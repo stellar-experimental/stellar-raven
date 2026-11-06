@@ -85,19 +85,19 @@ export function demoEffectiveOpenAiApiMode(
 export function demoOpenAiProviderOptions(model: string, reasoningEffort: DemoReasoningEffort | undefined) {
   // The provider-native Grok gateway transport uses the OpenAI-compatible
   // chat wire format too, including reasoning_effort.
-  if (
-    !reasoningEffort ||
-    !(model.startsWith("openai/") || model.startsWith("xai/") || model.startsWith("grok/"))
-  ) {
-    return {};
-  }
-  return {
-    providerOptions: {
-      openai: {
-        reasoningEffort
-      }
-    }
-  } as const;
+  const effort = reasoningEffort && (model.startsWith("openai/") || model.startsWith("xai/") || model.startsWith("grok/"))
+    ? { reasoningEffort }
+    : {};
+  // The demo gateway is Zero Data Retention, so OpenAI never persists response
+  // items. With the SDK default `store: true` a later step replays a reasoning
+  // item by id and OpenAI answers 404 `Items are not persisted for Zero Data
+  // Retention organizations` (gpt-6-astra at low, 2026-11-04). `store: false`
+  // makes @ai-sdk/openai request `reasoning.encrypted_content`, so the replay
+  // carries the item itself. Sent only to OpenAI: the xAI chat wire has no
+  // such field.
+  const retention = model.startsWith("openai/") ? { store: false } : {};
+  const openai = { ...effort, ...retention };
+  return Object.keys(openai).length === 0 ? {} : ({ providerOptions: { openai } } as const);
 }
 
 /**
@@ -121,12 +121,19 @@ export function demoOpenAiProviderOptions(model: string, reasoningEffort: DemoRe
  * fields and Anthropic calls out the confusion explicitly. `effort` accepts
  * low|medium|high|xhigh|max only, so "none" and "minimal" both floor to "low".
  *
- * Unmatched Claude ids (haiku, 4.x) fall through to `{}` and the server
- * default on purpose: 5-family config 400s on older models, and the model
- * override accepts arbitrary slugs.
+ * The whole 5.x family takes this path: Fable 5 and 5.1, Opus 5 and 5.5,
+ * Sonnet 5 and 5.5, and Haiku 5.5. Anthropic's effort reference lists all five
+ * effort levels and adaptive thinking for each of them, including Haiku 5.5
+ * (checked 2026-11-03). The Cloudflare catalog writes the point release with a
+ * dot (`claude-sonnet-5.5`); Anthropic's own ids use a dash (`claude-sonnet-5-5`).
+ * Both spellings match. Unmatched Claude ids (4.x) fall through to `{}` and the
+ * server default on purpose: 5-family config 400s on older models, and the
+ * model override accepts arbitrary slugs.
  */
+export const DEMO_ANTHROPIC_5X_MODEL = /^anthropic\/claude-(?:fable|opus|sonnet|haiku)-5(?:$|[.-])/;
+
 export function demoAnthropicProviderOptions(model: string, reasoningEffort: DemoReasoningEffort) {
-  if (!/^anthropic\/claude-(?:fable|opus|sonnet)-5(?:$|-)/.test(model)) return {};
+  if (!DEMO_ANTHROPIC_5X_MODEL.test(model)) return {};
   return {
     providerOptions: {
       anthropic: {
@@ -143,12 +150,10 @@ export function demoAnthropicProviderOptions(model: string, reasoningEffort: Dem
  *
  * `transport: "gateway"` uses provider-native PASSTHROUGH, which deliberately
  * strips `x-api-key`/`authorization`. Passthrough's Unified Billing list is
- * narrower than the run catalog: Sonnet 5 and Opus 5 are on it, Fable 5 and
- * Gemini are not — so those two were forwarded to api.anthropic.com and
- * generativelanguage.googleapis.com with NO credential, and the PROVIDER
- * answered `x-api-key header is required` / `Method doesn't allow unregistered
- * callers`. Provider errors, not gateway errors, which is what made it read as
- * a billing problem.
+ * narrower than the run catalog: Sonnet 5 and Opus 5 are on it, Fable 5 is
+ * not — so Fable was forwarded to api.anthropic.com with NO credential, and
+ * the PROVIDER answered `x-api-key header is required`. A provider error, not
+ * a gateway error, which is what made it read as a billing problem.
  *
  * Omitting `transport` selects `"run"` -> `binding.run(slug, body, { gateway })`,
  * the Unified Billing path. The gateway is NOT dropped: the rate limit and the
@@ -157,12 +162,18 @@ export function demoAnthropicProviderOptions(model: string, reasoningEffort: Dem
  * response caching, server-side fallback, BYOK aliases — this demo never uses,
  * and chat.ts runs its own client-side fallback loop.
  *
+ * Gemini is the opposite case. The run path accepts its first call but rejects
+ * the tool-result replay with `7003 User Input Error` (probed 2026-11-03,
+ * google/gemini-3.8-flash), while the Google AI Studio passthrough completes the
+ * whole tool loop under Unified Billing. So google/* takes the default
+ * passthrough branch below.
+ *
  * Deliberately narrow: openai/* and xai/* stay on passthrough because both are
- * green today and Responses-mode over the run path is unverified. Do not widen
- * this without probing the models it would move.
+ * green today and Responses-mode over the run path is unverified. Do not move
+ * a vendor between the two dispatches without probing the models it would move.
  */
 export function demoGatewayTransportSettings(model: string) {
-  if (model.startsWith("anthropic/") || model.startsWith("google/")) {
+  if (model.startsWith("anthropic/")) {
     return { resume: false, collectLog: false } as const;
   }
   if (model.startsWith("xai/") || model.startsWith("grok/")) {
@@ -182,27 +193,88 @@ export function demoGatewayOptions(id: string) {
 }
 
 /**
- * Vendors absent from workers-ai-provider's slug registry (26 keys, no
+ * Vendors absent from workers-ai-provider's slug registry (22 keys in 4.0.0, no
  * registration hook), so the plugin delegate throws `Unknown gateway provider`
  * before any network call. They are still reachable keyless through the plain
  * binding run path, which resolves slugs against Cloudflare's catalog instead.
  *
- * Keep this allowlist narrow. The plain binding path has no provider SDK to
- * remove unsupported parameters.
+ * Keep this allowlist narrow, and add a vendor only after an offline dispatch
+ * probe shows the registry error: `meta/` and `particle/` were probed on
+ * 2026-11-03 (sweep record in research/audits). The plain binding path has no
+ * provider SDK to remove unsupported parameters, so these models take the same
+ * catalog `reasoning_effort` mapping as `@cf/*` models.
  */
-export const DEMO_UNIFIED_RUN_PREFIXES = ["moonshotai/"] as const;
+export const DEMO_UNIFIED_RUN_PREFIXES = ["moonshotai/", "meta/", "particle/"] as const;
 
 export function demoUsesUnifiedRun(model: string): boolean {
   return DEMO_UNIFIED_RUN_PREFIXES.some((prefix) => model.startsWith(prefix));
 }
 
 /**
+ * Third-party catalog models on the plain binding path need the request format
+ * named. The provider builds an OpenAI chat-completions body, but `/run`
+ * validates a third-party slug against the serving provider's NATIVE schema
+ * unless the call carries `openaiEndpoint`, which `aig-entry` turns into the
+ * run request's `requestFormat` and converts the body. Cloudflare's own
+ * `agents/models/ai-sdk` provider sends exactly this option. Without it,
+ * Responses-only models (`meta/muse-spark-1.3`, probed 2026-11-03) reject the
+ * body with `7003 User Input Error`. workers-ai-provider forwards unknown
+ * settings keys to `binding.run`'s options, so this rides along with the
+ * gateway and header settings. `@cf/*` models are native and do not need it.
+ */
+export const DEMO_UNIFIED_RUN_REQUEST_FORMAT = { openaiEndpoint: "/v1/chat/completions" } as const;
+
+/**
+ * Catalog models whose catalog page lists `Request formats | Responses`. For
+ * these the gateway converts a chat-completions REQUEST, but a `stream: true`
+ * call comes back as the serving provider's native Responses event stream
+ * (`response.created`, `response.output_item.added`, ...), which the
+ * chat-completions parser cannot read: Muse Spark 1.3 answered every turn with
+ * three `[object Object]` tokens and no tool call (2026-11-04, gateway log
+ * `01a1a3cf-4ad7-7418-bc61-d495dfd92820`). A `stream: false` call is converted
+ * correctly, and workers-ai-provider's JSON-reply branch synthesizes the
+ * stream. Keyed on the catalog property, not on the vendor, so chat-format
+ * catalog models keep their live token stream.
+ *
+ * Source: https://developers.cloudflare.com/ai/models/meta/muse-spark-1.3/
+ * ("Request formats" row). Add an id only after reading its catalog page.
+ */
+export const DEMO_RESPONSES_FORMAT_CATALOG_MODELS = ["meta/muse-spark-1.3"] as const;
+
+/**
+ * The plain binding used by the unified-run client. It forwards everything
+ * untouched except `run` for the models above, which it asks for one JSON
+ * reply instead of a stream.
+ */
+export function demoUnifiedRunBinding(binding: Ai): Ai {
+  const jsonReplyModels: readonly string[] = DEMO_RESPONSES_FORMAT_CATALOG_MODELS;
+  return new Proxy(binding, {
+    get(target, key) {
+      if (key === "run") return (...args: Parameters<Ai["run"]>) => {
+        const [model, inputs, options] = args;
+        const wantsJsonReply = jsonReplyModels.includes(model) && inputs && typeof inputs === "object" && "stream" in inputs;
+        return target.run(model, (wantsJsonReply ? { ...inputs, stream: false } : inputs) as never, options);
+      };
+      const value = Reflect.get(target, key, target);
+      return typeof value === "function" ? value.bind(target) : value;
+    }
+  });
+}
+
+/** Models whose request body is built by the catalog run path, not a provider SDK. */
+export function demoUsesCatalogRun(model: string): boolean {
+  return model.startsWith("@") || demoUsesUnifiedRun(model);
+}
+
+/**
  * Kimi K3 accepts only `temperature: 1` ("only 1 is allowed"), and the unified
- * run path has no SDK to normalize that away. Returning undefined lets the
- * caller omit the field entirely where a model has no opinion.
+ * run path has no SDK to normalize that away. The quirk is Moonshot's, not the
+ * run path's: other registry-unknown vendors keep the demo temperature.
+ * Returning undefined lets the caller omit the field entirely where a model
+ * has no opinion.
  */
 export function demoTemperatureFor(model: string): number | undefined {
-  return demoUsesUnifiedRun(model) ? 1 : DEMO_TEMPERATURE;
+  return model.startsWith("moonshotai/") ? 1 : DEMO_TEMPERATURE;
 }
 
 export function demoModelSettings(
@@ -217,14 +289,15 @@ export function demoModelSettings(
     // evals must measure inference latency. The rate limiter handles abuse.
     "cf-aig-skip-cache": "true"
   } as const;
-  if (model.startsWith("@")) {
+  if (demoUsesCatalogRun(model)) {
     const effort = demoWorkersAiReasoningEffort(reasoningEffort);
     // OMIT the key rather than sending `reasoning_effort: null`. Providers
     // disagree about an explicit null: Workers AI's own models ignore it, but
     // GLM rejects the whole request with `8006: Invalid data for
     // reasoning_effort - reason value must be a string`. "No preference" is
     // absence, not null, and absence is what every provider accepts.
-    return effort === null ? ({ extraHeaders } as const) : ({ extraHeaders, reasoning_effort: effort } as const);
+    const run = demoUsesUnifiedRun(model) ? { extraHeaders, ...DEMO_UNIFIED_RUN_REQUEST_FORMAT } : { extraHeaders };
+    return effort === null ? run : { ...run, reasoning_effort: effort };
   }
   return {
     ...demoGatewayTransportSettings(model),

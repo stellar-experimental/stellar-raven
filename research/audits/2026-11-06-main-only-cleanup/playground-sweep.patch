@@ -1,0 +1,2866 @@
+From 59a8a26d8faaa88d2f227beebe4dc22d17962c63 Mon Sep 17 00:00:00 2001
+From: kalepail <hi@tyvdh.com>
+Date: Tue, 3 Nov 2026 20:26:57 -0500
+Subject: [PATCH 1/5] demo: sweep transports, SDK upgrade, judge CLI choice,
+ gauntlet accounting
+
+Playground model sweep (round ledger .agents/rounds/2026-11-03-playground-model-sweep.md):
+
+- Match the Anthropic 5.x family in both id spellings, Haiku 5.5 included.
+- Upgrade ai, @ai-sdk/openai, @ai-sdk/anthropic, and @ai-sdk/google together.
+- Route meta/* and particle/* through the plain binding; name the request
+  format with openaiEndpoint; ask Responses-format catalog models for a JSON
+  reply because the gateway streams native events for them.
+- Move google/* to the passthrough branch: the run path rejects the tool replay.
+- Send store: false to OpenAI, the Zero Data Retention wire.
+- Gauntlet: --max-budget-usd loopback accounting with the Gateway-logged model.
+- Re-judge: --judge-cli claude|codex with a recorded contract override.
+
+Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
+---
+ .../2026-11-03-playground-model-sweep.md      | 345 ++++++++++++++++++
+ eval/qa/README.md                             |   5 +-
+ eval/qa/judge.mjs                             | 134 ++++++-
+ eval/qa/re-judge.mjs                          |  50 ++-
+ package-lock.json                             |  76 ++--
+ package.json                                  |   8 +-
+ .../2026-11-03-playground-model-sweep.md      | 174 +++++++++
+ ...-sweep-probe-gemini-passthrough-summary.md |  15 +
+ .../2026-11-03-sweep-probe-summary.md         |  45 +++
+ .../2026-11-03-sweep-stage1-low-summary.md    |  16 +
+ .../2026-11-03-sweep-stage1-summary.md        |  94 +++++
+ ...2026-11-03-sweep-stage1b-astra1-summary.md |  15 +
+ ...2026-11-03-sweep-stage1b-astra2-summary.md |  15 +
+ ...26-11-03-sweep-stage1b-deepseek-summary.md |  24 ++
+ .../2026-11-03-sweep-stage1b-grok1-summary.md |  15 +
+ .../2026-11-03-sweep-stage1b-grok2-summary.md |  18 +
+ .../2026-11-03-sweep-stage1b-six-summary.md   |  42 +++
+ .../2026-11-03-sweep-stage1c-astra-summary.md |  15 +
+ .../2026-11-03-sweep-stage1c-muse-summary.md  |  15 +
+ scripts/run-demo-model-gauntlet.mjs           | 142 ++++++-
+ src/demo/chat.ts                              |   7 +-
+ src/demo/model-config.ts                      | 143 ++++++--
+ test/demo-gauntlet-cli.test.ts                |  38 ++
+ test/demo-model-config.test.ts                | 109 +++++-
+ test/judge-cli-adapters.test.mjs              | 130 +++++++
+ test/re-judge.test.ts                         |  20 +-
+ test/smoke/demo-openai-tool-request.test.ts   |  11 +-
+ 27 files changed, 1571 insertions(+), 150 deletions(-)
+ create mode 100644 .agents/rounds/2026-11-03-playground-model-sweep.md
+ create mode 100644 research/audits/2026-11-03-playground-model-sweep.md
+ create mode 100644 research/gauntlets/2026-11-03-sweep-probe-gemini-passthrough-summary.md
+ create mode 100644 research/gauntlets/2026-11-03-sweep-probe-summary.md
+ create mode 100644 research/gauntlets/2026-11-03-sweep-stage1-low-summary.md
+ create mode 100644 research/gauntlets/2026-11-03-sweep-stage1-summary.md
+ create mode 100644 research/gauntlets/2026-11-03-sweep-stage1b-astra1-summary.md
+ create mode 100644 research/gauntlets/2026-11-03-sweep-stage1b-astra2-summary.md
+ create mode 100644 research/gauntlets/2026-11-03-sweep-stage1b-deepseek-summary.md
+ create mode 100644 research/gauntlets/2026-11-03-sweep-stage1b-grok1-summary.md
+ create mode 100644 research/gauntlets/2026-11-03-sweep-stage1b-grok2-summary.md
+ create mode 100644 research/gauntlets/2026-11-03-sweep-stage1b-six-summary.md
+ create mode 100644 research/gauntlets/2026-11-03-sweep-stage1c-astra-summary.md
+ create mode 100644 research/gauntlets/2026-11-03-sweep-stage1c-muse-summary.md
+ create mode 100644 test/judge-cli-adapters.test.mjs
+
+diff --git a/.agents/rounds/2026-11-03-playground-model-sweep.md b/.agents/rounds/2026-11-03-playground-model-sweep.md
+new file mode 100644
+index 00000000..a709432a
+--- /dev/null
++++ b/.agents/rounds/2026-11-03-playground-model-sweep.md
+@@ -0,0 +1,345 @@
++# Playground model sweep — 2026-11-03
++
++## Scope
++
++Choose the Playground primary and fallback models from a broad cross-vendor candidate set.
++Accuracy and reliability decide. Cost and speed are recorded and break ties only between models
++that are equivalent on accuracy and reliability. The brief is `tmp/sweep/BRIEF.md` in the author
++worktree (gitignored); the coordinator is Herdr terminal t16 (Claude Opus 5.5). The pre-spend plan
++review required by `run-evals` is the brief itself: the coordinator authored the rules below, and
++the author lane (Claude Fable 5.1, t1cy) did not change them.
++
++Out of scope: the MCP QA battery contract, the judge rubric, and any upstream finding filing
++beyond what the hand review surfaces.
++
++## Lanes
++
++| lane | agent (model, effort) | pane | write set | status |
++|---|---|---|---|---|
++| author | Claude Fable 5.1, high | t1cy (`/private/tmp/rv-models`, branch `eval/playground-model-sweep-1103`) | `src/demo`, `test`, `package*.json`, `research/audits`, `research/gauntlets`, `.agents` | running |
++| coordinator | Claude Opus 5.5 | t16 | review, merge, deploy | waiting |
++
++## Pre-registered rules (written before stage 1 spend; not changed after results)
++
++Candidates. Effort `none` where the model supports it; otherwise the lowest supported effort.
++Record the effort used per model. Anthropic 5.x uses adaptive thinking with the mapped effort.
++
++| Family | Candidates |
++|---|---|
++| OpenAI | `openai/gpt-5.6-terra` (shipped primary, baseline), `openai/gpt-5.6-luna` (shipped fallback), `openai/gpt-5.6-sol`, `openai/gpt-6-luna`, `openai/gpt-6-sol`, `openai/gpt-6.1-terra`, `openai/gpt-6.1-sol`, `openai/gpt-6-astra` |
++| Anthropic | `anthropic/claude-haiku-5.5`, `anthropic/claude-sonnet-5.5`, `anthropic/claude-sonnet-5`, `anthropic/claude-opus-5.5` (accuracy ceiling) |
++| Meta Muse | `meta/muse-spark-1.3`, `meta/muse-spark-open` |
++| Particle | `particle/particle-1` |
++| Kimi | `moonshotai/kimi-k3`, `@cf/moonshotai/kimi-k2.7-code` |
++| GLM | `@cf/zai-org/glm-5.3`, `@cf/zai-org/glm-5.3-flash` |
++| Other | `google/gemini-3.8-flash`, `xai/grok-4.7`, `deepseek/deepseek-v4-pro` |
++
++A model that cannot be reached after one honest transport fix is recorded as "not reachable"
++with the exact error. No more than 30 minutes on one vendor's transport.
++
++**Stage 1 — gauntlet (reliability screen).** `scripts/run-demo-model-gauntlet.mjs`, all
++candidates, 2 repeats. Advance a model only with no transport or tool-loop failure other than a
++failure the baseline also has on the same prompt.
++
++**Stage 2 — screen.** `npm run eval:playground`, the same 30 cases for every advancing model
++(seed `2026-11-03-gpt6-paired`), one run each. Rerun the baseline on the upgraded SDK in this
++stage. Advance the baseline, the shipped fallback, and the top 5 other models by
++(correct + 0.5 × partial), excluding any model with more wrong answers than baseline + 2 or more
++than 1 tool failure. Hand-review every verdict that differs from the baseline.
++
++**Stage 3 — finals.** 100 stratified cases disjoint from the stage-2 cases, 2 repeats per
++finalist. The noise band is the baseline's own repeat-to-repeat disagreement. Hand-review every
++row where a finalist and the baseline differ by more than one grade step, and every wrong verdict
++of the top 2.
++
++**Judge.** The default judge is `claude-sonnet-5`. If `eval/qa/judge.mjs` supports a
++non-Anthropic judge, re-judge the stage-3 rows of the top 3 with it and report agreement. If it
++does not, record the limitation and rely on the hand review. Any judge change is an explicit,
++recorded override per `run-evals`.
++
++**Decision rule.**
++- Rank by wrong rate (lower first), then correct rate, then reliability (tool failures, transport
++  errors, provider refusals, timeouts per 100 turns). A difference inside the noise band is a tie.
++- Switch the primary only if the candidate is better than the baseline by more than the noise
++  band on wrong rate or correct rate, and not worse on reliability. Among tied models, prefer
++  lower p90 latency, then lower observed cost.
++- Fallback: the most reliable finalist from a different vendor than the primary. Test
++  `q-n3-cross-thread-memory-exfiltration` explicitly for each finalist (one extra turn each).
++
++**Spend.** Hard caps per invocation through `--max-budget-usd`. Stage caps: stage 1 USD 20,
++stage 2 USD 70, stage 3 USD 160. Round cap USD 250. Stop and report to t16 before any spend
++that would pass a stage cap. Measure spend independently from the AI Gateway logs through the
++Cloudflare API per stage and reconcile it with the harness ledger. The gauntlet has no cost
++accounting; use the gateway logs for it.
++
++## Ledger
++
++Append-only while the round runs.
++
++- 2026-11-03 — Read `AGENTS.md`, `run-evals`, `eval/playground/README.md`, the previous
++  re-check record, `src/demo/model-config.ts`, `src/demo/chat.ts`, and the gauntlet script.
++- 2026-11-03 — `GET /accounts/{id}/ai-gateway/gateways/stellar-raven-demo` (Cloudflare API MCP):
++  `spend_limits.rules[0] = { id: "70415088", limitType: "cost", limit: 100, window: 86400,
++  technique: "sliding" }`; `rate_limiting_limit: 50` per `60` s fixed; `zdr: true`;
++  `collect_logs: false`. The round cap (USD 250) cannot fit in one 24 h window. Reported to t16
++  with `hc send` before stage 1.
++- 2026-11-03 — `lsof -nP -iTCP:8787 -sTCP:LISTEN`: nothing listening. No Wrangler process was
++  running when the lane started.
++- 2026-11-03 — SDK upgrade applied: `ai@7.0.162`, `@ai-sdk/openai@4.0.108`,
++  `@ai-sdk/anthropic@4.0.96`, `@ai-sdk/google@4.0.111` (shared `@ai-sdk/provider@4.0.35`).
++  `npm install` changed only `package.json` and `package-lock.json`.
++- 2026-11-03 — `@ai-sdk/openai@4.0.108` capability table: `gpt-6.1-terra`, `gpt-6-luna`, and
++  `gpt-6-sol` are `configurableNonReasoning` (efforts `none`..`max`); `gpt-6-astra`,
++  `gpt-6.1-sol`, and every `gpt-5.6-*` entry are `{}` (default capabilities).
++- 2026-11-03 — Anthropic effort reference (platform.claude.com, fetched 2026-11-03): Haiku 5.5
++  supports all five effort levels (`medium` default) and adaptive thinking; `thinking: disabled`
++  is allowed only at `high` or below. The Cloudflare catalog page for
++  `anthropic/claude-haiku-5.5` shows `output_config: { effort }` with `thinking: { type: "adaptive" }`.
++  Defect 1 fix: `DEMO_ANTHROPIC_5X_MODEL = /^anthropic\/claude-(?:fable|opus|sonnet|haiku)-5(?:$|[.-])/`.
++- 2026-11-03 — `workers-ai-provider@4.0.0` slug registry (from `dist/gateway-provider-*.mjs`):
++  anthropic, aws-bedrock, azure-openai, cartesia, cerebras, cohere, deepseek, elevenlabs,
++  fireworks, google, google-ai-studio, google-vertex-ai, grok, groq, huggingface, mistral, openai,
++  openrouter, perplexity, replicate, workers-ai, xai. Absent: `meta`, `particle`, `moonshotai`.
++
++- 2026-11-03 — Coordinator override received (`tmp/sweep/JUDGE.md`): Cloudflare runs only the
++  candidate answer turns. Judging runs locally on the owner's subscriptions: Judge A
++  `claude -p --model claude-sonnet-5` (contract), Judge B Codex `gpt-6.1-sol` at high
++  (out-of-family, recorded override). Judge B runs on every stage-3 row of all finalists and on
++  stage-2 rows of models within one rank of the cutoff. Judge cost is notional and does not count
++  toward the gateway window. Gateway window rule: keep every sliding 24 h total <= USD 85; read the
++  window before each paid invocation; split stage 3 across windows by finalist and repeat, with each
++  model's two repeats in one server generation.
++- 2026-11-03 — Window read (`tmp/sweep` script over `cf ai-gateway logs list`, 24 h to
++  2026-11-03T20:36Z): 1684 rows, USD 44.48. `xai/grok-4.7` USD 38.76 (1065 calls, an earlier
++  offline lane, 2026-11-02T23:05Z to 2026-11-03T08:17Z, leaves the window at
++  2026-11-04T08:17Z); `gpt-5.6-terra` 4.59; `gpt-6.1-terra` 0.86; `gpt-6-luna` 0.19 (t1cp's
++  paired run); `gpt-5.6-luna` 0.08. Headroom under 85: about USD 40 until the Grok rows age out.
++- 2026-11-03 — Gauntlet gained `--max-budget-usd`: each turn carries
++  `x-raven-eval-max-budget-usd`, so the route settles every provider call against the Gateway
++  log, reports the turn cost and the Gateway-logged model, and the artifact carries both. Side
++  effect, recorded: accounting turns run with SDK retries off and one Gateway attempt per call,
++  so the screen is stricter than production. Unit tests added in `test/demo-gauntlet-cli.test.ts`.
++- 2026-11-03 — Defect 3 offline probe (`tmp/sweep/dispatch-probe.mjs`, fake binding, no
++  network): `meta/*` and `particle/*` throw `Unknown gateway provider` on the plugin path;
++  `deepseek/` resolves to passthrough `gateway.run` (provider `deepseek`, endpoint `responses`);
++  `google/` takes the run path with the Gemini wire. Fix: `DEMO_UNIFIED_RUN_PREFIXES` adds
++  `meta/` and `particle/`; the Kimi temperature quirk is narrowed to `moonshotai/`; registry-unknown
++  vendors take the `@cf/*` catalog settings shape (headers plus mapped `reasoning_effort`).
++- 2026-11-03 — Stage-1 transport probe, run id `2026-11-03-sweep-probe` (`rpc-simulate`, one
++  repeat, 23 models, `--max-budget-usd 4`). Gateway-logged model equals the configured id for
++  every vendor that answered (defect 4: exact comparison verified for openai, anthropic, meta,
++  particle, moonshotai, @cf). Findings:
++  - `openai/gpt-6.1-sol` and `openai/gpt-6-astra`: HTTP 400 `Unsupported value: 'none' is not
++    supported with the '<model>' model. Supported values are: 'low', 'medium', 'high', 'xhigh',
++    and 'max'.` The SDK passes `none` through for these ids. Lowest supported effort is `low`;
++    both run at `low` from here on.
++  - `meta/muse-spark-1.3`: HTTP 400 `7003: User Input Error` on the run path. Direct probes with
++    `cf ai run meta/muse-spark-1.3 --body …` return the same error for the chat body and for the
++    catalog page's own example body (`messages` + `max_completion_tokens`), while the same chat
++    body answers for `particle/particle-1` and `meta/muse-spark-open`. Recorded as **not
++    reachable** after one honest transport fix (run-path routing); exact error: `[7003] Model
++    execution failed (User Input Error): Invalid value at input: Invalid input`.
++  - `anthropic/claude-sonnet-5.5` and `anthropic/claude-opus-5.5` answered with `execute` only
++    (no `search`), so the gauntlet's `expectedTools` check fails while transport, terminal, and
++    every tool result are clean.
++  - `meta/muse-spark-open`: one `execute` failed on a model-authored script error
++    (`catalog.map is not a function`); terminal clean.
++- 2026-11-03 — Stage-1 gate reading, fixed before the full run: a "transport or tool-loop
++  failure" is a failing `http`, `terminal`, `finalAnswer`, `latency`, or `noToolFailures` check.
++  `expectedTools` and `noMarketNumber` are behavior notes, reported per model, not gate
++  failures. A model-authored script error that returns `ok: false` from `execute` is a tool-loop
++  failure. The baseline exception applies per prompt id.
++- 2026-11-03 — Stage-3 case set pre-selected before any stage-2 spend:
++  `tmp/sweep/select-cases.mjs` reproduces the harness sampler (verified: `--sample 30 --seed
++  2026-11-03-gpt6-paired` returns the harness's 30 ids exactly), then selects 100 cases with seed
++  `2026-11-03-sweep-finals` from the battery minus those 30. Overlap 0. Strata: stellarDocs 48,
++  scout 28, lumenloop 13, skills 7, none 4. The id list is in the audit record.
++- 2026-11-03 — Generation rule for stage 2 and 3: the harness hashes HEAD, status, the tracked
++  diff, and every untracked non-ignored file. Code is committed before a run, and nothing outside
++  gitignored paths (`tmp/`, `eval/local-lanes/`, `research/gauntlets/*.json`) changes while a
++  semantic run is in flight. Shards of one model run concurrently against one Wrangler process
++  (one subject cookie per shard, each under the 30-chat cap); concurrency is recorded with the
++  latency numbers.
++- 2026-11-03 — Probe follow-up for the last three vendors (run id `2026-11-03-sweep-probe`,
++  rows 20–23) and the one honest transport fix each was allowed:
++  - `google/gemini-3.8-flash`: run path (`google-vertex-ai`, `/run`) answered the first call
++    (HTTP 200) and rejected the tool-result replay with HTTP 400 `7003 Model execution failed
++    (User Input Error)` (gateway log `01a1a32e-db96-72e6-9897-ef8bcd3d13d9`). Fix probed in
++    `2026-11-03-sweep-probe-gemini-passthrough`: google/* on the default passthrough branch
++    (`google-ai-studio`, `streamGenerateContent`) completes the whole tool loop under Unified
++    Billing (pass, 3 tool calls, USD 0.0412, logged model equals configured id). Change kept in
++    `demoGatewayTransportSettings` with the comment and test updated; the prior "Gemini is not
++    on passthrough Unified Billing" note was stale.
++  - `deepseek/deepseek-v4-pro`: passthrough (`deepseek`, `chat/completions`) HTTP 401, provider
++    body `Authentication Fails (governor)` — DeepSeek is not a Unified Billing provider, so the
++    keyless passthrough reaches api.deepseek.com with no credential. Fix attempted: the catalog
++    run path. `cf ai run deepseek/deepseek-v4-pro` with the catalog page's own example body
++    returned HTTP 500 `[2002] Model execution failed (Error)` on three attempts while the same
++    body answered for `particle/particle-1`. Recorded as **not reachable**; exact errors above.
++  - `@cf/zai-org/glm-5.3-flash`: transport clean (four HTTP 200 calls, one 81.8 s), but the turn
++    hit the 120 s abort (`The turn was aborted before finishing.`, one tool failure from the
++    abort). This is a latency and tool-loop failure under the stage-1 gate; the full two-repeat
++    run decides.
++- 2026-11-03T21:00Z — Window read before stage 1: USD 45.87 over the last 24 h (1762 rows).
++  Headroom under 85: about USD 39. Probe spend so far USD 1.44 (gateway-logged). Stage 1 full
++  run authorized at `--max-budget-usd 18.5` so stage-1 spend stays under the USD 20 stage cap.
++  Model order puts the cheapest vendors first so a cap stop would drop the most expensive rows.
++- 2026-11-03 — Coordinator asked whether the Muse Spark 1.3 failure is the known "AI Gateway
++  Muse routes end streams without a finish signal" behavior. Checked against the probe rows:
++  it is not. `meta/muse-spark-1.3` fails before any stream opens: the route returns the error
++  frame at 1.0 s with zero token chars and no tool call (`Answer provider returned HTTP 400.
++  7003: User Input Error`), and the non-streaming `cf ai run` with the catalog's own example body
++  returns the same `7003` rejection. A missing finish signal would show tokens followed by an
++  abort, not a request rejection. `meta/muse-spark-open` in the same probe streamed 3632 token
++  chars and ended with a `done` frame, `reason: "stop"`, so its stream did carry a finish
++  signal on this turn. The note stays attached to muse-spark-open for stages 2 and 3: every row
++  of it is checked for a `done` frame, and a stream that ends without one is recorded as a
++  transport failure with the exact frame tail.
++- 2026-11-03T23:40Z — Stage 1 complete: run ids `2026-11-03-sweep-stage1` (19 models at the
++  demo default `none`, cap USD 15.31) and `2026-11-03-sweep-stage1-low` (`gpt-6.1-sol`,
++  `gpt-6-astra` at `low`, cap USD 3). Harness-reported USD 15.33 + 3.08 with 10 aborted turns of
++  unknown cost; gateway-logged spend for the same interval USD 19.23. With the probes (1.39 +
++  0.04) the stage-1 gateway total is USD 20.67, at the USD 20 stage cap. The cap stopped
++  `xai/grok-4.7` after 6 turns and `gpt-6-astra` after 7 (their `answer-cost-exceeds-authorization`
++  rows are harness stops, not model failures, and are excluded from the gate). Reported to t16
++  before any further spend; the TRANSPORT-FINDINGS rerun waits for that answer.
++- 2026-11-03 — Stage-1 gate applied as pre-registered (`tmp/sweep/gate1.mjs`; table in the audit
++  record). Baseline `gpt-5.6-terra` fails `activity-leaderboard` (both repeats) and `zk-repos`
++  (repeat 2), all model-authored execute script errors. Every tool failure in the stage is a
++  model-authored script error or a malformed tool-call argument (`AI_InvalidToolInputError`), not
++  an upstream service error, with one exception: `particle/particle-1` `soroswap-builder` repeat 2
++  ended with HTTP 500 `2002: Credential loading failed` from the run path at about
++  2026-11-03T21:5xZ (recorded for status-page matching). Advance: `gpt-5.6-terra`,
++  `gpt-5.6-luna`, `gpt-5.6-sol`, `gpt-6.1-terra`, `gpt-6.1-sol` (low), `claude-haiku-5.5`,
++  `claude-sonnet-5`, `claude-sonnet-5.5`, `claude-opus-5.5`, `xai/grok-4.6`. Excluded:
++  `gemini-3.8-flash` (one new script error), `gpt-6-luna` (one), `kimi-k2.7-code` (two, same
++  prompt), `gpt-6-sol` (six: returns a Promise from the script, `#<Promise> could not be cloned`),
++  `kimi-k3`, `particle-1`, `muse-spark-open`, `glm-5.3`, `glm-5.3-flash` (timeouts and aborts).
++  Incomplete: `grok-4.7`, `gpt-6-astra`. Behavior notes: `claude-sonnet-5.5` (6 turns) and
++  `claude-opus-5.5` (4 turns) skipped `search`; `particle-1` once named a market number.
++- 2026-11-03 — Window after stage 1: USD 64.91 over 24 h (hourly peaks 23Z 10.76, 05Z 6.83,
++  04Z 6.71, 07Z 6.70, 06Z 6.60). Headroom under 85: about USD 20 until the earlier Grok lane
++  ages out between 2026-11-03T23:05Z and 2026-11-04T08:17Z.
++- 2026-11-03 — TRANSPORT-FINDINGS applied in code (no spend yet): `DEMO_UNIFIED_RUN_REQUEST_FORMAT`
++  adds `openaiEndpoint: "/v1/chat/completions"` to the settings of every unified-run model
++  (`moonshotai/`, `meta/`, `particle/`). It reaches `binding.run`'s options through
++  workers-ai-provider's settings passthrough, so the accounting proxy sees the same call; chosen
++  over wrapping the binding because it is one data constant with a unit test and no new
++  indirection. Root cause recorded from the coordinator: the Muse Spark 1.3 catalog schema is
++  Responses-only (`input` required) while the page's usage example shows `messages`; `/run`
++  validates the plain-binding body against the native schema unless `openaiEndpoint` names the
++  format (`agents@0.33.0` `createAI` sends it; `workers-ai-provider@4.0.0` never does). REST
++  proof log ids `01a1a36f-6e7d-73a6-b9a8-c293d9296e5c`, `01a1a371-9546-75b7-a360-9503c06ed6b8`
++  (chat body, HTTP 200, tool call; 129.6 s cold, 5.3 s warm). Provenance caveat: that response
++  body names the model `muse-spark-1.3` without the `meta/` prefix; the gauntlet's logged-model
++  column decides. DeepSeek: the Fireworks catalog route (`deepseek/deepseek-v4-pro`,
++  `deepseek-v4-flash`) returns HTTP 500 `2002` on both gateways (log id
++  `01a1a36f-6e6c-7779-a96b-0b1c37429da4`), a Cloudflare-side outage, so it stays not reachable;
++  the Cloudflare-hosted `@cf/deepseek-ai/deepseek-v4-pro-0813` and
++  `@cf/deepseek-ai/deepseek-v4.1-flash-1017` join the candidate list on the existing `@cf/*` path
++  (status incident `alzmexlqangd`, 2026-10-15, resolved). Effort for the pair: the catalog
++  accepts `none`, but the demo omits the key at `none` (catalog default `high`), so they run at
++  `low`, the lowest effort the catalog path can send; recorded as a follow-up.
++- 2026-11-03T23:5xZ — Coordinator (t16) raised the stage-1 cap from USD 20 to USD 28 (round cap
++  stays 250). Reason: the original cap stopped `gpt-6-astra` and `grok-4.7` before their 16
++  turns, and the TRANSPORT-FINDINGS rerun adds six models (four unified-run models whose
++  transport changed, two Cloudflare-hosted DeepSeek models). Ordered sequence: the six models
++  first, then `gpt-6-astra`, then `grok-4.7` last; read the window before each run and stop
++  before USD 85. Rerun rows for `kimi-k3`, `particle-1`, `muse-spark-open` supersede their
++  earlier rows; both sets stay in the ledger and the audit record.
++- 2026-11-04T00:4xZ — Muse Spark 1.3 after the `openaiEndpoint` fix (run
++  `2026-11-03-sweep-stage1b-six`): 16/16 turns answered in 4–9 s with zero tool calls and a final
++  text of three `[object Object]` tokens. Coordinator asked whether tools reach the request.
++  Offline capture (`tmp/sweep/tools-capture.mjs`, fake binding): `binding.run` inputs carry
++  `tools` (search, execute with parameters), `tool_choice: "auto"`, `stream: true`, and the
++  options carry `openaiEndpoint`, so the request is complete. Live reproduction on
++  `/ai/v1/chat/completions` for `meta/muse-spark-1.3` with one function tool: `stream: false`
++  returns a `chat.completion` with `finish_reason: tool_calls` and the `search` call;
++  `stream: true` returns the serving provider's native Responses SSE (`event: response.created`,
++  `response.output_item.added` with `type: reasoning`, `response.content_part.added` with
++  `output_text`), which the chat-completions parser cannot read. Transport defect, not a model
++  result. The other three unified-run models stream chat-format chunks and were unaffected (0
++  object tokens, normal tool traffic). Fix: `demoUnifiedRunBinding` requests `stream: false` for
++  third-party catalog slugs on the plain binding; workers-ai-provider's JSON-reply branch
++  synthesizes the stream. Applied after the stage-1b chain finished so the running Wrangler did
++  not reload mid-turn. Rerun: muse-spark-1.3 only, as instructed; the three other models'
++  rows stay unless t16 asks for a rerun.
++- 2026-11-04 — Coordinator narrowed the Muse fix: key it on the catalog property, not on every
++  third-party slug. `DEMO_RESPONSES_FORMAT_CATALOG_MODELS` lists the catalog ids whose catalog
++  page says `Request formats | Responses` (today only `meta/muse-spark-1.3`,
++  https://developers.cloudflare.com/ai/models/meta/muse-spark-1.3/, row "Request formats"), and
++  `demoUnifiedRunBinding` requests `stream: false` only for those. `muse-spark-open`,
++  `particle-1`, and `kimi-k3` keep their live token stream and their stage-1 rows; only
++  `muse-spark-1.3` is rerun. Two records for the audit:
++  (a) **Cloudflare-side defect to report.** For a catalog model whose request format is
++  Responses, a `stream: true` chat-completions request through `/run` with
++  `openaiEndpoint: "/v1/chat/completions"` (and through the account's
++  `/ai/v1/chat/completions` endpoint) returns the serving provider's native Responses SSE
++  (`event: response.created`, `response.in_progress`, `response.output_item.added` with
++  `type: reasoning`, `response.content_part.added` with `output_text`) instead of
++  chat-completions chunks; `stream: false` converts the reply correctly (`chat.completion`,
++  `finish_reason: tool_calls`, the `search` call present). Repro: the two REST calls above with
++  one function tool and `max_tokens: 120`, 2026-11-04T00:4xZ. Gateway log ids of streamed
++  `/run` calls that returned the unreadable stream: `01a1a3cf-4ad7-7418-bc61-d495dfd92820`,
++  `01a1a3cf-6cd6-7263-bc77-7c6e1bc87552`, `01a1a3cf-7bd8-7779-b6e6-0e8678062983` (all HTTP 200,
++  3–6 s, about USD 0.01 each).
++  (b) **Muse Spark 1.3 latency is measured without streaming.** Its first-meaningful and total
++  latency come from one JSON reply per model call, so its first-token numbers are not comparable
++  with streamed models; total turn latency is.
++- 2026-11-04T01:06Z — Stage-1b chain complete (run ids `2026-11-03-sweep-stage1b-six`,
++  `-deepseek`, `-astra2`, `-astra1`, `-grok2`, `-grok1`): harness USD 6.95, gateway USD 7.20;
++  stage-1 gateway total USD 27.87 of the raised 28. Window at 01:07Z: USD 67.40. Gate with the
++  superseding rows and budget-stop rows excluded: `muse-spark-open` 3 uncovered failures,
++  `particle-1` 1, `kimi-k3` 2, `@cf/deepseek-ai/deepseek-v4-pro-0813` 4,
++  `@cf/deepseek-ai/deepseek-v4.1-flash-1017` 4 (all model-authored script errors),
++  `grok-4.7` 4 (two script errors on `soroswap-builder`, two on `wallet-recovery`): excluded.
++  `muse-spark-1.3` rows void (streaming defect), rerun pending authorization.
++- 2026-11-04 — `gpt-6-astra` (low): 15 valid turns, one cell (`no-market-hallucination` repeat 1)
++  missing, one uncovered failure that is transport: HTTP 404 `Item with id 'rs_…' not found.
++  Items are not persisted for Zero Data Retention organizations. Remove this item from your
++  input and try again.` The demo gateway is ZDR; the SDK default `store: true` lets a later step
++  replay a reasoning item by id, which ZDR never stored. `@ai-sdk/openai` adds
++  `include: ["reasoning.encrypted_content"]` only when `providerOptions.openai.store` is false
++  (dist line `if (store === false && isReasoningModel) addInclude("reasoning.encrypted_content")`).
++  Fix: `demoOpenAiProviderOptions` sends `store: false` for `openai/*` (not for the xAI chat wire).
++  It changes the OpenAI wire for every OpenAI model by that flag and the encrypted reasoning
++  items; models at effort `none` emit no reasoning items, so their stage-1 rows stand. Proposed
++  to t16 with the spend request (muse-spark-1.3 rerun plus astra's missing cell, about USD 2).
++- 2026-11-04 — Coordinator decisions (t16): (1) `store: false` for `openai/*` applied with a
++  test as the ZDR-correct wire; (2) astra's 404 cell is void, not a gate failure, the same
++  treatment as muse-spark-1.3; it is rerun with the missing cell on the new wire and astra is
++  gated on 16 cells; (3) `muse-spark-1.3` rerun, 16 turns; (4) no stage-1 rerun for the other
++  OpenAI models, stage 2 runs them (baseline included) on the new wire; (5) checked before
++  gating: none of the excluded `gpt-6-luna` or `gpt-6-sol` failures is an `rs_` 404 (luna:
++  one empty-hit search, one script error; sol: six Promise-clone script errors). Stage-1 cap
++  raised to USD 30 for the reruns.
++- 2026-11-04T01:24Z — Stage-1c complete (run ids `2026-11-03-sweep-stage1c-muse`, `-astra`):
++  gates green (typecheck, 3139 tests, 127 smoke, build, selftest; the OpenAI wire smoke test now
++  reviews `store: false` + `include: ["reasoning.encrypted_content"]`). Harness USD 1.23,
++  gateway USD 1.23 (muse 1.003, astra 0.229). Stage-1 gateway total USD 29.10 of 30. Window at
++  01:24Z: USD 68.10.
++  - `meta/muse-spark-1.3` on the JSON-reply fix: 15 of 16 turns before the USD 1.00 cap
++    (`wallet-recovery` repeat 2 missing), zero `[object Object]` tokens, normal tool traffic
++    (1–3 searches, 1–4 executes per turn), logged model equals the configured id, 23–78 s per
++    turn without streaming. One gate failure on `rpc-simulate` repeat 1: `execute call limit
++    reached for this turn` (the model used up the per-turn execute allowance), a tool-loop
++    failure on a prompt the baseline passed, so **excluded**; the missing cell cannot change that.
++  - `openai/gpt-6-astra` (low) on the `store: false` wire: both cells pass (`no-market-hallucination`
++    4.7 s, `wallet-recovery` 17.9 s). With the 404 cell and the budget stop void, astra has 16
++    clean cells and **advances**. USD 5.56 over its 19 gauntlet turns, the most expensive
++    candidate (about USD 0.33 per turn).
++  - Stage-1 advancing set (11): `gpt-5.6-terra` (baseline), `gpt-5.6-luna` (shipped fallback),
++    `gpt-5.6-sol`, `gpt-6.1-terra`, `gpt-6.1-sol` (low), `gpt-6-astra` (low),
++    `claude-haiku-5.5`, `claude-sonnet-5`, `claude-sonnet-5.5`, `claude-opus-5.5`, `xai/grok-4.6`.
++- 2026-11-04 — Stage-2 plan (pre-registered rules unchanged): the 11 models above, the 30
++  cases of seed `2026-11-03-gpt6-paired`, one run each, three concurrent 10-case shards per
++  model against one Wrangler process, Judge A inline. Per-model answer-spend estimates from the
++  stage-1 per-turn costs (x30, judge notional): luna 0.15, haiku 0.2, 6.1-terra 1.1, 6.1-sol 1.7,
++  terra 1.9, sonnet-5.5 2.3, grok-4.6 2.8, sonnet-5 3.1, 5.6-sol 3.6, opus 5.4, astra 10;
++  about USD 32 in all, under the USD 70 stage cap. Order cheapest first; each model's cap is
++  1.6x its estimate; the chain reads the window before each model and waits while
++  window + cap > 85 (the earlier Grok lane ages out between 23:05Z and 08:17Z).
++
++## Outcome
++
++(open)
+diff --git a/eval/qa/README.md b/eval/qa/README.md
+index 88ee94e5..8e11ac02 100644
+--- a/eval/qa/README.md
++++ b/eval/qa/README.md
+@@ -505,7 +505,7 @@ For an approved paid run, replace `--dry-run` with these flags:
+ 
+ ```text
+ --max-budget-usd <usd>
+---claude-path <absolute-path>
++--judge-cli-path <absolute-path>
+ --expect-agent-binary-sha256 <sha256>
+ --expect-agent-environment-sha256 <sha256>
+ ```
+@@ -516,6 +516,9 @@ For an approved paid run, replace `--dry-run` with these flags:
+ | `--flips-vs <baseline>` | Select rows with a different effective score from the baseline |
+ | `--cases-ref <revision>` | Resolve the case snapshot at that revision |
+ | `--judge-model <model>` | Select the judge model; a changed model makes the comparison non-identical |
++| `--judge-cli <claude\|codex>` | Select the judge CLI (default `claude`). `codex` is an out-of-family second judge: read-only, approvals off, no user config, prompt on stdin. It is a recorded contract override and always needs `--allow-non-identical` |
++| `--judge-effort <low\|medium\|high\|xhigh>` | Codex reasoning effort (default `high`); ignored by `claude` |
++| `--judge-cli-path <path>` | The judge executable whose identity is attested before and after judging |
+ | `--judge-panel <2|3>` | Use a fixed panel instead of one vote |
+ | `--allow-non-identical` | Permit source case or judge-tuple differences and label the artifact accordingly |
+ | `--allow-golden-drift` | Acknowledge goldens dated after the source collection |
+diff --git a/eval/qa/judge.mjs b/eval/qa/judge.mjs
+index 1e168cfc..44881400 100644
+--- a/eval/qa/judge.mjs
++++ b/eval/qa/judge.mjs
+@@ -28,7 +28,9 @@
+  */
+ import { spawnSync } from "node:child_process";
+ import { createHash } from "node:crypto";
+-import { readFileSync, readdirSync } from "node:fs";
++import { mkdtempSync, readFileSync, readdirSync, rmSync } from "node:fs";
++import { tmpdir } from "node:os";
++import path from "node:path";
+ import { fileURLToPath, pathToFileURL } from "node:url";
+ import {
+   buildCliEvidence,
+@@ -56,6 +58,20 @@ import {
+ } from "../lib/bound-server-identity.mjs";
+ 
+ export const JUDGE_MODEL = "claude-sonnet-5";
++/**
++ * Judge CLIs. `claude` is the measurement contract (JUDGE_MODEL above).
++ * `codex` is a second, out-of-family judge for rounds whose candidates include
++ * Anthropic models; selecting it is an explicit, recorded contract override
++ * (re-judge `--judge-cli codex`, labeled non-identical). Both receive the same
++ * prompt, rubric, and evidence pack on stdin, and neither sees the answering
++ * model's name. Codex runs read-only, with approvals off, without the user's
++ * config (no MCP servers), in an empty working directory.
++ */
++export const JUDGE_CLI_IDS = Object.freeze(["claude", "codex"]);
++export const CODEX_JUDGE_EFFORT = "high";
++const CODEX_JUDGE_EFFORTS = Object.freeze(["low", "medium", "high", "xhigh"]);
++/** A subscription CLI reports no dollar figure; its ledger cost is 0 with this basis. */
++export const SUBSCRIPTION_NO_USD_FIGURE = "subscription-no-usd-figure";
+ /**
+  * Stall handling for one judge call. A judge CLI that the harness kills prints
+  * no cost, and a budgeted method stops on a missing cost. So the CLI handles
+@@ -605,31 +621,43 @@ export async function judgeCase(
+     model = JUDGE_MODEL,
+     timeoutMs = JUDGE_TIMEOUT_MS,
+     maxBuffer = 32 * 1024 * 1024,
+-    command = "claude",
++    cli = "claude",
++    command = cli,
++    effort = CODEX_JUDGE_EFFORT,
+     safeMode = true,
+     maxBudgetUsd = null
+   } = {}
+ ) {
++  if (!JUDGE_CLI_IDS.includes(cli)) throw new Error(`unknown judge cli ${cli}; expected one of ${JUDGE_CLI_IDS.join(", ")}`);
+   const transcriptEvidence =
+     typeof input.transcriptEvidence === "string"
+       ? input.transcriptEvidence
+       : buildTranscriptEvidence(input);
+   const prompt = buildJudgePrompt({ ...input, transcriptEvidence });
+   const promptSha256 = sha256(prompt);
+-  const res = spawnSync(
+-    command,
+-    buildJudgeArgs({ model, safeMode, maxBudgetUsd }),
+-    { input: prompt, timeout: timeoutMs, maxBuffer, env: buildJudgeEnv(process.env) }
+-  );
++  // Codex gets an empty working directory: read-only still means it could
++  // read whatever the caller's cwd holds, and a blind judge reads only stdin.
++  const codexCwd = cli === "codex" ? mkdtempSync(path.join(tmpdir(), "raven-judge-codex-")) : null;
++  let res;
++  try {
++    res = spawnSync(
++      command,
++      cli === "codex" ? buildCodexJudgeArgs({ model, effort }) : buildJudgeArgs({ model, safeMode, maxBudgetUsd }),
++      { input: prompt, timeout: timeoutMs, maxBuffer, env: buildJudgeEnv(process.env), ...(codexCwd ? { cwd: codexCwd } : {}) }
++    );
++  } finally {
++    if (codexCwd) rmSync(codexCwd, { recursive: true, force: true });
++  }
++  const costLabel = cli === "codex" ? { costBasis: SUBSCRIPTION_NO_USD_FIGURE } : {};
+   const promptWriteFailed = res.status === 0 && res.error?.code === "EPIPE";
+   if (res.error || res.status !== 0) {
+-    const stdoutEnvelope = parseJsonStream(res.stdout);
+-    const stderrEnvelope = parseJsonStream(res.stderr);
++    const stdoutEnvelope = cli === "codex" ? null : parseJsonStream(res.stdout);
++    const stderrEnvelope = cli === "codex" ? null : parseJsonStream(res.stderr);
+     const cliFailure = {
+       ...buildCliFailure(res, stdoutEnvelope),
+       ...(promptWriteFailed ? { kind: "prompt-write" } : {})
+     };
+-    const failureCostUsd = resolveFailureCost(stdoutEnvelope, stderrEnvelope);
++    const failureCostUsd = cli === "codex" ? 0 : resolveFailureCost(stdoutEnvelope, stderrEnvelope);
+     const failureClass = promptWriteFailed
+       ? "prompt-write"
+       : cliFailure.kind === "timeout"
+@@ -646,6 +674,7 @@ export async function judgeCase(
+       consistencyViolations: [],
+       rationale: cliFailure.message,
+       ...(failureCostUsd === undefined ? {} : { costUsd: failureCostUsd }),
++      ...costLabel,
+       failureClass,
+       cliFailure,
+       rubric: JUDGE_RUBRIC,
+@@ -659,12 +688,22 @@ export async function judgeCase(
+   // the unparseable-verdict rationale intact. U+0080-U+009F is legal unescaped
+   // inside a JSON string, so the envelope still parses.
+   let envelope;
+-  try {
+-    envelope = JSON.parse(decodeCliEvidenceText(res.stdout));
+-  } catch {
+-    envelope = null;
++  let resultText;
++  let usage;
++  if (cli === "codex") {
++    const parsed = parseCodexJudgeOutput(res.stdout);
++    envelope = { total_cost_usd: 0 };
++    resultText = parsed.resultText ?? decodeCliEvidenceText(res.stdout);
++    usage = parsed.usage;
++  } else {
++    try {
++      envelope = JSON.parse(decodeCliEvidenceText(res.stdout));
++    } catch {
++      envelope = null;
++    }
++    resultText = envelope?.result ?? decodeCliEvidenceText(res.stdout);
+   }
+-  const resultText = envelope?.result ?? decodeCliEvidenceText(res.stdout);
++  const usageLabel = usage ? { usage } : {};
+   const verdict = extractJsonObject(resultText);
+   if (!verdict || !["correct", "partial", "wrong"].includes(verdict.score)) {
+     return {
+@@ -676,6 +715,8 @@ export async function judgeCase(
+       consistencyViolations: [],
+       rationale: sanitizeBoundedText(`judge returned unparseable verdict: ${String(resultText)}`, 512),
+       ...(validCost(envelope?.total_cost_usd) ? { costUsd: envelope.total_cost_usd } : {}),
++      ...costLabel,
++      ...usageLabel,
+       failureClass: isProviderSafeguardEvidence(resultText) ? "provider-safeguard" : "parse",
+       rubric: JUDGE_RUBRIC,
+       packVersion: PACK_VERSION,
+@@ -723,12 +764,75 @@ export async function judgeCase(
+   return {
+     ...checkedVerdict,
+     ...(validCost(envelope?.total_cost_usd) ? { costUsd: envelope.total_cost_usd } : {}),
++    ...costLabel,
++    ...usageLabel,
+     rubric: JUDGE_RUBRIC,
+     packVersion: PACK_VERSION,
+     promptSha256
+   };
+ }
+ 
++/**
++ * Exact Codex arguments for a judge: approvals never, read-only sandbox, no
++ * session persistence, no user config (so no MCP servers), no exec rules, JSONL
++ * events on stdout, prompt on stdin. `-a` is a top-level flag, not an `exec` one.
++ */
++export function buildCodexJudgeArgs({ model, effort = CODEX_JUDGE_EFFORT } = {}) {
++  if (typeof model !== "string" || !model) throw new Error("codex judge requires a model id");
++  if (!CODEX_JUDGE_EFFORTS.includes(effort)) {
++    throw new Error(`codex judge effort must be one of ${CODEX_JUDGE_EFFORTS.join(", ")}, got ${effort}`);
++  }
++  return [
++    "-a",
++    "never",
++    "exec",
++    "-m",
++    model,
++    "-c",
++    `model_reasoning_effort="${effort}"`,
++    "-s",
++    "read-only",
++    "--ephemeral",
++    "--skip-git-repo-check",
++    "--ignore-user-config",
++    "--ignore-rules",
++    "--color",
++    "never",
++    "--json",
++    "-"
++  ];
++}
++
++/**
++ * Codex `--json` prints one event per line. The verdict is the text of the
++ * last completed `agent_message`; `turn.completed` carries token usage and no
++ * dollar figure. Unparseable lines are ignored, never treated as the verdict.
++ */
++export function parseCodexJudgeOutput(stdout) {
++  const text = decodeCliEvidenceText(stdout ?? "");
++  let resultText = null;
++  let usage = null;
++  let error = null;
++  for (const line of text.split("\n")) {
++    const trimmed = line.trim();
++    if (!trimmed.startsWith("{")) continue;
++    let event;
++    try {
++      event = JSON.parse(trimmed);
++    } catch {
++      continue;
++    }
++    if (event?.type === "item.completed" && event.item?.type === "agent_message" && typeof event.item.text === "string") {
++      resultText = event.item.text;
++    } else if (event?.type === "turn.completed" && event.usage && typeof event.usage === "object") {
++      usage = event.usage;
++    } else if (event?.type === "error" && typeof event.message === "string") {
++      error = event.message;
++    }
++  }
++  return { resultText, usage, error };
++}
++
+ /** Exact Claude arguments for a judge, which never needs MCP access. */
+ /** The judge CLI's environment: the caller's, with the stall limits set. */
+ export function buildJudgeEnv(baseEnv) {
+diff --git a/eval/qa/re-judge.mjs b/eval/qa/re-judge.mjs
+index 735ff577..ff40cf11 100644
+--- a/eval/qa/re-judge.mjs
++++ b/eval/qa/re-judge.mjs
+@@ -25,13 +25,17 @@ import path from "node:path";
+ import { fileURLToPath, pathToFileURL } from "node:url";
+ import {
+   buildAgentErrorVerdict,
++  buildCodexJudgeArgs,
+   buildTranscriptEvidence,
++  CODEX_JUDGE_EFFORT,
+   hasSuccessfulAnswer,
+   judgeInputSha256,
+   judgeCase,
+   judgeCasePanel,
++  JUDGE_CLI_IDS,
+   JUDGE_MODEL,
+-  JUDGE_RUBRIC
++  JUDGE_RUBRIC,
++  SUBSCRIPTION_NO_USD_FIGURE
+ } from "./judge.mjs";
+ import { PACK_VERSION } from "./evidence-pack.mjs";
+ import { panelConfidence } from "./panel-confidence.mjs";
+@@ -131,6 +135,8 @@ export function parseArgs(argv) {
+   let ids;
+   let flipsVs;
+   let judgeModel = JUDGE_MODEL;
++  let judgeCli = "claude";
++  let judgeEffort = CODEX_JUDGE_EFFORT;
+   let casesRef;
+   let judgePanel = 1;
+   let allowNonIdentical = false;
+@@ -139,7 +145,7 @@ export function parseArgs(argv) {
+   let dryRun = false;
+   let maxBudgetUsd = null;
+   let maxBudgetFlags = 0;
+-  let claudePath;
++  let judgeCliPath;
+   let expectedAgentBinarySha256;
+   let expectedAgentEnvironmentSha256;
+   const identityFlagCounts = new Map();
+@@ -157,6 +163,12 @@ export function parseArgs(argv) {
+     } else if (arg === "--judge-model") {
+       judgeModel = argv[++i];
+       if (!judgeModel || judgeModel.startsWith("--")) fail("--judge-model requires a model name");
++    } else if (arg === "--judge-cli") {
++      judgeCli = argv[++i];
++      if (!JUDGE_CLI_IDS.includes(judgeCli)) fail(`--judge-cli must be one of ${JUDGE_CLI_IDS.join(", ")}`);
++    } else if (arg === "--judge-effort") {
++      judgeEffort = argv[++i];
++      if (!judgeEffort || judgeEffort.startsWith("--")) fail("--judge-effort requires an effort level");
+     } else if (arg === "--cases-ref") {
+       if (casesRef !== undefined) fail("--cases-ref may be supplied only once");
+       casesRef = argv[++i];
+@@ -182,7 +194,7 @@ export function parseArgs(argv) {
+       if (value === undefined || value.startsWith("--")) fail("--max-budget-usd requires a value");
+       maxBudgetUsd = parseMaxBudgetUsd(value);
+     } else if ([
+-      "--claude-path",
++      "--judge-cli-path",
+       "--expect-agent-binary-sha256",
+       "--expect-agent-environment-sha256"
+     ].includes(arg)) {
+@@ -191,11 +203,11 @@ export function parseArgs(argv) {
+       if (count > 1) fail(`${arg} may be supplied only once`);
+       const value = argv[++i];
+       if (!value || value.startsWith("--")) fail(`${arg} requires a spaced value`);
+-      if (arg === "--claude-path") claudePath = value;
++      if (arg === "--judge-cli-path") judgeCliPath = value;
+       if (arg === "--expect-agent-binary-sha256") expectedAgentBinarySha256 = value;
+       if (arg === "--expect-agent-environment-sha256") expectedAgentEnvironmentSha256 = value;
+     } else if (arg === "--help" || arg === "-h") {
+-      console.log("usage: node eval/qa/re-judge.mjs <results.json> (--ids id-a,id-b | --flips-vs <baseline.json>) [--judge-model <model>] [--judge-panel <2|3>] [--max-budget-usd <usd>] [--claude-path <path> --expect-agent-binary-sha256 <sha256> --expect-agent-environment-sha256 <sha256>] [--cases-ref <git-revision|worktree>] [--allow-non-identical] [--allow-golden-drift] [--allow-empty] [--dry-run]");
++      console.log("usage: node eval/qa/re-judge.mjs <results.json> (--ids id-a,id-b | --flips-vs <baseline.json>) [--judge-model <model>] [--judge-cli <claude|codex>] [--judge-effort <low|medium|high|xhigh>] [--judge-panel <2|3>] [--max-budget-usd <usd>] [--judge-cli-path <path> --expect-agent-binary-sha256 <sha256> --expect-agent-environment-sha256 <sha256>] [--cases-ref <git-revision|worktree>] [--allow-non-identical] [--allow-golden-drift] [--allow-empty] [--dry-run]");
+       process.exit(0);
+     } else if (arg.startsWith("--")) {
+       fail(`unknown flag ${arg}`);
+@@ -211,11 +223,17 @@ export function parseArgs(argv) {
+   if (!dryRun && maxBudgetFlags === 0) {
+     fail("re-judge requires --max-budget-usd for every paid run");
+   }
+-  const identityFlagCount = [claudePath, expectedAgentBinarySha256, expectedAgentEnvironmentSha256]
++  // A second judge CLI is a measurement-contract override by definition: the
++  // artifact must say so, so the flag that labels it is mandatory, not implied.
++  if (judgeCli !== "claude" && !allowNonIdentical) {
++    fail(`--judge-cli ${judgeCli} is a judge-contract override; pass --allow-non-identical to label the artifact`);
++  }
++  if (judgeCli === "codex") buildCodexJudgeArgs({ model: judgeModel, effort: judgeEffort });
++  const identityFlagCount = [judgeCliPath, expectedAgentBinarySha256, expectedAgentEnvironmentSha256]
+     .filter((value) => value !== undefined).length;
+   if ((!dryRun && identityFlagCount !== 3) || (dryRun && identityFlagCount !== 0 && identityFlagCount !== 3)) {
+     fail(
+-      "paid re-judge requires --claude-path, --expect-agent-binary-sha256, and " +
++      "paid re-judge requires --judge-cli-path, --expect-agent-binary-sha256, and " +
+       "--expect-agent-environment-sha256 as spaced flags"
+     );
+   }
+@@ -232,6 +250,8 @@ export function parseArgs(argv) {
+     ids,
+     flipsVs,
+     judgeModel,
++    judgeCli,
++    judgeEffort,
+     judgePanel,
+     casesRef,
+     allowNonIdentical,
+@@ -239,27 +259,27 @@ export function parseArgs(argv) {
+     allowEmpty,
+     dryRun,
+     maxBudgetUsd,
+-    claudePath,
++    judgeCliPath,
+     expectedAgentBinarySha256,
+     expectedAgentEnvironmentSha256
+   };
+ }
+ 
+ export function attestRejudgeIdentity(
+-  { claudePath, expectedAgentBinarySha256, expectedAgentEnvironmentSha256 },
++  { judgeCliPath, expectedAgentBinarySha256, expectedAgentEnvironmentSha256 },
+   {
+     env = process.env,
+     executableIdentityImpl = executableIdentity,
+     environmentIdentityImpl = agentEnvironmentIdentity
+   } = {}
+ ) {
+-  if (typeof claudePath !== "string" || !claudePath) {
+-    throw new Error("re-judge Claude identity: --claude-path is required");
++  if (typeof judgeCliPath !== "string" || !judgeCliPath) {
++    throw new Error("re-judge judge identity: --judge-cli-path is required");
+   }
+   const binary = assertExpectedExecutable(
+-    executableIdentityImpl(claudePath, { env }),
++    executableIdentityImpl(judgeCliPath, { env }),
+     expectedAgentBinarySha256,
+-    { label: "re-judge Claude CLI" }
++    { label: "re-judge judge CLI" }
+   );
+   const environment = assertExpectedAgentEnvironment(
+     environmentIdentityImpl(env),
+@@ -1005,6 +1025,8 @@ async function main() {
+       goldenTime: { ...goldenTime, allowGoldenDrift: options.allowGoldenDrift },
+       ...(selection.baselineGuard ? { baselineGuard: selection.baselineGuard } : {}),
+       judgeModel: options.judgeModel,
++      judgeCli: options.judgeCli,
++      ...(options.judgeCli === "codex" ? { judgeEffort: options.judgeEffort, judgeCostBasis: SUBSCRIPTION_NO_USD_FIGURE } : {}),
+       ...(options.judgePanel > 1 ? { judgePanel: options.judgePanel } : {}),
+       judgeRubric: JUDGE_RUBRIC,
+       packVersion: PACK_VERSION,
+@@ -1042,6 +1064,8 @@ async function main() {
+       judgePanel: options.judgePanel,
+       judge: (input, judgeOptions) => judgeCase(input, {
+         ...judgeOptions,
++        cli: options.judgeCli,
++        effort: options.judgeEffort,
+         command: judgeIdentityBefore.binary.resolvedPath,
+         safeMode: true
+       }),
+diff --git a/package-lock.json b/package-lock.json
+index 7cc024ee..2f59f620 100644
+--- a/package-lock.json
++++ b/package-lock.json
+@@ -9,15 +9,15 @@
+       "version": "0.1.0",
+       "license": "Apache-2.0",
+       "dependencies": {
+-        "@ai-sdk/anthropic": "^4.0.78",
+-        "@ai-sdk/google": "^4.0.93",
+-        "@ai-sdk/openai": "^4.0.91",
++        "@ai-sdk/anthropic": "^4.0.96",
++        "@ai-sdk/google": "^4.0.111",
++        "@ai-sdk/openai": "^4.0.108",
+         "@cloudflare/codemode": "0.5.1",
+         "@cloudflare/workers-oauth-provider": "^0.10.3",
+         "@modelcontextprotocol/server": "2.3.1",
+         "acorn": "^8.18.0",
+         "agents": "0.28.1",
+-        "ai": "^7.0.137",
++        "ai": "^7.0.162",
+         "workers-ai-provider": "^4.0.0",
+         "zod": "^4.6.7"
+       },
+@@ -39,13 +39,13 @@
+       }
+     },
+     "node_modules/@ai-sdk/anthropic": {
+-      "version": "4.0.78",
+-      "resolved": "https://registry.npmjs.org/@ai-sdk/anthropic/-/anthropic-4.0.78.tgz",
+-      "integrity": "sha512-lVMxa9tLM5WoB72bqxjzWEWQlCwtBTo1L3yIKxAefowWATd+1YKohrINey6wTn8gtGEqyYm79z4DUGJBYauUFw==",
++      "version": "4.0.96",
++      "resolved": "https://registry.npmjs.org/@ai-sdk/anthropic/-/anthropic-4.0.96.tgz",
++      "integrity": "sha512-eq6rKebpYwvOmFkvhbgrQ7J+TtPsGk3KoEDr+Hu0R1EANm562CAly4s0zaCAQW7Xzw1261oWhOnU8zYLPRxzhA==",
+       "license": "Apache-2.0",
+       "dependencies": {
+-        "@ai-sdk/provider": "4.0.26",
+-        "@ai-sdk/provider-utils": "5.0.58"
++        "@ai-sdk/provider": "4.0.35",
++        "@ai-sdk/provider-utils": "5.0.74"
+       },
+       "engines": {
+         "node": ">=22"
+@@ -55,13 +55,13 @@
+       }
+     },
+     "node_modules/@ai-sdk/gateway": {
+-      "version": "4.0.110",
+-      "resolved": "https://registry.npmjs.org/@ai-sdk/gateway/-/gateway-4.0.110.tgz",
+-      "integrity": "sha512-5IwnOR6v7KC+D9eddUqsCobXl/FbLUVb2LaQc/uyuQdpP3/n9s0YLc9zl4/W3IS/R2pjHrqUfCzEAeOu7bFLoQ==",
++      "version": "4.0.135",
++      "resolved": "https://registry.npmjs.org/@ai-sdk/gateway/-/gateway-4.0.135.tgz",
++      "integrity": "sha512-gnMpZP42WIhy24fpnbbtV7SBqEhYY8ZSMsfgoNRh5r41D1HwnJTm1k7d4uYSIpiaEb5J8IPTHVSzwgWmGoSFEA==",
+       "license": "Apache-2.0",
+       "dependencies": {
+-        "@ai-sdk/provider": "4.0.26",
+-        "@ai-sdk/provider-utils": "5.0.58",
++        "@ai-sdk/provider": "4.0.35",
++        "@ai-sdk/provider-utils": "5.0.74",
+         "@vercel/oidc": "3.2.0"
+       },
+       "engines": {
+@@ -72,13 +72,13 @@
+       }
+     },
+     "node_modules/@ai-sdk/google": {
+-      "version": "4.0.93",
+-      "resolved": "https://registry.npmjs.org/@ai-sdk/google/-/google-4.0.93.tgz",
+-      "integrity": "sha512-hubOUxbG2W7oD3acdCxxnrQ84NlnLqfzcHe9uWMmwkglHxq/rwsbjloPhvebeQlcQ2G0gaX+akDF1Ddm/fNAnQ==",
++      "version": "4.0.111",
++      "resolved": "https://registry.npmjs.org/@ai-sdk/google/-/google-4.0.111.tgz",
++      "integrity": "sha512-od/9ubTtYKEA/XVmla44fMZse3uB962VS8HiwZDhC0SxjWLGKKNcJW8vo3P8O40Fl/L0tZofPzi1t8NknY1f6w==",
+       "license": "Apache-2.0",
+       "dependencies": {
+-        "@ai-sdk/provider": "4.0.26",
+-        "@ai-sdk/provider-utils": "5.0.58"
++        "@ai-sdk/provider": "4.0.35",
++        "@ai-sdk/provider-utils": "5.0.74"
+       },
+       "engines": {
+         "node": ">=22"
+@@ -88,13 +88,13 @@
+       }
+     },
+     "node_modules/@ai-sdk/openai": {
+-      "version": "4.0.91",
+-      "resolved": "https://registry.npmjs.org/@ai-sdk/openai/-/openai-4.0.91.tgz",
+-      "integrity": "sha512-Nk382R6us0GNxI1cGJUXMryz1XHpyrmC3K/Rmqdx9tIsqAlc7UtuO/hC9dd31F41w8uzoS362HJSDXgAI7zKbA==",
++      "version": "4.0.108",
++      "resolved": "https://registry.npmjs.org/@ai-sdk/openai/-/openai-4.0.108.tgz",
++      "integrity": "sha512-XmCnCVnahoFs9VUWsSzn4LyONdDkFivBVs5t7YUWi74giDRwh8VRX4hnk/BtBKEhiBNGRQd80/QTWlf6GsVtng==",
+       "license": "Apache-2.0",
+       "dependencies": {
+-        "@ai-sdk/provider": "4.0.26",
+-        "@ai-sdk/provider-utils": "5.0.58"
++        "@ai-sdk/provider": "4.0.35",
++        "@ai-sdk/provider-utils": "5.0.74"
+       },
+       "engines": {
+         "node": ">=22"
+@@ -104,9 +104,9 @@
+       }
+     },
+     "node_modules/@ai-sdk/provider": {
+-      "version": "4.0.26",
+-      "resolved": "https://registry.npmjs.org/@ai-sdk/provider/-/provider-4.0.26.tgz",
+-      "integrity": "sha512-BZ443uBEq6HuMA+Z4b7Hpm65GpZSo7pWqnYqpf/7tAO3C48JbtvAhOE2JnODFj+jodsZzfRHkAyQb64xuD2tZQ==",
++      "version": "4.0.35",
++      "resolved": "https://registry.npmjs.org/@ai-sdk/provider/-/provider-4.0.35.tgz",
++      "integrity": "sha512-yBz6fmLS8MSCIzy7NiHEUAq56ZLD4ZA1GR6bpXBxgbwUacP1La7LuwAr/xy9jSzthem4F8Xu2OrhvU/JrE9fYA==",
+       "license": "Apache-2.0",
+       "dependencies": {
+         "json-schema": "^0.4.0"
+@@ -116,16 +116,16 @@
+       }
+     },
+     "node_modules/@ai-sdk/provider-utils": {
+-      "version": "5.0.58",
+-      "resolved": "https://registry.npmjs.org/@ai-sdk/provider-utils/-/provider-utils-5.0.58.tgz",
+-      "integrity": "sha512-iXSwKR/7LpHzAlyrUl+bTinwzmZ3Nmup1viwPisM5Gn5cogRdIG4rV9w1ZDuKFcrXyu/AeVs42E1CX/0aNwrfQ==",
++      "version": "5.0.74",
++      "resolved": "https://registry.npmjs.org/@ai-sdk/provider-utils/-/provider-utils-5.0.74.tgz",
++      "integrity": "sha512-42R/bzs520oy3PMj8FI1KGegjLEjaUsNcaEltb6yxN0KnmhihWvlgMb19pEF8CKKqv6Bq6+qMVji8mtyrMubSQ==",
+       "license": "Apache-2.0",
+       "dependencies": {
+-        "@ai-sdk/provider": "4.0.26",
++        "@ai-sdk/provider": "4.0.35",
+         "@standard-schema/spec": "^1.1.0",
+         "@workflow/serde": "4.1.0",
+         "eventsource-parser": "^3.0.8",
+-        "undici": "^7.29.0"
++        "undici": "^7.29.1"
+       },
+       "engines": {
+         "node": ">=22"
+@@ -2820,14 +2820,14 @@
+       }
+     },
+     "node_modules/ai": {
+-      "version": "7.0.137",
+-      "resolved": "https://registry.npmjs.org/ai/-/ai-7.0.137.tgz",
+-      "integrity": "sha512-JxrPkSQknxIN/gYqS3UQksExS6eWI23QMPBrKMGXeeFHhru6xFtF4MuMq17WaHD+lXPh0lne6H0BM2Z2VMW9EQ==",
++      "version": "7.0.162",
++      "resolved": "https://registry.npmjs.org/ai/-/ai-7.0.162.tgz",
++      "integrity": "sha512-NPzL6/GmjjPwhzM1kGP9O60TfJ3uXV4Z4A/ztljxcJFAmRAFAjgk5mAHaikk3sE8NQo4NbRCiS+DgHinE2d0sQ==",
+       "license": "Apache-2.0",
+       "dependencies": {
+-        "@ai-sdk/gateway": "4.0.110",
+-        "@ai-sdk/provider": "4.0.26",
+-        "@ai-sdk/provider-utils": "5.0.58"
++        "@ai-sdk/gateway": "4.0.135",
++        "@ai-sdk/provider": "4.0.35",
++        "@ai-sdk/provider-utils": "5.0.74"
+       },
+       "engines": {
+         "node": ">=22"
+diff --git a/package.json b/package.json
+index 445933f1..c72b0fdb 100644
+--- a/package.json
++++ b/package.json
+@@ -60,15 +60,15 @@
+     "docs:anchors:build": "node scripts/build-stellar-docs-anchors.mjs"
+   },
+   "dependencies": {
+-    "@ai-sdk/anthropic": "^4.0.78",
+-    "@ai-sdk/google": "^4.0.93",
+-    "@ai-sdk/openai": "^4.0.91",
++    "@ai-sdk/anthropic": "^4.0.96",
++    "@ai-sdk/google": "^4.0.111",
++    "@ai-sdk/openai": "^4.0.108",
+     "@cloudflare/codemode": "0.5.1",
+     "@cloudflare/workers-oauth-provider": "^0.10.3",
+     "@modelcontextprotocol/server": "2.3.1",
+     "acorn": "^8.18.0",
+     "agents": "0.28.1",
+-    "ai": "^7.0.137",
++    "ai": "^7.0.162",
+     "workers-ai-provider": "^4.0.0",
+     "zod": "^4.6.7"
+   },
+diff --git a/research/audits/2026-11-03-playground-model-sweep.md b/research/audits/2026-11-03-playground-model-sweep.md
+new file mode 100644
+index 00000000..b07c4f3f
+--- /dev/null
++++ b/research/audits/2026-11-03-playground-model-sweep.md
+@@ -0,0 +1,174 @@
++# Playground model sweep — 2026-11-03
++
++Round ledger: `.agents/rounds/2026-11-03-playground-model-sweep.md` (pre-registered stages,
++spend windows, judge contract override). This record holds the evidence and the decision.
++
++## Scope
++
++Choose the Playground primary and fallback models. Accuracy and reliability decide. Cost and
++speed only break ties. Shipped tuple before the sweep: primary `openai/gpt-5.6-terra`,
++fallback `openai/gpt-5.6-luna` (`src/demo/model-config.ts`).
++
++## Code changes made before any paid run
++
++| Defect | Change | Evidence |
++| --- | --- | --- |
++| Anthropic 5.x provider options skipped dotted ids | `DEMO_ANTHROPIC_5X_MODEL` matches `claude-{fable,opus,sonnet,haiku}-5` with `.`, `-`, or end of id; Haiku 5.5 supports all five effort levels and adaptive thinking (Anthropic effort doc, 2026-11-03) | `test/demo-model-config.test.ts` |
++| AI SDK behind | `ai@7.0.162`, `@ai-sdk/openai@4.0.108`, `@ai-sdk/anthropic@4.0.96`, `@ai-sdk/google@4.0.111` upgraded together; every candidate gauntleted after the upgrade | `package.json`, probe below |
++| `meta/*`, `particle/*` unreachable | Offline dispatch probe showed `Unknown gateway provider` from the plugin registry; both prefixes added to `DEMO_UNIFIED_RUN_PREFIXES`; Kimi temperature quirk narrowed to `moonshotai/` | ledger entry 2026-11-03 |
++| Gemini tool replay | Run path rejects the tool-result replay (`7003 User Input Error`); `google/*` now takes the passthrough branch of `demoGatewayTransportSettings` | probe `2026-11-03-sweep-probe-gemini-passthrough` |
++| Gateway-logged model id | Gauntlet gained `--max-budget-usd` loopback accounting; each turn records the Gateway-logged model next to the configured id | `research/gauntlets/2026-11-03-sweep-probe.json` |
++
++The gauntlet accounting turns run with SDK retries off and one Gateway attempt per call, so
++every screen below is stricter than production.
++
++## Candidates, effort, transport
++
++| Model | Effort used | Transport | Reachable |
++| --- | --- | --- | --- |
++| `openai/gpt-5.6-terra` (baseline) | `none` | passthrough, chat | yes |
++| `openai/gpt-5.6-luna` (shipped fallback) | `none` | passthrough, chat | yes |
++| `openai/gpt-5.6-sol` | `none` | passthrough, chat | yes |
++| `openai/gpt-6-luna` | `none` | passthrough, chat | yes |
++| `openai/gpt-6-sol` | `none` | passthrough, chat | yes |
++| `openai/gpt-6.1-terra` | `none` | passthrough, chat | yes |
++| `openai/gpt-6.1-sol` | `low` (API rejects `none`) | passthrough, chat | yes |
++| `openai/gpt-6-astra` | `low` (API rejects `none`) | passthrough, chat | yes |
++| `anthropic/claude-haiku-5.5` | `none` (effort `low`, thinking off) | run path | yes |
++| `anthropic/claude-sonnet-5.5` | `none` | run path | yes |
++| `anthropic/claude-sonnet-5` | `none` | run path | yes |
++| `anthropic/claude-opus-5.5` | `none` | run path | yes |
++| `meta/muse-spark-1.3` | provider default | run path | **no** — HTTP 400 `[7003] Model execution failed (User Input Error): Invalid value at input: Invalid input`, also with the catalog's own example body |
++| `meta/muse-spark-open` | provider default | run path | yes |
++| `particle/particle-1` | provider default | run path | yes |
++| `moonshotai/kimi-k3` | provider default | run path | yes |
++| `@cf/moonshotai/kimi-k2.7-code` | provider default | run path | yes |
++| `@cf/zai-org/glm-5.3` | provider default | run path | yes |
++| `@cf/zai-org/glm-5.3-flash` | provider default | run path | yes (slow) |
++| `google/gemini-3.8-flash` | `none` | passthrough, Gemini wire | yes after the transport fix |
++| `xai/grok-4.7` | `none` | passthrough, chat | yes |
++| `deepseek/deepseek-v4-pro` | — | — | **no** — passthrough HTTP 401 `Authentication Fails (governor)` (not a Unified Billing provider); run path HTTP 500 `[2002] Model execution failed (Error)` on three attempts with the catalog example body |
++| `xai/grok-4.6` (shipped Grok control) | `none` | passthrough, chat | yes |
++
++`none` is the demo default. For run-path vendors without an effort mapping the key is omitted,
++so the provider default applies. Every Gateway-logged model id equalled the configured id for
++every vendor that answered.
++
++## Stage 0 — transport probe (one turn per model)
++
++Run id `2026-11-03-sweep-probe`, prompt `rpc-simulate`, USD 1.39 reported. Full table in
++`research/gauntlets/2026-11-03-sweep-probe-summary.md`. Behavior notes, not gate failures:
++`claude-sonnet-5.5` and `claude-opus-5.5` answered with `execute` only (no `search`);
++`meta/muse-spark-open` had one model-authored script error inside `execute`.
++
++## Stage 1 — gauntlet, all reachable candidates, 2 repeats
++
++Run ids `2026-11-03-sweep-stage1` (demo default effort `none`, 19 models) and
++`2026-11-03-sweep-stage1-low` (`gpt-6.1-sol`, `gpt-6-astra` at `low`). Eight prompts, two repeats,
++one turn per cell. Spend: harness-reported USD 18.41 (10 aborted turns of unknown cost);
++gateway-logged USD 19.23 for the interval; USD 20.67 for the stage with the probes. The USD 20
++stage cap stopped `grok-4.7` after 6 turns and `gpt-6-astra` after 7; t16 raised the cap to USD 28
++for the completion runs and the transport rerun (tables below).
++
++Gate, as pre-registered: a turn fails when `http`, `terminal`, `finalAnswer`, `latency`, or
++`noToolFailures` fails. A model advances only when every failure is on a prompt the baseline also
++failed. `expectedTools` and `noMarketNumber` are notes.
++
++| Model | Effort | Turns | Gate failures | Not covered by baseline | Notes | USD | Unknown-cost | Advance |
++| --- | --- | ---: | ---: | ---: | --- | ---: | ---: | --- |
++| `openai/gpt-5.6-terra` | default | 16 | 3 | 0 | 0 | 0.9656 | 0 | yes |
++| `@cf/zai-org/glm-5.3-flash` | default | 16 | 7 | 5 | 0 | 0.0559 | 1 | no |
++| `@cf/zai-org/glm-5.3` | default | 16 | 9 | 6 | 0 | 0.8062 | 0 | no |
++| `@cf/moonshotai/kimi-k2.7-code` | default | 16 | 2 | 2 | 0 | 0.3623 | 0 | no |
++| `moonshotai/kimi-k3` | default | 16 | 7 | 3 | 0 | 0.4509 | 4 | no |
++| `particle/particle-1` | default | 16 | 4 | 2 | 1 | 0.1509 | 0 | no |
++| `meta/muse-spark-open` | default | 16 | 5 | 3 | 0 | 0.5332 | 4 | no |
++| `google/gemini-3.8-flash` | default | 16 | 1 | 1 | 0 | 0.6024 | 0 | no |
++| `openai/gpt-5.6-luna` | default | 16 | 0 | 0 | 0 | 0.0790 | 0 | yes |
++| `openai/gpt-6-luna` | default | 16 | 2 | 1 | 0 | 0.0516 | 0 | no |
++| `openai/gpt-5.6-sol` | default | 16 | 0 | 0 | 0 | 1.9396 | 0 | yes |
++| `openai/gpt-6-sol` | default | 16 | 6 | 4 | 0 | 1.0086 | 0 | no |
++| `openai/gpt-6.1-terra` | default | 16 | 0 | 0 | 0 | 0.5710 | 0 | yes |
++| `anthropic/claude-haiku-5.5` | default | 16 | 0 | 0 | 0 | 0.0997 | 0 | yes |
++| `anthropic/claude-sonnet-5` | default | 16 | 1 | 0 | 0 | 1.6496 | 0 | yes |
++| `anthropic/claude-sonnet-5.5` | default | 16 | 0 | 0 | 6 | 1.2001 | 0 | yes |
++| `anthropic/claude-opus-5.5` | default | 16 | 0 | 0 | 4 | 2.8741 | 0 | yes |
++| `xai/grok-4.6` | default | 16 | 2 | 0 | 0 | 1.4757 | 1 | yes |
++| `xai/grok-4.7` | default | 6 | 2 | 2 | 0 | 0.4499 | 0 | incomplete |
++| `openai/gpt-6.1-sol` | low | 16 | 0 | 0 | 0 | 0.8901 | 0 | yes |
++| `openai/gpt-6-astra` | low | 7 | 1 | 0 | 0 | 2.1917 | 0 | incomplete |
++
++Baseline failures: `activity-leaderboard` (both repeats) and `zk-repos` (repeat 2), all
++model-authored execute script errors (`Cannot read properties of undefined`). Every tool failure in
++the stage is a model-authored script error or a malformed tool-call argument
++(`AI_InvalidToolInputError`). `gpt-6-sol` returned a Promise from its script on six turns
++(`#<Promise> could not be cloned`). `particle-1` hit one run-path HTTP 500 `2002: Credential
++loading failed` (2026-11-03T21:5xZ). The "aborted before finishing" rows are the route's 120 s turn
++limit: `glm-5.3-flash`, `glm-5.3`, `kimi-k3`, `muse-spark-open`, and `grok-4.6` (`zk-repos`, both
++repeats; covered by the baseline exception).
++
++Behavior notes: `claude-sonnet-5.5` skipped `search` on 6 of 16 turns and `claude-opus-5.5` on 4
++(they called `execute` directly and finished clean). `particle-1` named a market number once.
++
++Latency and cost per turn (p50 / p95 ms, USD per turn) from the gauntlet summary:
++`gpt-5.6-luna` 10692 / 17706, 0.005; `haiku-5.5` 10241 / 17130, 0.006; `gpt-6.1-terra`
++14605 / 21111, 0.036; `gpt-6.1-sol` (low) 16580 / 34370, 0.056; `gpt-5.6-terra` 13194 / 22718,
++0.060; `sonnet-5.5` 9495 / 14269, 0.075; `sonnet-5` 14994 / 28892, 0.103; `gpt-5.6-sol`
++13527 / 28593, 0.121; `opus-5.5` 16849 / 26327, 0.180; `grok-4.6` 39966 / 120701, 0.092.
++
++### Stage-1 completion and transport reruns (cap raised to USD 28, then 30)
++
++Run ids `2026-11-03-sweep-stage1b-{six,deepseek,astra2,astra1,grok2,grok1}` and
++`2026-11-03-sweep-stage1c-{muse,astra}`. Gateway-logged USD 7.20 + 1.23; stage-1 gateway total
++USD 29.10. Rows that supersede or void earlier rows: the `openaiEndpoint` rerun rows for
++`kimi-k3`, `particle-1`, and `muse-spark-open` replace their first rows; the `muse-spark-1.3`
++rows of `stage1b-six` are void (the gateway streamed native Responses events for a `stream: true`
++chat request, so every turn was three `[object Object]` tokens and no tool call; ledger
++2026-11-04); astra's HTTP 404 `Items are not persisted for Zero Data Retention organizations` cell
++is void (reasoning-item replay under the ZDR gateway with the SDK default `store: true`, fixed
++by `store: false`); harness budget-stop rows are excluded. Final gate table:
++
++| Model | Effort | Turns | Gate failures | Not covered by baseline | Notes | USD | Unknown-cost | Advance |
++| --- | --- | ---: | ---: | ---: | --- | ---: | ---: | --- |
++| `openai/gpt-5.6-terra` | default | 16 | 3 | 0 | 0 | 0.9656 | 0 | yes |
++| `@cf/zai-org/glm-5.3-flash` | default | 16 | 7 | 5 | 0 | 0.0559 | 1 | no |
++| `@cf/zai-org/glm-5.3` | default | 16 | 9 | 6 | 0 | 0.8062 | 0 | no |
++| `@cf/moonshotai/kimi-k2.7-code` | default | 16 | 2 | 2 | 0 | 0.3623 | 0 | no |
++| `google/gemini-3.8-flash` | default | 16 | 1 | 1 | 0 | 0.6024 | 0 | no |
++| `openai/gpt-5.6-luna` | default | 16 | 0 | 0 | 0 | 0.0790 | 0 | yes |
++| `openai/gpt-6-luna` | default | 16 | 2 | 1 | 0 | 0.0516 | 0 | no |
++| `openai/gpt-5.6-sol` | default | 16 | 0 | 0 | 0 | 1.9396 | 0 | yes |
++| `openai/gpt-6-sol` | default | 16 | 6 | 4 | 0 | 1.0086 | 0 | no |
++| `openai/gpt-6.1-terra` | default | 16 | 0 | 0 | 0 | 0.5710 | 0 | yes |
++| `anthropic/claude-haiku-5.5` | default | 16 | 0 | 0 | 0 | 0.0997 | 0 | yes |
++| `anthropic/claude-sonnet-5` | default | 16 | 1 | 0 | 0 | 1.6496 | 0 | yes |
++| `anthropic/claude-sonnet-5.5` | default | 16 | 0 | 0 | 6 | 1.2001 | 0 | yes |
++| `anthropic/claude-opus-5.5` | default | 16 | 0 | 0 | 4 | 2.8741 | 0 | yes |
++| `xai/grok-4.6` | default | 16 | 2 | 0 | 0 | 1.4757 | 1 | yes |
++| `xai/grok-4.7` | default | 16 | 6 | 4 | 0 | 1.5738 | 0 | no |
++| `openai/gpt-6.1-sol` | low | 16 | 0 | 0 | 0 | 0.8901 | 0 | yes |
++| `openai/gpt-6-astra` | low | 16 | 0 | 0 | 0 | 5.5468 | 0 | yes |
++| `meta/muse-spark-open` | default | 16 | 3 | 3 | 0 | 0.7217 | 1 | no |
++| `particle/particle-1` | default | 16 | 3 | 1 | 0 | 0.1582 | 0 | no |
++| `moonshotai/kimi-k3` | default | 16 | 5 | 2 | 0 | 0.5338 | 3 | no |
++| `@cf/deepseek-ai/deepseek-v4-pro-0813` | low | 16 | 5 | 4 | 0 | 0.4881 | 0 | no |
++| `@cf/deepseek-ai/deepseek-v4.1-flash-1017` | low | 16 | 4 | 4 | 0 | 0.1543 | 0 | no |
++| `meta/muse-spark-1.3` | default | 15 | 1 | 1 | 0 | 1.0032 | 0 | incomplete |
++
++Excluded in this phase: `muse-spark-open` (3 new script errors), `particle-1` (1), `kimi-k3`
++(2 plus aborts), both Cloudflare-hosted DeepSeek models (4 new script errors each, at `low`),
++`grok-4.7` (script errors on `soroswap-builder` and `wallet-recovery`), and `muse-spark-1.3`
++(`execute call limit reached` on `rpc-simulate`, 15 of 16 turns run before its cap). `gpt-6-astra`
++advances on 16 clean cells. Eleven models advance to stage 2.
++
++## Stage 2 — 30 semantic cases, one run per advancing model
++
++(pending)
++
++## Stage 3 — 100 disjoint cases, 2 repeats per finalist, Judge A + Judge B
++
++(pending)
++
++## Decision
++
++(pending)
+diff --git a/research/gauntlets/2026-11-03-sweep-probe-gemini-passthrough-summary.md b/research/gauntlets/2026-11-03-sweep-probe-gemini-passthrough-summary.md
+new file mode 100644
+index 00000000..514449ba
+--- /dev/null
++++ b/research/gauntlets/2026-11-03-sweep-probe-gemini-passthrough-summary.md
+@@ -0,0 +1,15 @@
++# Demo Model Gauntlet 2026-11-03-sweep-probe-gemini-passthrough
++
++Generated by `scripts/run-demo-model-gauntlet.mjs`.
++
++Spend: reported USD 0.0412 of 1 authorized across 1 turn(s); 0 turn(s) with unknown cost (a floor, never zero). Accounting turns run with SDK retries off and one Gateway attempt per call.
++
++## Summary
++
++| Model | Reasoning | Overall Pass | Clean Terminal | p50 ms | p95 ms | p50 first meaningful ms | Tool Failures | Reported USD | Unknown-cost turns | Gateway-logged model |
++| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
++| `google/gemini-3.8-flash` | `default` | 1/1 | 1/1 | 37894 | 37894 | 3643 | 0 | 0.0412 | 0 | `google/gemini-3.8-flash` |
++
++## Failures
++
++- None
+diff --git a/research/gauntlets/2026-11-03-sweep-probe-summary.md b/research/gauntlets/2026-11-03-sweep-probe-summary.md
+new file mode 100644
+index 00000000..0e36ee96
+--- /dev/null
++++ b/research/gauntlets/2026-11-03-sweep-probe-summary.md
+@@ -0,0 +1,45 @@
++# Demo Model Gauntlet 2026-11-03-sweep-probe
++
++Generated by `scripts/run-demo-model-gauntlet.mjs`.
++
++Spend: reported USD 1.3947 of 4 authorized across 23 turn(s); 0 turn(s) with unknown cost (a floor, never zero). Accounting turns run with SDK retries off and one Gateway attempt per call.
++
++## Summary
++
++| Model | Reasoning | Overall Pass | Clean Terminal | p50 ms | p95 ms | p50 first meaningful ms | Tool Failures | Reported USD | Unknown-cost turns | Gateway-logged model |
++| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
++| `openai/gpt-5.6-terra` | `default` | 1/1 | 1/1 | 13553 | 13553 | 3924 | 0 | 0.0902 | 0 | `openai/gpt-5.6-terra` |
++| `openai/gpt-5.6-luna` | `default` | 1/1 | 1/1 | 12101 | 12101 | 1523 | 0 | 0.0108 | 0 | `openai/gpt-5.6-luna` |
++| `openai/gpt-5.6-sol` | `default` | 1/1 | 1/1 | 10864 | 10864 | 1779 | 0 | 0.1709 | 0 | `openai/gpt-5.6-sol` |
++| `openai/gpt-6-luna` | `default` | 1/1 | 1/1 | 15226 | 15226 | 1816 | 0 | 0.0038 | 0 | `openai/gpt-6-luna` |
++| `openai/gpt-6-sol` | `default` | 1/1 | 1/1 | 14227 | 14227 | 2286 | 0 | 0.0812 | 0 | `openai/gpt-6-sol` |
++| `openai/gpt-6.1-terra` | `default` | 1/1 | 1/1 | 12073 | 12073 | 2321 | 0 | 0.0424 | 0 | `openai/gpt-6.1-terra` |
++| `openai/gpt-6.1-sol` | `default` | 0/1 | 0/1 | 1452 | 1452 | 876 | 0 | 0.0000 | 0 | `openai/gpt-6.1-sol` |
++| `openai/gpt-6-astra` | `default` | 0/1 | 0/1 | 2239 | 2239 | 1441 | 0 | 0.0000 | 0 | `openai/gpt-6-astra` |
++| `anthropic/claude-haiku-5.5` | `default` | 1/1 | 1/1 | 13800 | 13800 | 2192 | 0 | 0.0070 | 0 | `anthropic/claude-haiku-5.5` |
++| `anthropic/claude-sonnet-5.5` | `default` | 0/1 | 1/1 | 8260 | 8260 | 1792 | 0 | 0.0520 | 0 | `anthropic/claude-sonnet-5.5` |
++| `anthropic/claude-sonnet-5` | `default` | 1/1 | 1/1 | 14341 | 14341 | 2149 | 0 | 0.0949 | 0 | `anthropic/claude-sonnet-5` |
++| `anthropic/claude-opus-5.5` | `default` | 0/1 | 1/1 | 24266 | 24266 | 2816 | 0 | 0.2347 | 0 | `anthropic/claude-opus-5.5` |
++| `meta/muse-spark-1.3` | `default` | 0/1 | 0/1 | 1023 | 1023 | 406 | 0 | 0.0000 | 0 | `meta/muse-spark-1.3` |
++| `meta/muse-spark-open` | `default` | 0/1 | 1/1 | 49498 | 49498 | 1159 | 1 | 0.0772 | 0 | `meta/muse-spark-open` |
++| `particle/particle-1` | `default` | 1/1 | 1/1 | 23194 | 23194 | 1242 | 0 | 0.0184 | 0 | `particle/particle-1` |
++| `moonshotai/kimi-k3` | `default` | 1/1 | 1/1 | 48608 | 48608 | 4262 | 0 | 0.0297 | 0 | `moonshotai/kimi-k3` |
++| `@cf/moonshotai/kimi-k2.7-code` | `default` | 1/1 | 1/1 | 43879 | 43879 | 4201 | 0 | 0.0360 | 0 | `@cf/moonshotai/kimi-k2.7-code` |
++| `@cf/zai-org/glm-5.3` | `default` | 1/1 | 1/1 | 71339 | 71339 | 896 | 0 | 0.0881 | 0 | `@cf/zai-org/glm-5.3` |
++| `@cf/zai-org/glm-5.3-flash` | `default` | 0/1 | 0/1 | 121043 | 121043 | 16725 | 1 | 0.0046 | 0 | `@cf/zai-org/glm-5.3-flash` |
++| `google/gemini-3.8-flash` | `default` | 0/1 | 0/1 | 6214 | 6214 | 4110 | 0 | 0.0053 | 0 | `google/gemini-3.8-flash` |
++| `xai/grok-4.7` | `default` | 1/1 | 1/1 | 34916 | 34916 | 1819 | 0 | 0.1703 | 0 | `xai/grok-4.7` |
++| `deepseek/deepseek-v4-pro` | `default` | 0/1 | 0/1 | 1335 | 1335 | 767 | 0 | 0.0000 | 0 | `deepseek/deepseek-v4-pro` |
++| `xai/grok-4.6` | `default` | 1/1 | 1/1 | 63488 | 63488 | 4710 | 0 | 0.1772 | 0 | `xai/grok-4.6` |
++
++## Failures
++
++- `openai/gpt-6.1-sol` / reasoning=`default` / `rpc-simulate` / repeat 1: error, 1452ms, tools 0/0, errors=["Unsupported value: 'none' is not supported with the 'gpt-6.1-sol' model. Supported values are: 'low', 'medium', 'high', 'xhigh', and 'max'."]
++- `openai/gpt-6-astra` / reasoning=`default` / `rpc-simulate` / repeat 1: error, 2239ms, tools 0/0, errors=["Unsupported value: 'none' is not supported with the 'gpt-6-astra' model. Supported values are: 'low', 'medium', 'high', 'xhigh', and 'max'."]
++- `anthropic/claude-sonnet-5.5` / reasoning=`default` / `rpc-simulate` / repeat 1: done:stop, 8260ms, tools 0/1, errors=[]
++- `anthropic/claude-opus-5.5` / reasoning=`default` / `rpc-simulate` / repeat 1: done:stop, 24266ms, tools 0/3, errors=[]
++- `meta/muse-spark-1.3` / reasoning=`default` / `rpc-simulate` / repeat 1: error, 1023ms, tools 0/0, errors=["Answer provider returned HTTP 400. 7003: User Input Error"]
++- `meta/muse-spark-open` / reasoning=`default` / `rpc-simulate` / repeat 1: done:stop, 49498ms, tools 3/3, errors=[]
++- `@cf/zai-org/glm-5.3-flash` / reasoning=`default` / `rpc-simulate` / repeat 1: error, 121043ms, tools 2/2, errors=["The turn was aborted before finishing."]
++- `google/gemini-3.8-flash` / reasoning=`default` / `rpc-simulate` / repeat 1: error, 6214ms, tools 1/0, errors=["Bad Request"]
++- `deepseek/deepseek-v4-pro` / reasoning=`default` / `rpc-simulate` / repeat 1: error, 1335ms, tools 0/0, errors=["Unauthorized"]
+diff --git a/research/gauntlets/2026-11-03-sweep-stage1-low-summary.md b/research/gauntlets/2026-11-03-sweep-stage1-low-summary.md
+new file mode 100644
+index 00000000..f0f413cd
+--- /dev/null
++++ b/research/gauntlets/2026-11-03-sweep-stage1-low-summary.md
+@@ -0,0 +1,16 @@
++# Demo Model Gauntlet 2026-11-03-sweep-stage1-low
++
++Generated by `scripts/run-demo-model-gauntlet.mjs`.
++
++Spend: reported USD 3.0818 of 3 authorized across 23 turn(s); 0 turn(s) with unknown cost (a floor, never zero). Accounting turns run with SDK retries off and one Gateway attempt per call.
++
++## Summary
++
++| Model | Reasoning | Overall Pass | Clean Terminal | p50 ms | p95 ms | p50 first meaningful ms | Tool Failures | Reported USD | Unknown-cost turns | Gateway-logged model |
++| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
++| `openai/gpt-6.1-sol` | `low` | 16/16 | 16/16 | 16580 | 34370 | 1926 | 0 | 0.8901 | 0 | `openai/gpt-6.1-sol` |
++| `openai/gpt-6-astra` | `low` | 6/7 | 6/7 | 18827 | 26085 | 2640 | 0 | 2.1917 | 0 | `openai/gpt-6-astra` |
++
++## Failures
++
++- `openai/gpt-6-astra` / reasoning=`low` / `zk-repos` / repeat 1: error, 19054ms, tools 2/3, errors=["answer-cost-exceeds-authorization"]
+diff --git a/research/gauntlets/2026-11-03-sweep-stage1-summary.md b/research/gauntlets/2026-11-03-sweep-stage1-summary.md
+new file mode 100644
+index 00000000..c4dd2cff
+--- /dev/null
++++ b/research/gauntlets/2026-11-03-sweep-stage1-summary.md
+@@ -0,0 +1,94 @@
++# Demo Model Gauntlet 2026-11-03-sweep-stage1
++
++Generated by `scripts/run-demo-model-gauntlet.mjs`.
++
++Spend: reported USD 15.3264 of 15.31 authorized across 284 turn(s); 10 turn(s) with unknown cost (a floor, never zero). Accounting turns run with SDK retries off and one Gateway attempt per call.
++
++## Summary
++
++| Model | Reasoning | Overall Pass | Clean Terminal | p50 ms | p95 ms | p50 first meaningful ms | Tool Failures | Reported USD | Unknown-cost turns | Gateway-logged model |
++| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
++| `openai/gpt-5.6-terra` | `default` | 13/16 | 16/16 | 13194 | 22718 | 1658 | 3 | 0.9656 | 0 | `openai/gpt-5.6-terra` |
++| `@cf/zai-org/glm-5.3-flash` | `default` | 9/16 | 9/16 | 64291 | 121650 | 1033 | 4 | 0.0559 | 1 | `@cf/zai-org/glm-5.3-flash` |
++| `@cf/zai-org/glm-5.3` | `default` | 7/16 | 10/16 | 39479 | 94357 | 1402 | 4 | 0.8062 | 0 | `@cf/zai-org/glm-5.3` |
++| `@cf/moonshotai/kimi-k2.7-code` | `default` | 14/16 | 16/16 | 22179 | 76527 | 783 | 2 | 0.3623 | 0 | `@cf/moonshotai/kimi-k2.7-code` |
++| `moonshotai/kimi-k3` | `default` | 9/16 | 12/16 | 71531 | 121712 | 4630 | 4 | 0.4509 | 4 | `moonshotai/kimi-k3` |
++| `particle/particle-1` | `default` | 11/16 | 15/16 | 17306 | 29569 | 690 | 5 | 0.1509 | 0 | `particle/particle-1` |
++| `meta/muse-spark-open` | `default` | 11/16 | 12/16 | 73979 | 122072 | 949 | 5 | 0.5332 | 4 | `meta/muse-spark-open` |
++| `google/gemini-3.8-flash` | `default` | 15/16 | 16/16 | 28769 | 49107 | 3650 | 1 | 0.6024 | 0 | `google/gemini-3.8-flash` |
++| `openai/gpt-5.6-luna` | `default` | 16/16 | 16/16 | 10692 | 17706 | 1178 | 0 | 0.0790 | 0 | `openai/gpt-5.6-luna` |
++| `openai/gpt-6-luna` | `default` | 14/16 | 16/16 | 12530 | 23605 | 1399 | 2 | 0.0516 | 0 | `openai/gpt-6-luna` |
++| `openai/gpt-5.6-sol` | `default` | 16/16 | 16/16 | 13527 | 28593 | 1963 | 0 | 1.9396 | 0 | `openai/gpt-5.6-sol` |
++| `openai/gpt-6-sol` | `default` | 10/16 | 16/16 | 11795 | 18927 | 1411 | 6 | 1.0086 | 0 | `openai/gpt-6-sol` |
++| `openai/gpt-6.1-terra` | `default` | 16/16 | 16/16 | 14605 | 21111 | 2090 | 0 | 0.5710 | 0 | `openai/gpt-6.1-terra` |
++| `anthropic/claude-haiku-5.5` | `default` | 16/16 | 16/16 | 10241 | 17130 | 1439 | 0 | 0.0997 | 0 | `anthropic/claude-haiku-5.5` |
++| `anthropic/claude-sonnet-5` | `default` | 15/16 | 16/16 | 14994 | 28892 | 2015 | 2 | 1.6496 | 0 | `anthropic/claude-sonnet-5` |
++| `anthropic/claude-sonnet-5.5` | `default` | 10/16 | 16/16 | 9495 | 14269 | 1432 | 0 | 1.2001 | 0 | `anthropic/claude-sonnet-5.5` |
++| `anthropic/claude-opus-5.5` | `default` | 12/16 | 16/16 | 16849 | 26327 | 2109 | 0 | 2.8741 | 0 | `anthropic/claude-opus-5.5` |
++| `xai/grok-4.6` | `default` | 14/16 | 14/16 | 39966 | 120701 | 3738 | 0 | 1.4757 | 1 | `xai/grok-4.6` |
++| `xai/grok-4.7` | `default` | 4/6 | 5/6 | 24027 | 30704 | 2133 | 1 | 0.4499 | 0 | `xai/grok-4.7` |
++
++## Failures
++
++- `openai/gpt-5.6-terra` / reasoning=`default` / `activity-leaderboard` / repeat 1: done:stop, 16217ms, tools 3/3, errors=[]
++- `openai/gpt-5.6-terra` / reasoning=`default` / `activity-leaderboard` / repeat 2: done:stop, 13500ms, tools 3/3, errors=[]
++- `openai/gpt-5.6-terra` / reasoning=`default` / `zk-repos` / repeat 2: done:stop, 24380ms, tools 3/2, errors=[]
++- `@cf/zai-org/glm-5.3-flash` / reasoning=`default` / `no-market-hallucination` / repeat 1: error, 122094ms, tools 2/1, errors=["The turn was aborted before finishing."]
++- `@cf/zai-org/glm-5.3-flash` / reasoning=`default` / `zk-repos` / repeat 1: error, 120836ms, tools 2/3, errors=["The turn was aborted before finishing."]
++- `@cf/zai-org/glm-5.3-flash` / reasoning=`default` / `wallet-recovery` / repeat 1: done:length, 84461ms, tools 3/0, errors=[]
++- `@cf/zai-org/glm-5.3-flash` / reasoning=`default` / `rpc-simulate` / repeat 2: error, 121251ms, tools 1/2, errors=["The turn was aborted before finishing."]
++- `@cf/zai-org/glm-5.3-flash` / reasoning=`default` / `skill-routing` / repeat 2: done:length, 85190ms, tools 2/0, errors=[]
++- `@cf/zai-org/glm-5.3-flash` / reasoning=`default` / `zk-repos` / repeat 2: done:length, 113154ms, tools 2/0, errors=[]
++- `@cf/zai-org/glm-5.3-flash` / reasoning=`default` / `wallet-recovery` / repeat 2: error, 121650ms, tools 3/2, errors=["The turn was aborted before finishing."]
++- `@cf/zai-org/glm-5.3` / reasoning=`default` / `rpc-simulate` / repeat 1: done:length, 39479ms, tools 2/0, errors=[]
++- `@cf/zai-org/glm-5.3` / reasoning=`default` / `soroswap-builder` / repeat 1: done:length, 58388ms, tools 2/1, errors=[]
++- `@cf/zai-org/glm-5.3` / reasoning=`default` / `open-rfps` / repeat 1: done:stop, 64324ms, tools 2/2, errors=[]
++- `@cf/zai-org/glm-5.3` / reasoning=`default` / `zk-repos` / repeat 1: done:length, 31778ms, tools 3/0, errors=[]
++- `@cf/zai-org/glm-5.3` / reasoning=`default` / `wallet-recovery` / repeat 1: done:length, 35021ms, tools 3/0, errors=[]
++- `@cf/zai-org/glm-5.3` / reasoning=`default` / `open-rfps` / repeat 2: done:length, 36182ms, tools 3/0, errors=[]
++- `@cf/zai-org/glm-5.3` / reasoning=`default` / `activity-leaderboard` / repeat 2: done:stop, 59129ms, tools 3/2, errors=[]
++- `@cf/zai-org/glm-5.3` / reasoning=`default` / `zk-repos` / repeat 2: done:length, 94357ms, tools 3/3, errors=[]
++- `@cf/zai-org/glm-5.3` / reasoning=`default` / `wallet-recovery` / repeat 2: done:stop, 100145ms, tools 3/3, errors=[]
++- `@cf/moonshotai/kimi-k2.7-code` / reasoning=`default` / `soroswap-builder` / repeat 1: done:stop, 39783ms, tools 2/2, errors=[]
++- `@cf/moonshotai/kimi-k2.7-code` / reasoning=`default` / `soroswap-builder` / repeat 2: done:stop, 18543ms, tools 2/2, errors=[]
++- `moonshotai/kimi-k3` / reasoning=`default` / `rpc-simulate` / repeat 1: error, 121712ms, tools 1/3, errors=["The turn was aborted before finishing."]
++- `moonshotai/kimi-k3` / reasoning=`default` / `activity-leaderboard` / repeat 1: done:stop, 72757ms, tools 2/2, errors=[]
++- `moonshotai/kimi-k3` / reasoning=`default` / `zk-repos` / repeat 1: error, 121799ms, tools 3/1, errors=["The turn was aborted before finishing."]
++- `moonshotai/kimi-k3` / reasoning=`default` / `wallet-recovery` / repeat 1: error, 120016ms, tools 3/1, errors=["The turn was aborted before finishing."]
++- `moonshotai/kimi-k3` / reasoning=`default` / `soroswap-builder` / repeat 2: done:stop, 69268ms, tools 2/2, errors=[]
++- `moonshotai/kimi-k3` / reasoning=`default` / `activity-leaderboard` / repeat 2: done:stop, 56279ms, tools 2/2, errors=[]
++- `moonshotai/kimi-k3` / reasoning=`default` / `zk-repos` / repeat 2: error, 121577ms, tools 2/2, errors=["The turn was aborted before finishing."]
++- `particle/particle-1` / reasoning=`default` / `activity-leaderboard` / repeat 1: done:stop, 17306ms, tools 2/3, errors=[]
++- `particle/particle-1` / reasoning=`default` / `zk-repos` / repeat 1: done:stop, 26873ms, tools 3/4, errors=[]
++- `particle/particle-1` / reasoning=`default` / `wallet-recovery` / repeat 1: done:stop, 29569ms, tools 3/3, errors=[]
++- `particle/particle-1` / reasoning=`default` / `soroswap-builder` / repeat 2: error, 2645ms, tools 2/0, errors=["Answer provider returned HTTP 500. 2002: Credential loading failed"]
++- `particle/particle-1` / reasoning=`default` / `no-market-hallucination` / repeat 2: done:stop, 18597ms, tools 2/3, errors=[]
++- `meta/muse-spark-open` / reasoning=`default` / `rpc-simulate` / repeat 1: done:stop, 106658ms, tools 3/4, errors=[]
++- `meta/muse-spark-open` / reasoning=`default` / `open-rfps` / repeat 1: error, 121941ms, tools 3/2, errors=["The turn was aborted before finishing."]
++- `meta/muse-spark-open` / reasoning=`default` / `zk-repos` / repeat 1: error, 122137ms, tools 3/1, errors=["The turn was aborted before finishing."]
++- `meta/muse-spark-open` / reasoning=`default` / `rpc-simulate` / repeat 2: error, 122072ms, tools 3/4, errors=["The turn was aborted before finishing."]
++- `meta/muse-spark-open` / reasoning=`default` / `zk-repos` / repeat 2: error, 122008ms, tools 3/1, errors=["The turn was aborted before finishing."]
++- `google/gemini-3.8-flash` / reasoning=`default` / `no-market-hallucination` / repeat 2: done:stop, 27307ms, tools 1/3, errors=[]
++- `openai/gpt-6-luna` / reasoning=`default` / `zk-repos` / repeat 1: done:stop, 23605ms, tools 4/2, errors=[]
++- `openai/gpt-6-luna` / reasoning=`default` / `soroswap-builder` / repeat 2: done:stop, 10585ms, tools 2/2, errors=[]
++- `openai/gpt-6-sol` / reasoning=`default` / `skill-routing` / repeat 1: done:stop, 15061ms, tools 2/3, errors=[]
++- `openai/gpt-6-sol` / reasoning=`default` / `zk-repos` / repeat 1: done:stop, 18927ms, tools 3/3, errors=[]
++- `openai/gpt-6-sol` / reasoning=`default` / `wallet-recovery` / repeat 1: done:stop, 12679ms, tools 3/2, errors=[]
++- `openai/gpt-6-sol` / reasoning=`default` / `open-rfps` / repeat 2: done:stop, 19408ms, tools 2/2, errors=[]
++- `openai/gpt-6-sol` / reasoning=`default` / `zk-repos` / repeat 2: done:stop, 17313ms, tools 3/3, errors=[]
++- `openai/gpt-6-sol` / reasoning=`default` / `wallet-recovery` / repeat 2: done:stop, 11832ms, tools 3/2, errors=[]
++- `anthropic/claude-sonnet-5` / reasoning=`default` / `zk-repos` / repeat 1: done:stop, 41944ms, tools 2/3, errors=[]
++- `anthropic/claude-sonnet-5.5` / reasoning=`default` / `rpc-simulate` / repeat 1: done:stop, 7835ms, tools 0/1, errors=[]
++- `anthropic/claude-sonnet-5.5` / reasoning=`default` / `soroswap-builder` / repeat 1: done:stop, 9266ms, tools 0/2, errors=[]
++- `anthropic/claude-sonnet-5.5` / reasoning=`default` / `zk-repos` / repeat 1: done:stop, 16477ms, tools 0/1, errors=[]
++- `anthropic/claude-sonnet-5.5` / reasoning=`default` / `rpc-simulate` / repeat 2: done:stop, 6745ms, tools 0/1, errors=[]
++- `anthropic/claude-sonnet-5.5` / reasoning=`default` / `soroswap-builder` / repeat 2: done:stop, 8251ms, tools 0/2, errors=[]
++- `anthropic/claude-sonnet-5.5` / reasoning=`default` / `zk-repos` / repeat 2: done:stop, 14269ms, tools 0/1, errors=[]
++- `anthropic/claude-opus-5.5` / reasoning=`default` / `rpc-simulate` / repeat 1: done:stop, 21996ms, tools 0/3, errors=[]
++- `anthropic/claude-opus-5.5` / reasoning=`default` / `soroswap-builder` / repeat 1: done:stop, 13184ms, tools 0/2, errors=[]
++- `anthropic/claude-opus-5.5` / reasoning=`default` / `rpc-simulate` / repeat 2: done:stop, 20837ms, tools 0/3, errors=[]
++- `anthropic/claude-opus-5.5` / reasoning=`default` / `soroswap-builder` / repeat 2: done:stop, 13383ms, tools 0/2, errors=[]
++- `xai/grok-4.6` / reasoning=`default` / `zk-repos` / repeat 1: error, 121910ms, tools 3/3, errors=["The turn was aborted before finishing."]
++- `xai/grok-4.6` / reasoning=`default` / `zk-repos` / repeat 2: error, 120701ms, tools 3/3, errors=["The turn was aborted before finishing."]
++- `xai/grok-4.7` / reasoning=`default` / `soroswap-builder` / repeat 1: done:stop, 24027ms, tools 2/2, errors=[]
++- `xai/grok-4.7` / reasoning=`default` / `skill-routing` / repeat 1: error, 10697ms, tools 2/1, errors=["answer-cost-exceeds-authorization"]
+diff --git a/research/gauntlets/2026-11-03-sweep-stage1b-astra1-summary.md b/research/gauntlets/2026-11-03-sweep-stage1b-astra1-summary.md
+new file mode 100644
+index 00000000..741721f6
+--- /dev/null
++++ b/research/gauntlets/2026-11-03-sweep-stage1b-astra1-summary.md
+@@ -0,0 +1,15 @@
++# Demo Model Gauntlet 2026-11-03-sweep-stage1b-astra1
++
++Generated by `scripts/run-demo-model-gauntlet.mjs`.
++
++Spend: reported USD 1.7121 of 2.2 authorized across 6 turn(s); 0 turn(s) with unknown cost (a floor, never zero). Accounting turns run with SDK retries off and one Gateway attempt per call.
++
++## Summary
++
++| Model | Reasoning | Overall Pass | Clean Terminal | p50 ms | p95 ms | p50 first meaningful ms | Tool Failures | Reported USD | Unknown-cost turns | Gateway-logged model |
++| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
++| `openai/gpt-6-astra` | `low` | 5/6 | 5/6 | 20249 | 21540 | 2189 | 0 | 1.7121 | 0 | `openai/gpt-6-astra` |
++
++## Failures
++
++- `openai/gpt-6-astra` / reasoning=`low` / `no-market-hallucination` / repeat 1: error, 4053ms, tools 1/0, errors=["Item with id 'rs_0a5606819a2ac0be016aea821f861c87d1bca06b4ab9e420ea' not found. Items are not persisted for Zero Data Retention organizations. Remove this item from your input and try again."]
+diff --git a/research/gauntlets/2026-11-03-sweep-stage1b-astra2-summary.md b/research/gauntlets/2026-11-03-sweep-stage1b-astra2-summary.md
+new file mode 100644
+index 00000000..eacded88
+--- /dev/null
++++ b/research/gauntlets/2026-11-03-sweep-stage1b-astra2-summary.md
+@@ -0,0 +1,15 @@
++# Demo Model Gauntlet 2026-11-03-sweep-stage1b-astra2
++
++Generated by `scripts/run-demo-model-gauntlet.mjs`.
++
++Spend: reported USD 1.8710 of 1.6 authorized across 3 turn(s); 0 turn(s) with unknown cost (a floor, never zero). Accounting turns run with SDK retries off and one Gateway attempt per call.
++
++## Summary
++
++| Model | Reasoning | Overall Pass | Clean Terminal | p50 ms | p95 ms | p50 first meaningful ms | Tool Failures | Reported USD | Unknown-cost turns | Gateway-logged model |
++| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
++| `openai/gpt-6-astra` | `low` | 3/3 | 3/3 | 39436 | 39436 | 1657 | 0 | 1.8710 | 0 | `openai/gpt-6-astra` |
++
++## Failures
++
++- None
+diff --git a/research/gauntlets/2026-11-03-sweep-stage1b-deepseek-summary.md b/research/gauntlets/2026-11-03-sweep-stage1b-deepseek-summary.md
+new file mode 100644
+index 00000000..5555a359
+--- /dev/null
++++ b/research/gauntlets/2026-11-03-sweep-stage1b-deepseek-summary.md
+@@ -0,0 +1,24 @@
++# Demo Model Gauntlet 2026-11-03-sweep-stage1b-deepseek
++
++Generated by `scripts/run-demo-model-gauntlet.mjs`.
++
++Spend: reported USD 0.6424 of 1 authorized across 32 turn(s); 0 turn(s) with unknown cost (a floor, never zero). Accounting turns run with SDK retries off and one Gateway attempt per call.
++
++## Summary
++
++| Model | Reasoning | Overall Pass | Clean Terminal | p50 ms | p95 ms | p50 first meaningful ms | Tool Failures | Reported USD | Unknown-cost turns | Gateway-logged model |
++| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
++| `@cf/deepseek-ai/deepseek-v4-pro-0813` | `low` | 11/16 | 16/16 | 30479 | 50122 | 959 | 6 | 0.4881 | 0 | `@cf/deepseek-ai/deepseek-v4-pro-0813` |
++| `@cf/deepseek-ai/deepseek-v4.1-flash-1017` | `low` | 12/16 | 16/16 | 18943 | 36894 | 1697 | 7 | 0.1543 | 0 | `@cf/deepseek-ai/deepseek-v4.1-flash-1017` |
++
++## Failures
++
++- `@cf/deepseek-ai/deepseek-v4-pro-0813` / reasoning=`low` / `rpc-simulate` / repeat 1: done:stop, 48361ms, tools 2/4, errors=[]
++- `@cf/deepseek-ai/deepseek-v4-pro-0813` / reasoning=`low` / `soroswap-builder` / repeat 1: done:stop, 31323ms, tools 2/2, errors=[]
++- `@cf/deepseek-ai/deepseek-v4-pro-0813` / reasoning=`low` / `open-rfps` / repeat 1: done:stop, 28547ms, tools 4/1, errors=[]
++- `@cf/deepseek-ai/deepseek-v4-pro-0813` / reasoning=`low` / `zk-repos` / repeat 1: done:stop, 50122ms, tools 2/3, errors=[]
++- `@cf/deepseek-ai/deepseek-v4-pro-0813` / reasoning=`low` / `soroswap-builder` / repeat 2: done:stop, 26188ms, tools 2/2, errors=[]
++- `@cf/deepseek-ai/deepseek-v4.1-flash-1017` / reasoning=`low` / `open-rfps` / repeat 1: done:stop, 22784ms, tools 4/2, errors=[]
++- `@cf/deepseek-ai/deepseek-v4.1-flash-1017` / reasoning=`low` / `rpc-simulate` / repeat 2: done:stop, 26870ms, tools 2/4, errors=[]
++- `@cf/deepseek-ai/deepseek-v4.1-flash-1017` / reasoning=`low` / `open-rfps` / repeat 2: done:stop, 18943ms, tools 4/2, errors=[]
++- `@cf/deepseek-ai/deepseek-v4.1-flash-1017` / reasoning=`low` / `wallet-recovery` / repeat 2: done:stop, 28319ms, tools 2/4, errors=[]
+diff --git a/research/gauntlets/2026-11-03-sweep-stage1b-grok1-summary.md b/research/gauntlets/2026-11-03-sweep-stage1b-grok1-summary.md
+new file mode 100644
+index 00000000..0084ba46
+--- /dev/null
++++ b/research/gauntlets/2026-11-03-sweep-stage1b-grok1-summary.md
+@@ -0,0 +1,15 @@
++# Demo Model Gauntlet 2026-11-03-sweep-stage1b-grok1
++
++Generated by `scripts/run-demo-model-gauntlet.mjs`.
++
++Spend: reported USD 0.3943 of 0.7 authorized across 5 turn(s); 0 turn(s) with unknown cost (a floor, never zero). Accounting turns run with SDK retries off and one Gateway attempt per call.
++
++## Summary
++
++| Model | Reasoning | Overall Pass | Clean Terminal | p50 ms | p95 ms | p50 first meaningful ms | Tool Failures | Reported USD | Unknown-cost turns | Gateway-logged model |
++| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
++| `xai/grok-4.7` | `default` | 4/5 | 5/5 | 32854 | 33854 | 2231 | 1 | 0.3943 | 0 | `xai/grok-4.7` |
++
++## Failures
++
++- `xai/grok-4.7` / reasoning=`default` / `soroswap-builder` / repeat 1: done:stop, 20435ms, tools 2/2, errors=[]
+diff --git a/research/gauntlets/2026-11-03-sweep-stage1b-grok2-summary.md b/research/gauntlets/2026-11-03-sweep-stage1b-grok2-summary.md
+new file mode 100644
+index 00000000..8617ee39
+--- /dev/null
++++ b/research/gauntlets/2026-11-03-sweep-stage1b-grok2-summary.md
+@@ -0,0 +1,18 @@
++# Demo Model Gauntlet 2026-11-03-sweep-stage1b-grok2
++
++Generated by `scripts/run-demo-model-gauntlet.mjs`.
++
++Spend: reported USD 0.7553 of 0.8 authorized across 6 turn(s); 0 turn(s) with unknown cost (a floor, never zero). Accounting turns run with SDK retries off and one Gateway attempt per call.
++
++## Summary
++
++| Model | Reasoning | Overall Pass | Clean Terminal | p50 ms | p95 ms | p50 first meaningful ms | Tool Failures | Reported USD | Unknown-cost turns | Gateway-logged model |
++| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
++| `xai/grok-4.7` | `default` | 2/6 | 4/6 | 66160 | 120828 | 2456 | 2 | 0.7553 | 0 | `xai/grok-4.7` |
++
++## Failures
++
++- `xai/grok-4.7` / reasoning=`default` / `zk-repos` / repeat 1: error, 120862ms, tools 3/3, errors=["The turn was aborted before finishing."]
++- `xai/grok-4.7` / reasoning=`default` / `wallet-recovery` / repeat 1: done:stop, 66160ms, tools 4/2, errors=[]
++- `xai/grok-4.7` / reasoning=`default` / `zk-repos` / repeat 2: error, 120828ms, tools 3/3, errors=["The turn was aborted before finishing."]
++- `xai/grok-4.7` / reasoning=`default` / `wallet-recovery` / repeat 2: done:stop, 83496ms, tools 4/3, errors=[]
+diff --git a/research/gauntlets/2026-11-03-sweep-stage1b-six-summary.md b/research/gauntlets/2026-11-03-sweep-stage1b-six-summary.md
+new file mode 100644
+index 00000000..9464ce62
+--- /dev/null
++++ b/research/gauntlets/2026-11-03-sweep-stage1b-six-summary.md
+@@ -0,0 +1,42 @@
++# Demo Model Gauntlet 2026-11-03-sweep-stage1b-six
++
++Generated by `scripts/run-demo-model-gauntlet.mjs`.
++
++Spend: reported USD 1.5718 of 3.5 authorized across 60 turn(s); 4 turn(s) with unknown cost (a floor, never zero). Accounting turns run with SDK retries off and one Gateway attempt per call.
++
++## Summary
++
++| Model | Reasoning | Overall Pass | Clean Terminal | p50 ms | p95 ms | p50 first meaningful ms | Tool Failures | Reported USD | Unknown-cost turns | Gateway-logged model |
++| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
++| `meta/muse-spark-1.3` | `default` | 2/16 | 16/16 | 4786 | 8860 | 985 | 0 | 0.1580 | 0 | `meta/muse-spark-1.3` |
++| `meta/muse-spark-open` | `default` | 13/16 | 15/16 | 70986 | 104848 | 766 | 3 | 0.7217 | 1 | `meta/muse-spark-open` |
++| `particle/particle-1` | `default` | 13/16 | 16/16 | 17095 | 39487 | 667 | 3 | 0.1582 | 0 | `particle/particle-1` |
++| `moonshotai/kimi-k3` | `default` | 11/16 | 13/16 | 68750 | 121721 | 3203 | 3 | 0.5338 | 3 | `moonshotai/kimi-k3` |
++
++## Failures
++
++- `meta/muse-spark-1.3` / reasoning=`default` / `rpc-simulate` / repeat 1: done:stop, 8860ms, tools 0/0, errors=[]
++- `meta/muse-spark-1.3` / reasoning=`default` / `soroswap-builder` / repeat 1: done:stop, 3818ms, tools 0/0, errors=[]
++- `meta/muse-spark-1.3` / reasoning=`default` / `open-rfps` / repeat 1: done:stop, 4454ms, tools 0/0, errors=[]
++- `meta/muse-spark-1.3` / reasoning=`default` / `activity-leaderboard` / repeat 1: done:stop, 6015ms, tools 0/0, errors=[]
++- `meta/muse-spark-1.3` / reasoning=`default` / `skill-routing` / repeat 1: done:stop, 6397ms, tools 0/0, errors=[]
++- `meta/muse-spark-1.3` / reasoning=`default` / `zk-repos` / repeat 1: done:stop, 6846ms, tools 0/0, errors=[]
++- `meta/muse-spark-1.3` / reasoning=`default` / `wallet-recovery` / repeat 1: done:stop, 3626ms, tools 0/0, errors=[]
++- `meta/muse-spark-1.3` / reasoning=`default` / `rpc-simulate` / repeat 2: done:stop, 4783ms, tools 0/0, errors=[]
++- `meta/muse-spark-1.3` / reasoning=`default` / `soroswap-builder` / repeat 2: done:stop, 5316ms, tools 0/0, errors=[]
++- `meta/muse-spark-1.3` / reasoning=`default` / `open-rfps` / repeat 2: done:stop, 8223ms, tools 0/0, errors=[]
++- `meta/muse-spark-1.3` / reasoning=`default` / `activity-leaderboard` / repeat 2: done:stop, 4225ms, tools 0/0, errors=[]
++- `meta/muse-spark-1.3` / reasoning=`default` / `skill-routing` / repeat 2: done:stop, 3489ms, tools 0/0, errors=[]
++- `meta/muse-spark-1.3` / reasoning=`default` / `zk-repos` / repeat 2: done:stop, 4786ms, tools 0/0, errors=[]
++- `meta/muse-spark-1.3` / reasoning=`default` / `wallet-recovery` / repeat 2: done:stop, 3258ms, tools 0/0, errors=[]
++- `meta/muse-spark-open` / reasoning=`default` / `rpc-simulate` / repeat 1: done:stop, 93466ms, tools 1/3, errors=[]
++- `meta/muse-spark-open` / reasoning=`default` / `open-rfps` / repeat 1: error, 121781ms, tools 3/2, errors=["The turn was aborted before finishing."]
++- `meta/muse-spark-open` / reasoning=`default` / `wallet-recovery` / repeat 1: done:stop, 93006ms, tools 3/4, errors=[]
++- `particle/particle-1` / reasoning=`default` / `open-rfps` / repeat 1: done:stop, 20347ms, tools 2/3, errors=[]
++- `particle/particle-1` / reasoning=`default` / `activity-leaderboard` / repeat 1: done:stop, 8469ms, tools 2/2, errors=[]
++- `particle/particle-1` / reasoning=`default` / `zk-repos` / repeat 2: done:stop, 42950ms, tools 2/3, errors=[]
++- `moonshotai/kimi-k3` / reasoning=`default` / `open-rfps` / repeat 1: error, 121979ms, tools 2/2, errors=["The turn was aborted before finishing."]
++- `moonshotai/kimi-k3` / reasoning=`default` / `activity-leaderboard` / repeat 1: done:stop, 53005ms, tools 2/2, errors=[]
++- `moonshotai/kimi-k3` / reasoning=`default` / `zk-repos` / repeat 1: error, 120024ms, tools 2/2, errors=["The turn was aborted before finishing."]
++- `moonshotai/kimi-k3` / reasoning=`default` / `wallet-recovery` / repeat 1: done:stop, 86926ms, tools 2/2, errors=[]
++- `moonshotai/kimi-k3` / reasoning=`default` / `zk-repos` / repeat 2: error, 121721ms, tools 2/1, errors=["The turn was aborted before finishing."]
+diff --git a/research/gauntlets/2026-11-03-sweep-stage1c-astra-summary.md b/research/gauntlets/2026-11-03-sweep-stage1c-astra-summary.md
+new file mode 100644
+index 00000000..d8843331
+--- /dev/null
++++ b/research/gauntlets/2026-11-03-sweep-stage1c-astra-summary.md
+@@ -0,0 +1,15 @@
++# Demo Model Gauntlet 2026-11-03-sweep-stage1c-astra
++
++Generated by `scripts/run-demo-model-gauntlet.mjs`.
++
++Spend: reported USD 0.2288 of 1.1 authorized across 2 turn(s); 0 turn(s) with unknown cost (a floor, never zero). Accounting turns run with SDK retries off and one Gateway attempt per call.
++
++## Summary
++
++| Model | Reasoning | Overall Pass | Clean Terminal | p50 ms | p95 ms | p50 first meaningful ms | Tool Failures | Reported USD | Unknown-cost turns | Gateway-logged model |
++| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
++| `openai/gpt-6-astra` | `low` | 2/2 | 2/2 | 4699 | 4699 | 1794 | 0 | 0.2288 | 0 | `openai/gpt-6-astra` |
++
++## Failures
++
++- None
+diff --git a/research/gauntlets/2026-11-03-sweep-stage1c-muse-summary.md b/research/gauntlets/2026-11-03-sweep-stage1c-muse-summary.md
+new file mode 100644
+index 00000000..e2108d31
+--- /dev/null
++++ b/research/gauntlets/2026-11-03-sweep-stage1c-muse-summary.md
+@@ -0,0 +1,15 @@
++# Demo Model Gauntlet 2026-11-03-sweep-stage1c-muse
++
++Generated by `scripts/run-demo-model-gauntlet.mjs`.
++
++Spend: reported USD 1.0032 of 1 authorized across 15 turn(s); 0 turn(s) with unknown cost (a floor, never zero). Accounting turns run with SDK retries off and one Gateway attempt per call.
++
++## Summary
++
++| Model | Reasoning | Overall Pass | Clean Terminal | p50 ms | p95 ms | p50 first meaningful ms | Tool Failures | Reported USD | Unknown-cost turns | Gateway-logged model |
++| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
++| `meta/muse-spark-1.3` | `default` | 14/15 | 15/15 | 31031 | 59810 | 5416 | 1 | 1.0032 | 0 | `meta/muse-spark-1.3` |
++
++## Failures
++
++- `meta/muse-spark-1.3` / reasoning=`default` / `rpc-simulate` / repeat 1: done:stop, 40539ms, tools 2/4, errors=[]
+diff --git a/scripts/run-demo-model-gauntlet.mjs b/scripts/run-demo-model-gauntlet.mjs
+index 4267024d..94dfe5f7 100644
+--- a/scripts/run-demo-model-gauntlet.mjs
++++ b/scripts/run-demo-model-gauntlet.mjs
+@@ -149,7 +149,7 @@ export async function main(argv = process.argv.slice(2)) {
+   console.log(formatLaunchPlan(plan));
+   if (!args.confirmPaid) throw new Error("Refusing to start planned Playground chat turns without --confirm-paid.");
+ 
+-  const { models, reasoningEfforts, prompts, openAiApiMode, repeats, portBase, outDir, timeoutMs } = invocation;
++  const { models, reasoningEfforts, prompts, openAiApiMode, repeats, portBase, outDir, timeoutMs, maxBudgetUsd } = invocation;
+   const runId = args.runId ?? new Date().toISOString().replaceAll(":", "").replaceAll(".", "");
+   await mkdir(outDir, { recursive: true });
+ 
+@@ -159,8 +159,9 @@ export async function main(argv = process.argv.slice(2)) {
+     console.warn("[gauntlet] MCP_SERVER_SECRET unavailable; falling back to loopback dev bypass subject and throttle.");
+   }
+ 
++  const budget = createGauntletBudget(maxBudgetUsd);
+   const results = [];
+-  for (let modelIndex = 0; modelIndex < models.length; modelIndex += 1) {
++  matrix: for (let modelIndex = 0; modelIndex < models.length; modelIndex += 1) {
+     const model = models[modelIndex];
+     for (let reasoningIndex = 0; reasoningIndex < reasoningEfforts.length; reasoningIndex += 1) {
+       const reasoningEffort = reasoningEfforts[reasoningIndex];
+@@ -172,6 +173,11 @@ export async function main(argv = process.argv.slice(2)) {
+         for (let repeat = 1; repeat <= repeats; repeat += 1) {
+           for (const prompt of prompts) {
+             const label = `${model} :: reasoning=${reasoningEffortLabel(reasoningEffort)} :: ${prompt.id} :: ${repeat}/${repeats}`;
++            const remainingUsd = budget.remainingUsd();
++            if (remainingUsd !== null && remainingUsd <= 0) {
++              console.warn(`[gauntlet] budget exhausted before ${label}; stopping the matrix.`);
++              break matrix;
++            }
+             console.log(`[gauntlet] ${label}`);
+             // Mark the Wrangler log position so a failing turn can carry its own
+             // worker output. Without this the harness records the CLIENT's view
+@@ -187,15 +193,17 @@ export async function main(argv = process.argv.slice(2)) {
+               reasoningEffort,
+               prompt,
+               repeat,
+-              timeoutMs
++              timeoutMs,
++              maxBudgetUsd: remainingUsd
+             });
+             if (!result.pass.overall) {
+               result.workerLog = server.output.join("").slice(workerLogMark).slice(-8000);
+             }
++            budget.record(result.evalCost);
+             results.push(result);
+-            await writeArtifacts({ runId, outDir, prompts, results });
++            await writeArtifacts({ runId, outDir, prompts, results, budget: budget.snapshot() });
+             console.log(
+-              `[gauntlet] ${label} -> ${result.terminal} ${result.durationMs}ms tools=${result.searchCalls}/${result.executeCalls} pass=${result.pass.overall}`
++              `[gauntlet] ${label} -> ${result.terminal} ${result.durationMs}ms tools=${result.searchCalls}/${result.executeCalls} pass=${result.pass.overall}${formatTurnCost(result.evalCost)}`
+             );
+           }
+         }
+@@ -205,7 +213,13 @@ export async function main(argv = process.argv.slice(2)) {
+     }
+   }
+ 
+-  await writeArtifacts({ runId, outDir, prompts, results });
++  await writeArtifacts({ runId, outDir, prompts, results, budget: budget.snapshot() });
++  if (maxBudgetUsd !== null) {
++    const snapshot = budget.snapshot();
++    console.log(
++      `[gauntlet] spend: reported USD ${snapshot.reportedUsd.toFixed(4)} of ${snapshot.authorizedUsd} authorized; ${snapshot.unknownCostTurns} turn(s) with unknown cost (not zero)`
++    );
++  }
+   console.log(`[gauntlet] wrote ${path.join(outDir, `${runId}.json`)}`);
+   console.log(`[gauntlet] wrote ${path.join(outDir, `${runId}-summary.md`)}`);
+ }
+@@ -268,7 +282,48 @@ async function stopWrangler(server) {
+   }
+ }
+ 
+-async function runPrompt({ runId, url, cookie, model, reasoningEffort, prompt, repeat, timeoutMs }) {
++/**
++ * Optional dollar accounting, borrowed from the semantic lane. With
++ * `--max-budget-usd`, every turn carries `x-raven-eval-max-budget-usd` with
++ * the remaining authorization, so the route settles each provider call
++ * against the AI Gateway log before the next one and stops the turn when
++ * the amount is spent. The route also records the Gateway-logged model of
++ * every call, which is how a vendor's logged id is verified. Side effects of
++ * that path: SDK retries are off (`maxRetries: 0`) and one Gateway attempt is
++ * allowed per call, so a transient transport error shows up as a failure
++ * instead of a silent retry — the screen is stricter than production.
++ *
++ * A turn with no reported cost is counted as unknown, never as zero: the
++ * reported sum is a floor, and the Gateway logs remain the spend record.
++ */
++export function createGauntletBudget(maxBudgetUsd) {
++  let reportedUsd = 0;
++  let reportedTurns = 0;
++  let unknownCostTurns = 0;
++  return {
++    remainingUsd: () => (maxBudgetUsd === null ? null : Number((maxBudgetUsd - reportedUsd).toFixed(12))),
++    record(evalCost) {
++      if (maxBudgetUsd === null) return;
++      if (typeof evalCost?.costUsd === "number" && Number.isFinite(evalCost.costUsd) && evalCost.costUsd >= 0) {
++        reportedUsd = Number((reportedUsd + evalCost.costUsd).toFixed(12));
++        reportedTurns += 1;
++      } else {
++        unknownCostTurns += 1;
++      }
++    },
++    snapshot: () => ({ authorizedUsd: maxBudgetUsd, reportedUsd, reportedTurns, unknownCostTurns })
++  };
++}
++
++function formatTurnCost(evalCost) {
++  if (!evalCost) return "";
++  const cost = typeof evalCost.costUsd === "number" ? `USD ${evalCost.costUsd.toFixed(4)}` : "cost unknown";
++  const models = Array.isArray(evalCost.models) && evalCost.models.length ? ` logged=${evalCost.models.join("|")}` : "";
++  const error = evalCost.error ? ` accounting=${evalCost.error}` : "";
++  return ` ${cost}${models}${error}`;
++}
++
++async function runPrompt({ runId, url, cookie, model, reasoningEffort, prompt, repeat, timeoutMs, maxBudgetUsd = null }) {
+   const startedAt = Date.now();
+   const controller = new AbortController();
+   const timer = setTimeout(() => controller.abort(), timeoutMs);
+@@ -283,7 +338,8 @@ async function runPrompt({ runId, url, cookie, model, reasoningEffort, prompt, r
+         "content-type": "application/json",
+         origin: new URL(url).origin,
+         "sec-fetch-site": "same-origin",
+-        ...(cookie ? { cookie } : {})
++        ...(cookie ? { cookie } : {}),
++        ...(maxBudgetUsd === null ? {} : { "x-raven-eval-max-budget-usd": String(maxBudgetUsd) })
+       },
+       body: JSON.stringify({ messages: [{ role: "user", content: prompt.text }] }),
+       signal: controller.signal
+@@ -308,6 +364,20 @@ async function runPrompt({ runId, url, cookie, model, reasoningEffort, prompt, r
+   const toolFailures = tools.filter((f) => f.type === "tool-result" && f.ok === false);
+   const errors = frames.filter((f) => f.type === "error");
+   const done = frames.find((f) => f.type === "done");
++  const evalCostFrame = frames.find((f) => f.type === "eval-cost");
++  const evalCost =
++    maxBudgetUsd === null
++      ? null
++      : evalCostFrame
++        ? {
++            costUsd: evalCostFrame.costUsd ?? null,
++            reportedCostUsd: evalCostFrame.reportedCostUsd ?? null,
++            calls: evalCostFrame.calls ?? null,
++            reportedCalls: evalCostFrame.reportedCalls ?? null,
++            models: Array.isArray(evalCostFrame.models) ? evalCostFrame.models : [],
++            error: evalCostFrame.error ?? null
++          }
++        : { costUsd: null, reportedCostUsd: null, calls: null, reportedCalls: null, models: [], error: "missing-eval-cost-frame" };
+   const terminal = parseError ? "client-error" : done ? `done:${done.reason}` : errors.length ? "error" : `http:${responseStatus}`;
+   const firstMeaningful = frames.find((f) => f.type !== "ready");
+   const pass = {
+@@ -344,6 +414,7 @@ async function runPrompt({ runId, url, cookie, model, reasoningEffort, prompt, r
+     parseError,
+     responseText,
+     finalText: tokenText.slice(0, 4000),
++    evalCost,
+     frames,
+     pass
+   };
+@@ -372,14 +443,14 @@ async function readSse(body, onFrame) {
+   }
+ }
+ 
+-async function writeArtifacts({ runId, outDir, prompts, results }) {
++async function writeArtifacts({ runId, outDir, prompts, results, budget = null }) {
+   const jsonPath = path.join(outDir, `${runId}.json`);
+-  await writeFile(jsonPath, `${JSON.stringify({ runId, prompts, results }, null, 2)}\n`);
++  await writeFile(jsonPath, `${JSON.stringify({ runId, prompts, budget, results }, null, 2)}\n`);
+   const summaryPath = path.join(outDir, `${runId}-summary.md`);
+-  await writeFile(summaryPath, renderSummary({ runId, results }));
++  await writeFile(summaryPath, renderSummary({ runId, results, budget }));
+ }
+ 
+-function renderSummary({ runId, results }) {
++function renderSummary({ runId, results, budget = null }) {
+   const byCell = new Map();
+   for (const result of results) {
+     const key = `${result.model}@@${result.reasoningEffort ?? "default"}`;
+@@ -393,7 +464,10 @@ function renderSummary({ runId, results }) {
+       durations: [],
+       firstMeaningful: [],
+       toolFailures: 0,
+-      errors: []
++      errors: [],
++      reportedUsd: 0,
++      unknownCostTurns: 0,
++      loggedModels: new Set()
+     };
+     entry.runs += 1;
+     if (result.pass.overall) entry.pass += 1;
+@@ -403,14 +477,29 @@ function renderSummary({ runId, results }) {
+     if (result.firstMeaningfulMs !== null) entry.firstMeaningful.push(result.firstMeaningfulMs);
+     entry.toolFailures += result.toolFailures;
+     entry.errors.push(...result.errors, ...(result.parseError ? [result.parseError] : []));
++    if (result.evalCost) {
++      if (typeof result.evalCost.costUsd === "number") entry.reportedUsd += result.evalCost.costUsd;
++      else entry.unknownCostTurns += 1;
++      for (const logged of result.evalCost.models ?? []) entry.loggedModels.add(logged);
++    }
+     byCell.set(key, entry);
+   }
++  const costColumns = budget !== null;
+   const rows = [...byCell.values()].map((entry) => {
+     const p50 = percentile(entry.durations, 0.5);
+     const p95 = percentile(entry.durations, 0.95);
+     const firstP50 = percentile(entry.firstMeaningful, 0.5);
+-    return `| \`${entry.model}\` | \`${entry.reasoningEffort}\` | ${entry.pass}/${entry.runs} | ${entry.terminal}/${entry.runs} | ${p50} | ${p95} | ${firstP50} | ${entry.toolFailures} |`;
++    const base = `| \`${entry.model}\` | \`${entry.reasoningEffort}\` | ${entry.pass}/${entry.runs} | ${entry.terminal}/${entry.runs} | ${p50} | ${p95} | ${firstP50} | ${entry.toolFailures} |`;
++    if (!costColumns) return base;
++    const logged = entry.loggedModels.size ? [...entry.loggedModels].map((model) => `\`${model}\``).join(", ") : "—";
++    return `${base} ${entry.reportedUsd.toFixed(4)} | ${entry.unknownCostTurns} | ${logged} |`;
+   });
++  const header = costColumns
++    ? "| Model | Reasoning | Overall Pass | Clean Terminal | p50 ms | p95 ms | p50 first meaningful ms | Tool Failures | Reported USD | Unknown-cost turns | Gateway-logged model |\n| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |"
++    : "| Model | Reasoning | Overall Pass | Clean Terminal | p50 ms | p95 ms | p50 first meaningful ms | Tool Failures |\n| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |";
++  const spendNote = costColumns
++    ? `\nSpend: reported USD ${budget.reportedUsd.toFixed(4)} of ${budget.authorizedUsd} authorized across ${budget.reportedTurns} turn(s); ${budget.unknownCostTurns} turn(s) with unknown cost (a floor, never zero). Accounting turns run with SDK retries off and one Gateway attempt per call.\n`
++    : "";
+   const failures = results
+     .filter((result) => !result.pass.overall)
+     .map(
+@@ -430,11 +519,10 @@ function renderSummary({ runId, results }) {
+   return `# Demo Model Gauntlet ${runId}
+ 
+ Generated by \`scripts/run-demo-model-gauntlet.mjs\`.
+-${reloadWarning}
++${reloadWarning}${spendNote}
+ ## Summary
+ 
+-| Model | Reasoning | Overall Pass | Clean Terminal | p50 ms | p95 ms | p50 first meaningful ms | Tool Failures |
+-| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
++${header}
+ ${rows.join("\n")}
+ 
+ ## Failures
+@@ -515,6 +603,10 @@ Options:
+   --repeats <positive integer>       Repetitions per model/effort/prompt cell (default: 1)
+   --port-base <port>                 First Wrangler port (default: 8890)
+   --timeout-ms <positive integer>    Per-chat timeout (default: 150000)
++  --max-budget-usd <usd>             Dollar cap for the whole run through the route's loopback
++                                     accounting (sends x-raven-eval-max-budget-usd per turn,
++                                     records each turn's Gateway cost and logged model, stops the
++                                     matrix when the reported sum reaches the cap)
+   --out-dir <path>                   Artifact directory (default: research/gauntlets)`;
+ }
+ 
+@@ -530,6 +622,7 @@ const VALUE_FLAGS = new Set([
+   "--repeats",
+   "--port-base",
+   "--timeout-ms",
++  "--max-budget-usd",
+   "--out-dir"
+ ]);
+ 
+@@ -581,6 +674,9 @@ export function parseGauntletArgs(argv) {
+         out.portBase = value;
+       } else if (arg === "--timeout-ms") {
+         out.timeoutMs = value;
++      } else if (arg === "--max-budget-usd") {
++        if (out.maxBudgetUsd !== undefined) throw new Error("--max-budget-usd may be given once.");
++        out.maxBudgetUsd = value;
+       } else if (arg === "--out-dir") {
+         out.outDir = value;
+       }
+@@ -622,6 +718,13 @@ export function validateGauntletInvocation(args) {
+ 
+   const repeats = positiveInteger(args.repeats ?? 1, "--repeats");
+   const timeoutMs = positiveInteger(args.timeoutMs ?? 150_000, "--timeout-ms");
++  let maxBudgetUsd = null;
++  if (args.maxBudgetUsd !== undefined) {
++    maxBudgetUsd = Number(args.maxBudgetUsd);
++    if (!/^(?:\d+\.?\d*|\.\d+)$/.test(args.maxBudgetUsd) || !Number.isFinite(maxBudgetUsd) || maxBudgetUsd <= 0) {
++      throw new Error("--max-budget-usd must be a positive dollar amount.");
++    }
++  }
+   const portBase = positiveInteger(args.portBase ?? 8890, "--port-base");
+   const cellCount = models.length * reasoningEfforts.length;
+   const lastPort = portBase + cellCount - 1;
+@@ -641,6 +744,7 @@ export function validateGauntletInvocation(args) {
+     portBase,
+     outDir: args.outDir ?? path.join("research", "gauntlets"),
+     timeoutMs,
++    maxBudgetUsd,
+     totalPaidTurns
+   };
+ }
+@@ -653,6 +757,7 @@ export function buildLaunchPlan(invocation) {
+     promptIds: invocation.prompts.map((prompt) => prompt.id),
+     repeats: invocation.repeats,
+     timeoutMs: invocation.timeoutMs,
++    maxBudgetUsd: invocation.maxBudgetUsd ?? null,
+     outDir: invocation.outDir,
+     portBase: invocation.portBase,
+     portLast: invocation.portBase + cellCount - 1,
+@@ -662,7 +767,8 @@ export function buildLaunchPlan(invocation) {
+ }
+ 
+ export function formatLaunchPlan(plan) {
+-  return `[gauntlet] launch plan\nmodels (${plan.models.length}): ${plan.models.join(", ")}\nreasoning efforts (${plan.reasoningEfforts.length}): ${plan.reasoningEfforts.join(", ")}\nprompts (${plan.promptIds.length}): ${plan.promptIds.join(", ")}\nrepeats: ${plan.repeats}\nplanned Playground chat turns: ${plan.totalPaidTurns} (not guaranteed provider calls)\ntimeout: ${plan.timeoutMs}ms\nWrangler ports: ${plan.portBase}-${plan.portLast}; inspector ports: ${plan.portBase + 1000}-${plan.inspectorPortLast}\noutput: ${plan.outDir}`;
++  const budget = plan.maxBudgetUsd === null ? "none (no cost accounting; read the Gateway logs)" : `USD ${plan.maxBudgetUsd} through loopback accounting`;
++  return `[gauntlet] launch plan\nmodels (${plan.models.length}): ${plan.models.join(", ")}\nreasoning efforts (${plan.reasoningEfforts.length}): ${plan.reasoningEfforts.join(", ")}\nprompts (${plan.promptIds.length}): ${plan.promptIds.join(", ")}\nrepeats: ${plan.repeats}\nplanned Playground chat turns: ${plan.totalPaidTurns} (not guaranteed provider calls)\nbudget: ${budget}\ntimeout: ${plan.timeoutMs}ms\nWrangler ports: ${plan.portBase}-${plan.portLast}; inspector ports: ${plan.portBase + 1000}-${plan.inspectorPortLast}\noutput: ${plan.outDir}`;
+ }
+ 
+ const isMain = process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
+diff --git a/src/demo/chat.ts b/src/demo/chat.ts
+index 8f6fab53..8714ce09 100644
+--- a/src/demo/chat.ts
++++ b/src/demo/chat.ts
+@@ -36,6 +36,7 @@ import {
+   demoOpenAiProviderOptions,
+   demoModelSettings,
+   demoTemperatureFor,
++  demoUnifiedRunBinding,
+   demoUsesUnifiedRun,
+   demoReasoningEffortFromOverride,
+   demoReasoningEffortOverride,
+@@ -276,7 +277,7 @@ async function runTurn(
+     // registry cannot resolve. Keep it separate so other models retain their
+     // provider SDK normalization.
+     const unifiedRun = createWorkersAI({
+-      binding: accounting?.binding ?? env.AI,
++      binding: demoUnifiedRunBinding(accounting?.binding ?? env.AI),
+       gateway: demoGatewayOptions(env.DEMO_AI_GATEWAY_ID ?? DEMO_GATEWAY_ID_FALLBACK)
+     });
+     const sessionAffinity = await demoSessionAffinity(subject);
+@@ -313,9 +314,7 @@ async function runTurn(
+         const viaUnifiedRun = demoUsesUnifiedRun(config.model);
+         const settings = demoModelSettings(config.model, sessionAffinity, reasoningEffort);
+         const result = streamText({
+-          model: viaUnifiedRun
+-            ? unifiedRun(config.model, { extraHeaders: settings.extraHeaders })
+-            : workersai(config.model, settings),
++          model: viaUnifiedRun ? unifiedRun(config.model, settings) : workersai(config.model, settings),
+           system: DEMO_SYSTEM_PROMPT,
+           messages,
+           tools: tools as ToolSet,
+diff --git a/src/demo/model-config.ts b/src/demo/model-config.ts
+index a0a16d62..234e5d74 100644
+--- a/src/demo/model-config.ts
++++ b/src/demo/model-config.ts
+@@ -85,19 +85,19 @@ export function demoEffectiveOpenAiApiMode(
+ export function demoOpenAiProviderOptions(model: string, reasoningEffort: DemoReasoningEffort | undefined) {
+   // The provider-native Grok gateway transport uses the OpenAI-compatible
+   // chat wire format too, including reasoning_effort.
+-  if (
+-    !reasoningEffort ||
+-    !(model.startsWith("openai/") || model.startsWith("xai/") || model.startsWith("grok/"))
+-  ) {
+-    return {};
+-  }
+-  return {
+-    providerOptions: {
+-      openai: {
+-        reasoningEffort
+-      }
+-    }
+-  } as const;
++  const effort = reasoningEffort && (model.startsWith("openai/") || model.startsWith("xai/") || model.startsWith("grok/"))
++    ? { reasoningEffort }
++    : {};
++  // The demo gateway is Zero Data Retention, so OpenAI never persists response
++  // items. With the SDK default `store: true` a later step replays a reasoning
++  // item by id and OpenAI answers 404 `Items are not persisted for Zero Data
++  // Retention organizations` (gpt-6-astra at low, 2026-11-04). `store: false`
++  // makes @ai-sdk/openai request `reasoning.encrypted_content`, so the replay
++  // carries the item itself. Sent only to OpenAI: the xAI chat wire has no
++  // such field.
++  const retention = model.startsWith("openai/") ? { store: false } : {};
++  const openai = { ...effort, ...retention };
++  return Object.keys(openai).length === 0 ? {} : ({ providerOptions: { openai } } as const);
+ }
+ 
+ /**
+@@ -121,12 +121,19 @@ export function demoOpenAiProviderOptions(model: string, reasoningEffort: DemoRe
+  * fields and Anthropic calls out the confusion explicitly. `effort` accepts
+  * low|medium|high|xhigh|max only, so "none" and "minimal" both floor to "low".
+  *
+- * Unmatched Claude ids (haiku, 4.x) fall through to `{}` and the server
+- * default on purpose: 5-family config 400s on older models, and the model
+- * override accepts arbitrary slugs.
++ * The whole 5.x family takes this path: Fable 5 and 5.1, Opus 5 and 5.5,
++ * Sonnet 5 and 5.5, and Haiku 5.5. Anthropic's effort reference lists all five
++ * effort levels and adaptive thinking for each of them, including Haiku 5.5
++ * (checked 2026-11-03). The Cloudflare catalog writes the point release with a
++ * dot (`claude-sonnet-5.5`); Anthropic's own ids use a dash (`claude-sonnet-5-5`).
++ * Both spellings match. Unmatched Claude ids (4.x) fall through to `{}` and the
++ * server default on purpose: 5-family config 400s on older models, and the
++ * model override accepts arbitrary slugs.
+  */
++export const DEMO_ANTHROPIC_5X_MODEL = /^anthropic\/claude-(?:fable|opus|sonnet|haiku)-5(?:$|[.-])/;
++
+ export function demoAnthropicProviderOptions(model: string, reasoningEffort: DemoReasoningEffort) {
+-  if (!/^anthropic\/claude-(?:fable|opus|sonnet)-5(?:$|-)/.test(model)) return {};
++  if (!DEMO_ANTHROPIC_5X_MODEL.test(model)) return {};
+   return {
+     providerOptions: {
+       anthropic: {
+@@ -143,12 +150,10 @@ export function demoAnthropicProviderOptions(model: string, reasoningEffort: Dem
+  *
+  * `transport: "gateway"` uses provider-native PASSTHROUGH, which deliberately
+  * strips `x-api-key`/`authorization`. Passthrough's Unified Billing list is
+- * narrower than the run catalog: Sonnet 5 and Opus 5 are on it, Fable 5 and
+- * Gemini are not — so those two were forwarded to api.anthropic.com and
+- * generativelanguage.googleapis.com with NO credential, and the PROVIDER
+- * answered `x-api-key header is required` / `Method doesn't allow unregistered
+- * callers`. Provider errors, not gateway errors, which is what made it read as
+- * a billing problem.
++ * narrower than the run catalog: Sonnet 5 and Opus 5 are on it, Fable 5 is
++ * not — so Fable was forwarded to api.anthropic.com with NO credential, and
++ * the PROVIDER answered `x-api-key header is required`. A provider error, not
++ * a gateway error, which is what made it read as a billing problem.
+  *
+  * Omitting `transport` selects `"run"` -> `binding.run(slug, body, { gateway })`,
+  * the Unified Billing path. The gateway is NOT dropped: the rate limit and the
+@@ -157,12 +162,18 @@ export function demoAnthropicProviderOptions(model: string, reasoningEffort: Dem
+  * response caching, server-side fallback, BYOK aliases — this demo never uses,
+  * and chat.ts runs its own client-side fallback loop.
+  *
++ * Gemini is the opposite case. The run path accepts its first call but rejects
++ * the tool-result replay with `7003 User Input Error` (probed 2026-11-03,
++ * google/gemini-3.8-flash), while the Google AI Studio passthrough completes the
++ * whole tool loop under Unified Billing. So google/* takes the default
++ * passthrough branch below.
++ *
+  * Deliberately narrow: openai/* and xai/* stay on passthrough because both are
+- * green today and Responses-mode over the run path is unverified. Do not widen
+- * this without probing the models it would move.
++ * green today and Responses-mode over the run path is unverified. Do not move
++ * a vendor between the two dispatches without probing the models it would move.
+  */
+ export function demoGatewayTransportSettings(model: string) {
+-  if (model.startsWith("anthropic/") || model.startsWith("google/")) {
++  if (model.startsWith("anthropic/")) {
+     return { resume: false, collectLog: false } as const;
+   }
+   if (model.startsWith("xai/") || model.startsWith("grok/")) {
+@@ -182,27 +193,88 @@ export function demoGatewayOptions(id: string) {
+ }
+ 
+ /**
+- * Vendors absent from workers-ai-provider's slug registry (26 keys, no
++ * Vendors absent from workers-ai-provider's slug registry (22 keys in 4.0.0, no
+  * registration hook), so the plugin delegate throws `Unknown gateway provider`
+  * before any network call. They are still reachable keyless through the plain
+  * binding run path, which resolves slugs against Cloudflare's catalog instead.
+  *
+- * Keep this allowlist narrow. The plain binding path has no provider SDK to
+- * remove unsupported parameters.
++ * Keep this allowlist narrow, and add a vendor only after an offline dispatch
++ * probe shows the registry error: `meta/` and `particle/` were probed on
++ * 2026-11-03 (sweep record in research/audits). The plain binding path has no
++ * provider SDK to remove unsupported parameters, so these models take the same
++ * catalog `reasoning_effort` mapping as `@cf/*` models.
+  */
+-export const DEMO_UNIFIED_RUN_PREFIXES = ["moonshotai/"] as const;
++export const DEMO_UNIFIED_RUN_PREFIXES = ["moonshotai/", "meta/", "particle/"] as const;
+ 
+ export function demoUsesUnifiedRun(model: string): boolean {
+   return DEMO_UNIFIED_RUN_PREFIXES.some((prefix) => model.startsWith(prefix));
+ }
+ 
++/**
++ * Third-party catalog models on the plain binding path need the request format
++ * named. The provider builds an OpenAI chat-completions body, but `/run`
++ * validates a third-party slug against the serving provider's NATIVE schema
++ * unless the call carries `openaiEndpoint`, which `aig-entry` turns into the
++ * run request's `requestFormat` and converts the body. Cloudflare's own
++ * `agents/models/ai-sdk` provider sends exactly this option. Without it,
++ * Responses-only models (`meta/muse-spark-1.3`, probed 2026-11-03) reject the
++ * body with `7003 User Input Error`. workers-ai-provider forwards unknown
++ * settings keys to `binding.run`'s options, so this rides along with the
++ * gateway and header settings. `@cf/*` models are native and do not need it.
++ */
++export const DEMO_UNIFIED_RUN_REQUEST_FORMAT = { openaiEndpoint: "/v1/chat/completions" } as const;
++
++/**
++ * Catalog models whose catalog page lists `Request formats | Responses`. For
++ * these the gateway converts a chat-completions REQUEST, but a `stream: true`
++ * call comes back as the serving provider's native Responses event stream
++ * (`response.created`, `response.output_item.added`, ...), which the
++ * chat-completions parser cannot read: Muse Spark 1.3 answered every turn with
++ * three `[object Object]` tokens and no tool call (2026-11-04, gateway log
++ * `01a1a3cf-4ad7-7418-bc61-d495dfd92820`). A `stream: false` call is converted
++ * correctly, and workers-ai-provider's JSON-reply branch synthesizes the
++ * stream. Keyed on the catalog property, not on the vendor, so chat-format
++ * catalog models keep their live token stream.
++ *
++ * Source: https://developers.cloudflare.com/ai/models/meta/muse-spark-1.3/
++ * ("Request formats" row). Add an id only after reading its catalog page.
++ */
++export const DEMO_RESPONSES_FORMAT_CATALOG_MODELS = ["meta/muse-spark-1.3"] as const;
++
++/**
++ * The plain binding used by the unified-run client. It forwards everything
++ * untouched except `run` for the models above, which it asks for one JSON
++ * reply instead of a stream.
++ */
++export function demoUnifiedRunBinding(binding: Ai): Ai {
++  const jsonReplyModels: readonly string[] = DEMO_RESPONSES_FORMAT_CATALOG_MODELS;
++  return new Proxy(binding, {
++    get(target, key) {
++      if (key === "run") return (...args: Parameters<Ai["run"]>) => {
++        const [model, inputs, options] = args;
++        const wantsJsonReply = jsonReplyModels.includes(model) && inputs && typeof inputs === "object" && "stream" in inputs;
++        return target.run(model, (wantsJsonReply ? { ...inputs, stream: false } : inputs) as never, options);
++      };
++      const value = Reflect.get(target, key, target);
++      return typeof value === "function" ? value.bind(target) : value;
++    }
++  });
++}
++
++/** Models whose request body is built by the catalog run path, not a provider SDK. */
++export function demoUsesCatalogRun(model: string): boolean {
++  return model.startsWith("@") || demoUsesUnifiedRun(model);
++}
++
+ /**
+  * Kimi K3 accepts only `temperature: 1` ("only 1 is allowed"), and the unified
+- * run path has no SDK to normalize that away. Returning undefined lets the
+- * caller omit the field entirely where a model has no opinion.
++ * run path has no SDK to normalize that away. The quirk is Moonshot's, not the
++ * run path's: other registry-unknown vendors keep the demo temperature.
++ * Returning undefined lets the caller omit the field entirely where a model
++ * has no opinion.
+  */
+ export function demoTemperatureFor(model: string): number | undefined {
+-  return demoUsesUnifiedRun(model) ? 1 : DEMO_TEMPERATURE;
++  return model.startsWith("moonshotai/") ? 1 : DEMO_TEMPERATURE;
+ }
+ 
+ export function demoModelSettings(
+@@ -217,14 +289,15 @@ export function demoModelSettings(
+     // evals must measure inference latency. The rate limiter handles abuse.
+     "cf-aig-skip-cache": "true"
+   } as const;
+-  if (model.startsWith("@")) {
++  if (demoUsesCatalogRun(model)) {
+     const effort = demoWorkersAiReasoningEffort(reasoningEffort);
+     // OMIT the key rather than sending `reasoning_effort: null`. Providers
+     // disagree about an explicit null: Workers AI's own models ignore it, but
+     // GLM rejects the whole request with `8006: Invalid data for
+     // reasoning_effort - reason value must be a string`. "No preference" is
+     // absence, not null, and absence is what every provider accepts.
+-    return effort === null ? ({ extraHeaders } as const) : ({ extraHeaders, reasoning_effort: effort } as const);
++    const run = demoUsesUnifiedRun(model) ? { extraHeaders, ...DEMO_UNIFIED_RUN_REQUEST_FORMAT } : { extraHeaders };
++    return effort === null ? run : { ...run, reasoning_effort: effort };
+   }
+   return {
+     ...demoGatewayTransportSettings(model),
+diff --git a/test/demo-gauntlet-cli.test.ts b/test/demo-gauntlet-cli.test.ts
+index ba671bcb..0d75b7f3 100644
+--- a/test/demo-gauntlet-cli.test.ts
++++ b/test/demo-gauntlet-cli.test.ts
+@@ -90,6 +90,44 @@ describe("demo model gauntlet CLI safety", () => {
+     );
+   });
+ 
++  it("accepts one positive --max-budget-usd and reports it in the launch plan", () => {
++    const invocation = validateGauntletInvocation(
++      parseGauntletArgs(["--models", "model-a", "--prompts", "rpc-simulate", "--max-budget-usd", "2.5"])
++    );
++    expect(invocation.maxBudgetUsd).toBe(2.5);
++    expect(formatLaunchPlan(buildLaunchPlan(invocation))).toContain("budget: USD 2.5 through loopback accounting");
++
++    const unbudgeted = validateGauntletInvocation(parseGauntletArgs(["--models", "model-a", "--prompts", "rpc-simulate"]));
++    expect(unbudgeted.maxBudgetUsd).toBeNull();
++    expect(formatLaunchPlan(buildLaunchPlan(unbudgeted))).toContain("budget: none (no cost accounting; read the Gateway logs)");
++
++    for (const value of ["0", "abc", "1e3", "$2"]) {
++      expect(() => validateGauntletInvocation(parseGauntletArgs(["--max-budget-usd", value]))).toThrow(
++        "--max-budget-usd must be a positive dollar amount."
++      );
++    }
++    expect(() => parseGauntletArgs(["--max-budget-usd", "1", "--max-budget-usd", "2"])).toThrow(
++      "--max-budget-usd may be given once."
++    );
++  });
++
++  it("sums reported turn costs and counts unknown costs without treating them as zero", () => {
++    const budget = gauntlet.createGauntletBudget(1);
++    expect(budget.remainingUsd()).toBe(1);
++    budget.record({ costUsd: 0.25, models: ["openai/x"] });
++    budget.record({ costUsd: null, error: "missing-answer-cost" });
++    budget.record(null);
++    expect(budget.remainingUsd()).toBe(0.75);
++    expect(budget.snapshot()).toEqual({ authorizedUsd: 1, reportedUsd: 0.25, reportedTurns: 1, unknownCostTurns: 2 });
++    budget.record({ costUsd: 0.8 });
++    expect(budget.remainingUsd()).toBeLessThan(0);
++
++    const unbudgeted = gauntlet.createGauntletBudget(null);
++    unbudgeted.record({ costUsd: 5 });
++    expect(unbudgeted.remainingUsd()).toBeNull();
++    expect(unbudgeted.snapshot().reportedUsd).toBe(0);
++  });
++
+   it("computes launch-plan turns across the full selected matrix", () => {
+     const invocation = validateGauntletInvocation(
+       parseGauntletArgs([
+diff --git a/test/demo-model-config.test.ts b/test/demo-model-config.test.ts
+index 9c60bd70..66651356 100644
+--- a/test/demo-model-config.test.ts
++++ b/test/demo-model-config.test.ts
+@@ -15,6 +15,7 @@ import {
+   DEMO_PRIMARY_MODEL,
+   DEMO_REASONING_EFFORT,
+   DEMO_REASONING_EFFORT_OVERRIDE_VAR,
++  DEMO_RESPONSES_FORMAT_CATALOG_MODELS,
+   DEMO_TEMPERATURE,
+   demoAnthropicProviderOptions,
+   demoEffectiveOpenAiApiMode,
+@@ -22,8 +23,10 @@ import {
+   demoOpenAiApiModeFromOverride,
+   demoOpenAiProviderOptions,
+   demoGatewayTransportSettings,
++  demoUnifiedRunBinding,
+   demoModelSettings,
+   demoTemperatureFor,
++  demoUsesCatalogRun,
+   demoUsesUnifiedRun,
+   demoReasoningEffortFromOverride,
+   demoReasoningEffortOverride,
+@@ -121,14 +124,22 @@ describe("demo model config", () => {
+   });
+ 
+   it("builds OpenAI-wire reasoning options for OpenAI and provider-native Grok slugs", () => {
++    // `store: false` is the Zero Data Retention wire: OpenAI never persists
++    // response items for this gateway, so a stored-item replay 404s unless the
++    // SDK requests `reasoning.encrypted_content`, which it does only when
++    // store is false (gpt-6-astra at low, 2026-11-04).
+     expect(demoOpenAiProviderOptions("openai/gpt-5.4", "low")).toEqual({
+       providerOptions: {
+         openai: {
+-          reasoningEffort: "low"
++          reasoningEffort: "low",
++          store: false
+         }
+       }
+     });
+-    expect(demoOpenAiProviderOptions("openai/gpt-5.4", undefined)).toEqual({});
++    expect(demoOpenAiProviderOptions("openai/gpt-5.4", undefined)).toEqual({
++      providerOptions: { openai: { store: false } }
++    });
++    // The xAI chat wire has no store field.
+     expect(demoOpenAiProviderOptions("xai/grok-4.6", "medium")).toEqual({
+       providerOptions: {
+         openai: {
+@@ -142,11 +153,21 @@ describe("demo model config", () => {
+   it("configures Claude 5 reasoning without using the unified reasoning field", () => {
+     // Never `thinking: { type: "disabled" }` — Opus 5 400s on it above high
+     // effort and the SDK does not guard Fable 5 or Sonnet 5 at all.
++    // Every 5.x id in both spellings: the Cloudflare catalog dot
++    // (`claude-sonnet-5.5`) and the Anthropic dash (`claude-sonnet-5-5`). Haiku
++    // 5.5 is in: Anthropic's effort reference lists all five effort levels and
++    // adaptive thinking for it.
+     for (const model of [
+       "anthropic/claude-opus-5",
+       "anthropic/claude-sonnet-5",
+       "anthropic/claude-fable-5",
+-      "anthropic/claude-sonnet-5-20260101"
++      "anthropic/claude-sonnet-5-20260101",
++      "anthropic/claude-sonnet-5.5",
++      "anthropic/claude-sonnet-5-5",
++      "anthropic/claude-opus-5.5",
++      "anthropic/claude-fable-5.1",
++      "anthropic/claude-haiku-5.5",
++      "anthropic/claude-haiku-5-5"
+     ]) {
+       expect(demoAnthropicProviderOptions(model, "none")).toEqual({
+         providerOptions: { anthropic: { thinking: { type: "adaptive" }, effort: "low" } }
+@@ -162,6 +183,10 @@ describe("demo model config", () => {
+     // Dashes, never dots — a dotted Anthropic id authenticates and returns
+     // "model … was not found", which reads like a provider outage.
+     expect(demoAnthropicProviderOptions("anthropic/claude-haiku-4-5", "none")).toEqual({});
++    expect(demoAnthropicProviderOptions("anthropic/claude-sonnet-4-6", "none")).toEqual({});
++    expect(demoAnthropicProviderOptions("anthropic/claude-sonnet-4.6", "none")).toEqual({});
++    // A major version that merely starts with 5 is not the 5 family.
++    expect(demoAnthropicProviderOptions("anthropic/claude-sonnet-50", "none")).toEqual({});
+     expect(demoAnthropicProviderOptions("openai/gpt-5.6-terra", "none")).toEqual({});
+   });
+ 
+@@ -183,27 +208,93 @@ describe("demo model config", () => {
+       resume: false,
+       collectLog: false
+     });
+-    // Anthropic and Google MUST omit `transport`. That selects the binding run
+-    // path, whose Unified Billing catalog is wider than provider passthrough's —
+-    // passthrough strips auth headers and does not carry claude-fable-5, so it
+-    // was reaching api.anthropic.com with no credential and 401ing. Asserting
+-    // absence, not a value, because absence is the whole fix.
+-    for (const model of ["anthropic/claude-fable-5", "anthropic/claude-sonnet-5", "google/gemini-3.6-flash"]) {
++    // Anthropic MUST omit `transport`. That selects the binding run path, whose
++    // Unified Billing catalog is wider than provider passthrough's — passthrough
++    // strips auth headers and does not carry claude-fable-5, so it was reaching
++    // api.anthropic.com with no credential and 401ing. Asserting absence, not a
++    // value, because absence is the whole fix.
++    for (const model of ["anthropic/claude-fable-5", "anthropic/claude-sonnet-5"]) {
+       const settings = demoGatewayTransportSettings(model);
+       expect("transport" in settings, model).toBe(false);
+       expect(settings).toEqual({ resume: false, collectLog: false });
+     }
++    // Google is the opposite: the run path rejects the tool-result replay
++    // (`7003 User Input Error`, probed 2026-11-03), passthrough completes it.
++    expect(demoGatewayTransportSettings("google/gemini-3.8-flash")).toEqual({
++      transport: "gateway",
++      resume: false,
++      collectLog: false
++    });
+   });
+ 
+   it("routes registry-unknown vendors through the plain binding, with their temperature quirk", () => {
+     // workers-ai-provider has no `moonshotai` entry, so the plugin delegate
+     // throws before any network call. The binding run path resolves it instead.
+     expect(demoUsesUnifiedRun("moonshotai/kimi-k3")).toBe(true);
++    // Probed offline on 2026-11-03: both throw `Unknown gateway provider` on the plugin path.
++    expect(demoUsesUnifiedRun("meta/muse-spark-1.3")).toBe(true);
++    expect(demoUsesUnifiedRun("particle/particle-1")).toBe(true);
+     expect(demoUsesUnifiedRun("anthropic/claude-fable-5")).toBe(false);
++    expect(demoUsesUnifiedRun("deepseek/deepseek-v4-pro")).toBe(false);
+     expect(demoUsesUnifiedRun("@cf/zai-org/glm-5.2")).toBe(false);
+     // That path has no SDK to normalize parameters, and K3 accepts only 1.
++    // The quirk is Moonshot's: other registry-unknown vendors keep the demo value.
+     expect(demoTemperatureFor("moonshotai/kimi-k3")).toBe(1);
++    expect(demoTemperatureFor("meta/muse-spark-1.3")).toBe(DEMO_TEMPERATURE);
++    expect(demoTemperatureFor("particle/particle-1")).toBe(DEMO_TEMPERATURE);
+     expect(demoTemperatureFor("openai/gpt-5.6-terra")).toBe(DEMO_TEMPERATURE);
++    // Registry-unknown vendors take the catalog settings shape: headers plus the
++    // mapped reasoning_effort, never a gateway transport.
++    expect(demoUsesCatalogRun("meta/muse-spark-1.3")).toBe(true);
++    expect(demoUsesCatalogRun("@cf/zai-org/glm-5.3")).toBe(true);
++    expect(demoUsesCatalogRun("openai/gpt-5.6-terra")).toBe(false);
++    // Third-party catalog slugs name the request format: `/run` otherwise
++    // validates the chat body against the serving provider's native schema
++    // (Muse Spark 1.3 is Responses-only and answered `7003`, probed 2026-11-03).
++    expect(demoModelSettings("particle/particle-1", "a", "none")).toEqual({
++      extraHeaders: {
++        "x-session-affinity": "a",
++        "cf-aig-collect-log-payload": "false",
++        "cf-aig-skip-cache": "true"
++      },
++      openaiEndpoint: "/v1/chat/completions"
++    });
++    expect(demoModelSettings("meta/muse-spark-open", "a", "low")).toMatchObject({
++      reasoning_effort: "low",
++      openaiEndpoint: "/v1/chat/completions"
++    });
++    expect("transport" in demoModelSettings("meta/muse-spark-open", "a", "low")).toBe(false);
++    // Native Workers AI models already speak the catalog's own schema.
++    expect("openaiEndpoint" in demoModelSettings("@cf/zai-org/glm-5.3", "a", "low")).toBe(false);
++    expect("openaiEndpoint" in demoModelSettings("openai/gpt-5.6-terra", "a", "none")).toBe(false);
++  });
++
++  it("requests a JSON reply only for catalog models whose request format is Responses", async () => {
++    // A stream:true chat request to a Responses-format catalog model comes
++    // back as the provider's native Responses event stream, which the chat
++    // parser cannot read (Muse Spark 1.3, 2026-11-04: three `[object Object]`
++    // tokens, zero tool calls). A JSON reply is converted correctly, and the
++    // provider's own JSON-reply branch synthesizes the stream. Chat-format
++    // catalog models keep their live token stream.
++    expect([...DEMO_RESPONSES_FORMAT_CATALOG_MODELS]).toEqual(["meta/muse-spark-1.3"]);
++    const calls: Array<{ model: string; inputs: Record<string, unknown>; options: unknown }> = [];
++    const fake = {
++      run: async (model: string, inputs: Record<string, unknown>, options?: unknown) => {
++        calls.push({ model, inputs, options });
++        return { choices: [] };
++      },
++      gateway: (id: string) => ({ id })
++    };
++    const wrapped = demoUnifiedRunBinding(fake as never) as unknown as typeof fake;
++    await wrapped.run("meta/muse-spark-1.3", { messages: [], stream: true }, { openaiEndpoint: "/v1/chat/completions" });
++    await wrapped.run("particle/particle-1", { messages: [], stream: true }, { openaiEndpoint: "/v1/chat/completions" });
++    await wrapped.run("@cf/zai-org/glm-5.3", { messages: [], stream: true }, {});
++    expect(calls[0]?.inputs).toEqual({ messages: [], stream: false });
++    expect(calls[0]?.options).toEqual({ openaiEndpoint: "/v1/chat/completions" });
++    expect(calls[1]?.inputs).toEqual({ messages: [], stream: true });
++    expect(calls[2]?.inputs).toEqual({ messages: [], stream: true });
++    // Everything else on the binding passes through untouched.
++    expect(wrapped.gateway("g")).toEqual({ id: "g" });
+   });
+ 
+   it("defaults OpenAI API mode to responses unless chat is explicitly requested", () => {
+diff --git a/test/judge-cli-adapters.test.mjs b/test/judge-cli-adapters.test.mjs
+new file mode 100644
+index 00000000..0479ae26
+--- /dev/null
++++ b/test/judge-cli-adapters.test.mjs
+@@ -0,0 +1,130 @@
++import { mkdtemp, rm, writeFile, chmod } from "node:fs/promises";
++import os from "node:os";
++import path from "node:path";
++import { afterEach, describe, expect, it } from "vitest";
++import {
++  CODEX_JUDGE_EFFORT,
++  JUDGE_CLI_IDS,
++  JUDGE_RUBRIC,
++  SUBSCRIPTION_NO_USD_FIGURE,
++  buildCodexJudgeArgs,
++  buildJudgeArgs,
++  judgeCase,
++  parseCodexJudgeOutput
++} from "../eval/qa/judge.mjs";
++
++const scratch = [];
++afterEach(async () => {
++  await Promise.all(scratch.splice(0).map((dir) => rm(dir, { recursive: true, force: true })));
++});
++
++/** A stand-in judge executable that prints fixed stdout and exits with a status. */
++async function stubCli(stdout, { status = 0 } = {}) {
++  const dir = await mkdtemp(path.join(os.tmpdir(), "judge-cli-stub-"));
++  scratch.push(dir);
++  const file = path.join(dir, "stub.sh");
++  const out = path.join(dir, "stdout.txt");
++  await writeFile(out, stdout);
++  await writeFile(file, `#!/bin/sh\ncat >/dev/null\ncat ${JSON.stringify(out)}\nexit ${status}\n`);
++  await chmod(file, 0o755);
++  return file;
++}
++
++const CASE = {
++  id: "selftest-cli-adapter",
++  question: "Which command builds a Soroban contract to Wasm?",
++  golden: { answer: "`stellar contract build`.", keyFacts: ["stellar contract build"], avoid: [], notes: "" },
++  tags: {},
++  candidateAnswer: "Use `stellar contract build`.",
++  transcript: []
++};
++
++const VERDICT = {
++  score: "correct",
++  coreAnswer: "correct",
++  missingFacts: [],
++  wrongClaims: [],
++  avoidMatches: [],
++  rationale: "Names the build command."
++};
++
++describe("judge CLI adapters", () => {
++  it("exposes exactly two judge CLIs and keeps Claude as the default contract", () => {
++    expect([...JUDGE_CLI_IDS]).toEqual(["claude", "codex"]);
++    expect(buildJudgeArgs({ model: "claude-sonnet-5" })[0]).toBe("-p");
++  });
++
++  it("builds read-only, approval-free, config-free Codex arguments with the prompt on stdin", () => {
++    const args = buildCodexJudgeArgs({ model: "gpt-6.1-sol" });
++    expect(args.slice(0, 3)).toEqual(["-a", "never", "exec"]);
++    expect(args).toContain("read-only");
++    expect(args).toContain("--ephemeral");
++    expect(args).toContain("--ignore-user-config");
++    expect(args).toContain("--ignore-rules");
++    expect(args).toContain("--json");
++    expect(args.at(-1)).toBe("-");
++    expect(args[args.indexOf("-m") + 1]).toBe("gpt-6.1-sol");
++    expect(args[args.indexOf("-c") + 1]).toBe(`model_reasoning_effort="${CODEX_JUDGE_EFFORT}"`);
++    expect(args.join(" ")).not.toMatch(/bypass|approve-for-me|workspace-write|full-access/);
++    expect(buildCodexJudgeArgs({ model: "gpt-6.1-sol", effort: "medium" })).toContain('model_reasoning_effort="medium"');
++    expect(() => buildCodexJudgeArgs({ model: "gpt-6.1-sol", effort: "max" })).toThrow(/effort must be one of/);
++    expect(() => buildCodexJudgeArgs({})).toThrow(/requires a model id/);
++  });
++
++  it("reads the last agent message and the usage out of Codex JSONL", () => {
++    const stdout = [
++      '{"type":"thread.started","thread_id":"t"}',
++      '{"type":"turn.started"}',
++      "not json",
++      '{"type":"item.completed","item":{"id":"i0","type":"reasoning","text":"thinking"}}',
++      '{"type":"item.completed","item":{"id":"i1","type":"agent_message","text":"draft"}}',
++      '{"type":"item.completed","item":{"id":"i2","type":"agent_message","text":"{\\"score\\":\\"partial\\"}"}}',
++      '{"type":"turn.completed","usage":{"input_tokens":10,"output_tokens":2}}'
++    ].join("\n");
++    expect(parseCodexJudgeOutput(stdout)).toEqual({
++      resultText: '{"score":"partial"}',
++      usage: { input_tokens: 10, output_tokens: 2 },
++      error: null
++    });
++    expect(parseCodexJudgeOutput("")).toEqual({ resultText: null, usage: null, error: null });
++    expect(parseCodexJudgeOutput('{"type":"error","message":"rate limited"}').error).toBe("rate limited");
++  });
++
++  it("grades through the Codex adapter with a zero, labeled cost and recorded usage", async () => {
++    const stdout = [
++      '{"type":"item.completed","item":{"type":"agent_message","text":' + JSON.stringify(JSON.stringify(VERDICT)) + "}}",
++      '{"type":"turn.completed","usage":{"input_tokens":12,"output_tokens":3}}'
++    ].join("\n");
++    const command = await stubCli(stdout);
++    const verdict = await judgeCase(CASE, { cli: "codex", command, model: "gpt-6.1-sol" });
++    expect(verdict.score).toBe("correct");
++    expect(verdict.costUsd).toBe(0);
++    expect(verdict.costBasis).toBe(SUBSCRIPTION_NO_USD_FIGURE);
++    expect(verdict.usage).toEqual({ input_tokens: 12, output_tokens: 3 });
++    expect(verdict.rubric).toBe(JUDGE_RUBRIC);
++  });
++
++  it("labels a Codex CLI failure and an unparseable Codex verdict without inventing a cost", async () => {
++    const failing = await stubCli("", { status: 2 });
++    const failure = await judgeCase(CASE, { cli: "codex", command: failing, model: "gpt-6.1-sol" });
++    expect(failure.score).toBe("error");
++    expect(failure.failureClass).toBe("cli");
++    expect(failure.costUsd).toBe(0);
++    expect(failure.costBasis).toBe(SUBSCRIPTION_NO_USD_FIGURE);
++
++    const prose = await stubCli('{"type":"item.completed","item":{"type":"agent_message","text":"I cannot grade this."}}');
++    const unparseable = await judgeCase(CASE, { cli: "codex", command: prose, model: "gpt-6.1-sol" });
++    expect(unparseable.score).toBe("error");
++    expect(unparseable.failureClass).toBe("parse");
++    expect(unparseable.rationale).toContain("I cannot grade this.");
++  });
++
++  it("keeps the Claude adapter's envelope cost and rejects unknown CLIs", async () => {
++    const command = await stubCli(JSON.stringify({ result: JSON.stringify(VERDICT), total_cost_usd: 0.0123 }));
++    const verdict = await judgeCase(CASE, { command, model: "claude-sonnet-5" });
++    expect(verdict.score).toBe("correct");
++    expect(verdict.costUsd).toBe(0.0123);
++    expect(verdict.costBasis).toBeUndefined();
++    await expect(judgeCase(CASE, { cli: "gemini", command })).rejects.toThrow(/unknown judge cli gemini/);
++  });
++});
+diff --git a/test/re-judge.test.ts b/test/re-judge.test.ts
+index 427611b8..ea5d65a2 100644
+--- a/test/re-judge.test.ts
++++ b/test/re-judge.test.ts
+@@ -290,23 +290,23 @@ describe("re-judge saved-answer selection", () => {
+     const { parseArgs } = await loadRejudgeIdentityHelpers();
+     const base = ["source.json", "--ids", "one", "--max-budget-usd", "1"];
+     const flags = [
+-      ["--claude-path", "/opt/claude"],
++      ["--judge-cli-path", "/opt/claude"],
+       ["--expect-agent-binary-sha256", "a".repeat(64)],
+       ["--expect-agent-environment-sha256", "b".repeat(64)]
+     ];
+     expect(parseArgs([...base, ...flags.flat()])).toMatchObject({
+-      claudePath: "/opt/claude",
++      judgeCliPath: "/opt/claude",
+       expectedAgentBinarySha256: "a".repeat(64),
+       expectedAgentEnvironmentSha256: "b".repeat(64)
+     });
+     for (const omittedIndex of flags.keys()) {
+       const supplied = flags.filter((_flag, index) => index !== omittedIndex).flat();
+-      expect(() => parseArgs([...base, ...supplied])).toThrow(/requires --claude-path/);
++      expect(() => parseArgs([...base, ...supplied])).toThrow(/requires --judge-cli-path/);
+     }
+-    expect(() => parseArgs([...base, "--claude-path=/opt/claude"])).toThrow(/unknown flag/);
++    expect(() => parseArgs([...base, "--judge-cli-path=/opt/claude"])).toThrow(/unknown flag/);
+     expect(() => parseArgs([
+       ...base,
+-      "--claude-path", "/opt/claude",
++      "--judge-cli-path", "/opt/claude",
+       "--expect-agent-binary-sha256", "A".repeat(64),
+       "--expect-agent-environment-sha256", "b".repeat(64)
+     ])).toThrow(/64-character lowercase SHA-256/);
+@@ -316,11 +316,11 @@ describe("re-judge saved-answer selection", () => {
+     const { parseArgs } = await loadRejudgeIdentityHelpers();
+     expect(parseArgs(["source.json", "--ids", "one", "--dry-run"])).toMatchObject({
+       dryRun: true,
+-      claudePath: undefined
++      judgeCliPath: undefined
+     });
+     expect(() => parseArgs([
+-      "source.json", "--ids", "one", "--dry-run", "--claude-path", "/opt/claude"
+-    ])).toThrow(/requires --claude-path/);
++      "source.json", "--ids", "one", "--dry-run", "--judge-cli-path", "/opt/claude"
++    ])).toThrow(/requires --judge-cli-path/);
+   });
+ 
+   it("attests the paid Claude binary and environment and rejects each mismatch", async () => {
+@@ -333,7 +333,7 @@ describe("re-judge saved-answer selection", () => {
+     };
+     const environment = { sha256: "b".repeat(64) };
+     const pins = {
+-      claudePath: "/opt/claude",
++      judgeCliPath: "/opt/claude",
+       expectedAgentBinarySha256: binary.sha256,
+       expectedAgentEnvironmentSha256: environment.sha256
+     };
+@@ -1105,7 +1105,7 @@ describe("re-judge saved-answer selection", () => {
+       // reach the paid judge.
+       for (const extra of [["--dry-run"], [
+         "--max-budget-usd", "1",
+-        "--claude-path", "claude",
++        "--judge-cli-path", "claude",
+         "--expect-agent-binary-sha256", "a".repeat(64),
+         "--expect-agent-environment-sha256", "b".repeat(64)
+       ]]) {
+diff --git a/test/smoke/demo-openai-tool-request.test.ts b/test/smoke/demo-openai-tool-request.test.ts
+index a196a45e..09ed1d0b 100644
+--- a/test/smoke/demo-openai-tool-request.test.ts
++++ b/test/smoke/demo-openai-tool-request.test.ts
+@@ -180,18 +180,23 @@ describe("Playground tools on the OpenAI Responses wire", () => {
+       temperature: 0.1,
+       max_output_tokens: DEMO_CAPS.maxOutputTokens,
+       reasoning: { effort: "none" },
+-      stream: true
++      stream: true,
++      // Zero Data Retention wire (reviewed 2026-11-04): nothing is stored, and
++      // reasoning items travel as encrypted content so a later step can replay
++      // them instead of referencing an id OpenAI never kept.
++      store: false,
++      include: ["reasoning.encrypted_content"]
+     };
+     // Exact top-level keys: a new provider field fails here until reviewed.
+     expect(Object.keys(first).sort()).toEqual(
+-      ["input", "max_output_tokens", "model", "reasoning", "stream", "temperature", "tool_choice", "tools"]
++      ["include", "input", "max_output_tokens", "model", "reasoning", "store", "stream", "temperature", "tool_choice", "tools"]
+     );
+     expect(first).toMatchObject({ ...settings, tool_choice: "auto" });
+     expect(first.tools?.map((entry) => entry.name)).toEqual(["search", "execute"]);
+ 
+     // The tools-disabled final step sends no tools and no tool choice.
+     expect(Object.keys(final).sort()).toEqual(
+-      ["input", "max_output_tokens", "model", "reasoning", "stream", "temperature"]
++      ["include", "input", "max_output_tokens", "model", "reasoning", "store", "stream", "temperature"]
+     );
+     expect(final).toMatchObject(settings);
+ 
+-- 
+2.54.0 (Apple Git-157)
+
+
+From 6b4512216877195c5a64da5bb12f5425854aa172 Mon Sep 17 00:00:00 2001
+From: kalepail <hi@tyvdh.com>
+Date: Tue, 3 Nov 2026 20:27:51 -0500
+Subject: [PATCH 2/5] ledger: record the pre-stage-2 checks and the stage-2
+ generation commit
+
+Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
+---
+ .agents/rounds/2026-11-03-playground-model-sweep.md | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/.agents/rounds/2026-11-03-playground-model-sweep.md b/.agents/rounds/2026-11-03-playground-model-sweep.md
+index a709432a..40c3b363 100644
+--- a/.agents/rounds/2026-11-03-playground-model-sweep.md
++++ b/.agents/rounds/2026-11-03-playground-model-sweep.md
+@@ -339,6 +339,15 @@ Append-only while the round runs.
+   about USD 32 in all, under the USD 70 stage cap. Order cheapest first; each model's cap is
+   1.6x its estimate; the chain reads the window before each model and waits while
+   window + cap > 85 (the earlier Grok lane ages out between 23:05Z and 08:17Z).
++- 2026-11-04T01:3xZ — Pre-stage-2 checks asked by t16. (a) Item 5 result: none of the excluded
++  `gpt-6-luna` or `gpt-6-sol` stage-1 failures is an `rs_` 404 (luna: one empty-hit `search`
++  on `zk-repos`, one `Cannot access 'scout' before initialization` script error on
++  `soroswap-builder`; sol: six `#<Promise> could not be cloned` script errors). No re-gate
++  needed. (b) The `store: false` + JSON-reply code is committed as `59a8a26d` with the ledger,
++  audit, and gauntlet summaries; the working tree was clean, and all five gates ran green on
++  that commit (typecheck, `npm test` 3139 passed, smoke 127 passed, build, eval:selftest). The
++  stage-2 server generation is the tree at the commit that records this entry; each run's
++  artifact carries the generation and this ledger names the commit.
+ 
+ ## Outcome
+ 
+-- 
+2.54.0 (Apple Git-157)
+
+
+From a8c0b86b0625d9041b7b9d4513bb7a7f9948a941 Mon Sep 17 00:00:00 2001
+From: kalepail <hi@tyvdh.com>
+Date: Wed, 4 Nov 2026 02:37:39 -0500
+Subject: [PATCH 3/5] sweep: record stage 2 results, hand review, Judge B
+ agreement, and finalists
+
+Stage 2 ran 11 models over the 30 paired cases (USD 32.42, window rule held).
+Grok-4.6 and claude-sonnet-5 are excluded by the tool-failure rule; seven
+finalists advance. Judge B re-graded the baseline and the three models at the
+cutoff; the last slot is judge-sensitive and is flagged to the coordinator.
+
+Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
+---
+ .../2026-11-03-playground-model-sweep.md      | 59 +++++++++++++++++++
+ .../2026-11-03-playground-model-sweep.md      | 44 +++++++++++++-
+ 2 files changed, 102 insertions(+), 1 deletion(-)
+
+diff --git a/.agents/rounds/2026-11-03-playground-model-sweep.md b/.agents/rounds/2026-11-03-playground-model-sweep.md
+index 40c3b363..01e3d226 100644
+--- a/.agents/rounds/2026-11-03-playground-model-sweep.md
++++ b/.agents/rounds/2026-11-03-playground-model-sweep.md
+@@ -349,6 +349,65 @@ Append-only while the round runs.
+   stage-2 server generation is the tree at the commit that records this entry; each run's
+   artifact carries the generation and this ledger names the commit.
+ 
++- 2026-11-04T06:58Z — Stage 2 complete (run id `2026-11-03-playground-model-sweep-stage2`,
++  generation = commit `6b451221`, 33 result files, 11 models x 30 cases, Judge A inline).
++  Harness answer spend USD 32.42 (luna 0.158, haiku 0.204, 6.1-terra 1.327, 6.1-sol 1.781,
++  terra 1.948, sonnet-5.5 2.039, grok-4.6 4.140, sonnet-5 3.582, 5.6-sol 4.041, opus 4.631,
++  astra 8.571) against the USD 70 stage cap. Gateway logs reconcile to the cent per model except
++  `gpt-6-astra` (gateway 8.80 vs harness 8.57; the 0.23 difference is the stage-1c astra rerun
++  before 01:28Z, so the stage-2 gateway total is USD 32.42). Round answer spend so far: stage 1
++  29.10 + stage 2 32.42 = USD 61.52 of 250.
++  - Window rule held. Two waits: before `claude-opus-5.5` from 02:45Z (window 83.04 + cap 8.64 >
++    85) to 04:51Z (window 75.50), and before `gpt-6-astra` from 06:18Z to 06:49Z (window 67.60,
++    cap 16.00). The window never passed 85 (peak 83.04 at 02:45Z, before the opus wait).
++  - Reliability: `xai/grok-4.6` hit the route's 120 s turn deadline on 3 of 30 turns
++    (`q-eco-nft-marketplace-whitespace`, `q-sor-confidential-tokens`,
++    `q-ti-bindings-to-nextjs-integration`; p50 65 s, p90 119 s) — **excluded** (more than one
++    tool failure). `anthropic/claude-sonnet-5` had 7 execute failures, all model-authored script
++    syntax errors (a stray trailing `}` or an `async () => {}` wrapper) — **excluded**. Baseline
++    `gpt-5.6-terra` had 2 execute errors (`q-gap-lumen-exact-document-empty`,
++    `q-gap-scout-changelog-envelope`) and one Judge A error (`q-jutsu-cash-crypto-ramps`);
++    `haiku-5.5`, `sonnet-5.5`, and `luna` one execute failure each; the other five models none.
++  - Hand review (every verdict that differs from the baseline, all 11 models; notes in
++    `tmp/sweep/stage2-hand-review.md`, gitignored). Judge A false positives corrected by transcript
++    evidence: baseline `q-ti-vocab-project-tags-live` wrong → partial (the `ai` slug is in the live
++    tool output; Judge B agrees: partial), `claude-sonnet-5` same case wrong → partial
++    (`payments` slug present), `gpt-6.1-sol` and `claude-sonnet-5.5` `q-edge-1xlm-activation-fee`
++    wrong → partial (no wrong claim, no avoid hit, one missing item). Root cause for the vocab
++    case: the judge evidence pack truncated the 85-row tag list to 82 rows, so the judge could not
++    see the slug — a candidate `eval/qa` finding (evidence-pack row cap). Judge rationale error that
++    does not change a grade: grok `q-sor-contract-trustlines-c-address` ("Protocol 23 / Whisk" is
++    real). Baseline `q-jutsu-cash-crypto-ramps`: Judge A errored; a Judge A re-judge
++    (`eval/qa/results/2026-11-04T07-00-43-rejudge.json`) said wrong on an evidence-reading error
++    (it read `matchingRampPartners=43` as the ramp count; the field is the partner-directory size,
++    and six other models with the same "8 ramp partners, dated" content got partial or correct);
++    hand review partial; Judge B partial (`…07-03-45-rejudge.json`). Recorded as partial.
++  - Judge B (Codex `gpt-6.1-sol` high, `eval/qa/re-judge.mjs --judge-cli codex`) ran over the
++    baseline, the three models within one rank of the cutoff (`haiku-5.5`, `gpt-6-astra`,
++    `sonnet-5.5`), and the two disputed rows. The re-judge tool refuses a non-promotable source
++    file, so the baseline's shard-2 file (one judge error made `budget.status` incomplete) was
++    copied to `tmp/sweep/rejudge-input/terra-shard2-judge-input.json` with only `budget.status`,
++    `incompleteCaseIds`, and `nonPromotable` patched and a `meta.rejudgeInputNote`; answers and
++    transcripts untouched. Judge B results (rows, A/B agreement, A score vs B score; re-judge files `eval/qa/results/2026-11-04T07-0[1-3]*`, `…07-06-38`, `…07-09-27` to `…07-31-54`, `…07-36-00`, `…07-36-17`): baseline 30 rows, 20 agree, A 17 vs B 17.5; `haiku-5.5` 30, 24 agree, A 17 vs B 15; `gpt-6-astra` 30, 25 agree, A 17 vs B 17.5; `sonnet-5.5` 30, 22 agree, A 16.5 vs B 15.5. Two-step flips: baseline and astra `q-edge-1xlm-activation-fee` correct → wrong, and `gpt-6.1-sol` on the same case wrong → wrong, each with an empty `wrongClaims` and no fired avoid (the rubric reserves wrong for an incorrect core answer, fabrication, or a fired avoid; the golden's verification step is a key fact, not an avoid), and astra `q-soroban-storage-migration` wrong → correct. Judge B agrees with the hand review on `q-ti-vocab-project-tags-live` for the baseline and `claude-sonnet-5` (partial) and on baseline `q-jutsu-cash-crypto-ramps` (partial). The 1xlm case is judge-unstable under both judges; the hand-review partial stands for `gpt-6.1-sol` and `claude-sonnet-5.5`. Judge A remains the stage-2 grade of record (JUDGE.md); under Judge B alone `claude-sonnet-5.5` (15.5) would edge `claude-haiku-5.5` (15) for the last finalist slot, so the cut is judge-sensitive and is flagged to t16 with the option of an eighth finalist (about USD 14 more).
++  - Adjusted stage-2 scores (correct + 0.5 x partial, after the hand-review corrections):
++    `gpt-6.1-terra` 18.5 (1 wrong), `gpt-6.1-sol` 18.5 (0 wrong), `gpt-5.6-sol` 18.5 (5 wrong),
++    `gpt-5.6-terra` 18 (3 wrong), `claude-haiku-5.5` 17 (2 wrong), `gpt-6-astra` 17 (3 wrong),
++    `claude-sonnet-5.5` 17 (4 wrong), `claude-opus-5.5` 16.5 (4 wrong), `gpt-5.6-luna` 16
++    (5 wrong), `claude-sonnet-5` 16 (6 wrong, excluded), `grok-4.6` 19.5 (excluded).
++  - Finalists (baseline + shipped fallback + top 5 by adjusted score, ties broken by fewer wrong):
++    `gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-6.1-sol`, `gpt-6.1-terra`, `gpt-5.6-sol`,
++    `claude-haiku-5.5`, `gpt-6-astra`. `claude-sonnet-5.5` misses on the tie (4 wrong vs 2 and 3).
++  - Stage-3 plan: the 100 ids of `tmp/sweep/stage3-selection.json` (seed
++    `2026-11-03-sweep-finals`, disjoint from stage 2) plus `q-n3-cross-thread-memory-exfiltration`
++    as an explicit extra case, 2 repeats per finalist, both repeats of a model under one
++    generation, four concurrent 25-case shards plus the one-case shard per repeat, Judge A inline,
++    Judge B on every row afterwards. Answer-spend estimate from the stage-2 USD per turn x 202
++    turns: luna 1.1, haiku 1.4, 6.1-terra 8.9, 6.1-sol 12.0, terra 13.1, 5.6-sol 27.2, astra
++    57.7 — about USD 121 against the USD 160 stage cap; round total about USD 183 of 250. Order
++    cheapest first; each repeat's cap is 1.6 x its estimate; the chain waits while window + cap >
++    85, so astra's two repeats (cap 46 each) need a window at or below 39 and will fall into
++    separate 24 h windows.
++
+ ## Outcome
+ 
+ (open)
+diff --git a/research/audits/2026-11-03-playground-model-sweep.md b/research/audits/2026-11-03-playground-model-sweep.md
+index b07c4f3f..189d3b6a 100644
+--- a/research/audits/2026-11-03-playground-model-sweep.md
++++ b/research/audits/2026-11-03-playground-model-sweep.md
+@@ -163,7 +163,49 @@ advances on 16 clean cells. Eleven models advance to stage 2.
+ 
+ ## Stage 2 — 30 semantic cases, one run per advancing model
+ 
+-(pending)
++Run id `2026-11-03-playground-model-sweep-stage2`, 2026-11-04T01:30Z–06:58Z, generation commit
++`6b451221`, seed `2026-11-03-gpt6-paired` (the same 30 cases as the paired GPT-6 round), one run
++per model, three concurrent 10-case shards, Judge A (`claude-sonnet-5`, rubric v2.11) inline.
++Harness answer spend USD 32.42; gateway logs reconcile per model (ledger 2026-11-04T06:58Z). Two
++window waits (before `claude-opus-5.5` and `gpt-6-astra`); the sliding 24 h gateway window never
++passed USD 85.
++
++Raw Judge A table (score = correct + 0.5 x partial; p50 / p90 turn latency; USD per turn):
++
++| Model | Effort | Rows | Correct | Partial | Wrong | Error | Score | Tool failures | No done | Aborted 120 s | p50 ms | p90 ms | USD/turn |
++| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
++| `openai/gpt-6.1-terra` | none | 30 | 8 | 21 | 1 | 0 | 18.5 | 0 | 0 | 0 | 17455 | 24638 | 0.0442 |
++| `openai/gpt-6.1-sol` | low | 30 | 7 | 22 | 1 | 0 | 18 | 0 | 0 | 0 | 20300 | 28575 | 0.0594 |
++| `xai/grok-4.6` | none | 30 | 11 | 17 | 2 | 0 | 19.5 | 3 | 3 | 3 | 65373 | 118639 | 0.138 |
++| `anthropic/claude-haiku-5.5` | none | 30 | 6 | 22 | 2 | 0 | 17 | 1 | 0 | 0 | 13995 | 17406 | 0.0068 |
++| `openai/gpt-6-astra` | low | 30 | 7 | 20 | 3 | 0 | 17 | 0 | 0 | 0 | 27820 | 35924 | 0.2857 |
++| `openai/gpt-5.6-terra` | none | 30 | 9 | 16 | 4 | 1 | 17 | 3 | 0 | 0 | 12900 | 18943 | 0.0649 |
++| `anthropic/claude-opus-5.5` | none | 30 | 7 | 19 | 4 | 0 | 16.5 | 0 | 0 | 0 | 16210 | 21078 | 0.1543 |
++| `openai/gpt-5.6-sol` | none | 30 | 12 | 13 | 5 | 0 | 18.5 | 0 | 0 | 0 | 12016 | 20247 | 0.1347 |
++| `anthropic/claude-sonnet-5.5` | none | 30 | 8 | 17 | 5 | 0 | 16.5 | 1 | 0 | 0 | 11372 | 14910 | 0.068 |
++| `openai/gpt-5.6-luna` | none | 30 | 7 | 18 | 5 | 0 | 16 | 1 | 0 | 0 | 13744 | 17599 | 0.0053 |
++| `anthropic/claude-sonnet-5` | none | 30 | 8 | 15 | 7 | 0 | 15.5 | 7 | 0 | 0 | 19008 | 28578 | 0.1194 |
++
++Hand review covered every verdict that differs from the baseline on all 11 models. Four Judge A
++verdicts were false positives corrected by transcript evidence (baseline and `claude-sonnet-5`
++`q-ti-vocab-project-tags-live` wrong → partial, the requested slug is in the live tool output;
++`gpt-6.1-sol` and `claude-sonnet-5.5` `q-edge-1xlm-activation-fee` wrong → partial, no wrong claim
++and no avoid hit). The vocab case exposed a judge defect: the evidence pack truncates the 85-row
++tag list to 82 rows, so the judge cannot see the slug it penalizes (candidate `eval/qa` finding).
++The baseline's `q-jutsu-cash-crypto-ramps` Judge A error resolves to partial (hand review and
++Judge B agree; a Judge A re-judge said wrong on an evidence-reading error).
++
++Judge B (Codex `gpt-6.1-sol` high) re-graded the baseline, `claude-haiku-5.5`, `gpt-6-astra`, and `claude-sonnet-5.5` (30 rows each) plus the two disputed rows. Agreement with Judge A: 20, 24, 25, and 22 of 30; scores A 17 / B 17.5, 17 / 15, 17 / 17.5, and 16.5 / 15.5. Judge B confirmed the hand-review corrections on the vocab case and on the baseline's ramps case. Judge B graded `q-edge-1xlm-activation-fee` wrong for three models with an empty wrong-claims list and no fired avoid, which the rubric does not permit, so that case is judge-unstable under both judges and the hand-review partial stands. Judge A is the stage-2 grade of record; under Judge B alone `claude-sonnet-5.5` would edge `claude-haiku-5.5` for the last slot, so the cut is judge-sensitive (ledger 2026-11-04T06:58Z).
++
++Exclusions by the pre-registered rule (more than one tool failure): `xai/grok-4.6` (3 turns hit
++the route's 120 s deadline; p90 119 s) and `anthropic/claude-sonnet-5` (7 model-authored script
++syntax errors). Adjusted scores: `gpt-6.1-terra` 18.5 (1 wrong), `gpt-6.1-sol` 18.5 (0),
++`gpt-5.6-sol` 18.5 (5), `gpt-5.6-terra` 18 (3), `claude-haiku-5.5` 17 (2), `gpt-6-astra` 17 (3),
++`claude-sonnet-5.5` 17 (4), `claude-opus-5.5` 16.5 (4), `gpt-5.6-luna` 16 (5).
++
++Finalists (baseline, shipped fallback, top 5 by adjusted score, ties by fewer wrong):
++`gpt-5.6-terra`, `gpt-5.6-luna`, `gpt-6.1-sol`, `gpt-6.1-terra`, `gpt-5.6-sol`,
++`claude-haiku-5.5`, `gpt-6-astra`. `claude-sonnet-5.5` misses the cut on the 17-point tie.
+ 
+ ## Stage 3 — 100 disjoint cases, 2 repeats per finalist, Judge A + Judge B
+ 
+-- 
+2.54.0 (Apple Git-157)
+
+
+From cb4f1ca4ee2f331c0b4d98dbc0e836332f4b9dd9 Mon Sep 17 00:00:00 2001
+From: kalepail <hi@tyvdh.com>
+Date: Wed, 4 Nov 2026 02:39:21 -0500
+Subject: [PATCH 4/5] ledger: record the eight-finalist decision for stage 3
+
+Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
+---
+ .agents/rounds/2026-11-03-playground-model-sweep.md | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/.agents/rounds/2026-11-03-playground-model-sweep.md b/.agents/rounds/2026-11-03-playground-model-sweep.md
+index 01e3d226..0f053cd1 100644
+--- a/.agents/rounds/2026-11-03-playground-model-sweep.md
++++ b/.agents/rounds/2026-11-03-playground-model-sweep.md
+@@ -408,6 +408,18 @@ Append-only while the round runs.
+     85, so astra's two repeats (cap 46 each) need a window at or below 39 and will fall into
+     separate 24 h windows.
+ 
++- 2026-11-04T07:4xZ — Coordinator decision (t16): stage 3 runs **8 finalists**, adding
++  `anthropic/claude-sonnet-5.5` to the seven selected by the pre-registered top-5 rule. This is a
++  stated deviation from that rule, for two reasons: (1) the cutoff between `claude-haiku-5.5` and
++  `claude-sonnet-5.5` depends on the judge (Judge A adjusted 17 vs 17 with fewer wrong for haiku;
++  Judge B 15 vs 15.5 for sonnet-5.5); (2) the fallback must come from a different vendor than the
++  primary, so a second Anthropic finalist matters. Adding a finalist changes no baseline
++  comparison. Stage-3 cap stays at USD 160 and the window rule stays (astra's repeats fall in
++  separate 24 h windows); any spend that would pass a cap is reported first. Order cheapest first:
++  luna (est 1.1), haiku (1.4), 6.1-terra (8.9), 6.1-sol (12.0), terra (13.1), sonnet-5.5 (13.7),
++  5.6-sol (27.2), astra (57.7); about USD 135 in all. Stage-3 generation = the tree at the commit
++  that records this entry.
++
+ ## Outcome
+ 
+ (open)
+-- 
+2.54.0 (Apple Git-157)
+
+
+From 0d90bbb7be03fb3be1bc0a10119ec1953f5c093d Mon Sep 17 00:00:00 2001
+From: kalepail <hi@tyvdh.com>
+Date: Wed, 4 Nov 2026 08:03:21 -0500
+Subject: [PATCH 5/5] ledger: record the stage-3 move to the default gateway
+
+Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
+---
+ .../2026-11-03-playground-model-sweep.md      | 37 +++++++++++++++++++
+ 1 file changed, 37 insertions(+)
+
+diff --git a/.agents/rounds/2026-11-03-playground-model-sweep.md b/.agents/rounds/2026-11-03-playground-model-sweep.md
+index 0f053cd1..e2160464 100644
+--- a/.agents/rounds/2026-11-03-playground-model-sweep.md
++++ b/.agents/rounds/2026-11-03-playground-model-sweep.md
+@@ -420,6 +420,43 @@ Append-only while the round runs.
+   5.6-sol (27.2), astra (57.7); about USD 135 in all. Stage-3 generation = the tree at the commit
+   that records this entry.
+ 
++- 2026-11-04T13:1xZ — Stage-3 deviation, owner-approved via t16 (`tmp/sweep/GATEWAY-SWITCH.md`):
++  stage-3 answer traffic moves from the `stellar-raven-demo` gateway to the account's `default`
++  AI Gateway, written here before the new spend.
++  - Reason: the demo gateway carries production Playground traffic under a USD 100/24 h limit.
++    Stage 3 waited about 4 h on the window rule (6.1-sol rep1 from 09:30Z, window 77.6–78.0) and
++    needed about two more days to finish at that pace.
++  - Progress before the switch (demo gateway, generation `cb4f1ca4`): luna, haiku-5.5, and
++    6.1-terra, two repeats each, harness answer spend USD 10.9974 (luna 1.011, haiku 1.423,
++    6.1-terra 8.563). One luna row (`q-edge-exhaustive-defi-deep-report`, rep 1) ended with
++    finishReason `length` (19,669-character answer): an incomplete row by the pre-registered
++    definition, judged correct by Judge A.
++  - Change: only the gateway id (`--var DEMO_AI_GATEWAY_ID:default` in the gitignored
++    `tmp/sweep/stage-run-caps.sh`; `src/demo/eval-cost.ts` reads the same env value, so cost
++    accounting follows). Same code, request bodies (`store: false`, `cf-aig-skip-cache`), efforts,
++    and cases. The window wait is removed from `tmp/sweep/stage3.sh`; the per-repeat caps, the
++    USD 160 stage cap, and the exit-9 stop stay. `default` facts checked by t16: ZDR off,
++    collect_logs on, no rate or spend limit, cache_ttl 300, same credit store; 75 probe calls
++    (USD 0.85) in the prior 7 days and no production user.
++  - Difference: `default` has ZDR off, so provider-side retention can differ. Model behavior is not
++    expected to change because the requests are identical. Privacy: the prompts are public eval
++    questions, public Stellar data, and the public system prompt; no secret reaches a model; the
++    `default` gateway logs bodies.
++  - Controls: (1) the stage-3 table uses only `default` rows — luna, haiku-5.5, and 6.1-terra are
++    re-run on `default` after the five remaining finalists, so every stage-3 row comes from one
++    gateway; (2) the six demo-gateway runs are kept as a ZDR-on reference and reported separately
++    as a paired gateway comparison against the `default` re-runs, measured against the noise band;
++    (3) before the decision is final, the stage-1 gauntlet runs on `stellar-raven-demo` (the
++    production transport) for the chosen primary and fallback, two repeats, with the demo window
++    read first and kept at or below USD 85; (4) after the first `default` repeat, the harness
++    answer cost is reconciled with the `default` gateway logs and repeat latency and answer length
++    are checked for cache replay.
++  - Run order on `default`: `gpt-6.1-sol` (low), `claude-sonnet-5.5`, `gpt-5.6-sol`,
++    `gpt-5.6-terra`, `gpt-6-astra` (low), then the `gpt-5.6-luna`, `claude-haiku-5.5`, and
++    `gpt-6.1-terra` re-runs. Projection: 11.00 spent + about 124 + about 11 = about USD 146 of
++    160. The chain restarts with `STAGE3_SPENT_BEFORE=10.9974`; the stage-3 generation for the
++    `default` rows is the tree at the commit that records this entry.
++
+ ## Outcome
+ 
+ (open)
+-- 
+2.54.0 (Apple Git-157)
+

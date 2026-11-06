@@ -554,16 +554,34 @@ failures. The switch rule allows no new wrong answers and no tool-loop regressio
 numbers are in
 [the re-check record](../research/audits/2026-11-03-playground-model-recheck.md).
 
-Two open facts. `openai/gpt-6.1-terra` fails every multi-step turn on the installed
-`@ai-sdk/openai@4.0.91`, because that SDK drops effort `none` for it. `@ai-sdk/openai@4.0.108`
-fixes it, but the upgrade needs a gauntlet of every demo model. Separately, OpenAI's cyber-safety
-filter refused `q-n3-cross-thread-memory-exfiltration` for both Terra models in a 10-case
-diagnostic, so the live Playground can return an error on such prompts.
+The recovered November 3–4 sweep supplies the recorded transport gauntlets for the SDK upgrade
+to `@ai-sdk/openai@4.0.108`, which fixes the earlier dropped-effort failure. The November 6
+integration keeps the shipped model tuple and adds offline regression checks. The sweep's stage 3
+stopped before a final decision; its partial results do not authorize promotion. See the
+[recovered sweep ledger](rounds/2026-11-03-playground-model-sweep.md) and
+[cleanup record](rounds/2026-11-06-main-only-cleanup.md). Any resumed paid collection needs a fresh
+reviewed plan, complete comparable rows, evidence-pack validation, and production-transport gates.
+OpenAI's cyber-safety filter also refused `q-n3-cross-thread-memory-exfiltration` for both Terra
+models in the earlier 10-case diagnostic; no current fix is asserted.
 
 Done when: a later OpenAI model passes the gauntlet on the installed SDK and is not worse than the
 primary on a paired 30-case semantic check, or the owner decides to stop re-checking.
 
 ## Eval instruments
+
+### Harden the archived second-judge experiment before enabling it
+
+The November 6 cleanup recovered the Codex adapter from the interrupted model sweep but kept
+it out of active code. Its exact implementation is preserved in
+[the original patch](../research/audits/2026-11-06-main-only-cleanup/playground-sweep.patch).
+Before integration, enforce an explicit billing/authentication contract and bounded-call or dollar
+authorization; include CLI, effort and relevant environment in comparison identity; require an
+explicit model; deny tools for the blind judge; and reject error/incomplete event streams.
+Add adversarial offline tests for each boundary. See the
+[independent review](rounds/2026-11-06-main-only-cleanup/playground-review.md).
+The existing Claude judge remains the measurement contract. No paid rerun is authorized here.
+
+Done when: a separately reviewed adapter meets those gates, or the owner retires the experiment.
 
 ### Resolve diagnostic noncompletions and judge ambiguities
 
@@ -660,6 +678,12 @@ confirmed the verdict in the post-run review. Result:
 
 Known limits that remain:
 
+- The recovered November 3–4 model sweep reports an 85-row tag list reduced to 82 rows in
+  judge evidence, with false wrong verdicts on `q-ti-vocab-project-tags-live`. Before another
+  model-selection round, recover the original transcript and compare its exact rendered pack;
+  repair and independently validate any confirmed truncation before relying on affected scores.
+  This is a dated reported defect, not a new live reproduction; see the
+  [sweep ledger](rounds/2026-11-03-playground-model-sweep.md).
 - Field and unit limits: Etherfuse shows 5 of 7 records, stablecoin issuers 41 of 42, and
   ERC-8004 0 of 2.
 - In the control rows, 5 rows lose 1 to 3 answer probes against p8.
@@ -939,6 +963,67 @@ item, but do not count them until condition 3 holds. No trigger authorizes imple
 
 Done when: the full section 8 trigger fires and the owner approves a phase-zero study, or the owner
 retires the program.
+
+### Consider consolidating the auxiliary Workers
+
+Raven deploys three Workers beside `stellar-raven-codemode`: the usage collector
+`stellar-raven-usage` (Tail Worker, `usage/wrangler.jsonc`), the usage report API
+`stellar-raven-usage-report` (`usage/report-site/cloudflare/wrangler.jsonc`), and the OpenAI domain
+challenge `stellar-raven-openai-verification`. The owner asked on 2026-10-25 whether fewer Workers
+would do. Each has its own config and deploy step, which adds operator load.
+The domain-challenge Worker has no secrets or service bindings.
+
+Questions to answer before any change:
+
+- Can the main Worker serve the report API and the OpenAI challenge as fixed routes without
+  widening the MCP surface, the sandbox boundary, or the D1 binding's reach?
+- Can a Worker be its own tail consumer, or must the collector stay separate? Cite Cloudflare docs.
+- Does the collector's "no HTTP route" isolation in `usage/README.md` still hold if it absorbs the
+  report API?
+- What changes in `usage-health`, `scripts/check-usage-deployment.mjs`, the fork setup steps, and
+  the Sites dashboard's `USAGE_REPORT_URL`?
+
+No trigger authorizes implementation. A proposal needs a short design note and independent review,
+and it must keep the privacy rules in `usage/README.md`.
+
+Done when: the owner accepts a reviewed consolidation and it ships, or the owner keeps the current
+split and this item is deleted.
+
+## OpenAI plugin submission
+
+### Obtain a written exception for the accepted two-tool endpoint
+
+The owner selected one endpoint and preservation of the accepted Claude implementation on 2026-10-23.
+The October 23 portal scan reported two operation-exposure findings and one artifact-persistence
+annotation finding. Reviewer OAuth access passed checks that day. Package `0.1.2` passed all eight
+rehearsal cases after a description fix. The owner submitted it on October 23; the last recorded
+portal state was `In review` and `Not published`. The reply was still an unsent draft.
+Recheck the existing submission and correspondence before acting; later status is not established here.
+The shared runtime, tool definitions, and annotations remain unchanged.
+Use the [case report](../plugins/openai/REVIEW-CASES-2026-10-23.md),
+[findings](../plugins/openai/MCP-FINDINGS.md), and
+[exception request](../plugins/openai/EXCEPTION-REQUEST.md).
+Do not describe the exception as approved without OpenAI's written decision.
+Before publication, resolve publisher verification and privacy-policy coverage. The November 6
+source check still finds query/response logging for 30 days in `src/site.ts` versus operational
+metadata retention of at most seven days in `docs/operations.md`; the plugin records do not resolve it.
+
+Done when: OpenAI grants the required exceptions, or the owner approves another submission approach.
+
+### Remove the OpenAI domain verification Worker after approval
+
+`stellar-raven-openai-verification` (source: `plugins/openai/domain-verification/`) serves only
+`raven.stellar.org/.well-known/openai-apps-challenge`. The October 23 portal check confirmed
+`Domain verified`. Preserve the service until its current verification requirement is confirmed.
+
+Trigger: OpenAI approves and publishes the app, or the owner withdraws the submission. Before
+removal, confirm in the portal that no active submission or published app still needs the live challenge. Then
+delete the Worker and its route, delete `plugins/openai/domain-verification/`, and update the
+references in `plugins/openai/README.md` and `plugins/openai/VERIFICATION.md`. Fold this into the
+consolidation item above if that work runs first.
+
+Done when: the Worker, its route, and its source are gone, and either the published app still passes
+the portal's connection check or the owner has confirmed withdrawal with no remaining challenge requirement.
 
 ## Owner decisions
 

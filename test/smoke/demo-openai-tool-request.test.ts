@@ -180,18 +180,23 @@ describe("Playground tools on the OpenAI Responses wire", () => {
       temperature: 0.1,
       max_output_tokens: DEMO_CAPS.maxOutputTokens,
       reasoning: { effort: "none" },
-      stream: true
+      stream: true,
+      // Zero Data Retention wire (reviewed 2026-11-04): nothing is stored, and
+      // reasoning items travel as encrypted content so a later step can replay
+      // them instead of referencing an id OpenAI never kept.
+      store: false,
+      include: ["reasoning.encrypted_content"]
     };
     // Exact top-level keys: a new provider field fails here until reviewed.
     expect(Object.keys(first).sort()).toEqual(
-      ["input", "max_output_tokens", "model", "reasoning", "stream", "temperature", "tool_choice", "tools"]
+      ["include", "input", "max_output_tokens", "model", "reasoning", "store", "stream", "temperature", "tool_choice", "tools"]
     );
     expect(first).toMatchObject({ ...settings, tool_choice: "auto" });
     expect(first.tools?.map((entry) => entry.name)).toEqual(["search", "execute"]);
 
     // The tools-disabled final step sends no tools and no tool choice.
     expect(Object.keys(final).sort()).toEqual(
-      ["input", "max_output_tokens", "model", "reasoning", "stream", "temperature"]
+      ["include", "input", "max_output_tokens", "model", "reasoning", "store", "stream", "temperature"]
     );
     expect(final).toMatchObject(settings);
 

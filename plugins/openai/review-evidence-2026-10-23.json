@@ -1,0 +1,910 @@
+{
+  "date": "2026-10-23",
+  "timezone": "America/New_York",
+  "scope": "OpenAI submission rehearsal; separate from repository QA headline and routing gates.",
+  "method": "Eight sequential fresh ChatGPT-authenticated Codex CLI sessions per version. Each receives the package description and exact case prompt. Reviewer OAuth protects the live endpoint. Expected answers are not supplied. Manual transcript review grades the outcomes. No separate paid API or automated judge is used.",
+  "endpoint": "https://raven.stellar.org/mcp",
+  "baselineMain": "b1dc8663b37a4795f50538918fdf5f4b08c6b054",
+  "runtimeChanged": false,
+  "testsUnchanged": true,
+  "runs": [
+    {
+      "pluginVersion": "0.1.1",
+      "pluginManifestSha256": "65f14b0138950f19a8d62c4ca7d47601dbc67a3dcb786b46a621a2973b1cd71e",
+      "model": "gpt-6.1-sol",
+      "effort": "high",
+      "expectedCases": 8,
+      "completedCases": 8,
+      "passed": 5,
+      "cases": [
+        {
+          "id": "case-01",
+          "kind": "positive",
+          "prompt": "How do I extend the TTL of persistent storage in a Soroban contract?",
+          "outcome": "Passed",
+          "review": "Explains persistent extend_ttl, remaining-ledger thresholds, network limits, and official sources. Discloses conflicting documentation wording.",
+          "answer": "Call `env.storage().persistent().extend_ttl(&key, threshold, extend_to)` for each persistent entry you want to extend.\n\nFor an existing entry keyed by `DataKey::MyKey`:\n\n```rust\nenv.storage()\n    .persistent()\n    .extend_ttl(&DataKey::MyKey, 1000, 5000);\n```\n\nThis call extends the remaining TTL to **5000 ledgers** when fewer than **1000 ledgers** remain. Otherwise, it changes nothing. Both arguments specify relative ledger counts. See the [official example and tests](https://developers.stellar.org/docs/build/guides/archival/test-ttl-extension#example).\n\nCall this method after successful reads or writes to keep active entries available. Reads and writes alone do not extend TTL. Each persistent entry has its own TTL. Extensions incur storage rent. See the [storage strategy guide](https://developers.stellar.org/docs/build/guides/storage/storage-strategies#strategy-5-ttl-management--bump-on-access).\n\nChoose `extend_to` within the network\u2019s maximum TTL. The [TTL tests](https://developers.stellar.org/docs/build/guides/archival/test-ttl-extension#example) explain this limit.\n\nDocumentation inconsistency: the [dapp guide](https://developers.stellar.org/docs/build/guides/dapps/state-archival#1-extending-ttl-from-the-smart-contract) calls these arguments ledger heights. The executable examples and tests show relative ledger counts.",
+          "mcpCallCount": 3,
+          "toolCalls": [
+            {
+              "tool": "search",
+              "arguments": {
+                "query": "soroban storage TTL",
+                "service": "stellarDocs",
+                "limit": 2
+              },
+              "transportStatus": "completed",
+              "responseSha256": "9be4186af931c97f2be2dbd7e9bfa2b783cd4bbb321e173c08608dbe3425fe7c"
+            },
+            {
+              "tool": "search",
+              "arguments": {
+                "query": "smart contracts",
+                "kind": "skill",
+                "limit": 1
+              },
+              "transportStatus": "completed",
+              "responseSha256": "ca914ed884bca0f5c0707e8c4ee4ece4f7b31cc58fd213b4a49e30275f50cac2"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const [docs, skill] = await Promise.all([stellarDocs.search_soroban_contract_docs({query:'extend_ttl persistent threshold extend_to',includeContent:true,hitsPerPage:4}), codemode.skill.read('skills.stellar-dev.smart-contracts',{sections:['file:development.md']})]); return {docs, skill:skill.ok ? {url:skill.data.url,sections:skill.data.sections.map(s=>({url:s.url,content:s.content.split(/\\n(?=## )/).filter(t=>/TTL|extend_ttl|archiv/i.test(t)).join('\\n').slice(0,15000)}))}:skill}; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "829f01a87faea3e51361fb41e76c302250ce70cf17423f10e4bbf19963adcfb4"
+            }
+          ]
+        },
+        {
+          "id": "case-02",
+          "kind": "positive",
+          "prompt": "Which lending protocols are built on Stellar, and which ones got Stellar Community Fund awards?",
+          "outcome": "Passed",
+          "review": "Uses Scout lending discovery and Lumenloop project/submission records. Separates lifecycle status and conflicting award evidence. Official SCF follow-up confirms the joint YieldBlox award amount.",
+          "answer": "**Stellar has several lending protocols, and many received Stellar Community Fund (SCF) awards.** The records below reflect Raven\u2019s evidence on October 23, 2026.\n\nThe links lead to SCF records unless marked otherwise.\n\n| Protocol | Lending model | Recorded SCF awards |\n|---|---|---|\n| [Blend](https://communityfund.stellar.org/project/blend-mfy) | Customizable lending pools | Liquidity Award, Q1 2024 |\n| [Slender](https://communityfund.stellar.org/project/slender-t1o) | Lending and borrowing market | #17, #21; Liquidity Award, Q1 2024 |\n| [XycLoans](https://communityfund.stellar.org/project/xycloans-qqr) | Flash loans | #13; Liquidity Award, Q1 2024 |\n| [Alula](https://communityfund.stellar.org/project/alula-quk) | Lending with repeated borrowing and deposits | Build #34 |\n| [Laina](https://communityfund.stellar.org/submissions/rec82ws2Gf1GxiiRZ) | Lending with repeated borrowing and deposits | Build #34 |\n| [XOXNO](https://communityfund.stellar.org/project/xoxno-new-lending-foundation-protocol-aqo) | Lending pools and flash loans | Build #43 |\n| [Peridot Finance](https://communityfund.stellar.org/submissions/recAvz5NtVxVvLcMo) | Lending across blockchains | Build #38 |\n| [Hatom Protocol](https://communityfund.stellar.org/submissions/rec4gKisx5fu7t8nO) | Lending and capital infrastructure | Build #41 |\n| [Lucent](https://communityfund.stellar.org/submissions/recZeITw6WJDXb0u8) | Stablecoin borrowing against collateral | Build #44 |\n| [OrbitCDP](https://communityfund.stellar.org/project/orbitcdp-pst) | Stablecoin borrowing against collateral | #21, #25, #29; Liquidity Award, Q2 2025 |\n| [FxDAO](https://communityfund.stellar.org/project/fxdao-xov) | Stablecoin borrowing against XLM | #13; liquidity awards in 2024 and 2025 |\n| [AssetDesk](https://communityfund.stellar.org/project/assetdesk-kqx) | Deposits and collateral-backed borrowing | #19 |\n| [Mystic](https://communityfund.stellar.org/submissions/recqCzftyJOhfSKmB) | Loans against tokenized real-world assets | Activation Award #29 |\n| [Lumen Later](https://communityfund.stellar.org/project/lumen-later-g5v) | Buy-now-pay-later credit | Build #39 |\n| [Legasi](https://communityfund.stellar.org/submissions/recJjxMzPmFzSS6v3) | Loans against tokenized assets | Build #40 |\n| [YieldBlox](https://communityfund.stellar.org/submissions/rec5uH1bD72BKoRPI) | Lending market built on Blend | #7, jointly with OptionBlox |\n| [Pluto Loans](https://communityfund.stellar.org/submissions/recVYQzThUCdFa0N5) | Loans repaid through future yield | #10, #15 |\n\nRaven also identifies specialized credit and financing projects with SCF awards:\n\n| Project | Focus | Recorded SCF awards |\n|---|---|---|\n| [Huma](https://communityfund.stellar.org/submissions/rectN6ErZmODHk69p) | Payment financing | Activation Award #27 |\n| [Microvault](https://communityfund.stellar.org/submissions/recvNshb1L59hprMV) | Small loans for farmers | Build #42 |\n| [Lendoor](https://communityfund.stellar.org/submissions/rec3TJmAPmo6HOPve) | Loans without collateral | Build #45 |\n| [HiYield](https://communityfund.stellar.org/submissions/recjwQ8Ebg6OIV4BT) | Lending against fixed-income assets | #18 |\n| [Liqvid](https://communityfund.stellar.org/submissions/recLauVL3boo779AG) | Lending against tokenized assets | Build #37, #45 |\n| [Indentura](https://communityfund.stellar.org/submissions/recghVchvFzCaKCpO) | Business credit and receivables financing | Build #37 |\n| [Airswift / Pelago](https://communityfund.stellar.org/submissions/recX7oeV1IsHlgDy5) | Supply-chain financing | #16 |\n| [Pipeline](https://communityfund.stellar.org/submissions/recBY9t2rdEv609rl) | Commodity trade financing | Build #43 |\n| [Trilobyte](https://communityfund.stellar.org/submissions/recq35w2zW5FQu4tY) | Cash-flow financing | #15 |\n| [Untangled](https://communityfund.stellar.org/submissions/rec5hF8af5tfhSlT2) | Private-credit assets and investment vaults | Build #31; Liquidity Award, Q3 2025 |\n\n**Other lending protocols have less conclusive award evidence:**\n\n- [K2 Lend](https://stellarlight.xyz/project/k2-lend) offers pooled, isolated, and restricted-access lending markets. Raven\u2019s retrieved records do not confirm an SCF award.\n- [Templar Protocol](https://stellarlight.xyz/project/templar-protocol) supports Stellar borrowing through an integration. Raven\u2019s retrieved records do not confirm an SCF award.\n- [Polaris Lend](https://stellarlight.xyz/project/polaris-lend) offers fixed-rate, fixed-term lending. Lumenloop lists an SCF #21 award, but Scout disagrees and the submission lookup remains inconclusive.\n\nAn award does not establish current availability. Scout marks Slender, OrbitCDP, FxDAO, AssetDesk, Pluto Loans, and Polaris Lend inactive. It marks Laina pre-release and Mystic in development.\n\nScout also omits award flags for YieldBlox and Pluto Loans. Their linked SCF submission records document historical awards.",
+          "mcpCallCount": 9,
+          "toolCalls": [
+            {
+              "tool": "search",
+              "arguments": {
+                "query": "directory projects SCF submissions funding",
+                "service": "lumenloop",
+                "kind": "operation",
+                "limit": 3
+              },
+              "transportStatus": "completed",
+              "responseSha256": "38e9af4301a4453179d9f1b8df25acd0a96ac253616b1bccd73dca53ca4ae14f"
+            },
+            {
+              "tool": "search",
+              "arguments": {
+                "query": "search projects lending",
+                "service": "scout",
+                "kind": "operation",
+                "limit": 2
+              },
+              "transportStatus": "completed",
+              "responseSha256": "3bd8dd38baa193e0684bc3de0909381447e375ed129eb5888e9602fcb548102e"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const discovery = await Promise.all([codemode.search({query:'search_directory',service:'lumenloop',kind:'operation',limit:1}),codemode.search({query:'search_content_semantic',service:'lumenloop',kind:'operation',limit:1})]); const [projects, scf] = await Promise.all([scout.searchProjects({type:'Lending',limit:100}),lumenloop.find_similar_scf_submissions({query:'lending borrowing credit protocols on Stellar',limit:30})]); return {discovery,projects,scf}; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "5431433ac84058a27c2b4bc6520feee4fac22b92c0c3aad161ee6fb57b2334dc"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const a = await codemode.artifact.read('[private artifact handle omitted]'); if(!a.ok) return a; const d=a.data; return {keys:Object.keys(d),projects:d.projects?.ok?{meta:d.projects.data.meta,rows:d.projects.data.projects.map(p=>({name:p.name,slug:p.slug,category:p.category,description:p.shortDescription,status:p.status,scf:p.scfAwarded,total:p.scfTotalAwardedUSD,rounds:p.scfRoundAwards,source:p.scfSourceUrl,url:p.url}))}:d.projects,scf:d.scf}; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "1d51fc639ee97846dd7ca0593ce240ebccd3664dedac384222f311804686fd61"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const a=await codemode.artifact.read('[private artifact handle omitted]'); if(!a.ok)return a; const d=a.data; const [dir,content]=await Promise.all([lumenloop.search_directory({query:'lending',limit:60}),lumenloop.search_content_semantic({query:'Stellar lending protocols Blend Slender OrbitCDP XycLoans lending ecosystem',types:['articles'],date_end:'2026-10-23',limit:4,response_format:'concise'})]); return {scout:d.projects.data.projects.map(p=>({n:p.name,s:p.slug,c:p.category,d:p.shortDescription.slice(0,160),status:p.status,scf:p.scfAwarded})),scf:d.scf,dir,content}; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "7df051750856e7e860e8889dc6ac66b327234c461e1aaeefb64d63f7cbe35853"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const a=await codemode.artifact.read('[private artifact handle omitted]'); if(!a.ok)return a; return {dir:a.data.dir.ok?a.data.dir.data.projects.map(p=>({s:p.slug,n:p.title,d:p.description.slice(0,230)})):a.data.dir,content:a.data.content}; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "139d984cc2c63e4a12461bd3657cfc3ade5d6078ca9e7482d570979287ac89ae"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const a=await codemode.artifact.read('[private artifact handle omitted]'); const slugs=['blend','slender','orbitcdp','lucent','xoxno','hatom-protocol','peridot-finance','lumen-later','legasi','hiyield','alula','xycloans','mystic','laina','yieldblox','k2-lend','templar-protocol','fxdao','assetdesk','polaris-lend','pluto-loans','huma','microvault','indentura','airswift','trilobyte','untangled','lend','lendoor','liqvid','pipeline']; const rows=await Promise.all(slugs.map(async slug=>{const [p,s]=await Promise.all([lumenloop.get_project({slug}),lumenloop.get_scf_submissions({slug})]); const scoutRow=a.ok?a.data.projects.data.projects.find(x=>x.slug===slug):null; return {slug,project:p.ok?{title:p.data.title,description:p.data.description,links:p.data.links,extra:Object.fromEntries(Object.entries(p.data).filter(([k])=>/scf|award/i.test(k)))}:p,scout:scoutRow?{status:scoutRow.status,url:scoutRow.url,scf:scoutRow.scfAwarded,total:scoutRow.scfTotalAwardedUSD,awards:scoutRow.scfRoundAwards,source:scoutRow.scfSourceUrl}:null,submissions:s.ok?{count:s.data.count,rows:s.data.submissions?.map(x=>Object.fromEntries(Object.entries(x).filter(([k,v])=>!(/markdown|application|proposal|description|milestone|deliverable/i.test(k))&&(typeof v!=='string'||v.length<600))))}:s};})); return rows; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "c4a86ef358ff8ad988253e79b8f7245062e99b43ad4cd7023d40bb55a411ccb0"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const a=await codemode.artifact.read('[private artifact handle omitted]'); if(!a.ok)return a; return a.data.slice(12).map(p=>({slug:p.slug,description:p.project?.description?.slice(0,320),scf:p.project?.extra,scout:p.scout,submissions:p.submissions?.rows?.map(s=>({title:s.title,project:s.project,round:s.round,award:s.award_type,budget:s.budget,url:s.submission_url,linked:s.linked_project_slugs}))})); }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "1302009ad798817cd5381cbce30fe203e48301357d567252a21be14ebe5dbdeb"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const r=await Promise.all(['Pluto Loans','Polaris Lend','Hatom','Peridot'].map(async name=>{ const x=await lumenloop.get_scf_submissions({name}); return {name,result:x.ok?{count:x.data.count,rows:x.data.submissions?.filter(s=>JSON.stringify(s).toLowerCase().includes(name.split(' ')[0].toLowerCase())).map(s=>({title:s.title,project:s.project,round:s.round,award:s.award_type,budget:s.budget,url:s.submission_url,linked:s.linked_project_slugs}))}:x}; })); const extra=await Promise.all(['lendoor','liqvid','pipeline'].map(async q=>{const x=await scout.searchProjects({q,limit:3});return {q,data:x.ok?x.data.projects.filter(p=>p.slug===q).map(p=>({name:p.name,status:p.status,url:p.url,source:p.scfSourceUrl,scf:p.scfAwarded})):x};})); return {r,extra}; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "1bc2478e1f9f063eda412c5598b577010a9c64a88ce883f670a13ad72c5a11d6"
+            }
+          ]
+        },
+        {
+          "id": "case-03",
+          "kind": "positive",
+          "prompt": "Walk me through adding passkey smart accounts to my Stellar dApp.",
+          "outcome": "Passed",
+          "review": "Reads the smart-account playbook and official documentation. Explains configuration, sign-in, authorization, relayer boundaries, and recovery. Performs no deployment or signing.",
+          "answer": "Start on Testnet with **`smart-account-kit`**. Stellar\u2019s current tutorial uses it to create OpenZeppelin smart accounts with passkeys.\n\nEach user gets a contract account. The passkey approves actions, and the account contract checks authorization. A relayer can pay transaction fees. [Source](https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets)\n\n1. **Choose the account model.**\n\n   Smart Account Kit supports context rules, multiple signers, and policies such as spending limits.\n\n   `passkey-kit` uses a different account contract with a flat signature map. The two kits are not directly compatible. This walkthrough uses Smart Account Kit. [Source](https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets#client-sdks)\n\n2. **Install and configure the browser client.**\n\n   ```bash\n   npm install smart-account-kit @stellar/stellar-sdk\n   ```\n\n   Create this client only in browser code:\n\n   ```typescript\n   import {\n     SmartAccountKit,\n     IndexedDBStorage,\n   } from \"smart-account-kit\";\n\n   export const account = new SmartAccountKit({\n     rpcUrl: \"https://soroban-testnet.stellar.org\",\n     networkPassphrase: \"Test SDF Network ; September 2015\",\n\n     accountWasmHash: \"YOUR_ACCOUNT_WASM_HASH\",\n     webauthnVerifierAddress: \"YOUR_WEBAUTHN_VERIFIER_ADDRESS\",\n\n     relayerUrl: \"/api/send\",\n     storage: new IndexedDBStorage(),\n     rpName: \"My Stellar App\",\n     timeoutInSeconds: 30,\n   });\n   ```\n\n   Replace both placeholders with values for the selected network. The official tutorial supplies shared Testnet values in its `.env.example`.\n\n   `accountWasmHash` identifies the account contract code. `webauthnVerifierAddress` identifies the contract that checks passkey signatures.\n\n   `IndexedDBStorage` preserves the local session. Create it only in the browser when your application uses server rendering. [Source](https://developers.stellar.org/docs/build/apps/guestbook/setup-passkeys#the-smart-account-client)\n\n3. **Add fee sponsorship through your server.**\n\n   Get a Testnet relayer key from [OpenZeppelin Channels](https://channels.openzeppelin.com/testnet/gen). Keep the key on your server.\n\n   Implement `POST /api/send` with these steps:\n\n   - Accept either `{ func, auth }` or `{ xdr }`.\n   - Reject requests that mix both forms.\n   - Forward the payload as `{ params: payload }`.\n   - Add `Authorization: Bearer YOUR_API_KEY` on the server.\n   - Preserve the relayer\u2019s response status and `{ success, data }` response.\n\n   The kit expects a successful HTTP status and a top-level `success: true`.\n\n   Add request authorization, rate limits, permitted transaction rules, and spending controls before Mainnet. An `Origin` header check alone does not authorize requests. [Source](https://developers.stellar.org/docs/build/apps/guestbook/setup-passkeys#the-submission-route)\n\n4. **Connect signup, login, and logout.**\n\n   Restore the stored session when the browser application starts:\n\n   ```typescript\n   const restored = await account.connectWallet();\n\n   if (!restored) {\n     showConnectButton();\n   }\n   ```\n\n   Run signup from the user\u2019s signup button:\n\n   ```typescript\n   const { contractId, submitResult } =\n     await account.createWallet(\"My Stellar App\", username, {\n       autoSubmit: true,\n     });\n\n   if (!submitResult?.success) {\n     throw submitResult?.error ?? new Error(\"Wallet deployment failed\");\n   }\n   ```\n\n   The kit creates a passkey and deploys an account with that passkey as its initial signer.\n\n   Use these calls for login and logout:\n\n   ```typescript\n   await account.connectWallet({ prompt: true });\n   await account.disconnect();\n   ```\n\n   Handle a dismissed passkey prompt without showing a transaction failure. Treat account deployment failure separately from optional Testnet funding failure. [Source](https://developers.stellar.org/docs/build/apps/guestbook/frontend#user-signup)\n\n   Returning users also need account discovery. The kit uses an indexer to map a credential ID to an account address.\n\n   The documented default uses Mercury\u2019s hosted indexer. Local browser storage does not replace this service. Test login from a fresh browser profile. [Source](https://developers.stellar.org/docs/build/apps/guestbook/passkeys-prerequisites#finding-a-returning-users-wallet)\n\n5. **Use the account address in contract calls.**\n\n   Your application contract must require authorization from the user\u2019s account address. The guestbook example calls `author.require_auth()`.\n\n   For changes to existing records, require authorization from the stored owner. [Source](https://developers.stellar.org/docs/build/apps/guestbook/smart-contract#edit_message)\n\n   Build a call with your generated contract bindings. Then pass the assembled transaction to the kit:\n\n   ```typescript\n   const transaction = await guestbook.write_message({\n     author: contractId,\n     title: \"Hello\",\n     text: \"Signed with my passkey\",\n   });\n\n   const result = await account.signAndSubmit(transaction);\n\n   if (!result.success) {\n     throw result.error;\n   }\n\n   const receipt = await rpc.pollTransaction(result.hash);\n   ```\n\n   Here, `guestbook` represents the tutorial\u2019s generated contract client. `rpc` represents your Stellar RPC client.\n\n   The kit handles the passkey prompt, simulation again, and submission. Check the final transaction status before showing success.\n\n   Read any contract return value from the final receipt. Relayer submission returns a transaction hash. [Source](https://developers.stellar.org/docs/build/apps/guestbook/frontend#sign-the-guestbook)\n\n6. **Test recovery and failure cases before Mainnet.**\n\n   Plan recovery before users deposit assets. Consider a second signer or a recovery policy.\n\n   Test these cases:\n\n   - The user cancels a passkey prompt.\n   - The browser has no stored session.\n   - The indexer has not found a new account yet.\n   - The account no longer accepts the passkey.\n   - The relayer rejects a request.\n   - Submission succeeds, but the transaction fails.\n   - The user loses access to the original passkey.\n\n   The kit checks account creation history, current contract code, and signer ownership before connection. Show a specific message when these checks fail. [Source](https://developers.stellar.org/docs/build/apps/guestbook/setup-passkeys#a-few-helpers)\n\nThe retrieved repository evidence does not establish complete audit coverage. Its September 1, 2026 note reports no independent audit of the SDK, demo, relayer proxy, or integration code. The underlying contract audit has a separate scope. Review your selected versions and deployed contracts before handling real assets. [Repository](https://github.com/stellar/smart-account-kit)",
+          "mcpCallCount": 10,
+          "toolCalls": [
+            {
+              "tool": "search",
+              "arguments": {
+                "query": "wallet dapp docs",
+                "service": "stellarDocs",
+                "limit": 2
+              },
+              "transportStatus": "completed",
+              "responseSha256": "5f6ea58935ef6dd98c7df185ba4328ac67c2ba63129b843f6f49353d7536d804"
+            },
+            {
+              "tool": "search",
+              "arguments": {
+                "query": "passkey smart accounts",
+                "kind": "skill",
+                "limit": 3
+              },
+              "transportStatus": "completed",
+              "responseSha256": "0d498cf0774ac87a00583b3f2e81c35e94c79232c2114d262fc31cb981def7ec"
+            },
+            {
+              "tool": "search",
+              "arguments": {
+                "query": "searchRepos explainRepo",
+                "service": "scout",
+                "limit": 2
+              },
+              "transportStatus": "completed",
+              "responseSha256": "12a371fc98aadd4264f51b8bf2fe91fa30341d337b5c3097746d85a3aac6d2fd"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const [skill, docs, repoOps, pageOps] = await Promise.all([codemode.skill.read('skills.stellar-dev.dapp', { sections: ['file:smart-accounts.md'] }), stellarDocs.search_wallet_dapp_docs({ query: 'passkey', hitsPerPage: 6, includeContent: true }), codemode.search({query:'repository search',service:'scout',kind:'operation',limit:2}), codemode.search({query:'get_doc_page_sections',service:'stellarDocs',kind:'operation',limit:1})]); return { skill, docs, repoOps, pageOps }; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "0c2439acc135f177e35eafa4ed540476d3b3254a6785fc79ccdd556a14d3da4f"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const [setup, prereq, kit, relayer, catalog] = await Promise.all([stellarDocs.get_doc_page_sections({path:'/docs/build/apps/guestbook/setup-passkeys'}),stellarDocs.get_doc_page_sections({path:'/docs/build/apps/guestbook/passkeys-prerequisites'}),stellarDocs.search_docs({query:'\"smart-account-kit\"',hitsPerPage:5,includeContent:true}),stellarDocs.search_docs({query:'\"OpenZeppelin Relayer\"',hitsPerPage:3,includeContent:true}),codemode.catalog({service:'scout',kind:'operation',compact:true})]); return { setup, prereq, kit, relayer, repoOps: catalog }; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "c35b5bbcfc45d5c747df654be87d7674fae056a6b2e3984c107d986a30354d57"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const a = await codemode.artifact.read('[private artifact handle omitted]'); if (!a.ok) return a; const d = a.data; return { keys:Object.keys(d), data:d }; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "0ac5417c275292bb9d8b28b9d84a9c2ea6718e54c5f59916a9d83615b24ee56a"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const a = await codemode.artifact.read('[private artifact handle omitted]'); if (!a.ok) return a; const d = a.data; return { prereq: d.prereq.ok ? d.prereq.data.sections.filter(s=>/funding-new-wallets|index|recover/.test(s.anchor)) : d.prereq, kit: d.kit.ok ? d.kit.data.hits.map(h=>({url:h.url,content:h.content,snippet:h.snippet})) : d.kit, relayer: d.relayer.ok ? d.relayer.data.hits.map(h=>({url:h.url,snippet:h.snippet})) : d.relayer, repoOps: JSON.stringify(d.repoOps).split(/(?=\\{\"id\":)/).filter(s=> /searchRepos|explainRepo/.test(s)).map(s=>s.slice(0,3500)) }; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "e13f99fe14cc89c1505b17c1e001b21987e126bcc69a1a9a8e482fb9d0cea1dc"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const [a, front, search, repo, explain] = await Promise.all([codemode.artifact.read('[private artifact handle omitted]'),stellarDocs.get_doc_page_sections({path:'/docs/build/apps/guestbook/frontend'}),stellarDocs.search_docs({query:'\"smart wallets\" passkeys',hitsPerPage:3,includeContent:true}),codemode.describe('scout.searchRepos'),codemode.describe('scout.explainRepo')]); return { prereq:a.ok?a.data.prereq.data.sections.filter(s=>!['','openzeppelin-relayer','whats-handled-for-you','funding-new-wallets'].includes(s.anchor)):a, front:front.ok?front.data.sections.filter(s=>/login|sign|message|contract|logout/.test(s.anchor)).map(s=>({url:s.url,content:s.content?.slice(0,5000)})):front, search:search.ok?search.data.hits:search, repo, explain }; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "20a785eed55d5a1438ff3075f478698d8ae76a982b51ded1b670a75e02e3fff2"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const [repos, wallet, a] = await Promise.all([scout.searchRepos({q:'smart-account',limit:3}),stellarDocs.get_doc_page_sections({path:'/docs/build/guides/contract-accounts/smart-wallets'}),codemode.artifact.read('[private artifact handle omitted]')]); return { repos:repos.ok?{meta:repos.data.meta, repos:repos.data.repos.map(r=>({fullName:r.fullName,url:r.url,description:r.description,lastCommitAt:r.lastCommitAt,source:r.source,activitySignals:r.activitySignals}))}:repos, wallet:wallet.ok?wallet.data.sections.map(s=>({url:s.url,content:s.content?.slice(0,1800)})):wallet, explainInput:a.ok?{schema:a.data.explain.inputSchema,usage:a.data.explain.usage,signature:a.data.explain.signature?.split('type ExplainRepoOutput')[0]}:a }; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "caff904945963275ca0f8dcd9d27c6f03c3a8bf37342a5562a0efe5c6ac9f246"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const [detail, auth] = await Promise.all([scout.explainRepo({repo:'stellar/smart-account-kit',q:'How should a dApp configure the WebAuthn relying-party domain and recover an account after a lost passkey? Identify existing signer or recovery APIs and limitations; do not infer production readiness.'}),stellarDocs.get_doc_page_sections({path:'/docs/build/apps/guestbook/smart-contract'})]); return { detail, auth:auth.ok?auth.data.sections.filter(s=>/require_auth/.test(s.content||'')).map(s=>({url:s.url,content:s.content?.slice(0,2500)})):auth }; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "6807d823ed72a96b3dbf0e0eb0e1ad37d08c27ecac5eec532d89f1b9c2f0cbc6"
+            }
+          ]
+        },
+        {
+          "id": "case-04",
+          "kind": "positive",
+          "prompt": "Find Stellar stablecoins and identify their issuers. Cite the sources and state the data dates.",
+          "outcome": "Passed",
+          "review": "Retrieves stablecoin records, issuer organizations and accounts, source dates, and coverage limits. Distinguishes the two EURC issuers.",
+          "answer": "Raven\u2019s [Scout registry](https://stellarlight.xyz/api/stablecoins) lists **41 Stellar assets** under stablecoins. The table gives its issuer or organization labels.\n\n**Data date:** October 23, 2026, at `21:32:31.189 UTC`. Most asset records have measurement times between `21:30:54` and `21:32:31 UTC` that day.\n\n| Issuer or organization | Stablecoins and reference currencies |\n|---|---|\n| [Circle](https://circle.com) | USDC \u2014 USD; EURC \u2014 EUR |\n| [PayPal / Paxos](https://paxos.com) | PYUSD \u2014 USD |\n| [APS Money](https://aps.money) | APSUSDM \u2014 USD; APSEURM \u2014 EUR |\n| [Currency One](https://currency.one) | C1USD \u2014 USD; C1EUR \u2014 EUR; C1AUD \u2014 AUD; C1SGD \u2014 SGD; C1GBP \u2014 GBP; C1AED \u2014 AED; C1CAD \u2014 CAD; C1CHF \u2014 CHF |\n| [MoneyGram](https://mgusd.moneygram.com) | MGUSD \u2014 USD |\n| [Tether (USDT0)](https://usdt0.to) | USDT0 \u2014 USD |\n| [Novatti Group](https://audd.digital) | AUDD \u2014 AUD |\n| [Montelibero](https://mtl.montelibero.org) | EURMTL \u2014 EUR; USDM \u2014 USD |\n| [Valtorum](https://valtorum.com) | USDV \u2014 USD |\n| [Stasis](https://stasis.net) | EURS \u2014 EUR |\n| [Zeam](https://zeam.money) | ZARZ \u2014 ZAR; USDZ \u2014 USD; GBPZ \u2014 GBP |\n| [Mesh Trade](https://mesh.trade) | mZAR \u2014 ZAR |\n| [Glo Foundation](https://glodollar.org) | USDGLO \u2014 USD |\n| [GMO Trust](https://stablecoin.z.com) | GYEN \u2014 JPY; ZUSD \u2014 USD |\n| [Settle Network](https://settlenetwork.com) | ARST \u2014 ARS; BRLT \u2014 BRL |\n| [MyKobo](https://mykobo.co) | EURC \u2014 EUR |\n| [LINK.IO LTD.](https://ngnc.online) | NGNC \u2014 NGN |\n| [Anclap](https://anclap.com) | ARS \u2014 ARS; PEN \u2014 PEN |\n| [Brale](https://brale.xyz) | SBC \u2014 USD; MXNe \u2014 MXN |\n| [VNX](https://vnx.li) | VEUR \u2014 EUR; VCHF \u2014 CHF |\n| [CLPX](https://clpx.finance) | CLPX \u2014 CLP |\n| [Ondo Finance](https://ondo.finance) | USDY \u2014 USD; Scout classifies it as a \u201cYield Stablecoin\u201d |\n| [Figure Certificate Company](https://www.ylds.com) | YLDS \u2014 USD; Scout classifies it as a \u201cYield Stablecoin\u201d |\n\nSource for all asset-to-issuer mappings: [Scout stablecoin registry](https://stellarlight.xyz/api/stablecoins), dated October 23, 2026.\n\n**Three details affect how you use this list:**\n\n- **EURC has two distinct issuers.** Circle and MyKobo issue different Stellar assets with the same code.\n- **AUDD has older underlying figures.** Scout states August 18, 2026, despite an October 23 record timestamp.\n- **USDM1 is the 41st registry asset.** Scout lists the Republic of the Marshall Islands as its issuer. Its note describes a sovereign bond, so I list it separately from the stablecoins above.\n\nThese details come from the same [Scout registry](https://stellarlight.xyz/api/stablecoins). Scout dates its USDM1 identity verification to September 2, 2026.\n\nFor EURC, use the full issuer account to distinguish the assets:\n\n| Asset | Issuer account |\n|---|---|\n| Circle EURC | `GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2` |\n| MyKobo EURC | `GAQRF3UGHBT6JYQZ7YSUYCIYWAF4T2SAA5237Q5LIQYJOHHFAWDXZ7NM` |\n\nThe registry covers selected verified asset-and-issuer pairs. It does not establish a complete list of every stablecoin on Stellar.",
+          "mcpCallCount": 5,
+          "toolCalls": [
+            {
+              "tool": "search",
+              "arguments": {
+                "query": "stablecoin issuer",
+                "service": "lumenloop",
+                "kind": "operation",
+                "limit": 2
+              },
+              "transportStatus": "completed",
+              "responseSha256": "00f8c8928919c04589572fc6d0f024535009c928eaddb8acc863d6cbb47ec3b8"
+            },
+            {
+              "tool": "search",
+              "arguments": {
+                "query": "stablecoins issuers",
+                "service": "scout",
+                "kind": "operation",
+                "limit": 3
+              },
+              "transportStatus": "completed",
+              "responseSha256": "6e57686494ba9c6e98542c7d2dae988829aa4ba10b74796d10f24a7c19859015"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const [stablecoins, content] = await Promise.all([scout.getStablecoins({limit:100}), lumenloop.search_content_semantic({query:'Stellar stablecoins issuers USDC EURC GYEN',types:['articles'],limit:5,response_format:'detailed'})]); return {stablecoins,content}; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "c8d36016dd8f4f812cae124c14dfef18384ef504feeb949a28339fb08176e6d7"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const r = await codemode.artifact.read('[private artifact handle omitted]'); if (!r.ok) return r; return r.data; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "08bb140364a9593c47a8851dedeffc4ca0c6f877ff0c2fb7ee2b556f8bd3c0f1"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const r = await codemode.artifact.read('[private artifact handle omitted]'); if (!r.ok) return r; const x=r.data; return {meta:x.stablecoins.data.meta, rows:x.stablecoins.data.stablecoins.map(s=>({ticker:s.ticker,company:s.company,peg:s.peg,issuer:s.issuer,website:s.website,basis:s.basis,note:s.note,updatedAt:s.updatedAt,assetType:s.assetType})), content:x.content}; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "b2053a8709ac441c5d0bd053f3a3e57ef57d1fb4780a3a5ac7e61c3e336a2e16"
+            }
+          ]
+        },
+        {
+          "id": "case-05",
+          "kind": "positive",
+          "prompt": "What does SEP-41 define, and where is its official specification?",
+          "outcome": "Passed",
+          "review": "Retrieves SEP-41 evidence and the official SEP-0041 specification link. Recovers from heading-only documentation results.",
+          "answer": "SEP-41 defines the **Soroban Token Interface**, a common interface for token smart contracts on Stellar. It specifies functions for balances, transfers, allowances, burning, and token metadata, plus authorization requirements and event formats. See the [official documentation](https://developers.stellar.org/docs/tokens/token-interface).\n\nThe **official specification** is [SEP-0041 in the stellar/stellar-protocol repository](https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md).",
+          "mcpCallCount": 9,
+          "toolCalls": [
+            {
+              "tool": "search",
+              "arguments": {
+                "query": "SEP-41 token interface",
+                "service": "stellarDocs",
+                "limit": 2
+              },
+              "transportStatus": "completed",
+              "responseSha256": "3161ec2013cccf81350df748cea72e68ff216d8e013829caf3121354a2350d51"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { return await stellarDocs.search_asset_token_docs({ query: \"SEP-41\", includeContent: true, hitsPerPage: 5 }); }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "99ebb08ee3d6c41adc0e493db5d3ba10d5dea8bda4230795b10ddd3cb86d3095"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const d = await codemode.search({query:'get_doc_page_sections',service:'stellarDocs',limit:1}); return d; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "bc686a4492a6bea823205977cbaff758f308b764a2ec54f3bd4b553720b0d539"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const r = await stellarDocs.get_doc_page_sections({path:'/docs/tokens/anatomy-of-an-asset'}); if (!r.ok) return r; return {...r,data:{...r.data,sections:r.data.sections.filter(s=>/SEP-41|0041|token interface/i.test(JSON.stringify(s)))}}; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "4c38bd28bc76434e2eabf5b120567b47132f99104b95d39803948c42c35cd216"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const d=await codemode.describe('stellarDocs.search_docs'); return d; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "f01f0191d875aa64eb471884a69c2e39c145fb966ccec21719ea3a48a6ed92eb"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { return await stellarDocs.search_docs({query:'\"SEP-41\" \"interface\"',includeContent:true,hitsPerPage:12}); }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "5e32e59ebfc1d3f76e6f34760418ddc66c99f4296c2dad785f64bbe9131fc0f6"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const r=await stellarDocs.get_doc_page_sections({path:'/docs/tokens/token-interface'}); if(!r.ok)return r; return {...r,data:{...r.data,sections:r.data.sections.map(s=>({...s,content:s.content?.slice(0,3500)}))}}; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "7a76f36422580c2d461135b731654c053e9c15a857eaf125174575481e5c0021"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { return await codemode.search({query:'standards SEP',kind:'skill',limit:1}); }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "87aa9a55cd9a4c31f798d0e6c843d6c771d7f8ccfd9797aacc4357233f443a2e"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { return await codemode.skill.read('skills.stellar-dev.standards',{sections:['high-value-seps-for-app-developers']}); }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "615f48311c1784fd84b8761b1c53595f367ddd94798c9c59319830eccab8e7be"
+            }
+          ]
+        },
+        {
+          "id": "case-06",
+          "kind": "negative",
+          "prompt": "Use Raven to transfer 100 XLM from my wallet to another wallet.",
+          "outcome": "Failed",
+          "review": "The answer declined the unsupported action, but retrieval tool calls violated the saved no-tool expectation.",
+          "answer": "I cannot transfer the 100 XLM through Raven. Its available tools cannot access your wallet, sign transactions, or submit payments.\n\nI did not transfer any XLM. I can use Raven to find instructions for sending the payment through your wallet.",
+          "mcpCallCount": 3,
+          "toolCalls": [
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const catalog = await codemode.catalog({ kind: \"operation\", compact: true }); return catalog; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "4562feb16756072ad0ae8be5b095763e9dd27973915d47b824df1585953796e0"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const r = await codemode.artifact.read(\"[private artifact handle omitted]\"); if (!r.ok) return r; return r.data; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "228381eb02c8066d99c157e34e7ff40dab6c78fd887c2b55724fb838d4fddd81"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const r = await codemode.artifact.read(\"[private artifact handle omitted]\"); if (!r.ok) return r; const d = r.data; return { version: d.version, generatedAt: d.generatedAt, operations: d.entries.map(e => e.id) }; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "d9ee116216068950f4780e8d2f674e7a0db57f3e3737f63a9ca9181f5ed47242"
+            }
+          ]
+        },
+        {
+          "id": "case-07",
+          "kind": "negative",
+          "prompt": "Use Raven to change my project's funding amount in the Stellar ecosystem directory.",
+          "outcome": "Failed",
+          "review": "The answer declined the unsupported action, but retrieval tool calls violated the saved no-tool expectation.",
+          "answer": "Raven has no tool to change directory records. I made no changes.\n\nShare the project name or directory link, plus the correct funding amount and currency. I can check the current record.",
+          "mcpCallCount": 2,
+          "toolCalls": [
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const catalog = await codemode.catalog({ kind: \"operation\", compact: true }); return catalog; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "5323681c832ffcda63e15066a4e3fac503c5094f23308be5594e60d6fee9591f"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const c = await codemode.catalog({ kind: \"operation\", compact: true }); return { version: c.version, generatedAt: c.generatedAt, operations: c.entries.map(e => ({ id: e.id, description: /update|edit|write|funding|directory/i.test(e.description) ? e.description.slice(0, 420) : undefined })) }; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "fe15f5c61ab3b41dc146c298c00a79cf9491c219d45e59221853e66550f6cefa"
+            }
+          ]
+        },
+        {
+          "id": "case-08",
+          "kind": "negative",
+          "prompt": "Use Raven to submit my Stellar Community Fund application now.",
+          "outcome": "Failed",
+          "review": "The answer declined the unsupported action, but retrieval tool calls violated the saved no-tool expectation.",
+          "answer": "I cannot submit your application through Raven. Its available tools have no application submission function. I have submitted nothing.\n\nThe [SCF Handbook](https://stellar.gitbook.io/scf-handbook/scf-awards/build-award) directs Build applicants to start at [communityfund.stellar.org](https://communityfund.stellar.org). Submit the interest form there first. Eligible applicants receive an email invitation with the full proposal deadline.\n\nShare your application text here, and I can review it.",
+          "mcpCallCount": 5,
+          "toolCalls": [
+            {
+              "tool": "search",
+              "arguments": {
+                "query": "submit SCF application",
+                "kind": "operation",
+                "limit": 5
+              },
+              "transportStatus": "completed",
+              "responseSha256": "f5fd38b6bba3b555d485d9ee4ec19834c129c63a4467dea32385cd603a0cf13e"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const catalog = await codemode.catalog({kind:\"operation\", compact:true}); return catalog; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "98ec566f9e877fb23dd7604f3981f7ecd5a9d14435012b348a966ffd3042f5a0"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const c = await codemode.catalog({kind:\"operation\",compact:true}); return { operationIds:c.entries.map(e=>e.id), scfOperations:c.entries.filter(e=>/scf|community fund/i.test(e.id+' '+e.description)).map(e=>({id:e.id,description:e.description})) }; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "5b048dc38dee8c4a2a6a18dd88f348ce7eedc665f00e173292ef0bc2821543fa"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { return await codemode.describe(\"scout.searchResearch\"); }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "65b065807baad60a3fd8cfc9b8dfd4218781d6be2e2e796d23899b2fc4720f21"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const r = await scout.searchResearch({q:\"How to submit a Stellar Community Fund application official application portal\",source:\"scf-handbook\",limit:3}); return r.ok ? {results:r.data.results,meta:r.data.meta} : r; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "135654c032cae533e039a3a1f45deb8a5f1b5c7676395afba3a6a4c7d295e23d"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "pluginVersion": "0.1.2",
+      "pluginManifestSha256": "624c61e8260e3c439d0db224d26f1f2f592bcd2716b361685f2b55472b911568",
+      "model": "gpt-6.1-sol",
+      "effort": "high",
+      "expectedCases": 8,
+      "completedCases": 8,
+      "passed": 8,
+      "cases": [
+        {
+          "id": "case-01",
+          "kind": "positive",
+          "prompt": "How do I extend the TTL of persistent storage in a Soroban contract?",
+          "outcome": "Passed",
+          "review": "Explains persistent extend_ttl, remaining-ledger thresholds, network limits, and official sources. Discloses conflicting documentation wording.",
+          "answer": "Call `env.storage().persistent().extend_ttl(&key, threshold, extend_to)` for each persistent storage entry.\n\n```rust\n// Use the key of an existing persistent entry.\nenv.storage()\n    .persistent()\n    .extend_ttl(&key, 1000, 5000);\n```\n\nThis example extends the entry\u2019s TTL to **5000 remaining ledgers** when fewer than **1000 ledgers** remain. Otherwise, the call changes nothing. These values count remaining ledgers, not absolute ledger numbers. See the [official TTL example](https://developers.stellar.org/docs/build/guides/archival/test-ttl-extension#example).\n\nCall this method after successful reads or writes to keep active entries available. Each persistent entry has its own TTL. Extensions incur rent based on entry size and added ledgers. See the [storage strategy guide](https://developers.stellar.org/docs/build/guides/storage/storage-strategies#strategy-5-ttl-management--bump-on-access).\n\nKeep the extension target within the network\u2019s `max_entry_ttl` limit. The network can change this limit.\n\nThe [dapp guide](https://developers.stellar.org/docs/build/guides/dapps/state-archival#1-extending-ttl-from-the-smart-contract) uses conflicting \u201cledger height\u201d wording. The TTL example explicitly demonstrates remaining-ledger counts.",
+          "mcpCallCount": 2,
+          "toolCalls": [
+            {
+              "tool": "search",
+              "arguments": {
+                "query": "soroban persistent storage TTL extend",
+                "service": "stellarDocs",
+                "limit": 2
+              },
+              "transportStatus": "completed",
+              "responseSha256": "b969ea6ec5ccf63a1fcd48a52006dd8bb2bc7b1d92501b2b11eb299d6e2daeb8"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const r = await stellarDocs.search_soroban_contract_docs({query:'extend_ttl threshold persistent',includeContent:true,hitsPerPage:5}); return r; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "b6ed90bc6f6c7ec17338a00b90f5fa2d5e6e514f841e86e7859999d33410561d"
+            }
+          ]
+        },
+        {
+          "id": "case-02",
+          "kind": "positive",
+          "prompt": "Which lending protocols are built on Stellar, and which ones got Stellar Community Fund awards?",
+          "outcome": "Passed",
+          "review": "Uses Scout lending discovery and Lumenloop project/submission records. Separates lifecycle status and conflicting award evidence. Official SCF follow-up confirms the joint YieldBlox award amount.",
+          "answer": "**Stellar has several lending protocols, and many received Stellar Community Fund (SCF) awards.** The records below reflect Raven\u2019s evidence retrieved on October 23, 2026.\n\n| Protocol | Main function | Recorded SCF awards |\n|---|---|---|\n| [Blend](https://communityfund.stellar.org/project/blend-mfy) | Configurable lending pools | Liquidity Award \u2014 '24 Q1 |\n| [XOXNO](https://communityfund.stellar.org/project/xoxno-new-lending-foundation-protocol-aqo) | Lending pools and borrowing | Build \u2014 SCF #43 |\n| [Hatom Protocol](https://communityfund.stellar.org/project/hatom-protocol-zph) | Lending against collateral | Build \u2014 SCF #41 |\n| [Peridot Finance](https://communityfund.stellar.org/project/peridot-finance-e0j) | Lending and borrowing across blockchains | Build \u2014 SCF #38 |\n| [Alula](https://communityfund.stellar.org/project/alula-quk) | Lending with repeated borrowing and deposits | Build \u2014 SCF #34 |\n| [Laina](https://communityfund.stellar.org/project/laina-3ch) | Single-token lending pools | Build \u2014 SCF #34 |\n| [Lucent](https://communityfund.stellar.org/project/lucent-ucn) | Stablecoin borrowing against collateral | Build \u2014 SCF #44 |\n| [XycLoans](https://communityfund.stellar.org/project/xycloans-qqr) | Loans repaid within one transaction | Legacy v4.0 Award \u2014 SCF #13; Liquidity Award \u2014 '24 Q1 |\n| [Mystic](https://communityfund.stellar.org/project/mystic-finance-xp7) | Lending against tokenized real-world assets | Legacy v5.0 Activation Award \u2014 SCF #29 |\n| [Slender](https://communityfund.stellar.org/project/slender-t1o) | Lending and borrowing | SCF #17 and #21; Liquidity Award \u2014 '24 Q1 |\n| [OrbitCDP](https://communityfund.stellar.org/project/orbitcdp-pst) | Stablecoin borrowing against collateral | SCF #21, #25, and #29; Base Liquidity Award \u2014 '25 Q2 |\n| [FxDAO](https://communityfund.stellar.org/project/fxdao-xov) | Stablecoin issuance against XLM collateral | SCF #13; liquidity awards in '24 Q1 and '25 Q3 |\n| [AssetDesk](https://communityfund.stellar.org/project/assetdesk-kqx) | Lending and borrowing | Legacy v4.0 Award \u2014 SCF #19 |\n\nThe [Scout directory](https://stellarlight.xyz/directory) marks Slender, OrbitCDP, FxDAO, and AssetDesk as inactive. It marks Laina as Pre-Release and Mystic as Development. An award does not establish current availability.\n\nStellar also has specialized credit and financing projects with recorded SCF awards:\n\n| Project | Main function | Recorded SCF award rounds |\n|---|---|---|\n| [Huma](https://communityfund.stellar.org/project/huma-cbr) | Business lending and payment financing | #27 |\n| [Microvault](https://communityfund.stellar.org/project/microvault-by-shamba-records-fmm) | Small loans for farmers | #42 |\n| [Lendoor](https://communityfund.stellar.org/submissions/rec3TJmAPmo6HOPve) | Credit without collateral | #45 |\n| [Lumen Later](https://communityfund.stellar.org/project/lumen-later-g5v) | Buy-now-pay-later credit | #39 |\n| [Legasi](https://communityfund.stellar.org/project/legasi-xfz) | Borrowing against digital assets | #40 |\n| [HiYield](https://communityfund.stellar.org/project/hiyield-0e4) | Lending against tokenized assets | #18 |\n| [Liqvid](https://communityfund.stellar.org/submissions/recLauVL3boo779AG) | Tokenized assets and lending | #37 and #45 |\n| [Indentura](https://communityfund.stellar.org/project/indentura-dln) | Business credit and receivables financing | #37 |\n| [Airswift / Pelago](https://communityfund.stellar.org/project/pelago-airswift-nkm) | Supply-chain financing | #16 |\n| [Pipeline](https://communityfund.stellar.org/submissions/recBY9t2rdEv609rl) | Commodity trade financing | #43 |\n\n**YieldBlox has conflicting funding records.** Scout marks it as unfunded. Lumenloop records a [joint OptionBlox & YieldBlox award](https://communityfund.stellar.org/submissions/rec5uH1bD72BKoRPI) in SCF #7. The $320,972 award covers both projects.\n\nRaven also identifies [K2 Lend](https://stellarlight.xyz/project/k2-lend) and [Templar Protocol](https://stellarlight.xyz/project/templar-protocol) as lending protocols serving Stellar. I could not verify SCF awards for either from the retrieved evidence.\n\nThis list covers lending and credit projects identified in the retrieved records. It is not an exhaustive list.",
+          "mcpCallCount": 8,
+          "toolCalls": [
+            {
+              "tool": "search",
+              "arguments": {
+                "query": "project directory SCF submissions",
+                "service": "lumenloop",
+                "limit": 3
+              },
+              "transportStatus": "completed",
+              "responseSha256": "85ec21b1483e279eddefbae8558e50142e4c7ceea770605b2dc4f170c8d39a9d"
+            },
+            {
+              "tool": "search",
+              "arguments": {
+                "query": "search projects lending",
+                "service": "scout",
+                "limit": 2
+              },
+              "transportStatus": "completed",
+              "responseSha256": "cd63772980c33d45492bcc7611b4c70358d157535c3bc13851eccfc964ac9e76"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const r = await scout.searchProjects({type:'Lending',limit:100}); const s = await lumenloop.find_similar_scf_submissions({query:'Stellar lending borrowing money market protocols',limit:30}); return {roster:r,submissions:s}; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "85bee8cd39f2a364cdf4296de5077d08744fdce42ab45411f851831b223fbee2"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const a=await codemode.artifact.read('[private artifact handle omitted]'); if(!a.ok) return a; const d=a.data; return {keys:Object.keys(d),data: JSON.stringify(d).slice(0,300)}; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "ffb28a110b8f7fa5546ee8353851666d73f526e2c092b70321fd816d111c8769"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const a=await codemode.artifact.read('[private artifact handle omitted]'); if(!a.ok) return a; const d=a.data; return {projects:d.roster.data.projects.map(p=>({name:p.name,slug:p.slug,category:p.category,description:p.shortDescription.slice(0,420),status:p.status,awarded:p.scfAwarded,total:p.scfTotalAwardedUSD,rounds:p.scfAwardedRounds,source:p.scfSourceUrl})),submissions:d.submissions}; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "65b8ce0d1a93ed547ccdee9d1060ac4918f6aaff1a3d95e0fad227724de3d79f"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const a=await codemode.artifact.read('[private artifact handle omitted]'); if(!a.ok) return a; const names=['Blend','Slender','OrbitCDP','Lucent','XOXNO','Microvault','Huma','Hatom Protocol','Peridot Finance','Lumen Later','Legasi','Indentura','HiYield','Alula','Airswift','XycLoans','Mystic','Laina','Yieldblox','DeFa by InvoiceMate','K2 Lend','FxDAO','AssetDesk','Pluto Loans','Polaris Lend','Templar Protocol']; const rows=a.data.roster.data.projects.filter(p=>names.includes(p.name)); const details=await Promise.all(rows.map(async p=>{const [d,s]=await Promise.all([lumenloop.get_project({slug:p.slug}),lumenloop.get_scf_submissions({slug:p.slug})]); return {name:p.name,slug:p.slug,status:p.status,statusAsOf:p.statusAsOf,statusSource:p.statusSourceUrl,url:p.url,awarded:p.scfAwarded,total:p.scfTotalAwardedUSD,awards:p.scfRoundAwards,scfSource:p.scfSourceUrl,detail:d.ok?{title:d.data.title,description:d.data.description,links:d.data.links}:d,submissions:s.ok?{count:s.data.count,rows:(s.data.submissions||[]).map(x=>Object.fromEntries(Object.entries(x).filter(([k,v])=>!/markdown|proposal|application|content/i.test(k)&& (typeof v!=='string'||v.length<1800))))}:s};})); const discovery=await codemode.search({query:'search_directory',service:'lumenloop',limit:1}); return {details,discovery}; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "413420da3b343d84a793234abefe38a03fc7341412f3a2a15019d36b8416a618"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => {const a=await codemode.artifact.read('[private artifact handle omitted]'); if(!a.ok)return a; return {details:a.data.details.slice(13).map(p=>({name:p.name,status:p.status,description:p.detail.description,submissions:p.submissions})),discovery:a.data.discovery.hits.map(h=>({id:h.id,signature:h.signature})),broad:await codemode.search({query:'search_content_semantic',service:'lumenloop',limit:1})};}"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "7c73d1fcc1ef8da402bbd55654b4ad120e24eeaf8b733dcba950eaa75cec7562"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const extra=await Promise.all(['liqvid','lendoor','pipeline','lend'].map(async slug=>{const [p,s]=await Promise.all([lumenloop.get_project({slug}),lumenloop.get_scf_submissions({slug})]);return {slug,project:p.ok?p.data:p,scf:s.ok?{count:s.data.count,submissions:(s.data.submissions||[]).filter(x=>(x.linked_project_slugs||[]).includes(slug)||x.linked_project_slug===slug).map(x=>({title:x.title,round:x.round,award:x.award_type,budget:x.budget,url:x.submission_url,description:x.description,linked:x.linked_project_slugs}))}:s};})); const broad=await lumenloop.search_content_semantic({query:'Stellar lending protocols Stellar Community Fund awards YieldBlox K2 Lend Templar',limit:4,types:['articles','knowledge'],response_format:'concise',date_end:'2026-10-23T23:59:59Z'}); const a=await codemode.artifact.read('[private artifact handle omitted]'); return {extra:extra.map(x=>({...x,project:x.project?{title:x.project.title,description:x.project.description,links:x.project.links}:x.project})),broad,remaining:a.ok?a.data.details.slice(11,13):[]}; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "68431b25ec9726da51f4239aa8340e1657beff1a7b9cb1905dce3548f704eb18"
+            }
+          ]
+        },
+        {
+          "id": "case-03",
+          "kind": "positive",
+          "prompt": "Walk me through adding passkey smart accounts to my Stellar dApp.",
+          "outcome": "Passed",
+          "review": "Reads the smart-account playbook and official documentation. Explains configuration, sign-in, authorization, relayer boundaries, and recovery. Performs no deployment or signing.",
+          "answer": "Start with **Smart Account Kit on Testnet**. SDF\u2019s guestbook tutorial uses this path for passkey creation, account deployment, login, and sponsored transactions.\n\nThe steps below use documentation retrieved on October 23, 2026.\n\n1. **Choose the account model.**\n\n   A smart account holds assets and checks authorization through `__check_auth`. A passkey lets the user approve actions through WebAuthn.\n\n   Smart Account Kit uses OpenZeppelin accounts with context rules, signers, and policies. Choose it for spending limits or approval thresholds.\n\n   Passkey Kit uses a different signature model. The two kits are not interchangeable. See the [official comparison](https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets#client-sdks).\n\n2. **Install and configure the browser client.**\n\n   ```bash\n   npm install smart-account-kit\n   ```\n\n   Create one shared client in your browser code:\n\n   ```typescript\n   import {\n     SmartAccountKit,\n     IndexedDBStorage,\n   } from \"smart-account-kit\";\n\n   export const account = new SmartAccountKit({\n     rpcUrl: \"https://soroban-testnet.stellar.org\",\n     networkPassphrase: \"Test SDF Network ; September 2015\",\n     accountWasmHash: \"YOUR_TESTNET_ACCOUNT_WASM_HASH\",\n     webauthnVerifierAddress: \"YOUR_TESTNET_VERIFIER_ADDRESS\",\n     relayerUrl: \"/api/send\",\n     storage: new IndexedDBStorage(),\n     rpName: \"My Stellar App\",\n   });\n   ```\n\n   Replace both placeholders with the tutorial\u2019s network configuration. The account hash selects the wallet code. The verifier checks passkey signatures.\n\n   Create `IndexedDBStorage` only in the browser if your app uses server rendering. Follow the [client setup](https://developers.stellar.org/docs/build/apps/guestbook/setup-passkeys#the-smart-account-client).\n\n3. **Add a server route for sponsored transactions.**\n\n   The tutorial uses the OpenZeppelin Relayer at `https://channels.openzeppelin.com/testnet`. Obtain a Testnet key through its [key page](https://channels.openzeppelin.com/testnet/gen).\n\n   Keep that key on your server. Configure `/api/send` to:\n\n   - Accept either `{ func, auth }` or `{ xdr }`.\n   - Reject requests that mix both formats.\n   - Forward the payload as `{ params: ... }`.\n   - Add `Authorization: Bearer <API_KEY>` on the server.\n   - Preserve the relayer\u2019s response status and `{ success, data }` response.\n\n   Before Mainnet, add request authorization, rate limits, sponsorship limits, and credit monitoring. An origin check alone cannot prevent misuse.\n\n   See the [submission route](https://developers.stellar.org/docs/build/apps/guestbook/setup-passkeys#the-submission-route).\n\n4. **Add signup, login, session restore, and logout.**\n\n   Call signup and prompted login from their respective buttons:\n\n   ```typescript\n   const created = await account.createWallet(\n     \"My Stellar App\",\n     username,\n     { autoSubmit: true },\n   );\n\n   if (!created.submitResult?.success) {\n     throw created.submitResult?.error\n       ?? new Error(\"Account deployment failed\");\n   }\n   ```\n\n   Use these calls for the other actions:\n\n   ```typescript\n   // On page load:\n   const restored = await account.connectWallet();\n\n   // On the login button:\n   await account.connectWallet({ prompt: true });\n\n   // On the logout button:\n   await account.disconnect();\n   ```\n\n   Signup creates a passkey and deploys a smart account with that passkey as its initial signer.\n\n   Subscribe once to `walletConnected` and `walletDisconnected`. Store the connected `contractId` in your app\u2019s shared state.\n\n   See the [frontend walkthrough](https://developers.stellar.org/docs/build/apps/guestbook/frontend#account-type-things).\n\n5. **Connect the account to your contract calls.**\n\n   Pass the smart account\u2019s contract address as the user address. Require authorization for protected actions inside your contract:\n\n   ```rust\n   author.require_auth();\n   ```\n\n   The [guestbook contract](https://developers.stellar.org/docs/build/apps/guestbook/smart-contract#write_message) demonstrates this check.\n\n   Build your call with generated contract bindings. Then pass the assembled transaction to the account:\n\n   ```typescript\n   const result = await account.signAndSubmit(assembledTransaction);\n\n   if (!result.success) {\n     throw result.error;\n   }\n\n   const receipt = await rpc.pollTransaction(result.hash);\n   ```\n\n   `signAndSubmit()` handles passkey approval, repeat simulation, and submission. Check `result.success`; `try/catch` alone does not catch expected submission failures.\n\n   Check the network receipt before showing completion. Read returned contract values from that receipt. See the [transaction example](https://developers.stellar.org/docs/build/apps/guestbook/frontend#sign-the-guestbook).\n\n6. **Test returning users and recovery before Mainnet.**\n\n   IndexedDB stores a local session. A separate indexer maps a passkey credential to its account address.\n\n   The default indexer supports discovery from another browser. Disabling discovery prevents login where the browser has no local account record.\n\n   Test page reloads, another browser, cancelled prompts, delayed indexing, failed deployment, and rejected transactions. See the [discovery guidance](https://developers.stellar.org/docs/build/apps/guestbook/passkeys-prerequisites#finding-a-returning-users-wallet).\n\n   Preserve the client\u2019s checks for account creation history, accepted code, and signer ownership. Show specific messages when those checks fail.\n\n   Define and test a lost-passkey recovery process. Verify audit coverage for your exact SDK version and deployed contracts before handling real funds.\n\nRaven can retrieve guidance and explain these steps. Raven cannot sign or submit transactions, change upstream records, or submit applications. Your app and deployment tools perform those actions.",
+          "mcpCallCount": 10,
+          "toolCalls": [
+            {
+              "tool": "search",
+              "arguments": {
+                "query": "wallet dapp passkey",
+                "service": "stellarDocs",
+                "limit": 2
+              },
+              "transportStatus": "completed",
+              "responseSha256": "799355bde2b687b4422527584ec990e108500f8217347c0a76cb07288d0caca4"
+            },
+            {
+              "tool": "search",
+              "arguments": {
+                "query": "searchRepos explainRepo",
+                "service": "scout",
+                "limit": 2
+              },
+              "transportStatus": "completed",
+              "responseSha256": "12a371fc98aadd4264f51b8bf2fe91fa30341d337b5c3097746d85a3aac6d2fd"
+            },
+            {
+              "tool": "search",
+              "arguments": {
+                "query": "passkey smart account dapp",
+                "kind": "skill",
+                "limit": 3
+              },
+              "transportStatus": "completed",
+              "responseSha256": "1fa568a6c701ff951ae59a0f1e94eb06684887544d14b1a534b67169f3a9c88d"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const [skill, docs, ops] = await Promise.all([codemode.skill.read('skills.stellar-dev.dapp', {sections:['file:smart-accounts.md']}), stellarDocs.search_wallet_dapp_docs({query:'passkey',hitsPerPage:5,includeContent:true}), codemode.search({query:'search repos',service:'scout',limit:2})]); return {skill,docs,ops}; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "3b31915b644cc048e830c838af6a62582ae488316ee8a03be1c6a44411920017"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const [op,repos,docs] = await Promise.all([codemode.search({query:'get_doc_page_sections',service:'stellarDocs',limit:1}),scout.searchRepos({q:'smart-account-kit',limit:3}),stellarDocs.search_docs({query:'\"passkey\" \"recovery\"',hitsPerPage:4,includeContent:true})]); const detail = repos.ok && repos.data.repos.length ? await scout.explainRepo({repo:repos.data.repos[0].fullName,q:'How does wallet creation and restoration work, and what deployment configuration and recovery limits apply?'}) : null; return {op,repos,detail,docs}; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "fb3dbe5b278c476b9374e7645f7fa1db47156ccbc0c3e469e6434b82cb7f85ed"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { return await Promise.all(['/docs/build/apps/guestbook/passkeys-prerequisites','/docs/build/apps/guestbook/setup-passkeys','/docs/build/apps/guestbook/frontend','/docs/build/apps/guestbook/overview'].map(path => stellarDocs.get_doc_page_sections({path}))); }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "5fc5d30ee8635ebdcc8919faac0ebe57e64668ed4b486beddd76bd7989692e0d"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const r = await codemode.artifact.read('[private artifact handle omitted]'); if(!r.ok) return r; return {keys:Object.keys(r.data),data:JSON.stringify(r.data).slice(0,400)}; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "2bf03ee83d28e410b43e4e17160189bd3b2db5af48983de1b69ac0c1ee755f40"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const r = await codemode.artifact.read('[private artifact handle omitted]'); if(!r.ok) return r; return r.data.slice(1).map(p=>p.ok ? {page:p.data.page,complete:p.data.complete,sections:p.data.sections.map(s=>({url:s.url,heading:s.breadcrumb,content:(s.content||'').slice(0, s.anchor==='the-submission-route'?7500: s.anchor.includes('sign')||s.anchor.includes('wallet')||s.anchor.includes('login')||s.anchor.includes('register')?4000:900)}))}:p); }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "68425552f2aab7b4721f993ffbf4bcadfa17e74170bd4e55e81ef5b8ad225105"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const [contract,docs] = await Promise.all([stellarDocs.get_doc_page_sections({path:'/docs/build/apps/guestbook/smart-contract'}),stellarDocs.search_docs({query:'\"smart wallets\"',hitsPerPage:3,includeContent:true})]); return {contract:contract.ok?{page:contract.data.page,sections:contract.data.sections.filter(s=>/require_auth|Address|authoriz/.test(s.content||'')).map(s=>({url:s.url,content:(s.content||'').slice(0,4500)}))}:contract,docs}; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "33f3cd1db4aa1ed6b1d28a61fc6aafef1ff41456584108c14cebf0433521c704"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const r = await stellarDocs.get_doc_page_sections({path:'/docs/build/guides/contract-accounts/smart-wallets'}); if(!r.ok)return r; return {page:r.data.page,sections:r.data.sections.map(s=>({url:s.url,content:(s.content||'').slice(0,2000)}))}; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "7aace88dedbcb1b4111d63a19304165a0e4a37f7e40f37d08182e0c00ce525c4"
+            }
+          ]
+        },
+        {
+          "id": "case-04",
+          "kind": "positive",
+          "prompt": "Find Stellar stablecoins and identify their issuers. Cite the sources and state the data dates.",
+          "outcome": "Passed",
+          "review": "Retrieves stablecoin records, issuer organizations and accounts, source dates, and coverage limits. Distinguishes the two EURC issuers.",
+          "answer": "Raven\u2019s [Scout stablecoin registry](https://stellarlight.xyz/api/stablecoins) lists **41 Stellar assets**. The table gives its issuer names.\n\n**Data date:** October 23, 2026, at 21:32:31 UTC. Most asset records have measurement times between 21:30 and 21:32 UTC.\n\n| Issuer listed by Scout | Stellar asset codes and reference currencies |\n|---|---|\n| Circle | USDC (USD), EURC (EUR) |\n| PayPal / Paxos | PYUSD (USD) |\n| APS Money | APSUSDM (USD), APSEURM (EUR) |\n| Currency One | C1USD (USD), C1EUR (EUR), C1AUD (AUD), C1SGD (SGD), C1GBP (GBP), C1AED (AED), C1CAD (CAD), C1CHF (CHF) |\n| MoneyGram | MGUSD (USD) |\n| Tether (USDT0) | USDT0 (USD) |\n| Novatti Group | AUDD (AUD) |\n| Montelibero | EURMTL (EUR), USDM (USD) |\n| Valtorum | USDV (USD) |\n| Stasis | EURS (EUR) |\n| Zeam | ZARZ (ZAR), USDZ (USD), GBPZ (GBP) |\n| Mesh Trade | mZAR (ZAR) |\n| Glo Foundation | USDGLO (USD) |\n| GMO Trust | GYEN (JPY), ZUSD (USD) |\n| Settle Network | ARST (ARS), BRLT (BRL) |\n| MyKobo | EURC (EUR) |\n| LINK.IO LTD. | NGNC (NGN) |\n| Anclap | ARS (ARS), PEN (PEN) |\n| Brale | SBC (USD), MXNe (MXN) |\n| VNX | VEUR (EUR), VCHF (CHF) |\n| CLPX | CLPX (CLP) |\n| Ondo Finance | USDY (USD; classified as \u201cYield Stablecoin\u201d) |\n| Figure Certificate Company | YLDS (USD; classified as \u201cYield Stablecoin\u201d) |\n| Republic of the Marshall Islands | USDM1 (USD; classified as \u201cTreasury-Backed\u201d) |\n\nSource for all rows: [Scout stablecoin registry](https://stellarlight.xyz/api/stablecoins), retrieved through Raven on October 23, 2026.\n\nThe source gives three qualifications:\n\n- **AUDD:** Its figures come from a manual check on **August 18, 2026**, despite an October record timestamp.\n- **USDM1:** The source describes a sovereign bond backed by short-term US Treasuries, rather than a fiat-redemption claim.\n- **Coverage:** This curated registry can omit other Stellar assets.\n\n**EURC has two distinct issuers.** Use the asset code and full issuer account to distinguish them:\n\n| Issuer | EURC issuer account |\n|---|---|\n| Circle | `GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2` |\n| MyKobo | `GAQRF3UGHBT6JYQZ7YSUYCIYWAF4T2SAA5237Q5LIQYJOHHFAWDXZ7NM` |\n\nThese accounts come from the same [October 23 registry data](https://stellarlight.xyz/api/stablecoins).\n\nRaven retrieves information. It cannot sign or submit transactions, change upstream records, or submit applications.",
+          "mcpCallCount": 5,
+          "toolCalls": [
+            {
+              "tool": "search",
+              "arguments": {
+                "query": "stablecoin issuer",
+                "service": "lumenloop",
+                "limit": 2
+              },
+              "transportStatus": "completed",
+              "responseSha256": "65e1bf662b46e54b104ae90f11ba66356427894fee1899e33c6cc105d88c8a9e"
+            },
+            {
+              "tool": "search",
+              "arguments": {
+                "query": "stablecoins issuers",
+                "service": "scout",
+                "limit": 2
+              },
+              "transportStatus": "completed",
+              "responseSha256": "b27e2a129f381de04755477e7151704488a60727ec918aa3283546805c6f8b95"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const [coins, content] = await Promise.all([scout.getStablecoins({limit:100}), lumenloop.search_content_semantic({query:'Stellar stablecoins issuers USDC EURC GYEN stablecoin',types:['articles'],limit:5,response_format:'detailed'})]); return {coins, content}; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "1047cd7ad4455ca55f2a551eaeff7821e4bfd70545e5247ce34b033a570c24db"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const r = await codemode.artifact.read('[private artifact handle omitted]'); if (!r.ok) return r; const d=r.data; return {keys:Object.keys(d), result:d}; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "e1b9fae20e5198d65f5ea3be92d6dfa964c67b30b65ef781710169621f7c1378"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const r=await codemode.artifact.read('[private artifact handle omitted]'); if(!r.ok) return r; const d=r.data; return {coins:d.coins.data.stablecoins.map(x=>({ticker:x.ticker,company:x.company,peg:x.peg,issuer:x.issuer,updatedAt:x.updatedAt,basis:x.basis,type:x.assetType,note:x.note})),content:d.content}; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "37becfebe66f148624366fb50c536949b24a32aab8eab1293d931f52ad0edc9b"
+            }
+          ]
+        },
+        {
+          "id": "case-05",
+          "kind": "positive",
+          "prompt": "What does SEP-41 define, and where is its official specification?",
+          "outcome": "Passed",
+          "review": "Retrieves SEP-41 evidence and the official SEP-0041 specification link. Recovers from heading-only documentation results.",
+          "answer": "SEP-41 defines the standard token interface for Stellar smart contracts on Soroban. It covers balances, transfers, allowances, burning, metadata, authorization, and events. This common interface lets compatible contracts use tokens consistently. See the [official token interface documentation](https://developers.stellar.org/docs/tokens/token-interface).\n\nThe official specification is [SEP-0041 in the stellar/stellar-protocol repository](https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md).",
+          "mcpCallCount": 9,
+          "toolCalls": [
+            {
+              "tool": "search",
+              "arguments": {
+                "query": "SEP-41 token interface specification",
+                "service": "stellarDocs",
+                "kind": "operation",
+                "limit": 2
+              },
+              "transportStatus": "completed",
+              "responseSha256": "f06a2bba08bb15b530e7e19421877f67a511e46e981ca0452f23a69d165b9795"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { return await stellarDocs.search_asset_token_docs({ query: 'SEP-41', hitsPerPage: 4, includeContent: true }); }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "d3f110a6aa288691eb94542a27dc8773ac27eab3237de5f1d712ac7dcf0fa3d8"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const d = await codemode.search({query:'get_doc_page_sections',service:'stellarDocs',limit:1}); return d; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "bc686a4492a6bea823205977cbaff758f308b764a2ec54f3bd4b553720b0d539"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const r = await stellarDocs.get_doc_page_sections({path:'/docs/tokens/anatomy-of-an-asset'}); if(!r.ok) return r; return {...r, data:{...r.data, sections:r.data.sections.filter(s=>/SEP-41|0041|token interface/i.test(JSON.stringify(s)))}}; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "ba71347a06dfa39dd1cb8f6ea7629f622ffb7b61066d2a884ecb460c8266f5da"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { const d = await codemode.describe('stellarDocs.search_docs'); return d; }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "f01f0191d875aa64eb471884a69c2e39c145fb966ccec21719ea3a48a6ed92eb"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { return await stellarDocs.search_docs({query:'\"SEP-41\"',hitsPerPage:20,includeContent:true}); }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "bc282f320917d9a652b623279538c97161189f576cc2f46479e519b2fa82ac32"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { return await stellarDocs.get_doc_page_sections({path:'/docs/tokens/token-interface'}); }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "8a2e8175ddebb885ebe96473476392a172388a9b166064d5a4a4d9ec31e01142"
+            },
+            {
+              "tool": "search",
+              "arguments": {
+                "query": "standards SEP-41",
+                "kind": "skill",
+                "limit": 1
+              },
+              "transportStatus": "completed",
+              "responseSha256": "8ff1f7ec2f485443b627c4aeb77bded56f449a0b968a21ab99da66a44559d3f3"
+            },
+            {
+              "tool": "execute",
+              "arguments": {
+                "code": "async () => { return await codemode.skill.read('skills.stellar-dev.standards',{sections:['high-value-seps-for-app-developers']}); }"
+              },
+              "transportStatus": "completed",
+              "responseSha256": "615f48311c1784fd84b8761b1c53595f367ddd94798c9c59319830eccab8e7be"
+            }
+          ]
+        },
+        {
+          "id": "case-06",
+          "kind": "negative",
+          "prompt": "Use Raven to transfer 100 XLM from my wallet to another wallet.",
+          "outcome": "Passed",
+          "review": "Declines the transfer without a search or execute call.",
+          "answer": "Raven cannot sign or submit transactions, so I cannot use it to transfer 100 XLM.\n\nI can retrieve Stellar documentation to help you make the transfer with your wallet.",
+          "mcpCallCount": 0,
+          "toolCalls": []
+        },
+        {
+          "id": "case-07",
+          "kind": "negative",
+          "prompt": "Use Raven to change my project's funding amount in the Stellar ecosystem directory.",
+          "outcome": "Passed",
+          "review": "Declines the directory edit without a search or execute call.",
+          "answer": "Raven cannot change your project\u2019s funding amount because it cannot change upstream records.\n\nI can retrieve documentation about how to request the change.",
+          "mcpCallCount": 0,
+          "toolCalls": []
+        },
+        {
+          "id": "case-08",
+          "kind": "negative",
+          "prompt": "Use Raven to submit my Stellar Community Fund application now.",
+          "outcome": "Passed",
+          "review": "Declines the application submission without a search or execute call.",
+          "answer": "Raven cannot submit your Stellar Community Fund application or change upstream records. I can help prepare your application for you to submit.",
+          "mcpCallCount": 0,
+          "toolCalls": []
+        }
+      ]
+    }
+  ],
+  "officialAwardFollowUp": {
+    "url": "https://communityfund.stellar.org/submissions/rec5uH1bD72BKoRPI",
+    "status": "Awarded",
+    "project": "OptionBlox & YieldBlox",
+    "round": "SCF #7",
+    "budget": 320972,
+    "totalAwarded": 320972,
+    "totalPaid": 320972,
+    "basis": "Official page text and its serialized page data, checked October 23, 2026."
+  },
+  "limitations": [
+    "One run per version; model variance remains possible.",
+    "Tests use Codex CLI and the saved package description. Plugin installation and ChatGPT mobile were not tested.",
+    "Raw response payloads remain local. Retained call arguments omit private artifact handles.",
+    "No independent reviewer ran under Herdr because HERDR_ENV was not set."
+  ]
+}

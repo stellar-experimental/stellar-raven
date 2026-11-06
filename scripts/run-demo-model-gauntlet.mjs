@@ -55,13 +55,11 @@ import { demoReasoningEffortOverride } from "../src/demo/model-config.ts";
  *
  * Deliberately ABSENT, with the reason so nobody re-adds them on a hunch:
  *
- *  - `google/gemini-*` — do not re-add without a library change. Entitled and
- *    reachable, but unusable HERE: passthrough is off its Unified Billing list
- *    (401), and the run path has no google `runWireFormat`, so it resolves to
- *    the OpenAI wire and drops `thought_signature` when a tool result is
- *    replayed. Measured `tools=1/0` and `2/0` — tool STARTS, zero tool RESULTS,
- *    then `Bad Request`. A tool-using gauntlet cannot pass a model that cannot
- *    return a tool result.
+ *  - `google/gemini-*` — absent from this older default matrix. The November 3
+ *    Gemini 3.8 Flash probe superseded the August routing failure: the current
+ *    Google passthrough completes tool replay. Select it explicitly with
+ *    --models for a reviewed run; that single probe does not verify every
+ *    Gemini model. See the dated sweep audit.
  *  - `@cf/zai-org/glm-*` — routed fine after the `reasoning_effort` fix and
  *    answered, but each dropped a tool call (`toolFailures=1`). Dropped on
  *    quality, not plumbing; re-probe before re-adding.
@@ -149,7 +147,7 @@ export async function main(argv = process.argv.slice(2)) {
   console.log(formatLaunchPlan(plan));
   if (!args.confirmPaid) throw new Error("Refusing to start planned Playground chat turns without --confirm-paid.");
 
-  const { models, reasoningEfforts, prompts, openAiApiMode, repeats, portBase, outDir, timeoutMs } = invocation;
+  const { models, reasoningEfforts, prompts, openAiApiMode, repeats, portBase, outDir, timeoutMs, maxBudgetUsd } = invocation;
   const runId = args.runId ?? new Date().toISOString().replaceAll(":", "").replaceAll(".", "");
   await mkdir(outDir, { recursive: true });
 
@@ -159,8 +157,9 @@ export async function main(argv = process.argv.slice(2)) {
     console.warn("[gauntlet] MCP_SERVER_SECRET unavailable; falling back to loopback dev bypass subject and throttle.");
   }
 
+  const budget = createGauntletBudget(maxBudgetUsd);
   const results = [];
-  for (let modelIndex = 0; modelIndex < models.length; modelIndex += 1) {
+  matrix: for (let modelIndex = 0; modelIndex < models.length; modelIndex += 1) {
     const model = models[modelIndex];
     for (let reasoningIndex = 0; reasoningIndex < reasoningEfforts.length; reasoningIndex += 1) {
       const reasoningEffort = reasoningEfforts[reasoningIndex];
@@ -172,6 +171,11 @@ export async function main(argv = process.argv.slice(2)) {
         for (let repeat = 1; repeat <= repeats; repeat += 1) {
           for (const prompt of prompts) {
             const label = `${model} :: reasoning=${reasoningEffortLabel(reasoningEffort)} :: ${prompt.id} :: ${repeat}/${repeats}`;
+            const remainingUsd = budget.remainingUsd();
+            if (remainingUsd !== null && remainingUsd <= 0) {
+              console.warn(`[gauntlet] budget exhausted before ${label}; stopping the matrix.`);
+              break matrix;
+            }
             console.log(`[gauntlet] ${label}`);
             // Mark the Wrangler log position so a failing turn can carry its own
             // worker output. Without this the harness records the CLIENT's view
@@ -187,16 +191,22 @@ export async function main(argv = process.argv.slice(2)) {
               reasoningEffort,
               prompt,
               repeat,
-              timeoutMs
+              timeoutMs,
+              maxBudgetUsd: remainingUsd
             });
             if (!result.pass.overall) {
               result.workerLog = server.output.join("").slice(workerLogMark).slice(-8000);
             }
+            budget.record(result.evalCost);
             results.push(result);
-            await writeArtifacts({ runId, outDir, prompts, results });
+            await writeArtifacts({ runId, outDir, prompts, results, plannedTurns: plan.totalPaidTurns, budget: budget.snapshot() });
             console.log(
-              `[gauntlet] ${label} -> ${result.terminal} ${result.durationMs}ms tools=${result.searchCalls}/${result.executeCalls} pass=${result.pass.overall}`
+              `[gauntlet] ${label} -> ${result.terminal} ${result.durationMs}ms tools=${result.searchCalls}/${result.executeCalls} pass=${result.pass.overall}${formatTurnCost(result.evalCost)}`
             );
+            if (budget.snapshot().unknownCostTurns > 0) {
+              console.warn("[gauntlet] turn cost is unknown; stopping before any further authorization.");
+              break matrix;
+            }
           }
         }
       } finally {
@@ -205,9 +215,24 @@ export async function main(argv = process.argv.slice(2)) {
     }
   }
 
-  await writeArtifacts({ runId, outDir, prompts, results });
+  await writeArtifacts({ runId, outDir, prompts, results, plannedTurns: plan.totalPaidTurns, budget: budget.snapshot() });
+  if (maxBudgetUsd !== null) {
+    const snapshot = budget.snapshot();
+    console.log(
+      `[gauntlet] spend: reported USD ${snapshot.reportedUsd.toFixed(4)} of ${snapshot.authorizedUsd} authorized; ${snapshot.unknownCostTurns} turn(s) with unknown cost (not zero)`
+    );
+  }
   console.log(`[gauntlet] wrote ${path.join(outDir, `${runId}.json`)}`);
   console.log(`[gauntlet] wrote ${path.join(outDir, `${runId}-summary.md`)}`);
+  if (budget.snapshot().unknownCostTurns > 0) {
+    throw new Error("Gauntlet incomplete: unknown turn cost requires reconciliation before another run.");
+  }
+  if (maxBudgetUsd !== null && budget.snapshot().reportedUsd > maxBudgetUsd) {
+    throw new Error("Gauntlet incomplete: reported spend exceeds the authorized budget.");
+  }
+  if (results.length < plan.totalPaidTurns) {
+    throw new Error(`Gauntlet incomplete: budget stopped the matrix after ${results.length}/${plan.totalPaidTurns} turns.`);
+  }
 }
 
 async function startWrangler({ model, reasoningEffort, openAiApiMode, port }) {
@@ -268,7 +293,54 @@ async function stopWrangler(server) {
   }
 }
 
-async function runPrompt({ runId, url, cookie, model, reasoningEffort, prompt, repeat, timeoutMs }) {
+/**
+ * Optional dollar accounting, borrowed from the semantic lane. With
+ * `--max-budget-usd`, every turn carries `x-raven-eval-max-budget-usd` with
+ * the remaining authorization, so the route settles each provider call
+ * against the AI Gateway log before the next one and stops the turn when
+ * the amount is spent. The route also records the Gateway-logged model of
+ * every call, which is how a vendor's logged id is verified. Side effects of
+ * that path: SDK retries are off (`maxRetries: 0`) and one Gateway attempt is
+ * allowed per call, so a transient transport error shows up as a failure
+ * instead of a silent retry — the screen is stricter than production.
+ *
+ * A turn with no reported cost is counted as unknown, never as zero: the
+ * reported sum is a floor, and the Gateway logs remain the spend record.
+ * Missing cost closes the remaining authorization until those logs reconcile.
+ */
+export function createGauntletBudget(maxBudgetUsd) {
+  let reportedUsd = 0;
+  let reportedTurns = 0;
+  let unknownCostTurns = 0;
+  return {
+    remainingUsd: () => (maxBudgetUsd === null ? null : unknownCostTurns > 0 ? 0 : Number((maxBudgetUsd - reportedUsd).toFixed(12))),
+    record(evalCost) {
+      if (maxBudgetUsd === null) return;
+      const validCost = typeof evalCost?.costUsd === "number" && Number.isFinite(evalCost.costUsd) && evalCost.costUsd >= 0;
+      const countsPresent = evalCost?.calls !== undefined || evalCost?.reportedCalls !== undefined;
+      const countsMatch = !countsPresent || (Number.isInteger(evalCost.calls) && evalCost.calls >= 0 && evalCost.reportedCalls === evalCost.calls);
+      if (validCost) {
+        reportedUsd = Number((reportedUsd + evalCost.costUsd).toFixed(12));
+      }
+      if (validCost && !evalCost.error && countsMatch) {
+        reportedTurns += 1;
+      } else {
+        unknownCostTurns += 1;
+      }
+    },
+    snapshot: () => ({ authorizedUsd: maxBudgetUsd, reportedUsd, reportedTurns, unknownCostTurns })
+  };
+}
+
+function formatTurnCost(evalCost) {
+  if (!evalCost) return "";
+  const cost = typeof evalCost.costUsd === "number" ? `USD ${evalCost.costUsd.toFixed(4)}` : "cost unknown";
+  const models = Array.isArray(evalCost.models) && evalCost.models.length ? ` logged=${evalCost.models.join("|")}` : "";
+  const error = evalCost.error ? ` accounting=${evalCost.error}` : "";
+  return ` ${cost}${models}${error}`;
+}
+
+async function runPrompt({ runId, url, cookie, model, reasoningEffort, prompt, repeat, timeoutMs, maxBudgetUsd = null }) {
   const startedAt = Date.now();
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
@@ -283,7 +355,8 @@ async function runPrompt({ runId, url, cookie, model, reasoningEffort, prompt, r
         "content-type": "application/json",
         origin: new URL(url).origin,
         "sec-fetch-site": "same-origin",
-        ...(cookie ? { cookie } : {})
+        ...(cookie ? { cookie } : {}),
+        ...(maxBudgetUsd === null ? {} : { "x-raven-eval-max-budget-usd": String(maxBudgetUsd) })
       },
       body: JSON.stringify({ messages: [{ role: "user", content: prompt.text }] }),
       signal: controller.signal
@@ -308,6 +381,20 @@ async function runPrompt({ runId, url, cookie, model, reasoningEffort, prompt, r
   const toolFailures = tools.filter((f) => f.type === "tool-result" && f.ok === false);
   const errors = frames.filter((f) => f.type === "error");
   const done = frames.find((f) => f.type === "done");
+  const evalCostFrame = frames.find((f) => f.type === "eval-cost");
+  const evalCost =
+    maxBudgetUsd === null
+      ? null
+      : evalCostFrame
+        ? {
+            costUsd: evalCostFrame.costUsd ?? null,
+            reportedCostUsd: evalCostFrame.reportedCostUsd ?? null,
+            calls: evalCostFrame.calls ?? null,
+            reportedCalls: evalCostFrame.reportedCalls ?? null,
+            models: Array.isArray(evalCostFrame.models) ? evalCostFrame.models : [],
+            error: evalCostFrame.error ?? null
+          }
+        : { costUsd: null, reportedCostUsd: null, calls: null, reportedCalls: null, models: [], error: "missing-eval-cost-frame" };
   const terminal = parseError ? "client-error" : done ? `done:${done.reason}` : errors.length ? "error" : `http:${responseStatus}`;
   const firstMeaningful = frames.find((f) => f.type !== "ready");
   const pass = {
@@ -344,6 +431,7 @@ async function runPrompt({ runId, url, cookie, model, reasoningEffort, prompt, r
     parseError,
     responseText,
     finalText: tokenText.slice(0, 4000),
+    evalCost,
     frames,
     pass
   };
@@ -372,14 +460,16 @@ async function readSse(body, onFrame) {
   }
 }
 
-async function writeArtifacts({ runId, outDir, prompts, results }) {
+async function writeArtifacts({ runId, outDir, prompts, results, plannedTurns, budget = null }) {
+  const accountingComplete = !budget?.unknownCostTurns && (budget?.authorizedUsd == null || budget.reportedUsd <= budget.authorizedUsd);
+  const completion = { plannedTurns, completedTurns: results.length, status: results.length === plannedTurns && accountingComplete ? "complete" : "incomplete" };
   const jsonPath = path.join(outDir, `${runId}.json`);
-  await writeFile(jsonPath, `${JSON.stringify({ runId, prompts, results }, null, 2)}\n`);
+  await writeFile(jsonPath, `${JSON.stringify({ runId, prompts, completion, budget, results }, null, 2)}\n`);
   const summaryPath = path.join(outDir, `${runId}-summary.md`);
-  await writeFile(summaryPath, renderSummary({ runId, results }));
+  await writeFile(summaryPath, renderSummary({ runId, results, budget }));
 }
 
-function renderSummary({ runId, results }) {
+function renderSummary({ runId, results, budget = null }) {
   const byCell = new Map();
   for (const result of results) {
     const key = `${result.model}@@${result.reasoningEffort ?? "default"}`;
@@ -393,7 +483,10 @@ function renderSummary({ runId, results }) {
       durations: [],
       firstMeaningful: [],
       toolFailures: 0,
-      errors: []
+      errors: [],
+      reportedUsd: 0,
+      unknownCostTurns: 0,
+      loggedModels: new Set()
     };
     entry.runs += 1;
     if (result.pass.overall) entry.pass += 1;
@@ -403,14 +496,29 @@ function renderSummary({ runId, results }) {
     if (result.firstMeaningfulMs !== null) entry.firstMeaningful.push(result.firstMeaningfulMs);
     entry.toolFailures += result.toolFailures;
     entry.errors.push(...result.errors, ...(result.parseError ? [result.parseError] : []));
+    if (result.evalCost) {
+      if (typeof result.evalCost.costUsd === "number") entry.reportedUsd += result.evalCost.costUsd;
+      else entry.unknownCostTurns += 1;
+      for (const logged of result.evalCost.models ?? []) entry.loggedModels.add(logged);
+    }
     byCell.set(key, entry);
   }
+  const costColumns = budget !== null;
   const rows = [...byCell.values()].map((entry) => {
     const p50 = percentile(entry.durations, 0.5);
     const p95 = percentile(entry.durations, 0.95);
     const firstP50 = percentile(entry.firstMeaningful, 0.5);
-    return `| \`${entry.model}\` | \`${entry.reasoningEffort}\` | ${entry.pass}/${entry.runs} | ${entry.terminal}/${entry.runs} | ${p50} | ${p95} | ${firstP50} | ${entry.toolFailures} |`;
+    const base = `| \`${entry.model}\` | \`${entry.reasoningEffort}\` | ${entry.pass}/${entry.runs} | ${entry.terminal}/${entry.runs} | ${p50} | ${p95} | ${firstP50} | ${entry.toolFailures} |`;
+    if (!costColumns) return base;
+    const logged = entry.loggedModels.size ? [...entry.loggedModels].map((model) => `\`${model}\``).join(", ") : "—";
+    return `${base} ${entry.reportedUsd.toFixed(4)} | ${entry.unknownCostTurns} | ${logged} |`;
   });
+  const header = costColumns
+    ? "| Model | Reasoning | Overall Pass | Clean Terminal | p50 ms | p95 ms | p50 first meaningful ms | Tool Failures | Reported USD | Unknown-cost turns | Gateway-logged model |\n| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |"
+    : "| Model | Reasoning | Overall Pass | Clean Terminal | p50 ms | p95 ms | p50 first meaningful ms | Tool Failures |\n| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |";
+  const spendNote = costColumns
+    ? `\nSpend: reported USD ${budget.reportedUsd.toFixed(4)} of ${budget.authorizedUsd} authorized across ${budget.reportedTurns} turn(s); ${budget.unknownCostTurns} turn(s) with unknown cost (partial per-turn costs remain in result rows; never zero). Accounting turns run with SDK retries off and one Gateway attempt per call.\n`
+    : "";
   const failures = results
     .filter((result) => !result.pass.overall)
     .map(
@@ -430,11 +538,10 @@ function renderSummary({ runId, results }) {
   return `# Demo Model Gauntlet ${runId}
 
 Generated by \`scripts/run-demo-model-gauntlet.mjs\`.
-${reloadWarning}
+${reloadWarning}${spendNote}
 ## Summary
 
-| Model | Reasoning | Overall Pass | Clean Terminal | p50 ms | p95 ms | p50 first meaningful ms | Tool Failures |
-| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+${header}
 ${rows.join("\n")}
 
 ## Failures
@@ -515,6 +622,10 @@ Options:
   --repeats <positive integer>       Repetitions per model/effort/prompt cell (default: 1)
   --port-base <port>                 First Wrangler port (default: 8890)
   --timeout-ms <positive integer>    Per-chat timeout (default: 150000)
+  --max-budget-usd <usd>             Dollar cap for the whole run through the route's loopback
+                                     accounting (sends x-raven-eval-max-budget-usd per turn,
+                                     records each turn's Gateway cost and logged model, stops the
+                                     matrix when the reported sum reaches the cap)
   --out-dir <path>                   Artifact directory (default: research/gauntlets)`;
 }
 
@@ -530,6 +641,7 @@ const VALUE_FLAGS = new Set([
   "--repeats",
   "--port-base",
   "--timeout-ms",
+  "--max-budget-usd",
   "--out-dir"
 ]);
 
@@ -581,6 +693,9 @@ export function parseGauntletArgs(argv) {
         out.portBase = value;
       } else if (arg === "--timeout-ms") {
         out.timeoutMs = value;
+      } else if (arg === "--max-budget-usd") {
+        if (out.maxBudgetUsd !== undefined) throw new Error("--max-budget-usd may be given once.");
+        out.maxBudgetUsd = value;
       } else if (arg === "--out-dir") {
         out.outDir = value;
       }
@@ -622,6 +737,13 @@ export function validateGauntletInvocation(args) {
 
   const repeats = positiveInteger(args.repeats ?? 1, "--repeats");
   const timeoutMs = positiveInteger(args.timeoutMs ?? 150_000, "--timeout-ms");
+  let maxBudgetUsd = null;
+  if (args.maxBudgetUsd !== undefined) {
+    maxBudgetUsd = Number(args.maxBudgetUsd);
+    if (!/^(?:\d+\.?\d*|\.\d+)$/.test(args.maxBudgetUsd) || !Number.isFinite(maxBudgetUsd) || maxBudgetUsd <= 0) {
+      throw new Error("--max-budget-usd must be a positive dollar amount.");
+    }
+  }
   const portBase = positiveInteger(args.portBase ?? 8890, "--port-base");
   const cellCount = models.length * reasoningEfforts.length;
   const lastPort = portBase + cellCount - 1;
@@ -641,6 +763,7 @@ export function validateGauntletInvocation(args) {
     portBase,
     outDir: args.outDir ?? path.join("research", "gauntlets"),
     timeoutMs,
+    maxBudgetUsd,
     totalPaidTurns
   };
 }
@@ -653,6 +776,7 @@ export function buildLaunchPlan(invocation) {
     promptIds: invocation.prompts.map((prompt) => prompt.id),
     repeats: invocation.repeats,
     timeoutMs: invocation.timeoutMs,
+    maxBudgetUsd: invocation.maxBudgetUsd ?? null,
     outDir: invocation.outDir,
     portBase: invocation.portBase,
     portLast: invocation.portBase + cellCount - 1,
@@ -662,7 +786,8 @@ export function buildLaunchPlan(invocation) {
 }
 
 export function formatLaunchPlan(plan) {
-  return `[gauntlet] launch plan\nmodels (${plan.models.length}): ${plan.models.join(", ")}\nreasoning efforts (${plan.reasoningEfforts.length}): ${plan.reasoningEfforts.join(", ")}\nprompts (${plan.promptIds.length}): ${plan.promptIds.join(", ")}\nrepeats: ${plan.repeats}\nplanned Playground chat turns: ${plan.totalPaidTurns} (not guaranteed provider calls)\ntimeout: ${plan.timeoutMs}ms\nWrangler ports: ${plan.portBase}-${plan.portLast}; inspector ports: ${plan.portBase + 1000}-${plan.inspectorPortLast}\noutput: ${plan.outDir}`;
+  const budget = plan.maxBudgetUsd === null ? "none (no cost accounting; read the Gateway logs)" : `USD ${plan.maxBudgetUsd} through loopback accounting`;
+  return `[gauntlet] launch plan\nmodels (${plan.models.length}): ${plan.models.join(", ")}\nreasoning efforts (${plan.reasoningEfforts.length}): ${plan.reasoningEfforts.join(", ")}\nprompts (${plan.promptIds.length}): ${plan.promptIds.join(", ")}\nrepeats: ${plan.repeats}\nplanned Playground chat turns: ${plan.totalPaidTurns} (not guaranteed provider calls)\nbudget: ${budget}\ntimeout: ${plan.timeoutMs}ms\nWrangler ports: ${plan.portBase}-${plan.portLast}; inspector ports: ${plan.portBase + 1000}-${plan.inspectorPortLast}\noutput: ${plan.outDir}`;
 }
 
 const isMain = process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
