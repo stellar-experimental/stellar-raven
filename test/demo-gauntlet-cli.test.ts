@@ -138,7 +138,7 @@ describe("demo model gauntlet CLI safety", () => {
     { name: "accounting error", cost: { costUsd: 0.1, error: "unsettled-call", calls: 1, reportedCalls: 1 }, repeats: 2, error: "unknown turn cost" },
     { name: "unsettled call count", cost: { costUsd: 0.1, calls: 2, reportedCalls: 1 }, repeats: 2, error: "unknown turn cost" },
     { name: "last-turn overspend", cost: { costUsd: 1.01, calls: 1, reportedCalls: 1 }, repeats: 1, error: "exceeds the authorized budget" },
-    { name: "budget exhaustion", cost: { costUsd: 1, calls: 1, reportedCalls: 1 }, repeats: 2, error: "budget stopped the matrix" }
+    { name: "budget exhaustion", cost: { costUsd: 1, calls: 2, reportedCalls: 2, logIds: ["offline-gateway-log-1", "offline-gateway-log-2"] }, repeats: 2, error: "budget stopped the matrix" }
   ])("saves an incomplete matrix after $name without another turn", async ({ cost, repeats, error }) => {
     const directory = await mkdtemp(path.join(os.tmpdir(), "gauntlet-offline-server-"));
     temporaryDirectories.push(directory);
@@ -183,6 +183,7 @@ http.createServer((req, res) => {
     const artifact = JSON.parse(await readFile(path.join(outDir, "missing-cost.json"), "utf8"));
     expect(artifact.completion).toEqual({ plannedTurns: repeats, completedTurns: 1, status: "incomplete" });
     expect(artifact.results).toHaveLength(1);
+    expect(artifact.results[0].evalCost.logIds).toEqual(cost && "logIds" in cost ? cost.logIds : []);
     expect(artifact.budget.unknownCostTurns).toBe(error === "unknown turn cost" ? 1 : 0);
   }, 25_000);
 
