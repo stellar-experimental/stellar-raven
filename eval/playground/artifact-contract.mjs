@@ -23,6 +23,68 @@ export const PLAYGROUND_INPUT_SNAPSHOT_CONTRACT = "playground-semantic-input/v1"
 export const PLAYGROUND_ROUND_CAP_CONTRACT = "playground-semantic-round-cap/v1";
 export const PLAYGROUND_LANE = "playground-semantic-v1";
 
+const CLIENT_ERROR_NAMES = new Set([
+  "Error", "TypeError", "AggregateError", "AbortError", "TimeoutError", "DOMException",
+  "SocketError", "ConnectTimeoutError", "HeadersTimeoutError", "BodyTimeoutError",
+  "RequestAbortedError", "ClientDestroyedError", "ClientClosedError",
+  "RequestContentLengthMismatchError", "ResponseContentLengthMismatchError"
+]);
+const CLIENT_ERROR_CODES = new Set([
+  "ECONNRESET", "ECONNREFUSED", "ECONNABORTED", "EPIPE", "ENOTFOUND", "EAI_AGAIN",
+  "ETIMEDOUT", "EHOSTUNREACH", "ENETUNREACH", "EADDRNOTAVAIL",
+  "UND_ERR_SOCKET", "UND_ERR_CONNECT_TIMEOUT", "UND_ERR_HEADERS_TIMEOUT", "UND_ERR_BODY_TIMEOUT",
+  "UND_ERR_ABORTED", "UND_ERR_DESTROYED", "UND_ERR_CLOSED",
+  "UND_ERR_REQ_CONTENT_LENGTH_MISMATCH", "UND_ERR_RES_CONTENT_LENGTH_MISMATCH"
+]);
+const CLIENT_ERROR_SYSCALLS = new Set(["connect", "read", "write", "getaddrinfo", "shutdown", "send", "recv"]);
+
+/**
+ * Optional row.clientErrorDetails is diagnostic only: phase plus an allowlisted error tree.
+ * It never changes failure classification, null-cost accounting, or retry eligibility.
+ * No messages, stacks, URLs, request data, or socket objects are copied. At most eight nodes,
+ * three levels, and three AggregateError children are retained; truncated marks omitted nodes.
+ * clientError remains the existing summary string; successful calls have null details.
+ */
+export function playgroundClientErrorDetails(error, phase) {
+  const seen = new WeakSet();
+  let nodes = 0;
+  const read = (value, key) => {
+    try { return value[key]; } catch { return undefined; }
+  };
+  const visit = (value, depth) => {
+    if (depth >= 3 || nodes >= 8) return null;
+    nodes += 1;
+    if (!value || typeof value !== "object") return { name: "Error" };
+    if (seen.has(value)) return { name: "Error", truncated: true };
+    seen.add(value);
+    const name = read(value, "name");
+    const out = { name: CLIENT_ERROR_NAMES.has(name) ? name : "Error" };
+    const code = read(value, "code"), errno = read(value, "errno"), syscall = read(value, "syscall");
+    if (CLIENT_ERROR_CODES.has(code)) out.code = code;
+    if (Number.isSafeInteger(errno) && Math.abs(errno) <= 65535) out.errno = errno;
+    if (CLIENT_ERROR_SYSCALLS.has(syscall)) out.syscall = syscall;
+    const cause = read(value, "cause");
+    if (cause !== undefined) {
+      const detail = visit(cause, depth + 1);
+      if (detail) out.cause = detail;
+      else out.truncated = true;
+    }
+    const errors = read(value, "errors");
+    if (Array.isArray(errors)) {
+      const length = read(errors, "length");
+      out.errors = [];
+      for (let i = 0; i < Math.min(length, 3); i += 1) {
+        const detail = visit(read(errors, i), depth + 1);
+        if (!detail) { out.truncated = true; break; }
+        out.errors.push(detail);
+      }
+      if (length > 3) out.truncated = true;
+    }
+    return out;
+  };
+  return { phase: phase === "stream" ? "stream" : "fetch", ...visit(error, 0) };
+}
+
 export function sha256(value) {
   return createHash("sha256").update(value).digest("hex");
 }

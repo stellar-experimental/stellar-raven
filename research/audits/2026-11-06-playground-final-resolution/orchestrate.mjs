@@ -14,6 +14,8 @@ import { assertPlaygroundArtifactMeta } from '../../../eval/playground/artifact-
 import { isSettledJudgeRowFailure, gatewayJudgeConfig } from '../../../eval/qa/gateway-judge.mjs';
 import { diagnosticRejudgeSource, diagnosticAnswerProblem, partialRecoverySource, isHarnessTransportFailure } from '../../../eval/qa/diagnostic-rejudge-source.mjs';
 
+import { importPriorCohort, verifyPriorCohort, pinnedJson, RESTART_ID, OLD_ANSWER_REVISION, OLD_RUNNER_SHA } from './prior-cohort.mjs';
+
 const DIRECTORY = path.dirname(fileURLToPath(import.meta.url));
 const SCALE = 1e12;
 export const CASH_CAP_USD = 200;
@@ -91,6 +93,7 @@ export function plan(selection, cases) {
   return tasks;
 }
 export function createJournal(config, selection, cases, journalPath) {
+  if (config.experimentId === RESTART_ID && !config.restartManifest) fail('restart requires prior-cohort initializer');
   const measurementRoot = realpathSync(config.measurementRoot);
   if (inside(physicalDestination(journalPath), measurementRoot)) fail('durable journal must be outside the frozen measurement checkout');
   if (!/^[a-f0-9]{40}$/.test(config.measurementRevision)) fail('measurementRevision must be a full Git commit');
@@ -115,6 +118,33 @@ export function createJournal(config, selection, cases, journalPath) {
   verifyMeasurement(result);
   return result;
 }
+export function createRestartJournal(config, selection, cases, journalPath) {
+  if (config.experimentId !== RESTART_ID || !config.restartManifest || existsSync(journalPath)) fail('fresh restart identity/destination required');
+  if (config.measurementRevision === OLD_ANSWER_REVISION || config.inputFileHashes?.runnerFileSha256 === OLD_RUNNER_SHA) fail('restart refuses unfixed answer measurement');
+  const priorCohort = importPriorCohort(config.restartManifest);
+  const oldDirectory = path.dirname(physicalDestination(priorCohort.sourceJournal.path));
+  const destination = physicalDestination(journalPath);
+  if (inside(destination, oldDirectory) || inside(oldDirectory, path.dirname(destination))) fail('restart destination overlaps original cohort');
+  if (path.basename(path.dirname(destination)) !== 'playground-final-transport-fixed') fail('unexpected restart base directory');
+  const old = pinnedJson(priorCohort.sourceJournal);
+  for (const field of Object.keys(INPUT_FILES).filter(f => f !== 'runnerFileSha256')) {
+    if (config.inputFileHashes[field] !== old.measurement.inputFileHashes[field]) fail(`restart changes measurement semantics: ${field}`);
+  }
+  if (!same(config.judgeA, old.measurement.judgeA)) fail('restart Judge A identity differs; new review required');
+  const journal = createJournal(config, selection, cases, journalPath);
+  Object.assign(journal, { recoveryPolicy: 'halt-only', priorCohort,
+    priorCohortSha256: hashJson(priorCohort), eraBinding: config.eraBinding });
+  sha(config.eraBinding?.sha256, 'explicit era binding'); required(config.eraBinding?.path, 'era binding path');
+  const context = pinnedJson(config.eraBinding), restartRoot = path.resolve(path.dirname(destination), '../../..');
+  if (context.contract !== 'playground-transport-fixed-context/v1' || context.experimentId !== RESTART_ID || context.base !== path.dirname(destination) || context.root !== restartRoot ||
+      context.control !== path.join(restartRoot, 'tmp/playground-final/transport-fixed') || config.eraBinding.path !== path.join(context.control, 'era-context.json') ||
+      context.answerMeasurementRoot !== config.measurementRoot || context.answerMeasurementRevision !== config.measurementRevision) fail('restart era context differs');
+  if (priorCohort.selectionSha256 !== journal.selectionSha256) fail('restart selection differs');
+  journal.events.push({type:'prior-cohort-imported', sourceJournal: priorCohort.sourceJournal,
+    ceilingConsumedUsd: priorCohort.ceilingConsumedUsd, canonicalCellsImported: 0, serverStop: priorCohort.serverStop});
+  verifyPriorCohort(journal);
+  return journal;
+}
 export function verifyMeasurement(journal) {
   for (const [field, file] of Object.entries(INPUT_FILES)) {
     const actual = sha256(readFileSync(path.join(journal.measurement.measurementRoot, file)));
@@ -122,6 +152,7 @@ export function verifyMeasurement(journal) {
   }
 }
 export function accounting(journal) {
+  const prior = verifyPriorCohort(journal);
   const entries = [...journal.tasks, ...journal.external];
   const reserved = entries.filter(t => ['reserved', 'unresolved'].includes(t.state)).reduce((sum, t) => sum + units(t.methodCapUsd), 0);
   const cash = entries.filter(t => ['settled', 'failed', 'settled-partial'].includes(t.state)).reduce((sum, t) => sum + units(t.ceilingChargeUsd ?? t.cashUsd), 0);
@@ -134,10 +165,13 @@ export function accounting(journal) {
   const answerCalls = entries.reduce((sum, t) => sum + (t.calls?.answerTurns ?? 0), 0);
   const judgeCalls = entries.reduce((sum, t) => sum + (t.calls?.judgeA ?? 0), 0);
   // Reconciled actual cash and conservative ceiling consumption are distinct.
-  return { cashCapUsd: CASH_CAP_USD, knownCashUsd: usd(knownCash), ceilingConsumedUsd: usd(cash), conservativeChargeUsd: usd(conservative), reservedUsd: usd(reserved), availableUsd: usd(units(CASH_CAP_USD) - cash - reserved), subscriptionNotionalUsd: usd(notional), answerTurns: answerCalls, judgeACalls: judgeCalls, apiJudgeCalls, reservedAnswerTurns, reservedApiJudgeCalls };
+  const currentEra = {knownCashUsd:usd(knownCash),ceilingConsumedUsd:usd(cash),conservativeChargeUsd:usd(conservative),subscriptionNotionalUsd:usd(notional),answerTurns:answerCalls,judgeACalls:judgeCalls,apiJudgeCalls};
+  return { cashCapUsd: CASH_CAP_USD, knownCashUsd: usd(knownCash + units(prior?.knownCashUsd ?? 0)), ceilingConsumedUsd: usd(cash + units(prior?.ceilingConsumedUsd ?? 0)), conservativeChargeUsd: usd(conservative + units(prior?.conservativeChargeUsd ?? 0)), reservedUsd: usd(reserved), availableUsd: usd(units(CASH_CAP_USD) - cash - reserved - units(prior?.ceilingConsumedUsd ?? 0)), subscriptionNotionalUsd: usd(notional + units(prior?.subscriptionNotionalUsd ?? 0)), answerTurns: answerCalls + (prior?.calls.answerTurns ?? 0), judgeACalls: judgeCalls + (prior ? prior.calls.judgeA + prior.calls.judgeACalibration : 0), apiJudgeCalls: apiJudgeCalls + (prior?.calls.apiJudge ?? 0), reservedAnswerTurns, reservedApiJudgeCalls,
+    ...(prior ? {currentEra, priorCohort:{...prior.calls,knownCashUsd:prior.knownCashUsd,ceilingConsumedUsd:prior.ceilingConsumedUsd,subscriptionNotionalUsd:prior.subscriptionNotionalUsd}} : {}) };
 }
 function active(journal) { return [...journal.tasks, ...journal.external].filter(t => ['reserved', 'unresolved'].includes(t.state)); }
 export function declareServer(journal, model, ownerTerminalId) {
+  verifyPriorCohort(journal);
   if (journal.state !== 'ready' || journal.server || active(journal).length) fail('cannot declare another server while stopped, leased or reserved');
   const next = journal.tasks.find(t => t.state === 'planned');
   if (next?.model !== model) fail('models must run in fixed planned order');
@@ -193,6 +227,8 @@ export function commandFor(journal, task, capPath, rawOutBase) {
     instruction: 'Proposal only. Owner verifies the sole loaded server, CLI/environment, gateway and reviewed authorization before manual launch.' };
 }
 export function validateReceipt(journal, task, receipt, partial = null) {
+  const prior = verifyPriorCohort(journal);
+  if (prior && partial) fail('restart is halt-only; partial source forbidden');
   if (receipt.quarantinedMeta || receipt.quarantinedRows || receipt.artifactContract?.includes('quarantine')) fail('quarantine is forensic only');
   assertPlaygroundArtifactMeta(receipt.meta);
   if (partial) {
@@ -221,7 +257,7 @@ export function validateReceipt(journal, task, receipt, partial = null) {
   }
   let answer = 0, judge = 0, providerCalls = 0, judgeCalls = 0, index = 0;
   const outcomes = [], logIdHashes = [];
-  const previouslyUsedLogs = new Set([...journal.tasks, ...journal.external].filter(t => t.id !== task.id).flatMap(t => t.logIdHashes ?? []));
+  const previouslyUsedLogs = new Set([...(prior?.logIdHashes ?? []), ...[...journal.tasks, ...journal.external].filter(t => t.id !== task.id).flatMap(t => t.logIdHashes ?? [])]);
   for (const row of rows) {
     const a = budget.calls[index++], frame = row.answerCost;
     if (partial && row.id === partial.recovery.failure.id) {
@@ -262,6 +298,7 @@ export function settle(journal, taskId, receipt, receiptIdentity, subscriptionPr
   // A bad receipt is persisted as a halt with the entire reservation retained.
   try {
     sha(receiptIdentity.sha256, 'receipt file');
+    if (verifyPriorCohort(journal)?.receiptSha256s.includes(receiptIdentity.sha256)) fail('prior cohort receipt forbidden');
     if (!task.launch || task.launch.taskId !== task.id || task.launch.model !== task.model || task.launch.repeat !== task.repeat || task.launch.caseIdsSha256 !== task.caseIdsSha256 ||
         path.dirname(path.resolve(receiptIdentity.path)) !== task.launch.rawOutDir || path.basename(receiptIdentity.path) !== `${receipt.meta?.runId}-playground-semantic.json`) fail('receipt is not in the prelaunch task output mapping');
     if ([...journal.tasks, ...journal.external].some(t => t.id !== taskId && t.receipt?.sha256 === receiptIdentity.sha256)) fail('receipt file already accounted');
@@ -298,6 +335,7 @@ export function loadRecoveryEvidence(identity, readBytes=readFileSync) {
   return {recovery,proof:JSON.parse(proofBytes),receiptSha256:recovery.receipt?.sha256};
 }
 export function settlePartial(journal,taskId,receipt,identity,recoveryIdentity,subscriptionProof,{readBytes=readFileSync}={}) {
+  if (journal.recoveryPolicy === 'halt-only' || journal.experimentId === RESTART_ID) fail('restart is halt-only; no partial recovery');
   const task=journal.tasks.find(t=>t.id===taskId);
   if (!task || task.state!=='unresolved' || task.parentTaskId || journal.tasks.some(t=>t.recovery) || active(journal).some(t=>t.id!==taskId)) fail('partial settlement requires sole unresolved original task');
   if (!same(task.receipt,identity) || !task.launch || task.launch.rawOutDir!==path.dirname(identity.path) || path.basename(identity.path)!==`${receipt.meta?.runId}-playground-semantic.json`) fail('partial original receipt differs');
@@ -317,6 +355,7 @@ export function settlePartial(journal,taskId,receipt,identity,recoveryIdentity,s
 }
 function costMismatch(a,b){return units(a)!==units(b);}
 export function reserveContinuation(journal,parentId,methodCapUsd,reviewRef) {
+  if (journal.recoveryPolicy === 'halt-only' || journal.experimentId === RESTART_ID) fail('restart is halt-only; no continuation');
   required(reviewRef,'continuation review');
   const parent=journal.tasks.find(t=>t.id===parentId);
   if (!parent || parent.state!=='settled-partial' || parent.continuationTaskId || parent.parentTaskId || active(journal).length || journal.server?.model!==parent.model) fail('continuation requires accounted partial task and sole matching server');
@@ -375,12 +414,15 @@ function assertFrozenJudgeB(journal, entry) {
 }
 
 function validateExternalAllocation(journal, entry) {
+  const opening = verifyPriorCohort(journal);
+  if (opening?.receiptSha256s.includes(entry.nativeSourceSha256)) fail('prior cohort B source forbidden');
   if (!['probe', 'calibration', 'judge-b', 'production-verification'].includes(entry.kind)) fail('unknown external method');
   if (!unique(entry.callIds) || !entry.callIds.length || journal.external.some(e => e.id === entry.id)) fail('duplicate/empty external method or calls');
   assertFrozenJudgeB(journal,entry);
   if (entry.kind === 'judge-b') {
     sha(entry.nativeSourceSha256,'native Judge B source');
     const native=journal.tasks.find(t=>t.receipt?.sha256===entry.nativeSourceSha256);
+    if (opening && (native?.state !== 'settled' || !same(entry.rowIds,native.ids) || !entry.runId?.startsWith(journal.experimentId+'-'))) fail('restart B requires settled new-era source and run identity');
     if(native?.state==='settled-partial') {
       if(!same(entry.partialSource,native.recovery)||!same(entry.rowIds,native.attemptedIds))fail('partial Judge B recovery binding differs');
       const partial=loadRecoveryEvidence(native.recovery),raw=readPinnedReceipt(native.receipt,readFileSync);
@@ -390,7 +432,7 @@ function validateExternalAllocation(journal, entry) {
     if (journal.external.some(e=>e.kind==='judge-b' && e.nativeSourceSha256===entry.nativeSourceSha256 && entry.rowIds.some(id=>e.rowIds.includes(id)))) fail('overlapping Judge B rows for one native source');
   }
   const cap = units(entry.methodCapUsd);
-  if (cap <= 0 || cap + (entry.kind==='judge-b'?units(CASH_BUFFER_USD):0) > units(accounting(journal).availableUsd)) fail('external reservation exceeds available cash');
+  if (cap <= 0 || cap + (entry.kind==='judge-b'||opening?units(CASH_BUFFER_USD):0) > units(accounting(journal).availableUsd)) fail('external reservation exceeds available cash');
   if (journal.external.some(e => e.receiptContract === entry.receiptContract && e.runId === entry.runId)) fail('external run already reserved; no implicit resume');
   required(entry.id, 'external method ID'); required(entry.reviewRef, 'external method review');
   required(entry.runId, 'external runId'); required(entry.model, 'external model');
@@ -479,7 +521,9 @@ export function settleExternal(journal, id, receipt, receiptIdentity) {
     assertFrozenJudgeB(journal,entry);
     const result = validateExternalReceipt(entry, receipt);
     const prior = [...journal.tasks, ...journal.external].filter(t => t.id !== id);
-    const usedLogs = new Set(prior.flatMap(t => t.logIdHashes ?? []));
+    const opening = verifyPriorCohort(journal);
+    if (opening?.receiptSha256s.includes(receiptIdentity.sha256)) fail('prior cohort receipt forbidden');
+    const usedLogs = new Set([...(opening?.logIdHashes ?? []), ...prior.flatMap(t => t.logIdHashes ?? [])]);
     if (prior.some(t => t.receipt?.sha256 === receiptIdentity.sha256) || result.logIdHashes.some(id => usedLogs.has(id))) fail('external receipt or Gateway identity already accounted');
     Object.assign(entry, result, {state: 'settled', receipt: receiptIdentity});
     journal.events.push({type: 'external-settled', id, cashUsd: entry.cashUsd, receiptSha256: receiptIdentity.sha256});
@@ -513,6 +557,8 @@ function readPinnedReceipt(identity, readBytes) {
 }
 function cellKey(model, caseId, repeat) { return `${model}\0${caseId}\0${repeat}`; }
 export function readFinalsMatrix(journal, selection, {readBytes = readFileSync, adjudications = null} = {}) {
+  const opening = verifyPriorCohort(journal);
+  if (opening && journal.tasks.some(t => opening.receiptSha256s.includes(t.receipt?.sha256) || t.state === 'settled-partial')) fail('prior/partial source forbidden in restart matrix');
   if (journal.contract !== 'playground-finals-journal/v1' || hashJson(selection) !== journal.selectionSha256) fail('matrix selection/journal identity differs');
   verifyMeasurement(journal);
   const cases = load(path.join(journal.measurement.measurementRoot, INPUT_FILES.corpusFileSha256)).cases;
@@ -584,6 +630,7 @@ export function readFinalsMatrix(journal, selection, {readBytes = readFileSync, 
       });
     }
   }
+  if (opening && rows.some(r=>r.answerFailure==='harness-transport-failure')) fail('restart canonical matrix has harness transport cells');
   if (rows.length !== selection.plannedAnswerTurns || new Set(rows.map(r => cellKey(r.model,r.caseId,r.repeat))).size !== rows.length) fail('duplicate or missing matrix cells');
   if (adjudications) {
     if (adjudications.contract !== 'playground-finals-adjudication/v1' || adjudications.selectionSha256 !== journal.selectionSha256 || adjudications.experimentId !== journal.experimentId || !Array.isArray(adjudications.rows) || adjudications.rows.length !== rows.length) fail('adjudication input identity or denominator differs');
@@ -608,7 +655,7 @@ export function readFinalsMatrix(journal, selection, {readBytes = readFileSync, 
   return {contract:'playground-finals-matrix/v1',experimentId:journal.experimentId,selectionSha256:journal.selectionSha256,
     orderedCasesSha256:selection.orderedCasesSha256,shardMappingsSha256:selection.shardMappingsSha256,readyForDecision:!!adjudications,
     models,caseIds:selection.orderedCaseIds,safetyCaseIds:selection.safetyCaseIds,baseline:'openai/gpt-5.6-terra',currentFallback:'openai/gpt-5.6-luna',
-    rows,rawJudgeTables,rowsSha256:hashJson(rows),limitation:'No grades or winner are inferred. Full transcript adjudication is required; raw grades on failed answers remain provenance only.'};
+    rows,rawJudgeTables,...(opening?{harnessTransportCells:0,harnessTransportSensitivity:[],priorDiagnosticReview:opening.reviewObligation}:{}),rowsSha256:hashJson(rows),limitation:'No grades or winner are inferred. Full transcript adjudication is required; raw grades on failed answers remain provenance only.'};
 }
 
 function atomicJson(file, value) {
@@ -632,14 +679,19 @@ export function updateJournal(file, operation) {
     const journal = load(file);
     if (journal.contract !== 'playground-finals-journal/v1' || journal.cashCapUsd !== CASH_CAP_USD) fail('unexpected journal identity');
     if (inside(physicalDestination(file), realpathSync(journal.measurement.measurementRoot))) fail('journal overlaps frozen measurement checkout');
+    verifyPriorCohort(journal);
+    const immutable = j => ({experimentId:j.experimentId,recoveryPolicy:j.recoveryPolicy,priorCohort:j.priorCohort,priorCohortSha256:j.priorCohortSha256,eraBinding:j.eraBinding});
+    const openingBefore = hashJson(immutable(journal));
     const result = operation(journal);
+    if (hashJson(immutable(journal)) !== openingBefore) fail('immutable opening record changed');
+    verifyPriorCohort(journal);
     atomicJson(file, journal);
     return { result, accounting: accounting(journal), state: journal.state };
   } finally { closeSync(fd); unlinkSync(lock); }
 }
 function parse(argv) {
   const [command, ...rest] = argv, options = {};
-  const allowed = { plan: ['selection', 'corpus'], init: ['config', 'journal'], status: ['journal'], server: ['journal', 'model', 'owner-terminal'], 'server-stopped': ['journal'], reserve: ['journal', 'allocations', 'raw-out-dir'], settle: ['journal', 'task', 'receipt', 'subscription-attestation'], 'revalidate': ['journal','task','receipt','subscription-attestation','review-ref'], 'settle-partial': ['journal','task','receipt','subscription-attestation','recovery','recovery-sha256'], 'reserve-continuation': ['journal','task','cap','review-ref','raw-out-dir'], 'reserve-external': ['journal', 'allocation'], 'reserve-external-batch': ['journal', 'allocations'], 'freeze-judge-b': ['journal','identity','review-ref','previous-identity'], 'settle-external': ['journal', 'task', 'receipt'], matrix: ['journal', 'adjudications'] };
+  const allowed = { plan: ['selection', 'corpus'], init: ['config', 'journal'], 'init-restart': ['config', 'config-sha256', 'journal'], status: ['journal'], server: ['journal', 'model', 'owner-terminal'], 'server-stopped': ['journal'], reserve: ['journal', 'allocations', 'raw-out-dir'], settle: ['journal', 'task', 'receipt', 'subscription-attestation'], 'revalidate': ['journal','task','receipt','subscription-attestation','review-ref'], 'settle-partial': ['journal','task','receipt','subscription-attestation','recovery','recovery-sha256'], 'reserve-continuation': ['journal','task','cap','review-ref','raw-out-dir'], 'reserve-external': ['journal', 'allocation'], 'reserve-external-batch': ['journal', 'allocations'], 'freeze-judge-b': ['journal','identity','review-ref','previous-identity'], 'settle-external': ['journal', 'task', 'receipt'], matrix: ['journal', 'adjudications'] };
   if (!allowed[command]) fail(`commands: ${Object.keys(allowed).join(', ')}; no launch command exists`);
   for (let i = 0; i < rest.length; i += 2) {
     const key = rest[i].replace(/^--/, '');
@@ -658,12 +710,15 @@ function main(argv) {
   const file = path.resolve(required(o.journal, '--journal'));
   if (command === 'matrix') return readFinalsMatrix(load(file), load(path.join(DIRECTORY, 'selection.json')), {adjudications: o.adjudications ? load(o.adjudications) : null});
   if (command === 'status') { const journal = load(file); return { state: journal.state, server: journal.server, halt: journal.halt, accounting: accounting(journal), tasks: journal.tasks.map(({ id, state }) => ({ id, state })) }; }
-  if (command === 'init') {
+  if (command === 'init' || command === 'init-restart') {
     if (existsSync(file)) fail('journal already exists');
-    const config = load(required(o.config, '--config'));
+    const configBytes = readFileSync(required(o.config, '--config'));
+    if (command === 'init-restart' && sha256(configBytes) !== o['config-sha256']) fail('restart config authorization differs');
+    const config = JSON.parse(configBytes);
+    if (command === 'init' && config.experimentId === RESTART_ID) fail('use reviewed init-restart');
     const selection = load(config.selectionPath ?? path.join(DIRECTORY, 'selection.json'));
     const cases = load(path.join(config.measurementRoot, 'eval/qa/cases.json')).cases;
-    const journal = createJournal(config, selection, cases, file);
+    const journal = command === 'init-restart' ? createRestartJournal(config, selection, cases, file) : createJournal(config, selection, cases, file);
     // Exclusive create: a competing init cannot replace an existing journal.
     mkdirSync(path.dirname(file), { recursive: true }); const fd = openSync(file, 'wx', 0o600);
     try { writeFileSync(fd, jsonBytes(journal)); fsyncSync(fd); } finally { closeSync(fd); }

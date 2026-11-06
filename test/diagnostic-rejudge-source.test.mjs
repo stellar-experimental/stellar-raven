@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { buildPlaygroundArtifactMeta, sha256Json, treeGenerationSha256, assertNotPlaygroundQuarantine } from "../eval/playground/artifact-contract.mjs";
-import { diagnosticRejudgeSource } from "../eval/qa/diagnostic-rejudge-source.mjs";
+import { diagnosticRejudgeSource, isHarnessTransportFailure } from "../eval/qa/diagnostic-rejudge-source.mjs";
 import { buildRejudgeArtifact, parseArgs, rejudgeRows } from "../eval/qa/re-judge.mjs";
 import { createSpendLedger } from "../eval/qa/spend-budget.mjs";
 
@@ -122,5 +122,25 @@ describe('ledger precision',()=>{
     source.budget.reportedSpendUsd=.1443856;source.budget.remainingUsd=.8556144;
     const before=JSON.stringify(source);expect(()=>diagnosticRejudgeSource(source)).not.toThrow();expect(JSON.stringify(source)).toBe(before);
     source.rows[0].verdict.costUsd=.0443857;expect(()=>diagnosticRejudgeSource(source)).toThrow('unaccounted');
+  });
+});
+
+
+describe("optional transport details do not change admission", () => {
+  it("keeps a transport failure ungradeable with or without its cause", () => {
+    const source = fixture();
+    Object.assign(source.rows[0], {answer: "", costUsd: null, answerCost: null, responseStatus: null, httpError: null,
+      clientError: "fetch failed", finishReason: null, frames: [], transcript: [], sseErrors: [], verdict: null});
+    const failure = source.rows[0];
+    expect(isHarnessTransportFailure(failure)).toBe(true);
+    expect(() => diagnosticRejudgeSource(source)).toThrow("invalid saved answer");
+    failure.clientErrorDetails = {phase: "fetch", name: "TypeError", cause: {name: "Error", code: "ECONNRESET", syscall: "read"}};
+    expect(isHarnessTransportFailure(failure)).toBe(true);
+    expect(() => diagnosticRejudgeSource(source)).toThrow("invalid saved answer");
+  });
+  it("keeps a settled judge diagnostic identical with absent or null details", () => {
+    const source = fixture(), before = diagnosticRejudgeSource(source);
+    source.rows[0].clientErrorDetails = null;
+    expect(diagnosticRejudgeSource(source)).toEqual(before);
   });
 });

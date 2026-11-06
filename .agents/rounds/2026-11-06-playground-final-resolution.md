@@ -434,3 +434,102 @@ blinding and the harness-failure class. The one-model collection driver passed
 20 scheduling and mocked execution checks; its exact-log helper passed nine zero-call
 boundary checks. The driver uses the authoritative journal accounting and is limited
 to untouched ten-task models. Luna's split source remains manually coordinated.
+
+### Second transport interruption — collection halted
+
+The $3.64 continuation stopped after four completed rows and a fifth immediate
+`fetch failed` result: 1 ms, no HTTP response, no frames, and no cost receipt.
+Sixteen IDs remain unattempted. Its raw SHA-256 is
+`1ab89179483857919b31a1e378df32563811dd19ee681956f120986143e355ea`.
+Ordinary settlement retained the full reservation and halted the journal. The
+one-recovery amendment does not admit a chained continuation.
+
+Exact GET reconciliation confirms twelve provider logs totaling $0.01245 for the
+four completed continuation rows. Provider reach and cost for its fifth row remain
+unknown. Across the interrupted cohort there are 85 answer attempts, 83 Judge A
+calls, and 337 known answer-provider calls; unknown provider-call counts remain
+unknown. Known API cash including calibration is $0.8915166. Charging both uncertain
+methods in full gives a conservative cumulative debit of $8.82879459 and leaves
+$191.17120541 under the original $200 ceiling. No budget is reset.
+
+Two new Astra/high lanes are reproducing the transport failure using free local
+requests and auditing a possible uniform restart after a demonstrated harness fix.
+The 85 original attempts and all their costs remain evidence. A fresh cohort, if
+approved after diagnosis and independent review, must use one repaired transport
+for every model and retain the entire prior spending debit; it cannot selectively
+replace failures. No new paid collection is authorized by this status entry.
+
+### Uniform restart protocol — predeclared before new-era data
+
+The coordinator chooses a complete new comparison after the transport repair passes
+its free reproduction, regression tests and independent review. This decision is
+made before any new-era answer exists and excludes all 85 earlier observations
+uniformly from the comparative matrix, including successful answers. They remain an
+aborted diagnostic cohort with original receipts, costs and separate full blinded
+transcript review. No old answer or verdict receives credit in the new matrix.
+
+The fresh era is `2026-11-06-playground-final-transport-fixed`, with its own journal
+under `eval/local-lanes/playground-final-transport-fixed`. The original halted journal
+stays at its original path. An immutable, hash-bound `priorCohort` record carries
+the $8.82879459 opening ceiling debit, $0.8915166 known cash, both unknown failed
+costs, source evidence, and prior counters. Known prefixes are included within their
+full method charges, never added a second time. Every subsequent reservation uses
+the original $200 ceiling minus that opening debit and all new spending/reservations.
+The $20 unreserved buffer remains in force.
+
+The new bounded authorization is 1,616 fresh first-attempt answers and up to 1,616
+eligible calls per judge. Prior consumed counts remain separate: 85 answers, 83
+collection A calls, seven calibration A calls and 27 calibration B calls. Combined
+study maxima before separately bounded probes are 1,701 answers, 1,706 A calls and
+1,643 B calls. No retry or saved-answer-rejudge reserve is introduced. Fixed selection,
+eight models, two repeats, shard order, goldens, rubric, pack, judge models, decision
+tests and adjudication requirements remain unchanged.
+
+The transport repair must change only connection handling and bounded error
+diagnostics, with request-body/model-input equality verified. The exact historical
+cause remains an inference because the old runner discarded it. A newly frozen
+clean answer checkout and generation, checked A executable/environment, reviewed
+helper paths and pins, and independently reviewed opening-debit initialization are
+required before launch. B keeps its calibrated request and frozen implementation
+identity if its implementation files remain unchanged. Root stopped the old sole
+Wrangler after all old paid processes ended; the lifecycle observation is retained
+separately without rewriting the original journal's historical lease.
+
+The cost scenario uses the twenty historical pilot inputs only: mean B cost
+$0.018488625, excluding the seven shorter known-answer fixtures, from
+`calibration-summary.json` and its pinned 27-call receipt. At that mean the full
+fresh matrix plus opening debit projects $173.83771259; pricing every B call at
+the pilot maximum projects $191.78723059, before production probes. The latter
+does not fit the unchanged $20 reserve. These are scenarios, not guarantees or
+authority to overspend. Reforecast after each model and before Astra repeat two;
+the reservation gate stops any batch that cannot fit. A budget stop produces no
+comparative decision on fewer models or repeats.
+
+A new unknown-cost, identity or transport stop immediately halts new launches and
+retains the full allocation while already authorized siblings may settle. There is
+no automatic partial recovery, chained continuation or selective replacement in
+the new era. Further action needs a fresh reviewed bounded decision within the
+owner's existing authorization. Necessary paid verification probes also require
+their own reviewed allocation against this same ceiling; no new user permission
+is inferred merely from creating that allocation. Actual collection remains gated
+on the completed repair, initializer review and identity freeze.
+
+### Transport repair and restart implementation accepted
+
+Astra/high implemented the isolated answer-transport repair and the separate
+prior-cohort initializer. Claude Fable 5.1/high independently approved the repair
+and initializer in the local `restart-design-review.md`, Parts F and H.1–H.2.
+The two initializer findings were reconciled: immutable copies preserve the old
+untracked helper evidence, and journal mutations protect the entire era binding
+and recovery policy as well as the opening debit. No review finding remains open
+for this source freeze. The created journal and actual launch pins still receive
+a final read-only verification before the first reservation.
+
+The transport regression failed before the fix and passes with fresh connections;
+wire bytes differ only in the Connection header. Existing failure admission and
+unknown-cost semantics remain unchanged. The combined implementation passed
+typecheck, build, eval self-test and the full unit suite (3,387 passed, three
+expected failures); the final initializer/helper delta passed 106 focused tests.
+The nine Judge B implementation files remain unchanged. No new-era paid call has
+occurred. The separate 85-observation diagnostic review uses opaque packets that
+retain every full transcript while withholding model and raw-judge metadata.

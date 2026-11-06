@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it } from 'vitest';
-import { mkdtempSync, mkdirSync, readFileSync, readdirSync, existsSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, realpathSync, readFileSync, readdirSync, existsSync, rmSync, writeFileSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { partialRecoverySource, diagnosticAnswerProblem } from '../eval/qa/diagnostic-rejudge-source.mjs';
@@ -408,4 +408,168 @@ it('requires explicit old identity and unchanged request configuration for pre-f
   expect(freezeJudgeB(f.journal,changed,'source-only amendment',old).identitySha256).toBe('b'.repeat(64));
   f.journal.external.push({kind:'judge-b'});
   expect(()=>freezeJudgeB(f.journal,{...changed,identitySha256:'c'.repeat(64)},'later',changed.identitySha256)).toThrow();
+});
+
+
+describe('transport details preserve receipt admission',()=>{
+  it('retains failure classification and unknown-cost rejection',()=>{
+    const f=partialFixture();
+    expect(answerFailureClass(f.raw.rows[3])).toBe('harness-transport-failure');
+    const rejection=()=>{try{validateReceipt(f.journal,f.task,f.raw);}catch(error){return error.message;}throw new Error('unexpected admission');};
+    const before=rejection();
+    f.raw.rows[3].clientErrorDetails={phase:'fetch',name:'TypeError',cause:{name:'Error',code:'ECONNRESET',syscall:'read'}};
+    expect(answerFailureClass(f.raw.rows[3])).toBe('harness-transport-failure');
+    expect(rejection()).toBe(before);
+  });
+  it('accepts a complete receipt identically with null details',()=>{
+    const f=fixture(),task=reserveSafety(f),raw=receipt(f,task);
+    const before=validateReceipt(f.journal,task,raw);
+    for(const row of raw.rows)row.clientErrorDetails=null;
+    expect(validateReceipt(f.journal,task,raw)).toEqual(before);
+  });
+});
+
+// Synthetic, portable copy of the approved accounting shape; no local receipts or network.
+function priorFixture(f) {
+  const initialRoot=path.join(f.dir,'old-root');mkdirSync(initialRoot,{recursive:true});
+  const root=realpathSync(initialRoot),base=path.join(root,'eval/local-lanes/playground-final-resolution'),pins=[];
+  f.config.measurementRoot=realpathSync(f.config.measurementRoot);
+  const save=(file,value)=>{const bytes=JSON.stringify(value);mkdirSync(path.dirname(file),{recursive:true});writeFileSync(file,bytes);const pin={path:file,sha256:sha256(bytes)};pins.push(pin);return pin;};
+  const old={contract:'playground-finals-journal/v1',experimentId:'2026-11-06-playground-final-resolution',state:'halted',cashCapUsd:200,selectionSha256:h(selection),server:{ownerTerminalId:'t30d'},measurement:structuredClone(f.config),tasks:[],external:[]};
+  old.measurement.inputFileHashes.runnerFileSha256=OLD_RUNNER_SHA;
+  const specs=[['m1-r1-s0',1,1,.00165025,.0469114],['m1-r1-s1',25,107,.14943036,1.9882808],['m1-r1-s2',4,10,.02027201,.1682468],['m1-r1-s2-c1',5,12,.01245,.2293404],['m1-r1-s3',25,107,.14647349,1.903444],['m1-r1-s4',25,100,.14495349,1.99841]];
+  for(const [id,n,providers,cash,notional] of specs){
+    const uncertain=id==='m1-r1-s2'||id.endsWith('c1'),knownCount=n-(uncertain?1:0),dir=path.join(base,'native',id);
+    const ids=Array.from({length:uncertain?(id.endsWith('c1')?21:25):n},(_,i)=>`${id}-case-${i}`),model='openai/gpt-5.6-luna',cap=id.endsWith('c1')?3.64:id.endsWith('s0')?2:4.33;
+    let remaining=cap;const calls=[],rows=[],proofRows=[];
+    const call=(method,rowId,costUsd)=>{calls.push({method,id:rowId,costUsd,authorizedUsd:Number(remaining.toFixed(12))});if(costUsd!==null)remaining-=costUsd;};
+    for(let i=0;i<n;i++){
+      if(i===knownCount){rows.push({id:ids[i],costUsd:null,answerCost:null,responseStatus:null,frames:[],clientError:'fetch failed',verdict:null});call('answer',ids[i],null);continue;}
+      const count=Math.floor(providers/knownCount)+(i===0?providers%knownCount:0),cost=i===0?cash:0,judgeCost=i===0?notional:0;
+      const logIds=Array.from({length:count},(_,j)=>`${id}-${i}-log-${j}`),frame={error:null,calls:count,reportedCalls:count,models:[model],logIds,costUsd:cost};
+      rows.push({id:ids[i],costUsd:cost,answerCost:frame,verdict:{costUsd:judgeCost}});call('answer',ids[i],cost);call('judge',ids[i],judgeCost);
+      proofRows.push({id:ids[i],costUsd:cost,logs:logIds.map((log,j)=>({id:log,costUsd:j===0?cost:0,model,provider:'openai',cached:false,custom_cost:false,collect_log_payload:false}))});
+    }
+    const r={meta:{capContext:{roundAuthorization:{experimentId:old.experimentId}},answering:{primaryModel:model},inputSnapshot:{tree:{headRevision:OLD_ANSWER_REVISION}},totalAgentCostUsd:cash,totalJudgeCostUsd:notional},rows,budget:{calls,selectedCaseIds:ids,unattemptedCaseIds:ids.slice(n),missingCosts:uncertain?1:0,status:uncertain?'invalid':'complete',reportedSpendUsd:Number((cash+notional).toFixed(12))}};
+    const rp=save(path.join(dir,id+'-playground-semantic.json'),r);
+    const cp=save(path.join(dir,'completion.json'),{taskId:id,receipt:rp.path,receiptSha256:rp.sha256,exitCode:uncertain?1:0,signal:null});
+    save(path.join(dir,'subscription-attestation.json'),{contract:'playground-claude-subscription-attestation/v1',taskId:id,experimentId:old.experimentId,receiptSha256:rp.sha256,executableSha256:S,environmentSha256:S,billingMode:'subscription',apiCredentialsExcluded:true,before:{authMethod:'claude.ai',subscriptionType:'max',executableSha256:S,environmentSha256:S},after:{authMethod:'claude.ai',subscriptionType:'max',executableSha256:S,environmentSha256:S}});
+    const proofPath=uncertain?path.join(root,'tmp/playground-final',id.endsWith('c1')?'second-infra-gateway-evidence.json':'first-infra-gateway-evidence.json'):rp.path.replace(/\.json$/,'.gateway-proof.json');
+    save(proofPath,{receipt:rp,accountId:B_CONFIG.accountId,gatewayId:old.measurement.gatewayId,rows:proofRows});
+    old.tasks.push({id,state:uncertain?(id.endsWith('c1')?'unresolved':'settled-partial'):'settled',receipt:rp,ids,model,methodCapUsd:cap,cashUsd:uncertain?null:cash});
+    if(id.endsWith('c1'))old.lastCompletion=cp;
+  }
+  const bCalls=Array.from({length:27},(_,i)=>({logId:'cal-'+i,costUsd:i===0?.416287:0,gatewayLog:{id:'cal-'+i,cached:false,customCost:false,collectLogPayload:false}}));
+  const bp=save(path.join(base,'b-calibration.json'),{budget:{calls:bCalls,missingCosts:0,stopped:null,totalCostUsd:.416287}});
+  old.external.push({kind:'calibration',state:'settled',receipt:bp,cashUsd:.416287});
+  save(path.join(base,'judge-a-calibration.json'),{calls:7,missingCosts:[],totalCostUsd:.3017528,callRecords:Array.from({length:7},(_,i)=>({ok:true,costUsd:i===0?.3017528:0}))});
+  const helperFile='tmp/playground-final/run-final-task.mjs',helperBytes='// immutable old helper\n';
+  const helperCopyPath=path.join(root,'tmp/playground-final/transport-fixed/historical-helpers/run-final-task.mjs');
+  mkdirSync(path.dirname(helperCopyPath),{recursive:true});writeFileSync(helperCopyPath,helperBytes);
+  const historicalHelperCopies={[helperFile]:{path:helperCopyPath,sha256:sha256(helperBytes)}};
+  save(path.join(root,'tmp/playground-final/collection-code-pins.json'),{[helperFile]:sha256(helperBytes)});
+  const last=old.lastCompletion;delete old.lastCompletion;const jp=save(path.join(base,'journal.json'),old);
+  const inventory=save(path.join(root,'tmp/playground-final/inventory.json'),{contract:'playground-restart-accounting-evidence/v1',journal:jp,pins:[...pins]});
+  const stop=save(path.join(root,'tmp/playground-final/stop.json'),{contract:'playground-aborted-cohort-server-stop/v1',state:'finished',terminal:'t30d',observedAt:'2026-11-06T18:00:00Z',journal:jp,lastMethod:'m1-r1-s2-c1',lastCompletionSha256:last.sha256});
+  const manifest=save(path.join(root,'tmp/playground-final/import.json'),{contract:'playground-aborted-cohort-import/v1',experimentId:RESTART_ID,sourceRevision:OLD_REVISION,historicalHelperCopies,reviewRef:'review',decisionRef:'pre-data-uniform-all-eight',uniformRestartBeforeNewData:true,inventory,serverStop:stop});
+  const journalPath=path.join(root,'eval/local-lanes/playground-final-transport-fixed/journal.json');
+  const control=path.join(root,'tmp/playground-final/transport-fixed');
+  const eraBinding=save(path.join(control,'era-context.json'),{contract:'playground-transport-fixed-context/v1',experimentId:RESTART_ID,root,base:path.dirname(journalPath),control,answerMeasurementRoot:f.config.measurementRoot,answerMeasurementRevision:f.config.measurementRevision});
+  const config={...f.config,experimentId:RESTART_ID,restartManifest:manifest,eraBinding};
+  return {config,journalPath,manifest,old,inventory,pins,journal:createRestartJournal(config,selection,corpus.cases,journalPath)};
+}
+
+import { createRestartJournal } from '../research/audits/2026-11-06-playground-final-resolution/orchestrate.mjs';
+import { importPriorCohort, RESTART_ID, OLD_REVISION, OLD_RUNNER_SHA, OLD_ANSWER_REVISION } from '../research/audits/2026-11-06-playground-final-resolution/prior-cohort.mjs';
+
+describe('uniform restart with immutable prior-cohort debit',()=>{
+  it('imports both entire holds once, retains nulls and 364 unique known logs, and separates calls',()=>{
+    const f=fixture(),p=priorFixture(f),a=accounting(p.journal);
+    expect(a).toMatchObject({knownCashUsd:.8915166,ceilingConsumedUsd:8.82879459,conservativeChargeUsd:7.97,availableUsd:191.17120541,reservedUsd:0,answerTurns:85,judgeACalls:90,apiJudgeCalls:27,subscriptionNotionalUsd:6.6363862,currentEra:{answerTurns:0,judgeACalls:0,apiJudgeCalls:0}});
+    expect(p.journal.priorCohort.uncertainMethods.map(c=>[c.ceilingChargeUsd,c.failedCashUsd])).toEqual([[4.33,null],[3.64,null]]);
+    expect(p.journal.priorCohort.logIdHashes).toHaveLength(364);expect(p.journal.tasks).toHaveLength(80);
+    expect(p.journal.tasks.reduce((n,t)=>n+t.ids.length,0)).toBe(1616);
+    expect(p.pins.every(pin=>sha256(readFileSync(pin.path))===pin.sha256)).toBe(true);
+    const task=reserveSafety({...f,journal:p.journal},2);
+    expect(accounting(p.journal).availableUsd).toBe(189.17120541); // Real first safety batch.
+    expect(roundCap(p.journal,task)).toMatchObject({plannedAnswerCalls:1616,absoluteAnswerCallCap:1616,answerCallsConsumedBeforeRun:0});
+  });
+  it('enforces the artificial cap+buffer boundary at twelve-decimal precision',()=>{
+    const p=priorFixture(fixture());declareServer(p.journal,p.journal.tasks[0].model,'test');
+    expect(()=>reserveBatch(p.journal,[{taskId:'m1-r1-s0',methodCapUsd:171.171205410001}])).toThrow('$200');
+    reserveBatch(p.journal,[{taskId:'m1-r1-s0',methodCapUsd:171.17120541}]);expect(accounting(p.journal).availableUsd).toBe(20);
+  });
+  it.each(['delete','alter','policy'])('refuses %s of the immutable opening record',kind=>{
+    const p=priorFixture(fixture());if(kind==='delete')delete p.journal.priorCohort;else if(kind==='alter')p.journal.priorCohort.ceilingConsumedUsd=0;else delete p.journal.recoveryPolicy;
+    expect(()=>accounting(p.journal)).toThrow('prior cohort');
+  });
+  it('refuses unfixed runner or revision and reused/overlapping destination',()=>{
+    const p=priorFixture(fixture());
+    expect(()=>createRestartJournal({...p.config,measurementRevision:OLD_ANSWER_REVISION},selection,corpus.cases,p.journalPath)).toThrow('unfixed');
+    expect(()=>createRestartJournal({...p.config,inputFileHashes:{...p.config.inputFileHashes,runnerFileSha256:OLD_RUNNER_SHA}},selection,corpus.cases,p.journalPath)).toThrow('unfixed');
+    expect(()=>createRestartJournal(p.config,selection,corpus.cases,path.join(path.dirname(p.old.tasks[0].receipt.path),'journal.json'))).toThrow('overlaps');
+    mkdirSync(path.dirname(p.journalPath),{recursive:true});writeFileSync(p.journalPath,'do not replace');
+    expect(()=>createRestartJournal(p.config,selection,corpus.cases,p.journalPath)).toThrow('destination');expect(readFileSync(p.journalPath,'utf8')).toBe('do not replace');
+  });
+  it('rejects changed source and missing completion before accounting or new reservations',()=>{
+    const p=priorFixture(fixture()),completion=p.pins.find(x=>x.path.endsWith('/m1-r1-s2-c1/completion.json'));
+    writeFileSync(completion.path,'{}');expect(()=>accounting(p.journal)).toThrow('changed evidence');
+    expect(()=>declareServer(p.journal,p.journal.tasks[0].model,'test')).toThrow('changed evidence');
+  });
+  it('rejects unobserved stop even with a newly hashed manifest',()=>{
+    const p=priorFixture(fixture()),m=JSON.parse(readFileSync(p.manifest.path));
+    const stop=JSON.parse(readFileSync(m.serverStop.path));stop.state='live';writeFileSync(m.serverStop.path,JSON.stringify(stop));m.serverStop.sha256=sha256(readFileSync(m.serverStop.path));writeFileSync(p.manifest.path,JSON.stringify(m));
+    expect(()=>importPriorCohort({...p.manifest,sha256:sha256(readFileSync(p.manifest.path))})).toThrow('server stop');
+  });
+  it('rejects original receipt admission and holds the new reservation on failure',()=>{
+    const f=fixture(),p=priorFixture(f),j=p.journal,task=reserveSafety({...f,journal:j},2),r=receipt({...f,journal:j},task);
+    settle(j,task.id,r,{...identity(r),sha256:j.priorCohort.receiptSha256s[0]},proof({...f,journal:j},task,r));
+    expect(j.state).toBe('halted');expect(accounting(j).reservedUsd).toBe(2);
+    expect(()=>settlePartial(j,task.id,r,identity(r),{},{})).toThrow('halt-only');
+    expect(()=>reserveContinuation(j,task.id,2,'review')).toThrow('halt-only');
+    expect(()=>readFinalsMatrix(j,selection)).toThrow('prior/partial');
+  });
+  it('rejects imported log reuse and old native B sources',()=>{
+    const f=fixture(),p=priorFixture(f),j=p.journal,task=reserveSafety({...f,journal:j},2),r=receipt({...f,journal:j},task);
+    r.rows[0].answerCost.logIds[0]='m1-r1-s0-0-log-0';
+    expect(()=>validateReceipt(j,task,r)).toThrow('Gateway identity reused');
+    // An old B source is rejected before any external reservation is added.
+    const other=priorFixture(fixture());
+    expect(()=>reserveExternal(other.journal,{...apiEntry(task,['x'],['x']),nativeSourceSha256:other.journal.priorCohort.receiptSha256s[0]})).toThrow('prior cohort B source');
+  });
+});
+
+it('settles new cash/notional without changing opening debit or consuming historical calls from the fresh cap',()=>{
+ const f=fixture(),p=priorFixture(f),j=p.journal,prior=JSON.stringify(j.priorCohort),task=reserveSafety({...f,journal:j},2),r=receipt({...f,journal:j},task);
+ settle(j,task.id,r,identity(r),proof({...f,journal:j},task,r));
+ expect(j.state).toBe('ready');expect(JSON.stringify(j.priorCohort)).toBe(prior);
+ expect(accounting(j)).toMatchObject({ceilingConsumedUsd:8.92879459,knownCashUsd:.9915166,reservedUsd:0,answerTurns:86,judgeACalls:91,currentEra:{answerTurns:1,judgeACalls:1,knownCashUsd:.1}});
+ const next=reserveBatch(j,[{taskId:'m1-r1-s1',methodCapUsd:4.33}])[0];expect(roundCap(j,next).answerCallsConsumedBeforeRun).toBe(1);
+});
+it('rolls back an attempted opening-record mutation under the journal lock',()=>{
+ const p=priorFixture(fixture());mkdirSync(path.dirname(p.journalPath),{recursive:true});writeFileSync(p.journalPath,JSON.stringify(p.journal));const original=readFileSync(p.journalPath);
+ expect(()=>updateJournal(p.journalPath,j=>{j.priorCohort.knownCashUsd=0;})).toThrow('immutable opening');
+ expect(readFileSync(p.journalPath)).toEqual(original);
+});
+it('keeps the twenty-dollar buffer for restart probes and rejects historical calibration log reuse',()=>{
+ const p=priorFixture(fixture());
+ const entry={id:'probe',kind:'probe',reviewRef:'bounded-probe',runId:'new-probe',model:'openai/gpt-5.6-terra',effort:'none',methodCapUsd:172,callIds:['probe#1'],receiptContract:'demo-gauntlet'};
+ expect(()=>reserveExternal(p.journal,entry)).toThrow('available cash');
+ const cap={...entry,methodCapUsd:2};reserveExternal(p.journal,cap);
+ const r={runId:cap.runId,completion:{status:'complete',plannedTurns:1,completedTurns:1},budget:{authorizedUsd:2,reportedUsd:.1,reportedTurns:1,unknownCostTurns:0},results:[{runId:cap.runId,promptId:'probe',repeat:1,model:cap.model,reasoningEffort:'none',responseStatus:200,latencyMs:1,error:null,evalCost:{costUsd:.1,reportedCostUsd:.1,calls:1,reportedCalls:1,models:[cap.model],logIds:['cal-0'],error:null}}]};
+ settleExternal(p.journal,cap.id,r,{path:'/synthetic/probe',sha256:h(r)});
+ expect(p.journal.state).toBe('halted');expect(p.journal.halt.reason).toContain('Gateway identity already accounted');expect(accounting(p.journal).reservedUsd).toBe(2);
+});
+
+it('validates retained helper copies without depending on future live helper edits',()=>{
+ const p=priorFixture(fixture()),m=JSON.parse(readFileSync(p.manifest.path));
+ const copy=m.historicalHelperCopies['tmp/playground-final/run-final-task.mjs'];
+ const live=path.join(path.resolve(path.dirname(p.old.tasks[0].receipt.path),'../../../../..'),'tmp/playground-final/run-final-task.mjs');
+ mkdirSync(path.dirname(live),{recursive:true});writeFileSync(live,'// changed live helper');
+ expect(accounting(p.journal).ceilingConsumedUsd).toBe(8.82879459);
+ writeFileSync(copy.path,'// changed retained evidence');expect(()=>accounting(p.journal)).toThrow('historical code pin');
+});
+it.each(['experimentId','recoveryPolicy','priorCohortSha256','eraBinding'])('protects %s in the journal mutation transaction',field=>{
+ const p=priorFixture(fixture());mkdirSync(path.dirname(p.journalPath),{recursive:true});writeFileSync(p.journalPath,JSON.stringify(p.journal));const before=readFileSync(p.journalPath);
+ expect(()=>updateJournal(p.journalPath,j=>{j[field]='changed';})).toThrow('immutable opening');expect(readFileSync(p.journalPath)).toEqual(before);
 });

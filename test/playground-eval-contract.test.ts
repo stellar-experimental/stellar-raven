@@ -421,3 +421,37 @@ describe("playground semantic artifact contract", () => {
     expect(() => assertQuarantineArtifact(saved)).not.toThrow();
   });
 });
+
+describe("Playground client error diagnostics", () => {
+  const details = artifactContract.playgroundClientErrorDetails;
+  it.each(["ECONNRESET", "ECONNREFUSED", "UND_ERR_SOCKET"])("retains %s without copying sensitive error text", (code) => {
+    const error = new TypeError("fetch failed", { cause: Object.assign(new Error("cookie=secret"), {
+      code, errno: -54, syscall: "read", socket: { remoteAddress: "secret" }
+    }) });
+    expect(details(error, "fetch")).toEqual({ phase: "fetch", name: "TypeError", cause: { name: "Error", code, errno: -54, syscall: "read" } });
+    expect(JSON.stringify(details(error, "fetch"))).not.toContain("secret");
+  });
+  it("retains abort and stream phases and bounded aggregate connection codes", () => {
+    expect(details(new DOMException("secret", "AbortError"), "stream")).toEqual({ phase: "stream", name: "AbortError" });
+    const error = new AggregateError([Object.assign(new Error(), { code: "ECONNREFUSED" }), Object.assign(new Error(), { code: "ENETUNREACH" })], "secret");
+    expect(details(new TypeError("fetch failed", { cause: error }), "fetch").cause).toEqual({ name: "AggregateError", errors: [{ name: "Error", code: "ECONNREFUSED" }, { name: "Error", code: "ENETUNREACH" }] });
+  });
+  it("drops arbitrary names, codes, syscalls, strings, and throwing properties", () => {
+    const hostile = { name: "token-secret", code: "TOKEN_SECRET", errno: Infinity, syscall: "secret", message: "secret", stack: "secret", get cause() { throw new Error("secret"); } };
+    expect(details(hostile, "fetch")).toEqual({ phase: "fetch", name: "Error" });
+    expect(details("token-secret", "fetch")).toEqual({ phase: "fetch", name: "Error" });
+  });
+  it("bounds cyclic, deep and wide causes to eight nodes and three levels", () => {
+    const cycle: { name: string; cause?: unknown } = { name: "Error" }; cycle.cause = cycle;
+    expect(details(cycle, "fetch").cause).toEqual({ name: "Error", truncated: true });
+    let deep = new Error();
+    for (let i = 0; i < 10; i++) deep = new Error("secret", { cause: deep });
+    const wide = new AggregateError(Array.from({ length: 20 }, () => new AggregateError([deep, deep, deep])), "secret");
+    const captured = details(wide, "fetch");
+    let nodes = 0, maxDepth = 0;
+    const walk = (node: any, depth = 1) => { nodes++; maxDepth = Math.max(maxDepth, depth); if (node.cause) walk(node.cause, depth + 1); for (const child of node.errors ?? []) walk(child, depth + 1); };
+    walk(captured);
+    expect(nodes).toBeLessThanOrEqual(8); expect(maxDepth).toBeLessThanOrEqual(3); expect(captured.truncated).toBe(true);
+    expect(JSON.stringify(captured)).not.toContain("secret");
+  });
+});
