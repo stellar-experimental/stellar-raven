@@ -213,7 +213,7 @@
     "description": "One spec covering every operation this MCP server can execute, across four services: lumenloop, scout (Stellar Light), stellarDocs (Mintlify-backed docs search), and skills (pinned agent playbooks). Paths are keyed '/{service}/{operation}' and each operationId is the exact callable name: an operation with operationId 'lumenloop.search_directory' is invoked inside the execute tool's sandbox as `await lumenloop.search_directory(args)` — args is ONE object matching the operation's requestBody schema (POST ops) or its parameter names (GET ops). The exact call line is on each operation as x-execute. Every call resolves (never throws) to { ok: true, data, asOf, asOfBasis, caveat? } or { ok: false, error: { service, kind, message } }; the 200 response schema documents `data`. `asOf` is the upstream data date (dataAsOf or asOf) when the payload states one, else the host observation time, and `asOfBasis` names which; `caveat` is \"no-rows\" or \"unverified-match\" when the host can show it. Every path in this spec is callable — exposure is filtered at build time, so nothing uncallable is described. Auth is handled host-side — code never sees keys.",
     "title": "stellar-raven-codemode — unified super spec",
     "version": "1.0.0",
-    "x-generatedAt": "2026-11-06T01:05:54Z"
+    "x-generatedAt": "2026-11-06T12:39:43Z"
   },
   "openapi": "3.1.0",
   "paths": {
@@ -7462,7 +7462,7 @@
   "x-generated": {
     "builder": "scripts/build-super-spec.mjs",
     "catalogEntries": 284,
-    "generatedAt": "2026-11-06T01:05:54Z"
+    "generatedAt": "2026-11-06T12:39:43Z"
   },
   "x-services": {
     "lumenloop": {
@@ -7505,7 +7505,7 @@
           "skills": 1
         }
       ],
-      "syncedAt": "2026-11-06T01:05:54Z"
+      "syncedAt": "2026-11-06T12:39:43Z"
     },
     "stellarDocs": {
       "authoredAt": "2026-11-02T00:00:00Z",
