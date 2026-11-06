@@ -60,15 +60,15 @@
     "docs:anchors:build": "node scripts/build-stellar-docs-anchors.mjs"
   },
   "dependencies": {
-    "@ai-sdk/anthropic": "^4.0.78",
-    "@ai-sdk/google": "^4.0.93",
-    "@ai-sdk/openai": "^4.0.91",
+    "@ai-sdk/anthropic": "^4.0.96",
+    "@ai-sdk/google": "^4.0.111",
+    "@ai-sdk/openai": "^4.0.108",
     "@cloudflare/codemode": "0.5.1",
     "@cloudflare/workers-oauth-provider": "^0.10.3",
     "@modelcontextprotocol/server": "2.3.1",
     "acorn": "^8.18.0",
     "agents": "0.28.1",
-    "ai": "^7.0.137",
+    "ai": "^7.0.162",
     "workers-ai-provider": "^4.0.0",
     "zod": "^4.6.7"
   },

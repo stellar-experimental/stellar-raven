@@ -15,6 +15,7 @@ import {
   DEMO_PRIMARY_MODEL,
   DEMO_REASONING_EFFORT,
   DEMO_REASONING_EFFORT_OVERRIDE_VAR,
+  DEMO_RESPONSES_FORMAT_CATALOG_MODELS,
   DEMO_TEMPERATURE,
   demoAnthropicProviderOptions,
   demoEffectiveOpenAiApiMode,
@@ -22,8 +23,10 @@ import {
   demoOpenAiApiModeFromOverride,
   demoOpenAiProviderOptions,
   demoGatewayTransportSettings,
+  demoUnifiedRunBinding,
   demoModelSettings,
   demoTemperatureFor,
+  demoUsesCatalogRun,
   demoUsesUnifiedRun,
   demoReasoningEffortFromOverride,
   demoReasoningEffortOverride,
@@ -121,14 +124,22 @@ describe("demo model config", () => {
   });
 
   it("builds OpenAI-wire reasoning options for OpenAI and provider-native Grok slugs", () => {
+    // `store: false` is the Zero Data Retention wire: OpenAI never persists
+    // response items for this gateway, so a stored-item replay 404s unless the
+    // SDK requests `reasoning.encrypted_content`, which it does only when
+    // store is false (gpt-6-astra at low, 2026-11-04).
     expect(demoOpenAiProviderOptions("openai/gpt-5.4", "low")).toEqual({
       providerOptions: {
         openai: {
-          reasoningEffort: "low"
+          reasoningEffort: "low",
+          store: false
         }
       }
     });
-    expect(demoOpenAiProviderOptions("openai/gpt-5.4", undefined)).toEqual({});
+    expect(demoOpenAiProviderOptions("openai/gpt-5.4", undefined)).toEqual({
+      providerOptions: { openai: { store: false } }
+    });
+    // The xAI chat wire has no store field.
     expect(demoOpenAiProviderOptions("xai/grok-4.6", "medium")).toEqual({
       providerOptions: {
         openai: {
@@ -142,11 +153,21 @@ describe("demo model config", () => {
   it("configures Claude 5 reasoning without using the unified reasoning field", () => {
     // Never `thinking: { type: "disabled" }` — Opus 5 400s on it above high
     // effort and the SDK does not guard Fable 5 or Sonnet 5 at all.
+    // Every 5.x id in both spellings: the Cloudflare catalog dot
+    // (`claude-sonnet-5.5`) and the Anthropic dash (`claude-sonnet-5-5`). Haiku
+    // 5.5 is in: Anthropic's effort reference lists all five effort levels and
+    // adaptive thinking for it.
     for (const model of [
       "anthropic/claude-opus-5",
       "anthropic/claude-sonnet-5",
       "anthropic/claude-fable-5",
-      "anthropic/claude-sonnet-5-20260101"
+      "anthropic/claude-sonnet-5-20260101",
+      "anthropic/claude-sonnet-5.5",
+      "anthropic/claude-sonnet-5-5",
+      "anthropic/claude-opus-5.5",
+      "anthropic/claude-fable-5.1",
+      "anthropic/claude-haiku-5.5",
+      "anthropic/claude-haiku-5-5"
     ]) {
       expect(demoAnthropicProviderOptions(model, "none")).toEqual({
         providerOptions: { anthropic: { thinking: { type: "adaptive" }, effort: "low" } }
@@ -162,6 +183,10 @@ describe("demo model config", () => {
     // Dashes, never dots — a dotted Anthropic id authenticates and returns
     // "model … was not found", which reads like a provider outage.
     expect(demoAnthropicProviderOptions("anthropic/claude-haiku-4-5", "none")).toEqual({});
+    expect(demoAnthropicProviderOptions("anthropic/claude-sonnet-4-6", "none")).toEqual({});
+    expect(demoAnthropicProviderOptions("anthropic/claude-sonnet-4.6", "none")).toEqual({});
+    // A major version that merely starts with 5 is not the 5 family.
+    expect(demoAnthropicProviderOptions("anthropic/claude-sonnet-50", "none")).toEqual({});
     expect(demoAnthropicProviderOptions("openai/gpt-5.6-terra", "none")).toEqual({});
   });
 
@@ -183,27 +208,93 @@ describe("demo model config", () => {
       resume: false,
       collectLog: false
     });
-    // Anthropic and Google MUST omit `transport`. That selects the binding run
-    // path, whose Unified Billing catalog is wider than provider passthrough's —
-    // passthrough strips auth headers and does not carry claude-fable-5, so it
-    // was reaching api.anthropic.com with no credential and 401ing. Asserting
-    // absence, not a value, because absence is the whole fix.
-    for (const model of ["anthropic/claude-fable-5", "anthropic/claude-sonnet-5", "google/gemini-3.6-flash"]) {
+    // Anthropic MUST omit `transport`. That selects the binding run path, whose
+    // Unified Billing catalog is wider than provider passthrough's — passthrough
+    // strips auth headers and does not carry claude-fable-5, so it was reaching
+    // api.anthropic.com with no credential and 401ing. Asserting absence, not a
+    // value, because absence is the whole fix.
+    for (const model of ["anthropic/claude-fable-5", "anthropic/claude-sonnet-5"]) {
       const settings = demoGatewayTransportSettings(model);
       expect("transport" in settings, model).toBe(false);
       expect(settings).toEqual({ resume: false, collectLog: false });
     }
+    // Google is the opposite: the run path rejects the tool-result replay
+    // (`7003 User Input Error`, probed 2026-11-03), passthrough completes it.
+    expect(demoGatewayTransportSettings("google/gemini-3.8-flash")).toEqual({
+      transport: "gateway",
+      resume: false,
+      collectLog: false
+    });
   });
 
   it("routes registry-unknown vendors through the plain binding, with their temperature quirk", () => {
     // workers-ai-provider has no `moonshotai` entry, so the plugin delegate
     // throws before any network call. The binding run path resolves it instead.
     expect(demoUsesUnifiedRun("moonshotai/kimi-k3")).toBe(true);
+    // Probed offline on 2026-11-03: both throw `Unknown gateway provider` on the plugin path.
+    expect(demoUsesUnifiedRun("meta/muse-spark-1.3")).toBe(true);
+    expect(demoUsesUnifiedRun("particle/particle-1")).toBe(true);
     expect(demoUsesUnifiedRun("anthropic/claude-fable-5")).toBe(false);
+    expect(demoUsesUnifiedRun("deepseek/deepseek-v4-pro")).toBe(false);
     expect(demoUsesUnifiedRun("@cf/zai-org/glm-5.2")).toBe(false);
     // That path has no SDK to normalize parameters, and K3 accepts only 1.
+    // The quirk is Moonshot's: other registry-unknown vendors keep the demo value.
     expect(demoTemperatureFor("moonshotai/kimi-k3")).toBe(1);
+    expect(demoTemperatureFor("meta/muse-spark-1.3")).toBe(DEMO_TEMPERATURE);
+    expect(demoTemperatureFor("particle/particle-1")).toBe(DEMO_TEMPERATURE);
     expect(demoTemperatureFor("openai/gpt-5.6-terra")).toBe(DEMO_TEMPERATURE);
+    // Registry-unknown vendors take the catalog settings shape: headers plus the
+    // mapped reasoning_effort, never a gateway transport.
+    expect(demoUsesCatalogRun("meta/muse-spark-1.3")).toBe(true);
+    expect(demoUsesCatalogRun("@cf/zai-org/glm-5.3")).toBe(true);
+    expect(demoUsesCatalogRun("openai/gpt-5.6-terra")).toBe(false);
+    // Third-party catalog slugs name the request format: `/run` otherwise
+    // validates the chat body against the serving provider's native schema
+    // (Muse Spark 1.3 is Responses-only and answered `7003`, probed 2026-11-03).
+    expect(demoModelSettings("particle/particle-1", "a", "none")).toEqual({
+      extraHeaders: {
+        "x-session-affinity": "a",
+        "cf-aig-collect-log-payload": "false",
+        "cf-aig-skip-cache": "true"
+      },
+      openaiEndpoint: "/v1/chat/completions"
+    });
+    expect(demoModelSettings("meta/muse-spark-open", "a", "low")).toMatchObject({
+      reasoning_effort: "low",
+      openaiEndpoint: "/v1/chat/completions"
+    });
+    expect("transport" in demoModelSettings("meta/muse-spark-open", "a", "low")).toBe(false);
+    // Native Workers AI models already speak the catalog's own schema.
+    expect("openaiEndpoint" in demoModelSettings("@cf/zai-org/glm-5.3", "a", "low")).toBe(false);
+    expect("openaiEndpoint" in demoModelSettings("openai/gpt-5.6-terra", "a", "none")).toBe(false);
+  });
+
+  it("requests a JSON reply only for catalog models whose request format is Responses", async () => {
+    // A stream:true chat request to a Responses-format catalog model comes
+    // back as the provider's native Responses event stream, which the chat
+    // parser cannot read (Muse Spark 1.3, 2026-11-04: three `[object Object]`
+    // tokens, zero tool calls). A JSON reply is converted correctly, and the
+    // provider's own JSON-reply branch synthesizes the stream. Chat-format
+    // catalog models keep their live token stream.
+    expect([...DEMO_RESPONSES_FORMAT_CATALOG_MODELS]).toEqual(["meta/muse-spark-1.3"]);
+    const calls: Array<{ model: string; inputs: Record<string, unknown>; options: unknown }> = [];
+    const fake = {
+      run: async (model: string, inputs: Record<string, unknown>, options?: unknown) => {
+        calls.push({ model, inputs, options });
+        return { choices: [] };
+      },
+      gateway: (id: string) => ({ id })
+    };
+    const wrapped = demoUnifiedRunBinding(fake as never) as unknown as typeof fake;
+    await wrapped.run("meta/muse-spark-1.3", { messages: [], stream: true }, { openaiEndpoint: "/v1/chat/completions" });
+    await wrapped.run("particle/particle-1", { messages: [], stream: true }, { openaiEndpoint: "/v1/chat/completions" });
+    await wrapped.run("@cf/zai-org/glm-5.3", { messages: [], stream: true }, {});
+    expect(calls[0]?.inputs).toEqual({ messages: [], stream: false });
+    expect(calls[0]?.options).toEqual({ openaiEndpoint: "/v1/chat/completions" });
+    expect(calls[1]?.inputs).toEqual({ messages: [], stream: true });
+    expect(calls[2]?.inputs).toEqual({ messages: [], stream: true });
+    // Everything else on the binding passes through untouched.
+    expect(wrapped.gateway("g")).toEqual({ id: "g" });
   });
 
   it("defaults OpenAI API mode to responses unless chat is explicitly requested", () => {

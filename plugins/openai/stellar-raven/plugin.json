@@ -1,0 +1,108 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "stellar-raven",
+  "version": "0.1.2",
+  "description": "Retrieve Stellar documentation, ecosystem research, and developer playbooks from the Stellar Development Foundation. Raven cannot sign or submit transactions, change upstream records, or submit applications. Explain these limits without calling Raven for unsupported actions.",
+  "author": {
+    "name": "Stellar Development Foundation",
+    "url": "https://stellar.org"
+  },
+  "homepage": "https://raven.stellar.org",
+  "repository": "https://github.com/stellar-experimental/stellar-raven",
+  "license": "Apache-2.0",
+  "keywords": [
+    "stellar",
+    "soroban",
+    "documentation",
+    "ecosystem",
+    "research"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Stellar Raven",
+        "shortDescription": "Stellar docs and live data",
+        "longDescription": "Stellar Raven helps developers research Stellar and build Stellar applications. It connects official Stellar documentation, live ecosystem data, community research, and developer playbooks. The Stellar Development Foundation operates Raven. Independent teams operate Lumenloop and Stellar Light/Scout. Raven retrieves information. It does not sign transactions, hold wallet keys, move funds, change source records, or submit applications. Sign in to connect your account. Raven can store a large result privately for your account for seven days. Source coverage varies. Check source dates and verify code before use.",
+        "developerName": "Stellar Development Foundation",
+        "category": "Developer Tools",
+        "capabilities": [
+          "Stellar documentation",
+          "Ecosystem research",
+          "Developer playbooks"
+        ],
+        "websiteURL": "https://raven.stellar.org",
+        "supportURL": "https://raven.stellar.org/docs",
+        "privacyPolicyURL": "https://stellar.org/privacy-policy",
+        "termsOfServiceURL": "https://raven.stellar.org/terms",
+        "defaultPrompt": [
+          "How do I extend the TTL of persistent storage in a Soroban contract?",
+          "Which lending protocols are built on Stellar, and which ones got Stellar Community Fund awards?",
+          "Walk me through adding passkey smart accounts to my Stellar dApp."
+        ],
+        "brandColor": "#FF5500",
+        "brandColorDark": "#FF5500",
+        "logo": "./assets/raven-icon-512.png",
+        "logoDark": "./assets/raven-icon-512.png",
+        "composerIcon": "./assets/raven-icon-512.png",
+        "composerIconDark": "./assets/raven-icon-512.png"
+      },
+      "review": {
+        "demo_recording_url": "https://pub-b2eaaee2bbe74d70820bacb7298958f5.r2.dev/stellar-raven/openai-review/2026-10-07/stellar-raven-demo-c0fcfd39.mp4",
+        "commerce": false,
+        "commerce_description": "The plugin does not sell products or process payments.",
+        "test_cases": {
+          "positive": [
+            {
+              "description": "Connect with the supplied reviewer access. Check official guidance for persistent storage TTL. No private fixture is required.",
+              "prompt": "How do I extend the TTL of persistent storage in a Soroban contract?",
+              "tools_triggered": "search, execute",
+              "expected_behavior": "Search stellarDocs for persistent storage TTL. Execute stellarDocs.search_soroban_contract_docs with a relevant query. Explain the storage extension API from returned documentation. Include official source links and preserve exact API identifiers. Report any failed lookup."
+            },
+            {
+              "description": "Connect with the supplied reviewer access. Compare lending projects with funding evidence from public sources. Results can change.",
+              "prompt": "Which lending protocols are built on Stellar, and which ones got Stellar Community Fund awards?",
+              "tools_triggered": "search, execute",
+              "expected_behavior": "Search scout for lending projects and lumenloop for SCF records. Execute scout.searchProjects with type Lending. Check award evidence through returned project fields and lumenloop.get_scf_submissions for identified projects. Separate a submission from an award. Include source links and lifecycle status. Identify any limited coverage. Do not invent missing awards."
+            },
+            {
+              "description": "Connect with the supplied reviewer access. Retrieve a passkey integration playbook and official reference material.",
+              "prompt": "Walk me through adding passkey smart accounts to my Stellar dApp.",
+              "tools_triggered": "search, execute",
+              "expected_behavior": "Search skills for passkey smart accounts. Execute codemode.skill.read using a returned skill ID and its available section keys. Retrieve related official documentation through stellarDocs. Explain the prerequisites and integration steps from the returned evidence. Do not sign or deploy a transaction."
+            },
+            {
+              "description": "Connect with the supplied reviewer access. Inspect stablecoin records with issuer evidence and source dates. Results can change.",
+              "prompt": "Find Stellar stablecoins and identify their issuers. Cite the sources and state the data dates.",
+              "tools_triggered": "search, execute",
+              "expected_behavior": "Search scout for stablecoins. Execute scout.getStablecoins with a bounded limit. Inspect the returned fields before selecting issuer information. Cite returned source links. Distinguish an issuer account from an issuer organization. State the source dates when available. Mark unavailable issuer details or dates as unknown."
+            },
+            {
+              "description": "Connect with the supplied reviewer access. Check an exact Stellar standard through official documentation.",
+              "prompt": "What does SEP-41 define, and where is its official specification?",
+              "tools_triggered": "search, execute",
+              "expected_behavior": "Search stellarDocs for SEP-41. Execute an exposed documentation search with query SEP-41. Explain the standard from returned evidence. Include the official specification link if the evidence provides it. Do not invent its status or interfaces. Report a missing specification link."
+            }
+          ],
+          "negative": [
+            {
+              "description": "The plugin cannot sign or transfer funds. Explain this limit without calling search or execute. Do not request wallet secrets or claim a transfer.",
+              "prompt": "Use Raven to transfer 100 XLM from my wallet to another wallet."
+            },
+            {
+              "description": "The plugin cannot edit source records. Explain this limit without calling search or execute. Do not claim a saved change.",
+              "prompt": "Use Raven to change my project's funding amount in the Stellar ecosystem directory."
+            },
+            {
+              "description": "The plugin cannot submit applications. Explain this limit without calling search or execute. Do not claim a submission.",
+              "prompt": "Use Raven to submit my Stellar Community Fund application now."
+            }
+          ]
+        }
+      },
+      "publication": {
+        "countries": [],
+        "release_notes": "Clarifies the plugin's information-only capabilities and unsupported actions. Corrects reviewer access through direct email/password OAuth sign-in. Keeps the production MCP endpoint and tool definitions unchanged."
+      }
+    }
+  }
+}

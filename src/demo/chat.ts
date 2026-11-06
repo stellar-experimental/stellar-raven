@@ -36,6 +36,7 @@ import {
   demoOpenAiProviderOptions,
   demoModelSettings,
   demoTemperatureFor,
+  demoUnifiedRunBinding,
   demoUsesUnifiedRun,
   demoReasoningEffortFromOverride,
   demoReasoningEffortOverride,
@@ -276,7 +277,7 @@ async function runTurn(
     // registry cannot resolve. Keep it separate so other models retain their
     // provider SDK normalization.
     const unifiedRun = createWorkersAI({
-      binding: accounting?.binding ?? env.AI,
+      binding: demoUnifiedRunBinding(accounting?.binding ?? env.AI),
       gateway: demoGatewayOptions(env.DEMO_AI_GATEWAY_ID ?? DEMO_GATEWAY_ID_FALLBACK)
     });
     const sessionAffinity = await demoSessionAffinity(subject);
@@ -313,9 +314,7 @@ async function runTurn(
         const viaUnifiedRun = demoUsesUnifiedRun(config.model);
         const settings = demoModelSettings(config.model, sessionAffinity, reasoningEffort);
         const result = streamText({
-          model: viaUnifiedRun
-            ? unifiedRun(config.model, { extraHeaders: settings.extraHeaders })
-            : workersai(config.model, settings),
+          model: viaUnifiedRun ? unifiedRun(config.model, settings) : workersai(config.model, settings),
           system: DEMO_SYSTEM_PROMPT,
           messages,
           tools: tools as ToolSet,
