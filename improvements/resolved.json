@@ -1125,6 +1125,24 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/b73c8c2f99a724138447339b8e753647e33e1724/improvements/stellar-docs/sd-063-restore-ttl-4095-stale.md"
     },
     {
+      "id": "sd-064",
+      "title": "The Mintlify migration removed the meeting author index pages. It added no redirect. Old links such as /meetings/authors/kalepail now…",
+      "service": "stellar-docs",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-09",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/pull/2945"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/2945"
+      ],
+      "liveRecheck": "2026-11-09T20:39Z: https://developers.stellar.org/meetings/authors/kalepail returns HTTP 308 to /meetings, which returns HTTP 200 with the Meeting Notes index. The /meetings/authors root, both trailing-slash forms, and all seven pre-migration author keys redirect the same way. stellar-docs main redirects.json holds the six PR2945 rules (merge 88c539971e605d01e5f1ee7f71efd1669ca1db5e).",
+      "reviewEvidence": "Author: Codex workhorse gpt-6.1-sol lane (sw-docs). Independent reviewer: Claude Fable high (hc t3cb), research/audits/2026-11-09-improvements-sweep/review-fable.md, freshly requested every author-index URL form and read redirects.json on stellar-docs main. Resolution comments: https://github.com/stellar/stellar-docs/pull/2945#issuecomment-6751071543",
+      "sourceCommit": "a5fe62e1187d628759bbf60cc0738688e13db66d",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/a5fe62e1187d628759bbf60cc0738688e13db66d/improvements/stellar-docs/sd-064-meeting-author-pages-404-after-migration.md"
+    },
+    {
       "id": "sd-065",
       "title": "The Debugging Errors page names the resource-limit errors HostError(Budget, LimitExceeded) and HostError(Storage, LimitExceeded). No error…",
       "service": "stellar-docs",
@@ -1662,6 +1680,25 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/ac3adf30192b2e9039576ea2ed065a594d526fb6/improvements/stellar-docs/sd-099-cross-contract-manual-invocation-does-not-compile.md"
     },
     {
+      "id": "sd-100",
+      "title": "The USDT0 launch page repeats an older ledger-close estimate in two places. Its FAQ says Stellar finalises in “5–7 seconds”. Its…",
+      "service": "stellar-docs",
+      "discovered": "2026-11-09",
+      "resolved": "2026-11-09",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/3078",
+        "https://github.com/stellar/stellar-docs/pull/3080"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/3080"
+      ],
+      "liveRecheck": "2026-11-09T20:51Z: production https://developers.stellar.org/launch/usdt0.md, the HTML page and cache-busted variants (all HTTP 200) say about 5 seconds and ~5s, with no 5–7 range, and the Stellar Stack link is intact. The Stellar Stack and Validators pages keep the configurable-target caveat. Mainnet ledgers 65394089–65394288 gave 199 five-second intervals (a dated sample, not a guarantee). A scan of 1,297 source files at b5f22fb71ca0dfa06655b77c42de6773bde1f2a4 and the live llms-full.txt found no old range.",
+      "reviewEvidence": "Author: coordinator Claude Opus 5.5 (live recheck after PR3080 merged). Independent reviewer: Codex frontier gpt-6-astra high (hc t3cc), research/audits/2026-11-09-improvements-sweep/review-astra-sd100.md, freshly fetched four page variants, Stack, Validators, Horizon ledgers, a 1,297-file source scan and llms-full.txt. Resolution comments: https://github.com/stellar/stellar-docs/issues/3078#issuecomment-6751220529 https://github.com/stellar/stellar-docs/pull/3080#issuecomment-6751221016",
+      "sourceCommit": "433b3848a54bf44c151e2a4f8a6e935ad498a0aa",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/433b3848a54bf44c151e2a4f8a6e935ad498a0aa/improvements/stellar-docs/sd-100-usdt0-launch-ledger-cadence.md"
+    },
+    {
       "id": "sk-001",
       "title": "The upstream stellar-dev/smart-contracts skill instructed the stale build target wasm32-unknown-unknown: SKILL.md lines ~137 and ~145,…",
       "service": "skills",
@@ -2143,6 +2180,28 @@
       "reviewEvidence": "Independent Codex frontier gpt-6-astra/high t361: research/audits/2026-11-06-assets-type-handoff/independent-review.md. Original trigger, upstream refs, adjacent claims, goldens, repo references and source snapshot checked. Fable unavailable due quota. Resolution comments posted/read back on issue177, PR178 and handoff381.",
       "sourceCommit": "c2f05adb6c6f8ec3d3eb4e33753e4f4128f5aaa3",
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/c2f05adb6c6f8ec3d3eb4e33753e4f4128f5aaa3/improvements/skills/sk-038-assets-custom-admin-issuer-lock-signers.md"
+    },
+    {
+      "id": "sk-039",
+      "title": "The assets skill's “SAC vs Custom Token Interface” list gives two incorrect types. transfer gives its destination as Address; SEP-41 now…",
+      "service": "skills",
+      "discovered": "2026-11-06",
+      "resolved": "2026-11-09",
+      "repo": "stellar/stellar-dev-skill",
+      "upstreamRefs": [
+        "https://github.com/stellar-experimental/stellar-raven/issues/388",
+        "https://github.com/stellar/stellar-dev-skill/issues/180",
+        "https://github.com/stellar/stellar-dev-skill/pull/181"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-dev-skill/issues/180",
+        "https://github.com/stellar/stellar-dev-skill/pull/181",
+        "https://github.com/stellar/stellar-docs/pull/3072"
+      ],
+      "liveRecheck": "2026-11-09T20:37:09Z: the ordinary https://developers.stellar.org/.well-known/agent-skills/assets/skill.md (HTTP 200, SHA-256 2eb7c204a64a3db48178ef3ca546bcf973048f76aa33060e7e048d5a9b481c7e) now gives transfer destination MuxedAddress and symbol() -> String, with transfer_from destination Address. The cache-busted and /.well-known/skills/ copies and the stellar-docs main source match. skills.stellar.org and the source repository main agree. The Docs copy was updated by stellar-docs PR3072.",
+      "reviewEvidence": "Author: Codex workhorse gpt-6.1-sol lane (sw-skills). Independent reviewer: Claude Fable high (hc t3cb), research/audits/2026-11-09-improvements-sweep/review-fable.md, freshly fetched the ordinary, cache-busted and /.well-known/skills/ URLs and the stellar-docs source. Resolution comments: https://github.com/stellar/stellar-dev-skill/issues/180#issuecomment-6751069952 https://github.com/stellar/stellar-dev-skill/pull/181#issuecomment-6751070537 https://github.com/stellar-experimental/stellar-raven/issues/388#issuecomment-6751071061",
+      "sourceCommit": "a5fe62e1187d628759bbf60cc0738688e13db66d",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/a5fe62e1187d628759bbf60cc0738688e13db66d/improvements/skills/sk-039-assets-token-interface-types.md"
     },
     {
       "id": "sls-001",
@@ -3885,6 +3944,60 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/079c82b9e6c079bf6514c344fd5aac51ba39c2a7/improvements/stellar-light-scout/sls-098-partner-page-toml-verified-badge-without-toml.md"
     },
     {
+      "id": "sls-099",
+      "title": "The Scout Soroswap description omits current API venues and does not distinguish API support from contract support. It names \"Soroswap,…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-09",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1910"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/pull/1924"
+      ],
+      "liveRecheck": "2026-11-09T20:40Z: https://stellarlight.xyz/api/projects/search?q=soroswap&limit=100 now names Soroswap AMM, Aquarius, SushiSwap V3 and Comet as the aggregator's Soroban API venues and SDEX as a separate classic path payment. https://stellarlight.xyz/api/projects/search?q=phoenix&limit=100 separates the v3 contract's Phoenix hop type from the API venue list. Neither stale phrase appears in either result set, and both match https://docs.soroswap.finance/aggregator/supported-amms.md and the aggregator-v3 contract reference.",
+      "reviewEvidence": "Author: Codex workhorse gpt-6.1-sol lane (sw-scout). Independent reviewer: Codex frontier gpt-6-astra high (hc t3cc), research/audits/2026-11-09-improvements-sweep/review-astra.md, re-derived sls-099 from fresh live reads frozen before reading the author report. Resolution comments: https://github.com/Stellar-Light/stellarlight/issues/1910#issuecomment-6751067795",
+      "sourceCommit": "433b3848a54bf44c151e2a4f8a6e935ad498a0aa",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/433b3848a54bf44c151e2a4f8a6e935ad498a0aa/improvements/stellar-light-scout/sls-099-soroswap-aggregator-venue-list-stale.md"
+    },
+    {
+      "id": "sls-100",
+      "title": "The Hana project website and status source point to a domain that redirects to the Wend remittance product. https://hana.money/ and…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-09",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1911"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/pull/1924"
+      ],
+      "liveRecheck": "2026-11-09T20:40Z: https://stellarlight.xyz/api/projects/search?q=hana&limit=100 has website https://hanawallet.io/ and statusSourceUrl https://www.hanawallet.io/, and its lifecycle note says the old domain no longer serves Hana. https://stellarlight.xyz/api/partners/hana-wallet has websiteUrl https://www.hanawallet.io. That site serves the Hana wallet, while both old hana.money hosts still redirect to an unrelated product. The curation maps on main use the corrected host.",
+      "reviewEvidence": "Author: Codex workhorse gpt-6.1-sol lane (sw-scout). Independent reviewer: Codex frontier gpt-6-astra high (hc t3cc), research/audits/2026-11-09-improvements-sweep/review-astra.md, re-derived sls-100 from fresh live reads frozen before reading the author report. Resolution comments: https://github.com/Stellar-Light/stellarlight/issues/1911#issuecomment-6751068209",
+      "sourceCommit": "433b3848a54bf44c151e2a4f8a6e935ad498a0aa",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/433b3848a54bf44c151e2a4f8a6e935ad498a0aa/improvements/stellar-light-scout/sls-100-hana-website-repurposed-domain.md"
+    },
+    {
+      "id": "sls-102",
+      "title": "The Blend row in GET /api/projects/search links tvlMethodUrl to one child protocol instead of its four-row aggregate. It reports tvlUSD:…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-09",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1913"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/pull/1924"
+      ],
+      "liveRecheck": "2026-11-09T20:40Z: https://stellarlight.xyz/api/projects/search?q=blend&limit=100 cites tvlMethodUrl https://defillama.com/protocol/blend, and both statusChecks source URLs use that parent. The mapping covers blend-pools, blend-pools-v2, blend-backstop and blend-backstop-v2, which https://api.llama.fi/protocols lists under parent#blend. The parent exposes 889 Stellar history points.",
+      "reviewEvidence": "Author: Codex workhorse gpt-6.1-sol lane (sw-scout). Independent reviewer: Codex frontier gpt-6-astra high (hc t3cc), research/audits/2026-11-09-improvements-sweep/review-astra.md, re-derived sls-102 from fresh live reads frozen before reading the author report. Resolution comments: https://github.com/Stellar-Light/stellarlight/issues/1913#issuecomment-6751068643",
+      "sourceCommit": "433b3848a54bf44c151e2a4f8a6e935ad498a0aa",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/433b3848a54bf44c151e2a4f8a6e935ad498a0aa/improvements/stellar-light-scout/sls-102-blend-tvl-method-url-points-at-v1-child.md"
+    },
+    {
       "id": "sls-103",
       "title": "GET /api/analyze?dimension=funding treats an empty stored snapshot as a valid baseline for its funding delta. previousSnapshot has…",
       "service": "stellar-light-scout",
@@ -3993,6 +4106,24 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/b73c8c2f99a724138447339b8e753647e33e1724/improvements/stellar-light-scout/sls-110-hackmeridian-rubric-weights.md"
     },
     {
+      "id": "sls-112",
+      "title": "The directory has no record for two first-party Stellar launches from September and October 2026",
+      "service": "stellar-light-scout",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-09",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1904"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/pull/1924"
+      ],
+      "liveRecheck": "2026-11-09T20:40Z: exact resolves for Chainlink and MetaMask both return found:true and Live. Chainlink carries dated oracle-feed products for testnet CBUF6IADAWPWIDWRTHJNINKXHG2UTIQ6TU2F2HRAXWAI7OT3KJPKK6O4 and mainnet CDQBHEUGLDHMSUHG4IH33RJBUTMNCZOT4JIAQR4WZFRDZW6DR6S32ZLZ, matching https://docs.chain.link/data-feeds/stellar. Native MetaMask is an end-user wallet row describing built-in Stellar support, and the community Snap row stays separate, matching https://support.metamask.io/configure/networks/stellar.",
+      "reviewEvidence": "Author: Codex workhorse gpt-6.1-sol lane (sw-scout). Independent reviewer: Codex frontier gpt-6-astra high (hc t3cc), research/audits/2026-11-09-improvements-sweep/review-astra.md, re-derived sls-112 from fresh live reads frozen before reading the author report. Resolution comments: https://github.com/Stellar-Light/stellarlight/issues/1904#issuecomment-6751069124",
+      "sourceCommit": "433b3848a54bf44c151e2a4f8a6e935ad498a0aa",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/433b3848a54bf44c151e2a4f8a6e935ad498a0aa/improvements/stellar-light-scout/sls-112-chainlink-and-metamask-native-stellar-rows.md"
+    },
+    {
       "id": "sls-113",
       "title": "The venueRole field gives the DEX sub-type: AMM, native order book, aggregator, trading UI, or wallet-integrated. On 2026-11-02 it is null…",
       "service": "stellar-light-scout",
@@ -4010,6 +4141,24 @@
       "reviewEvidence": "Author Codex frontier gpt-6-astra high (hc t38t, drift lane) and distinct reviewer Claude Fable 5.1 high (hc t3bf) repeated the original trigger live at 2026-11-09T19:10Z and 19:18Z; 22 non-Live null rows are outside the finding scope. Ledger: .agents/rounds/2026-11-09-upstream-handoffs.md. Posted and read back: https://github.com/Stellar-Light/stellarlight/issues/1905#issuecomment-6749359205",
       "sourceCommit": "fdf475f5cce54adfb2ef30722adc7af78b728429",
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/fdf475f5cce54adfb2ef30722adc7af78b728429/improvements/stellar-light-scout/sls-113-dex-venue-role-sparse.md"
+    },
+    {
+      "id": "sls-114",
+      "title": "For stellar/stellar-horizon, GET /api/repos/explain returns repoMeta.kind: platform, which is correct. Its codeVerified.contractInterface…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-09",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1906"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/pull/1925"
+      ],
+      "liveRecheck": "2026-11-09T20:40Z: https://stellarlight.xyz/api/repos/explain?repo=stellar/stellar-horizon returns kind platform, isDeployableContract false, and empty contractInterface and contractInterfacePaths (scan 2026-11-07T02:46:33Z at 6a13f418), although the integration-test contracts still exist in that tree. stellar/rs-soroban-env returns the same shape (scan 2026-11-07T02:47:10Z). The separate protocol-ceiling answer drift remains tracked in issue 1933.",
+      "reviewEvidence": "Author: Codex workhorse gpt-6.1-sol lane (sw-scout). Independent reviewer: Codex frontier gpt-6-astra high (hc t3cc), research/audits/2026-11-09-improvements-sweep/review-astra.md, re-derived sls-114 from fresh live reads frozen before reading the author report. Resolution comments: https://github.com/Stellar-Light/stellarlight/issues/1906#issuecomment-6751069547",
+      "sourceCommit": "433b3848a54bf44c151e2a4f8a6e935ad498a0aa",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/433b3848a54bf44c151e2a4f8a6e935ad498a0aa/improvements/stellar-light-scout/sls-114-explain-repo-fixture-interfaces-without-paths.md"
     }
   ]
 }

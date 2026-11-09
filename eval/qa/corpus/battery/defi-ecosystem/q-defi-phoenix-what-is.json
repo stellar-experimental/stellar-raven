@@ -20,7 +20,7 @@
       "Do NOT call PHO a governance token or present initial-whitepaper supply/emission/buyback plans as timeless guarantees.",
       "Do NOT describe Phoenix as a lender/oracle/bridge or invent current TVL."
     ],
-    "notes": "Per-project identity → lumenloop_get_project. Phoenix TVL not in corpus — anti-fabrication. Grounded on Scout: Phoenix DeFi Hub = SCF-funded AMM-based DEX on Soroban (PHO token); constant-product + stableswap pools, a Factory for pool creation, multi-hop routing; one of the AMM liquidity sources aggregated by Soroswap (per Scout; as of 2026-11-02 Soroswap's supported-venues page omits Phoenix, though the v3 interface defines a Phoenix hop, so do not require it). Built by Phoenix-Protocol-Group; scfTotalAwardedUSD ≈ $394,500.\nAlso good if the answer: $PHO is Phoenix's token; the AMM DEX is described as the first of several planned products. | Built by the Phoenix Protocol Group (phoenix-hub.io).\nGolden cites: A source identifying Phoenix as the Soroban DeFi-Hub / AMM DEX.\nCorrected 2026-07-10. Token identity and dated/source-attributed utility are required; speculative current tokenomics are not."
+    "notes": "Per-project identity → lumenloop_get_project. Phoenix TVL not in corpus — anti-fabrication. Grounded on Scout: Phoenix DeFi Hub = SCF-funded AMM-based DEX on Soroban (PHO token); constant-product + stableswap pools, a Factory for pool creation, multi-hop routing; Scout's 2026-11-02 record called it one of the AMM liquidity sources aggregated by Soroswap (historical Scout wording; as of 2026-11-02 Soroswap's supported-venues page omits Phoenix, though the v3 interface defines a Phoenix hop, so do not require it). Built by Phoenix-Protocol-Group; scfTotalAwardedUSD ≈ $394,500.\nAlso good if the answer: $PHO is Phoenix's token; the AMM DEX is described as the first of several planned products. | Built by the Phoenix Protocol Group (phoenix-hub.io).\nGolden cites: A source identifying Phoenix as the Soroban DeFi-Hub / AMM DEX.\nCorrected 2026-07-10. Token identity and dated/source-attributed utility are required; speculative current tokenomics are not.\nRECHECK 2026-11-09: Scout now names Soroswap, Aquarius, SushiSwap V3 and Comet as Soroban API venues and SDEX as a separate classic path payment. Its Phoenix row distinguishes the Phoenix hop type from the API venue list. The operator venue page still omits Phoenix while the v3 interface defines Phoenix(PhoenixHop); code presence does not establish an active API venue. sls-099 is resolved (improvements/resolved.json); the earlier Scout quotes remain dated historical observations."
   },
   "tags": {
     "category": "defi-ecosystem",
@@ -164,41 +164,53 @@
             "note": "\"| [Phoenix](https://www.phoenix-hub.io) | Constant product, stable | Yes (`Hop::Phoenix`) | Not today |\""
           }
         ]
+      },
+      {
+        "claim": "As of 2026-11-09, Scout Soroswap/Phoenix descriptions distinguish Soroban API venues, classic SDEX execution and the Phoenix hop type consistently with the operator documentation.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/projects/search?q=soroswap&limit=100",
+            "observedAt": "2026-11-09T20:47:04Z",
+            "note": "The Soroswap row now lists Soroswap AMM, Aquarius, SushiSwap V3 and Comet, with SDEX quoted as a separate classic path payment."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/projects/search?q=phoenix&limit=100",
+            "observedAt": "2026-11-09T20:47:04Z",
+            "note": "The Phoenix row says its v3 hop type does not establish inclusion in the Soroswap Aggregator API venue list."
+          },
+          {
+            "class": "A",
+            "ref": "https://docs.soroswap.finance/aggregator/supported-amms.md",
+            "observedAt": "2026-11-09T20:47:04Z",
+            "note": "Published API venues remain soroswap, aqua, sushi, comet and sdex; SDEX executes as a classic path payment."
+          },
+          {
+            "class": "A",
+            "ref": "https://docs.soroswap.finance/aggregator/technical-reference/contracts/aggregator-v3.md",
+            "observedAt": "2026-11-09T20:47:04Z",
+            "note": "The interface still defines Phoenix(PhoenixHop). This does not establish live API routing through Phoenix."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task defi-protocols)",
+      "date": "2026-11-09",
+      "by": "Retirement reconciliation lane (Codex); independent live reviewer: Codex frontier gpt-6-astra high (research/audits/2026-11-09-improvements-sweep/review-astra.md)",
       "evidence": [
-        "2026-11-02 [A] https://communityfund.stellar.org/project/recafjXSgVbrp8svj — \"Total awarded $394.5K* Awarded Submissions 7 ... \"totalAwarded\":394500,\"totalPaid\":394500\" (verifier accept of golden.answer)",
-        "2026-11-02T16:30:13Z [C] Raven scout.searchProjects q=Phoenix -> https://stellarlight.xyz/project/phoenix — \"scfTotalAwardedUSD: 394500, scfAsOf: 2026-09-04\" (verifier accept of golden.answer)",
-        "2026-11-02 [C] https://stellarlight.xyz/project/phoenix (via Raven scout.searchProjects) — \"One of the AMM liquidity sources aggregated by Soroswap.\" (verifier modify of golden.notes)",
-        "2026-11-02 [A] https://docs.soroswap.finance/aggregator/supported-amms.md — \"The venues the Soroswap Aggregator API routes through and their protocols values: soroswap, aqua (Aquarius), sushi (SushiSwap V3), comet and sdex\" (verifier modify of golden.notes)",
-        "2026-11-02 [A] https://docs.soroswap.finance/aggregator/technical-reference/contracts/aggregator-v3 — \"pub enum Hop { Soroswap(SoroswapHop), Aqua(AquaHop), Sushi(SushiHop), Phoenix(PhoenixHop), Comet(CometHop), }\" (verifier modify of golden.notes)",
-        "2026-11-02 [D] Perplexity search result for docs.soroswap.finance/aggregator/supported-amms.md (earlier cached version) — \"| [Phoenix](https://www.phoenix-hub.io) | Constant product, stable | Yes (`Hop::Phoenix`) | Not today |\" (verifier modify of golden.notes)",
-        "2026-11-02 [B] https://github.com/Phoenix-Protocol-Group/phoenix-contracts — \"Source code of the smart contracts of the Phoenix DeFi hub DEX protocol (archived:false, pushed 2026-08-19)\" (proposer claim, confirmed: Phoenix is a Soroban AMM/DEX suite with pools, factory, multihop routing, liquidity.)",
-        "2026-11-02 [C] https://stellarlight.xyz/project/phoenix — \"constant-product and stableswap liquidity pools ... a Factory for creating pools and multi-hop routing\" (proposer claim, confirmed: Phoenix is a Soroban AMM/DEX suite with pools, factory, multihop routing, liquidity.)",
-        "2026-11-02 [A] https://app.phoenix-hub.io/.well-known/stellar.toml — \"code=\"PHO\" issuer=\"GAX5TXB5RYJNLBUR477PEXM4X75APK2PGMTN6KEFQSESGWFXEAKFSXJO\"\" (proposer claim, confirmed: PHO is Phoenix's classic asset; TOML issuer GAX5...SXJO.)",
-        "2026-11-02 [C] https://lumenloop.com/projects/phoenix — \"PHO (primary) Issuer: GAX5TXB5RYJNLBUR477PEXM4X75APK2PGMTN6KEFQSESGWFXEAKFSXJO; Created on Stellar: 2024-05-07\" (proposer claim, confirmed: PHO is Phoenix's classic asset; TOML issuer GAX5...SXJO.)",
-        "2026-11-02 [A] https://www.phoenix-hub.io/ — \"Whitepaper -> https://raw.githubusercontent.com/Phoenix-Protocol-Group/docs/main/Initial%20Phoenix%20Whitepaper.pdf\" (proposer claim, confirmed: PHO tokenomics come from the 2024 initial whitepaper.)",
-        "2026-11-02 [A] https://communityfund.stellar.org/project/recafjXSgVbrp8svj — \"Total awarded $394.5K* ... Awarded Submissions 7 (7 status Awarded, 6 Not Awarded; totalAwarded 394500, totalPaid 394500)\" (proposer claim, confirmed-as-of: Official SCF page: 7 awarded submissions, $394.5K total.)",
-        "2026-11-02 [C] https://stellarlight.xyz/project/phoenix — \"Funded Rounds 16 20 25 Total Funded $394,500\" (proposer claim, confirmed-as-of: Official SCF page: 7 awarded submissions, $394.5K total.)",
-        "2026-11-02 [C] https://lumenloop.com/projects/phoenix — \"SCF: funded ($394,500), rounds 16, 20, 25, Liquidity Award - '24 Q1\" (proposer claim, confirmed-as-of: Official SCF page: 7 awarded submissions, $394.5K total.)",
-        "2026-11-02 [A] https://docs.soroswap.finance/aggregator/supported-amms.md — \"soroswap, aqua (Aquarius), sushi (SushiSwap V3), comet and sdex\" (proposer claim, disputed: Phoenix is one of the AMM liquidity sources aggregated by Soroswap.)",
-        "2026-11-02 [F] https://mainnet.sorobanrpc.com stellar contract info interface CARVQXFP4JF5ELLXUMQ6DALR346YVGBMQOHB4ENA7SSVXAYABXLBDDC4 — \"pub enum Hop { Soroswap, Aqua, Sushi, Phoenix, Comet }\" (proposer claim, disputed: Phoenix is one of the AMM liquidity sources aggregated by Soroswap.)",
-        "2026-11-02 [F] https://mainnet.sorobanrpc.com simulate get_adapters CAYP3UWLJM7ZPTUKL6R6BFGTRWLZ46LRKOXTERI2K6BIJAWGYY62TXTO — \"protocol_id 1 router CCLZRD4E72T7JCZCN3P7KNPYNXFYKQCL64ECLX7WP5GNVYPYJGU2IO2G paused false (deprecated contract)\" (proposer claim, disputed: Phoenix is one of the AMM liquidity sources aggregated by Soroswap.)",
-        "2026-11-02 [A] https://communityfund.stellar.org/dashboard/submissions/recLOzDpEMgJWDbTe — \"Phoenix's AMM enables decentralized swaps of crypto assets\" (proposer claim, contradicted: PHO is a governance token; Phoenix is a lender/oracle/bridge.)",
-        "2026-11-02 [D] https://defillama.com/protocol/phoenix-defi-hub — \"Category: Dexs Sub Category: AMM\" (proposer claim, contradicted: PHO is a governance token; Phoenix is a lender/oracle/bridge.)",
-        "Sibling sweep 2026-11-02: grep CAYP3|aggregator.*phoenix|394.5|394,500 across eval/qa/corpus/battery → q-defi-soroswap-what-is and q-defi-soroswap-vs-stellarx (updated together in this batch), q-eco-dex-saturation (already dated 2026-11-02, no Phoenix-venue claim), q-defi-provide-liquidity-impermanent-loss (dated 2026-06-29 note), q-hist-meridian-2026-corrected-venue (unrelated figure); no contradiction.",
-        "Pass 2 (.agents/rounds/2026-11-02-golden-audit.md, task defi-protocols) evidence follows; pass-1 lines above remain the provenance for the pass-1 diff.",
-        "2026-11-02 [C] https://stellarlight.xyz/api/projects/search?q=phoenix&limit=3 — \"One of the AMM liquidity sources aggregated by Soroswap.\" (pass-2 verifier accept on truth.verified.rootCause)",
-        "2026-11-02 [A] https://docs.soroswap.finance/aggregator/supported-amms.md — \"The venues the Soroswap Aggregator API routes through and their protocols values: soroswap, aqua (Aquarius), sushi (SushiSwap V3), comet and sdex (the Stellar classic DEX, quoted only when listed)\" (pass-2 verifier accept on truth.verified.rootCause)",
-        "Pass 2 change (provenance only): truth.verified.rootCause adds improvements/stellar-light-scout/sls-099-soroswap-aggregator-venue-list-stale.md, the stale Scout 'aggregated by Soroswap' record that caused the pass-1 notes change (do not require Phoenix as a current Soroswap venue). Question, answer, keyFacts, avoid, notes, truth.asOf, and truth.reverifyBy unchanged.",
-        "Pass 2 sibling sweep 2026-11-02: q-defi-soroswap-what-is and q-defi-provide-liquidity-impermanent-loss (same Phoenix venue ambiguity), cluster-012 and cluster-030 claims unchanged; no contradiction."
+        "C https://stellarlight.xyz/api/projects/search?q=soroswap&limit=100 (observedAt 2026-11-09T20:47:04Z): The Soroswap row now lists Soroswap AMM, Aquarius, SushiSwap V3 and Comet, with SDEX quoted as a separate classic path payment.",
+        "C https://stellarlight.xyz/api/projects/search?q=phoenix&limit=100 (observedAt 2026-11-09T20:47:04Z): The Phoenix row says its v3 hop type does not establish inclusion in the Soroswap Aggregator API venue list.",
+        "A https://docs.soroswap.finance/aggregator/supported-amms.md (observedAt 2026-11-09T20:47:04Z): Published API venues remain soroswap, aqua, sushi, comet and sdex; SDEX executes as a classic path payment.",
+        "A https://docs.soroswap.finance/aggregator/technical-reference/contracts/aggregator-v3.md (observedAt 2026-11-09T20:47:04Z): The interface still defines Phoenix(PhoenixHop). This does not establish live API routing through Phoenix.",
+        "sls-099 resolved: improvements/resolved.json entry sls-099 replaces the active finding pointer. Historical 2026-06-22/2026-06-29/2026-11-02 Scout quotes and earlier contract snapshots remain historical; the live descriptions no longer make those stale venue claims.",
+        "Independent live re-derivation: reviewer Codex frontier gpt-6-astra high, research/audits/2026-11-09-improvements-sweep/review-astra.md, sls-099; separately fetched both Scout searches and both operator pages at 2026-11-09T20:40Z before reading the author report.",
+        "Sibling sweep 2026-11-09: all battery matches for Soroswap, Phoenix, Hana, hana.money and hanawallet.io were inspected. q-defi-phoenix-what-is, q-defi-soroswap-what-is, q-defi-soroswap-vs-stellarx and q-defi-provide-liquidity-impermanent-loss share the dated venue correction; q-eco-dex-saturation, q-eco-defi-market-map, q-eco-defi-projects-discovery, q-gap-semantic-similar-projects, q-defi-named-newer-protocols, q-eco-most-active-defi-projects, q-defi-liquid-staking-whitespace and q-edge-factcheck-soroswap-first-amm do not require Phoenix in the current Soroswap API venue set. q-eco-stellar-wallets-list, q-edge-ambig-best-wallet and q-tool-wallets-comparison carry no stale Hana-domain claim. Other matches concern asset listings, contract access, funding history or unrelated project discovery. No contradiction; answer, keyFacts and avoid are unchanged in every edited case."
       ],
       "rootCause": [
         "freshness-drift",
-        "improvements/stellar-light-scout/sls-099-soroswap-aggregator-venue-list-stale.md"
+        "improvements/resolved.json entry sls-099 (Scout Soroswap/Phoenix venue correction)"
       ]
     },
     "origin": "raven-next q-defi-phoenix-what-is"

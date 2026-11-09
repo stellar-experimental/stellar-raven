@@ -14,6 +14,8 @@ evidence:
   - The same two lines are in Stellar-Light/stellarlight at public/skills/stellar-scout.md line 91 and public/skills/references/api-reference.md line 104 (main 98eb8ae133d822badf02ec341f301e45cb335537, read 2026-10-02). SHIPPING.md in that repository says the monorepo is canonical and the distribution repositories sync from it. src/lib/stellar-scout-skill.ts is a generated mirror.
   - upstream issue filed 2026-10-02: https://github.com/Stellar-Light/stellar-scout/issues/15
 recurrences:
+  - date: 2026-11-09
+    evidence: "2026-11-09T20:30:58Z GET https://stellarlight.xyz/api/status reports builders count407; /api/builders?q=zzzzqqq returns zero matches and advisory naming407 profiles. Fresh Scout main 0f3040cf SKILL line91 still says dozens, not hundreds; api-reference line119 still says about110. Canonical stellarlight public/skills copies agree byte-for-byte. Issue 15 remains open with no comments."
   - date: 2026-11-06
     evidence: "2026-11-06 still-repro: Fresh Scout SKILL/API reference; /api/status and builders?q=zzzzqqq — Source still dozens/not hundreds and ~110; status and no-match advisory both401 builders. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row sk-028."
 ---

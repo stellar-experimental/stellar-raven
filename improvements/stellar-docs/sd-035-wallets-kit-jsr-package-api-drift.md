@@ -5,6 +5,7 @@ status: reported-upstream
 discovered: 2026-07-11
 upstreamTitle: Replace legacy Wallets Kit v1 references in current tutorials
 evidence:
+  - "2026-11-09 sweep (still-repro): Tutorial still pins the dotted npm package to @^1 and explicitly teaches new StellarWalletsKit(...). Maintained Kit README uses static StellarWalletsKit.init with defaultModules(). The deployed stopgap is not the durable joint tutorial/BasicPay v2 migration. Recheck: https://developers.stellar.org/docs/build/apps/example-application-tutorial/overview.md; https://raw.githubusercontent.com/Creit-Tech/Stellar-Wallets-Kit/main/README.md"
   - re-verified 2026-07-14: docs/build/apps/example-application-tutorial/overview.mdx installs @creit.tech/stellar-wallets-kit (line 199) and lists it in Vite ssr.noExternal (line 254)
   - premise correction 2026-07-27: the maintainer corrected this record on https://github.com/stellar/stellar-docs/issues/2609#issuecomment-5035729421 - the dotted npm scope is not legacy-v1-only; npm dist-tag latest is 2.5.0 (published 2026-06-29), which is exactly why an unpinned install broke against v1 tutorial code
   - upstream stopgap https://github.com/stellar/stellar-docs/pull/2659 merged 2026-07-21 pins the tutorial install to @^1; the issue stays open for the durable v2 migration of this tutorial and stellar/basic-payment-app in lockstep
@@ -16,6 +17,8 @@ evidence:
   - narrowed residual posted and read back 2026-07-15: https://github.com/stellar/stellar-docs/issues/2609#issuecomment-4982273197
   - premise correction acknowledged upstream 2026-07-27: https://github.com/stellar/stellar-docs/issues/2609#issuecomment-5091976739
 recurrences:
+  - date: 2026-11-09
+    evidence: "Tutorial still pins the dotted npm package to @^1 and explicitly teaches new StellarWalletsKit(...). Maintained Kit README uses static StellarWalletsKit.init with defaultModules(). The deployed stopgap is not the durable joint tutorial/BasicPay v2 migration."
   - date: 2026-11-06
     evidence: "Live tutorial still pins @^1 and explicitly teaches new StellarWalletsKit(...). Stopgap deployed, durable joint v2 migration absent. Exact URLs and upstream state: .agents/rounds/2026-11-05-truth-maintenance/docs.md, row sd-035"
   - date: 2026-08-11

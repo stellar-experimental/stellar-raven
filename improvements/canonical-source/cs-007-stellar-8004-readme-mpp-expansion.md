@@ -12,6 +12,7 @@ probe:
     contains:
       - "Managed Payment Protocol"
 evidence:
+  - "2026-11-09 sweep (still-repro): README line 17 still expands MPP as Managed Payment Protocol. Current registration UI line 85 says Machine Payments Protocol and mpp-client imports mppx. Recheck: https://raw.githubusercontent.com/trionlabs/stellar-8004/main/README.md; https://raw.githubusercontent.com/trionlabs/stellar-8004/main/webapp/apps/web/src/lib/components/register/StepAdvanced.svelte; https://raw.githubusercontent.com/trionlabs/stellar-8004/main/webapp/apps/web/src/lib/mpp-client.ts"
   - "2026-11-06 current main still has the README mismatch; registration UI line85 and mppx client confirm Machine Payments Protocol. Owner public/issues-enabled/not-archived, all issues/PRs deduped; .agents/rounds/2026-11-05-truth-maintenance/other.md row cs-007."
   - "2026-11-02T17:23Z live read of trionlabs/stellar-8004 main 5920792f5fd1467c9bb9f9f801ac579dbfdf59e3 (2026-10-10). README.md:17 says '**x402 and MPP Integration** - Agents advertise x402 and Managed Payment Protocol support in their registration metadata.'"
   - "Same commit, the repository's own code uses the other expansion: webapp/supabase/migrations/037_mpp_column.sql:1 '-- Add MPP (Machine Payments Protocol) support column to agents table'; webapp/apps/web/src/lib/components/register/StepAdvanced.svelte:99 'Enable if your agent uses the Machine Payments Protocol for direct on-chain settlement'; webapp/apps/web/src/lib/mpp-client.ts:3 imports Challenge, Credential, Receipt from 'mppx', the Machine Payments Protocol client."
@@ -19,6 +20,8 @@ evidence:
   - "Golden consumer: eval/qa/corpus/battery/compliance-rwa-payments/q-agent-identity-erc8004-stellar.json cites https://github.com/trionlabs/stellar-8004 for the x402/MPP integration claim."
   - upstream issue filed 2026-11-06: https://github.com/trionlabs/stellar-8004/issues/71
 recurrences:
+  - date: 2026-11-09
+    evidence: "README line 17 still expands MPP as Managed Payment Protocol. Current registration UI line 85 says Machine Payments Protocol and mpp-client imports mppx."
   - date: 2026-11-06
     evidence: "2026-11-06 still-repro: Fresh trionlabs/stellar-8004 README,registration UI,mpp-client; repo metadata and all issues/PRs — README17 still Managed Payment Protocol; current UI85 says Machine Payments Protocol; mppx client remains. Historical migration path removed (404), so use current UI/client evidence. Repo public,issues enabled,not archived; no matching MPP-name issue/PR found. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row cs-007."
 ---

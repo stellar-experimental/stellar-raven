@@ -10,6 +10,8 @@ evidence:
   - https://github.com/lumenloop/lumenloop-backend/issues/37
   - 2026-08-11 review: issue #37 is open. It has no linked PR, checks, or reviews. Its only comment and latest timeline activity are kalepail's Raven tracking comment at 2026-07-13T22:54:35Z. `get_document({collection: "articles", id: 8228})` still says Stage 1 (2026) adds host functions and enterprise wallets can shift immediately, without a structured maturity, deployment state, or target-horizon field.
 recurrences:
+  - date: 2026-11-09
+    evidence: "2026-11-09 sweep at 2026-11-09T20:30:55.932291+00:00: still-repro. Article8228 and public Lumenloop markdown still say enterprise wallets can shift to quantum-safe contract accounts immediately; dated linked source still says required signer/primitives missing today and uses staged roadmap language. Current CAP0087 is Implemented/protocol30, while current Mainnet Horizon remains29. This check concerns source-date maturity wording, not a claim host functions are unimplemented everywhere or that native classic signers shipped. Read-only exact requests and response hashes: research/audits/2026-11-09-improvements-sweep/lane-lumenloop.md; upstream issue state/comments freshly read; no maintainer comments or claimed fix."
   - date: 2026-11-06
     evidence: "2026-11-06 still-repro: LL get_document articles8228 plus linked primary quantum-plan page and CAP0087 — Lumenloop still says enterprise wallets can shift immediately; primary retains missing-today/expected qualifiers; roadmap lacks structured deployment state. No new protocol-deployment claim made. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row ll-025."
   - date: 2026-08-11

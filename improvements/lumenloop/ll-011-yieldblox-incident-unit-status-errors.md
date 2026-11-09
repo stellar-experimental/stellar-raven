@@ -12,6 +12,8 @@ evidence:
   - 2026-08-04 exact live get_document recurrence: article 6520 still says "$61M XLM" in its short summary, while research 66 now says a "$10 million" Blend attack and that quarantine prevented full exfiltration; the two summaries still conflict on unit, affected component, completed loss, and containment status
   - https://github.com/lumenloop/lumenloop-backend/issues/24
 recurrences:
+  - date: 2026-11-09
+    evidence: "2026-11-09 sweep at 2026-11-09T20:30:50.665456+00:00: still-repro. Article6520 short summary still says borrowed $61M XLM; long summary separately gives 61M XLM and 1M USDC from the YieldBlox community pool. Research66 retains broad Blend identity and preventing full fund exfiltration, and its body still uses $61 million in XLM. Unit, affected-component, and containment wording remain inconsistent. Read-only exact requests and response hashes: research/audits/2026-11-09-improvements-sweep/lane-lumenloop.md; upstream issue state/comments freshly read; no maintainer comments or claimed fix."
   - date: 2026-11-06
     evidence: "2026-11-06 still-repro: LL get_document research66 and articles6520 — 6520 short summary still says $61M XLM; long summary says 61M XLM and 1M USDC from YieldBlox community pool. Research66 still broadens to Blend and says preventing full fund exfiltration. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row ll-011."
   - date: 2026-07-11

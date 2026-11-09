@@ -13,6 +13,8 @@ evidence:
   - 2026-11-02 earlier controls: the soroswap name query placed soroswap at zero-based position 7 of 10. The xbull query placed xbull at position 1 of 2.
   - upstream issue filed 2026-11-02: https://github.com/lumenloop/lumenloop-backend/issues/48
 recurrences:
+  - date: 2026-11-09
+    evidence: "2026-11-09 sweep at 2026-11-09T20:31:12.000179+00:00: still-repro. Blend limit1 still returns only account-demolisher; limit20 starts account-demolisher/backyard/bexo/blend. Soroswap exact slug is eighth and xBull second in adjacent name searches. This is exact identity priority, not evidence of the SQL sort column or the semantic fallback ordering. Read-only exact requests and response hashes: research/audits/2026-11-09-improvements-sweep/lane-lumenloop.md; upstream issue state/comments freshly read; no maintainer comments or claimed fix."
   - date: 2026-11-06
     evidence: "2026-11-06 still-repro: LL search_directory Blend default and limit1; soroswap,xbull controls — Blend fourth behind account-demolisher/backyard/bexo; limit1 only account-demolisher. Soroswap eighth and xBull second persist. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row ll-034."
 ---

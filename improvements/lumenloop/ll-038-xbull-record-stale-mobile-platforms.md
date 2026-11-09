@@ -14,6 +14,8 @@ evidence:
   - Source record: https://github.com/lumenloop/stellar-ecosystem-db/blob/main/projects/xbull.yaml. The 2026-06-29 file timestamp does not date mobile store withdrawal.
   - upstream issue filed 2026-11-02: https://github.com/lumenloop/stellar-ecosystem-db/issues/15
 recurrences:
+  - date: 2026-11-09
+    evidence: "2026-11-09 sweep at 2026-11-09T20:31:05.223290+00:00: still-repro. xBull API/YAML still advertise browsers, Android, iOS. Named Apple US listing is404 and lookup returns resultCount0; Play app.xbull.wallet and app.xbull.mobile both404. Operator xbull.app fails TLS through both urllib and curl today, so current operator links are not independently re-established. Store controls and stale record wording suffice for the scoped recurrence; no claim about installed client function or withdrawal date. Read-only exact requests and response hashes: research/audits/2026-11-09-improvements-sweep/lane-lumenloop.md; upstream issue state/comments freshly read; no maintainer comments or claimed fix."
   - date: 2026-11-06
     evidence: "2026-11-06 still-repro: LL get_project xbull; YAML; Apple named listing/lookup, both Play package pages,operator site — Still advertises browsers Android iOS; Apple US listing404/lookup0, Play both404; operator web+extension. No claim installed clients stopped working. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row ll-038."
 ---

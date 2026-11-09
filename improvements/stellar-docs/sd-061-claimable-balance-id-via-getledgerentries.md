@@ -5,6 +5,7 @@ status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: Claimable-balances guide says getLedgerEntries finds the Balance ID, but the method needs the ID as input
 evidence:
+  - "2026-11-09 sweep (still-repro): Claimable-balances line359 still says getLedgerEntries obtains Balance ID; immediately following code requires BALANCE_ID. Earlier creation code derives it with getClaimableBalanceId(0); migration table says known ID only and no listing equivalent. PR2752 remains draft, DIRTY/CONFLICTING, REVIEW_REQUIRED; 15 unresolved threads, nine current. Recheck: https://developers.stellar.org/docs/build/guides/transactions/claimable-balances.md; https://developers.stellar.org/docs/data/apis/migrate-from-horizon-to-rpc.md"
   - "2026-11-06 follow-up: https://github.com/stellar/stellar-docs/pull/2752 remains draft, DIRTY and REVIEW_REQUIRED, with 15 unresolved threads (9 current). Historical green checks do not establish current readiness. Evidence and head/check receipts: .agents/rounds/2026-11-06-remaining-sweep/docs.md."
   - 2026-11-02T17:17:27Z GET https://developers.stellar.org/docs/build/guides/transactions/claimable-balances returned HTTP 200 with "we'll need its Balance ID to claim it. You can call the RPC's getLedgerEntries endpoint to do this."
   - stellar/stellar-docs main 7cb5e8a492706d2ae95bbb14be737fbf96100058 docs/build/guides/transactions/claimable-balances.mdx line 366 carries the sentence; the JavaScript sample that follows starts with "// Replace with your actual Claimable Balance ID" and builds xdr.LedgerKey.claimableBalance from that ID
@@ -14,6 +15,8 @@ evidence:
   - the sentence came from stellar/stellar-docs#1784 (merged 2025-09-17), which replaced the earlier "can be done in several ways" text
   - upstream issue filed 2026-11-02: https://github.com/stellar/stellar-docs/issues/2998
 recurrences:
+  - date: 2026-11-09
+    evidence: "Claimable-balances line359 still says getLedgerEntries obtains Balance ID; immediately following code requires BALANCE_ID. Earlier creation code derives it with getClaimableBalanceId(0); migration table says known ID only and no listing equivalent. PR2752 remains draft, DIRTY/CONFLICTING, REVIEW_REQUIRED; 15 unresolved threads, nine current."
   - date: 2026-11-06
     evidence: "Live line359 still says getLedgerEntries obtains Balance ID, while following BALANCE_ID input and earlier getClaimableBalanceId prove known-ID requirement. Exact URLs and upstream state: .agents/rounds/2026-11-05-truth-maintenance/docs.md, row sd-061"
 ---

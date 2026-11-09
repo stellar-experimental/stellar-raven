@@ -14,6 +14,8 @@ evidence:
   - Solo todo 1438 item 1, solo://proj/49/scratchpad/independent-holdout--798
   - upstream issue filed 2026-08-11: https://github.com/OpenZeppelin/openzeppelin-skills/issues/13
 recurrences:
+  - date: 2026-11-09
+    evidence: "2026-11-09T20:30:57Z fresh OpenZeppelin/openzeppelin-skills main 584262af develop-secure-contracts HTTP 200: description still lists ERC20/ERC721/ERC1155, Ownable/AccessControl/AccessManager, Pausable/ReentrancyGuard and no explicit audit/security-review exclusion. Its generic library-first wording does not add Stellar component triggers; the body still names stellar-fungible. Setup companion still names Stellar crates. Issue 13 is open with no comments."
   - date: 2026-11-06
     evidence: "2026-11-06 still-repro: Fresh main develop-secure-contracts description and body — Description component trigger list remains Solidity-centric despite Stellar body/package terms; no explicit audit exclusion. Generic library-first wording does not add missing Stellar triggers. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row sk-014."
   - date: 2026-08-11

@@ -22,6 +22,8 @@ probe:
     contains:
       - "#[derive(UpgradeableMigratable)]"
 recurrences:
+  - date: 2026-11-09
+    evidence: "2026-11-09T20:30:57Z fresh OpenZeppelin/openzeppelin-skills main 584262af upgrade skill HTTP 200 still recommends both derives and both Internal traits in description, usage, access-control, metadata, and checklist prose. Current upgradeable docs still teach direct trait implementation and explain Why There Is No Migratable Trait; fresh stellar-contracts main c98fb341 macro source has no upgrade derives. Issue 16 and related description issue 14 are open with no comments."
   - date: 2026-11-06
     evidence: "2026-11-06 still-repro: Fresh OZ upgrade skill versus current upgradeable docs/macros/trait source — Derive Upgradeable/Migratable and Internal traits still recommended; current docs directly implement trait and explain no Migratable trait; current macros lack those derives. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row sk-022."
   - date: 2026-10-09

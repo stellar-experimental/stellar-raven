@@ -11,6 +11,8 @@ evidence:
   - live re-verified 2026-07-06 (eval round todo 846): slug stellar-weekly-roundup-week-29-2026 still fronts "week of May 29, 2026" content (created 2026-06-05) — the week-number/date mismatch persists; side drift: search_documents now requires a collection arg
   - https://github.com/lumenloop/lumenloop-backend/issues/21 (filed 2026-07-13; public page rechecked HTTP 200 with "week of May 29, 2026" and publication date 2026-06-05)
 recurrences:
+  - date: 2026-11-09
+    evidence: "2026-11-09 sweep at 2026-11-09T20:31:25.278705+00:00: still-repro. The week-29-2026 URL still renders the title week of May 29, 2026, with Published 2026-06-05. Adjacent roundups still use week-based dates independently of their slug labels. Read-only exact requests and response hashes: research/audits/2026-11-09-improvements-sweep/lane-lumenloop.md; upstream issue state/comments freshly read; no maintainer comments or claimed fix."
   - date: 2026-11-06
     evidence: "2026-11-06 still-repro: GET https://lumenloop.com/api/md/research/stellar-weekly-roundup-week-29-2026 — HTTP200: title week of May 29, 2026; Published 2026-06-05; URL still week-29. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row ll-001."
   - date: 2026-08-11

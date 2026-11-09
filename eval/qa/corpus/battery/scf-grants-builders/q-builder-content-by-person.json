@@ -17,7 +17,7 @@
       "Do NOT attribute semantic A/V results without exact-name and source validation.",
       "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
     ],
-    "notes": "GT-35 CORRECTION 2026-07-10: the exact Lumenloop person lane is all-empty and Scout has no Tyler row. Grade a bounded official-source roster and explicit validation of semantic candidates; empty service output is inconclusive.\nGT-35 independently confirmed by processes 3287/3289; this case is freshness-sensitive despite its inherited tag.\nAn answer that reports the LumenLoop exact-person lane as empty, or semantic person matches as unverified, makes a true source-scoped observation, not a wrong claim, while ll-005 and ll-017 stand. An answer that infers from that lane that nothing was published fires avoid[0].\n2026-09-30 re-verification: the official author index listed seven posts (2024-01-26 to 2024-06-13). On 2026-11-02 that index URL returned HTTP 404 after the 2026-10-22 Docs move to Mintlify (improvements/stellar-docs/sd-064), so an answer need not cite it. The same seven 2024 meeting pages still resolve with the byline 'Tyler van der Hoeven, Developer Advocate Director' and replace the index as the source. The three event pages still resolve; kalepail/passkey-kit is archived and points to stellar/passkey-kit; stellar/launchtube is archived (last push 2026-01-14) and remains readable. The repository descriptions in the answer are dated 2026-07-13; an answer observed later should report the archived state with its own date."
+    "notes": "GT-35 CORRECTION 2026-07-10: the exact Lumenloop person lane is all-empty and Scout has no Tyler row. Grade a bounded official-source roster and explicit validation of semantic candidates; empty service output is inconclusive.\nGT-35 independently confirmed by processes 3287/3289; this case is freshness-sensitive despite its inherited tag.\nAn answer that reports the LumenLoop exact-person lane as empty, or semantic person matches as unverified, makes a true source-scoped observation, not a wrong claim, while ll-005 and ll-017 stand. An answer that infers from that lane that nothing was published fires avoid[0].\n2026-09-30 re-verification: the official author index listed seven posts (2024-01-26 to 2024-06-13). On 2026-11-02 that index URL returned HTTP 404 after the 2026-10-22 Docs move to Mintlify. Since 2026-11-09 it redirects (308) to the generic /meetings index, and no per-author list exists (sd-064, resolved; see improvements/resolved.json), so an answer need not cite it. An answer that reports the earlier 404 or the later redirect, with its own date, makes a true dated observation, not a wrong claim. The same seven 2024 meeting pages still resolve with the byline 'Tyler van der Hoeven, Developer Advocate Director' and replace the index as the source. The three event pages still resolve; kalepail/passkey-kit is archived and points to stellar/passkey-kit; stellar/launchtube is archived (last push 2026-01-14) and remains readable. The repository descriptions in the answer are dated 2026-07-13; an answer observed later should report the archived state with its own date."
   },
   "tags": {
     "category": "scf-grants-builders",
@@ -220,14 +220,32 @@
             "note": "'_January 26, 2024_ · [Tyler van der Hoeven](https://github.com/kalepail), Developer Advocate Director'; code search finds seven meetings/2024/MM/DD.mdx files."
           }
         ]
+      },
+      {
+        "claim": "As of 2026-11-09, every pre-migration meeting-author URL redirects to the generic /meetings index; no per-author list exists.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/meetings/authors/kalepail",
+            "observedAt": "2026-11-09T20:39Z",
+            "note": "HTTP 308 to /meetings, then HTTP 200 'Meeting Notes' index. /meetings/authors, the trailing-slash forms and all seven pre-migration author keys behave the same."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-docs/pull/2945",
+            "observedAt": "2026-11-09",
+            "note": "Merged 2026-11-09T17:05:10Z as 88c539971e605d01e5f1ee7f71efd1669ca1db5e; six redirect rules in redirects.json."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-03",
-      "by": "lane urls (Codex gpt-6.1-sol high)",
+      "date": "2026-11-09",
+      "by": "coordinator Claude Opus 5.5; independent review Claude Fable high",
       "evidence": [
-        "https://developers.stellar.org/meetings/authors/kalepail (HTTP 404, 2026-11-03): Remove the dead author index from current sources. Seven dated meeting pages and migration repository evidence remain. The historical 404 observation stays in the answer.",
-        "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
+        "https://developers.stellar.org/meetings/authors/kalepail (HTTP 308 to /meetings, then HTTP 200 Meeting Notes index, 2026-11-09T20:39Z): https://github.com/stellar/stellar-docs/pull/2945 (merged 2026-11-09T17:05:10Z as 88c539971e605d01e5f1ee7f71efd1669ca1db5e) redirects every pre-migration author URL to the generic index. No per-author list is restored; the seven dated meeting pages remain the source. Independent live re-derivation: research/audits/2026-11-09-improvements-sweep/review-fable.md, Batch 2. Notes now point at the resolved sd-064 receipt instead of the deleted active finding. Judge-facing answer, key facts and avoids are unchanged.",
+        "Sibling sweep: rg for meetings/authors and sd-064 across eval/qa/corpus finds no other owned case."
       ],
       "rootCause": [
         "freshness-drift"

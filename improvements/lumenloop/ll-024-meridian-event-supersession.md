@@ -4,6 +4,7 @@ service: lumenloop
 status: reported-upstream
 discovered: 2026-07-11
 evidence:
+  - "2026-11-09 sweep at 2026-11-09T20:30:55.222173+00:00: inconclusive. Old event1457 remains unavailable; Yas Marina exact search empty; Abu Dhabi returns unrelated1212. Meridian exact and expanded searches expose current1819 with Lisbon/Convento do Beato Oct28-29, not a stale venue. No retained original stale-as-current response or deployed revision mechanism establishes a historical fix. Read-only exact requests and response hashes: research/audits/2026-11-09-improvements-sweep/lane-lumenloop.md; upstream issue state/comments freshly read; no maintainer comments or claimed fix."
   - "2026-11-06 scope/progress reconciliation: .agents/rounds/2026-11-06-remaining-sweep/other.md, row ll-024; replay arguments and response hashes in research/audits/2026-11-06-remaining-sweep/other-receipt.json."
   - P4 N2 candidate contrasts older Meridian 2026 Abu Dhabi/Yas Marina Oct 21-22 records with the current Lisbon/Convento do Beato Oct 28-29 schedule announced as a change on 2026-04-01; solo://proj/49/scratchpad/super-corpus-rebuild--585
   - https://github.com/lumenloop/lumenloop-backend/issues/33

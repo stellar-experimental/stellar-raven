@@ -351,23 +351,23 @@
           "q-scf-verified-members"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-06",
+        "lastChecked": "2026-11-09",
         "reSwept": {
-          "date": "2026-11-06",
-          "reason": "Wallet identity verification and immutable Hana evidence pointers change no project award totals, paid-versus-awarded basis, or OrbitCDP uncertainty.",
-          "verdict": "consistent"
+          "date": "2026-11-09",
+          "verdict": "consistent",
+          "reason": "Retirement reconciliation changes venue notes and source provenance only. Across all 12 members, SCF amounts and awarded-versus-paid basis are unchanged: Phoenix $394.5K, Soroswap $346,750 and Hana $50K + $82K = $132K remain the same dated facts. OrbitCDP stays source-conflicted and no venue correction promotes a directory total to official accounting."
         },
         "note": "Aquarius $391K (rounds 17/23/27/30), Soroswap $346,750 (rounds 15/17/21), Phoenix ~$394.5K, Reflector $444,840 (rounds 15/20/26/29), Band $100K, Lightecho $93,110, Orally $48K, DIA $38K, Blend $50K, Hana $132K, xBull $56.2K, ApiCharge $79K — every repeated figure matches exactly across cases, and the Blend/Script3 team-lineage caveat is carried consistently. q-defi-x402-on-stellar-what's membership here concerns the ApiCharge award only; wallet roster and auth-entry capability are tracked separately in cluster-125 and are not inferred from this consistent SCF cluster. Updated 2026-11-02: OrbitCDP's SCF total is source-conflicted (Scout scfTotalAwardedUSD 280000; Lumenloop awarded_total 330000), so no member pins it; Scout labels OrbitCDP Inactive, and members keep its lifecycle label source-relative.",
         "memberContentSha256": {
           "q-defi-aquarius-what-is": "7d28613a671cbe3342e5b5c17720a62c2571b184226e29a542e7e887fc67064b",
           "q-defi-blend-alternatives": "8555d5f9b8321ce8893f4846262a2a72d84534f03326b5ef1f2993a4888f0ec1",
           "q-defi-blend-what-is": "46b5e0dda07645c25aa18712c6f8c81bc17230de4d2d246e128fd9a26f19b7d2",
-          "q-defi-phoenix-what-is": "bfa879565a31c1685278a69dace666e34acfd92d72842d079f80c7d3117f66d4",
+          "q-defi-phoenix-what-is": "76acf7d6f08dfc7def9443eaffde4dc0b90a7fc9d0a040d7a2d97fec5614cc9b",
           "q-defi-reflector-oracle": "ec061bc79b120ad1ed8f9e685a07b112fa3c6692b1ebbf971f54e1cfedbc8bc7",
           "q-defi-rwa-scf-similar": "dd8afe398d360f67a490d6ce135d0e9d7deb31b6e8d4b6ca368021ff5a0cc0a8",
-          "q-defi-soroswap-what-is": "a5d7326675af03da54d6b541bd5eac930798987647a8d3a22639a7fd1755571a",
+          "q-defi-soroswap-what-is": "77d04ff5e5903c8a160f2444240d5c3a2db63ac578ee80ac47d69d1c71631c30",
           "q-defi-x402-on-stellar-what": "75bb51ff5ed93a0549bd61144f28683fce0987e655e0d39223583460592ab46a",
-          "q-eco-hana-wallet-scf": "08b12a025cfac198017088fe9ca491b505bb5d9ed38328412ca9f83d04d28afd",
+          "q-eco-hana-wallet-scf": "9850fe6706c37b1e69736a51b24588ad54a58321fff68d1f92c3d2868204b128",
           "q-eco-stellar-wallets-list": "7acc5af8f61dfad090cfde25d627fe1499fe48dcf58bf65d5371bdbf91aa68cf",
           "q-scf-history-soroswap": "914a96ff3dfe0a2dfaa27bfb7dbe90567f9ceab7f50fbdcb6a3eea2c908ce513",
           "q-scf-verified-members": "d8d38abd545459080f53ccbc15d30e4fea65819e7481bc900effe854348f1ba8"
@@ -411,16 +411,16 @@
           "q-protocol-amm-cap-0038"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-09",
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Member q-defi-soroswap-what-is changed only judge-blind truth.verified: rootCause now points at the improvements/resolved.json entry cs-002 (resolved 2026-11-02) instead of the deleted finding file, plus one evidence line. Question, golden answer, keyFacts, avoid, notes, and tags are unchanged, so the cluster facts are unchanged.",
-          "verdict": "consistent"
+          "date": "2026-11-09",
+          "verdict": "consistent",
+          "reason": "Re-read Soroswap identity/comparison and the first-AMM/CAP-0038 siblings. The new November 9 note corrects Scout venue prose while retaining the attributed June/November 2 quote. Firstness remains attributed marketing; the Protocol 18 native-pool counterexample, SDEX-versus-Soroban layer split and dated TVL/volume distinctions are unchanged."
         },
         "note": "Soroswap firstness remains attributed operator/Soroban scope, never independent broad-Stellar chronology. The classic SDEX is an older order-book venue; Protocol-18/CAP-0038 constant-product pools are the direct pre-Soroswap AMM counterexample. TVL, routed volume, and cumulative trading volume remain distinct; dated Soroswap current/max examples are non-gating. Re-swept 2026-07-28: re-read Soroswap chronology after the dated-TVL refresh; firstness attribution, the native P18 counterexample, and metric boundaries remain consistent.",
         "memberContentSha256": {
-          "q-defi-soroswap-vs-stellarx": "d33080e232c2dd63e051474130b2ebb208b463e40d6a5d247d79c9ff05fe65f4",
-          "q-defi-soroswap-what-is": "a5d7326675af03da54d6b541bd5eac930798987647a8d3a22639a7fd1755571a",
+          "q-defi-soroswap-vs-stellarx": "69aab6edcc718266743d0fafb066dcddbd324280421505867b6127fa6685392b",
+          "q-defi-soroswap-what-is": "77d04ff5e5903c8a160f2444240d5c3a2db63ac578ee80ac47d69d1c71631c30",
           "q-edge-factcheck-soroswap-first-amm": "8659cc275cc54d3edb55d1d1310b05127c0831bbc9b76ba18ac9b57b6b89e76a",
           "q-protocol-amm-cap-0038": "86e626e8ca19a27f40a8f1fa9987e064d7175aaf3dec9ca6f774d8f85472607f"
         }
@@ -512,7 +512,7 @@
         "reSwept": {
           "date": "2026-11-09",
           "verdict": "consistent",
-          "reason": "2026-11-09 handoff sweep: compared all 15 member goldens. Only q-protocol-ledger-close-time changes a present-tense Docs observation; its dated cadence, configurable target and monotonic-time distinctions stand. q-asset-path-payment-ops still says roughly one ledger (~5 s); timestamping still distinguishes consensus close time from trusted wall-clock proof. Other constants and members are unchanged; no contradiction."
+          "reason": "2026-11-09 improvements sweep: q-protocol-ledger-close-time changes only its USDT0 launch-page sentence, which is now corrected to about 5 seconds (sd-100 resolved through PR3080). Its dated five-second cadence, 5000-ms configurable target and closeTime semantics are unchanged. q-asset-path-payment-ops still says roughly one ledger (~5 s), and the timestamping member still separates consensus close time from wall-clock proof. Fees, reserves and supply members are unchanged; no contradiction."
         },
         "note": "Corrected 2026-07-10: base fee 100 stroops, 1 XLM = 10,000,000 stroops, base reserve 0.5 XLM, empty unsponsored account minimum 2 reserves = 1 XLM, and fees are separate. q-edge-1xlm-activation-fee previously mislabeled the 1 XLM minimum as the base reserve and is now overridden. Other repeated constants remain as previously reviewed; sponsorship terms qualify the simple minimum-balance formula. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
@@ -527,7 +527,7 @@
           "q-pc-practical-fee-setting": "d0b29056088637d617a9652252073981917d48c495c7ba92e5735c9a5e046615",
           "q-pc-sponsored-reserves": "55d6071f72fd619a329e6e7310d9f4326598f87727f934259468abf382642666",
           "q-protocol-base-reserve-min-balance": "428c382622a762eab1f1c56e4f49468668b8802d373903285833360742c5e086",
-          "q-protocol-ledger-close-time": "c15fc3e21cfab236cba2b919f853a9fed569144d4a5dfb6467df1525f5114ae2",
+          "q-protocol-ledger-close-time": "383a63a707ae98987f0015d3d7eaf063750d70b4a7f873b421de4ae656a45827",
           "q-sor-doc-timestamping-manage-data": "1303e33b3457de47dcecd5fa9b8991f3cc6f32d41bb78a5e06ae52d9f2a3c6b6",
           "q-soroban-simulate-resource-fee": "ef190edb519c0f46f3977048ea1cc7d0b223165768258aa40250f9c3407ca091",
           "q-token-initial-supply-distribution": "d21261aee65d659776e78342377e944fefad8121a445914a8ab7b7d2a4adce7c"
@@ -661,15 +661,15 @@
           "q-tool-smart-wallet-repos-discovery"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-06",
+        "lastChecked": "2026-11-09",
         "reSwept": {
-          "date": "2026-11-06",
-          "reason": "Freighter and Varial still identify the same SDF wallet. The new source-specific rename repair changes no operator, network, audit or wallet authorization claim.",
-          "verdict": "consistent"
+          "date": "2026-11-09",
+          "verdict": "consistent",
+          "reason": "Only Soroswap-versus-StellarX provenance changed in this cluster. Its entire golden remains byte-equivalent as parsed JSON: StellarX is an Ultra Stellar classic-liquidity UI, distinct from Soroswap contracts/API. Wallet roster, LOBSTR affiliations, venue-family count boundaries and Passkey Kit/Smart Account Kit authorization and audit claims in the other five members are unchanged."
         },
         "note": "Freighter = SDF-maintained (SDF renamed it Varial on 2026-10-29; as of 2026-11-02 members accept either name); LOBSTR/StellarX/StellarTerm use the Ultra Stellar operator brand, but absolute affiliation and store-specific legal-entity negatives are not truth gates. LOBSTR currently supports Stellar+XRPL; scale remains attributed; SCF amounts are optional, and cited totals must name their source, date, and awarded-versus-paid basis. Hana is multichain; xBull = Creit-Tech. Passkey Kit and Smart Account Kit are current sibling SDKs with different authorization models; the former legacy/demo characterization was accurate before the 2026-07-12 README rewrite and is now freshness-drift; as of 2026-11-02 the Passkey Kit README and SECURITY.md label it unaudited software, so a no-third-party-audit statement is accurate. DEX siblings distinguish UIs from independent liquidity venues and do not pin a three-player count. Re-swept 2026-07-28 by the round lead after the Lane A reconciliation: the reopen is hash churn from that same reconciliation's own content edits, not a new inconsistency. Lead read the changed answers directly and confirmed the cluster's claim still holds. Re-swept 2026-07-28 (round lead, post-adversarial-review): reopen is hash churn from the N1 fix — q-tool-passkeykit-smart-wallet's avoid clause was rescoped so it no longer punishes the true 'no third-party audit' statement, moving that member toward the cluster claim; lead read the changed answer directly. (An earlier revision of this appendix also credited the non-member q-token-circle-usdc-on-stellar edit; corrected 2026-07-28.)",
         "memberContentSha256": {
-          "q-defi-soroswap-vs-stellarx": "d33080e232c2dd63e051474130b2ebb208b463e40d6a5d247d79c9ff05fe65f4",
+          "q-defi-soroswap-vs-stellarx": "69aab6edcc718266743d0fafb066dcddbd324280421505867b6127fa6685392b",
           "q-eco-dex-saturation": "355d94a51cca4d34d16e92cad769d0975622c6d40352bd98e3342698c4a25929",
           "q-eco-lobstr-wallet": "58f17f61675e13cd6d191d93ce47c7216e4c39d5216f24072bc1eb97e978d319",
           "q-eco-stellar-wallets-list": "7acc5af8f61dfad090cfde25d627fe1499fe48dcf58bf65d5371bdbf91aa68cf",
@@ -855,15 +855,15 @@
           "q-scf-open-rfps"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-06",
+        "lastChecked": "2026-11-09",
         "reSwept": {
-          "date": "2026-11-06",
-          "reason": "RFP roster now agrees across sources. Source, date, basis and external-verification requirements remain intact. Source matrices and independent review: .agents/rounds/2026-11-05-truth-maintenance/.",
-          "verdict": "consistent"
+          "date": "2026-11-09",
+          "verdict": "consistent",
+          "reason": "Phoenix now explicitly dates the old Scout aggregation wording and adds a November 9 check against operator API venues and v3 types. It continues to distinguish corpus statements, published API venue scope and mere code presence. Reflector's dated deployment evidence, SCF category reconstruction basis and official-versus-Scout RFP roster checks are unchanged; no member treats a source-scoped observation as timeless world truth."
         },
         "note": "corpus-relative encoding: require source, as-of date, method/basis, and external verification before world-truth claims",
         "memberContentSha256": {
-          "q-defi-phoenix-what-is": "bfa879565a31c1685278a69dace666e34acfd92d72842d079f80c7d3117f66d4",
+          "q-defi-phoenix-what-is": "76acf7d6f08dfc7def9443eaffde4dc0b90a7fc9d0a040d7a2d97fec5614cc9b",
           "q-defi-reflector-oracle": "ec061bc79b120ad1ed8f9e685a07b112fa3c6692b1ebbf971f54e1cfedbc8bc7",
           "q-scf-funding-by-category": "8f59fd7423aac041beb87d0f51fc82570818acf74ec02c64dc2b6d5d080a6630",
           "q-scf-open-rfps": "6eabfc335e0969db9cf945bd1f25229665dca19f8b19cbd47b3b920d168a1c0e"
@@ -1052,16 +1052,16 @@
           "q-edge-fresh-most-recent-news"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-09",
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Member q-defi-soroswap-what-is changed only judge-blind truth.verified: rootCause now points at the improvements/resolved.json entry cs-002 (resolved 2026-11-02) instead of the deleted finding file, plus one evidence line. Question, golden answer, keyFacts, avoid, notes, and tags are unchanged, so the cluster facts are unchanged.",
-          "verdict": "consistent"
+          "date": "2026-11-09",
+          "verdict": "consistent",
+          "reason": "Soroswap adds a separately dated November 9 venue recheck and retains earlier June/November 2 observations. No publication/event/ingestion field was changed or reinterpreted. Blend and recent-news chronology requirements remain unchanged, including explicit windows, date labels, chronological sorting and non-exhaustive reporting."
         },
         "note": "Semantic relevance rank is not chronology. Recent-window answers declare window/asOf, validate and label publication versus event date, exclude undated rows, post-sort chronologically, explain editorial significance, and remain non-exhaustive. Ingestion/scrape timestamps do not silently become publication dates.",
         "memberContentSha256": {
           "q-defi-blend-what-is": "46b5e0dda07645c25aa18712c6f8c81bc17230de4d2d246e128fd9a26f19b7d2",
-          "q-defi-soroswap-what-is": "a5d7326675af03da54d6b541bd5eac930798987647a8d3a22639a7fd1755571a",
+          "q-defi-soroswap-what-is": "77d04ff5e5903c8a160f2444240d5c3a2db63ac578ee80ac47d69d1c71631c30",
           "q-edge-fresh-most-recent-news": "c0c81424654f2813f706d13f4e883121b40b67b679ee0724efcc46db915040e3"
         }
       },
@@ -1241,15 +1241,15 @@
           "q-infra-which-indexer"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-06",
+        "lastChecked": "2026-11-09",
         "reSwept": {
-          "date": "2026-11-06",
-          "reason": "Indexer note correction changes no Quasar, QuasarSwap or Soroswap identity claim. Source matrices and independent review: .agents/rounds/2026-11-05-truth-maintenance/. Final review metadata now names the independent reviewer; original Alchemy evidence is restored and superseded source-conflict observations are explicitly historical. Judge-facing fields are unchanged by these final provenance corrections.",
-          "verdict": "consistent"
+          "date": "2026-11-09",
+          "verdict": "consistent",
+          "reason": "Soroswap's recheck only concerns API venue membership versus the Phoenix hop type. Its PaltaLabs identity is unchanged; no Quasar/QuasarSwap relationship is introduced. The SEP-registry absence, Lightsail/Quasar RPC archive identity and separate indexer products in the other three members are unchanged and remain consistent with distinct entities."
         },
         "note": "QuasarSwap exists as a Nova Network DEX but was not verified as a Stellar project in the dated broad sweep. equilibriumco/quasar and lightsail-network/Quasar are unrelated Stellar data infrastructure, and Soroswap is a distinct DEX. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
-          "q-defi-soroswap-what-is": "a5d7326675af03da54d6b541bd5eac930798987647a8d3a22639a7fd1755571a",
+          "q-defi-soroswap-what-is": "77d04ff5e5903c8a160f2444240d5c3a2db63ac578ee80ac47d69d1c71631c30",
           "q-edge-noinfo-sep-9999": "315680dbff263901cfa7c1a6ab577489b99f3e55ec05b387b01d54174ff42800",
           "q-infra-rpc-provider-archive-tier": "00c3153da6a0a582c325424f65d8cd6b86237250daf2ada6f60224ff2403bc51",
           "q-infra-which-indexer": "7c72c6b135a49df7acd4d528ddcd5bd7dc58fc7e2c29c979581e83ecde1e5d4a"
@@ -1654,13 +1654,13 @@
         "lastChecked": "2026-11-09",
         "note": "As of 2026-11-02, Mainnet closes a ledger about every 5 seconds (target 5000 ms; 5.0-second mean since Protocol 28 on 2026-09-16); official Docs still say every 5–7 seconds, which matched samples before Protocol 28. As observed 2026-08-21, current Docs and live Mainnet configuration report maxTxSetSize 1000 classic operations and ledgerMaxTxCount 2000 smart-contract transactions. The v27 XDR schema defines the separate ledgerMaxTxCount setting but does not encode its current value. All claims are dated and configuration-scoped.",
         "memberContentSha256": {
-          "q-protocol-ledger-close-time": "c15fc3e21cfab236cba2b919f853a9fed569144d4a5dfb6467df1525f5114ae2",
+          "q-protocol-ledger-close-time": "383a63a707ae98987f0015d3d7eaf063750d70b4a7f873b421de4ae656a45827",
           "q-protocol-max-tx-set-size": "d0a1f799c41a8be3650cb62cac3edbff4a78f6483a4d75eaed735d809a50e60f"
         },
         "reSwept": {
           "date": "2026-11-09",
           "verdict": "consistent",
-          "reason": "2026-11-09 handoff sweep: q-protocol-ledger-close-time keeps its dated approximate five-second cadence and configurable-target distinction; it now records the live Stack/Validators corrections and the sd-100 USDT0 residual. This supersedes the dated November2 note that the two original pages still say 5–7. q-protocol-max-tx-set-size retains its separately dated classic/contract capacity observations. No contradiction or new universal constant."
+          "reason": "2026-11-09 improvements sweep: as of 2026-11-09 no live Docs page states 5–7 seconds. Stack and Validators say about 5 seconds, and the USDT0 launch page was corrected the same day (sd-100 resolved). This supersedes the dated November 2 statement in the note and the earlier handoff reason about an sd-100 residual. q-protocol-max-tx-set-size keeps its separately dated classic and contract capacity observations; no contradiction."
         }
       },
       {
@@ -1825,15 +1825,15 @@
           "q-defi-wisdomtree-crdt"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-03",
+        "lastChecked": "2026-11-09",
         "reSwept": {
-          "date": "2026-11-03",
-          "reason": "2026-11-03 URL-source repair: compared every member question, golden, tag, and surface with HEAD; all are identical. Canonical pages support the same cited facts. Only current sources and verification metadata changed. Preserve the prior consistency verdict and every historical measurement date. Evidence: tmp/urls/sibling-sweep.json and tmp/urls/decisions.json.",
-          "verdict": "consistent"
+          "date": "2026-11-09",
+          "verdict": "consistent",
+          "reason": "2026-11-09 improvements sweep: q-builder-content-by-person changes only its note on the old meeting-author index URL (now a redirect to the generic /meetings index; sd-064 resolved). The silent-empty person lane, exact validation of semantic candidates, and the working project/org/token entity lanes in the three DeFi members are unchanged; no contradiction."
         },
         "note": "The person lane is silently empty and semantic candidates need exact validation; this does not establish failure of working project/org/token entity lanes.",
         "memberContentSha256": {
-          "q-builder-content-by-person": "929de4446b8a2880d0e3572789f4fed58dbfea9097ffceafabc5e4b9c743b2dc",
+          "q-builder-content-by-person": "06c2ec9b2be7254b7351a1999820142a0fc3a55940a967e27a30e154773cb17f",
           "q-defi-benji-franklin-templeton": "d5968df841fd677e62dd8b54591bf82a5adcb798aff07bb9fa5d1385e5897e9f",
           "q-defi-ondo-usdy": "a1ef2492a81597b50ebcc3c123708a72723bfdd5f79a9eb56eb063a3bc7055f9",
           "q-defi-wisdomtree-crdt": "fc634d6dec2953b0f4538be82c111bda82871091560bf504ee1411eec87325e7"
@@ -3042,15 +3042,15 @@
           "q-gap-semantic-directory-fallback"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-06",
+        "lastChecked": "2026-11-09",
         "reSwept": {
-          "date": "2026-11-06",
-          "reason": "Builder source total refresh from 399 to 401 does not turn a directory miss into proof a person does not exist. Source matrices and independent review: .agents/rounds/2026-11-05-truth-maintenance/.",
-          "verdict": "consistent"
+          "date": "2026-11-09",
+          "verdict": "consistent",
+          "reason": "2026-11-09 improvements sweep: only q-builder-content-by-person changes, and only its note on the old meeting-author index URL (HTTP 404 on 2026-11-02, a 308 redirect to the generic /meetings index since 2026-11-09; sd-064 resolved). The seven dated meeting pages remain its source. Closed-world index absence versus open-world identity recovery is unchanged across all seven members; no contradiction."
         },
         "note": "An exact directory/index miss supports only a closed-world source-scoped conclusion. Open-world identity or history requires one bounded wider pass, exact identity plus source/date validation, and scoped non-verification with clarification when evidence remains insufficient. Justin Rice is the positive dated-history control; Strupey remains an as-of/source-scoped unverifiable case and must not be conflated with Joe Strupek or semantic neighbors.",
         "memberContentSha256": {
-          "q-builder-content-by-person": "929de4446b8a2880d0e3572789f4fed58dbfea9097ffceafabc5e4b9c743b2dc",
+          "q-builder-content-by-person": "06c2ec9b2be7254b7351a1999820142a0fc3a55940a967e27a30e154773cb17f",
           "q-builder-justin-rice-history": "aa800d231191c12fede8e0b529e859b99fe292773f20acfe54694291b2682166",
           "q-edge-closed-world-builder-directory-miss": "0baf5b657b328b0066500ee74cbf7babf61b6ef51016a567cf6acf37314d85a4",
           "q-edge-lumenloop-person-entity-empty": "72866be7cee8d2ab0659bec967ec48fe51739bfa179a52d286e08c52042a246c",

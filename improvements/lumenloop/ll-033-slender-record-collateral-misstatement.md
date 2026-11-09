@@ -14,6 +14,8 @@ evidence:
   - Source record: https://github.com/lumenloop/stellar-ecosystem-db/blob/main/projects/slender.yaml. Audit: https://www.certora.com/reports/slender (2024-05-22).
   - upstream issue filed 2026-11-02: https://github.com/lumenloop/stellar-ecosystem-db/issues/14
 recurrences:
+  - date: 2026-11-09
+    evidence: "2026-11-09 sweep at 2026-11-09T20:31:05.384441+00:00: still-repro. Slender API and YAML still say lend and borrow assets without collateral; fresh Certora audit overview describes ordinary borrowing via an over-collateralized loan. This does not justify changing unrelated products or equating flash loans with ordinary borrowing. Read-only exact requests and response hashes: research/audits/2026-11-09-improvements-sweep/lane-lumenloop.md; upstream issue state/comments freshly read; no maintainer comments or claimed fix."
   - date: 2026-11-06
     evidence: "2026-11-06 still-repro: LL get_project slender; current YAML; Certora Slender audit — Directory still borrow without collateral; primary audit says over-collateralized ordinary loan and discusses flash loans separately. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row ll-033."
 ---

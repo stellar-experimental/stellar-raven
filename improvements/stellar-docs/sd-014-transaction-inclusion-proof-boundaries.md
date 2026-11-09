@@ -5,6 +5,7 @@ status: reported-upstream
 discovered: 2026-07-10
 upstreamTitle: Document Stellar transaction inclusion verification boundaries
 evidence:
+  - "2026-11-09 sweep (still-repro): Fresh Discovery transaction inclusion proof query returns 48 adjacent sections, headed by lifecycle/simulation material, without a joined proof guide. Fresh GitHub code searches for inclusion proof and proof of inclusion return zero results (incomplete_results=false). Live Ledgers page explains scpValue.txSetHash but does not provide the joined verification recipe. Recheck: https://developers.stellar.org/docs/learn/fundamentals/ledger.md"
   - official Ledger, LedgerCloseMeta, and history/archive documentation
   - stellar-xdr ledger/SCP value definitions
   - stellar-core TxSetFrame and LedgerManager hash construction
@@ -13,6 +14,8 @@ evidence:
   - GT-41 recurrence: document timestamping guidance required historical transaction/result and ledger-close evidence because the current Manage Data entry is mutable
   - upstream issue filed 2026-07-14: https://github.com/stellar/stellar-docs/issues/2611
 recurrences:
+  - date: 2026-11-09
+    evidence: "Fresh Discovery transaction inclusion proof query returns 48 adjacent sections, headed by lifecycle/simulation material, without a joined proof guide. Fresh GitHub code searches for inclusion proof and proof of inclusion return zero results (incomplete_results=false). Live Ledgers page explains scpValue.txSetHash but does not provide the joined verification recipe."
   - date: 2026-11-06
     evidence: "Fresh transaction inclusion proof Discovery query returns lifecycle/simulation/transactions, no joined verification guide; no inclusion-proof phrase in current docs tree. Exact URLs and upstream state: .agents/rounds/2026-11-05-truth-maintenance/docs.md, row sd-014"
   - date: 2026-11-02

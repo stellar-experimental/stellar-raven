@@ -6,6 +6,7 @@ discovered: 2026-11-03
 repo: cloudflare/agents
 upstreamTitle: "createAI: string catalog models drop Anthropic adaptive thinking and effort providerOptions"
 evidence:
+  - "2026-11-09 sweep (still-repro): Latest npm agents 0.33.0 mocked-binding repro drops Anthropic thinking/effort for catalog strings; native Anthropic model preserves both but changes transport. Resume control check still makes one inference and one resume request, with zero external network calls. Main source still forces chat-completions. Issue 2809 is OPEN: only the separate resume/no-gateway issue 2790 is closed not_planned by github-actions[bot]. Recheck: https://raw.githubusercontent.com/cloudflare/agents/main/packages/agents/src/models/ai-sdk/models/language.ts; https://raw.githubusercontent.com/cloudflare/agents/main/packages/agents/src/models/core/transport.ts; https://registry.npmjs.org/agents/latest"
   - "2026-11-06 scope/progress reconciliation: .agents/rounds/2026-11-06-remaining-sweep/other.md, row cs-010; replay arguments and response hashes in research/audits/2026-11-06-remaining-sweep/other-receipt.json."
   - "2026-11-03: npm view workers-ai-provider@4.0.1 deprecated returns 'Deprecated. Use createAI from agents/models/ai-sdk, or ai-search-provider for AI Search'."
   - "2026-11-03: .agents/rounds/2026-11-03-demo-createai/repro/ (npm ci --ignore-scripts && npm run repro) exited 0 with agents@0.32.0, ai@7.0.137, and @ai-sdk/anthropic@4.0.78. observed.jsonl holds the captured requests."
@@ -18,6 +19,8 @@ evidence:
   - "Consumer impact: Raven's demo chat sends providerOptions.anthropic { thinking: { type: \"adaptive\" }, effort } for Claude 5 catalog IDs (src/demo/model-config.ts demoAnthropicProviderOptions). It reaches catalog /run today through workers-ai-provider's anthropic run wire (runWireFormat: \"anthropic\")."
   - upstream issue filed 2026-11-03: https://github.com/cloudflare/agents/issues/2809
 recurrences:
+  - date: 2026-11-09
+    evidence: "Latest npm agents 0.33.0 mocked-binding repro drops Anthropic thinking/effort for catalog strings; native Anthropic model preserves both but changes transport. Resume control check still makes one inference and one resume request, with zero external network calls. Main source still forces chat-completions. Issue 2809 is OPEN: only the separate resume/no-gateway issue 2790 is closed not_planned by github-actions[bot]."
   - date: 2026-11-06
     evidence: "2026-11-06 still-repro: Fresh npm agents0.33.0 captured-request repro with mocked binding; inspect current source and issues2809/2790/2631 — Catalog still drops thinking/effort; native route keeps options but changes transport; resume:false unknown field still resumes once with zero networkCalls. Bot confirmed2809; bot closed2790 not_planned.2631 remains open. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row cs-010."
 ---
