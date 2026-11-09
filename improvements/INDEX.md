@@ -60,8 +60,8 @@ Total findings: 91
 | sd-077 | Two stellar.org pages describe Marketing Grants eligibility differently for a project that has not launched                                 | verified          | 2026-11-02 | 1           |
 | sd-081 | The contract-restoration example on two docs pages does not parse and cannot build a valid restoration transaction. getWasmLedgerKey has…   | reported-upstream | 2026-11-02 | 1           |
 | sd-096 | Three invented source paths redirect to pages that do not exist. The original old-page premise was incorrect; the maintainer confirmed…     | declined-upstream | 2026-11-03 | 1           |
-| sd-100 | The USDT0 launch page repeats an older ledger-close estimate in two places. Its FAQ says Stellar finalises in “5–7 seconds”. Its…           | verified          | 2026-11-09 | 0           |
-| sd-101 | The WebAuthn tutorial's “Complete code” contract omits definitions needed for compilation. It references ADMIN_SIGNER_COUNT,…               | verified          | 2026-11-09 | 0           |
+| sd-100 | The USDT0 launch page repeats an older ledger-close estimate in two places. Its FAQ says Stellar finalises in “5–7 seconds”. Its…           | reported-upstream | 2026-11-09 | 0           |
+| sd-101 | The WebAuthn tutorial's “Complete code” contract omits definitions needed for compilation. It references ADMIN_SIGNER_COUNT,…               | reported-upstream | 2026-11-09 | 0           |
 | sd-102 | RPC backfill checks existing local ledger history for internal sequence gaps before fetching older history. A gap returns db verify: gap…   | declined-upstream | 2026-11-09 | 0           |
 
 ## lumenloop

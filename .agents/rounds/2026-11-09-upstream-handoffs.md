@@ -63,7 +63,9 @@ Golden reconciliation (golden-truth skill, reviewed by t38s): `q-tool-flutter-mo
 `q-ti-self-host-retention-backfill`, `q-pay-sdp-disbursement`, and `q-protocol-ledger-close-time`
 drop stale "page still says" claims; register clusters 017, 018, 065, and 135 were re-swept as
 consistent. The reviewer's two successor fixes (sd-101 hash qualifier, absolute ledger links in
-sd-100/sd-101) were applied before filing.
+sd-100/sd-101) were applied before filing. Filed with `improvements:file`:
+[sd-100 → stellar-docs#3078](https://github.com/stellar/stellar-docs/issues/3078) and
+[sd-101 → stellar-docs#3079](https://github.com/stellar/stellar-docs/issues/3079).
 
 ## Issue #223 — drift
 

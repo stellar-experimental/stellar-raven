@@ -1,7 +1,7 @@
 ---
 id: sd-101
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-09
 upstreamTitle: Complete the missing definitions and dependencies in the WebAuthn contract example
 evidence:
@@ -11,6 +11,7 @@ evidence:
   - "The event migration's PR3067 body acknowledges the pre-existing complete-example gap. Its exact acknowledgement and URL are recorded in Evidence below; that PR fixes sd-098, not this successor."
   - "Dedupe 2026-11-09: searched active findings and improvements/resolved.json for ADMIN_SIGNER_COUNT, ClientDataJson, base64_url, complete WebAuthn and WebAuthn complete. No separate finding owns these omissions."
   - "Successor of sd-098, whose event-migration resolution is recorded in improvements/resolved.json. Independent author and reviewer compilations reproduced 14 E0425/E0433 diagnostics on 2026-11-09."
+  - upstream issue filed 2026-11-09: https://github.com/stellar/stellar-docs/issues/3079
 ---
 
 ## Finding

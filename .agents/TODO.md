@@ -89,9 +89,10 @@ issues do not need reminders.
   green checks alone do not close findings. The author-owned protocol PR2059 is behind but
   green and awaiting review; respond to substantive review without a keepalive rebase.
 - Docs continuation (2026-11-09): sd-091 and sd-098 are retired with ten other deployed fixes
-  ([ledger](rounds/2026-11-09-upstream-handoffs.md)). sd-101 carries the remaining complete
-  WebAuthn example compile failure and sd-100 the USDT0 launch-page cadence; recheck each only
-  when its upstream issue reports a fix. sd-095 and sd-097 were retired earlier; see the
+  ([ledger](rounds/2026-11-09-upstream-handoffs.md)). sd-101 ([stellar-docs#3079](https://github.com/stellar/stellar-docs/issues/3079)) carries the
+  remaining complete WebAuthn example compile failure and sd-100
+  ([stellar-docs#3078](https://github.com/stellar/stellar-docs/issues/3078)) the USDT0 launch-page
+  cadence; recheck each only when its upstream issue reports a fix. sd-095 and sd-097 were retired earlier; see the
   [resolution ledger](rounds/2026-11-06-playground-final-resolution.md).
   The [continuation table](rounds/2026-11-06-remaining-sweep/docs.md) records all current
   review/conflict blockers, including draft2752 and the separate pending generated-skill PR3069.

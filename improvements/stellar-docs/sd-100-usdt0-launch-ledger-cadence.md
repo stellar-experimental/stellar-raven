@@ -1,7 +1,7 @@
 ---
 id: sd-100
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-09
 upstreamTitle: Update the repeated ledger-close estimates on the USDT0 launch page
 evidence:
@@ -10,6 +10,7 @@ evidence:
   - "2026-11-09 GET https://horizon.stellar.org/ledgers?order=desc&limit=200: Mainnet ledgers 65392850–65393049, Protocol 29, give 199 close-time deltas of 5 seconds; mean 5.000 seconds. This sample does not guarantee every interval."
   - "Source: https://github.com/stellar/stellar-docs/blob/f83baf27c91fdbc54c04872aba603b73d9cd9469/snippets/usdt0-launch.jsx lines 778 and 836."
   - "Successor of sd-054, whose resolution is recorded in improvements/resolved.json. Independent author and reviewer reads on 2026-11-09 confirmed both live repetitions."
+  - upstream issue filed 2026-11-09: https://github.com/stellar/stellar-docs/issues/3078
 probe:
   type: http-text
   url: https://developers.stellar.org/launch/usdt0.md
