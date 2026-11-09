@@ -1,10 +1,11 @@
 ---
 id: sd-054
 service: stellar-docs
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-10-01
 upstreamTitle: Update the ledger cadence on the Stellar Stack and Validators pages from 5-7 seconds to about 5 seconds
 evidence:
+  - "2026-11-09: https://developers.stellar.org/docs/learn/fundamentals/stellar-stack.md and https://developers.stellar.org/docs/validators.md both say about every 5 seconds with the network-setting caveat and no longer contain 5-7. A fresh Horizon sample (Mainnet ledgers 65392852-65393051) gave 199 adjacent close deltas of 5 seconds. The USDT0 launch page (https://developers.stellar.org/launch/usdt0) still says 5-7 seconds twice; Raven tracks that as successor sd-100. Resolving PR: https://github.com/stellar/stellar-docs/pull/2931. Independent recheck: Codex frontier (gpt-6-astra, high)."
   - live source read 2026-10-01 of stellar/stellar-docs at 109d95d18fe151ac40cc2fd5f5cc769660e51fcc. docs/learn/fundamentals/stellar-stack.mdx line 22 and docs/validators/README.mdx line 10 each say "Generally, nodes reach consensus, apply a transaction set, and update the ledger every 5-7 seconds." Both rendered pages carry the same sentence
   - post-upgrade sample 1, read 2026-10-01 from https://horizon.stellar.org/ledgers?cursor=276846917520982016&order=asc&limit=200. Ledgers 64458447 to 64458646 (Protocol 28) gave 199 closed_at deltas of 5 seconds each
   - post-upgrade sample 2, read 2026-10-01T18:55Z from https://horizon.stellar.org/ledgers?order=desc&limit=200. Ledgers 64718827 to 64719026 (Protocol 29) gave 199 closed_at deltas of 5 seconds each

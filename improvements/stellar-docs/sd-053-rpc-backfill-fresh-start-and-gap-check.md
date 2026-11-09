@@ -1,10 +1,11 @@
 ---
 id: sd-053
 service: stellar-docs
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-09-21
 upstreamTitle: State ordinary RPC startup and the local gap check in the BACKFILL section
 evidence:
+  - "2026-11-09: https://developers.stellar.org/docs/data/apis/rpc/admin-guide/configuring.md now says an empty database without BACKFILL starts at the latest archived ledger and that a larger HISTORY_RETENTION_WINDOW alone adds no older ledgers, matching stellar-rpc v30.0.0 service.go:182-191. The local gap-check half stays undocumented by the RPC team's decision (https://github.com/stellar/stellar-docs/pull/2899#discussion_r4516284001); Raven keeps that half as declined record sd-102 and will not re-file it. Resolving PR: https://github.com/stellar/stellar-docs/pull/2899. Independent recheck: Codex frontier (gpt-6-astra, high)."
   - successor of sd-029. https://github.com/stellar/stellar-docs/pull/2789 fixed the narrowed sd-029 scope. Its body lists "where an ordinary fresh startup begins without `BACKFILL`" and "how datastore gaps and existing local state limit what gets materialized" as left for RPC team review, and asks maintainers to keep the issue open
   - the open upstream issue that tracks this half is https://github.com/stellar/stellar-docs/issues/2602 (open on 2026-09-21; no comment after 2026-07-27)
   - both statements posted on the open issue and read back 2026-09-21: https://github.com/stellar/stellar-docs/issues/2602#issuecomment-5764382567. sd-029 is retired in improvements/resolved.json

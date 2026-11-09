@@ -508,11 +508,11 @@
           "q-token-initial-supply-distribution"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-03",
+        "lastChecked": "2026-11-09",
         "reSwept": {
-          "date": "2026-11-03",
-          "reason": "2026-11-03 URL-source repair: compared every member question, golden, tag, and surface with HEAD; all are identical. Canonical pages support the same cited facts. Only current sources and verification metadata changed. Preserve the prior consistency verdict and every historical measurement date. Evidence: tmp/urls/sibling-sweep.json and tmp/urls/decisions.json.",
-          "verdict": "consistent"
+          "date": "2026-11-09",
+          "verdict": "consistent",
+          "reason": "2026-11-09 handoff sweep: compared all 15 member goldens. Only q-protocol-ledger-close-time changes a present-tense Docs observation; its dated cadence, configurable target and monotonic-time distinctions stand. q-asset-path-payment-ops still says roughly one ledger (~5 s); timestamping still distinguishes consensus close time from trusted wall-clock proof. Other constants and members are unchanged; no contradiction."
         },
         "note": "Corrected 2026-07-10: base fee 100 stroops, 1 XLM = 10,000,000 stroops, base reserve 0.5 XLM, empty unsponsored account minimum 2 reserves = 1 XLM, and fees are separate. q-edge-1xlm-activation-fee previously mislabeled the 1 XLM minimum as the base reserve and is now overridden. Other repeated constants remain as previously reviewed; sponsorship terms qualify the simple minimum-balance formula. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
@@ -527,7 +527,7 @@
           "q-pc-practical-fee-setting": "d0b29056088637d617a9652252073981917d48c495c7ba92e5735c9a5e046615",
           "q-pc-sponsored-reserves": "55d6071f72fd619a329e6e7310d9f4326598f87727f934259468abf382642666",
           "q-protocol-base-reserve-min-balance": "428c382622a762eab1f1c56e4f49468668b8802d373903285833360742c5e086",
-          "q-protocol-ledger-close-time": "b6d6438972116ef0e6c1935e2cd66370c87da8543911166ef1bee7187c5a9b7e",
+          "q-protocol-ledger-close-time": "c15fc3e21cfab236cba2b919f853a9fed569144d4a5dfb6467df1525f5114ae2",
           "q-sor-doc-timestamping-manage-data": "1303e33b3457de47dcecd5fa9b8991f3cc6f32d41bb78a5e06ae52d9f2a3c6b6",
           "q-soroban-simulate-resource-fee": "ef190edb519c0f46f3977048ea1cc7d0b223165768258aa40250f9c3407ca091",
           "q-token-initial-supply-distribution": "d21261aee65d659776e78342377e944fefad8121a445914a8ab7b7d2a4adce7c"
@@ -551,11 +551,11 @@
           "q-ti-self-host-retention-backfill"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-06",
+        "lastChecked": "2026-11-09",
         "reSwept": {
-          "date": "2026-11-06",
-          "reason": "Only the events finding pointer changed after the approved configurable-retention correction; source and history boundaries are unchanged. Final review metadata now names the independent reviewer; original Alchemy evidence is restored and superseded source-conflict observations are explicitly historical. Judge-facing fields are unchanged by these final provenance corrections.",
-          "verdict": "consistent"
+          "date": "2026-11-09",
+          "verdict": "consistent",
+          "reason": "2026-11-09 handoff sweep: compared all 12 member goldens. q-ti-self-host-retention-backfill now records shipped archive-tip startup prose and sd-102 as the declined corruption-check documentation request. Empty DB is accepted; compatible local state does not mean a pre-existing DB. All siblings retain provider-scoped local history, getLedgers-only datastore fallback and indexing boundaries. No method/default/provider claim changed; no contradiction."
         },
         "note": "Current review 2026-11-03: official Horizon lifecycle wording agrees again. stellar/stellar-docs PR #3020 (2026-11-03) changed the Lab API Explorer card to the nearing-end-of-life label that the APIs overview and the Lab Horizon Endpoints page use (improvements/resolved.json entry sd-072). q-infra-horizon-vs-rpc dates the nearing-end-of-life label; its sd-072 caution is removed. getEvents: the method page and stellar-rpc v30.0.0 use one configurable history-retention-window with a stock default of 120960 ledgers (about 7 days); the 24-hour-default/seven-day-maximum method prose is fixed (sd-023, improvements/resolved.json), and the events ingest guide now also states the configurable default (sd-068 resolved November 6). Review 2026-09-09: the rendered Horizon pages and their positive indexed records agreed on nearing-end-of-life wording, and the sd-042 source/index conflict was fixed. Endpoint-specific migration, provider-configured retention, getLedgers-only archive scope, and historical-indexer boundaries remain unchanged. The following dated notes preserve the earlier review context: Corrected 2026-07-11: official Horizon lifecycle wording is source-conflicted, so cases preserve the durable operational/legacy-no-new-features and endpoint-by-endpoint boundary rather than one categorical deprecated/not-deprecated label. 'Soroban RPC' was renamed 'Stellar RPC' in Nov 2024. getEvents is bounded by each endpoint's configured ledger range; current stock/live observations were 120960 ledgers, while the generated method prose then conflicted with 24-hour-default/seven-day-maximum wording. Event page size, request ledger scan span, and retained history are distinct. The official RPC Archive tier extends getLedgers only; SDF's archive-node beta and provider betas that serve wider full history are dated nuances, not the official tier. Older events need continuous ingestion/indexing, and point-in-time balances need Hubble/owned history reconstruction. All listed cases now use this dispute-aware model. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed. Added 2026-07-28 (todo 1253 Lane B): q-ti-compute-token-lp-market-data joins this cluster because it asserts the same three claims — official Horizon lifecycle wording is source-conflicted so answers state the endpoint-by-endpoint boundary rather than one categorical label, RPC is not an unbounded historical index, and Hubble is historical SQL rather than a guaranteed real-time feed. Verified 2026-07-28 against q-infra-horizon-vs-rpc, q-infra-hubble-bigquery, q-infra-which-indexer, and q-ti-historical-pointintime-balances: no contradiction; the new member adds only the market-metric methodology layer (explicit identity/quote/window/fee/price basis, Classic SDEX pools distinct from Soroban AMM contracts) on top of the shared data-source boundaries.",
         "memberContentSha256": {
@@ -570,7 +570,7 @@
           "q-ti-enumerate-holders-airdrop": "0a1c801a5573023e605f581f0c116c8f74cd50e8bb3bffcc8709b472955a98c8",
           "q-ti-historical-pointintime-balances": "c991d229c472f9bf1ab95554584b3fdc09b0b2b561a01f24d4ea17448a530ec5",
           "q-ti-rpc-gettransactions-pagination-xdr": "ee43917c0c6fc3f737ebc1e7ba7810e9f69812c646544e83e77e48055d743f01",
-          "q-ti-self-host-retention-backfill": "843c2e46f0dae94e9af99dca17a792fcd1b72814efa3038b20b0e81e0acbc049"
+          "q-ti-self-host-retention-backfill": "82ff1ec3509070d392ca1b55a832bbbe94746a6e8b4f6ace92b668d5b8eb0e7a"
         }
       },
       {
@@ -1651,16 +1651,16 @@
           "q-protocol-max-tx-set-size"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-09",
         "note": "As of 2026-11-02, Mainnet closes a ledger about every 5 seconds (target 5000 ms; 5.0-second mean since Protocol 28 on 2026-09-16); official Docs still say every 5–7 seconds, which matched samples before Protocol 28. As observed 2026-08-21, current Docs and live Mainnet configuration report maxTxSetSize 1000 classic operations and ledgerMaxTxCount 2000 smart-contract transactions. The v27 XDR schema defines the separate ledgerMaxTxCount setting but does not encode its current value. All claims are dated and configuration-scoped.",
         "memberContentSha256": {
-          "q-protocol-ledger-close-time": "b6d6438972116ef0e6c1935e2cd66370c87da8543911166ef1bee7187c5a9b7e",
+          "q-protocol-ledger-close-time": "c15fc3e21cfab236cba2b919f853a9fed569144d4a5dfb6467df1525f5114ae2",
           "q-protocol-max-tx-set-size": "d0a1f799c41a8be3650cb62cac3edbff4a78f6483a4d75eaed735d809a50e60f"
         },
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-protocol-ledger-close-time states about 5 seconds as of 2026-11-02 (target 5000 ms, 5.0 s mean since P28) and accepts the Docs 5-7 s wording. q-protocol-max-tx-set-size keeps 1,000 classic ops and 2,000 contract txs as observed 2026-08-21. Both match the note text.",
-          "verdict": "consistent"
+          "date": "2026-11-09",
+          "verdict": "consistent",
+          "reason": "2026-11-09 handoff sweep: q-protocol-ledger-close-time keeps its dated approximate five-second cadence and configurable-target distinction; it now records the live Stack/Validators corrections and the sd-100 USDT0 residual. This supersedes the dated November2 note that the two original pages still say 5–7. q-protocol-max-tx-set-size retains its separately dated classic/contract capacity observations. No contradiction or new universal constant."
         }
       },
       {
@@ -3213,18 +3213,18 @@
           "q-pay-sdp-disbursement"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-09",
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): I compared all four SDP members' answer, avoid, and notes. All say native SEP-10/24, no required external Anchor Platform, and optional downstream rails. Both cases that cite 10,000 call it an SDP per-disbursement cap, not a protocol limit, so the note holds. The changes were the q-crp sponsorship-notes fix and a Wallet SDK SEP caution, and neither touches the cluster topic.",
-          "verdict": "consistent"
+          "date": "2026-11-09",
+          "verdict": "consistent",
+          "reason": "2026-11-09 handoff sweep: compared all four SDP members. q-pay-sdp-disbursement changes only source/verification metadata, superseding the stale Registration API observation after deployment. All four still describe native SDP SEP-10/24 and optional downstream anchor rails. The dated application batch-capacity distinctions are unchanged; no contradiction."
         },
         "note": "All four cases agree that current SDP is a bulk-disbursement application whose Core implements native SEP-10/24 and does not universally require an external Anchor Platform; downstream wallet, cash-out, or anchor rails are optional deployment choices. The 10,000-instruction per-disbursement cap is source-enforced by SDP (`MaxInstructionsPerDisbursement`, checked 2026-11-02) and matches the product page's 'up to 10,000 payments'; it is an SDP application limit, not a Stellar protocol invariant, and is not required by the two Docs-only questions after the exact-phrase Lumenloop probe returned no exact primary-linked evidence.",
         "memberContentSha256": {
           "q-anchor-sdp-vs-anchor-platform": "fc6a7abd875deb2ccdf30a77381cbf3be2b625e903fed003c8fa26af15d784d6",
           "q-anchor-sdp-what": "52156e364a9cb0a689f5c27200a110ac96bc59b302bf4923d3d9384d35464183",
           "q-crp-sdp-operation": "73bb470d4a9170a0908628c5314c06af6704876b41a5540bdde94a86b60e0523",
-          "q-pay-sdp-disbursement": "d80f8e8d6aa0bd5cc1d1c7302424b69af59ad57d8193d4bb0e0503e29f06261e"
+          "q-pay-sdp-disbursement": "99af4f2742ab7303093487d2e775b37a4b2989f05c29bf399a4ef2daaa4242cc"
         }
       },
       {

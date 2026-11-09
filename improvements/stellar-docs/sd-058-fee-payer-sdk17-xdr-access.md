@@ -1,10 +1,11 @@
 ---
 id: sd-058
 service: stellar-docs
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-10-09
 upstreamTitle: Update the fee-payer signing example to use SDK 17 XDR fields
 evidence:
+  - "2026-11-09: https://developers.stellar.org/docs/build/guides/transactions/signing-soroban-invocations.md and https://developers.stellar.org/docs/build/agentic-payments/x402/quickstart-guide.md use SDK 17 type/value access and contain no `.v1()` chain. The served extraction and rebuild blocks ran against @stellar/stellar-sdk 17.4.0 on unsigned local transactions: Soroban data is extracted byte-identically, the missing-data control throws, and the x402 rebuild keeps the Soroban data with fee 1. Nothing was signed or submitted. Resolving PR: https://github.com/stellar/stellar-docs/pull/2932. Independent recheck: Codex frontier (gpt-6-astra, high)."
   - 2026-10-09 live signing guide and source at 2efd1d55840eb780f4b311c313e35d34fedf2f63; https://github.com/stellar/stellar-docs/blob/2efd1d55840eb780f4b311c313e35d34fedf2f63/docs/build/guides/transactions/signing-soroban-invocations.mdx#L274
   - "2026-10-09 @stellar/stellar-sdk 17.2.1 local execution: the current fee-payer example throws TypeError: txEnvelope.v1 is not a function before any RPC call."
   - 2026-10-09 SDK 17.0.0 release and XDR migration guide; https://github.com/stellar/js-stellar-sdk/releases/tag/v17.0.0; https://github.com/stellar/js-stellar-sdk/blob/v17.0.0/docs/migration/xdr-migration.md

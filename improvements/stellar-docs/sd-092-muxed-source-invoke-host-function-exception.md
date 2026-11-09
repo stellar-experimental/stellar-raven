@@ -1,10 +1,11 @@
 ---
 id: sd-092
 service: stellar-docs
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-11-03
 upstreamTitle: "Document the muxed-source exception for contract invocation"
 evidence:
+  - "2026-11-09: https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos.md states that from Protocol 25 an InvokeHostFunction transaction cannot use a muxed transaction or operation source or carry a memo (txSOROBAN_INVALID), separates the fee-bump fee source and the ExtendFootprintTtl/RestoreFootprint operations, and limits muxed IDs in contract calls to MuxedAddress arguments. This matches stellar-core v30.0.0 TransactionFrame.cpp. Resolving PR: https://github.com/stellar/stellar-docs/pull/3054. Independent recheck: Codex frontier (gpt-6-astra, high)."
   - "research/audits/2026-11-03-qa-followup/additional-source-findings.json (OC-MUXED-SOURCE; fresh source receipts, case/review/packet hashes, owner proof, and fixture results)."
   - "Current source: https://raw.githubusercontent.com/stellar/stellar-docs/85d2d1b8e7a4451b7a6af0931f587ce73109b816/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos.mdx; SHA256 7b8584dd15e756006aec21823b560a57ba0ec1bc7d0a6eb22cb8dc875e667a08; Git blob af7ecae3202b86f227b03338f968842d1df93539."
   - "Published page: https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos.md; SHA256 58947c5707163492a6e52d435166ad8029feed7015dc141c1f8c8a7e9294a1e1."

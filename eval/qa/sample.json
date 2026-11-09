@@ -1,7 +1,7 @@
 {
   "$comment": "Deterministic stratified sample (N=30, by service) of the owned QA battery.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "883705aa704bc195200a6d762647173fef57f726542d1d900225785d8d447c52",
+  "corpusContentSha256": "6ef5fce88ea4224bf16b9ebfc9e81cdf6cab3df733ed8ccb94b600d62b238e9e",
   "counts": {
     "total": 30,
     "byCategory": {
@@ -2289,7 +2289,7 @@
         "stellarDocs.search_protocol_concepts_docs"
       ],
       "golden": {
-        "answer": "As of **2026-11-02**, Stellar Mainnet closes a ledger about every **5 seconds**. The network setting `ledger_target_close_time_milliseconds` is 5000. Every delta in a 199-ledger sample on 2026-11-02 was 5 seconds, and the mean has been 5.0 seconds since Protocol 28 activated on 2026-09-16. Before that upgrade, multi-ledger samples measured 5–7 seconds, and official Docs pages still say every 5–7 seconds. CAP-0070 made the target a validator-voted network setting, so a configured target is not a permanent constant and is not a guarantee for every observed close. Ledger `closeTime` is consensus-agreed and monotonic but has bounded wall-clock skew semantics. Date a cadence figure or name its source.",
+        "answer": "As of **2026-11-02**, Stellar Mainnet closes a ledger about every **5 seconds**. The network setting `ledger_target_close_time_milliseconds` is 5000. Every delta in a 199-ledger sample on 2026-11-02 was 5 seconds, and the mean has been 5.0 seconds since Protocol 28 activated on 2026-09-16. Before that upgrade, multi-ledger samples measured 5–7 seconds. By **2026-11-09**, the Stellar Stack and Validators pages say about 5 seconds and distinguish the configurable target from an individual close; the USDT0 launch page retains an older 5–7-second estimate (sd-100). CAP-0070 made the target a validator-voted network setting, so a configured target is not a permanent constant and is not a guarantee for every observed close. Ledger `closeTime` is consensus-agreed and monotonic but has bounded wall-clock skew semantics. Date a cadence figure or name its source.",
         "keyFacts": [
           "States about 5 seconds, or the documented 5–7 seconds, with a date or source.",
           "Explains configurable target versus observed cadence and closeTime semantics."
@@ -2297,7 +2297,7 @@
         "avoid": [
           "Do NOT claim the close time is a fixed protocol constant or guaranteed for every ledger."
         ],
-        "notes": "Freshness item: grade a dated or attributed cadence. As of 2026-11-02, Mainnet closes ledgers about every 5 seconds (target 5000 ms; 5.0-second mean since Protocol 28 on 2026-09-16). CAP-0088 (Protocol 30; Mainnet vote scheduled 2026-11-23) adds millisecond-resolution close times but does not itself change the 5000 ms target; mentioning it is not wrong. Official Docs pages still say every 5–7 seconds, which matched samples before Protocol 28. Accept either figure when the answer dates it or names its source. The answer does not need to run its own ledger sample. A 3–5-second figure is retired Docs wording and does not meet key fact 1. Trap is importing Bitcoin (10 min) or Ethereum (12s) block times.\nAlso good if the answer: Notes the close time is set by the proposing validator and recorded in the ledger header, and that SCP determines the agreed close time.\nGolden cites: The validators / fundamentals docs on developers.stellar.org (or the network dashboard)."
+        "notes": "Freshness item: grade a dated or attributed cadence. As of 2026-11-02, Mainnet closes ledgers about every 5 seconds (target 5000 ms; 5.0-second mean since Protocol 28 on 2026-09-16). CAP-0088 (Protocol 30; Mainnet vote scheduled 2026-11-23) adds millisecond-resolution close times but does not itself change the 5000 ms target; mentioning it is not wrong. The Stellar Stack and Validators pages now say about 5 seconds (verified 2026-11-09). Their earlier 5–7-second estimate matched samples before Protocol 28; the USDT0 launch still repeats it, tracked in sd-100. Accept either figure when the answer dates it or names its source. The answer does not need to run its own ledger sample. A 3–5-second figure is retired Docs wording and does not meet key fact 1. Trap is importing Bitcoin (10 min) or Ethereum (12s) block times.\nAlso good if the answer: Notes the close time is set by the proposing validator and recorded in the ledger header, and that SCP determines the agreed close time.\nGolden cites: The validators / fundamentals docs on developers.stellar.org (or the network dashboard)."
       },
       "tags": {
         "category": "protocol-core",
@@ -2366,6 +2366,18 @@
             "ref": "https://cryptoticker.io/en/stellar-protocol-30-bell-vote/",
             "note": "Perplexity search: 'The gaps between two ledgers do not get shorter for the moment; the five-second target stays.'",
             "observedAt": "2026-11-02"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-stack.md",
+            "observedAt": "2026-11-09",
+            "note": "The corrected about-five-seconds estimate includes the configurable-target and per-ledger caveat; the live Validators page agrees."
+          },
+          {
+            "class": "C",
+            "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=200",
+            "observedAt": "2026-11-09",
+            "note": "Fresh Mainnet sample 65392850–65393049 gives 199 five-second close-time deltas. This is a bounded observation, not a guarantee."
           }
         ],
         "corroboration": [
@@ -2635,22 +2647,19 @@
           }
         ],
         "verified": {
-          "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-04)",
+          "date": "2026-11-09",
+          "by": "Upstream handoff author reconciliation; independent live re-derivation by reviewer t38s; .agents/rounds/2026-11-09-upstream-handoffs.md",
           "evidence": [
-            "Verifier sample 2026-11-02 (class C): https://horizon.stellar.org/ledgers?order=desc&limit=200 — ledgers 65270052-65270251 (2026-11-02T16:14:04Z..16:30:39Z), 199 deltas all 5.0 s, protocol_version 29.",
-            "Proposer windows 2026-11-02 (class F): https://horizon.stellar.org/ledgers/64460000 and /ledgers/65269965 — mean 5.0000099 s over 809,965 ledgers since 2026-09-16; two more 199-delta windows from ledgers 64900001 and 65100001 were all 5.0 s.",
-            "Network setting 2026-11-02 (class F): stellar network settings --network mainnet (stellar-cli 28.1.0) — scp_timing.ledger_target_close_time_milliseconds 5000.",
-            "Class A 2026-11-02: https://stellar.org/blog/developers/introducing-bell-protocol-30-on-stellar — 'In September, Adapter (Protocol 28) brought mainnet ledger close times down from about 5.7 seconds to 5 seconds.' and 'November 23, 2026, 1700 UTC—Mainnet upgrade vote.'",
-            "Class B 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0088.md — 'Status: Implemented ... Protocol version: 30'; 'The existing whole-second `closeTime` field in `StellarValue` is unchanged'.",
-            "Class D 2026-11-02: Parallel web_search (kucoin.com) and Perplexity (cryptoticker.io, coinranking.com) — Mainnet vote 2026-11-23 17:00 UTC; no change to the block interval.",
-            "Class A 2026-10-27: https://developers.stellar.org/docs/learn/fundamentals/stellar-stack and https://developers.stellar.org/docs/validators still say 'every 5-7 seconds'.",
-            "Change: answer and notes date moved 2026-10-01 → 2026-11-02; notes gain a CAP-0088 grader caution (verifier-modified to 'does not itself change the 5000 ms target'). truth.asOf 2026-11-02; reverifyBy 2027-03-09 (after the P30 Mainnet vote).",
-            "Sibling sweep 2026-11-02: grep '5-7|5–7|~5 second|every 5 second|CAP-0088' over eval/qa/corpus/battery — q-asset-path-payment-ops, q-sor-doc-timestamping-manage-data, q-quickstart-manual-ledger-close, q-ti-tx-too-late-resubmit, q-edge-fresh-latest-protocol-version state no conflicting cadence; no other case cites CAP-0088; no contradiction.",
-            "No saved answer was re-judged and no paid QA ran."
+            "Class A 2026-11-09: https://developers.stellar.org/docs/learn/fundamentals/stellar-stack.md and https://developers.stellar.org/docs/validators.md both state about every 5 seconds, with a configurable-target caveat and no guarantee for each ledger.",
+            "Class C 2026-11-09: https://horizon.stellar.org/ledgers?order=desc&limit=200 yielded Mainnet ledgers 65392850–65393049, Protocol29, with 199 five-second consensus-close intervals and mean 5.000 seconds. The independent reviewer separately sampled 65392852–65393051 with the same result.",
+            "Class B 2026-11-09: https://github.com/stellar/stellar-docs/pull/2931 merged as 2301d2cde8c8397860f0a9cb0ca95ba545f25374; direct live reads, not the merge alone, establish deployment.",
+            "https://developers.stellar.org/launch/usdt0.md still says Stellar finalises in 5–7 seconds and lists 5–7s settlement. sd-100 preserves that narrower precision residual; sd-054's original two-page correction is deployed. No exact-five-second grading requirement was added.",
+            "Independent author/reviewer live checks agree; .agents/rounds/2026-11-09-upstream-handoffs.md. The dated 2026-11-02 cadence/settings observation and Protocol30 caution remain unchanged.",
+            "Sibling sweep 2026-11-09: only this golden contains the 5–7/5-7 cadence wording or 5000-ms target. q-asset-path-payment-ops, q-sor-doc-timestamping-manage-data, q-quickstart-manual-ledger-close and q-ti-tx-too-late-resubmit have no conflicting cadence claim."
           ],
           "rootCause": [
-            "freshness-drift"
+            "improvements/resolved.json (sd-054; two original pages corrected through PR2931)",
+            "improvements/stellar-docs/sd-100-usdt0-launch-ledger-cadence.md"
           ]
         },
         "origin": "raven-next q-protocol-ledger-close-time"

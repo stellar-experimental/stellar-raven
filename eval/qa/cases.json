@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "883705aa704bc195200a6d762647173fef57f726542d1d900225785d8d447c52",
+  "corpusContentSha256": "6ef5fce88ea4224bf16b9ebfc9e81cdf6cab3df733ed8ccb94b600d62b238e9e",
   "counts": {
     "total": 501,
     "byCategory": {
@@ -33351,6 +33351,18 @@
             "class": "B",
             "ref": "https://github.com/stellar/stellar-disbursement-platform-backend/tree/03e44fbedceab188cb91c77a181d8c734ffbd822",
             "note": "class inferred at migration"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/api-reference/registration.md",
+            "observedAt": "2026-11-09",
+            "note": "The live reference assigns SEP-10/24 endpoints to SDP itself, with separate Anchor Platform hosting explicitly limited to versions before 6.0.0."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-docs/blob/d3cf2fb26f3f694f519372d4dc4ad1eefe56a11e/openapi/stellar-disbursement-platform/main.yaml",
+            "observedAt": "2026-11-09",
+            "note": "Registration description and stellar.toml endpoint examples use the SDP host."
           }
         ],
         "corroboration": [
@@ -33398,15 +33410,17 @@
           }
         ],
         "verified": {
-          "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 (proposer re-verification, no gospel change; applier; .agents/rounds/2026-11-02-golden-audit.md, batch compliance-rwa-payments-04)",
+          "date": "2026-11-09",
+          "by": "Upstream handoff author reconciliation; independent live re-derivation by reviewer t38s; .agents/rounds/2026-11-09-upstream-handoffs.md",
           "evidence": [
-            "https://github.com/stellar/stellar-disbursement-platform-backend/blob/develop/README.md (observedAt 2026-11-02; latest release 7.1.0, 2026-10-26): \"The SDP now includes native implementations of Stellar Enhancement Proposals SEP10 and SEP24, providing wallet authentication and interactive deposit flows without requiring external Anchor Platform integration.\"",
-            "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/design-and-architecture (observedAt 2026-11-02): \"The TSS pulls payments that ready to be processed then submits them to the Stellar Network through Channel Accounts.\"",
-            "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/embedded-wallets (observedAt 2026-11-02): \"Embedded Wallets are Stellar smart contract accounts that are deployed on-chain when a receiver creates their passkey.\"; \"No built-in offramp: Offramping must be handled out-of-band\".",
-            "https://developers.stellar.org/platforms/stellar-disbursement-platform/admin-guide/getting-started (observedAt 2026-11-02): \"Since version 3.0.0 , the SDP can pay directly to Stellar wallet addresses rather than directing the receivers through the registration flow.\"",
-            "Observation (no truth change): the SDP Registration API reference still says wallets authenticate through Anchor Platform endpoints on a different host; primary source code and the Embedded Wallets page outrank it.",
-            "Sibling sweep 2026-11-02: q-anchor-sdp-what, q-anchor-sdp-vs-anchor-platform, q-crp-sdp-operation, q-pay-travel-rule-aid-flows, q-sep-31-cross-border; no contradiction."
+            "Class A 2026-11-09: https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/api-reference/registration.md says SDP hosts the SEP-10/24 endpoints itself and stellar.toml gives their URLs. Separate Anchor Platform hosting is explicitly before 6.0.0.",
+            "Class B 2026-11-09: https://github.com/stellar/stellar-docs/blob/d3cf2fb26f3f694f519372d4dc4ad1eefe56a11e/openapi/stellar-disbursement-platform/main.yaml and bundled.yaml have the same corrected description and SDP-host WEB_AUTH_ENDPOINT / TRANSFER_SERVER_SEP0024 examples.",
+            "Independent reviewer read the SDP backend changelog and stellar_toml_handler.go: native SEP-10/24 replaced the Anchor Platform integration in 6.0.0, and both advertised URLs use the request/tenant base URL; .agents/rounds/2026-11-09-upstream-handoffs.md.",
+            "sd-062 resolution supersedes the 2026-11-02 observation that Registration still describes current Anchor Platform hosting. The existing golden answer, key facts and avoids remain correct and unchanged.",
+            "Sibling sweep 2026-11-09: q-anchor-sdp-what, q-anchor-sdp-vs-anchor-platform and q-crp-sdp-operation already describe native SDP SEP-10/24. q-pay-travel-rule-aid-flows and q-sep-31-cross-border retain route-dependent downstream roles; no contradiction."
+          ],
+          "rootCause": [
+            "improvements/resolved.json (sd-062; deployed Registration and spec correction, PR3010)"
           ]
         },
         "origin": "raven-next q-pay-sdp-disbursement"
@@ -38324,7 +38338,7 @@
         "stellarDocs.search_protocol_concepts_docs"
       ],
       "golden": {
-        "answer": "As of **2026-11-02**, Stellar Mainnet closes a ledger about every **5 seconds**. The network setting `ledger_target_close_time_milliseconds` is 5000. Every delta in a 199-ledger sample on 2026-11-02 was 5 seconds, and the mean has been 5.0 seconds since Protocol 28 activated on 2026-09-16. Before that upgrade, multi-ledger samples measured 5–7 seconds, and official Docs pages still say every 5–7 seconds. CAP-0070 made the target a validator-voted network setting, so a configured target is not a permanent constant and is not a guarantee for every observed close. Ledger `closeTime` is consensus-agreed and monotonic but has bounded wall-clock skew semantics. Date a cadence figure or name its source.",
+        "answer": "As of **2026-11-02**, Stellar Mainnet closes a ledger about every **5 seconds**. The network setting `ledger_target_close_time_milliseconds` is 5000. Every delta in a 199-ledger sample on 2026-11-02 was 5 seconds, and the mean has been 5.0 seconds since Protocol 28 activated on 2026-09-16. Before that upgrade, multi-ledger samples measured 5–7 seconds. By **2026-11-09**, the Stellar Stack and Validators pages say about 5 seconds and distinguish the configurable target from an individual close; the USDT0 launch page retains an older 5–7-second estimate (sd-100). CAP-0070 made the target a validator-voted network setting, so a configured target is not a permanent constant and is not a guarantee for every observed close. Ledger `closeTime` is consensus-agreed and monotonic but has bounded wall-clock skew semantics. Date a cadence figure or name its source.",
         "keyFacts": [
           "States about 5 seconds, or the documented 5–7 seconds, with a date or source.",
           "Explains configurable target versus observed cadence and closeTime semantics."
@@ -38332,7 +38346,7 @@
         "avoid": [
           "Do NOT claim the close time is a fixed protocol constant or guaranteed for every ledger."
         ],
-        "notes": "Freshness item: grade a dated or attributed cadence. As of 2026-11-02, Mainnet closes ledgers about every 5 seconds (target 5000 ms; 5.0-second mean since Protocol 28 on 2026-09-16). CAP-0088 (Protocol 30; Mainnet vote scheduled 2026-11-23) adds millisecond-resolution close times but does not itself change the 5000 ms target; mentioning it is not wrong. Official Docs pages still say every 5–7 seconds, which matched samples before Protocol 28. Accept either figure when the answer dates it or names its source. The answer does not need to run its own ledger sample. A 3–5-second figure is retired Docs wording and does not meet key fact 1. Trap is importing Bitcoin (10 min) or Ethereum (12s) block times.\nAlso good if the answer: Notes the close time is set by the proposing validator and recorded in the ledger header, and that SCP determines the agreed close time.\nGolden cites: The validators / fundamentals docs on developers.stellar.org (or the network dashboard)."
+        "notes": "Freshness item: grade a dated or attributed cadence. As of 2026-11-02, Mainnet closes ledgers about every 5 seconds (target 5000 ms; 5.0-second mean since Protocol 28 on 2026-09-16). CAP-0088 (Protocol 30; Mainnet vote scheduled 2026-11-23) adds millisecond-resolution close times but does not itself change the 5000 ms target; mentioning it is not wrong. The Stellar Stack and Validators pages now say about 5 seconds (verified 2026-11-09). Their earlier 5–7-second estimate matched samples before Protocol 28; the USDT0 launch still repeats it, tracked in sd-100. Accept either figure when the answer dates it or names its source. The answer does not need to run its own ledger sample. A 3–5-second figure is retired Docs wording and does not meet key fact 1. Trap is importing Bitcoin (10 min) or Ethereum (12s) block times.\nAlso good if the answer: Notes the close time is set by the proposing validator and recorded in the ledger header, and that SCP determines the agreed close time.\nGolden cites: The validators / fundamentals docs on developers.stellar.org (or the network dashboard)."
       },
       "tags": {
         "category": "protocol-core",
@@ -38401,6 +38415,18 @@
             "ref": "https://cryptoticker.io/en/stellar-protocol-30-bell-vote/",
             "note": "Perplexity search: 'The gaps between two ledgers do not get shorter for the moment; the five-second target stays.'",
             "observedAt": "2026-11-02"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-stack.md",
+            "observedAt": "2026-11-09",
+            "note": "The corrected about-five-seconds estimate includes the configurable-target and per-ledger caveat; the live Validators page agrees."
+          },
+          {
+            "class": "C",
+            "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=200",
+            "observedAt": "2026-11-09",
+            "note": "Fresh Mainnet sample 65392850–65393049 gives 199 five-second close-time deltas. This is a bounded observation, not a guarantee."
           }
         ],
         "corroboration": [
@@ -38670,22 +38696,19 @@
           }
         ],
         "verified": {
-          "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-04)",
+          "date": "2026-11-09",
+          "by": "Upstream handoff author reconciliation; independent live re-derivation by reviewer t38s; .agents/rounds/2026-11-09-upstream-handoffs.md",
           "evidence": [
-            "Verifier sample 2026-11-02 (class C): https://horizon.stellar.org/ledgers?order=desc&limit=200 — ledgers 65270052-65270251 (2026-11-02T16:14:04Z..16:30:39Z), 199 deltas all 5.0 s, protocol_version 29.",
-            "Proposer windows 2026-11-02 (class F): https://horizon.stellar.org/ledgers/64460000 and /ledgers/65269965 — mean 5.0000099 s over 809,965 ledgers since 2026-09-16; two more 199-delta windows from ledgers 64900001 and 65100001 were all 5.0 s.",
-            "Network setting 2026-11-02 (class F): stellar network settings --network mainnet (stellar-cli 28.1.0) — scp_timing.ledger_target_close_time_milliseconds 5000.",
-            "Class A 2026-11-02: https://stellar.org/blog/developers/introducing-bell-protocol-30-on-stellar — 'In September, Adapter (Protocol 28) brought mainnet ledger close times down from about 5.7 seconds to 5 seconds.' and 'November 23, 2026, 1700 UTC—Mainnet upgrade vote.'",
-            "Class B 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0088.md — 'Status: Implemented ... Protocol version: 30'; 'The existing whole-second `closeTime` field in `StellarValue` is unchanged'.",
-            "Class D 2026-11-02: Parallel web_search (kucoin.com) and Perplexity (cryptoticker.io, coinranking.com) — Mainnet vote 2026-11-23 17:00 UTC; no change to the block interval.",
-            "Class A 2026-10-27: https://developers.stellar.org/docs/learn/fundamentals/stellar-stack and https://developers.stellar.org/docs/validators still say 'every 5-7 seconds'.",
-            "Change: answer and notes date moved 2026-10-01 → 2026-11-02; notes gain a CAP-0088 grader caution (verifier-modified to 'does not itself change the 5000 ms target'). truth.asOf 2026-11-02; reverifyBy 2027-03-09 (after the P30 Mainnet vote).",
-            "Sibling sweep 2026-11-02: grep '5-7|5–7|~5 second|every 5 second|CAP-0088' over eval/qa/corpus/battery — q-asset-path-payment-ops, q-sor-doc-timestamping-manage-data, q-quickstart-manual-ledger-close, q-ti-tx-too-late-resubmit, q-edge-fresh-latest-protocol-version state no conflicting cadence; no other case cites CAP-0088; no contradiction.",
-            "No saved answer was re-judged and no paid QA ran."
+            "Class A 2026-11-09: https://developers.stellar.org/docs/learn/fundamentals/stellar-stack.md and https://developers.stellar.org/docs/validators.md both state about every 5 seconds, with a configurable-target caveat and no guarantee for each ledger.",
+            "Class C 2026-11-09: https://horizon.stellar.org/ledgers?order=desc&limit=200 yielded Mainnet ledgers 65392850–65393049, Protocol29, with 199 five-second consensus-close intervals and mean 5.000 seconds. The independent reviewer separately sampled 65392852–65393051 with the same result.",
+            "Class B 2026-11-09: https://github.com/stellar/stellar-docs/pull/2931 merged as 2301d2cde8c8397860f0a9cb0ca95ba545f25374; direct live reads, not the merge alone, establish deployment.",
+            "https://developers.stellar.org/launch/usdt0.md still says Stellar finalises in 5–7 seconds and lists 5–7s settlement. sd-100 preserves that narrower precision residual; sd-054's original two-page correction is deployed. No exact-five-second grading requirement was added.",
+            "Independent author/reviewer live checks agree; .agents/rounds/2026-11-09-upstream-handoffs.md. The dated 2026-11-02 cadence/settings observation and Protocol30 caution remain unchanged.",
+            "Sibling sweep 2026-11-09: only this golden contains the 5–7/5-7 cadence wording or 5000-ms target. q-asset-path-payment-ops, q-sor-doc-timestamping-manage-data, q-quickstart-manual-ledger-close and q-ti-tx-too-late-resubmit have no conflicting cadence claim."
           ],
           "rootCause": [
-            "freshness-drift"
+            "improvements/resolved.json (sd-054; two original pages corrected through PR2931)",
+            "improvements/stellar-docs/sd-100-usdt0-launch-ledger-cadence.md"
           ]
         },
         "origin": "raven-next q-protocol-ledger-close-time"
@@ -66911,7 +66934,7 @@
           "Do NOT call 518400 the Horizon executable default or expect reingested rows outside a nonzero trailing window to remain.",
           "Do NOT conflate RPC BACKFILL, Horizon reingestion, Core catchup, schema migration/state rebuild, Galexie export or provider policy, and do not gate on a fixed GB/day figure."
         ],
-        "notes": "GT-54 CORRECTION 2026-07-11: this case owns executable retention, RPC BACKFILL and Horizon reingestion mechanics. The full-history sibling owns component/query boundaries; neither may collapse retention-only behavior into a universal no-backfill claim. GT-54 CORRECTION 2026-07-11: current Horizon source defaults HISTORY_RETENTION_COUNT to 0/unlimited; 518400 is the official one-month recommendation, not the executable default (official pages called it the default until sd-028 was fixed on 2026-07-27). RPC v27.1.1 ships 120960 as a dated binary default, not a hard maximum or universal provider policy. The user's ~1.3 TB/30d figure was not made a required exact claim; exact DB size depends on version, filters, and workload.\nAlso good if the answer: Mentions changing Horizon ingestion filters also does not retroactively backfill matching historical data; a historical range ingestion is needed. | Caveats storage estimates like 1.3TB/30d as workload/version-dependent rather than a universal constant.\nGolden cites: Horizon ingestion storage/retention docs. | RPC retention/data-lake docs. | Horizon filtering docs if discussing retroactive filtering/backfill.\nGrade the version-dated executable semantics and product/method boundaries, not an exact database size, provider window, checkpoint floor, or backfill duration. The v25.1 150 GB/<3h/<3 GB figures are release notes, not requirements.\nRe-verified 2026-11-02: stellar-rpc v30.0.0 and stellar-horizon v30.0.0 keep these defaults and behaviors. Since sd-028 (2026-07-27) the official Horizon pages state the 0 default, so an answer need not report an official-prose conflict."
+        "notes": "GT-54 CORRECTION 2026-07-11: this case owns executable retention, RPC BACKFILL and Horizon reingestion mechanics. The full-history sibling owns component/query boundaries; neither may collapse retention-only behavior into a universal no-backfill claim. GT-54 CORRECTION 2026-07-11: current Horizon source defaults HISTORY_RETENTION_COUNT to 0/unlimited; 518400 is the official one-month recommendation, not the executable default (official pages called it the default until sd-028 was fixed on 2026-07-27). RPC v27.1.1 ships 120960 as a dated binary default, not a hard maximum or universal provider policy. The user's ~1.3 TB/30d figure was not made a required exact claim; exact DB size depends on version, filters, and workload.\nAlso good if the answer: Mentions changing Horizon ingestion filters also does not retroactively backfill matching historical data; a historical range ingestion is needed. | Caveats storage estimates like 1.3TB/30d as workload/version-dependent rather than a universal constant.\nGolden cites: Horizon ingestion storage/retention docs. | RPC retention/data-lake docs. | Horizon filtering docs if discussing retroactive filtering/backfill.\nGrade the version-dated executable semantics and product/method boundaries, not an exact database size, provider window, checkpoint floor, or backfill duration. The v25.1 150 GB/<3h/<3 GB figures are release notes, not requirements.\nRe-verified 2026-11-02: stellar-rpc v30.0.0 and stellar-horizon v30.0.0 keep these defaults and behaviors. Since sd-028 (2026-07-27) the official Horizon pages state the 0 default, so an answer need not report an official-prose conflict.\nDocumentation reconciliation 2026-11-09: the official RPC configuring page now explains empty-database startup at the archive tip and why retention alone adds no older ledgers. sd-102 preserves the RPC team's declined request to document the internal-gap corruption sanity check. BACKFILL can create a database from scratch; an empty database counts as gapless. Do not require an otherwise correct answer to recite that sanity check, or treat the owner's omission as a contradiction of the implementation."
       },
       "tags": {
         "category": "tooling-infra",
@@ -66989,6 +67012,18 @@
             "ref": "https://github.com/stellar/stellar-horizon/blob/v30.0.0/internal/flags.go",
             "note": "v30.0.0 (latest, 2026-10-21) history-retention-count FlagDefault uint(0), '0 = retain an unlimited number of ledgers'; flags.go, reap.go, db.go blobs identical to v27.0.0.",
             "observedAt": "2026-11-02"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/data/apis/rpc/admin-guide/configuring.md",
+            "observedAt": "2026-11-09",
+            "note": "The live Backfilling History on Startup section now documents archive-tip empty-DB startup and forward-only retention; the gap-check paragraph remains intentionally omitted."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-rpc/blob/v30.0.0/cmd/stellar-rpc/internal/ingest/backfill.go",
+            "observedAt": "2026-11-09",
+            "note": "RunBackfill calls verifyDbGapless; an empty DB is accepted, while internal ledger gaps return an error."
           }
         ],
         "corroboration": [
@@ -67110,36 +67145,19 @@
           }
         ],
         "verified": {
-          "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task infra-tooling)",
+          "date": "2026-11-09",
+          "by": "Upstream handoff author reconciliation; independent live re-derivation by reviewer t38s; .agents/rounds/2026-11-09-upstream-handoffs.md",
           "evidence": [
-            "Gospel change 2026-11-02: answer re-dates RPC to v30.0.0 and Horizon to v30.0.0 (both 'unchanged since' the old pins); the official-prose-conflict sentence now says current docs agree; keyFacts[0] drops the v27.1.1 pin; keyFacts[4] drops the docs-conflict requirement; notes append a dated re-verification.",
-            "Live B 2026-11-02: https://github.com/stellar/stellar-rpc/blob/v30.0.0/cmd/stellar-rpc/internal/config/options.go — 'Name: \"history-retention-window\" ... DefaultValue: uint32(SevenDayOfLedgers)'; 'Name: \"backfill\" ... DefaultValue: false'; 'Name: \"serve-ledgers-from-datastore\" ... DefaultValue: false'",
-            "Live B 2026-11-02: gh api repos/stellar/stellar-rpc/releases and repos/stellar/stellar-horizon/releases — 'v30.0.0 2026-10-21T06:07:32Z prerelease=false (latest)' and 'v30.0.0 2026-10-21T08:38:20Z prerelease=false (latest)'",
-            "Live B 2026-11-02: https://github.com/stellar/stellar-rpc/compare/v27.1.1...v30.0.0 — backfill.go and service.go changed for performance only; BACKFILL still errors without serve-ledgers-from-datastore; get_ledgers.go unchanged",
-            "Live B 2026-11-02: https://github.com/stellar/stellar-horizon/blob/v30.0.0/internal/flags.go — 'FlagDefault: uint(0) ... (0 = retain an unlimited number of ledgers)'; flags.go, reap.go, db.go blob SHAs equal v27.0.0",
-            "Live A 2026-11-02: https://developers.stellar.org/docs/data/apis/horizon/admin-guide/configuring — 'By default (`HISTORY_RETENTION_COUNT=0`), Horizon retains all ingested history and never purges it. ... To enact the recommended sliding window of one month, set this to 518400'",
-            "Live A 2026-11-02: https://developers.stellar.org/docs/data/apis/horizon/admin-guide/ingestion — 'Horizon's default is `HISTORY_RETENTION_COUNT=0`, which retains all history and never purges ingested data.'",
-            "Live E 2026-11-02T16:41:42Z: Raven stellarDocs.search_docs -> https://developers.stellar.org/docs/data/apis/rpc/admin-guide/configuring#backfilling-history-on-startup — 'BACKFILL also requires datastore serving. Set SERVE_LEDGERS_FROM_DATASTORE = true.'",
-            "Live D 2026-11-02: Perplexity search -> RPC configuring docs and stellar-rpc releases — 'defaults to `false`. ... The default is `120960` ledgers, which is about 7 days.'",
-            "Sibling sweep 2026-11-02: q-infra-rpc-methods-list, q-infra-rpc-provider-archive-tier, q-crp-export-tx-history-taxes, q-ti-block-explorer-basics checked; none pins RPC v27.1.1 or Horizon v27.0.0 defaults against this case; no contradiction.",
-            "Pass 2 live A 2026-11-02T17:36Z: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents -- 'configured by a single history-retention-window setting with a stock default of 120960 ledgers (about 7 days, depending on ledger cadence)'; no '24 hours'/'24-hour'/'24h' text (0 matches).",
-            "Pass 2 live A 2026-11-02: https://developers.stellar.org/docs/data/apis/horizon/admin-guide/ingestion -- 'we recommend limiting historical retention of ingested data to a sliding window of 1 month ( HISTORY_RETENTION_COUNT=518400 ). Note that you must set this explicitly: Horizon's default is HISTORY_RETENTION_COUNT=0 , which retains all history'.",
-            "Pass 2 live A 2026-11-02: https://developers.stellar.org/docs/data/apis/rpc/admin-guide/configuring -- 'Backfilling History on Startup Set BACKFILL = true ...'; 'BACKFILL also requires datastore serving. Set SERVE_LEDGERS_FROM_DATASTORE = true .'",
-            "Pass 2 live B 2026-11-02: stellar/stellar-docs main 7cb5e8a4 -- openrpc getEvents.json 'single history-retention-window setting with a stock default of 120960 ledgers' (0 matches for 24 hour); configuring.mdx line 293 '`BACKFILL` also requires datastore serving'; horizon ingestion.mdx line 22 states the 0 default.",
-            "Repo record: improvements/resolved.json sd-023 and sd-028 resolved 2026-07-27, sd-029 resolved 2026-09-21 (PR #2789). All three are fixed upstream and the live pages no longer carry the old wording, so the cached-copy partial-cap caution expired; removed. sd-053 (open) covers docs omissions of the fresh-start and gap-check facts; it creates no canonical-page conflict with the golden, so no caution replaces the removed one.",
-            "Pass 2 change: keyFacts[4] re-formed into one predicate ('States ..., with 518400 only the recommended one-month window'); meaning unchanged.",
-            "Pass 2 sibling sweep 2026-11-02: grep '518400|HISTORY_RETENTION_WINDOW|cached or older cop' over the battery -> q-infra-rpc-methods-list (same 120960 window, no caution), q-ti-custodial-account-generation-c-address (its own sd-013 caution, removed in this pass); no contradiction.",
-            "Pass 2 independent verifier (task infra-tooling, .agents/rounds/2026-11-02-golden-audit.md) modify golden.notes: Accept the removal of the cached-copy caution: all three findings are resolved upstream and the live pages and Docs index carry the fixed wording. Modification: the retained GT-54 sentence still said '518400 is conflicting official recommendation/default prose', which the live Horizon pages no longer support and which contradicts the notes' last line; the newText makes it historical and dated. Residual, non-blocking: the APIs overview (developers.stellar.org/docs/data/apis#rpc) still says 'recent transaction queries (within a seven-day retention window)'. Quoting that phrase does not fire avoid[1], which targets a hard-maximum claim, so no new caution is needed. Also, the removed note dated the sd-029 fix 2026-09-14, but resolved.json says 2026-09-21; the removal makes that moot.",
-            "Pass 2 independent verifier (task infra-tooling, .agents/rounds/2026-11-02-golden-audit.md) accept golden.keyFacts[4]: 88 characters, one predicate under the lint split (no and/but/while/semicolon), same content: Horizon 0/unlimited default, 518400 only the recommended window. Confirmed by A configuring and ingestion pages and the E index.",
-            "Pass 2 independent verifier (task infra-tooling, .agents/rounds/2026-11-02-golden-audit.md) accept truth.verified.rootCause[+] (expired-caution entry): Verified expiry: all three findings resolved upstream and the live pages carry the fixed wording (quotes above).",
-            "Pass 2 independent verifier (task infra-tooling, .agents/rounds/2026-11-02-golden-audit.md) accept truth.verified.rootCause[+] (keyFacts[4] multi-predicate entry): Accurate: the old keyFacts[4] joined two predicates with a semicolon."
+            "Class A 2026-11-09: https://developers.stellar.org/docs/data/apis/rpc/admin-guide/configuring.md now states that ordinary empty-database startup begins at the latest history archive ledger and that a larger HISTORY_RETENTION_WINDOW alone adds no older ledgers.",
+            "Class B 2026-11-09: https://github.com/stellar/stellar-rpc/blob/v30.0.0/cmd/stellar-rpc/internal/ingest/service.go lines 182–191 uses root.CurrentLedger on db.ErrEmptyDB. https://github.com/stellar/stellar-rpc/blob/v30.0.0/cmd/stellar-rpc/internal/ingest/backfill.go lines 245–264 accepts empty DB and rejects internal gaps.",
+            "Owner scope decision: Shaptic explicitly declined documenting the corruption sanity check in https://github.com/stellar/stellar-docs/pull/2899#discussion_r4516284001 and approved the final patch. This does not reverse the runtime fact or require an existing database. sd-102 preserves the declined half of sd-053; the startup half is deployed.",
+            "The former observation that sd-053 covers two open documentation omissions is superseded. The historical sd-023/sd-028/sd-029 resolved receipts remain unchanged, and no expired canonical-page cap is restored.",
+            "Independent author/reviewer source reads agree on the shipped startup statement and intentional gap-check omission; .agents/rounds/2026-11-09-upstream-handoffs.md. Dated 2026-11-02 RPC/Horizon defaults were not changed by this documentation reconciliation.",
+            "Sibling sweep 2026-11-09: q-ti-self-host-core-rpc-full-history, q-infra-rpc-methods-list, q-soroban-event-indexing-design and q-tool-greenfield-indexer-prior-art-preflight keep retained-data/provider and indexing boundaries distinct. None claims larger retention alone recreates rows or requires an existing DB for BACKFILL; no contradiction."
           ],
           "rootCause": [
-            "freshness-drift",
-            "Upstream docs fix sd-028 (improvements/resolved.json, fixed 2026-07-27) removed the Horizon 518400 default wording, so the golden's official-prose-conflict sentence and keyFacts[4] went stale; RPC and Horizon v30.0.0 superseded the v27 version pins with unchanged defaults.",
-            "Expired caution: sd-023, sd-028, and sd-029 (improvements/resolved.json) are fixed upstream and the live pages carry the fixed wording, so the cached-copy grading caution no longer applies.",
-            "Eval-side authoring flaw: keyFacts[4] joined two predicates with a semicolon, which the multi-predicate key-fact lint flags."
+            "improvements/resolved.json (sd-053; startup half deployed through PR2899)",
+            "improvements/stellar-docs/sd-102-rpc-backfill-gap-check-declined.md"
           ]
         },
         "origin": "raven-next q-ti-self-host-retention-backfill"
@@ -69397,7 +69415,7 @@
         "stellarDocs.search_wallet_dapp_docs"
       ],
       "golden": {
-        "answer": "For a **wallet app**, start with Soneso's **`stellar_wallet_flutter_sdk`**. It provides wallet-oriented abstractions and SEP flows and builds on Soneso's **`stellar_flutter_sdk`**. Use `stellar_flutter_sdk` directly when you need the lower-level transaction/XDR, Horizon, Stellar RPC/Soroban, or SEP APIs without the wallet layer.\n\nBoth packages are **community-maintained by Soneso** and are documented by Stellar; neither is SDF-maintained merely because it appears in official docs. As of **2026-11-02**, pub.dev reported `stellar_wallet_flutter_sdk` **1.1.8** (published 2026-10-25, declaring `stellar_flutter_sdk: ^3.10.0`) and `stellar_flutter_sdk` **3.10.0** (published 2026-10-25); both packages release often. Recheck pub.dev and the Soneso release notes before pinning. Current Stellar wallet-tutorial snippets still show older dependency ranges and are tracked in sd-032, so resolve the current package graph rather than copying those versions blindly.\n\nChoose between the wallet layer and general SDK by required abstractions and perform ordinary dependency, maintenance, release, and security due diligence; there is no supported blanket claim that another language SDK is inherently safer for banking flows.",
+        "answer": "For a **wallet app**, start with Soneso's **`stellar_wallet_flutter_sdk`**. It provides wallet-oriented abstractions and SEP flows and builds on Soneso's **`stellar_flutter_sdk`**. Use `stellar_flutter_sdk` directly when you need the lower-level transaction/XDR, Horizon, Stellar RPC/Soroban, or SEP APIs without the wallet layer.\n\nBoth packages are **community-maintained by Soneso** and are documented by Stellar; neither is SDF-maintained merely because it appears in official docs. As of **2026-11-02**, pub.dev reported `stellar_wallet_flutter_sdk` **1.1.8** (published 2026-10-25, declaring `stellar_flutter_sdk: ^3.10.0`) and `stellar_flutter_sdk` **3.10.0** (published 2026-10-25); both packages release often. Recheck pub.dev and the Soneso release notes before pinning. As of **2026-11-09**, the official wallet tutorial uses `flutter pub add stellar_wallet_flutter_sdk stellar_flutter_sdk`, allowing the resolver to choose compatible dependencies.\n\nChoose between the wallet layer and general SDK by required abstractions and perform ordinary dependency, maintenance, release, and security due diligence; there is no supported blanket claim that another language SDK is inherently safer for banking flows.",
         "keyFacts": [
           "Recommends `stellar_wallet_flutter_sdk` for wallet-specific flows.",
           "Identifies `stellar_flutter_sdk` as the general lower-level dependency/layer.",
@@ -69408,9 +69426,9 @@
         "avoid": [
           "Do NOT conflate the wallet wrapper with the general protocol SDK or answer a wallet-layer question with only `stellar_flutter_sdk`.",
           "Do NOT call either package SDF-maintained because official docs list it, or name a nonexistent package.",
-          "Do NOT freeze versions, copy the stale tutorial pair blindly, or assert an unsupported comparative safety ranking among language SDKs."
+          "Do NOT freeze versions or assert an unsupported comparative safety ranking among language SDKs."
         ],
-        "notes": "Verified against the client-SDKs page: the Flutter SDK is stellar_flutter_sdk, maintained by the community developer Soneso (NOT SDF). Soneso also maintains the iOS/macOS, Kotlin Multiplatform, and PHP SDKs. Maintainer tier is the load-bearing nuance.\nAlso good if the answer: Soneso also maintains the iOS/macOS, Kotlin Multiplatform, and PHP SDKs in the same family.\nGolden cites: developers.stellar.org client-sdks page or the Soneso/stellar_flutter_sdk repo.\nGT-55 CORRECTION 2026-07-11: a wallet answer must distinguish the Soneso wallet wrapper from the underlying general SDK. Versions are dated, community recognition is not SDF maintenance, and unsupported language-tier safety rankings are not rewarded. sd-032 tracks the stale official tutorial pair.\nAccurately quoting the canonical Stellar Docs page on the Flutter tutorial pair as `stellar_wallet_flutter_sdk: ^1.0.6` with `stellar_flutter_sdk: ^2.1.3` is not a wrong claim while sd-032 stands; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
+        "notes": "Verified against the client-SDKs page: the Flutter SDK is stellar_flutter_sdk, maintained by the community developer Soneso (NOT SDF). Soneso also maintains the iOS/macOS, Kotlin Multiplatform, and PHP SDKs. Maintainer tier is the load-bearing nuance.\nAlso good if the answer: Soneso also maintains the iOS/macOS, Kotlin Multiplatform, and PHP SDKs in the same family.\nGolden cites: developers.stellar.org client-sdks page or the Soneso/stellar_flutter_sdk repo.\nGT-55 CORRECTION 2026-07-11: a wallet answer must distinguish the Soneso wallet wrapper from the underlying general SDK. Versions are dated, community recognition is not SDF maintenance, and unsupported language-tier safety rankings are not rewarded.\nDocumentation reconciliation 2026-11-09: the live wallet tutorial now uses resolver-managed installation. The former literal-pin grading caution has expired; retain the wallet/general SDK distinction and Soneso maintenance attribution."
       },
       "tags": {
         "category": "tooling-infra",
@@ -69528,6 +69546,18 @@
             "ref": "https://pub.dev/packages/stellar_wallet_flutter_sdk/changelog (via Parallel web_search)",
             "note": "1.1.8 25.Oct.2026. * update to stellar_flutter_sdk 3.10.0",
             "observedAt": "2026-11-02"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/apps/wallet/intro.md",
+            "observedAt": "2026-11-09",
+            "note": "The served Flutter installation is flutter pub add stellar_wallet_flutter_sdk stellar_flutter_sdk; the old ^1.0.6 / ^2.1.3 pair is absent."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-docs/blob/30d38a2f1474cd4be49bd7c208247f7e95d7155f/snippets/wallet/dart/install.mdx",
+            "observedAt": "2026-11-09",
+            "note": "The merged source uses the same resolver-managed install command."
           }
         ],
         "corroboration": [
@@ -69618,34 +69648,17 @@
           }
         ],
         "verified": {
-          "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-05)",
+          "date": "2026-11-09",
+          "by": "Upstream handoff author reconciliation; independent live re-derivation by reviewer t38s; .agents/rounds/2026-11-09-upstream-handoffs.md",
           "evidence": [
-            "D: Perplexity search -> https://pub.dev/packages/stellar_wallet_flutter_sdk — \"stellar_wallet_flutter_sdk 1.1.8 ... Latest stable release: dependencies: stellar_wallet_flutter_sdk: ^1.1.8 stellar_flutter_sdk: ^3.10.0\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[0..1]",
-            "C: https://pub.dev/api/packages/stellar_wallet_flutter_sdk — \"latest 1.1.8 published 2026-10-25T19:59:19Z; dependencies.stellar_flutter_sdk ^3.10.0; versions 1.1.3 (2026-06-24), 1.1.4 (2026-08-25), 1.1.5, 1.1.6, 1.1.7 (2026-10-16), 1.1.8\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[0..1]",
-            "A: https://developers.stellar.org/docs/tools/sdks/client-sdks — \"The `stellar-flutter-sdk` is an open source Stellar SDK for Flutter developers. It provides APIs to build transactions and connect to Horizon ... deploy and invoke Soroban smart contracts\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[0..1]",
-            "A: https://developers.stellar.org/docs/tools/sdks/client-sdks — \"Flutter SDK ... Maintained by a dedicated community developer. ... The Flutter Stellar SDK is maintained by dedicated community developer, Soneso.\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[2]",
-            "B: https://api.github.com/repos/Soneso/stellar_wallet_flutter_sdk — \"pushed_at 2026-10-25T19:59:24Z, archived false\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[2]",
-            "C: https://pub.dev/api/packages/stellar_wallet_flutter_sdk — \"latest 1.1.8 published 2026-10-25T19:59:19Z; dependencies.stellar_flutter_sdk ^3.10.0; versions 1.1.3 (2026-06-24), 1.1.4 (2026-08-25), 1.1.5, 1.1.6, 1.1.7 (2026-10-16), 1.1.8\" (observedAt 2026-11-02) → contradicted: golden.keyFacts[3] / golden.answer",
-            "C: https://pub.dev/api/packages/stellar_flutter_sdk — \"latest 3.10.0 published 2026-10-25T09:15:14Z; 3.3.0 (2026-07-13) ... 3.9.0 (2026-10-16), 3.10.0\" (observedAt 2026-11-02) → contradicted: golden.keyFacts[3] / golden.answer",
-            "D: Perplexity search -> https://pub.dev/packages/stellar_wallet_flutter_sdk — \"stellar_wallet_flutter_sdk 1.1.8 ... Latest stable release: dependencies: stellar_wallet_flutter_sdk: ^1.1.8 stellar_flutter_sdk: ^3.10.0\" (observedAt 2026-11-02) → contradicted: golden.keyFacts[3] / golden.answer",
-            "B: https://api.github.com/repos/Soneso/stellar_wallet_flutter_sdk — \"pushed_at 2026-10-25T19:59:24Z, archived false\" (observedAt 2026-11-02) → contradicted: golden.keyFacts[3] / golden.answer",
-            "B: https://github.com/stellar/stellar-docs/blob/main/snippets/wallet/dart/install.mdx (main de385430; file last commit 700ed32d 2026-10-22) — \"stellar_wallet_flutter_sdk: ^1.0.6\nstellar_flutter_sdk: ^2.1.3\" (observedAt 2026-11-02) → confirmed-as-of: golden.answer / golden.notes",
-            "D: Perplexity search -> https://developers.stellar.org/docs/build/apps/wallet/intro (date 2026-10-22) — \"stellar_wallet_flutter_sdk: ^1.0.6 stellar_flutter_sdk: ^2.1.3\" (observedAt 2026-11-02) → confirmed-as-of: golden.answer / golden.notes",
-            "B: https://github.com/stellar/stellar-docs/issues/2606 — \"state open, updated 2026-08-04\" (observedAt 2026-11-02) → confirmed-as-of: golden.answer / golden.notes",
-            "A: https://developers.stellar.org/docs/tools/sdks/client-sdks — \"Maintained by a dedicated community developer.\" (observedAt 2026-11-02) → confirmed: golden.avoid[0..2]",
-            "Verifier (accept golden.answer) C: https://pub.dev/api/packages/stellar_wallet_flutter_sdk — \"latest 1.1.8 published 2026-10-25T19:59:19Z; pubspec dependencies stellar_flutter_sdk: ^3.10.0\" (observedAt 2026-11-02)",
-            "Verifier (accept golden.answer) C: https://pub.dev/api/packages/stellar_flutter_sdk — \"latest 3.10.0 published 2026-10-25T09:15:14Z\" (observedAt 2026-11-02)",
-            "Verifier (accept golden.answer) B: https://api.github.com/repos/Soneso/stellar_wallet_flutter_sdk/releases — \"v1.1.8 2026-10-25T19:58:45Z; v1.1.7 2026-10-16\" (observedAt 2026-11-02)",
-            "Verifier (accept golden.answer) B: https://api.github.com/repos/Soneso/stellar_flutter_sdk/releases — \"3.10.0 2026-10-25T09:13:40Z; 3.9.0 2026-10-16\" (observedAt 2026-11-02)",
-            "Verifier (accept golden.answer) B: https://raw.githubusercontent.com/Soneso/stellar_wallet_flutter_sdk/v1.1.8/pubspec.yaml — \"version: 1.1.8 ... stellar_flutter_sdk: ^3.10.0\" (observedAt 2026-11-02)",
-            "Verifier (accept golden.answer) D: https://pub.dev/packages/stellar_wallet_flutter_sdk/changelog (via Parallel web_search) — \"1.1.8 25.Oct.2026. * update to stellar_flutter_sdk 3.10.0\" (observedAt 2026-11-02)",
-            "Verifier (accept golden.keyFacts[3]) C: https://pub.dev/api/packages/stellar_wallet_flutter_sdk — \"1.1.8 2026-10-25\" (observedAt 2026-11-02)",
-            "Verifier (accept golden.keyFacts[3]) B: https://api.github.com/repos/Soneso/stellar_flutter_sdk/releases — \"3.10.0 2026-10-25\" (observedAt 2026-11-02)",
-            "Sibling sweep 2026-11-02: q-tool-wallets-comparison, q-sep53-message-signing; grep 1.1.3|3.2.1 + flutter over battery → only this case pins those versions; q-tool-wallets-comparison, q-sep53-message-signing carry no conflicting version; no contradiction."
+            "Class A 2026-11-09: https://developers.stellar.org/docs/build/apps/wallet/intro.md embeds flutter pub add stellar_wallet_flutter_sdk stellar_flutter_sdk, with neither old pin. Class B: https://github.com/stellar/stellar-docs/blob/30d38a2f1474cd4be49bd7c208247f7e95d7155f/snippets/wallet/dart/install.mdx agrees.",
+            "Class C 2026-11-09: https://pub.dev/api/packages/stellar_wallet_flutter_sdk reports 1.1.8 with stellar_flutter_sdk ^3.10.0; https://pub.dev/api/packages/stellar_flutter_sdk reports 3.10.0. The dated 2026-11-02 version observation remains valid; no Flutter resolver execution is claimed.",
+            "sd-032 resolution: the deployed install correction removes the old constraint/backtracking trigger, so the stale-current sentence and dependent partial cap are removed. The predecessor receipt belongs in improvements/resolved.json.",
+            "Independent reviewer t38s freshly fetched the page, moved snippet source and both registry APIs before reading the author report, and reached the same fixed verdict; .agents/rounds/2026-11-09-upstream-handoffs.md.",
+            "Sibling sweep 2026-11-09: only this owned golden names stellar_wallet_flutter_sdk or stellar_flutter_sdk. q-tool-wallets-comparison and q-sep53-message-signing retain their different wallet/signing scopes; no conflicting package version or maintenance attribution was found."
           ],
           "rootCause": [
-            "freshness-drift"
+            "improvements/resolved.json (sd-032; deployed tutorial dependency correction, PR2898)"
           ]
         },
         "origin": "raven-next q-tool-flutter-mobile-sdk"

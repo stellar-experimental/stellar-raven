@@ -1,10 +1,11 @@
 ---
 id: sd-088
 service: stellar-docs
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-11-03
 upstreamTitle: Show consensus-value members beneath scpValue in the Ledgers page
 evidence:
+  - "2026-11-09: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/ledgers.md nests txSetHash, closeTime and upgrades under `scpValue: StellarValue`, says they are not direct header fields, and scopes millisecond close time to Protocol 30 (CAP-88). This matches stellar-xdr v28.0 and v30.0. Resolving PR: https://github.com/stellar/stellar-docs/pull/3050. Independent recheck: Codex frontier (gpt-6-astra, high)."
   - "Canonical owner: stellar/stellar-docs at 85d2d1b8e7a4451b7a6af0931f587ce73109b816. Edit docs/learn/fundamentals/stellar-data-structures/ledgers.mdx. Source SHA-256: bc741e2f6a0e20b0fdb50050598b71bef854bf4271d29e187051f3102c04883f."
   - "The source and live page place transaction-set hash, close time, and upgrades at the same heading level as direct header fields. The SCP paragraph describes storage here and in the following three fields."
   - "Official XDR v28.0 at 9c9c145953e80990d6ff1ae3a6a973a0ce6d0694 and v30.0 at 4f524bbac80c781c06e4fb5fc93a2d0d331d6705 place these members inside StellarValue, held by LedgerHeader.scpValue. The direct LedgerHeader definitions match with SHA-256 f42033fd3417e595a40521eb3efc41f464cac22a9cb3b50a8666335abecc2833."

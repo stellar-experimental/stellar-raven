@@ -1,10 +1,11 @@
 ---
 id: sd-062
 service: stellar-docs
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-11-02
 upstreamTitle: SDP Registration API reference still describes decommissioned Anchor Platform endpoints
 evidence:
+  - "2026-11-09: https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/api-reference/registration.md says SDP hosts the SEP-10 and SEP-24 endpoints itself and limits the separate Anchor Platform host to versions before 6.0.0; the four typos are gone and the bundled spec agrees. https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/troubleshooting.md lists SDP and TSS only. The SDP backend's stellar.toml handler builds both endpoints from the SDP base URL. Resolving PR: https://github.com/stellar/stellar-docs/pull/3010. Independent recheck: Codex frontier (gpt-6-astra, high)."
   - 2026-11-02T17:17:27Z GET https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/api-reference/registration returned HTTP 200 with "the wallet must authenticate and initiate a registration flow using the Anchor Platform Endpoints defined below. Note that these endpoints are hosted on a different host than the Stellar Disursement Platform."
   - stellar/stellar-docs main 5142b219d3ead7605cc1d9dd661582c653664ec5 docs/platforms/stellar-disbursement-platform/api-reference/registration.mdx lines 7 and 9, and the Registration tag description in openapi/stellar-disbursement-platform/main.yaml and bundled.yaml lines 68 and 70, carry the same paragraph
   - the same Registration tag already lists /sep10/auth, /sep24/info, and /sep24-interactive-deposit/* operations, added by stellar/stellar-docs#2150 (merged 2026-01-08), which kept the old tag description

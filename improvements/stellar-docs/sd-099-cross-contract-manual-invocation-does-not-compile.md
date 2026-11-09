@@ -1,10 +1,11 @@
 ---
 id: sd-099
 service: stellar-docs
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-11-06
 upstreamTitle: Fix the manual invocation example in the cross-contract guide
 evidence:
+  - "2026-11-09: https://developers.stellar.org/docs/build/guides/conventions/cross-contract.md shows the manual `env.invoke_contract` example with `&symbol_short!(\"add\")`, `into_val(&env)` arguments and the IntoVal import. The served snippet, extracted unchanged, passes `cargo check` against soroban-sdk 29.0.1. Resolving PR: https://github.com/stellar/stellar-docs/pull/3071. Independent recheck: Codex frontier (gpt-6-astra, high)."
   - "2026-11-06 approximately 18:06 UTC: GET https://developers.stellar.org/docs/build/guides/conventions/cross-contract.md serves the manual ContractB example with symbol_short!(\"add\") passed by value and two u32.to_val() calls. Page SHA-256 79c2edc6b031dfc5725f8e92efc954ae72149caad490684e9349f787286ae028."
   - "2026-11-06 source: https://github.com/stellar/stellar-docs/blob/22103ac670068f38fa0b77724bfe04ec1e447524/docs/build/guides/conventions/cross-contract.mdx has the same snippet. Repository head timestamp 2026-11-06T17:19:07Z; file SHA-256 e73adbc3a93e547623c533b98af227328bf5d207f94be301ed8ba1a3fe904669."
   - "2026-11-06 native cargo check --offline with rustc 1.93.0 and exact soroban-sdk pins 28.0.0 and 29.0.1: the complete manual snippet, with only no_std and SDK imports added, fails on both versions with E0308 (expected &Symbol, found Symbol) and two E0599 diagnostics (no u32.to_val method). Both corrected fixtures pass with exit 0."

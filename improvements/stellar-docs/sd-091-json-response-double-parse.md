@@ -1,10 +1,11 @@
 ---
 id: sd-091
 service: stellar-docs
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-11-03
 upstreamTitle: "Remove the second JSON parse from the simulation HTTP example"
 evidence:
+  - "2026-11-09: https://developers.stellar.org/docs/build/guides/transactions/simulateTransaction-Deep-Dive.md calls `response.json()` once and contains no `JSON.parse`. The served function ran against local fetch fixtures: success returns `result`, a JSON-RPC error throws its message, and a simulation `result.error` throws its message, each with one body read. No network simulation ran. Resolving PR: https://github.com/stellar/stellar-docs/pull/3053. Independent recheck: Codex frontier (gpt-6-astra, high)."
   - "2026-11-06 follow-up: https://github.com/stellar/stellar-docs/pull/3053 now handles result.error in its proposed patch, but remains CHANGES_REQUESTED/BLOCKED. The ordinary deployed function still double-parses result and throws for success, JSON-RPC error and simulation-error objects. Exact fixture and PR receipts: .agents/rounds/2026-11-06-remaining-sweep/docs.md."
   - "research/audits/2026-11-03-qa-followup/additional-source-findings.json (OC-JSON-PARSE; fresh source receipts, case/review/packet hashes, owner proof, and fixture results)."
   - "Current source: https://raw.githubusercontent.com/stellar/stellar-docs/85d2d1b8e7a4451b7a6af0931f587ce73109b816/docs/build/guides/transactions/simulateTransaction-Deep-Dive.mdx; SHA256 3d10b443ce150457aec5da83e274e1180bfa1e0c305db5f28f7c6983355a739d; Git blob cf3edbb514875b0ea72fd9dffaf13abed1546fec."

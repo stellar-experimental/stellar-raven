@@ -1,10 +1,11 @@
 ---
 id: sd-032
 service: stellar-docs
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-07-11
 upstreamTitle: Avoid stale incompatible Flutter wallet SDK version pins
 evidence:
+  - "2026-11-09: https://developers.stellar.org/docs/build/apps/wallet/intro.md now installs with `flutter pub add stellar_wallet_flutter_sdk stellar_flutter_sdk`; neither `^1.0.6` nor `^2.1.3` remains on the page. pub.dev reports stellar_wallet_flutter_sdk 1.1.8, which depends on stellar_flutter_sdk ^3.10.0, so the command no longer forces the stale pair. Flutter's resolver was not executed. Resolving PR: https://github.com/stellar/stellar-docs/pull/2898. Independent recheck: Codex frontier (gpt-6-astra, high)."
   - stellar/stellar-docs main commit 45770fa8 pins stellar_wallet_flutter_sdk ^1.0.6 and stellar_flutter_sdk ^2.1.3 in the English and Spanish wallet tutorial snippets
   - pub.dev API reported stellar_wallet_flutter_sdk 1.1.3 published 2026-06-24 with stellar_flutter_sdk ^3.2.0 as its dependency
   - pub.dev API reported stellar_flutter_sdk 3.2.1 published 2026-06-28
