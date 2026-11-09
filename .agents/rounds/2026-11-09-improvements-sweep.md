@@ -34,3 +34,64 @@ Coordinator: Claude Opus 5.5 (hc t2dn). Worktree `/private/tmp/claude-501/raven-
 | sw-lumenloop | t3br | Codex workhorse / `gpt-6.1-sol` / high | lumenloop |
 | sw-docs | t3bs | Codex workhorse / `gpt-6.1-sol` / high | stellar-docs, canonical-source, workers-ai-provider |
 | sw-skills | t3bt | Codex workhorse / `gpt-6.1-sol` / high | skills |
+| rv-fable | t3cb | Claude Fable / `claude-fable` / high | independent review: sk-039, sd-064 |
+| rv-astra | t3cc | Codex frontier / `gpt-6-astra` / high | independent review: Scout candidates and partials, sd-100 |
+| gold | t3cd | Codex workhorse / `gpt-6.1-sol` / high | golden cases and cross-references for retired Scout findings |
+| rv-gold | t3cg | Claude Fable / `claude-fable` / high | independent review of the golden edits |
+
+Reviewer selection: the coordinator (Claude Opus) and the authors (Codex workhorse) are out of the
+pool. Codex frontier took the Scout data review (dense analysis). Claude Fable took the skills,
+Docs and golden-truth review (product, documentation and grading taste). The golden edits cite the
+Astra review, so Fable reviewed them to keep that check independent.
+
+Lane reports and reviews are committed in
+[`research/audits/2026-11-09-improvements-sweep/`](../../research/audits/2026-11-09-improvements-sweep/).
+Raw JSON fetches (up to 26 MB) stayed local; the reports carry the exact URLs, timestamps and hashes.
+
+## Verdicts
+
+| Collection | Fixed and retired | Partial (kept) | Still reproduces | Inconclusive | Declined (unchanged) |
+|---|---|---|---|---|---|
+| stellar-light-scout (13) | sls-099, 100, 102, 112, 114 | sls-024, 029, 033, 101, 107, 111 | sls-115 | — | sls-039 |
+| lumenloop (37) | — | ll-006, 017, 020 | 30 others | ll-004, 022, 023, 024 | — |
+| stellar-docs (18) | sd-064, sd-100 | — | sd-005, 014, 035, 050, 059, 061, 070, 074, 077, 081, 101; sd-048 closed-unfixed | — | sd-004, 009, 096, 102 |
+| canonical-source (8) | — | — | cs-001, 004, 005, 006, 007, 009, 010 | — | cs-008 |
+| workers-ai-provider (1) | — | — | — | — | wai-001 |
+| skills (14) | sk-039 | — | 13 others | — | — |
+
+Every still-reproducing finding has a dated recurrence or evidence line. No new findings were
+filed and no successors were created.
+
+Decisions:
+
+- **Lumenloop partials (ll-006, 017, 020) keep their records.** Each residual is the unresolved part
+  of the original recommendation, and its open issue (no maintainer comment) already states it. A
+  successor would duplicate an open, untouched issue.
+- **ll-004** passes now (21 authenticated names, 18 anonymous) but was intermittent before; it stays
+  open until a second passing check on a later day. ll-022/023/024 keep their explicit uncertainty
+  (see the November 5 TODO entry).
+- **sd-048:** stellar-protocol#2010 closed as not planned by a stale bot, not by an owner decision.
+  CAP-0075 still lists degrees 3, 5, 7, 11 at line 78, and the author-owned PR2059 is open. The
+  status stays `reported-upstream`; it does not meet the `declined-upstream` bar.
+- **cs-010:** cloudflare/agents#2790 closed as not planned, but #2809 still tracks the same defect,
+  and the latest `agents` release still drops Anthropic thinking parts in the mocked-binding repro.
+- **sls-101, sls-107:** the issues closed on November 5 with partial deploys. The verification
+  results are posted on [1912](https://github.com/Stellar-Light/stellarlight/issues/1912#issuecomment-6751083543)
+  and [1900](https://github.com/Stellar-Light/stellarlight/issues/1900#issuecomment-6751084106).
+  The records stay active.
+- **sd-100:** maintainer bot PR3080 merged at 20:38Z, after the docs lane ran. The coordinator
+  rechecked the live page at 20:50Z, and Astra re-derived it before retirement.
+
+## Resolution comments
+
+Each comment was posted from the resolver dry run and read back byte for byte (author kalepail).
+
+| Finding | Comment |
+|---|---|
+| sls-099 | [stellarlight#1910](https://github.com/Stellar-Light/stellarlight/issues/1910#issuecomment-6751067795) |
+| sls-100 | [stellarlight#1911](https://github.com/Stellar-Light/stellarlight/issues/1911#issuecomment-6751068209) |
+| sls-102 | [stellarlight#1913](https://github.com/Stellar-Light/stellarlight/issues/1913#issuecomment-6751068643) |
+| sls-112 | [stellarlight#1904](https://github.com/Stellar-Light/stellarlight/issues/1904#issuecomment-6751069124) |
+| sls-114 | [stellarlight#1906](https://github.com/Stellar-Light/stellarlight/issues/1906#issuecomment-6751069547) |
+| sk-039 | [stellar-dev-skill#180](https://github.com/stellar/stellar-dev-skill/issues/180#issuecomment-6751069952), [#181](https://github.com/stellar/stellar-dev-skill/pull/181#issuecomment-6751070537), [stellar-raven#388](https://github.com/stellar-experimental/stellar-raven/issues/388#issuecomment-6751071061) |
+| sd-064 | [stellar-docs#2945](https://github.com/stellar/stellar-docs/pull/2945#issuecomment-6751071543) |

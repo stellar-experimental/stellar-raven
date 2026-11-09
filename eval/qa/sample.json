@@ -1,7 +1,7 @@
 {
   "$comment": "Deterministic stratified sample (N=30, by service) of the owned QA battery.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "038145269519e7a963698aa0a6c9133ec62be3865b1057893d330b1763600a51",
+  "corpusContentSha256": "e6663b2880bc0e33bce6257bda50394253691c476246ead5581eb4f5dd02955f",
   "counts": {
     "total": 30,
     "byCategory": {
@@ -980,7 +980,7 @@
           "Do NOT describe impermanent loss as a guaranteed permanent loss before comparing the LP position with holding and accounting for fees/incentives.",
           "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical."
         ],
-        "notes": "Do not preserve any APY/TVL number without a date. Phase 3 should re-check protocol UIs/DeFiLlama if a numeric yield/TVL claim appears. REVIEWED 2026-06-29: re-verified named LP/swap venues live on Scout — Soroswap (self-described first Soroban DEX/aggregator, Live), Aquarius (AMM/AQUA, Live), Phoenix (DeFi Hub AMM, PHO, Live); Scout said, and on 2026-11-02 still says, that Soroswap aggregates Soroswap/Phoenix/Aquarius liquidity (stale against the operator; sls-099). As of 2026-11-02, Soroswap's own supported-venues page lists Soroswap, Aquarius, SushiSwap V3, Comet, and SDEX, so do not require a Phoenix aggregation claim. No static APY/TVL numbers asserted in the gospel (risk-framed, source-gated) — kept that way. Stellar-docs SDEX/liquidity-pools source URL returns 200.\nAlso good if the answer: Explains withdrawal may depend on pool liquidity, protocol health, wallet support, lockups/incentive terms, and contract state. | Mentions comparing net returns after fees, slippage, incentives, and asset price exposure.\nGolden cites: Current protocol/project sources or Scout records for any named yield/liquidity claim.\nExpanded 2026-07-10. The answer must be operational and risk-specific, not merely a warning against yield promotion."
+        "notes": "Do not preserve any APY/TVL number without a date. Phase 3 should re-check protocol UIs/DeFiLlama if a numeric yield/TVL claim appears. REVIEWED 2026-06-29: re-verified named LP/swap venues live on Scout — Soroswap (self-described first Soroban DEX/aggregator, Live), Aquarius (AMM/AQUA, Live), Phoenix (DeFi Hub AMM, PHO, Live); Scout said on 2026-06-29 and still said on 2026-11-02 that Soroswap aggregates Soroswap/Phoenix/Aquarius liquidity (stale against the operator; sls-099). As of 2026-11-02, Soroswap's own supported-venues page lists Soroswap, Aquarius, SushiSwap V3, Comet, and SDEX, so do not require a Phoenix aggregation claim. No static APY/TVL numbers asserted in the gospel (risk-framed, source-gated) — kept that way. Stellar-docs SDEX/liquidity-pools source URL returns 200.\nAlso good if the answer: Explains withdrawal may depend on pool liquidity, protocol health, wallet support, lockups/incentive terms, and contract state. | Mentions comparing net returns after fees, slippage, incentives, and asset price exposure.\nGolden cites: Current protocol/project sources or Scout records for any named yield/liquidity claim.\nExpanded 2026-07-10. The answer must be operational and risk-specific, not merely a warning against yield promotion.\nRECHECK 2026-11-09: Scout now names Soroswap, Aquarius, SushiSwap V3 and Comet as Soroban API venues and SDEX as a separate classic path payment. Its Phoenix row distinguishes the Phoenix hop type from the API venue list. The operator venue page still omits Phoenix while the v3 interface defines Phoenix(PhoenixHop); code presence does not establish an active API venue. sls-099 is resolved (improvements/resolved.json); the earlier Scout quotes remain dated historical observations."
       },
       "tags": {
         "category": "defi-ecosystem",
@@ -1031,31 +1031,53 @@
                 "note": "verbatim legacy evidence descriptor imported at migration"
               }
             ]
+          },
+          {
+            "claim": "As of 2026-11-09, Scout Soroswap/Phoenix descriptions distinguish Soroban API venues, classic SDEX execution and the Phoenix hop type consistently with the operator documentation.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "C",
+                "ref": "https://stellarlight.xyz/api/projects/search?q=soroswap&limit=100",
+                "observedAt": "2026-11-09T20:47:04Z",
+                "note": "The Soroswap row now lists Soroswap AMM, Aquarius, SushiSwap V3 and Comet, with SDEX quoted as a separate classic path payment."
+              },
+              {
+                "class": "C",
+                "ref": "https://stellarlight.xyz/api/projects/search?q=phoenix&limit=100",
+                "observedAt": "2026-11-09T20:47:04Z",
+                "note": "The Phoenix row says its v3 hop type does not establish inclusion in the Soroswap Aggregator API venue list."
+              },
+              {
+                "class": "A",
+                "ref": "https://docs.soroswap.finance/aggregator/supported-amms.md",
+                "observedAt": "2026-11-09T20:47:04Z",
+                "note": "Published API venues remain soroswap, aqua, sushi, comet and sdex; SDEX executes as a classic path payment."
+              },
+              {
+                "class": "A",
+                "ref": "https://docs.soroswap.finance/aggregator/technical-reference/contracts/aggregator-v3.md",
+                "observedAt": "2026-11-09T20:47:04Z",
+                "note": "The interface still defines Phoenix(PhoenixHop). This does not establish live API routing through Phoenix."
+              }
+            ]
           }
         ],
         "verified": {
-          "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task defi-protocols)",
+          "date": "2026-11-09",
+          "by": "Retirement reconciliation lane (Codex); independent live reviewer: Codex frontier gpt-6-astra high (research/audits/2026-11-09-improvements-sweep/review-astra.md)",
           "evidence": [
-            "2026-11-02 [A] https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — \"The fee is 30 bps, which is equal to 0.30%. ... Pool shares are similar to other assets on Stellar but they cannot be transferred.\" (proposer claim, confirmed: Classic pools use LiquidityPoolDeposit/Withdraw, non-transferable pool shares, protocol fee; Soroban venues are contract-defined.)",
-            "2026-11-02 [E] Raven stellarDocs.search_docs 'LiquidityPoolDeposit pool shares fee 0.3%' — \"liquidity-on-stellar-sdex-liquidity-pools#liquidity-pool-participation: withdrawing from a liquidity pool with LiquidityPoolWithdrawOp\" (proposer claim, confirmed: Classic pools use LiquidityPoolDeposit/Withdraw, non-transferable pool shares, protocol fee; Soroban venues are contract-defined.)",
-            "2026-11-02 [B] https://github.com/stellar/stellar-xdr/blob/main/Stellar-transaction.x — \"LiquidityPoolDepositOp / LiquidityPoolWithdrawOp definitions\" (proposer claim, confirmed: Classic pools use LiquidityPoolDeposit/Withdraw, non-transferable pool shares, protocol fee; Soroban venues are contract-defined.)",
-            "2026-11-02 [D] https://defillama.com/chain/stellar — \"TVL values move daily (e.g. Blend $131.34m -20.69% 30d as of Oct 31, 2026)\" (proposer claim, confirmed: Risk framing (IL definition, no guaranteed APY, roster not permanent).)",
-            "Pass 1 (batch defi-ecosystem-03) made no gospel change: proposer verdict 'unchanged'; every answer, keyFact, and avoid claim was re-checked against the sources above on 2026-11-02 (proposer only; the verifier reviewed proposed changes only).",
-            "Sibling sweep 2026-11-02: q-asset-sdex-vs-amm, q-asset-amm-fee-reserve; no gospel change here. The notes' 2026-06-29 Scout line that Soroswap aggregates Phoenix is dated; Soroswap's 2026-11-02 venue list omits Phoenix (see q-defi-soroswap-what-is).",
-            "Pass 2 (.agents/rounds/2026-11-02-golden-audit.md, task defi-protocols) evidence follows; pass-1 lines above remain the provenance for the pass-1 diff.",
-            "2026-11-02 [C] https://stellarlight.xyz/api/projects/search?q=soroswap&limit=3 — \"with an aggregator that routes trades across Soroban AMMs (Soroswap, Phoenix, Aquarius) for best on-chain execution\" (pass-2 verifier modify on golden.notes)",
-            "2026-11-02 [C] https://stellarlight.xyz/api/projects/search?q=phoenix&limit=3 — \"One of the AMM liquidity sources aggregated by Soroswap.\" (pass-2 verifier modify on golden.notes)",
-            "2026-11-02 [A] https://docs.soroswap.finance/aggregator/supported-amms.md — \"The venues the Soroswap Aggregator API routes through and their protocols values: soroswap, aqua (Aquarius), sushi (SushiSwap V3), comet and sdex (the Stellar classic DEX, quoted only when listed)\" (pass-2 verifier modify on golden.notes)",
-            "2026-11-02 [C] https://stellarlight.xyz/api/projects/search?q=soroswap&limit=3 — \"with an aggregator that routes trades across Soroban AMMs (Soroswap, Phoenix, Aquarius) for best on-chain execution\" (pass-2 verifier accept on truth.verified.rootCause)",
-            "2026-11-02 [A] https://docs.soroswap.finance/aggregator/supported-amms.md — \"The venues the Soroswap Aggregator API routes through and their protocols values: soroswap, aqua (Aquarius), sushi (SushiSwap V3), comet and sdex (the Stellar classic DEX, quoted only when listed)\" (pass-2 verifier accept on truth.verified.rootCause)",
-            "Pass 2 change: golden.notes now say Soroswap is 'self-described' first (cluster-014 attribution), record that Scout said on 2026-06-29 and still says on 2026-11-02 that Soroswap aggregates Soroswap/Phoenix/Aquarius (stale against the operator; sls-099), add the 2026-11-02 operator venue list (Soroswap, Aquarius, SushiSwap V3, Comet, SDEX), and state that a Phoenix aggregation claim is not required. That non-requirement names the verified ambiguity: Aggregator v3 defines a Phoenix hop while the API venue list omits Phoenix. No cap; answer, keyFacts, and avoid unchanged; truth.asOf kept 2026-07-10.",
-            "Pass 2 sibling sweep 2026-11-02: q-defi-soroswap-what-is and q-defi-phoenix-what-is (same venue list and Phoenix ambiguity), q-asset-sdex-vs-amm, q-asset-amm-fee-reserve (no Soroswap venue claim); no contradiction.",
-            "Upstream pointer (pass 3, 2026-11-02): improvements/stellar-light-scout/sls-099-soroswap-aggregator-venue-list-stale.md now lists this case in its Golden consumers line."
+            "C https://stellarlight.xyz/api/projects/search?q=soroswap&limit=100 (observedAt 2026-11-09T20:47:04Z): The Soroswap row now lists Soroswap AMM, Aquarius, SushiSwap V3 and Comet, with SDEX quoted as a separate classic path payment.",
+            "C https://stellarlight.xyz/api/projects/search?q=phoenix&limit=100 (observedAt 2026-11-09T20:47:04Z): The Phoenix row says its v3 hop type does not establish inclusion in the Soroswap Aggregator API venue list.",
+            "A https://docs.soroswap.finance/aggregator/supported-amms.md (observedAt 2026-11-09T20:47:04Z): Published API venues remain soroswap, aqua, sushi, comet and sdex; SDEX executes as a classic path payment.",
+            "A https://docs.soroswap.finance/aggregator/technical-reference/contracts/aggregator-v3.md (observedAt 2026-11-09T20:47:04Z): The interface still defines Phoenix(PhoenixHop). This does not establish live API routing through Phoenix.",
+            "sls-099 resolved: improvements/resolved.json entry sls-099 replaces the active finding pointer. Historical 2026-06-22/2026-06-29/2026-11-02 Scout quotes and earlier contract snapshots remain historical; the live descriptions no longer make those stale venue claims.",
+            "Independent live re-derivation: reviewer Codex frontier gpt-6-astra high, research/audits/2026-11-09-improvements-sweep/review-astra.md, sls-099; separately fetched both Scout searches and both operator pages at 2026-11-09T20:40Z before reading the author report.",
+            "Sibling sweep 2026-11-09: all battery matches for Soroswap, Phoenix, Hana, hana.money and hanawallet.io were inspected. q-defi-phoenix-what-is, q-defi-soroswap-what-is, q-defi-soroswap-vs-stellarx and q-defi-provide-liquidity-impermanent-loss share the dated venue correction; q-eco-dex-saturation, q-eco-defi-market-map, q-eco-defi-projects-discovery, q-gap-semantic-similar-projects, q-defi-named-newer-protocols, q-eco-most-active-defi-projects, q-defi-liquid-staking-whitespace and q-edge-factcheck-soroswap-first-amm do not require Phoenix in the current Soroswap API venue set. q-eco-stellar-wallets-list, q-edge-ambig-best-wallet and q-tool-wallets-comparison carry no stale Hana-domain claim. Other matches concern asset listings, contract access, funding history or unrelated project discovery. No contradiction; answer, keyFacts and avoid are unchanged in every edited case."
           ],
           "rootCause": [
             "freshness-drift",
-            "improvements/stellar-light-scout/sls-099-soroswap-aggregator-venue-list-stale.md"
+            "improvements/resolved.json entry sls-099 (Scout Soroswap/Phoenix venue correction)"
           ]
         },
         "origin": "raven-next q-defi-provide-liquidity-impermanent-loss"
@@ -2289,7 +2311,7 @@
         "stellarDocs.search_protocol_concepts_docs"
       ],
       "golden": {
-        "answer": "As of **2026-11-02**, Stellar Mainnet closes a ledger about every **5 seconds**. The network setting `ledger_target_close_time_milliseconds` is 5000. Every delta in a 199-ledger sample on 2026-11-02 was 5 seconds, and the mean has been 5.0 seconds since Protocol 28 activated on 2026-09-16. Before that upgrade, multi-ledger samples measured 5–7 seconds. By **2026-11-09**, the Stellar Stack and Validators pages say about 5 seconds and distinguish the configurable target from an individual close; the USDT0 launch page retains an older 5–7-second estimate (sd-100). CAP-0070 made the target a validator-voted network setting, so a configured target is not a permanent constant and is not a guarantee for every observed close. Ledger `closeTime` is consensus-agreed and monotonic but has bounded wall-clock skew semantics. Date a cadence figure or name its source.",
+        "answer": "As of **2026-11-02**, Stellar Mainnet closes a ledger about every **5 seconds**. The network setting `ledger_target_close_time_milliseconds` is 5000. Every delta in a 199-ledger sample on 2026-11-02 was 5 seconds, and the mean has been 5.0 seconds since Protocol 28 activated on 2026-09-16. Before that upgrade, multi-ledger samples measured 5–7 seconds. By **2026-11-09**, the Stellar Stack and Validators pages say about 5 seconds and distinguish the configurable target from an individual close. The USDT0 launch page repeated the older 5–7-second estimate until it was corrected to about 5 seconds on 2026-11-09. CAP-0070 made the target a validator-voted network setting, so a configured target is not a permanent constant and is not a guarantee for every observed close. Ledger `closeTime` is consensus-agreed and monotonic but has bounded wall-clock skew semantics. Date a cadence figure or name its source.",
         "keyFacts": [
           "States about 5 seconds, or the documented 5–7 seconds, with a date or source.",
           "Explains configurable target versus observed cadence and closeTime semantics."
@@ -2297,7 +2319,7 @@
         "avoid": [
           "Do NOT claim the close time is a fixed protocol constant or guaranteed for every ledger."
         ],
-        "notes": "Freshness item: grade a dated or attributed cadence. As of 2026-11-02, Mainnet closes ledgers about every 5 seconds (target 5000 ms; 5.0-second mean since Protocol 28 on 2026-09-16). CAP-0088 (Protocol 30; Mainnet vote scheduled 2026-11-23) adds millisecond-resolution close times but does not itself change the 5000 ms target; mentioning it is not wrong. The Stellar Stack and Validators pages now say about 5 seconds (verified 2026-11-09). Their earlier 5–7-second estimate matched samples before Protocol 28; the USDT0 launch still repeats it, tracked in sd-100. Accept either figure when the answer dates it or names its source. The answer does not need to run its own ledger sample. A 3–5-second figure is retired Docs wording and does not meet key fact 1. Trap is importing Bitcoin (10 min) or Ethereum (12s) block times.\nAlso good if the answer: Notes the close time is set by the proposing validator and recorded in the ledger header, and that SCP determines the agreed close time.\nGolden cites: The validators / fundamentals docs on developers.stellar.org (or the network dashboard)."
+        "notes": "Freshness item: grade a dated or attributed cadence. As of 2026-11-02, Mainnet closes ledgers about every 5 seconds (target 5000 ms; 5.0-second mean since Protocol 28 on 2026-09-16). CAP-0088 (Protocol 30; Mainnet vote scheduled 2026-11-23) adds millisecond-resolution close times but does not itself change the 5000 ms target; mentioning it is not wrong. The Stellar Stack and Validators pages now say about 5 seconds (verified 2026-11-09). Their earlier 5–7-second estimate matched samples before Protocol 28; the USDT0 launch page repeated it until its 2026-11-09 correction (sd-100, resolved). Accept either figure when the answer dates it or names its source. The answer does not need to run its own ledger sample. A 3–5-second figure is retired Docs wording and does not meet key fact 1. Trap is importing Bitcoin (10 min) or Ethereum (12s) block times.\nAlso good if the answer: Notes the close time is set by the proposing validator and recorded in the ledger header, and that SCP determines the agreed close time.\nGolden cites: The validators / fundamentals docs on developers.stellar.org (or the network dashboard)."
       },
       "tags": {
         "category": "protocol-core",
@@ -2648,18 +2670,17 @@
         ],
         "verified": {
           "date": "2026-11-09",
-          "by": "Upstream handoff author reconciliation; independent live re-derivation by reviewer t38s; .agents/rounds/2026-11-09-upstream-handoffs.md",
+          "by": "coordinator Claude Opus 5.5; independent live re-derivation by Codex frontier gpt-6-astra high (research/audits/2026-11-09-improvements-sweep/review-astra-sd100.md); independent golden review Claude Fable high; .agents/rounds/2026-11-09-improvements-sweep.md",
           "evidence": [
-            "Class A 2026-11-09: https://developers.stellar.org/docs/learn/fundamentals/stellar-stack.md and https://developers.stellar.org/docs/validators.md both state about every 5 seconds, with a configurable-target caveat and no guarantee for each ledger.",
-            "Class C 2026-11-09: https://horizon.stellar.org/ledgers?order=desc&limit=200 yielded Mainnet ledgers 65392850–65393049, Protocol29, with 199 five-second consensus-close intervals and mean 5.000 seconds. The independent reviewer separately sampled 65392852–65393051 with the same result.",
-            "Class B 2026-11-09: https://github.com/stellar/stellar-docs/pull/2931 merged as 2301d2cde8c8397860f0a9cb0ca95ba545f25374; direct live reads, not the merge alone, establish deployment.",
-            "https://developers.stellar.org/launch/usdt0.md still says Stellar finalises in 5–7 seconds and lists 5–7s settlement. sd-100 preserves that narrower precision residual; sd-054's original two-page correction is deployed. No exact-five-second grading requirement was added.",
-            "Independent author/reviewer live checks agree; .agents/rounds/2026-11-09-upstream-handoffs.md. The dated 2026-11-02 cadence/settings observation and Protocol30 caution remain unchanged.",
-            "Sibling sweep 2026-11-09: only this golden contains the 5–7/5-7 cadence wording or 5000-ms target. q-asset-path-payment-ops, q-sor-doc-timestamping-manage-data, q-quickstart-manual-ledger-close and q-ti-tx-too-late-resubmit have no conflicting cadence claim."
+            "Class A 2026-11-09T20:51Z: https://developers.stellar.org/launch/usdt0.md, the HTML page and cache-busted variants say about 5 seconds and ~5s and contain no 5–7-second range, after https://github.com/stellar/stellar-docs/pull/3080 merged as b5f22fb71ca0dfa06655b77c42de6773bde1f2a4. https://developers.stellar.org/docs/learn/fundamentals/stellar-stack.md and https://developers.stellar.org/docs/validators.md still say about every 5 seconds, with a configurable-target caveat and no guarantee for each ledger.",
+            "Class A 2026-11-09: a scan of 1,297 stellar-docs source files at b5f22fb7 and the served https://developers.stellar.org/llms-full.txt found no 5–7 or five-to-seven range.",
+            "Class C 2026-11-09T20:51Z: https://horizon.stellar.org/ledgers?order=desc&limit=200 yielded Mainnet ledgers 65394089–65394288, Protocol 29, with 199 five-second intervals (mean 5.000 seconds). A dated sample, not a guarantee.",
+            "Only the USDT0 sentence in the answer and notes changed. keyFacts, avoid and the grading rule (accept either dated figure) are unchanged; no exact-five-second requirement was added. The dated 2026-11-02 cadence observation and the Protocol 30 caution remain.",
+            "Sibling sweep 2026-11-09 (carried from the earlier handoff reconciliation): only this golden contains the 5–7 cadence wording or the 5000-ms target."
           ],
           "rootCause": [
             "improvements/resolved.json (sd-054; two original pages corrected through PR2931)",
-            "improvements/stellar-docs/sd-100-usdt0-launch-ledger-cadence.md"
+            "improvements/resolved.json (sd-100; USDT0 launch page corrected through PR3080)"
           ]
         },
         "origin": "raven-next q-protocol-ledger-close-time"

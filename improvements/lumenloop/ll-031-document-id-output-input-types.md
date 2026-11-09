@@ -11,7 +11,7 @@ evidence:
   - upstream issue filed 2026-10-09: https://github.com/lumenloop/lumenloop-backend/issues/46
 recurrences:
   - date: 2026-11-09
-    evidence: "2026-11-09 sweep at 2026-11-09T20:31:15.113526+00:00: still-repro. Exact title search emits string id10190 and numeric get_document emits the same string ID. Numeric get_document/related calls succeed; passing string10190 into either yields HTTP400 invalid_arguments Expected number, received string. Valid related690 control also succeeds. Read-only exact requests and response hashes: tmp/lane-lumenloop.md; upstream issue state/comments freshly read; no maintainer comments or claimed fix."
+    evidence: "2026-11-09 sweep at 2026-11-09T20:31:15.113526+00:00: still-repro. Exact title search emits string id10190 and numeric get_document emits the same string ID. Numeric get_document/related calls succeed; passing string10190 into either yields HTTP400 invalid_arguments Expected number, received string. Valid related690 control also succeeds. Read-only exact requests and response hashes: research/audits/2026-11-09-improvements-sweep/lane-lumenloop.md; upstream issue state/comments freshly read; no maintainer comments or claimed fix."
   - date: 2026-11-06
     evidence: "2026-11-06 still-repro: LL search_documents exact title2+ Years of Neural Quorum Governance; document/related numeric and string10190 — Search/document emit string10190; numeric reads succeed; string get_document and get_related_projects both400 invalid_arguments Expected number, received string. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row ll-031."
   - date: 2026-11-02

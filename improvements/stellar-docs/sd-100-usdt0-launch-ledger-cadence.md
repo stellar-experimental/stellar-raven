@@ -1,10 +1,11 @@
 ---
 id: sd-100
 service: stellar-docs
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-11-09
 upstreamTitle: Update the repeated ledger-close estimates on the USDT0 launch page
 evidence:
+  - "2026-11-09T20:50:26Z live recheck after maintainer bot PR https://github.com/stellar/stellar-docs/pull/3080 merged at 20:38:31Z (issue 3078 closed completed 20:38:32Z): https://developers.stellar.org/launch/usdt0.md (SHA256 674ca833bb3501364b8bfb02cc743aa71a1f66a6c0698e5648560d37f10d869c), the HTML page and a cache-busted HTML request all say \"about 5 seconds\" and \"~5s\" and contain no 5–7 second estimate. Author-side fixed verdict; awaiting distinct review."
   - "2026-11-09 sweep (still-repro): Light check: live USDT0 page still contains both 5–7 seconds and 5–7s estimates; linked Stellar Stack says about every5seconds. Issue3078 has new bot-authored PR3080, OPEN/BLOCKED/REVIEW_REQUIRED, eight successful head checks, no reviews. Recheck: https://developers.stellar.org/launch/usdt0.md; https://developers.stellar.org/docs/learn/fundamentals/stellar-stack.md Upstream candidate https://github.com/stellar/stellar-docs/pull/3080 (read directly)."
   - "2026-11-09 live GET https://developers.stellar.org/launch/usdt0.md contains 'Stellar finalises in 5–7 seconds' and a 'Stellar settlement' value of '5–7s'. Markdown SHA256: 750e9401e3b292bbe52af15bec9133f4938440929f7daa6b9bddbeb53b178e22. The live HTML contains both claims too."
   - "2026-11-09 live GET https://developers.stellar.org/docs/learn/fundamentals/stellar-stack.md says 'about every 5 seconds', with a configurable-target caveat. SHA256: eb896b368c86eff88e9b8bef31fe38f410432738ace4106405a1130136ef655e."

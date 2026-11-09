@@ -11,7 +11,7 @@ evidence:
   - https://github.com/lumenloop/lumenloop-backend/issues/27
 recurrences:
   - date: 2026-11-09
-    evidence: "2026-11-09 sweep at 2026-11-09T20:31:18.060597+00:00: still-repro. Research133 retains $3B on-chain RWA market-cap milestone with a June25 developer-meeting link but no measurement methodology or inclusion scope. Research86/May29 retains $2.8B with the interview/report label. A link and headline do not establish a comparable metric basis; this check does not assert the numeric totals false. Read-only exact requests and response hashes: tmp/lane-lumenloop.md; upstream issue state/comments freshly read; no maintainer comments or claimed fix."
+    evidence: "2026-11-09 sweep at 2026-11-09T20:31:18.060597+00:00: still-repro. Research133 retains $3B on-chain RWA market-cap milestone with a June25 developer-meeting link but no measurement methodology or inclusion scope. Research86/May29 retains $2.8B with the interview/report label. A link and headline do not establish a comparable metric basis; this check does not assert the numeric totals false. Read-only exact requests and response hashes: research/audits/2026-11-09-improvements-sweep/lane-lumenloop.md; upstream issue state/comments freshly read; no maintainer comments or claimed fix."
   - date: 2026-11-06
     evidence: "2026-11-06 still-repro: LL semantic weekly roundups Jun19/May29 plus get_document research133 — Jun19 $3B and May29 $2.8B milestones still lack metric methodology/measurement scope; adjacent article5945 has separate $2B snapshot. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row ll-010."
   - date: 2026-08-11

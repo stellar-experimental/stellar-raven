@@ -13,7 +13,7 @@ evidence:
   - upstream issue filed 2026-08-19: https://github.com/lumenloop/lumenloop-backend/issues/43
 recurrences:
   - date: 2026-11-09
-    evidence: "2026-11-09 sweep at 2026-11-09T20:31:12.019415+00:00: still-repro. Omitted sort, definitely_not_a_real_sort_key, zzz_not_a_field, and foreign last_seen_at all return HTTP200, ids13500/13497/13495, total2304. publishing_date DESC instead returns13495/13500/13480. No effective-sort echo or warning appears. Read-only exact requests and response hashes: tmp/lane-lumenloop.md; upstream issue state/comments freshly read; no maintainer comments or claimed fix."
+    evidence: "2026-11-09 sweep at 2026-11-09T20:31:12.019415+00:00: still-repro. Omitted sort, definitely_not_a_real_sort_key, zzz_not_a_field, and foreign last_seen_at all return HTTP200, ids13500/13497/13495, total2304. publishing_date DESC instead returns13495/13500/13480. No effective-sort echo or warning appears. Read-only exact requests and response hashes: research/audits/2026-11-09-improvements-sweep/lane-lumenloop.md; upstream issue state/comments freshly read; no maintainer comments or claimed fix."
   - date: 2026-11-06
     evidence: "2026-11-06 still-repro: LL list_documents articles,limit3 with omitted sort, two bogus sorts,last_seen_at,publishing_date DESC — Bogus/foreign fields return HTTP200 same ids13288,13284,13278 as default; publishing_date differs. No effective sort echo or warning. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row ll-028."
   - date: 2026-11-02

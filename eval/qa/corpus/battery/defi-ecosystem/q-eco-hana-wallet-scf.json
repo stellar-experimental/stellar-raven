@@ -193,39 +193,53 @@
             "note": "Back to hanawallet.io Download Hana Wallet"
           }
         ]
+      },
+      {
+        "claim": "As of 2026-11-09, Scout points the Hana project and partner at hanawallet.io; the wallet domain serves Hana while the legacy hana.money redirects to Wend.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/projects/search?q=hana&limit=100",
+            "observedAt": "2026-11-09T20:47:04Z",
+            "note": "links.website is https://hanawallet.io/; statusSourceUrl is https://www.hanawallet.io/; lifecycle.note identifies the old domain as no longer serving Hana."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/partners/hana-wallet",
+            "observedAt": "2026-11-09T20:47:04Z",
+            "note": "websiteUrl is https://www.hanawallet.io; no partner detail is reproduced."
+          },
+          {
+            "class": "A",
+            "ref": "https://hanawallet.io/",
+            "observedAt": "2026-11-09T20:47:04Z",
+            "note": "HTTP 308 to https://www.hanawallet.io/, then HTTP 200; title Hana | Non-Custodial Multi-Chain Crypto Wallet; page includes Stellar."
+          },
+          {
+            "class": "F",
+            "ref": "https://hana.money/",
+            "observedAt": "2026-11-09T20:47:04Z",
+            "note": "GET follows HTTP 307 to https://www.wendmoney.com.au/, HTTP 200 Wend remittance page."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task defi-protocols)",
+      "date": "2026-11-09",
+      "by": "Retirement reconciliation lane (Codex); independent live reviewer: Codex frontier gpt-6-astra high (research/audits/2026-11-09-improvements-sweep/review-astra.md)",
       "evidence": [
-        "F: curl -sIL https://hana.money and https://www.hana.money — \"HTTP/2 307 location: https://www.wendmoney.com.au/\" (observedAt 2026-11-02)",
-        "F: curl -sIL https://news.hana.money — \"HTTP/2 308 location: https://news.hanawallet.io/\" (observedAt 2026-11-02)",
-        "A: https://www.hanawallet.io/ — \"<title>Hana | Non-Custodial Multi-Chain Crypto Wallet</title> ... 19 chains. One wallet on Chrome. ... Stellar\" (observedAt 2026-11-02)",
-        "A: https://www.hana.money/ — \"Wend | Send money to GCash or Maya in minutes\" (observedAt 2026-11-02)",
-        "C: Raven lumenloop.search_directory {query:'hana wallet'} -> slug hana — \"website: [\"hanawallet.io\"]\" (observedAt 2026-11-02)",
-        "F: curl -sIL https://hana.money — \"HTTP/2 307 location: https://www.wendmoney.com.au/\" (observedAt 2026-11-02)",
-        "A: https://www.wendmoney.com.au/ — \"<title>Wend | Send money to GCash or Maya in minutes</title>\" (observedAt 2026-11-02)",
-        "D: Parallel web_search 'hana.money Wend remittance' -> https://www.hana.money/ — \"Wend gets you the real exchange rate, with fees shown upfront. Send to GCash or Maya in minutes\" (observedAt 2026-11-02)",
-        "A: https://support.hanawallet.io/en/articles/11045736-hana-wallet-stellar-integration-guide — \"Back to hanawallet.io Download Hana Wallet\" (observedAt 2026-11-02)",
-        "Upstream defects noted by the proposer, filed as improvements/stellar-light-scout/sls-100-hana-website-repurposed-domain.md (website) and tracked in https://github.com/stellar-experimental/stellar-raven/blob/079c82b9e6c079bf6514c344fd5aac51ba39c2a7/improvements/stellar-light-scout/sls-095-freighter-varial-rename-identity.md (Freighter rename): Stellar Light project hana links.website is https://hana.money/, which now redirects to the Wend site; its shortDescription still names the Freighter API after the Freighter-to-Varial rename (https://stellarlight.xyz/api/projects/search?q=hana).",
-        "Sibling sweep 2026-11-02: grep hana.money over the battery → this case only; proposer siblings q-eco-stellar-wallets-list, q-edge-ambig-best-wallet, q-soroban-x402-auth-entry-signing, q-defi-phoenix-what-is; no contradiction. No case in this batch names Freighter or Varial.",
-        "Pass 2 (.agents/rounds/2026-11-02-golden-audit.md, task defi-protocols) evidence follows; pass-1 lines above remain the provenance for the pass-1 diff.",
-        "2026-11-02 [F] curl -sSI https://hana.money/ and https://www.hana.money/ — \"HTTP/2 307 location: https://www.wendmoney.com.au/\" (pass-2 verifier accept on tags.freshness)",
-        "2026-11-02 [A] https://www.hanawallet.io/ (curl -sSIL https://hanawallet.io/: HTTP/2 308 -> https://www.hanawallet.io/, HTTP/2 200) — \"<title>Hana | Non-Custodial Multi-Chain Crypto Wallet</title>\" (pass-2 verifier accept on tags.freshness)",
-        "2026-11-02 [C] https://stellarlight.xyz/api/projects/search?q=hana&limit=3 — \"hana | Live | statusAsOf 2026-08-28 | links.website https://hana.money/ | statusSourceUrl https://www.hana.money/ | lifecycle.note 'live wallet app; hanawallet.io 308s to hana.money' | shortDescription '... via Stellar Wallets Kit and the Freighter API'\" (pass-2 verifier accept on truth.verified.evidence[9])",
-        "2026-11-02 [F] curl -sSI https://hana.money/ and https://www.hana.money/ — \"HTTP/2 307 location: https://www.wendmoney.com.au/\" (pass-2 verifier accept on truth.verified.evidence[9])",
-        "2026-11-02 [A] https://www.hanawallet.io/ (curl -sSIL https://hanawallet.io/: HTTP/2 308 -> https://www.hanawallet.io/, HTTP/2 200) — \"<title>Hana | Non-Custodial Multi-Chain Crypto Wallet</title>\" (pass-2 verifier accept on truth.verified.evidence[9])",
-        "2026-11-02 [A] https://www.wendmoney.com.au/ — \"<title>Wend | Send money to GCash or Maya in minutes</title>\" (pass-2 verifier accept on truth.verified.evidence[9])",
-        "2026-11-02 [B] https://github.com/stellar-experimental/stellar-raven/blob/079c82b9e6c079bf6514c344fd5aac51ba39c2a7/improvements/stellar-light-scout/sls-095-freighter-varial-rename-identity.md — \"Prevalence: q=freighter returned 6 rows (freighter, hana, ...). ... the other five are prose references to a renamed product.\" (pass-2 verifier accept on truth.verified.evidence[9])",
-        "2026-11-02 [C] https://stellarlight.xyz/api/projects/search?q=hana&limit=3 — \"hana | Live | statusAsOf 2026-08-28 | links.website https://hana.money/ | statusSourceUrl https://www.hana.money/ | lifecycle.note 'live wallet app; hanawallet.io 308s to hana.money' | shortDescription '... via Stellar Wallets Kit and the Freighter API'\" (pass-2 verifier accept on truth.verified.rootCause)",
-        "2026-11-02 [F] curl -sSI https://hana.money/ and https://www.hana.money/ — \"HTTP/2 307 location: https://www.wendmoney.com.au/\" (pass-2 verifier accept on truth.verified.rootCause)",
-        "Pass 2 change: tags.freshness stable → scheduled because the answer carries the dated 2026-11-02 hana.money redirect observation; truth.reverifyBy 2027-03-17; evidence[9] now cites the filed findings sls-100 and sls-095; rootCause adds sls-100. The $132,000 SCF arithmetic is stable historical fact and is unchanged. Question, answer, keyFacts, avoid, and notes unchanged.",
-        "Pass 2 sibling sweep 2026-11-02: grep hana.money over the battery → this case only; q-eco-stellar-wallets-list has no hana.money reference; cluster-012 Hana $132K unchanged; no contradiction."
+        "C https://stellarlight.xyz/api/projects/search?q=hana&limit=100 (observedAt 2026-11-09T20:47:04Z): links.website is https://hanawallet.io/; statusSourceUrl is https://www.hanawallet.io/; lifecycle.note identifies the old domain as no longer serving Hana.",
+        "C https://stellarlight.xyz/api/partners/hana-wallet (observedAt 2026-11-09T20:47:04Z): websiteUrl is https://www.hanawallet.io; no partner detail is reproduced.",
+        "A https://hanawallet.io/ (observedAt 2026-11-09T20:47:04Z): HTTP 308 to https://www.hanawallet.io/, then HTTP 200; title Hana | Non-Custodial Multi-Chain Crypto Wallet; page includes Stellar.",
+        "F https://hana.money/ (observedAt 2026-11-09T20:47:04Z): GET follows HTTP 307 to https://www.wendmoney.com.au/, HTTP 200 Wend remittance page.",
+        "Historical observation, 2026-11-02: Scout links.website was https://hana.money/, statusSourceUrl was https://www.hana.money/, and lifecycle.note said hanawallet.io 308s to hana.money. That stale Scout state is corrected as of this recheck; sls-100 is resolved (improvements/resolved.json entry sls-100). The old-domain redirect observation in the dated answer and corroboration remains true. The adjacent Freighter API wording is a separate identity matter, previously tracked at https://github.com/stellar-experimental/stellar-raven/blob/079c82b9e6c079bf6514c344fd5aac51ba39c2a7/improvements/stellar-light-scout/sls-095-freighter-varial-rename-identity.md.",
+        "Independent live re-derivation: reviewer Codex frontier gpt-6-astra high, research/audits/2026-11-09-improvements-sweep/review-astra.md, sls-100; separately fetched the project, partner, operator sites and correction inputs at 2026-11-09T20:40Z before reading the author report.",
+        "Sibling sweep 2026-11-09: all battery matches for Soroswap, Phoenix, Hana, hana.money and hanawallet.io were inspected. q-defi-phoenix-what-is, q-defi-soroswap-what-is, q-defi-soroswap-vs-stellarx and q-defi-provide-liquidity-impermanent-loss share the dated venue correction; q-eco-dex-saturation, q-eco-defi-market-map, q-eco-defi-projects-discovery, q-gap-semantic-similar-projects, q-defi-named-newer-protocols, q-eco-most-active-defi-projects, q-defi-liquid-staking-whitespace and q-edge-factcheck-soroswap-first-amm do not require Phoenix in the current Soroswap API venue set. q-eco-stellar-wallets-list, q-edge-ambig-best-wallet and q-tool-wallets-comparison carry no stale Hana-domain claim. Other matches concern asset listings, contract access, funding history or unrelated project discovery. No contradiction; answer, keyFacts and avoid are unchanged in every edited case."
       ],
       "rootCause": [
         "freshness-drift",
-        "improvements/stellar-light-scout/sls-100-hana-website-repurposed-domain.md"
+        "improvements/resolved.json entry sls-100 (Scout Hana domain correction)"
       ]
     },
     "origin": "raven-next q-eco-hana-wallet-scf",

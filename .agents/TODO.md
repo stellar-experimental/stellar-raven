@@ -54,34 +54,23 @@ the backend's rate limits and terms.
 
 ## Improvements follow-up
 
-### Recheck sk-039 after the Docs skill copy updates
-
-The November 6 [assets handoff review](rounds/2026-11-06-assets-type-handoff.md)
-confirmed canonical PR181 and skills.stellar.org have the corrected SEP-41 types.
-The ordinary [Docs skill URL](https://developers.stellar.org/.well-known/agent-skills/assets/skill.md)
-still lists `transfer` destination `Address` and `symbol()` return `Symbol` at 18:58 UTC.
-After generation/cache refresh, or the next maintenance pass from November 7,
-require `MuxedAddress` and `String`, with `transfer_from` still using `Address`.
-No further canonical type change is requested. A distinct reviewer must repeat
-the ordinary URL check before retiring sk-039. Routine recurrences stay local.
-The earlier sk-038 signer-control delivery defect is now fixed on that ordinary URL.
-
 ### Recheck November 5 partial fixes after deployment or owner data jobs
 
 The [round ledger](rounds/2026-11-05-truth-maintenance.md) and its per-finding tables cover all
 130 starting findings. Recheck only when the named change or new evidence arrives; untouched
 issues do not need reminders.
 
-- Scout: [PR1924](https://github.com/Stellar-Light/stellarlight/pull/1924) is deployed (spec
-  1.9.127 live on 2026-11-09) and sls-113 is retired. The 2026-11-09 probe run flags sls-099/100/102
-  as fixed candidates: repeat their originals with a distinct reviewer before any status change.
-  sls-112 stays open. For sls-107, require the
-  enabled issuer refresh to populate issuer/source/date fields, including the nine affected
-  AUDD/Currency One records and the MGUSD control. For sls-114, require a new Horizon code scan
-  and verify fixture paths/classification. For sls-101, repeat aggregate and Spiko/Sentora/Etherfuse
-  provider checks after remap/enrichment; warnings are fixed but values remain stale.
+- Scout (2026-11-09 [sweep](rounds/2026-11-09-improvements-sweep.md)): sls-099/100/102/112/114
+  are retired after an independent review. sls-101 and sls-107 stay active, and both upstream
+  issues now carry a verification result. For sls-101, recheck the aggregate and the
+  Spiko/Sentora/Etherfuse provider values after the Sentora remap or unavailable-provider handling
+  ships; the warning is live, but the values remain stale. For sls-107, require the owner-enabled
+  issuer-of-record write (PR1923) to populate issuer, source and date for the nine
+  AUDD/Currency One records and the MGUSD control. sls-115 (issue 1933) needs a note or scan
+  invalidation fix; see the Horizon monitor below.
 - SCF coverage: after draft [PR1922](https://github.com/Stellar-Light/stellarlight/pull/1922)
   is rebased, merged and applied, repeat the full round-45 directory comparison for sls-111.
+  On 2026-11-09, 12 official round-45 source pages were still missing from the directory.
   Liqvid must have awarded rounds 37 and 45, never submitted-but-not-awarded rounds 30 and 44.
   The proposed 11 edits do not replace missing-project intake.
 - Docs: the [Docs table](rounds/2026-11-05-truth-maintenance/docs.md) identifies each unmerged
@@ -92,7 +81,9 @@ issues do not need reminders.
   ([ledger](rounds/2026-11-09-upstream-handoffs.md)). sd-101 ([stellar-docs#3079](https://github.com/stellar/stellar-docs/issues/3079)) carries the
   remaining complete WebAuthn example compile failure and sd-100
   ([stellar-docs#3078](https://github.com/stellar/stellar-docs/issues/3078)) the USDT0 launch-page
-  cadence; recheck each only when its upstream issue reports a fix. sd-095 and sd-097 were retired earlier; see the
+  cadence. Maintainer PRs [3081](https://github.com/stellar/stellar-docs/pull/3081) (sd-101) and
+  [3080](https://github.com/stellar/stellar-docs/pull/3080) (sd-100) were open and awaiting review on
+  2026-11-09; recheck each live page after its PR deploys. sd-095 and sd-097 were retired earlier; see the
   [resolution ledger](rounds/2026-11-06-playground-final-resolution.md).
   The [continuation table](rounds/2026-11-06-remaining-sweep/docs.md) records all current
   review/conflict blockers, including draft2752 and the separate pending generated-skill PR3069.

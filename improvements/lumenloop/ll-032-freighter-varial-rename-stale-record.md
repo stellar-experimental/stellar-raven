@@ -15,7 +15,7 @@ evidence:
   - upstream issue filed 2026-11-02: https://github.com/lumenloop/stellar-ecosystem-db/issues/13
 recurrences:
   - date: 2026-11-09
-    evidence: "2026-11-09 sweep at 2026-11-09T20:31:04.685268+00:00: still-repro. freighter API and YAML still have title Freighter, other_names=[], website freighter.app. varial directory query yields semantic neighbors and no freighter. Old website follows to current Varial site; current wallet README names Varial. Adjacent lumenswap/latch/aha-labs YAML descriptions still use Freighter. Read-only exact requests and response hashes: tmp/lane-lumenloop.md; upstream issue state/comments freshly read; no maintainer comments or claimed fix."
+    evidence: "2026-11-09 sweep at 2026-11-09T20:31:04.685268+00:00: still-repro. freighter API and YAML still have title Freighter, other_names=[], website freighter.app. varial directory query yields semantic neighbors and no freighter. Old website follows to current Varial site; current wallet README names Varial. Adjacent lumenswap/latch/aha-labs YAML descriptions still use Freighter. Read-only exact requests and response hashes: research/audits/2026-11-09-improvements-sweep/lane-lumenloop.md; upstream issue state/comments freshly read; no maintainer comments or claimed fix."
   - date: 2026-11-06
     evidence: "2026-11-06 still-repro: LL get_project freighter; search_directory varial; current YAML and freighter.app redirect — Freighter title,empty aliases,freighter.app unchanged; varial semantic neighbors exclude wallet; old website redirects Varial. Adjacent lumenswap/latch/aha-labs source references checked. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row ll-032."
 ---
