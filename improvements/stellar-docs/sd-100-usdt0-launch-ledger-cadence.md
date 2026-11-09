@@ -41,7 +41,6 @@ The earlier two-page correction is recorded under sd-054 in [Raven's resolution 
 
 The fresh Horizon sample contains 199 five-second consensus-close intervals.
 It supports an approximate estimate, not a permanent constant or an individual-ledger guarantee.
-The probe checks both old phrases because absence of one proposed replacement would not establish recurrence.
 
 ## Recommendation
 
