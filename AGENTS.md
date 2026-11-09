@@ -130,8 +130,8 @@ Choose the independent reviewer under "Coordination" by tier, not by a fixed mod
 - Mintlify admin credentials are maintenance-only and never a runtime/sandbox surface. Any write
   needs a read-only A/B win, a general mechanism rather than per-query hacks, and the rules in
   [`docs/stellar-docs.md`](docs/stellar-docs.md) ("Maintenance").
-- Evals produce evidence-backed upstream findings in `improvements/`; scores are instruments, not
-  the final product.
+- Evals support scoped decisions; route established upstream defects to `improvements/`. Scores
+  are evidence, not the decision itself.
 - Solo, a retired task tracker, is not a live path. Never add a `solo://` reference, a Solo todo,
   or a Solo scratchpad. Leave existing Solo references in dated records unchanged.
 - Retired sibling repos must not be referenced as live paths. Retained prior art is read-only under

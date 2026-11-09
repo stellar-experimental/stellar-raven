@@ -2,9 +2,10 @@ import { APICallError } from "ai";
 import { convertArrayToReadableStream, MockLanguageModelV4 } from "ai/test";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-const { createWorkersAiStub, modelStub } = vi.hoisted(() => ({
+const { createWorkersAiStub, modelStub, buildDemoToolsStub } = vi.hoisted(() => ({
   createWorkersAiStub: vi.fn(),
-  modelStub: vi.fn()
+  modelStub: vi.fn(),
+  buildDemoToolsStub: vi.fn()
 }));
 
 vi.mock("workers-ai-provider", async (importOriginal) => ({
@@ -15,7 +16,7 @@ vi.mock("../src/demo/tools.ts", async () => {
   const { tool } = await import("ai");
   const { z } = await import("zod");
   return {
-    buildDemoTools: ({ emit }: { emit: (frame: unknown) => void }) => ({
+    buildDemoTools: buildDemoToolsStub.mockImplementation(({ emit }: { emit: (frame: unknown) => void }) => ({
       tools: {
         test: tool({
           inputSchema: z.object({}),
@@ -26,11 +27,16 @@ vi.mock("../src/demo/tools.ts", async () => {
           }
         })
       }
-    })
+    }))
   };
 });
 
 import { handleDemoChat } from "../src/demo/chat";
+import * as modelConfig from "../src/demo/model-config";
+import type { DemoModelConfig } from "../src/demo/model-config";
+import type { DemoToolBudget } from "../src/demo/budget";
+import { DEMO_SYSTEM_PROMPT } from "../src/demo/prompt";
+import { openai as openaiChat } from "workers-ai-provider/openai";
 
 const finish = (finishReason = "stop") => ({
   type: "finish",
@@ -77,7 +83,12 @@ function testEnv(modelOverride?: string): Env {
   } as unknown as Env;
 }
 
-async function chatRequest(content: string, modelOverride?: string, evalBudget?: string) {
+async function chatRequest(
+  content: string | Array<{ role: "user" | "assistant"; content: string }>,
+  modelOverride?: string,
+  evalBudget?: string,
+  envOverrides: Partial<Env> = {}
+) {
   const pending: Promise<unknown>[] = [];
   const ctx = {
     waitUntil(promise: Promise<unknown>) {
@@ -89,9 +100,9 @@ async function chatRequest(content: string, modelOverride?: string, evalBudget?:
       method: "POST",
       headers: { "content-type": "application/json", origin: "http://localhost",
         ...(evalBudget === undefined ? {} : { "x-raven-eval-max-budget-usd": evalBudget }) },
-      body: JSON.stringify({ messages: [{ role: "user", content }] })
+      body: JSON.stringify({ messages: typeof content === "string" ? [{ role: "user", content }] : content })
     }),
-    testEnv(modelOverride),
+    { ...testEnv(modelOverride), ...envOverrides },
     ctx
   );
   return { response, pending };
@@ -131,6 +142,7 @@ function sseFrames(body: string): Record<string, unknown>[] {
 afterEach(() => {
   createWorkersAiStub.mockClear();
   modelStub.mockReset();
+  buildDemoToolsStub.mockClear();
   vi.restoreAllMocks();
 });
 
@@ -160,7 +172,7 @@ describe("demo chat provider failures", () => {
       [finish()]
     ]);
     expect(finalEvent).toMatchObject({
-      attemptedModels: ["openai/gpt-5.6-terra", "openai/gpt-5.6-luna"],
+      attemptedModels: ["openai/gpt-5.6-terra", "anthropic/claude-haiku-5.5"],
       finishReason: "stop",
       stopReasonClass: "missing-final-text",
       hadFinalText: false,
@@ -178,10 +190,10 @@ describe("demo chat provider failures", () => {
         [{ type: "error", error: providerError("latest rate limit", 429) }]
       ],
       expected: {
-        attemptedModels: ["openai/gpt-5.6-terra", "openai/gpt-5.6-luna"],
+        attemptedModels: ["openai/gpt-5.6-terra", "anthropic/claude-haiku-5.5"],
         providerErrorStatus: 429,
         providerErrorAttempt: 2,
-        providerErrorModel: "openai/gpt-5.6-luna",
+        providerErrorModel: "anthropic/claude-haiku-5.5",
         providerErrorTerminal: true
       },
       modelOverride: undefined
@@ -347,5 +359,170 @@ describe("demo chat terminal frame", () => {
     expect(models[0]?.doStreamCalls).toHaveLength(2);
     expect(frames).toContainEqual({ type: "token", text: "grounded answer" });
     expect(frames.at(-1)).toEqual({ type: "done", reason: "stop" });
+  });
+});
+
+describe("demo chat per-model configuration", () => {
+  const history = [
+    { role: "user", content: "earlier question" },
+    { role: "assistant", content: "earlier answer" },
+    { role: "user", content: "follow-up question" }
+  ] satisfies Array<{ role: "user" | "assistant"; content: string }>;
+
+  async function captureAttemptRequests(
+    configs: readonly DemoModelConfig[] | undefined,
+    modelOverride?: string,
+    envOverrides: Partial<Env> = {}
+  ) {
+    createWorkersAiStub.mockClear();
+    modelStub.mockReset();
+    const configSpy = configs ? vi.spyOn(modelConfig, "demoModelsFromOverride").mockReturnValue(configs) : undefined;
+    const models = (configs ?? modelConfig.demoModelsFromOverride(modelOverride)).map((_, index, all) => {
+      const model = modelFor(index === all.length - 1
+        ? textAnswer("answer")
+        : [{ type: "error", error: providerError("unavailable", 503) }]);
+      modelStub.mockReturnValueOnce(model);
+      return model;
+    });
+    const log = vi.spyOn(console, "log").mockImplementation(() => undefined);
+    log.mockClear();
+    const { response, pending } = await chatRequest(history, modelOverride, undefined, envOverrides);
+    const frames = sseFrames(await response.text());
+    await Promise.all(pending);
+    const plugins = createWorkersAiStub.mock.calls[0]?.[0].providers as Array<{ wireFormat: string }>;
+    const requests = models.map((model, index) => {
+      const [slug, settings] = modelStub.mock.calls[index]!;
+      const call = model.doStreamCalls[0]!;
+      // Compare the model-boundary inputs from real streamText, including its
+      // system/user/assistant prompt conversion, rather than helper outputs.
+      return {
+        slug, settings,
+        plugin: plugins.find((plugin) => plugin.wireFormat === (slug.startsWith("anthropic/") ? "anthropic" : "openai")),
+        prompt: call.prompt,
+        providerOptions: call.providerOptions,
+        temperature: call.temperature,
+        maxOutputTokens: call.maxOutputTokens
+      };
+    });
+    const events = log.mock.calls.map(([line]) => JSON.parse(String(line)) as Record<string, unknown>);
+    configSpy?.mockRestore();
+    return { requests, events, frames };
+  }
+
+  it.each([
+    ["openai/gpt-6.1-sol", "low", "anthropic/claude-haiku-5.5", "none"],
+    ["anthropic/claude-sonnet-5.5", "none", "openai/gpt-6-astra", "low"],
+    ["openai/gpt-6.1-sol", "low", "openai/gpt-5.6-luna", "none"],
+    ["openai/gpt-5.6-luna", "none", "openai/gpt-6.1-sol", "low"]
+  ] as const)("preserves single-model request inputs for %s/%s then %s/%s", async (primary, primaryEffort, fallback, fallbackEffort) => {
+    const pair = await captureAttemptRequests([
+      { model: primary, role: "primary", reasoningEffort: primaryEffort },
+      { model: fallback, role: "fallback", reasoningEffort: fallbackEffort }
+    ]);
+    const first = await captureAttemptRequests(undefined, primary, { DEMO_REASONING_EFFORT_OVERRIDE: primaryEffort });
+    const second = await captureAttemptRequests(undefined, fallback, { DEMO_REASONING_EFFORT_OVERRIDE: fallbackEffort });
+    expect(pair.requests).toEqual([first.requests[0], second.requests[0]]);
+    for (const request of pair.requests) {
+      expect(request.prompt[0]).toMatchObject({ role: "system", content: DEMO_SYSTEM_PROMPT });
+      if (request.slug.startsWith("openai/")) {
+        expect(request.plugin).toBe(modelConfig.openAiResponses);
+        expect(request.providerOptions).toEqual({ openai: {
+          reasoningEffort: request.slug === primary ? primaryEffort : fallbackEffort, store: false
+        } });
+      } else {
+        expect(request.plugin?.wireFormat).toBe("anthropic");
+        expect(request.providerOptions).toEqual({ anthropic: { thinking: { type: "adaptive" }, effort: "low" } });
+      }
+    }
+    expect(pair.events.find((event) => event.evt === "demo-chat-start")).toMatchObject({
+      model: primary, openAiApiMode: "responses", reasoningEffort: primaryEffort, reasoningEffortSource: "model"
+    });
+    expect(pair.events.find((event) => event.evt === "demo-chat")).toMatchObject({
+      model: fallback, reasoningEffort: fallbackEffort, reasoningEffortSource: "model",
+      ...(fallback.startsWith("openai/") ? { openAiReasoningEffortSent: fallbackEffort } : {})
+    });
+  });
+
+  it.each(["none", "low"] as const)("gives explicit %s priority over each model's effort", async (effort) => {
+    const { requests, events } = await captureAttemptRequests([
+      { model: "openai/gpt-6.1-sol", role: "primary", reasoningEffort: "low" },
+      { model: "openai/gpt-5.6-luna", role: "fallback", reasoningEffort: "none" }
+    ], undefined, { DEMO_REASONING_EFFORT_OVERRIDE: effort });
+    expect(requests.map((request) => request.providerOptions)).toEqual([
+      { openai: { reasoningEffort: effort, store: false } },
+      { openai: { reasoningEffort: effort, store: false } }
+    ]);
+    for (const event of events.filter((event) => event.evt === "demo-chat-start" || event.evt === "demo-chat")) {
+      expect(event).toMatchObject({ reasoningEffort: effort, reasoningEffortSource: "override" });
+    }
+  });
+
+  it("preserves each measured request in the shipped mixed tuple and honors explicit chat effort", async () => {
+    const defaults = await captureAttemptRequests(undefined);
+    expect(defaults.requests.map((request) => request.slug)).toEqual(["openai/gpt-5.6-terra", "anthropic/claude-haiku-5.5"]);
+    expect(defaults.requests.map((request) => request.providerOptions)).toEqual([
+      { openai: { reasoningEffort: "none", store: false } },
+      { anthropic: { thinking: { type: "adaptive" }, effort: "low" } }
+    ]);
+    for (const event of defaults.events.filter((event) => event.evt === "demo-chat-start" || event.evt === "demo-chat")) {
+      expect(event).toMatchObject({ reasoningEffort: "none", reasoningEffortSource: "default" });
+    }
+    const measuredPrimary = await captureAttemptRequests(undefined, "openai/gpt-5.6-terra", { DEMO_REASONING_EFFORT_OVERRIDE: "none" });
+    const measuredFallback = await captureAttemptRequests(undefined, "anthropic/claude-haiku-5.5", { DEMO_REASONING_EFFORT_OVERRIDE: "none" });
+    expect(defaults.requests).toEqual([measuredPrimary.requests[0], measuredFallback.requests[0]]);
+    expect(defaults.requests[0]?.plugin).toBe(modelConfig.openAiResponses);
+    const chat = await captureAttemptRequests(undefined, "openai/gpt-5.6-terra", { DEMO_OPENAI_API_MODE: "chat" });
+    expect(chat.requests[0]?.plugin).toBe(openaiChat);
+    expect(chat.requests[0]?.providerOptions).toEqual({ openai: { store: false } });
+    const explicit = await captureAttemptRequests(undefined, "openai/gpt-5.6-terra", {
+      DEMO_OPENAI_API_MODE: "chat", DEMO_REASONING_EFFORT_OVERRIDE: "low"
+    });
+    expect(explicit.requests[0]?.providerOptions).toEqual({ openai: { reasoningEffort: "low", store: false } });
+  });
+
+  it("falls back with original history and the same budget exactly once", async () => {
+    const budgets: DemoToolBudget[] = [];
+    const build = buildDemoToolsStub.getMockImplementation()!;
+    buildDemoToolsStub.mockImplementationOnce((args) => {
+      budgets.push(args.budget);
+      // Seed consumed allowance before a provider failure with no useful
+      // output; real emitted tool activity must suppress fallback (next test).
+      args.budget.searchCalls = 2;
+      args.budget.executeCalls = 1;
+      args.budget.recoveryAdviceDelivered = true;
+      return build(args);
+    }).mockImplementationOnce((args) => {
+      budgets.push(args.budget);
+      expect(args.budget).toMatchObject({ searchCalls: 2, executeCalls: 1, recoveryAdviceDelivered: true });
+      return build(args);
+    });
+    const { requests, events, frames } = await captureAttemptRequests([
+      { model: "openai/gpt-6.1-sol", role: "primary", reasoningEffort: "low" },
+      { model: "anthropic/claude-haiku-5.5", role: "fallback", reasoningEffort: "none" }
+    ]);
+    expect(budgets).toHaveLength(2);
+    expect(budgets[1]).toBe(budgets[0]);
+    expect(requests[1]?.prompt).toEqual(requests[0]?.prompt);
+    expect(requests[1]?.prompt).toHaveLength(history.length + 1);
+    expect(events.filter((event) => event.evt === "demo-model-fallback")).toEqual([
+      expect.objectContaining({ fromModel: "openai/gpt-6.1-sol", toModel: "anthropic/claude-haiku-5.5", reason: "provider-error" })
+    ]);
+    expect(events.find((event) => event.evt === "demo-chat")).toMatchObject({
+      searchCalls: 2, executeCalls: 1, toolCounterScope: "turn", usageScope: "sum-per-model-attempt"
+    });
+    expect(frames.filter((frame) => frame.type === "token")).toEqual([{ type: "token", text: "answer" }]);
+  });
+
+  it.each(["text", "tool"])("does not fallback after useful %s output", async (kind) => {
+    const streams = kind === "tool" ? [
+      [{ type: "tool-call", toolCallId: "call-1", toolName: "test", input: "{}" }, finish("tool-calls")],
+      [{ type: "error", error: providerError("unavailable", 503) }]
+    ] : [[
+      { type: "text-start", id: "text-1" }, { type: "text-delta", id: "text-1", delta: "partial answer" },
+      { type: "error", error: providerError("unavailable", 503) }
+    ]];
+    const { event } = await runChat(streams, "openai/gpt-6.1-sol,anthropic/claude-haiku-5.5", true);
+    expect(modelStub).toHaveBeenCalledTimes(1);
+    expect(event.attemptedModels).toEqual(["openai/gpt-6.1-sol"]);
   });
 });

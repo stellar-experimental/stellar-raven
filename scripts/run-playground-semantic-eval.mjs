@@ -27,7 +27,7 @@ import {
   demoEffectiveOpenAiApiMode,
   demoModelsFromOverride,
   demoOpenAiApiModeFromOverride,
-  demoReasoningEffortFromOverride,
+  demoReasoningEffortFor,
   demoReasoningEffortOverride
 } from "../src/demo/model-config.ts";
 import { buildTranscriptEvidence, judgeCase, JUDGE_MODEL, JUDGE_RUBRIC } from "../eval/qa/judge.mjs";
@@ -177,14 +177,28 @@ function overrideFrom(name, devVars) {
   return { value: undefined, source: "default" };
 }
 
-function answeringConfiguration(devVars) {
+export function answeringConfiguration(devVars) {
   const modelOverride = overrideFrom("DEMO_MODEL_OVERRIDE", devVars);
   const apiModeOverride = overrideFrom("DEMO_OPENAI_API_MODE", devVars);
   const reasoningOverride = overrideFrom("DEMO_REASONING_EFFORT_OVERRIDE", devVars);
-  const models = demoModelsFromOverride(modelOverride.value).map(({ model, role }) => ({ model, role }));
+  const configuredModels = demoModelsFromOverride(modelOverride.value);
   const requestedApiMode = demoOpenAiApiModeFromOverride(apiModeOverride.value);
-  const effectiveApiMode = demoEffectiveOpenAiApiMode(models, requestedApiMode);
+  const effectiveApiMode = demoEffectiveOpenAiApiMode(configuredModels, requestedApiMode);
   const validReasoningOverride = demoReasoningEffortOverride(reasoningOverride.value);
+  // Preserve both the declared and resolved effort for every ordered attempt.
+  // Use the runtime resolver: an explicit environment value (including none)
+  // wins over the model's effort, then the global default. Slug-only overrides
+  // come from demoModelsFromOverride without the production tuple's efforts.
+  const models = configuredModels.map((config) => ({
+    model: config.model,
+    role: config.role,
+    reasoningEffort: {
+      configured: config.reasoningEffort ?? null,
+      value: demoReasoningEffortFor(config, validReasoningOverride),
+      source: validReasoningOverride !== undefined
+        ? reasoningOverride.source : config.reasoningEffort !== undefined ? "model" : "default"
+    }
+  }));
   return {
     primaryModel: models[0].model,
     fallbackModels: models.slice(1).map(({ model }) => model),
@@ -197,14 +211,17 @@ function answeringConfiguration(devVars) {
       default: DEMO_OPENAI_API_MODE
     },
     reasoningEffort: {
-      value: demoReasoningEffortFromOverride(reasoningOverride.value),
-      source: validReasoningOverride ? reasoningOverride.source : "default",
+      // This summary describes the primary only; models records every attempt.
+      scope: "primary-attempt",
+      value: models[0].reasoningEffort.value,
+      source: models[0].reasoningEffort.source,
       default: DEMO_REASONING_EFFORT,
-      invalidOverrideIgnored: reasoningOverride.value !== undefined && !validReasoningOverride
+      invalidOverrideIgnored: reasoningOverride.value !== undefined && validReasoningOverride === undefined,
+      semantics: "resolved runtime effort before provider-specific mapping; not observed request payload"
     },
     temperature: DEMO_TEMPERATURE,
     modelSource: modelOverride.source,
-    defaultModels: DEMO_MODELS.map(({ model, role }) => ({ model, role })),
+    defaultModels: DEMO_MODELS.map((config) => ({ ...config })),
     configurationBasis: "local model-config plus evaluator-visible process/.dev.vars overrides",
     runtimeIntrospection: "gateway-log",
     observedAttemptedModels: null,

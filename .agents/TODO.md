@@ -550,7 +550,7 @@ On 2026-11-03 a paired 30-case semantic check kept `openai/gpt-5.6-terra` as the
 `openai/gpt-6-luna` cost $0.094 against $1.883 in answer spend, but scored 6 correct, 18 partial,
 and 6 wrong against Terra's 8, 17, and 5. Luna had three new wrong answers (two hand-confirmed) and
 two tool-loop failures. Terra had two new wrong answers (both hand-confirmed) and no tool-loop
-failures. The switch rule allows no new wrong answers and no tool-loop regressions. The fallback stays `openai/gpt-5.6-luna`. The
+failures. The switch rule allows no new wrong answers and no tool-loop regressions. That check retained `openai/gpt-5.6-luna` as fallback. The
 numbers are in
 [the re-check record](../research/audits/2026-11-03-playground-model-recheck.md).
 
@@ -569,17 +569,31 @@ primary on a paired 30-case semantic check, or the owner decides to stop re-chec
 
 ## Eval instruments
 
-### Resume the Playground finals after the November 8 subscription reset
+### Finish the scoped Playground model decision
 
 The owner chose to keep the $200 API cap and resume after the November 8 reset.
-The local one-shot restart targets 2026-11-08 at 19:05 America/New_York. Read [the resume checkpoint](rounds/2026-11-06-playground-resume.md)
-before any action: 202 m1 attempts settled, no server/reservations, 200 eligible B
-grades pending, then m2–m8 and full 1,616-cell adjudication. Preserve six quota A
-errors as attempts; no regrades or answer recollection are authorized. Independent
-continuation/owner-rollover review and the unfinished rubric audit, Astra R2 and
-conditional route reviews remain gates. Root supplies archive/schedule receipts.
-Done when both experiments have reviewed complete outcomes, any justified model
-change passes production/release gates, and owned resources are cleaned up.
+The scheduled handoff arrived and its one-shot job was removed. The
+[November 9 continuation](rounds/2026-11-09-playground-resumption.md) records current
+recovery, review and budget evidence. Read [the resume checkpoint](rounds/2026-11-06-playground-resume.md)
+before interpreting the historical study. The owner subsequently requested only
+decision-relevant evaluation and authorized simplifying the plan. The old
+1,616-cell matrix remains incomplete; filling it is no longer the objective.
+
+Judge B is closed as not qualified on its current unattended route: calibration
+passed, but real collection had 73 completions and two zero-cost HTTP 429s in 75
+attempts, including the approved untouched singleton. Keep the 125 unattempted
+cells and the $2.591247 unresolved hold. Preserve all A/B errors, original answers
+and prior debits; no further B collection or recovery is planned.
+
+The replacement collection is complete: 60 answer attempts, $1.2722109 new API cash.
+Haiku qualifies as fallback on the one confirmation (3 wrong versus Luna's 7,
+no answer failures or unsafe output); primary retained because the evaluation
+OpenAI account is inactive. Production OpenAI wholesale calls are separately
+observed healthy. See [the decision](../research/audits/2026-11-09-playground-product-decision.md)
+for partial/correct tradeoffs, raw judge errors and blind-review coverage.
+Candidate release tests passed; final independent review, production transport
+checks, merge/deploy and post-deploy verification remain. Frozen worktrees are
+archived and removed. Remove this item after release and owned-terminal cleanup.
 
 ### Resolve diagnostic noncompletions and judge ambiguities
 

@@ -1,9 +1,11 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import * as demoModelConfig from "../src/demo/model-config";
+import type { DemoModelConfig } from "../src/demo/model-config";
 // Plain Node evaluator module; exercised directly by Vitest without a build step.
 // @ts-expect-error no declaration file is emitted for the local .mjs contract.
 import * as artifactContract from "../eval/playground/artifact-contract.mjs";
 // @ts-expect-error local executable module intentionally exposes a test seam.
-import { answeringWithObserved, orchestratePlaygroundRun } from "../scripts/run-playground-semantic-eval.mjs";
+import { answeringConfiguration, answeringWithObserved, orchestratePlaygroundRun } from "../scripts/run-playground-semantic-eval.mjs";
 
 const {
   PLAYGROUND_ARTIFACT_CONTRACT,
@@ -178,6 +180,100 @@ function fixtureQuarantine() {
     }
   });
 }
+
+describe("playground answering receipt configuration", () => {
+  const mixedTuple: readonly DemoModelConfig[] = [
+    { model: "openai/receipt-primary", role: "primary", reasoningEffort: "high" },
+    { model: "anthropic/claude-sonnet-5", role: "fallback", reasoningEffort: "low" }
+  ];
+
+  beforeEach(() => {
+    for (const name of ["DEMO_MODEL_OVERRIDE", "DEMO_OPENAI_API_MODE", "DEMO_REASONING_EFFORT_OVERRIDE"]) {
+      vi.stubEnv(name, undefined);
+    }
+  });
+  afterEach(() => {
+    vi.restoreAllMocks();
+    vi.unstubAllEnvs();
+  });
+
+  function useTuple(tuple = mixedTuple) {
+    const resolve = demoModelConfig.demoModelsFromOverride;
+    vi.spyOn(demoModelConfig, "demoModelsFromOverride").mockImplementation((override) =>
+      override?.trim() ? resolve(override) : tuple
+    );
+  }
+
+  it("records each mixed-tuple effort in the real receipt builder and configuration hash", () => {
+    useTuple();
+    const answering = answeringConfiguration({});
+    expect(answering.models).toEqual([
+      { model: mixedTuple[0]!.model, role: "primary", reasoningEffort: { configured: "high", value: "high", source: "model" } },
+      { model: mixedTuple[1]!.model, role: "fallback", reasoningEffort: { configured: "low", value: "low", source: "model" } }
+    ]);
+    expect(answering.reasoningEffort).toMatchObject({ scope: "primary-attempt", value: "high", source: "model", default: "none" });
+    const meta = fixtureMeta(reviewedRound(), () => answering);
+    expect(() => assertPlaygroundArtifactMeta(meta)).not.toThrow();
+    const changed = structuredClone(meta);
+    changed.answering.models[1].reasoningEffort.value = "medium";
+    expect(() => assertPlaygroundArtifactMeta(changed)).toThrow(/answeringConfigSha256/);
+    const changedMeta = fixtureMeta(reviewedRound(), () => changed.answering);
+    expect(changedMeta.inputSnapshot.answeringConfigSha256).not.toBe(meta.inputSnapshot.answeringConfigSha256);
+    expect(fixtureMeta(reviewedRound(), () => answeringWithObserved(answering, [
+      { answerCost: { models: [mixedTuple[1]!.model] } }
+    ])).inputSnapshot.answeringConfigSha256).toBe(meta.inputSnapshot.answeringConfigSha256);
+  });
+
+  it.each(["none", "low"])("gives explicit process %s precedence over dev-vars and tuple efforts", (value) => {
+    useTuple();
+    vi.stubEnv("DEMO_REASONING_EFFORT_OVERRIDE", value);
+    const answering = answeringConfiguration({ DEMO_REASONING_EFFORT_OVERRIDE: "xhigh" });
+    expect(answering.models.map((entry: any) => entry.reasoningEffort)).toEqual([
+      { configured: "high", value, source: "process-env" },
+      { configured: "low", value, source: "process-env" }
+    ]);
+    expect(answering.reasoningEffort).toMatchObject({ value, source: "process-env", invalidOverrideIgnored: false });
+  });
+
+  it("uses a dev-vars override when the process has no override", () => {
+    useTuple();
+    const answering = answeringConfiguration({ DEMO_REASONING_EFFORT_OVERRIDE: " none " });
+    expect(answering.models.map((entry: any) => entry.reasoningEffort.value)).toEqual(["none", "none"]);
+    expect(answering.models.map((entry: any) => entry.reasoningEffort.source)).toEqual([".dev.vars", ".dev.vars"]);
+  });
+
+  it.each(["", "invalid"])("ignores invalid process value %j without falling through to dev-vars", (value) => {
+    useTuple();
+    vi.stubEnv("DEMO_REASONING_EFFORT_OVERRIDE", value);
+    const answering = answeringConfiguration({ DEMO_REASONING_EFFORT_OVERRIDE: "medium" });
+    expect(answering.models.map((entry: any) => entry.reasoningEffort.value)).toEqual(["high", "low"]);
+    expect(answering.reasoningEffort).toMatchObject({ value: "high", source: "model", invalidOverrideIgnored: true });
+  });
+
+  it.each(["process-env", ".dev.vars"])("does not inherit tuple effort for a slug-only override from %s", (source) => {
+    useTuple();
+    const slug = mixedTuple[0]!.model;
+    const devVars = source === ".dev.vars" ? { DEMO_MODEL_OVERRIDE: slug } : {};
+    if (source === "process-env") vi.stubEnv("DEMO_MODEL_OVERRIDE", slug);
+    const answering = answeringConfiguration(devVars);
+    expect(answering.models).toEqual([
+      { model: slug, role: "primary", reasoningEffort: { configured: null, value: "none", source: "default" } }
+    ]);
+    expect(answering.fallbackModels).toEqual([]);
+    expect(answering.modelSource).toBe(source);
+    expect(answering.reasoningEffort).toMatchObject({ value: "none", source: "default", invalidOverrideIgnored: false });
+  });
+
+  it("records the production tuple and global default when no overrides are present", () => {
+    const answering = answeringConfiguration({});
+    expect(answering.defaultModels).toEqual(demoModelConfig.DEMO_MODELS);
+    expect(answering.models.map(({ model, role }: DemoModelConfig) => ({ model, role }))).toEqual(demoModelConfig.DEMO_MODELS);
+    expect(answering.models.map((entry: any) => entry.reasoningEffort)).toEqual([
+      { configured: null, value: "none", source: "default" },
+      { configured: null, value: "none", source: "default" }
+    ]);
+  });
+});
 
 describe("playground semantic artifact contract", () => {
   it("requires both paid-run provenance inputs before model execution", () => {

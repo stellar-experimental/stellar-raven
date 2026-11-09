@@ -3,6 +3,12 @@
 The QA evaluation measures whether an agent gives a correct, current answer through `search` and `execute`.
 It is the headline measure. Other instruments test routing, discovery, tool use, or specific behavior.
 
+Choose instruments to resolve the stated decision at proportionate cost and risk. Reuse compatible
+stored results and accepted checks before collecting more. A bounded product comparison is distinct
+from an all-model superiority study: predeclare its sample, acceptance and stopping rules, and keep
+historical incomplete cohorts separate. The [run-evals skill](../.agents/skills/run-evals/SKILL.md)
+owns this scoping and review workflow; required CI and release gates remain unchanged.
+
 ## Instruments
 
 | Instrument | Measure | Cost and use | Status |
@@ -49,7 +55,7 @@ Git history preserves their measurement evidence.
 6. Treat results as local evidence under ignored `results/` directories. Prune results older than 30 days after investigations end.
 7. Preserve dated evidence. A historical score does not establish current correctness or authorize another paid run.
 
-Each round files or updates evidence-backed upstream findings in [improvements/](../improvements/README.md).
+When a round establishes an upstream defect, file or update evidence-backed findings in [improvements/](../improvements/README.md).
 Record problems in this repository in [.agents/TODO.md](../.agents/TODO.md).
 The [improvements workflow](../.agents/skills/improvements-pipeline/SKILL.md) defines evidence and status requirements.
 
