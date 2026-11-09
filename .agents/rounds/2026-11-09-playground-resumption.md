@@ -4,7 +4,7 @@ The owner resumed the experiments after the Claude reset, then explicitly reques
 
 ## Current decision
 
-Retain `openai/gpt-5.6-terra` as primary. `anthropic/claude-haiku-5.5` qualifies as fallback: on the disjoint 24-case confirmation it has three wrong answers versus Luna's seven, with no answer failures or unsafe output. It has fewer fully correct answers and more partial answers; this is a fallback acceptance result, not broad superiority. Production checks and release remain pending at this checkpoint.
+Retain `openai/gpt-5.6-terra` as primary. `anthropic/claude-haiku-5.5` qualifies as fallback: on the disjoint 24-case confirmation it has three wrong answers versus Luna's seven, with no answer failures or unsafe output. It has fewer fully correct answers and more partial answers; this is a fallback acceptance result, not broad superiority. Haiku passed all 16 production-gateway checks. The unchanged primary failed `noToolFailures` after a generated-script shape error, then recovered and answered normally. Its stopped run remains incomplete. The accepted two-cell gate blocks promotion pending an explicit fallback-only owner exception; no retry is planned.
 
 The second-judge experiment is closed with a route limitation: adapter/calibration passed, but 75 first attempts included two zero-cost provider 429s and 73 completions. The 125 unattempted calls and old $2.591247 unresolved hold remain. No more B collection or recovery is planned. The OpenAI primary comparison stopped after one zero-cost account-inactive evaluation failure. Existing production logs subsequently showed successful wholesale primary calls on a different gateway.
 
@@ -12,7 +12,7 @@ The second-judge experiment is closed with a route limitation: adapter/calibrati
 
 The [original ledger](2026-11-06-playground-final-resolution.md) and [resume checkpoint](2026-11-06-playground-resume.md) govern historical evidence. Their exhaustive completion requirement is superseded by the owner's scope amendment, `playground-product-screen-confirm-v1`. The paired screen and one confirmation used 60 new answer attempts and 59 A calls; no retries or top-ups. The report records selection, raw versus adjudicated outcomes, blind review coverage, freshness handling and limitations.
 
-New collection API cash is $1.2722109. Lifetime ceiling consumption is $12.29541403; the $2.591247 old hold and $20 reserve remain intact, leaving $165.11333897 above them. The $7.97 conservative charge is already inside the carried prior cohort, not another debit. A's $4.1203134 subscription notional is not API cash.
+New collection API cash is $1.2722109; settled Haiku production cash adds $0.1010618. Lifetime posted ceiling consumption is $12.39647583; the $2.591247 old hold, full $1.21 primary allocation and $20 reserve remain intact, leaving $163.80227717 above them. The partial primary receipt reports $0.3986999 and session-bound Gateway evidence observes $0.4129097; neither is added on top of the full hold. The $7.97 conservative charge is already inside the carried prior cohort, not another debit. A's $4.1203134 subscription notional is not API cash.
 
 Private evidence: `tmp/playground-final/resume-2026-11-09/`, including the immutable old journal snapshot, recovery/exact-log proof, failed singleton, accepted lean plan, caps/grants/receipts, blind reviews and conditional patch reviews. The full pre-closeout chronology is retained at `chronological-ledger-before-closeout.md`, SHA `695997fdca1e15c84fe8c8f46426a021ee09de6a5581c501f156bcaa9e477ae8`. Original answers, failed methods, judge errors and denominators remain preserved.
 
@@ -30,4 +30,4 @@ All collectors and servers are stopped and removed. Author-owned route/effort/do
 
 ## Release checkpoint
 
-Candidate typecheck, 3,386 unit tests (three expected failures), build, 140 smoke tests and eval self-test passed. Production transport checks, final independent review, secret scan, PR/merge/deploy, post-deploy legacy `/mcp` verification and remaining owned-terminal cleanup are next. Use the existing SDF deployment profile/account and the normal clean-main preflight; no billing or gateway settings changes.
+Candidate typecheck, 3,386 unit tests (three expected failures), build, 140 smoke tests and eval self-test passed. Independent Fable/high review and secret scans passed. Haiku production checks passed; the unchanged-primary check failed as recorded above. Source stayed unchanged through both runs. Prepare the reviewed draft PR and CI before the owner's release choice; merge/deploy and post-deploy legacy `/mcp` verification depend on that choice. Use the existing SDF deployment profile/account and the normal clean-main preflight; no billing or gateway settings changes.

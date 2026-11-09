@@ -591,9 +591,12 @@ no answer failures or unsafe output); primary retained because the evaluation
 OpenAI account is inactive. Production OpenAI wholesale calls are separately
 observed healthy. See [the decision](../research/audits/2026-11-09-playground-product-decision.md)
 for partial/correct tradeoffs, raw judge errors and blind-review coverage.
-Candidate release tests passed; final independent review, production transport
-checks, merge/deploy and post-deploy verification remain. Frozen worktrees are
-archived and removed. Remove this item after release and owned-terminal cleanup.
+Candidate release tests, independent review and Haiku production checks passed.
+The unchanged primary failed a tool-reliability gate, then recovered; its stopped
+run and full $1.21 allocation remain incomplete/held. Promotion requires an explicit
+fallback-only owner exception; otherwise retain the pair. No retry is planned.
+PR CI, release choice, merge/deploy and post-deploy verification remain. Frozen
+worktrees are archived and removed. Remove this item after release and owned-terminal cleanup.
 
 ### Resolve diagnostic noncompletions and judge ambiguities
 
