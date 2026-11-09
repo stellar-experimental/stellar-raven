@@ -569,34 +569,17 @@ primary on a paired 30-case semantic check, or the owner decides to stop re-chec
 
 ## Eval instruments
 
-### Finish the scoped Playground model decision
+### Clarify the model-facing `codemode.describe` response shape
 
-The owner chose to keep the $200 API cap and resume after the November 8 reset.
-The scheduled handoff arrived and its one-shot job was removed. The
-[November 9 continuation](rounds/2026-11-09-playground-resumption.md) records current
-recovery, review and budget evidence. Read [the resume checkpoint](rounds/2026-11-06-playground-resume.md)
-before interpreting the historical study. The owner subsequently requested only
-decision-relevant evaluation and authorized simplifying the plan. The old
-1,616-cell matrix remains incomplete; filling it is no longer the objective.
+The November 9 primary production check recovered from reading `spec.data.signature`:
+`codemode.describe` returns `{ ok: true, signature, inputSchema, ... }` at the top
+level, while service calls use `{ ok: true, data }`. See the retained failure in
+[the Playground decision](../research/audits/2026-11-09-playground-product-decision.md).
+Decide whether model-facing documentation or a forward-only shape change best
+resolves the ambiguity; evaluate that prompt/behavior change separately. Do not
+retry the closed model experiment or bundle a shape change into its release.
 
-Judge B is closed as not qualified on its current unattended route: calibration
-passed, but real collection had 73 completions and two zero-cost HTTP 429s in 75
-attempts, including the approved untouched singleton. Keep the 125 unattempted
-cells and the $2.591247 unresolved hold. Preserve all A/B errors, original answers
-and prior debits; no further B collection or recovery is planned.
-
-The replacement collection is complete: 60 answer attempts, $1.2722109 new API cash.
-Haiku qualifies as fallback on the one confirmation (3 wrong versus Luna's 7,
-no answer failures or unsafe output); primary retained because the evaluation
-OpenAI account is inactive. Production OpenAI wholesale calls are separately
-observed healthy. See [the decision](../research/audits/2026-11-09-playground-product-decision.md)
-for partial/correct tradeoffs, raw judge errors and blind-review coverage.
-Candidate release tests, independent review and Haiku production checks passed.
-The unchanged primary failed a tool-reliability gate, then recovered; its stopped
-run and full $1.21 allocation remain incomplete/held. Promotion requires an explicit
-fallback-only owner exception; otherwise retain the pair. No retry is planned.
-PR CI, release choice, merge/deploy and post-deploy verification remain. Frozen
-worktrees are archived and removed. Remove this item after release and owned-terminal cleanup.
+Done when: one reviewed, measured correction makes the describe shape clear to models.
 
 ### Resolve diagnostic noncompletions and judge ambiguities
 
