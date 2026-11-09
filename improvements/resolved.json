@@ -604,6 +604,26 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/773857262d462506947a324b7437b8499f886287/improvements/stellar-docs/sd-031-cli-container-command-drift.md"
     },
     {
+      "id": "sd-032",
+      "title": "The current Flutter Wallet SDK tutorial pins this pair:",
+      "service": "stellar-docs",
+      "discovered": "2026-07-11",
+      "resolved": "2026-11-09",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/2606",
+        "https://github.com/stellar/stellar-docs/pull/2410",
+        "https://github.com/stellar/stellar-docs/pull/2898"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/2898"
+      ],
+      "liveRecheck": "2026-11-09: https://developers.stellar.org/docs/build/apps/wallet/intro.md now installs with `flutter pub add stellar_wallet_flutter_sdk stellar_flutter_sdk`; neither `^1.0.6` nor `^2.1.3` remains on the page. pub.dev reports stellar_wallet_flutter_sdk 1.1.8, which depends on stellar_flutter_sdk ^3.10.0, so the command no longer forces the stale pair. Flutter's resolver was not executed.",
+      "reviewEvidence": "Author Codex workhorse gpt-6.1-sol high (hc t38r) and distinct reviewer Codex frontier gpt-6-astra high (hc t38s) independently re-fetched the live pages and upstream refs and re-ran served code; same verdict. Coordinator Claude Opus reviewed persistent references; four golden cases reconciled. Ledger: .agents/rounds/2026-11-09-upstream-handoffs.md. Posted and read back: https://github.com/stellar/stellar-docs/issues/2606#issuecomment-6749348123",
+      "sourceCommit": "ac3adf30192b2e9039576ea2ed065a594d526fb6",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/ac3adf30192b2e9039576ea2ed065a594d526fb6/improvements/stellar-docs/sd-032-flutter-wallet-dependency-snippets-stale.md"
+    },
+    {
       "id": "sd-033",
       "title": "The official Client & XDR SDKs page describes the current community Python SDK as Horizon-only. It says py-stellar-base communicates with…",
       "service": "stellar-docs",
@@ -932,6 +952,45 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/e67f8d11bc4fb218a618516b16e32b1be01722be/improvements/stellar-docs/sd-052-cli-bindings-placeholder-languages.md"
     },
     {
+      "id": "sd-053",
+      "title": "The RPC configuring page now has the section \"Backfilling History on Startup\". The section explains BACKFILL, but it omits two startup…",
+      "service": "stellar-docs",
+      "discovered": "2026-09-21",
+      "resolved": "2026-11-09",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/2602",
+        "https://github.com/stellar/stellar-docs/pull/2789",
+        "https://github.com/stellar/stellar-docs/pull/2899"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/2899"
+      ],
+      "liveRecheck": "2026-11-09: https://developers.stellar.org/docs/data/apis/rpc/admin-guide/configuring.md now says an empty database without BACKFILL starts at the latest archived ledger and that a larger HISTORY_RETENTION_WINDOW alone adds no older ledgers, matching stellar-rpc v30.0.0 service.go:182-191. The local gap-check half stays undocumented by the RPC team's decision (https://github.com/stellar/stellar-docs/pull/2899#discussion_r4516284001); Raven keeps that half as declined record sd-102 and will not re-file it.",
+      "reviewEvidence": "Author Codex workhorse gpt-6.1-sol high (hc t38r) and distinct reviewer Codex frontier gpt-6-astra high (hc t38s) independently re-fetched the live pages and upstream refs and re-ran served code; same verdict. Coordinator Claude Opus reviewed persistent references; four golden cases reconciled. Declined half retained as sd-102. Ledger: .agents/rounds/2026-11-09-upstream-handoffs.md. Posted and read back: https://github.com/stellar/stellar-docs/issues/2602#issuecomment-6749348438",
+      "sourceCommit": "ac3adf30192b2e9039576ea2ed065a594d526fb6",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/ac3adf30192b2e9039576ea2ed065a594d526fb6/improvements/stellar-docs/sd-053-rpc-backfill-fresh-start-and-gap-check.md"
+    },
+    {
+      "id": "sd-054",
+      "title": "Two pages say that the network updates the ledger \"every 5-7 seconds\": the Stellar Stack page and the Validators introduction. The sampled…",
+      "service": "stellar-docs",
+      "discovered": "2026-10-01",
+      "resolved": "2026-11-09",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/2889",
+        "https://github.com/stellar/stellar-docs/pull/2931"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/2931"
+      ],
+      "liveRecheck": "2026-11-09: https://developers.stellar.org/docs/learn/fundamentals/stellar-stack.md and https://developers.stellar.org/docs/validators.md both say about every 5 seconds with the network-setting caveat and no longer contain 5-7. A fresh Horizon sample (Mainnet ledgers 65392852-65393051) gave 199 adjacent close deltas of 5 seconds. The USDT0 launch page (https://developers.stellar.org/launch/usdt0) still says 5-7 seconds twice; Raven tracks that as successor sd-100.",
+      "reviewEvidence": "Author Codex workhorse gpt-6.1-sol high (hc t38r) and distinct reviewer Codex frontier gpt-6-astra high (hc t38s) independently re-fetched the live pages and upstream refs and re-ran served code; same verdict. Coordinator Claude Opus reviewed persistent references; four golden cases reconciled. USDT0 residual retained as sd-100. Ledger: .agents/rounds/2026-11-09-upstream-handoffs.md. Posted and read back: https://github.com/stellar/stellar-docs/issues/2889#issuecomment-6749348775",
+      "sourceCommit": "ac3adf30192b2e9039576ea2ed065a594d526fb6",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/ac3adf30192b2e9039576ea2ed065a594d526fb6/improvements/stellar-docs/sd-054-ledger-cadence-5-7-seconds-stale-after-protocol-28.md"
+    },
+    {
       "id": "sd-055",
       "title": "Two archival examples call sign() on the builder returned by assembleTransaction(). The non-restoration branch fails with TypeError:…",
       "service": "stellar-docs",
@@ -992,6 +1051,25 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/26e4e4207eb59da0268a9b1c71b181cf35b61c1f/improvements/stellar-docs/sd-057-anchor-admin-usdc-network-label.md"
     },
     {
+      "id": "sd-058",
+      "title": "The fee-payer signing example calls removed XDR getter methods with the current JavaScript SDK. It throws TypeError: txEnvelope.v1 is not…",
+      "service": "stellar-docs",
+      "discovered": "2026-10-09",
+      "resolved": "2026-11-09",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/2909",
+        "https://github.com/stellar/stellar-docs/pull/2932"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/2932"
+      ],
+      "liveRecheck": "2026-11-09: https://developers.stellar.org/docs/build/guides/transactions/signing-soroban-invocations.md and https://developers.stellar.org/docs/build/agentic-payments/x402/quickstart-guide.md use SDK 17 type/value access and contain no `.v1()` chain. The served extraction and rebuild blocks ran against @stellar/stellar-sdk 17.4.0 on unsigned local transactions: Soroban data is extracted byte-identically, the missing-data control throws, and the x402 rebuild keeps the Soroban data with fee 1. Nothing was signed or submitted.",
+      "reviewEvidence": "Author Codex workhorse gpt-6.1-sol high (hc t38r) and distinct reviewer Codex frontier gpt-6-astra high (hc t38s) independently re-fetched the live pages and upstream refs and re-ran served code; same verdict. Coordinator Claude Opus reviewed persistent references; four golden cases reconciled. Ledger: .agents/rounds/2026-11-09-upstream-handoffs.md. Posted and read back: https://github.com/stellar/stellar-docs/issues/2909#issuecomment-6749349101",
+      "sourceCommit": "ac3adf30192b2e9039576ea2ed065a594d526fb6",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/ac3adf30192b2e9039576ea2ed065a594d526fb6/improvements/stellar-docs/sd-058-fee-payer-sdk17-xdr-access.md"
+    },
+    {
       "id": "sd-060",
       "title": "The x402 overview page lists Albedo as a wallet that supports auth-entry signing. Albedo has no auth-entry signing intent, and the Stellar…",
       "service": "stellar-docs",
@@ -1008,6 +1086,25 @@
       "reviewEvidence": "Distinct Astra high reviewer t2dx freshly re-derived the deployed original trigger and adjacent behavior; approved in .agents/rounds/2026-11-05-truth-maintenance/docs-independent.md. Coordinator reconciled active references and scoped golden changes; historical evidence remains dated. Posted and read back: https://github.com/stellar/stellar-docs/issues/2997#issuecomment-6674833404",
       "sourceCommit": "ea544f5f190552cb7616c80407aa24fb550e75c9",
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/ea544f5f190552cb7616c80407aa24fb550e75c9/improvements/stellar-docs/sd-060-x402-wallet-list-albedo-auth-entry.md"
+    },
+    {
+      "id": "sd-062",
+      "title": "The SDP Registration API reference says that wallets authenticate through Anchor Platform endpoints on a separate host. SDP 6.0.0 removed…",
+      "service": "stellar-docs",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-09",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/2999",
+        "https://github.com/stellar/stellar-docs/pull/3010"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/3010"
+      ],
+      "liveRecheck": "2026-11-09: https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/api-reference/registration.md says SDP hosts the SEP-10 and SEP-24 endpoints itself and limits the separate Anchor Platform host to versions before 6.0.0; the four typos are gone and the bundled spec agrees. https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/troubleshooting.md lists SDP and TSS only. The SDP backend's stellar.toml handler builds both endpoints from the SDP base URL.",
+      "reviewEvidence": "Author Codex workhorse gpt-6.1-sol high (hc t38r) and distinct reviewer Codex frontier gpt-6-astra high (hc t38s) independently re-fetched the live pages and upstream refs and re-ran served code; same verdict. Coordinator Claude Opus reviewed persistent references; four golden cases reconciled. Ledger: .agents/rounds/2026-11-09-upstream-handoffs.md. Posted and read back: https://github.com/stellar/stellar-docs/issues/2999#issuecomment-6749349499",
+      "sourceCommit": "ac3adf30192b2e9039576ea2ed065a594d526fb6",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/ac3adf30192b2e9039576ea2ed065a594d526fb6/improvements/stellar-docs/sd-062-sdp-registration-anchor-platform-endpoints.md"
     },
     {
       "id": "sd-063",
@@ -1356,6 +1453,25 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/e5865654902461d4a46b140871d929a70e72c1c6/improvements/stellar-docs/sd-087-simulation-authmode-default-is-conditional.md"
     },
     {
+      "id": "sd-088",
+      "title": "The Ledgers page gives direct header fields and nested consensus-value members identical heading levels. Its SCP paragraph also describes…",
+      "service": "stellar-docs",
+      "discovered": "2026-11-03",
+      "resolved": "2026-11-09",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/3035",
+        "https://github.com/stellar/stellar-docs/pull/3050"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/3050"
+      ],
+      "liveRecheck": "2026-11-09: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/ledgers.md nests txSetHash, closeTime and upgrades under `scpValue: StellarValue`, says they are not direct header fields, and scopes millisecond close time to Protocol 30 (CAP-88). This matches stellar-xdr v28.0 and v30.0.",
+      "reviewEvidence": "Author Codex workhorse gpt-6.1-sol high (hc t38r) and distinct reviewer Codex frontier gpt-6-astra high (hc t38s) independently re-fetched the live pages and upstream refs and re-ran served code; same verdict. Coordinator Claude Opus reviewed persistent references; four golden cases reconciled. Ledger: .agents/rounds/2026-11-09-upstream-handoffs.md. Posted and read back: https://github.com/stellar/stellar-docs/issues/3035#issuecomment-6749349882",
+      "sourceCommit": "ac3adf30192b2e9039576ea2ed065a594d526fb6",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/ac3adf30192b2e9039576ea2ed065a594d526fb6/improvements/stellar-docs/sd-088-ledger-header-scpvalue-nesting.md"
+    },
+    {
       "id": "sd-089",
       "title": "The simulation deep-dive example decodes a possible return value before it checks simulation success. It calls…",
       "service": "stellar-docs",
@@ -1372,6 +1488,82 @@
       "reviewEvidence": "Distinct Astra high reviewer t2dx independently re-fetched original sources, inspected fixing PRs and ran original-scope controls; PASS in .agents/rounds/2026-11-05-truth-maintenance/docs-independent.md. Adjacent residuals have separate accepted findings. Coordinator reviewed persistent references. Posted and read back: https://github.com/stellar/stellar-docs/issues/3036#issuecomment-6674860234",
       "sourceCommit": "e5865654902461d4a46b140871d929a70e72c1c6",
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/e5865654902461d4a46b140871d929a70e72c1c6/improvements/stellar-docs/sd-089-simulation-preview-decodes-before-success-check.md"
+    },
+    {
+      "id": "sd-090",
+      "title": "The contract-spec guide gives incorrect encodings for tagged enums and integer enums. The declared tagged enum has variants A and B(u32).…",
+      "service": "stellar-docs",
+      "discovered": "2026-11-03",
+      "resolved": "2026-11-09",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/3037",
+        "https://github.com/stellar/stellar-docs/pull/3052"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/3052"
+      ],
+      "liveRecheck": "2026-11-09: https://developers.stellar.org/docs/build/guides/dapps/working-with-contract-specs.md encodes each tagged variant as a vector with the symbol first (`[Symbol(B), U32(0)]`) in the Python, Java and PHP examples, encodes integer enums as a single U32, and the named-struct Python example calls `scval.to_uint32`. The served Python snippets produced the expected ScVal encodings; Java and PHP were read, not run.",
+      "reviewEvidence": "Author Codex workhorse gpt-6.1-sol high (hc t38r) and distinct reviewer Codex frontier gpt-6-astra high (hc t38s) independently re-fetched the live pages and upstream refs and re-ran served code; same verdict. Coordinator Claude Opus reviewed persistent references; four golden cases reconciled. Ledger: .agents/rounds/2026-11-09-upstream-handoffs.md. Posted and read back: https://github.com/stellar/stellar-docs/issues/3037#issuecomment-6749350237",
+      "sourceCommit": "ac3adf30192b2e9039576ea2ed065a594d526fb6",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/ac3adf30192b2e9039576ea2ed065a594d526fb6/improvements/stellar-docs/sd-090-contract-spec-enum-encodings.md"
+    },
+    {
+      "id": "sd-091",
+      "title": "The simulation deep-dive example calls JSON.parse on the object returned by response.json(). A normal JSON-RPC object causes SyntaxError…",
+      "service": "stellar-docs",
+      "discovered": "2026-11-03",
+      "resolved": "2026-11-09",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/3038",
+        "https://github.com/stellar/stellar-docs/pull/3053"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/3053"
+      ],
+      "liveRecheck": "2026-11-09: https://developers.stellar.org/docs/build/guides/transactions/simulateTransaction-Deep-Dive.md calls `response.json()` once and contains no `JSON.parse`. The served function ran against local fetch fixtures: success returns `result`, a JSON-RPC error throws its message, and a simulation `result.error` throws its message, each with one body read. No network simulation ran.",
+      "reviewEvidence": "Author Codex workhorse gpt-6.1-sol high (hc t38r) and distinct reviewer Codex frontier gpt-6-astra high (hc t38s) independently re-fetched the live pages and upstream refs and re-ran served code; same verdict. Coordinator Claude Opus reviewed persistent references; four golden cases reconciled. Ledger: .agents/rounds/2026-11-09-upstream-handoffs.md. Posted and read back: https://github.com/stellar/stellar-docs/issues/3038#issuecomment-6749350551",
+      "sourceCommit": "ac3adf30192b2e9039576ea2ed065a594d526fb6",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/ac3adf30192b2e9039576ea2ed065a594d526fb6/improvements/stellar-docs/sd-091-json-response-double-parse.md"
+    },
+    {
+      "id": "sd-092",
+      "title": "The pooled-account guide permits a muxed source for any operation or transaction. Core rejects muxed sources for a single…",
+      "service": "stellar-docs",
+      "discovered": "2026-11-03",
+      "resolved": "2026-11-09",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/3039",
+        "https://github.com/stellar/stellar-docs/pull/3054"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/3054"
+      ],
+      "liveRecheck": "2026-11-09: https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos.md states that from Protocol 25 an InvokeHostFunction transaction cannot use a muxed transaction or operation source or carry a memo (txSOROBAN_INVALID), separates the fee-bump fee source and the ExtendFootprintTtl/RestoreFootprint operations, and limits muxed IDs in contract calls to MuxedAddress arguments. This matches stellar-core v30.0.0 TransactionFrame.cpp.",
+      "reviewEvidence": "Author Codex workhorse gpt-6.1-sol high (hc t38r) and distinct reviewer Codex frontier gpt-6-astra high (hc t38s) independently re-fetched the live pages and upstream refs and re-ran served code; same verdict. Coordinator Claude Opus reviewed persistent references; four golden cases reconciled. Ledger: .agents/rounds/2026-11-09-upstream-handoffs.md. Posted and read back: https://github.com/stellar/stellar-docs/issues/3039#issuecomment-6749350892",
+      "sourceCommit": "ac3adf30192b2e9039576ea2ed065a594d526fb6",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/ac3adf30192b2e9039576ea2ed065a594d526fb6/improvements/stellar-docs/sd-092-muxed-source-invoke-host-function-exception.md"
+    },
+    {
+      "id": "sd-093",
+      "title": "The storage page says transactions with overlapping footprints must execute sequentially. CAP-0063 defines a conflict only when at least…",
+      "service": "stellar-docs",
+      "discovered": "2026-11-03",
+      "resolved": "2026-11-09",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/3040",
+        "https://github.com/stellar/stellar-docs/pull/3055"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/3055"
+      ],
+      "liveRecheck": "2026-11-09: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/persisting-data.md says two transactions conflict only when one lists a shared entry as read-write, and allows read-only overlap in parallel execution, matching CAP-63. https://developers.stellar.org/docs/build/guides/storage/storage-strategies.md now says transactions that write shared entries contend.",
+      "reviewEvidence": "Author Codex workhorse gpt-6.1-sol high (hc t38r) and distinct reviewer Codex frontier gpt-6-astra high (hc t38s) independently re-fetched the live pages and upstream refs and re-ran served code; same verdict. Coordinator Claude Opus reviewed persistent references; four golden cases reconciled. Ledger: .agents/rounds/2026-11-09-upstream-handoffs.md. Posted and read back: https://github.com/stellar/stellar-docs/issues/3040#issuecomment-6749351241",
+      "sourceCommit": "ac3adf30192b2e9039576ea2ed065a594d526fb6",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/ac3adf30192b2e9039576ea2ed065a594d526fb6/improvements/stellar-docs/sd-093-footprint-overlap-read-only-exception.md"
     },
     {
       "id": "sd-094",
@@ -1430,6 +1622,44 @@
       "reviewEvidence": "Codex frontier gpt-6-astra/high, independent lane t35p; research/audits/2026-11-06-playground-final-resolution/handoff-retirement-review.md. Fresh live triggers, maintainer approvals, deployed merge checks, adjacent content and repo references verified. Fable unavailable due subscription quota. Resolution comments posted/read back on both upstream refs; no active golden/register refs.",
       "sourceCommit": "5ababf34190a23badac7979f58e0823e9125efe6",
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/5ababf34190a23badac7979f58e0823e9125efe6/improvements/stellar-docs/sd-097-raven-backend-still-names-algolia.md"
+    },
+    {
+      "id": "sd-098",
+      "title": "The custom-account authentication guide teaches four uses of the deprecated raw Events::publish method. The contract-spec guide teaches…",
+      "service": "stellar-docs",
+      "discovered": "2026-11-06",
+      "resolved": "2026-11-09",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/3065",
+        "https://github.com/stellar/stellar-docs/pull/3067"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/3067"
+      ],
+      "liveRecheck": "2026-11-09: https://developers.stellar.org/docs/build/guides/auth/check-auth-tutorials.md and https://developers.stellar.org/docs/build/guides/dapps/working-with-contract-specs.md replace all five `env.events().publish` calls with `#[contractevent]` types. The served event definitions compile on soroban-sdk 29.0.1, and a local test showed each typed event emits the same topics and data XDR as the raw call it replaces. The complete WebAuthn contract on the auth page still fails `cargo check` on missing definitions and dependency wiring, a separate pre-existing gap; Raven tracks it as successor sd-101.",
+      "reviewEvidence": "Author Codex workhorse gpt-6.1-sol high (hc t38r) and distinct reviewer Codex frontier gpt-6-astra high (hc t38s) independently re-fetched the live pages and upstream refs and re-ran served code; same verdict. Coordinator Claude Opus reviewed persistent references; four golden cases reconciled. Complete WebAuthn example residual retained as sd-101. Ledger: .agents/rounds/2026-11-09-upstream-handoffs.md. Posted and read back: https://github.com/stellar/stellar-docs/issues/3065#issuecomment-6749351559",
+      "sourceCommit": "ac3adf30192b2e9039576ea2ed065a594d526fb6",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/ac3adf30192b2e9039576ea2ed065a594d526fb6/improvements/stellar-docs/sd-098-auth-and-contract-spec-guides-deprecated-events-publish.md"
+    },
+    {
+      "id": "sd-099",
+      "title": "The manual invocation example in Making cross-contract calls does not compile with soroban-sdk 28.0.0 or 29.0.1. It passes a Symbol where…",
+      "service": "stellar-docs",
+      "discovered": "2026-11-06",
+      "resolved": "2026-11-09",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/3070",
+        "https://github.com/stellar/stellar-docs/pull/3071"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/3071"
+      ],
+      "liveRecheck": "2026-11-09: https://developers.stellar.org/docs/build/guides/conventions/cross-contract.md shows the manual `env.invoke_contract` example with `&symbol_short!(\"add\")`, `into_val(&env)` arguments and the IntoVal import. The served snippet, extracted unchanged, passes `cargo check` against soroban-sdk 29.0.1.",
+      "reviewEvidence": "Author Codex workhorse gpt-6.1-sol high (hc t38r) and distinct reviewer Codex frontier gpt-6-astra high (hc t38s) independently re-fetched the live pages and upstream refs and re-ran served code; same verdict. Coordinator Claude Opus reviewed persistent references; four golden cases reconciled. Ledger: .agents/rounds/2026-11-09-upstream-handoffs.md. Posted and read back: https://github.com/stellar/stellar-docs/issues/3070#issuecomment-6749351948",
+      "sourceCommit": "ac3adf30192b2e9039576ea2ed065a594d526fb6",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/ac3adf30192b2e9039576ea2ed065a594d526fb6/improvements/stellar-docs/sd-099-cross-contract-manual-invocation-does-not-compile.md"
     },
     {
       "id": "sk-001",
@@ -3761,6 +3991,25 @@
       "reviewEvidence": "Independent Astra high t2dv repeated original trigger and adjacent controls; .agents/rounds/2026-11-05-truth-maintenance/upstream-independent.md. Author lane t2dw. Golden reconciliation reviewed in scout-golden-review.md. Posted and read back: https://github.com/Stellar-Light/stellarlight/issues/1902#issuecomment-6674724617",
       "sourceCommit": "b73c8c2f99a724138447339b8e753647e33e1724",
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/b73c8c2f99a724138447339b8e753647e33e1724/improvements/stellar-light-scout/sls-110-hackmeridian-rubric-weights.md"
+    },
+    {
+      "id": "sls-113",
+      "title": "The venueRole field gives the DEX sub-type: AMM, native order book, aggregator, trading UI, or wallet-integrated. On 2026-11-02 it is null…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-09",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1905"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/pull/1924",
+        "https://github.com/Stellar-Light/stellarlight/pull/1939"
+      ],
+      "liveRecheck": "2026-11-09: https://stellarlight.xyz/api/projects/search?type=DEX&limit=100 returns all 38 DEX rows; all 15 Live rows carry a venueRole (4 amm, 5 trading-ui, 3 aggregator-router, 3 wallet-integrated), and the twelve originally null examples now carry a venueRole, are Inactive, or (Zenex) moved to the new Derivatives type. type=DEX&venueRole=amm returns exactly five rows with the filter echoed, and an invalid venueRole returns HTTP 400 with validVenueRoles. Spec 1.9.127.",
+      "reviewEvidence": "Author Codex frontier gpt-6-astra high (hc t38t, drift lane) and distinct reviewer Claude Fable 5.1 high (hc t3bf) repeated the original trigger live at 2026-11-09T19:10Z and 19:18Z; 22 non-Live null rows are outside the finding scope. Ledger: .agents/rounds/2026-11-09-upstream-handoffs.md. Posted and read back: https://github.com/Stellar-Light/stellarlight/issues/1905#issuecomment-6749359205",
+      "sourceCommit": "fdf475f5cce54adfb2ef30722adc7af78b728429",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/fdf475f5cce54adfb2ef30722adc7af78b728429/improvements/stellar-light-scout/sls-113-dex-venue-role-sparse.md"
     }
   ]
 }
