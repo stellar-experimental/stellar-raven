@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "e6663b2880bc0e33bce6257bda50394253691c476246ead5581eb4f5dd02955f",
+  "corpusContentSha256": "a9f8014c29716938b02f29e2e03bc08b212cf08b324ca6548631a0a58a93831f",
   "counts": {
     "total": 501,
     "byCategory": {
@@ -4941,7 +4941,7 @@
           "Do NOT attribute semantic A/V results without exact-name and source validation.",
           "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
         ],
-        "notes": "GT-35 CORRECTION 2026-07-10: the exact Lumenloop person lane is all-empty and Scout has no Tyler row. Grade a bounded official-source roster and explicit validation of semantic candidates; empty service output is inconclusive.\nGT-35 independently confirmed by processes 3287/3289; this case is freshness-sensitive despite its inherited tag.\nAn answer that reports the LumenLoop exact-person lane as empty, or semantic person matches as unverified, makes a true source-scoped observation, not a wrong claim, while ll-005 and ll-017 stand. An answer that infers from that lane that nothing was published fires avoid[0].\n2026-09-30 re-verification: the official author index listed seven posts (2024-01-26 to 2024-06-13). On 2026-11-02 that index URL returned HTTP 404 after the 2026-10-22 Docs move to Mintlify. Since 2026-11-09 it redirects (308) to the generic /meetings index, and no per-author list exists (sd-064, resolved; see improvements/resolved.json), so an answer need not cite it. An answer that reports the earlier 404 or the later redirect, with its own date, is correct. The same seven 2024 meeting pages still resolve with the byline 'Tyler van der Hoeven, Developer Advocate Director' and replace the index as the source. The three event pages still resolve; kalepail/passkey-kit is archived and points to stellar/passkey-kit; stellar/launchtube is archived (last push 2026-01-14) and remains readable. The repository descriptions in the answer are dated 2026-07-13; an answer observed later should report the archived state with its own date."
+        "notes": "GT-35 CORRECTION 2026-07-10: the exact Lumenloop person lane is all-empty and Scout has no Tyler row. Grade a bounded official-source roster and explicit validation of semantic candidates; empty service output is inconclusive.\nGT-35 independently confirmed by processes 3287/3289; this case is freshness-sensitive despite its inherited tag.\nAn answer that reports the LumenLoop exact-person lane as empty, or semantic person matches as unverified, makes a true source-scoped observation, not a wrong claim, while ll-005 and ll-017 stand. An answer that infers from that lane that nothing was published fires avoid[0].\n2026-09-30 re-verification: the official author index listed seven posts (2024-01-26 to 2024-06-13). On 2026-11-02 that index URL returned HTTP 404 after the 2026-10-22 Docs move to Mintlify. Since 2026-11-09 it redirects (308) to the generic /meetings index, and no per-author list exists (sd-064, resolved; see improvements/resolved.json), so an answer need not cite it. An answer that reports the earlier 404 or the later redirect, with its own date, makes a true dated observation, not a wrong claim. The same seven 2024 meeting pages still resolve with the byline 'Tyler van der Hoeven, Developer Advocate Director' and replace the index as the source. The three event pages still resolve; kalepail/passkey-kit is archived and points to stellar/passkey-kit; stellar/launchtube is archived (last push 2026-01-14) and remains readable. The repository descriptions in the answer are dated 2026-07-13; an answer observed later should report the archived state with its own date."
       },
       "tags": {
         "category": "scf-grants-builders",
@@ -5144,13 +5144,31 @@
                 "note": "'_January 26, 2024_ · [Tyler van der Hoeven](https://github.com/kalepail), Developer Advocate Director'; code search finds seven meetings/2024/MM/DD.mdx files."
               }
             ]
+          },
+          {
+            "claim": "As of 2026-11-09, every pre-migration meeting-author URL redirects to the generic /meetings index; no per-author list exists.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/meetings/authors/kalepail",
+                "observedAt": "2026-11-09T20:39Z",
+                "note": "HTTP 308 to /meetings, then HTTP 200 'Meeting Notes' index. /meetings/authors, the trailing-slash forms and all seven pre-migration author keys behave the same."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-docs/pull/2945",
+                "observedAt": "2026-11-09",
+                "note": "Merged 2026-11-09T17:05:10Z as 88c539971e605d01e5f1ee7f71efd1669ca1db5e; six redirect rules in redirects.json."
+              }
+            ]
           }
         ],
         "verified": {
           "date": "2026-11-09",
           "by": "coordinator Claude Opus 5.5; independent review Claude Fable high",
           "evidence": [
-            "https://developers.stellar.org/meetings/authors/kalepail (HTTP 308 to /meetings, then HTTP 200 Meeting Notes index, 2026-11-09T20:39Z): stellar-docs PR2945 redirects every pre-migration author URL to the generic index. No per-author list is restored; the seven dated meeting pages remain the source. Notes now point at the resolved sd-064 receipt instead of the deleted active finding. Judge-facing answer, key facts and avoids are unchanged.",
+            "https://developers.stellar.org/meetings/authors/kalepail (HTTP 308 to /meetings, then HTTP 200 Meeting Notes index, 2026-11-09T20:39Z): https://github.com/stellar/stellar-docs/pull/2945 (merged 2026-11-09T17:05:10Z as 88c539971e605d01e5f1ee7f71efd1669ca1db5e) redirects every pre-migration author URL to the generic index. No per-author list is restored; the seven dated meeting pages remain the source. Independent live re-derivation: research/audits/2026-11-09-improvements-sweep/review-fable.md, Batch 2. Notes now point at the resolved sd-064 receipt instead of the deleted active finding. Judge-facing answer, key facts and avoids are unchanged.",
             "Sibling sweep: rg for meetings/authors and sd-064 across eval/qa/corpus finds no other owned case."
           ],
           "rootCause": [
@@ -38411,7 +38429,7 @@
         "avoid": [
           "Do NOT claim the close time is a fixed protocol constant or guaranteed for every ledger."
         ],
-        "notes": "Freshness item: grade a dated or attributed cadence. As of 2026-11-02, Mainnet closes ledgers about every 5 seconds (target 5000 ms; 5.0-second mean since Protocol 28 on 2026-09-16). CAP-0088 (Protocol 30; Mainnet vote scheduled 2026-11-23) adds millisecond-resolution close times but does not itself change the 5000 ms target; mentioning it is not wrong. The Stellar Stack and Validators pages now say about 5 seconds (verified 2026-11-09). Their earlier 5–7-second estimate matched samples before Protocol 28; the USDT0 launch page repeated it until its 2026-11-09 correction (sd-100, resolved). Accept either figure when the answer dates it or names its source. The answer does not need to run its own ledger sample. A 3–5-second figure is retired Docs wording and does not meet key fact 1. Trap is importing Bitcoin (10 min) or Ethereum (12s) block times.\nAlso good if the answer: Notes the close time is set by the proposing validator and recorded in the ledger header, and that SCP determines the agreed close time.\nGolden cites: The validators / fundamentals docs on developers.stellar.org (or the network dashboard)."
+        "notes": "Freshness item: grade a dated or attributed cadence. As of 2026-11-02, Mainnet closes ledgers about every 5 seconds (target 5000 ms; 5.0-second mean since Protocol 28 on 2026-09-16). CAP-0088 (Protocol 30; Mainnet vote scheduled 2026-11-23) adds millisecond-resolution close times but does not itself change the 5000 ms target; mentioning it is not wrong. The Stellar Stack and Validators pages now say about 5 seconds (verified 2026-11-09). Their earlier 5–7-second estimate matched samples before Protocol 28; the USDT0 launch page repeated it until its 2026-11-09 correction (sd-100, resolved; see improvements/resolved.json). Accept either figure when the answer dates it or names its source. The answer does not need to run its own ledger sample. A 3–5-second figure is retired Docs wording and does not meet key fact 1. Trap is importing Bitcoin (10 min) or Ethereum (12s) block times.\nAlso good if the answer: Notes the close time is set by the proposing validator and recorded in the ledger header, and that SCP determines the agreed close time.\nGolden cites: The validators / fundamentals docs on developers.stellar.org (or the network dashboard)."
       },
       "tags": {
         "category": "protocol-core",
@@ -38756,6 +38774,36 @@
                 "ref": "https://www.kucoin.com/news/flash/stellar-prepares-bell-upgrade-for-protocol-30-with-new-contract-addresses-and-quantum-resistant-features",
                 "observedAt": "2026-11-02",
                 "note": "Parallel web_search: 'mainnet voting is set for November 23 at 17:00 UTC ... with no change to the current block interval'. Perplexity hits coinranking.com and cryptoticker.io agree."
+              }
+            ]
+          },
+          {
+            "claim": "As of 2026-11-09, the Stellar Stack, Validators and USDT0 launch pages say about 5 seconds; no served Docs page states 5–7 seconds.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/launch/usdt0.md",
+                "observedAt": "2026-11-09T20:51Z",
+                "note": "Says about 5 seconds; settlement ~5s. No 5–7 range."
+              },
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-stack.md",
+                "observedAt": "2026-11-09T20:51Z",
+                "note": "'update the ledger about every 5 seconds. The target close time is a network setting that can change, and a single ledger can take longer to close.' docs/validators.md carries the same sentence."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-docs/pull/3080",
+                "observedAt": "2026-11-09",
+                "note": "Merged 2026-11-09T20:38:31Z as b5f22fb71ca0dfa06655b77c42de6773bde1f2a4; one file, snippets/usdt0-launch.jsx."
+              },
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/llms-full.txt",
+                "observedAt": "2026-11-09T20:52Z",
+                "note": "No 5–7 or five-to-seven second range in the served corpus."
               }
             ]
           }

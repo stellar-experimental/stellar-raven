@@ -54,7 +54,7 @@ Raw JSON fetches (up to 26 MB) stayed local; the reports carry the exact URLs, t
 |---|---|---|---|---|---|
 | stellar-light-scout (13) | sls-099, 100, 102, 112, 114 | sls-024, 029, 033, 101, 107, 111 | sls-115 | — | sls-039 |
 | lumenloop (37) | — | ll-006, 017, 020 | 30 others | ll-004, 022, 023, 024 | — |
-| stellar-docs (18) | sd-064, sd-100 | — | sd-005, 014, 035, 050, 059, 061, 070, 074, 077, 081, 101; sd-048 closed-unfixed | — | sd-004, 009, 096, 102 |
+| stellar-docs (18) | sd-064, sd-100 | — | sd-005, 014, 035, 050, 059, 061, 070, 074, 077, 081, 101; sd-048 (closed-unfixed) | — | sd-004, 009, 096, 102 |
 | canonical-source (8) | — | — | cs-001, 004, 005, 006, 007, 009, 010 | — | cs-008 |
 | workers-ai-provider (1) | — | — | — | — | wai-001 |
 | skills (14) | sk-039 | — | 13 others | — | — |
@@ -95,3 +95,32 @@ Each comment was posted from the resolver dry run and read back byte for byte (a
 | sls-114 | [stellarlight#1906](https://github.com/Stellar-Light/stellarlight/issues/1906#issuecomment-6751069547) |
 | sk-039 | [stellar-dev-skill#180](https://github.com/stellar/stellar-dev-skill/issues/180#issuecomment-6751069952), [#181](https://github.com/stellar/stellar-dev-skill/pull/181#issuecomment-6751070537), [stellar-raven#388](https://github.com/stellar-experimental/stellar-raven/issues/388#issuecomment-6751071061) |
 | sd-064 | [stellar-docs#2945](https://github.com/stellar/stellar-docs/pull/2945#issuecomment-6751071543) |
+| sd-100 | [stellar-docs#3078](https://github.com/stellar/stellar-docs/issues/3078#issuecomment-6751220529), [#3080](https://github.com/stellar/stellar-docs/pull/3080#issuecomment-6751221016) |
+
+Verification results (records kept): sls-101 on
+[stellarlight#1912](https://github.com/Stellar-Light/stellarlight/issues/1912#issuecomment-6751083543),
+sls-107 on [stellarlight#1900](https://github.com/Stellar-Light/stellarlight/issues/1900#issuecomment-6751084106).
+
+The resolver then retired all eight findings to `improvements/resolved.json` (resolved 2026-11-09)
+and removed the sk-039 intake override. Active findings: 91 → 83.
+
+## Golden and register reconciliation
+
+- sls-099: q-defi-phoenix-what-is, q-defi-soroswap-what-is, q-defi-soroswap-vs-stellarx and
+  q-defi-provide-liquidity-impermanent-loss date the old Scout venue wording and point at the
+  resolved receipt.
+- sls-100: q-eco-hana-wallet-scf (provenance only).
+- sd-064: q-builder-content-by-person.
+- sd-100: q-protocol-ledger-close-time.
+- sls-102: q-edge-fresh-latest-blend-tvl was reviewed and needed no edit.
+- No answer key fact, avoid clause or grading rule changed. Judge-facing text changed only where it
+  said a corrected source still had the old wording.
+- Clusters 012, 014, 017, 022, 030, 038, 046, 065, 073 and 128 were re-swept with specific reasons.
+
+Independent golden review (Claude Fable high,
+[review-gold-fable.md](../../research/audits/2026-11-09-improvements-sweep/review-gold-fable.md))
+approved the five Codex-lane cases, the cross-references and all cluster reasons. It required two
+note fixes (a rubric word `correct` in the builder note; a missing resolved-ledger pointer in the
+ledger close-time note) and recommended a re-walkable PR2945 evidence line and dated corroboration
+rows for both coordinator cases. All four were applied, and the four affected clusters re-stamped.
+Its owner question about the 5–7-second grading acceptance is queued in `.agents/TODO.md`.

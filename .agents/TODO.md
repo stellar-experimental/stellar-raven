@@ -54,6 +54,16 @@ the backend's rate limits and terms.
 
 ## Improvements follow-up
 
+### Decide whether the ledger close-time golden still accepts an undated 5–7 seconds
+
+Owner decision. Since 2026-11-09 (sd-100 resolved), no served Docs page states 5–7 seconds.
+`q-protocol-ledger-close-time` key fact 1 still accepts "the documented 5–7 seconds, with a date
+or source", so "5–7 seconds per the Stellar docs" names a source that no longer says it. Third-party
+pages and caches can still carry the figure. Decide whether the 5–7 acceptance should require a
+pre-Protocol-28 (before 2026-09-16) or pre-2026-11-09 date; any change is its own `golden-truth`
+pass. Raised by the independent golden review in
+[the sweep](rounds/2026-11-09-improvements-sweep.md).
+
 ### Recheck November 5 partial fixes after deployment or owner data jobs
 
 The [round ledger](rounds/2026-11-05-truth-maintenance.md) and its per-finding tables cover all
@@ -79,11 +89,10 @@ issues do not need reminders.
   green and awaiting review; respond to substantive review without a keepalive rebase.
 - Docs continuation (2026-11-09): sd-091 and sd-098 are retired with ten other deployed fixes
   ([ledger](rounds/2026-11-09-upstream-handoffs.md)). sd-101 ([stellar-docs#3079](https://github.com/stellar/stellar-docs/issues/3079)) carries the
-  remaining complete WebAuthn example compile failure and sd-100
-  ([stellar-docs#3078](https://github.com/stellar/stellar-docs/issues/3078)) the USDT0 launch-page
-  cadence. Maintainer PRs [3081](https://github.com/stellar/stellar-docs/pull/3081) (sd-101) and
-  [3080](https://github.com/stellar/stellar-docs/pull/3080) (sd-100) were open and awaiting review on
-  2026-11-09; recheck each live page after its PR deploys. sd-095 and sd-097 were retired earlier; see the
+  remaining complete WebAuthn example compile failure. The maintainer triage-bot PR
+  [3081](https://github.com/stellar/stellar-docs/pull/3081) was open and awaiting review on
+  2026-11-09; recheck the live check-auth tutorial after it deploys. sd-100 retired on 2026-11-09
+  ([sweep](rounds/2026-11-09-improvements-sweep.md)). sd-095 and sd-097 were retired earlier; see the
   [resolution ledger](rounds/2026-11-06-playground-final-resolution.md).
   The [continuation table](rounds/2026-11-06-remaining-sweep/docs.md) records all current
   review/conflict blockers, including draft2752 and the separate pending generated-skill PR3069.

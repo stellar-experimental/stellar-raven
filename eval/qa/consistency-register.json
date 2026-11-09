@@ -527,7 +527,7 @@
           "q-pc-practical-fee-setting": "d0b29056088637d617a9652252073981917d48c495c7ba92e5735c9a5e046615",
           "q-pc-sponsored-reserves": "55d6071f72fd619a329e6e7310d9f4326598f87727f934259468abf382642666",
           "q-protocol-base-reserve-min-balance": "428c382622a762eab1f1c56e4f49468668b8802d373903285833360742c5e086",
-          "q-protocol-ledger-close-time": "f3928874e55d24f6eadaf0830494c333f5ed8210d0c8fa6b1ba495b8c4e92f58",
+          "q-protocol-ledger-close-time": "383a63a707ae98987f0015d3d7eaf063750d70b4a7f873b421de4ae656a45827",
           "q-sor-doc-timestamping-manage-data": "1303e33b3457de47dcecd5fa9b8991f3cc6f32d41bb78a5e06ae52d9f2a3c6b6",
           "q-soroban-simulate-resource-fee": "ef190edb519c0f46f3977048ea1cc7d0b223165768258aa40250f9c3407ca091",
           "q-token-initial-supply-distribution": "d21261aee65d659776e78342377e944fefad8121a445914a8ab7b7d2a4adce7c"
@@ -1654,7 +1654,7 @@
         "lastChecked": "2026-11-09",
         "note": "As of 2026-11-02, Mainnet closes a ledger about every 5 seconds (target 5000 ms; 5.0-second mean since Protocol 28 on 2026-09-16); official Docs still say every 5–7 seconds, which matched samples before Protocol 28. As observed 2026-08-21, current Docs and live Mainnet configuration report maxTxSetSize 1000 classic operations and ledgerMaxTxCount 2000 smart-contract transactions. The v27 XDR schema defines the separate ledgerMaxTxCount setting but does not encode its current value. All claims are dated and configuration-scoped.",
         "memberContentSha256": {
-          "q-protocol-ledger-close-time": "f3928874e55d24f6eadaf0830494c333f5ed8210d0c8fa6b1ba495b8c4e92f58",
+          "q-protocol-ledger-close-time": "383a63a707ae98987f0015d3d7eaf063750d70b4a7f873b421de4ae656a45827",
           "q-protocol-max-tx-set-size": "d0a1f799c41a8be3650cb62cac3edbff4a78f6483a4d75eaed735d809a50e60f"
         },
         "reSwept": {
@@ -1833,7 +1833,7 @@
         },
         "note": "The person lane is silently empty and semantic candidates need exact validation; this does not establish failure of working project/org/token entity lanes.",
         "memberContentSha256": {
-          "q-builder-content-by-person": "252df1001a24cf5bc30cb25b271e06b00ab10bf893a6c09fff601cc696bf84f1",
+          "q-builder-content-by-person": "06c2ec9b2be7254b7351a1999820142a0fc3a55940a967e27a30e154773cb17f",
           "q-defi-benji-franklin-templeton": "d5968df841fd677e62dd8b54591bf82a5adcb798aff07bb9fa5d1385e5897e9f",
           "q-defi-ondo-usdy": "a1ef2492a81597b50ebcc3c123708a72723bfdd5f79a9eb56eb063a3bc7055f9",
           "q-defi-wisdomtree-crdt": "fc634d6dec2953b0f4538be82c111bda82871091560bf504ee1411eec87325e7"
@@ -3050,7 +3050,7 @@
         },
         "note": "An exact directory/index miss supports only a closed-world source-scoped conclusion. Open-world identity or history requires one bounded wider pass, exact identity plus source/date validation, and scoped non-verification with clarification when evidence remains insufficient. Justin Rice is the positive dated-history control; Strupey remains an as-of/source-scoped unverifiable case and must not be conflated with Joe Strupek or semantic neighbors.",
         "memberContentSha256": {
-          "q-builder-content-by-person": "252df1001a24cf5bc30cb25b271e06b00ab10bf893a6c09fff601cc696bf84f1",
+          "q-builder-content-by-person": "06c2ec9b2be7254b7351a1999820142a0fc3a55940a967e27a30e154773cb17f",
           "q-builder-justin-rice-history": "aa800d231191c12fede8e0b529e859b99fe292773f20acfe54694291b2682166",
           "q-edge-closed-world-builder-directory-miss": "0baf5b657b328b0066500ee74cbf7babf61b6ef51016a567cf6acf37314d85a4",
           "q-edge-lumenloop-person-entity-empty": "72866be7cee8d2ab0659bec967ec48fe51739bfa179a52d286e08c52042a246c",
