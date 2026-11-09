@@ -141,7 +141,7 @@ describe("inventory command contract", () => {
     root = mkdtempSync(join(tmpdir(), "diff-inventory-"));
     const snapshot = join(root, "snapshot.json");
     writeFileSync(snapshot, execFileSync("git", ["show", "HEAD:inventory/stellar-light.json"], {
-      cwd: resolve(import.meta.dirname, ".."), encoding: "utf8"
+      cwd: resolve(import.meta.dirname, ".."), encoding: "utf8", maxBuffer: 64 * 1024 * 1024
     }));
     const result = spawnSync(process.execPath, [SCRIPT, "deep", "HEAD:inventory/stellar-light.json", snapshot], {
       cwd: tmpdir(), encoding: "utf8"

@@ -98,3 +98,18 @@ distinct-reviewer recheck.
 No change since the 2026-11-03 status. Cloudflare agents #2296 is open with no comments (last
 update 2026-09-17); `@cloudflare/codemode` is still 0.5.6. No general lexical intent mechanism is
 ready. The issue stays open without a new comment.
+
+## Test fixes found by the combined gate run
+
+- The Scout 1.9.127 inventory is 1,060,524 bytes, over Node's 1 MiB `execFileSync` default.
+  `test/diff-inventory.test.mjs` read `HEAD:inventory/stellar-light.json` without `maxBuffer`
+  and failed with ENOBUFS once the larger file was committed. The script already sets a large
+  buffer; the test now does too.
+- The closed Playground study pins `eval/qa/cases.json` at SHA-256 `46492d06…`. Its harness tests
+  read the live file, so any golden edit broke 92 tests ("selection corpus pin differs").
+  `research/audits/2026-11-06-playground-final-resolution/frozen-corpus.mjs` now reads the frozen
+  bytes from `e62c2b97` (which hashes to the pin) and verifies the hash. CI fetches full history.
+
+Final gates on the combined branch: typecheck, `npm test` (3,386 pass, 3 expected failures),
+build, eval self-test, routing gate, QA lint, register check, improvements lint and live lint,
+pin review, and secrets scan all pass. No `src/executor` or `src/demo` change, so no smoke lane.

@@ -8,8 +8,10 @@ import { accounting, closeServer, commandFor, createJournal, declareServer, plan
 
 import { prepareGatewayRejudge } from '../eval/qa/gateway-rejudge.mjs';
 import { verifySourceCases } from '../eval/qa/re-judge.mjs';
+import { frozenCorpusBytes } from '../research/audits/2026-11-06-playground-final-resolution/frozen-corpus.mjs';
 const selection = JSON.parse(readFileSync('research/audits/2026-11-06-playground-final-resolution/selection.json'));
-const corpus = JSON.parse(readFileSync('eval/qa/cases.json'));
+const corpusBytes = frozenCorpusBytes(selection.corpusSha256);
+const corpus = JSON.parse(corpusBytes);
 const scratch = [];
 afterEach(() => { for (const dir of scratch.splice(0)) rmSync(dir, {recursive: true, force: true}); });
 const h = x => sha256(JSON.stringify(x));
@@ -21,7 +23,7 @@ function fixture() {
   const measurementRoot = path.join(dir, 'measurement'); mkdirSync(measurementRoot);
   const inputFileHashes = {};
   for (const [field, file] of Object.entries(INPUTS)) {
-    const bytes = readFileSync(file); const target = path.join(measurementRoot,file);
+    const bytes = field === 'corpusFileSha256' ? corpusBytes : readFileSync(file); const target = path.join(measurementRoot,file);
     mkdirSync(path.dirname(target),{recursive:true}); writeFileSync(target,bytes); inputFileHashes[field]=sha256(bytes);
   }
   const tree = {headRevision:'1'.repeat(40),dirty:false,statusSha256:S,trackedDiffSha256:S,untrackedFilesSha256:S};
