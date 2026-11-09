@@ -12,6 +12,8 @@ evidence:
   - Raven removes complete Markdown blocks for all excluded Scout paths through one manifest-derived build-time and runtime filter
   - upstream issue filed 2026-08-19: https://github.com/Stellar-Light/stellar-scout/issues/13
 recurrences:
+  - date: 2026-11-09
+    evidence: "2026-11-09T20:30:57Z fresh Stellar-Light/stellar-scout main 0f3040cf HTTP 200: default SKILL endpoint table still lists feedback POST; api-reference lines 268-293 encourage submission, and lines 380-381 retain GET schema-helper guidance. Canonical stellarlight public/skills copies match the distribution files. No feedback endpoint was invoked. Issue 13 is open with no comments."
   - date: 2026-11-06
     evidence: "2026-11-06 still-repro: Fresh Scout SKILL.md and references/api-reference.md — Default skill still lists POST/api/feedback; reference documents encouraged submission and GET schema helper. No feedback submitted. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row sk-019."
 ---

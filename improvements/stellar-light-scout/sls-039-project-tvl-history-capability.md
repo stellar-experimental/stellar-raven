@@ -5,6 +5,7 @@ status: declined-upstream
 disposition: Accept provider-hosted history as the upstream design boundary; keep consumer guidance directing trend and peak questions to tvlMethodUrl and do not request duplicated in-API history without new evidence.
 discovered: 2026-07-10
 evidence:
+  - "2026-11-09T20:31:56Z Blend and Soroswap reads still expose current TVL/provenance, not in-API history or peak decomposition. https://api.llama.fi/protocol/blend returns a Stellar series (889 points), and sls-102 now fixes Blend method URL to the parent. Keep declined-upstream: accepted provider-hosted-history boundary remains, no refile. Owner theboycoder states the boundary in #522; kalepail acknowledged it. Receipts: tmp/lane-scout.md, tmp/scout-live-curl.json."
   - Scout project rows expose tvlUSD and tvlAsOf but not a history or method URL
   - direct same-provider Blend/Soroswap series distinguish current, quarter trend, peak, and record
   - Solo scratchpad 575 GT-23 primary 3264 and blind 3267

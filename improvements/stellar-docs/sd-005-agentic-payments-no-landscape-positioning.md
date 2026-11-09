@@ -4,6 +4,7 @@ service: stellar-docs
 status: reported-upstream
 discovered: 2026-07-06
 evidence:
+  - "2026-11-09 sweep (still-repro): Both agentic-payments overview and x402 page still attribute the protocol to Coinbase Developer Platform. AP2/ACP positioning remains absent on those pages and optional by the accepted maintainer scope decision. Recheck: https://developers.stellar.org/docs/build/agentic-payments.md; https://developers.stellar.org/docs/build/agentic-payments/x402.md"
   - eval/qa/results/2026-07-06T18-48-22-variantA.json (q-defi-agentic-payment-standards-compare, partial — verdict stands)
   - verdict-review workflow wf_01b3347d-1b8 (triage: upstream-data-gap; the answering agent's retrieval was exhaustive and correct)
   - live verification 2026-07-06: get_doc_page_sections full-content read, Algolia term probes, full read of the agentic-payments skill, lumenloop title/summary probes — all zero AP2/ACP content
@@ -13,6 +14,8 @@ evidence:
   - 2026-07-10 GT-12 primary plus blind review corrected the comparison taxonomy: x402 and MPP are general/external protocols with Stellar implementations; MPP includes charge as well as session/channel; AP2 x402 composition is optional; ACP is a beta commerce layer
   - independent Docs-team audit 2026-07-14 confirmed the AP2/ACP gap and found the adjacent x402 attribution stale after formation of the x402 Foundation under the Linux Foundation: https://gist.githubusercontent.com/ElliotFriend/3b3641b929b4408a834b85bcb4e75449/raw/a90e6b453ee3505ef2525b4428eaa75752e3ae08/raven-audit-rebuttal.md
 recurrences:
+  - date: 2026-11-09
+    evidence: "Both agentic-payments overview and x402 page still attribute the protocol to Coinbase Developer Platform. AP2/ACP positioning remains absent on those pages and optional by the accepted maintainer scope decision."
   - date: 2026-11-06
     evidence: "Overview and x402 page still attribute protocol to Coinbase Developer Platform. AP2/ACP comparison search remains ungrounded; comparative positioning was accepted as optional. Exact URLs and upstream state: .agents/rounds/2026-11-05-truth-maintenance/docs.md, row sd-005"
   - date: 2026-11-02

@@ -5,6 +5,7 @@ status: declined-upstream
 disposition: Accept the owner's operational-policy wording; preserve the consumer truth distinction between stock caps and implementation configurability without re-filing.
 discovered: 2026-07-03
 evidence:
+  - "2026-11-09 sweep (declined): Pagination still calls upper limits hardcoded; current RPC source at its relocated rpcv1/config/options.go exposes all three max/default settings. ElliotFriend relayed Shaptic’s explicit operational-policy decision to retain the wording. Recheck: https://developers.stellar.org/docs/data/apis/rpc/api-reference/structure/pagination.md"
   - developers.stellar.org method pages (getTransactions, getEvents, getLedgers) fetched 2026-07-03
   - stellar/stellar-rpc cmd/stellar-rpc/internal/config/options.go (same day)
   - Solo project 49, todo 828, scratchpad 521 (golden-truth deep-verification round)

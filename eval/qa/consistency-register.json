@@ -1825,15 +1825,15 @@
           "q-defi-wisdomtree-crdt"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-03",
+        "lastChecked": "2026-11-09",
         "reSwept": {
-          "date": "2026-11-03",
-          "reason": "2026-11-03 URL-source repair: compared every member question, golden, tag, and surface with HEAD; all are identical. Canonical pages support the same cited facts. Only current sources and verification metadata changed. Preserve the prior consistency verdict and every historical measurement date. Evidence: tmp/urls/sibling-sweep.json and tmp/urls/decisions.json.",
-          "verdict": "consistent"
+          "date": "2026-11-09",
+          "verdict": "consistent",
+          "reason": "2026-11-09 improvements sweep: q-builder-content-by-person changes only its note on the old meeting-author index URL (now a redirect to the generic /meetings index; sd-064 resolved). The silent-empty person lane, exact validation of semantic candidates, and the working project/org/token entity lanes in the three DeFi members are unchanged; no contradiction."
         },
         "note": "The person lane is silently empty and semantic candidates need exact validation; this does not establish failure of working project/org/token entity lanes.",
         "memberContentSha256": {
-          "q-builder-content-by-person": "929de4446b8a2880d0e3572789f4fed58dbfea9097ffceafabc5e4b9c743b2dc",
+          "q-builder-content-by-person": "252df1001a24cf5bc30cb25b271e06b00ab10bf893a6c09fff601cc696bf84f1",
           "q-defi-benji-franklin-templeton": "d5968df841fd677e62dd8b54591bf82a5adcb798aff07bb9fa5d1385e5897e9f",
           "q-defi-ondo-usdy": "a1ef2492a81597b50ebcc3c123708a72723bfdd5f79a9eb56eb063a3bc7055f9",
           "q-defi-wisdomtree-crdt": "fc634d6dec2953b0f4538be82c111bda82871091560bf504ee1411eec87325e7"
@@ -3042,15 +3042,15 @@
           "q-gap-semantic-directory-fallback"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-06",
+        "lastChecked": "2026-11-09",
         "reSwept": {
-          "date": "2026-11-06",
-          "reason": "Builder source total refresh from 399 to 401 does not turn a directory miss into proof a person does not exist. Source matrices and independent review: .agents/rounds/2026-11-05-truth-maintenance/.",
-          "verdict": "consistent"
+          "date": "2026-11-09",
+          "verdict": "consistent",
+          "reason": "2026-11-09 improvements sweep: only q-builder-content-by-person changes, and only its note on the old meeting-author index URL (HTTP 404 on 2026-11-02, a 308 redirect to the generic /meetings index since 2026-11-09; sd-064 resolved). The seven dated meeting pages remain its source. Closed-world index absence versus open-world identity recovery is unchanged across all seven members; no contradiction."
         },
         "note": "An exact directory/index miss supports only a closed-world source-scoped conclusion. Open-world identity or history requires one bounded wider pass, exact identity plus source/date validation, and scoped non-verification with clarification when evidence remains insufficient. Justin Rice is the positive dated-history control; Strupey remains an as-of/source-scoped unverifiable case and must not be conflated with Joe Strupek or semantic neighbors.",
         "memberContentSha256": {
-          "q-builder-content-by-person": "929de4446b8a2880d0e3572789f4fed58dbfea9097ffceafabc5e4b9c743b2dc",
+          "q-builder-content-by-person": "252df1001a24cf5bc30cb25b271e06b00ab10bf893a6c09fff601cc696bf84f1",
           "q-builder-justin-rice-history": "aa800d231191c12fede8e0b529e859b99fe292773f20acfe54694291b2682166",
           "q-edge-closed-world-builder-directory-miss": "0baf5b657b328b0066500ee74cbf7babf61b6ef51016a567cf6acf37314d85a4",
           "q-edge-lumenloop-person-entity-empty": "72866be7cee8d2ab0659bec967ec48fe51739bfa179a52d286e08c52042a246c",

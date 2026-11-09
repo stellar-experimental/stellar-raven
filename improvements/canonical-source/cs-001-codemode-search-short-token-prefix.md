@@ -5,6 +5,7 @@ status: reported-upstream
 discovered: 2026-09-17
 upstreamTitle: "codemode: searchConnectors matches unrelated methods through short tokens"
 evidence:
+  - "2026-11-09 sweep (still-repro): Fresh main search.ts executes all ten original cases: false matches score 27/55/45/27; four no-short-token controls return empty; intended queries score 153/481. Reverse short-token prefix rule remains line 68. Recheck: https://raw.githubusercontent.com/cloudflare/agents/main/packages/codemode/src/connectors/search.ts"
   - "Source: https://github.com/cloudflare/agents/blob/16b6856070f6c711486011b8b9dd926c2eaae52b/packages/codemode/src/connectors/search.ts#L66-L71 (main, 2026-09-17). The same rule is at line 68 in tags @cloudflare/codemode@0.4.2 (062611de), 0.5.1 (f089c5b6), and 0.5.2 (5f7ad7e4)."
   - "2026-09-17T01:46Z local reproduction against the pinned main search.ts with Node v24.13.0 type stripping. Unrelated queries return weather.getForecast (27, 45, 27) or billing.refundInvoice (55). Controls without 1-2 character field tokens return no results. Intended queries still match (153, 481)."
   - The published dist/index.js search regions of 0.4.2, 0.5.1, and 0.5.2 return the same false matches; the 0.5.1 and 0.5.2 regions are byte-identical.
@@ -13,6 +14,8 @@ evidence:
   - research/audits/2026-09-17-routing-audit/scorer-followup-plan.md and porter-stem-experiment.md record the Raven-side ablations. Removing only the reverse prefix direction also removed query-side word forms such as forecasts→forecast.
   - "upstream issue filed 2026-09-17: https://github.com/cloudflare/agents/issues/2296"
 recurrences:
+  - date: 2026-11-09
+    evidence: "Fresh main search.ts executes all ten original cases: false matches score 27/55/45/27; four no-short-token controls return empty; intended queries score 153/481. Reverse short-token prefix rule remains line 68."
   - date: 2026-11-06
     evidence: "2026-11-06 still-repro: Run original10 searchConnectors cases against freshly downloaded cloudflare/agents main search.ts — False matches unchanged27/55/45/27; four no-short-token controls empty; intended matches153/481. Exact short-prefix rule remains line68. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row cs-001."
 ---

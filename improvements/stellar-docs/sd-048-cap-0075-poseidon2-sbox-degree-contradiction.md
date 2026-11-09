@@ -5,6 +5,7 @@ status: reported-upstream
 discovered: 2026-09-01
 upstreamTitle: CAP-0075 lists unsupported Poseidon2 S-box degrees
 evidence:
+  - "2026-11-09 sweep (closed-unfixed): CAP-0075 line 78 still lists degrees 3,5,7,11; lines 124/157 and current host SUPPORTED_SBOX_DEGREES=[5] accept only 5. Issue 2010 was closed not_planned by github-actions[bot], not declined by a human. Correction PR2059 remains OPEN, BEHIND but MERGEABLE, REVIEW_REQUIRED, all five head checks successful, no reviews/comments. Recheck: https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0075.md; https://raw.githubusercontent.com/stellar/rs-soroban-env/main/soroban-env-host/src/crypto/poseidon/mod.rs"
   - 2026-09-01 source check at stellar/stellar-protocol commit 65e2b6262c0825494caf2a94116eb512c8335f22 found that core/cap-0075.md line 78 lists Poseidon2 degree values 3, 5, 7, and 11; line 124 says only 5 is supported; line 157 says the host traps when d is not 5
   - 2026-09-01 ABI check at stellar/rs-soroban-env commit a7e15b439c4b49b17ba8f9e4527efee8d8119aba found that soroban-env-common/env.json line 2725 documents degree 5 for BLS12_381 and BN254
   - 2026-09-01 host check at stellar/rs-soroban-env commit a7e15b439c4b49b17ba8f9e4527efee8d8119aba found SUPPORTED_SBOX_DEGREES = [5] in soroban-env-host/src/crypto/poseidon/mod.rs and an unsupported-degree error in poseidon2_params.rs
@@ -13,6 +14,8 @@ evidence:
   - "2026-10-06 issue state: github-actions added the stale label and a stale notice on 2026-10-02. The bot can close the issue after 30 more days without activity, on or after about 2026-11-01. No maintainer has replied. If the issue closes unfixed, classify it as closed-unfixed and keep this finding. Do not post a keep-alive comment."
   - "2026-11-03 errata PR opened after the stale-bot closure: https://github.com/stellar/stellar-protocol/pull/2059 (one-line change to core/cap-0075.md line 78 at master ded60f56; matches line 61, lines 124 and 157, and rs-soroban-env 0c99950e SUPPORTED_SBOX_DEGREES = [5])"
 recurrences:
+  - date: 2026-11-09
+    evidence: "CAP-0075 line 78 still lists degrees 3,5,7,11; lines 124/157 and current host SUPPORTED_SBOX_DEGREES=[5] accept only 5. Issue 2010 was closed not_planned by github-actions[bot], not declined by a human. Correction PR2059 remains OPEN, BEHIND but MERGEABLE, REVIEW_REQUIRED, all five head checks successful, no reviews/comments."
   - date: 2026-11-06
     evidence: "Current CAP0075 line78 still lists 3,5,7,11, lines124/157 accept5 only; current host SUPPORTED_SBOX_DEGREES=[5]. Exact URLs and upstream state: .agents/rounds/2026-11-05-truth-maintenance/docs.md, row sd-048"
   - date: 2026-11-02

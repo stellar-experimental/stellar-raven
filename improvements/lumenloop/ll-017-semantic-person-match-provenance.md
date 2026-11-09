@@ -4,6 +4,7 @@ service: lumenloop
 status: reported-upstream
 discovered: 2026-07-10
 evidence:
+  - "2026-11-09 sweep at 2026-11-09T20:31:07.666940+00:00: partial. Tyler and negative-control Strupey both return _weak_match=true, _top_similarity (.231/.259), and an explicit generic-filler warning. Tyler includes exact-name AV1487 and article625 mixed with unrelated content. AV passage query still returns topic neighbors without row-level exact-person relation/span. Existing aggregate safety improvement remains deployed; it does not resolve the row-level request. Read-only exact requests and response hashes: tmp/lane-lumenloop.md; upstream issue state/comments freshly read; no maintainer comments or claimed fix."
   - "2026-11-06 scope/progress reconciliation: .agents/rounds/2026-11-06-remaining-sweep/other.md, row ll-017; replay arguments and response hashes in research/audits/2026-11-06-remaining-sweep/other-receipt.json."
   - exact Tyler van der Hoeven A/V passage query returned ten semantically related but person-unrelated results
   - semantic content search mixed relevant official Tyler material with unrelated low-similarity results

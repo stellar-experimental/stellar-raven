@@ -1,10 +1,11 @@
 ---
 id: sd-064
 service: stellar-docs
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-11-02
 upstreamTitle: Restore or redirect the meeting author pages that the Mintlify migration removed
 evidence:
+  - "2026-11-09 sweep (fixed): Original kalepail URL, its trailing slash, authors root and elliotfriend all now HTTP308 → /meetings → HTTP200. PR2945 merged 2026-11-09T17:05:10Z at 88c539971e605d01e5f1ee7f71efd1669ca1db5e; all eight head checks successful and kaankacar approved. Redirect to the meetings index meets the recorded smallest fix; author-specific rosters were not restored. Recheck: https://developers.stellar.org/meetings/authors/kalepail; https://developers.stellar.org/meetings/authors; https://developers.stellar.org/meetings/authors/elliotfriend; https://developers.stellar.org/meetings/authors/kalepail/"
   - 2026-11-02T17:17:27Z GET https://developers.stellar.org/meetings/authors/kalepail returned HTTP 404
   - 2026-11-02 golden case q-builder-content-by-person records the same 404 at 2026-11-02T16:31:54Z, also for /meetings/authors/kalepail/ and /meetings/authors, while /meetings returns HTTP 200 with x-mintlify-client-version 0.0.4044
   - the same golden case recorded the page as live on 2026-07-13 and on 2026-09-30T21:31Z, with seven author posts dated 2024-01-26 through 2024-06-13

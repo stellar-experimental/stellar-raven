@@ -5,12 +5,17 @@ status: reported-upstream
 discovered: 2026-11-06
 upstreamTitle: "Refresh or invalidate the Horizon ceiling answer when its scanned source changes"
 evidence:
+  - "2026-11-09T20:32:02Z original and explicit-current explainRepo controls still select MaxSupportedProtocolVersion=29, knowledge-note dated2026-10-08. New scannedRef6a13f41808586884c9a7b1beecd92088b7284070 (scan2026-11-07) defines MaxSupportedProtocolVersion uint32=30 in internal/ingest/main.go, freshly read with gh api at20:33:21Z. Still reproduces after a newer scan; open #1933 has no comments. Fixture-interface fix sls-114 does not fix answer selection. Receipts: tmp/lane-scout.md, tmp/scout-live-curl.json, tmp/scout-extra.json."
   - "Explicit-current control independently observed at 2026-11-06T14:10:14.641Z: asking for the value as of today at codeVerified.scannedRef, not active Mainnet protocol, still selects 29. Upstream generation 2026-11-06T14:06:53.337Z; same scan ref defines 30. Full control: research/audits/2026-11-06-remaining-sweep/other-horizon-current-tool.json; distinct review: .agents/rounds/2026-11-06-remaining-sweep/cross-review.md."
   - "2026-11-06T13:54:27.220Z authenticated scout.explainRepo for stellar/stellar-horizon, question 'Which Horizon ingestion constant pins the highest supported protocol version, and what is its value?': selected answer MaxSupportedProtocolVersion = 29, answerSource knowledge-note, answerAsOf 2026-10-08T00:00:00Z, codeVerified.scannedRef 597544b60c20f8536d532d32abca8462394874f3. Full tool receipt: research/audits/2026-11-06-remaining-sweep/other-horizon-tool.json."
   - "At that exact scannedRef, internal/ingest/main.go line 38 defines MaxSupportedProtocolVersion uint32 = 30: https://github.com/stellar/stellar-horizon/blob/597544b60c20f8536d532d32abca8462394874f3/internal/ingest/main.go#L38"
   - "The selected note cites 430a28e79b3b43c213840e45523519ca11251c0a and accurately labels its historical October 8 observation. The defect is selecting that older fact for the current-source question, not fabricating the historical value."
   - ".agents/rounds/2026-11-06-remaining-sweep/other.md and cross-review.md record author and independent live verification. This recurs after retired sls-087; its October 10 resolution remains in improvements/resolved.json."
   - upstream issue filed 2026-11-06: https://github.com/Stellar-Light/stellarlight/issues/1933
+recurrences:
+  - date: 2026-11-09
+    evidence: "2026-11-09T20:32:02Z original and explicit-current explainRepo controls still select MaxSupportedProtocolVersion=29, knowledge-note dated2026-10-08. New scannedRef6a13f41808586884c9a7b1beecd92088b7284070 (scan2026-11-07) defines MaxSupportedProtocolVersion uint32=30 in internal/ingest/main.go, freshly read with gh api at20:33:21Z. Still reproduces after a newer scan; open #1933 has no comments. Fixture-interface fix sls-114 does not fix answer selection. Receipts: tmp/lane-scout.md, tmp/scout-live-curl.json, tmp/scout-extra.json."
+
 ---
 
 ## Finding

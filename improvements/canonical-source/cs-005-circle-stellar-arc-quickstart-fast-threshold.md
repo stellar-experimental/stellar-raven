@@ -12,6 +12,7 @@ probe:
     contains:
       - "// Fast Transfer finality threshold"
 evidence:
+  - "2026-11-09 sweep (still-repro): Both Stellar→Arc burn examples still label threshold 1000 Fast Transfer. Supported-chains says Stellar Fast=N/A; finality lists Stellar only under Standard. Original source-domain-27 Iris attestation still requested 1000 and executed 2000; fee API still lists both thresholds. Recheck: https://developers.circle.com/cctp/quickstarts/transfer-usdc-stellar-arc.md; https://developers.circle.com/cctp/concepts/supported-chains-and-domains.md; https://developers.circle.com/cctp/concepts/finality-and-block-confirmations.md; https://iris-api.circle.com/v2/burn/USDC/fees/27/0; https://iris-api.circle.com/v2/messages/27?transactionHash=649b62ed6fc2d566d8ce3d5e89a2ecef27d932e228d2892bef60bce43fb0bd27"
   - "2026-11-02T17:20Z live read: https://developers.circle.com/cctp/quickstarts/transfer-usdc-stellar-arc.md (HTTP 200). The Stellar burn step calls deposit_for_burn with 'nativeToScVal(1000, { type: \"u32\" }), // Fast Transfer finality threshold' (twice, lines 363 and 615 of the markdown). The parameter list says the threshold 'Determines whether it's a Fast Transfer (1000 or less) or a Standard Transfer (2000 or more)'."
   - "2026-11-02T17:21Z live read: https://developers.circle.com/cctp/concepts/supported-chains-and-domains.md row '| Stellar | ✅ | N/A | ❌ | ❌ |' under columns 'Source (Standard transfer) | Source (Fast transfer) | Source (Upfront fees) | Forwarding Service'. The page says N/A marks chains where 'standard attestation is already fast' so 'Fast Transfer is not necessary'."
   - "2026-11-02 live read: https://developers.circle.com/cctp/concepts/finality-and-block-confirmations.md lists '| **Stellar** | 1 | \\~5 seconds |' only in the 'Standard Transfer attestation times' section. The 'Fast Transfer attestation times' section has no Stellar row."
@@ -22,6 +23,8 @@ evidence:
   - "Golden consumer: eval/qa/corpus/battery/tooling-infra/q-tool-cctp-stellar-integration.json answer discloses the conflict, and its keyFacts say to use Standard 2000 until the Stellar-source 1000/Fast versus N/A dispute resolves."
   - upstream issue filed 2026-11-02: https://github.com/circlefin/stellar-cctp/issues/37
 recurrences:
+  - date: 2026-11-09
+    evidence: "Both Stellar→Arc burn examples still label threshold 1000 Fast Transfer. Supported-chains says Stellar Fast=N/A; finality lists Stellar only under Standard. Original source-domain-27 Iris attestation still requested 1000 and executed 2000; fee API still lists both thresholds."
   - date: 2026-11-06
     evidence: "2026-11-06 still-repro: GET Circle Stellar→Arc quickstart,supported chains,finality; Iris fees27/0 and original attestation hash — Both Stellar burn examples still1000/Fast; Stellar Fast=N/A, Standard~5sec. Original mainnet source27 message request1000 executed2000; fee API still lists both. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row cs-005."
 ---

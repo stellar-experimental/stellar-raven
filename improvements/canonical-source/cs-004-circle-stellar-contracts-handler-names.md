@@ -12,6 +12,7 @@ probe:
     contains:
       - "handle_receive_finalized_message"
 evidence:
+  - "2026-11-09 sweep (still-repro): Circle reference still lists both handle_receive_* handlers (lines 84–85); current interface source and a fresh deployed mainnet contract interface expose both handle_recv_* names instead. Recheck: https://developers.circle.com/cctp/references/stellar-contracts.md; https://raw.githubusercontent.com/circlefin/stellar-cctp/master/packages/cctp-interfaces/src/message_handler.rs"
   - "2026-11-02T17:20Z live read: https://developers.circle.com/cctp/references/stellar-contracts.md (HTTP 200) lists '| `handle_receive_finalized_message` | Mints USDC upon receiving a fully finalized message. | Called by `MessageTransmitter`. |' and '| `handle_receive_unfinalized_message` | Processes partially finalized (\"Fast Burn\") messages. |'. The page has no handle_recv_ spelling."
   - "Source: circlefin/stellar-cctp master 45746f2c803198bc6cd586475eb3c925f12bb488 (2026-06-18). packages/cctp-interfaces/src/message_handler.rs:40 'fn handle_recv_finalized_message(' and :63 'fn handle_recv_unfinalized_message('. contracts/token-messenger-minter-v2/src/contract.rs:375 and :428 implement the same names."
   - "2026-11-02T17:21Z deployed interface: stellar contract info interface --contract-id CAE2G5Z77UP7GYPYGFOWFGW7C7J6I4YP2AFGSADRKQY62SYUFLPNFTXL --rpc-url https://mainnet.sorobanrpc.com (stellar-cli 28.1.0; the mainnet TokenMessengerMinter ID from the same Circle page) returns 'fn handle_recv_finalized_message(' and 'fn handle_recv_unfinalized_message(' and no handle_receive_ function."
@@ -20,6 +21,8 @@ evidence:
   - "Golden consumer: eval/qa/corpus/battery/tooling-infra/q-tool-cctp-stellar-integration.json answer and keyFacts tell the answerer to use the deployed handle_recv_* names amid the docs contradiction."
   - upstream issue filed 2026-11-02: https://github.com/circlefin/stellar-cctp/issues/36
 recurrences:
+  - date: 2026-11-09
+    evidence: "Circle reference still lists both handle_receive_* handlers (lines 84–85); current interface source and a fresh deployed mainnet contract interface expose both handle_recv_* names instead."
   - date: 2026-11-06
     evidence: "2026-11-06 still-repro: GET Circle stellar-contracts.md; current interface source; stellar contract info interface on mainnet contract CAE2G5Z77UP7GYPYGFOWFGW7C7J6I4YP2AFGSADRKQY62SYUFLPNFTXL — Docs still both handle_receive_*; fresh deployed interface and source both handle_recv_*. Both functions checked. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row cs-004."
 ---

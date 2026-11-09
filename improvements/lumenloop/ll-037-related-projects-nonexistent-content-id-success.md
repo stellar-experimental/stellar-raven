@@ -13,6 +13,8 @@ evidence:
   - 2026-11-02T18:33:49Z earlier controls: get_document {"id":99999999,"collection":"articles"} returned HTTP 200 with a document-not-found message. get_related_projects {"content_id":690,"content_type":"article"} returned HTTP 200 and four project mentions.
   - upstream issue filed 2026-11-02: https://github.com/lumenloop/lumenloop-backend/issues/51
 recurrences:
+  - date: 2026-11-09
+    evidence: "2026-11-09 sweep at 2026-11-09T20:31:15.127990+00:00: still-repro. Unavailable article99999999 still returns HTTP200 success=true,data=[],error=null from related-project lookup; same ID get_document says no document. Valid article690/10190 controls return4/1 mentions in text-content objects. Preserve the same generic unavailable behavior for missing and unpublished content. Read-only exact requests and response hashes: tmp/lane-lumenloop.md; upstream issue state/comments freshly read; no maintainer comments or claimed fix."
   - date: 2026-11-06
     evidence: "2026-11-06 still-repro: LL get_related_projects article99999999; get_document same id; related690/10190 controls — Unavailable article returns success:true,data:[],error:null; document says not found; valid controls return4/1 mentions. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row ll-037."
 ---

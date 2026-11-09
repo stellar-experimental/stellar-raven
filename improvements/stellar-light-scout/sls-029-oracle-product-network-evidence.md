@@ -4,6 +4,7 @@ service: stellar-light-scout
 status: reported-upstream
 discovered: 2026-07-10
 evidence:
+  - "2026-11-09T20:31:57Z exact Band/DIA/RedStone/Lightecho reads and 20:33:22Z oracle search returned HTTP 200. Band/DIA/RedStone still have products:null; Lightecho has one mainnet oracle-feed product with contractId:null and a dated stale-price caution. Chainlink now has both proxy products (sls-112 fix), so the residual is provider/feed coverage, not universal absence of a product schema. Closed #514 and #742 do not establish complete feed evidence. theboycoder called this an accepted absence/capability gap in #742, not a deliberate boundary or refusal. Partial; retain, no new current feed-liveness claim. Receipts: tmp/lane-scout.md, tmp/scout-live-curl.json, tmp/scout-extra.json."
   - "2026-11-06 scope/progress reconciliation: .agents/rounds/2026-11-06-remaining-sweep/other.md, row sls-029; replay arguments and response hashes in research/audits/2026-11-06-remaining-sweep/other-receipt.json."
   - live Scout oracle search returns provider-level Live labels without product/network evidence tiers
   - official Band mapping plus live reads verify active mainnet relays while its published testnet contract is absent

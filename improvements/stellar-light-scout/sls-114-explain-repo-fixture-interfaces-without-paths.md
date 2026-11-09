@@ -1,10 +1,11 @@
 ---
 id: sls-114
 service: stellar-light-scout
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-11-02
 upstreamTitle: "explainRepo lists fixture contract interfaces for a platform repo without their source paths"
 evidence:
+  - "2026-11-09T20:32:02Z original explainRepo question returns Horizon platform/isDeployableContract:false, contractInterface:[], contractInterfacePaths:[], rescanned2026-11-07T02:46:33.460Z at6a13f41808586884c9a7b1beecd92088b7284070. Adjacent rs-soroban-env also has empty interfaces/paths and fresh scan. GitHub tree at Horizon scan ref still contains integration-test contracts, so removing fixture interfaces is observed, not inferred from absent source. theboycoder reports rescans in https://github.com/Stellar-Light/stellarlight/issues/1906#issuecomment-6701318060. Cargo-sdk/code-signals scope is explicitly separate; sls-115 answer drift still reproduces. Author-side fixed candidate. Receipts: tmp/lane-scout.md, tmp/scout-live-curl.json, tmp/scout-extra.json."
   - "Successor of sls-088, which Stellar-Light/stellarlight PR 1806 fixed (Horizon now returns kind platform and isDeployableContract false). sls-088 also asked to keep the fixture contracts as source evidence with their paths; the sls-088 retirement review (Codex gpt-6.1-sol high, 2026-11-02, .agents/rounds/2026-11-02-upstream-followup/rv-fu-review.md section A5) found that part not done."
   - "2026-11-02T22:26:43Z GET https://stellarlight.xyz/api/repos/explain?repo=stellar/stellar-horizon&q=Which Horizon ingestion constant pins the highest supported protocol version, and what is its value? (HTTP 200, OpenAPI 1.9.116, response sha256 7210f4fa611c69d8ec82d13f585621008bf20e9b32645ed72a20c0969f30523a): repoMeta.kind platform; codeVerified.contractInterface lists six entries, including 'IncrementContract.increment() -> u32' and 'Contract.bulk_transfer(sender: Address, contract: Address, recipients: Vec<Address>, amounts: Vec<i128>)'. No entry carries a path; sources has only repoUrl and DeepWiki links."
   - "2026-11-02 gh api repos/stellar/stellar-horizon/git/trees/597544b60c20f8536d532d32abca8462394874f3?recursive=1 (the response's scannedRef): every Rust contract is under internal/integration/contracts/, for example internal/integration/contracts/increment/src/lib.rs, add_u64/src/lib.rs, bulk/src/lib.rs, constructor/src/lib.rs, and store/src/lib.rs (the source of Contract.set and Contract.remove)."

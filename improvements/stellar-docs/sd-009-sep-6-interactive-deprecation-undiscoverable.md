@@ -5,6 +5,7 @@ status: declined-upstream
 disposition: Accept the docs owner's noise/placement decision; retain the canonical SEP status in standards-aware consumer truth and do not re-file without materially new evidence.
 discovered: 2026-07-09
 evidence:
+  - "2026-11-09 sweep (declined): Live Anchors guidance still omits deprecated wording; canonical SEP-6 still explicitly marks its interactive components deprecated in favor of SEP-24. Programmatic SEP-6 remains Active. Recheck: https://developers.stellar.org/docs/learn/fundamentals/anchors.md; https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0006.md"
   - eval/qa/reviewed/2026-07-09-improvements-evidence.md (durable redacted row q-sep-6-24-deprecation, wrong; verdict manually reviewed and upheld)
   - stellar/stellar-protocol ecosystem/sep-0006.md live source rechecked 2026-07-09: status is "Active (Interactive components are deprecated in favor of SEP-24)"
   - developers.stellar.org Anchors fundamentals page rechecked 2026-07-09: contrasts SEP-6 programmatic with SEP-24 hosted flows but never surfaces the deprecation status

@@ -5,6 +5,7 @@ status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: Make ResponseField text findable in the docs search
 evidence:
+  - "2026-11-09 sweep (still-repro): Seven original bare/verbatim Discovery queries all HTTP200 with 38/50/50/46/50/48/47 raw candidates; expected result-code leaf page absent for 7/7 before Raven filtering. Site MCP op_bad_signer returns Set Options Result Codes first, including ResponseField mapping. Recheck: read-only probes recorded in tmp/lane-docs.md"
   - "2026-11-02 live Mintlify search over the 93 stellar/stellar-docs files that use <ResponseField>: a verbatim sentence from inside a ResponseField returns its own page in the top 5 for 8 of 90 pages and misses the top 50 for 63 of 90; a prose sentence from the same pages returns the page in the top 5 for 50 of 84 and misses the top 50 for 12 of 84. Data: .agents/rounds/2026-11-02-mintlify-migration/responsefield-rank.json (script rf-rank.mjs)"
   - "2026-11-02 identifier probe: 8 of 25 Stellar result-code and config identifiers never appear in any of the 50 candidates, including op_bad_signer, op_low_reserve, op_too_many_signers, op_line_full, op_cross_self, op_over_source_max, op_under_dest_min, and tx_bad_auth_extra. Identifiers that also appear in prose (op_underfunded, tx_bad_seq, SET_OPTIONS_BAD_SIGNER) rank first. Data: .agents/rounds/2026-11-02-mintlify-migration/identifier-probe.json"
   - "2026-11-02 the Set Options result-code page body chunk exists in the index (1,975 characters, contains op_bad_signer) and is returned for its opening sentence, but not for op_bad_signer, SET_OPTIONS_BAD_SIGNER op_bad_signer, or the verbatim sentence 'Any additional signers added to the account cannot be the master key'. The retired Algolia index ranked that page first for 'op_bad_signer set options result codes'."
@@ -17,6 +18,8 @@ evidence:
   - "2026-11-03 Raven-side mitigation tested and rejected: fusing site MCP results with Discovery, for all queries or only for underscore identifiers, gained 18 to 25 of the 190 identifier queries but added 1257 to 1424 ms at p95 against a 600 ms limit, and full-site MCP replacement lost broad docs-page hits. Raven keeps the Discovery backend, so the gap remains in Raven output. Both fused designs also ranked the Set Options page 11th for the op_bad_signer template query."
   - "2026-11-03 Raven reply https://github.com/stellar/stellar-docs/issues/2995#issuecomment-6608646512 posts the raw-candidate comparison and the 190-token table, states that Raven's filter and the docs content are not the cause, requests no content change, and asks the holder of the Mintlify relationship whether to forward the Discovery ranking gap."
 recurrences:
+  - date: 2026-11-09
+    evidence: "Seven original bare/verbatim Discovery queries all HTTP200 with 38/50/50/46/50/48/47 raw candidates; expected result-code leaf page absent for 7/7 before Raven filtering. Site MCP op_bad_signer returns Set Options Result Codes first, including ResponseField mapping."
   - date: 2026-11-06
     evidence: "All7 original bare/verbatim queries return HTTP200 but omit expected result-code page from raw Discovery candidates (38–50 candidates). Site MCP op_bad_signer returns Set Options first. Backend discrepancy persists before adapter. Exact URLs and upstream state: .agents/rounds/2026-11-05-truth-maintenance/docs.md, row sd-059"
 ---

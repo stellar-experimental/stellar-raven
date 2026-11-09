@@ -14,6 +14,8 @@ evidence:
   - The consumer reference remains active in sk-027. Stellar-Light/stellar-scout references/api-reference.md builds https://skills.stellar.org/skills/{name}/SKILL.md and names soroban. This finding targets publication retention at stellar/stellar-dev-skill.
   - upstream issue filed 2026-11-02: https://github.com/stellar/stellar-dev-skill/issues/172
 recurrences:
+  - date: 2026-11-09
+    evidence: "2026-11-09T20:30:57Z ordinary GET https://skills.stellar.org/skills/soroban/SKILL.md still returns HTTP200/71331 bytes, git blob3c98cb8194d0921ddae7b5a9e1ed895511e968e2, with12 wasm32-unknown-unknown lines; current smart-contracts skill has four wasm32v1-none lines and no old-target lines. Fresh main soroban source returns404; deploy-pages.yml still sets keep_files:true. Issue172 remains open; stellar-triage-bot supplied an unapplied workflow patch and explicitly says human workflow permission is needed. No deployed cleanup is claimed."
   - date: 2026-11-06
     evidence: "2026-11-06 still-repro: GET https://skills.stellar.org/skills/soroban/SKILL.md versus smart-contracts; deploy workflow — Legacy orphan still200/71331bytes with12 wasm32-unknown-unknown lines; current skill wasm32v1-none. keep_files:true persists. Bot confirmed cause and supplied unapplied workflow patch requiring human workflow permission. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row sk-031."
 ---

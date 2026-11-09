@@ -13,6 +13,8 @@ evidence:
   - live re-execution 2026-09-04T07:00:31.027Z through production Raven used the host-side LumenLoop credential without exposing it; all three original calls returned ok and reproduced the record-content gap
   - upstream issue filed 2026-09-09: https://github.com/lumenloop/lumenloop-backend/issues/44
 recurrences:
+  - date: 2026-11-09
+    evidence: "2026-11-09 sweep at 2026-11-09T20:31:03.210730+00:00: still-repro. WisdomTree record still counts 13 digital funds and Gold token but names no CRDT/CRDYX; mainnet.tokens empty and current YAML agrees. CRDT directory fallback is semantic neighbors. Exact original semantic query limit15 returns24 rows without either ticker. Fresh issuer TOML names CRDT anchored to CRDYX, so product existence is independently controlled. Read-only exact requests and response hashes: tmp/lane-lumenloop.md; upstream issue state/comments freshly read; no maintainer comments or claimed fix."
   - date: 2026-11-06
     evidence: "2026-11-06 still-repro: LL get_project wisdomtree; search_directory CRDT; original CRDT/CRDYX semantic query; issuer TOML — Record still says13 digital funds and Gold token, mainnet.tokens empty. Neither returned project nor semantic rows names CRDT/CRDYX. Issuer TOML remains positive product control. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row ll-030."
   - date: 2026-09-04

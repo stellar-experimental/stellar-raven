@@ -4,6 +4,7 @@ service: lumenloop
 status: reported-upstream
 discovered: 2026-07-03
 evidence:
+  - "2026-11-09 sweep at 2026-11-09T20:31:07.308386+00:00: partial. Original stale-Q2-2021/Q4-2020 top-ten failure remains absent: broad articles are current RWA-focused candidates; article 5945 is absent broad and first in the Q1-focused control. Raw article similarities start .580,.556,.677; that alone does not prove the final ranking implementation wrong. Bounded July results mix July 6/8/6/7 and undated article 9054; no effective date/order contract is returned. This is the previously documented partial progress, not a newly established ranking deployment. Read-only exact requests and response hashes: tmp/lane-lumenloop.md; upstream issue state/comments freshly read; no maintainer comments or claimed fix."
   - "2026-11-06 scope/progress reconciliation: .agents/rounds/2026-11-06-remaining-sweep/other.md, row ll-006; replay arguments and response hashes in research/audits/2026-11-06-remaining-sweep/other-receipt.json."
   - eval/qa/results/2026-07-03T16-06-45-variantA.json (q-eco-stellar-rwa-stablecoin-volume)
   - live replay of the agent's exact search_content_semantic query (2026-07-03 evening, production)

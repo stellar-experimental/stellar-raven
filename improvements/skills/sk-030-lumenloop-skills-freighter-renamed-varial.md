@@ -14,6 +14,8 @@ evidence:
   - The earlier four-file source verification matched the Raven pin d92c56bda17ab702d3202335cfe814d64e70e191. This correction targets current upstream files.
   - upstream issue filed 2026-11-02: https://github.com/lumenloop/lumenloop-skills/issues/6
 recurrences:
+  - date: 2026-11-09
+    evidence: "2026-11-09T20:30:57Z fresh reads of all eight Lumenloop playbook/connector files at main a87ca957 still find eight Freighter prose lines in the original six affected files and zero Varial lines. Fresh stellar/freighter master README identifies Varial; the two other checked playbooks add no rename locations. Issue6 remains open with no comments."
   - date: 2026-11-06
     evidence: "2026-11-06 still-repro: Fresh six Lumenloop skills; Freighter README/redirect — Eight Freighter prose lines across six original files, no Varial; canonical wallet now Varial. All adjacent originally identified locations checked. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row sk-030."
 ---

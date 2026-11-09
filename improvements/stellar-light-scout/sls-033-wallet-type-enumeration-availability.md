@@ -4,6 +4,7 @@ service: stellar-light-scout
 status: reported-upstream
 discovered: 2026-07-10
 evidence:
+  - "2026-11-09T20:31:58Z GET https://stellarlight.xyz/api/projects/search?type=Wallet&limit=100 returned 74 rows/total74 and 74 distinct normalized names; 11 null productKind, 41 empty availability. Null-kind Live rows: smart-treasury, chainless, amulets, piggy-wallet, ibis, zig3v2, rehive, privy; two Development rows and Inactive mxlet complete the set. Populated available platform facts retain storeUrl/checkedAt. Exact enumeration fixed; metadata coverage residual persists despite closed #519/#742. Unknown availability is not unavailable. Receipts: tmp/lane-scout.md, tmp/scout-live-curl.json."
   - "2026-11-06 scope/progress reconciliation: .agents/rounds/2026-11-06-remaining-sweep/other.md, row sls-033; replay arguments and response hashes in research/audits/2026-11-06-remaining-sweep/other-receipt.json."
   - paginated q=wallet returned 164 keyword rows but independent exact raw-type projections returned 60 and then 59 Wallet-typed records within one hour
   - later snapshot contained 54 Live, 1 Development, and 4 Inactive rows with duplicate-name Stellar Passport records under different slugs

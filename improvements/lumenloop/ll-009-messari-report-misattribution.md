@@ -11,6 +11,8 @@ evidence:
   - live re-verified 2026-07-06 (eval round todo 846): both divergent sources still live in the index — av 2207 (interview: $2.8B RWA, 1,700 devs) vs article 5945 (written report: $2B RWA, 4,400+ devs) — so the misattribution mechanism persists; the lumenloop.com editorial pages themselves were not re-fetched this round
   - GT-20 recurrence 2026-07-10: live RWA search mixed SDF Q1, Allium raw/adjusted transfer volumes, and later ~$3B corpus summaries without machine-readable metric taxonomy/provenance
 recurrences:
+  - date: 2026-11-09
+    evidence: "2026-11-09 sweep at 2026-11-09T20:31:25.278705+00:00: still-repro. Roundup still places $2.8B and 1,700 monthly active developers beside a Messari report label linking to YouTube interview t0agtgLajhg. Public media page and AV2207 still say In Q1 2026 Stellar reached $2.8B. Adjacent article5945 contains its different SDF Q1 metrics; do not attribute that SDF article itself to Messari. Read-only exact requests and response hashes: tmp/lane-lumenloop.md; upstream issue state/comments freshly read; no maintainer comments or claimed fix."
   - date: 2026-11-06
     evidence: "2026-11-06 still-repro: GET Lumenloop markdown roundup week-29-2026 and media/state-stellar-q1-2026-beyond — Roundup still labels YouTube t0agtgLajhg as Messari report beside $2.8B/1,700; media still says In Q1 2026 Stellar reached $2.8B. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row ll-009."
   - date: 2026-08-11

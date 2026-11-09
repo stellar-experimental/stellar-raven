@@ -6,6 +6,7 @@ disposition: Accept the owner's decision to freeze workers-ai-provider. Do not r
 discovered: 2026-08-06
 upstreamTitle: workers-ai-provider rejects the Unified Billing moonshotai/Kimi catalog slug before AI.run
 evidence:
+  - "2026-11-09 sweep (declined): Fresh npm latest4.0.1 remains deprecated. Latest package mock reproduction still throws Unknown gateway provider moonshotai before binding.run (zero calls). PR639 remains closed/unmerged; mattzcarey explicitly feature-froze package. Issue634 closure was Raven’s own acknowledgement, not an independent maintainer fix. Recheck: https://registry.npmjs.org/workers-ai-provider/latest"
   - workers-ai-provider 4.0.0 installed from npm (latest dist-tag, verified 2026-08-06)
   - deterministic local reproduction: `createWorkersAI({ binding, providers: [openai], resume: false })("moonshotai/kimi-k3")` throws before the mock binding's `run` is called (0 calls)
   - registry exports 26 entries; `moonshotai` is absent, while `findProviderBySlug("moonshotai")` returns undefined

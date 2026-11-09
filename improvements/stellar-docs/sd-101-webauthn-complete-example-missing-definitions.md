@@ -5,6 +5,7 @@ status: reported-upstream
 discovered: 2026-11-09
 upstreamTitle: Complete the missing definitions and dependencies in the WebAuthn contract example
 evidence:
+  - "2026-11-09 sweep (still-repro): Light check: live check-auth tutorial SHA256 remains 5a55dbfd9a912c4bddfbcb5a9426aeb3bb270012f3b9383a3af347aa165158c5, identical to today’s independently compiled original. Missing definitions and base64_url calls remain. New bot-authored PR3081 is OPEN/BLOCKED/REVIEW_REQUIRED, eight successful head checks, no reviews; author explicitly did not compile with cargo. Recheck: https://developers.stellar.org/docs/build/guides/auth/check-auth-tutorials.md Upstream candidate https://github.com/stellar/stellar-docs/pull/3081 (read directly)."
   - "2026-11-09 live GET https://developers.stellar.org/docs/build/guides/auth/check-auth-tutorials.md, Tutorial 2 Complete code: the unchanged Rust fence fails native cargo check with soroban-sdk 29.0.1 and rustc 1.93.0."
   - "Served page SHA256: 5a55dbfd9a912c4bddfbcb5a9426aeb3bb270012f3b9383a3af347aa165158c5. Extracted complete-contract fence SHA256, including a final newline: 428107820e7f4eff0e69d4f4408f3e70a720c04fd1924b6f43d2b129c8fa5557."
   - "Source: https://github.com/stellar/stellar-docs/blob/f83baf27c91fdbc54c04872aba603b73d9cd9469/docs/build/guides/auth/check-auth-tutorials.mdx. The complete example references ADMIN_SIGNER_COUNT, WEEK_OF_LEDGERS and ClientDataJson without defining them, and does not provide serde_json_core/base64_url dependency or module wiring."
@@ -12,6 +13,9 @@ evidence:
   - "Dedupe 2026-11-09: searched active findings and improvements/resolved.json for ADMIN_SIGNER_COUNT, ClientDataJson, base64_url, complete WebAuthn and WebAuthn complete. No separate finding owns these omissions."
   - "Successor of sd-098, whose event-migration resolution is recorded in improvements/resolved.json. Independent author and reviewer compilations reproduced 14 E0425/E0433 diagnostics on 2026-11-09."
   - upstream issue filed 2026-11-09: https://github.com/stellar/stellar-docs/issues/3079
+recurrences:
+  - date: 2026-11-09
+    evidence: "Light check: live check-auth tutorial SHA256 remains 5a55dbfd9a912c4bddfbcb5a9426aeb3bb270012f3b9383a3af347aa165158c5, identical to today’s independently compiled original. Missing definitions and base64_url calls remain. New bot-authored PR3081 is OPEN/BLOCKED/REVIEW_REQUIRED, eight successful head checks, no reviews; author explicitly did not compile with cargo."
 ---
 
 ## Finding

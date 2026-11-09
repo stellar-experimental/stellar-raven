@@ -1,7 +1,7 @@
 ---
 id: sls-102
 service: stellar-light-scout
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-11-02
 upstreamTitle: "Blend tvlMethodUrl points to one V1 child while tvlUSD sums four protocol rows"
 probe:
@@ -12,6 +12,7 @@ probe:
     contains:
       - "\"tvlMethodUrl\":\"https://defillama.com/protocol/blend-pools\""
 evidence:
+  - "2026-11-09T20:31:56Z deployed fix verified: Blend tvlMethodUrl=https://defillama.com/protocol/blend and four mapped pool/backstop V1/V2 llamaSlugs. Both statusChecks sourceUrl values use the parent. Live DefiLlama protocol list puts all four children under parent#blend; parent endpoint has Stellar TVL/history, with borrowed and pool2 separate. Single-slug Soroswap still cites soroswap-amm. Different observation times do not imply exact numeric equality. theboycoder reports enrich-tvl execution at https://github.com/Stellar-Light/stellarlight/issues/1913#issuecomment-6701318370. Author-side fixed candidate. Receipts: tmp/lane-scout.md, tmp/scout-live-curl.json."
   - "2026-11-02T17:18Z live GET https://stellarlight.xyz/api/projects/search?q=blend&limit=3 returned row blend with tvlUSD 129334939, tvlAsOf 2026-11-02T13:19:15.688Z, llamaSlugs ['blend-pools','blend-pools-v2','blend-backstop','blend-backstop-v2'], and tvlMethodUrl 'https://defillama.com/protocol/blend-pools'. Its tvlMethod says the value is the 'sum of the project's mapped DefiLlama protocol rows (see llamaSlugs; e.g. Blend = pools + backstops)'."
   - "2026-11-02T17:19Z GET https://api.llama.fi/protocols: blend-pools (V1) Stellar 43517, blend-pools-v2 Stellar 129348788, blend-backstop 0, blend-backstop-v2 0. All four have parentProtocol 'parent#blend'."
   - "2026-11-02T17:20Z GET https://api.llama.fi/protocol/blend returned name Blend with currentChainTvls.Stellar 129392305, the parent series for the mapped children."

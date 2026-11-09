@@ -11,6 +11,8 @@ evidence:
   - live re-verified 2026-07-09: authenticated event semantic search returned ids 1597/1598 with start_at 2026-06-27T05:30/06:30Z while both summaries still say July 27
   - filed 2026-07-13: https://github.com/lumenloop/lumenloop-backend/issues/20
 recurrences:
+  - date: 2026-11-09
+    evidence: "2026-11-09 sweep at 2026-11-09T20:30:47.129266+00:00: still-repro. Events 1597/1598 still have June 27 structured start_at with July 27 summary prose. Exact original date-bounded query reproduces both. Adjacent 1444 has Jaipur title/location but Goa summary and slug. Read-only exact requests and response hashes: tmp/lane-lumenloop.md; upstream issue state/comments freshly read; no maintainer comments or claimed fix."
   - date: 2026-11-06
     evidence: "2026-11-06 still-repro: LL get_document events1597,1598,1444; original Bhopal/Jabalpur semantic query — 1597/1598 structured June27 versus July27 prose; 1444 title Jaipur but slug and summary Goa. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row ll-007."
   - date: 2026-07-09

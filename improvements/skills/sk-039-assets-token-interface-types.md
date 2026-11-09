@@ -1,10 +1,11 @@
 ---
 id: sk-039
 service: skills
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-11-06
 upstreamTitle: Update the assets skill's SEP-41 transfer and symbol type summaries
 evidence:
+  - "2026-11-09T20:30:57Z live recheck: ordinary GET https://developers.stellar.org/.well-known/agent-skills/assets/skill.md returned HTTP200, SHA-256 2eb7c204a64a3db48178ef3ca546bcf973048f76aa33060e7e048d5a9b481c7e. It now lists transfer destination MuxedAddress, symbol() return String, and transfer_from destination Address; preserves token.transfer(&from, &to, &amount) and the generated-client conversion note. Fresh main source, https://skills.stellar.org/skills/assets/SKILL.md, and Raven pin ceeb2f17a0fd1da3f47e28c6a73a026883020c09 all match SHA-256 c88cc42460803e48f2b316311ae33bdd7f130a23b9710cd356d02fd2599f1146, git blob e6493237cbc9c236a7ec9f5bfb179faf3d105cde. PR181 is merged; issue180 and handoff388 are closed/completed. The prior Docs delivery residual no longer reproduces. Independent retirement review remains outstanding."
   - "2026-11-06T18:57:30Z canonical published assets and merged PR181 source match SHA-256 c88cc42460803e48f2b316311ae33bdd7f130a23b9710cd356d02fd2599f1146. transfer takes MuxedAddress, symbol returns String, transfer_from retains Address, and the valid client example remains. Fix: https://github.com/stellar/stellar-dev-skill/pull/181; handoff: https://github.com/stellar-experimental/stellar-raven/issues/388."
   - "2026-11-06T18:58:35Z ordinary GET https://developers.stellar.org/.well-known/agent-skills/assets/skill.md returned HTTP 200, SHA-256 ff836f85491d74fcd2f2d0d1331bff502f45c8ad53b6bf351dc39a1114976b55, but still lists transfer destination Address and symbol() return Symbol. Keep reported-upstream for this deployed Docs copy; canonical content is corrected."
   - "2026-11-06T17:56:09Z GET https://skills.stellar.org/skills/assets/SKILL.md returned HTTP 200, SHA-256 ead389a330f0dc57da419fa31d40fa7177f498e60c50f1433b10a1604373c5a8. Lines 380 and 385 list an Address-only transfer destination and a Symbol return type for symbol()."
@@ -47,3 +48,11 @@ The ordinary Docs skill URL still lists both incorrect interface types. Keep the
 finding open until the generated and normally published Docs copy has the fix.
 No further canonical type correction is requested. The earlier evidence above
 records the original defect; the client example was always valid.
+
+## Delivery verification, 2026-11-09
+
+The ordinary Docs URL now publishes the corrected interface list and retains the
+valid client example. The source, skills.stellar.org, and Raven's pinned blob also
+contain the correction. The November 6 delivery residual above is resolved.
+A distinct reviewer must repeat the ordinary URL and adjacent-interface checks
+before retirement.

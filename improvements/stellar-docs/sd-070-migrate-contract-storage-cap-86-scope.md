@@ -5,6 +5,7 @@ status: reported-upstream
 discovered: 2026-11-02
 upstreamTitle: Storage migration guide says an added Option field always traps; soroban-sdk 28 reads it as None
 evidence:
+  - "2026-11-09 sweep (still-repro): Migration guide still says added Option field traps UnexpectedSize with no SDK28/CAP86 qualifier. SDK v28 release notes expressly permit missing Option fields as None and ignore extra fields; CAP86 remains Protocol28. Draft2763 remains unchanged since August18, BLOCKED/REVIEW_REQUIRED; historical checks successful. Recheck: https://developers.stellar.org/docs/build/guides/storage/migrate-contract-storage.md; https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0086.md"
   - 2026-11-02T17:17:27Z GET https://developers.stellar.org/docs/build/guides/storage/migrate-contract-storage returned HTTP 200 with "This traps with Error(Object, UnexpectedSize). The Soroban host validates the field count of the XDR-encoded value against the type definition before returning anything to the contract."; the page has no "v28", "CAP-86", or "CAP-0086" text
   - stellar/stellar-docs main 7cb5e8a492706d2ae95bbb14be737fbf96100058 docs/build/guides/storage/migrate-contract-storage.mdx lines 328-331
   - stellar/rs-soroban-sdk release v28.0.0 notes "A contracttype struct can be read from stored data with extra or missing fields (CAP-86). A field missing from the map reads as None if it is an Option, and errors otherwise ... An Option field can now be added or removed without migrating everything already stored." (rs-soroban-sdk PR 2006)
@@ -13,6 +14,8 @@ evidence:
   - 2026-11-02 pre-existing upstream PR https://github.com/stellar/stellar-docs/pull/2763 (open draft, opened 2026-08-18 by leighmcculloch) proposes this fix; Raven did not file a separate issue
   - golden cases q-soroban-storage-migration and q-soroban-upgradeable-storage-compat (golden audit pass 2, 2026-11-02)
 recurrences:
+  - date: 2026-11-09
+    evidence: "Migration guide still says added Option field traps UnexpectedSize with no SDK28/CAP86 qualifier. SDK v28 release notes expressly permit missing Option fields as None and ignore extra fields; CAP86 remains Protocol28. Draft2763 remains unchanged since August18, BLOCKED/REVIEW_REQUIRED; historical checks successful."
   - date: 2026-11-06
     evidence: "Live migration guide still says added Option c traps UnexpectedSize without SDK28/CAP86 qualifier. Draft2763 open unchanged sinceAug18; historical checks green, review-required. Exact URLs and upstream state: .agents/rounds/2026-11-05-truth-maintenance/docs.md, row sd-070"
 ---

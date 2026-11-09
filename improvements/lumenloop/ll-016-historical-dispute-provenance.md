@@ -10,6 +10,8 @@ evidence:
   - Solo scratchpad 575 GT-27 primary 3270 and blind 3272
   - https://github.com/lumenloop/lumenloop-backend/issues/31
 recurrences:
+  - date: 2026-11-09
+    evidence: "2026-11-09 sweep at 2026-11-09T20:31:07.539990+00:00: still-repro. Historical query returns candidate articles4640/1912/78/4644/575/3899/3908/5374 without typed claimant, target-event, dispute, or corroboration relations. This confirms the scoped provenance request; no new false causal sentence is established by absent optional fields. Read-only exact requests and response hashes: tmp/lane-lumenloop.md; upstream issue state/comments freshly read; no maintainer comments or claimed fix."
   - date: 2026-11-06
     evidence: "2026-11-06 still-repro: LL search_content_semantic Stellar 2014 fork Ripple consensus 2015 SCP,types articles/research — Historical article candidates returned (4640,1912,78,4644,3899,3908,5374); no typed claimant/target-event/dispute/corroboration relation. This proves metadata gap, not a newly proven false causal sentence. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row ll-016."
   - date: 2026-08-11

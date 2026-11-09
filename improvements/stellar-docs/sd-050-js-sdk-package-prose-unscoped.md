@@ -5,6 +5,7 @@ status: reported-upstream
 discovered: 2026-09-04
 upstreamTitle: JavaScript SDK page names the deprecated unscoped stellar-sdk package
 evidence:
+  - "2026-11-09 sweep (still-repro): Live Client SDKs page line 25 names unscoped stellar-sdk while linking scoped package. Registry still serves deprecated unscoped 13.3.0 versus scoped 17.4.0. Recheck: https://developers.stellar.org/docs/tools/sdks/client-sdks.md; https://registry.npmjs.org/stellar-sdk/latest; https://registry.npmjs.org/@stellar%2fstellar-sdk/latest"
   - 2026-09-09 independent Grok review found the existing open issue https://github.com/stellar/stellar-docs/issues/2561, authored by oceans404. Root read back its body and state. It explicitly requests the scoped package name throughout the same section. No duplicate issue or reminder comment was posted.
   - 2026-09-08 fresh stellar/stellar-docs main read reproduced the unscoped prose at commit db501fe9; source SHA-256 fd57c064ac74c436e30ad1e5f4eb92941a0cfffda1f3a785d153f27bbe562fa2. npm still serves deprecated `stellar-sdk` 13.3.0 from 2025-04-21 and scoped `@stellar/stellar-sdk` 17.0.1 from 2026-08-25. Full metadata SHA-256 values are 155b0eac26b840ce952f7045de875e0b6319b9e7e541570f2a0d22ec131590df and 63d5addf201cfc919e2d788df1f2ca7f71211b888dc1466f52fa356deef9513b.
   - 2026-09-04 live read of https://developers.stellar.org/docs/tools/sdks/client-sdks says `stellar-sdk` is the JavaScript library
@@ -14,6 +15,8 @@ evidence:
   - .agents/rounds/2026-09-03-truth-maintenance/upstream-docs-findings-terra.md records the dated recheck
   - .agents/rounds/2026-09-03-truth-maintenance/upstream-docs-findings-review-opus.md records the independent review and this correction
 recurrences:
+  - date: 2026-11-09
+    evidence: "Live Client SDKs page line 25 names unscoped stellar-sdk while linking scoped package. Registry still serves deprecated unscoped 13.3.0 versus scoped 17.4.0."
   - date: 2026-11-06
     evidence: "Live client-sdks line25 names unscoped stellar-sdk; npm serves deprecated13.3.0 versus scoped17.4.0. Exact URLs and upstream state: .agents/rounds/2026-11-05-truth-maintenance/docs.md, row sd-050"
 ---

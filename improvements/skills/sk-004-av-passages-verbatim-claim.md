@@ -10,6 +10,8 @@ evidence:
   - live re-verified 2026-07-06 (eval round todo 846): find_av_passages still returns only AI-generated summary/long_summary + start_offset — no transcript/verbatim text field
   - upstream issue filed 2026-07-07: https://github.com/lumenloop/lumenloop-skills/issues/1
 recurrences:
+  - date: 2026-11-09
+    evidence: "2026-11-09T20:31:29Z POST https://api.lumenloop.com/v1/tools/find_av_passages with query=passkeys smart wallets on Soroban, limit=3 returned HTTP 200/success with three rows; keys remain av_id,title,url,channel,summary,long_summary,slug,created_at,start_offset,similarity, with no transcript text. Fresh lumenloop/lumenloop-skills main a87ca957 retains dossier Direct quotes and digest verbatim claims. Adjacent integration-finder:99, content-auditor:77, and ecosystem-scout:136-137 also request direct quotes from this operation. Issue 1 is open with no comments."
   - date: 2026-11-06
     evidence: "2026-11-06 still-repro: Fresh Lumenloop dossier,digest,integration-finder main source; LL find_av_passages passkeys query — Dossier Direct quotes, digest verbatim and integration-finder direct quote persist; response has only AI summaries and offsets. Adjacent third skill remains part of action. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row sk-004."
   - date: 2026-08-11

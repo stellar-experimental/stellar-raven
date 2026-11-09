@@ -1,7 +1,7 @@
 ---
 id: sls-100
 service: stellar-light-scout
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-11-02
 upstreamTitle: "Hana wallet links point to a domain that redirects to the Wend remittance product"
 probe:
@@ -12,6 +12,7 @@ probe:
     contains:
       - "\"website\":\"https://hana.money/\""
 evidence:
+  - "2026-11-09T20:31:56Z deployed fix verified: Hana project website hanawallet.io, status source www.hanawallet.io and corrected lifecycle note; adjacent partner hana-wallet website www.hanawallet.io. Curl-followed wallet domain returns the Hana wallet title, while both old hana.money domains still redirect to Wend. Current source STATUS_FIX.hana, WEBSITE_FIXES.hana and partner URL_CORRECTIONS all use hanawallet.io. theboycoder reports both project/partner executes on 2026-11-07 at https://github.com/Stellar-Light/stellarlight/issues/1911#issuecomment-6701317262. Author-side fixed candidate. Receipts: tmp/lane-scout.md, tmp/scout-live-curl.json, tmp/scout-extra.json."
   - "2026-11-02T17:18Z live GET https://stellarlight.xyz/api/projects/search?q=hana&limit=3 returned row slug hana, name Hana, status Live, statusBasis human-verified, statusAsOf 2026-08-28, statusSourceUrl 'https://www.hana.money/', links.website 'https://hana.money/', twitter 'https://x.com/hanawallet'. lifecycle.note: 'live wallet app; hanawallet.io 308s to hana.money (WEBSITE_FIXES moves the row)'."
   - "2026-11-02T17:19Z curl -sSI https://hana.money/ and https://www.hana.money/ both returned HTTP/2 307 with location https://www.wendmoney.com.au/. The destination title is 'Wend | Send money to GCash or Maya in minutes'."
   - "2026-11-02T17:19Z curl -sSI https://hanawallet.io/ returned HTTP 308 to https://www.hanawallet.io/, which returned HTTP 200 with title 'Hana | Non-Custodial Multi-Chain Crypto Wallet'. The redirect direction recorded in lifecycle.note has reversed."

@@ -1,10 +1,11 @@
 ---
 id: sls-112
 service: stellar-light-scout
-status: reported-upstream
+status: fixed-upstream
 discovered: 2026-11-02
 upstreamTitle: "Directory has no record for Chainlink Data Feeds on Stellar or for MetaMask's native Stellar support"
 evidence:
+  - "2026-11-09T20:31:57Z deployed fix verified: exact Chainlink and MetaMask resolves both found:true. Chainlink has Oracle type, separately cited mainnet/testnet oracle-feed products and both original proxy addresses; primary Chainlink docs corroborate. MetaMask has native Stellar end-user-wallet row, and stellar-metamask explicitly identifies the separate Snap. Primary MetaMask docs confirm default Stellar network. Adjacent third-party relayer stays distinct. theboycoder reports seed execution at https://github.com/Stellar-Light/stellarlight/issues/1904#issuecomment-6701317637. Author-side fixed candidate. Receipts: tmp/lane-scout.md, tmp/scout-live-curl.json."
   - "2026-11-02T21:36:20Z live GET https://stellarlight.xyz/api/projects/resolve?q=Chainlink and ?q=MetaMask both returned found false: 'No project in this directory is named ...'."
   - "2026-11-02 GET /api/projects/search?q=chainlink returned total 1 strict match: 'Chainlink Oracles Relayer' (slug chainlink-oracles-relayer, shortDescription 'Provable, Manipulation Resistant Random Numbers From Chainlink Oracles on Soroban.', statusSourceUrl https://docs.relink.services/). It is a third-party VRF relayer, not Chainlink Data Feeds."
   - "2026-11-02 GET /api/projects/search?q=metamask returned 'Stellar-MetaMask' (shortDescription 'The Stellar Integration on MetaMask. Utilizing the MetaMask Snaps Platform.', statusSourceUrl https://snaps.metamask.io/snap/npm/stellar-snap/, productKind integration-kit). No row describes MetaMask's built-in Stellar network."

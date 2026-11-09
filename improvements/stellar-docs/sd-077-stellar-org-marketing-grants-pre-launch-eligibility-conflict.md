@@ -5,6 +5,7 @@ status: verified
 discovered: 2026-11-02
 upstreamTitle: The stellar.org funding index and the Marketing Grants page give different pre-launch eligibility
 evidence:
+  - "2026-11-09 sweep (still-repro): Funding index still requires a live product, while dedicated marketing-grants page’s Traction data asks whether project is live or preparing to launch soon. Dedicated prose still accepts clear use cases/concrete timelines. Both HTTP200. Recheck: https://stellar.org/grants-and-funding; https://stellar.org/grants-and-funding/marketing-grants"
   - "2026-11-02T18:32:50Z curl https://stellar.org/grants-and-funding returned HTTP 200 (SHA-256 551c02d8b32134803cc89447a9bf198a6ab7ada7f69fb85ffb54104c80e14108). The Marketing grants section says \"SDF offers Marketing Grants of up to $500,000 awarded in USD, USDC, or XLM\" and \"For both new and existing projects with a live product built on the Stellar network\""
   - "2026-11-02T18:32:50Z curl https://stellar.org/grants-and-funding/marketing-grants returned HTTP 200 (SHA-256 6a49470810f8b568ddbb44904f305fae3e578d76042336bc50c0cc9d7ad4cc4d). The What we look for section has a card titled \"Traction\"; the page data gives its description as \"Is the project live with traction or preparing to launch soon?\". The page body says \"Marketing grants go to both new and existing projects with clear use cases and concrete timelines\""
   - "2026-11-02 curl https://stellar.org/blog/foundation-news/the-marketing-grants-programs-first-million (SDF blog, dated 2022-08-02) returned HTTP 200 with \"Traction: Is the project live with traction or preparing to launch soon?\". The blog repeats the dedicated page; it does not resolve the conflict"
@@ -12,6 +13,8 @@ evidence:
   - "Classification: site-content. Both pages are SDF stellar.org program pages, not developers.stellar.org content. The stellar.org page copy has no public issue tracker (checked 2026-11-02), so intake.json marks this finding unclear"
   - "Affected golden case: eval/qa/corpus/battery/scf-grants-builders/q-scf-sdf-marketing-grant.json (truth.verified 2026-11-02). The golden states both attributed wordings and does not penalize either; an already-launched project qualifies under both"
 recurrences:
+  - date: 2026-11-09
+    evidence: "Funding index still requires a live product, while dedicated marketing-grants page’s Traction data asks whether project is live or preparing to launch soon. Dedicated prose still accepts clear use cases/concrete timelines. Both HTTP200."
   - date: 2026-11-06
     evidence: "Fresh funding index requires live product; Marketing Grants page data says live with traction OR preparing to launch soon. Both200; distinction persists. Exact URLs and upstream state: .agents/rounds/2026-11-05-truth-maintenance/docs.md, row sd-077"
 ---

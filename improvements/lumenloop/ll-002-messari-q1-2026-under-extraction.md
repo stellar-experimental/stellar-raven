@@ -12,6 +12,8 @@ evidence:
   - https://github.com/lumenloop/lumenloop-backend/issues/22
   - filed upstream 2026-07-13 after public-repo ownership and open/closed issue deduplication; root cause remains unconfirmed
 recurrences:
+  - date: 2026-11-09
+    evidence: "2026-11-09 sweep at 2026-11-09T20:30:47.129142+00:00: still-repro. AV 2207 still has summary length 344 and long_summary length 694 characters. It is a June 4 interview, not a full extraction of the written report; article 5945 remains a separate SDF report control. No expanded extraction observed. Read-only exact requests and response hashes: tmp/lane-lumenloop.md; upstream issue state/comments freshly read; no maintainer comments or claimed fix."
   - date: 2026-11-06
     evidence: "2026-11-06 still-repro: LL get_document {collection:av,id:2207} — HTTP200: summary 344 characters, long_summary 694; thin Messari interview extraction unchanged. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row ll-002."
   - date: 2026-08-11
