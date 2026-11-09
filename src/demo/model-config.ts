@@ -4,13 +4,15 @@ import type { ProviderPlugin } from "workers-ai-provider";
 export type DemoModelConfig = {
   model: string;
   role: "primary" | "fallback";
+  /** Used unless the server supplies a valid effort override. */
+  reasoningEffort?: DemoReasoningEffort;
 };
 
 export type DemoReasoningEffort = "none" | "minimal" | "low" | "medium" | "high" | "xhigh";
 export type DemoOpenAiApiMode = "chat" | "responses";
 
 export const DEMO_PRIMARY_MODEL = "openai/gpt-5.6-terra";
-export const DEMO_FALLBACK_MODEL = "openai/gpt-5.6-luna";
+export const DEMO_FALLBACK_MODEL = "anthropic/claude-haiku-5.5";
 export const DEMO_GROK_CONTROL_MODEL = "xai/grok-4.6";
 export const DEMO_KIMI_CONTROL_MODEL = "@cf/moonshotai/kimi-k2.7-code";
 export const DEMO_MODELS: readonly DemoModelConfig[] = [
@@ -48,6 +50,13 @@ export function demoReasoningEffortFromOverride(override: string | undefined): D
   return demoReasoningEffortOverride(override) ?? DEMO_REASONING_EFFORT;
 }
 
+export function demoReasoningEffortFor(
+  config: Pick<DemoModelConfig, "reasoningEffort">,
+  override: DemoReasoningEffort | undefined
+): DemoReasoningEffort {
+  return override ?? config.reasoningEffort ?? DEMO_REASONING_EFFORT;
+}
+
 export function demoReasoningEffortOverride(override: string | undefined): DemoReasoningEffort | undefined {
   const value = override?.trim();
   if (
@@ -70,16 +79,23 @@ export function demoOpenAiApiModeFromOverride(override: string | undefined): Dem
 }
 
 /**
- * Responses transport is valid only when every configured attempt is an
- * OpenAI model. Keep this decision shared by the runtime and evaluator so an
- * artifact's recorded effective mode describes the route's real selection.
+ * Only attempts sharing the OpenAI wire plugin constrain its mode. Anthropic,
+ * Google and catalog-run attempts use separate paths. Unknown vendors remain
+ * conservative: an OpenAI-compatible vendor needs the chat plugin. Require an
+ * OpenAI attempt so single-model non-OpenAI effective-mode labels stay stable.
+ * Shared by runtime and evaluator to keep recorded modes tied to real selection.
  */
 export function demoEffectiveOpenAiApiMode(
   models: readonly { model: string }[],
   requestedMode: DemoOpenAiApiMode
 ): DemoOpenAiApiMode {
   if (requestedMode !== "responses") return "chat";
-  return models.every(({ model }) => model.startsWith("openai/")) ? "responses" : "chat";
+  const hasOpenAi = models.some(({ model }) => model.startsWith("openai/"));
+  const compatible = models.every(({ model }) =>
+    model.startsWith("openai/") || model.startsWith("anthropic/") ||
+    model.startsWith("google/") || demoUsesCatalogRun(model)
+  );
+  return hasOpenAi && compatible ? "responses" : "chat";
 }
 
 export function demoOpenAiProviderOptions(model: string, reasoningEffort: DemoReasoningEffort | undefined) {

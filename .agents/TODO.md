@@ -550,7 +550,7 @@ On 2026-11-03 a paired 30-case semantic check kept `openai/gpt-5.6-terra` as the
 `openai/gpt-6-luna` cost $0.094 against $1.883 in answer spend, but scored 6 correct, 18 partial,
 and 6 wrong against Terra's 8, 17, and 5. Luna had three new wrong answers (two hand-confirmed) and
 two tool-loop failures. Terra had two new wrong answers (both hand-confirmed) and no tool-loop
-failures. The switch rule allows no new wrong answers and no tool-loop regressions. The fallback stays `openai/gpt-5.6-luna`. The
+failures. The switch rule allows no new wrong answers and no tool-loop regressions. That check retained `openai/gpt-5.6-luna` as fallback. The
 numbers are in
 [the re-check record](../research/audits/2026-11-03-playground-model-recheck.md).
 
@@ -569,17 +569,17 @@ primary on a paired 30-case semantic check, or the owner decides to stop re-chec
 
 ## Eval instruments
 
-### Resume the Playground finals after the November 8 subscription reset
+### Clarify the model-facing `codemode.describe` response shape
 
-The owner chose to keep the $200 API cap and resume after the November 8 reset.
-The local one-shot restart targets 2026-11-08 at 19:05 America/New_York. Read [the resume checkpoint](rounds/2026-11-06-playground-resume.md)
-before any action: 202 m1 attempts settled, no server/reservations, 200 eligible B
-grades pending, then m2–m8 and full 1,616-cell adjudication. Preserve six quota A
-errors as attempts; no regrades or answer recollection are authorized. Independent
-continuation/owner-rollover review and the unfinished rubric audit, Astra R2 and
-conditional route reviews remain gates. Root supplies archive/schedule receipts.
-Done when both experiments have reviewed complete outcomes, any justified model
-change passes production/release gates, and owned resources are cleaned up.
+The November 9 primary production check recovered from reading `spec.data.signature`:
+`codemode.describe` returns `{ ok: true, signature, inputSchema, ... }` at the top
+level, while service calls use `{ ok: true, data }`. See the retained failure in
+[the Playground decision](../research/audits/2026-11-09-playground-product-decision.md).
+Decide whether model-facing documentation or a forward-only shape change best
+resolves the ambiguity; evaluate that prompt/behavior change separately. Do not
+retry the closed model experiment or bundle a shape change into its release.
+
+Done when: one reviewed, measured correction makes the describe shape clear to models.
 
 ### Resolve diagnostic noncompletions and judge ambiguities
 

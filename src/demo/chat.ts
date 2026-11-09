@@ -38,7 +38,7 @@ import {
   demoTemperatureFor,
   demoUnifiedRunBinding,
   demoUsesUnifiedRun,
-  demoReasoningEffortFromOverride,
+  demoReasoningEffortFor,
   demoReasoningEffortOverride,
   demoModelsFromOverride,
   openAiResponses,
@@ -240,9 +240,13 @@ async function runTurn(
   const demoModels = demoModelsFromOverride(env.DEMO_MODEL_OVERRIDE);
   const requestedOpenAiApiMode = demoOpenAiApiModeFromOverride(env.DEMO_OPENAI_API_MODE);
   const openAiApiMode = demoEffectiveOpenAiApiMode(demoModels, requestedOpenAiApiMode);
-  const reasoningEffort = demoReasoningEffortFromOverride(env.DEMO_REASONING_EFFORT_OVERRIDE);
   const reasoningEffortOverride = demoReasoningEffortOverride(env.DEMO_REASONING_EFFORT_OVERRIDE);
-  const openAiReasoningEffort = openAiApiMode === "responses" ? reasoningEffort : reasoningEffortOverride;
+  let selectedConfig = demoModels[0];
+  let reasoningEffort = demoReasoningEffortFor(selectedConfig ?? {}, reasoningEffortOverride);
+  let openAiReasoningEffort = openAiApiMode === "responses"
+    ? reasoningEffort : reasoningEffortOverride ?? selectedConfig?.reasoningEffort;
+  const reasoningEffortSource = () => reasoningEffortOverride !== undefined
+    ? "override" : selectedConfig?.reasoningEffort !== undefined ? "model" : "default";
   const inputTelemetry = await demoInputTelemetry(messages, subject);
   let selectedModel = demoModels[0]?.model ?? "unknown";
   const attemptedModels: string[] = [];
@@ -254,7 +258,7 @@ async function runTurn(
     openAiApiMode,
     openAiApiModeRequested: env.DEMO_OPENAI_API_MODE ? DEMO_OPENAI_API_MODE_VAR : undefined,
     reasoningEffort,
-    reasoningEffortSource: reasoningEffortOverride ? "override" : "default",
+    reasoningEffortSource: reasoningEffortSource(),
     reasoningEffortOverride: reasoningEffortOverride ? DEMO_REASONING_EFFORT_OVERRIDE_VAR : undefined,
     ...inputTelemetry
   });
@@ -284,7 +288,13 @@ async function runTurn(
     for (let index = 0; index < demoModels.length; index += 1) {
       const config = demoModels[index];
       if (!config) continue;
+      selectedConfig = config;
       selectedModel = config.model;
+      reasoningEffort = demoReasoningEffortFor(config, reasoningEffortOverride);
+      // Chat retains its provider default unless effort was explicitly supplied
+      // by the environment or this model's configuration.
+      openAiReasoningEffort = openAiApiMode === "responses"
+        ? reasoningEffort : reasoningEffortOverride ?? config.reasoningEffort;
       attemptedModels.push(config.model);
       let emittedUsefulOutput = false;
       let fallbackLogged = false;
@@ -455,7 +465,7 @@ async function runTurn(
       openAiApiMode,
       openAiApiModeRequested: env.DEMO_OPENAI_API_MODE ? DEMO_OPENAI_API_MODE_VAR : undefined,
       reasoningEffort,
-      reasoningEffortSource: reasoningEffortOverride ? "override" : "default",
+      reasoningEffortSource: reasoningEffortSource(),
       reasoningEffortOverride: reasoningEffortOverride ? DEMO_REASONING_EFFORT_OVERRIDE_VAR : undefined,
       openAiReasoningEffortSent:
         selectedModel.startsWith("openai/") ||

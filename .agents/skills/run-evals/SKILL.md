@@ -1,13 +1,13 @@
 ---
 name: run-evals
-description: Run a full eval round on stellar-raven-codemode from Codex, Claude Code, or another CLI agent — pick the right instruments (routing gate, QA headline, agentic, plan, live-data), distinguish the orchestrating agent from the spawned answering and judge agents, record results, review every answer/verdict, triage failures to root cause, and file evidence-backed upstream service-improvement findings in improvements/. Use when asked to run evals, check gates, measure a scoring/catalog/executor change, review QA verdicts, understand eval model roles, or close an eval round. The primary artifact of every round is upstream findings, not the scores.
+description: Plan and run scoped evaluations, check routing gates, compare answer quality, review stored verdicts, or close an eval round. Select the smallest instrument that can resolve the decision, preserve measurement and spending contracts, and route evidence-backed findings.
 ---
 
 # Eval round — stellar-raven-codemode
 
 This skill is the orchestration around the instruments. The instruments and their contracts live
-in `eval/EVALS.md`, `eval/README.md`, and `eval/qa/README.md`. Re-read `eval/EVALS.md` and
-`improvements/README.md` before any round; they are the current truth.
+in `eval/EVALS.md`, `eval/README.md`, and `eval/qa/README.md`. Read `eval/EVALS.md` for instrument
+selection and `improvements/README.md` when filing upstream findings; an evaluation need not become an upstream investigation.
 
 ## North star
 
@@ -17,11 +17,10 @@ Every instrument answers one question at some layer:
 
 Two non-negotiables:
 
-1. **The scores are the instrument; the findings are the product.** This server's own tuning
-   ceiling is single-digit points. The outsized leverage is discovering gaps in the four
-   upstream surfaces (Lumenloop, Stellar Light/Scout, Stellar Docs, skill sources). A round
-   that surfaces an upstream gap and doesn't file it in `improvements/` has dropped its most
-   valuable output.
+1. **Resolve the stated decision with evidence.** A model choice, regression check and upstream
+   investigation need different amounts of work. Scores inform the decision; verified defects
+   become findings when relevant. A no-switch or inconclusive result can finish a bounded round
+   when its declared stopping rule is met.
 2. **One headline, three routing gates, everything else diagnostic.** The headline is QA
    end-to-end (contracts in `eval/qa/README.md`). The gates are the legacy, skills, and holdout
    routing lanes (thresholds in `eval/gates.json`). Never merge lanes, never tune per-question,
@@ -51,20 +50,31 @@ applies only to the helper, reviewer, and triage agents around the measurement.
 
 ## Round loop
 
-1. Run the preflight and selected instruments from this repo.
+1. Scope the decision, reuse compatible evidence, and run only the missing checks or instruments.
 2. Let the eval runner spawn the answering and judge agents; do not answer cases manually from
    the orchestrating session.
 3. Save and name the results file stamp(s).
-4. Review every `wrong` and `partial` row first; for a full closeout, review every row, including
-   surprising passes.
-5. Join each result row with its golden from `eval/qa/cases.json` before analysis.
+4. Apply the predeclared review coverage: prioritize safety, failures and decision-changing
+   disagreements, with a fixed sample of agreements. Exhaustive review is not the default.
+5. Bind reviewed rows to their exact source golden and full transcript before judging content.
 6. Classify each issue with the Step 5 root-cause table.
 7. Apply own-repo fixes where appropriate; file upstream findings in `improvements/`; make
    gospel edits to owned case files only through the `golden-truth` workflow.
-8. Update the committed eval record and close the round only after failures and learnings are
-   accounted for.
+8. Record the decision, retained failures, review coverage and limitations; stop at the agreed bound.
 
 ## Step 0 — scope the round and set up tracking
+
+State the decision and what evidence could change it. Before new collection, inventory reusable
+receipts, reviews and checks with matching case, model, rubric and source identities. Choose the
+smallest paired sample and candidate set adequate for the decision and its risk. Record selection,
+review coverage, maximum calls/dollars and a stopping rule before inspecting new outcomes. A bounded
+product screen/confirmation need not establish scientific superiority over every candidate.
+
+Reuse accepted checks and reviews for unchanged inputs. Repeat only the affected check for a
+changed input or unresolved finding; a new session alone is not a reason. Preserve required CI,
+release checks and per-launch identity/accounting guards. Stop rather than expanding collection
+or review to obtain a preferred result. A scope or stopping-rule change is a named amendment:
+retain the old results, failures and denominator, and report the new sample separately.
 
 Decide what changed (or what question you're asking) — that picks the instruments:
 
@@ -77,7 +87,7 @@ Decide what changed (or what question you're asking) — that picks the instrume
 | Big change / A-B / before-after on answer quality | + QA battery sample (headline; paid; ~30 min per 30 cases) |
 | Executor / adapter / envelope changes | + QA live-data lane (`--cases eval/qa/corpus/live/live-cases.json`) |
 | Tool-description / agent-prompt-surface change (tool descriptions, MCP instructions, nudges) | QA sample + plan regrade — behavior shifts, routing math doesn't |
-| Any QA run already stored | + plan regrade (free, offline) |
+| Stored QA run with an unresolved tool-plan question | plan regrade (free, offline); reuse existing analysis otherwise |
 | Upstream drift refresh landed | routing `--gate`; refresh `improvements/` statuses (drift is the natural checkpoint for `fixed-upstream` re-checks) |
 | Stale-gospel gate fired (`eval:qa:lint -- --stale` in PR CI or the daily refresh) | the `truth-maintenance` stale queue owns triage; each case goes through `golden-truth` |
 | Corpus-health cadence (periodic, no code change needed) | cross-question contradiction scan over `eval/qa/consistency-register.json` (member hashes stamped by `npm run eval:qa:register`) + a sampled refute-then-repair sweep weighted toward freshness-sensitive, numeric/version, and `truth.status != "confirmed"` cases (fixes through `golden-truth`) + re-verify any `dateContingentTraps` whose trigger has passed |
@@ -91,12 +101,13 @@ triage table, findings drafted). Repo fixes discovered during the round become *
 live-data). Before the first paid token: draft the round brief in the round ledger (instruments,
 sample, reading rules, budget); have it adversarially reviewed by a tier from the
 [`AGENTS.md` routing rules](../../../AGENTS.md#model-routing-for-repo-work-fan-out) that is
-not the brief's author; reconcile every finding; on a major revision, run a bounded delta
-re-review of what changed. Only then spend. The review checks, at minimum, the patterns
-pre-spend review has actually caught (dated evidence:
+not the brief's author; reconcile findings. Reuse that review while its inputs and scope hold;
+review only a material changed delta or unresolved finding. Only then spend. The review checks the
+patterns pre-spend review has actually caught (dated evidence:
 [`research/audits/2026-07-11-eval-round-orchestration.md`](../../../research/audits/2026-07-11-eval-round-orchestration.md)):
 
-- The round's own independent review is scheduled as mandatory, not optional.
+- One bounded independent review covers the decision, sample, budget and stopping rules;
+  specify any separate required release review without duplicating the same gate.
 - Attribution over a composite interval is predeclared: name the cases each landed change
   can deterministically affect before running, or claim only a diagnostic.
 - The noise floor bounds what variance can explain; it is never a significance threshold.
@@ -180,21 +191,16 @@ When the candidate surface differs from HEAD, the answering server must serve th
 manifest, spec, adapters, and descriptions from one pinned revision. A partial local overlay is not a
 valid source-addition arm.
 
-For a multi-lane or CI-like round, use `truth-maintenance` as the coordinator rather than
-holding every transcript, drift note, golden check, and improvement follow-up in one context
-window. The coordinator owns the round ledger and spawns isolated reviewers (as `AGENTS.md`
-"Coordination" describes) for:
+For an explicitly broad truth-maintenance round, use `truth-maintenance` to coordinate its lanes.
+For a bounded evaluation, keep one ledger and one reviewer; add parallel lanes only when their
+benefit justifies the coordination and delegation is authorized. Keep reviewers independent of
+candidate identities and the coordinator's expected judgment where blinding is needed.
 
-- wrong/partial QA rows or shards of rows,
-- plan/routing regression diffs,
-- golden contradiction or freshness clusters,
-- improvements filing/follow-up,
-- adversarial closeout review.
+## Step 1 — applicable free preflight
 
-Each reviewer appends a narrow evidence-backed verdict to the ledger; the coordinator reconciles
-and patches. Do not pass the coordinator's expected answer to reviewers.
-
-## Step 1 — free preflight (always)
+Reuse a recorded passing check when its relevant inputs are unchanged. Run the applicable commands
+below for changed inputs or missing evidence; collecting against frozen artifacts does not require
+regenerating them. Required repository CI/release checks still apply to a promoted change.
 
 ```sh
 npm run eval:selftest           # grader math sanity + live-contract pins — no server needed
@@ -324,13 +330,14 @@ Known judge failure modes (from `eval/qa/README.md`):
 - Transcript visibility is conditional: cases tagged live-data/freshness (or explicitly
   transcript-tagged) get a deterministic transcript source-basis evidence pack in the judge
   input; untagged cases are judged corpus-blind, where transcript-invisible corpus-grounded
-  specifics get misgraded as fabrication. **Live-verify every `wrong` verdict** by re-executing
-  the claim against the live service before counting it as an agent failure; past rounds
-  overturned most of a run's wrongs as judge artifacts.
-- Judge variance: verdicts are single samples. Before treating an isolated or flipped `wrong` as
-  real, re-judge the identical row once; a verdict that flips on identical input is variance:
-  record it monitor-only. Read `wrong` counts before `correct` counts, and compare variants only on
-  the same sample. Use `eval/qa/re-judge.mjs <results> --ids a,b` or
+  specifics can be misgraded as fabrication. Resolve decision-bearing disputes against the full
+  transcript and exact golden. Reuse matching source evidence; re-execute a live claim only when
+  freshness or missing evidence requires it. Leave unresolved claims explicit.
+- Judge variance: verdicts are single samples. Prefer existing full-transcript adjudication for
+  disputed grades. A bounded paid re-judge is optional when it can resolve a remaining decision,
+  not a routine response to every wrong or partial. A flip alone does not establish which grade
+  is right; preserve both observations. Read `wrong` counts before `correct` counts, and compare
+  variants only on the same sample. Use `eval/qa/re-judge.mjs <results> --ids a,b` or
   `--flips-vs <baseline-results>` for an identity- and tuple-guarded re-judge artifact; a paid
   re-judge requires exactly one `--max-budget-usd`. Never cross-compare runs judged under different
   rubric/pack versions without a re-judge (`JUDGE_RUBRIC` in `judge.mjs` is the current version;
@@ -354,23 +361,20 @@ not a ship gate. Its full contract is in `eval/qa/README.md` ("Paired verdict").
 The owner retired decision A and its paid paired collection on 2026-11-03
 ([decision record](../../rounds/2026-11-03-owner-followup.md)).
 
-Fan out sub-agents for this review when the run is big: one per `wrong`/`partial` case, each
-re-executing the disputed claims live (production or dev `execute`) and returning a verdict
-+ evidence. Or shard by evidence type (docs-index freshness, Scout/Lumenloop corpus claims, plan
-transcripts) when that is cheaper. Keep the write sets disjoint: reviewers append to the ledger;
-the coordinator edits repo files.
+Use the declared review sample and coverage. Expand review only for an unresolved finding that
+could change the decision, within the agreed bound. A second judge is a diagnostic or independent
+opinion, not a requirement to duplicate all grading; validate its usefulness on existing calibration
+and a bounded transcript sample before buying more judgments.
 
-New rows store the canonical judge input in `caseInput` under `qa-judge-case-v2`, including
-`golden`. Join legacy rows that lack it with `eval/qa/cases.json` on `id`:
+New rows store the canonical judge input in `caseInput` under `qa-judge-case-v2`.
+Join legacy rows by `id` to the exact corpus snapshot bound to their receipt. Review packets
+must carry the question, golden, case tags (especially `trap` and `freshness`), relevant as-of
+metadata, and full transcript. A golden-only join loses the tags that select the rubric branch.
 
-```js
-const golden = Object.fromEntries(cases.cases.map(c => [c.id, c.golden]))
-// per row: { ...row, golden: golden[row.id] }
-```
+## Step 5 — triage reviewed failures
 
-## Step 5 — triage every failure to its root cause
-
-For each miss/wrong/partial (and each surprising pass), classify and route:
+For failures and surprising passes in the declared review scope, classify and route. Retain all
+other outcomes and disclose unreviewed or unresolved rows; do not silently treat them as passes:
 
 | Root cause | How to recognize | Where it goes |
 |---|---|---|
@@ -435,7 +439,7 @@ that points at the real defect (`improvements/` finding, `.agents/TODO.md` entry
 `freshness-drift`). The CI gospel-change lint checks that the fields exist; the reviewer checks
 that they are true.
 
-## Step 6 — file the findings (the round's primary artifact)
+## Step 6 — file relevant verified findings
 
 Use the `improvements-pipeline` skill for collections, IDs, frontmatter, intake, filing, and
 lint. Charter: `improvements/README.md`. The round-specific bar:
@@ -465,9 +469,9 @@ Apply the [retention rule](../../README.md#retention) when closing the round.
 Close-out checklist:
 - [ ] Gate verdict recorded (and `gates.json` re-baselined in-commit if legitimate)
 - [ ] Dated results recorded; lane guides link the evidence their current contracts need
-- [ ] Every failure triaged (step 5 table complete in the round ledger)
-- [ ] New/updated `improvements/` findings committed — a round with zero findings needs an
-      explicit "nothing new surfaced, here's what was re-checked" note to be credible
+- [ ] Declared review coverage completed; failures and unresolved limits preserved
+- [ ] Relevant verified findings filed or explicitly deferred; a product decision does not require
+      a new upstream finding or an unrelated investigation
 - [ ] Own-repo fixes filed in `.agents/TODO.md` (not improvements/, not silently patched)
 - [ ] Corpus lint green: `npm run eval:qa:lint -- --since <ref> --stale` passes over any case
       edits, and `npm run eval:qa:register` re-stamped/reopened clusters

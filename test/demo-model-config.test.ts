@@ -29,6 +29,7 @@ import {
   demoUsesCatalogRun,
   demoUsesUnifiedRun,
   demoReasoningEffortFromOverride,
+  demoReasoningEffortFor,
   demoReasoningEffortOverride,
   demoModelsFromOverride,
   openAiResponses,
@@ -79,9 +80,9 @@ describe("demo model config", () => {
     expect(demoGatewayOptions("test-gateway")).toEqual({ id: "test-gateway", collectLog: false });
   });
 
-  it("uses the gauntlet winner with a fast fallback, conservative sampling, and configured default reasoning", () => {
+  it("keeps the primary with the qualified cross-vendor fallback and conservative sampling", () => {
     expect(DEMO_PRIMARY_MODEL).toBe("openai/gpt-5.6-terra");
-    expect(DEMO_FALLBACK_MODEL).toBe("openai/gpt-5.6-luna");
+    expect(DEMO_FALLBACK_MODEL).toBe("anthropic/claude-haiku-5.5");
     expect(DEMO_GROK_CONTROL_MODEL).toBe("xai/grok-4.6");
     expect(DEMO_KIMI_CONTROL_MODEL).toBe("@cf/moonshotai/kimi-k2.7-code");
     expect(DEMO_MODEL).toBe(DEMO_PRIMARY_MODEL);
@@ -311,6 +312,43 @@ describe("demo model config", () => {
       "chat"
     );
     expect(demoEffectiveOpenAiApiMode(DEMO_MODELS, "chat")).toBe("chat");
+  });
+
+  it.each([
+    "anthropic/claude-haiku-5.5", "google/gemini-3.8-flash",
+    "@cf/moonshotai/kimi-k2.7-code", "moonshotai/kimi-k3", "meta/muse-spark-1.3", "particle/particle-1"
+  ])("does not let the separate path for %s demote the OpenAI plugin", (model) => {
+    for (const models of [[{ model: "openai/gpt-6.1-sol" }, { model }], [{ model }, { model: "openai/gpt-6.1-sol" }]]) {
+      expect(demoEffectiveOpenAiApiMode(models, "responses")).toBe("responses");
+      expect(demoEffectiveOpenAiApiMode(models, "chat")).toBe("chat");
+    }
+    expect(demoEffectiveOpenAiApiMode([{ model }], "responses")).toBe("chat");
+  });
+
+  it.each(["xai/grok-4.6", "grok/grok-4.6", "deepseek/deepseek-r1", "unknown/model"])(
+    "keeps chat for other OpenAI-wire or unknown vendors (%s)", (model) => {
+      expect(demoEffectiveOpenAiApiMode([{ model: "openai/gpt-6.1-sol" }, { model }], "responses")).toBe("chat");
+    }
+  );
+
+  it.each([
+    ["openai/gpt-5.6-terra", "responses"], ["openai/gpt-5.6-luna", "responses"],
+    ["openai/gpt-6.1-terra", "responses"], ["openai/gpt-6.1-sol", "responses"],
+    ["openai/gpt-5.6-sol", "responses"], ["openai/gpt-6-astra", "responses"],
+    ["anthropic/claude-haiku-5.5", "chat"], ["anthropic/claude-sonnet-5.5", "chat"]
+  ])("preserves the measured single-model label for %s", (model, expected) => {
+    expect(demoEffectiveOpenAiApiMode([{ model }], "responses")).toBe(expected);
+    expect(demoEffectiveOpenAiApiMode([{ model }], "chat")).toBe("chat");
+  });
+
+  it("resolves explicit effort before model effort before the unchanged default", () => {
+    expect(demoReasoningEffortFor({}, undefined)).toBe("none");
+    expect(demoReasoningEffortFor({ reasoningEffort: "low" }, undefined)).toBe("low");
+    expect(demoReasoningEffortFor({ reasoningEffort: "none" }, undefined)).toBe("none");
+    expect(demoReasoningEffortFor({ reasoningEffort: "low" }, "none")).toBe("none");
+    expect(demoReasoningEffortFor({ reasoningEffort: "none" }, "low")).toBe("low");
+    // A slug-only evaluation override never inherits tuple-specific efforts.
+    expect(demoModelsFromOverride(DEMO_PRIMARY_MODEL)).toEqual([{ model: DEMO_PRIMARY_MODEL, role: "primary" }]);
   });
 
   it("maps demo reasoning values onto the narrower Workers AI catalog setting", () => {
