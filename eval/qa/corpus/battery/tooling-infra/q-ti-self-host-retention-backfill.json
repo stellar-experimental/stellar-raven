@@ -23,7 +23,7 @@
       "Do NOT call 518400 the Horizon executable default or expect reingested rows outside a nonzero trailing window to remain.",
       "Do NOT conflate RPC BACKFILL, Horizon reingestion, Core catchup, schema migration/state rebuild, Galexie export or provider policy, and do not gate on a fixed GB/day figure."
     ],
-    "notes": "GT-54 CORRECTION 2026-07-11: this case owns executable retention, RPC BACKFILL and Horizon reingestion mechanics. The full-history sibling owns component/query boundaries; neither may collapse retention-only behavior into a universal no-backfill claim. GT-54 CORRECTION 2026-07-11: current Horizon source defaults HISTORY_RETENTION_COUNT to 0/unlimited; 518400 is the official one-month recommendation, not the executable default (official pages called it the default until sd-028 was fixed on 2026-07-27). RPC v27.1.1 ships 120960 as a dated binary default, not a hard maximum or universal provider policy. The user's ~1.3 TB/30d figure was not made a required exact claim; exact DB size depends on version, filters, and workload.\nAlso good if the answer: Mentions changing Horizon ingestion filters also does not retroactively backfill matching historical data; a historical range ingestion is needed. | Caveats storage estimates like 1.3TB/30d as workload/version-dependent rather than a universal constant.\nGolden cites: Horizon ingestion storage/retention docs. | RPC retention/data-lake docs. | Horizon filtering docs if discussing retroactive filtering/backfill.\nGrade the version-dated executable semantics and product/method boundaries, not an exact database size, provider window, checkpoint floor, or backfill duration. The v25.1 150 GB/<3h/<3 GB figures are release notes, not requirements.\nRe-verified 2026-11-02: stellar-rpc v30.0.0 and stellar-horizon v30.0.0 keep these defaults and behaviors. Since sd-028 (2026-07-27) the official Horizon pages state the 0 default, so an answer need not report an official-prose conflict."
+    "notes": "GT-54 CORRECTION 2026-07-11: this case owns executable retention, RPC BACKFILL and Horizon reingestion mechanics. The full-history sibling owns component/query boundaries; neither may collapse retention-only behavior into a universal no-backfill claim. GT-54 CORRECTION 2026-07-11: current Horizon source defaults HISTORY_RETENTION_COUNT to 0/unlimited; 518400 is the official one-month recommendation, not the executable default (official pages called it the default until sd-028 was fixed on 2026-07-27). RPC v27.1.1 ships 120960 as a dated binary default, not a hard maximum or universal provider policy. The user's ~1.3 TB/30d figure was not made a required exact claim; exact DB size depends on version, filters, and workload.\nAlso good if the answer: Mentions changing Horizon ingestion filters also does not retroactively backfill matching historical data; a historical range ingestion is needed. | Caveats storage estimates like 1.3TB/30d as workload/version-dependent rather than a universal constant.\nGolden cites: Horizon ingestion storage/retention docs. | RPC retention/data-lake docs. | Horizon filtering docs if discussing retroactive filtering/backfill.\nGrade the version-dated executable semantics and product/method boundaries, not an exact database size, provider window, checkpoint floor, or backfill duration. The v25.1 150 GB/<3h/<3 GB figures are release notes, not requirements.\nRe-verified 2026-11-02: stellar-rpc v30.0.0 and stellar-horizon v30.0.0 keep these defaults and behaviors. Since sd-028 (2026-07-27) the official Horizon pages state the 0 default, so an answer need not report an official-prose conflict.\nDocumentation reconciliation 2026-11-09: the official RPC configuring page now explains empty-database startup at the archive tip and why retention alone adds no older ledgers. sd-102 preserves the RPC team's declined request to document the internal-gap corruption sanity check. BACKFILL can create a database from scratch; an empty database counts as gapless. Do not require an otherwise correct answer to recite that sanity check, or treat the owner's omission as a contradiction of the implementation."
   },
   "tags": {
     "category": "tooling-infra",
@@ -101,6 +101,18 @@
         "ref": "https://github.com/stellar/stellar-horizon/blob/v30.0.0/internal/flags.go",
         "note": "v30.0.0 (latest, 2026-10-21) history-retention-count FlagDefault uint(0), '0 = retain an unlimited number of ledgers'; flags.go, reap.go, db.go blobs identical to v27.0.0.",
         "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/data/apis/rpc/admin-guide/configuring.md",
+        "observedAt": "2026-11-09",
+        "note": "The live Backfilling History on Startup section now documents archive-tip empty-DB startup and forward-only retention; the gap-check paragraph remains intentionally omitted."
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-rpc/blob/v30.0.0/cmd/stellar-rpc/internal/ingest/backfill.go",
+        "observedAt": "2026-11-09",
+        "note": "RunBackfill calls verifyDbGapless; an empty DB is accepted, while internal ledger gaps return an error."
       }
     ],
     "corroboration": [
@@ -222,36 +234,19 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task infra-tooling)",
+      "date": "2026-11-09",
+      "by": "Upstream handoff author reconciliation; independent live re-derivation by reviewer t38s; .agents/rounds/2026-11-09-upstream-handoffs.md",
       "evidence": [
-        "Gospel change 2026-11-02: answer re-dates RPC to v30.0.0 and Horizon to v30.0.0 (both 'unchanged since' the old pins); the official-prose-conflict sentence now says current docs agree; keyFacts[0] drops the v27.1.1 pin; keyFacts[4] drops the docs-conflict requirement; notes append a dated re-verification.",
-        "Live B 2026-11-02: https://github.com/stellar/stellar-rpc/blob/v30.0.0/cmd/stellar-rpc/internal/config/options.go — 'Name: \"history-retention-window\" ... DefaultValue: uint32(SevenDayOfLedgers)'; 'Name: \"backfill\" ... DefaultValue: false'; 'Name: \"serve-ledgers-from-datastore\" ... DefaultValue: false'",
-        "Live B 2026-11-02: gh api repos/stellar/stellar-rpc/releases and repos/stellar/stellar-horizon/releases — 'v30.0.0 2026-10-21T06:07:32Z prerelease=false (latest)' and 'v30.0.0 2026-10-21T08:38:20Z prerelease=false (latest)'",
-        "Live B 2026-11-02: https://github.com/stellar/stellar-rpc/compare/v27.1.1...v30.0.0 — backfill.go and service.go changed for performance only; BACKFILL still errors without serve-ledgers-from-datastore; get_ledgers.go unchanged",
-        "Live B 2026-11-02: https://github.com/stellar/stellar-horizon/blob/v30.0.0/internal/flags.go — 'FlagDefault: uint(0) ... (0 = retain an unlimited number of ledgers)'; flags.go, reap.go, db.go blob SHAs equal v27.0.0",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/data/apis/horizon/admin-guide/configuring — 'By default (`HISTORY_RETENTION_COUNT=0`), Horizon retains all ingested history and never purges it. ... To enact the recommended sliding window of one month, set this to 518400'",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/data/apis/horizon/admin-guide/ingestion — 'Horizon's default is `HISTORY_RETENTION_COUNT=0`, which retains all history and never purges ingested data.'",
-        "Live E 2026-11-02T16:41:42Z: Raven stellarDocs.search_docs -> https://developers.stellar.org/docs/data/apis/rpc/admin-guide/configuring#backfilling-history-on-startup — 'BACKFILL also requires datastore serving. Set SERVE_LEDGERS_FROM_DATASTORE = true.'",
-        "Live D 2026-11-02: Perplexity search -> RPC configuring docs and stellar-rpc releases — 'defaults to `false`. ... The default is `120960` ledgers, which is about 7 days.'",
-        "Sibling sweep 2026-11-02: q-infra-rpc-methods-list, q-infra-rpc-provider-archive-tier, q-crp-export-tx-history-taxes, q-ti-block-explorer-basics checked; none pins RPC v27.1.1 or Horizon v27.0.0 defaults against this case; no contradiction.",
-        "Pass 2 live A 2026-11-02T17:36Z: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents -- 'configured by a single history-retention-window setting with a stock default of 120960 ledgers (about 7 days, depending on ledger cadence)'; no '24 hours'/'24-hour'/'24h' text (0 matches).",
-        "Pass 2 live A 2026-11-02: https://developers.stellar.org/docs/data/apis/horizon/admin-guide/ingestion -- 'we recommend limiting historical retention of ingested data to a sliding window of 1 month ( HISTORY_RETENTION_COUNT=518400 ). Note that you must set this explicitly: Horizon's default is HISTORY_RETENTION_COUNT=0 , which retains all history'.",
-        "Pass 2 live A 2026-11-02: https://developers.stellar.org/docs/data/apis/rpc/admin-guide/configuring -- 'Backfilling History on Startup Set BACKFILL = true ...'; 'BACKFILL also requires datastore serving. Set SERVE_LEDGERS_FROM_DATASTORE = true .'",
-        "Pass 2 live B 2026-11-02: stellar/stellar-docs main 7cb5e8a4 -- openrpc getEvents.json 'single history-retention-window setting with a stock default of 120960 ledgers' (0 matches for 24 hour); configuring.mdx line 293 '`BACKFILL` also requires datastore serving'; horizon ingestion.mdx line 22 states the 0 default.",
-        "Repo record: improvements/resolved.json sd-023 and sd-028 resolved 2026-07-27, sd-029 resolved 2026-09-21 (PR #2789). All three are fixed upstream and the live pages no longer carry the old wording, so the cached-copy partial-cap caution expired; removed. sd-053 (open) covers docs omissions of the fresh-start and gap-check facts; it creates no canonical-page conflict with the golden, so no caution replaces the removed one.",
-        "Pass 2 change: keyFacts[4] re-formed into one predicate ('States ..., with 518400 only the recommended one-month window'); meaning unchanged.",
-        "Pass 2 sibling sweep 2026-11-02: grep '518400|HISTORY_RETENTION_WINDOW|cached or older cop' over the battery -> q-infra-rpc-methods-list (same 120960 window, no caution), q-ti-custodial-account-generation-c-address (its own sd-013 caution, removed in this pass); no contradiction.",
-        "Pass 2 independent verifier (task infra-tooling, .agents/rounds/2026-11-02-golden-audit.md) modify golden.notes: Accept the removal of the cached-copy caution: all three findings are resolved upstream and the live pages and Docs index carry the fixed wording. Modification: the retained GT-54 sentence still said '518400 is conflicting official recommendation/default prose', which the live Horizon pages no longer support and which contradicts the notes' last line; the newText makes it historical and dated. Residual, non-blocking: the APIs overview (developers.stellar.org/docs/data/apis#rpc) still says 'recent transaction queries (within a seven-day retention window)'. Quoting that phrase does not fire avoid[1], which targets a hard-maximum claim, so no new caution is needed. Also, the removed note dated the sd-029 fix 2026-09-14, but resolved.json says 2026-09-21; the removal makes that moot.",
-        "Pass 2 independent verifier (task infra-tooling, .agents/rounds/2026-11-02-golden-audit.md) accept golden.keyFacts[4]: 88 characters, one predicate under the lint split (no and/but/while/semicolon), same content: Horizon 0/unlimited default, 518400 only the recommended window. Confirmed by A configuring and ingestion pages and the E index.",
-        "Pass 2 independent verifier (task infra-tooling, .agents/rounds/2026-11-02-golden-audit.md) accept truth.verified.rootCause[+] (expired-caution entry): Verified expiry: all three findings resolved upstream and the live pages carry the fixed wording (quotes above).",
-        "Pass 2 independent verifier (task infra-tooling, .agents/rounds/2026-11-02-golden-audit.md) accept truth.verified.rootCause[+] (keyFacts[4] multi-predicate entry): Accurate: the old keyFacts[4] joined two predicates with a semicolon."
+        "Class A 2026-11-09: https://developers.stellar.org/docs/data/apis/rpc/admin-guide/configuring.md now states that ordinary empty-database startup begins at the latest history archive ledger and that a larger HISTORY_RETENTION_WINDOW alone adds no older ledgers.",
+        "Class B 2026-11-09: https://github.com/stellar/stellar-rpc/blob/v30.0.0/cmd/stellar-rpc/internal/ingest/service.go lines 182–191 uses root.CurrentLedger on db.ErrEmptyDB. https://github.com/stellar/stellar-rpc/blob/v30.0.0/cmd/stellar-rpc/internal/ingest/backfill.go lines 245–264 accepts empty DB and rejects internal gaps.",
+        "Owner scope decision: Shaptic explicitly declined documenting the corruption sanity check in https://github.com/stellar/stellar-docs/pull/2899#discussion_r4516284001 and approved the final patch. This does not reverse the runtime fact or require an existing database. sd-102 preserves the declined half of sd-053; the startup half is deployed.",
+        "The former observation that sd-053 covers two open documentation omissions is superseded. The historical sd-023/sd-028/sd-029 resolved receipts remain unchanged, and no expired canonical-page cap is restored.",
+        "Independent author/reviewer source reads agree on the shipped startup statement and intentional gap-check omission; .agents/rounds/2026-11-09-upstream-handoffs.md. Dated 2026-11-02 RPC/Horizon defaults were not changed by this documentation reconciliation.",
+        "Sibling sweep 2026-11-09: q-ti-self-host-core-rpc-full-history, q-infra-rpc-methods-list, q-soroban-event-indexing-design and q-tool-greenfield-indexer-prior-art-preflight keep retained-data/provider and indexing boundaries distinct. None claims larger retention alone recreates rows or requires an existing DB for BACKFILL; no contradiction."
       ],
       "rootCause": [
-        "freshness-drift",
-        "Upstream docs fix sd-028 (improvements/resolved.json, fixed 2026-07-27) removed the Horizon 518400 default wording, so the golden's official-prose-conflict sentence and keyFacts[4] went stale; RPC and Horizon v30.0.0 superseded the v27 version pins with unchanged defaults.",
-        "Expired caution: sd-023, sd-028, and sd-029 (improvements/resolved.json) are fixed upstream and the live pages carry the fixed wording, so the cached-copy grading caution no longer applies.",
-        "Eval-side authoring flaw: keyFacts[4] joined two predicates with a semicolon, which the multi-predicate key-fact lint flags."
+        "improvements/resolved.json (sd-053; startup half deployed through PR2899)",
+        "improvements/stellar-docs/sd-102-rpc-backfill-gap-check-declined.md"
       ]
     },
     "origin": "raven-next q-ti-self-host-retention-backfill"

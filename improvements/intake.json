@@ -130,10 +130,6 @@
       "repo": "stellar/stellar-docs",
       "reason": "Ledger, transaction-set, result, archive, and SCP documentation lacks one explicit transaction-inclusion verification recipe and trust-boundary explanation."
     },
-    "sd-032": {
-      "repo": "stellar/stellar-docs",
-      "reason": "Current Flutter wallet tutorial dependency ranges are stale and can conflict with the current wallet SDK dependency graph."
-    },
     "sd-035": {
       "repo": "stellar/stellar-docs",
       "reason": "The Wallets Kit docs retain a v1 API and an @^1-pinned npm @creit.tech install; the v2 migration uses JSR @creit-tech/stellar-wallets-kit and static initialization."
@@ -145,14 +141,6 @@
     "sd-050": {
       "repo": "stellar/stellar-docs",
       "reason": "The Client & XDR SDKs page prose is developers.stellar.org content owned by the docs repository."
-    },
-    "sd-053": {
-      "repo": "stellar/stellar-docs",
-      "reason": "The RPC configuring page section on BACKFILL is developers.stellar.org content owned by the docs repository."
-    },
-    "sd-054": {
-      "repo": "stellar/stellar-docs",
-      "reason": "The Stellar Stack and Validators cadence sentences are developers.stellar.org content owned by the docs repository."
     },
     "sk-004": {
       "repo": "lumenloop/lumenloop-skills"
@@ -227,10 +215,6 @@
       "repo": "Trustless-Work/trustlesswork-skill",
       "reason": "Trustless Work owns the Core API skill error-link template and the docs-site redirects that serve its problem type URLs; it resolved sk-026 through that repository."
     },
-    "sd-058": {
-      "repo": "stellar/stellar-docs",
-      "reason": "The fee-payer signing and x402 XDR extraction examples are source content owned by stellar/stellar-docs."
-    },
     "ll-037": {
       "repo": "lumenloop/lumenloop-backend",
       "reason": "get_related_projects not-found semantics are Lumenloop API behavior; lumenloop/lumenloop-backend owns the API."
@@ -267,26 +251,6 @@
       "repo": "Inferara/soroban-security-portal",
       "reason": "Inferara/soroban-security-portal is the public, issue-enabled repository for stellarsecurityportal.com (its GitHub homepage). The portal owns the audit-report dataset that Stellar Light/Scout mirrors."
     },
-    "sd-088": {
-      "repo": "stellar/stellar-docs",
-      "reason": "The LedgerHeader explanatory hierarchy is source content owned by stellar/stellar-docs."
-    },
-    "sd-090": {
-      "repo": "stellar/stellar-docs",
-      "reason": "Contract-spec enum guide source is owned by stellar/stellar-docs."
-    },
-    "sd-091": {
-      "repo": "stellar/stellar-docs",
-      "reason": "docs/build/guides/transactions/simulateTransaction-Deep-Dive.mdx is verified source content in stellar/stellar-docs."
-    },
-    "sd-092": {
-      "repo": "stellar/stellar-docs",
-      "reason": "docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos.mdx is verified source content in stellar/stellar-docs."
-    },
-    "sd-093": {
-      "repo": "stellar/stellar-docs",
-      "reason": "docs/learn/fundamentals/contract-development/storage/persisting-data.mdx is verified source content in stellar/stellar-docs."
-    },
     "cs-010": {
       "repo": "cloudflare/agents",
       "reason": "The agents package metadata (npm view agents@0.32.0 repository bugs) names cloudflare/agents as its issue owner; createAI lives in packages/agents/src/models."
@@ -298,14 +262,6 @@
     "sk-039": {
       "repo": "stellar/stellar-dev-skill",
       "reason": "The canonical assets skill owns the SAC token-interface type summary."
-    },
-    "sd-098": {
-      "repo": "stellar/stellar-docs",
-      "reason": "Deprecated SDK API examples belong to the canonical Docs owner."
-    },
-    "sd-099": {
-      "repo": "stellar/stellar-docs",
-      "reason": "The cross-contract guide owns the manual invocation example and function-name prose."
     }
   }
 }

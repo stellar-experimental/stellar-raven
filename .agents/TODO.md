@@ -72,8 +72,10 @@ The [round ledger](rounds/2026-11-05-truth-maintenance.md) and its per-finding t
 130 starting findings. Recheck only when the named change or new evidence arrives; untouched
 issues do not need reminders.
 
-- Scout: after [PR1924](https://github.com/Stellar-Light/stellarlight/pull/1924) deploys and its
-  curation/enrichment jobs run, repeat sls-099/100/102/112/113 originals. For sls-107, require the
+- Scout: [PR1924](https://github.com/Stellar-Light/stellarlight/pull/1924) is deployed (spec
+  1.9.127 live on 2026-11-09) and sls-113 is retired. The 2026-11-09 probe run flags sls-099/100/102
+  as fixed candidates: repeat their originals with a distinct reviewer before any status change.
+  sls-112 stays open. For sls-107, require the
   enabled issuer refresh to populate issuer/source/date fields, including the nine affected
   AUDD/Currency One records and the MGUSD control. For sls-114, require a new Horizon code scan
   and verify fixture paths/classification. For sls-101, repeat aggregate and Spiko/Sentora/Etherfuse
@@ -86,13 +88,12 @@ issues do not need reminders.
   PR, review/check blocker and exact live trigger. Recheck those pages after deployment;
   green checks alone do not close findings. The author-owned protocol PR2059 is behind but
   green and awaiting review; respond to substantive review without a keepalive rebase.
-- Docs continuation (2026-11-06): sd-098 has [PR3067](https://github.com/stellar/stellar-docs/pull/3067)
-  awaiting review/deployment. After it ships, check all five raw-event locations;
-  compile the complete event examples and compare topics/data before retiring sd-098.
-  sd-095 and sd-097 passed fresh root and independent deployed-content checks; see the
-  [resolution ledger](rounds/2026-11-06-playground-final-resolution.md) for their retirement.
-  PR3053 now proposes the result.error correction for sd-091 but still has requested changes.
-  Re-run success, JSON-RPC error and simulation-error fixtures after approval and deployment.
+- Docs continuation (2026-11-09): sd-091 and sd-098 are retired with ten other deployed fixes
+  ([ledger](rounds/2026-11-09-upstream-handoffs.md)). sd-101 ([stellar-docs#3079](https://github.com/stellar/stellar-docs/issues/3079)) carries the
+  remaining complete WebAuthn example compile failure and sd-100
+  ([stellar-docs#3078](https://github.com/stellar/stellar-docs/issues/3078)) the USDT0 launch-page
+  cadence; recheck each only when its upstream issue reports a fix. sd-095 and sd-097 were retired earlier; see the
+  [resolution ledger](rounds/2026-11-06-playground-final-resolution.md).
   The [continuation table](rounds/2026-11-06-remaining-sweep/docs.md) records all current
   review/conflict blockers, including draft2752 and the separate pending generated-skill PR3069.
 - Lumenloop ll-022/023/024: the original records did not retain a reproducible wrong milestone,

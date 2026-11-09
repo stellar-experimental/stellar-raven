@@ -1,12 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import { createHash } from 'node:crypto';
+import { frozenCorpusBytes } from './frozen-corpus.mjs';
 import { mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, statSync, symlinkSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { generatePackets, joinReviews, main } from './blind-packets.mjs';
 const hash = value => createHash('sha256').update(value).digest('hex');
 const h = value => hash(JSON.stringify(value));
 const selection = JSON.parse(readFileSync(new URL('./selection.json', import.meta.url)));
-const corpusBytes = readFileSync(new URL('../../../eval/qa/cases.json', import.meta.url));
+const corpusBytes = frozenCorpusBytes(selection.corpusSha256);
 const corpus = JSON.parse(corpusBytes).cases;
 const models = Array.from({ length: 8 }, (_, i) => `PRIVATE_MODEL_${i}`);
 function fixture() {
@@ -123,7 +124,8 @@ it('CLI writes private ignored bundles, joins explicit reviews, and refuses over
     mutateRows(f);
     const matrixFile = path.join(directory, 'matrix.json'); writeFileSync(matrixFile, JSON.stringify(f.matrix));
     const bundleDir = path.join(directory, 'bundle');
-    const args = ['generate', matrixFile, 'eval/qa/cases.json', bundleDir];
+    const corpusFile = path.join(directory, 'cases.json'); writeFileSync(corpusFile, corpusBytes);
+    const args = ['generate', matrixFile, corpusFile, bundleDir];
     expect(main(args)).toMatchObject({ packets: 101, cells: 1616 });
     expect(statSync(bundleDir).mode & 0o777).toBe(0o700);
     expect(statSync(path.join(bundleDir, 'root-only-sidecar.json')).mode & 0o777).toBe(0o600);
@@ -140,7 +142,7 @@ it('CLI writes private ignored bundles, joins explicit reviews, and refuses over
       writeFileSync(path.join(reviewsDir, file), JSON.stringify(review));
     }
     const output = path.join(directory, 'adjudications.json');
-    expect(main(['join', matrixFile, 'eval/qa/cases.json', bundleDir, reviewsDir, output]).rows).toBe(1616);
+    expect(main(['join', matrixFile, corpusFile, bundleDir, reviewsDir, output]).rows).toBe(1616);
     expect(statSync(output).mode & 0o777).toBe(0o600);
   } finally { rmSync(directory, { recursive: true, force: true }); }
 });

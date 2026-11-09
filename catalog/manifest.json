@@ -2343,8 +2343,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-11-06T01:05:52.974Z",
-        "openapiVersion": "1.9.122",
+        "fetchedAt": "2026-11-09T19:08:25.744Z",
+        "openapiVersion": "1.9.127",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingExclusions": [
@@ -3031,7 +3031,7 @@
                 "type": "object"
               },
               "facetShifts": {
-                "description": "Category and package shares that moved most between the events, largest spread first. Each value is counted against every event's full set. A winners-only event (coverage) is left out: its winners' mix is not its field's.",
+                "description": "Category and package shares that moved most between the events, largest spread first. Each value is counted against every event's full set. A winners-only or partial event (coverage) is left out: the mix of its winners or of a partial list is not its field's.",
                 "items": {
                   "properties": {
                     "facet": {
@@ -3082,7 +3082,7 @@
                 "type": "object"
               },
               "notes": {
-                "description": "Plain-language differences, plus every gap: an event whose counts are unavailable, a winners-only event whose submission count is unknown, and any read that failed (a failed read is never served as an absent event or a zero).",
+                "description": "Plain-language differences, plus every gap: an event whose counts are unavailable, a winners-only or partial event whose submission count is unknown, and any read that failed (a failed read is never served as an absent event or a zero).",
                 "items": {
                   "type": "string"
                 },
@@ -3141,7 +3141,7 @@
           },
           "hackathons": {
             "items": {
-              "description": "Every row carries prizePoolUSD, hackersCount, submissionCount and winnerCount; null means no source gave the value (could not check), never zero, or for submissionCount on a winners-only event (coverage) that only its winners are on record.",
+              "description": "Every row carries prizePoolUSD, hackersCount, submissionCount and winnerCount; null means no source gave the value (could not check), never zero, or for submissionCount on a winners-only or partial event (coverage) that its stored rows are not its field.",
               "properties": {
                 "activeRatePct": {
                   "description": "Curated events only: stillActiveCount / submissionCount as a percent. null over incomplete rows, as prizePerWinnerUSD; notes says why.",
@@ -3149,9 +3149,10 @@
                   "type": "number"
                 },
                 "coverage": {
-                  "description": "Present only when the event's stored rows are not its full listing. winners-only: every stored row is a winner imported from the page that names it (an event off DoraHacks whose submission list Scout does not hold), so only its winners are on record and the size and mix of its field are unknown; its submission counts are then null, never the winner count. Absent: the stored rows are the event's listing as the daily DoraHacks sync stores it, or none are stored.",
+                  "description": "Present only when the event's stored rows are not its full listing. winners-only: every stored row is a winner imported from the page that names it (an event off DoraHacks whose submission list Scout does not hold), so only its winners are on record. partial: every stored row comes from a list other than the organizer's and at least one is not a winner (HackMeridian 2026's, from HackProof), each row with an entryBasis that says why it is stored; the list is not the event's field and need not hold every entry. In both the size and mix of the field are unknown: its submission counts are null, never the winner or row count, and no share is computed over the rows. Absent: the stored rows are the event's listing as the daily DoraHacks sync stores it, none are stored, or the stored copy could not be read with this response (meta.note says so).",
                   "enum": [
-                    "winners-only"
+                    "winners-only",
+                    "partial"
                   ],
                   "type": "string"
                 },
@@ -3183,7 +3184,7 @@
                   "type": "array"
                 },
                 "prizePerWinnerUSD": {
-                  "description": "prizePoolUSD / winnerCount, rounded. Absent when either is missing or zero. null when the winners on record are incomplete rows: only the winners are stored (coverage winners-only) or they are published only in part (getHackathon stats.winnersNote); notes says which. Never computed over incomplete rows.",
+                  "description": "prizePoolUSD / winnerCount, rounded. Absent when either is missing or zero. null when the winners on record are incomplete rows: only the winners are stored (coverage winners-only), the rows are a partial list (coverage partial), or the winners are published only in part or secondhand (getHackathon stats.winnersNote); notes says which. Never computed over incomplete rows.",
                   "nullable": true,
                   "type": "number"
                 },
@@ -3193,7 +3194,7 @@
                   "type": "number"
                 },
                 "profile": {
-                  "description": "What the event's stored submissions were about, built with and became, counted like upstream analyze hackathon submissions (shares over known values). Absent when the store holds none of its submissions. When coverage is winners-only it counts the winners only, not the event's field, and every share in it is null.",
+                  "description": "What the event's stored submissions were about, built with and became, counted like upstream analyze hackathon submissions (shares over known values). Absent when the store holds none of its submissions, or could not be read with this response (meta.note says so). When coverage is winners-only it counts the winners only, and when it is partial the rows of that list, not the event's field, and every share in it is null.",
                   "properties": {
                     "activity": {
                       "properties": {
@@ -3216,7 +3217,7 @@
                                 "type": "integer"
                               },
                               "share": {
-                                "description": "builds / known (0 to 1); null when no build's value is known, or when the counted rows are incomplete (only a winners-only event's winners): no share is computed over them.",
+                                "description": "builds / known (0 to 1); null when no build's value is known, or when the counted rows are incomplete (only a winners-only event's winners, or a partial event's list): no share is computed over them.",
                                 "nullable": true,
                                 "type": "number"
                               },
@@ -3256,7 +3257,7 @@
                                 "type": "integer"
                               },
                               "share": {
-                                "description": "builds / known (0 to 1); null when no build's value is known, or when the counted rows are incomplete (only a winners-only event's winners): no share is computed over them.",
+                                "description": "builds / known (0 to 1); null when no build's value is known, or when the counted rows are incomplete (only a winners-only event's winners, or a partial event's list): no share is computed over them.",
                                 "nullable": true,
                                 "type": "number"
                               },
@@ -3276,9 +3277,10 @@
                       "type": "object"
                     },
                     "coverage": {
-                      "description": "Present only when the event's stored rows are not its full listing. winners-only: every stored row is a winner imported from the page that names it (an event off DoraHacks whose submission list Scout does not hold), so only its winners are on record and the size and mix of its field are unknown; its submission counts are then null, never the winner count. Absent: the stored rows are the event's listing as the daily DoraHacks sync stores it, or none are stored.",
+                      "description": "Present only when the event's stored rows are not its full listing. winners-only: every stored row is a winner imported from the page that names it (an event off DoraHacks whose submission list Scout does not hold), so only its winners are on record. partial: every stored row comes from a list other than the organizer's and at least one is not a winner (HackMeridian 2026's, from HackProof), each row with an entryBasis that says why it is stored; the list is not the event's field and need not hold every entry. In both the size and mix of the field are unknown: its submission counts are null, never the winner or row count, and no share is computed over the rows. Absent: the stored rows are the event's listing as the daily DoraHacks sync stores it, none are stored, or the stored copy could not be read with this response (meta.note says so).",
                       "enum": [
-                        "winners-only"
+                        "winners-only",
+                        "partial"
                       ],
                       "type": "string"
                     },
@@ -3303,7 +3305,7 @@
                                 "type": "integer"
                               },
                               "share": {
-                                "description": "builds / known (0 to 1); null when no build's value is known, or when the counted rows are incomplete (only a winners-only event's winners): no share is computed over them.",
+                                "description": "builds / known (0 to 1); null when no build's value is known, or when the counted rows are incomplete (only a winners-only event's winners, or a partial event's list): no share is computed over them.",
                                 "nullable": true,
                                 "type": "number"
                               },
@@ -3343,7 +3345,7 @@
                                 "type": "integer"
                               },
                               "share": {
-                                "description": "builds / known (0 to 1); null when no build's value is known, or when the counted rows are incomplete (only a winners-only event's winners): no share is computed over them.",
+                                "description": "builds / known (0 to 1); null when no build's value is known, or when the counted rows are incomplete (only a winners-only event's winners, or a partial event's list): no share is computed over them.",
                                 "nullable": true,
                                 "type": "number"
                               },
@@ -3384,7 +3386,7 @@
                                 "type": "integer"
                               },
                               "share": {
-                                "description": "builds / known (0 to 1); null when no build's value is known, or when the counted rows are incomplete (only a winners-only event's winners): no share is computed over them.",
+                                "description": "builds / known (0 to 1); null when no build's value is known, or when the counted rows are incomplete (only a winners-only event's winners, or a partial event's list): no share is computed over them.",
                                 "nullable": true,
                                 "type": "number"
                               },
@@ -3424,7 +3426,7 @@
                                 "type": "integer"
                               },
                               "share": {
-                                "description": "builds / known (0 to 1); null when no build's value is known, or when the counted rows are incomplete (only a winners-only event's winners): no share is computed over them.",
+                                "description": "builds / known (0 to 1); null when no build's value is known, or when the counted rows are incomplete (only a winners-only event's winners, or a partial event's list): no share is computed over them.",
                                 "nullable": true,
                                 "type": "number"
                               },
@@ -3464,7 +3466,7 @@
                                 "type": "integer"
                               },
                               "share": {
-                                "description": "builds / known (0 to 1); null when no build's value is known, or when the counted rows are incomplete (only a winners-only event's winners): no share is computed over them.",
+                                "description": "builds / known (0 to 1); null when no build's value is known, or when the counted rows are incomplete (only a winners-only event's winners, or a partial event's list): no share is computed over them.",
                                 "nullable": true,
                                 "type": "number"
                               },
@@ -3484,7 +3486,7 @@
                       "type": "object"
                     },
                     "submissions": {
-                      "description": "Stored submissions profiled. null when coverage is winners-only: only the winners are on record, so the size of the field is unknown.",
+                      "description": "Stored submissions profiled. null when coverage is winners-only or partial: the stored rows are not the event's field, so its size is unknown.",
                       "nullable": true,
                       "type": "integer"
                     },
@@ -3514,7 +3516,7 @@
                   "type": "integer"
                 },
                 "submissionCount": {
-                  "description": "Curated events: directory projects tied to the event. DoraHacks events: stored submissions. null when neither is held: could not check, never zero; deltas.notes then names the event. Also null on a winners-only event (coverage): only its winners are stored, so the size of its field is unknown, never the winner count.",
+                  "description": "Curated events: directory projects tied to the event. DoraHacks events: stored submissions. null when neither is held: could not check, never zero; deltas.notes then names the event. Also null on a winners-only or partial event (coverage): its stored rows are its winners alone or a partial list from another source, so the size of its field is unknown, never the winner or row count.",
                   "nullable": true,
                   "type": "integer"
                 },
@@ -3559,8 +3561,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-11-06T01:05:52.974Z",
-        "openapiVersion": "1.9.122",
+        "fetchedAt": "2026-11-09T19:08:25.744Z",
+        "openapiVersion": "1.9.127",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingExclusions": [
@@ -4221,8 +4223,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-11-06T01:05:52.974Z",
-        "openapiVersion": "1.9.122",
+        "fetchedAt": "2026-11-09T19:08:25.744Z",
+        "openapiVersion": "1.9.127",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingExclusions": [
@@ -4871,8 +4873,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-11-06T01:05:52.974Z",
-        "openapiVersion": "1.9.122",
+        "fetchedAt": "2026-11-09T19:08:25.744Z",
+        "openapiVersion": "1.9.127",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -5319,8 +5321,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-11-06T01:05:52.974Z",
-        "openapiVersion": "1.9.122",
+        "fetchedAt": "2026-11-09T19:08:25.744Z",
+        "openapiVersion": "1.9.127",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingExclusions": [
@@ -5663,8 +5665,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-11-06T01:05:52.974Z",
-        "openapiVersion": "1.9.122",
+        "fetchedAt": "2026-11-09T19:08:25.744Z",
+        "openapiVersion": "1.9.127",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingExclusions": [
@@ -6093,8 +6095,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-11-06T01:05:52.974Z",
-        "openapiVersion": "1.9.122",
+        "fetchedAt": "2026-11-09T19:08:25.744Z",
+        "openapiVersion": "1.9.127",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingExclusions": [
@@ -6336,6 +6338,14 @@
         "outcomes",
         "upstream",
         "kind",
+        "contracts",
+        "created",
+        "network",
+        "testnet",
+        "path",
+        "entry",
+        "names",
+        "listed",
         "commits",
         "90",
         "days",
@@ -6366,9 +6376,10 @@
             "additionalProperties": true,
             "properties": {
               "coverage": {
-                "description": "Present only when the event's stored rows are not its full listing. winners-only: every stored row is a winner imported from the page that names it (an event off DoraHacks whose submission list Scout does not hold), so only its winners are on record and the size and mix of its field are unknown; its submission counts are then null, never the winner count. Absent: the stored rows are the event's listing as the daily DoraHacks sync stores it, or none are stored.",
+                "description": "Present only when the event's stored rows are not its full listing. winners-only: every stored row is a winner imported from the page that names it (an event off DoraHacks whose submission list Scout does not hold), so only its winners are on record. partial: every stored row comes from a list other than the organizer's and at least one is not a winner (HackMeridian 2026's, from HackProof), each row with an entryBasis that says why it is stored; the list is not the event's field and need not hold every entry. In both the size and mix of the field are unknown: its submission counts are null, never the winner or row count, and no share is computed over the rows. Absent: the stored rows are the event's listing as the daily DoraHacks sync stores it, none are stored, or the stored copy could not be read with this response (meta.note says so).",
                 "enum": [
-                  "winners-only"
+                  "winners-only",
+                  "partial"
                 ],
                 "type": "string"
               },
@@ -6410,7 +6421,7 @@
                 "type": "array"
               },
               "profile": {
-                "description": "What the event's stored submissions were about, built with and became, counted like upstream analyze hackathon submissions (shares over known values). Absent when the store holds none of its submissions. When coverage is winners-only it counts the winners only, not the event's field, and every share in it is null.",
+                "description": "What the event's stored submissions were about, built with and became, counted like upstream analyze hackathon submissions (shares over known values). Absent when the store holds none of its submissions, or could not be read with this response (meta.note says so). When coverage is winners-only it counts the winners only, and when it is partial the rows of that list, not the event's field, and every share in it is null.",
                 "properties": {
                   "activity": {
                     "properties": {
@@ -6433,7 +6444,7 @@
                               "type": "integer"
                             },
                             "share": {
-                              "description": "builds / known (0 to 1); null when no build's value is known, or when the counted rows are incomplete (only a winners-only event's winners): no share is computed over them.",
+                              "description": "builds / known (0 to 1); null when no build's value is known, or when the counted rows are incomplete (only a winners-only event's winners, or a partial event's list): no share is computed over them.",
                               "nullable": true,
                               "type": "number"
                             },
@@ -6473,7 +6484,7 @@
                               "type": "integer"
                             },
                             "share": {
-                              "description": "builds / known (0 to 1); null when no build's value is known, or when the counted rows are incomplete (only a winners-only event's winners): no share is computed over them.",
+                              "description": "builds / known (0 to 1); null when no build's value is known, or when the counted rows are incomplete (only a winners-only event's winners, or a partial event's list): no share is computed over them.",
                               "nullable": true,
                               "type": "number"
                             },
@@ -6493,9 +6504,10 @@
                     "type": "object"
                   },
                   "coverage": {
-                    "description": "Present only when the event's stored rows are not its full listing. winners-only: every stored row is a winner imported from the page that names it (an event off DoraHacks whose submission list Scout does not hold), so only its winners are on record and the size and mix of its field are unknown; its submission counts are then null, never the winner count. Absent: the stored rows are the event's listing as the daily DoraHacks sync stores it, or none are stored.",
+                    "description": "Present only when the event's stored rows are not its full listing. winners-only: every stored row is a winner imported from the page that names it (an event off DoraHacks whose submission list Scout does not hold), so only its winners are on record. partial: every stored row comes from a list other than the organizer's and at least one is not a winner (HackMeridian 2026's, from HackProof), each row with an entryBasis that says why it is stored; the list is not the event's field and need not hold every entry. In both the size and mix of the field are unknown: its submission counts are null, never the winner or row count, and no share is computed over the rows. Absent: the stored rows are the event's listing as the daily DoraHacks sync stores it, none are stored, or the stored copy could not be read with this response (meta.note says so).",
                     "enum": [
-                      "winners-only"
+                      "winners-only",
+                      "partial"
                     ],
                     "type": "string"
                   },
@@ -6520,7 +6532,7 @@
                               "type": "integer"
                             },
                             "share": {
-                              "description": "builds / known (0 to 1); null when no build's value is known, or when the counted rows are incomplete (only a winners-only event's winners): no share is computed over them.",
+                              "description": "builds / known (0 to 1); null when no build's value is known, or when the counted rows are incomplete (only a winners-only event's winners, or a partial event's list): no share is computed over them.",
                               "nullable": true,
                               "type": "number"
                             },
@@ -6560,7 +6572,7 @@
                               "type": "integer"
                             },
                             "share": {
-                              "description": "builds / known (0 to 1); null when no build's value is known, or when the counted rows are incomplete (only a winners-only event's winners): no share is computed over them.",
+                              "description": "builds / known (0 to 1); null when no build's value is known, or when the counted rows are incomplete (only a winners-only event's winners, or a partial event's list): no share is computed over them.",
                               "nullable": true,
                               "type": "number"
                             },
@@ -6601,7 +6613,7 @@
                               "type": "integer"
                             },
                             "share": {
-                              "description": "builds / known (0 to 1); null when no build's value is known, or when the counted rows are incomplete (only a winners-only event's winners): no share is computed over them.",
+                              "description": "builds / known (0 to 1); null when no build's value is known, or when the counted rows are incomplete (only a winners-only event's winners, or a partial event's list): no share is computed over them.",
                               "nullable": true,
                               "type": "number"
                             },
@@ -6641,7 +6653,7 @@
                               "type": "integer"
                             },
                             "share": {
-                              "description": "builds / known (0 to 1); null when no build's value is known, or when the counted rows are incomplete (only a winners-only event's winners): no share is computed over them.",
+                              "description": "builds / known (0 to 1); null when no build's value is known, or when the counted rows are incomplete (only a winners-only event's winners, or a partial event's list): no share is computed over them.",
                               "nullable": true,
                               "type": "number"
                             },
@@ -6681,7 +6693,7 @@
                               "type": "integer"
                             },
                             "share": {
-                              "description": "builds / known (0 to 1); null when no build's value is known, or when the counted rows are incomplete (only a winners-only event's winners): no share is computed over them.",
+                              "description": "builds / known (0 to 1); null when no build's value is known, or when the counted rows are incomplete (only a winners-only event's winners, or a partial event's list): no share is computed over them.",
                               "nullable": true,
                               "type": "number"
                             },
@@ -6701,7 +6713,7 @@
                     "type": "object"
                   },
                   "submissions": {
-                    "description": "Stored submissions profiled. null when coverage is winners-only: only the winners are on record, so the size of the field is unknown.",
+                    "description": "Stored submissions profiled. null when coverage is winners-only or partial: the stored rows are not the event's field, so its size is unknown.",
                     "nullable": true,
                     "type": "integer"
                   },
@@ -6814,10 +6826,10 @@
                 "type": "object"
               },
               "stats": {
-                "description": "Counts for the event. totalSubmissions counts the submissions served here (null = no submission list, or only the winners are on record).",
+                "description": "Counts for the event. totalSubmissions counts the submissions served here (null = no submission list, or only the winners or a partial list are on record).",
                 "properties": {
                   "coverageNote": {
-                    "description": "Present when upstreamSubmissions and totalSubmissions differ: which submissions are not served here (hidden or deleted by their teams, or a same-name resubmission counted once), or that a stored submission DoraHacks no longer lists is kept. When coverage is winners-only: that only the winners are on record, so the size and mix of the field are unknown and the counts of it are null.",
+                    "description": "Present when upstreamSubmissions and totalSubmissions differ: which submissions are not served here (hidden or deleted by their teams, or a same-name resubmission counted once), or that a stored submission DoraHacks no longer lists is kept. When coverage is winners-only: that only the winners are on record, so the size and mix of the field are unknown and the counts of it are null. When coverage is partial: that the rows are a partial list from a source other than the organizer, how many, the same nulls, then the event's dated note on where the list comes from and what Scout checked.",
                     "nullable": true,
                     "type": "string"
                   },
@@ -6848,7 +6860,7 @@
                     "type": "array"
                   },
                   "outcomes": {
-                    "description": "Submissions by status after the event, summing to totalSubmissions; null when no submission list is held, or only the winners are (coverage winners-only). Only submissions that are directory projects carry a status; DoraHacks submissions are not classified, so on a DoraHacks event built, inProgress and abandoned are 0 and unknown counts every submission. `profile` says what they became.",
+                    "description": "Submissions by status after the event, summing to totalSubmissions; null when no submission list is held, or only the winners or a partial list are (coverage winners-only or partial). Only submissions that are directory projects carry a status; DoraHacks submissions are not classified, so on a DoraHacks event built, inProgress and abandoned are 0 and unknown counts every submission. `profile` says what they became.",
                     "nullable": true,
                     "properties": {
                       "abandoned": {
@@ -6872,7 +6884,7 @@
                     "type": "number"
                   },
                   "totalSubmissions": {
-                    "description": "The submissions served here. null when no submission list is held, and when coverage is winners-only: only the winners are on record, so the size of the field is unknown, never the winner count.",
+                    "description": "The submissions served here. null when no submission list is held, and when coverage is winners-only or partial: the stored rows are its winners alone or a partial list from another source, so the size of the field is unknown, never the winner or row count.",
                     "nullable": true,
                     "type": "integer"
                   },
@@ -6886,7 +6898,7 @@
                     "type": "integer"
                   },
                   "winnersNote": {
-                    "description": "Why the winners are what they are, so a missing winner or a 0 is explained rather than silent. When hiddenWinners is non-empty: how many winning submissions are not served and why, with each one's placement and award. On an event off DoraHacks: a dated note that its winners are published only in part, or not announced upstream. When winners carry winnerSource: the page that names them and which named winners are not served. On an ended DoraHacks event with no winner served: DoraHacks' winner_announced flag, from its event listing (refreshed hourly), says not announced upstream, or announced but not recorded here. Not announced is never a claim that no one won. null = nothing to add, or the flag could not be read.",
+                    "description": "Why the winners are what they are, so a missing winner or a 0 is explained rather than silent. When hiddenWinners is non-empty: how many winning submissions are not served and why, with each one's placement and award. On an event off DoraHacks: a dated note that its winners are published only in part, not announced upstream, or secondhand (named only by the list its rows come from, which winnerSource gives). When winners carry winnerSource: the page that names them and which named winners are not served. On an ended DoraHacks event with no winner served: DoraHacks' winner_announced flag, from its event listing (refreshed hourly), says not announced upstream, or announced but not recorded here. Not announced is never a claim that no one won. null = nothing to add, or the flag could not be read.",
                     "nullable": true,
                     "type": "string"
                   }
@@ -6894,7 +6906,7 @@
                 "type": "object"
               },
               "tracks": {
-                "description": "The event's tracks: from its submission roster when one is held (on a winners-only event, the tracks of its winners on record); with no roster, the tracks and categories its record declares (kind, description, counts null). [] = the roster names no track. null = not known: no roster and no declared track, or winners that name no track; notes says which.",
+                "description": "The event's tracks: from its submission roster when one is held (on a winners-only event, the tracks of its winners on record); with no roster, or over a partial list (coverage partial), the tracks and categories its record declares (kind, description, counts null). [] = the roster names no track. null = not known: no roster and no declared track, or stored rows that name no track; notes says which.",
                 "items": {
                   "additionalProperties": true,
                   "properties": {
@@ -6914,7 +6926,7 @@
                       "type": "string"
                     },
                     "submissionCount": {
-                      "description": "Submissions in the track. null when the event's coverage is winners-only (only its winners are on record, so the track's field is unknown, never its winner count) and on a declared track (no roster held: not known).",
+                      "description": "Submissions in the track. null when the event's coverage is winners-only or partial (its stored rows are not its field, so the track's field is unknown, never its winner or row count) and on a declared track (no roster held: not known).",
                       "nullable": true,
                       "type": "integer"
                     },
@@ -7017,7 +7029,7 @@
             "type": "object"
           },
           "submissions": {
-            "description": "Every submission served for the event: [] = a roster read that found none. null = no roster is held (an event off DoraHacks with no curated roster) or none could be read just now (meta.note says which): not checked, never none. On a DoraHacks row `award` and `awardCategory` read as on `winners`: an award its winners of different placements share is `awardCategory`, never a row's `award`.",
+            "description": "Every submission served for the event: [] = a roster read that found none. null = no roster is held (an event off DoraHacks with no curated roster) or none could be read just now (meta.note says which): not checked, never none. On a DoraHacks row `award` and `awardCategory` read as on `winners`: an award its winners of different placements share is `awardCategory`, never a row's `award`. On a partial event (hackathon.coverage partial) the rows of that list, not the organizer's list of entries: each says why it is stored (entryBasis).",
             "items": {
               "additionalProperties": true,
               "properties": {
@@ -7028,6 +7040,50 @@
                 "awardCategory": {
                   "nullable": true,
                   "type": "string"
+                },
+                "contracts": {
+                  "description": "Present only when the contracts the repo cites were checked (rows of a partial list): the ones that passed every check, each kept only when the cited file holds its id at HEAD, getLedgerEntries finds its contract instance on testnet (live or archived) and stellar.expert dates its creation inside the event window. [] = checked, none passed. A floor, not every contract the team deployed: an id that failed a check or could not be checked is left out, never served as absent. Absent = not checked, or the stored contracts could not be read with this response (searchHackathonBuilds' meta.warnings then says so); either way unknown, never none.",
+                  "items": {
+                    "properties": {
+                      "checkedAt": {
+                        "format": "date-time",
+                        "type": "string"
+                      },
+                      "createdAt": {
+                        "description": "When stellar.expert dates the contract's creation.",
+                        "format": "date-time",
+                        "type": "string"
+                      },
+                      "id": {
+                        "description": "The contract id (C...).",
+                        "type": "string"
+                      },
+                      "network": {
+                        "enum": [
+                          "testnet"
+                        ],
+                        "type": "string"
+                      },
+                      "path": {
+                        "description": "The repo file that cites it.",
+                        "type": "string"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "type": "array"
+                },
+                "entryBasis": {
+                  "description": "Present only on a row of a partial list (its event's coverage is partial): why the row is stored, never a record that the organizer received it as an entry. repo-names-event: Scout's own read of the repo's text (its README, name, description, topics or another markdown file) found the event named with 2026, or no year at all, nearest the name in the same line (a mention of another edition does not count), at the path and on the day upstream hackathon submission's entryEvidence.mention gives: the team's own claim. placement-listed: the list the row comes from names a placement for it (winnerSource) and Scout's read of the repo's text did not find the event named. Absent on a DoraHacks row and on a winner imported from the page that names it.",
+                  "enum": [
+                    "repo-names-event",
+                    "placement-listed"
+                  ],
+                  "type": "string"
+                },
+                "winnerSource": {
+                  "description": "Present only when a page or file off DoraHacks, not DoraHacks' own winner assignments, names this win: that page or file, the evidence to cite; the submission's own links stay its DoraHacks ones. The placement is then the place as that source states it, 'Winner' when it names none. On a row of a partial list (entryBasis set), the list's own placement file, a secondhand source: HackMeridian 2026's placements come from HackProof's event file, and no organizer page names them (getHackathon stats.winnersNote). Absent on a win DoraHacks assigned, on a winner from an event off DoraHacks imported from the page that names it (curated-{event}-{name} with no entryBasis, whose own link is its source) and on a submission that did not win.",
+                  "type": "string"
                 }
               },
               "type": "object"
@@ -7036,7 +7092,7 @@
             "type": "array"
           },
           "tracks": {
-            "description": "The event's tracks: from its submission roster when one is held (on a winners-only event, the tracks of its winners on record); with no roster, the tracks and categories its record declares (kind, description, counts null). [] = the roster names no track. null = not known: no roster and no declared track, or winners that name no track; notes says which.",
+            "description": "The event's tracks: from its submission roster when one is held (on a winners-only event, the tracks of its winners on record); with no roster, or over a partial list (coverage partial), the tracks and categories its record declares (kind, description, counts null). [] = the roster names no track. null = not known: no roster and no declared track, or stored rows that name no track; notes says which.",
             "items": {
               "additionalProperties": true,
               "properties": {
@@ -7056,7 +7112,7 @@
                   "type": "string"
                 },
                 "submissionCount": {
-                  "description": "Submissions in the track. null when the event's coverage is winners-only (only its winners are on record, so the track's field is unknown, never its winner count) and on a declared track (no roster held: not known).",
+                  "description": "Submissions in the track. null when the event's coverage is winners-only or partial (its stored rows are not its field, so the track's field is unknown, never its winner or row count) and on a declared track (no roster held: not known).",
                   "nullable": true,
                   "type": "integer"
                 },
@@ -7108,6 +7164,38 @@
                   "nullable": true,
                   "type": "string"
                 },
+                "contracts": {
+                  "description": "Present only when the contracts the repo cites were checked (rows of a partial list): the ones that passed every check, each kept only when the cited file holds its id at HEAD, getLedgerEntries finds its contract instance on testnet (live or archived) and stellar.expert dates its creation inside the event window. [] = checked, none passed. A floor, not every contract the team deployed: an id that failed a check or could not be checked is left out, never served as absent. Absent = not checked, or the stored contracts could not be read with this response (searchHackathonBuilds' meta.warnings then says so); either way unknown, never none.",
+                  "items": {
+                    "properties": {
+                      "checkedAt": {
+                        "format": "date-time",
+                        "type": "string"
+                      },
+                      "createdAt": {
+                        "description": "When stellar.expert dates the contract's creation.",
+                        "format": "date-time",
+                        "type": "string"
+                      },
+                      "id": {
+                        "description": "The contract id (C...).",
+                        "type": "string"
+                      },
+                      "network": {
+                        "enum": [
+                          "testnet"
+                        ],
+                        "type": "string"
+                      },
+                      "path": {
+                        "description": "The repo file that cites it.",
+                        "type": "string"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "type": "array"
+                },
                 "demoUrl": {
                   "nullable": true,
                   "type": "string"
@@ -7115,6 +7203,14 @@
                 "description": {
                   "description": "Project blurb from the submission (markdown stripped).",
                   "nullable": true,
+                  "type": "string"
+                },
+                "entryBasis": {
+                  "description": "Present only on a row of a partial list (its event's coverage is partial): why the row is stored, never a record that the organizer received it as an entry. repo-names-event: Scout's own read of the repo's text (its README, name, description, topics or another markdown file) found the event named with 2026, or no year at all, nearest the name in the same line (a mention of another edition does not count), at the path and on the day upstream hackathon submission's entryEvidence.mention gives: the team's own claim. placement-listed: the list the row comes from names a placement for it (winnerSource) and Scout's read of the repo's text did not find the event named. Absent on a DoraHacks row and on a winner imported from the page that names it.",
+                  "enum": [
+                    "repo-names-event",
+                    "placement-listed"
+                  ],
                   "type": "string"
                 },
                 "githubUrl": {
@@ -7264,7 +7360,7 @@
                   "type": "integer"
                 },
                 "winnerSource": {
-                  "description": "Present only when a page off DoraHacks, not DoraHacks' own winner assignments, names this win: that page, the evidence to cite; the submission's own links stay its DoraHacks ones. The placement is then the place as that page states it, 'Winner' when it names none. Absent on a win DoraHacks assigned, on a submission from an event off DoraHacks (curated-{event}-{name}, whose own link is its source) and on a submission that did not win.",
+                  "description": "Present only when a page or file off DoraHacks, not DoraHacks' own winner assignments, names this win: that page or file, the evidence to cite; the submission's own links stay its DoraHacks ones. The placement is then the place as that source states it, 'Winner' when it names none. On a row of a partial list (entryBasis set), the list's own placement file, a secondhand source: HackMeridian 2026's placements come from HackProof's event file, and no organizer page names them (getHackathon stats.winnersNote). Absent on a win DoraHacks assigned, on a winner from an event off DoraHacks imported from the page that names it (curated-{event}-{name} with no entryBasis, whose own link is its source) and on a submission that did not win.",
                   "type": "string"
                 }
               },
@@ -7281,8 +7377,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-11-06T01:05:52.974Z",
-        "openapiVersion": "1.9.122",
+        "fetchedAt": "2026-11-09T19:08:25.744Z",
+        "openapiVersion": "1.9.127",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -7803,8 +7899,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-11-06T01:05:52.974Z",
-        "openapiVersion": "1.9.122",
+        "fetchedAt": "2026-11-09T19:08:25.744Z",
+        "openapiVersion": "1.9.127",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -8050,7 +8146,8 @@
                 "Card Issuing",
                 "Exchange",
                 "Oracle",
-                "Yield"
+                "Yield",
+                "Derivatives"
               ],
               "type": "string"
             },
@@ -8086,6 +8183,7 @@
         "exchange",
         "oracle",
         "yield",
+        "derivatives",
         "json",
         "devs28d",
         "one",
@@ -8322,8 +8420,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-11-06T01:05:52.974Z",
-        "openapiVersion": "1.9.122",
+        "fetchedAt": "2026-11-09T19:08:25.744Z",
+        "openapiVersion": "1.9.127",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingExclusions": [
@@ -9272,8 +9370,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-11-06T01:05:52.974Z",
-        "openapiVersion": "1.9.122",
+        "fetchedAt": "2026-11-09T19:08:25.744Z",
+        "openapiVersion": "1.9.127",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingExclusions": [
@@ -9952,8 +10050,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-11-06T01:05:52.974Z",
-        "openapiVersion": "1.9.122",
+        "fetchedAt": "2026-11-09T19:08:25.744Z",
+        "openapiVersion": "1.9.127",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -10458,8 +10556,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-11-06T01:05:52.974Z",
-        "openapiVersion": "1.9.122",
+        "fetchedAt": "2026-11-09T19:08:25.744Z",
+        "openapiVersion": "1.9.127",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -11054,8 +11152,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-11-06T01:05:52.974Z",
-        "openapiVersion": "1.9.122",
+        "fetchedAt": "2026-11-09T19:08:25.744Z",
+        "openapiVersion": "1.9.127",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -11661,8 +11759,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-11-06T01:05:52.974Z",
-        "openapiVersion": "1.9.122",
+        "fetchedAt": "2026-11-09T19:08:25.744Z",
+        "openapiVersion": "1.9.127",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -12115,8 +12213,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-11-06T01:05:52.974Z",
-        "openapiVersion": "1.9.122",
+        "fetchedAt": "2026-11-09T19:08:25.744Z",
+        "openapiVersion": "1.9.127",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingExclusions": [
@@ -12681,8 +12779,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-11-06T01:05:52.974Z",
-        "openapiVersion": "1.9.122",
+        "fetchedAt": "2026-11-09T19:08:25.744Z",
+        "openapiVersion": "1.9.127",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -12940,6 +13038,7 @@
       },
       "keywords": [
         "skill",
+        "bytes",
         "notes",
         "population",
         "last24h",
@@ -12981,6 +13080,13 @@
             "items": {
               "properties": {
                 "count": {
+                  "description": "null = the source could not be read with this response (could not check), never zero.",
+                  "nullable": true,
+                  "type": "integer"
+                },
+                "indexBytes": {
+                  "description": "hackathonBuilds only: the serialised size in bytes of the hackathon submissions index, as its last build on the server instance answering measured it (lastUpdatedAt dates it). Next caches the index as one item of at most 2 MB; past that every request rebuilds it from the store, so a live check reds above 1,800,000. null = that instance has not built the index yet (could not check). Absent on every other source.",
+                  "nullable": true,
                   "type": "integer"
                 },
                 "lastUpdatedAt": {
@@ -13046,8 +13152,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-11-06T01:05:52.974Z",
-        "openapiVersion": "1.9.122",
+        "fetchedAt": "2026-11-09T19:08:25.744Z",
+        "openapiVersion": "1.9.127",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingExclusions": [
@@ -13248,7 +13354,11 @@
       },
       "keywords": [
         "ended",
+        "entry",
+        "names",
+        "event",
         "placement",
+        "listed",
         "website",
         "owner",
         "moved",
@@ -13306,11 +13416,7 @@
         "vertical",
         "scored",
         "weak",
-        "types",
-        "via",
-        "winners",
-        "progress",
-        "audited"
+        "types"
       ],
       "kind": "operation",
       "outputSchema": {
@@ -13338,6 +13444,14 @@
                   "properties": {
                     "endedAt": {
                       "nullable": true,
+                      "type": "string"
+                    },
+                    "entryBasis": {
+                      "description": "Present only on a row of a partial list (its event's coverage is partial): why the row is stored, never a record that the organizer received it as an entry. repo-names-event: Scout's own read of the repo's text (its README, name, description, topics or another markdown file) found the event named with 2026, or no year at all, nearest the name in the same line (a mention of another edition does not count), at the path and on the day upstream hackathon submission's entryEvidence.mention gives: the team's own claim. placement-listed: the list the row comes from names a placement for it (winnerSource) and Scout's read of the repo's text did not find the event named. Absent on a DoraHacks row and on a winner imported from the page that names it.",
+                      "enum": [
+                        "repo-names-event",
+                        "placement-listed"
+                      ],
                       "type": "string"
                     },
                     "githubUrl": {
@@ -13426,6 +13540,10 @@
                     },
                     "url": {
                       "nullable": true,
+                      "type": "string"
+                    },
+                    "winnerSource": {
+                      "description": "Present only when a page or file off DoraHacks, not DoraHacks' own winner assignments, names this win: that page or file, the evidence to cite; the submission's own links stay its DoraHacks ones. The placement is then the place as that source states it, 'Winner' when it names none. On a row of a partial list (entryBasis set), the list's own placement file, a secondhand source: HackMeridian 2026's placements come from HackProof's event file, and no organizer page names them (getHackathon stats.winnersNote). Absent on a win DoraHacks assigned, on a winner from an event off DoraHacks imported from the page that names it (curated-{event}-{name} with no entryBasis, whose own link is its source) and on a submission that did not win.",
                       "type": "string"
                     }
                   },
@@ -13943,6 +14061,14 @@
                         "description": "null = the submissions index could not be read (not checked; the note says so), [] = checked, none listed (read it with buildsBelowEvidenceRule). Stored hackathon submissions matching the idea, best first: searchHackathonBuilds in hybrid mode (words plus meaning), across events on DoraHacks and off it. When buildsReranked is true, the first 50 of that ranking are reordered by a reranker that reads the idea with each build's name and summary, and of its top five the builds it scores at least 0.45 are listed. When it is false, of the hybrid top five only builds with a score of at least 0.7, two matched words, or every word of the idea the search reads used in the build's own name or description (a synonym, track or award text does not count; the search skips generic words such as app, so a one-word idea's builds need only mention that word) are listed. `matchedTerms` shows which words matched; `similarity` is the meaning score; a build with similarity and no matchedTerms was found by meaning alone, and a reranked build with neither by the reranker alone, so check it.",
                         "items": {
                           "properties": {
+                            "entryBasis": {
+                              "description": "Present only on a row of a partial list (its event's coverage is partial): why the row is stored, never a record that the organizer received it as an entry. repo-names-event: Scout's own read of the repo's text (its README, name, description, topics or another markdown file) found the event named with 2026, or no year at all, nearest the name in the same line (a mention of another edition does not count), at the path and on the day upstream hackathon submission's entryEvidence.mention gives: the team's own claim. placement-listed: the list the row comes from names a placement for it (winnerSource) and Scout's read of the repo's text did not find the event named. Absent on a DoraHacks row and on a winner imported from the page that names it.",
+                              "enum": [
+                                "repo-names-event",
+                                "placement-listed"
+                              ],
+                              "type": "string"
+                            },
                             "githubUrl": {
                               "nullable": true,
                               "type": "string"
@@ -13972,6 +14098,10 @@
                             "similarity": {
                               "description": "Meaning similarity to the idea, 0 to 1; absent when search by meaning did not run.",
                               "type": "number"
+                            },
+                            "winnerSource": {
+                              "description": "Present only when a page or file off DoraHacks, not DoraHacks' own winner assignments, names this win: that page or file, the evidence to cite; the submission's own links stay its DoraHacks ones. The placement is then the place as that source states it, 'Winner' when it names none. On a row of a partial list (entryBasis set), the list's own placement file, a secondhand source: HackMeridian 2026's placements come from HackProof's event file, and no organizer page names them (getHackathon stats.winnersNote). Absent on a win DoraHacks assigned, on a winner from an event off DoraHacks imported from the page that names it (curated-{event}-{name} with no entryBasis, whose own link is its source) and on a submission that did not win.",
+                              "type": "string"
                             }
                           },
                           "type": "object"
@@ -14044,8 +14174,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-11-06T01:05:52.974Z",
-        "openapiVersion": "1.9.122",
+        "fetchedAt": "2026-11-09T19:08:25.744Z",
+        "openapiVersion": "1.9.127",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingExclusions": [
@@ -14565,8 +14695,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-11-06T01:05:52.974Z",
-        "openapiVersion": "1.9.122",
+        "fetchedAt": "2026-11-09T19:08:25.744Z",
+        "openapiVersion": "1.9.127",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -15104,8 +15234,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-11-06T01:05:52.974Z",
-        "openapiVersion": "1.9.122",
+        "fetchedAt": "2026-11-09T19:08:25.744Z",
+        "openapiVersion": "1.9.127",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -15672,8 +15802,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-11-06T01:05:52.974Z",
-        "openapiVersion": "1.9.122",
+        "fetchedAt": "2026-11-09T19:08:25.744Z",
+        "openapiVersion": "1.9.127",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingExclusions": [
@@ -16057,8 +16187,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-11-06T01:05:52.974Z",
-        "openapiVersion": "1.9.122",
+        "fetchedAt": "2026-11-09T19:08:25.744Z",
+        "openapiVersion": "1.9.127",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingExclusions": [
@@ -16376,8 +16506,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-11-06T01:05:52.974Z",
-        "openapiVersion": "1.9.122",
+        "fetchedAt": "2026-11-09T19:08:25.744Z",
+        "openapiVersion": "1.9.127",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "routingKeywords": [
@@ -16564,9 +16694,13 @@
         "audited",
         "mainnet",
         "builds",
+        "entry",
+        "names",
+        "event",
+        "placement",
+        "listed",
         "matched",
         "terms",
-        "placement",
         "similarity",
         "below",
         "rule",
@@ -16817,6 +16951,14 @@
                         "description": "null = the submissions index could not be read (not checked; the note says so), [] = checked, none listed (read it with buildsBelowEvidenceRule). Stored hackathon submissions matching the idea, best first: searchHackathonBuilds in hybrid mode (words plus meaning), across events on DoraHacks and off it. When buildsReranked is true, the first 50 of that ranking are reordered by a reranker that reads the idea with each build's name and summary, and of its top five the builds it scores at least 0.45 are listed. When it is false, of the hybrid top five only builds with a score of at least 0.7, two matched words, or every word of the idea the search reads used in the build's own name or description (a synonym, track or award text does not count; the search skips generic words such as app, so a one-word idea's builds need only mention that word) are listed. `matchedTerms` shows which words matched; `similarity` is the meaning score; a build with similarity and no matchedTerms was found by meaning alone, and a reranked build with neither by the reranker alone, so check it.",
                         "items": {
                           "properties": {
+                            "entryBasis": {
+                              "description": "Present only on a row of a partial list (its event's coverage is partial): why the row is stored, never a record that the organizer received it as an entry. repo-names-event: Scout's own read of the repo's text (its README, name, description, topics or another markdown file) found the event named with 2026, or no year at all, nearest the name in the same line (a mention of another edition does not count), at the path and on the day upstream hackathon submission's entryEvidence.mention gives: the team's own claim. placement-listed: the list the row comes from names a placement for it (winnerSource) and Scout's read of the repo's text did not find the event named. Absent on a DoraHacks row and on a winner imported from the page that names it.",
+                              "enum": [
+                                "repo-names-event",
+                                "placement-listed"
+                              ],
+                              "type": "string"
+                            },
                             "githubUrl": {
                               "nullable": true,
                               "type": "string"
@@ -16846,6 +16988,10 @@
                             "similarity": {
                               "description": "Meaning similarity to the idea, 0 to 1; absent when search by meaning did not run.",
                               "type": "number"
+                            },
+                            "winnerSource": {
+                              "description": "Present only when a page or file off DoraHacks, not DoraHacks' own winner assignments, names this win: that page or file, the evidence to cite; the submission's own links stay its DoraHacks ones. The placement is then the place as that source states it, 'Winner' when it names none. On a row of a partial list (entryBasis set), the list's own placement file, a secondhand source: HackMeridian 2026's placements come from HackProof's event file, and no organizer page names them (getHackathon stats.winnersNote). Absent on a win DoraHacks assigned, on a winner from an event off DoraHacks imported from the page that names it (curated-{event}-{name} with no entryBasis, whose own link is its source) and on a submission that did not win.",
+                              "type": "string"
                             }
                           },
                           "type": "object"
@@ -16911,8 +17057,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-11-06T01:05:52.974Z",
-        "openapiVersion": "1.9.122",
+        "fetchedAt": "2026-11-09T19:08:25.744Z",
+        "openapiVersion": "1.9.127",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -17178,12 +17324,13 @@
               "Card Issuing",
               "Exchange",
               "Oracle",
-              "Yield"
+              "Yield",
+              "Derivatives"
             ],
             "type": "string"
           },
           "hackathon": {
-            "description": "Only these events: up to 10, comma-separated, each an event's slug or its exact title, any case. An event getHackathons lists whose submissions are not stored matches nothing, and meta.warnings says so; a value that names no event getHackathons lists answers 400 with validHackathons, the slugs of every event with stored submissions. A submission can enter several events; under this filter each row is that event's own entry, with its own placement.",
+            "description": "Only these events: up to 10, comma-separated, each an event's slug or its exact title, any case. An event getHackathons lists whose submissions are not stored matches nothing, and meta.warnings says so; a value that names no event getHackathons lists answers 400 with validHackathons, the slugs of every event with stored submissions. A submission can enter several events: under this filter each row is a named event's own entry, with its own placement, and one entered in several named events is one row, its best entry among those that match (a placed one first, then the latest), and one count.",
             "type": "string"
           },
           "limit": {
@@ -17213,7 +17360,7 @@
             "type": "string"
           },
           "q": {
-            "description": "Topic to search build names, descriptions and the packages their repos declare (prior-art lookup). A build is listed when it covers half of q's words, or when its name holds one of them unless most of q's words occur as a whole word in no submission (text or declared packages). A word of four letters or more also matches inside a longer word. In a question (q ends with ? or opens with which, who, whom, whose, what, where, when, why, how, has, have, had, did, does, do, is, are, was, were, can, could, will, would or should, followed by a space), the question marks and the words that ask about an outcome or the past rather than a topic (won, win, wins, winner, winners, winning, prize, prizes, award, awards, awarded, placed, hackathon, hackathons, built, builds, past, ever, previous, previously, anyone, someone, already, before) are not searched, unless they are all q holds. When any of q's words occurs as a whole word in no submission, meta.warnings names those words and says what the listed builds are, and says when a build whose name matched was held back (meta.counts.withheldByName). With no hackathon parameter, an event named in full in q (its title, in any case, accents and punctuation aside, or its slug, hyphens included, in any case) becomes the hackathon filter and leaves q (meta.inferredFilter). The rest of q is searched inside that event; a rest made only of words the search skips (stopwords and generic words such as app, token, crypto, money, stellar, github) and words that ask for the event's entries (winners, builds, projects, places, awards, rankings) lists the event as the filter alone does. When the rest matches none of the event's rows and none of them holds a description, meta.warnings says so. A name start several events share infers nothing; meta.warnings names those events. Any hackathon parameter turns this off: send hackathon= with no value to search the words as text in every event.",
+            "description": "Topic to search build names, descriptions and the packages their repos declare (prior-art lookup). A build is listed when it covers half of q's words, or when its name holds one of them unless most of q's words occur as a whole word in no submission (text or declared packages). A submission entered in several events matches when any of its entries does (each entry's track and award are its own) and is listed as the best of those. A word of four letters or more also matches inside a longer word. In a question (q ends with ? or opens with which, who, whom, whose, what, where, when, why, how, has, have, had, did, does, do, is, are, was, were, can, could, will, would or should, followed by a space), the question marks and the words that ask about an outcome or the past rather than a topic (won, win, wins, winner, winners, winning, prize, prizes, award, awards, awarded, placed, hackathon, hackathons, built, builds, past, ever, previous, previously, anyone, someone, already, before) are not searched, unless they are all q holds. When any of q's words occurs as a whole word in no submission, meta.warnings names those words and says what the listed builds are, and says when a build whose name matched was held back (meta.counts.withheldByName). With no hackathon parameter, an event named in full in q (its title, in any case, accents and punctuation aside, or its slug, hyphens included, in any case) becomes the hackathon filter and leaves q (meta.inferredFilter). The rest of q is searched inside that event; a rest made only of words the search skips (stopwords and generic words such as app, token, crypto, money, stellar, github) and words that ask for the event's entries (winners, builds, projects, places, awards, rankings) lists the event as the filter alone does. When the rest matches none of the event's rows and none of them holds a description, meta.warnings says so. A name start several events share infers nothing; meta.warnings names those events. Any hackathon parameter turns this off: send hackathon= with no value to search the words as text in every event.",
             "type": "string"
           },
           "track": {
@@ -17271,6 +17418,7 @@
         "exchange",
         "oracle",
         "yield",
+        "derivatives",
         "package",
         "offset",
         "after",
@@ -17281,7 +17429,16 @@
         "found",
         "award",
         "categories",
+        "contracts",
+        "checked",
+        "created",
+        "network",
+        "testnet",
+        "path",
         "ended",
+        "entry",
+        "names",
+        "listed",
         "terms",
         "prize",
         "website",
@@ -17291,17 +17448,7 @@
         "facts",
         "draft",
         "development",
-        "pre",
-        "release",
-        "inactive",
-        "held",
-        "similarity",
-        "votes",
-        "indexed",
-        "withheld",
-        "inferred",
-        "filter",
-        "filtered"
+        "pre"
       ],
       "kind": "operation",
       "outputSchema": {
@@ -17337,6 +17484,38 @@
                   },
                   "type": "array"
                 },
+                "contracts": {
+                  "description": "Present only when the contracts the repo cites were checked (rows of a partial list): the ones that passed every check, each kept only when the cited file holds its id at HEAD, getLedgerEntries finds its contract instance on testnet (live or archived) and stellar.expert dates its creation inside the event window. [] = checked, none passed. A floor, not every contract the team deployed: an id that failed a check or could not be checked is left out, never served as absent. Absent = not checked, or the stored contracts could not be read with this response (searchHackathonBuilds' meta.warnings then says so); either way unknown, never none.",
+                  "items": {
+                    "properties": {
+                      "checkedAt": {
+                        "format": "date-time",
+                        "type": "string"
+                      },
+                      "createdAt": {
+                        "description": "When stellar.expert dates the contract's creation.",
+                        "format": "date-time",
+                        "type": "string"
+                      },
+                      "id": {
+                        "description": "The contract id (C...).",
+                        "type": "string"
+                      },
+                      "network": {
+                        "enum": [
+                          "testnet"
+                        ],
+                        "type": "string"
+                      },
+                      "path": {
+                        "description": "The repo file that cites it.",
+                        "type": "string"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "type": "array"
+                },
                 "demoUrl": {
                   "nullable": true,
                   "type": "string"
@@ -17347,6 +17526,14 @@
                 },
                 "endedAt": {
                   "nullable": true,
+                  "type": "string"
+                },
+                "entryBasis": {
+                  "description": "Present only on a row of a partial list (its event's coverage is partial): why the row is stored, never a record that the organizer received it as an entry. repo-names-event: Scout's own read of the repo's text (its README, name, description, topics or another markdown file) found the event named with 2026, or no year at all, nearest the name in the same line (a mention of another edition does not count), at the path and on the day upstream hackathon submission's entryEvidence.mention gives: the team's own claim. placement-listed: the list the row comes from names a placement for it (winnerSource) and Scout's read of the repo's text did not find the event named. Absent on a DoraHacks row and on a winner imported from the page that names it.",
+                  "enum": [
+                    "repo-names-event",
+                    "placement-listed"
+                  ],
                   "type": "string"
                 },
                 "githubUrl": {
@@ -17479,6 +17666,10 @@
                 "votes": {
                   "nullable": true,
                   "type": "integer"
+                },
+                "winnerSource": {
+                  "description": "Present only when a page or file off DoraHacks, not DoraHacks' own winner assignments, names this win: that page or file, the evidence to cite; the submission's own links stay its DoraHacks ones. The placement is then the place as that source states it, 'Winner' when it names none. On a row of a partial list (entryBasis set), the list's own placement file, a secondhand source: HackMeridian 2026's placements come from HackProof's event file, and no organizer page names them (getHackathon stats.winnersNote). Absent on a win DoraHacks assigned, on a winner from an event off DoraHacks imported from the page that names it (curated-{event}-{name} with no entryBasis, whose own link is its source) and on a submission that did not win.",
+                  "type": "string"
                 }
               },
               "type": "object"
@@ -17491,7 +17682,7 @@
                 "description": "returned vs total: how much the filters narrowed.",
                 "properties": {
                   "entries": {
-                    "description": "Event entries that match: a submission entered in several events counts once per event. upstream analyze hackathon submissions counts this unit, so for the same filters and mode its total.builds equals this, not matched, with two exceptions that count here and not in analyze: a declared package q matched, and a winners-only event's rows analyze leaves out beside full listings (its meta.warnings names them).",
+                    "description": "Event entries that match: a submission entered in several events counts once per event, as each event's own count does. upstream analyze hackathon submissions counts submissions, so for the same filters and mode its total.builds equals matched, not this, with two exceptions that count here and not in analyze: a declared package q matched, and a winners-only event's rows or a partial event's rows, which analyze leaves out beside full listings (its meta.warnings names them).",
                     "type": "integer"
                   },
                   "indexedBuilds": {
@@ -17678,8 +17869,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-11-06T01:05:52.974Z",
-        "openapiVersion": "1.9.122",
+        "fetchedAt": "2026-11-09T19:08:25.744Z",
+        "openapiVersion": "1.9.127",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -18057,7 +18248,19 @@
               "Card Issuing",
               "Exchange",
               "Oracle",
-              "Yield"
+              "Yield",
+              "Derivatives"
+            ],
+            "type": "string"
+          },
+          "venueRole": {
+            "description": "Filter to projects whose curated `venueRole` equals this value, e.g. `type=DEX&venueRole=amm` lists AMMs and `venueRole=aggregator-router` lists routers. Rows not yet classified (venueRole null) never match, so the result is the classified subset, not every venue of that kind. A venueRole search adds no rows found by meaning, so an empty page means no classified row matched q. Unknown values return 400 with validVenueRoles.",
+            "enum": [
+              "amm",
+              "native-orderbook",
+              "aggregator-router",
+              "trading-ui",
+              "wallet-integrated"
             ],
             "type": "string"
           },
@@ -18094,6 +18297,15 @@
         "development",
         "pre",
         "release",
+        "venue",
+        "role",
+        "native",
+        "orderbook",
+        "aggregator",
+        "router",
+        "trading",
+        "ui",
+        "integrated",
         "offset",
         "fields",
         "view",
@@ -18128,16 +18340,7 @@
         "interface",
         "paths",
         "deployable",
-        "mainnet",
-        "caps",
-        "cap",
-        "scanned",
-        "ref",
-        "capabilities",
-        "version",
-        "deps",
-        "proof",
-        "cargo"
+        "mainnet"
       ],
       "kind": "operation",
       "outputSchema": {
@@ -19939,6 +20142,7 @@
                   "type": "string"
                 },
                 "scfAwarded": {
+                  "description": "Whether an SCF award is on record for the project. false with scfBasis null means no SCF read is recorded for this row, so it is not evidence that SCF did not fund the project. Cite a false only with scfBasis and scfSourceUrl.",
                   "type": "boolean"
                 },
                 "scfAwardedRounds": {
@@ -20061,7 +20265,7 @@
                   "type": "string"
                 },
                 "statusChecks": {
-                  "description": "Checks of the status label against stored upstream facts, present only on rows with a DefiLlama link (llamaSlugs); absent means the row has no DefiLlama link, so neither check applies. defillama-listing: hit when DefiLlama marks every linked slug dead (a deadFrom date, or deprecated with nothing locked and no live listing in its parentProtocol family), clear when it lists one as active, could-not-check when it was not read yet, a slug is missing upstream (a rename or removal), or a deprecated slug looks superseded (no deadFrom while value is still locked or a family listing is live): deprecated alone is never a hit. tvl-zero-onchain-quiet, only for DEX, Lending, Bridge and Yield rows: hit when a DefiLlama TVL of 0 read within the last 14 days, over a listing that found every linked slug, meets 60 or more days of observed time in which no tracked contract emitted an event or took a sub-call (both counters read for every contract), clear when a fresh TVL is above 0 or a contract moved in the latest window, could-not-check otherwise (no TVL figure or one that is negative, a TVL reading older than 14 days, a listing with a linked slug missing upstream, no tracked contract, a counter not read, a reading date that cannot be read, or under 60 days observed). A could-not-check result is not a clean bill.",
+                  "description": "Checks of the status label against stored upstream facts, present only on rows with a DefiLlama link (llamaSlugs); absent means the row has no DefiLlama link, so neither check applies. defillama-listing: hit when DefiLlama marks every linked slug dead (a deadFrom date, or deprecated with nothing locked and no live listing in its parentProtocol family), clear when it lists one as active, could-not-check when it was not read yet, a slug is missing upstream (a rename or removal), or a deprecated slug looks superseded (no deadFrom while value is still locked or a family listing is live): deprecated alone is never a hit. tvl-zero-onchain-quiet, only for DEX, Lending, Bridge, Yield and Derivatives rows: hit when a DefiLlama TVL of 0 read within the last 14 days, over a listing that found every linked slug, meets 60 or more days of observed time in which no tracked contract emitted an event or took a sub-call (both counters read for every contract), clear when a fresh TVL is above 0 or a contract moved in the latest window, could-not-check otherwise (no TVL figure or one that is negative, a TVL reading older than 14 days, a listing with a linked slug missing upstream, no tracked contract, a counter not read, a reading date that cannot be read, or under 60 days observed). A could-not-check result is not a clean bill.",
                   "items": {
                     "properties": {
                       "asOf": {
@@ -20089,7 +20293,7 @@
                         "type": "string"
                       },
                       "sourceUrl": {
-                        "description": "Where to check the fact: the first linked protocol's DefiLlama page (its listing and TVL figure); the contract readings behind the TVL check are the row's onchain block.",
+                        "description": "Where to check the fact: the row's tvlMethodUrl when it has one (the protocol's own page, or for several rows the parent page that sums them), else the first linked protocol's DefiLlama page; the contract readings behind the TVL check are the row's onchain block.",
                         "format": "uri",
                         "type": "string"
                       }
@@ -20151,7 +20355,7 @@
                   "type": "string"
                 },
                 "tvlMethodUrl": {
-                  "description": "Citation URL for the project's PRIMARY mapped DefiLlama protocol row (first of llamaSlugs): the provider/method page to cite alongside tvlUSD. When llamaSlugs has multiple entries, tvlUSD sums ALL of them, so this page shows one component, not necessarily the whole sum; enumerate llamaSlugs for the full inclusion set. Null when not llama-mapped.",
+                  "description": "The DefiLlama page that shows the whole tvlUSD, to cite alongside it: the protocol's own page when llamaSlugs has one entry; when it has several, the parent page whose child rows were exactly those slugs at the last TVL refresh (e.g. Blend: https://defillama.com/protocol/blend, its pools and backstop rows combined). Null when not llama-mapped, or when no single DefiLlama page sums the mapped rows (the family changed upstream, or was not read yet); llamaSlugs then lists each contributing page (https://defillama.com/protocol/{slug}).",
                   "format": "uri",
                   "nullable": true,
                   "type": "string"
@@ -20223,8 +20427,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-11-06T01:05:52.974Z",
-        "openapiVersion": "1.9.122",
+        "fetchedAt": "2026-11-09T19:08:25.744Z",
+        "openapiVersion": "1.9.127",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -21760,8 +21964,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-11-06T01:05:52.974Z",
-        "openapiVersion": "1.9.122",
+        "fetchedAt": "2026-11-09T19:08:25.744Z",
+        "openapiVersion": "1.9.127",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -22738,8 +22942,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-11-06T01:05:52.974Z",
-        "openapiVersion": "1.9.122",
+        "fetchedAt": "2026-11-09T19:08:25.744Z",
+        "openapiVersion": "1.9.127",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -23433,9 +23637,13 @@
         "audited",
         "mainnet",
         "builds",
+        "entry",
+        "names",
+        "event",
+        "placement",
+        "listed",
         "matched",
         "terms",
-        "placement",
         "similarity",
         "below",
         "rule",
@@ -23603,6 +23811,14 @@
                     "description": "null = the submissions index could not be read (not checked; the note says so), [] = checked, none listed (read it with buildsBelowEvidenceRule). Stored hackathon submissions matching the idea, best first: searchHackathonBuilds in hybrid mode (words plus meaning), across events on DoraHacks and off it. When buildsReranked is true, the first 50 of that ranking are reordered by a reranker that reads the idea with each build's name and summary, and of its top five the builds it scores at least 0.45 are listed. When it is false, of the hybrid top five only builds with a score of at least 0.7, two matched words, or every word of the idea the search reads used in the build's own name or description (a synonym, track or award text does not count; the search skips generic words such as app, so a one-word idea's builds need only mention that word) are listed. `matchedTerms` shows which words matched; `similarity` is the meaning score; a build with similarity and no matchedTerms was found by meaning alone, and a reranked build with neither by the reranker alone, so check it.",
                     "items": {
                       "properties": {
+                        "entryBasis": {
+                          "description": "Present only on a row of a partial list (its event's coverage is partial): why the row is stored, never a record that the organizer received it as an entry. repo-names-event: Scout's own read of the repo's text (its README, name, description, topics or another markdown file) found the event named with 2026, or no year at all, nearest the name in the same line (a mention of another edition does not count), at the path and on the day upstream hackathon submission's entryEvidence.mention gives: the team's own claim. placement-listed: the list the row comes from names a placement for it (winnerSource) and Scout's read of the repo's text did not find the event named. Absent on a DoraHacks row and on a winner imported from the page that names it.",
+                          "enum": [
+                            "repo-names-event",
+                            "placement-listed"
+                          ],
+                          "type": "string"
+                        },
                         "githubUrl": {
                           "nullable": true,
                           "type": "string"
@@ -23632,6 +23848,10 @@
                         "similarity": {
                           "description": "Meaning similarity to the idea, 0 to 1; absent when search by meaning did not run.",
                           "type": "number"
+                        },
+                        "winnerSource": {
+                          "description": "Present only when a page or file off DoraHacks, not DoraHacks' own winner assignments, names this win: that page or file, the evidence to cite; the submission's own links stay its DoraHacks ones. The placement is then the place as that source states it, 'Winner' when it names none. On a row of a partial list (entryBasis set), the list's own placement file, a secondhand source: HackMeridian 2026's placements come from HackProof's event file, and no organizer page names them (getHackathon stats.winnersNote). Absent on a win DoraHacks assigned, on a winner from an event off DoraHacks imported from the page that names it (curated-{event}-{name} with no entryBasis, whose own link is its source) and on a submission that did not win.",
+                          "type": "string"
                         }
                       },
                       "type": "object"
@@ -23699,8 +23919,8 @@
         "type": "object"
       },
       "provenance": {
-        "fetchedAt": "2026-11-06T01:05:52.974Z",
-        "openapiVersion": "1.9.122",
+        "fetchedAt": "2026-11-09T19:08:25.744Z",
+        "openapiVersion": "1.9.127",
         "source": "https://stellarlight.xyz/api/openapi.json"
       },
       "retrievalProfile": {
@@ -23965,7 +24185,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "service": "skills",
@@ -23984,7 +24204,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -24004,7 +24224,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -24025,7 +24245,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -24046,7 +24266,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -24067,7 +24287,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -24088,7 +24308,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -24109,7 +24329,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -24130,7 +24350,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -24151,7 +24371,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "service": "skills",
@@ -24170,7 +24390,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -24190,7 +24410,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -24211,7 +24431,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -24232,7 +24452,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -24253,7 +24473,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -24274,7 +24494,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -24295,7 +24515,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -24316,7 +24536,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "service": "skills",
@@ -24335,7 +24555,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -24355,7 +24575,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -24376,7 +24596,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -24397,7 +24617,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -24418,7 +24638,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -24439,7 +24659,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -24460,7 +24680,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -24704,7 +24924,7 @@
       },
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "runnable": true,
@@ -24724,7 +24944,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -24745,7 +24965,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -24766,7 +24986,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -24786,7 +25006,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -24807,7 +25027,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -24828,7 +25048,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -24849,7 +25069,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -24870,7 +25090,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -24891,7 +25111,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -24912,7 +25132,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -24933,7 +25153,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -24954,7 +25174,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -24975,7 +25195,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -24996,7 +25216,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -25017,7 +25237,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -25038,7 +25258,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -25059,7 +25279,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -25080,7 +25300,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -25101,7 +25321,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "service": "skills",
@@ -25120,7 +25340,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -25140,7 +25360,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -25161,7 +25381,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -25182,7 +25402,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -25203,7 +25423,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -25224,7 +25444,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -25245,7 +25465,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -25266,7 +25486,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -25287,7 +25507,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "service": "skills",
@@ -25306,7 +25526,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -25327,7 +25547,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -25348,7 +25568,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -25369,7 +25589,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -25390,7 +25610,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -25411,7 +25631,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "service": "skills",
@@ -25430,7 +25650,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -25450,7 +25670,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -25471,7 +25691,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -25492,7 +25712,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -25513,7 +25733,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -25534,7 +25754,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -25555,7 +25775,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -25576,7 +25796,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "d92c56bda17ab702d3202335cfe814d64e70e191",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills"
       },
       "searchable": false,
@@ -25597,7 +25817,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "584262af9eed516bdb1d2d897246502218e3917a",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/OpenZeppelin/openzeppelin-skills/tree/584262af9eed516bdb1d2d897246502218e3917a/skills"
       },
       "service": "skills",
@@ -25616,7 +25836,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "584262af9eed516bdb1d2d897246502218e3917a",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/OpenZeppelin/openzeppelin-skills/tree/584262af9eed516bdb1d2d897246502218e3917a/skills"
       },
       "searchable": false,
@@ -25637,7 +25857,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "584262af9eed516bdb1d2d897246502218e3917a",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/OpenZeppelin/openzeppelin-skills/tree/584262af9eed516bdb1d2d897246502218e3917a/skills"
       },
       "searchable": false,
@@ -25658,7 +25878,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "584262af9eed516bdb1d2d897246502218e3917a",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/OpenZeppelin/openzeppelin-skills/tree/584262af9eed516bdb1d2d897246502218e3917a/skills"
       },
       "searchable": false,
@@ -25679,7 +25899,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "584262af9eed516bdb1d2d897246502218e3917a",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/OpenZeppelin/openzeppelin-skills/tree/584262af9eed516bdb1d2d897246502218e3917a/skills"
       },
       "service": "skills",
@@ -25698,7 +25918,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "584262af9eed516bdb1d2d897246502218e3917a",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/OpenZeppelin/openzeppelin-skills/tree/584262af9eed516bdb1d2d897246502218e3917a/skills"
       },
       "searchable": false,
@@ -25719,7 +25939,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "584262af9eed516bdb1d2d897246502218e3917a",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/OpenZeppelin/openzeppelin-skills/tree/584262af9eed516bdb1d2d897246502218e3917a/skills"
       },
       "searchable": false,
@@ -25740,7 +25960,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "584262af9eed516bdb1d2d897246502218e3917a",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/OpenZeppelin/openzeppelin-skills/tree/584262af9eed516bdb1d2d897246502218e3917a/skills"
       },
       "searchable": false,
@@ -25761,7 +25981,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "584262af9eed516bdb1d2d897246502218e3917a",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/OpenZeppelin/openzeppelin-skills/tree/584262af9eed516bdb1d2d897246502218e3917a/skills"
       },
       "searchable": false,
@@ -25782,7 +26002,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "584262af9eed516bdb1d2d897246502218e3917a",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/OpenZeppelin/openzeppelin-skills/tree/584262af9eed516bdb1d2d897246502218e3917a/skills"
       },
       "searchable": false,
@@ -25803,7 +26023,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "584262af9eed516bdb1d2d897246502218e3917a",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/OpenZeppelin/openzeppelin-skills/tree/584262af9eed516bdb1d2d897246502218e3917a/skills"
       },
       "service": "skills",
@@ -25822,7 +26042,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "584262af9eed516bdb1d2d897246502218e3917a",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/OpenZeppelin/openzeppelin-skills/tree/584262af9eed516bdb1d2d897246502218e3917a/skills"
       },
       "searchable": false,
@@ -25843,7 +26063,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "584262af9eed516bdb1d2d897246502218e3917a",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/OpenZeppelin/openzeppelin-skills/tree/584262af9eed516bdb1d2d897246502218e3917a/skills"
       },
       "searchable": false,
@@ -25864,7 +26084,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "584262af9eed516bdb1d2d897246502218e3917a",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/OpenZeppelin/openzeppelin-skills/tree/584262af9eed516bdb1d2d897246502218e3917a/skills"
       },
       "searchable": false,
@@ -25885,7 +26105,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "584262af9eed516bdb1d2d897246502218e3917a",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/OpenZeppelin/openzeppelin-skills/tree/584262af9eed516bdb1d2d897246502218e3917a/skills"
       },
       "searchable": false,
@@ -25906,7 +26126,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "584262af9eed516bdb1d2d897246502218e3917a",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/OpenZeppelin/openzeppelin-skills/tree/584262af9eed516bdb1d2d897246502218e3917a/skills"
       },
       "searchable": false,
@@ -25927,7 +26147,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "service": "skills",
@@ -25946,7 +26166,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -25966,7 +26186,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -25986,7 +26206,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -26007,7 +26227,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -26028,7 +26248,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -26049,7 +26269,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -26070,7 +26290,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -26091,7 +26311,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "service": "skills",
@@ -26110,7 +26330,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -26131,7 +26351,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -26152,7 +26372,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -26172,7 +26392,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -26193,7 +26413,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -26214,7 +26434,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -26235,7 +26455,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -26256,7 +26476,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -26277,7 +26497,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -26298,7 +26518,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -26319,7 +26539,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -26340,7 +26560,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -26361,7 +26581,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -26382,7 +26602,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "service": "skills",
@@ -26401,7 +26621,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -26421,7 +26641,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -26441,7 +26661,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -26461,7 +26681,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -26482,7 +26702,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -26503,7 +26723,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -26524,7 +26744,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -26549,7 +26769,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "service": "skills",
@@ -26568,7 +26788,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -26588,7 +26808,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -26608,7 +26828,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -26628,7 +26848,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -26649,7 +26869,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -26670,7 +26890,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -26691,7 +26911,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -26712,7 +26932,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -26733,7 +26953,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -26754,7 +26974,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -26775,7 +26995,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -26796,7 +27016,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -26817,7 +27037,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -26841,7 +27061,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "service": "skills",
@@ -26860,7 +27080,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -26881,7 +27101,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -26901,7 +27121,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -26922,7 +27142,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -26943,7 +27163,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -26964,7 +27184,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -26985,7 +27205,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -27006,7 +27226,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -27027,7 +27247,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -27048,7 +27268,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -27072,7 +27292,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "service": "skills",
@@ -27091,7 +27311,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -27112,7 +27332,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -27133,7 +27353,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -27154,7 +27374,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -27175,7 +27395,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -27195,7 +27415,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -27215,7 +27435,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -27235,7 +27455,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -27256,7 +27476,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -27277,7 +27497,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -27298,7 +27518,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -27319,7 +27539,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -27340,7 +27560,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -27361,7 +27581,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -27385,7 +27605,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "service": "skills",
@@ -27404,7 +27624,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -27424,7 +27644,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -27444,7 +27664,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -27465,7 +27685,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -27486,7 +27706,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -27507,7 +27727,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -27528,7 +27748,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -27549,7 +27769,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -27570,7 +27790,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -27591,7 +27811,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -27612,7 +27832,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -27633,7 +27853,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "service": "skills",
@@ -27652,7 +27872,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -27673,7 +27893,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -27694,7 +27914,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -27715,7 +27935,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -27736,7 +27956,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -27757,7 +27977,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -27778,7 +27998,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -27799,7 +28019,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -27820,7 +28040,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -27841,7 +28061,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -27862,7 +28082,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "ceeb2f17a0fd1da3f47e28c6a73a026883020c09",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills"
       },
       "searchable": false,
@@ -27882,16 +28102,16 @@
       "kind": "skill",
       "outputSchema": null,
       "provenance": {
-        "commit": "f63e83a021021764f8b54eff7f5a38c10852d161",
-        "fetchedAt": "2026-11-06T18:57:22Z",
-        "source": "https://github.com/Stellar-Light/stellar-scout/tree/f63e83a021021764f8b54eff7f5a38c10852d161"
+        "commit": "0f3040cf41bc9a120148f11c37c4f60f3cf8ae39",
+        "fetchedAt": "2026-11-09T19:08:24Z",
+        "source": "https://github.com/Stellar-Light/stellar-scout/tree/0f3040cf41bc9a120148f11c37c4f60f3cf8ae39"
       },
       "service": "skills",
       "transport": {
-        "sha": "a27f8eb24907fa2e5ef27cd1496a9da7b385414b",
-        "sha256": "7e660881d48d97cd2af1e2e6c34a94ea31efb7a84b96c12ddeb821caf14b5fce",
+        "sha": "c6feb4e3375b70e97e9caa83482f31b0e40e8f50",
+        "sha256": "4e53255e11720ccf2e978abc2b57c5c022c4684e11610a2d9be44879d4d4ed8a",
         "type": "file",
-        "url": "https://raw.githubusercontent.com/Stellar-Light/stellar-scout/f63e83a021021764f8b54eff7f5a38c10852d161/SKILL.md"
+        "url": "https://raw.githubusercontent.com/Stellar-Light/stellar-scout/0f3040cf41bc9a120148f11c37c4f60f3cf8ae39/SKILL.md"
       }
     },
     {
@@ -27901,18 +28121,18 @@
       "kind": "skill-section",
       "outputSchema": null,
       "provenance": {
-        "commit": "f63e83a021021764f8b54eff7f5a38c10852d161",
-        "fetchedAt": "2026-11-06T18:57:22Z",
-        "source": "https://github.com/Stellar-Light/stellar-scout/tree/f63e83a021021764f8b54eff7f5a38c10852d161"
+        "commit": "0f3040cf41bc9a120148f11c37c4f60f3cf8ae39",
+        "fetchedAt": "2026-11-09T19:08:24Z",
+        "source": "https://github.com/Stellar-Light/stellar-scout/tree/0f3040cf41bc9a120148f11c37c4f60f3cf8ae39"
       },
       "searchable": false,
       "service": "skills",
       "transport": {
         "section": "Attribution",
-        "sha": "a27f8eb24907fa2e5ef27cd1496a9da7b385414b",
-        "sha256": "7e660881d48d97cd2af1e2e6c34a94ea31efb7a84b96c12ddeb821caf14b5fce",
+        "sha": "c6feb4e3375b70e97e9caa83482f31b0e40e8f50",
+        "sha256": "4e53255e11720ccf2e978abc2b57c5c022c4684e11610a2d9be44879d4d4ed8a",
         "type": "file",
-        "url": "https://raw.githubusercontent.com/Stellar-Light/stellar-scout/f63e83a021021764f8b54eff7f5a38c10852d161/SKILL.md"
+        "url": "https://raw.githubusercontent.com/Stellar-Light/stellar-scout/0f3040cf41bc9a120148f11c37c4f60f3cf8ae39/SKILL.md"
       }
     },
     {
@@ -27922,18 +28142,18 @@
       "kind": "skill-section",
       "outputSchema": null,
       "provenance": {
-        "commit": "f63e83a021021764f8b54eff7f5a38c10852d161",
-        "fetchedAt": "2026-11-06T18:57:22Z",
-        "source": "https://github.com/Stellar-Light/stellar-scout/tree/f63e83a021021764f8b54eff7f5a38c10852d161"
+        "commit": "0f3040cf41bc9a120148f11c37c4f60f3cf8ae39",
+        "fetchedAt": "2026-11-09T19:08:24Z",
+        "source": "https://github.com/Stellar-Light/stellar-scout/tree/0f3040cf41bc9a120148f11c37c4f60f3cf8ae39"
       },
       "searchable": false,
       "service": "skills",
       "transport": {
         "section": "Companion skills",
-        "sha": "a27f8eb24907fa2e5ef27cd1496a9da7b385414b",
-        "sha256": "7e660881d48d97cd2af1e2e6c34a94ea31efb7a84b96c12ddeb821caf14b5fce",
+        "sha": "c6feb4e3375b70e97e9caa83482f31b0e40e8f50",
+        "sha256": "4e53255e11720ccf2e978abc2b57c5c022c4684e11610a2d9be44879d4d4ed8a",
         "type": "file",
-        "url": "https://raw.githubusercontent.com/Stellar-Light/stellar-scout/f63e83a021021764f8b54eff7f5a38c10852d161/SKILL.md"
+        "url": "https://raw.githubusercontent.com/Stellar-Light/stellar-scout/0f3040cf41bc9a120148f11c37c4f60f3cf8ae39/SKILL.md"
       }
     },
     {
@@ -27943,18 +28163,18 @@
       "kind": "skill-section",
       "outputSchema": null,
       "provenance": {
-        "commit": "f63e83a021021764f8b54eff7f5a38c10852d161",
-        "fetchedAt": "2026-11-06T18:57:22Z",
-        "source": "https://github.com/Stellar-Light/stellar-scout/tree/f63e83a021021764f8b54eff7f5a38c10852d161"
+        "commit": "0f3040cf41bc9a120148f11c37c4f60f3cf8ae39",
+        "fetchedAt": "2026-11-09T19:08:24Z",
+        "source": "https://github.com/Stellar-Light/stellar-scout/tree/0f3040cf41bc9a120148f11c37c4f60f3cf8ae39"
       },
       "searchable": false,
       "service": "skills",
       "transport": {
         "section": "Data freshness",
-        "sha": "a27f8eb24907fa2e5ef27cd1496a9da7b385414b",
-        "sha256": "7e660881d48d97cd2af1e2e6c34a94ea31efb7a84b96c12ddeb821caf14b5fce",
+        "sha": "c6feb4e3375b70e97e9caa83482f31b0e40e8f50",
+        "sha256": "4e53255e11720ccf2e978abc2b57c5c022c4684e11610a2d9be44879d4d4ed8a",
         "type": "file",
-        "url": "https://raw.githubusercontent.com/Stellar-Light/stellar-scout/f63e83a021021764f8b54eff7f5a38c10852d161/SKILL.md"
+        "url": "https://raw.githubusercontent.com/Stellar-Light/stellar-scout/0f3040cf41bc9a120148f11c37c4f60f3cf8ae39/SKILL.md"
       }
     },
     {
@@ -27964,18 +28184,18 @@
       "kind": "skill-section",
       "outputSchema": null,
       "provenance": {
-        "commit": "f63e83a021021764f8b54eff7f5a38c10852d161",
-        "fetchedAt": "2026-11-06T18:57:22Z",
-        "source": "https://github.com/Stellar-Light/stellar-scout/tree/f63e83a021021764f8b54eff7f5a38c10852d161"
+        "commit": "0f3040cf41bc9a120148f11c37c4f60f3cf8ae39",
+        "fetchedAt": "2026-11-09T19:08:24Z",
+        "source": "https://github.com/Stellar-Light/stellar-scout/tree/0f3040cf41bc9a120148f11c37c4f60f3cf8ae39"
       },
       "searchable": false,
       "service": "skills",
       "transport": {
         "section": "Evidence floor",
-        "sha": "a27f8eb24907fa2e5ef27cd1496a9da7b385414b",
-        "sha256": "7e660881d48d97cd2af1e2e6c34a94ea31efb7a84b96c12ddeb821caf14b5fce",
+        "sha": "c6feb4e3375b70e97e9caa83482f31b0e40e8f50",
+        "sha256": "4e53255e11720ccf2e978abc2b57c5c022c4684e11610a2d9be44879d4d4ed8a",
         "type": "file",
-        "url": "https://raw.githubusercontent.com/Stellar-Light/stellar-scout/f63e83a021021764f8b54eff7f5a38c10852d161/SKILL.md"
+        "url": "https://raw.githubusercontent.com/Stellar-Light/stellar-scout/0f3040cf41bc9a120148f11c37c4f60f3cf8ae39/SKILL.md"
       }
     },
     {
@@ -27985,9 +28205,9 @@
       "kind": "skill-section",
       "outputSchema": null,
       "provenance": {
-        "commit": "f63e83a021021764f8b54eff7f5a38c10852d161",
-        "fetchedAt": "2026-11-06T18:57:22Z",
-        "source": "https://github.com/Stellar-Light/stellar-scout/tree/f63e83a021021764f8b54eff7f5a38c10852d161"
+        "commit": "0f3040cf41bc9a120148f11c37c4f60f3cf8ae39",
+        "fetchedAt": "2026-11-09T19:08:24Z",
+        "source": "https://github.com/Stellar-Light/stellar-scout/tree/0f3040cf41bc9a120148f11c37c4f60f3cf8ae39"
       },
       "searchable": false,
       "service": "skills",
@@ -27995,7 +28215,7 @@
         "sha": "5d5348c3e64957a6e0d64b73b1c28ecd419fdfa4",
         "sha256": "fb9513ac993261802f93d6a34c6d39c4c12f0b37e04c3f134e0bdbfc74a3269e",
         "type": "file",
-        "url": "https://raw.githubusercontent.com/Stellar-Light/stellar-scout/f63e83a021021764f8b54eff7f5a38c10852d161/README.md"
+        "url": "https://raw.githubusercontent.com/Stellar-Light/stellar-scout/0f3040cf41bc9a120148f11c37c4f60f3cf8ae39/README.md"
       }
     },
     {
@@ -28005,17 +28225,17 @@
       "kind": "skill-section",
       "outputSchema": null,
       "provenance": {
-        "commit": "f63e83a021021764f8b54eff7f5a38c10852d161",
-        "fetchedAt": "2026-11-06T18:57:22Z",
-        "source": "https://github.com/Stellar-Light/stellar-scout/tree/f63e83a021021764f8b54eff7f5a38c10852d161"
+        "commit": "0f3040cf41bc9a120148f11c37c4f60f3cf8ae39",
+        "fetchedAt": "2026-11-09T19:08:24Z",
+        "source": "https://github.com/Stellar-Light/stellar-scout/tree/0f3040cf41bc9a120148f11c37c4f60f3cf8ae39"
       },
       "searchable": false,
       "service": "skills",
       "transport": {
-        "sha": "175f194c2c5b5856aafe75be63bdfe240871d8e6",
-        "sha256": "a3fdce552dfff2ac340e5c3f9d92da3caa47f9e58570cfce5de87017602b6b08",
+        "sha": "b6998d870eb96e700943ddc838bab83070157265",
+        "sha256": "c3e6310fadb15dcdf9bcddcd96f7c963b1bdb83264c492f7822d4abfcbfad076",
         "type": "file",
-        "url": "https://raw.githubusercontent.com/Stellar-Light/stellar-scout/f63e83a021021764f8b54eff7f5a38c10852d161/references/api-reference.md"
+        "url": "https://raw.githubusercontent.com/Stellar-Light/stellar-scout/0f3040cf41bc9a120148f11c37c4f60f3cf8ae39/references/api-reference.md"
       }
     },
     {
@@ -28025,9 +28245,9 @@
       "kind": "skill-section",
       "outputSchema": null,
       "provenance": {
-        "commit": "f63e83a021021764f8b54eff7f5a38c10852d161",
-        "fetchedAt": "2026-11-06T18:57:22Z",
-        "source": "https://github.com/Stellar-Light/stellar-scout/tree/f63e83a021021764f8b54eff7f5a38c10852d161"
+        "commit": "0f3040cf41bc9a120148f11c37c4f60f3cf8ae39",
+        "fetchedAt": "2026-11-09T19:08:24Z",
+        "source": "https://github.com/Stellar-Light/stellar-scout/tree/0f3040cf41bc9a120148f11c37c4f60f3cf8ae39"
       },
       "searchable": false,
       "service": "skills",
@@ -28035,7 +28255,7 @@
         "sha": "906e7c323c3a2f312e31753006bc1a23953a0042",
         "sha256": "cda84a40a08735e795ef52cc10465b782512b22996b3bdcae0524a5a2b995172",
         "type": "file",
-        "url": "https://raw.githubusercontent.com/Stellar-Light/stellar-scout/f63e83a021021764f8b54eff7f5a38c10852d161/references/examples.md"
+        "url": "https://raw.githubusercontent.com/Stellar-Light/stellar-scout/0f3040cf41bc9a120148f11c37c4f60f3cf8ae39/references/examples.md"
       }
     },
     {
@@ -28045,18 +28265,18 @@
       "kind": "skill-section",
       "outputSchema": null,
       "provenance": {
-        "commit": "f63e83a021021764f8b54eff7f5a38c10852d161",
-        "fetchedAt": "2026-11-06T18:57:22Z",
-        "source": "https://github.com/Stellar-Light/stellar-scout/tree/f63e83a021021764f8b54eff7f5a38c10852d161"
+        "commit": "0f3040cf41bc9a120148f11c37c4f60f3cf8ae39",
+        "fetchedAt": "2026-11-09T19:08:24Z",
+        "source": "https://github.com/Stellar-Light/stellar-scout/tree/0f3040cf41bc9a120148f11c37c4f60f3cf8ae39"
       },
       "searchable": false,
       "service": "skills",
       "transport": {
         "section": "Key endpoints (quick reference)",
-        "sha": "a27f8eb24907fa2e5ef27cd1496a9da7b385414b",
-        "sha256": "7e660881d48d97cd2af1e2e6c34a94ea31efb7a84b96c12ddeb821caf14b5fce",
+        "sha": "c6feb4e3375b70e97e9caa83482f31b0e40e8f50",
+        "sha256": "4e53255e11720ccf2e978abc2b57c5c022c4684e11610a2d9be44879d4d4ed8a",
         "type": "file",
-        "url": "https://raw.githubusercontent.com/Stellar-Light/stellar-scout/f63e83a021021764f8b54eff7f5a38c10852d161/SKILL.md"
+        "url": "https://raw.githubusercontent.com/Stellar-Light/stellar-scout/0f3040cf41bc9a120148f11c37c4f60f3cf8ae39/SKILL.md"
       }
     },
     {
@@ -28066,18 +28286,18 @@
       "kind": "skill-section",
       "outputSchema": null,
       "provenance": {
-        "commit": "f63e83a021021764f8b54eff7f5a38c10852d161",
-        "fetchedAt": "2026-11-06T18:57:22Z",
-        "source": "https://github.com/Stellar-Light/stellar-scout/tree/f63e83a021021764f8b54eff7f5a38c10852d161"
+        "commit": "0f3040cf41bc9a120148f11c37c4f60f3cf8ae39",
+        "fetchedAt": "2026-11-09T19:08:24Z",
+        "source": "https://github.com/Stellar-Light/stellar-scout/tree/0f3040cf41bc9a120148f11c37c4f60f3cf8ae39"
       },
       "searchable": false,
       "service": "skills",
       "transport": {
         "section": "Known integration partners",
-        "sha": "a27f8eb24907fa2e5ef27cd1496a9da7b385414b",
-        "sha256": "7e660881d48d97cd2af1e2e6c34a94ea31efb7a84b96c12ddeb821caf14b5fce",
+        "sha": "c6feb4e3375b70e97e9caa83482f31b0e40e8f50",
+        "sha256": "4e53255e11720ccf2e978abc2b57c5c022c4684e11610a2d9be44879d4d4ed8a",
         "type": "file",
-        "url": "https://raw.githubusercontent.com/Stellar-Light/stellar-scout/f63e83a021021764f8b54eff7f5a38c10852d161/SKILL.md"
+        "url": "https://raw.githubusercontent.com/Stellar-Light/stellar-scout/0f3040cf41bc9a120148f11c37c4f60f3cf8ae39/SKILL.md"
       }
     },
     {
@@ -28087,18 +28307,18 @@
       "kind": "skill-section",
       "outputSchema": null,
       "provenance": {
-        "commit": "f63e83a021021764f8b54eff7f5a38c10852d161",
-        "fetchedAt": "2026-11-06T18:57:22Z",
-        "source": "https://github.com/Stellar-Light/stellar-scout/tree/f63e83a021021764f8b54eff7f5a38c10852d161"
+        "commit": "0f3040cf41bc9a120148f11c37c4f60f3cf8ae39",
+        "fetchedAt": "2026-11-09T19:08:24Z",
+        "source": "https://github.com/Stellar-Light/stellar-scout/tree/0f3040cf41bc9a120148f11c37c4f60f3cf8ae39"
       },
       "searchable": false,
       "service": "skills",
       "transport": {
         "section": "Limitations",
-        "sha": "a27f8eb24907fa2e5ef27cd1496a9da7b385414b",
-        "sha256": "7e660881d48d97cd2af1e2e6c34a94ea31efb7a84b96c12ddeb821caf14b5fce",
+        "sha": "c6feb4e3375b70e97e9caa83482f31b0e40e8f50",
+        "sha256": "4e53255e11720ccf2e978abc2b57c5c022c4684e11610a2d9be44879d4d4ed8a",
         "type": "file",
-        "url": "https://raw.githubusercontent.com/Stellar-Light/stellar-scout/f63e83a021021764f8b54eff7f5a38c10852d161/SKILL.md"
+        "url": "https://raw.githubusercontent.com/Stellar-Light/stellar-scout/0f3040cf41bc9a120148f11c37c4f60f3cf8ae39/SKILL.md"
       }
     },
     {
@@ -28108,18 +28328,18 @@
       "kind": "skill-section",
       "outputSchema": null,
       "provenance": {
-        "commit": "f63e83a021021764f8b54eff7f5a38c10852d161",
-        "fetchedAt": "2026-11-06T18:57:22Z",
-        "source": "https://github.com/Stellar-Light/stellar-scout/tree/f63e83a021021764f8b54eff7f5a38c10852d161"
+        "commit": "0f3040cf41bc9a120148f11c37c4f60f3cf8ae39",
+        "fetchedAt": "2026-11-09T19:08:24Z",
+        "source": "https://github.com/Stellar-Light/stellar-scout/tree/0f3040cf41bc9a120148f11c37c4f60f3cf8ae39"
       },
       "searchable": false,
       "service": "skills",
       "transport": {
         "section": "Output contract",
-        "sha": "a27f8eb24907fa2e5ef27cd1496a9da7b385414b",
-        "sha256": "7e660881d48d97cd2af1e2e6c34a94ea31efb7a84b96c12ddeb821caf14b5fce",
+        "sha": "c6feb4e3375b70e97e9caa83482f31b0e40e8f50",
+        "sha256": "4e53255e11720ccf2e978abc2b57c5c022c4684e11610a2d9be44879d4d4ed8a",
         "type": "file",
-        "url": "https://raw.githubusercontent.com/Stellar-Light/stellar-scout/f63e83a021021764f8b54eff7f5a38c10852d161/SKILL.md"
+        "url": "https://raw.githubusercontent.com/Stellar-Light/stellar-scout/0f3040cf41bc9a120148f11c37c4f60f3cf8ae39/SKILL.md"
       }
     },
     {
@@ -28129,18 +28349,18 @@
       "kind": "skill-section",
       "outputSchema": null,
       "provenance": {
-        "commit": "f63e83a021021764f8b54eff7f5a38c10852d161",
-        "fetchedAt": "2026-11-06T18:57:22Z",
-        "source": "https://github.com/Stellar-Light/stellar-scout/tree/f63e83a021021764f8b54eff7f5a38c10852d161"
+        "commit": "0f3040cf41bc9a120148f11c37c4f60f3cf8ae39",
+        "fetchedAt": "2026-11-09T19:08:24Z",
+        "source": "https://github.com/Stellar-Light/stellar-scout/tree/0f3040cf41bc9a120148f11c37c4f60f3cf8ae39"
       },
       "searchable": false,
       "service": "skills",
       "transport": {
         "section": "References (load these on demand)",
-        "sha": "a27f8eb24907fa2e5ef27cd1496a9da7b385414b",
-        "sha256": "7e660881d48d97cd2af1e2e6c34a94ea31efb7a84b96c12ddeb821caf14b5fce",
+        "sha": "c6feb4e3375b70e97e9caa83482f31b0e40e8f50",
+        "sha256": "4e53255e11720ccf2e978abc2b57c5c022c4684e11610a2d9be44879d4d4ed8a",
         "type": "file",
-        "url": "https://raw.githubusercontent.com/Stellar-Light/stellar-scout/f63e83a021021764f8b54eff7f5a38c10852d161/SKILL.md"
+        "url": "https://raw.githubusercontent.com/Stellar-Light/stellar-scout/0f3040cf41bc9a120148f11c37c4f60f3cf8ae39/SKILL.md"
       }
     },
     {
@@ -28150,18 +28370,18 @@
       "kind": "skill-section",
       "outputSchema": null,
       "provenance": {
-        "commit": "f63e83a021021764f8b54eff7f5a38c10852d161",
-        "fetchedAt": "2026-11-06T18:57:22Z",
-        "source": "https://github.com/Stellar-Light/stellar-scout/tree/f63e83a021021764f8b54eff7f5a38c10852d161"
+        "commit": "0f3040cf41bc9a120148f11c37c4f60f3cf8ae39",
+        "fetchedAt": "2026-11-09T19:08:24Z",
+        "source": "https://github.com/Stellar-Light/stellar-scout/tree/0f3040cf41bc9a120148f11c37c4f60f3cf8ae39"
       },
       "searchable": false,
       "service": "skills",
       "transport": {
         "section": "Specialized workflows",
-        "sha": "a27f8eb24907fa2e5ef27cd1496a9da7b385414b",
-        "sha256": "7e660881d48d97cd2af1e2e6c34a94ea31efb7a84b96c12ddeb821caf14b5fce",
+        "sha": "c6feb4e3375b70e97e9caa83482f31b0e40e8f50",
+        "sha256": "4e53255e11720ccf2e978abc2b57c5c022c4684e11610a2d9be44879d4d4ed8a",
         "type": "file",
-        "url": "https://raw.githubusercontent.com/Stellar-Light/stellar-scout/f63e83a021021764f8b54eff7f5a38c10852d161/SKILL.md"
+        "url": "https://raw.githubusercontent.com/Stellar-Light/stellar-scout/0f3040cf41bc9a120148f11c37c4f60f3cf8ae39/SKILL.md"
       }
     },
     {
@@ -28171,18 +28391,18 @@
       "kind": "skill-section",
       "outputSchema": null,
       "provenance": {
-        "commit": "f63e83a021021764f8b54eff7f5a38c10852d161",
-        "fetchedAt": "2026-11-06T18:57:22Z",
-        "source": "https://github.com/Stellar-Light/stellar-scout/tree/f63e83a021021764f8b54eff7f5a38c10852d161"
+        "commit": "0f3040cf41bc9a120148f11c37c4f60f3cf8ae39",
+        "fetchedAt": "2026-11-09T19:08:24Z",
+        "source": "https://github.com/Stellar-Light/stellar-scout/tree/0f3040cf41bc9a120148f11c37c4f60f3cf8ae39"
       },
       "searchable": false,
       "service": "skills",
       "transport": {
         "section": "Stellar-native topic clusters",
-        "sha": "a27f8eb24907fa2e5ef27cd1496a9da7b385414b",
-        "sha256": "7e660881d48d97cd2af1e2e6c34a94ea31efb7a84b96c12ddeb821caf14b5fce",
+        "sha": "c6feb4e3375b70e97e9caa83482f31b0e40e8f50",
+        "sha256": "4e53255e11720ccf2e978abc2b57c5c022c4684e11610a2d9be44879d4d4ed8a",
         "type": "file",
-        "url": "https://raw.githubusercontent.com/Stellar-Light/stellar-scout/f63e83a021021764f8b54eff7f5a38c10852d161/SKILL.md"
+        "url": "https://raw.githubusercontent.com/Stellar-Light/stellar-scout/0f3040cf41bc9a120148f11c37c4f60f3cf8ae39/SKILL.md"
       }
     },
     {
@@ -28192,18 +28412,18 @@
       "kind": "skill-section",
       "outputSchema": null,
       "provenance": {
-        "commit": "f63e83a021021764f8b54eff7f5a38c10852d161",
-        "fetchedAt": "2026-11-06T18:57:22Z",
-        "source": "https://github.com/Stellar-Light/stellar-scout/tree/f63e83a021021764f8b54eff7f5a38c10852d161"
+        "commit": "0f3040cf41bc9a120148f11c37c4f60f3cf8ae39",
+        "fetchedAt": "2026-11-09T19:08:24Z",
+        "source": "https://github.com/Stellar-Light/stellar-scout/tree/0f3040cf41bc9a120148f11c37c4f60f3cf8ae39"
       },
       "searchable": false,
       "service": "skills",
       "transport": {
         "section": "Two modes",
-        "sha": "a27f8eb24907fa2e5ef27cd1496a9da7b385414b",
-        "sha256": "7e660881d48d97cd2af1e2e6c34a94ea31efb7a84b96c12ddeb821caf14b5fce",
+        "sha": "c6feb4e3375b70e97e9caa83482f31b0e40e8f50",
+        "sha256": "4e53255e11720ccf2e978abc2b57c5c022c4684e11610a2d9be44879d4d4ed8a",
         "type": "file",
-        "url": "https://raw.githubusercontent.com/Stellar-Light/stellar-scout/f63e83a021021764f8b54eff7f5a38c10852d161/SKILL.md"
+        "url": "https://raw.githubusercontent.com/Stellar-Light/stellar-scout/0f3040cf41bc9a120148f11c37c4f60f3cf8ae39/SKILL.md"
       }
     },
     {
@@ -28213,18 +28433,18 @@
       "kind": "skill-section",
       "outputSchema": null,
       "provenance": {
-        "commit": "f63e83a021021764f8b54eff7f5a38c10852d161",
-        "fetchedAt": "2026-11-06T18:57:22Z",
-        "source": "https://github.com/Stellar-Light/stellar-scout/tree/f63e83a021021764f8b54eff7f5a38c10852d161"
+        "commit": "0f3040cf41bc9a120148f11c37c4f60f3cf8ae39",
+        "fetchedAt": "2026-11-09T19:08:24Z",
+        "source": "https://github.com/Stellar-Light/stellar-scout/tree/0f3040cf41bc9a120148f11c37c4f60f3cf8ae39"
       },
       "searchable": false,
       "service": "skills",
       "transport": {
         "section": "When to use this skill",
-        "sha": "a27f8eb24907fa2e5ef27cd1496a9da7b385414b",
-        "sha256": "7e660881d48d97cd2af1e2e6c34a94ea31efb7a84b96c12ddeb821caf14b5fce",
+        "sha": "c6feb4e3375b70e97e9caa83482f31b0e40e8f50",
+        "sha256": "4e53255e11720ccf2e978abc2b57c5c022c4684e11610a2d9be44879d4d4ed8a",
         "type": "file",
-        "url": "https://raw.githubusercontent.com/Stellar-Light/stellar-scout/f63e83a021021764f8b54eff7f5a38c10852d161/SKILL.md"
+        "url": "https://raw.githubusercontent.com/Stellar-Light/stellar-scout/0f3040cf41bc9a120148f11c37c4f60f3cf8ae39/SKILL.md"
       }
     },
     {
@@ -28235,7 +28455,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "service": "skills",
@@ -28254,7 +28474,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -28275,7 +28495,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -28296,7 +28516,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -28316,7 +28536,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -28336,7 +28556,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -28356,7 +28576,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -28376,7 +28596,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -28396,7 +28616,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -28416,7 +28636,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -28436,7 +28656,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -28456,7 +28676,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -28476,7 +28696,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -28496,7 +28716,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -28516,7 +28736,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -28536,7 +28756,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -28556,7 +28776,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -28576,7 +28796,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -28596,7 +28816,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -28616,7 +28836,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -28636,7 +28856,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -28656,7 +28876,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -28676,7 +28896,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -28696,7 +28916,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -28716,7 +28936,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -28737,7 +28957,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -28758,7 +28978,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -28779,7 +28999,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -28800,7 +29020,7 @@
       "outputSchema": null,
       "provenance": {
         "commit": "80e2467f34041b9f70e66d6c2f567fc76ba9b1bb",
-        "fetchedAt": "2026-11-06T18:57:22Z",
+        "fetchedAt": "2026-11-09T19:08:24Z",
         "source": "https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb"
       },
       "searchable": false,
@@ -31108,6 +31328,6 @@
       }
     }
   ],
-  "generatedAt": "2026-11-06T18:57:22Z",
+  "generatedAt": "2026-11-09T19:08:25.744Z",
   "version": 1
 }

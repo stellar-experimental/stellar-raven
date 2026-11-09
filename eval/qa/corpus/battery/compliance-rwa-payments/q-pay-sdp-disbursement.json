@@ -47,6 +47,18 @@
         "class": "B",
         "ref": "https://github.com/stellar/stellar-disbursement-platform-backend/tree/03e44fbedceab188cb91c77a181d8c734ffbd822",
         "note": "class inferred at migration"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/api-reference/registration.md",
+        "observedAt": "2026-11-09",
+        "note": "The live reference assigns SEP-10/24 endpoints to SDP itself, with separate Anchor Platform hosting explicitly limited to versions before 6.0.0."
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-docs/blob/d3cf2fb26f3f694f519372d4dc4ad1eefe56a11e/openapi/stellar-disbursement-platform/main.yaml",
+        "observedAt": "2026-11-09",
+        "note": "Registration description and stellar.toml endpoint examples use the SDP host."
       }
     ],
     "corroboration": [
@@ -94,15 +106,17 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer re-verification, no gospel change; applier; .agents/rounds/2026-11-02-golden-audit.md, batch compliance-rwa-payments-04)",
+      "date": "2026-11-09",
+      "by": "Upstream handoff author reconciliation; independent live re-derivation by reviewer t38s; .agents/rounds/2026-11-09-upstream-handoffs.md",
       "evidence": [
-        "https://github.com/stellar/stellar-disbursement-platform-backend/blob/develop/README.md (observedAt 2026-11-02; latest release 7.1.0, 2026-10-26): \"The SDP now includes native implementations of Stellar Enhancement Proposals SEP10 and SEP24, providing wallet authentication and interactive deposit flows without requiring external Anchor Platform integration.\"",
-        "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/design-and-architecture (observedAt 2026-11-02): \"The TSS pulls payments that ready to be processed then submits them to the Stellar Network through Channel Accounts.\"",
-        "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/embedded-wallets (observedAt 2026-11-02): \"Embedded Wallets are Stellar smart contract accounts that are deployed on-chain when a receiver creates their passkey.\"; \"No built-in offramp: Offramping must be handled out-of-band\".",
-        "https://developers.stellar.org/platforms/stellar-disbursement-platform/admin-guide/getting-started (observedAt 2026-11-02): \"Since version 3.0.0 , the SDP can pay directly to Stellar wallet addresses rather than directing the receivers through the registration flow.\"",
-        "Observation (no truth change): the SDP Registration API reference still says wallets authenticate through Anchor Platform endpoints on a different host; primary source code and the Embedded Wallets page outrank it.",
-        "Sibling sweep 2026-11-02: q-anchor-sdp-what, q-anchor-sdp-vs-anchor-platform, q-crp-sdp-operation, q-pay-travel-rule-aid-flows, q-sep-31-cross-border; no contradiction."
+        "Class A 2026-11-09: https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/api-reference/registration.md says SDP hosts the SEP-10/24 endpoints itself and stellar.toml gives their URLs. Separate Anchor Platform hosting is explicitly before 6.0.0.",
+        "Class B 2026-11-09: https://github.com/stellar/stellar-docs/blob/d3cf2fb26f3f694f519372d4dc4ad1eefe56a11e/openapi/stellar-disbursement-platform/main.yaml and bundled.yaml have the same corrected description and SDP-host WEB_AUTH_ENDPOINT / TRANSFER_SERVER_SEP0024 examples.",
+        "Independent reviewer read the SDP backend changelog and stellar_toml_handler.go: native SEP-10/24 replaced the Anchor Platform integration in 6.0.0, and both advertised URLs use the request/tenant base URL; .agents/rounds/2026-11-09-upstream-handoffs.md.",
+        "sd-062 resolution supersedes the 2026-11-02 observation that Registration still describes current Anchor Platform hosting. The existing golden answer, key facts and avoids remain correct and unchanged.",
+        "Sibling sweep 2026-11-09: q-anchor-sdp-what, q-anchor-sdp-vs-anchor-platform and q-crp-sdp-operation already describe native SDP SEP-10/24. q-pay-travel-rule-aid-flows and q-sep-31-cross-border retain route-dependent downstream roles; no contradiction."
+      ],
+      "rootCause": [
+        "improvements/resolved.json (sd-062; deployed Registration and spec correction, PR3010)"
       ]
     },
     "origin": "raven-next q-pay-sdp-disbursement"
