@@ -2,7 +2,7 @@
 
 # Stellar/Soroban ecosystem skills — index
 
-Directory of **21 agent skills** across **5 sources** · pinned 2026-11-06T18:57:22Z. Bodies are NOT vendored here: each row links to the upstream file at the commit pinned in [`MANIFEST.json`](./MANIFEST.json), which is what this server fetches and hash-verifies at read time.
+Directory of **21 agent skills** across **5 sources** · pinned 2026-11-09T19:08:24Z. Bodies are NOT vendored here: each row links to the upstream file at the commit pinned in [`MANIFEST.json`](./MANIFEST.json), which is what this server fetches and hash-verifies at read time.
 
 The **What it does** column is host-owned discovery text. Exact-ID overrides in `scripts/description-notes.mjs` can narrow upstream frontmatter for routing. They do not modify pinned source bytes. `codemode.skill.read` still applies its existing exposure scrub.
 
@@ -13,7 +13,7 @@ The **What it does** column is host-owned discovery text. Exact-ID overrides in 
 | `lumenloop` | [`lumenloop/lumenloop-skills`](https://github.com/lumenloop/lumenloop-skills) `skills/` | [`d92c56bda17a`](https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills) | 8 |
 | `openzeppelin-stellar` | [`OpenZeppelin/openzeppelin-skills`](https://github.com/OpenZeppelin/openzeppelin-skills) `skills/` | [`584262af9eed`](https://github.com/OpenZeppelin/openzeppelin-skills/tree/584262af9eed516bdb1d2d897246502218e3917a/skills) | 3 |
 | `stellar-dev` | [`stellar/stellar-dev-skill`](https://github.com/stellar/stellar-dev-skill) `skills/` | [`ceeb2f17a0fd`](https://github.com/stellar/stellar-dev-skill/tree/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills) | 8 |
-| `stellar-light` | [`Stellar-Light/stellar-scout`](https://github.com/Stellar-Light/stellar-scout) (root) | [`f63e83a02102`](https://github.com/Stellar-Light/stellar-scout/tree/f63e83a021021764f8b54eff7f5a38c10852d161) | 1 |
+| `stellar-light` | [`Stellar-Light/stellar-scout`](https://github.com/Stellar-Light/stellar-scout) (root) | [`0f3040cf41bc`](https://github.com/Stellar-Light/stellar-scout/tree/0f3040cf41bc9a120148f11c37c4f60f3cf8ae39) | 1 |
 | `trustless-work` | [`Trustless-Work/trustlesswork-skill`](https://github.com/Trustless-Work/trustlesswork-skill) (skill dirs at root) | [`80e2467f3404`](https://github.com/Trustless-Work/trustlesswork-skill/tree/80e2467f34041b9f70e66d6c2f567fc76ba9b1bb) | 1 |
 
 _Every source is public GitHub, pinned to a full commit SHA (independently verifiable); each source's upstream LICENSE/NOTICE file NAMES are recorded in `MANIFEST.json` as provenance — those files are not fetched, copied, or served (see `THIRD-PARTY-NOTICES.md` at the repo root)._
@@ -32,7 +32,7 @@ _Stellar-ecosystem analyst skills — survey/map a sector, profile a project, di
 | [`stellar-content-auditor`](https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills/stellar-content-auditor) | `lumenloop` | 8 KB | Audit and enrich a draft (blog post, talking points, tweet, announcement) against the LumenLoop Stellar ecosystem data — resolve the projects you mention to their canonical names and X/@ handles, pull supporting facts and citations from indexed content, and flag wrong handles or unsupported claims. Use when the user shares draft copy about Stellar and wants project handles/names/facts checked, or asks to fact-check, enrich, or add citations and links to a post. |
 | [`stellar-builder-quickstart`](https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills/stellar-builder-quickstart) | `lumenloop` | 12 KB | Go from a Stellar product idea to a build path: pick the right Stellar primitives, check ecosystem prior art via LumenLoop, and route to the relevant build skill (Soroban, SDK/dapp, assets, oracles). Use when the user wants to start building something on Stellar and needs orientation on approach and existing work. |
 | [`lumenloop-mcp-connect`](https://github.com/lumenloop/lumenloop-skills/tree/d92c56bda17ab702d3202335cfe814d64e70e191/skills/lumenloop-mcp-connect) | `lumenloop` | 16 KB | Connect your AI assistant (Claude, ChatGPT, Gemini, Cursor, or any MCP client) to LumenLoop's free read-only Stellar ecosystem MCP at https://mcp.lumenloop.com and learn its 18 query tools. Use when the user wants to set up or troubleshoot the lumenloop connector, asks what Stellar ecosystem data is available, or needs to know which lumenloop skill fits a task. |
-| [`stellar-scout`](https://github.com/Stellar-Light/stellar-scout/tree/f63e83a021021764f8b54eff7f5a38c10852d161) | `stellar-light` | 128 KB | Scouts the Stellar ecosystem before you build. Validates ideas against existing projects, matches open SCF-funded RFPs, drafts SCF pitches, finds audit firms, compares RFPs, recommends Soroban SDK skills, and cites primary sources (audits, SEPs, papers). Use whenever someone asks what to build on Stellar, vets an idea, preps an SCF grant application or hackathon entry, needs an auditor, or needs prior-art / security findings on a Soroban protocol. |
+| [`stellar-scout`](https://github.com/Stellar-Light/stellar-scout/tree/0f3040cf41bc9a120148f11c37c4f60f3cf8ae39) | `stellar-light` | 130 KB | Scouts the Stellar ecosystem before you build. Validates ideas against existing projects, matches open SCF-funded RFPs, drafts SCF pitches, finds audit firms, compares RFPs, recommends Soroban SDK skills, and cites primary sources (audits, SEPs, papers). Use whenever someone asks what to build on Stellar, vets an idea, preps an SCF grant application or hackathon entry, needs an auditor, or needs prior-art / security findings on a Soroban protocol. |
 
 ## Soroban & smart contracts
 
@@ -69,7 +69,7 @@ _Third-party Stellar platform skills — integrate hosted ecosystem services fro
 
 ## Ecosystem directory (stellarlight.xyz catalog snapshot)
 
-_The broader map of what exists across the Stellar agent-skill ecosystem — 82 entries from [`https://stellarlight.xyz/api/skills`](https://stellarlight.xyz/api/skills), fetched 2026-11-06T18:57:22Z. Only `skill-md` entries are downloadable SKILL.md skills; `mcp-server` / `sdk` / `cli` / `tool` entries are pointers to runtime tools, not skills. Not all are served here._
+_The broader map of what exists across the Stellar agent-skill ecosystem — 82 entries from [`https://stellarlight.xyz/api/skills`](https://stellarlight.xyz/api/skills), fetched 2026-11-09T19:08:24Z. Only `skill-md` entries are downloadable SKILL.md skills; `mcp-server` / `sdk` / `cli` / `tool` entries are pointers to runtime tools, not skills. Not all are served here._
 
 | Entry | Source | Kind |
 | --- | --- | --- |
@@ -159,7 +159,7 @@ _The broader map of what exists across the Stellar agent-skill ecosystem — 82 
 ## Community directory (stellar/stellar-dev-skill main source snapshot)
 
 The snapshot lists 50 Community skills from [stellar/stellar-dev-skill main](https://raw.githubusercontent.com/stellar/stellar-dev-skill/main/site/src/data/skills.ts).
-The snapshot date is 2026-11-06T18:57:30.968Z.
+The snapshot date is 2026-11-09T19:08:33.377Z.
 Source changes can precede deployment or never deploy.
 These links support discovery. Each skill needs a separate pin and exposure review before Raven can serve it.
 

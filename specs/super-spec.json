@@ -143,6 +143,13 @@
             "items": {
               "properties": {
                 "count": {
+                  "description": "null = the source could not be read with this response (could not check), never zero.",
+                  "nullable": true,
+                  "type": "integer"
+                },
+                "indexBytes": {
+                  "description": "hackathonBuilds only: the serialised size in bytes of the hackathon submissions index, as its last build on the server instance answering measured it (lastUpdatedAt dates it). Next caches the index as one item of at most 2 MB; past that every request rebuilds it from the store, so a live check reds above 1,800,000. null = that instance has not built the index yet (could not check). Absent on every other source.",
+                  "nullable": true,
                   "type": "integer"
                 },
                 "lastUpdatedAt": {
@@ -213,7 +220,7 @@
     "description": "One spec covering every operation this MCP server can execute, across four services: lumenloop, scout (Stellar Light), stellarDocs (Mintlify-backed docs search), and skills (pinned agent playbooks). Paths are keyed '/{service}/{operation}' and each operationId is the exact callable name: an operation with operationId 'lumenloop.search_directory' is invoked inside the execute tool's sandbox as `await lumenloop.search_directory(args)` — args is ONE object matching the operation's requestBody schema (POST ops) or its parameter names (GET ops). The exact call line is on each operation as x-execute. Every call resolves (never throws) to { ok: true, data, asOf, asOfBasis, caveat? } or { ok: false, error: { service, kind, message } }; the 200 response schema documents `data`. `asOf` is the upstream data date (dataAsOf or asOf) when the payload states one, else the host observation time, and `asOfBasis` names which; `caveat` is \"no-rows\" or \"unverified-match\" when the host can show it. Every path in this spec is callable — exposure is filtered at build time, so nothing uncallable is described. Auth is handled host-side — code never sees keys.",
     "title": "stellar-raven-codemode — unified super spec",
     "version": "1.0.0",
-    "x-generatedAt": "2026-11-06T18:57:22Z"
+    "x-generatedAt": "2026-11-09T19:08:25.744Z"
   },
   "openapi": "3.1.0",
   "paths": {
@@ -2580,7 +2587,8 @@
                   "Card Issuing",
                   "Exchange",
                   "Oracle",
-                  "Yield"
+                  "Yield",
+                  "Derivatives"
                 ],
                 "type": "string"
               },
@@ -4333,7 +4341,7 @@
         "operationId": "scout.searchHackathonBuilds",
         "parameters": [
           {
-            "description": "Topic to search build names, descriptions and the packages their repos declare (prior-art lookup). A build is listed when it covers half of q's words, or when its name holds one of them unless most of q's words occur as a whole word in no submission (text or declared packages). A word of four letters or more also matches inside a longer word. In a question (q ends with ? or opens with which, who, whom, whose, what, where, when, why, how, has, have, had, did, does, do, is, are, was, were, can, could, will, would or should, followed by a space), the question marks and the words that ask about an outcome or the past rather than a topic (won, win, wins, winner, winners, winning, prize, prizes, award, awards, awarded, placed, hackathon, hackathons, built, builds, past, ever, previous, previously, anyone, someone, already, before) are not searched, unless they are all q holds. When any of q's words occurs as a whole word in no submission, meta.warnings names those words and says what the listed builds are, and says when a build whose name matched was held back (meta.counts.withheldByName). With no hackathon parameter, an event named in full in q (its title, in any case, accents and punctuation aside, or its slug, hyphens included, in any case) becomes the hackathon filter and leaves q (meta.inferredFilter). The rest of q is searched inside that event; a rest made only of words the search skips (stopwords and generic words such as app, token, crypto, money, stellar, github) and words that ask for the event's entries (winners, builds, projects, places, awards, rankings) lists the event as the filter alone does. When the rest matches none of the event's rows and none of them holds a description, meta.warnings says so. A name start several events share infers nothing; meta.warnings names those events. Any hackathon parameter turns this off: send hackathon= with no value to search the words as text in every event.",
+            "description": "Topic to search build names, descriptions and the packages their repos declare (prior-art lookup). A build is listed when it covers half of q's words, or when its name holds one of them unless most of q's words occur as a whole word in no submission (text or declared packages). A submission entered in several events matches when any of its entries does (each entry's track and award are its own) and is listed as the best of those. A word of four letters or more also matches inside a longer word. In a question (q ends with ? or opens with which, who, whom, whose, what, where, when, why, how, has, have, had, did, does, do, is, are, was, were, can, could, will, would or should, followed by a space), the question marks and the words that ask about an outcome or the past rather than a topic (won, win, wins, winner, winners, winning, prize, prizes, award, awards, awarded, placed, hackathon, hackathons, built, builds, past, ever, previous, previously, anyone, someone, already, before) are not searched, unless they are all q holds. When any of q's words occurs as a whole word in no submission, meta.warnings names those words and says what the listed builds are, and says when a build whose name matched was held back (meta.counts.withheldByName). With no hackathon parameter, an event named in full in q (its title, in any case, accents and punctuation aside, or its slug, hyphens included, in any case) becomes the hackathon filter and leaves q (meta.inferredFilter). The rest of q is searched inside that event; a rest made only of words the search skips (stopwords and generic words such as app, token, crypto, money, stellar, github) and words that ask for the event's entries (winners, builds, projects, places, awards, rankings) lists the event as the filter alone does. When the rest matches none of the event's rows and none of them holds a description, meta.warnings says so. A name start several events share infers nothing; meta.warnings names those events. Any hackathon parameter turns this off: send hackathon= with no value to search the words as text in every event.",
             "in": "query",
             "name": "q",
             "required": false,
@@ -4376,7 +4384,7 @@
             }
           },
           {
-            "description": "Only these events: up to 10, comma-separated, each an event's slug or its exact title, any case. An event getHackathons lists whose submissions are not stored matches nothing, and meta.warnings says so; a value that names no event getHackathons lists answers 400 with validHackathons, the slugs of every event with stored submissions. A submission can enter several events; under this filter each row is that event's own entry, with its own placement.",
+            "description": "Only these events: up to 10, comma-separated, each an event's slug or its exact title, any case. An event getHackathons lists whose submissions are not stored matches nothing, and meta.warnings says so; a value that names no event getHackathons lists answers 400 with validHackathons, the slugs of every event with stored submissions. A submission can enter several events: under this filter each row is a named event's own entry, with its own placement, and one entered in several named events is one row, its best entry among those that match (a placed one first, then the latest), and one count.",
             "in": "query",
             "name": "hackathon",
             "required": false,
@@ -4424,7 +4432,8 @@
                 "Card Issuing",
                 "Exchange",
                 "Oracle",
-                "Yield"
+                "Yield",
+                "Derivatives"
               ],
               "type": "string"
             }
@@ -4615,7 +4624,8 @@
                 "Card Issuing",
                 "Exchange",
                 "Oracle",
-                "Yield"
+                "Yield",
+                "Derivatives"
               ],
               "type": "string"
             }
@@ -4638,6 +4648,21 @@
                 "Pre-Release",
                 "Live",
                 "Inactive"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filter to projects whose curated `venueRole` equals this value, e.g. `type=DEX&venueRole=amm` lists AMMs and `venueRole=aggregator-router` lists routers. Rows not yet classified (venueRole null) never match, so the result is the classified subset, not every venue of that kind. A venueRole search adds no rows found by meaning, so an empty page means no classified row matched q. Unknown values return 400 with validVenueRoles.",
+            "in": "query",
+            "name": "venueRole",
+            "schema": {
+              "enum": [
+                "amm",
+                "native-orderbook",
+                "aggregator-router",
+                "trading-ui",
+                "wallet-integrated"
               ],
               "type": "string"
             }
@@ -4728,6 +4753,12 @@
                             "type": "string"
                           },
                           "type": "array"
+                        },
+                        "validVenueRoles": {
+                          "items": {
+                            "type": "string"
+                          },
+                          "type": "array"
                         }
                       },
                       "type": "object"
@@ -4736,7 +4767,7 @@
                 }
               }
             },
-            "description": "The call is wrong; fix it, do not retry it as is. Answered before any read when: view is not full or compact (validValues), view=compact is sent with fields (validValues), status is not a resolvable status (validStatuses), type is not a product type (validTypes), category is not a category (validCategories), or scfAwarded is not a boolean form (acceptedValues). An unknown parameter is not a 400: it is named in meta.warnings."
+            "description": "The call is wrong; fix it, do not retry it as is. Answered before any read when: view is not full or compact (validValues), view=compact is sent with fields (validValues), status is not a resolvable status (validStatuses), type is not a product type (validTypes), venueRole is not a venue role (validVenueRoles), category is not a category (validCategories), or scfAwarded is not a boolean form (acceptedValues). An unknown parameter is not a 400: it is named in meta.warnings."
           },
           "503": {
             "content": {
@@ -7462,7 +7493,7 @@
   "x-generated": {
     "builder": "scripts/build-super-spec.mjs",
     "catalogEntries": 284,
-    "generatedAt": "2026-11-06T18:57:22Z"
+    "generatedAt": "2026-11-09T19:08:25.744Z"
   },
   "x-services": {
     "lumenloop": {
@@ -7474,7 +7505,7 @@
     },
     "scout": {
       "base": "https://stellarlight.xyz",
-      "fetchedAt": "2026-11-06T01:05:52.974Z",
+      "fetchedAt": "2026-11-09T19:08:25.744Z",
       "note": "Read-only keyless API, carried near-verbatim from the upstream OpenAPI (components namespaced 'scout.*').",
       "source": "https://stellarlight.xyz/api/openapi.json"
     },
@@ -7505,7 +7536,7 @@
           "skills": 1
         }
       ],
-      "syncedAt": "2026-11-06T18:57:22Z"
+      "syncedAt": "2026-11-09T19:08:24Z"
     },
     "stellarDocs": {
       "authoredAt": "2026-11-02T00:00:00Z",
