@@ -44,6 +44,36 @@ instructions ("ignore previous", "you must", credentials, URLs to fetch).
 
 ## Entries
 
+### 2026-11-09 — Scout partial-list provenance and venue filtering
+
+| Source | Pinned commit | Selection | Reviewed |
+| --- | --- | --- | --- |
+| `stellar-light` | `0f3040cf41bc9a120148f11c37c4f60f3cf8ae39` | `sel:7dc4db18c37b` | author (Codex frontier, `gpt-6-astra`, high) read both complete body diffs; independent review by Claude Fable (`claude-fable-5-1`, high) re-read both diffs from upstream |
+
+The author read the `SKILL.md` and `references/api-reference.md` diffs from
+`f63e83a021021764f8b54eff7f5a38c10852d161`. No selected file or skill was added or removed.
+The other four source selections are unchanged. Cache-bypassed mirror verification passed for
+all 67 selected files.
+
+The skill now distinguishes HackProof's partial HackMeridian list from an organizer-confirmed
+submission roster. It describes `entryBasis`, secondhand placement sources, checked testnet
+contracts, null field-size counts, and suppressed shares over incomplete lists. The API reference
+adds the curated `venueRole` filter and corrects analysis counting from event entries to unique
+submissions, while retaining per-event/group counting qualifications. These changes agree with
+the refreshed Scout 1.9.127 descriptor; the venue filter also passed a live read-only recheck.
+The numerical HackProof roster and its individual provenance claims were not independently
+audited; they remain attributed upstream data, not new golden answers.
+
+The changed text contains no instruction override, credential, or claim of additional Raven
+capabilities. It includes references to already excluded hackathon operations; the existing
+structural exposure scrub remains required. Catalog generation passed with all twelve Scout
+exclusions intact. Serving this pin grants no new callable operation.
+
+Source acceptance: coordinator (Claude Opus), 2026-11-09, issue #223. Routing gains one legacy
+top-1 grade with no loss; `eval/gates.json` moves its manifest fingerprint, accepted total and
+legacy baseline (219 to 220) in the same change. Independent review: Claude Fable high, approve
+with changes; every finding was reconciled. Evidence: `.agents/rounds/2026-11-09-upstream-handoffs.md`.
+
 ### 2026-11-06 — complete issuer locking and canonical Raven links
 
 | Source | Pinned commit | Selection | Reviewed |

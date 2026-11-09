@@ -38,7 +38,7 @@ Total findings: 104
 | sls-107 | GET /api/stablecoins has one company field, and it holds a brand name. For two issuers the brand differs from the ORG_NAME in the issuer's… | reported-upstream | 2026-11-02 | 2           |
 | sls-111 | The directory marks 24 projects with an SCF #45 award. The SCF funded-projects page lists at least 40 SCF #45 awards. Thirteen awarded…     | reported-upstream | 2026-11-02 | 1           |
 | sls-112 | The directory has no record for two first-party Stellar launches from September and October 2026                                            | reported-upstream | 2026-11-02 | 1           |
-| sls-113 | The venueRole field gives the DEX sub-type: AMM, native order book, aggregator, trading UI, or wallet-integrated. On 2026-11-02 it is null… | reported-upstream | 2026-11-02 | 1           |
+| sls-113 | The venueRole field gives the DEX sub-type: AMM, native order book, aggregator, trading UI, or wallet-integrated. On 2026-11-02 it is null… | fixed-upstream    | 2026-11-02 | 1           |
 | sls-114 | For stellar/stellar-horizon, GET /api/repos/explain returns repoMeta.kind: platform, which is correct. Its codeVerified.contractInterface…  | reported-upstream | 2026-11-02 | 1           |
 | sls-115 | scout.explainRepo selects an outdated Horizon protocol ceiling for a current-source question. The selected answer says…                     | reported-upstream | 2026-11-06 | 0           |
 
