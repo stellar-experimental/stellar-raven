@@ -18,7 +18,7 @@
       "Do NOT turn the 2026/2027 targets into guaranteed completion dates.",
       "Do NOT claim Stellar accounts were already quantum-safe by default when the plan was published."
     ],
-    "notes": "Roadmap status is volatile and must be reverified. Grade the dated distinction between planned and shipped behavior. As of 2026-11-02, CAP-0087 (ML-DSA-44/65/87 verification host functions) is in Protocol 30 \"Bell\" (stellar-core v30.0.0), with the Mainnet vote set for 2026-11-23; Mainnet still runs Protocol 29. SDF says a native post-quantum signer for classic accounts remains a future change. Do not penalize an answer that reports this later dated status, and do not require it."
+    "notes": "Grade what the June 2026 plan said at publication. Later developments are optional. As of 2026-11-10, Bell/P30 is live on Testnet with CAP-0087 ML-DSA-44/65/87 contract verification. Pubnet still runs P29 and the Bell Mainnet vote is scheduled for 2026-11-23. SDF still describes a native post-quantum signer for classic accounts as a future change. The June roadmap also leaves deprecation timing dependent on the threat. Accept a later sourced Mainnet activation."
   },
   "tags": {
     "category": "history-org-tokenomics",
@@ -32,7 +32,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-10",
     "reverifyBy": "2026-12-01",
     "sources": [
       {
@@ -82,6 +82,72 @@
         "ref": "https://coinranking.com/news/stellar-sets-november-3-testnet-vote-bell-protocol-30",
         "note": "The mainnet upgrade vote follows on November 23, 2026 at 17:00 UTC. ... Each upgrade takes effect if its validator vote passes.",
         "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan",
+        "observedAt": "2026-11-10",
+        "note": "June 9, 2026 roadmap puts ML-DSA-44/65 Soroban verification in Stage 1 during 2026, protocol opt-in migration in Stage 2 during 2027, and deprecation on a threat-dependent timeline."
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.org/blog/developers/introducing-bell-protocol-30-on-stellar",
+        "observedAt": "2026-11-10",
+        "note": "CAP-0087 is for smart contracts. Network transaction signatures remain Ed25519 and a native post-quantum signer for classic accounts is a future change."
+      },
+      {
+        "class": "B",
+        "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0087.md",
+        "observedAt": "2026-11-10",
+        "note": "Implemented for Protocol 30 with ML-DSA-44/65/87 verification host functions for contracts."
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-core/releases/tag/v30.0.0",
+        "observedAt": "2026-11-10",
+        "note": "The v30.0.0 release includes CAP-0084, CAP-0087 and CAP-0088. The release predates the Testnet and Mainnet votes."
+      },
+      {
+        "class": "C",
+        "ref": "https://horizon.stellar.org/",
+        "observedAt": "2026-11-10",
+        "note": "current_protocol_version 29, core_supported_protocol_version 30. Latest sampled Pubnet ledger 65413007 closed 2026-11-10T22:51:17Z."
+      },
+      {
+        "class": "C",
+        "ref": "https://mainnet.sorobanrpc.com",
+        "observedAt": "2026-11-10",
+        "note": "getNetwork identifies Pubnet. getLatestLedger independently reports protocolVersion 29 at ledger 65413029, 2026-11-10T22:53:07Z."
+      },
+      {
+        "class": "C",
+        "ref": "https://horizon-testnet.stellar.org/ledgers?order=desc&limit=1",
+        "observedAt": "2026-11-10",
+        "note": "Testnet ledger 5665487 closed 2026-11-10T22:51:18Z under Protocol 30."
+      },
+      {
+        "class": "F",
+        "ref": "https://soroban-testnet.stellar.org",
+        "observedAt": "2026-11-10",
+        "note": "Read-only getNetwork reports Test SDF Network ; September 2015 and Protocol 30. getLatestLedger reports Protocol 30 at ledger 5665509, 2026-11-10T22:53:08Z."
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+        "observedAt": "2026-11-10",
+        "note": "The guide lists November 3 at 17:00 UTC on Testnet and November 23 at 17:00 UTC on Mainnet. Upgrade SDKs before each date to decode CAP-0088 ledger headers."
+      },
+      {
+        "class": "C",
+        "ref": "https://status.stellar.org/api/v2/scheduled-maintenances/upcoming.json",
+        "observedAt": "2026-11-10",
+        "note": "The official operational calendar still lists the Mainnet upgrade vote for 2026-11-23T17:00:00.000Z as scheduled."
+      },
+      {
+        "class": "C",
+        "ref": "https://status.stellar.org/api/v2/scheduled-maintenances.json",
+        "observedAt": "2026-11-10",
+        "note": "The official operational calendar lists the November 3 Bell Testnet upgrade as completed."
       }
     ],
     "corroboration": [
@@ -162,32 +228,72 @@
             "note": "The mainnet upgrade vote follows on November 23, 2026 at 17:00 UTC. ... Each upgrade takes effect if its validator vote passes."
           }
         ]
+      },
+      {
+        "claim": "The June roadmap describes planned primitives and migration. As of November 10 CAP-0087 is part of Bell on Testnet, while Pubnet remains on P29 and the classic signer remains future.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan",
+            "observedAt": "2026-11-10",
+            "note": "June 9, 2026 roadmap puts ML-DSA-44/65 Soroban verification in Stage 1 during 2026, protocol opt-in migration in Stage 2 during 2027, and deprecation on a threat-dependent timeline."
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/developers/introducing-bell-protocol-30-on-stellar",
+            "observedAt": "2026-11-10",
+            "note": "CAP-0087 is for smart contracts. Network transaction signatures remain Ed25519 and a native post-quantum signer for classic accounts is a future change."
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0087.md",
+            "observedAt": "2026-11-10",
+            "note": "Implemented for Protocol 30 with ML-DSA-44/65/87 verification host functions for contracts."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-core/releases/tag/v30.0.0",
+            "observedAt": "2026-11-10",
+            "note": "The v30.0.0 release includes CAP-0084, CAP-0087 and CAP-0088. The release predates the Testnet and Mainnet votes."
+          },
+          {
+            "class": "C",
+            "ref": "https://horizon.stellar.org/",
+            "observedAt": "2026-11-10",
+            "note": "current_protocol_version 29, core_supported_protocol_version 30. Latest sampled Pubnet ledger 65413007 closed 2026-11-10T22:51:17Z."
+          },
+          {
+            "class": "F",
+            "ref": "https://soroban-testnet.stellar.org",
+            "observedAt": "2026-11-10",
+            "note": "Read-only getNetwork reports Test SDF Network ; September 2015 and Protocol 30. getLatestLedger reports Protocol 30 at ledger 5665509, 2026-11-10T22:53:08Z."
+          },
+          {
+            "class": "C",
+            "ref": "https://status.stellar.org/api/v2/scheduled-maintenances/upcoming.json",
+            "observedAt": "2026-11-10",
+            "note": "The official operational calendar still lists the Mainnet upgrade vote for 2026-11-23T17:00:00.000Z as scheduled."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch history-org-tokenomics-01)",
+      "date": "2026-11-10",
+      "by": "Codex golden-truth author lane, 2026-11-10 truth-maintenance round",
       "evidence": [
-        "[A] verifier: https://stellar.org/blog/developers/introducing-bell-protocol-30-on-stellar :: The testnet vote is on November 3, 2026 and the mainnet vote on November 23, 2026. ... CAP-87 lets Stellar smart contracts verify ML-DSA signatures. ... Network transaction signatures stay Ed25519 for now; a native post-quantum signer for classic accounts will come in a future protocol change. (observedAt 2026-11-02)",
-        "[A] verifier: https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide :: November 23, 2026, 1700 UTC—Mainnet upgrade vote. ... Adds three Soroban host functions, verify_sig_ml_dsa_44, verify_sig_ml_dsa_65, and verify_sig_ml_dsa_87 (observedAt 2026-11-02)",
-        "[B] verifier: https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0087.md :: Status: Implemented ... Protocol version: 30 ... one per standardized parameter set: ML-DSA-44, ML-DSA-65 and ML-DSA-87. (observedAt 2026-11-02)",
-        "[B] verifier: https://github.com/stellar/stellar-core/releases/tag/v30.0.0 :: This release bumps the protocol to version 30, which includes CAP-0084 ..., CAP-0087 (Host functions for ML-DSA signature verification) and CAP-0088 (observedAt 2026-11-02)",
-        "[F] verifier: https://horizon.stellar.org/ :: current_protocol_version 29; core_version stellar-core 30.0.0; history_latest_ledger_closed_at 2026-11-02T16:27:44Z (observedAt 2026-11-02)",
-        "[D] verifier: https://coinranking.com/news/stellar-sets-november-3-testnet-vote-bell-protocol-30 :: The mainnet upgrade vote follows on November 23, 2026 at 17:00 UTC. ... Each upgrade takes effect if its validator vote passes. (observedAt 2026-11-02)",
-        "[A] golden.keyFacts[0] (confirmed): https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan :: page metadata \"date\":\"2026-06-09\" (observedAt 2026-11-02)",
-        "[D] golden.keyFacts[0] (confirmed): https://decrypt.co/370570/quantum-clock-ticking-bitcoin-crypto-how-stellar-preparing :: Decrypt 2026-06-09: 'The Stellar Development Foundation announced a three-stage roadmap' (via Lumenloop index) (observedAt 2026-11-02)",
-        "[C] golden.keyFacts[0] (confirmed): lumenloop.search_content_semantic via Raven :: Introducing the Quantum Preparedness Plan, 2026-06-09 (observedAt 2026-11-02)",
-        "[A] golden.keyFacts[1..2] (confirmed): https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan :: \"Stage 1—Building blocks and contract accounts (2026). Add post-quantum signature verification to Soroban as native host functions, supporting ML-DSA-44 and ML-DSA-65\" (observedAt 2026-11-02)",
-        "[B] golden.keyFacts[1..2] (confirmed): https://github.com/stellar/stellar-protocol/blob/master/core/cap-0087.md :: \"Supporting ML-DSA verification as host functions allows Soroban custom accounts ... to authenticate with post-quantum signatures\" (observedAt 2026-11-02)",
-        "[A] golden.keyFacts[3]/golden.answer (confirmed): https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan :: \"The piece missing today is the quantum-safe signer type itself, along with the protocol primitives required to verify quantum-safe signatures efficiently.\"; \"By the end of 2027 ... every Stellar account is expected to be able to add a quantum-safe signer\" (observedAt 2026-11-02)",
-        "[B] golden.notes (roadmap status) (confirmed-as-of): https://github.com/stellar/stellar-protocol/blob/master/core/cap-0087.md :: \"Status: Implemented ... Protocol version: 30\"; README row \"CAP-0087 | 30 | Host functions for ML-DSA signature verification | Jay Geng | Implemented\" (observedAt 2026-11-02)",
-        "[A] golden.notes (roadmap status) (confirmed-as-of): https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide :: (dated 2026-10-20) \"November 3, 2026, 1700 UTC —Testnet upgrade vote. November 23, 2026, 1700 UTC —Mainnet upgrade vote.\"; \"Network-level transaction signatures remain Ed25519.\" (observedAt 2026-11-02)",
-        "[B] golden.notes (roadmap status) (confirmed-as-of): https://github.com/stellar/stellar-core/releases/tag/v30.0.0 :: \"This release bumps the protocol to version 30, which includes CAP-0084 ..., CAP-0087 (Host functions for ML-DSA signature verification) and CAP-0088\" (observedAt 2026-11-02)",
-        "[F] golden.notes (roadmap status) (confirmed-as-of): https://horizon.stellar.org/ :: current_protocol_version 29; core_supported_protocol_version 30; stellar-core 30.0.0 (observedAt 2026-11-02)",
-        "[D] golden.notes (roadmap status) (confirmed-as-of): https://coinburn.com/news/stellar-protocol-30-ledger-decoder-upgrade :: \"Those dates describe planned votes, not completed activations\" (observedAt 2026-11-02)",
-        "[A] golden.avoid[0..2] (contradicted): https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan :: \"The piece missing today is the quantum-safe signer type itself\"; \"is expected to\" (observedAt 2026-11-02)",
-        "Sibling sweep 2026-11-02: q-pc-quantum-preparedness-dormant, q-zk-host-functions-status checked; consistent (q-zk-host-functions-status says CAP-0087 is Protocol 30, not live; q-pc-quantum-preparedness-dormant judge-facing text does not state CAP-0087 status, only its judge-blind truth notes still say Draft).",
-        "reverifyBy 2026-12-01 is event-tied: the dated note says Mainnet still runs Protocol 29, which changes if the 2026-11-23 Mainnet vote passes."
+        "https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan",
+        "https://stellar.org/blog/developers/introducing-bell-protocol-30-on-stellar",
+        "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0087.md",
+        "https://github.com/stellar/stellar-core/releases/tag/v30.0.0",
+        "https://horizon.stellar.org/",
+        "https://mainnet.sorobanrpc.com",
+        "https://horizon-testnet.stellar.org/ledgers?order=desc&limit=1",
+        "https://soroban-testnet.stellar.org",
+        "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+        "https://status.stellar.org/api/v2/scheduled-maintenances/upcoming.json",
+        "https://status.stellar.org/api/v2/scheduled-maintenances.json",
+        "Sibling sweep: Protocol history, upgrade timing, current Pubnet version, P27/CAP-0071 and P23 settings cases agree. q-pc-quantum-preparedness-dormant, q-infra-testnet-vs-futurenet, q-zk-host-functions-status, q-pc-address-types-strkey and SDK cases keep explicitly dated earlier observations. q-protocol-ledger-header-fields and q-protocol-ledger-close-time preserve CAP-0088 semantics."
       ],
       "rootCause": [
         "freshness-drift"

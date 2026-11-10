@@ -78,14 +78,22 @@ issues do not need reminders.
   green checks alone do not close findings. The author-owned protocol PR2059 is behind but
   green and awaiting review; respond to substantive review without a keepalive rebase.
 - Docs continuation (2026-11-09): sd-091 and sd-098 are retired with ten other deployed fixes
-  ([ledger](rounds/2026-11-09-upstream-handoffs.md)). sd-101 ([stellar-docs#3079](https://github.com/stellar/stellar-docs/issues/3079)) carries the
-  remaining complete WebAuthn example compile failure. The maintainer triage-bot PR
-  [3081](https://github.com/stellar/stellar-docs/pull/3081) was open and awaiting review on
-  2026-11-09; recheck the live check-auth tutorial after it deploys. sd-100 retired on 2026-11-09
+  ([ledger](rounds/2026-11-09-upstream-handoffs.md)). sd-101 retired on 2026-11-10 after
+  PR3081 deployed; its review found two separate defects on the same page, filed as sd-103
+  ([stellar-docs#3097](https://github.com/stellar/stellar-docs/issues/3097), Tutorial 1 does not
+  build) and sd-104 ([stellar-docs#3098](https://github.com/stellar/stellar-docs/issues/3098),
+  admin count) ([ledger](rounds/2026-11-10-truth-maintenance.md)). Recheck by compiling and testing
+  the served fences when a fix deploys. sd-100 retired on 2026-11-09
   ([sweep](rounds/2026-11-09-improvements-sweep.md)). sd-095 and sd-097 were retired earlier; see the
   [resolution ledger](rounds/2026-11-06-playground-final-resolution.md).
   The [continuation table](rounds/2026-11-06-remaining-sweep/docs.md) records all current
   review/conflict blockers, including draft2752 and the separate pending generated-skill PR3069.
+- Software Versions (not filed, 2026-11-10): Protocol 30 has been live on Testnet since November 3
+  (Horizon and RPC report 30), but https://developers.stellar.org/docs/networks/software-versions.md
+  lists nothing above Protocol 29. Upstream normally adds both sections around Mainnet activation
+  (P29: Mainnet October 1, added October 7). After the November 23 Mainnet vote, recheck on or after
+  December 1; if the page still lacks Protocol 30, file it as the class of resolved sd-008
+  ([ledger](rounds/2026-11-10-truth-maintenance.md)).
 - Lumenloop ll-022/023/024: the original records did not retain a reproducible wrong milestone,
   preview-boundary omission or stale venue row. The current checks do not prove those content
   errors. Before any future closure or renewed claim, obtain the exact original/corrected record

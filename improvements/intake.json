@@ -247,10 +247,6 @@
       "repo": "stellar/stellar-docs",
       "reason": "restore-contract-js.mdx and state-archival.mdx are source content owned by stellar/stellar-docs."
     },
-    "cs-009": {
-      "repo": "Inferara/soroban-security-portal",
-      "reason": "Inferara/soroban-security-portal is the public, issue-enabled repository for stellarsecurityportal.com (its GitHub homepage). The portal owns the audit-report dataset that Stellar Light/Scout mirrors."
-    },
     "cs-010": {
       "repo": "cloudflare/agents",
       "reason": "The agents package metadata (npm view agents@0.32.0 repository bugs) names cloudflare/agents as its issue owner; createAI lives in packages/agents/src/models."

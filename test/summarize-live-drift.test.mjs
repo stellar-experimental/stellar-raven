@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { classifyDocsBackend, classifyOpenapiOperations, diffDocsTitles, summarizeDocsAnchors } from "../scripts/summarize-live-drift.mjs";
+import { classifyDocsBackend, classifyOpenapiOperations, diffDocsTitles, readHeadJson, summarizeDocsAnchors } from "../scripts/summarize-live-drift.mjs";
 
 const spec = (operation) => ({ paths: { "/api/example": { get: operation } } });
 
@@ -86,5 +86,16 @@ describe("live drift Stellar Docs classification", () => {
     const oldInv = { titles: [{ path: "/docs/a", title: "A" }, { path: "/docs/b", title: "B" }] };
     const nextInv = { titles: [{ path: "/docs/a", title: "A" }, { path: "/docs/b", title: "B2" }] };
     expect(diffDocsTitles(oldInv, nextInv)).toEqual({ added: ["/docs/b B2"], removed: ["/docs/b B"] });
+  });
+});
+
+describe("live drift HEAD snapshot reads", () => {
+  it("reads an inventory larger than the 1 MiB exec buffer default", () => {
+    const inv = readHeadJson("inventory/stellar-light.json");
+    expect(inv?.openapi?.paths).toBeTruthy();
+  });
+
+  it("returns null only for a path absent at HEAD", () => {
+    expect(readHeadJson("inventory/does-not-exist.json")).toBeNull();
   });
 });
