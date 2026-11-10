@@ -508,11 +508,11 @@
           "q-token-initial-supply-distribution"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-09",
+        "lastChecked": "2026-11-10",
         "reSwept": {
-          "date": "2026-11-09",
+          "date": "2026-11-10",
           "verdict": "consistent",
-          "reason": "2026-11-09 improvements sweep: q-protocol-ledger-close-time changes only its USDT0 launch-page sentence, which is now corrected to about 5 seconds (sd-100 resolved through PR3080). Its dated five-second cadence, 5000-ms configurable target and closeTime semantics are unchanged. q-asset-path-payment-ops still says roughly one ledger (~5 s), and the timestamping member still separates consensus close time from wall-clock proof. Fees, reserves and supply members are unchanged; no contradiction."
+          "reason": "2026-11-10 owner decision: q-protocol-ledger-close-time key fact 1 now accepts 5–7 seconds only as the pre-Protocol-28 cadence (before 2026-09-16); its notes say a 5–7 presented as current or undated misses that key fact as a minor error, and the as-of date moves to 2026-11-10. The answer, the 5000-ms target, closeTime semantics and avoid are unchanged. q-asset-path-payment-ops still says roughly one ledger (~5 s); fee, reserve, supply and timestamping members are untouched; no contradiction."
         },
         "note": "Corrected 2026-07-10: base fee 100 stroops, 1 XLM = 10,000,000 stroops, base reserve 0.5 XLM, empty unsponsored account minimum 2 reserves = 1 XLM, and fees are separate. q-edge-1xlm-activation-fee previously mislabeled the 1 XLM minimum as the base reserve and is now overridden. Other repeated constants remain as previously reviewed; sponsorship terms qualify the simple minimum-balance formula. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
@@ -527,7 +527,7 @@
           "q-pc-practical-fee-setting": "d0b29056088637d617a9652252073981917d48c495c7ba92e5735c9a5e046615",
           "q-pc-sponsored-reserves": "55d6071f72fd619a329e6e7310d9f4326598f87727f934259468abf382642666",
           "q-protocol-base-reserve-min-balance": "428c382622a762eab1f1c56e4f49468668b8802d373903285833360742c5e086",
-          "q-protocol-ledger-close-time": "383a63a707ae98987f0015d3d7eaf063750d70b4a7f873b421de4ae656a45827",
+          "q-protocol-ledger-close-time": "b8775b1d7f6131082be9c9d75da538b31c1c6d6b51e14088f2870f838d085e0a",
           "q-sor-doc-timestamping-manage-data": "1303e33b3457de47dcecd5fa9b8991f3cc6f32d41bb78a5e06ae52d9f2a3c6b6",
           "q-soroban-simulate-resource-fee": "ef190edb519c0f46f3977048ea1cc7d0b223165768258aa40250f9c3407ca091",
           "q-token-initial-supply-distribution": "d21261aee65d659776e78342377e944fefad8121a445914a8ab7b7d2a4adce7c"
@@ -1651,16 +1651,16 @@
           "q-protocol-max-tx-set-size"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-09",
-        "note": "As of 2026-11-02, Mainnet closes a ledger about every 5 seconds (target 5000 ms; 5.0-second mean since Protocol 28 on 2026-09-16); official Docs still say every 5–7 seconds, which matched samples before Protocol 28. As observed 2026-08-21, current Docs and live Mainnet configuration report maxTxSetSize 1000 classic operations and ledgerMaxTxCount 2000 smart-contract transactions. The v27 XDR schema defines the separate ledgerMaxTxCount setting but does not encode its current value. All claims are dated and configuration-scoped.",
+        "lastChecked": "2026-11-10",
+        "note": "As of 2026-11-02, Mainnet closes a ledger about every 5 seconds (target 5000 ms; 5.0-second mean since Protocol 28 on 2026-09-16); since 2026-11-09 the official Docs say about 5 seconds; the earlier 5–7-second wording matched samples before Protocol 28. As observed 2026-08-21, current Docs and live Mainnet configuration report maxTxSetSize 1000 classic operations and ledgerMaxTxCount 2000 smart-contract transactions. The v27 XDR schema defines the separate ledgerMaxTxCount setting but does not encode its current value. All claims are dated and configuration-scoped.",
         "memberContentSha256": {
-          "q-protocol-ledger-close-time": "383a63a707ae98987f0015d3d7eaf063750d70b4a7f873b421de4ae656a45827",
+          "q-protocol-ledger-close-time": "b8775b1d7f6131082be9c9d75da538b31c1c6d6b51e14088f2870f838d085e0a",
           "q-protocol-max-tx-set-size": "d0a1f799c41a8be3650cb62cac3edbff4a78f6483a4d75eaed735d809a50e60f"
         },
         "reSwept": {
-          "date": "2026-11-09",
+          "date": "2026-11-10",
           "verdict": "consistent",
-          "reason": "2026-11-09 improvements sweep: as of 2026-11-09 no live Docs page states 5–7 seconds. Stack and Validators say about 5 seconds, and the USDT0 launch page was corrected the same day (sd-100 resolved). This supersedes the dated November 2 statement in the note and the earlier handoff reason about an sd-100 residual. q-protocol-max-tx-set-size keeps its separately dated classic and contract capacity observations; no contradiction."
+          "reason": "2026-11-10 owner decision: q-protocol-ledger-close-time accepts 5–7 seconds only with a pre-Protocol-28 date; live Docs say about 5 seconds and a 2026-11-10 Mainnet sample was 199 five-second deltas. The cluster note now says the Docs changed on 2026-11-09. q-protocol-max-tx-set-size makes no cadence claim; no contradiction."
         }
       },
       {
