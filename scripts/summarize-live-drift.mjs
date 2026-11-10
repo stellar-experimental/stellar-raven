@@ -23,6 +23,8 @@ function git(args, options = {}) {
   return execFileSync("git", args, {
     cwd: ROOT,
     encoding: "utf8",
+    // Inventory snapshots exceed Node's 1 MiB default (stellar-light.json is over 1 MB).
+    maxBuffer: 256 * 1024 * 1024,
     stdio: ["ignore", "pipe", options.ignoreError ? "ignore" : "pipe"]
   });
 }
@@ -31,12 +33,15 @@ function readJson(path) {
   return JSON.parse(readFileSync(join(ROOT, path), "utf8"));
 }
 
-function readHeadJson(path) {
+// Returns null only when the path is absent at HEAD; any other failure throws so a
+// read error cannot masquerade as a new inventory file.
+export function readHeadJson(path) {
   try {
-    return JSON.parse(git(["show", `HEAD:${path}`], { ignoreError: true }));
+    git(["cat-file", "-e", `HEAD:${path}`], { ignoreError: true });
   } catch {
     return null;
   }
+  return JSON.parse(git(["show", `HEAD:${path}`]));
 }
 
 function changedFiles(paths) {

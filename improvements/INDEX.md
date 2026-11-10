@@ -53,8 +53,9 @@ Total findings: 83
 | sd-077 | Two stellar.org pages describe Marketing Grants eligibility differently for a project that has not launched                                 | verified          | 2026-11-02 | 2           |
 | sd-081 | The contract-restoration example on two docs pages does not parse and cannot build a valid restoration transaction. getWasmLedgerKey has…   | reported-upstream | 2026-11-02 | 2           |
 | sd-096 | Three invented source paths redirect to pages that do not exist. The original old-page premise was incorrect; the maintainer confirmed…     | declined-upstream | 2026-11-03 | 1           |
-| sd-101 | The WebAuthn tutorial's “Complete code” contract omits definitions needed for compilation. It references ADMIN_SIGNER_COUNT,…               | reported-upstream | 2026-11-09 | 1           |
 | sd-102 | RPC backfill checks existing local ledger history for internal sequence gaps before fetching older history. A gap returns db verify: gap…   | declined-upstream | 2026-11-09 | 0           |
+| sd-103 | The "Tutorial 1: time based restriction on token transfers" complete code does not compile with soroban-sdk 29.0.1. The complete contract…  | reported-upstream | 2026-11-10 | 0           |
+| sd-104 | The WebAuthn smart wallet in "Tutorial 2: implementing a smart wallet (WebAuthn)" can lose its last admin. set_signer increments…           | reported-upstream | 2026-11-10 | 0           |
 
 ## lumenloop
 
@@ -114,5 +115,4 @@ Total findings: 83
 | cs-006 | The SEP-1 stellar.toml that Paxos publishes for its Stellar assets describes the issuer as "Paxos Trust Company LLC". Paxos converted that… | verified          | 2026-11-02 | 2           |
 | cs-007 | The trionlabs/stellar-8004 README expands MPP as "Managed Payment Protocol". The repository's own registration UI and mppx client use…      | reported-upstream | 2026-11-02 | 2           |
 | cs-008 | CAP-0046-06 (Stellar Asset Contract, Status Final) says a SAC deployment uses a ContractExecutable of type CONTRACT_EXECUTABLE_TOKEN. The…  | declined-upstream | 2026-11-02 | 1           |
-| cs-009 | The Stellar Security Portal lists 2 audit reports for the OpenZeppelin Stellar Contracts library: 0.1.0 and v0.3.0-rc.2. The…               | reported-upstream | 2026-11-02 | 2           |
 | cs-010 | createAI from agents/models/ai-sdk drops Anthropic provider options for string catalog models. A call to ai("anthropic/claude-fable-5")…    | reported-upstream | 2026-11-03 | 2           |

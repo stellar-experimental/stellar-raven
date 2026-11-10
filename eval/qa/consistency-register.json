@@ -145,19 +145,19 @@
           "q-tool-rust-soroban-sdk"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-03",
+        "lastChecked": "2026-11-10",
         "reSwept": {
-          "date": "2026-11-03",
-          "reason": "V4 re-sweep on 2026-11-03. Key-fact dedup only. Member hash eb86f91504c5386f611da3603ac60b746b59806367dbba9b2a7142ef7404619b. Notes, values, dates, and the Bell trigger stayed unchanged.",
+          "date": "2026-11-10",
+          "reason": "Independent re-sweep, .agents/rounds/2026-11-10-truth-maintenance.md. The three changed members (q-edge-fresh-latest-protocol-version, q-pc-protocol-upgrade-timing, q-protocol-version-history-list) changed only the dated tail. On 2026-11-10 Mainnet reported Protocol 29, Testnet reported Bell/Protocol 30 after the 2026-11-03 upgrade, and the Mainnet vote stayed scheduled for 2026-11-23 17:00 UTC. The P19–P29 dates and features in the history case are unchanged and match the thirteen unchanged members: P20 Phase 0 on 2024-02-20, P22 on 2024-12-05, P23 on 2025-09-03, P25 on 2026-01-22, P27 at ledger 63386819 on 2026-07-08, P28 on 2026-09-16, P29 on 2026-10-01. q-tool-rust-soroban-sdk's dated v29.0.1 stable and v30.0.0-rc.1 pre-release still match crates.io. No contradiction.",
           "verdict": "consistent"
         },
         "note": "Historical 2026-07-03 snapshot only: the P17-P26 mappings were consistent, and P27 was then queued for the 2026-07-08 Mainnet vote. SUPERSEDED by the 2026-07-09 post-vote sweep below: P27/Zipper activated at ledger 63386819 on 2026-07-08T17:00:10Z, so no current grader may use this historical pending wording. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed. Updated 2026-11-02: members agree that P28/Adapter activated at ledger 64458446 on 2026-09-16 and P29 (no new CAPs) at ledger 64717645 on 2026-10-01; Bell/P30 (CAP-0084/0087/0088) votes are scheduled for 2026-11-03 (Testnet) and 2026-11-23 (Mainnet), not activated. P23 initialized ledgerMaxDependentTxClusters at 1; SLP-0004 set 2 on 2026-01-29 and SLP-0007 set 3 on 2026-10-22.",
         "memberContentSha256": {
           "q-comp-clawback-cap0035": "fc0447bce6e5d995d407373daa964d6447d5e1785ba98a1d31895d2ddba7e77d",
-          "q-edge-fresh-latest-protocol-version": "eb86f91504c5386f611da3603ac60b746b59806367dbba9b2a7142ef7404619b",
+          "q-edge-fresh-latest-protocol-version": "c0f445bb773bcd63d49b63abb185db42756572d1fc294e5bd783aa0ef94dff21",
           "q-hist-soroban-launch-protocol20": "607c8d4ef8e2605f5cab2bb3de04338029e4e3d1409ab42dac4f21d7742d294b",
           "q-infra-secp256r1-passkeys": "84974f242cf37ff410c87c6cb84315b98bafe01d9403a706b96548341a7a7b6f",
-          "q-pc-protocol-upgrade-timing": "8f80d3cc015678f2174309fa84cc74adca15b0b5ef07e86e32e4bd05a8d049ad",
+          "q-pc-protocol-upgrade-timing": "b7a4b8918c66b7ab9c61f396fd9979140a500ff14d6f8d06ef489c95463b34ef",
           "q-protocol-23-whisk-caps": "9e5e48b2dec70743bd49557b294db491ac32a0776f1f64cd91f54aed13971057",
           "q-protocol-24-whisk-incident": "d82dde59240f2f29304d51647f0b1ce47c7278ce931789c7d678bc98d379aa8c",
           "q-protocol-27-cap-0071": "9ed87a2ed3cb1cd8a7668edc7b16d9eb030d80a300b28992edd5565385e50dd7",
@@ -165,7 +165,7 @@
           "q-protocol-bls12-381-cap59": "2f4041263cdba995e966ef8dbbed03261d48e86d9aee31d9e495fe1679db4eda",
           "q-protocol-bn254-poseidon-xray": "ee9a9247f02c80e1a134f681726ab498a0040b5d68b3230f2aaa34e77b649300",
           "q-protocol-parallel-execution": "5a334961610d0deeeeda4eb29fc9a11613be0a836cb3b3772e5ac2042fd6e869",
-          "q-protocol-version-history-list": "dc6f6b4c6d4ad6d0f06da392e6ccc9e91454ae970ab32453e57bfa83cb072947",
+          "q-protocol-version-history-list": "a886ae6729b22370d868aab684621a7e4e03f7df841a6e7a333fed71048adb22",
           "q-soroban-auth-delegation-p27": "d85f4b38bdfdf5c012938a336cc22db45f98073b5b27eb51ea15400616c9a750",
           "q-soroban-constructor-lifecycle": "798e2a756125c45237bfb757cf8fc9f241341a32e53be7d56ecba91bea614d82",
           "q-tool-rust-soroban-sdk": "76dae54d79affebb15133eebc36e69fd6d32a132c7aed8fa5759f5631a6926d4"
@@ -306,10 +306,10 @@
           "q-scf-vs-sdf-enterprise-fund"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-06",
+        "lastChecked": "2026-11-10",
         "reSwept": {
-          "date": "2026-11-06",
-          "reason": "Only the funding finding pointer changed to an immutable snapshot after the approved funding-delta reconciliation; amounts and denominators are unchanged.",
+          "date": "2026-11-10",
+          "reason": "Independent re-sweep, .agents/rounds/2026-11-10-truth-maintenance.md. Three members changed. q-scf-current-round reports no round in Submission on 2026-11-10 with SCF #46 in Initial Review after 2026-11-09. q-scf-open-rfps and q-scf-rfp-tooling report no open Q4 brief and keep the interest-form-then-invitation path, which matches q-scf-how-to-apply and q-scf-vs-sdf-enterprise-fund. None of the three states a cap, tier, or total. The fourteen unchanged members carry program mechanics only and no SCF round, phase, or RFP roster claim. No contradiction.",
           "verdict": "consistent"
         },
         "note": "Historical 2026-07-03 snapshot: Build/Instawards/Public Goods/Audit Bank/Growth Hack and SDF-vs-SCF distinctions were consistent. SUPERSEDED in part by the 2026-07-09 corpus-health sweep: the earlier cluster omitted the Liquidity Award case while its absorbed award-tier sibling repeated the false 'amount undisclosed' claim. Current official rules publish $50K in XLM base plus an optional additional $50K supplemental award, up to $100K total. Funding-v2 also supersedes the old ~$19.97M/~223 analytics snapshot; current grading remains dated/source/count-basis-gated.",
@@ -319,14 +319,14 @@
           "q-scf-ambassador-program": "ec263946d7849d4032f7cf158e5729097c3c7afff1cf9687857736645472daac",
           "q-scf-audit-bank": "9806d54952eaf80c0b93a8fcdbb4da2f89b9978cf54a86966d496d7a3e104625",
           "q-scf-build-award-cap": "da398762082f13589fd790ff5e4518e2b988221e2dc9d2ce8f56f9d576a67f6e",
-          "q-scf-current-round": "cb2c10d2a8a6f19861ea56c1ba229e2cbea05cf00ec92afe2d121a56696e2240",
+          "q-scf-current-round": "931a7dc6bd296c556ec3f542102614a2ef605a4af4b7fea64d4dd49b7e145de0",
           "q-scf-hackathons-active": "24787b0351b84c216517ac3f5eb964e4178c09338a717f3f1e613168ceec2308",
           "q-scf-how-to-apply": "b46a5ef6c46fd346b78a48ee2e59be1e99ab500beaf5fe4dd212d67d225001b7",
           "q-scf-instawards": "8303a8051c776609538eaf34ae6806d41b0362e8dcf8b2ac3214e925469dc03b",
           "q-scf-nqg-voting": "92b0aa8a0fa7c9127463da7ced369345edf0b55c8207c8481a39fe2867a2bc54",
-          "q-scf-open-rfps": "6eabfc335e0969db9cf945bd1f25229665dca19f8b19cbd47b3b920d168a1c0e",
+          "q-scf-open-rfps": "a929140caaa76f302471433c6be1155a0b790b751dcb7c6558cd1c9a6fc1a4b1",
           "q-scf-regional-india": "86e9012d0f02dabcd7bf69ed54d1039b751d9c21439a127a2604cb9f511db349",
-          "q-scf-rfp-tooling": "4d5e3891ba78550312e7a4305897a46ed5b281f7a848c3d204dbfcfbe437f189",
+          "q-scf-rfp-tooling": "fba6bba4e7d5b01cc136eb2ac2beb3b412727592c89041d748aab8314c72dc61",
           "q-scf-sdf-marketing-grant": "cb01d1c9e8f92466066902af59c0bb008e42f7de21504f2f9ce8bab61885e6f5",
           "q-scf-total-distributed": "80080f126248fa8565ca203082fb3c47707658909bf51a27696ce06cfba43071",
           "q-scf-v7-changes": "e3c6dfa0b7152e11197d092a480a85b1a35a2c3baa75ab874b00302eb8a82036",
@@ -717,17 +717,17 @@
           "q-tool-rust-soroban-sdk"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-10",
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): No current member note carries the sd-008 older-copy Software Versions caution. q-pc-protocol-upgrade-timing and q-protocol-27-cap-0071 dropped it, as the note says. All four members agree on P27 at ledger 63386819 (2026-07-08), P28 at 64458446 (2026-09-16), P29 at 64717645 (2026-10-01), Bell/P30 votes scheduled for 2026-11-03 and 2026-11-23, and soroban-sdk v29.0.1 on mainnet P29.",
+          "date": "2026-11-10",
+          "reason": "Independent re-sweep, .agents/rounds/2026-11-10-truth-maintenance.md. q-pc-protocol-upgrade-timing now reports Bell live on Testnet and the Mainnet vote on 2026-11-23, with SDK deadlines before 2026-11-03 (Testnet) and 2026-11-23 (Mainnet) from the Bell guide. q-protocol-version-history-list carries the same tail. q-protocol-27-cap-0071 still dates P28 and P29 and accepts a later P30 report. q-tool-rust-soroban-sdk's dated v30.0.0-rc.1 pre-release agrees with the guide's \"stable release to follow before the Mainnet vote\". No member carries the retired Software Versions caution. No contradiction.",
           "verdict": "consistent"
         },
         "note": "No member carries the older-copy Software Versions caution tied to improvements/resolved.json entry sd-008 (stellar-docs PR #2743 merged; receipt resolved 2026-08-28). q-pc-protocol-upgrade-timing, q-protocol-27-cap-0071, and q-edge-fresh-latest-protocol-version removed their copies on 2026-11-02 because the trigger expired. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
-          "q-pc-protocol-upgrade-timing": "8f80d3cc015678f2174309fa84cc74adca15b0b5ef07e86e32e4bd05a8d049ad",
+          "q-pc-protocol-upgrade-timing": "b7a4b8918c66b7ab9c61f396fd9979140a500ff14d6f8d06ef489c95463b34ef",
           "q-protocol-27-cap-0071": "9ed87a2ed3cb1cd8a7668edc7b16d9eb030d80a300b28992edd5565385e50dd7",
-          "q-protocol-version-history-list": "dc6f6b4c6d4ad6d0f06da392e6ccc9e91454ae970ab32453e57bfa83cb072947",
+          "q-protocol-version-history-list": "a886ae6729b22370d868aab684621a7e4e03f7df841a6e7a333fed71048adb22",
           "q-tool-rust-soroban-sdk": "76dae54d79affebb15133eebc36e69fd6d32a132c7aed8fa5759f5631a6926d4"
         }
       },
@@ -744,19 +744,19 @@
           "q-tool-rust-soroban-sdk"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-03",
+        "lastChecked": "2026-11-10",
         "reSwept": {
-          "date": "2026-11-03",
-          "reason": "V4 re-sweep on 2026-11-03. Key-fact dedup only. Member hash eb86f91504c5386f611da3603ac60b746b59806367dbba9b2a7142ef7404619b. Notes, values, dates, and the Bell trigger stayed unchanged.",
+          "date": "2026-11-10",
+          "reason": "Independent re-sweep, .agents/rounds/2026-11-10-truth-maintenance.md. P27 activation at ledger 63386819 on 2026-07-08 and CAP-0071 semantics are unchanged in all seven members. The three changed members agree on the tail. On 2026-11-10 Mainnet reported Protocol 29, Testnet reported Bell/Protocol 30 after the 2026-11-03 upgrade, and the Mainnet vote stayed scheduled for 2026-11-23 17:00 UTC. q-edge-fresh-latest-protocol-version stays behavior-gated, q-protocol-scp-consensus-algorithm carries no activation claim, and q-tool-rust-soroban-sdk keeps its dated 2026-11-02 SDK versions. The cluster note already records the 2026-11-10 state. No contradiction.",
           "verdict": "consistent"
         },
-        "note": "Post-override truth is consistent: P27/Zipper activated on Mainnet at ledger 63386819 on 2026-07-08T17:00:10Z, and its CAP-0071 authentication delegation/address-bound credentials remain in effect. As of 2026-11-02, P28/Adapter (ledger 64458446, 2026-09-16) and P29 (ledger 64717645, 2026-10-01, no new CAPs) followed, so Mainnet runs P29; Bell/P30 votes are scheduled (Testnet 2026-11-03, Mainnet 2026-11-23), not live. As of 2026-11-02 the latest stable soroban-sdk is v29.0.1 and v30.0.0-rc.1 is a pre-release. The edge latest-version case remains behavior-gated rather than number-gated, and the SCP consensus case never carried an activation claim.",
+        "note": "Post-override truth is consistent: P27/Zipper activated on Mainnet at ledger 63386819 on 2026-07-08T17:00:10Z, and its CAP-0071 authentication delegation/address-bound credentials remain in effect. P28/Adapter (ledger 64458446, 2026-09-16) and P29 (ledger 64717645, 2026-10-01, no new CAPs) followed. On 2026-11-10, Mainnet was on P29 and Testnet was on Bell/P30 following the November 3 upgrade. The Mainnet vote was scheduled for 2026-11-23 at 17:00 UTC. As of 2026-11-02 the latest stable soroban-sdk is v29.0.1 and v30.0.0-rc.1 is a pre-release. The edge latest-version case remains behavior-gated rather than number-gated, and the SCP consensus case never carried an activation claim.",
         "memberContentSha256": {
-          "q-edge-fresh-latest-protocol-version": "eb86f91504c5386f611da3603ac60b746b59806367dbba9b2a7142ef7404619b",
-          "q-pc-protocol-upgrade-timing": "8f80d3cc015678f2174309fa84cc74adca15b0b5ef07e86e32e4bd05a8d049ad",
+          "q-edge-fresh-latest-protocol-version": "c0f445bb773bcd63d49b63abb185db42756572d1fc294e5bd783aa0ef94dff21",
+          "q-pc-protocol-upgrade-timing": "b7a4b8918c66b7ab9c61f396fd9979140a500ff14d6f8d06ef489c95463b34ef",
           "q-protocol-27-cap-0071": "9ed87a2ed3cb1cd8a7668edc7b16d9eb030d80a300b28992edd5565385e50dd7",
           "q-protocol-scp-consensus-algorithm": "ba760d5bb7ac504e53db81c2d209ecdec1994d2991aaf5cc5ec7d4bfee91c45d",
-          "q-protocol-version-history-list": "dc6f6b4c6d4ad6d0f06da392e6ccc9e91454ae970ab32453e57bfa83cb072947",
+          "q-protocol-version-history-list": "a886ae6729b22370d868aab684621a7e4e03f7df841a6e7a333fed71048adb22",
           "q-soroban-auth-delegation-p27": "d85f4b38bdfdf5c012938a336cc22db45f98073b5b27eb51ea15400616c9a750",
           "q-tool-rust-soroban-sdk": "76dae54d79affebb15133eebc36e69fd6d32a132c7aed8fa5759f5631a6926d4"
         }
@@ -789,15 +789,15 @@
           "q-scf-current-round"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-06",
+        "lastChecked": "2026-11-10",
         "note": "Current-round facts stay in q-scf-current-round; the v7 centralization case now contains only payment-term and network-authority claims.",
         "memberContentSha256": {
           "q-edge-scf-v7-centralization-myths": "706a148bbad751ef83b87c21c135df26b8f1e99717fdc41c8582ea438ba55efe",
-          "q-scf-current-round": "cb2c10d2a8a6f19861ea56c1ba229e2cbea05cf00ec92afe2d121a56696e2240"
+          "q-scf-current-round": "931a7dc6bd296c556ec3f542102614a2ef605a4af4b7fea64d4dd49b7e145de0"
         },
         "reSwept": {
-          "date": "2026-11-06",
-          "reason": "Fresh round verification preserves round 46 Submission/November 9; v7 network-authority claims do not change. Source matrices and independent review: .agents/rounds/2026-11-05-truth-maintenance/.",
+          "date": "2026-11-10",
+          "reason": "Independent re-sweep, .agents/rounds/2026-11-10-truth-maintenance.md. q-scf-current-round now reports no Build Award round in Submission on 2026-11-10, with SCF #46 in Initial Review after its 2026-11-09 deadline. q-edge-scf-v7-centralization-myths still carries only payment-term and network-authority claims and no round, phase, or deadline. No contradiction.",
           "verdict": "consistent"
         }
       },
@@ -855,18 +855,18 @@
           "q-scf-open-rfps"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-09",
+        "lastChecked": "2026-11-10",
         "reSwept": {
-          "date": "2026-11-09",
-          "verdict": "consistent",
-          "reason": "Phoenix now explicitly dates the old Scout aggregation wording and adds a November 9 check against operator API venues and v3 types. It continues to distinguish corpus statements, published API venue scope and mere code presence. Reflector's dated deployment evidence, SCF category reconstruction basis and official-versus-Scout RFP roster checks are unchanged; no member treats a source-scoped observation as timeless world truth."
+          "date": "2026-11-10",
+          "reason": "Independent re-sweep, .agents/rounds/2026-11-10-truth-maintenance.md. q-scf-open-rfps keeps source-relative, dated roster reporting: no open Q4 brief on the official RFP Track page and zero open briefs in Scout on 2026-11-10. Its corroboration now states that the Stellar Light guide is not independent of Scout. q-defi-phoenix-what-is, q-defi-reflector-oracle, and q-scf-funding-by-category are unchanged and make no RFP roster or round claim. The corpus-relative encoding rule still holds for all four. No contradiction.",
+          "verdict": "consistent"
         },
         "note": "corpus-relative encoding: require source, as-of date, method/basis, and external verification before world-truth claims",
         "memberContentSha256": {
           "q-defi-phoenix-what-is": "76acf7d6f08dfc7def9443eaffde4dc0b90a7fc9d0a040d7a2d97fec5614cc9b",
           "q-defi-reflector-oracle": "ec061bc79b120ad1ed8f9e685a07b112fa3c6692b1ebbf971f54e1cfedbc8bc7",
           "q-scf-funding-by-category": "8f59fd7423aac041beb87d0f51fc82570818acf74ec02c64dc2b6d5d080a6630",
-          "q-scf-open-rfps": "6eabfc335e0969db9cf945bd1f25229665dca19f8b19cbd47b3b920d168a1c0e"
+          "q-scf-open-rfps": "a929140caaa76f302471433c6be1155a0b790b751dcb7c6558cd1c9a6fc1a4b1"
         }
       },
       {
@@ -903,16 +903,16 @@
           "q-tool-rust-soroban-sdk"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-10",
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): Members agree that P27 activated at ledger 63386819 on 2026-07-08 and that CAP-0071 remains in effect. q-protocol-27-cap-0071 and q-protocol-version-history-list now state that Mainnet moved to P28 (2026-09-16) and P29 (2026-10-01). q-soroban-auth-delegation-p27's 'live on Mainnet since 2026-07-08' is compatible. The note says only 'P27/Zipper is active from ledger 63386819', which reads as the current protocol and is stale.",
+          "date": "2026-11-10",
+          "reason": "Independent re-sweep, .agents/rounds/2026-11-10-truth-maintenance.md. q-protocol-version-history-list changed only its Bell tail and notes; its P27 row (CAP-0071, ledger 63386819, 2026-07-08) is unchanged. q-protocol-27-cap-0071 and q-soroban-auth-delegation-p27 still state P27 live since 2026-07-08 and no longer the newest version. q-tool-rust-soroban-sdk says Mainnet runs Protocol 29 as of 2026-11-02, which the 2026-11-10 Horizon read confirms. No contradiction.",
           "verdict": "consistent"
         },
         "note": "P27/Zipper activated from ledger 63386819 at 2026-07-08T17:00:10Z and its CAP-0071 credentials remain in effect; the earlier pending note is historical and explicitly superseded. Re-swept 2026-11-02: P28 (2026-09-16) and P29 (2026-10-01) followed on Mainnet, so P27 is no longer the latest version; Bell/P30 votes are scheduled, not live. A 2026-07-28 re-sweep after reverifyBy-only hash churn changed no substantive claim.",
         "memberContentSha256": {
           "q-protocol-27-cap-0071": "9ed87a2ed3cb1cd8a7668edc7b16d9eb030d80a300b28992edd5565385e50dd7",
-          "q-protocol-version-history-list": "dc6f6b4c6d4ad6d0f06da392e6ccc9e91454ae970ab32453e57bfa83cb072947",
+          "q-protocol-version-history-list": "a886ae6729b22370d868aab684621a7e4e03f7df841a6e7a333fed71048adb22",
           "q-soroban-auth-delegation-p27": "d85f4b38bdfdf5c012938a336cc22db45f98073b5b27eb51ea15400616c9a750",
           "q-tool-rust-soroban-sdk": "76dae54d79affebb15133eebc36e69fd6d32a132c7aed8fa5759f5631a6926d4"
         }
@@ -926,16 +926,16 @@
           "q-scf-history-soroswap"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-06",
+        "lastChecked": "2026-11-10",
         "reSwept": {
-          "date": "2026-11-06",
-          "reason": "Current-round verification changes no Liquidity Award or Build cap amounts. Source matrices and independent review: .agents/rounds/2026-11-05-truth-maintenance/.",
+          "date": "2026-11-10",
+          "reason": "Independent re-sweep, .agents/rounds/2026-11-10-truth-maintenance.md. q-scf-current-round states no cap or award amount; it now reports the past 2026-11-09 deadline for SCF #46 and no open submission window. q-scf-build-award-cap and q-scf-history-soroswap are unchanged and state no round, phase, or deadline. The cap, Liquidity Award, and Soroswap amounts stay distinguished from round state. No contradiction.",
           "verdict": "consistent"
         },
         "note": "Program maximum ($100K in XLM via $50K Base plus optional $50K Supplemental), individual Soroswap award, general Build cap, and current-round deadline are explicitly distinguished.",
         "memberContentSha256": {
           "q-scf-build-award-cap": "da398762082f13589fd790ff5e4518e2b988221e2dc9d2ce8f56f9d576a67f6e",
-          "q-scf-current-round": "cb2c10d2a8a6f19861ea56c1ba229e2cbea05cf00ec92afe2d121a56696e2240",
+          "q-scf-current-round": "931a7dc6bd296c556ec3f542102614a2ef605a4af4b7fea64d4dd49b7e145de0",
           "q-scf-history-soroswap": "914a96ff3dfe0a2dfaa27bfb7dbe90567f9ceab7f50fbdcb6a3eea2c908ce513"
         }
       },
@@ -1096,17 +1096,17 @@
           "q-scf-v7-changes"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-06",
+        "lastChecked": "2026-11-10",
         "reSwept": {
-          "date": "2026-11-06",
-          "reason": "The current-round check changes no 10/20/30/40 payment terms or protocol authority. Source matrices and independent review: .agents/rounds/2026-11-05-truth-maintenance/.",
+          "date": "2026-11-10",
+          "reason": "Independent re-sweep, .agents/rounds/2026-11-10-truth-maintenance.md. q-scf-current-round and q-edge-fresh-latest-scf-round carry identical goldens: no round in Submission on 2026-11-10, SCF #46 in Initial Review after 2026-11-09, #45 last concluded, no #47 date. Their new avoid item (a review or voting phase does not accept new full proposals) agrees with q-scf-how-to-apply's interest-form-then-invitation flow. q-edge-scf-v7-centralization-myths and q-scf-v7-changes keep tranche and authority claims only. No contradiction.",
           "verdict": "consistent"
         },
         "note": "The dated Build schedule is 10/20/30/40 with current 90-day completion-form/unpaid-tranche terms. Grant administration and normative fairness are distinct from protocol authority. Current round/phase/deadline facts stay in the dedicated round cases rather than standing in for award terms.",
         "memberContentSha256": {
-          "q-edge-fresh-latest-scf-round": "7406e45cf19d9818b998f43d80bf1b733c5dc085aef422a2dd27549a7d374769",
+          "q-edge-fresh-latest-scf-round": "e203cc66cf29f15e59c6e1762172425da757fb13fe9cd8b2c9ae38a96b0fd381",
           "q-edge-scf-v7-centralization-myths": "706a148bbad751ef83b87c21c135df26b8f1e99717fdc41c8582ea438ba55efe",
-          "q-scf-current-round": "cb2c10d2a8a6f19861ea56c1ba229e2cbea05cf00ec92afe2d121a56696e2240",
+          "q-scf-current-round": "931a7dc6bd296c556ec3f542102614a2ef605a4af4b7fea64d4dd49b7e145de0",
           "q-scf-how-to-apply": "b46a5ef6c46fd346b78a48ee2e59be1e99ab500beaf5fe4dd212d67d225001b7",
           "q-scf-v7-changes": "e3c6dfa0b7152e11197d092a480a85b1a35a2c3baa75ab874b00302eb8a82036"
         }
@@ -1191,10 +1191,10 @@
           "q-protocol-version-history-list"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-10",
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-protocol-23-whisk-caps and q-protocol-parallel-execution both state the initial value 1, then 2 at ledger 60993066 on 2026-01-29 (SLP-0004), then 3 at ledger 65080525 on 2026-10-22 (SLP-0007), with 3 read on 2026-11-02; q-protocol-version-history-list keeps the initial-one nuance, and q-edge-noinfo-sep-9999 makes no cluster claim. The 2026-11-02 note already states these values.",
+          "date": "2026-11-10",
+          "reason": "Independent re-sweep, .agents/rounds/2026-11-10-truth-maintenance.md. q-protocol-version-history-list still says P23 introduced CAP-0063 support with one dependent cluster configured initially and later settings enabling more; only its Bell tail and note wording changed. q-protocol-23-whisk-caps and q-protocol-parallel-execution keep value one as initial and the later values (two, then three) as dated settings. q-edge-noinfo-sep-9999 is unchanged. No contradiction.",
           "verdict": "consistent"
         },
         "note": "No official sharding CAP was found in the dated registry/history sweep. P23 introduced CAP-0063 scheduling support with ledgerMaxDependentTxClusters initially one (no multi-cluster parallel execution); later network-settings votes raised it to two at ledger 60993066 on 2026-01-29 (SLP-0004) and to three at ledger 65080525 on 2026-10-22 (SLP-0007); three is the dated Mainnet value as of 2026-11-02. Parallel scheduling is not sharding, and no setting-change date is invented.",
@@ -1202,7 +1202,7 @@
           "q-edge-noinfo-sep-9999": "315680dbff263901cfa7c1a6ab577489b99f3e55ec05b387b01d54174ff42800",
           "q-protocol-23-whisk-caps": "9e5e48b2dec70743bd49557b294db491ac32a0776f1f64cd91f54aed13971057",
           "q-protocol-parallel-execution": "5a334961610d0deeeeda4eb29fc9a11613be0a836cb3b3772e5ac2042fd6e869",
-          "q-protocol-version-history-list": "dc6f6b4c6d4ad6d0f06da392e6ccc9e91454ae970ab32453e57bfa83cb072947"
+          "q-protocol-version-history-list": "a886ae6729b22370d868aab684621a7e4e03f7df841a6e7a333fed71048adb22"
         }
       },
       {
@@ -1589,16 +1589,16 @@
           "q-protocol-version-history-list"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-03",
+        "lastChecked": "2026-11-10",
         "reSwept": {
-          "date": "2026-11-03",
-          "reason": "2026-11-03 URL-source repair: compared every member question, golden, tag, and surface with HEAD; all are identical. Canonical pages support the same cited facts. Only current sources and verification metadata changed. Preserve the prior consistency verdict and every historical measurement date. Evidence: tmp/urls/sibling-sweep.json and tmp/urls/decisions.json.",
+          "date": "2026-11-10",
+          "reason": "Independent re-sweep, .agents/rounds/2026-11-10-truth-maintenance.md. q-protocol-version-history-list now shows the distinction directly: Core v30.0.0 shipped 2026-10-16, Bell activated on Testnet on 2026-11-03, and Mainnet still ran Protocol 29 on 2026-11-10 pending the 2026-11-23 vote. That agrees with q-protocol-cap-vs-sep's separation of CAP acceptance, implementation, and validator activation. No contradiction.",
           "verdict": "consistent"
         },
         "note": "CAP specification/acceptance, software implementation, and network activation are distinct; SEPs are ecosystem interoperability standards.",
         "memberContentSha256": {
           "q-protocol-cap-vs-sep": "32272a7080b325e39be0b9da5765de212e94038fd5cac093f55dac098961563a",
-          "q-protocol-version-history-list": "dc6f6b4c6d4ad6d0f06da392e6ccc9e91454ae970ab32453e57bfa83cb072947"
+          "q-protocol-version-history-list": "a886ae6729b22370d868aab684621a7e4e03f7df841a6e7a333fed71048adb22"
         }
       },
       {
@@ -1692,17 +1692,17 @@
           "q-protocol-version-history-list"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-10",
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): The members agree: the hist case gives Feb 20 P20/Phase 0 and Mar 19 GA, and the version-history case gives the same P20 date. But the note's 'P27 is live from ledger 63386819' now reads as the live tail, while q-protocol-version-history-list makes P29 the live tail as of 2026-11-02 with P30 votes scheduled.",
+          "date": "2026-11-10",
+          "reason": "Independent re-sweep, .agents/rounds/2026-11-10-truth-maintenance.md. q-protocol-version-history-list keeps P20/Soroban at 2024-02-20 and its notes now say P20 introduced Soroban in phases, matching q-hist-soroban-launch-protocol20 (Phase 0 on 2024-02-20, Phase 1 on 2024-02-27, Phase 2 on 2024-03-19). Its tail separates release support from activation. On 2026-11-10 Mainnet reported Protocol 29, Testnet reported Bell/Protocol 30 after the 2026-11-03 upgrade, and the Mainnet vote stayed scheduled for 2026-11-23 17:00 UTC. q-protocol-scp-consensus-algorithm carries no activation claim. The note's reverifyBy 2026-11-24 matches the case. No contradiction.",
           "verdict": "consistent"
         },
-        "note": "P20 activated Soroban on 2024-02-20; the March milestone raised capacity. Software major versions indicate protocol support but do not by themselves prove live activation. P27 activated at ledger 63386819 on 2026-07-08. As of 2026-11-02, P28/Adapter (ledger 64458446, 2026-09-16) and P29 (ledger 64717645, 2026-10-01) are live, and Bell/P30 votes are scheduled for 2026-11-03 (Testnet) and 2026-11-23 (Mainnet); q-protocol-version-history-list reverifyBy 2026-11-24. Duplicate version-history override keys were consolidated and stale pending-P27 grader notes replaced.",
+        "note": "P20 activated Soroban on 2024-02-20; the March milestone raised capacity. Software major versions indicate protocol support but do not by themselves prove live activation. P27 activated at ledger 63386819 on 2026-07-08. P28/Adapter activated on Mainnet at ledger 64458446 on 2026-09-16 and P29 at ledger 64717645 on 2026-10-01. On 2026-11-10, Mainnet was on P29 and Testnet was on Bell/P30 following the November 3 upgrade. The Mainnet vote was scheduled for 2026-11-23 at 17:00 UTC. q-protocol-version-history-list reverifyBy 2026-11-24. Duplicate version-history override keys were consolidated and stale pending-P27 grader notes replaced.",
         "memberContentSha256": {
           "q-hist-soroban-launch-protocol20": "607c8d4ef8e2605f5cab2bb3de04338029e4e3d1409ab42dac4f21d7742d294b",
           "q-protocol-scp-consensus-algorithm": "ba760d5bb7ac504e53db81c2d209ecdec1994d2991aaf5cc5ec7d4bfee91c45d",
-          "q-protocol-version-history-list": "dc6f6b4c6d4ad6d0f06da392e6ccc9e91454ae970ab32453e57bfa83cb072947"
+          "q-protocol-version-history-list": "a886ae6729b22370d868aab684621a7e4e03f7df841a6e7a333fed71048adb22"
         }
       },
       {
@@ -2003,15 +2003,15 @@
           "q-scf-rfp-tooling"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-06",
-        "note": "As of the November 5 local / November 6 UTC recheck, the official RFP Track page lists no open brief (Q4 coming soon), and Scout agrees: open=0, closed=16, activeQuarter=q4-2026. Both withdrawn Q3 briefs are closed. The synthetic round-46 row is a separate Submission window through November 9, not a brief. Both members preserve invitation gating and source-relative, dated roster reporting.",
+        "lastChecked": "2026-11-10",
+        "note": "On 2026-11-10, the official RFP Track page listed two Q4 placeholders and no open brief. Scout reported zero open briefs, 16 closed briefs, Q4 2026 as the active quarter, and both former Q3 briefs closed. Round #46 appeared in Initial Review in Scout round metadata with zero synthetic submission rows. Both members preserve invitation gating and source-relative, dated roster reporting.",
         "memberContentSha256": {
-          "q-scf-open-rfps": "6eabfc335e0969db9cf945bd1f25229665dca19f8b19cbd47b3b920d168a1c0e",
-          "q-scf-rfp-tooling": "4d5e3891ba78550312e7a4305897a46ed5b281f7a848c3d204dbfcfbe437f189"
+          "q-scf-open-rfps": "a929140caaa76f302471433c6be1155a0b790b751dcb7c6558cd1c9a6fc1a4b1",
+          "q-scf-rfp-tooling": "fba6bba4e7d5b01cc136eb2ac2beb3b412727592c89041d748aab8314c72dc61"
         },
         "reSwept": {
-          "date": "2026-11-06",
-          "reason": "Both RFP cases now say official and Scout rosters agree on zero open briefs; round 46 remains a separate submission window. Source matrices and independent review: .agents/rounds/2026-11-05-truth-maintenance/.",
+          "date": "2026-11-10",
+          "reason": "Independent re-sweep, .agents/rounds/2026-11-10-truth-maintenance.md. q-scf-open-rfps and q-scf-rfp-tooling share the same 2026-11-10 observation: the official RFP Track page lists two Q4 placeholders and no open brief; Scout reports open 0, closed 16, both former Q3 briefs closed, zero synthetic rows, and SCF #46 in Initial Review in round metadata. Both replaced the expired syntheticRounds trap with the same conditional avoid item and keep invitation gating. I re-read the handbook and both Scout responses. No contradiction.",
           "verdict": "consistent"
         }
       },
@@ -2091,15 +2091,15 @@
           "q-scf-open-rfps"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-06",
+        "lastChecked": "2026-11-10",
         "note": "The historical Q1-2026 Hummingbot/Kelp brief remains closed. The November 5/6 recheck finds no open brief in either the official roster or Scout. No later submission, fulfillment or merge is inferred; historical dates remain explicit.",
         "memberContentSha256": {
           "q-scf-hummingbot-kelp-closed-rfp": "dbd0b23174008fe154facfd5675431370d0d6a622306381499eb13b71d19eb91",
-          "q-scf-open-rfps": "6eabfc335e0969db9cf945bd1f25229665dca19f8b19cbd47b3b920d168a1c0e"
+          "q-scf-open-rfps": "a929140caaa76f302471433c6be1155a0b790b751dcb7c6558cd1c9a6fc1a4b1"
         },
         "reSwept": {
-          "date": "2026-11-06",
-          "reason": "Historical RFP finding pointers are immutable; neither the closed Hummingbot brief nor the approved current empty roster changes.",
+          "date": "2026-11-10",
+          "reason": "Independent re-sweep, .agents/rounds/2026-11-10-truth-maintenance.md. q-scf-open-rfps reports no open brief on 2026-11-10 and names only the two withdrawn Q3 briefs as closed. q-scf-hummingbot-kelp-closed-rfp is unchanged; the live closed roster still lists hummingbot-integration as closed in q1-2026. Neither member infers a later submission or fulfillment. No contradiction.",
           "verdict": "consistent"
         }
       },
@@ -2175,17 +2175,17 @@
           "q-scf-submission-lifecycle-deadlines"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-06",
+        "lastChecked": "2026-11-10",
         "note": "Rolling interest precedes eligibility/referral and invitation to a full proposal. Only Open uses project-level community voting; Integration/RFP are panel-led.",
         "memberContentSha256": {
           "q-scf-eligibility-criteria": "b42d75ea41de636513016271fa00148a5de8ec4c4637b3fd488754207e39840e",
           "q-scf-how-to-apply": "b46a5ef6c46fd346b78a48ee2e59be1e99ab500beaf5fe4dd212d67d225001b7",
-          "q-scf-rfp-tooling": "4d5e3891ba78550312e7a4305897a46ed5b281f7a848c3d204dbfcfbe437f189",
+          "q-scf-rfp-tooling": "fba6bba4e7d5b01cc136eb2ac2beb3b412727592c89041d748aab8314c72dc61",
           "q-scf-submission-lifecycle-deadlines": "b0fab3d5be0b24c6478a5062028ad6bb3968fff25bb0d867533c5dcdc8027136"
         },
         "reSwept": {
-          "date": "2026-11-06",
-          "reason": "RFP updates preserve rolling interest, invitation and panel-led decisions; no eligibility promise is added. Source matrices and independent review: .agents/rounds/2026-11-05-truth-maintenance/.",
+          "date": "2026-11-10",
+          "reason": "Independent re-sweep, .agents/rounds/2026-11-10-truth-maintenance.md. q-scf-rfp-tooling still requires a current-quarter open brief and the rolling interest form followed by invitation; its corroboration for that flow now rests on the handbook plus the grants.watch record. q-scf-how-to-apply, q-scf-eligibility-criteria, and q-scf-submission-lifecycle-deadlines are unchanged and describe the same rolling interest, eligibility, invitation, and panel-led RFP path. No contradiction.",
           "verdict": "consistent"
         }
       },
@@ -2492,16 +2492,16 @@
           "q-soroban-auth-delegation-p27"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-10",
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-protocol-27-cap-0071 and q-protocol-version-history-list now add P28 (2026-09-16) and P29 (2026-10-01) as later Mainnet protocols. All three members still say P27/Zipper activated at ledger 63386819 on 2026-07-08 with first-class CAP-0071 delegation, and that the P20 custom-account pattern remains distinct. The note makes no 'latest protocol' claim, so it stays true.",
+          "date": "2026-11-10",
+          "reason": "Independent re-sweep, .agents/rounds/2026-11-10-truth-maintenance.md. q-protocol-version-history-list's P27 row (CAP-0071 authentication delegation and address-bound credentials, ledger 63386819, 2026-07-08) is unchanged; only the Bell tail and notes moved. q-protocol-27-cap-0071 and q-soroban-auth-delegation-p27 are unchanged and keep first-class CAP-0071 delegation distinct from legacy P20 custom-account delegation. No contradiction.",
           "verdict": "consistent"
         },
         "note": "P27 live from ledger 63386819 and first-class CAP-0071 delegation. Legacy P20 custom-account delegation remains a distinct true statement. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
           "q-protocol-27-cap-0071": "9ed87a2ed3cb1cd8a7668edc7b16d9eb030d80a300b28992edd5565385e50dd7",
-          "q-protocol-version-history-list": "dc6f6b4c6d4ad6d0f06da392e6ccc9e91454ae970ab32453e57bfa83cb072947",
+          "q-protocol-version-history-list": "a886ae6729b22370d868aab684621a7e4e03f7df841a6e7a333fed71048adb22",
           "q-soroban-auth-delegation-p27": "d85f4b38bdfdf5c012938a336cc22db45f98073b5b27eb51ea15400616c9a750"
         }
       },
@@ -2665,17 +2665,17 @@
           "q-soroban-auth-delegation-p27"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-10",
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): All four members agree on P27 ledger 63386819 / 2026-07-08, P28 ledger 64458446 / 2026-09-16, P29 ledger 64717645 / 2026-10-01, and the CAP-0071 WITH_DELEGATES/V2 mechanics. But the note still says 'CAP Accepted-versus-network-live', while q-protocol-27-cap-0071 now distinguishes the CAP's 'Final registry status' from activation.",
+          "date": "2026-11-10",
+          "reason": "Independent re-sweep, .agents/rounds/2026-11-10-truth-maintenance.md. q-pc-protocol-upgrade-timing dropped its P27–P29 ledger recap from the answer and makes no CAP-0071 claim; it still separates a release or an announced vote from activation. q-protocol-version-history-list keeps the P27 row unchanged. q-protocol-27-cap-0071 and q-soroban-auth-delegation-p27 keep delegation and V2 mechanics with P27 live since 2026-07-08. No contradiction.",
           "verdict": "consistent"
         },
         "note": "stale spans replaced; delegation/V2 mechanics and the CAP-status-versus-network-live distinction retained (CAP-0071 is Final; P27 activated at ledger 63386819 on 2026-07-08, and as of 2026-11-02 Mainnet runs P29 with CAP-0071 still in effect). Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
-          "q-pc-protocol-upgrade-timing": "8f80d3cc015678f2174309fa84cc74adca15b0b5ef07e86e32e4bd05a8d049ad",
+          "q-pc-protocol-upgrade-timing": "b7a4b8918c66b7ab9c61f396fd9979140a500ff14d6f8d06ef489c95463b34ef",
           "q-protocol-27-cap-0071": "9ed87a2ed3cb1cd8a7668edc7b16d9eb030d80a300b28992edd5565385e50dd7",
-          "q-protocol-version-history-list": "dc6f6b4c6d4ad6d0f06da392e6ccc9e91454ae970ab32453e57bfa83cb072947",
+          "q-protocol-version-history-list": "a886ae6729b22370d868aab684621a7e4e03f7df841a6e7a333fed71048adb22",
           "q-soroban-auth-delegation-p27": "d85f4b38bdfdf5c012938a336cc22db45f98073b5b27eb51ea15400616c9a750"
         }
       },
@@ -2796,16 +2796,16 @@
           "q-protocol-version-history-list"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-10",
         "note": "P23 initialized one cluster. Separate settings upgrades raised it to two at ledger 60993066 on 2026-01-29 (limits/slp-0004.md) and to three at ledger 65080525 on 2026-10-22 (limits/slp-0007.md). The current value (three as of 2026-11-02) is dated and configuration-sensitive. Canonical SLP paths are under limits/, not core/.",
         "memberContentSha256": {
           "q-protocol-23-whisk-caps": "9e5e48b2dec70743bd49557b294db491ac32a0776f1f64cd91f54aed13971057",
           "q-protocol-parallel-execution": "5a334961610d0deeeeda4eb29fc9a11613be0a836cb3b3772e5ac2042fd6e869",
-          "q-protocol-version-history-list": "dc6f6b4c6d4ad6d0f06da392e6ccc9e91454ae970ab32453e57bfa83cb072947"
+          "q-protocol-version-history-list": "a886ae6729b22370d868aab684621a7e4e03f7df841a6e7a333fed71048adb22"
         },
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): The note updated today (1 -> 2 at ledger 60993066 on 2026-01-29 via limits/slp-0004.md -> 3 at ledger 65080525 on 2026-10-22 via limits/slp-0007.md; three as of 2026-11-02) matches the current text of q-protocol-23-whisk-caps and q-protocol-parallel-execution. q-protocol-version-history-list keeps the initial-one nuance and states no conflicting value.",
+          "date": "2026-11-10",
+          "reason": "Independent re-sweep, .agents/rounds/2026-11-10-truth-maintenance.md. q-protocol-version-history-list still says P23 initialized the dependent-cluster setting at one and that later network settings enabled multiple clusters; it pins no current value. q-protocol-23-whisk-caps and q-protocol-parallel-execution keep the SLP-0004 and SLP-0007 values as dated settings. No contradiction.",
           "verdict": "consistent"
         }
       },
@@ -2818,16 +2818,16 @@
           "q-soroban-auth-delegation-p27"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-10",
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-protocol-27-cap-0071, q-protocol-version-history-list, and q-soroban-auth-delegation-p27 all tie WITH_DELEGATES chains and address-bound V2 credentials to P27/CAP-0071, activated at ledger 63386819, with CAP-0071 Final. The note's facts stay true; the P28/P29 additions do not touch it.",
+          "date": "2026-11-10",
+          "reason": "Independent re-sweep, .agents/rounds/2026-11-10-truth-maintenance.md. The P27 mechanics and the ledger 63386819 activation are unchanged in q-protocol-27-cap-0071 and q-soroban-auth-delegation-p27. q-protocol-version-history-list changed only the Bell tail and note wording, and its P27 row still names CAP-0071 delegation and address-bound credentials. No contradiction.",
           "verdict": "consistent"
         },
         "note": "Address-with-delegates chains and address-bound V2 credentials are P27/CAP-0071; Pubnet activated at ledger 63386819, and the current registry lists CAP-0071 Final. Reverified 2026-08-05.",
         "memberContentSha256": {
           "q-protocol-27-cap-0071": "9ed87a2ed3cb1cd8a7668edc7b16d9eb030d80a300b28992edd5565385e50dd7",
-          "q-protocol-version-history-list": "dc6f6b4c6d4ad6d0f06da392e6ccc9e91454ae970ab32453e57bfa83cb072947",
+          "q-protocol-version-history-list": "a886ae6729b22370d868aab684621a7e4e03f7df841a6e7a333fed71048adb22",
           "q-soroban-auth-delegation-p27": "d85f4b38bdfdf5c012938a336cc22db45f98073b5b27eb51ea15400616c9a750"
         }
       },
@@ -2843,19 +2843,19 @@
           "q-soroban-auth-delegation-p27"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-03",
+        "lastChecked": "2026-11-10",
         "reSwept": {
-          "date": "2026-11-03",
-          "reason": "V4 re-sweep on 2026-11-03. Key-fact dedup only. Member hash eb86f91504c5386f611da3603ac60b746b59806367dbba9b2a7142ef7404619b. Notes, values, dates, and the Bell trigger stayed unchanged.",
+          "date": "2026-11-10",
+          "reason": "Independent re-sweep, .agents/rounds/2026-11-10-truth-maintenance.md. All six members agree that P27 activated at ledger 63386819 on 2026-07-08 and that Mainnet later moved to P28 and P29 with CAP-0071 credentials in effect. The three changed members agree on the tail. On 2026-11-10 Mainnet reported Protocol 29, Testnet reported Bell/Protocol 30 after the 2026-11-03 upgrade, and the Mainnet vote stayed scheduled for 2026-11-23 17:00 UTC. q-pc-protocol-27-zipper keeps its dated check and q-protocol-27-cap-0071 accepts a later P30 report. No member calls P27, P28, or P30 current on Mainnet. No contradiction.",
           "verdict": "consistent"
         },
-        "note": "P27 activated on Mainnet at ledger 63386819 on 2026-07-08; CAP-0071 delegation and address-bound V2 credentials are P27 features and remain in effect. As of 2026-11-02, Mainnet runs Protocol 29: P28 (Adapter) activated at ledger 64458446 on 2026-09-16 and P29 at ledger 64717645 on 2026-10-01, and neither changed CAP-0071 credentials. Bell/P30 has a Mainnet vote scheduled for 2026-11-23; a scheduled vote is not activation. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
+        "note": "P27 activated on Mainnet at ledger 63386819 on 2026-07-08; CAP-0071 delegation and address-bound V2 credentials are P27 features and remain in effect. Mainnet activated P28 (Adapter) at ledger 64458446 on 2026-09-16 and P29 at ledger 64717645 on 2026-10-01. CAP-0071 credentials stayed in effect through both upgrades. On 2026-11-10, Mainnet was on P29 and Testnet was on Bell/P30 following the November 3 upgrade. The Mainnet vote was scheduled for 2026-11-23 at 17:00 UTC. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
-          "q-edge-fresh-latest-protocol-version": "eb86f91504c5386f611da3603ac60b746b59806367dbba9b2a7142ef7404619b",
+          "q-edge-fresh-latest-protocol-version": "c0f445bb773bcd63d49b63abb185db42756572d1fc294e5bd783aa0ef94dff21",
           "q-pc-protocol-27-zipper": "316a2446eee191d3f047d421704ebafef24c410021a2f54ec2044b54ff8248e8",
-          "q-pc-protocol-upgrade-timing": "8f80d3cc015678f2174309fa84cc74adca15b0b5ef07e86e32e4bd05a8d049ad",
+          "q-pc-protocol-upgrade-timing": "b7a4b8918c66b7ab9c61f396fd9979140a500ff14d6f8d06ef489c95463b34ef",
           "q-protocol-27-cap-0071": "9ed87a2ed3cb1cd8a7668edc7b16d9eb030d80a300b28992edd5565385e50dd7",
-          "q-protocol-version-history-list": "dc6f6b4c6d4ad6d0f06da392e6ccc9e91454ae970ab32453e57bfa83cb072947",
+          "q-protocol-version-history-list": "a886ae6729b22370d868aab684621a7e4e03f7df841a6e7a333fed71048adb22",
           "q-soroban-auth-delegation-p27": "d85f4b38bdfdf5c012938a336cc22db45f98073b5b27eb51ea15400616c9a750"
         }
       },
@@ -2871,10 +2871,10 @@
           "q-scf-vs-sdf-enterprise-fund"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-06",
+        "lastChecked": "2026-11-10",
         "reSwept": {
-          "date": "2026-11-06",
-          "reason": "Fresh phase/deadline observations change no cap-bearing case or award maximum. Source matrices and independent review: .agents/rounds/2026-11-05-truth-maintenance/.",
+          "date": "2026-11-10",
+          "reason": "Independent re-sweep, .agents/rounds/2026-11-10-truth-maintenance.md. q-scf-current-round states no cap amount after the rewrite; it reports round state only. The cap-bearing members (q-scf-build-award-cap, q-scf-build-tracks, q-scf-how-to-apply, q-scf-vs-sdf-enterprise-fund) are unchanged at $150,000 worth of XLM, and q-edge-scf-v7-centralization-myths states no cap. No conflicting figure.",
           "verdict": "consistent"
         },
         "note": "As of 2026-11-02, the cap-bearing cases (q-scf-build-award-cap, q-scf-build-tracks, q-scf-how-to-apply, q-scf-vs-sdf-enterprise-fund) give the current SCF Build single-award cap as $150,000 worth of XLM and keep it apart from project-history amounts, the v7 lifecycle total, and other SDF programs. q-scf-current-round and q-edge-scf-v7-centralization-myths state no cap amount and no conflicting figure.",
@@ -2882,7 +2882,7 @@
           "q-edge-scf-v7-centralization-myths": "706a148bbad751ef83b87c21c135df26b8f1e99717fdc41c8582ea438ba55efe",
           "q-scf-build-award-cap": "da398762082f13589fd790ff5e4518e2b988221e2dc9d2ce8f56f9d576a67f6e",
           "q-scf-build-tracks": "04b850dbe3a936aed2ced78c77464d8dbc0559f07aec31bad8c9bada0272a699",
-          "q-scf-current-round": "cb2c10d2a8a6f19861ea56c1ba229e2cbea05cf00ec92afe2d121a56696e2240",
+          "q-scf-current-round": "931a7dc6bd296c556ec3f542102614a2ef605a4af4b7fea64d4dd49b7e145de0",
           "q-scf-how-to-apply": "b46a5ef6c46fd346b78a48ee2e59be1e99ab500beaf5fe4dd212d67d225001b7",
           "q-scf-vs-sdf-enterprise-fund": "f9f1db26d05d329a8f340ac8d93b86d600100cac06d8abe95cb42c5cccabddc6"
         }
@@ -2896,15 +2896,15 @@
           "q-scf-total-distributed"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-06",
+        "lastChecked": "2026-11-10",
         "reSwept": {
-          "date": "2026-11-06",
-          "reason": "Only the funding finding pointer changed; fixed round 43 history and dated round 46/45/44 observations are unchanged.",
+          "date": "2026-11-10",
+          "reason": "Independent re-sweep, .agents/rounds/2026-11-10-truth-maintenance.md. q-scf-round-43-results keeps the fixed SCF #43 result (29 projects, $3,139,069 in XLM, recap dated 2026-06-02) and q-scf-total-distributed is unchanged. q-scf-current-round reports SCF #46 in Initial Review after 2026-11-09, #45 last concluded, and no #47 date, which the awards index and round record confirmed on 2026-11-10. It makes no result or total claim. No contradiction.",
           "verdict": "consistent"
         },
-        "note": "SCF #43 keeps its fixed 29-project and $3,139,069 result. As of 2026-11-02, SCF #46 is in Submission through 2026-11-09 (moved from 2026-11-08 after 2026-10-18), #45 has ended and is the last concluded round, and #44 is concluded.",
+        "note": "SCF #43 keeps its fixed 29-project and $3,139,069 result. On 2026-11-10, SCF #46 was in Initial Review after its 2026-11-09 submission deadline. #45 was the last concluded round and #44 had also ended. The official Awards listing gave no #47 submission date.",
         "memberContentSha256": {
-          "q-scf-current-round": "cb2c10d2a8a6f19861ea56c1ba229e2cbea05cf00ec92afe2d121a56696e2240",
+          "q-scf-current-round": "931a7dc6bd296c556ec3f542102614a2ef605a4af4b7fea64d4dd49b7e145de0",
           "q-scf-round-43-results": "19d1fcc482918a6ee4f7f1151ec579d2d4836c434a4a46773c09aa71d4666d72",
           "q-scf-total-distributed": "80080f126248fa8565ca203082fb3c47707658909bf51a27696ce06cfba43071"
         }
@@ -3373,7 +3373,7 @@
       {
         "label": "Mainnet protocol activation history",
         "authoritativeValue": "Protocol 27 (Zipper) from ledger 63386819 (2026-07-08); Protocol 28 (Adapter) from ledger 64458446 (2026-09-16); Protocol 29 from ledger 64717645 (2026-10-01)",
-        "rule": "Each listed activation is fixed history: P27 at ledger 63386819 on 2026-07-08T17:00:10Z, P28 at ledger 64458446 on 2026-09-16T17:00:06Z, and P29 at ledger 64717645 on 2026-10-01T17:00:07Z. The current Mainnet version is volatile: on 2026-11-02 Horizon reported current_protocol_version 29 and core_supported_protocol_version 30. The Bell/Protocol 30 Mainnet vote is scheduled for 2026-11-23 17:00 UTC. A scheduled vote, release support, or CAP status alone does not prove activation; a dated later answer that reports P30 as current is correct. Retargeted 2026-11-02 from the former 'Protocol 27 Mainnet version' invariant.",
+        "rule": "P27, P28 and P29 activation dates and ledger numbers are fixed history. On 2026-11-10 Horizon reported Pubnet at Protocol 29. Bell is live on Testnet after the November 3 upgrade. The Mainnet vote remains scheduled for November 23 at 17:00 UTC. Establish Mainnet activation from dated live network evidence. A dated later answer that reports P30 as current is correct.",
         "acceptedSpellings": [
           "Protocol 27",
           "P27",
@@ -3426,11 +3426,32 @@
             "observedAt": "2026-11-02",
             "httpStatus": 200,
             "note": "'November 3, 2026, 1700 UTC —Testnet upgrade vote.' 'November 23, 2026, 1700 UTC —Mainnet upgrade vote.'"
+          },
+          {
+            "class": "C",
+            "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=1",
+            "observedAt": "2026-11-10",
+            "httpStatus": 200,
+            "note": "Pubnet ledger 65413007 at 2026-11-10T22:51:17Z reports Protocol 29."
+          },
+          {
+            "class": "C",
+            "ref": "https://horizon-testnet.stellar.org/ledgers?order=desc&limit=1",
+            "observedAt": "2026-11-10",
+            "httpStatus": 200,
+            "note": "Testnet ledger 5665487 at 2026-11-10T22:51:18Z reports Protocol 30."
+          },
+          {
+            "class": "C",
+            "ref": "https://status.stellar.org/api/v2/scheduled-maintenances/upcoming.json",
+            "observedAt": "2026-11-10",
+            "httpStatus": 200,
+            "note": "The Mainnet vote remains scheduled for November 23 at 17:00 UTC."
           }
         ],
         "datePolicy": {
           "mode": "as-of",
-          "asOf": "2026-11-02",
+          "asOf": "2026-11-10",
           "recheckOn": "Protocol 30 (Bell) Mainnet vote on 2026-11-23 or any later Mainnet protocol activation"
         },
         "affectedCaseIds": [
@@ -3441,19 +3462,19 @@
           "q-soroban-auth-delegation-p27"
         ],
         "memberContentSha256": {
-          "q-edge-fresh-latest-protocol-version": "eb86f91504c5386f611da3603ac60b746b59806367dbba9b2a7142ef7404619b",
+          "q-edge-fresh-latest-protocol-version": "c0f445bb773bcd63d49b63abb185db42756572d1fc294e5bd783aa0ef94dff21",
           "q-pc-protocol-27-zipper": "316a2446eee191d3f047d421704ebafef24c410021a2f54ec2044b54ff8248e8",
-          "q-pc-protocol-upgrade-timing": "8f80d3cc015678f2174309fa84cc74adca15b0b5ef07e86e32e4bd05a8d049ad",
+          "q-pc-protocol-upgrade-timing": "b7a4b8918c66b7ab9c61f396fd9979140a500ff14d6f8d06ef489c95463b34ef",
           "q-protocol-27-cap-0071": "9ed87a2ed3cb1cd8a7668edc7b16d9eb030d80a300b28992edd5565385e50dd7",
           "q-soroban-auth-delegation-p27": "d85f4b38bdfdf5c012938a336cc22db45f98073b5b27eb51ea15400616c9a750"
         },
         "verdict": "consistent",
         "reSwept": {
-          "date": "2026-11-03",
-          "reason": "V4 re-sweep on 2026-11-03. Key-fact dedup only. Member hash eb86f91504c5386f611da3603ac60b746b59806367dbba9b2a7142ef7404619b. Notes, values, dates, and the Bell trigger stayed unchanged.",
+          "date": "2026-11-10",
+          "reason": "Independent re-sweep, .agents/rounds/2026-11-10-truth-maintenance.md. I re-read Horizon ledgers 63386819 (P27, 2026-07-08T17:00:10Z), 64458446 (P28, 2026-09-16T17:00:06Z), and 64717645 (P29, 2026-10-01T17:00:07Z) with their preceding ledgers; the fixed values hold. Horizon and Mainnet RPC reported Protocol 29 and the status API listed the Mainnet vote for 2026-11-23T17:00:00Z. Of the affected cases, q-edge-fresh-latest-protocol-version keeps the P29 ledger and date, q-pc-protocol-upgrade-timing no longer restates ledgers, and q-pc-protocol-27-zipper, q-protocol-27-cap-0071, and q-soroban-auth-delegation-p27 are unchanged. The rule again accepts a later dated P30 report.",
           "verdict": "consistent"
         },
-        "lastChecked": "2026-11-03"
+        "lastChecked": "2026-11-10"
       },
       {
         "label": "SCF #43 official total",
@@ -3613,11 +3634,11 @@
       },
       {
         "label": "SCF Submission",
-        "authoritativeValue": "SCF #46 Submission through 2026-11-09; #45 Ended (last concluded); #44 concluded",
-        "rule": "As of 2026-11-02, SCF #46 is in Submission through 2026-11-09 (moved from 2026-11-08 after 2026-10-18), #45 has ended and is the last concluded round, and #44 is concluded.",
+        "authoritativeValue": "No Build Award round listed in Submission on 2026-11-10. SCF #46 Initial Review after 2026-11-09 deadline; #45 last concluded; #44 Ended.",
+        "rule": "Date the submission state. The official Awards listing shows SCF #46 in Initial Review after its November 9 deadline and gives no #47 submission date. Distinguish the rolling interest form from a full-proposal window. Accept a later sourced opening, phase or deadline.",
         "acceptedSpellings": [
           "SCF #46",
-          "Submission",
+          "Initial Review",
           "2026-11-09",
           "November 9, 2026",
           "Ended"
@@ -3649,28 +3670,49 @@
             "observedAt": "2026-11-06",
             "httpStatus": 200,
             "note": "Independent coordinator recheck confirms the same phase and November 9 date."
+          },
+          {
+            "class": "A",
+            "ref": "https://communityfund.stellar.org/awards",
+            "observedAt": "2026-11-10",
+            "httpStatus": 200,
+            "note": "The index shows #46 Initial Review after the November 9 deadline, #45 and #44 Ended, and no round in Submission."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/rfps?status=open",
+            "observedAt": "2026-11-10",
+            "httpStatus": 200,
+            "note": "Round #46 Initial Review, null submission window, #45 last concluded."
+          },
+          {
+            "class": "D",
+            "ref": "https://grants.watch/programs/stellar-community-fund-build-award?awardPage=2",
+            "observedAt": "2026-11-10",
+            "httpStatus": 200,
+            "note": "The grant index lists #46 closed after November 9 and the next round as unannounced."
           }
         ],
         "datePolicy": {
           "mode": "as-of",
-          "asOf": "2026-11-02",
-          "recheckOn": "SCF #46 deadline 2026-11-09, Prescreen & Panel Review 2026-11-11, or any later round or phase change"
+          "asOf": "2026-11-10",
+          "recheckOn": "SCF #46 phase change, including the published Panel Review and Community Vote dates, or any new submission window"
         },
         "affectedCaseIds": [
           "q-edge-fresh-latest-scf-round",
           "q-scf-current-round"
         ],
         "memberContentSha256": {
-          "q-edge-fresh-latest-scf-round": "7406e45cf19d9818b998f43d80bf1b733c5dc085aef422a2dd27549a7d374769",
-          "q-scf-current-round": "cb2c10d2a8a6f19861ea56c1ba229e2cbea05cf00ec92afe2d121a56696e2240"
+          "q-edge-fresh-latest-scf-round": "e203cc66cf29f15e59c6e1762172425da757fb13fe9cd8b2c9ae38a96b0fd381",
+          "q-scf-current-round": "931a7dc6bd296c556ec3f542102614a2ef605a4af4b7fea64d4dd49b7e145de0"
         },
         "verdict": "consistent",
         "reSwept": {
-          "date": "2026-11-06",
-          "reason": "Fresh primary awards/detail reads preserve round 46 Submission through November 9, 45 Ended and 44 concluded. Both member goldens are unchanged; only provenance was refreshed. November 9/11 recheck triggers remain.",
+          "date": "2026-11-10",
+          "reason": "Independent re-sweep, .agents/rounds/2026-11-10-truth-maintenance.md. The awards index read \"SCF #46 Initial Review Deadline to submit: November 9, 2026\" with #45 and #44 Ended and no #47 listing; the round record schedules Panel Review 2026-11-11 to 2026-11-18 and Community Vote 2026-11-23 to 2026-12-03. q-scf-current-round and q-edge-fresh-latest-scf-round carry identical goldens that match, and both accept a later sourced opening, phase, or deadline. Sentinels scf-47-not-listed and scf-47-not-listed-edge watch for a new round.",
           "verdict": "consistent"
         },
-        "lastChecked": "2026-11-06"
+        "lastChecked": "2026-11-10"
       },
       {
         "label": "Stellar base fee floor",
@@ -3725,7 +3767,7 @@
       {
         "triggerDateEvent": "Protocol 30 (Bell) Mainnet vote on 2026-11-23, any later Mainnet protocol activation, or any AddressV2 successor change",
         "requiredRecheck": "Re-probe Mainnet current_protocol_version on Horizon or RPC and re-verify every case that names the current or next protocol, or AddressV2 status; update the 'Mainnet protocol activation history' invariant and hashes.",
-        "disposition": "reviewed — the prior trigger (Mainnet activation of Protocol 28) fired on 2026-09-16: Horizon ledger 64458446 (2026-09-16T17:00:06Z) is the first protocol_version 28 ledger, and ledger 64717645 (2026-10-01T17:00:07Z) is the first protocol_version 29 ledger. On 2026-11-02 Horizon reported current_protocol_version 29 and core_supported_protocol_version 30. No member calls P27 current without a date; q-pc-protocol-27-zipper keeps its dated 2026-08-30 check. P28 and P29 did not change CAP-0071 credentials, including SOROBAN_CREDENTIALS_ADDRESS_V2. The trap now watches the Bell/P30 Mainnet vote scheduled for 2026-11-23 17:00 UTC: q-protocol-version-history-list reverifyBy 2026-11-24, q-pc-protocol-upgrade-timing reverifyBy 2026-11-24, and q-edge-fresh-latest-protocol-version reverifyBy 2026-11-24.",
+        "disposition": "2026-11-10 author sweep: the November 3 Testnet upgrade completed and Testnet runs Protocol 30. Mainnet remains on Protocol 29 at ledger 65413007. The Mainnet vote remains scheduled for November 23 at 17:00 UTC. Keep the event-triggered post-vote recheck and re-probe both networks if the schedule changes. q-protocol-version-history-list reverifyBy 2026-11-24, q-pc-protocol-upgrade-timing reverifyBy 2026-11-24, and q-edge-fresh-latest-protocol-version reverifyBy 2026-11-24.",
         "caseIds": [
           "q-edge-fresh-latest-protocol-version",
           "q-pc-protocol-27-zipper",
@@ -3734,19 +3776,19 @@
           "q-protocol-version-history-list"
         ],
         "memberContentSha256": {
-          "q-edge-fresh-latest-protocol-version": "eb86f91504c5386f611da3603ac60b746b59806367dbba9b2a7142ef7404619b",
+          "q-edge-fresh-latest-protocol-version": "c0f445bb773bcd63d49b63abb185db42756572d1fc294e5bd783aa0ef94dff21",
           "q-pc-protocol-27-zipper": "316a2446eee191d3f047d421704ebafef24c410021a2f54ec2044b54ff8248e8",
-          "q-pc-protocol-upgrade-timing": "8f80d3cc015678f2174309fa84cc74adca15b0b5ef07e86e32e4bd05a8d049ad",
+          "q-pc-protocol-upgrade-timing": "b7a4b8918c66b7ab9c61f396fd9979140a500ff14d6f8d06ef489c95463b34ef",
           "q-protocol-27-cap-0071": "9ed87a2ed3cb1cd8a7668edc7b16d9eb030d80a300b28992edd5565385e50dd7",
-          "q-protocol-version-history-list": "dc6f6b4c6d4ad6d0f06da392e6ccc9e91454ae970ab32453e57bfa83cb072947"
+          "q-protocol-version-history-list": "a886ae6729b22370d868aab684621a7e4e03f7df841a6e7a333fed71048adb22"
         },
         "verdict": "consistent",
         "reSwept": {
-          "date": "2026-11-03",
-          "reason": "V4 re-sweep on 2026-11-03. Key-fact dedup only. Member hash eb86f91504c5386f611da3603ac60b746b59806367dbba9b2a7142ef7404619b. Notes, values, dates, and the Bell trigger stayed unchanged.",
+          "date": "2026-11-10",
+          "reason": "Independent re-sweep, .agents/rounds/2026-11-10-truth-maintenance.md. The trigger has not fired: Mainnet reported Protocol 29 and the vote stayed scheduled for 2026-11-23 17:00 UTC when I read Horizon, Mainnet RPC, and the status API on 2026-11-10. The three Bell-dependent members carry reverifyBy 2026-11-24, restored after review and named in the disposition, and the sentinels mainnet-protocol-29, mainnet-protocol-29-latest, mainnet-protocol-29-history, and bell-mainnet-vote-scheduled hold. q-pc-protocol-27-zipper and q-protocol-27-cap-0071 are unchanged; CAP-0084, CAP-0087, and CAP-0088 do not mention Soroban credential types, so no AddressV2 successor is in Bell.",
           "verdict": "consistent"
         },
-        "lastChecked": "2026-11-03"
+        "lastChecked": "2026-11-10"
       },
       {
         "triggerDateEvent": "2026-08-27 or any earlier Circle CCTP V2 fee/finality/support update",
@@ -3774,7 +3816,7 @@
       {
         "triggerDateEvent": "Publication or state change for SCF #46/#45/#44 after the fixed SCF #43 recap",
         "requiredRecheck": "Keep SCF #43's fixed result separate. Refresh current-round and open-RFP cases after each official phase change.",
-        "disposition": "Reviewed November 5 local / November 6 UTC: round 46 remains Submission through November 9; round 45 is the last concluded round and 44 ended. Round 43 remains fixed history. Official and Scout RFP rosters now agree on no open brief; the synthetic round is separate. The historical November 8 citation allowance remains dated. Reverify open-rfps November 10 and rfp-tooling November 11; no deadline extension.",
+        "disposition": "2026-11-10 author sweep: #46 moved to Initial Review after November 9 and #45 remains last concluded. The official awards index lists no open submission window and gives no #47 dates. The official RFP page and Scout still show no open brief, and Scout emits no synthetic submission row. #43 remains fixed history. Recheck each official phase change and next-round opening. Watch mechanisms after the 2026-11-10 review: scf-47-not-listed fires when a new round is listed; scf-46-submission-deadline fires on a return to Submission or a changed #46 deadline, and no longer on a review-phase label change; q-scf-current-round reverifyBy 2026-12-04 and q-edge-fresh-latest-scf-round reverifyBy 2027-01-07 backstop the phase wording.",
         "caseIds": [
           "q-edge-fresh-latest-scf-round",
           "q-scf-round-43-results",
@@ -3784,20 +3826,20 @@
           "q-scf-total-distributed"
         ],
         "memberContentSha256": {
-          "q-edge-fresh-latest-scf-round": "7406e45cf19d9818b998f43d80bf1b733c5dc085aef422a2dd27549a7d374769",
-          "q-scf-current-round": "cb2c10d2a8a6f19861ea56c1ba229e2cbea05cf00ec92afe2d121a56696e2240",
-          "q-scf-open-rfps": "6eabfc335e0969db9cf945bd1f25229665dca19f8b19cbd47b3b920d168a1c0e",
-          "q-scf-rfp-tooling": "4d5e3891ba78550312e7a4305897a46ed5b281f7a848c3d204dbfcfbe437f189",
+          "q-edge-fresh-latest-scf-round": "e203cc66cf29f15e59c6e1762172425da757fb13fe9cd8b2c9ae38a96b0fd381",
+          "q-scf-current-round": "931a7dc6bd296c556ec3f542102614a2ef605a4af4b7fea64d4dd49b7e145de0",
+          "q-scf-open-rfps": "a929140caaa76f302471433c6be1155a0b790b751dcb7c6558cd1c9a6fc1a4b1",
+          "q-scf-rfp-tooling": "fba6bba4e7d5b01cc136eb2ac2beb3b412727592c89041d748aab8314c72dc61",
           "q-scf-round-43-results": "19d1fcc482918a6ee4f7f1151ec579d2d4836c434a4a46773c09aa71d4666d72",
           "q-scf-total-distributed": "80080f126248fa8565ca203082fb3c47707658909bf51a27696ce06cfba43071"
         },
         "verdict": "consistent",
         "reSwept": {
-          "date": "2026-11-06",
-          "reason": "Only the funding provenance pointer changed after independent phase-transition review. The trigger, required checks, members and November deadlines remain unchanged.",
+          "date": "2026-11-10",
+          "reason": "Independent re-sweep, .agents/rounds/2026-11-10-truth-maintenance.md. The trigger fired once since the last check: SCF #46 moved from Submission to Initial Review after 2026-11-09, and the four changed members record it. q-scf-current-round, q-edge-fresh-latest-scf-round, q-scf-open-rfps, and q-scf-rfp-tooling agree on no open submission window, no #47 date, and no open brief on 2026-11-10. q-scf-round-43-results and q-scf-total-distributed are unchanged and keep SCF #43 as fixed history. The trap stays armed for the next round.",
           "verdict": "consistent"
         },
-        "lastChecked": "2026-11-06"
+        "lastChecked": "2026-11-10"
       },
       {
         "triggerDateEvent": "2027-03-02 YieldBlox/Reflector remediation recheck or publication of a final post-mortem/reimbursement decision",

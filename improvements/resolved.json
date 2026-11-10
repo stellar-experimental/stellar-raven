@@ -40,6 +40,24 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/e9a845464c0e7ae01efde4c4701561abd81cfed0/improvements/canonical-source/cs-003-sep-registry-status-disagrees-with-preambles.md"
     },
     {
+      "id": "cs-009",
+      "title": "The Stellar Security Portal lists 2 audit reports for the OpenZeppelin Stellar Contracts library: 0.1.0 and v0.3.0-rc.2. The…",
+      "service": "canonical-source",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-10",
+      "repo": "Inferara/soroban-security-portal",
+      "upstreamRefs": [
+        "https://github.com/Inferara/soroban-security-portal/issues/256"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Inferara/soroban-security-portal/issues/256"
+      ],
+      "liveRecheck": "2026-11-10T22:52:15Z GET https://stellarsecurityportal.com/api/v1/reports: 73 reports, all eight OpenZeppelin Stellar Contracts audits present (ids 2, 35, 85-90, v0.1.0 through v0.8.0); GET https://stellarlight.xyz/api/audits?auditor=OpenZeppelin returns the same eight.",
+      "reviewEvidence": "Codex frontier gpt-6-astra high (hc t3kv), distinct from the Claude Opus coordinator, re-derived at 2026-11-10T22:53-22:55Z: portal ids 85-90 approved and byte-identical to the six upstream PDFs, Scout matched 8, research search finds v0.5.0 and ranks v0.8.0 first for a latest-audit query. Report: .agents/rounds/2026-11-10-truth-maintenance.md",
+      "sourceCommit": "aaf8963a319c9a7b2aeadc84fbac3eb426d920fd",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/aaf8963a319c9a7b2aeadc84fbac3eb426d920fd/improvements/canonical-source/cs-009-security-portal-misses-openzeppelin-stellar-audits.md"
+    },
+    {
       "id": "cs-011",
       "title": "ecosystem/README.md lists SEP-0013 as Abandoned. The preamble of ecosystem/sep-0013.md says Status: Rejected (In favor of SEP-6). Rejected…",
       "service": "canonical-source",
@@ -1697,6 +1715,26 @@
       "reviewEvidence": "Author: coordinator Claude Opus 5.5 (live recheck after PR3080 merged). Independent reviewer: Codex frontier gpt-6-astra high (hc t3cc), research/audits/2026-11-09-improvements-sweep/review-astra-sd100.md, freshly fetched four page variants, Stack, Validators, Horizon ledgers, a 1,297-file source scan and llms-full.txt. Resolution comments: https://github.com/stellar/stellar-docs/issues/3078#issuecomment-6751220529 https://github.com/stellar/stellar-docs/pull/3080#issuecomment-6751221016",
       "sourceCommit": "433b3848a54bf44c151e2a4f8a6e935ad498a0aa",
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/433b3848a54bf44c151e2a4f8a6e935ad498a0aa/improvements/stellar-docs/sd-100-usdt0-launch-ledger-cadence.md"
+    },
+    {
+      "id": "sd-101",
+      "title": "The WebAuthn tutorial's “Complete code” contract omits definitions needed for compilation. It references ADMIN_SIGNER_COUNT,…",
+      "service": "stellar-docs",
+      "discovered": "2026-11-09",
+      "resolved": "2026-11-10",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/3079",
+        "https://github.com/stellar/stellar-docs/pull/3067",
+        "https://github.com/stellar/stellar-docs/pull/3081"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/3081"
+      ],
+      "liveRecheck": "2026-11-10T22:50:10Z GET https://developers.stellar.org/docs/build/guides/auth/check-auth-tutorials.md (SHA-256 58bc90a3…): the Tutorial 2 Complete code fence defines WEEK_OF_LEDGERS, ADMIN_SIGNER_COUNT and ClientDataJson, has no base64_url:: call, and cargo check and cargo test pass with no errors or warnings on soroban-sdk =29.0.1 (1 test passed).",
+      "reviewEvidence": "Codex frontier gpt-6-astra high (hc t3ks), distinct from the Claude Opus coordinator, re-derived at 2026-11-10T22:51-22:53Z: same page and fence hashes, cargo check and test exit 0, walkthrough agrees with the complete code, PR3081 deployed by the merge-commit Mintlify check. Residuals filed as sd-103 (stellar-docs#3097) and sd-104 (stellar-docs#3098). Ledger: .agents/rounds/2026-11-10-truth-maintenance.md",
+      "sourceCommit": "aaf8963a319c9a7b2aeadc84fbac3eb426d920fd",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/aaf8963a319c9a7b2aeadc84fbac3eb426d920fd/improvements/stellar-docs/sd-101-webauthn-complete-example-missing-definitions.md"
     },
     {
       "id": "sk-001",

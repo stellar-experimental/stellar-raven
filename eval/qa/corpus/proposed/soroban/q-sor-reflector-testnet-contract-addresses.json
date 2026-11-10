@@ -7,7 +7,7 @@
     "stellarDocs.get_doc_page"
   ],
   "golden": {
-    "answer": "As of 2026-11-03, Stellar's Oracle Providers page lists these Reflector public oracle contracts on Testnet:\n\n- Stellar Mainnet DEX: `CAVLP5DH2GJPZMVO7IJY4CVOD5MWEFTJFVPD2YY2FQXOQHRGHK4D6HLP`.\n- external CEXs and DEXs: `CCYOZJCOPG34LLQQ7N24YXBM7LL62R7ONMZ3G6WZAAYPB5OYKOMJRN63`.\n- fiat exchange rates: `CCSSOHTBL3LEWUCBBEB5NJFC2OKFRC74OWEIJIZLRJBGAAU4VMU5NV4W`.\n\nThe first contract runs on Testnet but reports Stellar Mainnet DEX data. Its data source does not make its deployment a Mainnet contract. Reflector's testnet configuration confirms the three addresses and their data sources. Check the current provider registry before use, especially after a Testnet reset. Use the Testnet RPC endpoint `https://soroban-testnet.stellar.org`. Its `getNetwork` response must identify `Test SDF Network ; September 2015`. Read each contract's interface from that endpoint before building the client. A successful interface read confirms the contract exists there; it does not prove the prices are correct or current.",
+    "answer": "As of 2026-11-10, Stellar's Oracle Providers page lists these Reflector public oracle contracts on Testnet:\n\n- Stellar Mainnet DEX: `CAVLP5DH2GJPZMVO7IJY4CVOD5MWEFTJFVPD2YY2FQXOQHRGHK4D6HLP`.\n- external CEXs and DEXs: `CCYOZJCOPG34LLQQ7N24YXBM7LL62R7ONMZ3G6WZAAYPB5OYKOMJRN63`.\n- fiat exchange rates: `CCSSOHTBL3LEWUCBBEB5NJFC2OKFRC74OWEIJIZLRJBGAAU4VMU5NV4W`.\n\nThe first contract runs on Testnet but reports Stellar Mainnet DEX data. Its data source does not make its deployment a Mainnet contract. Reflector's testnet configuration confirms the three addresses and their data sources. Check the current provider registry before use, especially after a Testnet reset. Use the Testnet RPC endpoint `https://soroban-testnet.stellar.org`. Its `getNetwork` response must identify `Test SDF Network ; September 2015`. Read each contract's interface from that endpoint before building the client. A successful interface read confirms the contract exists there; it does not prove the prices are correct or current.",
     "keyFacts": [
       "Lists the full Testnet contract address for each requested feed.",
       "Separates the contract's deployment network from its market data source.",
@@ -33,8 +33,8 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-11-03",
-    "reverifyBy": "2026-12-09",
+    "asOf": "2026-11-10",
+    "reverifyBy": "2026-12-17",
     "sources": [
       {
         "class": "A",
@@ -65,6 +65,36 @@
         "ref": "https://github.com/reflector-network/reflector-contract/blob/master/README.md",
         "observedAt": "2026-11-03",
         "note": "The provider distinguishes price data validity and timestamp checks from interface compatibility."
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/data/oracles/oracle-providers.md",
+        "observedAt": "2026-11-10",
+        "note": "The Testnet table lists the same full IDs for Mainnet DEX data, external exchanges, and fiat exchange rates."
+      },
+      {
+        "class": "C",
+        "ref": "https://orchestrator-testnet.reflector.network/config",
+        "observedAt": "2026-11-10",
+        "note": "The provider configuration reports network=testnet and pubnet, exchanges, and forex for the three matching oracle contract IDs."
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/networks.md",
+        "observedAt": "2026-11-10",
+        "note": "The official schedule lists December 16, 2026. The reset returns Testnet to genesis and clears ledger entries, transaction data and history. Self-hosted Horizon needs to rejoin and synchronize."
+      },
+      {
+        "class": "F",
+        "ref": "https://soroban-testnet.stellar.org",
+        "observedAt": "2026-11-10",
+        "note": "getNetwork returned the Testnet passphrase. stellar contract info interface --no-cache with explicit RPC URL and passphrase read all three full IDs successfully, each returning an 89-line interface."
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/reflector-network/reflector-contract/blob/master/README.md",
+        "observedAt": "2026-11-10",
+        "note": "The provider documents price validity and timestamps separately from the contract interface."
       }
     ],
     "corroboration": [
@@ -211,21 +241,63 @@
             "note": "The repository source repeats the reset and redeployment behavior."
           }
         ]
+      },
+      {
+        "claim": "All three listed Reflector Testnet IDs and their feed mappings remain unchanged. The Mainnet DEX label describes the data source.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/data/oracles/oracle-providers.md",
+            "observedAt": "2026-11-10",
+            "note": "The Testnet table lists the same full IDs for Mainnet DEX data, external exchanges, and fiat exchange rates."
+          },
+          {
+            "class": "C",
+            "ref": "https://orchestrator-testnet.reflector.network/config",
+            "observedAt": "2026-11-10",
+            "note": "The provider configuration reports network=testnet and pubnet, exchanges, and forex for the three matching oracle contract IDs."
+          },
+          {
+            "class": "F",
+            "ref": "https://soroban-testnet.stellar.org",
+            "observedAt": "2026-11-10",
+            "note": "getNetwork returned the Testnet passphrase. stellar contract info interface --no-cache with explicit RPC URL and passphrase read all three full IDs successfully, each returning an 89-line interface."
+          }
+        ]
+      },
+      {
+        "claim": "The Testnet RPC passphrase and all three deployed interfaces were verified read-only on 2026-11-10.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/networks.md",
+            "observedAt": "2026-11-10",
+            "note": "The official schedule lists December 16, 2026. The reset returns Testnet to genesis and clears ledger entries, transaction data and history. Self-hosted Horizon needs to rejoin and synchronize."
+          },
+          {
+            "class": "F",
+            "ref": "https://soroban-testnet.stellar.org",
+            "observedAt": "2026-11-10",
+            "note": "getNetwork returned the Testnet passphrase. stellar contract info interface --no-cache with explicit RPC URL and passphrase read all three full IDs successfully, each returning an 89-line interface."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-03",
-      "by": "Codex lane hm; public-source verification; proposal only; independent activation review pending",
+      "date": "2026-11-10",
+      "by": "Codex golden-truth author lane, 2026-11-10 truth-maintenance round",
       "evidence": [
-        "https://developers.stellar.org/docs/data/oracles/oracle-providers, read 2026-11-03: the three Testnet full IDs match https://orchestrator-testnet.reflector.network/config. The independent operator configuration reports network=testnet and pubnet/exchanges/forex data sources.",
-        "https://soroban-testnet.stellar.org, read 2026-11-03: getNetwork returned the Testnet passphrase. stellar contract info interface succeeded for each full ID with explicit RPC URL, passphrase, isolated config, and --no-cache.",
-        "Read-only execution 2026-11-03: stellar contract invoke for the external-exchange contract, lastprice with asset Other(BTC), explicit public source account, and --send=no returned a price and timestamp. No key was read, no account was created, and no transaction was submitted. The value is not a golden invariant.",
-        "Sibling sweep 2026-11-03: q-sor-reflector-integration-code, q-defi-reflector-oracle, q-defi-oracle-landscape-live, q-tool-oracle-repo-live, and q-soroban-oracle-defensive-consumption. Mainnet examples and ABI/security requirements remain consistent; none requires the three full Testnet IDs.",
-        "Proposal boundary: a concrete Testnet deployment lookup, separate from the existing broad ABI/trap and oracle-security questions. Independent duplicate and activation review remain pending.",
-        "Source-sentinel activation follow-up: source-sentinels.mjs accepts battery cases only. After activation, add an anchor for the Testnet address table on the live Oracle Providers page."
+        "https://developers.stellar.org/docs/data/oracles/oracle-providers.md",
+        "https://orchestrator-testnet.reflector.network/config",
+        "https://developers.stellar.org/docs/networks.md",
+        "https://soroban-testnet.stellar.org",
+        "https://github.com/reflector-network/reflector-contract/blob/master/README.md",
+        "Sibling sweep: q-sor-reflector-integration-code, q-defi-reflector-oracle, q-defi-oracle-landscape-live, q-tool-oracle-repo-live and q-soroban-oracle-defensive-consumption agree on the distinction between network, ABI and price validation. Proposal-only refresh."
       ],
       "rootCause": [
-        ".agents/TODO.md: Add golden cases for the confirmed HackMeridian gaps"
+        "freshness-drift"
       ]
     },
     "origin": "authored 2026-11 (HackMeridian coverage)"

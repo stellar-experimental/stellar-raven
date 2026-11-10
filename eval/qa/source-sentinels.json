@@ -4,17 +4,28 @@
     {
       "id": "scf-46-submission-deadline",
       "caseId": "q-scf-current-round",
-      "caseAsOf": "2026-11-02",
+      "caseAsOf": "2026-11-10",
       "url": "https://communityfund.stellar.org/awards",
       "check": {
         "kind": "present",
-        "pattern": "SCF #46 Submission Deadline to submit: November 9, 2026"
+        "pattern": "SCF #46 (?!Submission\\b)[A-Z][A-Za-z ]+ Deadline to submit: November 9, 2026"
+      }
+    },
+    {
+      "id": "scf-47-not-listed",
+      "caseId": "q-scf-current-round",
+      "caseAsOf": "2026-11-10",
+      "url": "https://communityfund.stellar.org/awards",
+      "check": {
+        "kind": "absent",
+        "pattern": "SCF #47\\b",
+        "guard": "SCF #46 [A-Za-z ]+ Deadline to submit: November 9, 2026"
       }
     },
     {
       "id": "scf-45-ended",
       "caseId": "q-scf-current-round",
-      "caseAsOf": "2026-11-02",
+      "caseAsOf": "2026-11-10",
       "url": "https://communityfund.stellar.org/awards",
       "check": {
         "kind": "present",
@@ -24,11 +35,22 @@
     {
       "id": "scf-46-submission-deadline-edge",
       "caseId": "q-edge-fresh-latest-scf-round",
-      "caseAsOf": "2026-11-02",
+      "caseAsOf": "2026-11-10",
       "url": "https://communityfund.stellar.org/awards",
       "check": {
         "kind": "present",
-        "pattern": "SCF #46 Submission Deadline to submit: November 9, 2026"
+        "pattern": "SCF #46 (?!Submission\\b)[A-Z][A-Za-z ]+ Deadline to submit: November 9, 2026"
+      }
+    },
+    {
+      "id": "scf-47-not-listed-edge",
+      "caseId": "q-edge-fresh-latest-scf-round",
+      "caseAsOf": "2026-11-10",
+      "url": "https://communityfund.stellar.org/awards",
+      "check": {
+        "kind": "absent",
+        "pattern": "SCF #47\\b",
+        "guard": "SCF #46 [A-Za-z ]+ Deadline to submit: November 9, 2026"
       }
     },
     {
@@ -158,7 +180,7 @@
     {
       "id": "mainnet-protocol-29",
       "caseId": "q-hist-quantum-preparedness-plan",
-      "caseAsOf": "2026-11-02",
+      "caseAsOf": "2026-11-10",
       "url": "https://horizon.stellar.org/",
       "check": {
         "kind": "present",
@@ -271,6 +293,58 @@
         "kind": "absent",
         "pattern": "Albedo",
         "guard": "Varial Browser Extension"
+      }
+    },
+    {
+      "id": "scf-rfp-q4-roster",
+      "caseId": "q-scf-open-rfps",
+      "caseAsOf": "2026-11-10",
+      "url": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+      "check": {
+        "kind": "present",
+        "pattern": "Current Open RFPs \\*\\*\\*October 2026: New Q4 RFPs are coming soon\\.\\*\\*\\* [^<]*<details> <summary><strong>Coming Soon</strong></summary> ### </details> <details> <summary><strong>Coming Soon</strong></summary> ### </details> If you have"
+      }
+    },
+    {
+      "id": "scf-rfp-q4-tooling-roster",
+      "caseId": "q-scf-rfp-tooling",
+      "caseAsOf": "2026-11-10",
+      "url": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
+      "check": {
+        "kind": "present",
+        "pattern": "Current Open RFPs \\*\\*\\*October 2026: New Q4 RFPs are coming soon\\.\\*\\*\\* [^<]*<details> <summary><strong>Coming Soon</strong></summary> ### </details> <details> <summary><strong>Coming Soon</strong></summary> ### </details> If you have"
+      }
+    },
+    {
+      "id": "mainnet-protocol-29-latest",
+      "caseId": "q-edge-fresh-latest-protocol-version",
+      "caseAsOf": "2026-11-10",
+      "url": "https://horizon.stellar.org/",
+      "check": {
+        "kind": "present",
+        "pattern": "\"current_protocol_version\": ?29\\b",
+        "guard": "\"network_passphrase\": ?\"Public Global Stellar Network ; September 2015\""
+      }
+    },
+    {
+      "id": "mainnet-protocol-29-history",
+      "caseId": "q-protocol-version-history-list",
+      "caseAsOf": "2026-11-10",
+      "url": "https://horizon.stellar.org/",
+      "check": {
+        "kind": "present",
+        "pattern": "\"current_protocol_version\": ?29\\b",
+        "guard": "\"network_passphrase\": ?\"Public Global Stellar Network ; September 2015\""
+      }
+    },
+    {
+      "id": "bell-mainnet-vote-scheduled",
+      "caseId": "q-pc-protocol-upgrade-timing",
+      "caseAsOf": "2026-11-10",
+      "url": "https://status.stellar.org/api/v2/scheduled-maintenances/upcoming.json",
+      "check": {
+        "kind": "present",
+        "pattern": "\"name\":\\s*\"Stellar Public Network Protocol Upgrade Vote\".{0,7000}?\"scheduled_for\":\\s*\"2026-11-23T17:00:00\\.000Z\""
       }
     }
   ]
