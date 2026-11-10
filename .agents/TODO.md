@@ -54,16 +54,6 @@ the backend's rate limits and terms.
 
 ## Improvements follow-up
 
-### Decide whether the ledger close-time golden still accepts an undated 5–7 seconds
-
-Owner decision. Since 2026-11-09 (sd-100 resolved), no served Docs page states 5–7 seconds.
-`q-protocol-ledger-close-time` key fact 1 still accepts "the documented 5–7 seconds, with a date
-or source", so "5–7 seconds per the Stellar docs" names a source that no longer says it. Third-party
-pages and caches can still carry the figure. Decide whether the 5–7 acceptance should require a
-pre-Protocol-28 (before 2026-09-16) or pre-2026-11-09 date; any change is its own `golden-truth`
-pass. Raised by the independent golden review in
-[the sweep](rounds/2026-11-09-improvements-sweep.md).
-
 ### Recheck November 5 partial fixes after deployment or owner data jobs
 
 The [round ledger](rounds/2026-11-05-truth-maintenance.md) and its per-finding tables cover all

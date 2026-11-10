@@ -124,3 +124,19 @@ note fixes (a rubric word `correct` in the builder note; a missing resolved-ledg
 ledger close-time note) and recommended a re-walkable PR2945 evidence line and dated corroboration
 rows for both coordinator cases. All four were applied, and the four affected clusters re-stamped.
 Its owner question about the 5–7-second grading acceptance is queued in `.agents/TODO.md`.
+
+## Owner decision: ledger close-time 5–7 acceptance (2026-11-10)
+
+The owner decided that `q-protocol-ledger-close-time` accepts 5–7 seconds only as the cadence
+before Protocol 28 (Mainnet ledger 64458446, 2026-09-16), as a soft requirement. A 5–7 figure
+presented as current, undated, or attributed to current Docs misses key fact 1 as a minor error. It
+fires no avoid and never makes the answer wrong by itself. Key fact 1, the grading sentences in the
+notes and the as-of date (now 2026-11-10, from a fresh 199-ledger sample) changed; the avoid item
+did not.
+
+Clusters 017 and 065 were re-swept, and the stale "Docs still say 5–7" clause in the cluster-065
+note was corrected. Independent review by Claude Fable high
+([review-lct-fable.md](../../research/audits/2026-11-09-improvements-sweep/review-lct-fable.md)):
+approve with fixes. All four findings were applied: the `verified.by` provenance, the key-fact
+disjunction, the both-figures and past-framed grading, and the as-of refresh. The
+`.agents/TODO.md` item is closed.
