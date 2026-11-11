@@ -1737,6 +1737,44 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/aaf8963a319c9a7b2aeadc84fbac3eb426d920fd/improvements/stellar-docs/sd-101-webauthn-complete-example-missing-definitions.md"
     },
     {
+      "id": "sd-103",
+      "title": "The \"Tutorial 1: time based restriction on token transfers\" complete code does not compile with soroban-sdk 29.0.1. The complete contract…",
+      "service": "stellar-docs",
+      "discovered": "2026-11-10",
+      "resolved": "2026-11-11",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/3097",
+        "https://github.com/stellar/stellar-docs/pull/3102"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/3102"
+      ],
+      "liveRecheck": "2026-11-11T20:22:33Z GET https://developers.stellar.org/docs/build/guides/auth/check-auth-tutorials.md (SHA-256 9c82b212b21662b67c06a527dfbd587d5d627f1971444fced3803ee2eb72f57a). The verbatim Tutorial 1 complete contract and test fence with the page's dev-dependencies and soroban-sdk =29.0.1 (rustc 1.93.0): cargo test exit 0, test_token_auth passes, no warnings. The contract imports crypto::Hash, the test sets the timestamp instead of protocol_version 1, and the time-limit check is assert_eq!.",
+      "reviewEvidence": "Codex frontier gpt-6-astra high (hc t3pg), distinct from the Claude Opus coordinator, re-derived at 2026-11-11T20:23Z: same page SHA-256, verbatim fences byte-checked, cargo test exit 0 with no warnings, upstream issue closed completed and PR3102 merged with maintainer approval; the live page carries the fix. No residual. Review: research/audits/2026-11-11-sd103-sd104/review-astra.md",
+      "sourceCommit": "1991573350ef43fb49763f9d9cb1443622b72d8f",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/1991573350ef43fb49763f9d9cb1443622b72d8f/improvements/stellar-docs/sd-103-check-auth-tutorial-1-complete-code-does-not-build.md"
+    },
+    {
+      "id": "sd-104",
+      "title": "The WebAuthn smart wallet in \"Tutorial 2: implementing a smart wallet (WebAuthn)\" can lose its last admin. set_signer increments…",
+      "service": "stellar-docs",
+      "discovered": "2026-11-10",
+      "resolved": "2026-11-11",
+      "repo": "stellar/stellar-docs",
+      "upstreamRefs": [
+        "https://github.com/stellar/stellar-docs/issues/3098",
+        "https://github.com/stellar/stellar-docs/pull/3104"
+      ],
+      "resolvingRefs": [
+        "https://github.com/stellar/stellar-docs/pull/3104"
+      ],
+      "liveRecheck": "2026-11-11T20:22:33Z GET https://developers.stellar.org/docs/build/guides/auth/check-auth-tutorials.md (SHA-256 9c82b212b21662b67c06a527dfbd587d5d627f1971444fced3803ee2eb72f57a). In the walkthrough and complete code, set_signer increments ADMIN_SIGNER_COUNT only when the ID is not a persistent admin. The verbatim Tutorial 2 complete contract with soroban-sdk =29.0.1, serde 1 and serde-json-core 0.6: cargo test exit 0, test and test_readd_admin_keeps_last_admin pass (re-added sole admin, then try_remove returns Err(Ok(Error::NotPermitted))), no warnings.",
+      "reviewEvidence": "Codex frontier gpt-6-astra high (hc t3pg), distinct from the Claude Opus coordinator, re-derived at 2026-11-11T20:23Z: same page SHA-256, supplied tests pass, and two independently written tests pass (original trigger; promotion, demotion, replacement and removal keep the count and the last admin). Upstream issue closed completed and PR3104 merged with maintainer approval. No residual. Review: research/audits/2026-11-11-sd103-sd104/review-astra.md",
+      "sourceCommit": "1991573350ef43fb49763f9d9cb1443622b72d8f",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/1991573350ef43fb49763f9d9cb1443622b72d8f/improvements/stellar-docs/sd-104-webauthn-tutorial-admin-count-allows-last-admin-removal.md"
+    },
+    {
       "id": "sk-001",
       "title": "The upstream stellar-dev/smart-contracts skill instructed the stale build target wasm32-unknown-unknown: SKILL.md lines ~137 and ~145,…",
       "service": "skills",
