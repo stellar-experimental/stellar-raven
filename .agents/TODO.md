@@ -79,11 +79,9 @@ issues do not need reminders.
   green and awaiting review; respond to substantive review without a keepalive rebase.
 - Docs continuation (2026-11-09): sd-091 and sd-098 are retired with ten other deployed fixes
   ([ledger](rounds/2026-11-09-upstream-handoffs.md)). sd-101 retired on 2026-11-10 after
-  PR3081 deployed; its review found two separate defects on the same page, filed as sd-103
-  ([stellar-docs#3097](https://github.com/stellar/stellar-docs/issues/3097), Tutorial 1 does not
-  build) and sd-104 ([stellar-docs#3098](https://github.com/stellar/stellar-docs/issues/3098),
-  admin count) ([ledger](rounds/2026-11-10-truth-maintenance.md)). Recheck by compiling and testing
-  the served fences when a fix deploys. sd-100 retired on 2026-11-09
+  PR3081 deployed. Its two successors, sd-103 (Tutorial 1 build) and sd-104 (admin count),
+  retired on 2026-11-11 after PR3102 and PR3104 deployed
+  ([ledger](rounds/2026-11-11-sd103-sd104-retirement.md)). sd-100 retired on 2026-11-09
   ([sweep](rounds/2026-11-09-improvements-sweep.md)). sd-095 and sd-097 were retired earlier; see the
   [resolution ledger](rounds/2026-11-06-playground-final-resolution.md).
   The [continuation table](rounds/2026-11-06-remaining-sweep/docs.md) records all current
