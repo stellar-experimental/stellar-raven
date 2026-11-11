@@ -81,7 +81,7 @@ describe("demo model config", () => {
   });
 
   it("keeps the primary with the qualified cross-vendor fallback and conservative sampling", () => {
-    expect(DEMO_PRIMARY_MODEL).toBe("openai/gpt-5.6-terra");
+    expect(DEMO_PRIMARY_MODEL).toBe("openai/gpt-6.1-terra");
     expect(DEMO_FALLBACK_MODEL).toBe("anthropic/claude-haiku-5.5");
     expect(DEMO_GROK_CONTROL_MODEL).toBe("xai/grok-4.6");
     expect(DEMO_KIMI_CONTROL_MODEL).toBe("@cf/moonshotai/kimi-k2.7-code");

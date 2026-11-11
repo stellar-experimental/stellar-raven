@@ -11,7 +11,7 @@ export type DemoModelConfig = {
 export type DemoReasoningEffort = "none" | "minimal" | "low" | "medium" | "high" | "xhigh";
 export type DemoOpenAiApiMode = "chat" | "responses";
 
-export const DEMO_PRIMARY_MODEL = "openai/gpt-5.6-terra";
+export const DEMO_PRIMARY_MODEL = "openai/gpt-6.1-terra";
 export const DEMO_FALLBACK_MODEL = "anthropic/claude-haiku-5.5";
 export const DEMO_GROK_CONTROL_MODEL = "xai/grok-4.6";
 export const DEMO_KIMI_CONTROL_MODEL = "@cf/moonshotai/kimi-k2.7-code";

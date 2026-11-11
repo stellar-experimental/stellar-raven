@@ -81,7 +81,7 @@ import { demoReasoningEffortOverride } from "../src/demo/model-config.ts";
  */
 export const DEFAULT_MODELS = [
   "openai/gpt-5.6-sol",
-  "openai/gpt-5.6-terra",
+  "openai/gpt-6.1-terra",
   "openai/gpt-5.6-luna",
   "anthropic/claude-fable-5",
   "anthropic/claude-opus-5",
