@@ -8,9 +8,9 @@ answers, no tool-loop regressions).
 
 ## Scope
 
-The owner asked for a proportionate re-check. `gpt-6.1-terra` was the only candidate:
-`gpt-6.1-sol` still lacks effort `none` and is not cheaper than the primary (see the November 3
-record). The [November 9 decision](2026-11-09-playground-product-decision.md) could not run either
+The owner asked for a proportionate re-check of both `gpt-6.1` models. Effort `none` is not a
+requirement, so `gpt-6.1-sol`, which does not support it, ran at `low` (see "`gpt-6.1-sol` at
+effort `low`" below). The [November 9 decision](2026-11-09-playground-product-decision.md) could not run either
 `gpt-6.1` model because its OpenAI evaluation account answered "account inactive". The gauntlet
 below showed that route working again.
 
@@ -57,6 +57,26 @@ switch rule. The November 3 diagnostic recorded the
 same OpenAI cyber-safety refusal on `q-n3-cross-thread-memory-exfiltration` for both Terra
 models. It is not in this sample and is not a difference between them.
 
-Spend: $0.355 gauntlet + $1.383 answers + $2.016 judge = $3.75.
+## `gpt-6.1-sol` at effort `low`
+
+The owner confirmed that effort `none` is not a requirement, so `gpt-6.1-sol` ran at its lowest
+supported effort, `low`. It used the same 30 IDs and judge, on clean `9e6dd201`. That makes the
+Terra 6.1 run above a like-for-like comparator: same SDK, catalog, and goldens, and live data only
+minutes apart.
+
+The gauntlet passed 8/8 (reported $0.496), and every turn was logged as `openai/gpt-6.1-sol`.
+
+| Model | Correct | Partial | Wrong | Tool failures | Answer USD | p50 s | p90 s |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| `gpt-6.1-terra`, effort `none` | 11 | 19 | 0 | 0 | 1.383 | 17.8 | 25.1 |
+| `gpt-6.1-sol`, effort `low` | 9 | 21 | 0 | 0 | 1.743 | 20.6 | 31.2 |
+
+Sol scored lower on two cases (`q-gap-lumen-exact-document-empty` and
+`q-ti-bindings-to-nextjs-integration`, both correct → partial) and higher on none. It also cost
+26% more and was slower. Terra 6.1 stays primary. Effort `low` was not tried for Terra 6.1: it
+would add latency and cost, and Terra already has no wrong answers on this sample.
+
+Spend: Terra $0.355 gauntlet + $1.383 answers + $2.016 judge = $3.75; Sol $0.496 + $1.743 +
+$1.978 = $4.22; total $7.97.
 
 Raw results are local-only under `eval/local-lanes/playground-recheck-2026-11-10/`.
