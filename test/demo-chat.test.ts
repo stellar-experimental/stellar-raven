@@ -172,7 +172,7 @@ describe("demo chat provider failures", () => {
       [finish()]
     ]);
     expect(finalEvent).toMatchObject({
-      attemptedModels: ["openai/gpt-5.6-terra", "anthropic/claude-haiku-5.5"],
+      attemptedModels: ["openai/gpt-6.1-terra", "anthropic/claude-haiku-5.5"],
       finishReason: "stop",
       stopReasonClass: "missing-final-text",
       hadFinalText: false,
@@ -190,7 +190,7 @@ describe("demo chat provider failures", () => {
         [{ type: "error", error: providerError("latest rate limit", 429) }]
       ],
       expected: {
-        attemptedModels: ["openai/gpt-5.6-terra", "anthropic/claude-haiku-5.5"],
+        attemptedModels: ["openai/gpt-6.1-terra", "anthropic/claude-haiku-5.5"],
         providerErrorStatus: 429,
         providerErrorAttempt: 2,
         providerErrorModel: "anthropic/claude-haiku-5.5",
@@ -459,7 +459,7 @@ describe("demo chat per-model configuration", () => {
 
   it("preserves each measured request in the shipped mixed tuple and honors explicit chat effort", async () => {
     const defaults = await captureAttemptRequests(undefined);
-    expect(defaults.requests.map((request) => request.slug)).toEqual(["openai/gpt-5.6-terra", "anthropic/claude-haiku-5.5"]);
+    expect(defaults.requests.map((request) => request.slug)).toEqual(["openai/gpt-6.1-terra", "anthropic/claude-haiku-5.5"]);
     expect(defaults.requests.map((request) => request.providerOptions)).toEqual([
       { openai: { reasoningEffort: "none", store: false } },
       { anthropic: { thinking: { type: "adaptive" }, effort: "low" } }
@@ -467,14 +467,14 @@ describe("demo chat per-model configuration", () => {
     for (const event of defaults.events.filter((event) => event.evt === "demo-chat-start" || event.evt === "demo-chat")) {
       expect(event).toMatchObject({ reasoningEffort: "none", reasoningEffortSource: "default" });
     }
-    const measuredPrimary = await captureAttemptRequests(undefined, "openai/gpt-5.6-terra", { DEMO_REASONING_EFFORT_OVERRIDE: "none" });
+    const measuredPrimary = await captureAttemptRequests(undefined, "openai/gpt-6.1-terra", { DEMO_REASONING_EFFORT_OVERRIDE: "none" });
     const measuredFallback = await captureAttemptRequests(undefined, "anthropic/claude-haiku-5.5", { DEMO_REASONING_EFFORT_OVERRIDE: "none" });
     expect(defaults.requests).toEqual([measuredPrimary.requests[0], measuredFallback.requests[0]]);
     expect(defaults.requests[0]?.plugin).toBe(modelConfig.openAiResponses);
-    const chat = await captureAttemptRequests(undefined, "openai/gpt-5.6-terra", { DEMO_OPENAI_API_MODE: "chat" });
+    const chat = await captureAttemptRequests(undefined, "openai/gpt-6.1-terra", { DEMO_OPENAI_API_MODE: "chat" });
     expect(chat.requests[0]?.plugin).toBe(openaiChat);
     expect(chat.requests[0]?.providerOptions).toEqual({ openai: { store: false } });
-    const explicit = await captureAttemptRequests(undefined, "openai/gpt-5.6-terra", {
+    const explicit = await captureAttemptRequests(undefined, "openai/gpt-6.1-terra", {
       DEMO_OPENAI_API_MODE: "chat", DEMO_REASONING_EFFORT_OVERRIDE: "low"
     });
     expect(explicit.requests[0]?.providerOptions).toEqual({ openai: { reasoningEffort: "low", store: false } });

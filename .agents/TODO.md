@@ -543,33 +543,6 @@ Done when: an `agents` release forwards Anthropic provider options for `anthropi
 package, so it is not `fixed-upstream` evidence. The resolver accepts only `fixed-upstream`
 records, so that close-out needs a reviewed lifecycle decision.
 
-### Re-check the Playground primary when a new OpenAI model ships
-
-On 2026-11-03 a paired 30-case semantic check kept `openai/gpt-5.6-terra` as the primary.
-`openai/gpt-6-luna` cost $0.094 against $1.883 in answer spend, but scored 6 correct, 18 partial,
-and 6 wrong against Terra's 8, 17, and 5. Luna had three new wrong answers (two hand-confirmed) and
-two tool-loop failures. Terra had two new wrong answers (both hand-confirmed) and no tool-loop
-failures. The switch rule allows no new wrong answers and no tool-loop regressions. The numbers
-are in [the re-check record](../research/audits/2026-11-03-playground-model-recheck.md). The
-November 9 decision kept that primary and replaced the `openai/gpt-5.6-luna` fallback with
-`anthropic/claude-haiku-5.5`
-([decision record](../research/audits/2026-11-09-playground-product-decision.md)). Both `gpt-6.1`
-challengers were in its candidate set but could not run on the evaluation account, so the primary
-re-check against them is still open.
-
-The recovered November 3–4 sweep supplies the recorded transport gauntlets for the SDK upgrade
-to `@ai-sdk/openai@4.0.108`, which fixes the earlier dropped-effort failure. The November 6
-integration keeps the shipped model tuple and adds offline regression checks. The sweep's stage 3
-stopped before a final decision; its partial results do not authorize promotion. See the
-[recovered sweep ledger](rounds/2026-11-03-playground-model-sweep.md) and
-[cleanup record](rounds/2026-11-06-main-only-cleanup.md). Any resumed paid collection needs a fresh
-reviewed plan, complete comparable rows, evidence-pack validation, and production-transport gates.
-OpenAI's cyber-safety filter also refused `q-n3-cross-thread-memory-exfiltration` for both Terra
-models in the earlier 10-case diagnostic; no current fix is asserted.
-
-Done when: a later OpenAI model passes the gauntlet on the installed SDK and is not worse than the
-primary on a paired 30-case semantic check, or the owner decides to stop re-checking.
-
 ## Eval instruments
 
 ### Clarify the model-facing `codemode.describe` response shape
