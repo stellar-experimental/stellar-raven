@@ -234,12 +234,14 @@ Run it when the judging rubric, prompt, evidence pack, or judge adapter changes.
 
 ## Step 2 — live server (only for QA / agentic / live-data lanes)
 
-Reuse a running server first. Look for a pane already running `npm run dev:eval` (`herdr pane list`)
-and read its bound port from that pane's output (`herdr pane read <id>`). Pass that port to the
+Reuse a running server first. Look for a terminal already running `npm run dev:eval` (`hc ls`,
+usually named `dev-eval`; confirm with `hc get <t>`) and read its bound port from its output
+(`hc read <t>`). Pass that port to the
 eval runner. Do not start a duplicate Wrangler process.
 
-If no dev pane exists and a live lane needs one, split your own pane and run
-`npm run dev:eval -- --port <port>` there. Close only a pane you split yourself, and stop it before
+If no dev server exists and a live lane needs one, start it as your own child:
+`hc run --bg --name dev-eval npm run dev:eval -- --port <port>`, then
+`hc wait dev-eval --output Ready`. Stop only a server you started, and stop it before
 finalizing. The `dev:eval` launcher adds the required `--host localhost` flag: without it, the
 production routes make Wrangler present a public hostname, the `DEV_ALLOW_UNAUTHENTICATED`
 loopback gate never fires, and every request returns 401. Routing and plan lanes need no server.

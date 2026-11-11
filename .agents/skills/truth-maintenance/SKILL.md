@@ -137,7 +137,7 @@ for the next follow-up instead of relying on memory.
 
 ## Closeout checklist
 
-- The ledger has lane verdicts, exact commands/probes, spawned pane IDs, and final status.
+- The ledger has lane verdicts, exact commands/probes, spawned terminal IDs, and final status.
 - Every spawned agent is idle/finished; useful output is incorporated; no orphan follow-up
   `.agents/TODO.md` entry remains unless it names a concrete next check.
 - Drift-generated artifacts are regenerated, not hand-edited.

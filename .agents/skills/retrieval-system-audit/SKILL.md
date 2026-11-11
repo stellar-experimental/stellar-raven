@@ -10,7 +10,7 @@ Measure the complete retrieval system before changing it. Ship only general impr
 ## Use the companion runbooks
 
 1. Read `PLAN.md`, `ARCHITECTURE.md`, `eval/EVALS.md`, and `eval/qa/README.md`.
-2. Use the global `herdr` skill to run an explicitly requested multi-model audit, one agent per pane.
+2. Run an explicitly requested multi-model audit as `AGENTS.md` "Coordination" describes, one agent per lane.
 3. Use `run-evals` for every evaluation run and spend decision.
 4. Use `golden-truth` before changing a golden question or answer.
 5. Use `improvements-pipeline` for verified upstream defects.
@@ -96,7 +96,7 @@ Use reviewers who did not author the change. Reconcile every finding before fina
 
 Run the required tests, smoke tests, build, routing gate, relevant evals, improvements lint, and secret scan. Record exact artifacts, costs, failures, and rejected hypotheses.
 
-Close only panes you split yourself, after reviewing their handoffs. Reconcile `.agents/TODO.md`, the round ledger, and the worktree.
+Stop only the lanes you started, after reviewing their handoffs. Reconcile `.agents/TODO.md`, the round ledger, and the worktree.
 
 ## Evidence rule
 

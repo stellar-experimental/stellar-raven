@@ -43,35 +43,34 @@ in a networkless Dynamic Worker; host adapters own all service traffic, policy, 
 - Run the narrowest relevant eval or maintenance command in addition to the baseline; the selected
   skill defines the exact gate for eval, drift, golden-truth, improvements, and observability work.
 - Scan before committing: `npm run secrets:scan -- --tree`.
-- Do not start a second Wrangler process. Reuse the pane that already runs `npm run dev` (manual
-  testing) or `npm run dev:eval` (eval lanes; see `run-evals`), and read its bound URL from that
-  pane's output.
+- Do not start a second Wrangler process. Reuse the terminal that already runs `npm run dev`
+  (manual testing) or `npm run dev:eval` (eval lanes; see `run-evals`), and read its bound URL
+  from that terminal's output (find it with `hc ls` and `hc get <t>`, then `hc read <t>`).
 - Generated outputs are rebuilt by their `package.json` scripts, never edited by hand.
 
 ## Coordination
 
-The owner runs agents under Herdr, and the rules in this section and the next describe that setup.
-Without Herdr, work in one session. State in the pull request that the independent review is
-outstanding; the owner runs it.
+The owner runs agents under herdr-core (`hc`); `$HC_TERMINAL_ID` is set inside it. The rules in
+this section and the next describe that setup. Without it, work in one session. State in the
+pull request that the independent review is outstanding; the owner runs it.
 
-- Agents, panes, and worktrees run under Herdr. Use the global `herdr` skill for the CLI contract;
-  it is the authority on command syntax, lifecycle states, and ID handling. Confirm
-  `HERDR_ENV=1` before any control command, and read IDs out of JSON responses rather than
-  predicting them.
-- Spawn a reviewer or a parallel lane by splitting a pane from your own —
-  `herdr pane split --current --direction <right|down> --cwd "$PWD" --no-focus`; `--direction` is
-  required — then `herdr agent start <name> --kind <codex|grok|claude> --pane <id> -- <cli args>`.
-  Name the model and effort explicitly after `--`. Wait with `herdr agent wait <name>` or
-  `herdr agent prompt … --wait`; do not poll.
-- **Pane and agent ownership is recursive:** control only the pane you occupy and panes you
-  split yourself. Never close, interrupt, restart, send input to, rename, move, focus, resize, or
-  take over a parent, a sibling, an unrelated pane, or another agent's descendants. Apply the same
-  rule to every sub-agent. Idleness, staleness, a completed handoff, or a request to clean up does
-  not transfer ownership: leave a pane you do not own alone and ask its owning agent to reconcile
-  it. Record the pane IDs you create; unknown provenance means not owned. If the owner is unknown
-  or unavailable, ask the user for an explicit exception naming the exact target; never adopt it.
-- `herdr agent read` cannot recover output that scrolled off an alternate screen. For any reviewer
-  whose findings matter, have the agent write them to a Markdown file and reply with only the path.
+- Use the global `herdr-core` skill for the `hc` contract (`hc --skill`). Address a lane by the
+  `--name` you gave it.
+- Start each reviewer or parallel lane as a background child with its first task on the launch
+  line: `hc run --bg --name <lane> --cwd <worktree> <cli> <model and effort flags> "<task>"`.
+  [`.agents/model-roster.md`](.agents/model-roster.md) has the exact lines. Wait with
+  `hc wait --children any` or `all`; do not sleep or poll.
+- **Terminal ownership is recursive:** control only your own terminal and the children you
+  started. Never interrupt, kill, rename, or take over a parent, a sibling, an unrelated
+  terminal, or another agent's children, and send them no input except the report your parent
+  asked for. Apply the same rule to every sub-agent.
+  Idleness, staleness, a completed handoff, or a request to clean up does not transfer ownership:
+  leave a terminal you do not own alone and ask its owning agent to reconcile it. Record the
+  terminal IDs you create; unknown provenance means not owned. If the owner is unknown or
+  unavailable, ask the user for an explicit exception naming the exact target; never adopt it.
+- Screen history is not a record. For any reviewer whose findings matter, have the agent write
+  them to a Markdown file and report only the path to you: put `hc send <your terminal ID>
+  '<path>'` in its task (`$HC_TERMINAL_ID` in a double-quoted launch task expands to your ID).
 - Durable working state lives in the repository, never in an external tracker. Own-repo work goes
   to `.agents/TODO.md`; a multi-lane round keeps its ledger at
   `.agents/rounds/<YYYY-MM-DD>-<slug>.md`. See `.agents/README.md` for the routing table.
@@ -80,8 +79,7 @@ outstanding; the owner runs it.
 
 ## Model routing for repo-work fan-out
 
-Launch fan-out through Herdr panes, one agent per lane. State model and effort explicitly on the
-`herdr agent start` command line. Route by role tier:
+Route each lane by role tier:
 
 - **Codex frontier** at high — hard implementation, dense analysis, and security review.
 - **Codex workhorse** at high — routine implementation and bounded verification.
@@ -143,8 +141,8 @@ Choose the independent reviewer under "Coordination" by tier, not by a fixed mod
 Use the matching skill when the task triggers it. Each skill's frontmatter says when.
 Repository skills: `truth-maintenance`, `live-drift-resolution`, `run-evals`,
 `improvements-pipeline`, `golden-truth`, `retrieval-system-audit`,
-`cloudflare-observability-review`, and `audit-reviewability`. The global `herdr` skill owns pane,
-agent, and worktree control.
+`cloudflare-observability-review`, and `audit-reviewability`. The global `herdr-core` skill owns
+agent and terminal control.
 
 Add durable repo-wide rules here only after recurring friction. Put specialized instructions in the
 closest relevant skill or directory-level `AGENTS.md`.
