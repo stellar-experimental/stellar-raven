@@ -107,7 +107,7 @@ facts. Do this after regeneration and again after any corrective edits:
   `improvements/` findings, use `improvements-pipeline` to inspect the upstream issue/PR
   state and re-run the original trigger before changing statuses.
 
-For non-trivial drift, split this audit across reviewers in their own panes instead of one agent doing
+For non-trivial drift, split this audit across reviewer lanes instead of one agent doing
 all checks serially. Use separate reviewer briefs for the categories above, have each
 reviewer append a verdict with file:line evidence to the round ledger, then reconcile
 every finding before committing. Reviewer briefs should be narrow enough to verify, for
@@ -251,7 +251,7 @@ matches itself, so upstream shape drift on a declared op must be re-verified aga
 service, not against the runner's own contract:
 
 - **Re-run the affected runners' live smoke**: against a live-serving instance (for example, the
-  existing `npm run dev` pane and its bound URL required by
+  existing `npm run dev` terminal and its bound URL required by
   [`AGENTS.md` “Commands and verification”](../../../AGENTS.md#commands-and-verification) and
   [`Coordination`](../../../AGENTS.md#coordination)), `execute` a `codemode.skill.run(...)` call
   for each affected runnable id with a representative input, and confirm the envelope: `ok`

@@ -549,9 +549,13 @@ On 2026-11-03 a paired 30-case semantic check kept `openai/gpt-5.6-terra` as the
 `openai/gpt-6-luna` cost $0.094 against $1.883 in answer spend, but scored 6 correct, 18 partial,
 and 6 wrong against Terra's 8, 17, and 5. Luna had three new wrong answers (two hand-confirmed) and
 two tool-loop failures. Terra had two new wrong answers (both hand-confirmed) and no tool-loop
-failures. The switch rule allows no new wrong answers and no tool-loop regressions. That check retained `openai/gpt-5.6-luna` as fallback. The
-numbers are in
-[the re-check record](../research/audits/2026-11-03-playground-model-recheck.md).
+failures. The switch rule allows no new wrong answers and no tool-loop regressions. The numbers
+are in [the re-check record](../research/audits/2026-11-03-playground-model-recheck.md). The
+November 9 decision kept that primary and replaced the `openai/gpt-5.6-luna` fallback with
+`anthropic/claude-haiku-5.5`
+([decision record](../research/audits/2026-11-09-playground-product-decision.md)). Both `gpt-6.1`
+challengers were in its candidate set but could not run on the evaluation account, so the primary
+re-check against them is still open.
 
 The recovered November 3–4 sweep supplies the recorded transport gauntlets for the SDK upgrade
 to `@ai-sdk/openai@4.0.108`, which fixes the earlier dropped-effort failure. The November 6

@@ -5,7 +5,7 @@ Four things live here. Keep them separate.
 | path | holds | lifetime |
 |---|---|---|
 | `skills/` | repeatable task workflows (`<name>/SKILL.md`) | durable |
-| `model-roster.md` | the map from `AGENTS.md` model tiers to exact model IDs | durable; update when a CLI catalog changes |
+| `model-roster.md` | the map from `AGENTS.md` model tiers to exact model IDs and launch lines | durable; update when a CLI catalog changes |
 | `TODO.md` | the own-repo work queue, its priorities, and open owner decisions | until each item is done |
 | `rounds/` | one dated ledger per multi-lane round | until reconciliation; retain only cited evidence or a unique durable decision |
 
