@@ -76,7 +76,18 @@ Sol scored lower on two cases (`q-gap-lumen-exact-document-empty` and
 26% more and was slower. Terra 6.1 stays primary. Effort `low` was not tried for Terra 6.1: it
 would add latency and cost, and Terra already has no wrong answers on this sample.
 
+`gpt-6-astra` was not re-run. The interrupted
+[November 3–4 sweep](../../.agents/rounds/2026-11-03-playground-model-sweep.md) already measured
+it at `low` on 30 stage-2 cases: 3 wrong answers after hand review against 1 for `gpt-6.1-terra`, at $8.57 of
+answer spend against $1.33. That rules it out without new spend.
+
 Spend: Terra $0.355 gauntlet + $1.383 answers + $2.016 judge = $3.75; Sol $0.496 + $1.743 +
 $1.978 = $4.22; total $7.97.
 
 Raw results are local-only under `eval/local-lanes/playground-recheck-2026-11-10/`.
+
+## Production check
+
+After the deploy (Worker version `0545c76e`), Playground traffic on 2026-11-11 from 05:28Z was
+logged by the `stellar-raven-demo` AI Gateway as `openai/gpt-6.1-terra`. Every call succeeded,
+and none reached the fallback.

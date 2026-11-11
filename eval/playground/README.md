@@ -35,6 +35,10 @@ npm run eval:playground -- --confirm-paid --max-budget-usd 10 \
   --cases eval/qa/corpus/live/live-cases.json --full
 ```
 
+## Comparing candidate models
+
+To change the Playground primary or fallback, first run the gauntlet on the candidate, then run this lane on the same case IDs as the shipped model's run. Run each candidate at effort `none` when it supports it, otherwise at its lowest supported effort. Effort `none` is the shipped latency default, not an eligibility rule. Set `DEMO_MODEL_OVERRIDE` and `DEMO_REASONING_EFFORT_OVERRIDE` on both the server and the harness, and record the effort beside each result. Switch only when the candidate passes the gauntlet and is not worse on the paired run: no new wrong answers and no tool-loop regressions. Cost and latency decide between candidates that pass. [`research/audits/2026-11-10-playground-gpt61-terra-recheck.md`](../../research/audits/2026-11-10-playground-gpt61-terra-recheck.md) is a worked example.
+
 ## Dollar accounting
 
 Each paid invocation requires exactly one spaced `--max-budget-usd USD` flag.
