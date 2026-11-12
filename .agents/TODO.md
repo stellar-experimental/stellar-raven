@@ -63,8 +63,7 @@ issues do not need reminders.
 - Scout (2026-11-12 [round](rounds/2026-11-12-truth-maintenance.md)): sls-101, sls-111 and
   sls-115 are retired after an independent review; the earlier-round residual of sls-111 is
   successor sls-116 ([stellarlight#1952](https://github.com/Stellar-Light/stellarlight/issues/1952)).
-  sls-024 and sls-029 are verified fixed and retire once the goldens that cap on them are
-  reconciled (separate change). sls-033 stays active: nine unavailable platform facts lack a source
+  sls-024 and sls-029 are retired with their golden caps. sls-033 stays active: nine unavailable platform facts lack a source
   URL ([result](https://github.com/Stellar-Light/stellarlight/issues/519#issuecomment-6827190900));
   recheck when the owner adds a source field. For sls-107, require the owner-enabled
   issuer-of-record write (PR1923) to populate issuer, source and date for the nine
@@ -94,6 +93,18 @@ issues do not need reminders.
   errors. Before any future closure or renewed claim, obtain the exact original/corrected record
   or an owner explanation of the change; otherwise reassess the evidentiary basis. See the
   [other-collections table](rounds/2026-11-05-truth-maintenance/other.md) for exact IDs and queries.
+- Golden follow-ups from the sls-024/sls-029 cap review
+  ([review](../research/audits/2026-11-12-truth-maintenance/review-caps-fable.md)):
+  - At the next deliberate live-contract revision, reword `q-live-fluxity-status-provenance`'s
+    "state-conditional sls-024 discriminator" label (the grading rule still holds; on 2026-11-12
+    Scout showed Fluxity Live on a repo-activity basis with unknown deployment, and the site still
+    offered a waitlist). A notes edit changes the frozen `live-data-canonical-v3` digest.
+  - In the next golden pass, recheck `q-eco-defi-market-map`'s "DIA/Lightecho/Orally too" mainnet
+    note: on 2026-11-12 Scout showed DIA's only contract as an absent testnet address and Lightecho's
+    mainnet feeds as stale.
+  - Scout's Coins.ph partner profile still describes current PHP ramps on Stellar but marks itself
+    `aging` with `isCurrent: false`. Not filed: Scout's own freshness flag discloses it. File it
+    only if the profile drops that flag while keeping the claim.
 - cs-006: the Paxos metadata wording still reproduces, but no public repository owns the served
   TOML. Keep intake unclear until a metadata repository is identified or the owner authorizes
   contact through the published support channel. Do not file against an unrelated contract repo.

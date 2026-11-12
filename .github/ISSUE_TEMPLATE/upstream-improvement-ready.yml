@@ -21,7 +21,7 @@ body:
     attributes:
       label: Raven source record
       description: Link the exact public improvements/... Markdown file or its commit-pinned snapshot from the upstream report. Resolved active files are retired after review.
-      placeholder: https://github.com/stellar-experimental/stellar-raven/blob/main/improvements/stellar-light-scout/sls-024-project-lifecycle-operator-conflicts.md
+      placeholder: https://github.com/stellar-experimental/stellar-raven/blob/aaf8963a319c9a7b2aeadc84fbac3eb426d920fd/improvements/stellar-light-scout/sls-024-project-lifecycle-operator-conflicts.md
     validations:
       required: true
 

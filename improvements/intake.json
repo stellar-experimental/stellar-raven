@@ -163,14 +163,6 @@
       "repo": "OpenZeppelin/openzeppelin-skills",
       "reason": "The stale upgrade-stellar-contracts API guidance is owned by the OpenZeppelin skills repository."
     },
-    "sls-024": {
-      "repo": "Stellar-Light/stellarlight",
-      "reason": "Project lifecycle labels do not expose source, as-of date, or entity-versus-deployment scope when current operator surfaces conflict."
-    },
-    "sls-029": {
-      "repo": "Stellar-Light/stellarlight",
-      "reason": "Oracle discovery collapses provider, product family, network, contract evidence, and announcement status into one Live label."
-    },
     "sls-033": {
       "repo": "Stellar-Light/stellarlight",
       "reason": "Wallet enumeration mixes records, products, aliases, and availability states, so exact wallet counts and platform claims are unsafe."
