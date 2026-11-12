@@ -1,17 +1,17 @@
 {
-  "changelogEntryCount": 373,
+  "changelogEntryCount": 381,
   "changelogLatest": {
-    "date": "2026-11-07",
-    "detail": "Each of the 26 was read against its operator's own material on 2026-11-07. Three trade and gain a role: SwiftEx is wallet-integrated, AIDA and Balanced are trading-ui. Seven are not spot venues and leave DEX: Zenex is Derivatives, EarnBIT Exchange, Chartui Analytics, Reyts Payments and Stablecoin, PeerPesa Payments and Explorer, Prism Bridge and Yield, and Zig3v2 Wallet. Sixteen leave Live with `statusBasis` human-verified, `statusAsOf` 2026-11-07 and the page read as `statusSourceUrl`: TinyAmm, Switchly, XCCY, AXIS and Octarine are Pre-Release (testnet only), Stabble and StarLoom Development, and CLOB, FX Swap, Wombat, Ichi, Grip, Xlmeme, zkCross, Cables and Interstellar Inactive. Balanced's description now says it is a front end for SODAX. XCCY (interest rate swaps) and both Lusty rows (an options yield venue, also Yield) are Derivatives too, and the Live Lusty row moves to Pre-Release: its README says Stellar Testnet, and its vault contract exists on testnet only. searchProjects reads perpetual, perpetuals, perps, futures, derivative and derivatives as asking for the Derivatives type, and `statusChecks` runs tvl-zero-onchain-quiet on Derivatives rows as on DEX, Lending, Bridge and Yield rows. A nightly check names any Live DEX row that has no `venueRole` and no dated reason for it.",
-    "summary": "Project types gain Derivatives: perpetuals, futures, options, or rate or FX swaps, contracts on a price rather than spot exchange. searchProjects and getLeaderboard accept type=Derivatives, the hackathon build operations accept and can serve it as a category, and the search_projects MCP tool takes it from its next release. Once the curation lane runs, every Live DEX row carries a `venueRole`: type=DEX&status=Live returns 15 rows, where on 2026-11-07 it returned 38 with 26 unclassified.",
+    "date": "2026-11-11",
+    "detail": "No row moves on deploy: published, the basis stored before this version, now means not judged yet, and it and a missing basis are served exactly as before, so /api/contracts still serves 135 rows. A rescan (scan-repo-code --with-contract re-judges every row holding an id) moves a row to self-validated, source-matched, sibling-matched or cited where it can decide, and leaves it published where it cannot: a repo it points to is private or gone, a submodule's target cannot be read, or the contract's trait impls take the trait's default functions. A source read that was not whole (an unreadable file, a truncated tree) is a check that did not run and keeps the stored basis. Run read-only over the 135 rows the rescan leaves 115 rows on /api/contracts and judges 109 of 110 owners as theirs, every one of the 18 consumers cited, and 2 copies of an owner's source as owners (precision 0.98, recall 0.99). All 135 were labelled by hand on 2026-11-11: 111 owners, 18 consumers, 3 forks or copies, 3 unclear. Consumers held the SushiSwap V3 factory (reflector-network/reflector-stellar-connector, a config default), Soroswap's factory (lumenmap/lumenmap), two Blend pools (six repos) and the KALE farm contract. A sibling is found only where the repo points: the WASM's SEP-55 source_repo, a git submodule, or a README link, under the same GitHub owner; a fork defines nothing of its own, and an id whose build is attested to another owner's repo is cited. The source read takes a trait impl named by a path, with generics or with attribute arguments, the way a SEP-41 token implements its interface, and leaves out test code, inline test modules and mock contracts; a WASM exporting fewer than four functions matches only when the source defines all of them. A rescan keeps a cited id with its basis instead of dropping it, and judges the id a repo holds wherever its README still names it. The deployment pass counts a repo's contract id as mainnet-contract-join evidence only when it is not judged cited, and retracts to unknown a stored join claim whose source repo's id is judged cited: the evidence stays served as that repo's `mainnetContractBasis` cited on /api/repos/trust, and the run's plan prints the dated reason (the deployment row keeps none).",
+    "summary": "A contract a repo's README only cites is no longer served as that repo's contract. Every repo surface serves `mainnetContractBasis` beside `mainnetContractId`, with three new values: source-matched (the repo's own #[contractimpl] source defines at least half of the functions the deployed WASM exports, or all of them when it exports fewer than four), sibling-matched (a repo under the same GitHub owner that it points to does) and cited (neither does; usually a contract the repo calls). A cited id leaves /api/contracts, its trust report signals cites-contract-id, and explain no longer calls it the repo's deployment.",
     "surfaces": [
       "api",
-      "mcp"
+      "skill"
     ],
-    "type": "added",
-    "version": "spec@1.9.127"
+    "type": "fixed",
+    "version": "spec@1.9.135"
   },
-  "fetchedAt": "2026-11-09T19:08:25.744Z",
+  "fetchedAt": "2026-11-12T14:25:31.643Z",
   "openapi": {
     "components": {
       "parameters": {
@@ -1794,7 +1794,7 @@
               "type": "string"
             },
             "tvlAsOf": {
-              "description": "When tvlUSD was fetched from DefiLlama (dated-metrics rule). Null when untracked.",
+              "description": "When tvlUSD was fetched from DefiLlama (dated-metrics rule); with tvlUnavailable set, when DefiLlama was read and gave no figure. Null when not linked to DefiLlama, or not read yet.",
               "format": "date-time",
               "nullable": true,
               "type": "string"
@@ -1805,9 +1805,14 @@
               "type": "boolean"
             },
             "tvlUSD": {
-              "description": "DefiLlama-verified TVL in USD. null = NOT TRACKED on DefiLlama; never 'zero TVL'; most non-DeFi projects are legitimately untracked. Dated by tvlAsOf.",
+              "description": "DefiLlama-verified TVL in USD. null = no figure, never 'zero TVL': the row is not linked to DefiLlama (most non-DeFi projects), or it is and tvlUnavailable says why. Dated by tvlAsOf.",
               "nullable": true,
               "type": "number"
+            },
+            "tvlUnavailable": {
+              "description": "Non-null when the row is linked to DefiLlama (llamaSlugs) but holds no tvlUSD, saying why with the date it was read (also its tvlAsOf): DefiLlama lists the linked protocol but publishes no Stellar figure for it, or its slugs could not be read since its mapping changed. Never a zero and never an old figure: the last figure is not kept beside it. Null beside a figure, on a row with no DefiLlama link, and on a linked row not refreshed since this field was added (the weekly refresh writes it).",
+              "nullable": true,
+              "type": "string"
             },
             "types": {
               "description": "Granular product-type tags: the same types[] taxonomy as project-search rows, echoed so a consumer can see WHY a row matched a ?type= filter (#524).",
@@ -2405,7 +2410,7 @@
               ]
             },
             "availability": {
-              "description": "Per-platform availability with as-of dates. null = not curated.",
+              "description": "Per-platform app availability, each row dated by checkedAt (YYYY-MM-DD). platform sms is a wallet used by text message, with no app; its storeUrl is the operator's page for that service. available = the store listing or product surface at storeUrl was reachable on checkedAt; unavailable = the operator listed or announced the product for that platform but it could not be used there on checkedAt: the listing is gone or 404s, the product is not out yet, or the operator says it has shut down (the note says which; storeUrl is null unless a listing is still up). Rows say where the product's app is offered, not that it supports Stellar on that platform, and are separate from `status` (lifecycle). Null = no platform fact recorded: unknown, never 'unavailable'; availabilityCheck says whether a check found none.",
               "items": {
                 "properties": {
                   "checkedAt": {
@@ -2417,9 +2422,22 @@
                     "type": "string"
                   },
                   "platform": {
+                    "enum": [
+                      "ios",
+                      "android",
+                      "web",
+                      "browser-extension",
+                      "desktop",
+                      "hardware-device",
+                      "sms"
+                    ],
                     "type": "string"
                   },
                   "state": {
+                    "enum": [
+                      "available",
+                      "unavailable"
+                    ],
                     "type": "string"
                   },
                   "storeUrl": {
@@ -2431,6 +2449,34 @@
               },
               "nullable": true,
               "type": "array"
+            },
+            "availabilityCheck": {
+              "description": "A dated check behind a null availability. result none-found = the sources (the operator's site, docs or repo and the store links they give) were read on checkedAt and offer no app, extension, device, web app or SMS service, or the operator's domain no longer resolves (the note says which); could-not-check = a source could not be read on checkedAt. Unknown either way, never 'unavailable'; note says what the sources showed. Null when availability has rows or no check is recorded.",
+              "nullable": true,
+              "properties": {
+                "checkedAt": {
+                  "format": "date",
+                  "type": "string"
+                },
+                "note": {
+                  "type": "string"
+                },
+                "result": {
+                  "enum": [
+                    "none-found",
+                    "could-not-check"
+                  ],
+                  "type": "string"
+                },
+                "sources": {
+                  "items": {
+                    "format": "uri",
+                    "type": "string"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
             },
             "builtBy": {
               "description": "The organization/entity behind this project ('who built X'), e.g. LOBSTR → Ultra Stellar, Soroswap → Paltalabs. Null when no org is linked. Browse the org's portfolio at https://stellarlight.xyz/entities/{slug}.",
@@ -2522,14 +2568,23 @@
               "type": "object"
             },
             "deployment": {
-              "description": "Which network the product is actually deployed on, as a SEPARATE fact from lifecycle status (sls-079: 'Live' used to be read as mainnet-deployed). This is a PROJECT-level fact: mainnet means at least one of the project's products is minted on mainnet, not that every product is; read `products` for per-product state. Populated only from evidence: a verified mainnet contract join, an on-chain activity reading, a minted product in the verified RWA registry (basis rwa-registry, sls-023), or a human-verified operator artifact. A stored network is never overwritten by the registry; only an unknown is filled. network 'unknown' means exactly that: no evidence either way, never 'not deployed'.",
+              "description": "Which network the product is actually deployed on, as a SEPARATE fact from lifecycle status (sls-079: 'Live' used to be read as mainnet-deployed). This is a PROJECT-level fact: mainnet means at least one of the project's products is minted on mainnet, not that every product is; read `products` for per-product state. Populated only from evidence, kept apart from status and repository activity (sls-024): a Live status or an active repository alone never sets a network. The deployment pass writes mainnet or testnet only together with its basis, sourceUrl and asOf, and a nightly check reports any served value that lacks one. A stored network is never overwritten by the registry; only an unknown is filled. network 'unknown' means exactly that: no evidence either way, never 'not deployed'; its basis, sourceUrl and asOf are null.",
               "properties": {
                 "asOf": {
+                  "description": "When the evidence behind the value was observed (ISO 8601): the date the ledger or source was read, or the date the registry or DefiLlama reading carries. Null when network is unknown.",
                   "nullable": true,
                   "type": "string"
                 },
                 "basis": {
-                  "description": "Evidence class: mainnet-contract-join | onchain-activity | stablecoin-issuance | rwa-registry | human-verified. rwa-registry = a live product in the verified RWA registry (/api/rwa) proves mainnet deployment; sourceUrl is that product's own evidence (the issuer's stellar.toml, or the contract on stellar.expert). Null when network is unknown.",
+                  "description": "The evidence class behind a mainnet or testnet value. 'human-verified' = a curator checked a source that names the network (the operator's docs, a stellar.toml, an app bundle, Stellar's developer docs or an explorer page); sourceUrl is that source. 'onchain-activity' = a contract, asset, account or transaction the record holds, observed on that network's ledger; sourceUrl is its explorer page. 'mainnet-contract-join' = a repository of the project publishes a contract id that the mainnet ledger holds; sourceUrl is the repository. 'defillama-tvl' = DefiLlama tracks the protocol on Stellar (a reading at most 14 days old when the value was written); sourceUrl is the DefiLlama page. 'rwa-registry' = a minted product in the verified RWA registry (/api/rwa); sourceUrl is that product's own evidence. 'operator-toml' = the project's own stellar.toml declares an asset that Horizon holds and whose issuer names the project's domain back; sourceUrl is the toml. Null when network is unknown.",
+                  "enum": [
+                    "human-verified",
+                    "onchain-activity",
+                    "mainnet-contract-join",
+                    "defillama-tvl",
+                    "rwa-registry",
+                    "operator-toml"
+                  ],
                   "nullable": true,
                   "type": "string"
                 },
@@ -2542,6 +2597,7 @@
                   "type": "string"
                 },
                 "sourceUrl": {
+                  "description": "Where a reader re-checks the mainnet or testnet value: the page the basis names. Null when network is unknown.",
                   "nullable": true,
                   "type": "string"
                 }
@@ -2657,7 +2713,7 @@
               "type": "object"
             },
             "llamaSlugs": {
-              "description": "The curated DefiLlama protocol slugs whose rows SUM to tvlUSD (several per project, e.g. Blend = pools + backstops). The mapped-provider identifiers tvlMethod refers to: follow each as https://defillama.com/protocol/{slug} for the provider's own page and full TVL time series (history/peak/record live at the provider; this API serves the current dated point only). Null = not llama-mapped (matches tvlUSD null = not tracked).",
+              "description": "The curated DefiLlama protocol slugs whose rows SUM to tvlUSD (several per project, e.g. Blend = pools + backstops). The mapped-provider identifiers tvlMethod refers to: follow each as https://defillama.com/protocol/{slug} for the provider's own page and full TVL time series (history/peak/record live at the provider; this API serves the current dated point only). Null = not llama-mapped (matches tvlUSD null with tvlUnavailable null: not linked here).",
               "items": {
                 "type": "string"
               },
@@ -2672,13 +2728,14 @@
               "type": "string"
             },
             "networksBasis": {
-              "description": "What evidence stands behind supportedNetworks, and therefore whether the list is exhaustive. 'curated' = curator-maintained from the project's own docs; the list is intended to be complete, so an absent chain is informative. The rest are DERIVED proofs that the project operates on Stellar, strongest first: 'onchain-activity' (contract records observed on Stellar), 'defillama-tvl' (DefiLlama tracks its Stellar TVL), 'anchor-coverage' (SEP/corridor rails), 'scf-award' (the Stellar Community Fund funds only Stellar work). A derived basis yields exactly ['stellar'] and is NOT exhaustive; other chains are unknown, not excluded. NULL = no basis, which pairs with a null supportedNetworks.",
+              "description": "What evidence stands behind supportedNetworks, and therefore whether the list is exhaustive. 'curated' = curator-maintained from the project's own docs; the list is intended to be complete, so an absent chain is informative. The rest are DERIVED proofs that the project operates on Stellar, strongest first: 'onchain-activity' (contract records observed on Stellar), 'defillama-tvl' (DefiLlama tracks its Stellar TVL), 'anchor-coverage' (SEP/corridor rails), 'scf-award' (the Stellar Community Fund funds only Stellar work). 'deployment' is read last: the record's own mainnet or testnet deployment value with its sourceUrl (sls-024), so a sourced deployment never sits beside a null list. A derived basis yields exactly ['stellar'] and is NOT exhaustive; other chains are unknown, not excluded. NULL = no basis, which pairs with a null supportedNetworks.",
               "enum": [
                 "curated",
                 "onchain-activity",
                 "defillama-tvl",
                 "anchor-coverage",
-                "scf-award"
+                "scf-award",
+                "deployment"
               ],
               "nullable": true,
               "type": "string"
@@ -2701,14 +2758,30 @@
               "type": "integer"
             },
             "productKind": {
-              "description": "Curated product-kind for wallet-class records (hardware-wallet | mobile-app | browser-extension | web-app | protocol | sdk-kit). null = not-yet-classified (never a negative claim).",
+              "description": "What kind of wallet-landscape product a Wallet row is, curated from the operator's own description: end-user-wallet (an app people or organizations hold funds in), hardware-wallet (a physical signing device), connectivity-protocol (a wallet-to-dApp connection protocol, not a wallet), wallet-sdk (a library or platform for building wallets), integration-kit (a library for connecting existing wallets to dApps), smart-account-tooling (passkey or smart-account infrastructure). Null = not yet classified (unknown, never 'not a wallet').",
+              "enum": [
+                "end-user-wallet",
+                "hardware-wallet",
+                "connectivity-protocol",
+                "wallet-sdk",
+                "integration-kit",
+                "smart-account-tooling"
+              ],
               "nullable": true,
               "type": "string"
             },
             "products": {
-              "description": "Per-PRODUCT deployment records (#742): provider status and product-on-network status are DIFFERENT statements. A Live project row NEVER establishes that a given product is live on a given network; read this array for that, and if it is null you do not have the answer and must go to the operator. Curated only; every record carries evidenceUrl + asOf so the claim is re-verifiable at its source. NULL = no product-level records modelled for this project (UNKNOWN, never 'this project ships no products'). Fed by the verified RWA registry (/api/rwa; every row dated by its own verifiedAt) for the issuers that have a project row: WisdomTree, Spiko, Etherfuse, Ondo, Figure, Circle, Paxos, Centrifuge and others, plus hand-curated rows. Only MINTED registry rows are served here (registryState live or issued-single-holder); an asset the issuer declares or deployed with zero supply is tracked in the registry but is not a product. WHETHER THIS LIST IS COMPLETE for the issuer is a separate fact: read the sibling `productsCoverage`; declared / tracked / served against the issuer's own declaration (its stellar.toml, or its deployer's contract history), `complete` only when every declared asset is tracked and every issuer account was reconciled, null when that cannot be stated. Still null on most projects. kind: oracle-feed | rwa-asset | stablecoin | wallet-app | bridge | ramp | other; network: mainnet | testnet | futurenet; status: live | development | announced | retired.",
+              "description": "Per-PRODUCT deployment records (#742): provider status and product-on-network status are DIFFERENT statements. A Live project row NEVER establishes that a given product is live on a given network; read this array for that, and if it is null you do not have the answer and must go to the operator. Curated only; every record carries evidenceUrl + asOf so the claim is re-verifiable at its source. NULL = no product-level records modelled for this project (UNKNOWN, never 'this project ships no products'). Fed by the verified RWA registry (/api/rwa; every row dated by its own verifiedAt) for the issuers that have a project row: WisdomTree, Spiko, Etherfuse, Ondo, Figure, Circle, Paxos, Centrifuge and others, plus hand-curated rows, and by the oracle registry for oracle providers (Band, DIA, Lightecho, Reflector, RedStone, Chainlink, Pyth): one oracle-feed record per contract the provider published for each network, each address checked on chain on asOf. On an oracle record, status live means a contract existed at contractId on asOf and retired means the published address held none; status never says whether feeds update, which is `observation`: what the chain showed at its checkedAt. Evidence tiers (sls-029) read off two fields: addressTier (official-address or directory-only) and observation.tier (observed-updating, observed-stale, published-address-absent, or not-observable-pull-model); retired status is published-address-absent as of asOf. A provider that announced Stellar support without publishing an address has no record (provider-announced is not served as a tier). Only MINTED registry rows are served here (registryState live or issued-single-holder); an asset the issuer declares or deployed with zero supply is tracked in the registry but is not a product. WHETHER THIS LIST IS COMPLETE for the issuer is a separate fact: read the sibling `productsCoverage`; declared / tracked / served against the issuer's own declaration (its stellar.toml, or its deployer's contract history), `complete` only when every declared asset is tracked and every issuer account was reconciled, null when that cannot be stated. Still null on most projects. kind: oracle-feed | rwa-asset | stablecoin | wallet-app | bridge | ramp | other; network: mainnet | testnet | futurenet; status: live | development | announced | retired. A registry product whose issuer has said it no longer offers it (getRwaAssets `discontinued`) is served as retired, with that statement in note.",
               "items": {
                 "properties": {
+                  "addressTier": {
+                    "description": "Oracle registry records only: who publishes the contract address (evidenceUrl). official-address = the provider itself (its docs, repository, app or config); directory-only = only a third-party directory, Stellar's oracle-providers page, lists it, as for Band, which publishes no Stellar address. A statement about the address only: what the chain showed is observation.tier.",
+                    "enum": [
+                      "official-address",
+                      "directory-only"
+                    ],
+                    "type": "string"
+                  },
                   "asOf": {
                     "type": "string"
                   },
@@ -2765,6 +2838,121 @@
                   "note": {
                     "nullable": true,
                     "type": "string"
+                  },
+                  "observation": {
+                    "description": "Oracle registry records only: what the chain showed at checkedAt. Written only by the refresh-oracle-feeds lane, one reading per contract, replaced by each check that runs; a check that could not run keeps the previous reading. Null = no reading is stored for this contract, or the readings could not be loaded (meta.failedReads then names the read); never 'not updating'. Every freshness claim here is as of checkedAt, not later.",
+                    "nullable": true,
+                    "properties": {
+                      "checkedAt": {
+                        "description": "When the chain was read (ISO 8601).",
+                        "type": "string"
+                      },
+                      "contract": {
+                        "description": "present = a contract instance exists at contractId on this network; absent = getLedgerEntries found none.",
+                        "enum": [
+                          "present",
+                          "absent"
+                        ],
+                        "type": "string"
+                      },
+                      "feedList": {
+                        "description": "Where `feeds` came from and as of when. Null exactly when feeds is null.",
+                        "nullable": true,
+                        "properties": {
+                          "asOf": {
+                            "description": "When the list was read (ISO 8601) or, for seeded, the seeding date (YYYY-MM-DD).",
+                            "type": "string"
+                          },
+                          "basis": {
+                            "description": "contract = the contract's own assets(), read at asOf (sourceUrl is its Stellar Lab page, where anyone can call it); provider-list = the provider's published machine-readable list, read at asOf (Chainlink's feed list, RedStone's relayer manifest); seeded = symbols copied into our registry from sourceUrl on asOf, which do not follow later changes (Band, which publishes no list).",
+                            "enum": [
+                              "contract",
+                              "provider-list",
+                              "seeded"
+                            ],
+                            "type": "string"
+                          },
+                          "sourceUrl": {
+                            "type": "string"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "feeds": {
+                        "description": "Every feed this check read, in the order of its list (feedList; not a rank). Null when the contract is absent, and for pull-verifier and instance-only (a check that could not read the list stores nothing).",
+                        "items": {
+                          "properties": {
+                            "contractId": {
+                              "description": "The feed's own contract where it has one (RedStone MultiFeed price feed contracts); null when read through the record's contractId.",
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "feed": {
+                              "description": "The key a consumer passes to read the feed: an asset symbol or Stellar asset contract address (SEP-40), a Chainlink data_id in hex, a RedStone feed id, or BASE/USD for Band.",
+                              "type": "string"
+                            },
+                            "label": {
+                              "description": "The asset code a Stellar asset contract states for itself, or Chainlink's feed name; null otherwise.",
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "lastUpdateAt": {
+                              "description": "The time the provider's own getter gives for this feed's latest value: the SEP-40 lastprice timestamp (for Reflector the round timestamp, the price period the value belongs to, not the write transaction), Chainlink's round timestamp, Band's resolve time (last_updated_base), or RedStone's write timestamp. Null when the getter returned no value or could not be read.",
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "state": {
+                              "description": "updating = written within its bound before checkedAt (maxAgeSeconds; for Chainlink, twice that feed's own heartbeat); stale = older, or the contract's own check rejected the value as stale (RedStone), or the whole contract has not been written within maxAgeSeconds (Beam); no-value = the contract answered with no value: the SEP-40 getter returned None, or the contract's own no-data error (Chainlink #50, Band #1); could-not-check = the read failed or is not public (Beam per-asset reads), which says nothing about the feed.",
+                              "enum": [
+                                "updating",
+                                "stale",
+                                "no-value",
+                                "could-not-check"
+                              ],
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "nullable": true,
+                        "type": "array"
+                      },
+                      "lastUpdateAt": {
+                        "description": "The newest price write observed on the contract: the newest feed timestamp, or the contract's own last write where it keeps one (Reflector, Lightecho). Null when none was observed.",
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "maxAgeSeconds": {
+                        "description": "The bound behind updating and stale: twice the longer of the contract's resolution() and a heartbeat the provider publishes for it (sep40-lastprice, reflector-beam-last-timestamp); for Chainlink, each feed is judged against twice its own heartbeat in Chainlink's feed list and this field is twice the longest; 108000 for RedStone (the 30 hours its adapter enforces); 86400 for Band, which publishes no update interval. Null when no feed is read.",
+                        "nullable": true,
+                        "type": "integer"
+                      },
+                      "method": {
+                        "description": "How the feeds were read, each by simulating the provider's own getter: sep40-lastprice = assets(), then lastprice(asset) per asset; reflector-beam-last-timestamp = assets() and the contract's own last write, as Beam per-asset reads need prepaid access; chainlink-latest-round = latest_round(data_id, 18) per feed in Chainlink's published Stellar feed list; band-reference-data = get_reference_data against USD per seeded symbol; redstone-adapter-read = the adapter's checked read per feed id in RedStone's relayer manifest, plus its price history for a feed the check rejects; pull-verifier = existence only, as a pull-model verifier stores no prices and its freshness is not observable on chain; instance-only = existence only, no reader for this contract yet.",
+                        "enum": [
+                          "sep40-lastprice",
+                          "reflector-beam-last-timestamp",
+                          "chainlink-latest-round",
+                          "band-reference-data",
+                          "redstone-adapter-read",
+                          "pull-verifier",
+                          "instance-only"
+                        ],
+                        "type": "string"
+                      },
+                      "tier": {
+                        "description": "The evidence tier this reading supports, derived from its own fields only. observed-updating = at least one feed read this check had a value written within maxAgeSeconds before checkedAt; it says the contract is being written, not that every feed is (read feeds[].state). A contract that exists, or whose contract-wide timestamp is recent while no feed could be read, is never observed-updating. observed-stale = no feed read was updating, no feed was unreadable, and the newest write observed is older than maxAgeSeconds. published-address-absent = no contract at contractId. not-observable-pull-model = a pull-model verifier: prices are verified per call and nothing is stored on chain, so freshness is not observable on chain. Null = this check could not judge (a feed could not be read and none was updating), or the check is more than 24 hours old when served: a contract the lane stopped reading keeps its feeds and dates but loses its tier.",
+                        "enum": [
+                          "observed-updating",
+                          "observed-stale",
+                          "published-address-absent",
+                          "not-observable-pull-model"
+                        ],
+                        "nullable": true,
+                        "type": "string"
+                      }
+                    },
+                    "type": "object"
                   },
                   "registryState": {
                     "description": "The registry's own state: live | issued-single-holder, since `status` (the stored enum) cannot say 'minted but held only by the issuer'.",
@@ -3144,7 +3332,7 @@
               "type": "array"
             },
             "tvlAsOf": {
-              "description": "When tvlUSD was fetched from DefiLlama (ISO 8601).",
+              "description": "When tvlUSD was fetched from DefiLlama (ISO 8601); with tvlUnavailable set, when DefiLlama was read and gave no figure.",
               "nullable": true,
               "type": "string"
             },
@@ -3170,9 +3358,14 @@
               "type": "boolean"
             },
             "tvlUSD": {
-              "description": "Total value locked in USD per DefiLlama, summed across the protocol's tracked components. null = NOT TRACKED on DefiLlama (never 'zero TVL'); with llamaSlugs set, null means the linked DefiLlama protocol publishes no TVL figure for Stellar (an aggregator, or a protocol DefiLlama stopped computing). Refreshed weekly; see tvlAsOf, and tvlStale for a reading more than 14 days old.",
+              "description": "Total value locked in USD per DefiLlama, summed across the protocol's tracked components. null = no figure, never 'zero TVL': with llamaSlugs null the row is not linked to DefiLlama here (most non-DeFi projects); with llamaSlugs set, tvlUnavailable says why there is none, dated (for example, the linked DefiLlama protocol publishes no Stellar figure: an aggregator, or a protocol DefiLlama stopped computing). Refreshed weekly; see tvlAsOf, and tvlStale for a reading more than 14 days old.",
               "nullable": true,
               "type": "number"
+            },
+            "tvlUnavailable": {
+              "description": "Non-null when the row is linked to DefiLlama (llamaSlugs) but holds no tvlUSD, saying why with the date it was read (also its tvlAsOf): DefiLlama lists the linked protocol but publishes no Stellar figure for it, or its slugs could not be read since its mapping changed. Never a zero and never an old figure: the last figure is not kept beside it. Null beside a figure, on a row with no DefiLlama link, and on a linked row not refreshed since this field was added (the weekly refresh writes it).",
+              "nullable": true,
+              "type": "string"
             },
             "types": {
               "description": "Capability tags (Wallet, DEX, Lending, Oracle, SDK, RPC, Faucet, NFT, RWA, Anchor, Stablecoin, Indexer, Explorer, Security, Gaming).",
@@ -3479,8 +3672,20 @@
                   "description": "This repo's PRODUCT is a deployable Soroban contract (Cargo cdylib; vs a CLI/indexer/frontend that only uses Stellar). Known platform/SDK/tooling repos (stellar-core, rs-soroban-env, the SDKs/CLI/RPC…) are pinned FALSE even though they vendor cdylib crates; those are runtime/fixtures, not a deployable contract product.",
                   "type": "boolean"
                 },
+                "mainnetContractBasis": {
+                  "description": "Whose contract mainnetContractId is. self-validated = the deployed WASM names this repo as its source (SEP-55 source_repo) and this repo holds a GitHub build attestation for it. source-matched = this repo's own #[contractimpl] source defines at least half of the functions the deployed WASM exports (its contractspecv0), or all of them when it exports fewer than four; a function-name match, not a byte-level build, test code and mock contracts are not read, and a GitHub fork never qualifies. sibling-matched = a repo under the same GitHub owner that this repo points to (the WASM's SEP-55 source_repo, a git submodule, or a README link) defines at least half of them: a team's frontend or SDK repo whose contract lives next door. cited = the README names the contract but neither this repo nor such a sibling defines it, usually a contract the repo calls; it is NOT this repo's deployment. published = not judged under that rule yet: stored before spec 1.9.135 and served as it was until a scan of the repo moves it to one of the values above where it can decide, or left by a scan that could not decide (a pointed-to repo is private or gone, a submodule's target cannot be read, or the contract's trait impls take the trait's default functions, so its source names fewer functions than it exports). Every value but cited is served as the repo's deployment. null when mainnetContractId is null, or the id was recorded before its basis was (also not judged yet).",
+                  "enum": [
+                    "self-validated",
+                    "source-matched",
+                    "sibling-matched",
+                    "cited",
+                    "published"
+                  ],
+                  "nullable": true,
+                  "type": "string"
+                },
                 "mainnetContractId": {
-                  "description": "README-claimed contract id VERIFIED to exist on Stellar mainnet at scan time (stellar.expert echo-check): unfakeable deployment evidence. Null when no verified address.",
+                  "description": "A contract id the README names, confirmed on Stellar mainnet at scan time by an RPC read of its contract instance; a confirmed id is kept when a later scan cannot run the check or no longer sees the instance. Existence is not ownership: mainnetContractBasis says whose it is, and cited means a contract the repo calls, not its deployment. Null when no confirmed address.",
                   "nullable": true,
                   "type": "string"
                 },
@@ -3631,7 +3836,7 @@
               "type": "string"
             },
             "knowledgeNotes": {
-              "description": "Dated FACTS about this repo with named sources: curated (hand-verified: packaging, doc maps, companion repos) or derived:audit (the owning project has verified security-audit reports in the registry; exact projectSlug join). Never summaries, never guesses; empty when nothing is on record.",
+              "description": "Dated FACTS about this repo with named sources: curated (hand-verified: packaging, doc maps, companion repos) or derived:audit (the owning project has verified security-audit reports in the registry; exact projectSlug join). Never summaries, never guesses; empty when nothing is on record. A note that pins its value carries sourceCheck, checked against this row's codeVerified.scannedRef, once the stored note holds its pin (until the nightly knowledge-notes backfill stamps it, sourceCheck is null); unless its state is verified, read the note as the value on its asOf date, not the current one.",
               "items": {
                 "properties": {
                   "asOf": {
@@ -3643,8 +3848,83 @@
                   },
                   "source": {
                     "type": "string"
+                  },
+                  "sourceCheck": {
+                    "description": "A curated note that pins its value to a commit, file and symbol, checked against StellarLight's own code scan of its repo at scannedRef (the repo's codeVerified.scannedRef, where the response serves one), where every scan re-reads each pinned symbol. verified: the value at scannedRef is the note's. conflict: it is scannedValue, not the note's notedValue, so the note is a dated record of its own commit and not the current value. missing: the scan read scannedRef and found the file gone or no declaration of the symbol in it, so the current value is unknown. unknown: no usable reading at scannedRef (none stored yet, one taken at another commit, a read that failed, no code scan, or a scan that does not find the note's own value at the note's own commit, so its reading is not comparable), never a match. null when the note pins no value, so there is nothing to check, and, on searchRepos rows (codeReferences too) and verifyClaim evidence, also while the stored note has not yet been stamped with its pin: the nightly knowledge-notes backfill stamps it.",
+                    "nullable": true,
+                    "properties": {
+                      "notedAsOf": {
+                        "description": "YYYY-MM-DD the note was verified; null when the stored note carries no date.",
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "notedRef": {
+                        "description": "Full commit SHA the note's value was verified at.",
+                        "type": "string"
+                      },
+                      "notedValue": {
+                        "description": "The value the note states, as the source wrote it.",
+                        "type": "string"
+                      },
+                      "path": {
+                        "description": "Repo-relative path of the file that declares it.",
+                        "type": "string"
+                      },
+                      "reason": {
+                        "description": "One sentence on how the state was reached.",
+                        "type": "string"
+                      },
+                      "scannedAt": {
+                        "description": "When that scan ran.",
+                        "format": "date-time",
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "scannedRef": {
+                        "description": "The commit checked, codeVerified.scannedRef; null when the repo has no code scan.",
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "scannedValue": {
+                        "description": "The value at scannedRef; null unless state is verified or conflict.",
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "state": {
+                        "enum": [
+                          "verified",
+                          "conflict",
+                          "missing",
+                          "unknown"
+                        ],
+                        "type": "string"
+                      },
+                      "symbol": {
+                        "description": "The declared name the note states a value for.",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "state",
+                      "symbol",
+                      "path",
+                      "notedValue",
+                      "notedRef",
+                      "notedAsOf",
+                      "scannedValue",
+                      "scannedRef",
+                      "scannedAt",
+                      "reason"
+                    ],
+                    "type": "object"
                   }
                 },
+                "required": [
+                  "note",
+                  "source",
+                  "asOf",
+                  "sourceCheck"
+                ],
                 "type": "object"
               },
               "type": "array"
@@ -4371,11 +4651,30 @@
               "type": "string"
             },
             "assetType": {
-              "description": "Recorded only where the registry found the unit is not 1:1 with its peg; such rows are priced from their own market where it can be read (priceBasis). Yield Stablecoin = yield accrues to or is paid on the unit (Ondo's USDY); Treasury-Backed = a Treasury-backed bond (USDM1). Null = no qualifier recorded: the row was not classified, so null is unknown, NOT a verified plain peg and NOT 'not yield-bearing'. Filter with ?assetType=.",
+              "description": "What backs the unit as its issuer states it, never null; read by hand from the issuer's own page (assetTypeSourceUrl, read on assetTypeAsOf), never from a stellar.toml's anchor fields. Fiat-Backed = backed by its peg currency in cash, deposits or cash equivalents (short-dated government debt, government money market funds). Crypto-Backed = backed by crypto it holds or locks, another stablecoin included (USDT0: USDT locked on Ethereum). Multi-Asset-Backed = a reserve mixing asset types, fiat with crypto, gold or bonds (USDV, EURMTL). Treasury-Backed = a bond secured by US Treasuries, with par redemption and a coupon (USDM1); a bond takes this class though it pays yield. Yield Stablecoin = a stablecoin on which yield accrues or is paid, whatever backs it (USDY). Unclassified = no issuer statement of the backing could be read; assetTypeNote says what was checked. A class is the issuer's claim, not an audit. Filter with ?assetType=.",
               "enum": [
+                "Fiat-Backed",
+                "Crypto-Backed",
+                "Multi-Asset-Backed",
+                "Treasury-Backed",
                 "Yield Stablecoin",
-                "Treasury-Backed"
+                "Unclassified"
               ],
+              "type": "string"
+            },
+            "assetTypeAsOf": {
+              "description": "The day assetTypeSourceUrl was read, or for an Unclassified row the day the sources in assetTypeNote were checked.",
+              "format": "date-time",
+              "nullable": true,
+              "type": "string"
+            },
+            "assetTypeNote": {
+              "description": "What the issuer's page states about the backing, in short, and anything that qualifies it (a suspended platform, a page that refused automated reads); for an Unclassified row, what was checked and why it names no class.",
+              "nullable": true,
+              "type": "string"
+            },
+            "assetTypeSourceUrl": {
+              "description": "The issuer's own page or document the class rests on (a reserve, attestation or product page, a whitepaper or token terms, or its stellar.toml's description); re-verify there. Null for an Unclassified row. Served from the registry until the six-hourly refresh stores it, then as stored.",
               "nullable": true,
               "type": "string"
             },
@@ -4426,7 +4725,7 @@
               "type": "string"
             },
             "issuerOfRecordCheck": {
-              "description": "What the stored check of that toml found. named = it lists the account and gives an ORG_NAME (issuerOfRecord). not-named = the read completed and named no issuer: the account sets no home_domain, or a stellar.toml was read there that does not list the account or gives no ORG_NAME (issuerOfRecordNote says which); a checked absence, dated by issuerOfRecordAsOf. null = never read. A read that could not be made changes nothing, so the stored check and its date stay as they were: a network failure or a body that fails mid-read, any HTTP error, a not found too (a lapsed or parked home_domain answers the same, so it does not prove the issuer stopped issuing), a redirect off the home_domain or to http, and a body over 100 KB or one that does not read as a stellar.toml (HTML, a Not Found text, a JSON error, an empty body). A toml read that cannot answer changes nothing either: an ORG_NAME in a form the parser cannot read, or an account the toml does not list where it holds a listing the parser cannot read (a currency linked to its own toml, a code it cannot read).",
+              "description": "What the stored check of that toml found. named = it lists the account and gives an ORG_NAME (issuerOfRecord). not-named = the read completed and named no issuer: the account is not on Horizon, sets no home_domain or one that is not a plain host name, or a stellar.toml was read there that does not list the account or gives no ORG_NAME (issuerOfRecordNote says which); a checked absence, dated by issuerOfRecordAsOf. null = never read. A read that could not be made changes nothing, so the stored check and its date stay as they were: a network failure or a body that fails mid-read, any HTTP error, a not found too (a lapsed or parked home_domain answers the same, so it does not prove the issuer stopped issuing), a redirect off the home_domain or to http, and a body over 100 KB or one that does not read as a stellar.toml (HTML, a Not Found text, a JSON error, an empty body). A toml read that cannot answer changes nothing either: an ORG_NAME in a form the parser cannot read, or an account the toml does not list where it holds a listing the parser cannot read (a currency linked to its own toml, a code it cannot read).",
               "enum": [
                 "named",
                 "not-named"
@@ -4435,7 +4734,7 @@
               "type": "string"
             },
             "issuerOfRecordNote": {
-              "description": "On a named check: that toml's own desc for this currency, quoted, where it names an issuing party other than issuerOfRecord (MGUSD: 'issued by Bridge on behalf of MoneyGram'), else null. On a not-named check: why no issuer of record was named.",
+              "description": "On a named check: that toml's own desc for this currency, quoted, where it names an issuing party other than issuerOfRecord (MGUSD: 'issued by Bridge on behalf of MoneyGram'), else null. On a not-named check: why no issuer of record was named, with what that leaves unconfirmed where the registry has checked it (USDT0: the toml at usdt0.to names Everdawn Labs Limited and lists the account, but the account sets no home_domain pointing there, so the link is not confirmed from the account side).",
               "nullable": true,
               "type": "string"
             },
@@ -4471,7 +4770,7 @@
               "type": "string"
             },
             "note": {
-              "description": "Plain-words reason a row is curated-static or unmeasured. Null for live rows.",
+              "description": "Plain-words reason a row is curated-static or unmeasured, followed by any standing caveat the registry carries for the row (USDM1's bond terms; BRLT's home_domain, which did not resolve when checked). Null when there is neither.",
               "nullable": true,
               "type": "string"
             },
@@ -4510,7 +4809,7 @@
               "type": "number"
             },
             "ticker": {
-              "description": "Asset code (USDC, USDY, GYEN, …). NOT unique on its own: see assetId.",
+              "description": "Asset code (USDC, USDY, ARST, …). NOT unique on its own: see assetId.",
               "type": "string"
             },
             "updatedAt": {
@@ -4656,7 +4955,7 @@
       },
       "summary": "Agent-native data layer for the Stellar ecosystem: projects, builders, hackathons, SCF, audits, research.",
       "title": "Stellar Scout API",
-      "version": "1.9.127"
+      "version": "1.9.135"
     },
     "openapi": "3.1.0",
     "paths": {
@@ -5210,7 +5509,7 @@
                         "type": "object"
                       },
                       "tvl": {
-                        "description": "Present for dimension=all|tvl: DefiLlama-verified TVL rollup; null/absent projects are NOT tracked there, never 'zero TVL'. Refreshed weekly; a reading older than 14 days stays in the total and is named in staleTvlUSD, staleProjects and staleWarning.",
+                        "description": "Present for dimension=all|tvl: DefiLlama-verified TVL rollup; a project without a figure is never 'zero TVL': it is not linked to DefiLlama, or it is named in unavailableProjects with the dated reason. A project whose Stellar TVL DefiLlama files as double counted is summed apart, in doublecountedTvlUSD. Refreshed weekly; a reading older than 14 days stays in the total and is named in staleTvlUSD, staleProjects and staleWarning.",
                         "properties": {
                           "asOf": {
                             "description": "The NEWEST usable per-project tvlAsOf (a missing, unparseable or future date dates nothing): it dates the freshest reading, not the whole total (see oldestAsOf). Null when no summed reading has a usable date.",
@@ -5220,6 +5519,39 @@
                           },
                           "basis": {
                             "type": "string"
+                          },
+                          "doublecountedProjects": {
+                            "description": "Every reading left out of totalTvlUSD because DefiLlama files the project's Stellar TVL as double counted (enrich-tvl stores its verdict weekly), largest first; [] = none. A project whose verdict was not read yet is summed instead.",
+                            "items": {
+                              "properties": {
+                                "name": {
+                                  "nullable": true,
+                                  "type": "string"
+                                },
+                                "slug": {
+                                  "nullable": true,
+                                  "type": "string"
+                                },
+                                "tvlAsOf": {
+                                  "format": "date-time",
+                                  "nullable": true,
+                                  "type": "string"
+                                },
+                                "tvlStale": {
+                                  "description": "true = tvlAsOf is more than 14 days before this response, or missing, unparseable or in the future. Only the date is checked, not why the reading is old. See staleWarning.",
+                                  "type": "boolean"
+                                },
+                                "tvlUSD": {
+                                  "type": "number"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "type": "array"
+                          },
+                          "doublecountedTvlUSD": {
+                            "description": "The sum of doublecountedProjects: readings DefiLlama files as double counted on Stellar (the same deposits counted under another protocol too) and leaves out of its own Stellar total. Not part of totalTvlUSD, and never to be added to it. A flagged project is left out whole, so deposits it holds that no summed protocol also holds are in neither figure. 0 when there are none.",
+                            "type": "number"
                           },
                           "oldestAsOf": {
                             "description": "The OLDEST usable tvlAsOf among the readings summed. Null when no summed reading has a usable date.",
@@ -5269,7 +5601,7 @@
                             "type": "string"
                           },
                           "top10": {
-                            "description": "The ten largest readings, largest first.",
+                            "description": "The ten largest summed readings, largest first.",
                             "items": {
                               "properties": {
                                 "name": {
@@ -5298,11 +5630,40 @@
                             "type": "array"
                           },
                           "totalTvlUSD": {
-                            "description": "Sum of every tracked project's last reading, stale ones included (see staleTvlUSD).",
+                            "description": "Sum of every summed project's last reading, stale ones included (see staleTvlUSD). Projects DefiLlama files as double counted on Stellar are left out whole, so the total can undercount deposits that no summed protocol holds (see doublecountedProjects); a project whose double-count verdict was not read yet is summed, and may count the same deposits twice.",
                             "type": "number"
                           },
                           "trackedProjects": {
+                            "description": "How many readings totalTvlUSD sums: rows with a tvlUSD figure that DefiLlama does not file as double counted. unavailableProjects and doublecountedProjects are not counted.",
                             "type": "integer"
+                          },
+                          "unavailableProjects": {
+                            "description": "Every project of the rollup's population (Development, Live, Pre-Release) linked to DefiLlama (llamaSlugs) that holds no tvlUSD, ordered by slug (the order is not a rank): not summed in totalTvlUSD and not counted in trackedProjects. [] = every such linked project holds a figure.",
+                            "items": {
+                              "properties": {
+                                "name": {
+                                  "nullable": true,
+                                  "type": "string"
+                                },
+                                "slug": {
+                                  "nullable": true,
+                                  "type": "string"
+                                },
+                                "tvlAsOf": {
+                                  "description": "When DefiLlama was last read for the row; null when no usable date is stored.",
+                                  "format": "date-time",
+                                  "nullable": true,
+                                  "type": "string"
+                                },
+                                "tvlUnavailable": {
+                                  "description": "Non-null when the row is linked to DefiLlama (llamaSlugs) but holds no tvlUSD, saying why with the date it was read (also its tvlAsOf): DefiLlama lists the linked protocol but publishes no Stellar figure for it, or its slugs could not be read since its mapping changed. Never a zero and never an old figure: the last figure is not kept beside it. Null beside a figure, on a row with no DefiLlama link, and on a linked row not refreshed since this field was added (the weekly refresh writes it).",
+                                  "nullable": true,
+                                  "type": "string"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "type": "array"
                           }
                         },
                         "type": "object"
@@ -6597,9 +6958,11 @@
                               "type": "object"
                             },
                             "contractBasis": {
-                              "description": "Ownership evidence for contractId. self-validated = stellar.expert's source validation independently names THIS repo. published = the repo publishes the address and it is provably neither a shared token contract nor another repo's, but nothing proves it is this repo's deployment. onchain-attributed = the repo published no id; the address comes from on-chain enrichment, which recorded stellar.expert naming this repo as the contract's source on the project row. null = recorded before the basis was tracked.",
+                              "description": "Ownership evidence for contractId. self-validated = the contract's WASM names THIS repo as its source (SEP-55 source_repo) and this repo holds a GitHub build attestation for that WASM. source-matched = this repo's own #[contractimpl] source defines at least half of the functions the deployed WASM exports, or all of them when it exports fewer than four (a function-name match, not a byte-level build; a GitHub fork never qualifies). sibling-matched = a repo under the same GitHub owner that this repo points to (SEP-55 source_repo, a git submodule, or a README link) defines them. published = not judged yet under that rule (stored before spec 1.9.135, or a scan could not read the repo the source is in); a rescan moves such a row to a judged value where it can decide, and a row judged cited leaves this registry. onchain-attributed = the repo has no such id; the address comes from on-chain enrichment, which recorded stellar.expert naming this repo as the contract's source on the project row. null when contractId is null (a row listed for live usage alone), or for an id recorded before its basis was (not judged yet).",
                               "enum": [
                                 "self-validated",
+                                "source-matched",
+                                "sibling-matched",
                                 "published",
                                 "onchain-attributed"
                               ],
@@ -6607,7 +6970,7 @@
                               "type": "string"
                             },
                             "contractId": {
-                              "description": "Mainnet contract id (C…) published by this repo and resolved live on stellar.expert, with shared token contracts (SACs) and contracts stellar.expert attributes to another repo excluded. When the repo published no id but on-chain enrichment attributed contracts to it, the first attributed address is served here with `contractBasis: onchain-attributed` and the full list in `verifiedContracts`; null only when neither exists. Read `contractBasis` before treating it as the repo's own deployment.",
+                              "description": "The repo's mainnet contract id (C...): one its README names, confirmed on Stellar mainnet by the scanner's RPC read of its contract instance, and not judged cited. An id the README only cites, usually a contract the repo calls, is never served here; /api/repos/trust serves it with mainnetContractBasis cited. Read `contractBasis`: published or null means not judged yet under the source rule. When the repo has no such id but on-chain enrichment attributed contracts to it, the first attributed address is served with `contractBasis: onchain-attributed` and the full list in `verifiedContracts`; null when the row is listed for live usage (codeInUse) alone.",
                               "nullable": true,
                               "type": "string"
                             },
@@ -7458,6 +7821,18 @@
                                     },
                                     "interfaceSize": {
                                       "type": "integer"
+                                    },
+                                    "mainnetContractBasis": {
+                                      "description": "Whose contract mainnetContractId is. self-validated = the deployed WASM names this repo as its source (SEP-55 source_repo) and this repo holds a GitHub build attestation for it. source-matched = this repo's own #[contractimpl] source defines at least half of the functions the deployed WASM exports (its contractspecv0), or all of them when it exports fewer than four; a function-name match, not a byte-level build, test code and mock contracts are not read, and a GitHub fork never qualifies. sibling-matched = a repo under the same GitHub owner that this repo points to (the WASM's SEP-55 source_repo, a git submodule, or a README link) defines at least half of them: a team's frontend or SDK repo whose contract lives next door. cited = the README names the contract but neither this repo nor such a sibling defines it, usually a contract the repo calls; it is NOT this repo's deployment. published = not judged under that rule yet: stored before spec 1.9.135 and served as it was until a scan of the repo moves it to one of the values above where it can decide, or left by a scan that could not decide (a pointed-to repo is private or gone, a submodule's target cannot be read, or the contract's trait impls take the trait's default functions, so its source names fewer functions than it exports). Every value but cited is served as the repo's deployment. null when mainnetContractId is null, or the id was recorded before its basis was (also not judged yet).",
+                                      "enum": [
+                                        "self-validated",
+                                        "source-matched",
+                                        "sibling-matched",
+                                        "cited",
+                                        "published"
+                                      ],
+                                      "nullable": true,
+                                      "type": "string"
                                     },
                                     "mainnetContractId": {
                                       "nullable": true,
@@ -11955,11 +12330,11 @@
       },
       "/api/leaderboard": {
         "get": {
-          "description": "Ranked list of the top / most active Stellar projects by GitHub activity (`sort=activity|stars|issues|tvl` over a `range`; `category` filter; `format=csv`) with per-project GitHub rollups, plus an Electric Capital dev-count macro block. `meta.metricDefinitions` defines each served metric; activity = 90-day commit volume across Stellar-evidenced repos (github.commits90d; null = index gap, sorts last), ties by recency; issues = open backlog (not activity); tvl = DefiLlama-verified TVL (null = untracked, never zero). Ranks PROJECTS, not people → use getBuilders.",
+          "description": "Ranked list of the top / most active Stellar projects by GitHub activity (`sort=activity|stars|issues|tvl` over a `range`; `category` filter; `format=csv`) with per-project GitHub rollups, plus an Electric Capital dev-count macro block. `meta.metricDefinitions` defines each served metric; activity = 90-day commit volume across Stellar-evidenced repos (github.commits90d; null = index gap, sorts last), ties by recency; issues = open backlog (not activity); tvl = DefiLlama-verified TVL (null = no figure, never zero; see tvlUnavailable). Ranks PROJECTS, not people → use getBuilders.",
           "operationId": "getLeaderboard",
           "parameters": [
             {
-              "description": "Order the project leaderboard. An unrecognized value returns 400 with the valid list. sort=tvl orders by DefiLlama-verified tvlUSD; sort=supply orders by issued-asset circulating supply (assetSupply). For both, null = untracked → those rows sort last, never treated as 0.",
+              "description": "Order the project leaderboard. An unrecognized value returns 400 with the valid list. sort=tvl orders by DefiLlama-verified tvlUSD; sort=supply orders by issued-asset circulating supply (assetSupply). For both, null = no figure (for tvl, tvlUnavailable says why on a row linked to DefiLlama) → those rows sort last, never treated as 0.",
               "in": "query",
               "name": "sort",
               "schema": {
@@ -15259,7 +15634,7 @@
                                   "type": "string"
                                 },
                                 "mainnetJoined": {
-                                  "description": "a verified mainnet contract is attributed to this repo (raw field mainnetContractId)",
+                                  "description": "the repo's own mainnet contract is on record: a mainnetContractId whose basis is not cited (an id its README only cites does not count)",
                                   "type": "boolean"
                                 },
                                 "notes": {
@@ -15306,7 +15681,7 @@
                                   "type": "string"
                                 },
                                 "mainnetJoined": {
-                                  "description": "a verified mainnet contract is attributed to this repo (raw field mainnetContractId)",
+                                  "description": "the repo's own mainnet contract is on record: a mainnetContractId whose basis is not cited (an id its README only cites does not count)",
                                   "type": "boolean"
                                 },
                                 "notes": {
@@ -15654,18 +16029,18 @@
                         "type": "array"
                       },
                       "answer": {
-                        "description": "DeepWiki source-grounded answer; null if DeepWiki had no answer (routed repo still returned).",
+                        "description": "The answer text: answerSource states its grounding and answerAsOf its date. null when no grounded answer was produced (the routed repo is still returned).",
                         "nullable": true,
                         "type": "string"
                       },
                       "answerAsOf": {
-                        "description": "When the answer was true. NULL WHENEVER answerSource is 'deepwiki'. DeepWiki exposes no index date, so the age of such an answer is genuinely unknown and we will not invent one. Do NOT substitute codeVerified.scannedAt, codeVerified.scannedRef or repoMeta.lastCommitAt: those date OUR SOURCE SCAN, and a DeepWiki answer can be older than the scanned ref and contradict it (reported 2026-08-31: an answer said MaxSupportedProtocolVersion = 25 while the source at the scanned ref defined 28). Populated for answerSource 'knowledge-note' (the note's own verification asOf: day-granular, serialized as that day's 00:00:00Z; such notes now LEAD answers that name the exact identifier, precisely the reported class) and 'stellarlight-code-scan' (the answer IS the scan; scannedAt dates it). When null, verify any specific value against repoUrl at scannedRef.",
+                        "description": "When the answer was true. NULL WHENEVER answerSource is 'deepwiki'. DeepWiki exposes no index date, so the age of such an answer is genuinely unknown and we will not invent one. Do NOT substitute codeVerified.scannedAt, codeVerified.scannedRef or repoMeta.lastCommitAt: those date OUR SOURCE SCAN, and a DeepWiki answer can be older than the scanned ref and contradict it (reported 2026-08-31: an answer said MaxSupportedProtocolVersion = 25 while the source at the scanned ref defined 28). Populated for answerSource 'knowledge-note' (the note's own verification asOf: day-granular, serialized as that day's 00:00:00Z; such notes now LEAD answers that name the exact identifier, precisely the reported class, unless sourceCheck.state is conflict) and 'stellarlight-code-scan' (the answer IS the scan, a conflict's scanned value included; scannedAt dates it). When null, verify any specific value against repoUrl at scannedRef.",
                         "format": "date-time",
                         "nullable": true,
                         "type": "string"
                       },
                       "answerSource": {
-                        "description": "Where the answer text came from ('knowledge-note' | 'deepwiki' | 'stellarlight-code-scan'); null when no answer was produced; cite it alongside the answer. It states the GROUNDING, never the age: see answerAsOf. 'knowledge-note' = a curated, dated, source-cited fact that directly names the identifier asked about; it LEADS the answer, and any DeepWiki walkthrough appended after it is an undated index that can lag it; where they disagree, the dated fact wins.",
+                        "description": "Where the answer text came from ('knowledge-note' | 'deepwiki' | 'stellarlight-code-scan'); null when no answer was produced; cite it alongside the answer. It states the GROUNDING, never the age: see answerAsOf. 'knowledge-note' = a curated, dated, source-cited fact that directly names the identifier asked about; it LEADS the answer, and any DeepWiki walkthrough appended after it is an undated index that can lag it; where they disagree, the dated fact wins. When sourceCheck.state is unknown or missing, the note answers only as the value on answerAsOf, and the answer says the current value is unknown. 'stellarlight-code-scan' also answers when such a note pins its value and the scan read a different value at codeVerified.scannedRef (sourceCheck.state conflict): the answer is the scanned value, and the note stays in knowledgeNotes as a dated record.",
                         "nullable": true,
                         "type": "string"
                       },
@@ -15720,6 +16095,18 @@
                           "isDeployableContract": {
                             "description": "The routed repo's PRODUCT is a deployable Soroban contract. Known platform/SDK/tooling repos (stellar-core, rs-soroban-env, the SDKs/CLI/RPC…) are pinned FALSE: they vendor cdylib crates as runtime/fixtures, and this flag must never be read as 'Stellar Core itself is deployable'.",
                             "type": "boolean"
+                          },
+                          "mainnetContractBasis": {
+                            "description": "Whose contract mainnetContractId is. self-validated = the deployed WASM names this repo as its source (SEP-55 source_repo) and this repo holds a GitHub build attestation for it. source-matched = this repo's own #[contractimpl] source defines at least half of the functions the deployed WASM exports (its contractspecv0), or all of them when it exports fewer than four; a function-name match, not a byte-level build, test code and mock contracts are not read, and a GitHub fork never qualifies. sibling-matched = a repo under the same GitHub owner that this repo points to (the WASM's SEP-55 source_repo, a git submodule, or a README link) defines at least half of them: a team's frontend or SDK repo whose contract lives next door. cited = the README names the contract but neither this repo nor such a sibling defines it, usually a contract the repo calls; it is NOT this repo's deployment. published = not judged under that rule yet: stored before spec 1.9.135 and served as it was until a scan of the repo moves it to one of the values above where it can decide, or left by a scan that could not decide (a pointed-to repo is private or gone, a submodule's target cannot be read, or the contract's trait impls take the trait's default functions, so its source names fewer functions than it exports). Every value but cited is served as the repo's deployment. null when mainnetContractId is null, or the id was recorded before its basis was (also not judged yet).",
+                            "enum": [
+                              "self-validated",
+                              "source-matched",
+                              "sibling-matched",
+                              "cited",
+                              "published"
+                            ],
+                            "nullable": true,
+                            "type": "string"
                           },
                           "mainnetContractId": {
                             "nullable": true,
@@ -15793,7 +16180,7 @@
                         "type": "object"
                       },
                       "knowledgeNotes": {
-                        "description": "Every public, curated, dated, source-cited fact StellarLight holds for the routed repo: deprecations, renames and moved paths, registry identity (npm / PyPI / crates / Maven names), release trains, security advisories, whether or not one of them led the answer. Empty when none are curated. Read these even when answerSource is 'deepwiki': a walkthrough describes mechanism; it never says the package is deprecated or the path moved. Each note cites its own source URL and carries its verification date.",
+                        "description": "Every public, curated, dated, source-cited fact StellarLight holds for the routed repo: deprecations, renames and moved paths, registry identity (npm / PyPI / crates / Maven names), release trains, security advisories, whether or not one of them led the answer. Empty when none are curated. Read these even when answerSource is 'deepwiki': a walkthrough describes mechanism; it never says the package is deprecated or the path moved. Each note cites its own source URL and carries its verification date. A note that pins its value carries sourceCheck; unless its state is verified, read the note as the value on its asOf date, not the current one.",
                         "items": {
                           "properties": {
                             "asOf": {
@@ -15806,12 +16193,82 @@
                             "source": {
                               "description": "'curated' (hand-verified) or 'derived:audit'.",
                               "type": "string"
+                            },
+                            "sourceCheck": {
+                              "description": "A curated note that pins its value to a commit, file and symbol, checked against StellarLight's own code scan of its repo at scannedRef (the repo's codeVerified.scannedRef, where the response serves one), where every scan re-reads each pinned symbol. verified: the value at scannedRef is the note's. conflict: it is scannedValue, not the note's notedValue, so the note is a dated record of its own commit and not the current value. missing: the scan read scannedRef and found the file gone or no declaration of the symbol in it, so the current value is unknown. unknown: no usable reading at scannedRef (none stored yet, one taken at another commit, a read that failed, no code scan, or a scan that does not find the note's own value at the note's own commit, so its reading is not comparable), never a match. null when the note pins no value, so there is nothing to check, and, on searchRepos rows (codeReferences too) and verifyClaim evidence, also while the stored note has not yet been stamped with its pin: the nightly knowledge-notes backfill stamps it.",
+                              "nullable": true,
+                              "properties": {
+                                "notedAsOf": {
+                                  "description": "YYYY-MM-DD the note was verified; null when the stored note carries no date.",
+                                  "nullable": true,
+                                  "type": "string"
+                                },
+                                "notedRef": {
+                                  "description": "Full commit SHA the note's value was verified at.",
+                                  "type": "string"
+                                },
+                                "notedValue": {
+                                  "description": "The value the note states, as the source wrote it.",
+                                  "type": "string"
+                                },
+                                "path": {
+                                  "description": "Repo-relative path of the file that declares it.",
+                                  "type": "string"
+                                },
+                                "reason": {
+                                  "description": "One sentence on how the state was reached.",
+                                  "type": "string"
+                                },
+                                "scannedAt": {
+                                  "description": "When that scan ran.",
+                                  "format": "date-time",
+                                  "nullable": true,
+                                  "type": "string"
+                                },
+                                "scannedRef": {
+                                  "description": "The commit checked, codeVerified.scannedRef; null when the repo has no code scan.",
+                                  "nullable": true,
+                                  "type": "string"
+                                },
+                                "scannedValue": {
+                                  "description": "The value at scannedRef; null unless state is verified or conflict.",
+                                  "nullable": true,
+                                  "type": "string"
+                                },
+                                "state": {
+                                  "enum": [
+                                    "verified",
+                                    "conflict",
+                                    "missing",
+                                    "unknown"
+                                  ],
+                                  "type": "string"
+                                },
+                                "symbol": {
+                                  "description": "The declared name the note states a value for.",
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "state",
+                                "symbol",
+                                "path",
+                                "notedValue",
+                                "notedRef",
+                                "notedAsOf",
+                                "scannedValue",
+                                "scannedRef",
+                                "scannedAt",
+                                "reason"
+                              ],
+                              "type": "object"
                             }
                           },
                           "required": [
                             "note",
                             "source",
-                            "asOf"
+                            "asOf",
+                            "sourceCheck"
                           ],
                           "type": "object"
                         },
@@ -15831,7 +16288,7 @@
                             "type": "string"
                           },
                           "warnings": {
-                            "description": "THIS OPERATION ONLY: present on deepwiki-grounded answers, carrying the answer-dating disclaimer (answerAsOf is null; scannedAt/scannedRef/lastCommitAt date OUR SOURCE SCAN, not the answer). Unlike the shared Meta.warnings (ignored-query-param disclosure), it says nothing about your request parameters.",
+                            "description": "THIS OPERATION ONLY: how to read the answer. On a deepwiki-grounded answer, the answer-dating disclaimer (answerAsOf is null; scannedAt/scannedRef/lastCommitAt date OUR SOURCE SCAN, not the answer). On a knowledge-note answer, the note's precedence over the walkthrough; when sourceCheck.state is unknown or missing, instead that the note is the value on answerAsOf and says nothing about the current source, which the walkthrough cannot settle either. On an answer from the scan's reading after a sourceCheck conflict, why that reading answers instead of the note. Unlike the shared Meta.warnings (ignored-query-param disclosure), it says nothing about your request parameters.",
                             "items": {
                               "type": "string"
                             },
@@ -15955,6 +16412,75 @@
                             "type": "string"
                           }
                         },
+                        "type": "object"
+                      },
+                      "sourceCheck": {
+                        "description": "The curated note that names what was asked, when it pins its value to a commit, file and symbol, checked against StellarLight's own code scan at codeVerified.scannedRef. conflict: the answer is scannedValue (answerSource stellarlight-code-scan) and the note's notedValue is a dated record of notedRef, not the current value. unknown or missing: the note answers only as the value on notedAsOf, and the answer says the current value is unknown. verified: the note leads as the value at scannedRef too. null when no curated note names what was asked, or it pins no value.",
+                        "nullable": true,
+                        "properties": {
+                          "notedAsOf": {
+                            "description": "YYYY-MM-DD the note was verified; null when the stored note carries no date.",
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "notedRef": {
+                            "description": "Full commit SHA the note's value was verified at.",
+                            "type": "string"
+                          },
+                          "notedValue": {
+                            "description": "The value the note states, as the source wrote it.",
+                            "type": "string"
+                          },
+                          "path": {
+                            "description": "Repo-relative path of the file that declares it.",
+                            "type": "string"
+                          },
+                          "reason": {
+                            "description": "One sentence on how the state was reached.",
+                            "type": "string"
+                          },
+                          "scannedAt": {
+                            "description": "When that scan ran.",
+                            "format": "date-time",
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "scannedRef": {
+                            "description": "The commit checked, codeVerified.scannedRef; null when the repo has no code scan.",
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "scannedValue": {
+                            "description": "The value at scannedRef; null unless state is verified or conflict.",
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "state": {
+                            "enum": [
+                              "verified",
+                              "conflict",
+                              "missing",
+                              "unknown"
+                            ],
+                            "type": "string"
+                          },
+                          "symbol": {
+                            "description": "The declared name the note states a value for.",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "state",
+                          "symbol",
+                          "path",
+                          "notedValue",
+                          "notedRef",
+                          "notedAsOf",
+                          "scannedValue",
+                          "scannedRef",
+                          "scannedAt",
+                          "reason"
+                        ],
                         "type": "object"
                       },
                       "sources": {
@@ -16355,6 +16881,18 @@
                               "interfaceSize": {
                                 "type": "integer"
                               },
+                              "mainnetContractBasis": {
+                                "description": "Whose contract mainnetContractId is. self-validated = the deployed WASM names this repo as its source (SEP-55 source_repo) and this repo holds a GitHub build attestation for it. source-matched = this repo's own #[contractimpl] source defines at least half of the functions the deployed WASM exports (its contractspecv0), or all of them when it exports fewer than four; a function-name match, not a byte-level build, test code and mock contracts are not read, and a GitHub fork never qualifies. sibling-matched = a repo under the same GitHub owner that this repo points to (the WASM's SEP-55 source_repo, a git submodule, or a README link) defines at least half of them: a team's frontend or SDK repo whose contract lives next door. cited = the README names the contract but neither this repo nor such a sibling defines it, usually a contract the repo calls; it is NOT this repo's deployment. published = not judged under that rule yet: stored before spec 1.9.135 and served as it was until a scan of the repo moves it to one of the values above where it can decide, or left by a scan that could not decide (a pointed-to repo is private or gone, a submodule's target cannot be read, or the contract's trait impls take the trait's default functions, so its source names fewer functions than it exports). Every value but cited is served as the repo's deployment. null when mainnetContractId is null, or the id was recorded before its basis was (also not judged yet).",
+                                "enum": [
+                                  "self-validated",
+                                  "source-matched",
+                                  "sibling-matched",
+                                  "cited",
+                                  "published"
+                                ],
+                                "nullable": true,
+                                "type": "string"
+                              },
                               "mainnetContractId": {
                                 "nullable": true,
                                 "type": "string"
@@ -16483,7 +17021,7 @@
                             "type": "object"
                           },
                           "signals": {
-                            "description": "Closed deterministic vocabulary; absence of a signal means the evidence doesn't hold, not that the opposite is proven.",
+                            "description": "Closed deterministic vocabulary; absence of a signal means the evidence doesn't hold, not that the opposite is proven. For a held mainnetContractId exactly one of: verified-contract-id (basis self-validated), publishes-contract-id (source-matched, sibling-matched, or published or no basis, which are not judged yet), cites-contract-id (cited: the README names a contract neither this repo nor a same-owner repo it points to defines).",
                             "items": {
                               "enum": [
                                 "scanned",
@@ -16491,6 +17029,7 @@
                                 "live-on-mainnet",
                                 "verified-contract-id",
                                 "publishes-contract-id",
+                                "cites-contract-id",
                                 "audited",
                                 "multi-audited",
                                 "code-changed-since-audit",
@@ -17625,6 +18164,22 @@
                               "nullable": true,
                               "type": "integer"
                             },
+                            "discontinued": {
+                              "description": "The issuer's own dated statement that it no longer offers this product (issuance wound down, exchange services ended): `note` says what it states, `sourceUrl` where, `asOf` the day it was read. The row stays, since the token still exists on chain and `state` says what is minted; the project row serves the product with status retired and this note. null = no such statement found, never a verified 'still offered'.",
+                              "nullable": true,
+                              "properties": {
+                                "asOf": {
+                                  "type": "string"
+                                },
+                                "note": {
+                                  "type": "string"
+                                },
+                                "sourceUrl": {
+                                  "type": "string"
+                                }
+                              },
+                              "type": "object"
+                            },
                             "evidenceUrl": {
                               "description": "Where to re-verify: the issuer's stellar.toml, or the asset/contract on stellar.expert.",
                               "type": "string"
@@ -17733,6 +18288,7 @@
                               "type": "number"
                             },
                             "state": {
+                              "description": "What is minted on chain: live (at least two holders), issued-single-holder, deployed-no-supply or not-found. It is an on-chain fact, not a product status: a row whose issuer has discontinued the product (`discontinued` set) keeps state live while its tokens are minted and held.",
                               "enum": [
                                 "live",
                                 "issued-single-holder",
@@ -17787,6 +18343,10 @@
                                   "type": "integer"
                                 },
                                 "type": "object"
+                              },
+                              "discontinued": {
+                                "description": "Registry rows whose issuer has said it no longer offers the product (`discontinued` set). They keep state live while the tokens are minted and held, so subtract them from byState.live to count live products.",
+                                "type": "integer"
                               },
                               "issuerDeclared": {
                                 "description": "Rows admitted because a tracked issuer's own toml declares them (sls-083).",
@@ -19067,7 +19627,7 @@
       },
       "/api/stablecoins": {
         "get": {
-          "description": "Every tracked Stellar stablecoin, ranked by USD market cap by default (sort=marketcap|supply|holders|volume; peg filter). Rows carry marketCapUSD (comparable), raw supply + its peg (NOT comparable across pegs; GYEN supply is yen, ARST is pesos), holders, price, full issuer account, and `basis` (live | curated-static | unmeasured) so an estimate is never mistaken for a live measurement. Measured every 6h from Horizon, Stellar Expert and live peg FX; null = not measured, never zero.",
+          "description": "Every tracked Stellar stablecoin, ranked by USD market cap by default (sort=marketcap|supply|holders|volume; peg filter). Rows carry marketCapUSD (comparable), raw supply + its peg (NOT comparable across pegs; ARST supply is pesos, mZAR is rand), holders, price, full issuer account, and `basis` (live | curated-static | unmeasured) so an estimate is never mistaken for a live measurement. Measured every 6h from Horizon, Stellar Expert and live peg FX; null = not measured, never zero.",
           "operationId": "getStablecoins",
           "parameters": [
             {
@@ -19094,13 +19654,17 @@
               }
             },
             {
-              "description": "Filter on the row's assetType, case-insensitive: Yield Stablecoin (e.g. USDY), Treasury-Backed (e.g. USDM1), or none for the rows with no assetType recorded. A qualifier is recorded only where the unit is not 1:1 with its peg and a row without one was not classified, so assetType=none leaves out the known yield and Treasury products but does not certify every row left as par. Unrecognized values return 400 with the valid set.",
+              "description": "Filter on the row's assetType, case-insensitive: one class (defined on Stablecoin.assetType), e.g. Fiat-Backed for the coins whose issuer states cash or cash-equivalent reserves in the peg currency. Unclassified returns the rows whose issuer states no backing we could read; none is an alias of Unclassified, kept for compatibility, and returns the same rows. Unrecognized values return 400 with the valid set.",
               "in": "query",
               "name": "assetType",
               "schema": {
                 "enum": [
-                  "Yield Stablecoin",
+                  "Fiat-Backed",
+                  "Crypto-Backed",
+                  "Multi-Asset-Backed",
                   "Treasury-Backed",
+                  "Yield Stablecoin",
+                  "Unclassified",
                   "none"
                 ],
                 "type": "string"
@@ -19267,7 +19831,6 @@
               "ondo",
               "pyusd",
               "eurc",
-              "gyen",
               "issuer",
               "peg",
               "holders"
@@ -19457,7 +20020,7 @@
                         "type": "string"
                       },
                       "evidence": {
-                        "description": "Typed evidence rows; discriminate on kind. audit-report = the audit registry; status-record = the lifecycle status with its provenance trio; code-activity = per-repo activity with the existing quality label; curated-note = a repo knowledgeNote (dated fact with source); status-check = a check of a Live label that hit (note, source, asOf), the same check searchProjects serves in statusChecks: the verdict stays supported, the statement carries the caveat and confidence is halved.",
+                        "description": "Typed evidence rows; discriminate on kind. audit-report = the audit registry; status-record = the lifecycle status with its provenance trio; code-activity = per-repo activity with the existing quality label; curated-note = a repo knowledgeNote (dated fact with source) with its repo and its sourceCheck, or a stablecoin registry row (neither); status-check = a check of a Live label that hit (note, source, asOf), the same check searchProjects serves in statusChecks: the verdict stays supported, the statement carries the caveat and confidence is halved.",
                         "items": {
                           "properties": {
                             "activityState": {
@@ -19525,6 +20088,75 @@
                             },
                             "source": {
                               "type": "string"
+                            },
+                            "sourceCheck": {
+                              "description": "curated-note rows from a repo's knowledgeNotes only: the note's pinned value checked against StellarLight's own code scan of that repo at its scannedRef. Unless state is verified, the note is the value on its asOf date, not the current one. null when the note pins no value, or while the stored note has not yet been stamped with its pin (the nightly knowledge-notes backfill stamps it); absent on other kinds and on stablecoin registry rows.",
+                              "nullable": true,
+                              "properties": {
+                                "notedAsOf": {
+                                  "description": "YYYY-MM-DD the note was verified; null when the stored note carries no date.",
+                                  "nullable": true,
+                                  "type": "string"
+                                },
+                                "notedRef": {
+                                  "description": "Full commit SHA the note's value was verified at.",
+                                  "type": "string"
+                                },
+                                "notedValue": {
+                                  "description": "The value the note states, as the source wrote it.",
+                                  "type": "string"
+                                },
+                                "path": {
+                                  "description": "Repo-relative path of the file that declares it.",
+                                  "type": "string"
+                                },
+                                "reason": {
+                                  "description": "One sentence on how the state was reached.",
+                                  "type": "string"
+                                },
+                                "scannedAt": {
+                                  "description": "When that scan ran.",
+                                  "format": "date-time",
+                                  "nullable": true,
+                                  "type": "string"
+                                },
+                                "scannedRef": {
+                                  "description": "The commit checked, codeVerified.scannedRef; null when the repo has no code scan.",
+                                  "nullable": true,
+                                  "type": "string"
+                                },
+                                "scannedValue": {
+                                  "description": "The value at scannedRef; null unless state is verified or conflict.",
+                                  "nullable": true,
+                                  "type": "string"
+                                },
+                                "state": {
+                                  "enum": [
+                                    "verified",
+                                    "conflict",
+                                    "missing",
+                                    "unknown"
+                                  ],
+                                  "type": "string"
+                                },
+                                "symbol": {
+                                  "description": "The declared name the note states a value for.",
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "state",
+                                "symbol",
+                                "path",
+                                "notedValue",
+                                "notedRef",
+                                "notedAsOf",
+                                "scannedValue",
+                                "scannedRef",
+                                "scannedAt",
+                                "reason"
+                              ],
+                              "type": "object"
                             },
                             "stars": {
                               "nullable": true,
@@ -20165,7 +20797,7 @@
       }
     ]
   },
-  "openapiVersion": "1.9.127",
+  "openapiVersion": "1.9.135",
   "operationCount": 42,
   "service": "stellar-light",
   "source": {
@@ -20177,7 +20809,7 @@
     "status": "https://stellarlight.xyz/api/status"
   },
   "status": {
-    "apiVersion": "1.9.127",
+    "apiVersion": "1.9.135",
     "docs": "https://stellarlight.xyz/scout",
     "endpoints": [
       "/api/status",

@@ -4056,6 +4056,26 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/433b3848a54bf44c151e2a4f8a6e935ad498a0aa/improvements/stellar-light-scout/sls-100-hana-website-repurposed-domain.md"
     },
     {
+      "id": "sls-101",
+      "title": "The stale-total warning is now deployed. On 2026-11-06, GET /api/analyze?dimension=tvl reports totalTvlUSD: 1980381301, staleTvlUSD:…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-12",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1912",
+        "https://github.com/Stellar-Light/stellarlight/pull/1943"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/pull/1943",
+        "https://github.com/stellar-experimental/stellar-raven/issues/417"
+      ],
+      "liveRecheck": "2026-11-12T14:44:39Z GET https://stellarlight.xyz/api/analyze?dimension=tvl and /api/projects/search?q=<spiko|etherfuse|sentora>&limit=3: totalTvlUSD 185490765 over 10, staleTvlUSD 0; Spiko/Etherfuse null with dated unavailable reasons; Sentora 84775748 fresh and remapped to stellar-defi-hub; unavailable and double-counted rows listed and excluded.",
+      "reviewEvidence": "Distinct review by Codex frontier gpt-6-astra (high), research/audits/2026-11-12-truth-maintenance/review-retire-astra.md; author lane Codex gpt-6.1-sol. Resolution comments: https://github.com/Stellar-Light/stellarlight/issues/1912#issuecomment-6827173413, https://github.com/Stellar-Light/stellarlight/pull/1943#issuecomment-6827173800",
+      "sourceCommit": "aaf8963a319c9a7b2aeadc84fbac3eb426d920fd",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/aaf8963a319c9a7b2aeadc84fbac3eb426d920fd/improvements/stellar-light-scout/sls-101-analyze-tvl-total-includes-stale-rows.md"
+    },
+    {
       "id": "sls-102",
       "title": "The Blend row in GET /api/projects/search links tvlMethodUrl to one child protocol instead of its four-row aggregate. It reports tvlUSD:…",
       "service": "stellar-light-scout",
@@ -4182,6 +4202,27 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/b73c8c2f99a724138447339b8e753647e33e1724/improvements/stellar-light-scout/sls-110-hackmeridian-rubric-weights.md"
     },
     {
+      "id": "sls-111",
+      "title": "The directory marks 24 projects with an SCF #45 award. The SCF funded-projects page lists at least 40 SCF #45 awards. Thirteen awarded…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-12",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1903",
+        "https://github.com/Stellar-Light/stellarlight/pull/1946"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/pull/1922",
+        "https://github.com/Stellar-Light/stellarlight/pull/1946",
+        "https://github.com/stellar-experimental/stellar-raven/issues/421"
+      ],
+      "liveRecheck": "2026-11-12T14:44:39Z GET https://stellarlight.xyz/api/projects/search?scfAwarded=true&limit=100&offset=0..600 (635 awarded rows) vs https://communityfund.stellar.org/projects?tab=all-rounds: round 45 has 40 of 40 exact source-page identities, Liqvid [37,45], Pollar/Pods/Principal found. Earlier-round residual is successor sls-116 (Stellar-Light/stellarlight#1952).",
+      "reviewEvidence": "Distinct review by Codex frontier gpt-6-astra (high), research/audits/2026-11-12-truth-maintenance/review-retire-astra.md; author lane Codex gpt-6.1-sol. Successor re-read by the coordinator. Resolution comments: https://github.com/Stellar-Light/stellarlight/issues/1903#issuecomment-6827174998, https://github.com/Stellar-Light/stellarlight/pull/1946#issuecomment-6827175523",
+      "sourceCommit": "aaf8963a319c9a7b2aeadc84fbac3eb426d920fd",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/aaf8963a319c9a7b2aeadc84fbac3eb426d920fd/improvements/stellar-light-scout/sls-111-scf-45-award-coverage.md"
+    },
+    {
       "id": "sls-112",
       "title": "The directory has no record for two first-party Stellar launches from September and October 2026",
       "service": "stellar-light-scout",
@@ -4235,6 +4276,26 @@
       "reviewEvidence": "Author: Codex workhorse gpt-6.1-sol lane (sw-scout). Independent reviewer: Codex frontier gpt-6-astra high (hc t3cc), research/audits/2026-11-09-improvements-sweep/review-astra.md, re-derived sls-114 from fresh live reads frozen before reading the author report. Resolution comments: https://github.com/Stellar-Light/stellarlight/issues/1906#issuecomment-6751069547",
       "sourceCommit": "433b3848a54bf44c151e2a4f8a6e935ad498a0aa",
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/433b3848a54bf44c151e2a4f8a6e935ad498a0aa/improvements/stellar-light-scout/sls-114-explain-repo-fixture-interfaces-without-paths.md"
+    },
+    {
+      "id": "sls-115",
+      "title": "scout.explainRepo selects an outdated Horizon protocol ceiling for a current-source question. The selected answer says…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-11-06",
+      "resolved": "2026-11-12",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1933",
+        "https://github.com/Stellar-Light/stellarlight/pull/1942"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/pull/1942",
+        "https://github.com/stellar-experimental/stellar-raven/issues/418"
+      ],
+      "liveRecheck": "2026-11-12 GET https://stellarlight.xyz/api/repos/explain?repo=stellar%2Fstellar-horizon&q=Which+Horizon+ingestion+constant+pins+the+highest+supported+protocol+version%2C+and+what+is+its+value%3F plus explicit-current and handoff controls: answer 30, answerSource stellarlight-code-scan, sourceCheck conflict (noted 29, scanned 30) at matching scannedRef 6a13f418; gh api source reads confirm 30 at that ref and 29 at the historical note commit 430a28e.",
+      "reviewEvidence": "Distinct review by Codex frontier gpt-6-astra (high), research/audits/2026-11-12-truth-maintenance/review-retire-astra.md; author lane Codex gpt-6.1-sol. Resolution comments: https://github.com/Stellar-Light/stellarlight/issues/1933#issuecomment-6827174175, https://github.com/Stellar-Light/stellarlight/pull/1942#issuecomment-6827174551",
+      "sourceCommit": "aaf8963a319c9a7b2aeadc84fbac3eb426d920fd",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/aaf8963a319c9a7b2aeadc84fbac3eb426d920fd/improvements/stellar-light-scout/sls-115-horizon-ceiling-note-scan-drift.md"
     }
   ]
 }

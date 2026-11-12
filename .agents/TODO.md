@@ -60,19 +60,16 @@ The [round ledger](rounds/2026-11-05-truth-maintenance.md) and its per-finding t
 130 starting findings. Recheck only when the named change or new evidence arrives; untouched
 issues do not need reminders.
 
-- Scout (2026-11-09 [sweep](rounds/2026-11-09-improvements-sweep.md)): sls-099/100/102/112/114
-  are retired after an independent review. sls-101 and sls-107 stay active, and both upstream
-  issues now carry a verification result. For sls-101, recheck the aggregate and the
-  Spiko/Sentora/Etherfuse provider values after the Sentora remap or unavailable-provider handling
-  ships; the warning is live, but the values remain stale. For sls-107, require the owner-enabled
+- Scout (2026-11-12 [round](rounds/2026-11-12-truth-maintenance.md)): sls-101, sls-111 and
+  sls-115 are retired after an independent review; the earlier-round residual of sls-111 is
+  successor sls-116 ([stellarlight#1952](https://github.com/Stellar-Light/stellarlight/issues/1952)).
+  sls-024 and sls-029 are verified fixed and retire once the goldens that cap on them are
+  reconciled (separate change). sls-033 stays active: nine unavailable platform facts lack a source
+  URL ([result](https://github.com/Stellar-Light/stellarlight/issues/519#issuecomment-6827190900));
+  recheck when the owner adds a source field. For sls-107, require the owner-enabled
   issuer-of-record write (PR1923) to populate issuer, source and date for the nine
-  AUDD/Currency One records and the MGUSD control. sls-115 (issue 1933) needs a note or scan
-  invalidation fix; see the Horizon monitor below.
-- SCF coverage: after draft [PR1922](https://github.com/Stellar-Light/stellarlight/pull/1922)
-  is rebased, merged and applied, repeat the full round-45 directory comparison for sls-111.
-  On 2026-11-09, 12 official round-45 source pages were still missing from the directory.
-  Liqvid must have awarded rounds 37 and 45, never submitted-but-not-awarded rounds 30 and 44.
-  The proposed 11 edits do not replace missing-project intake.
+  AUDD/Currency One records and the MGUSD control; on 2026-11-12 all 37 rows still had null issuer
+  fields.
 - Docs: the [Docs table](rounds/2026-11-05-truth-maintenance/docs.md) identifies each unmerged
   PR, review/check blocker and exact live trigger. Recheck those pages after deployment;
   green checks alone do not close findings. The author-owned protocol PR2059 is behind but
@@ -125,11 +122,16 @@ id and cite both receipts.
 2026-11-06: the monitor fails again. The answer selects `MaxSupportedProtocolVersion = 29`
 from an October 8 note, while its own `scannedRef` (`597544b6…`) defines `30` at
 `internal/ingest/main.go:38`. This is a current-source selection defect, not a claim that the
-historical note or Mainnet protocol 29 is false. New finding `sls-115` preserves the regression;
+historical note or Mainnet protocol 29 is false. Finding `sls-115` preserved the regression;
 see [the continuation](rounds/2026-11-06-remaining-sweep/other.md) and its distinct cross-review.
-The November 5 passing monitor verdict missed the scan-ref comparison. After an upstream note
-refresh/invalidation fix, repeat both original and explicitly current queries against each
-returned scan commit. Keep the recovery program blocked; no paid collection is authorized.
+The November 5 passing monitor verdict missed the scan-ref comparison.
+
+2026-11-12: the blocker clears again. After stellarlight PR1942, the original and explicit-current
+queries return `30` from `stellarlight-code-scan`, with an explicit conflict against the dated
+29 note; the source at the response's `scannedRef` (`6a13f418…`) defines `30`. A distinct
+review repeated it and `sls-115` is retired
+([round](rounds/2026-11-12-truth-maintenance.md)). The recovery program stays blocked until a
+reviewed v3 plan (below); no paid collection is authorized.
 
 During each improvements or drift round, run one free `scout.explainRepo` reading against the
 existing local Raven server for `stellar/stellar-horizon`: "Which Horizon ingestion constant pins
@@ -598,11 +600,12 @@ The 2026-11-02 golden audit (`rounds/2026-11-02-golden-audit.md`) moved every ot
 date into 2027. Eight cases keep earlier dates, because each one depends on a known event, and
 `npm run eval:qa:lint -- --stale --enforce-floors` fails every PR once a date passes:
 
-- SCF #46 Submission closes 2026-11-09 and Panel Review starts 2026-11-11: `q-scf-open-rfps`
-  (2026-11-10), `q-scf-rfp-tooling` (11-11), `q-scf-current-round` and
-  `q-edge-fresh-latest-scf-round` (11-12). Also check whether the official RFP Track page has
-  published Q4 briefs and whether Scout agrees. The November 5/6 round verified the withdrawn
-  Q3 briefs are now closed in Scout and retired `sls-096`; do not carry forward the old lag claim.
+- SCF: the official RFP Track page published two Q4 briefs on 2026-11-11, and the six RFP cases
+  carry them ([round](rounds/2026-11-12-truth-maintenance.md)). Scout still served no open brief
+  on 2026-11-12 (roster checked 2026-11-04); its operator's nightly check already reports the lag.
+  On or after 2026-11-19, re-read `https://stellarlight.xyz/api/rfps?status=open`. If it still
+  serves no Q4 brief, file a Scout finding; when it catches up, drop the dated Scout-lag sentence
+  from the six cases' notes. `q-scf-current-round` is due 2026-12-04.
 - The Bell/P30 Mainnet vote is on 2026-11-23 17:00 UTC: `q-pc-protocol-upgrade-timing`,
   `q-protocol-version-history-list`, and `q-edge-fresh-latest-protocol-version` (11-24), and
   `q-hist-quantum-preparedness-plan` (12-01). The `mainnet-protocol-29` source sentinel fires when

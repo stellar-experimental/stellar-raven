@@ -298,21 +298,21 @@
     {
       "id": "scf-rfp-q4-roster",
       "caseId": "q-scf-open-rfps",
-      "caseAsOf": "2026-11-10",
+      "caseAsOf": "2026-11-12",
       "url": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
       "check": {
         "kind": "present",
-        "pattern": "Current Open RFPs \\*\\*\\*October 2026: New Q4 RFPs are coming soon\\.\\*\\*\\* [^<]*<details> <summary><strong>Coming Soon</strong></summary> ### </details> <details> <summary><strong>Coming Soon</strong></summary> ### </details> If you have"
+        "pattern": "Current Open RFPs [^<]*<details> <summary><strong>Web and API Analytics for Stellar Ecosystem Projects</strong></summary>(?:(?!<summary>)[\\s\\S])*<details> <summary><strong>XDR/CAP-Coverage Audit Tool and Indexer-Hardening Guide</strong></summary>(?:(?!<summary>)[\\s\\S])*</details> If you have"
       }
     },
     {
       "id": "scf-rfp-q4-tooling-roster",
       "caseId": "q-scf-rfp-tooling",
-      "caseAsOf": "2026-11-10",
+      "caseAsOf": "2026-11-12",
       "url": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
       "check": {
         "kind": "present",
-        "pattern": "Current Open RFPs \\*\\*\\*October 2026: New Q4 RFPs are coming soon\\.\\*\\*\\* [^<]*<details> <summary><strong>Coming Soon</strong></summary> ### </details> <details> <summary><strong>Coming Soon</strong></summary> ### </details> If you have"
+        "pattern": "Current Open RFPs [^<]*<details> <summary><strong>Web and API Analytics for Stellar Ecosystem Projects</strong></summary>(?:(?!<summary>)[\\s\\S])*<details> <summary><strong>XDR/CAP-Coverage Audit Tool and Indexer-Hardening Guide</strong></summary>(?:(?!<summary>)[\\s\\S])*</details> If you have"
       }
     },
     {

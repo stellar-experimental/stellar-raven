@@ -306,10 +306,10 @@
           "q-scf-vs-sdf-enterprise-fund"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-10",
+        "lastChecked": "2026-11-12",
         "reSwept": {
-          "date": "2026-11-10",
-          "reason": "Independent re-sweep, .agents/rounds/2026-11-10-truth-maintenance.md. Three members changed. q-scf-current-round reports no round in Submission on 2026-11-10 with SCF #46 in Initial Review after 2026-11-09. q-scf-open-rfps and q-scf-rfp-tooling report no open Q4 brief and keep the interest-form-then-invitation path, which matches q-scf-how-to-apply and q-scf-vs-sdf-enterprise-fund. None of the three states a cap, tier, or total. The fourteen unchanged members carry program mechanics only and no SCF round, phase, or RFP roster claim. No contradiction.",
+          "date": "2026-11-12",
+          "reason": "Re-sweep 2026-11-12 (.agents/rounds/2026-11-12-truth-maintenance.md). q-scf-open-rfps and q-scf-rfp-tooling now report the two Q4 2026 briefs the official RFP Track page published on 2026-11-11, with Scout still at zero open briefs; both keep #46 in Initial Review after 2026-11-09 with no open submission window and the interest-form-then-invitation path. q-scf-current-round, q-scf-how-to-apply and the other thirteen members are unchanged and make no claim about the Q4 roster. No contradiction.",
           "verdict": "consistent"
         },
         "note": "Historical 2026-07-03 snapshot: Build/Instawards/Public Goods/Audit Bank/Growth Hack and SDF-vs-SCF distinctions were consistent. SUPERSEDED in part by the 2026-07-09 corpus-health sweep: the earlier cluster omitted the Liquidity Award case while its absorbed award-tier sibling repeated the false 'amount undisclosed' claim. Current official rules publish $50K in XLM base plus an optional additional $50K supplemental award, up to $100K total. Funding-v2 also supersedes the old ~$19.97M/~223 analytics snapshot; current grading remains dated/source/count-basis-gated.",
@@ -324,9 +324,9 @@
           "q-scf-how-to-apply": "b46a5ef6c46fd346b78a48ee2e59be1e99ab500beaf5fe4dd212d67d225001b7",
           "q-scf-instawards": "8303a8051c776609538eaf34ae6806d41b0362e8dcf8b2ac3214e925469dc03b",
           "q-scf-nqg-voting": "92b0aa8a0fa7c9127463da7ced369345edf0b55c8207c8481a39fe2867a2bc54",
-          "q-scf-open-rfps": "a929140caaa76f302471433c6be1155a0b790b751dcb7c6558cd1c9a6fc1a4b1",
+          "q-scf-open-rfps": "f177c708d6b4854213cdcee2da5e266a332af2175c7c60e645ddd2c54f89a7fd",
           "q-scf-regional-india": "86e9012d0f02dabcd7bf69ed54d1039b751d9c21439a127a2604cb9f511db349",
-          "q-scf-rfp-tooling": "fba6bba4e7d5b01cc136eb2ac2beb3b412727592c89041d748aab8314c72dc61",
+          "q-scf-rfp-tooling": "bca947e19b54de02f4ea6adce6ee4004ba6e12bee82ff78a96477d06c1a760de",
           "q-scf-sdf-marketing-grant": "cb01d1c9e8f92466066902af59c0bb008e42f7de21504f2f9ce8bab61885e6f5",
           "q-scf-total-distributed": "80080f126248fa8565ca203082fb3c47707658909bf51a27696ce06cfba43071",
           "q-scf-v7-changes": "e3c6dfa0b7152e11197d092a480a85b1a35a2c3baa75ab874b00302eb8a82036",
@@ -855,10 +855,10 @@
           "q-scf-open-rfps"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-10",
+        "lastChecked": "2026-11-12",
         "reSwept": {
-          "date": "2026-11-10",
-          "reason": "Independent re-sweep, .agents/rounds/2026-11-10-truth-maintenance.md. q-scf-open-rfps keeps source-relative, dated roster reporting: no open Q4 brief on the official RFP Track page and zero open briefs in Scout on 2026-11-10. Its corroboration now states that the Stellar Light guide is not independent of Scout. q-defi-phoenix-what-is, q-defi-reflector-oracle, and q-scf-funding-by-category are unchanged and make no RFP roster or round claim. The corpus-relative encoding rule still holds for all four. No contradiction.",
+          "date": "2026-11-12",
+          "reason": "Re-sweep 2026-11-12 (.agents/rounds/2026-11-12-truth-maintenance.md). q-scf-open-rfps keeps dated, source-relative roster reporting: two official Q4 briefs and a lagging Scout empty set on 2026-11-12, each attributed. q-defi-phoenix-what-is, q-defi-reflector-oracle and q-scf-funding-by-category are unchanged and make no roster claim. The corpus-relative encoding rule holds. No contradiction.",
           "verdict": "consistent"
         },
         "note": "corpus-relative encoding: require source, as-of date, method/basis, and external verification before world-truth claims",
@@ -866,7 +866,7 @@
           "q-defi-phoenix-what-is": "76acf7d6f08dfc7def9443eaffde4dc0b90a7fc9d0a040d7a2d97fec5614cc9b",
           "q-defi-reflector-oracle": "ec061bc79b120ad1ed8f9e685a07b112fa3c6692b1ebbf971f54e1cfedbc8bc7",
           "q-scf-funding-by-category": "8f59fd7423aac041beb87d0f51fc82570818acf74ec02c64dc2b6d5d080a6630",
-          "q-scf-open-rfps": "a929140caaa76f302471433c6be1155a0b790b751dcb7c6558cd1c9a6fc1a4b1"
+          "q-scf-open-rfps": "f177c708d6b4854213cdcee2da5e266a332af2175c7c60e645ddd2c54f89a7fd"
         }
       },
       {
@@ -2003,15 +2003,15 @@
           "q-scf-rfp-tooling"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-10",
-        "note": "On 2026-11-10, the official RFP Track page listed two Q4 placeholders and no open brief. Scout reported zero open briefs, 16 closed briefs, Q4 2026 as the active quarter, and both former Q3 briefs closed. Round #46 appeared in Initial Review in Scout round metadata with zero synthetic submission rows. Both members preserve invitation gating and source-relative, dated roster reporting.",
+        "lastChecked": "2026-11-12",
+        "note": "On 2026-11-12, the official RFP Track page lists two Q4 2026 briefs published 2026-11-11 (Web and API Analytics for Stellar Ecosystem Projects; XDR/CAP-Coverage Audit Tool and Indexer-Hardening Guide). Scout reports zero open briefs with briefRoster checkedOn 2026-11-04, so it lags the official page. Round #46 is in Initial Review with no open submission window. Both members preserve invitation gating and source-relative, dated roster reporting.",
         "memberContentSha256": {
-          "q-scf-open-rfps": "a929140caaa76f302471433c6be1155a0b790b751dcb7c6558cd1c9a6fc1a4b1",
-          "q-scf-rfp-tooling": "fba6bba4e7d5b01cc136eb2ac2beb3b412727592c89041d748aab8314c72dc61"
+          "q-scf-open-rfps": "f177c708d6b4854213cdcee2da5e266a332af2175c7c60e645ddd2c54f89a7fd",
+          "q-scf-rfp-tooling": "bca947e19b54de02f4ea6adce6ee4004ba6e12bee82ff78a96477d06c1a760de"
         },
         "reSwept": {
-          "date": "2026-11-10",
-          "reason": "Independent re-sweep, .agents/rounds/2026-11-10-truth-maintenance.md. q-scf-open-rfps and q-scf-rfp-tooling share the same 2026-11-10 observation: the official RFP Track page lists two Q4 placeholders and no open brief; Scout reports open 0, closed 16, both former Q3 briefs closed, zero synthetic rows, and SCF #46 in Initial Review in round metadata. Both replaced the expired syntheticRounds trap with the same conditional avoid item and keep invitation gating. I re-read the handbook and both Scout responses. No contradiction.",
+          "date": "2026-11-12",
+          "reason": "Re-sweep 2026-11-12 (.agents/rounds/2026-11-12-truth-maintenance.md). Both members name the same two official Q4 briefs, the same Scout lag (open=0, briefRoster checkedOn 2026-11-04), the same #46 Initial Review state and the same invitation gating. q-scf-rfp-tooling adds the tooling and indexer scope of the XDR/CAP brief without contradicting q-scf-open-rfps. No contradiction.",
           "verdict": "consistent"
         }
       },
@@ -2091,15 +2091,15 @@
           "q-scf-open-rfps"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-10",
-        "note": "The historical Q1-2026 Hummingbot/Kelp brief remains closed. The November 5/6 recheck finds no open brief in either the official roster or Scout. No later submission, fulfillment or merge is inferred; historical dates remain explicit.",
+        "lastChecked": "2026-11-12",
+        "note": "The historical Q1-2026 Hummingbot/Kelp brief remains closed. On 2026-11-12 the official roster lists two unrelated Q4 briefs and Scout lists none. No later submission, fulfillment or merge is inferred; historical dates remain explicit.",
         "memberContentSha256": {
           "q-scf-hummingbot-kelp-closed-rfp": "dbd0b23174008fe154facfd5675431370d0d6a622306381499eb13b71d19eb91",
-          "q-scf-open-rfps": "a929140caaa76f302471433c6be1155a0b790b751dcb7c6558cd1c9a6fc1a4b1"
+          "q-scf-open-rfps": "f177c708d6b4854213cdcee2da5e266a332af2175c7c60e645ddd2c54f89a7fd"
         },
         "reSwept": {
-          "date": "2026-11-10",
-          "reason": "Independent re-sweep, .agents/rounds/2026-11-10-truth-maintenance.md. q-scf-open-rfps reports no open brief on 2026-11-10 and names only the two withdrawn Q3 briefs as closed. q-scf-hummingbot-kelp-closed-rfp is unchanged; the live closed roster still lists hummingbot-integration as closed in q1-2026. Neither member infers a later submission or fulfillment. No contradiction.",
+          "date": "2026-11-12",
+          "reason": "Re-sweep 2026-11-12 (.agents/rounds/2026-11-12-truth-maintenance.md). q-scf-open-rfps now lists the two Q4 briefs; neither is the Q1-2026 Hummingbot/Kelp brief, which stays closed in Scout and absent from the official page. q-scf-hummingbot-kelp-closed-rfp is unchanged. No contradiction.",
           "verdict": "consistent"
         }
       },
@@ -2175,17 +2175,17 @@
           "q-scf-submission-lifecycle-deadlines"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-10",
+        "lastChecked": "2026-11-12",
         "note": "Rolling interest precedes eligibility/referral and invitation to a full proposal. Only Open uses project-level community voting; Integration/RFP are panel-led.",
         "memberContentSha256": {
           "q-scf-eligibility-criteria": "b42d75ea41de636513016271fa00148a5de8ec4c4637b3fd488754207e39840e",
           "q-scf-how-to-apply": "b46a5ef6c46fd346b78a48ee2e59be1e99ab500beaf5fe4dd212d67d225001b7",
-          "q-scf-rfp-tooling": "fba6bba4e7d5b01cc136eb2ac2beb3b412727592c89041d748aab8314c72dc61",
+          "q-scf-rfp-tooling": "bca947e19b54de02f4ea6adce6ee4004ba6e12bee82ff78a96477d06c1a760de",
           "q-scf-submission-lifecycle-deadlines": "b0fab3d5be0b24c6478a5062028ad6bb3968fff25bb0d867533c5dcdc8027136"
         },
         "reSwept": {
-          "date": "2026-11-10",
-          "reason": "Independent re-sweep, .agents/rounds/2026-11-10-truth-maintenance.md. q-scf-rfp-tooling still requires a current-quarter open brief and the rolling interest form followed by invitation; its corroboration for that flow now rests on the handbook plus the grants.watch record. q-scf-how-to-apply, q-scf-eligibility-criteria, and q-scf-submission-lifecycle-deadlines are unchanged and describe the same rolling interest, eligibility, invitation, and panel-led RFP path. No contradiction.",
+          "date": "2026-11-12",
+          "reason": "Re-sweep 2026-11-12 (.agents/rounds/2026-11-12-truth-maintenance.md). q-scf-rfp-tooling keeps the rolling interest form, invitation to a full proposal and panel-led RFP review; its avoid item now targets a claim that RFP Track proposals are selected by community vote instead of a published bounty, because the Q4 briefs publish budget ranges. The other three members are unchanged. No contradiction.",
           "verdict": "consistent"
         }
       },
@@ -3816,7 +3816,7 @@
       {
         "triggerDateEvent": "Publication or state change for SCF #46/#45/#44 after the fixed SCF #43 recap",
         "requiredRecheck": "Keep SCF #43's fixed result separate. Refresh current-round and open-RFP cases after each official phase change.",
-        "disposition": "2026-11-10 author sweep: #46 moved to Initial Review after November 9 and #45 remains last concluded. The official awards index lists no open submission window and gives no #47 dates. The official RFP page and Scout still show no open brief, and Scout emits no synthetic submission row. #43 remains fixed history. Recheck each official phase change and next-round opening. Watch mechanisms after the 2026-11-10 review: scf-47-not-listed fires when a new round is listed; scf-46-submission-deadline fires on a return to Submission or a changed #46 deadline, and no longer on a review-phase label change; q-scf-current-round reverifyBy 2026-12-04 and q-edge-fresh-latest-scf-round reverifyBy 2027-01-07 backstop the phase wording.",
+        "disposition": "2026-11-10 author sweep: #46 moved to Initial Review after November 9 and #45 remains last concluded. The official awards index lists no open submission window and gives no #47 dates. On 2026-11-12 the official RFP page lists two Q4 briefs (published 2026-11-11) while Scout still shows none, and Scout emits no synthetic submission row. #43 remains fixed history. Recheck each official phase change and next-round opening. Watch mechanisms after the 2026-11-10 review: scf-47-not-listed fires when a new round is listed; scf-46-submission-deadline fires on a return to Submission or a changed #46 deadline, and no longer on a review-phase label change; q-scf-current-round reverifyBy 2026-12-04 and q-edge-fresh-latest-scf-round reverifyBy 2027-01-07 backstop the phase wording.",
         "caseIds": [
           "q-edge-fresh-latest-scf-round",
           "q-scf-round-43-results",
@@ -3828,18 +3828,18 @@
         "memberContentSha256": {
           "q-edge-fresh-latest-scf-round": "e203cc66cf29f15e59c6e1762172425da757fb13fe9cd8b2c9ae38a96b0fd381",
           "q-scf-current-round": "931a7dc6bd296c556ec3f542102614a2ef605a4af4b7fea64d4dd49b7e145de0",
-          "q-scf-open-rfps": "a929140caaa76f302471433c6be1155a0b790b751dcb7c6558cd1c9a6fc1a4b1",
-          "q-scf-rfp-tooling": "fba6bba4e7d5b01cc136eb2ac2beb3b412727592c89041d748aab8314c72dc61",
+          "q-scf-open-rfps": "f177c708d6b4854213cdcee2da5e266a332af2175c7c60e645ddd2c54f89a7fd",
+          "q-scf-rfp-tooling": "bca947e19b54de02f4ea6adce6ee4004ba6e12bee82ff78a96477d06c1a760de",
           "q-scf-round-43-results": "19d1fcc482918a6ee4f7f1151ec579d2d4836c434a4a46773c09aa71d4666d72",
           "q-scf-total-distributed": "80080f126248fa8565ca203082fb3c47707658909bf51a27696ce06cfba43071"
         },
         "verdict": "consistent",
         "reSwept": {
-          "date": "2026-11-10",
-          "reason": "Independent re-sweep, .agents/rounds/2026-11-10-truth-maintenance.md. The trigger fired once since the last check: SCF #46 moved from Submission to Initial Review after 2026-11-09, and the four changed members record it. q-scf-current-round, q-edge-fresh-latest-scf-round, q-scf-open-rfps, and q-scf-rfp-tooling agree on no open submission window, no #47 date, and no open brief on 2026-11-10. q-scf-round-43-results and q-scf-total-distributed are unchanged and keep SCF #43 as fixed history. The trap stays armed for the next round.",
+          "date": "2026-11-12",
+          "reason": "Re-sweep 2026-11-12 (.agents/rounds/2026-11-12-truth-maintenance.md). The official RFP Track page published two Q4 2026 briefs on 2026-11-11; q-scf-open-rfps and q-scf-rfp-tooling record them and Scout’s lag. #46 is still in Initial Review after 2026-11-09 with no open window and no #47 listed, so q-scf-current-round and q-edge-fresh-latest-scf-round stay unchanged. q-scf-round-43-results and q-scf-total-distributed keep SCF #43 as fixed history. The trap stays armed for the next round.",
           "verdict": "consistent"
         },
-        "lastChecked": "2026-11-10"
+        "lastChecked": "2026-11-12"
       },
       {
         "triggerDateEvent": "2027-03-02 YieldBlox/Reflector remediation recheck or publication of a final post-mortem/reimbursement decision",

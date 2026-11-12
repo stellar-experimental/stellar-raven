@@ -220,7 +220,7 @@
     "description": "One spec covering every operation this MCP server can execute, across four services: lumenloop, scout (Stellar Light), stellarDocs (Mintlify-backed docs search), and skills (pinned agent playbooks). Paths are keyed '/{service}/{operation}' and each operationId is the exact callable name: an operation with operationId 'lumenloop.search_directory' is invoked inside the execute tool's sandbox as `await lumenloop.search_directory(args)` — args is ONE object matching the operation's requestBody schema (POST ops) or its parameter names (GET ops). The exact call line is on each operation as x-execute. Every call resolves (never throws) to { ok: true, data, asOf, asOfBasis, caveat? } or { ok: false, error: { service, kind, message } }; the 200 response schema documents `data`. `asOf` is the upstream data date (dataAsOf or asOf) when the payload states one, else the host observation time, and `asOfBasis` names which; `caveat` is \"no-rows\" or \"unverified-match\" when the host can show it. Every path in this spec is callable — exposure is filtered at build time, so nothing uncallable is described. Auth is handled host-side — code never sees keys.",
     "title": "stellar-raven-codemode — unified super spec",
     "version": "1.0.0",
-    "x-generatedAt": "2026-11-09T19:08:25.744Z"
+    "x-generatedAt": "2026-11-12T14:25:31.643Z"
   },
   "openapi": "3.1.0",
   "paths": {
@@ -1870,6 +1870,7 @@
                     "repoMeta": {},
                     "routedVia": {},
                     "security": {},
+                    "sourceCheck": {},
                     "sources": {}
                   },
                   "type": "object",
@@ -2512,11 +2513,11 @@
     },
     "/scout/getLeaderboard": {
       "get": {
-        "description": "Ranked list of the top / most active Stellar projects by GitHub activity (sort=activity|stars|issues|tvl over a range; category filter; format=csv) with per-project GitHub rollups, plus an Electric Capital dev-count macro block. meta.metricDefinitions defines each served metric; activity = 90-day commit volume across Stellar-evidenced repos (github.commits90d; null = index gap, sorts last), ties by recency; issues = open backlog (not activity); tvl = DefiLlama-verified TVL (null = untracked, never zero). Ranks PROJECTS, not people → use getBuilders.",
+        "description": "Ranked list of the top / most active Stellar projects by GitHub activity (sort=activity|stars|issues|tvl over a range; category filter; format=csv) with per-project GitHub rollups, plus an Electric Capital dev-count macro block. meta.metricDefinitions defines each served metric; activity = 90-day commit volume across Stellar-evidenced repos (github.commits90d; null = index gap, sorts last), ties by recency; issues = open backlog (not activity); tvl = DefiLlama-verified TVL (null = no figure, never zero; see tvlUnavailable). Ranks PROJECTS, not people → use getBuilders.",
         "operationId": "scout.getLeaderboard",
         "parameters": [
           {
-            "description": "Order the project leaderboard. An unrecognized value returns 400 with the valid list. sort=tvl orders by DefiLlama-verified tvlUSD; sort=supply orders by issued-asset circulating supply (assetSupply). For both, null = untracked → those rows sort last, never treated as 0.",
+            "description": "Order the project leaderboard. An unrecognized value returns 400 with the valid list. sort=tvl orders by DefiLlama-verified tvlUSD; sort=supply orders by issued-asset circulating supply (assetSupply). For both, null = no figure (for tvl, tvlUnavailable says why on a row linked to DefiLlama) → those rows sort last, never treated as 0.",
             "in": "query",
             "name": "sort",
             "schema": {
@@ -3213,7 +3214,7 @@
     },
     "/scout/getStablecoins": {
       "get": {
-        "description": "Every tracked Stellar stablecoin, ranked by USD market cap by default (sort=marketcap|supply|holders|volume; peg filter). Rows carry marketCapUSD (comparable), raw supply + its peg (NOT comparable across pegs; GYEN supply is yen, ARST is pesos), holders, price, full issuer account, and basis (live | curated-static | unmeasured) so an estimate is never mistaken for a live measurement. Measured every 6h from Horizon, Stellar Expert and live peg FX; null = not measured, never zero.",
+        "description": "Every tracked Stellar stablecoin, ranked by USD market cap by default (sort=marketcap|supply|holders|volume; peg filter). Rows carry marketCapUSD (comparable), raw supply + its peg (NOT comparable across pegs; ARST supply is pesos, mZAR is rand), holders, price, full issuer account, and basis (live | curated-static | unmeasured) so an estimate is never mistaken for a live measurement. Measured every 6h from Horizon, Stellar Expert and live peg FX; null = not measured, never zero.",
         "operationId": "scout.getStablecoins",
         "parameters": [
           {
@@ -3240,13 +3241,17 @@
             }
           },
           {
-            "description": "Filter on the row's assetType, case-insensitive: Yield Stablecoin (e.g. USDY), Treasury-Backed (e.g. USDM1), or none for the rows with no assetType recorded. A qualifier is recorded only where the unit is not 1:1 with its peg and a row without one was not classified, so assetType=none leaves out the known yield and Treasury products but does not certify every row left as par. Unrecognized values return 400 with the valid set.",
+            "description": "Filter on the row's assetType, case-insensitive: one class (defined on Stablecoin.assetType), e.g. Fiat-Backed for the coins whose issuer states cash or cash-equivalent reserves in the peg currency. Unclassified returns the rows whose issuer states no backing we could read; none is an alias of Unclassified, kept for compatibility, and returns the same rows. Unrecognized values return 400 with the valid set.",
             "in": "query",
             "name": "assetType",
             "schema": {
               "enum": [
-                "Yield Stablecoin",
+                "Fiat-Backed",
+                "Crypto-Backed",
+                "Multi-Asset-Backed",
                 "Treasury-Backed",
+                "Yield Stablecoin",
+                "Unclassified",
                 "none"
               ],
               "type": "string"
@@ -7493,7 +7498,7 @@
   "x-generated": {
     "builder": "scripts/build-super-spec.mjs",
     "catalogEntries": 284,
-    "generatedAt": "2026-11-09T19:08:25.744Z"
+    "generatedAt": "2026-11-12T14:25:31.643Z"
   },
   "x-services": {
     "lumenloop": {
@@ -7505,7 +7510,7 @@
     },
     "scout": {
       "base": "https://stellarlight.xyz",
-      "fetchedAt": "2026-11-09T19:08:25.744Z",
+      "fetchedAt": "2026-11-12T14:25:31.643Z",
       "note": "Read-only keyless API, carried near-verbatim from the upstream OpenAPI (components namespaced 'scout.*').",
       "source": "https://stellarlight.xyz/api/openapi.json"
     },
