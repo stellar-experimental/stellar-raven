@@ -599,6 +599,31 @@ function compactOutputStub(entry: CatalogEntry, typeName: string): string {
   return `type ${typeName} = { /* ${inBlockComment(`${props.length} top-level field${props.length === 1 ? "" : "s"}: ${props.join(", ")} — ${pointer}`)} */ }`;
 }
 
+/** Keep whole sentences inside `max` chars; fall back to a word boundary. */
+export function clipProse(text: string, max: number): string {
+  if (text.length <= max) return text;
+  const head = text.slice(0, max);
+  const sentenceEnd = Math.max(head.lastIndexOf(". "), head.lastIndexOf(".\n"));
+  if (sentenceEnd >= max / 3) return head.slice(0, sentenceEnd + 1);
+  return `${head.slice(0, Math.max(head.lastIndexOf(" "), 1)).trimEnd()}…`;
+}
+
+const CARD_FIELD_DOC_CHARS = 100;
+
+/** The same schema with every field's prose clipped: all fields, types, and required marks stay. */
+function withShortFieldDocs(schema: JsonSchema): JsonSchema {
+  if (typeof schema !== "object" || schema === null) return schema;
+  const out: Record<string, unknown> = { ...schema };
+  if (typeof out.description === "string") out.description = clipProse(out.description, CARD_FIELD_DOC_CHARS);
+  if (schema.properties) {
+    out.properties = Object.fromEntries(
+      Object.entries(schema.properties).map(([key, value]) => [key, withShortFieldDocs(value as JsonSchema)])
+    );
+  }
+  if (schema.items && !Array.isArray(schema.items)) out.items = withShortFieldDocs(schema.items as JsonSchema);
+  return out as JsonSchema;
+}
+
 /**
  * Render a TypeScript signature for an operation or runnable-skill entry:
  * input/output type declarations plus the callable line the model can use
@@ -624,17 +649,23 @@ function compactOutputStub(entry: CatalogEntry, typeName: string): string {
  * stays byte-untouched. `codemode.describe` always renders full (default
  * mode): describe is the canonical detail-on-demand step, so it must carry
  * exactly what the search hit elided.
+ *
+ * `inputOnly` is the public search-card mode: the input type with every field,
+ * type, and required mark but short field prose, and a callable line that
+ * names the envelope's two arms. The card's `outputKeys` and `outputItemKeys`
+ * carry the payload field names instead of an output type.
  */
 export function renderSignature(
   entry: CatalogEntry,
-  opts?: { compactOversizedOutput?: boolean }
+  opts?: { compactOversizedOutput?: boolean; inputOnly?: boolean }
 ): string | undefined {
   const callableEntry = entry.kind === "operation" || entry.runnable === true;
   if (!callableEntry || !entry.inputSchema) return undefined;
   const typeBase = toPascalCase(sanitizeToolName(entryName(entry)));
   const parts: string[] = [];
-  parts.push(jsonSchemaToType(entry.inputSchema as JsonSchema, `${typeBase}Input`));
-  if (entry.outputSchema) {
+  const inputSchema = entry.inputSchema as JsonSchema;
+  parts.push(jsonSchemaToType(opts?.inputOnly ? withShortFieldDocs(inputSchema) : inputSchema, `${typeBase}Input`));
+  if (entry.outputSchema && !opts?.inputOnly) {
     const outputBlock = jsonSchemaToType(entry.outputSchema as JsonSchema, `${typeBase}Output`);
     parts.push(
       opts?.compactOversizedOutput && isOversizedOutputBlock(outputBlock)
@@ -650,7 +681,9 @@ export function renderSignature(
     ? `codemode.skill.run(${JSON.stringify(entry.id)}, input: ${typeBase}Input)`
     : `${entry.id}(input: ${typeBase}Input)`;
   parts.push(
-    `${callable}: Promise<{ ok: true, data: ${outputType} } | { ok: false, error: { kind: "error" | "soft-empty", message: string, hint?: string } }>`
+    opts?.inputOnly
+      ? `${callable}: Promise<{ ok: true, data } | { ok: false, error }>`
+      : `${callable}: Promise<{ ok: true, data: ${outputType} } | { ok: false, error: { kind: "error" | "soft-empty", message: string, hint?: string } }>`
   );
   return parts.join("\n");
 }

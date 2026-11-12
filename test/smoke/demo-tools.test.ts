@@ -14,7 +14,6 @@ type ToolWithExecute = {
 it("gives the Playground the complete description with the contradictory clause removed", () => {
   const built = buildDemoTools({ env: env as unknown as Env, emit: () => {} });
   expect(built.tools.execute).toMatchObject({ description: EXECUTE_DESCRIPTION });
-  expect(EXECUTE_DESCRIPTION).toContain("Skip it for single-step how-tos and debugging.\n- A few skills are RUNNABLE:");
   expect(EXECUTE_DESCRIPTION).not.toContain("purely factual questions use docs first");
 });
 

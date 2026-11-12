@@ -188,7 +188,7 @@ describe("/mcp auth dispatch", () => {
       expect(res.status).toBe(200);
       const init = await lastEventJson(res);
       expect(init.result?.serverInfo?.name).toBe("stellar-raven-codemode");
-      expect(init.result?.instructions).toContain("r.data.projects");
+      expect(init.result?.instructions).toContain("{ ok: true, data, asOf, asOfBasis, caveat? }");
     }
   });
 

@@ -40,6 +40,7 @@ import {
   type SourceMetadataEntry
 } from "../policy/source-basis.ts";
 import { shapeLogs } from "./shape-logs.ts";
+import { withScriptHint } from "./script-hints.ts";
 import { put as putArtifact, type ArtifactMime } from "../artifacts/store.ts";
 import { logArtifactWrite } from "../observability.ts";
 import type { EvidenceRecoveryHint } from "../policy/evidence-checkpoint.ts";
@@ -303,24 +304,6 @@ function collectCanonicalUrlCandidates(value: unknown): string[] {
   return out;
 }
 
-/**
- * Mirror @cloudflare/codemode's withGlobalsHint (dist/index.js): a sandbox
- * `ReferenceError` usually means the model invented a global — append the real
- * sandbox globals so the retry is informed instead of another guess. The
- * global names are derived from the wired provider set (never hard-coded) so
- * they cannot drift from what the sandbox actually exposes. Applied before
- * redaction/truncation so those still run last. Deviates from upstream's
- * wording by one clause — "and standard JavaScript" — because
- * EXECUTE_DESCRIPTION's globals rule includes it; without the clause the two
- * surfaces contradict on whether builtins (console, Promise, Math…) exist.
- */
-function withGlobalsHint(message: string, providers: SandboxProvider[]): string {
-  if (!/\bis not defined\b/.test(message)) return message;
-  return `${message} (the only globals available in the sandbox are: ${providers
-    .map((p) => p.name)
-    .join(", ")}, and standard JavaScript)`;
-}
-
 export function createExecuteRunner(env: Env, options: ExecuteRunnerOptions = {}): ExecuteRunner {
   const catalog = getCatalog();
   assertExecutorEvidenceOperationIds(catalog);
@@ -379,7 +362,14 @@ export function createExecuteRunner(env: Env, options: ExecuteRunnerOptions = {}
     // adapter fetch spans. No-op when tracing is off/unsampled; ends on throw.
     const outcome = await tracing.enterSpan("codemode.execute", async (span) => {
       span.setAttribute("code.chars", code.length);
-      const result = await executor.execute(code, providers);
+      // A script that fails to load (a syntax error) rejects instead of
+      // returning an error. Fold it into the same outcome so it gets a hint,
+      // redaction, and truncation like any other script failure.
+      const result = await executor.execute(code, providers).catch((e: unknown) => ({
+        result: undefined,
+        error: e instanceof Error ? e.message : String(e),
+        logs: [] as string[]
+      }));
       span.setAttribute("sandbox.ok", result.error === undefined);
       span.setAttribute("sandbox.logLines", result.logs?.length ?? 0);
       span.setAttribute("sandbox.skillRead", skillRead);
@@ -414,7 +404,9 @@ export function createExecuteRunner(env: Env, options: ExecuteRunnerOptions = {}
       artifactReads: artifactReadStats.count
     };
     if (outcome.error !== undefined) {
-      const hinted = withGlobalsHint(outcome.error, providers);
+      // Global names come from the wired provider set, never a hard-coded list.
+      // Hinting runs before redaction and truncation so those still run last.
+      const hinted = withScriptHint(outcome.error, providers.map((provider) => provider.name));
       return {
         ok: false,
         error: redactSecrets(hinted, secrets),

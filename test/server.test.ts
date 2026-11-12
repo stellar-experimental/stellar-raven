@@ -20,7 +20,15 @@ import { fileURLToPath } from "node:url";
 import { McpServer } from "@modelcontextprotocol/server";
 import { Client } from "@modelcontextprotocol/client";
 import { InMemoryTransport } from "@modelcontextprotocol/server";
-import { registerTools, SEARCH_KINDS, type RegisterToolsOptions } from "../src/mcp/tools";
+import {
+  registerTools,
+  SEARCH_CARD_DESCRIPTION_CHARS,
+  SEARCH_DEFAULT_LIMIT,
+  SEARCH_KINDS,
+  SEARCH_NEXT_STEPS_MAX_CHARS,
+  type RegisterToolsOptions
+} from "../src/mcp/tools";
+import { getCatalog } from "../src/catalog/load";
 import { allowDevUnauthenticated } from "../src/auth/gate";
 import type { McpAccessContext } from "../src/server";
 import type { ExecuteEvidenceSummary, ExecuteOperationSummary } from "../src/executor/run";
@@ -154,12 +162,9 @@ describe("tool registration", () => {
     expect(schema.properties?.kind?.enum).toEqual([...SEARCH_KINDS]);
     expect(schema.properties?.service?.type).toBe("string");
     expect(schema.properties?.limit?.type).toBe("integer");
-    // The temporary A/B-candidate framing is gone (ADR-0001: this IS the tool).
-    expect(search!.description).not.toMatch(/TEMPORARY|A\/B candidate/);
-    // …and the description points at execute's in-sandbox discovery affordances.
-    expect(search!.description).toContain("codemode.search");
-    expect(search!.description).toContain("codemode.catalog({ kind?, service?, compact? })");
-    expect(search!.description).toContain("codemode.spec()");
+    // The page ships as text plus structuredContent; no output schema is advertised.
+    expect(search).not.toHaveProperty("outputSchema");
+    expect(search!.description!.length).toBeLessThanOrEqual(CLAUDE_CODE_TOOL_DESCRIPTION_CAP_CHARS);
   });
 
   it("execute has the expected input schema", async () => {
@@ -171,8 +176,6 @@ describe("tool registration", () => {
     expect(Object.keys(schema.properties ?? {}).sort()).toEqual(["code"]);
     expect(schema.required).toEqual(["code"]);
     expect(schema.properties?.code?.type).toBe("string");
-    // execute mirrors upstream REQUEST_TYPES: spec + calls in one sandbox.
-    expect(execute!.description).toContain("codemode.spec()");
   });
 
   it("exposes titles, annotations, and a text-only execute declaration", async () => {
@@ -186,19 +189,9 @@ describe("tool registration", () => {
     expect(execute?.annotations).not.toHaveProperty("idempotentHint");
     expect(execute).not.toHaveProperty("outputSchema");
 
-    const descriptionPrefix =
-      execute?.description?.slice(0, CLAUDE_CODE_TOOL_DESCRIPTION_CAP_CHARS) ?? "";
-    expect(descriptionPrefix).toContain("one text result");
-    expect(descriptionPrefix).toContain("roughly 6k tokens");
-    expect(descriptionPrefix).toContain("payloads live under `.data`");
-    expect(descriptionPrefix).toContain("no network access");
-    expect(descriptionPrefix).toContain(
-      "can call only catalogued `lumenloop.*`, `scout.*`, and `stellarDocs.*` operations"
-    );
-    expect(descriptionPrefix).toContain("`fetch()` fails");
-    expect(execute?.description).toContain(
-      "Raven stores the full redacted result privately for that account for 7 days."
-    );
+    // The whole contract reaches a client that keeps 2,048 characters;
+    // test/mcp-instructions.test.ts holds what it must say.
+    expect(execute!.description!.length).toBeLessThanOrEqual(CLAUDE_CODE_TOOL_DESCRIPTION_CAP_CHARS);
   });
 });
 
@@ -809,20 +802,64 @@ describe("search behavior (host-side ranked)", () => {
     });
     expect(result.isError).toBeFalsy();
     const structured = result.structuredContent as {
-      hits: Array<{ id: string; score: number; signature?: string }>;
+      hits: Array<{ id: string; score: number; description: string; signature?: string; outputKeys?: string[] }>;
       nextSteps: string;
     };
     expect(structured.hits.length).toBeGreaterThan(0);
+    expect(structured.hits.length).toBeLessThanOrEqual(SEARCH_DEFAULT_LIMIT);
     expect(structured.hits[0]?.id).toBe("lumenloop.search_directory");
-    expect(structured.hits[0]?.signature).toContain("SearchDirectoryInput");
     expect(structured.nextSteps).toMatch(/execute/i);
-    expect(structured.nextSteps).toContain("filter raw row JSON");
-    expect(structured.nextSteps).toContain(
-      "Every call resolves to { ok: true, data, asOf, asOfBasis, caveat? } or { ok: false, error:"
-    );
-    expect(structured.nextSteps).toContain("at most two `scout.searchRepos`/`scout.searchProjects`");
-    expect(structured.nextSteps).toContain("three returned candidates");
-    expect(structured.nextSteps).toMatch(/single-step how-to or debugging/i);
+    // The envelope rule lives in the execute description, not on every page.
+    expect(structured.nextSteps).not.toContain("ok: true");
+  });
+
+  it("renders each hit as a compact card that is still callable", async () => {
+    const result = await client.callTool({ name: "search", arguments: { query: "search directory" } });
+    const { hits } = result.structuredContent as {
+      hits: Array<{ id: string; kind: string; description: string; signature?: string; outputKeys?: string[] }>;
+    };
+    const catalog = getCatalog();
+    for (const hit of hits) {
+      expect(hit.description.length, hit.id).toBeLessThanOrEqual(SEARCH_CARD_DESCRIPTION_CHARS);
+      if (hit.kind !== "operation") continue;
+      const entry = catalog.entries.find((candidate) => candidate.id === hit.id)!;
+      const inputSchema = entry.inputSchema as { properties?: Record<string, unknown>; required?: string[] };
+      // Every input field survives, required ones unmarked as optional.
+      for (const field of Object.keys(inputSchema.properties ?? {})) {
+        const required = inputSchema.required?.includes(field) ?? false;
+        expect(hit.signature, `${hit.id} ${field}`).toContain(`${field}${required ? "" : "?"}:`);
+      }
+      // No output type: the payload fields are named by outputKeys, and the
+      // call line still shows both arms of the envelope.
+      expect(hit.signature, hit.id).not.toMatch(/^type \w+Output\b/m);
+      expect(hit.signature!.split("\n").at(-1), hit.id).toBe(
+        `${hit.id}(input: ${/^type (\w+Input)\b/.exec(hit.signature!)![1]}): Promise<{ ok: true, data } | { ok: false, error }>`
+      );
+      expect(hit.outputKeys, hit.id).toEqual(
+        Object.keys((entry.outputSchema as { properties?: object }).properties ?? {}).sort()
+      );
+    }
+  });
+
+  it("keeps nextSteps inside its bound on every kind of page", async () => {
+    const queries = [
+      { query: "search directory" }, // gated hits
+      { query: "freighter" }, // short-name directory advice
+      { query: "hypertron" }, // zero hits plus directory and broad advice
+      { query: "zzzzqqqq zzqqzzqq" }, // zero hits plus broad advice
+      { query: "Tomer Weller", kind: "operation", service: "lumenloop" }, // lexical-only hits
+      { query: "stellar soroban contract", limit: 1 } // truncated
+    ];
+    const seen = new Set<string>();
+    for (const args of queries) {
+      const result = await client.callTool({ name: "search", arguments: args });
+      const { nextSteps } = result.structuredContent as { nextSteps: string };
+      expect(nextSteps.length, args.query).toBeGreaterThan(0);
+      expect(nextSteps.length, args.query).toBeLessThanOrEqual(SEARCH_NEXT_STEPS_MAX_CHARS);
+      seen.add(nextSteps);
+    }
+    // The pages differ, so the hint does: it is about this page.
+    expect(seen.size).toBeGreaterThanOrEqual(5);
   });
 
   it("returns short-name directory advice without adding it to ranked hits", async () => {
@@ -853,7 +890,7 @@ describe("search behavior (host-side ranked)", () => {
         })
       ])
     );
-    expect(structured.nextSteps).toContain("Use the advisory directory candidate");
+    expect(structured.nextSteps).toContain("directory operation in `widerCandidates`");
   });
 
   it("retains bounded broad guidance after a zero-hit name lookup", async () => {
@@ -861,8 +898,8 @@ describe("search behavior (host-side ranked)", () => {
     expect(result.isError).toBeFalsy();
     const structured = result.structuredContent as { hits: unknown[]; nextSteps: string };
     expect(structured.hits).toEqual([]);
-    expect(structured.nextSteps).toContain("Use the advisory directory candidate");
-    expect(structured.nextSteps).toContain("use one relevant broad advisory for a bounded pass");
+    expect(structured.nextSteps).toMatch(/no hits/i);
+    expect(structured.nextSteps).toContain("`widerCandidates`");
   });
 
   it("returns bounded exact-ID recovery separately from ranked hits", async () => {
@@ -1000,10 +1037,6 @@ describe("search behavior (host-side ranked)", () => {
     expect(hit).toBeDefined();
     expect(hit!.kind).toBe("skill");
     expect(hit!.availableSections!.length).toBeGreaterThan(0);
-    // The hint teaches sectioned reads, not whole-skill reads.
-    const { nextSteps } = result.structuredContent as { nextSteps: string };
-    expect(nextSteps).toContain("availableSections");
-    expect(nextSteps).toContain("codemode.skill.read");
   });
 
   it("returns an empty-hits result with guidance for a no-match query", async () => {
@@ -1023,9 +1056,8 @@ describe("search behavior (host-side ranked)", () => {
     expect(structured.hits).toEqual([]);
     expect(structured.widerCandidates.length).toBeGreaterThan(0);
     expect(structured.nextSteps).toMatch(/no hits/i);
-    expect(structured.nextSteps).toContain(
-      "No gated operation matched either; run one bounded broad pass over the advisory widerCandidates before retrying, and still do not conclude absence."
-    );
+    expect(structured.nextSteps).toContain("one bounded pass over the broad operations in `widerCandidates`");
+    expect(structured.nextSteps).toContain("does not show that a capability is missing");
     expect(structured.nextSteps).not.toContain("prefer the leading hit");
   });
 
@@ -1046,9 +1078,8 @@ describe("search behavior (host-side ranked)", () => {
     expect(structured.hits).toEqual([]);
     expect(structured.widerCandidates.length).toBeGreaterThan(0);
     expect(structured.nextSteps).toMatch(/no hits/i);
-    expect(structured.nextSteps).toContain(
-      "No gated operation matched either; run one bounded broad pass over the advisory widerCandidates before retrying, and still do not conclude absence."
-    );
+    expect(structured.nextSteps).toContain("one bounded pass over the broad operations in `widerCandidates`");
+    expect(structured.nextSteps).toContain("does not show that a capability is missing");
     expect(structured.nextSteps).not.toContain("prefer the leading hit");
   });
 
