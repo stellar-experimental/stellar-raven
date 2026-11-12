@@ -31,16 +31,16 @@
           "q-hist-remittance-corridors"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-12",
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-crp-anchors-by-corridor now dates an 8-partner Stellar Light roster (incl. MoneyGram) and MoneyGram SEP-24-legacy/widget paths; q-hist-remittance-corridors (unchanged) still calls MoneyGram Ramps a current example with dated coverage. No conflict; 'grader-caution candidate' note stays true.",
+          "date": "2026-11-12",
+          "reason": "Re-sweep 2026-11-12 (.agents/rounds/2026-11-12-truth-maintenance.md). q-hist-remittance-corridors narrowed its partial cap to the Lumenloop MoneyGram 200+ footprint under ll-008 and dropped the Scout and sls-024 scope; its answer, key facts and avoid items are unchanged. Read both members. q-crp-anchors-by-corridor (unchanged) still accepts a 170-180 Stellar off-ramp figure and rejects 200+ for the off-ramp; the remittance cap covers only an accurate quote of the corporate footprint, so the two do not conflict. Live Scout now says 170+ cash-out countries; Lumenloop still says over 200.",
           "verdict": "consistent"
         },
         "note": "grader-caution candidate",
         "memberContentSha256": {
           "q-crp-anchors-by-corridor": "f938892a2f1761b29ac792fa7238df687c4bf1c30eba483454b4c74bf8beab5b",
-          "q-hist-remittance-corridors": "c72a0668b41afe59f05732b42e183e762f1eb26bbad6aaae81bfc1100308224c"
+          "q-hist-remittance-corridors": "4c6d33eb711d73d1c95c9304a06144e8844c4257cc97253fc756ceb23dc07e5c"
         }
       },
       {
@@ -111,16 +111,16 @@
           "q-eco-stellar-wallets-list"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-06",
+        "lastChecked": "2026-11-12",
         "reSwept": {
-          "date": "2026-11-06",
-          "reason": "The wallet rename addition preserves LOBSTR facts and the original dated roster; only Scout now resolves the SDF wallet as Varial, while Lumenloop remains stale.",
+          "date": "2026-11-12",
+          "reason": "Re-sweep 2026-11-12 (.agents/rounds/2026-11-12-truth-maintenance.md). q-eco-stellar-wallets-list dropped its sls-024 partial cap on wallet Live labels; its dated 2026-11-02 roster, counts, avoid items and Freighter/Varial guidance are unchanged. Read both members. q-eco-lobstr-wallet (unchanged) still dates LOBSTR platform support and names Ultra Stellar. No LOBSTR or roster fact changed.",
           "verdict": "consistent"
         },
         "note": "grader-caution candidate",
         "memberContentSha256": {
           "q-eco-lobstr-wallet": "58f17f61675e13cd6d191d93ce47c7216e4c39d5216f24072bc1eb97e978d319",
-          "q-eco-stellar-wallets-list": "7acc5af8f61dfad090cfde25d627fe1499fe48dcf58bf65d5371bdbf91aa68cf"
+          "q-eco-stellar-wallets-list": "aa53d9c83a8434a37678dd07cec3b530b30ac460b7a1c7867f725e64c6d3da8e"
         }
       },
       {
@@ -270,15 +270,15 @@
           "q-eco-defi-market-map"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-12",
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-defi-named-newer-protocols now dates Zenex as a live mainnet perp exchange per its operator deployments page and states no venue count; q-defi-perps-whitespace and q-eco-defi-market-map are unchanged in judge text and agree (Zenex live, Kryon unresolved, Noether paused). The note's pinned rules (no testnet-only Zenex, no exclusive count) still hold.",
+          "date": "2026-11-12",
+          "reason": "Re-sweep 2026-11-12 (.agents/rounds/2026-11-12-truth-maintenance.md). q-defi-named-newer-protocols replaced its sls-024 OrbitCDP cap with a source-relative sentence; its Zenex text is unchanged. Read all three members. All still say Zenex runs a live mainnet perp market, none calls it testnet-only, and none states a venue count. q-defi-perps-whitespace and q-eco-defi-market-map are unchanged.",
           "verdict": "consistent"
         },
         "note": "All three agree as of 2026-10-15: perps are EMERGING, NOT whitespace; Zenex is a confirmed live mainnet perp DEX (operator deployments page plus on-chain fills); Kryon has mainnet perp contracts and claims live trading, but its current availability is unresolved; Noether's mainnet contracts stay paused until its audit clears; Stellars Finance shows no mainnet trading evidence. No member may call Zenex testnet-only, claim Stellar has no mainnet perp DEX, or state an exclusive venue count; all three exclude Turbolong as leveraged spot. The whitespace-vs-live split that silently drifted in the ancestor corpora stays pinned here; the former Scout-description-vs-deployment conflict for Zenex was sls-091 (fixed upstream).",
         "memberContentSha256": {
-          "q-defi-named-newer-protocols": "70507fa1ad44f098cac0c94209ebf9127c63b224c6376f26cee2cbfa0bdbfca9",
+          "q-defi-named-newer-protocols": "9fb045890217999b7ef636dd85987ab92b1957f5a19df5b6366f3dbfdfd7fe42",
           "q-defi-perps-whitespace": "f4fe02ad5f719ec9d662c7f5795681aaf29ebc971a9f69cab0026b68a39a6d9f",
           "q-eco-defi-market-map": "f6ebcdba13c215b3e0149990045abeadac8235c95ee54bef69d41645c2a01c8e"
         }
@@ -351,11 +351,11 @@
           "q-scf-verified-members"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-09",
+        "lastChecked": "2026-11-12",
         "reSwept": {
-          "date": "2026-11-09",
-          "verdict": "consistent",
-          "reason": "Retirement reconciliation changes venue notes and source provenance only. Across all 12 members, SCF amounts and awarded-versus-paid basis are unchanged: Phoenix $394.5K, Soroswap $346,750 and Hana $50K + $82K = $132K remain the same dated facts. OrbitCDP stays source-conflicted and no venue correction promotes a directory total to official accounting."
+          "date": "2026-11-12",
+          "reason": "Re-sweep 2026-11-12 (.agents/rounds/2026-11-12-truth-maintenance.md). q-defi-reflector-oracle dropped its sls-029 cap and q-eco-stellar-wallets-list dropped its sls-024 cap; neither sentence carried an SCF amount. Read all 12 members. Every repeated award figure is unchanged (Phoenix $394.5K, Soroswap $346,750, Hana $50K + $82K = $132K), and OrbitCDP's lifecycle label stays source-relative in q-defi-blend-alternatives and q-defi-rwa-scf-similar.",
+          "verdict": "consistent"
         },
         "note": "Aquarius $391K (rounds 17/23/27/30), Soroswap $346,750 (rounds 15/17/21), Phoenix ~$394.5K, Reflector $444,840 (rounds 15/20/26/29), Band $100K, Lightecho $93,110, Orally $48K, DIA $38K, Blend $50K, Hana $132K, xBull $56.2K, ApiCharge $79K — every repeated figure matches exactly across cases, and the Blend/Script3 team-lineage caveat is carried consistently. q-defi-x402-on-stellar-what's membership here concerns the ApiCharge award only; wallet roster and auth-entry capability are tracked separately in cluster-125 and are not inferred from this consistent SCF cluster. Updated 2026-11-02: OrbitCDP's SCF total is source-conflicted (Scout scfTotalAwardedUSD 280000; Lumenloop awarded_total 330000), so no member pins it; Scout labels OrbitCDP Inactive, and members keep its lifecycle label source-relative.",
         "memberContentSha256": {
@@ -363,12 +363,12 @@
           "q-defi-blend-alternatives": "8555d5f9b8321ce8893f4846262a2a72d84534f03326b5ef1f2993a4888f0ec1",
           "q-defi-blend-what-is": "46b5e0dda07645c25aa18712c6f8c81bc17230de4d2d246e128fd9a26f19b7d2",
           "q-defi-phoenix-what-is": "76acf7d6f08dfc7def9443eaffde4dc0b90a7fc9d0a040d7a2d97fec5614cc9b",
-          "q-defi-reflector-oracle": "ec061bc79b120ad1ed8f9e685a07b112fa3c6692b1ebbf971f54e1cfedbc8bc7",
+          "q-defi-reflector-oracle": "818eb1dbe8b6998f6044ae0af0c6af334f3e143418352a7a5dd1e6f6cc68de69",
           "q-defi-rwa-scf-similar": "dd8afe398d360f67a490d6ce135d0e9d7deb31b6e8d4b6ca368021ff5a0cc0a8",
           "q-defi-soroswap-what-is": "77d04ff5e5903c8a160f2444240d5c3a2db63ac578ee80ac47d69d1c71631c30",
           "q-defi-x402-on-stellar-what": "75bb51ff5ed93a0549bd61144f28683fce0987e655e0d39223583460592ab46a",
           "q-eco-hana-wallet-scf": "9850fe6706c37b1e69736a51b24588ad54a58321fff68d1f92c3d2868204b128",
-          "q-eco-stellar-wallets-list": "7acc5af8f61dfad090cfde25d627fe1499fe48dcf58bf65d5371bdbf91aa68cf",
+          "q-eco-stellar-wallets-list": "aa53d9c83a8434a37678dd07cec3b530b30ac460b7a1c7867f725e64c6d3da8e",
           "q-scf-history-soroswap": "914a96ff3dfe0a2dfaa27bfb7dbe90567f9ceab7f50fbdcb6a3eea2c908ce513",
           "q-scf-verified-members": "d8d38abd545459080f53ccbc15d30e4fea65819e7481bc900effe854348f1ba8"
         }
@@ -385,18 +385,18 @@
           "q-soroban-oracle-defensive-consumption"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-12",
         "reSwept": {
-          "date": "2026-11-02",
-          "verdict": "consistent",
-          "reason": "Grading-policy round 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): q-defi-reflector-oracle moved stable -> scheduled (the Reflector feed roster and 4-of-7 admin signer set unchanged). No stated value changed, so the other members of \"YieldBlox/Blend V2 oracle-manipulation incident (Feb 2026)\" still agree."
+          "date": "2026-11-12",
+          "reason": "Re-sweep 2026-11-12 (.agents/rounds/2026-11-12-truth-maintenance.md). q-defi-reflector-oracle dropped its sls-029 partial cap; no incident text changed. Read all six members. Exploit transfers, the two-transaction USDC borrow, source-specific USD valuations, quarantine-is-not-recovery, and the USTRY/Reflector Pulse five-minute feed vector all still agree. The Reflector case's 5-minute Pulse cadence matches the incident cases.",
+          "verdict": "consistent"
         },
         "note": "The cases consistently separate the 61,249,278.31-XLM and 1,000,196.70-USDC exploit transfers from source-specific combined USD valuations around $10M-$10.86M and from Blockaid's separately attributed 48,069,094-XLM quarantine. Corrected 2026-11-02: the roughly 14,000-USDC liability in the PoC's decoded pre-state came from a separate earlier attacker borrow (tx 01c2ba75…, 00:20:50 UTC, per Script3's 2026-03-04 post-mortem and Horizon), so about 1.01M USDC was borrowed across two transactions, never one 1,014,196.70-USDC transaction. Script3's dated figures (about $10M on 2026-02-22; about $10.5M net loss on 2026-03-04) are confirmed when attributed; rekt.news's $10.97M is not a Script3 figure. Quarantine is not recovery. Date, USTRY/Reflector vector, and app-level-not-protocol-level framing remain compatible. Re-swept 2026-07-28 (round lead, 24h-commit adversarial-review fixes): reopen is hash churn from this round's own contradiction-removing edits — q-comp-yieldblox-oracle-incident notes no longer assert Script3 depositor compensation as settled; remediation-vs-recovery discipline is now uniform with the answer and siblings. Edits move members toward the cluster claim; lead read each changed field directly. Re-swept 2026-07-28: hash churn from appending the todo-1254 record to truth.verified.evidence on the affected member(s) — the CI gospel gate requires verified to move with judge-facing edits; no judge-facing content changed in that append. Added 2026-07-28 (todo 1253 Lane B, G8): q-hist-yieldblox-v2-2026-exploit joins as the primary bearer of this cluster's claims. Without it, an edit to the corpus's main incident case reopened cluster-126 and the YieldBlox numericInvariant but never this cluster, leaving the date, USTRY/Reflector vector, and app-level-not-protocol-level framing claims with no reopen path. Verified 2026-07-28: its transfer figures, quarantine-is-not-recovery discipline, and combined-USD-valuation framing matched this cluster's note; its 14,000-USDC and Script3 framing was corrected on 2026-11-02 (see above). cluster-126 is now a strict membership subset: kept deliberately — 126 states the quantity invariant, this cluster states the incident framing.",
         "memberContentSha256": {
           "q-comp-security-disclosure-programs": "c71094fbb1347b0fa6861413bc4cbd9d4b128d2c07edf9290282391d30c38820",
           "q-comp-yieldblox-oracle-incident": "16fd59965584675e5235d5092149738b84c45a20f38f973e8eca7f6f87ee680f",
           "q-defi-etherfuse-stablebonds": "4e2c682064162ec3b20594b8e83314bb6e098fd17f29c3afbb5dc225bdcf8284",
-          "q-defi-reflector-oracle": "ec061bc79b120ad1ed8f9e685a07b112fa3c6692b1ebbf971f54e1cfedbc8bc7",
+          "q-defi-reflector-oracle": "818eb1dbe8b6998f6044ae0af0c6af334f3e143418352a7a5dd1e6f6cc68de69",
           "q-hist-yieldblox-v2-2026-exploit": "54afc85df57dc11ba79756fc62a862ba10861cc5d3b9d91f8b2f6f7d0a63ad95",
           "q-soroban-oracle-defensive-consumption": "1caab40de8ebdd857b3c3a0158fee38e49d1277c0cf9fb556c21406e50f3f74b"
         }
@@ -442,18 +442,18 @@
           "q-tool-cctp-stellar-integration"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-12",
         "reSwept": {
-          "date": "2026-11-02",
-          "verdict": "consistent",
-          "reason": "Grading-policy round 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): q-defi-wisdomtree-crdt moved stable -> scheduled (the CRDT issuer and launch facts unchanged). No stated value changed, so the other members of \"2025-2026 RWA/stablecoin launch dates and issuers\" still agree."
+          "date": "2026-11-12",
+          "reason": "Re-sweep 2026-11-12 (.agents/rounds/2026-11-12-truth-maintenance.md). q-defi-named-newer-protocols replaced its sls-024 OrbitCDP cap with a source-relative sentence; it makes no RWA or stablecoin launch claim. Read all 11 members. CRDT 2025-09-12, USDY 2025-09-17, PYUSD 2025-09-18, EURC 2023-09-26, the two CCTP milestones (2026-05-18 and 2026-05-19) and DTCC planned-on-Stellar are unchanged and agree.",
+          "verdict": "consistent"
         },
         "note": "CRDT=WisdomTree Sep 12 2025, USDY=Ondo Sep 17 2025, and PYUSD=PayPal-branded/Paxos-issued Sep 18 2025; Templar is another verified Nov 5 2025 launch. The set is illustrative, not exhaustive, and the old Meridian 'inflection point' narrative is not a truth gate. Announced, approved, technically integrated, listed, and publicly live remain distinct states. Circle recorded CCTP Stellar mainnet support on 2026-05-18 and SDF/Circle publicly announced live on 2026-05-19; the prior 2026-02-24 launch attribution is unverified. EURC=Circle 2023-09-26; BENJI=Franklin Templeton since 2021; Figure YLDS live 2026-05-05; DTCC's tokenization service on Stellar is planned for H1 2027 and NOT live on Stellar; as of 2026-11-02 the DTCC Tokenization Service went live on 2026-10-28 on the Canton Network and DTCC's private Besu network only, so that launch is not Stellar-live evidence. Re-swept 2026-07-28 (round lead, post-adversarial-review): reopen is hash churn from the F3 fix — q-token-circle-usdc-on-stellar now separates Circle's 2026-05-18 mainnet-support milestone from the 2026-05-19 public announcement, moving that member toward the cluster claim; lead read the changed answer directly. (An earlier revision of this appendix also credited the non-member q-tool-passkeykit-smart-wallet edit; corrected 2026-07-28.) Re-swept 2026-07-28 (round lead, 24h-commit adversarial-review fixes): reopen is hash churn from this round's own contradiction-removing edits — q-token-circle-usdc-on-stellar notes/corroboration now carry the two-milestone CCTP wording instead of the collapsed 2026-05-19 slogan. Edits move members toward the cluster claim; lead read each changed field directly. Re-swept 2026-07-28: hash churn from appending the todo-1254 record to truth.verified.evidence on the affected member(s) — the CI gospel gate requires verified to move with judge-facing edits; no judge-facing content changed in that append.",
         "memberContentSha256": {
           "q-asset-rwa-tokenized-freshness": "972021107a0b0919afedf3d825e15224c746586f51cc87a077fab8f90da03fbe",
           "q-asset-usdc-eurc-issuer": "14ef248c86b9d3fbc3ec39ba7d659a0bb644387599e2a1f3f5027260d7de2d62",
           "q-defi-benji-franklin-templeton": "d5968df841fd677e62dd8b54591bf82a5adcb798aff07bb9fa5d1385e5897e9f",
-          "q-defi-named-newer-protocols": "70507fa1ad44f098cac0c94209ebf9127c63b224c6376f26cee2cbfa0bdbfca9",
+          "q-defi-named-newer-protocols": "9fb045890217999b7ef636dd85987ab92b1957f5a19df5b6366f3dbfdfd7fe42",
           "q-defi-ondo-usdy": "a1ef2492a81597b50ebcc3c123708a72723bfdd5f79a9eb56eb063a3bc7055f9",
           "q-defi-wisdomtree-crdt": "fc634d6dec2953b0f4538be82c111bda82871091560bf504ee1411eec87325e7",
           "q-eco-pyusd-stellar-freshness": "55d8c1e95c428ead511a88910da029af3fa21da01f9ddaf44306d0a322942fac",
@@ -473,17 +473,17 @@
           "q-pay-moneygram-ramps"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-03",
+        "lastChecked": "2026-11-12",
         "note": "MoneyGram Ramps settles in Stellar USDC across all four members. As of 2026-11-02, MoneyGram's developer portal labels the SEP-10/SEP-24 anchor path legacy for existing allowlisted partners and directs new Stellar wallets to its Ramps widget SDK with API keys and server-side sessions; members accept either path when it is dated and attributed. The minimum differs by host on 2026-11-02: the Version 1.2 operator guide and its named production anchor (mgxanchor.moneygram.com) /info state 15 USDC, and the older stellar.moneygram.com /info states 1 USDC. The minimum stays disputed. Every observed surface states a 950 USDC cash-in maximum and a 2,500 USDC cash-out maximum. Country counts remain source- and direction-specific.",
         "memberContentSha256": {
           "q-anchor-moneygram-ramps": "23fcc18bb82051e1050112d4e34c75b81ef0694e247af1f4175bdcf674b0f46e",
           "q-crp-anchors-by-corridor": "f938892a2f1761b29ac792fa7238df687c4bf1c30eba483454b4c74bf8beab5b",
-          "q-hist-remittance-corridors": "c72a0668b41afe59f05732b42e183e762f1eb26bbad6aaae81bfc1100308224c",
+          "q-hist-remittance-corridors": "4c6d33eb711d73d1c95c9304a06144e8844c4257cc97253fc756ceb23dc07e5c",
           "q-pay-moneygram-ramps": "38d940aed17e2aa236f842f0b81b752f931cfa6a83c087dde0b952c5d32da21c"
         },
         "reSwept": {
-          "date": "2026-11-03",
-          "reason": "2026-11-03 URL-source repair: compared every member question, golden, tag, and surface with HEAD; all are identical. Canonical pages support the same cited facts. Only current sources and verification metadata changed. Preserve the prior consistency verdict and every historical measurement date. Evidence: tmp/urls/sibling-sweep.json and tmp/urls/decisions.json.",
+          "date": "2026-11-12",
+          "reason": "Re-sweep 2026-11-12 (.agents/rounds/2026-11-12-truth-maintenance.md). q-hist-remittance-corridors narrowed its cap to the Lumenloop 200+ footprint under ll-008; its answer still calls MoneyGram Ramps a current Stellar USDC example with dated coverage. Read all four members. All settle in Stellar USDC, accept the widget or legacy SEP-10/SEP-24 path when dated, keep the 15-versus-1 USDC minimum disputed, and keep country counts source- and direction-specific. No figure changed.",
           "verdict": "consistent"
         }
       },
@@ -582,15 +582,15 @@
           "q-scf-verified-members"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-12",
         "reSwept": {
-          "date": "2026-11-02",
-          "verdict": "consistent",
-          "reason": "Grading-policy round 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): q-defi-reflector-oracle moved stable -> scheduled (the Reflector feed roster and 4-of-7 admin signer set unchanged). No stated value changed, so the other members of \"oracles: Reflector is not the sole provider\" still agree."
+          "date": "2026-11-12",
+          "reason": "Re-sweep 2026-11-12 (.agents/rounds/2026-11-12-truth-maintenance.md). q-defi-reflector-oracle dropped its sls-029 partial cap; it still rejects a dominance ranking and treats alternative-provider status as source-relative. Read all three members. q-eco-defi-market-map (unchanged) still names other providers and q-scf-verified-members carries no oracle claim. The claim that Reflector is not the sole provider holds.",
+          "verdict": "consistent"
         },
         "note": "The members agree only that Reflector is NOT the sole Stellar oracle. q-eco-defi-market-map names alternative providers (Band, RedStone, DIA, Lightecho, Orally) and does not reward an oracle dominance or most-integrated ranking without a dated, stated metric. q-defi-reflector-oracle rejects unsupported dominance and integration rankings and treats alternative-provider status as source-relative, requiring dated provider evidence (reconciled 2026-10-15). q-scf-verified-members covers SCF governance tiers and carries no oracle claim.",
         "memberContentSha256": {
-          "q-defi-reflector-oracle": "ec061bc79b120ad1ed8f9e685a07b112fa3c6692b1ebbf971f54e1cfedbc8bc7",
+          "q-defi-reflector-oracle": "818eb1dbe8b6998f6044ae0af0c6af334f3e143418352a7a5dd1e6f6cc68de69",
           "q-eco-defi-market-map": "f6ebcdba13c215b3e0149990045abeadac8235c95ee54bef69d41645c2a01c8e",
           "q-scf-verified-members": "d8d38abd545459080f53ccbc15d30e4fea65819e7481bc900effe854348f1ba8"
         }
@@ -661,18 +661,18 @@
           "q-tool-smart-wallet-repos-discovery"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-09",
+        "lastChecked": "2026-11-12",
         "reSwept": {
-          "date": "2026-11-09",
-          "verdict": "consistent",
-          "reason": "Only Soroswap-versus-StellarX provenance changed in this cluster. Its entire golden remains byte-equivalent as parsed JSON: StellarX is an Ultra Stellar classic-liquidity UI, distinct from Soroswap contracts/API. Wallet roster, LOBSTR affiliations, venue-family count boundaries and Passkey Kit/Smart Account Kit authorization and audit claims in the other five members are unchanged."
+          "date": "2026-11-12",
+          "reason": "Re-sweep 2026-11-12 (.agents/rounds/2026-11-12-truth-maintenance.md). q-eco-stellar-wallets-list dropped its sls-024 partial cap; the Freighter/Varial naming rule and the dated roster are unchanged. Read all six members. Ultra Stellar operator attribution, LOBSTR Stellar + XRPL support, StellarX as a classic-liquidity UI, the no-fixed-venue-count rule and the Passkey Kit / Smart Account Kit distinctions are unchanged.",
+          "verdict": "consistent"
         },
         "note": "Freighter = SDF-maintained (SDF renamed it Varial on 2026-10-29; as of 2026-11-02 members accept either name); LOBSTR/StellarX/StellarTerm use the Ultra Stellar operator brand, but absolute affiliation and store-specific legal-entity negatives are not truth gates. LOBSTR currently supports Stellar+XRPL; scale remains attributed; SCF amounts are optional, and cited totals must name their source, date, and awarded-versus-paid basis. Hana is multichain; xBull = Creit-Tech. Passkey Kit and Smart Account Kit are current sibling SDKs with different authorization models; the former legacy/demo characterization was accurate before the 2026-07-12 README rewrite and is now freshness-drift; as of 2026-11-02 the Passkey Kit README and SECURITY.md label it unaudited software, so a no-third-party-audit statement is accurate. DEX siblings distinguish UIs from independent liquidity venues and do not pin a three-player count. Re-swept 2026-07-28 by the round lead after the Lane A reconciliation: the reopen is hash churn from that same reconciliation's own content edits, not a new inconsistency. Lead read the changed answers directly and confirmed the cluster's claim still holds. Re-swept 2026-07-28 (round lead, post-adversarial-review): reopen is hash churn from the N1 fix — q-tool-passkeykit-smart-wallet's avoid clause was rescoped so it no longer punishes the true 'no third-party audit' statement, moving that member toward the cluster claim; lead read the changed answer directly. (An earlier revision of this appendix also credited the non-member q-token-circle-usdc-on-stellar edit; corrected 2026-07-28.)",
         "memberContentSha256": {
           "q-defi-soroswap-vs-stellarx": "69aab6edcc718266743d0fafb066dcddbd324280421505867b6127fa6685392b",
           "q-eco-dex-saturation": "355d94a51cca4d34d16e92cad769d0975622c6d40352bd98e3342698c4a25929",
           "q-eco-lobstr-wallet": "58f17f61675e13cd6d191d93ce47c7216e4c39d5216f24072bc1eb97e978d319",
-          "q-eco-stellar-wallets-list": "7acc5af8f61dfad090cfde25d627fe1499fe48dcf58bf65d5371bdbf91aa68cf",
+          "q-eco-stellar-wallets-list": "aa53d9c83a8434a37678dd07cec3b530b30ac460b7a1c7867f725e64c6d3da8e",
           "q-tool-passkeykit-smart-wallet": "f3537b5974fc42b122b99f55549f750db5443a4734588844b586ce2cc80e3fba",
           "q-tool-smart-wallet-repos-discovery": "cc0eae47c65bc9b4fbb0480e614c20e833e810c8e395be538bd6fc291a7a1805"
         }
@@ -810,15 +810,15 @@
           "q-eco-stablecoins-on-stellar"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-12",
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-eco-pyusd-stellar-freshness and q-eco-stablecoins-on-stellar now agree that the LLC-to-N.A. change is the OCC-approved 2025-12-12 conversion ('Paxos Trust Company, N.A., which Paxos names as PYUSD's issuer as of 2026-11-02'). Both avoid an undated claim that 'Paxos Trust Company, LLC issues PYUSD today'. The note still calls this an 'explicit dated LLC-versus-N.A. disagreement', which is stale. q-defi-named-newer-protocols has no PYUSD claim.",
+          "date": "2026-11-12",
+          "reason": "Re-sweep 2026-11-12 (.agents/rounds/2026-11-12-truth-maintenance.md). q-defi-named-newer-protocols replaced its sls-024 OrbitCDP cap with a source-relative sentence; it has no PYUSD claim. Read all three members. q-eco-pyusd-stellar-freshness and q-eco-stablecoins-on-stellar (unchanged) still agree on PayPal-branded, Paxos-issued PYUSD and on dating the LLC-to-N.A. legal entity.",
           "verdict": "consistent"
         },
         "note": "resolved as PayPal-branded/Paxos-issued; re-swept 2026-11-02: the LLC-versus-N.A. difference is the OCC-approved 2025-12-12 conversion of Paxos Trust Company, LLC to Paxos Trust Company, N.A. (PYUSD's issuer as of 2026-11-02), not a source disagreement, and any legal-entity name must be dated",
         "memberContentSha256": {
-          "q-defi-named-newer-protocols": "70507fa1ad44f098cac0c94209ebf9127c63b224c6376f26cee2cbfa0bdbfca9",
+          "q-defi-named-newer-protocols": "9fb045890217999b7ef636dd85987ab92b1957f5a19df5b6366f3dbfdfd7fe42",
           "q-eco-pyusd-stellar-freshness": "55d8c1e95c428ead511a88910da029af3fa21da01f9ddaf44306d0a322942fac",
           "q-eco-stablecoins-on-stellar": "6adbd10339a3adc62db3f2fcb0a87493869de125b9d2cf4c180737bb5096c1a0"
         }
@@ -832,17 +832,17 @@
           "q-eco-stellar-wallets-list"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-06",
+        "lastChecked": "2026-11-12",
         "reSwept": {
-          "date": "2026-11-06",
-          "reason": "The wallet addition is dated and independently verified; it introduces no unsupported roster, RWA or agent-identity comparison.",
+          "date": "2026-11-12",
+          "reason": "Re-sweep 2026-11-12 (.agents/rounds/2026-11-12-truth-maintenance.md). q-eco-stellar-wallets-list dropped its sls-024 partial cap; no roster, RWA or agent-identity statement changed. Read all three members. q-asset-rwa-tokenized-freshness and q-defi-agent-identity-stellar-experimental are unchanged, and no member makes an unsupported cross-topic comparison.",
           "verdict": "consistent"
         },
         "note": "resolved by removing the unverifiable clauses and retaining the supported core",
         "memberContentSha256": {
           "q-asset-rwa-tokenized-freshness": "972021107a0b0919afedf3d825e15224c746586f51cc87a077fab8f90da03fbe",
           "q-defi-agent-identity-stellar-experimental": "66b2668ff8b1c712e54eee06f19c866ae9062ab1551ede76a0632f11818ded11",
-          "q-eco-stellar-wallets-list": "7acc5af8f61dfad090cfde25d627fe1499fe48dcf58bf65d5371bdbf91aa68cf"
+          "q-eco-stellar-wallets-list": "aa53d9c83a8434a37678dd07cec3b530b30ac460b7a1c7867f725e64c6d3da8e"
         }
       },
       {
@@ -858,13 +858,13 @@
         "lastChecked": "2026-11-12",
         "reSwept": {
           "date": "2026-11-12",
-          "reason": "Re-sweep 2026-11-12 (.agents/rounds/2026-11-12-truth-maintenance.md). q-scf-open-rfps keeps dated, source-relative roster reporting: two official Q4 briefs and a lagging Scout empty set on 2026-11-12, each attributed. q-defi-phoenix-what-is, q-defi-reflector-oracle and q-scf-funding-by-category are unchanged and make no roster claim. The corpus-relative encoding rule holds. No contradiction.",
+          "reason": "Re-sweep 2026-11-12 (.agents/rounds/2026-11-12-truth-maintenance.md). q-defi-reflector-oracle dropped its sls-029 partial cap and keeps deployments, operators and integrations dated and source-relative. Read all four members. q-defi-phoenix-what-is, q-scf-funding-by-category and q-scf-open-rfps are unchanged. The corpus-relative encoding rule (source, as-of date, basis, external verification) still holds for all four.",
           "verdict": "consistent"
         },
         "note": "corpus-relative encoding: require source, as-of date, method/basis, and external verification before world-truth claims",
         "memberContentSha256": {
           "q-defi-phoenix-what-is": "76acf7d6f08dfc7def9443eaffde4dc0b90a7fc9d0a040d7a2d97fec5614cc9b",
-          "q-defi-reflector-oracle": "ec061bc79b120ad1ed8f9e685a07b112fa3c6692b1ebbf971f54e1cfedbc8bc7",
+          "q-defi-reflector-oracle": "818eb1dbe8b6998f6044ae0af0c6af334f3e143418352a7a5dd1e6f6cc68de69",
           "q-scf-funding-by-category": "8f59fd7423aac041beb87d0f51fc82570818acf74ec02c64dc2b6d5d080a6630",
           "q-scf-open-rfps": "f177c708d6b4854213cdcee2da5e266a332af2175c7c60e645ddd2c54f89a7fd"
         }
@@ -952,10 +952,10 @@
           "q-soroban-deploy-cli"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-06",
+        "lastChecked": "2026-11-12",
         "reSwept": {
-          "date": "2026-11-06",
-          "reason": "The wallet note distinguishes historical counts from current source-specific identity evidence. Other RWA, issuer-role, builder, funding and CLI claims are unchanged.",
+          "date": "2026-11-12",
+          "reason": "Re-sweep 2026-11-12 (.agents/rounds/2026-11-12-truth-maintenance.md). q-eco-stellar-wallets-list dropped its sls-024 partial cap; it still separates historical counts from current identity evidence. Read all seven members. RWA attribution, Circle and Paxos issuer roles, the Latin America builder roster, SCF category analytics and the CLI deploy flow are unchanged.",
           "verdict": "consistent"
         },
         "note": "Dated/provenance-bearing overrides now distinguish source snapshots, legal entities, directory reconstructions, and current CLI/API semantics without unsupported comparisons. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
@@ -964,7 +964,7 @@
           "q-asset-usdc-eurc-issuer": "14ef248c86b9d3fbc3ec39ba7d659a0bb644387599e2a1f3f5027260d7de2d62",
           "q-builder-by-region-latam": "788eb3922f28f3f8b15109307aa080ff5fa3fcbf7107ca638371df54cbfdc652",
           "q-eco-pyusd-stellar-freshness": "55d8c1e95c428ead511a88910da029af3fa21da01f9ddaf44306d0a322942fac",
-          "q-eco-stellar-wallets-list": "7acc5af8f61dfad090cfde25d627fe1499fe48dcf58bf65d5371bdbf91aa68cf",
+          "q-eco-stellar-wallets-list": "aa53d9c83a8434a37678dd07cec3b530b30ac460b7a1c7867f725e64c6d3da8e",
           "q-scf-funding-by-category": "8f59fd7423aac041beb87d0f51fc82570818acf74ec02c64dc2b6d5d080a6630",
           "q-soroban-deploy-cli": "f5742dc6e4f69ce03310856a3ec3d62332f6194067bc1a2d16aad3fdf555eb6f"
         }
@@ -1166,17 +1166,17 @@
           "q-hist-unhcr-stellar-aid-assist"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-12",
         "reSwept": {
-          "date": "2026-11-02",
-          "verdict": "consistent",
-          "reason": "Grading-policy round 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): q-defi-wisdomtree-crdt moved stable -> scheduled (the CRDT issuer and launch facts unchanged). No stated value changed, so the other members of \"Historical launch/deployment and metric-unit discipline\" still agree."
+          "date": "2026-11-12",
+          "reason": "Re-sweep 2026-11-12 (.agents/rounds/2026-11-12-truth-maintenance.md). q-hist-remittance-corridors narrowed its cap to the Lumenloop 200+ footprint under ll-008; it still labels each corridor live, historical, announced or capability-only. Read all five members. BENJI since 2021, CRDT 2025-09-12, the phased Soroban rollout and the separately attributed UNHCR snapshots are unchanged, and no member merges announcement, capability and current deployment.",
+          "verdict": "consistent"
         },
         "note": "Announcements, capabilities, historic routes, phased activation, GA, and current deployment are distinct. Aid individuals/households/countries/windows and RWA chain/suite/fund values remain source-scoped. Current rosters and chain support never overwrite dated launch history or imply sole-chain deployment.",
         "memberContentSha256": {
           "q-defi-benji-franklin-templeton": "d5968df841fd677e62dd8b54591bf82a5adcb798aff07bb9fa5d1385e5897e9f",
           "q-defi-wisdomtree-crdt": "fc634d6dec2953b0f4538be82c111bda82871091560bf504ee1411eec87325e7",
-          "q-hist-remittance-corridors": "c72a0668b41afe59f05732b42e183e762f1eb26bbad6aaae81bfc1100308224c",
+          "q-hist-remittance-corridors": "4c6d33eb711d73d1c95c9304a06144e8844c4257cc97253fc756ceb23dc07e5c",
           "q-hist-soroban-launch-protocol20": "607c8d4ef8e2605f5cab2bb3de04338029e4e3d1409ab42dac4f21d7742d294b",
           "q-hist-unhcr-stellar-aid-assist": "2e9c12da5710a3be4e4e39e60865eb6ab095587ae48592ec4ca794ed0590a486"
         }
@@ -1487,15 +1487,15 @@
           "q-protocol-19-preconditions-cap-0021"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-02",
+        "lastChecked": "2026-11-12",
         "note": "Starlight is archived experimental work; CAP-0021/0040 are active protocol primitives, not production-deployment evidence. Perun local/standalone code remains source-relative until primary Mainnet deployment evidence exists. Scout's Centaurus row read Live+Unverified on 2026-07-10 and has read Inactive since 2026-07-13; neither label is deployment proof. As of 2026-11-02, the Stellar Docs MPP session guide's unaudited stellar-experimental one-way-channel contract is a self-deployed experimental option, not network-operated infrastructure.",
         "memberContentSha256": {
-          "q-pc-l2-payment-channels-starlight": "7cded72a3f607a553d0a9e768e7ba3cb7824e28f14f900cd9be333ff84fa2e25",
+          "q-pc-l2-payment-channels-starlight": "2a38bb42a2b2b2fb2b368fea03219cdf5c3db48049e54dbcd3da620d4f330b5b",
           "q-protocol-19-preconditions-cap-0021": "c612be1df92135c9b1d6e3544cd34e1534f73f7270c77aa23fe2673bbc7fcef0"
         },
         "reSwept": {
-          "date": "2026-11-02",
-          "reason": "Golden audit 2026-11-02 register re-sweep (.agents/rounds/2026-11-02-golden-audit.md): q-pc-l2-payment-channels-starlight now says 'Scout's Centaurus row then read Live+Unverified ... since 2026-07-13 Scout marks it Inactive' and adds the MPP one-way-channel note, so the entry's present-tense 'Centaurus Live+Unverified metadata' is stale; q-protocol-19-preconditions-cap-0021 is unchanged and agrees.",
+          "date": "2026-11-12",
+          "reason": "Re-sweep 2026-11-12 (.agents/rounds/2026-11-12-truth-maintenance.md). q-pc-l2-payment-channels-starlight dropped its sd-015/sls-024 partial cap and one bookkeeping line; its answer, key facts and avoid items are unchanged. Read both members. Starlight stays archived experimental work, CAP-0021/0040 stay active primitives and not deployment evidence, and Centaurus reads Inactive since 2026-07-13, which live Scout confirmed on 2026-11-12. q-protocol-19-preconditions-cap-0021 is unchanged and agrees.",
           "verdict": "consistent"
         }
       },

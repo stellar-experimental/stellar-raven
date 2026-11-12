@@ -18,7 +18,7 @@
       "Do NOT promote Perun local code or Centaurus Live+Unverified metadata into deployment without primary evidence.",
       "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
     ],
-    "notes": "GT-29 CORRECTION 2026-07-10: Starlight is archived experimental work; CAP-21/40 are active primitives, not deployment evidence. Perun is active local/standalone code without verified Mainnet deployment; Centaurus's 2026-07-10 Live+Unverified label conflicted with stale repos; Scout has marked it Inactive since 2026-07-13.\nsd-015 captures glossary lifecycle ambiguity; sls-024 captures project-status conflicts.\nAccurately quoting the canonical Stellar or Scout source on Starlight's old live wording or Centaurus's unqualified Live label is not a wrong claim while a cached Docs copy still shows the pre-2026-07-27 text fixed by sd-015 or sls-024 stands; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source.\nLive re-check 2026-11-02: the Docs glossary calls Starlight experimental, no longer maintained, and archived. Stellar Docs' MPP session guide uses the unaudited stellar-experimental one-way-channel Soroban contract, which integrators deploy themselves on Testnet or Mainnet; naming it as a dated experimental one-way payment-channel option is correct, but it is not network-operated infrastructure."
+    "notes": "GT-29 CORRECTION 2026-07-10: Starlight is archived experimental work; CAP-21/40 are active primitives, not deployment evidence. Perun is active local/standalone code without verified Mainnet deployment; Centaurus's 2026-07-10 Live+Unverified label conflicted with stale repos; Scout has marked it Inactive since 2026-07-13.\nLive re-check 2026-11-02: the Docs glossary calls Starlight experimental, no longer maintained, and archived. Stellar Docs' MPP session guide uses the unaudited stellar-experimental one-way-channel Soroban contract, which integrators deploy themselves on Testnet or Mainnet; naming it as a dated experimental one-way payment-channel option is correct, but it is not network-operated infrastructure."
   },
   "tags": {
     "category": "protocol-core",
@@ -142,8 +142,8 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-01)",
+      "date": "2026-11-12",
+      "by": "caps-1112 golden AUTHOR lane (Codex); .agents/rounds/2026-11-12-truth-maintenance.md",
       "evidence": [
         "Live C 2026-11-02: GET https://stellarlight.xyz/api/projects/search?q=centaurus -- 'slug centaurus, status Inactive, statusAsOf 2026-07-13T00:00:00.000Z, statusBasis human-verified, statusSourceUrl https://github.com/centaurus-project/centaurus, deployment.network unknown'",
         "Live B 2026-11-02: gh api repos/centaurus-project/centaurus -- 'archived false, pushed_at 2022-01-05T17:49:58Z'",
@@ -169,11 +169,17 @@
         "Live E 2026-11-02: Raven stellarDocs.search_docs('Starlight layer 2 payment channel') -- 'glossary#starlight snippet: 'An experimental layer 2 payment channel protocol ... The project is no''",
         "Live C 2026-11-02: Scout centaurus -- 'status Inactive'",
         "Independent verifier decisions: golden.answer (accept); golden.notes (verifier modify) -- .agents/rounds/2026-11-02-golden-audit/pass1/protocol-core-01.json.",
-        "Sibling sweep 2026-11-02: grep Centaurus/Starlight -> only this case names Centaurus; q-protocol-19-preconditions-cap-0021, q-mpp-discovery-and-modes, q-agent-payment-standard-choice, q-defi-streaming-payments-prior-art checked; no contradiction."
+        "Sibling sweep 2026-11-02: grep Centaurus/Starlight -> only this case names Centaurus; q-protocol-19-preconditions-cap-0021, q-mpp-discovery-and-modes, q-agent-payment-standard-choice, q-defi-streaming-payments-prior-art checked; no contradiction.",
+        "2026-11-12 scoped cap-retirement verification; prior dated evidence above remains historical.",
+        "2026-11-12T15:00:05.683724+00:00 [C] https://stellarlight.xyz/api/projects/search?q=Centaurus&limit=10 — Clean retry: meta.partial false, failedReads []; Centaurus Inactive, human-verified, statusAsOf 2026-07-13, source https://github.com/centaurus-project/centaurus; deployment unknown. Its historical Live+Unverified label is explicitly retracted in lifecycle.note.",
+        "2026-11-12T14:59:37.441590+00:00 [B] https://api.github.com/repos/centaurus-project/centaurus — Repository describes a second-layer payment network/exchange; pushed_at 2022-01-05T17:49:58Z. Repo staleness is not by itself a definitive shutdown or deployment verdict.",
+        "2026-11-12T14:59:37.778365+00:00 [A] https://developers.stellar.org/docs/learn/glossary — Current official glossary says Starlight is experimental, no longer maintained and archived since April 2024; the old live wording fixed by sd-015 is absent.",
+        "Cap decision: remove the stale sd-015/sls-024 partial cap and present-tense defect summary. Preserve archived-Starlight and source-relative Centaurus guidance, the answer and keyFacts. Independent lifecycle matrix: research/audits/2026-11-12-truth-maintenance/caps-lifecycle-matrix.md.",
+        "Sibling sweep 2026-11-12 (battery entity-name grep; 1 cases): q-pc-l2-payment-channels-starlight. Only this battery case matches Centaurus/Starlight/Perun; no topical sibling retains a competing claim. The live Fluxity case independently preserves the same label-versus-deployment distinction."
       ],
       "rootCause": [
         "freshness-drift",
-        "improvements/stellar-light-scout/sls-024-project-lifecycle-operator-conflicts.md"
+        "improvements/resolved.json entry sls-024: Scout now dates and sources every project lifecycle and positive deployment claim, which removes the source conflict that justified the cap."
       ]
     },
     "origin": "raven-next q-pc-l2-payment-channels-starlight"

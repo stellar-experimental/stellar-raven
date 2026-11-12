@@ -182,11 +182,41 @@ result on [519](https://github.com/Stellar-Light/stellarlight/issues/519#issueco
 
 sls-024 and sls-029 back partial caps in five goldens (`q-defi-named-newer-protocols`,
 `q-eco-stellar-wallets-list`, `q-pc-l2-payment-channels-starlight`, `q-hist-remittance-corridors`,
-`q-defi-reflector-oracle`). ADR-0008 removes a cap with its finding, so their retirement lands in a
-follow-up change with a golden lane (gold-caps, hc t3rg, Codex workhorse `gpt-6.1-sol` high) and
-an independent review. Handoff #419 stays open until then.
+`q-defi-reflector-oracle`). ADR-0008 removes a cap with its finding, so their retirement landed in
+a follow-up change.
 
-Active findings: 81 → 79 (three retired, one filed).
+Follow-up (cap reconciliation and sls-024/sls-029 retirement):
+
+- Author: gold-caps (hc t3rg, Codex workhorse `gpt-6.1-sol` high), with three read-only research
+  children. Report: [caps-report.md](../../research/audits/2026-11-12-truth-maintenance/caps-report.md);
+  matrices `caps-{lifecycle,oracle,remittance}-matrix.md` beside it.
+- Reviewer: rv-caps (hc t3s4, Claude Fable high), distinct from the Codex author. It re-derived each
+  trigger live before reading the author's matrices. Verdict: approve with changes
+  ([review-caps-fable.md](../../research/audits/2026-11-12-truth-maintenance/review-caps-fable.md)).
+- Result: four caps removed; the remittance cap narrowed to ll-008 (Lumenloop still carries the
+  unscoped 200+ MoneyGram footprint; Scout now says 170+). No answer, key fact or avoid item changed.
+- Review findings applied:
+  - F1: the Fluxity live case is left at its frozen `live-data-canonical-v3` content, because a notes
+    edit breaks the contract digest. Its rewording is queued.
+  - F2: evidence points at committed matrices, not `tmp/`.
+  - F3: `rootCause` uses the `improvements/resolved.json` receipt form, which also clears the four
+    new `symmetric-caution` warnings (QA lint back to 81 warnings).
+  - F4: OrbitCDP now carries a "do not penalize either source" caution.
+  - F5: the wallet avoid now fires only on a Live label offered as availability proof.
+  - F6: stable evidence URLs.
+  - F7 (Coins.ph partner prose) and F8 (`q-eco-defi-market-map` DIA/Lightecho note) are queued in
+    `.agents/TODO.md`.
+- The reviewer's 15 register re-sweeps were applied with `register-helper --review`.
+- Resolution comments (read back, author kalepail):
+  [stellar-scout#9](https://github.com/Stellar-Light/stellar-scout/issues/9#issuecomment-6827865598),
+  [494](https://github.com/Stellar-Light/stellarlight/issues/494#issuecomment-6827866033),
+  [1947](https://github.com/Stellar-Light/stellarlight/pull/1947#issuecomment-6827866748),
+  [514](https://github.com/Stellar-Light/stellarlight/issues/514#issuecomment-6827868322),
+  [742](https://github.com/Stellar-Light/stellarlight/issues/742#issuecomment-6827868717),
+  [1948](https://github.com/Stellar-Light/stellarlight/pull/1948#issuecomment-6827869050).
+- The issue template's placeholder now points at a commit-pinned snapshot of sls-024.
+
+Active findings: 81 → 77 (five retired, one filed).
 
 **Docs, skills, canonical source, Workers AI provider.** 36 findings, 42 refs read; no fixed or
 superseded candidate.

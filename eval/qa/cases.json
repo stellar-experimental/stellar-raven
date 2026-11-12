@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "4a05aa646e9b1a7661e959cf236f16e7832a0ea07bfd05c5bc58d55d2986622f",
+  "corpusContentSha256": "7fa55e28009abf617e9561f5334e2cdb3b3f14af6982c00ae3f70692ed155118",
   "counts": {
     "total": 501,
     "byCategory": {
@@ -13755,7 +13755,7 @@
           "Do NOT describe Zenex as testnet-only or pre-release; it runs a live mainnet market.",
           "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
         ],
-        "notes": "Scout found OrbitCDP and Zenex directly. Zenex (Zenith Protocols, formerly Hermes) is a Soroban perpetual futures exchange; as of 2026-10-15 its operator deployments page lists a live Stellar mainnet XLM-USD market (core contracts deployed 2026-09-29), and a public mainnet RPC read shows fills. The 2026-08-29 testnet reading of the Zenex FAQ is superseded. As of 2026-11-02, FxDAO has its own Scout row (Inactive, human-verified 2026-09-05). JST was not verified as a Stellar DeFi market maker in Scout search.\nAlso good if the answer: Separates testnet/pre-launch/announced status from mainnet-live status. | Mentions alternate spellings/domains only when sourced.\nGolden cites: Dated Scout/LumenLoop/project/web sources for every named entity claim.\nCorrected 2026-07-10. Grade honest entity/status separation; a directory row or live-looking site alone is not deployment proof.\nAccurately quoting the canonical Scout source on OrbitCDP's `Inactive` lifecycle label is not a wrong claim while sls-024 stands; grade caps at partial for that claim unless the answer independently contradicts the golden fact."
+        "notes": "Scout found OrbitCDP and Zenex directly. Zenex (Zenith Protocols, formerly Hermes) is a Soroban perpetual futures exchange; as of 2026-10-15 its operator deployments page lists a live Stellar mainnet XLM-USD market (core contracts deployed 2026-09-29), and a public mainnet RPC read shows fills. The 2026-08-29 testnet reading of the Zenex FAQ is superseded. As of 2026-11-02, FxDAO has its own Scout row (Inactive, human-verified 2026-09-05). JST was not verified as a Stellar DeFi market maker in Scout search.\nAlso good if the answer: Separates testnet/pre-launch/announced status from mainnet-live status. | Mentions alternate spellings/domains only when sourced.\nGolden cites: Dated Scout/LumenLoop/project/web sources for every named entity claim.\nCorrected 2026-07-10. Grade honest entity/status separation; a directory row or live-looking site alone is not deployment proof.\nSources disagree on OrbitCDP's lifecycle: do not penalize an answer that attributes Scout's dated Inactive label, the operator's Live on Stellar banner, or both, and do not require both. Neither surface alone establishes current deployment or definitive shutdown."
       },
       "tags": {
         "category": "defi-ecosystem",
@@ -14017,8 +14017,8 @@
           }
         ],
         "verified": {
-          "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch defi-ecosystem-02)",
+          "date": "2026-11-12",
+          "by": "caps-1112 golden AUTHOR lane (Codex); .agents/rounds/2026-11-12-truth-maintenance.md",
           "evidence": [
             "2026-11-02 [C] https://stellarlight.xyz/api/projects/search?q=DeFi — \"2026-11-02: counts total 208; first page Blend, Aquarius, Phoenix, DeFindex, Hoops Finance, Vaquita ...\" (proposer claim, confirmed-as-of: As of 2026-07-11 a DeFi directory query returned 39 matches (DeFindex, HedgePay, HiYield on page one).)",
             "2026-11-02 [A] https://fxdao.io/ — \"The first decentralized stablecoin protocol running on the Stellar network. Note: The protocol is still on development\" (proposer claim, confirmed-as-of: FxDAO is an XLM-backed stablecoin debt protocol, still in development; not production-ready.)",
@@ -14043,11 +14043,17 @@
             "2026-11-02 [A] https://jstdigital.io/services/ — \"Services include market making, treasury management, consulting/advisory and venture funding.\" (independent verifier, modify on golden.answer)",
             "Change: answer replaces the stale 2026-07-11 generic directory count (39 matches; now 208) with dated per-entity identities for FxDAO, OrbitCDP (source conflict stated), Zenex, and JST. Verifier modify applied: the JST line says a 2022-01-20 Script3 release reports financing from JST Capital, not 'funded Script3 in 2022'. Notes: FxDAO now has its own Scout row (Inactive, human-verified 2026-09-05). truth.status stays disputed (OrbitCDP). asOf 2026-10-15 -> 2026-11-02; reverifyBy 2027-01-20 -> 2027-05-25 (no event-tied reason for the earlier date).",
             "Root-cause note: the answer carried a generic directory count instead of the four named-entity identities the question asks for (authoring flaw), and Scout labels changed after 2026-07-11 (freshness drift).",
-            "Sibling sweep 2026-11-02: grep 'FxDAO|OrbitCDP|Zenex|JST' → q-defi-blend-alternatives (OrbitCDP labels conflict), q-defi-etherfuse-stablebonds (2026-06-22 note: OrbitCDP Live in Scout then; historical), q-defi-perps-whitespace and q-eco-defi-market-map (Zenex live mainnet as of 2026-10-15), q-defi-rwa-scf-similar (do not call OrbitCDP live from SCF history); q-eco-most-active-defi-projects keeps the dated 2026-07-11 '39 matches' observation; no contradiction."
+            "Sibling sweep 2026-11-02: grep 'FxDAO|OrbitCDP|Zenex|JST' → q-defi-blend-alternatives (OrbitCDP labels conflict), q-defi-etherfuse-stablebonds (2026-06-22 note: OrbitCDP Live in Scout then; historical), q-defi-perps-whitespace and q-eco-defi-market-map (Zenex live mainnet as of 2026-10-15), q-defi-rwa-scf-similar (do not call OrbitCDP live from SCF history); q-eco-most-active-defi-projects keeps the dated 2026-07-11 '39 matches' observation; no contradiction.",
+            "2026-11-12 scoped cap-retirement verification; prior dated evidence above remains historical.",
+            "2026-11-12T15:00:02.731561+00:00 [C] https://stellarlight.xyz/api/projects/search?q=OrbitCDP&limit=10 — Clean retry: meta.partial false, failedReads []; OrbitCDP Inactive, human-verified, statusAsOf 2026-09-05, statusSourceUrl https://orbitcdp.finance/; lifecycle explains owner verdict from empty stats and treats the banner as marketing; deployment.network unknown.",
+            "2026-11-12T14:59:36.874876+00:00 [A] https://orbitcdp.finance/ — Operator still says Live on Stellar, while oUSD Minted / Collateral Locked / Borrow APY show em dashes. Source conflict remains exactly as the dated golden describes; these surface claims do not independently prove shutdown or deployment.",
+            "Cap decision: remove sls-024 partial cap because Scout supplies the qualifying source/basis/date requested by the finding. Preserve golden.answer, keyFacts, avoid, disputed truth status, and symmetric source-conflict guidance. Independent lifecycle matrix: research/audits/2026-11-12-truth-maintenance/caps-lifecycle-matrix.md.",
+            "Sibling sweep 2026-11-12 (battery entity-name grep; 6 cases): q-eco-defi-market-map, q-defi-perps-whitespace, q-defi-etherfuse-stablebonds, q-defi-rwa-scf-similar, q-defi-blend-alternatives, q-defi-named-newer-protocols. Existing OrbitCDP source-conflict caveats in q-defi-blend-alternatives and q-defi-etherfuse-stablebonds remain consistent; q-defi-rwa-scf-similar requires deployment evidence. No new sibling contradiction from removing the cap."
           ],
           "rootCause": [
             "freshness-drift",
-            ".agents/TODO.md — eval-side authoring flaw: the answer carried a generic directory count instead of the four named-entity identities"
+            ".agents/TODO.md — eval-side authoring flaw: the answer carried a generic directory count instead of the four named-entity identities",
+            "improvements/resolved.json entry sls-024: Scout now dates and sources every project lifecycle and positive deployment claim, which removes the source conflict that justified the cap."
           ]
         },
         "origin": "raven-next q-defi-named-newer-protocols",
@@ -14971,7 +14977,7 @@
           "Do NOT claim public feeds have no possible limits or that all Reflector services must be free.",
           "Do NOT require an unsupported dominance ranking or a timeless node-operator/integration roster."
         ],
-        "notes": "GROUNDED 2026-07-10: identity comes from Scout/operator sources; current deployment and signer behavior were independently checked on-chain. Do not reward a dominance ranking.\nAlso good if the answer dates the observed 4-of-7 implementation, distinguishes public-feed terms from paid services, and treats integrations and alternative-provider status as source-relative.\nGolden cites: A source on Reflector as the Stellar price oracle (reflector.network, GitHub, or Lumenloop record).\nGT-17 CORRECTION 2026-07-10: remove the inherited no-limits trap, dominance claim, timeless operator roster, and all-alternatives-live composite.\nAccurately quoting the canonical Scout source on Reflector's provider-level `Live` label without product or network evidence is not a wrong claim while sls-029 stands; grade caps at partial for that claim unless the answer independently contradicts the golden fact.\nRe-checked 2026-11-02: the three Pulse feeds still update every 5 minutes under the 4-of-7 admin signers. Reflector now names its free public feeds Pulse, a paid prepaid-XRF feed Beam (its mainnet Beam oracle uses the same 4-of-7 signers), and its webhook service Flare (formerly Subscriptions). Naming Beam or Flare is correct. An attributed quote of Reflector's 'free for everyone, without limitations' Pulse wording does not fire the no-limits avoid."
+        "notes": "GROUNDED 2026-07-10: identity comes from Scout/operator sources; current deployment and signer behavior were independently checked on-chain. Do not reward a dominance ranking.\nAlso good if the answer dates the observed 4-of-7 implementation, distinguishes public-feed terms from paid services, and treats integrations and alternative-provider status as source-relative.\nGolden cites: A source on Reflector as the Stellar price oracle (reflector.network, GitHub, or Lumenloop record).\nGT-17 CORRECTION 2026-07-10: remove the inherited no-limits trap, dominance claim, timeless operator roster, and all-alternatives-live composite.\nRe-checked 2026-11-02: the three Pulse feeds still update every 5 minutes under the 4-of-7 admin signers. Reflector now names its free public feeds Pulse, a paid prepaid-XRF feed Beam (its mainnet Beam oracle uses the same 4-of-7 signers), and its webhook service Flare (formerly Subscriptions). Naming Beam or Flare is correct. An attributed quote of Reflector's 'free for everyone, without limitations' Pulse wording does not fire the no-limits avoid."
       },
       "tags": {
         "category": "defi-ecosystem",
@@ -15125,8 +15131,8 @@
           }
         ],
         "verified": {
-          "date": "2026-11-02",
-          "by": "Grading-policy round 2026-11-02 (owner decision D2; .agents/rounds/2026-11-02-grading-policy.md)",
+          "date": "2026-11-12",
+          "by": "caps-1112 golden AUTHOR lane (Codex); .agents/rounds/2026-11-12-truth-maintenance.md",
           "evidence": [
             "2026-11-02 [F] https://horizon.stellar.org/accounts/GC2M2UTZ57GSENZBTPMLPB6QSAL2USIPHMXSUCT2I3V24GYWF3EI6RFA (+ GCJ2RD.., GCSJ7N.., GCFTRC..) — \"thresholds low/med/high=4; 7 signers weight 1 each (same key set on all four admins); Pulse admin txs at 16:05:24, 16:10:24, ... 16:30:24Z with 4 signatures each; Beam admin last tx 2026-10-22T15:20:28Z, 4 sigs\" (verifier accept of golden.notes)",
             "2026-11-02 [F] stellar contract read via https://mainnet.sorobanrpc.com for CAFJ..4DLN, CALI..LE6M, CBKG..CJZC, CCRV..E2F7 — \"admin = GCJ2RD.., GC2M2U.., GCSJ7N.., GCFTRC.. respectively\" (verifier accept of golden.notes)",
@@ -15146,11 +15152,19 @@
             "2026-11-02 [A] https://reflector.network/oracles — \"Pulse oracles are openly available to use for any smart contract, but require someone to periodically pay oracle upkeep fees.\" (proposer claim, contradicted: Public feeds have no possible limits / all services must be free.)",
             "2026-11-02 [B] https://github.com/reflector-network/reflector-contract — \"ReflectorBeam ... prepaid ... purchased with XRF\" (proposer claim, contradicted: Public feeds have no possible limits / all services must be free.)",
             "Sibling sweep 2026-11-02: grep reflector + beam|flare|subscription → q-sor-reflector-integration-code (Pulse vs Beam signatures, Beam XRF cost; consistent), q-scf-cross-reflector-rounds-current (SCF #29 subscriptions; consistent), q-defi-oracle-landscape-live; no contradiction.",
-            "Freshness change 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): tags.freshness stable -> scheduled, truth.asOf 2026-11-02, truth.reverifyBy 2027-01-07. The 2026-11-02 evidence above confirms the dated values live; no other judge-facing field changed."
+            "Freshness change 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): tags.freshness stable -> scheduled, truth.asOf 2026-11-02, truth.reverifyBy 2027-01-07. The 2026-11-02 evidence above confirms the dated values live; no other judge-facing field changed.",
+            "2026-11-12 scoped cap-retirement verification; prior dated evidence above remains historical.",
+            "2026-11-12T15:00:06.109851+00:00 [C] https://stellarlight.xyz/api/projects/search?q=Reflector&limit=10 — Clean retry: meta.partial false, failedReads []; Reflector exposes 12 Pulse/Beam product-network entries, official-address sources and dated observations. Three mainnet Pulse products are observed-updating at checkedAt 2026-11-12T03:32:05.484Z; mainnet Beam is observed-stale, lastUpdateAt 2026-10-22T15:20:00Z. These are served observation times, not fresh independent on-chain measurements.",
+            "2026-11-12T15:00:49.069032+00:00 [C] https://orchestrator.reflector.network/config — Independent operator API: official orchestrator config network pubnet lists the three mainnet oracle contracts plus the Beam oracle_beam contract, agreeing with Scout addresses and product separation; this API is not a separate source class from Scout.",
+            "2026-11-12T15:01:28.871266Z [B] https://raw.githubusercontent.com/reflector-network/reflector-contract/b006d297ac1a11dbf97de5f74b9e45dac1acb14a/README.md — independent oracle verifier fetched pinned official source: Pulse provides free published feed access; Beam uses prepaid time-bound per-asset XRF access. Corroborates the product distinction independently of Scout.",
+            "2026-11-12T15:01:35.453178Z [A] https://reflector.network/docs.40142536f45bd150d90db7de00891ebd.js (stable entry point https://reflector.network/docs) — current official documentation bundle describes deployment on Stellar Testnet and Public networks; read with the independent pinned implementation and official configurations, not as freshness proof.",
+            "Cap decision: remove sls-029 provider-only partial cap; keep dated implementation, public-versus-paid service, source-relative integrations and no-dominance guidance. This scoped verification does not refresh signer thresholds or pretend Beam matches Pulse freshness. Independent oracle matrix: research/audits/2026-11-12-truth-maintenance/caps-oracle-matrix.md.",
+            "Sibling sweep 2026-11-12 (battery entity-name grep; 21 cases): q-edge-strupey-ambiguous-stellar-history, q-eco-xbull-wallet, q-hist-yieldblox-v2-2026-exploit, q-defi-reflector-oracle, q-pc-cross-redstone-sep40, q-eco-most-active-defi-projects, q-ass-cross-etherfuse-cetes-controls, q-eco-defi-market-map, q-defi-etherfuse-stablebonds, q-comp-yieldblox-oracle-incident, q-tool-oracle-repo-live, q-soroban-oracle-defensive-consumption, q-builder-by-scf-tier, q-defi-oracle-landscape-live, q-ti-historical-pointintime-balances, q-scf-cross-reflector-rounds-current, q-eco-defi-projects-discovery, q-sor-reflector-integration-code, q-scf-hackathon-compare-live, q-scf-kale-winner-live, q-defi-tooling-whitespace-live. q-sor-reflector-integration-code already distinguishes Pulse from paid Beam and requires current network-specific contracts; q-defi-oracle-landscape-live and market-map cases require dated product/network evidence rather than provider-label inference. Incident and SCF-history cases assert separate facts; no contradiction from cap removal."
           ],
           "rootCause": [
             "freshness-drift",
-            "Eval-side authoring flaw: the golden carries a dated point-in-time value but was tagged stable, so no reverifyBy date forced a re-check; the golden-truth skill requires scheduled plus truth.reverifyBy for such values (.agents/rounds/2026-11-02-grading-policy.md)."
+            "Eval-side authoring flaw: the golden carries a dated point-in-time value but was tagged stable, so no reverifyBy date forced a re-check; the golden-truth skill requires scheduled plus truth.reverifyBy for such values (.agents/rounds/2026-11-02-grading-policy.md).",
+            "improvements/resolved.json entry sls-029: Scout now serves per-product, per-network oracle address sources and dated observations, which removes the source conflict that justified the cap."
           ]
         },
         "origin": "raven-next q-defi-reflector-oracle",
@@ -19009,7 +19023,7 @@
           "Do NOT treat keyword/semantic matches, directory Live, or app code as proof of exact Wallet typing or current availability.",
           "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical."
         ],
-        "notes": "GROUNDED 2026-06-25: Lumen Loop / Scout directory wallet records confirm Freighter, Lobstr, Hana, xBull, with StellarTerm + Hot Wallet as adjacent options. Enumerating wallets the directory tracks → scout_projects (free-text directory); lumenloop_search_directory acceptable. Trap = fabricating wallet names or routing to general-web. List is curated, not exhaustive and should be treated as freshness-sensitive.\nAlso good if the answer: Distinguishes wallet types (browser-extension vs mobile vs multi-wallet kits) where the directory supports it.\nGolden cites: The Stellar project directory (scout_projects / lumenloop directory) entries for wallets.\nGT-20 CORRECTION 2026-07-10: grade pagination, exact-type filtering, generatedAt/count/source provenance, duplicate handling, and status-versus-availability separation. Never require a frozen roster/count.\nAccurately quoting the canonical Scout source on wallet `Live` labels as proof of app availability is not a wrong claim while sls-024 stands; grade caps at partial for that claim unless the answer independently contradicts the golden fact.\nRENAME (verified 2026-11-02): SDF renamed the Freighter wallet to Varial on 2026-10-29 (stellar.org blog \"Freighter is now Varial\"; extension 5.50.0 is the first Varial release). Freighter and Varial name the same SDF wallet; do not penalize either name. As of 2026-11-02 the Scout and Lumenloop records are still slug `freighter`, name Freighter; an answer that names this wallet Freighter, Varial, or both is not wrong.\n2026-11-05 scoped rename recheck: Scout now resolves both Freighter and Varial to the same wallet, slug freighter, current name Varial, with Freighter as a former-name alias, the October 29 rename date and varialwallet.com website. Lumenloop still describes the freighter record as Freighter and does not return the wallet for the new name (ll-032). This repairs the Scout identity lag only; the November 2 wallet roster and counts above remain historical observations, not newly verified totals."
+        "notes": "GROUNDED 2026-06-25: Lumen Loop / Scout directory wallet records confirm Freighter, Lobstr, Hana, xBull, with StellarTerm + Hot Wallet as adjacent options. Enumerating wallets the directory tracks → scout_projects (free-text directory); lumenloop_search_directory acceptable. Trap = fabricating wallet names or routing to general-web. List is curated, not exhaustive and should be treated as freshness-sensitive.\nAlso good if the answer: Distinguishes wallet types (browser-extension vs mobile vs multi-wallet kits) where the directory supports it.\nGolden cites: The Stellar project directory (scout_projects / lumenloop directory) entries for wallets.\nGT-20 CORRECTION 2026-07-10: grade pagination, exact-type filtering, generatedAt/count/source provenance, duplicate handling, and status-versus-availability separation. Never require a frozen roster/count.\nRENAME (verified 2026-11-02): SDF renamed the Freighter wallet to Varial on 2026-10-29 (stellar.org blog \"Freighter is now Varial\"; extension 5.50.0 is the first Varial release). Freighter and Varial name the same SDF wallet; do not penalize either name. As of 2026-11-02 the Scout and Lumenloop records are still slug `freighter`, name Freighter; an answer that names this wallet Freighter, Varial, or both is not wrong.\n2026-11-05 scoped rename recheck: Scout now resolves both Freighter and Varial to the same wallet, slug freighter, current name Varial, with Freighter as a former-name alias, the October 29 rename date and varialwallet.com website. Lumenloop still describes the freighter record as Freighter and does not return the wallet for the new name (ll-032). This repairs the Scout identity lag only; the November 2 wallet roster and counts above remain historical observations, not newly verified totals.\nReporting a wallet's dated Scout lifecycle label, or Scout's separate per-platform availability records, as attributed observations does not fire the availability avoid; it fires only when a Live label is itself offered as proof of current app availability."
       },
       "tags": {
         "category": "defi-ecosystem",
@@ -19280,17 +19294,26 @@
           }
         ],
         "verified": {
-          "date": "2026-11-05",
-          "by": "Scout Astra high bounded rename correction; independent review assigned to Docs t2dv",
+          "date": "2026-11-12",
+          "by": "caps-1112 golden AUTHOR lane (Codex); .agents/rounds/2026-11-12-truth-maintenance.md",
           "evidence": [
             "C https://stellarlight.xyz/api/projects/resolve?q=freighter — Together with q=varial, resolves the same freighter slug/current Varial identity; former-name alias Freighter, renamedAt2026-10-29, SDF source and varialwallet.com. search?q=varial&limit=100 returns the wallet as sole strict match.",
             "C https://api.lumenloop.com/v1/tools/get_project — Independent other lane: slug freighter still has Freighter title, empty aliases and freighter.app; search_directory query varial returns semantic neighbors without the wallet. Exact evidence other.md row ll-032; this remains an active separate service defect.",
             "A https://freighter.app/ — Redirects to https://varialwallet.com/; current stellar/freighter README says Varial (formerly Freighter), agreeing with Scout identity repair.",
             "Exact Scout original-trigger and primary controls: .agents/rounds/2026-11-05-truth-maintenance/scout.md sls-095; independently repeated by Docs in upstream-independent.md. Separate Lumenloop recheck: other.md ll-032. UTC receipts November6 correspond to local November5 round.",
-            "Scoped sibling check: q-eco-hana-wallet-scf notes explicitly date the domain change to2026-11-02 and do not claim current Scout rename lag; no semantic edit needed. Historical roster/counts, truth.asOf11-02, reverifyBy2027-02-15, question/keyFacts/avoid remain unchanged."
+            "Scoped sibling check: q-eco-hana-wallet-scf notes explicitly date the domain change to2026-11-02 and do not claim current Scout rename lag; no semantic edit needed. Historical roster/counts, truth.asOf11-02, reverifyBy2027-02-15, question/keyFacts/avoid remain unchanged.",
+            "2026-11-12 scoped cap-retirement verification; prior dated evidence above remains historical.",
+            "2026-11-12T15:00:03.604039+00:00 [C] https://stellarlight.xyz/api/projects/search?q=xBull&limit=10 — Clean retry: meta.partial false, failedReads []; Live/human-verified, statusAsOf 2026-08-29, source https://github.com/Creit-Tech; lifecycle explicitly limits Live to web wallet and Chrome extension; availability lists iOS/Android unavailable with separate check dates.",
+            "2026-11-12T15:00:04.302864+00:00 [C] https://stellarlight.xyz/api/projects/search?q=Freighter&limit=10 — Clean retry: meta.partial false, failedReads []; slug freighter resolves to Varial with dated human-verified lifecycle and release-source URL. This check does not refresh the historical wallet roster/counts.",
+            "2026-11-12T15:00:05.136566+00:00 [C] https://stellarlight.xyz/api/projects/search?q=Lobstr&limit=10 — Clean retry: meta.partial false, failedReads []; lifecycle cites the dated operator verification of shipping iOS/Android apps. Per-platform scope stays distinct from project lifecycle.",
+            "2026-11-12T15:00:46.787117+00:00 [B] https://raw.githubusercontent.com/Creit-Tech/xBull-Wallet/master/README.md — Operator-owned source repository describes its extension-wallet implementation and browser build; code is context, not proof of a store listing.",
+            "2026-11-12T15:00:47.531570+00:00 [A] https://chromewebstore.google.com/detail/xbull-wallet/omajpeaffjgmlpmhbfdjepdejoemifpe — Current Chrome Web Store listing identifies xBull Wallet, Creit Technologies LLP and version 1.40.0. The known App Store (https://apps.apple.com/us/app/xbull-wallet/id6705122563) and Google Play (https://play.google.com/store/apps/details?id=app.xbull.wallet) URLs returned 404 in separate read-only checks at 2026-11-12T15:00:47.162043+00:00 and 2026-11-12T15:00:47.351138+00:00. These checked URLs do not prove global absence.",
+            "Cap decision: remove sls-024 cap; retain status-versus-availability separation and existing Freighter/Varial symmetric naming guidance. Do not refresh roster counts or infer availability from a Live label. Independent lifecycle matrix: research/audits/2026-11-12-truth-maintenance/caps-lifecycle-matrix.md.",
+            "Sibling sweep 2026-11-12 (battery entity-name grep; 38 cases): q-edge-asset-site-scam-detection, q-edge-ambig-best-wallet, q-ti-stellar-lab-usage-and-new-ui, q-hist-x402-stellar-announcement, q-edge-strupey-ambiguous-stellar-history, q-ti-bindings-to-nextjs-integration, q-passkey-platform-constraints, q-ti-skill-builder-quickstart, q-tool-wallets-comparison, q-builder-by-scf-tier, q-ti-skill-integration-finder, q-ti-freighter-localhost-not-detected, q-ti-friendbot-ratelimit-alternatives, q-defi-soroswap-vs-stellarx, q-raph-lobstr-legitimacy, q-raph-hardware-wallet, q-eco-stellar-wallets-list, q-eco-freighter-wallet, q-eco-xbull-wallet, q-defi-soroswap-what-is, q-raph-scam-spam-tokens, q-builder-lumenloop-regions-vocab, q-eco-hana-wallet-scf, q-defi-provide-liquidity-impermanent-loss, q-defi-phoenix-what-is, q-aas-list-token-on-exchanges-aggregators, q-defi-aquarius-what-is, q-raph-phishing-pending-claim, q-raph-restore-wallet, q-aas-trusted-asset-list-whitelist, q-x402-payment-verification, q-raph-remove-scam-token, q-ti-find-export-secret-key, q-soroban-x402-auth-entry-signing, q-eco-lobstr-wallet, q-tool-freighter-wallet, q-ti-connect-wallet-button-code, q-ti-java-sdk-wallet-feebump. Wallet identity, rename and availability cases remain compatible: q-eco-xbull-wallet scopes Live to web/extension and rejects unsupported store claims; q-eco-freighter-wallet/q-tool-freighter-wallet accept Varial/Freighter; q-eco-lobstr-wallet dates platform support. Other matches address signing, safety, or historical discovery, not a current all-platform Live guarantee."
           ],
           "rootCause": [
-            "freshness-drift"
+            "freshness-drift",
+            "improvements/resolved.json entry sls-024: Scout now dates and sources every project lifecycle and positive deployment claim, which removes the source conflict that justified the cap."
           ]
         },
         "origin": "raven-next q-eco-stellar-wallets-list"
@@ -27282,7 +27305,7 @@
           "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts.",
           "Do NOT use an unsupported memory claim as a current remittance-corridor fact."
         ],
-        "notes": "GT-27 2026-07-10: grade dated row-level lifecycle and settlement-asset evidence. MoneyGram is current; Nium/Velo-PDAX/Coins.ph/Onafriq require capability, announcement, historical, or coverage caveats. Counts remain source/time scoped.\nGT-27 CORRECTION 2026-07-10: a partner roster is not a current deployment census.\nAccurately quoting the canonical Lumenloop or Scout source on MoneyGram's 200+ footprint or unqualified corridor lifecycle labels is not a wrong claim while ll-008 and sls-024 stand; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
+        "notes": "GT-27 2026-07-10: grade dated row-level lifecycle and settlement-asset evidence. MoneyGram is current; Nium/Velo-PDAX/Coins.ph/Onafriq require capability, announcement, historical, or coverage caveats. Counts remain source/time scoped.\nGT-27 CORRECTION 2026-07-10: a partner roster is not a current deployment census.\nAccurately quoting the canonical Lumenloop source on MoneyGram's 200+ footprint is not a wrong claim while ll-008 stands; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
       },
       "tags": {
         "category": "history-org-tokenomics",
@@ -27342,8 +27365,8 @@
           }
         ],
         "verified": {
-          "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch history-org-tokenomics-01)",
+          "date": "2026-11-12",
+          "by": "caps-1112 golden AUTHOR lane (Codex); .agents/rounds/2026-11-12-truth-maintenance.md",
           "evidence": [
             "[A] golden.answer/keyFacts (MoneyGram current) (confirmed-as-of): https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps :: \"MoneyGram Ramps lets wallets and exchanges offer USDC cash-in and cash-out at MoneyGram locations worldwide. Integrate on Solana or Stellar\" (observedAt 2026-11-02)",
             "[C] golden.answer/keyFacts (MoneyGram current) (confirmed-as-of): https://stellarlight.xyz/api/partners (via Raven scout.getPartners, generatedAt 2026-11-02T16:01:50Z) :: \"MoneyGram Access (MoneyGram Ramps) is a fiat on- and off-ramp anchor on Stellar. Via the SEP-24 standard\" (observedAt 2026-11-02)",
@@ -27353,17 +27376,27 @@
             "[C] golden.avoid[0..2] (contradicted): https://stellarlight.xyz/api/partners/anchor-coins-ph :: freshness.isCurrent false (observedAt 2026-11-02)",
             "Sibling sweep 2026-11-02: q-anchor-moneygram-ramps, q-crp-anchors-by-corridor, q-crp-regional-offramp-mobilemoney, q-pay-moneygram-ramps checked; consistent; MoneyGram Ramps current, Coins.ph historical caveat unchanged.",
             "No judge-facing change; prior verification event 2026-08-30 is in git history.",
-            "rootCause carried forward from the prior gospel event (retired-tracker entries dropped); no new gospel change in this event."
+            "rootCause carried forward from the prior gospel event (retired-tracker entries dropped); no new gospel change in this event.",
+            "2026-11-12 scoped cap-retirement verification; prior dated evidence above remains historical.",
+            "2026-11-12T15:00:06.780923+00:00 [C] https://stellarlight.xyz/api/projects/search?q=MoneyGram&limit=10 — Clean retry: meta.partial false, failedReads []; exact MoneyGram row has dated human-verified lifecycle/source, with deployment explicitly unknown. These fields establish the source-relative entity label, not a corridor census.",
+            "2026-11-12T15:00:08.285505+00:00 [C] https://stellarlight.xyz/api/projects/search?q=Velo&limit=10 — Clean retry: meta.partial false, failedReads []; exact Velo row has dated onchain-activity lifecycle and mainnet/operator-toml deployment source. This does not prove the specific historical PDAX corridor is currently usable.",
+            "2026-11-12T14:59:38.004089+00:00 [A] https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps — Current operator guide describes USDC cash-in/cash-out and a Stellar integration path. This corroborates service availability, not all-country coverage.",
+            "2026-11-12T15:00:32.283838Z [A] https://stellar.org/products-and-tools/moneygram — independent verifier observed 170+ explicitly scoped to Countries with USDC cash-out; preserve the coverage behavior, not a pinned count.",
+            "2026-11-12T15:01:34.114588Z [C] https://raw.githubusercontent.com/lumenloop/stellar-ecosystem-db/main/projects/moneygram.yaml — fresh Lumenloop maintained source still says operating in over 200 countries and territories beside the Stellar integration without a rail-specific coverage basis/date; keep ll-008 coverage caution. This is the maintained YAML, not a claimed runtime API read.",
+            "2026-11-12T15:01:34.234876Z [C] https://stellarlight.xyz/api/partners/anchor-coins-ph — independent verifier observed remittances-on-Stellar prose with aging/isCurrent false and null SEP/TOML/asset evidence; https://stellarlight.xyz/api/projects/search?q=Coins.ph&limit=100 at 2026-11-12T15:00:33.996311Z explicitly distinguishes site-liveness lifecycle from unknown deployment. Current Stellar corridor remains unverified; no new absolute negative or positive availability claim.",
+            "Cap decision: remove Scout/unqualified-lifecycle and sls-024 scope; retain only Lumenloop MoneyGram-footprint exception backed by active improvements/lumenloop/ll-008-directory-record-coverage-field-quality.md. Preserve dated answer/keyFacts and ordinary corridor/lifecycle/asset caveats. Independent matrix: research/audits/2026-11-12-truth-maintenance/caps-remittance-matrix.md.",
+            "Sibling sweep 2026-11-12 (battery entity-name grep; 20 cases): q-org-sdf-enterprise-fund, q-builder-justin-rice-history, q-protocol-tier1-requirements, q-scf-cross-decaf-sep24, q-asset-stablecoin-issuers-discovery, q-anchor-endpoint-discovery, q-anchor-list-builders-discovery, q-anchor-moneygram-ramps, q-hist-remittance-corridors, q-eco-stablecoins-on-stellar, q-hist-unhcr-stellar-aid-assist, q-gap-lumen-documents-browse, q-crp-anchors-by-corridor, q-crp-remittance-founder-advisory, q-pay-moneygram-ramps, q-crp-regional-offramp-mobilemoney, q-crp-custodial-vs-noncustodial-wallets, q-comp-cross-moneygram-partnership-sep24, q-pay-sdp-disbursement, q-comp-finclusive-caas. q-anchor-moneygram-ramps, q-pay-moneygram-ramps and q-crp-anchors-by-corridor agree on USDC service with dated coverage/path limits; q-crp-regional-offramp-mobilemoney and q-comp-cross-moneygram-partnership-sep24 retain discovery/announcement scope. Other matches concern historical aid, custody, funding, or directory snapshots. No new sibling contradiction."
           ],
           "rootCause": [
             "Partner capability, announcement, historic route, and live consumer deployment were collapsed.",
             "improvements/lumenloop/ll-008-directory-record-coverage-field-quality.md",
-            "improvements/stellar-light-scout/sls-024-project-lifecycle-operator-conflicts.md",
+            "improvements/resolved.json entry sls-024: Scout now dates and sources every project lifecycle and positive deployment claim, which removes the source conflict that justified the cap.",
             "eval-authoring",
             ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
             ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
             ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)",
-            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata"
+            ".agents/TODO.md — Replace expired temporary evidence in golden truth metadata",
+            "freshness-drift"
           ]
         },
         "origin": "raven-next q-hist-remittance-corridors"
@@ -34940,7 +34973,7 @@
           "Do NOT promote Perun local code or Centaurus Live+Unverified metadata into deployment without primary evidence.",
           "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
         ],
-        "notes": "GT-29 CORRECTION 2026-07-10: Starlight is archived experimental work; CAP-21/40 are active primitives, not deployment evidence. Perun is active local/standalone code without verified Mainnet deployment; Centaurus's 2026-07-10 Live+Unverified label conflicted with stale repos; Scout has marked it Inactive since 2026-07-13.\nsd-015 captures glossary lifecycle ambiguity; sls-024 captures project-status conflicts.\nAccurately quoting the canonical Stellar or Scout source on Starlight's old live wording or Centaurus's unqualified Live label is not a wrong claim while a cached Docs copy still shows the pre-2026-07-27 text fixed by sd-015 or sls-024 stands; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source.\nLive re-check 2026-11-02: the Docs glossary calls Starlight experimental, no longer maintained, and archived. Stellar Docs' MPP session guide uses the unaudited stellar-experimental one-way-channel Soroban contract, which integrators deploy themselves on Testnet or Mainnet; naming it as a dated experimental one-way payment-channel option is correct, but it is not network-operated infrastructure."
+        "notes": "GT-29 CORRECTION 2026-07-10: Starlight is archived experimental work; CAP-21/40 are active primitives, not deployment evidence. Perun is active local/standalone code without verified Mainnet deployment; Centaurus's 2026-07-10 Live+Unverified label conflicted with stale repos; Scout has marked it Inactive since 2026-07-13.\nLive re-check 2026-11-02: the Docs glossary calls Starlight experimental, no longer maintained, and archived. Stellar Docs' MPP session guide uses the unaudited stellar-experimental one-way-channel Soroban contract, which integrators deploy themselves on Testnet or Mainnet; naming it as a dated experimental one-way payment-channel option is correct, but it is not network-operated infrastructure."
       },
       "tags": {
         "category": "protocol-core",
@@ -35064,8 +35097,8 @@
           }
         ],
         "verified": {
-          "date": "2026-11-02",
-          "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-01)",
+          "date": "2026-11-12",
+          "by": "caps-1112 golden AUTHOR lane (Codex); .agents/rounds/2026-11-12-truth-maintenance.md",
           "evidence": [
             "Live C 2026-11-02: GET https://stellarlight.xyz/api/projects/search?q=centaurus -- 'slug centaurus, status Inactive, statusAsOf 2026-07-13T00:00:00.000Z, statusBasis human-verified, statusSourceUrl https://github.com/centaurus-project/centaurus, deployment.network unknown'",
             "Live B 2026-11-02: gh api repos/centaurus-project/centaurus -- 'archived false, pushed_at 2022-01-05T17:49:58Z'",
@@ -35091,11 +35124,17 @@
             "Live E 2026-11-02: Raven stellarDocs.search_docs('Starlight layer 2 payment channel') -- 'glossary#starlight snippet: 'An experimental layer 2 payment channel protocol ... The project is no''",
             "Live C 2026-11-02: Scout centaurus -- 'status Inactive'",
             "Independent verifier decisions: golden.answer (accept); golden.notes (verifier modify) -- .agents/rounds/2026-11-02-golden-audit/pass1/protocol-core-01.json.",
-            "Sibling sweep 2026-11-02: grep Centaurus/Starlight -> only this case names Centaurus; q-protocol-19-preconditions-cap-0021, q-mpp-discovery-and-modes, q-agent-payment-standard-choice, q-defi-streaming-payments-prior-art checked; no contradiction."
+            "Sibling sweep 2026-11-02: grep Centaurus/Starlight -> only this case names Centaurus; q-protocol-19-preconditions-cap-0021, q-mpp-discovery-and-modes, q-agent-payment-standard-choice, q-defi-streaming-payments-prior-art checked; no contradiction.",
+            "2026-11-12 scoped cap-retirement verification; prior dated evidence above remains historical.",
+            "2026-11-12T15:00:05.683724+00:00 [C] https://stellarlight.xyz/api/projects/search?q=Centaurus&limit=10 — Clean retry: meta.partial false, failedReads []; Centaurus Inactive, human-verified, statusAsOf 2026-07-13, source https://github.com/centaurus-project/centaurus; deployment unknown. Its historical Live+Unverified label is explicitly retracted in lifecycle.note.",
+            "2026-11-12T14:59:37.441590+00:00 [B] https://api.github.com/repos/centaurus-project/centaurus — Repository describes a second-layer payment network/exchange; pushed_at 2022-01-05T17:49:58Z. Repo staleness is not by itself a definitive shutdown or deployment verdict.",
+            "2026-11-12T14:59:37.778365+00:00 [A] https://developers.stellar.org/docs/learn/glossary — Current official glossary says Starlight is experimental, no longer maintained and archived since April 2024; the old live wording fixed by sd-015 is absent.",
+            "Cap decision: remove the stale sd-015/sls-024 partial cap and present-tense defect summary. Preserve archived-Starlight and source-relative Centaurus guidance, the answer and keyFacts. Independent lifecycle matrix: research/audits/2026-11-12-truth-maintenance/caps-lifecycle-matrix.md.",
+            "Sibling sweep 2026-11-12 (battery entity-name grep; 1 cases): q-pc-l2-payment-channels-starlight. Only this battery case matches Centaurus/Starlight/Perun; no topical sibling retains a competing claim. The live Fluxity case independently preserves the same label-versus-deployment distinction."
           ],
           "rootCause": [
             "freshness-drift",
-            "improvements/stellar-light-scout/sls-024-project-lifecycle-operator-conflicts.md"
+            "improvements/resolved.json entry sls-024: Scout now dates and sources every project lifecycle and positive deployment claim, which removes the source conflict that justified the cap."
           ]
         },
         "origin": "raven-next q-pc-l2-payment-channels-starlight"

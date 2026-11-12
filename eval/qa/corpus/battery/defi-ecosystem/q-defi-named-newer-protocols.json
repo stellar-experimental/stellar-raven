@@ -19,7 +19,7 @@
       "Do NOT describe Zenex as testnet-only or pre-release; it runs a live mainnet market.",
       "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
     ],
-    "notes": "Scout found OrbitCDP and Zenex directly. Zenex (Zenith Protocols, formerly Hermes) is a Soroban perpetual futures exchange; as of 2026-10-15 its operator deployments page lists a live Stellar mainnet XLM-USD market (core contracts deployed 2026-09-29), and a public mainnet RPC read shows fills. The 2026-08-29 testnet reading of the Zenex FAQ is superseded. As of 2026-11-02, FxDAO has its own Scout row (Inactive, human-verified 2026-09-05). JST was not verified as a Stellar DeFi market maker in Scout search.\nAlso good if the answer: Separates testnet/pre-launch/announced status from mainnet-live status. | Mentions alternate spellings/domains only when sourced.\nGolden cites: Dated Scout/LumenLoop/project/web sources for every named entity claim.\nCorrected 2026-07-10. Grade honest entity/status separation; a directory row or live-looking site alone is not deployment proof.\nAccurately quoting the canonical Scout source on OrbitCDP's `Inactive` lifecycle label is not a wrong claim while sls-024 stands; grade caps at partial for that claim unless the answer independently contradicts the golden fact."
+    "notes": "Scout found OrbitCDP and Zenex directly. Zenex (Zenith Protocols, formerly Hermes) is a Soroban perpetual futures exchange; as of 2026-10-15 its operator deployments page lists a live Stellar mainnet XLM-USD market (core contracts deployed 2026-09-29), and a public mainnet RPC read shows fills. The 2026-08-29 testnet reading of the Zenex FAQ is superseded. As of 2026-11-02, FxDAO has its own Scout row (Inactive, human-verified 2026-09-05). JST was not verified as a Stellar DeFi market maker in Scout search.\nAlso good if the answer: Separates testnet/pre-launch/announced status from mainnet-live status. | Mentions alternate spellings/domains only when sourced.\nGolden cites: Dated Scout/LumenLoop/project/web sources for every named entity claim.\nCorrected 2026-07-10. Grade honest entity/status separation; a directory row or live-looking site alone is not deployment proof.\nSources disagree on OrbitCDP's lifecycle: do not penalize an answer that attributes Scout's dated Inactive label, the operator's Live on Stellar banner, or both, and do not require both. Neither surface alone establishes current deployment or definitive shutdown."
   },
   "tags": {
     "category": "defi-ecosystem",
@@ -281,8 +281,8 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch defi-ecosystem-02)",
+      "date": "2026-11-12",
+      "by": "caps-1112 golden AUTHOR lane (Codex); .agents/rounds/2026-11-12-truth-maintenance.md",
       "evidence": [
         "2026-11-02 [C] https://stellarlight.xyz/api/projects/search?q=DeFi — \"2026-11-02: counts total 208; first page Blend, Aquarius, Phoenix, DeFindex, Hoops Finance, Vaquita ...\" (proposer claim, confirmed-as-of: As of 2026-07-11 a DeFi directory query returned 39 matches (DeFindex, HedgePay, HiYield on page one).)",
         "2026-11-02 [A] https://fxdao.io/ — \"The first decentralized stablecoin protocol running on the Stellar network. Note: The protocol is still on development\" (proposer claim, confirmed-as-of: FxDAO is an XLM-backed stablecoin debt protocol, still in development; not production-ready.)",
@@ -307,11 +307,17 @@
         "2026-11-02 [A] https://jstdigital.io/services/ — \"Services include market making, treasury management, consulting/advisory and venture funding.\" (independent verifier, modify on golden.answer)",
         "Change: answer replaces the stale 2026-07-11 generic directory count (39 matches; now 208) with dated per-entity identities for FxDAO, OrbitCDP (source conflict stated), Zenex, and JST. Verifier modify applied: the JST line says a 2022-01-20 Script3 release reports financing from JST Capital, not 'funded Script3 in 2022'. Notes: FxDAO now has its own Scout row (Inactive, human-verified 2026-09-05). truth.status stays disputed (OrbitCDP). asOf 2026-10-15 -> 2026-11-02; reverifyBy 2027-01-20 -> 2027-05-25 (no event-tied reason for the earlier date).",
         "Root-cause note: the answer carried a generic directory count instead of the four named-entity identities the question asks for (authoring flaw), and Scout labels changed after 2026-07-11 (freshness drift).",
-        "Sibling sweep 2026-11-02: grep 'FxDAO|OrbitCDP|Zenex|JST' → q-defi-blend-alternatives (OrbitCDP labels conflict), q-defi-etherfuse-stablebonds (2026-06-22 note: OrbitCDP Live in Scout then; historical), q-defi-perps-whitespace and q-eco-defi-market-map (Zenex live mainnet as of 2026-10-15), q-defi-rwa-scf-similar (do not call OrbitCDP live from SCF history); q-eco-most-active-defi-projects keeps the dated 2026-07-11 '39 matches' observation; no contradiction."
+        "Sibling sweep 2026-11-02: grep 'FxDAO|OrbitCDP|Zenex|JST' → q-defi-blend-alternatives (OrbitCDP labels conflict), q-defi-etherfuse-stablebonds (2026-06-22 note: OrbitCDP Live in Scout then; historical), q-defi-perps-whitespace and q-eco-defi-market-map (Zenex live mainnet as of 2026-10-15), q-defi-rwa-scf-similar (do not call OrbitCDP live from SCF history); q-eco-most-active-defi-projects keeps the dated 2026-07-11 '39 matches' observation; no contradiction.",
+        "2026-11-12 scoped cap-retirement verification; prior dated evidence above remains historical.",
+        "2026-11-12T15:00:02.731561+00:00 [C] https://stellarlight.xyz/api/projects/search?q=OrbitCDP&limit=10 — Clean retry: meta.partial false, failedReads []; OrbitCDP Inactive, human-verified, statusAsOf 2026-09-05, statusSourceUrl https://orbitcdp.finance/; lifecycle explains owner verdict from empty stats and treats the banner as marketing; deployment.network unknown.",
+        "2026-11-12T14:59:36.874876+00:00 [A] https://orbitcdp.finance/ — Operator still says Live on Stellar, while oUSD Minted / Collateral Locked / Borrow APY show em dashes. Source conflict remains exactly as the dated golden describes; these surface claims do not independently prove shutdown or deployment.",
+        "Cap decision: remove sls-024 partial cap because Scout supplies the qualifying source/basis/date requested by the finding. Preserve golden.answer, keyFacts, avoid, disputed truth status, and symmetric source-conflict guidance. Independent lifecycle matrix: research/audits/2026-11-12-truth-maintenance/caps-lifecycle-matrix.md.",
+        "Sibling sweep 2026-11-12 (battery entity-name grep; 6 cases): q-eco-defi-market-map, q-defi-perps-whitespace, q-defi-etherfuse-stablebonds, q-defi-rwa-scf-similar, q-defi-blend-alternatives, q-defi-named-newer-protocols. Existing OrbitCDP source-conflict caveats in q-defi-blend-alternatives and q-defi-etherfuse-stablebonds remain consistent; q-defi-rwa-scf-similar requires deployment evidence. No new sibling contradiction from removing the cap."
       ],
       "rootCause": [
         "freshness-drift",
-        ".agents/TODO.md — eval-side authoring flaw: the answer carried a generic directory count instead of the four named-entity identities"
+        ".agents/TODO.md — eval-side authoring flaw: the answer carried a generic directory count instead of the four named-entity identities",
+        "improvements/resolved.json entry sls-024: Scout now dates and sources every project lifecycle and positive deployment claim, which removes the source conflict that justified the cap."
       ]
     },
     "origin": "raven-next q-defi-named-newer-protocols",

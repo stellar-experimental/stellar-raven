@@ -2708,6 +2708,27 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/76e0bf4d00829e63146be206c1c834db5c22166d/improvements/stellar-light-scout/sls-023-rwa-product-deployment-status.md"
     },
     {
+      "id": "sls-024",
+      "title": "The original lifecycle-provenance gap is filled in the 2026-11-06 population scan: all 1,006 projects have lifecycle date/basis, and…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-07-10",
+      "resolved": "2026-11-12",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellar-scout/issues/9",
+        "https://github.com/Stellar-Light/stellarlight/issues/494",
+        "https://github.com/Stellar-Light/stellarlight/pull/1947"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/pull/1947",
+        "https://github.com/stellar-experimental/stellar-raven/issues/419"
+      ],
+      "liveRecheck": "2026-11-12T14:44:39Z GET https://stellarlight.xyz/api/projects/search?q=streaming%20recurring%20payments&limit=100 plus seven-category limit=100 pagination: 1020 distinct rows, lifecycle provenance complete, 99 positive deployments with zero missing source/basis/asOf/network-list fields; Allbridge mainnet and RenderGate/CleverCon testnet sourced.",
+      "reviewEvidence": "Distinct review by Codex frontier gpt-6-astra (high), research/audits/2026-11-12-truth-maintenance/review-retire-astra.md; author lane Codex gpt-6.1-sol. Golden caps removed in the same change after an independent Claude Fable review (research/audits/2026-11-12-truth-maintenance/review-caps-fable.md). Resolution comments: https://github.com/Stellar-Light/stellar-scout/issues/9#issuecomment-6827865598, https://github.com/Stellar-Light/stellarlight/issues/494#issuecomment-6827866033, https://github.com/Stellar-Light/stellarlight/pull/1947#issuecomment-6827866748",
+      "sourceCommit": "aaf8963a319c9a7b2aeadc84fbac3eb426d920fd",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/aaf8963a319c9a7b2aeadc84fbac3eb426d920fd/improvements/stellar-light-scout/sls-024-project-lifecycle-operator-conflicts.md"
+    },
+    {
       "id": "sls-025",
       "title": "Scout can retrieve Stellar ERC-8004-style implementation records under broad 8004 vocabulary while missing exact identifiers and…",
       "service": "stellar-light-scout",
@@ -2778,6 +2799,26 @@
       "reviewEvidence": "Independent Fable reviewer Solo 3655 re-derived upstream deploy and live trigger",
       "sourceCommit": "0306425752a0fb4c1b1965d64236c5a975aafa5b",
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/0306425752a0fb4c1b1965d64236c5a975aafa5b/improvements/stellar-light-scout/sls-028-stale-repurposed-project-links.md"
+    },
+    {
+      "id": "sls-029",
+      "title": "The 2026-11-06 oracle search distinguishes project deployments, including DIA testnet versus Band/RedStone mainnet, but lacks per-feed…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-07-10",
+      "resolved": "2026-11-12",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/514",
+        "https://github.com/Stellar-Light/stellarlight/issues/742",
+        "https://github.com/Stellar-Light/stellarlight/pull/1948"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/pull/1948"
+      ],
+      "liveRecheck": "2026-11-12T14:44:39Z GET https://stellarlight.xyz/api/projects/search?q=oracle&limit=100 plus exact Band/DIA/RedStone/Lightecho/Chainlink reads: product/network/address/source/date records and 2026-11-12 observations are live; Band updating vs absent testnet, DIA absent testnet, Lightecho stale, and Chainlink Data Feeds distinct from Data Streams.",
+      "reviewEvidence": "Distinct review by Codex frontier gpt-6-astra (high), research/audits/2026-11-12-truth-maintenance/review-retire-astra.md; author lane Codex gpt-6.1-sol. Golden caps removed in the same change after an independent Claude Fable review (research/audits/2026-11-12-truth-maintenance/review-caps-fable.md). Resolution comments: https://github.com/Stellar-Light/stellarlight/issues/514#issuecomment-6827868322, https://github.com/Stellar-Light/stellarlight/issues/742#issuecomment-6827868717, https://github.com/Stellar-Light/stellarlight/pull/1948#issuecomment-6827869050",
+      "sourceCommit": "aaf8963a319c9a7b2aeadc84fbac3eb426d920fd",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/aaf8963a319c9a7b2aeadc84fbac3eb426d920fd/improvements/stellar-light-scout/sls-029-oracle-product-network-evidence.md"
     },
     {
       "id": "sls-030",
