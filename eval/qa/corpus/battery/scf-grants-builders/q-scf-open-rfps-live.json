@@ -5,7 +5,7 @@
     "scout.getRfps"
   ],
   "golden": {
-    "answer": "Call the live open-RFP view, list only returned open rows, cite each brief URL, and include `meta.scfRound` as-of, phase, deadline, and `verifyAt` when present. Cross-check brief status against the official SCF RFP Track page; attribute and date each roster, and flag a returned brief that the official page no longer lists. Separate synthetic `scf-round` rows from curated briefs. Distinguish published open briefs from a confirmed open SCF submission round. Do not infer full-proposal availability from brief status alone.",
+    "answer": "Call the live open-RFP view, list only returned open rows, cite each brief URL, and include `meta.scfRound` as-of, phase, deadline, and `verifyAt` when present. Cross-check brief status against the official SCF RFP Track page; attribute and date each roster, and flag any disagreement between them in either direction, including a returned brief the official page no longer lists or an official brief the live view omits. Separate synthetic `scf-round` rows from curated briefs. Distinguish published open briefs from a confirmed open SCF submission round. Do not infer full-proposal availability from brief status alone.",
     "keyFacts": [
       "Lists only briefs that the live open-RFP response or official RFP page supports.",
       "Includes source links and current round as-of/phase/deadline/verifyAt.",
@@ -18,7 +18,7 @@
       "Claims that an open brief proves the current SCF round accepts a new full proposal.",
       "Do NOT call a Scout-listed brief open now unless the answer attributes and dates that status."
     ],
-    "notes": "Freshness item: As of 2026-11-05, the official RFP Track page lists no open brief and says \"October 2026: New Q4 RFPs are coming soon.\" Scout now agrees: open=0, activeQuarter=q4-2026, both former Q3 briefs closed. Its separate synthetic scf-round-46 row describes the Submission window through 2026-11-09; it is not an RFP brief. Grade dated source-relative roster reporting, not a permanent absence claim. Re-query later sources and flag any new disagreement. A historical, attributed report of the former Q3 rows is acceptable; it is not current evidence that those briefs are open. Reporting no open brief meets the listing fact; a synthetic round must not be substituted for one. The awards page showed November 8 in a 2026-10-18 snapshot, and older community posts repeat it; do not penalize a dated, attributed historical November 8 citation."
+    "notes": "Freshness item: As of 2026-11-12, the official RFP Track page lists two Q4 2026 briefs, published 2026-11-11: \"Web and API Analytics for Stellar Ecosystem Projects\" and \"XDR/CAP-Coverage Audit Tool and Indexer-Hardening Guide\". Scout still returns open=0 (activeQuarter q4-2026, briefRoster checkedOn 2026-11-04) and marks both former Q3 briefs closed, so it lags the official page; an answer that reports Scout’s empty set must date and attribute it and should flag the disagreement or mark the official cross-check unverified. No synthetic scf-round row appears: SCF #46 is in Initial Review after its 2026-11-09 submission deadline, and no submission window is open. Grade dated source-relative roster reporting, not a permanent absence claim. Re-query later sources and flag any new disagreement. A historical, attributed report of the former Q3 rows is acceptable; it is not current evidence that those briefs are open. Reporting the officially listed briefs, or an attributed and dated Scout empty set with the disagreement flagged or the official cross-check marked unverified, meets the listing fact; a synthetic round must not be substituted for one. The awards page showed November 8 in a 2026-10-18 snapshot, and older community posts repeat it; do not penalize a dated, attributed historical November 8 citation."
   },
   "tags": {
     "category": "scf-grants-builders",
@@ -32,7 +32,7 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-11-05",
+    "asOf": "2026-11-12",
     "sources": [
       {
         "class": "C",
@@ -222,17 +222,15 @@
       }
     ],
     "verified": {
-      "date": "2026-11-05",
-      "by": "Scout Astra high author lane; independent final review assigned to t2dv; .agents/rounds/2026-11-05-truth-maintenance/scout-golden-changes.md",
+      "date": "2026-11-12",
+      "by": "Coordinator (Claude Opus) with independent Claude Fable verification lane, 2026-11-12 truth-maintenance round (.agents/rounds/2026-11-12-truth-maintenance.md); golden-sentinels issue #422",
       "evidence": [
-        "A https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md — Current Open RFPs: \"October 2026: New Q4 RFPs are coming soon.\" No named brief.",
-        "B https://github.com/stellar/scf-handbook/commit/e07b4bfce158639f81908f74cfd74ec8d87f051a — Latest path commit still the 2026-10-16 Q3 withdrawal; same editorial lineage as official page.",
-        "C https://stellarlight.xyz/api/rfps?status=open — Now open=0, closed=16, activeQuarter=q4-2026; one synthetic scf-round-46 row, not a brief. Both Q3 rows are closed in quarter=q3-2026. Scout is the aggregator under check, not independent corroboration.",
-        "D https://www.grants.watch/programs/stellar-community-fund-build-award — Free general-web sweep for Stellar SCF Q4 2026 RFP open November 2026 found no newly published official brief. Cached Q3 snippets were contradicted by direct official reads. Source-relative absence only; exact queries and stale-source checks in scout.md.",
-        "A https://communityfund.stellar.org/awards — \"SCF #46 Submission Deadline to submit: November 9, 2026\"; #45 and #44 Ended.",
-        "A https://communityfund.stellar.org/awards/recxrSMYwAl8vcglg — \"Build Submission TBD - November 9, 2026\"; panel November 11–18; notification TBD; no deadline time/timezone stated.",
-        "C https://stellarlight.xyz/api/rfps?status=open — meta.scfRound currentRound46/currentPhase Submission/lastConfirmedRound45/submissionWindow.closes2026-11-09. References official awards source; not independent editorial confirmation.",
-        "Scoped sibling sweep and exact replay commands: .agents/rounds/2026-11-05-truth-maintenance/scout-golden-changes.md; primary matrix scout.md. November5 America/New_York observations have November6 UTC receipt timestamps. Existing reverifyBy dates retained; unrelated historical claims were not re-dated."
+        "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md (fetched 2026-11-12T14:29:35Z, re-read 14:34:36Z, SHA-256 f515003ea1d3ffe21ee6bf25f015897fe319a9ca2a5ad1ce51da58d012b546b5): Current Open RFPs lists the two Q4 briefs.",
+        "https://github.com/stellar/scf-handbook/commit/4cc1fae33d46618cf9193d1467e670fe7a48550a (GITBOOK-247: q4 RFPs, 2026-11-11T19:16:19Z) replaces the Q4 placeholder with both briefs.",
+        "https://stellarlight.xyz/api/rfps?status=open (2026-11-12T14:28:50Z): open=0, activeQuarter q4-2026, briefRoster.checkedOn 2026-11-04, scfRound #46 Initial Review, submission deadline 2026-11-09, no submission window.",
+        "https://communityfund.stellar.org/awards (2026-11-12T14:29Z): SCF #46 Initial Review, deadline November 9, 2026; no #47.",
+        "Independent re-derivation and corroboration matrix (Claude Fable lane, includes the web sweep and sibling sweep): research/audits/2026-11-12-truth-maintenance/golden-rfp-matrix.md",
+        "Sibling sweep: q-scf-open-rfps, q-scf-rfp-tooling, q-scf-open-rfps-live, q-scf-passkey-rfps-live, q-scf-rfps-hackathons-live and q-scf-contract-verification-rfp-live now carry the 2026-11-12 roster; q-scf-current-round, q-edge-fresh-latest-scf-round, q-scf-how-to-apply, q-scf-submission-lifecycle-deadlines and q-scf-hummingbot-kelp-closed-rfp re-confirmed unaffected."
       ],
       "rootCause": [
         "freshness-drift"
