@@ -65,6 +65,7 @@ import {
   evidenceCheckpointBlock,
   type EvidenceRecoveryHint
 } from "../policy/evidence-checkpoint.ts";
+import { withExactEvidence } from "../policy/exact-evidence.ts";
 import { DEMO_CAPS, createDemoToolBudget, type DemoToolBudget } from "./budget.ts";
 import type { DemoFrame } from "./frames.ts";
 
@@ -588,7 +589,10 @@ export function buildDemoTools(opts: {
           outcome.evidenceSummary.buildAuthoritySkillIds?.length
       );
       const candidateBlock = outcome.ok
-        ? candidateEvidenceBlock(outcome.operationSummary.candidateEvidence, hasPriorArtPreflight)
+        ? withExactEvidence(
+            candidateEvidenceBlock(outcome.operationSummary.candidateEvidence, hasPriorArtPreflight),
+            outcome.exactEvidence
+          )
         : "";
 
       const text = outcome.ok

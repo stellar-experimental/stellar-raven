@@ -142,7 +142,7 @@ The footer has its own bounded character budget after the result cut.
 It includes shape and loss facts, operation outcomes, source metadata, sanitized URLs, and artifact availability.
 A clean ok-only run has no truncation, no failed call, and no captured source metadata.
 Its compact footer keeps only the marker, `calls:`, `observedAt:`, and `guidance:` lines.
-Each ok call with a `caveat` carries a `[caveat: no-rows]` or `[caveat: unverified-match]` marker.
+Each ok call with a `caveat` carries a `[caveat: no-rows]` or `[caveat: unverified-match]` marker. A call whose result has an exact row adds `exact: <key>` to the same bracket.
 The call totals keep the caveat count after the budget drops per-call entries.
 An `observedAt:` line gives the latest host observation time across ok calls.
 Each failed call includes a reason of at most 64 characters.
@@ -212,6 +212,7 @@ A `"no-rows"` result is successful data, so a closed-world exact empty still app
 The signal never judges row relevance, so adjacent or off-target rows stay unmarked.
 Failed envelopes, skill reads, skill runs, and artifact reads carry none of these fields.
 The run-level `candidateEvidence` count, which triggers the candidate-evidence block, counts `"unverified-match"` calls.
+An ok result from a `semantic`, `research`, or `av` operation can also carry `exactRows: [{ index, key }]`. The host marks a row exact when three things agree, and judges no relevance: the query (`q` or `query`) holds a token of letters, an optional hyphen or space, and digits; the row's `source` equals those letters, ignoring case; and the last URL path segment of the row, without its extension, is those letters, a hyphen, and the same number (zero padding ignored). A row that only cites the identifier names another slug and is not marked. `exactRows` is present only when non-empty, and `caveat` and `data` do not change; the other rows stay candidates. When a call carries it, the candidate-evidence block appends one generated exception that names the call, the row's slug and URL, and says to state only what the returned text shows ([exact-evidence.ts](src/policy/exact-evidence.ts)). The upstream `exactKeys` field is not read: a row that only cites a key carries it too.
 [The design note](.agents/rounds/2026-10-10-weekend/answer-style/design.md) records which instruction sentences these signals replace.
 
 Scout can return HTTP 200 for a page that lost a backend read.

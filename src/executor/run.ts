@@ -44,6 +44,7 @@ import { withScriptHint } from "./script-hints.ts";
 import { put as putArtifact, type ArtifactMime } from "../artifacts/store.ts";
 import { logArtifactWrite } from "../observability.ts";
 import type { EvidenceRecoveryHint } from "../policy/evidence-checkpoint.ts";
+import type { ExactEvidenceCall } from "../policy/exact-evidence.ts";
 
 export type ExecuteOperationSummary = {
   total: number;
@@ -58,6 +59,8 @@ export type ExecuteOperationSummary = {
   candidateEvidence?: number;
   /** Successful Scout project/repository calls whose contracts can return prior-art candidates. */
   priorArtCandidates?: number;
+  /** Successful candidate-lane calls with a row that is the document the query names by identifier. */
+  exactEvidence?: number;
 };
 
 export type ExecuteEvidenceSummary = {
@@ -82,6 +85,8 @@ export type ExecuteOutcome =
       evidenceSummary: ExecuteEvidenceSummary;
       /** Conditional wider-pass advice derived only from successful operation ids. */
       recoveryHint?: EvidenceRecoveryHint;
+      /** Candidate-lane calls whose result held the document the query names by identifier. */
+      exactEvidence?: ExactEvidenceCall[];
       resultOriginalChars?: number;
       resultReturnedChars?: number;
       resultMaxTokens?: number;
@@ -153,6 +158,7 @@ export function summarizeOperationLedger(calls: readonly OpLedgerCall[]): Execut
   let caveats = 0;
   let candidateEvidence = 0;
   let priorArtCandidates = 0;
+  let exactEvidence = 0;
   for (const call of calls) {
     if (call.outcome === "ok") summary.ok += 1;
     else if (call.outcome === "error") summary.error += 1;
@@ -162,12 +168,24 @@ export function summarizeOperationLedger(calls: readonly OpLedgerCall[]): Execut
     if (call.outcome === "ok" && call.caveat) caveats += 1;
     if (hasEvidenceData && call.caveat === "unverified-match") candidateEvidence += 1;
     if (hasEvidenceData && EVIDENCE_OPERATION_IDS["prior-art"].has(call.op)) priorArtCandidates += 1;
+    if (call.outcome === "ok" && call.exactRows?.length) exactEvidence += 1;
   }
   if (evidenceData > 0) summary.evidenceData = evidenceData;
   if (caveats > 0) summary.caveats = caveats;
   if (candidateEvidence > 0) summary.candidateEvidence = candidateEvidence;
   if (priorArtCandidates > 0) summary.priorArtCandidates = priorArtCandidates;
+  if (exactEvidence > 0) summary.exactEvidence = exactEvidence;
   return summary;
+}
+
+/** The host-block view of the calls whose result held the document a query names by identifier. */
+function exactEvidenceOfLedger(calls: readonly OpLedgerCall[]): ExactEvidenceCall[] {
+  return calls
+    .filter((call) => call.outcome === "ok" && call.exactRows?.length)
+    .map((call) => ({
+      op: call.op,
+      rows: call.exactRows!.map(({ key, url }) => ({ key, ...(url ? { url } : {}) }))
+    }));
 }
 
 function sourceMetadataFromOperationLedger(calls: readonly OpLedgerCall[]): SourceMetadataEntry[] {
@@ -411,6 +429,7 @@ export function createExecuteRunner(env: Env, options: ExecuteRunnerOptions = {}
     const logs = shapeLogs(outcome.logs, secrets);
     const operationSummary = summarizeOperationLedger(opLedger);
     const recoveryHint = evidenceRecoveryHint(opLedger, operationSummary);
+    const exactEvidence = exactEvidenceOfLedger(opLedger);
     const evidenceSummary: ExecuteEvidenceSummary = {
       kind:
         operationSummary.evidenceData !== undefined
@@ -538,6 +557,7 @@ export function createExecuteRunner(env: Env, options: ExecuteRunnerOptions = {}
       operationSummary,
       evidenceSummary,
       ...(recoveryHint ? { recoveryHint } : {}),
+      ...(exactEvidence.length > 0 ? { exactEvidence } : {}),
       resultOriginalChars: result.originalChars,
       resultReturnedChars: text.length,
       resultMaxTokens: result.maxTokens,

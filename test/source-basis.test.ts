@@ -43,6 +43,23 @@ function calls(count: number): SourceBasisCall[] {
 }
 
 describe("source-basis manifest", () => {
+  it("shows exact rows beside the caveat and leaves a call without them untouched", () => {
+    const text = buildSourceBasisManifest({
+      shape: validArrayShape,
+      calls: [
+        { op: "scout.searchResearch", outcome: "ok", ms: 9, caveat: "unverified-match", exactRows: [{ index: 0, key: "sep-0043" }] },
+        { op: "scout.searchResearch", outcome: "ok", ms: 7, caveat: "unverified-match" }
+      ],
+      artifact: { state: "absent", reason: "not-truncated" },
+      truncated: false
+    });
+    const calls = text.split("\n").find((line) => line.startsWith("calls:"));
+    expect(calls).toBe(
+      "calls: scout.searchResearch=ok/9ms [caveat: unverified-match; exact: sep-0043]; " +
+        "scout.searchResearch=ok/7ms [caveat: unverified-match] (totals ok=2 (2 with caveat) error=0 soft-empty=0)"
+    );
+  });
+
   it("marks ok calls with a caveat in a compact footer for a clean ok-only run", () => {
     const input: BuildSourceBasisManifestInput = {
       shape: validArrayShape,

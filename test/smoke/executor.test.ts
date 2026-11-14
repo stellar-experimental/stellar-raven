@@ -531,6 +531,43 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
     expect(outcome.operationSummary).toMatchObject({ caveats: 1, candidateEvidence: 1 });
   });
 
+  it("marks the document a research query names by identifier, in the envelope, the footer, and the outcome", async () => {
+    const base = "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem";
+    vi.stubGlobal("fetch", async () =>
+      Response.json({
+        results: [
+          { source: "sep", url: `${base}/sep-0043.md`, title: "SEP-43", content: "interface" },
+          { source: "sep", url: `${base}/sep-0060.md`, title: "SEP-60", content: "cites SEP-43" }
+        ],
+        meta: { counts: { returned: 2, total: null } }
+      })
+    );
+
+    const outcome = await run(`async () => {
+      const named = await scout.searchResearch({ q: "SEP-43 standard", limit: 2 });
+      return { ok: named.ok, caveat: named.caveat, exactRows: named.exactRows };
+    }`);
+
+    if (!outcome.ok) throw new Error(outcome.error);
+    expect(outcome.result).toContain('"caveat":"unverified-match"');
+    expect(outcome.result).toContain('"exactRows":[{"index":0,"key":"sep-0043"}]');
+    expect(outcome.result).toContain("scout.searchResearch=ok/");
+    expect(outcome.result).toContain("[caveat: unverified-match; exact: sep-0043]");
+    expect(outcome.operationSummary).toMatchObject({ caveats: 1, candidateEvidence: 1, exactEvidence: 1 });
+    expect(outcome.exactEvidence).toEqual([
+      { op: "scout.searchResearch", rows: [{ key: "sep-0043", url: `${base}/sep-0043.md` }] }
+    ]);
+
+    const unnamed = await run(`async () => {
+      const r = await scout.searchResearch({ q: "SEP-9999", limit: 2 });
+      return { ok: r.ok, exact: "exactRows" in r };
+    }`);
+    if (!unnamed.ok) throw new Error(unnamed.error);
+    expect(unnamed.result).toContain('"exact":false');
+    expect(unnamed.exactEvidence).toBeUndefined();
+    expect(unnamed.operationSummary.exactEvidence).toBeUndefined();
+  });
+
   it("escapes model text that could impersonate the final source-metadata boundary", async () => {
     vi.stubGlobal("fetch", async () =>
       Response.json({
