@@ -122,6 +122,16 @@ disputes disappear, and no answer with a truly unsupported claim is graded up.
 
 ## Golden answers
 
+### Finish the 2026-11-14 golden coverage audit
+
+The round rebuilt the battery around a taxonomy of Stellar (`eval/qa/taxonomy.json`): compact
+rewrites, retirements, a small tool-contract lane, and proposed cases for uncovered topics.
+[Ledger](rounds/2026-11-14-golden-coverage-audit.md). What remains is listed in the ledger's
+Outcome: activating reviewed proposals, closing `openSlots`, and filing the source gaps.
+
+Done when: `eval/qa/taxonomy.json` has no `openSlots` entry that awaits a proposal, and every
+unreachable topic in the ledger has an `improvements/` finding or a recorded decision not to file.
+
 ### Re-verify the event-tied goldens after SCF #46 Panel Review and the Bell vote
 
 `npm run eval:qa:lint -- --stale --enforce-floors` fails every pull request once a `reverifyBy`
