@@ -45,3 +45,17 @@ the missing live Mintlify check go to the independent reviewer of the diffs.
 `b336fa14…3404` asserted before spend), Claude Sonnet 5.5 answering, pinned judge,
 `--max-panel-cases 50`, `--max-budget-usd 12.5`. Subscription spend under the owner approval of
 2026-11-14. No resume, no re-judge. Arm runs are authorized separately after the diff review.
+
+**Step 0-prime result.** Stamp `2026-11-14T22-18-17-variantA`, 50 of 50, USD 9.74: 22 correct, 25
+partial, 3 wrong (STEP-0-PRIME.md). Same-surface movement against the stored baseline: 17 of 50 rows
+changed (8 up, 9 down); on the 35 tier-matched rows, 7 changed. Verdict counts alone cannot carry a
+decision here; traced attribution (A1) does.
+
+**Diff review.** TUNE-DIFF-REVIEW.md (Claude Opus 5.5): arm 1 and arm 2 fit to measure, no blocking
+finding. Condition on arm 1: one free keyed live execute on the arm 1 server must show the detail
+sentence before collection.
+
+**Authorization, arm 1.** One collection of the 50-row panel on `a321c5b7`, same flags and pins as
+step 0-prime, `--max-budget-usd 12.5`, after the live check above passes and after the two trap
+rows that fail on step 0-prime are reviewed from their transcripts. Compared with step 0-prime
+under K0 to K5 as amended. No resume, no re-judge.
