@@ -77,18 +77,33 @@ Orchestrator: Claude Fable 5.2 on the Mac, terminal `t40f`. Briefs are in
 
 | lane | agent (model, effort) | terminal | write set | status |
 |---|---|---|---|---|
-| map-supply | Claude Fable 5.2, high: taste and product judgment | `agentpc/t1hd` | `map/map-supply.json` | running |
-| map-demand | Claude Opus 5.5, high: a second model for an independent map | `agentpc/t1hf` | `map/map-demand.json` | running |
-| audit-protocol | Claude Sonnet 5.5, high: bounded per-case review | `agentpc/t1hg` | `audit/audit-protocol.json` | running |
-| audit-assets | Claude Sonnet 5.5, high | `agentpc/t1hh` | `audit/audit-assets.json` | running |
-| audit-defi | Claude Sonnet 5.5, high | `agentpc/t1hj` | `audit/audit-defi.json` | running |
-| audit-soroban-a | Claude Sonnet 5.5, high | `agentpc/t1hk` | `audit/audit-soroban-a.json` | running |
-| audit-compliance, audit-edge, audit-hist-retail, audit-scf, audit-soroban-b, audit-tooling-a, audit-tooling-b | Claude Sonnet 5.5, high | queued | `audit/<lane>.json` | queued behind the six-lane cap |
+| map-supply | Claude Fable 5.2, high: taste and product judgment | `agentpc/t1hd` | `map/map-supply.json` | done: 14 domains, 160 leaves |
+| map-demand | Claude Opus 5.5, high: a second model for an independent map | `agentpc/t1hf` | `map/map-demand.json` | done: 14 domains, 156 leaves |
+| map-reconcile | Claude Fable 5.2, high | `agentpc/t1j8` | `map/taxonomy.json`, `map/taxonomy.md` | done: 14 domains, 167 leaves, target 249 cases |
+| audit-protocol, -assets, -defi, -soroban-a, -soroban-b, -scf, -compliance, -edge, -hist-retail, -tooling-a, -tooling-b | Claude Sonnet 5.5, high: bounded per-case review | `agentpc/t1hg`, `t1hh`, `t1hj`, `t1hk`, `t1j1`, `t1hx`, `t1hy`, `t1j0`, `t1j9`, `t1jc`, `t1jd` | `audit/<lane>.json` | done: 507 records |
+| verify-protocol-defi, -assets-soroban-a, -scf-edge, -compliance-soroban-b, -hist-retail, -tooling-a, -tooling-b | Claude Opus 5.5, high: the reviewer differs from the Sonnet auditors and the Fable orchestrator | `agentpc/t1hz`, `t1jb`, `t1jf`, `t1jh`, `t1jj`, `t1jk`, `t1jm` | `verify/<audit-lane>.json` | done: 502 decisions |
+| coverage | Claude Fable 5.2, high | `agentpc/t1jq` | `coverage/coverage.json`, `coverage/coverage.md` | done |
+| instrument | Claude Opus 5.5, high: instrument code; Codex tiers skipped because the owner asked for Fable, Opus, and Sonnet | `agentpc/t1jr` | `eval/qa/**` code, tests, `apply/**` | first pass done; follow-up running |
+| verify-coverage | Claude Opus 5.5, high: reviews the Fable coverage lane | `agentpc/t1jt` | `coverage/verify-coverage.json` | running |
+| gap-1, gap-2, gap-3 | Claude Fable 5.2, high: question design and research | `agentpc/t1jv`, `t1jw`, `t1jx` | `gap/<lane>.json`, new files under `eval/qa/corpus/proposed/` | running |
 
 ## Ledger
 
 - 2026-11-14 05:50 UTC. Opened the round at `920ae9f2`. Created the box worktree and launched six
   lanes with `hc run --bg --on agentpc --outlive-parent ... claude --model <alias> --effort high`.
   All six reported `working` on their brief.
+- 06:00 to 08:40 UTC. Phase 1 and 2. The two maps were reconciled into 167 leaves with a target of
+  249 cases. The 11 audit lanes returned 507 records; 7 verifier lanes checked 502 of them (401
+  accepted, 100 amended, 1 rejected; 5 `keep` records fell outside the one-in-five sample). Final
+  verdicts: 297 tighten, 84 merge, 100 retire, 18 move to tool lane, 8 keep. Rot checks: 604
+  hold, 97 unverifiable, 35 changed. The first verifier's error patterns went into
+  `briefs/common.md` (`a5631afb`). Outputs committed on the box at `52f0b754`.
+- 08:40 to 09:05 UTC. `coverage` mapped survivors to leaves: 211 headline cases, 7 tool-lane
+  cases, 200 retired, 89 merged, 35 open slots, 24 empty leaves (21 with a slot, 3 waived). It
+  proposed 94 cuts beyond the audit; `verify-coverage` reviews them before anything is applied.
+- 08:45 to 09:00 UTC. `instrument` wrote `apply/DESIGN.md`, taxonomy-based lint rules, a tool-lane
+  partition, and `apply/apply.mjs`. In a scratch clone with fixture leaves: compile, register,
+  lint (`--stale --enforce-floors`, and `--since`), selftest, and sentinels exit 0; `npm test`
+  fails in 6 files that pin case content. 17 records were refused (`apply/REPORT.md`).
 
 ## Outcome
