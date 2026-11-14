@@ -16,10 +16,9 @@
     ],
     "avoid": [
       "Do NOT claim a canonical TVL or price, or an exact StellarX or Scopuly match, without their methodology.",
-      "Do NOT use RPC alone for unbounded history or mix Classic pools with contract AMMs.",
-      "Do NOT answer about the asset named COMPUTE; 'compute' is a verb here."
+      "Do NOT use RPC alone for unbounded history or mix Classic pools with contract AMMs."
     ],
-    "notes": "StellarX and Scopuly formulas are not public; an answer that says so is correct."
+    "notes": "StellarX and Scopuly formulas are not public; an answer that says so is correct. 'Compute' is a verb in the question; an answer about an asset named COMPUTE misreads it."
   },
   "tags": {
     "category": "tooling-infra",
@@ -110,12 +109,9 @@
     ],
     "verified": {
       "date": "2026-11-14",
-      "by": "Golden coverage audit 2026-11-14 (audit-tooling-a, verify-audit-tooling-a; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+      "by": "Golden coverage audit finalize 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-a.json#q-ti-compute-token-lp-market-data",
-        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-a.json#q-ti-compute-token-lp-market-data",
-        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-ti-compute-token-lp-market-data",
-        "Live B 2026-11-14: github.com/stellar/stellar-docs docs/data/apis/index.mdx -- 'Horizon is nearing end-of-life and will eventually be deprecated in favor of Stellar RPC and Portfolio APIs'"
+        "Review finding L8 (.agents/rounds/2026-11-14-golden-coverage-audit/review/REVIEW.md): a question-parse caution moved from golden.avoid to golden.notes, since avoid items are for claims shown false; no fact changed."
       ],
       "rootCause": [
         ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"

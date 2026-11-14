@@ -1403,62 +1403,6 @@
       "reason": "Waived, covered by a case on another leaf: how validators vote a protocol version or setting onto Mainnet (tested by q-pc-protocol-upgrade-timing)."
     },
     {
-      "leaf": "network.quorum-freeze",
-      "reason": "Awaiting a verified proposal for: what CAP-77 lets validators freeze and how it is reversed."
-    },
-    {
-      "leaf": "assets.usdt0",
-      "reason": "Awaiting a verified proposal for: how USDT0 reaches Stellar and what kind of token it is."
-    },
-    {
-      "leaf": "data.network-metrics",
-      "reason": "Awaiting a verified proposal for: where authoritative activity and developer figures come from."
-    },
-    {
-      "leaf": "tooling.version-compat",
-      "reason": "Awaiting a verified proposal for: which releases match the protocol on Mainnet; what fails when an SDK or CLI lags a protocol upgrade."
-    },
-    {
-      "leaf": "standards.sep31-sep38",
-      "reason": "Awaiting a verified proposal for: the SEP-31 flow between a sending and a receiving anchor. Waived, covered by a case on another leaf: SEP-38 quotes and which SEPs use them (tested by q-sep-catalog-list)."
-    },
-    {
-      "leaf": "security.audit-registry",
-      "reason": "Awaiting a verified proposal for: where audit reports are published and which firms wrote them; whether a named project has been audited."
-    },
-    {
-      "leaf": "security.signing-safety",
-      "reason": "Awaiting a verified proposal for: what to check before signing a transaction from a website."
-    },
-    {
-      "leaf": "wallets.consumer-apps",
-      "reason": "Awaiting a verified proposal for: which consumer apps let people spend or save on Stellar."
-    },
-    {
-      "leaf": "wallets.support-channels",
-      "reason": "Awaiting a verified proposal for: the official help channels and what SDF does not do."
-    },
-    {
-      "leaf": "ecosystem.chain-comparisons",
-      "reason": "Awaiting a verified proposal for: how Stellar differs from the XRP Ledger and other chains."
-    },
-    {
-      "leaf": "ecosystem.strategy-roadmap",
-      "reason": "Awaiting a verified proposal for: SDF's stated priorities for the current year."
-    },
-    {
-      "leaf": "ecosystem.institutional-adoption",
-      "reason": "Awaiting a verified proposal for: which major institutions use Stellar and for what."
-    },
-    {
-      "leaf": "ai.agent-cli",
-      "reason": "Awaiting a verified proposal for: what the agent CLI does and how it limits what an agent can sign."
-    },
-    {
-      "leaf": "ai.mcp-servers",
-      "reason": "Awaiting a verified proposal for: which MCP servers an agent can connect and what each provides."
-    },
-    {
       "leaf": "behavior.paid-action-refusal",
       "reason": "Waived, covered by a case on another leaf: a request to trigger a paid or side-effecting operation (tested by test/policy.test.ts)."
     }

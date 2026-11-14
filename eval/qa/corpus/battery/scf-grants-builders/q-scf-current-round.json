@@ -29,7 +29,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-11-10",
+    "asOf": "2026-11-14",
     "reverifyBy": "2026-12-04",
     "sources": [
       {
@@ -263,7 +263,8 @@
         "Live A 2026-11-14: https://communityfund.stellar.org/awards -- 'Deadline to submit: November 9, 2026; SCF #45 phase Ended'",
         "Live C 2026-11-14: https://stellarlight.xyz/api/rfps?status=open -- 'meta.scfRound currentRound 46, currentPhase Initial Review, lastConfirmedRound 45 (2026-11-14)'",
         "Live A 2026-11-14: https://communityfund.stellar.org/awards -- '\"name\":\"SCF #46\",\"type\":\"Build Award Round\",\"phase\":\"Initial Review\" ... SCF #46 is currently in Initial Review.'",
-        "Live C 2026-11-14: https://stellarlight.xyz/api/rfps?status=open (meta.scfRound) -- 'currentRound 46, currentPhase Initial Review, roundsInProgress submissionDeadline 2026-11-09, submissionWindow opens null'"
+        "Live C 2026-11-14: https://stellarlight.xyz/api/rfps?status=open (meta.scfRound) -- 'currentRound 46, currentPhase Initial Review, roundsInProgress submissionDeadline 2026-11-09, submissionWindow opens null'",
+        "Live sentinel read 2026-11-14 (npm run eval:qa:sentinels -- --ids scf-45-ended,scf-46-submission-deadline,scf-47-not-listed): hold"
       ],
       "rootCause": [
         ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"

@@ -29,7 +29,7 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-11-12",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-01-28",
     "sources": [
       {
@@ -519,7 +519,8 @@
         "Live B 2026-11-14: https://github.com/stellar/scf-handbook/commit/cf94e3691faba4187b72c4d98cc4ff4a66c75fbc -- '2026-11-13T15:15:41Z GITBOOK-248; scf-awards/build-award/rfp-track.md -15 lines; no \"budget\" text remains in the file'",
         "Live B 2026-11-14: https://github.com/stellar/scf-handbook/blob/main/scf-awards/build-award/rfp-track.md -- 'The submission must address an open RFP from the current quarter'",
         "Live B 2026-11-14: https://github.com/stellar/scf-handbook/blob/main/scf-awards/build-award/rfp-track.md -- '#### Current Open RFPs ... Web and API Analytics for Stellar Ecosystem Projects ... XDR/CAP-Coverage Audit Tool and Indexer-Hardening Guide'",
-        "Live A 2026-11-14: https://communityfund.stellar.org/awards -- '\"name\":\"SCF #46\",\"type\":\"Build Award Round\",\"phase\":\"Initial Review\" ... SCF #46 is currently in Initial Review.'"
+        "Live A 2026-11-14: https://communityfund.stellar.org/awards -- '\"name\":\"SCF #46\",\"type\":\"Build Award Round\",\"phase\":\"Initial Review\" ... SCF #46 is currently in Initial Review.'",
+        "Live sentinel read 2026-11-14 (npm run eval:qa:sentinels -- --ids scf-rfp-q4-roster): hold"
       ],
       "rootCause": [
         ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit",

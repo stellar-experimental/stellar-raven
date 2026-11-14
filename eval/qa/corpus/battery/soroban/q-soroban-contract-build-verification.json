@@ -30,7 +30,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-06-17",
     "sources": [
       {
@@ -73,7 +73,8 @@
         "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0058.md -- 'SEP: 0058 Title: Contract Build Reproducibility for Verification Status: Draft Updated: 2026-07-15 Version: 0.6.0'",
         "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0049.md -- 'SEP: 0049 Title: Upgradeable Contracts'",
         "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0055.md -- 'https://api.github.com/repos/<user_name>/<repo_name>/attestations/sha256:<wasm_hash>'",
-        "Live F 2026-11-14: local stellar 30.0.1 `stellar contract info --help` -- 'build  Output the contract build information, if available'"
+        "Live F 2026-11-14: local stellar 30.0.1 `stellar contract info --help` -- 'build  Output the contract build information, if available'",
+        "Live sentinel read 2026-11-14 (npm run eval:qa:sentinels -- --ids sep55-draft,sep58-draft): hold"
       ],
       "rootCause": [
         ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"

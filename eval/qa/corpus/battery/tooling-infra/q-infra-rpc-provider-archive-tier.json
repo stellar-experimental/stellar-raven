@@ -32,7 +32,7 @@
     },
     "domain": "real-world",
     "status": "mixed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-05-21",
     "sources": [
       {
@@ -298,7 +298,8 @@
         "Live B 2026-11-14: github.com/stellar/stellar-docs docs/data/apis/rpc/providers.mdx -- '| [node101](https://node101.io/en/rpc/stellar) | ❌ | ✅ | ✅ | ✅ | ✅ |'",
         "Live B 2026-11-14: providers.mdx footnote -- 'Currently only the getLedgers RPC method supports this feature.'",
         "Live B 2026-11-14: github.com/stellar/stellar-docs docs/data/apis/rpc/providers.mdx -- 'Archive ✅: Validation Cloud, Gateway, Ankr, Obsrvr, OnFinality, Lightsail-Quasar, Exaion, GetBlock, node101 (9 rows)'",
-        "Live B 2026-11-14: providers.mdx footnote -- 'Currently only the [getLedgers](./api-reference/methods/getLedgers) RPC method supports this feature.'"
+        "Live B 2026-11-14: providers.mdx footnote -- 'Currently only the [getLedgers](./api-reference/methods/getLedgers) RPC method supports this feature.'",
+        "Live sentinel read 2026-11-14 (npm run eval:qa:sentinels -- --ids rpc-archive-provider-rows,rpc-archive-provider-names): hold"
       ],
       "rootCause": [
         ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"

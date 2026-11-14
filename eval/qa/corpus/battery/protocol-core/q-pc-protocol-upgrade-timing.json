@@ -30,7 +30,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-11-10",
+    "asOf": "2026-11-14",
     "sources": [
       {
         "class": "C",
@@ -435,7 +435,8 @@
         "Live F 2026-11-14: https://horizon-testnet.stellar.org/ -- 'current_protocol_version 30, core_supported_protocol_version 30'",
         "Live A 2026-11-14: https://developers.stellar.org/docs/validators/admin-guide/network-upgrades -- 'http-command 'upgrades?mode=set&upgradetime=…&protocolversion=9''",
         "Live A 2026-11-14: https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide -- 'November 23, 2026, 1700 UTC—Mainnet upgrade vote. ... Protocol 30 changes the ledger header format (CAP-88), and an older SDK may fail to decode'",
-        "Live F 2026-11-14: https://horizon.stellar.org/ledgers?order=desc&limit=1 -- '\"protocol_version\": 29 (Mainnet ledger 65467844); horizon-testnet latest ledger \"protocol_version\": 30'"
+        "Live F 2026-11-14: https://horizon.stellar.org/ledgers?order=desc&limit=1 -- '\"protocol_version\": 29 (Mainnet ledger 65467844); horizon-testnet latest ledger \"protocol_version\": 30'",
+        "Live sentinel read 2026-11-14 (npm run eval:qa:sentinels -- --ids bell-mainnet-vote-scheduled): hold"
       ],
       "rootCause": [
         ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"

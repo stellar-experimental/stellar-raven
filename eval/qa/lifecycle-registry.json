@@ -3,8 +3,8 @@
   "schema": "qa-lifecycle-registry-v1",
   "digestSchema": "canonical-json-sha256-v1",
   "counts": {
-    "proposed": 36,
-    "active": 216,
+    "proposed": 0,
+    "active": 252,
     "quarantined": 0,
     "retired": 291
   },
@@ -624,17 +624,17 @@
     },
     {
       "id": "q-agent-cli-authority-limits",
-      "path": "eval/qa/corpus/proposed/tooling-infra/q-agent-cli-authority-limits.json",
-      "state": "proposed",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-agent-cli-authority-limits.json",
+      "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "2cc173f2ad74920f3bc25e20c7673a797176099f695b3ccb4f4bbd5279d7abcc"
+      "caseContentSha256": "551d856638b2446e92596b6fa828f82bfcc274d5385c78998cfb8a9a09216d7d"
     },
     {
       "id": "q-agent-identity-erc8004-stellar",
       "path": "eval/qa/corpus/retired/q-agent-identity-erc8004-stellar.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "646842d7f0afa7b67241074e6d6e46d08e58629c6738e8ed451dcdf0638f74ff",
+      "tombstoneContentSha256": "ab07876be10df72d57c610a8f758c961800672fad2b0211d6c00be9c9a59ef86",
       "lastCaseContentSha256": "5a61869195395fa100b72031af1f2308091e0f08a0a75def2e24c01ecb9a0f47",
       "replacementIds": []
     },
@@ -651,10 +651,10 @@
     },
     {
       "id": "q-ai-mcp-servers-connect",
-      "path": "eval/qa/corpus/proposed/tooling-infra/q-ai-mcp-servers-connect.json",
-      "state": "proposed",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-ai-mcp-servers-connect.json",
+      "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "f80b80f7831dd9fbf9df69852c6aff4737f97ebadb7feae9c458017749752082"
+      "caseContentSha256": "d82e102785c6b41131e1d5ea495db4cb37aad45a152d1d85b9f2439f83c32f89"
     },
     {
       "id": "q-anchor-endpoint-discovery",
@@ -675,7 +675,7 @@
       "path": "eval/qa/corpus/battery/assets-anchors-seps/q-anchor-moneygram-ramps.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "c387a16b67bbb2b1a60d6187ef8af559a65aa912da26001531ef72b82a1ef0c8"
+      "caseContentSha256": "24d96010c5675ae4fb95708701532145739ea823219764326ef81136fe9ab21b"
     },
     {
       "id": "q-anchor-platform-what",
@@ -700,7 +700,7 @@
       "path": "eval/qa/corpus/retired/q-anchor-sdp-what.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "516e7339260ca75faff6cde8c2108c7d058a6a4c4d33a0dcc9bc20d7552367db",
+      "tombstoneContentSha256": "c4383d11f375618b9531e245b014f4310b883331172ff2eefbb26c51136692ac",
       "lastCaseContentSha256": "4b40fc3424d21c4bfdebb80f1f06407415e7687b049442b10c46f61072743505",
       "replacementIds": [
         "q-crp-sdp-operation"
@@ -758,7 +758,7 @@
       "path": "eval/qa/corpus/battery/assets-anchors-seps/q-asset-issue-asset-howto.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "2eaf457d6b50dd833d1e24b0d548d00e81d3eff33c4248a78cf4c4b55b809829"
+      "caseContentSha256": "09650c99be7d2c67a01d287d72d1554adb68ac48857b519029d0b0d3e9ab81bc"
     },
     {
       "id": "q-asset-path-payment-ops",
@@ -833,16 +833,16 @@
       "path": "eval/qa/corpus/retired/q-asset-usdc-eurc-path-fx.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "a578f3234b01f50e9ae0444179e9f6ec7f4a0932e65d1a97dbf9af5b9353fee5",
+      "tombstoneContentSha256": "9bc688ef4c3458a9c6bbf752a5c04218943f201e624805d27ba616f6c9662952",
       "lastCaseContentSha256": "d4ec2a4aa61df1d668a0025aa8c2a0b092815512ea018e91516ce9026b6f2be6",
       "replacementIds": []
     },
     {
       "id": "q-asset-usdt0-layerzero-oft",
-      "path": "eval/qa/corpus/proposed/assets-anchors-seps/q-asset-usdt0-layerzero-oft.json",
-      "state": "proposed",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-asset-usdt0-layerzero-oft.json",
+      "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "ae2ffd140c75d0d0ea809a56fd240f90373ea043d821011cd09b981ee9ee703b"
+      "caseContentSha256": "710766311a363aeb0f7e5fe64ecef1f78824223e786c6207e45c8f31cea863b8"
     },
     {
       "id": "q-asset-wallet-sdk-seps",
@@ -857,10 +857,10 @@
     },
     {
       "id": "q-audit-reports-where-published",
-      "path": "eval/qa/corpus/proposed/compliance-rwa-payments/q-audit-reports-where-published.json",
-      "state": "proposed",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-audit-reports-where-published.json",
+      "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "bba6fd175b51028b847bea42f61d52259ab7338a65afba0b68e2984b373f5cd0"
+      "caseContentSha256": "c6d89e900c48eab2a9fd6b19add85e145e257f9a883266ecda8006f8e6dd0a17"
     },
     {
       "id": "q-builder-by-region-latam",
@@ -896,7 +896,7 @@
       "path": "eval/qa/corpus/retired/q-builder-justin-rice-history.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "c662de618bb2c90df2e637bf0417bca37bc7883447135011a13143115ccb87d6",
+      "tombstoneContentSha256": "171cc9cd64b3d6edc3a43e348d384edf575c7c71542ff6c235d05359a002d890",
       "lastCaseContentSha256": "2b96b24bcc6f585cf04ca77e961ffcb2238fcbf45b09f27a208e2f21eaf2f190",
       "replacementIds": []
     },
@@ -905,7 +905,7 @@
       "path": "eval/qa/corpus/retired/q-builder-lumenloop-regions-vocab.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "bedb9c1f8e4808eb38cd53dbf644954db3921c72446e2499263ddc328a917124",
+      "tombstoneContentSha256": "e4081a220d565f5529ec76ecbf22f5f4e47a144bfaed24f388d585d60a0d4f43",
       "lastCaseContentSha256": "fd99c906b8b88776c544e19fa0c987be7a536cbfa3b7a1d3d502d18f28001bff",
       "replacementIds": []
     },
@@ -923,14 +923,14 @@
       "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-cctp-v2-usdc-stellar.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "837e4dc40e59b49e1a54507b429214ed9202c4fdf1615c59574010b205034452"
+      "caseContentSha256": "fdf2e7a88873435d8d2343858cb03487239037ea3254a46a031696645fbeeb65"
     },
     {
       "id": "q-comp-aml-analytics-vendors",
-      "path": "eval/qa/corpus/proposed/compliance-rwa-payments/q-comp-aml-analytics-vendors.json",
-      "state": "proposed",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-comp-aml-analytics-vendors.json",
+      "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "b3113fe4e246bc61d77a21820f2b612edca20f75e9a024d83c57498409fb4947"
+      "caseContentSha256": "270d252e6761b8e80adfa7197c163c5ee81134571b7b43e7c391273c5a3440e8"
     },
     {
       "id": "q-comp-anchor-compliance-stack",
@@ -1009,7 +1009,7 @@
       "path": "eval/qa/corpus/retired/q-comp-security-disclosure-programs.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "04cf254a29d5fd5aa54b7b2becec49706a98d668a4fa3be4251b235dd79a9936",
+      "tombstoneContentSha256": "7a51e6b447a02a01ec49daa6963c5a2fcb924f645a8cebf36772519d6bfb0619",
       "lastCaseContentSha256": "57704c99b9d553d421f1bb497acdd39d7d664e68c1ac7bad303342d59b9ca514",
       "replacementIds": []
     },
@@ -1018,7 +1018,7 @@
       "path": "eval/qa/corpus/retired/q-comp-sep6-vs-sep12-roles.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "2b1106cae6eda0a015590b86d5b1a1fe69c88b0ca0adc1530e53dd1d17354c3c",
+      "tombstoneContentSha256": "1981eb034fa47f73b7862eac583667de8ef93ceda9cd1774a667a937ecf8edd4",
       "lastCaseContentSha256": "05b52f675745e1de2fd6606963b2d6e12ad040ed517622789ad662557c79f247",
       "replacementIds": [
         "q-sep-12-kyc"
@@ -1049,10 +1049,10 @@
     },
     {
       "id": "q-consumer-apps-spend-save-send",
-      "path": "eval/qa/corpus/proposed/retail-consumer/q-consumer-apps-spend-save-send.json",
-      "state": "proposed",
+      "path": "eval/qa/corpus/battery/retail-consumer/q-consumer-apps-spend-save-send.json",
+      "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "e1a6f1369c64a447f0a2bee190f49745c2d6c854cd4873ebcbeb0ce85967e6ac"
+      "caseContentSha256": "de1d5d3fa2f1434b1d78eea0f7657f2ed550cd912afd1617bd8f706c02e4afb2"
     },
     {
       "id": "q-crp-anchors-by-corridor",
@@ -1081,7 +1081,7 @@
       "path": "eval/qa/corpus/retired/q-crp-cme-xlm-futures-dates.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "3f203b9849bbd6bd87c6728396c37a7dfd40cb5a83a6611acb3eddd249273c27",
+      "tombstoneContentSha256": "b9b91a77e2c57a73887e302d4a88f87e1c1d13abc17c415347d54260b4f84e70",
       "lastCaseContentSha256": "202f14f47854a5fbf82daf09164f0a1ce687d65f74840d952b6305b87fd97d01",
       "replacementIds": []
     },
@@ -1119,7 +1119,7 @@
       "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-crp-oz-rwa-erc3643-trex.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "b4234415e4b4d213148a85f9f139cda3984f78878f0d39b2f1cc1e43bbf3d5f6"
+      "caseContentSha256": "9cdfca630c8b8746f2b08d4cb9ffb2e98d1b5b488a2c1b916c0448b22176cf80"
     },
     {
       "id": "q-crp-partner-detail-after-discovery",
@@ -1132,10 +1132,10 @@
     },
     {
       "id": "q-crp-public-sector-cbdc-pilots-stellar",
-      "path": "eval/qa/corpus/proposed/compliance-rwa-payments/q-crp-public-sector-cbdc-pilots-stellar.json",
-      "state": "proposed",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-crp-public-sector-cbdc-pilots-stellar.json",
+      "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "c1c0f8e616b91ca2982dec07eaf62b182ddcae1ca88e7fa7e4f652a150742357"
+      "caseContentSha256": "31b6bc61f7d189c5353fbe0bb9d418220ca314dcc1eb74f6da7c22bff80ef5fd"
     },
     {
       "id": "q-crp-regional-offramp-mobilemoney",
@@ -1163,7 +1163,7 @@
       "path": "eval/qa/corpus/retired/q-crp-tokenize-personal-rwa.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "8d527e9873c7aed03e636d20b19c523714d06779a22843d25506681ed25f1a60",
+      "tombstoneContentSha256": "30c320c9b0d17dadaafc557f33b1bfad5092da59ed2865ffa1869ac4924bfab8",
       "lastCaseContentSha256": "6cde6e6601a8ecaaecb3034b6b9c5f427261b670fadb01cd8732d0392bc4bbe0",
       "replacementIds": [
         "q-crp-oz-rwa-erc3643-trex"
@@ -1171,10 +1171,10 @@
     },
     {
       "id": "q-data-network-metrics-sources",
-      "path": "eval/qa/corpus/proposed/tooling-infra/q-data-network-metrics-sources.json",
-      "state": "proposed",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-data-network-metrics-sources.json",
+      "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "3ff435d126312a50ac1418228d348afc322c23e65cdff9634fb6f32172bad4ae"
+      "caseContentSha256": "b6b89ce4bfaabf08eb51f5729df5a27e22def1fa3a92b8696c7fe5f9406edba1"
     },
     {
       "id": "q-defi-agent-identity-stellar-experimental",
@@ -1195,7 +1195,7 @@
       "path": "eval/qa/corpus/retired/q-defi-allbridge-what-is.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "492e77d27e7103fd24913afc98425cdb425881bb6acfb165059ff67bd506cd77",
+      "tombstoneContentSha256": "58af61f4a1c19770b7208fe6ccb27a5adb7f14790fbc5f6b83d676f5f8418d2d",
       "lastCaseContentSha256": "29593800099cf361f25446804e32aa79e508c65a06a036686b32361c471d4c7c",
       "replacementIds": []
     },
@@ -1222,7 +1222,7 @@
       "path": "eval/qa/corpus/retired/q-defi-asset-whitespace-live.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "15b1b466a5eabbdbf0c0a9af3ffc5c47af0e732e13e87e30b928e5e48d514ff7",
+      "tombstoneContentSha256": "fede3cd3958c9a593234357681574ebf855ff084796df1b5e9586c69e669f2ee",
       "lastCaseContentSha256": "47f3dcf7789d4b321df8cfbdc6cde74f5283f7955bb485e9f7d77e02c44d08b7",
       "replacementIds": [
         "q-defi-cluster-rollup-live"
@@ -1240,14 +1240,14 @@
       "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-blend-alternatives.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "ec5d233d87a0bac04230c44f37ed9a8be6edb4601d85bd704f3e7a798eb4d5cd"
+      "caseContentSha256": "9e5da0ecb4e9931ca99eb69e8d0351dcc439efd59d9182ea898cc15e4a9398ec"
     },
     {
       "id": "q-defi-blend-audit-record",
-      "path": "eval/qa/corpus/proposed/defi-ecosystem/q-defi-blend-audit-record.json",
-      "state": "proposed",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-blend-audit-record.json",
+      "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "9105033a0ede5b4b48b82ca7d92b59726d5aa1758575c18432837a9fa8e91059"
+      "caseContentSha256": "434ca522ee9ccf0f4c5becaff2f8de45545fad5776ed0f3609de69a1f55992fe"
     },
     {
       "id": "q-defi-blend-what-is",
@@ -1268,7 +1268,7 @@
       "path": "eval/qa/corpus/retired/q-defi-build-staking-for-own-token.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "4b71c6ae851aceebf3f58fe50530acfe1fdfcc8670608204ed225306f437e11e",
+      "tombstoneContentSha256": "7084aef2556e782ee8502ec432f766bd0d94b89c077502cd70b12dd579a6c074",
       "lastCaseContentSha256": "bc2b9160bc53a47f0a0fd8ab5dcb7285e007db65a17a82d7e62cda0c4db2c68d",
       "replacementIds": []
     },
@@ -1277,7 +1277,7 @@
       "path": "eval/qa/corpus/retired/q-defi-category-funding-ratio-live.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "0eace5e4c1035a7e49b6301ce31a9e832bbb965af9d729478d9c6c34e380e229",
+      "tombstoneContentSha256": "b506b73f1268f96d56310fcfa829c8de5a5997bb7b44de4a289956f6152669f1",
       "lastCaseContentSha256": "a477dac27cf4d329ee1356fcc92ba2a279e66e9ae1b04564fcc0b9f4ed6d0256",
       "replacementIds": [
         "q-defi-cluster-rollup-live"
@@ -1358,7 +1358,7 @@
       "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-liquid-staking-whitespace.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "099bb899086fa466e474ef09a30d12ce1848e27051f24cdd50ece24737eb71b2"
+      "caseContentSha256": "2ce2760ea6adda6f580db4a8d4004311ac49e72cd359f2275c0e42ca469578bc"
     },
     {
       "id": "q-defi-lumenloop-categories-vocab",
@@ -1374,7 +1374,7 @@
       "path": "eval/qa/corpus/retired/q-defi-market-making-kelp.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "2c9a44154ff259b7aab6acdbc4530dd8878199c94e9898dd491448ae39b9ed42",
+      "tombstoneContentSha256": "80a6b9f2343ab6752a69df0050b3318e2cb11991c0fe094346d46726566c993b",
       "lastCaseContentSha256": "184d0222183df4bf0f3d5eefd7f52eef64220946cf43b4749d1fe439f295699a",
       "replacementIds": []
     },
@@ -1410,7 +1410,7 @@
       "path": "eval/qa/corpus/retired/q-defi-perps-whitespace.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "45221411ec3e21292adec97c3575d7eb74bde816fc95d127204e5a8ab08f5352",
+      "tombstoneContentSha256": "0b189f18a8c27ab91fae4627618ee622b469d550cc19714afcdd5a78a8e780a2",
       "lastCaseContentSha256": "1fe397436b19f703bce9302b1b63e53accd1b80ecb932de38afa488760d437f7",
       "replacementIds": []
     },
@@ -1448,7 +1448,7 @@
       "path": "eval/qa/corpus/retired/q-defi-rwa-scf-similar.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "9ec32b44db066f8cc0048564d197faa956f99a2704a8d397e03d909f43b2e184",
+      "tombstoneContentSha256": "9843cb9c72df705afc04a3e50f3aadb5ab286da6128d4994b947c5a4bf514148",
       "lastCaseContentSha256": "01e1d81b70e71c721e8b7adc46d6f1abe201e34589b25b7928f65a22ea9963b6",
       "replacementIds": []
     },
@@ -1518,7 +1518,7 @@
       "path": "eval/qa/corpus/retired/q-defi-tooling-whitespace-live.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "9128461cd7ea03234a1210027b9b98afd6023cff4ab26b4f556fb3d4357194b4",
+      "tombstoneContentSha256": "01fac06f42c021b78a313bf45f945f7ed0183f760fd2ac5246643050584df7f3",
       "lastCaseContentSha256": "43c126bb83f2a17d5fe2a0f05b6bc504960d7981b71930e1e916cb7cbef9468c",
       "replacementIds": [
         "q-defi-cluster-rollup-live"
@@ -1552,7 +1552,7 @@
       "path": "eval/qa/corpus/retired/q-eco-defi-projects-discovery.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "4010867b40acd99a755f3e2a99dba52757b7c1c52d7af5d4be11bb74014fbb46",
+      "tombstoneContentSha256": "20adbc54fb5039c4f94db43dfba74b86e45f1ec37e8b80fceb040c9005a2e770",
       "lastCaseContentSha256": "f02fbe3c6a136c9eb040196ebafb637fa9892947c2a68df15453b5776060c2b0",
       "replacementIds": [
         "q-eco-defi-market-map"
@@ -1594,17 +1594,17 @@
     },
     {
       "id": "q-eco-hermes-renamed-zenex",
-      "path": "eval/qa/corpus/proposed/defi-ecosystem/q-eco-hermes-renamed-zenex.json",
-      "state": "proposed",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-eco-hermes-renamed-zenex.json",
+      "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "2f35a2aca6c9348bc6a4f93f4f41180c91cf75f31da05607f571ce9bcba3bdec"
+      "caseContentSha256": "daafe49095bd6b8bbaac803f8005fffdaf23fae7668556cc91ac361b80782334"
     },
     {
       "id": "q-eco-institutions-payment-networks-banks",
-      "path": "eval/qa/corpus/proposed/defi-ecosystem/q-eco-institutions-payment-networks-banks.json",
-      "state": "proposed",
+      "path": "eval/qa/corpus/battery/defi-ecosystem/q-eco-institutions-payment-networks-banks.json",
+      "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "045ec127c6a2a88c384f64efacc9acfe7d9dcdd9a8a06f167e9b4b72c60fc224"
+      "caseContentSha256": "cc90fef024b09107b0ad7935662c9f152e685ed1f572fbc1966093aa6ac877ec"
     },
     {
       "id": "q-eco-lobstr-wallet",
@@ -1662,7 +1662,7 @@
       "path": "eval/qa/corpus/retired/q-eco-xbull-wallet.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "beff60ca2862eab818d7ece01fc4f69592d6fd7d8d15493b9e7a1419cfe79a20",
+      "tombstoneContentSha256": "36428fffde5f7bdf5fa8481124b5115ffff2fe33479baad3e5f1ced7c5b37a37",
       "lastCaseContentSha256": "78151691b18021eb8257139ba8b52622e57dba06558647fd09b2a686d218d489",
       "replacementIds": [
         "q-eco-stellar-wallets-list"
@@ -1710,7 +1710,7 @@
       "path": "eval/qa/corpus/retired/q-edge-deep-full-history-report.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "f07a2908082314536ffb659736fb3f71a7480c7e4a1b32f596230a4e4f54ac33",
+      "tombstoneContentSha256": "e1bfe1a7bfa10fcfcde18a9ba3a715b8127494d92737852dc91bfbf132f4a4cf",
       "lastCaseContentSha256": "9206a2d82972a9f7d3846b781e33e6a51c168cd89928abeaa80a5d062503b1c2",
       "replacementIds": []
     },
@@ -1719,7 +1719,7 @@
       "path": "eval/qa/corpus/retired/q-edge-doc-category-filter-empty.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "391a80d1cc4107fbe91a027d1b7fdf7a1b81764884df35bbebbc8bb42c539aa7",
+      "tombstoneContentSha256": "1767b96ee19c5f3602bea676574380c36222dd6bd0e84891fa4dff63f9126c7a",
       "lastCaseContentSha256": "cdeb0e0398e4c18b40bcfe5cc604fc9daabab877056145665ca8f1a9f1fe5aff",
       "replacementIds": []
     },
@@ -1728,7 +1728,7 @@
       "path": "eval/qa/corpus/retired/q-edge-doc-page-sections-soft-empty.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "a5052a18cf100a8f8dcdc318c7d3200456109082260cb9b3ad85fdcb09ab1939",
+      "tombstoneContentSha256": "cccca32c11d01f25a9e615fb2768f5034e8f1607ed8469d4391e7726b639cc5f",
       "lastCaseContentSha256": "e66e793a7319348545af3e1452fba176bc7865a51898b14541ec4effdae7369a",
       "replacementIds": []
     },
@@ -1737,7 +1737,7 @@
       "path": "eval/qa/corpus/retired/q-edge-doc-title-zero-hits.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "84b364ae64f28ad2f13669a4bd1d07eaeadfb88a9a3ae8fa6a96cfe6aad4237a",
+      "tombstoneContentSha256": "a01654ca4a205bfd7d75effbf176992d3c8c71d898a544e5f02c97a49138f93e",
       "lastCaseContentSha256": "3cf2e8551d3fdd8dbf0c7b52800f1532781a0d7fc47458ac2ea2a6ac0bc2046b",
       "replacementIds": []
     },
@@ -1819,7 +1819,7 @@
       "path": "eval/qa/corpus/retired/q-edge-lumenloop-person-entity-empty.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "2d072579dcb459e79011e0f6674043c770171d6b49f03ad9f9e3a314c0e28bb3",
+      "tombstoneContentSha256": "76bf2d1ab8d605de1c36013520b0bcd288ba6b973680129f1c6b3fb24da9709a",
       "lastCaseContentSha256": "c35eee9a73a7cac5ce5d4331d34d3d1a0d452e653dc7243d1af1e1943073831b",
       "replacementIds": []
     },
@@ -1828,14 +1828,14 @@
       "path": "eval/qa/corpus/battery/edge-behavior/q-edge-metamask-evm-mental-model.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "86937bbc15d5512f7ef7a55853e5dc3539ae3966a738d95e59b8976a8f1f0ca4"
+      "caseContentSha256": "dfa72ada83433f623b84ca2153ee444847c82b6b246e4a83cb98969fc047e7b1"
     },
     {
       "id": "q-edge-noinfo-exact-tvl-figure",
       "path": "eval/qa/corpus/retired/q-edge-noinfo-exact-tvl-figure.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "7e71b07803090fdc480e51e47834fe78c64001e67a6ed6d87a8300c36ddff58f",
+      "tombstoneContentSha256": "4ec5b1ba115681a0658d772f0f785406f01df5f9365f0c86bff166f4b3b80652",
       "lastCaseContentSha256": "002249d5757173de0b1e096be6dd68e67dd9a490798b704f3b820fec5fb60027",
       "replacementIds": [
         "q-eco-defi-tvl-current"
@@ -1853,7 +1853,7 @@
       "path": "eval/qa/corpus/battery/edge-behavior/q-edge-noinfo-stellar-native-privacy-default.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "21cc37b2bcdaef0e53eb78959b7abfc389eab06dfbbc32d9052df921a30396a1"
+      "caseContentSha256": "3187b9919de4f4c743bcefcd77b16c7659e392432ce63034027395fa5ecdc409"
     },
     {
       "id": "q-edge-noinfo-stellar-pos-staking-rewards",
@@ -1889,7 +1889,7 @@
       "path": "eval/qa/corpus/retired/q-edge-open-world-recovery-after-narrow-miss.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "4c32ed5e2c22db921540064ae73950f5582be40211233596dd55e7ef007b7c38",
+      "tombstoneContentSha256": "f41bb5f6129811c539d0115f4bd1860face5dde1b311b27e6a02dfc257992985",
       "lastCaseContentSha256": "eddc2b2faccb59f3c13fc84994d62caece8111e5c71264331296f89bd92f54e4",
       "replacementIds": []
     },
@@ -1898,7 +1898,7 @@
       "path": "eval/qa/corpus/retired/q-edge-partner-detail-soft-empty.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "fc3c66b1337d63e28f1891a6e24e65a4869254413ed5b48c220fc17706549637",
+      "tombstoneContentSha256": "ca6221b038dd0d0913cda345e4f8929f4a4279ecc5cbdb5dce5252d96c30340b",
       "lastCaseContentSha256": "ac721f7c3d0f1bdbb93f62772bbc10136b6ddec970649fef4a2a25ec2047ca06",
       "replacementIds": []
     },
@@ -1962,7 +1962,7 @@
       "path": "eval/qa/corpus/retired/q-gap-builders-person-empty.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "217a31c7b6ae9a6e0f25f68109d4fd330a8c7f4a80954892fad10afd7b1e4e97",
+      "tombstoneContentSha256": "9cf11364d1644dc0e66e50ebdb238d6d548fce90677bb8077337c3a59d75dc3e",
       "lastCaseContentSha256": "ce6b0513ca587dd704569e278e027156ee4193f4c8beaea04565433805d18d0e",
       "replacementIds": []
     },
@@ -1971,7 +1971,7 @@
       "path": "eval/qa/corpus/retired/q-gap-compare-hackathons.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "662e5597c67d0753bfa8cbc557f7663170ae25a711ec31f693d1f023debd9d1e",
+      "tombstoneContentSha256": "8493d168a6209307ef05a92ed98ab1a1431abef4d13e7b51cea9595e10797025",
       "lastCaseContentSha256": "d5718dc212c192c33137e39ded7ee48b534eb2597479cf38b615239a08eea133",
       "replacementIds": []
     },
@@ -2016,7 +2016,7 @@
       "path": "eval/qa/corpus/retired/q-gap-hackathon-brief-evidence-boundaries.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "1f67322bc2d51e3baf67b42df73e83f24b1385699e45b387e4ca465fd4bad184",
+      "tombstoneContentSha256": "483a7cb1eca773332e7e2aceb64ca94a39be30d3c68c2047127b9a0ccbd1b03a",
       "lastCaseContentSha256": "6ae277a30de66c5da6c549a6ae8ec1f5334b8d3711ab7ff4909f471efa90578b",
       "replacementIds": []
     },
@@ -2025,7 +2025,7 @@
       "path": "eval/qa/corpus/retired/q-gap-hackathon-winner-order.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "a3c18d875e54ce006f0dcca2450d9cb235327f2b9a97f03a7077061398b6b07e",
+      "tombstoneContentSha256": "407e6f378151eadf41cac00dc7e8e9e0497878cd66566adc0d4fe8887e556249",
       "lastCaseContentSha256": "53b37cc34de3fd8d1b7507005aec73c17940441749b223fc0c4fdb25b3a92cab",
       "replacementIds": []
     },
@@ -2034,7 +2034,7 @@
       "path": "eval/qa/corpus/retired/q-gap-leaderboard-project-not-builder.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "6ce29b95e3c77297613dff49c9eac466653ccb752afe704c721f232b6dfab4c7",
+      "tombstoneContentSha256": "09535c7acffd09ab8416ef985ec517af86891631d7617676df4acfd0bbcd6aba",
       "lastCaseContentSha256": "850499d785c439f3d43b040b0a015480ba455d59d63018a62d15ed00a27fd2e8",
       "replacementIds": []
     },
@@ -2142,7 +2142,7 @@
       "path": "eval/qa/corpus/retired/q-gap-semantic-directory-fallback.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "f6a346a4eae6569b5c85b0a2866e6312b44e6227834dfa7621b7d6e500aec10a",
+      "tombstoneContentSha256": "5809e4921e2a5b42a8c23a6491725c8967d127e29794a40ef0ccbd938cbd6773",
       "lastCaseContentSha256": "e892e982bbdabf91fb1afaf87944abf4f22bcf75757ae52fb6803e83985774e1",
       "replacementIds": []
     },
@@ -2169,7 +2169,7 @@
       "path": "eval/qa/corpus/retired/q-gap-vet-pitch-vertical-null.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "f553eb2c72b83ab5e48ab30a2a8607b72a7568eb7b3ba6e7e064aa13fdc38b3f",
+      "tombstoneContentSha256": "7571ce6635bdfa221d9ca5f03f5d53cf1d8a27393a7c88accf5dbb0c52a58e69",
       "lastCaseContentSha256": "2cb6ec730cb82287484919bf6e04f67781db1a5eec8e4d8a7103763fdf53291d",
       "replacementIds": [
         "q-scf-pitch-prep-live"
@@ -2180,7 +2180,7 @@
       "path": "eval/qa/corpus/retired/q-hist-cctp-stellar-live-announcement.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "6e96b11043eaa8edb9b63a9493abfa66ef79832fcad26074ff5a665c3d3f9e0b",
+      "tombstoneContentSha256": "b2e710d7e21c292e864e5f36da82c8b1f91f6bdfb10e26507e714eb296357cda",
       "lastCaseContentSha256": "39625e96935c8d4fec1d8e93418302515c443b78afde486b6827554574853e1d",
       "replacementIds": [
         "q-cctp-v2-usdc-stellar"
@@ -2235,7 +2235,7 @@
       "path": "eval/qa/corpus/retired/q-hist-x402-stellar-announcement.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "3a1cc2af332548de58596a4b4d05d4d828daf97eee3a07da1b1561ad0e3df45a",
+      "tombstoneContentSha256": "ad964ab00ea083e10c1c6eea210d2603db275229d300919b001a1afc93efb77e",
       "lastCaseContentSha256": "667788dbd839778857d91201713fd8d8ff85aaafcc15a0928bca6dd1b9b697f8",
       "replacementIds": []
     },
@@ -2317,14 +2317,14 @@
       "path": "eval/qa/corpus/battery/tooling-infra/q-infra-rpc-provider-archive-tier.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "fc937d0bde22b8e5f5f9ceddbed83092631238ad360c8bb4f6b3f89b236be7a8"
+      "caseContentSha256": "97a91fee15f68840ca84b5d7f878f68c537ecd6b3f559501822d59f9e54792dc"
     },
     {
       "id": "q-infra-sdf-hosted-endpoints",
-      "path": "eval/qa/corpus/proposed/tooling-infra/q-infra-sdf-hosted-endpoints.json",
-      "state": "proposed",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-infra-sdf-hosted-endpoints.json",
+      "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "e2941ba656945d4d254c2805431bebb578b18fd766a269c04d05514371011323"
+      "caseContentSha256": "f96a5baf3984bfa2f004955bb73c2a720e93d79fcbd66996cff0377dff3ac9ad"
     },
     {
       "id": "q-infra-secp256r1-passkeys",
@@ -2350,10 +2350,10 @@
     },
     {
       "id": "q-infra-software-versions-current-protocol",
-      "path": "eval/qa/corpus/proposed/tooling-infra/q-infra-software-versions-current-protocol.json",
-      "state": "proposed",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-infra-software-versions-current-protocol.json",
+      "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "70ad07274d173a82a29a8dfc18c6b010215df56d6dd30694d088cbce58a7cd8f"
+      "caseContentSha256": "ad4ecddbc012f846492ddbbcbf5c6cb8e1681a7241bebaa2f1276fd1eecf9c9e"
     },
     {
       "id": "q-infra-testnet-reset-schedule-recovery",
@@ -2375,10 +2375,10 @@
     },
     {
       "id": "q-infra-version-lag-errors",
-      "path": "eval/qa/corpus/proposed/tooling-infra/q-infra-version-lag-errors.json",
-      "state": "proposed",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-infra-version-lag-errors.json",
+      "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "25963e2bd41166e22e685a9bfaaa853d02bb034fa0818c4516ffe7bde56f173b"
+      "caseContentSha256": "31d982425e02c1d756dc941331969f45584a6fc10857c90a7397e3ac92648d53"
     },
     {
       "id": "q-infra-which-indexer",
@@ -2392,7 +2392,7 @@
       "path": "eval/qa/corpus/retired/q-jutsu-cash-crypto-ramps.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "c53c0b800ae9f51a551ea0b5c672e0b486e321151df715d039f9d9fbe965e47e",
+      "tombstoneContentSha256": "478a30dfeebb655238444207f1780a3afa39d24f3fa3b4834b85d99cba2ee4da",
       "lastCaseContentSha256": "e543b77f828fa24a471e59f85476c735a7d80a3512c53f9295fbd05dbdea2b2f",
       "replacementIds": [
         "q-raph-buy-xlm-safely"
@@ -2419,7 +2419,7 @@
       "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-mpp-discovery-and-modes.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "221f94a8088afedb2d321c7e46a125de3ee161f095863f9a7fc6364a1dbe096e"
+      "caseContentSha256": "966b4aec18217ef27b609b1b280a532e885914cc091ee4978a0b1e9e59b8eea5"
     },
     {
       "id": "q-n3-cross-thread-memory-exfiltration",
@@ -2460,7 +2460,7 @@
       "path": "eval/qa/corpus/retired/q-n3-missing-funds-account-support.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "a29fc388015b5121a1c952b1a1215dec10d92fdda6176964c267f0d598affa7b",
+      "tombstoneContentSha256": "0877ee4521d2e3fc17bf62fcc9310d20667fb45b562c741555a154faa6707b4c",
       "lastCaseContentSha256": "689af560b13450dcf35b087990b7c5266ff10921187a0a0ad56070e170bcfc39",
       "replacementIds": []
     },
@@ -2469,7 +2469,7 @@
       "path": "eval/qa/corpus/retired/q-n3-offtopic-home-renovation.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "df6b46d8f8b5f790eeacc36c169118f62be5d857ce81e3d269219e03037ce0bc",
+      "tombstoneContentSha256": "a86d62ad3a8f620946305ddeb68c99429f67381894b5aa7fd0859fc40febae5f",
       "lastCaseContentSha256": "f917b986c4f68fc461b6e02f99695508562c03922bfd3dac6b7af848149d4924",
       "replacementIds": []
     },
@@ -2478,7 +2478,7 @@
       "path": "eval/qa/corpus/retired/q-n3-paid-research-budget-bypass.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "630c26f815638d4d42c1392dfe7eaea3dd264e3693e4393b107607d67bcfa57d",
+      "tombstoneContentSha256": "71a0b43f73edd00a9197900a6481c9a9600a081df2f6d43817c8d879edc2d315",
       "lastCaseContentSha256": "dd23276a671e37248e6c2fc6155986e9362b9932ee2829163ba879dbee5d52cb",
       "replacementIds": []
     },
@@ -2503,7 +2503,7 @@
       "path": "eval/qa/corpus/retired/q-n3-ssrf-metadata-endpoint.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "016b2e7480e3794dcde033cefcb15c3908826845f85fb9d8be3da5e859c1d848",
+      "tombstoneContentSha256": "3203fcb6e9e8e9fac4cb126b57fc5a9623ba79ef7cbaa67259e5f4c3fa6c3352",
       "lastCaseContentSha256": "5d4f3a566541ad490aad5baee1ad1e5f37f3a19c01cf2f7b829d3eeb6d9e41dd",
       "replacementIds": []
     },
@@ -2512,7 +2512,7 @@
       "path": "eval/qa/corpus/retired/q-n3-wallet-hacked-support-redirect.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "e3d11d0bab30a26fffdc1cedd22b0b59e184606a7104940ce016ec7ea4628d31",
+      "tombstoneContentSha256": "8734ec4d5f884253042275c11c8de3c52074b5b09fbcd376115a77d1b5b9b58b",
       "lastCaseContentSha256": "3cf1b4fdd1be91c41395963ea79d6c45bf33832c02ad3a610ac25c42681453be",
       "replacementIds": [
         "q-raph-stolen-wallet-recovery"
@@ -2523,7 +2523,7 @@
       "path": "eval/qa/corpus/retired/q-n3-xlm-personal-investment-advice.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "ec6e3ed3856284434f03b251768456df42520c7df2f53a2781eb8441f0d2b0b5",
+      "tombstoneContentSha256": "00a54d600e7be2c28950e759a718a8b23a804e5226680de94e6115786c2b346e",
       "lastCaseContentSha256": "a3387635430537ab296b5c96e86fb3708e55cf059b522515a06be2d4b462accc",
       "replacementIds": [
         "q-edge-xlm-price-investment-advice"
@@ -2531,45 +2531,45 @@
     },
     {
       "id": "q-net-protocol-meeting-notes-find-cap",
-      "path": "eval/qa/corpus/proposed/protocol-core/q-net-protocol-meeting-notes-find-cap.json",
-      "state": "proposed",
+      "path": "eval/qa/corpus/battery/protocol-core/q-net-protocol-meeting-notes-find-cap.json",
+      "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "a63e3518ab7ece563cfce2d97a61f3ae3f987b7bc372a7cced2264a9a1a77667"
+      "caseContentSha256": "190be8d753fdb00fafdd0f0c2e0c8f2ccd3f6ccfed201a3236628f186eec8111"
     },
     {
       "id": "q-net-tier1-roster-current",
-      "path": "eval/qa/corpus/proposed/protocol-core/q-net-tier1-roster-current.json",
-      "state": "proposed",
+      "path": "eval/qa/corpus/battery/protocol-core/q-net-tier1-roster-current.json",
+      "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "a9aa0f4a05dc583b156b3b880e46498494cf283fca830113aee6561ca16326af"
+      "caseContentSha256": "dfb22b9e16217f898c1f7eeecf789aa459906e9089a8bfedee91cd1a35d45cf5"
     },
     {
       "id": "q-network-halt-history",
-      "path": "eval/qa/corpus/proposed/protocol-core/q-network-halt-history.json",
-      "state": "proposed",
+      "path": "eval/qa/corpus/battery/protocol-core/q-network-halt-history.json",
+      "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "8ba5d3e34a3628c6a466ba7bb47c08cc4c9d3c9a56d403718e39050a66ca8f67"
+      "caseContentSha256": "2dc517677b113900f7776ff18b67d0e9fad8f0e2ae7fbcfcf597efb518a88514"
     },
     {
       "id": "q-network-status-where-to-check",
-      "path": "eval/qa/corpus/proposed/tooling-infra/q-network-status-where-to-check.json",
-      "state": "proposed",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-network-status-where-to-check.json",
+      "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "517577f0939fec5705ad8e47aef1dd7d90ae78b79f7a1e917fa132044b6fc0a0"
+      "caseContentSha256": "11822f33df3c380ec9207c09350973fe7e5348c9c135033b9cbce0d953547b1a"
     },
     {
       "id": "q-nft-vault-contract-standards",
-      "path": "eval/qa/corpus/proposed/assets-anchors-seps/q-nft-vault-contract-standards.json",
-      "state": "proposed",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-nft-vault-contract-standards.json",
+      "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "cb506ba86453d7a9d563980eec540a74af9ac5e04e2e0e7cca6670974e86c0ba"
+      "caseContentSha256": "83e4f3f659cab1ce0ae8bf472fcd7cd50dcf8dbb1f0e3ac6093541753c3c0912"
     },
     {
       "id": "q-org-mazieres-chief-scientist",
       "path": "eval/qa/corpus/retired/q-org-mazieres-chief-scientist.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "6896bae40bffe1a37a5942489e08f8970c6b39ab18f48e611993b92bdd8f235d",
+      "tombstoneContentSha256": "c4c35c3b77ab30c9f84cc42ac07faf3d2104736206f09cd04a37a167aedc88ca",
       "lastCaseContentSha256": "ca5428898f7ed2c2549b5cc132849f9edf03492895093ad020f4280e3b339988",
       "replacementIds": []
     },
@@ -2578,14 +2578,14 @@
       "path": "eval/qa/corpus/battery/history-org-tokenomics/q-org-sdf-board-directors.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "b610f95ecdf5c86eb464b3060cc1afdea7999c684d00d5a9ab87fcf519e417fb"
+      "caseContentSha256": "48b8066ddafcb68ce78ee623ee834c68482a46ac5ee40d2bb9aaf19f22adf4dd"
     },
     {
       "id": "q-org-sdf-enterprise-fund",
       "path": "eval/qa/corpus/retired/q-org-sdf-enterprise-fund.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "d1047698c67c3ccc80e447b44aff14d594143c509b0d927fd7bbd73487a1bfb0",
+      "tombstoneContentSha256": "2f0a26dd3673954e9234a632e57e6c80ae226cd9caecc6ad0a5e43b64c8754ff",
       "lastCaseContentSha256": "f2cb2e9f1e9fa090d3baa9fee05c255391fd9630a26ee2c11e36c77115ba8b25",
       "replacementIds": []
     },
@@ -2621,7 +2621,7 @@
       "path": "eval/qa/corpus/battery/soroban/q-passkey-smart-account-architecture.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "a426163d3ca85780ffc181e3acdda197b98bd839ec1f5959d5f853d7ae739ea0"
+      "caseContentSha256": "044576d10a467bdce27bb308a427e52cc7ac2916df1b2f3e2a4e0a93c1177b6b"
     },
     {
       "id": "q-passkey-wallet-recovery",
@@ -2639,17 +2639,17 @@
     },
     {
       "id": "q-pay-merchant-request-detect-reconcile",
-      "path": "eval/qa/corpus/proposed/compliance-rwa-payments/q-pay-merchant-request-detect-reconcile.json",
-      "state": "proposed",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-pay-merchant-request-detect-reconcile.json",
+      "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "f43731754cd8c5c6032bda69a463b47e97a1714c6d0bdf142ccfcdcef44e07b6"
+      "caseContentSha256": "02f697eee63973af553d3be9dc088267dffb9cb0357e4794d246db1918b74aa2"
     },
     {
       "id": "q-pay-moneygram-ramps",
       "path": "eval/qa/corpus/retired/q-pay-moneygram-ramps.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "470e8f12c5a5bc571f423a026bbb6ee4020b2fcf22167aa6e3e55fd9f124fa93",
+      "tombstoneContentSha256": "2d0f79a5548cdfca3974c613c2f297db230e1c082a311fc41a02a241c08f3640",
       "lastCaseContentSha256": "1af4a73f444cb1c0353047f6e7038398f36ba2abb76f063a13c2643584dd2cff",
       "replacementIds": []
     },
@@ -2701,23 +2701,23 @@
       "path": "eval/qa/corpus/retired/q-pc-bucketlist-vs-merkle-inclusion-proof.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "2513b27a4845fea33a2fefea42c15e88b34598f651cefdc745da0cfdc717a415",
+      "tombstoneContentSha256": "1848feec591c0b3fd2c285f7ca035e30001f1eac9c96b01d55d34477abf6b442",
       "lastCaseContentSha256": "2e30d80801f1ce2884d27ccc23e8cfdffbeb56b31a59207abd61a568b7a746bb",
       "replacementIds": []
     },
     {
       "id": "q-pc-core-software-audits",
-      "path": "eval/qa/corpus/proposed/protocol-core/q-pc-core-software-audits.json",
-      "state": "proposed",
+      "path": "eval/qa/corpus/battery/protocol-core/q-pc-core-software-audits.json",
+      "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "759ce72b76dad3a7e8b0a82133e05ab47fb447390e122bd4bbfb351157310625"
+      "caseContentSha256": "0eb29b38868425362b37ffda382cf082650e9b539cd7751aaad3b1f110f0dc27"
     },
     {
       "id": "q-pc-cross-redstone-sep40",
       "path": "eval/qa/corpus/battery/protocol-core/q-pc-cross-redstone-sep40.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "db52b088c2adcc21f19e9f47a19a36fa3ab1937ada29c38d79fa936c2fb9a6d0"
+      "caseContentSha256": "429e4b6693b72ecf2035a03b2e2e9cf8f99155bb0960a7b7d2b61a8caba0e26f"
     },
     {
       "id": "q-pc-doc-category-validator-search",
@@ -2740,7 +2740,7 @@
       "path": "eval/qa/corpus/retired/q-pc-l2-payment-channels-starlight.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "2edf0ddd06b4d29207335093d855b39b8f8d729ba64a18f57d5bde229a618a9f",
+      "tombstoneContentSha256": "7b2aec54328884edb9cd78d08658f9254aed71d8b998e4f78182d86f5fdab0a2",
       "lastCaseContentSha256": "0a607403471734943549b0261215d3bdf61c232ba487a47118f1d728bbe50996",
       "replacementIds": []
     },
@@ -2770,7 +2770,7 @@
       "path": "eval/qa/corpus/battery/protocol-core/q-pc-practical-fee-setting.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "5721dfd8fb86f269056091ebdd926c597bfe5b4937401de943baa9f6b58b15d9"
+      "caseContentSha256": "e861b3ffbdaf977a20eb5a505d5e44f2bac454e1a9dcafb6147383f5cffce99c"
     },
     {
       "id": "q-pc-protocol-26-yardstick",
@@ -2793,7 +2793,7 @@
       "path": "eval/qa/corpus/battery/protocol-core/q-pc-protocol-upgrade-timing.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "c51ac446cb97b71158b8f3f602a5ed31c57e5a4f7fdfa91b93f75add9d01c1d5"
+      "caseContentSha256": "d3460808e48e826ad1c0ef4aafa118e426ae22eed8e18cc1b60c9f77473dcf57"
     },
     {
       "id": "q-pc-quantum-preparedness-dormant",
@@ -2804,10 +2804,10 @@
     },
     {
       "id": "q-pc-quorum-freeze-cap77",
-      "path": "eval/qa/corpus/proposed/protocol-core/q-pc-quorum-freeze-cap77.json",
-      "state": "proposed",
+      "path": "eval/qa/corpus/battery/protocol-core/q-pc-quorum-freeze-cap77.json",
+      "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "d4f88de0b5fd0ec57e4af490e6ab543fe61de44e09f2dc178a71de7e30f2cda7"
+      "caseContentSha256": "eec35ef844e4d6f03403d070bee88f7580edfb9293afea9cbc1f85aa10f9b74e"
     },
     {
       "id": "q-pc-sequence-numbers-ordering-replace",
@@ -2853,7 +2853,7 @@
       "path": "eval/qa/corpus/retired/q-production-anchor-architecture.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "9a82162ca43342c3aba92ab282e6471a21c40427cde60096541941a615dc6f26",
+      "tombstoneContentSha256": "dd07c9106d5bd7e3c98efc81ed29cb0594c0ebdab1c737e589d4444a2e17a656",
       "lastCaseContentSha256": "4bf3ce80c15167ff53c200f972d9a8c90768ae1603318a8b91057e607c7a56eb",
       "replacementIds": [
         "q-anchor-sdp-vs-anchor-platform"
@@ -2871,7 +2871,7 @@
       "path": "eval/qa/corpus/retired/q-protocol-23-whisk-caps.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "f7b60b6d0ef2b17adc5bb027f5fa455b5e45cffc666599ea566d255dc3732b8f",
+      "tombstoneContentSha256": "6048dd0d9d380672993c2741717df3fd572addf5a863a5d82bf160a0cdf2ce99",
       "lastCaseContentSha256": "26d9c92ad58fba99cd7f2be3d943df7dde59081ca517b5b0448a1a283e3fadb2",
       "replacementIds": []
     },
@@ -2914,14 +2914,14 @@
       "path": "eval/qa/corpus/battery/protocol-core/q-protocol-base-reserve-min-balance.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "5dcbd42bb4dc93a678c7aa39d7316f6f6e128bbfd9ddf420a9925bbc8dd8db70"
+      "caseContentSha256": "c67c4fce0739ed154981d347f909c10ff1cc9e0e7c49f5390ff5a3a246875c0a"
     },
     {
       "id": "q-protocol-bls12-381-cap59",
       "path": "eval/qa/corpus/retired/q-protocol-bls12-381-cap59.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "7c6a92042c86549b5f980b2b9ca1b3b4335eeeae597014d0cc421dbb6438f19d",
+      "tombstoneContentSha256": "e57f3beb371158faf5b08c10a3f6921aa2ffd93eed77faecf6b447685493d298",
       "lastCaseContentSha256": "5043471748cfe6d0c62bddecd4f3fa42a89f4ace6503cf50a456182bc42545c1",
       "replacementIds": [
         "q-zk-host-functions-status"
@@ -2932,7 +2932,7 @@
       "path": "eval/qa/corpus/retired/q-protocol-bn254-poseidon-xray.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "7ddceed27a553209d7340f2950772d252e458701e7147ffbd2071d29bcba4ea0",
+      "tombstoneContentSha256": "e924aab42ab7c2a9ef9677727d2691e1f082cfa2df4cb49b69966d6d15f450cd",
       "lastCaseContentSha256": "bc6ba426a08910b6d0587203dd39e46a4e1e211ebedd2410205b4cd4b8adf5c7",
       "replacementIds": []
     },
@@ -2959,14 +2959,14 @@
       "path": "eval/qa/corpus/battery/protocol-core/q-protocol-ledger-close-time.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "5885a056e3df2644cc53505f0aae9a1600356d1e88f76b83fc549c958be9d2c3"
+      "caseContentSha256": "58d1933a6ecca2029f2b5c470ce9b5ad5fd92002562a244ca25701d2aac7d44d"
     },
     {
       "id": "q-protocol-ledger-entry-types",
       "path": "eval/qa/corpus/retired/q-protocol-ledger-entry-types.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "4ecd575f831b386ab7b0378fe3f548a14a934941cc9ae09bcdd8cb261eb627f2",
+      "tombstoneContentSha256": "7cfa4fc2b6f0515987e2d2f43e915057af91e5dd6fa69e77cc9190c64dd2c208",
       "lastCaseContentSha256": "81e191805b9c42b938cb503b3173b88ad7ebf9c0a71c391a950183e0adf31f7b",
       "replacementIds": []
     },
@@ -3071,14 +3071,14 @@
       "path": "eval/qa/corpus/battery/protocol-core/q-protocol-version-history-list.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "e14fccc7d33106a582a798812f6cb7d4137f9247cced93161bcce907fddd95f2"
+      "caseContentSha256": "f78900c76b43c5cee74638cb8cc4965b5a6e17ea6b06aeaa529ada48e52af506"
     },
     {
       "id": "q-quickstart-manual-ledger-close",
       "path": "eval/qa/corpus/retired/q-quickstart-manual-ledger-close.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "fb2ea976bc919478bfacc3ea4978a67048c2d532b82fafcd86b1e6200d526e5f",
+      "tombstoneContentSha256": "9a059a1b3b75ea8e14df9fefb60f86a38e231c932a715573a2ffa8c519de0626",
       "lastCaseContentSha256": "8d7be543be563d877bfc6287be5c9c380682286f77fbfeaafb3eedf8fc0a7b09",
       "replacementIds": []
     },
@@ -3148,10 +3148,10 @@
     },
     {
       "id": "q-raph-official-help-sdf-cannot-recover",
-      "path": "eval/qa/corpus/proposed/retail-consumer/q-raph-official-help-sdf-cannot-recover.json",
-      "state": "proposed",
+      "path": "eval/qa/corpus/battery/retail-consumer/q-raph-official-help-sdf-cannot-recover.json",
+      "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "ccfa7b44546d09be855b2454ef16e8e7447e0829d9e25260e0e41fcaca42352a"
+      "caseContentSha256": "a3227f6604610fe157015c6d9444889eb3713ab4da76995e9e899e0140d49fdc"
     },
     {
       "id": "q-raph-offramp-xlm-usdc",
@@ -3273,17 +3273,17 @@
     },
     {
       "id": "q-renamed-tools-rpc-cli-go-sdk",
-      "path": "eval/qa/corpus/proposed/tooling-infra/q-renamed-tools-rpc-cli-go-sdk.json",
-      "state": "proposed",
+      "path": "eval/qa/corpus/battery/tooling-infra/q-renamed-tools-rpc-cli-go-sdk.json",
+      "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "1765f7fbab566b87693f173678d8af1d7edc7abd9abd3a8aa39e12b953a8039b"
+      "caseContentSha256": "8dd68b9157c7933c213519ea4ecb678615a930683b40c0bad812e1bdea97242a"
     },
     {
       "id": "q-rwa-projects-tokenizing-stellar",
       "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-rwa-projects-tokenizing-stellar.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "7e1dc8417751304bf64d69adca8420d4855a1089dc944de2e226ebcd296d65a5"
+      "caseContentSha256": "003fe5c128a6a7fe4a94f42b99d97c3ff1157b564c1479ed0a7602c4c4580a42"
     },
     {
       "id": "q-rwa-stellar-vs-erc20-regulated",
@@ -3308,16 +3308,16 @@
       "path": "eval/qa/corpus/retired/q-scf-academic-research-grant.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "7a9e20d93ebb54fd6390a718cd2d40ac388791fd8fee9fc881776e24a3eb25d5",
+      "tombstoneContentSha256": "5910324e6486c6430b89aea5c7f4d93602ba960cb72f3353da9f50468593a38f",
       "lastCaseContentSha256": "275b58ff639a6bace718923680e098f8cca439f26cc5bb90114489c23d3a3a2a",
       "replacementIds": []
     },
     {
       "id": "q-scf-ai-agent-projects-agents-hackathon",
-      "path": "eval/qa/corpus/proposed/scf-grants-builders/q-scf-ai-agent-projects-agents-hackathon.json",
-      "state": "proposed",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-ai-agent-projects-agents-hackathon.json",
+      "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "13abf3292c8fd350c77b284eaf50dea21b49bc940ecfd82eb4e594ec23d5a8ee"
+      "caseContentSha256": "69561a8852047dd5e3dc0e1e7cdd3e0afb3debd01834ec5cbe408f2c02d4fd6c"
     },
     {
       "id": "q-scf-ambassador-program",
@@ -3352,7 +3352,7 @@
       "path": "eval/qa/corpus/retired/q-scf-build-tracks.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "4da6e639089fbda5e42aa192ee085ae7df573bfdc739664454d8616db7306393",
+      "tombstoneContentSha256": "b45a4afebbcc496f17e4cceb7750f2cd0f9a828293fb66a308b59f6a012969b2",
       "lastCaseContentSha256": "e2d0b507dd5f6fc4455b71ecec5b7b146c6ed91190cbe5f6add131ae8fcad6df",
       "replacementIds": []
     },
@@ -3361,7 +3361,7 @@
       "path": "eval/qa/corpus/retired/q-scf-confidential-tokens-preview.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "39137f61633726a69fe547281716a4f2ee85a201ed737b8f76c59e7ff2007940",
+      "tombstoneContentSha256": "198a99ecfe128fd56a9d705c5f161fd57d307757679a4eafc7d399fc3cde9975",
       "lastCaseContentSha256": "0400b972c576b4544ddcc2479b3ecf41f52cce6c8a12d95b435dd02d5659fdfa",
       "replacementIds": [
         "q-edge-noinfo-stellar-native-privacy-default"
@@ -3399,7 +3399,7 @@
       "path": "eval/qa/corpus/retired/q-scf-current-hackathons-compare-live.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "fe88c435741cb38a5d2e6cd05feb5908e7307b7a04f86de17b223081e1566b09",
+      "tombstoneContentSha256": "899d3aa34f78425cfd149c3f74dc3213bcf3dada775b3cf6f732609c8f4ce6a1",
       "lastCaseContentSha256": "1b606845cba284524f8273d7c89f3290ab360ccfe299898ec5bf4f76bde7887b",
       "replacementIds": []
     },
@@ -3408,7 +3408,7 @@
       "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-current-round.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "5696a8ee13272a09aad6fe7d5b35c8b7b0e234eee8dd06ab10dca12a1edd2917"
+      "caseContentSha256": "68453e28fbda2130ad388f34964be044fe065bbbe3043e026ebfc40d3a9bbc43"
     },
     {
       "id": "q-scf-ecosystem-listing-partner-jobs",
@@ -3426,7 +3426,7 @@
       "path": "eval/qa/corpus/retired/q-scf-eligibility-criteria.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "63ed859dd5376322d8cf6bdedb60fdf161698d8aaca040710b0329b9abe4926a",
+      "tombstoneContentSha256": "4a0555a772660544597ca14ab6bea1a2968f82fcd13bb9942e08cdd4b753859c",
       "lastCaseContentSha256": "7550c942acd43790bd88befd9b8cfd05840bb59a4db89ec3affd9d69c18fd877",
       "replacementIds": []
     },
@@ -3474,7 +3474,7 @@
       "path": "eval/qa/corpus/retired/q-scf-hummingbot-kelp-closed-rfp.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "c78bd5901f0987238f9e1b6d686800ae2aba3102158da5bd9111a5e4c67cf5d3",
+      "tombstoneContentSha256": "8aa22eac927daf5f1e6a1e5546f9cc92c3c09ebdc40f2b51b0422fac2582fc2a",
       "lastCaseContentSha256": "a0ce5e9ab46b82df67043c9116284331d6036d81f1c01f2331527ab5d4d9f0cc",
       "replacementIds": []
     },
@@ -3490,7 +3490,7 @@
       "path": "eval/qa/corpus/retired/q-scf-kale-winner-live.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "909ae3e5245cdd8edf7cb295435442e9a086dc6d260288d6e0500919fb8e6cf1",
+      "tombstoneContentSha256": "89f11786f7a6d5f6a7d7b64ab0d509f45e91adbb7a1b7f146869f785b5b0cfc5",
       "lastCaseContentSha256": "ab16199432f2cea070ddc440d1cda8a7288911f30552173d6ec12a9f9a72fc39",
       "replacementIds": []
     },
@@ -3506,14 +3506,14 @@
       "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-open-rfps.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "6104a08f8cfc950051007d1689584cb2564a358bec20cfa9ed42855750f2a948"
+      "caseContentSha256": "8225b7113bca8435165a6b308fe48299c261dee2c0c650c047eaad01c187fa19"
     },
     {
       "id": "q-scf-open-rfps-live",
       "path": "eval/qa/corpus/retired/q-scf-open-rfps-live.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "87525fe021ca93b017b5220f8489fac7296540cbaa8c4c6d5df81bd30ca83999",
+      "tombstoneContentSha256": "93cf5b59eee276899ff105375b914e99ae80e20bb5e68591b2e07a64e68323f4",
       "lastCaseContentSha256": "8d400fad8e1f79f731070fb25a3f146ce7123d69a51667c4ae37f840c446e814",
       "replacementIds": []
     },
@@ -3522,7 +3522,7 @@
       "path": "eval/qa/corpus/retired/q-scf-passkey-rfps-live.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "b58572e1d36889051854113e7b5e1af9a5c2d2e93c67f7e459b3e5639bdbd10e",
+      "tombstoneContentSha256": "376d18716323e463a0199d08a2164e33c427de692f374c0740c40d1e5f9f3ecb",
       "lastCaseContentSha256": "7ce72e17fbab83ed353bde43e2a668e50d57177e9ca066710f87755a13e495be",
       "replacementIds": []
     },
@@ -3565,7 +3565,7 @@
       "path": "eval/qa/corpus/retired/q-scf-rfps-hackathons-live.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "a6fb73ac69631ff0b0124b1b19cb4046305394c1d4ea809d081806a2b220fec7",
+      "tombstoneContentSha256": "f6a4d4f4dd9ab8e7738cf23e79998e1bebc89109fdf17d91a09e610452330fc4",
       "lastCaseContentSha256": "ec5a23a1cfc3ec1e1112c84a87528e63356892a01cb9eb1e25dbfa779f418e5d",
       "replacementIds": []
     },
@@ -3574,7 +3574,7 @@
       "path": "eval/qa/corpus/retired/q-scf-round-43-results.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "1589d98b070b415ec436857ba59c8c6d951f8e42d0f03db4853b73b106a4ff5d",
+      "tombstoneContentSha256": "df5883c757b2188d5c878c7f375e681f9c85818f44e1edef00b17253afd462e8",
       "lastCaseContentSha256": "030638876243c7d3ebc5acaf60ade066d155c61ff6ba7a9eb2ab912d884abdfd",
       "replacementIds": []
     },
@@ -3596,10 +3596,10 @@
     },
     {
       "id": "q-scf-service-provider-directories",
-      "path": "eval/qa/corpus/proposed/scf-grants-builders/q-scf-service-provider-directories.json",
-      "state": "proposed",
+      "path": "eval/qa/corpus/battery/scf-grants-builders/q-scf-service-provider-directories.json",
+      "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "96304dd1bc4a9e67a6ebe3c10a8878df0d5e3c146afb3dd7410c0044d74c3621"
+      "caseContentSha256": "493c67c1e216b8864eaa7bbb75ba3045ed2c3e8ec85e27635ea05580368fc92f"
     },
     {
       "id": "q-scf-skill-stellar-scout",
@@ -3651,7 +3651,7 @@
       "path": "eval/qa/corpus/retired/q-scf-verified-members.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "8b31f2c7c2b69502e10909679854a939e3a8f482ebf33d958d211ff3c818877f",
+      "tombstoneContentSha256": "573aec0dae0b52124af3047579f564354b7bc1bb0b5e91babf4b0c06b49b7a68",
       "lastCaseContentSha256": "1e18c20c6f7e63f55f2bc86a4f822f9713f4f09c8abc28b132cb3b1c4fd7e9a4",
       "replacementIds": [
         "q-scf-nqg-voting"
@@ -3678,7 +3678,7 @@
       "path": "eval/qa/corpus/retired/q-scout-hackathon-placed-share-kale-vs-zk.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "cffde8fbd81cb1b820a608f2b87f6e6e36617f7eb7986f16071e10900600e874",
+      "tombstoneContentSha256": "fb86f686f1e9b1dda9fdc6b3a1469db45da7e7d70ed4d40cc7324466cb768697",
       "lastCaseContentSha256": "482a9b3630e2a22ee0e68c29eb2c867f346f8893871946d242aaba74223c688d",
       "replacementIds": []
     },
@@ -3687,7 +3687,7 @@
       "path": "eval/qa/corpus/retired/q-scout-hackathon-submission-link-comet-hoops.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "19bbf383b697e95caf0b6bbe3a286b79a3b89c8d7a9aeb939e86319d3f48569b",
+      "tombstoneContentSha256": "877142413d792c268453db8b16514a7d1d5099bbe2d14461855752b5aa5e19a7",
       "lastCaseContentSha256": "de3bb36f020b5138763ab15d18ceebbdd6c9ad1dce95b3580276655fba98f043",
       "replacementIds": [
         "q-scf-blend-winners-live"
@@ -3698,7 +3698,7 @@
       "path": "eval/qa/corpus/retired/q-scout-hackathon-submission-xbid-outcome.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "e72819743dc645a6397156d4c5858479db7eab29efd81ff7f71b1ca32cfc54a3",
+      "tombstoneContentSha256": "3e9fecfb85940ce9cff25c4e4c4680e11ccd88599b264cba70f014f3fff63fb9",
       "lastCaseContentSha256": "c41254a4f71490cbd27bec0d87cf6fe6718b0b753a0e755b289f66169367562e",
       "replacementIds": []
     },
@@ -3707,16 +3707,16 @@
       "path": "eval/qa/corpus/retired/q-scout-hackathon-winner-libraries-vs-field.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "0e14e54353e6242942305c97c530b21fbe7a89484916e692b3020f269835fd1d",
+      "tombstoneContentSha256": "f7638ca5f4c48363e2332fdfcf5aa1644626b37e22014de5ddf8faee9695edf8",
       "lastCaseContentSha256": "13713b5a54785a91e2a2cff58cceab82b413ff3db634dd979d7b8bc32940b054",
       "replacementIds": []
     },
     {
       "id": "q-sdf-2026-strategy-priorities",
-      "path": "eval/qa/corpus/proposed/history-org-tokenomics/q-sdf-2026-strategy-priorities.json",
-      "state": "proposed",
+      "path": "eval/qa/corpus/battery/history-org-tokenomics/q-sdf-2026-strategy-priorities.json",
+      "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "e5af94d7959ebfa9026f72ef52b5ee0b99917370d3d2739b33b9e63fd57a80c6"
+      "caseContentSha256": "daa4d3f354276bc4266fccfef9b6ec73a18769aa08f7f8a6c14038befe2ad152"
     },
     {
       "id": "q-sep-1-toml",
@@ -3741,7 +3741,7 @@
       "path": "eval/qa/corpus/retired/q-sep-31-cross-border.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "0c5118f81713cccfdacaf1b28d7158d163dcbfb2418d427169fcf7bf6b0c0fc4",
+      "tombstoneContentSha256": "1574aa1565b615a542115df95660304140c5bd329760ac2020b9331a2a617ce9",
       "lastCaseContentSha256": "05725d1e2e9b25fcc31d5fb924596171798db708edf4157c2b0036524469ea8a",
       "replacementIds": [
         "q-sep6-sep24-sep31-choice"
@@ -3868,17 +3868,17 @@
     },
     {
       "id": "q-sep24-interactive-deposit-flow",
-      "path": "eval/qa/corpus/proposed/assets-anchors-seps/q-sep24-interactive-deposit-flow.json",
-      "state": "proposed",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-sep24-interactive-deposit-flow.json",
+      "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "40a107e201cccf558dbd244180cfc6eeffe08f50a1cfd6f587b14851f7723c68"
+      "caseContentSha256": "a7d021730ac8549c64e9e91fea22c1faa61e20948ae1d1178a391e2026f97ac0"
     },
     {
       "id": "q-sep31-flow-sep38-quotes",
-      "path": "eval/qa/corpus/proposed/assets-anchors-seps/q-sep31-flow-sep38-quotes.json",
-      "state": "proposed",
+      "path": "eval/qa/corpus/battery/assets-anchors-seps/q-sep31-flow-sep38-quotes.json",
+      "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "ecc0463aa251d6bb8bd7185c6a5391fcd561528cf73ae204b09fa7316999e0c9"
+      "caseContentSha256": "bcf2876252c4d33d78bdbd7cd39a339de76deb59b51dc81f470e5ad8c2c9b938"
     },
     {
       "id": "q-sep53-message-signing",
@@ -3900,10 +3900,10 @@
     },
     {
       "id": "q-signing-safety-website-request",
-      "path": "eval/qa/corpus/proposed/retail-consumer/q-signing-safety-website-request.json",
-      "state": "proposed",
+      "path": "eval/qa/corpus/battery/retail-consumer/q-signing-safety-website-request.json",
+      "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "66c4e379f2510e9a32fac037f0c1c67d3e5ecb7c81c0c8714aa332b8763fcfc7"
+      "caseContentSha256": "e504b03f65f6de40b8dd93b44736e398c891d968739a31d03d60636e7527f3aa"
     },
     {
       "id": "q-smart-account-scoped-policy-signers",
@@ -3984,10 +3984,10 @@
     },
     {
       "id": "q-sor-custom-errors-find-failure-cause",
-      "path": "eval/qa/corpus/proposed/soroban/q-sor-custom-errors-find-failure-cause.json",
-      "state": "proposed",
+      "path": "eval/qa/corpus/battery/soroban/q-sor-custom-errors-find-failure-cause.json",
+      "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "4d64a4c9627cec4eeaca1fdbebaf13c9f99fb86b1fc9f700dd0c4720b006208e"
+      "caseContentSha256": "42761f6cd85cd391fdb484e52bf939769b845a823868f182859ec9f878e97139"
     },
     {
       "id": "q-sor-decode-hosterror-codes",
@@ -4017,7 +4017,7 @@
       "path": "eval/qa/corpus/retired/q-sor-doc-timestamping-manage-data.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "9867e67a0e895718b74a3b99ea10964abea589a05814e53de9ce1d7e0b707e8e",
+      "tombstoneContentSha256": "44337ffcce5c165e0a6d395ae3b2891065c56653dfcd0af0d9a1ae3b929c2ecb",
       "lastCaseContentSha256": "4cc8be6f2318c5c0729c30ac4fe060a3055226c1c2ee59da097636458933068f",
       "replacementIds": []
     },
@@ -4078,7 +4078,7 @@
       "path": "eval/qa/corpus/retired/q-sor-reflector-integration-code.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "fb9b39abd231799675b583ff4a5526e61999ab33a7be9140c0e30bf530b85122",
+      "tombstoneContentSha256": "a4302a51eb069debf390b799ce8f1cd7c9b21336037b3fd9baba59e160645b4e",
       "lastCaseContentSha256": "10eb4b2d6ec0d1e0e6e0b017e50b8ba1a2d3685af5a7aa6c5028836709065665",
       "replacementIds": []
     },
@@ -4087,7 +4087,7 @@
       "path": "eval/qa/corpus/retired/q-sor-reflector-testnet-contract-addresses.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "add00ad5d8742c50a0cb82259607c61dcebcc68b5b176d0c3d494c6fba19d6ad",
+      "tombstoneContentSha256": "0da3c80c8344b938238a56baabdace3ffc03c6cce02d0c189954efd181c4755b",
       "lastCaseContentSha256": "c7e29b16c26c790494b1b7a29248c19275f7c225687732d7dcbcfa851c8cfac0",
       "replacementIds": []
     },
@@ -4150,7 +4150,7 @@
       "path": "eval/qa/corpus/retired/q-sor-test-event-assertion-ordering.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "80bb13bac35ba4d985755b726f1933995d5163cb07692411d882a3384226f6f7",
+      "tombstoneContentSha256": "978838bbdfe3f8e382b086ed54e2fa3afc01e61fc08ce29ebc52117e495e6903",
       "lastCaseContentSha256": "4228e93c2119ad264d1fbf44bce494a49e6c30ce1ff30ee5313d4bb035abe9fb",
       "replacementIds": []
     },
@@ -4223,7 +4223,7 @@
       "path": "eval/qa/corpus/battery/soroban/q-soroban-contract-build-verification.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "c765289a1191134a605a41bd35f5d5b291c4dc9a84070ab60d183329376e929d"
+      "caseContentSha256": "95c75a389dcf80eadf7059b13e470fd2c9caaa767a8104db0f7013937e3104d3"
     },
     {
       "id": "q-soroban-contract-id-derivation",
@@ -4237,7 +4237,7 @@
       "path": "eval/qa/corpus/retired/q-soroban-contractmeta-vs-contractevent.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "fd50eb89aa7f48814e9245df0ab7e7fa9565f17753ed19036cd7e0c6695591da",
+      "tombstoneContentSha256": "8a852bec8e4442a7177daf11b61e6bafe71976c1b6f6769210b15a731a711cc1",
       "lastCaseContentSha256": "c0dfcdb02c7c5b047d5299a60baf47bbce11894886e359cd5d3555fdbff26f50",
       "replacementIds": [
         "q-soroban-publish-events"
@@ -4275,10 +4275,10 @@
     },
     {
       "id": "q-soroban-fee-refundable-rent",
-      "path": "eval/qa/corpus/proposed/soroban/q-soroban-fee-refundable-rent.json",
-      "state": "proposed",
+      "path": "eval/qa/corpus/battery/soroban/q-soroban-fee-refundable-rent.json",
+      "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "e7a2dbc22577701c068ec26696b5e9b58d1827b12df6b30b0e5a02403946394d"
+      "caseContentSha256": "f5c50b52400c8b9b196c21acbd2a2ad755aff8c0d21855b7881f219621070920"
     },
     {
       "id": "q-soroban-fuzz-testing",
@@ -4317,7 +4317,7 @@
       "path": "eval/qa/corpus/retired/q-soroban-oracle-defensive-consumption.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "2c3ce9a82bdb486ce1d08f4e7be23aa3a625de77030b9bd02339ecddfe96f645",
+      "tombstoneContentSha256": "af65f1fcd77fe39c258816878b63a595f7a713358cf9a5d9f4e1eed30a560895",
       "lastCaseContentSha256": "6e431f6e3f091443d09497ceacbb4dc4bc74193c7982363c6f8025dc66b7bed0",
       "replacementIds": []
     },
@@ -4341,10 +4341,10 @@
     },
     {
       "id": "q-soroban-pre-mainnet-security-steps",
-      "path": "eval/qa/corpus/proposed/soroban/q-soroban-pre-mainnet-security-steps.json",
-      "state": "proposed",
+      "path": "eval/qa/corpus/battery/soroban/q-soroban-pre-mainnet-security-steps.json",
+      "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "6cf6680498434670de9e8f8e00f81a0a86428d402043fdcf7f31405f071f3b19"
+      "caseContentSha256": "a2bb5fcaa9305d2389e5776b906059816c5f89eb5a730d1f4007c8f54f9440c8"
     },
     {
       "id": "q-soroban-publish-events",
@@ -4379,7 +4379,7 @@
       "path": "eval/qa/corpus/retired/q-soroban-sdk-cve.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "a8becf0bde35a145b1ae1b8ade2945652a1cbd608d3ad99391043c7d2ffa7d28",
+      "tombstoneContentSha256": "c1df8ae2d3b91e915cc4698f7eaf7f6e090324c2bda58a4e30615d757c2beae4",
       "lastCaseContentSha256": "7c647e482faaaea200fcdb2148c9ad4a3880c05c57d85220914be1200409ca5c",
       "replacementIds": []
     },
@@ -4470,7 +4470,7 @@
       "path": "eval/qa/corpus/retired/q-soroban-x402-auth-entry-signing.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "6dd8f1e02531ac1a59b4ca5be832178508b53f330114b72556fb20f0d40a85e3",
+      "tombstoneContentSha256": "ff49bcbecaa601a0b957e16c9cd4ba6ed566df8a45fe0ad2e416f668104d3395",
       "lastCaseContentSha256": "a7c591d05d0c817c8e85f728fc229cae29fa3e3a1c9bf67fcef5c67c51ea930f",
       "replacementIds": []
     },
@@ -4483,10 +4483,10 @@
     },
     {
       "id": "q-stellar-vs-xrp-ledger",
-      "path": "eval/qa/corpus/proposed/protocol-core/q-stellar-vs-xrp-ledger.json",
-      "state": "proposed",
+      "path": "eval/qa/corpus/battery/protocol-core/q-stellar-vs-xrp-ledger.json",
+      "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "6b599d5e353b724d8d0e0a92a3bee1acecb892e7d1dec511df907d7214fa3d76"
+      "caseContentSha256": "16e71988fc1b568f2347b2e0173fcfa753619b03305576fead94321382a874db"
     },
     {
       "id": "q-ti-bindings-to-nextjs-integration",
@@ -4536,7 +4536,7 @@
       "path": "eval/qa/corpus/battery/tooling-infra/q-ti-compute-token-lp-market-data.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "0b7440b22cdf7269c05cad1d0d4fe0b00bbae4b8e130e67cbfd855013c673bb0"
+      "caseContentSha256": "0577e29b264566a64761d2af67ac56459af49694fc72cfec35c8ff12a5803011"
     },
     {
       "id": "q-ti-connect-wallet-button-code",
@@ -4557,7 +4557,7 @@
       "path": "eval/qa/corpus/retired/q-ti-enumerate-all-contracts.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "58a33d40246efc7b3051bb524bb23af5b970aa365cc9705c42215f7ecb6811ff",
+      "tombstoneContentSha256": "aa5a345914b86b13474dbb511b90e375ab3e64a5ec6c824250141cf1f1731816",
       "lastCaseContentSha256": "6d28d3d90159c9beeb0887b7d34cbe84d4ce1ee7f728ddb5d8feda8e4538e21f",
       "replacementIds": []
     },
@@ -4598,7 +4598,7 @@
       "path": "eval/qa/corpus/retired/q-ti-freighter-localhost-not-detected.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "7e4749df6690e45aaef28660d0564767051afe1977b1411c8c60abb384fc923d",
+      "tombstoneContentSha256": "a19123f4bee5d6cb3ee608eee1bc20577161c089489b19cd6182ce9ef7373300",
       "lastCaseContentSha256": "e17f0c194b085b0a0f9d4473e9a486739dee97bf28b909c6d1400ffd0b808443",
       "replacementIds": []
     },
@@ -4616,7 +4616,7 @@
       "path": "eval/qa/corpus/retired/q-ti-historical-pointintime-balances.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "80320a6d8d001c0fd14031f4adfb8cb23be94426ee81b20628c64a2a5eb0044e",
+      "tombstoneContentSha256": "a23064fac268b97d83221490bd1b725b255a973f8956da16a84484b097ff5fa4",
       "lastCaseContentSha256": "69a0afca074624e642930108e6586f6944c44a726583595e2c90243c1c018a05",
       "replacementIds": []
     },
@@ -4755,7 +4755,7 @@
       "path": "eval/qa/corpus/retired/q-ti-video-tutorials.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "cb2e4296b67f9c4bc0cbfa1381d3dc6c3e311e23056753a45d2271d263e23bc1",
+      "tombstoneContentSha256": "881512a98c0ac3417d94feb3f03c4a8d63eaa49c13d793a8bd919e31eb609e52",
       "lastCaseContentSha256": "34c8f2c530b7791446c7f41699ea8391f6d8d3abb28d8751e38bca15431a35fa",
       "replacementIds": []
     },
@@ -4815,17 +4815,17 @@
     },
     {
       "id": "q-token-xlm-supply-total-circulating",
-      "path": "eval/qa/corpus/proposed/history-org-tokenomics/q-token-xlm-supply-total-circulating.json",
-      "state": "proposed",
+      "path": "eval/qa/corpus/battery/history-org-tokenomics/q-token-xlm-supply-total-circulating.json",
+      "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "decc3f055c515d44ac07c484e54c6144ccd7b04bb9eac261bed68bd4564bfa1f"
+      "caseContentSha256": "c5e8cd6c8610521e47e4632afe7305635be2eede1a91bfd91d833f2de0f8b104"
     },
     {
       "id": "q-tool-cctp-stellar-integration",
       "path": "eval/qa/corpus/retired/q-tool-cctp-stellar-integration.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "8dab6f95b40e732c4a9daeb85c3d8a471f9c9636950b04ead099f7c6a570eeb0",
+      "tombstoneContentSha256": "4f22974015503c4a994cf76ecc0dff642c8090831caa61d6430911596b041110",
       "lastCaseContentSha256": "0be4267b3108134ac8e5a8133373f4934266576d324dc6e21342a423851e98a4",
       "replacementIds": [
         "q-cctp-v2-usdc-stellar"
@@ -4843,7 +4843,7 @@
       "path": "eval/qa/corpus/retired/q-tool-cli-testnet-identity-howto.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "1fafb2110bd29cbde0c2d1720d8960f3c873143ba7f9d499ab1e0c6e41445ed6",
+      "tombstoneContentSha256": "ac572883b0dc2fbb0889f5bbe583e0f85f48552353d53d2cf95d7fdb51626f56",
       "lastCaseContentSha256": "577fd08d989093f1e63d87a9b20151445abc2b2fdea00a9d06b94d7617fabf37",
       "replacementIds": []
     },
@@ -4861,7 +4861,7 @@
       "path": "eval/qa/corpus/retired/q-tool-flutter-mobile-sdk.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "2b6f7bb35e67268137743105c8db8593e128c0baf2bc18705b22351fc8d61eb5",
+      "tombstoneContentSha256": "8aa0683b00f9ec7bd90a8ee98038963f1f61e47b0a53995e5e9c085acb8f555d",
       "lastCaseContentSha256": "4e8aba1227454e3d623a52b0bb251640e0001272dcc26fc0d96ae4375b528255",
       "replacementIds": []
     },
@@ -4961,7 +4961,7 @@
       "path": "eval/qa/corpus/retired/q-tool-rust-soroban-sdk.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "93a74016160438f4e72fe7ffe5836fe091b7214206303b5f6a545ac2ef7f9839",
+      "tombstoneContentSha256": "6bb73ad9efe2611719ba78616289454ecc496605bb1d535e490ec4a07f439123",
       "lastCaseContentSha256": "8c263631b8e6b651da985f8d3e627f2065687ac96874c3af4d830f89116a513b",
       "replacementIds": []
     },
@@ -5049,16 +5049,16 @@
       "path": "eval/qa/corpus/retired/q-tw-escrow-api-auth-custody.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "d2d82795040149ef6dd89b4645c67a9d332746af7a8cdbb5d15797b609852cab",
+      "tombstoneContentSha256": "a2ba94e81369b2b7a63b3d98335cb0b53d947dd8501a4fb19b3c817918a5d2a2",
       "lastCaseContentSha256": "561476e7584ed114bceca3152ac1eb3454023334c074a22c72bafbf5c01e6757",
       "replacementIds": []
     },
     {
       "id": "q-validator-why-run-no-rewards",
-      "path": "eval/qa/corpus/proposed/protocol-core/q-validator-why-run-no-rewards.json",
-      "state": "proposed",
+      "path": "eval/qa/corpus/battery/protocol-core/q-validator-why-run-no-rewards.json",
+      "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "bbf818c8bdb108508050f9bc812168c574be896b5268db8ff15d80090740c8ce"
+      "caseContentSha256": "fbe67631f7463dba51e9dd24f98c3d1555c87b022f1d94a04d6c4db43d1bcd84"
     },
     {
       "id": "q-x402-payment-verification",
@@ -5090,7 +5090,7 @@
       "path": "eval/qa/corpus/retired/q-zk-nullifier-storage.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "3a05f3b874ab287c2e528119f8e95015e8bc269db162a09bbdfa3d5c5cd742bd",
+      "tombstoneContentSha256": "d016ece7e8065fd4de134c8f058e43d90e5bffd92c3a94e5a53ef7de57a799e3",
       "lastCaseContentSha256": "943e1961491eabde8f57b99eeb3523a1c6faf7bcf3c5122161cb8207fc8e6158",
       "replacementIds": []
     },
@@ -5099,7 +5099,7 @@
       "path": "eval/qa/corpus/retired/q-zk-poseidon-input-encoding.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "84b4b4f089f39cf53723b349fc78b97256236f2258b603c8674dbb761c256f19",
+      "tombstoneContentSha256": "4a27569f28f8103920022d3c25f5295a619369945a4b5bdc36cebccee21a41ef",
       "lastCaseContentSha256": "ecaef41ded1080e4f3221bb06864ac40a7c858ee39577c32d7daa52dd625a831",
       "replacementIds": []
     },
@@ -5108,7 +5108,7 @@
       "path": "eval/qa/corpus/battery/soroban/q-zk-proof-systems-stellar.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "9a30e3601361eb799441adbd16f8a3c0a50604f35c47bb9601ab31eb02075195"
+      "caseContentSha256": "c29879bed4d3c3b4c5240f1312bb540edb7c4311a3a81c9c0481baae2018c51a"
     },
     {
       "id": "q-zk-verification-resource-budget",

@@ -40,6 +40,10 @@ npm run eval:qa:compile
 npm run eval:qa:lint -- --since <ref>
 ```
 
+The headline battery measures Stellar truth by taxonomy leaf. It does not measure operation reach,
+skill reach, or response-envelope traps; the routing gates, the skills routing cases, unit tests,
+the frozen live lanes, and the tool lane own those.
+
 `--coverage` checks headline cases against [taxonomy.json](taxonomy.json). Every headline case names an existing `truth.leaf`, and no leaf holds more than its `cases` target plus one primary case.
 An empty weight-2 or weight-3 leaf warns unless `openSlots` names it with a reason; `--enforce-floors` makes it an error.
 An open slot whose leaf has an active case is an error, so the list only shrinks. `--stale` rejects expired `truth.reverifyBy` values.

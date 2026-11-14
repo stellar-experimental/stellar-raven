@@ -32,7 +32,7 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-05-14",
     "sources": [
       {
@@ -176,7 +176,8 @@
         "Live A 2026-11-14: https://developers.stellar.org/docs/data/oracles/oracle-providers -- 'Reflector: Publicly availble free price oracles are compatible with SEP40 ecosystem standard interface.'",
         "Live A 2026-11-14: https://developers.stellar.org/docs/data/oracles/oracle-providers -- 'RedStone: A single SEP-40-compliant contract that serves the supported Stellar assets through the standard lastprice, price, and prices interface.'",
         "Live A 2026-11-14: https://developers.stellar.org/docs/data/oracles/oracle-providers -- 'Chainlink: Data Feeds on Stellar use a single proxy contract that serves every feed... The proxy is not SEP-40 compatible.'",
-        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0040.md -- 'Title: Oracle Consumer Interface / Authors: Alex Mootz, OrbitLens, Markus Paulson-Luna / Status: Draft; fn base, assets, decimals, resolution, price, prices, lastprice'"
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0040.md -- 'Title: Oracle Consumer Interface / Authors: Alex Mootz, OrbitLens, Markus Paulson-Luna / Status: Draft; fn base, assets, decimals, resolution, price, prices, lastprice'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/data/oracles/oracle-providers.md -- 'A single SEP-40-compliant contract that serves the supported Stellar assets ... Data Feeds on Stellar use a single proxy contract that serves every feed'"
       ],
       "rootCause": [
         ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"

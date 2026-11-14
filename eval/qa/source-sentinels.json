@@ -4,7 +4,7 @@
     {
       "id": "scf-46-submission-deadline",
       "caseId": "q-scf-current-round",
-      "caseAsOf": "2026-11-10",
+      "caseAsOf": "2026-11-14",
       "url": "https://communityfund.stellar.org/awards",
       "check": {
         "kind": "present",
@@ -14,7 +14,7 @@
     {
       "id": "scf-47-not-listed",
       "caseId": "q-scf-current-round",
-      "caseAsOf": "2026-11-10",
+      "caseAsOf": "2026-11-14",
       "url": "https://communityfund.stellar.org/awards",
       "check": {
         "kind": "absent",
@@ -25,7 +25,7 @@
     {
       "id": "scf-45-ended",
       "caseId": "q-scf-current-round",
-      "caseAsOf": "2026-11-10",
+      "caseAsOf": "2026-11-14",
       "url": "https://communityfund.stellar.org/awards",
       "check": {
         "kind": "present",
@@ -35,7 +35,7 @@
     {
       "id": "rpc-archive-provider-rows",
       "caseId": "q-infra-rpc-provider-archive-tier",
-      "caseAsOf": "2026-11-02",
+      "caseAsOf": "2026-11-14",
       "url": "https://github.com/stellar/stellar-docs/blob/main/docs/data/apis/rpc/providers.mdx",
       "check": {
         "kind": "count",
@@ -47,7 +47,7 @@
     {
       "id": "rpc-archive-provider-names",
       "caseId": "q-infra-rpc-provider-archive-tier",
-      "caseAsOf": "2026-11-02",
+      "caseAsOf": "2026-11-14",
       "url": "https://github.com/stellar/stellar-docs/blob/main/docs/data/apis/rpc/providers.mdx",
       "check": {
         "kind": "count",
@@ -59,7 +59,7 @@
     {
       "id": "sdf-board-roster",
       "caseId": "q-org-sdf-board-directors",
-      "caseAsOf": "2026-11-02",
+      "caseAsOf": "2026-11-14",
       "url": "https://stellar.org/foundation/team",
       "check": {
         "kind": "present",
@@ -69,7 +69,7 @@
     {
       "id": "sep55-draft",
       "caseId": "q-soroban-contract-build-verification",
-      "caseAsOf": "2026-11-02",
+      "caseAsOf": "2026-11-14",
       "url": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0055.md",
       "check": {
         "kind": "present",
@@ -79,7 +79,7 @@
     {
       "id": "sep58-draft",
       "caseId": "q-soroban-contract-build-verification",
-      "caseAsOf": "2026-11-02",
+      "caseAsOf": "2026-11-14",
       "url": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0058.md",
       "check": {
         "kind": "present",
@@ -99,7 +99,7 @@
     {
       "id": "mpp-payment-intents",
       "caseId": "q-mpp-discovery-and-modes",
-      "caseAsOf": "2026-11-02",
+      "caseAsOf": "2026-11-14",
       "url": "https://developers.stellar.org/docs/build/agentic-payments/mpp",
       "check": {
         "kind": "present",
@@ -130,7 +130,7 @@
     {
       "id": "metamask-stellar-default",
       "caseId": "q-edge-metamask-evm-mental-model",
-      "caseAsOf": "2026-10-01",
+      "caseAsOf": "2026-11-14",
       "url": "https://support.metamask.io/configure/networks/stellar/",
       "check": {
         "kind": "present",
@@ -140,7 +140,7 @@
     {
       "id": "mainnet-base-reserve",
       "caseId": "q-protocol-base-reserve-min-balance",
-      "caseAsOf": "2026-07-11",
+      "caseAsOf": "2026-11-14",
       "url": "https://horizon.stellar.org/ledgers?order=desc&limit=1",
       "check": {
         "kind": "present",
@@ -183,7 +183,7 @@
     {
       "id": "scf-rfp-q4-roster",
       "caseId": "q-scf-open-rfps",
-      "caseAsOf": "2026-11-12",
+      "caseAsOf": "2026-11-14",
       "url": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
       "check": {
         "kind": "present",
@@ -204,7 +204,7 @@
     {
       "id": "mainnet-protocol-29-history",
       "caseId": "q-protocol-version-history-list",
-      "caseAsOf": "2026-11-10",
+      "caseAsOf": "2026-11-14",
       "url": "https://horizon.stellar.org/",
       "check": {
         "kind": "present",
@@ -215,7 +215,7 @@
     {
       "id": "bell-mainnet-vote-scheduled",
       "caseId": "q-pc-protocol-upgrade-timing",
-      "caseAsOf": "2026-11-10",
+      "caseAsOf": "2026-11-14",
       "url": "https://status.stellar.org/api/v2/scheduled-maintenances/upcoming.json",
       "check": {
         "kind": "present",

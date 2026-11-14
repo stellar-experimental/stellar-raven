@@ -1,0 +1,185 @@
+{
+  "id": "q-validator-why-run-no-rewards",
+  "question": "Stellar pays validators no block rewards. Why do organizations run one anyway, and what does running a validator involve?",
+  "surface": [
+    "stellarDocs.search_docs_in_category",
+    "scout.searchResearch"
+  ],
+  "golden": {
+    "answer": "Validators earn no block rewards, staking yield, or fee share. Organizations run them because their business depends on the network: a validator helps secure it and lets an issuer attest which ledgers it accepts. Influence comes only from others adding the node to their quorum sets. Running one means operating Stellar Core with a validator key, quorum configuration, maintenance, and upgrade votes.",
+    "keyFacts": [
+      "Validators receive no block rewards, staking yield, or share of fees.",
+      "Organizations run validators to help secure a network their business relies on.",
+      "A validator gains influence only when others add it to their quorum sets.",
+      "Running one means operating Stellar Core with a validator key and quorum set."
+    ],
+    "avoid": [
+      "Do NOT say validators earn XLM rewards, inflation payouts, or transaction fees."
+    ]
+  },
+  "tags": {
+    "category": "protocol-core",
+    "service": "stellarDocs",
+    "freshness": "stable"
+  },
+  "truth": {
+    "lifecycle": {
+      "state": "active",
+      "reviewState": "none",
+      "activation": {
+        "date": "2026-11-14",
+        "author": "gap lanes gap-1, gap-2, gap-3 (Claude Fable 5.2)",
+        "reviewer": "verify-gap (Claude Opus 5.5)",
+        "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+        "evidence": [
+          ".agents/rounds/2026-11-14-golden-coverage-audit/gap/verify-gap.json",
+          ".agents/rounds/2026-11-14-golden-coverage-audit/gap/"
+        ]
+      }
+    },
+    "leaf": "network.running-a-node",
+    "domain": "real-world",
+    "status": "confirmed",
+    "asOf": "2026-11-14",
+    "sources": [
+      {
+        "class": "A",
+        "ref": "https://stellar.org/blog/ecosystem/becoming-a-stellar-validator",
+        "observedAt": "2026-11-14",
+        "quote": "As validators on Stellar, they will receive no block rewards, no staking yield, no MEV awards, and no share of transaction fees."
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.org/blog/ecosystem/becoming-a-stellar-validator",
+        "observedAt": "2026-11-14",
+        "quote": "Anyone can run a validator, but it has no influence unless other participants choose to trust it."
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/validators/index.md",
+        "observedAt": "2026-11-14",
+        "quote": "you can let your customers know that you will only honor transactions and redeem assets from ledgers signed by your validator"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/validators/admin-guide/prerequisites.md",
+        "observedAt": "2026-11-14",
+        "quote": "Stellar Core is designed to run on relatively modest hardware so that a whole range of individuals and organizations can participate"
+      },
+      {
+        "class": "D",
+        "ref": "https://dev.to/roan911/how-stellars-validators-actually-run-the-network-no-mining-no-staking-just-trust-2j15",
+        "observedAt": "2026-11-14",
+        "quote": "There is no mining, no staking, and no reward for validating."
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "Stellar validators receive no block rewards, staking yield, or share of transaction fees.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/ecosystem/becoming-a-stellar-validator",
+            "observedAt": "2026-11-14",
+            "note": "'no block rewards, no staking yield, no MEV awards, and no share of transaction fees'."
+          },
+          {
+            "class": "D",
+            "ref": "https://dev.to/roan911/how-stellars-validators-actually-run-the-network-no-mining-no-staking-just-trust-2j15",
+            "observedAt": "2026-11-14",
+            "note": "'no mining, no staking, and no reward for validating'."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering.md",
+            "observedAt": "2026-11-14",
+            "note": "Fees 'go into a locked account and are not given to or used by anyone'."
+          }
+        ]
+      },
+      {
+        "claim": "Organizations run validators because their business depends on the network, and an issuer's validator can attest which ledgers it honors.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/ecosystem/becoming-a-stellar-validator",
+            "observedAt": "2026-11-14",
+            "note": "'Each has enough riding on the Stellar network that an outage could affect its operations ... reason enough to help hold it up.'"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/validators/index.md",
+            "observedAt": "2026-11-14",
+            "note": "Basic Validator: 'signatures can serve as official endorsements of specific ledgers in real time' for an asset issuer."
+          },
+          {
+            "class": "C",
+            "ref": "lumenloop.search_content_semantic",
+            "observedAt": "2026-11-14",
+            "note": "Indexed 2026-07-16 press release: MoneyGram, Figure Markets and Range join as Tier 1 validators."
+          }
+        ]
+      },
+      {
+        "claim": "A validator has influence only when other operators include it in their quorum sets.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/ecosystem/becoming-a-stellar-validator",
+            "observedAt": "2026-11-14",
+            "note": "'it has no influence unless other participants choose to trust it. Running more validators or acquiring more tokens does not change that.'"
+          },
+          {
+            "class": "D",
+            "ref": "https://dev.to/roan911/how-stellars-validators-actually-run-the-network-no-mining-no-staking-just-trust-2j15",
+            "observedAt": "2026-11-14",
+            "note": "'every validator publishes a configuration listing which other validators it will listen to'."
+          }
+        ]
+      },
+      {
+        "claim": "Running a validator means running Stellar Core with a validator secret key, quorum configuration, ongoing maintenance and votes on upgrades.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/validators/index.md",
+            "observedAt": "2026-11-14",
+            "note": "Basic Validator 'does require a secret key, and is configured to participate in consensus'; ongoing requirements list maintenance and network upgrades."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-core",
+            "observedAt": "2026-11-14",
+            "note": "'Reference implementation for the peer-to-peer agent that manages the Stellar network.'"
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-11-14",
+      "by": "verify-gap lane (Claude Opus 5.5) amendment of the gap proposal; applied by the instrument lane (Claude Opus 5.5), .agents/rounds/2026-11-14-golden-coverage-audit.md",
+      "evidence": [
+        "Independent verification: .agents/rounds/2026-11-14-golden-coverage-audit/gap/verify-gap.json#q-validator-why-run-no-rewards (amend)",
+        "Docs and SDF's blog confirm no monetary rewards, the business-reliance motive, the issuer-attestation advantage, and influence only through others' quorum sets. Freshness only: nothing in the golden is dated or volatile, so 'scheduled' adds a quarterly re-verification with no value. Make it stable.",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/validators.md -- 'There are no monetary rewards for being a validator on the Stellar network.'",
+        "Live A 2026-11-14: https://stellar.org/blog/ecosystem/becoming-a-stellar-validator -- 'they will receive no block rewards, no staking yield, no MEV awards, and no share of transaction fees.'",
+        "Live A 2026-11-14: https://stellar.org/blog/ecosystem/becoming-a-stellar-validator -- 'MoneyGram, Figure, and Range will join as Tier 1, but only as the current operators add them to their quorum configurations.'",
+        "Live D 2026-11-14: https://dev.to/roan911/how-stellars-validators-actually-run-the-network-no-mi -- 'How Stellar's validators actually run the network (no mining, no rewards)'",
+        "https://stellar.org/blog/ecosystem/becoming-a-stellar-validator",
+        "https://stellar.org/blog/ecosystem/becoming-a-stellar-validator",
+        "https://developers.stellar.org/docs/validators/index.md",
+        "https://developers.stellar.org/docs/validators/admin-guide/prerequisites.md",
+        "https://dev.to/roan911/how-stellars-validators-actually-run-the-network-no-mining-no-staking-just-trust-2j15"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
+      ]
+    },
+    "notes": "Sibling check: q-edge-noinfo-stellar-pos-staking-rewards tests the no-rewards fact as a trap; q-protocol-validator-node-roles tests node types; q-protocol-tier1-requirements tests Tier 1. Hardware figures (8 vCPU, 16 GB, 100 GB NVMe, verified April 2024 per the docs) are left out of the golden.",
+    "origin": "authored golden-coverage-audit 2026-11-14"
+  }
+}

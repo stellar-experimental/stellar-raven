@@ -8,7 +8,7 @@
     "date": "2026-11-14",
     "author": "audit-tooling-a (golden coverage audit)",
     "reviewer": "verify-audit-tooling-a (golden coverage audit)",
-    "reason": "One Quickstart flag on a target-one leaf.",
+    "reason": "One Quickstart flag on a one-case leaf that q-infra-quickstart-local-network already holds.",
     "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
     "evidence": [
       "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-a.json#q-quickstart-manual-ledger-close",

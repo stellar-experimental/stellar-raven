@@ -123,14 +123,16 @@
         "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-pc-practical-fee-setting",
         "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-pc-practical-fee-setting",
         "Live A 2026-11-14: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering -- 'This cannot be lower than 100 stroops per operation (the network minimum).'",
-        "Live F 2026-11-14: https://horizon.stellar.org/fee_stats -- '\"last_ledger_base_fee\": \"100\" ... fee_charged p70 \"5056\" (ledger 65467844)'"
+        "Live F 2026-11-14: https://horizon.stellar.org/fee_stats -- '\"last_ledger_base_fee\": \"100\" ... fee_charged p70 \"5056\" (ledger 65467844)'",
+        "Live F 2026-11-14: https://horizon.stellar.org/fee_stats -- 'last_ledger 65469118, last_ledger_base_fee 100, fee_charged min 100'",
+        "Live F 2026-11-14: https://horizon.stellar.org/ledgers?order=desc&limit=6 -- 'base_fee_in_stroops 100 (ledger 65469118)'"
       ],
       "rootCause": [
         ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
     "origin": "raven-next q-pc-practical-fee-setting",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-01-30",
     "notes": "GT-29/GT-32 CORRECTION 2026-07-10: lead with RPC getFeeStats/current CLI; Horizon /fee_stats remains available and Horizon is legacy/no-new-features, not formally deprecated. Hubble is historical analytics. Date the 100-stroop floor and provider observations.\nGT-29 endpoint discoverability attached to sd-003, resolved 2026-11-02: the getFeeStats method page is in the docs search. On 2026-09-09, the live pages and positive search records agree on the nearing-end-of-life label. The sd-042 search-ingestion conflict no longer applies. Grade durable endpoint behavior.",
     "leaf": "protocol.fees-surge"

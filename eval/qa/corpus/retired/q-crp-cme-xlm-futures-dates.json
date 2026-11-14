@@ -8,7 +8,7 @@
     "date": "2026-11-14",
     "author": "audit-compliance (golden coverage audit)",
     "reviewer": "verify-audit-compliance (golden coverage audit)",
-    "reason": "Surplus on ecosystem.xlm-markets, a one-facet leaf that q-raph-buy-xlm-safely holds: the case grades two dates and two contract sizes, dated trivia with no reasoning tested (verify-coverage leaf finding).",
+    "reason": "Two CME launch dates and two contract sizes are dated trivia with no reasoning tested on a one-facet leaf that q-raph-buy-xlm-safely holds.",
     "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
     "evidence": [
       "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-compliance.json#q-crp-cme-xlm-futures-dates",

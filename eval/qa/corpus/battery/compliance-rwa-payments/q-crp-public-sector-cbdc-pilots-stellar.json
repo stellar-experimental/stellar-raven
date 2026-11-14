@@ -1,0 +1,238 @@
+{
+  "id": "q-crp-public-sector-cbdc-pilots-stellar",
+  "question": "Has any government or central bank issued a CBDC or other public-sector asset on Stellar?",
+  "surface": [
+    "lumenloop.search_content_semantic",
+    "lumenloop.list_documents",
+    "scout.searchResearch"
+  ],
+  "golden": {
+    "answer": "As of 2026-11-14 no central bank has launched a production CBDC on Stellar. Ukraine's electronic hryvnia pilot (December 2021) was e-money issued by the commercial bank TASCOMBANK with Bitt; the National Bank of Ukraine said it was not its e-hryvnia. One government issues directly: the Marshall Islands' USDM1 sovereign bond has paid universal basic income on Stellar since December 2025.",
+    "keyFacts": [
+      "Ukraine's electronic hryvnia pilot on Stellar was run by TASCOMBANK and Bitt.",
+      "The National Bank of Ukraine said that pilot was not its e-hryvnia CBDC.",
+      "The Marshall Islands issued its USDM1 sovereign bond on Stellar."
+    ],
+    "avoid": [
+      "Do NOT say the National Bank of Ukraine issued a CBDC on Stellar."
+    ],
+    "notes": "An answer that names a production CBDC on Stellar needs a dated primary source; none was found on 2026-11-14. Tokenized government debt from private issuers such as Etherfuse is not a government issuance. Other sourced public-sector programs may be named and are not required."
+  },
+  "tags": {
+    "category": "compliance-rwa-payments",
+    "service": "lumenloop",
+    "freshness": "scheduled"
+  },
+  "truth": {
+    "lifecycle": {
+      "state": "active",
+      "reviewState": "none",
+      "activation": {
+        "date": "2026-11-14",
+        "author": "gap lanes gap-1, gap-2, gap-3 (Claude Fable 5.2)",
+        "reviewer": "verify-gap (Claude Opus 5.5)",
+        "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+        "evidence": [
+          ".agents/rounds/2026-11-14-golden-coverage-audit/gap/verify-gap.json",
+          ".agents/rounds/2026-11-14-golden-coverage-audit/gap/"
+        ]
+      }
+    },
+    "domain": "real-world",
+    "status": "confirmed",
+    "leaf": "assets.public-sector-cbdc",
+    "asOf": "2026-11-14",
+    "reverifyBy": "2027-02-23",
+    "notes": "The negative claim is dated and source-relative: absence from SDF's CBDC pages plus one web sweep. Re-run the sweep at reverifyBy.",
+    "sources": [
+      {
+        "class": "A",
+        "ref": "https://stellar.org/press/ukraine-electronic-hryvnia-pilot-launched-by-tascombank-and-bitt-on-stellar",
+        "observedAt": "2026-11-14",
+        "quote": "[Bitt] and [TASCOMBANK], one of Ukraine's oldest commercial banks, have launched a pilot project to issue an electronic hryvnia on Stellar."
+      },
+      {
+        "class": "D",
+        "ref": "https://www.bitt.com/blog/ukraine-electronic-hryvnia-pilot-launched-by-tascombank-and-bitt-on-stellar",
+        "observedAt": "2026-11-14",
+        "quote": "BRIDGETOWN AND SAN FRANCISCO — DECEMBER 14, 2021 — Global fintech Bitt and TASCOMBANK ... have launched a pilot project"
+      },
+      {
+        "class": "A",
+        "ref": "https://bank.gov.ua/en/news/all/natsionalniy-bank-vitaye-pilotniy-proyekt-ministerstva-tsifrovoyi-transformatsiyi-schodo-vipusku-programovanih-elektronnih-groshey",
+        "observedAt": "2026-11-14",
+        "quote": "This pilot project is not directly concerned with issuing the e-hryvnia, the NBU’s digital currency."
+      },
+      {
+        "class": "A",
+        "ref": "https://bank.gov.ua/en/news/all/natsionalniy-bank-vitaye-pilotniy-proyekt-ministerstva-tsifrovoyi-transformatsiyi-schodo-vipusku-programovanih-elektronnih-groshey",
+        "observedAt": "2026-11-14",
+        "quote": "This pilot project is intended to test the underlying technology by having one of the Ukrainian banks issue electronic money."
+      },
+      {
+        "class": "A",
+        "ref": "https://mof.gov.mh/usdm1/",
+        "observedAt": "2026-11-14",
+        "quote": "USDM1 is a U.S. dollar-denominated financial instrument issued by the Republic of the Marshall Islands (RMI)."
+      },
+      {
+        "class": "A",
+        "ref": "https://mof.gov.mh/usdm1-whitepaper/",
+        "observedAt": "2026-11-14",
+        "quote": "Transfers occur on the Stellar blockchain, enabling transparent and verifiable settlement"
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.org/press/world-s-first-on-chain-disbursement-of-universal-basic-income-delivered-on-the-stellar-network-via-digital-sovereign-bond-usdm1",
+        "observedAt": "2026-11-14",
+        "quote": "World’s First On-Chain Disbursement of Universal Basic Income Delivered on the Stellar Network via Digital Sovereign Bond USDM1"
+      },
+      {
+        "class": "D",
+        "ref": "https://www.coindesk.com/business/2025/12/16/marshall-islands-launches-world-s-first-blockchain-based-ubi-on-stellar-blockchain",
+        "observedAt": "2026-11-14",
+        "quote": "Marshall Islands launches world’s first blockchain-based UBI on Stellar blockchain (Dec 16, 2025)"
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.org/blog/ecosystem/the-worlds-government-debt-is-coming-onchain-its-choosing-stellar",
+        "observedAt": "2026-11-14",
+        "quote": "Etherfuse Stablebonds bring Mexican CETES and Brazilian Tesouro bonds"
+      },
+      {
+        "class": "D",
+        "ref": "perplexity_ask 2026-11-14: production CBDC on Stellar?",
+        "observedAt": "2026-11-14",
+        "quote": "No central bank CBDC had reached production on the Stellar public network as of November 2026."
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "Ukraine's electronic hryvnia pilot on Stellar was launched in December 2021 (announced 2021-12-14) by TASCOMBANK and Bitt.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/press/ukraine-electronic-hryvnia-pilot-launched-by-tascombank-and-bitt-on-stellar",
+            "observedAt": "2026-11-14",
+            "note": "SDF press release: Bitt and TASCOMBANK \"have launched a pilot project to issue an electronic hryvnia on Stellar\"."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.bitt.com/blog/ukraine-electronic-hryvnia-pilot-launched-by-tascombank-and-bitt-on-stellar",
+            "observedAt": "2026-11-14",
+            "note": "Bitt's copy of the release carries the dateline December 14, 2021."
+          },
+          {
+            "class": "A",
+            "ref": "https://bank.gov.ua/en/news/all/natsionalniy-bank-vitaye-pilotniy-proyekt-ministerstva-tsifrovoyi-transformatsiyi-schodo-vipusku-programovanih-elektronnih-groshey",
+            "observedAt": "2026-11-14",
+            "note": "NBU news dated 15 Dec 2021 names the Ministry of Digital Transformation, TASCOMBANK, Bitt and the Stellar Development Foundation."
+          }
+        ]
+      },
+      {
+        "claim": "The National Bank of Ukraine stated the pilot was not an issue of its e-hryvnia CBDC; a commercial bank issued electronic money.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://bank.gov.ua/en/news/all/natsionalniy-bank-vitaye-pilotniy-proyekt-ministerstva-tsifrovoyi-transformatsiyi-schodo-vipusku-programovanih-elektronnih-groshey",
+            "observedAt": "2026-11-14",
+            "note": "Deputy Governor Oleksii Shaban: \"This pilot project is not directly concerned with issuing the e-hryvnia, the NBU’s digital currency. Under new legislation, the NBU is the only authority that can issue the e-hryvnia.\""
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/press/ukraine-electronic-hryvnia-pilot-launched-by-tascombank-and-bitt-on-stellar",
+            "observedAt": "2026-11-14",
+            "note": "\"This regulated electronic hryvnia will be built under the current e-money legislation of Ukraine.\""
+          }
+        ]
+      },
+      {
+        "claim": "The Republic of the Marshall Islands issued the USDM1 sovereign bond, and its universal basic income payments in USDM1 run on Stellar from December 2025.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://mof.gov.mh/usdm1/",
+            "observedAt": "2026-11-14",
+            "note": "Ministry of Finance: USDM1 is \"issued by the Republic of the Marshall Islands\", backed 1:1 by short-dated U.S. Treasury instruments."
+          },
+          {
+            "class": "A",
+            "ref": "https://mof.gov.mh/usdm1-whitepaper/",
+            "observedAt": "2026-11-14",
+            "note": "Ministry whitepaper: \"Transfers occur on the Stellar blockchain.\""
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/press/world-s-first-on-chain-disbursement-of-universal-basic-income-delivered-on-the-stellar-network-via-digital-sovereign-bond-usdm1",
+            "observedAt": "2026-11-14",
+            "note": "SDF press release title names the first on-chain UBI disbursement on Stellar via the digital sovereign bond USDM1."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.coindesk.com/business/2025/12/16/marshall-islands-launches-world-s-first-blockchain-based-ubi-on-stellar-blockchain",
+            "observedAt": "2026-11-14",
+            "note": "CoinDesk, 2025-12-16: Marshall Islands launches blockchain-based UBI on Stellar with USDM1."
+          }
+        ]
+      },
+      {
+        "claim": "As of 2026-11-14 no central bank had launched a production CBDC on Stellar.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://bank.gov.ua/en/news/all/natsionalniy-bank-vitaye-pilotniy-proyekt-ministerstva-tsifrovoyi-transformatsiyi-schodo-vipusku-programovanih-elektronnih-groshey",
+            "observedAt": "2026-11-14",
+            "note": "The only CBDC-labelled Stellar project found is the Ukrainian pilot, which the central bank says is not its CBDC."
+          },
+          {
+            "class": "D",
+            "ref": "perplexity_ask 2026-11-14: production CBDC on Stellar?",
+            "observedAt": "2026-11-14",
+            "note": "Web sweep returned no production CBDC on Stellar; it listed the Ukrainian pilot and the Marshall Islands bond, and wrongly attributed the pilot to the NBU."
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/insights/stellar-for-cbdcs",
+            "observedAt": "2026-11-14",
+            "note": "Page text extracted 2026-11-14 offers a CBDC whitepaper and names no launched central bank currency."
+          }
+        ]
+      },
+      {
+        "claim": "The National Bank of Ukraine issued a CBDC on Stellar.",
+        "verdict": "contradicted",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://bank.gov.ua/en/news/all/natsionalniy-bank-vitaye-pilotniy-proyekt-ministerstva-tsifrovoyi-transformatsiyi-schodo-vipusku-programovanih-elektronnih-groshey",
+            "observedAt": "2026-11-14",
+            "note": "\"the term e-hryvnia only refers to an NBU-issued CBDC\"; the Stellar pilot had a commercial bank issue electronic money."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-11-14",
+      "by": "Claude Fable 5.2, gap-2 lane, 2026-11-14 golden-coverage-audit",
+      "evidence": [
+        "https://stellar.org/press/ukraine-electronic-hryvnia-pilot-launched-by-tascombank-and-bitt-on-stellar",
+        "https://bank.gov.ua/en/news/all/natsionalniy-bank-vitaye-pilotniy-proyekt-ministerstva-tsifrovoyi-transformatsiyi-schodo-vipusku-programovanih-elektronnih-groshey",
+        "https://mof.gov.mh/usdm1/",
+        "https://mof.gov.mh/usdm1-whitepaper/",
+        "https://stellar.org/press/world-s-first-on-chain-disbursement-of-universal-basic-income-delivered-on-the-stellar-network-via-digital-sovereign-bond-usdm1",
+        "https://www.coindesk.com/business/2025/12/16/marshall-islands-launches-world-s-first-blockchain-based-ubi-on-stellar-blockchain",
+        "Sibling sweep: q-hist-unhcr-stellar-aid-assist (UN aid payments) and q-rwa-projects-tokenizing-stellar (RWA issuers) agree; no battery case states the Ukrainian pilot or USDM1.",
+        "Independent verification: .agents/rounds/2026-11-14-golden-coverage-audit/gap/verify-gap.json#q-crp-public-sector-cbdc-pilots-stellar (accept)"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
+      ]
+    },
+    "origin": "authored golden-coverage-audit 2026-11-14"
+  }
+}

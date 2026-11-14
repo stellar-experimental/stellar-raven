@@ -6,7 +6,7 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "Stellar mandates no single toolchain: use Circom/Groth16, Noir (UltraHonk) or zkVMs such as RISC Zero, with a compatible Soroban verifier contract. The app team defines the circuit and keys. The verifier contract uses the native BLS12-381, BN254 and Poseidon host functions, which are primitives, not a private-payment system. Circuit-specific Groth16 normally needs a trusted setup; transparent systems do not.",
+    "answer": "Stellar mandates no single toolchain: use Circom/Groth16, Noir (UltraHonk) or zkVMs such as RISC Zero, with a compatible Soroban verifier contract. The app team defines the circuit and keys. The verifier contract uses the native BLS12-381, BN254 and Poseidon host functions, which are primitives, not a private-payment system. A Groth16 proof verifies on BLS12-381 or BN254 only when the circuit and the verifier use the same curve. Circuit-specific Groth16 normally needs a trusted setup; transparent systems do not.",
     "keyFacts": [
       "Stellar mandates no ZK toolchain; Circom/Groth16, Noir and RISC Zero verifiers exist.",
       "A Soroban verifier contract checks proofs with native BN254 or BLS12-381 host functions.",
@@ -186,14 +186,10 @@
     ],
     "verified": {
       "date": "2026-11-14",
-      "by": "Golden coverage audit 2026-11-14 (audit-soroban-b, verify-audit-soroban-b; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+      "by": "Golden coverage audit finalize 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-b.json#q-zk-proof-systems-stellar",
-        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-b.json#q-zk-proof-systems-stellar",
-        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-zk-proof-systems-stellar",
-        "Live A 2026-11-14: https://developers.stellar.org/docs/build/apps/privacy.md -- 'The current verifier accepts only non-zero-knowledge UltraHonk proofs, so OpenZeppelin does not guarantee that proofs keep balances and amounts private.'",
-        "Live B 2026-11-14: https://raw.githubusercontent.com/NethermindEth/rs-soroban-ultrahonk/main/crates/ultrahonk-soroban-verifier/README.md -- 'Supported flavor: `UltraKeccakFlavor` — non-ZK, non-recursive.'",
-        "Live A 2026-11-14: https://developers.stellar.org/docs/build/apps/privacy.md -- 'The current verifier accepts only non-zero-knowledge UltraHonk proofs'"
+        "Absorbed fact restored from tombstone eval/qa/corpus/retired/q-sor-cross-warmancer-zk-stack.json (its verified golden carried it).",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/soroban-examples/main/groth16_verifier/README.md -- 'Both curve-specific contracts expose the same shape ... The BLS12-381 contract is exercised with Circom, Gnark, and Arkworks fixtures. The BN254 contract is exercised with Gnark fixtures.'"
       ],
       "rootCause": [
         ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"

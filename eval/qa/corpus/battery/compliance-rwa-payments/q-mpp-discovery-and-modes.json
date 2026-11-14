@@ -30,7 +30,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-02-19",
     "sources": [
       {
@@ -266,7 +266,8 @@
         "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-compliance.json#q-mpp-discovery-and-modes",
         "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-mpp-discovery-and-modes",
         "Live A 2026-11-14: https://developers.stellar.org/docs/build/agentic-payments/mpp -- 'Each request triggers a Soroban SAC `transfer` settled on-chain individually.'",
-        "Live A 2026-11-14: https://mpp.dev/mpp-vs-x402 -- 'You can run both protocols on the same endpoint with `mppx`'"
+        "Live A 2026-11-14: https://mpp.dev/mpp-vs-x402 -- 'You can run both protocols on the same endpoint with `mppx`'",
+        "Live sentinel read 2026-11-14 (npm run eval:qa:sentinels -- --ids mpp-payment-intents): hold"
       ],
       "rootCause": [
         ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"

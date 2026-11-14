@@ -1,0 +1,175 @@
+{
+  "id": "q-sep31-flow-sep38-quotes",
+  "question": "How does a SEP-31 cross-border payment move between a sending anchor and a receiving anchor, and where do SEP-38 indicative and firm quotes fit?",
+  "surface": [
+    "stellarDocs.search_anchor_sep_docs",
+    "skills.stellar-dev.standards"
+  ],
+  "golden": {
+    "answer": "In SEP-31 the sending anchor takes the sender's funds, creates a transaction with the receiving anchor, then pays that anchor's Stellar account using the memo it was given; the receiving anchor delivers the funds to the recipient. SEP-38 supplies prices: indicative prices are estimates, while a firm quote has an id and an expiry that the SEP-31 transaction can reference.",
+    "keyFacts": [
+      "In SEP-31, the sending anchor pays the receiving anchor with a Stellar payment.",
+      "The receiving anchor delivers the funds to the recipient's financial account.",
+      "SEP-38 indicative prices are non-binding estimates.",
+      "A SEP-38 firm quote has an id and an expiry."
+    ],
+    "avoid": [
+      "Do NOT describe SEP-31 as an interactive flow that the end user completes in an anchor-hosted page."
+    ],
+    "notes": "Do not require endpoint names or status values. SEP-31 is Active and SEP-38 is Draft; do not require either status."
+  },
+  "tags": {
+    "category": "assets-anchors-seps",
+    "service": "stellarDocs",
+    "freshness": "stable"
+  },
+  "truth": {
+    "lifecycle": {
+      "state": "active",
+      "reviewState": "none",
+      "activation": {
+        "date": "2026-11-14",
+        "author": "gap lanes gap-1, gap-2, gap-3 (Claude Fable 5.2)",
+        "reviewer": "verify-gap (Claude Opus 5.5)",
+        "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+        "evidence": [
+          ".agents/rounds/2026-11-14-golden-coverage-audit/gap/verify-gap.json",
+          ".agents/rounds/2026-11-14-golden-coverage-audit/gap/"
+        ]
+      }
+    },
+    "domain": "real-world",
+    "status": "confirmed",
+    "asOf": "2026-11-14",
+    "leaf": "standards.sep31-sep38",
+    "notes": "Spec versions read 2026-11-14: SEP-31 v3.1.0 (Active, updated 2024-11-05), SEP-38 v2.5.0 (Draft, updated 2025-02-26). SEP-31 says the receiving anchor's payout may be off or on Stellar, so the golden does not say 'off-chain'. Duplicate note: active cases q-sep-31-cross-border and q-sep-38-quotes test parts of this knowledge today, but the coverage plan merges both away (survivors q-sep6-sep24-sep31-choice and q-sep-catalog-list) and opens this slot; this proposal replaces them with one case for the leaf.",
+    "sources": [
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0031.md",
+        "observedAt": "2026-11-14",
+        "quote": "The Sending Anchor sends the funds to the Receiving Anchor's Stellar account (on-Stellar)"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0031.md",
+        "observedAt": "2026-11-14",
+        "quote": "The Receiving Anchor sends funds to the Receiving Client's financial account (off/on-Stellar)"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0031.md",
+        "observedAt": "2026-11-14",
+        "quote": "quote_id: (optional) The id returned from a SEP-38 POST /quote response."
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0038.md",
+        "observedAt": "2026-11-14",
+        "quote": "These prices are indicative. The actual price will be calculated at conversion"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0038.md",
+        "observedAt": "2026-11-14",
+        "quote": "expires_at: The date and time by which the anchor must receive funds from the client."
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep31/integration#firm-vs-indicative-quotes",
+        "observedAt": "2026-11-14",
+        "quote": "If type=firm, your response must include the id & expires_at date-time field and reserve the liquidity needed to fulfil this quote until the quote expires."
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep31/index.md",
+        "observedAt": "2026-11-14",
+        "quote": "SEP-31 allows for a means by which wallets and/or exchanges interact with Stellar's existing set of send-side services."
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/build/apps/wallet/sep38.md",
+        "observedAt": "2026-11-14",
+        "quote": "The SEP-38 standard defines a way for anchors to provide quotes for the exchange of an off-chain asset and a different on-chain asset"
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "In SEP-31 the sending anchor pays the receiving anchor's Stellar account with a memo from the receiving anchor, and the receiving anchor delivers the funds to the recipient's financial account.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0031.md",
+            "observedAt": "2026-11-14",
+            "note": "Abstract steps 1 to 3 and the stellar_account_id, stellar_memo fields of the POST /transactions response."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep31/integration#funds-received",
+            "observedAt": "2026-11-14",
+            "note": "If the Sending Anchor has sent the funds, the Receiving Anchor should change the transaction status to pending_receiver."
+          }
+        ]
+      },
+      {
+        "claim": "SEP-38 indicative prices are non-binding estimates, and a SEP-38 firm quote has an id and an expires_at that a SEP-31 transaction can reference by quote_id.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0038.md",
+            "observedAt": "2026-11-14",
+            "note": "GET /prices and GET /price are indicative; POST /quote returns id and expires_at."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0031.md",
+            "observedAt": "2026-11-14",
+            "note": "POST /transactions accepts quote_id from a SEP-38 POST /quote response."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep31/integration#firm-vs-indicative-quotes",
+            "observedAt": "2026-11-14",
+            "note": "Docs distinguish firm quotes (id, expires_at, reserved liquidity) from indicative ones."
+          }
+        ]
+      },
+      {
+        "claim": "SEP-31 has no anchor-hosted interactive user interface; customer KYC for SEP-31 goes through SEP-12.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0031.md",
+            "observedAt": "2026-11-14",
+            "note": "The flow diagram shows SEP-10, SEP-12, SEP-31 and SEP-38 API calls between the two anchors only."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0012.md",
+            "observedAt": "2026-11-14",
+            "note": "SEP-6 and SEP-31 use this protocol."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-11-14",
+      "by": "gap-3 lane (Claude Fable 5.2, high), golden-coverage-audit 2026-11-14",
+      "evidence": [
+        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0031.md",
+        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0038.md",
+        "https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep31/integration",
+        "Sibling sweep: q-sep-31-cross-border, q-sep-38-quotes, q-sep6-sep24-sep31-choice, q-sep-catalog-list and q-sep-6-vs-31-misnumber-trap agree with these facts.",
+        ".agents/rounds/2026-11-14-golden-coverage-audit/gap/gap-3.json",
+        "Independent verification: .agents/rounds/2026-11-14-golden-coverage-audit/gap/verify-gap.json#q-sep31-flow-sep38-quotes (accept)"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
+      ]
+    },
+    "origin": "authored golden-coverage-audit 2026-11-14"
+  }
+}

@@ -1,0 +1,214 @@
+{
+  "id": "q-pc-quorum-freeze-cap77",
+  "question": "What does CAP-77 (Quorum Freeze) let Stellar validators freeze, how is a freeze enacted and reversed, and has it been used on Mainnet?",
+  "surface": [
+    "stellarDocs.search_docs",
+    "scout.searchResearch"
+  ],
+  "golden": {
+    "answer": "CAP-77, in Protocol 26, lets validators freeze specific ledger entries: accounts, trustlines, contract data and contract code. A freeze is a network configuration upgrade passed by validator vote; transactions that touch a frozen entry are rejected. A later upgrade can unfreeze entries. As of 2026-11-14 it has frozen the YieldBlox (SLP-0006) and Mercado Bitcoin (SLP-0008) exploit accounts.",
+    "keyFacts": [
+      "CAP-77 lets validators freeze accounts, trustlines, contract data, and contract code.",
+      "A freeze is enacted by a network configuration upgrade that validators vote on.",
+      "A later configuration upgrade can unfreeze the entries.",
+      "CAP-77 has been used to freeze the YieldBlox exploit accounts on Mainnet."
+    ],
+    "avoid": [
+      "Do NOT say SDF can freeze an entry on its own, without a validator vote.",
+      "Do NOT say a freeze returns the frozen funds to victims."
+    ],
+    "notes": "Accept later freezes with a dated source; the Mercado Bitcoin freeze (SLP-0008) is not required. Pool-share and issuer trustlines cannot be frozen; do not require that detail."
+  },
+  "tags": {
+    "category": "protocol-core",
+    "service": "stellarDocs",
+    "freshness": "scheduled"
+  },
+  "truth": {
+    "lifecycle": {
+      "state": "active",
+      "reviewState": "none",
+      "activation": {
+        "date": "2026-11-14",
+        "author": "gap lanes gap-1, gap-2, gap-3 (Claude Fable 5.2)",
+        "reviewer": "verify-gap (Claude Opus 5.5)",
+        "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+        "evidence": [
+          ".agents/rounds/2026-11-14-golden-coverage-audit/gap/verify-gap.json",
+          ".agents/rounds/2026-11-14-golden-coverage-audit/gap/"
+        ]
+      }
+    },
+    "domain": "real-world",
+    "status": "confirmed",
+    "asOf": "2026-11-14",
+    "reverifyBy": "2027-03-02",
+    "leaf": "network.quorum-freeze",
+    "notes": "On-chain read 2026-11-14 at ledger 65468615 (getLedgerEntries, CONFIG_SETTING_FROZEN_LEDGER_KEYS, key AAAACAAAABE=): four account keys, last modified at ledger 65273932. Three match the SLP-0006 accounts (GBO7…2WXC, GATD…MVZH, GCJO…DES4) and one matches the SLP-0008 account (GDXY…SOLP). CAP-77 also defines freezeBypassTxs, which lets listed transaction hashes pass validation against frozen keys; neither SLP uses it. q-comp-yieldblox-oracle-incident dates the SLP-0006 freeze to 2026-06-17 (ledger 63073409); this case does not pin that date.",
+    "sources": [
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0077.md",
+        "observedAt": "2026-11-14",
+        "quote": "Only a subset of ledger entry types can be frozen, specifically: Soroban-only entries (contract data, contract code), Account entries, Trustline entires, except pool share trustlines"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0077.md",
+        "observedAt": "2026-11-14",
+        "quote": "all the keys in keysToFreeze are encoded and added to frozenLedgerKeys and all the keys in keysToUnfreeze are removed from frozenLedgerKeys"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/validators/admin-guide/soroban-settings#frozen-ledger-keys",
+        "observedAt": "2026-11-14",
+        "quote": "CAP-77 has been introduced in protocol 26 to allow validators to make certain ledger keys \"frozen\""
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.org/blog/foundation-news/quorum-freeze-cap-77-governed-onchain-incident-response",
+        "observedAt": "2026-11-14",
+        "quote": "A quorum of validators must reach consensus on the freeze command which is the same threshold used for protocol upgrades and configuration changes."
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0006.md",
+        "observedAt": "2026-11-14",
+        "quote": "This proposal freezes three account entries using the frozen ledger key mechanism defined in CAP-0077. (Status: Final)"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0008.md",
+        "observedAt": "2026-11-14",
+        "quote": "This proposal freezes the Stellar account entry that received funds drained from Mercado Bitcoin on November 2, 2026 (Status: Final)"
+      },
+      {
+        "class": "F",
+        "ref": "https://mainnet.sorobanrpc.com getLedgerEntries(AAAACAAAABE=)",
+        "observedAt": "2026-11-14",
+        "quote": "frozen_ledger_keys: 4 keys; lastModifiedLedgerSeq 65273932; latestLedger 65468615"
+      },
+      {
+        "class": "D",
+        "ref": "https://blockaid.io/blog/73-quarantined-how-blockaid-and-stellar-validators-contained-a-10m-price-manipulation-attack",
+        "observedAt": "2026-11-14",
+        "quote": "Approximately 48,069,094 XLM was effectively quarantined as a result."
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "CAP-77 (Protocol 26) lets validators freeze account, trustline, contract data and contract code ledger entries.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0077.md",
+            "observedAt": "2026-11-14",
+            "note": "Preamble: Status Final, Protocol version 26. Abstract lists the freezable entry types."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/validators/admin-guide/soroban-settings#frozen-ledger-keys",
+            "observedAt": "2026-11-14",
+            "note": "Validator docs describe frozen ledger keys introduced in protocol 26."
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/foundation-news/quorum-freeze-cap-77-governed-onchain-incident-response",
+            "observedAt": "2026-11-14",
+            "note": "SDF post: quarantine specific accounts, contract data, or asset balances onchain."
+          }
+        ]
+      },
+      {
+        "claim": "A CAP-77 freeze is enacted by a validator-voted network configuration upgrade, and a later upgrade can unfreeze keys.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0077.md",
+            "observedAt": "2026-11-14",
+            "note": "frozenLedgerKeysDelta carries keysToFreeze and keysToUnfreeze and is applied through the settings upgrade mechanism."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/validators/admin-guide/soroban-settings#frozen-ledger-keys",
+            "observedAt": "2026-11-14",
+            "note": "Freezing/unfreezing the keys follows the standard upgrade procedure."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0006.md",
+            "observedAt": "2026-11-14",
+            "note": "The change can be reversed by a later network configuration upgrade that includes the account ledger keys in keysToUnfreeze."
+          }
+        ]
+      },
+      {
+        "claim": "As of 2026-11-14, CAP-77 freezes on Mainnet cover the three YieldBlox exploit accounts (SLP-0006) and one Mercado Bitcoin exploit account (SLP-0008).",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "F",
+            "ref": "https://mainnet.sorobanrpc.com getLedgerEntries(AAAACAAAABE=)",
+            "observedAt": "2026-11-14",
+            "note": "The Mainnet frozen ledger keys setting holds four account keys whose bytes match the two SLP payloads."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0006.md",
+            "observedAt": "2026-11-14",
+            "note": "Final proposal listing the three account ledger keys."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0008.md",
+            "observedAt": "2026-11-14",
+            "note": "Final proposal listing one account ledger key, created 2026-11-02."
+          },
+          {
+            "class": "D",
+            "ref": "https://blockaid.io/blog/73-quarantined-how-blockaid-and-stellar-validators-contained-a-10m-price-manipulation-attack",
+            "observedAt": "2026-11-14",
+            "note": "Independent account of the YieldBlox quarantine that SLP-0006 moved into network configuration."
+          }
+        ]
+      },
+      {
+        "claim": "A CAP-77 freeze needs a validator quorum and does not move or return funds.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/foundation-news/quorum-freeze-cap-77-governed-onchain-incident-response",
+            "observedAt": "2026-11-14",
+            "note": "A quorum of Stellar validators has to reach consensus before any freeze takes effect."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0008.md",
+            "observedAt": "2026-11-14",
+            "note": "The freeze keeps the stolen XLM from leaving the attacker's account while recovery efforts proceed."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-11-14",
+      "by": "gap-3 lane (Claude Fable 5.2, high), golden-coverage-audit 2026-11-14",
+      "evidence": [
+        "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0077.md",
+        "https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0006.md",
+        "https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0008.md",
+        "Mainnet getLedgerEntries read on 2026-11-14.",
+        "Sibling sweep: q-comp-yieldblox-oracle-incident (three accounts frozen under CAP-0077, SLP-0006), q-pc-protocol-26-yardstick and q-pc-slp-0004-0006-status agree. None tests what CAP-77 can freeze or how a freeze is reversed.",
+        ".agents/rounds/2026-11-14-golden-coverage-audit/gap/gap-3.json",
+        "Independent verification: .agents/rounds/2026-11-14-golden-coverage-audit/gap/verify-gap.json#q-pc-quorum-freeze-cap77 (accept)"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
+      ]
+    },
+    "origin": "authored golden-coverage-audit 2026-11-14"
+  }
+}

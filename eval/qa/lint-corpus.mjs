@@ -640,7 +640,7 @@ function inc(map, key) {
   map.set(key, (map.get(key) ?? 0) + 1);
 }
 
-export function isToolLaneCase(kase) {
+function isToolLaneCase(kase) {
   return kase.truth?.lane === "tool";
 }
 

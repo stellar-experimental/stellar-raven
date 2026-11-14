@@ -1,0 +1,223 @@
+{
+  "id": "q-sor-custom-errors-find-failure-cause",
+  "question": "How do I define and return my own error codes in a Soroban contract, and when a submitted invocation fails, where do I find out why?",
+  "surface": [
+    "stellarDocs.search_docs",
+    "stellarDocs.search_soroban_contract_docs",
+    "stellarDocs.get_doc_page"
+  ],
+  "golden": {
+    "answer": "Define a `#[contracterror]` enum with `#[repr(u32)]` codes, then return it as `Result<T, Error>` or raise it with `panic_with_error!`; the caller sees `Error(Contract, #N)`. Simulate first: `simulateTransaction` reports most failures before submission. An applied failure shows only `txFAILED` and a coarse operation code such as `INVOKE_HOST_FUNCTION_TRAPPED`; the diagnostic events in the transaction metadata carry the detailed cause.",
+    "keyFacts": [
+      "A contract error type is a `#[contracterror]` enum with `#[repr(u32)]` integer codes.",
+      "A function returns the error as `Result<T, Error>` or raises it with `panic_with_error!`.",
+      "Diagnostic events in the transaction metadata carry the detailed failure cause.",
+      "`simulateTransaction` reports most contract failures before submission."
+    ],
+    "avoid": [
+      "Do NOT say a plain `panic!` message is available on-chain to explain the failure."
+    ],
+    "notes": "This case tests defining errors and locating the cause of a failed invocation. q-sor-decode-hosterror-codes tests reading specific HostError classes; do not require that catalogue here. An RPC server returns diagnostic events only when its operator enabled them; saying so is correct, not required."
+  },
+  "tags": {
+    "category": "soroban",
+    "service": "stellarDocs",
+    "freshness": "stable"
+  },
+  "truth": {
+    "lifecycle": {
+      "state": "active",
+      "reviewState": "none",
+      "activation": {
+        "date": "2026-11-14",
+        "author": "gap lanes gap-1, gap-2, gap-3 (Claude Fable 5.2)",
+        "reviewer": "verify-gap (Claude Opus 5.5)",
+        "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+        "evidence": [
+          ".agents/rounds/2026-11-14-golden-coverage-audit/gap/verify-gap.json",
+          ".agents/rounds/2026-11-14-golden-coverage-audit/gap/"
+        ]
+      }
+    },
+    "domain": "real-world",
+    "status": "confirmed",
+    "leaf": "soroban.errors-debugging",
+    "sources": [
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/errors-and-debugging/errors.md",
+        "observedAt": "2026-11-14",
+        "quote": "Errors are a special type of enum integer type that are stored on ledger as `Error` values containing a `u32` code."
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/errors.md",
+        "observedAt": "2026-11-14",
+        "quote": "Errors can be returned from contract functions by returning `Result<_, E>`."
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/errors.md",
+        "observedAt": "2026-11-14",
+        "quote": "The error can be passed to the environment using the `panic_with_error!` macro."
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/errors.md",
+        "observedAt": "2026-11-14",
+        "quote": "thread 'test::test_panic' panicked at .../src/host.rs: HostError: Error(Contract, #1)"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/errors-and-debugging/debugging-errors.md",
+        "observedAt": "2026-11-14",
+        "quote": "The operation errors are not very granular, and diagnostic events should typically be used to understand the exact error."
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/errors-and-debugging/debugging-errors.md",
+        "observedAt": "2026-11-14",
+        "quote": "The errors and diagnostic events are recorded in the transaction meta stream emitted by the Core instance when the ledger is being closed."
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/errors-and-debugging/debugging-errors.md",
+        "observedAt": "2026-11-14",
+        "quote": "the `panic!()` messages are not included in the Wasm builds"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransaction.md",
+        "observedAt": "2026-11-14",
+        "quote": "This is only present if the `ENABLE_SOROBAN_DIAGNOSTIC_EVENTS` has been enabled on the RPC server."
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/soroban-examples/blob/main/errors/src/lib.rs",
+        "observedAt": "2026-11-14",
+        "quote": "#[contracterror] ... #[repr(u32)] ... LimitReached = 1, ... pub fn increment(env: Env) -> Result<u32, Error> {"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/rs-soroban-sdk/blob/main/soroban-sdk/src/lib.rs",
+        "observedAt": "2026-11-14",
+        "quote": "pub use soroban_sdk_macros::contracterror;"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-rpc/blob/main/cmd/stellar-rpc/internal/methods/get_transactions.go",
+        "observedAt": "2026-11-14",
+        "quote": "txInfo.ResultMetaXDR = base64.StdEncoding.EncodeToString(tx.Meta) ... txInfo.Diagnos[ticEventsXDR]"
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "A contract error type is a #[contracterror] enum with #[repr(u32)] integer codes.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/errors-and-debugging/errors.md",
+            "observedAt": "2026-11-14",
+            "note": "Code sample: #[contracterror] #[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)] #[repr(u32)] pub enum Error { AnError = 1 }."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/soroban-examples/blob/main/errors/src/lib.rs",
+            "observedAt": "2026-11-14",
+            "note": "The errors example contract declares #[contracterror], #[repr(u32)] and LimitReached = 1."
+          }
+        ]
+      },
+      {
+        "claim": "A contract function returns the error as Result<T, Error> or raises it with panic_with_error!, and the caller sees Error(Contract, #N).",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/errors.md",
+            "observedAt": "2026-11-14",
+            "note": "\"Errors can be returned from contract functions by returning Result<_, E>\"; \"The error can be passed to the environment using the panic_with_error! macro\"; test output shows HostError: Error(Contract, #1)."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/soroban-examples/blob/main/errors/src/lib.rs",
+            "observedAt": "2026-11-14",
+            "note": "pub fn increment(env: Env) -> Result<u32, Error> returns Err(Error::LimitReached)."
+          }
+        ]
+      },
+      {
+        "claim": "For an applied transaction the result is txFAILED with a coarse operation code, and diagnostic events in the transaction metadata carry the detailed cause.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/errors-and-debugging/debugging-errors.md",
+            "observedAt": "2026-11-14",
+            "note": "\"The transaction result (error) will be txFAILED for Soroban-related failures\"; operation error is one of INVOKE_HOST_FUNCTION_$ERROR ...; \"diagnostic events should typically be used to understand the exact error\"."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransaction.md",
+            "observedAt": "2026-11-14",
+            "note": "getTransaction documents diagnosticEventsXdr as an optional base64 slice of xdr.DiagnosticEvent, present when the server enabled diagnostic events."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-rpc/blob/main/cmd/stellar-rpc/internal/methods/get_transactions.go",
+            "observedAt": "2026-11-14",
+            "note": "The RPC server fills ResultXDR, ResultMetaXDR and DiagnosticEventsXDR on each transaction it returns."
+          }
+        ]
+      },
+      {
+        "claim": "simulateTransaction reports most contract failures before submission.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/errors-and-debugging/debugging-errors.md",
+            "observedAt": "2026-11-14",
+            "note": "Step 1, Transaction Simulation: errors \"are returned by the host and propagated through RPC\"; the table lists HostError(Budget, ExceededLimit), HostError(Storage, MissingValue) and HostError(WasmVm, InvalidAction)."
+          },
+          {
+            "class": "E",
+            "ref": "https://developers.stellar.org/docs/build/guides/transactions/simulateTransaction-Deep-Dive#error-handling",
+            "observedAt": "2026-11-14",
+            "note": "Docs index hit: the simulation mechanism \"also highlights potential errors and resource limitations\"."
+          }
+        ]
+      },
+      {
+        "claim": "A plain panic!() message is available on-chain to explain the failure.",
+        "verdict": "contradicted",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/errors-and-debugging/debugging-errors.md",
+            "observedAt": "2026-11-14",
+            "note": "\"Diagnostic events might provide more detailed information, but not always, as the panic!() messages are not included in the Wasm builds\"; the page recommends panic_with_error!() instead."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-11-14",
+      "by": "Claude Fable 5.2, gap-2 lane, 2026-11-14 golden-coverage-audit",
+      "evidence": [
+        "https://developers.stellar.org/docs/learn/fundamentals/contract-development/errors-and-debugging/errors.md",
+        "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/errors.md",
+        "https://developers.stellar.org/docs/learn/fundamentals/contract-development/errors-and-debugging/debugging-errors.md",
+        "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransaction.md",
+        "https://github.com/stellar/soroban-examples/blob/main/errors/src/lib.rs",
+        "Sibling sweep: q-sor-decode-hosterror-codes (reading HostError classes, try_ client results) agrees and does not test defining an error enum or the transaction-metadata location. q-soroban-simulate-resource-fee covers fees, not failure diagnosis.",
+        "Independent verification: .agents/rounds/2026-11-14-golden-coverage-audit/gap/verify-gap.json#q-sor-custom-errors-find-failure-cause (accept)"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
+      ]
+    },
+    "origin": "authored golden-coverage-audit 2026-11-14"
+  }
+}

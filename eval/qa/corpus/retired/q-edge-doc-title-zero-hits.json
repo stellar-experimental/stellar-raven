@@ -8,7 +8,7 @@
     "date": "2026-11-14",
     "author": "audit-edge (golden coverage audit)",
     "reviewer": "verify-audit-edge (golden coverage audit)",
-    "reason": "Adapter behavior covered by unit tests; the portable lesson lives in the Strupey case.",
+    "reason": "How Raven reports zero matching doc titles is adapter behavior covered by unit tests, and the open-world lesson is graded by q-edge-strupey-ambiguous-stellar-history.",
     "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
     "evidence": [
       "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-edge.json#q-edge-doc-title-zero-hits",

@@ -9,7 +9,7 @@
     "stellarDocs.search_wallet_dapp_docs"
   ],
   "golden": {
-    "answer": "There is no create-asset operation. An asset is an asset code plus issuer. Fund a separate issuing account and distribution account, set any authorization flags first, have the distribution account open a trustline with `ChangeTrust`, then have the issuer pay the supply to it. Publish a stellar.toml (SEP-1). Locking the issuer afterwards stops further issuance; paying the asset back to the issuer burns it.",
+    "answer": "There is no create-asset operation. An asset is an asset code plus issuer. Fund a separate issuing account and distribution account, set any authorization flags first, have the distribution account open a trustline with `ChangeTrust`, then have the issuer pay the supply to it. Publish a stellar.toml (SEP-1). Locking the issuer afterwards stops further issuance; paying the asset back to the issuer burns it, because the issuer cannot hold its own asset.",
     "keyFacts": [
       "A classic asset is defined by its asset code and issuing account.",
       "The distribution account opens a trustline with ChangeTrust before it receives the asset.",
@@ -236,14 +236,10 @@
     ],
     "verified": {
       "date": "2026-11-14",
-      "by": "Golden coverage audit 2026-11-14 (audit-assets, verify-audit-assets; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+      "by": "Golden coverage audit finalize 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-assets.json#q-asset-issue-asset-howto",
-        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-assets.json#q-asset-issue-asset-howto",
-        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-asset-issue-asset-howto",
-        "Live A 2026-11-14: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets -- 'There is no dedicated operation to create an asset on Stellar.'",
-        "Live A 2026-11-14: https://developers.stellar.org/docs/tokens/control-asset-access.md -- 'It is best practice on the Stellar network to create two accounts when issuing an asset: 1) the issuing account and 2) the distribution account.'",
-        "Live A 2026-11-14: https://developers.stellar.org/docs/tokens/control-asset-access.md -- 'set the issuing account’s master weight to 0 using the Set Options operation. This disables the master key, but it does not disable other signers'"
+        "Absorbed fact restored from tombstone eval/qa/corpus/retired/q-aas-burn-clawback-redemption-mechanics.json (its verified golden carried it).",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/tokens/control-asset-access.md -- 'an issuing account can't actually hold a balance of its own asset. Sending an asset back to its issuing account burns (deletes) the asset.'"
       ],
       "rootCause": [
         ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"

@@ -28,7 +28,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-11-10",
+    "asOf": "2026-11-14",
     "sources": [
       {
         "class": "B",
@@ -446,7 +446,8 @@
         "Live A 2026-11-14: https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide -- 'November 3, 2026, 1700 UTC —Testnet upgrade vote. November 23, 2026, 1700 UTC —Mainnet upgrade vote.'",
         "Live F 2026-11-14: https://horizon.stellar.org/ledgers/64458446 -- 'closed_at 2026-09-16T17:00:06Z, protocol_version 28 (64458445 is 27)'",
         "Live F 2026-11-14: https://horizon.stellar.org/ledgers/64717645 -- 'closed_at 2026-10-01T17:00:07Z, protocol_version 29 (64717644 is 28)'",
-        "Live A 2026-11-14: https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide -- 'November 23, 2026, 1700 UTC—Mainnet upgrade vote.'"
+        "Live A 2026-11-14: https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide -- 'November 23, 2026, 1700 UTC—Mainnet upgrade vote.'",
+        "Live sentinel read 2026-11-14 (npm run eval:qa:sentinels -- --ids mainnet-protocol-29-history): hold"
       ],
       "rootCause": [
         ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"

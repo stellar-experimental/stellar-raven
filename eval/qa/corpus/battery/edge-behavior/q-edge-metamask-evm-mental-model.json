@@ -32,7 +32,7 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-10-01",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-05-17",
     "sources": [
       {
@@ -184,7 +184,8 @@
         "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-edge.json#q-edge-metamask-evm-mental-model",
         "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-edge-metamask-evm-mental-model",
         "Live A 2026-11-14: https://support.metamask.io/configure/networks/stellar/ -- 'MetaMask supports Stellar as a default network, allowing you to manage XLM and other assets.'",
-        "Live B 2026-11-14: https://github.com/MetaMask/metamask-extension/blob/main/package.json -- '\"@metamask/stellar-wallet-snap\": \"^2.1.0\"'"
+        "Live B 2026-11-14: https://github.com/MetaMask/metamask-extension/blob/main/package.json -- '\"@metamask/stellar-wallet-snap\": \"^2.1.0\"'",
+        "Live sentinel read 2026-11-14 (npm run eval:qa:sentinels -- --ids metamask-stellar-default): hold"
       ],
       "rootCause": [
         ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"

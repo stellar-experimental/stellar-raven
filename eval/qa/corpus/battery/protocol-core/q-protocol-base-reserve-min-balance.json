@@ -30,7 +30,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-02-15",
     "sources": [
       {
@@ -245,7 +245,8 @@
         "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-protocol-base-reserve-min-balance",
         "Live F 2026-11-14: https://horizon.stellar.org/ledgers?order=desc&limit=5 -- 'closed_at 02:48:27, :32, :37, :42, :47Z; base_reserve_in_stroops 5000000; max_tx_set_size 1000; protocol_version 29'",
         "Live E 2026-11-14: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts#base-reserves -- 'One base reserve is currently 0.5 XLM.'",
-        "Live F 2026-11-14: https://horizon.stellar.org/ledgers?order=desc&limit=1 -- '\"base_reserve_in_stroops\": 5000000'"
+        "Live F 2026-11-14: https://horizon.stellar.org/ledgers?order=desc&limit=1 -- '\"base_reserve_in_stroops\": 5000000'",
+        "Live sentinel read 2026-11-14 (npm run eval:qa:sentinels -- --ids mainnet-base-reserve): hold"
       ],
       "rootCause": [
         ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"

@@ -90,10 +90,10 @@ Directories and `tags.category` stay; category is a filing aid, the leaf is the 
 
 | Rule | Level |
 |---|---|
-| A headline case has a `truth.leaf` that exists; a `secondaryLeaf` exists and differs | error, always |
-| A leaf has at most `cases + 1` primary headline cases | error, always |
+| A headline case has a `truth.leaf` that exists; a `secondaryLeaf` exists and differs | error whenever coverage runs (`--coverage` or `--enforce-floors`; CI runs the latter) |
+| A leaf has at most `cases + 1` primary headline cases | error whenever coverage runs (`--coverage` or `--enforce-floors`; CI runs the latter) |
 | A leaf of weight 2 or 3 has an active case, or an `openSlots` entry with a reason | error with `--enforce-floors`, warn with `--coverage` |
-| An `openSlots` entry names a real leaf, has a reason, and its leaf is still empty | error, always |
+| An `openSlots` entry names a real leaf, has a reason, and its leaf is still empty | error whenever coverage runs (`--coverage` or `--enforce-floors`; CI runs the latter) |
 
 Removed, with what each protected:
 

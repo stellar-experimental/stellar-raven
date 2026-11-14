@@ -8,7 +8,7 @@
     "date": "2026-11-14",
     "author": "audit-edge (golden coverage audit)",
     "reviewer": "verify-audit-edge (golden coverage audit)",
-    "reason": "Exposure enforced by manifest tests.",
+    "reason": "The paid Lumenloop research operation is not exposed, and manifest exposure tests enforce that boundary.",
     "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
     "evidence": [
       "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-edge.json#q-n3-paid-research-budget-bypass",

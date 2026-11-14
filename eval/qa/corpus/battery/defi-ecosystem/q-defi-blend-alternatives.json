@@ -13,11 +13,11 @@
       "OrbitCDP, EquitX and Templar are CDP, synthetic or cross-chain systems."
     ],
     "avoid": [
-      "Do NOT call any candidate unqualifiedly Live or Inactive where Scout and the operator disagree.",
+      "Do NOT call any candidate unqualifiedly Live or Inactive where a directory listing and the operator disagree.",
       "Do NOT list a DEX or AMM as a lending substitute.",
       "Do NOT describe Slender's regular borrowing as uncollateralized."
     ],
-    "notes": "Do not require a Blend dominance claim. A Lumenloop wording that Slender loans need no collateral is wrong (ll-033); flash loans only are uncollateralized."
+    "notes": "Do not require a Blend dominance claim. A claim that Slender loans need no collateral is wrong; only flash loans are uncollateralized."
   },
   "tags": {
     "category": "defi-ecosystem",
@@ -261,14 +261,9 @@
     ],
     "verified": {
       "date": "2026-11-14",
-      "by": "Golden coverage audit 2026-11-14 (audit-defi, verify-defi; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+      "by": "Golden coverage audit finalize 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-defi-blend-alternatives",
-        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-defi-blend-alternatives",
-        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-defi-blend-alternatives",
-        "Live D 2026-11-14: https://x.com/K2_Lend/article/2080737079974154476 -- 'K2 Brings Institution-Ready Lending Infrastructure to Stellar ... 2026-07-24'",
-        "Live A 2026-11-14: https://docs.k2lend.com/ -- 'K2 is a decentralized borrowing and lending protocol deployed on Stellar's Soroban smart contract platform.'",
-        "Live C 2026-11-14: not re-queried 2026-11-14 -- 'volatile labels were not re-read; the rewrite drops per-project labels'"
+        "Review finding L3 (.agents/rounds/2026-11-14-golden-coverage-audit/review/REVIEW.md): provenance moved from judge-facing text to truth.notes; no fact changed."
       ],
       "rootCause": [
         ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
@@ -277,7 +272,7 @@
     "origin": "raven-next q-defi-blend-alternatives",
     "asOf": "2026-11-02",
     "reverifyBy": "2027-01-27",
-    "notes": "DIFFERENTIATED 2026-06-29: this file OWNS the 'are there DIRECT money-market substitutes for Blend' lane (find_similar_projects_semantic; the 2026-06-29 near-single-backbone reading is superseded by the 2026-07-10 correction below). DISTINCT from q-defi-lending-scf-flagships (scout_projects; 'who built lending + which have SCF backing' landscape roster). Added must_avoid against drifting into the SCF-roster lane. Inherited 2026-06-29 Scout grounding: Blend is a major Soroban money market; closest 'alternatives' are Blend-derived (YieldBlox built ON Blend) or Blend-routing (DeFindex vaults), plus CDP-style adjacents (Orbit CDP) — not independent head-to-head lenders. NB live Scout (2026-06-29) confirms Slender is itself a noncustodial money-market by eq-lab (a real adjacent lender), so 'no competitor at all' should be softened to 'few independent head-to-head competitors'.\nSlender's regular loans are over-collateralized (Certora audit report 2024-05-22; DefiLlama, 2026-11-02). Slender's own site used 'no collateral' only for flash loans; the Lumenloop record's general 'without collateral' wording is wrong (ll-033).\nAlso good if the answer: Notes, with a dated source, that much Stellar lending and yield routing runs through Blend or Blend-aware routers like DeFindex.\nGolden cites: Sources for Blend's dominance and any named adjacent protocols.\nCorrected 2026-07-10 by GT-14 primary + blind golden-truth review. Grade category accuracy and dated/source-labeled status discipline, not a frozen roster or dominance claim. Current Scout/operator conflicts are evidence to disclose, not permission to silently select one surface.",
+    "notes": "DIFFERENTIATED 2026-06-29: this file OWNS the 'are there DIRECT money-market substitutes for Blend' lane (find_similar_projects_semantic; the 2026-06-29 near-single-backbone reading is superseded by the 2026-07-10 correction below). DISTINCT from q-defi-lending-scf-flagships (scout_projects; 'who built lending + which have SCF backing' landscape roster). Added must_avoid against drifting into the SCF-roster lane. Inherited 2026-06-29 Scout grounding: Blend is a major Soroban money market; closest 'alternatives' are Blend-derived (YieldBlox built ON Blend) or Blend-routing (DeFindex vaults), plus CDP-style adjacents (Orbit CDP) — not independent head-to-head lenders. NB live Scout (2026-06-29) confirms Slender is itself a noncustodial money-market by eq-lab (a real adjacent lender), so 'no competitor at all' should be softened to 'few independent head-to-head competitors'.\nSlender's regular loans are over-collateralized (Certora audit report 2024-05-22; DefiLlama, 2026-11-02). Slender's own site used 'no collateral' only for flash loans; the Lumenloop record's general 'without collateral' wording is wrong (ll-033).\nAlso good if the answer: Notes, with a dated source, that much Stellar lending and yield routing runs through Blend or Blend-aware routers like DeFindex.\nGolden cites: Sources for Blend's dominance and any named adjacent protocols.\nCorrected 2026-07-10 by GT-14 primary + blind golden-truth review. Grade category accuracy and dated/source-labeled status discipline, not a frozen roster or dominance claim. Current Scout/operator conflicts are evidence to disclose, not permission to silently select one surface.\nMoved from golden.notes 2026-11-14: the no-collateral wording for Slender came from a Lumenloop record (improvements finding ll-033); the directory-versus-operator status disagreement in the avoid item was observed between Scout and the operator.",
     "leaf": "defi.lending"
   }
 }

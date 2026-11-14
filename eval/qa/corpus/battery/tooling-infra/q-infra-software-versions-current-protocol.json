@@ -1,0 +1,241 @@
+{
+  "id": "q-infra-software-versions-current-protocol",
+  "question": "Which stellar-core, Stellar RPC, Horizon, Rust SDK and Stellar CLI releases go with the protocol Mainnet runs today, and where is that mapping published?",
+  "surface": [
+    "stellarDocs.search_docs",
+    "stellarDocs.get_doc_page",
+    "scout.searchResearch"
+  ],
+  "golden": {
+    "answer": "As of 2026-11-14 Mainnet runs Protocol 29, activated October 1, 2026. The developer docs' Software Versions page lists the matching releases: Stellar Core 29.0.0, Stellar RPC v29.0.0, Horizon v29.0.0, Rust SDK 28.0.0 and Stellar CLI 28.1.0. Protocol 30 releases are already published ahead of a Mainnet vote scheduled for November 23, 2026, so re-read the page after any upgrade.",
+    "keyFacts": [
+      "The developer docs' Software Versions page maps each protocol to its matching releases.",
+      "States the protocol Mainnet runs, with the date checked.",
+      "Gives the Core, RPC, Horizon, Rust SDK and CLI versions listed for that protocol."
+    ],
+    "avoid": [
+      "Do NOT say the Rust SDK or CLI major version always equals the protocol number."
+    ],
+    "notes": "On 2026-11-14 Mainnet ran Protocol 29 and the page listed Core, RPC and Horizon 29.0.0, Rust SDK 28.0.0 and CLI 28.1.0; the Protocol 30 Mainnet vote was set for 2026-11-23. After a Mainnet upgrade, grade against the release set the page lists for the then-current protocol. Later patch releases for the same protocol, such as RPC v29.0.1, are not wrong when attributed to a release page. Operators may already run next-version software before the vote; that is not an error."
+  },
+  "tags": {
+    "category": "tooling-infra",
+    "service": "stellarDocs",
+    "freshness": "scheduled"
+  },
+  "truth": {
+    "lifecycle": {
+      "state": "active",
+      "reviewState": "none",
+      "activation": {
+        "date": "2026-11-14",
+        "author": "gap lanes gap-1, gap-2, gap-3 (Claude Fable 5.2)",
+        "reviewer": "verify-gap (Claude Opus 5.5)",
+        "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+        "evidence": [
+          ".agents/rounds/2026-11-14-golden-coverage-audit/gap/verify-gap.json",
+          ".agents/rounds/2026-11-14-golden-coverage-audit/gap/"
+        ]
+      }
+    },
+    "domain": "real-world",
+    "status": "confirmed",
+    "leaf": "tooling.version-compat",
+    "asOf": "2026-11-14",
+    "reverifyBy": "2026-11-30",
+    "notes": "The pinned set changes when Mainnet adopts Protocol 30 (vote scheduled 2026-11-23). Re-verify at that activation even though reverifyBy follows the round's quarter spread.",
+    "sources": [
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/networks/software-versions.md",
+        "observedAt": "2026-11-14",
+        "quote": "## Protocol 29 (Mainnet, October 1, 2026)"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/networks/software-versions.md",
+        "observedAt": "2026-11-14",
+        "quote": "| Stellar Core | `29.0.0` | | Smart Contract Rust SDK | `28.0.0` | ... | Stellar CLI | `28.1.0` | | Stellar RPC | `v29.0.0` | | Stellar Horizon | `v29.0.0` |"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/networks/software-versions.md",
+        "observedAt": "2026-11-14",
+        "quote": "Protocol 29 is a security-focused release that fixes vulnerabilities in Stellar Core. It introduces no new CAPs."
+      },
+      {
+        "class": "C",
+        "ref": "https://horizon.stellar.org/",
+        "observedAt": "2026-11-14",
+        "quote": "\"core_version\": \"stellar-core 30.0.0 (0e49751a...)\" ... \"current_protocol_version\": 29, \"core_supported_protocol_version\": 30"
+      },
+      {
+        "class": "C",
+        "ref": "https://mainnet.sorobanrpc.com (getVersionInfo)",
+        "observedAt": "2026-11-14",
+        "quote": "\"version\":\"29.0.1-055dc9c7...\",\"captiveCoreVersion\":\"stellar-core 29.0.0 (4eb83337...)\",\"protocolVersion\":29"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-core/releases",
+        "observedAt": "2026-11-14",
+        "quote": "v30.0.0 2026-10-16; v29.0.0 2026-10-05; v28.0.1 2026-09-01"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-rpc/releases",
+        "observedAt": "2026-11-14",
+        "quote": "v30.0.1 2026-11-12; v30.0.0 2026-10-21; v29.0.1 2026-10-12; v29.0.0 2026-10-01"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-horizon/releases",
+        "observedAt": "2026-11-14",
+        "quote": "v30.0.1 2026-11-12; v30.0.0 2026-10-21; v29.0.0 2026-10-01"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/rs-soroban-sdk/releases",
+        "observedAt": "2026-11-14",
+        "quote": "v30.0.0-rc.1 2026-10-21 (prerelease); v29.0.1 2026-10-12; v29.0.0 2026-10-07; v28.0.0 2026-09-18"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-cli/releases",
+        "observedAt": "2026-11-14",
+        "quote": "v30.0.1 2026-11-03; v28.1.0 2026-09-26; v28.0.0 2026-08-26"
+      },
+      {
+        "class": "C",
+        "ref": "https://status.stellar.org/api/v2/scheduled-maintenances/upcoming.json",
+        "observedAt": "2026-11-14",
+        "quote": "Stellar Public Network Protocol Upgrade Vote | scheduled | 2026-11-23T17:00:00.000Z"
+      },
+      {
+        "class": "D",
+        "ref": "parallel-cli research trun_04740bf111ed4e8985800b541cbda276",
+        "observedAt": "2026-11-14",
+        "quote": "Stellar Mainnet currently runs Protocol 29, which became active on Mainnet on October 1, 2026"
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "Mainnet ran Protocol 29 in mid-November 2026 (observed 2026-11-14), activated October 1, 2026.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://horizon.stellar.org/",
+            "observedAt": "2026-11-14",
+            "note": "current_protocol_version 29 at history_latest_ledger_closed_at 2026-11-14T04:03:52Z."
+          },
+          {
+            "class": "C",
+            "ref": "https://mainnet.sorobanrpc.com (getVersionInfo)",
+            "observedAt": "2026-11-14",
+            "note": "protocolVersion 29."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/networks/software-versions.md",
+            "observedAt": "2026-11-14",
+            "note": "Newest section is \"Protocol 29 (Mainnet, October 1, 2026)\"; the page has no Protocol 30 section yet."
+          }
+        ]
+      },
+      {
+        "claim": "The Software Versions page lists, for Protocol 29 on Mainnet, Core 29.0.0, RPC v29.0.0 and Horizon v29.0.0.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/networks/software-versions.md",
+            "observedAt": "2026-11-14",
+            "note": "Table rows: Stellar Core `29.0.0`, Stellar RPC `v29.0.0`, Stellar Horizon `v29.0.0`."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-core/releases/tag/v29.0.0",
+            "observedAt": "2026-11-14",
+            "note": "Release v29.0.0 published 2026-10-05; stellar-rpc v29.0.0 and stellar-horizon v29.0.0 published 2026-10-01."
+          },
+          {
+            "class": "D",
+            "ref": "parallel-cli research trun_04740bf111ed4e8985800b541cbda276",
+            "observedAt": "2026-11-14",
+            "note": "Independent read of the page returned the same five versions."
+          }
+        ]
+      },
+      {
+        "claim": "The Software Versions page lists, for Protocol 29 on Mainnet, Rust SDK 28.0.0 and Stellar CLI 28.1.0.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/networks/software-versions.md",
+            "observedAt": "2026-11-14",
+            "note": "Table rows: Smart Contract Rust SDK `28.0.0`, Stellar CLI `28.1.0`."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/rs-soroban-sdk/releases",
+            "observedAt": "2026-11-14",
+            "note": "v28.0.0 published 2026-09-18; stellar-cli v28.1.0 published 2026-09-26."
+          }
+        ]
+      },
+      {
+        "claim": "The Rust SDK or CLI major version always equals the protocol number.",
+        "verdict": "contradicted",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/networks/software-versions.md",
+            "observedAt": "2026-11-14",
+            "note": "Protocol 29 pairs with Smart Contract Rust SDK 28.0.0 and Stellar CLI 28.1.0; Protocol 29 \"introduces no new CAPs\"."
+          }
+        ]
+      },
+      {
+        "claim": "A Mainnet vote on Protocol 30 was scheduled for 2026-11-23, and version 30 releases of Core, RPC, Horizon and the CLI were already published.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://status.stellar.org/api/v2/scheduled-maintenances/upcoming.json",
+            "observedAt": "2026-11-14",
+            "note": "\"Stellar Public Network Protocol Upgrade Vote\", status scheduled, scheduled_for 2026-11-23T17:00:00.000Z."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-core/releases/tag/v30.0.0",
+            "observedAt": "2026-11-14",
+            "note": "\"This release bumps the protocol to version 30\"; published 2026-10-16."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-11-14",
+      "by": "verify-gap lane (Claude Opus 5.5) amendment of the gap proposal; applied by the instrument lane (Claude Opus 5.5), .agents/rounds/2026-11-14-golden-coverage-audit.md",
+      "evidence": [
+        "Independent verification: .agents/rounds/2026-11-14-golden-coverage-audit/gap/verify-gap.json#q-infra-software-versions-current-protocol (amend)",
+        "Every figure is right today: Mainnet is on Protocol 29 (Horizon and RPC report protocol 29), and the Software Versions table lists Core 29.0.0, RPC v29.0.0, Horizon v29.0.0, Rust SDK 28.0.0 and CLI 28.1.0. But the Protocol 30 Mainnet vote is on 2026-11-23, nine days out, and key facts 3 and 4 pin the Protocol 29 set. They would then conflict with a correct current answer, and the notes' override would contradict the key facts. Make those key facts behavioral and keep the figures as the dated example in the answer. truth.reverifyBy 2027-02-03 is also too late; set it just after the vote (for example 2026-11-30).",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/networks/software-versions -- '## Protocol 29 (Mainnet, October 1, 2026) ... Stellar Core 29.0.0 ... Smart Contract Rust SDK 28.0.0 ... Stellar CLI 28.1.0 ... Stellar RPC v29.0.0'",
+        "Live F 2026-11-14: https://horizon.stellar.org/ and RPC getLatestLedger at mainnet.sorobanrpc.com -- 'current_protocol_version 29 (core stellar-core 30.0.0); RPC protocolVersion 29, sequence 65468907'",
+        "Live A 2026-11-14: https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide -- 'November 23, 2026, 1700 UTC - Mainnet upgrade vote.'",
+        "https://developers.stellar.org/docs/networks/software-versions.md",
+        "https://horizon.stellar.org/",
+        "https://status.stellar.org/api/v2/scheduled-maintenances/upcoming.json",
+        "https://github.com/stellar/stellar-core/releases",
+        "parallel-cli research trun_04740bf111ed4e8985800b541cbda276 (core-fast): agrees; its one flagged doubt (whether stellar-cli v30 exists) is settled by the GitHub release v30.0.1 dated 2026-11-03.",
+        "Sibling sweep: q-edge-fresh-latest-protocol-version (current protocol number), q-pc-protocol-upgrade-timing (vote timing and SDK deadlines) and q-tool-rust-soroban-sdk (crate choice) agree; none tests the per-protocol release matrix."
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
+      ]
+    },
+    "origin": "authored golden-coverage-audit 2026-11-14"
+  }
+}

@@ -7,7 +7,7 @@
     "skills.stellar-dev.smart-contracts"
   ],
   "golden": {
-    "answer": "A Stellar smart wallet is a contract account whose reserved `__check_auth` validates credentials and policy for each authorization. CAP-0051 added native secp256r1 (P-256) verification in Protocol 21, but a valid P-256 signature alone is not complete WebAuthn validation: the contract must bind the WebAuthn challenge to the Soroban authorization payload and check client data and authenticator flags. The contract stores public keys and policy or recovery state; the private key stays in the authenticator.",
+    "answer": "A Stellar smart wallet is a contract account whose reserved `__check_auth` validates credentials and policy for each authorization. CAP-0051 added native secp256r1 (P-256) verification in Protocol 21, but a valid P-256 signature alone is not complete WebAuthn validation: the contract must bind the WebAuthn challenge to the Soroban authorization payload and check client data and authenticator flags. The contract stores public keys and policy or recovery state; the private key stays in the authenticator. WebAuthn also permits algorithms other than P-256, and a separate G account submits the transaction and pays its fee; the C account only authorizes.",
     "keyFacts": [
       "`__check_auth` validates a contract account's credentials and authorization policy.",
       "CAP-0051 added native secp256r1 (P-256) signature verification in Protocol 21.",
@@ -296,13 +296,11 @@
     ],
     "verified": {
       "date": "2026-11-14",
-      "by": "Golden coverage audit 2026-11-14 (audit-soroban-a, verify-audit-soroban-a; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+      "by": "Golden coverage audit finalize 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-a.json#q-passkey-smart-account-architecture",
-        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-a.json#q-passkey-smart-account-architecture",
-        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-passkey-smart-account-architecture",
-        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0051.md -- 'Status: Final ... Protocol version: 21'",
-        "Live B 2026-11-14: https://github.com/OpenZeppelin/stellar-contracts/blob/main/packages/accounts/src/verifiers/webauthn.rs -- 'Origin verification in `clientDataJSON` is omitted; RP ID hash validation ... omitted'"
+        "Absorbed fact restored from tombstone eval/qa/corpus/retired/q-infra-secp256r1-passkeys.json (its verified golden carried it).",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/build/apps/smart-wallets.md -- 'Choose a fee sponsorship approach: contract accounts can't pay their own transaction fees'",
+        "Live A 2026-11-14: https://www.w3.org/TR/webauthn-3/ -- 'alg: -7 // \"ES256\" as registered in the IANA COSE Algorithms registry ... alg: -257 // Value registered by this specification for \"RS256\"'"
       ],
       "rootCause": [
         ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"

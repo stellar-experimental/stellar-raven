@@ -5,7 +5,7 @@
     "stellarDocs.search_protocol_concepts_docs"
   ],
   "golden": {
-    "answer": "As of 2026-11-14 Mainnet closes a ledger about every 5 seconds. The target, ledger_target_close_time_milliseconds, is 5000, and observed closes have averaged 5.0 seconds since Protocol 28 (2026-09-16); before that they ran about 5 to 7 seconds. The target is a validator-voted setting (CAP-0070), not a fixed protocol constant.",
+    "answer": "As of 2026-11-14 Mainnet closes a ledger about every 5 seconds. The target, ledger_target_close_time_milliseconds, is 5000, and five sampled closes on 2026-11-14 were 5 seconds apart; before Protocol 28 (2026-09-16) closes ran about 5 to 7 seconds. The target is a validator-voted setting (CAP-0070), not a fixed protocol constant.",
     "keyFacts": [
       "About 5 seconds, dated or sourced; 5 to 7 seconds only as the pre-Protocol-28 cadence.",
       "The target is a validator-set network setting, not a fixed constant."
@@ -27,7 +27,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-11-10",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-03-09",
     "sources": [
       {
@@ -436,15 +436,10 @@
     ],
     "verified": {
       "date": "2026-11-14",
-      "by": "Golden coverage audit 2026-11-14 (audit-protocol, verify-protocol; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+      "by": "Golden coverage audit finalize 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-protocol-ledger-close-time",
-        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-protocol-ledger-close-time",
-        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-protocol-ledger-close-time",
-        "Live F 2026-11-14: https://horizon.stellar.org/ledgers?order=desc&limit=5 -- 'closed_at 02:48:27, :32, :37, :42, :47Z; base_reserve_in_stroops 5000000; max_tx_set_size 1000; protocol_version 29'",
-        "Live E 2026-11-14: https://developers.stellar.org/docs/build/guides/storage/storage-strategies -- 'Per ledger (target ~5 s today)'",
-        "Live A 2026-11-14: https://developers.stellar.org/docs/learn/fundamentals/stellar-stack -- 'nodes reach consensus, apply a transaction set, and update the ledger about every 5 seconds. The target close time is a network setting'",
-        "Live F 2026-11-14: https://horizon.stellar.org/ledgers?order=desc&limit=8 -- 'closed_at 03:04:07Z, :12, :17, :22, :27, :32, :37, :42 (seven consecutive 5 s deltas)'"
+        "Review finding L1 (.agents/rounds/2026-11-14-golden-coverage-audit/review/REVIEW.md): the average claim rested on five sampled deltas; the answer now states the sample.",
+        "Live F 2026-11-14: https://horizon.stellar.org/ledgers?order=desc&limit=6 -- 'ledger 65469118 closed_at 2026-11-14T04:47:12Z; five deltas [5, 5, 5, 5, 5] s; protocol_version 29'"
       ],
       "rootCause": [
         ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"

@@ -6,7 +6,7 @@
     "lumenloop.search_directory"
   ],
   "golden": {
-    "answer": "Stellar uses SCP/FBA, not proof of stake, and validators earn no protocol reward, so there is no native validator-staking position for an XLM liquid-staking token to tokenize. A 2026-11-02 sweep of official docs, Scout, Lumenloop, DeFiLlama and the web found none; this is a bounded snapshot. yXLM, sXLM vault tokens, Blend deposits and LP shares earn lending or strategy yield, not validator rewards, and are not native LSTs.",
+    "answer": "Stellar uses SCP/FBA, not proof of stake, and validators earn no protocol reward, so there is no native validator-staking position for an XLM liquid-staking token to tokenize. As of 2026-11-02 no native XLM liquid-staking token was found; this is a bounded snapshot. yXLM, sXLM vault tokens, Blend deposits and LP shares earn lending or strategy yield, not validator rewards, and are not native LSTs.",
     "keyFacts": [
       "Stellar has no protocol validator rewards, so no native XLM staking position exists.",
       "No live native-XLM liquid-staking token was identified in the dated source universe.",
@@ -214,13 +214,9 @@
     ],
     "verified": {
       "date": "2026-11-14",
-      "by": "Golden coverage audit 2026-11-14 (audit-defi, verify-defi; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+      "by": "Golden coverage audit finalize 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-defi-liquid-staking-whitespace",
-        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-defi-liquid-staking-whitespace",
-        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-defi-liquid-staking-whitespace",
-        "Live A 2026-11-14: https://stellar.org/xlm-utility -- 'Join the discussion; XLM Rewards Pool Explorer: a proposal page, not shipped'",
-        "Live C 2026-11-14: scout.searchProjects({query:'liquid staking'}) -- 'top rows: backyard, normal, principal-protocol, defindex, for-yield (types Stablecoin/Lending/Yield/RWA); no validator-staking LST'"
+        "Review finding L3 (.agents/rounds/2026-11-14-golden-coverage-audit/review/REVIEW.md): provenance moved from judge-facing text to truth.notes; no fact changed."
       ],
       "rootCause": [
         ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
@@ -229,7 +225,7 @@
     "origin": "raven-next q-defi-liquid-staking-whitespace",
     "asOf": "2026-11-14",
     "reverifyBy": "2027-01-14",
-    "notes": "WHITESPACE honesty case. No dominant Soroban LST protocol is surfaced in the Scout directory. NB: Stellar uses SCP (federated agreement), not proof-of-stake — so there's no native staking to liquid-stake in the Ethereum/Solana sense; this strengthens the honest 'no LST' answer. Trap: inventing one or importing Lido/Marinade as Stellar-native. Freshness-soft: re-query the live directory. 2026-06-29 reviewed: re-ran Scout 'liquid staking'/'LST staked token' queries — returns only generic DeFi (DEXes Aquarius/Phoenix/Comet, etc.), no dedicated Stellar-native liquid-staking protocol; whitespace claim holds. Confidence kept medium.\nAlso good if the answer: Frames the absence as a genuine gap (not under-reporting) rather than asserting a product exists.\nGolden cites: Note that the conclusion is from absence of any LST project in the sourced corpus (treat as 'not publicly listed as active').\nCorrected 2026-07-10. Grade the dated/source-bounded native-staking negative and counterexample classification, not the word whitespace.\n2026-11-02 caution: StelloFi (stellofi.com) labels sXLM 'Native XLM Liquid Staking' and lists Mainnet contracts, but its own docs call sXLM a vault share token, say no strategy allocation is implemented, and say Stellar has no native staking yield. Naming such a product while classifying it as a vault share is not a wrong claim; calling it a native validator-staking LST is wrong. SDF's October 2026 fee-pool rewards discussion paper (stellar.org/xlm-utility) is an undecided proposal for locked XLM, not validator staking; an accurate dated mention is not a wrong claim, and calling it adopted or a native LST is wrong.",
+    "notes": "WHITESPACE honesty case. No dominant Soroban LST protocol is surfaced in the Scout directory. NB: Stellar uses SCP (federated agreement), not proof-of-stake — so there's no native staking to liquid-stake in the Ethereum/Solana sense; this strengthens the honest 'no LST' answer. Trap: inventing one or importing Lido/Marinade as Stellar-native. Freshness-soft: re-query the live directory. 2026-06-29 reviewed: re-ran Scout 'liquid staking'/'LST staked token' queries — returns only generic DeFi (DEXes Aquarius/Phoenix/Comet, etc.), no dedicated Stellar-native liquid-staking protocol; whitespace claim holds. Confidence kept medium.\nAlso good if the answer: Frames the absence as a genuine gap (not under-reporting) rather than asserting a product exists.\nGolden cites: Note that the conclusion is from absence of any LST project in the sourced corpus (treat as 'not publicly listed as active').\nCorrected 2026-07-10. Grade the dated/source-bounded native-staking negative and counterexample classification, not the word whitespace.\n2026-11-02 caution: StelloFi (stellofi.com) labels sXLM 'Native XLM Liquid Staking' and lists Mainnet contracts, but its own docs call sXLM a vault share token, say no strategy allocation is implemented, and say Stellar has no native staking yield. Naming such a product while classifying it as a vault share is not a wrong claim; calling it a native validator-staking LST is wrong. SDF's October 2026 fee-pool rewards discussion paper (stellar.org/xlm-utility) is an undecided proposal for locked XLM, not validator staking; an accurate dated mention is not a wrong claim, and calling it adopted or a native LST is wrong.\nMoved from golden.answer 2026-11-14: the 2026-11-02 snapshot searched official docs, Scout, Lumenloop, DeFiLlama and the web.",
     "leaf": "ecosystem.xlm-staking-rewards"
   }
 }

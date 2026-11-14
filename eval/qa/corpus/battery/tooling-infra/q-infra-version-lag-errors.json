@@ -1,0 +1,212 @@
+{
+  "id": "q-infra-version-lag-errors",
+  "question": "What goes wrong when my Stellar SDK or CLI is older than the protocol version the network runs, and how do I fix it?",
+  "surface": [
+    "stellarDocs.search_sdk_cli_tools_docs",
+    "scout.searchResearch",
+    "stellarDocs.get_doc_page"
+  ],
+  "golden": {
+    "answer": "Protocol upgrades can add XDR types, so an SDK built on older XDR can fail to decode new ledgers or transaction results, for example `Bad union switch` in the JavaScript SDK. Conversely, the host rejects a contract built for a newer protocol than the network runs. Fix: install the SDK and CLI releases published for that protocol. Testnet upgrades before Mainnet.",
+    "keyFacts": [
+      "An SDK built on older XDR can fail to decode data from a newer protocol.",
+      "The fix is to upgrade to the SDK and CLI releases published for that protocol.",
+      "Testnet upgrades to a new protocol before Mainnet.",
+      "The host rejects a contract built for a newer protocol than the network runs."
+    ],
+    "avoid": [],
+    "notes": "Accept any concrete decode error text; the JavaScript example is not required. Accept the Software Versions page or the protocol upgrade guide as the place to find matching releases."
+  },
+  "tags": {
+    "category": "tooling-infra",
+    "service": "stellarDocs",
+    "freshness": "scheduled"
+  },
+  "truth": {
+    "lifecycle": {
+      "state": "active",
+      "reviewState": "none",
+      "activation": {
+        "date": "2026-11-14",
+        "author": "gap lanes gap-1, gap-2, gap-3 (Claude Fable 5.2)",
+        "reviewer": "verify-gap (Claude Opus 5.5)",
+        "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+        "evidence": [
+          ".agents/rounds/2026-11-14-golden-coverage-audit/gap/verify-gap.json",
+          ".agents/rounds/2026-11-14-golden-coverage-audit/gap/"
+        ]
+      }
+    },
+    "domain": "real-world",
+    "status": "confirmed",
+    "asOf": "2026-11-14",
+    "reverifyBy": "2027-02-24",
+    "leaf": "tooling.version-compat",
+    "notes": "Observed 2026-11-14: Testnet and Futurenet report protocol 30, Mainnet reports 29; the Mainnet vote for Protocol 30 (Bell) is scheduled for 2026-11-23. The Bell guide says existing contracts keep working after that upgrade; this is stated per upgrade, so it is not a key fact. The host check is in rs-soroban-env parsed_module.rs ('contract protocol number is newer than host'). The other slot on this leaf (which releases match Mainnet's protocol) is not covered here. One parallel-cli research run (core-fast, 2026-11-14) agreed on all four facts.",
+    "sources": [
+      {
+        "class": "A",
+        "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+        "observedAt": "2026-11-14",
+        "quote": "Protocol 30 changes the ledger header format (CAP-88), and an older SDK may fail to decode Protocol 30 ledgers. (last updated 2026-10-23)"
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+        "observedAt": "2026-11-14",
+        "quote": "must update to the Protocol 30 XDR definitions, or decoding will fail on unknown union arms."
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/js-stellar-sdk/issues/1185",
+        "observedAt": "2026-11-14",
+        "quote": "TypeError: Bad union switch: 4 … I highly recommend that you begin upgrading to the v14.0.0 release candidate (2025-07-15)"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/rs-soroban-env/blob/main/soroban-env-host/src/vm/parsed_module.rs",
+        "observedAt": "2026-11-14",
+        "quote": "\"contract protocol number is newer than host\""
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/networks/software-versions.md",
+        "observedAt": "2026-11-14",
+        "quote": "Protocol 29 (Mainnet, October 1, 2026) … Stellar CLI 28.1.0 … Stellar JS Stellar SDK v17.2.1"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/tools/cli/agent-cli/guides/usdt0-on-mainnet.md",
+        "observedAt": "2026-11-14",
+        "quote": "Testnet upgrades to each new protocol before mainnet, so the two networks can differ for a few weeks."
+      },
+      {
+        "class": "F",
+        "ref": "getNetwork on https://soroban-testnet.stellar.org; https://horizon.stellar.org/",
+        "observedAt": "2026-11-14",
+        "quote": "Testnet protocolVersion 30; Mainnet current_protocol_version 29"
+      },
+      {
+        "class": "D",
+        "ref": "parallel-cli research run (core-fast, 2026-11-14)",
+        "observedAt": "2026-11-14",
+        "quote": "SDKs that include XDR bindings generated for an older protocol can throw decoding errors … the host will reject it"
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "An SDK built on older XDR definitions can fail to decode ledgers or transaction results from a newer protocol.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+            "observedAt": "2026-11-14",
+            "note": "SDF states an older SDK may fail to decode Protocol 30 ledgers."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/js-stellar-sdk/issues/1185",
+            "observedAt": "2026-11-14",
+            "note": "A real failure at the Protocol 23 Testnet rollout, confirmed by an SDK maintainer."
+          },
+          {
+            "class": "D",
+            "ref": "parallel-cli research run (core-fast, 2026-11-14)",
+            "observedAt": "2026-11-14",
+            "note": "Independent run reached the same finding."
+          }
+        ]
+      },
+      {
+        "claim": "The fix is to upgrade to the SDK and CLI releases published for that protocol, listed on the Software Versions page and in each upgrade guide.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+            "observedAt": "2026-11-14",
+            "note": "Upgrade to the latest version of the relevant Stellar SDK before each vote; lists the Protocol 30 releases."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/networks/software-versions.md",
+            "observedAt": "2026-11-14",
+            "note": "Lists the release of each component per protocol and network."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/js-stellar-sdk/issues/1185",
+            "observedAt": "2026-11-14",
+            "note": "The maintainer's fix was to move to the SDK release for the new protocol."
+          }
+        ]
+      },
+      {
+        "claim": "Testnet upgrades to a new protocol before Mainnet.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tools/cli/agent-cli/guides/usdt0-on-mainnet.md",
+            "observedAt": "2026-11-14",
+            "note": "States the ordering and the gap of a few weeks."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/networks/software-versions.md",
+            "observedAt": "2026-11-14",
+            "note": "Each protocol shows a Testnet date before its Mainnet date."
+          },
+          {
+            "class": "F",
+            "ref": "getNetwork on https://soroban-testnet.stellar.org; https://horizon.stellar.org/",
+            "observedAt": "2026-11-14",
+            "note": "On 2026-11-14 Testnet ran a newer protocol than Mainnet."
+          }
+        ]
+      },
+      {
+        "claim": "The Soroban host rejects a contract built for a newer protocol than the network runs.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/rs-soroban-env/blob/main/soroban-env-host/src/vm/parsed_module.rs",
+            "observedAt": "2026-11-14",
+            "note": "Returns the error 'contract protocol number is newer than host' with the comment 'Future protocols we don't allow'."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-core/blob/master/docs/versioning-soroban.md",
+            "observedAt": "2026-11-14",
+            "note": "The host only runs contracts with current or older protocols."
+          },
+          {
+            "class": "D",
+            "ref": "parallel-cli research run (core-fast, 2026-11-14)",
+            "observedAt": "2026-11-14",
+            "note": "Independent run described the same rejection and no contradicting source."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-11-14",
+      "by": "gap-3 lane (Claude Fable 5.2, high), golden-coverage-audit 2026-11-14",
+      "evidence": [
+        "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+        "https://github.com/stellar/js-stellar-sdk/issues/1185",
+        "https://github.com/stellar/rs-soroban-env/blob/main/soroban-env-host/src/vm/parsed_module.rs",
+        "https://developers.stellar.org/docs/networks/software-versions.md",
+        "Sibling sweep: q-edge-fresh-latest-protocol-version and q-pc-protocol-upgrade-timing cover the current protocol and upgrade timing and do not contradict; none tests mismatch failures.",
+        ".agents/rounds/2026-11-14-golden-coverage-audit/gap/gap-3.json",
+        "Independent verification: .agents/rounds/2026-11-14-golden-coverage-audit/gap/verify-gap.json#q-infra-version-lag-errors (accept)"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
+      ]
+    },
+    "origin": "authored golden-coverage-audit 2026-11-14"
+  }
+}

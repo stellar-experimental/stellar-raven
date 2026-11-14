@@ -8,7 +8,7 @@
     "date": "2026-11-14",
     "author": "audit-hist-retail (golden coverage audit)",
     "reviewer": "verify-hist-retail (golden coverage audit)",
-    "reason": "Merged into q-raph-buy-xlm-safely. Folding the no-durable-ramp-count behavior into q-raph-buy-xlm-safely is fine as an avoid item, but the survivor rewrite also puts the ramp count into KF1, which the buy-XLM question does not ask. See the amended q-raph-buy-xlm-safely rewrite.",
+    "reason": "Merged into q-raph-buy-xlm-safely: refusing to invent a network-wide ramp count is folded into q-raph-buy-xlm-safely as an avoid item.",
     "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
     "evidence": [
       "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-jutsu-cash-crypto-ramps",

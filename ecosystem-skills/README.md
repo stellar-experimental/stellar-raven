@@ -160,10 +160,11 @@ pull request.
 4. Add an `exposed` row for each skill to `research/skill-exposure-inventory.json`
    (`test/skill-exposure-classification.test.ts` requires it).
 5. Rebuild the generated artifacts through `live-drift-resolution`.
-6. Give every new exposed skill an active QA battery case. CI enforces `skill floor 1` per
-   exposed skill, and a skills-routing case does not count. Commit the case as `proposed` in an
-   earlier commit, activate it in the admission pull request after an independent
-   `golden-truth` review, then run `npm run eval:qa:compile` and `npm run eval:qa:register`.
+6. Add a skills-routing case to `eval/skills-cases.json`; routing and skills cases own skill
+   reach. Add a QA battery case only when the skill answers a taxonomy leaf, named in
+   `truth.leaf`: commit it as `proposed` in an earlier commit, activate it in the admission pull
+   request after an independent `golden-truth` review, then run `npm run eval:qa:compile` and
+   `npm run eval:qa:register`.
 7. Pass the gates on the complete tree: `npm test`,
    `npm run eval:qa:lint -- --stale --enforce-floors`, and the routing comparison in
    `live-drift-resolution`. The count contracts move (`test/catalog.test.ts`,
