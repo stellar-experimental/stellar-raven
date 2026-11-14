@@ -202,6 +202,15 @@ outside the repository.
    Stellar-side facts only), Pi Network, and regulation.
 4. Whether custody deserves its own leaf (`review/REVIEW.md`, L5).
 5. Whether any of the four envelope traps without a case needs a tool-lane case or a unit test.
+
+Decided 2026-11-14:
+
+- Decisions 3 and 4: the `decisions/SCOPE.md` advice is applied (`decisions/APPLY.md`, reviewed in
+  `decisions/REVIEW.md`). `q-pay-anchor-msb-licensing` retired, four cases now grade Stellar-side
+  facts only, and the XLM US-classification and issuer custody cases are active on their own leaves.
+- Decision 5: add nothing. The `matchPartners-503` path is pinned in `test/adapters.test.ts`, and
+  unit tests pin the `no-rows` and `unverified-match` caveats.
+- `sls-119` (Scout names Circle's reseller as EURC's issuer of record) is `verified` and unposted.
 6. A first full baseline on the 246 cases. It needs its own `run-evals` plan; the test here cost
    USD 0.22 per case.
 

@@ -154,3 +154,47 @@ No model-calling eval ran. Nothing was posted upstream.
 - Whether the Raven connector served this branch's build.
 - `.agents/TODO.md` still describes the scope advice as waiting for the owner; this lane did not
   edit it.
+
+## Review reconciliation
+
+Lane `scope-finalize` (Claude Opus 5.5, high), 2026-11-14, author of the branch. It applied every
+finding in [`REVIEW.md`](REVIEW.md) (lane `scope-review`, Claude Sonnet 5.5) as the reviewer wrote
+it. No finding was declined or reworded.
+
+| Finding | What changed |
+|---|---|
+| F1 (medium) | `q-comp-xlm-us-classification`: `golden.answer` and `golden.keyFacts` replaced with the reviewer's text; the SDF-letter key fact and answer sentence are gone. The letter and its 2026-10-20 date stay in `truth.sources`, `truth.corroboration` and `truth.notes`. The reviewer's evidence rows for the amended facts (Federal Register, Lowenstein, Baker Botts) are added to `truth.sources`. `truth.verified` records the removal and the Grayscale source class. |
+| F5 (low) | Same case: `golden.avoid` replaced with the reviewer's text. Grayscale's 2022 EDGAR information statement (class A) added to `truth.sources`; `truth.notes` names it as a risk disclosure. |
+| F6 (low) | `q-comp-issuer-institutional-custody` key fact 3 replaced with the reviewer's text ("at least two"). |
+| F2 (medium) | `q-defi-agentic-payment-standards-compare`: key fact 3 and the answer clause replaced with the dated wording; the notes sentence appended. `truth.verified` updated. |
+| F4 (low) | `q-asset-usdc-eurc-issuer`: the notes sentence replaced with the reviewer's text (no Scout name, no provenance). `truth.verified` updated. |
+| F3 (medium-low) | Option (a): the custody case is active in this change, so the `q-crp-custodial-vs-noncustodial-wallets` tombstone's replacement is active. Its reason keeps the "for issuers" wording. |
+| F7 (low) | Both proposals moved to `corpus/battery/compliance-rwa-payments/`, `truth.lifecycle.state` `active` with an `activation` record naming the reviewer, `truth.verified.by` names the reviewer, and both `openSlots` entries removed. The five `reSwept.reason` strings now end "Confirmed by independent diff review, decisions/REVIEW.md." The `q-pay-anchor-msb-licensing` tombstone reviewer field gains "; diff reviewed in decisions/REVIEW.md". |
+
+One mechanical consequence the review did not spell out: the F4 notes edit changed the content hash
+of `q-asset-usdc-eurc-issuer`, so `npm run eval:qa:register` reopened clusters 015 and 034. The
+reviewer had confirmed both clusters and wrote the F4 text, and F4 changes no claim either cluster
+checks. They were closed with
+[`review/scope-finalize-register-review.json`](../review/scope-finalize-register-review.json)
+(`--review`); its reason says so. That closure is the author's, not an independent re-read.
+
+The reviewer's exact wording adds three lint warnings (95 to 98), none an error: key fact 3 of the
+custody case (112 characters), key fact 3 of the agentic-payments case (94 characters), and the
+XLM avoid item (the lint reads "Do NOT present … as" as a phrasing requirement). They stand as
+written, per the brief.
+
+Gates, run bare from the repository root after the edits:
+
+| Command | Exit |
+|---|---|
+| `npm run eval:qa:compile` | 0 (247 cases, 6 tool cases, 545 reserved ids) |
+| `npm run eval:qa:lint -- --stale --enforce-floors` | 0 (0 errors, 98 warnings; coverage 164 of 167 leaves, 2 open slots) |
+| `npm run eval:qa:lint -- --since origin/main --stale` | 0 (0 errors, 98 warnings) |
+| `npm run eval:qa:register -- --check` | 0 |
+| `npm run eval:selftest` | 0 |
+| `npm run typecheck` | 0 |
+| `npm test` | 0 (3398 passed, 3 expected fail, 1 skipped) |
+| `npm run secrets:scan -- --tree` | 0 |
+
+`npm run improvements:lint` was not re-run: this change does not touch `improvements/`. No code
+changed, so `npm run build` was not re-run. No model-calling eval ran. Nothing was posted upstream.

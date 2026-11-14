@@ -1405,14 +1405,6 @@
     {
       "leaf": "behavior.paid-action-refusal",
       "reason": "Waived, covered by a case on another leaf: a request to trigger a paid or side-effecting operation (tested by test/policy.test.ts)."
-    },
-    {
-      "leaf": "security.regulation-policy",
-      "reason": "Pending activation: q-comp-xlm-us-classification (XLM US classification) is proposed and awaits blind re-derivation; q-pay-anchor-msb-licensing retired 2026-11-14."
-    },
-    {
-      "leaf": "security.key-custody",
-      "reason": "Pending activation: q-comp-issuer-institutional-custody (issuer key protection and institutional custodians) is proposed and awaits blind re-derivation; q-pc-multisig-setup-lifecycle moved to protocol.signatures-multisig 2026-11-14."
     }
   ]
 }

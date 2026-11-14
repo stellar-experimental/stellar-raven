@@ -11,7 +11,7 @@
     "keyFacts": [
       "Keep issuing-account keys in cold storage, such as a hardware wallet, or under multisig.",
       "An issuer may self-custody, use wallet infrastructure, or appoint a regulated custodian.",
-      "Names custodians with documented Stellar support, such as Anchorage, BitGo or Taurus.",
+      "Names at least two institutional custodians with documented Stellar support, such as Anchorage, BitGo or Taurus.",
       "Network support does not mean a custodian supports a specific asset or contract token."
     ],
     "avoid": [
@@ -26,8 +26,18 @@
   },
   "truth": {
     "lifecycle": {
-      "state": "proposed",
-      "reviewState": "none"
+      "state": "active",
+      "reviewState": "none",
+      "activation": {
+        "author": "scope-apply (golden coverage audit, Claude Opus 5.5)",
+        "date": "2026-11-14",
+        "evidence": [
+          ".agents/rounds/2026-11-14-golden-coverage-audit/decisions/REVIEW.md",
+          ".agents/rounds/2026-11-14-golden-coverage-audit/decisions/APPLY.md"
+        ],
+        "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+        "reviewer": "scope-review (Claude Sonnet 5.5)"
+      }
     },
     "domain": "real-world",
     "status": "confirmed",
@@ -184,18 +194,17 @@
     ],
     "verified": {
       "date": "2026-11-14",
-      "by": "scope-apply lane (Claude Opus 5.5, high), golden coverage audit 2026-11-14; proposal only, blind re-derivation and independent review pending",
+      "by": "scope-review lane (Claude Sonnet 5.5), independent diff review, decisions/REVIEW.md; blind re-derivation, amendment F6 applied by scope-finalize (Claude Opus 5.5)",
       "evidence": [
-        "https://developers.stellar.org/docs/tokens/asset-issuance-stack and https://developers.stellar.org/docs/tokens/how-to-issue-an-asset read 2026-11-14 (Parallel extract).",
-        "Second source class per drafted fact: KF1 stellar/stellar-dev-skill (B); KF2 Abra custody guide (D); KF3 Scout and Lumenloop rows (C) plus provider pages; KF4 Taurus's two Stellar announcements, 2024-06-24 and 2026-10-29 (A, C).",
-        "Raven probes 2026-11-14T16:53Z and 16:58Z: scout.searchProjects custody (strict, 27), BitGo and Taurus rows; Lumenloop rows for Taurus (2026-10-29), Anchorage (2019) and SDF Key Management 101 (2020).",
-        "Sibling sweep 2026-11-14: q-pc-multisig-setup-lifecycle (multisig mechanics, now primary on protocol.signatures-multisig), q-tool-wallets-comparison (hardware wallets as products), q-ti-custodial-account-generation-c-address (exchange custody flows). None states issuer key storage or a custodian roster; no contradiction.",
-        "Application record: .agents/rounds/2026-11-14-golden-coverage-audit/decisions/APPLY.md"
+        "Reviewer blind derivation 2026-11-14 (decisions/REVIEW.md Q2) matched key-protection and custodian facts; every author source re-read (how-to-issue-an-asset, asset-issuance-stack, Anchorage press page, developers.bitgo.com/docs/stellar-tokens).",
+        "F6: key fact 3 now states the count the notes already graded ('at least two'), so the key fact grades alone.",
+        "Additional custodian evidence from the reviewer: https://www.fireblocks.com/supported-assets (vendor) and https://stellar.org/institutions-solutions (A) document Fireblocks; 'such as' keeps the roster open.",
+        "Application record: .agents/rounds/2026-11-14-golden-coverage-audit/decisions/APPLY.md, section Review reconciliation"
       ],
       "rootCause": [
         ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "notes": "Proposed for security.key-custody (decisions/SCOPE.md B4). Also the survivor for the custody-model distinction once q-crp-custodial-vs-noncustodial-wallets lost q-pay-anchor-msb-licensing. The Docs Asset Issuance Stack names its providers as illustrative examples 'with documented Stellar support as at November 2026', not an endorsement. Scout's directory lists BitGo and Taurus but no Anchorage project; Anchorage rests on its own press page and Lumenloop."
+    "notes": "Authored for security.key-custody (decisions/SCOPE.md B4). Also the survivor for the custody-model distinction once q-crp-custodial-vs-noncustodial-wallets lost q-pay-anchor-msb-licensing. The Docs Asset Issuance Stack names its providers as illustrative examples 'with documented Stellar support as at November 2026', not an endorsement. Scout's directory lists BitGo and Taurus but no Anchorage project; Anchorage rests on its own press page and Lumenloop."
   }
 }

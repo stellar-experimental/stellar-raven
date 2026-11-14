@@ -3,8 +3,8 @@
   "schema": "qa-lifecycle-registry-v1",
   "digestSchema": "canonical-json-sha256-v1",
   "counts": {
-    "proposed": 2,
-    "active": 251,
+    "proposed": 0,
+    "active": 253,
     "quarantined": 0,
     "retired": 292
   },
@@ -828,7 +828,7 @@
       "path": "eval/qa/corpus/battery/retail-consumer/q-asset-usdc-eurc-issuer.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "f10575d7b428c2a053c6e2496f2238bc2b689f5a960c79eeff71a0db09d19e73"
+      "caseContentSha256": "b8b4ff07b05141f72b42adec92e826a9213d791c82a3c723c9ed835aca759ed2"
     },
     {
       "id": "q-asset-usdc-eurc-path-fx",
@@ -997,10 +997,10 @@
     },
     {
       "id": "q-comp-issuer-institutional-custody",
-      "path": "eval/qa/corpus/proposed/compliance-rwa-payments/q-comp-issuer-institutional-custody.json",
-      "state": "proposed",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-comp-issuer-institutional-custody.json",
+      "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "66cb6eacd71191e92983dc0e2019a6cf6148aadd1b4b3c3028e615882be377a1"
+      "caseContentSha256": "5cab39070b90cddf42f0c63839121592fa157e16cd9c41cd355c55718706266b"
     },
     {
       "id": "q-comp-sac-inherits-flags",
@@ -1051,10 +1051,10 @@
     },
     {
       "id": "q-comp-xlm-us-classification",
-      "path": "eval/qa/corpus/proposed/compliance-rwa-payments/q-comp-xlm-us-classification.json",
-      "state": "proposed",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-comp-xlm-us-classification.json",
+      "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "12076b00bba4c3a9da5892670e8753ce90552777326527026f4991a38c2fe904"
+      "caseContentSha256": "917685387938d86e205d435b8f0ba1630a709e3d5640401f62a9f9834dea14f7"
     },
     {
       "id": "q-comp-yieldblox-oracle-incident",
@@ -1204,7 +1204,7 @@
       "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-agentic-payment-standards-compare.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "1000077f287c2a29cef29f6ac861f9e0b61411423c909ec5965603f7f28d49f9"
+      "caseContentSha256": "64f05c96487a6989601021a31ffdf89d1ea9a2c59a3347fa7e1f2c59b36fc5b8"
     },
     {
       "id": "q-defi-allbridge-what-is",
@@ -2651,7 +2651,7 @@
       "path": "eval/qa/corpus/retired/q-pay-anchor-msb-licensing.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "ccd458e4831ee459136ce08f4dd4289aa907561b7c106fe5f22e41b29c6f52a0",
+      "tombstoneContentSha256": "38bf02594198b7a90eb18a291eae0961ce0452763d62dd56db04c76a7d8e9643",
       "lastCaseContentSha256": "d31b48f4995264885ed84bf286b3be88a5c8b9f1b54f475d8526064e104a6aff",
       "replacementIds": [
         "q-comp-aml-analytics-vendors",

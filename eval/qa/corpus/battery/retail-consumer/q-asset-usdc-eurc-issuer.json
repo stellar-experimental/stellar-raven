@@ -15,7 +15,7 @@
       "Do NOT present the Testnet issuer GBBD…FLA5 as Mainnet, or call Circle Mint Europe the current legal issuer.",
       "Do NOT attribute USDC or EURC issuance to Tether, Paxos or SDF."
     ],
-    "notes": "Naming Circle suffices; the EURC legal entity is optional context. EURC’s legal issuer is Circle Internet Financial Europe SAS; Circle Internet Financial, LLC is an affiliate reseller and the organization in Circle’s stellar.toml, which Scout repeats as issuer of record. An answer that names the LLC from that source does not fail on that point alone. MyKobo issues a separate asset with code EURC under its own issuer; naming it as a distinct asset is correct, attributing Circle’s EURC to MyKobo is wrong."
+    "notes": "Naming Circle suffices; the EURC legal entity is optional context. EURC’s legal issuer is Circle Internet Financial Europe SAS; Circle Internet Financial, LLC is an affiliate reseller and the organization named in Circle's stellar.toml; an answer that names it as EURC's issuer, attributed to that file, does not fail on that point alone. MyKobo issues a separate asset with code EURC under its own issuer; naming it as a distinct asset is correct, attributing Circle’s EURC to MyKobo is wrong."
   },
   "tags": {
     "category": "retail-consumer",
@@ -220,13 +220,12 @@
     ],
     "verified": {
       "date": "2026-11-14",
-      "by": "scope-apply lane (Claude Opus 5.5, high), golden coverage audit 2026-11-14; applies owner-approved decisions/SCOPE.md A6",
+      "by": "scope-finalize (Claude Opus 5.5), applying independent review finding F4 from scope-review (Claude Sonnet 5.5), decisions/REVIEW.md",
       "evidence": [
-        "Owner decision 2026-11-14: .agents/rounds/2026-11-14-golden-coverage-audit/decisions/SCOPE.md A6 (non-Stellar key facts move to optional context); applied in decisions/APPLY.md.",
-        "Moved the EU legal-issuer key fact to golden.notes: the question asks who issues, not which legal entity. circle.com settles the entity as Circle Internet Financial Europe SAS, so the notes tolerate a sourced LLC answer instead of accepting it as correct (deviation recorded in APPLY.md).",
-        "Live A 2026-11-14: https://www.circle.com/legal/eurc-terms -- \"EURC is a digital token issued by Circle Internet Financial Europe SAS\".",
-        "Scout defect filed as a verified finding: improvements/stellar-light-scout/sls-119-eurc-issuer-of-record-names-reseller.md",
-        "Sibling sweep 2026-11-14: q-eco-stellar-rwa-stablecoin-volume and q-eco-pyusd-stellar-freshness make no EURC legal-entity claim."
+        "F4: golden.notes no longer names Scout (a tool) or carries provenance; the legal-entity truth (Circle Internet Financial Europe SAS) and the leniency for a stellar.toml-attributed LLC answer are unchanged.",
+        "Reviewer re-read https://www.circle.com/legal/eurc-terms 2026-11-14: 'EURC is a digital token issued by Circle Internet Financial Europe SAS'; the LLC 'acts as a reseller of EURC'.",
+        "Scout's repetition of the LLC stays recorded in improvements/stellar-light-scout/sls-119-eurc-issuer-of-record-names-reseller.md.",
+        "Review: .agents/rounds/2026-11-14-golden-coverage-audit/decisions/REVIEW.md F4; application: decisions/APPLY.md, section Review reconciliation"
       ],
       "rootCause": [
         ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"

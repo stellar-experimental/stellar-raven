@@ -5,17 +5,17 @@
     "skills.stellar-dev.agentic-payments"
   ],
   "golden": {
-    "answer": "None of x402, MPP, AP2 or ACP is a Stellar standard. x402 and MPP are general payment protocols; Stellar docs define methods for them that settle SEP-41 token transfers through Soroban authorization, and none for AP2 or ACP. MPP covers one-time charge plus session and channel payments. AP2 is an emerging mandate-based authorization protocol that can use x402 but does not require it. ACP is a checkout protocol that delegates payment to PSPs.",
+    "answer": "None of x402, MPP, AP2 or ACP is a Stellar standard. x402 and MPP are general payment protocols; Stellar docs define methods for them that settle SEP-41 token transfers through Soroban authorization, and, as of November 2026, none for AP2 or ACP. MPP covers one-time charge plus session and channel payments. AP2 is an emerging mandate-based authorization protocol that can use x402 but does not require it. ACP is a checkout protocol that delegates payment to PSPs.",
     "keyFacts": [
       "x402 and MPP are general protocols; Stellar methods settle SEP-41 tokens.",
       "MPP covers one-time charge plus session and channel payments, not only streaming.",
-      "Stellar docs define payment methods for x402 and MPP only, not for AP2 or ACP."
+      "As of November 2026, Stellar docs define payment methods for x402 and MPP, not for AP2 or ACP."
     ],
     "avoid": [
       "Do NOT call x402 or MPP a Stellar-native standard.",
       "Do NOT describe ACP as a blockchain settlement rail or MPP as a Stripe/Tempo chain."
     ],
-    "notes": "AP2 and ACP descriptions are optional context, but a false one is wrong. The exposed Stellar agentic-payments skill covers x402 and MPP only; accept source-faithful limits on AP2 and ACP."
+    "notes": "AP2 and ACP descriptions are optional context, but a false one is wrong. The exposed Stellar agentic-payments skill covers x402 and MPP only; accept source-faithful limits on AP2 and ACP. Accept a later Stellar docs method for AP2 or ACP when the answer names its source."
   },
   "tags": {
     "category": "defi-ecosystem",
@@ -209,13 +209,11 @@
     ],
     "verified": {
       "date": "2026-11-14",
-      "by": "scope-apply lane (Claude Opus 5.5, high), golden coverage audit 2026-11-14; applies owner-approved decisions/SCOPE.md A6",
+      "by": "scope-finalize (Claude Opus 5.5), applying independent review finding F2 from scope-review (Claude Sonnet 5.5), decisions/REVIEW.md",
       "evidence": [
-        "Owner decision 2026-11-14: .agents/rounds/2026-11-14-golden-coverage-audit/decisions/SCOPE.md A6 (non-Stellar key facts move to optional context); applied in decisions/APPLY.md.",
-        "Replaced the AP2 and ACP key facts with one Stellar-side negative fact; the AP2 and ACP descriptions stay in the answer as optional context.",
-        "Live A 2026-11-14: https://developers.stellar.org/docs/build/agentic-payments.md -- \"Build payment-enabled APIs and AI agents on Stellar using HTTP-native payment protocols like x402 and MPP.\"",
-        "Negative claim: truth.corroboration row dated 2026-11-14 (A, B, E, D).",
-        "Sibling sweep 2026-11-14: q-defi-agent-identity-stellar-experimental and the ai.x402 cases make no AP2 or ACP claim that this contradicts."
+        "F2: the negative key fact and answer clause are now dated (as of November 2026), and golden.notes accepts a later Stellar docs method for AP2 or ACP; golden-truth section 3 (negative claims) and the live-case rule.",
+        "Negative claim unchanged in substance: truth.corroboration row dated 2026-11-14 (A, B, E, D).",
+        "Review: .agents/rounds/2026-11-14-golden-coverage-audit/decisions/REVIEW.md F2; application: decisions/APPLY.md, section Review reconciliation"
       ],
       "rootCause": [
         ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"

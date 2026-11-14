@@ -242,12 +242,12 @@
         "lastChecked": "2026-11-14",
         "reSwept": {
           "date": "2026-11-14",
-          "reason": "scope-apply (Claude Opus 5.5, .agents/rounds/2026-11-14-golden-coverage-audit/decisions/APPLY.md): q-asset-usdc-eurc-issuer moved its EU legal-issuer key fact to golden.notes and added a grading caution; Circle as issuer of USDC and EURC and the 2023-09-26 EURC launch are unchanged, so the cluster claims hold. Pending confirmation by the scope-apply diff reviewer.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "scope-apply (Claude Opus 5.5, .agents/rounds/2026-11-14-golden-coverage-audit/decisions/APPLY.md): q-asset-usdc-eurc-issuer moved its EU legal-issuer key fact to golden.notes and added a grading caution; Circle as issuer of USDC and EURC and the 2023-09-26 EURC launch are unchanged, so the cluster claims hold. Confirmed by independent diff review, decisions/REVIEW.md. Re-stamped after review finding F4: q-asset-usdc-eurc-issuer golden.notes now carries the reviewer's exact wording (provenance and tool name removed); its EURC legal-issuer claim, Circle-issues claim and 2023-09-26 launch date are unchanged, so the cluster claims hold."
         },
         "note": "CRDT=WisdomTree Sep 12 2025, USDY=Ondo Sep 17 2025, and PYUSD=PayPal-branded/Paxos-issued Sep 18 2025; Templar is another verified Nov 5 2025 launch. The set is illustrative, not exhaustive, and the old Meridian 'inflection point' narrative is not a truth gate. Announced, approved, technically integrated, listed, and publicly live remain distinct states. Circle recorded CCTP Stellar mainnet support on 2026-05-18 and SDF/Circle publicly announced live on 2026-05-19; the prior 2026-02-24 launch attribution is unverified. EURC=Circle 2023-09-26; BENJI=Franklin Templeton since 2021; Figure YLDS live 2026-05-05; DTCC's tokenization service on Stellar is planned for H1 2027 and NOT live on Stellar; as of 2026-11-02 the DTCC Tokenization Service went live on 2026-10-28 on the Canton Network and DTCC's private Besu network only, so that launch is not Stellar-live evidence. Re-swept 2026-07-28 (round lead, post-adversarial-review): reopen is hash churn from the F3 fix — q-token-circle-usdc-on-stellar now separates Circle's 2026-05-18 mainnet-support milestone from the 2026-05-19 public announcement, moving that member toward the cluster claim; lead read the changed answer directly. (An earlier revision of this appendix also credited the non-member q-tool-passkeykit-smart-wallet edit; corrected 2026-07-28.) Re-swept 2026-07-28 (round lead, 24h-commit adversarial-review fixes): reopen is hash churn from this round's own contradiction-removing edits — q-token-circle-usdc-on-stellar notes/corroboration now carry the two-milestone CCTP wording instead of the collapsed 2026-05-19 slogan. Edits move members toward the cluster claim; lead read each changed field directly. Re-swept 2026-07-28: hash churn from appending the todo-1254 record to truth.verified.evidence on the affected member(s) — the CI gospel gate requires verified to move with judge-facing edits; no judge-facing content changed in that append.",
         "memberContentSha256": {
-          "q-asset-usdc-eurc-issuer": "fe9f62504da38cac5746c625c622c57cf8f2356a5ac29e458e6314670c7630e3",
+          "q-asset-usdc-eurc-issuer": "5f3244d0168b7c40c993d9749a7c89da37983420ff088f818334ae106fc20e5d",
           "q-cctp-v2-usdc-stellar": "b90e9b6149819f7f3f272c18099dd490e186b353a6e50629651e54ec4fda6843",
           "q-defi-benji-franklin-templeton": "375a5960a4e545e026d0cbb92bd739978136c291d43b3e52e937bd371791ebd7",
           "q-eco-pyusd-stellar-freshness": "74ea08ca70e091e272adcac7ed9d34185fee0166f31a057e8876372518a2deac",
@@ -573,7 +573,7 @@
         "lastChecked": "2026-11-14",
         "reSwept": {
           "date": "2026-11-14",
-          "reason": "scope-apply (Claude Opus 5.5, .agents/rounds/2026-11-14-golden-coverage-audit/decisions/APPLY.md): q-defi-agent-identity-stellar-experimental moved the ERC-8004 Draft key fact to golden.notes as accepted context; its answer, avoid items and remaining key facts are unchanged, so the supported core the note describes holds. Pending confirmation by the scope-apply diff reviewer.",
+          "reason": "scope-apply (Claude Opus 5.5, .agents/rounds/2026-11-14-golden-coverage-audit/decisions/APPLY.md): q-defi-agent-identity-stellar-experimental moved the ERC-8004 Draft key fact to golden.notes as accepted context; its answer, avoid items and remaining key facts are unchanged, so the supported core the note describes holds. Confirmed by independent diff review, decisions/REVIEW.md.",
           "verdict": "consistent"
         },
         "note": "resolved by removing the unverifiable clauses and retaining the supported core",
@@ -663,12 +663,12 @@
         "lastChecked": "2026-11-14",
         "reSwept": {
           "date": "2026-11-14",
-          "reason": "scope-apply (Claude Opus 5.5, .agents/rounds/2026-11-14-golden-coverage-audit/decisions/APPLY.md): q-asset-usdc-eurc-issuer still names Circle Internet Financial Europe SAS as EURC legal issuer (answer and notes), now as context rather than a key fact, and adds that Circle Internet Financial, LLC is a reseller; no issuer-role claim of another member is contradicted. Pending confirmation by the scope-apply diff reviewer.",
-          "verdict": "consistent"
+          "verdict": "consistent",
+          "reason": "scope-apply (Claude Opus 5.5, .agents/rounds/2026-11-14-golden-coverage-audit/decisions/APPLY.md): q-asset-usdc-eurc-issuer still names Circle Internet Financial Europe SAS as EURC legal issuer (answer and notes), now as context rather than a key fact, and adds that Circle Internet Financial, LLC is a reseller; no issuer-role claim of another member is contradicted. Confirmed by independent diff review, decisions/REVIEW.md. Re-stamped after review finding F4: q-asset-usdc-eurc-issuer golden.notes now carries the reviewer's exact wording (provenance and tool name removed); its EURC legal-issuer claim, Circle-issues claim and 2023-09-26 launch date are unchanged, so the cluster claims hold."
         },
         "note": "Dated/provenance-bearing overrides now distinguish source snapshots, legal entities, directory reconstructions, and current CLI/API semantics without unsupported comparisons. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
-          "q-asset-usdc-eurc-issuer": "fe9f62504da38cac5746c625c622c57cf8f2356a5ac29e458e6314670c7630e3",
+          "q-asset-usdc-eurc-issuer": "5f3244d0168b7c40c993d9749a7c89da37983420ff088f818334ae106fc20e5d",
           "q-eco-pyusd-stellar-freshness": "74ea08ca70e091e272adcac7ed9d34185fee0166f31a057e8876372518a2deac",
           "q-eco-stellar-rwa-stablecoin-volume": "4fd00df31be96aebed96d2198d995638e62bf07b76a6b6d5331c4d2b2858d8e3",
           "q-eco-stellar-wallets-list": "a7cb352108a116c5ae16fda848cbff2749e92efb017b96a4184fc7d8fe8887aa",
@@ -730,7 +730,7 @@
         "lastChecked": "2026-11-14",
         "reSwept": {
           "date": "2026-11-14",
-          "reason": "scope-apply (Claude Opus 5.5, .agents/rounds/2026-11-14-golden-coverage-audit/decisions/APPLY.md): q-edge-oos-solana-vs-aptos now makes the comparison framework welcome, not required, and drops the refusal-boilerplate avoid clause by owner decision; its answer still gives a boundary plus a framework and injects no Stellar answer, so both members still fit the cluster note. Pending confirmation by the scope-apply diff reviewer.",
+          "reason": "scope-apply (Claude Opus 5.5, .agents/rounds/2026-11-14-golden-coverage-audit/decisions/APPLY.md): q-edge-oos-solana-vs-aptos now makes the comparison framework welcome, not required, and drops the refusal-boilerplate avoid clause by owner decision; its answer still gives a boundary plus a framework and injects no Stellar answer, so both members still fit the cluster note. Confirmed by independent diff review, decisions/REVIEW.md.",
           "verdict": "consistent"
         },
         "note": "Benign non-Stellar questions receive a concise source-coverage boundary plus a task-specific helpful redirect or decision framework. They are not unsafe-request refusal cases. Answers avoid unsupported external facts, do not manufacture a Stellar answer, and do not leak internal routing/tool names.",
@@ -1036,7 +1036,7 @@
         "lastChecked": "2026-11-14",
         "reSwept": {
           "date": "2026-11-14",
-          "reason": "scope-apply (Claude Opus 5.5, .agents/rounds/2026-11-14-golden-coverage-audit/decisions/APPLY.md): q-pc-multisig-setup-lifecycle changed only truth.leaf and truth.secondaryLeaf (swapped to protocol.signatures-multisig primary). question, golden and tags are byte-identical, so the members stay consistent. Pending confirmation by the scope-apply diff reviewer.",
+          "reason": "scope-apply (Claude Opus 5.5, .agents/rounds/2026-11-14-golden-coverage-audit/decisions/APPLY.md): q-pc-multisig-setup-lifecycle changed only truth.leaf and truth.secondaryLeaf (swapped to protocol.signatures-multisig primary). question, golden and tags are byte-identical, so the members stay consistent. Confirmed by independent diff review, decisions/REVIEW.md.",
           "verdict": "consistent"
         },
         "note": "SetOptions signer/threshold/master-weight changes use current high-threshold authority. A 2-of-3 example has exactly three effective authorities; master counts when nonzero. Add/test replacement authority before removing the old signer or disabling master.",
