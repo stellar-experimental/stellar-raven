@@ -70,7 +70,14 @@ not surface, a source it does not reach, or nowhere). Then test the one or two s
 recover the most facts, with a pass condition fixed in advance: more correct answers and no more
 wrong ones.
 
-Done when: the classification is recorded and the owner decides which source, if any, to test.
+Gaps are findings, not only errors (owner, 2026-11-14). Where support exists nowhere, or only in a
+source Raven does not reach, file a gap finding with a concrete net-new doc or content
+recommendation for the owning source, as an issue (Raven never opens upstream pull requests). Run
+it after the owner's QA battery audit settles the goldens, so retired or rewritten facts are not
+chased.
+
+Done when: the classification is recorded, gap findings are filed for the facts no reached source
+supports, and the owner decides which source, if any, to test.
 
 ### Report per-source attempts and final status
 
