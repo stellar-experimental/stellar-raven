@@ -66,9 +66,11 @@ State both numbers and make the call; scores are evidence, not the decision.
 - **Run here, on `hc`.** Development tests and evals use the local `wrangler dev` server
   (`npm run dev:eval`) and the subscription CLIs (Claude Code, Codex, Grok) driven through `hc`,
   before any API-billed path (Cloudflare AI Gateway, provider APIs). Use API billing only when no
-  CLI can do the job, and say why in the four lines. Two lanes qualify: the Playground lane,
-  because the product route itself calls the Gateway, and the Gateway second judge, because no CLI
-  guarantees a tool-free judge.
+  CLI can do the job, and say why in the four lines of each plan. Two lanes qualify. The
+  Playground lane measures the product route, which itself calls the Gateway. The Gateway second
+  judge is the opt-in diagnostic in [`eval/qa/gateway-judge.md`](../../../eval/qa/gateway-judge.md):
+  it needs an independent OpenAI judge model, and that contract documents why the Codex CLI
+  transport is unsupported for it. Neither exception extends to other API judging or collection.
 - The QA runner and the discovery agent arm spawn headless `claude -p` themselves. Start the runner
   as an `hc` child (`hc run --bg --name <lane> ...`) and `hc wait` for it. `--model` selects the
   Claude client.
