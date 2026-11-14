@@ -268,6 +268,10 @@ const refinedCatalogSchema = catalogSchema.superRefine((catalog, ctx) => {
       }
     }
 
+    if (entry.cardCaveat !== undefined && entry.kind !== "operation") {
+      ctx.addIssue({ code: "custom", message: `card caveat entry ${entry.id} is not an operation` });
+    }
+
     if (entry.retrievalProfile && entry.kind !== "operation") {
       ctx.addIssue({ code: "custom", message: `retrieval profile entry ${entry.id} is not an operation` });
     }
@@ -599,13 +603,18 @@ function compactOutputStub(entry: CatalogEntry, typeName: string): string {
   return `type ${typeName} = { /* ${inBlockComment(`${props.length} top-level field${props.length === 1 ? "" : "s"}: ${props.join(", ")} — ${pointer}`)} */ }`;
 }
 
-/** Keep whole sentences inside `max` chars; fall back to a word boundary. */
+/**
+ * Keep whole sentences inside `max` chars; fall back to a word boundary. Text
+ * with no word boundary keeps its first character, as one whole code point.
+ */
 export function clipProse(text: string, max: number): string {
   if (text.length <= max) return text;
   const head = text.slice(0, max);
   const sentenceEnd = Math.max(head.lastIndexOf(". "), head.lastIndexOf(".\n"));
   if (sentenceEnd >= max / 3) return head.slice(0, sentenceEnd + 1);
-  return `${head.slice(0, Math.max(head.lastIndexOf(" "), 1)).trimEnd()}…`;
+  const wordEnd = head.lastIndexOf(" ");
+  const kept = wordEnd > 0 ? head.slice(0, wordEnd) : String.fromCodePoint(text.codePointAt(0)!);
+  return `${kept.trimEnd()}…`;
 }
 
 const CARD_FIELD_DOC_CHARS = 100;

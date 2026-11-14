@@ -29,6 +29,7 @@ import {
   type RegisterToolsOptions
 } from "../src/mcp/tools";
 import { getCatalog } from "../src/catalog/load";
+import { clipProse } from "../src/catalog/search";
 import { allowDevUnauthenticated } from "../src/auth/gate";
 import type { McpAccessContext } from "../src/server";
 import type { ExecuteEvidenceSummary, ExecuteOperationSummary } from "../src/executor/run";
@@ -855,9 +856,22 @@ describe("search behavior (host-side ranked)", () => {
       expect(card, entry.id).toBeDefined();
       expect(card!.description.endsWith(` ${entry.cardCaveat}`), entry.id).toBe(true);
       expect(card!.description.length, entry.id).toBeLessThanOrEqual(SEARCH_CARD_DESCRIPTION_CHARS);
-      // The caveat restates the full description; it never replaces the card's opening sentence.
+      // The card still opens with the description's own prefix; the caveat only follows it.
       expect(card!.description.slice(0, 40), entry.id).toBe(entry.description.slice(0, 40));
     }
+  });
+
+  it("clips to whole code points when reserving caveat room forces a cut", () => {
+    // 140 UTF-16 units with no word boundary: whole at the card budget, cut once a caveat reserves room.
+    const emoji = "😀".repeat(70);
+    const caveat = getCatalog().entries.find((entry) => entry.id === "scout.listAudits")!.cardCaveat!;
+    expect(clipProse(emoji, SEARCH_CARD_DESCRIPTION_CHARS)).toBe(emoji);
+    const clipped = clipProse(emoji, SEARCH_CARD_DESCRIPTION_CHARS - caveat.length - 1);
+    expect(clipped).toBe("😀…");
+    expect(() => encodeURIComponent(clipped)).not.toThrow();
+    // A word boundary still wins, and a cut that lands inside a pair backs off to it.
+    expect(clipProse(`ab ${"😀".repeat(5)}`, 6)).toBe("ab…");
+    expect(clipProse("one two three", 9)).toBe("one two…");
   });
 
   it("states the prior-art pass once, on a page that shows a build playbook", async () => {

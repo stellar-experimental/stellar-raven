@@ -224,9 +224,31 @@ describe("build-catalog.mjs", () => {
     expect(attached.find((entry) => entry.id === "scout.listAudits")?.cardCaveat).toBe("Absent is not unaudited.");
     expect(() => attachCardCaveats(entries, { "scout.notExposed": "A caveat." })).toThrow(/matched no exposed operation/);
     expect(() => attachCardCaveats(entries, { "skills.stellar-dev.data": "A caveat." })).toThrow(/not an operation/);
-    for (const bad of ["x".repeat(135) + ".", "Two\nlines.", "No final period"]) {
-      expect(() => attachCardCaveats(entries, { "scout.listAudits": bad }), bad).toThrow(/must be one line/);
+    for (const bad of [
+      "x".repeat(135) + ".",
+      "Two\nlines.",
+      "Two\rlines.",
+      "Two\u2028lines.",
+      "Two\u2029lines.",
+      "No final period"
+    ]) {
+      expect(() => attachCardCaveats(entries, { "scout.listAudits": bad }), JSON.stringify(bad)).toThrow(/must be one line/);
     }
+  });
+
+  it("rejects a multi-line or non-operation card caveat at manifest load", () => {
+    const withCaveat = (id: string, cardCaveat: string) => ({
+      ...catalog,
+      entries: catalog.entries.map((entry) => (entry.id === id ? { ...entry, cardCaveat } : entry))
+    });
+    expect(loadManifest(withCaveat("scout.listAudits", "One line.")).entries).toHaveLength(catalog.entries.length);
+    for (const breakChar of ["\n", "\r", "\u2028", "\u2029"]) {
+      expect(() => loadManifest(withCaveat("scout.listAudits", `Two${breakChar}lines.`)), JSON.stringify(breakChar)).toThrow(
+        /must be one line/
+      );
+    }
+    expect(() => loadManifest(withCaveat("scout.listAudits", "x".repeat(136)))).toThrow();
+    expect(() => loadManifest(withCaveat("skills.stellar-dev.data", "One line."))).toThrow(/is not an operation/);
   });
 
   it("recovers weak RPC docs results through cited research and source-code explanation", () => {

@@ -1,7 +1,7 @@
 {
   "entries": [
     {
-      "cardCaveat": "start_offset orders passages; it is not a playback timestamp. created_at is not the recording date.",
+      "cardCaveat": "start_offset orders passages, not playback time. Do not use created_at as the recording date or recency evidence.",
       "description": "Find specific passages in long videos, podcasts, and recorded talks by semantic similarity. Returns parent recording metadata, AI summaries, and an opaque ordering offset.\n\nWhen to use: Find WHERE in videos/podcasts/spaces a topic is discussed — returns AI summaries of the matching passages plus an opaque ordering offset (NOT a playback timestamp). Use when you need \"the part of the talk where they discuss X\".\n\nReturns: Array of AV items with AI summaries, created_at (upstream metadata; do not treat it as the recording date or recency evidence), start_offset (an opaque transcript chunk offset for ordering passages within a recording — NOT playback seconds; do not render it as a timestamp or build a deep-link from it), and link. Transcript text itself is never returned — cite the link + the passage summary.",
       "id": "lumenloop.find_av_passages",
       "inputSchema": {
@@ -6517,7 +6517,7 @@
       }
     },
     {
-      "cardCaveat": "Winner order is a ranking only where placementRank is a number; otherwise list position means nothing.",
+      "cardCaveat": "Read placementRank with its track; never infer finishing place from list position. null means unranked.",
       "description": "Get one hackathon's full detail. Full detail for ONE hackathon by slug: every submission with placement, prize and track; winners, per-track aggregates and a stats funnel. DoraHacks events serve the stored copy: the event page, rules (submission requirements, and judging criteria where the organizer published them) and a profile of the submissions (categories, libraries, activity after the event, what they became). Needs an exact slug; resolve via getHackathons first. Not for listing events → use getHackathons.\n\nCatalog note: winner order is only meaningful when hackathonPlacement is ordinal (1st Place, 2nd Place, ...) and placementRank is a number; many events label every winner just Winners with placementRank null — there the winners array order is NOT a ranking, so never assert finishing order from list position (live-verified 2026-07-03).",
       "id": "scout.getHackathon",
       "inputSchema": {
@@ -14692,7 +14692,7 @@
       }
     },
     {
-      "cardCaveat": "Absent means no audit on record here, not unaudited. null finding counts are not extracted, not zero.",
+      "cardCaveat": "No matching audit here does not mean unaudited. null finding counts are not extracted, not zero.",
       "description": "Enumerable registry of Stellar security-audit reports. One row per security-audit report from stellarsecurityportal.com; the structured, enumerable half of the audit corpus (full report text is chunk-served by searchResearch with source=audit). Rows carry a normalized auditor, publication date, and a hand-verified link to the directory project (projectSlug). Semantics: a project ABSENT here has no audit on record at our source. NOT a claim it is unaudited; findingsTotal/severityCounts null = not extracted, NOT zero. Unknown query params are rejected with 400, never silently ignored.",
       "id": "scout.listAudits",
       "inputSchema": {

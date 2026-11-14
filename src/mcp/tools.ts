@@ -201,8 +201,9 @@ function compactCard<T extends SearchCard>(catalog: Catalog, card: T): T {
 }
 
 /**
- * A page that shows a build playbook is where a design starts, so the prior-art pass is stated
- * there, once. It rides only on a page with no wider-candidate advice, which keeps the hint in bound.
+ * A conditional reminder for a page that shows a build playbook: if the caller is designing
+ * something new, run the prior-art pass first. A playbook hit does not show design intent, so the
+ * sentence asks. It rides only on a page with no wider-candidate advice, which keeps the hint in bound.
  */
 const PRIOR_ART_NEXT_STEP =
   " Designing something new? Before the architecture, make one bounded prior-art pass in the same script: `scout.searchRepos`, `scout.searchProjects`.";

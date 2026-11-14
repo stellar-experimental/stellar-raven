@@ -184,9 +184,10 @@ const catalogEntryBaseSchema = z.object({
    * Operation entries only: one line that a compact search card must keep
    * because the card's clipped description drops it. It restates a caveat the
    * full description already carries, is rendered inside the card's
-   * description budget (src/mcp/tools.ts), and never feeds scoring.
+   * description budget (src/mcp/tools.ts), and never feeds scoring. The
+   * length and one-line rule match scripts/catalog-data/card-caveats.mjs.
    */
-  cardCaveat: z.string().min(1).max(135).optional(),
+  cardCaveat: z.string().min(1).max(135).regex(/^[^\r\n\u2028\u2029]*$/u, "must be one line").optional(),
   /**
    * Whole-skill entries only: the build domains this exact exposed playbook
    * authoritatively covers for the host's bounded prior-art composition cue.

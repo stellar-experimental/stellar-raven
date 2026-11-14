@@ -10,6 +10,7 @@
  * result is not absence and that a semantic row is a candidate: do not repeat
  * those here. Keys are exact exposed operation ids; the catalog builder fails
  * on an unknown key or an over-long line. The text never feeds search scoring.
+ * src/catalog/types.ts holds the same length and one-line rule for manifest load.
  */
 export const CARD_CAVEAT_MAX_CHARS = 135;
 
@@ -17,17 +18,17 @@ export const CARD_CAVEATS = Object.freeze({
   "lumenloop.find_content_by_entity":
     "Person: ok with empty groups shows only that this lookup linked nothing, not absence or a soft-empty; verify identity, source, date.",
   "lumenloop.find_av_passages":
-    "start_offset orders passages; it is not a playback timestamp. created_at is not the recording date.",
+    "start_offset orders passages, not playback time. Do not use created_at as the recording date or recency evidence.",
   "scout.analyzeEcosystem":
     "gaps, developers and toolchain are supply-side and as-of dated: never demand or a headcount.",
   "scout.getHackathon":
-    "Winner order is a ranking only where placementRank is a number; otherwise list position means nothing.",
+    "Read placementRank with its track; never infer finishing place from list position. null means unranked.",
   "scout.getLeaderboard":
     "tvl null means no figure, never zero. issues is the open backlog, not activity.",
   "scout.getStablecoins":
     "Compare marketCapUSD, not raw supply across pegs. null is unmeasured, never zero; check basis.",
   "scout.listAudits":
-    "Absent means no audit on record here, not unaudited. null finding counts are not extracted, not zero.",
+    "No matching audit here does not mean unaudited. null finding counts are not extracted, not zero.",
   "scout.searchRepos":
     "repoScore, stars and rank are discovery metadata, not security, license, audit or production evidence."
 });

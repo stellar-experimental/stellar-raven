@@ -1182,7 +1182,11 @@ export function attachCardCaveats(entries, caveats = CARD_CAVEATS) {
     const caveat = caveats[entry.id];
     if (caveat === undefined) return entry;
     if (entry.kind !== "operation") throw new Error(`card caveat key "${entry.id}" is not an operation`);
-    if (typeof caveat !== "string" || !/^\S[^\n]*\.$/.test(caveat) || caveat.length > CARD_CAVEAT_MAX_CHARS) {
+    if (
+      typeof caveat !== "string" ||
+      !/^\S[^\r\n\u2028\u2029]*\.$/u.test(caveat) ||
+      caveat.length > CARD_CAVEAT_MAX_CHARS
+    ) {
       throw new Error(
         `card caveat "${entry.id}" must be one line of at most ${CARD_CAVEAT_MAX_CHARS} characters that ends with a period`
       );
