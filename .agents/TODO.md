@@ -166,7 +166,9 @@ Nothing is filed: the owner is not established, because the miss may come from R
 or from upstream ranking.
 
 Next step: run the same query against the Mintlify search backend directly, and through Raven
-with and without its scoping, and compare where the page ranks.
+with and without its scoping, and compare where the page ranks. The bare query `web+stellar:pay` returns
+`/docs/build/apps/wallet/sep7#pay-operation` first, so the miss comes from the added words, not
+from the index or Raven's scoping; the check is about ranking, and the owner may be upstream.
 
 Done when: either an `sd-` docs-search finding is filed with the retrieval-level evidence, or a
 Raven-side fix lands with its A/B, or the check shows no defect and that result is recorded here.

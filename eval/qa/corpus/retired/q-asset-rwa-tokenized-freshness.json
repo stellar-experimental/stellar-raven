@@ -8,7 +8,7 @@
     "date": "2026-11-14",
     "author": "audit-assets (golden coverage audit)",
     "reviewer": "verify-audit-assets (golden coverage audit)",
-    "reason": "Merged into q-eco-stellar-rwa-stablecoin-volume. Same measurement as q-eco-stellar-rwa-stablecoin-volume (dated RWA value with its basis), and the survivor carries the $4.1B Q3 figure with QoQ growth. The rot 'changed' is ordinary drift of a dated figure; it should be recorded as holds. The survivor's live key facts pinning Q3 numbers belong to the defi verifier.",
+    "reason": "Merged into q-eco-stellar-rwa-stablecoin-volume, which asks for the same dated RWA value with its basis and carries SDF's Q3 2026 figure of about $4.1B.",
     "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
     "evidence": [
       "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-assets.json#q-asset-rwa-tokenized-freshness",

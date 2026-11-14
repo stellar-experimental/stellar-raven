@@ -571,3 +571,115 @@ the verification event and the contradicting Docs sentence.
 | `npm run eval:qa:sentinels -- --ids` (14 changed anchors, live, extra) | 0 | 14 of 14 `hold` |
 
 Untracked `qa/` appeared beside the round files during this review (another lane); I did not touch it.
+
+---
+
+# Final delta review: c93f0f94..f956bbd8 (HEAD)
+
+Reviewer: review lane, Claude Sonnet 5.5. Scope: the diff `c93f0f94..HEAD`, the six findings added in
+`c93f0f94` (`sd-105` to `sd-108`, `sls-117`, `sls-118`), and the two new `.agents/TODO.md` entries.
+Re-derived from the files and live sources on 2026-11-14, not from `apply/CLOSEOUT.md`.
+
+## Verdict
+
+**Fit to merge.** There is no blocking finding. Two low-severity items (F1, F2) and one note (F3) are
+worth fixing before merge; none changes a case answer, a finding, or a gate. Nothing was posted
+upstream.
+
+## Findings
+
+| # | Severity | Where | What is wrong | Fix |
+|---|---|---|---|---|
+| F1 | Low | `eval/qa/corpus/retired/q-sor-contract-as-claimable-arbiter.json` `reason` | The tombstone says the survivor `q-sor-classic-dex-from-contract` "absorbs ... 'escrow is a contract holding SAC or SEP-41 balances'". The closeout deleted that key fact from the survivor (the question does not ask for it, and I agree) and the survivor's answer does not state it. The tombstone now claims a fact the battery no longer holds. | Reword the reason: the survivor carries "contracts cannot interact with claimable balances"; the programmable-escrow fact was dropped as unasked. |
+| F2 | Low | 11 tombstones in `eval/qa/corpus/retired/` | D2 is fixed for the 16 named reasons, but the same class remains elsewhere: `q-builder-by-region-latam` ("The purpose label is wrong"), `q-comp-cross-moneygram-partnership-sep24`, `q-comp-cross-bitso-sep31`, `q-asset-rwa-tokenized-freshness` ("should be recorded as holds"), `q-edge-fresh-most-recent-news` ("The rot row records ordinary drift"), `q-defi-streaming-payments-prior-art` ("the stated duplicate is wrong"), `q-sor-stale-spec-after-upgrade` ("The lane's 'missing' list"), `q-ti-vocab-project-categories-live`, `q-crp-custodial-vs-noncustodial-wallets` ("reconciler should confirm it survives"), `q-gap-scout-changelog-envelope` ("Retire is right."), `q-protocol-validator-upgrade-vote` ("reasonable to drop"). The lifecycle script's `scoreWordReasons` still prints the last two. They are audit-process commentary, not a score; none is false except as noted in F1. | Reduce each to one self-contained sentence, as the 16 were. Cosmetic. |
+| F3 | Note | `.agents/TODO.md`, "Check Docs search for the SEP-7 payment-request page" | The entry's claim reproduces, but it omits what makes the check cheap. `search_docs('web+stellar:pay payment request QR code')` returns no `/wallet/sep7` page (ten hits, none), as the entry says. The bare query `web+stellar:pay` returns `/docs/build/apps/wallet/sep7#pay-operation` first. The miss therefore comes from the added words, not from the index or Raven's scoping. | Add the bare-query contrast to "Next step". It points the check at ranking, so the owner may be upstream. No change needed to "Nothing is filed". |
+
+No other defect found. In particular: no judge-facing text in the 12 edited cases names a tool or a
+verdict (scanned question and `golden` for `scout.`, `lumenloop`, `stellarDocs`, `codemode`, `Raven`,
+`search_docs`, `RESULT`, `verdict`: no hits).
+
+## D1, D2, D4: confirmed fixed
+
+| Item | Result |
+|---|---|
+| D1 | `q-soroban-simulate-resource-fee` now carries "Do NOT claim simulation runs through a Horizon endpoint; it is a Stellar RPC method." The Docs page `.../api-reference/methods/simulateTransaction` is an RPC method reference. The merged tombstone `q-infra-simulate-transaction-howto` now says the survivor carries it. |
+| D2 | The 16 reasons are one sentence each. Every `q-` id, `eval/` path and `test/` path they name exists (script over all 291 tombstones: 0 unknown ids, 0 missing files). `q-infra-secp256r1-passkeys` says the survivor carries "WebAuthn permits algorithms other than P-256" and "a separate G account submits and pays": both are in the `q-passkey-smart-account-architecture` answer. Residue: F2. |
+| D4 | The supply case's event now cites this file's "Re-derived correction" as the independent check and says verify-gap predates it. `golden.notes` names the Docs sentence as a partial-capped quote while `sd-105` stands. `sd-105` is `verified`, so the lint accepts the cap. |
+
+## The 12 edited cases
+
+Rule: each change must (a) rest on a defect in the case itself (a key fact the question does not
+ask for, a bundled predicate, or a claim the sources do not support), not on a verdict; (b) keep every
+fact that matters; (c) be true. I read all 12 diffs.
+
+| Case | (a) Independent defect | (b) Fact kept | (c) Checked |
+|---|---|---|---|
+| `q-comp-yieldblox-oracle-incident` | Yes: one key fact bundled a causal claim with a list | Split in two; nothing dropped | Facts unchanged |
+| `q-defi-agent-identity-stellar-experimental` | Yes: ERC-8004's payment scope is not asked | Kept in the answer; the Draft key fact stays | eips.ethereum.org/EIPS/eip-8004 shows "Draft" (live) |
+| `q-defi-blend-alternatives` | Yes: disclaimers about unasked systems | Moved to two avoid items; classification guard kept | Classification unchanged |
+| `q-defi-blend-audit-record` | Yes: the question needs one place, the fact required two | "Docs, repositories or the Security Portal" | `docs.blend.capital/audits-and-bug-bounties.md` shows V2 Audits, Certora, Code4rena (live). The Security Portal rests on an existing corroboration row, not on this page |
+| `q-hist-meridian-2026-corrected-venue` | Yes: bundled dates and an announcement date | Superseded plan kept; dates in the answer; avoid unchanged | Unchanged |
+| `q-pay-anchor-msb-licensing` | Yes: the question names no jurisdiction and `golden.notes` says none is asserted | US example and Travel Rule stay in the answer | Jurisdiction-neutral wording holds. I did not re-fetch fincen.gov (the page did not return text to `curl`) |
+| `q-sor-classic-dex-from-contract` | Yes: programmable escrow is not asked | Dropped; the claimable-balance fact stays | Overview page quote unchanged. See F1 for the tombstone |
+| `q-stellar-vs-xrp-ledger` | Yes: three of four key facts were XRP Ledger-side, which no Raven source covers | XRP Ledger facts stay in the answer as attributed context; `notes` says a false XRP claim is still wrong | See below |
+| `q-ti-parse-raw-ledger-data` | Yes: `getTransactions` types are not asked | Removed from answer and key facts | Corroboration kept |
+| `q-ti-testnet-usdc-faucet` | Yes: SAC clause is not asked | Reserve and trustline fact kept | Issuer unchanged |
+| `q-soroban-simulate-resource-fee` | Yes (D1) | Avoid item added | RPC method page (live) |
+| `q-token-xlm-supply-total-circulating` | Yes (D4) | Answer unchanged | See "Re-derived correction" above |
+
+### `q-stellar-vs-xrp-ledger`: changed claims against primary sources
+
+| Claim | Source (read 2026-11-14) | Result |
+|---|---|---|
+| Each SCP validator chooses its own quorum set | Docs `stellar-consensus-protocol.md`: "A node's trusted set of nodes is called a quorum set" (and "a node's opinion ... depends on the opinions of its quorum set") | Holds |
+| Stellar replaced its Ripple-derived consensus with SCP in 2015 | `stellar.org/blog/developers/upgraded-network-is-here`, dated 2015-11-03: "It uses the Stellar Consensus Protocol (SCP)" | Holds. The Ripple-derived start rests on the carried SEC filing row; causation of the fork is not asserted, consistent with `q-hist-scp-rewrite-2015` |
+| Fees go to a locked account no one can spend | Docs `fees-resource-limits-metering.md`: "go into a locked account and are not given to or used by anyone" | Holds |
+| Every asset but XLM has an issuer; holders opt in with a trustline | Docs `assets.md`: "must establish a trustline with the issuing account"; `lumens.md`: "The lumen is the only token that doesn't require an issuer or trustline." | Holds; "classic assets" scopes it correctly against contract tokens |
+
+A correct agent can satisfy all four key facts from Stellar Docs alone. The XRP Ledger half of the
+answer is now unscored context, as the audit intended.
+
+## The six findings
+
+Each live trigger was run once on 2026-11-14.
+
+| Finding | Trigger result | Gap real | Owner right | Form |
+|---|---|---|---|---|
+| `sd-105` | `lumens.md` line 49 holds "all XLM that has ever existed and will ever exist was created when the Stellar network went live"; line 76 holds the inflation definition (the finding cites the `.mdx` lines 48 and 75; the rendered `.md` is one line later) | Yes | `stellar/stellar-docs` (docs content) | Pass; `probe` present |
+| `sd-106` | Page text: 0 hits for Blockdaemon or Franklin Templeton. `stellar-core.cfg` prints the ten `HOME_DOMAIN` values named | Yes | `stellar/stellar-docs` | Pass; recurrence entry in the pipeline form |
+| `sd-107` | Docs overview line 71 has only "should match the version of the host functions supported"; `parsed_module.rs` line 382 holds "contract protocol number is newer than host", with the "Future protocols we don't allow" comment above it (main `5fdf6e62`, as cited) | Yes | `stellar/stellar-docs` (the rule belongs in the docs; the host is correct) | Pass; `probe` present |
+| `sd-108` | `gh search code` for "blind signing" and "unsolicited" in `stellar/stellar-docs`: 0 results each | Yes. It is an absence claim | `stellar/stellar-docs`, "missing guidance" as `improvements/README.md` allows; the finding states the placement is a judgment | Pass. It has no `probe`, which is right: an absence of a page has no stable string to match |
+| `sls-117` | Both `sdf-org` queries: HTTP 200, 25 rows, the same nine URLs; none of `foundation/strategy`, `foundation/roadmap`, `service-providers`, `stellar.org/community` | Yes | Stellar-Light (Scout research corpus) | Pass |
+| `sls-118` | `SLP-0006` query: 200, rows from `audit, cap, dev-docs, incident, sdf-blog, sep`; no `limits/` row. `limits/` holds `slp-0001` to `slp-0008`; `slp-0006` is "Freeze YieldBlox Exploit Stellar Accounts", Final, 2026-05-07; `slp-0008` is "Freeze Mercado Bitcoin Exploit Stellar Account", Final, 2026-11-02 | Yes | Stellar-Light | Pass; recurrence entry present |
+
+Nothing was posted upstream: no finding is `reported-upstream`, no evidence line holds an issue or pull
+request URL, `intake.json` only adds four `stellar/stellar-docs` per-finding targets, and a
+`generated-by-stellar-raven` marker search on `stellar/stellar-docs` and the `Stellar-Light`
+organization since 2026-11-13 returns nothing. `npm run improvements:lint` exits 0 (83 findings).
+
+## TODO entries
+
+| Entry | Sound? |
+|---|---|
+| Decide whether `stellar.org` pages outside Docs belong in a Raven source | Yes. It states an owner decision, not a finding, with three options, a next step and a done-when under "Owner decisions" (section exists at line 774). The `RESULT.md` link and the "Corpus-coverage diagnostics" anchor exist. The scope split with `sls-117` is correct: `sls-117` names strategy, roadmap and service-providers pages; the Audit Bank page is not in it. It names no case ID. |
+| Check Docs search for the SEP-7 payment-request page before filing | Yes, with F3. `/docs/build/apps/wallet/sep7.md` exists and holds `web+stellar:pay` three times. Scout returns the page for the long query, as stated. The done-when has three exits, including "no defect". |
+
+## Gates
+
+Run bare in this worktree at `f956bbd8`, clean tree.
+
+| Command | Exit | Result |
+|---|---|---|
+| `npm test` | 0 | 150 files pass, 1 skipped; 3,398 tests pass, 3 expected fail, 1 skipped |
+| `npm run eval:qa:lint -- --stale --enforce-floors` | 0 | 0 errors; `headline=246; tool=6; leaves=167; covered=164; openSlots=2` |
+| `npm run improvements:lint` | 0 | 83 findings |
+| `npm run eval:qa:register -- --check` | 0 | up to date |
+| `npm run eval:qa:compile` | 0 | wrote no tracked change (`git status` clean) |
+| Lifecycle proof script | 0 problems | 210 headline + 6 tool + 291 retired; 543 reserved ids; 36 new ids, none retired |
+
+## Open, as the closeout states
+
+Two unreachable cases, `q-stellar-vs-xrp-ledger` and `q-crp-public-sector-cbdc-pilots-stellar`, are
+recorded in `gaps/GAPS.md` only as "outside Raven's scope". That is the lane's judgment, not a
+recorded owner decision. The TODO "Finish the audit" done-when stays open until the owner records it.
+This does not block merging the branch, because that entry stays in the queue.

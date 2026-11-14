@@ -8,7 +8,7 @@
     "date": "2026-11-14",
     "author": "audit-soroban-a (golden coverage audit)",
     "reviewer": "verify-audit-soroban-a (golden coverage audit)",
-    "reason": "Merged into q-sor-scval-conversion. The q-sor-scval-conversion rewrite absorbs its durable fact as key fact 4 (regenerate spec-aware clients; raw Contract.call is spec-free). The rest is bug-report detail. The lane's 'missing' list rightly flags contract upgrade and migration as a gap.",
+    "reason": "Merged into q-sor-scval-conversion, which carries its durable fact as a key fact: after an upgrade, regenerate spec-aware clients, while raw Contract.call is spec-free.",
     "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
     "evidence": [
       "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-a.json#q-sor-stale-spec-after-upgrade",

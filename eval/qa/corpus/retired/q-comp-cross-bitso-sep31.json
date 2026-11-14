@@ -8,7 +8,7 @@
     "date": "2026-11-14",
     "author": "audit-compliance (golden coverage audit)",
     "reviewer": "verify-audit-compliance (golden coverage audit)",
-    "reason": "Retire holds: SEP-31 versus SEP-24 is owned by q-sep6-sep24-sep31-choice, and Bitso's directory role is an entity detail that anchor discovery (q-anchor-list-builders-discovery) already exercises. The purpose label is wrong: the case asks a world question (Bitso's role, SEP-31 vs SEP-24), so it is 'mixed', not 'raven-mechanics'. Drop q-sep-31-cross-border from the replacement IDs (assets merges it into q-sep6-sep24-sep31-choice).",
+    "reason": "Retired with no replacement because SEP-31 versus SEP-24 stays in the active case q-sep6-sep24-sep31-choice and Bitso's directory role is an entity detail that q-anchor-list-builders-discovery already exercises.",
     "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
     "evidence": [
       "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-compliance.json#q-comp-cross-bitso-sep31",

@@ -8,7 +8,7 @@
     "date": "2026-11-14",
     "author": "audit-protocol (golden coverage audit)",
     "reviewer": "verify-protocol (golden coverage audit)",
-    "reason": "Merged into q-pc-protocol-upgrade-timing. Survivor q-pc-protocol-upgrade-timing rewrite absorbs arming a scheduled UTC upgrade, in-band SCP activation, and 'not a token vote'. The exact http-command syntax is reasonable to drop from judge-facing text.",
+    "reason": "Merged into q-pc-protocol-upgrade-timing, which carries that validators arm a scheduled UTC upgrade, SCP applies it in-band, and it is not a token vote.",
     "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
     "evidence": [
       "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-protocol-validator-upgrade-vote",
