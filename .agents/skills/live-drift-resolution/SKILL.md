@@ -28,7 +28,7 @@ issue text or the upstream changelog. Run in order:
 npm run docs:anchors:build            # sitemap + headings -> src/adapters/stellar-docs-anchors.json
 node scripts/refresh-inventory.mjs    # live upstream -> inventory/*.json
 node scripts/build-catalog.mjs        # inventory -> catalog/manifest.json, with exposure guards
-npm run micro-map:build               # catalog -> src/mcp/micro-map.ts
+npm run micro-map:build               # catalog + source-family purposes -> src/mcp/micro-map.ts
 npm run spec:build                    # catalog -> specs/super-spec.json
 node eval/plan/build-op-classes.mjs   # catalog -> eval/plan/op-classes.json
 ```
