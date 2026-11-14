@@ -1,0 +1,10 @@
+{"instructions": {"tail": "ngs, then use docs only to corroborate standards mechanics.", "marker": false}, "search": {"tail": "ns, never as top-level tools. Ids are exact-match: copy them from search hits.", "marker": false}, "execute": {"tail": "ns, never as top-level tools. Ids are exact-match: copy them from search hits.", "marker": false}}
+
+Correction: the `search` and `execute` tails above are wrong. I wrote the same text for both, and I did not copy either one correctly. The right tails are:
+
+- `search`: "...Upstream docs: Lumenloop https://api.lumenloop.com/v1/docs; Scout https://stellarlight.xyz/api/openapi.json; Stellar Docs https://developers.stellar.org/docs."
+- `execute`: "...Check `r.ok` first. ... return a small projection." The description ends with the example script, so its last 150 characters are the end of that script: `docs: docs.ok ? docs.data.hits.map(h => h.url) : docs.error };\n}`
+
+Corrected JSON:
+
+{"instructions": {"tail": "ngs, then use docs only to corroborate standards mechanics.", "marker": false}, "search": {"tail": "Scout https://stellarlight.xyz/api/openapi.json; Stellar Docs https://developers.stellar.org/docs.", "marker": false}, "execute": {"tail": "project: detail?.ok ? detail.data : null, docs: docs.ok ? docs.data.hits.map(h => h.url) : docs.error };\n}", "marker": false}}

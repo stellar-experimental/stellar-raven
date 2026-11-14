@@ -1,0 +1,26 @@
+{
+ "instructions": {
+  "truth_len": 4066,
+  "marker": false,
+  "tail": "irectories, who-builds-what, adoption), start Scout/Lumenloop even when docs mention the topic, then use docs only to corroborate standards mechanics.",
+  "delivered_to": 4066,
+  "tail_trim": 0,
+  "full": true
+ },
+ "search": {
+  "truth_len": 1930,
+  "marker": false,
+  "tail": " docs: Lumenloop https://api.lumenloop.com/v1/docs; Scout https://stellarlight.xyz/api/openapi.json; Stellar Docs https://developers.stellar.org/docs.",
+  "delivered_to": 1930,
+  "tail_trim": 0,
+  "full": true
+ },
+ "execute": {
+  "truth_len": 2029,
+  "marker": false,
+  "tail": " search, mid-script.\n- `codemode.skill.read(id, { sections: [...] })`: playbook sections; `r.data.sections` is an ARRAY of { section, content, url }.",
+  "delivered_to": 2029,
+  "tail_trim": 0,
+  "full": true
+ }
+}

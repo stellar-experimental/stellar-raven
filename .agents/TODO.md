@@ -213,15 +213,19 @@ The test constants copy limits that belong to clients. Re-check a limit whenever
 version changes, and update the cited page and version. Claude Code: 4,096 characters for server
 instructions and for tools loaded up front, 16,384 through tool search, a 25,000-token MCP output
 cap, and a spill to file above 50,000 characters; before v2.1.296 the cut was 2,048. Grok CLI: a
-20,000-byte MCP result clip. Codex and ChatGPT: vendor docs say to keep the first 512 characters of
-server instructions self-contained and state no cut; Codex long-result handling is not verified.
-claude.ai web and Claude Desktop: community evidence (`anthropics/claude-ai-mcp#93`) that server
+20,000-byte MCP result clip. Measured on 2026-11-14 in
+`research/audits/2026-11-14-client-text-limits.md` (Claude Code 2.1.325, Codex 0.167.0, Grok 1.0.77,
+OpenCode v2.2.7): Claude Code's 4,096 and 16,384 held; Grok cuts instructions and tool descriptions at
+2,033 characters plus a marker; Codex shows one catalogue line of about 230 characters per server and
+appends the full instructions to each tool description in its JavaScript runtime; OpenCode puts the
+instructions whole in the system prompt and lists tools up front with 120 characters each. Codex and
+ChatGPT docs say to keep the first 512 characters of server instructions self-contained and state no
+cut. claude.ai web and Claude Desktop: community evidence (`anthropics/claude-ai-mcp#93`) that server
 instructions are dropped, so the tool descriptions are the whole contract there. The audit's
-"Re-verifying the external facts" table has the method for each. A four-client measured probe is in
-progress and will land as `research/audits/2026-11-14-client-text-limits.md`.
+"Re-verifying the external facts" table has the method for each.
 
-Done when: the table's rows match the current client versions, the probe's result is folded in, and
-Codex long-result handling has a recorded answer or an owner decision to leave it.
+Done when: the table's rows match the current client versions, and the owner decides whether Grok's
+2,033-character cut needs a guard like the Claude Code one (BASE is 1,899 characters, so it fits today).
 
 ## Golden answers
 

@@ -1,0 +1,76 @@
+{
+  "probe1": {
+    "instructions": {
+      "first": "IN1-000-bunipu",
+      "last": "IN1-001-nukipo",
+      "tail": null
+    },
+    "desc_a": {
+      "first": "TA1-000-vanoso",
+      "last": "TA1-156-toduzu",
+      "tail": null,
+      "jslen": 40143
+    },
+    "desc_b": {
+      "first": "TB1-000-givape",
+      "last": "IN1-156-negoko",
+      "tail": "obe1__desc_b(args: { [key: string]: unknown; }): Promise<CallToolResult>; };\n```",
+      "jslen": 23143
+    },
+    "desc_c": {
+      "first": "TC1-000-fepogu",
+      "last": "IN1-156-negoko",
+      "tail": "obe1__desc_c(args: { [key: string]: unknown; }): Promise<CallToolResult>; };\n```",
+      "jslen": 20643
+    },
+    "schema": {
+      "first": "IN1-000-bunipu",
+      "last": "IN1-156-negoko",
+      "tail": "_probe1__schema_probe(args: { note?: string; }): Promise<CallToolResult>; };\n```",
+      "jslen": 20282
+    },
+    "result": {
+      "first": "RS1-000-zigosu",
+      "last": "RS1-312-duroza",
+      "tail": "s until dusk fa RS1-312-duroza - the quick brown fox jumps over the lazy dog and",
+      "jslen": 40000
+    }
+  },
+  "probe2": {
+    "instructions": {
+      "first": "IN2-000-negifu",
+      "last": "IN2-001-vibopo",
+      "tail": null
+    },
+    "desc_a": {
+      "first": null,
+      "last": "IN2-156-sufosi",
+      "tail": "obe2__desc_a(args: { [key: string]: unknown; }): Promise<CallToolResult>; };\n```",
+      "jslen": 40143
+    },
+    "desc_b": {
+      "first": "TB2-000-loveka",
+      "last": "IN2-156-sufosi",
+      "tail": "obe2__desc_b(args: { [key: string]: unknown; }): Promise<CallToolResult>; };\n```",
+      "jslen": 23143
+    },
+    "desc_c": {
+      "first": "TC2-000-dovovo",
+      "last": "IN2-156-sufosi",
+      "tail": "obe2__desc_c(args: { [key: string]: unknown; }): Promise<CallToolResult>; };\n```",
+      "jslen": 20643
+    },
+    "schema": {
+      "first": "IN2-000-negifu",
+      "last": "IN2-156-sufosi",
+      "tail": "_probe2__schema_probe(args: { note?: string; }): Promise<CallToolResult>; };\n```",
+      "jslen": 20282
+    },
+    "result": {
+      "first": "RS2-000-bebume",
+      "last": "RS2-312-kasuse",
+      "tail": "s until dusk fa RS2-312-kasuse - the quick brown fox jumps over the lazy dog and",
+      "jslen": 40000
+    }
+  }
+}

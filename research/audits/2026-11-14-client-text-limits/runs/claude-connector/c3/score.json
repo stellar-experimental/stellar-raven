@@ -1,0 +1,23 @@
+{
+ "instructions": {
+  "truth_len": 4066,
+  "tail": "`, then return a compact projection. Operation and skill ids are exact-match \u2014 never guess them; discover via `search` or `codemode.search` mid-script.",
+  "marker": false,
+  "delivered_to": 1899,
+  "full": false
+ },
+ "search": {
+  "truth_len": 1930,
+  "tail": "m docs: Lumenloop https://api.lumenloop.com/v1/docs; Scout https://stellarlight.xyz/api/openapi.json; Stellar Docs https://developers.stellar.org/docs.",
+  "marker": false,
+  "delivered_to": 1930,
+  "full": true
+ },
+ "execute": {
+  "truth_len": 2029,
+  "tail": ": search, mid-script.\n- `codemode.skill.read(id, { sections: [...] })`: playbook sections; `r.data.sections` is an ARRAY of { section, content, url }.",
+  "marker": false,
+  "delivered_to": 2029,
+  "full": true
+ }
+}
