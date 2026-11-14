@@ -589,3 +589,203 @@ delimiter, so each scan stops at the next one) matches what the timings show.
 changes no manifest or spec text (the author records the routing gate as unchanged), so my last
 full bare sweep at `bd971784` (typecheck, build, smoke, secrets scan, routing gate, CI generated
 sync) stands for everything but these two regexes.
+
+## Generality review
+
+Reviewer: Claude Sonnet 5.5, high effort, 2026-11-14. Commit `ae148d0b` (author Claude Opus 5.5) against
+`7c7efd2a`. The orchestrator chose this reviewer; the tier differs from the author. Nothing outside
+this file was edited. No model-calling eval, deploy, or upstream post.
+
+### Verdict
+
+**Fit to merge, with two one-line guard fixes recommended and about 3,100 lines of snapshots to cut.**
+The adapter now returns what the site search returns, and the measured table reproduces exactly. The
+new guards hold against every input I tried except two gaps in the audit `reportUrl` check, both low
+severity. `get_page` still cannot leave stellar.org. All gates exit 0. The re-stamp of
+`eval/gates.json` follows the re-baseline rule. Two of the 80 snapshot responses were upstream
+glitches, not misses, and the doc's "cause not investigated" can now be closed. No finding blocks
+the merge.
+
+| # | Finding | Severity | Fix |
+|---|---|---|---|
+| G1 | `reportUrl` accepts userinfo: `https://stellar.org@evil.com/r.pdf` and `https://user:pass@evil.com/a` pass and are returned verbatim | Low (the register is SDF-curated and the field is cited, never fetched) | Reject when `url.username \|\| url.password` in `auditHit`; add one test |
+| G2 | The 2,048 cap tests the raw string, not `url.href`. A 2,014-character URL of U+202E becomes an 18,014-character `reportUrl` (9 times). `title` is uncapped too, up to the 256,000-byte search cap | Low (bounded: at most 10 hits, 256 KB upstream) | Test `url.href.length`; cap `title` at 300 as `description` is at 500 |
+| G3 | Zero-row snapshot entries (p11 question, p13 keyword) are upstream glitches (see Measurement) | Info | Update the doc line "cause not investigated" |
+| G4 | `get_page` still fetches `/API/search` (upper case) from stellar.org; the earlier review recorded this and the author left it to the owner | Info, not new, stays on stellar.org | None needed |
+
+### 1. Guards, attacked
+
+I ran about 110 inputs through `siteHits` and `callStellarOrg` directly (script in my scratchpad,
+not committed).
+
+**Audit `reportUrl`.**
+
+| Input class | Result |
+|---|---|
+| `javascript:`, `data:`, `file:`, `ftp:`, `//host`, relative, non-string, array, object | Dropped |
+| `HTTPS://EXAMPLE.com/A` | Kept, normalised to `https://example.com/A` |
+| Tab, CR or LF inside the string (`https://exa\tmple.com/`, a `\r\nSet-Cookie:` suffix) | The URL parser deletes them. The result is a plain URL with no control characters; the injection collapses into a path segment |
+| Leading C0 byte | Stripped |
+| NUL, space, U+202E in the path | Percent-encoded (`%00`, `%20`, `%E2%80%AE`) |
+| Homograph hosts (`раураl.com`, `stellаr.org` with Cyrillic а) | Returned as punycode (`xn--l-7sba6dbr.com`, `xn--stellr-7nf.org`). A raw homograph never reaches the model |
+| `http://x.com\@evil.com/` | Normalised to host `x.com` |
+| **Userinfo** (`https://stellar.org@evil.com/…`, `user:pass@`) | **Kept (G1)** |
+| `localhost`, `127.0.0.1`, `[::1]`, `169.254.169.254` | Kept. Nothing fetches the value: `reportUrl` appears only in the adapter, the spec, and the test; `get_page` refuses full URLs; the sandbox has no network. No action |
+| 2,100 characters / 2,020 characters | Dropped / kept. Raw length only (G2) |
+
+**Tutorial and partner `url`.** The URL is rebuilt from a validated slug, so no input text survives
+into it. Rejected: leading hyphen, `/`, `%2F`, `%0A`, `%00`, `..`, `.`, space, `+`, Cyrillic а (raw and
+percent-encoded), U+202E, 201 characters, off-origin hosts (`evil.com`, `stellar.org.evil.com`,
+`stellar.org@evil.com`, `//evil.com`, `www.`, `http:`, port 8443), the wrong path (`/learn/`,
+`/other`, `/ecosystem` for a tutorial), `javascript:`, and non-strings. Accepted and normalised:
+`https://user@stellar.org/learn?tutorial=x` and `:443` become the clean `https://stellar.org/…`;
+a duplicate `tutorial=` takes the first. A `__proto__` or `constructor` slug is safe (a `Map`). A
+tutorial or partner row with `isExternal: true` is dropped; unknown kinds (`blog`, `__proto__`) are
+dropped; `null`, numbers, and strings in `results` are skipped. Partner merge: three rows for one
+slug give one hit with `tags: ["x","y"]`; a category with a space is refused.
+
+**`get_page` boundary.** Refused with no fetch: `https://evil.com/a`, `//evil.com/a`,
+`/learn?tutorial=x`, `/ecosystem?partner=x`, an audit report URL, `/api/search`, `/a%2fb`, a
+backslash host, `/a/../../b`, `http://localhost/`, `/x?y=1`, `/x#h`. It reads only `/ok/page` and
+`/API/search` (G4), both on `https://stellar.org`. The redirect code is unchanged in this diff.
+
+### 2. Measurement
+
+**Rerun.** `node .../sorg-general/measure.mts research/services/stellar-org-queries.json
+.../snapshot.json <out>` (Node 26 runs it directly; `tsx` is not a dependency, so the header's
+`npx tsx` would download an unpinned package). All 16 cells of the author's table reproduce
+exactly: question 33/33 raw, 33/33 adapter; keyword 36/37 raw at 5 and 10, 37/37 adapter. I also
+reproduced the "before" column by running the same script against the `7c7efd2a` adapter. The raw
+and adapter ranks match `ranks-before.json` and `ranks-after.json` for all 80 forms. The committed
+rank files lack the `ownedRows` field that the current script writes, so they come from an earlier
+version of the script; the ranks agree.
+
+**Live spot-check, 8 of 40** (real adapter, real site, `limit: 10`; I also read the answer pages):
+
+| Case | Question rank | Keyword rank | Snapshot agrees | Note |
+|---|---|---|---|---|
+| a02 Reflector Certora report | 1 | 1 | yes | `certora.com/reports/reflector-security-assessment-v1` |
+| a05 Veridise audits | 3 | 1 | yes | firm query returns 10 audit rows |
+| a08 DeFindex audit | 2 | 2 | yes | report row is a signed `file.notion.so` URL |
+| d05 passkey tutorial | 2 | 2 | yes | tutorial row `webauthn-passkey-smart-wallets` |
+| d12 USDT0 | miss | miss (0 hits left) | yes | all 10 rows are blog or press |
+| p07 SDF leadership | 2 | 1 | yes | `/foundation/team` read: "Candace Kelly" present |
+| p11 Soroswap.Finance | **1** | 2 | **no** | snapshot recorded 0 rows for the question |
+| p12 MoneyGram partner | miss | 3 | yes | question form has no partner row |
+
+I also ran p13: question 1, keyword **1**; the snapshot recorded 0 rows for the keyword. I read
+`get_page` for `/foundation/team`, `/products-and-tools/tether-usdt0`, `/grants-and-funding/soroban-audit-bank`,
+`/grants-and-funding/bug-bounty`, `/learn/stellar-consensus-protocol`, and `/audit-bank/projects`: each
+contains the evidence string its query-set entry names.
+
+**The zero-row queries (G3).** The two zero-row entries are not misses. I called the raw site
+search three times each for "What does Soroswap.Finance do on Stellar?" and "Flutter wallet SDK":
+10 rows every time. The site search intermittently returns an empty `results` array for a valid
+query. Taken live, both forms hit at rank 1 and the totals read 34/40 (question) and 38/40
+(keyword). The table stays correct as a measurement of that snapshot. The consequence for the
+product: an `ok` result with empty `hits` and `meta.candidates: 0` can be this glitch, so the spec
+should not let a model read it as "SDF has no page". The `hits` description now names only the
+filter reason; it should also say a zero-candidate result is inconclusive.
+
+**Was a question written to fit the search?** Partly, on one axis, and not on selection.
+
+- *Lexical fit.* The brief said to derive questions from page titles, so most question and keyword
+  forms reuse title words: d04 ("hello world smart contract in Rust" restates "Write Your First
+  Smart Contract in Rust Pt. 1 | Hello World"), d05 and d06 do the same for tutorial titles; a09,
+  p04, p05, p08, d02, d03, d11, p01, and p02 use the page name as the keyword. The search matches
+  title, description, and tags, so these forms are the easiest ones for it. The absolute recall
+  (33/40, 37/40) is an upper bound for real questions; the author's own body-text probes (9 of 21
+  found) show the other side. The *gap* between raw search and adapter, which is the claim under
+  test, does not depend on phrasing, because both sides see the same rows.
+- *Audit answers.* The author says the eight audit answers were identified by firm-name queries
+  against the search under test. The register holds 77 records and renders only the first page
+  server-side, so a question whose answer the search cannot surface could not have been included.
+  The 6 audit-question rows that still read as misses (a01, a03, a04, a07 in question form) show
+  the set was not pruned to pass.
+- *Not censored.* Seven question forms miss for the raw search too (a01, a03, a04, a07, d12, p11
+  at snapshot, p12), and the doc reports each with a cause.
+- *Design decisions on the set.* Keeping partner rows and the blog/press/events filter were decided
+  on this same set. The partner decision is backed by Scout not holding the Flutter Wallet SDK, and
+  the filter by the cross-source URLs in `cross-source-urls.json`, not by the set's recall alone.
+  I do not consider either fitted.
+
+I found no question written to produce a particular answer. The set is title-biased and the audit
+group is survivorship-biased; the doc should say both, in one sentence, where it says "40 realistic
+questions".
+
+### 3. Routing gate and the `gates.json` re-stamp
+
+`npm run eval:routing -- --gate` exits 0 ("GATE PASS — legacy 338 within band, skills lane at/above
+floor, holdout lane at/above floors"). The `run-evals` rule: re-baseline only for a named, legitimate
+reason, in the same commit, with zero per-case hit-to-miss regressions and the provenance fields
+filled. This commit meets each part.
+
+- *Reason named:* the notes state the cause (audit, tutorial, partner rows in the description and
+  schema) and the lane.
+- *Same commit:* `eval/gates.json` changes in `ae148d0b` along with the manifest.
+- *Numbers did not move:* only the manifest SHA-256 and `localTrace` change. Thresholds and accepted
+  totals are untouched.
+- *Per-case check, redone:* I ran `node eval/run-routing.mjs --dump-ranked` on the `7c7efd2a`
+  manifest (`--manifest`) and on the final one. Of 495 ranked case IDs, exactly one top-five list
+  differs: `q-defi-reflector-resolve` gains `stellarOrg.search_site` at rank 5 in place of
+  `lumenloop.get_related_projects`. That is what the author recorded. The gate passes, so the
+  grade is unchanged. Zero grade or top-1 changes.
+- Wording nit: the note says "all 544 rows"; the ranked dump holds 495 case IDs (the other rows are
+  not ranked lanes). The comparison covers every ranked case.
+
+### 4. Bloat: files that should not be committed
+
+The diff adds 4,490 lines, of which 4,167 are under `.agents` and `research`. Most are
+measurement artifacts. The owner rule is to cut what adds no visibility.
+
+**Cut (3,086 lines, about 53 KB):**
+
+- `.agents/rounds/2026-11-14-golden-coverage-audit/sorg-general/ranks-before.json` (1,543 lines)
+- `.agents/rounds/2026-11-14-golden-coverage-audit/sorg-general/ranks-after.json` (1,543 lines)
+
+Both are pure outputs of `measure.mts` and the snapshot. I regenerated both from scratch and the
+ranks match (after: the current adapter; before: `git show 7c7efd2a:src/adapters/stellar-org.ts`).
+They already have stale content (no `ownedRows`), and `SORG-GENERAL.md` holds the table and every
+miss with its cause. They show nothing a rerun does not.
+
+**Cut or fold (optional, 21 lines):**
+`.agents/rounds/2026-11-14-golden-coverage-audit/sorg-general/body-probes.tsv`. The 12 misses are
+tabulated in `SORG-GENERAL.md` and the probe phrases live in `bodyProbes` of the query set. The file
+only adds the per-phrase rank for the nine hits. Cut unless the owner wants those ranks.
+
+**Keep:**
+
+- `sorg-general/snapshot.json` (one line, 104 KB). It is the only way to reproduce the table, and
+  the site search is not stable: two of its 80 responses are glitches I could not reproduce live.
+  It is the one large artifact that adds visibility.
+- `sorg-general/measure.mts` and `sorg-general/cross-source-urls.json` (small; the second backs the
+  filter decision).
+- `research/services/stellar-org-queries.json` (720 lines, the query set; pretty-printed, but it is
+  the deliverable the Algolia test will reuse).
+- `briefs/sorg-general.md` and `decisions/SORG-GENERAL.md` follow the round layout.
+
+If the ranks files are cut, remove the two sentences that name them in `SORG-GENERAL.md`
+("It also holds `ranks-before.json`, `ranks-after.json`, and `body-probes.tsv`") and fix the
+`npx tsx` header in `measure.mts`.
+
+### 5. Gates, bare, final tree `ae148d0b`
+
+| Command | Exit | Detail |
+|---|---|---|
+| `npm run typecheck` | 0 | |
+| `npm test` | 0 | 151 files passed, 1 skipped; 3,467 passed, 3 expected fail, 1 skipped (3,471). Equals the author's count |
+| `npm run build` | 0 | |
+| `npm run test:smoke` | 0 | 9 files, 141 tests |
+| `npm run eval:routing -- --gate` | 0 | GATE PASS, legacy 338 |
+| CI "generated artifacts in sync" (all ten scripts), then `git diff --exit-code --stat` on the CI path list | 0, 0 | The tree stayed clean |
+| `npm run secrets:scan -- --tree` | 0 | |
+
+### What I did not do
+
+- I did not run a model-calling eval, so routing reach (7/40 in the top five) and answer quality
+  stay as the author recorded them.
+- I did not test from a Workers runtime; all live calls ran from this machine.
+- I did not read the 40 query-set pages individually; I read 6 and the report rows for 5 audit
+  cases. The other 29 answer paths come from the author and the snapshot.
+- The vendor-diverse attack (Grok) on the guards is still open if the owner wants it. G1 and G2 came
+  from reading the diff first, then confirming by running inputs.
