@@ -1,12 +1,12 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "4421e97bc54c484f41c144a761e79a6e8038771ac8ccbe182691bbf76ae1c36d",
+  "corpusContentSha256": "f056aadc9af5044ac76b4c65b589f870393129aa30b0876f447dc0b871b40cea",
   "counts": {
-    "total": 246,
+    "total": 245,
     "byCategory": {
       "assets-anchors-seps": 25,
-      "compliance-rwa-payments": 20,
+      "compliance-rwa-payments": 19,
       "defi-ecosystem": 23,
       "edge-behavior": 20,
       "history-org-tokenomics": 12,
@@ -21,12 +21,12 @@
       "none": 10,
       "scout": 48,
       "skills": 11,
-      "stellarDocs": 158
+      "stellarDocs": 157
     },
     "byFreshness": {
       "live": 56,
       "scheduled": 98,
-      "stable": 92
+      "stable": 91
     },
     "traps": {
       "ambiguous": 2,
@@ -39,10 +39,10 @@
       "speculation": 1
     },
     "byLifecycleState": {
-      "active": 246
+      "active": 245
     },
     "byReviewState": {
-      "none": 244,
+      "none": 243,
       "resolved": 2
     }
   },
@@ -20208,111 +20208,6 @@
         "origin": "kaan passkey-wallet-recovery",
         "leaf": "wallets.lost-keys",
         "secondaryLeaf": "soroban.contract-accounts"
-      }
-    },
-    {
-      "id": "q-pay-anchor-msb-licensing",
-      "question": "Who holds the money-transmitter / MSB license when a wallet uses a Stellar anchor to on/off-ramp fiat — the wallet, the anchor, or Stellar?",
-      "surface": [
-        "stellarDocs.search_anchor_sep_docs",
-        "stellarDocs.search_asset_token_docs",
-        "stellarDocs.search_wallet_dapp_docs"
-      ],
-      "golden": {
-        "answer": "Do not decide licensing from the word 'anchor'. Identify each legal entity and who accepts, transmits, exchanges, issues, redeems or custodies value for others, which jurisdictions apply, and whether an exemption, agent or bank partner changes the picture. In the US, FinCEN MSB registration and state money-transmitter licensing are separate. A custodial wallet or on/off-ramp operator can be in scope; non-custodial signing software alone generally is not. Travel Rule duties likewise attach to covered intermediaries, not to the protocol or to software. Not legal advice.",
-        "keyFacts": [
-          "Licensing duties follow entity, activity, custody and jurisdiction, not the word 'anchor'.",
-          "Registration and licensing are distinct duties that differ by jurisdiction.",
-          "Custodial wallet operators can be in scope; non-custodial software alone generally is not."
-        ],
-        "avoid": [
-          "Do NOT say every anchor holds one universal MSB or money-transmitter license.",
-          "Do NOT call FinCEN registration a licence, or give definitive legal advice from a directory label."
-        ],
-        "notes": "Grade the classification framework; no jurisdictional rules are asserted."
-      },
-      "tags": {
-        "category": "compliance-rwa-payments",
-        "service": "stellarDocs",
-        "freshness": "stable"
-      },
-      "truth": {
-        "lifecycle": {
-          "state": "active",
-          "reviewState": "none"
-        },
-        "domain": "real-world",
-        "status": "confirmed",
-        "sources": [
-          {
-            "class": "D",
-            "ref": "https://www.ecfr.gov/current/title-31/subtitle-B/chapter-X/part-1010/section-1010.100",
-            "note": "class inferred at migration"
-          },
-          {
-            "class": "D",
-            "ref": "https://www.ecfr.gov/current/title-31/subtitle-B/chapter-X/part-1022/section-1022.380",
-            "note": "class inferred at migration"
-          },
-          {
-            "class": "D",
-            "ref": "https://www.fincen.gov/resources/statutes-regulations/guidance/application-fincens-regulations-persons-administering",
-            "note": "class inferred at migration"
-          }
-        ],
-        "corroboration": [
-          {
-            "claim": "The anchor always holds the MSB/money-transmitter license for the fiat leg",
-            "verdict": "contradicted",
-            "evidence": [
-              {
-                "class": "A",
-                "ref": "A: eCFR/FinCEN acceptance/transmission and hosted/unhosted guidance",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
-              },
-              {
-                "class": "A",
-                "ref": "A: network/software exclusions and federal registration rules",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
-              },
-              {
-                "class": "D",
-                "ref": "D: independent legal corroboration",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
-              },
-              {
-                "class": "D",
-                "ref": "Independent reviews: Solo GT-11 processes 3231/3236",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
-              },
-              {
-                "class": "A",
-                "ref": "https://www.fincen.gov/system/files/2019-05/FinCEN%20Guidance%20CVC%20FINAL%20508.pdf",
-                "observedAt": "2026-10-01",
-                "note": "FIN-2019-G001: 'Although when describing a business model this guidance may use a label by which the general type of product or service may be commonly known, the interpretation provided herein applies only to the business model the guidance describes'. Regulatory treatment follows the facts and circumstances of the activity, not the label."
-              }
-            ]
-          }
-        ],
-        "verified": {
-          "date": "2026-11-14",
-          "by": "Golden coverage audit closeout 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
-          "evidence": [
-            "The question names no jurisdiction, and golden.notes says no jurisdictional rules are asserted, yet a key fact required the US regimes. The key fact now states the jurisdiction-neutral rule; the answer keeps the US example.",
-            "Live A 2026-11-13 (Parallel extract): https://www.fincen.gov/money-services-business-msb-registration -- 'each money services business (MSB) must register with the Department of the Treasury'; re-registration is triggered by a change 'under State law', a separate regime.",
-            "Trigger only (not evidence): .agents/rounds/2026-11-14-golden-coverage-audit/qa/RESULT.md, 'Cases to fix'"
-          ],
-          "rootCause": [
-            ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
-          ]
-        },
-        "origin": "raven-next q-pay-anchor-msb-licensing",
-        "notes": "Grade the durable classification framing; specific jurisdictional requirements are not asserted. Trap: licensing on the protocol.\nAlso good if the answer: The wallet/app may also have its own MSB/money-transmitter obligations depending on custody and jurisdiction. | Each regulated participant maps its licenses to every jurisdiction in which it onboards customers.\nGolden cites: developers.stellar.org anchor docs; reputable regulatory reference where relevant.\nCORRECTION 2026-07-10: reject noun-based legal allocation. Require entity/activity/custody/route/jurisdiction analysis and distinguish registration from licensing.",
-        "leaf": "security.regulation-policy"
       }
     },
     {

@@ -4,9 +4,9 @@
   "digestSchema": "canonical-json-sha256-v1",
   "counts": {
     "proposed": 0,
-    "active": 252,
+    "active": 251,
     "quarantined": 0,
-    "retired": 291
+    "retired": 292
   },
   "reservedIds": [
     "q-aas-burn-clawback-redemption-mechanics",
@@ -989,7 +989,7 @@
       "path": "eval/qa/corpus/retired/q-comp-finclusive-caas.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "ae7ae18fd7133e94b3f03e47edd2343519e40fc77a36f347ab2b698b7511e832",
+      "tombstoneContentSha256": "4af2f52a5979c1f02c39e484da991953dc76cf414d1dc15df0d84321bf5f097c",
       "lastCaseContentSha256": "97b985a2a801d21ad9fbc0f0cdf3d1d27f31bca7037290482b08e28d938a95fc",
       "replacementIds": []
     },
@@ -1070,7 +1070,7 @@
       "path": "eval/qa/corpus/retired/q-crp-become-an-anchor-licensing.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "90c53e856c34da707d149cc7526c4d2e1ab6dfd9d48c8e65d8d0c9b25f996641",
+      "tombstoneContentSha256": "94ef46b1398f0eb02a470a865232f09cd186b0129d539434b7f1a24cfa57b8f2",
       "lastCaseContentSha256": "2388e136089e3ad537319f3ad1609b9f8baded28d3c2e8b7dec6c18be9c2dc0d",
       "replacementIds": [
         "q-anchor-sdp-vs-anchor-platform"
@@ -2632,10 +2632,15 @@
     },
     {
       "id": "q-pay-anchor-msb-licensing",
-      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-pay-anchor-msb-licensing.json",
-      "state": "active",
-      "reviewState": "none",
-      "caseContentSha256": "d31b48f4995264885ed84bf286b3be88a5c8b9f1b54f475d8526064e104a6aff"
+      "path": "eval/qa/corpus/retired/q-pay-anchor-msb-licensing.json",
+      "state": "retired",
+      "reviewState": "resolved",
+      "tombstoneContentSha256": "ccd458e4831ee459136ce08f4dd4289aa907561b7c106fe5f22e41b29c6f52a0",
+      "lastCaseContentSha256": "d31b48f4995264885ed84bf286b3be88a5c8b9f1b54f475d8526064e104a6aff",
+      "replacementIds": [
+        "q-comp-aml-analytics-vendors",
+        "q-crp-remittance-founder-advisory"
+      ]
     },
     {
       "id": "q-pay-merchant-request-detect-reconcile",
@@ -2669,11 +2674,9 @@
       "path": "eval/qa/corpus/retired/q-pay-travel-rule-aid-flows.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "2971c3366649d7d74184d993830c51234a30ed1f75035dd76b8614cc28953139",
+      "tombstoneContentSha256": "e3f12a35315a155f6df0989c8102f0f065c859b2e62ee61404330e916998e6ed",
       "lastCaseContentSha256": "5930ce901ec2d30d28fcbf0f6d69c13acdaa08723808a33f7ee24da7755c23a4",
-      "replacementIds": [
-        "q-pay-anchor-msb-licensing"
-      ]
+      "replacementIds": []
     },
     {
       "id": "q-pc-account-activation-not-found",
