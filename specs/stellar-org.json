@@ -12,7 +12,7 @@
     "auth": "none (keyless)",
     "cost": "free",
     "constraints": {
-      "searchShape": "GET /api/search?q=<query>&locale=en returns { query, locale, results: [{ id, kind, title, description, tags, url, isExternal }] } with at most 10 rows; kind is page or partner. A missing q returns 400 { error: \"invalid_query\" }.",
+      "searchShape": "GET /api/search?q=<query>&locale=en returns { query, locale, results: [{ id, kind, title, description, tags, url, isExternal }] } with at most 10 rows; kind is page or partner. A missing q, or one over 200 characters, returns 400 { error: \"invalid_query\" }.",
       "filtered": "Rows whose path is under /blog, /press or /events, and rows with isExternal true, are dropped. Partner rows link to a query string on /ecosystem and are returned with path /ecosystem.",
       "pages": "Pages are server-rendered HTML of 410-500 KB (2026-11-14). The adapter keeps the <main> text, follows same-origin redirects only, refuses a body over 2,000,000 bytes and cuts content at 40,000 characters."
     }
@@ -33,7 +33,8 @@
           "query": {
             "type": "string",
             "minLength": 1,
-            "description": "Keywords for the stellar.org site search, such as \"strategy\", \"roadmap\" or \"service providers\"."
+            "description": "Keywords or a short question for the stellar.org site search, such as \"strategy\", \"roadmap\" or \"service providers\". The site refuses more than 200 characters.",
+            "maxLength": 200
           },
           "limit": {
             "type": "integer",
