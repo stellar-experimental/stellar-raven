@@ -718,6 +718,7 @@ the portal's connection check or the owner has confirmed withdrawal.
 Each decision names the question and the safe default. Record the answer in a round ledger or a
 decision record, then delete it here.
 
-- **The round's reusable harness.** The `fp/harness` branch holds a generic agent loop, a spend
-  ledger, and a paired analysis, unmerged and unreviewed. Is it worth its own reviewed pull
-  request? Default: leave the branch unmerged.
+- **The round's prototype branches.** `fp/harness`, `fp/retrieve`, `fp/brief`, `fp/calib`, and
+  `fp/surface` are unmerged and unreviewed. Keep or delete them? The generic agent loop, the spend
+  ledger, and the paired analysis on `fp/harness` are reusable and would need their own reviewed
+  pull request. Default: keep the branches and merge nothing.
