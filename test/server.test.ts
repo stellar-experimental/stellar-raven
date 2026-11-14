@@ -841,6 +841,35 @@ describe("search behavior (host-side ranked)", () => {
     }
   });
 
+  it("keeps an operation's protected caveat whole inside the card budget", async () => {
+    const protectedEntries = getCatalog().entries.filter((entry) => entry.cardCaveat !== undefined);
+    expect(protectedEntries.map((entry) => entry.id)).toContain("lumenloop.find_content_by_entity");
+    for (const entry of protectedEntries) {
+      const name = entry.id.split(".")[1]!.replace(/_/g, " ").replace(/([a-z])([A-Z])/g, "$1 $2");
+      const result = await client.callTool({
+        name: "search",
+        arguments: { query: name, service: entry.service, kind: "operation", limit: 50 }
+      });
+      const { hits } = result.structuredContent as { hits: Array<{ id: string; description: string }> };
+      const card = hits.find((hit) => hit.id === entry.id);
+      expect(card, entry.id).toBeDefined();
+      expect(card!.description.endsWith(` ${entry.cardCaveat}`), entry.id).toBe(true);
+      expect(card!.description.length, entry.id).toBeLessThanOrEqual(SEARCH_CARD_DESCRIPTION_CHARS);
+      // The caveat restates the full description; it never replaces the card's opening sentence.
+      expect(card!.description.slice(0, 40), entry.id).toBe(entry.description.slice(0, 40));
+    }
+  });
+
+  it("states the prior-art pass once, on a page that shows a build playbook", async () => {
+    const hint = async (args: Record<string, unknown>) =>
+      ((await client.callTool({ name: "search", arguments: args })).structuredContent as { nextSteps: string }).nextSteps;
+    const build = await hint({ query: "soroban smart contract development", kind: "skill" });
+    expect(build.match(/prior-art pass/g)).toEqual(["prior-art pass"]);
+    expect(build).toContain("`scout.searchRepos`, `scout.searchProjects`");
+    expect(build.length).toBeLessThanOrEqual(SEARCH_NEXT_STEPS_MAX_CHARS);
+    expect(await hint({ query: "search directory" })).not.toContain("prior-art");
+  });
+
   // Successful pages only: an unknown `service` or `recoverFrom` id is an error
   // response whose `nextSteps` echoes the caller's value and is not capped.
   it("keeps nextSteps inside its bound on every kind of successful page", async () => {

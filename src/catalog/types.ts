@@ -181,6 +181,13 @@ const catalogEntryBaseSchema = z.object({
   /** Query-independent exact-ID recovery graph, validated at catalog build/load. */
   retrievalProfile: retrievalProfileSchema.optional(),
   /**
+   * Operation entries only: one line that a compact search card must keep
+   * because the card's clipped description drops it. It restates a caveat the
+   * full description already carries, is rendered inside the card's
+   * description budget (src/mcp/tools.ts), and never feeds scoring.
+   */
+  cardCaveat: z.string().min(1).max(135).optional(),
+  /**
    * Whole-skill entries only: the build domains this exact exposed playbook
    * authoritatively covers for the host's bounded prior-art composition cue.
    * It is metadata, never a claim that a returned repository is applicable.

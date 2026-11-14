@@ -16,6 +16,7 @@ import { RUNNERS } from "../src/skills/runners/index.ts";
 import {
   assertNoNonExposedRefs,
   assertSideEffectingOpsExcluded,
+  attachCardCaveats,
   attachKnownAliases,
   attachRetrievalProfiles
 } from "../scripts/build-catalog.mjs";
@@ -215,6 +216,17 @@ describe("build-catalog.mjs", () => {
         recoverWith: [{ id: "scout.notExposed", relation: "cross-family", on: ["empty"] }]
       }
     })).toThrow(/non-exposed operation/);
+  });
+
+  it("fails loud on an orphaned, non-operation, or over-long card caveat", () => {
+    const entries = catalog.entries.map(({ cardCaveat: _caveat, ...entry }) => entry);
+    const attached = attachCardCaveats(entries, { "scout.listAudits": "Absent is not unaudited." });
+    expect(attached.find((entry) => entry.id === "scout.listAudits")?.cardCaveat).toBe("Absent is not unaudited.");
+    expect(() => attachCardCaveats(entries, { "scout.notExposed": "A caveat." })).toThrow(/matched no exposed operation/);
+    expect(() => attachCardCaveats(entries, { "skills.stellar-dev.data": "A caveat." })).toThrow(/not an operation/);
+    for (const bad of ["x".repeat(135) + ".", "Two\nlines.", "No final period"]) {
+      expect(() => attachCardCaveats(entries, { "scout.listAudits": bad }), bad).toThrow(/must be one line/);
+    }
   });
 
   it("recovers weak RPC docs results through cited research and source-code explanation", () => {

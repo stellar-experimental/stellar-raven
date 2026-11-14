@@ -1,6 +1,7 @@
 {
   "entries": [
     {
+      "cardCaveat": "start_offset orders passages; it is not a playback timestamp. created_at is not the recording date.",
       "description": "Find specific passages in long videos, podcasts, and recorded talks by semantic similarity. Returns parent recording metadata, AI summaries, and an opaque ordering offset.\n\nWhen to use: Find WHERE in videos/podcasts/spaces a topic is discussed — returns AI summaries of the matching passages plus an opaque ordering offset (NOT a playback timestamp). Use when you need \"the part of the talk where they discuss X\".\n\nReturns: Array of AV items with AI summaries, created_at (upstream metadata; do not treat it as the recording date or recency evidence), start_offset (an opaque transcript chunk offset for ordering passages within a recording — NOT playback seconds; do not render it as a timestamp or build a deep-link from it), and link. Transcript text itself is never returned — cite the link + the passage summary.",
       "id": "lumenloop.find_av_passages",
       "inputSchema": {
@@ -245,6 +246,7 @@
       }
     },
     {
+      "cardCaveat": "Person: ok with empty groups shows only that this lookup linked nothing, not absence or a soft-empty; verify identity, source, date.",
       "description": "Find articles, AV, events, governance proposals, and SCF submissions that mention a specific named entity. Uses LLM-extracted entities (project/person/organization/token) from content_entities. Case-insensitive match on entity_name or exact match on normalized_slug. Use this when you want exact entity grounding, not semantic similarity.\n\nWhen to use: Find content mentioning a NAMED entity (project, organization, token) by case-insensitive name match with LLM-confidence filtering — works even when the entity has no directory slug. If you have a slug, prefer find_content_about_project.\n\nReturns: Content grouped by type in articles, av, events, proposals, and scf_submissions, with matched-entity confidence and content metadata.\n\nCatalog note: entity_type \"person\" can return ok data with all-empty groups even for heavily covered people (live-verified 2026-07-03). This is a data-shaped empty, not a transport or soft-empty failure. It supports only the scoped statement that this exact lookup linked no content. For open-world person coverage, use search_content_semantic, then require exact identity plus source and date before attribution.",
       "id": "lumenloop.find_content_by_entity",
       "inputSchema": {
@@ -1597,6 +1599,7 @@
       }
     },
     {
+      "cardCaveat": "gaps, developers and toolchain are supply-side and as-of dated: never demand or a headcount.",
       "description": "Cross-event Stellar ecosystem analytics rollup. The cross-ecosystem macro rollup: totals no single-event tool answers. Slice via dimension=hackathons|categories|funding|tvl|gaps|developers|toolchain: hackathon + SCF-funding totals, category distribution, DeFi TVL (dated), gaps (per-vertical whitespace: what should I build), developers (Electric Capital monthly-active devs + trend), and toolchain (Soroban-SDK version-status distribution + deprecated-toolchain roster + CI/test presence). gaps/developers/toolchain are SUPPLY/commit-side and as-of dated; never demand or a headcount.",
       "id": "scout.analyzeEcosystem",
       "inputSchema": {
@@ -6514,6 +6517,7 @@
       }
     },
     {
+      "cardCaveat": "Winner order is a ranking only where placementRank is a number; otherwise list position means nothing.",
       "description": "Get one hackathon's full detail. Full detail for ONE hackathon by slug: every submission with placement, prize and track; winners, per-track aggregates and a stats funnel. DoraHacks events serve the stored copy: the event page, rules (submission requirements, and judging criteria where the organizer published them) and a profile of the submissions (categories, libraries, activity after the event, what they became). Needs an exact slug; resolve via getHackathons first. Not for listing events → use getHackathons.\n\nCatalog note: winner order is only meaningful when hackathonPlacement is ordinal (1st Place, 2nd Place, ...) and placementRank is a number; many events label every winner just Winners with placementRank null — there the winners array order is NOT a ranking, so never assert finishing order from list position (live-verified 2026-07-03).",
       "id": "scout.getHackathon",
       "inputSchema": {
@@ -8293,6 +8297,7 @@
       }
     },
     {
+      "cardCaveat": "tvl null means no figure, never zero. issues is the open backlog, not activity.",
       "description": "Stellar ecosystem developer activity. Ranked list of the top / most active Stellar projects by GitHub activity (sort=activity|stars|issues|tvl over a range; category filter; format=csv) with per-project GitHub rollups, plus an Electric Capital dev-count macro block. meta.metricDefinitions defines each served metric; activity = 90-day commit volume across Stellar-evidenced repos (github.commits90d; null = index gap, sorts last), ties by recency; issues = open backlog (not activity); tvl = DefiLlama-verified TVL (null = no figure, never zero; see tvlUnavailable). Ranks PROJECTS, not people → use getBuilders.",
       "id": "scout.getLeaderboard",
       "inputSchema": {
@@ -12596,6 +12601,7 @@
       }
     },
     {
+      "cardCaveat": "Compare marketCapUSD, not raw supply across pegs. null is unmeasured, never zero; check basis.",
       "description": "Stellar stablecoins ranked by USD market cap. Every tracked Stellar stablecoin, ranked by USD market cap by default (sort=marketcap|supply|holders|volume; peg filter). Rows carry marketCapUSD (comparable), raw supply + its peg (NOT comparable across pegs; ARST supply is pesos, mZAR is rand), holders, price, full issuer account, and basis (live | curated-static | unmeasured) so an estimate is never mistaken for a live measurement. Measured every 6h from Horizon, Stellar Expert and live peg FX; null = not measured, never zero.",
       "id": "scout.getStablecoins",
       "inputSchema": {
@@ -14686,6 +14692,7 @@
       }
     },
     {
+      "cardCaveat": "Absent means no audit on record here, not unaudited. null finding counts are not extracted, not zero.",
       "description": "Enumerable registry of Stellar security-audit reports. One row per security-audit report from stellarsecurityportal.com; the structured, enumerable half of the audit corpus (full report text is chunk-served by searchResearch with source=audit). Rows carry a normalized auditor, publication date, and a hand-verified link to the directory project (projectSlug). Semantics: a project ABSENT here has no audit on record at our source. NOT a claim it is unaudited; findingsTotal/severityCounts null = not extracted, NOT zero. Unknown query params are rejected with 400, never silently ignored.",
       "id": "scout.listAudits",
       "inputSchema": {
@@ -21812,6 +21819,7 @@
       }
     },
     {
+      "cardCaveat": "repoScore, stars and rank are discovery metadata, not security, license, audit or production evidence.",
       "description": "Search the Stellar GitHub repo / code-reference index. Search the indexed Stellar ecosystem GitHub code repos: actual source graded by repoScore (0-100: freshness + traction + ecosystem authority), filterable by language/minScore. Use for 'show me the code/repos for X' or 'find a Rust/Soroban implementation of X'; prior-art source to read, fork, or cite. Not for products/companies and their funding/status → use searchProjects.\n\nCatalog note: repoScore, stars, rank, and directory presence are discovery metadata, not API, security, license, audit, maintenance, or production evidence. Verify those claims at the repository and primary sources before reusing code.",
       "id": "scout.searchRepos",
       "inputSchema": {

@@ -184,24 +184,38 @@ type SearchCard = { id: string; description: string; signature?: string };
  * The public search page shows each entry as a card: a short description and
  * an input-only signature with short field prose. `outputKeys` and
  * `outputItemKeys` already name the payload fields, and `codemode.describe(id)`
- * returns everything cut here.
+ * returns everything cut here. An entry's `cardCaveat` is the one line the cut
+ * must not drop: it takes its room out of the same description budget.
  */
 function compactCard<T extends SearchCard>(catalog: Catalog, card: T): T {
-  const entry = card.signature === undefined ? undefined : catalog.entries.find((e) => e.id === card.id);
-  const signature = entry && renderSignature(entry, { inputOnly: true });
+  const entry = catalog.entries.find((e) => e.id === card.id);
+  const signature = entry && card.signature !== undefined && renderSignature(entry, { inputOnly: true });
+  const caveat = entry?.cardCaveat;
   return {
     ...card,
-    description: clipProse(card.description, SEARCH_CARD_DESCRIPTION_CHARS),
+    description: caveat
+      ? `${clipProse(card.description, SEARCH_CARD_DESCRIPTION_CHARS - caveat.length - 1)} ${caveat}`
+      : clipProse(card.description, SEARCH_CARD_DESCRIPTION_CHARS),
     ...(signature ? { signature } : {})
   };
 }
+
+/**
+ * A page that shows a build playbook is where a design starts, so the prior-art pass is stated
+ * there, once. It rides only on a page with no wider-candidate advice, which keeps the hint in bound.
+ */
+const PRIOR_ART_NEXT_STEP =
+  " Designing something new? Before the architecture, make one bounded prior-art pass in the same script: `scout.searchRepos`, `scout.searchProjects`.";
 
 /**
  * The one hint a search response carries. It says what to do with this page
  * and nothing the tool descriptions already say; test/server.test.ts holds the
  * SEARCH_NEXT_STEPS_MAX_CHARS bound for every branch.
  */
-export function searchNextSteps(page: Pick<SearchPage, "hits" | "truncated" | "widerCandidates">): string {
+export function searchNextSteps(
+  page: Pick<SearchPage, "hits" | "truncated" | "widerCandidates">,
+  options: { buildPlaybookHit?: boolean } = {}
+): string {
   const { hits, truncated, widerCandidates } = page;
   const base =
     hits.length > 0
@@ -210,7 +224,7 @@ export function searchNextSteps(page: Pick<SearchPage, "hits" | "truncated" | "w
   if (widerCandidates.some((candidate) => candidate.basis === "short-query-directory")) {
     return `${base} This one-word query matched no operation name: if no hit names the entity, look it up with the directory operation in \`widerCandidates\`.`;
   }
-  if (widerCandidates.length === 0) return base;
+  if (widerCandidates.length === 0) return hits.length > 0 && options.buildPlaybookHit ? `${base}${PRIOR_ART_NEXT_STEP}` : base;
   return hits.length > 0
     ? `${base} No hit is a strong match: prefer the leading hit that fits, or make one bounded pass over the broad operations in \`widerCandidates\`.`
     : `${base} Before retrying, make one bounded pass over the broad operations in \`widerCandidates\`.`;
@@ -330,7 +344,11 @@ export function registerTools(server: McpServer, options: RegisterToolsOptions =
           recoveryMetadata: {
             serviceFilterExcludedSkills: page.recoveryMetadata.serviceFilterExcludedSkills.map(card)
           },
-          nextSteps: searchNextSteps(page)
+          nextSteps: searchNextSteps(page, {
+            buildPlaybookHit: page.hits.some(
+              (hit) => catalog.entries.find((e) => e.id === hit.id)?.buildAuthorityRoles !== undefined
+            )
+          })
         },
         page
       );
