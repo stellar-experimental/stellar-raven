@@ -391,3 +391,125 @@ start Wrangler.
    needs one more routing gate run and a fingerprint re-stamp.
 4. Apply the rule 3 sentence; fix the three stale doc lines.
 5. The vendor-diverse attack (Grok) on the adapter is still open if the owner wants it.
+
+## Delta review
+
+Reviewer Claude Sonnet 5.5, 2026-11-14. Reviewed `bd971784` ("Apply the stellar.org source
+review", on top of a merge of `origin/main` at `66301389`) against my findings at `866c5f9f`.
+No deploy, no model-calling eval, no Wrangler.
+
+### Verdict: **not fit to merge yet. One new blocking finding (D1), a one-line fix.**
+
+F1 and F2 are closed as written, and the other findings are applied. But the F2 fix left a second
+quadratic regex in the same file, with the same defect and the same cost: `documentTitle`.
+Everything else passes.
+
+### D1 (blocking): `documentTitle` is still quadratic on an unterminated `<title `
+
+`src/adapters/stellar-org.ts:212`, `/<title\b[^>]*>([^<]*)<\/title>/i`.
+
+`[^>]*` scans to the end of the body for every `<title ` that has no `>`, exactly as the old
+`TAG_RE` did. `documentTitle(html)` runs on the whole 2 MB body in `page()`, before and
+independent of the `<main>` text, so the `TAG_RE` fix does not reach it. Measured through
+`callStellarOrg` (fake 200 `text/html`, `<head>` + `"<title "` repeated + `</head><main>ok</main>`):
+
+| Repeats | Size | Time |
+|---|---|---|
+| 12,500 | 0.09 MB | 0.9 s |
+| 25,000 | 0.18 MB | 3.6 s |
+| 50,000 | 0.35 MB | 14.1 s |
+| 100,000 | 0.70 MB | **56.5 s** |
+| 280,000 | 1.96 MB | did not finish in 40 s |
+
+Same trigger conditions as F2 (hostile markup on a stellar.org page), same cost, and the test the
+author added for F2 uses `<!--` and `<a ` only, so it does not see this.
+
+**Fix** (one character class): stop the tag body at the next `<`.
+
+```ts
+const match = /<title\b[^<>]*>([^<]*)<\/title>/i.exec(html);
+```
+
+On a scratch copy with only this change, the 280,000-repeat body takes 34 ms (before `<main>`)
+and 6 ms (after it), and a normal `<title>Hello &amp; bye</title>` still reads `Hello & bye`.
+Add a test: `"<title ".repeat(280_000)` in the head and again after `<main>`, asserting the call
+returns in under a second with `ok: true`.
+
+### F1 re-run: closed
+
+All eight inputs from my table now return `kind: "error"` ("path must be a site-relative ...")
+with **0 requests sent**, live and fake: `/%2e%2e/api/search`, `/foo/%2e%2e/api/x`,
+`/.%2e/api/search`, `/%2E/api`, `/%61pi/search`, `/foundation%2fstrategy`,
+`/foundation%5cstrategy`, `/foundation/strategy%00`, and
+`/foundation/%2e%2e/foundation/roadmap`. The refusal table in the test file carries the encoded
+cases.
+
+Three new bypass variants, none of which gets past the guard to content:
+
+| Input | Result |
+|---|---|
+| `/foundation/..;/api`, `/api\t/search`, `/ap​i/search`, `/／api/search` (`;`, interior tab, zero-width space, fullwidth solidus) | refused, 0 requests |
+| `/%2F%2Fevil.com`, `/foo/%252e%252e/api`, `/api%2fsearch` (encoded and double-encoded) | refused, 0 requests |
+| `/API/search`, `/Api` (case; the `/api` check is case-sensitive) | **one request sent**; the site answers 307 to `/api/search`, and the adapter refuses the redirect with the new same-origin message ("a stellar.org URL this tool does not read"). No `/api` body returned. |
+
+The third row is the only residue and it is harmless, but the guard is not self-contained: if the
+site ever served `/API/...` without a redirect it would be read. Optional one-liner:
+`underPrefix(trimmed.toLowerCase(), "/api")` at `:63`. Also checked: `/api./search` and
+`/_next/data/x.json` and `/.well-known/security.txt` are allowed and return live 404 (`soft-empty`);
+they are ordinary same-origin GETs with no query string.
+
+### F2 re-run: closed for `TAG_RE`; open for the title regex (D1)
+
+At 1.5-1.9 MB (under the 2,000,000-byte cap, so the parser actually runs), through
+`callStellarOrg`:
+
+| Input | Time | Result |
+|---|---|---|
+| `<main>` + `<!--` x 380,000 (original) | 25 ms | soft-empty (no text) |
+| `<main>` + `<a ` x 600,000 (original) | 139 ms | ok |
+| `<main>` + `<a<a` x 380,000 | 40 ms | ok |
+| `<main>` + `</a ` x 380,000 (new: closing tags) | 129 ms | ok |
+| `<main>` + `<!-->` x 380,000 (new: degenerate comment) | 57 ms | soft-empty |
+| `<main>` + `<script>` x 240,000 (new: nested skip) | 77 ms | soft-empty |
+| `<main>` x 290,000 (nested main) | 130 ms | soft-empty |
+| `<main>` + `<li>x</li>` x 190,000 | 239 ms | ok |
+| `<main>` + `<a x="` + `<` x 1.9M | 34 ms | ok |
+| `<main>` + `&a` x 900,000, and `&#x` + 1.9M hex (entity regex) | 31 ms, 30 ms | ok, text kept as-is |
+| `<title ` x 280,000 in head | **> 40 s** | **D1** |
+
+Cases that exceeded 2,000,000 bytes were refused by the size cap and are not counted as tested;
+I re-ran them below the cap, as listed.
+
+### Other findings, as applied
+
+| Finding | Applied as written? |
+|---|---|
+| F3 empty page | Yes. `soft-empty` with the hint; the `<body>` fallback is gone from `mainHtml` (`""` when no `<main>`). Verified: empty body and chrome-only page both soft-empty. |
+| F4 redirect message | Yes. Off-origin keeps the old text; same-origin refusal says "a stellar.org URL this tool does not read (query string, /api, or an unsafe path)"; an unparsable `Location` is its own error. |
+| F5 deadline | Yes. `OPERATION_BUDGET_MS = 24_000`, each hop `min(12 s, remaining)`; a test covers budget exhaustion. |
+| F6 search bounds | Yes. `readCapped(res, 256_000)` and descriptions cut at 500 characters (test with 100,000). |
+| F7 case filter | Yes for the blog/press/events test (`path.toLowerCase()`); `/en/...` still not handled, as I said it need not be. The `/api` check stays case-sensitive (variant above). |
+| Bloat 1 partner rows | Cut. `siteHits` keeps `kind === "page"` only; the merge map is gone. |
+| Bloat drift classifier | Cut (`scripts/summarize-live-drift.mjs` -28, its tests -28); the `live-drift-resolution` skill gains the one-sentence item and names stellar.org in its description. |
+| Inventory probe | Yes. `/` instead of `/foundation/roadmap`. |
+| Rule 3 | Yes, my sentence is appended to `AUTHORITY_RULES[2]`. |
+| Stale docs | Yes. `ARCHITECTURE.md:57` (four services), `AGENTS.md:10` (stellar.org added), the skill description. Not re-read: the research note and `SORG.md` additions (an author record, 50 lines). |
+
+### Generated files and gates (bare, on `bd971784`, clean worktree)
+
+| Command | Exit | Note |
+|---|---|---|
+| `npm run typecheck` | 0 | |
+| `npm test` | 0 | 151 passed, 1 skipped (152 files); 3,458 passed, 3 expected fail, 1 skipped |
+| `npm run build` | 0 | |
+| `npm run test:smoke` | 0 | |
+| `npm run secrets:scan -- --tree` | 0 | |
+| `npm run eval:routing -- --gate` | 0 | `GATE PASS`. I did not re-diff per case against the moved `origin/main`; the manifest text changed only by the dropped partner wording and the rule 3 sentence, which the author's `gates.json` note records. |
+| CI generated-artifacts sequence, then `git diff --exit-code --stat` | 0, 0 | tree clean afterwards |
+
+### Next step
+
+Apply D1 (one character class plus the test), re-run `npm run typecheck`, `npm test`,
+`npm run test:smoke`, `npm run secrets:scan -- --tree`. With D1 closed this branch is fit to
+merge from this reviewer's side; the optional `/api` lowercase one-liner and the open
+vendor-diverse attack stay the owner's call.
