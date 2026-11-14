@@ -20,7 +20,6 @@ import {
   attachRetrievalProfiles
 } from "../scripts/build-catalog.mjs";
 import { EXCLUDED_SCOUT_OPS } from "../scripts/exposure.mjs";
-import { MICRO_MAP } from "../src/mcp/micro-map.ts";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const MANIFEST_PATH = join(ROOT, "catalog", "manifest.json");
@@ -490,24 +489,6 @@ describe("build-catalog.mjs", () => {
     const output = page.outputSchema as { required: string[]; properties: Record<string, unknown> };
     expect(output.required).toEqual(["url", "path", "title", "content"]);
     expect(Object.keys(output.properties).sort()).toEqual(["content", "path", "title", "url"]);
-  });
-
-  it("maps each design-stage build domain to exact Scout, skill, and Docs authority", () => {
-    const expected = [
-      ["Design/build/integrate", "skills.stellar-dev.smart-contracts", "stellarDocs.search_soroban_contract_docs"],
-      ["Design/build/integrate", "skills.stellar-dev.dapp", "stellarDocs.search_wallet_dapp_docs"],
-      ["Design/build/integrate", "skills.stellar-dev.dapp", "stellarDocs.search_sdk_cli_tools_docs"],
-      ["Design/build/integrate", "skills.stellar-dev.standards", "stellarDocs.search_protocol_concepts_docs"],
-      ["Design/build/integrate", "skills.stellar-dev.data", "stellarDocs.search_rpc_horizon_data_docs"]
-    ] as const;
-    for (const [title, skillId, docsId] of expected) {
-      const line = MICRO_MAP.split("\n").find((candidate) => candidate.includes(title));
-      expect(line, title).toBeDefined();
-      expect(line, title).toContain("scout.searchProjects");
-      expect(line, title).toContain("scout.searchRepos");
-      expect(line, title).toContain(skillId);
-      expect(line, title).toContain(docsId);
-    }
   });
 
   it("declares build authority only on the exact whole-skill role map", () => {

@@ -1166,6 +1166,20 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
     }
   });
 
+  it("turns each mechanical script failure into a hint that says how to fix it", async () => {
+    // The execute description no longer spells these out; the host error does.
+    for (const [code, fix] of [
+      [`async () => { return await scout.notAnOperation({}); }`, "operation ids are exact-match"],
+      [`async () => { return (await fetch("https://example.com")).status; }`, "the sandbox has no network"],
+      [`async () => { const x: number = 1; return x; }`, "plain JavaScript"],
+      [`async () => { return await Promise.all({ a: 1 }); }`, "\`Promise.all\` takes an array"]
+    ] as const) {
+      const outcome = await run(code);
+      expect(outcome.ok, code).toBe(false);
+      if (!outcome.ok) expect(outcome.error, code).toContain(fix);
+    }
+  });
+
   it("in-sandbox discovery works offline: codemode.search + catalog() + skill.read", async () => {
     const outcome = await run(`async () => {
       const found = await codemode.search("search directory");

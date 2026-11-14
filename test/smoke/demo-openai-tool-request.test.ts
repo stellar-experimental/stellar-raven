@@ -166,7 +166,7 @@ describe("Playground tools on the OpenAI Responses wire", () => {
       await Promise.all(sent.map(async (entry) => [entry.name, await sha256(entry.parameters)] as const))
     );
     expect(hashes).toEqual({
-      search: "c683ff874aeae288a21842cfef134670674ad294b4b96cf44da7d2803943bbfc",
+      search: "f763511d077e91e2624f40952c025b35760662e289ca1967e5704031f6609bf6",
       execute: "8a2d74fec2536309aaab83458396de4e4a0fef6d1184e670f689274c194641a5"
     });
   });

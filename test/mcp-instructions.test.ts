@@ -1,13 +1,17 @@
 /**
- * Server-instructions budget guard. Claude Code truncates
- * injected MCP server instructions at exactly 2,048 characters (measured in
- * production 2026-07-13: the pre-fix 2,160-char BASE cut off mid-sentence
- * inside the envelope contract and the micro-map below it never arrived).
- * BASE_SERVER_INSTRUCTIONS must therefore be a complete, self-sufficient
- * workflow/envelope contract inside that budget; everything after it
- * (micro-map) is bonus for full-injection clients only.
+ * Model-facing text budget and contract. Claude Code keeps exactly 2,048
+ * characters of injected MCP server instructions and of each tool description
+ * (measured in production 2026-07-13: a 2,160-char BASE cut off mid-sentence
+ * inside the envelope contract). Each field must therefore be one complete
+ * contract inside that budget. The micro-map after BASE is the only text a
+ * clipping client is allowed to miss.
+ *
+ * These tests hold what each contract must say and where it may say it. They
+ * do not pin wording beyond the rules a model acts on.
  */
 import { describe, expect, it } from "vitest";
+import { assertGeneratedTextNoNonExposedRefs } from "../scripts/build-micro-map.mjs";
+import { getCatalog } from "../src/catalog/load";
 import {
   BASE_SERVER_INSTRUCTIONS,
   EXECUTE_DESCRIPTION,
@@ -15,10 +19,8 @@ import {
   SEARCH_DESCRIPTION,
   SERVER_INSTRUCTIONS,
   UPSTREAM_DOC_LINKS,
-  rankedSearchOutputSchema,
   rankedSearchInputSchema,
-  recoveryCandidateSchema,
-  searchHitSchema
+  searchNextSteps
 } from "../src/mcp/tools";
 
 const CLAUDE_CODE_INSTRUCTIONS_CAP = 2048;
@@ -82,8 +84,9 @@ describe("server instructions — Claude Code 2KB budget", () => {
     // "inconclusive" describes only soft-empty; no caveat value reuses "empty".
     expect(BASE_SERVER_INSTRUCTIONS.match(/inconclusive/g)).toEqual(["inconclusive"]);
     expect(BASE_SERVER_INSTRUCTIONS).toContain('"soft-empty" (inconclusive, NOT evidence of absence)');
-    expect(EXECUTE_DESCRIPTION).not.toContain("`inconclusive`");
-    expect(EXECUTE_DESCRIPTION).toContain('still ok data, unlike a `soft-empty` error');
+    expect(EXECUTE_DESCRIPTION.match(/inconclusive/g)).toEqual(["inconclusive"]);
+    expect(EXECUTE_DESCRIPTION).toMatch(/"soft-empty" means [^.]*: inconclusive, not evidence of absence\./);
+    expect(EXECUTE_DESCRIPTION).toMatch(/"no-rows" is ok data/);
   });
 
   it("micro-map still rides after BASE for full-injection clients", () => {
@@ -91,107 +94,44 @@ describe("server instructions — Claude Code 2KB budget", () => {
     expect(SERVER_INSTRUCTIONS.length).toBeGreaterThan(CLAUDE_CODE_INSTRUCTIONS_CAP);
   });
 
-  it("binds each freeform tool to one official upstream doc URL per service", () => {
-    const bindings = [
-      "Lumenloop — API guide https://api.lumenloop.com/v1/docs",
-      "Stellar Light/Scout (scout) — OpenAPI https://stellarlight.xyz/api/openapi.json",
-      "Stellar Docs — https://developers.stellar.org/docs"
+  it("binds the surface to one official upstream doc URL per service, on `search`", () => {
+    const urls = [
+      "https://api.lumenloop.com/v1/docs",
+      "https://stellarlight.xyz/api/openapi.json",
+      "https://developers.stellar.org/docs"
     ];
-    for (const contract of [SEARCH_DESCRIPTION, EXECUTE_DESCRIPTION]) {
-      for (const binding of bindings) {
-        expect(contract).toContain(binding);
-      }
-    }
-  });
-
-  it("makes prior-art discovery a bounded design-stage preflight, not a universal build gate", () => {
-    for (const contract of [SEARCH_DESCRIPTION, EXECUTE_DESCRIPTION]) {
-      expect(contract).toMatch(/at most two .*discovery calls/i);
-      expect(contract).toContain("one focused detail call");
-      expect(contract).toContain("three returned candidates");
-      expect(contract).toMatch(/scope, pitfalls, and build-vs-integrate/i);
-      expect(contract).toMatch(/single-step how-tos and debugging/i);
-      expect(contract).toMatch(/license\/audit\/deployment\/compatibility.*unknown unless source-backed/i);
-    }
-    expect(EXECUTE_DESCRIPTION).toContain("scout.searchRepos");
-    expect(EXECUTE_DESCRIPTION).toContain("scout.searchProjects");
-    expect(EXECUTE_DESCRIPTION).toMatch(/never API, security, maintenance, or production authority/i);
-  });
-
-  it("states the section-read result shape that skills/store.ts returns", () => {
-    expect(EXECUTE_DESCRIPTION).toContain(
-      "A section read has no `content`; `sections` is an ARRAY of { section, content, url } in request order, not a map keyed by section: read `r.data.sections[0].content`."
-    );
-  });
-
-  it("distinguishes an untruncated footer from a truncation boundary", () => {
-    expect(EXECUTE_DESCRIPTION).toContain("after truncation, an ok call, or an error call");
-    expect(EXECUTE_DESCRIPTION).toContain("it marks calls with a caveat and gives `observedAt`");
-    expect(EXECUTE_DESCRIPTION).toContain("Only `--- SOURCE BASIS ---` marks truncation");
-    expect(EXECUTE_DESCRIPTION).toContain("`--- SOURCE METADATA ---` marks an untruncated footer");
-  });
-
-  it("states one coherent cross-tier score and promotion contract", () => {
-    const scoreDescription = searchHitSchema.shape.score.description ?? "";
-    const tierDescription = searchHitSchema.shape.tier.description ?? "";
-    for (const contract of [SEARCH_DESCRIPTION, scoreDescription, tierDescription]) {
-      expect(contract).toContain(">=1.6x");
-    }
-    expect(SEARCH_DESCRIPTION).toContain("Hit order is authoritative");
-    expect(SEARCH_DESCRIPTION).not.toMatch(/always ranked below every gated hit/i);
-    expect(SEARCH_DESCRIPTION).not.toMatch(/only among same-tier/i);
+    for (const url of urls) expect(UPSTREAM_DOC_LINKS).toContain(url);
+    // Reference metadata rides last, behind the contract the model acts on.
+    expect(SEARCH_DESCRIPTION.endsWith(UPSTREAM_DOC_LINKS)).toBe(true);
+    // The execute description spends that room on scripting rules instead.
+    expect(EXECUTE_DESCRIPTION).not.toContain("Upstream docs");
   });
 
   it("advertises only searchable kinds while preserving exact section reads", () => {
     expect(SEARCH_KINDS).toEqual(["operation", "skill"]);
     expect(rankedSearchInputSchema.kind.description).toContain("not independent search hits");
-    expect(SEARCH_DESCRIPTION).toContain("not independent ranked hits");
     expect(SEARCH_DESCRIPTION).toContain("availableSections");
     expect(SEARCH_DESCRIPTION).not.toMatch(/kind.*skill sections/i);
   });
 
   it("labels recovery as caller-reported rather than host-verified execution", () => {
-    const from = recoveryCandidateSchema.shape.from.description ?? "";
-    const recovery = rankedSearchOutputSchema.recovery.description ?? "";
     const reason = rankedSearchInputSchema.reason.description ?? "";
-    for (const contract of [from, recovery, reason]) {
+    const recoverFrom = rankedSearchInputSchema.recoverFrom.description ?? "";
+    for (const contract of [reason, recoverFrom]) {
       expect(contract).toMatch(/caller(?:-reported| reports)/i);
       expect(contract).not.toMatch(/evidence of a prior|verified attempt/i);
     }
-    expect(rankedSearchInputSchema.recoverFrom.description).toContain("not an execution ledger");
-    expect(recovery).toContain("does not verify an execution ledger");
-  });
-
-  it("publishes ranking confidence and service-filter recovery metadata", () => {
-    expect(rankedSearchOutputSchema.confidence.description).toContain("topScoreGap");
-    expect(rankedSearchOutputSchema.recoveryMetadata.description).toContain("service filter");
-    expect(SEARCH_DESCRIPTION).toContain("`confidence`");
-    expect(SEARCH_DESCRIPTION).toContain("`recoveryMetadata`");
-    expect(EXECUTE_DESCRIPTION).toContain("confidence, recoveryMetadata");
+    expect(recoverFrom).toContain("not an execution ledger");
   });
 });
 
-/**
- * Tool-description prefix budget. Claude Code clips a tool description at the
- * same 2,048 characters it clips injected server instructions, so the prefix —
- * not the whole string — is what the model reads while it decides how to call
- * the tool. Whatever sits early spends that budget.
- *
- * The upstream documentation URLs — one official link per source family — are
- * trailing reference metadata and provide no runtime guidance. They therefore
- * belong after the behavior contract rather than inside the clipped prefix.
- *
- * These tests hold both invariants. Each clipped prefix must still carry the
- * rules the model acts on — search's plan-then-compose workflow, including the
- * open-world half of its breadth rule, and execute's envelope contract and
- * `## Rules` opener. The URLs must ship in the full description and must not
- * appear in the prefix.
- */
-describe("tool descriptions — Claude Code 2KB clipped prefix", () => {
-  const clipped = (description: string) => description.slice(0, CLAUDE_CODE_INSTRUCTIONS_CAP);
+describe("tool descriptions — one contract inside the 2,048-character cap", () => {
+  it("fits each whole description inside the cap, so nothing is clipped", () => {
+    expect(SEARCH_DESCRIPTION.length).toBeLessThanOrEqual(CLAUDE_CODE_INSTRUCTIONS_CAP);
+    expect(EXECUTE_DESCRIPTION.length).toBeLessThanOrEqual(CLAUDE_CODE_INSTRUCTIONS_CAP);
+  });
 
-  it("search's clipped prefix still carries the plan-then-compose workflow", () => {
-    const survived = clipped(SEARCH_DESCRIPTION);
+  it("search carries the plan-then-compose workflow and the card shape", () => {
     for (const phrase of [
       "## Workflow",
       "Plan which source families could ground the answer before searching",
@@ -199,42 +139,92 @@ describe("tool descriptions — Claude Code 2KB clipped prefix", () => {
       "Write ONE `execute` script that composes SEVERAL relevant operations",
       "Match breadth to the claim",
       // The breadth rule is only actionable with its open-world half attached.
-      "needs a broad content/research family in the same script."
+      "needs a broad content/research family in the same script.",
+      // What a card holds, and where the rest is.
+      "`signature`",
+      "`outputKeys`",
+      'codemode.describe("<exact id>")',
+      "Hit order is the ranking",
+      "Never guess ids"
     ]) {
-      expect(survived, phrase).toContain(phrase);
+      expect(SEARCH_DESCRIPTION, phrase).toContain(phrase);
     }
   });
 
-  it("execute's clipped prefix still carries the envelope contract and the globals rule", () => {
-    const survived = clipped(EXECUTE_DESCRIPTION);
+  it("execute carries the envelope, the evidence signals, and the helpers", () => {
     for (const phrase of [
-      "Service-call payloads live under `.data`",
-      "## Rules",
-      "The ONLY globals are `lumenloop`, `scout`, `stellarDocs`, `codemode`, and standard JavaScript."
+      "sandbox with no network",
+      // Two scripting rules whose absence showed up as failed scripts.
+      "The ONLY globals are `lumenloop`, `scout`, `stellarDocs`, `codemode`, and standard JavaScript",
+      "Artifact reads resolve to the same envelope shape",
+      // An operation id is not a tool name: a client once called one at the top level.
+      "are called inside this script, never as top-level tools",
+      "Ids are exact-match",
+      "capped near 6k tokens",
+      "{ ok: true, data, asOf, asOfBasis, caveat? }",
+      "{ ok: false, error: { kind, message, hint? } }",
+      "Check `r.ok` first",
+      '"unverified-match" marks semantic candidates, not confirmed identity',
+      "call the detail operation before answering specifics",
+      "codemode.describe(id)",
+      "codemode.search(query)",
+      // src/skills/store.ts returns an array; 8.3% of section reads treated it as a map.
+      "`r.data.sections` is an ARRAY of { section, content, url }"
     ]) {
-      expect(survived, phrase).toContain(phrase);
+      expect(EXECUTE_DESCRIPTION, phrase).toContain(phrase);
     }
   });
 
-  it("ships the upstream doc URLs in full without spending the clipped budget", () => {
-    for (const contract of [SEARCH_DESCRIPTION, EXECUTE_DESCRIPTION]) {
-      expect(contract).toContain(UPSTREAM_DOC_LINKS);
-      expect(clipped(contract)).not.toContain("Upstream documentation:");
+  it("states the payload-access rule once across the whole surface", () => {
+    const pages = [
+      { hits: [{}], truncated: true, widerCandidates: [{ basis: "catalog-anchor" }] },
+      { hits: [], truncated: false, widerCandidates: [{ basis: "short-query-directory" }] }
+    ].map((page) => searchNextSteps(page as unknown as Parameters<typeof searchNextSteps>[0]));
+    const surface = [SERVER_INSTRUCTIONS, SEARCH_DESCRIPTION, EXECUTE_DESCRIPTION, ...pages].join("\n");
+    expect(surface.match(/never `r\.projects`/g)).toEqual(["never `r.projects`"]);
+    expect(EXECUTE_DESCRIPTION).toContain("`r.data.projects`, never `r.projects`");
+  });
+
+  it("teaches mechanics through host errors, not prefix text", () => {
+    // src/executor/script-hints.ts and the providers own these lessons. The globals
+    // rule is the exception: it is stated up front, with `fetch` as its one example.
+    for (const mechanic of [/TypeScript/, /named functions/, /\brequire\b/, /SOURCE BASIS/]) {
+      expect(EXECUTE_DESCRIPTION).not.toMatch(mechanic);
+    }
+  });
+
+  it("names only exposed operations, and its worked example matches their schemas", () => {
+    const catalog = getCatalog();
+    const operations = new Map(
+      catalog.entries.filter((entry) => entry.kind === "operation").map((entry) => [entry.id, entry])
+    );
+    // The guard checks every `service.name` token, in prose or in a call, against the manifest.
+    for (const [label, text] of Object.entries({ SEARCH_DESCRIPTION, EXECUTE_DESCRIPTION, SERVER_INSTRUCTIONS })) {
+      expect(() => assertGeneratedTextNoNonExposedRefs(text, catalog.entries, label)).not.toThrow();
+    }
+    // It rejects an id that exists nowhere, written as prose and written as a call.
+    for (const typo of ["Use `scout.searchReserch` for history.", "await scout.searchReserch({ query })"]) {
+      expect(() => assertGeneratedTextNoNonExposedRefs(typo, catalog.entries, "fixture")).toThrow(/scout\.searchReserch/);
+    }
+    // Each call in the example passes only declared input fields.
+    for (const [, id, args] of EXECUTE_DESCRIPTION.matchAll(/\b((?:lumenloop|stellarDocs)\.\w+)\(\{([^}]*)\}\)/g)) {
+      const declared = Object.keys((operations.get(id!)!.inputSchema as { properties: object }).properties);
+      for (const [, field] of args!.matchAll(/(\w+):/g)) expect(declared, `${id} ${field}`).toContain(field);
     }
   });
 });
 
-
 describe("source authority across description surfaces", () => {
-  it("deletes the contradictory clause without adding a replacement rule", () => {
-    const ending = "Skip it for single-step how-tos and debugging.";
-    expect(EXECUTE_DESCRIPTION.indexOf(ending)).toBeGreaterThan(2048);
-    expect(EXECUTE_DESCRIPTION).toContain(`${ending}\n- A few skills are RUNNABLE:`);
-    expect(EXECUTE_DESCRIPTION).not.toContain("Use Stellar Docs for protocol, standards, API, and implementation claims.");
-    expect(EXECUTE_DESCRIPTION).not.toContain("Start with Scout or Lumenloop for ecosystem facts.");
+  it("leaves source authority to the micro-map's rules", () => {
     for (const text of [EXECUTE_DESCRIPTION, SEARCH_DESCRIPTION, SERVER_INSTRUCTIONS]) {
       expect(text).not.toContain("purely factual questions use docs first");
     }
+    expect(EXECUTE_DESCRIPTION).not.toContain("Use Stellar Docs for protocol, standards, API, and implementation claims.");
     expect(SERVER_INSTRUCTIONS).toContain("start Scout/Lumenloop even when docs mention the topic");
+  });
+
+  it("gives no operation chains: search ranks operations, the map names families", () => {
+    expect(SERVER_INSTRUCTIONS).not.toContain("Workflow Archetypes");
+    expect(SERVER_INSTRUCTIONS).not.toMatch(/\w+\.\w+ -> \w+\.\w+/);
   });
 });

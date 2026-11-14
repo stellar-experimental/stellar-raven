@@ -2,29 +2,23 @@
 /**
  * build-micro-map.mjs — deterministic discovery orientation emitter.
  *
- * Reads the checked-in catalog manifest plus authored workflow archetypes and
- * emits src/mcp/micro-map.ts. This is model-facing text, so it is generated
- * and guarded like the other emitted surfaces: exact id validation, token
- * budget checks, and ADR-0003 leak checks all fail loud.
+ * Reads the checked-in catalog manifest plus the authored source-family
+ * purposes and emits src/mcp/micro-map.ts. This is model-facing text, so it is
+ * generated and guarded like the other emitted surfaces: family validation,
+ * token budget checks, and ADR-0003 leak checks all fail loud.
  */
 import { readFileSync, mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { assertNoNonExposedRefsInText } from "./emitted-text-guard.mjs";
 import { writeFileAtomic } from "./lib/shared.mjs";
-import {
-  AUTHORITY_RULES,
-  FAMILY_LINE,
-  SERVICE_FAMILY_PURPOSES,
-  WORKFLOW_ARCHETYPES
-} from "./catalog-data/workflow-archetypes.mjs";
+import { AUTHORITY_RULES, FAMILY_LINE, SERVICE_FAMILY_PURPOSES } from "./catalog-data/source-families.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const MANIFEST_PATH = join(ROOT, "catalog", "manifest.json");
 const OUT_PATH = join(ROOT, "src", "mcp", "micro-map.ts");
 
-const MICRO_MAP_MIN_TOKENS = 800;
-const MICRO_MAP_MAX_TOKENS = 1500;
+const MICRO_MAP_MAX_TOKENS = 700;
 const FAMILY_LINE_MAX_TOKENS = 150;
 
 const readJson = (path) => JSON.parse(readFileSync(path, "utf8"));
@@ -53,39 +47,16 @@ function countLabel(counts) {
   return parts.join(", ");
 }
 
-export function validateWorkflowArchetypes(archetypes, entries, familyPurposes = SERVICE_FAMILY_PURPOSES) {
+export function validateFamilyPurposes(entries, familyPurposes = SERVICE_FAMILY_PURPOSES) {
   const serviceFamilies = new Set(entries.map((entry) => entry.service));
-  const entryIds = new Set(entries.map((entry) => entry.id));
-  const purposeFamilies = new Set(familyPurposes.map((purpose) => purpose.family));
-  const archetypeIds = new Set();
-
   for (const purpose of familyPurposes) {
     if (!serviceFamilies.has(purpose.family)) {
       throw new Error(`micro-map family "${purpose.family}" is not present in catalog/manifest.json`);
     }
   }
-
-  for (const archetype of archetypes) {
-    if (archetypeIds.has(archetype.id)) throw new Error(`duplicate workflow archetype id: ${archetype.id}`);
-    archetypeIds.add(archetype.id);
-    if (!Array.isArray(archetype.families) || archetype.families.length === 0) {
-      throw new Error(`workflow archetype "${archetype.id}" has no families`);
-    }
-    for (const family of archetype.families) {
-      if (!serviceFamilies.has(family)) {
-        throw new Error(`workflow archetype "${archetype.id}" references unknown family "${family}"`);
-      }
-      if (!purposeFamilies.has(family)) {
-        throw new Error(`workflow archetype "${archetype.id}" references family "${family}" with no purpose prose`);
-      }
-    }
-    if (!Array.isArray(archetype.steps) || archetype.steps.length === 0) {
-      throw new Error(`workflow archetype "${archetype.id}" has no steps`);
-    }
-    for (const step of archetype.steps) {
-      if (!entryIds.has(step)) {
-        throw new Error(`workflow archetype "${archetype.id}" references non-manifest id "${step}"`);
-      }
+  for (const family of serviceFamilies) {
+    if (!familyPurposes.some((purpose) => purpose.family === family)) {
+      throw new Error(`catalog family "${family}" has no micro-map purpose prose`);
     }
   }
 }
@@ -99,7 +70,7 @@ export function assertGeneratedTextNoNonExposedRefs(text, entries, label) {
     if (!opIds.has(token)) {
       throw new Error(
         `ADR-0003 leak: ${label} emits a reference to non-exposed operation "${token}" — ` +
-          `fix scripts/catalog-data/workflow-archetypes.mjs or regenerate the catalog.`
+          `fix scripts/catalog-data/source-families.mjs or regenerate the catalog.`
       );
     }
   }
@@ -108,7 +79,7 @@ export function assertGeneratedTextNoNonExposedRefs(text, entries, label) {
 
 export function buildMicroMap(manifest) {
   const entries = manifest.entries ?? [];
-  validateWorkflowArchetypes(WORKFLOW_ARCHETYPES, entries);
+  validateFamilyPurposes(entries);
 
   const familyCounts = countsByFamily(entries);
   const sourceLines = SERVICE_FAMILY_PURPOSES.map((purpose) => {
@@ -116,10 +87,6 @@ export function buildMicroMap(manifest) {
     return `- ${purpose.label} (${purpose.family}; ${countLabel(counts)}): ${purpose.line} ${purpose.authority}`;
   });
   const authorityLines = AUTHORITY_RULES.map((rule) => `- ${rule}`);
-  const workflowLines = WORKFLOW_ARCHETYPES.map((archetype) => {
-    const steps = archetype.steps.join(" -> ");
-    return `- ${archetype.title} — ${archetype.questionShape} -> ${archetype.families.join("/")} -> ${steps}.`;
-  });
 
   const microMap = [
     "## Source Micro-Map",
@@ -128,18 +95,15 @@ export function buildMicroMap(manifest) {
     ...sourceLines,
     "",
     "### Authority Rules",
-    ...authorityLines,
-    "",
-    "### Workflow Archetypes",
-    ...workflowLines
+    ...authorityLines
   ].join("\n");
 
   const microMapTokens = estimateTokens(microMap);
   const familyLineTokens = estimateTokens(FAMILY_LINE);
-  if (microMapTokens < MICRO_MAP_MIN_TOKENS || microMapTokens > MICRO_MAP_MAX_TOKENS) {
+  if (microMapTokens > MICRO_MAP_MAX_TOKENS) {
     throw new Error(
-      `MICRO_MAP token estimate ${microMapTokens} outside ${MICRO_MAP_MIN_TOKENS}-${MICRO_MAP_MAX_TOKENS} ` +
-        `(chars/4). Adjust scripts/catalog-data/workflow-archetypes.mjs.`
+      `MICRO_MAP token estimate ${microMapTokens} exceeds ${MICRO_MAP_MAX_TOKENS} (chars/4). ` +
+        `Adjust scripts/catalog-data/source-families.mjs.`
     );
   }
   if (familyLineTokens > FAMILY_LINE_MAX_TOKENS) {

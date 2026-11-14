@@ -68,34 +68,42 @@ async function mcpCall(arguments_: Record<string, unknown>): Promise<McpSearchRe
   return client.callTool({ name: "search", arguments: arguments_ }) as Promise<McpSearchResult>;
 }
 
-async function mcpFacts(arguments_: Record<string, unknown>): Promise<SearchFacts> {
+/**
+ * The public page renders each entry as a compact card, and the sandbox page
+ * renders it in full. Both must agree on everything except that prose: ids,
+ * order, scores, tiers, payload keys, sections, totals, and confidence.
+ */
+function withoutCardProse<T extends { description: string; signature?: string }>(card: T) {
+  const { description: _description, signature: _signature, ...facts } = card;
+  return facts;
+}
+
+function rankingFacts(facts: SearchFacts) {
+  return {
+    hits: facts.hits.map(withoutCardProse),
+    total: facts.total,
+    truncated: facts.truncated,
+    recovery: facts.recovery.map(withoutCardProse),
+    widerCandidates: facts.widerCandidates.map(withoutCardProse),
+    confidence: facts.confidence,
+    recoveryMetadata: {
+      serviceFilterExcludedSkills: facts.recoveryMetadata.serviceFilterExcludedSkills.map(withoutCardProse)
+    }
+  };
+}
+
+async function mcpFacts(arguments_: Record<string, unknown>) {
   const result = await mcpCall(arguments_);
   expect(result.isError).toBeFalsy();
   const facts = result.structuredContent as SearchFacts & { nextSteps: string };
   expect(result.content?.[0]?.text).toBe(JSON.stringify(facts));
-  return {
-    hits: facts.hits,
-    total: facts.total,
-    truncated: facts.truncated,
-    recovery: facts.recovery,
-    widerCandidates: facts.widerCandidates,
-    confidence: facts.confidence,
-    recoveryMetadata: facts.recoveryMetadata
-  };
+  return rankingFacts(facts);
 }
 
-async function sandboxFacts(arguments_: Record<string, unknown>): Promise<SearchFacts> {
+async function sandboxFacts(arguments_: Record<string, unknown>) {
   const result = await sandboxSearch(arguments_) as SearchFacts & { ok: boolean };
   expect(result.ok).toBe(true);
-  return {
-    hits: result.hits,
-    total: result.total,
-    truncated: result.truncated,
-    recovery: result.recovery,
-    widerCandidates: result.widerCandidates,
-    confidence: result.confidence,
-    recoveryMetadata: result.recoveryMetadata
-  };
+  return rankingFacts(result);
 }
 
 describe("prepareCatalogSearch staged resolution", () => {

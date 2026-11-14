@@ -11,9 +11,9 @@ import {
   buildMicroMap,
   estimateTokens,
   renderTs,
-  validateWorkflowArchetypes
+  validateFamilyPurposes
 } from "../scripts/build-micro-map.mjs";
-import { SERVICE_FAMILY_PURPOSES, WORKFLOW_ARCHETYPES } from "../scripts/catalog-data/workflow-archetypes.mjs";
+import { SERVICE_FAMILY_PURPOSES } from "../scripts/catalog-data/source-families.mjs";
 import {
   FAMILY_LINE,
   FAMILY_LINE_TOKEN_ESTIMATE,
@@ -41,45 +41,34 @@ describe("build-micro-map.mjs", () => {
     expect(rendered.familyLine).toBe(FAMILY_LINE);
     expect(rendered.microMapTokens).toBe(MICRO_MAP_TOKEN_ESTIMATE);
     expect(rendered.familyLineTokens).toBe(FAMILY_LINE_TOKEN_ESTIMATE);
-    expect(MICRO_MAP_TOKEN_ESTIMATE).toBeGreaterThanOrEqual(800);
-    expect(MICRO_MAP_TOKEN_ESTIMATE).toBeLessThanOrEqual(1500);
+    expect(MICRO_MAP_TOKEN_ESTIMATE).toBeLessThanOrEqual(700);
     expect(FAMILY_LINE_TOKEN_ESTIMATE).toBeLessThanOrEqual(150);
     expect(estimateTokens(MICRO_MAP)).toBe(MICRO_MAP_TOKEN_ESTIMATE);
     expect(estimateTokens(FAMILY_LINE)).toBe(FAMILY_LINE_TOKEN_ESTIMATE);
   });
 
-  it("validates every workflow archetype against real service families and manifest ids", () => {
-    expect(() => validateWorkflowArchetypes(WORKFLOW_ARCHETYPES, manifest.entries)).not.toThrow();
-    expect(() =>
-      validateWorkflowArchetypes(
-        [{ ...WORKFLOW_ARCHETYPES[0], id: "bad-family", families: ["notAService"] }],
-        manifest.entries
-      )
-    ).toThrow(/unknown family "notAService"/);
-    expect(() =>
-      validateWorkflowArchetypes(
-        [
-          {
-            ...WORKFLOW_ARCHETYPES[0],
-            id: "bad-step",
-            steps: ["lumenloop.not_exposed"]
-          }
-        ],
-        manifest.entries
-      )
-    ).toThrow(/non-manifest id "lumenloop.not_exposed"/);
-    expect(() =>
-      validateWorkflowArchetypes([WORKFLOW_ARCHETYPES[0], WORKFLOW_ARCHETYPES[0]], manifest.entries)
-    ).toThrow(/duplicate workflow archetype id/);
+  it("names every catalog family once, with its live counts, and no operation chain", () => {
+    const families = [...new Set(manifest.entries.map((entry) => entry.service))];
+    for (const family of families) {
+      const lines = MICRO_MAP.split("\n").filter((line) => line.includes(`(${family};`));
+      expect(lines, family).toHaveLength(1);
+      const operations = manifest.entries.filter((e) => e.service === family && e.kind === "operation").length;
+      if (operations > 0) expect(lines[0]).toContain(`${operations} ops`);
+    }
+    expect(MICRO_MAP).not.toMatch(/\w+\.\w+ -> /);
   });
 
-  it("requires purpose prose for each emitted source family", () => {
+  it("requires purpose prose for each catalog family, and a catalog family for each purpose", () => {
+    expect(() => validateFamilyPurposes(manifest.entries)).not.toThrow();
+    expect(() => validateFamilyPurposes(manifest.entries, SERVICE_FAMILY_PURPOSES.slice(1))).toThrow(
+      /has no micro-map purpose prose/
+    );
     expect(() =>
-      validateWorkflowArchetypes(WORKFLOW_ARCHETYPES, manifest.entries, SERVICE_FAMILY_PURPOSES)
-    ).not.toThrow();
-    expect(() =>
-      validateWorkflowArchetypes(WORKFLOW_ARCHETYPES, manifest.entries, SERVICE_FAMILY_PURPOSES.slice(1))
-    ).toThrow(/with no purpose prose/);
+      validateFamilyPurposes(manifest.entries, [
+        ...SERVICE_FAMILY_PURPOSES,
+        { ...SERVICE_FAMILY_PURPOSES[0], family: "notAService" }
+      ])
+    ).toThrow(/family "notAService" is not present/);
   });
 
   it("applies ADR-0003 emitted-text guards to micro-map prose", () => {

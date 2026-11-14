@@ -54,15 +54,17 @@ The browser keeps history in page memory and sends it with each turn. The server
 
 Each authorized request creates a fresh, stateless `McpServer`. `createMcpHandler` serves streamable HTTP and supports both discovery and initialization lifecycles. Raven uses no Durable Object or server-side MCP session storage. Cloudflare routing handles allowed hostnames. The handler checks browser Origins against the configured hostnames and loopback hosts. Requests without an Origin header remain valid for ordinary MCP clients.
 
-[src/mcp/tools.ts](src/mcp/tools.ts) owns tool schemas, descriptions, and `SERVER_INSTRUCTIONS`. `BASE_SERVER_INSTRUCTIONS` must provide the complete workflow within its tested 2,000-character budget. The generated source-family map follows that base contract. It identifies service families without adding operation cards to the catalog.
+[src/mcp/tools.ts](src/mcp/tools.ts) owns tool schemas, descriptions, and `SERVER_INSTRUCTIONS`. Each tool description and `BASE_SERVER_INSTRUCTIONS` is one complete contract inside the 2,048 characters that Claude Code keeps of a field; tests hold the cap. The descriptions state what a script must know before it runs. The `execute` description states three scripting rules up front, because measured runs failed without them: operation ids are called inside the script and are not top-level tools; the only globals are the three services, `codemode`, and standard JavaScript; and artifact reads resolve to the same envelope as service calls. Any other mechanical mistake (an unknown id, a wrong-level read, TypeScript syntax) is taught by the host error that follows it ([script-hints.ts](src/executor/script-hints.ts)). One upstream documentation URL per source family rides last on the `search` description only. The generated source-family map follows the base contract. It names what each family can ground and which is the authority, and it carries no operation chains.
 
 The MCP and sandbox search adapters share `prepareCatalogSearch` from [search-resolution.ts](src/catalog/search-resolution.ts). It validates the service filter, validates recovery IDs, then resolves the page and requested recovery candidates. Each adapter retains its own input checks, response shape, prose, and telemetry.
-The MCP response supplies matching text and `structuredContent`:
+The MCP response supplies matching text and `structuredContent`, and the tool advertises no `outputSchema`:
 
 ```text
 { hits, total, truncated, recovery, widerCandidates,
   confidence, recoveryMetadata, nextSteps }
 ```
+
+The public page renders each entry as a compact card: a description of at most 220 characters, an input-only signature with short field prose, and, for operations, the payload field names (`outputKeys`, `outputItemKeys`). A runnable skill's card has the input-only signature and no payload field names. `codemode.describe(id)` returns the full description and types. The sandbox `codemode.search` page keeps full entries, because data inside the sandbox costs no context. On a successful page, `nextSteps` is at most 400 characters and says only what to do with this page. An error response for an unknown `service` or `recoverFrom` id echoes the caller's value and has no cap.
 
 An unknown service produces zero MCP hits and names the valid services in `nextSteps`. The sandbox adapter returns an error envelope for the same invalid filter. Neither adapter treats a spelling variant as a service alias. `getCatalog()` validates the bundled manifest once per isolate and throws on invalid catalog data.
 
@@ -85,7 +87,7 @@ This section gives only the stages.
 `total` and `truncated` describe catalog navigation, not completeness of upstream evidence.
 `widerCandidates` and `recovery` supply advice that stays separate from the ranked hits.
 [ADR-0007](research/decisions/0007-structural-recovery-guidance.md) records the structural, advisory, bounded recovery decision.
-An oversized rendered output type becomes a compact stub that names the exact `codemode.describe` call.
+A public card carries no output type. In catalog entries and the sandbox `codemode.search` page, an oversized rendered output type becomes a compact stub that names the exact `codemode.describe` call.
 The manifest and detail helpers retain the complete schemas.
 
 ## 3. An `execute` call, end to end
@@ -335,7 +337,7 @@ The signed cookie contains the peppered WorkOS subject; loopback dev uses `dev-l
 
 | Area | Limit or behavior | Source |
 | --- | --- | --- |
-| Search page | Default 10 hits; maximum 50. | [search.ts](src/catalog/search.ts) |
+| Search page | Default 5 hits; maximum 50. `codemode.search` defaults to 10. | [tools.ts](src/mcp/tools.ts), [search.ts](src/catalog/search.ts) |
 | Execute code | Non-empty string; no application length ceiling. | [tools.ts](src/mcp/tools.ts) |
 | Tool calls | No application per-session count cap. | [server.ts](src/server.ts) |
 | Refresh grant | Fixed authorization window; token rotation does not extend it. See the [retention table](docs/operations.md). | [gate.ts](src/auth/gate.ts) |
@@ -365,7 +367,7 @@ The manifest defines the exposed surface under [ADR-0003](research/decisions/000
 | Inputs | Builder | Output |
 | --- | --- | --- |
 | Service snapshots, authored docs spec, title snapshot, skill pins and files, runner registry | `scripts/build-catalog.mjs` | `catalog/manifest.json` |
-| Manifest and workflow archetypes | `scripts/build-micro-map.mjs` | `src/mcp/micro-map.ts` |
+| Manifest and source-family purposes | `scripts/build-micro-map.mjs` | `src/mcp/micro-map.ts` |
 | Manifest, service mappings, runner registry | `scripts/build-super-spec.mjs` | `specs/super-spec.json` |
 
 The catalog builder fetches exposed pinned skill files and verifies both digests.
