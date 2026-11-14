@@ -58,7 +58,7 @@ After independent review, GO 2 authorized a new probe against the repaired arms.
 That probe reported one call, one reported call, positive cost, and no accounting error.
 It also confirmed all three model overrides and visibility of the original baseline clause.
 The [accounting coverage review](../../../research/audits/2026-10-01-playground-accounting-coverage.md) retains the unsupported native and no-plugin paths.
-Their separate [TODO item](../../TODO.md#extend-playground-eval-accounting-to-native-and-no-plugin-model-paths) remains open.
+Their separate [TODO item](https://github.com/stellar-experimental/stellar-raven/blob/7697d424ef915d367b344fca827db0ba36060d35/.agents/TODO.md#extend-playground-eval-accounting-to-native-and-no-plugin-model-paths) remains open.
 
 ## Reviews and limits
 
