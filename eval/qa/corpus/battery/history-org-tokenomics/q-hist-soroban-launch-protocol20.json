@@ -5,16 +5,18 @@
     "scout.searchResearch"
   ],
   "golden": {
-    "answer": "Soroban's Mainnet rollout was phased: **Protocol 20/Phase 0 activated February 20, 2024**, Phase 1 followed February 27, and **Phase 2/general availability arrived March 19**. SDF's roughly **$100M Soroban Adoption Fund** was announced earlier, with Futurenet on **October 12, 2022**; it was not itself a 2024 launch event. Soroban is a non-EVM, Wasm-based contract platform with a Rust-first toolchain, not a Solidity/EVM environment or a protocol restricted in principle to Rust.",
+    "answer": "Soroban launched on Mainnet in phases: Protocol 20 activated it on February 20, 2024 (Phase 0), Phase 1 followed February 27, and general availability (Phase 2) arrived March 19, 2024. SDF's roughly $100M Soroban Adoption Fund was first announced with Futurenet on October 12, 2022 and restated at the March 2024 launch. Soroban is a Wasm-based, non-EVM contract platform with a Rust-first toolchain.",
     "keyFacts": [
-      "Treats Protocol activation, phased GA, and the 2022 fund announcement as distinct events.",
-      "Describes Soroban as a Wasm platform with a Rust-first toolchain.",
-      "Describes Soroban as non-EVM."
+      "Protocol 20 activated Soroban on Mainnet on February 20, 2024.",
+      "General availability (Phase 2) followed on March 19, 2024.",
+      "The ~$100M Soroban Adoption Fund was announced in 2022 with Futurenet.",
+      "Soroban is a Wasm-based, non-EVM platform with a Rust-first toolchain."
     ],
     "avoid": [
-      "Do NOT use one 2024 date for every rollout stage, claim the fund was a 2024 launch event, claim a 2021/22 Mainnet launch, or call Soroban Solidity/EVM/Rust-only."
+      "Do NOT claim a 2021/22 Mainnet launch or use one 2024 date for every stage.",
+      "Do NOT call Soroban Solidity/EVM, or Rust-only."
     ],
-    "notes": "GT-27 2026-07-10: distinguish Feb 20 Phase 0, Feb 27 Phase 1, Mar 19 GA, and the Oct 12 2022 fund announcement. Soroban is Wasm/Rust-first and non-EVM, not Rust-exclusive.\nGT-27 CORRECTION 2026-07-10: preserve the phased rollout rather than one blended launch date."
+    "notes": "SDF's March 19, 2024 release ties the $100M fund to the launch; citing it is not wrong as long as the fund's 2022 announcement is not denied."
   },
   "tags": {
     "category": "history-org-tokenomics",
@@ -69,29 +71,49 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "Protocol 20 activated Mainnet Feb 20, 2024; Phase 2 (GA) March 19, 2024.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/developers/protocol-20-upgrade-guide",
+            "observedAt": "2026-11-14",
+            "note": "On February 20 at 1700 UTC, the Stellar Mainnet upgraded to Protocol 20"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/networks/software-versions",
+            "observedAt": "2026-11-14",
+            "note": "Protocol 20: Soroban Phase 2 (March 19, 2024)"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch history-org-tokenomics-01)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-hist-retail, verify-hist-retail; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "[A] golden.answer/keyFacts[0] (confirmed): https://stellar.org/blog/developers/protocol-20-upgrade-guide :: \"February 20 : Protocol 20 Upgrade Vote + Phase 0. Complete! March 19: Phase 2 Network Settings Vote. Complete!\"; \"02/27/2024 — The network is now in Phase 1.\" (observedAt 2026-11-02)",
-        "[A] golden.answer/keyFacts[0] (confirmed): https://stellar.org/press/soroban-smart-contracts-platform-native-to-the-stellar-network-is-live-on-futurenet :: \"ROME, Italy – October 12, 2022 ... The Soroban Adoption Fund dedicates $100M to support developers\" (observedAt 2026-11-02)",
-        "[A] golden.answer/keyFacts[0] (confirmed): https://developers.stellar.org/docs/networks/software-versions :: \"Mainnet activated Protocol 20 on February 20, 2024 at 1700 UTC and ran the Phase 0 limits\" (observedAt 2026-11-02)",
-        "[D] golden.answer/keyFacts[0] (confirmed): https://www.theblock.co/amp/post/283446/smart-contracts-finally-arrive-on-stellar-network-with-soroban-launch-on-mainnet :: \"Soroban's mainnet phase 2 went live today\" (March 19, 2024) (observedAt 2026-11-02)",
-        "[D] golden.answer/keyFacts[0] (confirmed): https://www.coindesk.com/tech/2024/02/20/stellar-starts-phased-rollout-of-soroban-smart-contracts :: Published Feb 20, 2024: phased rollout began after validators voted (observedAt 2026-11-02)",
-        "[A] golden.keyFacts[1..2] (confirmed): https://stellar.org/press/soroban-smart-contracts-platform-native-to-the-stellar-network-is-live-on-futurenet :: \"Soroban introduces Turing-complete smart contracts to the Stellar network, built on WASM and with Rust.\" (observedAt 2026-11-02)",
-        "[D] golden.keyFacts[1..2] (confirmed): https://www.cryptotimes.io/2024/03/20/stellar-launches-soroban :: \"Soroban deploys a WebAssembly (WASM) solution\" (observedAt 2026-11-02)",
-        "Sibling sweep 2026-11-02: q-soroban-auth-delegation-p27, q-protocol-19-preconditions-cap-0021 checked; consistent; P20 dates unchanged.",
-        "No judge-facing change; prior verification event 2026-08-27 is in git history.",
-        "rootCause carried forward from the prior gospel event (retired-tracker entries dropped); no new gospel change in this event."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-hist-soroban-launch-protocol20",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-hist-soroban-launch-protocol20",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-hist-soroban-launch-protocol20",
+        "Live A 2026-11-14: https://stellar.org/blog/developers/protocol-20-upgrade-guide -- 'On February 20 at 1700 UTC, the Stellar Mainnet upgraded to Protocol 20'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/networks/software-versions -- 'Protocol 20: Soroban Phase 2 (March 19, 2024)'",
+        "Live A 2026-11-14: https://stellar.org/blog/developers/validator-guide-to-soroban-mainnet-phase-1 -- 'Page exists; no Feb 27 date found in the excerpt read'",
+        "Live A 2026-11-14: https://stellar.org/press/smart-contracts-launch-on-stellar -- 'Smart contracts launch on Stellar with $100m allocated to Soroban adoption fund (March 19, 2024)'",
+        "Live A 2026-11-14: https://stellar.org/press/smart-contracts-launch-on-stellar -- 'Smart contracts launch on Stellar with $100m allocated to Soroban adoption fund ... San Francisco, March 19, 2024'",
+        "Live A 2026-11-14: https://stellar.org/press/soroban-smart-contracts-platform-native-to-the-stellar-network-is-live-on-futurenet -- 'ROME, Italy – October 12, 2022 ... SDF also announced a $100M fund to support developers building on Soroban.'",
+        "Live A 2026-11-14: https://stellar.org/blog/developers/protocol-20-upgrade-guide -- '02/27/2024 — The network is now in Phase 1. The next step will be the Phase 2 vote'",
+        "Live E 2026-11-14: https://developers.stellar.org/docs/networks/software-versions -- 'Protocol 20: Soroban Phase 2 (March 19, 2024)'"
       ],
       "rootCause": [
-        "Distinct activation/GA/funding events were compressed and language support was over-narrowed.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (presentation-avoid class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (negative-predicate class)"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit",
+        "freshness-drift"
       ]
     },
-    "origin": "raven-next q-hist-soroban-launch-protocol20"
+    "origin": "raven-next q-hist-soroban-launch-protocol20",
+    "notes": "GT-27 2026-07-10: distinguish Feb 20 Phase 0, Feb 27 Phase 1, Mar 19 GA, and the Oct 12 2022 fund announcement. Soroban is Wasm/Rust-first and non-EVM, not Rust-exclusive.\nGT-27 CORRECTION 2026-07-10: preserve the phased rollout rather than one blended launch date.",
+    "leaf": "network.protocol-history"
   }
 }

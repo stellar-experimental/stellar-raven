@@ -1,0 +1,21 @@
+{
+  "id": "q-raph-hardware-wallet",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-hist-retail (golden coverage audit)",
+    "reviewer": "verify-hist-retail (golden coverage audit)",
+    "reason": "No Stellar-specific predicate: the key facts hold for any chain, so a generic answer scores the same as a grounded one. The case also carries a \"scheduled\" tag with nothing volatile to re-verify.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-raph-hardware-wallet",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-raph-hardware-wallet",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-raph-hardware-wallet"
+    ],
+    "lastCaseContentSha256": "527b92c74a2b908c84a05caaa08af6e20e9925db1196c94bf16278b0427c04e5",
+    "replacementIds": []
+  }
+}

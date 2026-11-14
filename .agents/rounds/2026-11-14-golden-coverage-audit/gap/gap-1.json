@@ -1,0 +1,138 @@
+{
+  "lane": "gap-1",
+  "generatedAt": "2026-11-14",
+  "slots": [
+    {
+      "leaf": "ai.agent-cli",
+      "facet": "what the agent CLI does and how it limits what an agent can sign",
+      "result": "proposed",
+      "caseId": "q-agent-cli-authority-limits",
+      "coveredBy": null,
+      "ravenReach": "answerable",
+      "ravenEvidence": "search (stellarDocs, skills) returned stellarDocs.search_sdk_cli_tools_docs and search_docs. execute: stellarDocs.search_docs x2 returned the agent-cli index (Capability Surface, Safety Architecture), the Authority & Security Model page ('execution engine, not a policy controller') and Delegate spending. All four key facts were in the hits.",
+      "owner": null,
+      "note": "Docs state they were verified against stellar-cli 28.1.0; latest release on 2026-11-14 was v30.0.1."
+    },
+    {
+      "leaf": "assets.nft-vault-standards",
+      "facet": "how NFTs and tokenized vaults are built and which SEPs define them",
+      "result": "proposed",
+      "caseId": "q-nft-vault-contract-standards",
+      "coveredBy": null,
+      "ravenReach": "answerable",
+      "ravenEvidence": "search (stellarDocs, skills) returned search_asset_token_docs and the OpenZeppelin skills. execute: stellarDocs.search_docs returned the OpenZeppelin Contracts page (Non-Fungible Token, Token Vault implementing SEP-56); scout.searchResearch returned the SEP-0050 and SEP-0056 preambles, both Status: Draft.",
+      "owner": null,
+      "note": "Weight 1. q-rwa-tokenization-standards already marks SEP-56 Draft as a side fact; it does not test the NFT or vault build path."
+    },
+    {
+      "leaf": "data.explorers-status",
+      "facet": "where to check live network and validator health",
+      "result": "proposed",
+      "caseId": "q-network-status-where-to-check",
+      "coveredBy": null,
+      "ravenReach": "answerable",
+      "ravenEvidence": "search (stellarDocs, scout) returned search_docs and scout.searchProjects. execute: stellarDocs.search_docs returned the Network Status page with its Status Page and Obsrvr Radar sections. scout.searchProjects returned Stellarbeat and RPC providers, not the status tools.",
+      "owner": null,
+      "note": "The Dashboard entry is on the same docs page as the two sections that surfaced. Scout's project rows did not name status.stellar.org or Obsrvr Radar."
+    },
+    {
+      "leaf": "ecosystem.chain-comparisons",
+      "facet": "how Stellar differs from the XRP Ledger and other chains",
+      "result": "proposed",
+      "caseId": "q-stellar-vs-xrp-ledger",
+      "coveredBy": null,
+      "ravenReach": "unreachable",
+      "ravenEvidence": "search (scout) returned scout.searchResearch only. execute: scout.searchResearch x2, lumenloop.search_content_semantic x2 and stellarDocs hits returned SCP docs, the SCP paper, a 2014 fork article and an Aquarius XRP listing vote. Nothing held the XRP Ledger side: Unique Node List, destroyed fees, trust line tokens.",
+      "owner": "XRPL facts: the XRP Ledger docs at xrpl.org (consensus-protocol/unl, transactions/transaction-cost, tokens/fungible-tokens/trust-line-tokens). A Stellar-owned comparison belongs to SDF, on stellar.org/faq under 'How does Stellar compare to other blockchains?' or stellar.org/learn.",
+      "note": "The Stellar side (SCP quorum sets, locked fee pool, trustlines) is reachable through Stellar Docs. Raven holds no other-chain source, so any cross-chain comparison is half reachable."
+    },
+    {
+      "leaf": "ecosystem.strategy-roadmap",
+      "facet": "SDF's stated priorities for the current year",
+      "result": "proposed",
+      "caseId": "q-sdf-2026-strategy-priorities",
+      "coveredBy": null,
+      "ravenReach": "unreachable",
+      "ravenEvidence": "search (lumenloop, scout) returned search_content_semantic and searchResearch. execute: scout.searchResearch (also with source sdf-org and sdf-blog) and lumenloop.search_content_semantic returned quarterly-report posts, the quarterly-reports index, weekly roundups and unrelated SDF pages. Exact-phrase reads for '$1 billion network asset value' and '15 transformational enterprises' returned nothing from the strategy page.",
+      "owner": "SDF. The fact lives at https://stellar.org/foundation/strategy. Scout's sdf-org research corpus already holds stellar.org/quarterly-reports and stellar.org/enterprise-fund and should hold this page and stellar.org/foundation/roadmap.",
+      "note": "Quarterly reports are reachable (Scout sdf-org index, Lumenloop articles). stellar.org/foundation/roadmap still shows the 2025 roadmap; the golden traps that."
+    },
+    {
+      "leaf": "network.incidents",
+      "facet": "network halts and how each was resolved",
+      "result": "proposed",
+      "caseId": "q-network-halt-history",
+      "coveredBy": null,
+      "ravenReach": "answerable",
+      "ravenEvidence": "search (scout) returned scout.searchResearch. execute: scout.searchResearch returned SDF's 'May 15th Network Halt' post (67 minutes, no consensus); lumenloop.search_content_semantic returned SDF's 'Statement on Halted SDF Validators' and CoinDesk's 2021-04-06 report. The incident-source filter returned only the YieldBlox application incident.",
+      "owner": null,
+      "note": "2019 duration is disputed (SDF 67 minutes, press about two hours). One parallel-cli research run (trun_9061a9e460964094a8328269f0a5a354) found no source that reconciles them, so the golden does not pin it. SDF's FAQ says the network has halted once. Scout's incident source holds no network-level incident row."
+    },
+    {
+      "leaf": "network.running-a-node",
+      "facet": "the incentive to run a validator",
+      "result": "proposed",
+      "caseId": "q-validator-why-run-no-rewards",
+      "coveredBy": null,
+      "ravenReach": "answerable",
+      "ravenEvidence": "search by codemode.search and the earlier stellarDocs and scout searches. execute: scout.searchResearch and lumenloop.search_content_semantic both returned SDF's 'Why institutions choose to become Stellar validators' (no block rewards, trust-based influence); stellarDocs.search_docs returned the Validators Introduction.",
+      "owner": null,
+      "note": "q-edge-noinfo-stellar-pos-staking-rewards tests the no-rewards fact as a trap; this case tests the reason and the requirement."
+    },
+    {
+      "leaf": "security.audit-registry",
+      "facet": "where audit reports are published and which firms wrote them",
+      "result": "proposed",
+      "caseId": "q-audit-reports-where-published",
+      "coveredBy": null,
+      "ravenReach": "answerable",
+      "ravenEvidence": "codemode.search returned scout.listAudits and scout.searchResearch. execute: scout.listAudits returned 71 reports with reportUrl on stellarsecurityportal.com and 15 auditor names; scout.searchResearch returned the SCF handbook Audit Bank page and the docs Audits page.",
+      "owner": null,
+      "note": "stellar.org/audit-bank/projects itself was not returned; the Audit Bank programme page was. Live slot: key facts are behavioral."
+    },
+    {
+      "leaf": "security.signing-safety",
+      "facet": "what to check before signing a transaction from a website",
+      "result": "proposed",
+      "caseId": "q-signing-safety-website-request",
+      "coveredBy": null,
+      "ravenReach": "unreachable",
+      "ravenEvidence": "codemode.search returned search_wallet_dapp_docs and skills.stellar-dev.dapp. execute: stellarDocs.search_docs x4 returned dapp build guides, SEP-7 and the agent-cli 'Inspection before signing' section; scout.searchResearch with source sdf-blog returned SDF's scam guide (verify the domain, never enter a secret key). The dapp skill's wallet-integration section had no pre-signing guidance. Nothing held blind or hash signing, signer-change operations, or wallet scan limits as user guidance.",
+      "owner": "SDF, for a wallet-user signing-safety page: developers.stellar.org under the wallet or security docs, or an update to stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers. Wallet vendors own their own review screens (docs.freighter.app, Ledger's Stellar app notes).",
+      "note": "No canonical source was supplied for this slot. Partly reachable: the domain check is in SDF's scam guide and the operation definitions are in Stellar Docs, but no Raven source assembles the checklist."
+    },
+    {
+      "leaf": "standards.deposit-withdrawal",
+      "facet": "the SEP-24 interactive flow",
+      "result": "proposed",
+      "caseId": "q-sep24-interactive-deposit-flow",
+      "coveredBy": null,
+      "ravenReach": "answerable",
+      "ravenEvidence": "codemode.search returned search_anchor_sep_docs and search_wallet_dapp_docs. execute: stellarDocs.search_docs returned the wallet SEP-24 guide (Getting Transaction Info) and the example-app section 'Launch the popup window and listen for a callback'; scout.searchResearch with source sep returned SEP-0024 'Interactive customer information needed'.",
+      "owner": null,
+      "note": "Weight 3: one parallel-cli research run (trun_0109eca42fd042999500976531184240) agreed with the SEP text on every step."
+    },
+    {
+      "leaf": "tooling.renames-repos",
+      "facet": "tools and products that changed name",
+      "result": "proposed",
+      "caseId": "q-renamed-tools-rpc-cli-go-sdk",
+      "coveredBy": null,
+      "ravenReach": "reachable-not-surfaced",
+      "ravenEvidence": "search (stellarDocs, scout) returned search_docs and scout.resolveProject. execute: stellarDocs.search_docs surfaced Software Versions ('Soroban CLI has been renamed to Stellar CLI') but no RPC rename statement; scout.resolveProject('soroban-rpc') and ('stellar/go') answered 'not tracked here'. A targeted scout.searchResearch with source sdf-blog returned 'Stellar RPC has Arrived' (rebranded with Protocol 22); scout.searchRepos lists stellar/go-stellar-sdk with renamedFrom null.",
+      "owner": "SDF. The Go move is stated in the stellar/go-stellar-sdk README; no Raven source returned that statement.",
+      "note": "Freighter to Varial is out of scope for this leaf. scout.resolveProject covers project names, not SDF tool or repository renames."
+    },
+    {
+      "leaf": "wallets.consumer-apps",
+      "facet": "which consumer apps let people spend or save on Stellar",
+      "result": "proposed",
+      "caseId": "q-consumer-apps-spend-save-send",
+      "coveredBy": null,
+      "ravenReach": "answerable",
+      "ravenEvidence": "search (scout) returned scout.searchProjects. execute: scout.searchProjects type=Card Issuing status=Live returned 5 rows (Bridge, Amulets, Blockroll, Wirex, Rain); category=User-Facing App status=Live returned 24 rows (Vesseo, Felix Pago, Sendana, Myaza, Azza, Linq and others) with function and region in the descriptions.",
+      "owner": null,
+      "note": "Live slot: key facts are behavioral. Region is free text in descriptions, not a filterable field. MoneyGram and Decaf did not appear in the first ten rows of this query."
+    }
+  ]
+}

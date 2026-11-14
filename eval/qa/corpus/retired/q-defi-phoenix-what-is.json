@@ -1,0 +1,21 @@
+{
+  "id": "q-defi-phoenix-what-is",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-defi (golden coverage audit)",
+    "reviewer": "verify-defi (golden coverage audit)",
+    "reason": "Third named-exchange case; facet 2 is held by q-defi-soroswap-vs-stellarx and Phoenix is named in q-eco-dex-saturation.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-defi-phoenix-what-is",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-defi-phoenix-what-is",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-defi-phoenix-what-is"
+    ],
+    "lastCaseContentSha256": "28638112882d3540609cbc33332f700a347f38fe66c9b9c5402b0ea47ef67fe5",
+    "replacementIds": []
+  }
+}

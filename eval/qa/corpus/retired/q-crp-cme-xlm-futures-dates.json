@@ -1,0 +1,21 @@
+{
+  "id": "q-crp-cme-xlm-futures-dates",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-compliance (golden coverage audit)",
+    "reviewer": "verify-audit-compliance (golden coverage audit)",
+    "reason": "Two CME launch dates and two contract sizes are dated trivia with no reasoning tested on a one-facet leaf that q-raph-buy-xlm-safely holds.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-compliance.json#q-crp-cme-xlm-futures-dates",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-compliance.json#q-crp-cme-xlm-futures-dates",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-crp-cme-xlm-futures-dates"
+    ],
+    "lastCaseContentSha256": "202f14f47854a5fbf82daf09164f0a1ce687d65f74840d952b6305b87fd97d01",
+    "replacementIds": []
+  }
+}

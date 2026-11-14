@@ -8,20 +8,18 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "For Classic `G...` trustlines, paginate Horizon **`GET /accounts?asset=CODE:ISSUER`** and follow the server-provided next link/cursor; do not build a giant account-ID URL. The collection represents trustline accounts and can include a zero balance, so inspect the target balance row and apply the campaign's positive-balance/authorization rules. It does not include `C...` contract balances.\n\nA multi-page live crawl is not an atomic exact-ledger snapshot. For deterministic distribution, pin the network and target ledger and use Hubble/owned ingestion or another provider that explicitly supplies snapshot semantics. Define treatment of claimable balances, liquidity pools, frozen/unauthorized trustlines, issuer/distribution accounts, muxed IDs, and contract holders. For SAC/custom SEP-41 holders, use complete indexed state/events plus current-balance validation; SEP-41 does not standardize storage enumeration. Freeze a recipient ledger, store computed amount/tx hash/status/retry count, manage sequence/fees, dry-run/canary, and make retries idempotent.",
+    "answer": "For Classic G trustlines, page Horizon `GET /accounts?asset=CODE:ISSUER` by following the returned next link or cursor; do not build a URL of account IDs. The list can include zero balances, so filter by the balance row and your eligibility rules, and it excludes C-address contract balances. A multi-page crawl is not an exact-ledger snapshot: for a deterministic airdrop pin a ledger and use Hubble or owned ingestion. Define treatment of claimable balances, pools, unauthorized trustlines, issuer, muxed and contract holders. Freeze the recipient list, make retries idempotent and canary first.",
     "keyFacts": [
-      "Uses cursor-paginated /accounts?asset=CODE:ISSUER; filters zero balances/eligibility.",
-      "States the Horizon collection excludes C-address token balances.",
-      "States a moving Horizon crawl is not an atomic historical snapshot.",
-      "Pins network/ledger and defines claimable/pool/auth/issuer/muxed/contract eligibility.",
-      "Requires an idempotent recipient ledger and retry/sequence/fee/canary controls."
+      "Pages /accounts?asset=CODE:ISSUER by cursor and filters zero or ineligible balances.",
+      "The Horizon collection excludes C-address token balances.",
+      "A live paged crawl is not an exact-ledger snapshot; pin a ledger via Hubble or ingestion.",
+      "The airdrop uses a frozen recipient ledger with idempotent retries."
     ],
     "avoid": [
-      "Do NOT equate trustline existence with a positive holder or claim `/accounts?asset` includes C-address token balances/contract holders.",
-      "Do NOT call a moving Horizon crawl an exact-ledger snapshot or stuff hundreds of IDs into one URL.",
-      "Do NOT airdrop before defining holder classes/deduplication or without idempotent retry state."
-    ],
-    "notes": "Classic holder enumeration is well grounded. Exact table/SQL choices depend on Hubble schema and whether the asset is classic trustline-only or has contract-address balances.\nAlso good if the answer: Mentions Horizon public-history limits and recommends Hubble or an indexer for full historical/bulk analytics. | Mentions that distribution should use normal Stellar payment transactions or claimable balances depending on whether recipients must opt in/claim.\nGolden cites: Horizon pagination/account docs or Hubble/indexer docs for the data-source choice.\nGT-52 CORRECTION 2026-07-11: require snapshot and eligibility semantics; do not grade a cursor-paginated live crawl as an exact-ledger holder set."
+      "Do NOT equate trustline existence with a positive balance or claim /accounts?asset lists C-address balances.",
+      "Do NOT call a moving Horizon crawl an exact-ledger snapshot.",
+      "Do NOT airdrop without idempotent retry state."
+    ]
   },
   "tags": {
     "category": "tooling-infra",
@@ -109,22 +107,19 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-03)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-tooling-a, verify-audit-tooling-a; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Re-verification 2026-11-02 with no gospel change: every golden claim was re-walked (source classes A, B, F); the proposer proposed no change and the verifier listed the case as no-proposal.",
-        "Class A (golden.answer/keyFacts[0], confirmed): https://developers.stellar.org/docs/data/apis/horizon/api-reference/list-all-accounts — \"This endpoint lists accounts by one of four filters : signer, asset, liquidity pool or sponsor.\" (observedAt 2026-11-02)",
-        "Class F (golden.answer/keyFacts[0], confirmed): https://horizon.stellar.org/accounts?asset=USDC:GA5Z...KZVN&limit=201 — \"\"reason\": \"invalid limit: value provided that is over limit max of 200\"\" (observedAt 2026-11-02)",
-        "Class F (golden.answer/keyFacts[0], confirmed): https://horizon.stellar.org/accounts?asset=USDC:GA5Z...KZVN&limit=200 — \"200 records, all G..., next link with cursor; 141 of 200 rows had a 0.0000000 USDC trustline balance\" (observedAt 2026-11-02)",
-        "Class B (golden.answer/keyFacts[0], confirmed): https://github.com/stellar/stellar-horizon/blob/master/internal/db2/page_query.go — \"DefaultPageSize = 10 ... MaxPageSize = 200\" (observedAt 2026-11-02)",
-        "Class F (golden.keyFacts[1], confirmed): https://horizon.stellar.org/accounts/CCW67TSZV3SSS2HXMBQ5JFGCKJNXKZM7UQUWUZPUTHXSTZLEO7SJMI75 — \"\"invalid_field\": \"account_id\", \"reason\": \"Account ID must star[t with G]\"\" (observedAt 2026-11-02)",
-        "Class F (golden.keyFacts[1], confirmed): https://horizon.stellar.org/assets?asset_code=USDC&asset_issuer=GA5Z... — \"num_contracts 48504, contracts_amount 96737739.6990147 reported separately from accounts/balances\" (observedAt 2026-11-02)",
-        "Class A (golden.keyFacts[1], confirmed): https://developers.stellar.org/docs/tokens/stellar-asset-contract — \"Stellar account balances for issued assets are always stored in trust lines, and Stellar contract balances for issued assets are always stored in a contract data entry.\" (observedAt 2026-11-02)",
-        "Class A (golden.keyFacts[2..4], confirmed): https://developers.stellar.org/docs/data — \"SDF-hosted Horizon keeps one year of history ... Hubble or Galexie are the recommended tools\" (observedAt 2026-11-02)",
-        "Class A (golden.keyFacts[2..4], confirmed): https://developers.stellar.org/docs/data/analytics/hubble/analyst-guide/history-vs-state-tables — \"state tables are a full history log of ledger entry states\" (observedAt 2026-11-02)",
-        "Sibling sweep 2026-11-02: grep accounts?asset|airdrop -> q-ti-fetch-all-balances-classic-sac, q-ti-enumerate-all-contracts, q-soroban-event-indexing-design, q-raph-unsolicited-airdrop checked; no conflicting Horizon page-size, trustline, or snapshot fact."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-a.json#q-ti-enumerate-holders-airdrop",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-a.json#q-ti-enumerate-holders-airdrop",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-ti-enumerate-holders-airdrop"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-ti-enumerate-holders-airdrop"
+    "origin": "raven-next q-ti-enumerate-holders-airdrop",
+    "notes": "Classic holder enumeration is well grounded. Exact table/SQL choices depend on Hubble schema and whether the asset is classic trustline-only or has contract-address balances.\nAlso good if the answer: Mentions Horizon public-history limits and recommends Hubble or an indexer for full historical/bulk analytics. | Mentions that distribution should use normal Stellar payment transactions or claimable balances depending on whether recipients must opt in/claim.\nGolden cites: Horizon pagination/account docs or Hubble/indexer docs for the data-source choice.\nGT-52 CORRECTION 2026-07-11: require snapshot and eligibility semantics; do not grade a cursor-paginated live crawl as an exact-ledger holder set.",
+    "leaf": "data.horizon-api"
   }
 }

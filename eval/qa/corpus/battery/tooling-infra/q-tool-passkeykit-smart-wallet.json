@@ -7,22 +7,18 @@
     "stellarDocs.search_wallet_dapp_docs"
   ],
   "golden": {
-    "answer": "Choose between the two currently maintained SDKs by authorization model, then pin and inspect the exact releases and contracts you deploy. **`passkey-kit`** provides its own Stellar smart-wallet contract and a flat multi-signer `Signatures` model for WebAuthn/passkey, Ed25519, and policy signers. As of 2026-11-02, its README and SECURITY.md say the wallet contract, SDKs, and relayer proxy have not received an independent third-party security audit, warn against storing assets you cannot afford to lose, and list known-vulnerable legacy wallet WASM hashes; it does not present the project as legacy demo material. **`smart-account-kit`** is the sibling SDK for the OpenZeppelin Stellar smart-account contracts and uses a different context-rule, auth-digest, signer, and policy model; its README labels the SDK, relayer proxy, and indexer integration unaudited and says the OpenZeppelin contracts have a separate audit with a different scope. The two are not drop-in compatible, so pick the model that fits the application rather than treating one as a universal successor.\n\nAudit and review claims remain component- and release-specific. OpenZeppelin contract review does not automatically cover either SDK, relayers, indexers, frontends, policies, deployment configuration, or application code. A separate G-account or relayer may submit and pay, but authorization remains in the selected C-account's `__check_auth` path and signer/policy contracts.",
+    "answer": "Two maintained SDKs fit. `stellar/passkey-kit` ships its own smart-wallet contract with a flat multi-signer `Signatures` model; `stellar/smart-account-kit` wraps the OpenZeppelin smart-account contracts with context rules and policies. They are not drop-in compatible, so choose by authorization model. As of 2026-11-14 Passkey Kit labels its contract, SDKs and relayer unaudited, Smart Account Kit labels its SDK unaudited, and the OpenZeppelin contract audit does not cover either SDK.",
     "keyFacts": [
-      "Calls both kits maintained, different, non-drop-in authorization models.",
-      "Passkey Kit: flat multi-signer; Smart Account Kit: OZ context-rule/auth-digest/policy.",
-      "Uses Passkey Kit's current unaudited-software warning and caveats.",
-      "Ties behavior and audit claims to exact selected releases and components.",
-      "Treats relaying and authorization as distinct functions."
+      "`stellar/passkey-kit` ships its own contract with flat multi-signer authorization.",
+      "`stellar/smart-account-kit` builds on OpenZeppelin smart accounts with context rules.",
+      "The two kits are not drop-in compatible; choose by authorization model.",
+      "Passkey Kit and the Smart Account Kit SDK are labeled unaudited (as of a stated date)."
     ],
     "avoid": [
-      "Do NOT characterise Passkey Kit as legacy, superseded, or demo-only material, and do NOT say the README directs readers to Smart Account Kit instead; that composite framing was removed on 2026-07-12. Noting that it carries no third-party audit is accurate and must NOT be penalised — as of 2026-11-02 its README and SECURITY.md label it unaudited software.",
-      "Do NOT claim either kit is the universal greenfield default for every authorization model.",
-      "Do NOT say both kits expose identical primitives or APIs across versions.",
-      "Do NOT imply that an OpenZeppelin contract audit covers Smart Account Kit, the relayer, indexer, frontend, policies, and deployment configuration as one inherited guarantee.",
-      "Do NOT confuse transaction submission or fee sponsorship with smart-account authorization."
+      "Do NOT call Passkey Kit legacy, superseded or demo-only; its README presents Smart Account Kit as a sibling.",
+      "Do NOT say the OpenZeppelin contract audit covers either SDK, relayer or indexer."
     ],
-    "notes": "Freshness correction reverified 2026-08-11: the current canonical repositories are stellar/passkey-kit and stellar/smart-account-kit. The former kalepail repositories are archived move pointers. The maintained projects remain sibling SDKs with different authorization models; do not assume identical primitives or inherited full-stack audit coverage. Re-verified 2026-11-02: README commit 69185164 (2026-08-19) replaced the review-before-meaningful-value line with an 'Unaudited software' caution; the official smart-wallets guide repeats that Passkey Kit is not independently audited."
+    "notes": "Saying Passkey Kit is unaudited is accurate and must not be penalized."
   },
   "tags": {
     "category": "tooling-infra",
@@ -36,7 +32,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-05-07",
     "sources": [
       {
@@ -194,24 +190,72 @@
             "note": "Third-party article (2026-10-08) reports the Smart Account Kit README unaudited label."
           }
         ]
+      },
+      {
+        "claim": "Passkey Kit README labels the wallet contract, SDKs and relayer proxy unaudited and points to Smart Account Kit as a non-drop-in sibling",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/passkey-kit/main/README.md",
+            "observedAt": "2026-11-14",
+            "note": "**Unaudited software.** This repository's smart-wallet contract, SDKs, and relayer proxy have not received an independent third-party security audit."
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/passkey-kit/main/README.md",
+            "observedAt": "2026-11-14",
+            "note": "so the two are not drop-in compatible — pick the model that fits your app."
+          }
+        ]
+      },
+      {
+        "claim": "Smart Account Kit README labels the SDK unaudited and says the OpenZeppelin contracts have a separate audit",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/smart-account-kit/main/README.md",
+            "observedAt": "2026-11-14",
+            "note": "The underlying OpenZeppelin Stellar contracts have a [separate audit] with a different scope."
+          }
+        ]
+      },
+      {
+        "claim": "kalepail repositories are archived move pointers",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://api.github.com/repos/kalepail/passkey-kit",
+            "observedAt": "2026-11-14",
+            "note": "archived true"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-06)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-tooling-b, verify-audit-tooling-b; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "B https://github.com/stellar/passkey-kit/blob/main/README.md (observedAt 2026-11-02): '**Unaudited software.** This repository's smart-wallet contract, SDKs, and relayer proxy have not received an independent third-party security audit. ... Do not store or control assets you cannot afford to lose.'",
-        "B https://github.com/stellar/passkey-kit/blob/main/SECURITY.md (observedAt 2026-11-02): 'The smart-wallet contract, SDKs, and repository relayer proxy have not received an independent third-party security audit.' plus '## Known-vulnerable wallet WASM hashes'.",
-        "B https://github.com/stellar/passkey-kit/commit/69185164c82dd2d595591c6172ad14d9481fd0b4 (observedAt 2026-11-02): 2026-08-19T16:06:47Z 'docs: disclose unaudited security status'; diff removes '**Security.** Review the contract and SDK yourself before holding meaningful value' and adds '**Unaudited software.** ...'.",
-        "B https://github.com/stellar/smart-account-kit/blob/main/README.md (observedAt 2026-11-02): '**Unaudited integration software.** This SDK, demo, relayer proxy, and indexer integration have not received an independent third-party security audit. ... The underlying OpenZeppelin Stellar contracts have a separate audit with a different scope.'",
-        "A https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets (observedAt 2026-11-02): 'Its repository states that the wallet contract and SDKs have not been independently audited, so review them yourself before they guard real value.'",
-        "B gh api repos/stellar/passkey-kit, repos/stellar/smart-account-kit, repos/kalepail/passkey-kit and C https://stellarlight.xyz/api/repos/search?q=smart-account-kit&limit=10 (observedAt 2026-11-02): stellar repos archived=false (pushed 2026-10-27); kalepail repos archived=true move pointers with successorRepo stellar/smart-account-kit.",
-        "Sibling sweep 2026-11-02: grep of the battery for 'meaningful value' found only this case; q-tool-smart-wallet-repos-discovery ('its own security caveats') stays consistent with both unaudited labels; q-soroban-add-signer-smart-wallet-howto, q-passkey-smart-account-architecture, and q-builder-content-by-person were listed by the proposer with no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-b.json#q-tool-passkeykit-smart-wallet",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-b.json#q-tool-passkeykit-smart-wallet",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-tool-passkeykit-smart-wallet",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/passkey-kit/main/README.md -- '**Unaudited software.** This repository's smart-wallet contract, SDKs, and relayer proxy have not received an independent third-party security audit.'",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/passkey-kit/main/README.md -- 'so the two are not drop-in compatible — pick the model that fits your app.'",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/smart-account-kit/main/README.md -- 'The underlying OpenZeppelin Stellar contracts have a [separate audit] with a different scope.'",
+        "Live B 2026-11-14: https://api.github.com/repos/kalepail/passkey-kit -- 'archived true'",
+        "Live B 2026-11-14: https://github.com/stellar/passkey-kit/blob/main/README.md -- 'Unaudited software. This repository's smart-wallet contract, SDKs, and relayer proxy have not received an independent third-party security audit.'",
+        "Live B 2026-11-14: https://github.com/stellar/passkey-kit/blob/main/README.md -- 'smart-account-kit is a sibling SDK ... so the two are not drop-in compatible — pick the model that fits your app.'",
+        "Live B 2026-11-14: https://github.com/stellar/smart-account-kit/blob/main/README.md -- 'This SDK, demo, relayer proxy, and indexer integration have not received an independent third-party security audit.'",
+        "Live B 2026-11-14: https://github.com/stellar/smart-account-kit/blob/main/README.md -- 'The underlying OpenZeppelin Stellar contracts have a separate audit with a different scope.'"
       ],
       "rootCause": [
-        "freshness-drift"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-tool-passkeykit-smart-wallet"
+    "origin": "raven-next q-tool-passkeykit-smart-wallet",
+    "notes": "Freshness correction reverified 2026-08-11: the current canonical repositories are stellar/passkey-kit and stellar/smart-account-kit. The former kalepail repositories are archived move pointers. The maintained projects remain sibling SDKs with different authorization models; do not assume identical primitives or inherited full-stack audit coverage. Re-verified 2026-11-02: README commit 69185164 (2026-08-19) replaced the review-before-meaningful-value line with an 'Unaudited software' caution; the official smart-wallets guide repeats that Passkey Kit is not independently audited.",
+    "leaf": "soroban.contract-accounts"
   }
 }

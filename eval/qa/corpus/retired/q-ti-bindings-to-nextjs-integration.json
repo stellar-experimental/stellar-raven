@@ -1,0 +1,21 @@
+{
+  "id": "q-ti-bindings-to-nextjs-integration",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-tooling-a (golden coverage audit)",
+    "reviewer": "verify-audit-tooling-a (golden coverage audit)",
+    "reason": "Bindings are q-soroban-cli-bindings, the sign flow is q-ti-connect-wallet-button-code and the build-simulate-submit flow is q-sor-deploy-invoke-from-js-sdk kf1; the fee split goes to the soroban.resource-fees slot.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-a.json#q-ti-bindings-to-nextjs-integration",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-a.json#q-ti-bindings-to-nextjs-integration",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-ti-bindings-to-nextjs-integration"
+    ],
+    "lastCaseContentSha256": "e06e3f898371e070e944ac6072c904fd1f2181621123e25218b2ff1461e7c5ea",
+    "replacementIds": []
+  }
+}

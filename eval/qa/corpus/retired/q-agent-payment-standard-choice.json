@@ -1,0 +1,23 @@
+{
+  "id": "q-agent-payment-standard-choice",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-compliance (golden coverage audit)",
+    "reviewer": "verify-audit-compliance (golden coverage audit)",
+    "reason": "Merged into q-mpp-discovery-and-modes. Its distinct content is the x402/MPP/AP2/ACP comparison and an adapter design pattern. q-defi-agentic-payment-standards-compare (defi: tighten, survives) owns the four-protocol comparison and q-mpp-discovery-and-modes owns x402-versus-MPP; the adapter advice is design guidance, not Stellar truth. Tombstone replacements: both IDs.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-compliance.json#q-agent-payment-standard-choice",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-compliance.json#q-agent-payment-standard-choice",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-agent-payment-standard-choice"
+    ],
+    "lastCaseContentSha256": "d351a53964e83034608b30f3fe04958037c5046dde255592b630e83d306b6415",
+    "replacementIds": [
+      "q-mpp-discovery-and-modes"
+    ]
+  }
+}

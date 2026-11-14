@@ -1,0 +1,23 @@
+{
+  "id": "q-crp-dtcc-stellar-connection-plan",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-compliance (golden coverage audit)",
+    "reviewer": "verify-audit-compliance (golden coverage audit)",
+    "reason": "Merged into q-rwa-projects-tokenizing-stellar. q-rwa-projects-tokenizing-stellar's rewrite keeps the 2026-05-27 announcement, the 1H27 Stellar target and 'live only on Canton and private Besu', which is everything this case grades.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-compliance.json#q-crp-dtcc-stellar-connection-plan",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-compliance.json#q-crp-dtcc-stellar-connection-plan",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-crp-dtcc-stellar-connection-plan"
+    ],
+    "lastCaseContentSha256": "1d9bc13f4e471b5d7fba770d266abc80cb3328fe9561b453d976385291598399",
+    "replacementIds": [
+      "q-rwa-projects-tokenizing-stellar"
+    ]
+  }
+}

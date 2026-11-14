@@ -1,0 +1,21 @@
+{
+  "id": "q-soroban-sdk-macros",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-soroban-b (golden coverage audit)",
+    "reviewer": "verify-audit-soroban-b (golden coverage audit)",
+    "reason": "Reference list; #[contractevent] is q-soroban-publish-events kf0 and contractmetav0 is q-soroban-contract-build-verification kf3.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-b.json#q-soroban-sdk-macros",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-b.json#q-soroban-sdk-macros",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-soroban-sdk-macros"
+    ],
+    "lastCaseContentSha256": "cad486d6355d04a53dab5713879ca3f763b208727381e56c70e7267af84a9a27",
+    "replacementIds": []
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "id": "q-ti-java-sdk-wallet-feebump",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-tooling-a (golden coverage audit)",
+    "reviewer": "verify-audit-tooling-a (golden coverage audit)",
+    "reason": "One community SDK plus a dated version; fee-bump mechanics are q-pc-fee-bump-channel-accounts-feepool kf0.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-a.json#q-ti-java-sdk-wallet-feebump",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-a.json#q-ti-java-sdk-wallet-feebump",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-ti-java-sdk-wallet-feebump"
+    ],
+    "lastCaseContentSha256": "dddeb76739e2269d5f4dd743caa74bd3e02c96cc428d5278c70d661ce70039bf",
+    "replacementIds": []
+  }
+}

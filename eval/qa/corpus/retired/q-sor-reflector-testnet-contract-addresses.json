@@ -1,0 +1,21 @@
+{
+  "id": "q-sor-reflector-testnet-contract-addresses",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-soroban-b (golden coverage audit)",
+    "reviewer": "verify-audit-soroban-b (golden coverage audit)",
+    "reason": "This never-activated proposal pins three volatile Testnet contract addresses for one provider, and the oracle leaf is covered by q-pc-cross-redstone-sep40.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-b.json#q-sor-reflector-testnet-contract-addresses",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-b.json#q-sor-reflector-testnet-contract-addresses",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-sor-reflector-testnet-contract-addresses"
+    ],
+    "lastCaseContentSha256": "c7e29b16c26c790494b1b7a29248c19275f7c225687732d7dcbcfa851c8cfac0",
+    "replacementIds": []
+  }
+}

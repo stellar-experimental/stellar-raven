@@ -1,21 +1,23 @@
 {
   "id": "q-eco-defi-market-map",
-  "question": "Where is the Stellar DeFi ecosystem crowded versus where is there whitespace to build?",
+  "question": "Who is building DeFi on Stellar, and where is the ecosystem crowded versus open to build?",
   "surface": [
     "scout.getClusters",
     "scout.searchProjects"
   ],
   "golden": {
-    "answer": "A defensible market map must be a **dated, source-relative snapshot**, not a timeless verdict. As of **2026-07-10**, Scout's type clusters showed many directory-tagged entries in RWA, DEX, wallets, lending, and NFTs, but those counts mix roles and lifecycle states and do not measure independent competitors, maturity, TVL, or usage. Map each lane with: directory count/source, independently verified live products, role, deployment state, and an observable concentration metric. Treat liquid staking, insurance, identity/attestation, perps, and RWA composability as **opportunity hypotheses to verify**, not empty categories. Named counterexamples already make absolute equity/real-estate, identity, and NFT whitespace claims unsafe.",
+    "answer": "A Stellar DeFi map must be a dated, source-relative snapshot. Active lanes include lending (Blend), liquidity (Aquarius, Soroswap, Phoenix, Sushi), oracles (Reflector), RWA and vaults (DeFindex), but directory counts mix roles and statuses and do not measure competition, maturity or TVL. Treat perps, liquid staking and insurance as opportunities to verify, not empty lanes; vaults and routers are not independent base lenders.",
     "keyFacts": [
-      "Uses dated source-relative counts with operator, status, and usage checks.",
-      "Treats directory density, competition, and maturity as different measures."
+      "Names real projects by lane, such as Blend, Aquarius or Soroswap, Reflector and DeFindex.",
+      "Directory counts mix roles and statuses; they do not measure competition or maturity.",
+      "Thin lanes such as perps and liquid staking are to be verified, not called empty.",
+      "Vaults and Blend-built pools are not independent base lenders."
     ],
     "avoid": [
-      "Do NOT hard-code a timeless crowded/whitespace map, infer maturity from tags, or assert a category is empty without a strict dated search and operator verification.",
-      "Do NOT flatten announced, testnet, pre-release, and mainnet-live projects into one status."
+      "Do NOT hard-code a timeless crowded/whitespace map or call a lane empty without a dated search.",
+      "Do NOT flatten announced, testnet and mainnet-live projects into one status."
     ],
-    "notes": "ANALYTIC saturation lane (crowded-vs-whitespace → scout_clusters/scout_analyze) — DISTINCT from q-eco-defi-projects-discovery (flat directory roster → scout_projects). Re-verified 2026-06-29. CORRECTED vs dossier whitespace list. Perps are NOT whitespace but EMERGING. As of 2026-10-15, Zenex runs a confirmed live Stellar mainnet perp DEX (operator deployments page plus on-chain fills); Kryon has mainnet perp contracts and claims live trading, but its current availability is unresolved; Noether's mainnet contracts stay paused until its audit clears; Stellars Finance shows no mainnet trading evidence. Do not call perps empty, call Zenex testnet-only, or require a venue count. (Turbolong is leveraged SPOT via Blend loops, NOT a perp — keep it out of the perps list.) NFT marketplaces exist (Litemint Stellar-native, Rarible multichain). Oracles are NOT single-provider (Band + RedStone live on mainnet; DIA/Lightecho/Orally too). Genuinely thin lanes that survive verification: liquid staking, on-chain identity/attestation, insurance. Scout /api/analyze?dimension=categories gives coarse, dated buckets (q-scf-funding-by-category carries the dated counts) — use finer directory searches for the DeFi sub-lanes. Gate now forbids the stale 'perps/NFT = whitespace' claim.\nAlso good if the answer: Notes lending has a clear leader (Blend) but is NOT strictly single-provider (e.g. Orbit CDP/DeFindex), and oracles are NOT single-provider (e.g. Reflector, DIA, Band, Lightecho, RedStone); do not reward an oracle dominance or most-integrated ranking without a dated, stated metric. | Notes RWA has a few flagship issuers (BENJI, CRDT, USDY) and treats equity/real-estate tokenization as a hypothesis to verify, not an empty lane.\nGolden cites: Scout clusters/analyze for the crowded categories and directory searches for the thin/whitespace conclusions.\nGT-19 CORRECTION 2026-07-10: grade methodology and dated evidence, not the inherited static map. Cluster/tag counts are not competitor, maturity, or capital metrics; whitespace claims are hypotheses, not absolutes."
+    "notes": "Do not require a fixed roster. Do not reward an oracle dominance or most-integrated ranking without a stated metric."
   },
   "tags": {
     "category": "defi-ecosystem",
@@ -142,22 +144,52 @@
             "note": "StellarExpert: engine created 1783442225 (2026-07-07T16:37:05Z); the order gateway shows 145 invocations."
           }
         ]
+      },
+      {
+        "claim": "Perps are emerging with a live mainnet venue (Zenex)",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://docs.zenex.trade/deployments/contract-addresses",
+            "observedAt": "2026-11-14",
+            "note": "Market XLM-USD | Status Active"
+          }
+        ]
+      },
+      {
+        "claim": "Scout category directory counts are index-relative",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "scout.getClusters({dimension:'category'})",
+            "observedAt": "2026-11-14",
+            "note": "population totalAvailable 899, included 899; Tooling size 163"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch defi-ecosystem-04)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-defi, verify-defi; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Zenex runs a live Stellar mainnet perp DEX (as of 2026-10-15) [confirmed-as-of] — A: https://docs.zenex.trade/deployments/contract-addresses — \"This page lists every contract of the live Zenex deployment on Stellar mainnet ... Market XLM-USD Status Active ... These values were checked on 6 October 2026.\" (observedAt 2026-11-02)",
-        "Directory cluster counts are source-relative taxonomy counts [confirmed] — C: https://stellarlight.xyz/api/clusters?dimension=types — \"RWA 96, DEX 44, Wallet 71, Lending 37, NFT 26; notes.crowdedness: 'Use to identify saturated vs underbuilt lanes; cross-reference .size and .scfFundedCount'\" (observedAt 2026-11-02)",
-        "Directory cluster counts are source-relative taxonomy counts [confirmed] — D: https://defillama.com/chain/stellar — \"42 protocols tracked; Phoenix DeFi Hub $47,194 vs Aquarius/Sushi multi-million TVL\" (observedAt 2026-10-31)",
-        "Litemint Stellar-native NFT marketplace exists [confirmed] — A: https://litemint.com/ — \"Litemint Market Buy, Sell, and Collect Digital Creations on Stellar\" (observedAt 2026-10-20)",
-        "Litemint Stellar-native NFT marketplace exists [confirmed] — F: https://market.litemint.com/ — \"HTTP 200\" (observedAt 2026-11-02)",
-        "No gospel change: every audited claim was confirmed or confirmed-as-of. Proposer sibling list q-defi-perps-whitespace, q-scf-funding-by-category, q-defi-reflector-oracle, q-eco-nft-marketplace-whitespace; no contradiction recorded."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-eco-defi-market-map",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-eco-defi-market-map",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-eco-defi-market-map",
+        "Live A 2026-11-14: https://docs.zenex.trade/deployments/contract-addresses -- 'Market XLM-USD | Status Active'",
+        "Live C 2026-11-14: scout.getClusters({dimension:'category'}) -- 'population totalAvailable 899, included 899; Tooling size 163'",
+        "Live C 2026-11-14: scout.searchProjects (Blend, Aquarius, Soroswap, Reflector, Litemint, Zenex) -- 'blend Live Lending; aquarius Live DEX; soroswap Live DEX; phoenix Live DEX; reflector Live Oracle; litemint Live NFT; zenex Live Derivatives'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
     "origin": "raven-next q-eco-defi-market-map",
     "reverifyBy": "2027-02-12",
-    "asOf": "2026-10-15"
+    "asOf": "2026-11-14",
+    "notes": "ANALYTIC saturation lane (crowded-vs-whitespace → scout_clusters/scout_analyze) — DISTINCT from q-eco-defi-projects-discovery (flat directory roster → scout_projects). Re-verified 2026-06-29. CORRECTED vs dossier whitespace list. Perps are NOT whitespace but EMERGING. As of 2026-10-15, Zenex runs a confirmed live Stellar mainnet perp DEX (operator deployments page plus on-chain fills); Kryon has mainnet perp contracts and claims live trading, but its current availability is unresolved; Noether's mainnet contracts stay paused until its audit clears; Stellars Finance shows no mainnet trading evidence. Do not call perps empty, call Zenex testnet-only, or require a venue count. (Turbolong is leveraged SPOT via Blend loops, NOT a perp — keep it out of the perps list.) NFT marketplaces exist (Litemint Stellar-native, Rarible multichain). Oracles are NOT single-provider (Band + RedStone live on mainnet; DIA/Lightecho/Orally too). Genuinely thin lanes that survive verification: liquid staking, on-chain identity/attestation, insurance. Scout /api/analyze?dimension=categories gives coarse, dated buckets (q-scf-funding-by-category carries the dated counts) — use finer directory searches for the DeFi sub-lanes. Gate now forbids the stale 'perps/NFT = whitespace' claim.\nAlso good if the answer: Notes lending has a clear leader (Blend) but is NOT strictly single-provider (e.g. Orbit CDP/DeFindex), and oracles are NOT single-provider (e.g. Reflector, DIA, Band, Lightecho, RedStone); do not reward an oracle dominance or most-integrated ranking without a dated, stated metric. | Notes RWA has a few flagship issuers (BENJI, CRDT, USDY) and treats equity/real-estate tokenization as a hypothesis to verify, not an empty lane.\nGolden cites: Scout clusters/analyze for the crowded categories and directory searches for the thin/whitespace conclusions.\nGT-19 CORRECTION 2026-07-10: grade methodology and dated evidence, not the inherited static map. Cluster/tag counts are not competitor, maturity, or capital metrics; whitespace claims are hypotheses, not absolutes.",
+    "leaf": "ecosystem.project-directory",
+    "secondaryLeaf": "defi.dex-amm"
   }
 }

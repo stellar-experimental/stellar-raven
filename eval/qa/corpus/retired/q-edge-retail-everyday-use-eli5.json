@@ -1,0 +1,21 @@
+{
+  "id": "q-edge-retail-everyday-use-eli5",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-edge (golden coverage audit)",
+    "reviewer": "verify-audit-edge (golden coverage audit)",
+    "reason": "Names no app, so it never tested the leaf facet; the wallets.consumer-apps slot replaces it.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-edge.json#q-edge-retail-everyday-use-eli5",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-edge.json#q-edge-retail-everyday-use-eli5",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-edge-retail-everyday-use-eli5"
+    ],
+    "lastCaseContentSha256": "7cfd919827168dff349fc38b1b07d02ef561db287c6bbbd642c91fbf0f9133f9",
+    "replacementIds": []
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "id": "q-builder-lumenloop-regions-vocab",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-scf (golden coverage audit)",
+    "reviewer": "verify-audit-scf (golden coverage audit)",
+    "reason": "Reading Lumenloop's region values is a Raven vocabulary behavior with no Stellar fact, and the frozen live lane asks the same question.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-builder-lumenloop-regions-vocab",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-builder-lumenloop-regions-vocab",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-builder-lumenloop-regions-vocab"
+    ],
+    "lastCaseContentSha256": "fd99c906b8b88776c544e19fa0c987be7a536cbfa3b7a1d3d502d18f28001bff",
+    "replacementIds": []
+  }
+}

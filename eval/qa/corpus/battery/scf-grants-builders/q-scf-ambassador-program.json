@@ -5,18 +5,17 @@
     "scout.searchResearch"
   ],
   "golden": {
-    "answer": "- The **Stellar Ambassador Program** supports builders, educators, and organizers through local chapters for events, meetups, education, documentation, and local growth. As of 2026-11-02, SAP 2.0 (launched July 2026) runs country-focused chapters operated by Lead Organizations.\n- Under SCF v7, ambassadors can recommend **Instawards** for early-stage builders, up to $15,000 in XLM in total per project (initial awards are typically $1,000–$5,000); there is no open Instaward application.\n- Chapters may recommend or referral-route teams, and an Instaward may help an eligible project prepare for a separate SCF Build application. This is a pipeline, not automatic progression or funding.\n- Ambassadors do **not** approve the $150K SCF Build award. SDF/SCF retains approval, and the Ambassador Program remains distinct from Verified Member/NQG governance roles.",
+    "answer": "The Stellar Ambassador Program (SAP 2.0, launched July 2026) supports builders and educators through country-focused local chapters run with Lead Organizations: events, meetups, education and local growth. Under SCF v7, ambassadors can recommend Instawards for early-stage builders. They do not approve funding; SDF decides. The program is separate from SCF Verified Member governance roles.",
     "keyFacts": [
-      "Supports builders and educators through local chapters (regional or country-focused).",
-      "Covers chapter events, meetups, and documentation.",
-      "Under SCF v7.0, ambassadors can recommend Instawards for early-stage builders.",
-      "Caps Instaward funding at $15K per project, paid in XLM."
+      "Chapters support local builders and educators with events, meetups and education.",
+      "Under SCF v7, ambassadors can recommend Instawards for early-stage builders.",
+      "Ambassadors and chapters do not approve funding; SDF makes the final decision.",
+      "The Ambassador Program is distinct from SCF Verified Member governance roles."
     ],
     "avoid": [
-      "Do NOT claim ambassadors directly approve the $150K SCF Build grant or that an Instaward guarantees progression; chapters may recommend/referral-route a separate SDF-reviewed Build application.",
-      "Do NOT confuse the Ambassador Program with SCF Verified Members / NQG governance roles."
+      "Do NOT say ambassadors approve SCF Build or Instaward funding."
     ],
-    "notes": "CORRECTION 2026-08-04: preserve direct-award authority versus referral-pipeline progression. Chapters can recommend/referral-route and Instawards can prepare an eligible project for a separate Build application; SDF/SCF retains approval and no funding/progression is automatic.\nUPDATE 2026-11-02: SAP 2.0 (July 2026) moved to country-focused chapters operated by Lead Organizations; accept either \"regional\" or \"country\" chapter wording. The $15,000 figure is the per-project total including conditional follow-ons; a typical initial Instaward is $1,000–$5,000. Neither detail is required."
+    "notes": "Accept \"regional\" or \"country\" chapter wording. Instaward amounts are not required here."
   },
   "tags": {
     "category": "scf-grants-builders",
@@ -186,25 +185,55 @@
             "note": "Still says \"form regional chapters\"; both wordings are accepted in golden.notes."
           }
         ]
+      },
+      {
+        "claim": "SAP 2.0 launched July 2026 with country-focused chapters operated with Lead Organizations.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.gitbook.io/ambassador-program",
+            "observedAt": "2026-11-14",
+            "note": "SAP 2.0 officially launched in July 2026."
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/ecosystem/introducing-scf-v7",
+            "observedAt": "2026-11-14",
+            "note": "ambassadors may recommend projects for small awards of up to $15K per project"
+          }
+        ]
+      },
+      {
+        "claim": "Chapter leads are non-binding; only SDF approves Instawards.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/instawards/official-rules.md",
+            "observedAt": "2026-11-14",
+            "note": "only SDF may approve Instawards or make grant commitments"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch scf-grants-builders-02)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-scf, verify-audit-scf; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "https://stellar.gitbook.io/ambassador-program (observedAt 2026-11-02): \"SAP 2.0 officially launched in July 2026. ... Lead Organizations: Ambassador Chapters are now operated by organizations ... Country-Focused Chapter Model: Regional Chapters have transitioned to country-focused Chapters\"",
-        "https://stellar.org/community (observedAt 2026-11-02): \"The Stellar Ambassador Program helps builders and educators form regional chapters, run events, and connect their communities with resources to build on Stellar.\"",
-        "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/instawards/official-rules.md (observedAt 2026-11-02): \"Most proposals successfully accepted by SDF begin with an initial Instaward in the range of $1,000 – $5,000 USD, paid in XLM ... up to $15,000 paid in XLM in the aggregate over time\"; \"Applicants may be eligible for multiple Instawards, up to a total cap of $15,000 paid in XLM\"",
-        "https://stellar.org/blog/ecosystem/introducing-scf-v7 (observedAt 2026-10-25): \"Through Instawards, ambassadors may recommend projects for small awards of up to $15K per project\"",
-        "https://x.com/riseinweb3/status/2097721034690466116 via Perplexity (observedAt 2026-11-02): \"It runs on SAP 2.0, launched in July 2026, with country-focused chapters led by Lead Organizations\"",
-        "Independent verifier: accepted answer, keyFacts[3], notes, asOf, reverifyBy; modified keyFacts[0] to accept both regional and country-focused chapter wording.",
-        "Sibling sweep 2026-11-02: grep 'regional chapter|Instaward' -> q-scf-regional-india, q-scf-instawards ($15,000 aggregate maximum; matches), q-scf-eligibility-criteria, q-scf-nqg-voting, q-scf-v7-changes; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-scf-ambassador-program",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-scf-ambassador-program",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-scf-ambassador-program",
+        "Live A 2026-11-14: https://stellar.gitbook.io/ambassador-program -- 'SAP 2.0 officially launched in July 2026.'",
+        "Live A 2026-11-14: https://stellar.org/blog/ecosystem/introducing-scf-v7 -- 'ambassadors may recommend projects for small awards of up to $15K per project'",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/instawards/official-rules.md -- 'only SDF may approve Instawards or make grant commitments'"
       ],
       "rootCause": [
-        "freshness-drift",
-        "SAP 2.0 (July 2026) replaced regional chapters with country-focused chapters run by Lead Organizations; the per-award $15K wording was imprecise against the Instawards official rules (aggregate cap)."
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-scf-ambassador-program"
+    "origin": "raven-next q-scf-ambassador-program",
+    "notes": "CORRECTION 2026-08-04: preserve direct-award authority versus referral-pipeline progression. Chapters can recommend/referral-route and Instawards can prepare an eligible project for a separate Build application; SDF/SCF retains approval and no funding/progression is automatic.\nUPDATE 2026-11-02: SAP 2.0 (July 2026) moved to country-focused chapters operated by Lead Organizations; accept either \"regional\" or \"country\" chapter wording. The $15,000 figure is the per-project total including conditional follow-ons; a typical initial Instaward is $1,000–$5,000. Neither detail is required.",
+    "leaf": "funding.community-programs"
   }
 }

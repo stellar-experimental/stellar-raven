@@ -1,24 +1,20 @@
 {
   "id": "q-protocol-accounts-signers-thresholds",
-  "question": "How do Stellar accounts handle signing — what are signers, weights, thresholds, and the sequence number for?",
+  "question": "How do Stellar accounts handle signing: what are signers, weights and thresholds?",
   "surface": [
     "stellarDocs.search_protocol_concepts_docs",
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "A classic Stellar account has a master key and optional additional **signers**, each with a weight. Operations are assigned **low, medium, or high** thresholds, and the valid signatures' combined weight must meet the transaction's required threshold; this is Stellar's native multisig model. Classic `SignerKey` has exactly four forms: **ed25519**, **pre-authorized transaction hash**, **hashX**, and **ed25519 signed payload** (the last added by CAP-0040 in Protocol 19). **secp256r1 is not a classic SignerKey**: CAP-0051/P21 exposed secp256r1 verification for Soroban custom-account/passkey authorization.\n\nThe transaction source account's sequence number provides replay protection and source-local ordering. Under the default precondition, a transaction's sequence must be exactly current + 1. That rule is not unconditional: CAP-0021/P19 `minSeqNum` makes a transaction valid when `minSeqNum <= current account sequence < transaction sequence`; if it succeeds, the account advances directly to the transaction sequence. A transaction rejected before ledger inclusion does not consume the sequence; an included transaction consumes it even when its operations fail.",
+    "answer": "A classic account has a master key plus optional signers, each with a weight. Each operation needs a low, medium or high threshold, met when the combined weight of valid signatures reaches it; this is native multisig. A SignerKey is ed25519, a pre-authorized transaction hash, hashX, or an ed25519 signed payload (CAP-0040). secp256r1 is not a classic signer; it is Soroban custom-account authentication.",
     "keyFacts": [
-      "Explains signer weights and low/medium/high thresholds for classic native multisig.",
-      "Lists all four classic SignerKey forms.",
-      "Keeps secp256r1 in Soroban/custom auth.",
-      "States the default +1 rule and CAP-0021 minSeqNum exception precisely."
+      "Signer weights must meet the operation's low, medium or high threshold.",
+      "Classic SignerKey has four forms, including the signed-payload signer.",
+      "secp256r1 belongs to Soroban custom-account auth, not classic signers."
     ],
     "avoid": [
-      "Do NOT list secp256r1 as a classic SignerKey.",
-      "Do NOT say accounts are single-key-only or confuse signer weight with an operation threshold.",
-      "Do NOT make exact +1 unconditional; a non-null minSeqNum can permit a sequence gap under CAP-0021."
-    ],
-    "notes": "Accounts subtopic. Traps: 'no native multisig' and Ethereum-style arbitrary nonce.\nAlso good if the answer: Notes the master key is itself a signer (with a weight); adding signers + setting thresholds yields multisig. | Notes different operations require different threshold categories (e.g. set_options/account-merge are high-threshold).\nGolden cites: The accounts / multisig / signature docs on developers.stellar.org.\nGT-31 CORRECTION 2026-07-11: classic SignerKey has four arms including signed payload; secp256r1 belongs to Soroban custom auth. Exact +1 is the default, not an unconditional rule when CAP-0021 minSeqNum is present."
+      "Do NOT list secp256r1 as a classic SignerKey or confuse signer weight with a threshold."
+    ]
   },
   "tags": {
     "category": "protocol-core",
@@ -146,22 +142,19 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-03)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-protocol, verify-protocol; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/transactions/transaction-lifecycle 'If the transaction is invalid, it will be rejected immediately by Stellar Core, the account's sequence number will not be incremented, and no fee will be consumed ... For each transaction, the account's sequence number is consumed (increased by 1) ... The entire transaction will fail if any operation fails'.",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions 'valid when S satisfies minSeqNum <= S < tx.seqNum ... after a transaction is executed, the account will always set its sequence number to the transaction's sequence number.'",
-        "Live B 2026-11-02: stellar-core@b8c4f12d6f1159d67be8743c87a3c7df839ae7f4 src/transactions/TransactionFrame.cpp 'There are only a few possible reasons for why we would *not* update the sequence number ... In any other scenario we should update the sequence number'; stellar-xdr Stellar-types.x SignerKeyType has four arms.",
-        "Live E 2026-11-02: Raven stellarDocs.search_docs returns the transaction-lifecycle passage 'rejected immediately by Stellar Core, the account's sequence number will not be incremented, and no fee will be consumed'.",
-        "Live F 2026-11-02: https://horizon.stellar.org/accounts/GDJO6CLNYWMBY7SKUN5ETMTNGZBOYDC4KNXISMFNVFQ7WSTSN5P3CBR3 failed tx 5e0f70fc... successful=false, ledger 65270250, seq 241038254755846192, fee_charged 200; account sequence now 241038254755846192.",
-        "Independent verifier accepted golden.answer (.agents/rounds/2026-11-02-golden-audit/pass1/protocol-core-03.json).",
-        "Sibling sweep 2026-11-02: q-pc-tx-finality-failure-semantics (same rule: included failures consume fee and sequence; pre-inclusion rejection consumes neither), q-pc-sequence-numbers-ordering-replace, q-protocol-19-preconditions-cap-0021; now consistent, no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-protocol-accounts-signers-thresholds",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-protocol-accounts-signers-thresholds",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-protocol-accounts-signers-thresholds"
       ],
       "rootCause": [
-        "Eval-side authoring flaw: the GT-31 rewrite used 'failed' for pre-inclusion rejection, contradicting included-failure sequence consumption in sibling q-pc-tx-finality-failure-semantics.",
-        ".agents/rounds/2026-11-02-golden-audit.md (batch protocol-core-03)"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-protocol-accounts-signers-thresholds"
+    "origin": "raven-next q-protocol-accounts-signers-thresholds",
+    "notes": "Accounts subtopic. Traps: 'no native multisig' and Ethereum-style arbitrary nonce.\nAlso good if the answer: Notes the master key is itself a signer (with a weight); adding signers + setting thresholds yields multisig. | Notes different operations require different threshold categories (e.g. set_options/account-merge are high-threshold).\nGolden cites: The accounts / multisig / signature docs on developers.stellar.org.\nGT-31 CORRECTION 2026-07-11: classic SignerKey has four arms including signed payload; secp256r1 belongs to Soroban custom auth. Exact +1 is the default, not an unconditional rule when CAP-0021 minSeqNum is present.",
+    "leaf": "protocol.signatures-multisig"
   }
 }

@@ -1,0 +1,21 @@
+{
+  "id": "q-pc-protocol-26-yardstick",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-protocol (golden coverage audit)",
+    "reviewer": "verify-protocol (golden coverage audit)",
+    "reason": "Rewrite keeps the date, all six CAPs with roles, the CAP-0081 exclusion and the P25/P26 BN254 split.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-pc-protocol-26-yardstick",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-pc-protocol-26-yardstick",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-pc-protocol-26-yardstick"
+    ],
+    "lastCaseContentSha256": "85fa75794bd586c715f565ca0592faf3e51171a4a470a175c0f9917b0207e7c2",
+    "replacementIds": []
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "clusters": [
+    {
+      "id": "cluster-017",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Closeout re-check 2026-11-14 (instrument lane, .agents/rounds/2026-11-14-golden-coverage-audit/apply/CLOSEOUT.md): q-soroban-simulate-resource-fee gained one avoid item (simulation is a Stellar RPC method, not a Horizon endpoint). It states no fee, reserve, close-time or supply constant, so the cluster's constants are unchanged and members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-023",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Closeout re-check 2026-11-14 (instrument lane, .agents/rounds/2026-11-14-golden-coverage-audit/apply/CLOSEOUT.md): q-ti-testnet-usdc-faucet lost its SAC-address clause and key fact. Its Friendbot boundary (fake Testnet XLM only, not USDC) is unchanged and agrees with the other members.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-029",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Closeout re-check 2026-11-14 (instrument lane, .agents/rounds/2026-11-14-golden-coverage-audit/apply/CLOSEOUT.md): q-defi-agent-identity-stellar-experimental lost the key fact on ERC-8004's payment scope; the answer keeps it as context. The supported core the note describes is unchanged; members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-053",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Closeout re-check 2026-11-14 (instrument lane, .agents/rounds/2026-11-14-golden-coverage-audit/apply/CLOSEOUT.md): q-token-xlm-supply-total-circulating gained a canonical-page grading caution tied to sd-105 and a corrected verification event. Its facts (100 billion at genesis, about 5.44 billion from inflation before Protocol 12, a dated total near 50 billion after the burn) are unchanged and agree with the other members and the note.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    }
+  ],
+  "numericInvariants": [
+    {
+      "matchLabel": "YieldBlox borrowed XLM USDC totals",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Closeout re-check 2026-11-14 (instrument lane, .agents/rounds/2026-11-14-golden-coverage-audit/apply/CLOSEOUT.md): q-comp-yieldblox-oracle-incident split one key fact into a causal fact and a defenses fact. The borrow figures (about 61.2M XLM and 1M USDC) and the avoid against a single 1,014,196.7040837 USDC transaction are unchanged and match the authoritative value.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    }
+  ],
+  "dateContingentTraps": [
+    {
+      "matchTriggerDateEvent": "2027-03-02 YieldBlox/Reflector remediation recheck or publication of a final post-mortem/reimbursement decision",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Closeout re-check 2026-11-14 (instrument lane, .agents/rounds/2026-11-14-golden-coverage-audit/apply/CLOSEOUT.md): q-comp-yieldblox-oracle-incident split one key fact; reverifyBy, the quarantine-is-not-recovery fact and the remediation notes are unchanged. The disposition holds.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "matchTriggerDateEvent": "2026-11-03 post-event check after Meridian 2026 on 2026-10-28/2026-10-29",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Closeout re-check 2026-11-14 (instrument lane, .agents/rounds/2026-11-14-golden-coverage-audit/apply/CLOSEOUT.md): q-hist-meridian-2026-corrected-venue reworded its second key fact to 'the earlier Abu Dhabi plan was superseded by the move to Lisbon'. Venue and dates (Convento do Beato, Lisbon, October 28-29, 2026) are unchanged; the closed disposition holds.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    }
+  ]
+}

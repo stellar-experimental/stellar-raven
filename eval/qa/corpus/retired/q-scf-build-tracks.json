@@ -1,0 +1,21 @@
+{
+  "id": "q-scf-build-tracks",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-scf (golden coverage audit)",
+    "reviewer": "verify-audit-scf (golden coverage audit)",
+    "reason": "The three SCF Build award paths are tested by q-scf-v7-changes, and which path goes to a community vote by q-scf-how-to-apply and q-scf-nqg-voting.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-scf-build-tracks",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-scf-build-tracks",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-scf-build-tracks"
+    ],
+    "lastCaseContentSha256": "e2d0b507dd5f6fc4455b71ecec5b7b146c6ed91190cbe5f6add131ae8fcad6df",
+    "replacementIds": []
+  }
+}

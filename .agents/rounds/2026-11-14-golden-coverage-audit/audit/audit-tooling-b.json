@@ -1,0 +1,3490 @@
+{
+  "lane": "audit-tooling-b",
+  "records": [
+    {
+      "id": "q-ti-scout-refresh-cached-rows",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Scout change feed",
+        "refreshing cached rows",
+        "per-surface truncation"
+      ],
+      "tests": "How to use Raven's scout.getChanges feed (since, per-surface limit and truncation, facets, empty-means-unchanged) to refresh cached Scout rows.",
+      "questionIssues": [
+        "Answerable only through Raven's Scout adapter; no other correct source can satisfy it."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "operation",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "scout.getChanges returns per-surface counts, truncation flags and facets for a since timestamp",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "https://stellarlight.xyz/api/changes?since=2026-11-07&limit=2",
+              "observedAt": "2026-11-14",
+              "quote": "meta.counts projects 856, repos 6201, partners 4; meta.truncated true for all three; limitPerSurface 2"
+            },
+            {
+              "class": "B",
+              "ref": "catalog/manifest.json#scout.getChanges",
+              "observedAt": "2026-11-14",
+              "quote": "Max rows PER SURFACE ... meta.truncated.<surface> ... Absence = unchanged since `since`"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-ti-scout-changelog-contract-check (tooling-a)",
+          "survivor": "q-ti-scout-changelog-contract-check",
+          "why": "Different operation (getChangelog, API contract changes) and different knowledge; listed only because both concern change feeds."
+        }
+      ],
+      "verdict": "move-tool-lane",
+      "reason": "No Stellar fact is tested; any other tool cannot satisfy it. Neither routing cases, the frozen live lane, nor unit tests exercise whether an agent reads per-surface truncation and the empty-means-unchanged rule, so a tool-contract lane keeps that visibility.",
+      "rewrite": null,
+      "confidence": "medium",
+      "wordsBefore": 208,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-ti-secret-key-vs-mnemonic-derivation",
+      "purpose": "stellar-truth",
+      "topics": [
+        "S-key versus mnemonic",
+        "SEP-5 key derivation",
+        "SEP-52 key sharing"
+      ],
+      "tests": "An S... key is one 32-byte Ed25519 seed with no standard inverse to its mnemonic, SEP-5 derives forward through BIP-39 and SLIP-10 at m/44'/148'/x', and SEP-52 is a Draft SLIP-39 sharing extension.",
+      "questionIssues": [
+        "Five asks in one question (key types, SEP-5 derivation, SEP-52, Lab, CLI errors); the Lab and CLI parts are owned by other cases and make the golden 494 words.",
+        "The Lab and CLI import asks pull volatile UI and flag detail into a stable-knowledge case."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Holds path, passphrase and index; split not needed but compress."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Holds SEP-52 status, SLIP-39, 256-bit entropy and 33-word shares; the last two are trivia."
+        },
+        {
+          "i": 4,
+          "kind": "process",
+          "issue": "Prescribes a CLI procedure and an argv ban; volatile and owned by the CLI how-to."
+        },
+        {
+          "i": 5,
+          "kind": "world",
+          "issue": "Two predicates (wallet backup behavior and Lab storage); Lab storage duplicates q-tool-lab-what-is."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SEP-52 is Draft v0.1.0 (Key Sharing Method for Stellar Keys); SEP-5 is Final",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0052.md",
+              "observedAt": "2026-11-14",
+              "quote": "Title: Key Sharing Method for Stellar Keys; Status: Draft; Version 0.1.0"
+            },
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0005.md",
+              "observedAt": "2026-11-14",
+              "quote": "Title: Key Derivation Methods for Stellar Keys; Status: Final"
+            }
+          ]
+        },
+        {
+          "claim": "SEP-5 path is m/44'/148'/x' with hardened-only derivation",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0005.md",
+              "observedAt": "2026-11-14",
+              "quote": "The following path should be used to generate keys: `m/44'/148'/x'`. We call `m/44'/148'/0'` the _primary key_."
+            }
+          ]
+        },
+        {
+          "claim": "stellar keys generate makes a 24-word phrase; --seed is generation input; keys add imports through a prompted --secure-store, with --secret-key/--seed-phrase deprecated",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "F",
+              "ref": "local `stellar keys generate --help` / `stellar keys add --help`, stellar 30.0.1",
+              "observedAt": "2026-11-14",
+              "quote": "Generate a new identity using a 24-word seed phrase; --seed: Optional seed to use when generating seed phrase. Random otherwise"
+            },
+            {
+              "class": "F",
+              "ref": "local `stellar keys add --help`, stellar 30.0.1",
+              "observedAt": "2026-11-14",
+              "quote": "--seed-phrase: Deprecated, use `--secure-store`. Enter key using 12-24 word seed phrase"
+            }
+          ]
+        },
+        {
+          "claim": "Lab Saved Keypairs: Testnet/Futurenet only, obfuscated not encrypted",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tools/lab/saved/keypairs.md",
+              "observedAt": "2026-11-14",
+              "quote": "Saved keypairs are obfuscated, but *not* encrypted"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tools/lab/saved/keypairs.md",
+              "observedAt": "2026-11-14",
+              "quote": "You can only save keypairs on test networks—never on Mainnet"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-ti-stellar-lab-usage-and-new-ui",
+          "survivor": "q-tool-lab-what-is",
+          "why": "Both state the Saved Keypairs storage boundary; the Lab case owns it."
+        },
+        {
+          "id": "q-tool-cli-testnet-identity-howto",
+          "survivor": "q-tool-cli-testnet-identity-howto",
+          "why": "Both touch `stellar keys generate`; the how-to owns the CLI procedure."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "The SEP-5, no-inverse and SEP-52 facts are correct and worth testing; the 494-word golden buries them under CLI flag, Lab storage and wallet-backup detail owned by other cases.",
+      "rewrite": {
+        "question": "What's the difference between my S... secret key and my 12/24-word recovery phrase, and how does SEP-5 derive keypairs from a mnemonic (why one phrase yields many addresses)? Where does SEP-52 fit?",
+        "answer": "An `S...` key is the StrKey of one 32-byte Ed25519 secret seed, not a mnemonic. SEP-5 derives forward: a BIP-39 mnemonic plus optional passphrase gives a seed, then SLIP-10 hardened derivation at m/44'/148'/x' gives each account. No standard recovers the phrase, passphrase, path or index from an S-key. SEP-52 is a Draft SLIP-39 share-splitting extension, not a 24-word encoding of one key.",
+        "keyFacts": [
+          "An S... key is the StrKey of one 32-byte Ed25519 secret seed, not a BIP-39 mnemonic.",
+          "SEP-5 derives forward from mnemonic and optional passphrase via SLIP-10 at m/44'/148'/x'.",
+          "No standard derives the mnemonic, passphrase, path or index back from an S-key.",
+          "SEP-52 is a Draft SLIP-39 share-splitting extension of SEP-5, not a one-key encoding."
+        ],
+        "avoid": [
+          "Do NOT call SEP-52 a Final 24-word representation of one S-key.",
+          "Do NOT say an S-key or G-address can reveal its original mnemonic, passphrase, path or index."
+        ],
+        "notes": "Accept any equivalent wording of the no-inverse rule. Whether a directly imported S-key is covered by a wallet's mnemonic backup is wallet-specific; do not penalize either claim.",
+        "movedToTruth": [
+          "CLI: `stellar keys generate` makes a 24-word phrase, `--seed` is generation input not import, import is prompted `keys add --secure-store`, secrets never in argv (verified on stellar 30.0.1 help 2026-11-14).",
+          "Lab Saved Keypairs: Testnet/Futurenet only, obfuscated not encrypted, pre-2025-09 rows plain text (owned by q-tool-lab-what-is).",
+          "SEP-52 details: 256-bit entropy recommended, 33-word SLIP-39 shares; BIP-39 64-byte seed vs 32-byte child; SEP-23 StrKey.",
+          "GT-54 correction history and the rejected '24-word representation' proposal."
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 494,
+      "wordsAfter": 170
+    },
+    {
+      "id": "q-ti-self-host-retention-backfill",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Horizon and RPC history retention",
+        "RPC BACKFILL",
+        "Horizon reingestion"
+      ],
+      "tests": "Retention settings bound how much history a self-hosted node keeps and never restore older history; RPC has an explicit BACKFILL path and Horizon needs `db reingest range`.",
+      "questionIssues": [
+        "Embeds a '~1.3 TB for 30d' premise that the golden itself declines to treat as a requirement.",
+        "Names Horizon and RPC settings together, so answers must separate two products."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Mixes three RPC defaults and a dated version in one fact."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Compresses datastore serve flag, coverage, state and checkpoint caveats into one fact."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Datastore getLedgers-only detail is depth, not the main point."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 5,
+          "kind": "world",
+          "issue": "Four predicates: reingest, nonzero reaping, ledger-1 normalization, size caution."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "RPC HISTORY_RETENTION_WINDOW defaults to 120960 ledgers and must be positive; SERVE_LEDGERS_FROM_DATASTORE and BACKFILL default false",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-rpc/blob/v30.0.1/cmd/stellar-rpc/internal/rpcv1/config/options.go",
+              "observedAt": "2026-11-14",
+              "quote": "DefaultValue: uint32(limits.SevenDayOfLedgers), Validate: positive; serve-ledgers-from-datastore DefaultValue: false; backfill DefaultValue: false"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/data/apis/rpc/admin-guide/configuring.md",
+              "observedAt": "2026-11-14",
+              "quote": "the default value is 120960 which corresponds to about 7 days of history"
+            }
+          ]
+        },
+        {
+          "claim": "Horizon HISTORY_RETENTION_COUNT defaults to 0 (unlimited); 518400 is the recommended 30-day window",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-horizon/blob/v30.0.1/internal/flags.go",
+              "observedAt": "2026-11-14",
+              "quote": "history-retention-count FlagDefault uint(0): (0 = retain an unlimited number of ledgers)"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/data/apis/horizon/admin-guide/configuring.md",
+              "observedAt": "2026-11-14",
+              "quote": "It is defaulted to 0, which means it will not purge any history from the database."
+            }
+          ]
+        },
+        {
+          "claim": "A nonzero Horizon retention purges reingested rows outside the window; gaps need `db reingest range`",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/data/apis/horizon/admin-guide/ingestion.md",
+              "observedAt": "2026-11-14",
+              "quote": "any data ingested beyond that limit will be automatically purged"
+            }
+          ]
+        },
+        {
+          "claim": "Latest stellar-rpc and stellar-horizon release (golden says v30.0.0 as of 2026-11-02)",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://api.github.com/repos/stellar/stellar-rpc/releases",
+              "observedAt": "2026-11-14",
+              "quote": "v30.0.1 2026-11-12 (v30.0.0 2026-10-21); stellar-horizon v30.0.1 2026-11-12; defaults unchanged at v30.0.1"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-infra-rpc-provider-archive-tier (tooling-a)",
+          "survivor": "q-infra-rpc-provider-archive-tier",
+          "why": "Adjacent: provider archive tiers versus self-hosted retention; different knowledge, listed to prevent folding."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "The retention and no-backfill facts are correct and important, but the 702-word golden bundles release benchmarks, doc-history and checkpoint detail that no judge needs; the version it pins is already one patch release behind.",
+      "rewrite": {
+        "question": "When self-hosting Horizon or Stellar RPC, how do HISTORY_RETENTION_COUNT and HISTORY_RETENTION_WINDOW affect database size, and why doesn't increasing the window backfill older history?",
+        "answer": "Retention only bounds how much history a node keeps; it never fetches older data. As of 2026-11-14 Stellar RPC keeps HISTORY_RETENTION_WINDOW ledgers (default 120960, about 7 days) and backfills only with BACKFILL=true from a datastore. Horizon's HISTORY_RETENTION_COUNT defaults to 0, meaning keep everything; 518400 is the recommended 30-day setting. Missing Horizon history needs `db reingest range`.",
+        "keyFacts": [
+          "RPC retention (default 120960 ledgers, ~7 days, 2026-11-14) never restores older history.",
+          "RPC BACKFILL=true needs SERVE_LEDGERS_FROM_DATASTORE=true and datastore coverage.",
+          "Horizon HISTORY_RETENTION_COUNT defaults to 0 (unlimited); 518400 is the 30-day advice.",
+          "Horizon gaps need `db reingest range`; a nonzero count purges older ledgers."
+        ],
+        "avoid": [
+          "Do NOT claim a larger retention window downloads or restores pruned or never-ingested history.",
+          "Do NOT use zero for unlimited RPC retention or call 518400 Horizon's default."
+        ],
+        "notes": "Do not require a database size such as 1.3 TB per 30 days or 40 GB per day; it depends on version, filters and workload. Accept a newer dated RPC default.",
+        "movedToTruth": [
+          "RPC datastore fallback serves only getLedgers; getTransaction/getTransactions/getEvents read retained or materialized rows.",
+          "BACKFILL needs gapless compatible local state; checkpoint alignment makes exact coverage unsafe to promise; an empty database counts as gapless.",
+          "Horizon ledger 1 normalizes to 2 on reingest.",
+          "sd-028 (2026-07-27) fixed official Horizon pages that called 518400 the default; sd-102 records the declined request to document the internal-gap sanity check.",
+          "v25.1 benchmark figures (150 GB, under 3 hours) are release notes, not requirements.",
+          "Release pins: stellar-rpc and stellar-horizon v30.0.1 (2026-11-12) keep these defaults."
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 702,
+      "wordsAfter": 156
+    },
+    {
+      "id": "q-ti-skill-builder-quickstart",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Stellar Builder Quickstart skill",
+        "product-idea to build plan workflow"
+      ],
+      "tests": "That an agent finds and follows Raven's served Stellar Builder Quickstart skill.",
+      "questionIssues": [
+        "Only a Raven-served skill can satisfy it; another tool has no such named workflow."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "process",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Skill skills.lumenloop.stellar-builder-quickstart is in the served inventory",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "test/skill-exposure-classification.test.ts",
+              "observedAt": "2026-11-14",
+              "quote": "REQUIRED_INVENTORY_IDS includes \"skills.lumenloop.stellar-builder-quickstart\""
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-ti-skill-content-auditor",
+          "survivor": "q-ti-skill-builder-quickstart",
+          "why": "Same measurement (does the agent surface the right Lumenloop workflow skill); one representative is enough."
+        },
+        {
+          "id": "q-ti-skill-integration-finder",
+          "survivor": "q-ti-skill-builder-quickstart",
+          "why": "Same measurement."
+        }
+      ],
+      "verdict": "move-tool-lane",
+      "reason": "No Stellar fact is tested. Inventory and exposure are unit-tested, but nothing else tests whether an agent discovers a workflow skill from a vague product question; keep this one as the single representative in a tool lane and retire its two siblings.",
+      "rewrite": null,
+      "confidence": "medium",
+      "wordsBefore": 112,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-ti-skill-content-auditor",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Stellar Content Auditor skill",
+        "draft copy audit workflow"
+      ],
+      "tests": "That an agent finds and follows Raven's served Stellar Content Auditor skill.",
+      "questionIssues": [
+        "Only a Raven-served skill can satisfy it."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "process",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Skill skills.lumenloop.stellar-content-auditor is in the served inventory and runnable",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "test/skill-exposure-classification.test.ts",
+              "observedAt": "2026-11-14",
+              "quote": "REQUIRED_INVENTORY_IDS includes \"skills.lumenloop.stellar-content-auditor\"; test/skill-run.test.ts also references it"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-ti-skill-builder-quickstart",
+          "survivor": "q-ti-skill-builder-quickstart",
+          "why": "Same measurement; builder-quickstart is the one moved to a tool lane."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "Duplicate of the other two skill-workflow cases and no Stellar truth; inventory and run behavior are already covered by test/skill-exposure-classification.test.ts and test/skill-run.test.ts.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 100,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-ti-skill-integration-finder",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Stellar Integration Finder skill",
+        "choosing an integration"
+      ],
+      "tests": "That an agent finds and follows Raven's served Stellar Integration Finder skill.",
+      "questionIssues": [
+        "Only a Raven-served skill can satisfy it."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Skill skills.lumenloop.stellar-integration-finder is in the served inventory",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "test/skill-exposure-classification.test.ts",
+              "observedAt": "2026-11-14",
+              "quote": "REQUIRED_INVENTORY_IDS includes \"skills.lumenloop.stellar-integration-finder\""
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-ti-skill-builder-quickstart",
+          "survivor": "q-ti-skill-builder-quickstart",
+          "why": "Same measurement."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "Duplicate skill-workflow case with no Stellar truth; inventory exposure is unit-tested. The world question (how to pick a wallet, oracle or anchor) is covered by the wallet and oracle cases.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 97,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-ti-stellar-lab-usage-and-new-ui",
+      "purpose": "mixed",
+      "topics": [
+        "Stellar Lab transaction workflow",
+        "Lab key handling",
+        "SAC deploy versus id"
+      ],
+      "tests": "Mixed: Lab capabilities and key-handling boundaries (stellar-truth) and the `contract asset deploy` versus `contract id asset` distinction (stellar-truth owned by the assets lane); the button-location asks are volatile UI trivia.",
+      "questionIssues": [
+        "Six asks in one question (sequence fetch, moved buttons, hardware signing, SAC creation, offline use) that no single answer can cover.",
+        "Asks where buttons moved, which the golden itself says must not be frozen; ungradable and rots with every UI release."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "Prescribes a preference for non-secret signing."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Duplicates the Saved Keypairs boundary also in KF5 and in the secret-key case."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Owned by q-asset-deploy-sac-cli."
+        },
+        {
+          "i": 5,
+          "kind": "world",
+          "issue": "Three predicates: Friendbot, trustline, Saved Keypairs."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Saved Keypairs works only on Testnet and Futurenet and is obfuscated, not encrypted",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tools/lab/saved/keypairs.md",
+              "observedAt": "2026-11-14",
+              "quote": "Saved keypairs are obfuscated, but *not* encrypted"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tools/lab/saved/keypairs.md",
+              "observedAt": "2026-11-14",
+              "quote": "You can only save keypairs on test networks—never on Mainnet"
+            }
+          ]
+        },
+        {
+          "claim": "Lab signs with a pasted secret key, a wallet extension or a hardware wallet",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/laboratory/blob/main/src/components/SignTransactionXdr/index.tsx",
+              "observedAt": "2026-11-14",
+              "quote": "| \"secretKey\" | \"hardwareWallet\" | \"extensionWallet\""
+            }
+          ]
+        },
+        {
+          "claim": "`stellar contract asset deploy` deploys a SAC; `stellar contract id asset` only derives the ID",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "F",
+              "ref": "local `stellar contract asset deploy --help` / `stellar contract id asset --help`, stellar 30.0.1",
+              "observedAt": "2026-11-14",
+              "quote": "Deploy builtin Soroban Asset Contract / Derive the contract id for a builtin Stellar Asset Contract"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-tool-lab-what-is",
+          "survivor": "q-tool-lab-what-is",
+          "why": "Same tool; survivor already owns capabilities and Friendbot scope and absorbs the key-handling boundary."
+        },
+        {
+          "id": "q-asset-deploy-sac-cli (assets lane)",
+          "survivor": "q-asset-deploy-sac-cli",
+          "why": "Owns SAC deploy; whether it also states that `contract id asset` only derives the ID is for the assets lane to confirm."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Its only gradable, durable content is the Lab capability and key-safety boundary that q-tool-lab-what-is can carry, plus a SAC fact the assets lane owns; the walkthrough asks are ungradable UI trivia.",
+      "rewrite": null,
+      "survivor": "q-tool-lab-what-is",
+      "confidence": "high",
+      "wordsBefore": 523,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-ti-tx-too-late-resubmit",
+      "purpose": "stellar-truth",
+      "topics": [
+        "tx_too_late expiry",
+        "time bounds and sequence numbers",
+        "safe resubmission"
+      ],
+      "tests": "txTOO_LATE means the ledger close time passed maxTime (0 = no bound), differs from txBAD_SEQ, consumes no sequence or fee, and recovery means rebuilding with current sequence and new bounds, then re-signing.",
+      "questionIssues": [],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Qualified scope (ordinary outer precondition rejection) makes it long; keep one predicate."
+        },
+        {
+          "i": 2,
+          "kind": "process",
+          "issue": "Prescribes a polling procedure; the world fact is that a pre-expiry miss is not proof of non-submission."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Five predicates in one fact."
+        },
+        {
+          "i": 4,
+          "kind": "process",
+          "issue": "Prescribes idempotency records; signature coverage is the world fact."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "txTOO_LATE is returned when maxTime is nonzero and earlier than ledger close time",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionFrame.cpp",
+              "observedAt": "2026-11-14",
+              "quote": "if (tb->maxTime && (tb->maxTime < (closeTime.timePoint() + upperBoundCloseTimeOffset))) ... txTOO_LATE"
+            }
+          ]
+        },
+        {
+          "claim": "Horizon documents tx_too_late as a transaction result code distinct from tx_bad_seq",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/transactions.md",
+              "observedAt": "2026-11-14",
+              "quote": "**tx_too_late** `txTOO_LATE`"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-pc-tx-finality-failure-semantics (protocol-core)",
+          "survivor": "q-pc-tx-finality-failure-semantics",
+          "why": "Owns the full 'rejected or expired transactions consume neither fee nor sequence' semantics; this case keeps one fact of it and owns the resubmission how-to."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Practical, correct and unlikely to rot, but the 361-word golden re-argues fee-bump and idempotency edge cases; the durable core fits in four facts.",
+      "rewrite": {
+        "question": null,
+        "answer": "`tx_too_late` (txTOO_LATE) means ledger close time passed the transaction's `maxTime`; maxTime 0 means no upper bound. It is not `tx_bad_seq`. An expired transaction consumes no sequence number or fee. Resending the same envelope fails again: confirm by hash it was not included, then rebuild with the current sequence and new time bounds, re-simulate if Soroban, re-sign, and submit under a new hash.",
+        "keyFacts": [
+          "txTOO_LATE means ledger close time passed maxTime (0 = no bound); it is not txBAD_SEQ.",
+          "A transaction rejected as expired before inclusion consumes no sequence number or fee.",
+          "Resubmit by rebuilding with the current sequence and new time bounds, then re-signing.",
+          "Check by hash that the old transaction was not included before rebuilding it."
+        ],
+        "avoid": [
+          "Do NOT resubmit the expired signed envelope unchanged or edit signed XDR while keeping the old signatures.",
+          "Do NOT claim a higher fee or a fee bump cures an expired maxTime."
+        ],
+        "notes": "Fee-bump and post-inclusion failures follow separate rules; do not penalize an answer that scopes the no-fee rule to ordinary pre-inclusion rejection.",
+        "movedToTruth": [
+          "Ambiguous-outcome flow: a hash lookup miss before expiry is not proof of non-submission; poll hash and account state until found or expired.",
+          "Soroban footprint, authorization and fee must be re-simulated after a rebuild.",
+          "Idempotency records prevent a timeout from becoming a duplicate payment.",
+          "GT-54 correction 2026-07-11 history."
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 361,
+      "wordsAfter": 168
+    },
+    {
+      "id": "q-ti-video-tutorials",
+      "purpose": "stellar-truth",
+      "topics": [
+        "official Stellar video tutorials",
+        "developer learning resources"
+      ],
+      "tests": "SDF's YouTube channel hosts an official Developer Tutorials playlist, and old tutorial commands must be checked against current docs.",
+      "questionIssues": [
+        "A resource-directory question with modest measurement value; acceptable as the only learning-resources case.",
+        "The golden mixes a Lumenloop AV start_offset rule that belongs to q-gap-av-offset-not-timestamp."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Names five resources in one fact."
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "Prescribes dating volatile metadata."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Two predicates."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "operation",
+          "issue": "Raven AV start_offset, covered elsewhere."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SDF's Developer Tutorials playlist exists on the SDF YouTube channel",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "D",
+              "ref": "https://www.youtube.com/playlist?list=PLmr3tp_7-7GiyTrRhKjlznmWe7AqFPq6i",
+              "observedAt": "2026-11-14",
+              "quote": "Developer Tutorials by Stellar Development Foundation. Playlist • 58 videos"
+            }
+          ]
+        },
+        {
+          "claim": "Lab docs link a Lumen Loop video series; Scaffold docs link an SDF video playlist",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tools/lab.md",
+              "observedAt": "2026-11-14",
+              "quote": "are available on [Lumen Loop's YouTube Channel]"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tools/scaffold-stellar.md",
+              "observedAt": "2026-11-14",
+              "quote": "the [Scaffold Stellar video series on YouTube]"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-gap-av-offset-not-timestamp (tooling-a)",
+          "survivor": "q-gap-av-offset-not-timestamp",
+          "why": "Owns the start_offset-is-not-seconds rule."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "The official playlist and the 'verify old videos against current docs' caution are worth one small case; playlist counts, Lab links and Raven AV mechanics are noise in a 321-word golden.",
+      "rewrite": {
+        "question": null,
+        "answer": "Yes. The Stellar Development Foundation YouTube channel hosts an official Developer Tutorials playlist (58 videos on 2026-11-14); start there. Check each video's commands, package names and endpoints against current docs, because older Soroban-era videos can be outdated.",
+        "keyFacts": [
+          "SDF's YouTube channel hosts an official Developer Tutorials playlist.",
+          "Older video commands, package names and endpoints may be outdated; check current docs."
+        ],
+        "avoid": [
+          "Do NOT present unofficial or community videos as official tutorials, or invent video titles."
+        ],
+        "notes": "Playlist size, titles and update dates change; do not require them.",
+        "movedToTruth": [
+          "Lab docs link a Lumen Loop video playlist; Scaffold Stellar docs link an SDF video series.",
+          "Playlist observed 2026-11-14: 58 videos (golden recorded 58 on 2026-11-02).",
+          "Raven AV start_offset is an opaque offset, not playback seconds (owned by q-gap-av-offset-not-timestamp)."
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 321,
+      "wordsAfter": 84
+    },
+    {
+      "id": "q-ti-vocab-content-tags-live",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Lumenloop content tags",
+        "vocabulary operation choice"
+      ],
+      "tests": "That an agent picks get_tags_vocabulary rather than the project-tag vocabulary for article and AV tags.",
+      "questionIssues": [
+        "Only Raven's Lumenloop adapter can satisfy it."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "lumenloop.get_tags_vocabulary and get_project_tags_vocabulary exist and are search-ranked for tag questions",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "test/search.test.ts:1415",
+              "observedAt": "2026-11-14",
+              "quote": "\"lumenloop.get_tags_vocabulary\" asserted in search ranking test"
+            },
+            {
+              "class": "B",
+              "ref": "catalog/manifest.json",
+              "observedAt": "2026-11-14",
+              "quote": "entries include get_tags_vocabulary and get_project_tags_vocabulary"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-gap-lumen-content-tag-vocabulary (tooling-a)",
+          "survivor": "q-gap-lumen-content-tag-vocabulary",
+          "why": "Same question about the same operation; also itself raven-mechanics."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "Duplicate of q-gap-lumen-content-tag-vocabulary with no Stellar truth; operation discoverability is unit-tested in test/search.test.ts and test/lumenloop-shape.test.ts.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 79,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-ti-vocab-project-categories-live",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Lumenloop project categories",
+        "vocabulary operation choice"
+      ],
+      "tests": "That an agent calls get_categories for the accepted project-category values.",
+      "questionIssues": [
+        "Only Raven's Lumenloop adapter can satisfy it."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "get_categories is routed for category-vocabulary questions",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "test/drift-141-routing.test.ts:145",
+              "observedAt": "2026-11-14",
+              "quote": "expect(ids(query)).toContain(\"lumenloop.get_categories\")"
+            },
+            {
+              "class": "B",
+              "ref": "eval/routing-cases.json",
+              "observedAt": "2026-11-14",
+              "quote": "q-defi-lumenloop-categories-vocab routing case present"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-tool-taxonomy-dispatch-live",
+          "survivor": "q-tool-taxonomy-dispatch-live",
+          "why": "Both ask for the category vocabulary; both retire."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "Routing case q-defi-lumenloop-categories-vocab and test/drift-141-routing.test.ts already cover choosing get_categories; no Stellar truth is measured.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 82,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-ti-vocab-project-tags-live",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Lumenloop directory project tags",
+        "vocabulary operation choice"
+      ],
+      "tests": "That an agent picks get_project_tags_vocabulary for directory project tags.",
+      "questionIssues": [
+        "Only Raven's Lumenloop adapter can satisfy it."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "get_project_tags_vocabulary exists in the exposed manifest",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "catalog/manifest.json",
+              "observedAt": "2026-11-14",
+              "quote": "entries include lumenloop.get_project_tags_vocabulary"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-gap-lumen-project-tag-vocabulary (tooling-a)",
+          "survivor": "q-gap-lumen-project-tag-vocabulary",
+          "why": "Same question about the same operation."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "Duplicate of q-gap-lumen-project-tag-vocabulary and of the content-tag case; no Stellar truth, and ranking is unit-tested.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 80,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-ti-vocab-regions-live",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Lumenloop region values",
+        "vocabulary operation choice"
+      ],
+      "tests": "That an agent calls get_regions and treats the returned strings as variant-prone, not a clean enum.",
+      "questionIssues": [
+        "Only Raven's Lumenloop adapter can satisfy it."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "get_regions is routed for region-vocabulary questions and covered by the frozen live lane",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "eval/qa/corpus/live/live-cases.json",
+              "observedAt": "2026-11-14",
+              "quote": "q-live-ll-regions-vocab | Which regions does Lumenloop classify projects into?"
+            },
+            {
+              "class": "B",
+              "ref": "eval/routing-cases.json",
+              "observedAt": "2026-11-14",
+              "quote": "q-builder-lumenloop-regions-vocab routing case present"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-live-ll-regions-vocab (frozen live lane)",
+          "survivor": "q-live-ll-regions-vocab",
+          "why": "Same question and expectation, already in the frozen live lane."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "The frozen live lane (q-live-ll-regions-vocab), a routing case and test/drift-141-routing.test.ts already cover this; no Stellar truth is measured.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 85,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-tool-cctp-stellar-integration",
+      "purpose": "stellar-truth",
+      "topics": [
+        "CCTP V2 on Stellar",
+        "Circle domain 27 and CctpForwarder",
+        "USDC decimals"
+      ],
+      "tests": "CCTP V2 moves native Circle USDC to and from Stellar through domain 27, with inbound transfers routed through CctpForwarder and a 7-to-6 decimal normalization.",
+      "questionIssues": [
+        "Premise 'is live' is true but the case also demands handling of two Circle documentation conflicts, which makes it a docs-audit rather than an integration question.",
+        "Heavy overlap with q-cctp-v2-usdc-stellar in the compliance lane."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Mixes CCTP V2, domain 27 and network-specific deployments."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Four predicates."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 5,
+          "kind": "process",
+          "issue": "Prescribes Standard 2000 amid a disputed docs conflict."
+        },
+        {
+          "i": 6,
+          "kind": "world",
+          "issue": "Docs method-name spelling conflict; trivia."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Circle domain 27 and the Mainnet/Testnet TokenMessengerMinter, MessageTransmitter and CctpForwarder contract IDs",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.circle.com/cctp/references/stellar-contracts.md",
+              "observedAt": "2026-11-14",
+              "quote": "TokenMessengerMinter | 27 | CAE2G5Z77UP7GYPYGFOWFGW7C7J6I4YP2AFGSADRKQY62SYUFLPNFTXL (Mainnet)"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.circle.com/cctp/references/stellar-contracts.md",
+              "observedAt": "2026-11-14",
+              "quote": "CctpForwarder | 27 | CBZL2IH7F6BIDAA3WBNXYKIXSATJGMSW7K5P5MJ6STX5RXN47TZJDF5T (Mainnet)"
+            }
+          ]
+        },
+        {
+          "claim": "Circle matrices still mark Stellar-as-source Fast as N/A while Iris lists a 1000 threshold",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.circle.com/cctp/concepts/supported-chains-and-domains.md",
+              "observedAt": "2026-11-14",
+              "quote": "| Stellar | ✅ | N/A | ❌ | ❌ |"
+            },
+            {
+              "class": "C",
+              "ref": "https://iris-api.circle.com/v2/burn/USDC/fees/27/0",
+              "observedAt": "2026-11-14",
+              "quote": "[{\"finalityThreshold\":1000,\"minimumFee\":0},{\"finalityThreshold\":2000,\"minimumFee\":0}]"
+            }
+          ]
+        },
+        {
+          "claim": "CCTP live-announcement date 2026-05-19",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/blog/foundation-news/circle-cctp-is-live-on-stellar",
+              "observedAt": "2026-11-14",
+              "quote": "not re-read today; owned and stated by q-hist-cctp-stellar-live-announcement"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-cctp-v2-usdc-stellar (compliance-rwa-payments)",
+          "survivor": "q-cctp-v2-usdc-stellar",
+          "why": "Same flow, forwarder and decimal knowledge; survivor covers dates, forwarder, decimals and fees."
+        },
+        {
+          "id": "q-hist-cctp-stellar-live-announcement (history-org-tokenomics)",
+          "survivor": "q-hist-cctp-stellar-live-announcement",
+          "why": "Owns the 2026-05-19 announcement date."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "q-cctp-v2-usdc-stellar already tests the same CctpForwarder and decimal knowledge; this case's unique world content is small and the rest (contract IDs, two Circle docs conflicts, handler spellings) is volatile trivia.",
+      "rewrite": null,
+      "survivor": "q-cctp-v2-usdc-stellar",
+      "absorb": "Stellar is Circle domain 27 (a CCTP domain, not a Stellar network ID); outbound burns approve the USDC SAC and call TokenMessengerMinter `deposit_for_burn`; inbound transfers set both mintRecipient and destinationCaller to the CctpForwarder and encode the recipient in the hook; the CCTP message uses 6 decimals against Stellar's 7. Contract IDs and the Stellar-source Fast dispute belong in truth only.",
+      "confidence": "high",
+      "wordsBefore": 670,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-tool-cli-skills-discovery",
+      "purpose": "mixed",
+      "topics": [
+        "install-ready Stellar developer tooling",
+        "agent skills and MCP servers",
+        "Stellar CLI"
+      ],
+      "tests": "Mixed: the world fact of which official AI and CLI tooling exists (Stellar Skills, Docs MCP server, Stellar CLI) and Raven's honest reading of the Scout skills catalog (no fabricated rows, empty kinds valid).",
+      "questionIssues": [
+        "A real directory question, but the golden holds no world fact: every key fact is about how to read Scout's catalog, so another correct source that names the official tooling would fail it."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "process",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Official docs list Stellar Skills at skills.stellar.org and a Stellar Docs MCP server at developers.stellar.org/mcp",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/building-with-ai.md",
+              "observedAt": "2026-11-14",
+              "quote": "[**skills.stellar.org**](https://skills.stellar.org/) is the home for Stellar Skills"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/building-with-ai.md",
+              "observedAt": "2026-11-14",
+              "quote": "The **Stellar Docs MCP server** at `https://developers.stellar.org/mcp`"
+            }
+          ]
+        },
+        {
+          "claim": "Official skills are maintained in stellar/stellar-dev-skill",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/building-with-ai.md",
+              "observedAt": "2026-11-14",
+              "quote": "Skills are open source and maintained in the [stellar/stellar-dev-skill] repository."
+            },
+            {
+              "class": "B",
+              "ref": "https://api.github.com/repos/stellar/stellar-dev-skill",
+              "observedAt": "2026-11-14",
+              "quote": "archived false; pushed_at 2026-11-12"
+            }
+          ]
+        },
+        {
+          "claim": "stellar/mcp-stellar-xdr, cited in truth.sources, is still maintained",
+          "result": "changed",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://api.github.com/repos/stellar/mcp-stellar-xdr",
+              "observedAt": "2026-11-14",
+              "quote": "archived true; pushed_at 2026-09-24"
+            }
+          ]
+        },
+        {
+          "claim": "Stellar CLI is an SDF-org repository with a current release",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://api.github.com/repos/stellar/stellar-cli/releases",
+              "observedAt": "2026-11-14",
+              "quote": "v30.0.1 published 2026-11-03 (stellar/stellar-cli)"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-gap-scout-get-skill-detail (tooling-a)",
+          "survivor": "q-gap-scout-get-skill-detail",
+          "why": "Covers getSkill versus listSkills usage; this case should own the world question of what tooling exists."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "The question is worth keeping as the single 'what AI and CLI tooling exists for Stellar' case, but its golden tests only catalog-reading mechanics. It needs world facts from the official Building with AI page; the cited stellar/mcp-stellar-xdr repository is now archived and must not be listed as install-ready.",
+      "rewrite": {
+        "question": null,
+        "answer": "Official tooling includes Stellar Skills at skills.stellar.org (official skills maintained in stellar/stellar-dev-skill, plus community skills), the Stellar Docs MCP server at developers.stellar.org/mcp, and the SDF-maintained Stellar CLI. Community skills are not SDF-endorsed; read each entry's owner and install command, and check them against its current README.",
+        "keyFacts": [
+          "skills.stellar.org hosts Stellar Skills; official ones live in stellar/stellar-dev-skill.",
+          "The Stellar Docs MCP server is served at developers.stellar.org/mcp.",
+          "The Stellar CLI (`stellar`) is the SDF-maintained command-line tool.",
+          "Community skills are not SDF-endorsed; each carries its own owner and install steps."
+        ],
+        "avoid": [
+          "Do NOT invent tools or install commands, or present a tool roster or count without an as-of date."
+        ],
+        "notes": "An answer built from returned Scout skills-catalog rows is also correct; empty kind filters are valid results, not absence proof.",
+        "movedToTruth": [
+          "Scout listSkills advertises kinds skill-md, mcp-server, sdk, cli, agent-kit, tool and sources sdf, stellarlight, lumenloop, external, community; enums do not promise populated rows.",
+          "Raven itself (raven.stellar.org) is also listed on the same page and is the system under test, so it is not a key fact.",
+          "stellar/mcp-stellar-xdr is archived (pushed 2026-09-24); replace it in truth.sources.",
+          "Narrow mcp-server discovery is a routing-corpus sibling, not a battery case."
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 322,
+      "wordsAfter": 124
+    },
+    {
+      "id": "q-tool-cli-testnet-identity-howto",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Stellar CLI testnet identity",
+        "Friendbot funding",
+        "keys generate"
+      ],
+      "tests": "`stellar keys generate <name> --network testnet --fund` creates and funds a named identity that later commands use through `--source-account`.",
+      "questionIssues": [],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Parenthetical offers two alternatives; keep one predicate."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "`stellar keys generate` has `--fund` and `--network`; `keys address` is an alias of `public-key`; `--source-account` is accepted and `--source` is still accepted",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "F",
+              "ref": "local `stellar keys generate --help`, stellar 30.0.1",
+              "observedAt": "2026-11-14",
+              "quote": "--fund   Fund generated key pair; --hd-path; --secure-store; --seed"
+            },
+            {
+              "class": "F",
+              "ref": "local `stellar keys --help`, stellar 30.0.1",
+              "observedAt": "2026-11-14",
+              "quote": "public-key  Given an identity return its address (public key) [aliases: address]"
+            },
+            {
+              "class": "F",
+              "ref": "local `stellar contract invoke --source nobody ...`, stellar 30.0.1",
+              "observedAt": "2026-11-14",
+              "quote": "--source accepted (error was 'Contract not found', not 'unexpected argument'); help lists -s, --source-account"
+            }
+          ]
+        },
+        {
+          "claim": "Testnet is reset periodically so funded accounts are not permanent",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/networks.md",
+              "observedAt": "2026-11-14",
+              "quote": "Testnet resets typically happen 2-4 times per year at 17:00 UTC"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-ti-friendbot-ratelimit-alternatives (tooling-a)",
+          "survivor": "q-ti-friendbot-ratelimit-alternatives",
+          "why": "Adjacent: Friendbot funding limits, different knowledge."
+        },
+        {
+          "id": "q-ti-secret-key-vs-mnemonic-derivation",
+          "survivor": "q-tool-cli-testnet-identity-howto",
+          "why": "Shares `stellar keys generate`; this case owns the CLI procedure."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "A realistic, stable how-to whose facts all hold on stellar 30.0.1; it only needs notes cut from 150 words of provenance to a grading caution.",
+      "rewrite": {
+        "question": null,
+        "answer": "Use the `stellar` CLI. `stellar keys generate <name> --network testnet --fund` creates a named identity and funds it through Friendbot; an unfunded account does not exist on the ledger. `stellar keys address <name>` prints the public key, and `--source-account <name>` signs later commands. Testnet resets wipe funded accounts, so rerun the setup afterwards.",
+        "keyFacts": [
+          "`stellar keys generate <name> --network testnet --fund` creates and funds an identity.",
+          "A new account must be funded (Friendbot on testnet) before it can sign or submit.",
+          "Later commands name the identity with `--source-account <name>`."
+        ],
+        "avoid": [
+          "Do NOT use the retired `soroban` binary name as the current command."
+        ],
+        "notes": "`--source` is still accepted as an alias of `--source-account` (checked on stellar 30.0.1); do not fail alias-only answers.",
+        "movedToTruth": [
+          "sk-001 fixed the stellar-dev skill: it uses --source-account and has no --global.",
+          "An answer presenting --global as a current keys generate flag is wrong; one labeling it historical is correct.",
+          "Local CLI checks moved from 28.1.0 to 30.0.1 on 2026-11-14."
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 347,
+      "wordsAfter": 118
+    },
+    {
+      "id": "q-tool-developer-leaderboard-live",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Scout developer-activity leaderboard",
+        "reading a ranking"
+      ],
+      "tests": "That an agent states explicit sort and range, reports generatedAt, and says the leaderboard ranks projects, not people.",
+      "questionIssues": [
+        "Asks about Scout's own ranking; there is no Stellar fact behind it."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "operation",
+          "issue": "Projects-not-people is a Raven data-model fact."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "scout.getLeaderboard returns project rows with generatedAt",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "https://stellarlight.xyz/api/leaderboard?sort=issues&range=all&limit=2",
+              "observedAt": "2026-11-14",
+              "quote": "keys: ecosystem, meta, projects; generatedAt 2026-11-14T03:20:15Z"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-live-leaderboard-active-projects (frozen live lane)",
+          "survivor": "q-live-leaderboard-active-projects",
+          "why": "Same surface and behavior, already in the frozen live lane."
+        },
+        {
+          "id": "q-tool-leaderboard-open-issues",
+          "survivor": "q-live-leaderboard-active-projects",
+          "why": "Same leaderboard-reading behavior with a different sort."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "The frozen live lane's q-live-leaderboard-active-projects already tests this behavior on this surface; the case adds no Stellar truth.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 74,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-tool-flutter-mobile-sdk",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Flutter Stellar SDK",
+        "wallet SDK versus general SDK",
+        "maintainer tier"
+      ],
+      "tests": "For a Flutter wallet, Soneso's stellar_wallet_flutter_sdk sits on top of the general stellar_flutter_sdk, and both are community-maintained rather than SDF-maintained.",
+      "questionIssues": [],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "process",
+          "issue": "Volatile pub.dev versions in a key fact; a later dated figure must pass."
+        },
+        {
+          "i": 4,
+          "kind": "process",
+          "issue": "Prescribes a dependency check."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "stellar_wallet_flutter_sdk 1.1.8 and stellar_flutter_sdk 3.10.0 are the latest pub.dev releases",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "https://pub.dev/api/packages/stellar_wallet_flutter_sdk",
+              "observedAt": "2026-11-14",
+              "quote": "latest 1.1.8 published 2026-10-25T19:59Z"
+            },
+            {
+              "class": "C",
+              "ref": "https://pub.dev/api/packages/stellar_flutter_sdk",
+              "observedAt": "2026-11-14",
+              "quote": "latest 3.10.0 published 2026-10-25T09:15Z"
+            }
+          ]
+        },
+        {
+          "claim": "Flutter SDK is community-maintained by Soneso, not SDF",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tools/sdks/client-sdks.md",
+              "observedAt": "2026-11-14",
+              "quote": "The Flutter Stellar SDK is maintained by dedicated community developer, Soneso."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-tool-which-sdk-comparison",
+          "survivor": "q-tool-which-sdk-comparison",
+          "why": "Both list Flutter among community-maintained SDKs; this case owns the wallet-versus-general layering."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Facts hold; the golden carries version pins, a doc-reconciliation history and a language-safety caution that add 350 words for three durable facts.",
+      "rewrite": {
+        "question": null,
+        "answer": "For a Flutter wallet, start with Soneso's `stellar_wallet_flutter_sdk`, which adds wallet and SEP flows on top of Soneso's `stellar_flutter_sdk`, the general SDK for transactions, Horizon, Stellar RPC and SEPs. Both are community-maintained by Soneso, not SDF, although Stellar's docs list them.",
+        "keyFacts": [
+          "`stellar_wallet_flutter_sdk` is the wallet layer built on `stellar_flutter_sdk`.",
+          "`stellar_flutter_sdk` is the general SDK for transactions, Horizon, RPC and SEPs.",
+          "Both packages are community-maintained by Soneso, not SDF."
+        ],
+        "avoid": [
+          "Do NOT call either package SDF-maintained because official docs list it.",
+          "Do NOT pin a package version without an as-of date."
+        ],
+        "notes": "Version figures are illustrative; accept newer dated ones.",
+        "movedToTruth": [
+          "pub.dev 2026-11-14: wallet 1.1.8 (published 2026-10-25) declaring stellar_flutter_sdk ^3.10.0; general 3.10.0 (published 2026-10-25).",
+          "Official wallet tutorial installs both packages with `flutter pub add` and lets the resolver choose versions (2026-11-09).",
+          "Soneso also maintains the iOS/macOS, Kotlin Multiplatform and PHP SDKs.",
+          "No supported claim that another language SDK is safer for banking flows."
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 353,
+      "wordsAfter": 97
+    },
+    {
+      "id": "q-tool-go-sdk-ingest",
+      "purpose": "stellar-truth",
+      "topics": [
+        "official Go SDK",
+        "ledger ingestion packages",
+        "stellar/go deprecation"
+      ],
+      "tests": "SDF's Go SDK is github.com/stellar/go-stellar-sdk, with ledger ingestion in its ingest and ingest/ledgerbackend packages, and the old stellar/go path is archived.",
+      "questionIssues": [],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "process",
+          "issue": "Contrast between ingestion and Horizon polling is explanatory; fold into the answer."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Module path go-stellar-sdk with ingest and ingest/ledgerbackend packages; stellar/go archived",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://api.github.com/repos/stellar/go-stellar-sdk/contents/ingest",
+              "observedAt": "2026-11-14",
+              "quote": "directories: ledger, ledgerbackend, loadtest, sac, tutorial"
+            },
+            {
+              "class": "B",
+              "ref": "https://api.github.com/repos/stellar/go",
+              "observedAt": "2026-11-14",
+              "quote": "archived true"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tools/sdks/client-sdks.md",
+              "observedAt": "2026-11-14",
+              "quote": "**The Go SDK is maintained by SDF.**"
+            }
+          ]
+        },
+        {
+          "claim": "Latest go-stellar-sdk release (golden: v0.8.0 as of 2026-11-02)",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://proxy.golang.org/github.com/stellar/go-stellar-sdk/@latest",
+              "observedAt": "2026-11-14",
+              "quote": "Version v0.9.0, Time 2026-11-10T14:46:09Z; GitHub release v0.9.0 2026-11-12"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-ti-parse-raw-ledger-data (tooling-a)",
+          "survivor": "q-ti-parse-raw-ledger-data",
+          "why": "Adjacent: parsing LedgerCloseMeta; different knowledge (XDR fields, not Go packages)."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Correct and answerable; the 213-word golden pins a release that is already one version behind and repeats the backend caveats in avoid.",
+      "rewrite": {
+        "question": null,
+        "answer": "Use SDF's Go module `github.com/stellar/go-stellar-sdk`. For ledger streaming and ingestion, import its `ingest` package to parse raw ledger XDR and `ingest/ledgerbackend` to choose the ledger source, such as Captive Core or a data lake. The old `github.com/stellar/go` repository is archived; do not start new code there.",
+        "keyFacts": [
+          "The official Go SDK module is `github.com/stellar/go-stellar-sdk`.",
+          "Raw ledger ingestion uses `go-stellar-sdk/ingest` with `ingest/ledgerbackend`.",
+          "`github.com/stellar/go` is archived and not for new code."
+        ],
+        "avoid": [
+          "Do NOT cite `github.com/stellar/go/ingest` as the current SDK path.",
+          "Do NOT pin a go-stellar-sdk release without an as-of date."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "Latest release v0.9.0 (2026-11-12) as of 2026-11-14; the golden's v0.8.0 (2026-10-20) was dated and now stale.",
+          "Module also contains txnbuild, clients/horizonclient and clients/rpcclient.",
+          "Backend choice (Captive Core, history archive, datastore/Galexie, RPC) has different retention and operating cost.",
+          "October 2025 split of the stellar/go monorepo."
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 213,
+      "wordsAfter": 87
+    },
+    {
+      "id": "q-tool-greenfield-indexer-prior-art-preflight",
+      "purpose": "mixed",
+      "topics": [
+        "Soroban event indexer design",
+        "prior-art check before building",
+        "durable event history"
+      ],
+      "tests": "Mixed: a design question whose durable world fact is that RPC getEvents keeps only a recent window so history needs a separate store, plus a Raven-specific process demand to consult Scout and a skill before designing.",
+      "questionIssues": [
+        "Asks for an architecture and plan, a deliberately open design question; the 'bounded prior-art pass' demand cannot be satisfied or checked by another tool."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Role list overlaps q-tool-indexer-repos-discovery."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "operation",
+          "issue": "Raven license/audit field gap."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "RPC keeps events only for a limited recent window, so durable history needs ingestion",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/guides/events/ingest.md",
+              "observedAt": "2026-11-14",
+              "quote": "an RPC keeps events only for a limited window of recent ledgers"
+            }
+          ]
+        },
+        {
+          "claim": "Galexie, the Ingest SDK and stellar-etl are active SDF repositories",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://api.github.com/repos/stellar/stellar-galexie",
+              "observedAt": "2026-11-14",
+              "quote": "archived false; pushed 2026-11-14"
+            },
+            {
+              "class": "B",
+              "ref": "https://api.github.com/repos/stellar/stellar-etl",
+              "observedAt": "2026-11-14",
+              "quote": "archived false; pushed 2026-11-14"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-tool-indexer-repos-discovery",
+          "survivor": "q-tool-indexer-repos-discovery",
+          "why": "The notes themselves say this case reuses its truth basis; same role taxonomy and RPC-retention fact."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "The case's own notes admit it reuses the truth basis of q-tool-indexer-repos-discovery; the shared durable facts fit in that survivor, and the Scout-consultation behavior is process, not Stellar truth.",
+      "rewrite": null,
+      "survivor": "q-tool-indexer-repos-discovery",
+      "absorb": "The survivor's world facts already include RPC's limited event window and the Galexie, Ingest SDK, indexer and ETL roles; add 'a durable index needs checkpointed ingestion with idempotent writes and a replay path that does not assume RPC is archival' as part of its answer only if the owner wants the design angle.",
+      "confidence": "medium",
+      "wordsBefore": 407,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-tool-indexer-repos-discovery",
+      "purpose": "mixed",
+      "topics": [
+        "Soroban event and ledger indexing",
+        "Galexie and Ingest SDK roles",
+        "RPC retention limits"
+      ],
+      "tests": "Mixed: the durable world fact of which SDF building blocks (Galexie, Ingest SDK, ledger-data indexer, ETL) serve which indexing role and that RPC getEvents is not durable history, plus Raven's role of reporting directly verified repos instead of fabricating.",
+      "questionIssues": [
+        "A real question, but the golden requires a Raven-style verified repository table and never states a world fact an alternative source could satisfy."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Six roles in one fact."
+        },
+        {
+          "i": 3,
+          "kind": "operation",
+          "issue": "repoScore guidance, duplicated across five sibling cases."
+        },
+        {
+          "i": 4,
+          "kind": "operation",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Galexie exports ledger metadata to a data lake; Ingest SDK is a set of Go packages; RPC keeps only a recent event window",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/data/indexers.md",
+              "observedAt": "2026-11-14",
+              "quote": "Galexie is a tool for acquiring Stellar ledger metadata from the network and exporting to external storage, a data lake."
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/guides/events/ingest.md",
+              "observedAt": "2026-11-14",
+              "quote": "an RPC keeps events only for a limited window of recent ledgers"
+            }
+          ]
+        },
+        {
+          "claim": "stellar-ledger-data-indexer, stellar-galexie, stellar-etl and go-stellar-sdk are active and not archived",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://api.github.com/repos/stellar/stellar-ledger-data-indexer",
+              "observedAt": "2026-11-14",
+              "quote": "archived false; pushed 2026-11-12; description: indexes ledger data by transaction_hash, contract_id, etc"
+            },
+            {
+              "class": "B",
+              "ref": "https://api.github.com/repos/stellar/stellar-galexie",
+              "observedAt": "2026-11-14",
+              "quote": "archived false; pushed 2026-11-14"
+            }
+          ]
+        },
+        {
+          "claim": "Scout exact owner/name recall for subquery/stellar-subql-starter (sls-025)",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "https://stellarlight.xyz/api/repos/search",
+              "observedAt": "2026-11-14",
+              "quote": "not re-queried; resolved finding sls-025 is a Raven-defect record, not a world fact"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-tool-greenfield-indexer-prior-art-preflight",
+          "survivor": "q-tool-indexer-repos-discovery",
+          "why": "Same truth basis; absorbed here."
+        },
+        {
+          "id": "q-infra-which-indexer (tooling-a)",
+          "survivor": "q-infra-which-indexer",
+          "why": "Owns third-party hosted indexer providers; this case owns open-source building blocks."
+        },
+        {
+          "id": "q-tool-oracle-repo-live, q-tool-passkey-repo-live, q-tool-zk-repo-live, q-tool-sdk-repos-discovery, q-tool-smart-wallet-repos-discovery",
+          "survivor": "q-tool-indexer-repos-discovery",
+          "why": "The same 'repoScore is navigation, not quality' behavior repeats across all of them; here it is dropped and left to the frozen live lane."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Indexing building blocks are a worthwhile Stellar topic, but the golden grades Raven's repository-table behavior. A rewrite grounded in the official indexers docs makes it a world case; the repoScore caution is already tested by the frozen live lane.",
+      "rewrite": {
+        "question": null,
+        "answer": "SDF's open-source building blocks are Galexie (exports ledger metadata to a data lake), the Go Ingest SDK (`go-stellar-sdk/ingest`), `stellar-ledger-data-indexer` and `stellar-etl`. RPC `getEvents` keeps only a recent window, so durable history needs your own ingestion and storage. Verify each repository's role, activity and archive status before recommending it.",
+        "keyFacts": [
+          "Galexie exports ledger metadata to a data lake; it is not a query index.",
+          "The Go Ingest SDK (`go-stellar-sdk/ingest`) parses ledger data for a custom indexer.",
+          "RPC `getEvents` serves only a limited recent window, so history needs your own storage.",
+          "`stellar-ledger-data-indexer` and `stellar-etl` are further SDF indexing repositories."
+        ],
+        "avoid": [
+          "Do NOT fabricate repositories or call a hosted-service client a complete backend.",
+          "Do NOT treat a Scout zero result for an exact owner/name as proof a repository does not exist."
+        ],
+        "notes": "A role-labeled table built from Scout rows is also correct; no named roster is required. repoScore and stars are navigation only.",
+        "movedToTruth": [
+          "Six roles: turnkey indexer, Galexie exporter, ingest library, ETL pipeline, hosted-service client SDK, community prior art.",
+          "sls-025 (exact owner/name recall) resolved 2026-07-14; exact queries return subquery/stellar-subql-starter.",
+          "SubQuery, OBSRVR and Mercury are not a timeless roster.",
+          "Greenfield design fields absorbed from q-tool-greenfield-indexer-prior-art-preflight: checkpointed worker, append-only raw storage, idempotent normalization, replay path using a historical source, monitoring and dead-letter handling.",
+          "stellar-rpc v30.0.1 (2026-11-12) is the current release."
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 393,
+      "wordsAfter": 147
+    },
+    {
+      "id": "q-tool-js-sdk-package",
+      "purpose": "stellar-truth",
+      "topics": [
+        "official JavaScript SDK",
+        "npm package name",
+        "stellar-base fold-in"
+      ],
+      "tests": "The official JS/TS SDK is the SDF-maintained `@stellar/stellar-sdk`, installed with npm, and `@stellar/stellar-base` is rolled into it.",
+      "questionIssues": [],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Trivia beside the main point (package name); keep as one predicate."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Capability list; low discriminating value."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "@stellar/stellar-sdk is the maintained SDF package; unscoped stellar-sdk and @stellar/stellar-base are deprecated in its favour",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "https://registry.npmjs.org/stellar-sdk/latest",
+              "observedAt": "2026-11-14",
+              "quote": "deprecated: This package has moved to @stellar/stellar-sdk!"
+            },
+            {
+              "class": "C",
+              "ref": "https://registry.npmjs.org/@stellar/stellar-base/latest",
+              "observedAt": "2026-11-14",
+              "quote": "version 15.0.0 deprecated: rolled into @stellar/stellar-sdk"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tools/sdks/client-sdks.md",
+              "observedAt": "2026-11-14",
+              "quote": "**The JavaScript SDK is maintained by SDF.**"
+            }
+          ]
+        },
+        {
+          "claim": "@stellar/stellar-sdk current version has no stellar-base dependency",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "https://registry.npmjs.org/@stellar/stellar-sdk/latest",
+              "observedAt": "2026-11-14",
+              "quote": "version 17.4.0; dependencies include @stellar/js-xdr, no @stellar/stellar-base"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-sor-deploy-invoke-from-js-sdk (soroban)",
+          "survivor": "q-tool-js-sdk-package",
+          "why": "Different use (deploy and invoke); not a duplicate."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "A fair, stable package-name case; the golden and notes can drop capability prose and the version history to three facts.",
+      "rewrite": {
+        "question": null,
+        "answer": "The official JavaScript/TypeScript SDK is `@stellar/stellar-sdk`, maintained by SDF; install it with `npm install @stellar/stellar-sdk`. It covers Horizon, Stellar RPC, transaction building and signing, and XDR. The former `@stellar/stellar-base` package is rolled into it, so there is no separate base install.",
+        "keyFacts": [
+          "The official JS/TS SDK is `@stellar/stellar-sdk`, maintained by SDF.",
+          "Install it with `npm install @stellar/stellar-sdk`.",
+          "`@stellar/stellar-base` is rolled into `@stellar/stellar-sdk`; no separate install."
+        ],
+        "avoid": [
+          "Do NOT name the unscoped `stellar-sdk` or `stellar-base` alone as the current official package.",
+          "Do NOT call the SDK community-maintained."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "The SDK talks to Horizon and Stellar RPC and exposes Horizon, rpc, Keypair and TransactionBuilder.",
+          "@stellar/stellar-sdk 17.4.0 (2026-10-25) is current; the fold-in dates from v16.",
+          "The unscoped stellar-sdk (13.3.0) and stellar-base (15.0.0) are npm-deprecated."
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 196,
+      "wordsAfter": 84
+    },
+    {
+      "id": "q-tool-lab-what-is",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Stellar Lab",
+        "no-code transaction building",
+        "Lab key handling"
+      ],
+      "tests": "Stellar Lab is the official no-code tool to build, sign, simulate and submit transactions on Mainnet, Testnet and Futurenet; Friendbot funds only Testnet and Futurenet; Saved Keypairs is test-network-only and obfuscated, not encrypted.",
+      "questionIssues": [
+        "Pure existence question; the safety boundary that matters for real agents is absent, which is why the merged Lab workflow case existed."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Capability list; low discriminating value."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Account creation scope; keep with Friendbot."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Lab creates accounts on Mainnet, Testnet and Futurenet; supports build, simulate, submit, contract deploy and invoke, XDR to JSON",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tools/lab.md",
+              "observedAt": "2026-11-14",
+              "quote": "Create Accounts on Mainnet, Testnet, and Futurenet using a web UI."
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tools/lab.md",
+              "observedAt": "2026-11-14",
+              "quote": "Transaction Dashboard ... Simulate and Submit ... XDR ⇔ JSON Support"
+            }
+          ]
+        },
+        {
+          "claim": "Saved Keypairs: Testnet and Futurenet only, obfuscated not encrypted",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tools/lab/saved/keypairs.md",
+              "observedAt": "2026-11-14",
+              "quote": "Saved keypairs are obfuscated, but *not* encrypted"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tools/lab/saved/keypairs.md",
+              "observedAt": "2026-11-14",
+              "quote": "You can only save keypairs on test networks—never on Mainnet"
+            }
+          ]
+        },
+        {
+          "claim": "Lab signs with a pasted secret key, a wallet extension or a hardware wallet",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/laboratory/blob/main/src/components/SignTransactionXdr/index.tsx",
+              "observedAt": "2026-11-14",
+              "quote": "| \"secretKey\" | \"hardwareWallet\" | \"extensionWallet\""
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-ti-stellar-lab-usage-and-new-ui",
+          "survivor": "q-tool-lab-what-is",
+          "why": "Merged here; survivor must absorb the key-handling boundary."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "As merge survivor it should carry the durable Lab facts from q-ti-stellar-lab-usage-and-new-ui (key handling) in a compact form; the question gains a key-handling clause so a safe answer is distinguishable.",
+      "rewrite": {
+        "question": "Is there an official web tool to build, sign, and submit Stellar transactions without writing code, and how should I handle keys in it?",
+        "answer": "Yes: Stellar Lab at lab.stellar.org builds, signs, simulates and submits transactions, deploys and invokes contracts, and views XDR as JSON, on Mainnet, Testnet and Futurenet. Friendbot funds only Testnet and Futurenet. Sign with a wallet or hardware signer; Saved Keypairs works only on Testnet and Futurenet and is obfuscated, not encrypted, so never store Mainnet secrets there.",
+        "keyFacts": [
+          "Stellar Lab (lab.stellar.org) is the official no-code build, sign and submit tool.",
+          "Friendbot funds only Testnet and Futurenet, never Mainnet.",
+          "Lab Saved Keypairs works on Testnet and Futurenet only and is obfuscated, not encrypted.",
+          "Lab signs with a wallet extension or hardware wallet as well as a pasted secret key."
+        ],
+        "avoid": [
+          "Do NOT imply Friendbot funds Mainnet or that Mainnet accounts are free.",
+          "Do NOT call Saved Keypairs encrypted, offline or suitable for a Mainnet secret."
+        ],
+        "notes": "Do not require button locations or screen steps; they change with the UI.",
+        "movedToTruth": [
+          "Lab can be self-hosted and Quickstart serves a local /lab, but local or self-hosted is not automatically offline or air-gapped; for an air gap export unsigned XDR to an offline signer.",
+          "New writes use reversible XOR/base64 obfuscation; rows saved before September 2025 may remain plain text.",
+          "`stellar contract asset deploy` deploys a SAC and `stellar contract id asset` only derives its ID (owned by q-asset-deploy-sac-cli); Lab has no dedicated SAC button as of the last check.",
+          "Freighter was renamed Varial on 2026-10-29; Lab shows it through the Stellar Wallets Kit picker.",
+          "Walkthrough details absorbed from q-ti-stellar-lab-usage-and-new-ui: Fetch next sequence, Change Trust, Build/Sign/Submit."
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 305,
+      "wordsAfter": 145
+    },
+    {
+      "id": "q-tool-leaderboard-open-issues",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Scout leaderboard by open issues",
+        "backlog versus activity"
+      ],
+      "tests": "That an agent uses scout.getLeaderboard with sort=issues, reports generatedAt and scope, and does not read open-issue volume as maintenance activity.",
+      "questionIssues": [
+        "Asks for a Scout-corpus ranking, not a Stellar fact; the answer is whatever the live feed returns."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "process",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "process",
+          "issue": "Prescribes a GitHub corroboration method and an open_issues_count caveat."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "scout.getLeaderboard supports sort=issues with generatedAt",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "https://stellarlight.xyz/api/leaderboard?sort=issues&range=all&limit=2",
+              "observedAt": "2026-11-14",
+              "quote": "response keys ecosystem, meta, projects; generatedAt 2026-11-14T03:20:15Z"
+            },
+            {
+              "class": "B",
+              "ref": "test/drift-141-routing.test.ts",
+              "observedAt": "2026-11-14",
+              "quote": "getLeaderboard routing assertions present"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-live-leaderboard-active-projects (frozen live lane)",
+          "survivor": "q-live-leaderboard-active-projects",
+          "why": "Same surface, same read-the-ranking behavior."
+        },
+        {
+          "id": "q-tool-developer-leaderboard-live",
+          "survivor": "q-live-leaderboard-active-projects",
+          "why": "Same behavior with a different sort."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "No Stellar truth; the frozen live lane and test/drift-141-routing.test.ts cover leaderboard use, and the route-mismatch it guards (repo search versus leaderboard) is a routing concern.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 255,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-tool-oracle-repo-live",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Soroban oracle repositories",
+        "reading repoScore"
+      ],
+      "tests": "That an agent filters Scout repo rows, paginates before a global superlative, and treats repoScore as navigation, not quality proof.",
+      "questionIssues": [
+        "World question (best oracle repos) is answered only as a Raven-ranking behavior."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "operation",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "scout.searchRepos returns repo rows with repoScore for q=oracle",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "https://stellarlight.xyz/api/repos/search?q=oracle&limit=3",
+              "observedAt": "2026-11-14",
+              "quote": "response keys meta, repos; meta.generatedAt 2026-11-14T03:20:18Z"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-live-oracle-repo-triage (frozen live lane)",
+          "survivor": "q-live-oracle-repo-triage",
+          "why": "Same surface (scout.searchRepos), same repoScore-is-navigation behavior."
+        },
+        {
+          "id": "q-defi-oracle-landscape-live (defi-ecosystem)",
+          "survivor": "q-defi-oracle-landscape-live",
+          "why": "Same question about oracle projects in the directory and what evidence supports a strong reference; survivor for the world angle, and q-defi-reflector-oracle owns Reflector facts."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "Duplicate of the frozen live case q-live-oracle-repo-triage and of q-defi-oracle-landscape-live; the repoScore caution repeats across five sibling cases.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 162,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-tool-passkey-repo-live",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "passkey and smart-wallet repositories",
+        "reading repoScore"
+      ],
+      "tests": "That an agent filters Scout rows for passkey repos, paginates before a superlative, and treats repoScore as navigation only.",
+      "questionIssues": [
+        "Same behavior as the oracle and ZK repo cases on another topic."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "operation",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "scout.searchRepos q=passkey returns rows; canonical kits moved to the stellar org",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://api.github.com/repos/stellar/passkey-kit",
+              "observedAt": "2026-11-14",
+              "quote": "archived false; pushed 2026-10-27"
+            },
+            {
+              "class": "B",
+              "ref": "https://api.github.com/repos/kalepail/passkey-kit",
+              "observedAt": "2026-11-14",
+              "quote": "archived true"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-live-oracle-repo-triage (frozen live lane)",
+          "survivor": "q-live-oracle-repo-triage",
+          "why": "Same behavior on a different topic."
+        },
+        {
+          "id": "q-tool-smart-wallet-repos-discovery",
+          "survivor": "q-tool-passkeykit-smart-wallet",
+          "why": "Same passkey and smart-wallet repository topic; the world content is owned by the passkeykit case."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "Same repoScore behavior as the frozen live repo cases; the world content (which passkey kits exist) is owned by q-tool-passkeykit-smart-wallet.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 146,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-tool-passkey-wallet-recovery",
+      "purpose": "stellar-truth",
+      "topics": [
+        "passkey smart-wallet recovery",
+        "signer rotation",
+        "SEP-30 versus C-accounts"
+      ],
+      "tests": "Losing the only usable passkey of a smart account is unrecoverable unless a preconfigured independent signer or recovery policy exists; sync, relayers and indexers are not recovery authority, and SEP-30 targets classic accounts.",
+      "questionIssues": [],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Names four functions in one fact."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Restates KF2."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SEP-30 is Draft v0.8.1 for multi-party recovery of classic Stellar accounts",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0030.md",
+              "observedAt": "2026-11-14",
+              "quote": "Title: Account Recovery: multi-party recovery of Stellar accounts; Status: Draft; Version: 0.8.1"
+            }
+          ]
+        },
+        {
+          "claim": "stellar/smart-account-kit and stellar/passkey-kit are maintained",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://api.github.com/repos/stellar/smart-account-kit",
+              "observedAt": "2026-11-14",
+              "quote": "archived false; pushed 2026-11-13"
+            },
+            {
+              "class": "B",
+              "ref": "https://api.github.com/repos/stellar/passkey-kit",
+              "observedAt": "2026-11-14",
+              "quote": "archived false; pushed 2026-10-27"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-passkey-wallet-recovery (soroban)",
+          "survivor": "q-passkey-wallet-recovery",
+          "why": "Same question about recovering a lost passkey smart wallet; its facts (contract policy, guardian disclosure, loss of every signer unrecoverable, sync is not recovery) subsume this case."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "q-passkey-wallet-recovery already tests recovery design for a lost passkey including 'sync is availability, not recovery'; this case adds only the SEP-30-is-classic-only distinction and the relayer/indexer non-authority point.",
+      "rewrite": null,
+      "survivor": "q-passkey-wallet-recovery",
+      "absorb": "SEP-30 is a recovery-signer model for classic G-accounts and does not automatically recover a passkey C-account; a relayer or indexer is not recovery authority.",
+      "confidence": "high",
+      "wordsBefore": 316,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-tool-passkeykit-smart-wallet",
+      "purpose": "stellar-truth",
+      "topics": [
+        "passkey smart-wallet libraries",
+        "Passkey Kit versus Smart Account Kit",
+        "unaudited software"
+      ],
+      "tests": "Two maintained SDKs fit passkey smart wallets, Passkey Kit with its own flat multi-signer contract and Smart Account Kit over OpenZeppelin contracts; they are not drop-in compatible and both SDKs are unaudited.",
+      "questionIssues": [
+        "The golden answers a harder question than asked: 'What library' is answered with a two-kit comparison and audit scoping; acceptable but the audit state is volatile."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Two predicates (both maintained; not drop-in)."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Volatile audit state without an as-of in the key fact."
+        },
+        {
+          "i": 3,
+          "kind": "process",
+          "issue": "Prescribes pinning and per-release scoping."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Passkey Kit README labels the wallet contract, SDKs and relayer proxy unaudited and points to Smart Account Kit as a non-drop-in sibling",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/passkey-kit/main/README.md",
+              "observedAt": "2026-11-14",
+              "quote": "**Unaudited software.** This repository's smart-wallet contract, SDKs, and relayer proxy have not received an independent third-party security audit."
+            },
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/passkey-kit/main/README.md",
+              "observedAt": "2026-11-14",
+              "quote": "so the two are not drop-in compatible — pick the model that fits your app."
+            }
+          ]
+        },
+        {
+          "claim": "Smart Account Kit README labels the SDK unaudited and says the OpenZeppelin contracts have a separate audit",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/smart-account-kit/main/README.md",
+              "observedAt": "2026-11-14",
+              "quote": "The underlying OpenZeppelin Stellar contracts have a [separate audit] with a different scope."
+            }
+          ]
+        },
+        {
+          "claim": "kalepail repositories are archived move pointers",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://api.github.com/repos/kalepail/passkey-kit",
+              "observedAt": "2026-11-14",
+              "quote": "archived true"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-soroban-add-signer-smart-wallet-howto (soroban)",
+          "survivor": "q-tool-passkeykit-smart-wallet",
+          "why": "Restates 'maintained, non-drop-in siblings' as a key fact; this case owns it."
+        },
+        {
+          "id": "q-tool-smart-wallet-repos-discovery",
+          "survivor": "q-tool-passkeykit-smart-wallet",
+          "why": "Retired; its world content is here."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Facts hold and matter; the golden has 431 words, five key facts and a history of README wording. A compact version keeps the sibling model, non-drop-in and audit-scope facts with an as-of.",
+      "rewrite": {
+        "question": null,
+        "answer": "Two maintained SDKs fit. `stellar/passkey-kit` ships its own smart-wallet contract with a flat multi-signer `Signatures` model; `stellar/smart-account-kit` wraps the OpenZeppelin smart-account contracts with context rules and policies. They are not drop-in compatible, so choose by authorization model. As of 2026-11-14 both READMEs label the SDKs unaudited, and the OpenZeppelin contract audit does not cover them.",
+        "keyFacts": [
+          "`stellar/passkey-kit` ships its own contract with flat multi-signer authorization.",
+          "`stellar/smart-account-kit` builds on OpenZeppelin smart accounts with context rules.",
+          "The two kits are not drop-in compatible; choose by authorization model.",
+          "Both READMEs label the SDKs unaudited (2026-11-14); OpenZeppelin's audit scope differs."
+        ],
+        "avoid": [
+          "Do NOT call Passkey Kit legacy, superseded or demo-only; its README presents Smart Account Kit as a sibling.",
+          "Do NOT say the OpenZeppelin contract audit covers either SDK, relayer or indexer."
+        ],
+        "notes": "Saying Passkey Kit is unaudited is accurate and must not be penalized.",
+        "movedToTruth": [
+          "Passkey Kit commit 69185164 (2026-08-19) replaced the review-before-meaningful-value line with an Unaudited software caution; SECURITY.md lists known-vulnerable legacy wallet WASM hashes.",
+          "Former kalepail repositories are archived move pointers.",
+          "A relayer or fee-paying G-account submits and pays; authorization stays in the C-account's __check_auth and signer/policy contracts.",
+          "Smart Account Kit deployed artifacts use later source revisions than the OpenZeppelin audit scope (README 2026-11-13)."
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 431,
+      "wordsAfter": 138
+    },
+    {
+      "id": "q-tool-rust-soroban-sdk",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Rust contract SDK",
+        "soroban-sdk crate",
+        "client crates versus contract SDK"
+      ],
+      "tests": "`soroban-sdk` from stellar/rs-soroban-sdk is SDF's canonical Rust crate for Soroban contracts, targeting `wasm32v1-none`, and is separate from off-chain client crates.",
+      "questionIssues": [],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Volatile version in a key fact."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Two predicates (canonical and documented community alternatives)."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Latest stable soroban-sdk is v29.0.1; v30.0.0-rc.1 is a pre-release",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "https://crates.io/api/v1/crates/soroban-sdk",
+              "observedAt": "2026-11-14",
+              "quote": "max_stable_version 29.0.1; newest_version 30.0.0-rc.1"
+            },
+            {
+              "class": "B",
+              "ref": "https://api.github.com/repos/stellar/rs-soroban-sdk/releases",
+              "observedAt": "2026-11-14",
+              "quote": "v30.0.0-rc.1 2026-10-21 pre=true; v29.0.1 2026-10-12"
+            }
+          ]
+        },
+        {
+          "claim": "Rust SDK is SDF-maintained; contract builds target wasm32v1-none",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tools/sdks/contract-sdks.md",
+              "observedAt": "2026-11-14",
+              "quote": "**The Rust SDK is maintained by SDF.**"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/smart-contracts/getting-started/setup.md",
+              "observedAt": "2026-11-14",
+              "quote": "Install the `wasm32v1-none` target"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-tool-which-sdk-comparison",
+          "survivor": "q-tool-which-sdk-comparison",
+          "why": "Overlaps on 'Rust is SDF's canonical contract SDK'; this case owns the crate name and target."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Correct and stable at its core; the golden pins release history that already shifts every few weeks.",
+      "rewrite": {
+        "question": null,
+        "answer": "Add `soroban-sdk` from stellar/rs-soroban-sdk, SDF's canonical Rust crate for writing Soroban contracts that compile to Wasm for the `wasm32v1-none` target. It is separate from off-chain Rust client crates such as `stellar-xdr`, `stellar-strkey` and `stellar-rpc-client`. As of 2026-11-14 the latest stable release is v29.0.1; match the version to the target network's protocol.",
+        "keyFacts": [
+          "`soroban-sdk` (stellar/rs-soroban-sdk) is SDF's canonical Rust contract SDK.",
+          "Contract builds target `wasm32v1-none`.",
+          "Off-chain crates such as `stellar-xdr` and `stellar-strkey` are not the contract SDK."
+        ],
+        "avoid": [
+          "Do NOT name `stellar-sdk` or an off-chain client crate as the Rust contract SDK.",
+          "Do NOT cite a soroban-sdk release as latest without an as-of date."
+        ],
+        "notes": "A dated older version is not wrong; an undated 'latest' claim is.",
+        "movedToTruth": [
+          "Release history: v28.0.0 2026-09-18, v29.0.0 2026-10-07, v29.0.1 2026-10-12, v30.0.0-rc.1 2026-10-21 (pre-release); mainnet runs Protocol 29 until the 2026-11-23 vote.",
+          "Official contract catalog also documents community Solang/Solidity and AssemblyScript paths with different maturity.",
+          "docs.rs and crates.io can lag a GitHub release."
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 325,
+      "wordsAfter": 113
+    },
+    {
+      "id": "q-tool-sdk-repos-discovery",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Stellar SDK repositories",
+        "Scout repo rows",
+        "maintainer tier"
+      ],
+      "tests": "That an agent reports observed Scout SDK repo rows with generatedAt, role and corroboration instead of a static top list.",
+      "questionIssues": [
+        "'Top-rated' invites a ranking the golden forbids; the world question (which SDKs are official) is owned by q-tool-which-sdk-comparison."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "process",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Scout row `tier` is an index quality tier, not maintainer tier; SDF Go SDK is documented as SDF-maintained",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tools/sdks/client-sdks.md",
+              "observedAt": "2026-11-14",
+              "quote": "**The Go SDK is maintained by SDF.**"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-tool-which-sdk-comparison",
+          "survivor": "q-tool-which-sdk-comparison",
+          "why": "World angle (official versus community SDKs) is owned there."
+        },
+        {
+          "id": "q-live-zk-repos-current (frozen live lane)",
+          "survivor": "q-live-zk-repos-current",
+          "why": "Same repoScore behavior."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "Pure Scout-row reporting behavior already covered by the frozen live repo cases; the SDK world content is in q-tool-which-sdk-comparison.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 326,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-tool-sep41-status-live",
+      "purpose": "stellar-truth",
+      "topics": [
+        "SEP-41 token interface",
+        "SEP status as of a date"
+      ],
+      "tests": "SEP-41 is the Soroban token interface (not the Stellar Asset Contract itself) and its status is reported from the current preamble with an as-of.",
+      "questionIssues": [],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "process",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SEP-41 preamble: Draft, version 0.5.2, updated 2026-08-24",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md",
+              "observedAt": "2026-11-14",
+              "quote": "Title: Soroban Token Interface; Status: Draft; Updated: 2026-08-24; Version 0.5.2"
+            },
+            {
+              "class": "B",
+              "ref": "https://api.github.com/repos/stellar/stellar-protocol/commits?path=ecosystem/sep-0041.md",
+              "observedAt": "2026-11-14",
+              "quote": "2026-09-15 SEP-41: permit additional event topics (#1994)"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-sep-41-token-interface (assets-anchors-seps)",
+          "survivor": "q-sep-41-token-interface",
+          "why": "Same question: what SEP-41 is, how it relates to the SAC, and its dated status."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "q-sep-41-token-interface already asks what SEP-41 is and states it is the common interface implemented by the SAC and custom tokens, with a dated-status key fact; this case adds only the status as-of.",
+      "rewrite": null,
+      "survivor": "q-sep-41-token-interface",
+      "absorb": "As of 2026-11-14 the official SEP-41 preamble says Draft, version 0.5.2, updated 2026-08-24 (a 2026-09-15 commit permitted additional event topics); a later preamble must be accepted.",
+      "confidence": "high",
+      "wordsBefore": 90,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-tool-skill-detail-install",
+      "purpose": "behavior",
+      "topics": [
+        "installing an agent skill",
+        "retired skill slug",
+        "skill detail lookup"
+      ],
+      "tests": "Behavior and mechanics: a topical name ('soroban') is not an exact current slug, so an agent must resolve it against the live skill list before fetching detail, and must not invent install steps.",
+      "questionIssues": [
+        "Premise 'the Stellar soroban agent skill' is a stale name by design (fabrication bait); acceptable as a behavior probe."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "process",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "process",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "/api/skills/soroban returns 404 and the SDF slug is smart-contracts",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "https://stellarlight.xyz/api/skills/soroban",
+              "observedAt": "2026-11-14",
+              "quote": "HTTP 404"
+            },
+            {
+              "class": "C",
+              "ref": "https://stellarlight.xyz/api/skills/smart-contracts",
+              "observedAt": "2026-11-14",
+              "quote": "HTTP 200"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-gap-scout-get-skill-detail (tooling-a)",
+          "survivor": "q-gap-scout-get-skill-detail",
+          "why": "Same getSkill/listSkills usage; this case adds the retired-slug trap."
+        }
+      ],
+      "verdict": "move-tool-lane",
+      "reason": "No Stellar truth. The retired-slug honesty probe is the one thing q-gap-scout-get-skill-detail does not test and nothing else visibly covers, so it fits a tool lane as a fabrication-bait case.",
+      "rewrite": null,
+      "confidence": "medium",
+      "wordsBefore": 338,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-tool-smart-wallet-repos-discovery",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "passkey and smart-wallet repositories",
+        "Scout repo rows"
+      ],
+      "tests": "That an agent reports observed Scout rows and labels direct non-Scout references to stellar/smart-account-kit, OpenZeppelin account contracts and stellar/passkey-kit.",
+      "questionIssues": [
+        "World question is answerable without Scout and is the passkeykit case's topic."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Vague 'current and legacy purposes'."
+        },
+        {
+          "i": 4,
+          "kind": "process",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "smart-account-kit and passkey-kit are current; kalepail repos are archived",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://api.github.com/repos/stellar/smart-account-kit",
+              "observedAt": "2026-11-14",
+              "quote": "archived false; pushed 2026-11-13"
+            },
+            {
+              "class": "B",
+              "ref": "https://api.github.com/repos/kalepail/passkey-kit",
+              "observedAt": "2026-11-14",
+              "quote": "archived true"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-tool-passkeykit-smart-wallet",
+          "survivor": "q-tool-passkeykit-smart-wallet",
+          "why": "Owns the world facts."
+        },
+        {
+          "id": "q-tool-passkey-repo-live",
+          "survivor": "q-tool-passkeykit-smart-wallet",
+          "why": "Same topic."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "Duplicates q-tool-passkeykit-smart-wallet on the world facts and the frozen live repo cases on the Scout behavior.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 338,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-tool-soroban-auth-audit-live",
+      "purpose": "mixed",
+      "topics": [
+        "Soroban authorization recursion audit finding",
+        "Veridise audit V2 and V2.1"
+      ],
+      "tests": "Mixed: the Veridise audit's Critical-labeled authorization-recursion item was judged invalid (stellar-truth) plus whether Raven's research search now retrieves its V2.1 identifier (raven-mechanics, already fixed).",
+      "questionIssues": [
+        "'Currently indexed' ties a world question to Raven's index; the same question is already asked in the soroban lane without that wording."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "operation",
+          "issue": "Scout exactMiss behavior; a resolved defect, not a world fact."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "V2 labeled the item V-SOR-VUL-002 Critical and Investigated; V2.1 moved it to Appendix A.2.2 as V-SOR-APP-VUL-003 with a Why Invalid rationale",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://veridise.com/wp-content/uploads/2025/02/VAR_Stellar_Soroban.pdf",
+              "observedAt": "2026-11-14",
+              "quote": "A.2.2 V-SOR-APP-VUL-003: Denial of Service During Authorization; Severity Critical; Status Investigated"
+            },
+            {
+              "class": "A",
+              "ref": "https://veridise.com/wp-content/uploads/2025/02/VAR_Stellar_Soroban.pdf",
+              "observedAt": "2026-11-14",
+              "quote": "Why Invalid: failed require_auth in __check_auth returns an Err ... linear in the number of trackers"
+            },
+            {
+              "class": "D",
+              "ref": "https://stellarsecurityportal.com/api/v1/reports/28",
+              "observedAt": "2026-11-14",
+              "quote": "V-SOR-VUL-002 Denial of Service During Authorization Critical Investigated; Critical-Severity Issues 0 0"
+            }
+          ]
+        },
+        {
+          "claim": "Scout research retrieves V-SOR-APP-VUL-003 without meta.exactMiss",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "https://stellarlight.xyz/api/research?q=V-SOR-APP-VUL-003&source=audit&limit=2",
+              "observedAt": "2026-11-14",
+              "quote": "meta.exactMiss null; first item Stellar Soroban Core: Veridise"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-soroban-auth-recursion-dos-audit (soroban)",
+          "survivor": "q-soroban-auth-recursion-dos-audit",
+          "why": "Same audit finding, same V2 versus V2.1 facts, same invalid-issue disposition."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "q-soroban-auth-recursion-dos-audit tests exactly the same finding with the same key facts; the extra Scout exactMiss fact is a resolved defect (sls-071, sls-074) with no measurement value in a truth battery.",
+      "rewrite": null,
+      "survivor": "q-soroban-auth-recursion-dos-audit",
+      "absorb": "Nothing new beyond confirming it names the V2 label (V-SOR-VUL-002) and the V2.1 appendix label (V-SOR-APP-VUL-003) with the rationale that error propagation makes the loop linear in the number of trackers and many trackers are costly to build; drop the exactMiss detail.",
+      "confidence": "high",
+      "wordsBefore": 285,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-tool-taxonomy-dispatch-live",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Lumenloop categories and project tags",
+        "vocabulary operations"
+      ],
+      "tests": "That an agent calls both get_categories and get_project_tags_vocabulary and keeps their scopes distinct.",
+      "questionIssues": [
+        "Only Raven's Lumenloop adapter can satisfy it; asOf is 2026-07-11, not re-verified in the last audit."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "process",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Both vocabulary operations exist",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "catalog/manifest.json",
+              "observedAt": "2026-11-14",
+              "quote": "entries include lumenloop.get_categories and lumenloop.get_project_tags_vocabulary"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-ti-vocab-project-categories-live",
+          "survivor": "q-ti-vocab-project-categories-live",
+          "why": "Same category vocabulary; both retire."
+        },
+        {
+          "id": "q-ti-vocab-project-tags-live",
+          "survivor": "q-gap-lumen-project-tag-vocabulary",
+          "why": "Same project-tag vocabulary."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "Merges two vocabulary questions already asked separately and already covered by routing cases and unit tests; no Stellar truth.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 69,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-tool-wallets-comparison",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Stellar wallets",
+        "hardware wallet and WalletConnect support",
+        "wallet kits versus wallets"
+      ],
+      "tests": "Varial (formerly Freighter) is SDF's non-custodial wallet; Stellar Wallets Kit lets apps connect Ledger, Trezor and WalletConnect; hardware wallets and a connectivity protocol are different things.",
+      "questionIssues": [
+        "The golden never answers the question asked (which wallets, which support hardware wallets or WalletConnect); it returns a role taxonomy a user would not recognize as an answer."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": "Prescribes a classification method."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "process",
+          "issue": "Prescribes comparison dimensions."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Freighter was renamed Varial on 2026-10-29; Varial is SDF's flagship non-custodial wallet",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial",
+              "observedAt": "2026-11-14",
+              "quote": "Today, Freighter becomes Varial, with a new name and a new focus"
+            },
+            {
+              "class": "B",
+              "ref": "https://api.github.com/repos/stellar/freighter/releases",
+              "observedAt": "2026-11-14",
+              "quote": "5.50.0 published 2026-10-29; 5.52.0 2026-11-07"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tools/developer-tools/wallets.md",
+              "observedAt": "2026-11-14",
+              "quote": "SDF’s flagship non-custodial wallet extension"
+            }
+          ]
+        },
+        {
+          "claim": "Stellar Wallets Kit includes Ledger, Trezor and WalletConnect modules",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tools/developer-tools/wallets.md",
+              "observedAt": "2026-11-14",
+              "quote": "The Stellar Wallets Kit supports many wallets including: ... Ledger Hardware Wallet, Trezor Hardware Wallet, ... WalletConnect"
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/Creit-Tech/Stellar-Wallets-Kit/tree/main/src/sdk/modules",
+              "observedAt": "2026-11-14",
+              "quote": "ledger.module.ts, trezor.module.ts, wallet-connect.module.ts, varial.module.ts"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-tool-freighter-wallet (retail-consumer)",
+          "survivor": "q-tool-freighter-wallet",
+          "why": "Owns 'Freighter/Varial is SDF's noncustodial wallet'."
+        },
+        {
+          "id": "q-eco-stellar-wallets-list (defi-ecosystem)",
+          "survivor": "q-eco-stellar-wallets-list",
+          "why": "Directory roster of wallets; different knowledge (Scout directory)."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "A real question worth keeping, but the golden answers a different one. The rewrite states the world facts the question asks for, grounded in the official wallets page and the kit's module list.",
+      "rewrite": {
+        "question": null,
+        "answer": "Varial (formerly Freighter, renamed 2026-10-29) is SDF's non-custodial wallet extension. Stellar Wallets Kit, a community library from Creit Tech, lets apps connect many wallets, including Ledger and Trezor hardware wallets and WalletConnect. Ledger and Trezor are hardware wallets; WalletConnect is a connection protocol, not a wallet. Wallet lists are non-exhaustive, so check each wallet's own docs for current support.",
+        "keyFacts": [
+          "Varial, formerly Freighter, is SDF's non-custodial wallet extension.",
+          "Stellar Wallets Kit has modules for Ledger, Trezor and WalletConnect.",
+          "Ledger and Trezor are hardware wallets; WalletConnect is a protocol, not a wallet.",
+          "Wallet lists in docs and kits are non-exhaustive; verify each wallet's current support."
+        ],
+        "avoid": [
+          "Do NOT call WalletConnect a wallet app or Ledger and Trezor mere connectors.",
+          "Do NOT call every listed wallet official or SDF-maintained."
+        ],
+        "notes": "Freighter and Varial name the same wallet; do not penalize either name. Quoting Scout's wallet type metadata as attributed is not a wrong claim.",
+        "movedToTruth": [
+          "Role taxonomy: end-user wallet products, wallet-building SDKs (SDF TypeScript Wallet SDK, Soneso Flutter wallet layer), Stellar Wallets Kit, smart-account tooling.",
+          "Verify per wallet: custody, platform, transaction and Soroban auth-entry support, network and asset scope, recovery, maintenance.",
+          "sls-033 (Scout wallet type and productKind metadata) cap clause leaves the judge-facing notes with the Scout-metadata claims; the finding stays in improvements/."
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 398,
+      "wordsAfter": 149
+    },
+    {
+      "id": "q-tool-which-sdk-comparison",
+      "purpose": "stellar-truth",
+      "topics": [
+        "official versus community SDKs",
+        "choosing a Stellar SDK",
+        "contract versus client SDKs"
+      ],
+      "tests": "SDF maintains the JavaScript and Go client SDKs, the Rust contract SDK and some Rust client crates, while Python, Java, iOS, Flutter, KMP, PHP and .NET SDKs are community-maintained; maintainer tier alone does not settle production fitness.",
+      "questionIssues": [
+        "The question asks which SDKs are SDF versus community, but the golden never names them; it returns a decision framework."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "process",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "process",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SDF maintains the JS, Go and Rust contract SDKs; Python, iOS, Flutter, PHP, KMP, Java and .NET are community-maintained",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tools/sdks/client-sdks.md",
+              "observedAt": "2026-11-14",
+              "quote": "The JavaScript SDK is maintained by SDF; The Go SDK is maintained by SDF; The Python SDK is maintained by dedicated community developers"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tools/sdks/contract-sdks.md",
+              "observedAt": "2026-11-14",
+              "quote": "**The Rust SDK is maintained by SDF.**"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-tool-js-sdk-package, q-tool-go-sdk-ingest, q-tool-rust-soroban-sdk, q-tool-flutter-mobile-sdk",
+          "survivor": "q-tool-which-sdk-comparison",
+          "why": "Each owns one SDK's name and package; this case owns the maintainer-tier roster."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "A good, answerable question whose golden is a 304-word decision framework with no roster; the official docs state the maintainer tier per SDK, so the roster is the world fact.",
+      "rewrite": {
+        "question": null,
+        "answer": "SDF maintains the JavaScript and Go client SDKs, the Rust `soroban-sdk` for contracts and several Rust client crates (`stellar-xdr`, `stellar-strkey`, an RPC client). Python, Java, iOS, Flutter, Kotlin Multiplatform, PHP and .NET SDKs are community-maintained, though Stellar's docs list them. Choose by role and feature coverage first; maintainer tier alone is not a production verdict.",
+        "keyFacts": [
+          "SDF maintains the JavaScript and Go client SDKs and the Rust `soroban-sdk` contract SDK.",
+          "Python, Java, iOS, Flutter, KMP, PHP and .NET SDKs are community-maintained.",
+          "Choose by role and feature coverage; maintainer tier alone is not a production verdict."
+        ],
+        "avoid": [
+          "Do NOT conflate contract SDKs with client SDKs or assume every language has the same Horizon, RPC and SEP coverage.",
+          "Do NOT claim an SDF-maintained SDK carries a support SLA or that community SDKs are unfit for production."
+        ],
+        "notes": "Accept the documented community contract paths (Solang, AssemblyScript) as extra detail, not requirements.",
+        "movedToTruth": [
+          "Official docs also document Solang and AssemblyScript community contract paths with different maturity.",
+          "Validate the exact SDK: feature parity, protocol compatibility, release cadence, dependency posture, tests.",
+          "Date versions and recheck before pinning."
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 304,
+      "wordsAfter": 145
+    },
+    {
+      "id": "q-tool-zk-repo-live",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Stellar ZK repositories",
+        "hackathon winner marker",
+        "reading repoScore"
+      ],
+      "tests": "That an agent filters Scout ZK repo rows, treats hackathonWinner as index-relative and codeVerified as scan evidence, and does not read repoScore as quality.",
+      "questionIssues": [
+        "Same behavior as the oracle case; the world content (ZK on Stellar) is owned by q-zk-* cases."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "operation",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "FredericRezeau/xray-games is not archived and DoraHacks lists it 2nd in Stellar Hacks: ZK Gaming",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://api.github.com/repos/FredericRezeau/xray-games",
+              "observedAt": "2026-11-14",
+              "quote": "not re-read; the note is a grading allowance for one example row, not a golden fact"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-live-zk-repos-current (frozen live lane)",
+          "survivor": "q-live-zk-repos-current",
+          "why": "Same question and same repoScore behavior in the frozen live lane."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "The frozen live lane holds q-live-zk-repos-current for exactly this behavior; the case adds no Stellar truth.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 191,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-infra-testnet-reset-schedule-recovery",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Testnet reset schedule",
+        "what a reset wipes",
+        "demo planning"
+      ],
+      "tests": "The official Networks page lists the next scheduled Testnet reset; a reset returns the network to genesis and wipes accounts and contract data, so demo setup must be scripted.",
+      "questionIssues": [
+        "December-specific wording means the case needs a refresh once the date passes; acceptable as a scheduled case."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "process",
+          "issue": "Prescribes a setup script."
+        },
+        {
+          "i": 3,
+          "kind": "process",
+          "issue": "Prescribes checking the schedule."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Networks lists December 16, 2026 as the scheduled 2026 Testnet reset",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/networks.md",
+              "observedAt": "2026-11-14",
+              "quote": "Here are the scheduled 2026 dates: * December 16, 2026"
+            },
+            {
+              "class": "C",
+              "ref": "https://status.stellar.org/api/v2/scheduled-maintenances/upcoming.json",
+              "observedAt": "2026-11-14",
+              "quote": "only 2026-11-23T17:00Z Stellar Public Network Protocol Upgrade Vote; no December reset entry"
+            }
+          ]
+        },
+        {
+          "claim": "A reset clears all ledger entries and history; Horizon operators must re-join and re-sync",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/networks.md",
+              "observedAt": "2026-11-14",
+              "quote": "Resets clear all ledger entries (accounts, trustlines, offers, smart contract data, etc.), transactions, and historical data"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-infra-testnet-vs-futurenet (tooling-a)",
+          "survivor": "q-infra-testnet-vs-futurenet",
+          "why": "Network selection; its notes already say it does not require the reset date."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Facts verified today and the case is useful; the 282-word golden carries a long time-of-day dispute that belongs in the judge-blind block.",
+      "rewrite": {
+        "question": null,
+        "answer": "As of 2026-11-14 the official Networks page lists December 16, 2026 as the next scheduled Testnet reset; check that page and Stellar's status announcements before the demo. A reset returns Testnet to genesis, wiping accounts, balances, trustlines, offers, contract data, transactions and history. Keep a setup script that recreates and funds accounts, assets, trustlines and contracts.",
+        "keyFacts": [
+          "Networks lists the next scheduled Testnet reset (2026-12-16 as of 2026-11-14).",
+          "A Testnet reset returns the network to genesis, wiping ledger entries and history.",
+          "Demo setup should be scripted to recreate accounts, assets, trustlines and contracts."
+        ],
+        "avoid": [
+          "Do NOT claim Testnet accounts, balances or contracts survive a reset.",
+          "Do NOT present the published date as a guarantee."
+        ],
+        "notes": "Accept a newer dated official schedule, including a postponement. Do not require the reset hour: Networks says 17:00 UTC is typical, the packages runbook says 09:00.",
+        "movedToTruth": [
+          "Status upcoming-maintenance data had no December reset announcement on 2026-11-14; that omission does not cancel the Networks date.",
+          "Self-hosted Horizon must re-join and re-sync after a reset (stellar/packages testnet-reset runbook).",
+          "Mainnet is out of scope; q-infra-testnet-vs-futurenet owns network selection.",
+          "Chain-reference sites repeat the date but are not a second schedule authority."
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 282,
+      "wordsAfter": 138
+    }
+  ],
+  "summary": {
+    "keep": 0,
+    "tighten": 16,
+    "merge": 6,
+    "retire": 14,
+    "move-tool-lane": 3,
+    "factsChanged": 0
+  },
+  "crossCategoryDuplicates": [
+    "CCTP on Stellar: q-tool-cctp-stellar-integration, q-cctp-v2-usdc-stellar (compliance-rwa-payments), q-hist-cctp-stellar-live-announcement (history-org-tokenomics); survivor q-cctp-v2-usdc-stellar, with q-hist keeping the announcement date",
+    "SEP-41 token interface and status: q-tool-sep41-status-live, q-sep-41-token-interface (assets-anchors-seps); survivor q-sep-41-token-interface",
+    "Passkey smart-wallet recovery: q-tool-passkey-wallet-recovery, q-passkey-wallet-recovery (soroban); survivor q-passkey-wallet-recovery. q-soroban-add-signer-smart-wallet-howto restates 'Passkey Kit and Smart Account Kit are non-drop-in siblings', which q-tool-passkeykit-smart-wallet owns",
+    "Soroban authorization-recursion audit finding: q-tool-soroban-auth-audit-live, q-soroban-auth-recursion-dos-audit (soroban); survivor the soroban case",
+    "Scout repoScore behavior: q-tool-oracle-repo-live, q-tool-passkey-repo-live, q-tool-zk-repo-live, q-tool-sdk-repos-discovery, q-tool-smart-wallet-repos-discovery duplicate the frozen live lane (q-live-oracle-repo-triage, q-live-zk-repos-current); oracle world angle also q-defi-oracle-landscape-live (defi-ecosystem)",
+    "Scout leaderboard reading: q-tool-developer-leaderboard-live, q-tool-leaderboard-open-issues vs q-live-leaderboard-active-projects (frozen live lane)",
+    "Lumenloop vocabulary operations: q-ti-vocab-content-tags-live, q-ti-vocab-project-tags-live vs q-gap-lumen-content-tag-vocabulary, q-gap-lumen-project-tag-vocabulary (tooling-a); categories and regions vs routing cases and q-live-ll-regions-vocab",
+    "Stellar Lab: q-tool-lab-what-is, q-ti-stellar-lab-usage-and-new-ui; Saved Keypairs storage also in q-ti-secret-key-vs-mnemonic-derivation; SAC deploy versus id asset in q-asset-deploy-sac-cli (assets-anchors-seps)",
+    "Wallet products: q-tool-wallets-comparison overlaps q-tool-freighter-wallet (retail-consumer) on Freighter/Varial and q-raph-hardware-wallet on hardware wallets, without duplicating either's question",
+    "Expired-transaction semantics: q-ti-tx-too-late-resubmit shares the 'rejected before inclusion consumes no sequence or fee' fact with q-pc-tx-finality-failure-semantics (protocol-core)",
+    "Indexing building blocks: q-tool-indexer-repos-discovery, q-tool-greenfield-indexer-prior-art-preflight vs q-infra-which-indexer (tooling-a, third-party providers)"
+  ],
+  "missing": [
+    "Stellar CLI contract lifecycle as one how-to (build, deploy, invoke, generate bindings): check tooling-a before adding.",
+    "Galexie / data-lake setup how-to for self-hosted ingestion: no case in this lane asks how to run it, only which components exist.",
+    "Stellar Wallets Kit integration (connect, sign a transaction, Soroban auth entries): q-ti-connect-wallet-button-code in tooling-a may cover it; confirm.",
+    "SDK selection beyond JS, Go, Rust and Flutter (Python, Java): the which-SDK roster covers maintainer tier only; a Python or Java how-to is absent from this lane."
+  ]
+}

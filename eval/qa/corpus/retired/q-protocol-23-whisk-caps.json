@@ -1,0 +1,21 @@
+{
+  "id": "q-protocol-23-whisk-caps",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-protocol (golden coverage audit)",
+    "reviewer": "verify-protocol (golden coverage audit)",
+    "reason": "A per-release CAP membership list adds nothing beyond the release date and main feature that q-protocol-version-history-list tests.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-protocol-23-whisk-caps",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-protocol-23-whisk-caps",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-protocol-23-whisk-caps"
+    ],
+    "lastCaseContentSha256": "26d9c92ad58fba99cd7f2be3d943df7dde59081ca517b5b0448a1a283e3fadb2",
+    "replacementIds": []
+  }
+}

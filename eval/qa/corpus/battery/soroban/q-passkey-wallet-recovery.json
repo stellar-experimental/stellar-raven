@@ -7,19 +7,19 @@
     "skills.stellar-dev.smart-contracts"
   ],
   "golden": {
-    "answer": "The passkey has no Stellar seed to recover, so recovery must be pre-authorized in contract policy; an Ed25519 fallback may itself use an independently secured Stellar seed. Configure independent signers, guardians, admin, or upgrade authority before loss. Losing every authorized path is unrecoverable at protocol level. Recovery policy can add rotation/revocation, delays, notifications, cancellation, thresholds, and audit events, while explicitly disclosing guardian or provider takeover power. Platform sync improves availability but is not an independent contract recovery path.",
+    "answer": "A passkey has no Stellar seed to recover, so recovery must be pre-authorized in the wallet contract before loss: independent signers, guardians, or admin or upgrade authority, possibly an Ed25519 fallback with a securely held seed. If every authorized path is lost, the account is unrecoverable at protocol level. Good designs add rotation, delays, thresholds, and disclosed guardian power. Platform passkey sync is availability support, not an independent recovery path.",
     "keyFacts": [
-      "Requires pre-loss contract policy for seedless passkeys with secure-seed Ed25519 fallback.",
-      "Treats loss of every signer/admin/guardian/upgrade authority as protocol-unrecoverable.",
-      "Lists rotation/revocation, delays, notifications, cancellation, thresholds, audit events.",
-      "Guardian or provider takeover power must be disclosed and constrained.",
-      "Treats platform passkey sync as availability support, not independent contract recovery."
+      "Recovery must be pre-authorized in contract policy, because a passkey has no Stellar seed.",
+      "Losing every signer, admin, guardian, and upgrade path is unrecoverable at protocol level.",
+      "Recovery design adds rotation, delays, thresholds, and disclosed guardian power.",
+      "Platform passkey sync is availability support, not an independent contract recovery path."
     ],
     "avoid": [
-      "A lost passkey can always be recreated from the Stellar contract address.",
-      "Recovery authority can be added after every existing signer, admin, guardian, and upgrade path is lost.",
-      "A correctly scoped Ed25519 recovery signer is invalid merely because it is backed by an independently secured Stellar seed."
-    ]
+      "Do NOT claim that a lost passkey can be recreated from the Stellar contract address.",
+      "Do NOT claim that recovery authority can be added after every signer, admin, guardian, and upgrade path is lost.",
+      "Do NOT claim SEP-30 recovers a passkey contract account."
+    ],
+    "notes": "An Ed25519 recovery signer backed by an independently secured seed is valid; do not penalize it."
   },
   "tags": {
     "category": "soroban",
@@ -234,23 +234,19 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-01)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-soroban-a, verify-audit-soroban-a; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Provenance-only correction; judge-facing fields unchanged.",
-        "F curl https://developers.stellar.org/docs/build/apps/smart-wallets/recovery — '308 -> https://developers.stellar.org/docs/build/guides/contract-accounts/recovery; that target returns 404 (<title>Page Not Found</title>)' (observedAt 2026-11-02).",
-        "B https://developers.stellar.org/sitemap.xml — contract-accounts pages listed: (index), advanced-patterns, examples, smart-wallets; no recovery page (observedAt 2026-11-02). stellar/stellar-docs redirects.json maps '/docs/build/apps/smart-wallets/:slug*' to '/docs/build/guides/contract-accounts/:slug*'.",
-        "A https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns — 'Separate roles (admin vs. standard) so daily use can be delegated while upgrades or recovery stay with admins.' and 'add a cooldown after actions like key rotation or large transfers.' (observedAt 2026-11-02).",
-        "A https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets — 'Passkeys (WebAuthn) are common, but you can also use Ed25519 keys, policy signers, session keys or anything the contract can verify.' and 'Keys stay on the device or synced across devices through cloud providers.' (observedAt 2026-11-02).",
-        "B https://raw.githubusercontent.com/kalepail/passkey-kit/main/README.md — 'A wallet is a Soroban smart contract whose signers can be secp256r1 passkeys, Ed25519 keys, or policy contracts.' (observedAt 2026-11-02): keyFacts[0] confirmed.",
-        "B https://github.com/OpenZeppelin/stellar-contracts/blob/ddc327eb92d63709436da3a8455f641c2d5476c5/packages/accounts/src/smart_account/mod.rs — 'Rule 1: Admin group - 3 of 3 signers ... optional expiration (valid_until)' (observedAt 2026-11-02): keyFacts[1..2] confirmed.",
-        "A https://developers.google.com/identity/passkeys/supported-environments — HTTP 200; passkey sync is a provider/platform feature (observedAt 2026-11-02): keyFacts[4] confirmed.",
-        "Sibling sweep 2026-11-02: q-passkey-smart-account-architecture, q-passkey-platform-constraints, q-smart-account-scoped-policy-signers, q-tool-passkey-wallet-recovery checked; no battery case still cites the dead recovery URL; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-a.json#q-passkey-wallet-recovery",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-a.json#q-passkey-wallet-recovery",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-passkey-wallet-recovery"
       ],
       "rootCause": [
-        "Eval-side provenance flaw: truth.sources and all eight corroboration rows cited https://developers.stellar.org/docs/build/apps/smart-wallets/recovery, which resolves to a 404 on 2026-11-02 and has no commit history in stellar/stellar-docs; refs now point at the live contract-accounts pages."
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "kaan passkey-wallet-recovery"
+    "origin": "kaan passkey-wallet-recovery",
+    "leaf": "wallets.lost-keys",
+    "secondaryLeaf": "soroban.contract-accounts"
   }
 }

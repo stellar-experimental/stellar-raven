@@ -1,0 +1,948 @@
+{
+  "lane": "findings",
+  "generatedAt": "2026-11-14",
+  "agent": "Claude Fable 5.2",
+  "method": "Inputs: gap/verify-gap.json and gap/gap-*.json, review/REVIEW.md finding D4, map/taxonomy.json ravenReach, audit/*.json. Every mapper no or partial leaf of weight 3, and every row filed, was re-run through Raven on 2026-11-14 between 05:04 and 05:14 UTC: operation search inside the script (codemode.search), then one execute per batch of leaves. Rows that reached a finding were also checked against the upstream surface directly (developers.stellar.org .md pages, the stellar/stellar-docs source, the Scout REST API, stellar.org pages).",
+  "evidenceKey": {
+    "confirmed": "reproduced by two lanes or by this lane on 2026-11-14",
+    "single": "one observation, or an observation that did not reproduce"
+  },
+  "counts": {
+    "rows": 43,
+    "confirmed": 15,
+    "single": 28,
+    "filedRows": 9,
+    "findings": [
+      "sd-105",
+      "sd-106",
+      "sd-107",
+      "sd-108",
+      "sls-117",
+      "sls-118"
+    ]
+  },
+  "rows": [
+    {
+      "leaf": "wallets.wrong-memo",
+      "title": "Missing or wrong memo to an exchange",
+      "weight": 3,
+      "volatility": "stable",
+      "mapperReach": "no",
+      "reachToday": "unreachable",
+      "missing": "The recovery path for a deposit sent without its memo: SDF cannot recover the funds; contact the exchange.",
+      "owner": "Stellar Light/Scout",
+      "ownerNote": "SDF publishes the answer at stellar.org/community; Scout's sdf-org research source does not hold that page.",
+      "evidence": "confirmed",
+      "recheck": {
+        "at": "2026-11-14T05:05:26Z",
+        "result": "stellarDocs.search_docs returned C-account memo, pooled-accounts, and payment pages. scout.searchResearch returned SEP-0044, SEP-0029, and CAP-0064. lumenloop.search_content_semantic returned the 2020 SDF post 'Fixing memo-less payments'. No returned text gives the recovery path. stellar.org/community (HTTP 200) states it."
+      },
+      "leafCases": [],
+      "affectedCases": [
+        "q-raph-missing-exchange-memo"
+      ],
+      "recommend": "Add stellar.org/community to Scout's sdf-org source (sls-117).",
+      "finding": "sls-117",
+      "notFiled": null
+    },
+    {
+      "leaf": "ecosystem.xlm-supply",
+      "title": "XLM supply, the 2019 burn, and the end of inflation",
+      "weight": 3,
+      "volatility": "scheduled",
+      "mapperReach": "partial",
+      "reachToday": "answerable; canonical page contradicts itself",
+      "missing": "Nothing is missing. The Docs Lumens page says all XLM was created at launch, above its own paragraph on 5.44 billion inflation lumens.",
+      "owner": "Stellar Docs",
+      "ownerNote": "docs/learn/fundamentals/lumens.mdx line 48.",
+      "evidence": "confirmed",
+      "recheck": {
+        "at": "2026-11-14T05:05:26Z",
+        "result": "stellarDocs.get_doc_page('/docs/learn/fundamentals/lumens') returned both passages. scout.searchResearch returned the same page with the 2026-07-21 Dashboard API figures (total supply 50,001,786,839.9)."
+      },
+      "leafCases": [],
+      "affectedCases": [
+        "q-token-xlm-supply-total-circulating"
+      ],
+      "recommend": "Replace the sentence on line 48 (sd-105 gives the text).",
+      "finding": "sd-105",
+      "notFiled": null
+    },
+    {
+      "leaf": "tooling.version-compat",
+      "title": "Software versions for the current protocol",
+      "weight": 3,
+      "volatility": "scheduled",
+      "mapperReach": "partial",
+      "reachToday": "partial: one key fact unreachable",
+      "missing": "The rule that the host rejects a contract built for a newer protocol than the network runs, and its error text.",
+      "owner": "Stellar Docs",
+      "ownerNote": "The rule lives only in stellar/rs-soroban-env (soroban-env-host/src/vm/parsed_module.rs). The Docs Environment Meta section says only that the interface version 'should match'.",
+      "evidence": "confirmed",
+      "recheck": {
+        "at": "2026-11-14T05:04:48Z",
+        "result": "stellarDocs.search_docs('contract protocol number is newer than host') returned Software Versions, Guestbook, Build Your Own Contract SDK, and State Archival; no text holds the rule. scout.searchResearch (8 rows) and search_sdk_cli_tools_docs also held nothing. At 2026-11-14T05:06:19Z the mapper's other concern did not reproduce: Scout returned the Software Versions page and the Bell upgrade guide for the matching-releases question."
+      },
+      "leafCases": [],
+      "affectedCases": [
+        "q-infra-version-lag-errors"
+      ],
+      "recommend": "Add four sentences to the Environment Meta section and one to Software Versions (sd-107 gives the text).",
+      "finding": "sd-107",
+      "notFiled": null
+    },
+    {
+      "leaf": "wallets.scams-phishing",
+      "title": "Scams, phishing, and impersonation",
+      "weight": 3,
+      "volatility": "live",
+      "mapperReach": "partial",
+      "reachToday": "partial",
+      "missing": "What a victim should do after a scam. The returned sources are dated 2020 to 2023.",
+      "owner": "outside Raven's scope",
+      "ownerNote": "SDF's scam guide (stellar.org blog, updated July 2022) is held by Scout and Lumenloop. Whether the full guide gives victim steps was not established.",
+      "evidence": "confirmed",
+      "recheck": {
+        "at": "2026-11-14T05:05:26Z",
+        "result": "scout.searchResearch returned the SDF guide 'Protect Yourself from Scammers' as row 2; lumenloop.search_content_semantic returned the guide, the 2020 email-incident statement, the 2023 security reminders, and the Stellarscam.report origin story. stellarDocs.search_docs returned a threat-model example and unrelated pages. No returned chunk gives victim steps."
+      },
+      "leafCases": [],
+      "affectedCases": [
+        "q-raph-stolen-wallet-recovery",
+        "q-edge-asset-site-scam-detection"
+      ],
+      "recommend": "Source-coverage question for the owner: ask SDF to refresh the 2022 guide with an 'if you were scammed' section. Read the guide in full before any filing.",
+      "finding": null,
+      "notFiled": "The source is held. No defect in it is established; the guide's age alone is not a finding."
+    },
+    {
+      "leaf": "protocol.accounts-reserves",
+      "title": "Accounts, reserves, and account creation",
+      "weight": 3,
+      "volatility": "stable",
+      "mapperReach": "partial",
+      "reachToday": "answerable",
+      "missing": "Mapper: why an unfunded address cannot receive a payment was not in the returned text.",
+      "owner": "none",
+      "ownerNote": null,
+      "evidence": "single",
+      "recheck": {
+        "at": "2026-11-14T05:05:52Z",
+        "result": "Not reproduced. The glossary 'Create account operation' entry, the payment tutorial ('If the destination address is not a funded account ...'), and the agent CLI troubleshooting page surfaced."
+      },
+      "leafCases": [],
+      "affectedCases": [],
+      "recommend": "None.",
+      "finding": null,
+      "notFiled": "Not reproduced."
+    },
+    {
+      "leaf": "network.current-protocol",
+      "title": "Current and next protocol version",
+      "weight": 3,
+      "volatility": "scheduled",
+      "mapperReach": "partial",
+      "reachToday": "answerable through Scout",
+      "missing": "Mapper: Docs search lands on the Protocol 20 section of Software Versions, and the full page exceeds Raven's result cap.",
+      "owner": "Raven (own repo)",
+      "ownerNote": null,
+      "evidence": "single",
+      "recheck": {
+        "at": "2026-11-14T05:06:19Z",
+        "result": "Not reproduced as a source gap. scout.searchResearch returned the Software Versions outline ('Protocol 29 (Mainnet, October 1, 2026)') and the Bell upgrade guide (votes on November 3 and November 23). stellarDocs.search_docs still ranked the Protocol 20 anchor first."
+      },
+      "leafCases": [],
+      "affectedCases": [],
+      "recommend": "Orchestrator: consider a .agents/TODO.md note on section-level reads of Software Versions.",
+      "finding": null,
+      "notFiled": "Not an upstream gap. The Docs-search anchor and the page-size cap are Raven-side observations."
+    },
+    {
+      "leaf": "assets.trustlines",
+      "title": "Trustlines",
+      "weight": 3,
+      "volatility": "stable",
+      "mapperReach": "partial",
+      "reachToday": "answerable",
+      "missing": "Mapper: the reason for trustlines was not in the returned text.",
+      "owner": "none",
+      "ownerNote": null,
+      "evidence": "single",
+      "recheck": {
+        "at": "2026-11-14T05:05:52Z",
+        "result": "Not reproduced. The Accounts page section 'Trustlines' ('an explicit opt-in for an account to hold a particular asset') and the manage-trust tutorial (0.5 XLM reserve) surfaced."
+      },
+      "leafCases": [],
+      "affectedCases": [],
+      "recommend": "None.",
+      "finding": null,
+      "notFiled": "Not reproduced."
+    },
+    {
+      "leaf": "assets.sac",
+      "title": "Stellar Asset Contract (SAC)",
+      "weight": 3,
+      "volatility": "scheduled",
+      "mapperReach": "partial",
+      "reachToday": "answerable",
+      "missing": "Mapper: the contract-ID derivation command was not in the returned snippet.",
+      "owner": "none",
+      "ownerNote": null,
+      "evidence": "single",
+      "recheck": {
+        "at": "2026-11-14T05:05:52Z",
+        "result": "Not reproduced. The SAC guide (`stellar contract id asset`), the CLI reference, and the Deployment section (deterministic identifier) surfaced."
+      },
+      "leafCases": [],
+      "affectedCases": [],
+      "recommend": "None.",
+      "finding": null,
+      "notFiled": "Not reproduced."
+    },
+    {
+      "leaf": "assets.usdc",
+      "title": "USDC and EURC on Stellar",
+      "weight": 3,
+      "volatility": "stable",
+      "mapperReach": "partial",
+      "reachToday": "answerable through Scout",
+      "missing": "Mapper: the issuer identity of USDC was not in the returned Docs text.",
+      "owner": "none",
+      "ownerNote": null,
+      "evidence": "single",
+      "recheck": {
+        "at": "2026-11-14T05:06:19Z",
+        "result": "Not reproduced. scout.getStablecoins returned USDC with the full issuer account, issuerDomain circle.com, and issuerOfRecord 'Circle Internet Financial, LLC' (as of 2026-11-13). The asset-docs search returned no issuer text; the x402 page holds the Mainnet issuer."
+      },
+      "leafCases": [],
+      "affectedCases": [],
+      "recommend": "None.",
+      "finding": null,
+      "notFiled": "Not reproduced."
+    },
+    {
+      "leaf": "soroban.storage-types",
+      "title": "Contract storage types",
+      "weight": 3,
+      "volatility": "stable",
+      "mapperReach": "partial",
+      "reachToday": "answerable",
+      "missing": "Mapper: neither canonical storage page ranked in the top three.",
+      "owner": "none",
+      "ownerNote": null,
+      "evidence": "single",
+      "recheck": {
+        "at": "2026-11-14T05:05:52Z",
+        "result": "Not reproduced. 'Storage strategies' (the three storage tiers), 'Choosing the right storage' (storage types table), and State Archival best practices surfaced."
+      },
+      "leafCases": [],
+      "affectedCases": [],
+      "recommend": "None.",
+      "finding": null,
+      "notFiled": "Not reproduced."
+    },
+    {
+      "leaf": "soroban.authorization",
+      "title": "Contract authorization",
+      "weight": 3,
+      "volatility": "stable",
+      "mapperReach": "partial",
+      "reachToday": "answerable",
+      "missing": "Mapper: Raven's operation search ranked Lumenloop operations above the Soroban docs operation.",
+      "owner": "Raven (own repo)",
+      "ownerNote": null,
+      "evidence": "single",
+      "recheck": {
+        "at": "2026-11-14T05:05:52Z",
+        "result": "Not reproduced. Raven's search ranked stellarDocs.search_soroban_contract_docs first. The Authorization page, the auth example, and the Solidity migration page (msg.sender) surfaced."
+      },
+      "leafCases": [],
+      "affectedCases": [],
+      "recommend": "None.",
+      "finding": null,
+      "notFiled": "Not reproduced."
+    },
+    {
+      "leaf": "data.result-codes",
+      "title": "Result codes and API errors",
+      "weight": 3,
+      "volatility": "stable",
+      "mapperReach": "partial",
+      "reachToday": "answerable",
+      "missing": "Mapper: the transaction result-code reference did not rank in the top three.",
+      "owner": "none",
+      "ownerNote": null,
+      "evidence": "single",
+      "recheck": {
+        "at": "2026-11-14T05:05:52Z",
+        "result": "Not reproduced. The Transaction Failed page (tx_bad_seq 'may become valid in the future') and the transaction result-codes reference surfaced. sd-059 already tracks result-code identifiers that the Docs search cannot find."
+      },
+      "leafCases": [],
+      "affectedCases": [],
+      "recommend": "None.",
+      "finding": null,
+      "notFiled": "Not reproduced. Related residue is tracked by sd-059."
+    },
+    {
+      "leaf": "tooling.js-sdk",
+      "title": "JavaScript SDK",
+      "weight": 3,
+      "volatility": "scheduled",
+      "mapperReach": "partial",
+      "reachToday": "answerable",
+      "missing": "Mapper: package and class names were not in the returned text.",
+      "owner": "none",
+      "ownerNote": null,
+      "evidence": "single",
+      "recheck": {
+        "at": "2026-11-14T05:05:52Z",
+        "result": "Not reproduced. The invoke-contract guide (`@stellar/stellar-sdk`, `@stellar/stellar-sdk/contract` Client), the JS SDK helpers page (`contract.Client.from`), and the client SDK list surfaced."
+      },
+      "leafCases": [],
+      "affectedCases": [],
+      "recommend": "None.",
+      "finding": null,
+      "notFiled": "Not reproduced."
+    },
+    {
+      "leaf": "standards.deposit-withdrawal",
+      "title": "Deposit and withdrawal (SEP-24 and SEP-6)",
+      "weight": 3,
+      "volatility": "stable",
+      "mapperReach": "partial",
+      "reachToday": "answerable",
+      "missing": "Mapper: no returned text contrasted SEP-24 with SEP-6.",
+      "owner": "none",
+      "ownerNote": null,
+      "evidence": "single",
+      "recheck": {
+        "at": "2026-11-14T05:06:19Z",
+        "result": "Not reproduced. The Anchors page section 'SEP-6 vs. SEP-24: Programmatic vs. Hosted Transfers' and SEP-0024 'Changes from SEP-6' surfaced."
+      },
+      "leafCases": [],
+      "affectedCases": [],
+      "recommend": "None.",
+      "finding": null,
+      "notFiled": "Not reproduced."
+    },
+    {
+      "leaf": "standards.anchors-directory",
+      "title": "Anchors and where they operate",
+      "weight": 3,
+      "volatility": "live",
+      "mapperReach": "partial",
+      "reachToday": "answerable; per-country structure unchecked",
+      "missing": "Mapper: Bitso and Yellow Card were 'not-profiled' with null assets and SEPs; per-country rail coverage needs detail per anchor.",
+      "owner": "Stellar Light/Scout",
+      "ownerNote": null,
+      "evidence": "single",
+      "recheck": {
+        "at": "2026-11-14T05:06:19Z",
+        "result": "Partly reproduced. scout.searchProjects({type:'Anchor', status:'Live'}) returned 37 anchors. Bitso (Mexico and Colombia) and Yellow Card (20 African countries) carry country coverage in prose. The structured anchor profile fields were not read."
+      },
+      "leafCases": [],
+      "affectedCases": [],
+      "recommend": "If a case later needs per-country filtering, read the anchor profile fields and file then.",
+      "finding": null,
+      "notFiled": "The prose answers the question. The structured-profile claim was not re-read, so it stays a single observation."
+    },
+    {
+      "leaf": "defi.bridges",
+      "title": "Bridges and cross-chain transfers",
+      "weight": 3,
+      "volatility": "live",
+      "mapperReach": "partial",
+      "reachToday": "answerable",
+      "missing": "Mapper (shared note with assets.usdc): the CCTP page did not give the USDC issuer.",
+      "owner": "none",
+      "ownerNote": null,
+      "evidence": "single",
+      "recheck": {
+        "at": "2026-11-14T05:06:19Z",
+        "result": "Not reproduced. scout.searchResearch returned the Docs CCTP page and Lumenloop research on CCTP and Allbridge. The cross-chain skill lists CCTP, Axelar, LayerZero, and NEAR Intents sections."
+      },
+      "leafCases": [],
+      "affectedCases": [],
+      "recommend": "None.",
+      "finding": null,
+      "notFiled": "Not reproduced."
+    },
+    {
+      "leaf": "network.tier1-quorum",
+      "title": "Tier 1 organizations and quorum sets",
+      "weight": 2,
+      "volatility": "live",
+      "mapperReach": "yes",
+      "reachToday": "partial: where to look is answerable, the roster is not",
+      "missing": "The current Tier 1 organizations. No Raven source names all ten.",
+      "owner": "Stellar Docs",
+      "ownerNote": "The Tier 1 Organizations page names none. Live owners: Obsrvr Radar's network quorum set and the stellar/packages example configuration.",
+      "evidence": "confirmed",
+      "recheck": {
+        "at": "2026-11-14T05:04:48Z",
+        "result": "stellarDocs.get_doc_page('/docs/validators/tier-1-orgs') returned 18,903 characters and no organization name. scout.searchResearch and lumenloop.search_content_semantic returned the 2026-07-16 press release (three names), an SDF post of 2026-08-11, and a 2024 Obsrvr post. stellar/packages lists ten HOME_DOMAIN values today."
+      },
+      "leafCases": [],
+      "affectedCases": [
+        "q-net-tier1-roster-current"
+      ],
+      "recommend": "Add a dated 'Current Tier 1 organizations' section that points to Radar and the example configuration (sd-106 gives the list).",
+      "finding": "sd-106",
+      "notFiled": null
+    },
+    {
+      "leaf": "network.quorum-freeze",
+      "title": "Quorum Freeze (CAP-77)",
+      "weight": 2,
+      "volatility": "scheduled",
+      "mapperReach": "yes",
+      "reachToday": "partial: three of four key facts answerable",
+      "missing": "The record that Quorum Freeze was used on Mainnet: SLP-0006 (YieldBlox accounts) and SLP-0008 (Mercado Bitcoin account).",
+      "owner": "Stellar Light/Scout",
+      "ownerNote": "The records are stellar/stellar-protocol limits/slp-0006.md and slp-0008.md. Scout indexes CAPs and SEPs from that repository, not SLPs. Stellar Docs list no enacted freeze either.",
+      "evidence": "confirmed",
+      "recheck": {
+        "at": "2026-11-14T05:04:48Z",
+        "result": "Eight scout.searchResearch calls (the last at 2026-11-14T05:14:04Z), one Docs search with meetings, and two Lumenloop searches returned CAP-0077, the Docs 'Frozen ledger keys' section, and the Protocol 26 posts. No row names an SLP or says the freeze was used. Scout's YieldBlox incident row describes the earlier overlay filter only."
+      },
+      "leafCases": [],
+      "affectedCases": [
+        "q-pc-quorum-freeze-cap77"
+      ],
+      "recommend": "Index limits/slp-*.md in the Scout research corpus (sls-118).",
+      "finding": "sls-118",
+      "notFiled": null
+    },
+    {
+      "leaf": "ecosystem.strategy-roadmap",
+      "title": "SDF strategy, roadmap, and reports",
+      "weight": 2,
+      "volatility": "scheduled",
+      "mapperReach": "unchecked",
+      "reachToday": "unreachable",
+      "missing": "SDF's 2026 strategy: the $1 billion network asset value target, 15 enterprises signed and 5 deployed, and where the strategy and roadmap are published.",
+      "owner": "Stellar Light/Scout",
+      "ownerNote": "SDF publishes stellar.org/foundation/strategy and stellar.org/foundation/roadmap. Scout's sdf-org source holds nine other SDF pages.",
+      "evidence": "confirmed",
+      "recheck": {
+        "at": "2026-11-14T05:04:25Z",
+        "result": "scout.searchResearch (no filter, sdf-org, sdf-blog) returned roundups, the mandate pages, and the terms of service. Lumenloop listed strategy posts for 2018 to 2023 only. The REST call with source=sdf-org and limit=25 returned nine distinct URLs, none of them the strategy page."
+      },
+      "leafCases": [],
+      "affectedCases": [
+        "q-sdf-2026-strategy-priorities"
+      ],
+      "recommend": "Add the strategy and roadmap pages to Scout's sdf-org source (sls-117).",
+      "finding": "sls-117",
+      "notFiled": null
+    },
+    {
+      "leaf": "security.signing-safety",
+      "title": "Transaction signing safety",
+      "weight": 2,
+      "volatility": "stable",
+      "mapperReach": "unchecked",
+      "reachToday": "unreachable as a checklist",
+      "missing": "What a person checks before approving a signing request: domain and network, every operation, signer and merge operations, contract sub-invocations, hash signing.",
+      "owner": "Stellar Docs",
+      "ownerNote": "No canonical page exists. Docs host the wallet and signing guides; the only review guidance addresses agents (agent CLI, 'Inspection before signing').",
+      "evidence": "confirmed",
+      "recheck": {
+        "at": "2026-11-14T05:04:48Z",
+        "result": "Four searches (Docs, Docs wallet scope, Scout research, Lumenloop) returned developer signing guides, SEP-0007, and the 2022 SDF scam guide. None lists the checks. A code search of stellar/stellar-docs for 'blind signing' returned nothing outside meetings."
+      },
+      "leafCases": [],
+      "affectedCases": [
+        "q-signing-safety-website-request"
+      ],
+      "recommend": "Add one wallet-safety page under Build > Apps > Wallet (sd-108 gives the outline).",
+      "finding": "sd-108",
+      "notFiled": null
+    },
+    {
+      "leaf": "wallets.unsolicited-assets",
+      "title": "Unknown tokens and unsolicited payments",
+      "weight": 2,
+      "volatility": "stable",
+      "mapperReach": "no",
+      "reachToday": "unreachable",
+      "missing": "Why unknown tokens and claimable balances appear in an account, and how to treat them.",
+      "owner": "Stellar Docs",
+      "ownerNote": "No canonical page exists; the mapper inferred the answer from claimable-balance mechanics.",
+      "evidence": "confirmed",
+      "recheck": {
+        "at": "2026-11-14T05:06:50Z",
+        "result": "stellarDocs.search_docs returned the claimable balances guide and three Horizon reference pages. scout.searchResearch (6 rows) and lumenloop.search_content_semantic (6 rows) returned nothing on unsolicited, spam, or airdropped assets. A code search of stellar/stellar-docs for 'unsolicited' returned nothing."
+      },
+      "leafCases": [],
+      "affectedCases": [
+        "q-raph-unsolicited-airdrop"
+      ],
+      "recommend": "Section 7 of the page that sd-108 proposes.",
+      "finding": "sd-108",
+      "notFiled": null
+    },
+    {
+      "leaf": "standards.payment-patterns",
+      "title": "Accepting payments and recurring payment designs",
+      "weight": 2,
+      "volatility": "stable",
+      "mapperReach": "unchecked",
+      "reachToday": "reachable-not-surfaced",
+      "missing": "Nothing is missing. The Docs search does not return the wallet SEP-7 page for a query that contains `web+stellar:pay`.",
+      "owner": "unresolved",
+      "ownerNote": "Either Raven's Docs scoping or the Docs search ranking. Scout returns SEP-0007 and the Docs SEP-7 page for the same wording.",
+      "evidence": "confirmed",
+      "recheck": {
+        "at": "2026-11-14T05:06:50Z",
+        "result": "stellarDocs.search_docs('web+stellar:pay payment request QR code') returned the SEP-10 tutorial, do_stellar_payment, an x402 page, and the payment tutorial. scout.searchResearch returned sep-0007.md and /docs/build/apps/wallet/sep7 with the `web+stellar:pay` example."
+      },
+      "leafCases": [],
+      "affectedCases": [
+        "q-pay-merchant-request-detect-reconcile"
+      ],
+      "recommend": "Orchestrator: add a .agents/TODO.md item to run that check with this query and the expected page /docs/build/apps/wallet/sep7.",
+      "finding": null,
+      "notFiled": "The owner is not established. A Docs-search finding needs a retrieval-level check against the search backend first, to separate upstream ranking from Raven scoping."
+    },
+    {
+      "leaf": "ecosystem.chain-comparisons",
+      "title": "Stellar compared with other networks",
+      "weight": 2,
+      "volatility": "scheduled",
+      "mapperReach": "unchecked",
+      "reachToday": "half reachable: Stellar side only",
+      "missing": "XRP Ledger facts: the Unique Node List, destroyed fees, trust line tokens.",
+      "owner": "outside Raven's scope",
+      "ownerNote": "xrpl.org owns the facts. Raven holds no other-chain source.",
+      "evidence": "confirmed",
+      "recheck": {
+        "at": "2026-11-14T05:06:50Z",
+        "result": "Docs, Scout research, and Lumenloop returned SCP, fee, and ledger pages plus 2014 and 2018 press on the Ripple split. No row holds an XRP Ledger fact."
+      },
+      "leafCases": [],
+      "affectedCases": [
+        "q-stellar-vs-xrp-ledger"
+      ],
+      "recommend": "Source-coverage question for the owner: keep cross-chain comparison cases in the headline only if Raven is expected to answer the other chain's half from general knowledge; otherwise retire the case or ask SDF for a comparison page.",
+      "finding": null,
+      "notFiled": "Outside Raven's scope."
+    },
+    {
+      "leaf": "wallets.pi-network",
+      "title": "Pi Network and other Stellar-derived networks",
+      "weight": 2,
+      "volatility": "stable",
+      "mapperReach": "no",
+      "reachToday": "unreachable",
+      "missing": "Any statement about Pi Network's relation to Stellar.",
+      "owner": "outside Raven's scope",
+      "ownerNote": "Pi Network's own documentation owns the facts.",
+      "evidence": "confirmed",
+      "recheck": {
+        "at": "2026-11-14T05:06:50Z",
+        "result": "stellarDocs.search_docs('Pi Network') returned network-passphrase pages. scout.searchResearch and lumenloop.search_content_semantic returned SCP articles. No row mentions Pi Network."
+      },
+      "leafCases": [],
+      "affectedCases": [
+        "q-n3-pi-network-wrong-chain"
+      ],
+      "recommend": "Source-coverage question for the owner: the same choice as for chain comparisons. A one-line SDF FAQ entry ('Pi is a separate network; Pi cannot be sent to a Stellar address') would close it.",
+      "finding": null,
+      "notFiled": "Outside Raven's scope."
+    },
+    {
+      "leaf": "security.regulation-policy",
+      "title": "Regulation and SDF policy positions",
+      "weight": 2,
+      "volatility": "scheduled",
+      "mapperReach": "no",
+      "reachToday": "partial: historical positions only",
+      "missing": "SDF's current position on stablecoin regulation (MiCA, GENIUS Act).",
+      "owner": "outside Raven's scope",
+      "ownerNote": "SDF's Policy Hub and policy blog. Whether SDF has published a current position was not established.",
+      "evidence": "confirmed",
+      "recheck": {
+        "at": "2026-11-14T05:06:50Z",
+        "result": "scout.searchResearch returned SDF policy posts from 2023 and a regional post of 2026-05-08. Lumenloop returned posts from 2020 to 2023, ten Policy Hub pages, and an October 2026 interview video. Nothing dated 2025 or 2026 states a position."
+      },
+      "leafCases": [],
+      "affectedCases": [
+        "q-pay-anchor-msb-licensing"
+      ],
+      "recommend": "Source-coverage question for the owner. The one battery case on the leaf does not depend on it.",
+      "finding": null,
+      "notFiled": "No current owner-side page is identified, so there is nothing to ask a Raven source to ingest."
+    },
+    {
+      "leaf": "ecosystem.institutional-adoption",
+      "title": "Institutional and enterprise adoption",
+      "weight": 2,
+      "volatility": "live",
+      "mapperReach": "unchecked",
+      "reachToday": "answerable",
+      "missing": "Gap lane: the Mastercard Crypto Credential release did not surface on the ordinary pass.",
+      "owner": "Lumenloop",
+      "ownerNote": null,
+      "evidence": "single",
+      "recheck": {
+        "at": "2026-11-14 (verify lane)",
+        "result": "Not reproduced by the verify lane: lumenloop.search_content_semantic returned the release in its top two rows. Not re-run here."
+      },
+      "leafCases": [],
+      "affectedCases": [],
+      "recommend": "None.",
+      "finding": null,
+      "notFiled": "Not reproduced by the second lane."
+    },
+    {
+      "leaf": "tooling.renames-repos",
+      "title": "Renamed tools and canonical repositories",
+      "weight": 2,
+      "volatility": "scheduled",
+      "mapperReach": "partial",
+      "reachToday": "answerable",
+      "missing": "Mapper and gap lane: no source stated the Soroban RPC and Go SDK renames.",
+      "owner": "none",
+      "ownerNote": null,
+      "evidence": "single",
+      "recheck": {
+        "at": "2026-11-14 (verify lane)",
+        "result": "Not reproduced by the verify lane: the RPC Introduction snippet and the SDF Go SDK post surfaced. Not re-run here."
+      },
+      "leafCases": [],
+      "affectedCases": [],
+      "recommend": "None.",
+      "finding": null,
+      "notFiled": "Not reproduced by the second lane."
+    },
+    {
+      "leaf": "network.incidents",
+      "title": "Network halts and protocol incidents",
+      "weight": 2,
+      "volatility": "scheduled",
+      "mapperReach": "no",
+      "reachToday": "answerable per gap lanes",
+      "missing": "Mapper: no row described the May 2019 halt.",
+      "owner": "Stellar Light/Scout",
+      "ownerNote": null,
+      "evidence": "single",
+      "recheck": null,
+      "leafCases": [],
+      "affectedCases": [],
+      "recommend": "None.",
+      "finding": null,
+      "notFiled": "Not re-run. Both gap lanes recorded q-network-halt-history as answerable."
+    },
+    {
+      "leaf": "ai.mcp-servers",
+      "title": "MCP servers for Stellar",
+      "weight": 2,
+      "volatility": "live",
+      "mapperReach": "no",
+      "reachToday": "answerable per gap lanes",
+      "missing": "Mapper: the standards skill has no MCP mention; other sources were not probed.",
+      "owner": "none",
+      "ownerNote": null,
+      "evidence": "single",
+      "recheck": null,
+      "leafCases": [],
+      "affectedCases": [],
+      "recommend": "None.",
+      "finding": null,
+      "notFiled": "Not re-run. Both gap lanes recorded q-ai-mcp-servers-connect as answerable (Docs 'Building with AI')."
+    },
+    {
+      "leaf": "data.network-metrics",
+      "title": "Network and ecosystem metrics",
+      "weight": 2,
+      "volatility": "live",
+      "mapperReach": "partial",
+      "reachToday": "answerable per gap lanes",
+      "missing": "Mapper: Scout's leaderboard has developer metrics but no on-chain accounts, transactions, or payment volume.",
+      "owner": "Stellar Light/Scout",
+      "ownerNote": null,
+      "evidence": "single",
+      "recheck": null,
+      "leafCases": [],
+      "affectedCases": [],
+      "recommend": "None.",
+      "finding": null,
+      "notFiled": "Not re-run. Both gap lanes recorded q-data-network-metrics-sources as answerable."
+    },
+    {
+      "leaf": "network.protocol-history",
+      "title": "Protocol release history",
+      "weight": 2,
+      "volatility": "scheduled",
+      "mapperReach": "partial",
+      "reachToday": "not re-run",
+      "missing": "Mapper: Software Versions exceeds Raven's result cap (same note as network.current-protocol).",
+      "owner": "Raven (own repo)",
+      "ownerNote": null,
+      "evidence": "single",
+      "recheck": null,
+      "leafCases": [],
+      "affectedCases": [],
+      "recommend": "See network.current-protocol.",
+      "finding": null,
+      "notFiled": "Weight 2, single observation, not re-run."
+    },
+    {
+      "leaf": "standards.moneygram-ramps",
+      "title": "MoneyGram ramps",
+      "weight": 2,
+      "volatility": "scheduled",
+      "mapperReach": "partial",
+      "reachToday": "not re-run",
+      "missing": "Mapper: scout.matchPartners returned HTTP 503; corridor detail was not checked.",
+      "owner": "Stellar Light/Scout",
+      "ownerNote": null,
+      "evidence": "single",
+      "recheck": {
+        "at": "2026-11-14T05:06:19Z",
+        "result": "Side observation: the Scout anchor row for Moneygram carries SEP-24, about 500K locations, and 170+ cash-out countries."
+      },
+      "leafCases": [],
+      "affectedCases": [],
+      "recommend": "None.",
+      "finding": null,
+      "notFiled": "Weight 2, single observation; a transient 503 is not a content gap."
+    },
+    {
+      "leaf": "standards.exchange-integration",
+      "title": "Exchange integration",
+      "weight": 2,
+      "volatility": "stable",
+      "mapperReach": "partial",
+      "reachToday": "not re-run",
+      "missing": "Mapper: no exchange integration guide is in the Docs index; the pooled-accounts guide covers deposit attribution.",
+      "owner": "Stellar Docs",
+      "ownerNote": null,
+      "evidence": "single",
+      "recheck": null,
+      "leafCases": [],
+      "affectedCases": [],
+      "recommend": "Re-check before the next round; a missing guide would be a Docs content finding.",
+      "finding": null,
+      "notFiled": "Weight 2, single observation, not re-run."
+    },
+    {
+      "leaf": "defi.lending",
+      "title": "Lending and yield protocols",
+      "weight": 2,
+      "volatility": "live",
+      "mapperReach": "partial",
+      "reachToday": "not re-run",
+      "missing": "Mapper: no call returned how Blend's pools are structured.",
+      "owner": "Stellar Light/Scout",
+      "ownerNote": null,
+      "evidence": "single",
+      "recheck": null,
+      "leafCases": [],
+      "affectedCases": [],
+      "recommend": "None.",
+      "finding": null,
+      "notFiled": "Weight 2, single observation, not re-run."
+    },
+    {
+      "leaf": "defi.tvl-landscape",
+      "title": "DeFi TVL and protocol rankings",
+      "weight": 2,
+      "volatility": "live",
+      "mapperReach": "partial",
+      "reachToday": "not re-run",
+      "missing": "Supply mapper: most rows had null TVL. Demand mapper: scout.getLeaderboard sort=tvl returned a ranking.",
+      "owner": "Stellar Light/Scout",
+      "ownerNote": null,
+      "evidence": "single",
+      "recheck": null,
+      "leafCases": [],
+      "affectedCases": [],
+      "recommend": "None.",
+      "finding": null,
+      "notFiled": "The two mappers disagree and the second answered the question. sls-039 tracks TVL history."
+    },
+    {
+      "leaf": "wallets.landscape",
+      "title": "Wallets that support Stellar",
+      "weight": 2,
+      "volatility": "live",
+      "mapperReach": "partial",
+      "reachToday": "not re-run",
+      "missing": "Mapper: contract-token support is not a field on Scout wallet rows.",
+      "owner": "Stellar Light/Scout",
+      "ownerNote": null,
+      "evidence": "single",
+      "recheck": null,
+      "leafCases": [],
+      "affectedCases": [],
+      "recommend": "None.",
+      "finding": null,
+      "notFiled": "sls-033 already tracks wallet enumeration and availability fields."
+    },
+    {
+      "leaf": "ecosystem.sdf",
+      "title": "The Stellar Development Foundation and its leadership",
+      "weight": 2,
+      "volatility": "live",
+      "mapperReach": "partial",
+      "reachToday": "not re-run",
+      "missing": "Mapper: Scout's leadership rows were observed on 2026-07-19.",
+      "owner": "Stellar Light/Scout",
+      "ownerNote": null,
+      "evidence": "single",
+      "recheck": {
+        "at": "2026-11-14T05:04:25Z",
+        "result": "Side observation: Scout's sdf-org row for stellar.org/foundation/team now carries the date 2026-11-13."
+      },
+      "leafCases": [],
+      "affectedCases": [],
+      "recommend": "None.",
+      "finding": null,
+      "notFiled": "Weight 2, single observation; the research row looks refreshed."
+    },
+    {
+      "leaf": "ecosystem.sdf-mandate-holdings",
+      "title": "SDF mandate and XLM holdings",
+      "weight": 2,
+      "volatility": "live",
+      "mapperReach": "partial",
+      "reachToday": "not re-run",
+      "missing": "Mapper: no current SDF holding figure; it lives behind the Dashboard API.",
+      "owner": "outside Raven's scope",
+      "ownerNote": null,
+      "evidence": "single",
+      "recheck": {
+        "at": "2026-11-14T05:05:26Z",
+        "result": "Side observation: the Docs Lumens page carries a Dashboard API snapshot dated 2026-07-21 (sdfMandate 15,563,517,195.8)."
+      },
+      "leafCases": [],
+      "affectedCases": [],
+      "recommend": "Source-coverage question for the owner: whether Raven should expose the Dashboard lumens API.",
+      "finding": null,
+      "notFiled": "A live figure belongs to dashboard.stellar.org, which is not a Raven source."
+    },
+    {
+      "leaf": "ecosystem.xlm-staking-rewards",
+      "title": "XLM staking and the 2026 rewards proposal",
+      "weight": 2,
+      "volatility": "scheduled",
+      "mapperReach": "partial",
+      "reachToday": "not re-run",
+      "missing": "Mapper: no row states plainly that XLM has no protocol staking.",
+      "owner": "none",
+      "ownerNote": null,
+      "evidence": "single",
+      "recheck": null,
+      "leafCases": [],
+      "affectedCases": [],
+      "recommend": "None.",
+      "finding": null,
+      "notFiled": "Weight 2, single observation, not re-run."
+    },
+    {
+      "leaf": "ecosystem.history-origins",
+      "title": "Origins and history of Stellar",
+      "weight": 2,
+      "volatility": "stable",
+      "mapperReach": "partial",
+      "reachToday": "not re-run",
+      "missing": "Mapper: nothing on the Ripple relationship in the returned rows.",
+      "owner": "Lumenloop",
+      "ownerNote": null,
+      "evidence": "single",
+      "recheck": {
+        "at": "2026-11-14T05:06:50Z",
+        "result": "Side observation: Lumenloop returned the 2014 fork article and 'Ripple and Stellar's sibling rivalry' (2018) for a comparison query."
+      },
+      "leafCases": [],
+      "affectedCases": [],
+      "recommend": "None.",
+      "finding": null,
+      "notFiled": "Weight 2, single observation; the side observation suggests the history is held."
+    },
+    {
+      "leaf": "funding.service-providers",
+      "title": "Service providers and partners for hire",
+      "weight": 1,
+      "volatility": "live",
+      "mapperReach": "yes",
+      "reachToday": "partial: two of three key facts answerable",
+      "missing": "SDF's service providers directory (stellar.org/ecosystem/service-providers), the only list of integration and developer-service firms.",
+      "owner": "Stellar Light/Scout",
+      "ownerNote": "Scout's sdf-org source does not hold the page; Scout's partner directory has no agency rows.",
+      "evidence": "confirmed",
+      "recheck": {
+        "at": "2026-11-14T05:04:25Z",
+        "result": "scout.searchResearch (no filter and sdf-org) returned the terms of service, team, SCF Integration Track, and analytics-provider pages. Docs returned RPC and Horizon provider pages. Lumenloop returned SCF submissions. No row holds the directory page."
+      },
+      "leafCases": [],
+      "affectedCases": [
+        "q-scf-service-provider-directories"
+      ],
+      "recommend": "Add the page to Scout's sdf-org source (sls-117).",
+      "finding": "sls-117",
+      "notFiled": null
+    },
+    {
+      "leaf": "assets.public-sector-cbdc",
+      "title": "Government, public-sector, and CBDC use",
+      "weight": 1,
+      "volatility": "scheduled",
+      "mapperReach": "unchecked",
+      "reachToday": "partial: one key fact unreachable",
+      "missing": "The National Bank of Ukraine's statement that the 2021 pilot was not its e-hryvnia.",
+      "owner": "outside Raven's scope",
+      "ownerNote": "bank.gov.ua news item of 2021-12-15. Lumenloop holds SDF's two press releases, a CoinDesk item ('Ukraine Commercial Bank to Test Digital Currency'), and a Decrypt item whose headline calls it a central-bank pilot.",
+      "evidence": "confirmed",
+      "recheck": {
+        "at": "2026-11-14T05:06:50Z",
+        "result": "lumenloop.search_content_semantic returned the CoinDesk and Decrypt items and the SDF press release ('under National Bank of Ukraine supervision'). scout.searchResearch returned U.S. Bank stablecoin items. No row holds the NBU statement."
+      },
+      "leafCases": [],
+      "affectedCases": [
+        "q-crp-public-sector-cbdc-pilots-stellar"
+      ],
+      "recommend": "Source-coverage question for the owner: whether Lumenloop should ingest the NBU news item as an article.",
+      "finding": null,
+      "notFiled": "The owner of the fact is outside Raven's scope. The Decrypt headline is a third party's wording, not a Lumenloop defect."
+    },
+    {
+      "leaf": "ecosystem.xlm-markets",
+      "title": "XLM listings and investment products",
+      "weight": 1,
+      "volatility": "live",
+      "mapperReach": "no",
+      "reachToday": "not re-run",
+      "missing": "Mapper: no regulated XLM investment product in the returned rows.",
+      "owner": "outside Raven's scope",
+      "ownerNote": null,
+      "evidence": "single",
+      "recheck": null,
+      "leafCases": [],
+      "affectedCases": [],
+      "recommend": "None.",
+      "finding": null,
+      "notFiled": "Weight 1, single observation, not re-run."
+    }
+  ],
+  "auditInputs": {
+    "unverifiable": 97,
+    "unverifiableNoEvidence": 34,
+    "byLane": {
+      "assets": 3,
+      "compliance": 20,
+      "defi": 10,
+      "edge": 3,
+      "hist-retail": 31,
+      "protocol": 13,
+      "scf": 6,
+      "soroban-b": 4,
+      "tooling-a": 4,
+      "tooling-b": 3
+    },
+    "missingArrays": 11,
+    "missingItems": 67
+  }
+}

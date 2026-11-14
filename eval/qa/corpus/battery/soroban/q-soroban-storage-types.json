@@ -7,21 +7,18 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "Soroban exposes **three SDK storage accessors/types** via `env.storage()`:\n\n- **Persistent** — long-lived per-key data. On TTL expiry it is archived and can be restored.\n- **Temporary** — short-lived/recreatable data. On TTL expiry it is deleted permanently.\n- **Instance** — small config/admin state stored inside the persistent contract-instance ledger entry; it shares that entry's TTL and is loaded with the instance.\n\nAt the XDR layer there are only **two `ContractDataDurability` variants**, Persistent and Temporary; Instance is not a third XDR durability. Under Protocol 23/CAP-0066+, an archived Persistent entry or contract-instance entry can auto-restore for an `InvokeHostFunctionOp` only when the key is in the invocation's read-write footprint and marked in `archivedSorobanEntries`, normally supplied by simulation. `RestoreFootprintOp` remains the manual fallback when auto-restore cannot fit or is intentionally separated.\n\nRule of thumb: balances/ownership -> Persistent; ephemeral/derivable data -> Temporary; small contract config -> Instance.",
+    "answer": "`env.storage()` offers three types. Persistent holds long-lived per-key data such as balances; on TTL expiry it is archived and can be restored. Temporary holds short-lived or recreatable data, is cheapest, and is deleted permanently on expiry. Instance holds small contract-wide configuration in the contract-instance entry, shares that entry's TTL and is loaded on every call. Since Protocol 23, archived entries are restored automatically when the transaction's restore list includes them.",
     "keyFacts": [
-      "Maps 3 SDK accessors/types→I/P/T; XDR ContractDataDurability→Persistent/Temporary only.",
-      "Maps Persistent→long-lived per-key balances/ownership; T→cheap short-lived/recreatable.",
-      "Maps Instance→small per-contract config/admin/metadata tied to/loaded with its instance.",
-      "Maps TTL expiry→P/I archived/restorable; Temporary permanently deleted/nonrestorable.",
-      "P23+ restore keys: RW footprint + archivedSorobanEntries; RestoreFootprintOp is fallback."
+      "Persistent storage holds long-lived data; expired entries are archived and restorable.",
+      "Temporary storage is cheapest and its expired entries are deleted permanently.",
+      "Instance storage is small contract-wide config tied to the instance entry and TTL.",
+      "Since Protocol 23, archived entries listed in the restore list restore automatically."
     ],
     "avoid": [
-      "Do NOT invent storage types not in Soroban (e.g., only 'storage'/'memory'/'calldata' as in Solidity).",
-      "Do NOT say Temporary data is restorable after expiry, or that Persistent/Instance data is permanently deleted on expiry.",
-      "Do NOT claim archived Persistent/Instance entries always require a separate `RestoreFootprintOp`, that auto-restore is impossible under Protocol 23+, or that `RestoreFootprintOp` is not a manual fallback.",
-      "Do NOT imply auto-restore works without the read-write footprint plus archivedSorobanEntries metadata, or invent ContractDataDurability::Instance."
+      "Do NOT invent storage types such as Solidity's storage/memory/calldata.",
+      "Do NOT say Temporary data is restorable after expiry, or Persistent/Instance data is deleted on expiry."
     ],
-    "notes": "2026-06-29: removed duplicated Why-these-cards/Edge sections (verified 2026-06-29). Storage-semantics swap is the headline trap; Solidity storage/memory/calldata is the cross-chain trap. Verified against 'choosing the right storage' + state-archival docs.\nAlso good if the answer: Instance storage is loaded on every contract invocation (so keep it small). | Temporary is the cheapest tier.\nGolden cites: The developers.stellar.org 'choosing the right storage' or state-archival guide.\nGT-47 BLIND REFINEMENT 2026-07-11: distinguish three SDK storage accessors from two XDR durability variants. For P23 auto-restore require both the invocation read-write footprint and archivedSorobanEntries metadata; reserve restoration footprint for the manual RestoreFootprintOp path."
+    "notes": "Noting that XDR has only two durability variants is a correct bonus, not a requirement."
   },
   "tags": {
     "category": "soroban",
@@ -35,7 +32,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-03-19",
     "sources": [
       {
@@ -167,20 +164,42 @@
             "note": "TestSimulateTransactionAutoRestore requires nil RestorePreamble and nonempty ArchivedSorobanEntries; the manual test skips protocols above 22."
           }
         ]
+      },
+      {
+        "claim": "Temporary data is removed forever; Persistent/Instance are archived and automatically restorable since Protocol 23",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/storage/choosing-the-right-storage.md",
+            "observedAt": "2026-11-14",
+            "note": "| Temporary | `env.storage().temporary()` | Cheapest | Data is removed forever | Unlimited |"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival.md",
+            "observedAt": "2026-11-14",
+            "note": "archived entries included in a transaction's restore list ... are automatically restored when the `InvokeHostFunctionOp` executes."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-06",
-      "by": "2026-11-05 truth-maintenance coordinator; independent Astra high reviewer t2dx, docs-independent.md",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-soroban-b, verify-audit-soroban-b; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Fresh A/B checks: https://developers.stellar.org/docs/build/guides/transactions/simulateTransaction-Deep-Dive.md — Since Protocol 23, you usually do not need a separate restore step. The same InvokeHostFunction transaction restores listed entries first.",
-        "Fresh A/B checks: https://raw.githubusercontent.com/stellar/stellar-rpc/main/cmd/stellar-rpc/internal/integrationtest/simulate_transaction_test.go — TestSimulateTransactionAutoRestore requires nil RestorePreamble and nonempty ArchivedSorobanEntries; the manual test skips protocols above 22.",
-        "Sibling sweep: q-sor-ttl-defaults-extend, q-sor-p23-auto-restore-extendto, q-sor-force-fast-archival-localnet, q-soroban-storage-types; all retain the same restoration behavior and lose only the expired sd-078 attribution cap. q-soroban-simulate-resource-fee and q-infra-simulate-transaction-howto retain conditional restorePreamble handling. No numeric TTL value or avoid clause changed."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-b.json#q-soroban-storage-types",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-b.json#q-soroban-storage-types",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-soroban-storage-types",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/build/guides/storage/choosing-the-right-storage.md -- '| Temporary | `env.storage().temporary()` | Cheapest | Data is removed forever | Unlimited |'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival.md -- 'archived entries included in a transaction's restore list ... are automatically restored when the `InvokeHostFunctionOp` executes.'"
       ],
       "rootCause": [
-        "improvements/resolved.json entry sd-078: live Docs correction removes the source conflict that justified the cap."
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-soroban-storage-types"
+    "origin": "raven-next q-soroban-storage-types",
+    "notes": "2026-06-29: removed duplicated Why-these-cards/Edge sections (verified 2026-06-29). Storage-semantics swap is the headline trap; Solidity storage/memory/calldata is the cross-chain trap. Verified against 'choosing the right storage' + state-archival docs.\nAlso good if the answer: Instance storage is loaded on every contract invocation (so keep it small). | Temporary is the cheapest tier.\nGolden cites: The developers.stellar.org 'choosing the right storage' or state-archival guide.\nGT-47 BLIND REFINEMENT 2026-07-11: distinguish three SDK storage accessors from two XDR durability variants. For P23 auto-restore require both the invocation read-write footprint and archivedSorobanEntries metadata; reserve restoration footprint for the manual RestoreFootprintOp path.",
+    "leaf": "soroban.storage-types"
   }
 }

@@ -1,0 +1,21 @@
+{
+  "id": "q-gap-leaderboard-project-not-builder",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-defi (golden coverage audit)",
+    "reviewer": "verify-defi (golden coverage audit)",
+    "reason": "That Scout's leaderboard ranks projects rather than people is operation semantics that the routing gates own.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-gap-leaderboard-project-not-builder",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-gap-leaderboard-project-not-builder",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-gap-leaderboard-project-not-builder"
+    ],
+    "lastCaseContentSha256": "850499d785c439f3d43b040b0a015480ba455d59d63018a62d15ed00a27fd2e8",
+    "replacementIds": []
+  }
+}

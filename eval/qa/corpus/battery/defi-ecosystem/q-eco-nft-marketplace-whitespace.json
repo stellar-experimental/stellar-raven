@@ -6,16 +6,16 @@
     "scout.searchProjects"
   ],
   "golden": {
-    "answer": "**Litemint** is a live Stellar-native NFT marketplace and is the clearest currently verified integration candidate, but validate its current API/contract integration path before committing. The broader category remains thin only as a dated, criteria-dependent judgment. **Rarible has real Stellar association**—an SCF #30 award and a STELLAR reference enum—but its current official supported-chain table, help/UI surfaces, and live directory network fields did not verify public production Stellar support on **2026-07-10**. Describe that as awarded/partially implemented or unverified current deployment, not as either live support or no relationship.",
+    "answer": "Litemint is a live Stellar-native NFT marketplace and the clearest integration candidate; validate its current API or contract path first. Rarible has a Stellar association (an SCF award and a schema entry), but its supported-chain documentation did not verify production Stellar support (checked 2026-07-10), so treat Rarible as awarded or unverified, not as live support. The category is thin, not empty.",
     "keyFacts": [
-      "Identifies Litemint as a live Stellar NFT marketplace.",
-      "Treats Rarible award/schema evidence separately from unverified current API/UI support."
+      "Litemint is a live Stellar-native NFT marketplace.",
+      "Rarible has an SCF award but its production Stellar support is unverified."
     ],
     "avoid": [
-      "Do NOT claim Rarible currently supports Stellar in production without a working dated API/UI path, or deny all Rarible-Stellar association.",
-      "Do NOT assert no OpenSea-scale venue without defining and measuring scale, or treat wallet NFT display as a marketplace."
+      "Do NOT claim Rarible supports Stellar in production without a working dated path, or deny any Rarible-Stellar association.",
+      "Do NOT treat wallet NFT display as a marketplace."
     ],
-    "notes": "CORRECTED vs dossier (re-verified 2026-06-29): live Scout surfaces Litemint (Stellar-native NFT marketplace, Soroban royalties) and Rarible (multi-chain, Stellar-supported); Cyberbrawl (Litemint's on-chain TCG) is also Live. The Phase-1 'NFT marketplaces undeveloped / none surfaced' framing was stale. Honest answer: marketplaces exist but the category is thin/under-built (not crowded). This file OWNS the INTEGRATE-DECISION lane ('is there a mature marketplace I could integrate') — DISTINCT from q-defi-nft-standards-projects (NFT representation standards + project roster). Gate rewards naming Litemint and forbids the 'no NFT marketplace exists' claim.\nAlso good if the answer: Honestly characterizes NFT marketplaces as a thin/under-built category on Stellar (few options, none MetaMask/OpenSea-scale) rather than a crowded, mature market.\nGolden cites: The directory/Scout entries for Litemint (and Rarible) as the Stellar NFT-marketplace evidence.\nGT-19 CORRECTION 2026-07-10: Litemint is live; Rarible has award/schema evidence but current production Stellar support was not verified. Grade deployment-state precision, not a binary directory Live flag."
+    "notes": "Truth is disputed for Rarible: sources differ on Stellar support, so grade deployment-state precision, not a binary Live flag."
   },
   "tags": {
     "category": "defi-ecosystem",
@@ -88,26 +88,39 @@
           }
         ],
         "note": "Legacy verdict: disputed-deployment-state."
+      },
+      {
+        "claim": "Litemint is a Stellar-native NFT marketplace",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "D",
+            "ref": "https://market.litemint.com/",
+            "observedAt": "2026-11-14",
+            "note": "Buy, sell, and collect digital creations on Litemint — the first native marketplace on Stellar"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Grading-policy round 2026-11-02 (owner decision D2; .agents/rounds/2026-11-02-grading-policy.md)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-defi, verify-defi; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Litemint is a live Stellar NFT marketplace [confirmed-as-of] — A: https://litemint.com/ — \"Litemint Market Buy, Sell, and Collect Digital Creations on Stellar, Cyberbrawl items included\" (observedAt 2026-10-20)",
-        "Litemint is a live Stellar NFT marketplace [confirmed-as-of] — F: https://market.litemint.com/ — \"HTTP 200\" (observedAt 2026-11-02)",
-        "Litemint is a live Stellar NFT marketplace [confirmed-as-of] — C: https://stellarlight.xyz/api/projects/search?q=litemint — \"Litemint | Live | User-Facing App | ['NFT']\" (observedAt 2026-11-02)",
-        "Rarible has an SCF #30 award and no verified public production Stellar support [confirmed-as-of] — A: https://communityfund.stellar.org/submissions/recRfE25wZkOThcrq — \"\"title\":\"Rarible.com X Stellar NFT Experience\",\"status\":\"Awarded\",\"roundName\":\"SCF #30\",\"budget\":150000; project \"totalAwarded\":150000,\"totalPaid\":50000\" (observedAt 2026-11-02)",
-        "Rarible has an SCF #30 award and no verified public production Stellar support [confirmed-as-of] — A: https://docs.rarible.org/docs/supported-chains — \"Currently supported chains table: no Stellar row (0 occurrences of 'stellar' in the fetched page)\" (observedAt 2026-11-02)",
-        "Rarible has an SCF #30 award and no verified public production Stellar support [confirmed-as-of] — C: https://stellarlight.xyz/api/projects/search?q=rarible — \"lifecycle.note: public Stellar marketplace support was not verifiable on Rarible's live API/UI as of 2026-07-11, so supportedNetworks lists verified deployments only (evm).\" (observedAt 2026-11-02)",
-        "No gospel change: every audited claim was confirmed or confirmed-as-of. Proposer sibling list q-eco-defi-market-map, q-defi-nft-standards-projects; no contradiction recorded.",
-        "Freshness change 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): tags.freshness stable -> scheduled, truth.asOf 2026-11-02, truth.reverifyBy 2027-01-25. The 2026-11-02 evidence above confirms the dated values live; no other judge-facing field changed."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-eco-nft-marketplace-whitespace",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-eco-nft-marketplace-whitespace",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-eco-nft-marketplace-whitespace",
+        "Live D 2026-11-14: https://market.litemint.com/ -- 'Buy, sell, and collect digital creations on Litemint — the first native marketplace on Stellar'",
+        "Live A 2026-11-14: https://docs.rarible.org/docs/supported-chains -- 'fetched page text (12,308 chars) names no chains at all, Solana included, so absence of Stellar proves nothing; last confirmed 2026-07-10'",
+        "Live C 2026-11-14: scout.searchProjects({query:'Litemint'}) -- 'slug litemint, status Live, types [NFT]'"
       ],
       "rootCause": [
-        "Eval-side authoring flaw: the golden carries a dated point-in-time value but was tagged stable, so no reverifyBy date forced a re-check; the golden-truth skill requires scheduled plus truth.reverifyBy for such values (.agents/rounds/2026-11-02-grading-policy.md)."
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
     "origin": "raven-next q-eco-nft-marketplace-whitespace",
-    "reverifyBy": "2027-01-25"
+    "reverifyBy": "2027-01-25",
+    "notes": "CORRECTED vs dossier (re-verified 2026-06-29): live Scout surfaces Litemint (Stellar-native NFT marketplace, Soroban royalties) and Rarible (multi-chain, Stellar-supported); Cyberbrawl (Litemint's on-chain TCG) is also Live. The Phase-1 'NFT marketplaces undeveloped / none surfaced' framing was stale. Honest answer: marketplaces exist but the category is thin/under-built (not crowded). This file OWNS the INTEGRATE-DECISION lane ('is there a mature marketplace I could integrate') — DISTINCT from q-defi-nft-standards-projects (NFT representation standards + project roster). Gate rewards naming Litemint and forbids the 'no NFT marketplace exists' claim.\nAlso good if the answer: Honestly characterizes NFT marketplaces as a thin/under-built category on Stellar (few options, none MetaMask/OpenSea-scale) rather than a crowded, mature market.\nGolden cites: The directory/Scout entries for Litemint (and Rarible) as the Stellar NFT-marketplace evidence.\nGT-19 CORRECTION 2026-07-10: Litemint is live; Rarible has award/schema evidence but current production Stellar support was not verified. Grade deployment-state precision, not a binary directory Live flag.",
+    "leaf": "ecosystem.project-directory",
+    "secondaryLeaf": "assets.nft-vault-standards"
   }
 }

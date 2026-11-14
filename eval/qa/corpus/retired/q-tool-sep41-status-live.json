@@ -1,0 +1,23 @@
+{
+  "id": "q-tool-sep41-status-live",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-tooling-b (golden coverage audit)",
+    "reviewer": "verify-audit-tooling-b (golden coverage audit)",
+    "reason": "Merged into q-sep-41-token-interface. Survivor q-sep-41-token-interface (assets rewrite, verifier-accepted with a 2026-11-14 read of v0.5.2 Draft) states what SEP-41 is, its SAC relation and its dated status; nothing is lost.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-b.json#q-tool-sep41-status-live",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-b.json#q-tool-sep41-status-live",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-tool-sep41-status-live"
+    ],
+    "lastCaseContentSha256": "4b2a27d24a69b97fb3fe9c6785e5f607f85b3a7a49321904a831b08ef0b366d7",
+    "replacementIds": [
+      "q-sep-41-token-interface"
+    ]
+  }
+}

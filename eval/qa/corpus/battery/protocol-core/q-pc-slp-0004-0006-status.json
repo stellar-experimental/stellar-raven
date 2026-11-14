@@ -1,24 +1,21 @@
 {
   "id": "q-pc-slp-0004-0006-status",
-  "question": "What are Stellar Limits Proposals SLP-0004 and SLP-0006, and which one was final versus still draft as of July 11, 2026?",
+  "question": "What are Stellar Limits Proposals (SLPs), how do they differ from CAPs and SEPs, and how does an approved one take effect?",
   "surface": [
     "stellarDocs.search_protocol_concepts_docs",
     "lumenloop.search_documents"
   ],
   "golden": {
-    "answer": "As of July 11, 2026, SLP-0004 was Final. It raised Soroban limits including per-transaction instructions from 100 million to 400 million, write entries from 50 to 200, and footprint size from 100 to 200 entries; it also proposed roughly fourfold reductions for most non-refundable resource fees. SLP-0006 was still Draft. It proposes moving the existing overlay-layer block on three accounts associated with the February 22 YieldBlox V2 exploit into network configuration using CAP-0077. SLPs are Stellar Limits Proposals, not CAPs or SEPs. The Draft label described the document, not the network: from Mainnet ledger 63073409 (2026-06-17 17:00 UTC) onward, the `frozen_ledger_keys` network setting has held these three account keys (observed 2026-11-02). The repository marked SLP-0006 Final on 2026-10-22.",
+    "answer": "A Stellar Limits Proposal (SLP) proposes changes to network-configuration limits and fees, such as Soroban ledger caps; it is neither a CAP nor a SEP and lives under limits/ in stellar-protocol. An approved SLP takes effect through a validator-voted configuration upgrade, not a protocol-version change. SLP-0007, for example, raised dependent clusters from 2 to 3 and halved Soroban resource fees, live on Mainnet from 2026-10-22.",
     "keyFacts": [
-      "Reports SLP status as of July 11, 2026: SLP-0004 Final, SLP-0006 Draft.",
-      "Lists SLP-0004 per-tx instructions 100M→400M, write entries 50→200, footprint 100→200.",
-      "Reports roughly fourfold cuts to most SLP-0004 non-refundable fees.",
-      "Describes SLP-0006's proposed CAP-0077 network configuration.",
-      "Names 3 already overlay-blocked YieldBlox exploit accounts."
+      "SLPs propose network-configuration limit and fee changes; they are not CAPs or SEPs.",
+      "An approved SLP takes effect through a validator-voted configuration upgrade.",
+      "Document status and network application are separate states."
     ],
     "avoid": [
-      "Do NOT call either proposal a SEP or CAP.",
-      "Do NOT say SLP-0006 was Final on July 11, 2026, or infer from its Draft label that the freeze was not applied."
+      "Do NOT call an SLP a CAP or SEP."
     ],
-    "notes": "SLP-0006 is status-sensitive. Preserve the as-of date and accept a newer sourced status rather than pinning Draft forever.\nCORRECTION 2026-11-02: SLP-0006 stayed Draft until 2026-10-22, but Mainnet frozen_ledger_keys has held its three keys since ledger 63073409 (2026-06-17). Grade document status and network application separately; accept the current Final status if the answer keeps the July 11 Draft status."
+    "notes": "Accept any current SLP example if dated."
   },
   "tags": {
     "category": "protocol-core",
@@ -32,7 +29,7 @@
     },
     "domain": "real-world",
     "status": "mixed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-06-15",
     "sources": [
       {
@@ -156,32 +153,44 @@
             "note": "'Status: Final' (applier re-read 2026-11-02)."
           }
         ]
+      },
+      {
+        "claim": "SLP-0004 per-tx instructions 100M to 400M, write entries 50 to 200",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/limits/slp-0004.md",
+            "observedAt": "2026-11-14",
+            "note": "| Instructions/threads | 100'000'000 | 400'000'000 …; Write Entries 50 200"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task protocol-current)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-protocol, verify-protocol; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Gospel change (pass 2): golden.answer dates the present-perfect 'has held' frozen_ledger_keys claim with '(observed 2026-11-02)' (verifier accept). truth.asOf 2026-11-02 and reverifyBy 2027-06-15 unchanged.",
-        "Class F 2026-11-02 (pass-2 verifier): https://mainnet.sorobanrpc.com getLedgerEntries keys=[AAAACAAAABE=] (CONFIG_SETTING_FROZEN_LEDGER_KEYS) — latestLedger 65271116; lastModifiedLedgerSeq 63073409; 3 keys decode to GATDQL767ZM2JQTBEG4BQ5WKOQNGAGWZDUN4GYT2UINPEU3RT2UAMVZH, GBO7VUL2TOKPWFAWKATIW7K3QYA7WQ63VDY5CAE6AFUUX6BHZBOC2WXC, GCJOPSQNJDUYMWVJ3U7LYWWHM4N7NPWNF3RTOHB76PA67NH6DLWODES4 (observedAt 2026-11-02)",
-        "Class F 2026-11-02 (pass-2 verifier): https://horizon.stellar.org/ledgers/63073409 — sequence 63073409, closed_at 2026-06-17T17:00:08Z, protocol_version 26 (observedAt 2026-11-02)",
-        "Sibling sweep 2026-11-02 (pass 2): q-comp-yieldblox-oracle-incident (ledger 63073409 freeze; consistent), q-hist-yieldblox-v2-2026-exploit (consistent); no contradiction.",
-        "Pass 1 (batch protocol-core-02): Gospel change: golden.answer now separates SLP-0006 document status from network application (verifier-modified wording); avoid[1] replaced because it punished a true claim; CORRECTION note appended (verifier-modified wording).",
-        "Pass 1 (batch protocol-core-02): https://mainnet.sorobanrpc.com getLedgerEntries CONFIG_SETTING_FROZEN_LEDGER_KEYS (key AAAACAAAABE=) — lastModifiedLedgerSeq 63073409; keys decode to GATDQL767ZM2JQTBEG4BQ5WKOQNGAGWZDUN4GYT2UINPEU3RT2UAMVZH, GBO7VUL2TOKPWFAWKATIW7K3QYA7WQ63VDY5CAE6AFUUX6BHZBOC2WXC, GCJOPSQNJDUYMWVJ3U7LYWWHM4N7NPWNF3RTOHB76PA67NH6DLWODES4 (observedAt 2026-11-02).",
-        "Pass 1 (batch protocol-core-02): https://horizon.stellar.org/ledgers/63073409 — closed_at 2026-06-17T17:00:08Z, protocol 26; header scp_value.upgrades has one type-6 (LEDGER_UPGRADE_CONFIG) upgrade (observedAt 2026-11-02; applier re-read 2026-11-02).",
-        "Pass 1 (batch protocol-core-02): https://raw.githubusercontent.com/stellar/stellar-protocol/master/limits/slp-0006.md — 'Status: Final ... keysToFreeze ... GBO7VUL2..., GATDQL76..., GCJOPSQN... The keysToUnfreeze value is empty.' (observedAt 2026-11-02).",
-        "Pass 1 (batch protocol-core-02): https://api.github.com/repos/stellar/stellar-protocol/commits?path=limits/slp-0006.md — 2026-10-22T23:13:02Z 1ae39233 'Update CAP and SLP statuses (#2046)'; 2026-05-07 86d54d5a SLP-0006 created (observedAt 2026-11-02).",
-        "Pass 1 (batch protocol-core-02): https://status.stellar.org/history.rss + Parallel/Perplexity sweeps — no public announcement dates the freeze; the wording states only the on-chain observation 'from ledger 63073409 onward' (observedAt 2026-11-02).",
-        "Pass 1 (batch protocol-core-02): SLP-0004 limits: https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0004.md — '| Write Entries | 50 | 200 |', '| Instructions/threads | 100'000'000 | 400'000'000 |', footprint 100 to 200, non-refundable fees cut 4 times; Status Final (observedAt 2026-11-02).",
-        "Pass 1 (batch protocol-core-02): truth.reverifyBy 2027-06-15 per the proposer matrix, inside the 2027-06 audit window.",
-        "Pass 1 (batch protocol-core-02): Sibling sweep 2026-11-02: grep SLP-0006|frozen_ledger_keys → q-comp-yieldblox-oracle-incident (states SLP-0006 froze the three accounts at ledger 63073409 on 2026-06-17; consistent), q-hist-yieldblox-v2-2026-exploit (frozen is not recovered; consistent); no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-pc-slp-0004-0006-status",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-pc-slp-0004-0006-status",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-pc-slp-0004-0006-status",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-protocol/master/limits/slp-0004.md -- 'Status: Final'",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-protocol/master/limits/slp-0006.md -- 'Status: Final (Created 2026-05-07)'",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-protocol/master/limits/slp-0007.md -- 'Status: Final … dependent transaction clusters (2 to 3)'",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-protocol/master/limits/slp-0008.md -- 'Status: Final (Created 2026-11-02)'",
+        "Live E 2026-11-14: https://developers.stellar.org/docs/build/guides/storage/storage-strategies -- 'SLP-0007 (live on Mainnet since October 22, 2026)'",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-protocol/master/limits/slp-0004.md -- '| Instructions/threads | 100'000'000 | 400'000'000 …; Write Entries 50 200'",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-protocol/master/limits/slp-0007.md -- 'Title: Increase Soroban Ledger-Wide Limits and Reduce Resource Fees / Status: Final ... dependent transaction clusters (2 to 3) ... all fees are cut in half'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/build/guides/storage/storage-strategies -- 'Checked: October 22, 2026. Protocol: Stellar Protocol 29, with the SLP-0007 network settings upgrade that went live on Mainnet the same day.'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/limits/README.md -- '| [SLP-0006] | Freeze YieldBlox Exploit Stellar Accounts | Alex Mootz | Final | ... | [SLP-0008] | Freeze Mercado Bitcoin Exploit Stellar Account | Justin Rice | Final |'"
       ],
       "rootCause": [
-        "freshness-drift",
-        "Eval-side authoring flaw: network application state was inferred from the SLP document's Draft label instead of the live frozen_ledger_keys config setting",
-        "Upstream status lag (fixed upstream): SLP-0006 stayed Draft for four months after Mainnet applied its frozen_ledger_keys upgrade; marked Final in https://github.com/stellar/stellar-protocol/pull/2046 on 2026-10-22"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit",
+        "freshness-drift"
       ]
     },
-    "origin": "authored 2026-07 (2026-events)"
+    "origin": "authored 2026-07 (2026-events)",
+    "notes": "SLP-0006 is status-sensitive. Preserve the as-of date and accept a newer sourced status rather than pinning Draft forever.\nCORRECTION 2026-11-02: SLP-0006 stayed Draft until 2026-10-22, but Mainnet frozen_ledger_keys has held its three keys since ledger 63073409 (2026-06-17). Grade document status and network application separately; accept the current Final status if the answer keeps the July 11 Draft status.",
+    "leaf": "network.limits-settings"
   }
 }

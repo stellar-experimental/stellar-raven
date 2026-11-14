@@ -8,20 +8,16 @@
     "stellarDocs.search_wallet_dapp_docs"
   ],
   "golden": {
-    "answer": "- **SEP-12 — KYC API** is the API for authenticated customer-data exchange with an anchor. **PUT /customer** idempotently creates or updates customer fields; **GET /customer** returns required fields and customer/KYC status; **DELETE /customer/[account]** removes a customer. Optional binary files may be uploaded separately with **POST /customer/files** and referenced from a later PUT.\n- **SEP-9 — Standard KYC Fields** is the data dictionary of field names such as first_name, email_address, and id_type. It is vocabulary used by SEP-12 and related flows, not an API.\n- Every SEP-12 request uses a bearer JWT from **SEP-10 for G/M accounts** or **SEP-45 for C accounts**. SEP-12 is then used where the chosen SEP-6, SEP-24, or SEP-31 flow needs customer information.",
+    "answer": "SEP-12 is the KYC API between wallet and anchor: `PUT /customer` idempotently uploads customer fields and `GET /customer` returns the fields still required and the KYC status. SEP-9 is only the dictionary of standard field names such as `first_name`. Requests carry a SEP-10 JWT for G or M accounts, or a SEP-45 JWT for contract accounts.",
     "keyFacts": [
-      "Names SEP-12 as the KYC API.",
-      "Uses PUT /customer for create/update and GET /customer for fields/status.",
-      "Uses POST /customer/files for optional binary files.",
-      "Names SEP-9 as the Standard KYC Fields data dictionary that SEP-12 uses.",
-      "Uses SEP-10 authentication for G/M accounts and SEP-45 for C accounts."
+      "SEP-12 is the KYC API between a wallet and an anchor.",
+      "PUT /customer uploads fields; GET /customer returns required fields and status.",
+      "SEP-9 is the standard KYC field dictionary, not an API.",
+      "SEP-12 requests authenticate with a SEP-10 or SEP-45 JWT."
     ],
     "avoid": [
-      "Do NOT misnumber KYC: SEP-12 is the API and SEP-9 is its field dictionary.",
-      "Do NOT call POST /customer the customer-record upload or say GET /customer uploads fields.",
-      "Do NOT claim SEP-12 excludes SEP-45/C-account authentication."
-    ],
-    "notes": "Dossier §7.1, Q15. SEP-9 vs SEP-12 distinction. Both Active (ecosystem README): SEP-12 'KYC API', SEP-9 'Standard KYC Fields'.\nAlso good if the answer: The anchor verifies the data and returns a status; SEP-12 is used by SEP-6/24/31 flows.\nGolden cites: SEP-0012 (and SEP-0009) on the stellar-protocol repo or developers.stellar.org.\nCORRECTION 2026-07-10 (golden-truth; Solo scratchpad 575, processes 3220/3221/3225): require the PUT-upload / GET-requirements-status distinction. POST applies to the optional /customer/files helper or to callback delivery at a wallet-provided URL, not the main /customer upload. Account auth is SEP-10 for G/M or SEP-45 for C."
+      "Do NOT claim that customer fields are uploaded with POST /customer."
+    ]
   },
   "tags": {
     "category": "assets-anchors-seps",
@@ -100,22 +96,63 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "SEP-12 endpoints: GET/PUT /customer, DELETE /customer/[account], POST /customer/files; JWT from SEP-10 or SEP-45.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0012.md",
+            "observedAt": "2026-11-14",
+            "note": "- [`PUT /customer`](#customer-put): Idempotent upload of customer info"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0012.md",
+            "observedAt": "2026-11-14",
+            "note": "- [`GET /customer`](#customer-get): Check the status of a customers info"
+          }
+        ]
+      },
+      {
+        "claim": "SEP-9 is Active (v1.17.0) and SEP-12 Active (v1.15.0).",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0009.md",
+            "observedAt": "2026-11-14",
+            "note": "Title: Standard KYC Fields Status: Active Version 1.17.0"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0012.md",
+            "observedAt": "2026-11-14",
+            "note": "Title: KYC API Status: Active Version 1.15.0"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-03)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-assets, verify-audit-assets; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0012.md — \"GET /customer: Check the status of a customers info / PUT /customer: Idempotent upload of customer info / DELETE /customer/[account] / POST /customer/files\" (observedAt 2026-11-02; supports golden.keyFacts[1-2]: confirmed)",
-        "[A] https://developers.stellar.org/docs/platforms/anchor-platform — \"SEP-12 — Customer KYC/AML data management\" (observedAt 2026-10-22; supports golden.keyFacts[1-2]: confirmed)",
-        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0012.md — \"Anchors and clients must support at least one of SEP-10 or SEP-45 web authentication and use it for all SEP-12 endpoints.\" (observedAt 2026-11-02; supports golden.keyFacts[4]: confirmed)",
-        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0045.md — \"This SEP only supports C (contract) accounts. SEP-10 only supports G and M\" (observedAt 2026-11-02; supports golden.keyFacts[4]: confirmed)",
-        "[A] https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep45 — \"proving control over a contract account (C...)\" (observedAt 2026-10-01; supports golden.keyFacts[4]: confirmed)",
-        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0009.md — \"Title: Standard KYC Fields / Status: Active / Version 1.17.0\" (observedAt 2026-11-02; supports golden.keyFacts[3]: confirmed)",
-        "No gospel change: proposer matrix verdict 'unchanged'; no proposals for this case.",
-        "Sibling sweep 2026-11-02: q-sep-45-contract-auth, q-comp-sep6-vs-sep12-roles, q-anchor-platform-what checked; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-assets.json#q-sep-12-kyc",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-assets.json#q-sep-12-kyc",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-sep-12-kyc",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0012.md -- '- [`PUT /customer`](#customer-put): Idempotent upload of customer info'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0012.md -- '- [`GET /customer`](#customer-get): Check the status of a customers info'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0009.md -- 'Title: Standard KYC Fields Status: Active Version 1.17.0'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0012.md -- 'Title: KYC API Status: Active Version 1.15.0'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0012.md -- 'Title: KYC API Status: Active Updated: 2024-07-23 Version 1.15.0'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-sep-12-kyc"
+    "origin": "raven-next q-sep-12-kyc",
+    "notes": "Dossier §7.1, Q15. SEP-9 vs SEP-12 distinction. Both Active (ecosystem README): SEP-12 'KYC API', SEP-9 'Standard KYC Fields'.\nAlso good if the answer: The anchor verifies the data and returns a status; SEP-12 is used by SEP-6/24/31 flows.\nGolden cites: SEP-0012 (and SEP-0009) on the stellar-protocol repo or developers.stellar.org.\nCORRECTION 2026-07-10 (golden-truth; Solo scratchpad 575, processes 3220/3221/3225): require the PUT-upload / GET-requirements-status distinction. POST applies to the optional /customer/files helper or to callback delivery at a wallet-provided URL, not the main /customer upload. Account auth is SEP-10 for G/M or SEP-45 for C.",
+    "leaf": "standards.sep12-kyc"
   }
 }

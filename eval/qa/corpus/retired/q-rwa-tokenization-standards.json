@@ -1,0 +1,21 @@
+{
+  "id": "q-rwa-tokenization-standards",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-compliance (golden coverage audit)",
+    "reviewer": "verify-audit-compliance (golden coverage audit)",
+    "reason": "Both facets are tested directly (SEP-8 case, T-REX case kf3). Its SEP-56 fact is carried to the assets.nft-vault-standards slot, which names it.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-compliance.json#q-rwa-tokenization-standards",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-compliance.json#q-rwa-tokenization-standards",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-rwa-tokenization-standards"
+    ],
+    "lastCaseContentSha256": "7465d32fe042e49d99401aa1bc54839ec0b0580a35982e89bc725e85642be022",
+    "replacementIds": []
+  }
+}

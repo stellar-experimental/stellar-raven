@@ -1,0 +1,21 @@
+{
+  "id": "q-builder-rust-soroban-devs",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-scf (golden coverage audit)",
+    "reviewer": "verify-audit-scf (golden coverage audit)",
+    "reason": "Scores a volatile directory roster, not Stellar truth; same pattern as q-builder-by-region-latam and covered by the live-lane builder shortlist case.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-builder-rust-soroban-devs",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-builder-rust-soroban-devs",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-builder-rust-soroban-devs"
+    ],
+    "lastCaseContentSha256": "f83ebea11dd85743ff252325960169707e8f6138a77a74787daa06cec1de571c",
+    "replacementIds": []
+  }
+}

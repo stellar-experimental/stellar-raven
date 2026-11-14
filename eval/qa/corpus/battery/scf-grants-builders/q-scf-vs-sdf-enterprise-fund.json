@@ -5,21 +5,17 @@
     "scout.searchResearch"
   ],
   "golden": {
-    "answer": "A grounded answer derives its named examples and status claims from the live Stellar Scout directory or research data, then dates the roster so it is not presented as permanent. As of 2026-07-10, the verified sources supported this observed answer:\n\nUse **SCF Build** for an up-to-$150K XLM-valued development grant: the interest form is open, but eligibility/referral review precedes an invited full proposal, and only the Open Track uses project-level community voting. **SDF Marketing Grants** are a separate direct application path, up to $500K for growth/user acquisition. **Enterprise Fund** is venture-style strategic investment rather than an SCF grant. Current dedicated Enterprise pages now say Apply Now/Submit your application, although older official funding-index/mandate copy still says SDF finds companies and has no application; disclose that source conflict and follow the live form for current routing. **Matching Fund**, within Enterprise, is an explicit application track for pre-seed through Series B companies with a lead term sheet, 1:1 matching, and a $200K–$500K SDF check.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "SCF Build is an up-to-$150K XLM development grant: interest form, then an invited proposal; only Open Track is community-voted. Marketing Grants (up to $500K) are a separate growth path. The Enterprise Fund is strategic investment, not an SCF grant, and has a live application form. Its Matching Fund matches a lead investor 1:1 (pre-seed to Series B), $200K minimum check, up to $500K.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation.",
-      "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Treats SCF Build, Marketing, general Enterprise, and Matching as distinct mechanisms.",
-      "Explains SCF interest-to-invitation and Open-only voting."
+      "SCF Build is a grant of up to $150K in XLM; the Enterprise Fund is strategic investment.",
+      "SCF Build starts with an interest form and invitation; only Open Track is community-voted.",
+      "The Enterprise Fund has a live application form; Marketing Grants are a separate path.",
+      "Matching Fund matches a lead investor 1:1: $200K minimum check, up to $500K."
     ],
     "avoid": [
-      "Do NOT substitute an unsupported memory claim for source-supported content.",
-      "Do NOT say all SCF proposals are openly submitted/public-voted.",
-      "Do NOT tell founders never to apply to Enterprise while the current application form is live, or hide the official source conflict.",
-      "Do NOT claim Enterprise investment is an SCF grant or invent a general per-company cap.",
-      "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical."
+      "Do NOT tell founders the Enterprise Fund takes no applications."
     ],
-    "notes": "Dossier §1/§5/§10. THE category-defining trap: confusing SCF (open, community-voted) with the SDF Enterprise Fund (outreach-only). Higher threshold.\nAlso good if the answer: The SCF Build cap is $150K XLM; SDF-direct lines (Matching/Marketing) reach ~$500K with different mechanisms.\nGolden cites: stellar.org/grants-and-funding (SDF programs) and the SCF handbook.\nGT-40 blind reversed the primary/outreach-only conclusion after verifying the live general Enterprise application. Qualified answers may mention the older official conflict but must not prohibit the current form."
+    "notes": "Older funding-index and mandate copy says SDF finds companies and has no application; disclosing that conflict is fine, but telling founders not to apply is wrong while the form is live."
   },
   "tags": {
     "category": "scf-grants-builders",
@@ -33,7 +29,7 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-14",
     "sources": [
       {
         "class": "A",
@@ -80,20 +76,75 @@
           }
         ],
         "note": "Legacy verdict: confirmed-with-official-conflict."
+      },
+      {
+        "claim": "Enterprise Fund has a live application form; older copy says no application.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/enterprise-fund",
+            "observedAt": "2026-11-14",
+            "note": "Apply Now ... Submit your application"
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/enterprise-fund/apply",
+            "observedAt": "2026-11-14",
+            "note": "Apply Now for the Stellar Enterprise Fund"
+          }
+        ]
+      },
+      {
+        "claim": "Matching Fund: lead investor 1:1 up to $500,000, minimum check $200,000, pre-seed to Series B.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/grants-and-funding/matching-fund",
+            "observedAt": "2026-11-14",
+            "note": "funds will be matched 1:1 up to US $500,000, with a minimum check size of US $200,000"
+          }
+        ]
+      },
+      {
+        "claim": "Marketing Grants up to $500,000; Build up to $150,000 in XLM.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/grants-and-funding",
+            "observedAt": "2026-11-14",
+            "note": "Apply for up to $150,000 in XLM*"
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/grants-and-funding/marketing-grants",
+            "observedAt": "2026-11-14",
+            "note": "Funding for a marketing grant is up to $500k"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch scf-grants-builders-05)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-scf, verify-audit-scf; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Golden audit 2026-11-02 re-verification, no gospel change.",
-        "A 2026-11-02: https://communityfund.stellar.org/awards — '$150K in XLM* Max. Award Amount'. B 2026-11-02: https://raw.githubusercontent.com/stellar/scf-handbook/e07b4bfce158639f81908f74cfd74ec8d87f051a/scf-awards/build-award/README.md — 'Community Vote (for Open Track only)'.",
-        "A 2026-11-02: https://stellar.org/grants-and-funding/marketing-grants — 'up to $500k'; D https://www.web3grant.com/grants/stellar-sdf-marketing-grants — 'Up to $500K'.",
-        "A 2026-11-02: official Enterprise conflict persists — https://stellar.org/enterprise-fund '[Apply Now](https://stellar.org/enterprise-fund/apply)'; https://stellar.org/enterprise-fund/apply '## Submit your application'; https://stellar.org/grants-and-funding 'There is no application for these programs; we find promising enterprises and engage with them.' D Parallel web_search shows the same 'Apply Now' copy.",
-        "A 2026-11-02: https://stellar.org/grants-and-funding/matching-fund — 'funds will be matched 1:1 up to US $500,000, with a minimum check size of US $200,000 ... Term sheet or SAFE from lead investor ... (Pre-seed to Series B)'; SDF blog https://stellar.org/blog/foundation-news/announcing-the-matching-fund (via D) agrees.",
-        "Sibling sweep 2026-11-02: the q-scf-sdf-marketing-grant pre-launch-scope dispute does not touch this case, which states only the separate path and the ~$500K cap; q-org-sdf-enterprise-fund, q-scf-how-to-apply, and q-scf-total-distributed show no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-scf-vs-sdf-enterprise-fund",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-scf-vs-sdf-enterprise-fund",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-scf-vs-sdf-enterprise-fund",
+        "Live A 2026-11-14: https://stellar.org/enterprise-fund -- 'Apply Now ... Submit your application'",
+        "Live A 2026-11-14: https://stellar.org/enterprise-fund/apply -- 'Apply Now for the Stellar Enterprise Fund'",
+        "Live A 2026-11-14: https://stellar.org/grants-and-funding/matching-fund -- 'funds will be matched 1:1 up to US $500,000, with a minimum check size of US $200,000'",
+        "Live A 2026-11-14: https://stellar.org/grants-and-funding -- 'Apply for up to $150,000 in XLM*'",
+        "Live A 2026-11-14: https://stellar.org/grants-and-funding/marketing-grants -- 'Funding for a marketing grant is up to $500k'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-scf-vs-sdf-enterprise-fund"
+    "origin": "raven-next q-scf-vs-sdf-enterprise-fund",
+    "notes": "Dossier §1/§5/§10. THE category-defining trap: confusing SCF (open, community-voted) with the SDF Enterprise Fund (outreach-only). Higher threshold.\nAlso good if the answer: The SCF Build cap is $150K XLM; SDF-direct lines (Matching/Marketing) reach ~$500K with different mechanisms.\nGolden cites: stellar.org/grants-and-funding (SDF programs) and the SCF handbook.\nGT-40 blind reversed the primary/outreach-only conclusion after verifying the live general Enterprise application. Qualified answers may mention the older official conflict but must not prohibit the current form.",
+    "leaf": "funding.other-sdf-funding"
   }
 }

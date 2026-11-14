@@ -1,0 +1,21 @@
+{
+  "id": "q-soroban-wasm-size-limit",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-soroban-b (golden coverage audit)",
+    "reviewer": "verify-audit-soroban-b (golden coverage audit)",
+    "reason": "Dated limit value; q-soroban-resource-limits kf1 grades that limits are validator settings read live. Building under the size cap is scope, not a facet.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-b.json#q-soroban-wasm-size-limit",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-b.json#q-soroban-wasm-size-limit",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-soroban-wasm-size-limit"
+    ],
+    "lastCaseContentSha256": "b45c1bbd0b74196ac235740bf7c362d4f67d80a2f6ba4b995718ab5082adac5b",
+    "replacementIds": []
+  }
+}

@@ -5,16 +5,18 @@
     "scout.searchResearch"
   ],
   "golden": {
-    "answer": "In **2015**, Stellar adopted the **Stellar Consensus Protocol**, authored by **David Mazières**, using Federated Byzantine Agreement and node-chosen quorum slices rather than PoW or PoS. SDF announced the paper/code on April 8, and its upgraded SCP network was live by **November 3, 2015**.\n\nWhy it replaced the earlier Ripple-derived design is historically disputed. SDF said the 2014 fork exposed weaknesses in the inherited system and motivated a new safety/liveness model. Ripple's contemporaneous response said Stellar's modified implementation/configuration did not demonstrate a flaw in Ripple consensus. Attribute those causal accounts rather than presenting one as uncontested.",
+    "answer": "In 2015 Stellar adopted the Stellar Consensus Protocol, authored by David Mazières, using Federated Byzantine Agreement with node-chosen quorum slices rather than PoW or PoS. SDF announced the paper and code on April 8, and the upgraded network was live on November 3, 2015. Why it replaced the earlier Ripple-derived design is disputed: SDF cited weaknesses the 2014 fork exposed; Ripple said the fork showed no flaw in Ripple consensus.",
     "keyFacts": [
-      "Attributes the 2015 paper to Mazières.",
-      "Identifies FBA and the 2015 rollout.",
-      "Attributes the disputed fork causation."
+      "David Mazières authored the 2015 SCP paper.",
+      "SCP is Federated Byzantine Agreement with node-chosen quorum slices, not PoW or PoS.",
+      "The upgraded SCP network was live on November 3, 2015.",
+      "Why the original consensus was replaced is disputed between SDF and Ripple."
     ],
     "avoid": [
-      "Do NOT call SCP PoW/PoS, misattribute authorship/year, or state SDF's fork explanation as uncontested fact."
+      "Do NOT call SCP proof-of-work or proof-of-stake.",
+      "Do NOT state SDF’s fork explanation as uncontested fact."
     ],
-    "notes": "GT-27 2026-07-10: primary sources establish April paper/code and November 3 rollout. Treat fork causation as a disclosed SDF-versus-Ripple historical dispute, not settled narrative.\nGT-27 CORRECTION 2026-07-10: replace Wikipedia-dependent causation with attributed primary-source conflict.\nAccurately quoting the canonical Lumenloop source on the SDF-only causal account of the 2014 fork is not a wrong claim while ll-016 stands; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
+    "notes": "Quoting the canonical Lumenloop source on the SDF-only causal account of the 2014 fork is not a wrong claim while ll-016 stands; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source."
   },
   "tags": {
     "category": "history-org-tokenomics",
@@ -28,7 +30,7 @@
     },
     "domain": "real-world",
     "status": "disputed",
-    "asOf": "2026-07-10",
+    "asOf": "2026-11-14",
     "sources": [
       {
         "class": "A",
@@ -76,30 +78,36 @@
           }
         ],
         "note": "Legacy verdict: disputed-causation."
+      },
+      {
+        "claim": "SCP paper and code announced April 8, 2015; upgraded SCP network live November 3, 2015.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/developers/upgraded-network-is-here",
+            "observedAt": "2026-11-14",
+            "note": "Not re-read: stable 2015 history, two class A hits confirmed 2026-11-02."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch history-org-tokenomics-01)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-hist-retail, verify-hist-retail; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "[A] golden.keyFacts[0] (confirmed): https://stellar.org/blog/foundation-news/stellar-consensus-protocol-proof-code :: date 2015-04-08; \"The paper by Prof. David Mazières, Chief Scientist at Stellar.org, presents the Stellar Consensus Protocol (SCP), a construction for federated Byzantine agreement (FBA).\" (observedAt 2026-11-02)",
-        "[D] golden.keyFacts[0] (confirmed): https://datatracker.ietf.org/doc/html/draft-mazieres-dinrg-scp-05 :: \"Mazieres, D., 'The Stellar Consensus Protocol: A Federated Model for Internet-level Consensus', Stellar Development Foundation whitepaper, 2015\" (observedAt 2026-11-02)",
-        "[A] golden.keyFacts[1] (confirmed): https://stellar.org/blog/developers/upgraded-network-is-here :: date 2015-11-03; \"It uses the Stellar Consensus Protocol (SCP), which has several safety properties that secure the network against forking.\" (observedAt 2026-11-02)",
-        "[E] golden.keyFacts[1] (confirmed): stellarDocs.search_docs -> https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol :: \"Stellar Consensus Protocol (SCP), which is a construction of the Federated Byzantine Agreement (FBA)\" (observedAt 2026-11-02)",
-        "[D] golden.keyFacts[1] (confirmed): https://www.scs.stanford.edu/15au-cs140/notes/scp.pdf :: Mazières lecture 2015-11-11 on SCP/FBA (observedAt 2026-11-02)",
-        "[A] golden.keyFacts[2] (disputed): https://stellar.org/blog/foundation-news/safety-liveness-and-fault-tolerance-consensus-choice :: (2014-12-05) \"the Stellar network experienced a ledger fork that is related to a failure of the underlying Ripple/Stellar consensus system\" (observedAt 2026-11-02)",
-        "[A] golden.keyFacts[2] (disputed): https://xrpl.org/blog/2014/why-the-stellar-forking-issue-does-not-affect-ripple :: \"it is impossible for the Ripple network to experience an unintentional ledger fork as Stellar's did because our nodes require votes from a majority of validators\" (observedAt 2026-11-02)",
-        "Sibling sweep 2026-11-02: q-org-mazieres-chief-scientist, q-protocol-scp-consensus-algorithm checked; consistent; dispute encoding unchanged.",
-        "No judge-facing change; prior verification event 2026-08-29 is in git history.",
-        "rootCause carried forward from the prior gospel event (retired-tracker entries dropped); no new gospel change in this event."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-hist-scp-rewrite-2015",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-hist-scp-rewrite-2015",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-hist-scp-rewrite-2015",
+        "Live A 2026-11-14: https://stellar.org/blog/developers/upgraded-network-is-here -- 'Not re-read: stable 2015 history, two class A hits confirmed 2026-11-02.'"
       ],
       "rootCause": [
-        "Secondary chronology collapsed a disputed causal narrative into settled fact.",
-        "improvements/lumenloop/ll-016-historical-dispute-provenance.md",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (symmetric-caution class)",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-hist-scp-rewrite-2015"
+    "origin": "raven-next q-hist-scp-rewrite-2015",
+    "notes": "GT-27 2026-07-10: primary sources establish April paper/code and November 3 rollout. Treat fork causation as a disclosed SDF-versus-Ripple historical dispute, not settled narrative.\nGT-27 CORRECTION 2026-07-10: replace Wikipedia-dependent causation with attributed primary-source conflict.\nAccurately quoting the canonical Lumenloop source on the SDF-only causal account of the 2014 fork is not a wrong claim while ll-016 stands; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source.",
+    "leaf": "ecosystem.history-origins",
+    "secondaryLeaf": "network.scp-consensus"
   }
 }

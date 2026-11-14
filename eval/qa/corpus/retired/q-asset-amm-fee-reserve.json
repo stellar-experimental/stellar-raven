@@ -1,0 +1,23 @@
+{
+  "id": "q-asset-amm-fee-reserve",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-assets (golden coverage audit)",
+    "reviewer": "verify-audit-assets (golden coverage audit)",
+    "reason": "Merged into q-asset-sdex-vs-amm. The survivor q-asset-sdex-vs-amm rewrite keeps the 30 bps fee and the two-base-reserve pool-share trustline as key facts, which are this case's only two facts.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-assets.json#q-asset-amm-fee-reserve",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-assets.json#q-asset-amm-fee-reserve",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-asset-amm-fee-reserve"
+    ],
+    "lastCaseContentSha256": "aa63fc7b6d6d933a9d4e76e6349e22074f826a446b4759fccf090f59d1e45323",
+    "replacementIds": [
+      "q-asset-sdex-vs-amm"
+    ]
+  }
+}

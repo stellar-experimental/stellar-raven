@@ -1,6 +1,6 @@
 {
   "id": "q-tool-lab-what-is",
-  "question": "Is there an official web tool to build, sign, and submit Stellar transactions without writing code?",
+  "question": "Is there an official web tool to build, sign, and submit Stellar transactions without writing code, and how should I handle keys in it?",
   "surface": [
     "stellarDocs.search_asset_token_docs",
     "stellarDocs.search_protocol_concepts_docs",
@@ -8,19 +8,18 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "Yes. **Stellar Lab** at **`https://lab.stellar.org`** is the official web toolkit for building, signing, simulating, and submitting Stellar transactions without writing application code. It also exposes account/keypair workflows, Horizon and Stellar RPC explorers, XDR↔JSON tools, and contract deploy/invoke/simulate flows. The current open-source implementation is `stellar/laboratory`.\n\nLab can be used for account-creation workflows on **Mainnet, Testnet, and Futurenet**. **Friendbot funding is only for Testnet and Futurenet—never Mainnet.** A Mainnet account needs a real funded transaction and production signing safeguards. This is the current Stellar Lab, successor to the older Stellar Laboratory branding; detailed button locations and storage/signing safety belong to the dedicated workflow guidance and can change with the UI.",
+    "answer": "Yes: Stellar Lab at lab.stellar.org builds, signs, simulates and submits transactions, deploys and invokes contracts, and views XDR as JSON, on Mainnet, Testnet and Futurenet. Friendbot funds only Testnet and Futurenet. Sign with a wallet or hardware signer; Saved Keypairs works only on Testnet and Futurenet and is obfuscated, not encrypted, so never store Mainnet secrets there.",
     "keyFacts": [
-      "Names Stellar Lab as the official build, sign, simulate, and submit web tool.",
-      "Covers contract, API, and XDR workflows.",
-      "Supports account creation on Mainnet, Testnet, and Futurenet.",
-      "Limits Friendbot funding to Testnet and Futurenet."
+      "Stellar Lab (lab.stellar.org) is the official no-code build, sign and submit tool.",
+      "Friendbot funds only Testnet and Futurenet, never Mainnet.",
+      "Lab Saved Keypairs works on Testnet and Futurenet only and is obfuscated, not encrypted.",
+      "Lab signs with a wallet extension or hardware wallet as well as a pasted secret key."
     ],
     "avoid": [
-      "Do NOT imply Friendbot funds Mainnet, that an unsigned transaction can be submitted, or that Mainnet account creation is free.",
-      "Do NOT refer only to the legacy Laboratory name/URL or claim no current Lab exists.",
-      "Do NOT turn this at-a-glance question into a frozen button-by-button workflow or encourage production-secret handling in a browser."
+      "Do NOT imply Friendbot funds Mainnet or that Mainnet accounts are free.",
+      "Do NOT call Saved Keypairs encrypted, offline or suitable for a Mainnet secret."
     ],
-    "notes": "2026-06-29 differentiation: this file owns the EXISTENCE/capabilities-at-a-glance lane ('is there an official no-code web tool? yes, Stellar Lab'); the step-by-step new-UI workflow (fetch sequence, Add Operation button locations, SAC, offline) is owned by q-ti-stellar-lab-usage-and-new-ui. lab.stellar.org is the official tool across Mainnet/Testnet/Futurenet; 'all-new Lab' relaunch (late 2024) supersedes the legacy Laboratory.\nAlso good if the answer: It includes a transaction builder, keypair generator, and Friendbot-backed testnet funding, plus contract invoke/simulate/submit.\nGolden cites: lab.stellar.org and/or the developers.stellar.org Lab docs / introducing-the-all-new-stellar-lab post.\nGT-55 CORRECTION 2026-07-11: account creation spans Mainnet/Testnet/Futurenet; Friendbot funding is Testnet/Futurenet only. Grade current official capabilities at a glance, not brittle UI steps; detailed Lab workflow/storage safety stays with q-ti-stellar-lab-usage-and-new-ui."
+    "notes": "Do not require button locations or screen steps; they change with the UI."
   },
   "tags": {
     "category": "tooling-infra",
@@ -34,7 +33,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-04-29",
     "sources": [
       {
@@ -124,22 +123,77 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "Lab creates accounts on Mainnet, Testnet and Futurenet; supports build, simulate, submit, contract deploy and invoke, XDR to JSON",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tools/lab.md",
+            "observedAt": "2026-11-14",
+            "note": "Create Accounts on Mainnet, Testnet, and Futurenet using a web UI."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tools/lab.md",
+            "observedAt": "2026-11-14",
+            "note": "Transaction Dashboard ... Simulate and Submit ... XDR ⇔ JSON Support"
+          }
+        ]
+      },
+      {
+        "claim": "Saved Keypairs: Testnet and Futurenet only, obfuscated not encrypted",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tools/lab/saved/keypairs.md",
+            "observedAt": "2026-11-14",
+            "note": "Saved keypairs are obfuscated, but *not* encrypted"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tools/lab/saved/keypairs.md",
+            "observedAt": "2026-11-14",
+            "note": "You can only save keypairs on test networks—never on Mainnet"
+          }
+        ]
+      },
+      {
+        "claim": "Lab signs with a pasted secret key, a wallet extension or a hardware wallet",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/laboratory/blob/main/src/components/SignTransactionXdr/index.tsx",
+            "observedAt": "2026-11-14",
+            "note": "| \"secretKey\" | \"hardwareWallet\" | \"extensionWallet\""
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-05)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-tooling-b, verify-audit-tooling-b; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "A: https://developers.stellar.org/docs/tools/lab — \"Easily Create Accounts: Create Accounts on Mainnet, Testnet, and Futurenet using a web UI. You can use Friendbot to fund those accounts directly on Lab for Testnet and Futurenet. ... Simulate and Submit ... XDR ⇔ JSON Support\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[0..1]",
-        "F: curl -sI https://lab.stellar.org — \"HTTP/2 200\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[0..1]",
-        "B: https://api.github.com/repos/stellar/laboratory — \"archived false, pushed 2026-11-01\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[0..1]",
-        "A: https://developers.stellar.org/docs/tools/lab — \"Easily Create Accounts: Create Accounts on Mainnet, Testnet, and Futurenet using a web UI. You can use Friendbot to fund those accounts directly on Lab for Testnet and Futurenet. ... Simulate and Submit ... XDR ⇔ JSON Support\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[2]",
-        "A: https://developers.stellar.org/docs/tools/lab — \"Easily Create Accounts: Create Accounts on Mainnet, Testnet, and Futurenet using a web UI. You can use Friendbot to fund those accounts directly on Lab for Testnet and Futurenet. ... Simulate and Submit ... XDR ⇔ JSON Support\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[3] / golden.avoid[0]",
-        "A: https://developers.stellar.org/docs/networks — \"Friendbot Available | No | Yes (10,000 XLM) | Yes (10,000 XLM)\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[3] / golden.avoid[0]",
-        "E: stellarDocs.search_sdk_cli_tools_docs 'Stellar Lab build sign submit transactions Friendbot' — \"Developers can use Stellar Lab to build and submit transactions\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[3] / golden.avoid[0]",
-        "Sibling sweep 2026-11-02: q-ti-stellar-lab-usage-and-new-ui, q-ti-secret-key-vs-mnemonic-derivation; no contradiction found by the proposer matrix."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-b.json#q-tool-lab-what-is",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-b.json#q-tool-lab-what-is",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-tool-lab-what-is",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/tools/lab.md -- 'Create Accounts on Mainnet, Testnet, and Futurenet using a web UI.'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/tools/lab.md -- 'Transaction Dashboard ... Simulate and Submit ... XDR ⇔ JSON Support'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/tools/lab/saved/keypairs.md -- 'Saved keypairs are obfuscated, but *not* encrypted'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/tools/lab/saved/keypairs.md -- 'You can only save keypairs on test networks—never on Mainnet'",
+        "Live B 2026-11-14: https://github.com/stellar/laboratory/blob/main/src/components/SignTransactionXdr/index.tsx -- '| \"secretKey\" | \"hardwareWallet\" | \"extensionWallet\"'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/tools/lab/saved/keypairs -- 'saved keypairs for the selected network (only Testnet and Futurenet) in the browser's local storage. Saved keypairs are obfuscated, but *not* encrypted'",
+        "Live B 2026-11-14: https://github.com/stellar/laboratory (code search) -- ''Sign with wallet extension' in src/components/SignShell/index.tsx; 'hardware wallet' in SignStepContent.tsx and SignShell'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-tool-lab-what-is"
+    "origin": "raven-next q-tool-lab-what-is",
+    "notes": "2026-06-29 differentiation: this file owns the EXISTENCE/capabilities-at-a-glance lane ('is there an official no-code web tool? yes, Stellar Lab'); the step-by-step new-UI workflow (fetch sequence, Add Operation button locations, SAC, offline) is owned by q-ti-stellar-lab-usage-and-new-ui. lab.stellar.org is the official tool across Mainnet/Testnet/Futurenet; 'all-new Lab' relaunch (late 2024) supersedes the legacy Laboratory.\nAlso good if the answer: It includes a transaction builder, keypair generator, and Friendbot-backed testnet funding, plus contract invoke/simulate/submit.\nGolden cites: lab.stellar.org and/or the developers.stellar.org Lab docs / introducing-the-all-new-stellar-lab post.\nGT-55 CORRECTION 2026-07-11: account creation spans Mainnet/Testnet/Futurenet; Friendbot funding is Testnet/Futurenet only. Grade current official capabilities at a glance, not brittle UI steps; detailed Lab workflow/storage safety stays with q-ti-stellar-lab-usage-and-new-ui.",
+    "leaf": "tooling.lab"
   }
 }

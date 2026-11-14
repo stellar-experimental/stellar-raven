@@ -5,18 +5,16 @@
     "scout.searchResearch"
   ],
   "golden": {
-    "answer": "For ordinary public contract calls, Soroban prevents invoking a contract that is already executing on the call stack, so classic Ethereum-style same-contract reentrancy is structurally blocked and a Solidity-style ReentrancyGuard is not the primary defense. The host has narrow internal/self-allowed modes and a special custom-account `__check_auth` path; those are not general public reentry and should not be used to claim the host has no exceptions internally. Continue to reason about cross-contract ordering, authorization, state assumptions, and rollback semantics.",
+    "answer": "Not in the Ethereum sense. For ordinary public calls the Soroban host rejects re-entering a contract that is already on the call stack, so classic same-contract reentrancy is structurally blocked and a Solidity-style `nonReentrant` guard is not the primary defense. The host has narrow internal exceptions that are not general public reentry. Cross-contract ordering, authorization and state assumptions still need careful design.",
     "keyFacts": [
-      "Ordinary public calls cannot re-enter an executing contract.",
-      "Classic same-contract reentrancy is structurally blocked.",
-      "Internal auth and custom-account modes qualify the public-call rule.",
-      "Cross-contract composition still needs risk analysis."
+      "The host rejects re-entering a contract already on the call stack in ordinary calls.",
+      "Classic same-contract reentrancy is therefore structurally blocked.",
+      "Cross-contract ordering, auth and state assumptions still need analysis."
     ],
     "avoid": [
-      "Do NOT prescribe Solidity nonReentrant as the primary Soroban defense.",
-      "Do NOT claim an exceptionless internal-host rule or zero cross-contract ordering risk."
-    ],
-    "notes": "Soroban host disallows re-entering a contract already on the call stack, so classic single-contract reentrancy is structurally prevented; dominant risks are storage-growth DoS / auth / oracle. Trap: asserting EVM-identical reentrancy and prescribing nonReentrant.\nAlso good if the answer: You should still reason about cross-contract call ordering and state assumptions (checks-effects-interactions-style discipline) for composed flows.\nGolden cites: A Soroban security source (Veridise/Inferara/SDF) on the reentrancy/host model.\nGT-46 CORRECTION 2026-07-11: scope the no-reentry claim to ordinary public calls."
+      "Do NOT prescribe a Solidity `nonReentrant` guard as the primary Soroban defense.",
+      "Do NOT claim the host has no internal exceptions or that cross-contract risk is zero."
+    ]
   },
   "tags": {
     "category": "soroban",
@@ -73,19 +71,43 @@
           }
         ],
         "note": "Legacy verdict: confirmed-with-scope."
+      },
+      {
+        "claim": "The host prohibits re-entry by default and has narrow Allowed/SelfAllowed modes",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-env/v30.0.0/soroban-env-host/src/host/frame.rs",
+            "observedAt": "2026-11-14",
+            "note": "reentry_mode: ContractReentryMode::Prohibited"
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-env/v30.0.0/soroban-env-host/src/host/frame.rs",
+            "observedAt": "2026-11-14",
+            "note": "(_, None) | (ContractReentryMode::Allowed, _) => ()"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-05)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-soroban-b, verify-audit-soroban-b; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "https://raw.githubusercontent.com/stellar/rs-soroban-env/v30.0.0/soroban-env-host/src/host/frame.rs — \"/// Re-entry is completely prohibited.\" ... \"/// Re-entry is allowed, but only directly into the same contract\" ... \"/// Re-entry is fully allowed.\" ... \"Contract re-entry is not allowed\" (observedAt 2026-11-02)",
-        "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization — \"If any contract calls `require_auth` for the `Address` of this contract, the Soroban host will call `__check_auth`\" (observedAt 2026-11-02)",
-        "https://developers.stellar.org/docs/build/guides/conventions/cross-contract — cross-contract guide present with security considerations (observedAt 2026-11-02)",
-        "No gospel change: all keyFacts and avoid items confirmed; default call params use ContractReentryMode::Prohibited.",
-        "Sibling sweep 2026-11-02: q-soroban-vuln-classes, q-soroban-auth-recursion-dos-audit: no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-b.json#q-soroban-reentrancy",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-b.json#q-soroban-reentrancy",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-soroban-reentrancy",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/rs-soroban-env/v30.0.0/soroban-env-host/src/host/frame.rs -- 'reentry_mode: ContractReentryMode::Prohibited'",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/rs-soroban-env/v30.0.0/soroban-env-host/src/host/frame.rs -- '(_, None) | (ContractReentryMode::Allowed, _) => ()'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-soroban-reentrancy"
+    "origin": "raven-next q-soroban-reentrancy",
+    "notes": "Soroban host disallows re-entering a contract already on the call stack, so classic single-contract reentrancy is structurally prevented; dominant risks are storage-growth DoS / auth / oracle. Trap: asserting EVM-identical reentrancy and prescribing nonReentrant.\nAlso good if the answer: You should still reason about cross-contract call ordering and state assumptions (checks-effects-interactions-style discipline) for composed flows.\nGolden cites: A Soroban security source (Veridise/Inferara/SDF) on the reentrancy/host model.\nGT-46 CORRECTION 2026-07-11: scope the no-reentry claim to ordinary public calls.",
+    "leaf": "security.contract-security",
+    "secondaryLeaf": "soroban.overview"
   }
 }

@@ -1,0 +1,21 @@
+{
+  "id": "q-defi-build-staking-for-own-token",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-defi (golden coverage audit)",
+    "reviewer": "verify-defi (golden coverage audit)",
+    "reason": "A third case stating that Stellar has no native staking, with generic contract design as its only other content.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-defi-build-staking-for-own-token",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-defi-build-staking-for-own-token",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-defi-build-staking-for-own-token"
+    ],
+    "lastCaseContentSha256": "bc2b9160bc53a47f0a0fd8ab5dcb7285e007db65a17a82d7e62cda0c4db2c68d",
+    "replacementIds": []
+  }
+}

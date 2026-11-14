@@ -1,0 +1,3214 @@
+{
+  "lane": "audit-tooling-a",
+  "records": [
+    {
+      "id": "q-gap-av-offset-not-timestamp",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Lumenloop AV passage offset",
+        "citing recorded talks"
+      ],
+      "tests": "That a Lumenloop find_av_passages start_offset is an opaque ordering value, not playback seconds.",
+      "questionIssues": [
+        "Answerable only through Lumenloop's own operation; no other Stellar source or tool could satisfy it.",
+        "The golden restates an observation ('returned an AV passage with summary...') instead of a fact about Stellar."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": "Names a Raven/Lumenloop field contract."
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": "Citation procedure for one Lumenloop operation."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Catalog contract says start_offset is an opaque ordering offset, not seconds",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "test/catalog.test.ts (preserves the evidence-backed model contracts)",
+              "observedAt": "2026-11-14",
+              "quote": "Returns parent recording metadata, AI summaries, and an opaque ordering offset."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-ti-video-tutorials",
+          "survivor": "q-ti-video-tutorials",
+          "why": "Another battery case also exercises AV passages (confirmed by grep for start_offset); not read in full."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "Pure Lumenloop output contract. test/catalog.test.ts pins the opaque-ordering wording and test/evidence-pack-per-operation.test.mjs pins start_offset handling, so a unit test already guards what the case measures.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 92,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-gap-lumen-content-tag-vocabulary",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Lumenloop content tags",
+        "vocabulary operations"
+      ],
+      "tests": "Which Lumenloop operation returns article/AV content tags, and that it differs from the project-tag vocabulary.",
+      "questionIssues": [
+        "Operation-name lookup. A Stellar-truth agent has no use for Lumenloop tag vocabularies."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": "Names a Lumenloop operation's scope."
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": "Restates the manifest 'use X instead' cross-reference."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "get_tags_vocabulary is for article/AV content; get_project_tags_vocabulary for directory projects",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "catalog/manifest.json#lumenloop.get_tags_vocabulary",
+              "observedAt": "2026-11-14",
+              "quote": "These tags are used for articles and AV content, NOT for directory projects."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-gap-lumen-project-tag-vocabulary",
+          "survivor": "none",
+          "why": "Mirror image of the same manifest cross-reference; both retire."
+        },
+        {
+          "id": "q-ti-vocab-content-tags-live",
+          "survivor": "none",
+          "why": "Same question in audit-tooling-b; a second copy of the same operation lookup."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "The manifest descriptions of both vocabulary operations point at each other, test/lumenloop-shape.test.ts covers the operation shape, and the frozen live lane already holds a vocabulary case (q-live-ll-regions-vocab). Three near-copies of one lookup add nothing.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 66,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-gap-lumen-documents-browse",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Lumenloop event browsing",
+        "list versus search operations"
+      ],
+      "tests": "That browsing upcoming Lumenloop events uses list_documents with a period argument, not exact-substring search_documents.",
+      "questionIssues": [
+        "Question is answerable only by naming Lumenloop operations and arguments."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": "Names an operation and an argument."
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": "Restates the manifest list-vs-search split."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "list_documents browses by structured criteria incl. time period; search_documents is exact substring on title/URL",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "catalog/manifest.json#lumenloop.list_documents",
+              "observedAt": "2026-11-14",
+              "quote": "Browse/enumerate ONE collection by structured criteria — status, source, date, time period (upcoming/past events)"
+            }
+          ]
+        }
+      ],
+      "duplicates": [],
+      "verdict": "move-tool-lane",
+      "reason": "No test or routing case exercises list_documents argument choice (grep of test/ and eval/routing-cases.json finds none), so a tool-contract lane is the only place that would show an agent picking `period` over a guessed `time_period`. It is not headline Stellar truth.",
+      "rewrite": null,
+      "toolLaneNote": "Would go unseen: whether agents choose list_documents with the real `period` argument for date-bounded browsing instead of keyword search or an invented argument.",
+      "confidence": "medium",
+      "wordsBefore": 86,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-gap-lumen-exact-document-empty",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Lumenloop exact search",
+        "soft-empty results"
+      ],
+      "tests": "That an empty exact-substring Lumenloop document search is a soft miss, not proof the topic has no content.",
+      "questionIssues": [
+        "Premise is only meaningful for one Lumenloop operation."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": "Describes a Raven envelope outcome."
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": "Describes one operation's matching rule."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "search_documents is title/URL substring only, not meaning",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "catalog/manifest.json#lumenloop.search_documents",
+              "observedAt": "2026-11-14",
+              "quote": "case-insensitive SUBSTRING match on title and URL only (NOT body text, NOT meaning)"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-edge-doc-page-sections-soft-empty",
+          "survivor": "q-edge-doc-page-sections-soft-empty",
+          "why": "Same behavior (an empty or missing lookup is soft, not proof of absence) on the docs side; lives in edge-behavior, read only to confirm the topic."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "The soft-empty-is-not-absence behavior is covered by the frozen live case q-live-ll-guessed-slug-soft-empty and by the edge-behavior case, and Raven's MCP server instructions state it. The substring rule is pinned in the manifest.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 97,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-gap-lumen-project-tag-vocabulary",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Lumenloop project tags",
+        "vocabulary operations"
+      ],
+      "tests": "Which Lumenloop operation returns directory project tags and that it differs from content tags.",
+      "questionIssues": [
+        "Operation-name lookup; mirror of the content-tag case."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": "Names an operation."
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": "Restates the paired cross-reference; KF1 and the avoid item say the same thing."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "get_project_tags_vocabulary returns { count, tags[{id,name,slug}] } for directory projects",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "catalog/manifest.json#lumenloop.get_project_tags_vocabulary",
+              "observedAt": "2026-11-14",
+              "quote": "Returns: { count, tags: [...] } — each tag: { id, name, slug }."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-gap-lumen-content-tag-vocabulary",
+          "survivor": "none",
+          "why": "Same cross-reference seen from the other side."
+        },
+        {
+          "id": "q-ti-vocab-project-tags-live",
+          "survivor": "none",
+          "why": "Same question in audit-tooling-b."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "Same grounds as the content-tag case: manifest cross-reference, lumenloop-shape test, and the frozen live vocabulary case cover it, and it is a third copy of one lookup.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 62,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-gap-rpc-horizon-unindexed-reference",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Raven docs search recall",
+        "RPC and Horizon reference pages"
+      ],
+      "tests": "That a miss in Raven's docs search on an RPC or Horizon page is retrieval noise, not evidence the API is absent.",
+      "questionIssues": [
+        "Asks about Raven's search index, which no other tool shares.",
+        "The golden mixes the resolved sd-003 history, the open sd-059 finding, and a 2026-11-02 index snapshot into judge-facing prose; the caution is dated and half-resolved.",
+        "No Stellar-truth fact: the RPC and Horizon facts are tested in q-infra-rpc-methods-list and q-ti-rpc-gettransactions-pagination-xdr."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": "Claims about Raven's search ranking; volatile."
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": "Recovery procedure for Raven's search."
+        },
+        {
+          "i": 2,
+          "kind": "process",
+          "issue": "Absence-discipline rule, generic."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Reference pages are in Raven's docs search and rank by method name",
+          "result": "unverifiable",
+          "evidence": []
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-edge-doc-page-sections-soft-empty",
+          "survivor": "q-edge-doc-page-sections-soft-empty",
+          "why": "Same absence-discipline behavior; lives in edge-behavior."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "It measures one search index's recall on one defect (sd-059), a finding that belongs in improvements/, not the headline battery. The general rule it states (empty result is not absence) is covered by q-live-ll-guessed-slug-soft-empty and the edge case.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 214,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-gap-scout-get-skill-detail",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Scout skill detail",
+        "skill discovery"
+      ],
+      "tests": "Which Scout operation returns one skill's full content and how an unknown slug behaves.",
+      "questionIssues": [
+        "Operation-lookup; also asks where Raven's own skills are read (codemode.skill.read), which no other tool has.",
+        "Carries a July correction in its notes that belongs in the judge-blind record."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": "Names an operation and argument."
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": "Names a discovery operation."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "getSkill 404s with a hint to use listSkills for unknown names (soft-empty)",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "catalog/manifest.json#scout.getSkill",
+              "observedAt": "2026-11-14",
+              "quote": "404s with a hint to list scout.listSkills when unknown."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-tool-skill-detail-install",
+          "survivor": "q-tool-skill-detail-install",
+          "why": "Asks for the same getSkill slug-resolve behavior inside a user task; lives in audit-tooling-b, read only to confirm the topic."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "Duplicate of the broader q-tool-skill-detail-install, which exercises getSkill soft-empty inside a user task. Test/catalog.test.ts and test/adapters.test.ts cover the operation.",
+      "rewrite": null,
+      "confidence": "medium",
+      "wordsBefore": 180,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-infra-horizon-vs-rpc",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Horizon versus Stellar RPC",
+        "API choice for a new Soroban app",
+        "Horizon lifecycle"
+      ],
+      "tests": "How Horizon and Stellar RPC differ in data shape, scope and history, and which a new Soroban app should start with.",
+      "questionIssues": [
+        "A real developer question; strong answers from any correct source pass.",
+        "The golden's answer text is 364 words including process boilerplate ('A grounded answer derives...', 'The dated example is illustrative...')."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": "Prescribes wording ('presents sourced observations as current or dated')."
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "Restates KF0."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Good; keep."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Volatile label; needs a date but must accept a later one."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Official docs describe Horizon as nearing end-of-life and eventually deprecated",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "github.com/stellar/stellar-docs docs/data/apis/index.mdx",
+              "observedAt": "2026-11-14",
+              "quote": "Horizon is nearing end-of-life and will eventually be deprecated in favor of Stellar RPC and Portfolio APIs"
+            }
+          ]
+        },
+        {
+          "claim": "RPC offers classic and contract queries; 12 stock methods, no Horizon-style indexed resources",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "github.com/stellar/stellar-docs openrpc/src/stellar-rpc/methods",
+              "observedAt": "2026-11-14",
+              "quote": "getEvents.json getFeeStats.json getHealth.json getLatestLedger.json getLedgerEntries.json getLedgers.json getNetwork.json getTransaction.json getTransactions.json getVersionInfo.json sendTransaction.json simulateTransaction.json"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-ti-compute-token-lp-market-data",
+          "survivor": "q-infra-horizon-vs-rpc",
+          "why": "Repeats the Horizon end-of-life boundary; keep the lifecycle claim only here."
+        },
+        {
+          "id": "q-infra-rpc-methods-list",
+          "survivor": "q-infra-rpc-methods-list",
+          "why": "Overlaps on 'RPC is not a full Horizon indexer'; the method list owns the RPC inventory."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Needed anchor case for the Horizon-versus-RPC choice. Cut the process key facts and the generic preamble, keep the durable distinctions, and date the lifecycle label.",
+      "rewrite": {
+        "question": null,
+        "answer": "Stellar RPC is the JSON-RPC gateway for current network state, simulation, submission and retention-bounded recent transactions and events. It covers classic and contract data and is not Soroban-only. Horizon is a REST indexer with curated resources and history such as offers, claimable balances and effects. Use RPC for new smart-contract work; use Horizon, an indexer or Hubble for curated or full-history needs. As of 2026-11-14 the docs call Horizon nearing end-of-life.",
+        "keyFacts": [
+          "RPC serves current state, simulation and submission; its history is retention-bounded.",
+          "RPC covers classic and contract data; it is not Soroban-only or a full Horizon indexer.",
+          "Horizon is the REST indexer for curated history; new Soroban apps start with RPC.",
+          "Official docs call Horizon nearing end-of-life, eventually deprecated (as of 2026-11-14)."
+        ],
+        "avoid": [
+          "Do NOT call RPC Soroban-only or a complete Horizon replacement.",
+          "Do NOT call Horizon already deprecated or promise universal full history."
+        ],
+        "notes": "A later dated lifecycle label from the official docs is correct. Naming Hubble, Portfolio APIs or another indexer for history is correct.",
+        "movedToTruth": [
+          "GT-49 correction history and EVM-guide render check",
+          "Half-of-Horizon-endpoints-have-no-RPC-equivalent aside",
+          "Source-commit citation 700ed32"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 364,
+      "wordsAfter": 165
+    },
+    {
+      "id": "q-infra-hubble-bigquery",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Hubble analytics dataset",
+        "BigQuery access",
+        "historical SQL"
+      ],
+      "tests": "That Hubble is SDF's public read-only BigQuery history dataset at crypto-stellar.crypto_stellar, for bulk history rather than current-state reads.",
+      "questionIssues": [
+        "Real developer question. The load-bearing fact (dataset path) is stable and easy to grade."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": "Wording prescription."
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "Duplicates KF0."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Holds two predicates (path and workload)."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Overlaps KF2."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Vague ('qualifies cadence/schema freshness')."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Public dataset is crypto-stellar.crypto_stellar",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "github.com/stellar/stellar-docs docs/data/analytics/hubble/analyst-guide/connecting.mdx",
+              "observedAt": "2026-11-14",
+              "quote": "open the [crypto-stellar.crypto_stellar] dataset ... public dataset `crypto_stellar`"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-ti-historical-pointintime-balances",
+          "survivor": "q-ti-historical-pointintime-balances",
+          "why": "Uses Hubble for a harder task; this case owns the 'what is Hubble' definition only."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Keep. Replace the boilerplate answer and process key facts with the dataset path and workload. The golden's cited connecting-to-bigquery page no longer exists under that path (the content now lives at analyst-guide/connecting); refresh the source in truth.",
+      "rewrite": {
+        "question": null,
+        "answer": "Hubble is SDF's public, read-only Stellar historical analytics dataset in BigQuery, at `crypto-stellar.crypto_stellar`. Query it with SQL from the BigQuery UI, client libraries or Looker Studio, using your own billing-enabled Google Cloud project. It suits bulk historical analysis, not transaction submission or low-latency current-state reads. Updates arrive in batches, so it is not a real-time feed.",
+        "keyFacts": [
+          "Hubble is SDF's public read-only historical analytics dataset in BigQuery.",
+          "The dataset path is crypto-stellar.crypto_stellar.",
+          "It serves bulk history over SQL and is not a real-time or submission interface."
+        ],
+        "avoid": [
+          "Do NOT describe Hubble as RPC, a wallet, or a guaranteed real-time feed.",
+          "Do NOT invent a dataset path."
+        ],
+        "notes": "Exact table names, schemas and update cadence change; do not penalize an unlisted table or a hedged cadence.",
+        "movedToTruth": [
+          "GT-49 correction note",
+          "Source-URL refresh: connecting-to-bigquery moved to analyst-guide/connecting",
+          "Example table accounts_current"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 278,
+      "wordsAfter": 122
+    },
+    {
+      "id": "q-infra-quickstart-local-network",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Stellar Quickstart",
+        "local network for development and CI",
+        "network modes"
+      ],
+      "tests": "That `stellar container start local` runs a disposable local network, and that only local mode is hermetic.",
+      "questionIssues": [
+        "Real developer question. Several parts (four modes, faucet rules, persistence) are one case's worth only if kept tight."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": "Wording prescription."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Good."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Good."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Overlaps KF2 (public modes are not hermetic)."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Good."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "`stellar container start` with local as the default network",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "github.com/stellar/stellar-cli cmd/soroban-cli/src/commands/container/start.rs",
+              "observedAt": "2026-11-14",
+              "quote": "/// Network to start. Default is `local`"
+            }
+          ]
+        },
+        {
+          "claim": "Quickstart modes local, testnet, futurenet, pubnet",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "github.com/stellar/stellar-cli container/start.rs",
+              "observedAt": "2026-11-14",
+              "quote": "Network::Futurenet => \"future\", // pubnet, local, and testnet all default to latest"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-quickstart-manual-ledger-close",
+          "survivor": "q-quickstart-manual-ledger-close",
+          "why": "Both exercise Quickstart local mode; this owns setup and modes, the other owns manual close."
+        },
+        {
+          "id": "q-ti-friendbot-ratelimit-alternatives",
+          "survivor": "q-ti-friendbot-ratelimit-alternatives",
+          "why": "Repeats 'public-network Quickstart modes proxy public faucets'; own it there only."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Keep the setup case; drop the process fact, merge the two overlapping hermetic facts, and delete the boilerplate answer.",
+      "rewrite": {
+        "question": null,
+        "answer": "Run `stellar container start local` (or `docker run -i -p 8000:8000 stellar/quickstart --local`) for a disposable local network with Core, Horizon, Stellar RPC, Friendbot and Lab. Quickstart supports local, testnet, futurenet and pubnet modes; only local is a hermetic network with its own faucet, while the others connect to public networks. It is development infrastructure, not a production node, and its state is not persistent by default.",
+        "keyFacts": [
+          "`stellar container start local` or the stellar/quickstart image starts a local network.",
+          "Quickstart has four modes: local, testnet, futurenet and pubnet.",
+          "Only local mode is hermetic with its own faucet; public modes proxy public faucets.",
+          "Quickstart is disposable development and CI infrastructure, not a production deployment."
+        ],
+        "avoid": [
+          "Do NOT claim testnet, futurenet or pubnet modes are hermetic or bypass public faucet limits.",
+          "Do NOT recommend Quickstart as a production node."
+        ],
+        "notes": "The older `stellar network container start` form is retired; an answer using it is out of date. Quickstart images and defaults change by release; accept a dated later detail.",
+        "movedToTruth": [
+          "GT-50/GT-52 correction history",
+          "CLI 28.1.0 help-output evidence",
+          "Lab quickstart doc source"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 335,
+      "wordsAfter": 165
+    },
+    {
+      "id": "q-infra-rpc-methods-list",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Stellar RPC method inventory",
+        "contract dry-run",
+        "RPC history retention"
+      ],
+      "tests": "The 12 application methods of stock Stellar RPC, that simulateTransaction is the dry run, and that ledger/event history is retention-bounded.",
+      "questionIssues": [
+        "Answerable and aimed at a real need. The simulateTransaction half duplicates q-soroban-simulate-resource-fee."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Good, but KF1 restates part of it."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Subset of KF0; delete."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Holds two predicates (getLedgers and getEvents)."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Overlaps KF3 (deep history needs an archive provider)."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Stock RPC exposes exactly 12 application methods",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "github.com/stellar/stellar-docs openrpc/src/stellar-rpc/methods",
+              "observedAt": "2026-11-14",
+              "quote": "getEvents.json getFeeStats.json getHealth.json getLatestLedger.json getLedgerEntries.json getLedgers.json getNetwork.json getTransaction.json getTransactions.json getVersionInfo.json sendTransaction.json simulateTransaction.json"
+            },
+            {
+              "class": "F",
+              "ref": "POST https://soroban-testnet.stellar.org queryEvents",
+              "observedAt": "2026-11-14",
+              "quote": "{\"error\":{\"code\":-32601,\"message\":\"method not found\",\"data\":\"queryEvents\"}}"
+            }
+          ]
+        },
+        {
+          "claim": "Stock RPC release line is v30.x with a ~7 day retention window",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "github.com/stellar/stellar-rpc/releases",
+              "observedAt": "2026-11-14",
+              "quote": "v30.0.1 2026-11-12T17:06:18Z"
+            },
+            {
+              "class": "F",
+              "ref": "POST https://soroban-testnet.stellar.org getHealth",
+              "observedAt": "2026-11-14",
+              "quote": "\"latestLedger\":5720487,\"latestLedgerCloseTime\":\"1794626079\",\"oldestLedger\":5599528"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-soroban-simulate-resource-fee",
+          "survivor": "q-soroban-simulate-resource-fee",
+          "why": "Owns the dry-run procedure; this case keeps only 'simulateTransaction is the dry run' as one fact of the inventory."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Needed: the method inventory is a stable-per-release world fact. Cut the subset and overlap key facts, keep the retention caution, and move the beta-node note into grading cautions.",
+      "rewrite": {
+        "question": null,
+        "answer": "As of 2026-11-14 stock Stellar RPC (v30.0.1) exposes 12 application methods: getHealth, getNetwork, getVersionInfo, getLatestLedger, getLedgers, getLedgerEntries, getTransaction, getTransactions, getEvents, getFeeStats, sendTransaction and simulateTransaction. Use simulateTransaction to dry-run a contract call before signing. getLedgers and getEvents serve only the provider's retention window (stock default about 7 days); deep history needs an archive-backed provider.",
+        "keyFacts": [
+          "Stock RPC exposes 12 application methods, including getLedgerEntries and getTransactions.",
+          "simulateTransaction is the dry run before signing and submitting.",
+          "getLedgers and getEvents are retention-bounded; deep history needs an archive provider."
+        ],
+        "avoid": [
+          "Do NOT add Horizon paths, SDK helpers, removed aliases or discovery methods to the method list.",
+          "Do NOT imply every getLedgers endpoint reaches genesis."
+        ],
+        "notes": "A later release's list is correct if dated. Naming beta-only methods (queryEvents, archive-node beta) as beta is not an error. A differing provider retention value is not wrong.",
+        "movedToTruth": [
+          "GT-50 correction history",
+          "120960-ledger default and options.go citation",
+          "Archive-node beta 2026-09-30 details",
+          "reverifyBy 2027-05-12"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 322,
+      "wordsAfter": 135
+    },
+    {
+      "id": "q-infra-rpc-provider-archive-tier",
+      "purpose": "stellar-truth",
+      "topics": [
+        "RPC archive providers",
+        "full ledger history via getLedgers",
+        "choosing an RPC provider"
+      ],
+      "tests": "Which providers the official table marks RPC Archive, that the tier is getLedgers-only deep history, and that the roster is volatile.",
+      "questionIssues": [
+        "Real question, aimed at a volatile roster. The grader notes grew to 555 words of roster history and provider cautions; the question itself is fine."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Roster fact; must accept later dated rosters."
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "Names a source of truth rather than a Stellar fact; fold into KF0."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Vague ('freshness-sensitive')."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Official Providers table marks nine RPC Archive rows",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "github.com/stellar/stellar-docs docs/data/apis/rpc/providers.mdx",
+              "observedAt": "2026-11-14",
+              "quote": "| [node101](https://node101.io/en/rpc/stellar) | ❌ | ✅ | ✅ | ✅ | ✅ |"
+            }
+          ]
+        },
+        {
+          "claim": "The official tier supports only getLedgers",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "providers.mdx footnote",
+              "observedAt": "2026-11-14",
+              "quote": "Currently only the getLedgers RPC method supports this feature."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-ti-self-host-retention-backfill",
+          "survivor": "q-infra-rpc-provider-archive-tier",
+          "why": "Overlaps on history beyond retention; not read in full."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Keep: the archive roster is exactly the volatile-but-checkable fact the battery should date. Compress to the roster, the getLedgers-only boundary and a choice rule; move all roster history and beta commentary out of the judge-facing text.",
+      "rewrite": {
+        "question": null,
+        "answer": "As of 2026-11-14 the official RPC Providers table marks nine hosted rows with RPC Archive: Validation Cloud, Gateway, Ankr, Obsrvr, OnFinality, Lightsail Network/Quasar, Exaion, GetBlock and node101. The roster changes; recheck the table. Archive means data-lake-backed deep history through getLedgers only; ordinary RPC also serves getLedgers within its retention. Choose by network, documented coverage, plan, SLA and current health.",
+        "keyFacts": [
+          "Names a dated archive roster taken from the official Providers table.",
+          "The official RPC Archive tier means deep getLedgers history, not events or transactions.",
+          "Ordinary RPC also has getLedgers within retention; archive adds historical reach.",
+          "Plans, SLAs and health are provider-specific; verify before choosing."
+        ],
+        "avoid": [
+          "Do NOT say non-archive providers lack the getLedgers method.",
+          "Do NOT claim the official RPC Archive tier covers events, transactions or state lookups.",
+          "Do NOT invent pricing, SLA or a provider ranking."
+        ],
+        "notes": "Accept a dated earlier roster that matched the table on its date (seven rows 2026-07-11; eight 2026-08-18 to 2026-09-08) and a later dated roster. Penalize an undated roster. Attributing full-history events or transactions to SDF's archive-node beta or Validation Cloud's RPC v2 beta is correct; attributing it to the official tier is not.",
+        "movedToTruth": [
+          "Roster history with stellar-docs commits 785c991 and f83cf336",
+          "Validation Cloud RPC v2 beta and node101 caution",
+          "Archive-node beta 2026-09-30",
+          "Also-good items on Blockdaemon/QuickNode/NowNodes"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 555,
+      "wordsAfter": 188
+    },
+    {
+      "id": "q-infra-secp256r1-passkeys",
+      "purpose": "stellar-truth",
+      "topics": [
+        "secp256r1 passkey verification",
+        "CAP-0051",
+        "__check_auth",
+        "WebAuthn on Soroban"
+      ],
+      "tests": "That CAP-0051 gives contracts only a P-256 signature primitive and that WebAuthn parsing and policy live in the account contract.",
+      "questionIssues": [
+        "Good question, but the same knowledge is the core of q-passkey-smart-account-architecture, which asks the broader 'how do passkey smart wallets work' question."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Fine; stated as 'common, not universal'."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Checklist of five checks in one fact."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Checklist of replay/counter/policy checks; overlaps KF2."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Role split G versus C; belongs to the account-architecture case."
+        }
+      ],
+      "rot": [],
+      "duplicates": [
+        {
+          "id": "q-passkey-smart-account-architecture",
+          "survivor": "q-passkey-smart-account-architecture",
+          "why": "Already states CAP-0051 added native secp256r1 in Protocol 21, that the primitive is not full WebAuthn validation, and that the contract binds the challenge to the Soroban payload."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "The survivor (soroban category, outside this lane's list) tests the same knowledge. It must absorb two things this case alone holds: WebAuthn permits algorithms other than P-256 (P-256/ES256 is common, not universal), and a separate G-account submits and pays while the C-account authorizes. No rot re-check: protocol-level facts, stable, no `asOf` on this case.",
+      "rewrite": null,
+      "confidence": "medium",
+      "wordsBefore": 379,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-infra-simulate-transaction-howto",
+      "purpose": "stellar-truth",
+      "topics": [
+        "simulateTransaction",
+        "Soroban footprint and resource fees",
+        "assemble then submit"
+      ],
+      "tests": "That a Soroban call is dry-run through RPC simulateTransaction and the result applied before signing and sending.",
+      "questionIssues": [
+        "Same question as q-soroban-simulate-resource-fee in different words; also asked inside q-infra-rpc-methods-list."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Same as the survivor's KF."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Same."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Same."
+        }
+      ],
+      "rot": [],
+      "duplicates": [
+        {
+          "id": "q-soroban-simulate-resource-fee",
+          "survivor": "q-soroban-simulate-resource-fee",
+          "why": "Covers RPC simulateTransaction, applying returned data/footprint/resource fee, auth, restorePreamble, not-finality, and the SDK/CLI wrappers."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Survivor q-soroban-simulate-resource-fee (soroban category, outside this lane's list) is the richer case. It must absorb only the explicit statement that simulation is an RPC capability and Horizon has no simulate endpoint, and the error/restore, assemble, sign, send, poll ordering if it lacks it. No rot re-check: stable docs, unchanged since 2026-11-02.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 210,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-infra-testnet-vs-futurenet",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Testnet versus Futurenet",
+        "test network roles and resets",
+        "Friendbot funding"
+      ],
+      "tests": "The roles of Testnet (stable integration) and Futurenet (upcoming protocol preview), their separation, and their reset behavior.",
+      "questionIssues": [
+        "Real question, correct scope."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": "Wording prescription."
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "Duplicates KF0."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Holds passphrase, state, identifiers and fake value."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Testnet and Futurenet protocol versions",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "F",
+              "ref": "POST https://soroban-testnet.stellar.org getNetwork",
+              "observedAt": "2026-11-14",
+              "quote": "\"passphrase\":\"Test SDF Network ; September 2015\",\"protocolVersion\":30"
+            },
+            {
+              "class": "F",
+              "ref": "POST https://rpc-futurenet.stellar.org getNetwork",
+              "observedAt": "2026-11-14",
+              "quote": "\"passphrase\":\"Test SDF Future Network ; October 2022\",\"protocolVersion\":30"
+            }
+          ]
+        },
+        {
+          "claim": "Friendbot funds accounts and contracts on Testnet and Futurenet",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "github.com/stellar/stellar-docs docs/networks/index.mdx",
+              "observedAt": "2026-11-14",
+              "quote": "Friendbot is a bot that funds accounts and contracts with fake XLM on Testnet or Futurenet."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-ti-friendbot-ratelimit-alternatives",
+          "survivor": "q-ti-friendbot-ratelimit-alternatives",
+          "why": "Owns faucet rules; this case should keep only 'Friendbot funds both networks'."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Keep. Replace the 351-word boilerplate answer and the version-snapshot notes (protocol 29 on 2026-11-02, protocol 30 on both today) with the durable role and reset facts. A per-day protocol version is ordinary drift, not a fact error.",
+      "rewrite": {
+        "question": null,
+        "answer": "Testnet and Futurenet are separate public test networks with valueless XLM, different passphrases, ledgers and accounts, and no production guarantees. Use Testnet for stable integration testing; use Futurenet to try upcoming protocol features before release. Testnet resets on a planned cadence; Futurenet resets as needed. Friendbot funds both G-accounts and C-contract addresses. Live protocol versions change, so date any version you quote.",
+        "keyFacts": [
+          "Testnet is the stable integration network; Futurenet previews upcoming protocol features.",
+          "They are separate networks with different passphrases and state, and valueless XLM.",
+          "Testnet resets on a planned cadence; Futurenet resets as needed.",
+          "Friendbot funds accounts and contracts on both networks."
+        ],
+        "avoid": [
+          "Do NOT swap the two roles, equate either with Mainnet, or claim real-value assets.",
+          "Do NOT freeze a protocol version or provider count without a date."
+        ],
+        "notes": "Futurenet need not run a higher protocol than Testnet on a given day; a dated answer showing them equal is correct.",
+        "movedToTruth": [
+          "Protocol 29 on 2026-11-02; protocol 30 on both on 2026-11-14",
+          "Protocol 30 Testnet upgrade and Mainnet vote schedule",
+          "2026-08-04 Friendbot correction"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 351,
+      "wordsAfter": 150
+    },
+    {
+      "id": "q-infra-which-indexer",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Stellar indexers",
+        "historical cross-account queries",
+        "indexer selection"
+      ],
+      "tests": "That historical cross-account filtering needs an indexer, plus the roster of indexers the official overview lists and The Graph's Substreams-only support.",
+      "questionIssues": [
+        "Real question. Asks for 'which should I pick', so the answer is a roster plus a choice rule; scoring a roster invites staleness."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": "Wording prescription."
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "Duplicates KF0."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Only world fact; the core 'need an indexer' claim is missing from the key facts."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Official Indexers overview: Alchemy live, The Graph Substreams-only, Goldsky Turbo, OnFinality, Mercury, OBSRVR, SubQuery",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "github.com/stellar/stellar-docs docs/data/indexers/index.mdx",
+              "observedAt": "2026-11-14",
+              "quote": "The Graph offers Stellar support for Substreams, with no current plans to expand Subgraph or Token API support to Stellar."
+            },
+            {
+              "class": "B",
+              "ref": "docs/data/indexers/index.mdx",
+              "observedAt": "2026-11-14",
+              "quote": "Alchemy: a widely-used data provider (popular on Ethereum), now live on Stellar."
+            },
+            {
+              "class": "B",
+              "ref": "docs/data/indexers/index.mdx",
+              "observedAt": "2026-11-14",
+              "quote": "Turbo is how Goldsky serves Stellar data, for both Mainnet and Testnet"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-tool-indexer-repos-discovery",
+          "survivor": "q-infra-which-indexer",
+          "why": "Both ask which indexers exist; this one owns the products and the choice rule, the other the repos (audit-tooling-b; read only for topic)."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Keep with real key facts. Replace boilerplate and the 2026-08/11 correction history with the need-an-indexer rule, the roster (dated, must accept later) and the Substreams boundary.",
+      "rewrite": {
+        "question": null,
+        "answer": "Historical cross-account filtering needs an indexer: RPC history is retention-bounded and Horizon has no arbitrary cross-account filters. As of 2026-11-14 the official Indexers overview lists SubQuery, OBSRVR, Goldsky (Turbo pipelines), OnFinality, Mercury, Alchemy's live Stellar Data API, and The Graph through Substreams only. Hubble/BigQuery fits deep historical SQL. Verify retention, data model and network coverage before committing.",
+        "keyFacts": [
+          "Historical cross-account filtering needs an indexer; RPC history is bounded.",
+          "Names dated indexers from the official overview (e.g. SubQuery, OBSRVR, Goldsky, Alchemy).",
+          "The Graph supports Stellar through Substreams only, not Subgraphs or Token API.",
+          "Hubble/BigQuery suits deep historical SQL."
+        ],
+        "avoid": [
+          "Do NOT say Alchemy's Stellar Data API is still only planned; official docs call it live.",
+          "Do NOT claim The Graph has full Subgraph or Token API support for Stellar.",
+          "Do NOT recommend RPC alone for arbitrary historical cross-account filtering."
+        ],
+        "notes": "The roster changes; accept a later dated roster from the official overview. Goldsky serves Stellar through Turbo pipelines; naming Mirror is out of date.",
+        "movedToTruth": [
+          "2026-08-04 and 2026-11-06 correction history",
+          "Alchemy blog and docs sources",
+          "Goldsky migrate-from-mirror evidence",
+          "stellar-docs PR 2573"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 352,
+      "wordsAfter": 160
+    },
+    {
+      "id": "q-passkey-platform-constraints",
+      "purpose": "stellar-truth",
+      "topics": [
+        "passkey platform constraints",
+        "relying-party ID and origin",
+        "passkey sync and recovery"
+      ],
+      "tests": "Browser, RP ID and sync behavior a dApp must plan for with passkeys; this is general WebAuthn truth applied to Stellar wallets.",
+      "questionIssues": [
+        "Weak Stellar specificity: nearly every fact is WebAuthn or vendor behavior, true whatever tool answers. Still relevant to Stellar passkey wallets."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Two predicates (web versus native)."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Holds RP ID, origin, related origins and handoff binding."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Third-party Mozilla Sync data-type claim; trivia and volatile."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Mozilla Sync's data-type list omits passkeys",
+          "result": "unverifiable",
+          "evidence": []
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-passkey-wallet-recovery",
+          "survivor": "q-passkey-wallet-recovery",
+          "why": "Owns recovery; this case repeats 'cross-device uncertainty requires an explicit recovery path' (soroban category; read only for topic)."
+        },
+        {
+          "id": "q-tool-passkey-wallet-recovery",
+          "survivor": "q-passkey-wallet-recovery",
+          "why": "Same recovery topic (audit-tooling-b)."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Keep the RP ID and sync constraints; drop the Mozilla Sync trivia (volatile, I could not confirm it in this pass) and the Stellar-handoff clause. Treat as the lowest Stellar-specific case here; the reconciler may merge it with the passkey architecture and recovery cases.",
+      "rewrite": {
+        "question": null,
+        "answer": "WebAuthn's web API needs a secure context; native apps use platform passkey APIs. A passkey is scoped to an RP ID, not an exact page URL: validate RP ID and origin, and plan for subdomain or related-origin designs. Apple and Google sync passkeys, but sync versus device-bound behavior is provider-specific, and Firefox may delegate to the OS or provider. Provide an explicit recovery path.",
+        "keyFacts": [
+          "WebAuthn web APIs need a secure context; native apps use platform passkey APIs.",
+          "Credentials are scoped to an RP ID; check RP ID and origin, and related-origin rules.",
+          "Sync is provider-specific; Apple and Google sync passkeys, others may be device-bound.",
+          "Cross-device uncertainty requires an explicit recovery path."
+        ],
+        "avoid": [
+          "Do NOT claim a passkey for one dApp domain is automatically valid for unrelated domains.",
+          "Do NOT claim all browsers and devices sync every passkey the same way."
+        ],
+        "notes": "Origin and RP-ID checks belong to the relying party per W3C WebAuthn; OpenZeppelin and Passkey Kit verifiers omit them on-chain. Accept an answer that places them in the overall flow or leaves them to the client.",
+        "movedToTruth": [
+          "Mozilla Sync passkey data-type observation and source",
+          "Stellar authorization handoff binding clause",
+          "Security Boulevard support-matrix source"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 241,
+      "wordsAfter": 175
+    },
+    {
+      "id": "q-quickstart-manual-ledger-close",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Quickstart manual ledger close",
+        "testing time-dependent contracts",
+        "close time and timestamps"
+      ],
+      "tests": "How to advance ledgers in Quickstart local mode, what manualclose can and cannot do, and when SDK test utilities are the better tool.",
+      "questionIssues": [
+        "Real developer question, answerable."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Two predicates (1s close; flag)."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Includes volatile issue status #4040; needs a date."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Two predicates (SDK utils; Quickstart for integration)."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Operational trivia (fresh volume); drop."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "A manualclose count parameter is still open (stellar-core #4040)",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "github.com/stellar/stellar-core/issues/4040",
+              "observedAt": "2026-11-14",
+              "quote": "state open: Support manual closing N ledgers (updated 2026-07-09)"
+            }
+          ]
+        },
+        {
+          "claim": "Quickstart default image runs Protocol 30",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "github.com/stellar/quickstart images.json",
+              "observedAt": "2026-11-14",
+              "quote": "\"protocol_version_default\": 30"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-infra-quickstart-local-network",
+          "survivor": "q-quickstart-manual-ledger-close",
+          "why": "Different concern; keep both. Shared fact is only that local mode is the hermetic one."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Keep: manual close is a recurring contract-testing need with real traps. Cut the operational aside and fold three overlapping avoid items; keep the Protocol 30 close-time caution as a grading note.",
+      "rewrite": {
+        "question": null,
+        "answer": "In Quickstart local mode ledgers close about every second. To control closes, start with `--enable-core-manual-close` (default off), then call Core's `manualclose`; each call advances one ledger, and a count parameter is still an open stellar-core request (#4040, as of 2026-11-14). Repeated closes advance sequence and close time but cannot set an arbitrary timestamp. Under Protocol 30 (CAP-88) close time has millisecond resolution, so rapid closes can share one whole-second contract timestamp. For unit tests, set ledger sequence and timestamp directly with soroban-sdk test utilities.",
+        "keyFacts": [
+          "Local mode closes ~1s; --enable-core-manual-close (default off) enables manualclose.",
+          "Each manualclose advances one ledger; a count is unsupported (core #4040, 2026-11-14).",
+          "Repeated closes advance sequence and close time but cannot set an arbitrary timestamp.",
+          "soroban-sdk test utilities set sequence and timestamp; Quickstart suits integration tests."
+        ],
+        "avoid": [
+          "Do NOT claim a Quickstart manual-close endpoint can accelerate testnet or pubnet ledgers.",
+          "Do NOT use the obsolete --core-manual-close flag.",
+          "Do NOT claim Quickstart manualclose accepts a count or an arbitrary timestamp."
+        ],
+        "notes": "Setting ENABLE_CORE_MANUAL_CLOSE=true as a container variable is acceptable. Standalone Core (RUN_STANDALONE) accepts ledgerSeq and closeTime; Quickstart does not set it. Claiming every manualclose advances the Soroban timestamp by at least one second is wrong for Protocol 30 and later.",
+        "movedToTruth": [
+          "Fresh volume or supervisor reconfiguration note",
+          "HerderImpl.cpp and CAP-0088 citations",
+          "Standalone Core parameter detail"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 349,
+      "wordsAfter": 200
+    },
+    {
+      "id": "q-ti-bindings-to-nextjs-integration",
+      "purpose": "stellar-truth",
+      "topics": [
+        "TypeScript contract bindings",
+        "Next.js dApp with wallet signing",
+        "Soroban transaction fee semantics"
+      ],
+      "tests": "How to generate and consume typed bindings in Next.js, sign with the SDF wallet, and what Tx.fee covers.",
+      "questionIssues": [
+        "Three questions in one (bindings, Next.js wallet flow, fee semantics); each is real but the fee part is also tested in q-soroban-simulate-resource-fee."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Pins the CLI generator and SDK generator as equal; version-specific."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Three predicates (package, client boundary, network validation)."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Overlaps KF3 (refundable vs non-refundable)."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "`stellar contract bindings typescript` is deprecated in favor of the JS SDK generator",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "github.com/stellar/stellar-cli cmd/soroban-cli/src/commands/contract/bindings.rs",
+              "observedAt": "2026-11-14",
+              "quote": "/// ⚠️ Deprecated, use the JavaScript Stellar SDK instead (https://github.com/stellar/js-stellar-sdk#cli)."
+            },
+            {
+              "class": "C",
+              "ref": "https://registry.npmjs.org/@stellar/stellar-sdk",
+              "observedAt": "2026-11-14",
+              "quote": "latest 17.4.0 published 2026-10-25"
+            }
+          ]
+        },
+        {
+          "claim": "Freighter is now Varial; @stellar/varial-sdk 7.0.0 and @stellar/freighter-api 6.0.1 both ship",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "https://registry.npmjs.org/@stellar/varial-sdk",
+              "observedAt": "2026-11-14",
+              "quote": "latest 7.0.0 published 2026-10-28"
+            },
+            {
+              "class": "A",
+              "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial",
+              "observedAt": "2026-11-14",
+              "quote": "Freighter is now Varial: Your wallet for discovering Stellar"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-soroban-cli-bindings",
+          "survivor": "q-soroban-cli-bindings",
+          "why": "Owns bindings generation inputs and the TypeScript deprecation; this case should not re-test generation."
+        },
+        {
+          "id": "q-soroban-simulate-resource-fee",
+          "survivor": "q-soroban-simulate-resource-fee",
+          "why": "Owns the resource-fee and inclusion-fee split; keep one line of it here only."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Keep as the one Next.js plus wallet integration case. Remove version pins (CLI 28.1.0 is already superseded; the CLI is v30.0.1) and the retired-command avoids; collapse fee facts to one.",
+      "rewrite": {
+        "question": null,
+        "answer": "Generate a typed client with `npx @stellar/stellar-sdk generate` (the Stellar CLI's `stellar contract bindings typescript` still works but is deprecated) and install the output as a workspace or published package. In Next.js, keep wallet code in a `\"use client\"` component and validate the network passphrase. Create the client with signing options, call the typed method (simulation supplies Soroban data, auth and resources), have the wallet (Freighter, now Varial) sign the assembled XDR, submit through RPC and poll. `Tx.fee` is the maximum total: inclusion bid plus the Soroban resource fee, whose parts are not all refundable.",
+        "keyFacts": [
+          "A typed Client comes from the JS SDK generator or the deprecated CLI bindings command.",
+          "Wallet code runs in a client component, validating the network passphrase.",
+          "The flow is build, simulate, assemble, wallet-sign, submit, then poll.",
+          "Tx.fee is the inclusion bid plus the Soroban resource fee, not all of it refundable."
+        ],
+        "avoid": [
+          "Do NOT call the wallet SDK during server rendering or put a secret key in browser code.",
+          "Do NOT describe Tx.fee as inclusion-only or every resource charge as refundable."
+        ],
+        "notes": "Freighter and Varial name the same wallet; either package (@stellar/freighter-api, @stellar/varial-sdk) is correct. Naming only one generator is not an error. Generated method names follow the installed package.",
+        "movedToTruth": [
+          "2026-07-11 GT-51 correction",
+          "Freighter→Varial rename evidence and package versions",
+          "CLI 28.1.0 and SDK 17.4.0 pins as of 2026-11-02",
+          "Retired `soroban contract bindings ts` command"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 518,
+      "wordsAfter": 203
+    },
+    {
+      "id": "q-ti-channel-accounts-throughput",
+      "purpose": "stellar-truth",
+      "topics": [
+        "channel accounts",
+        "tx_bad_seq and TRY_AGAIN_LATER retries",
+        "multi-provider resubmission"
+      ],
+      "tests": "Parallel submission through channel accounts, retriable versus terminal submission errors, and safe resubmission of an identical signed envelope.",
+      "questionIssues": [
+        "Compound but coherent real-world question.",
+        "The golden's own notes call multi-provider resubmission an inference; its key fact asserts hash-idempotence as settled."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Holds lanes, tx_bad_seq, tx source and operation source."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Two predicates (TRY_AGAIN_LATER and terminal codes)."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Inference per the case's own notes; keep but phrase as hash-idempotent resubmission."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Trivia beside the main point; hedged with 'usually'."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Horizon error docs: TRY_AGAIN_LATER means wait before resubmitting",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "github.com/stellar/stellar-docs docs/data/apis/horizon/api-reference/errors/error-handling.mdx",
+              "observedAt": "2026-11-14",
+              "quote": "TRY_AGAIN_LATER: This indicates that the Stellar-Core instance is currently unable to process submission of this particular transaction."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-pc-fee-bump-channel-accounts-feepool",
+          "survivor": "q-pc-fee-bump-channel-accounts-feepool",
+          "why": "Owns the channel-account and fee-bump definitions."
+        },
+        {
+          "id": "q-ti-classic-submission-errors",
+          "survivor": "q-ti-channel-accounts-throughput",
+          "why": "Both explain tx_bad_seq and TRY_AGAIN_LATER retry rules; keep the retry rules here and the result-code taxonomy in the other."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Keep as the submission-reliability case. Cut to four key facts, drop the invalid-u32 trivia from key facts (keep in answer) and make the overlap with the result-code case one-directional.",
+      "rewrite": {
+        "question": null,
+        "answer": "Each transaction consumes its source account's sequence, so workers sharing one source collide with `tx_bad_seq`. Use funded channel accounts, one lane per worker, as transaction sources; operation sources and signatures still belong to the real account. After `tx_bad_seq` do not blindly rebuild a payment with a new sequence, which can duplicate it; check the original hash first. `TRY_AGAIN_LATER` is temporary: wait and resubmit the same envelope. An identical signed envelope can be submitted to more than one provider; expect duplicate, pending or not-found responses during lag. An `invalid u32` error usually means a client typing bug, because sequences are 64-bit.",
+        "keyFacts": [
+          "Funded channel accounts give parallel sequence lanes; operation sources stay the user's.",
+          "After tx_bad_seq, a rebuilt payment with a new sequence can duplicate; check the hash.",
+          "TRY_AGAIN_LATER is temporary: wait, resubmit the same envelope; terminal codes need a fix.",
+          "An identical signed envelope is hash-idempotent; expect duplicate or pending replies."
+        ],
+        "avoid": [
+          "Do NOT submit uncoordinated transactions from one source-account sequence lane.",
+          "Do NOT retry terminal result codes without fixing or rebuilding the transaction.",
+          "Do NOT promise fixed throughput or treat invalid u32 as a protocol sequence limit."
+        ],
+        "notes": "Fee-bump replacement for 'same sequence, higher fee' is correct to mention. Multi-provider resubmission rests on hash idempotence plus documented duplicate and pending behavior; no live two-provider run backs it.",
+        "movedToTruth": [
+          "GT-51 correction history",
+          "Inference note on multi-provider submission",
+          "Fee-bump replacement doc link",
+          "asOf 2026-07-11 (not re-read in full)"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 511,
+      "wordsAfter": 215
+    },
+    {
+      "id": "q-ti-classic-submission-errors",
+      "purpose": "stellar-truth",
+      "topics": [
+        "classic transaction result codes",
+        "spendable balance and reserves",
+        "retry handling for 400, 429 and 5xx"
+      ],
+      "tests": "How to read Horizon transaction and operation result codes, why underfunded refers to spendable balance, and which failures are retriable.",
+      "questionIssues": [
+        "Question lists TRY_AGAIN_LATER, which the golden does not answer and q-ti-channel-accounts-throughput owns; remove it from the question.",
+        "Four sub-questions; still answerable."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Lists five inputs in one fact."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Namespace fact; overlaps KF3."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Namespace fact; merge with KF2."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Overlaps the retry rules of the throughput case."
+        }
+      ],
+      "rot": [],
+      "duplicates": [
+        {
+          "id": "q-ti-channel-accounts-throughput",
+          "survivor": "q-ti-channel-accounts-throughput",
+          "why": "Owns TRY_AGAIN_LATER and tx_bad_seq retry rules."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Keep as the result-code taxonomy case. Merge the two namespace facts, delete the TRY_AGAIN_LATER dependence, and add the missing `asOf`. No rot re-check: stable docs, last audit 2026-11-02; this case has no `truth.asOf`.",
+      "rewrite": {
+        "question": "Why do classic txs fail with tx_bad_seq or op_underfunded even when balance and sequence look right (selling liabilities, base reserve, subentry reserves), and how do I read the wider result-code taxonomy (op_no_destination, op_bad_signer, PAYMENT_SRC_NO_TRUST)?",
+        "answer": "Read the HTTP status and Horizon `extras.result_codes`: a transaction code plus per-operation codes. `tx_bad_seq` means the source sequence did not match; `tx_failed` means an operation failed and the whole transaction rolled back. Underfunded refers to spendable balance: balance minus base reserve, subentry reserves and selling liabilities, not the displayed total. Codes are namespaced: `PAYMENT_NO_DESTINATION` and `PAYMENT_SRC_NO_TRUST` for Payment, `op_bad_signer` with `SET_OPTIONS_BAD_SIGNER` for SetOptions, `op_bad_auth` generically. Retry 429, 5xx and timeouts hash-first; deterministic 400 failures need a fix.",
+        "keyFacts": [
+          "Reads transaction and operation result codes; tx_failed is an atomic operation failure.",
+          "Underfunded means spendable balance after reserves, subentries and selling liabilities.",
+          "Result codes are namespaced: Payment codes, SetOptions op_bad_signer, generic op_bad_auth.",
+          "Retries 429, 5xx and timeouts hash-first; does not retry deterministic 400 failures."
+        ],
+        "avoid": [
+          "Do NOT retry every HTTP 400 or call a polling timeout a definitive failure.",
+          "Do NOT mix generic, Payment and SetOptions code namespaces."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "2026-06-29 and GT-51 correction notes",
+          "Also-good items on Horizon 400 transaction_failed and high-sequence caveat"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 251,
+      "wordsAfter": 144
+    },
+    {
+      "id": "q-ti-cli-rust-windows-troubleshooting",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Stellar CLI and Rust setup",
+        "Windows MSVC and WSL toolchain",
+        "testnet funding and balance checks"
+      ],
+      "tests": "Diagnosing Stellar contract build and CLI setup failures: Rust 1.84+/wasm32v1-none, Windows toolchain, Friendbot scope and the balance command.",
+      "questionIssues": [
+        "Six-symptom compound question; each symptom is real but the case reads as a troubleshooting checklist rather than one concept.",
+        "The `alias already exists` and mainnet BYO-URL parts overlap q-tool-cli-testnet-identity-howto."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "'Usually maps' is hedged and vague."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Holds rustup, MSVC, WSL and PATH."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Local-CLI-state fact, not Stellar truth."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Holds Friendbot, mainnet funding and BYO URL."
+        },
+        {
+          "i": 5,
+          "kind": "world",
+          "issue": "Volatile CLI version fact; fine with a date."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Contracts need Rust 1.84.0+ and the wasm32v1-none target",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "github.com/stellar/stellar-docs docs/build/smart-contracts/getting-started/setup.mdx",
+              "observedAt": "2026-11-14",
+              "quote": "Stellar smart contracts require **Rust toolchain `v1.84.0` or higher**, as the `wasm32v1-none` target is only available in recent versions."
+            }
+          ]
+        },
+        {
+          "claim": "The CLI has no `stellar account` subcommand; `stellar token balance` reads balances (CLI v28.0.0+)",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "github.com/stellar/stellar-cli cmd/soroban-cli/src/commands/mod.rs",
+              "observedAt": "2026-11-14",
+              "quote": "/// Interact with SEP-41 tokens and Stellar Asset Contracts"
+            },
+            {
+              "class": "B",
+              "ref": "github.com/stellar/stellar-cli/releases/tag/v30.0.1",
+              "observedAt": "2026-11-14",
+              "quote": "`stellar token` now covers the common admin operations for Stellar Asset Contracts"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-tool-cli-testnet-identity-howto",
+          "survivor": "q-tool-cli-testnet-identity-howto",
+          "why": "Owns identity creation and Friendbot funding with the CLI."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Keep, cut from six key facts to four: drop the alias fact and fold the funding and balance facts. The CLI release line is now v30.0.1 (2026-11-03); the golden's 'v28.1.0 has no stellar account' stays true but should not pin a version.",
+      "rewrite": {
+        "question": null,
+        "answer": "Stellar contracts need Rust 1.84.0 or newer and the `wasm32v1-none` target, reinstalled after a toolchain update. A missing Wasm file usually means `stellar contract build` failed or deploy points at the wrong path. On Windows, `rustup` or `link.exe` not found means a PATH problem or missing MSVC build tools; WSL is the alternative. `alias already exists` means the alias is configured: list, reuse or remove it. Friendbot funds only testnet, futurenet and local; mainnet needs real XLM and a valid RPC URL. The CLI has no `stellar account` subcommand; `stellar token balance` (CLI v28+) reads balances.",
+        "keyFacts": [
+          "Contracts need Rust 1.84+ and the wasm32v1-none target, reinstalled after updates.",
+          "Missing Wasm means a failed build or wrong path; Windows tool misses are PATH or MSVC.",
+          "Friendbot funds testnet, futurenet and local only; mainnet needs real XLM and a valid URL.",
+          "`stellar token balance` (CLI v28+) reads balances; `stellar account` does not exist."
+        ],
+        "avoid": [
+          "Do NOT tell users the current contract target is `wasm32-unknown-unknown`.",
+          "Do NOT suggest a mainnet Friendbot or fake funding."
+        ],
+        "notes": "An answer for an older pinned CLI that reads balances through a SAC `balance` invoke, Horizon, RPC or Lab is also correct.",
+        "movedToTruth": [
+          "Sk-006 skill remediation rows note",
+          "GT-51 correction (prefer prebuilt/Winget, explicit MSVC)",
+          "Alias-collision remediation",
+          "CLI 28.1.0 local-run evidence"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 530,
+      "wordsAfter": 191
+    },
+    {
+      "id": "q-ti-compute-token-lp-market-data",
+      "purpose": "mixed",
+      "topics": [
+        "token and liquidity-pool market data",
+        "Classic pools versus Soroban AMMs",
+        "data sources for volume, TVL and price"
+      ],
+      "tests": "Behavior: there is no canonical value to match StellarX or Scopuly. World: where Classic and contract-AMM data come from and that RPC is not a history index.",
+      "questionIssues": [
+        "Real analytics question. 'Compute' is used as a verb, and the golden guards against the asset named COMPUTE; the guard is a fabrication trap, not a Stellar fact."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": "Prescribes what the answer must state (identity, quote, window)."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "process",
+          "issue": "Duplicates KF0; the formulas are in the answer, not facts."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Duplicates q-infra-horizon-vs-rpc's Horizon lifecycle fact."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Horizon is nearing end-of-life, eventually deprecated",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "github.com/stellar/stellar-docs docs/data/apis/index.mdx",
+              "observedAt": "2026-11-14",
+              "quote": "Horizon is nearing end-of-life and will eventually be deprecated in favor of Stellar RPC and Portfolio APIs"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-infra-horizon-vs-rpc",
+          "survivor": "q-infra-horizon-vs-rpc",
+          "why": "Owns the Horizon lifecycle label."
+        },
+        {
+          "id": "q-ti-historical-pointintime-balances",
+          "survivor": "q-ti-historical-pointintime-balances",
+          "why": "Both use Hubble for history; different task."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Keep the 'no canonical product number' behavior plus the Classic-versus-Soroban data-source split; drop the process key facts and the Horizon lifecycle fact (owned elsewhere).",
+      "rewrite": {
+        "question": null,
+        "answer": "No API value is canonical for 24h volume, fees, TVL or price; matching StellarX or Scopuly means reproducing their filters and methodology. First fix the asset or pool identity, quote asset, time window, price method and spam or stale-pool policy. Classic SDEX trades and liquidity pools come from Horizon for bounded reads, or Hubble and indexers for bulk history; Soroban AMMs need contract events and state through an indexer. Volume sums successful trades or swaps in the quote asset; TVL is reserves times timestamp-aligned prices. RPC is not an unbounded history index.",
+        "keyFacts": [
+          "No canonical volume, TVL or price exists; state identity, quote asset, window and method.",
+          "Classic SDEX and pool data come from different sources than Soroban AMM contract data.",
+          "Bulk history comes from Hubble or an indexer; RPC is not an unbounded history index."
+        ],
+        "avoid": [
+          "Do NOT claim a canonical TVL or price, or an exact StellarX or Scopuly match, without their methodology.",
+          "Do NOT use RPC alone for unbounded history or mix Classic pools with contract AMMs.",
+          "Do NOT answer about the asset named COMPUTE; 'compute' is a verb here."
+        ],
+        "notes": "StellarX and Scopuly formulas are not public; an answer that says so is correct.",
+        "movedToTruth": [
+          "GT-51 verb-versus-asset note",
+          "2026-08-04 Horizon guidance observation",
+          "Also-good items on Hubble and migration docs"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 351,
+      "wordsAfter": 195
+    },
+    {
+      "id": "q-ti-connect-wallet-button-code",
+      "purpose": "stellar-truth",
+      "topics": [
+        "wallet connect flow in React",
+        "Freighter/Varial API semantics",
+        "Stellar Wallets Kit customization"
+      ],
+      "tests": "The correct Freighter/Varial connect flow (isConnected is structured detection, requestAccess on click, network validation) and public-API Wallets Kit customization.",
+      "questionIssues": [
+        "Good dApp question; asks for 'show me code' but the golden grades behavior, which is fine."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Two predicates (requestAccess; getAddress)."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "process",
+          "issue": "Generic UI-state advice."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "@stellar/freighter-api 6.0.1 and @stellar/varial-sdk 7.0.0 both current",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "npm view @stellar/freighter-api version",
+              "observedAt": "2026-11-14",
+              "quote": "version = '6.0.1'"
+            },
+            {
+              "class": "C",
+              "ref": "https://registry.npmjs.org/@stellar/varial-sdk",
+              "observedAt": "2026-11-14",
+              "quote": "latest 7.0.0 published 2026-10-28"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-ti-freighter-localhost-not-detected",
+          "survivor": "q-ti-connect-wallet-button-code",
+          "why": "Both state that isConnected returns a structured result and the call belongs in client code; keep the API-semantics facts here."
+        },
+        {
+          "id": "q-eco-freighter-wallet",
+          "survivor": "q-eco-freighter-wallet",
+          "why": "Owns 'Freighter is now Varial'; confirmed by a battery grep, not read in full."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Keep as the dApp connect-flow case. Drop the generic UI-state fact and the second Varial rename block (owned by the ecosystem case); keep API semantics and the Wallets Kit public-API fact.",
+      "rewrite": {
+        "question": null,
+        "answer": "Put the connect control in a `\"use client\"` component or hook. `isConnected()` returns a structured result that only detects the extension, not authorization. On user click call `requestAccess()` for the one-call permission and address flow; `getAddress()` is a silent read for an already-authorized site. Check the network passphrase before signing, handle rejection, never prompt on mount and never handle a secret key. Freighter is now Varial; `@stellar/freighter-api` and `@stellar/varial-sdk` expose the same methods. For multi-wallet UX use Stellar Wallets Kit's public modules or a custom picker, not private modal DOM.",
+        "keyFacts": [
+          "isConnected returns a structured result that detects the extension, not authorization.",
+          "requestAccess on user click gets permission and address; getAddress reads silently.",
+          "Validates the network passphrase and handles rejection and wrong-network states.",
+          "Wallets Kit customization uses public APIs or a custom picker, not private modal DOM."
+        ],
+        "avoid": [
+          "Do NOT write `if (await isConnected())` as though the result were a boolean.",
+          "Do NOT prompt on mount, ignore network or rejection, or handle a secret key.",
+          "Do NOT invent missing exports or depend on private Wallets Kit modal structure."
+        ],
+        "notes": "Freighter and Varial name the same wallet; either package or module name (VarialModule, FreighterModule) is correct. A missing `getAddress` export means version skew.",
+        "movedToTruth": [
+          "GT-51 correction (requestAccess recommended)",
+          "Varial rename block with package versions and Wallets Kit 2.8.0 VarialModule",
+          "Release-tag sources"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 449,
+      "wordsAfter": 199
+    },
+    {
+      "id": "q-ti-custodial-account-generation-c-address",
+      "purpose": "stellar-truth",
+      "topics": [
+        "custodial key generation",
+        "C-address contract accounts",
+        "memo deposits with muxed addresses"
+      ],
+      "tests": "Custodial G/S key handling, that a C address is a contract ID funded by token transfer, and how memo deposits work with M addresses.",
+      "questionIssues": [
+        "Three real topics (keygen/vanity, funding C addresses, exchange support); the exchange part is only a dated caution."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Two predicates (C is a contract ID; separate G pays)."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "process",
+          "issue": "A dating instruction, not a fact; goes to avoid."
+        }
+      ],
+      "rot": [],
+      "duplicates": [
+        {
+          "id": "q-pc-address-types-strkey",
+          "survivor": "q-pc-address-types-strkey",
+          "why": "Owns G/C/M/S definitions."
+        },
+        {
+          "id": "q-sor-contract-trustlines-c-address",
+          "survivor": "q-sor-contract-trustlines-c-address",
+          "why": "Owns how a C address holds and sends a classic asset through SAC."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Keep the custodial angle; cut definitions owned by the address-type case. No rot re-check: stable docs, and the case disclaims exchange support as dated, so no volatile claim is pinned.",
+      "rewrite": {
+        "question": null,
+        "answer": "Generate Ed25519 keys only in a backend, HSM or KMS and never expose the S... secret. A random keypair is not an on-ledger account: create and fund it with CreateAccount or a sponsored-reserve flow. Vanity addresses need brute-force generation, so never accept a seed from a third party. A C... address is a contract ID that authorizes through its contract's `__check_auth`; a separate G account submits and pays. Fund it with a token or SAC transfer, not CreateAccount. If an exchange cannot send to C addresses, withdraw to a G account and transfer. For memo deposits use an M... address, or G plus a u64 ID.",
+        "keyFacts": [
+          "Custodial keys are generated in a backend or HSM; a keypair is not yet a ledger account.",
+          "A C address is a contract ID authorizing via __check_auth; a G account submits and pays.",
+          "G-to-C funding uses a SAC or token transfer, not CreateAccount or a classic payment.",
+          "Memo-based custodial deposits use M... muxed addresses or G plus a u64 ID."
+        ],
+        "avoid": [
+          "Do NOT generate or log custodial secrets in clients or accept third-party vanity seeds.",
+          "Do NOT call a C address a keypair or classic account.",
+          "Do NOT claim an exchange supports C addresses without a current provider source."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "2026-06-29 and GT-51 notes",
+          "Exchange support intentionally not asserted",
+          "Also-good items on SAC docs and memo handling"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 328,
+      "wordsAfter": 204
+    },
+    {
+      "id": "q-ti-enumerate-all-contracts",
+      "purpose": "stellar-truth",
+      "topics": [
+        "enumerating Soroban contracts",
+        "Hubble state tables",
+        "RPC limits for discovery"
+      ],
+      "tests": "That RPC cannot list all contracts, that 'all' needs defining, and where controlled coverage comes from.",
+      "questionIssues": [
+        "Real data-engineering question; the golden's Lab/StellarExpert provenance fact is a third-party detail beside the main point."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Third-party provider provenance; volatile."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Three predicates (instances, hashes, SAC)."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Stellar Lab lists contracts through a StellarExpert API",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "github.com/stellar/laboratory src/query/external/useSEContractsList.ts",
+              "observedAt": "2026-11-14",
+              "quote": "import { STELLAR_EXPERT_API } from \"@/constants/settings\"; /** StellarExpert API to get smart contracts list */"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-ti-enumerate-holders-airdrop",
+          "survivor": "q-ti-enumerate-holders-airdrop",
+          "why": "Same pattern (no enumerate-all RPC; use Hubble or ingestion) for holders; different object."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Keep. Merge the provenance and coverage facts and fold the three-way distinction into one line.",
+      "rewrite": {
+        "question": null,
+        "answer": "First define 'all': live instances, archived-but-restorable instances, or every instance ever created. Stellar RPC has no list-all-contracts method: `getLedgerEntries` needs explicit keys and `getEvents` is retention-bounded. For a practical current list, Stellar Lab uses a paginated StellarExpert endpoint, which is third-party coverage, not a protocol registry. For controlled coverage use Hubble state tables, or ingest complete ledger metadata with Galexie or the Ingest SDK, join TTL and state, and replay history for all-ever. Contract instances, uploaded Wasm hashes and SAC built-ins differ; many instances can share one Wasm hash.",
+        "keyFacts": [
+          "RPC cannot list all contracts: getLedgerEntries needs keys; getEvents is bounded.",
+          "Coverage must be defined as live, archived or all-ever.",
+          "Hubble or complete ledger ingestion gives controlled coverage; Lab's list is third-party.",
+          "Contract instances, Wasm hashes and SAC built-ins are distinct things."
+        ],
+        "avoid": [
+          "Do NOT claim getLedgerEntries scans by prefix or getEvents gives all-time enumeration.",
+          "Do NOT call Lab or StellarExpert canonical or complete.",
+          "Do NOT count Wasm uploads as deployed instances or ignore archived state."
+        ],
+        "notes": "No SQL is gated: Hubble table and column names change.",
+        "movedToTruth": [
+          "GT-52 correction",
+          "Lab commit citation",
+          "Also-good items on SAC contract IDs"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 298,
+      "wordsAfter": 174
+    },
+    {
+      "id": "q-ti-enumerate-holders-airdrop",
+      "purpose": "stellar-truth",
+      "topics": [
+        "enumerating asset holders",
+        "Horizon pagination",
+        "retry-safe airdrop distribution"
+      ],
+      "tests": "How to list every trustline holder of a Classic asset, why a live crawl is not a snapshot, and how to distribute safely.",
+      "questionIssues": [
+        "Real operator question; both halves (enumerate, distribute) are answerable. The golden is long mostly because of the eligibility checklist."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Two predicates (cursor paging; filter zero balances)."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Lists six holder classes in one fact."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Idempotency, sequence, fees and canary in one fact."
+        }
+      ],
+      "rot": [],
+      "duplicates": [
+        {
+          "id": "q-ti-enumerate-all-contracts",
+          "survivor": "q-ti-enumerate-all-contracts",
+          "why": "Same pattern (no single-call enumeration; use Hubble or ingestion) for contracts."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Keep. Merge the holder-class and idempotency checklists into two facts. No rot re-check: stable Horizon and SEP-41 docs, confirmed 2026-11-02.",
+      "rewrite": {
+        "question": null,
+        "answer": "For Classic G trustlines, page Horizon `GET /accounts?asset=CODE:ISSUER` by following the returned next link or cursor; do not build a URL of account IDs. The list can include zero balances, so filter by the balance row and your eligibility rules, and it excludes C-address contract balances. A multi-page crawl is not an exact-ledger snapshot: for a deterministic airdrop pin a ledger and use Hubble or owned ingestion. Define treatment of claimable balances, pools, unauthorized trustlines, issuer, muxed and contract holders. Freeze the recipient list, make retries idempotent and canary first.",
+        "keyFacts": [
+          "Pages /accounts?asset=CODE:ISSUER by cursor and filters zero or ineligible balances.",
+          "The Horizon collection excludes C-address token balances.",
+          "A live paged crawl is not an exact-ledger snapshot; pin a ledger via Hubble or ingestion.",
+          "The airdrop uses a frozen recipient ledger with idempotent retries."
+        ],
+        "avoid": [
+          "Do NOT equate trustline existence with a positive balance or claim /accounts?asset lists C-address balances.",
+          "Do NOT call a moving Horizon crawl an exact-ledger snapshot.",
+          "Do NOT airdrop without idempotent retry state."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "GT-52 correction",
+          "Also-good items on Horizon history limits and claimable balances",
+          "reverifyBy 2027-02-03"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 312,
+      "wordsAfter": 165
+    },
+    {
+      "id": "q-ti-explain-repo-payload-status",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Scout repo explanation",
+        "envelope versus payload status",
+        "provenance of generated answers"
+      ],
+      "tests": "That Scout's explainRepo carries its own upstream data.ok separate from the host envelope and must be read with the routed repo as provenance.",
+      "questionIssues": [
+        "The question wraps a mechanics check in a Stellar topic (where result codes are implemented); the Stellar answer is never graded."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "operation",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "explainRepo payload carries its own ok flag, distinct from the envelope",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "catalog/manifest.json#scout.explainRepo",
+              "observedAt": "2026-11-14",
+              "quote": "the upstream payload carries its own ok flag at data.ok — distinct from the envelope call-status ok."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-gap-explainrepo-payload-ok",
+          "survivor": "q-ti-explain-repo-payload-status",
+          "why": "Same data.ok check on the same operation and question (audit-soroban-a lane). Keep one."
+        },
+        {
+          "id": "q-gap-scout-changelog-envelope",
+          "survivor": "q-ti-explain-repo-payload-status",
+          "why": "getChangelog carries the identical catalog note; one tool-lane case covers both operations."
+        }
+      ],
+      "verdict": "move-tool-lane",
+      "reason": "Only a tool-contract case sees whether an agent checks the nested data.ok before trusting an answer; no unit test asserts that behavior (grep of test/ finds no data.ok check) and no frozen live case covers it. It tests no Stellar fact, so it leaves the headline.",
+      "rewrite": null,
+      "toolLaneNote": "Would go unseen: agents that treat envelope success as proof the upstream answered, and generated explanations quoted without the routed repo.",
+      "confidence": "medium",
+      "wordsBefore": 117,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-ti-fetch-all-balances-classic-sac",
+      "purpose": "stellar-truth",
+      "topics": [
+        "account and contract balances",
+        "Classic trustlines versus SAC",
+        "token discovery"
+      ],
+      "tests": "How to read a G account's Classic balances, a C address's token balances, and why no single call discovers every token.",
+      "questionIssues": [
+        "Real question; the 'getSACBalance' name in the question is not an official method, which the golden does not correct."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Two predicates (Horizon source; no double count)."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Overlaps KF2."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [],
+      "duplicates": [
+        {
+          "id": "q-asset-trustline-vs-sac",
+          "survivor": "q-asset-trustline-vs-sac",
+          "why": "Owns the trustline-versus-SAC model."
+        },
+        {
+          "id": "q-sor-contract-trustlines-c-address",
+          "survivor": "q-sor-contract-trustlines-c-address",
+          "why": "Owns how a C address holds and sends classic assets."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Keep as the 'every balance' discovery case; merge the overlapping discovery and validation facts. No rot re-check: stable, confirmed 2026-11-02.",
+      "rewrite": {
+        "question": null,
+        "answer": "Use separate paths. For a G account, Horizon `/accounts/{G}` returns native XLM plus Classic trustline and pool-share balances; when that account uses a Classic asset through its SAC, it is the same underlying trustline balance, so do not count it twice. For a C address, SAC and custom-token balances are contract state: call a known token's SEP-41 `balance(address)` or read indexed state. No single Horizon or RPC call discovers every token an address holds; use token-event or indexer data to find candidate contracts, then validate current balances. SEP-41 storage layout is not standardized.",
+        "keyFacts": [
+          "Horizon gives G-account native and Classic balances; the SAC view is not a second copy.",
+          "C-address and custom-token balances come from the token's balance() or indexed state.",
+          "No single call discovers every token an address holds; use indexed events, then validate.",
+          "SEP-41 storage layouts are not standardized."
+        ],
+        "avoid": [
+          "Do NOT promise all token balances from one RPC or Horizon call or double-count a G trustline as a SAC copy.",
+          "Do NOT parse arbitrary SEP-41 storage as standardized.",
+          "Do NOT imply Horizon account JSON lists C-address token state."
+        ],
+        "notes": "A dated, scoped provider convenience API is acceptable.",
+        "movedToTruth": [
+          "GT-52 correction",
+          "Also-good items on SEP-41 versus SAC",
+          "reverifyBy 2027-02-11"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 278,
+      "wordsAfter": 187
+    },
+    {
+      "id": "q-ti-freighter-localhost-not-detected",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Freighter/Varial detection on localhost",
+        "secure contexts",
+        "wallet troubleshooting"
+      ],
+      "tests": "Why window.freighterApi can be undefined in local dev and that HTTP localhost is already a secure context.",
+      "questionIssues": [
+        "Real developer problem. The answer text centers on package renames and a commit-pinned manifest, which are not the question."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Three conditions in one fact."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Troubleshooting order; process-like."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Generic secret-handling advice."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Official frontend guidance treats http://localhost and 127.0.0.1 as secure contexts",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "github.com/stellar/stellar-docs docs/build/guides/dapps/frontend-guide.mdx",
+              "observedAt": "2026-11-14",
+              "quote": "Varial wallet requires a secure connection to interact with your dapp. Browsers treat `http://localhost` and `http://127.0.0.1` as secure contexts"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-ti-connect-wallet-button-code",
+          "survivor": "q-ti-connect-wallet-button-code",
+          "why": "Owns the isConnected/requestAccess API semantics; keep only the localhost-specific facts here."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Keep the localhost-specific facts (the script-tag global, secure-context rule) and drop what the connect-wallet case owns. Date the frontend-guidance claim at 2026-11-14.",
+      "rewrite": {
+        "question": null,
+        "answer": "`window.freighterApi` is defined by the library's script-tag build; the extension does not inject it, so an npm import or a missing script tag leaves it undefined. Use `@stellar/freighter-api` (now `@stellar/varial-sdk`) in client code after mount and read the structured `isConnected()` result. Official frontend guidance (as of 2026-11-14) treats `http://localhost` and `http://127.0.0.1` as secure contexts, so HTTPS is not a universal fix. Check the same browser profile, an enabled and unlocked extension, a reload after install, and the top-level frame before suspecting RPC CORS. Never export a secret into local code.",
+        "keyFacts": [
+          "window.freighterApi comes from the library's script-tag build, not extension injection.",
+          "HTTP localhost and 127.0.0.1 are secure contexts, so HTTPS is not a universal fix.",
+          "Check profile, enablement, reload and top-level frame before RPC CORS."
+        ],
+        "avoid": [
+          "Do NOT call isConnected during server rendering or treat its structured result as a boolean.",
+          "Do NOT claim localhost needs an allowlist entry, that HTTP never works, or that HTTPS always fixes detection.",
+          "Do NOT export a secret key as a workaround."
+        ],
+        "notes": "Freighter and Varial name the same wallet; either package is correct. Exact behavior can vary by extension release.",
+        "movedToTruth": [
+          "Varial rename block with package versions",
+          "Commit-pinned manifest source (be7c780c) and `<all_urls>` observation",
+          "2026-09-16 guidance date"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 405,
+      "wordsAfter": 184
+    },
+    {
+      "id": "q-ti-friendbot-ratelimit-alternatives",
+      "purpose": "mixed",
+      "topics": [
+        "Friendbot rate limits",
+        "alternatives for Testnet XLM",
+        "fabrication bait: official backup faucet"
+      ],
+      "tests": "Behavior: do not invent a quota or an official backup faucet. World: legitimate ways to get Testnet XLM and that Quickstart public modes proxy the public faucets.",
+      "questionIssues": [
+        "Good question: the 'is there an official backup faucet wallet' clause is a clean fabrication trap with a negative-claim answer."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Two predicates (fund-one-then-create; local Quickstart)."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Overlaps q-infra-quickstart-local-network."
+        },
+        {
+          "i": 3,
+          "kind": "process",
+          "issue": "A dating instruction."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Three distinct resources in one fact."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Docs: fund the first account with Friendbot, then create more with CreateAccount",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "github.com/stellar/stellar-docs docs/networks/index.mdx",
+              "observedAt": "2026-11-14",
+              "quote": "For multiple accounts: fund your first account with Friendbot, then use that account to fund subsequent accounts using the Create Account operation"
+            }
+          ]
+        },
+        {
+          "claim": "Validation Cloud advertises a Stellar testnet faucet",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "D",
+              "ref": "https://www.validationcloud.io/multi-chain-faucets",
+              "observedAt": "2026-11-14",
+              "quote": "Multi-Chain Faucets for Aptos, Casper, Hedera, and Stellar Tokens"
+            }
+          ]
+        },
+        {
+          "claim": "No official backup faucet wallet is documented",
+          "result": "unverifiable",
+          "evidence": []
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-infra-quickstart-local-network",
+          "survivor": "q-infra-quickstart-local-network",
+          "why": "Owns 'public-network Quickstart modes proxy the public faucets'."
+        },
+        {
+          "id": "q-infra-testnet-vs-futurenet",
+          "survivor": "q-infra-testnet-vs-futurenet",
+          "why": "Owns Friendbot funding of both networks."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Keep: it is the battery's only fabrication bait for a plausible Stellar facility. Cut the process fact and the Varial rename block, which has nothing to do with faucets.",
+      "rewrite": {
+        "question": null,
+        "answer": "Public Testnet Friendbot is rate-limited and no official numeric quota is documented. On 429, honor Retry-After or back off; do not rotate IPs or hammer it. For many accounts, fund one account with Friendbot and create the rest with CreateAccount. For hermetic CI use Quickstart local mode and its own Friendbot; Quickstart's testnet and futurenet modes proxy the public faucets. Third-party Testnet XLM faucets exist (Validation Cloud lists one, as of 2026-11-14) but are provider-specific. Futurenet is a different network, and Circle's faucet gives test USDC, not XLM. No official backup faucet wallet is documented; never send keys or Mainnet funds.",
+        "keyFacts": [
+          "On 429, honor Retry-After or back off; no numeric quota is documented.",
+          "Fund one account, then CreateAccount for more; local Quickstart is the hermetic option.",
+          "Quickstart testnet and futurenet modes proxy the public faucets and do not evade limits.",
+          "Futurenet is a different network, and Circle's faucet supplies test USDC, not XLM."
+        ],
+        "avoid": [
+          "Do NOT invent a request quota, rotate IPs or hammer retries.",
+          "Do NOT claim an official backup faucet wallet exists without a current official source.",
+          "Do NOT confuse test USDC with XLM or send keys or Mainnet funds to a faucet."
+        ],
+        "notes": "A dated Friendbot rate-limit response using HTTP 400 instead of 429 is not an error. If an official backup appears, require a dated developers.stellar.org citation.",
+        "movedToTruth": [
+          "GT-52 re-verification 2026-09-01",
+          "Freighter→Varial rename block",
+          "Quickstart friendbot.conf source",
+          "Also-good item on Circle faucet trustline"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 353,
+      "wordsAfter": 219
+    },
+    {
+      "id": "q-ti-historical-pointintime-balances",
+      "purpose": "stellar-truth",
+      "topics": [
+        "historical account balances",
+        "Hubble state tables",
+        "point-in-time reconstruction"
+      ],
+      "tests": "That balances at a past date need Hubble or ingested history using latest-at-or-before-ledger, plus an external price source for USD.",
+      "questionIssues": [
+        "Real analyst question; strong answers differ in SQL but agree on method."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Three predicates (deletion, network, ledger mapping)."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Contract-state replay and checkpoint detail; heavy beside the main point."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Holds exact/reconstructed, nominal/spendable and external USD."
+        }
+      ],
+      "rot": [],
+      "duplicates": [
+        {
+          "id": "q-infra-hubble-bigquery",
+          "survivor": "q-infra-hubble-bigquery",
+          "why": "Owns the 'what is Hubble' definition."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Keep. Split the last fact so USD valuation stands alone and drop the checkpoint-reconstruction aside. No rot re-check: stable method and Hubble docs, confirmed 2026-11-02 (reverifyBy 2027-02-12).",
+      "rewrite": {
+        "question": null,
+        "answer": "Horizon account reads and RPC `getLedgerEntries` have no balance-at-ledger parameter. Map the timestamp to a closed ledger, then use Hubble account and trustline state-change history and take the latest row at or before that ledger per key, handling deleted and recreated entries and the network passphrase. Hubble state tables are change logs, not snapshots, and `batch_run_date` is a load proxy, so rank by ledger or close time. For token balances replay contract-data history or complete ledger metadata. Report exact versus reconstructed and nominal versus spendable. USD value needs a separate timestamp-aligned price source with a stated method.",
+        "keyFacts": [
+          "Takes the latest Hubble or ingested row at or before the ledger for each key.",
+          "Handles deletion and recreation, network identity and timestamp-to-ledger mapping.",
+          "Hubble state tables are change logs; batch_run_date is not exact state time.",
+          "USD value is a separate timestamp-aligned join to a named price source."
+        ],
+        "avoid": [
+          "Do NOT pass a historical ledger to current account or getLedgerEntries APIs.",
+          "Do NOT use batch_run_date as exact state time.",
+          "Do NOT invent USD prices without a named source and method."
+        ],
+        "notes": "A named price source with a stated asset and quote method (a price feed, Hubble Reflector price tables, or trade-implied prices with pair and window) is not invented. A trade-implied stablecoin price is USD only if the answer says so.",
+        "movedToTruth": [
+          "GT-52 correction",
+          "2026-10-01 price-source note history",
+          "Also-good item on Horizon history truncation"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 395,
+      "wordsAfter": 216
+    },
+    {
+      "id": "q-ti-java-sdk-wallet-feebump",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Java Stellar SDK",
+        "Maven coordinates",
+        "fee-bump construction"
+      ],
+      "tests": "The current Java SDK Maven coordinate and version, and the correct fee-bump factories and signing roles.",
+      "questionIssues": [
+        "Narrow SDK-specific question; still a real developer need. Answerable from Maven Central and the SDK repo."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Volatile version; must accept a later dated version."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Fee calculation, signature and Soroban fees in one fact."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Current release is network.lightsail:stellar-sdk 6.0.0",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "D",
+              "ref": "https://repo1.maven.org/maven2/network/lightsail/stellar-sdk/maven-metadata.xml",
+              "observedAt": "2026-11-14",
+              "quote": "<latest>6.0.0</latest> <release>6.0.0</release> <lastUpdated>20261028085328</lastUpdated>"
+            },
+            {
+              "class": "B",
+              "ref": "github.com/lightsail-network/java-stellar-sdk/releases/latest",
+              "observedAt": "2026-11-14",
+              "quote": "6.0.0 2026-10-28T08:27:04Z"
+            }
+          ]
+        },
+        {
+          "claim": "FeeBumpTransaction exposes createWithFee and createWithBaseFee",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "github.com/lightsail-network/java-stellar-sdk src/main/java/org/stellar/sdk/FeeBumpTransaction.java @6.0.0",
+              "observedAt": "2026-11-14",
+              "quote": "public static FeeBumpTransaction createWithBaseFee("
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-pc-fee-bump-channel-accounts-feepool",
+          "survivor": "q-pc-fee-bump-channel-accounts-feepool",
+          "why": "Owns language-agnostic fee-bump semantics."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Keep as the SDK-version-and-API case (volatile, checkable). Re-read the Maven record and release today, so the date moves to 2026-11-14. Cut the generic fee-bump semantics owned by the protocol case.",
+      "rewrite": {
+        "question": null,
+        "answer": "As of 2026-11-14 use `network.lightsail:stellar-sdk:6.0.0` (Maven Central and the 2026-10-28 GitHub release agree); recheck, as the version is not timeless. A fee bump wraps a fully signed inner transaction in an outer envelope signed by the fee source. Build it with `FeeBumpTransaction.createWithBaseFee(feeSource, baseFee, inner)` or `createWithFee(...)`; the old Builder is removed. The inner transaction keeps its source, sequence and signatures; the fee source pays. For an external wallet, send each XDR only to the role that signs it and never export a secret into Java.",
+        "keyFacts": [
+          "Names the network.lightsail:stellar-sdk coordinate with a dated current version.",
+          "Fee-bump factories are FeeBumpTransaction.createWithBaseFee and createWithFee.",
+          "A fee bump wraps a fully signed inner transaction; the fee source signs the outer.",
+          "External-wallet flow signs inner and outer XDR by role, without exporting secrets."
+        ],
+        "avoid": [
+          "Do NOT report org.stellar coordinates or the superseded beta/3.1.0 split as current.",
+          "Do NOT invent buildFeeBumpTransaction or use the removed Builder.",
+          "Do NOT use the fee payer's sequence or remove inner signatures."
+        ],
+        "notes": "A dated older release (4.0.1, 5.0.0) is correct on its own date. Version claims must carry a date.",
+        "movedToTruth": [
+          "Version history 4.0.1 (2026-07-16), 5.0.0 (2026-09-01), 6.0.0 (2026-10-28)",
+          "GT-52 note on blocked local Java test",
+          "Soroban resource-fee preservation detail"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 320,
+      "wordsAfter": 177
+    },
+    {
+      "id": "q-ti-openzeppelin-relayer",
+      "purpose": "stellar-truth",
+      "topics": [
+        "OpenZeppelin Relayer and Channels",
+        "fee-paying relayers on Stellar",
+        "self-hosted versus managed funding"
+      ],
+      "tests": "That self-hosted OpenZeppelin Relayer and managed Channels are different products with different funding, and that release and health claims are dated.",
+      "questionIssues": [
+        "The question asks 'is it live on mainnet'; the golden never answers that and instead grades dating discipline, so the first ask is unscored.",
+        "Surface is only scout.searchResearch, so the case partly measures Scout's corpus rather than Stellar truth.",
+        "The notes are 470 words of dated release, docs-nav and status-host observations."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Holds XDR, payment, Soroban, policy, signer and fee-bump support."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Dated trivia: 2026-11-02 v1.9.0 versus 1.8.x docs mismatch."
+        },
+        {
+          "i": 4,
+          "kind": "process",
+          "issue": "A dating instruction; duplicates KF3 and the avoid list."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Latest repository release is v1.9.0 (2026-10-22)",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "github.com/OpenZeppelin/openzeppelin-relayer/releases",
+              "observedAt": "2026-11-14",
+              "quote": "v1.9.0 2026-10-22T08:08:29Z"
+            }
+          ]
+        },
+        {
+          "claim": "Rendered docs lag the release (no 1.9.x path) and the Channels status host does not resolve",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://docs.openzeppelin.com/relayer/1.9.x",
+              "observedAt": "2026-11-14",
+              "quote": "HTTP 404"
+            },
+            {
+              "class": "F",
+              "ref": "curl https://status.channels.openzeppelin.com",
+              "observedAt": "2026-11-14",
+              "quote": "curl exit 6: could not resolve host"
+            }
+          ]
+        },
+        {
+          "claim": "Relayer is live on mainnet (the question's first ask)",
+          "result": "unverifiable",
+          "evidence": []
+        }
+      ],
+      "duplicates": [],
+      "verdict": "tighten",
+      "reason": "Keep the product distinction and the funding model, which are durable. Cut the dated release and status trivia from key facts and notes into the judge-blind record. Consider rewording the question to drop 'live on mainnet', which no key fact answers.",
+      "rewrite": {
+        "question": "What is the OpenZeppelin Relayer on Stellar, how is the relayer account funded, and how do I integrate it with my backend to pay fees?",
+        "answer": "OpenZeppelin Relayer is a self-hostable AGPL relaying service. Its Stellar support covers prepared-XDR submission, classic payments, Soroban invocation, fee-bump or sponsorship flows, policies and several signer backends. When self-hosted you configure and fund the relayer account yourself. OpenZeppelin Channels is the separate managed offering with hosted authentication, parallel accounts and fee handling; its hosted service publishes no generic top-up address. Keep credentials and signing server-side, validate transaction intent, and date any release, network-support or service-health claim.",
+        "keyFacts": [
+          "Self-hosted OpenZeppelin Relayer and managed Channels are different products.",
+          "Relayer on Stellar supports XDR, payment and Soroban submission, fee-bump and sponsorship.",
+          "Self-hosting means funding your own relayer account; Channels has no top-up address.",
+          "Release and health claims carry an as-of date; a 401 is not proof of downtime."
+        ],
+        "avoid": [
+          "Do NOT conflate self-hosted Relayer with managed Channels.",
+          "Do NOT publish a generic hosted top-up address.",
+          "Do NOT pin a release, network support or provider health without an as-of date."
+        ],
+        "notes": "Repository and rendered-docs versions can disagree (2026-11-14: release v1.9.0, docs show 1.8.x as stable with no 1.9.x path); either dated observation is correct.",
+        "movedToTruth": [
+          "2026-09-02 and 2026-11-02 observation pairs (v1.8.0/1.5.x; v1.9.0/1.8.x)",
+          "Docs top-nav /relayer/1.5.x link",
+          "Dead status.channels.openzeppelin.com host and deleted Statuspage page",
+          "Channels fair-use stroop-limit terms",
+          "disputed status basis"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 470,
+      "wordsAfter": 177
+    },
+    {
+      "id": "q-ti-parse-raw-ledger-data",
+      "purpose": "stellar-truth",
+      "topics": [
+        "XDR types in RPC responses",
+        "xdrFormat json",
+        "Galexie data-lake files"
+      ],
+      "tests": "Which XDR type each RPC getLedgers and getTransactions field carries, what xdrFormat=json changes, and how .xdr.zst data-lake files are read.",
+      "questionIssues": [
+        "Real developer question. Absorbs the XDR-type facts that q-ti-rpc-gettransactions-pagination-xdr should drop."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Two predicates (raw base64; SDK-parsed)."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Galexie data-lake files are zstd-compressed LedgerCloseMetaBatch values",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "github.com/stellar/stellar-docs docs/data/indexers/build-your-own/galexie/data-lake-format.mdx",
+              "observedAt": "2026-11-14",
+              "quote": "Each ledger file is a [Zstandard] compressed [`LedgerCloseMetaBatch`] XDR value"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-ti-rpc-gettransactions-pagination-xdr",
+          "survivor": "q-ti-parse-raw-ledger-data",
+          "why": "Both state the getTransactions XDR types and *Json renaming; this case owns them."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Keep as the single XDR-decoding case. Merge the two overlapping avoid items, fold in the data-lake batch type now documented, and cut the also-good aside. The getLedgers and getTransactions type mapping was not re-read today (reason: stable wire types, verified 2026-07-11 and 2026-11-02).",
+      "rewrite": {
+        "question": null,
+        "answer": "Decode by source field. In default base64 mode, RPC `getLedgers.headerXdr` is a `LedgerHeaderHistoryEntry` and `metadataXdr` a `LedgerCloseMeta`; `getTransactions` returns `envelopeXdr` (`TransactionEnvelope`), `resultXdr` (`TransactionResult`) and `resultMetaXdr` (`TransactionMeta`). The public JS SDK may already parse these, so do not double-decode. With `xdrFormat=json` the fields are renamed `*Json` and the form is less stable. The CLI path is `stellar xdr decode --type <Type> --input single-base64`. For `.xdr.zst` data-lake files, decompress zstd first; the official Galexie format stores a `LedgerCloseMetaBatch` per file, not a bare `LedgerCloseMeta`.",
+        "keyFacts": [
+          "getLedgers maps headerXdr to LedgerHeaderHistoryEntry and metadataXdr to LedgerCloseMeta.",
+          "getTransactions maps to TransactionEnvelope, TransactionResult and TransactionMeta.",
+          "xdrFormat=json renames fields to *Json and is less stable; SDK-parsed values skip decode.",
+          ".xdr.zst files need zstd decompression, then decoding as the dataset's documented type."
+        ],
+        "avoid": [
+          "Do NOT decode headerXdr as LedgerHeader or collapse LedgerCloseMeta into TransactionMeta.",
+          "Do NOT double-decode SDK-parsed XDR or expect *Xdr names in JSON mode.",
+          "Do NOT assume a .xdr.zst file holds one bare LedgerCloseMeta."
+        ],
+        "notes": "Naming LedgerCloseMetaBatch for Galexie files is correct but not required.",
+        "movedToTruth": [
+          "GT-53 verification and DATA-LAKE NOTE 2026-11-02",
+          "AWS S3 public data-lake path",
+          "Provider page-limit aside"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 444,
+      "wordsAfter": 166
+    },
+    {
+      "id": "q-ti-related-projects-from-content",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Lumenloop content-to-projects relation",
+        "directory project mentions"
+      ],
+      "tests": "That get_related_projects takes a content id plus type and returns the projects that content mentions, not a keyword search or the reverse.",
+      "questionIssues": [
+        "Operation-lookup wrapped as a user task; answerable only with Lumenloop."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": "Restates the manifest's relation direction."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "get_related_projects maps content → mentioned projects; the reverse is find_content_about_project",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "catalog/manifest.json#lumenloop.get_related_projects",
+              "observedAt": "2026-11-14",
+              "quote": "The reverse direction (project → content) is find_content_about_project."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-gap-related-projects-empty",
+          "survivor": "none",
+          "why": "Same operation and direction (audit-assets lane); both retire for the same reason."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "A Lumenloop operation contract. test/catalog.test.ts asserts its description and return shape and test/lumenloop-shape.test.ts covers it; the frozen live lane holds the soft-empty behavior. No Stellar fact is at stake.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 99,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-ti-rpc-gettransactions-pagination-xdr",
+      "purpose": "stellar-truth",
+      "topics": [
+        "RPC cursor pagination",
+        "stock RPC page limits",
+        "poller falling behind retention"
+      ],
+      "tests": "How getTransactions pages (inclusive startLedger then cursor), the stock 50/200 limits and that they are configurable, and what happens when a poller falls behind.",
+      "questionIssues": [
+        "Half the question (decoding resultMetaXdr) duplicates q-ti-parse-raw-ledger-data.",
+        "Disputed status: the official page calls the cap hardcoded while source shows configurable defaults (sd-004, declined upstream)."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Four methods' limits in one fact."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Four predicates (retention, failed txs, diagnostics, idempotency)."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Duplicates the XDR facts of q-ti-parse-raw-ledger-data."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Stock limits: getTransactions 50/200, getEvents 100/10000, getLedgers 50/200, as configurable options",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "github.com/stellar/stellar-rpc @v30.0.1 cmd/stellar-rpc/internal/rpcv1/config/options.go",
+              "observedAt": "2026-11-14",
+              "quote": "Name: \"max-transactions-limit\" ... DefaultValue: uint(200) ... Name: \"default-transactions-limit\" ... DefaultValue: uint(50)"
+            },
+            {
+              "class": "B",
+              "ref": "options.go @v30.0.1",
+              "observedAt": "2026-11-14",
+              "quote": "Name: \"max-events-limit\" DefaultValue: uint(10000); \"default-events-limit\" DefaultValue: uint(100)"
+            }
+          ]
+        },
+        {
+          "claim": "Official getTransactions page still calls the 200 cap hardcoded",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "github.com/stellar/stellar-docs docs/data/apis/rpc/api-reference/methods/getTransactions.mdx",
+              "observedAt": "2026-11-14",
+              "quote": "an upper limit that is hardcoded in Stellar-RPC for performance reasons"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-ti-parse-raw-ledger-data",
+          "survivor": "q-ti-parse-raw-ledger-data",
+          "why": "Owns XDR field types and *Json renaming."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Keep the pagination and limits case; remove the XDR-decoding half to the parse-raw case. The retained canonical-page caution must stay in lint form with its sd-004 finding path.",
+      "rewrite": {
+        "question": "How do I reliably page Stellar RPC getTransactions and getEvents with the cursor, and detect when my poller falls behind the per-call 200 limit?",
+        "answer": "For the first `getTransactions` page send an inclusive `startLedger` and optional `limit`; afterward omit `startLedger` and send the response's opaque `pagination.cursor`, which resumes after the last item. The two are mutually exclusive. Persist the new cursor only after downstream writes succeed. As of 2026-11-14 stock stellar-rpc defaults `getTransactions` to 50 with a maximum of 200, `getEvents` to 100/10000 and `getLedgers` to 50/200; these are operator-configurable options, so providers can differ. Horizon is 10 default, 200 max. A cursor cannot recover history outside retention, so a poller that falls behind needs an indexer or data lake. RPC returns failed as well as successful transactions.",
+        "keyFacts": [
+          "First page uses an inclusive startLedger; later pages use the opaque cursor alone.",
+          "Stock limits: getTransactions 50/200, getEvents 100/10000, getLedgers 50/200 (2026-11-14).",
+          "These are configurable defaults that providers can change, not protocol constants.",
+          "A cursor cannot recover history beyond retention; falling behind needs an indexer or lake."
+        ],
+        "avoid": [
+          "Do NOT repeat startLedger with a cursor, edit the cursor or treat it as a ledger number.",
+          "Do NOT claim the 200 limit is Horizon-only or that RPC has no 200-record cap.",
+          "Do NOT claim the stock 50/200 is immutable for every provider."
+        ],
+        "notes": "Canonical-page caution: the official getTransactions page calls the cap hardcoded. An attributed quote of that page is not a wrong claim while improvements/stellar-docs/sd-004-rpc-limits-described-as-hardcoded.md stays declined-upstream; grade caps at partial. This does not accept universal immutability. Either the documented stock 50/200 or a dated source-level configurable-default qualifier is correct.",
+        "movedToTruth": [
+          "GT-53 correction history and sd-003/sd-004 notes",
+          "stellar-docs#2567 reference",
+          "XDR type mapping (now owned by q-ti-parse-raw-ledger-data)",
+          "Idempotency-by-hash also-good item"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 519,
+      "wordsAfter": 241
+    },
+    {
+      "id": "q-ti-scaffold-stellar",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Scaffold Stellar",
+        "full-stack dApp scaffolding",
+        "scaffold.yml versus environments.toml"
+      ],
+      "tests": "That Scaffold Stellar is a separate plugin for full-stack projects, distinct from `stellar contract init`, with a v2 scaffold.yml current config.",
+      "questionIssues": [
+        "Real question. The Stellar Docs Scaffold page and the tool's own docs disagree on config format, so the golden must be sourced and dated."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Four tools in one fact."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "process",
+          "issue": "Prescribes recording dated claims; not a fact."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Holds script review, prerequisites and supply chain."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "stellar-scaffold-cli is 0.0.34 on crates.io (2026-10-25)",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "https://crates.io/api/v1/crates/stellar-scaffold-cli",
+              "observedAt": "2026-11-14",
+              "quote": "max_version 0.0.34, updated_at 2026-10-25T16:56:34Z"
+            }
+          ]
+        },
+        {
+          "claim": "Stellar Docs Scaffold page still describes environments.toml while v2 uses scaffold.yml",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "github.com/stellar/stellar-docs docs/tools/scaffold-stellar.mdx",
+              "observedAt": "2026-11-14",
+              "quote": "Explore the `environments.toml` file to customize your development environment(s)"
+            },
+            {
+              "class": "B",
+              "ref": "github.com/stellar-scaffold/cli crates/stellar-scaffold-cli/CHANGELOG.md",
+              "observedAt": "2026-11-14",
+              "quote": "Feat/scaffold config v2 docs (#612)"
+            }
+          ]
+        }
+      ],
+      "duplicates": [],
+      "verdict": "tighten",
+      "reason": "Keep: a distinct SDF-adjacent tool with a documented docs-versus-tool conflict. Cut the version and template-roster trivia to dated answer text only.",
+      "rewrite": {
+        "question": null,
+        "answer": "Scaffold Stellar is a separate plugin: `cargo install --locked stellar-scaffold-cli`, then `stellar scaffold init <project>`. It coordinates Rust contracts, TypeScript clients and bindings, a frontend template and environment configuration. It is not part of the core CLI, and it differs from `stellar contract init`, which creates only a contract workspace. As of 2026-11-14 the crate is 0.0.34. Current projects keep networks, accounts and contracts in a version 2 `scaffold.yml`; `environments.toml` is the legacy format, and the Stellar Docs Scaffold page still describes it. Review generated scripts and community templates before running them; local networks need Docker.",
+        "keyFacts": [
+          "Installs with cargo install --locked stellar-scaffold-cli, then stellar scaffold init.",
+          "Scaffold is a separate full-stack plugin, not core CLI and not `stellar contract init`.",
+          "Current config is a v2 scaffold.yml; environments.toml is legacy (as of 2026-11-14).",
+          "Community templates are third-party code to review and pin; local networks need Docker."
+        ],
+        "avoid": [
+          "Do NOT imply stellar scaffold ships with every core CLI install.",
+          "Do NOT equate `stellar scaffold init` with `stellar contract init`.",
+          "Do NOT present environments.toml as the current format for new projects."
+        ],
+        "notes": "Describing environments.toml for legacy projects is correct. A later crate version, template roster or config format is acceptable if dated.",
+        "movedToTruth": [
+          "GT-53 correction (old 25.2.0 snapshot)",
+          "Version 2 landed in 0.0.28 per changelog",
+          "React and Svelte template roster",
+          "stellar-registry-cli aside"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 409,
+      "wordsAfter": 197
+    },
+    {
+      "id": "q-ti-scout-changelog-contract-check",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Scout changelog",
+        "cached client contract drift"
+      ],
+      "tests": "That scout.getChangelog is the contract-change feed, and that change history is not current health or data.",
+      "questionIssues": [
+        "Pure Scout usage; no Stellar fact is tested."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "getChangelog is a latest-first contract-change feed; use getStatus for health",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "catalog/manifest.json#scout.getChangelog",
+              "observedAt": "2026-11-14",
+              "quote": "Not for: the actual ecosystem data → use the relevant search endpoint; current health / source freshness / version → use scout.getStatus."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-gap-scout-changelog-envelope",
+          "survivor": "q-ti-explain-repo-payload-status",
+          "why": "Same operation (audit-protocol lane); the shared data.ok behavior is covered by the one tool-lane case."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "The manifest states exactly what the case rewards, test/catalog.test.ts lists the operation, and the nested data.ok behavior it shares with explainRepo is kept in the single tool-lane case. It adds no visibility.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 103,
+      "wordsAfter": 0
+    }
+  ],
+  "summary": {
+    "keep": 0,
+    "tighten": 27,
+    "merge": 2,
+    "retire": 8,
+    "move-tool-lane": 2,
+    "factsChanged": 0
+  },
+  "crossCategoryDuplicates": [
+    "LumenLoop vocabulary lookups: q-gap-lumen-content-tag-vocabulary, q-gap-lumen-project-tag-vocabulary here; q-ti-vocab-content-tags-live, q-ti-vocab-project-tags-live, q-ti-vocab-regions-live, q-ti-vocab-project-categories-live (audit-tooling-b); q-defi-lumenloop-categories-vocab, q-builder-lumenloop-regions-vocab elsewhere. Seven copies of 'which operation returns which vocabulary'.",
+    "Soft-empty absence discipline: q-gap-lumen-exact-document-empty, q-gap-rpc-horizon-unindexed-reference here; q-edge-doc-page-sections-soft-empty, q-edge-partner-detail-soft-empty (edge-behavior); frozen live q-live-ll-guessed-slug-soft-empty.",
+    "Soroban dry-run: q-infra-simulate-transaction-howto and the simulateTransaction clause of q-infra-rpc-methods-list repeat q-soroban-simulate-resource-fee.",
+    "Passkey smart accounts: q-infra-secp256r1-passkeys merges into q-passkey-smart-account-architecture; q-passkey-platform-constraints touches q-passkey-wallet-recovery and q-tool-passkey-wallet-recovery.",
+    "Freighter→Varial rename and wallet API: q-ti-connect-wallet-button-code, q-ti-freighter-localhost-not-detected, q-ti-friendbot-ratelimit-alternatives, q-ti-bindings-to-nextjs-integration all carry the same RENAME block; q-eco-freighter-wallet and q-tool-freighter-wallet own it.",
+    "Channel accounts and fee bumps: q-ti-channel-accounts-throughput, q-ti-java-sdk-wallet-feebump versus q-pc-fee-bump-channel-accounts-feepool.",
+    "C-address handling: q-ti-custodial-account-generation-c-address versus q-pc-address-types-strkey and q-sor-contract-trustlines-c-address.",
+    "Enumeration without a single call: q-ti-enumerate-holders-airdrop and q-ti-enumerate-all-contracts share one pattern (no list-all operation; define coverage; use Hubble or ingestion).",
+    "RPC XDR decoding: q-ti-rpc-gettransactions-pagination-xdr and q-ti-parse-raw-ledger-data share the getTransactions XDR types; kept in parse-raw only.",
+    "Scout operation mechanics: q-gap-explainrepo-payload-ok (audit-soroban-a), q-gap-scout-changelog-envelope (audit-protocol), q-ti-explain-repo-payload-status, q-ti-scout-changelog-contract-check test the same data.ok envelope behavior; one tool-lane case suffices."
+  ],
+  "missing": [
+    "SEP-41 token interface and Stellar Asset Contract mechanics from the tooling side (token CLI commands `stellar token` v28 to v30 are in no case except a balance mention).",
+    "Stellar Lab: what it can and cannot do (q-tool-lab-what-is exists in audit-tooling-b; none here).",
+    "Galexie and the Ingest SDK as an indexer-building path (only mentioned inside enumerate and parse cases).",
+    "Wallets Kit and wallet-connection protocols beyond Freighter (only one connect-wallet case).",
+    "Transaction submission strategy for Soroban (sendTransaction status handling, restore and bump footprint flows) beyond simulate.",
+    "Operational monitoring and status sources (status.stellar.org, network upgrade schedule) as a Stellar-truth topic."
+  ]
+}

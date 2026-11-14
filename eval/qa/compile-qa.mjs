@@ -14,6 +14,7 @@ import {
   QA_DIR,
   QA_SERVICES,
   SAMPLE_PATH,
+  TOOL_CASES_PATH,
   stratifiedSample
 } from "./lib.mjs";
 import {
@@ -45,19 +46,6 @@ const CORROBORATION_VERDICTS = new Set([
 ]);
 const DISPOSITIONS = new Set(["carry", "merge", "redefine", "retire"]);
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
-const MIGRATION_KEYFACT_EXCEPTIONS = new Map([
-  ["q-ti-cli-rust-windows-troubleshooting", 6],
-  ["q-ti-run-tune-own-horizon", 6],
-  ["q-ti-secret-key-custody-backend", 6],
-  ["q-ti-secret-key-vs-mnemonic-derivation", 6],
-  ["q-ti-self-host-core-rpc-full-history", 6],
-  ["q-ti-self-host-retention-backfill", 6],
-  ["q-ti-stellar-lab-usage-and-new-ui", 6],
-  ["q-ti-testnet-mainnet-migration", 6],
-  ["q-ti-xdr-decode-in-code", 6],
-  ["q-tool-cctp-stellar-integration", 7]
-]);
-
 function sha256(value) {
   return createHash("sha256").update(value).digest("hex");
 }
@@ -100,7 +88,7 @@ function validateEvidence(file, evidence, field) {
   }
 }
 
-function validateCase(file, kase, { allowedLifecycleStates = COMPILED_LIFECYCLE_STATES } = {}) {
+export function validateCase(file, kase, { allowedLifecycleStates = COMPILED_LIFECYCLE_STATES } = {}) {
   if (!kase || typeof kase !== "object" || Array.isArray(kase)) fail(file, "case must be an object");
   const [strkeyFinding] = strkeyFindings(kase);
   if (strkeyFinding) {
@@ -115,14 +103,7 @@ function validateCase(file, kase, { allowedLifecycleStates = COMPILED_LIFECYCLE_
   if (!Array.isArray(kase.surface) || !kase.surface.every(nonEmptyString)) fail(file, "surface must be a string array");
   if (kase.tags?.service !== "none" && kase.surface.length === 0) fail(file, "surface is required unless service is none");
   if (!nonEmptyString(kase.golden?.answer)) fail(file, "golden.answer is required");
-  const expectedLegacyCount = MIGRATION_KEYFACT_EXCEPTIONS.get(kase.id);
-  // Ten mechanically carried cases already have 6-7 judge-visible facts. The
-  // migration proof forbids changing them in C5; every other case is closed at
-  // five, and even these ids may not grow beyond their pinned migration count.
-  assertStringArray(file, kase.golden?.keyFacts, "golden.keyFacts", { min: 1, max: expectedLegacyCount ?? 5 });
-  if (expectedLegacyCount && kase.golden.keyFacts.length !== expectedLegacyCount) {
-    fail(file, `migration exception requires exactly ${expectedLegacyCount} golden.keyFacts until P4 consolidation`);
-  }
+  assertStringArray(file, kase.golden?.keyFacts, "golden.keyFacts", { min: 1, max: 5 });
   assertStringArray(file, kase.golden?.avoid, "golden.avoid");
   if (kase.golden.notes !== undefined && typeof kase.golden.notes !== "string") fail(file, "golden.notes must be a string");
   if (!QA_SERVICES.has(kase.tags?.service)) fail(file, `unknown service ${kase.tags?.service}`);
@@ -139,6 +120,10 @@ function validateCase(file, kase, { allowedLifecycleStates = COMPILED_LIFECYCLE_
     fail(file, "scheduled cases require truth.reverifyBy as YYYY-MM-DD");
   }
   if (kase.truth.reverifyBy !== undefined && !DATE_RE.test(kase.truth.reverifyBy)) fail(file, "truth.reverifyBy must be YYYY-MM-DD");
+  for (const field of ["leaf", "secondaryLeaf", "notes"]) {
+    if (kase.truth[field] !== undefined && !nonEmptyString(kase.truth[field])) fail(file, `truth.${field} must be a non-empty string`);
+  }
+  if (kase.truth.lane !== undefined && kase.truth.lane !== "tool") fail(file, "truth.lane must be tool when present");
   validateEvidence(file, kase.truth?.sources, "truth.sources");
   if (!nonEmptyString(kase.truth?.origin)) fail(file, "truth.origin is required");
   if (!kase.truth?.verified || !DATE_RE.test(kase.truth.verified.date ?? "") || !nonEmptyString(kase.truth.verified.by)) {
@@ -258,7 +243,7 @@ function validateRegister(register) {
   }
 }
 
-function validateLedger(ledger, cases) {
+function validateLedger(ledger, cases, retiredIds) {
   const rows = Array.isArray(ledger) ? ledger : ledger?.rows ?? ledger?.entries;
   if (!Array.isArray(rows)) throw new Error("migration-ledger.json: expected rows[]");
   const byId = new Map(cases.map((kase) => [kase.id, kase]));
@@ -276,6 +261,8 @@ function validateLedger(ledger, cases) {
     }
     for (const id of row.destination ?? []) {
       const destination = byId.get(id);
+      // A retired destination is history; its tombstone carries the forward pointer.
+      if (!destination && retiredIds.has(id)) continue;
       if (!destination) throw new Error(`migration-ledger.json: missing destination ${id}`);
       if (["carry", "redefine"].includes(row.disposition) && !destination.truth.origin.includes(row.sourceId)) {
         throw new Error(`migration-ledger.json: ${id} truth.origin does not name ${row.sourceId}`);
@@ -313,21 +300,24 @@ function wrapper(cases, corpusContentSha256, comment) {
 }
 
 function main() {
-  if (process.argv.length > 2) throw new Error("compile-qa.mjs takes no arguments; it always emits cases.json, sample.json, and lifecycle-registry.json");
+  if (process.argv.length > 2) throw new Error("compile-qa.mjs takes no arguments; it always emits cases.json, sample.json, tool-cases.json, and lifecycle-registry.json");
   const seen = new Set();
   const batteryRecords = recordsFrom(CORPUS_DIR, { allowedLifecycleStates: COMPILED_LIFECYCLE_STATES });
   const proposedRecords = recordsFrom(PROPOSED_DIR, { allowedLifecycleStates: new Set(["proposed"]) });
   const tombstoneRecords = tombstoneRecordsFrom(RETIRED_DIR);
-  const cases = batteryRecords.map(({ file, value: kase }) => {
+  const compiled = batteryRecords.map(({ file, value: kase }) => {
     if (seen.has(kase.id)) fail(file, `duplicate id ${kase.id}`);
     seen.add(kase.id);
     return kase;
   }).sort((a, b) => a.id.localeCompare(b.id));
+  // Tool-lane cases grade Raven mechanics; they keep their lifecycle but leave the headline file.
+  const cases = compiled.filter((kase) => kase.truth.lane !== "tool");
+  const toolCases = compiled.filter((kase) => kase.truth.lane === "tool");
   if (!existsSync(LEDGER_PATH) || !existsSync(REGISTER_PATH)) throw new Error("migration ledger and consistency register are required");
-  validateLedger(json(LEDGER_PATH), cases);
+  validateLedger(json(LEDGER_PATH), compiled, new Set(tombstoneRecords.map(({ value }) => value.id)));
   validateRegister(json(REGISTER_PATH));
   if (!existsSync(LIFECYCLE_POLICY_PATH)) throw new Error("corpus/lifecycle-policy.json is required");
-  const policyResult = lifecyclePolicyProblems(cases, json(LIFECYCLE_POLICY_PATH), undefined, {
+  const policyResult = lifecyclePolicyProblems(compiled, json(LIFECYCLE_POLICY_PATH), undefined, {
     enforceTriggers: false
   });
   if (policyResult.problems.length) throw new Error(`corpus/lifecycle-policy.json: ${policyResult.problems[0]}`);
@@ -344,9 +334,11 @@ function main() {
   const sample = stratifiedSample(cases, SAMPLE_SIZE);
   writeFileAtomic(CASES_PATH, `${JSON.stringify(wrapper(cases, corpusContentSha256, "Generated owned QA battery. Regenerate with npm run eval:qa:compile."), null, 2)}\n`);
   writeFileAtomic(SAMPLE_PATH, `${JSON.stringify(wrapper(sample, corpusContentSha256, `Deterministic stratified sample (N=${SAMPLE_SIZE}, by service) of the owned QA battery.`), null, 2)}\n`);
+  writeFileAtomic(TOOL_CASES_PATH, `${JSON.stringify(wrapper(toolCases, sha256(JSON.stringify(toolCases)), "Generated tool-contract lane: battery cases with truth.lane tool. Regenerate with npm run eval:qa:compile."), null, 2)}\n`);
   writeFileAtomic(LIFECYCLE_REGISTRY_PATH, `${JSON.stringify(lifecycleRegistry, null, 2)}\n`);
   console.log(`wrote ${CASES_PATH} (${cases.length} cases; sha256 ${corpusContentSha256})`);
   console.log(`wrote ${SAMPLE_PATH} (${sample.length} cases)`);
+  console.log(`wrote ${TOOL_CASES_PATH} (${toolCases.length} cases)`);
   console.log(`wrote ${LIFECYCLE_REGISTRY_PATH} (${lifecycleRegistry.reservedIds.length} reserved ids)`);
 }
 

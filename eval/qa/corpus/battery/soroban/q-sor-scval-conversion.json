@@ -1,23 +1,24 @@
 {
   "id": "q-sor-scval-conversion",
-  "question": "How do I convert between native JS/Rust values and Soroban ScVal — i128/u64, BytesN<32>, contract-ID hex vs StrKey C-addresses, enum/union UDTs, stroops vs display amounts — in the current SDK?",
+  "question": "How do I convert between JS or Rust values and Soroban ScVal in the current SDK (i128/u64, BytesN<32>, C-address StrKey versus raw contract-ID bytes, enum UDTs, token base units versus display amounts), and what happens to typed clients after a contract upgrade?",
   "surface": [
     "stellarDocs.search_protocol_concepts_docs",
     "stellarDocs.search_sdk_cli_tools_docs",
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "Prefer generated clients or `contract.Spec` conversion; Rust uses `IntoVal`/`FromVal`. Preserve wide integers as `bigint` or decimal strings—an unsafe JS Number cannot be repaired after rounding. In JS SDK 16 and 17 (npm latest 17.4.0 as of 2026-11-02), `new Contract(C...).contractId()` returns the C StrKey; use `StrKey.decodeContract`/`encodeContract` for the 32 raw bytes. A `BytesN<32>` is 32 raw bytes, not ASCII C-address/hex text. Generic `nativeToScVal(Buffer)` creates `scvBytes` but cannot enforce the contract's declared BytesN length; spec-driven conversion/generated bindings do. UDT enum/union objects must match the embedded spec's tag/arm shape, not EVM ABI tuples. Token amounts are integer smallest/base units and `decimals()` controls display; “stroop” is specifically the conventional XLM/classic 10^-7 unit.",
+    "answer": "Prefer generated clients or `contract.Spec`; Rust uses `IntoVal` and `FromVal`. Keep wide integers as `bigint` or decimal strings; an unsafe JS Number cannot be repaired. A `BytesN<32>` is 32 raw bytes, not C-address or hex text; `StrKey.decodeContract` and `encodeContract` convert a C-address to and from them. Enum and union UDTs follow the embedded contract spec, not EVM ABI tuples. Token amounts are integer base units scaled by `decimals()`. After an upgrade, regenerate bindings and recreate spec-aware clients; raw `new Contract(id).call(method, ...scVals)` is spec-free.",
     "keyFacts": [
-      "Uses spec-driven conversion and exact integer/StrKey/raw-byte boundaries.",
-      "Generic `scvBytes` and `BytesN` validation are different conversion boundaries.",
-      "UDT shape follows the embedded contract spec.",
-      "Base-unit values require token-specific display scaling."
+      "Wide integers stay `bigint` or decimal strings; unsafe JS Numbers lose precision.",
+      "`BytesN<32>` is 32 raw bytes, and `StrKey` converts to and from the C-address.",
+      "UDT enum and union shapes follow the embedded contract spec.",
+      "After an upgrade, regenerate spec-aware clients; raw `Contract.call` is spec-free."
     ],
     "avoid": [
-      "Do NOT pass unsafe JS numbers, ASCII/hex in place of raw bytes, guess union shapes, or call every token base unit a stroop."
+      "Do NOT pass unsafe JS Numbers, ASCII or hex text where raw bytes are required, or guessed union shapes.",
+      "Do NOT claim that every token base unit is a stroop."
     ],
-    "notes": "Phase 3 should verify exact current JS helper names against the installed/current @stellar/stellar-sdk version because this repo does not vendor node_modules.\nAlso good if the answer: Mentions `scValToNative`/humanizing helpers for decoding results and diagnostic/event ScVals.\nGolden cites: Official Stellar XDR/SCVal or transaction docs. | Official contract specs/client docs or JS SDK docs/source for helper behavior.\nAs of 2026-11-02, npm latest is 17.4.0 and lts-16 is 16.4.1; these helper names hold in 17.4.0, but exact helper names are release-sensitive."
+    "notes": "Helper names are release-sensitive (JS SDK 17.4.0 is latest as of 2026-11-14); `scValToNative` for decoding is an acceptable addition."
   },
   "tags": {
     "category": "soroban",
@@ -31,7 +32,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-05-06",
     "sources": [
       {
@@ -164,37 +165,44 @@
             "note": "Releases Latest: 17.4.0 last week"
           }
         ]
+      },
+      {
+        "claim": "JS SDK 16 and 17 expose StrKey.decodeContract / encodeContract; 17.4.0 is npm latest, lts-16 is 16.4.1",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/js-stellar-sdk/blob/v17.4.0/src/base/strkey.ts",
+            "observedAt": "2026-11-14",
+            "note": "static encodeContract(data: Uint8Array): string; static decodeContract(address: string): Uint8Array"
+          },
+          {
+            "class": "D",
+            "ref": "npm view @stellar/stellar-sdk dist-tags",
+            "observedAt": "2026-11-14",
+            "note": "latest 17.4.0; lts-16 16.4.1"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-03)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-soroban-a, verify-audit-soroban-a; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Gospel change 2026-11-02 (verifier accepted): golden.answer \"In current JS SDK 16, `new Contract(C...).contractId()` returns the C StrKey;\" -> \"In JS SDK 16 and 17 (npm latest 17.4.0 as of 2026-11-02), `new Contract(C...).contractId()` returns the C StrKey;\"; golden.notes \"GT-43 current SDK snapshot is 16.0.1; exact helper names are release-sensitive.\" -> \"As of 2026-11-02, npm latest is 17.4.0 and lts-16 is 16.4.1; these helper names hold in 17.4.0, but exact helper names are release-sensitive.\"",
-        "Verifier B 2026-11-02: npm registry: npm view @stellar/stellar-sdk dist-tags — \"\"latest\": \"17.4.0\", \"lts-16\": \"16.4.1\" (17.4.0 published 2026-10-25T11:30:46Z; 16.4.1 published 2026-10-22T19:33:39Z)\"",
-        "Verifier B 2026-11-02: @stellar/stellar-sdk@17.4.0 tarball lib/esm/base/contract.d.ts and strkey.d.ts — \"contractId(): string; — 'Returns Stellar contract ID as a strkey'; static encodeContract(data: Uint8Array): string; static decodeContract(address: string): Uint8Array;\"",
-        "Verifier B 2026-11-02: https://github.com/stellar/js-stellar-sdk/releases/latest (gh api) — \"v17.4.0\"",
-        "Verifier F 2026-11-02: local node probe against s16=@stellar/stellar-sdk@16.4.1 and s17=@stellar/stellar-sdk@17.4.0 — \"s16: contractId()===C-id true, decodeContract length 32, encodeContract round-trip true, nativeToScVal(Buffer) scvBytes, i128 bigint round-trip true, contract.Spec function; s17: same results (decodeContract returns Uint8Array, nativeToScVal(Buffer) type scvBytes)\"",
-        "Verifier D 2026-11-02: Perplexity search '@stellar/stellar-sdk 17.4.0 release' -> https://github.com/stellar/js-stellar-sdk/releases/tag/v17.4.0 — \"v17.4.0 Latest ... released this 25 Oct\"",
-        "Verifier F 2026-11-02: local node probe, @stellar/stellar-sdk@17.4.0 — \"Contract.contractId, StrKey.decodeContract/encodeContract, nativeToScVal, scValToNative, contract.Spec all present and behave as the golden states\"",
-        "Verifier D 2026-11-02: Perplexity search -> https://app.unpkg.com/@stellar/stellar-sdk — \"Releases Latest: 17.4.0 last week\"",
-        "Proposer C 2026-11-02: npm view @stellar/stellar-sdk dist-tags — \"\"latest\": \"17.4.0\", \"lts-16\": \"16.4.1\"; 17.0.0 published 2026-08-20T23:33:42Z\"",
-        "Proposer B 2026-11-02: https://github.com/stellar/js-stellar-sdk/releases — \"v17.4.0 2026-10-25 (latest); v16.4.1 2026-10-22\"",
-        "Proposer A 2026-11-02: https://developers.stellar.org/docs/networks/software-versions — \"Protocol 29 (Mainnet, October 1, 2026) ... | Stellar JS Stellar SDK | `v17.2.1` |\"",
-        "Proposer D 2026-11-02: https://hysenlabs.com/projects/stellar-js-stellar-sdk — \"Use either the latest version, v17, or v16 ... Version 16 remains supported through March 2027\"",
-        "Proposer claim verdict contradicted (golden.answer): 'current JS SDK 16' is the current major Note: Only the version label drifted; the helper behavior is unchanged in 17.4.0.",
-        "Proposer F 2026-11-02: node script on @stellar/stellar-sdk 17.4.0 — \"contractId 'CAFJZQW...N34DLN'; decodeContract -> Uint8Array len 32; encodeContract roundtrip true; nativeToScVal(Uint8Array) and (Buffer) -> scvBytes; 2n**100n type i128 -> scvI128; '18446744073709551615' type u64 -> scvU64\"",
-        "Proposer B 2026-11-02: https://github.com/stellar/js-stellar-sdk/blob/main/CHANGELOG.md (v17.0.0) — \"Public APIs use `Uint8Array` instead of Node's `Buffer` ... `StrKey.decode*`\"",
-        "Proposer claim verdict confirmed (golden.answer): Contract.contractId() returns C StrKey; StrKey.decodeContract/encodeContract give 32 raw bytes; nativeToScVal(bytes) -> scvBytes; wide ints via bigint/string",
-        "Proposer F 2026-11-02: @stellar/stellar-sdk 17.4.0 — \"nativeToScVal(new Uint8Array(5)) -> scvBytes with no length check\"",
-        "Proposer A 2026-11-02: https://developers.stellar.org/docs/tools/cli/stellar-cli — \"1 stroop = 0.0000001 xlm.\"",
-        "Proposer claim verdict confirmed (golden.answer): BytesN length is enforced by spec-driven conversion, not generic nativeToScVal; UDTs follow embedded spec; base units scale by decimals(); stroop is XLM 10^-7",
-        "Sibling sweep 2026-11-02: checked q-sor-deploy-invoke-from-js-sdk, q-tool-js-sdk-package, q-ti-bindings-to-nextjs-integration; no contradiction found. Applier grep 2026-11-02 for \"16.0.1\" and \"JS SDK 16\" over the battery: only q-sor-deploy-invoke-from-js-sdk carries a dated \"GT-41 API snapshot 2026-07-10 used SDK 16.0.1\" note, which is an as-of record, not a contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-a.json#q-sor-scval-conversion",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-a.json#q-sor-scval-conversion",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-sor-scval-conversion",
+        "Live B 2026-11-14: https://github.com/stellar/js-stellar-sdk/blob/v17.4.0/src/base/strkey.ts -- 'static encodeContract(data: Uint8Array): string; static decodeContract(address: string): Uint8Array'",
+        "Live D 2026-11-14: npm view @stellar/stellar-sdk dist-tags -- 'latest 17.4.0; lts-16 16.4.1'",
+        "Live D 2026-11-14: npm view @stellar/stellar-sdk version time.modified -- 'version = '17.4.0'; time.modified = '2026-10-25''"
       ],
       "rootCause": [
-        "freshness-drift"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-sor-scval-conversion"
+    "origin": "raven-next q-sor-scval-conversion",
+    "notes": "Phase 3 should verify exact current JS helper names against the installed/current @stellar/stellar-sdk version because this repo does not vendor node_modules.\nAlso good if the answer: Mentions `scValToNative`/humanizing helpers for decoding results and diagnostic/event ScVals.\nGolden cites: Official Stellar XDR/SCVal or transaction docs. | Official contract specs/client docs or JS SDK docs/source for helper behavior.\nAs of 2026-11-02, npm latest is 17.4.0 and lts-16 is 16.4.1; these helper names hold in 17.4.0, but exact helper names are release-sensitive.",
+    "leaf": "soroban.sdk-dialect-types",
+    "secondaryLeaf": "tooling.js-sdk"
   }
 }

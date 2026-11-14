@@ -1,0 +1,21 @@
+{
+  "id": "q-rwa-stellar-vs-erc20-regulated",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-compliance (golden coverage audit)",
+    "reviewer": "verify-audit-compliance (golden coverage audit)",
+    "reason": "Built from facts the flags, SEP-8 and T-REX cases test; the chain comparison goes to the ecosystem.chain-comparisons slot.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-compliance.json#q-rwa-stellar-vs-erc20-regulated",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-compliance.json#q-rwa-stellar-vs-erc20-regulated",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-rwa-stellar-vs-erc20-regulated"
+    ],
+    "lastCaseContentSha256": "03689ed422c7459f2ed72e833829347d41f987d4b217d4639c935b7c32e694e1",
+    "replacementIds": []
+  }
+}

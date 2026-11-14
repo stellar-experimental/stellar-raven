@@ -3,17 +3,18 @@
   "question": "My Stellar wallet was drained. Can Stellar get my XLM back?",
   "surface": [],
   "golden": {
-    "answer": "A completed Stellar payment is not something SDF can simply reverse or retrieve from another person's account. XLM has no issuer clawback; for a non-XLM token, only its verified issuer may have a narrow recovery or reissue path if clawback was enabled and its policy permits it. If a sufficient uncompromised signer still controls the account, replace or remove the compromised signer and move what remains—this does not recover assets already transferred. Act quickly: stop using the compromised device, preserve transaction hashes and relevant screenshots, contact the wallet/exchange only through its official support channel, and report theft to the appropriate local authorities. If you still control any remaining funds or accounts, move them using a clean device and newly secured credentials. Do not pay a 'recovery agent' or share a secret key—those requests are a common follow-on scam.",
+    "answer": "Stellar and SDF cannot reverse a completed transfer or freeze a thief's account. XLM has no issuer clawback; only a verified issuer with clawback enabled may recover an issued asset. If an uncompromised signer still controls the account, replace the compromised signers and move what remains. Preserve transaction hashes, contact the wallet or exchange through official support, and report the theft. Never pay or share keys with a 'recovery agent'.",
     "keyFacts": [
-      "States the network/SDF cannot simply reverse a completed theft.",
-      "Gives safe evidence-preservation and account-security steps."
+      "Stellar and SDF cannot reverse a completed theft or freeze the thief's account.",
+      "XLM has no issuer clawback; only a clawback-enabled issuer may recover an issued asset.",
+      "Safe steps: secure what remains, preserve hashes, use official support, report the theft.",
+      "Paying or sharing keys with a 'recovery agent' is a scam."
     ],
     "avoid": [
       "Do NOT promise recovery or say SDF can freeze the thief's account.",
-      "Do NOT advise paying or sharing credentials with a recovery agent.",
-      "Do NOT say every stolen issued token is categorically unrecoverable or describe issuer clawback as generic transaction reversal."
+      "Do NOT say every stolen issued token is unrecoverable, or describe clawback as generic reversal."
     ],
-    "notes": "Edge refusal/safety case; the negative claim needs an independent blind re-derivation."
+    "notes": "Acknowledge the loss; do not claim to inspect, trace, or reverse anything."
   },
   "tags": {
     "category": "edge-behavior",
@@ -28,7 +29,7 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-02-11",
     "sources": [
       {
@@ -80,21 +81,42 @@
             "observedAt": "2026-07-11"
           }
         ]
+      },
+      {
+        "claim": "XLM has no issuer clawback; clawback applies only to issued assets with the issuer's flag set",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/transactions/clawbacks",
+            "observedAt": "2026-11-14",
+            "note": "The issuer sets up their account to enable clawbacks using the AUTH_CLAWBACK_ENABLED flag ... for any assets issued by that account"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md",
+            "observedAt": "2026-11-14",
+            "note": "Invalid clawback cases list: `asset` is native. / `asset` is `ASSET_TYPE_NATIVE`."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch edge-behavior-04)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-edge, verify-audit-edge; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers — \"SDF does not have the capability to freeze, access, or return tokens\" / \"DOES NOT have the capability to freeze or return XLM held in a Stellar account\" (observedAt 2026-11-02). Page still live 2026-11-02.",
-        "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md — \"The `ClawbackOp` and `ClawbackClaimableBalanceOp` operations only apply to assets issued by the source account.\"; ClawbackOp is malformed when `asset` is native (observedAt 2026-11-02).",
-        "https://developers.stellar.org/docs/build/apps/application-design-considerations — \"If they lose their secret key, they will also lose access to their account.\" (observedAt 2026-11-02).",
-        "https://www.finra.org/investors/investing/investment-products/crypto-assets/risks — \"Crypto assets are risky and often extremely volatile.\" / \"the risk of losing all of your investment is significant\" (observedAt 2026-11-02).",
-        "https://www.fbi.gov/how-we-can-help-you/victim-services/national-crimes-and-victim-resources/cryptocurrency-investment-fraud — \"Almost all victims, after they lost their money, are contacted by scammers conducting recovery fraud schemes.\" (observedAt 2026-11-02).",
-        "Verification-only event: no proposal; gospel unchanged; truth.reverifyBy 2027-02-11 already inside the 2027-02 window, kept.",
-        "Sibling sweep 2026-11-02: q-n3-wallet-hacked-support-redirect, q-comp-clawback-holder-risk, q-comp-clawback-cap0035, q-raph-missing-exchange-memo, q-n3-missing-funds-account-support; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-edge.json#q-raph-stolen-wallet-recovery",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-edge.json#q-raph-stolen-wallet-recovery",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-raph-stolen-wallet-recovery",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/build/guides/transactions/clawbacks -- 'The issuer sets up their account to enable clawbacks using the AUTH_CLAWBACK_ENABLED flag ... for any assets issued by that account'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md -- 'Invalid clawback cases list: `asset` is native. / `asset` is `ASSET_TYPE_NATIVE`.'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raph wallet-stolen-funds-recovery"
+    "origin": "raph wallet-stolen-funds-recovery",
+    "notes": "Edge refusal/safety case; the negative claim needs an independent blind re-derivation.",
+    "leaf": "wallets.scams-phishing"
   }
 }

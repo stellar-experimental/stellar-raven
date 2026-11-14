@@ -1,0 +1,23 @@
+{
+  "id": "q-defi-tooling-whitespace-live",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-defi (golden coverage audit)",
+    "reviewer": "verify-defi (golden coverage audit)",
+    "reason": "Merged into q-defi-cluster-rollup-live: reading the Tooling category row against overlapping clusters is the population-id rule graded by the tool-lane case q-defi-cluster-rollup-live.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-defi-tooling-whitespace-live",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-defi-tooling-whitespace-live",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-defi-tooling-whitespace-live"
+    ],
+    "lastCaseContentSha256": "43c126bb83f2a17d5fe2a0f05b6bc504960d7981b71930e1e916cb7cbef9468c",
+    "replacementIds": [
+      "q-defi-cluster-rollup-live"
+    ]
+  }
+}

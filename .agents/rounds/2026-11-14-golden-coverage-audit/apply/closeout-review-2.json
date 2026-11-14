@@ -1,0 +1,28 @@
+{
+  "numericInvariants": [
+    {
+      "matchLabel": "YieldBlox borrowed XLM USDC totals",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Closeout re-check 2026-11-14 after a wording fix (instrument lane, .agents/rounds/2026-11-14-golden-coverage-audit/apply/CLOSEOUT.md): q-comp-yieldblox-oracle-incident reworded its staleness key fact to one predicate ('The manipulated price was fresh, so oracle staleness was not the cause.'). Borrow figures unchanged; matches the authoritative value.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    }
+  ],
+  "dateContingentTraps": [
+    {
+      "matchTriggerDateEvent": "2027-03-02 YieldBlox/Reflector remediation recheck or publication of a final post-mortem/reimbursement decision",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Closeout re-check 2026-11-14 after a wording fix (instrument lane, .agents/rounds/2026-11-14-golden-coverage-audit/apply/CLOSEOUT.md): Same one-predicate rewording of the staleness key fact; reverifyBy and the remediation facts are unchanged. The disposition holds.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    }
+  ]
+}

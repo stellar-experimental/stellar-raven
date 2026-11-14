@@ -1,0 +1,21 @@
+{
+  "id": "q-comp-security-disclosure-programs",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-compliance (golden coverage audit)",
+    "reviewer": "verify-audit-compliance (golden coverage audit)",
+    "reason": "Duplicates q-scf-sdf-bug-bounty for the SDF HackerOne bounty and q-scf-audit-bank for the Audit Bank.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-compliance.json#q-comp-security-disclosure-programs",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-compliance.json#q-comp-security-disclosure-programs",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-comp-security-disclosure-programs"
+    ],
+    "lastCaseContentSha256": "57704c99b9d553d421f1bb497acdd39d7d664e68c1ac7bad303342d59b9ca514",
+    "replacementIds": []
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "id": "q-raph-claimable-balance-safety",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-hist-retail (golden coverage audit)",
+    "reviewer": "verify-hist-retail (golden coverage audit)",
+    "reason": "Retail restatement; after the absorb on q-aas-claim-received-claimable-balances the trustline fact lives on the survivor, and the unlock-payment caution is q-raph-unsolicited-airdrop kf1.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-raph-claimable-balance-safety",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-raph-claimable-balance-safety",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-raph-claimable-balance-safety"
+    ],
+    "lastCaseContentSha256": "97ff4705cb9919dbfdc8901aa7818ee8409c9f0c92fdb342eb47122e42c25290",
+    "replacementIds": []
+  }
+}

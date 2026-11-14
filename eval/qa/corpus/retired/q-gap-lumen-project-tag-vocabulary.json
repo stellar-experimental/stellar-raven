@@ -1,0 +1,21 @@
+{
+  "id": "q-gap-lumen-project-tag-vocabulary",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-tooling-a (golden coverage audit)",
+    "reviewer": "verify-audit-tooling-a (golden coverage audit)",
+    "reason": "Mirror of the content-tag case; q-ti-vocab-project-tags-live (tooling-b) is the same question and q-live-ll-regions-vocab covers the vocabulary behavior.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-a.json#q-gap-lumen-project-tag-vocabulary",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-a.json#q-gap-lumen-project-tag-vocabulary",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-gap-lumen-project-tag-vocabulary"
+    ],
+    "lastCaseContentSha256": "b7a518c26e3394c0d904464115f9dbd2d35eda0cf603f163d22c4c0249d4429d",
+    "replacementIds": []
+  }
+}

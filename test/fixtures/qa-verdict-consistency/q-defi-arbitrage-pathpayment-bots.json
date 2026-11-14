@@ -1,0 +1,20 @@
+{
+  "$comment": "Frozen golden copied from q-defi-arbitrage-pathpayment-bots at the 2026-11-14 coverage audit base; a verdict-consistency fixture, not a live case.",
+  "golden": {
+    "answer": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-11, the verified sources supported this observed answer:\n\nStellar supports path payments through `PathPaymentStrictSend` and `PathPaymentStrictReceive`. Path payments can traverse orderbook and pool liquidity. The protocol provides execution mechanics and a 0.3% AMM fee to liquidity providers, but it does not guarantee arbitrage or market-making profit. Profitability depends on live prices, liquidity, slippage, transaction fees, latency, competition, and capital. A strict-send quote fixes the source amount and estimates destination output, then the submitted transaction should protect the user with `destination_min`; a strict-receive quote fixes destination amount and protects the sender with `send_max`. If liquidity moves before inclusion, the operation can fail with path-payment result codes such as `UNDER_DESTMIN`, `OVER_SENDMAX`, or no usable path / too-few-offers. Sources: Stellar path-payment guide and Horizon operation-specific result-code docs.\n\nFor a small-capital bot, the defensible answer is \"possible to build, not reliably profitable.\" Expected costs and risks include spreads, slippage, base fees and surge pricing, failed transactions, stale quotes, minimum reserves/trustlines, path disappearance, competition, latency, inventory imbalance, and thin pools. Backtesting and testnet/paper trading are required before risking funds; Raven should not recommend a strategy as a guaranteed return.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "keyFacts": [
+      "Specific sourced observations visibly date changing roster/status/version/measurement.",
+      "Stellar supports path payments/pathfinding via strict-send/strict-receive.",
+      "Bot profitability depends on liquidity, spreads, fees, slippage, latency.",
+      "Failed transactions, competition, capital affect profit, especially for small accounts.",
+      "Path query/simulation estimates destination amounts under destination-min/send-max limits."
+    ],
+    "avoid": [
+      "Do NOT promise profit or imply small-capital arbitrage is reliably profitable.",
+      "Do NOT provide financial advice as a guaranteed strategy.",
+      "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts.",
+      "Do NOT claim unsupported memory is a source-supported current observation."
+    ],
+    "notes": "Profitability is intentionally not gated on a current numeric estimate; Phase 3 should attack any answer that turns pathfinding mechanics into financial advice.\nAlso good if the answer: Mentions circular/same-asset arbitrage and batching should be tested carefully because paths can disappear or execute differently by submission time. | Mentions result-code traps such as under-destination-min or no-path when quoting and submitting.\nGrade a no-guarantee statement, not an absence-of-incentives claim. CAP-0038 includes liquidity-provider fees and expressly discusses profit-driven liquidity allocation.\nGolden cites: Stellar docs for path payments/pathfinding and dated market/liquidity sources for current profitability claims."
+  }
+}

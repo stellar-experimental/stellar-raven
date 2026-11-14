@@ -1,0 +1,21 @@
+{
+  "id": "q-zk-verification-resource-budget",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-soroban-b (golden coverage audit)",
+    "reviewer": "verify-audit-soroban-b (golden coverage audit)",
+    "reason": "Three of four key facts duplicate the simulate and resource-limits cases; the remaining 'prefer native host functions over pure-Wasm curve arithmetic' is already implied by the host-function cases. No unique measurement remains; a ZK framing alone does not make a new fact.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-b.json#q-zk-verification-resource-budget",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-b.json#q-zk-verification-resource-budget",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-zk-verification-resource-budget"
+    ],
+    "lastCaseContentSha256": "4b005b1969f22f4e899357884d0e18bcd3bc158c24b810d7e088896de7326737",
+    "replacementIds": []
+  }
+}

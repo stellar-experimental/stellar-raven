@@ -1,0 +1,21 @@
+{
+  "id": "q-defi-perps-whitespace",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-defi (golden coverage audit)",
+    "reviewer": "verify-defi (golden coverage audit)",
+    "reason": "Derivatives have no taxonomy leaf because neither mapper found demand, and the case rests on a volatile roster of one live venue.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-defi-perps-whitespace",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-defi-perps-whitespace",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-defi-perps-whitespace"
+    ],
+    "lastCaseContentSha256": "1fe397436b19f703bce9302b1b63e53accd1b80ecb932de38afa488760d437f7",
+    "replacementIds": []
+  }
+}

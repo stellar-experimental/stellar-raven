@@ -1,0 +1,23 @@
+{
+  "id": "q-crp-become-an-anchor-licensing",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-compliance (golden coverage audit)",
+    "reviewer": "verify-audit-compliance (golden coverage audit)",
+    "reason": "Merged into q-anchor-sdp-vs-anchor-platform. Licensing is q-pay-anchor-msb-licensing and the business stack is q-crp-remittance-founder-advisory. Absorb one fact: the Anchor Platform is technical plumbing, not a licence.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-compliance.json#q-crp-become-an-anchor-licensing",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-compliance.json#q-crp-become-an-anchor-licensing",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-crp-become-an-anchor-licensing"
+    ],
+    "lastCaseContentSha256": "2388e136089e3ad537319f3ad1609b9f8baded28d3c2e8b7dec6c18be9c2dc0d",
+    "replacementIds": [
+      "q-anchor-sdp-vs-anchor-platform"
+    ]
+  }
+}

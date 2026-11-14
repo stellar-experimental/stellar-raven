@@ -1,0 +1,21 @@
+{
+  "id": "q-defi-named-newer-protocols",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-defi (golden coverage audit)",
+    "reviewer": "verify-defi (golden coverage audit)",
+    "reason": "A disputed, volatile status grab-bag. Zenex survives in q-defi-perps-whitespace and OrbitCDP/CDP lending in q-defi-blend-alternatives; FxDAO and JST are not worth a case.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-defi-named-newer-protocols",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-defi-named-newer-protocols",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-defi-named-newer-protocols"
+    ],
+    "lastCaseContentSha256": "16cd5702a522a272453bba972909ecf1e9a3a64edce1f01ca638a5da72807285",
+    "replacementIds": []
+  }
+}

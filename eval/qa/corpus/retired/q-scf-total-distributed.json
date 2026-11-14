@@ -1,0 +1,21 @@
+{
+  "id": "q-scf-total-distributed",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-scf (golden coverage audit)",
+    "reviewer": "verify-audit-scf (golden coverage audit)",
+    "reason": "No official total exists; the case grades basis labelling of a reconstruction, which q-defi-cluster-rollup-live (tool lane) also does.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-scf-total-distributed",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-scf-total-distributed",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-scf-total-distributed"
+    ],
+    "lastCaseContentSha256": "64c68c2e3eb838e640d543423cdc5aa20cddc07ff12b41114026bfba61680275",
+    "replacementIds": []
+  }
+}

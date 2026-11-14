@@ -8,20 +8,19 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "Use separate discovery/accounting paths. For a `G...` account, Horizon `/accounts/{G}` returns native XLM plus Classic trustline and LP-share rows. When that G account uses a Classic asset through its SAC interface, it is the **same underlying account/trustline balance**, not a second wrapped copy—do not double-count it.\n\nFor a `C...` address, SAC/custom-token balances are contract state. For a **known** token, call its SEP-41 `balance(address)` interface or use the corresponding ledger/indexed state. There is no standard one-call Horizon/RPC operation that discovers every SAC and arbitrary SEP-41 token held by any address. Use complete token-event/indexer data to discover candidate contracts, then query current balance/metadata. Arbitrary SEP-41 storage layout is not standardized, so generic contract-data parsing is not universally valid. Return network, snapshot ledger/source, full asset/contract identity, decimals/units, and amount provenance.",
+    "answer": "Use separate paths. For a G account, Horizon `/accounts/{G}` returns native XLM plus Classic trustline and pool-share balances; when that account uses a Classic asset through its SAC, it is the same underlying trustline balance, so do not count it twice. For a C address, SAC and custom-token balances are contract state: call a known token's SEP-41 `balance(address)` or read indexed state. No single Horizon or RPC call discovers every token an address holds; use token-event or indexer data to find candidate contracts, then validate current balances. SEP-41 storage layout is not standardized.",
     "keyFacts": [
-      "Uses Horizon for G-account native/Classic balances and forbids counting a second SAC copy.",
-      "Uses token/SAC contract state for C-address or known-token balances.",
-      "All-token discovery requires indexed token events.",
-      "Current balance validation follows token discovery.",
-      "Arbitrary SEP-41 storage layouts are not standardized."
+      "Horizon gives G-account native and Classic balances; the SAC view is not a second copy.",
+      "C-address and custom-token balances come from the token's balance() or indexed state.",
+      "No single call discovers every token an address holds; use indexed events, then validate.",
+      "SEP-41 storage layouts are not standardized."
     ],
     "avoid": [
-      "Do NOT promise all token balances from one RPC/Horizon call or double-count a G trustline as a SAC copy.",
-      "Do NOT parse arbitrary SEP-41 storage as standardized or mix raw values without decimals/identity.",
-      "Do NOT imply Horizon account JSON lists C-address contract token state."
+      "Do NOT promise all token balances from one RPC or Horizon call or double-count a G trustline as a SAC copy.",
+      "Do NOT parse arbitrary SEP-41 storage as standardized.",
+      "Do NOT imply Horizon account JSON lists C-address token state."
     ],
-    "notes": "No verified universal all-token discovery API; answer gates on splitting classic account balances from known/indexed token-contract balances.\nAlso good if the answer: Mentions that custom SEP-41 tokens and SACs share the token-interface subset, but SACs add asset-specific/admin functionality.\nGolden cites: SAC docs and Horizon account/balances docs.\nGT-52 CORRECTION 2026-07-11: grade the no-double-count and discovery/provenance boundaries; a provider convenience API is acceptable only when dated and scoped."
+    "notes": "A dated, scoped provider convenience API is acceptable."
   },
   "tags": {
     "category": "tooling-infra",
@@ -103,19 +102,19 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-03)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-tooling-a, verify-audit-tooling-a; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Re-verification 2026-11-02 with no gospel change: every golden claim was re-walked (source classes A, B, D, F); the proposer proposed no change and the verifier listed the case as no-proposal.",
-        "Class A (golden.keyFacts[0], confirmed): https://developers.stellar.org/docs/tokens/anatomy-of-an-asset — \"Transfers between accounts and contracts using SAC resolve to the same trustline\" (observedAt 2026-11-02)",
-        "Class A (golden.keyFacts[0], confirmed): https://developers.stellar.org/docs/data/apis/horizon/api-reference/retrieve-an-account — \"The balances section in the response will also list all the trustlines this account has established\" (observedAt 2026-11-02)",
-        "Class B (golden.answer, confirmed-as-of): https://github.com/stellar/stellar-rpc/tree/v30.0.0/cmd/stellar-rpc/internal/methods — \"methods: get_events, get_fee_stats, get_health, get_latest_ledger, get_ledger_entries, get_ledgers, get_network, get_transaction(s), get_version_info, send_transaction, simulate_transaction\" (observedAt 2026-11-02)",
-        "Class F (golden.answer, confirmed-as-of): https://horizon.stellar.org/accounts/C... — \"400 Account ID must start with G\" (observedAt 2026-11-02)",
-        "Class A (golden.answer, confirmed-as-of): https://developers.stellar.org/docs/data/apis/migrate-from-horizon-to-rpc — \"GET /accounts/{address} | getLedgerEntries | ... RPC will not provide trust line information associated with the account directly\" (observedAt 2026-11-02)",
-        "Class D (golden.answer, confirmed-as-of): https://developers.stellar.org/docs/data/indexers (via Perplexity) — \"Alchemy ... Stellar Data API serves indexed transfer history, account balances, and NFT holdings across Stellar assets and contract tokens\" (observedAt 2026-11-02)",
-        "Sibling sweep 2026-11-02: q-ti-enumerate-holders-airdrop, q-ti-historical-pointintime-balances checked; no conflicting fact."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-a.json#q-ti-fetch-all-balances-classic-sac",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-a.json#q-ti-fetch-all-balances-classic-sac",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-ti-fetch-all-balances-classic-sac"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-ti-fetch-all-balances-classic-sac"
+    "origin": "raven-next q-ti-fetch-all-balances-classic-sac",
+    "notes": "No verified universal all-token discovery API; answer gates on splitting classic account balances from known/indexed token-contract balances.\nAlso good if the answer: Mentions that custom SEP-41 tokens and SACs share the token-interface subset, but SACs add asset-specific/admin functionality.\nGolden cites: SAC docs and Horizon account/balances docs.\nGT-52 CORRECTION 2026-07-11: grade the no-double-count and discovery/provenance boundaries; a provider convenience API is acceptable only when dated and scoped.",
+    "leaf": "data.rpc-api"
   }
 }

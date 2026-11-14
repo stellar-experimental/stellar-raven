@@ -5,17 +5,17 @@
     "scout.searchResearch"
   ],
   "golden": {
-    "answer": "As of 2026-11-10, the official SCF Awards page lists no Build Award round in Submission. SCF #46 is in Initial Review after its November 9, 2026 submission deadline. SCF #45 is the last concluded round. The page gives no SCF #47 submission date. Check the live Awards page and compare Scout round metadata.\n\nThe dated example is illustrative. A later answer should report the state supported at its observation time.",
+    "answer": "As of 2026-11-14, the official SCF Awards page lists no Build round in Submission. SCF #46 is in Initial Review after its November 9, 2026 submission deadline, and SCF #45 is the last concluded round. No SCF #47 submission date is published.",
     "keyFacts": [
-      "States whether a Build Award round is accepting submissions as of the source date.",
-      "Identifies the phase of the current in-progress round, if one is listed.",
-      "Reports the open round's published deadline or says no upcoming deadline is published."
+      "States whether any Build round is accepting submissions, with the observation date.",
+      "Names the in-progress round and its phase (SCF #46, Initial Review).",
+      "Gives a published next deadline or says none is published."
     ],
     "avoid": [
-      "Do NOT claim a review or voting phase accepts new full proposals.",
-      "Do NOT invent a submission date, deadline time, timezone, notification date, or submission count."
+      "Do NOT say a review or voting phase accepts new full proposals.",
+      "Do NOT invent a deadline, time zone or submission count."
     ],
-    "notes": "Grade the dated submission state first. For the 2026-11-10 example, accept that no round is listed in Submission, with #46 in Initial Review after its November 9 deadline. The awards page still displays that deadline. The round detail publishes later Panel Review and Community Vote windows, which do not reopen submissions. These windows and #45’s ended status are useful context, not required. The earlier November 8 deadline may be cited as dated, attributed history. Accept a later sourced opening, phase, or deadline."
+    "notes": "Accept a later dated, sourced round state. The Panel Review and Community Vote windows do not reopen submissions. A dated, attributed November 8 deadline is historical, not wrong."
   },
   "tags": {
     "category": "scf-grants-builders",
@@ -29,7 +29,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-11-10",
+    "asOf": "2026-11-14",
     "reverifyBy": "2026-12-04",
     "sources": [
       {
@@ -226,23 +226,52 @@
             "note": "The grant index lists #46 as closed with a November 9 deadline and reports the next round as unannounced. It cites SCF for the window."
           }
         ]
+      },
+      {
+        "claim": "SCF #46 is in Initial Review after a November 9, 2026 deadline; #45 ended; no Submission-phase round.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://communityfund.stellar.org/awards",
+            "observedAt": "2026-11-14",
+            "note": "SCF #46 is currently in Initial Review. If you submitted a project already, you will receive an email on whether or not you've passed the prescreen"
+          },
+          {
+            "class": "A",
+            "ref": "https://communityfund.stellar.org/awards",
+            "observedAt": "2026-11-14",
+            "note": "Deadline to submit: November 9, 2026; SCF #45 phase Ended"
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/rfps?status=open",
+            "observedAt": "2026-11-14",
+            "note": "meta.scfRound currentRound 46, currentPhase Initial Review, lastConfirmedRound 45 (2026-11-14)"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-10",
-      "by": "Codex golden-truth author lane, 2026-11-10 truth-maintenance round",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-scf, verify-audit-scf; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "https://communityfund.stellar.org/awards",
-        "https://communityfund.stellar.org/awards/recxrSMYwAl8vcglg",
-        "https://stellarlight.xyz/api/rfps?status=open",
-        "https://grants.watch/programs/stellar-community-fund-build-award?awardPage=2",
-        "Sibling sweep: the two current-round cases, q-scf-open-rfps, q-scf-rfp-tooling, and the SCF live RFP siblings agree on the dated transition. q-scf-how-to-apply and q-scf-submission-lifecycle-deadlines retain the distinct invitation flow. q-scf-round-43-results is fixed history.",
-        "Dated web sweep queries: \"SCF #47\" \"Stellar Community Fund\" November 2026; Stellar SCF 46 Initial Review November 2026 SCF 47 submission period next. No dated #47 schedule surfaced."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-scf-current-round",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-scf-current-round",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-scf-current-round",
+        "Live A 2026-11-14: https://communityfund.stellar.org/awards -- 'SCF #46 is currently in Initial Review. If you submitted a project already, you will receive an email on whether or not you've passed the prescreen'",
+        "Live A 2026-11-14: https://communityfund.stellar.org/awards -- 'Deadline to submit: November 9, 2026; SCF #45 phase Ended'",
+        "Live C 2026-11-14: https://stellarlight.xyz/api/rfps?status=open -- 'meta.scfRound currentRound 46, currentPhase Initial Review, lastConfirmedRound 45 (2026-11-14)'",
+        "Live A 2026-11-14: https://communityfund.stellar.org/awards -- '\"name\":\"SCF #46\",\"type\":\"Build Award Round\",\"phase\":\"Initial Review\" ... SCF #46 is currently in Initial Review.'",
+        "Live C 2026-11-14: https://stellarlight.xyz/api/rfps?status=open (meta.scfRound) -- 'currentRound 46, currentPhase Initial Review, roundsInProgress submissionDeadline 2026-11-09, submissionWindow opens null'",
+        "Live sentinel read 2026-11-14 (npm run eval:qa:sentinels -- --ids scf-45-ended,scf-46-submission-deadline,scf-47-not-listed): hold"
       ],
       "rootCause": [
-        "freshness-drift"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-scf-current-round"
+    "origin": "raven-next q-scf-current-round",
+    "notes": "Grade the dated submission state first. For the 2026-11-10 example, accept that no round is listed in Submission, with #46 in Initial Review after its November 9 deadline. The awards page still displays that deadline. The round detail publishes later Panel Review and Community Vote windows, which do not reopen submissions. These windows and #45’s ended status are useful context, not required. The earlier November 8 deadline may be cited as dated, attributed history. Accept a later sourced opening, phase, or deadline.",
+    "leaf": "funding.scf-rounds-status"
   }
 }

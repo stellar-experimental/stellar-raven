@@ -1,0 +1,389 @@
+[
+ {
+  "leaf": "ai.ecosystem-projects",
+  "title": "AI projects in the ecosystem",
+  "scope": "In: the AI and agent projects built on Stellar and the events that produced them.",
+  "weight": 1,
+  "volatility": "live",
+  "facet": "which AI or agent projects are built on Stellar",
+  "draftQuestion": "Which AI or agent projects are built on Stellar, and which events produced them?",
+  "canonicalSources": [
+   {
+    "class": "C",
+    "ref": "scout.searchProjects type=AI status=Live",
+    "observedAt": "2026-11-14",
+    "quote": "meta.counts.total=49: Warmancer, Orally, Rail402, Janus, CredioLabs.AI, PathPulse AI, Dig, REAPP"
+   },
+   {
+    "class": "C",
+    "ref": "scout.getHackathons",
+    "observedAt": "2026-11-14",
+    "quote": "Stellar Hacks: Agents | 2026-03-30 | completed"
+   },
+   {
+    "class": "B",
+    "ref": "https://github.com/trionlabs/awesome-stellar-ai"
+   }
+  ],
+  "existingCases": []
+ },
+ {
+  "leaf": "assets.public-sector-cbdc",
+  "title": "Government, public-sector, and CBDC use",
+  "scope": "In: government debt, CBDC positions and pilots, and other public-sector use of Stellar.",
+  "weight": 1,
+  "volatility": "scheduled",
+  "facet": "which public institutions have issued or piloted on Stellar",
+  "draftQuestion": "Which governments, central banks or other public institutions have issued or piloted assets on Stellar?",
+  "canonicalSources": [
+   {
+    "class": "A",
+    "ref": "https://stellar.org/insights/stellar-for-cbdcs",
+    "observedAt": "2026-11-14",
+    "quote": "Unlock the future of Central Bank Digital Currencies (CBDCs) by downloading the comprehensive whitepaper"
+   },
+   {
+    "class": "A",
+    "ref": "https://stellar.org/blog/ecosystem/the-worlds-government-debt-is-coming-onchain-its-choosing-stellar"
+   },
+   {
+    "class": "A",
+    "ref": "https://stellar.org/insights/cbdcs-for-policymakers",
+    "unverified": true,
+    "note": "URL listed in stellar.org/sitemap.xml on 2026-11-14; page not opened"
+   }
+  ],
+  "existingCases": []
+ },
+ {
+  "leaf": "data.network-metrics",
+  "title": "Network and ecosystem metrics",
+  "scope": "In: where figures for accounts, operations, volume, and developer activity come from, the quarterly and third-party research reports that carry them, and how dated each is. Out: DeFi TVL (defi.tvl-landscape) and real-world-asset value (assets.rwa-issuers).",
+  "weight": 2,
+  "volatility": "live",
+  "facet": "where authoritative activity and developer figures come from",
+  "draftQuestion": "Where do authoritative figures for Stellar accounts, operations, payment volume and developer activity come from, and how current is each source?",
+  "canonicalSources": [
+   {
+    "class": "A",
+    "ref": "https://stellar.org/quarterly-reports",
+    "observedAt": "2026-11-14",
+    "quote": "Explore SDF's Network Stats. Track and compare key metrics YoY."
+   },
+   {
+    "class": "A",
+    "ref": "https://stellar.org/learn/the-power-of-stellar",
+    "observedAt": "2026-11-14",
+    "quote": "12 Billion # of operations processed since launch"
+   },
+   {
+    "class": "E",
+    "ref": "scout.getLeaderboard({limit:1}).ecosystem",
+    "observedAt": "2026-11-14",
+    "quote": "asOf 2026-11-05, activeDevs28d 4276, commits28d 95878, fullTimeDevs 520"
+   },
+   {
+    "class": "C",
+    "ref": "scout.getStatus",
+    "observedAt": "2026-11-14",
+    "quote": "Electric Capital snapshot, as of 2026-11-05"
+   },
+   {
+    "class": "C",
+    "ref": "scout.getLeaderboard",
+    "observedAt": "2026-11-14",
+    "quote": "meta.counts.total=898; dataAsOf 2026-11-13T17:53:23.727Z"
+   },
+   {
+    "class": "D",
+    "ref": "https://messari.io/report/state-of-stellar-q1-2026"
+   }
+  ],
+  "existingCases": []
+ },
+ {
+  "leaf": "ecosystem.institutional-adoption",
+  "title": "Institutional and enterprise adoption",
+  "scope": "In: which large institutions build on or integrate Stellar and what each launched, with dates and sources. Out: real-world-asset issuers (assets.rwa-issuers).",
+  "weight": 2,
+  "volatility": "live",
+  "facet": "which major institutions use Stellar and for what",
+  "draftQuestion": "Which major financial institutions have launched on or integrated with Stellar, what did each launch, and when?",
+  "canonicalSources": [
+   {
+    "class": "A",
+    "ref": "https://stellar.org/sitemap.xml",
+    "observedAt": "2026-11-14",
+    "quote": "https://stellar.org/case-studies/dtcc"
+   },
+   {
+    "class": "D",
+    "ref": "https://whalehub.io/blog/stellar-institutions-2026"
+   },
+   {
+    "class": "A",
+    "ref": "https://stellar.org/press/wirex-and-stellar-go-live-with-dual-stablecoin-visa-settlement-in-usdc-and-eurc-for-7-million-users",
+    "unverified": true,
+    "note": "URL listed in stellar.org/sitemap.xml on 2026-11-14; page not opened"
+   },
+   {
+    "class": "A",
+    "ref": "https://stellar.org/insights/institutional-finance-report",
+    "unverified": true,
+    "note": "URL listed in stellar.org/sitemap.xml on 2026-11-14; page not opened"
+   }
+  ],
+  "existingCases": []
+ },
+ {
+  "leaf": "ecosystem.xlm-supply",
+  "title": "XLM supply, the 2019 burn, and the end of inflation",
+  "scope": "In: total and circulating supply, the 2019 supply reduction, and the removed inflation mechanism.",
+  "weight": 3,
+  "volatility": "scheduled",
+  "facet": "total and circulating supply, and whether new XLM can be created",
+  "draftQuestion": "How many XLM exist, how many are in circulation, and can new XLM ever be created?",
+  "canonicalSources": [
+   {
+    "class": "A",
+    "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens.md",
+    "observedAt": "2026-11-14",
+    "quote": "Learn about lumens (XLM), the native digital asset of the Stellar network. Understand its role in transactions, network fees, and smart contract rent."
+   },
+   {
+    "class": "B",
+    "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0026.md",
+    "observedAt": "2026-11-14",
+    "quote": "CAP-0026 | 12 | Disable Inflation Mechanism | OrbitLens | Final"
+   },
+   {
+    "class": "A",
+    "ref": "https://stellar.org/blog/foundation-news/sdfs-next-steps",
+    "observedAt": "2026-11-14",
+    "quote": "An update on Stellar’s giveaway programs and to announce a new mandate for the Stellar Development Foundation."
+   },
+   {
+    "class": "E",
+    "ref": "https://decrypt.co/11077/stellar-xlm-price-up-25-percent-55-billion-tokens-burned",
+    "observedAt": "2026-11-14",
+    "quote": "Stellar (XLM) price rockets 25% as foundation burns 55 billion tokens (2019-11-05)"
+   },
+   {
+    "class": "E",
+    "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/ledgers#inflation-sequence",
+    "observedAt": "2026-11-14",
+    "quote": "the inflation operation was deprecated when validators voted to upgrade the network to Protocol 12 on 10/28/2019."
+   },
+   {
+    "class": "D",
+    "ref": "https://www.coindesk.com/markets/2019/11/05/stellars-foundation-just-destroyed-half-the-supply-of-its-lumens-cryptocurrency"
+   }
+  ],
+  "existingCases": [
+   "q-hot-fee-pool-burn-deflation",
+   "q-token-initial-supply-distribution"
+  ]
+ },
+ {
+  "leaf": "network.protocol-meetings",
+  "title": "Protocol and developer meeting notes",
+  "scope": "In: the published protocol and developer meeting record, what it covers, and how to find a decision discussed there.",
+  "weight": 1,
+  "volatility": "scheduled",
+  "facet": "where meetings are recorded and how to find a decision",
+  "draftQuestion": "Where are Stellar protocol and developer meetings recorded, and how do I find what was decided about a given CAP?",
+  "canonicalSources": [
+   {
+    "class": "A",
+    "ref": "https://developers.stellar.org/meetings/index.md",
+    "observedAt": "2026-11-14",
+    "quote": "Notes and recordings from the Stellar protocol & developers meetings"
+   },
+   {
+    "class": "A",
+    "ref": "https://developers.stellar.org/meetings/2026/11/12.md",
+    "observedAt": "2026-11-14",
+    "quote": "This week Chad Ostrowski and Pam Selle of The Aha Company showed Stellar Registry, an on-chain naming and discovery system for smart contracts and their Wasms."
+   },
+   {
+    "class": "C",
+    "ref": "lumenloop.list_documents collection=events",
+    "observedAt": "2026-11-14",
+    "quote": "Stellar Developers Meeting - 11/12/2026"
+   }
+  ],
+  "existingCases": []
+ },
+ {
+  "leaf": "network.tier1-quorum",
+  "title": "Tier 1 organizations and quorum sets",
+  "scope": "In: what Tier 1 means and requires, how quorum sets express trust, and where the current set is published.",
+  "weight": 2,
+  "volatility": "live",
+  "facet": "who validates today and where the roster is published",
+  "draftQuestion": "Which organizations are Tier 1 validators on Stellar today, and where is the current list published?",
+  "canonicalSources": [
+   {
+    "class": "A",
+    "ref": "https://developers.stellar.org/docs/validators/tier-1-orgs.md",
+    "observedAt": "2026-11-14",
+    "quote": "Run three geographically dispersed Full Validators, achieve sustained 99.9%+ uptime visible on Obsrvr Radar"
+   },
+   {
+    "class": "B",
+    "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0020.md",
+    "observedAt": "2026-11-14",
+    "quote": "SEP-0020 | Self-verification of validator nodes | Johan Stén | Active"
+   },
+   {
+    "class": "A",
+    "ref": "https://stellar.org/blog/ecosystem/becoming-a-stellar-validator",
+    "unverified": true,
+    "note": "URL listed in stellar.org/sitemap.xml on 2026-11-14; page not opened"
+   }
+  ],
+  "existingCases": [
+   "q-protocol-tier1-requirements"
+  ]
+ },
+ {
+  "leaf": "security.audit-registry",
+  "title": "Audit reports for ecosystem projects",
+  "scope": "In: which projects have published audits, by which firms, when, and where the reports are.",
+  "weight": 2,
+  "volatility": "live",
+  "facet": "whether a named project has been audited",
+  "draftQuestion": "Has Blend been audited? By which firm, when, and where is the report?",
+  "canonicalSources": [
+   {
+    "class": "D",
+    "ref": "https://stellarsecurityportal.com/",
+    "observedAt": "2026-11-14",
+    "quote": "Stellar Security Portal"
+   },
+   {
+    "class": "E",
+    "ref": "scout.searchProjects({q:'Blend',fields:'audits'})",
+    "observedAt": "2026-11-14",
+    "quote": "Blend audits count 6, auditors [OtterSec, Certora, Code4rena], latestAt 2025-08-13, codeChangedSinceAudit true"
+   },
+   {
+    "class": "C",
+    "ref": "scout.listAudits",
+    "observedAt": "2026-11-14",
+    "quote": "meta.counts.total=71; One row per audit report from stellarsecurityportal.com"
+   },
+   {
+    "class": "A",
+    "ref": "https://stellar.org/audit-bank/projects"
+   }
+  ],
+  "existingCases": []
+ },
+ {
+  "leaf": "soroban.errors-debugging",
+  "title": "Contract errors and debugging",
+  "scope": "In: contract error enums, host errors, diagnostic events, and how to find why an invocation failed. Out: transaction and operation result codes (data.result-codes).",
+  "weight": 2,
+  "volatility": "stable",
+  "facet": "finding why an invocation failed",
+  "draftQuestion": "How do I define custom contract errors, and how do I find out why a contract invocation failed (diagnostic events, simulation, error codes)?",
+  "canonicalSources": [
+   {
+    "class": "A",
+    "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/errors-and-debugging/debugging-errors.md",
+    "observedAt": "2026-11-14",
+    "quote": "Debug and Understanding Soroban Errors through the General Transaction Cycle."
+   },
+   {
+    "class": "A",
+    "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/errors-and-debugging/errors.md",
+    "observedAt": "2026-11-14",
+    "quote": "Generating errors from smart contracts."
+   },
+   {
+    "class": "A",
+    "ref": "https://developers.stellar.org/docs/tools/quickstart/debugging/diagnostic-events.md",
+    "observedAt": "2026-11-14",
+    "quote": "Soroban diagnostic events contain logs about internal events"
+   }
+  ],
+  "existingCases": [
+   "q-sor-decode-hosterror-codes"
+  ]
+ },
+ {
+  "leaf": "standards.payment-patterns",
+  "title": "Accepting payments and recurring payment designs",
+  "scope": "In: how a merchant or app requests, watches for, and reconciles an incoming payment, and the designs for recurring, streaming, and escrowed payments. Out: deposit attribution for custodians (protocol.memos-muxed) and exchange integration (standards.exchange-integration).",
+  "weight": 2,
+  "volatility": "stable",
+  "facet": "accepting and reconciling a merchant payment",
+  "draftQuestion": "How does a merchant or app request a Stellar payment, detect that it arrived, and match it to an order?",
+  "canonicalSources": [
+   {
+    "class": "A",
+    "ref": "https://developers.stellar.org/docs/build/guides/transactions/send-and-receive-payments",
+    "observedAt": "2026-11-14",
+    "quote": "Learn to send payments and watch for received payments on the Stellar network."
+   },
+   {
+    "class": "A",
+    "ref": "https://developers.stellar.org/docs/build/guides/basics/follow-received-payments",
+    "observedAt": "2026-11-14",
+    "quote": "This tutorial shows how easy it is to use Horizon to watch for incoming payments on an account using JavaScript and EventSource"
+   }
+  ],
+  "existingCases": [
+   "q-stellar-recurring-payments"
+  ]
+ },
+ {
+  "leaf": "tooling.version-compat",
+  "title": "Software versions for the current protocol",
+  "scope": "In: which releases of Core, RPC, Horizon, the Rust SDK, and the CLI go with the current protocol, and the errors a mismatch produces.",
+  "weight": 3,
+  "volatility": "scheduled",
+  "facet": "which releases match the protocol on Mainnet",
+  "draftQuestion": "Which stellar-core, RPC, Horizon, Rust SDK and CLI releases support the protocol Mainnet runs today?",
+  "canonicalSources": [
+   {
+    "class": "A",
+    "ref": "https://developers.stellar.org/docs/networks/software-versions.md",
+    "observedAt": "2026-11-14",
+    "quote": "Smart Contract Rust SDK | `28.0.0`"
+   }
+  ],
+  "existingCases": []
+ },
+ {
+  "leaf": "wallets.support-channels",
+  "title": "Where to get help",
+  "scope": "In: the official community and support channels, and what SDF does and does not do for users.",
+  "weight": 2,
+  "volatility": "scheduled",
+  "facet": "the official help channels and what SDF does not do",
+  "draftQuestion": "Where do I get official help with a Stellar problem, and what will SDF never do for a user?",
+  "canonicalSources": [
+   {
+    "class": "A",
+    "ref": "https://stellar.org/community",
+    "observedAt": "2026-11-14",
+    "quote": "SDF cannot recover funds. Contact the exchange or service you sent to directly."
+   },
+   {
+    "class": "A",
+    "ref": "https://stellar.org/faq",
+    "observedAt": "2026-11-14",
+    "quote": "SDF is not a financial institution, money remitter, money transmitter, or money service business."
+   },
+   {
+    "class": "A",
+    "ref": "https://developers.stellar.org/llms.txt",
+    "observedAt": "2026-11-14",
+    "quote": "[Discord](https://discord.com/invite/zVYdY3ktTn)"
+   }
+  ],
+  "existingCases": []
+ }
+]

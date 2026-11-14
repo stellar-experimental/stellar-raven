@@ -6,18 +6,16 @@
     "stellarDocs.search_protocol_concepts_docs"
   ],
   "golden": {
-    "answer": "A fee-bump transaction wraps an already-signed inner transaction. The outer fee source signs and pays; the inner source, sequence, operations, and signatures remain authoritative. Paying the bump does not consume the fee source's sequence number. The outer fee field is the **total maximum fee bid** for the effective operation count (inner operations + one wrapper, plus applicable Soroban resource-fee handling), and must satisfy the inner-fee validity rule. The fee source is charged once; do **not** add the visible inner and outer fee fields as separate charges. Channel accounts are different: separate transaction-source accounts consume their own sequences to provide throughput lanes while operations may use another source. Stellar fees go to the protocol fee pool, not validator rewards.",
+    "answer": "A fee-bump wraps a signed inner transaction. The outer fee source signs and pays; the inner source, sequence and signatures stay authoritative and the fee source's own sequence is not used. The outer fee is one total bid for inner operations plus one, charged once, so inner and outer fee fields do not add. Channel accounts are separate source accounts whose sequence lanes give parallel throughput. Fees go to the fee pool, not validators.",
     "keyFacts": [
-      "Explains outer fee-source authorization and payment.",
-      "Keeps the inner source, sequence, and signatures unchanged.",
-      "Treats the outer charged fee and inner retained fee field as non-additive.",
-      "Distinguishes channel-account sequence lanes."
+      "The fee source signs and pays; the inner source, sequence and signatures stay unchanged.",
+      "The charged outer fee and the inner fee field are not additive.",
+      "Channel accounts are separate transaction sources giving sequence-number lanes."
     ],
     "avoid": [
-      "Do NOT say fee bump replaces inner authorization or consumes the fee source sequence.",
-      "Do NOT add inner and outer fields as two separately assessed fees or conflate channel accounts with fee sponsorship."
+      "Do NOT say a fee-bump replaces inner authorization, consumes the fee source sequence, or doubles the fee."
     ],
-    "notes": "Reviewed 2026-06-29: differentiated (D3) — dropped the surge-fee-choice clause from the q and downgraded the surge must_have to should_have so surge/fee-selection is owned by q-pc-practical-fee-setting; this question keeps the fee-bump-specific 'why fees look doubled' as a must_have. Fee-bump and channel-account mechanics verified against official docs and CAP-0015. Fee-pool wording verified 2026-11-02 against LedgerHeader.feePool (XDR: 'fees burned since last inflation run'), the Lumens page ('No one has access to the fee pool'), and SDF's fees FAQ (fees go to neither SDF nor validators).\nAlso good if the answer: Notes the max fee is a bid under surge pricing, deferring fee-selection strategy to fee-setting guidance (owned by q-pc-practical-fee-setting). | Mentions feeStats or network fee endpoints for estimating current inclusion fees.\nGolden cites: At least one primary Stellar source such as developers.stellar.org, stellar-core docs, or the stellar-protocol repository.\nGT-29 CORRECTION 2026-07-10: displayed inner/outer fee fields are not additive charges; the fee source incurs the outer charged fee.\nFee layers: XDR FeeBumpTransaction.fee is the total bid. The docs 'Fee' attribute and the js-stellar-base buildFeeBumpTransaction baseFee are a per-operation bid multiplied by inner operations + 1 (js-stellar-base also adds the inner Soroban resource fee). An answer that describes either layer correctly is not wrong."
+    "notes": "Either the XDR total-bid or the SDK per-operation baseFee description is correct if consistent."
   },
   "tags": {
     "category": "protocol-core",
@@ -150,35 +148,37 @@
             "note": "Stellar validators receive no share of transaction fees or protocol rewards ... No one can access or spend it under the current protocol"
           }
         ]
+      },
+      {
+        "claim": "Fee-bump: total max bid for inner operations plus one; replaces same source/sequence only at a 10x bid",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/transactions/fee-bump-transactions",
+            "observedAt": "2026-11-14",
+            "note": "the total number of operations is equal to the number of operations in the inner transaction plus one … if and only if the fee bid of the second transaction is 10x"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-01)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-protocol, verify-protocol; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Live B 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-ledger.x -- 'int64 feePool; // fees burned since last inflation run'",
-        "Live A 2026-10-31 (Parallel cache, fetched 2026-11-02): https://developers.stellar.org/docs/learn/fundamentals/lumens -- 'The lumens do not belong to any particular account. No one has access to the fee pool, so these lumens are non-circulating.'",
-        "Live A 2026-10-01 (Parallel cache, fetched 2026-11-02): https://stellar.org/blog/developers/transaction-submission-timeouts-and-dynamic-fees-faq -- 'Fees do not go to the Stellar Development Foundation or to network validators: they go into the fee pool, which is tracked in the ledger header.'",
-        "Live A 2026-10-16 (Parallel cache): https://stellar.org/blog/ecosystem/becoming-a-stellar-validator -- 'they will receive no block rewards, no staking yield, no MEV awards, and no share of transaction fees.'",
-        "Live D 2026-11-02: Perplexity perplexity_ask (fee pool / validator rewards) -- 'Stellar validators receive no share of transaction fees or protocol rewards ... No one can access or spend it under the current protocol'",
-        "Live A 2026-10-26 (Parallel cache): https://developers.stellar.org/docs/build/guides/transactions/fee-bump-transactions -- 'Fee: The maximum per-operation fee you're willing to pay for the fee-bump transaction. The fee-bump transaction is one operation. Therefore, the total number of operations is equal to the number of operations in the inner transaction plus one.'",
-        "Live B 2026-11-02: https://raw.githubusercontent.com/stellar/js-stellar-base/master/src/transaction_builder.js -- '@param {string} baseFee - max fee willing to pay per operation in inner transaction ... fee: xdr.Int64.fromString(base.times(innerOps + 1).plus(resourceFee).toString())'",
-        "Live B 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-transaction.x -- 'struct FeeBumpTransaction { MuxedAccount feeSource; int64 fee; ...'",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/build/guides/transactions/fee-bump-transactions -- 'This account will incur the fee instead of the source account specified in the inner transaction. The sequence number is still taken from the source account, however.'",
-        "Live B 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0015.md -- 'Status: Final; Protocol version: 13'",
-        "Live B 2026-11-02: https://github.com/stellar/stellar-core/blob/master/src/transactions/FeeBumpTransactionFrame.cpp -- 'return mInnerTx->getNumOperations() + 1;'",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/build/guides/transactions/fee-bump-transactions -- 'The fee must be greater than or equal to the network minimum fee for the number of operations in the inner transaction, plus one for the fee bump. The fee must also be greater than or equal to the fee specified in the inner transaction.'",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/build/guides/transactions/fee-bump-transactions -- 'Fee: The maximum per-operation fee you're willing to pay for the fee-bump transaction.'",
-        "Live B 2026-11-02: https://github.com/stellar/js-stellar-base/blob/master/src/transaction_builder.js -- '@param {string} baseFee - max fee willing to pay per operation'",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/build/guides/transactions/channel-accounts -- 'the assets will come out of the base account, and the sequence number and fees will be consumed by the channel account.'",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/lumens -- 'The Fee Pool is where network fees collect. The lumens do not belong to any particular account. No one has access to the fee pool, so these lumens are non-circulating.'",
-        "Independent verifier decisions: golden.notes (verifier modify) -- .agents/rounds/2026-11-02-golden-audit/pass1/protocol-core-01.json.",
-        "Sibling sweep 2026-11-02: grep fee pool/feePool -> q-hot-fee-pool-burn-deflation (fees go to the non-circulating fee pool, not validator rewards; consistent), q-pc-practical-fee-setting, q-ti-channel-accounts-throughput, q-ti-java-sdk-wallet-feebump, q-protocol-ledger-header-fields; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-pc-fee-bump-channel-accounts-feepool",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-pc-fee-bump-channel-accounts-feepool",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-pc-fee-bump-channel-accounts-feepool",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/build/guides/transactions/fee-bump-transactions -- 'the total number of operations is equal to the number of operations in the inner transaction plus one … if and only if the fee bid of the second transaction is 10x'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-xdr/blob/v30.0/Stellar-ledger.x -- 'int64 feePool; // fees burned since last inflation run'"
       ],
       "rootCause": [
-        "Eval-side authoring flaw: notes left an unverified fee-pool hedge and did not reconcile the Docs per-operation 'Fee' wording with the XDR total fee field."
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-pc-fee-bump-channel-accounts-feepool"
+    "origin": "raven-next q-pc-fee-bump-channel-accounts-feepool",
+    "notes": "Reviewed 2026-06-29: differentiated (D3) — dropped the surge-fee-choice clause from the q and downgraded the surge must_have to should_have so surge/fee-selection is owned by q-pc-practical-fee-setting; this question keeps the fee-bump-specific 'why fees look doubled' as a must_have. Fee-bump and channel-account mechanics verified against official docs and CAP-0015. Fee-pool wording verified 2026-11-02 against LedgerHeader.feePool (XDR: 'fees burned since last inflation run'), the Lumens page ('No one has access to the fee pool'), and SDF's fees FAQ (fees go to neither SDF nor validators).\nAlso good if the answer: Notes the max fee is a bid under surge pricing, deferring fee-selection strategy to fee-setting guidance (owned by q-pc-practical-fee-setting). | Mentions feeStats or network fee endpoints for estimating current inclusion fees.\nGolden cites: At least one primary Stellar source such as developers.stellar.org, stellar-core docs, or the stellar-protocol repository.\nGT-29 CORRECTION 2026-07-10: displayed inner/outer fee fields are not additive charges; the fee source incurs the outer charged fee.\nFee layers: XDR FeeBumpTransaction.fee is the total bid. The docs 'Fee' attribute and the js-stellar-base buildFeeBumpTransaction baseFee are a per-operation bid multiplied by inner operations + 1 (js-stellar-base also adds the inner Soroban resource fee). An answer that describes either layer correctly is not wrong.",
+    "leaf": "protocol.fee-bump-sponsorship",
+    "secondaryLeaf": "tooling.channel-accounts"
   }
 }

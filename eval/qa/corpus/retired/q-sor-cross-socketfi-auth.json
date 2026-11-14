@@ -1,0 +1,21 @@
+{
+  "id": "q-sor-cross-socketfi-auth",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-soroban-a (golden coverage audit)",
+    "reviewer": "verify-audit-soroban-a (golden coverage audit)",
+    "reason": "Not a real user ask. Its portable fact (__check_auth) is a key fact of q-soroban-check-auth-custom-account. The SocketFi profile is a corpus snapshot, and smart-wallet project discovery stays in q-tool-smart-wallet-repos-discovery.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-a.json#q-sor-cross-socketfi-auth",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-a.json#q-sor-cross-socketfi-auth",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-sor-cross-socketfi-auth"
+    ],
+    "lastCaseContentSha256": "cfae9479682ff89ca921249d404e9b849e4defe64fe7061b86eca305cd53e5f8",
+    "replacementIds": []
+  }
+}

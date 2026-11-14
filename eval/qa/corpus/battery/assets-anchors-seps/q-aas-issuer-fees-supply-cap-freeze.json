@@ -7,22 +7,17 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "Classic Stellar assets do not have a protocol-level per-transfer issuer-fee hook like a custom token tax. They are identified by asset code plus issuer account, held on trustlines, and moved with Stellar payment/path-payment/offer operations. If an issuer needs custom transfer logic, that is a separate Soroban/custom-token design question, not a classic asset flag.\n\nSupply caps are operational for classic assets. The issuer can stop minting, lock or disable issuer signing authority, and document supply commitments, but there is no immutable max-supply field attached to an arbitrary issued asset. (Supply is tracked as outstanding balances held outside the issuer; the burn/redemption accounting itself is covered separately in q-aas-burn-clawback-redemption-mechanics.)\n\nFreeze and clawback are protocol controls, but only when configured correctly. `AUTH_REQUIRED_FLAG` requires authorization before holding/transacting; `AUTH_REVOCABLE_FLAG` lets the issuer deauthorize trustlines; `AUTH_CLAWBACK_ENABLED_FLAG` allows clawback for subsequent clawback-enabled trustlines and requires revocable authorization. Freezing/deauthorization blocks use; clawback removes/burns a specified amount under CAP-35. These controls are holder-risk and decentralization tradeoffs, not hidden transfer fees.",
+    "answer": "Classic assets have no protocol per-transfer issuer fee and no max-supply field. An issuer caps supply operationally by locking the issuing account after issuance; a SAC admin moved away from the issuer can still mint. An issuer can freeze a holder by deauthorizing the trustline when AUTH_REVOCABLE is set. Custom transfer logic needs a Soroban token.",
     "keyFacts": [
-      "Classic Stellar assets omit a built-in per-transfer issuer fee hook.",
-      "Classic asset supply caps use operational/governance controls.",
-      "The issuer can stop minting or lock/disable issuer control.",
-      "Authorization flags can authorize or deauthorize trustlines.",
-      "Clawback-enabled assets can claw back balances under the required flags."
+      "Classic assets have no protocol per-transfer issuer fee hook.",
+      "Classic assets have no protocol max-supply field.",
+      "Locking the issuing account stops further issuance of the classic asset.",
+      "Deauthorizing a trustline freezes a holder when the revocable flag is set."
     ],
     "avoid": [
-      "Do NOT claim classic Stellar assets have a custom smart-contract tax.",
-      "Do NOT claim the protocol encodes an immutable max-supply field for arbitrary issued assets.",
-      "Do NOT claim classic Stellar assets can arbitrarily tax every transfer at the protocol level.",
-      "Do NOT claim clawback/freeze is available unless the relevant flags and trustline authorization model are in place.",
-      "Do NOT re-derive the full burn/redemption accounting (transfers-to-issuer-burn); reference clawback as an issuer control and stay on the fee/cap/freeze feasibility question."
+      "Do NOT claim that classic Stellar assets have a built-in issuer transfer tax or an immutable max-supply field."
     ],
-    "notes": "Verified flags and issuer-control boundaries against control-asset-access and CAP-35 (live 2026-06-29). Transfer-fee absence is inferred from the classic asset operation model and SAC docs rather than a single explicit negative statement. Differentiated from q-aas-burn-clawback-redemption-mechanics: this file owns the fee/cap/freeze feasibility debunk and AUTH_* enumeration and now references rather than re-derives burn accounting.\nLocking the issuer caps supply only while any deployed SAC's admin is still the issuer: the control-asset-access docs warn that a SAC admin moved with `set_admin` can still mint. Do not penalize an answer that adds this caveat.\nAlso good if the answer: Distinguishes freezing/deauthorization from clawback and from burning/redeeming supply. | Mentions Soroban custom tokens could encode different token logic, but that is separate from classic asset issuer flags/SAC behavior.\nGolden cites: Stellar docs on asset authorization flags/clawback and classic asset issuance."
+    "notes": "A SAC admin moved with set_admin can still mint after the issuer is locked; do not penalize an answer that adds this."
   },
   "tags": {
     "category": "assets-anchors-seps",
@@ -136,23 +131,58 @@
             "note": "Exact excerpt: 'pub(crate) fn mint(...) { ... let admin = read_administrator(e)?; admin.require_auth()?;'"
           }
         ]
+      },
+      {
+        "claim": "Locking the issuer (master weight 0, no other signers) stops further issuance; a SAC admin moved by set_admin can still mint.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/control-asset-access",
+            "observedAt": "2026-11-14",
+            "note": "If the admin was not the issuer, then the admin would be able to mint the asset even with the issuing account locked."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+            "observedAt": "2026-11-14",
+            "note": "administrative authority is mutable and can be transferred afterwards with the SAC's `set_admin` function."
+          }
+        ]
+      },
+      {
+        "claim": "AUTH_CLAWBACK_ENABLED needs AUTH_REVOCABLE; AUTH_REQUIRED/REVOCABLE govern authorize/deauthorize.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md",
+            "observedAt": "2026-11-14",
+            "note": "The account `AUTH_REVOCABLE_FLAG` flag must also be set because for clawback to succeed"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-01)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-assets, verify-audit-assets; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Gospel change 2026-11-02: golden.notes add a symmetric caution that locking the issuer caps supply only while a deployed SAC's admin is still the issuer; answers that add this caveat are not penalized. answer, keyFacts, and avoid are unchanged.",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/tokens/control-asset-access — 'If the admin was not the issuer, then the admin would be able to mint the asset even with the issuing account locked.'",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/tokens/stellar-asset-contract — 'administrative authority is mutable and can be transferred afterwards with the SAC's `set_admin` function.'",
-        "Live B 2026-11-02: https://github.com/stellar/rs-soroban-env/blob/main/soroban-env-host/src/builtin_contracts/stellar_asset_contract/contract.rs — 'pub(crate) fn mint(...) { ... let admin = read_administrator(e)?; admin.require_auth()?;'",
-        "Live B 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md — 'The account `AUTH_REVOCABLE_FLAG` flag must also be set because for clawback to succeed in all cases'",
-        "Sibling sweep 2026-11-02: q-aas-burn-clawback-redemption-mechanics, q-asset-issue-asset-howto, q-comp-sac-inherits-flags, q-comp-auth-flags-overview checked; no sibling asserts that a locked issuer makes supply immutable regardless of SAC admin; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-assets.json#q-aas-issuer-fees-supply-cap-freeze",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-assets.json#q-aas-issuer-fees-supply-cap-freeze",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-aas-issuer-fees-supply-cap-freeze",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/tokens/control-asset-access -- 'If the admin was not the issuer, then the admin would be able to mint the asset even with the issuing account locked.'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/tokens/stellar-asset-contract -- 'administrative authority is mutable and can be transferred afterwards with the SAC's `set_admin` function.'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md -- 'The account `AUTH_REVOCABLE_FLAG` flag must also be set because for clawback to succeed'",
+        "Live A 2026-11-14: https://github.com/stellar/stellar-docs/blob/main/docs/tokens/control-asset-access.mdx -- 'When AUTH_REVOCABLE_FLAG is enabled, an issuer can revoke an existing trustline's authorization, thereby freezing the asset held by an account.'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0018.md -- 'If AUTH_REVOCABLE_FLAG is not set, the transition from AUTHORIZED_FLAG to AUTHORIZED_TO_MAINTAIN_LIABILITIES_FLAG is invalid.'"
       ],
       "rootCause": [
-        "Eval-side authoring flaw: the supply-cap claim omitted the documented SAC-admin caveat on control-asset-access."
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-aas-issuer-fees-supply-cap-freeze"
+    "origin": "raven-next q-aas-issuer-fees-supply-cap-freeze",
+    "notes": "Verified flags and issuer-control boundaries against control-asset-access and CAP-35 (live 2026-06-29). Transfer-fee absence is inferred from the classic asset operation model and SAC docs rather than a single explicit negative statement. Differentiated from q-aas-burn-clawback-redemption-mechanics: this file owns the fee/cap/freeze feasibility debunk and AUTH_* enumeration and now references rather than re-derives burn accounting.\nLocking the issuer caps supply only while any deployed SAC's admin is still the issuer: the control-asset-access docs warn that a SAC admin moved with `set_admin` can still mint. Do not penalize an answer that adds this caveat.\nAlso good if the answer: Distinguishes freezing/deauthorization from clawback and from burning/redeeming supply. | Mentions Soroban custom tokens could encode different token logic, but that is separate from classic asset issuer flags/SAC behavior.\nGolden cites: Stellar docs on asset authorization flags/clawback and classic asset issuance.",
+    "leaf": "assets.issuance",
+    "secondaryLeaf": "assets.issuer-controls"
   }
 }

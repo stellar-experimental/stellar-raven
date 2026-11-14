@@ -1,0 +1,23 @@
+{
+  "id": "q-scf-verified-members",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-scf (golden coverage audit)",
+    "reviewer": "verify-audit-scf (golden coverage audit)",
+    "reason": "Merged into q-scf-nqg-voting: q-scf-nqg-voting tests the same governance tier table and absorbs the separation of governance verification from KYC.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-scf-verified-members",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-scf-verified-members",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-scf-verified-members"
+    ],
+    "lastCaseContentSha256": "1e18c20c6f7e63f55f2bc86a4f822f9713f4f09c8abc28b132cb3b1c4fd7e9a4",
+    "replacementIds": [
+      "q-scf-nqg-voting"
+    ]
+  }
+}

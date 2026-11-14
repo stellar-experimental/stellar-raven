@@ -1,0 +1,21 @@
+{
+  "id": "q-scf-cross-decaf-sep24",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-scf (golden coverage audit)",
+    "reviewer": "verify-audit-scf (golden coverage audit)",
+    "reason": "Retired because the Decaf specifics are trivia, the SEP-24 topic stays in the active case q-sep6-sep24-sep31-choice, and the frozen live lane covers cross-service reconciliation.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-scf-cross-decaf-sep24",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-scf-cross-decaf-sep24",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-scf-cross-decaf-sep24"
+    ],
+    "lastCaseContentSha256": "94ea9fe57c41a50d9c2c547487fe1199074168c9b0ca4c3cea48284dcec115ab",
+    "replacementIds": []
+  }
+}

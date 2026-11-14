@@ -1,0 +1,23 @@
+{
+  "id": "q-edge-noinfo-stellar-pos-staking-rewards",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-edge (golden coverage audit)",
+    "reviewer": "verify-audit-edge (golden coverage audit)",
+    "reason": "Merged into q-raph-xlm-staking. The retail survivor's rewrite already carries the no-native-PoS-reward fact and the fee-pool proposal caution.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-edge.json#q-edge-noinfo-stellar-pos-staking-rewards",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-edge.json#q-edge-noinfo-stellar-pos-staking-rewards",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-edge-noinfo-stellar-pos-staking-rewards"
+    ],
+    "lastCaseContentSha256": "b7787fbe62c92fea52d088606ec6740fd3a7778a2ac24c01e7708badfe118f8d",
+    "replacementIds": [
+      "q-raph-xlm-staking"
+    ]
+  }
+}

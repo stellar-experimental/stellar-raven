@@ -6,17 +6,16 @@
     "skills.stellar-dev.standards"
   ],
   "golden": {
-    "answer": "Begin with the asset issuer's home domain, fetch /.well-known/stellar.toml under SEP-1, and read the advertised WEB_AUTH_ENDPOINT and TRANSFER_SERVER_SEP0024 values. Authenticate with SEP-10 (or SEP-45 for contract accounts, when the anchor advertises WEB_AUTH_FOR_CONTRACTS_ENDPOINT), then call SEP-24's info and interactive endpoints and track the transaction status. A directory entry can help find an anchor, but it is not the integration contract; the issuer's signed operational domain and current stellar.toml are authoritative. Test against a sandbox before using production credentials.",
+    "answer": "The wallet starts from the issuer's home domain and fetches https://<domain>/.well-known/stellar.toml (SEP-1). It reads TRANSFER_SERVER_SEP0024 and the web-auth endpoint (WEB_AUTH_ENDPOINT for SEP-10, WEB_AUTH_FOR_CONTRACTS_ENDPOINT for SEP-45), authenticates, then calls the SEP-24 info and interactive endpoints. The issuer's current stellar.toml is authoritative, not a directory listing.",
     "keyFacts": [
-      "SEP-1 stellar.toml on the issuer's home domain advertises anchor service endpoints.",
-      "SEP-10 (or SEP-45 for contract accounts) auth precedes protected SEP-24 calls.",
-      "Uses the anchor's current stellar.toml and API responses instead of directory metadata."
+      "The issuer's home-domain stellar.toml is served at /.well-known/stellar.toml.",
+      "The stellar.toml advertises the anchor's SEP-24 server and web-auth endpoint.",
+      "SEP-24 protected calls need SEP-10 or SEP-45 authentication first."
     ],
     "avoid": [
-      "The anchor directory itself supplies every anchor's authenticated SEP-24 API endpoint.",
-      "SEP-24 can be integrated without discovering the issuer domain or authenticating when the anchor requires SEP-10."
+      "Do NOT claim that an anchor directory supplies each anchor's authenticated SEP-24 endpoint."
     ],
-    "notes": "As of 2026-11-02, SEP-24 v3.8.0 (Active) says anchors and clients must support SEP-10 or SEP-45 (Draft, contract accounts) or both. An answer that names SEP-45 for contract-account wallets is not wrong.\nkeyFacts[2] grades behavior, not a required statement. The question does not mention directories, and SEP-24 says the stellar.toml TRANSFER_SERVER_SEP0024 entry is how a wallet finds the anchor's server. An answer that takes the auth and SEP-24 endpoints from the anchor's live stellar.toml and API responses, and relies on no directory, satisfies keyFacts[2]; an explicit directory caveat is welcome but not required. An answer that takes endpoints from directory metadata misses keyFacts[2]."
+    "notes": "Naming SEP-45 for contract-account wallets is correct, not an error."
   },
   "tags": {
     "category": "assets-anchors-seps",
@@ -171,32 +170,68 @@
             "class": "A",
             "ref": "https://developers.stellar.org/docs/platforms/anchor-platform",
             "observedAt": "2026-11-02",
-            "note": "Exact quote: 'SEP-45 \u2014 Web authentication using challenge/responses for contract accounts'"
+            "note": "Exact quote: 'SEP-45 — Web authentication using challenge/responses for contract accounts'"
+          }
+        ]
+      },
+      {
+        "claim": "SEP-1 stellar.toml advertises TRANSFER_SERVER_SEP0024 and WEB_AUTH_FOR_CONTRACTS_ENDPOINT.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md",
+            "observedAt": "2026-11-14",
+            "note": "| TRANSFER_SERVER_SEP0024         | uses `https://`        | The server used for [SEP-24](sep-0024.md) Anchor/Client interoperability"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md",
+            "observedAt": "2026-11-14",
+            "note": "| WEB_AUTH_FOR_CONTRACTS_ENDPOINT | uses `https://`        | The endpoint used for [SEP-45 Web Authentication](sep-0045.md)"
+          }
+        ]
+      },
+      {
+        "claim": "SEP-24 requires anchors and clients to support SEP-10 or SEP-45 or both (v3.8.0, Active).",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
+            "observedAt": "2026-11-14",
+            "note": "Anchors and clients must support one of the [SEP-10](sep-0010.md) or"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
+            "observedAt": "2026-11-14",
+            "note": "Status: Active ... Version 3.8.0"
           }
         ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 pass 3 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task peer-handoff)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-assets, verify-audit-assets; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Gospel change 2026-11-02: golden.answer and keyFacts[1] now name SEP-45 as the contract-account alternative to SEP-10 for protected SEP-24 calls; golden.notes add a dated do-not-penalize caution (pass 1, batch assets-anchors-seps-01). Pass 3 (task peer-handoff) adds a golden.notes line that grades keyFacts[2] as behavior: live stellar.toml and API endpoints with no directory reliance satisfy it; directory-sourced endpoints miss it. SEP-10 stays the named default, so a SEP-10-only answer still satisfies keyFacts[1].",
-        "Live B 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md \u2014 'An anchor must define the location of their `TRANSFER_SERVER_SEP0024` in their [`stellar.toml`](sep-0001.md). This is how a wallet knows where to find the anchor's server.' and 'The assets issuing account should have a home_domain set so the clients can find the toml file to begin the process.' (Status Active, Version 3.8.0; observedAt 2026-11-02)",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/build/apps/example-application-tutorial/anchor-integration returns HTTP 200 after the Mintlify move (observedAt 2026-11-02).",
-        "Live B 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md \u2014 'Status: Active ... Version 3.8.0 ... Anchors and clients must support one of the SEP-10 or SEP-45 web authentication or both'",
-        "Live B 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md \u2014 '| WEB_AUTH_FOR_CONTRACTS_ENDPOINT | uses `https://` | The endpoint used for SEP-45 Web Authentication |'",
-        "Live B 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0045.md \u2014 'SEP: 0045 Title: Stellar Web Authentication for Contract Accounts ... Status: Draft ... Version: 0.1.1'",
-        "Live E 2026-11-02: https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep24/getting-started \u2014 'SEP-24: SEP-1 (Stellar Info File), SEP-10 (Stellar Authentication) and SEP-45 (Stellar Web Authentication for contract account).'",
-        "Live F 2026-11-02: https://mgxanchor.moneygram.com/.well-known/stellar.toml \u2014 'WEB_AUTH_ENDPOINT = \"https://mgxanchor.moneygram.com/stellarsepservice/auth\" TRANSFER_SERVER_SEP0024 = \"https://mgxanchor.moneygram.com/stellarsepservice/sep24\" WEB_AUTH_FOR_CONTRACTS_ENDPOINT = ...'",
-        "Sibling sweep 2026-11-02: q-sep6-sep24-sep31-choice, q-sep-45-contract-auth, q-sep-interactive-deposit-withdraw, q-sep-wallet-seps-list checked; none asserts SEP-10 is the only SEP-24 authentication; no contradiction.",
-        "Sibling sweep 2026-11-02 (pass 3): the new note changes only keyFacts[2] grading scope; q-sep-interactive-deposit-withdraw and q-sep-wallet-seps-list make no directory claim; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-assets.json#q-anchor-endpoint-discovery",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-assets.json#q-anchor-endpoint-discovery",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-anchor-endpoint-discovery",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md -- '| TRANSFER_SERVER_SEP0024         | uses `https://`        | The server used for [SEP-24](sep-0024.md) Anchor/Client interoperability'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md -- '| WEB_AUTH_FOR_CONTRACTS_ENDPOINT | uses `https://`        | The endpoint used for [SEP-45 Web Authentication](sep-0045.md)'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md -- 'Anchors and clients must support one of the [SEP-10](sep-0010.md) or'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md -- 'Status: Active ... Version 3.8.0'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md -- 'Title: Hosted Deposit and Withdrawal Status: Active Updated: 2025-09-10 Version 3.8.0'"
       ],
       "rootCause": [
-        "Eval-side authoring flaw: the keyFact pinned SEP-10 as the only SEP-24 authentication, but SEP-24 v3.8.0 (2025-09-10) allows SEP-10 and/or SEP-45.",
-        "Eval-side authoring flaw: keyFacts[2] 'instead of directory metadata' can be read as a required directory statement, but SEP-24 v3.8.0 makes the stellar.toml TRANSFER_SERVER_SEP0024 entry the discovery path and the question names no directory (hand-off .agents/rounds/2026-11-02-mintlify-migration/qa-rows-lane-1.md on branch feat/mintlify-docs-migration)."
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
     "origin": "kaan anchor-discovery-integration",
-    "asOf": "2026-11-02"
+    "asOf": "2026-11-14",
+    "notes": "As of 2026-11-02, SEP-24 v3.8.0 (Active) says anchors and clients must support SEP-10 or SEP-45 (Draft, contract accounts) or both. An answer that names SEP-45 for contract-account wallets is not wrong.\nkeyFacts[2] grades behavior, not a required statement. The question does not mention directories, and SEP-24 says the stellar.toml TRANSFER_SERVER_SEP0024 entry is how a wallet finds the anchor's server. An answer that takes the auth and SEP-24 endpoints from the anchor's live stellar.toml and API responses, and relies on no directory, satisfies keyFacts[2]; an explicit directory caveat is welcome but not required. An answer that takes endpoints from directory metadata misses keyFacts[2].",
+    "leaf": "standards.stellar-toml",
+    "secondaryLeaf": "standards.deposit-withdrawal"
   }
 }

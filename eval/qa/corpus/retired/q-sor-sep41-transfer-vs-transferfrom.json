@@ -1,0 +1,23 @@
+{
+  "id": "q-sor-sep41-transfer-vs-transferfrom",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-soroban-a (golden coverage audit)",
+    "reviewer": "verify-audit-soroban-a (golden coverage audit)",
+    "reason": "Merged into q-soroban-token-transfer-pattern. q-soroban-token-transfer-pattern kf2/kf3 test transfer versus transfer_from and the MuxedAddress destination; the absorbed absolute-ledger expiry is the one missing fact.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-a.json#q-sor-sep41-transfer-vs-transferfrom",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-a.json#q-sor-sep41-transfer-vs-transferfrom",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-sor-sep41-transfer-vs-transferfrom"
+    ],
+    "lastCaseContentSha256": "29e008d24d673ac7a056733502d1209a122168399902797671e672b8fa8ef4d3",
+    "replacementIds": [
+      "q-soroban-token-transfer-pattern"
+    ]
+  }
+}

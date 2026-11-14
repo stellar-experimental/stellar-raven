@@ -1,0 +1,21 @@
+{
+  "id": "q-builder-by-region-latam",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-scf (golden coverage audit)",
+    "reviewer": "verify-audit-scf (golden coverage audit)",
+    "reason": "Retired with no replacement because it is a corpus-grounded directory question with no stable Stellar fact, no taxonomy leaf covers builders by region, and the frozen live lane carries the builder-shortlist question.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-builder-by-region-latam",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-builder-by-region-latam",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-builder-by-region-latam"
+    ],
+    "lastCaseContentSha256": "867080577cfe5d16fe6770a8aa52248fb5c4a03d9f24d8d3e8d30e0a081dfe43",
+    "replacementIds": []
+  }
+}

@@ -5,18 +5,15 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "Call a deployed contract either through a generated typed client (from `contractimport!` or generated bindings) or through `Env::invoke_contract`. The whole call tree shares the transaction's resource budget. Authorization is an invocation tree: an external address's `require_auth` must be covered for the relevant nested invocation and arguments. Separately, the address of the contract making a direct cross-contract call is implicitly authorized for that direct call; do not describe every boundary as an unconditional authorization reset.",
+    "answer": "Call a deployed contract through a typed client (from `contractimport!` or generated bindings) or `Env::invoke_contract`; the whole call tree shares the transaction's resource budget. Authorization follows the invocation tree: an external address's `require_auth` must be covered for the nested invocation and its arguments, while the contract making a direct call is itself implicitly authorized for that call.",
     "keyFacts": [
-      "Names generated typed clients as one call mechanism.",
-      "Names Env::invoke_contract as the other call mechanism.",
-      "Requires external-address invocation-tree coverage.",
-      "Names direct-contract-invoker implicit authorization."
+      "A contract calls another via a generated typed client or `Env::invoke_contract`.",
+      "An external address must authorize the nested invocation and its arguments."
     ],
     "avoid": [
       "Do NOT use Solidity interface/call/delegatecall semantics.",
-      "Do NOT claim nested external auth is automatically inherited, or deny the direct-invoker contract exception."
-    ],
-    "notes": "delegatecall is the EVM trap; scout_repos acceptable for code.\nAlso good if the answer: Cross-contract calls run within the same instruction/memory budget as the outer invocation. | Authorization (`require_auth`) is enforced at each contract boundary, not inherited implicitly.\nGolden cites: The developers.stellar.org cross-contract calls guide.\nGT-45 BLIND CORRECTION 2026-07-11: grade the two-part auth rule, not a blanket per-boundary-reset slogan."
+      "Do NOT claim nested external-address auth is inherited automatically, or deny the direct-invoker exception."
+    ]
   },
   "tags": {
     "category": "soroban",
@@ -71,19 +68,35 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "A direct invoker contract's require_auth calls are implicitly authorized, but not calls deeper in the stack; external addresses need explicit coverage",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization.md",
+            "observedAt": "2026-11-14",
+            "note": "all the `require_auth` calls made on behalf of the **direct** invoker contract `Address` are considered to be authorized (but not any calls ..."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-04)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-soroban-b, verify-audit-soroban-b; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "https://developers.stellar.org/docs/build/guides/conventions/cross-contract — \"A common way to do this is to load the Wasm of a contract using contractimport! ... Behind the scenes, this way of doing it is simply a convenient wrapper around env.invoke_contract.\" (observedAt 2026-11-02).",
-        "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization — \"Hence all the require_auth calls made on behalf of the direct invoker contract Address are considered to be authorized (but not any calls on behalf of the contract deeper down the stack).\" (observedAt 2026-11-02).",
-        "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-11.md — \"Whenever a contract calls require_auth for an account, host iterates over every non-exhausted SorobanAuthorizationEntry where credentials match\" (observedAt 2026-11-02).",
-        "No gospel change; no proposal (verifier noProposalCases).",
-        "Sibling sweep 2026-11-02: q-sor-require-auth-propagation, q-sor-decode-hosterror-codes, q-soroban-check-auth-custom-account; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-b.json#q-soroban-cross-contract-call",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-b.json#q-soroban-cross-contract-call",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-soroban-cross-contract-call",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization.md -- 'all the `require_auth` calls made on behalf of the **direct** invoker contract `Address` are considered to be authorized (but not any calls ...'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-soroban-cross-contract-call"
+    "origin": "raven-next q-soroban-cross-contract-call",
+    "notes": "delegatecall is the EVM trap; scout_repos acceptable for code.\nAlso good if the answer: Cross-contract calls run within the same instruction/memory budget as the outer invocation. | Authorization (`require_auth`) is enforced at each contract boundary, not inherited implicitly.\nGolden cites: The developers.stellar.org cross-contract calls guide.\nGT-45 BLIND CORRECTION 2026-07-11: grade the two-part auth rule, not a blanket per-boundary-reset slogan.",
+    "leaf": "soroban.cross-contract"
   }
 }

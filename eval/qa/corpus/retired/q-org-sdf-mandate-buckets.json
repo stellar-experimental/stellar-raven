@@ -1,0 +1,23 @@
+{
+  "id": "q-org-sdf-mandate-buckets",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-hist-retail (golden coverage audit)",
+    "reviewer": "verify-hist-retail (golden coverage audit)",
+    "reason": "Merged into q-org-sdf-structure-mandate. The bucket taxonomy is one fact of the SDF-mandate question; the survivor rewrite names the four current buckets and guards against presenting 2019 buckets as current. The page-state quirk is interface trivia.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-org-sdf-mandate-buckets",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-org-sdf-mandate-buckets",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-org-sdf-mandate-buckets"
+    ],
+    "lastCaseContentSha256": "34bc54def2586aefa92d0aa6e83259b01f4ba9752c75046790d90d988c1c6e43",
+    "replacementIds": [
+      "q-org-sdf-structure-mandate"
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "id": "q-hist-cctp-stellar-live-announcement",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-hist-retail (golden coverage audit)",
+    "reviewer": "verify-hist-retail (golden coverage audit)",
+    "reason": "Merged into q-cctp-v2-usdc-stellar: q-cctp-v2-usdc-stellar carries both the 2026-05-18 support date and the 2026-05-19 live announcement and tests burn-and-mint without a wrapped asset.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-hist-cctp-stellar-live-announcement",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-hist-cctp-stellar-live-announcement",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-hist-cctp-stellar-live-announcement"
+    ],
+    "lastCaseContentSha256": "39625e96935c8d4fec1d8e93418302515c443b78afde486b6827554574853e1d",
+    "replacementIds": [
+      "q-cctp-v2-usdc-stellar"
+    ]
+  }
+}

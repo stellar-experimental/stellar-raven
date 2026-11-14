@@ -1,24 +1,22 @@
 {
   "id": "q-scf-nqg-voting",
-  "question": "How does SCF community voting work — what is Neural Quorum Governance and who can vote?",
+  "question": "What is SCF Neural Quorum Governance, and who can vote?",
   "surface": [
     "scout.searchResearch"
   ],
   "golden": {
-    "answer": "A grounded answer derives current tier permissions from the official SCF governance pages and dates them. NQG is SCF's reputation/delegation governance system, combining Neural Governance with Quorum Delegation; it is not XLM/token voting and not Stellar Consensus Protocol. **Verified** has identity/account verification and view/discussion access; **Pathfinder** may participate by delegating weight; **Navigator** and **Pilot** may vote actively on Build Open projects; **Pilot** may also serve as a delegate and act on governance proposals. Build project-level community voting applies to the **Open Track only**. Integration and RFP awards are panel-led. Public Goods has a separate governance/process and must not be assigned the Build Open electorate without its own current source.",
+    "answer": "Neural Quorum Governance (NQG) is SCF's reputation- and delegation-based voting system, not XLM voting or the Stellar Consensus Protocol. Verified Members have four tiers: Verified (view discussions only), Pathfinder (can delegate), Navigator (votes actively on Build Open projects) and Pilot (also a quarterly delegate and governance proposer). Community project voting applies to the Open Track only. Tier status is governance reputation, separate from award history and payout KYC/KYB.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation.",
-      "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Gives the Verified/Pathfinder/Navigator/Pilot permission matrix.",
-      "Applies community voting only to Build Open projects.",
-      "Explains NQG as reputation/delegation governance, not token voting or SCP."
+      "NQG is reputation and delegation governance, not XLM voting or SCP.",
+      "Verified members only view; Pathfinders can delegate; Navigators vote on Open projects.",
+      "Pilots can also serve as quarterly delegates and propose governance changes.",
+      "Community project voting applies only to Build Open Track projects."
     ],
     "avoid": [
-      "Do NOT say every basic Verified member actively votes or can be a delegate.",
-      "Do NOT generalize Build Open voting to Integration/RFP or treat Public Goods as the same vote.",
-      "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical."
+      "Do NOT say every basic Verified member votes actively or can be a delegate.",
+      "Do NOT extend Build Open voting to Integration, RFP or Public Goods."
     ],
-    "notes": "CORRECTION 2026-08-04: grade the verified tier roles and Build Open community-vote/delegation boundary. Public Goods has a separate process; do not state or require a Public Goods electorate from Build Open rules."
+    "notes": "Public Goods has a separate process; do not require or state its electorate."
   },
   "tags": {
     "category": "scf-grants-builders",
@@ -32,7 +30,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-08-04",
+    "asOf": "2026-11-14",
     "sources": [
       {
         "class": "A",
@@ -74,23 +72,56 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "Verified view-only; Pathfinder delegates; Navigator votes actively; Pilot is also a quarterly delegate and governance proposer.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/main/governance/verified-members/README.md",
+            "observedAt": "2026-11-14",
+            "note": "Delegate votes for the SCF Build Award submissions during Community Vote ... Pathfinder, Navigator, Pilot"
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/main/governance/verified-members/README.md",
+            "observedAt": "2026-11-14",
+            "note": "Become a quarterly delegate for the SCF Build Award ... propose, contribute, and vote for governance proposals (Pilot only)"
+          }
+        ]
+      },
+      {
+        "claim": "Community vote applies to the Open Track only.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/build-award/README.md",
+            "observedAt": "2026-11-14",
+            "note": "Community Vote (for Open Track only)"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch scf-grants-builders-04)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-scf, verify-audit-scf; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Verification-only event 2026-11-02: every judge-facing field is unchanged; the proposer re-derived the claims from two or more source classes (no change proposed, so no verifier pass).",
-        "Live A 2026-10-29: https://stellar.gitbook.io/scf-handbook/governance/neural-quorum-governance — 'Neural Quorum Governance (NQG) is a novel voting-power attribution and delegation mechanism ... Neural Governance ... and Quorum Delegation' (claim: NQG = Neural Governance + Quorum Delegation, reputation/delegation mechanism, not token voting; verdict confirmed)",
-        "Live A 2026-11-02: https://medium.com/stellar-community/2-years-of-neural-quorum-governance-7bddd31 — 'Community Vote now applied to Open Track only, with Integration- and RFP tracks evaluated by the delegate panel directly.' (claim: NQG = Neural Governance + Quorum Delegation, reputation/delegation mechanism, not token voting; verdict confirmed)",
-        "Live A 2026-11-02: https://stellar.gitbook.io/scf-handbook/governance/verified-members.md — 'Delegate votes ... Pathfinder ✅ Navigator ✅ Pilot ✅; Vote actively for projects ... Navigator ✅ Pilot ✅; Become a quarterly delegate ... propose, contribute, and vote for governance proposals ... Pilot ✅' (claim: Verified view-only; Pathfinder delegates; Navigator+Pilot vote actively; Pilot delegate + governance proposals; verdict confirmed)",
-        "Live C 2026-11-02: Raven MCP scout.searchResearch(NQG Pathfinder Navigator Pilot) — 'returned How to Become Verified, How to vote, Neural Quorum Governance handbook pages' (claim: Verified view-only; Pathfinder delegates; Navigator+Pilot vote actively; Pilot delegate + governance proposals; verdict confirmed)",
-        "Live A 2026-11-02: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/quarterly-governance-process.md — 'Open ... Panel Review & Community Vote; RFP ... Panel Review only' (claim: Community vote only on Build Open; Integration/RFP panel-only; Public Goods separate; verdict confirmed)",
-        "Live A 2026-11-02: https://stellar.gitbook.io/scf-handbook/supporting-programs/public-goods-award.md — 'Managed through Soroban Governor with voting power weighted by Neural Quorum Governance (NQG)' (claim: Community vote only on Build Open; Integration/RFP panel-only; Public Goods separate; verdict confirmed)",
-        "Live A 2026-11-02: https://medium.com/feed/stellar-community (SCF #43 recap) — 'the Integration Track ... (reviewed by the delegate panel only), and the RFP Track ... (reviewed by the delegate panel only)' (claim: Community vote only on Build Open; Integration/RFP panel-only; Public Goods separate; verdict confirmed)",
-        "Sibling sweep 2026-11-02: q-scf-verified-members, q-scf-build-tracks checked by the proposer; no contradiction (no gospel change)."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-scf-nqg-voting",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-scf-nqg-voting",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-scf-nqg-voting",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/scf-handbook/main/governance/verified-members/README.md -- 'Delegate votes for the SCF Build Award submissions during Community Vote ... Pathfinder, Navigator, Pilot'",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/scf-handbook/main/governance/verified-members/README.md -- 'Become a quarterly delegate for the SCF Build Award ... propose, contribute, and vote for governance proposals (Pilot only)'",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/build-award/README.md -- 'Community Vote (for Open Track only)'",
+        "Live B 2026-11-14: https://github.com/stellar/scf-handbook/blob/main/governance/verified-members/README.md -- 'Access to #verified-panel ... to view discussions: all four tiers; Delegate votes ... and contribute to discussions: Pathfinder, Navigator, Pilot'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-scf-nqg-voting"
+    "origin": "raven-next q-scf-nqg-voting",
+    "notes": "CORRECTION 2026-08-04: grade the verified tier roles and Build Open community-vote/delegation boundary. Public Goods has a separate process; do not state or require a Public Goods electorate from Build Open rules.",
+    "leaf": "funding.scf-apply"
   }
 }

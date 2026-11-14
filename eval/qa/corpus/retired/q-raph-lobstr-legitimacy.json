@@ -1,0 +1,21 @@
+{
+  "id": "q-raph-lobstr-legitimacy",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-hist-retail (golden coverage audit)",
+    "reviewer": "verify-hist-retail (golden coverage audit)",
+    "reason": "Operator and custody model are q-eco-lobstr-wallet kf0/kf1; no other Stellar fact is lost.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-raph-lobstr-legitimacy",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-raph-lobstr-legitimacy",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-raph-lobstr-legitimacy"
+    ],
+    "lastCaseContentSha256": "fe8f204ebfa96118a62a80ac682aa2a09a8b285a0fb7887b3f063779178aaef4",
+    "replacementIds": []
+  }
+}

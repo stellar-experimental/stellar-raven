@@ -1,0 +1,23 @@
+{
+  "id": "q-tool-cctp-stellar-integration",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-tooling-b (golden coverage audit)",
+    "reviewer": "verify-audit-tooling-b (golden coverage audit)",
+    "reason": "Merged into q-cctp-v2-usdc-stellar: q-cctp-v2-usdc-stellar tests CCTP V2 on Stellar, including domain 27 and inbound routing through CctpForwarder.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-b.json#q-tool-cctp-stellar-integration",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-b.json#q-tool-cctp-stellar-integration",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-tool-cctp-stellar-integration"
+    ],
+    "lastCaseContentSha256": "0be4267b3108134ac8e5a8133373f4934266576d324dc6e21342a423851e98a4",
+    "replacementIds": [
+      "q-cctp-v2-usdc-stellar"
+    ]
+  }
+}

@@ -1,0 +1,173 @@
+{
+  "clusters": [
+    {
+      "id": "cluster-007",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Reconcile re-check 2026-11-14 (instrument lane, .agents/rounds/2026-11-14-golden-coverage-audit/apply/RECONCILE.md): q-pc-protocol-27-zipper gained a grader note: SDF's Zipper guide says the old SOROBAN_CREDENTIALS_ADDRESS type stays valid only until Protocol 28, but CAP-0071-02 keeps it valid and Protocol 28 did not remove it. No activation date, ledger, CAP status or protocol number changed. The protocol-to-feature and activation mappings stay consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-008",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Reconcile re-check 2026-11-14 (instrument lane, .agents/rounds/2026-11-14-golden-coverage-audit/apply/RECONCILE.md): q-pc-protocol-27-zipper gained a grader note: SDF's Zipper guide says the old SOROBAN_CREDENTIALS_ADDRESS type stays valid only until Protocol 28, but CAP-0071-02 keeps it valid and Protocol 28 did not remove it. No activation date, ledger, CAP status or protocol number changed. CAP-0071 stays Final and assigned to Protocol 27; the note cites CAP-0071-02, also Final.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-024",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Reconcile re-check 2026-11-14 (instrument lane, .agents/rounds/2026-11-14-golden-coverage-audit/apply/RECONCILE.md): q-pc-protocol-27-zipper gained a grader note: SDF's Zipper guide says the old SOROBAN_CREDENTIALS_ADDRESS type stays valid only until Protocol 28, but CAP-0071-02 keeps it valid and Protocol 28 did not remove it. No activation date, ledger, CAP status or protocol number changed. No member carries the old Software Versions caution; the note adds none.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-025",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Reconcile re-check 2026-11-14 (instrument lane, .agents/rounds/2026-11-14-golden-coverage-audit/apply/RECONCILE.md): q-pc-protocol-27-zipper gained a grader note: SDF's Zipper guide says the old SOROBAN_CREDENTIALS_ADDRESS type stays valid only until Protocol 28, but CAP-0071-02 keeps it valid and Protocol 28 did not remove it. No activation date, ledger, CAP status or protocol number changed. The note agrees with this entry: CAP-0071 credentials remain in effect after P28 and P29.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-032",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Reconcile re-check 2026-11-14 (instrument lane, .agents/rounds/2026-11-14-golden-coverage-audit/apply/RECONCILE.md): q-pc-protocol-27-zipper gained a grader note: SDF's Zipper guide says the old SOROBAN_CREDENTIALS_ADDRESS type stays valid only until Protocol 28, but CAP-0071-02 keeps it valid and Protocol 28 did not remove it. No activation date, ledger, CAP status or protocol number changed. The note agrees that CAP-0071 credentials remain in effect.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-049",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Reconcile re-check 2026-11-14 (instrument lane, .agents/rounds/2026-11-14-golden-coverage-audit/apply/RECONCILE.md): q-hot-sdf-xlm-holdings-sales scoped its grader note to the Developer Docs lumens page and added that SDF's mandate page shows per-bucket tables with a 'Last updated' time (stellar.org/foundation/mandate, read 2026-11-14). It still treats balances as source-, method- and timestamp-scoped and forbids summing mixed-timestamp rows, as this entry says.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-098",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Reconcile re-check 2026-11-14 (instrument lane, .agents/rounds/2026-11-14-golden-coverage-audit/apply/RECONCILE.md): q-soroban-require-auth gained a grader note that CAP-0089's require_external_auth functions are a Draft proposal for Protocol 31, not shipped. Its require_auth facts are unchanged and agree with q-sor-require-auth-propagation.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-102",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Reconcile re-check 2026-11-14 (instrument lane, .agents/rounds/2026-11-14-golden-coverage-audit/apply/RECONCILE.md): q-soroban-require-auth gained only the CAP-0089 Draft note; its __check_auth fact is unchanged and agrees with q-soroban-check-auth-custom-account.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-104",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Reconcile re-check 2026-11-14 (instrument lane, .agents/rounds/2026-11-14-golden-coverage-audit/apply/RECONCILE.md): q-pc-protocol-27-zipper gained a grader note: SDF's Zipper guide says the old SOROBAN_CREDENTIALS_ADDRESS type stays valid only until Protocol 28, but CAP-0071-02 keeps it valid and Protocol 28 did not remove it. No activation date, ledger, CAP status or protocol number changed. Delegation remains a first-class P27 feature.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-112",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Reconcile re-check 2026-11-14 (instrument lane, .agents/rounds/2026-11-14-golden-coverage-audit/apply/RECONCILE.md): q-pc-protocol-27-zipper gained a grader note: SDF's Zipper guide says the old SOROBAN_CREDENTIALS_ADDRESS type stays valid only until Protocol 28, but CAP-0071-02 keeps it valid and Protocol 28 did not remove it. No activation date, ledger, CAP status or protocol number changed. The CAP-status-versus-network-live distinction is unchanged.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-119",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Reconcile re-check 2026-11-14 (instrument lane, .agents/rounds/2026-11-14-golden-coverage-audit/apply/RECONCILE.md): q-pc-protocol-27-zipper gained a grader note: SDF's Zipper guide says the old SOROBAN_CREDENTIALS_ADDRESS type stays valid only until Protocol 28, but CAP-0071-02 keeps it valid and Protocol 28 did not remove it. No activation date, ledger, CAP status or protocol number changed. Delegate chains and V2 credentials remain P27 features.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-120",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Reconcile re-check 2026-11-14 (instrument lane, .agents/rounds/2026-11-14-golden-coverage-audit/apply/RECONCILE.md): q-pc-protocol-27-zipper gained a grader note: SDF's Zipper guide says the old SOROBAN_CREDENTIALS_ADDRESS type stays valid only until Protocol 28, but CAP-0071-02 keeps it valid and Protocol 28 did not remove it. No activation date, ledger, CAP status or protocol number changed. The note agrees that CAP-0071 credentials stayed in effect through P28 and P29.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    }
+  ],
+  "numericInvariants": [
+    {
+      "matchLabel": "Mainnet protocol activation history",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Reconcile re-check 2026-11-14 (instrument lane, .agents/rounds/2026-11-14-golden-coverage-audit/apply/RECONCILE.md): q-pc-protocol-27-zipper gained a grader note: SDF's Zipper guide says the old SOROBAN_CREDENTIALS_ADDRESS type stays valid only until Protocol 28, but CAP-0071-02 keeps it valid and Protocol 28 did not remove it. No activation date, ledger, CAP status or protocol number changed. Activation dates and ledger numbers are unchanged; Horizon reported protocol_version 29 on 2026-11-14.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    }
+  ],
+  "dateContingentTraps": [
+    {
+      "matchTriggerDateEvent": "Protocol 30 (Bell) Mainnet vote on 2026-11-23, any later Mainnet protocol activation, or any AddressV2 successor change",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Reconcile re-check 2026-11-14 (instrument lane, .agents/rounds/2026-11-14-golden-coverage-audit/apply/RECONCILE.md): q-pc-protocol-27-zipper gained a grader note: SDF's Zipper guide says the old SOROBAN_CREDENTIALS_ADDRESS type stays valid only until Protocol 28, but CAP-0071-02 keeps it valid and Protocol 28 did not remove it. No activation date, ledger, CAP status or protocol number changed. reverifyBy and the Bell vote facts are unchanged, and the note anticipates no AddressV2 successor change. The disposition holds.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "matchTriggerDateEvent": "A verified Confidential Tokens Mainnet deployment, or a zero-knowledge verifier release",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Reconcile re-check 2026-11-14 (instrument lane, .agents/rounds/2026-11-14-golden-coverage-audit/apply/RECONCILE.md): q-edge-noinfo-stellar-native-privacy-default dropped its dating-only key fact. Its answer and notes still date Confidential Tokens and Stellar Private Payments as of 2026-11-14, and nothing claims a verified Mainnet deployment, so the disposition holds.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    }
+  ]
+}

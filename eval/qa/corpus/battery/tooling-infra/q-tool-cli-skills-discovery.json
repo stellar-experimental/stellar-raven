@@ -7,20 +7,17 @@
     "scout.searchResearch"
   ],
   "golden": {
-    "answer": "Use the live Scout skills catalog and report **returned rows**, not its enums as a frozen roster. `scout.listSkills({})` advertises valid kind filters `skill-md`, `mcp-server`, `sdk`, `cli`, `agent-kit`, and `tool`, and valid source filters `sdf`, `stellarlight`, `lumenloop`, `external`, and `community`. Those values describe what the API accepts; they do **not** promise that every category has a current entry.\n\nFor each row actually returned, give its name/slug, kind, source/owner, install or configuration command, repository/docs URL, scope, and maturity/security caveat. Re-run filtered calls for the requested kinds and preserve an empty array honestly. Verify install commands against each current repository/package README and distinguish SDF-owned from community tooling.",
+    "answer": "Official tooling includes Stellar Skills at skills.stellar.org (official skills maintained in stellar/stellar-dev-skill, plus community skills), the Stellar Docs MCP server at developers.stellar.org/mcp, and the SDF-maintained Stellar CLI. Community skills are not SDF-endorsed; read each entry's owner and install command, and check them against its current README.",
     "keyFacts": [
-      "Uses Scout's broad live skills catalog across requested tooling kinds.",
-      "Returns concrete current rows from the catalog.",
-      "Treats valid filter enums versus populated rows as distinct catalog categories.",
-      "Accepts empty categories as valid current results.",
-      "Includes row install/config, ownership, scope, URLs, and maturity caveats."
+      "skills.stellar.org hosts Stellar Skills; official ones live in stellar/stellar-dev-skill.",
+      "The Stellar Docs MCP server is served at developers.stellar.org/mcp.",
+      "The Stellar CLI (`stellar`) is the SDF-maintained command-line tool.",
+      "Community skills are not SDF-endorsed; each carries its own owner and install steps."
     ],
     "avoid": [
-      "Do NOT claim every valid kind/source enum currently has a row or turn one empty response into permanent absence.",
-      "Do NOT fabricate tools or install commands, call every listed tool SDF-official, or hide maturity/security caveats.",
-      "Do NOT freeze counts, membership, or empty categories without an answer-time generatedAt/as-of stamp."
+      "Do NOT invent tools or install commands, or present a tool roster or count without an as-of date."
     ],
-    "notes": "2026-06-29 differentiation vs the routing-corpus lane q-tool-mcp-servers-skills-discovery (routing eval only — NOT an owned battery case): this file owns the BROAD multi-kind catalog sweep (skill-md/mcp-server/sdk/cli/agent-kit/tool); mcp-discovery owns the NARROW kind=mcp-server filter. Scout /api/skills returns those kinds across sources [sdf, stellarlight, lumenloop, external, community]. Fabrication is the trap.\nAlso good if the answer: Spans the FULL multi-kind catalog (skill-md, mcp-server, sdk, cli, agent-kit, tool) rather than scoping to a single kind such as MCP servers only. | Distinguishes tooling-catalog discovery from a conceptual docs lookup.\nGolden cites: Scout skills catalog (stellarlight.xyz/api/skills) results.\nGT-55 CORRECTION 2026-07-11: grade the broad multi-kind live-catalog behavior, but never require one row per valid enum. Require current returned entries and honest empty categories with generatedAt/as-of context; narrow MCP-only discovery remains a sibling case."
+    "notes": "Further tools drawn from Scout's skills catalog are welcome extra detail; an empty kind filter is a valid result, not absence proof."
   },
   "tags": {
     "category": "tooling-infra",
@@ -34,7 +31,7 @@
     },
     "domain": "corpus-grounded",
     "status": "confirmed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-03-11",
     "sources": [
       {
@@ -151,23 +148,82 @@
           }
         ],
         "note": "The 2026-07-11 row above (community empty) is a dated historical row; the golden never pins per-enum counts."
+      },
+      {
+        "claim": "Official docs list Stellar Skills at skills.stellar.org and a Stellar Docs MCP server at developers.stellar.org/mcp",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/building-with-ai.md",
+            "observedAt": "2026-11-14",
+            "note": "[**skills.stellar.org**](https://skills.stellar.org/) is the home for Stellar Skills"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/building-with-ai.md",
+            "observedAt": "2026-11-14",
+            "note": "The **Stellar Docs MCP server** at `https://developers.stellar.org/mcp`"
+          }
+        ]
+      },
+      {
+        "claim": "Official skills are maintained in stellar/stellar-dev-skill",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/building-with-ai.md",
+            "observedAt": "2026-11-14",
+            "note": "Skills are open source and maintained in the [stellar/stellar-dev-skill] repository."
+          },
+          {
+            "class": "B",
+            "ref": "https://api.github.com/repos/stellar/stellar-dev-skill",
+            "observedAt": "2026-11-14",
+            "note": "archived false; pushed_at 2026-11-12"
+          }
+        ]
+      },
+      {
+        "claim": "Stellar CLI is an SDF-org repository with a current release",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://api.github.com/repos/stellar/stellar-cli/releases",
+            "observedAt": "2026-11-14",
+            "note": "v30.0.1 published 2026-11-03 (stellar/stellar-cli)"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-04)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-tooling-b, verify-audit-tooling-b; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Verification-only event 2026-11-02: no judge-facing field changed; asOf 2026-11-02 and reverifyBy 2027-03-11 refreshed; one dated corroboration row added.",
-        "Live C 2026-11-02T16:41:08Z: https://stellarlight.xyz/api/skills — '\"counts\": {\"returned\": 82, \"total\": 82, \"bySource\": {\"sdf\": 8, \"stellarlight\": 15, \"lumenloop\": 8, \"external\": 12, \"community\": 39}}'; validKinds and validSources unchanged",
-        "Live C 2026-11-02T16:43:25Z: https://stellarlight.xyz/api/skills?kind=agent-kit — 0 rows; a valid filter can return an empty array",
-        "Live C 2026-11-02: https://stellarlight.xyz/api/skills?kind=mcp-server — stellar-scout-mcp (stellarlight) 'npx @stellar-light/scout-mcp'; lumenloop-mcp (lumenloop) 'claude mcp add --transport http lumenloop https://mcp.lumenloop.com'",
-        "Live A 2026-11-02: https://skills.stellar.org/llms.txt — '# Stellar Skills ... Agent-readable Stellar developer documentation' (HTTP 200)",
-        "Sibling sweep 2026-11-02: q-gap-scout-list-skill-directory, q-tool-skill-detail-install, q-gap-scout-get-skill-detail checked; enums agree and none pins per-kind counts; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-b.json#q-tool-cli-skills-discovery",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-b.json#q-tool-cli-skills-discovery",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-tool-cli-skills-discovery",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/build/building-with-ai.md -- '[**skills.stellar.org**](https://skills.stellar.org/) is the home for Stellar Skills'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/build/building-with-ai.md -- 'The **Stellar Docs MCP server** at `https://developers.stellar.org/mcp`'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/build/building-with-ai.md -- 'Skills are open source and maintained in the [stellar/stellar-dev-skill] repository.'",
+        "Live B 2026-11-14: https://api.github.com/repos/stellar/stellar-dev-skill -- 'archived false; pushed_at 2026-11-12'",
+        "Live B 2026-11-14: https://api.github.com/repos/stellar/mcp-stellar-xdr -- 'archived true; pushed_at 2026-09-24'",
+        "Live B 2026-11-14: https://api.github.com/repos/stellar/stellar-cli/releases -- 'v30.0.1 published 2026-11-03 (stellar/stellar-cli)'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-docs/blob/main/docs/build/building-with-ai.mdx -- 'The **Stellar Docs MCP server** at `https://developers.stellar.org/mcp` gives your agent direct access to this documentation site.'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/build/building-with-ai -- 'Skills are open source and maintained in the stellar/stellar-dev-skill repository.'",
+        "Live A 2026-11-14: https://skills.stellar.org/ -- 'Community skills are independently developed and are not reviewed, endorsed, or maintained by the Stellar Development Foundation.'",
+        "Live B 2026-11-14: https://api.github.com/repos/stellar/mcp-stellar-xdr -- 'archived=true pushed=2026-09-24T15:38:47Z desc=An MCP exposing an interface to Stellar XDR-JSON.'"
       ],
       "rootCause": [
-        "Verification-only event 2026-11-02: every judge-facing field is unchanged; the live catalog grew (82 rows; community now populated) without contradicting the behavioral golden."
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit",
+        "freshness-drift"
       ]
     },
-    "origin": "raven-next q-tool-cli-skills-discovery"
+    "origin": "raven-next q-tool-cli-skills-discovery",
+    "notes": "2026-06-29 differentiation vs the routing-corpus lane q-tool-mcp-servers-skills-discovery (routing eval only — NOT an owned battery case): this file owns the BROAD multi-kind catalog sweep (skill-md/mcp-server/sdk/cli/agent-kit/tool); mcp-discovery owns the NARROW kind=mcp-server filter. Scout /api/skills returns those kinds across sources [sdf, stellarlight, lumenloop, external, community]. Fabrication is the trap.\nAlso good if the answer: Spans the FULL multi-kind catalog (skill-md, mcp-server, sdk, cli, agent-kit, tool) rather than scoping to a single kind such as MCP servers only. | Distinguishes tooling-catalog discovery from a conceptual docs lookup.\nGolden cites: Scout skills catalog (stellarlight.xyz/api/skills) results.\nGT-55 CORRECTION 2026-07-11: grade the broad multi-kind live-catalog behavior, but never require one row per valid enum. Require current returned entries and honest empty categories with generatedAt/as-of context; narrow MCP-only discovery remains a sibling case.",
+    "leaf": "ai.skills-llms-docs",
+    "secondaryLeaf": "ai.mcp-servers"
   }
 }

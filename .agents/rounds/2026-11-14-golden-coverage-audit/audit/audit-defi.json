@@ -1,0 +1,4426 @@
+{
+  "lane": "audit-defi",
+  "records": [
+    {
+      "id": "q-defi-agent-identity-stellar-experimental",
+      "purpose": "mixed",
+      "topics": [
+        "ERC-8004 agent identity",
+        "Stellar community implementations",
+        "standard versus deployment"
+      ],
+      "tests": "ERC-8004 is an external Ethereum Draft for agent identity and reputation, and Stellar has unratified community Soroban implementations but no ratified SEP.",
+      "questionIssues": [
+        "Answerable and realistic. Ground-truth parts (Draft status, no SEP, two repos) are tool-independent; the Scout-only framing in the golden wrapper is not needed."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": "Dating rule; restates KF1 and the case's freshness tag."
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "Restates KF0."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "ERC-8004 is still status Draft",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/ethereum/ERCs/blob/master/ERCS/erc-8004.md",
+              "observedAt": "2026-11-14",
+              "quote": "status: Draft ... type: Standards Track ... created: 2025-08-13"
+            }
+          ]
+        },
+        {
+          "claim": "The stellar-protocol ecosystem has no agent-identity SEP",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "gh search code 8004 --repo stellar/stellar-protocol",
+              "observedAt": "2026-11-14",
+              "quote": "one hit only: ecosystem/sep-0002.md (a false positive); no SEP-8004 file"
+            }
+          ]
+        },
+        {
+          "claim": "trionlabs/stellar-8004 and progax01/stellar8004 exist and are not archived",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "gh api repos/trionlabs/stellar-8004",
+              "observedAt": "2026-11-14",
+              "quote": "archived false, pushed_at 2026-11-14T00:53:24Z"
+            },
+            {
+              "class": "B",
+              "ref": "gh api repos/progax01/stellar8004",
+              "observedAt": "2026-11-14",
+              "quote": "archived false, pushed_at 2026-06-15T03:32:16Z"
+            }
+          ]
+        }
+      ],
+      "duplicates": [],
+      "verdict": "tighten",
+      "reason": "The topic matters (agent identity on Stellar) and the facts hold, but 552 words of judge prose are provenance, repoScore history and a deployment-date aside. Two of four key facts are process boilerplate.",
+      "rewrite": {
+        "question": null,
+        "answer": "ERC-8004 ('Trustless Agents') is an Ethereum ERC, still a Draft as of 2026-11-14, for agent identity, reputation and validation; payments are out of scope and compose with x402. Stellar has no ratified agent-identity SEP. Community Soroban implementations (trionlabs/stellar-8004, progax01/stellar8004) are deployed but unratified, so describe them as early community work.",
+        "keyFacts": [
+          "ERC-8004 is an Ethereum Draft for agent identity, reputation and validation.",
+          "ERC-8004 leaves payments out of scope; it composes with x402.",
+          "Stellar has no ratified SEP for agent identity as of 2026-11-14.",
+          "Community Soroban implementations exist, such as trionlabs/stellar-8004."
+        ],
+        "avoid": [
+          "Calling ERC-8004, SRC-8004 or SEP-8004 a ratified Stellar standard.",
+          "Claiming no Stellar implementation exists."
+        ],
+        "notes": "Do not require the Ethereum mainnet deployment date. Do not infer audit, adoption or reliability from deployment.",
+        "movedToTruth": [
+          "Scout repoScore/judgeScore history (69 vs 54)",
+          "Jan-29-2026 mainnet date and single-source caveat",
+          "emperorsixpacks/-bear-protocol handle correction",
+          "GT-12 correction history"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 552,
+      "wordsAfter": 120
+    },
+    {
+      "id": "q-defi-agentic-payment-standards-compare",
+      "purpose": "mixed",
+      "topics": [
+        "x402, MPP, AP2, ACP comparison",
+        "Stellar settlement methods",
+        "SEP-41 token substrate"
+      ],
+      "tests": "Which agent-payment protocols are general rather than Stellar-specific, and how each relates to Stellar settlement via SEP-41.",
+      "questionIssues": [
+        "Realistic and answerable. Slight overlap with q-defi-x402-on-stellar-what, which should own x402 mechanics; this case owns the four-way layering."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": "Dating rule; restates the freshness tag."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Holds two predicates (x402, MPP general; Stellar methods settle SEP-41)."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Holds two predicates (AP2 and ACP) and a maturity label."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Restates KF1 and adds SEP-41, which the answer needs only once."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "MPP has charge, session and channel intents and a Stellar charge method over SEP-41 transfers",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/agentic-payments/mpp",
+              "observedAt": "2026-11-14",
+              "quote": "Use the Machine Payments Protocol (MPP) for per-request HTTP payments on Stellar, with ... off-chain payment channels."
+            },
+            {
+              "class": "D",
+              "ref": "https://mpp.dev/payment-methods/stellar/charge",
+              "observedAt": "2026-11-14",
+              "quote": "The Stellar implementation of the charge intent. The client signs a SEP-41 transfer invocation"
+            }
+          ]
+        },
+        {
+          "claim": "AP2 moves through FIDO Alliance work",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "D",
+              "ref": "https://fidoalliance.org/building-the-trust-layer-for-agentic-payments-with-ap2-and-verifiable-intent",
+              "observedAt": "2026-11-14",
+              "quote": "Building the Trust Layer for Agentic Payments with AP2 and Verifiable Intent (May 26, 2026)"
+            }
+          ]
+        },
+        {
+          "claim": "ACP is 'beta'",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://docs.stripe.com/agentic-commerce/protocols/acp",
+              "observedAt": "2026-11-14",
+              "quote": "an open standard created by Stripe, OpenAI, and Meta that defines how AI agents interact with businesses to complete purchases"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-defi-x402-on-stellar-what",
+          "survivor": "q-defi-x402-on-stellar-what",
+          "why": "x402 mechanics are tested there in full; this case should only place x402 among the four."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Keeps a useful layering question but cuts a 641-word golden to the four distinctions. The unverified 'beta' label for ACP is dropped; the source-confirmed 'open standard by Stripe, OpenAI and Meta' replaces it only in the truth block.",
+      "rewrite": {
+        "question": null,
+        "answer": "None of x402, MPP, AP2 or ACP is a Stellar standard. x402 and MPP are general payment protocols; Stellar supplies methods that settle SEP-41 token transfers through Soroban authorization. MPP covers one-time charge plus session and channel payments. AP2 is an emerging mandate-based authorization protocol that can use x402 but does not require it. ACP is a checkout protocol that delegates payment to PSPs.",
+        "keyFacts": [
+          "x402 and MPP are general protocols; Stellar methods settle SEP-41 tokens.",
+          "MPP covers one-time charge plus session and channel payments, not only streaming.",
+          "AP2 is an emerging authorization protocol; x402 is optional there.",
+          "ACP is a checkout protocol that delegates payment; it is not a settlement rail."
+        ],
+        "avoid": [
+          "Calling x402 or MPP a Stellar-native standard.",
+          "Describing ACP as a blockchain settlement rail or MPP as a Stripe/Tempo chain."
+        ],
+        "notes": "The exposed Stellar agentic-payments skill covers x402 and MPP only; accept source-faithful limits on AP2 and ACP.",
+        "movedToTruth": [
+          "VERIFIED 2026-06-22/29 notes",
+          "AP2-routes-through-x402 framing is industry, not Stellar-docs",
+          "'beta' label for ACP unverified 2026-11-14",
+          "coverage diagnostic 2026-07-14"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 641,
+      "wordsAfter": 148
+    },
+    {
+      "id": "q-defi-allbridge-what-is",
+      "purpose": "mixed",
+      "topics": [
+        "Allbridge bridge products",
+        "Stellar bridge availability",
+        "Core versus Next versus Classic"
+      ],
+      "tests": "Allbridge is a bridge with three products whose Stellar support differs, and bridge coverage must be verified per route rather than taken from a launch-era list.",
+      "questionIssues": [
+        "The question 'which chains does it bridge to/from Stellar' invites a static list that the golden itself says is volatile; the answer is behavioral (verify route) plus the product split. Still a realistic ask."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Holds two predicates (bridge provider; three products differ)."
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "Prescribes verifying through the provider API or UI; not a world fact."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Allbridge Core lists Stellar as temporarily unavailable pending a CCTP audit; pools discontinued July 2026",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://docs-core.allbridge.io/what-is-allbridge-core.md",
+              "observedAt": "2026-11-14",
+              "quote": "Stellar support is temporarily unavailable while the Stellar CCTP implementation is pending audit."
+            }
+          ]
+        },
+        {
+          "claim": "Allbridge Next lists Stellar among 8 chains",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://allbridge.io/next/",
+              "observedAt": "2026-11-14",
+              "quote": "Move stablecoins and native gas tokens across 8 chains with low, predictable fees"
+            }
+          ]
+        },
+        {
+          "claim": "Allbridge Classic is deprecated and stops in November 2026",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://docs.allbridge.io/master.md",
+              "observedAt": "2026-11-14",
+              "quote": "Allbridge Classic is deprecated and will be stopped in November 2026."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-defi-bridge-evm-to-stellar-axelar",
+          "survivor": "q-defi-bridge-evm-to-stellar-axelar",
+          "why": "Both carry the same dated Core status; the bridge case should own cross-bridge comparison, this one product identity."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Needed (a bridge identity case with a live status trap) but the golden is 458 words with a 2026-07-10 snapshot history. Only one fresh source class was re-read; claims are first-party statements, so the single class is acceptable but confidence is medium.",
+      "rewrite": {
+        "question": null,
+        "answer": "Allbridge is a cross-chain bridge provider with three products: Core (stablecoins), Next (stablecoins, gas tokens, swaps) and the deprecated Classic. After a July 2026 exploit Core dropped pool-based transfers; as of 2026-11-14 its docs list Stellar as temporarily unavailable pending a CCTP audit, while Next lists Stellar among 8 chains. XRPL belongs to Classic, which stops in November 2026. Verify each route's assets and direction before use.",
+        "keyFacts": [
+          "Allbridge is a bridge provider; Core, Next and Classic differ on Stellar support.",
+          "As of 2026-11-14 Core lists Stellar unavailable; Next lists Stellar.",
+          "XRPL and the 2023 launch chain list are historical, not current Core routes."
+        ],
+        "avoid": [
+          "Presenting the 2023 launch chain list or XRPL as current Core coverage.",
+          "Describing Allbridge as a DEX, lender, oracle or Starbridge."
+        ],
+        "notes": "Accept a dated, attributed status for either product. Do not require the superseded 16-network snapshot.",
+        "movedToTruth": [
+          "Per-project identity routing hint",
+          "FRESHNESS UPDATE 2026-11-02 and GT-13 correction history",
+          "SDF 2023 press launch chain list",
+          "Also-good-if: 2023 launch note"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 458,
+      "wordsAfter": 139
+    },
+    {
+      "id": "q-defi-aquarius-what-is",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Aquarius AMM and AQUA",
+        "ICE lock tokens",
+        "governICE versus upvoteICE"
+      ],
+      "tests": "Aquarius is a Soroban AMM whose AQUA lock mints non-transferable ICE tokens with distinct voting and boost roles.",
+      "questionIssues": [
+        "Good project-identity question with a real precision trap (ICE family roles)."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Holds several predicates (three tokens, non-transferable, distinct roles)."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Conditional boost mechanic; important but narrow."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "ICE tokens are non-transferable; upvoteICE and governICE have separate roles; AQUA is used for locking, voting, rewards and governance",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://docs.aqua.network/aqua-and-ice/ice-tokens-locking-aqua-and-getting-benefits",
+              "observedAt": "2026-11-14",
+              "quote": "Lock AQUA to receive ICE — non-transferable tokens that carry voting power and boost liquidity rewards."
+            },
+            {
+              "class": "A",
+              "ref": "https://docs.aqua.network/governance/aquarius-governance-community-led-decision-making",
+              "observedAt": "2026-11-14",
+              "quote": "Users vote on proposals using their governICE balance"
+            }
+          ]
+        }
+      ],
+      "duplicates": [],
+      "verdict": "tighten",
+      "reason": "Needed, but a 412-word golden carries rename and delegate-program history. Trim to the identity, the three ICE roles, and the no-free-emissions caution.",
+      "rewrite": {
+        "question": null,
+        "answer": "Aquarius is a Stellar/Soroban liquidity layer and AMM. AQUA is its transferable utility and reward asset. Locking AQUA mints non-transferable ICE-family tokens: ICE for lock and boost accounting, upvoteICE for liquidity-market voting, governICE for DAO proposals. ICE can boost AQUA rewards for eligible LP and SDEX activity; holding ICE or governance voting alone earns no emissions.",
+        "keyFacts": [
+          "Aquarius is a Stellar/Soroban liquidity layer and AMM.",
+          "AQUA is transferable; ICE-family tokens from locking AQUA are not.",
+          "ICE, upvoteICE and governICE have separate lock, market-voting and governance roles.",
+          "ICE boosts AQUA rewards only for eligible LP/SDEX activity."
+        ],
+        "avoid": [
+          "Calling ICE-family tokens transferable or merging the three ICE roles.",
+          "Claiming holding ICE or casting governance votes earns AQUA emissions.",
+          "Describing Aquarius as a lender, oracle or bridge."
+        ],
+        "notes": "A dated, attributed mention of voting-incentive payouts or the delegate AQUA pool is not a claim that holding ICE earns emissions.",
+        "movedToTruth": [
+          "Scout one-line summary merges upvote and governICE",
+          "downvoteICE deprecated June 2026",
+          "Freighter-to-Varial rename note (belongs to wallets case)",
+          "Also-good-if wallet integrations"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 412,
+      "wordsAfter": 143
+    },
+    {
+      "id": "q-defi-arbitrage-pathpayment-bots",
+      "purpose": "mixed",
+      "topics": [
+        "path payments strict-send and strict-receive",
+        "bot profitability honesty",
+        "market-making tooling"
+      ],
+      "tests": "How PathPaymentStrictSend and StrictReceive protect a trade, and that protocol mechanics do not guarantee bot profit.",
+      "questionIssues": [
+        "Double-barreled (profitable bot? and how do path queries work?) but both halves are answerable and coherent. Absorbs the Kelp tooling question."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": "Dating rule; restates the freshness tag."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Profitability drivers list is a long predicate chain."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Overlaps KF2 (fees, competition, capital)."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "stellar-deprecated/kelp is archived; last release v1.12.0 on 2021-11-05",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "gh api repos/stellar-deprecated/kelp",
+              "observedAt": "2026-11-14",
+              "quote": "archived true, pushed_at 2023-11-03T05:46:15Z"
+            },
+            {
+              "class": "B",
+              "ref": "gh api repos/stellar-deprecated/kelp/releases/latest",
+              "observedAt": "2026-11-14",
+              "quote": "tag v1.12.0, published 2021-11-05T20:56:13Z"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-defi-market-making-kelp",
+          "survivor": "q-defi-arbitrage-pathpayment-bots",
+          "why": "Kelp status and offer-repositioning fold into this bot-building case."
+        },
+        {
+          "id": "q-defi-sdex-offer-lifecycle",
+          "survivor": "q-defi-sdex-offer-lifecycle",
+          "why": "Offer id, fill and cancellation tracking is its own question; this case should not restate it."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Survivor of the Kelp merge. Drops the wrapper and absorbs the single durable Kelp fact (archived tool, prior art only).",
+      "rewrite": {
+        "question": null,
+        "answer": "Stellar path payments move value across orderbook and AMM liquidity. PathPaymentStrictSend fixes the send amount and is protected by destination_min; PathPaymentStrictReceive fixes the received amount and is protected by send_max. Profit is not guaranteed: spreads, fees, slippage, competition and vanishing paths can fail or erase gains, so test on testnet first. Kelp, the old SDEX bot, is archived (last release 2021).",
+        "keyFacts": [
+          "Strict-send fixes the send amount and is protected by destination_min.",
+          "Strict-receive fixes the receive amount and is protected by send_max.",
+          "Bot profit depends on liquidity, spreads, fees, slippage and competition.",
+          "Kelp (stellar-deprecated/kelp) is archived, with its last release in 2021."
+        ],
+        "avoid": [
+          "Promising profit or guaranteed returns from small-capital arbitrage.",
+          "Calling stellar-deprecated/kelp actively maintained."
+        ],
+        "notes": "Grade a no-guarantee statement, not a claim that profit incentives are absent: CAP-0038 pays AMM liquidity-provider fees and discusses profit-driven allocation.",
+        "movedToTruth": [
+          "Phase-3 attack note",
+          "Result-code traps (UNDER_DESTMIN, OVER_SENDMAX) as also-good-if",
+          "Kelp release/push dates",
+          "Source list"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 423,
+      "wordsAfter": 134
+    },
+    {
+      "id": "q-defi-asset-whitespace-live",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Scout Asset category cluster",
+        "index whitespace versus market absence"
+      ],
+      "tests": "How an agent reads Scout's getClusters category row, an overlapping type cluster and analyzeEcosystem without conflating denominators.",
+      "questionIssues": [
+        "Asks about 'the current Stellar index', so no other tool could answer it; it grades Scout response handling, not Stellar truth."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": "Names getClusters category row as the comparison."
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "process",
+          "issue": "Prescribes reporting an as-of timestamp."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "The only world fact (index whitespace is not market absence); restated by the avoid."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "getClusters category rows still return size, scfFundedCount and a population block",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "scout.getClusters({dimension:'category'})",
+              "observedAt": "2026-11-14",
+              "quote": "population.id projects|status:Development+Live+Pre-Release, totalAvailable 899, generatedAt 2026-11-14T02:49:37Z"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-defi-cluster-rollup-live",
+          "survivor": "q-defi-cluster-rollup-live",
+          "why": "Same getClusters/analyzeEcosystem denominator mechanics, a different category row."
+        },
+        {
+          "id": "q-defi-tooling-whitespace-live",
+          "survivor": "q-defi-cluster-rollup-live",
+          "why": "Same mechanics, Tooling row."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Three cases (Asset, Tooling, funding ratio) exercise one mechanic with different category labels. One mechanics case survives in the tool lane.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 124,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-defi-benji-franklin-templeton",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Franklin Templeton BENJI",
+        "tokenized money-market fund",
+        "issuer and product precision"
+      ],
+      "tests": "BENJI is the share token of the Franklin OnChain U.S. Government Money Fund (FOBXX), a registered fund using Stellar as its system of record.",
+      "questionIssues": [
+        "Clean, answerable entity question with a real confusable (BENJI versus USDY and CRDT)."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Overlaps KF2: both come from the same 'first registered fund on a public blockchain' claim."
+        }
+      ],
+      "rot": [],
+      "rotNote": "Stable facts (fund identity, first U.S.-registered fund on a public blockchain, live since 2021) confirmed 2026-11-02 against the SDF press release and Franklin Templeton; no reason to re-read.",
+      "duplicates": [],
+      "verdict": "tighten",
+      "reason": "Needed as the flagship tokenized-fund case. Stable facts were confirmed 2026-11-02 and were not re-read; the golden is trimmed from 318 words by removing inline citations, the 99.5% asset and milestone detail.",
+      "rewrite": {
+        "question": null,
+        "answer": "BENJI is the on-chain share token of Franklin Templeton's Franklin OnChain U.S. Government Money Fund (FOBXX). FOBXX was the first U.S.-registered mutual fund to use a public blockchain, Stellar, as its official system of record, and it has operated there since 2021. BENJI is a tokenized money-market fund share, not a stablecoin.",
+        "keyFacts": [
+          "BENJI is Franklin Templeton's tokenized fund share on Stellar.",
+          "It represents the Franklin OnChain U.S. Government Money Fund (FOBXX).",
+          "FOBXX was the first U.S.-registered mutual fund to use a public blockchain as record.",
+          "Stellar has been FOBXX's official system of record since 2021."
+        ],
+        "avoid": [
+          "Calling BENJI an algorithmic stablecoin or a yieldcoin like USDY.",
+          "Attributing BENJI to WisdomTree or Ondo."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "99.5% government-securities share, intraday yield and P2P transfer (also-good-if)",
+          "April 2026 five-year milestone and Luxembourg/Singapore firsts",
+          "VERIFIED provenance sentence"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 318,
+      "wordsAfter": 111
+    },
+    {
+      "id": "q-defi-blend-alternatives",
+      "purpose": "mixed",
+      "topics": [
+        "Stellar lending protocols",
+        "Blend derivatives versus independent lenders",
+        "CDP and credit adjacents"
+      ],
+      "tests": "Which Stellar lending options exist beside Blend, separated into direct lenders, Blend-built or routing layers, and adjacent credit systems.",
+      "questionIssues": [
+        "Realistic. Answerable only with a dated, status-labelled roster; the volatile statuses (Live/Inactive/testnet) are the main rot risk."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "process",
+          "issue": "Dating rule for lifecycle labels; process wording."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "K2 Lend announced its Stellar mainnet launch on 2026-07-24",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "D",
+              "ref": "https://x.com/K2_Lend/article/2080737079974154476",
+              "observedAt": "2026-11-14",
+              "quote": "K2 Brings Institution-Ready Lending Infrastructure to Stellar ... 2026-07-24"
+            },
+            {
+              "class": "A",
+              "ref": "https://docs.k2lend.com/",
+              "observedAt": "2026-11-14",
+              "quote": "K2 is a decentralized borrowing and lending protocol deployed on Stellar's Soroban smart contract platform."
+            }
+          ]
+        },
+        {
+          "claim": "Slender, Laina and Peridot lifecycle labels as of 2026-11-02",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "not re-queried 2026-11-14",
+              "observedAt": "2026-11-14",
+              "quote": "volatile labels were not re-read; the rewrite drops per-project labels"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-defi-lending-landscape-live",
+          "survivor": "q-defi-blend-alternatives",
+          "why": "Asks the same 'which lenders exist' question as a directory-scoped Scout roster."
+        },
+        {
+          "id": "q-eco-defi-projects-discovery",
+          "survivor": "q-eco-defi-market-map",
+          "why": "Roster of DeFi projects also lists lenders."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Keep as the one lending-landscape case. Replace the status-by-project roster (stale within weeks) with the stable category separation.",
+      "rewrite": {
+        "question": null,
+        "answer": "Few like-for-like alternatives exist. Direct Soroban lenders include K2 Lend (mainnet announced 2026-07-24), Slender and Peridot; deployment status varies, so check each. YieldBlox is a Blend pool and DeFindex a vault router, so neither is independent. OrbitCDP, EquitX and Templar are CDP, synthetic or cross-chain systems. Blend is a major lender, but dominance is not established.",
+        "keyFacts": [
+          "Names real Stellar lending alternatives such as K2 Lend, Slender or Peridot.",
+          "YieldBlox (a Blend pool) and DeFindex (a vault router) are not independent lenders.",
+          "OrbitCDP, EquitX and Templar are CDP, synthetic or cross-chain systems.",
+          "Slender's regular borrowing is over-collateralized."
+        ],
+        "avoid": [
+          "Calling any candidate unqualifiedly Live or Inactive where Scout and the operator disagree.",
+          "Listing a DEX or AMM as a lending substitute."
+        ],
+        "notes": "Do not require a Blend dominance claim. A Lumenloop wording that Slender loans need no collateral is wrong (ll-033); flash loans only are uncollateralized.",
+        "movedToTruth": [
+          "Scout labels as of 2026-11-02 (Slender Inactive, Laina Pre-Release, K2 and Peridot Live)",
+          "Laina testnet-only; slender.fi domain unresolved 2026-11-02",
+          "Certora/DefiLlama collateral evidence",
+          "DIFFERENTIATED history and GT-14 correction"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 508,
+      "wordsAfter": 142
+    },
+    {
+      "id": "q-defi-blend-what-is",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Blend lending protocol",
+        "Script3 as builder",
+        "isolated pools and governance"
+      ],
+      "tests": "Blend is a Soroban lending protocol with permissionless isolated pools, built by Script3, whose base protocol has no DAO while pools carry their own administration.",
+      "questionIssues": [
+        "Core identity case; clear and answerable."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Trivia beside the main point: the blend-capital org name."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Subtle but important nuance (protocol no-DAO versus pool administration)."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Blend by Script3; permissionless isolated pools; no DAO or central operator at protocol level",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "D",
+              "ref": "https://script3.io/",
+              "observedAt": "2026-11-14",
+              "quote": "Blend. A universal liquidity protocol primitive."
+            },
+            {
+              "class": "A",
+              "ref": "https://docs.blend.capital/users/general-faq",
+              "observedAt": "2026-11-14",
+              "quote": "Blend is a DeFi protocol that allows any entity to create or utilize an immutable lending market"
+            }
+          ]
+        }
+      ],
+      "duplicates": [],
+      "verdict": "tighten",
+      "reason": "Needed. Drop the blend-capital trivia key fact and the dominance caution from the judge-facing text.",
+      "rewrite": {
+        "question": null,
+        "answer": "Blend is a Soroban lending protocol where anyone can deploy permissionless, isolated pools to supply assets and take over-collateralized loans. It was developed by Script3, not SDF. The base protocol is immutable with no DAO or central operator, but each pool's creator sets its assets, oracle, backstop take and risk parameters, so pools can still have owners.",
+        "keyFacts": [
+          "Blend is a Soroban lending protocol with permissionless isolated pools.",
+          "Blend loans are over-collateralized.",
+          "Script3 developed Blend.",
+          "The base protocol has no DAO, but individual pools can have owners and risk settings."
+        ],
+        "avoid": [
+          "Conflating Stellar Blend with blend.com, or calling it a DEX or oracle.",
+          "Attributing Blend to SDF or claiming no pool can have an owner."
+        ],
+        "notes": "Do not require a dominance or Aave-equivalent ranking.",
+        "movedToTruth": [
+          "blend-capital as the public code organization",
+          "Scout identity grounding",
+          "GT-14 correction history",
+          "Also-good-if lines"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 297,
+      "wordsAfter": 121
+    },
+    {
+      "id": "q-defi-bridge-evm-to-stellar-axelar",
+      "purpose": "mixed",
+      "topics": [
+        "bridging USDC from Ethereum",
+        "CCTP versus Axelar trust model",
+        "wrapped versus native USDC"
+      ],
+      "tests": "That bridge safety depends on route and trust model, and that an Axelar route may deliver USDC.axl rather than Circle-native Stellar USDC.",
+      "questionIssues": [
+        "Realistic. Two questions (safest way, Axelar comparison) but one coherent answer. Most key facts require tools to run live quotes, which an agent cannot reproduce; the durable facts are the trust-model differences."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": "Prescribes how the answer is sourced."
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "Dating rule; restates the freshness tag."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Holds several predicates (four trust models)."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Behavioral caution, not a fact."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Allbridge Core's Stellar route is unavailable pending an audit; pools discontinued",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://docs-core.allbridge.io/what-is-allbridge-core.md",
+              "observedAt": "2026-11-14",
+              "quote": "Stellar support is temporarily unavailable while the Stellar CCTP implementation is pending audit."
+            }
+          ]
+        },
+        {
+          "claim": "An Axelar quote on 2026-07-10 delivered USDC.axl, not Circle-native Stellar USDC",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "D",
+              "ref": "not re-quoted 2026-11-14",
+              "observedAt": "2026-11-14",
+              "quote": "route quotes are point-in-time; the rewrite keeps the date"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-defi-allbridge-what-is",
+          "survivor": "q-defi-allbridge-what-is",
+          "why": "Both assert the dated Allbridge Core status; keep that detail in one case."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "A practical safety question worth keeping, but the 612-word golden reports a stale 2026-07-10 quote matrix. Reduce to the durable trust-model distinctions.",
+      "rewrite": {
+        "question": null,
+        "answer": "No bridge is provably 'safest'; routes differ by trust model. Circle CCTP burns and mints native USDC. Axelar relies on a validator/gateway model and, in a 2026-07-10 quote, delivered USDC.axl rather than Circle-native Stellar USDC. Allbridge Core's pool routes were discontinued after a July 2026 exploit. Check the destination issuer or contract, re-quote at execution, and send a small test first.",
+        "keyFacts": [
+          "CCTP burns and mints native USDC; Axelar uses a validator/gateway trust model.",
+          "An Axelar route can deliver USDC.axl, not Circle-native Stellar USDC (2026-07-10 quote).",
+          "The destination issuer or SAC must be checked before moving funds.",
+          "No bridge route is guaranteed safe."
+        ],
+        "avoid": [
+          "Claiming an Axelar route yields Circle-native Stellar USDC without inspecting the destination token.",
+          "Calling a MetaMask route to Stellar safe without dated provider evidence."
+        ],
+        "notes": "Accept a dated, attributed statement that MetaMask documents swaps into Stellar; it does not replace route and token checks.",
+        "movedToTruth": [
+          "Per-provider 2026-07-10 route table (Allbridge Next CCTP, Core native liquidity, Squid RFQ)",
+          "MetaMask freshness updates 2026-10-01",
+          "Allbridge Core freshness update 2026-11-02",
+          "GT-24 sibling repair"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 612,
+      "wordsAfter": 145
+    },
+    {
+      "id": "q-defi-build-staking-for-own-token",
+      "purpose": "stellar-truth",
+      "topics": [
+        "XLM has no native staking",
+        "custom token staking contract design",
+        "yield risk and compliance"
+      ],
+      "tests": "That Stellar has no protocol staking rewards, so token staking is an application-layer contract design with a named reward source and risks.",
+      "questionIssues": [
+        "Realistic builder question; the premise is true and checkable."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Design checklist; an instruction more than a fact."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Lists primitives; the 'names any of' makes it a low bar."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Vague ('matches each primitive and its risks')."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "XLM has no native protocol staking; SDF's October 2026 fee-pool rewards paper is an undecided discussion",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/xlm-utility",
+              "observedAt": "2026-11-14",
+              "quote": "Join the discussion (stellar/discussions tokenomics); proposal page, not an adopted mechanism"
+            }
+          ]
+        }
+      ],
+      "rotNote": "SCP/FBA with no validator rewards is stable protocol fact, confirmed 2026-11-02.",
+      "duplicates": [
+        {
+          "id": "q-defi-liquid-staking-whitespace",
+          "survivor": "q-defi-liquid-staking-whitespace",
+          "why": "Both rest on 'no native staking'; this case owns the builder design, that case the LST negative."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Keep. Trim the answer and replace the vague key facts with the four durable ones.",
+      "rewrite": {
+        "question": null,
+        "answer": "XLM has no native protocol staking rewards: Stellar reaches consensus with SCP/FBA, and validators earn no protocol reward. Staking for your own Soroban token is therefore a contract you design: define the deposited token, reward source, lock and accounting rules, emissions and withdrawals. Build on SEP-41 or SAC tokens, and weigh sustainability, securities and smart-contract risks and audit before launch.",
+        "keyFacts": [
+          "XLM has no native protocol staking rewards; consensus is SCP/FBA.",
+          "Custom-token staking is an application or contract-layer design.",
+          "The design needs a real reward source, lock and accounting rules, and withdrawal logic.",
+          "Building blocks include SEP-41 tokens and Stellar Asset Contract tokens."
+        ],
+        "avoid": [
+          "Implying users earn native XLM staking rewards from the protocol.",
+          "Promising yield without naming a reward source and risks."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "Also-good-if risk list",
+          "Golden cites",
+          "No-unresolved-caveat note"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 253,
+      "wordsAfter": 121
+    },
+    {
+      "id": "q-defi-category-funding-ratio-live",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Scout category cluster funding ratio",
+        "population ids"
+      ],
+      "tests": "How to rank Scout categories by funded share without mixing denominators.",
+      "questionIssues": [
+        "'in the served index' ties it to Scout; the question is a Scout response-handling exercise."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Keeps index share apart from funding amount; the only world-level point."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "getClusters rows carry size and scfFundedCount",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "scout.getClusters({dimension:'category'})",
+              "observedAt": "2026-11-14",
+              "quote": "clusters[0] key Tooling size 163 with scfFundedCount; population totalAvailable 899"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-defi-cluster-rollup-live",
+          "survivor": "q-defi-cluster-rollup-live",
+          "why": "Same denominator-disclosure mechanic."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Same mechanic as the cluster rollup case; no separate visibility.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 109,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-defi-category-saturation-live",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Scout category crowdedness",
+        "index snapshot"
+      ],
+      "tests": "Reports Scout's crowdedness score and raw counts with generatedAt.",
+      "questionIssues": [
+        "Scout-specific by wording."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "process",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "process",
+          "issue": "Restates KF2."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Scout still serves a crowdedness formula with generatedAt",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "scout.getClusters({dimension:'category'})",
+              "observedAt": "2026-11-14",
+              "quote": "notes.crowdedness Score 1-10, log-scaled ... clipped to [1,10]; generatedAt 2026-11-14"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-live-ecosystem-crowded-underbuilt",
+          "survivor": "q-live-ecosystem-crowded-underbuilt",
+          "why": "The frozen live lane already asks the same crowded-versus-underbuilt question."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "Duplicates the frozen live-lane case q-live-ecosystem-crowded-underbuilt, which asks the same question of the same operation.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 80,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-defi-cluster-rollup-live",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Scout getClusters versus analyzeEcosystem",
+        "population id comparability",
+        "overlapping type clusters"
+      ],
+      "tests": "Whether an agent compares meta.population ids before combining Scout cluster and rollup numbers, and does not sum overlapping type clusters.",
+      "questionIssues": [
+        "Asks for 'a current quantitative view'; no Stellar fact, only Scout response handling."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": "Labels SCF dollars as 'reconstructed project-based total'."
+        },
+        {
+          "i": 2,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "process",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "operation",
+          "issue": "Overlap with KF0; the only generalizable point."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "getClusters returns meta.population.id and an explicit population scope",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "scout.getClusters({dimension:'category'})",
+              "observedAt": "2026-11-14",
+              "quote": "population {id: projects|status:Development+Live+Pre-Release, included 899, truncated false}"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-defi-asset-whitespace-live",
+          "survivor": "q-defi-cluster-rollup-live",
+          "why": "Folds in."
+        },
+        {
+          "id": "q-defi-tooling-whitespace-live",
+          "survivor": "q-defi-cluster-rollup-live",
+          "why": "Folds in."
+        },
+        {
+          "id": "q-defi-category-funding-ratio-live",
+          "survivor": "q-defi-cluster-rollup-live",
+          "why": "Folds in."
+        }
+      ],
+      "verdict": "move-tool-lane",
+      "reason": "No Stellar fact is tested, but the population-id comparability behavior has zero unit-test coverage (grep of test/ finds none) and no routing gate or live-lane case checks it. Without this case, an agent summing cross-population numbers goes unseen. One case replaces four.",
+      "rewrite": null,
+      "confidence": "medium",
+      "wordsBefore": 111,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-defi-comet-what-is",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Comet weighted AMM",
+        "SCF funding",
+        "Blend backstop deployment"
+      ],
+      "tests": "Comet is an SCF-funded weighted-AMM design, no longer a major standalone DEX, whose code backs Blend's BLND:USDC backstop.",
+      "questionIssues": [
+        "'Is it a major live DEX?' is a good trap question with a clear answer."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Holds two predicates (SCF-funded weighted AMM; two awards totaling $291K)."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SCF awards total $291K and Scout lists Comet Inactive",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "scout.searchProjects('Comet')",
+              "observedAt": "2026-11-14",
+              "quote": "slug comet, status Inactive, scfTotalAwardedUSD 291000, scfAwarded true"
+            }
+          ]
+        },
+        {
+          "claim": "Blend V2.1 uses a Comet v1.1 BLND:USDC pool as its backstop token",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://docs.blend.capital/mainnet-deployments",
+              "observedAt": "2026-11-14",
+              "quote": "Blend Adjacent Smart Contracts * Comet v1.1 Contract (BLND:USDC liquidity pool)"
+            }
+          ]
+        },
+        {
+          "claim": "2026-08-25 exploit drained 717,518.92 USDC from the original Comet V1 BLND:USDC pool",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "D",
+              "ref": "https://x.com/script3official/status/2093365171846533577",
+              "observedAt": "2026-11-14",
+              "quote": "last confirmed 2026-11-02; not re-read"
+            }
+          ]
+        }
+      ],
+      "duplicates": [],
+      "verdict": "tighten",
+      "reason": "Needed as a confusable-entity and status trap. Trim to identity, funding and the backstop role.",
+      "rewrite": {
+        "question": null,
+        "answer": "Comet is an SCF-funded Balancer-style weighted AMM for Soroban ($150K in SCF #13 and $141K in SCF #18). It is not a major standalone DEX: Scout lists it Inactive as of 2026-11-14. Its pool code lives on in Blend's BLND:USDC backstop (Comet v1.1 under Blend V2.1), after the original Comet V1 pool was exploited on 2026-08-25.",
+        "keyFacts": [
+          "Comet is an SCF-funded weighted-AMM design with awards totaling $291K.",
+          "Comet's pool code backs Blend's BLND:USDC backstop (v1.1 under Blend V2.1)."
+        ],
+        "avoid": [
+          "Saying Comet was not SCF-funded or never reached mainnet.",
+          "Presenting the Blend backstop as proof Comet is a major standalone DEX."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "717,518.92 USDC exploit amount and mechanism",
+          "Per-round amounts if not required",
+          "Stale 2026-06-29 Scout reading",
+          "Meridian 2023 demo also-good-if"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 300,
+      "wordsAfter": 98
+    },
+    {
+      "id": "q-defi-cross-blend-rivool-sac",
+      "purpose": "mixed",
+      "topics": [
+        "Rivool and Blend case study",
+        "classic USDC SAC"
+      ],
+      "tests": "Joins a single June 2026 corpus item (Rivool using Blend) to the SAC/SEP-41 interface for classic USDC.",
+      "questionIssues": [
+        "Composite of two unrelated lookups; the first half is a corpus-specific item (a case study) rather than a topic a user would ask about; the second half is a general Soroban/assets fact."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Corpus trivia: one case-study relationship."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Holds several predicates (live, Script3, isolated pools)."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [],
+      "rotNote": "SAC/SEP-41 fact is stable and confirmed 2026-11-02; Rivool/Blend case-study link not re-read because the case is retired.",
+      "duplicates": [
+        {
+          "id": "q-defi-blend-what-is",
+          "survivor": "q-defi-blend-what-is",
+          "why": "Covers Blend identity and builder."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "The Rivool half is a single corpus item with no durable topic. The SAC half is a general assets fact that the assets/Soroban lanes should test directly (cross-category duplicate: classic asset in Soroban via SAC); Blend identity is covered by q-defi-blend-what-is.",
+      "rewrite": null,
+      "confidence": "medium",
+      "wordsBefore": 175,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-defi-defindex-honest",
+      "purpose": "mixed",
+      "topics": [
+        "DeFindex vault infrastructure",
+        "product lineup",
+        "TVL provider disagreement"
+      ],
+      "tests": "What DeFindex is and its product lineup, and that TVL differs by provider and must be reported with source and date.",
+      "questionIssues": [
+        "'exact product lineup' invites inventing products; the golden separates strategy adapters from products. 'TVL' is volatile by design."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Holds several predicates (vault, API, SDK, dfToken)."
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "Dating rule for TVL; process."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Operator docs list Vaults, Stable APY and Boost as products",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://docs.defindex.io/llms.txt",
+              "observedAt": "2026-11-14",
+              "quote": "[Vaults] The base product. [Stable APY] Publish a rate ... [Boost] ..."
+            }
+          ]
+        },
+        {
+          "claim": "DeFiLlama TVL is about $18.7M",
+          "result": "changed",
+          "evidence": [
+            {
+              "class": "D",
+              "ref": "https://api.llama.fi/tvl/defindex",
+              "observedAt": "2026-11-14",
+              "quote": "18507707.586 on 2026-11-14 (golden: about $18.73M on 2026-11-02); expected drift, golden is dated"
+            }
+          ]
+        }
+      ],
+      "duplicates": [],
+      "verdict": "tighten",
+      "reason": "Behavior (dated, provider-labelled TVL) is the right test; the 300-word golden holds four dated TVL series. Keep one dated pair.",
+      "rewrite": {
+        "question": null,
+        "answer": "DeFindex, from PaltaLabs, is non-custodial vault and yield infrastructure on Soroban: vaults with strategy contracts, dfToken shares, an API and TypeScript/Flutter SDKs. Operator docs list Vaults, Stable APY and Boost as products; the seven BlendStrategy entries are adapters, not products. TVL differs by provider: DeFiLlama read about $18.7M on 2026-11-02 and $18.5M on 2026-11-14. Cite provider and date.",
+        "keyFacts": [
+          "DeFindex is non-custodial vault and yield infrastructure on Soroban.",
+          "Operator docs list Vaults, Stable APY and Boost as the products.",
+          "TVL is provider-specific and moves, so a figure needs its provider and date."
+        ],
+        "avoid": [
+          "Saying DeFindex TVL is unavailable or repeating the operator's undated $1.1M headline.",
+          "Inflating strategy adapters into separate products or guaranteeing yield."
+        ],
+        "notes": "Grade product identity and dated, method-aware TVL; no exact figure is required.",
+        "movedToTruth": [
+          "2026-07-10 four-provider TVL series",
+          "strategy endpoint seven-adapter history",
+          "Scout row details (PaltaLabs, Live)",
+          "Corrected 2026-07-10 note"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 300,
+      "wordsAfter": 124
+    },
+    {
+      "id": "q-defi-etherfuse-stablebonds",
+      "purpose": "mixed",
+      "topics": [
+        "Etherfuse Stablebonds USTRY and CETES",
+        "asset identity by code plus issuer",
+        "RWA integration risk"
+      ],
+      "tests": "What USTRY and CETES are, that Stellar assets must be identified by code plus issuer, and that the YieldBlox incident was a consumer-side oracle failure.",
+      "questionIssues": [
+        "Two asks (what are they, how to integrate) but one coherent answer. The answer is loaded with 2026-07-10 contract IDs."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": "Dating rule; restates the freshness tag."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Risk checklist; a list of five areas."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Risk checklist; overlaps KF2."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "USTRY and CETES share issuer GCRYUGD5NVARGXT56XEZI5CIFCQETYHAPQQTHO2O3IQZTHDH4LATMYWC",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://etherfuse.com/.well-known/stellar.toml",
+              "observedAt": "2026-11-14",
+              "quote": "code = USTRY issuer = GCRYUGD5NVARGXT56XEZI5CIFCQETYHAPQQTHO2O3IQZTHDH4LATMYWC"
+            },
+            {
+              "class": "A",
+              "ref": "https://etherfuse.com/.well-known/stellar.toml",
+              "observedAt": "2026-11-14",
+              "quote": "code = CETES issuer = GCRYUGD5NVARGXT56XEZI5CIFCQETYHAPQQTHO2O3IQZTHDH4LATMYWC"
+            }
+          ]
+        },
+        {
+          "claim": "Feb 2026 YieldBlox incident was a thin-market oracle failure, not an Etherfuse contract exploit",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "D",
+              "ref": "https://www.blockaid.io/blog/73-quarantined-how-blockaid-and-stellar-validators-contained-a-10m-price-manipulation-attack",
+              "observedAt": "2026-11-14",
+              "quote": "last confirmed 2026-11-02; not re-read"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-defi-benji-franklin-templeton",
+          "survivor": "q-defi-benji-franklin-templeton",
+          "why": "Same RWA issuer-precision lesson; keep each product's own identity case."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Needed (RWA issuer identity plus the incident attribution). Cut the 558-word golden to identity, code+issuer, risks and the incident boundary.",
+      "rewrite": {
+        "question": null,
+        "answer": "Etherfuse Stablebonds are tokenized sovereign-debt products: USTRY represents US Treasury notes and CETES Mexican Treasury certificates. On Stellar, identify each by asset code plus issuer (both share issuer GCRYUGD5…ATMYWC per Etherfuse's stellar.toml) and by its SAC, not by ticker. Weigh custody, redemption, eligibility, liquidity and oracle risk. The February 2026 YieldBlox loss was a thin-market oracle failure in a pool using USTRY, not an Etherfuse contract exploit.",
+        "keyFacts": [
+          "USTRY is a tokenized US Treasury product and CETES a Mexican Treasury product.",
+          "Stellar assets are identified by code plus issuer, not ticker.",
+          "Integration risk includes custody, redemption, liquidity and oracle dependence.",
+          "The YieldBlox incident was an oracle-consumer failure, not an Etherfuse contract exploit."
+        ],
+        "avoid": [
+          "Confusing Etherfuse with other RWA issuers or inventing yields, venues or loss amounts.",
+          "Saying the YieldBlox incident compromised Etherfuse's issuer contract."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "Deterministic SAC contract ids and full issuer",
+          "OrbitCDP grounding note",
+          "Loss estimate and multi-source incident corroboration",
+          "US-unavailability legal page note"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 558,
+      "wordsAfter": 132
+    },
+    {
+      "id": "q-defi-flash-loans",
+      "purpose": "mixed",
+      "topics": [
+        "flash loans on Soroban",
+        "atomic cross-contract calls",
+        "deployed versus code-only evidence"
+      ],
+      "tests": "Soroban has no native flash-loan operation but contracts can build one atomically; Blend v2 is a deployed implementation.",
+      "questionIssues": [
+        "Realistic builder question. The answer's second half (XycLoans, Slender evidence tiers) is directory-status trivia."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": "Dating rule."
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "Restates KF0."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Evidence-tier distinction; process-adjacent."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Blend v2 pool contract exposes flash_loan",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "gh search code flash_loan --repo blend-capital/blend-contracts-v2",
+              "observedAt": "2026-11-14",
+              "quote": "pool/src/contract.rs, pool/src/pool/submit.rs and test-suites/tests/test_flashloan.rs contain flash_loan"
+            }
+          ]
+        },
+        {
+          "claim": "K2 Lend documents flash loans as a feature",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://docs.k2lend.com/",
+              "observedAt": "2026-11-14",
+              "quote": "supply assets to earn interest, borrow against collateral, swap collateral positions, and execute flash loans"
+            }
+          ]
+        }
+      ],
+      "duplicates": [],
+      "verdict": "tighten",
+      "reason": "A good protocol-mechanics case, but the golden includes a roster of three projects and their stale status labels. Keep the mechanic and Blend as the verified deployment.",
+      "rewrite": {
+        "question": null,
+        "answer": "Soroban has no protocol-native flash-loan operation, but a contract can implement one: within one atomic invocation it lends, calls borrower logic via synchronous cross-contract calls, and requires repayment before returning; any error rolls back the whole call tree. Blend v2 pools expose a flash_loan function. Code, marketing or a directory label alone does not prove a usable deployment.",
+        "keyFacts": [
+          "Soroban has no native flash-loan operation; contracts implement them.",
+          "Atomic cross-contract calls roll back on error, which enforces same-call repayment.",
+          "Blend v2 pool contracts expose a flash_loan function."
+        ],
+        "avoid": [
+          "Claiming XycLoans is the sole or current mainnet implementation.",
+          "Treating source code, marketing or a directory label as proof of deployment."
+        ],
+        "notes": "Deployment evidence tiers, not an exclusive project name, are the gate.",
+        "movedToTruth": [
+          "XycLoans/Slender evidence tiers and Scout labels as of 2026-11-02",
+          "Blend V2.1 redeploy note",
+          "Also-good-if lines",
+          "Corrected 2026-07-10 note"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 440,
+      "wordsAfter": 118
+    },
+    {
+      "id": "q-defi-lending-landscape-live",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Scout lending directory",
+        "SCF evidence in rows"
+      ],
+      "tests": "Reports returned directory rows for lending and attributes SCF status from current rows.",
+      "questionIssues": [
+        "'in the current Stellar directory' is Scout-specific; no other tool could satisfy it."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "process",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Directory search still returns lending rows",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "scout.searchProjects('Blend')",
+              "observedAt": "2026-11-14",
+              "quote": "slug blend, status Live, types [Lending], scfAwarded true"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-defi-blend-alternatives",
+          "survivor": "q-defi-blend-alternatives",
+          "why": "Same lending-landscape topic, graded on world facts."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "A directory-scoped roster whose golden states no fact; the lending-landscape topic is already covered by q-defi-blend-alternatives.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 78,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-defi-liquid-staking-whitespace",
+      "purpose": "mixed",
+      "topics": [
+        "liquid staking on Stellar",
+        "no native validator staking",
+        "bounded negative claims"
+      ],
+      "tests": "That no native-XLM liquid-staking token exists (Stellar has no validator staking), and that look-alikes are not LSTs.",
+      "questionIssues": [
+        "Realistic. The negative is bounded by date and source universe, which the golden states."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Dated negative; world fact with an as-of."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Overlaps KF2 (look-alikes)."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "No native-XLM LST is live; SDF's xlm-utility paper is an undecided proposal",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/xlm-utility",
+              "observedAt": "2026-11-14",
+              "quote": "Join the discussion; XLM Rewards Pool Explorer: a proposal page, not shipped"
+            }
+          ]
+        }
+      ],
+      "rotNote": "SCP/FBA with no validator rewards is stable protocol fact, confirmed 2026-11-02. Counterexample sXLM/yXLM/Chrysalis evidence not re-read.",
+      "duplicates": [
+        {
+          "id": "q-defi-build-staking-for-own-token",
+          "survivor": "q-defi-build-staking-for-own-token",
+          "why": "Shares the 'no native staking' premise."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Keep: a bounded-negative case is valuable. Trim the 460-word golden to the claim and the look-alike classification.",
+      "rewrite": {
+        "question": null,
+        "answer": "Stellar uses SCP/FBA, not proof of stake, and validators earn no protocol reward, so there is no native validator-staking position for an XLM liquid-staking token to tokenize. As of 2026-11-14 none was identified in official docs, Scout or Lumenloop, and this is a bounded snapshot. yXLM, sXLM vault tokens, Blend deposits and LP shares earn lending or strategy yield, not validator rewards, and are not native LSTs.",
+        "keyFacts": [
+          "Stellar has no protocol validator rewards, so no native XLM staking position exists.",
+          "No live native-XLM liquid-staking token was identified in the dated source universe.",
+          "yXLM, sXLM vaults, Blend deposits and LP shares are not native LSTs."
+        ],
+        "avoid": [
+          "Stating a permanent global absence of liquid staking on Stellar.",
+          "Calling any XLM yield token a native LST."
+        ],
+        "notes": "Naming StelloFi's sXLM while classifying it as a vault share is correct. SDF's October 2026 fee-pool paper is an undecided proposal; calling it adopted or a native LST is wrong.",
+        "movedToTruth": [
+          "Chrysalis SCF concept detail",
+          "StelloFi docs evidence",
+          "WHITESPACE history and 2026-06-29 review",
+          "Also-good-if: frame as genuine gap"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 460,
+      "wordsAfter": 152
+    },
+    {
+      "id": "q-defi-lumenloop-categories-vocab",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Lumenloop category vocabulary"
+      ],
+      "tests": "Enumerates Lumenloop's five controlled category values.",
+      "questionIssues": [
+        "Only Lumenloop can answer it; the five values are an artifact of one directory, not Stellar truth."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "get_categories returns exactly five values",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "lumenloop.get_categories({})",
+              "observedAt": "2026-11-14",
+              "quote": "count 5: Applications 16, Developer Tooling 15, Education & Community 14, Financial Protocols 11, Infrastructure & Services 12"
+            }
+          ]
+        }
+      ],
+      "duplicates": [],
+      "verdict": "retire",
+      "reason": "Raven-mechanics already covered: eval/routing-cases.json has a get_categories routing gate, and the vocabulary is a Lumenloop artifact, not knowledge about Stellar.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 291,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-defi-market-making-kelp",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Stellar market-making tooling",
+        "Kelp status",
+        "SDEX offers versus AMM liquidity"
+      ],
+      "tests": "Kelp is an archived SDEX bot, and market making on Stellar spans SDEX offers, AMM pools and incentives.",
+      "questionIssues": [
+        "Triple-barreled (tooling, Kelp maintained, repositioning)."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": "Dating rule."
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "Restates KF0."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Restates KF2."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Process-heavy list."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "stellar-deprecated/kelp is archived, last release v1.12.0 on 2021-11-05",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "gh api repos/stellar-deprecated/kelp",
+              "observedAt": "2026-11-14",
+              "quote": "archived true, pushed_at 2023-11-03"
+            },
+            {
+              "class": "B",
+              "ref": "gh api repos/stellar-deprecated/kelp/releases/latest",
+              "observedAt": "2026-11-14",
+              "quote": "v1.12.0 published 2021-11-05"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-defi-arbitrage-pathpayment-bots",
+          "survivor": "q-defi-arbitrage-pathpayment-bots",
+          "why": "Bot building, path payments and Kelp status belong in one case."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Kelp's archived status and offer-repositioning fold into the arbitrage and path-payment bot case, which now carries them.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 328,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-defi-named-newer-protocols",
+      "purpose": "mixed",
+      "topics": [
+        "FxDAO, OrbitCDP, Zenex, JST",
+        "protocol status conflicts"
+      ],
+      "tests": "Four unrelated entity-status lookups, including a market maker (JST) that is not a Stellar protocol.",
+      "questionIssues": [
+        "A bundle of four entity lookups; no real user asks all four. The golden itself says three are contested or unverified."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Zenex runs a live mainnet market",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://docs.zenex.trade/deployments/contract-addresses",
+              "observedAt": "2026-11-14",
+              "quote": "Market XLM-USD, Status Active"
+            },
+            {
+              "class": "C",
+              "ref": "scout.searchProjects('Zenex')",
+              "observedAt": "2026-11-14",
+              "quote": "slug zenex, status Live, scfTotalAwardedUSD 150000"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-defi-perps-whitespace",
+          "survivor": "q-defi-perps-whitespace",
+          "why": "Zenex status."
+        },
+        {
+          "id": "q-defi-blend-alternatives",
+          "survivor": "q-defi-blend-alternatives",
+          "why": "OrbitCDP as CDP."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "A bundle of four entity lookups already covered elsewhere (Zenex in the perps case, OrbitCDP in lending alternatives); FxDAO and JST are low-value status or fabrication-bait items better covered by an edge-lane entity-not-found case.",
+      "rewrite": null,
+      "confidence": "medium",
+      "wordsBefore": 446,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-defi-ondo-usdy",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Ondo USDY on Stellar",
+        "tokenized note eligibility",
+        "issuer and product precision"
+      ],
+      "tests": "USDY is Ondo's accumulating tokenized note launched on Stellar in September 2025, available to qualifying non-U.S. persons rather than everyone.",
+      "questionIssues": [
+        "Good: 'who can hold it' is a real user question with a legal-versus-technical trap."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Historical launch rate; trivia beside eligibility."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Backing varies by issuance date; secondary."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "U.S. persons and prohibited jurisdictions cannot hold USDY; issuer is Ondo Global Markets (BVI) Limited",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://docs.ondo.finance/general-access-products/usdy/eligibility",
+              "observedAt": "2026-11-14",
+              "quote": "Ondo Global Markets (BVI) Limited, the issuer of USDY tokens, also prohibits persons from subscribing for, acquiring or redeeming"
+            }
+          ]
+        },
+        {
+          "claim": "United States and U.S. persons are excluded",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://docs.ondo.finance/general-access-products/usdy/eligibility",
+              "observedAt": "2026-11-14",
+              "quote": "persons who are \"US persons\" ... are also prohibited from subscribing for, acquiring or redeeming USDY tokens."
+            }
+          ]
+        }
+      ],
+      "duplicates": [],
+      "verdict": "tighten",
+      "reason": "Needed as the yield-bearing RWA identity and eligibility case. Drop the backing-composition and launch-rate key facts to one dated clause.",
+      "rewrite": {
+        "question": null,
+        "answer": "USDY is Ondo's accumulating tokenized note, launched on Stellar on 2025-09-17 at about 5.3% APY (a launch figure, not a current promise). It is held by qualifying non-U.S. persons under Ondo's terms and KYC: U.S. persons and prohibited jurisdictions are excluded, and eligibility is legal, not decided by Stellar account flags.",
+        "keyFacts": [
+          "USDY is Ondo's accumulating tokenized note.",
+          "USDY launched on Stellar in September 2025.",
+          "Eligibility excludes U.S. persons and other prohibited persons; KYC applies.",
+          "Stellar issuer flags prove technical issuance, not legal eligibility."
+        ],
+        "avoid": [
+          "Promising the 5.3% launch rate as current.",
+          "Claiming everyone, U.S. persons or only institutions can hold USDY."
+        ],
+        "notes": "Ondo's docs name Ondo Global Markets (BVI) Limited as issuer, formerly Ondo USDY LLC; either name is acceptable if dated.",
+        "movedToTruth": [
+          "Backing varies by issuance date (Treasuries, ETFs, deposits)",
+          "Press-release provenance sentence",
+          "Also-good-if: issuer rename on 2025-12-15"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 340,
+      "wordsAfter": 120
+    },
+    {
+      "id": "q-defi-oracle-landscape-live",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Scout oracle directory rows",
+        "evidence for a reference oracle"
+      ],
+      "tests": "Queries Scout for oracle rows and compares status, funding and code-verification evidence.",
+      "questionIssues": [
+        "Scout-scoped; the golden states no fact. The real-world oracle question (which oracle providers exist) is untested."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "process",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "process",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "process",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Reflector remains the cited oracle reference",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://reflector.network/oracles",
+              "observedAt": "2026-11-14",
+              "quote": "Status: live (4-of-7 multisig) ... Sampling: 5 minutes"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-defi-reflector-oracle",
+          "survivor": "q-defi-reflector-oracle",
+          "why": "Oracle identity is tested there."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "A directory-process case with no world fact; oracle identity is covered by q-defi-reflector-oracle. Listed under missing: oracle providers beyond Reflector.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 87,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-defi-perps-whitespace",
+      "purpose": "stellar-truth",
+      "topics": [
+        "perpetuals on Stellar",
+        "Zenex, Kryon, Noether",
+        "leveraged spot versus perps"
+      ],
+      "tests": "That perps on Stellar are emerging, not empty: Zenex runs a live mainnet perp DEX, and other entrants are unlaunched or unresolved.",
+      "questionIssues": [
+        "Realistic whitespace question; golden was corrected from an earlier false 'whitespace' claim."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Zenex runs a live Stellar mainnet perp market (XLM-USD active)",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://docs.zenex.trade/deployments/contract-addresses",
+              "observedAt": "2026-11-14",
+              "quote": "Market XLM-USD | Status Active | Market contract CAOZCITWHWAXH5FRU4EULQ5EN2HMTCHICRNC4R5ZAOVD7XHCCQSJ42IB"
+            },
+            {
+              "class": "C",
+              "ref": "scout.searchProjects('Zenex')",
+              "observedAt": "2026-11-14",
+              "quote": "slug zenex, status Live, scfTotalAwardedUSD 150000"
+            }
+          ]
+        },
+        {
+          "claim": "Kryon trading availability unresolved; Noether mainnet paused pending audit",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://noether.exchange/",
+              "observedAt": "2026-11-14",
+              "quote": "not re-read 2026-11-14; last confirmed 2026-10-15 by on-chain reads"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-defi-named-newer-protocols",
+          "survivor": "q-defi-perps-whitespace",
+          "why": "Zenex status."
+        },
+        {
+          "id": "q-eco-defi-market-map",
+          "survivor": "q-eco-defi-market-map",
+          "why": "Market map restates perps as emerging."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "A strong dated-negative case. Cut 688 words of verification narrative; keep the roster as three entrants.",
+      "rewrite": {
+        "question": null,
+        "answer": "Yes: perps on Stellar are emerging, not empty. As of 2026-11-14 Zenex (formerly Hermes) runs a live Stellar mainnet perp DEX with an active XLM-USD market. Kryon advertises XLM-PERP live on mainnet, but its current trading is unresolved; Noether has mainnet contracts paused until its audit. Leveraged-spot loops such as Turbolong are not perps. This is a dated roster; re-check before answering.",
+        "keyFacts": [
+          "Zenex is a live Stellar mainnet perpetual futures exchange.",
+          "At least one other perp entrant is not yet open for mainnet trading.",
+          "Perps on Stellar are emerging rather than whitespace."
+        ],
+        "avoid": [
+          "Calling Zenex testnet-only or pre-release.",
+          "Claiming Stellar has no mainnet perp DEX.",
+          "Calling Noether or any entrant mainnet-live without current deployment evidence.",
+          "Treating leveraged spot loops as perpetual futures."
+        ],
+        "notes": "Do not require a venue count. 'First perps venue' is acceptable only as an attributed claim, since Kryon dates an earlier launch. Calling Noether open for trading while its market is paused is wrong.",
+        "movedToTruth": [
+          "On-chain read evidence and ledgers",
+          "Kryon engine state and 2026-08-25 last change",
+          "Noether pause state and guarded mode",
+          "Stellars Finance testnet-only record",
+          "DefiLlama 'Derivatives' row note",
+          "Stale Scout Zenex wording (sls-091)"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 688,
+      "wordsAfter": 155
+    },
+    {
+      "id": "q-defi-phoenix-what-is",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Phoenix DeFi Hub AMM",
+        "PHO token",
+        "SCF funding"
+      ],
+      "tests": "Phoenix is a Soroban AMM/DEX suite whose PHO token is a utility/incentive asset, funded by SCF.",
+      "questionIssues": [
+        "Clear identity case; token is an easy confusion with governance token."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Pool, routing and liquidity functions in one predicate chain."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Provenance clause (2024 whitepaper) bundled as a fact."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Phoenix SCF total about $394.5K across seven awarded submissions",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "scout.searchProjects('Phoenix DeFi Hub')",
+              "observedAt": "2026-11-14",
+              "quote": "slug phoenix, status Live, scfTotalAwardedUSD 394500, scfAwarded true"
+            },
+            {
+              "class": "A",
+              "ref": "https://communityfund.stellar.org/project/recafjXSgVbrp8svj",
+              "observedAt": "2026-11-14",
+              "quote": "page did not render server-side 2026-11-14; seven-submission count last confirmed 2026-11-02"
+            }
+          ]
+        }
+      ],
+      "duplicates": [],
+      "verdict": "tighten",
+      "reason": "Needed. Move the Soroswap venue-list history out; keep the identity, token and SCF fact.",
+      "rewrite": {
+        "question": null,
+        "answer": "Phoenix DeFi Hub is a Soroban AMM/DEX suite with constant-product and stable pools, routing and staking. PHO is its classic Stellar asset with a SAC, described in the 2024 whitepaper as a utility and incentive token, not a governance token. Phoenix is SCF-funded, about $394.5K in awards as of 2026-11-14. It is not a lender, oracle or bridge.",
+        "keyFacts": [
+          "Phoenix is a Soroban AMM/DEX suite with constant-product and stable pools.",
+          "PHO is Phoenix's classic asset with a SAC, a utility/incentive token.",
+          "Phoenix received SCF awards totaling about $394.5K."
+        ],
+        "avoid": [
+          "Calling PHO a governance token or its 2024 supply plans current guarantees.",
+          "Describing Phoenix as a lender, oracle or bridge, or inventing TVL."
+        ],
+        "notes": "Do not require Phoenix to appear in Soroswap's current venue list.",
+        "movedToTruth": [
+          "Soroswap venue-list history and RECHECK 2026-11-09",
+          "Operator TOML issuer GAX5...SXJO",
+          "Built-by Phoenix Protocol Group",
+          "Corrected 2026-07-10 note"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 378,
+      "wordsAfter": 121
+    },
+    {
+      "id": "q-defi-provide-liquidity-impermanent-loss",
+      "purpose": "stellar-truth",
+      "topics": [
+        "providing liquidity on Stellar",
+        "classic pool deposit and withdraw",
+        "impermanent loss and withdrawal risk"
+      ],
+      "tests": "How classic Stellar liquidity-pool deposits and withdrawals work, how they differ from Soroban venues, and what impermanent loss means.",
+      "questionIssues": [
+        "Very broad (how to, compare yields, understand IL, withdrawal risk) but answerable as one how-to."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": "Dating rule."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Prescribes a checklist; process-flavored."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Risk list, five items in one predicate."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Overlaps KF3 and KF1."
+        }
+      ],
+      "rot": [],
+      "rotNote": "Classic pool mechanics (LiquidityPoolDeposit/Withdraw, pool-share trustline, non-transferable shares) are stable protocol facts confirmed 2026-11-09 and not re-read. Scout/Soroswap venue history is moved out of the golden.",
+      "duplicates": [],
+      "verdict": "tighten",
+      "reason": "A realistic retail question with a mix of stable mechanics and warnings. Reduce to the mechanics and the IL definition; the venue-roster history (Phoenix in Soroswap) is not needed.",
+      "rewrite": {
+        "question": null,
+        "answer": "On Stellar's classic constant-product pools you establish trustlines, deposit with LiquidityPoolDeposit (setting price bounds), hold non-transferable pool shares, and exit with LiquidityPoolWithdraw for a pro-rata share. Soroban venues and vaults work differently: check each contract's admin, lock and withdrawal rules. Impermanent loss is underperformance versus simply holding the two assets after relative prices move; fees or incentives may not offset it.",
+        "keyFacts": [
+          "Classic pools use LiquidityPoolDeposit and LiquidityPoolWithdraw with share trustlines.",
+          "Soroban venues and vaults have different, contract-specific deposit and withdraw flows.",
+          "Impermanent loss is LP underperformance versus holding after relative price changes.",
+          "Exit risk includes lockups, queues, pool depth and contract or admin risk."
+        ],
+        "avoid": [
+          "Promising returns or treating APY/TVL as guaranteed.",
+          "Describing impermanent loss as guaranteed permanent loss, or all Stellar LP venues as having the same mechanics."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "Scout/Soroswap venue-list history and RECHECK 2026-11-09",
+          "Also-good-if net-return line",
+          "Golden cites",
+          "Expanded 2026-07-10 note"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 554,
+      "wordsAfter": 128
+    },
+    {
+      "id": "q-defi-reflector-oracle",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Reflector price oracle",
+        "multisig signer implementation",
+        "Pulse, Beam and Flare"
+      ],
+      "tests": "Reflector is a Soroban oracle where nodes sign matching transactions, with a 4-of-7 multisig on public feeds, free public feeds and separate paid and webhook products.",
+      "questionIssues": [
+        "Core identity case; clear."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Dated implementation detail (4-of-7, feed classes) bundled."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Free public feeds; the paid-service caveat is separate."
+        },
+        {
+          "i": 4,
+          "kind": "process",
+          "issue": "'Freshness-sensitive' process line."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Pulse feeds are live under a 4-of-7 multisig with 5-minute sampling",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://reflector.network/oracles",
+              "observedAt": "2026-11-14",
+              "quote": "Status: live (4-of-7 multisig) Base symbol: USD Decimals: 14 Sampling: 5 minutes"
+            },
+            {
+              "class": "A",
+              "ref": "https://reflector.network/docs",
+              "observedAt": "2026-11-14",
+              "quote": "Recent price feed updates: 2026-11-10 05:00:00 UTC"
+            }
+          ]
+        },
+        {
+          "claim": "Beam is a separate mainnet oracle whose users pay a per-call fee; Flare covers subscriptions",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://reflector.network/beam",
+              "observedAt": "2026-11-14",
+              "quote": "end-users have to pay a small price-per-call fee each time they pull data from a Beam oracle"
+            },
+            {
+              "class": "A",
+              "ref": "https://reflector.network/flare",
+              "observedAt": "2026-11-14",
+              "quote": "/ Subscriptions Create n..."
+            }
+          ]
+        }
+      ],
+      "duplicates": [],
+      "verdict": "tighten",
+      "reason": "Needed. Trim the 360-word golden; keep the mechanism, the dated multisig, and free-public-versus-paid distinction.",
+      "rewrite": {
+        "question": null,
+        "answer": "Reflector is a Stellar/Soroban oracle. Independent nodes compute prices from Stellar DEX and AMM data and external markets, build matching transactions and exchange signatures; only matching hashes aggregate. As of 2026-11-14 its public Pulse feeds run under a 4-of-7 multisig with 5-minute sampling. Public feeds are free; Beam charges per call and Flare provides subscriptions, so do not claim all Reflector services are free.",
+        "keyFacts": [
+          "Reflector is a Stellar/Soroban oracle with node-computed prices.",
+          "Only matching transaction hashes aggregate through node signatures.",
+          "As of 2026-11-14 public feeds run under a 4-of-7 multisig.",
+          "Public Pulse feeds are free; Beam is pay-per-call."
+        ],
+        "avoid": [
+          "Describing Reflector as a DEX, AMM, lender or bridge.",
+          "Claiming public feeds can never have limits or that all Reflector services are free."
+        ],
+        "notes": "Do not require a dominance ranking or a timeless operator roster. Quoting Reflector's 'free for everyone' Pulse wording with attribution is not wrong.",
+        "movedToTruth": [
+          "Seven weight-1 signers and recent four-signature updates 2026-07-10",
+          "SEP-40-style interface note",
+          "GT-17 correction history",
+          "Operator roster and integrations"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 360,
+      "wordsAfter": 144
+    },
+    {
+      "id": "q-defi-rwa-scf-similar",
+      "purpose": "mixed",
+      "topics": [
+        "SCF funding of RWA projects",
+        "awarded versus requested versus paid",
+        "official SCF status"
+      ],
+      "tests": "Whether SCF has funded RWA/tokenization work, and that awarded status, budget requested and amount paid are different fields.",
+      "questionIssues": [
+        "Realistic. The answer's heavy semantic/award_type vocabulary grades Lumenloop and Scout field handling."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Fields-handling: process/operation."
+        },
+        {
+          "i": 4,
+          "kind": "operation",
+          "issue": "Names Raven field semantics."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Talwex, Lend and TERWA are Scout RWA projects with SCF awards",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "scout.searchProjects('Lend'|'Talwex'|'TERWA')",
+              "observedAt": "2026-11-14",
+              "quote": "Lend scf 213460 RWA; Talwex 150000 RWA; TERWA 97240 RWA; all scfAwarded true, Live"
+            },
+            {
+              "class": "A",
+              "ref": "https://communityfund.stellar.org/submissions/rec2UJLCx1DBLgdm4",
+              "observedAt": "2026-11-14",
+              "quote": "official page not re-read 2026-11-14 (renders client-side)"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-defi-rwa-treasury-funding-live",
+          "survivor": "q-defi-rwa-scf-similar",
+          "why": "Same funding-provenance topic."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "SCF funding of RWA is a real topic (the SCF lane may also cover it; cross-category). Reduce to the world fact and the awarded-versus-budget-versus-paid distinction; drop field names.",
+      "rewrite": {
+        "question": null,
+        "answer": "Yes. SCF has awarded RWA and tokenization work, for example Talwex, Lend and TERWA in SCF #43. Check each submission's official SCF page: a requested budget, an award and amounts actually paid are different, and a semantic match or directory flag is not proof of an award. SCF history also does not show a project is currently live. Absence of BENJI, CRDT or USDY from SCF records means only 'not found'.",
+        "keyFacts": [
+          "SCF has awarded RWA/tokenization projects, such as Talwex, Lend and TERWA (SCF #43).",
+          "Requested budget, awarded amount and amount paid are different figures.",
+          "SCF history does not prove a project is currently live."
+        ],
+        "avoid": [
+          "Treating a proposed budget or semantic match as an award.",
+          "Asserting BENJI, CRDT or USDY never had any SCF relationship."
+        ],
+        "notes": "Quoting the canonical Lumenloop or Scout source on bare SCF budgets is not wrong while ll-013 and sls-026 stand; grade caps at partial for that claim. A newer dated figure is current, not a contradiction.",
+        "movedToTruth": [
+          "2026-08-04 per-submission statuses and Lend $120,560 / $72,336",
+          "Lend SCF #45 $92,900 and project total $213,460",
+          "0xAuth SCF #27 historical example",
+          "GT-17 correction history"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 471,
+      "wordsAfter": 159
+    },
+    {
+      "id": "q-defi-rwa-treasury-funding-live",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Scout RWA/Treasury directory rows",
+        "funding provenance"
+      ],
+      "tests": "Directory search for tokenized Treasuries with provenance labels.",
+      "questionIssues": [
+        "Scout-scoped; the golden names no fact."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "process",
+          "issue": null
+        }
+      ],
+      "rot": [],
+      "rotNote": "No pinned value; behavior-only golden.",
+      "duplicates": [
+        {
+          "id": "q-defi-rwa-scf-similar",
+          "survivor": "q-defi-rwa-scf-similar",
+          "why": "Funding provenance for RWA."
+        },
+        {
+          "id": "q-defi-benji-franklin-templeton",
+          "survivor": "q-defi-benji-franklin-templeton",
+          "why": "Tokenized money-market identity."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "A directory-process case that states no fact; RWA identity and funding are covered by the BENJI, USDY, CRDT and rwa-scf cases.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 80,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-defi-sdex-offer-lifecycle",
+      "purpose": "stellar-truth",
+      "topics": [
+        "SDEX manage offer lifecycle",
+        "result XDR and meta",
+        "trades and offer state"
+      ],
+      "tests": "How to track offer creation, update, deletion and fills via result XDR/meta, current offers and trades, and that classic offers do not expire at protocol level.",
+      "questionIssues": [
+        "Excellent, realistic builder question that any tool can answer from primary docs."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Two predicates (path payments consume offers; pagination)."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Horizon offer-created/updated/removed effects are unused",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "gh search code EffectOfferCreated --repo stellar/stellar-horizon",
+              "observedAt": "2026-11-14",
+              "quote": "matches in internal/db2/history/main.go and internal/resourceadapter/effects.go; 'unused' status not re-read"
+            }
+          ]
+        }
+      ],
+      "rotNote": "ManageOffer semantics (offer_id=0 creates, zero amount deletes, no protocol-level expiry) are stable protocol facts confirmed 2026-11-03; not re-read.",
+      "duplicates": [
+        {
+          "id": "q-defi-arbitrage-pathpayment-bots",
+          "survivor": "q-defi-sdex-offer-lifecycle",
+          "why": "Offer lifecycle tracking is owned here."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Needed. The golden is 354 words of correct detail; trim to the four practical rules.",
+      "rewrite": {
+        "question": null,
+        "answer": "For Manage Sell/Buy Offer, offer_id=0 creates, a nonzero id updates, and amount=0 deletes. Read the transaction's result XDR/meta for the authoritative create, update or delete and claimed offers, then use /accounts/{id}/offers for open remainders and /trades for fills. An offer that fills immediately may never get a stored offer id. Classic offers do not expire at the protocol level, and Horizon offer effects are unused.",
+        "keyFacts": [
+          "offer_id=0 creates, a nonzero id updates, and amount=0 deletes an offer.",
+          "Result XDR/meta is authoritative for offer transitions and claimed offers.",
+          "Current offers and trades are separate surfaces for open state and fill history.",
+          "Classic offers do not expire at the protocol level."
+        ],
+        "avoid": [
+          "Relying on Horizon offer effects to recover offer ids.",
+          "Assuming a missing offer was necessarily fully filled."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "Horizon source repo history (stellar-horizon vs archived stellar/go)",
+          "Live-update observation",
+          "Also-good-if lines",
+          "GT-17 correction history"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 354,
+      "wordsAfter": 125
+    },
+    {
+      "id": "q-defi-skill-ecosystem-scout",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Raven skill selection",
+        "ecosystem landscape workflow"
+      ],
+      "tests": "Whether an agent picks the Stellar Ecosystem Scout skill for a landscape request.",
+      "questionIssues": [
+        "Asks 'which workflow is the best source', which only Raven's skill catalog can satisfy."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": null
+        }
+      ],
+      "rot": [],
+      "rotNote": "Raven skill content, not world truth; nothing to re-verify.",
+      "duplicates": [
+        {
+          "id": "q-skill-eco-scout-rwa-landscape",
+          "survivor": "q-skill-eco-scout-rwa-landscape",
+          "why": "eval/skills-cases.json already tests this skill's selection."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "Skill routing is already covered by eval/skills-cases.json (q-skill-eco-scout-rwa-landscape) and unit tests; no Stellar fact is tested.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 102,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-defi-skill-project-dossier",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Raven skill selection",
+        "project due-diligence workflow"
+      ],
+      "tests": "Whether an agent picks the Stellar Project Dossier skill.",
+      "questionIssues": [
+        "Only Raven's catalog can satisfy it."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": null
+        }
+      ],
+      "rot": [],
+      "rotNote": "Raven skill content, not world truth.",
+      "duplicates": [
+        {
+          "id": "q-skill-project-dossier-blend",
+          "survivor": "q-skill-project-dossier-blend",
+          "why": "eval/skills-cases.json already tests this skill."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "Skill routing is already covered by eval/skills-cases.json (q-skill-project-dossier-blend); no Stellar fact is tested.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 103,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-defi-soroswap-vs-stellarx",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Soroswap versus StellarX",
+        "AMM and aggregator versus trading interface",
+        "product layers"
+      ],
+      "tests": "Soroswap builds Soroban AMM and aggregation contracts plus API; StellarX is a classic-DEX trading interface; they are different product layers.",
+      "questionIssues": [
+        "Good confusable-entity question; absorbs the plain Soroswap identity question."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Holds several predicates (contracts/API versus UI roles)."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Three-layer claim is subtle and valuable."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Soroswap's on-chain aggregator v3 hops across Soroban venues; the API can quote classic SDEX separately",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://docs.soroswap.finance/aggregator/technical-reference/contracts/aggregator-v3",
+              "observedAt": "2026-11-14",
+              "quote": "Aggregator v3 CARVQXFP4JF5ELLXUMQ6DALR346YVGBMQOHB4ENA7SSVXAYABXLBDDC4; previous aggregator deprecated; hops Soroswap, Aqua, Sushi, Phoenix, Comet"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-defi-soroswap-what-is",
+          "survivor": "q-defi-soroswap-vs-stellarx",
+          "why": "Soroswap identity folds into this comparison."
+        },
+        {
+          "id": "q-eco-dex-saturation",
+          "survivor": "q-eco-dex-saturation",
+          "why": "Both state StellarX is a UI, not a venue."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Survivor of the Soroswap merge. It already holds the product-layer lesson; it absorbs PaltaLabs attribution and 'first DEX' chronology as a caution.",
+      "rewrite": {
+        "question": null,
+        "answer": "Soroswap, built by PaltaLabs, is Soroban AMM and aggregation contracts plus an API and SDK. Its on-chain aggregator routes only through Soroban AMM venues; its API can also quote classic SDEX liquidity, executed as a separate classic path payment. StellarX, run by Ultra Stellar, is a non-custodial trading interface for classic order books and pools, not a Soroban router or AMM. Soroswap's 'first DEX' wording is its own claim.",
+        "keyFacts": [
+          "Soroswap (PaltaLabs) builds Soroban AMM and aggregation contracts plus API and SDK.",
+          "The on-chain aggregator routes Soroban venues; API quotes may add classic SDEX.",
+          "StellarX is a non-custodial classic-DEX trading interface run by Ultra Stellar.",
+          "Soroswap's 'first' or 'best' wording is its own claim, not independent history."
+        ],
+        "avoid": [
+          "Calling Soroswap and StellarX the same kind of product, or inferring a StellarX Soroban router from AMM access.",
+          "Calling StellarX an SDF product, or making a permanent shutdown claim."
+        ],
+        "notes": "Credit a dated aggregator venue list; an undated claim that the deprecated aggregator is current is stale.",
+        "movedToTruth": [
+          "Aggregator v3 contract id and deprecation date 2026-09-24",
+          "Venue-list history and RECHECK 2026-11-09",
+          "Phoenix hop type versus API venue",
+          "Soroswap Earn and swap app also-good-if"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 266,
+      "wordsAfter": 162
+    },
+    {
+      "id": "q-defi-soroswap-what-is",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Soroswap identity",
+        "aggregator layers",
+        "adapter set"
+      ],
+      "tests": "Soroswap is a PaltaLabs Soroban AMM and aggregation stack with distinct contract, API and UI layers.",
+      "questionIssues": [
+        "Plain identity question; the golden pins a contract id and an adapter list that change."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "process",
+          "issue": "Dating rule for the adapter set."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Aggregator v3 is the mainnet contract and the older aggregator is deprecated",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://docs.soroswap.finance/aggregator/technical-reference/contracts/aggregator-v3",
+              "observedAt": "2026-11-14",
+              "quote": "The previous aggregator, CAYP3UWLJM7ZPTUKL6R6BFGTRWLZ46LRKOXTERI2K6BIJAWGYY62TXTO ... is deprecated. Since 2026-09-24"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-defi-soroswap-vs-stellarx",
+          "survivor": "q-defi-soroswap-vs-stellarx",
+          "why": "Identity and product layers are tested there."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Soroswap's identity and layer boundaries are fully tested in the vs-StellarX comparison; the remaining content is contract ids and adapter lists that rot.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 573,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-defi-streaming-payments-prior-art",
+      "purpose": "mixed",
+      "topics": [
+        "streaming payments prior art",
+        "Scout repo and SCF roster"
+      ],
+      "tests": "Surfaces a per-item matrix of repos, SCF awards and deployment evidence for streaming-payment projects.",
+      "questionIssues": [
+        "Asks for a roster of mid-tier repos; the answer is a corpus snapshot. No category knowledge is tested beyond 'repo presence is not production'."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Generic maturity-dimensions caution."
+        }
+      ],
+      "rot": [],
+      "rotNote": "Roster of six repos and SCF awards not re-read; retired.",
+      "duplicates": [
+        {
+          "id": "q-defi-agentic-payment-standards-compare",
+          "survivor": "q-defi-agentic-payment-standards-compare",
+          "why": "x402/MPP session distinctions are tested there."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "A corpus roster of small projects that moves quickly; its one durable lesson (repo or SCF presence is not production deployment) is tested by blend-alternatives and perps. A payments lane may want a recurring-payments topic case (see missing).",
+      "rewrite": null,
+      "confidence": "medium",
+      "wordsBefore": 425,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-defi-tooling-whitespace-live",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Scout Tooling category cluster",
+        "index whitespace"
+      ],
+      "tests": "Reads the Tooling category row and overlapping type clusters.",
+      "questionIssues": [
+        "Scout-specific."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "process",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Tooling is Scout's largest category",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "scout.getClusters({dimension:'category'})",
+              "observedAt": "2026-11-14",
+              "quote": "clusters[0] key Tooling size 163 (of 899 projects in scope)"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-defi-cluster-rollup-live",
+          "survivor": "q-defi-cluster-rollup-live",
+          "why": "Same mechanic."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Same getClusters category-row mechanic as the rollup case.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 87,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-defi-wisdomtree-crdt",
+      "purpose": "stellar-truth",
+      "topics": [
+        "WisdomTree CRDT private credit fund",
+        "transfer-agent record",
+        "issuer identity"
+      ],
+      "tests": "WisdomTree launched a private-credit digital fund (CRDYX/CRDT) on Ethereum and Stellar in September 2025; it is not a stablecoin or Treasury fund.",
+      "questionIssues": [
+        "Clear. Includes an issuer account id, which is verifiable integration trivia beside the main point."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Issuer id; identifier-level."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "SAC id; derivable from the issuer, adds nothing."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "CRDT launched on Ethereum and Stellar on 2025-09-12",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://ir.wisdomtree.com/news-events/press-releases/detail/755/wisdomtree-brings-private-credit-onchain-with-the-launch-of",
+              "observedAt": "2026-11-14",
+              "quote": "Tokenized WisdomTree Private Credit and Alternative Income Digital Fund (Token: CRDT) September 12, 2025"
+            }
+          ]
+        }
+      ],
+      "rotNote": "Issuer and SAC ids last confirmed against the issuer TOML and Horizon on 2026-08-26; not re-read.",
+      "duplicates": [],
+      "verdict": "tighten",
+      "reason": "Needed as the private-credit RWA identity case. Drop the SAC key fact and the minimum/settlement detail.",
+      "rewrite": {
+        "question": null,
+        "answer": "On 2025-09-12 WisdomTree launched the Private Credit and Alternative Income Digital Fund (fund ticker CRDYX, token CRDT) on Ethereum and Stellar. It is an SEC-registered open-end fund share tracking a private-credit index, not a stablecoin, Treasury fund or bank deposit. The transfer-agent record is determinative and blockchain records are supplementary; transfers need whitelisted wallets. Stellar issuer: GBWMQUGP…TJD6J2P45.",
+        "keyFacts": [
+          "CRDT is WisdomTree's tokenized private-credit and alternative-income fund share.",
+          "It launched on Ethereum and Stellar on 2025-09-12.",
+          "The transfer-agent record is determinative; blockchain records are supplementary.",
+          "CRDT's Stellar issuer is GBWMQUGPPLSC62YPGD5CEHATOQRQMNLNAV2TMEXJ4ZYOTY4TJD6J2P45."
+        ],
+        "avoid": [
+          "Calling CRDT a stablecoin, Treasury fund, bank deposit or a Franklin or Ondo product.",
+          "Implying blockchain records supersede the transfer-agent record."
+        ],
+        "notes": "A Lumenloop-scoped answer caps at partial for recall gaps while ll-012 is active.",
+        "movedToTruth": [
+          "SAC id CBQDK4Y3...",
+          "$25 minimum, T+0 subscription, T+2 redemption",
+          "Distributor role conflicts",
+          "2026-08-26 TOML and Horizon verification"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 326,
+      "wordsAfter": 122
+    },
+    {
+      "id": "q-defi-x402-on-stellar-what",
+      "purpose": "mixed",
+      "topics": [
+        "x402 on Stellar",
+        "facilitator settlement",
+        "SEP-41 and SAC authorization"
+      ],
+      "tests": "How x402 v2 exact works on Stellar via SEP-41 transfers and signed auth entries, the facilitator role and its credentials, and SDF's dated governance role.",
+      "questionIssues": [
+        "Very realistic. Includes a governance-dating detail that is secondary."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": "Dating rule."
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "Restates KF0."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Four predicates (HTTP 402, v2 exact, SEP-41/SAC, facilitator)."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SDF is a Premier member of the x402 Foundation with a Governing Board seat",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/x402",
+              "observedAt": "2026-11-14",
+              "quote": "As a Premier member, SDF holds a seat on the Foundation's Governing Board"
+            },
+            {
+              "class": "D",
+              "ref": "https://www.linuxfoundation.org/press/linux-foundation-announces-operational-launch-of-x402-foundation-to-standardize-internet-native-payments-for-ai-agents-and-applications",
+              "observedAt": "2026-11-14",
+              "quote": "Premier members include Adyen, ... Circle, Cloudflare, Coinbase ... Stellar Development Fou(ndation)"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-defi-agentic-payment-standards-compare",
+          "survivor": "q-defi-x402-on-stellar-what",
+          "why": "x402 mechanics owned here."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Keep; cut the 678-word golden to mechanics, roles, credentials and the x402-versus-MPP split. Governance dating moves to the truth block.",
+      "rewrite": {
+        "question": null,
+        "answer": "x402 is an HTTP 402 payment protocol created at Coinbase and now under Linux Foundation stewardship. On Stellar it uses the v2 'exact' scheme: the client simulates a SEP-41 token transfer and signs Soroban authorization entries (a classic asset via its SAC). The resource server sets price and payee; a facilitator verifies and settles, sponsoring fees. Hosted facilitators may still need API keys. x402 differs from MPP.",
+        "keyFacts": [
+          "x402 uses HTTP 402; Stellar's scheme is v2 exact with SEP-41 and signed auth entries.",
+          "Classic assets participate through their SAC.",
+          "The resource server sets price and payee; the facilitator verifies and settles.",
+          "Hosted facilitators can still require API keys; x402 is distinct from MPP."
+        ],
+        "avoid": [
+          "Saying x402 is Stellar-invented, supports v1 on Stellar, or pays classic assets without the SAC.",
+          "Conflating seller, facilitator, x402 and MPP roles."
+        ],
+        "notes": "Quoting Stellar docs on Coinbase's x402 ownership is not wrong while sd-005 stands; grade caps at partial. Any SDF governance claim needs its date: a seat is correct as of 2026-09-30.",
+        "movedToTruth": [
+          "Governance chronology (2026-07-10, 2026-07-14, 2026-09-30)",
+          "OpenZeppelin /supported 401 probe",
+          "Coinbase-hosted testnet-only note",
+          "VERIFIED 2026-06-22/29 notes"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 678,
+      "wordsAfter": 165
+    },
+    {
+      "id": "q-eco-defi-market-map",
+      "purpose": "mixed",
+      "topics": [
+        "Stellar DeFi crowded versus whitespace",
+        "illustrative DeFi project roster",
+        "directory density versus competition"
+      ],
+      "tests": "That a DeFi market map must be dated and source-relative: directory counts are not competition or maturity, and named counterexamples make absolute whitespace claims unsafe.",
+      "questionIssues": [
+        "Realistic builder question. It now also absorbs 'who is building DeFi on Stellar' (the roster ask)."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": "Dating rule; the case's freshness tag."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Method statement (directory density, competition, maturity differ)."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Perps are emerging with a live mainnet venue (Zenex)",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://docs.zenex.trade/deployments/contract-addresses",
+              "observedAt": "2026-11-14",
+              "quote": "Market XLM-USD | Status Active"
+            }
+          ]
+        },
+        {
+          "claim": "Scout category directory counts are index-relative",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "scout.getClusters({dimension:'category'})",
+              "observedAt": "2026-11-14",
+              "quote": "population totalAvailable 899, included 899; Tooling size 163"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-eco-defi-projects-discovery",
+          "survivor": "q-eco-defi-market-map",
+          "why": "Folds in."
+        },
+        {
+          "id": "q-defi-perps-whitespace",
+          "survivor": "q-defi-perps-whitespace",
+          "why": "Perps owned there."
+        },
+        {
+          "id": "q-eco-nft-marketplace-whitespace",
+          "survivor": "q-eco-nft-marketplace-whitespace",
+          "why": "NFT owned there."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Survivor of the projects-discovery merge. A top-level 'where is DeFi crowded' case is useful; the golden currently lists contested whitespace claims that are better owned by the perps, NFT and liquid-staking cases.",
+      "rewrite": {
+        "question": null,
+        "answer": "A Stellar DeFi map must be a dated, source-relative snapshot. Directory tags show many entries in lending (Blend), liquidity (Aquarius, Soroswap, Phoenix, Sushi), oracles (Reflector), RWA and vaults (DeFindex), but counts mix roles and statuses and do not measure competition, maturity or TVL. Treat perps, liquid staking and insurance as opportunities to verify, not empty lanes; vaults and routers are not independent base lenders.",
+        "keyFacts": [
+          "Directory counts mix roles and statuses; they do not measure competition or maturity.",
+          "A project roster should state its selection rule and each project's category and status.",
+          "Perps are emerging and NFT marketplaces exist, so neither lane is empty.",
+          "Vaults and Blend-built pools are not independent base lenders."
+        ],
+        "avoid": [
+          "Hard-coding a timeless crowded/whitespace map or calling a lane empty without a dated search.",
+          "Flattening announced, testnet and mainnet-live projects into one status."
+        ],
+        "notes": "Do not reward an oracle dominance or most-integrated ranking without a stated metric.",
+        "movedToTruth": [
+          "Per-lane grounding notes (Litemint, Rarible, Band, RedStone, DIA)",
+          "Templar cross-chain note and Certora report",
+          "GT-19 correction history",
+          "Source URLs for type clusters"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 431,
+      "wordsAfter": 148
+    },
+    {
+      "id": "q-eco-defi-projects-discovery",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "DeFi project directory roster"
+      ],
+      "tests": "Produces a dated, illustrative roster of DeFi projects with category and status.",
+      "questionIssues": [
+        "'main DeFi projects' invites a frozen roster; the golden itself says to grade no permanent roster."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Dependencies and roles of each project."
+        }
+      ],
+      "rot": [],
+      "rotNote": "Roster is illustrative; no fact pinned beyond identities covered by other cases.",
+      "duplicates": [
+        {
+          "id": "q-eco-defi-market-map",
+          "survivor": "q-eco-defi-market-map",
+          "why": "Roster and category roles fold into the market map."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "The roster ask is a lens on the market map; the one durable lesson (vaults and Blend-built pools are not independent lenders) is carried by the market-map rewrite.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 229,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-eco-defi-tvl-current",
+      "purpose": "behavior",
+      "topics": [
+        "Stellar DeFi TVL",
+        "provider-dated volatile metric",
+        "chain versus protocol TVL"
+      ],
+      "tests": "That a current TVL answer names its provider, scope and date and keeps chain TVL apart from protocol or RWA measures.",
+      "questionIssues": [
+        "Realistic and answerable from DeFiLlama. 'Directory' routing in the surface is unrelated to correctness."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": "Dating rule; restates the freshness tag."
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "process",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "process",
+          "issue": "Retrieval timestamp; restates KF0."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "DeFiLlama's live Stellar chain TVL",
+          "result": "changed",
+          "evidence": [
+            {
+              "class": "D",
+              "ref": "https://api.llama.fi/v2/chains",
+              "observedAt": "2026-11-14",
+              "quote": "Stellar tvl 204910862.41 (2026-11-14); golden notes read about $227M on 2026-11-02 and a $272.8M daily high on 2026-10-01"
+            }
+          ]
+        }
+      ],
+      "duplicates": [],
+      "verdict": "tighten",
+      "reason": "A fine behavior case for a volatile number. The golden is 429 words of DeFiLlama history; the judge needs only the behavior.",
+      "rewrite": {
+        "question": null,
+        "answer": "Take current chain DeFi TVL from a named provider such as DeFiLlama's Stellar chain endpoint and state its definition and observation date. DeFiLlama showed about $204.9M on 2026-11-14 (about $227M on 2026-11-02), so the figure moves. Keep chain TVL separate from protocol, RWA and asset measures, and do not mix provider snapshots.",
+        "keyFacts": [
+          "Reports TVL from a named provider such as DeFiLlama.",
+          "States the provider's TVL definition or endpoint scope.",
+          "Gives an observation date for the figure.",
+          "Keeps chain TVL separate from protocol, RWA and asset measures."
+        ],
+        "avoid": [
+          "Giving an undated current TVL scalar or pinning a record date.",
+          "Summing overlapping rows or mixing snapshots from different providers or methods."
+        ],
+        "notes": "Grade provider, scope and date, not a specific TVL value.",
+        "movedToTruth": [
+          "DeFiLlama historical series revisions 2026-06-29 to 2026-11-02",
+          "Lumenloop records carry no TVL field",
+          "GT-19 correction history",
+          "Also-good-if lines"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 429,
+      "wordsAfter": 118
+    },
+    {
+      "id": "q-eco-dex-saturation",
+      "purpose": "mixed",
+      "topics": [
+        "Stellar DEX and AMM landscape",
+        "venue versus router versus interface",
+        "counting criterion"
+      ],
+      "tests": "That 'how many serious DEXes' needs a counting criterion and a role separation among SDEX, AMM venues, aggregators and UIs.",
+      "questionIssues": [
+        "Realistic. 'Serious players' is undefined, which the golden turns into the test."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": "Prescribes stating the counting criterion."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Soroswap's aggregator hops across Soroswap, Aqua, Sushi, Phoenix and Comet venues in its interface",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://docs.soroswap.finance/aggregator/technical-reference/contracts/aggregator-v3",
+              "observedAt": "2026-11-14",
+              "quote": "Hop enum: Soroswap, Aqua, Sushi, Phoenix, Comet"
+            }
+          ]
+        },
+        {
+          "claim": "Aquarius, Soroswap, Phoenix and Sushi are live Stellar AMM venues",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "scout.searchProjects",
+              "observedAt": "2026-11-14",
+              "quote": "Soroswap/Phoenix Live checked 2026-11-14 via Scout; Sushi and Aquarius not re-queried"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-defi-soroswap-vs-stellarx",
+          "survivor": "q-defi-soroswap-vs-stellarx",
+          "why": "Role separation (router versus UI) is tested there."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "A role-and-venue taxonomy case worth one slot. Cut the history and the Soroswap routing detail already owned elsewhere.",
+      "rewrite": {
+        "question": null,
+        "answer": "There is no stable count until the criterion is stated. Separate native Stellar liquidity (the SDEX orderbook and classic pools), independent Soroban AMM venues such as Aquarius, Soroswap, Phoenix and Sushi, aggregators and routers, and wallet or trading interfaces such as StellarX. Count a product as a venue only with evidence of its own liquidity and mainnet activity, and date the answer.",
+        "keyFacts": [
+          "Defines the counting criterion before counting venues.",
+          "Separates native SDEX liquidity, AMM venues, routers and trading interfaces.",
+          "A DEX directory tag does not prove independent liquidity."
+        ],
+        "avoid": [
+          "Hard-coding three serious players or equating a DEX tag with independent liquidity.",
+          "Including or excluding a product as a venue without a dated role or liquidity test."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "Inherited three-name Scout grounding",
+          "Sushi V3 live since 2026-02-10",
+          "WOWMAX and StellarBroker notes",
+          "GT-19 correction history"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 273,
+      "wordsAfter": 115
+    },
+    {
+      "id": "q-eco-hana-wallet-scf",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Hana wallet",
+        "SCF award arithmetic"
+      ],
+      "tests": "Hana is a non-custodial multichain wallet with two awarded SCF rounds (#22 and #25) totaling $132,000.",
+      "questionIssues": [
+        "A single-project SCF lookup; answerable but narrow and not something a broad agent evaluation needs."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Arithmetic trap (exclude #21), project-specific."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Hana's SCF total is $132,000 and its site is hanawallet.io",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "scout.searchProjects('Hana wallet')",
+              "observedAt": "2026-11-14",
+              "quote": "slug hana, status Live, scfTotalAwardedUSD 132000, scfAwarded true"
+            },
+            {
+              "class": "A",
+              "ref": "https://www.hanawallet.io/",
+              "observedAt": "2026-11-14",
+              "quote": "Hana wallet site reachable 2026-11-14"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-eco-lobstr-wallet",
+          "survivor": "q-eco-lobstr-wallet",
+          "why": "Wallet identity case; this one adds only an SCF sum."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "A per-project SCF lookup for one mid-size wallet is trivia beside the SCF lane's funding-arithmetic cases (cross-category duplicate: SCF award lookup by project). Wallet identity is covered by LOBSTR and the wallets list.",
+      "rewrite": null,
+      "confidence": "medium",
+      "wordsBefore": 230,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-eco-lobstr-wallet",
+      "purpose": "stellar-truth",
+      "topics": [
+        "LOBSTR wallet",
+        "Ultra Stellar operator",
+        "attributed scale claims"
+      ],
+      "tests": "LOBSTR is a non-custodial wallet run by Ultra Stellar (not SDF), with network and scale claims that must be dated and attributed.",
+      "questionIssues": [
+        "Realistic. 'scale' invites a number; the golden handles it as attributed claims."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "process",
+          "issue": "Dating rule for support claims."
+        },
+        {
+          "i": 3,
+          "kind": "process",
+          "issue": "Attribution rule for scale claims."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "LOBSTR is operated by Ultra Stellar and supports Stellar and XRPL",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://lobstr.co/",
+              "observedAt": "2026-11-14",
+              "quote": "not re-read 2026-11-14; operator and XRPL support last confirmed 2026-09-17"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-eco-stellar-wallets-list",
+          "survivor": "q-eco-lobstr-wallet",
+          "why": "Wallet identity lives here."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Needed as the flagship wallet identity case. Remove the SCF-total handling and legal-entity clauses, which are not what the question asks.",
+      "rewrite": {
+        "question": null,
+        "answer": "LOBSTR is a non-custodial Stellar wallet operated by the Ultra Stellar brand, not by SDF. It runs on web, iOS and Android and, per its operator, also supports XRPL (as of 2026-09-17). User counts are differently defined, attributed claims, such as LOBSTR's own 1M+ users and a third-party 1.5M, not one verified current total.",
+        "keyFacts": [
+          "Ultra Stellar operates LOBSTR.",
+          "LOBSTR is non-custodial.",
+          "LOBSTR supports Stellar and XRPL as of 2026-09-17.",
+          "User and download figures are attributed claims, not one verified total."
+        ],
+        "avoid": [
+          "Claiming SDF builds or operates LOBSTR.",
+          "Presenting user, download or transaction figures as one verified current total."
+        ],
+        "notes": "A dated, sourced SCF total that names its awarded-or-paid basis is not wrong; do not require one. Quoting Lumenloop scf.awarded_total or its operating_region is not wrong while ll-013 and ll-008 stand (cap partial).",
+        "movedToTruth": [
+          "Scout grounding text",
+          "Legal-suffix and jurisdiction guidance",
+          "SCF awarded versus paid correction 2026-09-17",
+          "Google Play and XRPL Commons evidence"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 429,
+      "wordsAfter": 130
+    },
+    {
+      "id": "q-eco-most-active-defi-projects",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Scout leaderboard activity ranking",
+        "DeFi activity metric"
+      ],
+      "tests": "Reports a ranking of DeFi projects by development activity with the metric stated.",
+      "questionIssues": [
+        "The activity metric is defined by Scout (github.commits90d); the question is not answerable the same way by another tool."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Names specific projects; roster is volatile."
+        },
+        {
+          "i": 3,
+          "kind": "process",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Scout leaderboard activity sort is github.commits90d with recency tie-break",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "scout.getLeaderboard({sort:'activity'})",
+              "observedAt": "2026-11-14",
+              "quote": "metricDefinitions.activity: sort=activity orders by github.commits90d ... recency breaking ties; dataAsOf 2026-11-13"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-live-leaderboard-active-projects",
+          "survivor": "q-live-leaderboard-active-projects",
+          "why": "The frozen live lane already asks which projects are most active by development activity."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "Duplicates frozen live-lane q-live-leaderboard-active-projects, which asks the same question of the same operation.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 343,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-eco-nft-marketplace-whitespace",
+      "purpose": "mixed",
+      "topics": [
+        "NFT marketplaces on Stellar",
+        "Litemint",
+        "Rarible Stellar support"
+      ],
+      "tests": "That Stellar has a live NFT marketplace (Litemint) and that Rarible's Stellar link is an award and schema entry, not verified production support.",
+      "questionIssues": [
+        "Realistic integration question with a good trap (Rarible)."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Litemint is a Stellar-native NFT marketplace",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "D",
+              "ref": "https://market.litemint.com/",
+              "observedAt": "2026-11-14",
+              "quote": "Buy, sell, and collect digital creations on Litemint — the first native marketplace on Stellar"
+            }
+          ]
+        },
+        {
+          "claim": "Rarible's supported-chain docs do not verify production Stellar support",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://docs.rarible.org/docs/supported-chains",
+              "observedAt": "2026-11-14",
+              "quote": "fetched page text (12,308 chars) names no chains at all, Solana included, so absence of Stellar proves nothing; last confirmed 2026-07-10"
+            }
+          ]
+        }
+      ],
+      "duplicates": [],
+      "verdict": "tighten",
+      "reason": "Needed for the NFT lane. Trim to the Litemint and Rarible distinction; the thin-category judgment is a dated opinion.",
+      "rewrite": {
+        "question": null,
+        "answer": "Litemint is a live Stellar-native NFT marketplace and the clearest integration candidate; validate its current API or contract path first. Rarible has a Stellar association (an SCF award and a schema entry), but its supported-chain documentation did not verify production Stellar support (checked 2026-07-10), so treat Rarible as awarded or unverified, not as live support. The category is thin, not empty.",
+        "keyFacts": [
+          "Litemint is a live Stellar-native NFT marketplace.",
+          "Rarible has an SCF award but its production Stellar support is unverified."
+        ],
+        "avoid": [
+          "Claiming Rarible supports Stellar in production without a working dated path, or denying any Rarible-Stellar association.",
+          "Treating wallet NFT display as a marketplace."
+        ],
+        "notes": "Truth is disputed for Rarible: sources differ on Stellar support, so grade deployment-state precision, not a binary Live flag.",
+        "movedToTruth": [
+          "Cyberbrawl and Soroban royalties grounding",
+          "Litemint contracts repo",
+          "Rarible help-center page",
+          "Corrected 2026-06-29/2026-07-10 history"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 292,
+      "wordsAfter": 122
+    },
+    {
+      "id": "q-eco-pyusd-stellar-freshness",
+      "purpose": "stellar-truth",
+      "topics": [
+        "PayPal PYUSD on Stellar",
+        "brand versus legal issuer",
+        "launch date"
+      ],
+      "tests": "PYUSD launched on Stellar on 2025-09-18, is PayPal-branded and issued by Paxos, and legal-entity names must be dated.",
+      "questionIssues": [
+        "Clear, realistic, answerable. The wrapper 'live' tag adds nothing: launch facts are stable."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": "Dating rule."
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "Restates KF0."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "PYUSD went live on Stellar on 2025-09-18",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/press/paypal-pyusd-is-now-available-on-stellar",
+              "observedAt": "2026-11-14",
+              "quote": "Rio de Janeiro, Brazil, September 18th, 2025 Today the stablecoin PayPal USD (PYUSD) is live on the Stellar network."
+            }
+          ]
+        },
+        {
+          "claim": "Paxos Trust Company, N.A. is named as issuer; Paxos surfaces still differ",
+          "result": "changed",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://www.paxos.com/pyusd",
+              "observedAt": "2026-11-14",
+              "quote": "Issued by Paxos Trust Company, N.A., PayPal USD (PYUSD) is PayPal's stablecoin designed for payments."
+            },
+            {
+              "class": "A",
+              "ref": "https://docs.paxos.com/stablecoin/pyusd",
+              "observedAt": "2026-11-14",
+              "quote": "PayPal USD (PYUSD), issued by Paxos Trust Company, LLC (Paxos), is an open, fully backed ..."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-eco-stablecoins-on-stellar",
+          "survivor": "q-eco-pyusd-stellar-freshness",
+          "why": "PYUSD detail lives here."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Needed. The facts hold, but Paxos's own surfaces now disagree on the legal entity (N.A. on the product page, LLC on docs), so the golden's flat 'Paxos names N.A.' statement is only half true; the rewrite states the discrepancy.",
+      "rewrite": {
+        "question": null,
+        "answer": "Yes. PayPal USD (PYUSD) went live on Stellar on 2025-09-18. It is PayPal-branded and issued by Paxos, not PayPal. The legal entity is named differently by Paxos surfaces as of 2026-11-14: its product page says Paxos Trust Company, N.A. (after the OCC-approved conversion), while its docs and the 2025 launch release say LLC, so date the name. Cite a ledger and date for any supply figure.",
+        "keyFacts": [
+          "PYUSD launched on Stellar on 2025-09-18.",
+          "PYUSD is PayPal-branded.",
+          "Paxos issues PYUSD, not PayPal.",
+          "Paxos's legal entity name (N.A. versus LLC) differs by source, so name and date it."
+        ],
+        "avoid": [
+          "Claiming PayPal itself is the legal issuer.",
+          "Claiming PYUSD is absent from Stellar, or giving an undated supply figure."
+        ],
+        "notes": "Accept either Paxos entity name when dated and attributed.",
+        "movedToTruth": [
+          "Mainnet issuer GDQE7IXJ... and testnet issuer warning",
+          "OCC Conditional Approval 1358 and 2025-12-12 conversion",
+          "Paxos TOML wording",
+          "GT-20 re-verification history"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 385,
+      "wordsAfter": 123
+    },
+    {
+      "id": "q-eco-stablecoins-on-stellar",
+      "purpose": "mixed",
+      "topics": [
+        "stablecoins on Stellar",
+        "issuer-led coins versus fund tokens",
+        "Scout stablecoin registry"
+      ],
+      "tests": "Which fiat stablecoins live on Stellar with their issuers, and that a registry is not a census and product classes differ.",
+      "questionIssues": [
+        "Realistic. The answer is a roster, so the golden uses behavior, not a list."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "Restates the dating rule."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Names issuers; roster is volatile."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Scout's stablecoin registry is a curated, non-exhaustive list with 37 tracked assets",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "scout.getStablecoins({limit:3})",
+              "observedAt": "2026-11-14",
+              "quote": "counts.tracked 37; coverage.basis curated-registry; multiIssuerTickers EURC by Circle and MyKobo"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-eco-pyusd-stellar-freshness",
+          "survivor": "q-eco-pyusd-stellar-freshness",
+          "why": "PYUSD issuer detail."
+        },
+        {
+          "id": "q-eco-stellar-rwa-stablecoin-volume",
+          "survivor": "q-eco-stellar-rwa-stablecoin-volume",
+          "why": "Stablecoin supply and volume measures."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Keep one stablecoin-roster case. The wrapper and the PYUSD avoid are noise here (the PYUSD issuer trap lives in its own case). The real lessons: issuer attribution, product-class separation, registry is not a census.",
+      "rewrite": {
+        "question": null,
+        "answer": "Stellar's stablecoins are mostly issuer-led: Circle's USDC and EURC, PayPal's PYUSD (issued by Paxos), and newer regional and institutional coins. Attribute each to its issuer account, since a ticker can have several issuers (EURC has two). Treat the roster as dated and non-exhaustive, and keep fiat stablecoins apart from yield-bearing and fund tokens such as BENJI.",
+        "keyFacts": [
+          "Names current Stellar stablecoins with their issuers, such as Circle's USDC and EURC.",
+          "Attributes by issuer account because one ticker can have several issuers.",
+          "A registry or search result is not a complete census of Stellar stablecoins."
+        ],
+        "avoid": [
+          "Inventing a stablecoin or issuer, or asserting absence without a defined dated universe.",
+          "Conflating fiat stablecoins with yield-bearing certificates and fund tokens, or reading a null supply as zero."
+        ],
+        "notes": "Grade the reading behavior, not set membership; marketCapUSD is the cross-peg size metric.",
+        "movedToTruth": [
+          "Scout coverage-block semantics and counts fields",
+          "2026-08-19 registry bound",
+          "Dossier issuer verification list",
+          "GT-20 correction history"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 473,
+      "wordsAfter": 135
+    },
+    {
+      "id": "q-eco-stellar-rwa-stablecoin-volume",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Stellar RWA and stablecoin metrics",
+        "SDF quarterly reports",
+        "stocks versus flows"
+      ],
+      "tests": "Reports SDF's quarterly RWA and stablecoin figures with dates and separates stock measures from period flows.",
+      "questionIssues": [
+        "Realistic, answerable. Asks 'recent SDF reporting', so the figure is dated by the report."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": "Dating rule."
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "Restates KF0."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "process",
+          "issue": "'Flags staleness'; vague."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SDF Q3 2026 report: RWAs $4.1B at quarter end, stablecoin market cap $496M, Q3 transfer volume $25.1B",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/e4b4d30bf7f1db5ea5c383a51bff3e3912326a0d.pdf",
+              "observedAt": "2026-11-14",
+              "quote": "Stablecoin market cap reached $496M, and real-world assets reached $4.1 billion."
+            },
+            {
+              "class": "A",
+              "ref": "https://cdn.sanity.io/files/e2r40yh6/production-i18n/e4b4d30bf7f1db5ea5c383a51bff3e3912326a0d.pdf",
+              "observedAt": "2026-11-14",
+              "quote": "Stablecoin volume grew by 121% quarter-over-quarter to $25.1 billion"
+            }
+          ]
+        },
+        {
+          "claim": "SDF quarterly-reports page summary shows $4.3B RWAs",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/quarterly-reports",
+              "observedAt": "2026-11-14",
+              "quote": "Summary of Q3 2026 ... $4.3B RWAs"
+            }
+          ]
+        }
+      ],
+      "duplicates": [],
+      "verdict": "tighten",
+      "reason": "Valuable, but 677 words of five dated series is excessive. Keep the latest report and the stock/flow rule; older series move to the truth block.",
+      "rewrite": {
+        "question": null,
+        "answer": "SDF's Q3 2026 report (October 2026) puts on-chain RWAs at $4.1B at quarter end (its quarterly-reports page summary says $4.3B), stablecoin market cap at $496M, and Q3 stablecoin transfer volume at $25.1B. Market cap and RWA value are point-in-time stocks; transfer volume is a period flow. Cite the report and date, and do not merge figures from different sources.",
+        "keyFacts": [
+          "SDF's Q3 2026 report puts RWAs at about $4.1B at quarter end.",
+          "Q3 stablecoin transfer volume was $25.1B and stablecoin market cap $496M.",
+          "Supply, market cap and RWA value are stocks; transfer volume is a period flow."
+        ],
+        "avoid": [
+          "Summing or comparing supply, market cap, RWA value and volume as one scope.",
+          "Presenting a historical scalar as current."
+        ],
+        "notes": "Do not penalize either $4.1B or $4.3B when attributed and dated. Attributing the $2.8B RWA figure to Messari is not wrong while ll-009 stands (cap partial).",
+        "movedToTruth": [
+          "Q1 and Q2 2026 report figures",
+          "Allium March 2026 report",
+          "rwa.xyz 2026-07-10 snapshot",
+          "Messari State of Stellar Q1 note",
+          "GT-20 correction history"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 677,
+      "wordsAfter": 141
+    },
+    {
+      "id": "q-eco-stellar-wallets-list",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Scout wallet directory enumeration",
+        "pagination and exact-type filtering"
+      ],
+      "tests": "Whether an agent enumerates Scout's wallet rows with pagination, exact-type counts and duplicate handling.",
+      "questionIssues": [
+        "'the ecosystem directory tracks' makes it a Scout enumeration; the world question ('which wallets exist for Stellar') is untested. Proposed replacement question below."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "operation",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Stellar Wallets Kit supports xBull, Albedo, Varial (formerly Freighter), Rabet, LOBSTR, Hana and Hot Wallet",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/Creit-Tech/Stellar-Wallets-Kit",
+              "observedAt": "2026-11-14",
+              "quote": "xBull Wallet; Albedo; Varial, formerly Freighter (extension and mobile); Rabet; Lobstr; Hana; Hot Wallet"
+            }
+          ]
+        },
+        {
+          "claim": "Varial is the renamed Freighter wallet (rename dated 2026-10-29)",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/Creit-Tech/Stellar-Wallets-Kit",
+              "observedAt": "2026-11-14",
+              "quote": "Varial, formerly Freighter (extension and mobile)"
+            },
+            {
+              "class": "A",
+              "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial",
+              "observedAt": "2026-11-14",
+              "quote": "rename date 2026-10-29 last confirmed 2026-11-02; not re-read"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-eco-lobstr-wallet",
+          "survivor": "q-eco-lobstr-wallet",
+          "why": "Wallet identity."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "The directory-enumeration form tests only Scout pagination. Replace it with the world question; the Freighter-to-Varial rename and the wallet roster are checkable stellar truth.",
+      "rewrite": {
+        "question": "Which wallets can I use with Stellar, and which have been renamed recently?",
+        "answer": "Stellar wallets include Varial (SDF's wallet, renamed from Freighter on 2026-10-29), LOBSTR, xBull, Albedo, Rabet, Hana and Hot Wallet, available as browser extensions, web and mobile apps; the Stellar Wallets Kit integrates them. Treat any list as a dated, non-exhaustive snapshot and check a wallet's current availability before recommending it.",
+        "keyFacts": [
+          "Varial is SDF's wallet, renamed from Freighter on 2026-10-29.",
+          "LOBSTR, xBull, Albedo, Rabet, Hana and Hot Wallet are Stellar wallets.",
+          "A wallet list is a dated, non-exhaustive snapshot."
+        ],
+        "avoid": [
+          "Presenting a small hand-picked list as exhaustive.",
+          "Treating a directory 'Live' label as proof of current app availability."
+        ],
+        "notes": "Freighter and Varial name the same wallet; accept either name.",
+        "movedToTruth": [
+          "Scout 191/72/32 count history and pagination notes",
+          "Scout rename recheck 2026-11-05 and ll-032",
+          "Duplicate canonical-record handling",
+          "GT-20 correction history"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 481,
+      "wordsAfter": 106
+    },
+    {
+      "id": "q-gap-contracts-domain-empty",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Scout listContracts empty result"
+      ],
+      "tests": "How an agent reports an ok-with-empty registry result from scout.listContracts.",
+      "questionIssues": [
+        "Only Scout's registry contract applies."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "process",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "process",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "scout.listContracts(domain defi-yield) is still an ok empty result",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "scout.listContracts({domain:'defi-yield'})",
+              "observedAt": "2026-11-14",
+              "quote": "counts returned 0 total 0; caveat no-rows; note: Evidence-gated"
+            }
+          ]
+        }
+      ],
+      "duplicates": [],
+      "verdict": "retire",
+      "reason": "Envelope semantics (ok-empty versus soft-empty) are covered by test/ (nine softEmpty and two listContracts test files). The general 'empty is not absence' behavior is tested by the whitespace cases.",
+      "rewrite": null,
+      "confidence": "medium",
+      "wordsBefore": 182,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-gap-digest-defi-adjacent",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Raven digest skill softEmpty"
+      ],
+      "tests": "Whether an agent reads a digest skill's softEmpty flag as a quiet window.",
+      "questionIssues": [
+        "Raven skill contract only."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": null
+        }
+      ],
+      "rot": [],
+      "rotNote": "Raven skill contract; no world fact.",
+      "duplicates": [
+        {
+          "id": "q-skill-eco-digest-defi-roundup",
+          "survivor": "q-skill-eco-digest-defi-roundup",
+          "why": "eval/skills-cases.json covers the digest skill."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "The digest skill is already covered by eval/skills-cases.json (q-skill-eco-digest-defi-roundup) and by unit tests of softEmpty.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 97,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-gap-leaderboard-project-not-builder",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Scout leaderboard versus builders"
+      ],
+      "tests": "That Scout's leaderboard ranks projects, not people.",
+      "questionIssues": [
+        "Pure Scout contract question."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "getLeaderboard returns ranked projects",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "scout.getLeaderboard({sort:'activity',limit:3})",
+              "observedAt": "2026-11-14",
+              "quote": "meta.source stellarlight.xyz/leaderboard, counts total 898 projects"
+            }
+          ]
+        }
+      ],
+      "duplicates": [],
+      "verdict": "retire",
+      "reason": "A tool-description fact; getLeaderboard has five unit-test files and a frozen live-lane case, and no Stellar knowledge is tested.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 79,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-gap-semantic-directory-fallback",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Lumenloop semantic fallback",
+        "closed-world versus open-world recovery"
+      ],
+      "tests": "Whether an agent reports a semantic-fallback directory result as candidates and escalates open-world questions to a broad pass.",
+      "questionIssues": [
+        "Only Raven's directory envelope applies, but the recovery behavior (do not equate nearby rows with identity) is a real agent risk."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "process",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "process",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "process",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "search_directory returns match_mode: semantic for a concept query",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "lumenloop.search_directory({query:'decentralized lending for stablecoins'})",
+              "observedAt": "2026-11-14",
+              "quote": "data.match_mode 'semantic'; caveat unverified-match"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-gap-semantic-similar-projects",
+          "survivor": "q-gap-semantic-directory-fallback",
+          "why": "Similar-project lookup is a narrower mechanic."
+        }
+      ],
+      "verdict": "move-tool-lane",
+      "reason": "No Stellar fact, but unit tests check only the match_mode field (two files), not whether an agent labels semantic rows as candidates and widens for open-world questions; no routing or live-lane case checks that behavior. Without this case that misuse goes unseen.",
+      "rewrite": null,
+      "confidence": "medium",
+      "wordsBefore": 277,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-gap-semantic-similar-projects",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Lumenloop find_similar_projects_semantic"
+      ],
+      "tests": "Which operation finds projects similar to a known slug.",
+      "questionIssues": [
+        "A tool-selection question with no world content."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "find_similar_projects_semantic({slug:'soroswap'}) returns ranked neighbors",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "lumenloop.find_similar_projects_semantic({slug:'soroswap'})",
+              "observedAt": "2026-11-14",
+              "quote": "returned stellarbroker 0.7485, soroban-polygon-interop 0.7127"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-gap-semantic-directory-fallback",
+          "survivor": "q-gap-semantic-directory-fallback",
+          "why": "Semantic candidate semantics."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "An operation-selection fact covered by three test files and by the dossier skill's routing case; no Stellar knowledge is tested.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 75,
+      "wordsAfter": 0
+    }
+  ],
+  "summary": {
+    "keep": 0,
+    "tighten": 34,
+    "merge": 6,
+    "retire": 16,
+    "move-tool-lane": 2,
+    "factsChanged": 1
+  },
+  "crossCategoryDuplicates": [
+    "SCF funding of RWA/tokenization projects: q-defi-rwa-scf-similar vs the scf lane's RWA-funding cases",
+    "SCF award lookup by project: q-eco-hana-wallet-scf (retired) vs scf per-project cases",
+    "Classic asset in Soroban through its SAC and SEP-41: q-defi-cross-blend-rivool-sac (retired) vs assets and soroban lanes",
+    "x402 and MPP mechanics: q-defi-x402-on-stellar-what and q-defi-agentic-payment-standards-compare vs any tooling or soroban agentic-payments case",
+    "Stablecoin supply, market cap and RWA totals: q-eco-stellar-rwa-stablecoin-volume vs assets stablecoin-size cases",
+    "Bridge safety and CCTP: q-defi-bridge-evm-to-stellar-axelar vs assets or edge CCTP and bridge cases",
+    "YieldBlox/USTRY oracle incident (Feb 2026): q-defi-etherfuse-stablebonds vs security or incident cases",
+    "Freighter-to-Varial rename: q-eco-stellar-wallets-list vs tooling wallet cases",
+    "Flash loans and atomic cross-contract calls: q-defi-flash-loans vs soroban cross-contract cases",
+    "SDEX offers and path payments: q-defi-sdex-offer-lifecycle and q-defi-arbitrage-pathpayment-bots vs protocol-core operation cases",
+    "Staking and no native XLM staking: q-defi-build-staking-for-own-token and q-defi-liquid-staking-whitespace vs protocol consensus-rewards cases"
+  ],
+  "missing": [
+    "Oracle providers on Stellar beyond Reflector (Band, RedStone, DIA) and how contracts consume SEP-40 feeds; q-defi-oracle-landscape-live was retired as a directory case.",
+    "DEX/AMM basics: how the SDEX orderbook, classic liquidity pools and Soroban AMMs differ for a trader (protocol-core may own classic pools).",
+    "Stablecoin issuance and anchored-asset distinction for a builder (assets lane), and a yield-bearing versus fiat stablecoin test.",
+    "Recurring or streaming payments design on Soroban (q-defi-streaming-payments-prior-art retired as a roster).",
+    "Cross-chain lending on Stellar (Templar on NEAR) and Blend pool-creation risk, which the market map only names.",
+    "Insurance, identity and attestation on Stellar are named as thin lanes in the market map but have no case."
+  ]
+}

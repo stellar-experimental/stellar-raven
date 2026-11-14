@@ -1,0 +1,21 @@
+{
+  "id": "q-tw-escrow-api-auth-custody",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-compliance (golden coverage audit)",
+    "reviewer": "verify-audit-compliance (golden coverage audit)",
+    "reason": "One project's API authentication header is vendor detail, not ecosystem knowledge.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-compliance.json#q-tw-escrow-api-auth-custody",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-compliance.json#q-tw-escrow-api-auth-custody",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-tw-escrow-api-auth-custody"
+    ],
+    "lastCaseContentSha256": "561476e7584ed114bceca3152ac1eb3454023334c074a22c72bafbf5c01e6757",
+    "replacementIds": []
+  }
+}

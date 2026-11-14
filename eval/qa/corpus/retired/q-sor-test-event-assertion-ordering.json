@@ -1,0 +1,21 @@
+{
+  "id": "q-sor-test-event-assertion-ordering",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-soroban-a (golden coverage audit)",
+    "reviewer": "verify-audit-soroban-a (golden coverage audit)",
+    "reason": "One test-API behavior on a one-case leaf that q-soroban-unit-testing already holds.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-a.json#q-sor-test-event-assertion-ordering",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-a.json#q-sor-test-event-assertion-ordering",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-sor-test-event-assertion-ordering"
+    ],
+    "lastCaseContentSha256": "4228e93c2119ad264d1fbf44bce494a49e6c30ce1ff30ee5313d4bb035abe9fb",
+    "replacementIds": []
+  }
+}

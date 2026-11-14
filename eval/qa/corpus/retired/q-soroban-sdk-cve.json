@@ -1,0 +1,21 @@
+{
+  "id": "q-soroban-sdk-cve",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-soroban-b (golden coverage audit)",
+    "reviewer": "verify-audit-soroban-b (golden coverage audit)",
+    "reason": "A volatile list of soroban-sdk advisory ids with no taxonomy facet.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-b.json#q-soroban-sdk-cve",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-b.json#q-soroban-sdk-cve",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-soroban-sdk-cve"
+    ],
+    "lastCaseContentSha256": "7c647e482faaaea200fcdb2148c9ad4a3880c05c57d85220914be1200409ca5c",
+    "replacementIds": []
+  }
+}

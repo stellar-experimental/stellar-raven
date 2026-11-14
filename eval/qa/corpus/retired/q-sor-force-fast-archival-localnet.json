@@ -1,0 +1,21 @@
+{
+  "id": "q-sor-force-fast-archival-localnet",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-soroban-a (golden coverage audit)",
+    "reviewer": "verify-audit-soroban-a (golden coverage audit)",
+    "reason": "Once its duplicated P23 restore facts are removed, what remains is a list of Core test-config flag names that the golden itself says must be re-checked every release. That is version-sensitive trivia, not categorical knowledge; q-sor-p23-auto-restore-extendto owns the durable behavior.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-a.json#q-sor-force-fast-archival-localnet",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-a.json#q-sor-force-fast-archival-localnet",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-sor-force-fast-archival-localnet"
+    ],
+    "lastCaseContentSha256": "9cd298f68939bf982d8576a2344b57b07134a6761b96a75a3e14a5e50ba0f7a6",
+    "replacementIds": []
+  }
+}

@@ -8,18 +8,16 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "The official JS/TS SDK is **`@stellar/stellar-sdk`**, **maintained by SDF**. Install via a package\nmanager: **`npm install @stellar/stellar-sdk`** (or `pnpm add` / `yarn add` equivalent). It talks to\nboth **Horizon (REST)** and **Stellar RPC (JSON-RPC)**, and handles transaction building/signing and XDR\nencode/decode. It exposes classes like **`Horizon`, `rpc`, `Keypair`, `TransactionBuilder`** and network\nselectors for mainnet/testnet/futurenet/local. **As of v16, the former `@stellar/stellar-base` package\nwas folded into `@stellar/stellar-sdk`** — no separate base install is needed.",
+    "answer": "The official JavaScript/TypeScript SDK is `@stellar/stellar-sdk`, maintained by SDF; install it with `npm install @stellar/stellar-sdk`. It covers Horizon, Stellar RPC, transaction building and signing, and XDR. The former `@stellar/stellar-base` package is rolled into it, so there is no separate base install.",
     "keyFacts": [
       "The official JS/TS SDK is `@stellar/stellar-sdk`, maintained by SDF.",
-      "Installs with `npm install @stellar/stellar-sdk` or a pnpm/yarn equivalent.",
-      "Supports Horizon REST and Stellar RPC JSON-RPC.",
-      "Handles transaction building, signing, and XDR encoding and decoding."
+      "Install it with `npm install @stellar/stellar-sdk`.",
+      "`@stellar/stellar-base` is rolled into `@stellar/stellar-sdk`; no separate install."
     ],
     "avoid": [
-      "Do NOT name `stellar-sdk` (unscoped/legacy), `stellar-base` alone, or web3.js/ethers as the official current package.",
-      "Do NOT claim the SDK is community-maintained — it is SDF-maintained."
-    ],
-    "notes": "Package name is the defining fact; the scoped @stellar/ prefix is the trap. v16 base-fold claim holds (js-stellar-sdk v16 folded @stellar/stellar-base into @stellar/stellar-sdk).\nAlso good if the answer: As of v16, the former `@stellar/stellar-base` package was folded into `@stellar/stellar-sdk` (no separate base install). | Exposes classes like `Horizon`, `rpc`, `Keypair`, `TransactionBuilder`.\nGolden cites: At least one primary developers.stellar.org SDKs page (client-sdks) or the stellar/js-stellar-sdk repo."
+      "Do NOT name the unscoped `stellar-sdk` or `stellar-base` alone as the current official package.",
+      "Do NOT call the SDK community-maintained."
+    ]
   },
   "tags": {
     "category": "tooling-infra",
@@ -87,22 +85,65 @@
             "note": "Live npm registry response: `name` was `@stellar/stellar-base`, `version` was `15.0.0`, and `deprecated` was `This package is now rolled into @stellar/stellar-sdk. Please use @stellar/stellar-sdk to continue receiving updates and support.`"
           }
         ]
+      },
+      {
+        "claim": "@stellar/stellar-sdk is the maintained SDF package; unscoped stellar-sdk and @stellar/stellar-base are deprecated in its favour",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://registry.npmjs.org/stellar-sdk/latest",
+            "observedAt": "2026-11-14",
+            "note": "deprecated: This package has moved to @stellar/stellar-sdk!"
+          },
+          {
+            "class": "C",
+            "ref": "https://registry.npmjs.org/@stellar/stellar-base/latest",
+            "observedAt": "2026-11-14",
+            "note": "version 15.0.0 deprecated: rolled into @stellar/stellar-sdk"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tools/sdks/client-sdks.md",
+            "observedAt": "2026-11-14",
+            "note": "**The JavaScript SDK is maintained by SDF.**"
+          }
+        ]
+      },
+      {
+        "claim": "@stellar/stellar-sdk current version has no stellar-base dependency",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://registry.npmjs.org/@stellar/stellar-sdk/latest",
+            "observedAt": "2026-11-14",
+            "note": "version 17.4.0; dependencies include @stellar/js-xdr, no @stellar/stellar-base"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-05)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-tooling-b, verify-audit-tooling-b; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "A: https://developers.stellar.org/docs/tools/sdks/client-sdks — \"The JavaScript SDK is maintained by SDF.\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[0]",
-        "C: https://registry.npmjs.org/@stellar/stellar-sdk — \"dist-tags latest 17.4.0 (2026-10-25), lts-16 16.4.1\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[0]",
-        "B: https://github.com/stellar/js-stellar-sdk README — \"npm install --save @stellar/stellar-sdk ... pnpm add @stellar/stellar-sdk ... yarn add @stellar/stellar-sdk\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[1]",
-        "A: https://developers.stellar.org/docs/tools/sdks/client-sdks — \"A networking layer API for Stellar RPC methods and the Horizon API. Facilities for building and signing transactions\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[2..3]",
-        "B: https://github.com/stellar/js-stellar-sdk README — \"### Migrating from @stellar/stellar-base — `@stellar/stellar-base` is now folded into `@stellar/stellar-sdk`.\" (observedAt 2026-11-02) → confirmed: golden.answer",
-        "C: https://registry.npmjs.org/@stellar/stellar-base/latest — \"15.0.0; deprecated: This package is now rolled into @stellar/stellar-sdk.\" (observedAt 2026-11-02) → confirmed: golden.answer",
-        "C: https://registry.npmjs.org/stellar-sdk/latest — \"13.3.0; deprecated: This package has moved to @stellar/stellar-sdk!\" (observedAt 2026-11-02) → confirmed: golden.avoid[0]",
-        "Sibling sweep 2026-11-02: q-tool-which-sdk-comparison, q-tool-sdk-repos-discovery, q-sor-deploy-invoke-from-js-sdk, q-ti-bindings-to-nextjs-integration; no contradiction found by the proposer matrix."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-b.json#q-tool-js-sdk-package",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-b.json#q-tool-js-sdk-package",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-tool-js-sdk-package",
+        "Live C 2026-11-14: https://registry.npmjs.org/stellar-sdk/latest -- 'deprecated: This package has moved to @stellar/stellar-sdk!'",
+        "Live C 2026-11-14: https://registry.npmjs.org/@stellar/stellar-base/latest -- 'version 15.0.0 deprecated: rolled into @stellar/stellar-sdk'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/tools/sdks/client-sdks.md -- '**The JavaScript SDK is maintained by SDF.**'",
+        "Live C 2026-11-14: https://registry.npmjs.org/@stellar/stellar-sdk/latest -- 'version 17.4.0; dependencies include @stellar/js-xdr, no @stellar/stellar-base'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/tools/sdks/client-sdks -- 'The JavaScript SDK is maintained by SDF. ... The Python SDK is maintained by dedicated community developers. ... The Go SDK is maintained by SDF.'",
+        "Live C 2026-11-14: https://registry.npmjs.org/@stellar/stellar-sdk -- 'latest 17.4.0 (2026-10-25); dependencies list has no @stellar/stellar-base'",
+        "Live C 2026-11-14: https://registry.npmjs.org/@stellar/stellar-base -- '15.0.0 deprecated: This package is now rolled into @stellar/stellar-sdk. Please use @stellar/stellar-sdk'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-tool-js-sdk-package"
+    "origin": "raven-next q-tool-js-sdk-package",
+    "notes": "Package name is the defining fact; the scoped @stellar/ prefix is the trap. v16 base-fold claim holds (js-stellar-sdk v16 folded @stellar/stellar-base into @stellar/stellar-sdk).\nAlso good if the answer: As of v16, the former `@stellar/stellar-base` package was folded into `@stellar/stellar-sdk` (no separate base install). | Exposes classes like `Horizon`, `rpc`, `Keypair`, `TransactionBuilder`.\nGolden cites: At least one primary developers.stellar.org SDKs page (client-sdks) or the stellar/js-stellar-sdk repo.",
+    "leaf": "tooling.js-sdk"
   }
 }

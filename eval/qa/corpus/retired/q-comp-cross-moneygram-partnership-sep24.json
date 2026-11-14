@@ -1,0 +1,21 @@
+{
+  "id": "q-comp-cross-moneygram-partnership-sep24",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-compliance (golden coverage audit)",
+    "reviewer": "verify-audit-compliance (golden coverage audit)",
+    "reason": "Retired with no replacement because MoneyGram's Stellar ramps stay in the active case q-anchor-moneygram-ramps and the dated April 2026 partnership extension rests on one unverified vendor news item.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-compliance.json#q-comp-cross-moneygram-partnership-sep24",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-compliance.json#q-comp-cross-moneygram-partnership-sep24",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-comp-cross-moneygram-partnership-sep24"
+    ],
+    "lastCaseContentSha256": "5a635dc09d8ab6bdba225957907a0fcbfb7602ce884596937eb3183230b3ea37",
+    "replacementIds": []
+  }
+}

@@ -1,25 +1,23 @@
 {
   "id": "q-zk-host-functions-status",
-  "question": "Which zero-knowledge cryptographic host functions are live on Stellar as of July 2026, which CAPs introduced them, and what gaps remain for STARK-style verification?",
+  "question": "Which zero-knowledge host functions are live on Stellar, which CAPs introduced them, and what gaps remain for STARK-style verification?",
   "surface": [
     "skills.stellar-dev.zk-proofs",
     "skills.stellar-dev.standards",
     "stellarDocs.search_protocol_concepts_docs"
   ],
   "golden": {
-    "answer": "As of 2026-07-11, CAP-0059's BLS12-381 host functions (Protocol 22), CAP-0074's BN254 and CAP-0075's Poseidon/Poseidon2 primitives (Protocol 25), and CAP-0080's BN254 MSM, scalar-field arithmetic, inversion, and curve-membership checks (Protocol 26) are live: pubnet and testnet reported Protocol 27. CAP-0080's recorded status was **Implemented** on 2026-08-29. These are low-level primitives, not complete proof systems. There were no documented native Goldilocks, NTT, or FRI host functions as of 2026-07-11, so STARK-style verifiers need additional Wasm work or another architecture.",
+    "answer": "As of 2026-11-14 the live ZK primitives are BLS12-381 (CAP-0059, Protocol 22), BN254 (CAP-0074) and Poseidon/Poseidon2 (CAP-0075) in Protocol 25, and CAP-0080's further BN254 operations in Protocol 26; all are Final. They are primitives, not proof systems. No native Goldilocks, NTT or FRI host functions are documented, so STARK-style verifiers need extra Wasm work or another design.",
     "keyFacts": [
-      "CAP-0059 introduced BLS12-381 host functions with minimum supported Protocol 22.",
-      "Protocol 25 added BN254 via Final CAP-0074 and Poseidon/Poseidon2 via Final CAP-0075.",
-      "Protocol 26 activated CAP-0080 (Implemented, later Final).",
-      "Marks Protocol 22, 25, and 26 primitives live on pubnet and testnet as of a stated date.",
-      "Dates the native Goldilocks/NTT/FRI host-function gap to an observation date."
+      "CAP-0059 added BLS12-381 host functions in Protocol 22.",
+      "CAP-0074 (BN254) and CAP-0075 (Poseidon/Poseidon2) landed in Protocol 25.",
+      "CAP-0080 added further BN254 ZK operations in Protocol 26.",
+      "No native Goldilocks, NTT or FRI host functions exist (as of a stated date)."
     ],
     "avoid": [
-      "CAP-0074 and CAP-0075 are still merely proposed and unavailable on mainnet as of July 2026.",
-      "Native ZK host functions are complete end-to-end proof systems."
+      "Do NOT call CAP-0074 or CAP-0075 proposed-only, or the host functions complete proof systems."
     ],
-    "notes": "Status-sensitive details are stated as of 2026-07-11; grade later sourced changes leniently and require dated primary evidence. As of 2026-11-02, pubnet and testnet report Protocol 29 and CAP-0080 is Final (moved 2026-09-22); do not penalize an answer that reports these later dated facts. CAP-0087 (ML-DSA, Protocol 30, not live as of 2026-11-02) is not an NTT/FRI primitive for STARK verification."
+    "notes": "Later dated protocol versions are not wrong (pubnet 29, testnet 30 on 2026-11-14). CAP-0087 (ML-DSA, Protocol 30) is not an NTT/FRI primitive."
   },
   "tags": {
     "category": "soroban",
@@ -33,7 +31,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-04-06",
     "sources": [
       {
@@ -168,7 +166,7 @@
             "class": "A",
             "ref": "https://developers.stellar.org/docs/networks/software-versions",
             "observedAt": "2026-08-29",
-            "note": "Exact release heading: \u2018Protocol 26 (Mainnet, May 6, 2026)\u2019. Its feature list includes \u2018Host Functions for Efficient ZK BN254 Use Cases: CAP-80\u2019."
+            "note": "Exact release heading: ‘Protocol 26 (Mainnet, May 6, 2026)’. Its feature list includes ‘Host Functions for Efficient ZK BN254 Use Cases: CAP-80’."
           },
           {
             "class": "B",
@@ -189,7 +187,7 @@
             "class": "B",
             "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0080.md",
             "observedAt": "2026-08-29",
-            "note": "Exact header lines: `Status: Implemented` and `Protocol version: 26`. Exact summary: \u2018This CAP adds host functions for BN254 MSM, BN254 modular arithmetic, and curve membership checks for BLS12-381 and BN254.\u2019"
+            "note": "Exact header lines: `Status: Implemented` and `Protocol version: 26`. Exact summary: ‘This CAP adds host functions for BN254 MSM, BN254 modular arithmetic, and curve membership checks for BLS12-381 and BN254.’"
           },
           {
             "class": "F",
@@ -420,23 +418,61 @@
             "note": "'Protocol 29 (Mainnet, October 1, 2026) ... It introduces no new CAPs.'"
           }
         ]
+      },
+      {
+        "claim": "CAP-0059 (P22), CAP-0074 and CAP-0075 (P25), CAP-0080 (P26) are all Final",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0080.md",
+            "observedAt": "2026-11-14",
+            "note": "Title: Host functions for efficient ZK BN254 use cases Status: Final Protocol version: 26"
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/README.md",
+            "observedAt": "2026-11-14",
+            "note": "| CAP-0074 | 25 | Host functions for BN254 | ... | Final |"
+          }
+        ]
+      },
+      {
+        "claim": "No documented native Goldilocks, NTT or FRI host functions; CAP-0087 (ML-DSA) is not one",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/README.md",
+            "observedAt": "2026-11-14",
+            "note": "| CAP-0087 | 30 | Host functions for ML-DSA signature verification | ... | Implemented |"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-07)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-soroban-b, verify-audit-soroban-b; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Gospel change: golden.notes now dates the CAP-0087 'not live' clause 'as of 2026-11-02'; verifier decision accept.",
-        "B https://github.com/stellar/stellar-protocol/blob/master/core/cap-0087.md \u2014 'Status: Implemented ... Protocol version: 30' (observedAt 2026-11-02).",
-        "F https://horizon.stellar.org/ and https://horizon-testnet.stellar.org/ \u2014 current_protocol_version 29, core_supported_protocol_version 30 (observedAt 2026-11-02).",
-        "A https://developers.stellar.org/docs/networks/software-versions \u2014 'Protocol 29 (Mainnet, October 1, 2026) ... It introduces no new CAPs.' (observedAt 2026-11-02).",
-        "B https://github.com/stellar/rs-soroban-env/blob/0c99950e96128beba3319aa96b116646ce974e69/soroban-env-common/env.json \u2014 crypto host functions are bls12_381_*, bn254_*, poseidon(2)_permutation, verify_sig_ml_dsa_*; none match goldilocks|ntt|fri|stark (observedAt 2026-11-02).",
-        "Sibling sweep 2026-11-02: q-sor-cross-warmancer-zk-stack, q-pc-protocol-26-yardstick, q-pc-protocol-27-zipper, q-protocol-bn254-poseidon-xray, q-protocol-bls12-381-cap59, q-edge-fresh-latest-protocol-version checked; no contradiction. q-pc-quantum-preparedness-dormant evidence records CAP-0087 as Draft at its earlier observation date; its golden does not pin CAP-0087 status."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-b.json#q-zk-host-functions-status",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-b.json#q-zk-host-functions-status",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-zk-host-functions-status",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0080.md -- 'Title: Host functions for efficient ZK BN254 use cases Status: Final Protocol version: 26'",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/README.md -- '| CAP-0074 | 25 | Host functions for BN254 | ... | Final |'",
+        "Live F 2026-11-14: POST https://mainnet.sorobanrpc.com getVersionInfo -- '\"protocolVersion\":29'",
+        "Live F 2026-11-14: POST https://soroban-testnet.stellar.org getNetwork -- '\"protocolVersion\":30'",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/README.md -- '| CAP-0087 | 30 | Host functions for ML-DSA signature verification | ... | Implemented |'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0080.md -- 'Title: Host functions for efficient ZK BN254 use cases Status: Final Protocol version: 26'",
+        "Live F 2026-11-14: https://horizon.stellar.org/ ; https://horizon-testnet.stellar.org/ -- 'pubnet current_protocol_version 29; testnet current_protocol_version 30 (stellar-core 30.0.0)'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/core/README.md -- 'CAP-0087 | 30 | Host functions for ML-DSA signature verification | Implemented (no Goldilocks/NTT/FRI CAP listed)'"
       ],
       "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit",
         "freshness-drift"
       ]
     },
-    "origin": "kaan zk-host-functions-cap-roadmap"
+    "origin": "kaan zk-host-functions-cap-roadmap",
+    "notes": "Status-sensitive details are stated as of 2026-07-11; grade later sourced changes leniently and require dated primary evidence. As of 2026-11-02, pubnet and testnet report Protocol 29 and CAP-0080 is Final (moved 2026-09-22); do not penalize an answer that reports these later dated facts. CAP-0087 (ML-DSA, Protocol 30, not live as of 2026-11-02) is not an NTT/FRI primitive for STARK verification.",
+    "leaf": "soroban.crypto-zk"
   }
 }

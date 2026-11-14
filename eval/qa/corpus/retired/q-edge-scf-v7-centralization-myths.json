@@ -1,0 +1,21 @@
+{
+  "id": "q-edge-scf-v7-centralization-myths",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-edge (golden coverage audit)",
+    "reviewer": "verify-audit-edge (golden coverage audit)",
+    "reason": "The tranche schedule is q-scf-build-award-cap kf2; \"SDF cannot remove a Mainnet app\" follows from q-org-sdf-structure-mandate kf1.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-edge.json#q-edge-scf-v7-centralization-myths",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-edge.json#q-edge-scf-v7-centralization-myths",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-edge-scf-v7-centralization-myths"
+    ],
+    "lastCaseContentSha256": "c884642c1ee2f60eccda0932ccbf941387c22e3a771b2a311d8f28d4ee5f3a3f",
+    "replacementIds": []
+  }
+}

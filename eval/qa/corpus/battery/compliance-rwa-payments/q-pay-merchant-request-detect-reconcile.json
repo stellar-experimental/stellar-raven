@@ -1,0 +1,206 @@
+{
+  "id": "q-pay-merchant-request-detect-reconcile",
+  "question": "How does a merchant or app request a Stellar payment from a customer, detect that it arrived, and match it to the right order?",
+  "surface": [
+    "stellarDocs.search_docs",
+    "stellarDocs.get_doc_page"
+  ],
+  "golden": {
+    "answer": "Request it with a SEP-7 `web+stellar:pay` link or QR code carrying destination, amount, asset, and a per-order memo, or give each order a muxed address. Detect it by polling RPC `getEvents` for `transfer` events, or by following Horizon's payments for the account, from a saved cursor. Match on memo or muxed ID, then check asset code, issuer, and amount.",
+    "keyFacts": [
+      "A SEP-7 `web+stellar:pay` URI carries the destination, amount, asset, and memo.",
+      "A per-order memo or muxed account ID ties an incoming payment to its order.",
+      "RPC `getEvents` transfer events or Horizon's account payments reveal incoming payments.",
+      "An asset is identified by its code together with its issuer."
+    ],
+    "avoid": [
+      "Do NOT match an incoming payment on the asset code alone."
+    ],
+    "notes": "Either detection path is correct: RPC transfer events or Horizon's account payments. Do not require both, and do not require a named payment processor. Giving each order its own receiving address is also a correct way to match."
+  },
+  "tags": {
+    "category": "compliance-rwa-payments",
+    "service": "stellarDocs",
+    "freshness": "stable"
+  },
+  "truth": {
+    "lifecycle": {
+      "state": "active",
+      "reviewState": "none",
+      "activation": {
+        "date": "2026-11-14",
+        "author": "gap lanes gap-1, gap-2, gap-3 (Claude Fable 5.2)",
+        "reviewer": "verify-gap (Claude Opus 5.5)",
+        "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+        "evidence": [
+          ".agents/rounds/2026-11-14-golden-coverage-audit/gap/verify-gap.json",
+          ".agents/rounds/2026-11-14-golden-coverage-audit/gap/"
+        ]
+      }
+    },
+    "domain": "real-world",
+    "status": "confirmed",
+    "leaf": "standards.payment-patterns",
+    "notes": "The slot's second canonical source, docs/build/guides/basics/follow-received-payments, returned Page Not Found as .md on 2026-11-14; the send-and-receive guide now teaches RPC getEvents.",
+    "sources": [
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0007.md",
+        "observedAt": "2026-11-14",
+        "quote": "The `pay` operation represents a request to pay a specific address with a specific asset, regardless of the source asset used by the payer."
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0007.md",
+        "observedAt": "2026-11-14",
+        "quote": "web+stellar:pay?destination=GCALNQQB...&amount=120.1234567&memo=skdjfasf&memo_type=MEMO_TEXT&msg=pay%20me%20with%20lumens"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0007.md",
+        "observedAt": "2026-11-14",
+        "quote": "5. `memo` (optional) - Can be a memo to be included in the payment / path payment."
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos.md",
+        "observedAt": "2026-11-14",
+        "quote": "an internal customer database maps transactions to individual accounts, using either the muxed account feature or transaction memos"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/build/guides/transactions/send-and-receive-payments.md",
+        "observedAt": "2026-11-14",
+        "quote": "These events can be efficiently monitored using the RPC server's `getEvents` method, which provides server-side filtering and real-time payment detection."
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/build/guides/transactions/send-and-receive-payments.md",
+        "observedAt": "2026-11-14",
+        "quote": "**Efficient polling**: Use cursors and pagination for reliable event processing"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/get-payments-by-account-id.md",
+        "observedAt": "2026-11-14",
+        "quote": "Streaming mode allows you to listen for new payments for this account as they are added to the Stellar ledger."
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets.md",
+        "observedAt": "2026-11-14",
+        "quote": "Assets are uniquely identified by the combination of their asset code and issuer."
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0067.md",
+        "observedAt": "2026-11-14",
+        "quote": "an `to_muxed_id` `ScVal` containing the transaction memo"
+      },
+      {
+        "class": "E",
+        "ref": "https://developers.stellar.org/docs/build/apps/wallet/sep7#pay-operation",
+        "observedAt": "2026-11-14",
+        "quote": "The pay operation represents a request to pay a specific address with a specific asset, regardless of the source asset used by the payer."
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "A SEP-7 web+stellar:pay URI carries the destination, amount, asset, and memo.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0007.md",
+            "observedAt": "2026-11-14",
+            "note": "Operation pay parameters: destination (required), amount, asset_code, asset_issuer, memo, memo_type, callback, msg; example URIs use web+stellar:pay?destination=...&amount=...&memo=..."
+          },
+          {
+            "class": "E",
+            "ref": "https://developers.stellar.org/docs/build/apps/wallet/sep7#pay-operation",
+            "observedAt": "2026-11-14",
+            "note": "Docs index hit for the wallet SDK's SEP-7 guide describes the same pay operation."
+          }
+        ]
+      },
+      {
+        "claim": "A per-order memo or a muxed account ID ties an incoming payment to its order.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos.md",
+            "observedAt": "2026-11-14",
+            "note": "Services map transactions to individual accounts \"using either the muxed account feature or transaction memos\"; muxed accounts \"aren't yet supported by all wallets, exchanges, and anchors\"."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0067.md",
+            "observedAt": "2026-11-14",
+            "note": "Transfer events carry to_muxed_id: the muxed ID for a muxed destination, or the transaction memo when the destination is a plain account and the memo is not MEMO_NONE."
+          }
+        ]
+      },
+      {
+        "claim": "Incoming payments are detected through RPC getEvents transfer events or Horizon's payments for the account, resumed from a cursor.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/transactions/send-and-receive-payments.md",
+            "observedAt": "2026-11-14",
+            "note": "Section \"Monitoring Payments as event stream\": getEvents with topic filters, cursors and pagination; \"Payments are 'transfer' events\"."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/get-payments-by-account-id.md",
+            "observedAt": "2026-11-14",
+            "note": "\"can be used in streaming mode ... Horizon will start at the earliest known payment unless a cursor is set\"."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0067.md",
+            "observedAt": "2026-11-14",
+            "note": "CAP-67 defines the unified transfer event that classic payment operations and token contracts both emit."
+          }
+        ]
+      },
+      {
+        "claim": "An asset is identified by its code together with its issuer; matching on the code alone is unsafe.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets.md",
+            "observedAt": "2026-11-14",
+            "note": "\"asset codes often overlap (for example, multiple companies offer a USD token on Stellar). Assets are uniquely identified by the combination of their asset code and issuer.\""
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0007.md",
+            "observedAt": "2026-11-14",
+            "note": "The pay operation takes asset_code and asset_issuer as separate parameters."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-11-14",
+      "by": "Claude Fable 5.2, gap-2 lane, 2026-11-14 golden-coverage-audit",
+      "evidence": [
+        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0007.md",
+        "https://developers.stellar.org/docs/build/guides/transactions/send-and-receive-payments.md",
+        "https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos.md",
+        "https://developers.stellar.org/docs/data/apis/horizon/api-reference/get-payments-by-account-id.md",
+        "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets.md",
+        "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0067.md",
+        "Sibling sweep: q-stellar-recurring-payments (recurring billing), q-sep-7-uri (SEP-7 identity and scheme), q-raph-exchange-memo and q-raph-missing-exchange-memo (exchange deposit memos) agree; none tests the request, detect, match sequence for a merchant. q-raph-merchant-payments is slated for retirement in this round.",
+        "Independent verification: .agents/rounds/2026-11-14-golden-coverage-audit/gap/verify-gap.json#q-pay-merchant-request-detect-reconcile (accept)"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
+      ]
+    },
+    "origin": "authored golden-coverage-audit 2026-11-14"
+  }
+}

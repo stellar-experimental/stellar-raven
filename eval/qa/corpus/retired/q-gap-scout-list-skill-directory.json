@@ -1,0 +1,21 @@
+{
+  "id": "q-gap-scout-list-skill-directory",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-soroban-a (golden coverage audit)",
+    "reviewer": "verify-audit-soroban-a (golden coverage audit)",
+    "reason": "Retired because it tests how Raven surfaces listSkills, which the routing gates measure, while the active case q-tool-cli-skills-discovery keeps the skills-catalog topic.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-a.json#q-gap-scout-list-skill-directory",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-a.json#q-gap-scout-list-skill-directory",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-gap-scout-list-skill-directory"
+    ],
+    "lastCaseContentSha256": "b8306a3b0b26a281e72276eb768301b6e22ee79944156cd281f583fffb098307",
+    "replacementIds": []
+  }
+}

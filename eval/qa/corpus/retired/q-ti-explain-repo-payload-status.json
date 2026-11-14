@@ -1,0 +1,21 @@
+{
+  "id": "q-ti-explain-repo-payload-status",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-tooling-a (golden coverage audit)",
+    "reviewer": "verify-audit-tooling-a (golden coverage audit)",
+    "reason": "Not a distinct mechanism. Its rule (an ok host envelope can carry a payload-level non-answer; read data.ok) is the one that auditors and verifiers already retired twice this round as covered and adding no visibility: q-gap-scout-changelog-envelope and q-gap-scout-status-envelope (verify: \"envelope-vs-payload ok is covered by adapter unit tests ... and test/live/run-live-execute.mjs\"). Keeping it here contradicts those accepted verdicts. Its degraded-answer half is the same reading discipline q-scf-pitch-prep-live grades for composite blocks. explainRepo is also a narrow operation.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-a.json#q-ti-explain-repo-payload-status",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-a.json#q-ti-explain-repo-payload-status",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-ti-explain-repo-payload-status"
+    ],
+    "lastCaseContentSha256": "597bf34b869d0d0cbb31934bb730a7feb774f07130a801a913f71a1007531c21",
+    "replacementIds": []
+  }
+}

@@ -1,0 +1,1369 @@
+{
+  "lane": "verify-gap",
+  "generatedAt": "2026-11-14",
+  "agent": "Claude Opus 5.5, terminal t1jz",
+  "method": "Blind pass first: only question, answer, keyFacts and avoid were read, and each claim was re-derived from live sources (gh raw reads of stellar-protocol, rs-soroban-env, stellar-cli, stellar/packages, Blend and OpenZeppelin repos; developers.stellar.org .md pages; stellar.org pages via parallel-cli extract; parallel-cli search as the web engine; live Horizon, RPC, Radar, status.stellar.org and dashboard API reads). Truth blocks and gap notes were read only afterwards. Raven reach was re-run once with my own wording for every unreachable or reachable-not-surfaced result (four execute calls, 2026-11-14 04:27-04:36 UTC).",
+  "proposals": [
+    {
+      "id": "q-asset-usdt0-layerzero-oft",
+      "decision": "accept",
+      "why": "Every key fact holds on the official docs page and on-chain: USDT0 is a classic asset with a SAC, USDT is locked on Ethereum and Stellar's OFT mints. Question tests the heart of assets.usdt0. No duplicate in the battery.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/tokens/usdt0-layerzero.md",
+          "observedAt": "2026-11-14",
+          "quote": "On Stellar, USDT0 is a **classic asset with a SAC**. Classic flows use a trustline plus a payment."
+        },
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/launch/usdt0.md",
+          "observedAt": "2026-11-14",
+          "quote": "Ethereum alone locks the USDT that backs them all"
+        },
+        {
+          "class": "F",
+          "ref": "https://horizon.stellar.org/assets?asset_code=USDT0&asset_issuer=GATISXX6BZ6NC7IKQBY37CJD4SOZL3CYZJWXEDG6JVIY4WBS6KXJHN6Q",
+          "observedAt": "2026-11-14",
+          "quote": "contract_id CBSJZEIO5C7KC2SF3MKSNXXJSW5G3VTNBX4ATMKUI3B2MR4JKM4R26YF; authorized balance 3738113.6962373"
+        },
+        {
+          "class": "D",
+          "ref": "https://layerzero.network/blog/layerzero-endpoint-on-stellar-usdt0",
+          "observedAt": "2026-11-14",
+          "quote": "LayerZero Endpoint on Stellar is Live, led by USDT0 (published 2026-09-02)"
+        }
+      ],
+      "amended": {
+        "question": null,
+        "answer": null,
+        "keyFacts": null,
+        "avoid": null,
+        "notes": null,
+        "freshness": null
+      },
+      "ravenReach": "answerable"
+    },
+    {
+      "id": "q-nft-vault-contract-standards",
+      "decision": "accept",
+      "why": "SEP-50 (Non-Fungible Tokens) and SEP-56 (Tokenized Vault Standard) are both Draft today; SEP-39 is NFT interoperability guidance for classic assets; OpenZeppelin's stellar-tokens crate ships non_fungible and vault modules, the docs say the vault implements SEP-56, and OpenZeppelin authored SEP-50. The dated-status key fact accepts a later status.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0050.md",
+          "observedAt": "2026-11-14",
+          "quote": "Title: Non-Fungible Tokens / Status: Draft / Updated: 2025-03-10"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0056.md",
+          "observedAt": "2026-11-14",
+          "quote": "Title: Tokenized Vault Standard / Status: Draft / Updated: 2025-11-06"
+        },
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/tools/openzeppelin-contracts.md",
+          "observedAt": "2026-11-14",
+          "quote": "The Fungible Token Vault extends the Fungible Token and implements SEP-56 Tokenized Vault Standard"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/OpenZeppelin/stellar-contracts/tree/main/packages/tokens/src",
+          "observedAt": "2026-11-14",
+          "quote": "directories: fungible, non_fungible, rwa, vault"
+        }
+      ],
+      "amended": {
+        "question": null,
+        "answer": null,
+        "keyFacts": null,
+        "avoid": null,
+        "notes": null,
+        "freshness": null
+      },
+      "ravenReach": "answerable"
+    },
+    {
+      "id": "q-sep24-interactive-deposit-flow",
+      "decision": "accept",
+      "why": "Matches the SEP-24 text step by step. Its first key fact repeats q-anchor-endpoint-discovery's auth fact, but the coverage plan lists that case as a secondary only and leaves the flow itself (hosted URL, KYC in the hosted page, callback or polling) untested; this case fills that gap.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
+          "observedAt": "2026-11-14",
+          "quote": "Anchors and clients must support one of the SEP-10 or SEP-45 web authentication or both"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
+          "observedAt": "2026-11-14",
+          "quote": "POST TRANSFER_SERVER_SEP0024/transactions/deposit/interactive ... on_change_callback: postMessage or a URL that the anchor should POST a JSON message to"
+        },
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/build/apps/example-application-tutorial/anchor-integration/sep24",
+          "observedAt": "2026-11-14",
+          "quote": "Launch the popup window and listen for a callback (section surfaced by Raven's docs search)"
+        }
+      ],
+      "amended": {
+        "question": null,
+        "answer": null,
+        "keyFacts": null,
+        "avoid": null,
+        "notes": null,
+        "freshness": null
+      },
+      "ravenReach": "answerable"
+    },
+    {
+      "id": "q-sep31-flow-sep38-quotes",
+      "decision": "accept",
+      "why": "SEP-31 spec: the Sending Anchor pays the Receiving Anchor's Stellar account and the Receiving Anchor delivers to the Receiving Client; SEP-38 indicative prices versus firm quotes with expires_at. SEP-31 Active, SEP-38 Draft, as the notes say. Replaces the merged q-sep-31-cross-border and q-sep-38-quotes, as the coverage plan intends.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0031.md",
+          "observedAt": "2026-11-14",
+          "quote": "The Sending Anchor sends the funds to the Receiving Anchor's Stellar account"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0038.md",
+          "observedAt": "2026-11-14",
+          "quote": "These prices are indicative. The actual price will be calculated at conversion time ... expires_at: The date and time by which the anchor must receive funds"
+        },
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep31/integration",
+          "observedAt": "2026-11-14",
+          "quote": "Customers can be identified using two approaches. The first approach uses a Stellar account and memo."
+        }
+      ],
+      "amended": {
+        "question": null,
+        "answer": null,
+        "keyFacts": null,
+        "avoid": null,
+        "notes": null,
+        "freshness": null
+      },
+      "ravenReach": "answerable"
+    },
+    {
+      "id": "q-audit-reports-where-published",
+      "decision": "accept",
+      "why": "Both registries exist and list firms. SDF's Security Tools page lists the portal (sorobansecurity.com redirects to stellarsecurityportal.com). The Audit Bank page shows Certora, Runtime Verification, Halborn, Hacken and Zellic; the portal mirror holds Veridise (14) and OpenZeppelin (8). Firm names are dated examples, as the notes say.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://stellar.org/audit-bank/projects",
+          "observedAt": "2026-11-14",
+          "quote": "The Soroban Security Audit Bank provides comprehensive, structured security audits for eligible projects funded through the Stellar Community Fund"
+        },
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/tools/developer-tools/security-tools.md",
+          "observedAt": "2026-11-14",
+          "quote": "### [The Soroban Security Portal](https://sorobansecurity.com)"
+        },
+        {
+          "class": "F",
+          "ref": "https://sorobansecurity.com",
+          "observedAt": "2026-11-14",
+          "quote": "HTTP 200 after redirect to https://stellarsecurityportal.com/"
+        },
+        {
+          "class": "C",
+          "ref": "Raven scout.listAudits (limit 100), 2026-11-14T04:36:08Z",
+          "observedAt": "2026-11-14",
+          "quote": "71 reports, all on stellarsecurityportal.com; Veridise 14, Runtime Verification 11, Certora 10, OtterSec 9, OpenZeppelin 8, Halborn 4"
+        }
+      ],
+      "amended": {
+        "question": null,
+        "answer": null,
+        "keyFacts": null,
+        "avoid": null,
+        "notes": null,
+        "freshness": null
+      },
+      "ravenReach": "answerable"
+    },
+    {
+      "id": "q-comp-aml-analytics-vendors",
+      "decision": "accept",
+      "why": "Chainalysis and TRM Labs state Stellar coverage on their own sites; SDF's service-providers page lists AnChain, Elliptic, Indicum and Merkle Science as analytics companies. SEP-12 is the KYC data API and KYC/AML remains the anchor's obligation. Notes correctly accept any two sourced vendors.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://www.chainalysis.com/blog/stellar-automatic-token-support-february-2026/",
+          "observedAt": "2026-11-14",
+          "quote": "Chainalysis Upgrades Support for Stellar with Automatic Token Support (February 11, 2026)"
+        },
+        {
+          "class": "A",
+          "ref": "https://www.trmlabs.com/blockchain-coverage/stellar",
+          "observedAt": "2026-11-14",
+          "quote": "Trace, screen, and monitor Stellar with TRM Labs."
+        },
+        {
+          "class": "A",
+          "ref": "https://stellar.org/ecosystem/service-providers",
+          "observedAt": "2026-11-14",
+          "quote": "## Analytics companies: AnChain, Elliptic, Indicum, Merkle Service"
+        },
+        {
+          "class": "D",
+          "ref": "https://corsa.finance/compare/chainalysis-vs-trm-vs-elliptic",
+          "observedAt": "2026-11-14",
+          "quote": "Chainalysis vs TRM Labs vs Elliptic (2026): Blockchain Analytics Compared"
+        }
+      ],
+      "amended": {
+        "question": null,
+        "answer": null,
+        "keyFacts": null,
+        "avoid": null,
+        "notes": null,
+        "freshness": null
+      },
+      "ravenReach": "answerable"
+    },
+    {
+      "id": "q-crp-public-sector-cbdc-pilots-stellar",
+      "decision": "accept",
+      "why": "The NBU's own statement confirms the pilot was e-money issued by a commercial bank and not the e-hryvnia; SDF's press release names TASCOMBANK and Bitt; the Marshall Islands Ministry of Finance and SDF document USDM1 and the December 2025 UBI disbursement. The no-production-CBDC claim is dated and the notes demand a dated primary source for any contrary claim. The avoid item guards a real trap: Raven's own Lumenloop corpus holds a Decrypt headline calling it a central-bank CBDC pilot.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://bank.gov.ua/en/news/all/natsionalniy-bank-vitaye-pilotniy-proyekt-ministerstva-tsifrovoyi-transformatsiyi-schodo-vipusku-programovanih-elektronnih-groshey",
+          "observedAt": "2026-11-14",
+          "quote": "This pilot project is not directly concerned with issuing the e-hryvnia, the NBU's digital currency."
+        },
+        {
+          "class": "A",
+          "ref": "https://stellar.org/press/ukraine-electronic-hryvnia-pilot-launched-by-tascombank-and-bitt-on-stellar",
+          "observedAt": "2026-11-14",
+          "quote": "TASCOMBANK will build and test the regulated electronic hryvnia on Stellar ... built under the current e-money legislation of Ukraine"
+        },
+        {
+          "class": "A",
+          "ref": "https://mof.gov.mh/usdm1-whitepaper/",
+          "observedAt": "2026-11-14",
+          "quote": "Financial Access and the Path to USDM1 (RMI Ministry of Finance, 2025-12-12)"
+        },
+        {
+          "class": "D",
+          "ref": "https://www.coindesk.com/business/2025/12/16/marshall-islands-launches-world-s-first-blockchain-based-ubi-on-stellar-blockchain",
+          "observedAt": "2026-11-14",
+          "quote": "Marshall Islands launches world's first blockchain-based UBI on Stellar blockchain"
+        }
+      ],
+      "amended": {
+        "question": null,
+        "answer": null,
+        "keyFacts": null,
+        "avoid": null,
+        "notes": null,
+        "freshness": null
+      },
+      "ravenReach": "unreachable",
+      "ravenReachNote": "Corrected from reachable-not-surfaced. My wording surfaced both the hryvnia press release (Lumenloop) and USDM1 (Scout research: SDF 2025 year in review, May and Jun 2026 roundups), so those facts are answerable. The NBU statement (key fact 2) is in no Raven source; the gap note itself places it on bank.gov.ua. Owner: National Bank of Ukraine, news item of 2021-12-15 at the bank.gov.ua URL above; Lumenloop's article corpus could ingest it. Raven instead holds a misleading Decrypt headline ('Ukraine's Central Bank Oversees Digital Currency Pilot Using Stellar', 2021-12-14)."
+    },
+    {
+      "id": "q-pay-merchant-request-detect-reconcile",
+      "decision": "accept",
+      "why": "SEP-7 pay URIs carry destination, amount, asset and memo; the docs payment guide monitors payments through RPC events; asset identity is code plus issuer. Distinct from the muxed-account and recurring-payment cases. Note: truth.asOf is missing on this stable case.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0007.md",
+          "observedAt": "2026-11-14",
+          "quote": "destination (required) - A valid account ID or payment address ... memo field will be put on-chain"
+        },
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/build/guides/transactions/send-and-receive-payments.md",
+          "observedAt": "2026-11-14",
+          "quote": "capture payment activity as pure events. These events can be efficiently monitored using the RPC server"
+        },
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets.md",
+          "observedAt": "2026-11-14",
+          "quote": "Classic assets on Stellar have two identifying characteristics: the asset code and the issuer."
+        }
+      ],
+      "amended": {
+        "question": null,
+        "answer": null,
+        "keyFacts": null,
+        "avoid": null,
+        "notes": null,
+        "freshness": null
+      },
+      "ravenReach": "reachable-not-surfaced",
+      "ravenReachNote": "Confirmed. My merchant-wording docs search surfaced the send-and-receive RPC pipeline and the memo guidance, but a direct 'web+stellar:pay payment request QR code' docs query returned SEP-10 and x402 pages, not SEP-7. SEP-7 is held (scout.searchResearch source sep returned sep-0007.md in another query)."
+    },
+    {
+      "id": "q-defi-blend-audit-record",
+      "decision": "amend",
+      "why": "Core facts hold: v1 reports are Certora and OtterSec (blend-contracts/audits), v2 reports are Certora and Code4rena (blend-contracts-v2/audits; Code4rena ran Feb 24 to Mar 17, 2025). But the Certora v2 reports are dated April and June 2025, so 'early 2025' in key fact 2 is too narrow. A web search for Blend audits also returns github.com/BlendMoney/audits, a different project (Blend Money, blend.money) with Cantina, Zellic, Sherlock and yAudit reports through 2026; a grader caution prevents crediting or penalizing that confusion wrongly.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "https://github.com/blend-capital/blend-contracts-v2/tree/main/audits",
+          "observedAt": "2026-11-14",
+          "quote": "Code4rena x Blend V2 audit report.pdf; Script3 - Certora - Blend v2 - Security Assessment Draft v3 Report - April 2025.pdf"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/code-423n4/2025-02-blend",
+          "observedAt": "2026-11-14",
+          "quote": "Starts February 24, 2025 20:00 UTC / Ends March 17, 2025 20:00 UTC"
+        },
+        {
+          "class": "A",
+          "ref": "https://docs-v1.blend.capital/audits-and-bug-bounties",
+          "observedAt": "2026-11-14",
+          "quote": "Blend has been Audited by both Certora and Ottersec. All issues have been addressed."
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/BlendMoney/audits",
+          "observedAt": "2026-11-14",
+          "quote": "org BlendMoney: name 'Blend Money', blog https://blend.money; README lists Cantina, Zellic, Sherlock audits 2025-2026"
+        }
+      ],
+      "amended": {
+        "question": null,
+        "answer": null,
+        "keyFacts": [
+          "Blend v1 was audited by Certora and OtterSec.",
+          "Blend v2 was audited by Certora and through a Code4rena competition in 2025.",
+          "The audit reports are published in Blend's docs and contract repositories.",
+          "States the date of the latest audit report it relies on."
+        ],
+        "avoid": null,
+        "notes": "Accept a later audit record that adds reports. Publication dates differ by source for the same report (for example the v1 Certora report is dated December 2023 on the Stellar Security Portal and January 25, 2024 on Certora's site); do not penalize either. An audit covers the reviewed version, not later code; saying so is correct, not required. Blend Money (blend.money, GitHub BlendMoney) is a different project; its Cantina, Zellic, Sherlock and yAudit reports are not Blend audits.",
+        "freshness": null
+      },
+      "ravenReach": "answerable"
+    },
+    {
+      "id": "q-eco-hermes-renamed-zenex",
+      "decision": "amend",
+      "why": "Zenex is live on Mainnet (operator docs list the deployment and an XLM-USD market). But no primary source states the rename: Zenex's own docs repository never mentions Hermes, and the only 'formerly Hermes' statement found is the Stellar Light record, the aggregator under test. What a primary source does show is that one GitHub organization, zenith-protocols, built the Hermes perpetual exchange (2024) and now builds Zenex. Encode the rename as the source-backed succession and label it corpus-recorded.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "https://github.com/zenith-protocols/hermes",
+          "observedAt": "2026-11-14",
+          "quote": "Hermes: Decentralized Perpetual Exchange on Stellar (last push 2024-10-13)"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/zenith-protocols (zenex-sdk-js, zenex-docs)",
+          "observedAt": "2026-11-14",
+          "quote": "zenex-sdk-js pushed 2026-11-11; zenex-docs pushed 2026-10-16; no file in zenex-docs mentions Hermes"
+        },
+        {
+          "class": "A",
+          "ref": "https://docs.zenex.trade/deployments",
+          "observedAt": "2026-11-14",
+          "quote": "This page lists every contract of the live Zenex deployment on Stellar mainnet and the values those contracts run with."
+        },
+        {
+          "class": "C",
+          "ref": "https://stellarlight.xyz/project/zenex",
+          "observedAt": "2026-11-14",
+          "quote": "Zenex (formerly Hermes) is a decentralized perpetual (leveraged) trading exchange on Stellar"
+        }
+      ],
+      "amended": {
+        "question": null,
+        "answer": "Hermes's team, Zenith Protocols, now runs Zenex, a perpetual futures exchange that ecosystem directories record as Hermes's successor. As of 2026-11-14 Zenex is live: its documentation lists a Stellar Mainnet deployment with an XLM-USD market. Status can change, so cite the operator's deployments page or a dated directory record.",
+        "keyFacts": [
+          "Zenex, from Hermes's team Zenith Protocols, is the successor to Hermes.",
+          "Zenex is live on Stellar Mainnet, or a later dated status is given."
+        ],
+        "avoid": null,
+        "notes": "Live. Grade the succession and a dated status. The rename is recorded in ecosystem directories and shown by the shared Zenith Protocols GitHub organization; Zenex's own documentation does not state it, so saying 'directories list Zenex as formerly Hermes' is correct. Do not require other perpetuals venues.",
+        "freshness": null
+      },
+      "ravenReach": "answerable"
+    },
+    {
+      "id": "q-eco-institutions-payment-networks-banks",
+      "decision": "accept",
+      "why": "All four dated facts hold at their primary sources: Visa newsroom 2025-07-31, Wirex and SDF releases 2025-11-17/18, SDF and Mastercard 2024-10-15, U.S. Bank and Reuters 2026-09-09. Notes handle the U.S. Bank 'launch' versus 'pilot' wording. Names institutions no other case covers.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://usa.visa.com/about-visa/newsroom/press-releases.releaseId.21581.html",
+          "observedAt": "2026-11-14",
+          "quote": "Visa Expands Stablecoin Settlement Support 7/31/2025"
+        },
+        {
+          "class": "A",
+          "ref": "https://stellar.org/press/wirex-and-stellar-go-live-with-dual-stablecoin-visa-settlement-in-usdc-and-eurc-for-7-million-users",
+          "observedAt": "2026-11-14",
+          "quote": "dual-stablecoin settlement using USDC and EURC on the Stellar blockchain is now live"
+        },
+        {
+          "class": "A",
+          "ref": "https://stellar.org/press/stellar-joins-the-mastercard-crypto-credential-ecosystem-to-unlock-verified-interactions-across-public-blockchain-networks",
+          "observedAt": "2026-11-14",
+          "quote": "At Meridian 2024 ... announced a new partnership with Mastercard to integrate the company's Crypto Credential solution"
+        },
+        {
+          "class": "D",
+          "ref": "https://www.reuters.com/legal/transactional/us-bancorp-executes-first-live-transaction-using-dollar-backed-usbdc-stablecoin-2026-09-09",
+          "observedAt": "2026-11-14",
+          "quote": "US Bancorp executes first live transaction using dollar-backed USBDC stablecoin (Sept 9, 2026)"
+        }
+      ],
+      "amended": {
+        "question": null,
+        "answer": null,
+        "keyFacts": null,
+        "avoid": null,
+        "notes": null,
+        "freshness": null
+      },
+      "ravenReach": "answerable",
+      "ravenReachNote": "Same class, different detail: with my wording, lumenloop.search_content_semantic returned the SDF Mastercard press release (2024-10-15) in its top two rows, so the gap note's 'reachable but not surfaced' for Mastercard did not reproduce."
+    },
+    {
+      "id": "q-sdf-2026-strategy-priorities",
+      "decision": "accept",
+      "why": "stellar.org/foundation/strategy states the $1 billion network asset value target, 15 new transformational enterprises signed and at least 5 deployed, and the faster, safer infrastructure objective. The roadmap page is still titled '2025 SDF Product Roadmap', so the avoid item is a verified trap.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://stellar.org/foundation/strategy",
+          "observedAt": "2026-11-14",
+          "quote": "We're targeting $1 billion in growth for network asset value on Stellar"
+        },
+        {
+          "class": "A",
+          "ref": "https://stellar.org/foundation/strategy",
+          "observedAt": "2026-11-14",
+          "quote": "Our year-end target: sign 15 new transformational enterprises and deploy at least 5 in 2026."
+        },
+        {
+          "class": "A",
+          "ref": "https://stellar.org/foundation/roadmap",
+          "observedAt": "2026-11-14",
+          "quote": "title: Stellar | 2025 SDF Product Roadmap"
+        },
+        {
+          "class": "D",
+          "ref": "https://www.crypto-news-flash.com/sdf-outlines-stellars-2026-strategy",
+          "observedAt": "2026-11-14",
+          "quote": "SDF Outlines Stellar's 2026 Strategy for Growth and Scale (2026-02-05)"
+        }
+      ],
+      "amended": {
+        "question": null,
+        "answer": null,
+        "keyFacts": null,
+        "avoid": null,
+        "notes": null,
+        "freshness": null
+      },
+      "ravenReach": "unreachable",
+      "ravenReachNote": "Confirmed. scout.searchResearch and lumenloop.search_content_semantic returned SCF results, weekly roundups and coverage of the 2025 roadmap; lumenloop.search_documents('strategy') lists SDF strategy posts for 2018-2023 only. Owner confirmed: SDF, stellar.org/foundation/strategy."
+    },
+    {
+      "id": "q-token-xlm-supply-total-circulating",
+      "decision": "accept",
+      "why": "Live dashboard API today: totalSupply 50,001,786,837.397 and circulatingSupply 35,407,570,704 (updatedAt 2026-11-14T04:24Z), exactly the golden's figures. Horizon's total_coins reads 105,443,902,087 and the burn account GALAXYVOID... has master weight 0, matching the note. CAP-26 disabled inflation in Protocol 12; docs date the vote 2019-10-28. Distinct from q-hot-fee-pool-burn-deflation and q-token-initial-supply-distribution.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://dashboard.stellar.org/api/v3/lumens",
+          "observedAt": "2026-11-14",
+          "quote": "\"totalSupply\": \"50001786837.3970712\", \"circulatingSupply\": \"35407570704.3678974\""
+        },
+        {
+          "class": "F",
+          "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=1",
+          "observedAt": "2026-11-14",
+          "quote": "ledger 65468912 total_coins 105443902087.3472865"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0026.md",
+          "observedAt": "2026-11-14",
+          "quote": "Title: Disable Inflation Mechanism / Status: Final / Protocol version: 12"
+        },
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens",
+          "observedAt": "2026-11-14",
+          "quote": "This \"network inflation\" was ended by validator vote on October 28, 2019."
+        }
+      ],
+      "amended": {
+        "question": null,
+        "answer": null,
+        "keyFacts": null,
+        "avoid": null,
+        "notes": null,
+        "freshness": null
+      },
+      "ravenReach": "answerable"
+    },
+    {
+      "id": "q-net-protocol-meeting-notes-find-cap",
+      "decision": "accept",
+      "why": "developers.stellar.org/meetings indexes dated pages from January 2024; the newest entry today is 2026-11-12, and that page embeds its YouTube recording. CAP preambles carry Status and a Discussion link (for example CAP-77).",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/meetings.md",
+          "observedAt": "2026-11-14",
+          "quote": "**2026-11-12** ... **2024-01-18** Discord agenda thread"
+        },
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/meetings/2026/11/12.md",
+          "observedAt": "2026-11-14",
+          "quote": "# 2026-11-12 [YouTube video player](https://www.youtube-nocookie.com/embed/zTZtF1jL2H0"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0077.md",
+          "observedAt": "2026-11-14",
+          "quote": "Status: Final / Discussion: https://github.com/orgs/stellar/discussions/1811 / Protocol version: 26"
+        }
+      ],
+      "amended": {
+        "question": null,
+        "answer": null,
+        "keyFacts": null,
+        "avoid": null,
+        "notes": null,
+        "freshness": null
+      },
+      "ravenReach": "answerable"
+    },
+    {
+      "id": "q-net-tier1-roster-current",
+      "decision": "accept",
+      "why": "Three independent witnesses give the same ten organizations: the live Radar transitive quorum set, SDF's stellar/packages example config (OBSRVR replaced SatoshiPay on 2026-07-14; Figure, MoneyGram and Range added 2026-08-25), and SDF's July 2026 press release. Key facts are behavioral or durable; the SatoshiPay avoid item is verified.",
+      "evidence": [
+        {
+          "class": "F",
+          "ref": "https://radar.withobsrvr.com/api/v1 (transitiveQuorumSet)",
+          "observedAt": "2026-11-14",
+          "quote": "Blockdaemon, Creit Technologies, Figure Certificate Company, Franklin Templeton, LOBSTR, MoneyGram, OBSRVR, Public Node, Range, SDF"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/packages/blob/master/docs/examples/pubnet-validator-full/stellar-core.cfg",
+          "observedAt": "2026-11-14",
+          "quote": "Replace SatoshiPay with OBSRVR in pubnet full validator example (#223), 2026-07-14"
+        },
+        {
+          "class": "A",
+          "ref": "https://stellar.org/press/moneygram-figure-markets-and-range-to-help-secure-the-stellar-network-by-joining-as-tier-1-validators",
+          "observedAt": "2026-11-14",
+          "quote": "Expanding the set of Tier 1 organizations increases the network's fault tolerance"
+        }
+      ],
+      "amended": {
+        "question": null,
+        "answer": null,
+        "keyFacts": null,
+        "avoid": null,
+        "notes": null,
+        "freshness": null
+      },
+      "ravenReach": "unreachable",
+      "ravenReachNote": "Confirmed. stellarDocs.search_docs returned the Tier 1 Organizations page, which links Radar but lists no organizations; Lumenloop returned the July 2026 press release (three of ten names) and a 2024 OBSRVR post. Owner confirmed: SDF validators docs, with Radar as the live source."
+    },
+    {
+      "id": "q-network-halt-history",
+      "decision": "accept",
+      "why": "SDF's post: halted 67 minutes, no funds lost, no fork, key validators coordinated a quorum-set reduction. Press reported about two hours, so the duration is not pinned and the note accepts both. SDF's 2021 statement: SDF validators halted while the network kept processing transactions; Protocol 16 resolved it. Avoid items are verified false.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://stellar.org/blog/developers/may-15th-network-halt",
+          "observedAt": "2026-11-14",
+          "quote": "No one lost their money; no one's balances were confused by a fork."
+        },
+        {
+          "class": "A",
+          "ref": "https://stellar.org/blog/developers/may-15th-network-halt",
+          "observedAt": "2026-11-14",
+          "quote": "key validators on the network coordinated a configuration change in which quourumsets were reduced to only include highly available validators"
+        },
+        {
+          "class": "D",
+          "ref": "https://www.theblock.co/news/business/2019-05-16-stellar-was-down-for-2-hours-23614",
+          "observedAt": "2026-11-14",
+          "quote": "Stellar network went down at 4:15 p.m. ET for nearly two hours"
+        },
+        {
+          "class": "A",
+          "ref": "https://stellar.org/press/statement-on-halted-sdf-validators",
+          "observedAt": "2026-11-14",
+          "quote": "During the entirety of the SDF node downtime, the Stellar network remained online ... The network itself did not halt."
+        }
+      ],
+      "amended": {
+        "question": null,
+        "answer": null,
+        "keyFacts": null,
+        "avoid": null,
+        "notes": null,
+        "freshness": null
+      },
+      "ravenReach": "answerable"
+    },
+    {
+      "id": "q-pc-core-software-audits",
+      "decision": "accept",
+      "why": "The docs Audits section has pages for Stellar Core and Soroban Host Environment, Stellar RPC, the Soroban Rust SDK and the Soroban Poseidon SDK, each listing reports by version, and states that an unlisted version has no published audit. Auditors' own sites corroborate.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/networks/audits.md",
+          "observedAt": "2026-11-14",
+          "quote": "Audits are performed by third-party firms and cover a specific version of the software. A version that isn't listed here hasn't been audited"
+        },
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/networks/audits/stellar-core.md",
+          "observedAt": "2026-11-14",
+          "quote": "v25.0.0 | Runtime Verification ... v24.0.0 | Oak Security ... v20.0.0 | Veridise"
+        },
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/networks/audits/stellar-rpc.md",
+          "observedAt": "2026-11-14",
+          "quote": "v22.1.0 | OtterSec | Soroban RPC Security Assessment"
+        },
+        {
+          "class": "D",
+          "ref": "https://www.runtimeverification.com/public-report/soroban-env",
+          "observedAt": "2026-11-14",
+          "quote": "Runtime Verification public report: soroban-env"
+        }
+      ],
+      "amended": {
+        "question": null,
+        "answer": null,
+        "keyFacts": null,
+        "avoid": null,
+        "notes": null,
+        "freshness": null
+      },
+      "ravenReach": "answerable"
+    },
+    {
+      "id": "q-pc-quorum-freeze-cap77",
+      "decision": "accept",
+      "why": "CAP-77 (Final, Protocol 26) allows freezing ACCOUNT, TRUSTLINE (not pool-share or issuer), CONTRACT_DATA and CONTRACT_CODE keys through a validator-voted config upgrade, and keysToUnfreeze reverses it. Mainnet use was confirmed empirically: the live CONFIG_SETTING_FROZEN_LEDGER_KEYS entry, read from three RPC providers, holds exactly the three SLP-0006 accounts plus the SLP-0008 account. SLP-0008 states the freeze does not address returning funds, which supports the second avoid item.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0077.md",
+          "observedAt": "2026-11-14",
+          "quote": "if any of the keys doesn't belong to the following allowed types: ACCOUNT, TRUSTLINE, CONTRACT_DATA, CONTRACT_CODE"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0006.md",
+          "observedAt": "2026-11-14",
+          "quote": "SLP: 0006 Title: Freeze YieldBlox Exploit Stellar Accounts Status: Final"
+        },
+        {
+          "class": "F",
+          "ref": "RPC getLedgerEntries key AAAACAAAABE= on mainnet.sorobanrpc.com, gateway.fm, lightsail; latestLedger 65468900",
+          "observedAt": "2026-11-14",
+          "quote": "4 frozen keys: GATDQL76..., GBO7VUL2..., GCJOPSQN... (SLP-0006) and GDXYRI6I... (SLP-0008); lastModifiedLedgerSeq 65273932"
+        },
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/validators/admin-guide/soroban-settings#frozen-ledger-keys",
+          "observedAt": "2026-11-14",
+          "quote": "introduced in protocol 26 to allow validators to make certain ledger keys \"frozen\""
+        }
+      ],
+      "amended": {
+        "question": null,
+        "answer": null,
+        "keyFacts": null,
+        "avoid": null,
+        "notes": null,
+        "freshness": null
+      },
+      "ravenReach": "unreachable",
+      "ravenReachNote": "Confirmed for the Mainnet-use fact only. scout.searchResearch returned the CAP and Software Versions, stellarDocs the Frozen ledger keys section; Lumenloop returned Mercado Bitcoin hack coverage with no freeze. No Raven source holds SLP-0006 or SLP-0008. Owner confirmed: stellar/stellar-protocol limits/; Scout's cap source could also index SLPs."
+    },
+    {
+      "id": "q-stellar-vs-xrp-ledger",
+      "decision": "amend",
+      "why": "Every key fact holds: xrpl.org defines the UNL, says each transaction must destroy XRP, and calls trust line tokens its original token standard; Stellar docs define per-node quorum sets and a locked fee account; Stellar relaunched on SCP in 2015. Notes-only amend: both chains now also have non-trust-line token forms (XRPL Multi-Purpose Tokens, Stellar contract tokens), so key fact 4 must not punish an answer that adds them.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://xrpl.org/docs/concepts/consensus-protocol/unl",
+          "observedAt": "2026-11-14",
+          "quote": "Every XRP Ledger server is configured with a UNL, which determines which validation votes it listens to"
+        },
+        {
+          "class": "A",
+          "ref": "https://xrpl.org/docs/concepts/transactions/transaction-cost",
+          "observedAt": "2026-11-14",
+          "quote": "each transaction must destroy a small amount of XRP"
+        },
+        {
+          "class": "A",
+          "ref": "https://xrpl.org/docs/concepts/tokens/fungible-tokens/trust-line-tokens",
+          "observedAt": "2026-11-14",
+          "quote": "This is the original token standard of the XRP Ledger, in contrast to [Multi-Purpose Tokens]"
+        },
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+          "observedAt": "2026-11-14",
+          "quote": "The lumens collected from transaction fees go into a locked account and are not given to or used by anyone."
+        },
+        {
+          "class": "D",
+          "ref": "https://www.coindesk.com/markets/2014/12/09/stellar-network-fork-prompts-concerns-over-ripple-consensus-protocol",
+          "observedAt": "2026-11-14",
+          "quote": "A ledger fork in the Stellar network sparked debate over the Ripple consensus protocol's safety."
+        }
+      ],
+      "amended": {
+        "question": null,
+        "answer": null,
+        "keyFacts": null,
+        "avoid": null,
+        "notes": "Mentioning XRP Ledger Multi-Purpose Tokens or Stellar contract tokens alongside trust lines is correct, not required.",
+        "freshness": null
+      },
+      "ravenReach": "unreachable",
+      "ravenReachNote": "Confirmed: docs, Scout research and Lumenloop returned SCP, glossary and the 2014 fork article, nothing on UNL, destroyed fees or XRPL trust lines. But the owner is out of Raven's scope: xrpl.org is not a Raven upstream and SDF has no obligation to host XRPL facts. Record this as a coverage diagnostic, not an upstream finding."
+    },
+    {
+      "id": "q-validator-why-run-no-rewards",
+      "decision": "amend",
+      "why": "Docs and SDF's blog confirm no monetary rewards, the business-reliance motive, the issuer-attestation advantage, and influence only through others' quorum sets. Freshness only: nothing in the golden is dated or volatile, so 'scheduled' adds a quarterly re-verification with no value. Make it stable.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/validators.md",
+          "observedAt": "2026-11-14",
+          "quote": "There are no monetary rewards for being a validator on the Stellar network."
+        },
+        {
+          "class": "A",
+          "ref": "https://stellar.org/blog/ecosystem/becoming-a-stellar-validator",
+          "observedAt": "2026-11-14",
+          "quote": "they will receive no block rewards, no staking yield, no MEV awards, and no share of transaction fees."
+        },
+        {
+          "class": "A",
+          "ref": "https://stellar.org/blog/ecosystem/becoming-a-stellar-validator",
+          "observedAt": "2026-11-14",
+          "quote": "MoneyGram, Figure, and Range will join as Tier 1, but only as the current operators add them to their quorum configurations."
+        },
+        {
+          "class": "D",
+          "ref": "https://dev.to/roan911/how-stellars-validators-actually-run-the-network-no-mi",
+          "observedAt": "2026-11-14",
+          "quote": "How Stellar's validators actually run the network (no mining, no rewards)"
+        }
+      ],
+      "amended": {
+        "question": null,
+        "answer": null,
+        "keyFacts": null,
+        "avoid": null,
+        "notes": null,
+        "freshness": "stable (drop truth.reverifyBy)"
+      },
+      "ravenReach": "answerable"
+    },
+    {
+      "id": "q-consumer-apps-spend-save-send",
+      "decision": "accept",
+      "why": "The examples hold at the vendors' own help centres: Vesseo and Decaf both document cashing out USDC through MoneyGram, and SDF's MoneyGram case study cites 170+ countries. Key facts are behavioral, as a live directory question needs.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://help.vesseoapp.com/hc/en-us/articles/31455017157271-How-do-I-cash-out-Stellar-USDC-via-MoneyGram",
+          "observedAt": "2026-11-14",
+          "quote": "How do I cash out Stellar USDC via MoneyGram? - Vesseo ENG"
+        },
+        {
+          "class": "A",
+          "ref": "https://intercom.help/decaf/en/articles/11005410-withdraw-your-usdc-to-cash",
+          "observedAt": "2026-11-14",
+          "quote": "You can use MoneyGram in the Decaf Wallet to withdraw your USDC"
+        },
+        {
+          "class": "A",
+          "ref": "https://stellar.org/case-studies/moneygram-international",
+          "observedAt": "2026-11-14",
+          "quote": "170+ Countries with USDC cash-out"
+        }
+      ],
+      "amended": {
+        "question": null,
+        "answer": null,
+        "keyFacts": null,
+        "avoid": null,
+        "notes": null,
+        "freshness": null
+      },
+      "ravenReach": "answerable"
+    },
+    {
+      "id": "q-raph-official-help-sdf-cannot-recover",
+      "decision": "accept",
+      "why": "SDF's scam guide states it cannot freeze, access or return tokens, never asks for keys, and never cold-DMs about support; stellar.org/community lists Discord, Stellar Stack Exchange and r/Stellar. Overlaps q-raph-stolen-wallet-recovery on the cannot-reverse fact only; the channels and never-asks facts are new.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
+          "observedAt": "2026-11-14",
+          "quote": "SDF does not have the capability to freeze, access, or return tokens held in a Stellar account."
+        },
+        {
+          "class": "A",
+          "ref": "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
+          "observedAt": "2026-11-14",
+          "quote": "NEVER ask you for your private keys ... NEVER cold DM people regarding support issues or security alerts."
+        },
+        {
+          "class": "A",
+          "ref": "https://stellar.org/community",
+          "observedAt": "2026-11-14",
+          "quote": "Stellar Exchange: You got questions, we got answers ... (https://stellar.stackexchange.com/)"
+        },
+        {
+          "class": "F",
+          "ref": "https://stellar.stackexchange.com/",
+          "observedAt": "2026-11-14",
+          "quote": "HTTP 200"
+        }
+      ],
+      "amended": {
+        "question": null,
+        "answer": null,
+        "keyFacts": null,
+        "avoid": null,
+        "notes": null,
+        "freshness": null
+      },
+      "ravenReach": "answerable"
+    },
+    {
+      "id": "q-signing-safety-website-request",
+      "decision": "accept",
+      "why": "A real, high-value user question with no other case on the leaf. Each check is supported: SDF's scam guide (verify the domain, never enter a secret key), the operations list (set_options signers and thresholds, account_merge), Ledger's Stellar app exposing a separate SIGN_HASH command and Ledger's blind-signing guidance. The avoid items are verified unsafe advice. It is a domain best practice with no single canonical page, which the 'stable' tag fits.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
+          "observedAt": "2026-11-14",
+          "quote": "malicious entities set up dummy websites ... to induce you to enter your secret key ... Always double check any place you are entering your secret key."
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/LedgerHQ/app-stellar/blob/develop/docs/COMMANDS.md",
+          "observedAt": "2026-11-14",
+          "quote": "SIGN_HASH | 0x08 | Sign the hash"
+        },
+        {
+          "class": "D",
+          "ref": "https://www.ledger.com/academy/cryptos-greatest-weakness-blind-signing-explained",
+          "observedAt": "2026-11-14",
+          "quote": "What is Blind Signing? (Ledger Academy, updated Apr 16, 2026)"
+        }
+      ],
+      "amended": {
+        "question": null,
+        "answer": null,
+        "keyFacts": null,
+        "avoid": null,
+        "notes": null,
+        "freshness": null
+      },
+      "ravenReach": "unreachable",
+      "ravenReachNote": "Confirmed. With my wording, docs search returned dapp build pages and the agent-cli 'Inspection before signing' section, and Scout research returned SEP-7, SEP-8, SEP-24 and SEP-43. No source assembles user-side pre-signing checks. SEP-7 (held) requires wallets to verify origin_domain, which covers only the domain check. Owner as named."
+    },
+    {
+      "id": "q-scf-ai-agent-projects-agents-hackathon",
+      "decision": "accept",
+      "why": "DoraHacks confirms SDF's Stellar Hacks: Agents: submission 2026-03-30 to 2026-04-13 (extended one hour), 10,000 USD, 591 hackers, 262 builds, x402 and MPP in the title slug. Project names are dated examples and the notes accept any dated listing. The x402 and MPP fact overlaps the agentic-payment cases but is not their focus.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://dorahacks.io/hackathon/stellar-agents-x402-stripe-mpp/detail",
+          "observedAt": "2026-11-14",
+          "quote": "Submission 2026/03/30 13:00 Deadline 2026/04/13 17:00 Extended 2026/04/13 18:00 ... Builds 262 ... Hackers 591"
+        },
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/llms.txt (agent-cli x402 guide; 2026-05-07 meeting)",
+          "observedAt": "2026-11-14",
+          "quote": "Pay for x402-protected APIs on Stellar with USDC ... a hands-on walkthrough of the Machine Payments Protocol (MPP) on Stellar"
+        }
+      ],
+      "amended": {
+        "question": null,
+        "answer": null,
+        "keyFacts": null,
+        "avoid": null,
+        "notes": null,
+        "freshness": null
+      },
+      "ravenReach": "answerable"
+    },
+    {
+      "id": "q-scf-service-provider-directories",
+      "decision": "accept",
+      "why": "stellar.org/ecosystem/service-providers exists with Developer services, Infrastructure & whitelabel, Analytics, Tokenization and Audit partners sections; anchors.stellar.org serves the Stellar Anchor Directory; the Audit Bank official rules name the pre-approved firms.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://stellar.org/ecosystem/service-providers",
+          "observedAt": "2026-11-14",
+          "quote": "sections: Developer services; Infrastructure & whitelabel services; Analytics companies; Tokenization services; Audit partners"
+        },
+        {
+          "class": "F",
+          "ref": "https://anchors.stellar.org/",
+          "observedAt": "2026-11-14",
+          "quote": "HTTP 200, <title>Stellar Anchor Directory"
+        },
+        {
+          "class": "A",
+          "ref": "https://stellar.gitbook.io/scf-handbook/supporting-programs/audit-bank/official-rules",
+          "observedAt": "2026-11-14",
+          "quote": "The Soroban Security Audit Program (the \"Program\") is structured to enhance the safety and security of Soroban ecosystem projects"
+        }
+      ],
+      "amended": {
+        "question": null,
+        "answer": null,
+        "keyFacts": null,
+        "avoid": null,
+        "notes": null,
+        "freshness": null
+      },
+      "ravenReach": "unreachable",
+      "ravenReachNote": "Confirmed. Scout research (sdf-org, sdf-blog, scf-handbook) returned the SCF Integration List and Audit Bank rules; scout.getPartners returned 43 partners; nothing holds the service-providers page. Owner confirmed."
+    },
+    {
+      "id": "q-sor-custom-errors-find-failure-cause",
+      "decision": "accept",
+      "why": "The docs show #[contracterror] with #[repr(u32)], simulation as step 1, and diagnostic events as the detail behind coarse txFAILED codes; panic!() messages are not included in Wasm builds, which verifies the avoid item. Separate from q-sor-decode-hosterror-codes as the notes say. Note: truth.asOf is missing on this stable case.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/errors-and-debugging/errors.md",
+          "observedAt": "2026-11-14",
+          "quote": "#[contracterror] #[repr(u32)]"
+        },
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/errors-and-debugging/debugging-errors.md",
+          "observedAt": "2026-11-14",
+          "quote": "Diagnostic events might provide more detailed information, but not always, as the panic!() messages are not included in the Wasm builds."
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/rs-soroban-sdk/blob/main/soroban-sdk/src/lib.rs",
+          "observedAt": "2026-11-14",
+          "quote": "pub use soroban_sdk_macros::contracterror; ... macro_rules! panic_with_error {"
+        }
+      ],
+      "amended": {
+        "question": null,
+        "answer": null,
+        "keyFacts": null,
+        "avoid": null,
+        "notes": null,
+        "freshness": null
+      },
+      "ravenReach": "answerable"
+    },
+    {
+      "id": "q-soroban-fee-refundable-rent",
+      "decision": "amend",
+      "why": "The docs and CAP-46-07 confirm the split exactly: non-refundable for instructions, read and write bytes and bandwidth; refundable for rent, events and return value, charged on actual use. Freshness only: the golden pins no rate or date and the notes exclude fee rates, so 'scheduled' adds re-verification with no value. Make it stable.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering.md",
+          "observedAt": "2026-11-14",
+          "quote": "Non-refundable fees: calculated from CPU instructions, read bytes, write bytes, and bandwidth ... Refundable fees: calculated from rent, events"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-07.md",
+          "observedAt": "2026-11-14",
+          "quote": "refundableResourcesFee - the maximum fee for resources that ... are charged based on the actual usage."
+        }
+      ],
+      "amended": {
+        "question": null,
+        "answer": null,
+        "keyFacts": null,
+        "avoid": null,
+        "notes": null,
+        "freshness": "stable (drop truth.reverifyBy)"
+      },
+      "ravenReach": "answerable"
+    },
+    {
+      "id": "q-soroban-pre-mainnet-security-steps",
+      "decision": "accept",
+      "why": "Docs threat-modeling section has a STRIDE template; Security Tools lists Scout, Almanax, Certora Sunbeam and the Security Portal; SDF's DeFi security standards post sets 'a completed audit before any material user funds are accepted' and audit-to-deployment parity.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/build/security-docs/threat-modeling/index.md",
+          "observedAt": "2026-11-14",
+          "quote": "STRIDE Threat Model Template: Use this template to create a STRIDE threat model for your project."
+        },
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/tools/developer-tools/security-tools.md",
+          "observedAt": "2026-11-14",
+          "quote": "### Scout: Bug Fighter ### Almanax ### Certora Sunbeam ### The Soroban Security Portal"
+        },
+        {
+          "class": "A",
+          "ref": "https://stellar.org/blog/ecosystem/stellar-defi-security-standards-and-best-practices",
+          "observedAt": "2026-11-14",
+          "quote": "A completed audit before any material user funds are accepted"
+        },
+        {
+          "class": "A",
+          "ref": "https://stellar.org/blog/ecosystem/stellar-defi-security-standards-and-best-practices",
+          "observedAt": "2026-11-14",
+          "quote": "Audit-to-deployment parity. The code running in production should be the code that was reviewed."
+        }
+      ],
+      "amended": {
+        "question": null,
+        "answer": null,
+        "keyFacts": null,
+        "avoid": null,
+        "notes": null,
+        "freshness": null
+      },
+      "ravenReach": "answerable"
+    },
+    {
+      "id": "q-agent-cli-authority-limits",
+      "decision": "amend",
+      "why": "The Authority & Security Model page confirms no spend caps, allowlists, scanning or 2FA, and that payments and transfers never prompt. But it also says the CLI does prompt for non-root Soroban sub-authorizations (--auto-sign suppresses them), so 'no confirmation prompts' in key fact 2 is too broad. v30.0.1 (2026-11-03) added token admin commands, not policy controls, so the dated claim still holds.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/tools/cli/agent-cli/reference/authority-model.md",
+          "observedAt": "2026-11-14",
+          "quote": "The CLI is an execution engine, not a policy controller. It does not include: Built-in Spend Caps or Allowlists"
+        },
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/tools/cli/agent-cli/reference/authority-model.md",
+          "observedAt": "2026-11-14",
+          "quote": "The --auto-sign flag only suppresses non-root Soroban sub-authorization prompts. Standard payments and token transfers never prompt"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-cli/releases/tag/v30.0.1",
+          "observedAt": "2026-11-14",
+          "quote": "Token admin commands: stellar token mint, clawback, set-admin, set-authorized (no spend-policy feature listed)"
+        }
+      ],
+      "amended": {
+        "question": null,
+        "answer": "It is the standard Stellar CLI driven by an AI agent as a wallet and toolchain: it reads balances, transfers tokens, builds transactions, and deploys or invokes contracts. As of 2026-11-14 the CLI enforces no spend caps or allowlists and does not ask to confirm payments or transfers. Limits come from a dedicated low-balance key, an on-chain token allowance, build-only handoff to a human signer, or multisig thresholds.",
+        "keyFacts": [
+          "The agent CLI is the standard Stellar CLI used by an AI agent as a wallet.",
+          "The CLI enforces no spend caps or allowlists and does not prompt before payments.",
+          "An on-chain token allowance caps what the agent can spend.",
+          "Build-only mode hands the unsigned transaction to a human signer."
+        ],
+        "avoid": null,
+        "notes": "Accept a later dated description if the CLI has since added policy controls. The CLI does prompt for non-root Soroban sub-authorizations unless --auto-sign is set; saying so is correct.",
+        "freshness": null
+      },
+      "ravenReach": "answerable"
+    },
+    {
+      "id": "q-ai-mcp-servers-connect",
+      "decision": "accept",
+      "why": "The Building with AI page documents both servers. Live probes: raven.stellar.org/mcp answers 401 to an unauthenticated initialize, and developers.stellar.org/mcp answers 200 with serverInfo 'Stellar Developer Docs'. Raven is the system under test, but the golden rests on SDF docs and endpoint behavior. It adds the official servers that q-tool-cli-skills-discovery lacks.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/build/building-with-ai",
+          "observedAt": "2026-11-14",
+          "quote": "Sign-in happens inside your own client (Raven uses OAuth) ... If you only need the documentation, use the lighter Stellar Docs MCP server"
+        },
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/build/building-with-ai",
+          "observedAt": "2026-11-14",
+          "quote": "paste the endpoint, and choose \"No sign in\" under Authentication. https://developers.stellar.org/mcp"
+        },
+        {
+          "class": "F",
+          "ref": "POST initialize to https://raven.stellar.org/mcp and https://developers.stellar.org/mcp",
+          "observedAt": "2026-11-14",
+          "quote": "raven: HTTP 401; developers.stellar.org/mcp: HTTP 200, serverInfo {name: Stellar Developer Docs}"
+        }
+      ],
+      "amended": {
+        "question": null,
+        "answer": null,
+        "keyFacts": null,
+        "avoid": null,
+        "notes": null,
+        "freshness": null
+      },
+      "ravenReach": "answerable"
+    },
+    {
+      "id": "q-data-network-metrics-sources",
+      "decision": "accept",
+      "why": "Hubble is SDF's public BigQuery dataset with complete history; SDF's quarterly-reports page carries dated network stats (Q3 2026: 23.5B operations); the-power-of-stellar still shows 12 billion, so the note's grading caution is accurate; Electric Capital's Stellar ecosystem page is live. Overlaps q-infra-hubble-bigquery on one fact only.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/data/analytics/hubble.md",
+          "observedAt": "2026-11-14",
+          "quote": "Hubble is an open-source, publicly available dataset that provides a complete historical record of the Stellar network."
+        },
+        {
+          "class": "A",
+          "ref": "https://stellar.org/quarterly-reports",
+          "observedAt": "2026-11-14",
+          "quote": "Summary of Q3 2026 ## Network stats ... 23.5B"
+        },
+        {
+          "class": "A",
+          "ref": "https://stellar.org/learn/the-power-of-stellar",
+          "observedAt": "2026-11-14",
+          "quote": "# 12 [billion]"
+        },
+        {
+          "class": "D",
+          "ref": "https://www.developerreport.com/ecosystems/stellar",
+          "observedAt": "2026-11-14",
+          "quote": "HTTP 200 (Electric Capital Developer Report, Stellar ecosystem page)"
+        }
+      ],
+      "amended": {
+        "question": null,
+        "answer": null,
+        "keyFacts": null,
+        "avoid": null,
+        "notes": null,
+        "freshness": null
+      },
+      "ravenReach": "answerable"
+    },
+    {
+      "id": "q-infra-sdf-hosted-endpoints",
+      "decision": "accept",
+      "why": "The Networks comparison lists Mainnet RPC as 'Third-party providers only' and SDF's Testnet and Futurenet RPC URLs; the Horizon Providers page states the one-year truncation. Live checks: both SDF RPC URLs are healthy, and Horizon's elder ledger is about 6.3 million ledgers (about one year) behind the tip.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/networks",
+          "observedAt": "2026-11-14",
+          "quote": "Stellar RPC | Third-party providers only | https://soroban-testnet.stellar.org | https://rpc-futurenet.stellar.org"
+        },
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/data/apis/horizon/providers",
+          "observedAt": "2026-11-14",
+          "quote": "On August 1, 2024, the publicly accessible SDF-hosted Horizon had its historical data truncated to one year."
+        },
+        {
+          "class": "F",
+          "ref": "getHealth on soroban-testnet.stellar.org and rpc-futurenet.stellar.org; GET horizon.stellar.org/",
+          "observedAt": "2026-11-14",
+          "quote": "both status healthy; Horizon history_elder_ledger 59161681 vs tip 65468907"
+        }
+      ],
+      "amended": {
+        "question": null,
+        "answer": null,
+        "keyFacts": null,
+        "avoid": null,
+        "notes": null,
+        "freshness": null
+      },
+      "ravenReach": "answerable"
+    },
+    {
+      "id": "q-infra-software-versions-current-protocol",
+      "decision": "amend",
+      "why": "Every figure is right today: Mainnet is on Protocol 29 (Horizon and RPC report protocol 29), and the Software Versions table lists Core 29.0.0, RPC v29.0.0, Horizon v29.0.0, Rust SDK 28.0.0 and CLI 28.1.0. But the Protocol 30 Mainnet vote is on 2026-11-23, nine days out, and key facts 3 and 4 pin the Protocol 29 set. They would then conflict with a correct current answer, and the notes' override would contradict the key facts. Make those key facts behavioral and keep the figures as the dated example in the answer. truth.reverifyBy 2027-02-03 is also too late; set it just after the vote (for example 2026-11-30).",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/networks/software-versions",
+          "observedAt": "2026-11-14",
+          "quote": "## Protocol 29 (Mainnet, October 1, 2026) ... Stellar Core 29.0.0 ... Smart Contract Rust SDK 28.0.0 ... Stellar CLI 28.1.0 ... Stellar RPC v29.0.0"
+        },
+        {
+          "class": "F",
+          "ref": "https://horizon.stellar.org/ and RPC getLatestLedger at mainnet.sorobanrpc.com",
+          "observedAt": "2026-11-14",
+          "quote": "current_protocol_version 29 (core stellar-core 30.0.0); RPC protocolVersion 29, sequence 65468907"
+        },
+        {
+          "class": "A",
+          "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+          "observedAt": "2026-11-14",
+          "quote": "November 23, 2026, 1700 UTC - Mainnet upgrade vote."
+        }
+      ],
+      "amended": {
+        "question": null,
+        "answer": null,
+        "keyFacts": [
+          "The developer docs' Software Versions page maps each protocol to its matching releases.",
+          "States the protocol Mainnet runs, with the date checked.",
+          "Gives the Core, RPC, Horizon, Rust SDK and CLI versions listed for that protocol."
+        ],
+        "avoid": null,
+        "notes": "On 2026-11-14 Mainnet ran Protocol 29 and the page listed Core, RPC and Horizon 29.0.0, Rust SDK 28.0.0 and CLI 28.1.0; the Protocol 30 Mainnet vote was set for 2026-11-23. After a Mainnet upgrade, grade against the release set the page lists for the then-current protocol. Later patch releases for the same protocol, such as RPC v29.0.1, are not wrong when attributed to a release page. Operators may already run next-version software before the vote; that is not an error.",
+        "freshness": "scheduled; set truth.reverifyBy to 2026-11-30, after the Protocol 30 vote"
+      },
+      "ravenReach": "answerable"
+    },
+    {
+      "id": "q-infra-version-lag-errors",
+      "decision": "accept",
+      "why": "The Bell guide says an older SDK may fail to decode Protocol 30 ledgers, so upgrade before the Testnet vote (Nov 3) and the Mainnet vote (Nov 23). rs-soroban-env rejects a contract whose protocol is newer than the host's ledger protocol. Overlaps q-pc-protocol-upgrade-timing's 'why a compatible SDK is required', but this case tests the failure modes, which the coverage plan opened as a separate slot.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+          "observedAt": "2026-11-14",
+          "quote": "Protocol 30 changes the ledger header format (CAP-88), and an older SDK may fail to decode Protocol 30 ledgers."
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/rs-soroban-env/blob/main/soroban-env-host/src/vm/parsed_module.rs",
+          "observedAt": "2026-11-14",
+          "quote": "\"contract protocol number is newer than host\""
+        }
+      ],
+      "amended": {
+        "question": null,
+        "answer": null,
+        "keyFacts": null,
+        "avoid": null,
+        "notes": null,
+        "freshness": null
+      },
+      "ravenReach": "unreachable",
+      "ravenReachNote": "Confirmed for key fact 4. Docs search returned Software Versions changelog rows and the network-upgrade guide; Scout research returned the Bell and Adapter upgrade guides (decode failure, upgrade timing). Nothing holds the newer-protocol contract rejection. Owner confirmed."
+    },
+    {
+      "id": "q-network-status-where-to-check",
+      "decision": "accept",
+      "why": "The docs Network Status page lists Dashboard, Obsrvr Radar and the Status Page (incidents and scheduled maintenance, subscriptions). status.stellar.org's own component list includes SDF Horizon and Friendbot.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/tools/developer-tools/network-status.md",
+          "observedAt": "2026-11-14",
+          "quote": "Status Page: Tracks network incidents and scheduled maintenance for the Testnet and Mainnet. Subscribe to updates"
+        },
+        {
+          "class": "F",
+          "ref": "https://status.stellar.org/api/v2/components.json",
+          "observedAt": "2026-11-14",
+          "quote": "SDF Public Network Horizon, SDF Test Network Horizon, Stellar Test Network Friendbot, Stellar Dashboard"
+        }
+      ],
+      "amended": {
+        "question": null,
+        "answer": null,
+        "keyFacts": null,
+        "avoid": null,
+        "notes": null,
+        "freshness": null
+      },
+      "ravenReach": "answerable"
+    },
+    {
+      "id": "q-renamed-tools-rpc-cli-go-sdk",
+      "decision": "accept",
+      "why": "The RPC docs state the Soroban-RPC to Stellar-RPC rename (Nov 2024); the soroban-rpc and soroban-cli GitHub URLs resolve to stellar-rpc and stellar-cli; stellar/go is now an archived stub reading 'This repository has been moved to github.com/stellar/go-stellar-sdk', and that repo says it was refactored as of October 2025. Overlaps q-tool-go-sdk-ingest on the Go module name only.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/data/apis/rpc",
+          "observedAt": "2026-11-14",
+          "quote": "Stellar-RPC was renamed from Soroban-RPC in Nov 2024."
+        },
+        {
+          "class": "B",
+          "ref": "gh api repos/stellar/soroban-rpc, repos/stellar/soroban-cli",
+          "observedAt": "2026-11-14",
+          "quote": "full_name stellar/stellar-rpc; full_name stellar/stellar-cli"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/go",
+          "observedAt": "2026-11-14",
+          "quote": "archived: true ... This repository has been moved to: github.com/stellar/go-stellar-sdk"
+        },
+        {
+          "class": "A",
+          "ref": "https://stellar.org/blog/developers/introducing-the-golang-stellar-sdk",
+          "observedAt": "2026-11-14",
+          "quote": "The Go repo - previously stellar/go - will be renamed to stellar/go-stellar-sdk"
+        }
+      ],
+      "amended": {
+        "question": null,
+        "answer": null,
+        "keyFacts": null,
+        "avoid": null,
+        "notes": null,
+        "freshness": null
+      },
+      "ravenReach": "answerable",
+      "ravenReachNote": "Corrected from reachable-not-surfaced. An ordinary stellarDocs.search_docs('Soroban RPC renamed Stellar RPC') returned the RPC Introduction snippet 'Stellar-RPC was renamed from Soroban-RPC in Nov 2024', and an ordinary scout.searchResearch on the Go move returned SDF's 'Introducing the Golang Stellar SDK' post. The CLI rename is on Software Versions. The gap owner claim ('no Raven source returned that statement') does not hold, so no upstream finding is due."
+    }
+  ],
+  "slots": [],
+  "slotsNote": "All 36 slot results in gap-1, gap-2 and gap-3 are 'proposed' (gap-3 has one extra orchestrator-added slot). No slot was recorded as covered-by or no-golden, so there is nothing to check under that heading. Every slot in the three slot files has a result.",
+  "formNotes": [
+    "truth.reverifyBy collisions; the brief asks for a different day per case: 2027-02-09 is shared by q-asset-usdt0-layerzero-oft, q-token-xlm-supply-total-circulating and q-agent-cli-authority-limits; 2027-02-23 by q-nft-vault-contract-standards and q-crp-public-sector-cbdc-pilots-stellar; 2027-03-23 by q-network-halt-history and q-pc-core-software-audits. Re-spread at apply time; it is judge-blind.",
+    "truth.asOf is absent on q-pay-merchant-request-detect-reconcile and q-sor-custom-errors-find-failure-cause.",
+    "Raven-reach classification differs by lane. gap-3 records the weakest key fact; gap-2 records q-eco-institutions-payment-networks-banks as answerable with one fact not surfaced. Treat each per-fact ravenReachNote, not the case label, as the upstream-finding input.",
+    "No proposal id collides with a battery case; each appears once in eval/qa/lifecycle-registry.json as its own proposed entry."
+  ],
+  "summary": {
+    "accept": 29,
+    "amend": 7,
+    "reject": 0
+  }
+}

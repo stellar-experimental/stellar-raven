@@ -5,20 +5,15 @@
     "stellarDocs.search_protocol_concepts_docs"
   ],
   "golden": {
-    "answer": "**Protocol 24** was the focused corrective upgrade after Protocol 23/Whisk, activated on Mainnet on **2025-10-22**. P23's persistent-eviction retrofit reused an eviction scan that loaded the latest **TTL** but did not reload the latest **entry version**. A candidate encountered in an arbitrary older Bucket List layer could therefore be written to Hot Archive instead of the newest value; restoring it later made that old value observable as live state.\n\nThe exact scope was **478** corrupted entries. Before quarantine, **84** were restored and **77 of those were subsequently modified**; the remaining **394 were never restored**. **CAP-0076** amended only entries still in Hot Archive whose corruption had never been observed, restoring those 394 to their verifiable pre-archival values. It did not rewrite the 84 restored entries; affected protocols and issuers handled those separately. CAP-0076 also added **31,879,035 stroops** to the fee pool to account for two restored XLM contract balances that had burned 1,000,000 and 30,879,035 stroops. The incident did **not** cause a chain fork, but a blanket 'no loss of funds' claim is false.",
+    "answer": "Protocol 24 (2025-10-22) corrected a Protocol 23 bug: eviction loaded an entry's latest TTL but not its latest version, so 478 entries were archived with stale values. CAP-0076 amended the 394 never-restored entries to their correct values and left the 84 restored ones untouched. It also added 31,879,035 stroops to the fee pool for two XLM contract balances that had burned. There was no chain fork.",
     "keyFacts": [
-      "Explains the exact latest-TTL-versus-stale-entry-version eviction defect.",
-      "Reports 478 affected, 84 restored, and 77 restored-and-modified.",
-      "Reports CAP-0076 amended the 394 never-restored entries.",
-      "Reports 31,879,035-stroop fee-pool remediation for two actual XLM burns.",
-      "Preserves the no-fork qualifier."
+      "The bug loaded the latest TTL but not the latest entry version during eviction.",
+      "478 entries were corrupted; CAP-0076 amended the 394 never restored.",
+      "CAP-0076 added 31,879,035 stroops to the fee pool for two XLM burns; no fork."
     ],
     "avoid": [
-      "Do NOT say P24 restored or rewrote all 478 affected entries; CAP-0076 amended the 394 never-restored entries only.",
-      "Do NOT call this merely an incorrect restore routine: the corruption was written during eviction because the latest entry version was not loaded.",
-      "Do NOT claim there was a chain fork or broadly claim no funds were lost; two restored balances burned 31,879,035 stroops."
-    ],
-    "notes": "GT-31 CORRECTION 2026-07-11: require the exact eviction/version root cause and 478/84/77/394 qualifiers. CAP-0076 amended only never-restored entries and the fee pool; no fork occurred, but two restored XLM balances burned 31,879,035 stroops, so no broad no-loss trap survives."
+      "Do NOT say Protocol 24 rewrote all 478 entries or that no funds were affected."
+    ]
   },
   "tags": {
     "category": "protocol-core",
@@ -90,20 +85,56 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "478 corrupted, 394 never restored (so 84 restored), fee pool +31,879,035 stroops",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0076.md",
+            "observedAt": "2026-11-14",
+            "note": "478 ledger entries have been archived with an incorrect state … 394 entries out of these have never been restored"
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0076.md",
+            "observedAt": "2026-11-14",
+            "note": "`31879035` stroops will be added to the `feePool`"
+          }
+        ]
+      },
+      {
+        "claim": "Protocol 24 Mainnet 2025-10-22",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/networks/software-versions",
+            "observedAt": "2026-11-14",
+            "note": "Protocol 24 (Mainnet, October 22, 2025)"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-03)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-protocol, verify-protocol; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "No gospel change 2026-11-02: question, golden, and tags are unchanged; this event refreshes judge-blind provenance only.",
-        "Live re-check 2026-11-02 (confirmed): P24 activated on Mainnet 2025-10-22 — A https://developers.stellar.org/docs/networks/software-versions 'Protocol 24 (Mainnet, October 22, 2025)'; D https://x.com/StellarOrg/status/1981048696826413193 (via Perplexity) 'Validators just voted to upgrade Stellar Mainnet to Protocol 24, which fixes a bug in the state archival feature.'",
-        "Live re-check 2026-11-02 (confirmed): Eviction loaded latest TTL but not latest entry version — A https://stellar.org/blog/foundation-news/state-archival-issue-post-mortem 'While the code correctly checked for expiration by loading the latest Time-To-Live (TTL) value, it failed to load the latest version of the entry itself if there was one'; B https://github.com/stellar/stellar-core/commit/790602666cb26f84fa2e6f510a754152f1a84332 'fix: every eviction candidate loads the latest version of the entry (cited by the post-mortem)'",
-        "Live re-check 2026-11-02 (confirmed): 478 affected; 84 restored, 77 modified; CAP-0076 amended 394 never-restored — B https://github.com/stellar/stellar-protocol/blob/master/core/cap-0076.md '478 ledger entries have been archived with an incorrect state ... 394 entries out of these have never been restored'; A https://stellar.org/blog/developers/addressing-state-archival-inconsistencies-protocol-upgrade-vote-next-week '84 corrupted entries were restored and incorporated into the live ledger state and 77 of those entries were actually modified; the remaining 394 were not restored.'",
-        "Live re-check 2026-11-02 (confirmed): 31,879,035 stroops added to fee pool for two burns (1,000,000 + 30,879,035) — B https://github.com/stellar/stellar-protocol/blob/master/core/cap-0076.md 'Thus `1000000 + 30879035 = 31879035` stroops have been burned, which is reflected via `feePool`.'; A https://stellar.org/blog/foundation-news/state-archival-issue-post-mortem 'After fixes, only 84 remained corrupted and mitigations had to be taken by protocols and issuers.'",
-        "Sibling sweep 2026-11-02: q-protocol-version-history-list keeps P24 on 2025-10-22; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-protocol-24-whisk-incident",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-protocol-24-whisk-incident",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-protocol-24-whisk-incident",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0076.md -- '478 ledger entries have been archived with an incorrect state … 394 entries out of these have never been restored'",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0076.md -- '`31879035` stroops will be added to the `feePool`'",
+        "Live D 2026-11-14: parallel-cli search \"Protocol 24 CAP-0076 corrupted entries 478 restored 84 modified 77\" -- 'no result states the 77 figure'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/networks/software-versions -- 'Protocol 24 (Mainnet, October 22, 2025)'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-protocol-24-whisk-incident"
+    "origin": "raven-next q-protocol-24-whisk-incident",
+    "notes": "GT-31 CORRECTION 2026-07-11: require the exact eviction/version root cause and 478/84/77/394 qualifiers. CAP-0076 amended only never-restored entries and the fee pool; no fork occurred, but two restored XLM balances burned 31,879,035 stroops, so no broad no-loss trap survives.",
+    "leaf": "network.incidents"
   }
 }

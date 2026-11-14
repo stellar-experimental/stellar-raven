@@ -1,0 +1,21 @@
+{
+  "id": "q-raph-merchant-payments",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-hist-retail (golden coverage audit)",
+    "reviewer": "verify-hist-retail (golden coverage audit)",
+    "reason": "Generic merchant, tax and refund advice with no Stellar predicate. The Stellar-specific merchant mechanics (SEP-7 payment URIs, memo or muxed matching, strict-receive) are ungraded today; that gap is listed under missing and should get a proposal rather than keep this case.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-raph-merchant-payments",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-raph-merchant-payments",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-raph-merchant-payments"
+    ],
+    "lastCaseContentSha256": "2e1df4be9aa79f01732422848e317c77b3226b31b4ba8477db423bd26e3cf56f",
+    "replacementIds": []
+  }
+}

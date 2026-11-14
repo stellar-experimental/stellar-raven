@@ -9,20 +9,18 @@
     "stellarDocs.search_wallet_dapp_docs"
   ],
   "golden": {
-    "answer": "For a conventional custodial account, generate an Ed25519 keypair only in the backend/HSM/KMS, expose the `G...` public address, and keep the `S...` secret out of clients/logs. `Keypair.random()` creates key material, not an on-ledger account; create/fund the account with `CreateAccount` or a documented sponsored-reserve flow. Vanity G addresses require brute-force key generation, so outsourcing exposes the winning secret.\n\nA `C...` address is a contract ID, not a keypair and not creatable with `CreateAccount`. A C account has no corresponding Stellar seed and authorizes Soroban auth entries through its contract-defined `__check_auth`; a separate G account submits and pays/sponsors fees. G-to-C asset funding is a simulated/assembled SAC/token `transfer`, and C balances are relevant token/SAC contract state. If an exchange does not currently support C withdrawals, withdraw to a controlled G account and transfer to C. For C-to-custodian deposits requiring a memo ID, use the custodian's supplied `M...` address or construct the muxed destination from G plus the u64 ID; keep provider support dated.",
+    "answer": "Generate Ed25519 keys only in a backend, HSM or KMS and never expose the S... secret. A random keypair is not an on-ledger account: create and fund it with CreateAccount or a sponsored-reserve flow. Vanity addresses need brute-force generation, so never accept a seed from a third party. A C... address is a contract ID that authorizes through its contract's `__check_auth`; a separate G account submits and pays. Fund it with a token or SAC transfer, not CreateAccount. If an exchange cannot send to C addresses, withdraw to a G account and transfer. For memo deposits use an M... address, or G plus a u64 ID.",
     "keyFacts": [
-      "Treats backend-custodied G/S keys and on-ledger creation/funding as distinct.",
-      "Defines C as a contract ID with contract auth and a fee-paying/submitting G account.",
-      "Uses SAC/token transfers with contract-held balance records for G↔C.",
-      "Uses M addresses or G+u64 for memo-based custodial deposits.",
-      "Dates exchange support for C-address withdrawals."
+      "Custodial keys are generated in a backend or HSM; a keypair is not yet a ledger account.",
+      "A C address is a contract ID authorizing via __check_auth; a G account submits and pays.",
+      "G-to-C funding uses a SAC or token transfer, not CreateAccount or a classic payment.",
+      "Memo-based custodial deposits use M... muxed addresses or G plus a u64 ID."
     ],
     "avoid": [
-      "Do NOT generate/log custodial secrets in clients or accept third-party vanity seeds.",
-      "Do NOT call a C address a keypair/classic account, use CreateAccount/Classic Payment to C, or equate ID prediction with deployment.",
-      "Do NOT claim an exchange supports C addresses without a current provider source or omit muxed memo handling."
-    ],
-    "notes": "Verified docs 2026-06-29. Exchange-specific withdrawal support was intentionally not asserted.\nAlso good if the answer: Cites official G-to-C/C-to-G contract-account payment docs and SAC docs. | Mentions memo/muxed-address handling when contract accounts send to services requiring memos.\nGolden cites: Official Stellar docs for sending to/receiving from contract accounts. | Official Stellar docs for SAC balances or asset-contract behavior.\nGT-51 CORRECTION 2026-07-11: require keypair-versus-ledger-account and G-versus-C authorization distinctions; treat exchange/wallet support as dated."
+      "Do NOT generate or log custodial secrets in clients or accept third-party vanity seeds.",
+      "Do NOT call a C address a keypair or classic account.",
+      "Do NOT claim an exchange supports C addresses without a current provider source."
+    ]
   },
   "tags": {
     "category": "tooling-infra",
@@ -110,24 +108,20 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task infra-tooling)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-tooling-a, verify-audit-tooling-a; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Live A 2026-11-02: https://developers.stellar.org/docs/build/guides/transactions/send-and-receive-c-accounts (page dated 2026-10-22) — 'it should create a muxed address that includes the receiving account ... and provided memo id in the muxed id field'.",
-        "Live A 2026-11-02: https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide — 'Exchanges and custodians: ... add support for withdrawing to muxed contract addresses (the W address type).'",
-        "Live D 2026-11-02: Perplexity search for Binance C-address XLM withdrawals found no primary source; exchange C-address support stays provider-specific and dated.",
-        "Pass 2 live A 2026-11-02T17:36Z: GET https://developers.stellar.org/docs/build/guides/transactions/create-account (HTTP 200) -- 'Alternatively, an account can be created with a startingBalance of 0 when another account sponsors its reserves (CAP-33 sponsored reserves): the sponsor carries the two base reserves on the new account's behalf'.",
-        "Pass 2 live B 2026-11-02: stellar/stellar-docs main 7cb5e8a4 docs/build/guides/transactions/create-account.mdx line 21 -- 'Alternatively, an account can be created with a `startingBalance` of `0` when another account sponsors its reserves'.",
-        "Repo record: improvements/resolved.json sd-013 resolved 2026-07-27 (stellar/stellar-docs#2590, PR #2657). Fixed upstream and the live page no longer carries the pre-fix wording, so the golden.notes cached-copy partial-cap caution expired; removed (same disposition as pass-1 sibling q-pc-account-merge-reclaim-reserve). Answer, keyFacts, and avoid unchanged.",
-        "Pass 2 sibling sweep 2026-11-02: grep sd-013 over the battery -> q-pc-account-activation-not-found (provenance mention only, no caution), q-pc-account-merge-reclaim-reserve (caution already removed in pass 1); no contradiction.",
-        "Pass 2 independent verifier (task infra-tooling, .agents/rounds/2026-11-02-golden-audit.md) accept golden.notes: The sd-013 caution's trigger has expired. sd-013 is resolved upstream (2026-07-27). The live create-account guide and the Docs index record both carry the fixed sponsored startingBalance 0 wording. The caution was a cached-copy partial cap, so removal follows ADR-0008 and the skill's expiry rule. The remaining notes and the dated exchange-support rule are unchanged.",
-        "Pass 2 independent verifier (task infra-tooling, .agents/rounds/2026-11-02-golden-audit.md) accept truth.verified.rootCause: freshness-drift plus the resolved sd-013 pointer is a valid, non-score rootCause. A resolved.json pointer does not trigger the symmetric-caution lint, so removing the caution leaves no lint warning."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-a.json#q-ti-custodial-account-generation-c-address",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-a.json#q-ti-custodial-account-generation-c-address",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-ti-custodial-account-generation-c-address"
       ],
       "rootCause": [
-        "freshness-drift",
-        "improvements/resolved.json entry sd-013 (fixed upstream 2026-07-27; the live create-account guide carries the fixed sponsored startingBalance 0 wording, so the cached-copy caution expired)"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-ti-custodial-account-generation-c-address"
+    "origin": "raven-next q-ti-custodial-account-generation-c-address",
+    "notes": "Verified docs 2026-06-29. Exchange-specific withdrawal support was intentionally not asserted.\nAlso good if the answer: Cites official G-to-C/C-to-G contract-account payment docs and SAC docs. | Mentions memo/muxed-address handling when contract accounts send to services requiring memos.\nGolden cites: Official Stellar docs for sending to/receiving from contract accounts. | Official Stellar docs for SAC balances or asset-contract behavior.\nGT-51 CORRECTION 2026-07-11: require keypair-versus-ledger-account and G-versus-C authorization distinctions; treat exchange/wallet support as dated.",
+    "leaf": "standards.exchange-integration",
+    "secondaryLeaf": "protocol.address-types"
   }
 }

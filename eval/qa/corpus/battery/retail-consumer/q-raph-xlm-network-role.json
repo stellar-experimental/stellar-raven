@@ -5,16 +5,16 @@
     "stellarDocs.search_protocol_concepts_docs"
   ],
   "golden": {
-    "answer": "XLM is Stellar's native asset. It pays network fees and is part of account-reserve mechanics; it can also be sent and traded. Calling it 'gas' is a rough analogy for the fee role, but it misses the reserve role and does not make XLM identical to Ethereum's fee model. Unlike a typical issued Stellar token such as a stablecoin, XLM has no issuer or trustline requirement.",
+    "answer": "XLM (the lumen) is Stellar’s native asset. It pays network fees and backs account reserves, and it can also be sent and traded. “Gas” is a rough analogy for the fee role but misses reserves, and it does not make Stellar’s economics identical to Ethereum’s. Unlike issued tokens such as stablecoins, XLM needs no issuer or trustline.",
     "keyFacts": [
-      "Names XLM's fee and reserve roles.",
-      "Distinguishes native XLM from issuer-specific trustline assets."
+      "XLM is Stellar’s native asset and pays network fees.",
+      "XLM also backs account reserves, so “gas” is only a partial analogy.",
+      "XLM needs no issuer or trustline, unlike issued assets."
     ],
     "avoid": [
-      "Do NOT say XLM requires a trustline or issuer.",
-      "Do NOT claim the gas analogy makes the two networks economically identical."
-    ],
-    "notes": "Stable conceptual comparison."
+      "Do NOT say XLM requires a trustline or issuer, or is an issuer-backed stablecoin.",
+      "Do NOT turn the explanation into a price prediction."
+    ]
   },
   "tags": {
     "category": "retail-consumer",
@@ -54,19 +54,35 @@
             "observedAt": "2026-07-11"
           }
         ]
+      },
+      {
+        "claim": "The lumen is the only token that does not require an issuer or trustline; pays fees, rent, reserves.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "http://developers.stellar.org/docs/learn/fundamentals/lumens",
+            "observedAt": "2026-11-14",
+            "note": "The lumen is the only token that doesn’t require an issuer or trustline."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch retail-consumer-03)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-hist-retail, verify-hist-retail; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Verification-only event 2026-11-02: every judge-facing field is unchanged; the proposer re-derived each claim from at least two source classes and found no change needed.",
-        "Live A 2026-10-31: https://developers.stellar.org/docs/learn/fundamentals/lumens — 'Lumens (XLM) are the native currency of the Stellar network. The lumen is the only token that doesn't require an issuer or trustline. They are used to pay all transaction fees, fund rent, and to cover minimum balance requirements' (claim: XLM is the native asset; pays fees, rent and minimum-balance reserves; needs no issuer or trustline; verdict confirmed)",
-        "Live B 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-ledger-entries.x — 'ASSET_TYPE_NATIVE = 0, ASSET_TYPE_CREDIT_ALPHANUM4 = 1' (claim: XLM is the native asset; pays fees, rent and minimum-balance reserves; needs no issuer or trustline; verdict confirmed)",
-        "Live A 2026-10-31: https://developers.stellar.org/docs/learn/fundamentals/lumens — 'The lumen is the only token that doesn't require an issuer or trustline.' (claim: Avoids punish 'XLM needs trustline/issuer' / 'issuer-backed stablecoin' / price prediction / identical-economics claims; verdict confirmed)",
-        "Sibling sweep 2026-11-02: q-raph-xlm-simple, q-edge-metamask-evm-mental-model, q-protocol-base-reserve-min-balance checked; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-raph-xlm-network-role",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-raph-xlm-network-role",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-raph-xlm-network-role",
+        "Live A 2026-11-14: http://developers.stellar.org/docs/learn/fundamentals/lumens -- 'The lumen is the only token that doesn’t require an issuer or trustline.'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raph xlm-native-asset-purpose-vs-gas"
+    "origin": "raph xlm-native-asset-purpose-vs-gas",
+    "notes": "Stable conceptual comparison.",
+    "leaf": "ecosystem.xlm-role"
   }
 }

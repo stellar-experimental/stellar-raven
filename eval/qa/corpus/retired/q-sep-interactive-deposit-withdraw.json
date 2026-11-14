@@ -1,0 +1,23 @@
+{
+  "id": "q-sep-interactive-deposit-withdraw",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-assets (golden coverage audit)",
+    "reviewer": "verify-audit-assets (golden coverage audit)",
+    "reason": "Merged into q-sep6-sep24-sep31-choice. The survivor's first two key facts are exactly SEP-24 hosted interactive versus SEP-6 programmatic.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-assets.json#q-sep-interactive-deposit-withdraw",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-assets.json#q-sep-interactive-deposit-withdraw",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-sep-interactive-deposit-withdraw"
+    ],
+    "lastCaseContentSha256": "f5ab98242437055582e88a9ec23f6f839755fdfcfabfe1f8439ea52803beb114",
+    "replacementIds": [
+      "q-sep6-sep24-sep31-choice"
+    ]
+  }
+}

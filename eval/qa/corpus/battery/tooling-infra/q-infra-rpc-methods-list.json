@@ -7,19 +7,17 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "As of 2026-11-02, the stock Stellar RPC release line (v30.0.0) exposes 12 application methods: **`getHealth`, `getNetwork`, `getVersionInfo`, `getLatestLedger`, `getLedgers`, `getLedgerEntries`, `getTransaction`, `getTransactions`, `getEvents`, `getFeeStats`, `sendTransaction`, and `simulateTransaction`**. Use **`simulateTransaction`** to dry-run and prepare a contract invocation before signing/submitting.\n\n`getLedgers` exists on ordinary RPC instances within their retained range; deep/full ledger history requires an archive/data-lake-backed provider. `getEvents` is likewise bounded by provider-configured retention. SDK helpers such as `getAccount`, Horizon REST paths, removed singular `getLedgerEntry`, and disabled `rpc.*` discovery methods are not additional application methods.",
+    "answer": "As of 2026-11-14 stock Stellar RPC (v30.0.1) exposes 12 application methods: getHealth, getNetwork, getVersionInfo, getLatestLedger, getLedgers, getLedgerEntries, getTransaction, getTransactions, getEvents, getFeeStats, sendTransaction and simulateTransaction. Use simulateTransaction to dry-run a contract call before signing. getLedgers and getEvents serve only the provider's retention window (stock default about 7 days); deep history needs an archive-backed provider.",
     "keyFacts": [
-      "Names all 12 application methods of the stock RPC release.",
-      "Includes getTransaction, getTransactions, and getLedgerEntries.",
-      "Uses simulateTransaction for the dry run.",
-      "Treats ordinary getLedgers and getEvents as provider-retention-bounded.",
-      "Attributes deep history to archive-backed providers."
+      "Stock RPC exposes 12 application methods, including getLedgerEntries and getTransactions.",
+      "simulateTransaction is the dry run before signing and submitting.",
+      "getLedgers and getEvents are retention-bounded; deep history needs an archive provider."
     ],
     "avoid": [
-      "Do NOT add Horizon paths, SDK helpers, removed aliases, or `rpc.discover`/`getMethods` to the application-method list.",
-      "Do NOT imply every getLedgers endpoint reaches genesis or repeat a universal event-retention day count."
+      "Do NOT add Horizon paths, SDK helpers, removed aliases or discovery methods to the method list.",
+      "Do NOT imply every getLedgers endpoint reaches genesis."
     ],
-    "notes": "2026-06-29: simulateTransaction is the load-bearing answer; inventing method names is the trap. 12-method enum is this file's lane (vs q-infra-simulate-transaction-howto, the procedure). Retention normalized (re-verified 2026-11-02): the getEvents reference and stellar-rpc v30.0.0 config use one history-retention-window with a stock default of 120960 ledgers (~7 days); there is no separate 24h event default. Rubric gates on the durable 'limited window' fact, not the exact default.\nAlso good if the answer: `getLedgers` is the archive-tier method for full ledger-history retrieval. | `getEvents` retrieves contract events within the provider's retention window (stock default 120960 ledgers, about 7 days, as of 2026-11-02).\nGolden cites: developers.stellar.org RPC API-reference methods page.\nGT-50 CORRECTION 2026-07-11: exact inventory is release-sensitive. Gate the 12 names and simulateTransaction, while preserving ordinary-versus-archive getLedgers and provider-configured event retention.\nArchive-node beta 2026-11-02: SDF's stellar-rpc tag archive-node-beta (2026-09-30) adds a beta-only `queryEvents` method and serves full history for getEvents, getLedgers, getTransaction, and getTransactions. Stock RPC v30.0.0 returns method not found for queryEvents. Do not penalize an answer that names these as beta-only; the 12 stock methods remain the gate."
+    "notes": "A later release's list is correct if dated. Naming beta-only methods (queryEvents, archive-node beta) as beta is not an error. A differing provider retention value is not wrong."
   },
   "tags": {
     "category": "tooling-infra",
@@ -33,7 +31,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-05-12",
     "sources": [
       {
@@ -147,63 +145,66 @@
             "note": "ledgerRetentionWindow 120960 on both; testnet queryEvents -> {code:-32601,message:'method not found'}."
           }
         ]
+      },
+      {
+        "claim": "Stock RPC exposes exactly 12 application methods",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "github.com/stellar/stellar-docs openrpc/src/stellar-rpc/methods",
+            "observedAt": "2026-11-14",
+            "note": "getEvents.json getFeeStats.json getHealth.json getLatestLedger.json getLedgerEntries.json getLedgers.json getNetwork.json getTransaction.json getTransactions.json getVersionInfo.json sendTransaction.json simulateTransaction.json"
+          },
+          {
+            "class": "F",
+            "ref": "POST https://soroban-testnet.stellar.org queryEvents",
+            "observedAt": "2026-11-14",
+            "note": "{\"error\":{\"code\":-32601,\"message\":\"method not found\",\"data\":\"queryEvents\"}}"
+          }
+        ]
+      },
+      {
+        "claim": "Stock RPC release line is v30.x with a ~7 day retention window",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "github.com/stellar/stellar-rpc/releases",
+            "observedAt": "2026-11-14",
+            "note": "v30.0.1 2026-11-12T17:06:18Z"
+          },
+          {
+            "class": "F",
+            "ref": "POST https://soroban-testnet.stellar.org getHealth",
+            "observedAt": "2026-11-14",
+            "note": "\"latestLedger\":5720487,\"latestLedgerCloseTime\":\"1794626079\",\"oldestLedger\":5599528"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "sd-003 retirement 2026-11-02 (Claude Opus 5.5; ledger .agents/rounds/2026-11-02-mintlify-migration.md, section \"sd-003 retirement\"; independent re-derivation .agents/rounds/2026-11-02-mintlify-migration/sd003-golden-review.md), on top of the golden audit 2026-11-02 event",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-tooling-a, verify-audit-tooling-a; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Gospel change 2026-11-02: removed the sd-003 partial cap from golden.notes; sd-003 is resolved.",
-        "Class E (confirmed-as-of): Raven MCP execute (production https://raven.stellar.org, Worker version 499f58ba, Mintlify backend) stellarDocs.search_docs 'getTransactions API reference limit' → #1 /docs/data/apis/rpc/api-reference/methods/getTransactions; search_rpc_horizon_data_docs 'getFeeStats' → #1 …/methods/getFeeStats; 'getTransaction status NOT_FOUND' → #1 …/methods/getTransaction; 'Horizon list all transactions endpoint' → #1 /docs/data/apis/horizon/api-reference/list-all-transactions (observedAt 2026-11-02T20:02:52Z)",
-        "Class A (confirmed-as-of): curl -L https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransactions.md — 'The limit for getTransactions can range from 1 to 200 … it defaults to 50'; …/methods/getFeeStats and /docs/data/apis/horizon/api-reference/list-all-transactions HTTP 200 (observedAt 2026-11-02)",
-        "Class B: stellar/stellar-docs commit 700ed32d0b2bac10e265cdc5fb1a4b70671ab130 (2026-10-22, 'build: migrate developers.stellar.org from Docusaurus to Mintlify (#2941)') moved the generated reference pages into the Mintlify site and its search.",
-        "Class E (confirmed-as-of): Raven MCP execute (production https://raven.stellar.org, Worker version 499f58ba, Mintlify backend) get_doc_page /docs/data/apis/rpc/api-reference/methods (title 'Methods') names all 12 stock methods plus the beta-only queryEvents (observedAt 2026-11-02T20:04Z).",
-        "Gospel change 2026-11-02: golden.notes drops the stale '24h default, ~7 days max' getEvents wording (retention-normalized sentence and also-good fragment) for the single 120960-ledger history-retention-window, and adds a beta-only archive-node note (queryEvents, full-history methods). The 12 stock methods remain the gate; answer, keyFacts, and avoid are unchanged.",
-        "Verifier accept (replace-substring (retention normalized sentence)) class A: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents — \"Stellar-RPC retains a bounded, ledger-denominated history of recent transactions and events, configured by a single history-retention-window setting with a stock default of 120960 ledgers (about 7 days, depending on ledger cadence)\" (observedAt 2026-11-02)",
-        "Verifier accept (replace-substring (retention normalized sentence)) class B: https://github.com/stellar/stellar-rpc/blob/v30.0.0/cmd/stellar-rpc/internal/config/options.go — \"Name: \"history-retention-window\", ... \"configures history retention window for transactions and events, expressed in number of ledgers, the default value is %d which corresponds to about 7 days of history\" ... DefaultValue: uint32(SevenDayOfLedgers); OneDay...\" (observedAt 2026-11-02)",
-        "Verifier accept (replace-substring (retention normalized sentence)) class F: POST https://soroban-testnet.stellar.org getHealth (version 30.0.0-13e53516) — \"\"ledgerRetentionWindow\":120960\" (observedAt 2026-11-02)",
-        "Verifier accept (replace-substring (retention normalized sentence)) class E: stellarDocs.search_docs -> https://developers.stellar.org/docs/data/apis/rpc/admin-guide/configuring#backfilling-history-on-startup — \"HISTORY_RETENTION_WINDOW sets the target size of that window. The default is 120960 ledgers, which is about 7\" (observedAt 2026-11-02)",
-        "Verifier accept (replace-substring (Also good getEvents line)) class A: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents — \"stock default of 120960 ledgers (about 7 days, depending on ledger cadence); requests are served from within that retained range\" (observedAt 2026-11-02)",
-        "Verifier accept (replace-substring (Also good getEvents line)) class B: https://github.com/stellar/stellar-rpc/blob/v30.0.0/cmd/stellar-rpc/internal/config/options.go — \"DefaultValue: uint32(SevenDayOfLedgers)\" (observedAt 2026-11-02)",
-        "Verifier accept (replace-substring (Also good getEvents line)) class F: POST https://mainnet.sorobanrpc.com getHealth (v29.0.1) — \"\"oldestLedger\":65149374 ... \"latestLedger\":65270333 ... \"ledgerRetentionWindow\":120960\" (observedAt 2026-11-02)",
-        "Verifier accept (append-text (archive-node beta)) class B: gh api repos/stellar/stellar-rpc/git/tags/e45ee57a8250d5399298db60e7218c70c369e400 — \"archive-node-beta 2026-09-30T17:11:41Z tamirms -> d277ba48 'rpcv2: trim the sample config and fix the archive node runbook (#1054)'\" (observedAt 2026-11-02)",
-        "Verifier accept (append-text (archive-node beta)) class B: https://github.com/stellar/stellar-rpc/blob/archive-node-beta/docs/API-CHANGES-BETA.md — \"No existing method, parameter, or response field was removed. `getEvents`, `getLedgers`, `getTransaction`, and `getTransactions` now serve full history. ... `queryEvents` is a new method in the archive node. The current RPC does not have it.\" (observedAt 2026-11-02)",
-        "Verifier accept (append-text (archive-node beta)) class B: https://github.com/stellar/stellar-rpc/blob/v30.0.0/cmd/stellar-rpc/internal/jsonrpc.go — \"handlers registered: getHealth, getEvents, getNetwork, getVersionInfo, getLatestLedger, getLedgers, getLedgerEntries, getTransaction, getTransactions, sendTransaction, simulateTransaction, getFeeStats (12; no queryEvents)\" (observedAt 2026-11-02)",
-        "Verifier accept (append-text (archive-node beta)) class F: POST https://soroban-testnet.stellar.org queryEvents (getVersionInfo 30.0.0-13e53516) — \"{\"code\":-32601,\"message\":\"method not found\",\"data\":\"queryEvents\"}\" (observedAt 2026-11-02)",
-        "Verifier accept (append-text (archive-node beta)) class D: https://hub.docker.com/r/stellar/unsafe-stellar-rpc (Parallel web_search excerpt) — \"Unreleased beta builds of stellar-rpc. Not safe for production use ... Recent tags archive-node-beta\" (observedAt 2026-11-02)",
-        "Verifier accept (append-text (archive-node beta)) class D: https://github.com/stellar/go-stellar-sdk/commit/0f59d2edfb0d41d5f9d52d609c054177df1983bd (Parallel web_search excerpt) — \"rpc: rename getEventsV2 to queryEvents (#6012)\" (observedAt 2026-11-02)",
-        "Class B (golden.answer / keyFacts[0], confirmed-as-of): gh api repos/stellar/stellar-docs/contents/openrpc/src/stellar-rpc/methods?ref=main — \"getEvents getFeeStats getHealth getLatestLedger getLedgerEntries getLedgers getNetwork getTransaction getTransactions getVersionInfo sendTransaction simulateTransaction (12 files)\" (observedAt 2026-11-02)",
-        "Class F (golden.answer / keyFacts[0], confirmed-as-of): POST https://soroban-testnet.stellar.org getVersionInfo / getHealth — \"version 30.0.0-13e53516...; getHealth result status healthy, ledgerRetentionWindow 120960\" (observedAt 2026-11-02)",
-        "Class F (golden.avoid[0], contradicted): POST https://soroban-testnet.stellar.org getLedgerEntry / getMethods / rpc.discover — \"{\"code\":-32601,\"message\":\"method not found\",\"data\":\"getLedgerEntry\"} (same for getMethods, rpc.discover)\" (observedAt 2026-11-02)",
-        "Class A (golden.notes, contradicted): curl https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents — \"stock default of 120960 ledgers (about 7 days, depend...\" (observedAt 2026-11-02)",
-        "Class B (golden.notes, contradicted): stellar-docs openrpc/src/stellar-rpc/methods/getEvents.json@de38543 (changed in 75aae6dd 2026-07-21, 'Replace stale RPC transaction and event retention guidance (#2595) (#2656)') — \"Stellar-RPC retains a bounded, ledger-denominated history of recent transactions and events, configured by a single history-retention-window setting with a stock default of 120960 ledgers\" (observedAt 2026-11-02)",
-        "Class B (golden.notes, contradicted): https://raw.githubusercontent.com/stellar/stellar-rpc/v30.0.0/cmd/stellar-rpc/internal/config/options.go:314-320 — \"Name: \"history-retention-window\" ... the default value is %d which corresponds to about 7 days of history (no separate event retention option)\" (observedAt 2026-11-02)",
-        "Class F (golden.notes, contradicted): POST https://soroban-testnet.stellar.org getHealth — \"ledgerRetentionWindow 120960\" (observedAt 2026-11-02)",
-        "Class B (golden.notes (new), confirmed-as-of): https://github.com/stellar/stellar-rpc/blob/archive-node-beta/docs/API-CHANGES-BETA.md (tag archive-node-beta -> d277ba48, 2026-09-30) — \"getEvents, getLedgers, getTransaction, and getTransactions now serve full history. ... queryEvents is a new method in the archive node. The current RPC does not have it.\" (observedAt 2026-11-02)",
-        "Class F (golden.notes (new), confirmed-as-of): POST https://soroban-testnet.stellar.org and https://mainnet.sorobanrpc.com queryEvents — \"{\"code\":-32601,\"message\":\"method not found\",\"data\":\"queryEvents\"}\" (observedAt 2026-11-02)",
-        "Class A (golden.notes (new), confirmed-as-of): https://docs.validationcloud.io/v1/stellar/overview (via sibling lane, 2026-11-02) — \"Pubnet RPC v2 (Beta): Stellar RPC only (full history from ledger 2)\" (observedAt 2026-11-02)",
-        "Class F (golden.keyFacts[3] / keyFacts[4], confirmed): POST https://soroban-testnet.stellar.org getLedgers (no startLedger) — \"start ledger (0) must be between the oldest ledger: 5401552 and the latest ledger: 5522511 for this rpc instance\" (observedAt 2026-11-02)",
-        "Class A (golden.keyFacts[3] / keyFacts[4], confirmed): https://developers.stellar.org/docs/data/apis/rpc/providers (source providers.mdx main) — \"Currently only the getLedgers RPC method supports this feature.\" (observedAt 2026-11-02)",
-        "Sibling sweep 2026-11-02: grep '24h default|24-hour|~24h' and 'queryEvents' over the battery. q-ti-block-explorer-basics, q-ti-self-host-retention-backfill, and q-ti-openzeppelin-relayer carry only dated or quote-scoped 24-hour wording and do not conflict. q-soroban-publish-events keeps an sd-023 cache-scoped caution whose expiry condition now appears met (flagged to its owning lane). No other case names queryEvents. q-infra-rpc-provider-archive-tier already scopes getLedgers-only to the official tier.",
-        "Pass 2 live B 2026-11-02: gh api repos/stellar/stellar-rpc/releases -- 'v30.0.0 2026-10-21T06:07:32Z pre=false' is the latest release; earlier v29.0.1, v29.0.0, v28.0.1, v28.0.0.",
-        "Pass 2 live B 2026-11-02: stellar-rpc v30.0.0 cmd/stellar-rpc/internal/jsonrpc.go registers 12 methodName entries (GetHealth, GetEvents, GetNetwork, GetVersionInfo, GetLatestLedger, GetLedgers, GetLedgerEntries, GetTransaction, GetTransactions, SendTransaction, SimulateTransaction, GetFeeStats).",
-        "Pass 2 live B 2026-11-02: stellar-rpc main c436cd7d (2026-10-29) internal/rpcv1/jsonrpc.go registers the same 12; internal/rpcv2/jsonrpc.go (archive node, unreleased) adds protocol.QueryEventsMethodName for 13.",
-        "Pass 2 live B 2026-11-02: stellar/stellar-docs main 7cb5e8a4 openrpc/src/stellar-rpc/methods lists 12 files: getEvents getFeeStats getHealth getLatestLedger getLedgerEntries getLedgers getNetwork getTransaction getTransactions getVersionInfo sendTransaction simulateTransaction.",
-        "Pass 2 live F 2026-11-02T17:37Z: POST https://soroban-testnet.stellar.org getVersionInfo -- 'version 30.0.0-13e53516...'; queryEvents -- '{\"code\":-32601,\"message\":\"method not found\",\"data\":\"queryEvents\"}'. POST https://mainnet.sorobanrpc.com getVersionInfo -- 'version 29.0.1-055dc9c7...'.",
-        "Pass 2 change: golden.answer dates the 12-method count (As of 2026-11-02) and scopes it to the stock release line (v30.0.0); keyFacts[0] scopes the count to the stock RPC release. The method names, the dry-run method, and the archive-node beta note are unchanged.",
-        "Pass 2 sibling sweep 2026-11-02: grep '12 ... methods|queryEvents' over the battery finds only this case; q-infra-simulate-transaction-howto and q-infra-rpc-provider-archive-tier make no method-count claim.",
-        "Pass 2 independent verifier (task infra-tooling, .agents/rounds/2026-11-02-golden-audit.md) accept golden.answer: Confirmed across B and F. The stock release v30.0.0 registers exactly 12 methods. Live Testnet RPC 30.0.0 and Mainnet provider 29.0.1 both reject queryEvents. The rpcv2 handler set on main adds queryEvents (13), so the release scope and as-of date are a needed precision, not a loosening. The 12-method gate and simulateTransaction are unchanged. Wording 'release line (v30.0.0)' reads correctly with a Mainnet provider still on v29.0.1, which also lacks queryEvents.",
-        "Pass 2 independent verifier (task infra-tooling, .agents/rounds/2026-11-02-golden-audit.md) accept golden.keyFacts[0]: 58 characters, one predicate, no snapshot date inside the fact. Same gate (all 12), scoped to the stock release so an answer that also names beta-only queryEvents is not misread.",
-        "Pass 2 independent verifier (task infra-tooling, .agents/rounds/2026-11-02-golden-audit.md) accept truth.verified.rootCause[+]: Verified: the rpcv2 handler set with queryEvents (13) is on stellar-rpc main and the archive-node-beta tag tree contains rpcv2/eventsapi/query_events.go. The entry is an eval-side authoring flaw, not a score rationale."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-a.json#q-infra-rpc-methods-list",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-a.json#q-infra-rpc-methods-list",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-infra-rpc-methods-list",
+        "Live B 2026-11-14: github.com/stellar/stellar-docs openrpc/src/stellar-rpc/methods -- 'getEvents.json getFeeStats.json getHealth.json getLatestLedger.json getLedgerEntries.json getLedgers.json getNetwork.json getTransaction.json getTransactions.json getVersionInfo.json sendTransaction.json simulateTransaction.json'",
+        "Live F 2026-11-14: POST https://soroban-testnet.stellar.org queryEvents -- '{\"error\":{\"code\":-32601,\"message\":\"method not found\",\"data\":\"queryEvents\"}}'",
+        "Live B 2026-11-14: github.com/stellar/stellar-rpc/releases -- 'v30.0.1 2026-11-12T17:06:18Z'",
+        "Live F 2026-11-14: POST https://soroban-testnet.stellar.org getHealth -- '\"latestLedger\":5720487,\"latestLedgerCloseTime\":\"1794626079\",\"oldestLedger\":5599528'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-rpc/releases -- 'v30.0.1 2026-11-12T17:06:18Z (latest, not prerelease)'",
+        "Live F 2026-11-14: POST https://soroban-testnet.stellar.org getVersionInfo -- '\"version\":\"30.0.1-6b6ec60c8bde5a93984b6290065d3882d384b25d\" ... \"protocolVersion\":30'",
+        "Live F 2026-11-14: POST https://soroban-testnet.stellar.org getHealth -- '\"ledgerRetentionWindow\":120960'",
+        "Live B 2026-11-14: github.com/stellar/stellar-docs openrpc/src/stellar-rpc/methods -- 'getEvents getFeeStats getHealth getLatestLedger getLedgerEntries getLedgers getNetwork getTransaction getTransactions getVersionInfo sendTransaction simulateTransaction'"
       ],
       "rootCause": [
-        "freshness-drift",
-        "improvements/resolved.json entry sd-023 (stellar-docs PR #2656 replaced the 24h/7-day event retention prose; the notes still cited the pre-fix wording)",
-        "Upstream stellar-rpc tag archive-node-beta (2026-09-30) added beta-only queryEvents and full-history reads after the last verification.",
-        "Eval-side authoring flaw: golden.answer and keyFacts[0] stated the 12-method count as 'current' with no as-of date or release scope, while the archive-node rpcv2 handler set (13 methods with queryEvents) exists on the archive-node-beta tag and stellar-rpc main.",
-        "improvements/resolved.json entry sd-003 (generated RPC-method and Horizon-endpoint reference pages were absent from the retired Algolia index; the 2026-10-22 Mintlify migration, stellar/stellar-docs@700ed32d PR #2941, indexed them, and Raven reads Mintlify since 2026-11-02)"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-infra-rpc-methods-list"
+    "origin": "raven-next q-infra-rpc-methods-list",
+    "notes": "2026-06-29: simulateTransaction is the load-bearing answer; inventing method names is the trap. 12-method enum is this file's lane (vs q-infra-simulate-transaction-howto, the procedure). Retention normalized (re-verified 2026-11-02): the getEvents reference and stellar-rpc v30.0.0 config use one history-retention-window with a stock default of 120960 ledgers (~7 days); there is no separate 24h event default. Rubric gates on the durable 'limited window' fact, not the exact default.\nAlso good if the answer: `getLedgers` is the archive-tier method for full ledger-history retrieval. | `getEvents` retrieves contract events within the provider's retention window (stock default 120960 ledgers, about 7 days, as of 2026-11-02).\nGolden cites: developers.stellar.org RPC API-reference methods page.\nGT-50 CORRECTION 2026-07-11: exact inventory is release-sensitive. Gate the 12 names and simulateTransaction, while preserving ordinary-versus-archive getLedgers and provider-configured event retention.\nArchive-node beta 2026-11-02: SDF's stellar-rpc tag archive-node-beta (2026-09-30) adds a beta-only `queryEvents` method and serves full history for getEvents, getLedgers, getTransaction, and getTransactions. Stock RPC v30.0.0 returns method not found for queryEvents. Do not penalize an answer that names these as beta-only; the 12 stock methods remain the gate.",
+    "leaf": "data.rpc-api"
   }
 }

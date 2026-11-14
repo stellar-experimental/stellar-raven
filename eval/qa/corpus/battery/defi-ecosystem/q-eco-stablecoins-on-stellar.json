@@ -8,21 +8,17 @@
     "scout.getStablecoins"
   ],
   "golden": {
-    "answer": "A grounded answer derives its named examples and status claims from the current LumenLoop corpus, then dates the roster so it is not presented as permanent. As of 2026-07-11, a live stablecoin search returned 38 matches, including Circle, Glo Dollar, and Coins.ph, with issuer and token descriptions attached.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "Stellar's stablecoins are mostly issuer-led: Circle's USDC and EURC, PayPal's PYUSD (issued by Paxos), and newer regional and institutional coins. Attribute each to its issuer account: many accounts issue look-alike codes such as EURC, and only the real issuer's asset is the stablecoin. Treat the roster as dated and non-exhaustive, and keep fiat stablecoins apart from yield-bearing and fund tokens such as BENJI.",
     "keyFacts": [
-      "Presents specific current or dated source evidence, not unsupported memory.",
-      "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Names current Stellar stablecoins together with their issuers."
+      "Names current Stellar stablecoins with their issuers, such as Circle's USDC and EURC.",
+      "Identifies a stablecoin by issuer account, since a code alone can be impersonated.",
+      "A registry or search result is not a complete census of Stellar stablecoins."
     ],
     "avoid": [
-      "Do NOT claim PayPal is PYUSD's legal issuer, or state without a source and date that Paxos Trust Company, LLC issues PYUSD today.",
-      "Do NOT invent a stablecoin/issuer or assert a complete absence/presence category without a defined dated universe.",
-      "Do NOT conflate native issuance, supply, app availability, conventional stablecoins, yield-bearing certificates, and fund/RWA tokens.",
-      "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical.",
-      "Do NOT claim the ranked stablecoin registry is the complete set of Stellar stablecoins; a missing asset is untracked, not absent from Stellar.",
-      "Do NOT read a null supply, market cap, or holder value as zero, and do NOT compare raw supply across rows with different pegs; marketCapUSD is the comparable metric."
+      "Do NOT invent a stablecoin or issuer, or assert absence without a defined dated universe.",
+      "Do NOT conflate fiat stablecoins with yield-bearing certificates and fund tokens, or read a null supply as zero."
     ],
-    "notes": "VERIFIED issuers against dossier primary sources: Circle USDC + EURC; PayPal PYUSD (launched on Stellar Sep 18 2025); regional anchors like ClickPesa TZS; BENJI as quasi-stable RWA share. New issuers can appear, so flag the list as time-bounded. Stablecoin coverage → lumenloop_search_content_semantic.\nAlso good if the answer: Characterizes the stablecoin set as issuer-led fiat stablecoins (USDC/EURC/PYUSD), with regional anchors (e.g. ClickPesa's TZS) and BENJI as a quasi-stable RWA.\nGolden cites: A dated source for each named stablecoin.\nGT-20 CORRECTION 2026-07-10 supersedes the inherited 'major set' and algorithmic-absence framing. Grade a dated non-exhaustive taxonomy, issuer roles, and product-class separation.\nSTABLECOIN REGISTRY BOUND (verified 2026-08-19): scout.getStablecoins serves a curated registry, not a census. A live read included Circle USDC and Circle EURC with measured values. Its coverage block states that absence means untracked, never absent from Stellar. GRADER CAUTION: grade the reading behavior instead of set membership. Cite meta.dataAsOf for ranking or size claims; meta.generatedAt only dates the response. marketCapUSD is the cross-peg size metric because supply uses each row's peg. Null means unmeasured, not zero. Use assetId or issuer as the identity because one ticker can have several issuers. counts.total is the filtered count before slicing, counts.tracked is the whole registry, and counts.returned is the served page. Do not require a pinned row count, order, timestamp lag, or position. The top marketCapUSD row can be a yield-bearing token, so preserve product-class distinctions. Circle's USDC issuer remains independently confirmed by Circle and Horizon."
+    "notes": "Grade the reading behavior, not set membership; marketCapUSD is the cross-peg size metric."
   },
   "tags": {
     "category": "defi-ecosystem",
@@ -36,7 +32,7 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-14",
     "sources": [
       {
         "class": "A",
@@ -284,26 +280,37 @@
             "note": "Stale wording still served: \"Paxos Trust Company LLC is a prudentially regulated stablecoin issuer, powering PYUSD\"; a dated, sourced quote of it is not the trap."
           }
         ]
+      },
+      {
+        "claim": "Scout's stablecoin registry is a curated, non-exhaustive list with 37 tracked assets",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "scout.getStablecoins({limit:3})",
+            "observedAt": "2026-11-14",
+            "note": "counts.tracked 37; coverage.basis curated-registry; multiIssuerTickers EURC by Circle and MyKobo"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch defi-ecosystem-05)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-defi, verify-defi; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "OCC CA 1358 2026-11-02: https://www.occ.gov/topics/charters-and-licensing/interpretations-and-decisions/2026/ca1358.pdf — Paxos Trust Company, LLC converts to \"Paxos Trust Company, National Association ... OCC Charter Number 25379\" (December 12, 2025).",
-        "Paxos licenses 2026-11-02: https://www.paxos.com/terms-and-conditions/licenses — \"converted from a New York limited-purpose trust charter to a national trust charter on December 12, 2025.\"",
-        "Raven scout.getStablecoins 2026-11-02 (meta.source https://stellarlight.xyz/api/stablecoins, dataAsOf 2026-11-02T16:22:16.011Z): \"assetId USDC-GA5ZSEJY, issuer GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN, marketCapUSD 321134258.33; counts.tracked 41\" — Circle USDC is in the live registry, so the sls-066 cached-copy caution is expired and removed.",
-        "Raven scout.getStablecoins 2026-11-02: Circle EURC row assetId EURC-GDHU6WRG has peg EUR, so 'issuer-led dollars' was wrong; notes now say 'issuer-led fiat stablecoins'.",
-        "Horizon 2026-11-02: https://horizon.stellar.org/assets?asset_code=TZS — ClickPesa TZS live (toml connect.clickpesa.com).",
-        "Independent verifier accepted all three changes (avoid[0], two notes edits): .agents/rounds/2026-11-02-golden-audit/pass1/defi-ecosystem-05.json.",
-        "Sibling sweep 2026-11-02: grep PYUSD|Paxos|sls-066|Circle USDC → q-eco-pyusd-stellar-freshness (avoid[0] wording aligned in this batch), q-asset-usdc-eurc-issuer; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-eco-stablecoins-on-stellar",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-eco-stablecoins-on-stellar",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-eco-stablecoins-on-stellar",
+        "Live C 2026-11-14: scout.getStablecoins({limit:3}) -- 'counts.tracked 37; coverage.basis curated-registry; multiIssuerTickers EURC by Circle and MyKobo'",
+        "Live F 2026-11-14: https://horizon.stellar.org/assets?asset_code=EURC&limit=20&order=desc -- '20 distinct EURC issuers on one page; Circle's GDHU6WRG...ITNPP2 (toml circle.com) has 53757 accounts; others point to tomls such as kraken.com.bz, blackrock.co.com'",
+        "Live C 2026-11-14: scout.getStablecoins({limit:3}) -- 'counts.tracked 37; coverage.basis curated-registry; multiIssuerTickers EURC by Circle and MyKobo (auditor's quote)'"
       ],
       "rootCause": [
-        "freshness-drift",
-        "improvements/resolved.json entry sls-066 (fixed 2026-08-19; the grading caution expired)",
-        "Eval-side authoring flaw: golden.notes labeled EURC as a dollar stablecoin."
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-eco-stablecoins-on-stellar"
+    "origin": "raven-next q-eco-stablecoins-on-stellar",
+    "notes": "VERIFIED issuers against dossier primary sources: Circle USDC + EURC; PayPal PYUSD (launched on Stellar Sep 18 2025); regional anchors like ClickPesa TZS; BENJI as quasi-stable RWA share. New issuers can appear, so flag the list as time-bounded. Stablecoin coverage → lumenloop_search_content_semantic.\nAlso good if the answer: Characterizes the stablecoin set as issuer-led fiat stablecoins (USDC/EURC/PYUSD), with regional anchors (e.g. ClickPesa's TZS) and BENJI as a quasi-stable RWA.\nGolden cites: A dated source for each named stablecoin.\nGT-20 CORRECTION 2026-07-10 supersedes the inherited 'major set' and algorithmic-absence framing. Grade a dated non-exhaustive taxonomy, issuer roles, and product-class separation.\nSTABLECOIN REGISTRY BOUND (verified 2026-08-19): scout.getStablecoins serves a curated registry, not a census. A live read included Circle USDC and Circle EURC with measured values. Its coverage block states that absence means untracked, never absent from Stellar. GRADER CAUTION: grade the reading behavior instead of set membership. Cite meta.dataAsOf for ranking or size claims; meta.generatedAt only dates the response. marketCapUSD is the cross-peg size metric because supply uses each row's peg. Null means unmeasured, not zero. Use assetId or issuer as the identity because one ticker can have several issuers. counts.total is the filtered count before slicing, counts.tracked is the whole registry, and counts.returned is the served page. Do not require a pinned row count, order, timestamp lag, or position. The top marketCapUSD row can be a yield-bearing token, so preserve product-class distinctions. Circle's USDC issuer remains independently confirmed by Circle and Horizon.",
+    "leaf": "assets.stablecoin-landscape"
   }
 }

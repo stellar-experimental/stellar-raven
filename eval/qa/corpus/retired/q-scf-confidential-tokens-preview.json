@@ -1,0 +1,23 @@
+{
+  "id": "q-scf-confidential-tokens-preview",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-scf (golden coverage audit)",
+    "reviewer": "verify-audit-scf (golden coverage audit)",
+    "reason": "Merged into q-edge-noinfo-stellar-native-privacy-default: q-edge-noinfo-stellar-native-privacy-default tests that Confidential Tokens hide amounts but keep addresses visible and are not a Mainnet privacy default.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-scf-confidential-tokens-preview",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-scf-confidential-tokens-preview",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-scf-confidential-tokens-preview"
+    ],
+    "lastCaseContentSha256": "0400b972c576b4544ddcc2479b3ecf41f52cce6c8a12d95b435dd02d5659fdfa",
+    "replacementIds": [
+      "q-edge-noinfo-stellar-native-privacy-default"
+    ]
+  }
+}

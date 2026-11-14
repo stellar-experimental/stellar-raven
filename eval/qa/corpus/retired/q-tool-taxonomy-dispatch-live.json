@@ -1,0 +1,21 @@
+{
+  "id": "q-tool-taxonomy-dispatch-live",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-tooling-b (golden coverage audit)",
+    "reviewer": "verify-audit-tooling-b (golden coverage audit)",
+    "reason": "Retired with no replacement because it repeats the vocabulary-dispatch question that test/drift-141-routing.test.ts covers and states no Stellar fact.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-b.json#q-tool-taxonomy-dispatch-live",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-b.json#q-tool-taxonomy-dispatch-live",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-tool-taxonomy-dispatch-live"
+    ],
+    "lastCaseContentSha256": "07f9f982781c19a8573917f7b3e61a9c82593a720e7d2f9e23fb51d12e519460",
+    "replacementIds": []
+  }
+}

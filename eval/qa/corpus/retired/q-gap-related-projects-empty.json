@@ -1,0 +1,21 @@
+{
+  "id": "q-gap-related-projects-empty",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-assets (golden coverage audit)",
+    "reviewer": "verify-audit-assets (golden coverage audit)",
+    "reason": "Raven mechanics only. The host now returns caveat 'no-rows' for an empty ok result (src/adapters/types.ts:55 ResultCaveat), and q-ti-related-projects-from-content grades the same operation's direction. Fold the empty-array line into that case.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-assets.json#q-gap-related-projects-empty",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-assets.json#q-gap-related-projects-empty",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-gap-related-projects-empty"
+    ],
+    "lastCaseContentSha256": "b0402ca691fb44866bc4b53b4471cfc8187ff00f2cc0e170ce3e96aae5544a68",
+    "replacementIds": []
+  }
+}

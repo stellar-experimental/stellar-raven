@@ -1,0 +1,21 @@
+{
+  "id": "q-gap-digest-soroban-adjacent",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-soroban-a (golden coverage audit)",
+    "reviewer": "verify-audit-soroban-a (golden coverage audit)",
+    "reason": "Retired with no battery replacement because it tests the digest response envelope rather than a Soroban fact, and the frozen live cases q-live-digest-rwa-recent and q-live-digest-blend-coverage in eval/qa/corpus/live/live-digest-supplement-cases.json cover digest behavior.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-a.json#q-gap-digest-soroban-adjacent",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-a.json#q-gap-digest-soroban-adjacent",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-gap-digest-soroban-adjacent"
+    ],
+    "lastCaseContentSha256": "c151c3fc35a314cbde1aa712c426eba93f8cf5cd09f88e312d5a98bdb457aba8",
+    "replacementIds": []
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "id": "q-soroban-wasm-language",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-soroban-b (golden coverage audit)",
+    "reviewer": "verify-audit-soroban-b (golden coverage audit)",
+    "reason": "Merged into q-soroban-no-std-constraints. Rust/soroban-sdk to wasm32v1-none and not-EVM land in q-soroban-no-std-constraints' rewrite; the 128 KiB cap stays in q-soroban-wasm-size-limit; the build target also in q-sor-build-target-wasm32v1 (soroban-a: tighten).",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-b.json#q-soroban-wasm-language",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-b.json#q-soroban-wasm-language",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-soroban-wasm-language"
+    ],
+    "lastCaseContentSha256": "729c2987cc97ca6afb4d790f9e48bda1db74b31432487ec0dcc83f3224cd950b",
+    "replacementIds": [
+      "q-soroban-no-std-constraints"
+    ]
+  }
+}

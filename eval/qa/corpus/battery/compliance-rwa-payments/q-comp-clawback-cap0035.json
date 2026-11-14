@@ -8,18 +8,17 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "- Clawback lets an **asset issuer burn a specified amount of a clawback-enabled asset from a holder's clawback-enabled\n  trustline (or an entire clawback-enabled claimable balance)** — without the holder's cooperation; the assets are **burned, not\n  returned** to the issuer [1].\n- Introduced by **CAP-0035 (\"Asset Clawback\") in Protocol 17** (activated ~2021-06-01) [1][2].\n- The issuer must have set **`AUTH_REVOCABLE` first, then `AUTH_CLAWBACK_ENABLED`** — only then are new\n  trustlines clawback-eligible [1].\n- It was **designed to help issuers meet securities/regulatory obligations** (revoke after fraud, error,\n  or regulatory action) [1].\n- Implemented via the **Clawback** and **Clawback Claimable Balance** operations (after enabling the flag\n  with Set Options) [1]. It needs **no Soroban contract**, and **no arbitrary account** can claw back\n  another's funds — only the issuer of that asset.\n\nSources: [1] developers.stellar.org clawbacks; [2] CAP-0035.",
+    "answer": "Clawback (CAP-0035, Protocol 17) lets an issuer burn a specified amount of its asset from a holder's clawback-enabled trustline, or an entire clawback-enabled claimable balance, without the holder's cooperation; the amount is burned, not returned. The issuer must set AUTH_REVOCABLE, then AUTH_CLAWBACK_ENABLED, before trustlines are created. It is an intentional, issuer-only regulatory tool, not a vulnerability, so holders carry issuer counterparty risk; XLM and unflagged assets are unaffected.",
     "keyFacts": [
-      "An issuer can burn a specified amount from a holder's clawback-enabled trustline.",
-      "The clawback does not require the holder's cooperation.",
-      "Clawback was introduced by CAP-0035 in Protocol 17.",
-      "Clawback requires the issuer's AUTH_REVOCABLE and AUTH_CLAWBACK_ENABLED flags."
+      "An issuer can burn a set amount from a clawback-enabled trustline without holder consent.",
+      "CAP-0035 introduced clawback in Protocol 17.",
+      "Clawback needs AUTH_REVOCABLE and AUTH_CLAWBACK_ENABLED set before trustlines are created.",
+      "It is intentional and issuer-only, so holders bear issuer risk; it is not a vulnerability."
     ],
     "avoid": [
-      "Do NOT attribute clawback to the wrong protocol/CAP (e.g. say it was Protocol 20/Soroban or a different CAP number).",
-      "Do NOT claim clawback requires a Soroban smart contract, or that any account can claw back another's funds."
-    ],
-    "notes": "Verified: clawbacks doc attributes the feature to CAP-0035 (Asset Clawback), introduced in Protocol 17 (activated ~2021-06-01). Requires AUTH_REVOCABLE + AUTH_CLAWBACK_ENABLED. Clawed-back assets are BURNED, not returned to issuer. Ops: Set Options (enable), Clawback, Clawback Claimable Balance. Trap: wrong protocol/CAP number.\nAlso good if the answer: It was designed to help issuers meet securities/regulatory obligations (revoke assets after fraud, error, or regulatory action). | Implemented via clawback operations (ClawbackOp / ClawbackClaimableBalanceOp).\nGolden cites: developers.stellar.org clawbacks guide and/or CAP-0035 in the stellar-protocol repo."
+      "Do NOT attribute clawback to another protocol or CAP, or to Soroban.",
+      "Do NOT claim clawed-back assets return to the issuer, that any account can claw back, or that XLM is clawbackable."
+    ]
   },
   "tags": {
     "category": "compliance-rwa-payments",
@@ -147,40 +146,48 @@
             "note": "Exact source: \"if (!isClawbackEnabledOnTrustline(trust)) { innerResult(res).code(CLAWBACK_NOT_CLAWBACK_ENABLED); return false; }\""
           }
         ]
+      },
+      {
+        "claim": "CAP-0035 (Asset Clawback) is Final and targets Protocol 17.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0035.md",
+            "observedAt": "2026-11-14",
+            "note": "Status: Final ... Protocol version: 17"
+          }
+        ]
+      },
+      {
+        "claim": "A clawback burns the amount; it is not returned to the issuer.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/transactions/clawbacks",
+            "observedAt": "2026-11-14",
+            "note": "burn a specific amount of a clawback-enabled asset from a trustline or claimable balance"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch compliance-rwa-payments-01)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-compliance, verify-audit-compliance; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Verifier golden.keyFacts[0]: Live re-check 2026-11-02: https://developers.stellar.org/docs/build/guides/transactions/clawbacks — \"This causes every subsequent trustline established to any assets issued by that account to have the `TRUSTLINE_CLAWBACK_ENABLED_FLAG` set automatically. ... You can only clear a flag, not set it. So clearing a clawback flag on a trustline is irreversible.\" (class A)",
-        "Verifier golden.keyFacts[0]: Live re-check 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0035.md — \"In order to execute a clawback of an amount in an account, an issuer account must have its `AUTH_CLAWBACK_ENABLED_FLAG` flag set when the account holding the asset created its trustline. ... `TRUSTLINE_CLAWBACK_ENABLED_FLAG`, that is set at the time the trustline is created if the issuer account of the asset of the trustline has its `AUTH_CLAWBACK_ENABLED_FLAG` flag set.\" (class B)",
-        "Verifier golden.keyFacts[0]: Live re-check 2026-11-02: https://github.com/stellar/stellar-core/blob/master/src/transactions/ClawbackOpFrame.cpp — \"if (!isClawbackEnabledOnTrustline(trust)) { innerResult(res).code(CLAWBACK_NOT_CLAWBACK_ENABLED); return false; }\" (class B)",
-        "Verifier golden.keyFacts[0]: Live re-check 2026-11-02: Perplexity perplexity_ask (cites developers.stellar.org clawbacks, stellaratlas.net/protocol/cap-0035) — \"Setting `AUTH_CLAWBACK_ENABLED` does not make previously established trustlines clawback-enabled. The issuer can claw back from a trustline only if that trustline has `TRUSTLINE_CLAWBACK_ENABLED_FLAG`\" (class D)",
-        "Verifier golden.answer: Live re-check 2026-11-02: https://developers.stellar.org/docs/build/guides/transactions/clawbacks — \"This causes every subsequent trustline established to any assets issued by that account to have the `TRUSTLINE_CLAWBACK_ENABLED_FLAG` set automatically. ... You can only clear a flag, not set it. So clearing a clawback flag on a trustline is irreversible.\" (class A)",
-        "Verifier golden.answer: Live re-check 2026-11-02: https://developers.stellar.org/docs/build/guides/transactions/clawbacks — \"This operation claws back a claimable balance, returning the asset to the issuer account, burning it. You must claw back the entire claimable balance, not just part of it.\" (class A)",
-        "Verifier golden.answer: Live re-check 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0035.md — \"In order to execute a clawback of an amount in an account, an issuer account must have its `AUTH_CLAWBACK_ENABLED_FLAG` flag set when the account holding the asset created its trustline. ... `TRUSTLINE_CLAWBACK_ENABLED_FLAG`, that is set at the time the trustline is created if the issuer account of the asset of the trustline has its `AUTH_CLAWBACK_ENABLED_FLAG` flag set.\" (class B)",
-        "Verifier golden.answer: Live re-check 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0035.md — \"Claimable balances are immutable and so any functionality to clawback a claimable balance is all or nothing. ... struct ClawbackClaimableBalanceOp { ClaimableBalanceID balanceID; };\" (class B)",
-        "Proposer golden.keyFacts[2] [confirmed]: Live re-check 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md — \"CAP: 0035 Title: Asset Clawback ... Status: Final ... Protocol version: 17\" (class B)",
-        "Proposer golden.keyFacts[2] [confirmed]: Live re-check 2026-11-02: https://stellar.org/blog/developers/protocol-17-upgrade-complete — \"Today, June 1, 2021 at 1500 UTC, the Stellar public network successfully upgraded to Protocol 17.\" (class A)",
-        "Proposer golden.keyFacts[2] [confirmed]: Live re-check 2026-11-02: https://stellar.org/protocol-upgrades — \"Protocol 17 6-1-2021 - CAP-0035 (Asset clawback for regulatroy compliance.)\" (class A)",
-        "Proposer golden.keyFacts[0] [contradicted]: Live re-check 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md — \"an issuer account must have its `AUTH_CLAWBACK_ENABLED_FLAG` flag set when the account holding the asset created its trustline.\" (class B)",
-        "Proposer golden.keyFacts[0] [contradicted]: Live re-check 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md — \"When the flag is set, trustlines created to the account inherit the flag and the balances within those trustlines may be clawed back by the issuer.\" (class B)",
-        "Proposer golden.keyFacts[0] [contradicted]: Live re-check 2026-11-02: https://github.com/stellar/stellar-docs/blob/main/docs/tokens/control-asset-access.mdx — \"With the `AUTH_CLAWBACK_ENABLED_FLAG` flag set, any _subsequent_ trustlines established with this account will have clawbacks enabled.\" (class A)",
-        "Proposer golden.keyFacts[0] [contradicted]: Live re-check 2026-11-02: https://github.com/stellar/stellar-docs/blob/main/docs/build/guides/transactions/clawbacks.mdx — \"The issuing account uses this operation to remove clawback capabilities on a specific trustline by removing the `TRUSTLINE_CLAWBACK_ENABLED_FLAG`\" (class A)",
-        "Proposer golden.keyFacts[1] [confirmed]: Live re-check 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md — \"This operation does not require the affected account's signature.\" (class B)",
-        "Proposer golden.keyFacts[1] [confirmed]: Live re-check 2026-11-02: https://github.com/stellar/stellar-docs/blob/main/docs/build/guides/transactions/clawbacks.mdx — \"allow an asset issuer to burn a specific amount of a clawback-enabled asset from a trustline or claimable balance\" (class A)",
-        "Proposer golden.keyFacts[3] [confirmed]: Live re-check 2026-11-02: https://github.com/stellar/stellar-docs/blob/main/docs/build/guides/transactions/clawbacks.mdx — \"If an issuing account wants to set the `AUTH_CLAWBACK_ENABLED_FLAG`, it must have the `AUTH_REVOCABLE_FLAG` set.\" (class A)",
-        "Proposer golden.keyFacts[3] [confirmed]: Live re-check 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md — \"If an issuer wishes to set `AUTH_CLAWBACK_ENABLED_FLAG`, it must also have `AUTH_REVOCABLE_FLAG` set.\" (class B)",
-        "Proposer golden.avoid[0..1] [contradicted]: Live re-check 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md — \"Protocol version: 17\" (class B)",
-        "Proposer golden.avoid[0..1] [contradicted]: Live re-check 2026-11-02: https://stellar.org/blog/developers/protocol-17-upgrade-complete — \"Protocol 17 introduces a new feature – Asset Clawback\" (class A)",
-        "Sibling sweep 2026-11-02: proposer checked q-sep-clawback-prereq-flag, q-comp-auth-flags-overview, q-comp-clawback-holder-risk, q-aas-burn-clawback-redemption-mechanics, q-rwa-stellar-vs-erc20-regulated, q-raph-stolen-wallet-recovery; verifier grep 'any holder' over eval/qa/corpus/battery/*/*.json -> only q-comp-auth-flags-overview and q-comp-clawback-cap0035 carried the overbroad phrasing; no contradiction remains."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-compliance.json#q-comp-clawback-cap0035",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-compliance.json#q-comp-clawback-cap0035",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-comp-clawback-cap0035",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0035.md -- 'Status: Final ... Protocol version: 17'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/build/guides/transactions/clawbacks -- 'burn a specific amount of a clawback-enabled asset from a trustline or claimable balance'"
       ],
       "rootCause": [
-        "Eval-side authoring flaw: keyFact and answer said 'any holder', dropping CAP-0035's rule that only trustlines created with the clawback flag set are clawback-enabled.",
-        ".agents/rounds/2026-11-02-golden-audit.md — golden audit batch compliance-rwa-payments-01"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-comp-clawback-cap0035"
+    "origin": "raven-next q-comp-clawback-cap0035",
+    "notes": "Verified: clawbacks doc attributes the feature to CAP-0035 (Asset Clawback), introduced in Protocol 17 (activated ~2021-06-01). Requires AUTH_REVOCABLE + AUTH_CLAWBACK_ENABLED. Clawed-back assets are BURNED, not returned to issuer. Ops: Set Options (enable), Clawback, Clawback Claimable Balance. Trap: wrong protocol/CAP number.\nAlso good if the answer: It was designed to help issuers meet securities/regulatory obligations (revoke assets after fraud, error, or regulatory action). | Implemented via clawback operations (ClawbackOp / ClawbackClaimableBalanceOp).\nGolden cites: developers.stellar.org clawbacks guide and/or CAP-0035 in the stellar-protocol repo.",
+    "leaf": "assets.issuer-controls"
   }
 }

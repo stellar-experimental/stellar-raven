@@ -1,0 +1,21 @@
+{
+  "id": "q-scout-hackathon-submission-xbid-outcome",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-scf (golden coverage audit)",
+    "reviewer": "verify-audit-scf (golden coverage audit)",
+    "reason": "This never-activated proposal grades one project's hackathon placement, trivia with no taxonomy leaf.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-scout-hackathon-submission-xbid-outcome",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-scout-hackathon-submission-xbid-outcome",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-scout-hackathon-submission-xbid-outcome"
+    ],
+    "lastCaseContentSha256": "c41254a4f71490cbd27bec0d87cf6fe6718b0b753a0e755b289f66169367562e",
+    "replacementIds": []
+  }
+}

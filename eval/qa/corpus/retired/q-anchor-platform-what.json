@@ -1,0 +1,23 @@
+{
+  "id": "q-anchor-platform-what",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-assets (golden coverage audit)",
+    "reviewer": "verify-audit-assets (golden coverage audit)",
+    "reason": "Merged into q-anchor-sdp-vs-anchor-platform. Survivor q-anchor-sdp-vs-anchor-platform tests the Anchor Platform's role (operator backend) and its SEP set; nothing else here matters (Java vs Kotlin is a grading caution).",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-assets.json#q-anchor-platform-what",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-assets.json#q-anchor-platform-what",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-anchor-platform-what"
+    ],
+    "lastCaseContentSha256": "075ed7edfafaa52f739e0253c1140f6c387ad054ac9a035dc05c5a38b1c7a89f",
+    "replacementIds": [
+      "q-anchor-sdp-vs-anchor-platform"
+    ]
+  }
+}

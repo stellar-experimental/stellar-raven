@@ -1,0 +1,23 @@
+{
+  "id": "q-protocol-bls12-381-cap59",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-protocol (golden coverage audit)",
+    "reviewer": "verify-protocol (golden coverage audit)",
+    "reason": "Merged into q-zk-host-functions-status: q-zk-host-functions-status tests that BLS12-381 arrived in Protocol 22 through CAP-0059.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-protocol-bls12-381-cap59",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-protocol-bls12-381-cap59",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-protocol-bls12-381-cap59"
+    ],
+    "lastCaseContentSha256": "5043471748cfe6d0c62bddecd4f3fa42a89f4ace6503cf50a456182bc42545c1",
+    "replacementIds": [
+      "q-zk-host-functions-status"
+    ]
+  }
+}

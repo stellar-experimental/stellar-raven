@@ -1,0 +1,23 @@
+{
+  "id": "q-pay-sdp-disbursement",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-compliance (golden coverage audit)",
+    "reviewer": "verify-audit-compliance (golden coverage audit)",
+    "reason": "Merged into q-crp-sdp-operation. 'What SDP is' is the first half of q-crp-sdp-operation's rewritten question, which keeps Dashboard/Core/TSS, native SEP-10/24 without Anchor Platform, and the optional-MoneyGram note.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-compliance.json#q-pay-sdp-disbursement",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-compliance.json#q-pay-sdp-disbursement",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-pay-sdp-disbursement"
+    ],
+    "lastCaseContentSha256": "737476aa499b12f8de8223c15820939ab870524eccd4b727e0e0a41ba0a2f871",
+    "replacementIds": [
+      "q-crp-sdp-operation"
+    ]
+  }
+}

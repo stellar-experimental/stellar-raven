@@ -1,0 +1,21 @@
+{
+  "id": "q-scf-sdf-marketing-grant",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-scf (golden coverage audit)",
+    "reviewer": "verify-audit-scf (golden coverage audit)",
+    "reason": "q-scf-vs-sdf-enterprise-fund kf2 names Marketing Grants as a separate path; the $500K cap is lost and is a single dated number.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-scf-sdf-marketing-grant",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-scf-sdf-marketing-grant",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-scf-sdf-marketing-grant"
+    ],
+    "lastCaseContentSha256": "aa9c5b400dcc1853b0d46914bb4cccda12152e123f4868edc1d61284f24d45f8",
+    "replacementIds": []
+  }
+}

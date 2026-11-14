@@ -1,0 +1,23 @@
+{
+  "id": "q-crp-custodial-vs-noncustodial-wallets",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-compliance (golden coverage audit)",
+    "reviewer": "verify-audit-compliance (golden coverage audit)",
+    "reason": "Merged into q-pay-anchor-msb-licensing, which carries the custody scope (custodial operators can be in scope; non-custodial software alone generally is not), while q-tool-wallets-comparison classifies wallets by custody.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-compliance.json#q-crp-custodial-vs-noncustodial-wallets",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-compliance.json#q-crp-custodial-vs-noncustodial-wallets",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-crp-custodial-vs-noncustodial-wallets"
+    ],
+    "lastCaseContentSha256": "db4306033bd76f50694c1b53734c2df1fbc883963c184f69d4dee0a45fc74fcd",
+    "replacementIds": [
+      "q-pay-anchor-msb-licensing"
+    ]
+  }
+}

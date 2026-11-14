@@ -1,0 +1,572 @@
+{
+ "stamp": "2026-11-14T06-06-31-variantA",
+ "commit": "aaaf107f10fcdddbfe4434ae28550d3ac1af20f2",
+ "rows": [
+  {
+   "id": "q-pc-core-software-audits",
+   "set": "new",
+   "verdict": "wrong",
+   "panel": null,
+   "classification": "agent-failure",
+   "reason": "Docs \"Audits\" pages for Core+Soroban host, RPC, Rust SDK and Poseidon SDK exist and are searchable; the agent used only scout.listAudits and denied RPC/SDK audits.",
+   "proposedAction": "Monitor-only (one case); no case change.",
+   "leaf": "security.core-audits",
+   "evidence": "probe"
+  },
+  {
+   "id": "q-pc-slp-0004-0006-status",
+   "set": "rewritten",
+   "verdict": "wrong",
+   "panel": null,
+   "classification": "upstream-data-gap",
+   "reason": "No Stellar Docs page, meeting note, Scout or Lumenloop hit mentions SLPs; the agent could not confirm the proposal type exists.",
+   "proposedAction": "Upstream gap (see list); keep the case.",
+   "leaf": "network.limits-settings",
+   "evidence": "probe"
+  },
+  {
+   "id": "q-raph-stolen-wallet-recovery",
+   "set": "rewritten",
+   "verdict": "wrong",
+   "panel": [
+    "wrong",
+    "correct",
+    "wrong"
+   ],
+   "classification": "judge-artifact",
+   "reason": "Panel split wrong/correct/wrong; the rationale says behavior matched and only the background clawback fact was missing, yet the trap grade was wrong.",
+   "proposedAction": "Demote key fact 2 (clawback) to golden.notes; no re-judge.",
+   "leaf": "wallets.scams-phishing",
+   "evidence": "transcript"
+  },
+  {
+   "id": "q-scf-service-provider-directories",
+   "set": "new",
+   "verdict": "wrong",
+   "panel": [
+    "wrong",
+    "wrong",
+    "partial"
+   ],
+   "classification": "judge-artifact",
+   "reason": "Agent named Scout's live partners directory with audit firms and anchors; the golden notes accept \"another maintained partner directory named with its source\", but the judge graded wrong.",
+   "proposedAction": "Rubric note: honor \"accept another directory\" notes; reword key facts to \"names a maintained directory with its source\".",
+   "leaf": "funding.service-providers",
+   "evidence": "transcript"
+  },
+  {
+   "id": "q-sdf-2026-strategy-priorities",
+   "set": "new",
+   "verdict": "wrong",
+   "panel": null,
+   "classification": "corpus-coverage-diagnostic",
+   "reason": "stellar.org/foundation/strategy and the roadmap page are in no Raven source (Docs none; Lumenloop returned policy-hub and blog rows); the agent correctly declined to list priorities.",
+   "proposedAction": "Keep golden; record coverage result.",
+   "leaf": "ecosystem.strategy-roadmap",
+   "evidence": "probe"
+  },
+  {
+   "id": "q-ti-scaffold-stellar",
+   "set": "rewritten",
+   "verdict": "wrong",
+   "panel": null,
+   "classification": "upstream-data-gap",
+   "reason": "Docs Scaffold page mentions environments.toml 3 times and scaffold.yml 0 times; the answer followed it and fired the avoid.",
+   "proposedAction": "Upstream gap (see list).",
+   "leaf": "tooling.scaffold-bindings",
+   "evidence": "probe"
+  },
+  {
+   "id": "q-aas-claimable-predicates-expiry-reserves",
+   "set": "rewritten",
+   "verdict": "partial",
+   "panel": null,
+   "classification": "agent-failure",
+   "reason": "Core answer correct; omitted the 10-claimant cap.",
+   "proposedAction": "None.",
+   "leaf": "protocol.claimable-balances",
+   "evidence": "transcript"
+  },
+  {
+   "id": "q-aas-list-token-on-exchanges-aggregators",
+   "set": "rewritten",
+   "verdict": "partial",
+   "panel": null,
+   "classification": "agent-failure",
+   "reason": "Omitted setting the issuer home_domain; \"each venue sets its own policy\" given only as \"no process found\".",
+   "proposedAction": "None.",
+   "leaf": "assets.asset-info-lists",
+   "evidence": "transcript"
+  },
+  {
+   "id": "q-ai-mcp-servers-connect",
+   "set": "new",
+   "verdict": "partial",
+   "panel": null,
+   "classification": "agent-failure",
+   "reason": "Gave both endpoints and scopes; omitted Raven sign-in and that the Docs MCP needs none.",
+   "proposedAction": "None.",
+   "leaf": "ai.mcp-servers",
+   "evidence": "transcript"
+  },
+  {
+   "id": "q-asset-sdex-vs-amm",
+   "set": "rewritten",
+   "verdict": "partial",
+   "panel": null,
+   "classification": "agent-failure",
+   "reason": "Omitted that a pool-share trustline needs two base reserves.",
+   "proposedAction": "None.",
+   "leaf": "defi.liquidity-pools",
+   "evidence": "transcript"
+  },
+  {
+   "id": "q-audit-reports-where-published",
+   "set": "new",
+   "verdict": "partial",
+   "panel": null,
+   "classification": "corpus-coverage-diagnostic",
+   "reason": "Portal and firms correct; stellar.org/audit-bank/projects is in no Raven source (Docs audit pages cover network software only; Lumenloop has only the Audit Bank blog post).",
+   "proposedAction": "Keep golden; record coverage result.",
+   "leaf": "security.audit-registry",
+   "evidence": "probe"
+  },
+  {
+   "id": "q-comp-yieldblox-oracle-incident",
+   "set": "rewritten",
+   "verdict": "partial",
+   "panel": [
+    "partial",
+    "correct",
+    "partial"
+   ],
+   "classification": "eval-side-gap",
+   "reason": "Only \"supply caps\" was missing from a key fact that bundles three defenses plus a staleness claim.",
+   "proposedAction": "Split key fact 4 or accept any two named defenses.",
+   "leaf": "security.app-exploits",
+   "evidence": "transcript"
+  },
+  {
+   "id": "q-crp-public-sector-cbdc-pilots-stellar",
+   "set": "new",
+   "verdict": "partial",
+   "panel": null,
+   "classification": "agent-failure",
+   "reason": "Conclusion and Marshall Islands right; omitted that the National Bank of Ukraine said the pilot was not its e-hryvnia.",
+   "proposedAction": "None.",
+   "leaf": "assets.public-sector-cbdc",
+   "evidence": "transcript"
+  },
+  {
+   "id": "q-data-network-metrics-sources",
+   "set": "new",
+   "verdict": "partial",
+   "panel": null,
+   "classification": "agent-failure",
+   "reason": "Hubble pages are indexed in Docs; the agent said no source existed for accounts or operations. SDF quarterly reports are a stellar.org-side source.",
+   "proposedAction": "Monitor-only.",
+   "leaf": "data.network-metrics",
+   "evidence": "transcript"
+  },
+  {
+   "id": "q-defi-agent-identity-stellar-experimental",
+   "set": "rewritten",
+   "verdict": "partial",
+   "panel": null,
+   "classification": "corpus-coverage-diagnostic",
+   "reason": "ERC-8004 Draft status and x402 scope live with Ethereum; no Raven source hosts them. Stellar-side facts (no SEP, community Soroban code) were correct.",
+   "proposedAction": "Make key facts 1-2 optional or move to notes.",
+   "leaf": "ai.mpp-agentic-protocols",
+   "evidence": "transcript"
+  },
+  {
+   "id": "q-defi-blend-alternatives",
+   "set": "rewritten",
+   "verdict": "partial",
+   "panel": null,
+   "classification": "eval-side-gap",
+   "reason": "Key facts 2-3 demand unprompted disclaimers on named non-lenders (DeFindex, EquitX, Templar) the question did not ask for.",
+   "proposedAction": "Collapse to one fact: names real lenders and separates non-independent or CDP systems; accept any example.",
+   "leaf": "defi.lending",
+   "evidence": "transcript"
+  },
+  {
+   "id": "q-defi-blend-audit-record",
+   "set": "new",
+   "verdict": "partial",
+   "panel": null,
+   "classification": "eval-side-gap",
+   "reason": "All firms, versions and dates correct; key fact 3 demands three report locations when the portal alone answers \"where can I read them\".",
+   "proposedAction": "Reword to \"at least one hosting location\".",
+   "leaf": "security.audit-registry",
+   "evidence": "transcript"
+  },
+  {
+   "id": "q-defi-x402-on-stellar-what",
+   "set": "rewritten",
+   "verdict": "partial",
+   "panel": null,
+   "classification": "upstream-semantics-gap",
+   "reason": "Stellar Docs and skills present x402 as Coinbase-owned; Linux Foundation stewardship is absent, and the case notes already cap such an answer at partial.",
+   "proposedAction": "Known; the case cannot score correct while the sources say Coinbase.",
+   "leaf": "ai.x402",
+   "evidence": "transcript"
+  },
+  {
+   "id": "q-eco-defi-market-map",
+   "set": "rewritten",
+   "verdict": "partial",
+   "panel": null,
+   "classification": "agent-failure",
+   "reason": "Omitted liquid staking and insurance as unverified lanes.",
+   "proposedAction": "None.",
+   "leaf": "ecosystem.project-directory",
+   "evidence": "transcript"
+  },
+  {
+   "id": "q-eco-hermes-renamed-zenex",
+   "set": "new",
+   "verdict": "partial",
+   "panel": null,
+   "classification": "agent-failure",
+   "reason": "Succession right; the agent did not confirm live status. Scout project record not checked in the transcript.",
+   "proposedAction": "Monitor-only.",
+   "leaf": "ecosystem.project-directory",
+   "evidence": "transcript"
+  },
+  {
+   "id": "q-eco-institutions-payment-networks-banks",
+   "set": "new",
+   "verdict": "partial",
+   "panel": null,
+   "classification": "agent-failure",
+   "reason": "Visa, Wirex and U.S. Bank right; named a later Mastercard item, not the October 2024 Crypto Credential.",
+   "proposedAction": "None.",
+   "leaf": "ecosystem.institutional-adoption",
+   "evidence": "transcript"
+  },
+  {
+   "id": "q-eco-stablecoins-on-stellar",
+   "set": "rewritten",
+   "verdict": "partial",
+   "panel": [
+    "wrong",
+    "partial",
+    "partial"
+   ],
+   "classification": "judge-artifact",
+   "reason": "Judge called \"USDM (Montelibero)\" fabricated; Scout getStablecoins returns USDM-GDHDC4GB, company Montelibero (re-run live). The pack did not show it; panel wrong/partial/partial.",
+   "proposedAction": "Round record; rubric note not needed (pack gap).",
+   "leaf": "assets.stablecoin-landscape",
+   "evidence": "probe"
+  },
+  {
+   "id": "q-hist-meridian-2026-corrected-venue",
+   "set": "rewritten",
+   "verdict": "partial",
+   "panel": null,
+   "classification": "eval-side-gap",
+   "reason": "Venue and dates correct and the answer says \"not Abu Dhabi\"; key fact 2 requires Yas Marina Oct 21-22 and the 2026-04-01 announcement, which no Raven source states (Docs soft-empty).",
+   "proposedAction": "Reword fact 2 to \"earlier Abu Dhabi plans were superseded\"; drop the dates.",
+   "leaf": "funding.meridian",
+   "evidence": "probe"
+  },
+  {
+   "id": "q-hist-unhcr-stellar-aid-assist",
+   "set": "rewritten",
+   "verdict": "partial",
+   "panel": null,
+   "classification": "agent-failure",
+   "reason": "Omitted UNICC and the non-additivity caveat on adoption snapshots.",
+   "proposedAction": "None.",
+   "leaf": "standards.disbursements",
+   "evidence": "transcript"
+  },
+  {
+   "id": "q-infra-rpc-provider-archive-tier",
+   "set": "rewritten",
+   "verdict": "partial",
+   "panel": null,
+   "classification": "agent-failure",
+   "reason": "Exact dated nine-provider roster; omitted that ordinary RPC also serves getLedgers within retention.",
+   "proposedAction": "None.",
+   "leaf": "data.providers",
+   "evidence": "transcript"
+  },
+  {
+   "id": "q-infra-sdf-hosted-endpoints",
+   "set": "new",
+   "verdict": "partial",
+   "panel": null,
+   "classification": "upstream-semantics-gap",
+   "reason": "Docs Horizon overview lists only testnet and futurenet as SDF-run; a Skills playbook uses horizon.stellar.org; Docs say the public Horizon keeps a year. The agent hedged honestly.",
+   "proposedAction": "Upstream gap (see list).",
+   "leaf": "data.providers",
+   "evidence": "transcript"
+  },
+  {
+   "id": "q-infra-software-versions-current-protocol",
+   "set": "new",
+   "verdict": "partial",
+   "panel": null,
+   "classification": "corpus-coverage-diagnostic",
+   "reason": "Release set correct; no Raven source states which protocol Mainnet runs today (live network value).",
+   "proposedAction": "Keep golden; record coverage result.",
+   "leaf": "tooling.version-compat",
+   "evidence": "transcript"
+  },
+  {
+   "id": "q-net-protocol-meeting-notes-find-cap",
+   "set": "new",
+   "verdict": "partial",
+   "panel": null,
+   "classification": "agent-failure",
+   "reason": "Right index and URL patterns; omitted that pages carry the video and that the CAP preamble holds status.",
+   "proposedAction": "None.",
+   "leaf": "network.protocol-meetings",
+   "evidence": "transcript"
+  },
+  {
+   "id": "q-net-tier1-roster-current",
+   "set": "new",
+   "verdict": "partial",
+   "panel": null,
+   "classification": "upstream-data-gap",
+   "reason": "Docs Tier 1 page covers requirements and Obsrvr Radar but lists none of the ten organizations; the agent said it could not retrieve the roster.",
+   "proposedAction": "Upstream gap (see list).",
+   "leaf": "network.tier1-quorum",
+   "evidence": "probe"
+  },
+  {
+   "id": "q-network-status-where-to-check",
+   "set": "new",
+   "verdict": "partial",
+   "panel": null,
+   "classification": "upstream-data-gap",
+   "reason": "Three places right; the Docs Network Status page is silent on SDF-run services such as Horizon and Friendbot (agent reading, not re-read).",
+   "proposedAction": "Monitor-only.",
+   "leaf": "data.explorers-status",
+   "evidence": "transcript"
+  },
+  {
+   "id": "q-nft-vault-contract-standards",
+   "set": "new",
+   "verdict": "partial",
+   "panel": null,
+   "classification": "agent-failure",
+   "reason": "SEP-50, SEP-56 and OpenZeppelin right; reported \"type Standard\" instead of status Draft.",
+   "proposedAction": "None.",
+   "leaf": "assets.nft-vault-standards",
+   "evidence": "transcript"
+  },
+  {
+   "id": "q-pay-anchor-msb-licensing",
+   "set": "rewritten",
+   "verdict": "partial",
+   "panel": null,
+   "classification": "eval-side-gap",
+   "reason": "Question is jurisdiction-neutral; key fact 2 demands US FinCEN-versus-state regimes.",
+   "proposedAction": "Reword fact 2 to \"jurisdiction-specific licensing regimes\".",
+   "leaf": "security.regulation-policy",
+   "evidence": "transcript"
+  },
+  {
+   "id": "q-pc-quorum-freeze-cap77",
+   "set": "new",
+   "verdict": "partial",
+   "panel": null,
+   "classification": "upstream-data-gap",
+   "reason": "Mechanism right; the agent found no source tying the YieldBlox freeze to CAP-77, whose SLP-0006 record is in no Raven source.",
+   "proposedAction": "Upstream gap (see list).",
+   "leaf": "network.quorum-freeze",
+   "evidence": "transcript"
+  },
+  {
+   "id": "q-protocol-max-tx-set-size",
+   "set": "rewritten",
+   "verdict": "partial",
+   "panel": null,
+   "classification": "corpus-coverage-diagnostic",
+   "reason": "1,000 classic operations right and dated; the 2,000 Soroban transactions per ledger figure lives only in live settings and Lab.",
+   "proposedAction": "Keep golden; record coverage result.",
+   "leaf": "network.limits-settings",
+   "evidence": "transcript"
+  },
+  {
+   "id": "q-raph-buy-xlm-safely",
+   "set": "rewritten",
+   "verdict": "partial",
+   "panel": null,
+   "classification": "agent-failure",
+   "reason": "Declined to name a cheapest venue; omitted the withdrawal-network and memo check and the discount-offer warning.",
+   "proposedAction": "None.",
+   "leaf": "ecosystem.xlm-markets",
+   "evidence": "transcript"
+  },
+  {
+   "id": "q-signing-safety-website-request",
+   "set": "new",
+   "verdict": "partial",
+   "panel": null,
+   "classification": "agent-failure",
+   "reason": "Nine checks right; omitted account merge.",
+   "proposedAction": "None.",
+   "leaf": "security.signing-safety",
+   "evidence": "transcript"
+  },
+  {
+   "id": "q-sor-classic-dex-from-contract",
+   "set": "rewritten",
+   "verdict": "partial",
+   "panel": null,
+   "classification": "eval-side-gap",
+   "reason": "Key fact 4 (programmable escrow) is not in the golden answer and the question does not ask for it; the other three facts were met.",
+   "proposedAction": "Delete key fact 4.",
+   "leaf": "soroban.overview",
+   "evidence": "transcript"
+  },
+  {
+   "id": "q-sor-scval-conversion",
+   "set": "rewritten",
+   "verdict": "partial",
+   "panel": null,
+   "classification": "upstream-data-gap",
+   "reason": "Agent reports Docs do not state the i128/u64 JS mapping or post-upgrade client behavior (transcript only, not re-read).",
+   "proposedAction": "Monitor-only.",
+   "leaf": "soroban.sdk-dialect-types",
+   "evidence": "transcript"
+  },
+  {
+   "id": "q-soroban-cli-bindings",
+   "set": "rewritten",
+   "verdict": "partial",
+   "panel": null,
+   "classification": "agent-failure",
+   "reason": "TypeScript and Rust right; did not list placeholder languages or the regenerate rule.",
+   "proposedAction": "None.",
+   "leaf": "tooling.scaffold-bindings",
+   "evidence": "transcript"
+  },
+  {
+   "id": "q-soroban-pre-mainnet-security-steps",
+   "set": "new",
+   "verdict": "partial",
+   "panel": null,
+   "classification": "agent-failure",
+   "reason": "Docs STRIDE template and monitoring-plan pages are searchable; the answer omitted the threat-model step.",
+   "proposedAction": "None.",
+   "leaf": "security.contract-security",
+   "evidence": "probe"
+  },
+  {
+   "id": "q-soroban-storage-migration",
+   "set": "rewritten",
+   "verdict": "partial",
+   "panel": null,
+   "classification": "agent-failure",
+   "reason": "Version marker and lazy or eager migration right; omitted bounded idempotent batches and the CAP-86 sparse-read nuance.",
+   "proposedAction": "None.",
+   "leaf": "soroban.upgrades",
+   "evidence": "transcript"
+  },
+  {
+   "id": "q-stellar-vs-xrp-ledger",
+   "set": "new",
+   "verdict": "partial",
+   "panel": null,
+   "classification": "corpus-coverage-diagnostic",
+   "reason": "No Raven source covers the XRP Ledger (Docs search returns nothing); key facts 2-4 are XRPL-side.",
+   "proposedAction": "Retire, or restate to Stellar-side facts with XRPL as attributed context.",
+   "leaf": "ecosystem.chain-comparisons",
+   "evidence": "probe"
+  },
+  {
+   "id": "q-ti-parse-raw-ledger-data",
+   "set": "rewritten",
+   "verdict": "partial",
+   "panel": null,
+   "classification": "eval-side-gap",
+   "reason": "Key fact 2 (getTransactions field types) is not asked; the question names LedgerCloseMeta, getLedgers, v4 meta and .xdr.zst, all of which were handled.",
+   "proposedAction": "Drop getTransactions from the golden answer and key facts.",
+   "leaf": "protocol.xdr",
+   "evidence": "transcript"
+  },
+  {
+   "id": "q-ti-testnet-usdc-faucet",
+   "set": "rewritten",
+   "verdict": "partial",
+   "panel": null,
+   "classification": "eval-side-gap",
+   "reason": "Friendbot, trustline and issuer correct; the SAC-address clause and XLM-reserve point are not asked.",
+   "proposedAction": "Delete the SAC clause from the golden.",
+   "leaf": "assets.usdc",
+   "evidence": "transcript"
+  },
+  {
+   "id": "q-tool-indexer-repos-discovery",
+   "set": "rewritten",
+   "verdict": "partial",
+   "panel": null,
+   "classification": "agent-failure",
+   "reason": "Real Scout repos with dates; omitted the getEvents retention window.",
+   "proposedAction": "None.",
+   "leaf": "data.galexie-ingest",
+   "evidence": "transcript"
+  },
+  {
+   "id": "q-zk-proof-systems-stellar",
+   "set": "rewritten",
+   "verdict": "partial",
+   "panel": null,
+   "classification": "agent-failure",
+   "reason": "Systems, host functions and Groth16 setup right; declined to say whether UltraHonk needs a setup.",
+   "proposedAction": "None.",
+   "leaf": "soroban.crypto-zk",
+   "evidence": "transcript"
+  },
+  {
+   "id": "q-consumer-apps-spend-save-send",
+   "set": "new",
+   "verdict": "correct",
+   "panel": null,
+   "classification": "none",
+   "reason": "Answer head and verdict rationale agree; all key facts present.",
+   "proposedAction": "None.",
+   "leaf": "wallets.consumer-apps",
+   "evidence": "transcript"
+  },
+  {
+   "id": "q-pc-account-merge-reclaim-reserve",
+   "set": "rewritten",
+   "verdict": "correct",
+   "panel": null,
+   "classification": "none",
+   "reason": "Answer head and verdict rationale agree; all key facts present.",
+   "proposedAction": "None.",
+   "leaf": "protocol.account-merge",
+   "evidence": "transcript"
+  },
+  {
+   "id": "q-scf-ai-agent-projects-agents-hackathon",
+   "set": "new",
+   "verdict": "correct",
+   "panel": null,
+   "classification": "none",
+   "reason": "Answer head and verdict rationale agree; all key facts present.",
+   "proposedAction": "None.",
+   "leaf": "ai.ecosystem-projects",
+   "evidence": "transcript"
+  },
+  {
+   "id": "q-soroban-fee-refundable-rent",
+   "set": "new",
+   "verdict": "correct",
+   "panel": null,
+   "classification": "none",
+   "reason": "Answer head and verdict rationale agree; all key facts present.",
+   "proposedAction": "None.",
+   "leaf": "soroban.resource-fees",
+   "evidence": "transcript"
+  }
+ ]
+}

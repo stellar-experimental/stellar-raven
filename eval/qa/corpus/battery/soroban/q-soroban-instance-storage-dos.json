@@ -5,18 +5,18 @@
     "scout.searchResearch"
   ],
   "golden": {
-    "answer": "Instance storage is part of the contract-instance ledger entry and is loaded with the contract, so unbounded per-user data makes every invocation read and deserialize more bytes. Operations can eventually hit fee, resource, or ledger-entry-size limits; an over-limit write fails and the prior valid state remains, but application paths that require further growth can become unavailable\u2014a real DoS risk, not an automatic permanent brick. Separately, the contract-data entry-size limit is a validator-voted setting that can be lowered to a small protocol floor, and stellar-core also checks entry size when it loads footprint entries: an instance entry larger than a later-lowered limit makes every invocation fail until validators raise the limit, so leave headroom. Keep Instance storage small and fixed. Put per-user/unbounded data in separate Persistent keys and shard any growing collection.",
+    "answer": "Instance storage lives in the contract-instance ledger entry, which is loaded whole on every invocation. A growing per-user map raises every call's cost and eventually hits resource or entry-size limits, so growth-dependent paths fail. An over-limit write fails atomically and prior state is kept: a DoS risk, not an automatic permanent brick. The size limit is validator-voted and can be lowered, so leave headroom. Keep Instance small; shard per-user data into Persistent keys.",
     "keyFacts": [
-      "Unbounded Instance storage raises every invocation's cost.",
-      "Growth-dependent paths can fail at resource or entry limits.",
-      "Over-limit writes fail atomically with prior valid state preserved.",
-      "Use Persistent keys or sharding for unbounded data."
+      "Instance storage is one ledger entry loaded in full on every invocation.",
+      "Unbounded Instance growth raises every call's cost and can hit entry-size limits.",
+      "An over-limit write fails atomically and prior valid state is preserved.",
+      "Per-user or growing data belongs in separate, sharded Persistent keys."
     ],
     "avoid": [
       "Do NOT call the first over-limit write an irreversible permanent brick.",
-      "Do NOT say Instance storage is lazily loaded like separate Persistent keys."
+      "Do NOT say Instance storage loads lazily like separate Persistent keys."
     ],
-    "notes": "Routes to scout_research (security corpus). Instance = whole instance entry loaded per call; verified against the storage/state-archival semantics. Trap: thinking Instance loads lazily.\nAlso good if the answer: This is a recognized Soroban vulnerability class (Instance-storage DoS / unbounded storage growth) in audit checklists.\nGolden cites: A Soroban security checklist (e.g., Veridise) or developers.stellar.org storage guidance.\nGT-46 CORRECTION 2026-07-11: distinguish rejected writes and growth-path DoS from an unsupported permanent-brick claim.\n2026-11-02 read-path qualifier: stellar-core validates contract-data entry size on footprint reads as well as writes. An answer that says an instance entry left above a later-lowered contract_data_entry_size_bytes makes every call fail until the limit is raised is correct and does not fire avoid[0]. An answer that says ordinary growth makes the existing entry unreadable or the contract permanently unusable is still wrong."
+    "notes": "An instance entry left above a later-lowered validator-voted size limit failing every call is correct, not a brick claim."
   },
   "tags": {
     "category": "soroban",
@@ -101,28 +101,55 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "Entry-size limit is validator-voted, may be lowered, with a protocol floor of 2,000 bytes",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-core/v30.0.0/src/ledger/NetworkConfig.h",
+            "observedAt": "2026-11-14",
+            "note": "static constexpr uint32_t MAX_CONTRACT_DATA_ENTRY_SIZE_BYTES = 2'000;"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/storage/choosing-the-right-storage.md",
+            "observedAt": "2026-11-14",
+            "note": "The limit is set by validator vote, and the protocol only requires it to stay at or above a small fixed minimum"
+          }
+        ]
+      },
+      {
+        "claim": "Instance storage is stored in the same ledger entry as the contract instance",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/storage/choosing-the-right-storage.md",
+            "observedAt": "2026-11-14",
+            "note": "It is physically stored in the same ledger entry as the contract itself and shares TTL with it."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 pass 3 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task peer-handoff)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-soroban-b, verify-audit-soroban-b; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Gospel change 2026-11-02 (pass 3, task peer-handoff): golden.answer adds the read-path entry-size risk under a validator-lowered contract_data_entry_size_bytes; golden.notes add a symmetric read-path qualifier. keyFacts and avoid items are unchanged.",
-        "Live B 2026-11-02: https://github.com/stellar/stellar-core/blob/v30.0.0/src/transactions/InvokeHostFunctionOpFrame.cpp \u2014 'bool addReads(xdr::xvector<LedgerKey> const& footprintKeys, bool isReadOnly) ... if (!validateContractLedgerEntry(lk, entrySize, mSorobanConfig, mAppConfig, mOpFrame.mParentTx, mDiagnosticEvents)) { mOpFrame.innerResult(mRes).code(INVOKE_HOST_FUNCTION_RESOURCE_LIMIT_EXCEEDED); return false; }' (observedAt 2026-11-02)",
-        "Live B 2026-11-02: https://github.com/stellar/stellar-core/blob/v30.0.0/src/transactions/TransactionUtils.cpp \u2014 'if (lk.type() == CONTRACT_DATA && config.maxContractDataEntrySizeBytes() < entrySize) { diagnosticEvents.pushError(SCE_BUDGET, SCEC_EXCEEDED_LIMIT, \"ContractData size exceeds network config maximum size\", ...); return false; }' (observedAt 2026-11-02)",
-        "Live B 2026-11-02: https://github.com/stellar/stellar-core/blob/v30.0.0/src/ledger/NetworkConfig.cpp \u2014 'case ConfigSettingID::CONFIG_SETTING_CONTRACT_DATA_ENTRY_SIZE_BYTES: valid = cfg.contractDataEntrySizeBytes() >= MinimumSorobanNetworkConfig::MAX_CONTRACT_DATA_ENTRY_SIZE_BYTES;' and https://github.com/stellar/stellar-core/blob/v30.0.0/src/ledger/NetworkConfig.h \u2014 'static constexpr uint32_t MAX_CONTRACT_DATA_ENTRY_SIZE_BYTES = 2'000;' (observedAt 2026-11-02)",
-        "B 2026-11-02: the same read-path validateContractLedgerEntry call exists at stellar-core v21.0.0 and v23.0.0 InvokeHostFunctionOpFrame.cpp, so this is a long-standing behavior, not drift.",
-        "Live F 2026-11-02: POST https://mainnet.sorobanrpc.com getLedgerEntries CONFIG_SETTING_CONTRACT_DATA_ENTRY_SIZE_BYTES = 65536 bytes (lastModifiedLedgerSeq 57941156; latestLedger 65271915; protocolVersion 29), so the lowered-limit case is hypothetical on Mainnet today. No dated volatile value enters the golden text; freshness stays stable.",
-        "Sibling sweep 2026-11-02 (pass 3): cluster-133 members q-sor-persistent-unbounded-collection-cap, q-soroban-resource-limits, q-zk-nullifier-storage checked; both limit cases call the entry-size limit network-controlled; no contradiction.",
-        "https://developers.stellar.org/docs/build/guides/storage/storage-strategies \u2014 \"Everything in `instance()` shares the contract instance's single ledger entry: it is all loaded on every invocation, it must fit the 64 KiB cap together\" (observedAt 2026-11-02)",
-        "https://developers.stellar.org/docs/build/guides/storage/choosing-the-right-storage \u2014 \"The total size of all the keys and values in the instance storage is limited by the ledger entry size limit.\"; Persistent \"Unlimited\" (observedAt 2026-11-02)",
-        "https://github.com/stellar/stellar-docs/blob/main/docs/networks/resource-limits-fees.mdx \u2014 \"Max contract-data entry size | 65,536 B (64 KiB)\" (observedAt 2026-11-02)",
-        "Sibling sweep 2026-11-02 (pass 1, batch soroban-05): q-soroban-storage-types, q-sor-persistent-unbounded-collection-cap, q-soroban-vuln-classes: no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-b.json#q-soroban-instance-storage-dos",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-b.json#q-soroban-instance-storage-dos",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-soroban-instance-storage-dos",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-core/v30.0.0/src/ledger/NetworkConfig.h -- 'static constexpr uint32_t MAX_CONTRACT_DATA_ENTRY_SIZE_BYTES = 2'000;'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/build/guides/storage/choosing-the-right-storage.md -- 'The limit is set by validator vote, and the protocol only requires it to stay at or above a small fixed minimum'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/build/guides/storage/choosing-the-right-storage.md -- 'It is physically stored in the same ledger entry as the contract itself and shares TTL with it.'"
       ],
       "rootCause": [
-        "Eval-side authoring gap: the golden covered over-limit writes only and omitted stellar-core's read-path entry-size check under a validator-lowered limit (hand-off .agents/rounds/2026-11-02-mintlify-migration/golden-handoff.md on branch feat/mintlify-docs-migration)."
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-soroban-instance-storage-dos"
+    "origin": "raven-next q-soroban-instance-storage-dos",
+    "notes": "Routes to scout_research (security corpus). Instance = whole instance entry loaded per call; verified against the storage/state-archival semantics. Trap: thinking Instance loads lazily.\nAlso good if the answer: This is a recognized Soroban vulnerability class (Instance-storage DoS / unbounded storage growth) in audit checklists.\nGolden cites: A Soroban security checklist (e.g., Veridise) or developers.stellar.org storage guidance.\nGT-46 CORRECTION 2026-07-11: distinguish rejected writes and growth-path DoS from an unsupported permanent-brick claim.\n2026-11-02 read-path qualifier: stellar-core validates contract-data entry size on footprint reads as well as writes. An answer that says an instance entry left above a later-lowered contract_data_entry_size_bytes makes every call fail until the limit is raised is correct and does not fire avoid[0]. An answer that says ordinary growth makes the existing entry unreadable or the contract permanently unusable is still wrong.",
+    "leaf": "soroban.storage-types"
   }
 }

@@ -1,0 +1,21 @@
+{
+  "id": "q-ti-skill-integration-finder",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-tooling-b (golden coverage audit)",
+    "reviewer": "verify-audit-tooling-b (golden coverage audit)",
+    "reason": "Duplicate skill-workflow case with no Stellar truth; inventory exposure is unit-tested. The world question (how to pick a wallet, oracle or anchor) is covered by the wallet and oracle cases.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-b.json#q-ti-skill-integration-finder",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-b.json#q-ti-skill-integration-finder",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-ti-skill-integration-finder"
+    ],
+    "lastCaseContentSha256": "886eea6760e070f5312e334184cc88d130b631a1646d672bc36044fb224a741b",
+    "replacementIds": []
+  }
+}

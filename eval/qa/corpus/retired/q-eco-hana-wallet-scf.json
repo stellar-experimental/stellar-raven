@@ -1,0 +1,21 @@
+{
+  "id": "q-eco-hana-wallet-scf",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-defi (golden coverage audit)",
+    "reviewer": "verify-defi (golden coverage audit)",
+    "reason": "Single-project SCF lookup for a mid-size wallet; per-project SCF lookup stays tested by q-scf-history-soroswap and wallet identity by q-eco-lobstr-wallet and the wallets case.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-eco-hana-wallet-scf",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-eco-hana-wallet-scf",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-eco-hana-wallet-scf"
+    ],
+    "lastCaseContentSha256": "cba854a09deb93ac357e746de233042744f604d42b007f0f51a001859f331995",
+    "replacementIds": []
+  }
+}

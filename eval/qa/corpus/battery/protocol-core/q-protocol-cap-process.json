@@ -5,21 +5,17 @@
     "stellarDocs.search_protocol_concepts_docs"
   ],
   "golden": {
-    "answer": "A proposed core-protocol change starts with public discussion, then a markdown CAP PR under `stellar/stellar-protocol/core/` in **Draft**. After iteration it moves to **Awaiting Decision** and CAP Core Team review. The decision is branched: the Final Comment Period can lead to acceptance or rejection, while concerns can return it to Draft. **Accepted** is a specification decision, not deployment. The current registry workflow continues through **Implemented** and **Final**; `Implementation Review` is no longer a status. Those labels remain separate from network activation: validators configure scheduled upgrade proposals and SCP externalizes agreement through quorum sets under FBA, not a global node-count majority or XLM-holder vote. Testnet and Mainnet can activate at different times. CAPs define Core/protocol behavior; **SEPs** specify ecosystem interoperability conventions and do not by themselves change consensus rules.",
+    "answer": "A CAP starts as public discussion and a Draft markdown PR in stellar-protocol/core, moves to Awaiting Decision, then a Final Comment Period leads to Accepted or rejection (or back to Draft). Accepted means the specification is approved; Implemented and Final follow. None of these is network activation, which happens when validators agree to a scheduled upgrade through SCP quorum sets, not a node-count majority or XLM-holder vote. SEPs set ecosystem conventions and do not change consensus rules.",
     "keyFacts": [
-      "Describes Draft, Awaiting Decision, FCP accept or reject, and return to Draft.",
-      "Uses Draft → Awaiting Decision → FCP → Accepted → Implemented → Final.",
-      "Treats CAP status, implementation, release, and SCP activation as distinct stages.",
-      "Uses quorum-set/FBA semantics for network activation.",
-      "Treats CAPs, SEPs, and token-holder votes as distinct governance concepts."
+      "CAP path: Draft, Awaiting Decision, FCP, Accepted, Implemented, Final.",
+      "CAP status is separate from implementation, release and network activation.",
+      "Activation is validator agreement through quorum sets, not a token or majority vote.",
+      "CAPs change protocol; SEPs are ecosystem interoperability standards."
     ],
     "avoid": [
-      "Do NOT claim the process is an unconditional Draft-to-Final line or that Implementation Review is a current status.",
-      "Do NOT equate Accepted, Implemented, or Final status with actual activation on every network.",
-      "Do NOT describe SCP/FBA network activation as a global node-count majority vote or an XLM token-holder vote.",
-      "Do NOT confuse CAP protocol changes with SEP interoperability standards."
+      "Do NOT list Implementation Review as a current status or equate Accepted or Final with activation."
     ],
-    "notes": "CORRECTION 2026-08-04: current lifecycle is Draft → Awaiting Decision → FCP → Accepted → Implemented → Final; Implementation Review is retired. CAP status, implementation/release, and network activation remain separate.\nGrader note 2026-11-02: stellar-protocol core/README.md defines Final as a CAP 'accepted by a majority of validators (nodes) on the network'. An answer that attributes that wording to the registry as the definition of the Final label does not fire avoid[2]. avoid[2] fires only when the answer says SCP network activation itself is decided by a global node-count majority or a token-holder vote. A correct grade still requires keyFacts[3] (quorum-set/FBA semantics for activation)."
+    "notes": "core/README describes Final as accepted by a majority of validators; an answer quoting that as the registry definition is not wrong."
   },
   "tags": {
     "category": "protocol-core",
@@ -133,25 +129,50 @@
             "note": "Activation is a scheduled validator upgrade vote: 'The testnet vote is on November 3, 2026 and the mainnet vote on November 23, 2026. ... The upgrade takes effect if they approve.'"
           }
         ]
+      },
+      {
+        "claim": "Current CAP statuses include Accepted, Implemented, Final",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0081.md",
+            "observedAt": "2026-11-14",
+            "note": "Status: Accepted"
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0084.md",
+            "observedAt": "2026-11-14",
+            "note": "Status: Implemented"
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0071.md",
+            "observedAt": "2026-11-14",
+            "note": "Status: Final"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task protocol-current)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-protocol, verify-protocol; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Gospel change (pass 2): golden.avoid[2] reworded from 'simple majority of validators' to 'a global node-count majority vote' (same error class, mirrors the answer; verifier accept); golden.notes gains a grader note (verifier-modified) that an attributed quote of the registry's Final-label definition does not fire avoid[2], while a correct grade still requires keyFacts[3] quorum-set/FBA semantics.",
-        "Class B 2026-11-02 (pass-2 verifier): https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/README.md — Implemented - ... It will graduate to **Final** when it has been formally accepted by a majority of validators (nodes) on the network. **Final** — A CAP that has been accepted by a majority of validators (nodes) on the network. (observedAt 2026-11-02)",
-        "Sibling sweep 2026-11-02 (pass 2): q-protocol-cap-vs-sep, q-protocol-validator-upgrade-vote, q-protocol-quorum-slice-vs-quorum (cluster-115); no contradiction.",
-        "Pass 1 (batch protocol-core-04): Class B 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/README.md — Awaiting Decision → Final Comment Period → Accepted/Rejected or back to Draft → Implemented → 'It will graduate to Final'; no 'Implementation Review' status.",
-        "Pass 1 (batch protocol-core-04): Class B 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0088.md — 'Status: Implemented ... Protocol version: 30', a live Implemented-not-active example.",
-        "Pass 1 (batch protocol-core-04): Class C 2026-11-02: https://horizon.stellar.org/ — current_protocol_version 29.",
-        "Pass 1 (batch protocol-core-04): Class A 2026-11-02: https://stellar.org/blog/developers/introducing-bell-protocol-30-on-stellar — 'The testnet vote is on November 3, 2026 and the mainnet vote on November 23, 2026. ... The upgrade takes effect if they approve.'",
-        "Pass 1 (batch protocol-core-04): No gospel change. Residual hazard noted by the proposer: core/README.md words Final as 'accepted by a majority of validators (nodes) on the network', which avoid[2] could catch in an attributed quote; not changed (ADR-0008 caps canonical-page cautions). Sibling sweep: q-protocol-cap-vs-sep, q-protocol-validator-upgrade-vote — consistent."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-protocol-cap-process",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-protocol-cap-process",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-protocol-cap-process",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0081.md -- 'Status: Accepted'",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0084.md -- 'Status: Implemented'",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0071.md -- 'Status: Final'"
       ],
       "rootCause": [
-        "Eval-side authoring flaw: avoid[2] wording ('simple majority of validators') could punish an accurate attributed quote of stellar-protocol core/README.md's Final-status definition (.agents/rounds/2026-11-02-golden-audit.md, task protocol-current)"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-protocol-cap-process"
+    "origin": "raven-next q-protocol-cap-process",
+    "notes": "CORRECTION 2026-08-04: current lifecycle is Draft → Awaiting Decision → FCP → Accepted → Implemented → Final; Implementation Review is retired. CAP status, implementation/release, and network activation remain separate.\nGrader note 2026-11-02: stellar-protocol core/README.md defines Final as a CAP 'accepted by a majority of validators (nodes) on the network'. An answer that attributes that wording to the registry as the definition of the Final label does not fire avoid[2]. avoid[2] fires only when the answer says SCP network activation itself is decided by a global node-count majority or a token-holder vote. A correct grade still requires keyFacts[3] (quorum-set/FBA semantics for activation).",
+    "leaf": "network.cap-process-status",
+    "secondaryLeaf": "standards.sep-process"
   }
 }

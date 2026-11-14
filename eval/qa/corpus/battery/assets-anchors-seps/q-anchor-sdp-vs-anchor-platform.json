@@ -7,19 +7,17 @@
     "stellarDocs.search_wallet_dapp_docs"
   ],
   "golden": {
-    "answer": "All three are **SDF-maintained**, each for a different role [1][2][3]:\n\n- **Anchor Platform** — the **anchor operator's** backend (Java) that implements anchor SEP endpoints (**SEP-1/6/10/12/24/31/38**). Run it to *be* an anchor [1].\n- **Stellar Disbursement Platform (SDP)** — the **disbursement organization's** bulk-payment application. Current SDP Core implements native **SEP-10/24**, publishes its own `stellar.toml`, and does not require an external Anchor Platform. A receiver wallet or cash-out route may use an anchor downstream, but that is optional deployment behavior rather than SDP's universal architecture [2].\n- **Wallet SDK** — a **wallet developer's** TypeScript client library wrapping client-side SEP flows (**SEP-10/12/24/38**) [3].\n\nSo: Anchor Platform = anchor backend; SDP = bulk-payout application; Wallet SDK = wallet client library.",
+    "answer": "All three are SDF-maintained. The Anchor Platform is the backend an anchor operator runs, implementing SEP-1, 6, 10, 12, 24, 31, 38 and 45; it is software, not a licence. The Disbursement Platform is a bulk-payout application whose Core implements SEP-10 and SEP-24 itself, with no Anchor Platform needed. The Wallet SDK is a client library wrapping SEP-1, 6, 10, 12, 24 and 38, not SEP-31.",
     "keyFacts": [
-      "Anchor Platform is a Java anchor-operator backend with SEP-6/10/12/24/31/38 endpoints.",
-      "SDP is a bulk-payment application for disbursement organizations.",
-      "SDP Core implements native SEP-10/24 with optional downstream anchor rails.",
-      "Wallet SDK is a TypeScript library wrapping client-side SEP-10/12/24/38, not SEP-31."
+      "The Anchor Platform is the anchor operator backend for SEP-6/10/12/24/31/38.",
+      "The Disbursement Platform is a bulk-payment application, not a wallet or anchor.",
+      "SDP Core implements SEP-10 and SEP-24 natively without the Anchor Platform.",
+      "The Wallet SDK is a client library for SEP-1/6/10/12/24/38, not SEP-31."
     ],
     "avoid": [
-      "Do NOT claim SDP and the Anchor Platform are the same product, or swap their roles.",
-      "Do NOT misnumber the SEPs each component covers or claim SDP's 10,000-instruction per-disbursement cap is a Stellar protocol limit.",
-      "Do NOT claim the Wallet SDK wraps SEP-31."
+      "Do NOT claim the SDP 10,000-instruction per-disbursement cap is a Stellar protocol limit."
     ],
-    "notes": "Three-way comparison reverified 2026-08-05. The declared Docs surfaces support the role and current-architecture comparison, not the stellar.org product page's numeric advertisement. Corrected 2026-11-02: that page advertises up to 10,000 payments per batch, and the SDP backend enforces the same 10,000-instruction cap per disbursement (`MaxInstructionsPerDisbursement`). It is an SDP application limit, not a Stellar protocol limit. Do not require the number here, and do not penalize an answer that states it as an SDP per-disbursement cap. As of 2026-11-02 the official Anchor Platform page and source also list SEP-45 (contract-account web authentication); adding SEP-45 to the Anchor Platform list is not misnumbering. The Wallet SDK also wraps SEP-1 and SEP-6 and supports SEP-7 URIs and SEP-30 recovery (docs and @stellar/typescript-wallet-sdk source, 2026-11-02); listing those for the Wallet SDK is not misnumbering."
+    "notes": "Adding SEP-1 or SEP-45 for the Anchor Platform, or SEP-7 or SEP-30 for the Wallet SDK, is not misnumbering."
   },
   "tags": {
     "category": "assets-anchors-seps",
@@ -251,26 +249,70 @@
             "note": "Exact quote: 'Next, we need to define SEP-30 identities'"
           }
         ]
+      },
+      {
+        "claim": "SDP Core implements SEP-10 and SEP-24 natively; SDP is three services (Core, TSS, Dashboard) and does not require the Anchor Platform.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/design-and-architecture.md",
+            "observedAt": "2026-11-14",
+            "note": "Wallet Registration: a web application registers a recipient by collecting and verifying their OTP code and verification information via Stellar’s [SEP-24"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/design-and-architecture.md",
+            "observedAt": "2026-11-14",
+            "note": "The Stellar Disbursement Platform consists of three services deployed together:"
+          }
+        ]
+      },
+      {
+        "claim": "Wallet SDK wraps SEP-1, 6, 7, 10, 12, 24, 38 client-side; not SEP-31.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/apps/wallet/intro.md",
+            "observedAt": "2026-11-14",
+            "note": "* [SEP-24]: explored on [Hosted Deposit and Withdrawal] section * [SEP-6]: explored on [Programmatic Deposit and Withdrawal] section"
+          }
+        ]
+      },
+      {
+        "claim": "Anchor Platform SEP list (1, 6, 10, 12, 24, 31, 38, 45).",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/platforms/anchor-platform.md",
+            "observedAt": "2026-11-14",
+            "note": "SEP-45 ... SEP-38 integration for price discovery and exchange rate"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-01)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-assets, verify-audit-assets; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Gospel change 2026-11-02: golden.notes add a symmetric caution that listing SEP-1, SEP-6, SEP-7, or SEP-30 for the Wallet SDK is not misnumbering; the 'not SEP-31' avoid stays. answer, keyFacts, and avoid are unchanged.",
-        "Live B 2026-11-02: https://github.com/stellar/typescript-wallet-sdk/tree/main/@stellar/typescript-wallet-sdk/src/walletSdk — 'Anchor/{Sep6.ts,Sep24.ts,Sep38.ts}; Recovery/index.ts 'Used for Account Recovery using Sep-30'; Uri/{Sep7Pay.ts,Sep7Tx.ts}'",
-        "Live E 2026-11-02: https://developers.stellar.org/docs/build/apps/wallet/intro#anchor-basics — 'anchor class the wallet SDK also has support for the SEP-7 protocol'",
-        "Live E 2026-11-02: https://developers.stellar.org/docs/build/apps/wallet/sep30 — 'Next, we need to define SEP-30 identities'",
-        "Live F 2026-11-02: curl https://developers.stellar.org/docs/build/apps/wallet/{sep6,sep7,sep30} — 'all 200'",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/platforms/anchor-platform — 'SEP-1, 6, 10, 12, 24, 31 (receive only), 38, 45'",
-        "Live B 2026-11-02: https://github.com/stellar/stellar-disbursement-platform-backend/blob/develop/internal/data/disbursement_instructions.go#L49 — 'const MaxInstructionsPerDisbursement = 10000'",
-        "Prior verification event 2026-11-02 (PR #310, commit 86cc5f53) corrected the SDP 10,000-instruction cap and SEP-45 notes; this event keeps those facts.",
-        "Sibling sweep 2026-11-02: q-asset-wallet-sdk-seps, q-sep-wallet-seps-list, q-anchor-platform-what, q-anchor-sdp-what, q-pay-sdp-disbursement, q-crp-sdp-operation, q-tool-wallets-comparison checked; none says the Wallet SDK lacks SEP-1/6/7/30 support; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-assets.json#q-anchor-sdp-vs-anchor-platform",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-assets.json#q-anchor-sdp-vs-anchor-platform",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-anchor-sdp-vs-anchor-platform",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/design-and-architecture.md -- 'Wallet Registration: a web application registers a recipient by collecting and verifying their OTP code and verification information via Stellar’s [SEP-24'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/design-and-architecture.md -- 'The Stellar Disbursement Platform consists of three services deployed together:'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/build/apps/wallet/intro.md -- '* [SEP-24]: explored on [Hosted Deposit and Withdrawal] section * [SEP-6]: explored on [Programmatic Deposit and Withdrawal] section'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/platforms/anchor-platform.md -- 'SEP-45 ... SEP-38 integration for price discovery and exchange rate'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0045.md -- 'Title: Stellar Web Authentication for Contract Accounts Status: Draft Updated: 2025-12-16 Version: 0.1.1'"
       ],
       "rootCause": [
-        "Eval-side authoring flaw: the Wallet SDK SEP list (SEP-10/12/24/38) is a subset, and the misnumbering avoid can punish a true fuller list."
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-anchor-sdp-vs-anchor-platform"
+    "origin": "raven-next q-anchor-sdp-vs-anchor-platform",
+    "notes": "Three-way comparison reverified 2026-08-05. The declared Docs surfaces support the role and current-architecture comparison, not the stellar.org product page's numeric advertisement. Corrected 2026-11-02: that page advertises up to 10,000 payments per batch, and the SDP backend enforces the same 10,000-instruction cap per disbursement (`MaxInstructionsPerDisbursement`). It is an SDP application limit, not a Stellar protocol limit. Do not require the number here, and do not penalize an answer that states it as an SDP per-disbursement cap. As of 2026-11-02 the official Anchor Platform page and source also list SEP-45 (contract-account web authentication); adding SEP-45 to the Anchor Platform list is not misnumbering. The Wallet SDK also wraps SEP-1 and SEP-6 and supports SEP-7 URIs and SEP-30 recovery (docs and @stellar/typescript-wallet-sdk source, 2026-11-02); listing those for the Wallet SDK is not misnumbering.",
+    "leaf": "standards.anchor-platform",
+    "secondaryLeaf": "tooling.wallet-sdk"
   }
 }

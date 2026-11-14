@@ -1,0 +1,23 @@
+{
+  "id": "q-sep-6-24-deprecation",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-assets (golden coverage audit)",
+    "reviewer": "verify-audit-assets (golden coverage audit)",
+    "reason": "Merged into q-sep6-sep24-sep31-choice. The survivor's key fact 'SEP-6 is the programmatic API; only its interactive flow is deprecated' and the sd-009 cap note carry the whole case.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-assets.json#q-sep-6-24-deprecation",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-assets.json#q-sep-6-24-deprecation",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-sep-6-24-deprecation"
+    ],
+    "lastCaseContentSha256": "b49acac4d227ba01c8b0950a03f9bbc094cea7ce8de8a0f867cc78cd1af5ce7c",
+    "replacementIds": [
+      "q-sep6-sep24-sep31-choice"
+    ]
+  }
+}

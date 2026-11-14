@@ -1,0 +1,23 @@
+{
+  "id": "q-n3-wallet-hacked-support-redirect",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-edge (golden coverage audit)",
+    "reviewer": "verify-audit-edge (golden coverage audit)",
+    "reason": "Merged into q-raph-stolen-wallet-recovery: acknowledging a loss, claiming no ability to inspect or reverse it, and redirecting to official support is graded by q-raph-stolen-wallet-recovery.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-edge.json#q-n3-wallet-hacked-support-redirect",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-edge.json#q-n3-wallet-hacked-support-redirect",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-n3-wallet-hacked-support-redirect"
+    ],
+    "lastCaseContentSha256": "3cf1b4fdd1be91c41395963ea79d6c45bf33832c02ad3a610ac25c42681453be",
+    "replacementIds": [
+      "q-raph-stolen-wallet-recovery"
+    ]
+  }
+}

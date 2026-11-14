@@ -1,0 +1,818 @@
+{
+  "lane": "verify-defi",
+  "decisions": [
+    {
+      "id": "q-defi-agent-identity-stellar-experimental",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite keeps the three-way split (Ethereum Draft, no Stellar SEP, early community implementations). Re-derived.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "https://github.com/ethereum/ERCs/blob/master/ERCS/erc-8004.md",
+          "observedAt": "2026-11-14",
+          "quote": "title: Trustless Agents / status: Draft"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/README.md",
+          "observedAt": "2026-11-14",
+          "quote": "no SEP title matches agent, identity, or 8004 (grep of the SEP index)"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-defi-agentic-payment-standards-compare",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite keeps the general-vs-Stellar-method split, MPP beyond streaming, AP2 optional x402 and ACP not a rail. Dropping the unverified 'beta' label for ACP is correct.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-defi-allbridge-what-is",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Auditor re-read the Allbridge Core, Next and Classic pages on 2026-11-14; rewrite keeps product split, dated Stellar status and XRPL-as-Classic-history.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-defi-aquarius-what-is",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite keeps AQUA vs non-transferable ICE family, the three ICE roles and conditional boosts; Varial note correctly leaves this case.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-defi-arbitrage-pathpayment-bots",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite keeps strict-send/receive protections, no-profit guarantee and absorbs Kelp archived. Avoid items lose the 'Do NOT' prefix (style only).",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-defi-asset-whitespace-live",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "Same index-relative cluster-reading behaviour as q-defi-cluster-rollup-live. When the tool-lane case is written it must keep one check that index whitespace is not real-world absence.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-defi-benji-franklin-templeton",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite keeps all four key facts verbatim in substance; secondary product firsts move to truth.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-defi-blend-alternatives",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite replaces the stale per-project label roster with stable category separation and keeps the Slender collateral correction.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-defi-blend-what-is",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite keeps pools, over-collateralization, Script3, protocol-vs-pool governance. Blend still Live in Scout.",
+      "evidence": [
+        {
+          "class": "C",
+          "ref": "scout.searchProjects({query:'Blend'})",
+          "observedAt": "2026-11-14",
+          "quote": "slug blend, status Live, types [Lending]"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-defi-bridge-evm-to-stellar-axelar",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite keeps the trust-model comparison, the dated USDC.axl observation, destination-token checks and no-safety guarantee.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-defi-build-staking-for-own-token",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite keeps no native staking, contract-layer design, real reward source and building blocks.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-defi-category-funding-ratio-live",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "Same population/denominator discipline as the cluster-rollup survivor; that case should absorb 'show numerator and denominator per row'.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-defi-category-saturation-live",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "Scout crowdedness-formula mechanics; the frozen live lane already holds q-live-ecosystem-crowded-underbuilt (eval/qa/corpus/live/live-cases.json). No Stellar truth lost.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-defi-cluster-rollup-live",
+      "auditVerdict": "move-tool-lane",
+      "decision": "accept",
+      "finalVerdict": "move-tool-lane",
+      "why": "Reading Scout's population ids and nonsummable type clusters is a model behaviour no unit test can grade, so a tool lane earns it; it also absorbs the three merged whitespace/funding-ratio cases.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-defi-comet-what-is",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite keeps SCF funding, not-a-major-DEX and the Blend backstop role; the auditor re-read Scout and Blend's deployment page on 2026-11-14.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-defi-cross-blend-rivool-sac",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "The Rivool news link is trivia; Blend identity survives in q-defi-blend-what-is and classic-USDC-via-SAC/SEP-41 is owned by q-asset-trustline-vs-sac and q-sep-41-token-interface.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-defi-defindex-honest",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "The 'changed' TVL is ordinary drift of a dated value; the rewrite keeps it provider-labelled and dated, and grades behaviour, not the figure. Re-derived the 2026-11-14 DeFiLlama value.",
+      "evidence": [
+        {
+          "class": "C",
+          "ref": "https://api.llama.fi/tvl/defindex",
+          "observedAt": "2026-11-14",
+          "quote": "18507707.586126003"
+        },
+        {
+          "class": "C",
+          "ref": "scout.searchProjects({query:'liquid staking'})",
+          "observedAt": "2026-11-14",
+          "quote": "slug defindex, status Live, types [Infrastructure, SDK, Yield]"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-defi-etherfuse-stablebonds",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite keeps product identity, code+issuer identity, risk set and the YieldBlox oracle-consumer boundary.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-defi-flash-loans",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite keeps no native op, atomic rollback mechanics and Blend v2 flash_loan; evidence tiers stay as the gate.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-defi-lending-landscape-live",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "Process-only golden; the lending landscape topic stays visible through q-defi-blend-alternatives (direct lenders, Blend-built pools, CDPs) and q-defi-blend-what-is.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-defi-liquid-staking-whitespace",
+      "auditVerdict": "tighten",
+      "decision": "amend",
+      "finalVerdict": "tighten",
+      "why": "Rewrite re-dates the negative to 2026-11-14, but the auditor only re-read the xlm-utility page, not the full sweep. Keep the negative dated to the last full sweep (2026-11-02). A 2026-11-14 Scout 'liquid staking' spot check returned only yield/lending/vault rows, consistent with it.",
+      "evidence": [
+        {
+          "class": "C",
+          "ref": "scout.searchProjects({query:'liquid staking'})",
+          "observedAt": "2026-11-14",
+          "quote": "top rows: backyard, normal, principal-protocol, defindex, for-yield (types Stablecoin/Lending/Yield/RWA); no validator-staking LST"
+        }
+      ],
+      "finalRewrite": {
+        "question": null,
+        "answer": "Stellar uses SCP/FBA, not proof of stake, and validators earn no protocol reward, so there is no native validator-staking position for an XLM liquid-staking token to tokenize. A 2026-11-02 sweep of official docs, Scout, Lumenloop, DeFiLlama and the web found none; this is a bounded snapshot. yXLM, sXLM vault tokens, Blend deposits and LP shares earn lending or strategy yield, not validator rewards, and are not native LSTs.",
+        "keyFacts": [
+          "Stellar has no protocol validator rewards, so no native XLM staking position exists.",
+          "No live native-XLM liquid-staking token was identified in the dated source universe.",
+          "yXLM, sXLM vaults, Blend deposits and LP shares are not native LSTs."
+        ],
+        "avoid": [
+          "Stating a permanent global absence of liquid staking on Stellar.",
+          "Calling any XLM yield token a native LST."
+        ],
+        "notes": "Naming StelloFi's sXLM while classifying it as a vault share is correct. SDF's October 2026 fee-pool paper is an undecided proposal; calling it adopted or a native LST is wrong.",
+        "movedToTruth": [
+          "Chrysalis SCF concept detail",
+          "StelloFi docs evidence",
+          "WHITESPACE history and 2026-06-29 review",
+          "Also-good-if: frame as genuine gap"
+        ]
+      }
+    },
+    {
+      "id": "q-defi-lumenloop-categories-vocab",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "Enumerates Lumenloop's controlled vocabulary; only Raven could satisfy it and it is a routing assertion, which the routing lane owns.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-defi-market-making-kelp",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "Survivor q-defi-arbitrage-pathpayment-bots rewrite absorbs Kelp-archived and the no-profit-guarantee; SDEX offer handling is owned by q-defi-sdex-offer-lifecycle.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-defi-named-newer-protocols",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "A disputed, volatile status grab-bag. Zenex survives in q-defi-perps-whitespace and OrbitCDP/CDP lending in q-defi-blend-alternatives; FxDAO and JST are not worth a case.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-defi-ondo-usdy",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite keeps note identity, launch date, eligibility and flags-are-not-eligibility. The new issuer-name note is supported by Ondo's own eligibility page plus an independent issuer registry listing.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://docs.ondo.finance/general-access-products/usdy/eligibility",
+          "observedAt": "2026-11-14",
+          "quote": "Ondo Global Markets (BVI) Limited, the issuer of USDY tokens, also prohibits persons from subscribing for, acquiring or redeeming"
+        },
+        {
+          "class": "D",
+          "ref": "https://www.stableorgone.com/issuer/ondo-global-markets",
+          "observedAt": "2026-11-14",
+          "quote": "Ondo Global Markets (BVI) Limited — Stablecoin Organization"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-defi-oracle-landscape-live",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "Process-only directory case. Oracle topic stays visible via q-defi-reflector-oracle and q-pc-cross-redstone-sep40 (amended in the protocol verify file to name Reflector and RedStone as the docs' SEP-40 providers).",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-defi-perps-whitespace",
+      "auditVerdict": "tighten",
+      "decision": "amend",
+      "finalVerdict": "tighten",
+      "why": "Zenex was re-read on 2026-11-14, but the rewrite also carries Kryon's unresolved state and Noether's paused state under the 2026-11-14 date, and the auditor marked those unverifiable. Keep them dated 2026-10-15. Zenex still Live in Scout.",
+      "evidence": [
+        {
+          "class": "C",
+          "ref": "scout.searchProjects({query:'Zenex'})",
+          "observedAt": "2026-11-14",
+          "quote": "slug zenex, status Live, types [Derivatives]"
+        }
+      ],
+      "finalRewrite": {
+        "question": null,
+        "answer": "Yes: perps on Stellar are emerging, not empty. As of 2026-11-14 Zenex (formerly Hermes) runs a live Stellar mainnet perp DEX with an active XLM-USD market. As of 2026-10-15 Kryon advertised XLM-PERP live on mainnet but its current trading was unresolved, and Noether's mainnet contracts were paused until its audit. Leveraged-spot loops such as Turbolong are not perps. Re-check the roster before answering.",
+        "keyFacts": [
+          "Zenex is a live Stellar mainnet perpetual futures exchange.",
+          "At least one other perp entrant is not yet open for mainnet trading.",
+          "Perps on Stellar are emerging rather than whitespace."
+        ],
+        "avoid": [
+          "Calling Zenex testnet-only or pre-release.",
+          "Claiming Stellar has no mainnet perp DEX.",
+          "Calling Noether or any entrant mainnet-live without current deployment evidence.",
+          "Treating leveraged spot loops as perpetual futures."
+        ],
+        "notes": "Do not require a venue count. 'First perps venue' is acceptable only as an attributed claim, since Kryon dates an earlier launch. Calling Noether open for trading while its market is paused is wrong.",
+        "movedToTruth": [
+          "On-chain read evidence and ledgers",
+          "Kryon engine state and 2026-08-25 last change",
+          "Noether pause state and guarded mode",
+          "Stellars Finance testnet-only record",
+          "DefiLlama 'Derivatives' row note",
+          "Stale Scout Zenex wording (sls-091)"
+        ]
+      }
+    },
+    {
+      "id": "q-defi-phoenix-what-is",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite keeps AMM identity, PHO as a non-governance utility asset with SAC and the SCF total; the $394.5K figure matches Scout on 2026-11-14 (the official SCF page last rendered 2026-11-02).",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-defi-provide-liquidity-impermanent-loss",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite keeps the classic deposit/withdraw ops, Soroban-venue difference, correct IL definition and exit risks.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-defi-reflector-oracle",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite keeps oracle identity, matching-hash aggregation, dated 4-of-7, free Pulse vs paid Beam; auditor re-read reflector.network on 2026-11-14.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-defi-rwa-scf-similar",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite keeps awarded examples, budget/award/paid separation, history-is-not-liveness and the ll-013/sls-026 caps.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-defi-rwa-treasury-funding-live",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "Process-only; treasury/RWA identity and SCF-funding provenance stay covered by q-defi-rwa-scf-similar, q-defi-benji-franklin-templeton, q-defi-ondo-usdy and q-defi-wisdomtree-crdt.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-defi-sdex-offer-lifecycle",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite keeps offer_id semantics, result XDR authority, offers vs trades surfaces and no protocol expiry.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-defi-skill-ecosystem-scout",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "Skill-selection case; the named survivor q-skill-eco-scout-rwa-landscape lives in the skills routing lane (eval/skills-cases.json), not the battery, which is the right home.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-defi-skill-project-dossier",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "Skill-selection case; survivor q-skill-project-dossier-blend is in eval/skills-cases.json.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-defi-soroswap-vs-stellarx",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Survivor rewrite absorbs the Soroswap identity case cleanly.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-defi-soroswap-what-is",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "Survivor q-defi-soroswap-vs-stellarx keeps PaltaLabs, product layers, on-chain vs API routing and attributed 'first' wording; the aggregator contract history correctly moves to truth.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-defi-streaming-payments-prior-art",
+      "auditVerdict": "retire",
+      "decision": "amend",
+      "finalVerdict": "retire",
+      "why": "Retire stands, but the stated duplicate is wrong: q-defi-agentic-payment-standards-compare tests x402/MPP/AP2/ACP, not streaming payments. The real coverage is q-stellar-recurring-payments (how recurring payments work) plus the greenfield prior-art preflight cases (q-soroban-greenfield-escrow-prior-art-preflight, q-tool-greenfield-indexer-prior-art-preflight). Record those as the replacement ids in the tombstone.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-defi-tooling-whitespace-live",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "Same cluster-reading behaviour as the survivor; nothing beyond the Asset case's whitespace-vs-absence point.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-defi-wisdomtree-crdt",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite keeps fund identity, launch date, transfer-agent primacy and issuer; SAC id moves to truth.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-defi-x402-on-stellar-what",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite keeps v2 exact/SEP-41/SAC mechanics, role separation, API-key qualification and dated governance.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-eco-defi-market-map",
+      "auditVerdict": "tighten",
+      "decision": "amend",
+      "finalVerdict": "tighten",
+      "why": "As survivor of q-eco-defi-projects-discovery it must ask who is building, otherwise KF2 ('a roster should state its selection rule') grades something the question never asks and the roster topic disappears. Ask both; make the roster a world fact. Named projects re-checked live in Scout.",
+      "evidence": [
+        {
+          "class": "C",
+          "ref": "scout.searchProjects (Blend, Aquarius, Soroswap, Reflector, Litemint, Zenex)",
+          "observedAt": "2026-11-14",
+          "quote": "blend Live Lending; aquarius Live DEX; soroswap Live DEX; phoenix Live DEX; reflector Live Oracle; litemint Live NFT; zenex Live Derivatives"
+        }
+      ],
+      "finalRewrite": {
+        "question": "Who is building DeFi on Stellar, and where is the ecosystem crowded versus open to build?",
+        "answer": "A Stellar DeFi map must be a dated, source-relative snapshot. Active lanes include lending (Blend), liquidity (Aquarius, Soroswap, Phoenix, Sushi), oracles (Reflector), RWA and vaults (DeFindex), but directory counts mix roles and statuses and do not measure competition, maturity or TVL. Treat perps, liquid staking and insurance as opportunities to verify, not empty lanes; vaults and routers are not independent base lenders.",
+        "keyFacts": [
+          "Names real projects by lane, such as Blend, Aquarius or Soroswap, Reflector and DeFindex.",
+          "Directory counts mix roles and statuses; they do not measure competition or maturity.",
+          "Perps are emerging and NFT marketplaces exist, so neither lane is empty.",
+          "Vaults and Blend-built pools are not independent base lenders."
+        ],
+        "avoid": [
+          "Hard-coding a timeless crowded/whitespace map or calling a lane empty without a dated search.",
+          "Flattening announced, testnet and mainnet-live projects into one status."
+        ],
+        "notes": "Do not require a fixed roster. Do not reward an oracle dominance or most-integrated ranking without a stated metric.",
+        "movedToTruth": [
+          "Per-lane grounding notes (Litemint, Rarible, Band, RedStone, DIA)",
+          "Templar cross-chain note and Certora report",
+          "GT-19 correction history",
+          "Source URLs for type clusters"
+        ]
+      }
+    },
+    {
+      "id": "q-eco-defi-projects-discovery",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "Merge is right, but the audit's purpose label (raven-mechanics) is wrong: 'who is building DeFi on Stellar' is world truth any source can answer. The survivor must ask it; see the amended q-eco-defi-market-map rewrite.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-eco-defi-tvl-current",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "'Changed' is drift of an illustrative value in a behaviour case; the rewrite grades provider, scope and date, not the number. Re-derived: the two DeFiLlama endpoints differ the same day, which supports the do-not-mix-snapshots avoid.",
+      "evidence": [
+        {
+          "class": "C",
+          "ref": "https://api.llama.fi/v2/chains",
+          "observedAt": "2026-11-14",
+          "quote": "\"name\":\"Stellar\" ... \"tvl\":204553134.47"
+        },
+        {
+          "class": "C",
+          "ref": "https://api.llama.fi/v2/historicalChainTvl/Stellar",
+          "observedAt": "2026-11-14",
+          "quote": "2026-11-14 198227559 (2026-11-13 200461507)"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-eco-dex-saturation",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite keeps criterion-first counting and role separation; named venues are examples, not a gate.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-eco-hana-wallet-scf",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "Single-project SCF lookup for a mid-size wallet; per-project SCF lookup stays tested by q-scf-history-soroswap and wallet identity by q-eco-lobstr-wallet and the wallets case.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-eco-lobstr-wallet",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite keeps operator, non-custody, dated XRPL support and attributed scale claims.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-eco-most-active-defi-projects",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "Leaderboard metric mechanics; the frozen live lane holds q-live-leaderboard-active-projects.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-eco-nft-marketplace-whitespace",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite keeps Litemint live and Rarible award-vs-unverified-production; Litemint still Live in Scout.",
+      "evidence": [
+        {
+          "class": "C",
+          "ref": "scout.searchProjects({query:'Litemint'})",
+          "observedAt": "2026-11-14",
+          "quote": "slug litemint, status Live, types [NFT]"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-eco-pyusd-stellar-freshness",
+      "auditVerdict": "tighten",
+      "decision": "amend",
+      "finalVerdict": "tighten",
+      "why": "The audit's 'changed' is a stale secondary page, not a change of fact: Paxos converted to Paxos Trust Company, National Association under its OCC charter, and its PYUSD page and licenses page say so. Accepting 'either entity name' would weaken a correct fact. Keep N.A. as current and allow a dated, attributed quote of an LLC page.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://www.paxos.com/terms-and-conditions/licenses",
+          "observedAt": "2026-11-14",
+          "quote": "National Trust Bank Charter Paxos Trust Company, National Association converted from a New York limited-purpose trust charter to a national trust char..."
+        },
+        {
+          "class": "A",
+          "ref": "https://www.occ.treas.gov/news-issuances/news-releases/2025/nr-occ-2025-125e.pdf",
+          "observedAt": "2026-11-14",
+          "quote": "OCC Decision Letter - Application by Paxos Trust Company to Convert to a [national trust bank]"
+        },
+        {
+          "class": "A",
+          "ref": "https://stellar.org/press/paypal-pyusd-is-now-available-on-stellar",
+          "observedAt": "2026-11-14",
+          "quote": "September 18th, 2025 Today the stablecoin PayPal USD (PYUSD) is live on the Stellar network. (auditor's quote)"
+        }
+      ],
+      "finalRewrite": {
+        "question": null,
+        "answer": "Yes. PayPal USD (PYUSD) went live on Stellar on 2025-09-18. It is PayPal-branded and issued by Paxos, not PayPal. The issuing entity is now Paxos Trust Company, N.A., after its OCC-approved conversion from Paxos Trust Company, LLC, which issued PYUSD at the Stellar launch. Cite a ledger and date for any supply figure.",
+        "keyFacts": [
+          "PYUSD launched on Stellar on 2025-09-18.",
+          "PYUSD is PayPal-branded.",
+          "Paxos issues PYUSD, not PayPal."
+        ],
+        "avoid": [
+          "Claiming PayPal itself is the legal issuer.",
+          "Claiming PYUSD is absent from Stellar, or giving an undated supply figure."
+        ],
+        "notes": "Naming the issuer simply as Paxos is enough. An attributed, dated quote of a Paxos page or the 2025 release that says LLC is not wrong; an unattributed claim that the LLC issues PYUSD today is a minor error.",
+        "movedToTruth": [
+          "Mainnet issuer GDQE7IXJ... and testnet issuer warning",
+          "OCC Conditional Approval 1358 and 2025-12-12 conversion",
+          "Paxos TOML and docs still saying LLC (2026-11-14)",
+          "GT-20 re-verification history"
+        ]
+      }
+    },
+    {
+      "id": "q-eco-stablecoins-on-stellar",
+      "auditVerdict": "tighten",
+      "decision": "amend",
+      "finalVerdict": "tighten",
+      "why": "'EURC has two issuers' comes from Scout's curated registry only and is misleading: Horizon lists dozens of accounts issuing an EURC code, nearly all impostors, which is exactly why issuer attribution matters. State that instead.",
+      "evidence": [
+        {
+          "class": "F",
+          "ref": "https://horizon.stellar.org/assets?asset_code=EURC&limit=20&order=desc",
+          "observedAt": "2026-11-14",
+          "quote": "20 distinct EURC issuers on one page; Circle's GDHU6WRG...ITNPP2 (toml circle.com) has 53757 accounts; others point to tomls such as kraken.com.bz, blackrock.co.com"
+        },
+        {
+          "class": "C",
+          "ref": "scout.getStablecoins({limit:3})",
+          "observedAt": "2026-11-14",
+          "quote": "counts.tracked 37; coverage.basis curated-registry; multiIssuerTickers EURC by Circle and MyKobo (auditor's quote)"
+        }
+      ],
+      "finalRewrite": {
+        "question": null,
+        "answer": "Stellar's stablecoins are mostly issuer-led: Circle's USDC and EURC, PayPal's PYUSD (issued by Paxos), and newer regional and institutional coins. Attribute each to its issuer account: many accounts issue look-alike codes such as EURC, and only the real issuer's asset is the stablecoin. Treat the roster as dated and non-exhaustive, and keep fiat stablecoins apart from yield-bearing and fund tokens such as BENJI.",
+        "keyFacts": [
+          "Names current Stellar stablecoins with their issuers, such as Circle's USDC and EURC.",
+          "Identifies a stablecoin by issuer account, since a code alone can be impersonated.",
+          "A registry or search result is not a complete census of Stellar stablecoins."
+        ],
+        "avoid": [
+          "Inventing a stablecoin or issuer, or asserting absence without a defined dated universe.",
+          "Conflating fiat stablecoins with yield-bearing certificates and fund tokens, or reading a null supply as zero."
+        ],
+        "notes": "Grade the reading behavior, not set membership; marketCapUSD is the cross-peg size metric.",
+        "movedToTruth": [
+          "Scout coverage-block semantics and counts fields",
+          "2026-08-19 registry bound",
+          "Dossier issuer verification list",
+          "GT-20 correction history"
+        ]
+      }
+    },
+    {
+      "id": "q-eco-stellar-rwa-stablecoin-volume",
+      "auditVerdict": "tighten",
+      "decision": "amend",
+      "finalVerdict": "tighten",
+      "why": "This is a freshness:live case, but the rewrite pins Q3 2026 figures as key facts, so a correct answer citing the Q4 2026 report (due early 2027) would fail. Keep Q3 as the dated example and accept a later dated SDF report.",
+      "evidence": [],
+      "finalRewrite": {
+        "question": null,
+        "answer": "SDF's Q3 2026 report (October 2026) puts on-chain RWAs at $4.1B at quarter end (its quarterly-reports page summary says $4.3B), stablecoin market cap at $496M, and Q3 stablecoin transfer volume at $25.1B. Market cap and RWA value are point-in-time stocks; transfer volume is a period flow. Cite the report and date, and do not merge figures from different sources.",
+        "keyFacts": [
+          "Cites a dated SDF report figure for RWA value, such as about $4.1B at Q3 2026 end.",
+          "Gives stablecoin market cap and transfer volume with their period (Q3 2026: $496M; $25.1B).",
+          "Supply, market cap and RWA value are stocks; transfer volume is a period flow."
+        ],
+        "avoid": [
+          "Summing or comparing supply, market cap, RWA value and volume as one scope.",
+          "Presenting a historical scalar as current."
+        ],
+        "notes": "Figures from a later dated SDF report are correct. Do not penalize either $4.1B or $4.3B when attributed and dated. Attributing the $2.8B RWA figure to Messari is not wrong while ll-009 stands (cap partial).",
+        "movedToTruth": [
+          "Q1 and Q2 2026 report figures",
+          "Allium March 2026 report",
+          "rwa.xyz 2026-07-10 snapshot",
+          "Messari State of Stellar Q1 note",
+          "GT-20 correction history"
+        ]
+      }
+    },
+    {
+      "id": "q-eco-stellar-wallets-list",
+      "auditVerdict": "tighten",
+      "decision": "amend",
+      "finalVerdict": "tighten",
+      "why": "Reframing to the world question is right and the rename is verified from two classes. KF2 lists six wallets as one fact, so a judge could demand all six; make it 'names real wallets such as'.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial",
+          "observedAt": "2026-11-14",
+          "quote": "Freighter is now Varial: Your wallet for discovering Stellar (page datePublished 2026-10-29)"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/freighter/releases/tag/5.50.0",
+          "observedAt": "2026-11-14",
+          "quote": "5.50.0 published 2026-10-29T20:32:42Z"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/Creit-Tech/Stellar-Wallets-Kit/tree/main/src/sdk/modules",
+          "observedAt": "2026-11-14",
+          "quote": "albedo, hana, hotwallet, lobstr, rabet, varial, xbull ... .module.ts"
+        }
+      ],
+      "finalRewrite": {
+        "question": "Which wallets can I use with Stellar, and which have been renamed recently?",
+        "answer": "Stellar wallets include Varial (SDF's wallet, renamed from Freighter on 2026-10-29), LOBSTR, xBull, Albedo, Rabet, Hana and Hot Wallet, available as browser extensions, web and mobile apps; the Stellar Wallets Kit integrates them. Treat any list as a dated, non-exhaustive snapshot and check a wallet's current availability before recommending it.",
+        "keyFacts": [
+          "Varial is SDF's wallet, renamed from Freighter on 2026-10-29.",
+          "Names real Stellar wallets such as LOBSTR, xBull, Albedo, Rabet or Hana.",
+          "A wallet list is a dated, non-exhaustive snapshot."
+        ],
+        "avoid": [
+          "Presenting a small hand-picked list as exhaustive.",
+          "Treating a directory 'Live' label as proof of current app availability."
+        ],
+        "notes": "Freighter and Varial name the same wallet; accept either name.",
+        "movedToTruth": [
+          "Scout 191/72/32 count history and pagination notes",
+          "Scout rename recheck 2026-11-05 and ll-032",
+          "Duplicate canonical-record handling",
+          "GT-20 correction history"
+        ]
+      }
+    },
+    {
+      "id": "q-gap-contracts-domain-empty",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "Scout listContracts empty-success semantics; the general 'registry absence is not world absence' behaviour is carried by Raven's envelope contract and other no-info cases. Medium confidence, as the audit says.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-gap-digest-defi-adjacent",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "Digest softEmpty mechanics; survivor q-skill-eco-digest-defi-roundup is in eval/skills-cases.json.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-gap-leaderboard-project-not-builder",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "Pure operation-semantics case (leaderboard vs getBuilders); routing owns it.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-gap-semantic-directory-fallback",
+      "auditVerdict": "move-tool-lane",
+      "decision": "accept",
+      "finalVerdict": "move-tool-lane",
+      "why": "Grades whether a model treats semantic-fallback rows as candidates and widens for open-world identity; adapter tests cannot see that. Tool lane is right.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-gap-semantic-similar-projects",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "Operation-selection case; the semantic-identity guard survives in the q-gap-semantic-directory-fallback tool-lane case.",
+      "evidence": [],
+      "finalRewrite": null
+    }
+  ],
+  "summary": {
+    "accept": 50,
+    "amend": 8,
+    "reject": 0
+  },
+  "patterns": [
+    "Sample rule: the brief's one-in-five keep sample is empty because this file has no keep verdicts. Every retire, merge, move-tool-lane, changed rot, and tighten rewrite (58 of 58 records) was checked.",
+    "Re-dating without re-checking: several rewrites move a volatile claim's as-of to 2026-11-14 when the auditor's own rot entry says it was not re-read (liquid-staking negative, Kryon/Noether perps states). The orchestrator should check every '2026-11-14' in this auditor's rewrites against a rot entry with 2026-11-14 evidence, and otherwise keep the last verified date.",
+    "Live/behaviour cases turned into pinned values: q-eco-stellar-rwa-stablecoin-volume moved dated example figures into key facts. A freshness:live case's key facts must accept a later dated figure.",
+    "'Changed' is used for ordinary drift of a dated value (DeFindex and chain TVL) and for a stale secondary page (Paxos docs saying LLC). Neither is a changed fact; the PYUSD rewrite consequently weakened a correct issuer fact. Treat drift as 'holds (dated)' and check legal-entity changes against the primary record.",
+    "Survivor ids are sometimes wrong or point outside the battery: the streaming prior-art retirement names an unrelated survivor; the skill-case survivors live in eval/skills-cases.json, which is fine but should be recorded as such in tombstones.",
+    "Purpose labels: q-eco-defi-projects-discovery ('who is building DeFi') is labelled raven-mechanics but is world truth; the merge is still right only if the survivor asks the question. Directory-enumeration questions should be checked for an underlying world question before they are labelled raven-mechanics.",
+    "Style: rewrite avoid items drop the 'Do NOT' prefix used by most of the corpus. Harmless to a judge, but the apply phase should normalise one form."
+  ]
+}

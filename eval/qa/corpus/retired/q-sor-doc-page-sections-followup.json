@@ -1,0 +1,21 @@
+{
+  "id": "q-sor-doc-page-sections-followup",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-soroban-a (golden coverage audit)",
+    "reviewer": "verify-audit-soroban-a (golden coverage audit)",
+    "reason": "Retired with no replacement because get_doc_page section reads are Raven's own contract, covered by test/adapters.test.ts, and no Stellar fact depends on them.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-a.json#q-sor-doc-page-sections-followup",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-a.json#q-sor-doc-page-sections-followup",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-sor-doc-page-sections-followup"
+    ],
+    "lastCaseContentSha256": "d399b5b349f4d03e6f1e54eba779d0b367a3bbf5c80a57ec2ff5a4401ffeca75",
+    "replacementIds": []
+  }
+}

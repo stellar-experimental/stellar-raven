@@ -6,19 +6,19 @@
     "stellarDocs.search_rpc_horizon_data_docs"
   ],
   "golden": {
-    "answer": "As of **2026-11-02**, the official Providers table marks nine hosted rows for **RPC Archive**: **Validation Cloud, Gateway, Ankr, Obsrvr, OnFinality, Lightsail Network/Quasar, Exaion, GetBlock, and node101**. The roster grows over time: seven rows as of 2026-07-11, Validation Cloud added 2026-08-18, and node101 added 2026-09-08. Recheck the live table because the roster and access plans are volatile.\n\nArchive means data-lake-backed **deep/full ledger history through `getLedgers`**. Ordinary RPC instances can still expose `getLedgers` within local retention; the differentiator is historical reach, not method existence. The official RPC Archive tier does not extend `getEvents`, `getTransaction(s)`, or `getLedgerEntries`; the Providers page says only `getLedgers` supports it. Separately, SDF's archive-node beta (stellar-rpc tag `archive-node-beta`, 2026-09-30) and Validation Cloud's RPC v2 beta serve full history for `getEvents`, `getLedgers`, `getTransaction`, and `getTransactions`; those are beta products, not the official tier definition. Choose by network, documented historical coverage, authentication/plan, SLA/rate limits, and current operational health rather than an unsupported universal ranking.",
+    "answer": "As of 2026-11-14 the official RPC Providers table marks nine hosted rows with RPC Archive: Validation Cloud, Gateway, Ankr, Obsrvr, OnFinality, Lightsail Network/Quasar, Exaion, GetBlock and node101. The roster changes; recheck the table. Archive means data-lake-backed deep history through getLedgers only; ordinary RPC also serves getLedgers within its retention. Choose by network, documented coverage, plan, SLA and current health.",
     "keyFacts": [
-      "Names a dated, attributed archive roster of seven, eight, or nine official rows.",
-      "Treats the official Providers table as the roster's source of truth.",
-      "Defines the official archive tier by getLedgers history beyond ordinary retention.",
-      "Keeps provider plans, SLAs, and live health freshness-sensitive."
+      "Names a dated archive roster taken from the official Providers table.",
+      "The official RPC Archive tier means deep getLedgers history, not events or transactions.",
+      "Ordinary RPC also has getLedgers within retention; archive adds historical reach.",
+      "Plans, SLAs and health are provider-specific; verify before choosing."
     ],
     "avoid": [
       "Do NOT say non-archive providers lack the getLedgers method.",
-      "Do NOT claim the official RPC Archive tier covers events, transactions, or state lookups.",
-      "Do NOT invent pricing, SLA, or provider preference without current provider-owned evidence."
+      "Do NOT claim the official RPC Archive tier covers events, transactions or state lookups.",
+      "Do NOT invent pricing, SLA or a provider ranking."
     ],
-    "notes": "Re-verified 2026-11-02 against the Providers page: 16 providers; nine RPC Archive rows (Validation Cloud, Gateway, Ankr, Obsrvr, OnFinality, Lightsail Network - Quasar, Exaion, GetBlock, node101). The page still says 'Currently only the getLedgers RPC method supports this feature.' Freshness-sensitive (the subset changes): gate on 'only a subset supports archive; the Providers table is the source of truth', and reward flagging staleness.\nRoster history: seven rows as of 2026-07-11 (Gateway, Ankr, Obsrvr, OnFinality, Lightsail/Quasar, Exaion, GetBlock); Validation Cloud added 2026-08-18 (stellar-docs 785c991); node101 added 2026-09-08 (stellar-docs f83cf336). Do not penalize an answer that cites a dated, attributed earlier roster that matches its date: seven rows as of 2026-07-11, or eight rows with Validation Cloud from 2026-08-18 to 2026-09-08. Penalize an undated roster, or a roster that does not match the official table on its stated date.\nGrader caution 2026-11-02 (replaces the 2026-08-20 Validation Cloud caution): Validation Cloud's own docs now list 'Pubnet RPC v2 (Beta): Stellar RPC only (full history from ledger 2)' and still list 'Pubnet Archive: Horizon only'. Do not penalize a claim that Validation Cloud's full-history RPC is provider-confirmed; it is a beta product. node101's own page uses generic archive text, so attribute its row to the official table.\nMethod scope: the official RPC Archive tier is getLedgers-only. SDF's archive-node beta (stellar-rpc tag archive-node-beta, 2026-09-30) and Validation Cloud's RPC v2 beta serve full history for getEvents, getLedgers, getTransaction, and getTransactions. Do not penalize an answer that attributes full-history getEvents or getTransaction(s) to those betas. Penalize an answer that says the official RPC Archive tier generally covers those methods. getLedgerEntries is a current-state lookup and is not in the beta's full-history list.\nAlso good if the answer: Choice also depends on network coverage (Testnet/Mainnet/Futurenet) and dedicated-node availability; the official Providers table is the source of truth. | Validation Cloud / QuickNode are low-friction consumer options; Blockdaemon/QuickNode/NowNodes offer dedicated production nodes.\nGolden cites: developers.stellar.org RPC Providers page (archive tier column) and getLedgers method docs."
+    "notes": "Accept a dated earlier roster that matched the table on its date (seven rows 2026-07-11; eight 2026-08-18 to 2026-09-08) and a later dated roster. Penalize an undated roster. Attributing full-history events or transactions to SDF's archive-node beta or Validation Cloud's RPC v2 beta is correct; attributing it to the official tier is not."
   },
   "tags": {
     "category": "tooling-infra",
@@ -32,7 +32,7 @@
     },
     "domain": "real-world",
     "status": "mixed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-05-21",
     "sources": [
       {
@@ -262,26 +262,51 @@
             "note": "'This method will return an error if `startLedger` is less than the oldest ledger stored in this node'."
           }
         ]
+      },
+      {
+        "claim": "Official Providers table marks nine RPC Archive rows",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "github.com/stellar/stellar-docs docs/data/apis/rpc/providers.mdx",
+            "observedAt": "2026-11-14",
+            "note": "| [node101](https://node101.io/en/rpc/stellar) | ❌ | ✅ | ✅ | ✅ | ✅ |"
+          }
+        ]
+      },
+      {
+        "claim": "The official tier supports only getLedgers",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "providers.mdx footnote",
+            "observedAt": "2026-11-14",
+            "note": "Currently only the getLedgers RPC method supports this feature."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "golden-truth near-due re-verification 2026-11-02 (round ledger .agents/rounds/2026-11-02-golden-reverify.md; research lane plus authoring lane, Claude Opus 5.5)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-tooling-a, verify-audit-tooling-a; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Gospel change 2026-11-02: the answer now dates a nine-row roster (node101 added 2026-09-08 in stellar-docs f83cf336). The roster keyFact admits a dated, attributed seven-, eight-, or nine-row roster, so an earlier dated roster is not penalized. The notes record the roster history and the 16-provider count.",
-        "Live A/B 2026-11-02: https://developers.stellar.org/docs/data/apis/rpc/providers and providers.mdx@de38543086d312eadcb69f3456d02b6aaa3e54bb show 16 providers and nine RPC Archive rows. The orchestrator re-confirmed the count and the nine names independently.",
-        "Live A 2026-11-02: https://docs.validationcloud.io/v1/stellar/overview now lists 'Pubnet RPC v2 (Beta): Stellar RPC only (full history from ledger 2)'. The 2026-08-20 caution (Horizon-only archive, retention-bounded RPC) was stale; the new caution allows a provider-confirmed beta claim.",
-        "Live B/A 2026-11-02: stellar-rpc tag archive-node-beta (d277ba48, 2026-09-30) docs/API-CHANGES-BETA.md and Validation Cloud's RPC v2 docs serve full history for getEvents, getLedgers, getTransaction, and getTransactions. The answer sentence and avoid[1] now scope the getLedgers-only claim to the official RPC Archive tier; the betas are a dated nuance in the answer and notes.",
-        "Live F 2026-11-02: archive-rpc.lightsail.network and rpc.ankr.com/stellar_soroban return ledger 1000000 from getLedgers but reject getEvents at ledger 1000000; mainnet.sorobanrpc.com serves getLedgers only within retention.",
-        "node101's own page uses generic archive text; its own capability is unverifiable, so the golden attributes the row to the official table and truth.status stays mixed.",
-        "Sibling sweep 2026-11-02: grep 'rpc archive|archive tier|validation cloud|node101|getLedgers' in the battery. q-infra-rpc-methods-list, q-crp-export-tx-history-taxes, and q-ti-rpc-gettransactions-pagination-xdr bound getEvents and getTransactions by retention; that holds for stock RPC, and the archive-node beta is a new caveat that q-infra-rpc-methods-list may need. q-ti-self-host-retention-backfill dates its v27.1.1 defaults to 2026-07-11. q-ti-friendbot-ratelimit-alternatives and q-ti-parse-raw-ledger-data do not conflict. No sibling names node101 or a roster count. Register cluster-018's note ('extends getLedgers only') needs the same tier scope.",
-        "Golden audit 2026-11-02 (batch tooling-infra-01, .agents/rounds/2026-11-02-golden-audit.md): proposer re-walk confirmed the 16-provider, nine-row RPC Archive table at providers.mdx@de38543 (B) and the rendered page (A), the getLedgers-only footnote, and the archive-node-beta full-history note (B, d277ba48). No change proposed; reverifyBy moved into the 2027-05 audit window."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-a.json#q-infra-rpc-provider-archive-tier",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-a.json#q-infra-rpc-provider-archive-tier",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-infra-rpc-provider-archive-tier",
+        "Live B 2026-11-14: github.com/stellar/stellar-docs docs/data/apis/rpc/providers.mdx -- '| [node101](https://node101.io/en/rpc/stellar) | ❌ | ✅ | ✅ | ✅ | ✅ |'",
+        "Live B 2026-11-14: providers.mdx footnote -- 'Currently only the getLedgers RPC method supports this feature.'",
+        "Live B 2026-11-14: github.com/stellar/stellar-docs docs/data/apis/rpc/providers.mdx -- 'Archive ✅: Validation Cloud, Gateway, Ankr, Obsrvr, OnFinality, Lightsail-Quasar, Exaion, GetBlock, node101 (9 rows)'",
+        "Live B 2026-11-14: providers.mdx footnote -- 'Currently only the [getLedgers](./api-reference/methods/getLedgers) RPC method supports this feature.'",
+        "Live sentinel read 2026-11-14 (npm run eval:qa:sentinels -- --ids rpc-archive-provider-rows,rpc-archive-provider-names): hold"
       ],
       "rootCause": [
-        "freshness-drift",
-        "The official table added node101, Validation Cloud's own docs added a full-history RPC beta, and SDF shipped the archive-node beta that serves full history beyond getLedgers."
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-infra-rpc-provider-archive-tier"
+    "origin": "raven-next q-infra-rpc-provider-archive-tier",
+    "notes": "Re-verified 2026-11-02 against the Providers page: 16 providers; nine RPC Archive rows (Validation Cloud, Gateway, Ankr, Obsrvr, OnFinality, Lightsail Network - Quasar, Exaion, GetBlock, node101). The page still says 'Currently only the getLedgers RPC method supports this feature.' Freshness-sensitive (the subset changes): gate on 'only a subset supports archive; the Providers table is the source of truth', and reward flagging staleness.\nRoster history: seven rows as of 2026-07-11 (Gateway, Ankr, Obsrvr, OnFinality, Lightsail/Quasar, Exaion, GetBlock); Validation Cloud added 2026-08-18 (stellar-docs 785c991); node101 added 2026-09-08 (stellar-docs f83cf336). Do not penalize an answer that cites a dated, attributed earlier roster that matches its date: seven rows as of 2026-07-11, or eight rows with Validation Cloud from 2026-08-18 to 2026-09-08. Penalize an undated roster, or a roster that does not match the official table on its stated date.\nGrader caution 2026-11-02 (replaces the 2026-08-20 Validation Cloud caution): Validation Cloud's own docs now list 'Pubnet RPC v2 (Beta): Stellar RPC only (full history from ledger 2)' and still list 'Pubnet Archive: Horizon only'. Do not penalize a claim that Validation Cloud's full-history RPC is provider-confirmed; it is a beta product. node101's own page uses generic archive text, so attribute its row to the official table.\nMethod scope: the official RPC Archive tier is getLedgers-only. SDF's archive-node beta (stellar-rpc tag archive-node-beta, 2026-09-30) and Validation Cloud's RPC v2 beta serve full history for getEvents, getLedgers, getTransaction, and getTransactions. Do not penalize an answer that attributes full-history getEvents or getTransaction(s) to those betas. Penalize an answer that says the official RPC Archive tier generally covers those methods. getLedgerEntries is a current-state lookup and is not in the beta's full-history list.\nAlso good if the answer: Choice also depends on network coverage (Testnet/Mainnet/Futurenet) and dedicated-node availability; the official Providers table is the source of truth. | Validation Cloud / QuickNode are low-friction consumer options; Blockdaemon/QuickNode/NowNodes offer dedicated production nodes.\nGolden cites: developers.stellar.org RPC Providers page (archive tier column) and getLedgers method docs.",
+    "leaf": "data.providers"
   }
 }

@@ -1,0 +1,21 @@
+{
+  "id": "q-scout-hackathon-placed-share-kale-vs-zk",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-scf (golden coverage audit)",
+    "reviewer": "verify-audit-scf (golden coverage audit)",
+    "reason": "This never-activated proposal computes shares from Scout's stored submissions, a Raven-mechanics question with no taxonomy leaf.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-scout-hackathon-placed-share-kale-vs-zk",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-scout-hackathon-placed-share-kale-vs-zk",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-scout-hackathon-placed-share-kale-vs-zk"
+    ],
+    "lastCaseContentSha256": "482a9b3630e2a22ee0e68c29eb2c867f346f8893871946d242aaba74223c688d",
+    "replacementIds": []
+  }
+}

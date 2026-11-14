@@ -5,20 +5,17 @@
     "lumenloop.find_content_by_entity"
   ],
   "golden": {
-    "answer": "A grounded answer consults the current LumenLoop corpus, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-11-02, the verified sources supported this observed answer:\n\n**PayPal USD (PYUSD) is live on Stellar.** It launched on **September 18, 2025**. PYUSD is PayPal-branded and **issued by Paxos**. The 2025 SDF launch release names **Paxos Trust Company, LLC**, the issuer at launch. On 2025-12-12 the OCC approved, and Paxos completed, its conversion to **Paxos Trust Company, N.A.**, which Paxos names as PYUSD's issuer as of 2026-11-02. Paxos's Stellar TOML still carries the older LLC wording, so date any legal-entity name.\n\nThe mainnet issuer is `GDQE7IXJ4HUHV6RQHIUPRJSEZE4DRS5WY577O2FY6YQ5LVWZ7JZTU2V5`; do not confuse it with PayPal's documented testnet issuer. Current supply/circulation is volatile, so cite a ledger/date for any amount and distinguish brand, legal issuer, testnet, mainnet, and SAC identities.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "Yes. PayPal USD (PYUSD) went live on Stellar on 2025-09-18. It is PayPal-branded and issued by Paxos, not PayPal. The issuing entity is now Paxos Trust Company, N.A., after its OCC-approved conversion from Paxos Trust Company, LLC, which issued PYUSD at the Stellar launch. Cite a ledger and date for any supply figure.",
     "keyFacts": [
-      "Presents specific current or dated source evidence, not unsupported memory.",
-      "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "States that PYUSD launched on Stellar on September 18, 2025.",
-      "Attributes the PYUSD product to PayPal.",
-      "Attributes PYUSD issuance to Paxos."
+      "PYUSD launched on Stellar on 2025-09-18.",
+      "PYUSD is PayPal-branded.",
+      "Paxos issues PYUSD, not PayPal."
     ],
     "avoid": [
-      "Do NOT claim PayPal itself is the legal issuer, or state without a source and date that Paxos Trust Company, LLC issues PYUSD today.",
-      "Do NOT claim PYUSD is absent from Stellar or give a current supply figure without a dated source.",
-      "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
+      "Do NOT claim PayPal itself is the legal issuer.",
+      "Do NOT claim PYUSD is absent from Stellar, or give an undated supply figure."
     ],
-    "notes": "FRESHNESS + entity. Verified: PayPal's PYUSD launched on Stellar Sep 18, 2025 (SDF press), part of the Sep-2025 RWA/stablecoin cluster around Meridian 2025. Issuer = Paxos (PayPal-branded). Any circulating/supply figure is volatile — gate on a dated source + staleness caveat.\nAlso good if the answer: Attributes PYUSD to PayPal and frames it as part of the issuer-led stablecoin set on Stellar.\nGolden cites: A dated source for PYUSD on Stellar (Sep 2025).\nGT-20 RE-VERIFIED 2026-07-10: replace inherited 'issuer=PayPal (with Paxos)' shorthand with PayPal-branded, Paxos-issued. LLC-versus-N.A. reflects the OCC-approved conversion of 2025-12-12 (OCC Conditional Approval 1358); date any legal-entity name. Mainnet/testnet/SAC addresses and any supply require explicit network/date provenance."
+    "notes": "Naming the issuer simply as Paxos is enough. An attributed, dated quote of a Paxos page or the 2025 release that says LLC is not wrong; an unattributed claim that the LLC issues PYUSD today is a minor error."
   },
   "tags": {
     "category": "defi-ecosystem",
@@ -32,7 +29,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-14",
     "sources": [
       {
         "class": "A",
@@ -193,27 +190,41 @@
             "note": "\"Conditional Approval 1358 | January 2026 | 12/12/2025 | Application by Paxos Trust Company, LLC, New York, NY to convert to a national bank\""
           }
         ]
+      },
+      {
+        "claim": "PYUSD went live on Stellar on 2025-09-18",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/press/paypal-pyusd-is-now-available-on-stellar",
+            "observedAt": "2026-11-14",
+            "note": "Rio de Janeiro, Brazil, September 18th, 2025 Today the stablecoin PayPal USD (PYUSD) is live on the Stellar network."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch defi-ecosystem-05)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-defi, verify-defi; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "OCC CA 1358 2026-11-02: https://www.occ.gov/topics/charters-and-licensing/interpretations-and-decisions/2026/ca1358.pdf — \"December 12, 2025 ... conditionally approves the application filed by Paxos Trust Company, LLC ... will operate under the title of Paxos Trust Company, National Association ... OCC Charter Number 25379.\"",
-        "Paxos licenses 2026-11-02: https://www.paxos.com/terms-and-conditions/licenses — \"Paxos Trust Company, National Association converted from a New York limited-purpose trust charter to a national trust charter on December 12, 2025.\"",
-        "Paxos product page 2026-11-02: https://www.paxos.com/pyusd — \"Issued by Paxos Trust Company, N.A., PayPal USD (PYUSD) is PayPal's stablecoin designed for payments.\"",
-        "SDF launch release 2026-11-02: https://stellar.org/press/paypal-pyusd-is-now-available-on-stellar — \"September 18th, 2025 Today the stablecoin PayPal USD (PYUSD) is live on the Stellar network.\" It names Paxos Trust Company, LLC (launch-time issuer).",
-        "Paxos Stellar TOML 2026-11-02: https://token-metadata.paxos.com/.well-known/stellar.toml — code=\"PYUSD\" issuer=\"GDQE7IXJ4HUHV6RQHIUPRJSEZE4DRS5WY577O2FY6YQ5LVWZ7JZTU2V5\"; ORG_DESCRIPTION still says \"Paxos Trust Company LLC\".",
-        "Horizon 2026-11-02: https://horizon.stellar.org/assets?asset_code=PYUSD&asset_issuer=GDQE7IXJ4HUHV6RQHIUPRJSEZE4DRS5WY577O2FY6YQ5LVWZ7JZTU2V5 — mainnet asset present, contract_id CCCRWH6Q3FNP3I2I57BDLM5AFAT7O6OF6GKQOC6SSJNDAVRZ57SPHGU2.",
-        "Raven scout.getStablecoins 2026-11-02 (dataAsOf 2026-11-02T16:22:16.011Z): assetId PYUSD-GDQE7IXJ, issuer GDQE7IXJ4HUHV6RQHIUPRJSEZE4DRS5WY577O2FY6YQ5LVWZ7JZTU2V5.",
-        "Independent verifier accepted all five changes (answer as-of date, LLC/N.A. paragraph, avoid[0], two notes edits): .agents/rounds/2026-11-02-golden-audit/pass1/defi-ecosystem-05.json.",
-        "Sibling sweep 2026-11-02: grep PYUSD|Paxos across eval/qa/corpus/battery → q-eco-pyusd-stellar-freshness, q-eco-stablecoins-on-stellar (avoid[0] aligned in this batch), q-asset-usdc-eurc-issuer (only rejects Paxos as a USDC/EURC issuer); no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-eco-pyusd-stellar-freshness",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-eco-pyusd-stellar-freshness",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-eco-pyusd-stellar-freshness",
+        "Live A 2026-11-14: https://stellar.org/press/paypal-pyusd-is-now-available-on-stellar -- 'Rio de Janeiro, Brazil, September 18th, 2025 Today the stablecoin PayPal USD (PYUSD) is live on the Stellar network.'",
+        "Live A 2026-11-14: https://www.paxos.com/pyusd -- 'Issued by Paxos Trust Company, N.A., PayPal USD (PYUSD) is PayPal's stablecoin designed for payments.'",
+        "Live A 2026-11-14: https://docs.paxos.com/stablecoin/pyusd -- 'PayPal USD (PYUSD), issued by Paxos Trust Company, LLC (Paxos), is an open, fully backed ...'",
+        "Live A 2026-11-14: https://www.paxos.com/terms-and-conditions/licenses -- 'National Trust Bank Charter Paxos Trust Company, National Association converted from a New York limited-purpose trust charter to a national trust char...'",
+        "Live A 2026-11-14: https://www.occ.treas.gov/news-issuances/news-releases/2025/nr-occ-2025-125e.pdf -- 'OCC Decision Letter - Application by Paxos Trust Company to Convert to a [national trust bank]'",
+        "Live A 2026-11-14: https://stellar.org/press/paypal-pyusd-is-now-available-on-stellar -- 'September 18th, 2025 Today the stablecoin PayPal USD (PYUSD) is live on the Stellar network. (auditor's quote)'"
       ],
       "rootCause": [
-        "freshness-drift",
-        "Eval-side authoring flaw: inherited 'Issuer = PayPal (with Paxos)' shorthand survived the GT-20 correction in golden.notes, and the earlier pass framed LLC-versus-N.A. as a source disagreement without checking the OCC corporate record."
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit",
+        "freshness-drift"
       ]
     },
-    "origin": "raven-next q-eco-pyusd-stellar-freshness"
+    "origin": "raven-next q-eco-pyusd-stellar-freshness",
+    "notes": "FRESHNESS + entity. Verified: PayPal's PYUSD launched on Stellar Sep 18, 2025 (SDF press), part of the Sep-2025 RWA/stablecoin cluster around Meridian 2025. Issuer = Paxos (PayPal-branded). Any circulating/supply figure is volatile — gate on a dated source + staleness caveat.\nAlso good if the answer: Attributes PYUSD to PayPal and frames it as part of the issuer-led stablecoin set on Stellar.\nGolden cites: A dated source for PYUSD on Stellar (Sep 2025).\nGT-20 RE-VERIFIED 2026-07-10: replace inherited 'issuer=PayPal (with Paxos)' shorthand with PayPal-branded, Paxos-issued. LLC-versus-N.A. reflects the OCC-approved conversion of 2025-12-12 (OCC Conditional Approval 1358); date any legal-entity name. Mainnet/testnet/SAC addresses and any supply require explicit network/date provenance.",
+    "leaf": "assets.stablecoin-landscape"
   }
 }

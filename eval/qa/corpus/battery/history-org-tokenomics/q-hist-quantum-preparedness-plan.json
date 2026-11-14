@@ -6,19 +6,18 @@
     "lumenloop.search_documents"
   ],
   "golden": {
-    "answer": "SDF published the Quantum Preparedness Plan on June 9, 2026 as a three-stage roadmap, not an announcement that Stellar was already quantum-safe. Stage 1 targets ML-DSA-44 and ML-DSA-65 signature-verification host functions for Soroban during 2026 so contract accounts can adopt quantum-safe authentication. Stage 2 targets protocol-level opt-in migration in 2027, and the plan says every Stellar account is expected to be able to add a quantum-safe signer by the end of 2027. The article explicitly says the quantum-safe signer type and verification primitives were missing at publication, so dates and capabilities are plans/expectations rather than shipped guarantees.",
+    "answer": "SDF published the Quantum Preparedness Plan on June 9, 2026 as a three-stage roadmap, not a claim that Stellar is already quantum-safe. Stage 1 adds ML-DSA-44 and ML-DSA-65 signature-verification host functions for Soroban contract accounts during 2026. Every account is expected to be able to add a quantum-safe signer by the end of 2027 through a native protocol upgrade. Those primitives did not exist at publication.",
     "keyFacts": [
       "SDF published the Quantum Preparedness Plan on June 9, 2026.",
-      "Stage 1 plans ML-DSA-44/65 verification host functions during 2026.",
-      "The host functions target Soroban contract accounts.",
-      "Treats the plan as a roadmap."
+      "The plan is a three-stage roadmap, not a shipped capability.",
+      "Stage 1 plans ML-DSA-44/65 verification host functions for contract accounts in 2026.",
+      "Every account is expected able to add a quantum-safe signer by end of 2027."
     ],
     "avoid": [
-      "Do NOT claim ML-DSA host functions or a native quantum-safe signer had already shipped when the plan was published.",
-      "Do NOT turn the 2026/2027 targets into guaranteed completion dates.",
-      "Do NOT claim Stellar accounts were already quantum-safe by default when the plan was published."
+      "Do NOT claim ML-DSA host functions or a native quantum-safe signer had shipped when the plan was published.",
+      "Do NOT present the 2026/2027 targets as guaranteed dates."
     ],
-    "notes": "Grade what the June 2026 plan said at publication. Later developments are optional. As of 2026-11-10, Bell/P30 is live on Testnet with CAP-0087 ML-DSA-44/65/87 contract verification. Pubnet still runs P29 and the Bell Mainnet vote is scheduled for 2026-11-23. SDF still describes a native post-quantum signer for classic accounts as a future change. The June roadmap also leaves deprecation timing dependent on the threat. Accept a later sourced Mainnet activation."
+    "notes": "Grade what the plan said at publication. Accept later sourced developments, including Bell (Protocol 30, CAP-0087) and a sourced Mainnet activation."
   },
   "tags": {
     "category": "history-org-tokenomics",
@@ -276,29 +275,69 @@
             "note": "The official operational calendar still lists the Mainnet upgrade vote for 2026-11-23T17:00:00.000Z as scheduled."
           }
         ]
+      },
+      {
+        "claim": "Plan published 2026-06-09 as a three-stage roadmap; every account expected able to add a quantum-safe signer by end of 2027; enterprise wallets via Soroban contract accounts in 2026.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan",
+            "observedAt": "2026-11-14",
+            "note": "every Stellar account is expected to be able to add a quantum-safe signer through a native protocol upgrade"
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan",
+            "observedAt": "2026-11-14",
+            "note": "the three-stage roadmap to quantum-safe cryptography"
+          }
+        ]
+      },
+      {
+        "claim": "Pubnet runs Protocol 29; Bell (P30, CAP-0087) is live on Testnet; Mainnet vote 2026-11-23.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://horizon.stellar.org/",
+            "observedAt": "2026-11-14",
+            "note": "current_protocol_version=29; core_supported_protocol_version=30 (ledger closed 2026-11-14T03:13:12Z)"
+          },
+          {
+            "class": "C",
+            "ref": "https://status.stellar.org/api/v2/scheduled-maintenances/upcoming.json",
+            "observedAt": "2026-11-14",
+            "note": "Stellar Public Network Protocol Upgrade Vote, scheduled_for 2026-11-23T17:00:00.000Z"
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/developers/introducing-bell-protocol-30-on-stellar",
+            "observedAt": "2026-11-14",
+            "note": "The testnet vote is on November 3, 2026 and the mainnet vote on November 23, 2026."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-10",
-      "by": "Codex golden-truth author lane, 2026-11-10 truth-maintenance round",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-hist-retail, verify-hist-retail; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan",
-        "https://stellar.org/blog/developers/introducing-bell-protocol-30-on-stellar",
-        "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0087.md",
-        "https://github.com/stellar/stellar-core/releases/tag/v30.0.0",
-        "https://horizon.stellar.org/",
-        "https://mainnet.sorobanrpc.com",
-        "https://horizon-testnet.stellar.org/ledgers?order=desc&limit=1",
-        "https://soroban-testnet.stellar.org",
-        "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
-        "https://status.stellar.org/api/v2/scheduled-maintenances/upcoming.json",
-        "https://status.stellar.org/api/v2/scheduled-maintenances.json",
-        "Sibling sweep: Protocol history, upgrade timing, current Pubnet version, P27/CAP-0071 and P23 settings cases agree. q-pc-quantum-preparedness-dormant, q-infra-testnet-vs-futurenet, q-zk-host-functions-status, q-pc-address-types-strkey and SDK cases keep explicitly dated earlier observations. q-protocol-ledger-header-fields and q-protocol-ledger-close-time preserve CAP-0088 semantics."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-hist-quantum-preparedness-plan",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-hist-quantum-preparedness-plan",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-hist-quantum-preparedness-plan",
+        "Live A 2026-11-14: https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan -- 'every Stellar account is expected to be able to add a quantum-safe signer through a native protocol upgrade'",
+        "Live A 2026-11-14: https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan -- 'the three-stage roadmap to quantum-safe cryptography'",
+        "Live C 2026-11-14: https://horizon.stellar.org/ -- 'current_protocol_version=29; core_supported_protocol_version=30 (ledger closed 2026-11-14T03:13:12Z)'",
+        "Live C 2026-11-14: https://status.stellar.org/api/v2/scheduled-maintenances/upcoming.json -- 'Stellar Public Network Protocol Upgrade Vote, scheduled_for 2026-11-23T17:00:00.000Z'",
+        "Live A 2026-11-14: https://stellar.org/blog/developers/introducing-bell-protocol-30-on-stellar -- 'The testnet vote is on November 3, 2026 and the mainnet vote on November 23, 2026.'"
       ],
       "rootCause": [
-        "freshness-drift"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "authored 2026-07 (2026-events)"
+    "origin": "authored 2026-07 (2026-events)",
+    "notes": "Grade what the June 2026 plan said at publication. Later developments are optional. As of 2026-11-10, Bell/P30 is live on Testnet with CAP-0087 ML-DSA-44/65/87 contract verification. Pubnet still runs P29 and the Bell Mainnet vote is scheduled for 2026-11-23. SDF still describes a native post-quantum signer for classic accounts as a future change. The June roadmap also leaves deprecation timing dependent on the threat. Accept a later sourced Mainnet activation.",
+    "leaf": "security.quantum-preparedness"
   }
 }

@@ -8,19 +8,16 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "A trustline is the ledger entry that lets an account hold a non-native Stellar asset. Its `limit` is the maximum balance that account is willing/able to hold for that asset; changing the limit is done with `ChangeTrust`.\n\n`op_invalid_limit` / `CHANGE_TRUST_INVALID_LIMIT` means the requested new limit is not sufficient to hold the current balance and buying liabilities. The operation docs explicitly call out the common removal case: trying to remove a trustline while it still has a nonzero asset balance. Other lifecycle constraints can also matter, such as missing issuer, low reserve, deauthorization, or liquidity-pool references.\n\nTo remove a trustline safely, first reduce the asset balance to zero through payment, trade, redemption/burn to issuer, or another valid disposition. Cancel or settle relevant offers/liabilities. Then submit `ChangeTrust` with limit `0`. When the trustline closes, the associated base reserve becomes available again; until then, the trustline increases the account's minimum XLM balance.",
+    "answer": "A trustline `limit` is the most of that asset the account will hold, changed with `ChangeTrust`. `op_invalid_limit` means the new limit is below the current balance plus buying liabilities, typically from removing a trustline that still holds tokens. To remove one, bring the balance to zero, cancel related offers, then submit ChangeTrust with limit 0.",
     "keyFacts": [
-      "Explains a trustline limit caps the maximum balance the account can hold for that asset.",
-      "Defines `op_invalid_limit` as a new trustline limit outside protocol constraints.",
-      "Names a below-balance limit as a common `op_invalid_limit` cause.",
-      "Requires a zero asset balance before trustline removal.",
-      "Removes a trustline by setting its limit to zero."
+      "A trustline limit caps the balance the account will hold of that asset.",
+      "op_invalid_limit means the new limit is below balance plus buying liabilities.",
+      "A trustline can be removed only when its asset balance is zero.",
+      "Removal is a ChangeTrust operation with limit 0."
     ],
     "avoid": [
-      "Do NOT tell users to remove a trustline while it still has a nonzero balance.",
-      "Do NOT imply a trustline limit increases automatically without a Change Trust operation."
-    ],
-    "notes": "Verified against operation docs and Horizon result-code docs.\nAlso good if the answer: Mentions trustlines increase the account minimum balance/reserve while present. | Notes authorization flags can affect whether the account can hold or transact the asset.\nGolden cites: Stellar docs for trustlines/change trust or operation result codes."
+      "Do NOT remove a trustline while it still holds a nonzero balance."
+    ]
   },
   "tags": {
     "category": "assets-anchors-seps",
@@ -57,15 +54,16 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-01)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-assets, verify-audit-assets; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Verification-only event 2026-11-02: every judge-facing field is unchanged; the proposer and an independent verifier re-derived the claims from at least two source classes.",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations.md — 'CHANGE_TRUST_INVALID_LIMIT -3 The `limit` is not sufficient to hold the current balance of the trustline and still satisfy its buying liabilities. This error occurs when attempting to remove a trustline with a non-zero asset balance.' (claim: op_invalid_limit: limit below balance + buying liabilities; removal with nonzero balance.; verdict confirmed)",
-        "Live B 2026-11-02: https://github.com/stellar/stellar-core/blob/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/transactions/ChangeTrustOpFrame.cpp#L192-L245 — 'if (mChangeTrust.limit < getMinimumLimit(...)) { // Can't drop the limit below the balance you are holding ... CHANGE_TRUST_INVALID_LIMIT; ... // new trust line if (mChangeTrust.limit == 0) CHANGE_TRUST_INVALID_LIMIT' (claim: op_invalid_limit: limit below balance + buying liabilities; removal with nonzero balance.; verdict confirmed)",
-        "Live B 2026-11-02: https://github.com/stellar/stellar-core/blob/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/transactions/ChangeTrustOpFrame.cpp#L208-L212 — 'liquidityPoolUseCount != 0 -> CHANGE_TRUST_CANNOT_DELETE' (claim: Removal = ChangeTrust limit 0; reserve freed; LP references block deletion.; verdict confirmed)",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/change-trust.md — 'For every new trustline added to an account, the minimum reserve of XLM that account must hold increases.' (claim: Removal = ChangeTrust limit 0; reserve freed; LP references block deletion.; verdict confirmed)",
-        "Sibling sweep 2026-11-02: q-aas-claim-received-claimable-balances, q-asset-trustline-vs-sac checked; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-assets.json#q-aas-trustline-limit-lifecycle",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-assets.json#q-aas-trustline-limit-lifecycle",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-aas-trustline-limit-lifecycle",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/change-trust -- 'The limit is not sufficient to hold the current balance of the trustline and still satisfy its buying liabilities.'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
     "origin": "raven-next q-aas-trustline-limit-lifecycle",
@@ -105,7 +103,21 @@
             "note": "Exact quote: 'For every new trustline added to an account, the minimum reserve of XLM that account must hold increases.'"
           }
         ]
+      },
+      {
+        "claim": "op_invalid_limit: limit not sufficient to hold current balance and satisfy buying liabilities.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/change-trust",
+            "observedAt": "2026-11-14",
+            "note": "The limit is not sufficient to hold the current balance of the trustline and still satisfy its buying liabilities."
+          }
+        ]
       }
-    ]
+    ],
+    "notes": "Verified against operation docs and Horizon result-code docs.\nAlso good if the answer: Mentions trustlines increase the account minimum balance/reserve while present. | Notes authorization flags can affect whether the account can hold or transact the asset.\nGolden cites: Stellar docs for trustlines/change trust or operation result codes.",
+    "leaf": "assets.trustlines"
   }
 }

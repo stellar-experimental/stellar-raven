@@ -6,17 +6,14 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "- **Protocol 19** (activated ~2022-06-08) introduced **generalized transaction preconditions via CAP-0021** — time bounds, ledger bounds, min sequence number / age / gap, and extra signers [1][2].\n- These enable patterns like **payment channels** and **time-locked / sequence-conditioned** transactions [2].\n- Protocol 19 also included **CAP-0040** (ed25519 signed-payload signer / shared signing for contracts) [1].\n- Preconditions extended the older simple timebounds concept into a richer set [2]. Protocol 19 did **not** introduce Soroban (that was Protocol 20).",
+    "answer": "Protocol 19 (June 2022) added generalized transaction preconditions via CAP-0021: time bounds, ledger bounds, minimum sequence number, minimum sequence age and ledger gap, and extra signers. They enable time-locked and sequence-conditioned transactions such as payment channels. CAP-0040 signed-payload signers shipped alongside. Soroban arrived in Protocol 20.",
     "keyFacts": [
-      "Protocol 19 activated around 2022-06-08.",
       "Protocol 19 introduced generalized preconditions through CAP-0021.",
-      "CAP-0021 adds time/ledger bounds, minimum sequence number/age/gap, and extra signers."
+      "CAP-0021 adds time/ledger bounds, minimum sequence number/age/gap and extra signers."
     ],
     "avoid": [
-      "Do NOT attribute generalized preconditions to the wrong protocol (e.g. P18 or P20) or wrong CAP (e.g. CAP-0046).",
-      "Do NOT claim Protocol 19 introduced Soroban smart contracts (that was Protocol 20)."
-    ],
-    "notes": "P19 = CAP-0021 preconditions. Trap is wrong version/CAP or confusing with Soroban (P20).\nAlso good if the answer: Notes these preconditions enable patterns like payment channels and time-locked / sequence-conditioned transactions. | Notes Protocol 19 also included CAP-0040 (shared/signed payloads for contracts/ed25519 signed payload signer).\nGolden cites: The 'Announcing Protocol 19' material and/or CAP-0021 in stellar/stellar-protocol."
+      "Do NOT attribute preconditions to another protocol or CAP, or claim Protocol 19 introduced Soroban."
+    ]
   },
   "tags": {
     "category": "protocol-core",
@@ -43,14 +40,17 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-03)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-protocol, verify-protocol; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "No gospel change 2026-11-02: question, golden, and tags are unchanged; this event refreshes judge-blind provenance only.",
-        "Live re-check 2026-11-02 (confirmed): Protocol 19 activated 2022-06-08 with CAP-0021 (and CAP-0040) — A https://stellar.org/protocol-upgrades 'Protocol 19 6-8-2022 - CAP-0021 (Generalized transaction conditions and timelocks.), CAP-0040 (Shared transaction signing for contracts.)'; B https://github.com/stellar/stellar-protocol/blob/master/core/cap-0021.md 'Status: Final ... Protocol version: 19'; D https://stellar.org/blog/developers/protocol-19-upgrade-complete (via Perplexity search) 'Today, June 8, 2022 at 15:00 UTC, the Stellar public network successfully upgraded to Protocol 19!'",
-        "Live re-check 2026-11-02 (confirmed): CAP-0021 adds time/ledger bounds, minSeqNum/age/gap, extra signers — B https://github.com/stellar/stellar-protocol/blob/master/core/cap-0021.md 'sequence number n satisfies minSeqNum <= n < tx.seqNum ... `extraSigners`'; A https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions 'Minimum sequence number ... Minimum sequence age ... Minimum sequence ledger gap ... Ledger bounds'",
-        "Live re-check 2026-11-02 (confirmed): Soroban is Protocol 20, not 19 — B https://github.com/stellar/stellar-protocol/blob/master/core/README.md '| [CAP-0046](cap-0046.md) | 20 |Soroban smart contract system overview |'; A https://developers.stellar.org/docs/networks/software-versions 'Protocol 20: Soroban Phase 0 (Mainnet, February 20, 2024)'",
-        "Sibling sweep 2026-11-02: q-protocol-accounts-signers-thresholds uses the same minSeqNum <= S < tx.seqNum rule; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-protocol-19-preconditions-cap-0021",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-protocol-19-preconditions-cap-0021",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-protocol-19-preconditions-cap-0021",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0021.md -- 'Status: Final / Protocol version: 19'",
+        "Live D 2026-11-14: https://stellar.org/blog (parallel-cli search, Protocol 19 announcement) -- 'Today, June 8, 2022 at 15:00 UTC, the Stellar public network [upgraded to Protocol 19]'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
     "origin": "raven-next q-protocol-19-preconditions-cap-0021",
@@ -72,7 +72,28 @@
             "note": "Fetched CAP-0021 source defines generalized transaction preconditions and their fields."
           }
         ]
+      },
+      {
+        "claim": "Protocol 19 activated 2022-06-08 with CAP-0021 Final",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0021.md",
+            "observedAt": "2026-11-14",
+            "note": "Status: Final / Protocol version: 19"
+          },
+          {
+            "class": "D",
+            "ref": "https://stellar.org/blog (parallel-cli search, Protocol 19 announcement)",
+            "observedAt": "2026-11-14",
+            "note": "Today, June 8, 2022 at 15:00 UTC, the Stellar public network [upgraded to Protocol 19]"
+          }
+        ]
       }
-    ]
+    ],
+    "notes": "P19 = CAP-0021 preconditions. Trap is wrong version/CAP or confusing with Soroban (P20).\nAlso good if the answer: Notes these preconditions enable patterns like payment channels and time-locked / sequence-conditioned transactions. | Notes Protocol 19 also included CAP-0040 (shared/signed payloads for contracts/ed25519 signed payload signer).\nGolden cites: The 'Announcing Protocol 19' material and/or CAP-0021 in stellar/stellar-protocol.",
+    "leaf": "protocol.timebounds-preconditions",
+    "secondaryLeaf": "network.protocol-history"
   }
 }

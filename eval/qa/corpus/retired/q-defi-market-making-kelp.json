@@ -1,0 +1,21 @@
+{
+  "id": "q-defi-market-making-kelp",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-defi (golden coverage audit)",
+    "reviewer": "verify-defi (golden coverage audit)",
+    "reason": "Kelp's archived status has no taxonomy facet, and the case it would have merged into was itself retired.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-defi-market-making-kelp",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-defi-market-making-kelp",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-defi-market-making-kelp"
+    ],
+    "lastCaseContentSha256": "184d0222183df4bf0f3d5eefd7f52eef64220946cf43b4749d1fe439f295699a",
+    "replacementIds": []
+  }
+}

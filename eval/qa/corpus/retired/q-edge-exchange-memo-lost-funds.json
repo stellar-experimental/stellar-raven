@@ -1,0 +1,23 @@
+{
+  "id": "q-edge-exchange-memo-lost-funds",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-edge (golden coverage audit)",
+    "reviewer": "verify-audit-edge (golden coverage audit)",
+    "reason": "Merged into q-raph-missing-exchange-memo. Same user problem as q-raph-missing-exchange-memo. But the retail lane merges that case the other way, into this one, so the two merges form a cycle. Keep q-raph-missing-exchange-memo (home category retail) as the single survivor, absorbing status-first diagnosis, the muxed-address model and discretionary recovery, and drop the retail lane's reverse merge.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-edge.json#q-edge-exchange-memo-lost-funds",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-edge.json#q-edge-exchange-memo-lost-funds",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-edge-exchange-memo-lost-funds"
+    ],
+    "lastCaseContentSha256": "1e8a8476a763d90a61aa1fa9d8427a2bc3954f7ea3f70e7d9e33db29f6b6fc17",
+    "replacementIds": [
+      "q-raph-missing-exchange-memo"
+    ]
+  }
+}

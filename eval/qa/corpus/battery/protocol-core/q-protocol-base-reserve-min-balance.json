@@ -7,20 +7,16 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "The **base reserve** is a validator-configurable ledger parameter. On Mainnet ledger **63426130** on **2026-07-11**, it was **5,000,000 stroops = 0.5 XLM**; that number is current configuration, not a permanent constant. For a classic account, Core computes:\n\n`minimumBalance = (2 + numSubEntries + numSponsoring - numSponsored) * baseReserve`\n\nThus an unsponsored empty account currently needs two reserves, or **1 XLM**. Each ordinary owned subentry adds a reserve; each entry the account sponsors adds one, while each reserve unit sponsored for it subtracts one. A fully sponsored new account can start with **0 XLM** because its two account reserve units are charged to the sponsor. When sponsorship ends, the reserve obligation shifts back to the owner, which must then meet the balance requirement. A pool-share trustline is the important exception to 'one trustline, one reserve': it consumes **two reserve units**.\n\nLiabilities are not a term in Core's minimum-balance formula. They affect spendability separately: available XLM is the balance minus minimum balance and **selling liabilities**. Removing an entry can release its reserve, subject to remaining liabilities and sponsorship. Soroban contract code/data are not classic account subentries; they use TTL-based **rent** and archival rules rather than this account reserve formula.",
+    "answer": "The base reserve is a validator-voted network setting, 0.5 XLM (5,000,000 stroops) on Mainnet as of 2026-11-14. Minimum balance = (2 + numSubEntries + numSponsoring - numSponsored) × baseReserve, so an unsponsored empty account needs 1 XLM. A pool-share trustline counts as two subentries. Selling liabilities reduce spendable balance but are not in the minimum.",
     "keyFacts": [
-      "Gives the full sponsorship-aware minimum-balance formula.",
-      "Separates minimum balance from the selling-liability spendable boundary.",
-      "Explains sponsored zero-balance account creation and later reserve-obligation shift.",
-      "Sets a pool-share trustline reserve cost at twice the current 0.5 XLM base reserve.",
-      "Describes Soroban contract rent as its own storage-cost model."
+      "Minimum balance is (2 + subentries + sponsoring - sponsored) times the base reserve.",
+      "A pool-share trustline costs two reserve units.",
+      "Selling liabilities reduce spendable XLM but are not in the minimum balance.",
+      "The base reserve is validator-set: 0.5 XLM as of the stated date."
     ],
     "avoid": [
-      "Do NOT use (2 + subentries) * baseReserve as a universal post-sponsorship formula or add liabilities inside Core's minimum-balance calculation.",
-      "Do NOT claim every trustline costs one reserve or that a sponsored account can remain under-reserved after sponsorship ends.",
-      "Do NOT claim 0.5 XLM is timeless or that classic account reserves apply to Soroban contract storage."
-    ],
-    "notes": "GT-31 CORRECTION 2026-07-11: require the sponsorship-aware formula and separate selling-liability spendability. A sponsored account may start at zero, pool-share trustlines cost two reserve units, current 0.5 XLM is dated configuration, and contract data pays rent rather than classic reserve."
+      "Do NOT call 0.5 XLM a fixed protocol constant, or add liabilities to the minimum-balance formula."
+    ]
   },
   "tags": {
     "category": "protocol-core",
@@ -34,7 +30,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-02-15",
     "sources": [
       {
@@ -220,24 +216,44 @@
             "note": "'Allows the sponsoring account to remove or transfer sponsorships of existing ledgerEntries and signers.'"
           }
         ]
+      },
+      {
+        "claim": "Base reserve 0.5 XLM (5,000,000 stroops) on Mainnet",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "F",
+            "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=5",
+            "observedAt": "2026-11-14",
+            "note": "closed_at 02:48:27, :32, :37, :42, :47Z; base_reserve_in_stroops 5000000; max_tx_set_size 1000; protocol_version 29"
+          },
+          {
+            "class": "E",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts#base-reserves",
+            "observedAt": "2026-11-14",
+            "note": "One base reserve is currently 0.5 XLM."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "golden-truth near-due re-verification 2026-11-02 (round ledger .agents/rounds/2026-11-02-golden-reverify.md; research lane plus authoring lane, Claude Opus 5.5); re-confirmed by Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-03)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-protocol, verify-protocol; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "No gospel change 2026-11-02: question, answer, keyFacts, avoid, notes, tags, and truth.asOf (2026-07-11, the dated ledger in the answer) are unchanged. This event refreshes judge-blind provenance and reverifyBy only.",
-        "Live F 2026-11-02: https://horizon.stellar.org/ledgers?order=desc&limit=1 ledger 65268657 reports base_reserve_in_stroops 5000000 on protocol 29; https://horizon-testnet.stellar.org/ledgers?order=desc&limit=1 ledger 5521086 reports 5000000.",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/lumens ('One base reserve is currently 0.5 XLM'; two base reserves, currently 1 XLM; sponsored zero starting balance; contract data pays rent) and https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves#effect-on-minimum-balance (sponsorship-aware formula; selling liabilities separate).",
-        "Live B 2026-11-02: stellar-core@b8c4f12d6f1159d67be8743c87a3c7df839ae7f4 src/transactions/TransactionUtils.cpp lines 903-906 and 611-613; stellar-xdr Stellar-ledger.x LEDGER_UPGRADE_BASE_RESERVE; CAP-0033 REVOKE_SPONSORSHIP_LOW_RESERVE; CAP-0038 two base reserves for a pool-share trustline; CAP-0046-07 rent fee.",
-        "Source repair 2026-11-02: the Liquidity Pools URL moved to https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools after the 2026-10-22 Mintlify migration; the old path returns 404.",
-        "Sibling sweep 2026-11-02: grep 'base reserve|baseReserve|minimum balance' (23 cases), spot-checked q-edge-1xlm-activation-fee, q-asset-trustline-basics, q-asset-amm-fee-reserve, q-pc-sponsored-reserves, and q-pc-account-merge-reclaim-reserve; no contradiction.",
-        "Live re-check 2026-11-02 (confirmed-as-of): Base reserve 5,000,000 stroops (0.5 XLM), dated configuration — F https://horizon.stellar.org/ledgers?order=desc&limit=1 'ledger 65269905 closed 2026-11-02T16:01:49Z protocol 29 base_reserve_in_stroops 5000000'; A https://developers.stellar.org/docs/learn/fundamentals/lumens 'One base reserve is currently 0.5 XLM.'",
-        "Live re-check 2026-11-02 (confirmed): Sponsorship-aware min balance formula; selling liabilities separate — B https://github.com/stellar/stellar-core/blob/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/transactions/TransactionUtils.cpp 'effEntries = 2 + numSubentries + numSponsoring - numSponsored; return effEntries * baseReserve'; A https://developers.stellar.org/docs/learn/fundamentals/lumens '`available balance` = `balance` - `minimum balance` - `liabilities.selling`.'",
-        "Live re-check 2026-11-02 (confirmed): Pool-share trustline counts as two subentries — B https://github.com/stellar/stellar-protocol/blob/master/core/cap-0038.md 'The pool share trust line `tl` has ... The pool share trust line should count as two subentries'",
-        "Sibling sweep 2026-11-02: q-pc-sponsored-reserves carries the same formula; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-protocol-base-reserve-min-balance",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-protocol-base-reserve-min-balance",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-protocol-base-reserve-min-balance",
+        "Live F 2026-11-14: https://horizon.stellar.org/ledgers?order=desc&limit=5 -- 'closed_at 02:48:27, :32, :37, :42, :47Z; base_reserve_in_stroops 5000000; max_tx_set_size 1000; protocol_version 29'",
+        "Live E 2026-11-14: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts#base-reserves -- 'One base reserve is currently 0.5 XLM.'",
+        "Live F 2026-11-14: https://horizon.stellar.org/ledgers?order=desc&limit=1 -- '\"base_reserve_in_stroops\": 5000000'",
+        "Live sentinel read 2026-11-14 (npm run eval:qa:sentinels -- --ids mainnet-base-reserve): hold"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-protocol-base-reserve-min-balance"
+    "origin": "raven-next q-protocol-base-reserve-min-balance",
+    "notes": "GT-31 CORRECTION 2026-07-11: require the sponsorship-aware formula and separate selling-liability spendability. A sponsored account may start at zero, pool-share trustlines cost two reserve units, current 0.5 XLM is dated configuration, and contract data pays rent rather than classic reserve.",
+    "leaf": "protocol.accounts-reserves"
   }
 }

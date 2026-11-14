@@ -1,0 +1,21 @@
+{
+  "id": "q-tool-rust-soroban-sdk",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-tooling-b (golden coverage audit)",
+    "reviewer": "verify-audit-tooling-b (golden coverage audit)",
+    "reason": "That soroban-sdk is SDF's canonical contract crate is tested by q-tool-which-sdk-comparison, and its wasm32v1-none target by q-sor-build-target-wasm32v1.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-b.json#q-tool-rust-soroban-sdk",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-b.json#q-tool-rust-soroban-sdk",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-tool-rust-soroban-sdk"
+    ],
+    "lastCaseContentSha256": "8c263631b8e6b651da985f8d3e627f2065687ac96874c3af4d830f89116a513b",
+    "replacementIds": []
+  }
+}

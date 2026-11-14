@@ -5,16 +5,18 @@
     "stellarDocs.search_protocol_concepts_docs"
   ],
   "golden": {
-    "answer": "Do not assume it is lost. The confirmed transaction cannot be edited to append a memo or reversed by Stellar/SDF, and the exchange—not Stellar—has to identify and credit a memo-less deposit to its pooled address. Open that exchange's deposit-recovery/support flow promptly and provide the transaction hash, asset, amount, destination, time, and the account details it requests. Do not send another transaction or share a secret key. Whether recovery is possible, how long it takes, and any fee are exchange-specific.",
+    "answer": "Not necessarily. First check the transaction result: if it failed, nothing settled; if it succeeded, the funds reached the exchange's address, but without the memo (or muxed M-address ID) the exchange could not credit you automatically. Stellar and SDF cannot edit or reverse it. Contact the exchange's official support with the transaction hash, asset, amount and time; recovery is at its discretion. Never share a secret key, recovery phrase or 2FA code.",
     "keyFacts": [
-      "Recovery is an exchange support/accounting process, not a network reversal.",
-      "Names the transaction hash and deposit details as useful recovery evidence."
+      "Check the transaction result first: a failed transaction moved nothing.",
+      "A successful payment reached the exchange; the memo only drives its internal credit.",
+      "Stellar and SDF cannot reverse it; recovery is at the exchange's discretion.",
+      "Contact the exchange's official support with non-secret transaction details."
     ],
     "avoid": [
       "Do NOT promise recovery or claim the Stellar network can reverse the payment.",
-      "Do NOT advise sharing a secret key."
+      "Do NOT advise sharing a secret key, recovery phrase, password or 2FA code."
     ],
-    "notes": "No trap: recovery policies vary by custodian."
+    "notes": "Exchanges may use a memo or a muxed (M...) address for deposits; accept either model. Recovery policy, timing and fees vary by exchange."
   },
   "tags": {
     "category": "retail-consumer",
@@ -107,21 +109,20 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch retail-consumer-02)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-hist-retail, verify-hist-retail; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "A https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers — \"SDF ... DOES NOT have the capability to freeze or return XLM held in a Stellar account.\" (observedAt 2026-11-02; supports golden.answer / keyFacts[0] / avoid[0]: confirmed)",
-        "B https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0029.md — \"Dealing with missing memos may result in lost funds and requires manual actions from the custodial support staff.\" (observedAt 2026-11-02; supports golden.answer / keyFacts[0] / avoid[0]: confirmed)",
-        "A https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos — \"most custodial services, including cryptocurrency exchanges, choose to use a single pooled Stellar account ... an internal customer database maps transactions to individual accounts, using either the muxed account feature or transaction memos.\" (observedAt 2026-11-02; supports golden.answer / keyFacts[0] / avoid[0]: confirmed)",
-        "A https://support.kraken.com/articles/crypto-assets-deposit-recovery — \"Reach out to our Support Team with detailed information about the transaction, including transaction ID (TxID), cryptocurrency and amount, deposit address used, and date and time of the transaction.\" (observedAt 2026-11-02 (page dated 2026-09-21); supports golden.keyFacts[1]: confirmed-as-of)",
-        "A https://www.binance.com/en/support/faq/detail/40b87335db904481888ef406b105442b — \"Enter the details of your deposit ... Coin/Token ... Deposit amount\" (observedAt 2026-11-02; supports golden.keyFacts[1]: confirmed-as-of)",
-        "A https://support.kraken.com/articles/crypto-assets-deposit-recovery — \"Missing or Incorrect Tag/Memo | Network fee | Credit/Refund ... No Guarantee of Recovery\" (observedAt 2026-11-02; supports golden.answer / avoid[0]: confirmed-as-of)",
-        "A https://www.binance.com/en/support/faq/detail/40b87335db904481888ef406b105442b — \"We will collect fees for the retrieval service ... after the asset is successfully retrieved, it will only be returned to the source address.\" (observedAt 2026-11-02; supports golden.answer / avoid[0]: confirmed-as-of)",
-        "D https://www.binance.com/en/square/post/380553313425184 — \"Recovery isn't guaranteed , and some requests may carry a fee (2026-10-23)\" (observedAt 2026-11-02; supports golden.answer / avoid[0]: confirmed-as-of)",
-        "A https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers — \"NEVER ask you for your private keys.\" (observedAt 2026-11-02; supports golden.avoid[1]: confirmed)",
-        "Sibling set checked by the proposer 2026-11-02: q-raph-exchange-memo, q-jutsu-what-is-a-memo, q-raph-withdraw-exchange-self-custody; no contradiction recorded."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-raph-missing-exchange-memo",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-raph-missing-exchange-memo",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-raph-missing-exchange-memo",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/learn/fundamentals/transactions -- 'Stable; not re-read.'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raph memoless-exchange-deposit-recovery"
+    "origin": "raph memoless-exchange-deposit-recovery",
+    "notes": "No trap: recovery policies vary by custodian.",
+    "leaf": "wallets.wrong-memo"
   }
 }

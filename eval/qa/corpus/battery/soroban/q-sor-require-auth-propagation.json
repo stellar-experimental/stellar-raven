@@ -6,16 +6,17 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "`require_auth` checks the exact Address passed. In user → A → B, B's `user.require_auth()` is satisfied only by the user's signed invocation tree; requiring user auth at A's entry prevents an inner authorization from being replayed through an unintended wrapper. If B instead calls `a_address.require_auth()` for immediate invoker A, the host automatically authorizes that direct A → B relationship. A must **not** put direct B in `authorize_as_current_contract` entries. Explicit current-contract authorization is for deeper calls, e.g. A → B → C where C requires A: before calling B, A authorizes the exact C invocation and nested sub-invocations. This is invocation-tree authorization, not ambient msg.sender; `__check_auth` is not used for the automatic direct-contract-invoker case.",
+    "answer": "`require_auth` checks exactly the Address it is called on. In user -> A -> B, B's `user.require_auth()` is satisfied only by the user's signed invocation tree, so require user auth at A's entry too. If B requires its direct invoker A, the host authorizes that direct call automatically, and A must not list it in `authorize_as_current_contract`. Use `authorize_as_current_contract` for deeper calls (A -> B -> C where C requires A): before calling B, A authorizes the exact C invocation. There is no ambient `msg.sender`.",
     "keyFacts": [
-      "Explains user auth propagation and wrapper/front-running boundary.",
-      "States direct A→B contract auth is automatic.",
-      "Uses authorize_as_current_contract for C/deeper calls."
+      "`require_auth` is satisfied only by authorization for the exact Address it is called on.",
+      "A direct invoker contract's auth is automatic; no `authorize_as_current_contract` entry.",
+      "`authorize_as_current_contract` covers deeper calls, such as C in A -> B -> C."
     ],
     "avoid": [
-      "Do NOT include the direct next-contract call in auth_entries, infer msg.sender, or call __check_auth for the automatic direct-invoker case."
+      "Do NOT list the direct next contract call in `authorize_as_current_contract` entries.",
+      "Do NOT claim that Soroban has an ambient `msg.sender`."
     ],
-    "notes": "Also good if the answer: Mentions custom account `__check_auth` only when B requires auth for an `Address::Contract` account.\nGolden cites: Official Stellar authorization docs. | Official cross-contract authorization starter guide for entry-point auth and sub-call behavior.\nGT-42 independently classified the inherited direct-call instruction as materially wrong."
+    "notes": "Mentioning `__check_auth` only for Address::Contract accounts is acceptable."
   },
   "tags": {
     "category": "soroban",
@@ -75,20 +76,19 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-03)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-soroban-a, verify-audit-soroban-a; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Proposer A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization#contract-invoker — \"all the `require_auth` calls made on behalf of the **direct** invoker contract `Address` are considered to be authorized (but not any calls on behalf of the contract deeper down the stack).\"",
-        "Proposer B 2026-11-02: https://github.com/stellar/rs-soroban-sdk/blob/v29.0.1/soroban-sdk/src/env.rs — \"All the direct calls that the current contract performs are always considered to have been authorized. This is only needed to authorize deeper calls that originate from the next contract call from the current contract.\"",
-        "Proposer E 2026-11-02: stellarDocs.search_soroban_contract_docs 'authorize_as_current_contract sub-contract call' — \"top hit https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization#matching-authorized-invocation-trees\"",
-        "Proposer claim verdict confirmed (golden.answer): require_auth for the direct invoker contract A is automatic; deeper calls need authorize_as_current_contract entries, not the direct B call",
-        "Proposer A 2026-11-02: https://developers.stellar.org/docs/build/guides/auth/contract-authorization — \"Without that, the authorized inner `add()` call can be front-run by anyone without being wrapped in `add_with()`.\"",
-        "Proposer claim verdict confirmed (golden.answer): Requiring user auth at A's entry prevents the inner authorization being front-run through an unintended wrapper",
-        "Proposer A 2026-11-02: https://developers.stellar.org/docs/build/guides/auth/contract-authorization — \"The second condition occurs when an account contract has not provided invoker authorization, for example, by calling a function that requires authorization directly.\"",
-        "Proposer claim verdict confirmed (golden.answer): __check_auth is not used for the automatic direct-contract-invoker case",
-        "Sibling sweep 2026-11-02: checked q-soroban-token-transfer-pattern, q-sor-recurring-escrow-patterns, q-soroban-require-auth; no contradiction found."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-a.json#q-sor-require-auth-propagation",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-a.json#q-sor-require-auth-propagation",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-sor-require-auth-propagation"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-sor-require-auth-propagation"
+    "origin": "raven-next q-sor-require-auth-propagation",
+    "notes": "Also good if the answer: Mentions custom account `__check_auth` only when B requires auth for an `Address::Contract` account.\nGolden cites: Official Stellar authorization docs. | Official cross-contract authorization starter guide for entry-point auth and sub-call behavior.\nGT-42 independently classified the inherited direct-call instruction as materially wrong.",
+    "leaf": "soroban.authorization"
   }
 }

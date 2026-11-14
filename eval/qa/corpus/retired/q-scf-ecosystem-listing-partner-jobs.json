@@ -1,0 +1,23 @@
+{
+  "id": "q-scf-ecosystem-listing-partner-jobs",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-scf (golden coverage audit)",
+    "reviewer": "verify-audit-scf (golden coverage audit)",
+    "reason": "Merged into q-scf-vs-sdf-enterprise-fund. The Matching Fund terms are the only precise fact, and neither map lists directory listing or jobs as a leaf.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-scf-ecosystem-listing-partner-jobs",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-scf-ecosystem-listing-partner-jobs",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-scf-ecosystem-listing-partner-jobs"
+    ],
+    "lastCaseContentSha256": "866a5c08194b5cd5f89440c660d50658b5c3ba8a4c00e376593b4d4fc427a448",
+    "replacementIds": [
+      "q-scf-vs-sdf-enterprise-fund"
+    ]
+  }
+}

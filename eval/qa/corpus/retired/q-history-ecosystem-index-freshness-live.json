@@ -1,0 +1,21 @@
+{
+  "id": "q-history-ecosystem-index-freshness-live",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-hist-retail (golden coverage audit)",
+    "reviewer": "verify-hist-retail (golden coverage audit)",
+    "reason": "Retired with no replacement because it grades Raven's Scout status envelope rather than a Stellar fact, and test/adapters.test.ts and test/live/run-live-execute.mjs exercise scout.getStatus.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-history-ecosystem-index-freshness-live",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-history-ecosystem-index-freshness-live",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-history-ecosystem-index-freshness-live"
+    ],
+    "lastCaseContentSha256": "6f17a1b53d3ef791d415d6992d98bb5c0f58ad2be0ae283395da26f5692ea90c",
+    "replacementIds": []
+  }
+}

@@ -13,7 +13,9 @@ Use the [run-evals workflow](../../.agents/skills/run-evals/SKILL.md) to plan a 
 | `corpus/retired/` | Permanent retirement records |
 | `corpus/live/live-cases.json` | Frozen `live-data-canonical-v3`, with 15 cases |
 | `corpus/live/live-digest-supplement-cases.json` | Frozen `live-digest-supplement-v2`, with two cases |
-| `cases.json`, `sample.json`, `lifecycle-registry.json` | Generated cases, sample, membership, and identity records |
+| `cases.json`, `sample.json`, `lifecycle-registry.json` | Generated headline cases, sample, membership, and identity records |
+| `tool-cases.json` | Generated tool-contract lane: battery cases with `truth.lane: "tool"` |
+| `taxonomy.json` | Coverage map: domains, leaves with weight, volatility, and case target, and open slots |
 | `consistency-register.json` | Cross-case contradictions and numeric invariants |
 | `results/` | Local, ignored collection and judging artifacts |
 | `reviewed/` | Retained dated evidence |
@@ -38,8 +40,13 @@ npm run eval:qa:compile
 npm run eval:qa:lint -- --since <ref>
 ```
 
-`--coverage` reports coverage floors without enforcing them.
-`--enforce-floors` makes floor violations errors. `--stale` rejects expired `truth.reverifyBy` values.
+The headline battery measures Stellar truth by taxonomy leaf. It does not measure operation reach,
+skill reach, or response-envelope traps; the routing gates, the skills routing cases, unit tests,
+the frozen live lanes, and the tool lane own those.
+
+`--coverage` checks headline cases against [taxonomy.json](taxonomy.json). Every headline case names an existing `truth.leaf`, and no leaf holds more than its `cases` target plus one primary case.
+An empty weight-2 or weight-3 leaf warns unless `openSlots` names it with a reason; `--enforce-floors` makes it an error.
+An open slot whose leaf has an active case is an error, so the list only shrinks. `--stale` rejects expired `truth.reverifyBy` values.
 Use `npm run eval:qa:register` to update member hashes after reviewed changes.
 An unclustered case cannot trigger a cluster's automatic reopening; register coverage needs separate review.
 
@@ -78,6 +85,7 @@ node eval/qa/run-qa.mjs \
 Use the actual bound port. Variant A uses the shipped `search` tool.
 For the canonical live lane, replace `--sample 30` with `--cases eval/qa/corpus/live/live-cases.json`.
 For the digest lane, use `--cases eval/qa/corpus/live/live-digest-supplement-cases.json`.
+For the tool-contract lane, use `--cases eval/qa/tool-cases.json`; report it apart from the headline.
 Use one `--ids a,b,c` argument for an explicit selection.
 
 The [runner parser](run-qa.mjs) owns the complete flag contract.
@@ -174,12 +182,15 @@ Do not edit generated cases, samples, or registry records by hand.
 | Field | Consumer |
 |---|---|
 | `question`, `golden.*`, `tags.trap`, `tags.freshness` | Judge prompt and expected-answer change checks |
-| `surface` | Manifest exposure checks and coverage floors; hidden from agent and judge |
+| `surface` | Manifest exposure checks; hidden from agent and judge |
 | `tags.service` | Sample selection and service reports |
 | `truth.*` | Provenance, verification, lifecycle, and consistency checks; hidden from the judge |
+| `truth.leaf`, `truth.secondaryLeaf` | Taxonomy coverage (one primary leaf, at most one secondary) |
+| `truth.notes` | Provenance text moved out of `golden.notes`; judge-blind |
+| `truth.lane` | `tool` moves a Raven-mechanics case out of the headline into `tool-cases.json` |
 
 The filename must equal the case ID. The directory must equal `tags.category`.
-IDs remain permanently reserved. Key facts use one to five entries, except explicitly pinned exceptions.
+IDs remain permanently reserved. Key facts use one to five entries.
 Scheduled cases require `truth.asOf` and `truth.reverifyBy`.
 Live cases use behavioral expectations instead of fixed volatile values.
 
@@ -199,12 +210,24 @@ Judge noise queues review; it does not justify quarantine.
 
 Retirement requires a reason independent of scores and a permanent retirement record.
 That record keeps the final content digest, evidence, independent review, and replacement IDs.
+A merged case is a retirement whose replacement ID is its survivor. A migration-ledger row may keep a retired destination; the tombstone points forward.
 The compiler rejects missing reserved IDs, direct battery additions, duplicate IDs, and retired-ID reuse.
 
 Mass review starts at the earliest configured threshold: 25 queued active cases, five percent queued, or three calendar months.
 The percentage calculation rounds upward.
 [corpus/lifecycle-policy.json](corpus/lifecycle-policy.json) records the cadence anchor and frozen review identity.
 Keep corpus-health results separate from system-quality results.
+
+### Held-out split
+
+A round that tunes against the battery draws its split once, at close, from the final headline
+battery. Key each case by `sha256("qa-split-<round date>:" + id)`. Stratify by taxonomy domain
+(the prefix of `truth.leaf`) and `tags.freshness`, sort each stratum by key, and deal positions
+in order: tuning, held-out, held-out, reserve, repeating (25/50/25 percent). A case added later
+goes to reserve until the next draw, which uses a new salt. Write the split to
+`eval/qa/results/splits/<date>.json`; that directory is git-ignored and no tuning lane reads it by
+default. Record only its SHA-256 in the round ledger, and never copy a held-out or reserve ID into
+a ledger or `.agents/TODO.md`.
 
 ### Source sentinels
 
@@ -725,7 +748,7 @@ Repeats preserve each arm's port pair. Baseline and candidate retain different e
 
 ## CI contract and evidence
 
-CI regenerates and compares `cases.json`, `sample.json`, and `lifecycle-registry.json` byte-for-byte.
+CI regenerates and compares `cases.json`, `sample.json`, `tool-cases.json`, and `lifecycle-registry.json` byte-for-byte.
 It runs the offline corpus, consistency-register, and frozen-contract checks.
 The paid judge self-test requires separate approval and does not run in CI.
 The [golden-truth workflow](../../.agents/skills/golden-truth/SKILL.md) defines verification and independent-review requirements.

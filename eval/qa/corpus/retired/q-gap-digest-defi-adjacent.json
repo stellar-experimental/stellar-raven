@@ -1,0 +1,21 @@
+{
+  "id": "q-gap-digest-defi-adjacent",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-defi (golden coverage audit)",
+    "reviewer": "verify-defi (golden coverage audit)",
+    "reason": "Digest softEmpty mechanics; survivor q-skill-eco-digest-defi-roundup is in eval/skills-cases.json.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-gap-digest-defi-adjacent",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-gap-digest-defi-adjacent",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-gap-digest-defi-adjacent"
+    ],
+    "lastCaseContentSha256": "b1691fc493f8ed6d15afbc3c70fbff543beeca8f16fddd177dd6ec5913b69a2c",
+    "replacementIds": []
+  }
+}

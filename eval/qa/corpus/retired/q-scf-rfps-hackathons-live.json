@@ -1,0 +1,21 @@
+{
+  "id": "q-scf-rfps-hackathons-live",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-scf (golden coverage audit)",
+    "reviewer": "verify-audit-scf (golden coverage audit)",
+    "reason": "Both halves, open RFPs and current hackathons, have surviving cases, and its note that Scout lags is no longer true.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-scf-rfps-hackathons-live",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-scf-rfps-hackathons-live",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-scf-rfps-hackathons-live"
+    ],
+    "lastCaseContentSha256": "ec5a23a1cfc3ec1e1112c84a87528e63356892a01cb9eb1e25dbfa779f418e5d",
+    "replacementIds": []
+  }
+}

@@ -6,19 +6,18 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "Call `address.require_auth()` or `address.require_auth_for_args(args)` for the Address whose authority is required. `require_auth_for_args` binds the authorization entry to the explicit deterministic argument vector you provide; it is not limited to a predefined subset of function arguments. For classic-account credentials the host validates the credential/signature path. For a contract/custom-account address, the host invokes that account contract's `__check_auth`. Soroban address authorization entries use their own nonce and ledger expiration; do not conflate that with the transaction source account's sequence number. A directly invoking contract address is implicitly authorized for its direct call. Tests may mock auth, but production checks must not. Keep the layers distinct: credentials authenticate the signer, `require_auth` checks that the Address authorized this invocation, and the contract's own business rules (roles, limits, ownership) still need explicit checks.",
+    "answer": "Call `address.require_auth()` or `require_auth_for_args(args)` on the Address whose authority is required. `require_auth_for_args` binds authorization to the exact argument vector you give. The host checks classic credentials or, for a contract account, invokes its `__check_auth`. Auth entries carry their own nonce and ledger expiration, not the source account's sequence number. A contract directly invoking another is implicitly authorized for that call. Business rules such as roles still need their own checks.",
     "keyFacts": [
-      "`require_auth_for_args` binds explicit deterministic arguments.",
-      "Names classic host checks and custom-account `__check_auth` as credential paths.",
-      "Soroban auth uses its own nonce and ledger expiration.",
-      "Source-account sequence and direct-invoker auth are different mechanisms.",
-      "Treats authentication, authorization, and business policy as distinct layers."
+      "`require_auth` makes the host check that the Address authorized this invocation.",
+      "`require_auth_for_args` binds authorization to an explicit argument vector.",
+      "Contract accounts are checked by `__check_auth`; classic accounts by their credentials.",
+      "Auth entries use their own nonce and ledger expiration, not the source account sequence."
     ],
     "avoid": [
       "Do NOT use msg.sender/tx.origin or reduce auth to the transaction source account.",
-      "Do NOT call require_auth_for_args a fixed subset mechanism or say all addresses use identical signature verification."
+      "Do NOT call `require_auth_for_args` a fixed-subset mechanism."
     ],
-    "notes": "2026-06-29: removed duplicated Why-these-cards/Edge sections. This file owns the require_auth API how-to lane; the EVM msg.sender comparison/why and 'not an allowlist' nuance belong to q-sor-msg-sender-equivalent. Verified: address.require_auth()/require_auth_for_args; host verifies SorobanCredentials; replay via host-managed nonce + ledger expiration.\nAlso good if the answer: `require_auth_for_args` lets you bind the authorization to an explicit argument vector you choose (for example, a subset of the call's arguments). | Replay is prevented via a host-managed nonce + ledger expiration in the auth payload.\nGolden cites: The developers.stellar.org authorization documentation.\nGT-46 CORRECTION 2026-07-11: distinguish explicit args, credential paths, replay counters, and direct-invoker auth."
+    "notes": "A direct-invoker contract being implicitly authorized for its own direct call is correct, not a bypass claim. `require_external_auth` and `require_external_auth_for_args` are host functions proposed in CAP-0089 (Draft, targeting Protocol 31); naming them as that proposal is accurate, and presenting them as available on Mainnet or in the current SDK is wrong."
   },
   "tags": {
     "category": "soroban",
@@ -107,22 +106,35 @@
             "note": "Exact quote: 'Ensures that this Address has authorized invocation of the current contract with the provided arguments. During the on-chain execution the Soroban host will perform the needed authentication (verify the signatures) and ensure the replay prevention.'"
           }
         ]
+      },
+      {
+        "claim": "A direct invoker contract's own address is implicitly authorized for its direct call, not deeper in the stack",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization.md",
+            "observedAt": "2026-11-14",
+            "note": "all the `require_auth` calls made on behalf of the **direct** invoker contract `Address` are considered to be authorized"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-05)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit reconcile 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization — \"Authorization differs from *authentication*\" ... \"The only difference between the functions is the ability to customize the invocation arguments.\" (observedAt 2026-11-02)",
-        "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/address.rs — \"The arguments don't have to match the arguments of the contract invocation. However, it's considered the best practice to have a well-defined, deterministic and ledger-state-independent mapping\" (observedAt 2026-11-02)",
-        "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization — \"Verify signature expiration. ... Verify and consume nonce. ... Call `__check_auth` of the account contract\" (observedAt 2026-11-02)",
-        "Independent verifier (verify/soroban-05.json): accept on golden.answer and golden.notes.",
-        "Sibling sweep 2026-11-02: grep 'subset of arguments' → only this case; q-sor-msg-sender-equivalent, q-soroban-auth-vs-authn: no contradiction."
+        "Grader note: an answer that names the CAP-0089 functions was graded as fabricating them; they are real but unshipped.",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0089.md -- 'Title: Host functions for invoker-less authorization', 'Status: Draft', 'Created: 2026-10-16', 'Protocol version: 31'; it defines `require_external_auth` and `require_external_auth_for_args`.",
+        "Live C 2026-11-14: https://horizon.stellar.org/ledgers?order=desc&limit=1 -- Mainnet protocol_version 29.",
+        "Trigger only (not evidence): /home/tyler/code/stellar-raven-codemode/tmp/agentic/GOLDEN-PASS.md (other session, 2026-11-14)"
       ],
       "rootCause": [
-        "Eval-side authoring flaw: keyFacts[4] (authentication, authorization, and business-policy layers) was added without a supporting sentence in golden.answer, and an also-good line ('specific subset of arguments') conflicted with avoid[1]."
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-soroban-require-auth"
+    "origin": "raven-next q-soroban-require-auth",
+    "notes": "2026-06-29: removed duplicated Why-these-cards/Edge sections. This file owns the require_auth API how-to lane; the EVM msg.sender comparison/why and 'not an allowlist' nuance belong to q-sor-msg-sender-equivalent. Verified: address.require_auth()/require_auth_for_args; host verifies SorobanCredentials; replay via host-managed nonce + ledger expiration.\nAlso good if the answer: `require_auth_for_args` lets you bind the authorization to an explicit argument vector you choose (for example, a subset of the call's arguments). | Replay is prevented via a host-managed nonce + ledger expiration in the auth payload.\nGolden cites: The developers.stellar.org authorization documentation.\nGT-46 CORRECTION 2026-07-11: distinguish explicit args, credential paths, replay counters, and direct-invoker auth.",
+    "leaf": "soroban.authorization"
   }
 }

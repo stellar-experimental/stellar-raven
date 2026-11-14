@@ -1,0 +1,23 @@
+{
+  "id": "q-eco-xbull-wallet",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-hist-retail (golden coverage audit)",
+    "reviewer": "verify-hist-retail (golden coverage audit)",
+    "reason": "Merged into q-eco-stellar-wallets-list: one wallet's builder is not a facet of the wallet landscape, and q-eco-stellar-wallets-list still names xBull.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-eco-xbull-wallet",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-eco-xbull-wallet",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-eco-xbull-wallet"
+    ],
+    "lastCaseContentSha256": "78151691b18021eb8257139ba8b52622e57dba06558647fd09b2a686d218d489",
+    "replacementIds": [
+      "q-eco-stellar-wallets-list"
+    ]
+  }
+}

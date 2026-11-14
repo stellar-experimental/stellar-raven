@@ -6,16 +6,17 @@
     "stellarDocs.search_sdk_cli_tools_docs"
   ],
   "golden": {
-    "answer": "Use a reputable Stellar block explorer for a quick public view, or query the account and transaction endpoints through a trusted Horizon/RPC provider if you are building something. Search by the public account address or transaction hash—never by a secret key. Check the network (mainnet versus testnet) and remember that on-chain history is public, so do not post more personal context alongside an address than you intend to reveal.",
+    "answer": "Use a block explorer such as StellarExpert for a quick public view, or query a Horizon or RPC provider if you are building something. Pick the right network (Mainnet or Testnet) first, then search by public account address or transaction hash (for an asset, code plus issuer), never a secret key. A miss on the wrong network is not proof something does not exist, and on-chain history is public.",
     "keyFacts": [
-      "Uses public address/transaction hash, never a secret key.",
-      "Calls out correct network selection and public on-chain history."
+      "Look up by public address or transaction hash, never a secret key.",
+      "Select the correct network first; a miss on another network is not proof of nonexistence.",
+      "On-chain history is public, so linking an address to an identity exposes its activity."
     ],
     "avoid": [
-      "Do NOT request a secret key to look up an account.",
-      "Do NOT claim blockchain transaction history is private by default."
+      "Do NOT ask for or accept a secret key to look up an account.",
+      "Do NOT claim blockchain transaction history is private."
     ],
-    "notes": "Authentic Jutsu phrasing: questions.jsonl message 2025-09-12T03:04:29.317Z."
+    "notes": "Any reputable explorer or Stellar Lab is acceptable; do not require a specific one."
   },
   "tags": {
     "category": "retail-consumer",
@@ -58,16 +59,20 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch retail-consumer-01)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-hist-retail, verify-hist-retail; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "2026-11-02 [A] https://developers.stellar.org/docs/data/apis/horizon/api-reference/retrieve-an-account — \"GET /accounts/:account_id ... The balances section in the response will also list all the trustlines this account has established\" (claim: golden.keyFacts[0] confirmed: Lookup uses public address/tx hash, never secret key)",
-        "2026-11-02 [F] https://horizon.stellar.org/accounts/GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN/transactions?limit=1&order=desc — \"HTTP 200 with no credentials\" (claim: golden.keyFacts[0] confirmed: Lookup uses public address/tx hash, never secret key)",
-        "2026-11-02 [F] https://horizon.stellar.org/transactions?limit=1&order=desc — \"public tx fdb41ef885c9... created_at 2026-11-02T16:08:14Z returned unauthenticated\" (claim: golden.keyFacts[1] confirmed: Network selection matters; on-chain history is public)",
-        "2026-11-02 [A] https://developers.stellar.org/docs/build/guides/transactions/path-payments — \"new Horizon.Server(\"https://horizon-testnet.stellar.org\") ... Networks.TESTNET\" (claim: golden.keyFacts[1] confirmed: Network selection matters; on-chain history is public)",
-        "Sibling sweep 2026-11-02: siblings checked q-ti-block-explorer-basics, q-crp-export-tx-history-taxes, q-ti-historical-pointintime-balances; no gospel change in this case, no contradiction found."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-jutsu-check-account-history",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-jutsu-check-account-history",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-jutsu-check-account-history",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/tools/block-explorers -- 'Not re-read this pass; carried from the 2026-11-02 verification.'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "authored 2026-07 (jutsu phrasing)"
+    "origin": "authored 2026-07 (jutsu phrasing)",
+    "notes": "Authentic Jutsu phrasing: questions.jsonl message 2025-09-12T03:04:29.317Z.",
+    "leaf": "data.explorers-status"
   }
 }

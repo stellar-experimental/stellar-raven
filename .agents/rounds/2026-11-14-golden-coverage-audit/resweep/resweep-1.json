@@ -1,0 +1,347 @@
+{
+  "lane": "resweep-1",
+  "entries": [
+    {
+      "collection": "clusters",
+      "selector": "cluster-003",
+      "verdict": "consistent",
+      "reSwept": "Compared q-defi-benji-franklin-templeton (BENJI = FOBXX share token on Stellar since 2021, not a stablecoin) with q-rwa-projects-tokenizing-stellar (dated issuer-sourced live products incl. BENJI, DTCC planned 1H27). Both keep BENJI as a live Franklin Templeton product on Stellar; the note still holds."
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-006",
+      "verdict": "consistent",
+      "reSwept": "Compared q-eco-lobstr-wallet (Ultra Stellar operates non-custodial LOBSTR, Stellar+XRPL as of 2026-09-17) with q-eco-stellar-wallets-list (names LOBSTR among dated, non-exhaustive wallets; Freighter renamed Varial). No disagreement. Observation only: q-eco-lobstr-wallet golden.notes still carries an SCF-total/Lumenloop scf.awarded_total sentence that its compacted answer no longer asks about."
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-008",
+      "verdict": "drop-member",
+      "reSwept": "Compared the CAP/protocol pairs each member states: clawback CAP-0035/P17, Soroswap CAP-0038/P18, passkey CAP-0051/P21, Zipper CAP-0071/P27, ZK host functions CAP-0059/P22 + CAP-0074/0075/P25 + CAP-0080/P26 (CAP-0080 confirmed Final, Protocol 26 in stellar-protocol core/cap-0080.md), constructor CAP-0058/P22, SEP-41 CAP-46-6. All agree with the entry note. q-ti-rpc-gettransactions-pagination-xdr states no CAP or protocol (its only \"cap\" is the 200-record limit), before or after the rewrite.",
+      "edit": "Remove q-ti-rpc-gettransactions-pagination-xdr from cluster-008.members (it is already in the RPC-retention cluster cluster-018). Optionally add CAP-80 to the label list; the note needs no change."
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-011",
+      "verdict": "text-edit",
+      "reSwept": "Read all 11 members. Build cap $150K XLM (q-scf-build-award-cap, q-scf-vs-sdf-enterprise-fund), three tracks and Open-Track-only vote (v7-changes, how-to-apply, nqg-voting, vs-enterprise-fund), Instawards $1-5K initial/$15K cap with SDF final approval (instawards, ambassador-program), and SCF #46 in Initial Review (current-round, open-rfps) all agree. No member now states the Liquidity Award $50K+$50K supplemental terms or the funding-v2 ~$19.97M/~223 analytics totals that the note and label describe (compaction dropped them; Soroswap Liquidity Award $50K sits only in q-scf-history-soroswap, outside the cluster).",
+      "edit": "Relabel to \"SCF program mechanics (v7, caps, tiers)\" and cut the note sentences about the Liquidity Award $50K+$50K and the funding-v2 ~$19.97M/~223 snapshot; keep the 2026-07-03 consistency statement for Build/Instawards/Public Goods/Audit Bank/SDF-vs-SCF distinctions."
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-014",
+      "verdict": "consistent",
+      "reSwept": "Compared q-defi-soroswap-vs-stellarx (Soroswap built by PaltaLabs, \"first DEX\"/\"first\"/\"best\" wording is its own claim; StellarX is a classic-DEX interface) with q-edge-factcheck-soroswap-first-amm (CAP-0038/Protocol 18 native AMM pools predate Soroswap; \"first aggregator\" is operator marketing; $1B TVL unsupported). Firstness stays attributed in both and the native-AMM counterexample is stated only in the edge case without contradicting the other."
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-016",
+      "verdict": "drop-member",
+      "reSwept": "Compared q-anchor-moneygram-ramps (settles in Stellar USDC, widget SDK for new partners, SEP-10/SEP-24 legacy for existing allowlisted partners, 170+ countries) with q-crp-remittance-founder-advisory. The latter now names no MoneyGram, Ramps, USDC figure or country count at all (it is a generic corridor/SEP-rails advisory), so it cannot disagree about MoneyGram figures. The note also still describes minimums (15 vs 1 USDC), 950/2500 USDC maxima and four-member country counts that no remaining member states.",
+      "edit": "Drop q-crp-remittance-founder-advisory from cluster-016.members. Replace it with q-anchor-list-builders-discovery, which names \"MoneyGram Ramps (SEP-24 cash-in and cash-out)\" and so can still disagree about the path; that wording is incomplete rather than wrong under the Ramps case note. Cut the note sentences on the 15/1 USDC minimum, the 950/2,500 USDC maxima and country counts. If the orchestrator prefers no replacement, delete-entry instead, since one member cannot contradict itself."
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-018",
+      "verdict": "consistent",
+      "reSwept": "Compared all 11 members. RPC stock event/ledger retention is 120960 ledgers about 7 days in q-infra-rpc-methods-list, q-soroban-event-indexing-design, q-soroban-publish-events and q-ti-self-host-retention-backfill; q-infra-horizon-vs-rpc, q-infra-which-indexer, q-ti-compute-token-lp-market-data and q-ti-enumerate-holders-airdrop all route unbounded history to an indexer/Hubble; q-infra-rpc-provider-archive-tier keeps archive to getLedgers only; q-infra-horizon-vs-rpc dates the nearing-end-of-life label; q-ti-rpc-gettransactions-pagination-xdr limits 50/200 are stated as configurable stock defaults. No conflict. Observation: q-ti-historical-pointintime-balances named in the note is retired and the Soroban RPC to Stellar RPC rename is stated by no member; harmless history."
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-020",
+      "verdict": "consistent",
+      "reSwept": "Compared q-hist-scp-rewrite-2015 (Mazieres authored SCP, FBA not PoW/PoS, live 2015-11-03, replacement rationale disputed SDF vs Ripple), q-raph-xlm-staking (SCP not PoS, no native staking), q-org-sdf-structure-mandate (non-stock nonprofit, four buckets) and q-protocol-tier1-requirements (three Full Validators, quorum-set inclusion). No contradiction. Observation: the note sentence on Mazieres founder/professor/Chief Scientist team-page data is carried by no member now; harmless."
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-022",
+      "verdict": "consistent",
+      "reSwept": "Compared q-defi-soroswap-vs-stellarx, q-eco-dex-saturation, q-eco-lobstr-wallet, q-eco-stellar-wallets-list and q-tool-passkeykit-smart-wallet. Ultra Stellar runs LOBSTR and StellarX (stated in the first and third); wallets-list gives Varial = renamed Freighter 2026-10-29; dex-saturation separates venues from trading interfaces such as StellarX and hard-codes no player count; q-tool-passkeykit-smart-wallet says both kits are maintained siblings and Passkey Kit is unaudited, which the note says is accurate. No conflict. Observation: the note facts on Hana multichain, xBull = Creit-Tech and StellarTerm are carried by no member."
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-024",
+      "verdict": "text-edit",
+      "reSwept": "Compared q-pc-protocol-upgrade-timing, q-pc-protocol-27-zipper and q-protocol-version-history-list. All agree: Mainnet on Protocol 29, Bell (P30) live on Testnet with the Mainnet vote 2026-11-23 17:00 UTC, Zipper activated 2026-07-08. The label still names q-protocol-27-cap-0071 and q-tool-rust-soroban-sdk (both retired) and omits the current member q-pc-protocol-27-zipper.",
+      "edit": "Relabel cluster-024 to \"q-pc-protocol-upgrade-timing + q-pc-protocol-27-zipper + q-protocol-version-history-list\"."
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-026",
+      "verdict": "consistent",
+      "reSwept": "Compared q-scf-build-award-cap ($150,000 worth of XLM cap, 10/20/30/40% tranches) with q-scf-history-soroswap (four awards 57,600 + 139,150 + 100,000 + 50,000 = $346,750). The sum checks and no Soroswap award exceeds or is confused with the Build cap."
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-029",
+      "verdict": "text-edit",
+      "reSwept": "Compared q-eco-stellar-rwa-stablecoin-volume (dated SDF Q3 2026 figures, $4.1B vs $4.3B both accepted when attributed), q-defi-agent-identity-stellar-experimental (ERC-8004 Draft, no ratified Stellar SEP) and q-eco-stellar-wallets-list (dated non-exhaustive roster). Each states only supported, dated claims and none overlaps another, so the note \"removing the unverifiable clauses\" still holds. The label names the retired q-asset-rwa-tokenized-freshness instead of the current member q-eco-stellar-rwa-stablecoin-volume.",
+      "edit": "Relabel cluster-029 to \"q-eco-stellar-rwa-stablecoin-volume + q-defi-agent-identity-stellar-experimental + q-eco-stellar-wallets-list\"."
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-032",
+      "verdict": "consistent",
+      "reSwept": "Compared q-pc-protocol-27-zipper (P27 Zipper, ledger 63386819, 2026-07-08 17:00 UTC, historical not latest) with q-protocol-version-history-list (P27 Zipper 2026-07-08 CAP-0071; Mainnet P29; Bell vote 2026-11-23). Dates and CAP agree and both treat P27 as past. The label word \"tooling\" is carried by no member; harmless."
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-034",
+      "verdict": "consistent",
+      "reSwept": "Compared q-eco-stellar-rwa-stablecoin-volume, q-asset-usdc-eurc-issuer (Circle issues USDC/EURC, EURC 2023-09-26, Circle Internet Financial Europe SAS), q-eco-pyusd-stellar-freshness (PYUSD live 2025-09-18, Paxos issues, PayPal-branded), q-eco-stellar-wallets-list and q-soroban-deploy-cli. The issuer-role, RWA-attribution and dated-roster claims do not overlap or contradict; the CLI case states current stellar flags only."
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-037",
+      "verdict": "consistent",
+      "reSwept": "Compared q-asset-trustline-vs-sac (SAC is one asset viewed through a contract id, SEP-41, no bridge), q-defi-bridge-evm-to-stellar-axelar (Axelar can deliver USDC.axl, CCTP native, check destination issuer or SAC), q-edge-metamask-evm-mental-model (not EVM, XLM native with deterministic network-specific SAC ID, MetaMask built-in Stellar support dated 2026-11-14) and q-pc-address-types-strkey (G/C/M/S, C is not 0x). Native vs wrapped vs SAC representations stay distinct and no member contradicts the note. Observation: the note sentence on the issuer as SAC initial admin / set_admin is carried by no member now."
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-039",
+      "verdict": "consistent",
+      "reSwept": "Compared q-edge-xlm-price-investment-advice (declines price/token picks, offers neutral source-based education) with q-edge-oos-solana-vs-aptos (no unsupported verdict, gives a current-evidence comparison framework, no forced Stellar answer). Both pair a boundary with a useful redirect, neither is a safety refusal, neither names internal tools. The BTC variant is covered by the first case notes."
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-041",
+      "verdict": "consistent",
+      "reSwept": "Compared q-edge-validators-reverse-tx-fork-detection (finality relative to quorum intersection, clawback is separate, compare hashes across independent sources, one endpoint is not proof), q-pc-tx-finality-failure-semantics (submission is not finality, failed inclusion consumes fee and sequence), q-protocol-quorum-slice-vs-quorum and q-protocol-tier1-requirements (node-chosen quorum sets). No contradiction. Observation: the last two never stated finality or fork detection (checked against the pre-audit text); they are SCP-vocabulary neighbours, not carriers of the claim."
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-043",
+      "verdict": "consistent",
+      "reSwept": "Compared q-defi-benji-franklin-templeton (FOBXX on Stellar since 2021, tokenized fund share), q-hist-soroban-launch-protocol20 (Protocol 20 2024-02-20 Phase 0, GA 2024-03-19, fund announced 2022 then restated) and q-hist-unhcr-stellar-aid-assist (Dec 2022 pilot, later snapshots differ in unit/country/date). Each keeps announcement, activation and current-state separate and source-scoped, as the note requires."
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-045",
+      "verdict": "drop-member",
+      "reSwept": "Compared q-eco-defi-tvl-current (provider-named, defined, dated; $204.9M DeFiLlama 2026-11-14) with q-edge-fresh-latest-blend-tvl (provider-defined, dated, not an exact objective figure, same-provider trend points). They agree. q-defi-aquarius-what-is no longer mentions TVL at all (its pre-audit text did; compaction removed it) and now covers ICE/AQUA tokenomics only.",
+      "edit": "Drop q-defi-aquarius-what-is from cluster-045.members; the remaining pair q-eco-defi-tvl-current and q-edge-fresh-latest-blend-tvl keeps the claim."
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-048",
+      "verdict": "consistent",
+      "reSwept": "Compared q-defi-liquid-staking-whitespace, q-raph-xlm-staking and q-protocol-scp-consensus-algorithm. All state SCP/FBA is not proof of stake and validators earn no protocol reward; the first two call sXLM/third-party staking non-native and the SDF October 2026 fee-pool paper an undecided proposal, matching the note; the LST absence is dated to a 2026-11-02 sweep."
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-053",
+      "verdict": "consistent",
+      "reSwept": "Compared q-token-initial-supply-distribution (100B at genesis, not mined, 50/25/20/5 plan, plans not proof of distribution) with q-hot-fee-pool-burn-deflation (CAP-26 ended inflation 2019-10-28, SDF burned about 55.44B XLM on 2019-11-04, separate events). Both keep the allocation plan, inflation removal and burn separate. Observation: Stripe 2B loan repayment from the note appears in no member (the supply case lists it only as out of scope)."
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-056",
+      "verdict": "consistent",
+      "reSwept": "Compared q-pc-fee-bump-channel-accounts-feepool (outer fee paid once, inner/outer fee fields not additive, channel accounts are separate sources with their own sequence lanes, fees to the fee pool not validators), q-ti-channel-accounts-throughput (channel lanes, tx_bad_seq), q-pc-sequence-numbers-ordering-replace (10x fee-bump replacement), q-pc-practical-fee-setting (getFeeStats / Horizon /fee_stats, Horizon legacy but not formally deprecated) and q-hot-fee-pool-burn-deflation (fees sequestered, not rewards). No conflict; the fee-bump replacement mention in the channel case notes matches the sequence case."
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-059",
+      "verdict": "consistent",
+      "reSwept": "Compared q-pc-muxed-accounts (M = G + uint64, G owns funds/reserves/sequence, InvokeHostFunction and some services reject M), q-pc-address-types-strkey (M muxed, W prefix acceptable) and q-crp-sdp-operation (SDP rejects encoded M recipients). All agree with the note: M valid only in specified positions, compatibility service-specific and dated."
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-061",
+      "verdict": "text-edit",
+      "reSwept": "Compared q-infra-horizon-vs-rpc (docs call Horizon nearing end-of-life as of 2026-11-14, not deprecated, endpoint-specific boundary) with q-pc-practical-fee-setting (Horizon /fee_stats remains available; notes say legacy but not formally deprecated). No contradiction, but the note says q-pc-practical-fee-setting \"keeps its dated 2026-09-08 nearing-end-of-life label\" and its answer no longer states any lifecycle label.",
+      "edit": "In cluster-061.note replace \"q-pc-practical-fee-setting keeps its dated 2026-09-08 nearing-end-of-life label\" with \"q-pc-practical-fee-setting only says Horizon /fee_stats remains available and, in its notes, that Horizon is legacy but not formally deprecated, which agrees with the dated nearing-end-of-life label in q-infra-horizon-vs-rpc\"."
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-063",
+      "verdict": "consistent",
+      "reSwept": "Compared q-infra-horizon-vs-rpc (RPC for live state, Horizon as curated indexer, Hubble/indexer for full history, nearing end-of-life as of 2026-11-14) with q-pc-practical-fee-setting (100 stroops per operation minimum dated 2026-11-14, RPC getFeeStats or stellar fees stats, Horizon /fee_stats remains available). Matches the note on the dated floor and the estimator roles; the Lab sd-072 history is resolved and stated by neither member."
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-066",
+      "verdict": "consistent",
+      "reSwept": "Compared q-protocol-network-passphrases-list (exact public, Testnet and Futurenet strings) with q-infra-testnet-vs-futurenet (separate networks with different passphrases, resets, Friendbot; no version frozen). They agree; neither states a version alignment, which the note calls stage-sensitive, so the note imposes no check."
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-068",
+      "verdict": "consistent",
+      "reSwept": "Compared q-protocol-state-archival-ttl (expired Persistent/Instance archived and restorable, Temporary deleted for good), q-sor-p23-auto-restore-extendto (P23 simulation lists archivedSorobanEntries and the invoke restores atomically; Temporary cannot be restored; relative extendTo) and q-soroban-storage-types (same Temporary/Persistent/Instance split; P23 auto-restore when the restore list includes the entry). They agree. Observation: \"must be restored before use\" in the first answer is compatible with atomic restore in the invoke, and no member names CAP-0062/CAP-0066 that the note cites."
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-072",
+      "verdict": "consistent",
+      "reSwept": "Compared q-scf-nqg-voting (Verified/Pathfinder/Navigator/Pilot are governance reputation tiers, separate from award history and KYC/KYB, Open-Track-only vote) with q-scf-build-award-cap (project award cap and tranches). Governance roles and project awards stay separate; neither states a person-level ranking, so the note holds."
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-075",
+      "verdict": "consistent",
+      "reSwept": "Compared q-scf-how-to-apply (interest form, invited full proposal to Open/Integration/RFP, prescreen/panel/revision, Open-only vote, KYC/KYB before milestone payments) with q-scf-vs-sdf-enterprise-fund (interest form then invited proposal, only Open Track voted). Same ordered flow, no extra or missing stage."
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-078",
+      "verdict": "consistent",
+      "reSwept": "Compared q-scf-build-award-cap ($150,000 worth of XLM, four payments: 10% on acceptance then 20/30/40% on three deliverables) with q-scf-how-to-apply (three tracks, Open-only vote, KYC/KYB then milestone payments). The note's cap, three tracks, Open-only vote and four-payment mechanics are each stated by at least one member and none contradicts it."
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-080",
+      "verdict": "text-edit",
+      "reSwept": "Compared q-scf-nqg-voting (four governance tiers, Pilot also quarterly delegate and proposer, Open-Track-only vote, tiers separate from awards) with q-scf-build-award-cap ($150,000 XLM, tranches). No conflict. The label still names q-scf-verified-members, which is retired and not a member.",
+      "edit": "Relabel cluster-080 to \"q-scf-build-award-cap + q-scf-nqg-voting\"."
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-084",
+      "verdict": "delete-entry",
+      "reSwept": "Compared q-scf-history-soroswap (Liquidity Award 2024 Q1 $50,000 among four awards totalling $346,750) and q-scf-build-award-cap ($150K Build cap) with q-defi-aquarius-what-is and q-defi-blend-what-is. The latter two never carried Liquidity Award terms in judge-facing text (checked pre-audit golden: no hit) and are tokenomics/lending explainers. The note's $50K base + optional $50K supplemental = $100K max and \"Aquarius remains Pending\" appear in no member.",
+      "edit": "Delete cluster-084. After dropping the two non-carriers the pair q-scf-build-award-cap + q-scf-history-soroswap is exactly cluster-026, so the entry would duplicate it, and its note facts have no member. If the orchestrator wants the $100K-max fact checked, add it to a case first."
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-089",
+      "verdict": "consistent",
+      "reSwept": "Compared q-scf-how-to-apply (interest form, invited full proposal to one of three tracks, only Open gets a community vote) with q-scf-open-rfps (RFP proposal must answer an open brief; a listed brief is not an open window; SCF #46 in Initial Review). They agree; neither contradicts the other. Observation: q-scf-rfp-tooling named in the prior sweep is retired; q-scf-open-rfps no longer states \"rolling\" interest or panel-led RFP review, which the note still asserts, but how-to-apply's Open-only vote implies it."
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-091",
+      "verdict": "consistent",
+      "reSwept": "Compared q-scf-v7-changes (v7 launched January 2026 with three Build tracks, referral, Instawards replacing Kickstart, no single Growth track), q-scf-build-award-cap (Build cap/tranches, v7 blog $300K is a lifecycle total), q-scf-instawards ($1-5K initial, $15K total, SDF approves, not voted) and q-scf-hackathons-active (dated event roster). Program rules stay separate. Observation: q-scf-hackathons-active never stated anything about the v7 menu (pre-audit text checked); it is a neighbour, not a carrier."
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-096",
+      "verdict": "text-edit",
+      "reSwept": "Compared q-sor-decode-hosterror-codes (Error(Contract, #N) is contract-local with no global table, Bad union switch means XDR/type mismatch, try_* nested Ok(Ok)/Err(Ok)/Err(Err)), q-soroban-unit-testing (setup, mock_all_auths hides a missing require_auth, happy path in-process) and q-sor-scval-conversion (spec-driven UDTs, regenerate bindings). No contradiction and the unit-testing case still owns setup while the HostError case owns interpretation. Compaction dropped \"non-root auth versus missing contract context\" from q-sor-decode-hosterror-codes (pre-audit text had it); no member states it now.",
+      "edit": "In cluster-096.note delete \"and non-root auth differs from missing contract context\" so the note reads \"Contract #N is local, Bad union switch is an XDR/type boundary. Generated try_* clients preserve ...\""
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-101",
+      "verdict": "delete-entry",
+      "reSwept": "Compared q-eco-nft-marketplace-whitespace (Litemint live, Rarible awarded-or-unverified) with q-soroban-oz-token (OpenZeppelin stellar-contracts, SEP-41 fungible base). The migration ledger merged q-sor-nft-mint-on-soroban into q-soroban-oz-token with the SEP-50-vs-SEP-39 distinction documented as dropped, so no member states SEP-39/SEP-50 Draft status or the classic-versus-Soroban NFT split; q-soroban-oz-token is now fungible-token only.",
+      "edit": "Delete cluster-101. One member (q-eco-nft-marketplace-whitespace) remains and the note facts (SEP-39/SEP-50 Draft, classic uniqueness vs Soroban programmable NFT) are carried by no case. If NFT SEP status is wanted in the battery, add it to a case first and re-register."
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-103",
+      "verdict": "consistent",
+      "reSwept": "Compared q-soroban-cli-bindings (stellar contract bindings typescript/rust inputs, TypeScript path deprecated for the JS SDK generator, CLI 30.0.1) with q-soroban-deploy-cli (build, keys generate, deploy --wasm, invoke; CLI is stellar not soroban). Distinct commands, same CLI name and version, no overlapping rule."
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-107",
+      "verdict": "text-edit",
+      "reSwept": "Compared q-sep-41-token-interface (Draft, v0.5.2 as of 2026-11-14, subset of the CAP-46-6 SAC interface, signatures change between drafts) with q-soroban-token-transfer-pattern (transfer(from,to,amount) needs from auth, transfer_from needs spender auth and bounded allowance, v0.5.2 dated, accept to: Address before MuxedAddress). They agree on version and function roles. The label still names the retired q-sor-sep41-transfer-vs-transferfrom.",
+      "edit": "Relabel cluster-107 to \"q-sep-41-token-interface + q-soroban-token-transfer-pattern\"."
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-109",
+      "verdict": "consistent",
+      "reSwept": "Compared q-sor-ttl-defaults-extend (dated Mainnet min Persistent 2,073,600 / min Temporary 17,280 / max 3,110,400, extension is explicit, Temporary deleted, Persistent/Instance archive and since P23 auto-restore), q-sor-p23-auto-restore-extendto (atomic restore, liveUntil = current + minPersistentTTL - 1, relative extendTo capped at maxEntryTTL - 1) and q-soroban-storage-types. Settings stay dated, extension, P23 auto-restore and Temporary deletion stay separate concepts as the note requires; the figures agree arithmetically (120/1/180 days at 5 s ledgers)."
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-113",
+      "verdict": "consistent",
+      "reSwept": "Compared q-pc-sequence-numbers-ordering-replace (current+1, minSeqNum exception, included tx consumes sequence, rejected one does not), q-protocol-19-preconditions-cap-0021 (P19 June 2022, CAP-0021 incl. minimum sequence number/age/gap, CAP-0040 signed payload alongside) and q-protocol-accounts-signers-thresholds (SignerKey four forms incl. CAP-0040 signed payload, secp256r1 not a classic signer). CAP-0021/CAP-0040 attributions agree. Observation: the accounts-signers answer no longer states the sequence-consumption rule that the prior sweep cited; the sequence case carries it."
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-115",
+      "verdict": "text-edit",
+      "reSwept": "Compared q-protocol-cap-process (activation is validator agreement through SCP quorum sets on a scheduled upgrade, not a token or majority vote; CAPs vs SEPs) with q-pc-protocol-upgrade-timing (validators arm a scheduled upgrade, SCP applies it in-band, not a token-holder vote). They agree. The label still names retired q-protocol-cap-vs-sep and q-protocol-validator-upgrade-vote, and the note says they are \"retained siblings\"; the CAP-vs-SEP point now lives in q-protocol-cap-process and the validator-vote point in q-pc-protocol-upgrade-timing.",
+      "edit": "Relabel cluster-115 to \"q-protocol-cap-process + q-pc-protocol-upgrade-timing\" and set the note to \"CAP status is separate from network activation; activation is scheduled validator agreement through SCP, not a token or majority vote; CAPs change protocol, SEPs are conventions.\""
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-120",
+      "verdict": "consistent",
+      "reSwept": "Compared q-pc-protocol-27-zipper (P27 ledger 63386819, 2026-07-08, CAP-0071 delegation and address-bound V2), q-edge-fresh-latest-protocol-version (Mainnet P29 activated 2026-10-01 at ledger 64717645; Bell vote 2026-11-23 17:00 UTC), q-pc-protocol-upgrade-timing (Mainnet P29, Bell live on Testnet, same vote time) and q-protocol-version-history-list (P27 2026-07-08, P28 2026-09-16, P29 2026-10-01). Dates, ledgers and vote time are identical wherever repeated; no member calls P27 current. Observation: the note's P28 ledger 64458446 and \"Adapter\" name appear in no member."
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-123",
+      "verdict": "consistent",
+      "reSwept": "Compared q-protocol-base-reserve-min-balance (0.5 XLM as of 2026-11-14, minimum (2 + subentries + sponsoring - sponsored) x reserve, 1 XLM empty, pool-share trustline two reserves), q-asset-trustline-basics (trustline +1 reserve, 0.5 XLM, validators can change), q-pc-account-activation-not-found (two reserves = 1 XLM, sponsored can start at 0), q-asset-sdex-vs-amm (pool-share trustline two reserves) and q-raph-low-xlm-transfer-fail (no exact figure). All figures agree and the dated/validator-set caveat is carried."
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-125",
+      "verdict": "text-edit",
+      "reSwept": "Compared q-defi-x402-on-stellar-what (x402 v2 exact scheme with SEP-41 and signed auth entries, classic assets via SAC, facilitator may need API keys) with q-x402-payment-verification (verify before fulfilling, dated 2026-11-14 facilitator options, none mandatory). They agree. Compaction dropped what the label and note are about: the pre-audit x402-what text carried the announcement and \"not a SEP\" wording, and neither member states the March 10 announcement date, the Albedo/Varial/Hana/HOT wallet roster or the unverified end-to-end wallet compatibility.",
+      "edit": "Relabel cluster-125 to \"x402 on Stellar: scheme and facilitator facts\" and cut the note to the claims the members now carry: Stellar scheme is v2 exact with SEP-41/SAC and signed auth entries; facilitator list is dated 2026-11-14 and non-mandatory. Delete the March 10 announcement, Albedo/Varial roster and Hana/HOT/Klever/OneKey/Scopuly sentences."
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-129",
+      "verdict": "drop-member",
+      "reSwept": "Compared q-soroban-greenfield-escrow-prior-art-preflight (one bounded prior-art pass of at most three candidates alongside skill and Docs, license/audit/deployment unknown) and q-tool-indexer-repos-discovery (SDF building blocks, verify each repo's role, activity and archive status, scout zero result is not absence) with q-sor-build-target-wasm32v1. The first two agree. The pre-audit build-target text said a scoped build question needs no ecosystem landscape detour; the compacted answer only gives build facts, so the \"known-step no-detour\" half of the entry is carried by no member.",
+      "edit": "Drop q-sor-build-target-wasm32v1 from cluster-129.members and relabel to \"Greenfield prior-art preflight and repo-discovery vetting\"; delete the note sentence \"A scoped build/debug question stays on current official mechanics without an ecosystem landscape detour.\""
+    },
+    {
+      "collection": "clusters",
+      "selector": "cluster-135",
+      "verdict": "text-edit",
+      "reSwept": "Compared q-crp-sdp-operation (SDP Core implements native SEP-10/SEP-24, needs no Anchor Platform, MoneyGram cash-out is an optional downstream choice) with q-anchor-sdp-vs-anchor-platform (SDP Core implements SEP-10 and SEP-24 itself, Anchor Platform backs anchors, the 10,000-instruction cap is not a protocol limit). The two agree. The note still says \"All four cases agree\" and relies on the product-page \"up to 10,000 payments\" match, but only two members remain and only the avoid clause on the cap survives.",
+      "edit": "In cluster-135.note replace \"All four cases agree\" with \"Both cases agree\". Optionally relabel to \"SDP native architecture, optional downstream rails, and the 10,000-instruction cap as an application limit\"."
+    },
+    {
+      "collection": "numericInvariants",
+      "selector": "SCF Build cap",
+      "verdict": "consistent",
+      "reSwept": "Compared q-scf-build-award-cap (\"up to $150,000 worth of XLM (as of 2026-11-14)\", milestone tranches, $300K is the lifecycle total) with the authoritative value $150,000 worth of XLM: it matches, and q-scf-vs-sdf-enterprise-fund (\"up-to-$150K XLM\") also agrees though it is not in affectedCaseIds. The cap is not transferred to other programs in either answer (Marketing Grants up to $500K and Instawards $15K stay separate)."
+    },
+    {
+      "collection": "numericInvariants",
+      "selector": "Mainnet protocol activation history",
+      "verdict": "consistent",
+      "reSwept": "Read Horizon live on 2026-11-14: ledger 63386819 closed 2026-07-08T17:00:10Z at protocol 27, 64458446 closed 2026-09-16T17:00:06Z at protocol 28, 64717645 closed 2026-10-01T17:00:07Z at protocol 29, and the latest ledger 65469050 reports protocol 29. q-pc-protocol-27-zipper (ledger 63386819, 2026-07-08), q-edge-fresh-latest-protocol-version (P29, 2026-10-01, ledger 64717645) and q-pc-protocol-upgrade-timing (Mainnet P29, vote 2026-11-23 17:00 UTC) match the authoritative value."
+    },
+    {
+      "collection": "numericInvariants",
+      "selector": "YieldBlox borrowed XLM USDC totals",
+      "verdict": "consistent",
+      "reSwept": "Compared q-comp-yieldblox-oracle-incident (\"about 61.2M XLM and 1M USDC\", about 48M XLM quarantined and not recovery, avoid 1,014,196.7040837 USDC as one transaction, USD accepted when attributed) with the authoritative 61,249,278.3064502 XLM and 1,000,196.7040837 USDC. The rounded figures agree, 48,069,094 / 61,249,278 = 78.5% matches the quarantine subset, and the single-transaction guard is intact. Observation: the 14,000 USDC separate earlier borrow and exact decimals are stated by no case now; q-hist-yieldblox-v2-2026-exploit is retired and only one member remains."
+    },
+    {
+      "collection": "numericInvariants",
+      "selector": "Stellar base fee floor",
+      "verdict": "consistent",
+      "reSwept": "Compared q-pc-practical-fee-setting (\"100 stroops per operation as of 2026-11-14\", surge pays the lowest included bid) with the authoritative 100 stroops per operation. Live Horizon on 2026-11-14 reports base_fee_in_stroops 100 and fee_stats last_ledger_base_fee 100 (base reserve 5,000,000 stroops). The only member agrees."
+    },
+    {
+      "collection": "dateContingentTraps",
+      "selector": "2026-08-27 or any earlier Circle CCTP V2 fee/finality/support update",
+      "verdict": "consistent",
+      "reSwept": "Trigger date 2026-08-27 has passed, so I re-checked live on 2026-11-14. Circle release notes (developers.circle.com/release-notes/cctp-2026.md) say \"2026.05.18 Added support for Stellar mainnet\"; the Stellar blog is dated 2026-05-19T14:00Z; the Circle Iris fee API returns minimumFee 0/0 for 27 to 0 and 1/0 for 0 to 27 at finality 1000/2000. q-cctp-v2-usdc-stellar states the same dates, domain 27 and fee figures (Fast/Standard 0/0 and 1 bp/0), and its reverifyBy 2027-02-05 matches the disposition; the only member (q-tool-cctp-stellar-integration merged into it) is current."
+    },
+    {
+      "collection": "dateContingentTraps",
+      "selector": "2027-03-02 YieldBlox/Reflector remediation recheck or publication of a final post-mortem/reimbursement decision",
+      "verdict": "text-edit",
+      "reSwept": "Trigger date 2027-03-02 has not passed. Compared q-comp-yieldblox-oracle-incident (quarantine is not recovery, ~$10M attributed, no repayment asserted, reverifyBy 2027-03-02) with the disposition: consistent. One web search for a reimbursement decision found only Script3's 2026-02-23 post saying all depositors will be fully compensated, which predates the disposition and does not decide the quarantined funds. The disposition still says \"both incident cases now encode it\" and cites the SLP-0006 freeze of three exploit accounts, but q-hist-yieldblox-v2-2026-exploit is retired and the remaining case states neither the post-mortem nor SLP-0006.",
+      "edit": "In the disposition replace \"both incident cases now encode it\" with \"q-comp-yieldblox-oracle-incident encodes it\" and drop \"SLP-0006 froze the three exploit accounts at ledger 63073409 on 2026-06-17\" or note that no case states it. Optionally add \"Script3 2026-02-23 depositor-compensation statement is separate from a decision on the quarantined funds\"."
+    },
+    {
+      "collection": "dateContingentTraps",
+      "selector": "2026-11-03 post-event check after Meridian 2026 on 2026-10-28/2026-10-29",
+      "verdict": "consistent",
+      "reSwept": "Trigger date 2026-11-03 has passed, so I re-checked live: meridian.stellar.org/schedule says \"two days of keynotes, technical sessions, and workshops on October 28-29 at Convento do Beato in Lisbon, Portugal\" and the event-details page is live. q-hist-meridian-2026-corrected-venue states Oct 28-29, 2026 at Convento do Beato, Lisbon, with Abu Dhabi (Oct 21-22) superseded after the 2026-04-01 announcement; the entry is closed and the case is stable."
+    }
+  ],
+  "summary": {
+    "consistent": 36,
+    "text-edit": 11,
+    "conflict": 0,
+    "drop-member": 4,
+    "delete-entry": 2
+  }
+}

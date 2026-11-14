@@ -1,0 +1,23 @@
+{
+  "id": "q-soroban-oz-upgradeable-macro",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-soroban-b (golden coverage audit)",
+    "reviewer": "verify-audit-soroban-b (golden coverage audit)",
+    "reason": "Merged into q-soroban-storage-migration. Target-one leaf. Without the absorb the code-replacement half of the facet would be untested (q-soroban-storage-migration grades only data); the absorbed fact (in-place executable replacement at the same address, entrypoint needs authorization) closes it, so the absorb is required, not optional.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-b.json#q-soroban-oz-upgradeable-macro",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-b.json#q-soroban-oz-upgradeable-macro",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-soroban-oz-upgradeable-macro"
+    ],
+    "lastCaseContentSha256": "2e586978790f2ef7aaf7cd7b0df7805e74d0ca341e03f841e67a80dc4367170a",
+    "replacementIds": [
+      "q-soroban-storage-migration"
+    ]
+  }
+}

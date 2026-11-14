@@ -1,0 +1,21 @@
+{
+  "id": "q-scf-skill-submission-radar",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-scf (golden coverage audit)",
+    "reviewer": "verify-audit-scf (golden coverage audit)",
+    "reason": "Confirmed: eval/skills-cases.json:162 q-skill-scf-radar-positioning expects skills_scf_submission_radar.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-scf-skill-submission-radar",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-scf-skill-submission-radar",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-scf-skill-submission-radar"
+    ],
+    "lastCaseContentSha256": "ce1b2d281b6ca94dde186d36360ce9e31711830cc69ba7ee86e99310e9a89395",
+    "replacementIds": []
+  }
+}

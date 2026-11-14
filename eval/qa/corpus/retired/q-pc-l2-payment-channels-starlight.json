@@ -1,0 +1,21 @@
+{
+  "id": "q-pc-l2-payment-channels-starlight",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-protocol (golden coverage audit)",
+    "reviewer": "verify-protocol (golden coverage audit)",
+    "reason": "Starlight is an archived experiment, no taxonomy leaf holds payment channels, and neither mapper found demand for one.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-pc-l2-payment-channels-starlight",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-pc-l2-payment-channels-starlight",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-pc-l2-payment-channels-starlight"
+    ],
+    "lastCaseContentSha256": "0a607403471734943549b0261215d3bdf61c232ba487a47118f1d728bbe50996",
+    "replacementIds": []
+  }
+}

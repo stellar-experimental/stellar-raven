@@ -6,18 +6,18 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "Soroban limits several independent dimensions: transaction/envelope size, footprint entry counts and bytes, disk/ledger reads and writes, CPU instructions, memory, ledger-entry size, event bytes, and return-value size. The network settings are validator-controlled and can change. Enforcement is not uniformly 'during execution': declared transaction/footprint/size maxima can fail validation or preflight, while actual instruction, memory, I/O, event, and return usage can fail when the invocation is applied. Many resources also have ledger-wide budgets, but not every transaction resource has a one-for-one ledger analogue—for example, current configuration has a transaction memory cap without a separate ledger memory cap. Simulate and inspect the target network rather than freezing values.",
+    "answer": "Soroban meters several independent resources: transaction size, footprint entry counts and bytes, disk reads and writes, CPU instructions, memory, ledger-entry size, event bytes and return-value size. The limits are validator-voted network settings that change, so inspect the target network instead of quoting numbers. Declared maxima can fail at validation or simulation; actual CPU, memory, I/O and event use fails at apply time. Most have ledger-wide budgets, but memory is capped per transaction only.",
     "keyFacts": [
-      "Names event, return, entry-size, footprint, I/O, CPU, and memory limits.",
-      "Includes transaction/envelope size among Soroban resource limits.",
-      "Treats validation/preflight and apply-time enforcement as different phases.",
-      "Ledger aggregates cover many transaction resources."
+      "Limits span tx size, footprint, I/O, CPU, memory, entry size, event and return bytes.",
+      "Limits are validator-voted settings that change; values should not be frozen.",
+      "Declared maxima fail at validation; actual CPU, memory, I/O, event use fails at apply.",
+      "Many limits have ledger-wide budgets, but memory is capped per transaction only."
     ],
     "avoid": [
       "Do NOT reduce limits to one gas scalar or freeze network numbers.",
-      "Do NOT say every limit fails only during execution or every resource has a ledger-wide analogue."
+      "Do NOT say every limit fails only during execution."
     ],
-    "notes": "Freshness: limit constants are validator-voted config and retuned across protocols; reward flagging config-tunability rather than quoting a fixed number. Categories verified against the fees/resource-limits page.\nAlso good if the answer: The Wasm memory limit is a hard ceiling with no fee (you cannot pay to exceed it). | Hitting a resource limit produces a failed transaction at execution, not a soft warning.\nGolden cites: The developers.stellar.org fees/resource-limits/metering page (config settings).\nGT-47 BLIND CORRECTION 2026-07-11: phase enforcement and avoid the every-resource ledger-cap absolute.\nSince 2026-07-31 (sd-024 resolved), the Stellar Docs transaction and fees pages use `diskReadBytes` and `resourceFee` and describe both pre-execution validation and apply-time failure. An answer that presents `readBytes` or `refundableFee` as current XDR field names, or says every limit fails only at execution, is wrong even when it cites an older docs copy; an answer that labels those names as older XDR is correct."
+    "notes": "Naming `readBytes` or `refundableFee` as current XDR field names is stale; labelling them older XDR is correct."
   },
   "tags": {
     "category": "soroban",
@@ -31,7 +31,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-03-05",
     "sources": [
       {
@@ -74,24 +74,56 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "Per-transaction memory is capped but there is no ledger-wide memory limit; other resources have ledger-wide budgets",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "F",
+            "ref": "`stellar network settings --network testnet`",
+            "observedAt": "2026-11-14",
+            "note": "compute: ledger_max_instructions 580000000, tx_max_instructions 400000000, tx_memory_limit 41943040 (no ledger memory field)"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering.md",
+            "observedAt": "2026-11-14",
+            "note": "A transaction's memory (RAM) is also capped, though not subject to any charge."
+          }
+        ]
+      },
+      {
+        "claim": "Docs use `sorobanData.resourceFee` and describe pre-execution and apply-time enforcement",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering.md",
+            "observedAt": "2026-11-14",
+            "note": "Before execution, the declared `sorobanData.resourceFee` must be at least the fee computed ... the transaction fails at apply time"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "golden cap backlog 2026-11-02 (caps-2)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-soroban-b, verify-audit-soroban-b; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Cap ended 2026-11-02: sd-024 is resolved (improvements/resolved.json, resolved 2026-07-31) and the live pages no longer carry the stale content, so the partial cap became a plain rule.",
-        "A 2026-11-02T21:24:12Z: GET https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/stellar-transaction.md — SorobanResources declares \"uint32 diskReadBytes;\" and SorobanTransactionData \"int64 resourceFee;\"; 0 matches for readBytes as a bare field and for refundableFee.",
-        "A 2026-11-02T21:24:12Z: GET https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering.md — \"Before execution, the declared `sorobanData.resourceFee` must be at least the fee computed from the transaction's *declared* resources, or the transaction is rejected as invalid (`txSOROBAN_INVALID`) ... the transaction fails at apply time\".",
-        "E 2026-11-02T21:26:00Z: Raven stellarDocs.search_docs 'SorobanResources readBytes refundableFee' — top hit is the fees page with the resourceFee formula; no hit shows readBytes or refundableFee as current fields.",
-        "Sibling sweep 2026-11-02: grep of the battery for refundableFee and sd-024 finds only this case; no contradiction.",
-        "Prior verification event: Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-06) (2026-11-02); see git history."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-b.json#q-soroban-resource-limits",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-b.json#q-soroban-resource-limits",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-soroban-resource-limits",
+        "Live F 2026-11-14: `stellar network settings --network testnet` -- 'compute: ledger_max_instructions 580000000, tx_max_instructions 400000000, tx_memory_limit 41943040 (no ledger memory field)'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering.md -- 'A transaction's memory (RAM) is also capped, though not subject to any charge.'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering.md -- 'Before execution, the declared `sorobanData.resourceFee` must be at least the fee computed ... the transaction fails at apply time'"
       ],
       "rootCause": [
-        ".agents/rounds/2026-11-02-grading-policy.md (ADR-0008 amendment 2026-11-02: partial caps follow open upstream findings)",
-        "improvements/resolved.json entry sd-024 (resolved 2026-07-31; the cap it backed ended)"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-soroban-resource-limits"
+    "origin": "raven-next q-soroban-resource-limits",
+    "notes": "Freshness: limit constants are validator-voted config and retuned across protocols; reward flagging config-tunability rather than quoting a fixed number. Categories verified against the fees/resource-limits page.\nAlso good if the answer: The Wasm memory limit is a hard ceiling with no fee (you cannot pay to exceed it). | Hitting a resource limit produces a failed transaction at execution, not a soft warning.\nGolden cites: The developers.stellar.org fees/resource-limits/metering page (config settings).\nGT-47 BLIND CORRECTION 2026-07-11: phase enforcement and avoid the every-resource ledger-cap absolute.\nSince 2026-07-31 (sd-024 resolved), the Stellar Docs transaction and fees pages use `diskReadBytes` and `resourceFee` and describe both pre-execution validation and apply-time failure. An answer that presents `readBytes` or `refundableFee` as current XDR field names, or says every limit fails only at execution, is wrong even when it cites an older docs copy; an answer that labels those names as older XDR is correct.",
+    "leaf": "soroban.resource-fees",
+    "secondaryLeaf": "network.limits-settings"
   }
 }

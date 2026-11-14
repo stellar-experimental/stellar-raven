@@ -1,0 +1,21 @@
+{
+  "id": "q-edge-doc-category-filter-empty",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-edge (golden coverage audit)",
+    "reviewer": "verify-audit-edge (golden coverage audit)",
+    "reason": "How Raven reports a docs match outside the requested category is an adapter contract that unit tests and the frozen live soft-empty case already exercise.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-edge.json#q-edge-doc-category-filter-empty",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-edge.json#q-edge-doc-category-filter-empty",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-edge-doc-category-filter-empty"
+    ],
+    "lastCaseContentSha256": "cdeb0e0398e4c18b40bcfe5cc604fc9daabab877056145665ca8f1a9f1fe5aff",
+    "replacementIds": []
+  }
+}

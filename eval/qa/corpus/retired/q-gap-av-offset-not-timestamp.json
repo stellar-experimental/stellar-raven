@@ -1,0 +1,21 @@
+{
+  "id": "q-gap-av-offset-not-timestamp",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-tooling-a (golden coverage audit)",
+    "reviewer": "verify-audit-tooling-a (golden coverage audit)",
+    "reason": "Pure Lumenloop output contract. test/catalog.test.ts:434 pins the opaque-offset wording, and the agent behavior stays graded inside q-ti-video-tutorials and q-soroban-av-passkeys-talk (both carry the start_offset avoid).",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-a.json#q-gap-av-offset-not-timestamp",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-a.json#q-gap-av-offset-not-timestamp",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-gap-av-offset-not-timestamp"
+    ],
+    "lastCaseContentSha256": "528618931c8f18e19ab3904ef32c08abe73c1113381340c36232491caf4b223c",
+    "replacementIds": []
+  }
+}

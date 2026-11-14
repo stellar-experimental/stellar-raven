@@ -1,0 +1,23 @@
+{
+  "id": "q-sep-8-regulated-assets",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-assets (golden coverage audit)",
+    "reviewer": "verify-audit-assets (golden coverage audit)",
+    "reason": "Merged into q-comp-sep8-regulated-assets-approval-server. The survivor q-comp-sep8-regulated-assets-approval-server rewrite keeps the required flags, the approval_server, regulated and approval_criteria stellar.toml fields, and the five statuses.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-assets.json#q-sep-8-regulated-assets",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-assets.json#q-sep-8-regulated-assets",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-sep-8-regulated-assets"
+    ],
+    "lastCaseContentSha256": "3cc750ba1e4c32df37e643305d81f4106249cf91c363a2a272e738450f26ef98",
+    "replacementIds": [
+      "q-comp-sep8-regulated-assets-approval-server"
+    ]
+  }
+}

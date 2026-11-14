@@ -5,20 +5,17 @@
     "scout.searchProjects"
   ],
   "golden": {
-    "answer": "A grounded answer derives its named examples and status claims from the live Stellar Scout directory or research data, then dates the roster so it is not presented as permanent. As of 2026-11-02, the Stellar Scout directory's RWA type filter returned 101 project records (84 Live, 12 Development, 5 Inactive), including Benji, WisdomTree, Ondo, and Etherfuse; DTCC was listed as Development.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "As of 2026-11-14, issuer sources show products live on Stellar from Franklin Templeton (BENJI), WisdomTree, Ondo (USDY) and Figure (YLDS), among others. DTCC announced on 2026-05-27 a Stellar connection expected in 1H27; its tokenization service is live only on Canton and a private Besu network, so DTCC on Stellar is planned, not live. Directory presence is not proof of a live Stellar product, and control models differ.",
     "keyFacts": [
-      "Dates each specific source-supported observation.",
-      "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Separates primary-confirmed live Stellar products from announced or planned products."
+      "Names dated, issuer-sourced live RWA products such as BENJI, Ondo USDY or Figure YLDS.",
+      "DTCC's Stellar link is planned for 1H27; its service is live only on other networks.",
+      "Directory presence or Live status does not prove a live Stellar-issued product."
     ],
     "avoid": [
-      "Do NOT treat directory presence or entity Live status as proof of a live Stellar-issued product.",
       "Do NOT put planned DTCC Stellar work in the live bucket.",
-      "Do NOT claim all RWA products use SEP-8 or one identical legal/control model.",
-      "Do NOT freeze volatile AUM or roster counts without dated primary evidence.",
-      "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical."
+      "Do NOT claim every RWA product uses SEP-8 or one control model, or freeze AUM or roster counts without dated evidence."
     ],
-    "notes": "2026-06-29 re-verified dated claims and freshness-gated. Franklin Templeton (BENJI/FOBXX, ~$654M AUM on Stellar) and WisdomTree (Prime funds + gold) confirmed; Figure YLDS = SEC-registered face-amount certificate, live on Stellar May 5, 2026 (stellar.org/press/figure-announces-launch-of-ylds-on-stellar-network) — consistent with q-rwa-dtcc-tokenization which keeps DTCC's DTC service PLANNED for H1 2027 (not live). Ondo Finance also active. Landscape evolving/freshness-sensitive (quarterly). Trap: inventing projects or presenting DTCC's forward-dated plan as live.\nAlso good if the answer: Mentions other RWA/tokenization participants (e.g. DTCC's planned DTC tokenization service) and treats the landscape as evolving. | Notes these use Stellar's regulated-asset model (SEP-8 + flags).\nGolden cites: Scout/Lumenloop project directory entries and/or dated issuer sources.\nCORRECTION 2026-07-10: grade dated product-level deployment and legal/mechanism scope. DTCC is planned H1 2027 on Stellar. GOLD is the live WisdomTree code. No roster-wide SEP-8 gate.\nUPDATE 2026-11-02: the DTCC Tokenization Service went live on 2026-10-28 on the Canton Network and DTCC's private Besu network. DTCC's roadmap still lists Stellar as anticipated in 2027 (first half of 2027 per the 2026-05-27 announcement). An answer that says DTS is live on other networks while Stellar remains planned does not put DTCC Stellar work in the live bucket."
+    "notes": "Accept any dated, primary-sourced issuer; a complete roster is not required."
   },
   "tags": {
     "category": "compliance-rwa-payments",
@@ -32,7 +29,7 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-14",
     "sources": [
       {
         "class": "D",
@@ -226,24 +223,83 @@
             "note": "\"In addition to adding Stellar and Arc in 2027, DTCC plans to add tools for settling transactions with digital cash\""
           }
         ]
+      },
+      {
+        "claim": "Franklin Templeton (BENJI) and WisdomTree publish Stellar assets in their stellar.toml.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "D",
+            "ref": "https://www.franklintempleton.com/.well-known/stellar.toml",
+            "observedAt": "2026-11-14",
+            "note": "[[CURRENCIES]] code=\"BENJI\""
+          },
+          {
+            "class": "D",
+            "ref": "https://stellar.wisdomtree.com/.well-known/stellar.toml",
+            "observedAt": "2026-11-14",
+            "note": "code=\"USD\" name=\"WisdomTree Dollar Token\""
+          }
+        ]
+      },
+      {
+        "claim": "Ondo USDY and Figure YLDS are live on Stellar.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "D",
+            "ref": "https://ondo.finance/blog/usdy-is-now-live-on-stellar",
+            "observedAt": "2026-11-14",
+            "note": "USDY is Now Live on Stellar ... Sep 17, 2025"
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/press/figure-announces-launch-of-ylds-on-stellar-network",
+            "observedAt": "2026-11-14",
+            "note": "today launches YLDS on the Stellar network"
+          }
+        ]
+      },
+      {
+        "claim": "DTCC's Stellar connection is expected 1H27; its service is live only on Canton and a private Besu network.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://www.dtcc.com/press-releases/2026/tokenization-service-to-connect-with-stellar-public-blockchain-as-dtc-advances-multi-chain-strategy",
+            "observedAt": "2026-11-14",
+            "note": "anticipate DTC-tokenized assets available on the Stellar network during the 1H27"
+          },
+          {
+            "class": "A",
+            "ref": "https://www.dtcc.com/press-releases/2026/dtcc-tokenization-service-goes-live",
+            "observedAt": "2026-11-14",
+            "note": "currently integrated with the Canton Network and DTCC's private Besu network"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch compliance-rwa-payments-04)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-compliance, verify-audit-compliance; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "https://stellarlight.xyz/api/projects/search?type=RWA&limit=1 (observedAt 2026-11-02T16:41Z, applier re-read): counts.total 101; status=Live 84, Development 12, Inactive 5. The proposer's 4 Inactive was wrong; the verifier modified it to 5 and the applier confirmed.",
-        "https://stellarlight.xyz/api/projects/search?type=RWA&limit=100&fields=name,slug,status (observedAt 2026-11-02): Benji, Ondo, WisdomTree, Etherfuse Live; DTCC Development. The count is a corpus-only, source-relative Scout observation.",
-        "https://www.dtcc.com/press-releases/2026/dtcc-tokenization-service-goes-live (observedAt 2026-11-02): \"The service is currently integrated with the Canton Network and DTCC's private Besu network, with additional blockchain networks to be added in 2027.\"",
-        "https://communications.dtcc.com/rs/669-QIL-921/images/DTCC%20Tokenization%20Service%20At-a-Glance.pdf (observedAt 2026-11-02): Stellar (SEP-41) listed under \"Anticipated in 2027\".",
-        "https://crypto.news/dtcc-launches-tokenization-service-with-20-major-firms/ and https://www.coindesk.com/business/2026/10/28/wall-street-backbone-dtcc-brings-usd30-trillion-securities-closer-to-blockchain-with-major-banks (observedAt 2026-11-02): Stellar integration expected in 2027 (first half of 2027).",
-        "Independent verifier 2026-11-02: golden.answer modify (5 Inactive), golden.notes accept (.agents/rounds/2026-11-02-golden-audit/pass1/compliance-rwa-payments-04.json).",
-        "Sibling sweep 2026-11-02: grep DTCC|RWA records|Spydra -> q-crp-dtcc-stellar-connection-plan (Stellar expected H1 2027; consistent), q-asset-rwa-tokenized-freshness, q-defi-rwa-scf-similar, q-defi-rwa-treasury-funding-live; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-compliance.json#q-rwa-projects-tokenizing-stellar",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-compliance.json#q-rwa-projects-tokenizing-stellar",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-rwa-projects-tokenizing-stellar",
+        "Live D 2026-11-14: https://www.franklintempleton.com/.well-known/stellar.toml -- '[[CURRENCIES]] code=\"BENJI\"'",
+        "Live D 2026-11-14: https://stellar.wisdomtree.com/.well-known/stellar.toml -- 'code=\"USD\" name=\"WisdomTree Dollar Token\"'",
+        "Live D 2026-11-14: https://ondo.finance/blog/usdy-is-now-live-on-stellar -- 'USDY is Now Live on Stellar ... Sep 17, 2025'",
+        "Live A 2026-11-14: https://stellar.org/press/figure-announces-launch-of-ylds-on-stellar-network -- 'today launches YLDS on the Stellar network'",
+        "Live A 2026-11-14: https://www.dtcc.com/press-releases/2026/tokenization-service-to-connect-with-stellar-public-blockchain-as-dtc-advances-multi-chain-strategy -- 'anticipate DTC-tokenized assets available on the Stellar network during the 1H27'",
+        "Live A 2026-11-14: https://www.dtcc.com/press-releases/2026/dtcc-tokenization-service-goes-live -- 'currently integrated with the Canton Network and DTCC's private Besu network'"
       ],
       "rootCause": [
-        "freshness-drift"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-rwa-projects-tokenizing-stellar"
+    "origin": "raven-next q-rwa-projects-tokenizing-stellar",
+    "notes": "2026-06-29 re-verified dated claims and freshness-gated. Franklin Templeton (BENJI/FOBXX, ~$654M AUM on Stellar) and WisdomTree (Prime funds + gold) confirmed; Figure YLDS = SEC-registered face-amount certificate, live on Stellar May 5, 2026 (stellar.org/press/figure-announces-launch-of-ylds-on-stellar-network) — consistent with q-rwa-dtcc-tokenization which keeps DTCC's DTC service PLANNED for H1 2027 (not live). Ondo Finance also active. Landscape evolving/freshness-sensitive (quarterly). Trap: inventing projects or presenting DTCC's forward-dated plan as live.\nAlso good if the answer: Mentions other RWA/tokenization participants (e.g. DTCC's planned DTC tokenization service) and treats the landscape as evolving. | Notes these use Stellar's regulated-asset model (SEP-8 + flags).\nGolden cites: Scout/Lumenloop project directory entries and/or dated issuer sources.\nCORRECTION 2026-07-10: grade dated product-level deployment and legal/mechanism scope. DTCC is planned H1 2027 on Stellar. GOLD is the live WisdomTree code. No roster-wide SEP-8 gate.\nUPDATE 2026-11-02: the DTCC Tokenization Service went live on 2026-10-28 on the Canton Network and DTCC's private Besu network. DTCC's roadmap still lists Stellar as anticipated in 2027 (first half of 2027 per the 2026-05-27 announcement). An answer that says DTS is live on other networks while Stellar remains planned does not put DTCC Stellar work in the live bucket.",
+    "leaf": "assets.rwa-issuers",
+    "secondaryLeaf": "ecosystem.institutional-adoption"
   }
 }

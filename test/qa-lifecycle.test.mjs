@@ -1,5 +1,5 @@
 import { execFileSync } from "node:child_process";
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -21,6 +21,15 @@ import { formatFiveTrackSummary } from "../eval/qa/five-track.mjs";
 import { lintLifecycle, loadLifecycleLane } from "../eval/qa/lint-corpus.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+
+function walkJson(dir) {
+  if (!existsSync(dir)) return [];
+  return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) return walkJson(full);
+    return entry.name.endsWith(".json") ? [full] : [];
+  }).sort();
+}
 
 function kase(id, state = "active", reviewState = "none") {
   return {
@@ -384,6 +393,32 @@ describe("golden lifecycle", () => {
     expect(() => registry({ retired: [record(retired, "retired")] }, prior)).toThrow(/does not match the registry/);
   });
 
+  it("retires a real battery case against the checked-in registry", () => {
+    const lane = (name) => walkJson(path.join(ROOT, "eval/qa/corpus", name)).map((file) => ({ file, value: JSON.parse(readFileSync(file, "utf8")) }));
+    const battery = lane("battery");
+    const committed = JSON.parse(readFileSync(path.join(ROOT, "eval/qa/lifecycle-registry.json"), "utf8"));
+    const [target, survivor] = battery.filter(({ value }) => value.truth.lifecycle.state === "active");
+    const retiredFile = path.join(ROOT, "eval/qa/corpus/retired", `${target.value.id}.json`);
+    const build = (lastCaseContentSha256) => buildLifecycleRegistry({
+      root: ROOT,
+      batteryRecords: battery.filter((item) => item !== target),
+      proposedRecords: lane("proposed"),
+      tombstoneRecords: [
+        ...lane("retired"),
+        { file: retiredFile, value: tombstone(target.value.id, lastCaseContentSha256, [survivor.value.id]) }
+      ],
+      previousRegistry: committed
+    });
+    const built = build(contentSha256(target.value));
+    expect(built.entries.find((entry) => entry.id === target.value.id)).toMatchObject({
+      state: "retired",
+      path: `eval/qa/corpus/retired/${target.value.id}.json`,
+      replacementIds: [survivor.value.id]
+    });
+    expect(built.reservedIds).toEqual(committed.reservedIds);
+    expect(() => build("0".repeat(64))).toThrow(/does not match the registry/);
+  });
+
   it("fires mass review at 25 queued cases, five percent, or one quarter", () => {
     const lifecyclePolicy = policy();
     const active = Array.from({ length: 100 }, (_, index) => kase(`q-case-${index}`));
@@ -499,15 +534,24 @@ describe("golden lifecycle", () => {
       "registry caseContentSha256 is stale"
     );
 
-    const current = JSON.parse(readFileSync(path.join(ROOT, "eval/qa/cases.json"), "utf8"));
+    const headline = JSON.parse(readFileSync(path.join(ROOT, "eval/qa/cases.json"), "utf8")).cases;
+    const toolLane = JSON.parse(readFileSync(path.join(ROOT, "eval/qa/tool-cases.json"), "utf8")).cases;
+    const current = [...headline, ...toolLane];
     const currentRegistry = JSON.parse(readFileSync(path.join(ROOT, "eval/qa/lifecycle-registry.json"), "utf8"));
-    expect(current.cases).toHaveLength(501);
-    const activeCount = current.cases.filter((item) => item.truth.lifecycle.state === "active").length;
-    const quarantinedCount = current.cases.filter((item) => item.truth.lifecycle.state === "quarantined").length;
-    expect(activeCount + quarantinedCount).toBe(current.cases.length);
-    expect(currentRegistry.counts).toMatchObject({ active: activeCount, proposed: 6, quarantined: quarantinedCount, retired: 0 });
-    expect(currentRegistry.reservedIds).toHaveLength(507);
-    for (const item of current.cases) {
+    expect(headline.every((item) => item.truth.lane === undefined)).toBe(true);
+    expect(toolLane.every((item) => item.truth.lane === "tool")).toBe(true);
+    const activeCount = current.filter((item) => item.truth.lifecycle.state === "active").length;
+    const quarantinedCount = current.filter((item) => item.truth.lifecycle.state === "quarantined").length;
+    expect(activeCount + quarantinedCount).toBe(current.length);
+    const laneFiles = (lane) => walkJson(path.join(ROOT, "eval/qa/corpus", lane)).length;
+    expect(currentRegistry.counts).toMatchObject({
+      active: activeCount,
+      proposed: laneFiles("proposed"),
+      quarantined: quarantinedCount,
+      retired: laneFiles("retired")
+    });
+    expect(currentRegistry.reservedIds).toHaveLength(current.length + laneFiles("proposed") + laneFiles("retired"));
+    for (const item of current) {
       const entry = currentRegistry.entries.find((candidate) => candidate.id === item.id);
       expect(entry.state).toBe(item.truth.lifecycle.state);
       expect(entry.caseContentSha256).toBe(contentSha256(item));

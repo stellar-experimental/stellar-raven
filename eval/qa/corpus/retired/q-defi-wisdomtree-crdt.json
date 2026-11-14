@@ -1,0 +1,21 @@
+{
+  "id": "q-defi-wisdomtree-crdt",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-defi (golden coverage audit)",
+    "reviewer": "verify-defi (golden coverage audit)",
+    "reason": "WisdomTree is named in q-rwa-projects-tokenizing-stellar kf0; an issuer G-address is identifier trivia.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-defi-wisdomtree-crdt",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-defi-wisdomtree-crdt",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-defi-wisdomtree-crdt"
+    ],
+    "lastCaseContentSha256": "b4712076316c410f7fa9cba1a82e2075996569fb661d9b80a92d088ffa174ec9",
+    "replacementIds": []
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "id": "q-gap-explainrepo-payload-ok",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-soroban-a (golden coverage audit)",
+    "reviewer": "verify-audit-soroban-a (golden coverage audit)",
+    "reason": "Twin of q-ti-explain-repo-payload-status; with that case also retired, the mechanism rests on the earlier envelope-case verdicts.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-a.json#q-gap-explainrepo-payload-ok",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-a.json#q-gap-explainrepo-payload-ok",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-gap-explainrepo-payload-ok"
+    ],
+    "lastCaseContentSha256": "889a42796185fa8419e23441b45547f4b18e06184037a0722c288af443caac8b",
+    "replacementIds": []
+  }
+}

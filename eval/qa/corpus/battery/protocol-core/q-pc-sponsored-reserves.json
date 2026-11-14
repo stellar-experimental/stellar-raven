@@ -7,19 +7,15 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "Sponsored reserves let one account take on the minimum-balance reserve burden for another account or ledger entry; they do not mint XLM or remove authorization, fee, signer, trustline, or issuer-control rules. The canonical operation pattern is a sponsorship \"sandwich\": the sponsor starts with `BeginSponsoringFutureReserves`, the sponsored account creates the entry, and the sponsored account ends with `EndSponsoringFutureReserves`. Source: https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves\n\nThe minimum-balance effect is tracked through account fields: the sponsored account's `numSponsored` offsets subentries that would otherwise raise its minimum balance, while the sponsor's `numSponsoring` records the reserve obligations it has taken on. The current Docs and Core give the sponsored-reserve minimum balance formula as `(2 + numSubEntries + numSponsoring - numSponsored) * baseReserve`. Source: https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves#effect-on-minimum-balance. They calculate spendability separately: `available balance = balance - minimum balance - liabilities.selling`. Source: https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionUtils.cpp\n\n`RevokeSponsorship` can remove or transfer sponsorship of existing ledger entries and signers, with behavior depending on the source account and requiring valid authorization/reserve sufficiency. A fully sponsored account with no spendable XLM may hold a sponsored trustline and receive that asset if issuer authorization permits it, but it still needs fees paid by some transaction source or fee-bump sponsor to submit transfers, and it cannot bypass trustline/authorization requirements. Sources: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations#revoke-sponsorship and https://developers.stellar.org/docs/learn/fundamentals/lumens#minimum-balance",
+    "answer": "Sponsored reserves let a sponsor carry another account's or entry's base reserve: BeginSponsoringFutureReserves, the sponsored account's entry-creating operation, then EndSponsoringFutureReserves in one transaction. numSponsoring and numSponsored track the obligations, and RevokeSponsorship removes or transfers them. Sponsorship mints no XLM; a 0-XLM sponsored account can hold an authorized sponsored trustline but still needs someone to pay fees.",
     "keyFacts": [
-      "One account can sponsor another account's or ledger entry's minimum-balance reserve.",
-      "Future reserves use BeginSponsoringFutureReserves and EndSponsoringFutureReserves.",
-      "Explains num_sponsored/num_sponsoring track sponsored entries and sponsoring obligations.",
-      "Sponsorship reduces the user's XLM reserve burden."
+      "A sponsor carries another account's reserve via Begin/EndSponsoringFutureReserves.",
+      "numSponsoring and numSponsored track it; RevokeSponsorship removes or transfers it.",
+      "A 0-XLM sponsored account still needs fees paid and issuer authorization."
     ],
     "avoid": [
-      "Do NOT say sponsorship mints XLM or lets accounts bypass all minimum balance/fee rules.",
-      "Do NOT claim a sponsored 0-XLM account can always transfer assets without fees or authorization.",
-      "Do NOT add liabilities inside Core's minimum-balance calculation; Core subtracts selling liabilities when it calculates available balance."
-    ],
-    "notes": "Verified against Stellar Docs. 0-XLM account behavior depends on whether another account pays fees and whether required trustlines/authorization already exist.\nAlso good if the answer: Mentions RevokeSponsorship and that revocation/transfer requires valid authorization and reserve sufficiency.\nGolden cites: At least one primary Stellar source such as developers.stellar.org, stellar-core docs, or the stellar-protocol repository."
+      "Do NOT say sponsorship mints XLM or lets a 0-XLM account transact without fees or authorization."
+    ]
   },
   "tags": {
     "category": "protocol-core",
@@ -73,19 +69,35 @@
             "note": "getMinBalance multiplies effective reserve units by baseReserve; getAvailableBalance then subtracts selling liabilities from protocol V10."
           }
         ]
+      },
+      {
+        "claim": "Sandwich operations and numSponsored/numSponsoring tracking",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves",
+            "observedAt": "2026-11-14",
+            "note": "BeginSponsoringFutureReserves … EndSponsoringFutureReserves; minimum balance (2 + numSubEntries + numSponsoring - numSponsored) * baseReserve (read 2026-11-02)"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-03)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-protocol, verify-protocol; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "No gospel change 2026-11-02: question, golden, and tags are unchanged; this event refreshes judge-blind provenance only.",
-        "Live re-check 2026-11-02 (confirmed): Sponsorship sandwich BeginSponsoringFutureReserves ... EndSponsoringFutureReserves; sponsor begins, sponsored ends — A https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves 'To create a sponsored reserve, you have to use a sandwich transaction that includes three operations.'; B https://github.com/stellar/stellar-protocol/blob/master/core/cap-0033.md 'This relation is initiated by `BeginSponsoringFutureReservesOp`, where the sponsoring account is the source account, and is terminated by `EndSponsoringFutureReserveOp`, where the sponsored account is the source account.'",
-        "Live re-check 2026-11-02 (confirmed): min balance = (2 + numSubEntries + numSponsoring - numSponsored) * baseReserve; available = balance - min - liabilities.selling — A https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves#effect-on-minimum-balance 'the minimum balance calculation is: (2 + `numSubEntries` + `numSponsoring` - `numSponsored`) * `baseReserve`. Selling liabilities are not part of the minimum balance.'; B https://github.com/stellar/stellar-core/blob/b8c4f12d6f1159d67be8743c87a3c7df839ae7f4/src/transactions/TransactionUtils.cpp 'int64_t effEntries = 2LL; effEntries += numSubentries; effEntries += numSponsoring; effEntries -= numSponsored; ... return effEntries * int64_t(lh.baseReserve);'",
-        "Live re-check 2026-11-02 (confirmed): 0-XLM sponsored account still needs fees paid by some source/fee-bump and trustline authorization — A https://developers.stellar.org/docs/learn/fundamentals/lumens 'a sponsored account can even be created with a starting balance of `0`, with the sponsor carrying its reserves.'; A https://developers.stellar.org/docs/build/apps/wallet/stellar 'Executing this transaction will be fully covered by the `sponsorKeyPair` and `sponsoredKeyPair` and may not even have any XLM funds on its account.'",
-        "Sibling sweep 2026-11-02: q-protocol-base-reserve-min-balance carries the same sponsorship-aware formula; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-pc-sponsored-reserves",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-pc-sponsored-reserves",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-pc-sponsored-reserves",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves -- 'BeginSponsoringFutureReserves … EndSponsoringFutureReserves; minimum balance (2 + numSubEntries + numSponsoring - numSponsored) * baseReserve (read 2026-11-02)'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-pc-sponsored-reserves"
+    "origin": "raven-next q-pc-sponsored-reserves",
+    "notes": "Verified against Stellar Docs. 0-XLM account behavior depends on whether another account pays fees and whether required trustlines/authorization already exist.\nAlso good if the answer: Mentions RevokeSponsorship and that revocation/transfer requires valid authorization and reserve sufficiency.\nGolden cites: At least one primary Stellar source such as developers.stellar.org, stellar-core docs, or the stellar-protocol repository.",
+    "leaf": "protocol.fee-bump-sponsorship"
   }
 }

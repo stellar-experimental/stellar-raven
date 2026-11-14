@@ -1,0 +1,21 @@
+{
+  "id": "q-tool-zk-repo-live",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-tooling-b (golden coverage audit)",
+    "reviewer": "verify-audit-tooling-b (golden coverage audit)",
+    "reason": "Frozen q-live-zk-repos-current asks the same question with the same repoScore behavior. ZK world coverage remains in q-zk-host-functions-status, q-protocol-bn254-poseidon-xray and the q-zk-proof-systems-stellar cluster. The unverifiable xray-games rot claim no longer matters.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-b.json#q-tool-zk-repo-live",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-b.json#q-tool-zk-repo-live",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-tool-zk-repo-live"
+    ],
+    "lastCaseContentSha256": "5708223d37d011daace8a8ebd9980858dee8eca3c5c7c07370a610508219568c",
+    "replacementIds": []
+  }
+}

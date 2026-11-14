@@ -1,0 +1,23 @@
+{
+  "id": "q-defi-provide-liquidity-impermanent-loss",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-defi (golden coverage audit)",
+    "reviewer": "verify-defi (golden coverage audit)",
+    "reason": "Merged into q-asset-sdex-vs-amm. Target-one leaf; the absorbed fact gives q-asset-sdex-vs-amm the contract-AMM half of the facet. Impermanent loss is generic DeFi.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-defi-provide-liquidity-impermanent-loss",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-defi-provide-liquidity-impermanent-loss",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-defi-provide-liquidity-impermanent-loss"
+    ],
+    "lastCaseContentSha256": "739b661d2605b2d0f6613402ecfc3c886fd562b38cd42149c03dc37ac6c6fea2",
+    "replacementIds": [
+      "q-asset-sdex-vs-amm"
+    ]
+  }
+}

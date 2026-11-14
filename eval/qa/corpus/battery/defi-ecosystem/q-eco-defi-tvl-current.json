@@ -5,19 +5,18 @@
     "lumenloop.search_directory"
   ],
   "golden": {
-    "answer": "A grounded answer takes current chain DeFi TVL from a named, dated TVL provider such as DeFiLlama's Stellar chain endpoints, states the measurement basis, and makes the observation date visible. Directory, research, and news sources supply secondary figures; keep each figure's provider, scope, and date. As of 2026-07-11, the live research results included a 2026-04-23 developer meeting reporting $170M of DeFi TVL; older results reported different figures, demonstrating why provider and date matter.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "Take current chain DeFi TVL from a named provider such as DeFiLlama's Stellar chain endpoint and state its definition and observation date. DeFiLlama showed about $204.9M on 2026-11-14 (about $227M on 2026-11-02), so the figure moves. Keep chain TVL separate from protocol, RWA and asset measures, and do not mix provider snapshots.",
     "keyFacts": [
-      "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Names the provider used for the reported TVL.",
+      "Reports TVL from a named provider such as DeFiLlama.",
       "States the provider's TVL definition or endpoint scope.",
-      "Includes an answer-visible retrieval timestamp.",
-      "Separates chain TVL from protocol, RWA, and asset measures."
+      "Gives an observation date for the figure.",
+      "Keeps chain TVL separate from protocol, RWA and asset measures."
     ],
     "avoid": [
-      "Do NOT pin May 30 as the record, give an undated current scalar, sum overlapping rows, or compare contributors from mismatched snapshots/methods.",
-      "Do NOT present a changeable current measurement without its provider, scope, and observation date; registered invariants and explicitly historical quantities are not current measurements."
+      "Do NOT give an undated current TVL scalar or pin a record date.",
+      "Do NOT sum overlapping rows or mix snapshots from different providers or methods."
     ],
-    "notes": "FRESHNESS item, RE-VERIFIED LIVE 2026-06-29 (perplexity/DeFiLlama): figure is HIGHLY volatile and the dossier's ~$227M is stale. DeFiLlama's daily history changes between reads (revisions or method changes), so record labels and dates move: on 2026-11-02 its historicalChainTvl series showed a $272.8M daily-close high dated 2026-10-01 (some news dates it 2026-10-02), above the $242.7M point on 2026-05-30, and about $221M for 2026-11-02, while the /v2/chains live figure read about $227M the same day. So the gate MUST be on 'cite a dated source + flag staleness + confirm live', NOT a fixed number. Two distinct figures (record vs live snapshot) must not be merged. Confidence: low (volatile).\nAlso good if the answer: Attributes the figure to a specific dated source (DeFiLlama, SDF blog, or dated news) rather than a bare number. | Notes the live DeFiLlama snapshot moves substantially (as of 2026-11-02, DeFiLlama daily history ran from about $194M on 2026-06-29 to a $272.8M high on 2026-10-01) — i.e. confirm against the live source.\nGolden cites: A dated TVL source (DeFiLlama / SDF / dated news) with a freshness caveat.\nGT-19 CORRECTION 2026-07-10: the DeFiLlama history read on 2026-07-11 put June 19 above May 30; the 2026-11-02 read reverses that order, so never grade a record date. Gate provider/endpoint/asOf/definition and chain-vs-protocol separation, never one record/current scalar.\nSource routing 2026-11-02: Lumenloop search_directory and get_project records carried no TVL field; Lumenloop content supplies only dated secondary TVL mentions, not a current provider value."
+    "notes": "Grade provider, scope and date, not a specific TVL value."
   },
   "tags": {
     "category": "defi-ecosystem",
@@ -31,7 +30,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-14",
     "sources": [
       {
         "class": "D",
@@ -136,26 +135,24 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task scf-population-staking)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-defi, verify-defi; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "C: https://api.llama.fi/v2/historicalChainTvl/Stellar — \"max ('2026-10-01', 272841590); 2026-05-30 242671595; 2026-06-19 238715806; 2026-06-29 194179178 (lowest point since 2026-06-29); 2026-11-02 220967151\" (observedAt 2026-11-02)",
-        "C: https://api.llama.fi/v2/chains — \"'tvl': 227292727.19807118, ... 'name': 'Stellar'\" (observedAt 2026-11-02)",
-        "A: https://defillama.com/chain/stellar — \"Total Value Locked in DeFi as of Oct 31, 2026 $223.4m\" (observedAt 2026-11-02)",
-        "D: https://whalehub.io/blog/stellar-defi-tvl-2026 — \"Stellar DeFi TVL stood at $271.6M on 6 October 2026, according to DefiLlama, after a record $272.8M on 1 October.\" (observedAt 2026-11-02)",
-        "D: https://blockonomi.com/stellar-defi-hits-new-tvl-record-as-active-wallets-near-100000/ — \"The Stellar DeFi ecosystem reached a record total value locked of nearly $273 million on October 2, according to DeFiLlama.\" (observedAt 2026-11-02)",
-        "Sibling sweep 2026-11-02: grep '242M|June 19|272.8' over the battery → only this case carries the TVL record figures (q-builder-content-by-person's 'June 19' is an unrelated event date); proposer siblings q-edge-fresh-latest-blend-tvl, q-edge-noinfo-exact-tvl-figure, q-asset-rwa-tokenized-freshness, q-eco-defi-market-map; no contradiction.",
-        "Live C 2026-11-02 (pass 2): POST https://api.lumenloop.com/v1/tools/search_directory {query:'DeFi TVL'} -> 20 rows with keys category, description, similarity, slug, tags, title, website only; POST /v1/tools/get_project {slug:'blend'|'defindex'} -> data keys based_in, category, description, links, mainnet, operating_region, other_names, parent, scf, slug, tags, title; no TVL field or TVL text.",
-        "Live 2026-11-02 (pass 2): https://api.llama.fi/v2/chains Stellar tvl 227638623.88; https://api.llama.fi/v2/historicalChainTvl/Stellar max 2026-10-01 272841590, 2026-05-30 242671595, 2026-06-19 238715806, 2026-06-29 194179178, 2026-11-02 221313047; notes values hold.",
-        "Pass 2 2026-11-02: removed the sls-031 cached-copy partial-cap caution. sls-031 was fixed upstream on 2026-07-14 (improvements/resolved.json#sls-031), and live GET https://stellarlight.xyz/api/projects/search?q=defindex returns tvlUSD 18732903, tvlAsOf 2026-11-02T13:19:15.688Z, tvlSource 'defillama', llamaSlugs ['defindex'], tvlMethodUrl https://defillama.com/protocol/defindex; the trigger expired, and it was an aggregator partial cap outside the three ADR-0008 cases.",
-        "Sibling sweep 2026-11-02 (pass 2): the same 'from the current LumenLoop corpus' template sentence appears in q-asset-rwa-tokenized-freshness, q-crp-regional-offramp-mobilemoney, q-eco-stablecoins-on-stellar, q-eco-stellar-rwa-stablecoin-volume, q-edge-fresh-latest-blend-tvl, q-edge-fresh-most-recent-news, q-builder-lumenloop-regions-vocab (not edited here; flagged to the round ledger). q-edge-fresh-latest-blend-tvl and q-edge-noinfo-exact-tvl-figure name sls-031 and may carry the same expired caution; no TVL figure here contradicts them."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-eco-defi-tvl-current",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-eco-defi-tvl-current",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-eco-defi-tvl-current",
+        "Live D 2026-11-14: https://api.llama.fi/v2/chains -- 'Stellar tvl 204910862.41 (2026-11-14); golden notes read about $227M on 2026-11-02 and a $272.8M daily high on 2026-10-01'",
+        "Live C 2026-11-14: https://api.llama.fi/v2/chains -- '\"name\":\"Stellar\" ... \"tvl\":204553134.47'",
+        "Live C 2026-11-14: https://api.llama.fi/v2/historicalChainTvl/Stellar -- '2026-11-14 198227559 (2026-11-13 200461507)'"
       ],
       "rootCause": [
-        "freshness-drift",
-        "eval-authoring: the migration template sentence named the LumenLoop corpus as the TVL source, but Lumenloop directory and project records carry no TVL field (verified 2026-11-02)",
-        "improvements/resolved.json#sls-031 — fixed upstream 2026-07-14; the cached-copy partial-cap caution expired and is removed"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit",
+        "freshness-drift"
       ]
     },
-    "origin": "raven-next q-eco-defi-tvl-current"
+    "origin": "raven-next q-eco-defi-tvl-current",
+    "notes": "FRESHNESS item, RE-VERIFIED LIVE 2026-06-29 (perplexity/DeFiLlama): figure is HIGHLY volatile and the dossier's ~$227M is stale. DeFiLlama's daily history changes between reads (revisions or method changes), so record labels and dates move: on 2026-11-02 its historicalChainTvl series showed a $272.8M daily-close high dated 2026-10-01 (some news dates it 2026-10-02), above the $242.7M point on 2026-05-30, and about $221M for 2026-11-02, while the /v2/chains live figure read about $227M the same day. So the gate MUST be on 'cite a dated source + flag staleness + confirm live', NOT a fixed number. Two distinct figures (record vs live snapshot) must not be merged. Confidence: low (volatile).\nAlso good if the answer: Attributes the figure to a specific dated source (DeFiLlama, SDF blog, or dated news) rather than a bare number. | Notes the live DeFiLlama snapshot moves substantially (as of 2026-11-02, DeFiLlama daily history ran from about $194M on 2026-06-29 to a $272.8M high on 2026-10-01) — i.e. confirm against the live source.\nGolden cites: A dated TVL source (DeFiLlama / SDF / dated news) with a freshness caveat.\nGT-19 CORRECTION 2026-07-10: the DeFiLlama history read on 2026-07-11 put June 19 above May 30; the 2026-11-02 read reverses that order, so never grade a record date. Gate provider/endpoint/asOf/definition and chain-vs-protocol separation, never one record/current scalar.\nSource routing 2026-11-02: Lumenloop search_directory and get_project records carried no TVL field; Lumenloop content supplies only dated secondary TVL mentions, not a current provider value.",
+    "leaf": "behavior.freshness-honesty",
+    "secondaryLeaf": "defi.tvl-landscape"
   }
 }

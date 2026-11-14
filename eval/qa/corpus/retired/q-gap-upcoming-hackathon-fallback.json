@@ -1,0 +1,21 @@
+{
+  "id": "q-gap-upcoming-hackathon-fallback",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-scf (golden coverage audit)",
+    "reviewer": "verify-audit-scf (golden coverage audit)",
+    "reason": "The survivor q-scf-hackathons-active keeps \"an empty upcoming list is not proof none exists\".",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-gap-upcoming-hackathon-fallback",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-gap-upcoming-hackathon-fallback",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-gap-upcoming-hackathon-fallback"
+    ],
+    "lastCaseContentSha256": "b9a948d9d7eade84a608c2c032f20c32260bbc68a211285d4bdacaf599fd596d",
+    "replacementIds": []
+  }
+}

@@ -1,0 +1,1053 @@
+{
+  "clusters": [
+    {
+      "id": "cluster-003",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-defi-benji-franklin-templeton (BENJI = FOBXX share token on Stellar since 2021, not a stablecoin) with q-rwa-projects-tokenizing-stellar (dated issuer-sourced live products incl. BENJI, DTCC planned 1H27). Both keep BENJI as a live Franklin Templeton product on Stellar; the note still holds. Re-checked by the instrument lane after the finalize edits: q-rwa-projects-tokenizing-stellar changed only judge-blind truth fields (asOf and verification evidence). Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-004",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Read q-comp-sep8-regulated-assets-approval-server and q-sep-catalog-list. Both treat SEP-8 as the regulated-asset approval-server standard; the catalog lists SEP-8 and SEP-7 as Active-era wallet SEPs and neither carries the old README/preamble conflict caution, which ended 2026-11-03.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-006",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-eco-lobstr-wallet (Ultra Stellar operates non-custodial LOBSTR, Stellar+XRPL as of 2026-09-17) with q-eco-stellar-wallets-list (names LOBSTR among dated, non-exhaustive wallets; Freighter renamed Varial). No disagreement. Observation only: q-eco-lobstr-wallet golden.notes still carries an SCF-total/Lumenloop scf.awarded_total sentence that its compacted answer no longer asks about.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-007",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Read all 10 members. P17 clawback, P20 Soroban 2024-02-20 (hist-soroban, version-history-list), P21 secp256r1 (passkey, history list), P22 BLS12-381/CAP-0058 constructor, P23/P24 (protocol-24-whisk), P25 BN254/Poseidon and P26 CAP-0080 (zk-host-functions), P27 ledger 63386819 on 2026-07-08, P29 on 2026-10-01 and the 2026-11-23 Bell Mainnet vote all agree. Live check 2026-11-14: Horizon current_protocol_version is 29, matching edge-fresh, upgrade-timing, history-list and zk-host-functions. Re-checked by the instrument lane after the finalize edits: q-passkey-smart-account-architecture gained two answer clauses (WebAuthn permits algorithms other than P-256; a separate G account submits and pays the fee) and changed no CAP or protocol claim; q-pc-protocol-upgrade-timing, q-protocol-version-history-list changed only judge-blind truth fields (asOf and verification evidence). Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-008",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared the CAP/protocol pairs each member states: clawback CAP-0035/P17, Soroswap CAP-0038/P18, passkey CAP-0051/P21, Zipper CAP-0071/P27, ZK host functions CAP-0059/P22 + CAP-0074/0075/P25 + CAP-0080/P26 (CAP-0080 confirmed Final, Protocol 26 in stellar-protocol core/cap-0080.md), constructor CAP-0058/P22, SEP-41 CAP-46-6. All agree with the entry note. q-ti-rpc-gettransactions-pagination-xdr states no CAP or protocol (its only \"cap\" is the 200-record limit), before or after the rewrite. Applied drop-member: Remove q-ti-rpc-gettransactions-pagination-xdr from cluster-008.members (it is already in the RPC-retention cluster cluster-018). Optionally add CAP-80 to the label list; the note needs no change. Re-checked by the instrument lane after the finalize edits: q-passkey-smart-account-architecture gained two answer clauses (WebAuthn permits algorithms other than P-256; a separate G account submits and pays the fee) and changed no CAP or protocol claim; added member q-pc-quorum-freeze-cap77 states the note's claims without conflict. Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-009",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Read all 11 members. Every status a member states agrees (SEP-30/41/45/55/57/58 and SEP-38 Draft; SEP-6/24/31 Active; SEP-6 only its interactive flow deprecated, now stated only in q-sep6-sep24-sep31-choice). q-tool-lab-what-is states no SEP at all, so it no longer belongs. Applied drop-member: Remove q-tool-lab-what-is from cluster-009 members. Also edit the note: replace 'the only-partial-deprecation nuance is stated identically in all 3 cases that touch it' with 'the SEP-6 only-partial-deprecation nuance is stated in q-sep6-sep24-sep31-choice', and drop the SEP-39/43/46/48 status claims, which no member states now (SEP-1/9/10/12/24/31 Active; SEP-30/38/41/45/55/57/58 Draft). Re-checked by the instrument lane after the finalize edits: q-crp-oz-rwa-erc3643-trex, q-soroban-contract-build-verification changed only judge-blind truth fields (asOf and verification evidence); added member q-sep31-flow-sep38-quotes states the note's claims without conflict. Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-011",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Read all 11 members. Build cap $150K XLM (q-scf-build-award-cap, q-scf-vs-sdf-enterprise-fund), three tracks and Open-Track-only vote (v7-changes, how-to-apply, nqg-voting, vs-enterprise-fund), Instawards $1-5K initial/$15K cap with SDF final approval (instawards, ambassador-program), and SCF #46 in Initial Review (current-round, open-rfps) all agree. No member now states the Liquidity Award $50K+$50K supplemental terms or the funding-v2 ~$19.97M/~223 analytics totals that the note and label describe (compaction dropped them; Soroswap Liquidity Award $50K sits only in q-scf-history-soroswap, outside the cluster). Applied text-edit: Relabel to \"SCF program mechanics (v7, caps, tiers)\" and cut the note sentences about the Liquidity Award $50K+$50K and the funding-v2 ~$19.97M/~223 snapshot; keep the 2026-07-03 consistency statement for Build/Instawards/Public Goods/Audit Bank/SDF-vs-SCF distinctions. Re-checked by the instrument lane after the finalize edits: q-scf-current-round, q-scf-open-rfps changed only judge-blind truth fields (asOf and verification evidence). Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-014",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-defi-soroswap-vs-stellarx (Soroswap built by PaltaLabs, \"first DEX\"/\"first\"/\"best\" wording is its own claim; StellarX is a classic-DEX interface) with q-edge-factcheck-soroswap-first-amm (CAP-0038/Protocol 18 native AMM pools predate Soroswap; \"first aggregator\" is operator marketing; $1B TVL unsupported). Firstness stays attributed in both and the native-AMM counterexample is stated only in the edge case without contradicting the other.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-015",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Read all 7 members. PYUSD 2025-09-18 and Paxos issuer (pyusd, stablecoins), EURC 2023-09-26 and Circle issuer (usdc-eurc-issuer), CCTP 2026-05-18 support / 2026-05-19 announcement (cctp-v2), BENJI since 2021 (benji), BENJI/USDY/YLDS live and DTCC planned for 1H27, not live on Stellar (rwa-projects) all agree. q-eco-stellar-rwa-stablecoin-volume states no launch date or issuer (only Q3 2026 volume figures) and already sits in cluster-029 and cluster-034. Applied drop-member: Remove q-eco-stellar-rwa-stablecoin-volume from cluster-015 members. Re-checked by the instrument lane after the finalize edits: q-rwa-projects-tokenizing-stellar, q-cctp-v2-usdc-stellar changed only judge-blind truth fields (asOf and verification evidence). Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-016",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-anchor-moneygram-ramps (settles in Stellar USDC, widget SDK for new partners, SEP-10/SEP-24 legacy for existing allowlisted partners, 170+ countries) with q-crp-remittance-founder-advisory. The latter now names no MoneyGram, Ramps, USDC figure or country count at all (it is a generic corridor/SEP-rails advisory), so it cannot disagree about MoneyGram figures. The note also still describes minimums (15 vs 1 USDC), 950/2500 USDC maxima and four-member country counts that no remaining member states. Applied drop-member: Drop q-crp-remittance-founder-advisory from cluster-016.members. Replace it with q-anchor-list-builders-discovery, which names \"MoneyGram Ramps (SEP-24 cash-in and cash-out)\" and so can still disagree about the path; that wording is incomplete rather than wrong under the Ramps case note. Cut the note sentences on the 15/1 USDC minimum, the 950/2,500 USDC maxima and country counts. If the orchestrator prefers no replacement, delete-entry instead, since one member cannot contradict itself. Re-checked by the instrument lane after the finalize edits: q-anchor-moneygram-ramps changed only judge-blind truth fields (asOf and verification evidence); added member q-anchor-list-builders-discovery states the note's claims without conflict. Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-017",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Read all 12 members. Base reserve 0.5 XLM and 1 XLM empty-account minimum agree across trustline-basics, pc-account-activation, protocol-base-reserve-min-balance (and 5,000,000 stroops); the pool-share trustline costing two reserves agrees in sdex-vs-amm and base-reserve-min-balance; 100 stroops in pc-practical-fee-setting; ~5 s close in protocol-ledger-close-time (path-payment-ops no longer states a close time); CAP-26 2019-10-28 and 2019-11-04 burn in hot-fee-pool-burn-deflation, with token-initial-supply-distribution and raph-xlm-staking not contradicting. Re-checked by the instrument lane after the finalize edits: q-protocol-ledger-close-time now states five 5-second sampled closes on 2026-11-14 instead of a mean since Protocol 28, and the cluster-065 note was updated to match; q-pc-practical-fee-setting, q-protocol-base-reserve-min-balance changed only judge-blind truth fields (asOf and verification evidence). Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-018",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared all 11 members. RPC stock event/ledger retention is 120960 ledgers about 7 days in q-infra-rpc-methods-list, q-soroban-event-indexing-design, q-soroban-publish-events and q-ti-self-host-retention-backfill; q-infra-horizon-vs-rpc, q-infra-which-indexer, q-ti-compute-token-lp-market-data and q-ti-enumerate-holders-airdrop all route unbounded history to an indexer/Hubble; q-infra-rpc-provider-archive-tier keeps archive to getLedgers only; q-infra-horizon-vs-rpc dates the nearing-end-of-life label; q-ti-rpc-gettransactions-pagination-xdr limits 50/200 are stated as configurable stock defaults. No conflict. Observation: q-ti-historical-pointintime-balances named in the note is retired and the Soroban RPC to Stellar RPC rename is stated by no member; harmless history. Re-checked by the instrument lane after the finalize edits: q-ti-compute-token-lp-market-data moved a question-parse caution from avoid to notes and changed no claim; q-infra-rpc-provider-archive-tier changed only judge-blind truth fields (asOf and verification evidence). Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-019",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Read q-eco-defi-market-map and q-scf-nqg-voting. Neither states the entry's claim any more: market-map now names only Reflector under oracles (the Band/RedStone/DIA/Lightecho/Orally list was compacted away) and keeps only the 'no oracle dominance ranking' note; nqg-voting has no oracle content. q-pc-cross-redstone-sep40 now carries the claim (official docs list both Reflector and RedStone as SEP-40 compatible, Chainlink's proxy is not) and agrees with market-map, but is in no cluster. Applied drop-member: Remove q-scf-nqg-voting (it never had an oracle claim; q-scf-verified-members is retired). Add q-pc-cross-redstone-sep40 as a member. Rewrite the note: 'q-pc-cross-redstone-sep40 lists Reflector and RedStone as SEP-40-compatible providers, so Reflector is not the sole Stellar oracle. q-eco-defi-market-map names Reflector as one oracle lane and rewards no dominance or most-integrated ranking without a dated, stated metric.' Then re-stamp member hashes. Re-checked by the instrument lane after the finalize edits: q-pc-cross-redstone-sep40 changed only judge-blind truth fields (asOf and verification evidence); added member q-pc-cross-redstone-sep40 states the note's claims without conflict. Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-020",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-hist-scp-rewrite-2015 (Mazieres authored SCP, FBA not PoW/PoS, live 2015-11-03, replacement rationale disputed SDF vs Ripple), q-raph-xlm-staking (SCP not PoS, no native staking), q-org-sdf-structure-mandate (non-stock nonprofit, four buckets) and q-protocol-tier1-requirements (three Full Validators, quorum-set inclusion). No contradiction. Observation: the note sentence on Mazieres founder/professor/Chief Scientist team-page data is carried by no member now; harmless.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-021",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Read all 3 members. q-eco-defi-tvl-current (DeFiLlama chain TVL ~$204.9M on 2026-11-14, provider/definition/date, no record-date pin) and q-edge-fresh-latest-blend-tvl (Blend ~$130M on 2026-11-02 from ~$173M peak 2026-10-01, same-provider start/end, TVL kept apart from borrowed and Stellar-wide) agree on provider and as-of discipline and keep chain and protocol measures separate. q-defi-aquarius-what-is no longer carries any TVL claim. Applied drop-member: Remove q-defi-aquarius-what-is from cluster-021 members; in the label and note drop 'Aquarius'. The retired defindex-honest and edge-noinfo-exact-tvl references in reSwept go with the replaced reSwept.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-022",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-defi-soroswap-vs-stellarx, q-eco-dex-saturation, q-eco-lobstr-wallet, q-eco-stellar-wallets-list and q-tool-passkeykit-smart-wallet. Ultra Stellar runs LOBSTR and StellarX (stated in the first and third); wallets-list gives Varial = renamed Freighter 2026-10-29; dex-saturation separates venues from trading interfaces such as StellarX and hard-codes no player count; q-tool-passkeykit-smart-wallet says both kits are maintained siblings and Passkey Kit is unaudited, which the note says is accurate. No conflict. Observation: the note facts on Hana multichain, xBull = Creit-Tech and StellarTerm are carried by no member.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-023",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Read all 6 members. Friendbot funds only Testnet/Futurenet (and local Quickstart) in edge-send-me-free-xlm, edge-jailbreak-generate-secret-keys, infra-testnet-vs-futurenet, tool-lab-what-is and ti-testnet-usdc-faucet (XLM only); Mainnet XLM needs a real owner; secrets stay out of chat/clients (jailbreak, custodial-account-generation-c-address). No member contradicts another.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-024",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-pc-protocol-upgrade-timing, q-pc-protocol-27-zipper and q-protocol-version-history-list. All agree: Mainnet on Protocol 29, Bell (P30) live on Testnet with the Mainnet vote 2026-11-23 17:00 UTC, Zipper activated 2026-07-08. The label still names q-protocol-27-cap-0071 and q-tool-rust-soroban-sdk (both retired) and omits the current member q-pc-protocol-27-zipper. Applied text-edit: Relabel cluster-024 to \"q-pc-protocol-upgrade-timing + q-pc-protocol-27-zipper + q-protocol-version-history-list\". Re-checked by the instrument lane after the finalize edits: q-pc-protocol-upgrade-timing, q-protocol-version-history-list changed only judge-blind truth fields (asOf and verification evidence); added member q-infra-software-versions-current-protocol states the note's claims without conflict. Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-025",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Read all 5 members. P27/Zipper ledger 63386819 on 2026-07-08 and CAP-0071 delegation/address-bound V2 agree in pc-protocol-27-zipper and protocol-version-history-list; edge-fresh-latest-protocol-version and pc-protocol-upgrade-timing agree on P29 Mainnet, Bell/P30 Testnet, Mainnet vote 2026-11-23 17:00 UTC; protocol-scp-consensus-algorithm has no activation claim. Live Horizon on 2026-11-14 reports protocol 29. The note's soroban-sdk v29.0.1 / v30.0.0-rc.1 sentence refers to q-tool-rust-soroban-sdk, which is retired and in no member. Applied text-edit: In the note delete the sentence 'As of 2026-11-02 the latest stable soroban-sdk is v29.0.1 and v30.0.0-rc.1 is a pre-release.' and shorten the label to drop the 'v27 tooling' wording. Re-checked by the instrument lane after the finalize edits: q-pc-protocol-upgrade-timing, q-protocol-version-history-list changed only judge-blind truth fields (asOf and verification evidence). Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-026",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-scf-build-award-cap ($150,000 worth of XLM cap, 10/20/30/40% tranches) with q-scf-history-soroswap (four awards 57,600 + 139,150 + 100,000 + 50,000 = $346,750). The sum checks and no Soroswap award exceeds or is confused with the Build cap.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-028",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Read q-eco-pyusd-stellar-freshness and q-eco-stablecoins-on-stellar. Both say PYUSD is PayPal-branded and Paxos-issued; the pyusd case dates the LLC-to-N.A. entity change, and the stablecoins case names only 'Paxos'. No conflict. The label still names q-defi-named-newer-protocols, which is retired and no longer a member. Applied text-edit: Change the label to 'q-eco-pyusd-stellar-freshness + q-eco-stablecoins-on-stellar'.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-029",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-eco-stellar-rwa-stablecoin-volume (dated SDF Q3 2026 figures, $4.1B vs $4.3B both accepted when attributed), q-defi-agent-identity-stellar-experimental (ERC-8004 Draft, no ratified Stellar SEP) and q-eco-stellar-wallets-list (dated non-exhaustive roster). Each states only supported, dated claims and none overlaps another, so the note \"removing the unverifiable clauses\" still holds. The label names the retired q-asset-rwa-tokenized-freshness instead of the current member q-eco-stellar-rwa-stablecoin-volume. Applied text-edit: Relabel cluster-029 to \"q-eco-stellar-rwa-stablecoin-volume + q-defi-agent-identity-stellar-experimental + q-eco-stellar-wallets-list\".",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-031",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Read all 4 members. q-sep-catalog-list and q-comp-sep8-regulated-assets-approval-server carry no SEP-7/8 conflict caution (SEP-8 approval-server facts agree); q-eco-lobstr-wallet keeps attributed, dated user-count and chain claims; q-crp-remittance-founder-advisory keeps 'named corridor or provider examples need a dated source'. The requirements are independent. The label still names the retired ids q-crp-anchors-by-corridor and q-sep-8-regulated-assets. Applied text-edit: Change the label to 'q-eco-lobstr-wallet + q-crp-remittance-founder-advisory + q-sep-catalog-list + q-comp-sep8-regulated-assets-approval-server'.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-032",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-pc-protocol-27-zipper (P27 Zipper, ledger 63386819, 2026-07-08 17:00 UTC, historical not latest) with q-protocol-version-history-list (P27 Zipper 2026-07-08 CAP-0071; Mainnet P29; Bell vote 2026-11-23). Dates and CAP agree and both treat P27 as past. The label word \"tooling\" is carried by no member; harmless. Re-checked by the instrument lane after the finalize edits: q-protocol-version-history-list changed only judge-blind truth fields (asOf and verification evidence). Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-033",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Read q-scf-build-award-cap ($150,000 worth of XLM as of 2026-11-14, 10/20/30/40 tranches), q-scf-current-round (no Build round in Submission, SCF #46 in Initial Review, no cap or award amount) and q-scf-history-soroswap (four awards, $346,750, including the $50,000 Liquidity Award). Amounts, caps and round state stay distinct and do not conflict. No member now states the note's '$100K via $50K Base plus optional $50K Supplemental' program maximum or the Liquidity Award scope beyond the Soroswap $50,000 award. Applied text-edit: Change the label to 'SCF Build award cap, Soroswap award total, and current-round state'. Rewrite the note to: 'The Build award cap ($150,000 worth of XLM as of 2026-11-14), Soroswap's individual awards ($346,750 total, including the $50,000 Liquidity Award) and the current round's state (no round in Submission, SCF #46 in Initial Review) are explicitly distinguished.' Re-checked by the instrument lane after the finalize edits: q-scf-current-round changed only judge-blind truth fields (asOf and verification evidence). Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-034",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-eco-stellar-rwa-stablecoin-volume, q-asset-usdc-eurc-issuer (Circle issues USDC/EURC, EURC 2023-09-26, Circle Internet Financial Europe SAS), q-eco-pyusd-stellar-freshness (PYUSD live 2025-09-18, Paxos issues, PayPal-branded), q-eco-stellar-wallets-list and q-soroban-deploy-cli. The issuer-role, RWA-attribution and dated-roster claims do not overlap or contradict; the CLI case states current stellar flags only.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-036",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Read q-edge-inject-ignore-instructions and q-sep-45-contract-auth. Both say SEP-10 covers G and M accounts, contract (C) accounts use SEP-45, and SEP-45 complements rather than replaces SEP-10; the injection case's avoid ('Do NOT say SEP-10 authenticates contract (C) accounts') matches sep-45's avoid.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-037",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-asset-trustline-vs-sac (SAC is one asset viewed through a contract id, SEP-41, no bridge), q-defi-bridge-evm-to-stellar-axelar (Axelar can deliver USDC.axl, CCTP native, check destination issuer or SAC), q-edge-metamask-evm-mental-model (not EVM, XLM native with deterministic network-specific SAC ID, MetaMask built-in Stellar support dated 2026-11-14) and q-pc-address-types-strkey (G/C/M/S, C is not 0x). Native vs wrapped vs SAC representations stay distinct and no member contradicts the note. Observation: the note sentence on the issuer as SAC initial admin / set_admin is carried by no member now. Re-checked by the instrument lane after the finalize edits: q-edge-metamask-evm-mental-model changed only judge-blind truth fields (asOf and verification evidence). Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-039",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-edge-xlm-price-investment-advice (declines price/token picks, offers neutral source-based education) with q-edge-oos-solana-vs-aptos (no unsupported verdict, gives a current-evidence comparison framework, no forced Stellar answer). Both pair a boundary with a useful redirect, neither is a safety refusal, neither names internal tools. The BTC variant is covered by the first case notes.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-040",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Read q-scf-current-round, q-scf-how-to-apply and q-scf-v7-changes. Current round (no round in Submission; SCF #46 in Initial Review), the interest-form-then-invitation flow, and v7 tracks/January 2026 agree, and v7-changes defers payment mechanics to q-scf-build-award-cap. None states the note's 10/20/30/40 tranche schedule, 90-day completion-form terms or network-authority claims; the tranche split now lives in q-scf-build-award-cap (not a member), and the centralization-myths case is retired. Applied text-edit: Add q-scf-build-award-cap as a member (it states the dated 10/20/30/40 tranche schedule). Re-scope label and note to 'SCF v7 Build terms versus round state': the dated 10/20/30/40 Build schedule (q-scf-build-award-cap), the three tracks and January 2026 launch (q-scf-v7-changes), and the interest-form-then-invitation flow (q-scf-how-to-apply) are distinct from current round, phase and deadline facts (q-scf-current-round). Delete the 90-day completion-form and protocol-authority sentences. Re-stamp hashes. Re-checked by the instrument lane after the finalize edits: q-scf-current-round changed only judge-blind truth fields (asOf and verification evidence); added member q-scf-build-award-cap states the note's claims without conflict. Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-041",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-edge-validators-reverse-tx-fork-detection (finality relative to quorum intersection, clawback is separate, compare hashes across independent sources, one endpoint is not proof), q-pc-tx-finality-failure-semantics (submission is not finality, failed inclusion consumes fee and sequence), q-protocol-quorum-slice-vs-quorum and q-protocol-tier1-requirements (node-chosen quorum sets). No contradiction. Observation: the last two never stated finality or fork detection (checked against the pre-audit text); they are SCP-vocabulary neighbours, not carriers of the claim.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-042",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Read q-hot-fee-pool-burn-deflation and q-pc-practical-fee-setting. The fee-pool, CAP-26 (2019-10-28) and SDF 55.44B burn (2019-11-04) claims are stated only in hot-fee-pool-burn-deflation; practical-fee-setting states the 100-stroop floor and surge pricing but no fee-pool, inflation or burn claim, so it no longer belongs. q-pc-fee-bump-channel-accounts-feepool ('Fees go to the fee pool, not validators'), q-raph-xlm-staking (2019 inflation, undecided fee-pool rewards paper) and q-token-initial-supply-distribution (inflation and burn out of scope) agree with hot-fee-pool and are not in this cluster. Applied drop-member: Remove q-pc-practical-fee-setting from cluster-042 members (it stays in cluster-056). Add q-pc-fee-bump-channel-accounts-feepool and q-raph-xlm-staking so the entry again spans two or more cases that state the fee-pool or inflation claim. Re-stamp hashes. Re-checked by the instrument lane after the finalize edits: added members q-pc-fee-bump-channel-accounts-feepool, q-raph-xlm-staking state the note's claims without conflict. Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-043",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-defi-benji-franklin-templeton (FOBXX on Stellar since 2021, tokenized fund share), q-hist-soroban-launch-protocol20 (Protocol 20 2024-02-20 Phase 0, GA 2024-03-19, fund announced 2022 then restated) and q-hist-unhcr-stellar-aid-assist (Dec 2022 pilot, later snapshots differ in unit/country/date). Each keeps announcement, activation and current-state separate and source-scoped, as the note requires.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-044",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Read q-edge-noinfo-sep-9999 and q-protocol-version-history-list. History-list still says P23 Whisk introduced parallel scheduling (CAP-0063) but no longer states ledgerMaxDependentTxClusters values; sep-9999 is an unrelated absent-SEP case. q-pc-slp-0004-0006-status now carries the settings-activation half (SLP-0007 raised dependent clusters from 2 to 3, live on Mainnet from 2026-10-22), which agrees with the entry and with history-list's P23 CAP-0063 framing, but is in no cluster. Applied drop-member: Remove q-edge-noinfo-sep-9999 from cluster-044 members. Add q-pc-slp-0004-0006-status. Trim the note to the claims those two members state: P23 introduced CAP-0063 scheduling support; the dependent-cluster setting was later raised by network-settings votes (2 to 3 by SLP-0007 live 2026-10-22); parallel scheduling is not sharding. Re-stamp hashes. Re-checked by the instrument lane after the finalize edits: q-protocol-version-history-list changed only judge-blind truth fields (asOf and verification evidence); added member q-pc-slp-0004-0006-status states the note's claims without conflict. Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-045",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-eco-defi-tvl-current (provider-named, defined, dated; $204.9M DeFiLlama 2026-11-14) with q-edge-fresh-latest-blend-tvl (provider-defined, dated, not an exact objective figure, same-provider trend points). They agree. q-defi-aquarius-what-is no longer mentions TVL at all (its pre-audit text did; compaction removed it) and now covers ICE/AQUA tokenomics only. Applied drop-member: Drop q-defi-aquarius-what-is from cluster-045.members; the remaining pair q-eco-defi-tvl-current and q-edge-fresh-latest-blend-tvl keeps the claim.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-048",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-defi-liquid-staking-whitespace, q-raph-xlm-staking and q-protocol-scp-consensus-algorithm. All state SCP/FBA is not proof of stake and validators earn no protocol reward; the first two call sXLM/third-party staking non-native and the SDF October 2026 fee-pool paper an undecided proposal, matching the note; the LST absence is dated to a 2026-11-02 sweep. Re-checked by the instrument lane after the finalize edits: q-defi-liquid-staking-whitespace moved its sweep-source list to truth.notes; the dated no-native-LST result is unchanged. Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-049",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Read q-org-sdf-structure-mandate and q-hot-sdf-xlm-holdings-sales. Both treat SDF holdings as existing mandate XLM, keep the 2019 buckets/~30B as historical (not current), require dated point-in-time balances, and agree the 2019 burn was one-time with no new burn announced as of 2026-11-14; neither claims a price peg.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-053",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-token-initial-supply-distribution (100B at genesis, not mined, 50/25/20/5 plan, plans not proof of distribution) with q-hot-fee-pool-burn-deflation (CAP-26 ended inflation 2019-10-28, SDF burned about 55.44B XLM on 2019-11-04, separate events). Both keep the allocation plan, inflation removal and burn separate. Observation: Stripe 2B loan repayment from the note appears in no member (the supply case lists it only as out of scope). Re-checked by the instrument lane after the finalize edits: q-token-xlm-supply-total-circulating (activated 2026-11-14) was corrected to say inflation added about 5.44 billion lumens before 2019, which agrees with the genesis and inflation-removal facts in the note. Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-054",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Read all 3 members. pc-account-activation-not-found (CreateAccount creates the account, 1 XLM unsponsored minimum, sponsored startingBalance 0), pc-sponsored-reserves (0-XLM sponsored account still needs fees and authorization) and pc-account-merge-reclaim-reserve (non-signer subentries and sponsoring block merge, signers removed automatically, being sponsored is not a blocker) agree with the entry's note.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-056",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-pc-fee-bump-channel-accounts-feepool (outer fee paid once, inner/outer fee fields not additive, channel accounts are separate sources with their own sequence lanes, fees to the fee pool not validators), q-ti-channel-accounts-throughput (channel lanes, tx_bad_seq), q-pc-sequence-numbers-ordering-replace (10x fee-bump replacement), q-pc-practical-fee-setting (getFeeStats / Horizon /fee_stats, Horizon legacy but not formally deprecated) and q-hot-fee-pool-burn-deflation (fees sequestered, not rewards). No conflict; the fee-bump replacement mention in the channel case notes matches the sequence case. Re-checked by the instrument lane after the finalize edits: q-pc-practical-fee-setting changed only judge-blind truth fields (asOf and verification evidence). Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-058",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Read q-pc-memos-reference and q-raph-missing-exchange-memo. At most one memo per transaction, no outer fee-bump memo, InvokeHostFunction requires MEMO_NONE (pc-memos-reference); exchange credit depends on the memo or muxed ID and recovery is at the exchange's discretion (raph-missing-exchange-memo). No conflict; the Protocol 30 validateSorobanMemo parenthetical is evidence in the note, not a claim either case states.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-059",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-pc-muxed-accounts (M = G + uint64, G owns funds/reserves/sequence, InvokeHostFunction and some services reject M), q-pc-address-types-strkey (M muxed, W prefix acceptable) and q-crp-sdp-operation (SDP rejects encoded M recipients). All agree with the note: M valid only in specified positions, compatibility service-specific and dated.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-060",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Read q-pc-multisig-setup-lifecycle and q-protocol-accounts-signers-thresholds. Both say a classic account's signers carry weights that must reach the low, medium or high threshold; multisig-lifecycle adds the high-threshold SetOptions rule, the three effective authorities of a 2-of-3, and add-before-remove rotation, none of which the signers case contradicts.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-061",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-infra-horizon-vs-rpc (docs call Horizon nearing end-of-life as of 2026-11-14, not deprecated, endpoint-specific boundary) with q-pc-practical-fee-setting (Horizon /fee_stats remains available; notes say legacy but not formally deprecated). No contradiction, but the note says q-pc-practical-fee-setting \"keeps its dated 2026-09-08 nearing-end-of-life label\" and its answer no longer states any lifecycle label. Applied text-edit: In cluster-061.note replace \"q-pc-practical-fee-setting keeps its dated 2026-09-08 nearing-end-of-life label\" with \"q-pc-practical-fee-setting only says Horizon /fee_stats remains available and, in its notes, that Horizon is legacy but not formally deprecated, which agrees with the dated nearing-end-of-life label in q-infra-horizon-vs-rpc\". Re-checked by the instrument lane after the finalize edits: q-pc-practical-fee-setting changed only judge-blind truth fields (asOf and verification evidence). Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-062",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Read q-protocol-cap-process and q-protocol-version-history-list. cap-process separates CAP acceptance, implementation and validator activation; version-history-list dates each Mainnet activation and says Bell is on Testnet with the Mainnet vote still scheduled for 2026-11-23, which is the same separation. The note's SEP sentence agrees with cap-process ('SEPs set ecosystem conventions'). The old member q-protocol-cap-vs-sep is replaced by cap-process in the member list. Re-checked by the instrument lane after the finalize edits: q-protocol-version-history-list changed only judge-blind truth fields (asOf and verification evidence). Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-063",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-infra-horizon-vs-rpc (RPC for live state, Horizon as curated indexer, Hubble/indexer for full history, nearing end-of-life as of 2026-11-14) with q-pc-practical-fee-setting (100 stroops per operation minimum dated 2026-11-14, RPC getFeeStats or stellar fees stats, Horizon /fee_stats remains available). Matches the note on the dated floor and the estimator roles; the Lab sd-072 history is resolved and stated by neither member. Re-checked by the instrument lane after the finalize edits: q-pc-practical-fee-setting changed only judge-blind truth fields (asOf and verification evidence). Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-065",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Read q-protocol-ledger-close-time (about 5 s as of 2026-11-14, 5000 ms target, 5 to 7 s only pre-Protocol-28) and q-protocol-max-tx-set-size (1,000 classic operations and 2,000 smart-contract transactions as of 2026-11-14). The figures match the note's 2026-08-21 observations, the close-time case makes no limits claim and the tx-set case makes no cadence claim. Re-checked by the instrument lane after the finalize edits: q-protocol-ledger-close-time now states five 5-second sampled closes on 2026-11-14 instead of a mean since Protocol 28, and the cluster-065 note was updated to match. Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-066",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-protocol-network-passphrases-list (exact public, Testnet and Futurenet strings) with q-infra-testnet-vs-futurenet (separate networks with different passphrases, resets, Friendbot; no version frozen). They agree; neither states a version alignment, which the note calls stage-sensitive, so the note imposes no check.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-067",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Read all 3 members. P20/Soroban 2024-02-20 agrees between q-hist-soroban-launch-protocol20 (Phase 0 2024-02-20, Phase 1 2024-02-27, GA 2024-03-19) and q-protocol-version-history-list; P27, P28 and P29 dates and the Bell Testnet/Mainnet-vote tail are stated only in history-list and match the note; q-protocol-scp-consensus-algorithm carries no activation claim. history-list reverifyBy is 2026-11-24 as the note says. Re-checked by the instrument lane after the finalize edits: q-protocol-version-history-list changed only judge-blind truth fields (asOf and verification evidence). Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-068",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-protocol-state-archival-ttl (expired Persistent/Instance archived and restorable, Temporary deleted for good), q-sor-p23-auto-restore-extendto (P23 simulation lists archivedSorobanEntries and the invoke restores atomically; Temporary cannot be restored; relative extendTo) and q-soroban-storage-types (same Temporary/Persistent/Instance split; P23 auto-restore when the restore list includes the entry). They agree. Observation: \"must be restored before use\" in the first answer is compatible with atomic restore in the invoke, and no member names CAP-0062/CAP-0066 that the note cites.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-069",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Read all 3 members. Full Validators publish a history archive and Basic ones do not (validator-node-roles, tier1-requirements: three Full Validators each with its own archive), Watchers do not vote, Tier 1 comes from other orgs' quorum sets, and q-pc-protocol-upgrade-timing has validators arming a fixed-UTC upgrade that SCP applies in-band (Bell vote 2026-11-23 17:00 UTC). No conflict. Re-checked by the instrument lane after the finalize edits: q-pc-protocol-upgrade-timing changed only judge-blind truth fields (asOf and verification evidence). Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-072",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-scf-nqg-voting (Verified/Pathfinder/Navigator/Pilot are governance reputation tiers, separate from award history and KYC/KYB, Open-Track-only vote) with q-scf-build-award-cap (project award cap and tranches). Governance roles and project awards stay separate; neither states a person-level ranking, so the note holds.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-075",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-scf-how-to-apply (interest form, invited full proposal to Open/Integration/RFP, prescreen/panel/revision, Open-only vote, KYC/KYB before milestone payments) with q-scf-vs-sdf-enterprise-fund (interest form then invited proposal, only Open Track voted). Same ordered flow, no extra or missing stage.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-078",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-scf-build-award-cap ($150,000 worth of XLM, four payments: 10% on acceptance then 20/30/40% on three deliverables) with q-scf-how-to-apply (three tracks, Open-only vote, KYC/KYB then milestone payments). The note's cap, three tracks, Open-only vote and four-payment mechanics are each stated by at least one member and none contradicts it.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-080",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-scf-nqg-voting (four governance tiers, Pilot also quarterly delegate and proposer, Open-Track-only vote, tiers separate from awards) with q-scf-build-award-cap ($150,000 XLM, tranches). No conflict. The label still names q-scf-verified-members, which is retired and not a member. Applied text-edit: Relabel cluster-080 to \"q-scf-build-award-cap + q-scf-nqg-voting\".",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-082",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Read all 4 members. q-scf-instawards states the $1,000-$5,000 initial award, up to two conditional follow-ons, $15,000 aggregate, non-binding chapter guidance and SDF-only final approval; q-scf-ambassador-program agrees (ambassadors recommend, SDF decides, amounts not required); q-scf-v7-changes (Instawards succeed Kickstart) and q-scf-build-award-cap ($150,000 Build cap) state different programs and do not conflict.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-088",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Read q-scf-how-to-apply and q-scf-v7-changes. Neither states the note's 10/20/30/40 mechanics: how-to-apply says only 'milestone-based payments' and v7-changes says not to freeze the launch blog's 'four-tranche' shorthand. The mechanics and the acceptance-is-not-a-deliverable distinction now live in q-scf-build-award-cap (10% on acceptance, then 20/30/40 on three deliverables; avoid 'acceptance a fourth deliverable'), which agrees with both. The label still names q-scf-submission-lifecycle-deadlines, which is no longer a member. Applied text-edit: Add q-scf-build-award-cap as a member. Change the label to 'q-scf-build-award-cap + q-scf-how-to-apply + q-scf-v7-changes'. Keep the note. Re-stamp hashes. Re-checked by the instrument lane after the finalize edits: added member q-scf-build-award-cap states the note's claims without conflict. Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-089",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-scf-how-to-apply (interest form, invited full proposal to one of three tracks, only Open gets a community vote) with q-scf-open-rfps (RFP proposal must answer an open brief; a listed brief is not an open window; SCF #46 in Initial Review). They agree; neither contradicts the other. Observation: q-scf-rfp-tooling named in the prior sweep is retired; q-scf-open-rfps no longer states \"rolling\" interest or panel-led RFP review, which the note still asserts, but how-to-apply's Open-only vote implies it. Re-checked by the instrument lane after the finalize edits: q-scf-open-rfps changed only judge-blind truth fields (asOf and verification evidence). Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-090",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Read q-scf-nqg-voting and q-scf-build-award-cap. nqg-voting states the whole role matrix (Verified views, Pathfinder delegates, Navigator votes on Build Open, Pilot also delegates and proposes; tier status separate from payout KYC/KYB). build-award-cap states no tier or voting claim. q-scf-how-to-apply (only Open Track gets a community vote), q-scf-instawards (not NQG-voted) and q-scf-ambassador-program (distinct from Verified Member governance roles) agree with nqg-voting but are not members. Applied drop-member: Remove q-scf-build-award-cap from cluster-090 members (the retired q-scf-verified-members is already gone). Add q-scf-how-to-apply and q-scf-ambassador-program so the entry spans cases that state the Open-Track-only vote and the Verified Member roles. Re-stamp hashes. Re-checked by the instrument lane after the finalize edits: added members q-scf-how-to-apply, q-scf-ambassador-program state the note's claims without conflict. Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-091",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-scf-v7-changes (v7 launched January 2026 with three Build tracks, referral, Instawards replacing Kickstart, no single Growth track), q-scf-build-award-cap (Build cap/tranches, v7 blog $300K is a lifecycle total), q-scf-instawards ($1-5K initial, $15K total, SDF approves, not voted) and q-scf-hackathons-active (dated event roster). Program rules stay separate. Observation: q-scf-hackathons-active never stated anything about the v7 menu (pre-audit text checked); it is a neighbour, not a carrier.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-095",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Read all 4 members. sor-build-target-wasm32v1 (stellar contract build, wasm32v1-none, soroban-sdk 28 plain-cargo failure), soroban-cli-bindings (Rust bindings only from a local --wasm, TypeScript from wasm/hash/id but deprecated, regenerate after spec changes), sor-deploy-invoke-from-js-sdk (createCustomContract needs an uploaded wasmHash; assembleTransaction returns a builder, prepareTransaction a built tx, version-sensitive) and ti-scaffold-stellar (separate plugin, not core CLI, not stellar contract init) agree with the note; no case claims scaffold replaces bindings.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-096",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-sor-decode-hosterror-codes (Error(Contract, #N) is contract-local with no global table, Bad union switch means XDR/type mismatch, try_* nested Ok(Ok)/Err(Ok)/Err(Err)), q-soroban-unit-testing (setup, mock_all_auths hides a missing require_auth, happy path in-process) and q-sor-scval-conversion (spec-driven UDTs, regenerate bindings). No contradiction and the unit-testing case still owns setup while the HostError case owns interpretation. Compaction dropped \"non-root auth versus missing contract context\" from q-sor-decode-hosterror-codes (pre-audit text had it); no member states it now. Applied text-edit: In cluster-096.note delete \"and non-root auth differs from missing contract context\" so the note reads \"Contract #N is local, Bad union switch is an XDR/type boundary. Generated try_* clients preserve ...\"",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-098",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Read q-sor-require-auth-propagation and q-soroban-require-auth. Both say require_auth checks the Address it is called on, a contract directly invoking another is implicitly authorized for that call (no authorize_as_current_contract entry), and Soroban has no ambient msg.sender or tx.origin.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-102",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Read q-soroban-check-auth-custom-account and q-soroban-require-auth. Both say a contract-account Address is authorized through its host-invoked __check_auth and that the host, not the contract, handles nonce and expiry for standard credentials; the custom-account avoid ('no require_auth on the account's own address inside __check_auth') does not conflict with require-auth.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-103",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-soroban-cli-bindings (stellar contract bindings typescript/rust inputs, TypeScript path deprecated for the JS SDK generator, CLI 30.0.1) with q-soroban-deploy-cli (build, keys generate, deploy --wasm, invoke; CLI is stellar not soroban). Distinct commands, same CLI name and version, no overlapping rule.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-104",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Read q-pc-protocol-27-zipper and q-protocol-version-history-list. Both date Zipper at 2026-07-08 (ledger 63386819 in the zipper case) with CAP-0071 authentication delegation; zipper adds the address-bound V2 credential. Neither states the note's 'legacy P20 custom-account delegation' statement; q-soroban-auth-delegation-p27 and q-protocol-27-cap-0071, which held it, are retired. Applied text-edit: In the note delete 'Legacy P20 custom-account delegation remains a distinct true statement.' Keep 'P27 live from ledger 63386819 and first-class CAP-0071 delegation.' Re-checked by the instrument lane after the finalize edits: q-protocol-version-history-list changed only judge-blind truth fields (asOf and verification evidence). Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-107",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-sep-41-token-interface (Draft, v0.5.2 as of 2026-11-14, subset of the CAP-46-6 SAC interface, signatures change between drafts) with q-soroban-token-transfer-pattern (transfer(from,to,amount) needs from auth, transfer_from needs spender auth and bounded allowance, v0.5.2 dated, accept to: Address before MuxedAddress). They agree on version and function roles. The label still names the retired q-sor-sep41-transfer-vs-transferfrom. Applied text-edit: Relabel cluster-107 to \"q-sep-41-token-interface + q-soroban-token-transfer-pattern\".",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-108",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Read q-sor-decode-hosterror-codes (generated try_* returns Err(Ok(contract_error)) or Err(Err(invoke_error)); read diagnostic events), q-soroban-publish-events (events in transaction meta, getEvents is paginated, RPC retention bounded, default 120960 ledgers) and q-soroban-unit-testing (mock_all_auths hides a missing check; use env.auths() and negative paths). They agree. No member states that failed invocations roll events back or that nested events attach to the last top-level invocation (battery grep finds neither). Applied text-edit: In the note delete 'Failed invocations roll events back. Successful nested calls contribute ordered events to the last top-level invocation.' Keep the mock_all_auths, try_* and publication-versus-RPC-retention sentences.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-109",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-sor-ttl-defaults-extend (dated Mainnet min Persistent 2,073,600 / min Temporary 17,280 / max 3,110,400, extension is explicit, Temporary deleted, Persistent/Instance archive and since P23 auto-restore), q-sor-p23-auto-restore-extendto (atomic restore, liveUntil = current + minPersistentTTL - 1, relative extendTo capped at maxEntryTTL - 1) and q-soroban-storage-types. Settings stay dated, extension, P23 auto-restore and Temporary deletion stay separate concepts as the note requires; the figures agree arithmetically (120/1/180 days at 5 s ledgers).",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-112",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Read q-pc-protocol-upgrade-timing, q-pc-protocol-27-zipper and q-protocol-version-history-list. Zipper activated at ledger 63386819 on 2026-07-08 with CAP-0071 delegation and V2 credentials (zipper, history-list); Mainnet runs P29 with Bell announced for 2026-11-23 and a release or vote is not activation (upgrade-timing, history-list, live Horizon on 2026-11-14 reports protocol 29). No conflict. The label names retired ids q-protocol-27-cap-0071 and q-soroban-auth-delegation-p27, and no member states 'CAP-0071 is Final'. Applied text-edit: Change the label to 'q-pc-protocol-upgrade-timing + q-pc-protocol-27-zipper + q-protocol-version-history-list'. In the note replace 'CAP-0071 is Final; P27 activated at ledger 63386819 on 2026-07-08, and as of 2026-11-02 Mainnet runs P29 with CAP-0071 still in effect' with 'P27 activated at ledger 63386819 on 2026-07-08, and as of 2026-11-14 Mainnet runs P29 with CAP-0071 still in effect'. Re-checked by the instrument lane after the finalize edits: q-pc-protocol-upgrade-timing, q-protocol-version-history-list changed only judge-blind truth fields (asOf and verification evidence). Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-113",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-pc-sequence-numbers-ordering-replace (current+1, minSeqNum exception, included tx consumes sequence, rejected one does not), q-protocol-19-preconditions-cap-0021 (P19 June 2022, CAP-0021 incl. minimum sequence number/age/gap, CAP-0040 signed payload alongside) and q-protocol-accounts-signers-thresholds (SignerKey four forms incl. CAP-0040 signed payload, secp256r1 not a classic signer). CAP-0021/CAP-0040 attributions agree. Observation: the accounts-signers answer no longer states the sequence-consumption rule that the prior sweep cited; the sequence case carries it.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-114",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Read all 4 members. Base reserve 0.5 XLM and 1 XLM unsponsored minimum agree across base-reserve-min-balance and pc-account-activation-not-found; the pool-share trustline costing two reserves (1.0 XLM) agrees in sdex-vs-amm and base-reserve-min-balance; sponsored reserves and a 0-XLM sponsored account agree between pc-sponsored-reserves and pc-account-activation-not-found (CAP-0033). The label still names the retired q-asset-amm-fee-reserve, which q-asset-sdex-vs-amm replaced. Applied text-edit: Change the label to 'q-protocol-base-reserve-min-balance + q-pc-sponsored-reserves + q-pc-account-activation-not-found + q-asset-sdex-vs-amm'. Re-checked by the instrument lane after the finalize edits: q-protocol-base-reserve-min-balance changed only judge-blind truth fields (asOf and verification evidence). Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-115",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-protocol-cap-process (activation is validator agreement through SCP quorum sets on a scheduled upgrade, not a token or majority vote; CAPs vs SEPs) with q-pc-protocol-upgrade-timing (validators arm a scheduled upgrade, SCP applies it in-band, not a token-holder vote). They agree. The label still names retired q-protocol-cap-vs-sep and q-protocol-validator-upgrade-vote, and the note says they are \"retained siblings\"; the CAP-vs-SEP point now lives in q-protocol-cap-process and the validator-vote point in q-pc-protocol-upgrade-timing. Applied text-edit: Relabel cluster-115 to \"q-protocol-cap-process + q-pc-protocol-upgrade-timing\" and set the note to \"CAP status is separate from network activation; activation is scheduled validator agreement through SCP, not a token or majority vote; CAPs change protocol, SEPs are conventions.\" Re-checked by the instrument lane after the finalize edits: q-pc-protocol-upgrade-timing changed only judge-blind truth fields (asOf and verification evidence). Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-119",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Read q-pc-protocol-27-zipper and q-protocol-version-history-list. Both state Zipper's 2026-07-08 activation and CAP-0071 authentication delegation; zipper adds ledger 63386819 and the address-bound V2 credential. Live Horizon on 2026-11-14 reports protocol 29, so P27 is historical in both. Neither member states 'CAP-0071 Final', so that clause is unsupported by any member. Applied text-edit: In the note delete 'and the current registry lists CAP-0071 Final. Reverified 2026-08-05.' Keep 'Address-with-delegates chains and address-bound V2 credentials are P27/CAP-0071; Pubnet activated at ledger 63386819.' Re-checked by the instrument lane after the finalize edits: q-protocol-version-history-list changed only judge-blind truth fields (asOf and verification evidence). Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-120",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-pc-protocol-27-zipper (P27 ledger 63386819, 2026-07-08, CAP-0071 delegation and address-bound V2), q-edge-fresh-latest-protocol-version (Mainnet P29 activated 2026-10-01 at ledger 64717645; Bell vote 2026-11-23 17:00 UTC), q-pc-protocol-upgrade-timing (Mainnet P29, Bell live on Testnet, same vote time) and q-protocol-version-history-list (P27 2026-07-08, P28 2026-09-16, P29 2026-10-01). Dates, ledgers and vote time are identical wherever repeated; no member calls P27 current. Observation: the note's P28 ledger 64458446 and \"Adapter\" name appear in no member. Re-checked by the instrument lane after the finalize edits: q-pc-protocol-upgrade-timing, q-protocol-version-history-list changed only judge-blind truth fields (asOf and verification evidence). Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-121",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Read all 4 members. $150,000 worth of XLM as of 2026-11-14 appears in q-scf-build-award-cap and, as 'up to $150K', in q-scf-vs-sdf-enterprise-fund (kept apart from Marketing Grants up to $500K and the Matching Fund, $200K minimum check up to $500K); q-scf-current-round states no cap and q-scf-how-to-apply no longer does. No conflicting figure. The note still names q-scf-build-tracks and q-edge-scf-v7-centralization-myths (both retired) and lists how-to-apply as cap-bearing. Applied text-edit: Rewrite the note: 'As of 2026-11-14, q-scf-build-award-cap and q-scf-vs-sdf-enterprise-fund give the current SCF Build single-award cap as $150,000 worth of XLM and keep it apart from the Marketing Grants and Enterprise Fund Matching Fund amounts. q-scf-current-round and q-scf-how-to-apply state no cap amount and no conflicting figure.' Re-checked by the instrument lane after the finalize edits: q-scf-current-round changed only judge-blind truth fields (asOf and verification evidence). Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-123",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-protocol-base-reserve-min-balance (0.5 XLM as of 2026-11-14, minimum (2 + subentries + sponsoring - sponsored) x reserve, 1 XLM empty, pool-share trustline two reserves), q-asset-trustline-basics (trustline +1 reserve, 0.5 XLM, validators can change), q-pc-account-activation-not-found (two reserves = 1 XLM, sponsored can start at 0), q-asset-sdex-vs-amm (pool-share trustline two reserves) and q-raph-low-xlm-transfer-fail (no exact figure). All figures agree and the dated/validator-set caveat is carried. Re-checked by the instrument lane after the finalize edits: q-protocol-base-reserve-min-balance changed only judge-blind truth fields (asOf and verification evidence). Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-125",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-defi-x402-on-stellar-what (x402 v2 exact scheme with SEP-41 and signed auth entries, classic assets via SAC, facilitator may need API keys) with q-x402-payment-verification (verify before fulfilling, dated 2026-11-14 facilitator options, none mandatory). They agree. Compaction dropped what the label and note are about: the pre-audit x402-what text carried the announcement and \"not a SEP\" wording, and neither member states the March 10 announcement date, the Albedo/Varial/Hana/HOT wallet roster or the unverified end-to-end wallet compatibility. Applied text-edit: Relabel cluster-125 to \"x402 on Stellar: scheme and facilitator facts\" and cut the note to the claims the members now carry: Stellar scheme is v2 exact with SEP-41/SAC and signed auth entries; facilitator list is dated 2026-11-14 and non-mandatory. Delete the March 10 announcement, Albedo/Varial roster and Hana/HOT/Klever/OneKey/Scopuly sentences.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-128",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Read q-edge-closed-world-builder-directory-miss and q-edge-strupey-ambiguous-stellar-history. They are the intended closed-world/open-world pair: the directory case stops at Scout's builder-directory scope and does not claim the name has no history, while the history case reports a scoped non-verification after a broad dated pass and asks for clarification; neither conflates Strupey with a namesake. The note's positive Justin Rice control is in no member (q-builder-content-by-person is retired; a battery grep for 'Justin Rice' finds nothing). Applied text-edit: In the note delete the sentence 'Justin Rice is the positive dated-history control; Strupey remains' and continue 'Strupey remains an as-of/source-scoped unverifiable case...'; i.e. drop the Justin Rice clause.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-129",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-soroban-greenfield-escrow-prior-art-preflight (one bounded prior-art pass of at most three candidates alongside skill and Docs, license/audit/deployment unknown) and q-tool-indexer-repos-discovery (SDF building blocks, verify each repo's role, activity and archive status, scout zero result is not absence) with q-sor-build-target-wasm32v1. The first two agree. The pre-audit build-target text said a scoped build question needs no ecosystem landscape detour; the compacted answer only gives build facts, so the \"known-step no-detour\" half of the entry is carried by no member. Applied drop-member: Drop q-sor-build-target-wasm32v1 from cluster-129.members and relabel to \"Greenfield prior-art preflight and repo-discovery vetting\"; delete the note sentence \"A scoped build/debug question stays on current official mechanics without an ecosystem landscape detour.\"",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-133",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Read q-soroban-resource-limits and q-soroban-instance-storage-dos. They agree: limits are validator-voted settings that change (resource-limits), the entry-size limit can be lowered so leave headroom (instance-storage-dos), and Instance storage is one entry loaded whole while per-user growth belongs in sharded Persistent keys. The note's nullifier case and Persistent-collection case are not in the battery. Applied text-edit: Rewrite the note: 'The generic resource case (q-soroban-resource-limits) covers simulation and network limits. The Instance-storage case (q-soroban-instance-storage-dos) covers contract-instance state and DoS risk, with growing per-user data sharded into Persistent keys. The cases are compatible because they use different storage scopes and threat models.'",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-135",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-crp-sdp-operation (SDP Core implements native SEP-10/SEP-24, needs no Anchor Platform, MoneyGram cash-out is an optional downstream choice) with q-anchor-sdp-vs-anchor-platform (SDP Core implements SEP-10 and SEP-24 itself, Anchor Platform backs anchors, the 10,000-instruction cap is not a protocol limit). The two agree. The note still says \"All four cases agree\" and relies on the product-page \"up to 10,000 payments\" match, but only two members remain and only the avoid clause on the cap survives. Applied text-edit: In cluster-135.note replace \"All four cases agree\" with \"Both cases agree\". Optionally relabel to \"SDP native architecture, optional downstream rails, and the 10,000-instruction cap as an application limit\".",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    }
+  ],
+  "numericInvariants": [
+    {
+      "matchLabel": "SCF Build cap",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-scf-build-award-cap (\"up to $150,000 worth of XLM (as of 2026-11-14)\", milestone tranches, $300K is the lifecycle total) with the authoritative value $150,000 worth of XLM: it matches, and q-scf-vs-sdf-enterprise-fund (\"up-to-$150K XLM\") also agrees though it is not in affectedCaseIds. The cap is not transferred to other programs in either answer (Marketing Grants up to $500K and Instawards $15K stay separate).",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "matchLabel": "base reserve",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Compared the three affected cases with 0.5 XLM per reserve and a 1 XLM unsponsored empty-account minimum. q-asset-trustline-basics (one reserve = 0.5 XLM) and q-protocol-base-reserve-min-balance (0.5 XLM, 5,000,000 stroops, formula, 1 XLM minimum, pool-share = two subentries) match. q-raph-low-xlm-transfer-fail states no reserve figure (its avoid is 'do not quote a timeless exact minimum balance'). q-pc-account-activation-not-found (1 XLM at 0.5 XLM) and q-asset-sdex-vs-amm (pool-share trustline two base reserves) state the invariant but are not listed. Live Horizon on 2026-11-14: latest ledger 65469045 reports base_reserve_in_stroops 5000000. Applied drop-member: Remove q-raph-low-xlm-transfer-fail from affectedCaseIds (no figure to compare) and add q-pc-account-activation-not-found (and optionally q-asset-sdex-vs-amm). Move datePolicy.asOf from 2026-07-11 to 2026-11-14 (live Horizon reading above) and re-stamp hashes. Re-checked by the instrument lane after the finalize edits: q-protocol-base-reserve-min-balance changed only judge-blind truth fields (asOf and verification evidence); added member q-pc-account-activation-not-found states the note's claims without conflict. Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "matchLabel": "Mainnet protocol activation history",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Read Horizon live on 2026-11-14: ledger 63386819 closed 2026-07-08T17:00:10Z at protocol 27, 64458446 closed 2026-09-16T17:00:06Z at protocol 28, 64717645 closed 2026-10-01T17:00:07Z at protocol 29, and the latest ledger 65469050 reports protocol 29. q-pc-protocol-27-zipper (ledger 63386819, 2026-07-08), q-edge-fresh-latest-protocol-version (P29, 2026-10-01, ledger 64717645) and q-pc-protocol-upgrade-timing (Mainnet P29, vote 2026-11-23 17:00 UTC) match the authoritative value. Re-checked by the instrument lane after the finalize edits: q-pc-protocol-upgrade-timing changed only judge-blind truth fields (asOf and verification evidence). Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "matchLabel": "CCTP Stellar dates",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): The only member, q-cctp-v2-usdc-stellar, states 2026-05-18 Circle Stellar mainnet support and 2026-05-19 SDF/Circle live announcement, keeps both labelled, and no longer states or implies the retired 2026-02-24 attribution. That matches the authoritative value and rule. Other cases that mention CCTP (q-defi-bridge-evm-to-stellar-axelar) carry no 2026-05 date. Re-checked by the instrument lane after the finalize edits: q-cctp-v2-usdc-stellar changed only judge-blind truth fields (asOf and verification evidence). Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "matchLabel": "YieldBlox borrowed XLM USDC totals",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-comp-yieldblox-oracle-incident (\"about 61.2M XLM and 1M USDC\", about 48M XLM quarantined and not recovery, avoid 1,014,196.7040837 USDC as one transaction, USD accepted when attributed) with the authoritative 61,249,278.3064502 XLM and 1,000,196.7040837 USDC. The rounded figures agree, 48,069,094 / 61,249,278 = 78.5% matches the quarantine subset, and the single-transaction guard is intact. Observation: the 14,000 USDC separate earlier borrow and exact decimals are stated by no case now; q-hist-yieldblox-v2-2026-exploit is retired and only one member remains.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "matchLabel": "SCF Submission",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): The only member, q-scf-current-round, says no Build round is in Submission, SCF #46 is in Initial Review after its 2026-11-09 deadline, #45 is the last concluded round and no #47 date is published. Live check 2026-11-14: communityfund.stellar.org/awards lists #46 Initial Review (deadline November 9, 2026) and every other round Ended, and Scout's rfps feed reports currentPhase Initial Review with a null submission window. (A cached parallel-cli extract still showed #46 as Submission; the raw page and Scout agree on Initial Review.) Re-checked by the instrument lane after the finalize edits: q-scf-current-round changed only judge-blind truth fields (asOf and verification evidence). Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "matchLabel": "Stellar base fee floor",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-pc-practical-fee-setting (\"100 stroops per operation as of 2026-11-14\", surge pays the lowest included bid) with the authoritative 100 stroops per operation. Live Horizon on 2026-11-14 reports base_fee_in_stroops 100 and fee_stats last_ledger_base_fee 100 (base reserve 5,000,000 stroops). The only member agrees. Re-checked by the instrument lane after the finalize edits: q-pc-practical-fee-setting changed only judge-blind truth fields (asOf and verification evidence). Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    }
+  ],
+  "dateContingentTraps": [
+    {
+      "matchTriggerDateEvent": "Protocol 30 (Bell) Mainnet vote on 2026-11-23, any later Mainnet protocol activation, or any AddressV2 successor change",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): The trigger date 2026-11-23 has not passed (today is 2026-11-14), and live Horizon on 2026-11-14 reports Mainnet protocol 29 at ledger 65469045, so no activation has happened. q-edge-fresh-latest-protocol-version, q-pc-protocol-upgrade-timing and q-protocol-version-history-list agree on P29 Mainnet, Bell on Testnet and the 2026-11-23 17:00 UTC vote; q-pc-protocol-27-zipper keeps P27 as historical. Their reverifyBy dates (2026-11-24 for the first three) are intact. Re-checked by the instrument lane after the finalize edits: q-pc-protocol-upgrade-timing, q-protocol-version-history-list changed only judge-blind truth fields (asOf and verification evidence); added member q-infra-software-versions-current-protocol states the note's claims without conflict. Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "matchTriggerDateEvent": "2026-08-27 or any earlier Circle CCTP V2 fee/finality/support update",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Trigger date 2026-08-27 has passed, so I re-checked live on 2026-11-14. Circle release notes (developers.circle.com/release-notes/cctp-2026.md) say \"2026.05.18 Added support for Stellar mainnet\"; the Stellar blog is dated 2026-05-19T14:00Z; the Circle Iris fee API returns minimumFee 0/0 for 27 to 0 and 1/0 for 0 to 27 at finality 1000/2000. q-cctp-v2-usdc-stellar states the same dates, domain 27 and fee figures (Fast/Standard 0/0 and 1 bp/0), and its reverifyBy 2027-02-05 matches the disposition; the only member (q-tool-cctp-stellar-integration merged into it) is current. Re-checked by the instrument lane after the finalize edits: q-cctp-v2-usdc-stellar changed only judge-blind truth fields (asOf and verification evidence). Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "matchTriggerDateEvent": "Publication or state change for SCF #46/#45/#44 after the fixed SCF #43 recap",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): The trigger is event-based and has not fired. Live 2026-11-14: the SCF awards page lists #46 Initial Review, #45 and #44 Ended and no round in Submission, and Scout's rfps feed shows the same phase, a null submission window and two open Q4 briefs (open: 2). q-scf-current-round (Initial Review, no #47 date) and q-scf-open-rfps (two Q4 briefs published 2026-11-11, no open window) agree with both. Re-checked by the instrument lane after the finalize edits: q-scf-current-round, q-scf-open-rfps changed only judge-blind truth fields (asOf and verification evidence). Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "matchTriggerDateEvent": "2027-03-02 YieldBlox/Reflector remediation recheck or publication of a final post-mortem/reimbursement decision",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Trigger date 2027-03-02 has not passed. Compared q-comp-yieldblox-oracle-incident (quarantine is not recovery, ~$10M attributed, no repayment asserted, reverifyBy 2027-03-02) with the disposition: consistent. One web search for a reimbursement decision found only Script3's 2026-02-23 post saying all depositors will be fully compensated, which predates the disposition and does not decide the quarantined funds. The disposition still says \"both incident cases now encode it\" and cites the SLP-0006 freeze of three exploit accounts, but q-hist-yieldblox-v2-2026-exploit is retired and the remaining case states neither the post-mortem nor SLP-0006. Applied text-edit: In the disposition replace \"both incident cases now encode it\" with \"q-comp-yieldblox-oracle-incident encodes it\" and drop \"SLP-0006 froze the three exploit accounts at ledger 63073409 on 2026-06-17\" or note that no case states it. Optionally add \"Script3 2026-02-23 depositor-compensation statement is separate from a decision on the quarantined funds\".",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "matchTriggerDateEvent": "A verified Confidential Tokens Mainnet deployment, or a zero-knowledge verifier release",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): No trigger has fired: 2027-04 is in the future, and live on 2026-11-14 OpenZeppelin/stellar-contracts' latest release is still v0.8.0 (2026-10-20), the stellar-confidential crate is 0.8.0, and NethermindEth/rs-soroban-ultrahonk has no release or commit after 2026-10-12. The only member, q-edge-noinfo-stellar-native-privacy-default, agrees (addresses stay public, verifier is non-zero-knowledge, Stellar Private Payments an unaudited Testnet preview), but it carries no truth.reverifyBy; the 2027-04-08 and 2027-04-22 dates came from the retired q-scf-confidential-tokens-preview and q-sor-confidential-tokens. Applied text-edit: The date leg of the trigger no longer matches any member's reverifyBy. Either set truth.reverifyBy 2027-04-08 on q-edge-noinfo-stellar-native-privacy-default (case edit, outside this review) or rewrite triggerDateEvent to 'A verified Confidential Tokens Mainnet deployment, or a zero-knowledge verifier release' and drop '2027-04-08/2027-04-22 review'. Also drop the disposition's retired-case clauses, and note that the member no longer states the 'Mainnet-ready 2026-10-22' wording. Re-checked by the instrument lane after the finalize edits: q-edge-noinfo-stellar-native-privacy-default changed only judge-blind truth fields (asOf and verification evidence). Members remain consistent.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "matchTriggerDateEvent": "2026-11-03 post-event check after Meridian 2026 on 2026-10-28/2026-10-29",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-14",
+      "reSwept": {
+        "date": "2026-11-14",
+        "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Trigger date 2026-11-03 has passed, so I re-checked live: meridian.stellar.org/schedule says \"two days of keynotes, technical sessions, and workshops on October 28-29 at Convento do Beato in Lisbon, Portugal\" and the event-details page is live. q-hist-meridian-2026-corrected-venue states Oct 28-29, 2026 at Convento do Beato, Lisbon, with Abu Dhabi (Oct 21-22) superseded after the 2026-04-01 announcement; the entry is closed and the case is stable.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    }
+  ]
+}

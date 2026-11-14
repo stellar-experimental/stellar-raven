@@ -1,0 +1,657 @@
+{
+  "lane": "verify-audit-tooling-a",
+  "decisions": [
+    {
+      "id": "q-gap-av-offset-not-timestamp",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "Pure Lumenloop output contract. test/catalog.test.ts:434 pins the opaque-offset wording, and the agent behavior stays graded inside q-ti-video-tutorials and q-soroban-av-passkeys-talk (both carry the start_offset avoid).",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "test/catalog.test.ts:434",
+          "observedAt": "2026-11-14",
+          "quote": "Returns parent recording metadata, AI summaries, and an opaque ordering offset."
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-gap-lumen-content-tag-vocabulary",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "Operation-lookup mechanics. q-ti-vocab-content-tags-live (tooling-b) asks the same question and the frozen live lane holds q-live-ll-regions-vocab, so no visibility is lost.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-gap-lumen-documents-browse",
+      "auditVerdict": "move-tool-lane",
+      "decision": "amend",
+      "finalVerdict": "retire",
+      "why": "The move reason is false: test/skill-runners.test.ts:180 pins the exact list_documents({collection:'events', period:'upcoming'}) call for the digest skill, the frozen live digest cases run that skill, and the host rejects a guessed `time_period` before any call, so a wrong guess fails loudly. No visibility is left for a tool lane; retire. The world question under it (upcoming Stellar ecosystem events) is a coverage question for phase 3, not a reason to keep this case.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "test/skill-runners.test.ts:180",
+          "observedAt": "2026-11-14",
+          "quote": "expect(docs.args).toEqual({ collection: \"events\", period: \"upcoming\", limit: 5 });"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-gap-lumen-exact-document-empty",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "Substring-only search is pinned in the manifest; the soft-empty-is-not-absence behavior is graded by frozen q-live-ll-guessed-slug-soft-empty.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-gap-lumen-project-tag-vocabulary",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "Mirror of the content-tag case; q-ti-vocab-project-tags-live (tooling-b) is the same question and q-live-ll-regions-vocab covers the vocabulary behavior.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-gap-rpc-horizon-unindexed-reference",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "It grades one docs-search ranking defect (sd-059, already in improvements/) and a generic absence rule graded elsewhere. No Stellar fact rides on it. The audit's 'unverifiable' rot row carries no evidence, but the verdict does not depend on it.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-gap-scout-get-skill-detail",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "q-tool-skill-detail-install grades the same getSkill slug-resolve and soft-empty-miss behavior inside a user task; the adapter's 404 mapping is unit-tested.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-infra-horizon-vs-rpc",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite keeps the transport, scope, retention and history distinctions and dates the lifecycle label; the label was re-read today in the docs source, so the new date is backed. The notes accept a later label.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "github.com/stellar/stellar-docs docs/data/apis/index.mdx",
+          "observedAt": "2026-11-14",
+          "quote": "Horizon is nearing end-of-life and will eventually be deprecated in favor of Stellar RPC and Portfolio APIs"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-infra-hubble-bigquery",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Keeps the dataset path, read-only historical workload and not-real-time boundary; process facts and boilerplate go. No fact changes.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-infra-quickstart-local-network",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Keeps command, four modes, local-only hermeticity and non-production scope. The retired `stellar network container start` form moves from avoid to a note, which is enough.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-infra-rpc-methods-list",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Twelve-method list and simulateTransaction hold. The new pin v30.0.1 is confirmed by the release page and by live testnet getVersionInfo; stock retention 120960 ledgers confirmed live.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-rpc/releases",
+          "observedAt": "2026-11-14",
+          "quote": "v30.0.1 2026-11-12T17:06:18Z (latest, not prerelease)"
+        },
+        {
+          "class": "F",
+          "ref": "POST https://soroban-testnet.stellar.org getVersionInfo",
+          "observedAt": "2026-11-14",
+          "quote": "\"version\":\"30.0.1-6b6ec60c8bde5a93984b6290065d3882d384b25d\" ... \"protocolVersion\":30"
+        },
+        {
+          "class": "F",
+          "ref": "POST https://soroban-testnet.stellar.org getHealth",
+          "observedAt": "2026-11-14",
+          "quote": "\"ledgerRetentionWindow\":120960"
+        },
+        {
+          "class": "B",
+          "ref": "github.com/stellar/stellar-docs openrpc/src/stellar-rpc/methods",
+          "observedAt": "2026-11-14",
+          "quote": "getEvents getFeeStats getHealth getLatestLedger getLedgerEntries getLedgers getNetwork getTransaction getTransactions getVersionInfo sendTransaction simulateTransaction"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-infra-rpc-provider-archive-tier",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Nine archive rows and the getLedgers-only footnote re-read today in the Providers source; the earlier-roster grading caution is preserved.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "github.com/stellar/stellar-docs docs/data/apis/rpc/providers.mdx",
+          "observedAt": "2026-11-14",
+          "quote": "Archive ✅: Validation Cloud, Gateway, Ankr, Obsrvr, OnFinality, Lightsail-Quasar, Exaion, GetBlock, node101 (9 rows)"
+        },
+        {
+          "class": "B",
+          "ref": "providers.mdx footnote",
+          "observedAt": "2026-11-14",
+          "quote": "Currently only the [getLedgers](./api-reference/methods/getLedgers) RPC method supports this feature."
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-infra-secp256r1-passkeys",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "Same knowledge as q-passkey-smart-account-architecture (CAP-0051 P-256 primitive is not full WebAuthn validation; __check_auth binds the challenge). The survivor's accepted soroban-a rewrite contains neither absorbed item, so the orchestrator must add them when applying, as answer clauses rather than new key facts: 'WebAuthn also permits algorithms other than P-256' and 'a separate G account submits and pays fees; the C account only authorizes'. Both are already in this case's verified golden; no fact changes.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-infra-simulate-transaction-howto",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "q-soroban-simulate-resource-fee asks the same question with more detail. Its soroban-b rewrite lacks the Horizon boundary, so the orchestrator must add the avoid 'Do NOT claim simulation runs through a Horizon endpoint; it is a Stellar RPC method.' The sign-after-simulate ordering is already implied by 'on the unsigned transaction'.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-infra-testnet-vs-futurenet",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Durable roles, separation, reset cadence and Friendbot G/C funding kept; per-day protocol numbers rightly move to truth as drift. Live getVersionInfo shows protocol 30 on testnet today.",
+      "evidence": [
+        {
+          "class": "F",
+          "ref": "POST https://soroban-testnet.stellar.org getVersionInfo",
+          "observedAt": "2026-11-14",
+          "quote": "\"protocolVersion\":30"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-infra-which-indexer",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Roster re-read today in the docs source matches the rewrite (Alchemy live, Goldsky Turbo, The Graph Substreams-only); the dropped per-provider selection advice was opinion, and the notes accept a later dated roster.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "github.com/stellar/stellar-docs docs/data/indexers/index.mdx",
+          "observedAt": "2026-11-14",
+          "quote": "The Graph offers Stellar support for Substreams, with no current plans to expand Subgraph or Token API support to Stellar."
+        },
+        {
+          "class": "B",
+          "ref": "docs/data/indexers/index.mdx",
+          "observedAt": "2026-11-14",
+          "quote": "Turbo is how Goldsky serves Stellar data, for both Mainnet and Testnet"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-passkey-platform-constraints",
+      "auditVerdict": "tighten",
+      "decision": "amend",
+      "finalVerdict": "tighten",
+      "why": "Dropping the unconfirmed Mozilla Sync detail is right, but the rewrite also drops the one Stellar-specific constraint (bind the wallet/dApp handoff challenge to the intended Stellar authorization), which the question asks for and the current golden states. Restored in answer and key fact 2; no new claim.",
+      "evidence": [],
+      "finalRewrite": {
+        "question": null,
+        "answer": "WebAuthn's web API needs a secure context; native apps use platform passkey APIs. A passkey is scoped to an RP ID, not an exact page URL: validate RP ID and origin, plan for subdomain or related-origin designs, and bind any wallet or dApp handoff challenge to the intended Stellar authorization. Apple and Google sync passkeys, but sync versus device-bound behavior is provider-specific, and Firefox may delegate to the OS or provider. Provide an explicit recovery path.",
+        "keyFacts": [
+          "WebAuthn web APIs need a secure context; native apps use platform passkey APIs.",
+          "Validates RP ID and origin and binds the challenge to the Stellar authorization.",
+          "Sync is provider-specific; Apple and Google sync passkeys, others may be device-bound.",
+          "Cross-device uncertainty requires an explicit recovery path."
+        ],
+        "avoid": [
+          "Do NOT claim a passkey for one dApp domain is automatically valid for unrelated domains.",
+          "Do NOT claim all browsers and devices sync every passkey the same way."
+        ],
+        "notes": "Origin and RP-ID checks belong to the relying party per W3C WebAuthn; OpenZeppelin and Passkey Kit verifiers omit them on-chain. Accept an answer that places them in the overall flow or leaves them to the client.",
+        "movedToTruth": [
+          "Mozilla Sync passkey data-type observation and source",
+          "Security Boulevard support-matrix source"
+        ]
+      }
+    },
+    {
+      "id": "q-quickstart-manual-ledger-close",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Flag, one-ledger-per-call, no arbitrary timestamp, CAP-88 millisecond caution and unit-test split all kept. #4040 is still open today, so the 2026-11-14 date is backed.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-core/issues/4040",
+          "observedAt": "2026-11-14",
+          "quote": "state: open; title: Support manual closing N ledgers; updated 2026-07-09"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-ti-bindings-to-nextjs-integration",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Generator, client boundary, sign-submit-poll order and the Tx.fee composition kept; version pins rightly leave the answer. Deprecation and Varial package confirmed today.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "github.com/stellar/stellar-cli cmd/soroban-cli/src/commands/contract/bindings/typescript.rs:59",
+          "observedAt": "2026-11-14",
+          "quote": "`stellar contract bindings typescript` is deprecated. Use the JavaScript Stellar SDK"
+        },
+        {
+          "class": "C",
+          "ref": "npm view @stellar/varial-sdk",
+          "observedAt": "2026-11-14",
+          "quote": "version = 7.0.0; time.modified = 2026-10-28"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-ti-channel-accounts-throughput",
+      "auditVerdict": "tighten",
+      "decision": "amend",
+      "finalVerdict": "tighten",
+      "why": "Rewrite is sound except key fact 1, which hardens the golden's 'operation source/signer where needed' into 'operation sources stay the user's'. A channel lane often carries the business account's own operations; keep the key fact to the lane claim, which the answer already qualifies.",
+      "evidence": [],
+      "finalRewrite": {
+        "question": null,
+        "answer": "Each transaction consumes its source account's sequence, so workers sharing one source collide with `tx_bad_seq`. Use funded channel accounts, one lane per worker, as transaction sources; keep the real account as operation source and signer where the operation needs it. After `tx_bad_seq` do not blindly rebuild a payment with a new sequence, which can duplicate it; check the original hash first. `TRY_AGAIN_LATER` is temporary: wait and resubmit the same envelope. An identical signed envelope can be submitted to more than one provider; expect duplicate, pending or not-found responses during lag. An `invalid u32` error usually means a client typing bug, because sequences are 64-bit.",
+        "keyFacts": [
+          "Funded channel accounts as transaction sources give parallel sequence lanes.",
+          "After tx_bad_seq, a rebuilt payment with a new sequence can duplicate; check the hash.",
+          "TRY_AGAIN_LATER is temporary: wait, resubmit the same envelope; terminal codes need a fix.",
+          "An identical signed envelope is hash-idempotent; expect duplicate or pending replies."
+        ],
+        "avoid": [
+          "Do NOT submit uncoordinated transactions from one source-account sequence lane.",
+          "Do NOT retry terminal result codes without fixing or rebuilding the transaction.",
+          "Do NOT promise fixed throughput or treat invalid u32 as a protocol sequence limit."
+        ],
+        "notes": "Fee-bump replacement for 'same sequence, higher fee' is correct to mention. Multi-provider resubmission rests on hash idempotence plus documented duplicate and pending behavior; no live two-provider run backs it.",
+        "movedToTruth": [
+          "GT-51 correction history",
+          "Inference note on multi-provider submission",
+          "Fee-bump replacement doc link",
+          "asOf 2026-07-11 (not re-read in full)"
+        ]
+      }
+    },
+    {
+      "id": "q-ti-classic-submission-errors",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Atomic tx_failed, spendable balance, namespaced codes and hash-first retry kept; TRY_AGAIN_LATER leaves the question because the channel case owns it. No fact changes.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-ti-cli-rust-windows-troubleshooting",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rust 1.84/wasm32v1-none, path and MSVC triage, faucet scope and `stellar token balance` kept. `stellar account` is still absent at CLI v30.0.1, the current release.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "github.com/stellar/stellar-cli cmd/soroban-cli/src/commands @v30.0.1",
+          "observedAt": "2026-11-14",
+          "quote": "cache cfg completion.rs container contract doctor.rs env events.rs ... keys ledger message network plugin skill snapshot strkey.rs token tx (no account)"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-cli/releases",
+          "observedAt": "2026-11-14",
+          "quote": "v30.0.1 2026-11-03T02:24:38Z"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-ti-compute-token-lp-market-data",
+      "auditVerdict": "tighten",
+      "decision": "amend",
+      "finalVerdict": "tighten",
+      "why": "The question asks for volume, fees, TVL and price; the rewrite keeps volume and TVL formulas but drops the fee rule and the named price method that the current golden and its key fact 3 require. Restored with no new claim.",
+      "evidence": [],
+      "finalRewrite": {
+        "question": null,
+        "answer": "No API value is canonical for 24h volume, fees, TVL or price; matching StellarX or Scopuly means reproducing their filters and methodology. First fix the asset or pool identity, quote asset, time window, price method and spam or stale-pool policy. Classic SDEX trades and liquidity pools come from Horizon for bounded reads, or Hubble and indexers for bulk history; Soroban AMMs need contract events and state through an indexer. Volume sums successful trades or swaps in the quote asset; fees follow the pool's own fee rule; TVL is reserves times timestamp-aligned prices; price names its method (last, mid, VWAP or oracle). RPC is not an unbounded history index.",
+        "keyFacts": [
+          "No canonical volume, TVL or price exists; state identity, quote asset, window and method.",
+          "Classic SDEX and pool data come from different sources than Soroban AMM contract data.",
+          "Bulk history comes from Hubble or an indexer; RPC is not an unbounded history index.",
+          "Gives volume, fee, TVL and price formulas with a named price method."
+        ],
+        "avoid": [
+          "Do NOT claim a canonical TVL or price, or an exact StellarX or Scopuly match, without their methodology.",
+          "Do NOT use RPC alone for unbounded history or mix Classic pools with contract AMMs.",
+          "Do NOT answer about the asset named COMPUTE; 'compute' is a verb here."
+        ],
+        "notes": "StellarX and Scopuly formulas are not public; an answer that says so is correct.",
+        "movedToTruth": [
+          "GT-51 verb-versus-asset note",
+          "2026-08-04 Horizon guidance observation",
+          "Also-good items on Hubble and migration docs"
+        ]
+      }
+    },
+    {
+      "id": "q-ti-connect-wallet-button-code",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Structured isConnected, requestAccess vs getAddress, network check and public Wallets Kit APIs kept; both module names stay accepted in notes.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-ti-custodial-account-generation-c-address",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Keypair-vs-ledger-account, C as contract ID with a paying G account, SAC transfer funding and muxed deposits kept. No fact changes.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-ti-enumerate-all-contracts",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "No RPC list-all, coverage definition, provenance of Lab's third-party list, and instance/Wasm/SAC distinction kept.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-ti-enumerate-holders-airdrop",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Cursor paging, zero balances, C-balance exclusion, non-atomic crawl and idempotent distribution kept. No fact changes.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-ti-explain-repo-payload-status",
+      "auditVerdict": "move-tool-lane",
+      "decision": "accept",
+      "finalVerdict": "move-tool-lane",
+      "why": "No unit test asserts how an agent reads the nested data.ok, and no frozen live case covers explainRepo. But soroban-a moved its twin q-gap-explainrepo-payload-ok to the tool lane too (verify accepted). The orchestrator should keep one; this case is the better survivor (explicit owner/repo, data.ok and provenance key facts) and the twin should retire.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-ti-fetch-all-balances-classic-sac",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "No-double-count, C-address contract state, no one-call discovery and non-standard SEP-41 storage kept.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-ti-freighter-localhost-not-detected",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Script-tag global, secure-context localhost and triage order kept; the secure-context sentence was re-read today in the docs source, so the new date is backed.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "github.com/stellar/stellar-docs docs/build/guides/dapps/frontend-guide.mdx",
+          "observedAt": "2026-11-14",
+          "quote": "Browsers treat `http://localhost` and `http://127.0.0.1` as secure contexts"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-ti-friendbot-ratelimit-alternatives",
+      "auditVerdict": "tighten",
+      "decision": "amend",
+      "finalVerdict": "tighten",
+      "why": "The audit marked 'no official backup faucet wallet is documented' unverifiable with no evidence, yet the rewrite asserts it flatly in the answer. A negative claim needs a primary-record sweep; restore the golden's hedged form. The avoid item already guards correctly.",
+      "evidence": [],
+      "finalRewrite": {
+        "question": null,
+        "answer": "Public Testnet Friendbot is rate-limited and no official numeric quota is documented. On 429, honor Retry-After or back off; do not rotate IPs or hammer it. For many accounts, fund one account with Friendbot and create the rest with CreateAccount. For hermetic CI use Quickstart local mode and its own Friendbot; Quickstart's testnet and futurenet modes proxy the public faucets. Third-party Testnet XLM faucets exist (Validation Cloud lists one, as of 2026-11-14) but are provider-specific. Futurenet is a different network, and Circle's faucet gives test USDC, not XLM. Treat any claimed official backup faucet wallet as unverified unless current official docs name it; never send keys or Mainnet funds.",
+        "keyFacts": [
+          "On 429, honor Retry-After or back off; no numeric quota is documented.",
+          "Fund one account, then CreateAccount for more; local Quickstart is the hermetic option.",
+          "Quickstart testnet and futurenet modes proxy the public faucets and do not evade limits.",
+          "Futurenet is a different network, and Circle's faucet supplies test USDC, not XLM."
+        ],
+        "avoid": [
+          "Do NOT invent a request quota, rotate IPs or hammer retries.",
+          "Do NOT claim an official backup faucet wallet exists without a current official source.",
+          "Do NOT confuse test USDC with XLM or send keys or Mainnet funds to a faucet."
+        ],
+        "notes": "A dated Friendbot rate-limit response using HTTP 400 instead of 429 is not an error. If an official backup appears, require a dated developers.stellar.org citation.",
+        "movedToTruth": [
+          "GT-52 re-verification 2026-09-01",
+          "Freighter→Varial rename block",
+          "Quickstart friendbot.conf source",
+          "Also-good item on Circle faucet trustline"
+        ]
+      }
+    },
+    {
+      "id": "q-ti-historical-pointintime-balances",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Latest-at-or-before reconstruction, deletion handling, change-log semantics and the separate USD join kept; the price-source caution survives in notes.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-ti-java-sdk-wallet-feebump",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Coordinates and 6.0.0 re-read today in two classes; factories and role split kept.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "https://github.com/lightsail-network/java-stellar-sdk/releases (audit record, re-walkable)",
+          "observedAt": "2026-11-14",
+          "quote": "6.0.0 2026-10-28T08:27:04Z"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-ti-openzeppelin-relayer",
+      "auditVerdict": "tighten",
+      "decision": "amend",
+      "finalVerdict": "tighten",
+      "why": "Product split, funding model and dating rule kept, and dropping the never-answered 'live on mainnet' ask is acceptable. But the note dates the '1.8.x stable' docs observation to 2026-11-14, and only the 1.9.x 404 was re-read today (the extract today shows a 1.5.x top-nav link, not 1.8.x). Keep the 1.8.x observation at its verified date.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://docs.openzeppelin.com/relayer (parallel-cli extract)",
+          "observedAt": "2026-11-14",
+          "quote": "production use, see the (https://docs.openzeppelin.com/relayer/1.5.x)"
+        }
+      ],
+      "finalRewrite": {
+        "question": "What is the OpenZeppelin Relayer on Stellar, how is the relayer account funded, and how do I integrate it with my backend to pay fees?",
+        "answer": "OpenZeppelin Relayer is a self-hostable AGPL relaying service. Its Stellar support covers prepared-XDR submission, classic payments, Soroban invocation, fee-bump or sponsorship flows, policies and several signer backends. When self-hosted you configure and fund the relayer account yourself. OpenZeppelin Channels is the separate managed offering with hosted authentication, parallel accounts and fee handling; its hosted service publishes no generic top-up address. Keep credentials and signing server-side, validate transaction intent, and date any release, network-support or service-health claim.",
+        "keyFacts": [
+          "Self-hosted OpenZeppelin Relayer and managed Channels are different products.",
+          "Relayer on Stellar supports XDR, payment and Soroban submission, fee-bump and sponsorship.",
+          "Self-hosting means funding your own relayer account; Channels has no top-up address.",
+          "Release and health claims carry an as-of date; a 401 is not proof of downtime."
+        ],
+        "avoid": [
+          "Do NOT conflate self-hosted Relayer with managed Channels.",
+          "Do NOT publish a generic hosted top-up address.",
+          "Do NOT pin a release, network support or provider health without an as-of date."
+        ],
+        "notes": "Repository and rendered-docs versions can disagree (2026-11-02: release v1.9.0 while docs showed 1.8.x as stable; 2026-11-14: still no 1.9.x docs path); either dated observation is correct.",
+        "movedToTruth": [
+          "2026-09-02 and 2026-11-02 observation pairs (v1.8.0/1.5.x; v1.9.0/1.8.x)",
+          "Docs top-nav /relayer/1.5.x link",
+          "Dead status.channels.openzeppelin.com host and deleted Statuspage page",
+          "Channels fair-use stroop-limit terms",
+          "disputed status basis"
+        ]
+      }
+    },
+    {
+      "id": "q-ti-parse-raw-ledger-data",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Exact getLedgers/getTransactions XDR types, SDK double-decode, JSON renaming and LedgerCloseMetaBatch kept; it now owns the XDR mapping alone.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-ti-related-projects-from-content",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "Operation contract pinned by test/catalog.test.ts and lumenloop-shape tests; no Stellar fact. Chain conflict: audit-assets retired q-gap-related-projects-empty saying to fold its empty-array line into this case, and that verify accepted it. With both retired, drop that fold instruction.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-ti-rpc-gettransactions-pagination-xdr",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Cursor exclusivity, stock limits as configurable options and the sd-004 canonical-page caution in lint form kept; the XDR half moves to the parse case. Limits re-derived today from source and live testnet.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "github.com/stellar/stellar-rpc @v30.0.1 cmd/stellar-rpc/internal/rpcv1/config/options.go:353-384",
+          "observedAt": "2026-11-14",
+          "quote": "max-transactions-limit 200; default-transactions-limit 50; max-ledgers-limit 200; default-ledgers-limit 50"
+        },
+        {
+          "class": "B",
+          "ref": "options.go:331-340 @v30.0.1",
+          "observedAt": "2026-11-14",
+          "quote": "max-events-limit DefaultValue uint(10000); default-events-limit DefaultValue uint(100)"
+        },
+        {
+          "class": "F",
+          "ref": "POST https://soroban-testnet.stellar.org getTransactions limit 201",
+          "observedAt": "2026-11-14",
+          "quote": "\"message\":\"limit must not exceed 200\""
+        },
+        {
+          "class": "F",
+          "ref": "POST https://soroban-testnet.stellar.org getEvents limit 10001",
+          "observedAt": "2026-11-14",
+          "quote": "\"message\":\"limit must not exceed 10000\""
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-ti-scaffold-stellar",
+      "auditVerdict": "tighten",
+      "decision": "amend",
+      "finalVerdict": "tighten",
+      "why": "Rewrite is sound and 0.0.34 is confirmed today, but key fact 1 names only `cargo install` while the current golden lists `cargo binstall stellar-scaffold-cli` as the project's documented alternative. Add it to the notes so a correct binstall answer is not penalized.",
+      "evidence": [
+        {
+          "class": "C",
+          "ref": "https://crates.io/api/v1/crates/stellar-scaffold-cli",
+          "observedAt": "2026-11-14",
+          "quote": "max_version 0.0.34, updated_at 2026-10-25T16:56:34Z"
+        }
+      ],
+      "finalRewrite": {
+        "question": null,
+        "answer": "Scaffold Stellar is a separate plugin: `cargo install --locked stellar-scaffold-cli`, then `stellar scaffold init <project>`. It coordinates Rust contracts, TypeScript clients and bindings, a frontend template and environment configuration. It is not part of the core CLI, and it differs from `stellar contract init`, which creates only a contract workspace. As of 2026-11-14 the crate is 0.0.34. Current projects keep networks, accounts and contracts in a version 2 `scaffold.yml`; `environments.toml` is the legacy format, and the Stellar Docs Scaffold page still describes it. Review generated scripts and community templates before running them; local networks need Docker.",
+        "keyFacts": [
+          "Installs with cargo install --locked stellar-scaffold-cli, then stellar scaffold init.",
+          "Scaffold is a separate full-stack plugin, not core CLI and not `stellar contract init`.",
+          "Current config is a v2 scaffold.yml; environments.toml is legacy (as of 2026-11-14).",
+          "Community templates are third-party code to review and pin; local networks need Docker."
+        ],
+        "avoid": [
+          "Do NOT imply stellar scaffold ships with every core CLI install.",
+          "Do NOT equate `stellar scaffold init` with `stellar contract init`.",
+          "Do NOT present environments.toml as the current format for new projects."
+        ],
+        "notes": "`cargo binstall stellar-scaffold-cli` is an accepted install alternative. Describing environments.toml for legacy projects is correct. A later crate version, template roster or config format is acceptable if dated.",
+        "movedToTruth": [
+          "GT-53 correction (old 25.2.0 snapshot)",
+          "Version 2 landed in 0.0.28 per changelog",
+          "React and Svelte template roster",
+          "stellar-registry-cli aside"
+        ]
+      }
+    },
+    {
+      "id": "q-ti-scout-changelog-contract-check",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "The manifest states what the case rewards; its protocol-lane twin q-gap-scout-changelog-envelope is already retired with verify acceptance.",
+      "evidence": [],
+      "finalRewrite": null
+    }
+  ],
+  "summary": {
+    "accept": 32,
+    "amend": 7,
+    "reject": 0
+  },
+  "patterns": [
+    "Sample rule: every record was checked (12 retire, merge and move records, 27 tighten). The audit has no keep records, so there was no keep sample.",
+    "Before calling a case move-tool-lane, also grep test/skill-runners.test.ts and the frozen live digest cases: the auditor's 'no test exercises list_documents argument choice' missed test/skill-runners.test.ts:180.",
+    "Survivor chains need the orchestrator: (1) merge survivors' accepted rewrites in other lanes (q-passkey-smart-account-architecture, q-soroban-simulate-resource-fee) do not yet contain what this lane says they must absorb; (2) audit-assets folds an item into q-ti-related-projects-from-content, which this lane retires; (3) explainRepo data.ok is moved to the tool lane twice (here and q-gap-explainrepo-payload-ok in soroban-a).",
+    "Compaction sometimes drops a sub-ask the question names (fees and price in q-ti-compute-token-lp-market-data, the Stellar handoff binding in q-passkey-platform-constraints). Check every clause of the question survives in the answer.",
+    "An 'unverifiable' rot row was rewritten as a flat negative claim in the answer (Friendbot backup wallet). Unverifiable rot rows here also carry empty evidence (q-gap-rpc-horizon-unindexed-reference, q-passkey-platform-constraints, q-ti-friendbot-ratelimit-alternatives, q-ti-openzeppelin-relayer).",
+    "Date moves to 2026-11-14 were backed by evidence observed today in every case except one compound note (OpenZeppelin 1.8.x docs label). Avoid items already use the 'Do NOT' form throughout."
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "id": "q-org-sdf-enterprise-fund",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-hist-retail (golden coverage audit)",
+    "reviewer": "verify-hist-retail (golden coverage audit)",
+    "reason": "Duplicates q-scf-vs-sdf-enterprise-fund on what the Enterprise Fund is, and the MoneyGram-stake detail is trivia.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-org-sdf-enterprise-fund",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-org-sdf-enterprise-fund",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-org-sdf-enterprise-fund"
+    ],
+    "lastCaseContentSha256": "f2cb2e9f1e9fa090d3baa9fee05c255391fd9630a26ee2c11e36c77115ba8b25",
+    "replacementIds": []
+  }
+}

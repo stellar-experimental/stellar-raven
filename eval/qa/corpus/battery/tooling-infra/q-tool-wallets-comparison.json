@@ -6,20 +6,18 @@
     "stellarDocs.search_wallet_dapp_docs"
   ],
   "golden": {
-    "answer": "Compare by **role** before comparing names.\n\n- An **end-user wallet product** controls or connects signing keys and has product-specific custody, platforms, recovery, network/asset, and signing support. Varial (formerly Freighter) is an SDF-provided noncustodial product; independent products must be verified with their own current sources.\n- A **wallet-building SDK** is code used to build wallet experiences—for example SDF's TypeScript Wallet SDK for classic-account/anchor flows or community language-specific wallet SDKs such as Soneso's Flutter wallet layer. It is not an installed wallet.\n- **Creit-Tech Stellar Wallets Kit** is a community multi-wallet dapp adapter over configured external wallet modules; it neither custodies keys nor becomes those wallets.\n- **Smart Account Kit/OpenZeppelin account tooling** builds programmable passkey/C-account wallets with separate authorization, fee-submission, and recovery design.\n- **Ledger and Trezor are hardware wallet products**. **WalletConnect is a connectivity protocol/module**, not an end-user wallet application.\n\nFor every current option, verify custody/key control, browser/mobile/hardware environment, transaction and Soroban auth-entry support, network/asset scope, connection requirements, recovery process, maintenance, and the exact module/version. A directory or kit module list is not a certified, exhaustive, or timeless wallet roster.",
+    "answer": "Varial (formerly Freighter, renamed 2026-10-29) is SDF's non-custodial wallet extension. Stellar Wallets Kit, a community library from Creit Tech, lets apps connect many wallets, including Ledger and Trezor hardware wallets and WalletConnect. Ledger and Trezor are hardware wallets; WalletConnect is a connection protocol, not a wallet. Wallet lists are non-exhaustive, so check each wallet's own docs for current support.",
     "keyFacts": [
-      "Classifies end-user wallets, SDKs, Wallets Kit, and smart-account tooling by role.",
-      "Classifies Ledger and Trezor as hardware wallets and WalletConnect as connectivity.",
-      "Compares each product's custody, platform, signing, assets, recovery, and maintenance.",
-      "Treats wallet rosters as current, non-exhaustive, and uncertified."
+      "Varial, formerly Freighter, is SDF's non-custodial wallet extension.",
+      "Stellar Wallets Kit has modules for Ledger, Trezor and WalletConnect.",
+      "Ledger and Trezor are hardware wallets; WalletConnect is a protocol, not a wallet.",
+      "Wallet lists in docs and kits are non-exhaustive; verify each wallet's current support."
     ],
     "avoid": [
-      "Do NOT classify Ledger or Trezor as mere connectors, or WalletConnect as a wallet app.",
-      "Do NOT conflate Wallet SDK with Stellar Wallets Kit, a wallet product, or smart-account tooling.",
-      "Do NOT infer custody, recovery, platform availability, or every signing capability from directory inclusion or a module export.",
-      "Do NOT claim a representative list is exhaustive or call every wallet official/SDF-maintained."
+      "Do NOT call WalletConnect a wallet app or Ledger and Trezor mere connectors.",
+      "Do NOT call every listed wallet official or SDF-maintained."
     ],
-    "notes": "GT-56 TAXONOMY CORRECTION 2026-07-11: compare roles and exact products, not one roster. Ledger/Trezor are hardware wallet products; WalletConnect is a connectivity protocol/module. Separate wallet products, wallet-building SDKs, community Wallets Kit, and smart-account tooling, with product-specific custody/recovery/capability evidence.\nAccurately quoting the canonical Scout source on exact `type=Wallet` membership or available `productKind` and platform metadata is not a wrong claim while sls-033 stands; grade caps at partial for those claims unless the answer contradicts the golden fact independently of the quoted source.\nRENAME (verified 2026-11-02): SDF renamed the Freighter wallet to Varial on 2026-10-29 (stellar.org blog \"Freighter is now Varial\"; extension 5.50.0 is the first Varial release). Freighter and Varial name the same SDF wallet; do not penalize either name."
+    "notes": "Freighter and Varial name the same wallet; do not penalize either name. Quoting Scout's wallet type metadata as attributed is not a wrong claim."
   },
   "tags": {
     "category": "tooling-infra",
@@ -33,7 +31,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-05-14",
     "sources": [
       {
@@ -223,33 +221,72 @@
             "note": "\"Built by the Stellar Development Foundation. Open source and non-custodial.\"; \"Varial Wallet SDF’s flagship non-custodial wallet extension ... codebase is open sourced here: https://github.com/stellar/freighter\"."
           }
         ]
+      },
+      {
+        "claim": "Freighter was renamed Varial on 2026-10-29; Varial is SDF's flagship non-custodial wallet",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial",
+            "observedAt": "2026-11-14",
+            "note": "Today, Freighter becomes Varial, with a new name and a new focus"
+          },
+          {
+            "class": "B",
+            "ref": "https://api.github.com/repos/stellar/freighter/releases",
+            "observedAt": "2026-11-14",
+            "note": "5.50.0 published 2026-10-29; 5.52.0 2026-11-07"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tools/developer-tools/wallets.md",
+            "observedAt": "2026-11-14",
+            "note": "SDF’s flagship non-custodial wallet extension"
+          }
+        ]
+      },
+      {
+        "claim": "Stellar Wallets Kit includes Ledger, Trezor and WalletConnect modules",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tools/developer-tools/wallets.md",
+            "observedAt": "2026-11-14",
+            "note": "The Stellar Wallets Kit supports many wallets including: ... Ledger Hardware Wallet, Trezor Hardware Wallet, ... WalletConnect"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/Creit-Tech/Stellar-Wallets-Kit/tree/main/src/sdk/modules",
+            "observedAt": "2026-11-14",
+            "note": "ledger.module.ts, trezor.module.ts, wallet-connect.module.ts, varial.module.ts"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task full-reverify)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-tooling-b, verify-audit-tooling-b; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "https://stellar.org/blog/foundation-news/freighter-is-now-varial (RSS https://stellar.org/blog/rss.xml pubDate Thu, 29 Oct 2026) — \"Freighter is now Varial, with a new name and a new focus\" (observedAt 2026-11-02).",
-        "https://github.com/stellar/freighter/releases/tag/5.50.0 (published_at 2026-10-29T20:32:42Z) — \"Freighter is now **Varial**. This is the first release under the new name.\" (observedAt 2026-11-02).",
-        "https://github.com/stellar/freighter README and rebrand commit db6d022b (2026-10-28, \"Freighter is now Varial (#3048)\") — \"Varial (formerly Freighter) is a non-custodial wallet extension\"; manifest name \"Varial Wallet\" (observedAt 2026-11-02).",
-        "curl -I: https://www.freighter.app -> 301 https://varialwallet.com/ ; https://docs.freighter.app -> 307 https://docs.varialwallet.com/ (observedAt 2026-11-02).",
-        "General web (Parallel search + Perplexity, one class): https://blockchain.news/news/stellar-freighter-rebrands-varial-discover-directory ; https://www.tokenpost.com/news/technology/43511 — \"according to a Stellar Foundation blog post published on 2026-10-29\" (observedAt 2026-11-02).",
-        "Store and maintainer: Chrome Web Store listing \"Varial Wallet\" 5.51.0; Firefox AMO API still names \"Freighter\" 5.49.0; repo stays stellar/freighter and npm packages stay under the SDF @stellar scope (observedAt 2026-11-02).",
-        "Full re-verification 2026-11-02 (pass 2): role taxonomy, hardware/connectivity classification, Wallet SDK, Wallets Kit, Smart Account Kit, and Varial identity re-checked across classes A and B (corroboration rows 0-2); no judge-facing text changed; truth.asOf moved to 2026-11-02; reverifyBy 2027-05-14.",
-        "Sibling sweep 2026-11-02: grep -rli 'freighter|varial' eval/qa/corpus/battery -> 20 Freighter cases; 11 are in batch varial-dev; the other Varial-lane siblings (q-eco-freighter-wallet, q-tool-freighter-wallet, q-ti-find-export-secret-key) already state the same 2026-10-29 rename and same-product identity; no sibling names a different date, a different wallet, or a removed @stellar/freighter-api.",
-        "2026-11-02 [A] https://developers.stellar.org/docs/tools/developer-tools/wallets — Kit list \"Albedo Varial Hana Ledger Hardware Wallet Trezor Hardware Wallet Lobstr Rabet Scopuly WalletConnect xBull HOT Wallet\"; \"Varial Wallet SDF’s flagship non-custodial wallet extension\".",
-        "2026-11-02 [B] Creit-Tech/Stellar-Wallets-Kit main 9db6b363f678 (v2.8.0, 2026-10-28) — ledger.module.ts ModuleType.HW_WALLET; trezor.module.ts; wallet-connect.module.ts ModuleType.BRIDGE_WALLET with projectId; varial.module.ts productName \"Varial\".",
-        "2026-11-02 [A] https://developers.stellar.org/docs/build/apps/wallet/overview — Wallet SDK guide connects to anchors and builds a wallet without smart contracts; [A] https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets — Smart Account Kit drives OpenZeppelin Smart Account contracts with passkey, Ed25519, and policy signers.",
-        "2026-11-02 [B] stellar/typescript-wallet-sdk (pushed 2026-10-19), Soneso/stellar_wallet_flutter_sdk (pushed 2026-10-25), stellar/smart-account-kit (pushed 2026-10-27; kalepail/smart-account-kit now says MOVED) — all active, none archived.",
-        "2026-11-02 [A] https://varialwallet.com/ — \"Built by the Stellar Development Foundation. Open source and non-custodial.\"; https://docs.varialwallet.com/ — \"Freighter is now Varial. Same wallet, new name.\" and \"New integrations should use @stellar/varial-sdk\".",
-        "ADR-0008 observation (no change proposed): golden.notes keeps the pre-existing sls-033 Scout partial cap (improvements/stellar-light-scout/sls-033-wallet-type-enumeration-availability.md, still reported-upstream on 2026-11-02). It predates this audit; the owner decision on aggregator partial caps (pass-1 consistency-rubric M4) governs it.",
-        "Sibling sweep 2026-11-02 (pass 2): grep 'Wallet-typed|type=Wallet|WalletConnect|hardware wallet|Wallets Kit' -> q-eco-stellar-wallets-list, q-ti-connect-wallet-button-code, q-raph-hardware-wallet, q-tool-freighter-wallet; no contradiction with the role taxonomy."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-b.json#q-tool-wallets-comparison",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-b.json#q-tool-wallets-comparison",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-tool-wallets-comparison",
+        "Live A 2026-11-14: https://stellar.org/blog/foundation-news/freighter-is-now-varial -- 'Today, Freighter becomes Varial, with a new name and a new focus'",
+        "Live B 2026-11-14: https://api.github.com/repos/stellar/freighter/releases -- '5.50.0 published 2026-10-29; 5.52.0 2026-11-07'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/tools/developer-tools/wallets.md -- 'SDF’s flagship non-custodial wallet extension'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/tools/developer-tools/wallets.md -- 'The Stellar Wallets Kit supports many wallets including: ... Ledger Hardware Wallet, Trezor Hardware Wallet, ... WalletConnect'",
+        "Live B 2026-11-14: https://github.com/Creit-Tech/Stellar-Wallets-Kit/tree/main/src/sdk/modules -- 'ledger.module.ts, trezor.module.ts, wallet-connect.module.ts, varial.module.ts'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/build/guides/freighter -- 'Varial (formerly Freighter) is a browser extension wallet provided by the Stellar Development Foundation.'",
+        "Live B 2026-11-14: https://github.com/Creit-Tech/Stellar-Wallets-Kit/tree/HEAD/src/sdk/modules -- 'ledger.module.ts, trezor.module.ts, wallet-connect.module.ts, varial.module.ts'"
       ],
       "rootCause": [
-        "freshness-drift",
-        ".agents/TODO.md — Add the Varial rename to the goldens that name Freighter"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-tool-wallets-comparison"
+    "origin": "raven-next q-tool-wallets-comparison",
+    "notes": "GT-56 TAXONOMY CORRECTION 2026-07-11: compare roles and exact products, not one roster. Ledger/Trezor are hardware wallet products; WalletConnect is a connectivity protocol/module. Separate wallet products, wallet-building SDKs, community Wallets Kit, and smart-account tooling, with product-specific custody/recovery/capability evidence.\nAccurately quoting the canonical Scout source on exact `type=Wallet` membership or available `productKind` and platform metadata is not a wrong claim while sls-033 stands; grade caps at partial for those claims unless the answer contradicts the golden fact independently of the quoted source.\nRENAME (verified 2026-11-02): SDF renamed the Freighter wallet to Varial on 2026-10-29 (stellar.org blog \"Freighter is now Varial\"; extension 5.50.0 is the first Varial release). Freighter and Varial name the same SDF wallet; do not penalize either name.",
+    "leaf": "wallets.landscape",
+    "secondaryLeaf": "tooling.wallet-connection"
   }
 }

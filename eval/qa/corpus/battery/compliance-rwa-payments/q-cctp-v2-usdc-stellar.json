@@ -8,20 +8,19 @@
     "skills.stellar-dev.cross-chain"
   ],
   "golden": {
-    "answer": "Circle's release notes record **Stellar mainnet support on 2026-05-18**, and SDF and Circle publicly announced CCTP live on Stellar on **2026-05-19**. The earlier **2026-02-24** date previously called the launch was not recoverable from accessible primary material, so do not collapse it with either confirmed May milestone. Stellar is CCTP domain 27. CCTP burns native USDC on the source and mints native USDC on the destination. For Stellar G-, M-, or C-address recipients, use Circle's CctpForwarder path; a wrong mintRecipient or destinationCaller can strand funds. Stellar USDC uses 7 decimals while CCTP messages use 6, so the seventh outbound decimal remains on Stellar. On 2026-07-11, Circle's fee endpoint returned Fast/Standard 0/0 for domain 27→0 and 1 bp/0 for 0→27; re-query /v2/burn/USDC/fees. Circle transfer fees are separate from network resources, relayer, integrator, and any swap charges.",
+    "answer": "Circle added Stellar mainnet CCTP support on 2026-05-18, and SDF and Circle announced it live on 2026-05-19; Stellar is CCTP domain 27. CCTP burns native USDC on the source chain and mints native USDC on the destination, with no wrapped token. Inbound transfers set both mintRecipient and destinationCaller to the CctpForwarder contract, which forwards to the G, M or C recipient named in hook data. Stellar USDC's seventh decimal stays on Stellar because CCTP messages use 6. Fees are live values: as of 2026-11-14 Circle's fee API showed Fast/Standard 0/0 for 27→0 and 1 bp/0 for 0→27.",
     "keyFacts": [
-      "Circle dates Stellar support to 2026-05-18 and the public-live announcement to 2026-05-19.",
-      "Use CctpForwarder with correct mintRecipient or destinationCaller for G/M/C funds.",
-      "The 6-decimal CCTP format leaves Stellar USDC's seventh decimal on Stellar.",
-      "Re-query /v2/burn/USDC/fees for 2026-07-11 Fast/Standard 27→0 0/0, 0→27 1 bp/0.",
-      "Treats Circle fees, network resources, relayers, integrators, and swaps as distinct costs."
+      "Stellar mainnet CCTP support came on 2026-05-18 and was announced live on 2026-05-19.",
+      "CCTP burns native USDC on the source chain and mints native USDC on the destination.",
+      "Inbound transfers set mintRecipient and destinationCaller to the CctpForwarder contract.",
+      "CCTP messages use 6 decimals, so Stellar USDC's seventh decimal stays on Stellar.",
+      "Fees are dated live values from Circle's fee API, not fixed."
     ],
     "avoid": [
-      "CCTP locks USDC and issues a wrapped Stellar token.",
-      "Every CCTP route is permanently fee-free and exactly 1:1 after all costs.",
-      "Do NOT call 2026-02-24 the Stellar launch without accessible primary evidence or merge technical support and public announcement into one date."
+      "Do NOT say CCTP locks USDC and issues a wrapped Stellar token.",
+      "Do NOT present CCTP fees as permanent or the transfer as exactly 1:1 after all costs."
     ],
-    "notes": "Milestone provenance was rechecked on 2026-07-28: Circle's technical-support record is 2026-05-18 and SDF/Circle's public-live announcement is 2026-05-19. The prior 2026-02-24 launch attribution was not recovered from accessible primary material and is not a truth gate. Fee observations remain explicitly dated 2026-07-11; grade later sourced changes leniently."
+    "notes": "Accept either milestone date when it is labeled (technical support 2026-05-18, public announcement 2026-05-19). Fee figures are dated observations; accept a later dated figure from Circle's fee API."
   },
   "tags": {
     "category": "compliance-rwa-payments",
@@ -35,7 +34,7 @@
     },
     "domain": "real-world",
     "status": "mixed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-02-05",
     "sources": [
       {
@@ -272,24 +271,63 @@
             "observedAt": "2026-07-11"
           }
         ]
+      },
+      {
+        "claim": "Circle added Stellar mainnet CCTP support on 2026-05-18.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.circle.com/release-notes/cctp-2026",
+            "observedAt": "2026-11-14",
+            "note": "## May 2026 **2026.05.18** Added support for Stellar mainnet."
+          }
+        ]
+      },
+      {
+        "claim": "Fast/Standard fees 27→0 are 0/0 and 0→27 are 1 bp/0.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://iris-api.circle.com/v2/burn/USDC/fees/27/0",
+            "observedAt": "2026-11-14",
+            "note": "[{finalityThreshold:1000,minimumFee:0},{finalityThreshold:2000,minimumFee:0}]"
+          },
+          {
+            "class": "A",
+            "ref": "https://iris-api.circle.com/v2/burn/USDC/fees/0/27",
+            "observedAt": "2026-11-14",
+            "note": "[{finalityThreshold:1000,minimumFee:1},{finalityThreshold:2000,minimumFee:0}]"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch compliance-rwa-payments-01)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-compliance, verify-audit-compliance; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Proposer golden.keyFacts[0] [confirmed]: Live re-check 2026-11-02: https://developers.circle.com/release-notes/cctp-2026 — \"2026.05.18 Added support for Stellar mainnet.\" (class A)",
-        "Proposer golden.keyFacts[0] [confirmed]: Live re-check 2026-11-02: https://x.com/StellarOrg/status/2056797748264116265 (via Perplexity) — \".@circle CCTP is live on Stellar. ... 6:02 PM · May 19, 2026\" (class D)",
-        "Proposer golden.keyFacts[0] [confirmed]: Live re-check 2026-11-02: Lumenloop research via Perplexity: https://lumenloop.com/research/stellar-weekly-roundup-week-15-2026 — \"Circle's Cross-Chain Transfer Protocol went live on Stellar on May 19\" (class C)",
-        "Proposer golden.keyFacts[1..2] [confirmed]: Live re-check 2026-11-02: https://developers.circle.com/cctp/references/stellar — \"On the source burn, both `mintRecipient` and `destinationCaller` must be set to the `CctpForwarder`\" (class A)",
-        "Proposer golden.keyFacts[1..2] [confirmed]: Live re-check 2026-11-02: https://developers.circle.com/cctp/references/stellar — \"Regardless of direction, the `amount` field in a CCTP message is always in six-decimal subunits.\" (class A)",
-        "Proposer golden.keyFacts[1..2] [confirmed]: Live re-check 2026-11-02: https://developers.circle.com/cctp/references/stellar code sample — \"destinationDomain: 27\" (class F)",
-        "Proposer golden.keyFacts[3] [confirmed-as-of]: Live re-check 2026-11-02: https://iris-api.circle.com/v2/burn/USDC/fees/27/0 — \"[{\"finalityThreshold\":1000,\"minimumFee\":0},{\"finalityThreshold\":2000,\"minimumFee\":0}]\" (class F)",
-        "Proposer golden.keyFacts[3] [confirmed-as-of]: Live re-check 2026-11-02: https://iris-api.circle.com/v2/burn/USDC/fees/0/27 — \"[{\"finalityThreshold\":1000,\"minimumFee\":1},{\"finalityThreshold\":2000,\"minimumFee\":0}]\" (class F)",
-        "Sibling sweep 2026-11-02: proposer checked q-hist-cctp-stellar-live-announcement, q-tool-cctp-stellar-integration, q-token-circle-usdc-on-stellar, q-defi-bridge-evm-to-stellar-axelar; no judge-facing field changed in this case, and no sibling contradicts the confirmed claims.",
-        "reverifyBy kept at 2027-02-05: eval/qa/consistency-register.json disposition names 'q-cctp-v2-usdc-stellar reverifyBy 2027-02-05'; the register is a shared file outside this batch."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-compliance.json#q-cctp-v2-usdc-stellar",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-compliance.json#q-cctp-v2-usdc-stellar",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-cctp-v2-usdc-stellar",
+        "Live A 2026-11-14: https://developers.circle.com/release-notes/cctp-2026 -- '## May 2026 **2026.05.18** Added support for Stellar mainnet.'",
+        "Live A 2026-11-14: https://iris-api.circle.com/v2/burn/USDC/fees/27/0 -- '[{finalityThreshold:1000,minimumFee:0},{finalityThreshold:2000,minimumFee:0}]'",
+        "Live A 2026-11-14: https://iris-api.circle.com/v2/burn/USDC/fees/0/27 -- '[{finalityThreshold:1000,minimumFee:1},{finalityThreshold:2000,minimumFee:0}]'",
+        "Live A 2026-11-14: https://developers.circle.com/cctp/fees-and-finality -- 'extract error: http_status_code 404'",
+        "Live A 2026-11-14: https://developers.circle.com/release-notes/cctp-2026.md -- '**2026.05.18** ... Added support for Stellar mainnet.'",
+        "Live A 2026-11-14: https://stellar.org/blog/foundation-news/circle-cctp-is-live-on-stellar -- 'Publishing date <time dateTime=\"2026-05-19T14:00:00.000Z\"> ... Circle CCTP (Cross-Chain Transfer Protocol) is live'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/tokens/cross-chain-transfers.md -- 'Stellar's CCTP domain is `27`. ... Stellar USDC has 7 decimals, while CCTP messages use 6.'",
+        "Live A 2026-11-14: https://developers.circle.com/cctp/references/stellar.md -- 'Set both `mintRecipient` and `destinationCaller` to the `CctpForwarder`'",
+        "Live F 2026-11-14: https://iris-api.circle.com/v2/burn/USDC/fees/0/27 -- '[{\"finalityThreshold\":1000,\"minimumFee\":1},{\"finalityThreshold\":2000,\"minimumFee\":0}]'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit",
+        "freshness-drift"
       ]
     },
-    "origin": "kaan cctp-usdc-stellar-crosschain"
+    "origin": "kaan cctp-usdc-stellar-crosschain",
+    "notes": "Milestone provenance was rechecked on 2026-07-28: Circle's technical-support record is 2026-05-18 and SDF/Circle's public-live announcement is 2026-05-19. The prior 2026-02-24 launch attribution was not recovered from accessible primary material and is not a truth gate. Fee observations remain explicitly dated 2026-07-11; grade later sourced changes leniently.",
+    "leaf": "defi.bridges",
+    "secondaryLeaf": "assets.usdc"
   }
 }

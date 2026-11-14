@@ -1,0 +1,23 @@
+{
+  "id": "q-crp-tokenize-personal-rwa",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-compliance (golden coverage audit)",
+    "reviewer": "verify-audit-compliance (golden coverage audit)",
+    "reason": "Merged into q-crp-oz-rwa-erc3643-trex: q-crp-oz-rwa-erc3643-trex tests that minting a token creates no ownership, redemption or legal-compliance rights.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-compliance.json#q-crp-tokenize-personal-rwa",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-compliance.json#q-crp-tokenize-personal-rwa",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-crp-tokenize-personal-rwa"
+    ],
+    "lastCaseContentSha256": "6cde6e6601a8ecaaecb3034b6b9c5f427261b670fadb01cd8732d0392bc4bbe0",
+    "replacementIds": [
+      "q-crp-oz-rwa-erc3643-trex"
+    ]
+  }
+}

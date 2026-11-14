@@ -1,0 +1,21 @@
+{
+  "id": "q-defi-skill-project-dossier",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-defi (golden coverage audit)",
+    "reviewer": "verify-defi (golden coverage audit)",
+    "reason": "Skill-selection case; survivor q-skill-project-dossier-blend is in eval/skills-cases.json.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-defi-skill-project-dossier",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-defi-skill-project-dossier",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-defi-skill-project-dossier"
+    ],
+    "lastCaseContentSha256": "2db9f5a3d82df7efdff9da4f6eed914269fabbd61e05b996080fa59682cc00ea",
+    "replacementIds": []
+  }
+}

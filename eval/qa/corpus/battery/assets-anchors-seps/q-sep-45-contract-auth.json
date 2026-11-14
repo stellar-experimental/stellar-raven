@@ -8,19 +8,17 @@
     "stellarDocs.search_wallet_dapp_docs"
   ],
   "golden": {
-    "answer": "A grounded answer derives its named examples and status claims from the current official Stellar documentation, then dates the roster so it is not presented as permanent. As of 2026-06-22, the verified sources supported this observed answer:\n\nYes — it is **SEP-45, \"Stellar Web Authentication for Contract Accounts\"** (Status: **Draft**),\nthe Soroban smart-account analog of SEP-10 [1]. It defines how a client authenticates on behalf of\na **contract (`C…`) account** by signing **Soroban authorization entries** (a `web_auth_verify`\ninvocation against a `WEB_AUTH_CONTRACT_ID` declared in the anchor's `stellar.toml`), exchanging\nthe signed challenge for a session JWT. It is **based on SEP-10 but does not replace it**: SEP-10\ncovers `G`/`M` accounts, SEP-45 covers `C` accounts, and a service that wants both must implement\nboth [1]. Contract-account auth is **SEP-45, not SEP-10 and not SEP-43**; SEP-43 exists but is the\nunrelated **Standard Web Wallet API Interface** (Draft) [2]. Freshness caveat: SEP-45 is still Draft\n(v0.1.1) and may advance.\n\nSources: [1] stellar-protocol `ecosystem/sep-0045.md` (Draft, updated 2025-12-16);\n[2] `ecosystem/sep-0043.md` (Standard Web Wallet API Interface, Draft) + `ecosystem/README.md` (registry).\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "Yes: SEP-45, Stellar Web Authentication for Contract Accounts (Draft, v0.1.1 as of 2026-11-14). It is the Soroban analog of SEP-10: a client authenticates a contract (C...) account by signing Soroban authorization entries for the anchor's web-auth contract and receives a session JWT. SEP-10 still covers G and M accounts. SEP-43 is an unrelated wallet API.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation.",
-      "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Names SEP-45 as Stellar Web Authentication for Contract Accounts.",
-      "Treats SEP-45 as the Soroban smart-account analog of SEP-10."
+      "SEP-45 is Stellar Web Authentication for Contract Accounts.",
+      "SEP-45 is the Soroban analog of SEP-10 for C accounts, using auth entries.",
+      "SEP-45 complements SEP-10 rather than replacing it.",
+      "SEP-45 is a Draft, not a Final standard (as of a stated date)."
     ],
     "avoid": [
-      "Do NOT misnumber it (contract-account auth is SEP-45, not SEP-43 or SEP-10).",
-      "Do NOT claim SEP-45 is final/active if the current status is Draft.",
-      "Do NOT present a changeable current measurement without its provider, scope, and observation date; registered invariants and explicitly historical quantities are not current measurements."
+      "Do NOT claim that contract-account web authentication is SEP-10 or SEP-43."
     ],
-    "notes": "Newer SEP. Freshness-sensitive. Verified 2026-06-22: SEP-0045 'Stellar Web Authentication for Contract Accounts', Status Draft (v0.1.1, updated 2025-12-16); reference web-auth contract deployed on pubnet. (SEP-43 DOES exist separately — 'Standard Web Wallet API Interface', Draft — but is unrelated to contract-account auth; do not claim it is missing.)\nAlso good if the answer: Notes SEP-45 is in Draft status (not yet final). | Contrasts it with SEP-10, which authenticates classic accounts.\nGolden cites: SEP-0045 on the stellar-protocol repo."
+    "notes": "Accept a later dated status or version."
   },
   "tags": {
     "category": "assets-anchors-seps",
@@ -34,7 +32,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-06-22",
+    "asOf": "2026-11-14",
     "sources": [
       {
         "class": "B",
@@ -53,17 +51,18 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-03)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-assets, verify-audit-assets; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0045.md — \"Title: Stellar Web Authentication for Contract Accounts / Status: Draft / Updated: 2025-12-16 / Version: 0.1.1 ... This SEP is based on SEP-10, but does not replace it.\" (observedAt 2026-11-02; supports golden.keyFacts[2-3]: confirmed-as-of)",
-        "[A] https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep45 — \"SEP-45 (Stellar Web Authentication for Contract Accounts) enables smart wallet applications ... proving control over a contract account (C...)\" (observedAt 2026-10-01; supports golden.keyFacts[2-3]: confirmed-as-of)",
-        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0045.md — \"The web authentication contract described in this document has been deployed to the following networks: - Pubnet: CALI6JC3MSNDGFRP7Z2OKUEPREHOJRRXKMJEWQDEFZPFGXALA45RAUTH\" (observedAt 2026-11-02; supports golden.notes: confirmed)",
-        "[A] https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep45 — \"An instance of this contract is deployed at CD3LA6RKF5D2FN2R2L57MWXLBRSEWWENE74YBEFZSSGNJRJGICFGQXMX on testnet.\" (observedAt 2026-10-01; supports golden.notes: confirmed)",
-        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/README.md — \"| [SEP-0045](sep-0045.md) | Stellar Web Authentication for Contract Accounts | Philip Liu, Marcelo Salloum, Leigh McCulloch | Draft |\" (observedAt 2026-11-02; supports golden.avoid[0-1]: confirmed)",
-        "No gospel change: proposer matrix verdict 'unchanged'; no proposals for this case.",
-        "Sibling sweep 2026-11-02: q-sep-12-kyc, q-sep-43-web-wallet-api, q-sep-catalog-list checked; no contradiction.",
-        "truth.asOf kept at 2026-06-22 because golden.answer names that as-of date; the 2026-11-02 preamble (Draft, v0.1.1, updated 2025-12-16) is unchanged."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-assets.json#q-sep-45-contract-auth",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-assets.json#q-sep-45-contract-auth",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-sep-45-contract-auth",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0045.md -- 'Title: Stellar Web Authentication for Contract Accounts Status: Draft Updated: 2025-12-16 Version: 0.1.1'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0045.md -- 'A **Web Auth Contract**: a contract that implements the `web_auth_verify`'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0045.md -- 'Status: Draft Updated: 2025-12-16 Version: 0.1.1'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
     "origin": "raven-next q-sep-45-contract-auth",
@@ -85,7 +84,27 @@
             "note": "Fetched SEP-45 source identifies Stellar Web Authentication for Contract Accounts and relates it to SEP-10."
           }
         ]
+      },
+      {
+        "claim": "SEP-45 is Draft v0.1.1 (updated 2025-12-16); C accounts via WEB_AUTH_CONTRACT_ID and web_auth_verify; SEP-10 stays for G/M.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0045.md",
+            "observedAt": "2026-11-14",
+            "note": "Title: Stellar Web Authentication for Contract Accounts Status: Draft Updated: 2025-12-16 Version: 0.1.1"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0045.md",
+            "observedAt": "2026-11-14",
+            "note": "A **Web Auth Contract**: a contract that implements the `web_auth_verify`"
+          }
+        ]
       }
-    ]
+    ],
+    "notes": "Newer SEP. Freshness-sensitive. Verified 2026-06-22: SEP-0045 'Stellar Web Authentication for Contract Accounts', Status Draft (v0.1.1, updated 2025-12-16); reference web-auth contract deployed on pubnet. (SEP-43 DOES exist separately — 'Standard Web Wallet API Interface', Draft — but is unrelated to contract-account auth; do not claim it is missing.)\nAlso good if the answer: Notes SEP-45 is in Draft status (not yet final). | Contrasts it with SEP-10, which authenticates classic accounts.\nGolden cites: SEP-0045 on the stellar-protocol repo.",
+    "leaf": "standards.web-auth"
   }
 }

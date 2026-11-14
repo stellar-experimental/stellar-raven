@@ -1,0 +1,23 @@
+{
+  "id": "q-zk-circuit-setup",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-soroban-b (golden coverage audit)",
+    "reviewer": "verify-audit-soroban-b (golden coverage audit)",
+    "reason": "Merged into q-zk-proof-systems-stellar. q-zk-proof-systems-stellar's widened question and rewrite carry 'the app team defines circuit and keys' and 'circuit-specific Groth16 needs a trusted setup; transparent systems do not'. Universal-setup reuse is lost, which is general cryptography rather than Stellar truth.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-b.json#q-zk-circuit-setup",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-b.json#q-zk-circuit-setup",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-zk-circuit-setup"
+    ],
+    "lastCaseContentSha256": "cae77f8abb5728f8f3fd62ceb7574e67702c62cfbed244fdb0ab6b1730aaced4",
+    "replacementIds": [
+      "q-zk-proof-systems-stellar"
+    ]
+  }
+}

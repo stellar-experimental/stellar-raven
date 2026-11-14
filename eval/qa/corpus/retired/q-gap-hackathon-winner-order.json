@@ -1,0 +1,21 @@
+{
+  "id": "q-gap-hackathon-winner-order",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-scf (golden coverage audit)",
+    "reviewer": "verify-audit-scf (golden coverage audit)",
+    "reason": "Ordering winners only by an explicit placement field is the rule the frozen live case q-live-hackathon-recent-winners already grades.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-gap-hackathon-winner-order",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-gap-hackathon-winner-order",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-gap-hackathon-winner-order"
+    ],
+    "lastCaseContentSha256": "53b37cc34de3fd8d1b7507005aec73c17940441749b223fc0c4fdb25b3a92cab",
+    "replacementIds": []
+  }
+}

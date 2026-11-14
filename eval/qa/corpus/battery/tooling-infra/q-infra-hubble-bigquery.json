@@ -7,20 +7,17 @@
     "stellarDocs.search_sdk_cli_tools_docs"
   ],
   "golden": {
-    "answer": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-11, the verified sources supported this observed answer:\n\nHubble is SDF's public, read-only Stellar historical analytics dataset in BigQuery. The canonical project/dataset path is `crypto-stellar.crypto_stellar`, usable from the BigQuery UI, SDKs, SQL tools, and Looker-style analytics. It is for bulk historical queries, not transaction submission or low-latency current-state reads. Current docs describe intraday batch updates but no guaranteed same-day cadence, so date exact table/schema/freshness claims and do not call it real time.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "Hubble is SDF's public, read-only Stellar historical analytics dataset in BigQuery, at `crypto-stellar.crypto_stellar`. Query it with SQL from the BigQuery UI, client libraries or Looker Studio, using your own billing-enabled Google Cloud project. It suits bulk historical analysis, not transaction submission or low-latency current-state reads. Updates arrive in batches, so it is not a real-time feed.",
     "keyFacts": [
-      "Presents sourced observations as current or dated.",
-      "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Names the public BigQuery dataset path and historical analytics workload.",
-      "Defines Hubble as read-only historical analytics.",
-      "Qualifies cadence/schema freshness."
+      "Hubble is SDF's public read-only historical analytics dataset in BigQuery.",
+      "The dataset path is crypto-stellar.crypto_stellar.",
+      "It serves bulk history over SQL and is not a real-time or submission interface."
     ],
     "avoid": [
-      "Do NOT describe Hubble as RPC, a wallet, or a real-time guaranteed feed.",
-      "Do NOT invent a dataset path or freeze schema/cadence.",
-      "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
+      "Do NOT describe Hubble as RPC, a wallet, or a guaranteed real-time feed.",
+      "Do NOT invent a dataset path."
     ],
-    "notes": "The crypto-stellar.crypto_stellar BigQuery path is the load-bearing fact — verified against connecting-to-bigquery (project crypto-stellar, dataset crypto_stellar; UI/SDK/Looker access; billing-enabled GCP project required).\nAlso good if the answer: You can access it via the BigQuery UI, the BigQuery client SDK (e.g. google-cloud-bigquery), or Looker Studio. | Example tables include current-state tables like `accounts_current`.\nGolden cites: developers.stellar.org Hubble docs (analytics/hubble, connecting-to-bigquery).\nGT-49 CORRECTION 2026-07-11: gate dataset identity/workload; exact cadence/schema is dated."
+    "notes": "Exact table names, schemas and update cadence change; do not penalize an unlisted table or a hedged cadence."
   },
   "tags": {
     "category": "tooling-infra",
@@ -34,7 +31,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-14",
     "sources": [
       {
         "class": "A",
@@ -102,24 +99,35 @@
             "observedAt": "2026-07-11"
           }
         ]
+      },
+      {
+        "claim": "Public dataset is crypto-stellar.crypto_stellar",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "github.com/stellar/stellar-docs docs/data/analytics/hubble/analyst-guide/connecting.mdx",
+            "observedAt": "2026-11-14",
+            "note": "open the [crypto-stellar.crypto_stellar] dataset ... public dataset `crypto_stellar`"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-01)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-tooling-a, verify-audit-tooling-a; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Re-verification 2026-11-02 with no gospel change: every golden claim was re-walked (source classes A, B, D); the proposer proposed no change and the verifier listed the case as no-proposal.",
-        "Class B (golden.keyFacts[2], confirmed): stellar-docs@de38543 docs/data/analytics/hubble/developer-guide/connecting-to-bigquery/index.mdx:20,79 — \"open the [crypto-stellar.crypto_stellar] dataset ... dataset_id = 'crypto-stellar.crypto_stellar'\" (observedAt 2026-11-02)",
-        "Class A (golden.keyFacts[2], confirmed): curl https://developers.stellar.org/docs/data/analytics/hubble/developer-guide/connecting-to-bigquery — \"crypto-stellar.crypto_stellar\" (observedAt 2026-11-02)",
-        "Class D (golden.keyFacts[2], confirmed): perplexity_search (excluding developers.stellar.org) -> https://stellar.org/blog/developers/beyond-the-blockchain-unlocking-the-power-of-analytics-with-hubble — \"Users with a Google Cloud Project can follow the link to the dataset `crypto-stellar.crypto_stellar`\" (observedAt 2026-11-02)",
-        "Class B (golden.keyFacts[3] / avoid[0], confirmed): stellar-docs@de38543 docs/data/analytics/hubble/index.mdx:8,20 — \"Hubble should not be used for real-time data retrieval and cannot submit transactions to the network. ... Hubble is read-only; it cannot interact with the Stellar Network.\" (observedAt 2026-11-02)",
-        "Class A (golden.keyFacts[3] / avoid[0], confirmed): curl https://developers.stellar.org/docs/data/analytics/hubble — \"read-only; it cannot interact with the Stellar Ne...\" (observedAt 2026-11-02)",
-        "Class B (golden.keyFacts[4], confirmed-as-of): stellar-docs@de38543 docs/data/analytics/hubble/index.mdx:21 — \"The database is updated in intraday batches. There is no guarantee for same-day data availability.\" (observedAt 2026-11-02)",
-        "Class A (golden.keyFacts[4], confirmed-as-of): curl https://developers.stellar.org/docs/data/analytics/hubble — \"intraday batches. There is no guarantee for same-day data availability.\" (observedAt 2026-11-02)",
-        "Class D (golden.keyFacts[4], confirmed-as-of): stellar.org blog (2023-07-11) via perplexity_search — \"Hubble stays up-to-date through intraday batches that execute every 30 minutes.\" (observedAt 2026-11-02)",
-        "Sibling sweep 2026-11-02: q-infra-which-indexer, q-ti-historical-pointintime-balances, q-crp-export-tx-history-taxes, q-ti-enumerate-all-contracts checked; no conflicting fact."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-a.json#q-infra-hubble-bigquery",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-a.json#q-infra-hubble-bigquery",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-infra-hubble-bigquery",
+        "Live B 2026-11-14: github.com/stellar/stellar-docs docs/data/analytics/hubble/analyst-guide/connecting.mdx -- 'open the [crypto-stellar.crypto_stellar] dataset ... public dataset `crypto_stellar`'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-infra-hubble-bigquery"
+    "origin": "raven-next q-infra-hubble-bigquery",
+    "notes": "The crypto-stellar.crypto_stellar BigQuery path is the load-bearing fact — verified against connecting-to-bigquery (project crypto-stellar, dataset crypto_stellar; UI/SDK/Looker access; billing-enabled GCP project required).\nAlso good if the answer: You can access it via the BigQuery UI, the BigQuery client SDK (e.g. google-cloud-bigquery), or Looker Studio. | Example tables include current-state tables like `accounts_current`.\nGolden cites: developers.stellar.org Hubble docs (analytics/hubble, connecting-to-bigquery).\nGT-49 CORRECTION 2026-07-11: gate dataset identity/workload; exact cadence/schema is dated.",
+    "leaf": "data.hubble-analytics"
   }
 }

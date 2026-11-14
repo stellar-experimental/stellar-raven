@@ -1068,21 +1068,21 @@ export async function runPinnedJudgeSelfTestCandidate(
 }
 
 const PROMPT_SHA256_FIXTURES = new Map([
-  ["q-aas-burn-clawback-redemption-mechanics", "d8cd7305a5312ce60606ac30c9cf0d9910cadc417b3d2ed67bcfd0e4e55d3beb"],
-  ["q-aas-list-token-on-exchanges-aggregators", "09b76f30cc05aeb3f395a13b51b346705f2019facb10f6b3dd36086874d71b9a"],
-  ["q-asset-rwa-tokenized-freshness", "23b4aa6ad0f7045360879ac8bb417945033df243a0febd2f7b1d324037264192"], // gitleaks:allow — committed prompt SHA-256 fixture
-  ["q-comp-sep8-number-lookup-no-deepresearch", "2272a2b0ba8b4a864ad3db214c03331d261833733598070ebccda59c26741bee"],
-  ["q-edge-1xlm-activation-fee", "737091bfac82c1efcf4fd6a82efe09548c0c3f880ee4b9eab5368e1ff9d0897f"],
-  ["q-edge-ambig-best-wallet", "05266383cb4f1cf013e8d6d98d48b05627d6e639cd99c286d2b17ee17bbe8026"],
-  ["q-edge-factcheck-soroswap-first-amm", "6bbbc09ea3b253743b56eae47b8a25a19c629d9304dee00fdf27aaf1d7fcd475"],
-  ["q-edge-inject-ignore-instructions", "eb9c98b763c39eb99078eeea9d03dd1faa54c7163258d239e1cf95ade0c63031"],
-  ["q-edge-noinfo-sep-9999", "ee26f155872d4e22c2318762fb395d84cfda34ecfb6f8e2310d52fc148cd1a68"],
-  ["q-edge-oos-bitcoin-price-prediction", "f62133201dcc23860692cfd22c42790d983dcb32d8b1b07e09bcafc1d41aac0e"],
-  ["q-edge-send-me-free-xlm", "474637b74bf866068a473baa0e83e0c30d27469eed4511a517b1c89e688e0945"],
-  ["q-edge-xlm-price-investment-advice", "9f903bf48c19a598c8aad1a97791c31061ba5c2abc2d8168c637f64abcc30c4e"],
-  ["q-scf-total-distributed", "8250f5c8695025ea73b783cfaec0a6a30ef7171296330641716e651bee3f6bcb"],
-  ["q-soroban-storage-types", "11f8aec4e220c6a6b6d2d79bb02014ad1582f14e2c2648dbb1911eb56b69a5c7"],
-  ["q-ti-bindings-to-nextjs-integration", "c8093089a5e95afe23910fee4187f1baf7a5162f2f9939d08bfc5cb2dbaa5340"]
+  ["q-aas-claimable-predicates-expiry-reserves", "c54dd37ed8037a9ef6b58303018123a408b0bf582e990631b2f0dc94b297d470"],
+  ["q-aas-issuer-fees-supply-cap-freeze", "4e10b9b7dfe7d0f580343866f63be813cbd05d0ee8f3c05b8441ced36a22b616"],
+  ["q-aas-list-token-on-exchanges-aggregators", "bddbc3999c19ce4889fb5f41ded8c8e59adcd9c832f07286d0d6c67777f9406f"],
+  ["q-anchor-list-builders-discovery", "7014e9767c1987f642dee13b20e3c7780b2b204364c2beaf404737aa941a37a6"],
+  ["q-cctp-v2-usdc-stellar", "7ffa2c62077535df79cffb52b5379f038d970e7011c609cebd29237054080624"],
+  ["q-crp-regional-offramp-mobilemoney", "03cc88478ef6fa3c1a7c30a8c8418662c5f38e7969d4f79fa96532626b9c0338"],
+  ["q-edge-ambig-best-wallet", "d25c4d1e3c26b994cc9738f44250b0b013475969730c8f7a376b0293943aab3e"],
+  ["q-edge-factcheck-soroswap-first-amm", "9705ded96d2c8a14afa7912104514569bcc729f9dfdcae2e70aecdc16e398859"],
+  ["q-edge-inject-ignore-instructions", "08c23aa904ddf5bed98da0b4c33c53a6eee0f4e4d0536b23542641cf0f9d49b1"],
+  ["q-edge-noinfo-sep-9999", "d325002524ccb20a8e0a626e9db6fabff6e027ec30f43056cf1511bdef0a8d52"],
+  ["q-edge-oos-solana-vs-aptos", "c403fd196e96e86d5d4f9bb2a6380aed3dd7e38cc1efde1cd5aca15e7c5c1fb9"],
+  ["q-edge-send-me-free-xlm", "3f0827cb33e171d7dca55214aa42b9100f8f47fc1da2fee923ddcdd1fe51ac71"],
+  ["q-edge-xlm-price-investment-advice", "c78fe545f0716a18219b286b442c78300580499de8e4d5b7e1bec05e7aade742"],
+  ["q-n3-issues-842-backup-faucet-wallet", "2f2b1249d07552d0e4e2160bbfea203f70c2d588db0b33e061838fdb40428c1c"],
+  ["q-soroban-storage-types", "1b12fe263318de4cdee8f0a35f4b01eafd6f79a10712da16a8c11d8772f7a9b1"]
 ]);
 
 function loadPromptFixtureCases() {

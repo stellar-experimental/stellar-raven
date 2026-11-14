@@ -1,0 +1,21 @@
+{
+  "id": "q-eco-most-active-defi-projects",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-defi (golden coverage audit)",
+    "reviewer": "verify-defi (golden coverage audit)",
+    "reason": "Leaderboard metric mechanics; the frozen live lane holds q-live-leaderboard-active-projects.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-eco-most-active-defi-projects",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-eco-most-active-defi-projects",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-eco-most-active-defi-projects"
+    ],
+    "lastCaseContentSha256": "6c6bd1236e63ba2b92a06f8b2e38f689a2d3114dd650a56148c1a3e3b019b34b",
+    "replacementIds": []
+  }
+}

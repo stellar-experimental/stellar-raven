@@ -1,0 +1,21 @@
+{
+  "id": "q-protocol-amm-cap-0038",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-protocol (golden coverage audit)",
+    "reviewer": "verify-protocol (golden coverage audit)",
+    "reason": "Its one fact is q-edge-factcheck-soroswap-first-amm kf0 (CAP-0038, Protocol 18, 2021-11-03).",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-protocol-amm-cap-0038",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-protocol-amm-cap-0038",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-protocol-amm-cap-0038"
+    ],
+    "lastCaseContentSha256": "e6b1a8471d7c9fd8147d905daf4cc5f1ed64a381a510505b53b9b06460195dce",
+    "replacementIds": []
+  }
+}

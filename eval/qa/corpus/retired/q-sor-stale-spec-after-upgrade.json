@@ -1,0 +1,23 @@
+{
+  "id": "q-sor-stale-spec-after-upgrade",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-soroban-a (golden coverage audit)",
+    "reviewer": "verify-audit-soroban-a (golden coverage audit)",
+    "reason": "Merged into q-sor-scval-conversion, which carries its durable fact as a key fact: after an upgrade, regenerate spec-aware clients, while raw Contract.call is spec-free.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-a.json#q-sor-stale-spec-after-upgrade",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-a.json#q-sor-stale-spec-after-upgrade",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-sor-stale-spec-after-upgrade"
+    ],
+    "lastCaseContentSha256": "f7ab17b99bf60de4886f750233e8400b09135d4a59cbc852d3744288f524d2d8",
+    "replacementIds": [
+      "q-sor-scval-conversion"
+    ]
+  }
+}

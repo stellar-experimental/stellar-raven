@@ -7,17 +7,15 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "Classic Stellar multisig uses account-level signer weights plus low/medium/high thresholds. `SetOptions` adds/removes signers and changes master weight/thresholds; signer, threshold, and master-weight changes require the current high-threshold authorization. For an unambiguous **2-of-3**, define exactly three effective authorities: either master + two added signers at weight 1, or three added signers at weight 1 with master weight 0 only after they are proven usable; set the relevant medium/high threshold to 2. Master weight 0 disables the account key and can permanently lock the account if alternatives cannot satisfy thresholds. Rotate by adding the replacement, verifying the new quorum/signing path, then removing the old signer while the current quorum still authorizes the transaction.",
+    "answer": "Classic multisig gives signers weights and sets low, medium and high thresholds. SetOptions adds or removes signers and changes thresholds and master weight, and needs the high threshold. A 2-of-3 has exactly three effective authorities (master plus two weight-1 signers, or three signers with master weight 0) and threshold 2. Add and test a replacement signer before removing the old one; master weight 0 without working alternatives locks the account.",
     "keyFacts": [
-      "Uses SetOptions/current high threshold for signer/threshold/master-weight changes.",
-      "Defines exactly three effective authorities for 2-of-3.",
-      "Adds/tests the replacement before removal."
+      "SetOptions changes to signers, thresholds and master weight need the high threshold.",
+      "A 2-of-3 has exactly three effective authorities and threshold 2.",
+      "Add and test the replacement before removal; master weight 0 risks permanent lockout."
     ],
     "avoid": [
-      "Do NOT set master weight 0 before alternates are proven or accidentally configure four authorities while calling it 2-of-3.",
-      "Do NOT confuse classic multisig with Soroban custom-account authentication."
-    ],
-    "notes": "Reviewed 2026-06-29: differentiated (D1) from q-protocol-accounts-signers-thresholds — this question owns the operational lifecycle verbs (SetOptions add/remove/rotate, master-weight-0 lockout, safe rotation); the conceptual weight/threshold model is demoted to assumed background (owned by the sibling). Verified against official signatures/multisig, SetOptions, and CLI docs. Covers classic account multisig, not Soroban custom-account authentication.\nAlso good if the answer: Assumes the weight/threshold model (signers have weights; low/medium/high thresholds) as background; deep threshold theory is owned by q-protocol-accounts-signers-thresholds. | Mentions sequence/fee and that the SetOptions transaction itself must be authorized under current thresholds.\nGolden cites: At least one primary Stellar source such as developers.stellar.org, stellar-core docs, or the stellar-protocol repository.\nGT-29 PRECISION 2026-07-10: a 2-of-3 example must name exactly three effective authorities; master is one if its weight is nonzero."
+      "Do NOT zero the master weight before alternates are proven, or confuse classic multisig with Soroban custom accounts."
+    ]
   },
   "tags": {
     "category": "protocol-core",
@@ -64,20 +62,20 @@
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-a)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-protocol, verify-protocol; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Solo scratchpad 575 GT-29 primary 3276 confirmed lifecycle mechanics; blind 3278 isolated the example-count ambiguity.",
-        "Structural re-form (compound-predicate): Split the three-authority requirement from replacement rotation; the 2-of-3 lifecycle truth is unchanged.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/signatures-multisig — current docs still define signer weights and thresholds for a three-authority 2-of-3 design.",
-        "Live re-check 2026-08-27: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations#set-options — SetOptions still manages signer addition, removal, weights, and thresholds.",
-        "Sibling sweep 2026-08-27: grep SetOptions|2-of-3|master weight|multisig → q-protocol-accounts-signers-thresholds, q-soroban-add-signer-smart-wallet-howto; no contradiction"
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-pc-multisig-setup-lifecycle",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-pc-multisig-setup-lifecycle",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-pc-multisig-setup-lifecycle"
       ],
       "rootCause": [
-        "Eval-side illustrative authority-count ambiguity.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-pc-multisig-setup-lifecycle"
+    "origin": "raven-next q-pc-multisig-setup-lifecycle",
+    "notes": "Reviewed 2026-06-29: differentiated (D1) from q-protocol-accounts-signers-thresholds — this question owns the operational lifecycle verbs (SetOptions add/remove/rotate, master-weight-0 lockout, safe rotation); the conceptual weight/threshold model is demoted to assumed background (owned by the sibling). Verified against official signatures/multisig, SetOptions, and CLI docs. Covers classic account multisig, not Soroban custom-account authentication.\nAlso good if the answer: Assumes the weight/threshold model (signers have weights; low/medium/high thresholds) as background; deep threshold theory is owned by q-protocol-accounts-signers-thresholds. | Mentions sequence/fee and that the SetOptions transaction itself must be authorized under current thresholds.\nGolden cites: At least one primary Stellar source such as developers.stellar.org, stellar-core docs, or the stellar-protocol repository.\nGT-29 PRECISION 2026-07-10: a 2-of-3 example must name exactly three effective authorities; master is one if its weight is nonzero.",
+    "leaf": "security.key-custody",
+    "secondaryLeaf": "protocol.signatures-multisig"
   }
 }

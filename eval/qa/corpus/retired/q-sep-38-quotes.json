@@ -1,0 +1,23 @@
+{
+  "id": "q-sep-38-quotes",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-assets (golden coverage audit)",
+    "reviewer": "verify-audit-assets (golden coverage audit)",
+    "reason": "Merged into q-sep-catalog-list. The q-sep-catalog-list rewrite keeps 'SEP-38 is the Anchor RFQ quote API' as a key fact. SEP-38 is Draft v2.5.0, so the status nuance is not lost.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-assets.json#q-sep-38-quotes",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-assets.json#q-sep-38-quotes",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-sep-38-quotes"
+    ],
+    "lastCaseContentSha256": "e82026843e415e7f10cfdc7cf43e2f9bfbe2da36fb72ce435de3964ec39fc050",
+    "replacementIds": [
+      "q-sep-catalog-list"
+    ]
+  }
+}

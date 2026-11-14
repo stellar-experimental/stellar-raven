@@ -1,0 +1,23 @@
+{
+  "id": "q-anchor-sdp-what",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-assets (golden coverage audit)",
+    "reviewer": "verify-audit-assets (golden coverage audit)",
+    "reason": "Merged into q-crp-sdp-operation: what the Stellar Disbursement Platform is and how its Core implements SEP-10 and SEP-24 natively is the subject of q-crp-sdp-operation.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-assets.json#q-anchor-sdp-what",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-assets.json#q-anchor-sdp-what",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-anchor-sdp-what"
+    ],
+    "lastCaseContentSha256": "4b40fc3424d21c4bfdebb80f1f06407415e7687b049442b10c46f61072743505",
+    "replacementIds": [
+      "q-crp-sdp-operation"
+    ]
+  }
+}

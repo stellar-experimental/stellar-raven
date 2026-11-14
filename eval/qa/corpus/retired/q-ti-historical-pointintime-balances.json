@@ -1,0 +1,21 @@
+{
+  "id": "q-ti-historical-pointintime-balances",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-tooling-a (golden coverage audit)",
+    "reviewer": "verify-audit-tooling-a (golden coverage audit)",
+    "reason": "A second Hubble how-to on a one-case leaf that q-infra-hubble-bigquery already holds.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-a.json#q-ti-historical-pointintime-balances",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-a.json#q-ti-historical-pointintime-balances",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-ti-historical-pointintime-balances"
+    ],
+    "lastCaseContentSha256": "69a0afca074624e642930108e6586f6944c44a726583595e2c90243c1c018a05",
+    "replacementIds": []
+  }
+}

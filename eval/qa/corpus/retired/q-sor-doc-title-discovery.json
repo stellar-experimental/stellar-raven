@@ -1,0 +1,21 @@
+{
+  "id": "q-sor-doc-title-discovery",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-soroban-a (golden coverage audit)",
+    "reviewer": "verify-audit-soroban-a (golden coverage audit)",
+    "reason": "Retired because search_doc_titles ranking is Raven's own behavior, covered by test/adapters.test.ts, while the zero-hit honesty it also probed stays in the active case q-edge-strupey-ambiguous-stellar-history.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-a.json#q-sor-doc-title-discovery",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-a.json#q-sor-doc-title-discovery",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-sor-doc-title-discovery"
+    ],
+    "lastCaseContentSha256": "d01aad0cf5b7c87aab5435317851efc73bcc1848e496e02ffbde4c1b9f9be527",
+    "replacementIds": []
+  }
+}

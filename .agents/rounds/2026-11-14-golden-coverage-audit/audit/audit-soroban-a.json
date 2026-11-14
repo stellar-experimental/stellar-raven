@@ -1,0 +1,3190 @@
+{
+  "lane": "audit-soroban-a",
+  "records": [
+    {
+      "id": "q-gap-digest-soroban-adjacent",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Lumenloop digest skill",
+        "softEmpty and date window",
+        "roundup is not protocol authority"
+      ],
+      "tests": "How an agent reads the output envelope of the runnable ecosystem-digest skill; no Stellar fact is tested.",
+      "questionIssues": [
+        "Only Raven's digest skill can satisfy it; no other tool has a digest with softEmpty or a call audit.",
+        "The Soroban theme is incidental; the sibling q-gap-digest-defi-adjacent tests the same behavior."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": "Names a Raven skill."
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "Prescribes wording (process)."
+        },
+        {
+          "i": 2,
+          "kind": "process",
+          "issue": "Names Raven envelope fields."
+        },
+        {
+          "i": 3,
+          "kind": "process",
+          "issue": "Duplicates KF2."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "skills.lumenloop.stellar-ecosystem-digest is an exposed runnable skill",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "catalog/manifest.json#skills.lumenloop.stellar-ecosystem-digest",
+              "observedAt": "2026-11-14",
+              "quote": "listed in the case's own truth.sources; lint-corpus.mjs:54 names DIGEST_SKILL"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-gap-digest-defi-adjacent",
+          "survivor": "q-gap-digest-defi-adjacent",
+          "why": "Same behavior (softEmpty vs error, window framing). The frozen live lane (eval/qa/corpus/live/live-digest-supplement-cases.json, q-live-digest-rwa-recent and q-live-digest-blend-coverage) already exercises the digest end to end."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "Pure Raven mechanics, duplicated by q-gap-digest-defi-adjacent (defi) and by the frozen live digest cases; it adds no Soroban or Stellar truth. Phase 4 must replace the lint 'digest skill floor 2' with a live-lane floor.",
+      "rewrite": null,
+      "wordsBefore": 94,
+      "wordsAfter": 0,
+      "confidence": "high",
+      "notRechecked": "The digest was not re-run: the retire verdict does not depend on its current output."
+    },
+    {
+      "id": "q-gap-explainrepo-payload-ok",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Scout explainRepo",
+        "envelope vs payload ok",
+        "source-grounded code answers"
+      ],
+      "tests": "Whether an agent reads Raven's outer envelope separately from the payload's own ok/answered fields when using scout.explainRepo.",
+      "questionIssues": [
+        "Asks about a Raven operation, not about Stellar Core; another tool could not satisfy it.",
+        "The avoid on codeVerified.isDeployableContract is a field-level curiosity, not a truth."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": "Names a Raven operation."
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "Names Raven envelope vs payload fields."
+        },
+        {
+          "i": 2,
+          "kind": "process",
+          "issue": "Generic caution; any code answer should be checked."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "scout.explainRepo with q + repo stellar/stellar-core returns envelope ok:true and payload ok:true, answered:true with repo metadata and source URLs",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "Raven execute scout.explainRepo {q, repo:'stellar/stellar-core'}",
+              "observedAt": "2026-11-14",
+              "quote": "envelopeOk true; payload ok true; answered true; sources include github.com/stellar/stellar-core/releases"
+            }
+          ]
+        }
+      ],
+      "duplicates": [],
+      "verdict": "move-tool-lane",
+      "reason": "Unit and routing tests only cover whether explainRepo is surfaced (test/drift-141-routing.test.ts); nothing exercises how an agent reads its nested ok/answered fields. That visibility belongs in a tool-contract lane, not the Stellar-truth headline.",
+      "rewrite": null,
+      "wordsBefore": 109,
+      "wordsAfter": 0,
+      "confidence": "medium",
+      "notRechecked": "The input field is `q`, not `question` (a call with `question` fails argument validation); the golden does not name it."
+    },
+    {
+      "id": "q-gap-scout-list-skill-directory",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Scout skill directory",
+        "listSkills vs getSkill"
+      ],
+      "tests": "Whether an agent picks scout.listSkills for discovery and getSkill for one entry; the roster count is a dated observation.",
+      "questionIssues": [
+        "Asks about a Raven operation pair; the answer is stated in the operations' own descriptions.",
+        "The golden carries two dated roster snapshots (7 and 8 entries) as notes, which is trivia."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": "Unclear what 'limits gateway-served skills to a subset' requires."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "scout.listSkills source=sdf returns eight entries (agentic-payments, cross-chain, dapp, data, standards, assets, smart-contracts, zk-proofs)",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "Raven execute scout.listSkills {source:'sdf'}",
+              "observedAt": "2026-11-14",
+              "quote": "n=8 slugs agentic-payments, cross-chain, dapp, data, standards, assets, smart-contracts, zk-proofs; asOf 2026-11-14"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-ti-skill-builder-quickstart",
+          "survivor": "q-ti-skill-builder-quickstart",
+          "why": "The tooling case already tests skill-driven workflow discovery."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "Raven mechanics with no Stellar truth; routing gates and scoring tests already assert scout.listSkills is surfaced for skill-discovery queries (test/scoring.test.ts:223, test/search.test.ts:1497). The roster count is volatile trivia.",
+      "rewrite": null,
+      "wordsBefore": 168,
+      "wordsAfter": 0,
+      "confidence": "medium"
+    },
+    {
+      "id": "q-passkey-smart-account-architecture",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Passkey smart wallets",
+        "__check_auth",
+        "CAP-0051 secp256r1",
+        "WebAuthn on-chain checks"
+      ],
+      "tests": "That a passkey wallet is a contract account whose __check_auth must do more than verify a P-256 signature, and what lives on-chain.",
+      "questionIssues": [
+        "Question is sound and answerable from any correct source.",
+        "Overlaps q-infra-secp256r1-passkeys on CAP-0051 and WebAuthn checks (see duplicates)."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Holds two predicates (challenge binding, client data and flags)."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Shared Wasm hash is trivia beside the main point."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "CAP-0051 adds native secp256r1 verification in Protocol 21",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0051.md",
+              "observedAt": "2026-11-14",
+              "quote": "Status: Final ... Protocol version: 21"
+            }
+          ]
+        },
+        {
+          "claim": "Production Stellar verifiers deliberately leave origin and RP-ID checks off-chain",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/OpenZeppelin/stellar-contracts/blob/main/packages/accounts/src/verifiers/webauthn.rs",
+              "observedAt": "2026-11-14",
+              "quote": "Origin verification in `clientDataJSON` is omitted; RP ID hash validation ... omitted"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-infra-secp256r1-passkeys",
+          "survivor": "q-passkey-smart-account-architecture",
+          "why": "Same CAP-0051 / WebAuthn topic in tooling-infra. Its key fact 'requires origin/RP-ID checks' conflicts with this case's note that on-chain verifiers omit them. One case should own it."
+        },
+        {
+          "id": "q-soroban-check-auth-custom-account",
+          "survivor": "q-soroban-check-auth-custom-account",
+          "why": "KF0 here restates the reserved __check_auth hook; defer that to the check-auth case."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Needed: it is the one passkey-architecture case. Cut 287 words to the four facts that matter, drop version-dated prose and the shared-hash trivia, and keep the symmetric caution about origin/RP-ID.",
+      "rewrite": {
+        "question": null,
+        "answer": "A Stellar smart wallet is a contract account whose reserved `__check_auth` validates credentials and policy for each authorization. CAP-0051 added native secp256r1 (P-256) verification in Protocol 21, but a valid P-256 signature alone is not complete WebAuthn validation: the contract must bind the WebAuthn challenge to the Soroban authorization payload and check client data and authenticator flags. The contract stores public keys and policy or recovery state; the private key stays in the authenticator.",
+        "keyFacts": [
+          "`__check_auth` validates a contract account's credentials and authorization policy.",
+          "CAP-0051 added native secp256r1 (P-256) signature verification in Protocol 21.",
+          "Contract checks bind the WebAuthn challenge to the Soroban payload and verify flags.",
+          "Only public keys and policy state go on-chain; the private key stays in the authenticator."
+        ],
+        "avoid": [
+          "A valid raw P-256 signature is complete WebAuthn assertion validation.",
+          "The private passkey key is stored on-chain."
+        ],
+        "notes": "Origin and RP-ID checks: W3C WebAuthn assigns them to the Relying Party, and OpenZeppelin's on-chain verifier omits them by design. Do not penalize an answer that requires them in the overall flow, or one that leaves them to the client and platform. Penalize only a claim that the P-256 signature alone is complete validation.",
+        "movedToTruth": [
+          "Status-sensitive-as-of 2026-07-11 sentence",
+          "OpenZeppelin and Passkey Kit verifier provenance",
+          "Shared Wasm hash and avoid about shared balances"
+        ]
+      },
+      "wordsBefore": 287,
+      "wordsAfter": 192,
+      "confidence": "high",
+      "notRechecked": "Passkey Kit's verifier was not re-read; the rewrite names only OpenZeppelin."
+    },
+    {
+      "id": "q-passkey-wallet-recovery",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Passkey wallet recovery",
+        "pre-authorized signers",
+        "guardian risk"
+      ],
+      "tests": "That a seedless passkey wallet must be given recovery authority in contract policy before loss, and that sync is not recovery.",
+      "questionIssues": [
+        "Sound and answerable. 'Before the primary passkey is lost' is the right framing."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Holds two predicates (pre-loss policy, Ed25519 fallback)."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "A six-item list in one fact."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [],
+      "duplicates": [
+        {
+          "id": "q-tool-passkey-wallet-recovery",
+          "survivor": "q-passkey-wallet-recovery",
+          "why": "Near-identical question in tooling-infra. Merge that case into this one, absorbing its SEP-30 distinction (classic G-account vs C-account recovery) as at most one key fact."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Survivor of the pair. Compress the answer, split the compound key facts, and move the 'Ed25519 recovery signer is valid' avoid to a grading caution because it is not a verified-false claim.",
+      "rewrite": {
+        "question": null,
+        "answer": "A passkey has no Stellar seed to recover, so recovery must be pre-authorized in the wallet contract before loss: independent signers, guardians, or admin or upgrade authority, possibly an Ed25519 fallback with a securely held seed. If every authorized path is lost, the account is unrecoverable at protocol level. Good designs add rotation, delays, thresholds, and disclosed guardian power. Platform passkey sync is availability support, not an independent recovery path.",
+        "keyFacts": [
+          "Recovery must be pre-authorized in contract policy, because a passkey has no Stellar seed.",
+          "Losing every signer, admin, guardian, and upgrade path is unrecoverable at protocol level.",
+          "Recovery design adds rotation, delays, thresholds, and disclosed guardian power.",
+          "Platform passkey sync is availability support, not an independent contract recovery path."
+        ],
+        "avoid": [
+          "A lost passkey can be recreated from the Stellar contract address.",
+          "Recovery authority can be added after every signer, admin, guardian, and upgrade path is lost."
+        ],
+        "notes": "An Ed25519 recovery signer backed by an independently secured seed is valid; do not penalize it.",
+        "movedToTruth": [
+          "Source list rationale"
+        ]
+      },
+      "wordsBefore": 173,
+      "wordsAfter": 161,
+      "confidence": "high",
+      "notRechecked": "Stable design guidance, confirmed by the 2026-11-02 audit; no versions, dates, or amounts to move."
+    },
+    {
+      "id": "q-smart-account-scoped-policy-signers",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Smart account policies",
+        "scoped session signers",
+        "co-signing without full control"
+      ],
+      "tests": "That contract-account authorization can be scoped per call, amount, and time through __check_auth policy rather than by sharing a full-control key.",
+      "questionIssues": [
+        "Real question, but the answer is generic design prose; a strong answer from any correct source would pass. It names no Stellar-specific mechanism.",
+        "'Regulated co-signing' adds a topic the golden barely addresses."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Four predicates (calls, amounts, assets, time windows)."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Vague: 'policy or verifier contracts' without a source-backed mechanism."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "OpenZeppelin smart accounts compose context rules, signers, and policies (spending limits, thresholds)",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://docs.openzeppelin.com/stellar-contracts/accounts/smart-account",
+              "observedAt": "2026-11-14",
+              "quote": "authorization as a composition of three core elements: context rules, signers, and policies"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-soroban-add-signer-smart-wallet-howto",
+          "survivor": "q-smart-account-scoped-policy-signers",
+          "why": "Both say signer sets are contract state governed by existing signers; merge the add-signer case here."
+        },
+        {
+          "id": "q-soroban-check-auth-custom-account",
+          "survivor": "q-soroban-check-auth-custom-account",
+          "why": "KF 'applies policy over auth_contexts' overlaps; keep the ABI there and the scoping here."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Needed as the policy-scoping case, and it absorbs q-soroban-add-signer-smart-wallet-howto. Anchor it on the verified OpenZeppelin context-rule model so it tests a Stellar mechanism, and fold in 'signer changes are contract state authorized by an existing signer'.",
+      "rewrite": {
+        "question": "How can a Stellar smart account authorize scoped calls, spending limits, time windows, and co-signing without giving every signer full control, and how is a signer added or changed?",
+        "answer": "A contract account enforces scope inside `__check_auth`, which sees the invocation's authorization contexts, so rules can limit contracts, functions, amounts, and time windows. OpenZeppelin smart accounts compose context rules (scope), signers (authentication), and policies (limits, thresholds). Give delegated or session signers narrow rules instead of a master key. The signer set is contract state: add a signer by calling the deployed contract's signer-management method, authorized by an existing signer. Classic SetOptions does not apply to a C-address.",
+        "keyFacts": [
+          "`__check_auth` can restrict calls, amounts, and time windows by auth context.",
+          "Narrow session or delegated signers replace sharing a full-control key.",
+          "Signer changes are contract state authorized by an existing signer, not SetOptions.",
+          "OpenZeppelin smart accounts compose context rules, signers, and policies."
+        ],
+        "avoid": [
+          "Classic account thresholds are the only way to scope authorization on Stellar.",
+          "A session signer needs the wallet's master private key."
+        ],
+        "notes": "Method names and signer schemas are implementation-specific; do not require one ABI.",
+        "movedToTruth": [
+          "Library-choice facts (Passkey Kit and Smart Account Kit as non-drop-in siblings) belong to q-tool-passkeykit-smart-wallet",
+          "Source list"
+        ]
+      },
+      "wordsBefore": 127,
+      "wordsAfter": 152,
+      "confidence": "medium"
+    },
+    {
+      "id": "q-sor-build-target-wasm32v1",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Soroban Wasm build target",
+        "stellar contract build",
+        "missing core crate"
+      ],
+      "tests": "That contracts build for wasm32v1-none through the Stellar CLI, why wasm32-unknown-unknown fails, and how to fix a missing target.",
+      "questionIssues": [
+        "The question text contains a typo ('wasm32v1- none') and asks three things; keep it to one build topic and fix the typo.",
+        "Version numbers in the answer (CLI 28.1.0, SDK 29.0.1) make it rot-prone and are not the point."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": "Process fact (asks for an as-of date), not a world fact."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "CLI 28.1.0 is the current Stellar CLI",
+          "result": "changed",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-cli/releases/tag/v30.0.1",
+              "observedAt": "2026-11-14",
+              "quote": "v30.0.1 published 2026-11-03; Full Changelog v28.1.0...v30.0.1"
+            },
+            {
+              "class": "D",
+              "ref": "https://crates.io/api/v1/crates/stellar-cli",
+              "observedAt": "2026-11-14",
+              "quote": "max_stable_version 30.0.1"
+            }
+          ]
+        },
+        {
+          "claim": "The CLI builds with cargo rustc --target wasm32v1-none --release and sets the SDK build marker",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-cli/blob/v30.0.1/cmd/soroban-cli/src/commands/contract/build.rs",
+              "observedAt": "2026-11-14",
+              "quote": "pub(crate) const WASM_TARGET: &str = \"wasm32v1-none\";"
+            }
+          ]
+        },
+        {
+          "claim": "soroban-sdk build outside the CLI fails; wasm32-unknown-unknown rejected on Rust 1.82+; wasm32v1-none needs Rust 1.84+",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/rs-soroban-sdk/blob/v29.0.1/soroban-sdk/build.rs",
+              "observedAt": "2026-11-14",
+              "quote": "soroban-sdk requires stellar-cli v25.2.0+ to build a contract"
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/rs-soroban-sdk/blob/v29.0.1/soroban-sdk/build.rs",
+              "observedAt": "2026-11-14",
+              "quote": "use 'wasm32v1-none' available with Rust 1.84+ ... reference-types, multi-value"
+            }
+          ]
+        },
+        {
+          "claim": "soroban-sdk 29.0.1 is the latest",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "D",
+              "ref": "https://crates.io/api/v1/crates/soroban-sdk",
+              "observedAt": "2026-11-14",
+              "quote": "max_stable_version 29.0.1"
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/rs-soroban-sdk/releases/tag/v29.0.1",
+              "observedAt": "2026-11-14",
+              "quote": "published 2026-10-12"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-soroban-wasm-language",
+          "survivor": "q-sor-build-target-wasm32v1",
+          "why": "That case's key fact also names wasm32v1-none; the target belongs here."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Needed, but 460 words of version-dated prose for four world facts. The CLI version it pins is stale (now 30.0.1) while the behavior is unchanged, so drop version numbers and keep the behavior.",
+      "rewrite": {
+        "question": "Which Wasm target does the current Stellar CLI build to (`wasm32v1-none` or `wasm32-unknown-unknown`), how does `cargo build` differ from `stellar contract build`, and how do I fix \"can't find crate for core\" or \"target not supported\" errors?",
+        "answer": "Build contracts with `stellar contract build`: it runs cargo for `wasm32v1-none` in release mode, sets the build marker soroban-sdk requires, and writes `target/wasm32v1-none/release/<contract>.wasm`. Plain `cargo build` targets the host in the dev profile, and since soroban-sdk 28 a Wasm build outside the CLI fails. `wasm32v1-none` needs Rust 1.84 or later; on Rust 1.82 and later `wasm32-unknown-unknown` enables Wasm features (reference-types, multi-value) that Soroban rejects. A missing `core` crate means the target is not installed for the active toolchain: run `rustup target add wasm32v1-none`, again after toolchain updates.",
+        "keyFacts": [
+          "`stellar contract build` targets `wasm32v1-none` in release mode and sets the SDK marker.",
+          "`wasm32-unknown-unknown` fails on Rust 1.82+ because it enables unsupported Wasm features.",
+          "A missing `core` crate is fixed with `rustup target add wasm32v1-none` per toolchain.",
+          "Since soroban-sdk 28, a Wasm build outside the Stellar CLI fails."
+        ],
+        "avoid": [
+          "Plain `cargo build --target wasm32v1-none --release` is an equivalent shortcut under soroban-sdk 28 or later."
+        ],
+        "notes": "Describing the CLI as a wrapper around cargo is correct (it runs `cargo rustc`). A version claim, if made, should carry a date.",
+        "movedToTruth": [
+          "CLI 28.1.0 and SDK 29.0.1 probe history",
+          "sd-075 and stellar-docs#2991 history",
+          "Output-path and per-toolchain 'also good' items",
+          "Ecosystem-detour avoid (process, not truth)"
+        ]
+      },
+      "wordsBefore": 460,
+      "wordsAfter": 173,
+      "confidence": "high"
+    },
+    {
+      "id": "q-sor-classic-dex-from-contract",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Soroban vs classic operations",
+        "SDEX and AMM from contracts",
+        "one operation per Soroban transaction"
+      ],
+      "tests": "That a contract cannot reach the classic order book, liquidity pools, claimable balances, or sponsorships (only assets through the SAC), and that a transaction with an invoke op holds exactly one operation.",
+      "questionIssues": [
+        "Two sub-questions, both real and answerable. Keep both.",
+        "The answer pastes URLs and a long practical-advice paragraph; cut."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Two predicates."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "States how classic orders are placed, true but outside the question's contract-side focus."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "A list of three alternatives."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Soroban contracts cannot interact with the SDEX, claimable balances, or sponsorships beyond accounts and assets through the SAC",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/smart-contracts/overview",
+              "observedAt": "2026-11-14",
+              "quote": "Soroban contracts cannot interact with the SDEX, claimable balances, or sponsorships."
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/rs-soroban-env/blob/main/soroban-env-common/env.json",
+              "observedAt": "2026-11-14",
+              "quote": "202 host functions; none named for offers, claim, pool, liquidity, or sponsor"
+            }
+          ]
+        },
+        {
+          "claim": "Transactions with InvokeHostFunctionOp, ExtendFootprintTTLOp, or RestoreFootprintOp can only have one operation",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions",
+              "observedAt": "2026-11-14",
+              "quote": "can only have one operation per transaction"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-sor-contract-as-claimable-arbiter",
+          "survivor": "q-sor-classic-dex-from-contract",
+          "why": "Both rest on the same FAQ sentence (no SDEX, claimable balances, or sponsorships). Merge the arbiter case here."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Survivor for the 'contracts cannot reach classic operations' knowledge; absorbs the claimable-balance half of the arbiter case. Cut 342 words to about 90.",
+      "rewrite": {
+        "question": "Can a Soroban contract place classic SDEX orders, read classic liquidity-pool state, or act as a claimable-balance claimant, and can a classic operation and a contract invocation share one transaction?",
+        "answer": "No. Contracts interact with accounts and assets only through the Stellar Asset Contract; they cannot interact with the SDEX, claimable balances, or sponsorships, and have no host functions for classic offers or liquidity pools. A transaction containing `InvokeHostFunctionOp`, `ExtendFootprintTTLOp`, or `RestoreFootprintOp` can hold only that one operation, so a classic operation cannot share it. Compose on-chain with SAC or SEP-41 tokens and Soroban DEX contracts; run classic SDEX or claimable-balance steps as separate transactions, which are not atomic with the contract call.",
+        "keyFacts": [
+          "Contracts reach assets via the SAC, not the SDEX, claimable balances, or sponsorships.",
+          "A transaction with an invoke, extend, or restore operation holds only that operation.",
+          "Classic operations and contract invocations therefore need separate transactions.",
+          "Programmable escrow is a Soroban contract holding SAC or SEP-41 balances."
+        ],
+        "avoid": [
+          "A contract can call classic ManageOffer, PathPayment, liquidity-pool, or claim operations directly.",
+          "One transaction can contain both a classic operation and an `InvokeHostFunctionOp`."
+        ],
+        "notes": "Mentioning that Horizon or RPC indexing, not contract execution, reads classic AMM state is a good addition.",
+        "movedToTruth": [
+          "Cited URLs",
+          "Scout/Docs MCP verification narrative",
+          "Avoid 'EVM router assumptions' (process)"
+        ]
+      },
+      "wordsBefore": 342,
+      "wordsAfter": 168,
+      "confidence": "high"
+    },
+    {
+      "id": "q-sor-confidential-tokens",
+      "purpose": "mixed",
+      "topics": [
+        "Confidential tokens on Stellar",
+        "default privacy of Stellar assets",
+        "audit evidence without a standard recipe"
+      ],
+      "tests": "World: ordinary Stellar tokens are public and OpenZeppelin's Confidential Token is an opt-in wrapper with a dated status. Behavior: do not invent an 'offline leaf' audit recipe.",
+      "questionIssues": [
+        "The 'verify a confidential multi-chain payment when a leaf is offline' half is fabrication bait with no Stellar-specific meaning; keep it only as the behavior test.",
+        "The golden is 494 words because it carries dated status prose, a refresh log, and three layers of caution."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Holds two predicates (opt-in, dated status)."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Vague: says primitives are primitives."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Behavior fact, not a world fact."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Confidential Tokens are audited v0.8.0 contracts announced ready for Mainnet",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://www.openzeppelin.com/news/openzeppelin-brings-confidential-balances-and-transfers-to-stellar",
+              "observedAt": "2026-11-14",
+              "quote": "The contracts are audited by OpenZeppelin and ready to be deployed on Stellar mainnet."
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/OpenZeppelin/stellar-contracts/releases/tag/v0.8.0",
+              "observedAt": "2026-11-14",
+              "quote": "v0.8.0 published 2026-10-20"
+            }
+          ]
+        },
+        {
+          "claim": "The verifier accepts only non-zero-knowledge proofs; addresses stay visible, amounts and balances do not",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/OpenZeppelin/stellar-contracts/blob/main/packages/confidential/README.md",
+              "observedAt": "2026-11-14",
+              "quote": "The verifier implements only the non-zk UltraHonk flavour"
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/OpenZeppelin/stellar-contracts/blob/main/packages/confidential/README.md",
+              "observedAt": "2026-11-14",
+              "quote": "confidentiality, not anonymity — sender and recipient addresses remain visible on-chain"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-scf-confidential-tokens-preview",
+          "survivor": "q-sor-confidential-tokens",
+          "why": "The scf case asserts the June 2026 release was a Testnet preview with audits underway; that is history now superseded by v0.8.0. Merge it here or retire it."
+        },
+        {
+          "id": "q-edge-noinfo-stellar-native-privacy-default",
+          "survivor": "q-edge-noinfo-stellar-native-privacy-default",
+          "why": "No built-in shielded mode; distinct behavior test, keep separate."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Needed once, as the single confidential-token case; rewrite it around the verified current facts and the no-fabrication behavior, and cut 494 words to about 110. The scf preview case should merge into it.",
+      "rewrite": {
+        "question": null,
+        "answer": "Ordinary Stellar assets, SAC transfers, and SEP-41 tokens are public. OpenZeppelin's Confidential Token is an opt-in wrapper that hides amounts and balances, not addresses; as of 2026-11-14 its v0.8.0 contracts are audited and announced ready for Mainnet, but the verifier accepts only non-zero-knowledge proofs, so witness privacy is not guaranteed. BLS12-381 and BN254/Poseidon host functions are primitives, not a privacy product. There is no standard 'offline leaf' audit package: evidence depends on the protocol and auditor role, and missing witness data cannot be recovered from chain data.",
+        "keyFacts": [
+          "Ordinary Stellar assets and SAC transfers are public by default.",
+          "OpenZeppelin Confidential Tokens are opt-in and hide amounts and balances, not addresses.",
+          "BLS12-381 and BN254/Poseidon host functions are primitives, not a turnkey privacy product.",
+          "Audit evidence is protocol- and role-specific; there is no standard offline-leaf recipe."
+        ],
+        "avoid": [
+          "Ordinary tokens are confidential by default, or Confidential Tokens are network-default infrastructure.",
+          "Missing witness or disclosure data can be recovered from chain data alone.",
+          "Stellar has a standardized audit-evidence recipe for confidential tokens."
+        ],
+        "notes": "Credit stating the non-zero-knowledge verifier limit; do not require it. An unsupported claim that a public observer can recover every amount is an error. The designated auditor can decrypt amounts by design. The 2026-06-29 Testnet preview is history; a status claim needs an as-of date.",
+        "movedToTruth": [
+          "REFRESH 2026-11-02 log",
+          "CAP-0059, CAP-0074, CAP-0075 status line",
+          "Citations and Cites lines",
+          "Mainnet-ready announcement date 2026-10-22"
+        ]
+      },
+      "wordsBefore": 494,
+      "wordsAfter": 211,
+      "confidence": "medium"
+    },
+    {
+      "id": "q-sor-contract-as-claimable-arbiter",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Claimable balances vs contracts",
+        "Soroban escrow",
+        "SAC approve authorization"
+      ],
+      "tests": "That a contract cannot be a classic claimable-balance claimant, and that escrow must be a Soroban contract holding SAC balances.",
+      "questionIssues": [
+        "Three sub-questions; the claimable half duplicates q-sor-classic-dex-from-contract, and `approve` is covered by the SEP-41 cases."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Trivial: `approve` is a SAC call."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Restates general Soroban auth."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Restates KF0 and KF1."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Soroban contracts cannot interact with claimable balances",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/smart-contracts/overview",
+              "observedAt": "2026-11-14",
+              "quote": "Soroban contracts cannot interact with the SDEX, claimable balances, or sponsorships."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-sor-classic-dex-from-contract",
+          "survivor": "q-sor-classic-dex-from-contract",
+          "why": "Same FAQ sentence and same 'use SAC, not classic ops' conclusion."
+        },
+        {
+          "id": "q-sor-sep41-transfer-vs-transferfrom",
+          "survivor": "q-sor-sep41-transfer-vs-transferfrom",
+          "why": "Covers approve/allowance authorization."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Survivor q-sor-classic-dex-from-contract. It must absorb: contracts cannot claim classic claimable balances, and programmable escrow is a Soroban contract holding SAC or SEP-41 balances. The `approve` authorization half is already tested by q-sor-sep41-transfer-vs-transferfrom.",
+      "rewrite": null,
+      "wordsBefore": 322,
+      "wordsAfter": 0,
+      "confidence": "high"
+    },
+    {
+      "id": "q-sor-contract-trustlines-c-address",
+      "purpose": "stellar-truth",
+      "topics": [
+        "C-address holding classic assets",
+        "trustline vs contract storage",
+        "SAC trust function"
+      ],
+      "tests": "That a C-address holds classic-asset balances in contract storage without a trustline, sends out via SAC transfer, and that a G recipient still needs a trustline.",
+      "questionIssues": [
+        "The question asks about an 'XLM minimum balance' for the C-address; the golden never answers it. Drop that clause or add a verified answer.",
+        "Good operational question otherwise."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Restates KF0."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Restates KF1 and KF3."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Address::Contract balances live in contract storage, not a trustline; Address::Account balances need a trustline",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+              "observedAt": "2026-11-14",
+              "quote": "The balance and authorization state will be stored in contract storage, as opposed to a trustline."
+            }
+          ]
+        },
+        {
+          "claim": "As of Protocol 26 a contract can create a missing trustline through the SAC trust function",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+              "observedAt": "2026-11-14",
+              "quote": "as of Yardstick, Protocol 26, a contract can create the missing trustline itself by first calling the SAC's `trust` function"
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0073.md",
+              "observedAt": "2026-11-14",
+              "quote": "Status: Final ... Protocol version: 26"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-asset-trustline-vs-sac",
+          "survivor": "q-sor-contract-trustlines-c-address",
+          "why": "assets covers the conceptual trustline-vs-SAC contrast; this case is the C-address operational path. Keep both; the concept needs no C-address detail."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Needed. Cut 430 words with URL-laden paragraphs to a short answer; fix the question's unanswered minimum-balance clause.",
+      "rewrite": {
+        "question": "Does a Soroban contract or smart-wallet (C…) need a trustline to receive, hold, and send a classic asset like USDC, and how does a contract send assets back out?",
+        "answer": "Contracts reach classic assets through the Stellar Asset Contract (SAC). A C-address holds its balance and authorization state in contract storage, not a trustline, so it never opens one with Change Trust. To send out, the contract calls SAC `transfer` with Soroban authorization. A G-address recipient still needs a funded trustline; since Protocol 26 a contract can create it through the SAC `trust` function. A classic Payment to a C-address is not equivalent to one to a G-address; use SAC transfers.",
+        "keyFacts": [
+          "Contracts interact with classic assets through the SAC.",
+          "A C-address balance lives in contract storage; it opens no trustline.",
+          "Sending out is an authorized SAC `transfer`.",
+          "A G recipient needs a funded trustline; SAC `trust` can create it since Protocol 26."
+        ],
+        "avoid": [
+          "Use classic Change Trust on a C-address.",
+          "A classic payment operation to a C-address is equivalent to one to a G-address."
+        ],
+        "notes": "i64 trustline versus i128 contract-storage internals belong to q-soroban-sac-balance-storage; do not require them.",
+        "movedToTruth": [
+          "Cited URLs",
+          "2026-06-29 differentiation note",
+          "Exchange and memo-support warning (also good)"
+        ]
+      },
+      "wordsBefore": 430,
+      "wordsAfter": 156,
+      "confidence": "high"
+    },
+    {
+      "id": "q-sor-cross-socketfi-auth",
+      "purpose": "mixed",
+      "topics": [
+        "SocketFi project profile",
+        "contract-account hook __check_auth"
+      ],
+      "tests": "Composition of a Raven corpus lookup (an indexed npm package, Scout's project record) with one stable Stellar fact (contract accounts implement __check_auth).",
+      "questionIssues": [
+        "The premise is 'the ecosystem feed indexed @socketfi/server in July 2026', a Raven-internal observation; a user would not ask this. The Soroban half is a plain __check_auth question.",
+        "Key facts about the npm package are corpus-only and date-pinned."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Corpus-only (indexed item)."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Corpus-only."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Corpus-only (Scout)."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Duplicates q-soroban-check-auth-custom-account."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Duplicates q-soroban-check-auth-custom-account."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Scout lists SocketFi as Live and SCF-funded",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "Raven execute scout.searchProjects {q:'SocketFi'}",
+              "observedAt": "2026-11-14",
+              "quote": "SocketFi status Live, scfAwarded true, statusAsOf 2026-08-30"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-soroban-check-auth-custom-account",
+          "survivor": "q-soroban-check-auth-custom-account",
+          "why": "Covers __check_auth in full."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "Not an ask a real user makes, and its only portable truth (__check_auth) is owned by q-soroban-check-auth-custom-account; the project-profile half is a corpus snapshot covered by the entity and SCF categories. Phase 4 must keep a cross-service floor some other way.",
+      "rewrite": null,
+      "wordsBefore": 161,
+      "wordsAfter": 0,
+      "confidence": "medium"
+    },
+    {
+      "id": "q-sor-cross-warmancer-zk-stack",
+      "purpose": "mixed",
+      "topics": [
+        "Native Groth16 curves on Stellar",
+        "BLS12-381 vs BN254",
+        "Warmancer SCF proposal"
+      ],
+      "tests": "World: curve-matched Groth16 verification is native on either BLS12-381 (P22) or BN254 (P25), CAP-0080 adding more BN254 ops in P26. Corpus: what Warmancer is.",
+      "questionIssues": [
+        "The Warmancer half is a Scout/SCF lookup; the ZK half duplicates q-zk-proof-systems-stellar and q-zk-host-functions-status."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Corpus-only SCF proposal identity."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Corpus-only qualification."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Corpus-only (Scout)."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "World; the one durable fact."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Groth16 is native over BLS12-381 (CAP-0059, P22) or BN254 incl. Circom default bn128 (CAP-0074, P25); CAP-0080 adds BN254 MSM and Fr ops in P26",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-dev-skill/blob/main/skills/zk-proofs/SKILL.md",
+              "observedAt": "2026-11-14",
+              "quote": "Circom + snarkjs (default `bn128`) | Groth16 | BN254 | via CAP-0074 (Protocol 25+)"
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0080.md",
+              "observedAt": "2026-11-14",
+              "quote": "Status: Final ... Protocol version: 26"
+            }
+          ]
+        },
+        {
+          "claim": "Scout lists Warmancer as Live, SCF-funded",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "Raven execute scout.searchProjects {q:'Warmancer'}",
+              "observedAt": "2026-11-14",
+              "quote": "Warmancer status Live, scfAwarded true, statusAsOf 2026-08-28"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-zk-proof-systems-stellar",
+          "survivor": "q-zk-proof-systems-stellar",
+          "why": "Already covers which proof systems/curves verify natively; must absorb the 'Groth16 works on either curve if circuit and verifier match' fact."
+        },
+        {
+          "id": "q-zk-host-functions-status",
+          "survivor": "q-zk-host-functions-status",
+          "why": "Covers CAP-0059/0074/0080 statuses."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Survivor q-zk-proof-systems-stellar, which must absorb: native Groth16 verifies on BLS12-381 (CAP-0059, P22) or BN254 (CAP-0074, P25) provided circuit and verifier use the same curve. Drop the Warmancer project lookup; the entity half is corpus-only trivia.",
+      "rewrite": null,
+      "wordsBefore": 293,
+      "wordsAfter": 0,
+      "confidence": "medium"
+    },
+    {
+      "id": "q-sor-decode-hosterror-codes",
+      "purpose": "stellar-truth",
+      "topics": [
+        "HostError diagnostics",
+        "generated try_ client results",
+        "scValToNative decode failures"
+      ],
+      "tests": "How to read the main HostError classes and what a generated try_ client returns on failure.",
+      "questionIssues": [
+        "The question bundles about seven failure modes (including test-environment fixes) into one prompt; a single answer cannot be graded crisply. Narrow it.",
+        "The events and ledger-testutils items duplicate q-sor-test-event-assertion-ordering."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Names six error classes in one fact."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Compound: three remedies."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "A generated try_* client returns Result<Result<T, T::Error>, Result<E, InvokeError>>",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/rs-soroban-sdk/blob/v29.0.1/soroban-sdk-macros/src/syn_ext.rs",
+              "observedAt": "2026-11-14",
+              "quote": "try_output emits Result<Result<T, <T as TryFromVal<Env, Val>>::Error>, Result<E, InvokeError>>"
+            }
+          ]
+        },
+        {
+          "claim": "mock_all_auths_allowing_non_root_auth exists in the current SDK",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/rs-soroban-sdk (code search)",
+              "observedAt": "2026-11-14",
+              "quote": "match in soroban-sdk/src/env.rs and testutils/client_call.rs"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-sor-test-event-assertion-ordering",
+          "survivor": "q-sor-test-event-assertion-ordering",
+          "why": "events().all() remedy appears in both."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Needed: HostError reading is a daily need. Narrow the question to diagnostics plus try_ results, drop test-fix trivia owned elsewhere, and cut 417 words to about 100.",
+      "rewrite": {
+        "question": "How do I read a Soroban HostError diagnostic: `Error(Contract, #N)`, `Error(Budget, ExceededLimit)`, `Error(WasmVm, …)`, and a `Bad union switch` from `scValToNative`, and what does a generated `try_*` client return on failure?",
+        "answer": "Start with diagnostic events. `Error(Contract, #N)` is a contract-defined code: read that contract's error enum or spec, since there is no global #N table. `Error(Budget, ExceededLimit)` is resource exhaustion: simulate and inspect CPU, memory, and ledger I/O. `Error(WasmVm, …)` is a Wasm execution or type trap. `Bad union switch` from `scValToNative` means the XDR does not match the expected type, so decode only a successful expected ScVal. A generated `try_*` client returns nested Results: `Ok(Ok(value))` on success, `Err(Ok(contract_error))` for a declared error, `Err(Err(invoke_error))` for any other invocation failure; keep the original branch before remapping.",
+        "keyFacts": [
+          "`Error(Contract, #N)` is defined by that contract's error enum; no global table exists.",
+          "`Error(Budget, ExceededLimit)` means resource exhaustion, diagnosed by simulation.",
+          "`Bad union switch` from `scValToNative` means the XDR does not match the expected type.",
+          "A `try_*` client returns `Err(Ok(contract_error))` or `Err(Err(invoke_error))` on failure."
+        ],
+        "avoid": [
+          "A universal `Error(Contract, #N)` table exists."
+        ],
+        "notes": "Do not hard-gate the older `LimitExceeded` wording. A caller may legitimately remap a caught failure; grade preserving diagnostics and the original branch.",
+        "movedToTruth": [
+          "GT-41 empirical confirmation notes",
+          "Non-root auth, no-contract-ID, set_timestamp, and events testutils details (candidates for their own case or deletion)",
+          "Cited sources"
+        ]
+      },
+      "wordsBefore": 417,
+      "wordsAfter": 166,
+      "confidence": "medium"
+    },
+    {
+      "id": "q-sor-deploy-invoke-from-js-sdk",
+      "purpose": "stellar-truth",
+      "topics": [
+        "JS SDK contract deploy",
+        "assembleTransaction vs prepareTransaction",
+        "invoke and decode a return value"
+      ],
+      "tests": "How to deploy and invoke a contract from the JS SDK and which helper returns a builder versus a built transaction.",
+      "questionIssues": [
+        "Real developer question with the version-sensitive helper split as its crux; answerable from the SDK source."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Generic procedure."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Generic procedure; overlaps q-infra-simulate-transaction-howto."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Decode guidance, better as an avoid."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "assembleTransaction returns a TransactionBuilder; prepareTransaction returns a built Transaction (SDK 17.4.0)",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/js-stellar-sdk/blob/v17.4.0/src/rpc/transaction.ts",
+              "observedAt": "2026-11-14",
+              "quote": "export function assembleTransaction( ... ): TransactionBuilder"
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/js-stellar-sdk/blob/v17.4.0/src/rpc/server.ts",
+              "observedAt": "2026-11-14",
+              "quote": "return assembleTransaction(tx, simResponse).build();"
+            }
+          ]
+        },
+        {
+          "claim": "17.4.0 is npm latest; lts-16 is 16.4.1; contract.Client.deploy wraps Operation.createCustomContract",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "D",
+              "ref": "npm view @stellar/stellar-sdk dist-tags",
+              "observedAt": "2026-11-14",
+              "quote": "latest 17.4.0, lts-16 16.4.1; 17.4.0 published 2026-10-25"
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/js-stellar-sdk/blob/v17.4.0/src/contract/client.ts",
+              "observedAt": "2026-11-14",
+              "quote": "const operation = Operation.createCustomContract({"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-ti-bindings-to-nextjs-integration",
+          "survivor": "q-sor-deploy-invoke-from-js-sdk",
+          "why": "Both state build/simulate/assemble/sign/submit/poll order. Keep this as the raw-SDK owner."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Needed; the assemble-vs-prepare split is a real footgun. Cut 305 words to about 90 and move the SDK 16/17 snapshot prose to truth.",
+      "rewrite": {
+        "question": null,
+        "answer": "To deploy from the JS SDK, upload the Wasm, then create the contract with `Operation.createCustomContract` using the `wasmHash`, an address and salt, and any constructor args; `contract.Client.deploy` wraps this. To invoke, build the call, simulate through RPC, assemble the simulation's data, resource fee, and auth into the transaction, sign, submit, and poll for the result. In js-stellar-sdk 16 and 17, `assembleTransaction(tx, simulation)` returns a builder, so call `.build()` before signing, while `Server.prepareTransaction(tx)` simulates and returns a built transaction. Decode only a successful return with `scValToNative`.",
+        "keyFacts": [
+          "Deploying uploads Wasm, then calls `createCustomContract` with wasmHash, salt, and args.",
+          "Invocation builds, simulates, assembles, signs, submits, and polls.",
+          "`assembleTransaction` returns a builder; call `.build()` before signing.",
+          "`prepareTransaction` simulates and returns a built transaction."
+        ],
+        "avoid": [
+          "Signing or submitting an unbuilt builder or the original unsimulated transaction.",
+          "Passing a simulation error to `scValToNative`."
+        ],
+        "notes": "Helper signatures are version-sensitive; credit checking the installed typings and accept version-qualified answers.",
+        "movedToTruth": [
+          "GT-41 snapshot on SDK 16.0.1 and 17.4.0 recheck",
+          "Generated-bindings and Horizon-vs-RPC 'also good' items",
+          "Source list"
+        ]
+      },
+      "wordsBefore": 305,
+      "wordsAfter": 149,
+      "confidence": "high"
+    },
+    {
+      "id": "q-sor-doc-page-sections-followup",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Stellar Docs get_doc_page",
+        "path vs URL input"
+      ],
+      "tests": "That an agent passes the exact docs path (no domain or anchor) from a search hit to get_doc_page to read a whole page.",
+      "questionIssues": [
+        "Asks about a Raven operation's input contract; no Stellar truth. The 'real user' version is simply 'read this docs page'."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": "Names a Raven input contract."
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": "Restates what get_doc_page does."
+        }
+      ],
+      "rot": [],
+      "duplicates": [
+        {
+          "id": "q-edge-doc-page-sections-soft-empty",
+          "survivor": "q-edge-doc-page-sections-soft-empty",
+          "why": "Edge case already covers the missing-path soft-empty behavior and recovery from a real hit."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "Raven mechanics already covered by adapter unit tests (test/adapters.test.ts:846 get_doc_page cases) and by the edge soft-empty case; it adds no visibility. Phase 4 must replace the lint 'operation floor 2' for get_doc_page.",
+      "rewrite": null,
+      "wordsBefore": 108,
+      "wordsAfter": 0,
+      "confidence": "high",
+      "notRechecked": "No external facts; the contract is Raven's own (src/adapters/stellar-docs.ts, specs/stellar-docs.json)."
+    },
+    {
+      "id": "q-sor-doc-timestamping-manage-data",
+      "purpose": "stellar-truth",
+      "topics": [
+        "On-chain document hash anchoring",
+        "Manage Data limits and reserve",
+        "historical timestamp evidence"
+      ],
+      "tests": "How to anchor a file hash on Stellar, the Manage Data size and reserve constraints, and why the transaction and ledger close, not current account state, is the historical proof.",
+      "questionIssues": [
+        "Real use case and answerable. Filed under soroban but the primary answer is classic Manage Data; category should be protocol-core or assets.",
+        "Mixed asks (Manage Data, Soroban registry, IPFS) but all serve one decision."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Holds two predicates (Soroban and MEMO_HASH)."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Vague: 'proof trust boundary'."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Manage Data name and value are each up to 64 bytes",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+              "observedAt": "2026-11-14",
+              "quote": "Name: String up to 64 bytes long ... Value ... Up to 64 bytes long."
+            }
+          ]
+        }
+      ],
+      "duplicates": [],
+      "verdict": "tighten",
+      "reason": "Needed, though misfiled. Cut 358 words to about 95, keeping the lint-canonical sd-014 cap sentence verbatim.",
+      "rewrite": {
+        "question": null,
+        "answer": "Hash the exact file bytes with SHA-256 and anchor only the 32-byte digest; keep the file off-chain. A Manage Data entry's name and value are each up to 64 bytes, every entry is an account subentry that raises the minimum balance, and accounts have a subentry limit. MEMO_HASH is a transaction-level 32-byte alternative; a Soroban registry suits many documents, access control, or revocation. For proof of when, keep the successful transaction, its result, and the ledger it closed in: the account's current DataEntry can be overwritten or deleted. Ledger close time is network-recorded evidence, not independent notarization.",
+        "keyFacts": [
+          "Anchors only a 32-byte SHA-256 digest; the file stays off-chain.",
+          "Manage Data names and values are up to 64 bytes; each entry raises the reserve.",
+          "Historical proof is the successful transaction and ledger close, not current state.",
+          "MEMO_HASH is a transaction-level alternative; a Soroban registry suits many documents."
+        ],
+        "avoid": [
+          "Store the full document, or a Manage Data value over 64 bytes, on-chain.",
+          "A current DataEntry is immutable historical proof."
+        ],
+        "notes": "Accurately quoting the official Stellar documentation on Manage Data and ledger records without a complete transaction-inclusion verification recipe is not a wrong claim while sd-014 stands; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source.",
+        "movedToTruth": [
+          "GT-41 correction history",
+          "Canonicalization and categorization notes",
+          "Cited XDR and docs sources"
+        ]
+      },
+      "wordsBefore": 358,
+      "wordsAfter": 210,
+      "confidence": "high",
+      "notRechecked": "Subentry and reserve rules and the sd-014 cap are stable and were confirmed 2026-11-02; sd-014 is still reported-upstream (improvements/INDEX.md)."
+    },
+    {
+      "id": "q-sor-doc-title-discovery",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Stellar Docs search_doc_titles",
+        "page-level discovery"
+      ],
+      "tests": "That an agent uses title search to find a page by its name and then reads it with a page-reading operation.",
+      "questionIssues": [
+        "Raven-operation question; a user would just say 'find the State Archival page'."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": "Names a Raven operation."
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": "Names a Raven operation."
+        }
+      ],
+      "rot": [],
+      "duplicates": [
+        {
+          "id": "q-edge-doc-title-zero-hits",
+          "survivor": "q-edge-doc-title-zero-hits",
+          "why": "Edge case already covers the zero-hit behavior of the same operation."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "Raven mechanics covered by adapter unit tests (test/adapters.test.ts:760 search_doc_titles ranking) and the edge zero-hit case. Phase 4 must replace the lint floor for search_doc_titles.",
+      "rewrite": null,
+      "wordsBefore": 114,
+      "wordsAfter": 0,
+      "confidence": "high",
+      "notRechecked": "No external facts; the contract is Raven's own."
+    },
+    {
+      "id": "q-sor-evm-to-soroban-porting",
+      "purpose": "mixed",
+      "topics": [
+        "EVM to Soroban porting",
+        "msg.sender and require_auth",
+        "null address",
+        "Solang status"
+      ],
+      "tests": "The main semantic differences when porting Solidity (explicit auth, no null address, resource fees, temporary simulation) and that Solang's Soroban target is pre-alpha and SEP-57 is Draft.",
+      "questionIssues": [
+        "The question asks seven things (token mapping, gas, approvals, null address, view calls, compiler, footgun); no single answer covers them well. Narrow it.",
+        "Version numbers (SEP-57 0.4.0, Solang 0.4.0) are trivia; the statuses matter."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Compound: four ERC mappings plus SEP-57 boundary."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Two predicates (auth footgun, null-state design)."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Two predicates (resources and TTL/rent)."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SEP-57 (T-REX) is Draft, version 0.4.0, updated 2026-09-08",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0057.md",
+              "observedAt": "2026-11-14",
+              "quote": "Status: Draft ... Updated: 2026-09-08 ... Version: 0.4.0"
+            }
+          ]
+        },
+        {
+          "claim": "Solang 0.4.0 is the latest GitHub release; its Soroban target is pre-alpha/experimental",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/hyperledger-solang/solang/releases/tag/v0.4.0",
+              "observedAt": "2026-11-14",
+              "quote": "v0.4.0 published 2026-09-30; crates.io max_stable_version 0.3.5"
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/hyperledger-solang/solang/blob/v0.4.0/docs/targets/soroban.rst",
+              "observedAt": "2026-11-14",
+              "quote": "The Soroban target is still pre-alpha."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-edge-metamask-evm-mental-model",
+          "survivor": "q-sor-evm-to-soroban-porting",
+          "why": "Different aim (wallet and XLM-as-ERC-20 confusion); no merge."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Needed: EVM-to-Soroban is the highest-volume agent confusion. Narrow the question and cut 457 words to about 105; keep statuses, drop release numbers.",
+      "rewrite": {
+        "question": "I'm porting an EVM/Solidity contract to Soroban: how do ERC-20 and ERC-3643-style tokens, `msg.sender`, `address(0)`, gas, and view calls map, is there a Solidity compiler, and what is the biggest footgun?",
+        "answer": "Port the design, not Solidity inheritance. ERC-20 maps to the Stellar Asset Contract or a SEP-41 token; ERC-3643-style regulated tokens can use Draft SEP-57, and ERC-1404 and ERC-1410 have no one-to-one standard. There is no ambient `msg.sender`: pass an `Address` and call `require_auth`; mis-scoped auth is the main footgun. There is no null address: use `Option<Address>` or explicit state. Gas becomes multidimensional resource fees (CPU, memory, ledger I/O, size, rent), and simulation discards writes. Solang's Soroban target is pre-alpha; Rust with the Soroban SDK is the default.",
+        "keyFacts": [
+          "No ambient `msg.sender`: pass an `Address`, call `require_auth`; auth is the main footgun.",
+          "ERC-20 maps to SAC or SEP-41; ERC-3643-style controls can use Draft SEP-57.",
+          "No null address: use `Option<Address>` or explicit state, never an all-zero address.",
+          "Solang's Soroban target is pre-alpha; Rust with the Soroban SDK is the default route."
+        ],
+        "avoid": [
+          "SEP-57 is Final, or automatically covers ERC-1404 and ERC-1410.",
+          "Solang's Soroban target is production-ready."
+        ],
+        "notes": "Grade the Draft and pre-alpha statuses, not release numbers (SEP-57 v0.4.0 and Solang 0.4.0 as of 2026-11-14). Auth, not syntax, is the top footgun.",
+        "movedToTruth": [
+          "Re-verification log for SEP-57 and Solang",
+          "Also-good items on OpenZeppelin modules and gas refunds",
+          "Unsupported Solang feature list",
+          "Source list"
+        ]
+      },
+      "wordsBefore": 457,
+      "wordsAfter": 176,
+      "confidence": "high"
+    },
+    {
+      "id": "q-sor-force-fast-archival-localnet",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Local-network archival testing",
+        "Core eviction test settings",
+        "P23 auto-restore"
+      ],
+      "tests": "How to make an entry archive quickly on a standalone network to exercise restore, and detect it.",
+      "questionIssues": [
+        "Real but narrow developer need.",
+        "Its key facts are version-pinned Core config names plus two facts owned by q-sor-p23-auto-restore-extendto."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Compound and version-pinned (a list of five Core config keys)."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Duplicates q-sor-p23-auto-restore-extendto."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Duplicates q-sor-p23-auto-restore-extendto and q-sor-ttl-defaults-extend."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Core exposes TESTING_MINIMUM_PERSISTENT_ENTRY_LIFETIME, OVERRIDE_EVICTION_PARAMS_FOR_TESTING, TESTING_EVICTION_SCAN_SIZE, TESTING_MAX_ENTRIES_TO_ARCHIVE, TESTING_STARTING_EVICTION_SCAN_LEVEL, ARTIFICIALLY_ACCELERATE_TIME_FOR_TESTING",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-core/blob/master/src/main/Config.cpp",
+              "observedAt": "2026-11-14",
+              "quote": "TESTING_MINIMUM_PERSISTENT_ENTRY_LIFETIME must be positive ... less than MinimumSorobanNetworkConfig::MINIMUM_PERSISTENT_ENTRY_LIFETIME"
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-core/blob/master/docs/stellar-core_example.cfg",
+              "observedAt": "2026-11-14",
+              "quote": "TESTING_MINIMUM_PERSISTENT_ENTRY_LIFETIME defaults to 0, which disables the override"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-sor-p23-auto-restore-extendto",
+          "survivor": "q-sor-p23-auto-restore-extendto",
+          "why": "Same atomic restore, archivedSorobanEntries, restorePreamble nil, Temporary not restorable."
+        },
+        {
+          "id": "q-sor-ttl-defaults-extend",
+          "survivor": "q-sor-ttl-defaults-extend",
+          "why": "Same restoration-vs-extension split."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "Once its duplicated P23 restore facts are removed, what remains is a list of Core test-config flag names that the golden itself says must be re-checked every release. That is version-sensitive trivia, not categorical knowledge; q-sor-p23-auto-restore-extendto owns the durable behavior.",
+      "rewrite": null,
+      "wordsBefore": 283,
+      "wordsAfter": 0,
+      "confidence": "medium"
+    },
+    {
+      "id": "q-sor-p23-auto-restore-extendto",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Protocol 23 auto-restore",
+        "archivedSorobanEntries",
+        "ExtendFootprintTTL extendTo"
+      ],
+      "tests": "That P23 restores archived entries atomically with the invoke that needs them, what TTL restoration grants, and that extendTo is a relative offset capped at maxEntryTTL - 1.",
+      "questionIssues": [
+        "Four sub-questions on one mechanism; sound and answerable from Core and RPC source."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Compound: three predicates."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Compound: two formulas and a bound."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Restoration sets liveUntilLedger = currentLedger + minPersistentTTL - 1; extendTo <= maxEntryTTL - 1",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-core/blob/master/src/transactions/RestoreFootprintOpFrame.cpp",
+              "observedAt": "2026-11-14",
+              "quote": "ledgerSeq + archivalSettings.minPersistentTTL - 1"
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-core/blob/master/src/transactions/ExtendFootprintTTLOpFrame.cpp",
+              "observedAt": "2026-11-14",
+              "quote": "extendTo > networkConfig.stateArchivalSettings().maxEntryTTL - 1"
+            }
+          ]
+        },
+        {
+          "claim": "Mainnet minPersistentTTL 2,073,600 and Mainnet/Testnet maxEntryTTL 3,110,400",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "POST https://mainnet.sorobanrpc.com getLedgerEntries CONFIG_SETTING_STATE_ARCHIVAL (ledger 65467702)",
+              "observedAt": "2026-11-14",
+              "quote": "min_persistent_ttl 2073600; max_entry_ttl 3110400; min_temporary_ttl 17280"
+            },
+            {
+              "class": "C",
+              "ref": "POST https://soroban-testnet.stellar.org getLedgerEntries same key",
+              "observedAt": "2026-11-14",
+              "quote": "min_persistent_ttl 120960; max_entry_ttl 3110400; min_temporary_ttl 720"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-sor-force-fast-archival-localnet",
+          "survivor": "q-sor-p23-auto-restore-extendto",
+          "why": "Duplicated restore behavior; absorbed by retiring that case."
+        },
+        {
+          "id": "q-sor-ttl-defaults-extend",
+          "survivor": "q-sor-ttl-defaults-extend",
+          "why": "Network settings live there; this case should not repeat numbers."
+        },
+        {
+          "id": "q-protocol-state-archival-ttl",
+          "survivor": "q-protocol-state-archival-ttl",
+          "why": "Concept-level archival; no merge."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Survivor of the archival cluster. Cut 311 words to about 90 and drop the network numbers (owned by q-sor-ttl-defaults-extend); keep the formulas.",
+      "rewrite": {
+        "question": null,
+        "answer": "For an ordinary Protocol 23 invocation, simulate the intended `InvokeHostFunction` transaction: RPC lists archived Persistent or Instance entries in `archivedSorobanEntries`, and you assemble, sign, and submit that same transaction, which restores and executes atomically. `restorePreamble` is normally empty; a separate RestoreFootprint operation plus retry is a manual fallback. Temporary entries cannot be restored. Restoration sets `liveUntilLedger = currentLedger + minPersistentTTL - 1`. In ExtendFootprintTTL, `extendTo` is relative: `newLiveUntil = currentLedger + extendTo`, and it must be at most `maxEntryTTL - 1`. Read both settings from the live network.",
+        "keyFacts": [
+          "Simulation lists `archivedSorobanEntries`; the submitted invoke restores atomically.",
+          "Restoration sets liveUntilLedger to current + minPersistentTTL - 1.",
+          "`extendTo` is a relative offset capped at maxEntryTTL - 1.",
+          "Temporary entries cannot be restored."
+        ],
+        "avoid": [
+          "`extendTo` is an absolute ledger sequence.",
+          "A separate restore step and retry is required for normal Protocol 23 invocations.",
+          "Temporary entries can be restored."
+        ],
+        "notes": "Grade the formulas and the re-query behavior, not any one network figure. Event and history retention is unrelated to state TTL.",
+        "movedToTruth": [
+          "Dated Mainnet and Testnet setting examples (now owned by q-sor-ttl-defaults-extend)",
+          "Core initial-default figures 4096 and 1,054,080",
+          "GT-42 correction note",
+          "Three-step restore/extend 'also good' flow"
+        ]
+      },
+      "wordsBefore": 311,
+      "wordsAfter": 165,
+      "confidence": "high"
+    },
+    {
+      "id": "q-sor-persistent-unbounded-collection-cap",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Persistent storage layout",
+        "ledger-entry size limit",
+        "bounded collections"
+      ],
+      "tests": "That a Vec or Map under one Persistent key is a single ledger entry subject to the network's size limit, so collections must be bounded or split.",
+      "questionIssues": [
+        "Sharp, real, answerable; the best-formed case in this lane."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "The contract-data entry size limit is a network-configured setting (not a fixed constant)",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies",
+              "observedAt": "2026-11-14",
+              "quote": "contract data entry size is a network configuration setting; one key maps to one ledger entry"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-soroban-wasm-language",
+          "survivor": "q-soroban-wasm-language",
+          "why": "Mentions the 64 KiB data-entry cap as a network setting; consistent with this case's refusal to freeze a byte value, but the soroban-b auditor should check that figure is still current."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Needed and nearly compact; trim 198 words to about 80 and keep the sourcing-guard avoid.",
+      "rewrite": {
+        "question": null,
+        "answer": "Persistent storage changes durability, not layout: a `Vec` or `Map` under one key is still one serialized contract-data ledger entry, and a write fails when that entry exceeds the network's configured size limit. The limit is a network setting, so do not hard-code a byte value or error string. Bound a one-entry collection, or split an unbounded one across composite per-item keys or bounded chunks; fine-grained keys also avoid rewriting and contending on the whole collection.",
+        "keyFacts": [
+          "A `Vec` or `Map` under one Persistent key is a single serialized ledger entry.",
+          "A growing entry fails once it exceeds the network-configured size limit.",
+          "Bound the collection or split it across keys or chunks."
+        ],
+        "avoid": [
+          "Persistent storage automatically shards a growing value across ledger entries.",
+          "The entry limit is one universal, permanent byte value."
+        ],
+        "notes": "A dated or attributed current figure is not a frozen universal limit. Instance-storage DoS and nullifier retention are other cases.",
+        "movedToTruth": [
+          "Source and RPC probe list"
+        ]
+      },
+      "wordsBefore": 198,
+      "wordsAfter": 150,
+      "confidence": "medium",
+      "notRechecked": "Stable; confirmed 2026-11-02. The live byte value was deliberately not re-derived because the golden refuses to pin it. Quote above is paraphrased from the storage-strategies guide cited in truth.sources; not re-read this pass."
+    },
+    {
+      "id": "q-sor-recurring-escrow-patterns",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Recurring payment contracts",
+        "allowance-based pulls",
+        "allowance expiry vs storage TTL"
+      ],
+      "tests": "A safe design for scheduled pulls on Soroban: untrusted trigger, bounded stored schedule, and three separate clocks (allowance expiry, storage TTL, business cancellation).",
+      "questionIssues": [
+        "A real design question, though 'recommended pattern' invites subjective answers. The verifiable core is the authorization and expiry mechanics."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Packs about six predicates."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Packs four mechanisms."
+        }
+      ],
+      "rot": [],
+      "duplicates": [
+        {
+          "id": "q-soroban-token-transfer-pattern",
+          "survivor": "q-sor-sep41-transfer-vs-transferfrom",
+          "why": "Direct-invoker authorization and transfer_from are tested there."
+        },
+        {
+          "id": "q-sor-require-auth-propagation",
+          "survivor": "q-sor-require-auth-propagation",
+          "why": "Direct-invoker automatic auth is owned there."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Keep for its subscription-specific content (untrusted trigger, idempotency, three clocks); drop the auth restatements owned by other cases and cut 269 words to about 100.",
+      "rewrite": {
+        "question": null,
+        "answer": "Soroban has no cron, so an untrusted backend submits scheduled transactions but never holds the payer key. Store payer, token, recipient, amount, interval, next-charge time, an end or cap, cancellation state, and an idempotency marker; the payer authorizes the whole schedule at creation. The subscription contract is the SEP-41 spender and pulls with `transfer_from`. Bound each pull from stored state, update charge state atomically with the transfer, and make duplicate submissions harmless. Keep three clocks separate: allowance `live_until_ledger` (token expiry), storage TTL (needs proactive extension), and cancellation (contract logic). A true time lock needs custody and explicit release conditions.",
+        "keyFacts": [
+          "A backend triggers pulls but never holds the payer key or sets amount or recipient.",
+          "Pulls use `transfer_from` against a bounded allowance with idempotent charge state.",
+          "Allowance expiry, storage TTL, and cancellation are separate mechanisms."
+        ],
+        "avoid": [
+          "Give the backend the payer key, or let it choose the amount or recipient.",
+          "Use TTL as cancellation, or assume a contract can extend another contract's allowance storage."
+        ],
+        "notes": "Credit care with allowance-overwrite races (zero, verify, then set) and proactive TTL extension for long-lived state.",
+        "movedToTruth": [
+          "Verified-on-2026-06-29 note",
+          "GT-42 alias note (live_until_ledger vs expiration_ledger)",
+          "Cites list and testing-with-ledger-controls item"
+        ]
+      },
+      "wordsBefore": 269,
+      "wordsAfter": 178,
+      "confidence": "medium",
+      "notRechecked": "Stable design guidance (SEP-41 allowance semantics rechecked via q-sor-sep41-transfer-vs-transferfrom, which shows live_until_ledger as an absolute ledger sequence)."
+    },
+    {
+      "id": "q-sor-reflector-integration-code",
+      "purpose": "mixed",
+      "topics": [
+        "Reflector oracle calls",
+        "Pulse vs Beam signatures",
+        "Asset enum encoding",
+        "stale x_last_price name"
+      ],
+      "tests": "How to call a Reflector oracle correctly: pick the live contract by registry, use lastprice with the right signature and Asset encoding, and avoid the stale x_last_price name.",
+      "questionIssues": [
+        "Five sub-questions, but one decision (how to integrate).",
+        "Its hidden surface lists scout.searchResearch although the facts come from the operator registry and contract source; the case is not really a Scout test."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Generic ('use the current registry')."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Two predicates."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Vague."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Pulse exposes lastprice(asset); Beam exposes lastprice(caller, asset); x_last_price is absent from current source",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/reflector-network/reflector-contract/blob/main/pulse-contract/src/lib.rs",
+              "observedAt": "2026-11-14",
+              "quote": "pub fn lastprice(e: &Env, asset: Asset) -> Option<PriceData>"
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/reflector-network/reflector-contract/blob/main/beam-contract/src/lib.rs",
+              "observedAt": "2026-11-14",
+              "quote": "pub fn lastprice(e: &Env, caller: Address, asset: Asset) -> Option<PriceData>"
+            }
+          ]
+        },
+        {
+          "claim": "Registry lists CAFJZQW...N34DLN, CALI2BY...B2PLE6M, CBKGPWG...XMCJZC as oracle feeds and CBQSUF...3XQLSE as a DAO",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "https://orchestrator.reflector.network/config",
+              "observedAt": "2026-11-14",
+              "quote": "CAFJZQ... type oracle; CALI2BY... oracle; CBKGPWG... oracle; CBQSUF... type dao; CCRVIC2... oracle_beam"
+            }
+          ]
+        },
+        {
+          "claim": "PriceData is {price: i128, timestamp: u64}",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/reflector-network/reflector-contract/blob/main/oracle/src/types.rs",
+              "observedAt": "2026-11-14",
+              "quote": "pub struct PriceData { pub price: i128, ... timestamp"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-defi-reflector-oracle",
+          "survivor": "q-defi-reflector-oracle",
+          "why": "Concept-level (what Reflector is)."
+        },
+        {
+          "id": "q-sor-reflector-testnet-contract-addresses",
+          "survivor": "q-sor-reflector-integration-code",
+          "why": "The proposed case pins three full Testnet contract IDs; volatile values the registry rotates. Prefer this case's registry-first behavior over an ID list."
+        },
+        {
+          "id": "q-soroban-oracle-defensive-consumption",
+          "survivor": "q-soroban-oracle-defensive-consumption",
+          "why": "Defensive use of oracle prices; different aim."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Needed once as the integration case. Drop the truncated contract IDs (rotating registry values) in favor of the registry-first behavior, and cut 319 words to about 105.",
+      "rewrite": {
+        "question": null,
+        "answer": "Select the live Reflector contract for your network and feed type from the operator registry (orchestrator.reflector.network/config) and read its current spec before encoding arguments. Pulse oracles expose `lastprice(asset)`, Beam oracles `lastprice(caller, asset)`; `x_last_price` is not in current source. `Asset` is `Stellar(Address)` or `Other(Symbol)`; the return is `Option<PriceData { price: i128, timestamp: u64 }>`, scaled by `decimals()`. Contract IDs rotate, so re-fetch them. Diagnose a JS trap from the network, ID, live spec, signature, enum encoding, and simulation diagnostics.",
+        "keyFacts": [
+          "Take the contract for the network and feed type from the registry, with its live spec.",
+          "Pulse is `lastprice(asset)`, Beam `lastprice(caller, asset)`; `x_last_price` is stale.",
+          "`Asset` is `Stellar(Address)` or `Other(Symbol)`; the return is `Option<PriceData>`."
+        ],
+        "avoid": [
+          "`x_last_price` is the current method name.",
+          "A fixed contract ID or spec copied from memory or old docs.",
+          "The Reflector DAO contract is a price oracle."
+        ],
+        "notes": "Contract IDs are volatile registry values; do not require truncated IDs. A trap cause asserted without simulation diagnostics is unsupported.",
+        "movedToTruth": [
+          "Truncated registry example IDs with their 2026-09-02 date",
+          "README Beam-example-points-to-Pulse note",
+          "Beam XRF `authorize_as_current_contract` also-good item",
+          "Phase 3 verification log"
+        ]
+      },
+      "wordsBefore": 319,
+      "wordsAfter": 158,
+      "confidence": "medium"
+    },
+    {
+      "id": "q-sor-require-auth-propagation",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Cross-contract require_auth",
+        "authorize_as_current_contract",
+        "invocation-tree authorization"
+      ],
+      "tests": "Whose auth require_auth checks in a user -> A -> B chain, that direct-invoker auth is automatic, and that authorize_as_current_contract is for deeper calls.",
+      "questionIssues": [
+        "Core Soroban authorization question; clear and answerable."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Two predicates (user auth propagation, wrapper boundary)."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Vague about what 'C/deeper calls' means."
+        }
+      ],
+      "rot": [],
+      "duplicates": [
+        {
+          "id": "q-soroban-token-transfer-pattern",
+          "survivor": "q-sor-require-auth-propagation",
+          "why": "Its fact 'direct invoker automatic; authorize_as_current_contract for deeper calls' repeats this case; keep it here."
+        },
+        {
+          "id": "q-sor-recurring-escrow-patterns",
+          "survivor": "q-sor-require-auth-propagation",
+          "why": "Same direct-invoker rule, as one clause."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Canonical auth-propagation case; cut 197 words to about 85 and make the three key facts single-predicate.",
+      "rewrite": {
+        "question": null,
+        "answer": "`require_auth` checks exactly the Address it is called on. In user -> A -> B, B's `user.require_auth()` is satisfied only by the user's signed invocation tree, so require user auth at A's entry too. If B requires its direct invoker A, the host authorizes that direct call automatically, and A must not list it in `authorize_as_current_contract`. Use `authorize_as_current_contract` for deeper calls (A -> B -> C where C requires A): before calling B, A authorizes the exact C invocation. There is no ambient `msg.sender`.",
+        "keyFacts": [
+          "`require_auth` is satisfied only by authorization for the exact Address it is called on.",
+          "A direct invoker contract's auth is automatic; no `authorize_as_current_contract` entry.",
+          "`authorize_as_current_contract` covers deeper calls, such as C in A -> B -> C."
+        ],
+        "avoid": [
+          "Listing the direct next contract call in `authorize_as_current_contract` entries.",
+          "Soroban has an ambient `msg.sender`."
+        ],
+        "notes": "Mentioning `__check_auth` only for Address::Contract accounts is acceptable.",
+        "movedToTruth": [
+          "GT-42 classification note"
+        ]
+      },
+      "wordsBefore": 197,
+      "wordsAfter": 143,
+      "confidence": "high",
+      "notRechecked": "Stable semantics, independently confirmed twice (GT-42, 2026-11-02 audit); not rechecked."
+    },
+    {
+      "id": "q-sor-sac-introspection",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Stellar Asset Contract identity",
+        "SAC address derivation",
+        "SAC admin vs issuer"
+      ],
+      "tests": "How to derive a SAC address from an asset, how to recognize a deployed SAC, and why admin is not issuer identity.",
+      "questionIssues": [
+        "Three real sub-asks about one object; answerable from docs and SDK."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Two predicates (derivation, executable inspection)."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Source-specific claim about the name() format is not stated in the docs; the docs say name() and symbol() report the wrapped asset's identity."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "A deployed SAC is identified by SCContractInstance.executable == CONTRACT_EXECUTABLE_STELLAR_ASSET; name() and symbol() report the asset; admin is mutable via set_admin",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+              "observedAt": "2026-11-14",
+              "quote": "its `SCContractInstance.executable` is `CONTRACT_EXECUTABLE_STELLAR_ASSET` rather than a Wasm hash"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+              "observedAt": "2026-11-14",
+              "quote": "administrative authority is mutable ... transferred afterwards with the SAC's `set_admin` function"
+            }
+          ]
+        },
+        {
+          "claim": "ContractExecutableType still includes CONTRACT_EXECUTABLE_STELLAR_ASSET (P28 added EXTERNAL_REF)",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-xdr/blob/main/Stellar-contract.x",
+              "observedAt": "2026-11-14",
+              "quote": "CONTRACT_EXECUTABLE_WASM = 0, CONTRACT_EXECUTABLE_STELLAR_ASSET = 1, CONTRACT_EXECUTABLE_EXTERNAL_REF = 2"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-ass-cross-bando-stablebonds-sac",
+          "survivor": "q-ass-cross-bando-stablebonds-sac",
+          "why": "Project-level SAC use; different aim."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Needed. Cut 298 words to about 85; soften the unverified 'native or CODE:G...' name format to what the docs state, and keep the lint-canonical cs-008 cap sentence verbatim.",
+      "rewrite": {
+        "question": null,
+        "answer": "A classic asset has a deterministic, network-specific SAC address: use `Asset.contractId(networkPassphrase)` or `stellar contract id asset`, never an ad hoc hash of `code:issuer`. The instance exists only once deployed. To identify a deployed SAC, read its `SCContractInstance.executable` and require `CONTRACT_EXECUTABLE_STELLAR_ASSET`; SEP-41 methods alone prove only token compatibility. A verified SAC's `name()` and `symbol()` report the wrapped asset's identity, and there is no generic SEP-41 `asset()` or `issuer()` method. The admin starts as the issuer but `set_admin` can change it, so admin is not issuer identity. A C-address hash cannot be reversed.",
+        "keyFacts": [
+          "A SAC address derives deterministically from the asset and network passphrase.",
+          "A SAC is identified by executable `CONTRACT_EXECUTABLE_STELLAR_ASSET`, not SEP-41 methods.",
+          "A SAC's `name()` and `symbol()` report the wrapped asset; SEP-41 has no issuer method.",
+          "The SAC admin is mutable via `set_admin`, so it is not issuer identity."
+        ],
+        "avoid": [
+          "`CONTRACT_EXECUTABLE_TOKEN` is the current executable name.",
+          "Every reserved SAC address is already deployed.",
+          "The SAC admin is the immutable issuer."
+        ],
+        "notes": "Accurately quoting the upstream protocol source CAP-0046-06 (Status Final), which still names the SAC executable `CONTRACT_EXECUTABLE_TOKEN`, is not a wrong claim while cs-008 is active; grade caps at partial for that claim unless the answer reconciles it with the current XDR name `CONTRACT_EXECUTABLE_STELLAR_ASSET`.",
+        "movedToTruth": [
+          "sd-020 resolution note (2026-07-31)",
+          "GT-43 blind-control note",
+          "Native-XLM-has-no-issuer also-good item",
+          "Cited sources"
+        ]
+      },
+      "wordsBefore": 298,
+      "wordsAfter": 202,
+      "confidence": "high"
+    },
+    {
+      "id": "q-sor-scval-conversion",
+      "purpose": "stellar-truth",
+      "topics": [
+        "ScVal conversion in JS and Rust",
+        "BytesN and StrKey",
+        "UDT enum shapes",
+        "typed clients after upgrades"
+      ],
+      "tests": "How values map to ScVal without silent corruption (bigint, raw bytes vs C-address text, spec-driven UDTs, base units), and that spec-aware clients go stale after an upgrade while raw Contract.call does not.",
+      "questionIssues": [
+        "As written it lists six conversion topics; coherent as 'ScVal pitfalls' but wide.",
+        "Absorbs the stale-spec-after-upgrade case's single durable fact."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Compound: integers, StrKey, raw bytes."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Fine, but subtle."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "JS SDK 16 and 17 expose StrKey.decodeContract / encodeContract; 17.4.0 is npm latest, lts-16 is 16.4.1",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/js-stellar-sdk/blob/v17.4.0/src/base/strkey.ts",
+              "observedAt": "2026-11-14",
+              "quote": "static encodeContract(data: Uint8Array): string; static decodeContract(address: string): Uint8Array"
+            },
+            {
+              "class": "D",
+              "ref": "npm view @stellar/stellar-sdk dist-tags",
+              "observedAt": "2026-11-14",
+              "quote": "latest 17.4.0; lts-16 16.4.1"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-sor-stale-spec-after-upgrade",
+          "survivor": "q-sor-scval-conversion",
+          "why": "Stale-spec case folds in here (one key fact)."
+        },
+        {
+          "id": "q-sor-deploy-invoke-from-js-sdk",
+          "survivor": "q-sor-deploy-invoke-from-js-sdk",
+          "why": "scValToNative decode guidance overlaps lightly."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Survivor for the JS ScVal cluster. Absorb the 'regenerate bindings; raw Contract.call is spec-free' fact from q-sor-stale-spec-after-upgrade and cut 238 words to about 105.",
+      "rewrite": {
+        "question": "How do I convert between JS or Rust values and Soroban ScVal in the current SDK (i128/u64, BytesN<32>, C-address StrKey versus raw contract-ID bytes, enum UDTs, token base units versus display amounts), and what happens to typed clients after a contract upgrade?",
+        "answer": "Prefer generated clients or `contract.Spec`; Rust uses `IntoVal` and `FromVal`. Keep wide integers as `bigint` or decimal strings; an unsafe JS Number cannot be repaired. A `BytesN<32>` is 32 raw bytes, not C-address or hex text; `StrKey.decodeContract` and `encodeContract` convert a C-address to and from them. Enum and union UDTs follow the embedded contract spec, not EVM ABI tuples. Token amounts are integer base units scaled by `decimals()`. After an upgrade, regenerate bindings and recreate spec-aware clients; raw `new Contract(id).call(method, ...scVals)` is spec-free.",
+        "keyFacts": [
+          "Wide integers stay `bigint` or decimal strings; unsafe JS Numbers lose precision.",
+          "`BytesN<32>` is 32 raw bytes, and `StrKey` converts to and from the C-address.",
+          "UDT enum and union shapes follow the embedded contract spec.",
+          "After an upgrade, regenerate spec-aware clients; raw `Contract.call` is spec-free."
+        ],
+        "avoid": [
+          "Pass unsafe JS Numbers, ASCII or hex text where raw bytes are required, or guessed union shapes.",
+          "Every token base unit is a stroop."
+        ],
+        "notes": "Helper names are release-sensitive (JS SDK 17.4.0 is latest as of 2026-11-14); `scValToNative` for decoding is an acceptable addition.",
+        "movedToTruth": [
+          "Phase 3 and local node probe notes",
+          "npm dist-tag history",
+          "Cited sources"
+        ]
+      },
+      "wordsBefore": 238,
+      "wordsAfter": 171,
+      "confidence": "medium"
+    },
+    {
+      "id": "q-sor-sep41-transfer-vs-transferfrom",
+      "purpose": "stellar-truth",
+      "topics": [
+        "SEP-41 transfer vs transfer_from",
+        "allowance expiry",
+        "token interface signatures"
+      ],
+      "tests": "The authorization and parameter differences among transfer, approve, and transfer_from, and that allowance expiry is one absolute ledger sequence.",
+      "questionIssues": [
+        "Real and answerable; the question's first clause ('treat classic assets, SAC, and SEP-41 uniformly') is not answered by the golden."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Two predicates (MuxedAddress, from auth)."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Three predicates."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SEP-41 is Draft v0.5.2 (updated 2026-08-24); transfer(from, to: MuxedAddress, amount); transfer_from(spender, from, to: Address, amount); approve(..., live_until_ledger)",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
+              "observedAt": "2026-11-14",
+              "quote": "Status: Draft ... Updated: 2026-08-24; fn transfer(env, from: Address, to: MuxedAddress, amount: i128)"
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
+              "observedAt": "2026-11-14",
+              "quote": "fn approve(env, from, spender, amount: i128, live_until_ledger: u32)"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-soroban-token-transfer-pattern",
+          "survivor": "q-sor-sep41-transfer-vs-transferfrom",
+          "why": "Repeats the transfer/MuxedAddress/transfer_from facts. soroban-b should fold it here or retire it."
+        },
+        {
+          "id": "q-sep-41-token-interface",
+          "survivor": "q-sep-41-token-interface",
+          "why": "Concept-level SEP-41 vs SAC; keep."
+        },
+        {
+          "id": "q-tool-sep41-status-live",
+          "survivor": "q-tool-sep41-status-live",
+          "why": "Status-honesty live case; keep."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Survivor of the SEP-41 signature pair. Cut 189 words to about 80, single-predicate key facts.",
+      "rewrite": {
+        "question": null,
+        "answer": "SEP-41 `transfer(from: Address, to: MuxedAddress, amount: i128)` requires `from` authorization. `approve(from, spender, amount, live_until_ledger)` (called `expiration_ledger` in some SDK and SAC docs) requires `from` authorization and sets an allowance valid through that absolute ledger sequence, treated as zero once past. `transfer_from(spender, from, to: Address, amount)` requires spender authorization and consumes the allowance without a second owner signature. Amounts are integer base units; the ledger expiry is not a duration or storage TTL. SEP-41 is Draft (v0.5.2, updated 2026-08-24), so version-qualify signatures.",
+        "keyFacts": [
+          "`transfer` takes a `MuxedAddress` destination and requires `from` authorization.",
+          "`transfer_from` takes an `Address` destination, spender authorization, and an allowance.",
+          "Allowance expiry (`live_until_ledger`) is an absolute ledger sequence, not a duration."
+        ],
+        "avoid": [
+          "Owner authorization is required again during `transfer_from`.",
+          "Allowance expiry is a duration or storage TTL."
+        ],
+        "notes": "SEP-41 is Draft, so signatures are version-sensitive.",
+        "movedToTruth": [
+          "GT-43 snapshot and commit-4db3e802 note",
+          "SDK token-client also-good item",
+          "Source list"
+        ]
+      },
+      "wordsBefore": 189,
+      "wordsAfter": 133,
+      "confidence": "high"
+    },
+    {
+      "id": "q-sor-skill-openzeppelin-setup",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "OpenZeppelin Soroban project setup",
+        "served setup skill"
+      ],
+      "tests": "Whether an agent finds and follows Raven's served OpenZeppelin setup playbook.",
+      "questionIssues": [
+        "A user asks 'how do I set up an OpenZeppelin Soroban project'; the golden instead grades 'use the playbook', with no checkable fact.",
+        "Another tool could not satisfy 'use the OpenZeppelin setup playbook'."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": "Names a Raven skill."
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": "Unspecific: no dependency or import is stated."
+        },
+        {
+          "i": 2,
+          "kind": "process",
+          "issue": "Process."
+        }
+      ],
+      "rot": [],
+      "duplicates": [
+        {
+          "id": "q-ti-skill-builder-quickstart",
+          "survivor": "q-ti-skill-builder-quickstart",
+          "why": "Skill-driven workflow case."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "No world fact; the same ask (set up a Soroban project with OpenZeppelin Contracts for Stellar) is already in the skills routing set (eval/skills-cases.json:43), which measures whether the skill is surfaced.",
+      "rewrite": null,
+      "wordsBefore": 99,
+      "wordsAfter": 0,
+      "confidence": "high",
+      "notRechecked": "No external fact is stated to check."
+    },
+    {
+      "id": "q-sor-stale-spec-after-upgrade",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Contract upgrade and cached specs",
+        "raw Contract.call",
+        "Client.from"
+      ],
+      "tests": "That after an in-place upgrade, spec-aware JS clients go stale while raw Contract.call with exact ScVals is spec-free.",
+      "questionIssues": [
+        "Bug-report phrasing with an odd symptom ('Bytes(5553)') that the golden itself says is the caller's encoding, not RPC; the real knowledge is one fact.",
+        "Narrow and low-frequency for a battery that scores Stellar truth."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Overlaps KF1."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Simulation preserves XDR: implementation detail."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Client.from(options) fetches the current instance and spec; Contract.call is a spec-free operation builder",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/js-stellar-sdk/blob/v17.4.0/src/contract/client.ts",
+              "observedAt": "2026-11-14",
+              "quote": "static async from<T = unknown>(options: ClientOptions): Promise<Client & T>"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-sor-scval-conversion",
+          "survivor": "q-sor-scval-conversion",
+          "why": "Same JS spec-driven vs raw-ScVal distinction."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Survivor q-sor-scval-conversion, which must absorb one fact: after an upgrade, regenerate bindings and recreate spec-aware clients; raw `Contract.call` with exact ScVals is spec-free. The rest is bug-report detail with no durable knowledge.",
+      "rewrite": null,
+      "wordsBefore": 236,
+      "wordsAfter": 0,
+      "confidence": "medium"
+    },
+    {
+      "id": "q-sor-test-event-assertion-ordering",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Soroban test events",
+        "events().all()",
+        "nested call event order"
+      ],
+      "tests": "How a unit test sees events from nested calls and that the list reflects only the last top-level invocation.",
+      "questionIssues": [
+        "Concrete and answerable; narrow SDK-testing semantics, but a real daily test-writing need."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Overlaps KF4."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Restates KF0 from the other side."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Events::all() returns ContractEvents with filter_by_contract in the current SDK",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/rs-soroban-sdk/blob/v29.0.1/soroban-sdk/src/_migrating/v25_event_testing.rs",
+              "observedAt": "2026-11-14",
+              "quote": "`filter_by_contract` - filter events by contract address"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-sor-decode-hosterror-codes",
+          "survivor": "q-sor-test-event-assertion-ordering",
+          "why": "The events testutils remedy appears there; this case owns it."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Keep as the only test-events case; merge the five overlapping key facts to three and cut 150 words to about 65.",
+      "rewrite": {
+        "question": null,
+        "answer": "Import `soroban_sdk::testutils::Events as _` and call `env.events().all()` right after the outer client call. It returns the events of the last top-level invocation, including nested calls, in emission order, so A -> B -> A yields A, B, A. Use `.filter_by_contract(&a)` for only A's events. Reading does not clear the list, but the next top-level call replaces it, so assert before the next call.",
+        "keyFacts": [
+          "`events().all()` returns the last top-level call's events, nested ones included, in order.",
+          "`filter_by_contract` isolates one contract's events.",
+          "The next top-level call replaces the observed events, so assert first."
+        ],
+        "avoid": [
+          "`events().all()` accumulates events across every top-level client call."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "Scope note on other event cases"
+        ]
+      },
+      "wordsBefore": 150,
+      "wordsAfter": 99,
+      "confidence": "medium",
+      "notRechecked": "The 'last top-level invocation replaces the list' semantic was not re-derived this pass; it rests on the pinned SDK source tests in truth.sources and the 2026-11-02 audit."
+    },
+    {
+      "id": "q-sor-ttl-defaults-extend",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Soroban TTL defaults",
+        "extending instance, code, and persistent TTL",
+        "archival vs extension"
+      ],
+      "tests": "Network TTL settings, that activity does not auto-extend, and which API extends which kind of entry.",
+      "questionIssues": [
+        "Three real sub-asks; answerable from docs, SDK, and live network settings."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Compound: settings and API shapes."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Compound: three behaviors."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Mainnet min Persistent 2,073,600, min Temporary 17,280, max 3,110,400 ledgers; Testnet 120,960, 720, 3,110,400",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "POST https://mainnet.sorobanrpc.com getLedgerEntries CONFIG_SETTING_STATE_ARCHIVAL (ledger 65467702)",
+              "observedAt": "2026-11-14",
+              "quote": "min_persistent_ttl 2073600; min_temporary_ttl 17280; max_entry_ttl 3110400"
+            },
+            {
+              "class": "C",
+              "ref": "POST https://soroban-testnet.stellar.org getLedgerEntries same key",
+              "observedAt": "2026-11-14",
+              "quote": "min_persistent_ttl 120960; min_temporary_ttl 720; max_entry_ttl 3110400"
+            }
+          ]
+        },
+        {
+          "claim": "SDK deployer has extend_ttl, extend_ttl_for_contract_instance, extend_ttl_for_code",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/rs-soroban-sdk/blob/v29.0.1/soroban-sdk/src/deploy.rs",
+              "observedAt": "2026-11-14",
+              "quote": "pub fn extend_ttl_for_contract_instance( ... pub fn extend_ttl_for_code(&self, contract_address: Address, threshold: u32, extend_to: u32)"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-sor-p23-auto-restore-extendto",
+          "survivor": "q-sor-ttl-defaults-extend",
+          "why": "This case owns the dated network numbers; the p23 case owns formulas."
+        },
+        {
+          "id": "q-protocol-state-archival-ttl",
+          "survivor": "q-protocol-state-archival-ttl",
+          "why": "Concept-level; keep."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Owner of the network TTL numbers (re-dated 2026-11-14: unchanged since 2026-07-10). Cut 208 words to about 95.",
+      "rewrite": {
+        "question": null,
+        "answer": "TTL is counted in ledgers and set by network configuration; reads and activity do not extend an entry. A freshly deployed contract's code and instance entries start at the network's minimum Persistent TTL. As of 2026-11-14, Mainnet: min Persistent 2,073,600, min Temporary 17,280, max 3,110,400 ledgers; Testnet: 120,960, 720, 3,110,400. Re-query rather than hard-code. Extend with `instance().extend_ttl(threshold, extend_to)`, `persistent().extend_ttl(&key, threshold, extend_to)`, and the deployer's `extend_ttl_for_contract_instance` and `extend_ttl_for_code`; there is no `bump()`. Temporary entries expire for good; Persistent and Instance entries archive and, since Protocol 23, auto-restore, which is not extension.",
+        "keyFacts": [
+          "Mainnet TTL (2026-11-14): min Persistent 2,073,600, min Temporary 17,280, max 3,110,400.",
+          "Extension is explicit per entry, instance, or code; activity does not extend TTL.",
+          "Temporary entries are deleted; Persistent and Instance entries archive and restore."
+        ],
+        "avoid": [
+          "Network TTL settings stated as undated, fixed constants.",
+          "Reads or activity extend an entry's TTL."
+        ],
+        "notes": "Settings are network values; a dated figure with a re-query note is correct.",
+        "movedToTruth": [
+          "GT-43 live-settings note",
+          "ExtendFootprintTTLOp read-only-footprint detail (owned by q-sor-p23-auto-restore-extendto)",
+          "Testing-docs also-good item"
+        ]
+      },
+      "wordsBefore": 208,
+      "wordsAfter": 153,
+      "confidence": "high"
+    },
+    {
+      "id": "q-soroban-add-signer-smart-wallet-howto",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Adding a signer to a smart wallet",
+        "contract-specific signer management",
+        "Passkey Kit vs Smart Account Kit"
+      ],
+      "tests": "That signer mutation is contract-specific state authorized by an existing signer, and that Passkey Kit and Smart Account Kit are maintained, non-drop-in siblings.",
+      "questionIssues": [
+        "The how-to has no durable procedure (it depends on the deployed contract); the golden's content is mostly library choice, which q-tool-passkeykit-smart-wallet already tests."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Duplicates q-tool-passkeykit-smart-wallet."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Duplicates q-tool-passkeykit-smart-wallet."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Passkey Kit and Smart Account Kit are maintained under stellar/*; the kalepail forks are archived",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "gh api repos/stellar/passkey-kit, repos/stellar/smart-account-kit",
+              "observedAt": "2026-11-14",
+              "quote": "archived=false; pushed 2026-10-27 and 2026-11-13"
+            },
+            {
+              "class": "B",
+              "ref": "gh api repos/kalepail/passkey-kit, repos/kalepail/smart-account-kit",
+              "observedAt": "2026-11-14",
+              "quote": "archived=true; pushed 2026-07-31"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-tool-passkeykit-smart-wallet",
+          "survivor": "q-tool-passkeykit-smart-wallet",
+          "why": "Owns the two-kit sibling facts verbatim."
+        },
+        {
+          "id": "q-smart-account-scoped-policy-signers",
+          "survivor": "q-smart-account-scoped-policy-signers",
+          "why": "Absorbs the signer-state fact."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Survivor q-smart-account-scoped-policy-signers, which must absorb: signer changes are contract state authorized by an existing signer, not classic SetOptions. The kit-sibling facts stay in q-tool-passkeykit-smart-wallet.",
+      "rewrite": null,
+      "wordsBefore": 259,
+      "wordsAfter": 0,
+      "confidence": "high"
+    },
+    {
+      "id": "q-soroban-auth-delegation-p27",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Protocol 27 delegated signers",
+        "CAP-0071",
+        "address-bound credentials"
+      ],
+      "tests": "That CAP-0071 in Protocol 27 adds first-class delegated signers and address-bound credentials for custom accounts.",
+      "questionIssues": [
+        "Clear and answerable. Duplicates q-protocol-27-cap-0071 in protocol-core, whose key facts are mostly process ('dates each observation') while this case's are concrete."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Fixed historical fact, but phrased as 'live', which will age; Protocol 29 is now current."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Protocol 27 activated on Mainnet 2026-07-08 at ledger 63386819; CAP-0071 Final",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/networks/software-versions",
+              "observedAt": "2026-11-14",
+              "quote": "## Protocol 27 (Mainnet, July 8, 2026) ... Authentication Delegation and Address-Bound Soroban Credentials: CAP-71"
+            },
+            {
+              "class": "C",
+              "ref": "https://horizon.stellar.org/ledgers/63386819",
+              "observedAt": "2026-11-14",
+              "quote": "closed_at 2026-07-08T17:00:10Z; protocol_version 27"
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0071.md",
+              "observedAt": "2026-11-14",
+              "quote": "Status: Final ... Protocol version: 27"
+            }
+          ]
+        },
+        {
+          "claim": "XDR defines SOROBAN_CREDENTIALS_ADDRESS_V2 and SOROBAN_CREDENTIALS_ADDRESS_WITH_DELEGATES with SorobanDelegateSignature",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-xdr/blob/main/Stellar-transaction.x",
+              "observedAt": "2026-11-14",
+              "quote": "SOROBAN_CREDENTIALS_ADDRESS_V2 = 2, SOROBAN_CREDENTIALS_ADDRESS_WITH_DELEGATES = 3"
+            }
+          ]
+        },
+        {
+          "claim": "Protocol 29 is the current Mainnet protocol",
+          "result": "changed",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/networks/software-versions",
+              "observedAt": "2026-11-14",
+              "quote": "## Protocol 29 (Mainnet, October 1, 2026)"
+            },
+            {
+              "class": "C",
+              "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=1",
+              "observedAt": "2026-11-14",
+              "quote": "ledger 65467701 protocol_version 29"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-protocol-27-cap-0071",
+          "survivor": "q-soroban-auth-delegation-p27",
+          "why": "Same topic in protocol-core. Keep this case (concrete facts); fold that case's status-vs-activation distinction in or retire it."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Needed once. Cut 192 words to about 80, and phrase the status as 'Protocol 27, live since 2026-07-08' rather than 'remains pending' wording, since Protocol 29 is now current.",
+      "rewrite": {
+        "question": null,
+        "answer": "Yes. CAP-0071, in Protocol 27 (live on Mainnet since 2026-07-08), adds first-class delegated signers for custom accounts: credentials of type `SOROBAN_CREDENTIALS_ADDRESS_WITH_DELEGATES` carry nested `SorobanDelegateSignature` chains. It also adds `SOROBAN_CREDENTIALS_ADDRESS_V2`, which binds credentials to the account address to prevent cross-account replay. Earlier custom accounts could already delegate by calling `require_auth_for_args` inside `__check_auth`; Protocol 27 made it a host-level credential feature. Clients need compatible SDK and CLI versions.",
+        "keyFacts": [
+          "CAP-0071 in Protocol 27 adds first-class delegated signers for custom accounts.",
+          "Delegation uses `SOROBAN_CREDENTIALS_ADDRESS_WITH_DELEGATES` with nested signatures.",
+          "`SOROBAN_CREDENTIALS_ADDRESS_V2` binds credentials to the account address.",
+          "Protocol 27 has been live on Mainnet since 2026-07-08."
+        ],
+        "avoid": [
+          "First-class delegated credentials existed before Protocol 27, or Protocol 27 is still pending on Mainnet.",
+          "Custom-account delegation was impossible before Protocol 27."
+        ],
+        "notes": "Grade the credential mechanics, not host-function spelling.",
+        "movedToTruth": [
+          "GT-31/GT-44 reconciliation note",
+          "ENVELOPE_TYPE_SOROBAN_AUTHORIZATION_WITH_ADDRESS detail",
+          "Incompatible-older-tooling avoid (process)"
+        ]
+      },
+      "wordsBefore": 192,
+      "wordsAfter": 128,
+      "confidence": "high"
+    },
+    {
+      "id": "q-soroban-auth-recursion-dos-audit",
+      "purpose": "mixed",
+      "topics": [
+        "Veridise Soroban audit finding",
+        "report-version identifiers",
+        "audit-label vs counted severity"
+      ],
+      "tests": "Whether an agent reports an audit finding's historical label, its disposition, and the report version accurately instead of inflating it into an exploit.",
+      "questionIssues": [
+        "Aimed at one audit report's internal ID renumbering (V-SOR-VUL-002 vs V-SOR-APP-VUL-003); a user rarely asks this.",
+        "The behavior (don't inflate an audit label into an exploit) is real but sits on report trivia."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Report-internal labeling."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Report-internal counts."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Report-version history."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Report-version history."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Scout research returns the Veridise V-SOR-APP-VUL-003 record with exactKeys and no exactMiss",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "Raven execute scout.searchResearch {q:'V-SOR-APP-VUL-003'}",
+              "observedAt": "2026-11-14",
+              "quote": "top hit 'Stellar Soroban Core: Veridise' exactKeys ['V-SOR-APP-VUL-003']"
+            }
+          ]
+        }
+      ],
+      "duplicates": [],
+      "verdict": "retire",
+      "reason": "Trivia about one audit report's identifier history, unanswerable from a general Stellar source without that exact PDF, and its Raven-specific half (Scout exactMiss behavior) belongs to Scout contract tests. A general 'what audits cover Soroban core and how to read a finding' case would earn the slot instead.",
+      "rewrite": null,
+      "wordsBefore": 293,
+      "wordsAfter": 0,
+      "confidence": "medium",
+      "notRechecked": "The Veridise V2 and V2.1 text was not re-read; the 2026-08-25 primary-source recheck is unchanged and the verdict does not hinge on it."
+    },
+    {
+      "id": "q-soroban-av-passkeys-talk",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Lumenloop A/V passages",
+        "no transcript text",
+        "opaque start_offset"
+      ],
+      "tests": "Whether an agent surfaces A/V summary rows with provenance, never claims transcript quotes or timestamps, and does not substitute docs.",
+      "questionIssues": [
+        "A real user ask ('find the talk'), but the golden grades Lumenloop's output contract (no transcript, opaque offset), not Stellar truth."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": "Names a Raven operation."
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": "Raven output contract."
+        },
+        {
+          "i": 2,
+          "kind": "operation",
+          "issue": "Duplicates q-gap-av-offset-not-timestamp."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "lumenloop.find_av_passages returns summary rows with recording title, url, and channel and no transcript text",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "Raven execute lumenloop.find_av_passages {query:'Stellar passkeys secp256r1 smart wallet signing'}",
+              "observedAt": "2026-11-14",
+              "quote": "row 'Workshop: Stellar | Multichain Day | DEVCON 2024' with summary, long_summary, youtube url, channel Wrapped; no transcript field"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-gap-av-offset-not-timestamp",
+          "survivor": "q-gap-av-offset-not-timestamp",
+          "why": "Same opaque start_offset fact."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Survivor q-gap-av-offset-not-timestamp (tooling), which must absorb: the A/V operation returns AI summaries with recording provenance but no transcript text, so never present a summary as a quote or attribute it to a speaker. The sk-004 cap note moves with it. Whether the survivor then leaves the headline for a tool-contract lane is the tooling auditor's call.",
+      "rewrite": null,
+      "wordsBefore": 291,
+      "wordsAfter": 0,
+      "confidence": "medium"
+    },
+    {
+      "id": "q-soroban-check-auth-custom-account",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Custom accounts",
+        "__check_auth ABI",
+        "host-handled nonces and replay"
+      ],
+      "tests": "The reserved __check_auth signature, that the host calls it, what the contract must verify, and what the host already guarantees.",
+      "questionIssues": [
+        "Canonical and answerable. Includes an 'ERC-4337' trap in the avoid, which is a valid behavior caution."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Two predicates (reserved ABI, host-only dispatch)."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [],
+      "duplicates": [
+        {
+          "id": "q-sor-cross-socketfi-auth",
+          "survivor": "q-soroban-check-auth-custom-account",
+          "why": "That case's __check_auth half is redundant; retire it."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Canonical __check_auth case; cut 211 words to about 80 and make the key facts single-predicate.",
+      "rewrite": {
+        "question": null,
+        "answer": "Implement the reserved `CustomAccountInterface::__check_auth(signature_payload: BytesN<32>, signature, auth_contexts: Vec<Context>)`. The host, not a direct user call, invokes it when another invocation requires that C-address's authorization. The contract verifies its chosen signatures (Ed25519, secp256r1/WebAuthn, multisig) and applies policy over `auth_contexts`, returning success only when valid. For standard address credentials the host consumes the nonce and enforces expiry and replay protection before `__check_auth`. Never call `require_auth` on the account's own address inside it: that recurses.",
+        "keyFacts": [
+          "`__check_auth(signature_payload, signature, auth_contexts)` is reserved and host-invoked.",
+          "The contract verifies signatures and applies policy over `auth_contexts`.",
+          "The host handles nonces, expiry, and replay for standard address credentials."
+        ],
+        "avoid": [
+          "Direct user invocation of `__check_auth`, or EIP-4337 as the model.",
+          "A home-grown nonce is mandatory for standard credentials.",
+          "Calling `require_auth` on the account's own address inside `__check_auth`."
+        ],
+        "notes": "A separate application protocol may define its own replay domain; do not penalize that.",
+        "movedToTruth": [
+          "2026-06-29 duplicate-section removal note",
+          "GT-44 correction note",
+          "scout_repos acceptable-for-templates remark"
+        ]
+      },
+      "wordsBefore": 211,
+      "wordsAfter": 140,
+      "confidence": "high",
+      "notRechecked": "Stable ABI semantics, independently corrected under GT-44 and confirmed 2026-11-02; Protocol 27's delegation credentials (CAP-0071) extend but do not change this core."
+    },
+    {
+      "id": "q-soroban-cli-bindings",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Stellar CLI bindings generation",
+        "TypeScript deprecation",
+        "Rust bindings from Wasm"
+      ],
+      "tests": "Which inputs each CLI bindings subcommand accepts, that TypeScript is deprecated for the JS SDK generator, and that other languages are placeholders.",
+      "questionIssues": [
+        "Answerable and real. Its version pin (CLI 28.1.0, 2026-09-26) is stale; the CLI is now 30.0.1."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Compound: inputs and deprecation."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Compound: snapshot/regeneration and contractimport!."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "CLI 28.1.0 is current",
+          "result": "changed",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-cli/releases/tag/v30.0.1",
+              "observedAt": "2026-11-14",
+              "quote": "v30.0.1 published 2026-11-03"
+            }
+          ]
+        },
+        {
+          "claim": "TypeScript bindings are deprecated for the JS SDK; Rust binds only from --wasm; other languages are placeholders",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-cli/blob/v30.0.1/cmd/soroban-cli/src/commands/contract/bindings.rs",
+              "observedAt": "2026-11-14",
+              "quote": "Deprecated, use the JavaScript Stellar SDK instead ... Generate Python bindings (requires external plugin)"
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-cli/blob/v30.0.1/cmd/soroban-cli/src/commands/contract/bindings/rust.rs",
+              "observedAt": "2026-11-14",
+              "quote": "wasm: wasm::Args ... generate_from_file(&wasm_path_str"
+            },
+            {
+              "class": "A",
+              "ref": "https://github.com/stellar/js-stellar-sdk/blob/master/README.md",
+              "observedAt": "2026-11-14",
+              "quote": "npx @stellar/stellar-sdk generate --wasm ... --wasm-hash <hex-encoded-hash>"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-sor-bindings-from-wasm-no-address",
+          "survivor": "q-soroban-cli-bindings",
+          "why": "Overlapping bindings how-to (soroban-b lane): consider one survivor."
+        },
+        {
+          "id": "q-ti-bindings-to-nextjs-integration",
+          "survivor": "q-ti-bindings-to-nextjs-integration",
+          "why": "Uses the generated client downstream; different aim."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Needed; the deprecation and Rust-only-from-Wasm facts are real traps. Drop the stale CLI version pin (behavior unchanged in 30.0.1) and cut 314 words to about 90.",
+      "rewrite": {
+        "question": null,
+        "answer": "Use the language subcommand. `stellar contract bindings typescript --output-dir <dir>` takes one of `--wasm <file>`, `--wasm-hash <hash>`, or `--contract-id <C…>`, but the CLI marks it deprecated in favor of the JS SDK generator (`npx @stellar/stellar-sdk generate`). `stellar contract bindings rust` works only from a local `--wasm`, so for an on-chain contract first fetch its Wasm. Python, Java, Flutter, Swift, PHP, and Kotlin Multiplatform are placeholders that require an external plugin. Bindings snapshot the embedded spec, so regenerate after interface changes. `contractimport!` is the separate in-contract Rust typed-client macro.",
+        "keyFacts": [
+          "TypeScript bindings take Wasm, hash, or contract ID but are deprecated for the JS SDK.",
+          "Rust bindings generate only from a local `--wasm` file.",
+          "Other languages are placeholders that need an external plugin.",
+          "Bindings snapshot the spec and must be regenerated after interface changes."
+        ],
+        "avoid": [
+          "Rust or placeholder languages accept all three TypeScript inputs.",
+          "Bindings update automatically after a contract upgrade."
+        ],
+        "notes": "Version-qualify CLI claims; the current CLI is 30.0.1 (2026-11-03).",
+        "movedToTruth": [
+          "GT-44 capability matrix on 27.0.0 and 28.1.0 re-run",
+          "contractimport! also-good item",
+          "Source list"
+        ]
+      },
+      "wordsBefore": 314,
+      "wordsAfter": 157,
+      "confidence": "high"
+    }
+  ],
+  "summary": {
+    "keep": 0,
+    "tighten": 24,
+    "merge": 5,
+    "retire": 8,
+    "move-tool-lane": 1,
+    "factsChanged": 2
+  },
+  "crossCategoryDuplicates": [
+    "Passkey recovery: q-passkey-wallet-recovery (survivor) and q-tool-passkey-wallet-recovery (tooling-infra); merge the latter, absorbing its SEP-30 G-account vs C-account recovery distinction as one key fact.",
+    "CAP-0051 / WebAuthn on-chain checks: q-passkey-smart-account-architecture and q-infra-secp256r1-passkeys (tooling-infra). Their key facts conflict on origin and RP-ID checks (this lane's case permits leaving them to the client and platform because OpenZeppelin's verifier omits them; the infra case requires them). One case should own it.",
+    "Confidential tokens: q-sor-confidential-tokens (survivor) and q-scf-confidential-tokens-preview (scf-grants-builders), whose 'June 2026 Testnet preview, not Mainnet' framing is now history after v0.8.0 (audited, announced ready for Mainnet). Merge or retire the scf case.",
+    "Protocol 27 / CAP-0071: q-soroban-auth-delegation-p27 (survivor, concrete facts) and q-protocol-27-cap-0071 (protocol-core, mostly process key facts).",
+    "Reflector: q-sor-reflector-integration-code, q-defi-reflector-oracle, q-tool-oracle-repo-live, q-soroban-oracle-defensive-consumption, and the proposed q-sor-reflector-testnet-contract-addresses (pins three rotating full contract IDs; prefer registry-first behavior).",
+    "SEP-41 transfer facts: q-sor-sep41-transfer-vs-transferfrom (survivor) and q-soroban-token-transfer-pattern (soroban-b) restate transfer/MuxedAddress/transfer_from; fold or retire the latter. q-sep-41-token-interface and q-tool-sep41-status-live are distinct (concept and status honesty).",
+    "Claimable balances / SDEX from contracts: q-sor-classic-dex-from-contract (survivor) absorbs q-sor-contract-as-claimable-arbiter; q-asset-claimable-balance (assets) is the classic concept and stays.",
+    "JS ScVal and spec: q-sor-scval-conversion (survivor) absorbs q-sor-stale-spec-after-upgrade; q-sor-deploy-invoke-from-js-sdk and q-ti-bindings-to-nextjs-integration overlap lightly on the build/simulate/assemble/sign order.",
+    "CLI and JS bindings generation: q-soroban-cli-bindings and q-sor-bindings-from-wasm-no-address (soroban-b); pick one survivor.",
+    "Native Groth16 curves: q-sor-cross-warmancer-zk-stack merges into q-zk-proof-systems-stellar; q-zk-host-functions-status covers CAP statuses and stays.",
+    "A/V passages: q-soroban-av-passkeys-talk merges into q-gap-av-offset-not-timestamp; q-gap-digest-soroban-adjacent duplicates q-gap-digest-defi-adjacent.",
+    "State archival: q-sor-p23-auto-restore-extendto (survivor), q-sor-ttl-defaults-extend (owns network numbers), q-protocol-state-archival-ttl (concept). q-sor-force-fast-archival-localnet is retired as duplicated and version-pinned.",
+    "Smart-account kits: q-soroban-add-signer-smart-wallet-howto merges into q-smart-account-scoped-policy-signers; the two-kit sibling facts live in q-tool-passkeykit-smart-wallet and q-tool-smart-wallet-repos-discovery.",
+    "q-sor-doc-timestamping-manage-data is classic Manage Data, filed under soroban; it belongs in protocol-core or assets-anchors-seps."
+  ],
+  "missing": [
+    "Protocol 28 contract features: CAP-0085 externally managed contract executables (CONTRACT_EXECUTABLE_EXTERNAL_REF, atomic fleet upgrades) and CAP-0086 sparse symbol-keyed map host functions; no case in this lane tests either. Check soroban-b before proposing.",
+    "Contract upgrade and migration pattern (update_current_contract_wasm, versioned storage) beyond the retired stale-spec bug report.",
+    "How to read a Soroban security audit and what the core host has been audited for (replaces the retired Veridise renumbering trivia); needs an owner source, not a single report's IDs.",
+    "SEP-55 and SEP-58 build verification exists in q-soroban-contract-build-verification; confirm soroban-b keeps it, since this lane's build-target case no longer carries that topic.",
+    "Soroban resource limits and fee model (per-transaction and per-ledger limits, rent); q-soroban-simulate-resource-fee may cover it, check soroban-b."
+  ]
+}

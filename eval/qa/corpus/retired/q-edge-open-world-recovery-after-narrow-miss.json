@@ -1,0 +1,21 @@
+{
+  "id": "q-edge-open-world-recovery-after-narrow-miss",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-edge (golden coverage audit)",
+    "reviewer": "verify-audit-edge (golden coverage audit)",
+    "reason": "Running one broad search after an empty directory lookup is the rule q-edge-strupey-ambiguous-stellar-history grades, and the instruction text is unit-tested.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-edge.json#q-edge-open-world-recovery-after-narrow-miss",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-edge.json#q-edge-open-world-recovery-after-narrow-miss",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-edge-open-world-recovery-after-narrow-miss"
+    ],
+    "lastCaseContentSha256": "eddc2b2faccb59f3c13fc84994d62caece8111e5c71264331296f89bd92f54e4",
+    "replacementIds": []
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "id": "q-gap-hackathon-brief-evidence-boundaries",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-scf (golden coverage audit)",
+    "reviewer": "verify-audit-scf (golden coverage audit)",
+    "reason": "Reading an empty liveContracts list or null domain as unknown rather than absent is graded by the tool-lane case q-scf-pitch-prep-live.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-gap-hackathon-brief-evidence-boundaries",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-gap-hackathon-brief-evidence-boundaries",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-gap-hackathon-brief-evidence-boundaries"
+    ],
+    "lastCaseContentSha256": "6ae277a30de66c5da6c549a6ae8ec1f5334b8d3711ab7ff4909f471efa90578b",
+    "replacementIds": []
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "id": "q-protocol-operations-vs-transactions",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-protocol (golden coverage audit)",
+    "reviewer": "verify-protocol (golden coverage audit)",
+    "reason": "Merged into q-protocol-operation-types-list. The survivor's rewrite opens with the containment fact (transaction = signed atomic unit bundling 1+ operations) as KF0 and keeps the inversion trap in avoid.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-protocol-operations-vs-transactions",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-protocol-operations-vs-transactions",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-protocol-operations-vs-transactions"
+    ],
+    "lastCaseContentSha256": "cce48fc9910d0c0c9139484d77a8e45594d46369337f70bcb81d1d948cdefd35",
+    "replacementIds": [
+      "q-protocol-operation-types-list"
+    ]
+  }
+}

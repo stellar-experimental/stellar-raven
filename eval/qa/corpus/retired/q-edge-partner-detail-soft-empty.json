@@ -1,0 +1,21 @@
+{
+  "id": "q-edge-partner-detail-soft-empty",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-edge (golden coverage audit)",
+    "reviewer": "verify-audit-edge (golden coverage audit)",
+    "reason": "How Raven's Scout getPartner reports an unknown slug is an adapter contract that unit tests already exercise.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-edge.json#q-edge-partner-detail-soft-empty",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-edge.json#q-edge-partner-detail-soft-empty",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-edge-partner-detail-soft-empty"
+    ],
+    "lastCaseContentSha256": "ac721f7c3d0f1bdbb93f62772bbc10136b6ddec970649fef4a2a25ec2047ca06",
+    "replacementIds": []
+  }
+}

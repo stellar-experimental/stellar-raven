@@ -1,0 +1,21 @@
+{
+  "id": "q-defi-flash-loans",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-defi (golden coverage audit)",
+    "reviewer": "verify-defi (golden coverage audit)",
+    "reason": "No taxonomy facet. Note: atomic rollback is in q-soroban-cross-contract-call's answer, not its key facts; acceptable because no leaf asks for it.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-defi-flash-loans",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-defi-flash-loans",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-defi-flash-loans"
+    ],
+    "lastCaseContentSha256": "746141398cc0712db6efa505a6fa00c14cf03a7003cbd8b299c0f55d5d11f940",
+    "replacementIds": []
+  }
+}

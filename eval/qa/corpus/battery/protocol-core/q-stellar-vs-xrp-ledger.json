@@ -1,0 +1,243 @@
+{
+  "id": "q-stellar-vs-xrp-ledger",
+  "question": "How does Stellar differ from the XRP Ledger in consensus, transaction fees, and how assets are issued?",
+  "surface": [
+    "stellarDocs.search_docs",
+    "scout.searchResearch"
+  ],
+  "golden": {
+    "answer": "In the Stellar Consensus Protocol (SCP), each validator chooses its own quorum set; XRP Ledger servers each trust a Unique Node List. Stellar launched in 2014 on Ripple-derived code and switched to SCP in 2015. Stellar sends fees to a locked account no one can spend; the XRP Ledger destroys them. On Stellar every asset but XLM has an issuer, and holders opt in with a trustline; XRP Ledger tokens also use trust lines.",
+    "keyFacts": [
+      "In Stellar's SCP, each validator chooses its own quorum set.",
+      "Stellar replaced its original Ripple-derived consensus with SCP in 2015.",
+      "Stellar transaction fees go to a locked account that no one can spend.",
+      "Stellar classic assets have an issuer, and holders opt in with a trustline."
+    ],
+    "avoid": [
+      "Do NOT say Stellar still runs the Ripple or XRP Ledger consensus protocol."
+    ],
+    "notes": "XRP Ledger properties (Unique Node List, destroyed fees, trust-line tokens) are context an answer may attribute to the XRP Ledger; they are not required. A false XRP Ledger claim is still wrong. Mentioning XRP Ledger Multi-Purpose Tokens or Stellar contract tokens alongside trust lines is correct, not required."
+  },
+  "tags": {
+    "category": "protocol-core",
+    "service": "stellarDocs",
+    "freshness": "scheduled"
+  },
+  "truth": {
+    "lifecycle": {
+      "state": "active",
+      "reviewState": "none",
+      "activation": {
+        "date": "2026-11-14",
+        "author": "gap lanes gap-1, gap-2, gap-3 (Claude Fable 5.2)",
+        "reviewer": "verify-gap (Claude Opus 5.5)",
+        "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+        "evidence": [
+          ".agents/rounds/2026-11-14-golden-coverage-audit/gap/verify-gap.json",
+          ".agents/rounds/2026-11-14-golden-coverage-audit/gap/"
+        ]
+      }
+    },
+    "leaf": "ecosystem.chain-comparisons",
+    "domain": "real-world",
+    "status": "confirmed",
+    "asOf": "2026-11-14",
+    "reverifyBy": "2027-03-09",
+    "sources": [
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol.md",
+        "observedAt": "2026-11-14",
+        "quote": "The Stellar network reaches consensus using the Stellar Consensus Protocol (SCP), which is a construction of the Federated Byzantine Agree[ment]"
+      },
+      {
+        "class": "A",
+        "ref": "https://xrpl.org/docs/concepts/consensus-protocol/unl",
+        "observedAt": "2026-11-14",
+        "quote": "A unique node list (UNL) is a server's list of validators that it trusts not to collude. Every XRP Ledger server is configured with a UNL"
+      },
+      {
+        "class": "A",
+        "ref": "https://xrpl.org/docs/concepts/consensus-protocol/consensus-structure",
+        "observedAt": "2026-11-14",
+        "quote": "All transactions included in a ledger destroy some XRP as a transaction cost"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering.md",
+        "observedAt": "2026-11-14",
+        "quote": "The lumens collected from transaction fees go into a locked account and are not given to or used by anyone."
+      },
+      {
+        "class": "A",
+        "ref": "https://xrpl.org/docs/concepts/tokens/fungible-tokens/trust-line-tokens",
+        "observedAt": "2026-11-14",
+        "quote": "Anyone can issue trust line tokens by sending a Payment transaction if the necessary trust lines are in place."
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens.md",
+        "observedAt": "2026-11-14",
+        "quote": "The lumen is the only token that doesn't require an issuer or trustline."
+      },
+      {
+        "class": "D",
+        "ref": "https://www.bullrunners.com/blog/xrp-vs-stellar-xlm/",
+        "observedAt": "2026-11-14",
+        "quote": "Stellar started in 2014 on code from the XRP Ledger and switched to its own Stellar Consensus Protocol in 2015."
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "Stellar uses SCP, a federated Byzantine agreement protocol in which each node sets its own quorum set; the XRP Ledger has each server trust a Unique Node List.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol.md",
+            "observedAt": "2026-11-14",
+            "note": "'A node's opinion on a statement depends on the opinions of its quorum set.'"
+          },
+          {
+            "class": "A",
+            "ref": "https://xrpl.org/docs/concepts/consensus-protocol/unl",
+            "observedAt": "2026-11-14",
+            "note": "Every XRP Ledger server is configured with a UNL."
+          },
+          {
+            "class": "D",
+            "ref": "https://coinchoose.com/coins/xrp-vs-stellar",
+            "observedAt": "2026-11-14",
+            "note": "Comparison table: XRP Ledger Consensus Protocol (validator UNLs) versus Stellar Consensus Protocol (federated Byzantine agreement)."
+          }
+        ]
+      },
+      {
+        "claim": "XRP Ledger transaction costs are destroyed; Stellar fees go to a locked fee pool that no account can spend.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://xrpl.org/docs/concepts/transactions/transaction-cost",
+            "observedAt": "2026-11-14",
+            "note": "'Every transaction must specify how much XRP to destroy to pay the transaction cost.'"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering.md",
+            "observedAt": "2026-11-14",
+            "note": "Fees 'go into a locked account and are not given to or used by anyone'."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.bullrunners.com/blog/xrp-vs-stellar-xlm/",
+            "observedAt": "2026-11-14",
+            "note": "'XRP Ledger fees are destroyed, while Stellar fees go into a locked account that no one uses.'"
+          }
+        ]
+      },
+      {
+        "claim": "Both networks issue non-native assets through trust lines to an issuer.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://xrpl.org/docs/concepts/tokens/fungible-tokens/trust-line-tokens",
+            "observedAt": "2026-11-14",
+            "note": "Trust line tokens: the side with the negative balance is the issuer."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens.md",
+            "observedAt": "2026-11-14",
+            "note": "Every asset except the lumen requires an issuer and a trustline."
+          },
+          {
+            "class": "D",
+            "ref": "https://xora.finance/blog/xrp-vs-stellar-2026",
+            "observedAt": "2026-11-14",
+            "note": "'both support issued assets and on-ledger trading'."
+          }
+        ]
+      },
+      {
+        "claim": "Stellar launched in 2014 on Ripple-derived code and replaced its consensus with SCP in 2015.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "D",
+            "ref": "https://www.sec.gov/Archives/edgar/data/1761325/000095017024130176/gxlm-20240930.htm",
+            "observedAt": "2026-11-14",
+            "note": "Slot source quote: the network 'initially employed the Ripple Protocol Consensus Algorithm ... which was replaced with the Stellar Consensus' Protocol. Not re-opened by this lane."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.bullrunners.com/blog/xrp-vs-stellar-xlm/",
+            "observedAt": "2026-11-14",
+            "note": "'Stellar started in 2014 on code from the XRP Ledger and switched to its own Stellar Consensus Protocol in 2015.'"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol.md",
+            "observedAt": "2026-11-14",
+            "note": "Current docs describe SCP as the network's consensus protocol."
+          }
+        ]
+      },
+      {
+        "claim": "The upgraded Stellar network running the Stellar Consensus Protocol went live on 2015-11-03.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/developers/upgraded-network-is-here",
+            "observedAt": "2026-11-14",
+            "note": "Post dated 2015-11-03: 'The upgraded Stellar network is here! ... It uses the Stellar Consensus Protocol (SCP)'; the code is 'less than half the size of the previous codebase'."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.sec.gov/Archives/edgar/data/1761325/000095017024130176/gxlm-20240930.htm",
+            "observedAt": "2026-11-14",
+            "note": "Carried from the existing row: the network 'initially employed the Ripple Protocol Consensus Algorithm ... which was replaced with the Stellar Consensus' Protocol."
+          }
+        ]
+      },
+      {
+        "claim": "Every Stellar asset except the lumen has an issuer, and an account opts in to hold it with a trustline.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets.md",
+            "observedAt": "2026-11-14",
+            "note": "'Trustlines are an explicit opt-in for an account to hold a particular asset. To hold a specific asset, an account must establish a trustline with the issuing account'."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens.md",
+            "observedAt": "2026-11-14",
+            "note": "'The lumen is the only token that doesn't require an issuer or trustline.'"
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-11-14",
+      "by": "Golden coverage audit closeout 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+      "evidence": [
+        "Key facts restated to Stellar-side facts (per-node quorum sets, fee handling, the 2015 SCP relaunch, issuer and trustline); XRP Ledger properties moved to attributed context in golden.notes.",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol.md -- 'each Core node decides on which other nodes it would like to trust to reach agreement. A node's trusted set of nodes is called a quorum set.'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering.md -- 'The lumens collected from transaction fees go into a locked account and are not given to or used by anyone.'",
+        "Live A 2026-11-14: https://stellar.org/blog/developers/upgraded-network-is-here (dated 2015-11-03) -- 'It uses the Stellar Consensus Protocol (SCP)'.",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets.md -- 'To hold a specific asset, an account must establish a trustline with the issuing account'.",
+        "Sibling check: q-hist-scp-rewrite-2015 (SCP network live 2015-11-03; the fork's causation stays disputed and is not asserted here).",
+        "Trigger and instruction: qa/RESULT.md (trigger only) and briefs/closeout.md section 1."
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
+      ]
+    },
+    "notes": "Sibling check: q-hist-scp-rewrite-2015 treats the 2014 fork causation as disputed; this case does not assert a cause. q-hot-fee-pool-burn-deflation: fee pool is sequestration, not a burn; this golden says 'locked fee pool'.\nRestated 2026-11-14 so the key facts are Stellar-side; the XRP Ledger facts stay in the answer as attributed context and keep their xrpl.org corroboration rows.",
+    "origin": "authored golden-coverage-audit 2026-11-14"
+  }
+}

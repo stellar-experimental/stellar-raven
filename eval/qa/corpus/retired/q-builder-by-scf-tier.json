@@ -1,0 +1,23 @@
+{
+  "id": "q-builder-by-scf-tier",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-scf (golden coverage audit)",
+    "reviewer": "verify-audit-scf (golden coverage audit)",
+    "reason": "Merged into q-scf-nqg-voting. The only durable fact (Verified Member tier is governance, not an award record) fits the NQG survivor; the handbook tier table confirms it.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-builder-by-scf-tier",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-builder-by-scf-tier",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-builder-by-scf-tier"
+    ],
+    "lastCaseContentSha256": "213c4cf6d99bcd4422f92b15c31b827b8168e6091f3b96c9b4697e79b5437bd2",
+    "replacementIds": [
+      "q-scf-nqg-voting"
+    ]
+  }
+}

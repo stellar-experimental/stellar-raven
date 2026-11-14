@@ -5,20 +5,18 @@
     "scout.searchResearch"
   ],
   "golden": {
-    "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\nInstawards are chapter-guided, short-sprint awards for eligible early execution. A **typical initial award is $1,000–$5,000 in USD value paid in XLM**. After successful completion, a project may receive **up to two conditional follow-ons**, with **$15,000 aggregate maximum over time**; follow-ons are not automatic. There is no standard public/open application form, but there is a real chapter-guided request and scoping process. Chapter support is non-binding: **SDF alone makes the final approval and funding commitment**, generally after reviewing the scope and eligibility. Instawards are not community/NQG-voted Build grants.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "Instawards are small, fast SCF awards for early execution, guided by a local Ambassador Chapter. A typical initial award is $1,000 to $5,000 in USD value paid in XLM, and up to two conditional follow-ons can bring a project to $15,000 in total. There is no standard open application: chapter leads can offer opportunities, and SDF alone gives final approval. Instawards are not community-voted.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation.",
-      "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Describes no standard public form and a real process as different conditions.",
-      "Names SDF approval as final."
+      "A typical initial Instaward is $1,000 to $5,000 in USD value, paid in XLM.",
+      "Follow-ons are conditional, up to two, with a $15,000 aggregate maximum.",
+      "There is no standard open application; Ambassador Chapter leads can offer opportunities.",
+      "Chapter support is non-binding; SDF alone approves and funds."
     ],
     "avoid": [
-      "Do NOT substitute an unsupported memory claim for source-supported content.",
-      "Do NOT call $15K the automatic initial award or imply follow-ons are guaranteed.",
-      "Do NOT say chapter leads commit SDF funds or that Instawards use NQG voting.",
-      "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
+      "Do NOT call $15,000 the automatic initial award or say follow-ons are guaranteed.",
+      "Do NOT say chapter leads commit SDF funds or that Instawards use NQG voting."
     ],
-    "notes": "Dossier §2.2/§7.2. Trap: assuming an open application; it's ambassador-recommended.\nAlso good if the answer: Under SCF v7.0, Instawards replaced the prior Kickstart Award.\nGolden cites: The SCF Instawards handbook page.\nGT-39/40 atom independently confirmed 2026-07-10. Accept 'no open application' only when the answer still acknowledges the chapter-guided request/scope and final SDF review."
+    "notes": "Accept \"no open application\" only if the answer also notes the chapter-guided request and SDF review."
   },
   "tags": {
     "category": "scf-grants-builders",
@@ -32,7 +30,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-10",
+    "asOf": "2026-11-14",
     "sources": [
       {
         "class": "A",
@@ -75,19 +73,42 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "Typical initial award $1,000 to $5,000 in XLM; up to two follow-ons; $15,000 aggregate; no standard open application; only SDF approves.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/instawards/official-rules.md",
+            "observedAt": "2026-11-14",
+            "note": "initial Instaward in the range of $1,000 - $5,000 USD, paid in XLM ... up to $15,000 paid in XLM in the aggregate over time or up to two (2) follow-on"
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/instawards/official-rules.md",
+            "observedAt": "2026-11-14",
+            "note": "Instawards don't have a standard open application process"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer re-verification, no gospel change; applier refreshed provenance; .agents/rounds/2026-11-02-golden-audit.md, batch scf-grants-builders-03)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-scf, verify-audit-scf; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "A 2026-11-02: https://stellar.gitbook.io/scf-handbook/scf-awards/instawards/official-rules.md — 'Most proposals successfully accepted by SDF begin with an initial Instaward in the range of $1,000 – $5,000 USD, paid in XLM ... may increase the total funding amount up to $15,000 paid in XLM in the aggregate over time or up to two (2) follow-on disbursements.'",
-        "A 2026-11-02: same rules — 'Instawards don't have a standard open application process, but opportunities to apply can be made available by the local Ambassador Chapter leads'; 'only SDF may approve Instawards or make grant commitments'.",
-        "A 2026-11-02: https://stellar.org/blog/ecosystem/introducing-scf-v7 — 'ambassadors may recommend projects for small awards of up to $15K per project'.",
-        "D 2026-11-02: https://www.risein.com/blog (Parallel search) — '15 Projects from Türkiye Received $75,000 in Stellar Instawards Grants in October' (Oct 19, 2026).",
-        "No gospel change. Sibling sweep: q-scf-v7-changes, q-scf-ambassador-program, q-scf-regional-india, q-edge-scf-v7-centralization-myths, q-scf-nqg-voting; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-scf-instawards",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-scf-instawards",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-scf-instawards",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/instawards/official-rules.md -- 'initial Instaward in the range of $1,000 - $5,000 USD, paid in XLM ... up to $15,000 paid in XLM in the aggregate over time or up to two (2) follow-on'",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/instawards/official-rules.md -- 'Instawards don't have a standard open application process'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-scf-instawards"
+    "origin": "raven-next q-scf-instawards",
+    "notes": "Dossier §2.2/§7.2. Trap: assuming an open application; it's ambassador-recommended.\nAlso good if the answer: Under SCF v7.0, Instawards replaced the prior Kickstart Award.\nGolden cites: The SCF Instawards handbook page.\nGT-39/40 atom independently confirmed 2026-07-10. Accept 'no open application' only when the answer still acknowledges the chapter-guided request/scope and final SDF review.",
+    "leaf": "funding.scf-supporting-programs"
   }
 }

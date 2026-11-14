@@ -13,8 +13,9 @@ paid run.
 ## Priorities
 
 1. Ship the trimmed surface and work its known weakness on live-data questions (first item).
-2. The golden-truth pass, then source coverage: the first-principles round found that sources and
-   goldens limit accuracy, not the shape of the tool.
+2. Source coverage, from the 2026-11-14 gap ledger: the first-principles round found that sources
+   and goldens limit accuracy, not the shape of the tool. The golden coverage audit rebuilt the
+   goldens.
 3. Event-tied golden re-verification, on its dates.
 
 The general routing repair stays held. It needs new mechanism evidence, not another lexical
@@ -27,11 +28,18 @@ Round `fp-2026-11-12`: [ledger](rounds/2026-11-12-fp.md),
 [ADR-0011](../research/decisions/0011-tool-surface-stays-code-mode-trimmed.md). The tool surface
 stays `search` + `execute`, trimmed for cost.
 
-Held-out status: the 100 even-position cases are spent, and the stopped second look opened 4
-odd-position cases. 96 odd-position cases and the 150 reserve cases are unopened; keep them
-unseen. The ledger's
-[held-out status](rounds/2026-11-12-fp.md#held-out-status-after-the-round) is authoritative. Never
-copy a held-out or reserve case ID into this file.
+Held-out status: the first-principles split is void, because the 2026-11-14 golden coverage audit
+rebuilt the battery. The current split is drawn by the rule in
+[`eval/qa/README.md`](../eval/qa/README.md) ("Held-out split") from the 246 headline cases:
+
+- SHA-256 `f683852ee2922dce1b73504582fca7109a21b5cdff89d72a219c51d6f9890efa`.
+- 79 tuning, 119 held-out, and 48 reserve cases.
+- The file is on the owner's Linux machine at `~/backups/gca-2026-11-14-split.json`.
+
+No product-tuning lane has opened any of the 246 cases. The round's battery test used 70 of them
+once (IDs in [`qa/ids.txt`](rounds/2026-11-14-golden-coverage-audit/qa/ids.txt)); it read answers
+and tuned nothing. An item may name a case by ID; never record which set a
+case is in, and tune no product change on a held-out or reserve case.
 
 ### Find what costs the trimmed surface accuracy on live-data questions
 
@@ -43,38 +51,24 @@ schema, or the shorter instructions) from the stored transcripts before spending
 Done when: a reviewed change closes the gap on a scoped live-data run, or the owner accepts the
 gap as the price of the trim.
 
-### Run a golden-truth pass on procedural key facts
-
-A word-pattern screen flags 77 of the 569 key facts in the tuning set: 70 prescribe how the answer
-is produced or worded, and 9 name a Raven operation. An agent that uses any other tool cannot
-satisfy them, so every design comparison tilts toward the current design. One suspected
-source-against-golden conflict (Protocol 27 credential validity) and two noted ones (hand-edited
-generated bindings, CAP-89) need a primary source. The screen is not a ruling: no golden was
-edited.
-
-Next, with the `golden-truth` skill: split each case's key facts into world facts and process
-requirements, remove operation names from key facts, and resolve the conflicts. The review needs
-no model spend. Re-scoring stored answers is about 366 judge votes.
-
-Done when: the reviewed corpus change merges and the flagged count is recorded.
-
 ### Audit source coverage
 
-291 of 569 tuning key facts have no supporting passage in anything Raven retrieved, and in a
-sample of 60 of them, 55% were not found by a targeted search of Raven's sources. Nothing shows
-yet which sources are missing. Do this after the golden-truth pass and the per-source status
-item below.
+The first-principles round measured the old battery: 291 of 569 tuning key facts had no
+supporting passage in anything Raven retrieved. The 2026-11-14 golden coverage audit rebuilt the
+battery, so start from its
+[gap ledger](rounds/2026-11-14-golden-coverage-audit/gaps/GAPS.md). The ledger lists 43 taxonomy
+leaves with a known or suspected source gap (15 confirmed, 28 single observations), and six
+`verified` findings cover 9 of them: `sd-105`, `sd-106`, `sd-107`, `sd-108`, `sls-117`,
+`sls-118`. Do this after the per-source status item below.
 
-Next: for each unsupported world fact, find where support exists (a source Raven reaches but did
-not surface, a source it does not reach, or nowhere). Then test the one or two sources that
-recover the most facts, with a pass condition fixed in advance: more correct answers and no more
-wrong ones.
+Next: re-check the 28 single-observation leaves. For each confirmed gap without a finding, find
+where support exists: a source Raven reaches but did not surface, a source it does not reach, or
+nowhere. Then test the one or two sources that recover the most facts, with a pass condition fixed
+in advance: more correct answers and no more wrong ones.
 
 Gaps are findings, not only errors (owner, 2026-11-14). Where support exists nowhere, or only in a
 source Raven does not reach, file a gap finding with a concrete net-new doc or content
-recommendation for the owning source, as an issue (Raven never opens upstream pull requests). Run
-it after the owner's QA battery audit settles the goldens, so retired or rewritten facts are not
-chased.
+recommendation for the owning source, as an issue (Raven never opens upstream pull requests).
 
 Done when: the classification is recorded, gap findings are filed for the facts no reached source
 supports, and the owner decides which source, if any, to test.
@@ -129,21 +123,89 @@ disputes disappear, and no answer with a truly unsupported claim is graded up.
 
 ## Golden answers
 
+### Finish the 2026-11-14 golden coverage audit
+
+The round rebuilt the battery around a taxonomy of Stellar (`eval/qa/taxonomy.json`):
+
+- 246 headline cases and 6 tool-lane cases;
+- 164 of 167 leaves covered;
+- the two remaining `openSlots` are waived.
+
+The corpus work is done ([ledger](rounds/2026-11-14-golden-coverage-audit.md), Outcome). What
+remains:
+
+- **Owner decisions:**
+  - File the six `verified` findings upstream (`sd-105` to `sd-108`, `sls-117`, `sls-118`). The
+    round posted nothing.
+  - The stellar.org source question: the next item.
+  - Whether chain-comparison, Pi Network, and stablecoin-regulation topics stay in scope. No Raven
+    source holds the other chain's half or SDF's current policy
+    ([gap ledger](rounds/2026-11-14-golden-coverage-audit/gaps/GAPS.md), "Source-coverage
+    questions").
+  - Whether key custody needs its own case. `security.key-custody` is covered only by a multisig
+    setup case that is primary there
+    ([review](rounds/2026-11-14-golden-coverage-audit/review/REVIEW.md), L5).
+  - Whether the four envelope traps that no case covers since the floors were deleted
+    (`person-entity-empty`, `av-offset`, `semantic-fallback`, `matchPartners-503`) get a tool-lane
+    case or a unit test (review M2).
+- **Optional key-fact polish.** 72 cases still carry lint warnings: 98 warnings in all, 58 of
+  them on key facts with multiple predicates, over 90 characters, or with a negative predicate.
+  Polish through the `golden-truth` skill, case by case; no warning blocks a gate.
+- **A first full baseline run** on the 246 headline cases. It needs its own `run-evals` plan
+  (decision, cap, stop rule) and its own spend authorization. Keep the held-out discipline
+  stated at the top of this file.
+
+Done when: each owner decision is recorded under "Owner decisions", and the baseline plan is
+written or declined.
+
+### Decide whether stellar.org pages outside Docs belong in a Raven source
+
+Three unrelated golden cases miss for one reason: the fact lives only on a `stellar.org` page that
+no Raven source holds. The leaves are `ecosystem.strategy-roadmap` (the SDF strategy and roadmap
+pages), `security.audit-registry` (the Audit Bank projects page), and `funding.service-providers`
+(the service-providers directory). The 2026-11-14 QA test showed all three
+([result](rounds/2026-11-14-golden-coverage-audit/qa/RESULT.md), "Corpus-coverage
+diagnostics"). `sls-117` covers only the Scout research-corpus part: four `sdf-org` pages its
+`sls-055` fix left out. Whether Raven should hold `stellar.org` itself is an owner decision, not
+a finding.
+
+Next step: the owner chooses one of three options. Rely on `sls-117` and wait for Scout. Add a
+`stellar.org` source to Raven, with the exposure change and a read-only A/B. Or keep the cases
+and accept that they test facts outside Raven's sources.
+
+Done when: the decision is recorded under "Owner decisions" and the three leaves' cases follow
+it.
+
+### Check Docs search for the SEP-7 payment-request page before filing
+
+`stellarDocs.search_docs('web+stellar:pay payment request QR code')` does not return
+`/docs/build/apps/wallet/sep7`, though the page holds that exact string; Scout returns it. The
+leaf is `standards.payment-patterns` ([gap ledger](rounds/2026-11-14-golden-coverage-audit/gaps/GAPS.md)).
+Nothing is filed: the owner is not established, because the miss may come from Raven's scoping
+or from upstream ranking.
+
+Next step: run the same query against the Mintlify search backend directly, and through Raven
+with and without its scoping, and compare where the page ranks. The bare query `web+stellar:pay` returns
+`/docs/build/apps/wallet/sep7#pay-operation` first, so the miss comes from the added words, not
+from the index or Raven's scoping; the check is about ranking, and the owner may be upstream.
+
+Done when: either an `sd-` docs-search finding is filed with the retrieval-level evidence, or a
+Raven-side fix lands with its A/B, or the check shows no defect and that result is recorded here.
+
 ### Re-verify the event-tied goldens after SCF #46 Panel Review and the Bell vote
 
 `npm run eval:qa:lint -- --stale --enforce-floors` fails every pull request once a `reverifyBy`
-date passes. Eight cases keep dates before 2027 because each depends on a known event:
+date passes. Six cases keep dates before 2027 because each depends on a known event:
 
-- **SCF.** The six RFP cases carry the two Q4 briefs published on 2026-11-11. Scout served no
-  open brief on 2026-11-12. On or after 2026-11-19, re-read
-  `https://stellarlight.xyz/api/rfps?status=open`. If it still serves no Q4 brief, file a Scout
-  finding; when it catches up, drop the dated Scout-lag sentence from the six cases' notes.
-  `q-scf-current-round` is due 2026-12-04.
+- **SCF.** `q-scf-current-round` is due 2026-12-04. The RFP Scout-lag check is done: the audit
+  retired five of the six RFP cases, and the survivor (due 2027-01-28) records that Scout and the
+  official page both listed the two Q4 briefs on 2026-11-14.
 - **Bell/P30 Mainnet vote, 2026-11-23 17:00 UTC.** `q-pc-protocol-upgrade-timing`,
-  `q-protocol-version-history-list`, and `q-edge-fresh-latest-protocol-version` are due 11-24;
-  `q-hist-quantum-preparedness-plan` is due 12-01. The `mainnet-protocol-29` source sentinel
-  fires when Mainnet activates Protocol 30. Update the register's Bell date trap in the same
-  change.
+  `q-protocol-version-history-list`, and `q-edge-fresh-latest-protocol-version` are due 11-24.
+  `q-hist-quantum-preparedness-plan` is due 12-01. One case added by the audit, which states the
+  Protocol 29 release set, is due 11-30; `--stale` lists it. The `mainnet-protocol-29` source
+  sentinel fires when Mainnet activates Protocol 30. Update the register's Bell date trap in the
+  same change.
 
 Use the `golden-truth` skill, then `npm run eval:qa:register`.
 [Ledger](rounds/2026-11-12-truth-maintenance.md).
@@ -154,48 +216,13 @@ Done when: no battery case has a `reverifyBy` date before 2027-01-01.
 
 From the [review](../research/audits/2026-11-12-truth-maintenance/review-caps-fable.md):
 
-- At the next deliberate live-contract revision, reword the "state-conditional sls-024
-  discriminator" label of `q-live-fluxity-status-provenance`. The grading rule holds; a notes
-  edit changes the frozen `live-data-canonical-v3` digest.
-- In the next golden pass, recheck the "DIA/Lightecho/Orally too" mainnet note of
-  `q-eco-defi-market-map`. On 2026-11-12 Scout showed DIA's only contract as an absent testnet
-  address and Lightecho's mainnet feeds as stale.
+At the next deliberate live-contract revision, reword the "state-conditional sls-024
+discriminator" label of `q-live-fluxity-status-provenance`. The grading rule holds; a notes edit
+changes the frozen `live-data-canonical-v3` digest. (The audit's rewrite of the DeFi market-map
+case removed the "DIA/Lightecho/Orally too" note from judge-facing text; it survives only as
+judge-blind provenance.)
 
-### Add golden cases for the confirmed HackMeridian gaps
-
-Three gaps already have cases: R04 (`q-sor-decode-hosterror-codes`), R23
-(`q-soroban-oz-token`), and R31 (`q-asset-stablecoin-issuers-discovery`). Two proposals, R20
-(`q-infra-testnet-reset-schedule-recovery`) and Q18
-(`q-sor-reflector-testnet-contract-addresses`), passed independent review with ACTIVATE but are
-held: activation would lift the scheduled share above the 35% cap in `eval/qa/lint-corpus.mjs`,
-and both facts expire with the 2026-12-16 Testnet reset. The owner decided on 2026-11-02 against
-a dedicated paid battery for them. Records:
-[proposals](rounds/2026-11-03-hackmeridian-golden-proposals.md),
-[review](rounds/2026-11-03-hackmeridian-golden-proposals-review.md).
-
-Reopen after the reset with post-reset facts, when the scheduled share has room, or by converting
-other scheduled cases to behavioral wording. Raising the cap is an owner decision.
-
-Done when: the cases pass `npm run eval:qa:lint -- --stale --enforce-floors` and merge.
-
-### When Scout hackathon submission operations are exposed
-
-Trigger: a reviewed exposure change makes `scout.getHackathonSubmission` or
-`scout.analyzeHackathonSubmissions` callable. Both are excluded today.
-
-- **Winner goldens.** `q-scf-kale-winner-live` and `q-gap-hackathon-winner-order` require the
-  event-detail path as the only route, while the submission operation returns an explicit
-  `placement`. Accept placement from either path through `golden-truth`, or record why the
-  event-detail path stays the only route
-  ([review](rounds/2026-10-06-scout-hackathon-goldens/review-astra.md)).
-- **Proposals.** Four cases wait in `eval/qa/corpus/proposed/scf-grants-builders/`. Three are
-  cleared for activation. `q-scout-hackathon-placed-share-kale-vs-zk` is blocked: its winner
-  totals have no witness independent of DoraHacks
-  ([ledger](rounds/2026-10-06-scout-hackathon-goldens.md)).
-
-Done when: the dated facts are re-probed, each activated case carries
-`truth.lifecycle.activation`, the fourth case has an independent source or a reviewed rewrite,
-and the floors lint passes for both operations.
+Done when: the live contract's next reviewed revision carries the reworded label.
 
 ### Resolve held source ownership and bounty policy
 
@@ -556,8 +583,10 @@ The judge uses pack `p9` ([result](rounds/2026-10-12-pack-p9/result-p9.md)). Kno
 
 - The November 3 model sweep reported an 85-row tag list cut to 82 rows in judge evidence, with
   false wrong verdicts on `q-ti-vocab-project-tags-live`
-  ([ledger](rounds/2026-11-03-playground-model-sweep.md)). Before another model-selection round,
-  recover the transcript, compare its rendered pack, and repair any confirmed truncation.
+  ([ledger](rounds/2026-11-03-playground-model-sweep.md)). The 2026-11-14 audit retired that
+  case as Raven mechanics, but a long list can still be truncated. Before another
+  model-selection round, recover the transcript, compare its rendered pack, and repair any
+  confirmed truncation.
 - Field and unit limits: Etherfuse shows 5 of 7 records, stablecoin issuers 41 of 42, and
   ERC-8004 0 of 2.
 - Five control rows lose 1 to 3 answer probes against p8.
@@ -582,8 +611,9 @@ Done when: a reviewed decision is recorded, and any rubric change has its measur
 ### Reconcile the QA answering prompt with out-of-scope goldens
 
 The answering prompt asks for a plain, brief out-of-scope answer (`eval/qa/run-qa.mjs`), while
-goldens such as `q-edge-oos-solana-vs-aptos` and `q-n3-wallet-hacked-support-redirect` require
-decision support or acknowledgment. The delegated October 1 adjudication keeps both
+goldens such as `q-edge-oos-solana-vs-aptos` and `q-raph-stolen-wallet-recovery` require
+decision support or acknowledgment. The second absorbed `q-n3-wallet-hacked-support-redirect` in
+the 2026-11-14 audit. The delegated October 1 adjudication keeps both
 ([record](rounds/2026-10-01-backlog-closeout/owner-adjudications.md)); the owner can veto it. A
 prompt change changes the implementation hash and needs a reviewed decision and measurement.
 

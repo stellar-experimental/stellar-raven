@@ -1,0 +1,21 @@
+{
+  "id": "q-pc-bucketlist-vs-merkle-inclusion-proof",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-protocol (golden coverage audit)",
+    "reviewer": "verify-protocol (golden coverage audit)",
+    "reason": "Bucket List versus transaction-set hashing is core internals that neither mapper found demand for and no taxonomy leaf holds.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-pc-bucketlist-vs-merkle-inclusion-proof",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-pc-bucketlist-vs-merkle-inclusion-proof",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-pc-bucketlist-vs-merkle-inclusion-proof"
+    ],
+    "lastCaseContentSha256": "2e30d80801f1ce2884d27ccc23e8cfdffbeb56b31a59207abd61a568b7a746bb",
+    "replacementIds": []
+  }
+}

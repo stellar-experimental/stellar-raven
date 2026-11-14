@@ -1,0 +1,21 @@
+{
+  "id": "q-gap-match-partners-degrade",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-assets (golden coverage audit)",
+    "reviewer": "verify-audit-assets (golden coverage audit)",
+    "reason": "test/adapters.test.ts:445 pins the 503 to non-retryable error with a getPartners hint. Agent fallback is unobserved, but a static case cannot force the 503, so a lane case would mostly grade the success path. That, more than the unit test, is why retiring is right.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-assets.json#q-gap-match-partners-degrade",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-assets.json#q-gap-match-partners-degrade",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-gap-match-partners-degrade"
+    ],
+    "lastCaseContentSha256": "86773edbc5e609966bb4e7d70723017e89afb4c8eaba1ccffb05876fbd30f153",
+    "replacementIds": []
+  }
+}

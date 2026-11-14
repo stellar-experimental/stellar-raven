@@ -1,0 +1,21 @@
+{
+  "id": "q-edge-lumenloop-person-entity-empty",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-edge (golden coverage audit)",
+    "reviewer": "verify-audit-edge (golden coverage audit)",
+    "reason": "Reading an ok Lumenloop envelope with empty collections is unit-tested envelope behavior, and the open-world rule is graded by q-edge-strupey-ambiguous-stellar-history.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-edge.json#q-edge-lumenloop-person-entity-empty",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-edge.json#q-edge-lumenloop-person-entity-empty",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-edge-lumenloop-person-entity-empty"
+    ],
+    "lastCaseContentSha256": "c35eee9a73a7cac5ce5d4331d34d3d1a0d452e653dc7243d1af1e1943073831b",
+    "replacementIds": []
+  }
+}

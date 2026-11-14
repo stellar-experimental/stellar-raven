@@ -1,0 +1,141 @@
+{
+  "cases": [
+    {
+      "id": "q-asset-trustline-basics",
+      "rewrite": {
+        "question": null,
+        "answer": "A trustline is an account's explicit opt-in, created with `ChangeTrust`, to hold a non-native asset from a given issuer, with its own limit. Without one, payments of that asset fail. Each trustline raises the account's minimum XLM balance by one base reserve (0.5 XLM; validators can change it), a held minimum rather than a fee. XLM itself needs no trustline.",
+        "keyFacts": [
+          "A trustline is an account's opt-in to hold a specific non-native asset.",
+          "It is created with ChangeTrust for an asset code and issuer.",
+          "Without a trustline, payments of that asset fail.",
+          "Each trustline raises the minimum XLM balance by one base reserve."
+        ],
+        "avoid": [
+          "Assets can be received with no trustline, like ERC-20 tokens.",
+          "The base reserve is a spent fee rather than a held minimum balance."
+        ],
+        "notes": "Do not penalize an answer that dates the XLM amount or states it in base-reserve units.",
+        "movedToTruth": [
+          "Horizon ledger 65269774 / 2026-11-02 reserve observation",
+          "Pool-share trustline two-reserve fact (now in q-asset-sdex-vs-amm)",
+          "Dossier reference",
+          "Golden-cites line"
+        ]
+      }
+    },
+    {
+      "id": "q-edge-noinfo-sep-9999",
+      "rewrite": {
+        "question": null,
+        "answer": "SEP-9999 is not in the official Stellar SEP registry (stellar/stellar-protocol), so I can't summarize it or give implementation steps. If you meant a different SEP, give me its number or topic and I'll look it up.",
+        "keyFacts": [
+          "States SEP-9999 is absent from the official SEP registry, with an as-of date.",
+          "Invents no scope or implementation steps and offers to look up a real SEP."
+        ],
+        "avoid": [
+          "Describing SEP-9999's content, or claiming the registry permanently ends near SEP-0050."
+        ],
+        "notes": "Strict profile: fabrication is the failure mode.",
+        "movedToTruth": [
+          "Edit-history stamps (GT-*, correction and hardening dates) and authoring provenance",
+          "Commit f2d36490 observation and 'Also good if' lines"
+        ]
+      }
+    },
+    {
+      "id": "q-pc-account-activation-not-found",
+      "rewrite": {
+        "question": null,
+        "answer": "A keypair is only an identity until a CreateAccount operation creates its ledger entry, so a Payment to a nonexistent G-address fails with PAYMENT_NO_DESTINATION. An unsponsored empty account needs two base reserves, 1 XLM at the 0.5 XLM base reserve, which validators can change. A sponsored CreateAccount (CAP-0033) can use startingBalance 0.",
+        "keyFacts": [
+          "CreateAccount, not key generation or Payment, creates the ledger account.",
+          "The unsponsored minimum is two base reserves (1 XLM at 0.5 XLM, dated).",
+          "Sponsored creation can start at 0 XLM."
+        ],
+        "avoid": [
+          "Do NOT say Payment creates a missing destination or that every generated address exists."
+        ],
+        "notes": "Accept 1 XLM only when dated or tied to the reserve; the reserve is validator-set.",
+        "movedToTruth": [
+          "GT-29 correction history",
+          "sd-013 docs-gap record",
+          "Friendbot Testnet remark"
+        ]
+      }
+    },
+    {
+      "id": "q-sep-53-sign-verify-message",
+      "rewrite": {
+        "question": null,
+        "answer": "SEP-53, Sign and Verify Messages, is Final (v1.0.0). To sign an arbitrary message, prefix its exact bytes with `Stellar Signed Message:\\n` (with the newline), apply one SHA-256, and ed25519-sign the 32-byte digest with the Stellar key. It is off-chain, not a transaction, and proves control of one key, not a multisig threshold or contract-account policy.",
+        "keyFacts": [
+          "SEP-53 is titled Sign and Verify Messages and is Final.",
+          "The message is prefixed with 'Stellar Signed Message:\\n' before hashing.",
+          "The prefixed bytes are hashed once with SHA-256 and signed with ed25519.",
+          "A SEP-53 signature is off-chain and is not a Stellar transaction."
+        ],
+        "avoid": [
+          "SEP-53 message signing is broadcast as a Stellar transaction.",
+          "SEP-53 is the SEP-10 web authentication challenge."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "Per-language SDK support roster (unverifiable from the spec; check each release)",
+          "SEP-43 relation (separate Draft wallet API)",
+          "Nonce/expiry caution provenance",
+          "2026-07-11 status-sensitive stamp"
+        ]
+      }
+    },
+    {
+      "id": "q-pc-sequence-numbers-ordering-replace",
+      "rewrite": {
+        "question": null,
+        "answer": "Sequence numbers are per source account, with no global order across accounts. By default a transaction needs current sequence + 1, so N+2 at N fails tx_bad_seq. CAP-0021 minSeqNum is the exception: it is valid when minSeqNum <= current < transaction sequence, then advances the account to that sequence. A transaction included in a ledger consumes its sequence even if its operations fail; one rejected at submission does not. A queued same-source, same-sequence transaction can be replaced by a fee-bump bidding 10x.",
+        "keyFacts": [
+          "Sequence is per source account; the default is exactly current + 1.",
+          "A minSeqNum precondition can permit a gap and advance the sequence directly.",
+          "An included transaction consumes its sequence even if it fails; a rejected one does not.",
+          "A queued transaction can be replaced by a fee-bump bidding at least 10x."
+        ],
+        "avoid": [
+          "Do NOT say N+2 can never apply, or that a transaction rejected before inclusion consumes sequence."
+        ],
+        "notes": "Grade queue replacement separately from preconditions; behavior depends on the submission path.",
+        "movedToTruth": [
+          "GT-31 overlap correction history",
+          "also-good and golden cites lines"
+        ]
+      }
+    },
+    {
+      "id": "q-protocol-accounts-signers-thresholds",
+      "rewrite": {
+        "question": "How do Stellar accounts handle signing: what are signers, weights and thresholds?",
+        "answer": "A classic account has a master key plus optional signers, each with a weight. Each operation needs a low, medium or high threshold, met when the combined weight of valid signatures reaches it; this is native multisig. A SignerKey is ed25519, a pre-authorized transaction hash, hashX, or an ed25519 signed payload (CAP-0040). secp256r1 is not a classic signer; it is Soroban custom-account authentication.",
+        "keyFacts": [
+          "Signer weights must meet the operation's low, medium or high threshold.",
+          "Classic SignerKey has four forms, including the signed-payload signer.",
+          "secp256r1 belongs to Soroban custom-account auth, not classic signers."
+        ],
+        "avoid": [
+          "Do NOT list secp256r1 as a classic SignerKey or confuse signer weight with a threshold."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "sequence/minSeqNum material (now owned by the sequence case)",
+          "GT-31 correction history"
+        ]
+      }
+    },
+    {
+      "id": "q-comp-sep8-number-lookup-no-deepresearch",
+      "note": "Duplicate: q-comp-sep8-regulated-assets-approval-server carries the SEP-8 identity and q-edge-exhaustive-defi-deep-report carries the paid-research proportionality behavior."
+    },
+    {
+      "id": "q-gap-rpc-horizon-unindexed-reference",
+      "note": "Tests one docs-search ranking defect (sd-059, filed in improvements/) and a generic absence rule that q-live-ll-guessed-slug-soft-empty already tests; no Stellar fact rides on it."
+    }
+  ]
+}

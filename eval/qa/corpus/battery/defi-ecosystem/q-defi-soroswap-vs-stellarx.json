@@ -5,19 +5,18 @@
     "lumenloop.search_directory"
   ],
   "golden": {
-    "answer": "They are different product layers. **Soroswap** develops Soroban AMM and aggregation contracts plus API/SDK/frontend components; its API/service can quote across a wider venue set than the on-chain aggregator contract itself. **StellarX**, currently operated by Ultra Stellar, is a non-custodial trading interface for classic Stellar DEX order books and protocol-level classic liquidity pools. AMM access does not prove StellarX owns a proprietary Soroban AMM or aggregator. Date current availability rather than asserting a timeless shutdown/non-shutdown state.",
+    "answer": "Soroswap, built by PaltaLabs, is Soroban AMM and aggregation contracts plus an API and SDK. Its on-chain aggregator routes only through Soroban AMM venues; its API can also quote classic SDEX liquidity, executed as a separate classic path payment. StellarX, run by Ultra Stellar, is a non-custodial trading interface for classic order books and pools, not a Soroban router or AMM. Soroswap's 'first DEX' wording is its own claim.",
     "keyFacts": [
-      "Treats Soroswap-owned Soroban contracts/API and the StellarX UI as different roles.",
-      "Treats API routing, on-chain aggregation, and UI access as three layers.",
-      "Names Ultra Stellar as StellarX's builder.",
-      "Describes StellarX as a non-custodial Classic-liquidity trading UI."
+      "Soroswap (PaltaLabs) builds Soroban AMM and aggregation contracts plus API and SDK.",
+      "The on-chain aggregator routes Soroban venues; API quotes may add classic SDEX.",
+      "StellarX is a non-custodial classic-DEX trading interface run by Ultra Stellar.",
+      "Soroswap's 'first' or 'best' wording is its own claim, not independent history."
     ],
     "avoid": [
-      "Do NOT call the products the same type or infer a StellarX Soroban router/AMM from AMM access.",
-      "Do NOT make an unsupported permanent shutdown or availability claim.",
-      "Do NOT claim StellarX is an SDF-built product."
+      "Do NOT call Soroswap and StellarX the same kind of product, or infer a StellarX Soroban router from AMM access.",
+      "Do NOT call StellarX an SDF product, or make a permanent shutdown claim."
     ],
-    "notes": "Confusable-project trap encoded directly. Comparison across two project records. Grounded on Scout: Soroswap (PaltaLabs) = a Soroban DEX plus DEX aggregator; 'first' is Soroswap's own wording, not independently proven. Its on-chain aggregator routes across Soroban AMM venues only. Its Route API quotes can also include the classic SDEX. Do not merge those two layers. StellarX = a decentralized TRADING PLATFORM/UI on Stellar (with AMM access), built by Ultra Stellar (same team as LOBSTR/StellarTerm) — NOT an aggregator, NOT SDF.\nAlso good if the answer: Notes they are different categories: aggregation/routing vs a trading UI over Classic + AMM.\nGolden cites: Sources distinguishing Soroswap (aggregator) from StellarX (trading UI).\nGT-18 CORRECTION 2026-07-10: preserve product-layer boundaries and remove the inherited shutdown absolute."
+    "notes": "Credit a dated aggregator venue list; an undated claim that the deprecated aggregator is current is stale."
   },
   "tags": {
     "category": "defi-ecosystem",
@@ -200,24 +199,35 @@
             "note": "The interface still defines Phoenix(PhoenixHop). This does not establish live API routing through Phoenix."
           }
         ]
+      },
+      {
+        "claim": "Soroswap's on-chain aggregator v3 hops across Soroban venues; the API can quote classic SDEX separately",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://docs.soroswap.finance/aggregator/technical-reference/contracts/aggregator-v3",
+            "observedAt": "2026-11-14",
+            "note": "Aggregator v3 CARVQXFP4JF5ELLXUMQ6DALR346YVGBMQOHB4ENA7SSVXAYABXLBDDC4; previous aggregator deprecated; hops Soroswap, Aqua, Sushi, Phoenix, Comet"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-09",
-      "by": "Retirement reconciliation lane (Codex); independent live reviewer: Codex frontier gpt-6-astra high (research/audits/2026-11-09-improvements-sweep/review-astra.md)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-defi, verify-defi; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "C https://stellarlight.xyz/api/projects/search?q=soroswap&limit=100 (observedAt 2026-11-09T20:47:04Z): The Soroswap row now lists Soroswap AMM, Aquarius, SushiSwap V3 and Comet, with SDEX quoted as a separate classic path payment.",
-        "C https://stellarlight.xyz/api/projects/search?q=phoenix&limit=100 (observedAt 2026-11-09T20:47:04Z): The Phoenix row says its v3 hop type does not establish inclusion in the Soroswap Aggregator API venue list.",
-        "A https://docs.soroswap.finance/aggregator/supported-amms.md (observedAt 2026-11-09T20:47:04Z): Published API venues remain soroswap, aqua, sushi, comet and sdex; SDEX executes as a classic path payment.",
-        "A https://docs.soroswap.finance/aggregator/technical-reference/contracts/aggregator-v3.md (observedAt 2026-11-09T20:47:04Z): The interface still defines Phoenix(PhoenixHop). This does not establish live API routing through Phoenix.",
-        "sls-099 resolved: improvements/resolved.json entry sls-099 replaces the active finding pointer. Historical 2026-06-22/2026-06-29/2026-11-02 Scout quotes and earlier contract snapshots remain historical; the live descriptions no longer make those stale venue claims.",
-        "Independent live re-derivation: reviewer Codex frontier gpt-6-astra high, research/audits/2026-11-09-improvements-sweep/review-astra.md, sls-099; separately fetched both Scout searches and both operator pages at 2026-11-09T20:40Z before reading the author report.",
-        "Sibling sweep 2026-11-09: all battery matches for Soroswap, Phoenix, Hana, hana.money and hanawallet.io were inspected. q-defi-phoenix-what-is, q-defi-soroswap-what-is, q-defi-soroswap-vs-stellarx and q-defi-provide-liquidity-impermanent-loss share the dated venue correction; q-eco-dex-saturation, q-eco-defi-market-map, q-eco-defi-projects-discovery, q-gap-semantic-similar-projects, q-defi-named-newer-protocols, q-eco-most-active-defi-projects, q-defi-liquid-staking-whitespace and q-edge-factcheck-soroswap-first-amm do not require Phoenix in the current Soroswap API venue set. q-eco-stellar-wallets-list, q-edge-ambig-best-wallet and q-tool-wallets-comparison carry no stale Hana-domain claim. Other matches concern asset listings, contract access, funding history or unrelated project discovery. No contradiction; answer, keyFacts and avoid are unchanged in every edited case."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-defi-soroswap-vs-stellarx",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-defi-soroswap-vs-stellarx",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-defi-soroswap-vs-stellarx",
+        "Live A 2026-11-14: https://docs.soroswap.finance/aggregator/technical-reference/contracts/aggregator-v3 -- 'Aggregator v3 CARVQXFP4JF5ELLXUMQ6DALR346YVGBMQOHB4ENA7SSVXAYABXLBDDC4; previous aggregator deprecated; hops Soroswap, Aqua, Sushi, Phoenix, Comet'"
       ],
       "rootCause": [
-        "freshness-drift"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-defi-soroswap-vs-stellarx"
+    "origin": "raven-next q-defi-soroswap-vs-stellarx",
+    "notes": "Confusable-project trap encoded directly. Comparison across two project records. Grounded on Scout: Soroswap (PaltaLabs) = a Soroban DEX plus DEX aggregator; 'first' is Soroswap's own wording, not independently proven. Its on-chain aggregator routes across Soroban AMM venues only. Its Route API quotes can also include the classic SDEX. Do not merge those two layers. StellarX = a decentralized TRADING PLATFORM/UI on Stellar (with AMM access), built by Ultra Stellar (same team as LOBSTR/StellarTerm) — NOT an aggregator, NOT SDF.\nAlso good if the answer: Notes they are different categories: aggregation/routing vs a trading UI over Classic + AMM.\nGolden cites: Sources distinguishing Soroswap (aggregator) from StellarX (trading UI).\nGT-18 CORRECTION 2026-07-10: preserve product-layer boundaries and remove the inherited shutdown absolute.",
+    "leaf": "defi.dex-amm"
   }
 }

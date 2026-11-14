@@ -5,17 +5,17 @@
     "scout.searchResearch"
   ],
   "golden": {
-    "answer": "- Start by **submitting an interest form on communityfund.stellar.org**; eligible applicants are then invited to submit a full proposal. (https://communityfund.stellar.org/awards)\n- The full proposal is submitted to a **specific Build track — Open, Integration, or RFP**. Open is for experienced teams pursuing novel or brand-new Stellar use cases, with existing traction or deep Stellar/domain knowledge; Integration and RFP are panel-only. (https://stellar.gitbook.io/scf-handbook/scf-awards/build-award)\n- The proposal should include a **technical roadmap, milestone plan, budget breakdown, traction, and team info**; projects typically run **3–6 months**. (https://stellar.gitbook.io/scf-handbook/scf-awards/build-award)\n- Review involves a **prescreen plus panel review** (the Open Track Delegate Panel or a Category Delegate Panel), and for the Open Track a **community (NQG) vote**. (https://stellar.gitbook.io/scf-handbook/scf-awards/build-award)\n- Awardees must **complete KYC/KYB before receiving milestone-based tranche payments** (up to $150K worth of XLM). (https://stellar.gitbook.io/scf-handbook/scf-awards/build-award)",
+    "answer": "Submit the interest form on communityfund.stellar.org. If you are eligible, SCF invites you to submit a full proposal to one Build track (Open, Integration or RFP) by that round's deadline. The proposal goes through prescreen, panel review and possible revision; only Open Track projects get a community vote. Selected teams complete KYC/KYB, accept the award and receive milestone-based payments.",
     "keyFacts": [
-      "Applicants start by submitting an interest form on communityfund.stellar.org.",
-      "SCF invites eligible applicants to submit a full Open, Integration, or RFP proposal.",
-      "Awardees must complete KYC/KYB before receiving (tranche) payments."
+      "Applicants start with an interest form on communityfund.stellar.org.",
+      "Eligible applicants are invited to submit a full Open, Integration or RFP proposal.",
+      "Review runs prescreen, panel review, possible revision, then an Open-Track-only vote.",
+      "KYC/KYB is required before milestone-based payments."
     ],
     "avoid": [
-      "Do NOT invent a generic '/apply' email or claim there is no application (the interest-form → invitation → proposal flow is real).",
-      "Do NOT claim stellar.org/enterprise-fund or its application form is the SCF Build application path, and do not attach SCF Build mechanics — the $150K XLM cap, milestone tranches, KYC-before-payment, delegate-panel review, or Open-Track community vote — to the separate Enterprise Fund. The Enterprise Fund's own application is live; the conflation is wrong."
+      "Do NOT present the SDF Enterprise Fund application as the SCF Build path."
     ],
-    "notes": "Dossier §2.5. Trap: confusing the SCF Build application flow with the separate Enterprise Fund.\nAlso good if the answer: The proposal requires a technical roadmap, milestone plan, budget breakdown, traction, and team info. | There is a prescreen + panel review (Track Delegate Panels), and an Open-Track community vote.\nGolden cites: The SCF Build Award handbook application-flow page or communityfund.stellar.org."
+    "notes": "The awards page says rounds run about every six weeks, but 2026 deadlines were 5 to 12 weeks apart; do not require a fixed cadence, per-stage durations or a results week."
   },
   "tags": {
     "category": "scf-grants-builders",
@@ -53,16 +53,50 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer re-verification, no gospel change; applier refreshed provenance; .agents/rounds/2026-11-02-golden-audit.md, batch scf-grants-builders-03)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-scf, verify-audit-scf; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "A 2026-11-02: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award.md — 'Submit the interest form on the SCF Website ... If you meet requirements, you will be invited to submit to an open SCF round'; 'Award size: up to $150,000 worth of XLM'; 'Timeline: Typically 3–6 months per project'; 'Community Vote (for Open Track only)'.",
-        "A 2026-11-02: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/open-track — 'reviewed by 2 reviewers from that quarter's Open Track Delegate Panel'; integration-track page names the Category Delegate Panel.",
-        "A 2026-11-02: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/submission-criteria — 'Entities funded through the Matching Fund or Enterprise Fund are not eligible' (separate path).",
-        "D 2026-11-02: https://devgrantsdaily.com/industry/web3/ — 'Stellar Community Fund Build Award gives up to $150K in XLM ... Round SCF #46 closes on November 8, 2026'.",
-        "No gospel change. Sibling sweep: q-scf-eligibility-criteria, q-scf-vs-sdf-enterprise-fund, q-org-sdf-enterprise-fund, q-scf-v7-changes; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-scf-how-to-apply",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-scf-how-to-apply",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-scf-how-to-apply",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/build-award/README.md -- 'you'll receive an invitation via email to submit a full SCF Build proposal to one of the three Build Award tracks'",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/build-award/README.md -- 'Community Vote (for Open Track only)'",
+        "Live A 2026-11-14: https://communityfund.stellar.org/awards -- 'SCF Build Award rounds run every 6 weeks.'",
+        "Live A 2026-11-14: https://communityfund.stellar.org/awards -- 'SCF #46 submission deadline November 9, 2026 versus the 2026 deadlines Feb 8, Mar 15, Apr 26, Jun 14, Aug 16 (case record): gaps of 5 to 12 weeks'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit",
+        "freshness-drift"
       ]
     },
-    "origin": "raven-next q-scf-how-to-apply"
+    "origin": "raven-next q-scf-how-to-apply",
+    "notes": "Dossier §2.5. Trap: confusing the SCF Build application flow with the separate Enterprise Fund.\nAlso good if the answer: The proposal requires a technical roadmap, milestone plan, budget breakdown, traction, and team info. | There is a prescreen + panel review (Track Delegate Panels), and an Open-Track community vote.\nGolden cites: The SCF Build Award handbook application-flow page or communityfund.stellar.org.",
+    "corroboration": [
+      {
+        "claim": "Interest form, then invitation, then full proposal to one of three tracks; prescreen, panel, revision, Open-only vote; KYC before payment.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/build-award/README.md",
+            "observedAt": "2026-11-14",
+            "note": "you'll receive an invitation via email to submit a full SCF Build proposal to one of the three Build Award tracks"
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/build-award/README.md",
+            "observedAt": "2026-11-14",
+            "note": "Community Vote (for Open Track only)"
+          },
+          {
+            "class": "A",
+            "ref": "https://communityfund.stellar.org/awards",
+            "observedAt": "2026-11-14",
+            "note": "SCF Build Award rounds run every 6 weeks."
+          }
+        ]
+      }
+    ],
+    "leaf": "funding.scf-apply"
   }
 }

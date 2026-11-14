@@ -5,17 +5,17 @@
     "stellarDocs.search_sdk_cli_tools_docs"
   ],
   "golden": {
-    "answer": "- **SEP-53 — \"Sign and Verify Messages\"** (Status: **Final**) standardizes signing and verifying **arbitrary off-chain messages** with Stellar ed25519 keypairs, preventing ecosystem fragmentation [1].\n- Mechanism: prefix the message with **`\"Stellar Signed Message:\\n\"`**, hash with single-round **SHA-256**, and sign/verify the hash with the ed25519 key [1].\n- Use cases: proving control of an address on social platforms, off-chain agreement/terms verification, cross-chain address proof [1].\n- It is **distinct from SEP-10** (web-auth challenge/JWT) — SEP-53 is general message signing, not an auth flow. The Stellar CLI `message` subcommand implements it.",
+    "answer": "SEP-53, Sign and Verify Messages, is Final (v1.0.0). To sign an arbitrary message, prefix its exact bytes with `Stellar Signed Message:\\n` (with the newline), apply one SHA-256, and ed25519-sign the 32-byte digest with the Stellar key. It is off-chain, not a transaction, and proves control of one key, not a multisig threshold or contract-account policy. SEP-7 is the separate `web+stellar:` URI scheme for asking a wallet to sign a transaction.",
     "keyFacts": [
-      "SEP-53 is titled 'Sign and Verify Messages'.",
-      "SEP-53 standardizes signing and verifying arbitrary messages with Stellar keypairs.",
-      "SEP-53 is in Final status."
+      "SEP-53, Sign and Verify Messages, is a Final standard.",
+      "The message is prefixed with 'Stellar Signed Message:\\n' before hashing.",
+      "The prefixed bytes are hashed once with SHA-256 and signed with ed25519.",
+      "A SEP-53 signature is made off-chain, not submitted as a Stellar transaction."
     ],
     "avoid": [
-      "Do NOT misnumber SEP-53 or attribute a different title to it.",
-      "Do NOT conflate SEP-53 with SEP-10 (SEP-10 is the web-auth challenge/token, not general message signing)."
-    ],
-    "notes": "SEP-53 verified Final (ecosystem README + sep-0053.md preamble: Status Final, created 2025-02-01, updated 2026-06-18). Spec uses ed25519 + single-round SHA-256 over prefix 'Stellar Signed Message:\\\\n'. CLI `message` subcommand exists but is a should_have, not a hard gate.\nAlso good if the answer: The Stellar CLI `message` subcommand implements SEP-53.\nGolden cites: The SEP-53 spec in the stellar/stellar-protocol repo (or developers.stellar.org SEP listing)."
+      "Do NOT claim that SEP-53 message signing is broadcast as a Stellar transaction.",
+      "Do NOT claim that SEP-53 is the SEP-10 web authentication challenge."
+    ]
   },
   "tags": {
     "category": "assets-anchors-seps",
@@ -37,21 +37,21 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-04)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-assets, verify-audit-assets; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0053.md — \"Title: Sign and Verify Messages / Status: Final / Created: 2025-02-01 / Updated: 2026-06-18 / Version: 1.0.0\" (observedAt 2026-11-02; supports golden.keyFacts[0]: confirmed)",
-        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/README.md — \"| [SEP-0053](sep-0053.md) | Sign and Verify Messages | Jun Luo, Pamphile Roy, OrbitLens, Piyal Basu | Final |\" (observedAt 2026-11-02; supports golden.keyFacts[0]: confirmed)",
-        "[B] https://github.com/stellar/stellar-protocol/commits/master/ecosystem/sep-0053.md — \"b1933843 2026-06-18 SEP-53: Change Status to Final (#1963)\" (observedAt 2026-11-02; supports golden.keyFacts[2]: confirmed-as-of)",
-        "[D] perplexity_ask (citing github.com/stellar/stellar-protocol ecosystem README + sep-0006.md) — \"SEP-6 ... Active; its status explicitly says \"Interactive components are deprecated in favor of SEP-24.\" ... SEP-38 is Draft, SEP-53 is Final, and SEPs 7 and 8 are Final.\" (observedAt 2026-11-02; supports golden.keyFacts[2]: confirmed-as-of)",
-        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0053.md — \"a fixed prefix string is used: \"Stellar Signed Message:\\n\" ... This proposal standardizes on single-round SHA-256 ... Proving control of a Stellar address on social platforms; Verifying off-chain agreements or terms; Integrating with cross-chain or multi-chain dApps that require address proof\" (observedAt 2026-11-02; supports golden.answer: confirmed)",
-        "[D] https://docs.walletconnect.com/wallets/chains/stellar (Parallel web_search) — \"sign(Ed25519, sha256(\"Stellar Signed Message:\\n\" || message)) ... matches the finalized SEP-53 convention\" (observedAt 2026-11-02; supports golden.answer: confirmed)",
-        "[A] https://developers.stellar.org/docs/tools/cli/stellar-cli#subcommands — \"message — Sign and verify arbitrary messages using SEP-53\" (observedAt 2026-11-02; supports golden.notes: confirmed)",
-        "[B] https://github.com/stellar/stellar-cli/blob/main/cmd/soroban-cli/src/commands/message/mod.rs — \"/// The prefix used for SEP-53 message signing.\" (observedAt 2026-11-02; supports golden.notes: confirmed)",
-        "[E] stellarDocs.search_docs 'SEP-53 sign verify message' -> developers.stellar.org/docs/tools/cli/agent-cli/guides/sign-messages — \"stellar message sign and verify implement SEP-53\" (observedAt 2026-11-02; supports golden.notes: confirmed)",
-        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0010.md — \"Title: Stellar Web Authentication / Status: Active / Version: 3.4.1\" (observedAt 2026-11-02; supports golden.avoid[1]: confirmed)",
-        "No gospel change: proposer matrix verdict 'unchanged'; no proposals for this case.",
-        "Sibling sweep 2026-11-02: checked q-sep53-message-signing; no contradiction with this case's facts."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-assets.json#q-sep-53-sign-verify-message",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-assets.json#q-sep-53-sign-verify-message",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-sep-53-sign-verify-message",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md -- 'Title: Sign and Verify Messages Status: Final Updated: 2026-06-18 Version: 1.0.0'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md -- 'fixed prefix string is used: `\"Stellar Signed Message:\\n\"`,'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/README.md -- '| [SEP-0053](sep-0053.md) | Sign and Verify Messages | Jun Luo, Pamphile Roy, OrbitLens, Piyal Basu | Final'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md -- 'In multi-signer scenarios, possession of just one key may not grant full control over the account.'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-cli/blob/main/cmd/soroban-cli/src/commands/message/mod.rs -- '/// The prefix used for SEP-53 message signing.'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md -- 'Status: Final Updated: 2026-06-18 Version: 1.0.0'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
     "origin": "raven-next q-sep-53-sign-verify-message",
@@ -73,7 +73,57 @@
             "note": "Fetched SEP-53 source is titled Sign and Verify Messages, defines arbitrary-message signing, and records Final status."
           }
         ]
+      },
+      {
+        "claim": "SEP-53 'Sign and Verify Messages' is Final v1.0.0 (updated 2026-06-18); prefix 'Stellar Signed Message:\\n', single SHA-256, ed25519.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md",
+            "observedAt": "2026-11-14",
+            "note": "Title: Sign and Verify Messages Status: Final Updated: 2026-06-18 Version: 1.0.0"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md",
+            "observedAt": "2026-11-14",
+            "note": "fixed prefix string is used: `\"Stellar Signed Message:\\n\"`,"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/README.md",
+            "observedAt": "2026-11-14",
+            "note": "| [SEP-0053](sep-0053.md) | Sign and Verify Messages | Jun Luo, Pamphile Roy, OrbitLens, Piyal Basu | Final"
+          }
+        ]
+      },
+      {
+        "claim": "A single-key signature does not prove control of a multi-signer account.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md",
+            "observedAt": "2026-11-14",
+            "note": "In multi-signer scenarios, possession of just one key may not grant full control over the account."
+          }
+        ]
+      },
+      {
+        "claim": "Stellar CLI has a `message` subcommand implementing SEP-53.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-cli/blob/main/cmd/soroban-cli/src/commands/message/mod.rs",
+            "observedAt": "2026-11-14",
+            "note": "/// The prefix used for SEP-53 message signing."
+          }
+        ]
       }
-    ]
+    ],
+    "notes": "SEP-53 verified Final (ecosystem README + sep-0053.md preamble: Status Final, created 2025-02-01, updated 2026-06-18). Spec uses ed25519 + single-round SHA-256 over prefix 'Stellar Signed Message:\\\\n'. CLI `message` subcommand exists but is a should_have, not a hard gate.\nAlso good if the answer: The Stellar CLI `message` subcommand implements SEP-53.\nGolden cites: The SEP-53 spec in the stellar/stellar-protocol repo (or developers.stellar.org SEP listing).",
+    "leaf": "standards.wallet-utility-seps"
   }
 }

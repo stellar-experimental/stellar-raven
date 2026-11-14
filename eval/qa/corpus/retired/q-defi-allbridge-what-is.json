@@ -1,0 +1,21 @@
+{
+  "id": "q-defi-allbridge-what-is",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-defi (golden coverage audit)",
+    "reviewer": "verify-defi (golden coverage audit)",
+    "reason": "One bridge's volatile product status has no facet of its own, and q-defi-bridge-evm-to-stellar-axelar already states Allbridge Core's discontinuation.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-defi-allbridge-what-is",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-defi-allbridge-what-is",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-defi-allbridge-what-is"
+    ],
+    "lastCaseContentSha256": "29593800099cf361f25446804e32aa79e508c65a06a036686b32361c471d4c7c",
+    "replacementIds": []
+  }
+}

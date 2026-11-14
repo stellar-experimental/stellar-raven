@@ -1,0 +1,21 @@
+{
+  "id": "q-sor-contract-trustlines-c-address",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-soroban-a (golden coverage audit)",
+    "reviewer": "verify-audit-soroban-a (golden coverage audit)",
+    "reason": "Repeats q-asset-trustline-vs-sac kf3 (a C-address balance is SAC storage, not a trustline).",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-a.json#q-sor-contract-trustlines-c-address",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-a.json#q-sor-contract-trustlines-c-address",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-sor-contract-trustlines-c-address"
+    ],
+    "lastCaseContentSha256": "b17ae2c03b9b0955fad80fca2c3e6bd05741a62a21bd41a24ed63240dc88f9e5",
+    "replacementIds": []
+  }
+}

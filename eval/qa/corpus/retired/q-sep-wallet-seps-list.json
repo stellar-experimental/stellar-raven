@@ -1,0 +1,23 @@
+{
+  "id": "q-sep-wallet-seps-list",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-assets (golden coverage audit)",
+    "reviewer": "verify-audit-assets (golden coverage audit)",
+    "reason": "Merged into q-sep-catalog-list. The q-sep-catalog-list rewrite tests the same numbers and purposes (SEP-1, 6, 10, 12, 24); 'wallet needs' versus 'commonly used' is the same knowledge.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-assets.json#q-sep-wallet-seps-list",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-assets.json#q-sep-wallet-seps-list",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-sep-wallet-seps-list"
+    ],
+    "lastCaseContentSha256": "edb87db7021df10037f71c6f16aac41c05f0f782b7f2a3487e385c56bd597f4d",
+    "replacementIds": [
+      "q-sep-catalog-list"
+    ]
+  }
+}

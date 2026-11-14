@@ -6,18 +6,16 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "A **path payment** converts one asset into another in a **single atomic transaction**, routing\nacross the **Stellar DEX orderbook and/or AMM liquidity pools** to find a path — so the sender pays\nin one asset and the recipient receives a different one, and neither party has to hold the\nintermediate asset (this is what enables on-chain FX, e.g. USDC → EURC) [1]. Two operations\nimplement it [1]:\n\n- **`PathPaymentStrictSend`** — the sender fixes the **exact source amount**; the recipient receives\n  **at least `destMin`** of the destination asset.\n- **`PathPaymentStrictReceive`** — the recipient is guaranteed an **exact destination amount**; the\n  sender pays **at most `sendMax`**.\n\nIt settles in roughly one ledger close (~5 s) at the normal low network fee — no off-chain bridge or\nthird-party DEX router is involved.\n\nSource: [1] developers.stellar.org path-payments / liquidity-on-the-Stellar-DEX docs.",
+    "answer": "A path payment converts one asset to another in a single atomic transaction, routing through the order book, AMM pools, or both, so the recipient can receive a different asset than the sender pays. `PathPaymentStrictSend` fixes the amount sent and the recipient gets at least `destMin`. `PathPaymentStrictReceive` fixes the amount received and the sender pays at most `sendMax`.",
     "keyFacts": [
-      "Names both path-payment operations: PathPaymentStrictSend and PathPaymentStrictReceive.",
-      "Converts one asset to another through a path payment.",
-      "Routes through the DEX order book, AMM pools, or both.",
-      "Executes the routed payment atomically in one transaction."
+      "PathPaymentStrictSend fixes the amount sent; the recipient gets at least destMin.",
+      "PathPaymentStrictReceive fixes the amount received; the sender pays at most sendMax.",
+      "Routing can use the DEX order book, AMM pools, or both.",
+      "The conversion executes atomically in one transaction."
     ],
     "avoid": [
-      "Do NOT invent operation names (e.g. 'PathSwapOp', 'CrossAssetPaymentOp') as the canonical ops.",
-      "Do NOT claim path payments require an off-chain bridge or a third-party DEX router."
-    ],
-    "notes": "Dossier §3.2. Two ops: PathPaymentStrictSend / PathPaymentStrictReceive. Verified against developers.stellar.org path-payments / liquidity docs.\nAlso good if the answer: Strict-send fixes the source amount (receiver gets at least dest_min); strict-receive fixes the destination amount (sender pays at most send_max). | Settles in a few seconds (≈ one ledger close, ~5s) at low fee.\nGolden cites: A path-payments page on developers.stellar.org."
+      "Do NOT claim that path payments require an off-chain bridge or a third-party DEX router."
+    ]
   },
   "tags": {
     "category": "assets-anchors-seps",
@@ -65,16 +63,19 @@
       }
     ],
     "verified": {
-      "date": "2026-11-03",
-      "by": "lane urls (Codex gpt-6.1-sol high)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-assets, verify-audit-assets; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "https://developers.stellar.org/docs/learn/encyclopedia/transactions-specialized/path-payments (HTTP 308, 2026-11-03): The guide documents SDEX/pool routing and Strict Send/Strict Receive limits. Current source: https://developers.stellar.org/docs/build/guides/transactions/path-payments (HTTP 200).",
-        "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-assets.json#q-asset-path-payment-ops",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-assets.json#q-asset-path-payment-ops",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-asset-path-payment-ops"
       ],
       "rootCause": [
-        "freshness-drift"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-asset-path-payment-ops"
+    "origin": "raven-next q-asset-path-payment-ops",
+    "notes": "Dossier §3.2. Two ops: PathPaymentStrictSend / PathPaymentStrictReceive. Verified against developers.stellar.org path-payments / liquidity docs.\nAlso good if the answer: Strict-send fixes the source amount (receiver gets at least dest_min); strict-receive fixes the destination amount (sender pays at most send_max). | Settles in a few seconds (≈ one ledger close, ~5s) at low fee.\nGolden cites: A path-payments page on developers.stellar.org.",
+    "leaf": "defi.path-payments"
   }
 }

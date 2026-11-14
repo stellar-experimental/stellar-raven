@@ -70,6 +70,8 @@
         "Sibling sweep 2026-11-02: q-cctp-v2-usdc-stellar, q-asset-usdc-eurc-issuer, q-token-circle-usdc-on-stellar checked; no contradiction."
       ]
     },
-    "origin": "raph move-usdc-onto-stellar-from-ethereum-or-exchange"
+    "origin": "raph move-usdc-onto-stellar-from-ethereum-or-exchange",
+    "leaf": "wallets.wrong-network",
+    "secondaryLeaf": "assets.usdc"
   }
 }

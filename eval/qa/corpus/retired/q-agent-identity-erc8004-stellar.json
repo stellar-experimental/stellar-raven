@@ -1,0 +1,21 @@
+{
+  "id": "q-agent-identity-erc8004-stellar",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-compliance (golden coverage audit)",
+    "reviewer": "verify-audit-compliance (golden coverage audit)",
+    "reason": "Duplicates q-defi-agent-identity-stellar-experimental, which already tests ERC-8004 registries as signals rather than proof and Stellar ports as community-run.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-compliance.json#q-agent-identity-erc8004-stellar",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-compliance.json#q-agent-identity-erc8004-stellar",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-agent-identity-erc8004-stellar"
+    ],
+    "lastCaseContentSha256": "5a61869195395fa100b72031af1f2308091e0f08a0a75def2e24c01ecb9a0f47",
+    "replacementIds": []
+  }
+}

@@ -39,7 +39,7 @@ Record `truth.domain` (`real-world`, `corpus-grounded`, or `mixed`) per case; cl
 **Canonical-page conflicts.** When a canonical page or aggregator conflicts with stronger
 authority, verify both claims. A reconciled answer may be `correct`; an attributed but unresolved
 canonical-page claim is at most `partial`; the same false claim without attribution is `wrong`. Put
-the caution in that case's `golden.notes` in the lint-canonical form: name the page or source,
+the caution in that case's `golden.notes` (a grading caution, so judge-facing) in the lint-canonical form: name the page or source,
 state that an attributed quote is not a wrong claim, and state the cap. A cap must name an active
 `improvements/` finding (`verified`, `reported-upstream`, or `declined-upstream`) or the
 `cap-finding` lint fails (ADR-0008). File that finding once its live re-check passes, and remove
@@ -92,10 +92,16 @@ the fact from live sources without reading the proposer's notes. Reviewer and au
 | confirmed | Pin it, with an `asOf` in the text if it is volatile |
 | disputed | Never pin. Set `truth.status: "disputed"`, record both sides, add a grader caution ("sources disagree; do not penalize either figure"), use sourcing-guard avoid items instead of number traps, and file the reconciliation upstream |
 | contradicted | Fix the golden and record how the wrong fact got in |
-| unverifiable | Not claim it. Move it to `golden.notes` or remove it. Label corpus-only facts ("per the Scout corpus") |
+| unverifiable | Not claim it. Remove it from judge-facing text and keep its provenance in `truth.notes`. Label corpus-only facts ("per the Scout corpus") |
 
 - **Gate the durable form** of a contested or volatile fact: the protocol version, the CAP or SEP
   ID, "cite a dated primary source", or the behavior of flagging staleness.
+- **Keep judge-facing text compact.** Aim for an answer of about 60 words where the truth allows,
+  two to four single-predicate key facts that state world facts, avoid items only for claims shown
+  false and always in the form `Do NOT …`, and `golden.notes` limited to grading cautions.
+  Provenance, history, and source notes go in the judge-blind `truth.notes`. A case that grades
+  Raven mechanics rather than Stellar truth carries `truth.lane: "tool"` and stays out of the
+  headline.
 - **Update `truth.verified`** on every gospel change. It holds the latest event only: `date`, `by`,
   `evidence` (URLs or ledger paths), and `rootCause` (an `improvements/` path, a `.agents/TODO.md`
   entry, or `freshness-drift`). A score or verdict is never a root cause.
@@ -137,13 +143,18 @@ contract. The decisions this skill owns:
 
 - **Propose, then activate.** A new ID lands as a proposal in one commit and activates in a later
   commit after source verification, duplicate and boundary checks, and an independent reviewer.
+- **Leaf.** A new headline case names one taxonomy leaf from `eval/qa/taxonomy.json` in
+  `truth.leaf`, and at most one `truth.secondaryLeaf`. Activating a case on an empty leaf removes
+  that leaf's `openSlots` entry.
 - **Quarantine** before the next aggregate when an independent reviewer confirms a
   score-independent truth or validity conflict. Record author, reviewer, evidence, start date, and
   a decision date within 30 days. That decision corrects, retires, or independently renews the
   case; reactivation is never automatic. Judge noise alone sets `reviewState: queued`.
 - **Retire** only for a score-independent reason: duplication, obsolete scope, unanswerable
   wording, or lost relevance. The tombstone keeps evidence, reviewer, date, last digest, and
-  replacement IDs. IDs are never reused.
+  replacement IDs, and its reason is one self-contained sentence. A merge is a retirement whose
+  replacement is the survivor; the survivor absorbs any fact only the merged case tested. IDs are
+  never reused.
 - **Mass review** starts at the earliest of 25 queued active cases, five percent queued, or one
   quarter. Bind it to the `qa-mass-review-rules-v1` digest, keep reviewers blind to the desired
   score movement, and report corpus health separately from system performance.

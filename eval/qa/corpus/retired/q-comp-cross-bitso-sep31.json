@@ -1,0 +1,21 @@
+{
+  "id": "q-comp-cross-bitso-sep31",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-compliance (golden coverage audit)",
+    "reviewer": "verify-audit-compliance (golden coverage audit)",
+    "reason": "Retired with no replacement because SEP-31 versus SEP-24 stays in the active case q-sep6-sep24-sep31-choice and Bitso's directory role is an entity detail that q-anchor-list-builders-discovery already exercises.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-compliance.json#q-comp-cross-bitso-sep31",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-compliance.json#q-comp-cross-bitso-sep31",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-comp-cross-bitso-sep31"
+    ],
+    "lastCaseContentSha256": "89d59ad16986f67179fc09ceaf93526b51107659f16c501756cb87685530e284",
+    "replacementIds": []
+  }
+}

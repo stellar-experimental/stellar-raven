@@ -1,0 +1,23 @@
+{
+  "id": "q-comp-sac-inherits-flags",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-compliance (golden coverage audit)",
+    "reviewer": "verify-audit-compliance (golden coverage audit)",
+    "reason": "Merged into q-asset-trustline-vs-sac. Third case on 'how a classic asset is exposed to contracts'. Absorb one fact: the SAC keeps the asset's authorization and clawback controls.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-compliance.json#q-comp-sac-inherits-flags",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-compliance.json#q-comp-sac-inherits-flags",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-comp-sac-inherits-flags"
+    ],
+    "lastCaseContentSha256": "ce6edfa1ce428ab7f0d62310fe3a7ce58b745a6432aa16dd87bab1039b581b88",
+    "replacementIds": [
+      "q-asset-trustline-vs-sac"
+    ]
+  }
+}

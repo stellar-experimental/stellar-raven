@@ -1,0 +1,23 @@
+{
+  "id": "q-asset-rwa-tokenized-freshness",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-assets (golden coverage audit)",
+    "reviewer": "verify-audit-assets (golden coverage audit)",
+    "reason": "Merged into q-eco-stellar-rwa-stablecoin-volume, which asks for the same dated RWA value with its basis and carries SDF's Q3 2026 figure of about $4.1B.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-assets.json#q-asset-rwa-tokenized-freshness",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-assets.json#q-asset-rwa-tokenized-freshness",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-asset-rwa-tokenized-freshness"
+    ],
+    "lastCaseContentSha256": "3d983ef2713c7b1ea29f03cc8a28080bfded58489939a703f5a2a75d25f259e8",
+    "replacementIds": [
+      "q-eco-stellar-rwa-stablecoin-volume"
+    ]
+  }
+}

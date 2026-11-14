@@ -6,18 +6,17 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "Define a typed event with `#[contractevent]` and call its generated `publish(&env)` method. The older raw `env.events().publish` path is deprecated. Successful contract events are recorded in transaction meta and queried off-chain with Stellar RPC `getEvents`; this is a paginated query/cursor API, not a durable subscription. Failed invocations roll back contract events; diagnostic events have different success/failure behavior and should not be conflated. RPC query history is bounded and provider/configuration dependent—inspect the endpoint's current health/configuration and use an indexer for durable history rather than freezing a universal day count.",
+    "answer": "Define a typed event with `#[contractevent]` and call its generated `publish(&env)`; raw `env.events().publish` is deprecated. Successful contract events are recorded in transaction meta and read off-chain with RPC `getEvents`, a paginated query, not a subscription. RPC history is bounded: the stock default is 120960 ledgers (about seven days, as of 2026-11-14) and providers differ, so use an indexer for durable history.",
     "keyFacts": [
-      "Leads with #[contractevent] plus typed Event::publish and marks raw publish deprecated.",
-      "Event categories include successful contract events and optional diagnostics.",
-      "`getEvents` supplies event queries.",
-      "Event retention is provider-configured."
+      "Emit with a `#[contractevent]` type's generated `publish(&env)`.",
+      "Raw `env.events().publish` is deprecated.",
+      "Events are read with RPC `getEvents`, a paginated query, not a subscription.",
+      "RPC event history is bounded (stock default about seven days); use an indexer for more."
     ],
     "avoid": [
-      "Do NOT teach raw events as the preferred current API or call getEvents a subscription.",
-      "Do NOT promise permanent history or freeze a universal retention window."
+      "Do NOT promise permanent event history or call `getEvents` a subscription."
     ],
-    "notes": "2026-06-29: removed duplicated Why-these-cards/Edge sections (verified 2026-06-29). Bounded, provider-configured retention is the key fact; 'forever queryable' is the trap. Verified 2026-11-02: typed #[contractevent] events with Event::publish (raw env.events().publish is deprecated), read via RPC getEvents within the history-retention-window (stock default 120960 ledgers, about 7 days).\nAlso good if the answer: RPC retains queryable events for a limited window (stock default about 7 days, configurable per provider); for older events you need an external indexer. | The leading topics are indexed and used to filter getEvents queries.\nGolden cites: The developers.stellar.org events / RPC getEvents documentation.\nGT-46 CORRECTION 2026-07-11: typed-event-first API and provider-configured retention replace deprecated/stale wording."
+    "notes": "Retention is provider-configured: accept a stated window with the as-of caveat, and reject 'forever'."
   },
   "tags": {
     "category": "soroban",
@@ -31,7 +30,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-02-26",
     "sources": [
       {
@@ -226,22 +225,57 @@
             "note": "Raw publish is deprecated: use the #[contractevent] macro on a contract event type."
           }
         ]
+      },
+      {
+        "claim": "Raw `env.events().publish` is deprecated in favor of `#[contractevent]`",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/events.rs",
+            "observedAt": "2026-11-14",
+            "note": "#[deprecated(note = \"use the #[contractevent] macro on a contract event type\")] pub fn publish<T, D>(&self, topics: T, data: D)"
+          }
+        ]
+      },
+      {
+        "claim": "RPC retains a bounded window, stock default 120960 ledgers (about 7 days)",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents.md",
+            "observedAt": "2026-11-14",
+            "note": "stock default of 120960 ledgers (about 7 days, depending on ledger cadence)"
+          },
+          {
+            "class": "F",
+            "ref": "POST https://soroban-testnet.stellar.org getHealth",
+            "observedAt": "2026-11-14",
+            "note": "\"ledgerRetentionWindow\":120960"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-06",
-      "by": "2026-11-05 truth-maintenance coordinator; independent Astra high reviewer t2dx, docs-independent.md",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-soroban-b, verify-audit-soroban-b; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "https://developers.stellar.org/docs/build/guides/events/ingest.md — Each RPC operator sets the history-retention-window; default 120960 ledgers, about 7 days.",
-        "https://developers.stellar.org/docs/learn/migrate/evm/solidity-and-rust-advanced-concepts.md — Event examples use #[contractevent] instead of raw env.events().publish.",
-        "https://raw.githubusercontent.com/stellar/stellar-rpc/v30.0.0/cmd/stellar-rpc/internal/config/options.go — history-retention-window defaults to SevenDayOfLedgers and is operator configurable.",
-        "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/events.rs — Raw publish is deprecated: use the #[contractevent] macro on a contract event type.",
-        "Sibling sweep: q-sor-test-event-assertion-ordering, q-sor-decode-hosterror-codes, q-soroban-unit-testing retain failed-call rollback and last-invocation event semantics. No answer, key fact, avoid clause, or retention value changes. Corrected the v30.0.0 source URL: that tag uses internal/config, not the later internal/rpcv1/config path."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-b.json#q-soroban-publish-events",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-b.json#q-soroban-publish-events",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-soroban-publish-events",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/events.rs -- '#[deprecated(note = \"use the #[contractevent] macro on a contract event type\")] pub fn publish<T, D>(&self, topics: T, data: D)'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents.md -- 'stock default of 120960 ledgers (about 7 days, depending on ledger cadence)'",
+        "Live F 2026-11-14: POST https://soroban-testnet.stellar.org getHealth -- '\"ledgerRetentionWindow\":120960'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/data/apis/rpc.md -- 'RPC retains only a bounded, recent window of history (about 7 days by default).'"
       ],
       "rootCause": [
-        "improvements/resolved.json entries sd-068 and sd-069: live Docs corrections remove stale source-conflict notes."
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-soroban-publish-events"
+    "origin": "raven-next q-soroban-publish-events",
+    "notes": "2026-06-29: removed duplicated Why-these-cards/Edge sections (verified 2026-06-29). Bounded, provider-configured retention is the key fact; 'forever queryable' is the trap. Verified 2026-11-02: typed #[contractevent] events with Event::publish (raw env.events().publish is deprecated), read via RPC getEvents within the history-retention-window (stock default 120960 ledgers, about 7 days).\nAlso good if the answer: RPC retains queryable events for a limited window (stock default about 7 days, configurable per provider); for older events you need an external indexer. | The leading topics are indexed and used to filter getEvents queries.\nGolden cites: The developers.stellar.org events / RPC getEvents documentation.\nGT-46 CORRECTION 2026-07-11: typed-event-first API and provider-configured retention replace deprecated/stale wording.",
+    "leaf": "soroban.events",
+    "secondaryLeaf": "data.events-retention"
   }
 }

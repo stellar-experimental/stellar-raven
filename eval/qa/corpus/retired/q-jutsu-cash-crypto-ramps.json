@@ -1,0 +1,23 @@
+{
+  "id": "q-jutsu-cash-crypto-ramps",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-hist-retail (golden coverage audit)",
+    "reviewer": "verify-hist-retail (golden coverage audit)",
+    "reason": "Merged into q-raph-buy-xlm-safely: refusing to invent a network-wide ramp count is folded into q-raph-buy-xlm-safely as an avoid item.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-jutsu-cash-crypto-ramps",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-jutsu-cash-crypto-ramps",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-jutsu-cash-crypto-ramps"
+    ],
+    "lastCaseContentSha256": "e543b77f828fa24a471e59f85476c735a7d80a3512c53f9295fbd05dbdea2b2f",
+    "replacementIds": [
+      "q-raph-buy-xlm-safely"
+    ]
+  }
+}

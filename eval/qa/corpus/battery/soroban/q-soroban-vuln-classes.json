@@ -5,18 +5,17 @@
     "skills.stellar-dev.smart-contracts"
   ],
   "golden": {
-    "answer": "Treat this as a non-exhaustive Soroban review checklist: missing/wrong authorization (including initialization and Wasm updates); unsafe storage/TTL/archival assumptions; unchecked external token/contract results or arbitrary counterparties; arithmetic/precision/input-validation errors; panic/unwrap and unbounded-work denial of service; and application-specific economic/state-transition mistakes. Under P23+ archived Persistent/Instance data can auto-restore with correct transaction metadata, so do not present generic 'restore front-running' or irreversible-brick slogans as universal current behavior. Over-limit writes fail atomically, though growth-dependent application paths can still become unavailable.",
+    "answer": "A non-exhaustive Soroban audit checklist: missing or wrong authorization (including initialization and Wasm upgrades); unsafe storage, TTL and archival assumptions; unchecked results of external token or contract calls; arithmetic, rounding and input-validation errors; panics and unbounded work that cause denial of service; and application-specific economic or state-transition flaws. The host blocks same-contract reentrancy, so Ethereum's reentrancy list does not transfer unchanged.",
     "keyFacts": [
-      "Names major current authorization, storage, external-call, and arithmetic/input families.",
-      "Names major current DoS / economic-state-transition families.",
-      "Scopes storage/TTL issues to current P23+ restoration semantics.",
-      "Scopes storage/TTL issues to atomic failure semantics."
+      "Missing or wrong authorization, including at initialization and upgrade, is a core class.",
+      "Storage, TTL and archival assumptions are a Soroban-specific class.",
+      "Arithmetic, rounding, input validation and unchecked external-call results are common.",
+      "Panics and unbounded growth or work cause denial of service."
     ],
     "avoid": [
-      "Do NOT claim one checklist is exhaustive or import EVM-only vulnerabilities unchanged.",
-      "Do NOT repeat pre-P23 manual-only restoration or automatic permanent-brick claims."
-    ],
-    "notes": "2026-06-29: removed duplicated Why-these-cards/Edge sections (verified 2026-06-29). Routes to scout_research (audit corpus). Trap: pasting the EVM vuln list. Verified against Veridise Soroban checklist + Inferara Soroban Security Portal; reentrancy into the same contract is disallowed by the host.\nAlso good if the answer: Notes that classic Ethereum-style reentrancy is largely mitigated by Soroban's host model (no reentry into the same contract).\nGolden cites: A Soroban security checklist/portal (Veridise blog, Inferara portal) or SDF security docs.\nGT-48 CORRECTION 2026-07-11: keep vulnerability taxonomy non-exhaustive and current to P23+ restoration."
+      "Do NOT present one list as exhaustive or import EVM-only vulnerabilities unchanged.",
+      "Do NOT claim pre-Protocol-23 manual-only restoration, or an automatic permanent brick, as current."
+    ]
   },
   "tags": {
     "category": "soroban",
@@ -30,7 +29,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-03-29",
     "sources": [
       {
@@ -78,18 +77,35 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "Audit guidance lists authorization, arithmetic/rounding, error handling and storage-key issues",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "D",
+            "ref": "https://www.certora.com/blog/roadmap-to-a-soroban-security-audit",
+            "observedAt": "2026-11-14",
+            "note": "Check your code for authorization/authentication issues, integer overflow, arithmetic bugs and rounding errors, improper error handling, and storage key"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-06)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-soroban-b, verify-audit-soroban-b; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "https://www.certora.com/blog/roadmap-to-a-soroban-security-audit (observedAt 2026-11-02): \"Check your code for authorization/authentication issues, integer overflow, arithmetic bugs and rounding errors, improper error handling, and storage key collisions ... avoid denial-of-service (DoS) attack vectors\".",
-        "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-11.md (observedAt 2026-11-02): \"The custom account authentication is the only case of contract invocation with self-reentrancy allowed\".",
-        "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival (observedAt 2026-10-26) and https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering (observedAt 2026-10-28) confirm the TTL/archival and resource-limit caveats.",
-        "Verification only: no gospel change. Sibling sweep 2026-11-02: q-sor-evm-to-soroban-porting, q-soroban-auth-recursion-dos-audit; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-b.json#q-soroban-vuln-classes",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-b.json#q-soroban-vuln-classes",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-soroban-vuln-classes",
+        "Live D 2026-11-14: https://www.certora.com/blog/roadmap-to-a-soroban-security-audit -- 'Check your code for authorization/authentication issues, integer overflow, arithmetic bugs and rounding errors, improper error handling, and storage key'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-soroban-vuln-classes"
+    "origin": "raven-next q-soroban-vuln-classes",
+    "notes": "2026-06-29: removed duplicated Why-these-cards/Edge sections (verified 2026-06-29). Routes to scout_research (audit corpus). Trap: pasting the EVM vuln list. Verified against Veridise Soroban checklist + Inferara Soroban Security Portal; reentrancy into the same contract is disallowed by the host.\nAlso good if the answer: Notes that classic Ethereum-style reentrancy is largely mitigated by Soroban's host model (no reentry into the same contract).\nGolden cites: A Soroban security checklist/portal (Veridise blog, Inferara portal) or SDF security docs.\nGT-48 CORRECTION 2026-07-11: keep vulnerability taxonomy non-exhaustive and current to P23+ restoration.",
+    "leaf": "security.contract-security"
   }
 }

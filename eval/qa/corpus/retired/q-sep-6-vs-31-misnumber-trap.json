@@ -1,0 +1,21 @@
+{
+  "id": "q-sep-6-vs-31-misnumber-trap",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-assets (golden coverage audit)",
+    "reviewer": "verify-audit-assets (golden coverage audit)",
+    "reason": "Facet 2 (false premise about a real thing) is held by q-edge-factcheck-soroswap-first-amm; the SEP-24/31 facts are q-sep6-sep24-sep31-choice kf0/kf2.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-assets.json#q-sep-6-vs-31-misnumber-trap",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-assets.json#q-sep-6-vs-31-misnumber-trap",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-sep-6-vs-31-misnumber-trap"
+    ],
+    "lastCaseContentSha256": "6cfe8cc854e889a8775fcf1243f70acfcb6ce6f100f1d315d872f2f58397727f",
+    "replacementIds": []
+  }
+}

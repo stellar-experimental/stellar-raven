@@ -7,20 +7,18 @@
     "skills.stellar-dev.standards"
   ],
   "golden": {
-    "answer": "As of 2026-11-02, SEP-6, SEP-24, and SEP-31 are Active. Use SEP-24 for an anchor-hosted interactive deposit/withdrawal UI; use SEP-6 for programmatic deposit/withdrawal—the legacy interactive SEP-6 flow is deprecated in favor of SEP-24, not the whole SEP. For SEP-31, a Sending Anchor calls a Receiving Anchor under an established bilateral or commercial relationship for cross-border payout. Discover them through SEP-1 keys TRANSFER_SERVER, TRANSFER_SERVER_SEP0024, and DIRECT_PAYMENT_SERVER respectively. Add SEP-38 when quotes or rates are part of the corridor.",
+    "answer": "Use SEP-24 when the anchor hosts the interactive deposit and withdrawal UI. Use SEP-6 for a programmatic API with no hosted UI; only SEP-6's old interactive flow is deprecated in favor of SEP-24. Use SEP-31 for anchor-to-anchor cross-border payments, where a sending anchor pays a receiving anchor with no end-user UI. SEP-38 adds quotes. SEP-6, SEP-24 and SEP-31 are all Active as of 2026-11-14; SEP-38 is Draft.",
     "keyFacts": [
-      "Maps SEP-24 to anchor-hosted interactive deposit/withdrawal; SEP-6 to programmatic API.",
-      "Keeps SEP-6 Active with only its legacy interactive flow deprecated in favor of SEP-24.",
-      "Uses SEP-31 for Sending→Receiving Anchor calls with established bilateral/commercial ties.",
-      "Gives a dated Active status for SEP-6, SEP-24, and SEP-31.",
-      "Maps SEP-1 keys TRANSFER_SERVER, TRANSFER_SERVER_SEP0024, and DIRECT_PAYMENT_SERVER."
+      "SEP-24 is the anchor-hosted interactive deposit and withdrawal standard.",
+      "SEP-6 is the programmatic API; only its interactive flow is deprecated.",
+      "SEP-31 is a sending anchor paying a receiving anchor, with no end-user hosted UI.",
+      "SEP-6, SEP-24 and SEP-31 are Active standards (as of a stated date)."
     ],
     "avoid": [
-      "SEP-31 is simply the newest replacement for both SEP-6 and SEP-24.",
-      "SEP-24 requires the wallet to collect and host the anchor's KYC user interface.",
-      "Do NOT claim SEP-38 is an Active SEP; the protocol repo lists it as Draft."
+      "Do NOT claim SEP-31 replaces both SEP-6 and SEP-24.",
+      "Do NOT claim SEP-24 requires the wallet to host the anchor's KYC user interface."
     ],
-    "notes": "Verified on 2026-08-27: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0038.md reported Status: Draft (Updated 2025-02-26, last commit 2025-06-17), and a Perplexity web sweep found no source calling SEP-38 Active; the retired keyFact that grouped SEP-38 with the Active SEPs overreached golden.answer.\nAccurately quoting the official Stellar documentation on SEP-6 programmatic use and SEP-24 hosted flows without the SEP-6 interactive-component deprecation is not a wrong claim while sd-009 stands; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source.\nAlso good if the answer: Adds SEP-38 (Draft) for quotes or rates when they are part of the corridor."
+    "notes": "Quoting official docs on SEP-6 programmatic use without the interactive deprecation is not a wrong claim while sd-009 stands; the grade caps at partial for that claim."
   },
   "tags": {
     "category": "assets-anchors-seps",
@@ -34,7 +32,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-04-24",
     "sources": [
       {
@@ -308,19 +306,65 @@
           }
         ],
         "note": "Mirrored in golden.avoid; SEP-6/24/31 remain Active per their preambles (checked 2026-08-27)."
+      },
+      {
+        "claim": "SEP-6, SEP-24 and SEP-31 are Active; SEP-38 is Draft; SEP-6 interactive components deprecated in favor of SEP-24.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/README.md",
+            "observedAt": "2026-11-14",
+            "note": "| [SEP-0031](sep-0031.md) | Cross-Border Payments API | SDF | Active"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0038.md",
+            "observedAt": "2026-11-14",
+            "note": "Title: Anchor RFQ API Status: Draft"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0006.md",
+            "observedAt": "2026-11-14",
+            "note": "Status: Active (Interactive components are deprecated in favor of SEP-24)"
+          }
+        ]
+      },
+      {
+        "claim": "SEP-1 keys TRANSFER_SERVER (SEP-6), TRANSFER_SERVER_SEP0024, DIRECT_PAYMENT_SERVER (SEP-31).",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md",
+            "observedAt": "2026-11-14",
+            "note": "| DIRECT_PAYMENT_SERVER           | uses `https://`        | The server used for receiving [SEP-31](sep-0031.md) direct fiat-to-fiat payments."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-03",
-      "by": "lane urls (Codex gpt-6.1-sol high)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-assets, verify-audit-assets; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "https://developers.stellar.org/docs/anchoring-assets/anchor-platform (HTTP 308, 2026-11-03): The page documents SEP-6, SEP-24, SEP-31, SEP-38 and anchor workflows; existing SEP specifications remain the detailed authority. Current source: https://developers.stellar.org/docs/learn/fundamentals/anchors (HTTP 200).",
-        "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-assets.json#q-sep6-sep24-sep31-choice",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-assets.json#q-sep6-sep24-sep31-choice",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-sep6-sep24-sep31-choice",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/README.md -- '| [SEP-0031](sep-0031.md) | Cross-Border Payments API | SDF | Active'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0038.md -- 'Title: Anchor RFQ API Status: Draft'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0006.md -- 'Status: Active (Interactive components are deprecated in favor of SEP-24)'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md -- '| DIRECT_PAYMENT_SERVER           | uses `https://`        | The server used for receiving [SEP-31](sep-0031.md) direct fiat-to-fiat payments.'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md -- 'Status: Active'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0031.md -- 'Title: Cross-Border Payments API Status: Active Version 3.1.0'"
       ],
       "rootCause": [
-        "freshness-drift"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "kaan sep24-vs-sep31-vs-sep6"
+    "origin": "kaan sep24-vs-sep31-vs-sep6",
+    "notes": "Verified on 2026-08-27: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0038.md reported Status: Draft (Updated 2025-02-26, last commit 2025-06-17), and a Perplexity web sweep found no source calling SEP-38 Active; the retired keyFact that grouped SEP-38 with the Active SEPs overreached golden.answer.\nAccurately quoting the official Stellar documentation on SEP-6 programmatic use and SEP-24 hosted flows without the SEP-6 interactive-component deprecation is not a wrong claim while sd-009 stands; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source.\nAlso good if the answer: Adds SEP-38 (Draft) for quotes or rates when they are part of the corridor.",
+    "leaf": "standards.deposit-withdrawal",
+    "secondaryLeaf": "standards.sep31-sep38"
   }
 }

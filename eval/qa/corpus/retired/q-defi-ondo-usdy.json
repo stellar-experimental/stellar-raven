@@ -1,0 +1,21 @@
+{
+  "id": "q-defi-ondo-usdy",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-defi (golden coverage audit)",
+    "reviewer": "verify-defi (golden coverage audit)",
+    "reason": "USDY is named in q-rwa-projects-tokenizing-stellar kf0; the product facet is held by BENJI.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-defi-ondo-usdy",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-defi-ondo-usdy",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-defi-ondo-usdy"
+    ],
+    "lastCaseContentSha256": "55d8822dcbccb86514a48761c27f35a2f11f6d11655bd61e51ef2a66b16f761d",
+    "replacementIds": []
+  }
+}

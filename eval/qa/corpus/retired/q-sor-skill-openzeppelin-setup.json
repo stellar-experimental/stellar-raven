@@ -1,0 +1,21 @@
+{
+  "id": "q-sor-skill-openzeppelin-setup",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-soroban-a (golden coverage audit)",
+    "reviewer": "verify-audit-soroban-a (golden coverage audit)",
+    "reason": "Retired because its golden states no Stellar fact; the routing case q-skill-oz-project-setup in eval/skills-cases.json measures the skill, and the active case q-soroban-oz-token keeps the OpenZeppelin token topic.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-a.json#q-sor-skill-openzeppelin-setup",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-a.json#q-sor-skill-openzeppelin-setup",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-sor-skill-openzeppelin-setup"
+    ],
+    "lastCaseContentSha256": "311b569c5a4df780c2f8d35781eb208dfce724619ce57ef5634415ab49bb3338",
+    "replacementIds": []
+  }
+}

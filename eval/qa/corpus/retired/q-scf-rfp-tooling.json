@@ -1,0 +1,23 @@
+{
+  "id": "q-scf-rfp-tooling",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-scf (golden coverage audit)",
+    "reviewer": "verify-audit-scf (golden coverage audit)",
+    "reason": "Merged into q-scf-open-rfps. Changed fact confirmed (budget sections removed); the current-quarter rule is in the survivor rewrite.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-scf-rfp-tooling",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-scf-rfp-tooling",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-scf-rfp-tooling"
+    ],
+    "lastCaseContentSha256": "91bbfae731d3ccdc771bd2e8667d63caad3c19fd8c12d57e55e0ec9f027f9188",
+    "replacementIds": [
+      "q-scf-open-rfps"
+    ]
+  }
+}

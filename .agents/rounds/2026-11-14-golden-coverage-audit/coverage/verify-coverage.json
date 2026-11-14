@@ -1,0 +1,1094 @@
+{
+  "lane": "verify-coverage",
+  "reviewer": {
+    "tier": "Claude Opus",
+    "model": "claude-opus-5-5",
+    "effort": "high"
+  },
+  "observedAt": "2026-11-14",
+  "method": "Read every cut case and its leaf survivors (final question and key facts: verifier finalRewrite, else auditor rewrite, else case file) before reading the author's reasons; then checked each cited case is headline and each cited key fact exists. Tool-lane coveredBy files were opened at the cited lines. Weight-3 sample: the 10 of 37 weight-3 leaves with the lowest SHA-256 hex digest of the leaf id.",
+  "extraCuts": [
+    {
+      "id": "q-edge-1xlm-activation-fee",
+      "decision": "accept",
+      "why": "Reserve math is tested three times on its leaf (q-protocol-base-reserve-min-balance kf0, q-pc-account-activation-not-found kf1); the pay-to-unlock lure is q-raph-phishing-pending-claim (rectification fee).",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-infra-testnet-reset-schedule-recovery",
+      "decision": "accept",
+      "why": "Unactivated proposal; the reset facet is q-infra-testnet-vs-futurenet kf2, and the absorbed fact (a reset returns Testnet to genesis) completes it. Survivor is headline.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-ti-friendbot-ratelimit-alternatives",
+      "decision": "accept",
+      "why": "Friendbot scope is q-infra-testnet-vs-futurenet kf3 and q-edge-send-me-free-xlm kf1; the backup-faucet bait is q-n3-issues-842-backup-faucet-wallet. The 429 back-off detail is operational, not a facet.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-aas-claim-received-claimable-balances",
+      "decision": "accept-with-absorb",
+      "why": "The author says its trustline fact repeats the survivor; it does not. q-aas-claimable-predicates-expiry-reserves states the trustline only in answer prose (\"suits recipients without a trustline yet\"), not as a key fact. The leaf scope names \"paying an account that has no trustline yet\", so the survivor must grade it.",
+      "absorbInto": "q-aas-claimable-predicates-expiry-reserves",
+      "absorbFact": "A claimable balance can be created for an account with no trustline, but claiming a non-native asset needs the claimant's trustline."
+    },
+    {
+      "id": "q-raph-claimable-balance-safety",
+      "decision": "accept",
+      "why": "Retail restatement; after the absorb on q-aas-claim-received-claimable-balances the trustline fact lives on the survivor, and the unlock-payment caution is q-raph-unsolicited-airdrop kf1.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-raph-restore-wallet",
+      "decision": "accept",
+      "why": "Two thin facts; the phrase-versus-key distinction is q-ti-secret-key-vs-mnemonic-derivation kf0-kf2.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-ti-find-export-secret-key",
+      "decision": "accept",
+      "why": "Wallet-export steps are product trivia; the key/phrase relation is the survivor's facet, and non-reversibility of an address is general cryptography.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-protocol-parallel-execution",
+      "decision": "accept",
+      "why": "CAP-0063 in Protocol 23 is in q-protocol-version-history-list's answer (\"P23 Whisk ... parallel scheduling (CAP-0063)\"); the cluster-count value is a validator setting, and SLP-0007 raising it to 3 is in q-pc-slp-0004-0006-status's answer.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-pc-protocol-26-yardstick",
+      "decision": "accept",
+      "why": "Per-release CAP roster; date and headline are graded by q-protocol-version-history-list kf0-kf1.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-protocol-23-whisk-caps",
+      "decision": "accept",
+      "why": "Per-release CAP roster; same coverage as Yardstick.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-protocol-amm-cap-0038",
+      "decision": "accept",
+      "why": "Its one fact is q-edge-factcheck-soroswap-first-amm kf0 (CAP-0038, Protocol 18, 2021-11-03).",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-aas-burn-clawback-redemption-mechanics",
+      "decision": "accept",
+      "why": "Clawback half is q-comp-clawback-cap0035 kf0/kf2; the burn-to-issuer fact moves to q-asset-issue-asset-howto, which is headline and is where supply creation is graded.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-comp-sac-inherits-flags",
+      "decision": "accept",
+      "why": "Third SAC case; q-asset-trustline-vs-sac is headline and the absorbed fact (SAC keeps authorization and clawback controls) is the only non-repeated content.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-sor-contract-trustlines-c-address",
+      "decision": "accept",
+      "why": "Repeats q-asset-trustline-vs-sac kf3 (a C-address balance is SAC storage, not a trustline).",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-sor-sac-introspection",
+      "decision": "accept",
+      "why": "Deterministic id and admin are q-asset-deploy-sac-cli kf2/kf3; the native-XLM, per-network SAC id is q-edge-metamask-evm-mental-model kf3, so the leaf's second facet stays tested.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-sor-sep41-transfer-vs-transferfrom",
+      "decision": "accept",
+      "why": "q-soroban-token-transfer-pattern kf2/kf3 test transfer versus transfer_from and the MuxedAddress destination; the absorbed absolute-ledger expiry is the one missing fact.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-aas-trusted-asset-list-whitelist",
+      "decision": "accept",
+      "why": "Target-one leaf; the absorbed fact (no protocol or SDF whitelist; SEP-42 lists are opt-in) is what this case adds over q-aas-list-token-on-exchanges-aggregators kf2.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-defi-etherfuse-stablebonds",
+      "decision": "accept",
+      "why": "Named-product case; the roster is q-rwa-projects-tokenizing-stellar and the YieldBlox oracle point is q-comp-yieldblox-oracle-incident.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-defi-ondo-usdy",
+      "decision": "accept",
+      "why": "USDY is named in q-rwa-projects-tokenizing-stellar kf0; the product facet is held by BENJI.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-defi-wisdomtree-crdt",
+      "decision": "accept",
+      "why": "WisdomTree is named in q-rwa-projects-tokenizing-stellar kf0; an issuer G-address is identifier trivia.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-rwa-tokenization-standards",
+      "decision": "accept",
+      "why": "Both facets are tested directly (SEP-8 case, T-REX case kf3). Its SEP-56 fact is carried to the assets.nft-vault-standards slot, which names it.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-rwa-stellar-vs-erc20-regulated",
+      "decision": "accept",
+      "why": "Built from facts the flags, SEP-8 and T-REX cases test; the chain comparison goes to the ecosystem.chain-comparisons slot.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-soroban-wasm-size-limit",
+      "decision": "accept",
+      "why": "Dated limit value; q-soroban-resource-limits kf1 grades that limits are validator settings read live. Building under the size cap is scope, not a facet.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-soroban-sdk-macros",
+      "decision": "accept",
+      "why": "Reference list; #[contractevent] is q-soroban-publish-events kf0 and contractmetav0 is q-soroban-contract-build-verification kf3.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-sor-persistent-unbounded-collection-cap",
+      "decision": "accept",
+      "why": "Same lesson as q-soroban-instance-storage-dos kf1/kf3 (one growing entry hits the size limit; shard per key).",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-soroban-auth-delegation-p27",
+      "decision": "accept",
+      "why": "Duplicate of q-pc-protocol-27-zipper kf1/kf2 (CAP-0071 delegation, address-bound credential, same date).",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-passkey-platform-constraints",
+      "decision": "accept",
+      "why": "WebAuthn platform behaviour, not Stellar knowledge; the Stellar binding is q-passkey-smart-account-architecture kf2.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-sor-test-event-assertion-ordering",
+      "decision": "accept",
+      "why": "One test-API behaviour; the leaf facet is held by q-soroban-unit-testing.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-soroban-oz-upgradeable-macro",
+      "decision": "accept",
+      "why": "Target-one leaf. Without the absorb the code-replacement half of the facet would be untested (q-soroban-storage-migration grades only data); the absorbed fact (in-place executable replacement at the same address, entrypoint needs authorization) closes it, so the absorb is required, not optional.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-soroban-factory-pattern",
+      "decision": "accept",
+      "why": "Deploy by Wasm hash plus salt is q-soroban-contract-id-derivation kf1; the leaf facet is held by q-soroban-cross-contract-call.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-protocol-bn254-poseidon-xray",
+      "decision": "accept",
+      "why": "Same CAP-to-protocol table as q-zk-host-functions-status kf0-kf2.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-zk-nullifier-storage",
+      "decision": "accept",
+      "why": "Application design for one privacy-pool pattern; no taxonomy facet.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-zk-poseidon-input-encoding",
+      "decision": "accept",
+      "why": "Cross-implementation hashing detail; no taxonomy facet.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-ti-historical-pointintime-balances",
+      "decision": "accept",
+      "why": "Second Hubble how-to on a target-one leaf; q-infra-hubble-bigquery holds the facet.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-ti-enumerate-all-contracts",
+      "decision": "accept",
+      "why": "Third Hubble how-to on a target-one leaf.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-tool-cli-testnet-identity-howto",
+      "decision": "accept",
+      "why": "Repeats q-soroban-deploy-cli kf1 (`keys generate --network testnet --fund`).",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-ti-cli-rust-windows-troubleshooting",
+      "decision": "accept",
+      "why": "Grab-bag of symptoms; the wasm32v1-none fix is q-sor-build-target-wasm32v1 kf2. Version-skew errors get the tooling.version-compat slot.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-tool-rust-soroban-sdk",
+      "decision": "accept",
+      "why": "Repeats q-tool-which-sdk-comparison kf0 and q-sor-build-target-wasm32v1 kf0.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-tool-flutter-mobile-sdk",
+      "decision": "accept",
+      "why": "One community SDK; maintainer tiers are q-tool-which-sdk-comparison kf1.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-ti-java-sdk-wallet-feebump",
+      "decision": "accept",
+      "why": "One community SDK plus a dated version; fee-bump mechanics are q-pc-fee-bump-channel-accounts-feepool kf0.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-quickstart-manual-ledger-close",
+      "decision": "accept",
+      "why": "One Quickstart flag on a target-one leaf.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-ti-bindings-to-nextjs-integration",
+      "decision": "accept",
+      "why": "Bindings are q-soroban-cli-bindings, the sign flow is q-ti-connect-wallet-button-code and the build-simulate-submit flow is q-sor-deploy-invoke-from-js-sdk kf1; the fee split goes to the soroban.resource-fees slot.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-ti-freighter-localhost-not-detected",
+      "decision": "accept",
+      "why": "One troubleshooting symptom; the connect flow is q-ti-connect-wallet-button-code.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-comp-anchor-compliance-stack",
+      "decision": "accept",
+      "why": "Restates the SEP role map that q-sep6-sep24-sep31-choice, q-sep-12-kyc and q-comp-sep8-regulated-assets-approval-server test one by one.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-crp-become-an-anchor-licensing",
+      "decision": "accept",
+      "why": "Licensing is q-pay-anchor-msb-licensing kf0, the business stack is q-crp-remittance-founder-advisory kf0/kf3; survivor q-anchor-sdp-vs-anchor-platform is headline and the absorbed fact fits its kf0.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-raph-offramp-xlm-usdc",
+      "decision": "accept",
+      "why": "Two thin facts that q-crp-regional-offramp-mobilemoney kf1/kf3 test with more substance. My unverified-keep check found the record sound, so this is a coverage cut, not a quality one.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-pay-moneygram-ramps",
+      "decision": "accept",
+      "why": "Duplicate of q-anchor-moneygram-ramps; its extra content is dated limits.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-sep-7-uri",
+      "decision": "accept",
+      "why": "Target-one leaf. The absorb keeps SEP-7 graded on q-sep-53-sign-verify-message; I endorse the author's option to re-ask that survivor as the SEP mapping (signing links, message signing, federation), since today it asks only about SEP-53.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-hist-remittance-corridors",
+      "decision": "accept",
+      "why": "MoneyGram is q-anchor-moneygram-ramps; live-versus-announced discipline is q-rwa-projects-tokenizing-stellar kf2.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-sor-recurring-escrow-patterns",
+      "decision": "accept",
+      "why": "Same facet as q-stellar-recurring-payments; the absorbed transfer_from-against-allowance fact is the contract half that survivor lacks.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-defi-provide-liquidity-impermanent-loss",
+      "decision": "accept",
+      "why": "Target-one leaf; the absorbed fact gives q-asset-sdex-vs-amm the contract-AMM half of the facet. Impermanent loss is generic DeFi.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-asset-usdc-eurc-path-fx",
+      "decision": "accept",
+      "why": "Applied restatement of q-asset-path-payment-ops kf0-kf3.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-defi-arbitrage-pathpayment-bots",
+      "decision": "accept-with-absorb",
+      "why": "Bot economics and Kelp are not facets, but the leaf scope names slippage bounds and the survivor never grades them: q-asset-path-payment-ops kf1 says what each operation fixes, not what bounds the other side. Extend that key fact rather than add one.",
+      "absorbInto": "q-asset-path-payment-ops",
+      "absorbFact": "Strict send fixes the source amount and is bounded by destMin; strict receive fixes the destination amount and is bounded by sendMax."
+    },
+    {
+      "id": "q-defi-phoenix-what-is",
+      "decision": "accept",
+      "why": "Third named-exchange case; facet 2 is held by q-defi-soroswap-vs-stellarx and Phoenix is named in q-eco-dex-saturation.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-defi-perps-whitespace",
+      "decision": "accept",
+      "why": "No taxonomy facet; the \"perps are emerging\" claim survives as q-eco-defi-market-map kf2.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-defi-comet-what-is",
+      "decision": "accept",
+      "why": "Its key facts are award totals and a Blend dependency; neither tests what the exchange does.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-defi-defindex-honest",
+      "decision": "accept",
+      "why": "DeFindex is classified in q-defi-blend-alternatives kf1; the dated-TVL rule is q-eco-defi-tvl-current.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-defi-flash-loans",
+      "decision": "accept",
+      "why": "No taxonomy facet. Note: atomic rollback is in q-soroban-cross-contract-call's answer, not its key facts; acceptable because no leaf asks for it.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-defi-allbridge-what-is",
+      "decision": "accept",
+      "why": "Volatile single-provider status; q-defi-bridge-evm-to-stellar-axelar's answer already states Allbridge Core's discontinuation. See the defi.bridges leaf finding.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-defi-reflector-oracle",
+      "decision": "accept",
+      "why": "q-pc-cross-redstone-sep40 kf1 names Reflector as SEP-40 compatible; signer counts and product tiers are operator detail.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-sor-reflector-integration-code",
+      "decision": "accept",
+      "why": "One provider's call signatures; the interface facet is SEP-40.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-soroban-oracle-defensive-consumption",
+      "decision": "accept",
+      "why": "Defenses are q-comp-yieldblox-oracle-incident kf3 (depth minimums, value bounds, supply caps; staleness not causal). See the security.contract-security leaf finding: facet 2 still has no case.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-soroban-sdk-cve",
+      "decision": "accept",
+      "why": "Volatile list of advisory ids; no taxonomy facet names CVEs.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-comp-security-disclosure-programs",
+      "decision": "accept",
+      "why": "The bounty is q-scf-sdf-bug-bounty kf0 and the Audit Bank is q-scf-audit-bank kf0.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-pay-travel-rule-aid-flows",
+      "decision": "accept",
+      "why": "Target-one leaf; the absorbed fact gives q-pay-anchor-msb-licensing the Travel Rule regime the leaf scope names.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-sor-confidential-tokens",
+      "decision": "accept",
+      "why": "Duplicate of q-edge-noinfo-stellar-native-privacy-default kf0/kf1; the offline-leaf half has no fact.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-raph-lobstr-legitimacy",
+      "decision": "accept",
+      "why": "Operator and custody model are q-eco-lobstr-wallet kf0/kf1; no other Stellar fact is lost.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-raph-withdraw-exchange-self-custody",
+      "decision": "accept",
+      "why": "Two thin facts; network choice is q-raph-usdc-onto-stellar kf0 and q-edge-metamask-evm-mental-model, and secret-key safety is graded across the wallets domain. My unverified-keep check found the record sound.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-raph-secret-key-hash-recovery",
+      "decision": "accept",
+      "why": "Its Stellar fact (no network-level key reset) is implied by q-aas-sep30-recoverable-wallets kf3 and q-raph-stolen-wallet-recovery kf0; the hash half is general cryptography.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-raph-remove-scam-token",
+      "decision": "accept",
+      "why": "Asset identity is q-edge-asset-site-scam-detection kf0; trustline removal at zero balance with ChangeTrust limit 0 is q-aas-trustline-limit-lifecycle kf2/kf3. Hiding-is-display-only is the one loss, and it is wallet UI.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-edge-retail-everyday-use-eli5",
+      "decision": "accept",
+      "why": "Names no app, so it never tested the leaf facet; the wallets.consumer-apps slot replaces it.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-org-mazieres-chief-scientist",
+      "decision": "accept",
+      "why": "SCP authorship is q-hist-scp-rewrite-2015 kf0. See the ecosystem.sdf leaf finding.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-builder-justin-rice-history",
+      "decision": "accept",
+      "why": "One person and two post titles. The author calls q-org-sdf-board-directors the leadership facet; it covers the board only (see leaf finding).",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-defi-build-staking-for-own-token",
+      "decision": "accept",
+      "why": "Third \"no native staking\" case; the rest is generic contract design.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-tw-escrow-api-auth-custody",
+      "decision": "accept",
+      "why": "One vendor's API header; not directory knowledge.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-edge-scf-v7-centralization-myths",
+      "decision": "accept",
+      "why": "The tranche schedule is q-scf-build-award-cap kf2; \"SDF cannot remove a Mainnet app\" follows from q-org-sdf-structure-mandate kf1.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-scf-total-distributed",
+      "decision": "accept",
+      "why": "No official total exists; the case grades basis labelling of a reconstruction, which q-defi-cluster-rollup-live (tool lane) also does.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-scf-build-tracks",
+      "decision": "accept",
+      "why": "Three tracks are q-scf-v7-changes kf1; Open-only vote is q-scf-how-to-apply kf2 and q-scf-nqg-voting kf3.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-scf-eligibility-criteria",
+      "decision": "accept",
+      "why": "Prescreen detail within q-scf-how-to-apply kf2.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-scf-round-43-results",
+      "decision": "accept",
+      "why": "One past round's recap numbers.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-defi-rwa-scf-similar",
+      "decision": "accept",
+      "why": "Target-one leaf held by q-scf-history-soroswap; three awards from one round.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-org-sdf-enterprise-fund",
+      "decision": "accept",
+      "why": "Duplicate of q-scf-vs-sdf-enterprise-fund kf0; the MoneyGram-stake source is trivia.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-scf-sdf-marketing-grant",
+      "decision": "accept",
+      "why": "q-scf-vs-sdf-enterprise-fund kf2 names Marketing Grants as a separate path; the $500K cap is lost and is a single dated number.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-scf-academic-research-grant",
+      "decision": "accept",
+      "why": "Weight-1, target-one leaf already held.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-hist-x402-stellar-announcement",
+      "decision": "accept",
+      "why": "An announcement date; mechanism is q-defi-x402-on-stellar-what.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-soroban-x402-auth-entry-signing",
+      "decision": "accept",
+      "why": "Flow is q-x402-payment-verification kf0; the rest is a volatile wallet roster.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-agent-identity-erc8004-stellar",
+      "decision": "accept",
+      "why": "Duplicate of q-defi-agent-identity-stellar-experimental kf0/kf3.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-sep-6-vs-31-misnumber-trap",
+      "decision": "accept",
+      "why": "Facet 2 (false premise about a real thing) is held by q-edge-factcheck-soroswap-first-amm; the SEP-24/31 facts are q-sep6-sep24-sep31-choice kf0/kf2.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-edge-exhaustive-defi-deep-report",
+      "decision": "accept",
+      "why": "Response shaping, not a trap; content is q-eco-defi-market-map and the dated-source rule is behavior.freshness-honesty.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-pc-bucketlist-vs-merkle-inclusion-proof",
+      "decision": "accept",
+      "why": "Core internals with no demand and no leaf.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-pc-l2-payment-channels-starlight",
+      "decision": "accept",
+      "why": "Archived experiment; no leaf and no demand.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-protocol-ledger-entry-types",
+      "decision": "accept",
+      "why": "Enum recital; no leaf.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-sor-doc-timestamping-manage-data",
+      "decision": "accept",
+      "why": "Manage Data limits are scope of a full leaf; the pattern itself has no facet.",
+      "absorbInto": null,
+      "absorbFact": null
+    },
+    {
+      "id": "q-ti-video-tutorials",
+      "decision": "accept",
+      "why": "Learning resources are not in the taxonomy. The A/V-handling visibility it carried moves with q-soroban-av-passkeys-talk to the tool lane (mergeFixes).",
+      "absorbInto": null,
+      "absorbFact": null
+    }
+  ],
+  "mergeFixes": [
+    {
+      "id": "q-raph-missing-exchange-memo",
+      "decision": "accept",
+      "why": "Cycle resolved to the case both verifiers chose; it is headline on wallets.wrong-memo and its final key facts carry status-first diagnosis, the internal-credit layer and discretionary recovery. The muxed alternative is in its answer.",
+      "survivor": "q-raph-missing-exchange-memo"
+    },
+    {
+      "id": "q-soroban-av-passkeys-talk",
+      "decision": "accept",
+      "why": "Right fix: q-gap-av-offset-not-timestamp was retired on the promise that this case and q-ti-video-tutorials carried the behavior, and both were then leaving. Moving it to the tool lane keeps the one observer of summary-versus-transcript handling.",
+      "survivor": "q-soroban-av-passkeys-talk"
+    },
+    {
+      "id": "q-tool-soroban-auth-audit-live",
+      "decision": "accept",
+      "why": "Both cases on the topic are retired as identifier trivia; security.core-audits gets a slot instead. No survivor needed.",
+      "survivor": null
+    },
+    {
+      "id": "q-gap-compare-hackathons",
+      "decision": "accept",
+      "why": "Confirmed: eval/qa/corpus/live/live-cases.json q-live-ll-guessed-slug-soft-empty kf1 resolves by search, then calls detail with the returned slug.",
+      "survivor": null
+    },
+    {
+      "id": "q-gap-hackathon-winner-order",
+      "decision": "accept",
+      "why": "Confirmed: live-cases.json q-live-hackathon-recent-winners kf2 \"asserts 1st/2nd/3rd only if the data provides it\" is the same rule.",
+      "survivor": null
+    },
+    {
+      "id": "q-gap-hackathon-brief-evidence-boundaries",
+      "decision": "accept",
+      "why": "The empty-block-is-unknown rule is graded by kept tool-lane q-scf-pitch-prep-live kf0-kf2.",
+      "survivor": null
+    },
+    {
+      "id": "q-defi-asset-whitespace-live",
+      "decision": "accept",
+      "why": "Survivor q-defi-cluster-rollup-live is kept in the tool lane and grades the population-id rule all three merged cases shared. The merge holds outside the headline, which the fix states.",
+      "survivor": "q-defi-cluster-rollup-live"
+    },
+    {
+      "id": "q-gap-vet-pitch-vertical-null",
+      "decision": "accept",
+      "why": "Survivor q-scf-pitch-prep-live kf1 is the null-vertical fact; tool-lane survivor stated.",
+      "survivor": "q-scf-pitch-prep-live"
+    },
+    {
+      "id": "q-anchor-sdp-what",
+      "decision": "accept",
+      "why": "q-crp-sdp-operation is headline on standards.disbursements and tests what SDP is and how it is built (kf0-kf2).",
+      "survivor": "q-crp-sdp-operation"
+    },
+    {
+      "id": "q-edge-noinfo-exact-tvl-figure",
+      "decision": "accept",
+      "why": "q-eco-defi-tvl-current asks for the Stellar-wide figure, the same knowledge; the Blend-only case was the wrong survivor.",
+      "survivor": "q-eco-defi-tvl-current"
+    },
+    {
+      "id": "q-tool-cctp-stellar-integration",
+      "decision": "accept",
+      "why": "Survivor is headline on defi.bridges. Taking the tooling-b wording for kf2 (mintRecipient and destinationCaller both set to CctpForwarder) is the more specific claim; the applier must use it and keep domain 27 in the answer.",
+      "survivor": "q-cctp-v2-usdc-stellar"
+    },
+    {
+      "id": "q-hist-cctp-stellar-live-announcement",
+      "decision": "accept",
+      "why": "Condition holds: q-cctp-v2-usdc-stellar kf0 carries both 2026-05-18 and 2026-05-19.",
+      "survivor": "q-cctp-v2-usdc-stellar"
+    },
+    {
+      "id": "q-eco-xbull-wallet",
+      "decision": "accept",
+      "why": "One wallet's builder is not a wallets.landscape facet; q-eco-stellar-wallets-list kf1 still names xBull. Recording it as a duplicate retirement is honest.",
+      "survivor": "q-eco-stellar-wallets-list"
+    },
+    {
+      "id": "q-production-anchor-architecture",
+      "decision": "accept",
+      "why": "Chain broken correctly: q-anchor-sdp-vs-anchor-platform is headline and receives the same absorbed fact from q-crp-become-an-anchor-licensing, so both merges land one fact once.",
+      "survivor": "q-anchor-sdp-vs-anchor-platform"
+    },
+    {
+      "id": "q-comp-sep6-vs-sep12-roles",
+      "decision": "accept",
+      "why": "q-sep-12-kyc kf0/kf2 test the SEP-12 role; SEP-6's role is q-sep6-sep24-sep31-choice kf1.",
+      "survivor": "q-sep-12-kyc"
+    },
+    {
+      "id": "q-crp-tokenize-personal-rwa",
+      "decision": "accept",
+      "why": "q-crp-oz-rwa-erc3643-trex kf3 is the absorbed fact; the brief's \"key fact 4\" is 1-based.",
+      "survivor": "q-crp-oz-rwa-erc3643-trex"
+    },
+    {
+      "id": "q-protocol-bls12-381-cap59",
+      "decision": "accept",
+      "why": "q-zk-host-functions-status kf0 is CAP-0059 in Protocol 22.",
+      "survivor": "q-zk-host-functions-status"
+    },
+    {
+      "id": "q-scf-confidential-tokens-preview",
+      "decision": "accept",
+      "why": "q-edge-noinfo-stellar-native-privacy-default kf1 carries the Confidential Tokens fact (amounts hidden, addresses not).",
+      "survivor": "q-edge-noinfo-stellar-native-privacy-default"
+    },
+    {
+      "id": "q-soroban-contractmeta-vs-contractevent",
+      "decision": "accept",
+      "why": "Split is correct: #[contractevent] is q-soroban-publish-events kf0, contractmetav0 is q-soroban-contract-build-verification kf3. Both headline.",
+      "survivor": "q-soroban-publish-events"
+    },
+    {
+      "id": "q-defi-market-making-kelp",
+      "decision": "accept",
+      "why": "Kelp's archive status has no facet; retire is right once its survivor goes.",
+      "survivor": null
+    },
+    {
+      "id": "q-edge-deep-full-history-report",
+      "decision": "accept",
+      "why": "Both are response-shaping requests with no leaf; retire both.",
+      "survivor": null
+    },
+    {
+      "id": "q-sep-31-cross-border",
+      "decision": "accept",
+      "why": "q-sep6-sep24-sep31-choice kf2 tests the anchor-to-anchor SEP-31 flow, so the merge is sound. The author's second option (reinstate this case into the standards.sep31-sep38 slot) is the cheaper fill and I endorse it; if taken, it must absorb a SEP-38 indicative-versus-firm quote fact from merged q-sep-38-quotes.",
+      "survivor": "q-sep6-sep24-sep31-choice"
+    }
+  ],
+  "toolLane": [
+    {
+      "id": "q-ti-explain-repo-payload-status",
+      "decision": "reject",
+      "final": "retire",
+      "why": "Not a distinct mechanism. Its rule (an ok host envelope can carry a payload-level non-answer; read data.ok) is the one that auditors and verifiers already retired twice this round as covered and adding no visibility: q-gap-scout-changelog-envelope and q-gap-scout-status-envelope (verify: \"envelope-vs-payload ok is covered by adapter unit tests ... and test/live/run-live-execute.mjs\"). Keeping it here contradicts those accepted verdicts. Its degraded-answer half is the same reading discipline q-scf-pitch-prep-live grades for composite blocks. explainRepo is also a narrow operation."
+    },
+    {
+      "id": "q-edge-closed-world-builder-directory-miss",
+      "decision": "accept",
+      "final": "keep-tool-lane",
+      "why": "Real and distinct: the conclusive, scoped negative is the counterpart of frozen live q-live-ll-guessed-slug-soft-empty (inconclusive), and nothing else observes an agent stopping. test/server.test.ts:1391 and test/demo-steps.test.ts:90 pin only the host's wording. Without it the battery rewards over-searching and cannot catch it."
+    },
+    {
+      "id": "q-scf-pitch-prep-live",
+      "decision": "accept",
+      "final": "keep-tool-lane",
+      "why": "Real: null or unavailable composite blocks read as zero or absent is a plausible agent error that no gate observes (test/search.test.ts and plan-grade cover routing and class only). It also carries the retired hackathon-brief and vet-pitch rules."
+    },
+    {
+      "id": "q-scf-resolve-passport-superseded-slug",
+      "decision": "accept",
+      "final": "keep-tool-lane",
+      "why": "Distinct: superseded redirect plus \"a stale record's status is not the project's state\"; tests only list resolveProject. Risk: it depends on one live Scout duplicate record (passport, Draft, superseded). If Scout removes it the case breaks; re-point to another superseded slug then rather than retire."
+    },
+    {
+      "id": "q-defi-cluster-rollup-live",
+      "decision": "accept",
+      "final": "keep-tool-lane",
+      "why": "Distinct: population-id comparability and non-summable overlapping clusters; grep of test/ and src/ finds no \"population\", and frozen live q-live-ecosystem-crowded-underbuilt never combines two views."
+    },
+    {
+      "id": "q-soroban-greenfield-escrow-prior-art-preflight",
+      "decision": "accept",
+      "final": "keep-tool-lane",
+      "why": "Distinct: whether the agent runs a bounded prior-art pass unprompted. test/server.test.ts:1458 covers caveats only after a prior-art operation ran; the frozen live repo cases ask for repos outright. It is the only case on unprompted research discipline."
+    },
+    {
+      "id": "q-soroban-av-passkeys-talk",
+      "decision": "accept",
+      "final": "keep-tool-lane",
+      "why": "Distinct and now the only observer: test/catalog.test.ts:432 pins the description (AI summaries, opaque offset, no transcript); the three find_av_passages routing cases check selection only. The retirement of q-gap-av-offset-not-timestamp was accepted on the condition that this case keeps grading it."
+    },
+    {
+      "id": "q-gap-explainrepo-payload-ok",
+      "decision": "accept",
+      "final": "retire",
+      "why": "Twin of q-ti-explain-repo-payload-status; with that case also retired, the mechanism rests on the earlier envelope-case verdicts."
+    },
+    {
+      "id": "q-scout-hackathon-brief-first-hour",
+      "decision": "accept",
+      "final": "retire",
+      "why": "Same composite-block reading as q-scf-pitch-prep-live (kf0 empty list is not none on mainnet); test/drift-141-routing.test.ts:73 is ranking only, but the behavior is carried by the kept case."
+    },
+    {
+      "id": "q-scf-hackathon-compare-live",
+      "decision": "accept",
+      "final": "retire",
+      "why": "Confirmed: live-cases.json q-live-hackathon-recent-winners kf2 (placement only if the data gives it) and q-live-ll-guessed-slug-soft-empty kf1 (resolve then detail); test/argument-aliases.test.ts:109 normalizes compareHackathons slugs. Null-not-zero stays in q-scf-pitch-prep-live."
+    },
+    {
+      "id": "q-ti-scout-refresh-cached-rows",
+      "decision": "accept",
+      "final": "retire",
+      "why": "Truncation honesty is frozen live q-live-builders-artifact-continuation kf0. Empty-means-unchanged is a getChanges contract detail, and a cache-refresh workflow is rare for Raven's users. The loss is real but small."
+    },
+    {
+      "id": "q-gap-semantic-directory-fallback",
+      "decision": "accept",
+      "final": "retire",
+      "why": "Host labels semantic fallback rows unverified-match (test/executor-providers.test.ts:208), and the agent behavior (do not promote fuzzy neighbors; one broad pass) is headline q-edge-strupey-ambiguous-stellar-history."
+    },
+    {
+      "id": "q-gap-match-partners-degrade",
+      "decision": "accept",
+      "final": "retire",
+      "why": "test/adapters.test.ts:445 pins the 503 to non-retryable error with a getPartners hint. Agent fallback is unobserved, but a static case cannot force the 503, so a lane case would mostly grade the success path. That, more than the unit test, is why retiring is right."
+    },
+    {
+      "id": "q-crp-partner-detail-after-discovery",
+      "decision": "accept",
+      "final": "retire",
+      "why": "Confirmed: live guessed-slug case kf1 (detail only with the returned slug), test/plan-grade.test.mjs:116-166 (discovery before getPartner), test/adapters.test.ts:399 (unknown slug is soft-empty)."
+    },
+    {
+      "id": "q-tool-skill-detail-install",
+      "decision": "accept",
+      "final": "retire",
+      "why": "Confirmed: eval/routing-cases.json:3879 holds the same id, and the guessed-slug mechanism is the frozen live case. The install-doc content is skill text, not Stellar truth."
+    },
+    {
+      "id": "q-scf-skill-submission-radar",
+      "decision": "accept",
+      "final": "retire",
+      "why": "Confirmed: eval/skills-cases.json:162 q-skill-scf-radar-positioning expects skills_scf_submission_radar."
+    },
+    {
+      "id": "q-ti-skill-builder-quickstart",
+      "decision": "accept",
+      "final": "retire",
+      "why": "Confirmed: eval/skills-cases.json:178 q-skill-builder-quickstart-remittance expects skills_stellar_builder_quickstart."
+    },
+    {
+      "id": "q-ass-cross-bando-stablebonds-sac",
+      "decision": "accept",
+      "final": "retire",
+      "why": "Confirmed: frozen live q-live-beans-cross-service-reconcile kf0/kf1 queries both services and attributes each separately. The SAC half is headline (assets.sac)."
+    },
+    {
+      "id": "q-ass-cross-etherfuse-cetes-controls",
+      "decision": "accept",
+      "final": "retire",
+      "why": "Same composition mechanism as the Bando case; issuer controls are headline q-comp-auth-flags-overview."
+    }
+  ],
+  "toolLaneVerdict": "Six cases earn the lane: each is the only observer of an agent-side reading or stopping rule that the routing gates, unit tests and frozen live lane do not see (closed-world stop, composite nulls, superseded records, population ids, unprompted prior-art pass, A/V summaries). Seven do not: q-ti-explain-repo-payload-status repeats the envelope-versus-payload rule this round already retired twice as covered, so the lane should be six.",
+  "leaves": [
+    {
+      "id": "network.upgrade-process",
+      "finding": "Waived to q-pc-protocol-upgrade-timing (primary network.current-protocol). Sound: its kf1 (validators arm, SCP activates in-band, not a token vote) is the leaf facet.",
+      "fix": "none"
+    },
+    {
+      "id": "tooling.wallet-sdk",
+      "finding": "Waived to q-anchor-sdp-vs-anchor-platform kf3 (Wallet SDK is a client library for SEP-1/6/10/12/24/38, not SEP-31). Sound for a weight-1 leaf.",
+      "fix": "none"
+    },
+    {
+      "id": "behavior.paid-action-refusal",
+      "finding": "Waived to test/policy.test.ts. Sound only while the paid Lumenloop trigger stays unexposed: the agent cannot discover it, so a static case would grade nothing. AGENTS.md requires a reviewed change to expose it; that change must add a case to this leaf.",
+      "fix": "none"
+    },
+    {
+      "id": "protocol.tx-lifecycle-finality",
+      "finding": "One over target. Sound: facet 2 names close time and irreversibility, and the two cases test them separately.",
+      "fix": "none"
+    },
+    {
+      "id": "soroban.sdk-dialect-types",
+      "finding": "One over target on a one-facet leaf. Acceptable: scope names SDK types and conversions, and q-sor-scval-conversion is the only case that grades ScVal width and C-address byte handling.",
+      "fix": "none"
+    },
+    {
+      "id": "soroban.contract-accounts",
+      "finding": "One over target. Sound: facet 2 names the kits.",
+      "fix": "none"
+    },
+    {
+      "id": "tooling.scaffold-bindings",
+      "finding": "One over target. Sound: the facet text names both a typed client and a starter project.",
+      "fix": "none"
+    },
+    {
+      "id": "tooling.wallet-connection",
+      "finding": "One over target on a one-facet leaf. Acceptable: the standard (SEP-43) and the practical connect flow fail differently.",
+      "fix": "none"
+    },
+    {
+      "id": "tooling.relayers",
+      "finding": "One over target. Acceptable: q-smart-wallet-fee-sponsorship (gasless smart-wallet onboarding) and q-ti-openzeppelin-relayer (relayer product and funding) share no key fact.",
+      "fix": "none"
+    },
+    {
+      "id": "wallets.lost-keys",
+      "finding": "One over target. Sound: classic SEP-30 and passkey contract-policy recovery are different mechanisms.",
+      "fix": "none"
+    },
+    {
+      "id": "ecosystem.xlm-markets",
+      "finding": "One over target on a weight-1 leaf, and the brief allows one over only when each case covers a facet the taxonomy names; the leaf has one facet. q-crp-cme-xlm-futures-dates grades two dates and two contract sizes: dated trivia with no reasoning tested. q-raph-buy-xlm-safely holds the leaf.",
+      "fix": "cut q-crp-cme-xlm-futures-dates (retire; the regulated-product half is weight-1 detail)"
+    },
+    {
+      "id": "funding.hackathons",
+      "finding": "One over target. Acceptable: the facet names both open hackathons and what was built.",
+      "fix": "none"
+    },
+    {
+      "id": "ai.mpp-agentic-protocols",
+      "finding": "One over target. Sound: the scope names ERC-8004 beside the two facets.",
+      "fix": "none"
+    },
+    {
+      "id": "protocol.fees-surge",
+      "finding": "Weight 3, sampled. One case with the second slot waived to it. Facet 1 \"how a fee bid is charged\" is not graded: q-pc-practical-fee-setting kf0 says the fee is a maximum bid, but no key fact says what is actually charged. Docs: \"Under normal (non-surge) circumstances, you will only pay the standard fee even with a higher maximum fee set\" and \"During surge pricing mode ... the user pays the minimum inclusion fee in their transaction set\" (developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering, observed 2026-11-14). The waiver holds only with this fact.",
+      "fix": "absorb into q-pc-practical-fee-setting kf0: outside surge a transaction pays the 100-stroop minimum even with a higher max; in surge it pays the lowest inclusion bid in its transaction set, up to its max."
+    },
+    {
+      "id": "network.limits-settings",
+      "finding": "Weight 3, sampled. The leaf's heart question is \"where does a developer read current limits, and who sets them\". \"Who\" is graded (validator vote; SLPs). \"Where\" is not: neither q-protocol-max-tx-set-size nor q-pc-slp-0004-0006-status names a live source, and q-soroban-resource-limits only says not to freeze values. Taxonomy canonical source: \"The Stellar Lab's Network Limits page displays real-time network settings\" (developers.stellar.org/docs/networks/resource-limits-fees).",
+      "fix": "absorb into q-protocol-max-tx-set-size: current values are read live from Lab's Network Limits page or `stellar network settings`, not from a fixed table."
+    },
+    {
+      "id": "defi.bridges",
+      "finding": "Weight 3, sampled. CCTP facet is tested well. Facet 1 (which bridges connect Stellar and what each moves) is graded only through Axelar versus CCTP; the roster (for example Allbridge's status) is answer prose. Heart is tested: a user moving USDC from Ethereum is the leaf question.",
+      "fix": "none"
+    },
+    {
+      "id": "ecosystem.project-directory",
+      "finding": "Weight 3, sampled. Holds: q-eco-defi-market-map tests facet 3 (projects in a category) and q-eco-nft-marketplace-whitespace, though category-framed, grades named-project liveness (Litemint live; Rarible unverified), which is facet 1. Facet 2 has a slot.",
+      "fix": "none"
+    },
+    {
+      "id": "soroban.authorization",
+      "finding": "Weight 3, sampled. Heart tested by q-soroban-require-auth and q-sor-require-auth-propagation. The \"msg.sender equivalent\" half is answer-implicit only (pass the Address and call require_auth); facet 3 (mistakes) leans on q-soroban-vuln-classes kf0 on another leaf. Not a side-detail leaf.",
+      "fix": "none"
+    },
+    {
+      "id": "wallets.wrong-memo",
+      "finding": "Weight 3, sampled. Both facets graded (q-raph-missing-exchange-memo kf0-kf3; q-raph-exchange-memo is pre-send prevention). Sound.",
+      "fix": "none"
+    },
+    {
+      "id": "wallets.scams-phishing",
+      "finding": "Weight 3, sampled. Asset and site legitimacy plus victim steps are graded; social-engineering lures sit on behavior.scam-check. Sound.",
+      "fix": "none"
+    },
+    {
+      "id": "tooling.js-sdk",
+      "finding": "Weight 3, sampled. Package and build-simulate-assemble-submit flow graded. Sound.",
+      "fix": "none"
+    },
+    {
+      "id": "behavior.fabrication-bait",
+      "finding": "Weight 3, sampled. One case per facet (nonexistent SEP; false premise about Soroswap). Sound.",
+      "fix": "none"
+    },
+    {
+      "id": "protocol.accounts-reserves",
+      "finding": "Weight 3, sampled. All three facets graded by three distinct cases. Sound.",
+      "fix": "none"
+    },
+    {
+      "id": "ecosystem.xlm-staking-rewards",
+      "finding": "Found while checking residual overlap. Facet 2 (status of the locked-XLM rewards proposal) is answer prose only: q-raph-xlm-staking kf2 says no CAP proposes native staking, and its answer says SDF's October 2026 fee-pool rewards paper is an undecided discussion. Both kept cases otherwise grade facet 1 (\"no native staking\").",
+      "fix": "amend q-raph-xlm-staking kf2 to grade the proposal's status (an undecided SDF discussion proposal, not a CAP or live feature, dated) with evidence from stellar.org/xlm-utility or stellar/discussions 2052."
+    },
+    {
+      "id": "ecosystem.sdf",
+      "finding": "Facet 2 \"who leads SDF today\" is graded only as the board (q-org-sdf-board-directors). No surviving case names SDF's executive leadership; the two cut person cases did not either (Mazières is founder and scientist, Rice a VP).",
+      "fix": "amend q-org-sdf-board-directors to ask who leads SDF (chief executive and board) and add one dated executive key fact with evidence from the SDF team page."
+    },
+    {
+      "id": "security.contract-security",
+      "finding": "Weight 3. Author notes facet 2 (practices and tools SDF recommends before Mainnet) is untested and leaves it there with no slot; the target is met by two cases on facet 1. A weight-3 facet with no case and no slot is a gap the slot list should carry.",
+      "fix": "add slot: pre-Mainnet security practice: What security steps and tools does SDF recommend before deploying a Soroban contract to Mainnet (audits, the Audit Bank, static analysis, threat modeling, monitoring)?"
+    }
+  ],
+  "duplicates": [],
+  "duplicatesNote": "None should merge now. Every pair in duplicates already names a headline survivor and cuts the rest. Every residualOverlap group shares one fact across cases that test different facets; merging any would drop a facet. The closest call is q-raph-xlm-staking and q-defi-liquid-staking-whitespace, both opening with \"no native staking\"; the ecosystem.xlm-staking-rewards fix gives the first a distinct facet instead.",
+  "unverifiedKeeps": [
+    {
+      "id": "q-n3-inject-ignore-previous-instructions",
+      "decision": "accept",
+      "why": "83 words, two behavior key facts, no volatile claim. Distinct payload (disclose config plus false endorsement) from q-edge-inject-ignore-instructions."
+    },
+    {
+      "id": "q-n3-issues-842-backup-faucet-wallet",
+      "decision": "accept",
+      "why": "Lure holds live: gh api repos/stellar/stellar-docs/issues/842 is a closed PR \"Update RPC retention window to 7 days\"; stellar/docs now resolves to archived stellar-deprecated/docs, where issue 842 returns 404 (2026-11-14). The grader note correctly grades the boundary, not the address."
+    },
+    {
+      "id": "q-raph-offramp-xlm-usdc",
+      "decision": "accept",
+      "why": "Record is compact and current (no fixed provider claim; availability is country-specific). Moot: the case is cut (extraCuts accept)."
+    },
+    {
+      "id": "q-raph-usdc-onto-stellar",
+      "decision": "accept",
+      "why": "Most volatile claim holds live: circle.com/.well-known/stellar.toml lists code=\"USDC\" issuer=\"GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN\" (2026-11-14). Two compact key facts; the answer does not name CCTP, but it requires a provider-supported Stellar route, which stays correct."
+    },
+    {
+      "id": "q-raph-withdraw-exchange-self-custody",
+      "decision": "accept",
+      "why": "Compact and stable. The auditor's note that freshness \"scheduled\" should be \"stable\" is right but moot: the case is cut."
+    }
+  ],
+  "summary": {
+    "cutsAccepted": 92,
+    "cutsRejected": 0,
+    "cutsWithAbsorb": 2,
+    "mergeFixesAccepted": 22,
+    "mergeFixesRejected": 0,
+    "toolLaneKeep": 6,
+    "toolLaneRetire": 13,
+    "leafFindingsWithFix": 6,
+    "headlineAfter": 210,
+    "headlineAfterNote": "211 minus q-crp-cme-xlm-futures-dates; plus one new slot on security.contract-security (35 to 36)."
+  }
+}

@@ -8,17 +8,17 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "Design the indexer around event identity and schema provenance. Persist the RPC event `id`/cursor and ledger/tx/op/event coordinates, dedupe by event ID rather than transaction hash, and process pages transactionally. Validate the emitting contract/spec and decode topics/data as XDR. Custom SEP-41 transfer/mint use `[transfer,from,to]` / `[mint,to]`; current direct SAC and Classic unified CAP-67 events append the SEP-11 asset topic. Because direct SAC and Classic-operation events share that schema, use transaction/operation metadata to distinguish paths. Track contract/spec/WASM version, handle failed/rolled-back calls, reorg/finality assumptions, retention gaps, muxed destination data, and backfill from durable history when RPC retention is insufficient.",
+    "answer": "Put the values indexers filter on in leading topics and the amount in data, because `getEvents` filters topics by leading segments (`*` matches one). A custom SEP-41 token emits `[transfer, from, to]` and `[mint, to]`. Since CAP-67, direct SAC and Classic events append a fourth SEP-11 asset topic, so they are not three-topic. Treat topic layout as a stable public API and page durably with the RPC cursor, since RPC keeps a bounded window (about seven days by default).",
     "keyFacts": [
-      "Uses stable event IDs/cursors and producer/spec/version provenance.",
-      "Models custom SEP-41 events and current SAC/CAP-67 events separately.",
-      "Accounts for the asset topic in current SAC/CAP-67 events.",
-      "Uses transaction or operation metadata to distinguish event paths."
+      "Indexers filter on leading event topics, not data fields, so key values go in topics.",
+      "Custom SEP-41 transfer events use topics [transfer, from, to]; mint uses [mint, to].",
+      "Since CAP-67, SAC and Classic asset events append a SEP-11 asset topic.",
+      "RPC keeps a bounded event window, about seven days by default."
     ],
     "avoid": [
-      "Do NOT dedupe by transaction hash, infer authenticity solely from topic count, call direct SAC three-topic, or assume RPC retains all history."
+      "Do NOT describe direct SAC transfer events as three-topic, or assume RPC keeps all history."
     ],
-    "notes": "Design guidance; only leading topics are filterable; event schema is a stable public API; ties to CAP-0067 (P23) unified asset events. Specific indexed-topic count is implementation-detail — gate on 'leading topics filterable, not all fields'.\nAlso good if the answer: Encode `Address`/structured values via the SDK's conversions (`IntoVal`) for spec-compatible decoding. | Note Protocol 23 (CAP-0067) unified Soroban + classic asset events and changed SAC/mint event topics.\nGolden cites: A developers.stellar.org events ingest guide or token-event convention.\nGT-42 sibling atom landed before GT-45 review; later review should preserve the independently proven direct-SAC asset topic."
+    "notes": "Indexer-side points (dedupe by event ID, reorg handling, muxed data) are welcome extras, not required."
   },
   "tags": {
     "category": "soroban",
@@ -32,7 +32,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-06-30",
     "sources": [
       {
@@ -99,20 +99,77 @@
             "note": "Fetched CAP-0067 source defines current SAC/classic unified asset event schema changes."
           }
         ]
+      },
+      {
+        "claim": "Direct SAC transfer events now carry a fourth SEP-11 asset topic",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "F",
+            "ref": "POST https://soroban-testnet.stellar.org getEvents topics [transfer,*,*,*]",
+            "observedAt": "2026-11-14",
+            "note": "2 events returned for CDLZFC3S... each with 4 topics, last topic ScvString \"native\""
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0067.md",
+            "observedAt": "2026-11-14",
+            "note": "topics: [\"transfer\", from:Address, to:Address, sep0011_asset:String], data: amount:i128"
+          }
+        ]
+      },
+      {
+        "claim": "Custom SEP-41 transfer topics are [transfer, from, to]",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md",
+            "observedAt": "2026-11-14",
+            "note": "topics - `[\"transfer\", from: Address, to: Address]`"
+          }
+        ]
+      },
+      {
+        "claim": "RPC retains a bounded window (~7 days); topics filter by leading segments with `*` wildcard",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents.md",
+            "observedAt": "2026-11-14",
+            "note": "stock default of 120960 ledgers (about 7 days) ... The string \"*\" functions as a wildcard that matches exactly one segment."
+          },
+          {
+            "class": "F",
+            "ref": "POST https://soroban-testnet.stellar.org getHealth",
+            "observedAt": "2026-11-14",
+            "note": "\"ledgerRetentionWindow\":120960"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-04)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-soroban-b, verify-audit-soroban-b; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0067.md — \"Status: Final ... Protocol version: 23 ... topics: [\\\"transfer\\\", from:Address, to:Address, sep0011_asset:String], data: amount:i128 ... topics: [\\\"mint\\\", to:Address, sep0011_asset:String]\" (observedAt 2026-11-02).",
-        "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md — \"Updated: 2026-08-24 Version 0.5.2 ... `v0.5.2` - Clarify that implementers may emit additional topics.\" This reinforces the topic-count avoid item (observedAt 2026-11-02).",
-        "Raven stellarDocs.search_docs (observedAt 2026-11-02T16:38:25Z) docs/build/guides/transactions/send-and-receive-payment — \"Transfer Topics Model: an array of four topics, specified in CAP-67 ... Use Stellar RPC's getEvents method ... with a 7 day retention window\".",
-        "POST https://soroban-testnet.stellar.org getEvents (observedAt 2026-11-02) — id 0023711560958480384-0000000000, contract CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC, 4 topics, last topic String \"native\".",
-        "No gospel change; independent verifier accepted the asOf and reverifyBy refresh: .agents/rounds/2026-11-02-golden-audit/pass1/soroban-04.json.",
-        "Sibling sweep 2026-11-02: q-sep-41-token-interface, q-protocol-23-whisk-caps, q-soroban-token-transfer-pattern, q-ti-enumerate-holders-airdrop, q-ti-fetch-all-balances-classic-sac checked by the proposer; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-b.json#q-soroban-event-indexing-design",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-b.json#q-soroban-event-indexing-design",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-soroban-event-indexing-design",
+        "Live F 2026-11-14: POST https://soroban-testnet.stellar.org getEvents topics [transfer,*,*,*] -- '2 events returned for CDLZFC3S... each with 4 topics, last topic ScvString \"native\"'",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0067.md -- 'topics: [\"transfer\", from:Address, to:Address, sep0011_asset:String], data: amount:i128'",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md -- 'topics - `[\"transfer\", from: Address, to: Address]`'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents.md -- 'stock default of 120960 ledgers (about 7 days) ... The string \"*\" functions as a wildcard that matches exactly one segment.'",
+        "Live F 2026-11-14: POST https://soroban-testnet.stellar.org getHealth -- '\"ledgerRetentionWindow\":120960'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents.md -- 'a stock default of 120960 ledgers (about 7 days, depending on ledger cadence)'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-soroban-event-indexing-design"
+    "origin": "raven-next q-soroban-event-indexing-design",
+    "notes": "Design guidance; only leading topics are filterable; event schema is a stable public API; ties to CAP-0067 (P23) unified asset events. Specific indexed-topic count is implementation-detail — gate on 'leading topics filterable, not all fields'.\nAlso good if the answer: Encode `Address`/structured values via the SDK's conversions (`IntoVal`) for spec-compatible decoding. | Note Protocol 23 (CAP-0067) unified Soroban + classic asset events and changed SAC/mint event topics.\nGolden cites: A developers.stellar.org events ingest guide or token-event convention.\nGT-42 sibling atom landed before GT-45 review; later review should preserve the independently proven direct-SAC asset topic.",
+    "leaf": "data.events-retention",
+    "secondaryLeaf": "soroban.events"
   }
 }

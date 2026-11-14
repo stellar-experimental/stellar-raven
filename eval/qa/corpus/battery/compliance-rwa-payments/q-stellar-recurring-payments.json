@@ -7,17 +7,15 @@
     "skills.stellar-dev.smart-contracts"
   ],
   "golden": {
-    "answer": "Stellar does not execute a merchant's future charge merely because a prior payment occurred. Implement recurrence in an application or contract-account policy. A user can authorize a narrowly scoped session or delegated signer that permits only a named contract, asset, maximum amount, cadence, and expiry; an off-chain scheduler then submits each authorized charge. Provide revocation, pause, idempotency, receipts, failed-payment handling, and a clear distinction between a pull authorization and custody.",
+    "answer": "Stellar has no native recurring-payment operation, and a past payment authorizes no future charge. Implement recurrence in the application or a contract-account policy: the user authorizes a scoped session or delegated signer limited to a named contract, asset, maximum amount, cadence and expiry, and a backend scheduler submits each charge. A token allowance is the other pull pattern: the payer approves a bounded amount and the charger calls `transfer_from`. Provide revocation, pause, idempotency and failed-payment handling; never take an unrestricted private key.",
     "keyFacts": [
-      "Recurring billing uses application scheduling or a contract-account policy.",
-      "A single payment does not create an automatic standing order.",
-      "A delegated credential should restrict merchant, asset, amount, cadence, and expiry.",
-      "Users need revocation and pause controls.",
-      "Billing services need idempotency and failed-payment handling."
+      "Stellar has no native recurring payments; the app or a contract account schedules charges.",
+      "A delegated credential should limit merchant, asset, amount, cadence and expiry.",
+      "Users need revocation and pause controls, and never share unrestricted keys."
     ],
     "avoid": [
-      "Stellar automatically repeats any payment operation at a specified monthly interval.",
-      "A subscription merchant needs the user's unrestricted private key."
+      "Do NOT claim Stellar automatically repeats a payment at a set interval.",
+      "Do NOT say a subscription merchant needs the user's unrestricted private key."
     ]
   },
   "tags": {
@@ -125,14 +123,18 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer re-verification, no gospel change; applier; .agents/rounds/2026-11-02-golden-audit.md, batch compliance-rwa-payments-04)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-compliance, verify-audit-compliance; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns (observedAt 2026-11-02): \"Store a record for the session key with its expiry, allowed scope, and remaining allowance; reduce the allowance on each authorized call.\"; \"Block execution until a specific ledger timestamp, or add a cooldown\" (time rules gate authorization; they do not schedule execution).",
-        "stellarDocs.search_docs 'session keys policy signers recurring payments smart account' -> https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets (observedAt 2026-11-02): \"you can also use Ed25519 keys, policy signers, session keys or anything the contract can\".",
-        "Sibling sweep 2026-11-02: q-sor-recurring-escrow-patterns, q-smart-account-scoped-policy-signers, q-raph-merchant-payments, q-defi-streaming-payments-prior-art; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-compliance.json#q-stellar-recurring-payments",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-compliance.json#q-stellar-recurring-payments",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-stellar-recurring-payments"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "kaan recurring-subscriptions-stellar"
+    "origin": "kaan recurring-subscriptions-stellar",
+    "leaf": "standards.payment-patterns"
   }
 }

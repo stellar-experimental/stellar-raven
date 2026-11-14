@@ -1,0 +1,23 @@
+{
+  "id": "q-protocol-27-cap-0071",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-protocol (golden coverage audit)",
+    "reviewer": "verify-protocol (golden coverage audit)",
+    "reason": "Merged into q-pc-protocol-27-zipper. Same protocol, CAP and activation as q-pc-protocol-27-zipper, with a stale 'queued' premise. The survivor rewrite carries both credential changes and the not-ZK/consensus boundary.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-protocol-27-cap-0071",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-protocol-27-cap-0071",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-protocol-27-cap-0071"
+    ],
+    "lastCaseContentSha256": "508eacc2146d6ea516b4b97d997135736c19ad9e8690dd7ed053be98cb242d5d",
+    "replacementIds": [
+      "q-pc-protocol-27-zipper"
+    ]
+  }
+}

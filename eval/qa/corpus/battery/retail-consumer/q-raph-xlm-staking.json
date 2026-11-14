@@ -5,18 +5,17 @@
     "stellarDocs.search_protocol_concepts_docs"
   ],
   "golden": {
-    "answer": "Stellar does not use proof-of-stake, so holding XLM does not natively stake it or earn protocol staking rewards. If a third party advertises 'XLM staking,' it is offering its own product, not activating a native network feature; investigate its custody, lockup, withdrawal, counterparty, and scam risks independently. Never send a secret key or funds to a promoter just to 'activate' staking. As of 2026-11-02, a live sweep of the official accepted and proposed CAP repository shows no native-staking or validator-reward CAP. That is a dated record claim, not a promise that future governance can never change. In October 2026, SDF published a discussion paper on a possible fee-pool-funded reward for XLM locked for a fixed term; SDF says it has not decided to fund or support any such mechanism, and that locked XLM would not secure the network or confer validator rights.",
+    "answer": "Stellar uses SCP, not proof-of-stake, so holding XLM does not natively stake it or earn protocol staking rewards. A third-party “XLM staking” offer is that provider's own product: check custody, lockup and scam risk, and never send keys or funds to “activate” staking. As of 2026-11-14 no accepted or proposed CAP adds native staking. SDF's October 2026 paper on fee-pool rewards for locked XLM is an undecided discussion proposal, not a CAP or a live feature.",
     "keyFacts": [
-      "States that Stellar has no native proof-of-stake reward for holding XLM.",
-      "Treats a third-party yield product as different from native staking."
+      "Stellar has no native proof-of-stake reward for holding XLM.",
+      "Third-party “staking” is the provider's own product, not a native feature.",
+      "Rewards for locked XLM are an undecided SDF proposal, not a CAP or live feature (dated)."
     ],
     "avoid": [
       "Do NOT say SDF runs an official staking program.",
-      "Do NOT call every third-party yield product native staking.",
-      "Do NOT say native staking will never exist or present an undated absence-of-plans claim.",
-      "Do NOT say SDF's October 2026 fee-pool rewards paper was adopted or is proof-of-stake staking."
+      "Do NOT say native staking will never exist, or that the fee-pool paper was adopted."
     ],
-    "notes": "Negative/status claim requires blind re-derivation before landing. SDF's October 2026 fee-pool rewards discussion paper (stellar.org/xlm-utility) is an undecided proposal for community feedback; an accurate dated mention of it is correct and does not contradict the CAP-sweep negative."
+    "notes": "Accept a later dated status of the rewards proposal. Calling the 2019 inflation mechanism staking is wrong."
   },
   "tags": {
     "category": "retail-consumer",
@@ -31,7 +30,7 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-02-18",
     "sources": [
       {
@@ -169,27 +168,55 @@
             "note": "Independent press coverage of the same discussion; no adoption claimed."
           }
         ]
+      },
+      {
+        "claim": "No accepted or proposed CAP adds native staking or validator rewards.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://api.github.com/repos/stellar/stellar-protocol/contents/core?ref=master",
+            "observedAt": "2026-11-14",
+            "note": "CAP listing runs to cap-0090; gh code search \"staking\" in stellar/stellar-protocol hits only ecosystem/sep-0037.md and sep-0056.md"
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0089.md",
+            "observedAt": "2026-11-14",
+            "note": "Title: Host functions for invoker-less authorization (Draft); cap-0088 Millisecond-Resolution Close Times"
+          }
+        ]
+      },
+      {
+        "claim": "SDF’s fee-pool rewards paper is a discussion proposal, not a decision.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/xlm-utility",
+            "observedAt": "2026-11-14",
+            "note": "Illustrative scenarios, not forecasts or commitments."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch retail-consumer-03)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-hist-retail, verify-hist-retail; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Gospel change 2026-11-02: golden.answer refreshes the dated CAP sweep to 2026-11-02 (drops the stale 'current Protocol 27 materials' wording; Protocol 29 is live) and adds SDF's October 2026 fee-pool rewards discussion paper with its 'not decided' status; one avoid item and a symmetric golden.notes caution added. Verifier decisions: answer modify, avoid modify, notes accept. Applier reworded the verifier avoid text from present-as to say-that form (same content) to clear the avoid presentation lint.",
-        "Live A 2026-11-02: https://cdn.sanity.io/files/e2r40yh6/production-i18n/1e067e436f0b8fa290e2adb4fed9804f8a480f1b.pdf — 'It is important to note that SDF has not decided to fund or support any such mechanism; this paper is for discussion purposes only.'",
-        "Live A 2026-11-02: https://cdn.sanity.io/files/e2r40yh6/production-i18n/1e067e436f0b8fa290e2adb4fed9804f8a480f1b.pdf — 'Locked XLM would not secure the network, confer validator or governance rights, create a claim on network services or face slashing. Validators would continue operating without protocol staking rewards.'",
-        "Live A 2026-11-02: https://stellar.org/xlm-utility — 'Illustrative scenarios, not forecasts or commitments.'",
-        "Live B 2026-11-02: https://github.com/stellar/stellar-protocol master 0da06899c02f818be0132f42cea1f45d6396e20a — grep core/cap-*.md for staking|stake|validator reward|fee pool|rewards pool: only incidental hits; no staking or reward CAP (latest CAP-0090).",
-        "Live B 2026-11-02: https://github.com/orgs/stellar/discussions/2052 — 'Mechanics are not defined yet.'",
-        "Live C 2026-10-30: https://lumenloop.com/research/stellar-weekly-roundup-week-oct-30-2026 — 'Framed as an early discussion rather than a finalized protocol change'",
-        "Live E 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — 'There are no monetary rewards for being a validator on the Stellar network.'",
-        "Live F 2026-11-02: https://horizon.stellar.org/ledgers?order=desc&limit=1 — protocol_version 29.",
-        "Sibling sweep 2026-11-02: q-edge-noinfo-stellar-pos-staking-rewards, q-hot-fee-pool-burn-deflation, q-defi-liquid-staking-whitespace, q-edge-fresh-latest-protocol-version, q-protocol-scp-consensus-algorithm checked; q-hot-fee-pool-burn-deflation already says future protocol changes could alter fee-pool treatment; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-raph-xlm-staking",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-raph-xlm-staking",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-raph-xlm-staking",
+        "Live B 2026-11-14: https://api.github.com/repos/stellar/stellar-protocol/contents/core?ref=master -- 'CAP listing runs to cap-0090; gh code search \"staking\" in stellar/stellar-protocol hits only ecosystem/sep-0037.md and sep-0056.md'",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0089.md -- 'Title: Host functions for invoker-less authorization (Draft); cap-0088 Millisecond-Resolution Close Times'",
+        "Live A 2026-11-14: https://stellar.org/xlm-utility -- 'Illustrative scenarios, not forecasts or commitments.'"
       ],
       "rootCause": [
-        "freshness-drift"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raph xlm-native-staking-not-supported"
+    "origin": "raph xlm-native-staking-not-supported",
+    "notes": "Negative/status claim requires blind re-derivation before landing. SDF's October 2026 fee-pool rewards discussion paper (stellar.org/xlm-utility) is an undecided proposal for community feedback; an accurate dated mention of it is correct and does not contradict the CAP-sweep negative.",
+    "leaf": "ecosystem.xlm-staking-rewards"
   }
 }

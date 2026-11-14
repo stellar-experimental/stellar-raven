@@ -1,0 +1,21 @@
+{
+  "id": "q-sor-reflector-integration-code",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-soroban-a (golden coverage audit)",
+    "reviewer": "verify-audit-soroban-a (golden coverage audit)",
+    "reason": "One provider's call signatures add little beyond the SEP-40 interface that q-pc-cross-redstone-sep40 tests.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-a.json#q-sor-reflector-integration-code",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-a.json#q-sor-reflector-integration-code",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-sor-reflector-integration-code"
+    ],
+    "lastCaseContentSha256": "10eb4b2d6ec0d1e0e6e0b017e50b8ba1a2d3685af5a7aa6c5028836709065665",
+    "replacementIds": []
+  }
+}

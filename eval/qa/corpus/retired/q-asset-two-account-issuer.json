@@ -1,0 +1,23 @@
+{
+  "id": "q-asset-two-account-issuer",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-assets (golden coverage audit)",
+    "reviewer": "verify-audit-assets (golden coverage audit)",
+    "reason": "Merged into q-asset-issue-asset-howto. The survivor q-asset-issue-asset-howto rewrite adds 'separate issuing and distribution accounts are recommended practice' as a key fact. The issuer-cannot-hold-own-asset fact stays in q-aas-burn-clawback-redemption-mechanics.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-assets.json#q-asset-two-account-issuer",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-assets.json#q-asset-two-account-issuer",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-asset-two-account-issuer"
+    ],
+    "lastCaseContentSha256": "a4677d5747e21687096d8e028ce789577a650e622764fd621880836e272d2157",
+    "replacementIds": [
+      "q-asset-issue-asset-howto"
+    ]
+  }
+}

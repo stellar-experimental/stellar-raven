@@ -1,0 +1,23 @@
+{
+  "id": "q-asset-stablecoin-issuers-discovery",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-assets (golden coverage audit)",
+    "reviewer": "verify-audit-assets (golden coverage audit)",
+    "reason": "Merged into q-eco-stablecoins-on-stellar. Same knowledge as q-eco-stablecoins-on-stellar (issuers versus stablecoins, Circle USDC/EURC, a non-exhaustive dated roster). The 38-to-37 row change is registry drift, not a changed fact.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-assets.json#q-asset-stablecoin-issuers-discovery",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-assets.json#q-asset-stablecoin-issuers-discovery",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-asset-stablecoin-issuers-discovery"
+    ],
+    "lastCaseContentSha256": "5823bd75f35534f387301061b9dbe3a9d65678f94dd12acc7f141832ec2ae5b5",
+    "replacementIds": [
+      "q-eco-stablecoins-on-stellar"
+    ]
+  }
+}

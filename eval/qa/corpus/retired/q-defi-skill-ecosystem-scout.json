@@ -1,0 +1,21 @@
+{
+  "id": "q-defi-skill-ecosystem-scout",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-defi (golden coverage audit)",
+    "reviewer": "verify-defi (golden coverage audit)",
+    "reason": "Retired with no battery replacement because it tests which skill Raven selects, which the skills routing case q-skill-eco-scout-rwa-landscape in eval/skills-cases.json measures.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-defi-skill-ecosystem-scout",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-defi-skill-ecosystem-scout",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-defi-skill-ecosystem-scout"
+    ],
+    "lastCaseContentSha256": "74e3650c0d258d2d4f2a00c3c3467daa302e5850384d84cac246dafdc9592a86",
+    "replacementIds": []
+  }
+}

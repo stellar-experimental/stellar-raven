@@ -1,0 +1,23 @@
+{
+  "id": "q-sor-contract-as-claimable-arbiter",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-soroban-a (golden coverage audit)",
+    "reviewer": "verify-audit-soroban-a (golden coverage audit)",
+    "reason": "Merged into q-sor-classic-dex-from-contract, which carries the fact that contracts cannot interact with claimable balances; the programmable-escrow fact was dropped there because the question does not ask for it.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-a.json#q-sor-contract-as-claimable-arbiter",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-a.json#q-sor-contract-as-claimable-arbiter",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-sor-contract-as-claimable-arbiter"
+    ],
+    "lastCaseContentSha256": "f33e936ce2ed1b39a431a09a0a5ada083dd7e1559daf0b1b583ddd31582a7a57",
+    "replacementIds": [
+      "q-sor-classic-dex-from-contract"
+    ]
+  }
+}

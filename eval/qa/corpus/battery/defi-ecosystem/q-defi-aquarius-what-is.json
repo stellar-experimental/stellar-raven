@@ -7,19 +7,19 @@
     "lumenloop.search_directory"
   ],
   "golden": {
-    "answer": "**Aquarius** is a Stellar/Soroban liquidity layer and AMM; **AQUA** is its transferable utility/reward asset. Locking AQUA creates a claimable balance and mints a non-transferable ICE-family position that melts toward unlock. Current docs distinguish **ICE** for lock/boost accounting, **upvoteICE** for liquidity-market voting, and **governICE** for DAO proposal voting; legacy downvoteICE was deprecated in June 2026. Longer locks can receive a larger multiplier.\n\nICE can boost AQUA rewards for eligible LP/SDEX activity, but simply holding ICE or casting governance votes does not guarantee/base-earn AQUA emissions; governance voting is documented as unrewarded. Aquarius is an AMM/liquidity protocol, not a lender, oracle, or bridge. Treat TVL and market-rank claims separately as live, dated metrics.",
+    "answer": "Aquarius is a Stellar/Soroban liquidity layer and AMM. AQUA is its transferable utility and reward asset. Locking AQUA mints non-transferable ICE-family tokens: ICE for lock and boost accounting, upvoteICE for liquidity-market voting, governICE for DAO proposals. ICE can boost AQUA rewards for eligible LP and SDEX activity; holding ICE or governance voting alone earns no emissions.",
     "keyFacts": [
       "Aquarius is a Stellar/Soroban liquidity layer and AMM.",
-      "AQUA is its transferable utility and reward asset.",
-      "Treats ICE, upvoteICE, and governICE as non-transferable tokens with distinct roles.",
-      "Limits AQUA reward boosts to eligible LP/SDEX activity."
+      "AQUA is transferable; ICE-family tokens from locking AQUA are not.",
+      "ICE, upvoteICE and governICE have separate lock, market-voting and governance roles.",
+      "ICE boosts AQUA rewards only for eligible LP/SDEX activity."
     ],
     "avoid": [
-      "Do NOT call ICE-family tokens transferable or collapse ICE, upvoteICE, and governICE into one governance/reward token.",
-      "Do NOT claim that merely holding ICE or casting governance votes earns AQUA emissions.",
-      "Do NOT describe Aquarius as a lender, oracle, or bridge."
+      "Do NOT call ICE-family tokens transferable or merge the three ICE roles.",
+      "Do NOT claim holding ICE or casting governance votes earns AQUA emissions.",
+      "Do NOT describe Aquarius as a lender, oracle or bridge."
     ],
-    "notes": "Per-project identity + tokenomics. AQUA/ICE lock mechanic is the precision trap. Grounded on Scout: Aquarius (AQUA) = DeFi liquidity layer + AMM on Soroban, stable/volatile pools with multihop swaps; LPs earn fees + AQUA yield. Current Aquarius docs separate upvoteICE market voting, which directs AQUA rewards, from governICE proposal voting, which they document as unrewarded; Scout's one-line summary merges the two.\nVoters on markets that carry voting incentives can receive incentive payouts in the incentive assets, often AQUA. Current Aquarius docs also describe a monthly AQUA pool for whitelisted delegates. Those docs compute delegate voting power from dICE plus gdICE, including governance-delegated ICE; an attributed delegate-program statement does not claim that casting governance votes earns emissions. Stating either dated, attributed program is not a claim that ICE holding or governance voting earns emissions.\nAlso good if the answer: Integrates with wallets such as LOBSTR, StellarX, Varial (formerly Freighter), StellarTerm.\nGolden cites: A source on Aquarius and the AQUA/ICE token mechanics (Lumenloop record, aqua.network, or DeFiLlama).\nCorrected 2026-07-10 by GT-13 independent agreement. Grade current token-role distinctions and conditional boost mechanics; do not require stale downvoteICE or a blanket emissions claim.\nRENAME (verified 2026-11-02): SDF renamed the Freighter wallet to Varial on 2026-10-29 (stellar.org blog \"Freighter is now Varial\"; extension 5.50.0 is the first Varial release). Freighter and Varial name the same SDF wallet; do not penalize either name."
+    "notes": "A dated, attributed mention of voting-incentive payouts or the delegate AQUA pool is not a claim that holding ICE earns emissions."
   },
   "tags": {
     "category": "defi-ecosystem",
@@ -189,26 +189,43 @@
             "note": "www.freighter.app -> https://varialwallet.com/ ; docs.freighter.app -> https://docs.varialwallet.com/."
           }
         ]
+      },
+      {
+        "claim": "ICE tokens are non-transferable; upvoteICE and governICE have separate roles; AQUA is used for locking, voting, rewards and governance",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://docs.aqua.network/aqua-and-ice/ice-tokens-locking-aqua-and-getting-benefits",
+            "observedAt": "2026-11-14",
+            "note": "Lock AQUA to receive ICE — non-transferable tokens that carry voting power and boost liquidity rewards."
+          },
+          {
+            "class": "A",
+            "ref": "https://docs.aqua.network/governance/aquarius-governance-community-led-decision-making",
+            "observedAt": "2026-11-14",
+            "note": "Users vote on proposals using their governICE balance"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch varial-dev)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-defi, verify-defi; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "https://stellar.org/blog/foundation-news/freighter-is-now-varial (RSS https://stellar.org/blog/rss.xml pubDate Thu, 29 Oct 2026) — \"Freighter is now Varial, with a new name and a new focus\" (observedAt 2026-11-02).",
-        "https://github.com/stellar/freighter/releases/tag/5.50.0 (published_at 2026-10-29T20:32:42Z) — \"Freighter is now **Varial**. This is the first release under the new name.\" (observedAt 2026-11-02).",
-        "https://github.com/stellar/freighter README and rebrand commit db6d022b (2026-10-28, \"Freighter is now Varial (#3048)\") — \"Varial (formerly Freighter) is a non-custodial wallet extension\"; manifest name \"Varial Wallet\" (observedAt 2026-11-02).",
-        "curl -I: https://www.freighter.app -> 301 https://varialwallet.com/ ; https://docs.freighter.app -> 307 https://docs.varialwallet.com/ (observedAt 2026-11-02).",
-        "General web (Parallel search + Perplexity, one class): https://blockchain.news/news/stellar-freighter-rebrands-varial-discover-directory ; https://www.tokenpost.com/news/technology/43511 — \"according to a Stellar Foundation blog post published on 2026-10-29\" (observedAt 2026-11-02).",
-        "Store and maintainer: Chrome Web Store listing \"Varial Wallet\" 5.51.0; Firefox AMO API still names \"Freighter\" 5.49.0; repo stays stellar/freighter and npm packages stay under the SDF @stellar scope (observedAt 2026-11-02).",
-        "Aquarius token-role facts were re-read 2026-11-02 at https://docs.aqua.network/aqua-and-ice/ice-tokens-locking-aqua-and-getting-benefits.md (\"ICE cannot be sent, traded, or deposited anywhere.\"); unchanged.",
-        "Sibling sweep 2026-11-02: grep -rli 'freighter|varial' eval/qa/corpus/battery -> 20 Freighter cases; 11 are in batch varial-dev; the other Varial-lane siblings (q-eco-freighter-wallet, q-tool-freighter-wallet, q-ti-find-export-secret-key) already state the same 2026-10-29 rename and same-product identity; no sibling names a different date, a different wallet, or a removed @stellar/freighter-api."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-defi-aquarius-what-is",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-defi-aquarius-what-is",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-defi-aquarius-what-is",
+        "Live A 2026-11-14: https://docs.aqua.network/aqua-and-ice/ice-tokens-locking-aqua-and-getting-benefits -- 'Lock AQUA to receive ICE — non-transferable tokens that carry voting power and boost liquidity rewards.'",
+        "Live A 2026-11-14: https://docs.aqua.network/governance/aquarius-governance-community-led-decision-making -- 'Users vote on proposals using their governICE balance'"
       ],
       "rootCause": [
-        "freshness-drift",
-        ".agents/TODO.md — Add the Varial rename to the goldens that name Freighter"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-defi-aquarius-what-is"
+    "origin": "raven-next q-defi-aquarius-what-is",
+    "notes": "Per-project identity + tokenomics. AQUA/ICE lock mechanic is the precision trap. Grounded on Scout: Aquarius (AQUA) = DeFi liquidity layer + AMM on Soroban, stable/volatile pools with multihop swaps; LPs earn fees + AQUA yield. Current Aquarius docs separate upvoteICE market voting, which directs AQUA rewards, from governICE proposal voting, which they document as unrewarded; Scout's one-line summary merges the two.\nVoters on markets that carry voting incentives can receive incentive payouts in the incentive assets, often AQUA. Current Aquarius docs also describe a monthly AQUA pool for whitelisted delegates. Those docs compute delegate voting power from dICE plus gdICE, including governance-delegated ICE; an attributed delegate-program statement does not claim that casting governance votes earns emissions. Stating either dated, attributed program is not a claim that ICE holding or governance voting earns emissions.\nAlso good if the answer: Integrates with wallets such as LOBSTR, StellarX, Varial (formerly Freighter), StellarTerm.\nGolden cites: A source on Aquarius and the AQUA/ICE token mechanics (Lumenloop record, aqua.network, or DeFiLlama).\nCorrected 2026-07-10 by GT-13 independent agreement. Grade current token-role distinctions and conditional boost mechanics; do not require stale downvoteICE or a blanket emissions claim.\nRENAME (verified 2026-11-02): SDF renamed the Freighter wallet to Varial on 2026-10-29 (stellar.org blog \"Freighter is now Varial\"; extension 5.50.0 is the first Varial release). Freighter and Varial name the same SDF wallet; do not penalize either name.",
+    "leaf": "defi.protocol-governance",
+    "secondaryLeaf": "defi.dex-amm"
   }
 }

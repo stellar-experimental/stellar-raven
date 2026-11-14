@@ -1,0 +1,21 @@
+{
+  "id": "q-ti-skill-content-auditor",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-tooling-b (golden coverage audit)",
+    "reviewer": "verify-audit-tooling-b (golden coverage audit)",
+    "reason": "Duplicate of the other two skill-workflow cases and no Stellar truth; inventory and run behavior are already covered by test/skill-exposure-classification.test.ts and test/skill-run.test.ts.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-b.json#q-ti-skill-content-auditor",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-b.json#q-ti-skill-content-auditor",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-ti-skill-content-auditor"
+    ],
+    "lastCaseContentSha256": "bfdcdffd96f082b43a47c36e07fc58cfea5c0be0a192b36c92143b07ab766b53",
+    "replacementIds": []
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "id": "q-defi-comet-what-is",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-defi (golden coverage audit)",
+    "reviewer": "verify-defi (golden coverage audit)",
+    "reason": "Its key facts are award totals and a Blend dependency; neither tests what the exchange does.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-defi-comet-what-is",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-defi-comet-what-is",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-defi-comet-what-is"
+    ],
+    "lastCaseContentSha256": "631f5d2be772cb14f8b97a24663cb2499368e1458217278fd775cf322e496f9e",
+    "replacementIds": []
+  }
+}

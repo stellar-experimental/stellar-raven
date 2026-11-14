@@ -1,0 +1,23 @@
+{
+  "id": "q-aas-burn-clawback-redemption-mechanics",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-assets (golden coverage audit)",
+    "reviewer": "verify-audit-assets (golden coverage audit)",
+    "reason": "Merged into q-asset-issue-asset-howto. Clawback half repeats q-comp-clawback-cap0035. Absorb one fact: sending an asset back to its issuer burns it, and the issuer cannot hold its own asset.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-assets.json#q-aas-burn-clawback-redemption-mechanics",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-assets.json#q-aas-burn-clawback-redemption-mechanics",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-aas-burn-clawback-redemption-mechanics"
+    ],
+    "lastCaseContentSha256": "2aa9da1bc61dd0f27fd77dd245600fc3401987903fb649c2b237fda4e439b157",
+    "replacementIds": [
+      "q-asset-issue-asset-howto"
+    ]
+  }
+}

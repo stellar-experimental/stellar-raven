@@ -6,19 +6,17 @@
     "stellarDocs.search_docs"
   ],
   "golden": {
-    "answer": "MPP is an HTTP-402 payment-negotiation protocol. On Stellar, Charge settles SAC transfers per request and Session uses a funded unidirectional channel with cumulative off-chain commitments. Publish an OpenAPI 3.1 document, commonly /openapi.json, with x-payment-info.offers, but treat discovery metadata as advisory: the runtime 402 Challenge is authoritative for current price, token, network, expiry, and terms. Optional discovery includes MPPScan registration and the mpp.dev services registry, including the read-only https://mpp.dev/mcp/services surface. MPP and x402 are distinct protocols with distinct challenge, credential, and receipt headers. As of 2026-11-02, mpp.dev says one mppx endpoint can serve both protocols for x402-compatible EVM charges; with one endpoint or separate adapters, never relabel one protocol's payload as the other.",
+    "answer": "MPP is an HTTP-402 payment protocol. On Stellar, Charge settles a SAC transfer per request on-chain, and Session uses a funded channel with cumulative off-chain commitments. An API advertises payment through an OpenAPI 3.1 document with x-payment-info.offers, but the runtime 402 challenge is authoritative for price, token, network and expiry. MPP and x402 both use HTTP 402 with different payloads and headers; never relabel one as the other.",
     "keyFacts": [
-      "Defines MPP as HTTP 402 with per-request SAC Charge and cumulative off-chain Session.",
-      "Publish OpenAPI 3.1, commonly at /openapi.json, with x-payment-info.offers.",
-      "Treats discovery as advisory to runtime 402 price, token, network, expiry, and terms.",
-      "Names MPPScan, mpp.dev, and https://mpp.dev/mcp/services as optional discovery.",
-      "Treats MPP and x402 as distinct protocols with non-interchangeable payloads."
+      "MPP Charge settles a SAC transfer per request; Session uses a funded off-chain channel.",
+      "APIs advertise MPP via OpenAPI x-payment-info; the runtime 402 challenge is authoritative.",
+      "x402 and MPP both use HTTP 402 but are distinct protocols with distinct payloads."
     ],
     "avoid": [
-      "MPP Session requires a new on-chain transfer for every API call.",
-      "Listing an API in an MPP directory automatically verifies all client payments."
+      "Do NOT claim MPP Session needs a new on-chain transfer for every call.",
+      "Do NOT claim an MPP directory listing verifies client payments, or relabel one protocol's payload as the other's."
     ],
-    "notes": "Status-sensitive details are stated as of 2026-11-02; grade later sourced changes leniently and require dated primary evidence.\nAs of 2026-11-02, https://mpp.dev/mpp-vs-x402 says one mppx endpoint can serve both protocols for x402-compatible EVM charges. An answer that recommends separate adapters, or one endpoint that offers both protocols, is not wrong. An answer that relabels one protocol's payload or headers as the other is wrong."
+    "notes": "A single mppx endpoint serving both protocols, or separate adapters, is acceptable (mpp.dev, as of 2026-11-14)."
   },
   "tags": {
     "category": "compliance-rwa-payments",
@@ -32,7 +30,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-02-19",
     "sources": [
       {
@@ -234,29 +232,49 @@
             "note": "'Use this read-only MCP server to discover MPP paid API services'."
           }
         ]
+      },
+      {
+        "claim": "MPP Charge settles a Soroban SAC transfer per request on-chain.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/agentic-payments/mpp",
+            "observedAt": "2026-11-14",
+            "note": "Each request triggers a Soroban SAC `transfer` settled on-chain individually."
+          }
+        ]
+      },
+      {
+        "claim": "mpp.dev says one mppx endpoint can serve both MPP and x402 clients.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://mpp.dev/mpp-vs-x402",
+            "observedAt": "2026-11-14",
+            "note": "You can run both protocols on the same endpoint with `mppx`"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 pass 3 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task peer-handoff)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-compliance, verify-audit-compliance; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Gospel change 2026-11-02 (pass 3, task peer-handoff): golden.answer drops the 'expose separate adapters' prescription and adds a dated one-endpoint clause; keyFacts[4] now reads 'Treats MPP and x402 as distinct protocols with non-interchangeable payloads.' (verifier modification); golden.notes status date moves to 2026-11-02 and add a symmetric do-not-penalize line for separate adapters or one dual-protocol endpoint. Relabeling a payload stays wrong.",
-        "Live A 2026-11-02: https://mpp.dev/mpp-vs-x402 \u2014 'You can run both protocols on the same endpoint with mppx , so adopting MPP doesn't require you to exclude x402 clients. ... With mppx , you can run x402-compatible EVM charges inline with an MPP route: the server emits both MPP and x402 Challenges, accepts either Credential format, and returns the matching Receipt header.' Header table: Challenge 'PAYMENT-REQUIRED' vs 'WWW-Authenticate: Payment'; Credential 'PAYMENT-SIGNATURE' vs 'Authorization: Payment'; Receipt 'PAYMENT-RESPONSE' vs 'Payment-Receipt' (observedAt 2026-11-02)",
-        "Live A 2026-11-02: https://mpp.dev/guides/use-mpp-with-x402 \u2014 'Returns MPP and x402 Challenges on 402 responses Accepts MPP and x402 Credentials ... Returns the Receipt header that matches the client's protocol' and 'The wrapper delegates x402 Credentials, lifecycle hooks, verification, and settlement to the official x402 adapter.' (dateModified 2026-10-26; observedAt 2026-11-02)",
-        "Live B 2026-11-02: https://github.com/wevm/mppx/blob/ed76e8e21c4b20cf0845cbd60ba8565bc7bc2c30/src/integrations/x402/Negotiator.ts \u2014 '/** Selects MPP, x402, or an immediate response for a request. */' and 'Send either an MPP credential or an x402 payment signature, not both.' (status 400); gh api repos/wevm/mppx/commits?path=src/integrations/x402 oldest commit 2026-08-24T18:57:01Z 07c59cf40b 'feat: add MPP compatibility to x402 adapters (#831)', after the 2026-07-11 status snapshot (observedAt 2026-11-02)",
-        "D 2026-10-31: Parallel web_fetch cached copies of https://mpp.dev/mpp-vs-x402 and https://mpp.dev/guides/use-mpp-with-x402 carry the same 'run both protocols on the same endpoint' wording.",
-        "Earlier 2026-11-02 re-verification (.agents/rounds/2026-11-02-golden-reverify.md): Dead refs replaced: https://developers.stellar.org/docs/build/apps/agentic-payments/mpp (HTTP 404) moved to https://developers.stellar.org/docs/build/agentic-payments/mpp; https://github.com/stellar/mpp (404) is replaced by https://github.com/stellar/stellar-mpp-sdk (gh api: not archived, pushed 2026-10-26); https://github.com/interop-alliance/mpp-services (404, no successor found) is dropped in favor of a live C probe of https://mpp.dev/mcp/services and the stellar-dev-skill pin.",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/build/agentic-payments/mpp and https://developers.stellar.org/docs/build/agentic-payments/mpp/channel-guide confirm HTTP 402, per-request SAC Charge, and cumulative off-chain Session commitments with no per-payment on-chain transaction.",
-        "Live A 2026-11-02: https://mpp.dev/advanced/discovery confirms OpenAPI 3.1 at /openapi.json with x-payment-info.offers[], advisory discovery, MPPScan, and the read-only https://mpp.dev/mcp/services directory.",
-        "Live C 2026-11-02: MCP initialize on https://mpp.dev/mcp/services returned HTTP 200 (mpp-services-mcp 1.0.0).",
-        "Live B 2026-11-02: https://github.com/stellar/stellar-dev-skill/blob/cac64041d0c759a3b10ce6fba4fa3e0672bcbe0f/skills/agentic-payments/mpp.md at stellar-dev-skill pin cac64041d0c759a3b10ce6fba4fa3e0672bcbe0f states the same five runtime-authoritative terms.",
-        "Sibling sweep 2026-11-02: grep MPPScan|mpp.dev/mcp/services|x-payment-info|MPP|stellar-mpp-sdk finds q-agent-payment-standard-choice, q-agent-identity-erc8004-stellar, q-defi-agentic-payment-standards-compare, q-defi-streaming-payments-prior-art, q-defi-x402-on-stellar-what; no contradiction. q-agent-payment-standard-choice still cites the dead https://github.com/stellar/mpp.",
-        "Sibling sweep 2026-11-02 (pass 3): q-agent-payment-standard-choice recommends one payment adapter boundary for the chosen standard, not separate MPP and x402 adapters; q-defi-agentic-payment-standards-compare and q-defi-x402-on-stellar-what carry no adapter or relabel claim; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-compliance.json#q-mpp-discovery-and-modes",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-compliance.json#q-mpp-discovery-and-modes",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-mpp-discovery-and-modes",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/build/agentic-payments/mpp -- 'Each request triggers a Soroban SAC `transfer` settled on-chain individually.'",
+        "Live A 2026-11-14: https://mpp.dev/mpp-vs-x402 -- 'You can run both protocols on the same endpoint with `mppx`'",
+        "Live sentinel read 2026-11-14 (npm run eval:qa:sentinels -- --ids mpp-payment-intents): hold"
       ],
       "rootCause": [
-        "freshness-drift"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "kaan agentic-mpp-discovery"
+    "origin": "kaan agentic-mpp-discovery",
+    "notes": "Status-sensitive details are stated as of 2026-11-02; grade later sourced changes leniently and require dated primary evidence.\nAs of 2026-11-02, https://mpp.dev/mpp-vs-x402 says one mppx endpoint can serve both protocols for x402-compatible EVM charges. An answer that recommends separate adapters, or one endpoint that offers both protocols, is not wrong. An answer that relabels one protocol's payload or headers as the other is wrong.",
+    "leaf": "ai.mpp-agentic-protocols"
   }
 }

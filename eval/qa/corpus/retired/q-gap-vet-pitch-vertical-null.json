@@ -1,0 +1,23 @@
+{
+  "id": "q-gap-vet-pitch-vertical-null",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-scf (golden coverage audit)",
+    "reviewer": "verify-audit-scf (golden coverage audit)",
+    "reason": "Merged into q-scf-pitch-prep-live: reading a null vertical as unmapped rather than as market absence is graded by the tool-lane case q-scf-pitch-prep-live.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-gap-vet-pitch-vertical-null",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-gap-vet-pitch-vertical-null",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-gap-vet-pitch-vertical-null"
+    ],
+    "lastCaseContentSha256": "2cb6ec730cb82287484919bf6e04f67781db1a5eec8e4d8a7103763fdf53291d",
+    "replacementIds": [
+      "q-scf-pitch-prep-live"
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "id": "q-raph-scam-spam-tokens",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-hist-retail (golden coverage audit)",
+    "reviewer": "verify-hist-retail (golden coverage audit)",
+    "reason": "Merged into q-raph-unsolicited-airdrop. Same unsolicited-asset mechanism as q-raph-unsolicited-airdrop; the survivor rewrite absorbs the open-network premise, the trustline distinction and issuer-based judgment.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-raph-scam-spam-tokens",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-raph-scam-spam-tokens",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-raph-scam-spam-tokens"
+    ],
+    "lastCaseContentSha256": "b86559b2d18540549507793adfb77ecc7c29c617c585cbec06c26796ef4b8d2f",
+    "replacementIds": [
+      "q-raph-unsolicited-airdrop"
+    ]
+  }
+}

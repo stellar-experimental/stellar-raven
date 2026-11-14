@@ -1,0 +1,23 @@
+{
+  "id": "q-edge-oos-bitcoin-price-prediction",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-edge (golden coverage audit)",
+    "reviewer": "verify-audit-edge (golden coverage audit)",
+    "reason": "Merged into q-edge-xlm-price-investment-advice. The survivor rewrite extends the no-forecast rule to any asset; generic out-of-scope behavior stays in q-edge-oos-solana-vs-aptos.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-edge.json#q-edge-oos-bitcoin-price-prediction",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-edge.json#q-edge-oos-bitcoin-price-prediction",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-edge-oos-bitcoin-price-prediction"
+    ],
+    "lastCaseContentSha256": "4031cf8175bb2ca441055f32ecda2b1e1d048e0377d66a4fd4291910a43010b2",
+    "replacementIds": [
+      "q-edge-xlm-price-investment-advice"
+    ]
+  }
+}

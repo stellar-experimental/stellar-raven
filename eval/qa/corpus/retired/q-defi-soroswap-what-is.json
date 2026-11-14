@@ -1,0 +1,23 @@
+{
+  "id": "q-defi-soroswap-what-is",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-defi (golden coverage audit)",
+    "reviewer": "verify-defi (golden coverage audit)",
+    "reason": "Merged into q-defi-soroswap-vs-stellarx. Survivor q-defi-soroswap-vs-stellarx keeps PaltaLabs, product layers, on-chain vs API routing and attributed 'first' wording; the aggregator contract history correctly moves to truth.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-defi-soroswap-what-is",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-defi-soroswap-what-is",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-defi-soroswap-what-is"
+    ],
+    "lastCaseContentSha256": "6d06e62e4699b9157b3a543d6f252f6fc252ca53cf7a20931cee9fbfa2ce4e42",
+    "replacementIds": [
+      "q-defi-soroswap-vs-stellarx"
+    ]
+  }
+}

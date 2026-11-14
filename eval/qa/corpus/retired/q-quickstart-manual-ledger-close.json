@@ -1,0 +1,21 @@
+{
+  "id": "q-quickstart-manual-ledger-close",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-tooling-a (golden coverage audit)",
+    "reviewer": "verify-audit-tooling-a (golden coverage audit)",
+    "reason": "One Quickstart flag on a one-case leaf that q-infra-quickstart-local-network already holds.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-a.json#q-quickstart-manual-ledger-close",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-a.json#q-quickstart-manual-ledger-close",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-quickstart-manual-ledger-close"
+    ],
+    "lastCaseContentSha256": "8d7be543be563d877bfc6287be5c9c380682286f77fbfeaafb3eedf8fc0a7b09",
+    "replacementIds": []
+  }
+}
