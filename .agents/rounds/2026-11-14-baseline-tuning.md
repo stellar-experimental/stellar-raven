@@ -31,3 +31,17 @@ to reserve). SHA-256 `697c550ae15400f5d7e8d9e47f4fd3d5460a6052d91571f5014ef4d35f
 |---|---|---|---|---|
 
 ## Ledger
+
+## Plan 2: first tuning loop
+
+Plan [TUNING-PLAN.md](2026-11-14-baseline-tuning/TUNING-PLAN.md), review and adopted amendments A1
+to A9 and A11 beside it. Implementer report: TUNE-IMPL-1.md (arm 1 `a321c5b7`, arm 2 `3eb40f56`).
+
+Orchestrator rulings on TUNE-IMPL-1 (Claude Fable 5.2, 2026-11-14): the panel stays at 50 rows
+(`q-protocol-version-history-list` is not added); the `eval/gates.json` fingerprint re-stamp and
+the missing live Mintlify check go to the independent reviewer of the diffs.
+
+**Authorization, step 0-prime.** One collection of the 50-row panel on `6ce86dce` (surface
+`b336fa14…3404` asserted before spend), Claude Sonnet 5.5 answering, pinned judge,
+`--max-panel-cases 50`, `--max-budget-usd 12.5`. Subscription spend under the owner approval of
+2026-11-14. No resume, no re-judge. Arm runs are authorized separately after the diff review.
