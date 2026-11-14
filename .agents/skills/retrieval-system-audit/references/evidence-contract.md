@@ -28,14 +28,15 @@ Record these items before implementation or spend:
 
 - One causal hypothesis.
 - Two unrelated targets when available.
-- At least six symmetric controls for a product change.
+- Symmetric controls for a product change, sized to the decision. State the control coverage and
+  justify it here before any outcome is read.
 - The unchanged baseline arm.
 - The single changed variable.
 - One mechanism metric.
 - Exact case identifiers and order.
 - Runner, server, manifest, corpus, prompt, evidence-pack, rubric, and judge pins.
 - Model roles and repetitions.
-- Expected cost, hard cap, and checkpoint intervals.
+- Expected time and cost, hard cap, and checkpoint intervals.
 - Stop rules and acceptance thresholds.
 - Author and independent reviewers.
 

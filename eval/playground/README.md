@@ -1,10 +1,12 @@
 # Playground semantic evaluation
 
-`scripts/run-demo-model-gauntlet.mjs` remains the eight-case transport and tool-loop smoke test. It checks that models can complete the SSE chat path cleanly; it does not establish factual answer quality. It prints the validated matrix first and will not create artifacts, read `.dev.vars`, mint cookies, or start Wrangler unless the operator explicitly supplies `--confirm-paid` (for example: `node scripts/run-demo-model-gauntlet.mjs --models openai/gpt-5.4 --confirm-paid`). The printed total is planned Playground chat turns, not guaranteed provider calls.
+`scripts/run-demo-model-gauntlet.mjs` remains the eight-case transport and tool-loop smoke test. It checks that models can complete the SSE chat path cleanly; it does not establish factual answer quality. It prints the validated matrix first and will not create artifacts, read `.dev.vars`, mint cookies, or start Wrangler unless the operator explicitly supplies `--confirm-paid` (for example: `node scripts/run-demo-model-gauntlet.mjs --models openai/gpt-6.1-terra --confirm-paid`). The printed total is planned Playground chat turns, not guaranteed provider calls. Without `--models` it runs the three evaluation clients (Sonnet 5.5, GPT-6.1 Terra, Grok 4.7). Select any other model explicitly with `--models` and state in the run plan the decision it serves.
 
 `npm run eval:playground` is the complementary semantic lane. It sends existing QA cases to the real `POST /playground/chat` SSE route, captures the final assistant text, search/execute outcomes, terminal reason, latency, HTTP/SSE errors, and grades the final answer with the existing `eval/qa` golden, evidence-pack, and judge contract. It introduces no new quality rubric and does not change corpus or golden content.
 
 Use a pane already running `npm run dev` and its bound loopback URL; do not start Wrangler for this command.
+
+Both lanes are API-billed: the Playground route itself calls models through Cloudflare AI Gateway, so no subscription CLI can stand in for it. Use them only for a Playground decision, on the fewest cases and models that can change it, and state the expected cost first. For other questions, use the CLI-driven instruments in the [evaluation map](../EVALS.md).
 
 ```sh
 # Free validation: default seeded, stratified five-case selection; no HTTP/model/judge calls.
@@ -37,7 +39,7 @@ npm run eval:playground -- --confirm-paid --max-budget-usd 10 \
 
 ## Comparing candidate models
 
-To change the Playground primary or fallback, first run the gauntlet on the candidate, then run this lane on the same case IDs as the shipped model's run. Run each candidate at effort `none` when it supports it, otherwise at its lowest supported effort. Effort `none` is the shipped latency default, not an eligibility rule. Set `DEMO_MODEL_OVERRIDE` and `DEMO_REASONING_EFFORT_OVERRIDE` on both the server and the harness, and record the effort beside each result. Switch only when the candidate passes the gauntlet and is not worse on the paired run: no new wrong answers and no tool-loop regressions. Cost and latency decide between candidates that pass. [`research/audits/2026-11-10-playground-gpt61-terra-recheck.md`](../../research/audits/2026-11-10-playground-gpt61-terra-recheck.md) is a worked example.
+To change the Playground primary or fallback, first run the gauntlet on the candidate, then run this lane on the same case IDs as the shipped model's run. Run each candidate at effort `none` when it supports it, otherwise at its lowest supported effort. Effort `none` is the shipped latency default, not an eligibility rule. Set `DEMO_MODEL_OVERRIDE` and `DEMO_REASONING_EFFORT_OVERRIDE` on both the server and the harness, and record the effort beside each result. Switch only when the candidate passes the gauntlet and shows no tool-loop regressions on the paired run. Cost and latency then decide, unless the cheaper candidate is far less correct. Report each candidate's count of new wrong answers beside its cost and latency as the evidence for that call. [`research/audits/2026-11-10-playground-gpt61-terra-recheck.md`](../../research/audits/2026-11-10-playground-gpt61-terra-recheck.md) is a worked example.
 
 ## Dollar accounting
 

@@ -41,7 +41,7 @@ The required flags bind the server revision, surface hash, executable hash, envi
 Each agent receives only the remaining budget authorization. Invalid, missing, or excessive cost reports fail the run.
 Artifacts record each authorization, cost report, and remaining amount under `eval/discovery/results/`.
 
-The agent defaults to `claude-sonnet-5` at medium effort and can use only `mcp__raven__search`.
+The agent defaults to `claude-sonnet-5-5` at medium effort and can use only `mcp__raven__search`.
 The runner grades at most the first three searches and records the observed call count.
 Zero searches or more than three searches invalidate final-selection credit.
 Use `--cases`, `--ids`, `--repeat`, `--model`, and `--effort` for explicit comparisons.

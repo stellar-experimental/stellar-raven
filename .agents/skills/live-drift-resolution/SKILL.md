@@ -3,365 +3,161 @@ name: live-drift-resolution
 description: Resolve a "Live service drift detected" issue — the daily CI that diffs the committed catalog against the live upstream surfaces (Lumenloop, Stellar Light/Scout, Stellar Docs). Regenerate the artifacts, classify the drift, decide whether it needs a policy or routing-baseline change or is a clean mechanical bump, dual-verify, commit, deploy when authorized, verify production, and close. Use when a drift issue is filed, when refreshing inventory, or when deciding if an upstream version bump is routing-neutral.
 ---
 
-# Live service drift resolution — stellar-raven-codemode
+# Live service drift resolution
 
-Boundary: this resolves live **service surface** drift. If the user asks whether repo truth is
-current across evals, golden answers, improvements, upstream issues, or PRs, use
-`truth-maintenance` as the coordinator and this skill as only the drift lane.
+The committed catalog (`inventory/*.json`, `catalog/manifest.json`, `specs/super-spec.json`,
+`eval/plan/op-classes.json`) is a frozen snapshot of upstream surfaces. Resolving drift is
+mechanical regeneration plus one judgment:
 
-## North star
+> Is this a clean bump to absorb, or does it change the exposed surface or routing behavior, which
+> needs a policy or baseline decision in the same change?
 
-The committed catalog (`catalog/manifest.json`, `inventory/*.json`, `specs/super-spec.json`,
-`eval/plan/op-classes.json`) is a **frozen snapshot** of upstream surfaces that drift on their
-own schedule. A daily CI job re-fetches the live surfaces and files a **"Live service drift
-detected"** issue when the snapshot no longer matches. Resolving it is mechanical regeneration
-plus **one real judgment**:
+Both errors cost: absorbing a bump that added a callable operation ships an unvetted surface, and
+re-baselining a gate for a bump that did not touch routing hides a regression. Size the work to the
+class: pure provenance drift, the common daily case, needs steps 1, 2, 4, 6, 7, and 8, all free
+and local, with no reviewer lanes. There, step 6 is a bounded local search that ends in recorded
+"no edit needed" evidence or a routed edit. For a pass across
+evals, goldens, and improvements as well, `truth-maintenance` coordinates and this skill is the
+drift lane.
 
-> Is this a clean mechanical bump (absorb and commit), or does it change the exposed surface
-> or the routing behavior (which needs a policy or baseline decision in the SAME change)?
+## 1. Regenerate
 
-Getting that judgment wrong in either direction is the failure mode: rubber-stamping a bump
-that added a callable operation ships an unvetted surface; re-baselining a gate for a bump that
-didn't touch routing hides a real regression behind a moved goalpost. The whole skill exists to
-make that one call correctly and prove it.
+The issue's diffstat shows the shape of the drift. Derive the class from the diff, not from the
+issue text or the upstream changelog. Run in order:
 
-## Step 0 — read the issue, don't trust its summary
-
-The drift issue is auto-filed by a bot. It links this runbook, lists the minimum checks before
-close, and gives a diffstat of the generated files. Read it for the *shape* (which files, roughly
-how big), but treat its framing as a starting point, not a verdict — the whole point of the steps
-below is to derive the truth from the actual diff.
-
-## Step 1 — regenerate from live services
-
-Run the full pipeline in this order (the daily refresh workflow runs the first five). Each step
-feeds the next, except the keyless anchor capture, which is independent:
-
-```
-npm run docs:anchors:build              # public sitemap + rendered headings → src/adapters/stellar-docs-anchors.json
-node scripts/refresh-inventory.mjs      # re-fetch live upstream → inventory/*.json
-node scripts/build-catalog.mjs          # inventory → catalog/manifest.json (+ exposure guards)
-npm run micro-map:build                  # catalog + workflow archetypes → src/mcp/micro-map.ts
-npm run spec:build                       # catalog → specs/super-spec.json (ships into sandbox)
-node eval/plan/build-op-classes.mjs     # catalog → eval/plan/op-classes.json (broad/detail/meta)
+```sh
+npm run docs:anchors:build            # sitemap + headings -> src/adapters/stellar-docs-anchors.json
+node scripts/refresh-inventory.mjs    # live upstream -> inventory/*.json
+node scripts/build-catalog.mjs        # inventory -> catalog/manifest.json, with exposure guards
+npm run micro-map:build               # catalog + source-family purposes -> src/mcp/micro-map.ts
+npm run spec:build                    # catalog -> specs/super-spec.json
+node eval/plan/build-op-classes.mjs   # catalog -> eval/plan/op-classes.json
 ```
 
-When `src/adapters/stellar-docs-anchors.json` changes, read the drift summary's changed pages,
-removed pages, and ambiguous headings, then run `test/adapters.test.ts` and the two
-`test/stellar-docs-anchor*` tests. An anchor change does not touch the catalog or routing.
+- `refresh-inventory.mjs` rewrites a service file only when its surface moved, so the working tree
+  isolates the drift. `git status --short` must show only generated artifacts, plus the policy,
+  runner, or baseline edits the class below requires. Anything else: stop and investigate.
+- **Anchors.** When `stellar-docs-anchors.json` changes, read the summary's changed pages, removed
+  pages, and ambiguous headings, then run `test/adapters.test.ts` and the two
+  `test/stellar-docs-anchor*` tests. An anchor change does not touch the catalog or routing.
+- **Skill pins.** When `ecosystem-skills/` pins move, also run:
 
-If the drift issue also reports an `ecosystem-skills/` pin change, or if you run
-`ecosystem-skills/update.sh` while resolving the issue, rebuild the generated artifacts in the
-same pass:
+  ```sh
+  ./ecosystem-skills/update.sh               # re-pin and print the old->new body diff
+  node scripts/check-mirrors.mjs --fetch     # every pin resolves upstream and hashes as recorded
+  $EDITOR ecosystem-skills/PIN-REVIEW.md     # record the attestation
+  node scripts/check-pin-review.mjs --base origin/main
+  ```
 
-```
-./ecosystem-skills/update.sh              # re-pin AND print the old->new body diff — READ IT
-node scripts/check-mirrors.mjs --fetch    # every new pin resolves upstream and hashes as recorded
-# then record the attestation (CI fails without it):
-$EDITOR ecosystem-skills/PIN-REVIEW.md
-node scripts/check-pin-review.mjs --base origin/main
-node scripts/build-catalog.mjs
-npm run micro-map:build
-npm run spec:build
-node eval/plan/build-op-classes.mjs
-```
+  then rebuild the catalog, micro-map, spec, and op classes. Skill bodies are fetched and verified
+  at read time from the pinned commit, so a re-pin changes what the model reads. Read the body diff
+  before you commit it.
 
-Skill bodies are NOT vendored and NOT bundled into the Worker: `MANIFEST.json` pins each file by
-commit + git blob hash, and `codemode.skill.read` fetches and verifies it at read time
-(`src/skills/source.ts`). So a re-pin ships the moment `catalog/manifest.json` carries the new
-`transport.url`/`sha` — there is no separate bundle to regenerate, and **a re-pin changes what
-the model reads**. Read the skill diffs before committing one.
+## 2. Classify each service
 
-`refresh-inventory.mjs` only rewrites a service file when its live surface actually moved (it
-prints `unchanged (kept fetchedAt …)` otherwise), so the working tree isolates the real drift.
-
-Confirm the working tree touched **only generated artifacts** (`git status --short`) unless the
-classification below explicitly requires an intentional policy, runner, or baseline-source edit
-(for example `scripts/exposure.mjs`, runner `ops`, or `eval/gates.json`). Any other hand-editable
-source, doc, or script means something is wrong; stop and investigate. Generated artifacts are
-never hand-edited
-([`AGENTS.md` “Commands and verification”](../../../AGENTS.md#commands-and-verification)).
-
-## Step 1b — impact audit beyond the generated catalog
-
-Before deciding the change is done, audit every category that could consume the upstream
-facts. Do this after regeneration and again after any corrective edits:
-
-- **Inventory/catalog/spec/op classes:** confirm regenerated files match the upstream
-  surface and ADR-0003 exposure policy.
-- **Runtime source:** check relevant adapters, runners, tests, and generated runtime
-  payloads. Skill pin drift changes served content the moment the catalog transports move, so
-  read the skill diffs; runner drift may require `src/skills/runners/**` and
-  `test/fixtures/skill-runners/**`.
-- **Golden/eval files:** search active eval sources (`eval/qa/**`, `eval/corpus/**`,
-  `eval/*cases*.json`, `eval/plan/**`, `eval/gates.json`) for facts, terms, operation
-  names, or expected answers made stale by the upstream change. Update only when the
-  new truth is independently established; use the `golden-truth` skill for golden
-  answer changes.
-- **Improvements:** reconcile `improvements/**` with the new upstream state: mark fixed
-  findings fixed-upstream, add recurrence probes for still-broken issues, and file new
-  findings when the drift reveals a live upstream gap. Regenerate `improvements/INDEX.md`.
-- **Relevant docs/examples:** check any repo-scoped skills, examples, or runbooks that
-  quote the changed behavior and would teach agents the old facts.
-- **Upstream issue/PR state:** if this drift may resolve or obsolete existing
-  `improvements/` findings, use `improvements-pipeline` to inspect the upstream issue/PR
-  state and re-run the original trigger before changing statuses.
-
-For non-trivial drift, split this audit across reviewer lanes instead of one agent doing
-all checks serially. Use separate reviewer briefs for the categories above, have each
-reviewer append a verdict with file:line evidence to the round ledger, then reconcile
-every finding before committing. Reviewer briefs should be narrow enough to verify, for
-example:
-
-- `golden/eval reviewer`: inspect owned QA battery cases (`eval/qa/corpus/battery/**`),
-  live contracts, skill cases, plan/gates, and report any stale expected answers or missing
-  eval coverage.
-- `improvements reviewer`: inspect fixed/recurring/new upstream findings and lint/index
-  state.
-- `runtime/source reviewer`: inspect `src/**`, runner declarations/projections, fixtures,
-  and generated runtime modules.
-- `exposure/routing reviewer`: inspect inventory/catalog/spec/op classes, ADR-0003
-  exposure policy, and routing gate evidence.
-- `upstream follow-up reviewer`: inspect affected `improvements/` findings and their
-  upstream issues/PRs, then re-run the original trigger to decide whether the drift actually
-  fixed, superseded, or left them still-repro.
-
-Record when a category is intentionally unchanged. "No edit needed" is a conclusion that
-needs evidence, not an assumption.
-
-## Step 2 — classify the drift (this picks the rest of the path)
-
-Diff the source-of-truth inventory first (`git diff inventory/<service>.json`). Sort the change
-into one of three classes **per service**:
-
-| Class | What changed | What it needs |
-|---|---|---|
-| **Provenance/data** | `fetchedAt`, version strings, changelog entries, data-source counts, snapshot dates — **and nothing else**: every operation object must be identical, not merely its four routing text fields (see the warning below) | Absorb as-is. No policy, no routing decision. |
-| **Operation surface** | An operation was **added, removed, or renamed** in `openapi.paths` (check the path/method set, NOT just `operationCount` — a rename holds the count constant) | **Policy decision** (Step 3) before commit. |
-| **Routing-relevant text** | An operation `summary`/`description`/`operationId`/`x-routing` changed | **Routing-baseline decision** (Step 4) before commit. |
-| **Runner-affecting** | ANY of the above touches an operation that a runnable-skill runner declares in its `ops` (schema/response-shape drift on such an op counts too — runners project those payloads) | **Runner re-verification** (Step 4b) before closing. This class stacks on top of the others, it never replaces them. |
-
-> **The four text fields are necessary, not sufficient — do not classify on them alone.**
-> `specs/super-spec.json` is serialized in full into the sandbox (`src/executor/run.ts` →
-> `serializeSpecForSandbox`), so an operation's `parameters`, `requestBody`, `responses`,
-> `x-execute`, and the shared `components` are all model-visible contract. A Scout-only schema
-> change that left `operationId`/`summary`/`description`/`x-routing` untouched would pass a
-> four-field check and be absorbed as "pure provenance" while genuinely changing what the sandbox
-> can call and what it gets back. Step 4b catches schema drift **only** for ops a runner declares,
-> and most services have no runner at all — so it is not a backstop for this.
->
-> Before claiming provenance/data, diff the **whole** operation object and the components section,
-> not just the routing tuple:
->
-> ```
-> node scripts/diff-inventory.mjs deep HEAD:inventory/<service>.json inventory/<service>.json
-> ```
->
-> Both checks must print `true`. A failed check means at least routing-relevant drift.
-> The change can also affect the operation surface.
-
-Runner-affecting is machine-checkable, never eyeballed — the runner registry
-(`src/skills/runners/index.ts`, `RUNNERS`) is the allowlist-as-data:
-
-```
-# declared op ids per runnable skill (node-clean by construction):
-node -e 'import("./src/skills/runners/index.ts").then(m => {
-  for (const [id, r] of Object.entries(m.RUNNERS)) console.log(id, JSON.stringify(r.ops));
-})'
-# intersect those op ids with the ops the inventory diff touched (added/removed/renamed,
-# schema or description changed) — a non-empty intersection = runner-affecting.
-```
-
-A **removed/renamed** declared op will already fail `scripts/build-catalog.mjs` loudly (the
-declared-ops drift guard) — that failure is the signal, not a nuisance; reconcile the runner's
-declared `ops` as part of the policy decision, never by loosening the guard.
-
-A single bump can be pure-provenance (the common daily case) or mix classes. Never infer the
-class from the upstream changelog's self-description ("routing-neutral", "additive") — the
-changelog is a *claim to verify*, not evidence. Derive the class from the actual diff:
-
-```
+```sh
 SERVICE=<svc>
-# Compare the path and method set for added, removed, or renamed operations:
 node scripts/diff-inventory.mjs surface "HEAD:inventory/${SERVICE}.json" "inventory/${SERVICE}.json"
-# Compare operationId, summary, description, and x-routing for each operation:
-node scripts/diff-inventory.mjs text "HEAD:inventory/${SERVICE}.json" "inventory/${SERVICE}.json"
+node scripts/diff-inventory.mjs text    "HEAD:inventory/${SERVICE}.json" "inventory/${SERVICE}.json"
+node scripts/diff-inventory.mjs deep    "HEAD:inventory/${SERVICE}.json" "inventory/${SERVICE}.json"
 ```
 
-The script reads a Git `<ref>:<path>` source or a working file path.
-It resolves paths from the repository root.
-The `surface` and `text` modes print sorted removed (`-`) and added (`+`) rows.
-An empty result means that comparison found no change.
-The `text` mode normalizes whitespace and sorts object keys in `x-routing`.
-The `deep` mode compares complete paths and shared components without normalizing text or changing array order.
-Run all three modes before you claim provenance/data drift.
-Exit codes are `0` for equal, `1` for drift, and `2` for an input or command error.
-Classify drift when a command exits `1`; correct errors when it exits `2`.
+`surface` compares the path and method set, `text` compares `operationId`, `summary`,
+`description`, and `x-routing`, and `deep` compares whole operation objects and shared components.
+Exit `0` is equal, `1` is drift, `2` is an input error to correct. Run all three.
 
-## Step 3 — operation surface changed → policy decision
+| Class | What changed | Needs |
+|---|---|---|
+| Provenance/data | `fetchedAt`, versions, changelog, counts, and nothing else; all three modes equal | Absorb as-is |
+| Operation surface | An operation was added, removed, or renamed (`surface` drift) | Policy decision (step 3) |
+| Routing text | A `summary`, `description`, `operationId`, or `x-routing` changed (`text` drift) | Baseline decision (step 4) |
+| Runner-affecting | Any drift on an operation a runnable-skill runner declares in `ops` | Live runner check (step 5); stacks on the others |
 
-A newly-exposed operation is a **new callable surface**. Do not ship it unexamined:
+- `operationCount` hides a rename; trust the `surface` mode.
+- The four text fields are not sufficient. The whole spec ships into the sandbox, so `parameters`,
+  `requestBody`, `responses`, `x-execute`, and `components` are model-visible contract. A `deep`
+  drift with equal `text` is at least routing-relevant and can be a surface change.
+- Runner-affecting is machine-checked. List the declared operations and intersect them with the
+  operations the diff touched:
 
-- **The manifest IS the exposed surface (ADR-0003).** Exposure is filtered at BUILD time; the
-  decision to expose/deny/meter an op is exact-match data in `scripts/exposure.mjs`, enforced by
-  guards in `scripts/build-catalog.mjs` (`assertNoNonExposedRefs` breaks the build if emitted text
-  references a non-exposed op or retired skill). Decide, for each new op: expose it, or add it to
-  the exclusion data. A new op that should stay dark is added to `scripts/exposure.mjs` in the
-  same change that absorbs the drift.
-- A **removed** op that was referenced anywhere must not leave a dangling reference — the build
-  guard will fail loud if it does; that failure is the signal, not a nuisance.
-- Special case — the paid Lumenloop research lane (`request_research` + its read half
-  `research_result`/`list_my_research`) stays excluded as a unit; see
-  [`AGENTS.md` “Hard rules”](../../../AGENTS.md#hard-rules) before touching any of the three.
+  ```sh
+  node -e 'import("./src/skills/runners/index.ts").then(m => {
+    for (const [id, r] of Object.entries(m.RUNNERS)) console.log(id, JSON.stringify(r.ops));
+  })'
+  ```
 
-Record the exposure call and its rationale (round ledger / commit body). This is the class the
-issue means by "new/removed operations … may need policy (deny/metered) decisions."
+## 3. Operation surface: policy decision
 
-## Step 4 — routing-relevant text changed → baseline decision
+The manifest is the exposed surface (ADR-0003). For each new operation, expose it or add it to the
+exclusion data in `scripts/exposure.mjs` in the same change. A removed operation that something
+still references fails `build-catalog.mjs`; that failure is the signal. Reconcile the reference or
+the runner's `ops`, and never loosen the guard. The paid Lumenloop research operations stay
+excluded as a unit (`AGENTS.md` "Hard rules"). Record the exposure call and its reason in the
+commit body.
 
-An operation description and `x-routing` block are lexical routing fuel. If a
-`summary`/`description`/`operationId`/`x-routing`
-changed, the routing gate may legitimately move:
+## 4. Routing text: baseline decision
 
+```sh
+npm run eval:compile
+npm run eval:routing -- --gate
 ```
-npm run eval:compile && npm run eval:routing -- --gate
-```
 
-- The `--gate` flag enforces the thresholds in `eval/gates.json`.
-  The command prints `GATE PASS …` when the checks pass.
-  It exits with a nonzero code when a threshold or gate evidence check fails.
-- **Re-baseline ONLY when a routing-relevant text change is the cause and the movement is an
-  intended improvement** — e.g. a bump that genuinely reworded an operation
-  `summary`/`description` or curated `x-routing`.
-  Re-baselining is asserting "the new numbers are the new correct floor."
-- **Never re-baseline to make a red gate green for a pure-provenance/data bump.** If descriptions
-  are byte-identical (Step 2 diff empty) the gate must pass against the *existing* baseline with
-  no change — that is the proof the bump is routing-neutral. A gate that moves when descriptions
-  didn't is a real regression, not a baseline to bump.
+- Provenance/data drift must pass against the existing baseline unchanged. That pass is the proof
+  that the bump is routing-neutral. A gate that moves when the text did not is a regression.
+- Re-baseline `eval/gates.json` only when a routing-text change caused an intended improvement.
+  Justify it separately in the commit body. Never re-baseline to make a red gate green.
 
-If you do re-baseline, it is a deliberate, separately-justified part of the change, not a
-side effect — capture why (round ledger / commit body), same as an exposure decision.
+## 5. Runner-affecting: live check
 
-## Step 4b — runner-affecting drift → live runner re-verification
+A runner's output schema is self-authored, so it cannot prove an upstream shape. Against the
+existing dev server, `execute` a `codemode.skill.run(...)` call for each affected runner with a
+representative input. Confirm `ok` as expected, every `data.calls[].ok` true, and no section
+unexpectedly `null` or `softEmpty`. Compare each projected field with the live payload. Treat a
+`null` section, a spurious `softEmpty`, or `outputSchemaOk: false` as drift to fix in the runner.
+Refresh `test/fixtures/skill-runners/` in the same change when shapes moved.
 
-When the Step 2 machine check found a non-empty intersection between the drift diff and any
-runner's declared `ops`, the resolution is not closable on regeneration + guards alone. The
-runners' output projections are self-authored schemas — they can only prove the projection
-matches itself, so upstream shape drift on a declared op must be re-verified against the live
-service, not against the runner's own contract:
+## 6. Check what else consumed the old facts
 
-- **Re-run the affected runners' live smoke**: against a live-serving instance (for example, the
-  existing `npm run dev` terminal and its bound URL required by
-  [`AGENTS.md` “Commands and verification”](../../../AGENTS.md#commands-and-verification) and
-  [`Coordination`](../../../AGENTS.md#coordination)), `execute` a `codemode.skill.run(...)` call
-  for each affected runnable id with a representative input, and confirm the envelope: `ok`
-  as expected, `data.calls[].ok` all true, no section unexpectedly `null` or `softEmpty`.
-- **Re-verify projections against the observed shapes**: compare the fields each runner
-  projects with what the live payloads actually carry now. A defensive projection that
-  half-handles a shape change surfaces as a `null` section, a spurious `softEmpty`, or an
-  `outputSchemaOk: false` warn-belt event — treat any of those as drift to reconcile in the
-  runner, not noise.
-- **Refresh the live-captured fixtures** the offline test lanes share
-  (`test/fixtures/skill-runners/`) if observed shapes moved, in the same change.
+Search for consumers of what changed and record "no edit needed" with its evidence:
 
-Only after both the live smoke and the projection re-check pass does the drift close.
+- **Goldens and evals** (`eval/qa/**`, `eval/*cases*.json`, `eval/plan/**`, `eval/gates.json`):
+  stale facts, terms, or operation names. Change a golden only through `golden-truth`.
+- **Improvements**: a finding the drift fixed, left reproducing, or newly revealed. Use
+  `improvements-pipeline` and re-run the original trigger before any status change.
+- **Runtime source and docs**: adapters, runners, tests, and runbooks that quote the old behavior.
 
-## Step 5 — verify before committing
+For pure provenance drift this is a bounded local search: versions, changelog entries, and counts
+can still make a golden stale or resolve a finding. Record what you searched and the result in the
+commit body. For a larger drift, give each category to a reviewer lane that returns file:line
+evidence.
 
-Run the guards that would catch a bad absorb, and confirm the scope:
+## 7. Verify, review, commit
 
-- `node scripts/build-catalog.mjs` exits 0 and prints the expected exclusions (ADR-0003 leak
-  guard green).
-- Routing gate result matches the Step 2/4 expectation (PASS unchanged for provenance/data;
-  intended movement for a re-baselined text change).
-- If `ecosystem-skills/**` changed, `node scripts/check-mirrors.mjs --fetch` passes and the
-  rebuilt `catalog/manifest.json` carries the new `transport.url`/`sha` for every changed skill
-  file — and the skill diffs themselves were read (they are prompt input).
-- If golden/eval files changed, run their focused lint/gate (`npm run eval:qa:lint` and the
-  relevant eval lane) in addition to the routing gate.
-- If improvements changed, run `npm run improvements:index`,
-  `npm run improvements:lint`, `npm run improvements:lint -- --live`, and
-  `npm run improvements:probes`.
-- `npm run secrets:scan -- --tree` is clean — a regenerated artifact must never carry an upstream
-  key/token. Also eyeball the diff for high-entropy strings and secret-shaped assignments.
-- `git status --short` shows only regenerated artifacts plus any explicitly justified policy,
-  runner, baseline, eval/golden, improvement, or runbook edits required by the drift class;
-  `git diff --check` is clean.
+- `node scripts/build-catalog.mjs` exits 0 with the expected exclusions.
+- The routing gate matches the class: unchanged pass, or the intended movement.
+- Run the focused gates for whatever else changed: `npm run eval:qa:lint`; for improvements,
+  `npm run improvements:index`, `npm run improvements:lint`, `npm run improvements:lint -- --live`,
+  and `npm run improvements:probes`.
+- After a skill re-pin, `check-mirrors.mjs --fetch` passes and `catalog/manifest.json` carries the
+  new `transport.url` and `sha` for every changed skill file.
+- `npm run secrets:scan -- --tree` and `git diff --check` are clean. A regenerated artifact must
+  never carry an upstream key.
+- **Independent review** is required for surface, routing-text, runner, or skill-pin drift, and not
+  for pure provenance drift. Follow `AGENTS.md` "Coordination": a reviewer other than the author
+  re-derives the class from `git diff`, re-runs the guards and gate, and returns file:line
+  evidence. Reconcile every finding before the commit.
+- Commit as `catalog: absorb <service> <version> drift — <class>`, state what was verified in the
+  body, and push.
 
-## Step 6 — independent adversarial review (default for anything past pure-provenance)
+## 8. Deploy and close
 
-For any drift that touched the operation surface or routing text — and as good hygiene even on a
-clean bump — spawn an **independent reviewer** to verify or refute the "safe to commit" call
-before committing. This mirrors the repo's independent-review rule in
-[`AGENTS.md` “Coordination”](../../../AGENTS.md#coordination).
+The catalog, spec, and skill pins compile into the Worker, and CI does not deploy. Production
+serves the old surface until someone deploys.
 
-- Follow the review gate in [`AGENTS.md`](../../../AGENTS.md#coordination) for spawning and
-  reviewer choice. Spawn a *different* agent with an explicit adversarial brief: do NOT
-  trust the maintainer's summary; re-derive the drift class from the actual `git diff`, re-run the
-  guards and gate, check ADR-0003 exposure and secrets, and return a verdict with file:line
-  evidence. Prefer a different vendor from the author. Put the brief in the round ledger and have
-  the reviewer append findings. Reconcile every finding before committing.
-
-## Step 7 — close out
-
-- Commit the regenerated artifacts plus any explicitly justified policy, runner, or baseline-source
-  edits required by the drift class. Match the house prefix and name the upstream version and the
-  class of change, e.g. `catalog: absorb <service> <version> drift — <one-line class>`. State in
-  the body what was verified (op count, description-identity, gate result, guards, secrets) and
-  that an independent review agreed. Push.
-- If the change involved a policy or baseline decision, record it where the project tracks work
-  (round ledger), so the *why* survives — the artifacts only carry the *what*.
-
-## Step 8 — deploy to production (the drift isn't resolved until prod serves it)
-
-Committing and pushing does NOT update the live service. The catalog and spec are compiled *into*
-the Worker bundle (`catalog/manifest.json` → `src/catalog/load.ts`, `specs/super-spec.json` →
-`src/executor/run.ts`), and CI does **not** deploy — so production keeps serving the OLD upstream
-version until a manual deploy. That includes skills: a re-pin does NOT reach users on merge,
-because the pinned `transport.url`/`sha` pairs live in the compiled catalog — deployed production
-keeps fetching the OLD commit until you deploy the new one. Closing the drift loop requires shipping:
-
-- `npm run build` (`wrangler deploy --dry-run`) first — confirm the bundle builds and bindings are
-  intact; it's the same check the review step ran.
-- `npm run deploy` (`wrangler deploy`) — pushes the new catalog live to the production routes.
-  Deploying to production is outward-facing: get the owner's go-ahead unless durably authorized.
-- Verify live: the deploy prints a new Version ID and the updated routes; a quick liveness check
-  confirms the roll-out. **Give the edge ~1 minute first.** A just-deployed route can 404 for about
-  a minute, including on cache-busted URLs — that is propagation, not a routing bug. Re-check before
-  debugging it. The public landing pages
-  should return `200`; unauthenticated `/mcp`
-  should return `401` with a `WWW-Authenticate: Bearer` header, unless the check includes a valid
-  bearer token. Note the Version ID in the close-out record.
-
-A drift bump that is committed but never deployed is a *silent* stale prod — the catalog carries
-the new upstream version while the gateway still answers as the old one. Treat deploy as part of
-resolving the issue, not a separate optional chore.
-
-After production verification, close the drift issue with a comment that records the commit sha,
-deploy Version ID, and evidence from the guards/review/live check (`gh issue close <n> --comment …`).
-
-## Hard rules
-
-- Derive the drift class from the actual diff, never from the upstream changelog's self-labels.
-- Check the operation path·method **set** for add/remove/rename — `operationCount` alone hides a
-  rename.
-- The manifest IS the exposed surface (ADR-0003): a newly-exposed op is a policy decision; expose
-  or exclude it in `scripts/exposure.mjs` in the same change. Never let emitted text reference a
-  non-exposed op or retired skill — the build guard enforces this; a guard failure is the signal.
-- Re-baseline the routing gate only for an intended routing-relevant text change, and justify it
-  separately. Never re-baseline to hide a provenance/data-bump regression.
-- Drift touching any op in a runner's declared `ops` (machine-check against `RUNNERS`,
-  `src/skills/runners/index.ts`) is runner-affecting: re-run the runner live smoke and
-  re-verify projections against observed shapes before closing (Step 4b). Never close on the
-  runner's own output schema as evidence — it is self-authored.
-- Generated artifacts (`catalog/manifest.json`, `inventory/*.json`, `specs/super-spec.json`,
-  `eval/plan/op-classes.json`, `improvements/INDEX.md`) are rebuilt by scripts, never
-  hand-edited.
-- Skill pin drift is runtime drift the moment the catalog transports advance — a re-pin is a
-  content change to the model surface, not a metadata bump.
-- Every drift resolution includes an impact audit for golden/eval files, improvements,
-  inventory/catalog/spec, runtime source, and relevant docs/examples; use ledger category
-  reviewers for non-trivial drift and record their evidence.
-- Never print or commit a secret; `secrets:scan --tree` before every drift commit.
-- Independent, adversarial review before committing anything past a pure-provenance bump;
-  reviewer ≠ author; let it finish.
+1. `npm run build` confirms that the bundle builds.
+2. `npm run deploy` needs the owner's go-ahead unless durably authorized.
+3. Wait about a minute; a fresh route can return 404 while it propagates. Then check that the
+   landing page returns `200` and unauthenticated `/mcp` returns `401` with
+   `WWW-Authenticate: Bearer`.
+4. Close the issue with the commit, the deploy Version ID, and the guard and live-check evidence
+   (`gh issue close <n> --comment ...`).

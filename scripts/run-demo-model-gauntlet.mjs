@@ -34,16 +34,19 @@ import { demoReasoningEffortOverride } from "../src/demo/model-config.ts";
  * conclusion — including a gateway cache replay — logs it. No log plus no closed
  * span means the invocation was destroyed, which no model behavior can cause.
  *
- * Frontier model per family, so the matrix measures the edge rather than
- * whatever was current when it was written. Every slug below was verified to
- * ROUTE on 2026-08-06 (run ids 2026-08-06-latest-matrix / -route-probe) — a
- * slug that has not been probed does not belong here, because a wrong one does
- * not look like a typo. Anthropic versions with DASHES (`claude-sonnet-4-6`,
- * not `4.6`); a dotted id authenticates and returns "model … was not found",
- * which reads like a provider outage.
+ * The default matrix is the three evaluation clients that the run-evals skill
+ * names: Sonnet 5.5, GPT-6.1 Terra, and Grok 4.7. Select any other model
+ * explicitly with --models, and state in the run plan the decision it serves.
+ * `openai/gpt-6.1-terra` routed on 2026-08-06 (run ids 2026-08-06-latest-matrix
+ * / -route-probe); `anthropic/claude-sonnet-5.5` and `xai/grok-4.7` routed in
+ * the 2026-11-03 sweep (research/gauntlets/). A slug that has not been probed
+ * does not belong in the default, because a wrong one does not look like a
+ * typo. Anthropic 4.x versions take DASHES (`claude-sonnet-4-6`, not `4.6`); a
+ * dotted 4.x id authenticates and returns "model … was not found", which reads
+ * like a provider outage. The catalog writes 5.x point releases with a dot
+ * (`claude-sonnet-5.5`).
  *
- * Every entry is GREEN as of 2026-08-06. Two were unblocked by routing changes,
- * not by credentials — see src/demo/model-config.ts:
+ * Routing notes for models you select explicitly — see src/demo/model-config.ts:
  *   - claude-fable-5 was failing `x-api-key header is required` because
  *     `transport: "gateway"` selects provider PASSTHROUGH, whose Unified Billing
  *     catalog is narrower than the run catalog. Omitting `transport` for
@@ -55,7 +58,7 @@ import { demoReasoningEffortOverride } from "../src/demo/model-config.ts";
  *
  * Deliberately ABSENT, with the reason so nobody re-adds them on a hunch:
  *
- *  - `google/gemini-*` — absent from this older default matrix. The November 3
+ *  - `google/gemini-*` — absent from the default matrix. The November 3
  *    Gemini 3.8 Flash probe superseded the August routing failure: the current
  *    Google passthrough completes tool replay. Select it explicitly with
  *    --models for a reviewed run; that single probe does not verify every
@@ -75,19 +78,14 @@ import { demoReasoningEffortOverride } from "../src/demo/model-config.ts";
  * still fit, so it presents as one model failing every prompt in ~180ms while
  * the rest of the matrix stays green — which looks exactly like a dead model.
  * Seen 2026-08-06: claude-fable-5 0/8 with `Payment Required`, then green again
- * on re-probe once the window slid. A full run of this matrix is 64 turns on
- * frontier models; back-to-back runs will hit it. Check the gateway's spend
- * window before debugging the model.
+ * on re-probe once the window slid. A full run of the default matrix is 24
+ * turns; a wider --models selection or back-to-back runs can hit the limit.
+ * Check the gateway's spend window before debugging the model.
  */
 export const DEFAULT_MODELS = [
-  "openai/gpt-5.6-sol",
+  "anthropic/claude-sonnet-5.5",
   "openai/gpt-6.1-terra",
-  "openai/gpt-5.6-luna",
-  "anthropic/claude-fable-5",
-  "anthropic/claude-opus-5",
-  "anthropic/claude-sonnet-5",
-  "xai/grok-4.6",
-  "moonshotai/kimi-k3"
+  "xai/grok-4.7"
 ];
 
 export const PROMPTS = [

@@ -3,92 +3,58 @@ name: cloudflare-observability-review
 description: Investigate live Cloudflare Workers observability for stellar-raven-codemode. Use when reviewing production MCP request logs, playground/demo telemetry, traces, Ray IDs, request headers, telemetry query results, eval observability, agent-run forensics, or whether Cloudflare metadata is enough without app-level correlation IDs.
 ---
 
-# Cloudflare Observability Review
+# Cloudflare observability review
 
-Use this runbook to answer "what happened in production?" for
-`stellar-raven-codemode` using Cloudflare Workers Logs, platform invocation
-events, and OTel spans.
+Answer "what happened in production?" from Workers Logs, platform invocation events, and OTel
+spans. State the question first, then run the narrowest query that can answer it: one Ray ID or a
+short window before a wide sweep. Stop when the question is answered. In a round, record the query
+inputs, Ray IDs, and verdict in the round ledger or `.agents/TODO.md`.
 
-When the investigation is part of an eval round, agent-run forensic review, or other
-multi-agent maintenance pass, record the query inputs, Ray IDs, and verdict in the relevant
-round ledger (`.agents/rounds/`) or `.agents/TODO.md` so the evidence survives outside the
-current context window.
+Cloudflare-native request identity is enough for one invocation. Use the app's privacy-safe
+`subjectHash` and `clientHash` only to attribute across requests. Do not add a model-forwarded
+correlation ID unless production evidence shows this fails for common investigations.
 
-## Principle
+## Safety
 
-Prefer Cloudflare-native request identity for one invocation. Use the app's
-privacy-safe OAuth subject/client hashes only for cross-request attribution.
+- Never print secrets from `.env`, `.dev.vars`, Wrangler, Cloudflare, or MCP responses.
+- Use the Cloudflare API MCP for historical evidence. `wrangler tail` is a convenience stream; a
+  miss there is not evidence that logs are absent.
+- Platform fields that carry IPs, geo, TLS, or client fingerprints may be queried inside a bounded
+  investigation to join or separate requests. Report them only when directly relevant, never copy
+  them into app logs, and never infer identity from them outside an abuse review with its own
+  privacy decision.
 
-Observability works without a model-facing `correlationId` contract. Same-user
-concurrent MCP tasks are rare, and for debugging/evals we join requests by Ray ID,
-time window, user-agent/client marker, host/path/method/status, and auth mode. If an
-investigation needs stronger cross-request grouping, add privacy-safe auth
-subject/client fields to app logs rather than asking models to forward ids.
+## What joins
 
-## Safety Rules
+One invocation:
 
-- Never print secrets from `.env`, `.dev.vars`, Wrangler, Cloudflare, or MCP
-  responses.
-- Use Cloudflare API MCP for historical evidence. `wrangler tail` is only a
-  convenience stream; a miss there is not evidence that logs are absent.
-- Do not copy raw IPs, IP hashes, or IP-derived fingerprints into app logs.
-  Cloudflare platform events already expose IP-bearing request headers.
-- It is OK to query and use Cloudflare-native private/platform fields
-  (IP-bearing headers, geo, TLS/client fingerprint fields, user-agent) inside a
-  bounded investigation when they are needed to join or separate requests.
-  Report them only when directly relevant; otherwise report Ray IDs, time
-  windows, paths, statuses, and app event fields.
-- Do not infer identity from IP/geo/TLS fields unless explicitly doing an abuse
-  review with a separate privacy decision.
+- The response `cf-ray` header joins to Workers Logs. Strip the colo suffix:
+  `a15a1ed37fa5b049-ATL` becomes `a15a1ed37fa5b049`.
+- App JSON logs have `$metadata.type = "cf-worker"`; platform invocation logs have
+  `"cf-worker-event"`; OTel spans have `"span"` and join by `cloudflare.ray_id`.
 
-## What Joins Reliably
+A controlled eval or research run: a narrow time window plus a unique non-secret marker in
+`clientInfo.name` or the user-agent, grouped by path, method, status, and Ray ID.
 
-For one HTTP invocation:
+Third-party traffic across requests:
 
-- Response `cf-ray` header -> Workers Logs. Strip the colo suffix:
-  `a15a1ed37fa5b049-ATL` -> `a15a1ed37fa5b049`.
-- Workers app JSON logs: `$metadata.type = "cf-worker"`.
-- Workers platform invocation logs: `$metadata.type = "cf-worker-event"`.
-- OTel spans: `$metadata.type = "span"`, joined by `cloudflare.ray_id`.
+- Group by `subjectHash` or `clientHash` from the `mcp_request` summary. Child events join through
+  `$metadata.requestId` and do not repeat the hashes.
+- `subjectHash` is the 16-hex `hashPrefix(subject)` that playground and artifact events use.
+  `clientHash` is a 16-hex HMAC of the OAuth client ID.
+- `clientHash = null` means a grant issued before client attribution, not an anonymous user. Never
+  fill the gap from user-agent or network fields.
+- Rotating `MCP_SERVER_SECRET` splits hashes between old and new grants, and rotates demo cookies.
+- A wrong named API key falls through to OAuth and appears as `accessMode = "oauth-rejected"`; a
+  valid key is `"api-key"`. Never derive identity from rejected credentials.
+- `OPTIONS /mcp` preflights emit no `mcp_request` event.
+- Rare same-user concurrent tasks can stay ambiguous. Accept that unless evidence shows it matters.
 
-Across a controlled eval/research run:
+## Live probe
 
-- Use a narrow time window.
-- Use unique non-secret markers in `clientInfo.name` or user-agent when the
-  harness allows it.
-- Group by service, host, path, method, status, user-agent, and Ray IDs.
-
-Across arbitrary third-party MCP traffic:
-
-- Join one invocation through the Ray ID and Cloudflare request metadata.
-- For successful OAuth requests, group across invocations by `subjectHash`
-  and/or `clientHash` from the authoritative `mcp_request` summary. Child
-  events join through `$metadata.requestId`; they do not repeat the hashes.
-- Old grants issued before client attribution have `clientHash = null`. Never
-  fill that gap from user-agent or network fields.
-- Accept that rare same-user concurrency may be ambiguous.
-
-Identity caveats:
-
-- `subjectHash` is the same 16-hex `hashPrefix(subject)` used by playground
-  and artifact events.
-- `clientHash` is a 16-hex, versioned, domain-separated HMAC of the OAuth
-  client id. The raw client id lives only in encrypted grant props.
-- Rotating `MCP_SERVER_SECRET` creates a temporary split: old grants retain
-  old props while new grants derive new user/client hashes. Demo cookies
-  rotate too.
-- A wrong named API key intentionally falls through to the OAuth provider and
-  appears as `accessMode = "oauth-rejected"`; do not derive identity from
-  rejected credentials. A valid key appears as `accessMode = "api-key"`.
-- OAuth-provider `OPTIONS /mcp` preflights emit no `mcp_request` app event.
-
-## Live Probe
-
-Generate a known request when needed. Use a named API key (`Authorization: Bearer
-<name>:<token>`). An operator creates one with
-`npm run mcp-key -- create <name> --out <file>`, which writes the credential to a
-mode-`0600` file. Read it from that file without echoing it, and do not load `.env`
-into the shell:
+Generate a known request when you need one. Use a named API key from a mode-`0600` file (an
+operator creates it with `npm run mcp-key -- create <name> --out <file>`). Do not echo it and do
+not load `.env` into the shell:
 
 ```sh
 RAVEN_KEY_FILE=<path to the credential file>
@@ -106,279 +72,134 @@ curl -i -sS https://raven.stellar.org/mcp \
   awk 'BEGIN{IGNORECASE=1} /^HTTP\//{print} /^cf-ray:/{print} /^content-type:/{print} /^mcp-session-id:/{print}'
 ```
 
-Wait 30-90 seconds for ingestion before querying.
+Wait 30 to 90 seconds for ingestion before you query.
 
-## Query Workflow
+## Query
 
-1. Discover fields if needed with Cloudflare API MCP
-   `/workers/observability/telemetry/keys`.
-2. Query recent events with filters:
+1. Discover fields when needed: Cloudflare API MCP `/workers/observability/telemetry/keys`.
+2. Events for one request:
 
-```json
-[
-  { "key": "$metadata.service", "operation": "eq", "type": "string", "value": "stellar-raven-codemode" },
-  { "key": "$metadata.requestId", "operation": "eq", "type": "string", "value": "<ray-without-colo>" }
-]
-```
+   ```json
+   [
+     { "key": "$metadata.service", "operation": "eq", "type": "string", "value": "stellar-raven-codemode" },
+     { "key": "$metadata.requestId", "operation": "eq", "type": "string", "value": "<ray-without-colo>" }
+   ]
+   ```
+3. Spans for one request:
 
-3. If looking for traces, query OTel/span events by:
+   ```json
+   [
+     { "key": "cloudflare.script_name", "operation": "eq", "type": "string", "value": "stellar-raven-codemode" },
+     { "key": "cloudflare.ray_id", "operation": "eq", "type": "string", "value": "<ray-without-colo>" }
+   ]
+   ```
+4. Broader reviews: group counts by `$metadata.type`, `$workers.event.request.path`,
+   `$workers.event.response.status`, `$workers.event.request.headers.user-agent`, or
+   `cloudflare.ray_id`.
+5. Cross-request OAuth review: filter `evt = "mcp_request"`, group by `subjectHash` or
+   `clientHash`, then join child events and spans by `$metadata.requestId`.
 
-```json
-[
-  { "key": "cloudflare.script_name", "operation": "eq", "type": "string", "value": "stellar-raven-codemode" },
-  { "key": "cloudflare.ray_id", "operation": "eq", "type": "string", "value": "<ray-without-colo>" }
-]
-```
+## Measurement traps
 
-4. For broader reviews, group counts by `$metadata.type`,
-   `$workers.event.request.path`, `$workers.event.response.status`,
-   `$workers.event.request.headers.user-agent`, or `cloudflare.ray_id`.
-5. For cross-request OAuth review, filter app events to
-   `evt = "mcp_request"`, then group by `subjectHash` or `clientHash`. Use
-   each matching event's `$metadata.requestId`/`rayId` to join child tool/op
-   events and spans. A null client hash means a pre-attribution grant, not an
-   anonymous user.
+Each of these fails silently: the query succeeds and the number looks plausible.
 
-## Skill Retrieval (`skill_read`)
+- **Filter `$metadata.type` before you count requests.** App log rows inherit their invocation's
+  status, so an unfiltered group counts log volume and can more than double the request total.
+- **Filter by `evt`, not `source.evt`**, unless the keys endpoint shows the `source.*` variant.
+  The keyspace flattens app JSON fields.
+- **A new field value is not filterable at once.** The filter index can lag the first emission by
+  about 20 minutes. When a filter returns zero for something you have reason to expect, query by
+  service only and filter client-side, or join by `$metadata.requestId`.
+- **A wide `view: "events"` query returns a small, unrepresentative slice**, not every match under
+  `limit`. Slice any window wider than about 6 hours and sum. Never conclude "this never happens"
+  from one multi-day query.
+- **ABR sampling is not uniform across window sizes.** `abr_level` is 1 for windows up to about 12
+  hours and 10 above. Use equal, narrow windows for a ratio and report the level.
+- **`truncated` on `search` and `demo-search` is catalog pagination** (`total > hits.length`), not
+  byte truncation. Byte truncation is `demo-execute.resultTruncated` and the
+  `--- SOURCE BASIS ---` block.
+- **`recoveryAdviceDelivered` is a host delivery latch**, not model compliance.
+- **`evidenceState` on a `demo-step` is per step.** The final answering step makes no tool calls,
+  so `"none"` there is structural.
+- **`sourceBasis`** exists when a result is truncated or an operation provides allowed source
+  metadata. `canonicalUrlCount` comes from the full result before truncation, so a zero count
+  cannot show that truncation removed a URL.
+- **Check the shape before you match stored results.** `rows[].transcript` is an array of objects,
+  and `verdict` is an object whose label is `verdict.score`. String or identity comparisons on
+  either return a wrong answer without an error.
+- **AI Gateway can replay completions.** The demo gateway has `cache_ttl: 300`, and a replay is
+  invisible from the Worker. `demoModelSettings` sends `cf-aig-skip-cache: true`, so demo repeats
+  are independent; any other measured surface that talks to a gateway needs that header. Compare
+  repeat latency and output length before you trust a p50.
 
-Skill bodies are fetched from their pinned upstream at read time, not bundled
-(`ARCHITECTURE.md` §6). `evt = "skill_read"` is the only view of that path.
+## Skill reads
 
-- **Latency profile:** group `ms` by `from` (`memo` | `cache` | `upstream`).
-  Always split by `from` — a memo hit and an upstream fetch differ by orders of
-  magnitude, so a mean over both is meaningless.
-- **Availability:** `evt = "skill_read"` with `outcome = "error"`, grouped by
-  canonical `id` and `from`.
-  This is the accepted-risk dependency on raw.githubusercontent.com made
-  observable; a rising `could not fetch` rate is the early signal from REAL
-  traffic.
-- **Availability, synthetic:** `evt = "skill_canary"` — the hourly cron
-  (`src/skills/canary.ts`) that fetches every pinned file with the caches
-  bypassed. This is the only detector for a Cloudflare-side egress failure, and
-  the only one that works with zero user traffic. Query it when `skill_read`
-  is silent: silence there means "nobody asked", never "everything is fine".
-  Two joint readings worth knowing:
-  - `skill_canary ok=false` while `check-mirrors --fetch` is green in CI →
-    the content is fine and *our access to it* is broken. Cloudflare/network,
-    not upstream.
-  - No `skill_canary` events at all → the cron is not firing. The detector is
-    down, which reads identically to healthy unless you check. `refresh.yml`
-    treats a verdict older than 3h as a failure for exactly this reason.
-- **Does anyone read sections?** group by `shape` (`whole` | `sections` |
-  `files` | `mixed`). Feeds the open question in
-  `ideas/skill-discovery-without-bundling.md` — if `whole` dominates, the
-  section catalog entries (`skill-section` count in `catalog/manifest.json`) are dead weight.
-- **Which skills are actually used?** group by `id`; a long never-read tail is
-  evidence for shrinking the read surface.
-- `retrievals` counts distinct pinned files a call fetched (a `##` section read
-  costs 1; N companion files cost N+1). Fields carry no body text and no caller
-  identity — the id is a public catalog id.
-- Expect an `upstream` read in tens of milliseconds and a `memo` hit near 0 ms.
+Skill bodies are fetched from their pinned upstream at read time (`ARCHITECTURE.md` §6).
 
-**A NEW field VALUE is not filterable immediately.** Filtering
-`evt = "skill_read"` returned zero for ~20 minutes after the first one was ever
-emitted, while the events were demonstrably present — joining by
-`$metadata.requestId` showed `skill_read` sitting right next to the `execute`
-line it belonged to. The filter index lags first appearance. This is a sharper
-version of the Field Map warning below: when a filter returns zero for something
-you have good reason to believe exists, do not conclude it is missing. Query
-broadly (service filter only) and filter client-side, or join by
-`$metadata.requestId` from an event you CAN find. Costs one query instead of an
-afternoon of debugging a working emitter.
+- **`evt = "skill_read"`**: group `ms` by `from` (`memo`, `cache`, `upstream`) and never average
+  across them. Expect tens of milliseconds for `upstream` and near zero for `memo`. For
+  availability, filter `outcome = "error"` and group by `id` and `from`. `shape` (`whole`,
+  `sections`, `files`, `mixed`) and `id` show what is read; this feeds the open question in
+  `ideas/skill-discovery-without-bundling.md`. `retrievals` counts pinned files
+  fetched. Events carry no body text and no caller identity.
+- **`evt = "skill_canary"`**: the hourly cron (`src/skills/canary.ts`) fetches every pinned file
+  with caches bypassed. It is the only detector that works with no user traffic. Silence in
+  `skill_read` means nobody asked, not that reads work.
+  - `ok=false` while `check-mirrors --fetch` is green in CI: the content is fine and our access
+    from Cloudflare is broken.
+  - No canary events: the cron is not firing. That reads the same as healthy unless you check;
+    `refresh.yml` fails on a verdict older than 3 hours for this reason.
 
-## Demo Playground Failures
+## Playground failures
 
-For `/playground/chat` screenshots or user-visible tool cards, do not start only
-from the screenshot timestamp. The screenshot may be captured after the failing
-turn, or from a local browser that is replaying retained UI state. First search
-a wide recent window (usually 10 hours, or the user's stated window) for app
-events:
+Do not start from a screenshot timestamp; the capture can postdate the failing turn. Search a wide
+recent window (about 10 hours, or the stated window) in slices:
 
 - `evt = "demo-execute"` grouped by `ok` and `evidenceOutcome`.
-- `evt = "demo-chat"` with `executeFailures > 0`, grouped by
-  `executeFailures`, `finishReason`, and Ray/request ID.
-- Span view for `codemode.execute`, grouped by `$metadata.message` and
-  `sandbox.ok`, to separate model-code failures from sandbox/runtime failures.
+- `evt = "demo-chat"` with `executeFailures > 0`, grouped by `finishReason` and request ID. A chat
+  can finish with an answer after failed executes.
+- Spans for `codemode.execute`, grouped by `$metadata.message` and `sandbox.ok`, to separate
+  model-code failures from sandbox failures.
 
-Then join each failing request by `$metadata.requestId`:
+Then join each failing request by `$metadata.requestId`: `demo-search` (limits, hit and omitted
+counts, top IDs), `demo-execute` (`ok`, `evidenceOutcome`, `codeChars`, truncation, `ms`), `op`
+(operation IDs, outcomes, timings), `demo-chat` (`searchCalls`, `executeCalls`, `executeFailures`,
+`finishReason`, `budgetExhausted`, `finalNeededButMissing`), and `demo-chat-start` (`model`,
+`openAiApiMode`, `reasoningEffort`, message counts and sizes, `subjectHash`).
 
-- `demo-search`: query size, requested/effective limits, hit/total/omitted counts,
-  gated/backfill counts, truncation, and top ids.
-- `demo-execute`: `ok`, `evidenceOutcome`, `codeChars`, truncation/count fields, `ms`.
-- `op`: operation ids/outcomes/timings inside the execute attempt.
-- `demo-chat`: `searchCalls`, `executeCalls`, `executeFailures`,
-  `finishReason`, `budgetExhausted`, and `finalNeededButMissing`.
-- `cf-worker-event`: path/method/status/user-agent and, when needed, the
-  Cloudflare private/platform fields used to disambiguate same-user traffic.
+Question, code, result, answer, and provider-error text is not logged. Use text the user supplies,
+and mark inference from counts and IDs as best-effort.
 
-`demo-chat-start` records only message counts/sizes and subject correlation:
+- `object is not iterable` with `Promise.all({ ... })` is model-authored JavaScript, not a service
+  outage.
+- `Execution timed out` after successful `op` lines usually means a slow or broad script hit the
+  60-second sandbox cap. Check `codeChars`, list limits, and operation timings first.
 
-- `evt = "demo-chat-start"` grouped by `$metadata.requestId`, `model`,
-  `openAiApiMode`, `reasoningEffort`, `auth`, `historyMessages`, and
-  `userMessages`.
-- `latestUserChars`, `historyChars`: sizing clues for truncation/body issues.
-- `subjectHash`: privacy-safe per-demo-session join key; do not infer real
-  identity from it.
+## Field map
 
-Question, code, result, answer, and provider-error content is intentionally not
-logged. When wording matters, use user-supplied screenshots/text and mark any
-inference from counts, operation ids, timestamps, and Ray IDs as best-effort.
+- **MCP request summary**: `accessMode`, `subjectHash`, `clientHash`, `requestId`, `rayId`,
+  `method`, `status`. Rejected events omit the identity keys. Cloudflare redacts the older `auth`
+  field, so group by `accessMode`.
+- **Auth-flow rejections**: `evt = "auth_reject"` with `status` and `reason`; `src/auth/workos.ts`
+  owns the emitters and reason strings. These events omit identity fields. Failures inside `@cloudflare/workers-oauth-provider`
+  (`/token`, `/register`) show only status and path.
+- **App logs**: `evt`, `queryChars`, `requestedLimit`, `effectiveLimit`, `omittedCount`,
+  `gatedHits`, `backfillHits`, `hits`, `total`, `truncated`, `top`, `ok`, `evidenceOutcome`,
+  `codeChars`, `latestUserChars`, `historyChars`, `historyMessages`, `userMessages`, `model`,
+  `openAiApiMode`, `reasoningEffort`. `omittedCount` is `total - hits` for the consulted tiers and,
+  like `total`, a floor. A null `effectiveLimit` means validation or a refusal stopped the search.
+- **Metadata**: `$metadata.service`, `.requestId`, `.type`, `.trigger`, `.message`.
+- **Platform**: `$workers.event.rayId`, `$workers.requestId`, `$workers.event.request.path`,
+  `.method`, `.headers.user-agent`, `.headers.mcp-protocol-version`, `.headers.cf-ray`,
+  `$workers.event.response.status`.
+- **OTel**: `cloudflare.script_name`, `cloudflare.ray_id`, `cloudflare.colo`, `cloudflare.asn`,
+  `http.response.status_code`, `url.full`, `user_agent.original`, `traceId`, `spanId`.
+- **Privacy-sensitive, already in platform logs**: `cf-connecting-ip`, `x-real-ip`, precise geo,
+  TLS, and client-fingerprint metadata.
 
-Common diagnosis patterns:
+## Report
 
-- `object is not iterable (cannot read property Symbol(Symbol.iterator))` with
-  code containing `Promise.all({ ... })` is model-authored JavaScript, not an
-  upstream service outage. The retry should rewrite to
-  `Promise.all([callA, callB])`.
-- `Execution timed out` after successful `op` lines usually means the model
-  wrote a slow/broad script or hit the sandbox's 60s wall-clock cap. Check
-  `codeChars`, broad list limits, and operation timings before blaming a
-  service.
-- `demo-chat` can still finish with an answer after failed executes; inspect
-  `executeFailures`, not only `finishReason`.
-
-## Field Map
-
-Cloudflare's query/filter keyspace flattens app JSON log fields. If a returned
-event object displays app data under `source.evt`, filter and group by `evt` unless
-the keys endpoint shows the `source.*` variant
-for that dataset. A query using `source.evt = "demo-search"` can miss events
-that `evt = "demo-search"` finds.
-
-High-value fields:
-
-- MCP request summary: `accessMode`, `subjectHash`, `clientHash`, `requestId`,
-  `rayId`, `method`, `status`. Successful requests include identity keys
-  (null outside attributed OAuth); rejected events omit them entirely.
-- The older `auth` app field is redacted to `*****` by Cloudflare and is not
-  useful for grouping; the `/mcp` summary deliberately uses `accessMode`.
-- Browser auth-flow rejections: `evt = "auth_reject"` with `status` and
-  `reason`. Group by both fields. `src/auth/workos.ts` owns the emitters.
-  Consent retries use `retryConsent()` with HTTP 303 and a constant reason,
-  such as `CSRF token mismatch` or `Terms acknowledgement required`.
-  Authorization errors with an allowed redirect use HTTP 303 and `error.code` as the reason.
-  Without an allowed redirect, `text()` returns HTTP 400.
-  Its reason uses `unredirectable:` followed by the error code, error class, or `unknown`.
-  Callback state failures use HTTP 400. Their reasons match their constant response bodies:
-  `Invalid or expired state`, `Invalid login state`, or `State binding mismatch`.
-  These events omit identity fields. Never hash rejected credentials.
-  Token-exchange failures inside
-  `@cloudflare/workers-oauth-provider` (`/token`, `/register`) stay opaque —
-  status and path only.
-- App JSON logs: `evt`, `queryChars`,
-  `requestedLimit`, `effectiveLimit`, `omittedCount`, `gatedHits`, `backfillHits`,
-  `hits`, `total`, `truncated`, `top`,
-  `ok`, `evidenceOutcome`, `codeChars`, result/log truncation fields,
-  `latestUserChars`, `historyChars`,
-  `historyMessages`, `userMessages`, `subjectHash`, `auth`, `model`,
-  `openAiApiMode`, `reasoningEffort`
-
-- `$metadata.service`, `$metadata.requestId`, `$metadata.type`,
-  `$metadata.trigger`, `$metadata.message`
-- `$workers.event.rayId`, `$workers.requestId`,
-  `$workers.event.request.headers.cf-ray`
-- `$workers.event.request.headers.user-agent`
-- `$workers.event.request.headers.mcp-protocol-version`
-- `$workers.event.request.path`, `$workers.event.request.method`,
-  `$workers.event.response.status`
-- OTel: `cloudflare.script_name`, `cloudflare.ray_id`, `cloudflare.colo`,
-  `cloudflare.asn`, `http.response.status_code`, `url.full`,
-  `user_agent.original`, `traceId`, `spanId`
-
-`omittedCount` is `total - hits` for the scorer
-tiers consulted by that page; like `total`, it is a floor rather than an
-exhaustive missed-result count. A null `effectiveLimit` means validation or a
-refusal prevented the search page from running.
-
-Privacy-sensitive fields already present in platform logs:
-
-- `$workers.event.request.headers.cf-connecting-ip`
-- `$workers.event.request.headers.x-real-ip`
-- precise geo, TLS, and client-fingerprint-like metadata
-
-## Measurement Traps
-
-Each of these produced a confidently wrong conclusion in a real investigation.
-They are silent: the query succeeds, the number looks plausible, and nothing
-signals the error.
-
-- **Do not sum request counts without filtering `$metadata.type`.** App JSON log
-  rows (`cf-worker`) inherit their invocation's status, so grouping every row by
-  `$workers.event.response.status` counts logging volume, not requests. The
-  unfiltered total can be more than double the real request count. Filter to
-  the invocation type before quoting any request total or rate.
-- **`search`/`demo-search` `truncated` is catalog pagination, not byte
-  truncation.** It means `total > hits.length` — more catalog entries matched
-  than the page returned (`src/catalog/search.ts`). It says nothing about the
-  model-boundary byte cut. A "94% truncated" figure read this way is a category
-  error and cannot justify any payload-size conclusion. Execute-result byte
-  truncation is `demo-execute.resultTruncated` / the `--- SOURCE BASIS ---`
-  block.
-- **`recoveryAdviceDelivered` is a host delivery latch, not model compliance.**
-  It is set when the checkpoint becomes visible in the tool result, not when the
-  model acts on it. Never infer model behavior from it.
-- **`evidenceState` on a `demo-step` is per-step.** The final answering step
-  makes no tool calls, so `evidenceState: "none"` there is structural and does
-  NOT mean the turn lacked evidence — earlier steps hold it.
-- **`sourceBasis` exists when the result is truncated or an operation provides allowed source metadata.**
-  Use `demo-execute.resultTruncated` to identify truncation.
-  Untruncated results with source metadata have no stored result artifact.
-  `canonicalUrlCount` comes from the full redacted result before truncation.
-  A zero count cannot show that truncation removed a URL.
-- **A single wide-window `view: "events"` query returns a tiny, unrepresentative
-  slice — it is NOT "all the matching events under `limit`."** On one filter
-  (`cf-worker-event`, `path = /authorize`, `limit: 500`), a flat 7-day query
-  returned about 1% of the events that the same filter returned over
-  consecutive 6-hour windows. The few survivors looked like a plausible complete
-  set, which is what makes this lethal. A returned count far below `limit` is
-  therefore NOT evidence that few events matched. Slice any window wider than
-  ~6h and sum, and never conclude "this never happens" from a flat multi-day
-  query.
-- **ABR sampling is not an iid sample of the filtered set.** `abr_level` is 1
-  for windows of about 12h or less and 10 for wider ones; concatenating windows
-  at different levels biases any ratio computed across them. Query in equal,
-  narrow windows when a ratio matters, and report the level observed.
-- **Check the shape before matching.** `rows[].transcript` is an array of
-  objects; `transcript.includes("...")` is element equality and always returns
-  false. `verdict` is an object whose label is `verdict.score`, so comparing
-  verdicts directly compares object identity and reports 100% change. Both
-  mistakes fail silently and look like findings.
-- **The AI Gateway replays completions, so repeats are not samples.** The demo
-  gateway carries `cache_ttl: 300`; within that window an identical request
-  returns the recorded completion. It is invisible from inside the Worker — same
-  frames, same telemetry, no marker — and gateway logs will not settle it either,
-  because the demo sets `collectLog: false`. The tell is arithmetic: a repeat
-  that returns byte-identical answer text at a latency no inference could
-  produce: a multi-step agentic turn that returns thousands of identical
-  characters in about one second is a replay. `demoModelSettings` sends
-  `cf-aig-skip-cache: true` on every demo request, so demo repeats are
-  independent — but any older stored run, and any NEW measured surface
-  that talks to a gateway, needs the header or the same trap returns. Compare
-  repeat latency AND output length before trusting a p50.
-
-## Decision Heuristic
-
-- Request-level debugging: Ray ID is enough.
-- Controlled eval/research review: Ray ID plus time window and unique marker is
-  enough.
-- Ordinary user support: Ray ID plus auth mode, user-agent, host/path/status,
-  and nearby events is usually enough.
-- Multi-request attribution by authenticated user/client: use the existing
-  request-summary `subjectHash`/`clientHash`; do not infer missing attribution
-  from platform fingerprint fields.
-- Exact separation of rare same-user concurrent tasks: accept ambiguity unless
-  there is evidence it matters enough to add a new app-level mechanism.
-
-Do not reintroduce a model-forwarded correlation id unless production evidence
-shows Cloudflare/auth observability fails for common investigations.
-
-## Report Shape
-
-End with:
-
-- Query inputs: timeframe, filters, Ray IDs, datasets/views.
-- Joined evidence: app JSON logs, platform events, spans.
-- Gaps: ingestion delay, missing auth subject/client, no session header, etc.
-- Privacy notes: IP-bearing or fingerprint-like fields observed.
-- Recommendation: Cloudflare-only, add auth subject/client fields, or change
-  service code/docs.
+End with the query inputs (timeframe, filters, Ray IDs, views), the joined evidence, the gaps
+(ingestion delay, missing attribution), any privacy-sensitive fields observed, and one
+recommendation: Cloudflare-only is enough, add auth subject or client fields, or change service
+code or docs.

@@ -26,8 +26,9 @@ Resolve the narrowest complete scope from the request:
 2. Otherwise, use the supplied files or directories.
 3. Otherwise, audit the repository when the request names the codebase.
 
-State the selected mode, scope, and fixed point. Ask only when different choices would materially
-change the result.
+State the selected mode, scope, fixed point, and expected time before you start. A repository
+audit is the largest scope: choose it only when the request names the codebase. Ask only when
+different choices would materially change the result.
 
 ## Establish the baseline
 
