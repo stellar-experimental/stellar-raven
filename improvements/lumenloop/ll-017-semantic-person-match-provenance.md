@@ -18,6 +18,8 @@ evidence:
   - Solo scratchpad 611 evidence-poor retrieval review
   - https://github.com/lumenloop/lumenloop-backend/issues/36
 recurrences:
+  - date: 2026-11-14
+    evidence: "2026-11-14T02:36Z POST https://api.lumenloop.com/v1/tools/search_content_semantic with query 'Tyler van der Hoeven' and with the negative control 'Strupey' (limit 10): both return _weak_match true (top similarity 0.231 and 0.259) and 30 rows. The control scores higher than the real name, and none of its 30 rows contains the token. Row keys are id, slug, title, summary, long_summary, similarity, dates, url, domain, channel and platform: no per-row exact-match flag, entity link or matched span. Still reproduces."
   - date: 2026-11-06
     evidence: "2026-11-06 partial: LL find_av_passages Tyler van der Hoeven; semantic Tyler and negative control Strupey — AV remains topic neighbors without exact-person provenance. Semantic Tyler mixes exact1487/625 with neighbors. Both Tyler and Strupey now carry _weak_match=true, _top_similarity and explicit generic-filler warning; no per-row exact relation/span. Evidence/owner state: .agents/rounds/2026-11-05-truth-maintenance/other.md, row ll-017."
   - date: 2026-07-13

@@ -28,8 +28,8 @@ Total findings: 77
 | ------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- | ---------- | ----------- |
 | sls-033 | Exact wallet enumeration and name deduplication now work: on 2026-11-06, type=Wallet&limit=100 returns 72 rows, total: 72, and 72 distinct… | reported-upstream | 2026-07-10 | 9           |
 | sls-039 | Scout's project-level tvlUSD/tvlAsOf point cannot answer a trend question or distinguish current, quarter start/end, quarter peak, and…     | declined-upstream | 2026-07-10 | 1           |
-| sls-107 | GET /api/stablecoins has one company field, and it holds a brand name. For two issuers the brand differs from the ORG_NAME in the issuer's… | reported-upstream | 2026-11-02 | 2           |
-| sls-116 | Scout SCF award records miss awards that official SCF project pages publish for rounds before 45. For example, three official pages mark…   | reported-upstream | 2026-11-12 | 0           |
+| sls-107 | GET /api/stablecoins has one company field, and it holds a brand name. For two issuers the brand differs from the ORG_NAME in the issuer's… | fixed-upstream    | 2026-11-02 | 2           |
+| sls-116 | Scout SCF award records miss awards that official SCF project pages publish for rounds before 45. For example, three official pages mark…   | reported-upstream | 2026-11-12 | 1           |
 
 ## stellar-docs
 
@@ -59,19 +59,19 @@ Total findings: 77
 | ll-002 | The Messari "State of Stellar Q1 2026" AV/research item carries only ~702 chars of extracted content. A load-bearing source is…             | reported-upstream | 2026-07-03 | 3           |
 | ll-003 | Region vocabulary is free-text rather than a controlled list. The live-lane eval case q-live-ll-regions-vocab currently passes on…          | reported-upstream | 2026-07-03 | 6           |
 | ll-004 | Authenticated discovery and account metadata disagree on the tool count in the 2026-11-06 check: the same key returns 18 tool names while…  | reported-upstream | 2026-07-03 | 3           |
-| ll-005 | find_content_by_entity advertises entity_type: "person" in its input schema enum, but the external lane returns success: true with…         | reported-upstream | 2026-07-03 | 7           |
+| ll-005 | find_content_by_entity advertises entity_type: "person" in its input schema enum, but the external lane returns success: true with…         | reported-upstream | 2026-07-03 | 8           |
 | ll-006 | The 2026-07-03 replay of search_content_semantic ranked old recurring SDF publications above the relevant Q1 2026 report. For the query…    | reported-upstream | 2026-07-03 | 2           |
 | ll-007 | Event summary prose can contradict the structured start_at field. The Bhopal and Jabalpur "Build On Stellar" workshop rows say "July 27"…   | reported-upstream | 2026-07-03 | 6           |
-| ll-008 | Directory records carry misleading region/coverage values, two live instances:                                                              | reported-upstream | 2026-07-03 | 3           |
+| ll-008 | Directory records carry misleading region/coverage values, two live instances:                                                              | reported-upstream | 2026-07-03 | 4           |
 | ll-009 | Lumenloop's editorial content misattributes two headline statistics to "Messari's State of Stellar Q1 2026 report":                         | reported-upstream | 2026-07-03 | 3           |
 | ll-010 | Lumenloop weekly-roundup research items state headline Stellar RWA totals with no data source and no measurement scope. The Jun 19, 2026…   | reported-upstream | 2026-07-06 | 3           |
 | ll-011 | Lumenloop's YieldBlox incident summaries repeat material unit, identity, and status errors. The current research document 66 calls it a…    | reported-upstream | 2026-07-10 | 5           |
 | ll-012 | Broad Lumenloop RWA discovery mixes planned and live product states and has weak recall for major currently live Stellar products. A live…  | reported-upstream | 2026-07-10 | 5           |
-| ll-013 | lumenloop.get_scf_submissions({slug:"blend"}) links the correct Blend Capital submission and returns round, award_type, and budget:…        | reported-upstream | 2026-07-10 | 8           |
+| ll-013 | lumenloop.get_scf_submissions({slug:"blend"}) links the correct Blend Capital submission and returns round, award_type, and budget:…        | reported-upstream | 2026-07-10 | 9           |
 | ll-014 | Project-content and similarity retrieval do not expose enough match provenance or confidence for a consumer to distinguish exact Soroswap…  | reported-upstream | 2026-07-10 | 3           |
 | ll-015 | Lumenloop's stellar-weekly-roundup-week-jul-3-2026 repeatedly dates Protocol 27 Mainnet activation as July 9. The roundup's own linked…     | reported-upstream | 2026-07-10 | 3           |
 | ll-016 | Historical retrieval lacks structured claimant and dispute links for the 2014 fork and 2015 SCP rewrite. SDF and Ripple published…          | reported-upstream | 2026-07-10 | 3           |
-| ll-017 | Person-oriented semantic and A/V searches still lack per-result provenance that distinguishes exact named-person matches from topic…        | reported-upstream | 2026-07-10 | 7           |
+| ll-017 | Person-oriented semantic and A/V searches still lack per-result provenance that distinguishes exact named-person matches from topic…        | reported-upstream | 2026-07-10 | 8           |
 | ll-018 | The SCF submissions operation applies fuzzy matching even when the caller supplies the supposedly exact slug identity. The band slug…       | reported-upstream | 2026-07-10 | 3           |
 | ll-019 | The A/V response contract is internally inconsistent. Documentation describes an object containing results. The live adapter returns a…     | reported-upstream | 2026-07-11 | 5           |
 | ll-020 | The exact Zipper guide retrieval still returns pre-vote article 8084 without an explicit link to the correct post-vote activation state.…   | reported-upstream | 2026-07-11 | 2           |
