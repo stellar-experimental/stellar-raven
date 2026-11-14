@@ -1,7 +1,6 @@
 # Contributing to Stellar Raven
 
-Issues and pull requests are welcome. This guide gives the setup, the checks, and the rules that a
-change must follow. [README.md](./README.md) describes the project.
+Issues and pull requests are welcome. [README.md](./README.md) describes the project.
 
 ## Where to send what
 
@@ -15,11 +14,10 @@ change must follow. [README.md](./README.md) describes the project.
 
 ## Set up
 
-Follow steps 1 to 3 of [Run locally](./README.md#run-locally) in the README. Two notes apply to
-contributors:
+Follow steps 1 to 3 of [Run locally](./README.md#run-locally) in the README.
 
-- `npm ci` also installs the pre-commit hook (`scripts/git-hooks/pre-commit`). The hook blocks
-  commits that contain secrets.
+- `npm ci` also installs the pre-commit hook (`scripts/git-hooks/pre-commit`), which blocks a
+  commit that contains a secret.
 - Placeholder values in `.dev.vars` are enough for typecheck and tests. Without `.dev.vars`, the
   generated `Env` type has no secret members and typecheck fails.
 
@@ -34,11 +32,12 @@ npm run build
 npm run secrets:scan -- --tree
 ```
 
-Run `npm run test:smoke` when you change `src/executor/` or `src/demo/`. CI also runs these gates.
-Run the matching one when you change its area:
+Run each command bare; a pipe hides its exit status. CI also runs the gates below. Run the
+matching one when you change its area:
 
 | Area | Command |
 |---|---|
+| `src/executor/` or `src/demo/` | `npm run test:smoke` |
 | `eval/` | `npm run eval:selftest`, `npm run eval:qa:lint -- --stale --enforce-floors`, `npm run eval:qa:register -- --check` |
 | Catalog, routing, or skills | `npm run eval:routing -- --gate` |
 | `ecosystem-skills/` pins | `node scripts/check-pin-review.mjs --base origin/main` |
@@ -55,11 +54,7 @@ Add `?template=upstream-improvement-handoff.md` to the new pull request URL to a
 
 ## Rules
 
-- Never edit a generated file by hand. Run its script.
-- The generated manifest (`catalog/manifest.json`) is the exposed surface. Model code never owns
-  endpoints, arguments, authentication, or exposure.
-- Secrets stay on the host. Never print, commit, or pass a credential to the sandbox.
-- Never commit partner-tier Lumenloop details or production usage counts.
-- Prefer the best current design. Do not add compatibility shims or dual formats.
-
-[`AGENTS.md`](./AGENTS.md) holds the full rules. Coding agents must read it first.
+The "Hard rules" in [`AGENTS.md`](./AGENTS.md#hard-rules) bind every change, whoever writes it:
+generated files come from their scripts, secrets stay on the host, partner-tier details and
+production counts are never committed, and the design is forward-only. Coding agents read
+[`AGENTS.md`](./AGENTS.md) first.

@@ -1,46 +1,34 @@
-# `.agents/` — agent instructions and durable working state
+# `.agents/` — agent instructions and working state
 
-Four things live here. Keep them separate.
-
-| path | holds | lifetime |
+| Path | Holds | Lifetime |
 |---|---|---|
-| `skills/` | repeatable task workflows (`<name>/SKILL.md`) | durable |
-| `model-roster.md` | the map from `AGENTS.md` model tiers to exact model IDs and launch lines | durable; update when a CLI catalog changes |
-| `TODO.md` | the own-repo work queue, its priorities, and open owner decisions | until each item is done |
-| `rounds/` | one dated ledger per multi-lane round | until reconciliation; retain only cited evidence or a unique durable decision |
+| `skills/` | Repeatable task procedures (`<name>/SKILL.md`). `.claude/skills` is a committed symlink to it. | Durable |
+| `model-roster.md` | Model IDs and launch lines for the `AGENTS.md` tiers and the eval and test set | Durable; update when a CLI catalog changes |
+| `TODO.md` | The own-repo work queue and open owner decisions | Until each item is done |
+| `rounds/` | One dated ledger per multi-lane round | Until reconciliation (see Retention) |
 
-`.claude/skills` is a committed symlink to `skills/`. Codex scans `skills/` repo-scoped. Each skill
-is a plain-Markdown runbook, so any agent can read it directly.
+Working state lives in the repository so that the next agent and CI can read it. A decision
+recorded elsewhere does not exist for them.
 
-## Why these are files
+## Where a note goes
 
-Working state lives in the repository, in git, reviewable in a pull request. It is not held in an
-external task tracker. An instruction nobody can `grep` is an instruction nobody follows: a
-decision recorded outside the repo is invisible to the next agent and to CI.
+| Note | Place |
+|---|---|
+| Upstream service defect | `improvements/<collection>/` ([`improvements/README.md`](../improvements/README.md)) |
+| Own-repo fix, gap, follow-up, or owner decision | `TODO.md` |
+| Working ledger of a round in progress | `rounds/<YYYY-MM-DD>-<slug>.md` ([`rounds/README.md`](rounds/README.md)) |
+| Evidence from a dated investigation | `research/audits/` or `eval/qa/reviewed/` |
+| A rule that binds future work | `AGENTS.md`, a skill, or an ADR under `research/decisions/` |
 
-Two consequences follow.
-
-- A decision that should bind future work belongs in `AGENTS.md`, a skill, or an ADR under
-  `research/decisions/` — not in a round ledger. Ledgers record what happened, not what is required.
-- Anything an agent must not lose across a context window goes in a file in the same commit as the
-  work it describes.
-
-## Where a given note goes
-
-- Upstream service defect → `improvements/<collection>/` (see `improvements/README.md`).
-- Own-repo fix, gap, follow-up, or owner decision → `TODO.md`.
-- Evidence from a dated investigation → `research/audits/` or `eval/qa/reviewed/`.
-- The working ledger of a round in progress → `rounds/<YYYY-MM-DD>-<slug>.md` (see
-  `rounds/README.md`).
-- A durable design decision → `research/decisions/`.
+A ledger records what happened. It never sets a rule.
 
 ## Retention
 
 - Keep one ledger while a round runs.
-- At closure, move open work to `TODO.md` and durable rules to the nearest current guide or ADR.
-- Keep a dated ledger only while a current artifact needs its evidence.
-- Keep a raw report only when a current artifact cites it or needs it to interpret retained evidence.
-- Delete other briefs, intermediate reviews, raw outputs, and completed ledgers after reconciliation.
-- A link from another historical record does not establish a retention need.
-- Preserve historical content through Git; do not rewrite it to describe current tools.
-- Record the retained evidence and its current consumer in the round's Outcome section.
+- At closure, move open work to `TODO.md` and durable rules to the nearest guide or ADR.
+- Keep a dated ledger or raw report only while a current artifact cites it or needs it to
+  interpret retained evidence. Name that artifact in the round's Outcome section. A link from
+  another historical record is not such a need.
+- Delete other briefs, intermediate reviews, raw outputs, and finished ledgers after
+  reconciliation. Git keeps the history; do not rewrite a retained record to describe current
+  tools.

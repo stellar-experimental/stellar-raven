@@ -1,156 +1,160 @@
 # AGENTS.md — stellar-raven-codemode
 
-Canonical repository instructions for Codex, Claude Code, and other coding agents. Keep this file
-short, current, and operational. Put architecture, research, history, and task runbooks in the
-linked docs and skills instead of accumulating them here. Human contributors start with
-[`CONTRIBUTING.md`](CONTRIBUTING.md).
+Shared instructions for Codex, Claude Code, and other coding agents. This file holds only rules
+that change an agent's next action. Architecture, evidence, and procedures live in the linked
+files. Human contributors start with [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 ## Project and source-of-truth map
 
-This is a Cloudflare Workers MCP server exposing `search` and `execute` over Lumenloop, Stellar
-Light/Scout, Stellar Docs (Mintlify), and selected ecosystem skills. Model-authored JavaScript runs
-in a networkless Dynamic Worker; host adapters own all service traffic, policy, and secrets.
+A Cloudflare Workers MCP server that exposes `search` and `execute` over Lumenloop, Stellar
+Light/Scout, Stellar Docs (Mintlify), and pinned ecosystem skills. Model-written JavaScript runs in
+a networkless Dynamic Worker. Host adapters own all service traffic, policy, and secrets.
 
-- Read `PLAN.md` for current product scope and status, then `ARCHITECTURE.md` for the implemented
-  request, catalog, scoring, sandbox, and auth design.
-- Use `README.md` for connection and local setup, and [`docs/operations.md`](docs/operations.md)
-  for operator procedures.
-- Use `research/` for dated evidence and design context; it is not an instruction layer.
-- This repo is self-contained, including usage collection and reporting under `usage/`. Owner-only
-  private folders exist outside the repository; `usage/README.md` names them and their roles. Never
-  depend on them, and never commit production counts here.
-- Use `.agents/skills/<name>/SKILL.md` for repeatable task workflows. `.claude/skills` is the
-  committed symlink to the same canonical directory.
-- Use `.agents/TODO.md` for the own-repo work queue, priorities, and open owner decisions, and
-  `.agents/rounds/` for round ledgers. `.agents/README.md` says which note belongs where.
-- `CLAUDE.md` imports this file. Do not duplicate shared rules there.
+| Need | Read |
+|---|---|
+| Product scope and status | `PLAN.md` |
+| Request, catalog, scoring, sandbox, and auth design | `ARCHITECTURE.md` |
+| Connection and local setup | `README.md` |
+| Deploy and operate | [`docs/operations.md`](docs/operations.md) |
+| A repeatable task procedure | `.agents/skills/<name>/SKILL.md` (`.claude/skills` is a symlink to that directory) |
+| Open work and owner decisions | `.agents/TODO.md` |
+| Round ledgers, and which note goes where | `.agents/rounds/`, `.agents/README.md` |
+| Dated evidence and decision records | `research/` (evidence, not an instruction layer) |
+
+The repo is self-contained, including usage collection under `usage/`. The owner keeps private
+folders outside it; `usage/README.md` names them. Never depend on them, and never commit production
+counts. `CLAUDE.md` imports this file; do not duplicate rules there.
 
 ## Commands and verification
 
-- Install reproducibly: `npm ci`. The `prepare` script installs a pre-commit hook that scans
-  staged files for secrets.
+- Install with `npm ci`. Its `prepare` script installs a pre-commit hook that scans staged files
+  for secrets.
 - Fresh clone: follow "Run locally" in `README.md`. `npm run typegen` needs the placeholder
-  `.dev.vars` first; without it, `Env` has no secret members and `npm run typecheck` fails.
-- Baseline validation for code changes: `npm run typecheck`, `npm test`, and `npm run build`.
-  `npm test` excludes `test/smoke/**`; add `npm run test:smoke` when touching `src/executor` or
-  `src/demo` — it is the only lane exercising those paths against the assembled worker
-  (unit tests import the modules directly; CI always runs both).
-- CI (`.github/workflows/ci.yml`) also runs `npm run eval:selftest`,
-  `npm run eval:qa:lint -- --stale --enforce-floors`, `npm run eval:qa:register -- --check`,
-  `npm run improvements:lint`, `node scripts/check-pin-review.mjs --base <ref>`,
-  `npm run eval:routing -- --gate`, and a generated-artifact sync check. Run the matching command
-  when you touch `eval/`, `improvements/`, `catalog/`, or `ecosystem-skills/`.
-- Run the narrowest relevant eval or maintenance command in addition to the baseline; the selected
-  skill defines the exact gate for eval, drift, golden-truth, improvements, and observability work.
+  `.dev.vars` first; without it `Env` has no secret members and `npm run typecheck` fails.
+- Baseline for a code change: `npm run typecheck`, `npm test`, and `npm run build`. Add
+  `npm run test:smoke` when you touch `src/executor` or `src/demo`: `npm test` excludes
+  `test/smoke/**`, and that lane is the only one that runs those paths in the assembled Worker.
+- CI runs more gates per area. The "Checks" table in `CONTRIBUTING.md` maps each area to its
+  command; run the matching one when you touch `eval/`, `improvements/`, `catalog/`,
+  `ecosystem-skills/`, or `usage/`. The selected skill names any further gate.
+- Run a gate command bare. A pipe hides its exit status.
+- Never put a model-calling eval command in a gate sweep. Those commands cost money and need
+  their own authorization (the `run-evals` skill).
 - Scan before committing: `npm run secrets:scan -- --tree`.
-- Do not start a second Wrangler process. Reuse the terminal that already runs `npm run dev`
-  (manual testing) or `npm run dev:eval` (eval lanes; see `run-evals`), and read its bound URL
-  from that terminal's output (find it with `hc ls` and `hc get <t>`, then `hc read <t>`).
-- Generated outputs are rebuilt by their `package.json` scripts, never edited by hand.
+- Generated files are rebuilt by their scripts, never edited by hand
+  ([`scripts/README.md`](scripts/README.md) lists them).
+- Do not start a second Wrangler process. Reuse the terminal that runs `npm run dev` (manual
+  testing) or `npm run dev:eval` (eval lanes), and read its bound URL from that terminal
+  (`hc ls`, then `hc read <t>`).
+
+## Spend and evidence
+
+"Spend" is the size of the work: how long a task takes, what it costs, and where it runs.
+
+- **Decide with the least spend that can decide.** Scope each task and eval to the smallest run
+  that answers the question. Before you start, state the decision it changes, the expected time
+  and cost, and the stop rule. Call the result as soon as the evidence is solid. Do not add
+  confirmation rounds, extra looks, or re-checks that buy little information.
+- **Cost counts.** Correctness wins only when the alternative is far less correct. A path that is
+  much cheaper and only slightly less correct can be the better product.
+- **Run here, on `hc`, first.** Development tests and evals run against the local `wrangler dev`
+  server with the subscription CLI agents (Claude Code, Codex, Grok) as `hc` children. Use an
+  API-billed path (Cloudflare AI Gateway, a provider API) only when no CLI path can do the job,
+  and record why.
+- **Eval and test models.** Claude Sonnet 5.5, GPT-6.1 Terra, and Grok 4.7. Add Claude Opus 5.5
+  and GPT-6.1 Sol where they help. Leave out Haiku and GPT-6 Luna.
+- A paid method needs its own written authorization. A diagnostic budget does not transfer to
+  headline collection.
+- File and response size come second. Trim bloat where it is cheap; do not spend effort on it
+  for its own sake.
+
+[`.agents/model-roster.md`](.agents/model-roster.md) has the model IDs and launch lines. The
+`run-evals` skill has the measurement procedure. Scores are evidence for a scoped decision, not
+the decision; an established upstream defect goes to `improvements/`.
 
 ## Coordination
 
-The owner runs agents under herdr-core (`hc`); `$HC_TERMINAL_ID` is set inside it. The rules in
-this section and the next describe that setup. Without it, work in one session. State in the
-pull request that the independent review is outstanding; the owner runs it.
+The owner runs agents under herdr-core (`hc`); `$HC_TERMINAL_ID` is set inside it. Without it, work
+in one session and state in the pull request that the independent review is outstanding.
 
-- Use the global `herdr-core` skill for the `hc` contract (`hc --skill`). Address a lane by the
+- The global `herdr-core` skill holds the `hc` contract (`hc --skill`). Address a lane by the
   `--name` you gave it.
 - Start each reviewer or parallel lane as a background child with its first task on the launch
-  line: `hc run --bg --name <lane> --cwd <worktree> <cli> <model and effort flags> "<task>"`.
-  [`.agents/model-roster.md`](.agents/model-roster.md) has the exact lines. Wait with
-  `hc wait --children any` or `all`; do not sleep or poll.
-- **Terminal ownership is recursive:** control only your own terminal and the children you
-  started. Never interrupt, kill, rename, or take over a parent, a sibling, an unrelated
-  terminal, or another agent's children, and send them no input except the report your parent
-  asked for. Apply the same rule to every sub-agent.
-  Idleness, staleness, a completed handoff, or a request to clean up does not transfer ownership:
-  leave a terminal you do not own alone and ask its owning agent to reconcile it. Record the
-  terminal IDs you create; unknown provenance means not owned. If the owner is unknown or
-  unavailable, ask the user for an explicit exception naming the exact target; never adopt it.
-- Screen history is not a record. For any reviewer whose findings matter, have the agent write
-  them to a Markdown file and report only the path to you: put `hc send <your terminal ID>
-  '<path>'` in its task (`$HC_TERMINAL_ID` in a double-quoted launch task expands to your ID).
-- Durable working state lives in the repository, never in an external tracker. Own-repo work goes
-  to `.agents/TODO.md`; a multi-lane round keeps its ledger at
-  `.agents/rounds/<YYYY-MM-DD>-<slug>.md`. See `.agents/README.md` for the routing table.
-- Independent adversarial review is a completion gate when requested: reviewer must differ from
-  author, run to completion, and have every finding reconciled before finalization.
+  line, and wait with `hc wait --children any` or `all`. Do not sleep or poll. The roster has the
+  exact lines.
+- **Terminal ownership is recursive.** Control only your own terminal and the children you
+  started. Never interrupt, kill, rename, take over, or send input to a parent, a sibling, an
+  unrelated terminal, or another agent's children; the one exception is the report your parent
+  asked for. Idleness, staleness, a finished handoff, or a cleanup request does not transfer
+  ownership. Record the terminal IDs you create; unknown provenance means not owned. Ask the
+  owning agent to reconcile its terminal. If that agent is unknown or gone, ask the user for an
+  exception that names the exact target. Every sub-agent follows the same rule.
+- Screen history is not a record. A reviewer writes its findings to a Markdown file and sends you
+  only the path (`hc send <your terminal ID> '<path>'` in its task).
+- Durable working state lives in the repository, never in an external tracker: own-repo work in
+  `.agents/TODO.md`, a multi-lane round in `.agents/rounds/<YYYY-MM-DD>-<slug>.md`.
+- A requested independent review is a completion gate. The reviewer runs to completion, and
+  every finding is reconciled before the work is final.
 
 ## Model routing for repo-work fan-out
 
-Route each lane by role tier:
+| Tier | Use for |
+|---|---|
+| Codex frontier | Hard implementation, dense analysis, security review |
+| Codex workhorse | Routine implementation, bounded verification |
+| Claude Fable | Product, API, documentation, taste |
+| Claude Opus | The stable Claude fallback |
+| Grok | Vendor-diverse assumption attack |
 
-- **Codex frontier** at high — hard implementation, dense analysis, and security review.
-- **Codex workhorse** at high — routine implementation and bounded verification.
-- **Claude Fable** at high — product, API, documentation, and taste.
-- **Claude Opus** at high — the stable Claude fallback.
-- **Grok** at high — vendor-diverse assumption attack.
+Run every tier at high effort. Escalate to xhigh only for a subtle change or after a high pass
+missed a real finding, and reserve max for frontier work or a failed high pass. `ultra`
+delegates to subagents; treat it as a separate topology. The roster maps each tier to a model
+ID; when a CLI catalog changes, update the roster only.
 
-Reserve max for frontier work or a failed high-effort pass; treat ultra as a separate delegated
-topology. [`.agents/model-roster.md`](.agents/model-roster.md) maps each tier to an exact model ID
-and launch line. When a CLI catalog changes, update the roster only. Eval answering and judge
-models remain separate measurement contracts controlled by `run-evals`.
+The independent reviewer:
 
-Choose the independent reviewer under "Coordination" by tier, not by a fixed model:
-
-- **Eligibility.** The reviewer differs from the author *and* from the orchestrator. An
-  orchestrator that is also a candidate reviewer drops out of the pool for that gate.
-- **Effort.** Run the gate at high. Escalate to xhigh only for a subtle change, or after a
-  high pass missed a real finding. Never make xhigh the standing default.
-- **Selection and fallback.** Match the tier to the change: Claude Fable for product, API, and
-  taste; Codex frontier for dense implementation or analysis; Grok for vendor-diverse assumption
-  attack. When that tier is the author, the orchestrator, or unavailable, take the next best
-  match, then Claude Opus at high as the last resort. Record the tier, model, and effort used, and
-  why the matched tier was skipped.
+- differs from the author and from the orchestrator;
+- comes from the tier that matches the change. When that tier is the author, the orchestrator,
+  or unavailable, take the next best match, then Claude Opus;
+- is recorded with its tier, model, effort, and the reason a matched tier was skipped.
 
 ## Hard rules
 
-- **Forward-only:** prefer the best current design; do not add compatibility shims, dual formats,
-  or deprecation paths merely to preserve deployed behavior. Deviations still need evidence.
+- **Forward-only.** Prefer the best current design. Add no compatibility shim, dual format, or
+  deprecation path only to preserve deployed behavior. A deviation needs evidence.
 - **The manifest is the exposed surface** (ADR-0003). Model code never owns endpoints, arguments,
-  auth, or exposure. Never emit references to non-exposed operations or retired skills. Two guards
-  enforce this: `assertNoNonExposedRefsInText` runs in `prebuild` (via `build-micro-map.mjs`) over
-  emitted text, and `assertNoNonExposedRefs` checks manifest entries when the catalog is rebuilt
-  (`build-catalog.mjs`) and on every `npm test`. `npm run build` alone does NOT rebuild the catalog,
-  so a hand-edited manifest is caught by `npm test`/CI rather than by the build.
-- Keep exact-match resolution for skill/tool IDs. Preserve service distinctions among soft-empty,
-  error, and data responses.
-- **Secrets stay host-side:** never print, commit, or expose credentials to the sandbox;
-  `globalOutbound` remains `null`.
-- The paid Lumenloop research trigger and its account-scoped read operations remain unexposed.
-  Enabling them requires the exposure change, partner-detail persistence, budget gate, and dedup in
-  one reviewed change.
-- Partner-tier Lumenloop details are never committed. Inventory keeps name-only stubs and skill
-  sync remains keyless.
-- Any paid or side-effecting model operation requires host-side request-context approval,
-  elicitation, and budget enforcement before it can ship.
-- Mintlify admin credentials are maintenance-only and never a runtime/sandbox surface. Any write
-  needs a read-only A/B win, a general mechanism rather than per-query hacks, and the rules in
-  [`docs/stellar-docs.md`](docs/stellar-docs.md) ("Maintenance").
-- Evals support scoped decisions; route established upstream defects to `improvements/`. Scores
-  are evidence, not the decision itself.
-- Solo, a retired task tracker, is not a live path. Never add a `solo://` reference, a Solo todo,
-  or a Solo scratchpad. Leave existing Solo references in dated records unchanged.
-- Retired sibling repos must not be referenced as live paths. Retained prior art is read-only under
-  `eval/corpus/`; it is also the routing eval's committed label source. The QA battery is owned
-  under `eval/qa/corpus/` and does not read it.
-
-## Task runbooks
-
-Use the matching skill when the task triggers it. Each skill's frontmatter says when.
-Repository skills: `truth-maintenance`, `live-drift-resolution`, `run-evals`,
-`improvements-pipeline`, `golden-truth`, `retrieval-system-audit`,
-`cloudflare-observability-review`, and `audit-reviewability`. The global `herdr-core` skill owns
-agent and terminal control.
-
-Add durable repo-wide rules here only after recurring friction. Put specialized instructions in the
-closest relevant skill or directory-level `AGENTS.md`.
+  auth, or exposure. Never emit a reference to a non-exposed operation or a retired skill. Two
+  guards enforce it: `assertNoNonExposedRefsInText` on emitted text in `prebuild`, and
+  `assertNoNonExposedRefs` on manifest entries at catalog rebuild and in `npm test`.
+  `npm run build` does not rebuild the catalog, so `npm test` and CI catch a hand-edited
+  manifest, not the build.
+- Skill and tool IDs resolve by exact match. Keep soft-empty, error, and data responses distinct.
+- **Secrets stay host-side.** Never print or commit a credential or expose one to the sandbox.
+  `globalOutbound` stays `null`.
+- The paid Lumenloop research trigger and its account-scoped reads stay unexposed. Enabling them
+  takes the exposure change, partner-detail persistence, a budget gate, and dedup in one reviewed
+  change.
+- Partner-tier Lumenloop details are never committed. Inventory keeps name-only stubs, and skill
+  sync stays keyless.
+- A paid or side-effecting model operation needs host-side request-context approval, elicitation,
+  and budget enforcement before it ships.
+- Mintlify admin credentials are maintenance-only, never a runtime or sandbox surface. A docs
+  search change needs a read-only A/B win and a general mechanism, not a per-query exception
+  ([`docs/stellar-docs.md`](docs/stellar-docs.md), "Maintenance").
+- Skills are timeless: no todo IDs, run stamps, or dated state in skill text.
+- Solo, a retired task tracker, is not a live path. Add no `solo://` reference, Solo todo, or Solo
+  scratchpad. Leave Solo references in dated records unchanged.
+- Never reference a retired sibling repo as a live path. Prior art under `eval/corpus/` is
+  read-only; it is the routing eval's label source. The QA battery lives under `eval/qa/corpus/`
+  and does not read it.
 
 ## Definition of done
 
-- The diff is scoped and preserves unrelated work in the dirty tree.
-- Proportionate tests and required skill gates pass; failures are reported, not hidden.
-- Generated artifacts came from scripts and secrets scanning passed where required.
-- Requested independent reviews completed and every finding was reconciled.
-- Documentation describes current behavior and links dated research instead of embedding history.
+- The diff is scoped and keeps unrelated work in a dirty tree.
+- Proportionate tests and the required gates pass. Failures are reported, not hidden.
+- Generated files came from their scripts, and the secrets scan passed.
+- Every requested independent review finished and every finding was reconciled.
+- Documentation describes current behavior and links dated research, not history.
+
+Add a rule here only after recurring friction. A specialized instruction goes in the nearest
+skill or directory-level guide.

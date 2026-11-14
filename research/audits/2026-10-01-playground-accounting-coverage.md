@@ -43,5 +43,5 @@ Do not remove the guard and dispatch without a captured log identifier.
 Add real-handler regressions for both models and a fallback into a native model.
 Require an answer, captured log reads, and a complete numeric receipt.
 
-The [Eval instruments queue](../../.agents/TODO.md#extend-playground-eval-accounting-to-native-and-no-plugin-model-paths) owns this extension.
+The [Eval instruments queue](https://github.com/stellar-experimental/stellar-raven/blob/7697d424ef915d367b344fca827db0ba36060d35/.agents/TODO.md#extend-playground-eval-accounting-to-native-and-no-plugin-model-paths) owns this extension.
 The current measurement retains the OpenAI configuration and needs a new bounded receipt GO after review.

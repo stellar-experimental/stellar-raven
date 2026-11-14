@@ -94,4 +94,4 @@ The $100 Codex reserve is policy only, not a measured cost or proven cap.
 The record establishes no whole-session bill or spending-cap claim.
 
 No upstream issue, pull request, admin write, push, or deployment occurred.
-The [follow-up queue](../../../.agents/TODO.md#review-a-fresh-finalization-comparison-and-capability-canary) records the remaining measurement and source-evidence work.
+The [follow-up queue](https://github.com/stellar-experimental/stellar-raven/blob/cd1ca34a7be9dd19312755a2919e66875fcc8bcc/.agents/TODO.md#review-a-fresh-finalization-comparison-and-capability-canary) records the remaining measurement and source-evidence work.
