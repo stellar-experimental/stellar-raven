@@ -14,7 +14,11 @@
 import { describe, expect, it } from "vitest";
 import { assertGeneratedTextNoNonExposedRefs } from "../scripts/build-micro-map.mjs";
 import { getCatalog } from "../src/catalog/load";
-import { CLAUDE_CODE_INSTRUCTIONS_CAP_CHARS, CLAUDE_CODE_TOOL_DESCRIPTION_CAP_CHARS } from "./helpers/mcp-tool-metadata";
+import {
+  CLAUDE_CODE_INSTRUCTIONS_CAP_CHARS,
+  CLAUDE_CODE_PRE_V2_1_296_CAP_CHARS,
+  CLAUDE_CODE_TOOL_DESCRIPTION_CAP_CHARS
+} from "./helpers/mcp-tool-metadata";
 import {
   BASE_SERVER_INSTRUCTIONS,
   EXECUTE_DESCRIPTION,
@@ -135,6 +139,11 @@ describe("tool descriptions — one contract inside the character cap", () => {
   it(`fits each whole description inside ${CLAUDE_CODE_TOOL_DESCRIPTION_CAP_CHARS} chars, so nothing is clipped`, () => {
     expect(SEARCH_DESCRIPTION.length).toBeLessThanOrEqual(CLAUDE_CODE_TOOL_DESCRIPTION_CAP_CHARS);
     expect(EXECUTE_DESCRIPTION.length).toBeLessThanOrEqual(CLAUDE_CODE_TOOL_DESCRIPTION_CAP_CHARS);
+  });
+
+  it(`keeps each description within ${CLAUDE_CODE_PRE_V2_1_296_CAP_CHARS} chars, the pre-v2.1.296 limit; growth past it needs a measured reason`, () => {
+    expect(SEARCH_DESCRIPTION.length).toBeLessThanOrEqual(CLAUDE_CODE_PRE_V2_1_296_CAP_CHARS);
+    expect(EXECUTE_DESCRIPTION.length).toBeLessThanOrEqual(CLAUDE_CODE_PRE_V2_1_296_CAP_CHARS);
   });
 
   it("search carries the plan-then-compose workflow and the card shape", () => {

@@ -30,3 +30,7 @@ export const EXPECTED_TOOL_METADATA = {
 // characters.
 export const CLAUDE_CODE_INSTRUCTIONS_CAP_CHARS = 4_096;
 export const CLAUDE_CODE_TOOL_DESCRIPTION_CAP_CHARS = 4_096;
+
+// The limit before v2.1.296. The base contract and both descriptions still fit it. Retire this
+// constant together with BASE_BUDGET.
+export const CLAUDE_CODE_PRE_V2_1_296_CAP_CHARS = 2_048;

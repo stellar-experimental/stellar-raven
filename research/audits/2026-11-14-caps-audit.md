@@ -50,7 +50,7 @@ costs below are stated as a formula plus one worked example.
 | `MICRO_MAP_MAX_TOKENS` (`scripts/build-micro-map.mjs`) | 700 tokens (was 1,500) | Ratchet | 1,500 came from the P1 spec's budget (ed43c6df). 700 came with e3d0cd55, which measured only the arm B bundle. | The map is 542 tokens, reread on every model call in clients that inject instructions. It protects nothing: a 700-token map would push the instructions to about 4,700 chars, over Claude Code's limit. | **Retire.** Replace it with the 4,096 total guard, which leaves the map about 2,195 chars. **Measure** its value (paid test M3). |
 | `FAMILY_LINE_MAX_TOKENS` | 150 tokens (line is 90) | Guess | P1 spec, "≤ ~120" | The line is part of the `search` description, and the description limit already bounds it | **Retire.** It duplicates the description guard. |
 | `SEARCH_DEFAULT_LIMIT` (`src/mcp/tools.ts`) | 5 cards | Guess, bundle-measured | Playground value from f80ea10f (2026-07-06), copied in e3d0cd55. Arm B measured it only as part of the bundle. | Free check: 7 cards adds 11 operation-card hits on 182 legacy rows (113→124) and loses none. It costs +1,899 bytes (about 475 tokens) per page. | **Measure** (M1). Avoid 6: it ranks worse than 5. |
-| `MAX_SEARCH_LIMIT` (`src/catalog/search.ts`) | 50 | Guess | Initial snapshot 7e83d1c5 | At 50, a page averages 41.8 KB (about 10.5k tokens). 459 of 460 pages exceed the Grok clip. The largest, 54.7 KB, exceeds Claude Code's 50,000-char spill-to-file rule. | **Recalibrate** the public tool to 10. Long candidate lists belong in `codemode.search` inside `execute`. Check `requestedLimit` in telemetry first (free). |
+| `MAX_SEARCH_LIMIT` (`src/catalog/search.ts`) | 50 | Guess | Initial snapshot 7e83d1c5 | At 50, a page averages 41.8 KB (about 10.5k tokens). 459 of 460 pages exceed the Grok clip. The largest, 54.7 KB, exceeds Claude Code's 50,000-char spill-to-file rule. | **Measure** (free telemetry: the `requestedLimit` distribution), then recalibrate the public tool to 10. Long candidate lists belong in `codemode.search` inside `execute`. The change edits model-facing schema text ("default 5, max 50"), so it needs its own review. |
 | `DEFAULT_SEARCH_LIMIT` (`codemode.search`, catalog) | 10 | Guess | Initial snapshot | Read by the script, not the model, unless the script returns it | **Keep.** |
 | `SEARCH_CARD_DESCRIPTION_CHARS` | 220 chars | Guess, bundle-measured | Playground value (f80ea10f), copied in e3d0cd55 | Ranking never reads it, so card hits do not change. 79 of 80 entries are clipped, and 76% of served hits lose a query word that the full text has (51% at 400). Raising it to 400 adds up to 180 chars per card. | **Keep.** Measure only if M1's stored-answer step points at card content. |
 | `CARD_CAVEAT_MAX_CHARS` | 135 chars | Derived | d7e13d98. Leaves 85 chars of description inside 220. | Keeps eight evidence caveats on cards | **Keep.** It moves with 220. |
@@ -66,7 +66,7 @@ costs below are stated as a formula plus one worked example.
 | Artifact size / retention | 2 MiB; 7 days | Guess; owner policy | 59940f0b; retention table | 2 MiB bounds the size of an artifact, not model tokens. The 7-day TTL is disclosed retention. | **Keep.** |
 | R2 custom metadata | 8,192 bytes (target 7,600) | External fact | R2 limits page, re-verified today | Prevents `MetadataTooLarge` | **Keep.** |
 | `ARTIFACT_INFO_CAP` / `ARTIFACT_READ_CAP` | 8 / 4 per execute | Guess | c824ed61, 3710d116 | Host load. Results still pass the 6k cap. | **Keep.** A free telemetry check shows whether any run hits them. |
-| `EXECUTE_TIMEOUT_MS` | 60 s | Guess | Initial snapshot. The upstream default is 30 s. | Bounds the tail. Arm B's p95 was 55.6 s per question. | **Keep.** A free telemetry check gives the timeout rate. |
+| `EXECUTE_TIMEOUT_MS` | 60 s | Guess | Initial snapshot. The upstream default is 30 s. | Bounds the tail. Arm B's p95 was 55.6 s per question. Codex's default `tool_timeout_sec` is 60 (vendor docs: "Timeout (seconds) for the server to run a tool. Default: `60`"), so a script that runs to Raven's limit races the Codex client timeout, and Codex can give up first and lose Raven's structured timeout result. | **Keep**, after a free telemetry read of the timeout rate and of `execute` wall time above about 50 s. |
 | Lumenloop and Scout per-call timeout | **none** | Missing cap | `src/adapters/lumenloop.ts`, `scout.ts` | One hung call holds the whole script until the 60 s limit and loses every other result | **Measure** tail latency in telemetry (free). Then add a per-operation budget like the Stellar Docs one. |
 | Stellar Docs attempts / budget | 8 s + 12 s; 24 s | Measured | A/B p99 3,717 ms, with 4 of 1,498 requests over 8 s; an 88 s incident (Mintlify round, item 2) | Fits inside 60 s | **Keep.** |
 | Skill fetch / read / runner | 8 s; 20 s; 30 s | Derived; guess | 4a00ff27 (two attempts × 8 s × 4 files exceeded 60 s); runner f99be10c | Fits inside 60 s | **Keep.** |
@@ -115,6 +115,28 @@ separator, 2,165 for the micro-map). Another server's instructions in the same c
   count. The `execute` line that e3d0cd55 removed (upstream-docs links) is a candidate to restore
   only if a run shows it was missed.
 
+**Other clients.** Each row names its source and its evidence class. Vendor documentation was read on
+2026-11-14 (by the review of this audit); community evidence is labelled and is not vendor-confirmed.
+
+| Client | Server instructions | Source | Evidence class |
+|---|---|---|---|
+| Claude Code v2.1.296 and later | Read and cut at 4,096 characters; a tool loaded up front is cut at 4,096, through tool search at 16,384. | `code.claude.com/docs/en/mcp`; this session's context (v2.1.325) | Vendor docs, plus a direct observation |
+| Claude Code before v2.1.296 | Cut at 2,048 characters. Before v2.1.295 the cut applied to every tool description. | `code.claude.com/docs/en/mcp` ("Before v2.1.296, the shorter limit was 2,048 characters"); outside measurement on 2.1.285, `dev.to/rulestack`, 2026-10-07 | Vendor docs, plus an independent measurement |
+| Codex (CLI, IDE, ChatGPT desktop) | Read as server-wide guidance. Vendor advice: "Keep the first 512 characters self-contained so the most important guidance is available when Codex is deciding how to use the server." No cut is stated. | `developers.openai.com/codex/mcp` | Vendor docs |
+| ChatGPT | Read alongside tool metadata. Vendor advice: "Keep the most important details in the first 512 characters." | `developers.openai.com/plugins/build/mcp-server` | Vendor docs |
+| claude.ai web and Claude Desktop | **Dropped entirely**, not cut. Tool descriptions do arrive: a 1,770-character description came through verbatim, so the tool descriptions are the whole contract there. | Open issue `anthropics/claude-ai-mcp#93`, wire-level canary probe posted 2026-07-29 | Community evidence; not vendor-confirmed |
+| Grok CLI | Unknown. The only Grok limit verified is the 20,000-byte MCP result clip. | Embedded docs, v1.0.77 | Audit verification (result clip only) |
+
+The 512-character advice is a weaker rule than Claude Code's cut. Raven's first 512 characters hold
+the purpose line and the start of the workflow and end mid-word in
+`codemode.skill.read(id, { sectio`, which is acceptable for "deciding how to use the server". Claude
+Code is the only client known to read the micro-map. claude.ai and Desktop see neither BASE nor the
+map. This narrows M3's population.
+
+A four-client measured probe is in progress. Its result will be added as
+`research/audits/2026-11-14-client-text-limits.md`, and its measured limits replace the community
+and vendor-advice rows above where they differ.
+
 **Recommendation.** Recalibrate both test constants to 4,096 and cite the docs page and the
 version. Add one assertion that `SERVER_INSTRUCTIONS.length <= 4096`. Keep BASE first: that costs
 nothing and protects any client still on the old limit. Retire the separate 2,000-character BASE
@@ -126,7 +148,7 @@ take a model call.
 
 **Where.** `scripts/build-micro-map.mjs` fails the build above either limit. `test/micro-map.test.mjs`
 repeats both checks. Generated values: micro-map 542 tokens (2,165 chars), FAMILY_LINE 90 tokens
-(360 chars).
+(359 chars).
 
 **Who and when.** Both numbers start with the P1 guidance spec (ed43c6df, 2026-07-09;
 `research/p1-guidance-spec.md`, since removed). That spec said "800–1,500 tokens" and
@@ -209,7 +231,7 @@ anything reaches the model.
 **Recommendation.**
 
 - Default: **measure** with M1. Do not move it to 6.
-- Maximum for the public tool: **recalibrate to 10**. Every page in the run fits Claude Code, and all
+- Maximum for the public tool: **measure, then recalibrate to 10**. Every page in the run fits Claude Code, and all
   but one fit the Grok clip. Keep 50 for `codemode.search`. Before changing it, read the logged
   `requestedLimit` distribution in Workers observability. That check is free, and its counts stay
   out of the repo.
@@ -266,8 +288,9 @@ Grok CLI clip" (about 18 KB); M2 is the measurement that item needs.
 ### 6. Timeouts and call limits
 
 - **`EXECUTE_TIMEOUT_MS = 60_000`.** From the initial snapshot. The `DynamicWorkerExecutor` default
-  is 30 s. It is the only wall clock around Lumenloop and Scout calls. Keep it. The timeout rate per
-  execute is in telemetry, a free read.
+  is 30 s. It is the only wall clock around Lumenloop and Scout calls. Keep it, after a free telemetry read: the timeout rate per
+  execute and the share of runs above about 50 s. Codex's default `tool_timeout_sec` is 60, so a run near
+  Raven's limit can lose its structured timeout result to the client.
 - **Lumenloop and Scout have no per-call timeout.** `fetch` in both adapters has no `signal`. One
   hung upstream holds a `Promise.all` script until the 60 s limit, and the agent gets a timeout
   instead of the other calls' results. Stellar Docs closed the same gap with a measured 24 s
@@ -301,11 +324,13 @@ subscription CLIs against the local `npm run dev:eval` server.
 
 | Id | Question | Free step first | Smallest paid run | Decide by | Stop rule |
 |---|---|---|---|---|---|
-| M1 | Does a default of 7 recover arm B's live-data loss? | Replay each stored arm B search query from the round archive through the scorer at limits 5 and 7. Count live-data wrong answers where the needed operation appears only at rank 6 or 7. If none, stop: keep 5. | Arm B with default 7 against default 5, interleaved, on the live-data-tagged cases of the 61-case tuning subset, with Sonnet 5.5 and GPT-6.1 Terra | Score difference and client tokens per question | Keep 5 if tokens rise more than 5% with no score gain |
-| M2 | Can the execute boundary drop to 4,000 tokens? | Count, from telemetry or stored results, how often a returned value exceeds 16,000 characters before truncation | `EXECUTE_MODEL_BOUNDARY_MAX_TOKENS=4000` against 6,000 on the 61-case tuning subset, with Sonnet 5.5, GPT-6.1 Terra, and Grok 4.7. Run Grok in the Grok CLI so the 20 KB clip applies. | Score within the round's 0.05 margin; tokens per question; artifact reads per question | Keep 6,000 if score falls by more than 0.03 or artifact reads rise enough to cancel the saving |
-| M3 | Is the micro-map worth 542 tokens per call? | None. Its value only shows in agent behavior. | Claude Code v2.1.296 or later (Sonnet 5.5), instructions with and without the micro-map, on the 61-case tuning subset | Score and source-family misses | Drop the map if the score is within noise |
+| M1 | Does a default of 7 recover arm B's live-data loss? | Replay each stored arm B search query from the round archive through the scorer at limits 5 and 7. Count live-data wrong answers where the needed operation appears only at rank 6 or 7. If none, stop: keep 5. | Arm B with default 7 against default 5, interleaved, only on the cases the free replay flags (the needed operation at rank 6 or 7, answer wrong) plus a few controls, with Sonnet 5.5 and GPT-6.1 Terra | Score difference and client tokens per question | Move to 7 if the flagged cases gain and the computed token rise is at most 5%; otherwise keep 5 |
+| M2 | Can the execute boundary drop to 4,000 tokens? | Re-truncate the stored arm B `execute` results at 16,000 characters and check whether facts cited in the stored answers appear only between 16,000 and 24,000 characters of the raw result. If none do, the paid run only confirms. If many do, 4,000 is unlikely to hold: skip the run. Also count how often a returned value exceeds 16,000 characters. | `EXECUTE_MODEL_BOUNDARY_MAX_TOKENS=4000` against 6,000 on the 61-case tuning subset, with Sonnet 5.5, GPT-6.1 Terra, and Grok 4.7. Run Grok in the Grok CLI so the 20 KB clip applies. | Score within the round's 0.05 margin; tokens per question; artifact reads per question | Keep 6,000 if score falls by more than 0.05 (the margin the 61 cases can resolve) or artifact reads rise enough to cancel the saving. Consider 4,500 tokens too: 18,000 characters plus the 1,600-character source-basis manifest is under the Grok clip of 20,000 bytes. |
+| M3 | Is the micro-map worth 542 tokens per call? | None. Its value only shows in agent behavior. | Claude Code v2.1.296 or later (Sonnet 5.5), instructions with and without the micro-map, on the 61-case tuning subset | Score and source-family misses | Drop the map if the score is within noise. On 61 cases that resolve only 0.05, most outcomes land within noise, so this is a decision by default: the burden of proof is on the map, which the owner may accept under "cost counts". Only Claude Code is known to read the map |
 
-M1 and M2 are independent, and M2 needs no code. M3 is the lowest priority.
+M1 and M2 are independent, and M2 needs no code. M3 is the lowest priority. The token side of M1
+needs no paid run: pages are deterministic, so the +1,899 bytes per page times the rereads in the stored
+arm B transcripts gives the client-token change exactly. Only the score side needs models.
 
 ## Re-verifying the external facts
 
@@ -316,7 +341,10 @@ M1 and M2 are independent, and M2 needs no code. M3 is the lowest priority.
 | Grok CLI MCP result clip: 20,000 bytes, head kept | Verified (v1.0.77 embedded docs) | `strings "$(readlink -f "$(which grok)")" \| grep -A3 "MCP tool-result size cap"` |
 | R2 custom metadata: 8,192 bytes | Verified | developers.cloudflare.com/r2/platform/limits |
 | `@cloudflare/codemode` default boundary: 6,000 tokens | Verified (0.5.1) | `grep MAX_TOKENS node_modules/@cloudflare/codemode/dist/mcp.js` |
-| Codex CLI handling of server instructions and long results | **Not verified** | Codex config reference (`tool_output_token_limit` and instruction handling); not exposed in the 0.167.0 binary strings |
+| Codex and ChatGPT handling of server instructions | Partly verified (vendor docs: read, keep the first 512 characters self-contained; no cut stated) | `developers.openai.com/codex/mcp`, `developers.openai.com/plugins/build/mcp-server`; the measured probe, `2026-11-14-client-text-limits.md`, when it lands |
+| Codex long-result handling (`tool_output_token_limit`) | **Not verified** | Codex config reference; not exposed in the 0.167.0 binary strings |
+| claude.ai web and Claude Desktop: server instructions dropped; tool descriptions arrive | Community evidence only | `anthropics/claude-ai-mcp#93`; the measured probe, when it lands |
+| Claude Code before v2.1.296 cuts instructions at 2,048 | Verified (docs; outside measurement on 2.1.285) | `code.claude.com/docs/en/mcp` |
 
 ## Method
 
@@ -338,7 +366,8 @@ M1 and M2 are independent, and M2 needs no code. M3 is the lowest priority.
 ## Applied
 
 Date: 2026-11-14. The two recommendations that change no model-facing text and no runtime
-behaviour. The audit above was written before these changes and is left as it was. No description,
+behaviour. The audit above was written before items 1 and 2; item 4 folds the review's non-blocking
+findings into it. No description,
 instruction, micro-map, card, limit, or timeout changed. `src/mcp/micro-map.ts` lost two unused
 exports and its text is byte-identical.
 
@@ -366,17 +395,50 @@ exports and its text is byte-identical.
 - Removed both constants, their two build failures, `estimateTokens`, and the two
   `*_TOKEN_ESTIMATE` exports in the generated file. Nothing outside the build script and
   `test/micro-map.test.mjs` read them. The build log now prints character counts.
-- The total guard and the description guard replace them. `test/micro-map.test.mjs` keeps the
+- The total guard replaces the micro-map gate. The pre-v2.1.296 description guard (Applied 3) bounds
+  `FAMILY_LINE`, which sits inside the `search` description. `test/micro-map.test.mjs` keeps the
   staleness check and compares the committed text to a fresh render.
 - Left alone, as the task required: `SEARCH_DEFAULT_LIMIT`, `MAX_SEARCH_LIMIT`, the `execute`
   boundary, card lengths, timeouts.
 
+**3. Review blocking finding B1 applied** ([review](2026-11-14-caps-audit-review.md)). The branch had
+raised the description test to 4,096 and retired the family-line gate, which left the descriptions with
+no bound below 4,096 while BASE kept its old-limit bound. It now protects old-limit clients for all
+three fields:
+
+- `test/helpers/mcp-tool-metadata.ts` exports `CLAUDE_CODE_PRE_V2_1_296_CAP_CHARS = 2_048`, with a
+  comment that it is retired together with `BASE_BUDGET`.
+- `test/mcp-instructions.test.ts` holds `SEARCH_DESCRIPTION` and `EXECUTE_DESCRIPTION` to it, in
+  "tool descriptions — one contract inside the character cap". Growth past it needs a measured reason.
+- `ARCHITECTURE.md` states that each description is also held to the pre-v2.1.296 limit of 2,048.
+- The other route the review named, an owner decision to drop old-client protection everywhere
+  including `BASE_BUDGET`, is not taken.
+
+**4. Review non-blocking findings N1 to N6 folded in**, documentation only, no code:
+
+- N1: the client table in section 1 records Codex and ChatGPT (vendor docs), claude.ai web and Claude
+  Desktop (community evidence), and Claude Code before v2.1.296, each with source and evidence class.
+  The "Re-verifying" table and the TODO item no longer say Codex was never verified. A four-client
+  measured probe is in progress and will be added as `2026-11-14-client-text-limits.md`.
+- N2: Codex's 60-second `tool_timeout_sec` is recorded on the `EXECUTE_TIMEOUT_MS` row and in section 6,
+  with a free read of `execute` wall time above about 50 s ahead of "Keep".
+- N3: `FAMILY_LINE` is 359 characters, not 360.
+- N4: the review's critique of M1 to M3 (it carries no number of its own) is applied to the paid tests
+  table and to the TODO entries: M1 closes with a win rule and runs only on flagged cases; M2 gets a
+  free re-truncation step, one threshold of 0.05, and a 4,500-token option; M3 says plainly that the
+  burden of proof is on the map.
+- N5: the `MAX_SEARCH_LIMIT` recommendation reads "Measure, then recalibrate" and notes that it needs
+  its own review.
+- N6: the total guard's failure shows only two numbers. Pointing its message at
+  `scripts/catalog-data/source-families.mjs` and `src/mcp/tools.ts` changes a test, so it is an open
+  item in `.agents/TODO.md`.
+
 **Open items.** `.agents/TODO.md`, section "Caps audit follow-ups": M1, M2, M3, the free telemetry
 reads (`requestedLimit`, Lumenloop and Scout tail latency, artifact cap hits, `execute` timeout
-rate), and the external client limit re-check. Each has a done-when rule. None is authorized to
+rate), the external client limit re-check, and the total-guard message. Each has a done-when rule. None is authorized to
 spend.
 
-**Gates**, each run bare in this worktree after `npm run typegen` (the first `typecheck` failed
+**Gates** for the first change, each run bare in this worktree after `npm run typegen` (the first `typecheck` failed
 only because the ignored `env.d.ts` was missing, as `AGENTS.md` warns for a fresh clone):
 
 | Command | Exit | Result |
@@ -387,4 +449,15 @@ only because the ignored `env.d.ts` was missing, as `AGENTS.md` warns for a fres
 | `npm run test:smoke` | 0 | 9 files, 141 tests passed |
 | `npm run eval:routing -- --gate` | 0 | GATE PASS, committed evidence verified |
 | CI "generated artifacts in sync" steps, then `git diff --exit-code` over its paths | 0, 0 | no drift |
+| `npm run secrets:scan -- --tree` | 0 | clean |
+
+**Gates after B1 and the review fold-in**, each run bare in this worktree:
+
+| Command | Exit | Result |
+|---|---:|---|
+| `npm run typecheck` | 0 | clean |
+| `npm test` | 0 | 150 files passed, 1 skipped; 3,400 tests passed, 3 expected fail, 1 skipped (one new: the pre-v2.1.296 description guard) |
+| `npm run build` | 0 | dry run completed |
+| `npm run test:smoke` | 0 | 9 files, 141 tests passed |
+| `npm run eval:routing -- --gate` | 0 | GATE PASS, committed evidence verified |
 | `npm run secrets:scan -- --tree` | 0 | clean |
