@@ -83,3 +83,12 @@ arm cannot act.
 `tune/loop-1-arm2` that removes the micro-map from `SERVER_INSTRUCTIONS` through its generator and
 leaves `FAMILY_LINE` in the `search` description. An independent reviewer reads the diff before
 the run is authorized.
+
+**Arm 3 diff review.** ARM-3-REVIEW.md (Claude Opus 5.5): fit to measure. Served instructions
+proven from the assembled Worker (1,899 characters, a strict prefix of 4,066; both tool
+descriptions byte-identical).
+
+**Authorization, arm 3.** One collection of the 50-row panel on `d4919118`, same flags and pins as
+step 0-prime, `--max-budget-usd 12.5`. Before any verdict is read: freeze and hash the arm 2
+exclusion list (rows with an exact row on either side). The trap step adds a transcript read for
+governance and attribution claims. Decision rule as A6, threshold 6 net rows, fixed before the run.
