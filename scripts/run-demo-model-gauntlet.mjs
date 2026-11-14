@@ -35,14 +35,17 @@ import { demoReasoningEffortOverride } from "../src/demo/model-config.ts";
  * span means the invocation was destroyed, which no model behavior can cause.
  *
  * Frontier model per family, so the matrix measures the edge rather than
- * whatever was current when it was written. Every slug below was verified to
+ * whatever was current when it was written. Every slug below except the two
+ * named at the end of this paragraph was verified to
  * ROUTE on 2026-08-06 (run ids 2026-08-06-latest-matrix / -route-probe) — a
  * slug that has not been probed does not belong here, because a wrong one does
- * not look like a typo. Anthropic versions with DASHES (`claude-sonnet-4-6`,
- * not `4.6`); a dotted id authenticates and returns "model … was not found",
- * which reads like a provider outage.
+ * not look like a typo. Anthropic 4.x versions take DASHES (`claude-sonnet-4-6`,
+ * not `4.6`); a dotted 4.x id authenticates and returns "model … was not found",
+ * which reads like a provider outage. The catalog writes 5.x point releases
+ * with a dot (`claude-sonnet-5.5`). `anthropic/claude-sonnet-5.5` and
+ * `xai/grok-4.7` routed in the 2026-11-03 sweep (research/gauntlets/).
  *
- * Every entry is GREEN as of 2026-08-06. Two were unblocked by routing changes,
+ * The 2026-08-06 entries were GREEN on that date. Two were unblocked by routing changes,
  * not by credentials — see src/demo/model-config.ts:
  *   - claude-fable-5 was failing `x-api-key header is required` because
  *     `transport: "gateway"` selects provider PASSTHROUGH, whose Unified Billing
@@ -75,18 +78,17 @@ import { demoReasoningEffortOverride } from "../src/demo/model-config.ts";
  * still fit, so it presents as one model failing every prompt in ~180ms while
  * the rest of the matrix stays green — which looks exactly like a dead model.
  * Seen 2026-08-06: claude-fable-5 0/8 with `Payment Required`, then green again
- * on re-probe once the window slid. A full run of this matrix is 64 turns on
+ * on re-probe once the window slid. A full run of this matrix is 56 turns on
  * frontier models; back-to-back runs will hit it. Check the gateway's spend
  * window before debugging the model.
  */
 export const DEFAULT_MODELS = [
   "openai/gpt-5.6-sol",
   "openai/gpt-6.1-terra",
-  "openai/gpt-5.6-luna",
   "anthropic/claude-fable-5",
   "anthropic/claude-opus-5",
-  "anthropic/claude-sonnet-5",
-  "xai/grok-4.6",
+  "anthropic/claude-sonnet-5.5",
+  "xai/grok-4.7",
   "moonshotai/kimi-k3"
 ];
 
