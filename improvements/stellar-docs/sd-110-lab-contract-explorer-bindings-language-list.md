@@ -1,7 +1,7 @@
 ---
 id: sd-110
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-14
 upstreamTitle: Lab Contract Explorer page lists JSON, Python, and Java as Stellar CLI binding languages
 probe:
@@ -21,6 +21,7 @@ evidence:
   - "2026-11-14: a model answering from Stellar Docs search retrieved this Contract Explorer section and quoted it, attributed to the Lab Contract Explorer, as the CLI's binding language coverage (baseline run 2026-11-14T20-13-51-variantA, q-soroban-cli-bindings)."
   - "Classification: docs-content. The section undertakes to say which languages the CLI binding command covers and names one that does not exist and two that the CLI does not generate."
   - "Affected golden case: eval/qa/corpus/battery/soroban/q-soroban-cli-bindings.json (key fact 3; no golden change). Ledger: .agents/rounds/2026-11-14-baseline-tuning/CASE-DEFECTS.md."
+  - upstream issue filed 2026-11-14: https://github.com/stellar/stellar-docs/issues/3151
 ---
 
 ## Finding

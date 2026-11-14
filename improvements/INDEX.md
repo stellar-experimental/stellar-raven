@@ -57,8 +57,8 @@ Total findings: 86
 | sd-106 | The Tier 1 Organizations page explains the role, the cost, and the path to join. It does not say which organizations are Tier 1 today       | reported-upstream | 2026-11-14 | 1           |
 | sd-107 | Stellar Docs do not state what happens when a contract is built for a newer protocol than the network runs                                  | reported-upstream | 2026-11-14 | 0           |
 | sd-108 | Stellar Docs explain how an application asks a wallet to sign. They do not explain what a person or a wallet must review before approval    | reported-upstream | 2026-11-14 | 0           |
-| sd-109 | The passkeys prerequisites page says that Friendbot cannot fund a contract address. That is not true. The Testnet and Futurenet Friendbots… | verified          | 2026-11-14 | 0           |
-| sd-110 | The Lab Contract Explorer page gives a wrong list of Stellar CLI binding languages. It says the CLI generates bindings in "TypeScript,…     | verified          | 2026-11-14 | 0           |
+| sd-109 | The passkeys prerequisites page says that Friendbot cannot fund a contract address. That is not true. The Testnet and Futurenet Friendbots… | reported-upstream | 2026-11-14 | 0           |
+| sd-110 | The Lab Contract Explorer page gives a wrong list of Stellar CLI binding languages. It says the CLI generates bindings in "TypeScript,…     | reported-upstream | 2026-11-14 | 0           |
 
 ## lumenloop
 
