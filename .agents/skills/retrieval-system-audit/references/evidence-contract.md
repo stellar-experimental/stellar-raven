@@ -28,7 +28,7 @@ Record these items before implementation or spend:
 
 - One causal hypothesis.
 - Two unrelated targets when available.
-- At least six symmetric controls for a product change.
+- Symmetric controls for a product change, sized to the decision.
 - The unchanged baseline arm.
 - The single changed variable.
 - One mechanism metric.
