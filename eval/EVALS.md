@@ -9,6 +9,13 @@ from an all-model superiority study: predeclare its sample, acceptance and stopp
 historical incomplete cohorts separate. The [run-evals skill](../.agents/skills/run-evals/SKILL.md)
 owns this scoping and review workflow; required CI and release gates remain unchanged.
 
+Before a paid run, name the decision, the smallest run that can change it, the stop rule, and the
+expected time and cost. Run development evals here: the local `wrangler dev` server and the
+subscription CLIs (Claude Code, Codex, Grok) driven through `hc`, before any API-billed path.
+Test with Claude Sonnet 5.5, GPT-6.1 Terra, and Grok 4.7; add Claude Opus 5.5 or GPT-6.1 Sol only
+where they can change the decision, and omit Haiku and GPT-6 Luna. The skill holds the model IDs
+and the two API-billed exceptions.
+
 ## Instruments
 
 | Instrument | Measure | Cost and use | Status |
@@ -25,7 +32,7 @@ owns this scoping and review workflow; required CI and release gates remain unch
 | [QA battery](qa/README.md) | Final-answer correctness | Paid; use matched cases before and after substantial changes | Headline; membership comes from the [registry](qa/lifecycle-registry.json) |
 | [Canonical live QA](qa/corpus/live/live-cases.json) | Live-data behavior on 15 cases | Paid; test grounding after executor or adapter changes | Separate diagnostic: `live-data-canonical-v3` |
 | [Digest QA](qa/corpus/live/live-digest-supplement-cases.json) | Recency-digest grounding on two cases | Paid; test digest or skill-run questions | Separate diagnostic: `live-digest-supplement-v2` |
-| [Playground](playground/README.md) | The public `/playground/chat` model and tool loop | Paid; uses selected QA cases | Diagnostic; keep its denominator separate from MCP QA |
+| [Playground](playground/README.md) | The public `/playground/chat` model and tool loop | Paid and API-billed through AI Gateway; uses selected QA cases | Diagnostic; keep its denominator separate from MCP QA |
 | [Plan](plan/README.md) | Service coverage and broad-to-detail call order | Offline; grades stored QA transcripts | Diagnostic; progression is informational |
 | [Temporal](temporal/README.md) | Answer behavior for temporal questions | Offline; grades stored results | Diagnostic |
 | [Partner docs](partner-docs/README.md) | Required facts in partner documentation | Live source checks; see the instrument guide | Diagnostic |
