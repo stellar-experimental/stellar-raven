@@ -3,7 +3,7 @@
   "schema": "qa-lifecycle-registry-v1",
   "digestSchema": "canonical-json-sha256-v1",
   "counts": {
-    "proposed": 0,
+    "proposed": 1,
     "active": 251,
     "quarantined": 0,
     "retired": 292
@@ -65,6 +65,7 @@
     "q-comp-sep6-vs-sep12-roles",
     "q-comp-sep8-number-lookup-no-deepresearch",
     "q-comp-sep8-regulated-assets-approval-server",
+    "q-comp-xlm-us-classification",
     "q-comp-yieldblox-oracle-incident",
     "q-consumer-apps-spend-save-send",
     "q-crp-anchors-by-corridor",
@@ -1039,6 +1040,13 @@
       "state": "active",
       "reviewState": "none",
       "caseContentSha256": "87cdabdf46c9ea12477372a9d5be506ee271e304e6a9113de3153dc125e8470f"
+    },
+    {
+      "id": "q-comp-xlm-us-classification",
+      "path": "eval/qa/corpus/proposed/compliance-rwa-payments/q-comp-xlm-us-classification.json",
+      "state": "proposed",
+      "reviewState": "none",
+      "caseContentSha256": "12076b00bba4c3a9da5892670e8753ce90552777326527026f4991a38c2fe904"
     },
     {
       "id": "q-comp-yieldblox-oracle-incident",
