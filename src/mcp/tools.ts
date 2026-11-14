@@ -106,7 +106,7 @@ export const executeInputSchema = {
     )
 };
 
-// Each model-facing field below is one complete contract inside the 2,048
+// Each model-facing field below is one complete contract inside the 4,096
 // characters that Claude Code keeps of a tool description or of server
 // instructions; test/mcp-instructions.test.ts holds the cap. The descriptions
 // state what a script must know before it runs. What a script can get wrong
@@ -116,8 +116,8 @@ export const executeInputSchema = {
 // The Playground uses the same exported tool contract.
 //
 // One official upstream documentation URL per source family rides last on the
-// `search` description, as reference metadata. The `execute` description has
-// no room for it inside the cap.
+// `search` description, as reference metadata. The `execute` description does
+// not carry it.
 export const UPSTREAM_DOC_LINKS = `Upstream docs: Lumenloop https://api.lumenloop.com/v1/docs; Scout https://stellarlight.xyz/api/openapi.json; Stellar Docs https://developers.stellar.org/docs.`;
 
 export const SEARCH_DESCRIPTION = `Ranked search over every exposed service operation (lumenloop.*, scout.*, stellarDocs.*) and whole skill. Hits are cards to compose in \`execute\`; they are not evidence.
@@ -162,7 +162,7 @@ Helpers:
  * MCP initialize-time instructions (SDK ServerOptions.instructions). Clients
  * that inject them put them in the system prompt, where they outlive per-tool
  * descriptions over a long session. BASE is the workflow and evidence contract
- * and fits the 2,048-character cap; it names the envelope without restating
+ * and fits the pre-v2.1.296 2,048-character limit; it names the envelope without restating
  * the payload-access rule, which the execute description owns. The micro-map
  * rides after BASE for clients that inject instructions in full.
  */

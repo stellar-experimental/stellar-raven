@@ -190,7 +190,7 @@ describe("tool registration", () => {
     expect(execute?.annotations).not.toHaveProperty("idempotentHint");
     expect(execute).not.toHaveProperty("outputSchema");
 
-    // The whole contract reaches a client that keeps 2,048 characters;
+    // The whole contract reaches a client that keeps 4,096 characters;
     // test/mcp-instructions.test.ts holds what it must say.
     expect(execute!.description!.length).toBeLessThanOrEqual(CLAUDE_CODE_TOOL_DESCRIPTION_CAP_CHARS);
   });
