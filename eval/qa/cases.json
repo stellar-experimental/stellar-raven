@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "28d1acdd13ab112afca014b4abc03edad712e7070eafe3790341e4bc997a8309",
+  "corpusContentSha256": "bdeab2512044ee72c0166525c30509a5880f5310e023a77df9d205d6cb2bb3ea",
   "counts": {
     "total": 245,
     "byCategory": {
@@ -2956,18 +2956,17 @@
         "stellarDocs.search_asset_token_docs"
       ],
       "golden": {
-        "answer": "Circle issues both USDC and EURC on Stellar, as native classic assets (not wrapped, not XLM). The Mainnet USDC issuer is GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN; GBBD…FLA5 is Testnet. EURC launched on Stellar on September 26, 2023. Circle’s licensed EURC issuer is Circle Internet Financial Europe SAS.",
+        "answer": "Circle issues both USDC and EURC on Stellar, as native classic assets (not wrapped, not XLM). The Mainnet USDC issuer is GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN; GBBD…FLA5 is Testnet. EURC launched on Stellar on September 26, 2023. EURC’s legal issuer is Circle Internet Financial Europe SAS.",
         "keyFacts": [
           "Circle issues USDC and EURC on Stellar as native classic assets, not wrapped.",
           "Mainnet USDC issuer is GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN.",
-          "EURC launched on Stellar on September 26, 2023.",
-          "EURC’s EU legal issuer is Circle Internet Financial Europe SAS."
+          "EURC launched on Stellar on September 26, 2023."
         ],
         "avoid": [
           "Do NOT present the Testnet issuer GBBD…FLA5 as Mainnet, or call Circle Mint Europe the current legal issuer.",
           "Do NOT attribute USDC or EURC issuance to Tether, Paxos or SDF."
         ],
-        "notes": "MyKobo issues a separate asset with code EURC under its own issuer; naming it as a distinct asset is correct, attributing Circle’s EURC to MyKobo is wrong."
+        "notes": "Naming Circle suffices; the EURC legal entity is optional context. EURC’s legal issuer is Circle Internet Financial Europe SAS; Circle Internet Financial, LLC is an affiliate reseller and the organization in Circle’s stellar.toml, which Scout repeats as issuer of record. An answer that names the LLC from that source does not fail on that point alone. MyKobo issues a separate asset with code EURC under its own issuer; naming it as a distinct asset is correct, attributing Circle’s EURC to MyKobo is wrong."
       },
       "tags": {
         "category": "retail-consumer",
@@ -3138,19 +3137,47 @@
                 "note": "EURC Launches on the Stellar Network September 26, 2023"
               }
             ]
+          },
+          {
+            "claim": "EURC is issued by Circle Internet Financial Europe SAS; Circle Internet Financial, LLC, the ORG_NAME in Circle’s stellar.toml, is an affiliate that resells EURC.",
+            "verdict": "confirmed",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://www.circle.com/legal/eurc-terms",
+                "observedAt": "2026-11-14",
+                "note": "Section 1: \"EURC is a digital token issued by Circle Internet Financial Europe SAS\"; \"Circle Internet Financial, LLC (“Circle”) is an affiliate of Circle Europe and acts as a reseller of EURC\"."
+              },
+              {
+                "class": "A",
+                "ref": "https://www.circle.com/eurc",
+                "observedAt": "2026-11-14",
+                "note": "\"EURC is issued by Circle Internet Financial Europe SAS, an electronic money institution authorized by the ACPR in France\"."
+              },
+              {
+                "class": "C",
+                "ref": "scout.getStablecoins({peg: \"EUR\"})",
+                "observedAt": "2026-11-14",
+                "note": "EURC issuerOfRecord \"Circle Internet Financial, LLC\", source https://circle.com/.well-known/stellar.toml: the toml organization, not the legal issuer (improvements/stellar-light-scout/sls-119-eurc-issuer-of-record-names-reseller.md)."
+              },
+              {
+                "class": "F",
+                "ref": "https://www.circle.com/.well-known/stellar.toml",
+                "observedAt": "2026-11-14",
+                "note": "ORG_NAME=\"Circle Internet Financial, LLC\"; the EURC entry has no issuing-entity field."
+              }
+            ]
           }
         ],
         "verified": {
           "date": "2026-11-14",
-          "by": "Golden coverage audit 2026-11-14 (audit-hist-retail, verify-hist-retail; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+          "by": "scope-apply lane (Claude Opus 5.5, high), golden coverage audit 2026-11-14; applies owner-approved decisions/SCOPE.md A6",
           "evidence": [
-            "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-asset-usdc-eurc-issuer",
-            "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-asset-usdc-eurc-issuer",
-            "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-asset-usdc-eurc-issuer",
-            "Live A 2026-11-14: https://www.circle.com/.well-known/stellar.toml -- 'code=\"USDC\" issuer=\"GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN\"'",
-            "Live A 2026-11-14: https://www.circle.com/.well-known/stellar.toml -- 'code=\"EURC\" issuer=\"GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2\"'",
-            "Live A 2026-11-14: https://www.circle.com/pressroom/eurc-launches-on-the-stellar-network -- 'EURC Launches on the Stellar Network September 26, 2023'",
-            "Live A 2026-11-14: https://www.circle.com/eurc -- 'Not re-read this pass; corrected 2026-07-09 and confirmed 2026-11-02.'"
+            "Owner decision 2026-11-14: .agents/rounds/2026-11-14-golden-coverage-audit/decisions/SCOPE.md A6 (non-Stellar key facts move to optional context); applied in decisions/APPLY.md.",
+            "Moved the EU legal-issuer key fact to golden.notes: the question asks who issues, not which legal entity. circle.com settles the entity as Circle Internet Financial Europe SAS, so the notes tolerate a sourced LLC answer instead of accepting it as correct (deviation recorded in APPLY.md).",
+            "Live A 2026-11-14: https://www.circle.com/legal/eurc-terms -- \"EURC is a digital token issued by Circle Internet Financial Europe SAS\".",
+            "Scout defect filed as a verified finding: improvements/stellar-light-scout/sls-119-eurc-issuer-of-record-names-reseller.md",
+            "Sibling sweep 2026-11-14: q-eco-stellar-rwa-stablecoin-volume and q-eco-pyusd-stellar-freshness make no EURC legal-entity claim."
           ],
           "rootCause": [
             ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
@@ -6593,7 +6620,6 @@
       "golden": {
         "answer": "ERC-8004 ('Trustless Agents') is an Ethereum ERC, still a Draft as of 2026-11-14, for agent identity, reputation and validation; payments are out of scope and compose with x402. Stellar has no ratified agent-identity SEP. Community Soroban implementations (trionlabs/stellar-8004, progax01/stellar8004) are deployed but unratified, so describe them as early community work.",
         "keyFacts": [
-          "ERC-8004 is an Ethereum Draft for agent identity, reputation and validation.",
           "Stellar has no ratified SEP for agent identity (as of a stated date).",
           "Community Soroban implementations exist, such as trionlabs/stellar-8004."
         ],
@@ -6601,7 +6627,7 @@
           "Do NOT call ERC-8004, SRC-8004 or SEP-8004 a ratified Stellar standard.",
           "Do NOT claim no Stellar implementation exists."
         ],
-        "notes": "Do not require the Ethereum mainnet deployment date. Do not infer audit, adoption or reliability from deployment."
+        "notes": "Stating that ERC-8004 is an Ethereum Draft for agent identity, reputation and validation is accepted context, not required. Do not require the Ethereum mainnet deployment date. Do not infer audit, adoption or reliability from deployment."
       },
       "tags": {
         "category": "defi-ecosystem",
@@ -6768,12 +6794,11 @@
         ],
         "verified": {
           "date": "2026-11-14",
-          "by": "Golden coverage audit closeout 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+          "by": "scope-apply lane (Claude Opus 5.5, high), golden coverage audit 2026-11-14; applies owner-approved decisions/SCOPE.md A6",
           "evidence": [
-            "Removed the key fact that ERC-8004 leaves payments to x402: the question asks what exists on Stellar and how mature it is, not ERC-8004's payment scope. The answer keeps it as context.",
-            "Key fact 1 kept: the external Draft standard is one side of the case's three-way distinction (truth.notes, GT-12).",
-            "Live A 2026-11-14: https://eips.ethereum.org/EIPS/eip-8004 -- status badge 'Draft' ('This EIP is not yet recommended for general use or implementation').",
-            "Trigger only (not evidence): .agents/rounds/2026-11-14-golden-coverage-audit/qa/RESULT.md, 'Cases to fix'"
+            "Owner decision 2026-11-14: .agents/rounds/2026-11-14-golden-coverage-audit/decisions/SCOPE.md A6 (non-Stellar key facts move to optional context); applied in decisions/APPLY.md.",
+            "Moved the key fact that ERC-8004 is an Ethereum Draft to golden.notes as accepted context; the answer and the avoid item that bars calling it a ratified Stellar standard are unchanged.",
+            "Live B 2026-11-14 (unchanged from the prior event): https://github.com/ethereum/ERCs/blob/master/ERCS/erc-8004.md -- status: Draft."
           ],
           "rootCause": [
             ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
@@ -6791,18 +6816,17 @@
         "skills.stellar-dev.agentic-payments"
       ],
       "golden": {
-        "answer": "None of x402, MPP, AP2 or ACP is a Stellar standard. x402 and MPP are general payment protocols; Stellar supplies methods that settle SEP-41 token transfers through Soroban authorization. MPP covers one-time charge plus session and channel payments. AP2 is an emerging mandate-based authorization protocol that can use x402 but does not require it. ACP is a checkout protocol that delegates payment to PSPs.",
+        "answer": "None of x402, MPP, AP2 or ACP is a Stellar standard. x402 and MPP are general payment protocols; Stellar docs define methods for them that settle SEP-41 token transfers through Soroban authorization, and none for AP2 or ACP. MPP covers one-time charge plus session and channel payments. AP2 is an emerging mandate-based authorization protocol that can use x402 but does not require it. ACP is a checkout protocol that delegates payment to PSPs.",
         "keyFacts": [
           "x402 and MPP are general protocols; Stellar methods settle SEP-41 tokens.",
           "MPP covers one-time charge plus session and channel payments, not only streaming.",
-          "AP2 is an emerging authorization protocol; x402 is optional there.",
-          "ACP is a checkout protocol that delegates payment; it is not a settlement rail."
+          "Stellar docs define payment methods for x402 and MPP only, not for AP2 or ACP."
         ],
         "avoid": [
           "Do NOT call x402 or MPP a Stellar-native standard.",
           "Do NOT describe ACP as a blockchain settlement rail or MPP as a Stripe/Tempo chain."
         ],
-        "notes": "The exposed Stellar agentic-payments skill covers x402 and MPP only; accept source-faithful limits on AP2 and ACP."
+        "notes": "AP2 and ACP descriptions are optional context, but a false one is wrong. The exposed Stellar agentic-payments skill covers x402 and MPP only; accept source-faithful limits on AP2 and ACP."
       },
       "tags": {
         "category": "defi-ecosystem",
@@ -6816,7 +6840,7 @@
         },
         "domain": "real-world",
         "status": "confirmed",
-        "asOf": "2026-11-02",
+        "asOf": "2026-11-14",
         "sources": [
           {
             "class": "A",
@@ -6962,19 +6986,47 @@
                 "note": "Building the Trust Layer for Agentic Payments with AP2 and Verifiable Intent (May 26, 2026)"
               }
             ]
+          },
+          {
+            "claim": "As of 2026-11-14, Stellar docs define payment methods for x402 and MPP and none for AP2 or ACP.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/build/agentic-payments.md",
+                "observedAt": "2026-11-14",
+                "note": "Index lists two methods: x402 on Stellar and MPP on Stellar; the page has no AP2 or ACP mention."
+              },
+              {
+                "class": "B",
+                "ref": "gh search code AP2 / \"Agent Payments Protocol\" / \"Agentic Commerce Protocol\" / ACP --repo stellar/stellar-docs; gh api repos/stellar/stellar-docs/contents/docs/build/agentic-payments",
+                "observedAt": "2026-11-14",
+                "note": "Directory holds index.mdx, mpp, x402. Code hits are only hash or base64 substrings in Horizon and RPC examples and pnpm-lock.yaml."
+              },
+              {
+                "class": "E",
+                "ref": "stellarDocs.search_docs({query: \"AP2 Agent Payments Protocol\"}) and ({query: \"ACP Agentic Commerce Protocol checkout\"})",
+                "observedAt": "2026-11-14",
+                "note": "Both return only agentic-payments, x402 and MPP pages; no AP2 or ACP page."
+              },
+              {
+                "class": "D",
+                "ref": "parallel-cli search: Stellar AP2 agent payments protocol; Stellar ACP agentic commerce protocol",
+                "observedAt": "2026-11-14",
+                "note": "Results: Stellar x402 and MPP pages, Stripe ACP docs, ap2-protocol.org spec; no Stellar AP2 or ACP method."
+              }
+            ]
           }
         ],
         "verified": {
           "date": "2026-11-14",
-          "by": "Golden coverage audit 2026-11-14 (audit-defi, verify-defi; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+          "by": "scope-apply lane (Claude Opus 5.5, high), golden coverage audit 2026-11-14; applies owner-approved decisions/SCOPE.md A6",
           "evidence": [
-            "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-defi-agentic-payment-standards-compare",
-            "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-defi-agentic-payment-standards-compare",
-            "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-defi-agentic-payment-standards-compare",
-            "Live A 2026-11-14: https://developers.stellar.org/docs/build/agentic-payments/mpp -- 'Use the Machine Payments Protocol (MPP) for per-request HTTP payments on Stellar, with ... off-chain payment channels.'",
-            "Live D 2026-11-14: https://mpp.dev/payment-methods/stellar/charge -- 'The Stellar implementation of the charge intent. The client signs a SEP-41 transfer invocation'",
-            "Live D 2026-11-14: https://fidoalliance.org/building-the-trust-layer-for-agentic-payments-with-ap2-and-verifiable-intent -- 'Building the Trust Layer for Agentic Payments with AP2 and Verifiable Intent (May 26, 2026)'",
-            "Live A 2026-11-14: https://docs.stripe.com/agentic-commerce/protocols/acp -- 'an open standard created by Stripe, OpenAI, and Meta that defines how AI agents interact with businesses to complete purchases'"
+            "Owner decision 2026-11-14: .agents/rounds/2026-11-14-golden-coverage-audit/decisions/SCOPE.md A6 (non-Stellar key facts move to optional context); applied in decisions/APPLY.md.",
+            "Replaced the AP2 and ACP key facts with one Stellar-side negative fact; the AP2 and ACP descriptions stay in the answer as optional context.",
+            "Live A 2026-11-14: https://developers.stellar.org/docs/build/agentic-payments.md -- \"Build payment-enabled APIs and AI agents on Stellar using HTTP-native payment protocols like x402 and MPP.\"",
+            "Negative claim: truth.corroboration row dated 2026-11-14 (A, B, E, D).",
+            "Sibling sweep 2026-11-14: q-defi-agent-identity-stellar-experimental and the ai.x402 cases make no AP2 or ACP claim that this contradicts."
           ],
           "rootCause": [
             ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
@@ -13615,13 +13667,12 @@
       "golden": {
         "answer": "I can't give a reliable current Solana-versus-Aptos recommendation from this Stellar-focused service. Compare current primary evidence for execution model, finality, fees, tooling, liquidity, security record, validator structure, and your protocol requirements. I can answer a separate Stellar/Soroban question if useful, but I won't insert Stellar as the answer unless asked.",
         "keyFacts": [
-          "Avoids an unsupported Solana-versus-Aptos verdict.",
-          "Supplies a practical current-evidence comparison framework."
+          "Avoids an unsupported Solana-versus-Aptos verdict."
         ],
         "avoid": [
-          "Do NOT give a confident Solana/Aptos verdict, inject Stellar as a third-option resolution, or provide only refusal boilerplate."
+          "Do NOT give a confident Solana/Aptos verdict or inject Stellar as a third-option resolution."
         ],
-        "notes": "GT-26 2026-07-10: require honest source-coverage limits plus a useful current-primary-evidence comparison framework. No unsupported verdict and no forced Stellar third option.\nGT-26 OOS REWRITE 2026-07-10: scope honesty plus decision support replaces refusal-only grading."
+        "notes": "A current-evidence comparison framework is welcome, not required; do not penalize a brief, scope-honest reply."
       },
       "tags": {
         "category": "edge-behavior",
@@ -13670,22 +13721,19 @@
           }
         ],
         "verified": {
-          "date": "2026-08-29",
-          "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
+          "date": "2026-11-14",
+          "by": "scope-apply lane (Claude Opus 5.5, high), golden coverage audit 2026-11-14; applies owner-approved decisions/SCOPE.md A6",
           "evidence": [
-            "Solo scratchpad 575 GT-26 primary 3269 and blind 3271.",
-            "Live re-check (class A, 2026-08-29): https://solana.com/docs/core/fees/fee-structure documents Solana-specific fees and transaction priorities.",
-            "Live re-check (class A, 2026-08-29): https://aptos.dev/build/guides/application-integration documents Aptos-specific finality, SDK, transaction, and account behavior.",
-            "Live re-check (class B, 2026-08-29): README.md limits the current repository scope to Stellar ecosystem services and skills.",
-            "Sibling sweep (2026-08-29): Solana, Aptos, unsupported-verdict, and comparison-framework cases showed no contradiction."
+            "Owner decision 2026-11-14: .agents/rounds/2026-11-14-golden-coverage-audit/decisions/SCOPE.md A6 (non-Stellar key facts move to optional context); applied in decisions/APPLY.md.",
+            "Made the comparison-framework key fact welcome, not required, and dropped \"or provide only refusal boilerplate\" from the avoid item. This reverses the 2026-07-10 GT-26 choice by the owner’s decision; no fact about either chain is asserted."
           ],
           "rootCause": [
-            "Strict none-route scoring optimized tool non-use rather than end-answer usefulness.",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+            ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
           ]
         },
         "origin": "raven-next q-edge-oos-solana-vs-aptos",
-        "leaf": "behavior.out-of-scope"
+        "leaf": "behavior.out-of-scope",
+        "notes": "GT-26 2026-07-10 required honest source-coverage limits plus a current-primary-evidence comparison framework, replacing refusal-only grading. The 2026-11-14 owner decision (decisions/SCOPE.md A6) made the framework welcome, not required, and dropped the refusal-boilerplate avoid clause."
       }
     },
     {
