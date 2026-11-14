@@ -499,6 +499,17 @@ leaves release data upstream and the finding is filed.
 
 ## Eval instruments
 
+### Add a runner for Codex and Grok as QA answering clients
+
+`eval/qa/run-qa.mjs` drives only the Claude CLI. No committed runner drives Codex or Grok as a
+QA answering client; the `run-evals` skill tells agents to run them as `hc` lanes against the
+loopback MCP server. Two of the three default eval clients (GPT-6.1 Terra and Grok 4.7)
+therefore have no repeatable harness.
+
+Done when: a committed runner drives the Codex and Grok CLIs as answering clients against the
+local server and writes results the judge can grade, or a recorded decision keeps the hand-run
+lanes.
+
 ### Review a fresh finalization comparison and capability canary
 
 The [candidate](../research/audits/2026-11-03-qa-followup/finalization-candidate.md) has no
