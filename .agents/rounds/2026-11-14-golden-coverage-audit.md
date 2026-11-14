@@ -139,5 +139,67 @@ Orchestrator: Claude Fable 5.2 on the Mac, terminal `t40f`. Briefs are in
    agentpc; the owner approved subscription spend on 2026-11-14.
 4. **Review coverage.** Every `wrong` and `partial` row against transcript and golden, and every
    fifth `correct` row.
+- 13:30 to 15:10 UTC. `qa-run` (Sonnet) ran the planned battery test at `aaaf107f`: stamp
+  `2026-11-14T06-06-31-variantA`, 70 of 70 jobs, answering `claude-sonnet-5-5`, judge
+  `claude-sonnet-5`, rubric `v2.11`, pack `p9`, USD 15.43 against the USD 40 cap, 57 minutes.
+  Verdicts: 24 correct, 40 partial, 6 wrong; the core answer was correct on 65 of 70. The lane
+  reviewed all 46 failures and 4 of 24 passes (`qa/RESULT.md`): 21 agent failures, 8 case defects,
+  6 upstream data gaps, 2 upstream semantics gaps, 6 coverage diagnostics, 3 judge artifacts. The
+  20 other passes are unreviewed. This was a test of the battery; it is not a baseline.
+- 14:00 UTC. `findings` (Fable) wrote the gap ledger (`gaps/GAPS.md`) and filed six `verified`
+  findings locally: `sd-105` to `sd-108`, `sls-117`, `sls-118`. Nothing was posted upstream.
+- 15:10 to 16:30 UTC. `instrument` fixed 10 of the 12 cases the test flagged (each for a defect
+  independent of the verdict; the two judge-artifact rows were left unchanged), applied the delta
+  review, added recurrences to `sls-118` and `sd-106`, and drew the new split
+  (`apply/CLOSEOUT.md`). `review` passed the final delta as fit to merge with three low items,
+  fixed in `391ffd69`.
 
 ## Outcome
+
+Closed 2026-11-14. Branch `audit/golden-coverage`.
+
+| | Before (`origin/main` `a84ac87b`) | After |
+|---|---|---|
+| Headline cases | 501 | 246 |
+| Tool-contract lane | none | 6 cases, `eval/qa/tool-cases.json`, own denominator |
+| Retired with a tombstone | 0 | 291 (200 retired, 91 merged into a survivor) |
+| Coverage map | 10 categories with size floors | `eval/qa/taxonomy.json`: 14 domains, 167 leaves; 164 covered, 3 waived |
+| Judge-facing words | 146,959 (293 per case) | 39,412 (160 per case) |
+| Key facts | 1,869 | 872 |
+| New cases | | 36, each re-derived blind by a second model |
+| Upstream findings | | 6 filed locally, 2 recurrences |
+
+| lane | verdict | evidence | remaining risk |
+|---|---|---|---|
+| Surface map | Done | `map/taxonomy.json`; two independent maps, one reconciler | The map is a judgment. Weights and targets move as the ecosystem does; the mass-review cadence owns that. |
+| Case audit | Done | `audit/`, `verify/`: 507 records, 502 verified (401 accepted, 100 amended, 1 rejected) | Rewrites compress prose, so a nuance can be lost. The reviewer found five lost facts in three passes; all are restored. |
+| Coverage cuts | Done | `coverage/coverage.json`, `coverage/verify-coverage.json`: 94 extra cuts, 92 accepted, 2 turned into merges | Retirement is permanent. Every tombstone keeps the last digest, so a case can be re-authored under a new id. |
+| New cases | Done | `gap/verify-gap.json`: 29 accepted, 7 amended, 0 rejected | 39.8% of cases are `scheduled`; the stale gate and sentinels carry that load now that the 35% cap is gone. |
+| Instrument | Done | `apply/RUN.md`, `apply/FINAL.md`, `apply/CLOSEOUT.md`: every gate exit 0 at each step | The battery no longer measures operation reach, skill reach, or four envelope traps (`review/REVIEW.md`, M2). Routing gates, skills cases, unit tests, the live lanes, and the tool lane own those. |
+| Independent review | Fit to merge | `review/REVIEW.md`: three passes by Claude Sonnet 5.5, high | The reviewer and every author are Claude models, by the owner's choice of Fable, Opus, and Sonnet. No Codex or Grok lane attacked the assumptions. |
+| Battery test | Done; not a baseline | `qa/RESULT.md`, stamp `2026-11-14T06-06-31-variantA` (local, ignored, on the Linux machine) | 20 `correct` rows are unreviewed. Half of the partials are agent failures on compact key facts; whether single-predicate key facts grade more strictly than the old prose is not measured. |
+| Gap ledger | Done | `gaps/GAPS.md`; `improvements/` `sd-105` to `sd-108`, `sls-117`, `sls-118` | Mapper-only observations (`single`) were not filed. |
+
+Every earlier QA baseline is void for comparison: the cases, the key facts, and the denominator
+changed. The first-principles split is void too. The new split was drawn by the rule in
+`eval/qa/README.md`: sha256 `f683852e…f9890efa`, 79 tuning, 119 held-out, 48 reserve, kept
+outside the repository.
+
+### Owner decisions waiting
+
+1. Post the six findings upstream as issues.
+2. Whether `stellar.org` pages outside Docs belong in a Raven source (three leaves miss for that
+   one reason).
+3. Whether topics outside Raven's sources stay in the battery: chain comparisons (now graded on
+   Stellar-side facts only), Pi Network, and regulation.
+4. Whether custody deserves its own leaf (`review/REVIEW.md`, L5).
+5. Whether any of the four envelope traps without a case needs a tool-lane case or a unit test.
+6. A first full baseline on the 246 cases. It needs its own `run-evals` plan; the test here cost
+   USD 0.22 per case.
+
+### Retained evidence
+
+The round folder holds the briefs, maps, audit and verification records, coverage matrix,
+overrides, apply script, review, QA review, and gap ledger. Consumers: the 291 tombstones and the
+`truth.verified` events cite these paths. Results JSON and the split file stay on the Linux
+machine (`/home/tyler/code/raven-wt/gca-eval/eval/qa/results/`, `~/backups/gca-2026-11-14-split.json`).
