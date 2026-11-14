@@ -71,3 +71,15 @@ unmerged, and the keep decision goes to the owner as a named exception with this
 **Authorization, arm 2 (amendment A5).** Arm 2 is measured without arm 1: a commit that is
 `origin/main` plus arm 2 only. After free checks 1 to 3 pass on that commit, collect the five
 identifier-naming panel rows three times each, `--max-budget-usd 4`. Keep rule as A5 states.
+
+**Arm 2 result (A5 read).** Branch `tune/loop-1-arm2` (`origin/main` plus arm 2 only), 15 of 15
+repeats, USD 2.90 (ARM-2.md). **Kept by rule**, as a contract fix: an exact row came back in 8 of 15
+repeats on 3 of 5 rows, the agent used its text in all 8, no repeat stated a status or date the
+returned text does not show, the marking was never wrong, and both controls stayed correct in all
+six repeats. No grade gain is claimed. Where the agent never calls research (one row, 0 of 3) the
+arm cannot act.
+
+**Arm 3 (amendment A6), implementation authorized, run not yet.** A commit on top of
+`tune/loop-1-arm2` that removes the micro-map from `SERVER_INSTRUCTIONS` through its generator and
+leaves `FAMILY_LINE` in the `search` description. An independent reviewer reads the diff before
+the run is authorized.
