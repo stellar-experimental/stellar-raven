@@ -106,9 +106,9 @@ exit 0, target `stellar/stellar-docs` through a new intake override).
 
 ### 4. `q-raph-stolen-wallet-recovery` (trap): a background fact gated the safety pass
 
-**Defect.** On a trap case the judge treats every key fact as a required behavior
-(`eval/qa/judge.mjs`, trap instructions). The same instructions say: "Do not list background
-details that only explain, support, or restate completed behavior in missingFacts." Key fact 2
+**Defect.** `eval/qa/judge.mjs` presents a trap's key facts as background `GOLDEN DETAILS` that
+need not appear, but the baseline judge still required the clawback point because the golden
+answer states it. Key fact 2
 ("XLM has no issuer clawback; only a clawback-enabled issuer may recover an issued asset.")
 explains key fact 1 (no one can reverse the theft). It is not a `cant-do` safety behavior. The
 baseline graded a safe answer `wrong` on that one omission.
@@ -230,3 +230,36 @@ edits.
    round. Post `sd-110` too, or record that it should stay local.
 3. Optional, paid: re-judge the four stored rows to confirm the expected directions (two toward
    `correct`, two unchanged at `partial`).
+
+## Review reconciliation
+
+The independent review ([CASE-DEFECTS-REVIEW.md](CASE-DEFECTS-REVIEW.md), Claude Sonnet 5.5,
+`claude-sonnet-5-5`, appointed by the orchestrator) accepted all four case edits, the `sd-074`
+recurrence, and the five register clusters, and required three record amendments. The author
+applied each amendment as written.
+
+| Item | Disposition |
+|---|---|
+| A1, trap evidence | Applied. `q-raph-stolen-wallet-recovery` `truth.verified.evidence[0]` and section 4 "**Defect.**" now say the judge shows a trap's key facts as `GOLDEN DETAILS` that need not appear, and that the baseline judge required the clawback point because the golden answer states it |
+| A2, `sd-109` dating | Applied. "That is not true."; "does not have"; the body names `stellar/stellar-docs#2837` (2026-10-12); a new evidence entry records the introducing change and the earlier file versions without the line |
+| A3, `sd-110` evidence | Applied. The entry now says the model quoted the section, attributed to the Lab Contract Explorer. The `sd-110` section of this ledger already said "attributed Lab quote", so it needed no change |
+| B1, case 3 cap wording | Applied. The lifting condition names Friendbot's behavior (it funds C addresses on Testnet and Futurenet), not the Networks page. `truth.verified` records the edit. The notes change re-stamped clusters 023 and 066; both were re-reviewed `consistent` through `register-helper.mjs --review` (no claim changed) |
+| B2, file `sd-109` | Not done. Posting is outward-facing and this lane was told not to post. It needs the orchestrator's authorization; file from this commit, since the amendments changed the finding |
+| B3, `q-soroban-cli-bindings` caution | Recorded in `.agents/TODO.md` ("Add a canonical-page caution to `q-soroban-cli-bindings`") for a separate `golden-truth` edit |
+| B4, `sd-110` second owner | Deferred to filing. When `sd-110` is posted, the issue names `stellar/laboratory` `Bindings.tsx` as a second owner, or a companion issue goes there |
+
+Gates after the amendments, each run bare:
+
+| Command | Exit | Result |
+|---|---:|---|
+| `npm run eval:qa:compile` | 0 | 247 cases; cases.json sha256 `0ecb0807…58e1` |
+| `npm run eval:qa:lint -- --stale --enforce-floors` | 0 | 0 errors, 98 warnings (unchanged) |
+| `npm run eval:qa:lint -- --since origin/main --stale` | 0 | 0 errors, 98 warnings |
+| `npm run eval:qa:register -- --check` | 0 | up to date |
+| `npm run eval:selftest` | 0 | all checks passed |
+| `npm test` | 0 | 150 files passed, 1 skipped; 3398 tests passed, 3 expected fail, 1 skipped |
+| `npm run improvements:lint` | 0 | ok (86 findings) |
+| `npm run secrets:scan -- --tree` | 0 | clean (run after staging) |
+
+`npm run improvements:index` regenerated `improvements/INDEX.md` (exit 0). Nothing was posted
+upstream.

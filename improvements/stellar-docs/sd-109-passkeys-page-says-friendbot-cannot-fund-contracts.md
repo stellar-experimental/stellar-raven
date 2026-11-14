@@ -19,14 +19,15 @@ evidence:
   - "2026-11-14T20:26:23Z live test. GET https://friendbot.stellar.org/?addr=CALMAURYIR6LLJWOSEKKSKWB75BAR5LRXZWFCVOXP246WHL4P44MN6MB returned HTTP 200 \"successful\": true, hash 191ea1c8b23cf887bbe9d49db8c5e4efae1f81bd7a11e3116e7eecb62a8e8e51. RPC getTransaction on https://soroban-testnet.stellar.org returned SUCCESS at ledger 5732868. The envelope invokes the native asset contract `transfer` for 10,000 XLM to the C address."
   - "2026-11-14 the same request to https://friendbot-futurenet.stellar.org returned HTTP 200 \"successful\": true, hash d2a93391edfb847f646f40c6d6a8ec57e0733a621af26415b61eb3378d1958a1. RPC getTransaction on https://rpc-futurenet.stellar.org returned SUCCESS at ledger 1613141."
   - "2026-11-14 gh search code in stellar/stellar-docs: \"only funds classic\" matches only docs/build/apps/guestbook/passkeys-prerequisites.mdx."
-  - "Classification: docs-content. The page states a Friendbot limit that the deployed Friendbot no longer has and that two other Docs pages contradict."
+  - "Introducing change: stellar/stellar-docs#2837 (2026-10-12) added the sentence to docs/build/apps/guestbook/passkeys-prerequisites.mdx (2dd75fef); earlier file versions 03411a21 and abd0066f contain no Friendbot line."
+  - "Classification: docs-content. The page states a Friendbot limit that the deployed Friendbot does not have and that two other Docs pages contradict."
   - "Affected golden case: eval/qa/corpus/battery/tooling-infra/q-infra-testnet-vs-futurenet.json (grading caution). Ledger: .agents/rounds/2026-11-14-baseline-tuning/CASE-DEFECTS.md."
 ---
 
 ## Finding
 
-The passkeys prerequisites page says that Friendbot cannot fund a contract address. That is no
-longer true. The Testnet and Futurenet Friendbots fund a `C...` contract address directly.
+The passkeys prerequisites page says that Friendbot cannot fund a contract address. That is not
+true. The Testnet and Futurenet Friendbots fund a `C...` contract address directly.
 
 The page says: "Friendbot only funds classic `G...` accounts, so it can't top up a `C...`
 contract address directly." The Networks page and the Quickstart faucet page say that Friendbot
@@ -52,7 +53,8 @@ The request returned `"successful": true`. The transaction calls the native asse
 Futurenet gave the same result.
 
 Friendbot added contract address funding in stellar/friendbot#21 (2025-12-15). The Docs recorded
-it in #2136 (2025-12-16).
+it in #2136 (2025-12-16). The passkeys sentence was added later, in stellar/stellar-docs#2837
+(2026-10-12).
 
 ## Recommendation
 

@@ -458,14 +458,14 @@
         "lastChecked": "2026-11-14",
         "reSwept": {
           "date": "2026-11-14",
-          "reason": "Baseline case-defects re-sweep 2026-11-14 (.agents/rounds/2026-11-14-baseline-tuning/CASE-DEFECTS.md): q-infra-testnet-vs-futurenet gained a grading caution and evidence: live Friendbot funded a C address on Testnet and Futurenet via the native asset contract transfer (sd-109 records the conflicting passkeys page). Its key facts are unchanged and agree with q-ti-custodial-account-generation-c-address (fund a C address by SAC or token transfer), q-ti-testnet-usdc-faucet (fake XLM only), and the Testnet/Futurenet-only Friendbot boundary in the other members.",
+          "reason": "Baseline case-defects review reconciliation 2026-11-14 (.agents/rounds/2026-11-14-baseline-tuning/CASE-DEFECTS-REVIEW.md, B1): q-infra-testnet-vs-futurenet's grading caution now names Friendbot's behavior (it funds C addresses on Testnet and Futurenet) instead of the Networks page. This restates the existing key fact 4; no answer or key fact changed, and it agrees with q-ti-custodial-account-generation-c-address, q-ti-testnet-usdc-faucet, and the Testnet/Futurenet-only Friendbot boundary in the other members.",
           "verdict": "consistent"
         },
         "note": "Friendbot funds non-production Testnet/Futurenet, while Mainnet XLM must be acquired from an authorized owner. Quickstart can run local Friendbot. Official local/Lab tooling may generate test identities; safe generation is distinct from emitting secrets or claiming prefunded Mainnet accounts. A public account address is shareable and is not a secret/recovery phrase. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
           "q-edge-jailbreak-generate-secret-keys": "70c26b320545ac4c743d3c7657873c04f68b770bc290a95be7122f8b7beb376d",
           "q-edge-send-me-free-xlm": "801119bbc5abb3e161453e7da8aaec4f0d2a16b1866f6910abbea52cd85c090f",
-          "q-infra-testnet-vs-futurenet": "70565684d7b79961d1873016187f06a289ee086ccd6ed6006d74b54070f5b178",
+          "q-infra-testnet-vs-futurenet": "085ac946d136c560c9a9a611f3464e41532b8ea37a8ba6947e01a6339eb3f11a",
           "q-ti-custodial-account-generation-c-address": "5e91cfd37d2c6d0dcda21fdb7a30858576eab09a99d7d1dda0361567dfb86dac",
           "q-ti-testnet-usdc-faucet": "ff4dfef56212dae80778ac866f692d44ea37b7a202a49be9479376f6783ba109",
           "q-tool-lab-what-is": "a161440b168901b98041429dcbd0e6d80269cbb8415576ec74b67af6aa8defd7"
@@ -1136,12 +1136,12 @@
         "lastChecked": "2026-11-14",
         "reSwept": {
           "date": "2026-11-14",
-          "reason": "Baseline case-defects re-sweep 2026-11-14 (.agents/rounds/2026-11-14-baseline-tuning/CASE-DEFECTS.md): q-infra-testnet-vs-futurenet gained a Friendbot grading caution only; it still states no passphrase string or version alignment, so it agrees with q-protocol-network-passphrases-list and the note.",
+          "reason": "Baseline case-defects review reconciliation 2026-11-14 (.agents/rounds/2026-11-14-baseline-tuning/CASE-DEFECTS-REVIEW.md, B1): q-infra-testnet-vs-futurenet changed only the Friendbot wording of its grading caution. It adds no passphrase or protocol-version claim, so the member stays consistent with q-protocol-network-passphrases-list.",
           "verdict": "consistent"
         },
         "note": "Exact passphrases are stable; Testnet/Futurenet/Mainnet version alignment is stage-sensitive and live-verified.",
         "memberContentSha256": {
-          "q-infra-testnet-vs-futurenet": "70565684d7b79961d1873016187f06a289ee086ccd6ed6006d74b54070f5b178",
+          "q-infra-testnet-vs-futurenet": "085ac946d136c560c9a9a611f3464e41532b8ea37a8ba6947e01a6339eb3f11a",
           "q-protocol-network-passphrases-list": "3d7b33bcf16bcb7c0495d3d87564f0a026b77b936c94cc21ba8cea8ff8986c7c"
         }
       },

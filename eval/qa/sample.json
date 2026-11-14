@@ -1,7 +1,7 @@
 {
   "$comment": "Deterministic stratified sample (N=30, by service) of the owned QA battery.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "8589228a7d75df60cd4f9d877c211b994a55608c71a23a16e40635df45b6e621",
+  "corpusContentSha256": "4c648d48daf547e7de08fc39f2b35eb54438fe3ccd35c6a3182a82cc14347340",
   "counts": {
     "total": 30,
     "byCategory": {
@@ -2762,7 +2762,7 @@
           "Do NOT swap the two roles, equate either with Mainnet, or claim real-value assets.",
           "Do NOT freeze a protocol version or provider count without a date."
         ],
-        "notes": "Futurenet need not run a higher protocol than Testnet on a given day; a dated answer showing them equal is correct. The canonical Stellar Docs passkeys prerequisites page says Friendbot only funds classic G accounts; quoting it is not a wrong claim while sd-109 stands, and unless the answer reconciles it with the Networks page, grade caps at partial."
+        "notes": "Futurenet need not run a higher protocol than Testnet on a given day; a dated answer showing them equal is correct. The canonical Stellar Docs passkeys prerequisites page says Friendbot only funds classic G accounts; quoting it is not a wrong claim while sd-109 stands, and unless the answer reconciles it with Friendbot's actual behavior (it funds C addresses on Testnet and Futurenet), grade caps at partial."
       },
       "tags": {
         "category": "tooling-infra",
@@ -2966,7 +2966,7 @@
           "date": "2026-11-14",
           "by": "Baseline case-defects lane 2026-11-14 (Claude Opus 5.5; .agents/rounds/2026-11-14-baseline-tuning/CASE-DEFECTS.md)",
           "evidence": [
-            "Defect: .agents/rounds/2026-11-14-baseline-tuning/BASELINE.md ('Case defects'). The baseline review found the live passkeys prerequisites page contradicting key fact 4. Re-verified from primary sources: key fact 4 is confirmed; the page is wrong. Added a canonical-page grading caution tied to sd-109; answer and key facts unchanged.",
+            "Defect: .agents/rounds/2026-11-14-baseline-tuning/BASELINE.md ('Case defects'). The baseline review found the live passkeys prerequisites page contradicting key fact 4. Re-verified from primary sources: key fact 4 is confirmed; the page is wrong. Added a canonical-page grading caution tied to sd-109; answer and key facts unchanged. Independent review (B1) reworded the lifting condition to name Friendbot's behavior instead of the Networks page.",
             "Live F 2026-11-14T20:26:23Z: GET https://friendbot.stellar.org/?addr=CALMAURYIR6LLJWOSEKKSKWB75BAR5LRXZWFCVOXP246WHL4P44MN6MB -- '\"successful\": true', hash 191ea1c8b23cf887bbe9d49db8c5e4efae1f81bd7a11e3116e7eecb62a8e8e51; soroban-testnet getTransaction SUCCESS ledger 5732868.",
             "Live F 2026-11-14: GET https://friendbot-futurenet.stellar.org/?addr=CALMAURYIR6LLJWOSEKKSKWB75BAR5LRXZWFCVOXP246WHL4P44MN6MB -- '\"successful\": true', hash d2a93391edfb847f646f40c6d6a8ec57e0733a621af26415b61eb3378d1958a1; rpc-futurenet getTransaction SUCCESS ledger 1613141.",
             "Live B 2026-11-14: https://github.com/stellar/friendbot/blob/main/internal/friendbot_handler.go lines 108-111 -- 'Check if it's a valid C address (contract)' gated by SupportsContractAddresses().",
