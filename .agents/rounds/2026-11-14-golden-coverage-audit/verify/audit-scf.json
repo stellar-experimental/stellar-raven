@@ -1,0 +1,863 @@
+{
+  "lane": "verify-audit-scf",
+  "decisions": [
+    {
+      "id": "q-builder-by-region-latam",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "Retire holds: no stable world fact, the frozen live lane carries the builder-shortlist question, and neither map has a find-builders-by-region leaf. The purpose label is wrong: it is a corpus-grounded directory question, not pure Raven mechanics.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-builder-by-scf-tier",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "The only durable fact (Verified Member tier is governance, not an award record) fits the NQG survivor; the handbook tier table confirms it.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/scf-handbook/blob/main/governance/verified-members/README.md",
+          "observedAt": "2026-11-14",
+          "quote": "Access to #verified-panel ... to view discussions: all four tiers; Delegate votes ... and contribute to discussions: Pathfinder, Navigator, Pilot"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-builder-content-by-person",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "Retire holds with q-builder-justin-rice-history as the person-history survivor. Two named survivors (q-edge-lumenloop-person-entity-empty, q-edge-open-world-recovery-after-narrow-miss) are themselves retired by the edge lane, so only the Justin Rice case carries this topic.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-builder-justin-rice-history",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite keeps the checkable world facts and the title-variant caution. The team-page title is re-confirmed today, so the 2026-11-14 date is backed.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://stellar.org/foundation/team",
+          "observedAt": "2026-11-14",
+          "quote": "card \"description\":\"VP of Ecosystem\", \"title\":\"Justin Rice\""
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-builder-lumenloop-regions-vocab",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "Pure Lumenloop vocabulary behavior; the frozen live lane asks the same question.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-builder-rust-soroban-devs",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "Same question as frozen q-live-builders-artifact-continuation (Soroban/Rust builder shortlist), with no stable fact. Purpose is a directory question, not mechanics; the verdict still holds.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-gap-builders-person-empty",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "Same empty-directory reading as the edge closed-world case moving to the tool lane.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-gap-compare-hackathons",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "Operation field ownership only; the tool-lane survivor rewrite carries the 2-to-5-slug rule.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-gap-hackathon-brief-evidence-boundaries",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "Same operation; the survivor rewrite carries the empty-registry and null-domain boundary.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-gap-hackathon-winner-order",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "The placement-field rule is a key fact in the tool-lane survivor rewrite.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-gap-upcoming-hackathon-fallback",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "The survivor q-scf-hackathons-active keeps \"an empty upcoming list is not proof none exists\".",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-gap-vet-pitch-vertical-null",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "The survivor rewrite (q-scf-pitch-prep-live) carries the null-vertical and null-is-not-zero facts.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-scf-academic-research-grant",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite keeps applicant, cap, deadlines and the two-per-year limit, and drops only process facts. The auditor re-read research.stellar.org today, which backs the date.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-scf-ambassador-program",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Dropping the Instaward amounts is safe because q-scf-instawards owns them; the approval boundary and Verified Member distinction stay.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-scf-audit-bank",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite keeps 100% coverage, the conditional 5% copay and the non-bounty boundary; dated from a rules file and stellar.org page read today.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-scf-blend-winners-live",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Converting the tool-step case to the world result is right; placements and the June to July 2025 dates re-derived. The orchestrator should also set tags.freshness to stable, since a finished event result does not move.",
+      "evidence": [
+        {
+          "class": "C",
+          "ref": "scout.getHackathon({slug:\"stellar-hacks-blend\"}) via Raven execute",
+          "observedAt": "2026-11-14",
+          "quote": "startDate 2025-06-18, endDate 2025-07-07; placementRank 1 Blend Pool Creator, 2 Comet x Hoops Finance, 3 YieldBack.Cash; totalSubmissions 39"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-scf-build-award-cap",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "The added 10/20/30/40 split and pay-day XLM conversion are both in the handbook (the split was already a v7-case key fact).",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/scf-handbook/blob/main/scf-awards/build-award/README.md",
+          "observedAt": "2026-11-14",
+          "quote": "Award size: up to $150,000 worth of XLM* ... Structure: Milestone-based funding (paid in tranches)"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/scf-handbook/blob/main/scf-awards/build-award/budget-and-deliverable-guidelines.md",
+          "observedAt": "2026-11-14",
+          "quote": "#0 n/a (paid upon award acceptance) 10% | #1 MVP 20% | #2 Testnet 30% | #3 Mainnet Launch 40%"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/scf-handbook/blob/main/.gitbook/includes/xlm-award-valuation-disclaimer.md",
+          "observedAt": "2026-11-14",
+          "quote": "calculated using the CF Stellar Lumens-Dollar Settlement Price ... reported on the day such Award is scheduled to be paid"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-scf-build-tracks",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite keeps the three tracks, Open-only vote, Open admitting traction, and Resubmission as a path.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-scf-confidential-tokens-preview",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "Same facts as q-sor-confidential-tokens. But the soroban-a rewrite of that survivor puts the June 29 preview only in notes as history; the orchestrator must add the absorbed key fact (\"the 2026-06-29 release was a Testnet developer preview, not a Mainnet launch\") when applying both.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-scf-contract-verification-rfp-live",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "A closed brief with procedure-only key facts. The changed fact is re-derived: Scout now lists both Q4 briefs, so the lag note is false.",
+      "evidence": [
+        {
+          "class": "C",
+          "ref": "https://stellarlight.xyz/api/rfps?status=open",
+          "observedAt": "2026-11-14",
+          "quote": "generatedAt 2026-11-14T02:36:22Z; counts open 2, closed 16; briefRoster checkedOn 2026-11-12; both Q4 2026 briefs status open"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/scf-handbook/blob/main/scf-awards/build-award/rfp-track.md",
+          "observedAt": "2026-11-14",
+          "quote": "#### Current Open RFPs ... Web and API Analytics for Stellar Ecosystem Projects ... XDR/CAP-Coverage Audit Tool and Indexer-Hardening Guide"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-scf-cross-decaf-sep24",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "Decaf specifics are trivia; SEP-24 is owned by q-sep6-sep24-sep31-choice and cross-service reconciliation by the live lane. Note that the compliance lane retires the other named survivor, q-comp-cross-moneygram-partnership-sep24.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-scf-cross-reflector-rounds-current",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "q-scf-history-soroswap keeps one project-funding-history case (map leaf ecosystem.project-funding-history); the live lane covers the cross-service join.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-scf-current-hackathons-compare-live",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "Third copy of one operation check, with no notes and an avoid that is not a claim.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-scf-current-round",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Round state re-derived today from the awards page and Scout round metadata.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://communityfund.stellar.org/awards",
+          "observedAt": "2026-11-14",
+          "quote": "\"name\":\"SCF #46\",\"type\":\"Build Award Round\",\"phase\":\"Initial Review\" ... SCF #46 is currently in Initial Review."
+        },
+        {
+          "class": "C",
+          "ref": "https://stellarlight.xyz/api/rfps?status=open (meta.scfRound)",
+          "observedAt": "2026-11-14",
+          "quote": "currentRound 46, currentPhase Initial Review, roundsInProgress submissionDeadline 2026-11-09, submissionWindow opens null"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-scf-ecosystem-listing-partner-jobs",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "The Matching Fund terms are the only precise fact, and neither map lists directory listing or jobs as a leaf.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-scf-eligibility-criteria",
+      "auditVerdict": "tighten",
+      "decision": "amend",
+      "finalVerdict": "tighten",
+      "why": "Verdict holds, but key fact 4 holds two predicates (panel merit, KYC). Keep it to the point that matters for this trap: traction is judged at panel review, not prescreen.",
+      "evidence": [],
+      "finalRewrite": {
+        "question": null,
+        "answer": "SCF Build accepts eligible individuals, teams and organizations building meaningful Stellar products; a registered company is not required. Prescreen is a completeness and readiness check, not a judgment of idea strength or traction: it flags vague or unbudgeted deliverables, unbalanced budgets, ineligible expenses and missing technical detail. Merit, including traction, is judged at panel review; KYC/KYB comes before payout.",
+        "keyFacts": [
+          "Individuals, teams and organizations can qualify; a registered company is not required.",
+          "Prescreen checks completeness and readiness, not idea strength or traction.",
+          "Prescreen flags vague or unbudgeted deliverables and unbalanced budgets.",
+          "Traction and merit are judged at panel review, not at prescreen."
+        ],
+        "avoid": [
+          "Do NOT say weak traction or unclear fit is itself the prescreen definition.",
+          "Do NOT invent a universal minimum-TVL, token-launch or US-only requirement."
+        ],
+        "notes": "Real track, category, participant and jurisdiction constraints exist; do not deny them.",
+        "movedToTruth": [
+          "GT-37 correction and process IDs",
+          "Integration final-tranche metric check",
+          "full submission criteria list"
+        ]
+      }
+    },
+    {
+      "id": "q-scf-funding-by-category",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "No stable fact survives; the survivor q-scf-total-distributed keeps the basis-labelling behavior. The survivor q-defi-category-funding-ratio-live is itself merged by the defi lane, which does not change this verdict.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-scf-hackathon-compare-live",
+      "auditVerdict": "move-tool-lane",
+      "decision": "accept",
+      "finalVerdict": "move-tool-lane",
+      "why": "Scout-only composite behavior with no other coverage; the rewrite absorbs the slug, count and placement rules.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-scf-hackathons-active",
+      "auditVerdict": "tighten",
+      "decision": "amend",
+      "finalVerdict": "tighten",
+      "why": "Key fact 1 pins the Waterloo event in a live case and goes false after 2026-11-18. A live key fact must accept a later dated roster.",
+      "evidence": [
+        {
+          "class": "C",
+          "ref": "https://stellarlight.xyz/api/hackathons?status=active",
+          "observedAt": "2026-11-14",
+          "quote": "Blockchain Innovation Challenge powered by Stellar, Waterloo | 2026-11-02 | 2026-11-18 | active"
+        }
+      ],
+      "finalRewrite": {
+        "question": null,
+        "answer": "As of 2026-11-14, the Blockchain Innovation Challenge powered by Stellar (Velocity, University of Waterloo) is active, November 2 to 18, 2026, open to Waterloo students. Scout's feed lists no upcoming event, which does not prove none exists elsewhere. Stellar Hacks: Real-World ZK ended July 3, 2026.",
+        "keyFacts": [
+          "Names a current or upcoming hackathon from a dated source, or says none is listed.",
+          "Stellar Hacks: Real-World ZK ended on July 3, 2026 and is not active.",
+          "An empty upcoming list in one feed is not proof that none exists."
+        ],
+        "avoid": [
+          "Do NOT call Real-World ZK currently active."
+        ],
+        "notes": "Accept any dated, sourced active or upcoming event; the roster changes. Example: as of 2026-11-14 the Waterloo Blockchain Innovation Challenge ran Nov 2 to 18, 2026.",
+        "movedToTruth": [
+          "29-event feed count",
+          "Istanbul and HackMeridian completed events",
+          "DoraHacks org and X sources"
+        ]
+      }
+    },
+    {
+      "id": "q-scf-history-soroswap",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Four awards and $346.8K re-derived from the official project page and Lumenloop today.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://communityfund.stellar.org/project/soroswapfinance-yax",
+          "observedAt": "2026-11-14",
+          "quote": "Total awarded $346.8K* Awarded Submissions 4 ... Liquidity Award - '24 Q1 $50.0K ... SCF #17 budget 139150"
+        },
+        {
+          "class": "C",
+          "ref": "lumenloop.get_scf_submissions({slug:\"soroswap\"}) via Raven execute",
+          "observedAt": "2026-11-14",
+          "quote": "count 4; SCF #21 Soroswap.Finance Aggregator, budget 100000, Legacy v5.0 Community Award"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-scf-how-to-apply",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite is correct and absorbs the lifecycle case. The rot row is mislabelled: the awards page still says \"every 6 weeks\", so that claim holds; the uneven 2026 deadlines were already in the lifecycle golden. Not a changed fact.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://communityfund.stellar.org/awards",
+          "observedAt": "2026-11-14",
+          "quote": "SCF Build Award rounds run every 6 weeks."
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-scf-hummingbot-kelp-closed-rfp",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "One closed brief is trivia; the survivor keeps \"do not call former briefs open\".",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-scf-instawards",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite matches the official rules and moves amounts into world key facts.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-scf-kale-winner-live",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "Golden states no fact; q-scf-blend-winners-live carries a named result.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-scf-nqg-voting",
+      "auditVerdict": "tighten",
+      "decision": "amend",
+      "finalVerdict": "tighten",
+      "why": "Verdict holds, but the rewrite says Verified can \"view and discuss\". The handbook gives Verified view access only; contributing to discussions starts at Pathfinder.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/scf-handbook/blob/main/governance/verified-members/README.md",
+          "observedAt": "2026-11-14",
+          "quote": "Access to #verified-panel ... to view discussions: all four tiers; Delegate votes ... and contribute to discussions: Pathfinder, Navigator, Pilot"
+        }
+      ],
+      "finalRewrite": {
+        "question": "What is SCF Neural Quorum Governance, and who can vote?",
+        "answer": "Neural Quorum Governance (NQG) is SCF's reputation- and delegation-based voting system, not XLM voting or the Stellar Consensus Protocol. Verified Members have four tiers: Verified (view discussions only), Pathfinder (can delegate), Navigator (votes actively on Build Open projects) and Pilot (also a quarterly delegate and governance proposer). Community project voting applies to the Open Track only. Tier status is governance reputation, separate from award history and payout KYC/KYB.",
+        "keyFacts": [
+          "NQG is reputation and delegation governance, not XLM voting or SCP.",
+          "Verified can only view; Pathfinder can delegate; Navigator votes actively on Open projects.",
+          "Pilots can also serve as quarterly delegates and propose governance changes.",
+          "Community project voting applies only to Build Open Track projects."
+        ],
+        "avoid": [
+          "Do NOT say every basic Verified member votes actively or can be a delegate.",
+          "Do NOT extend Build Open voting to Integration, RFP or Public Goods."
+        ],
+        "notes": "Public Goods has a separate process; do not require or state its electorate.",
+        "movedToTruth": [
+          "CORRECTION 2026-08-04 narrative",
+          "NQG Medium retrospective source",
+          "Pilot-only delegate source"
+        ]
+      }
+    },
+    {
+      "id": "q-scf-open-rfps-live",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "Duplicate of the survivor and the live lane; the Scout-lag claim is now false.",
+      "evidence": [
+        {
+          "class": "C",
+          "ref": "https://stellarlight.xyz/api/rfps?status=open",
+          "observedAt": "2026-11-14",
+          "quote": "generatedAt 2026-11-14T02:36:22Z; counts open 2, closed 16; briefRoster checkedOn 2026-11-12; both Q4 2026 briefs status open"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-scf-open-rfps",
+      "auditVerdict": "tighten",
+      "decision": "amend",
+      "finalVerdict": "tighten",
+      "why": "Changed facts re-derived: Scout lists both Q4 briefs, budgets were removed on 2026-11-13, and the current-quarter rule is in the handbook. But key facts 1, 2 and 4 pin this quarter's briefs and SCF #46's phase in a scheduled case; they must accept a later dated roster and round state.",
+      "evidence": [
+        {
+          "class": "C",
+          "ref": "https://stellarlight.xyz/api/rfps?status=open",
+          "observedAt": "2026-11-14",
+          "quote": "generatedAt 2026-11-14T02:36:22Z; counts open 2, closed 16; briefRoster checkedOn 2026-11-12; both Q4 2026 briefs status open"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/scf-handbook/commit/cf94e3691faba4187b72c4d98cc4ff4a66c75fbc",
+          "observedAt": "2026-11-14",
+          "quote": "2026-11-13T15:15:41Z GITBOOK-248; scf-awards/build-award/rfp-track.md -15 lines; no \"budget\" text remains in the file"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/scf-handbook/blob/main/scf-awards/build-award/rfp-track.md",
+          "observedAt": "2026-11-14",
+          "quote": "The submission must address an open RFP from the current quarter"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/scf-handbook/blob/main/scf-awards/build-award/rfp-track.md",
+          "observedAt": "2026-11-14",
+          "quote": "#### Current Open RFPs ... Web and API Analytics for Stellar Ecosystem Projects ... XDR/CAP-Coverage Audit Tool and Indexer-Hardening Guide"
+        },
+        {
+          "class": "A",
+          "ref": "https://communityfund.stellar.org/awards",
+          "observedAt": "2026-11-14",
+          "quote": "\"name\":\"SCF #46\",\"type\":\"Build Award Round\",\"phase\":\"Initial Review\" ... SCF #46 is currently in Initial Review."
+        }
+      ],
+      "finalRewrite": {
+        "question": null,
+        "answer": "As of 2026-11-14, the official SCF RFP Track page and Scout both list two open Q4 2026 briefs, published 2026-11-11: \"Web and API Analytics for Stellar Ecosystem Projects\" and \"XDR/CAP-Coverage Audit Tool and Indexer-Hardening Guide\". An RFP Track proposal must answer an open brief from the current quarter. SCF #46 is in Initial Review, so no submission window is open; a listed brief is not an open window.",
+        "keyFacts": [
+          "Reports the briefs the official RFP Track page lists, with the observation date.",
+          "An RFP Track proposal must answer an open brief from the current quarter.",
+          "A listed brief does not mean a submission window is open."
+        ],
+        "avoid": [
+          "Do NOT call the former Q2 or Q3 2026 briefs open."
+        ],
+        "notes": "Grade a dated, source-relative roster; accept a later roster. As of 2026-11-14: Web and API Analytics, and the XDR/CAP-Coverage Audit Tool, both published 2026-11-11; SCF #46 in Initial Review. If Scout and the official page disagree, an attributed, dated report of either is acceptable. Do not require budget ranges; the handbook removed them on 2026-11-13.",
+        "movedToTruth": [
+          "Scout lag narrative (2026-11-04 to 2026-11-12)",
+          "synthetic scf-round row semantics",
+          "November 8 versus 9 deadline history",
+          "Reddit and X sources"
+        ]
+      }
+    },
+    {
+      "id": "q-scf-passkey-rfps-live",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "The frozen live lane has the same question.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-scf-pitch-prep-live",
+      "auditVerdict": "move-tool-lane",
+      "decision": "accept",
+      "finalVerdict": "move-tool-lane",
+      "why": "Scout-only composite with no other coverage; the rewrite absorbs the null-vertical rule.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-scf-regional-india",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "Map leaf funding.ambassadors-chapters stays covered by q-scf-ambassador-program; one chapter is an instance.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-scf-resolve-passport-superseded-slug",
+      "auditVerdict": "move-tool-lane",
+      "decision": "accept",
+      "finalVerdict": "move-tool-lane",
+      "why": "Resolver state re-derived today; the superseded-record reading is not covered elsewhere.",
+      "evidence": [
+        {
+          "class": "C",
+          "ref": "scout.resolveProject({q:\"passport\"}) via Raven execute",
+          "observedAt": "2026-11-14",
+          "quote": "matchedOn slug; subject passport status Draft; superseded true; current stellar-passport status Live (generatedAt 2026-11-14T03:20Z)"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-scf-rfp-tooling",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "Changed fact confirmed (budget sections removed); the current-quarter rule is in the survivor rewrite.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/scf-handbook/commit/cf94e3691faba4187b72c4d98cc4ff4a66c75fbc",
+          "observedAt": "2026-11-14",
+          "quote": "2026-11-13T15:15:41Z GITBOOK-248; scf-awards/build-award/rfp-track.md -15 lines; no \"budget\" text remains in the file"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/scf-handbook/blob/main/scf-awards/build-award/rfp-track.md",
+          "observedAt": "2026-11-14",
+          "quote": "The submission must address an open RFP from the current quarter"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-scf-rfps-hackathons-live",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "Both halves have survivors; its lag note is now false.",
+      "evidence": [
+        {
+          "class": "C",
+          "ref": "https://stellarlight.xyz/api/rfps?status=open",
+          "observedAt": "2026-11-14",
+          "quote": "generatedAt 2026-11-14T02:36:22Z; counts open 2, closed 16; briefRoster checkedOn 2026-11-12; both Q4 2026 briefs status open"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-scf-round-43-results",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite keeps the recap figures, the dates trap and the section inconsistency; the dropped dashboard figure moves to truth.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-scf-sdf-bug-bounty",
+      "auditVerdict": "tighten",
+      "decision": "amend",
+      "finalVerdict": "tighten",
+      "why": "HackerOne facts and the stale stellar.org split are re-derived. But the rewrite drops the half of the question about Soroban apps: third-party applications are outside SDF's program. Restore that fact and move the OpenZeppelin bounty to notes.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://hackerone.com/stellar (policy, GraphQL team.policy)",
+          "observedAt": "2026-11-14",
+          "quote": "Critical: 0 to 25,000 points ... Note: 0 to 500 points 1 point currently corresponds to 1 USD, payable in lumens (XLM)"
+        },
+        {
+          "class": "A",
+          "ref": "https://hackerone.com/stellar (policy, GraphQL team.policy)",
+          "observedAt": "2026-11-14",
+          "quote": "For Critical Blockchain/DLT bugs in carveout assets, the reward amount is 10% of the funds directly affected, capped at the maximum reward of 250,000 points."
+        },
+        {
+          "class": "A",
+          "ref": "https://hackerone.com/stellar (policy, GraphQL team.policy)",
+          "observedAt": "2026-11-14",
+          "quote": "## Out of scope ... Vulnerabilities affecting third-party applications that consume Stellar APIs"
+        },
+        {
+          "class": "A",
+          "ref": "https://stellar.org/grants-and-funding",
+          "observedAt": "2026-11-14",
+          "quote": "can earn awards up to $250,000 worth of XLM. Awards up to $50,000 paid in USD can also be earned for possible exploits discovered in the Soroban platform."
+        }
+      ],
+      "finalRewrite": {
+        "question": null,
+        "answer": "Since 2026-05-07 SDF runs one HackerOne bug bounty for new general reports; the Stellar Immunefi program is deprecated for new submissions. Standard maxima run from 25,000 points (critical) to 500 (note); one point is $1, paid in XLM. A carveout pays critical stellar-core, protocol and Soroban host bugs up to 250,000 points. Third-party Soroban apps are outside SDF's program.",
+        "keyFacts": [
+          "New general SDF reports go to the consolidated HackerOne program; Immunefi is deprecated.",
+          "Standard maxima run 25,000 (critical) to 500 (note) points; 1 point is $1, paid in XLM.",
+          "A 250,000-point carveout covers stellar-core, protocol and Soroban host code.",
+          "Exploits in third-party Soroban apps are outside SDF's bug bounty."
+        ],
+        "avoid": [
+          "Do NOT present the old $250K protocol and $50K Soroban-app split as the current reward scale."
+        ],
+        "notes": "stellar.org/grants-and-funding still carries the older $250,000 XLM and $50,000 USD wording (observed 2026-11-14); an attributed quote of it is not a wrong claim but is not the current HackerOne scale. The Audit Bank is not a vulnerability bounty. OpenZeppelin's Stellar Contracts Immunefi bounty is a separate program; naming it is correct but not required.",
+        "movedToTruth": [
+          "sls-020 Scout security-program record",
+          "Dossier reference",
+          "Immunefi OpenZeppelin $25K/$250K figures"
+        ]
+      }
+    },
+    {
+      "id": "q-scf-sdf-marketing-grant",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Cap and eligibility re-derived today.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://stellar.org/grants-and-funding",
+          "observedAt": "2026-11-14",
+          "quote": "Marketing Grants of up to $500,000 awarded in USD, USDC, or XLM ... For both new and existing projects with a live product"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-scf-skill-stellar-scout",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "The real reason is routing coverage, not the named survivor: eval/skills-cases.json already has a stellar-scout case. q-ti-skill-builder-quickstart tests a different skill.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "eval/skills-cases.json",
+          "observedAt": "2026-11-14",
+          "quote": "grep: 1 case names stellar-scout; 0 name scf-submission-radar"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-scf-skill-submission-radar",
+      "auditVerdict": "move-tool-lane",
+      "decision": "accept",
+      "finalVerdict": "move-tool-lane",
+      "why": "No skills-cases entry covers scf-submission-radar, so a tool-lane case still adds visibility.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "eval/skills-cases.json",
+          "observedAt": "2026-11-14",
+          "quote": "grep: 1 case names stellar-scout; 0 name scf-submission-radar"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-scf-submission-lifecycle-deadlines",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "Same funnel as how-to-apply; the no-fixed-duration caution is in the survivor notes. Its rot \"changed\" label is wrong, as on q-scf-how-to-apply.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://communityfund.stellar.org/awards",
+          "observedAt": "2026-11-14",
+          "quote": "SCF Build Award rounds run every 6 weeks."
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-scf-total-distributed",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Re-derived: the Scout reconstruction moved to 616 projects and $61.99M, so \"has grown since\" is backed and the figure must stay a dated example.",
+      "evidence": [
+        {
+          "class": "C",
+          "ref": "https://stellarlight.xyz/api/analyze?dimension=funding",
+          "observedAt": "2026-11-14",
+          "quote": "scfAwardedProjects 616, scfTotalDistributedUSD 61987691.49, snapshotAsOf 2026-11-13; previousSnapshot 597 projects $60,196,976.26"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-scf-v7-changes",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite keeps the launch date, tracks, Instawards and referral program; the payment split moves to the cap case.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-scf-verified-members",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "Same tier table as the NQG survivor, which absorbs the KYC separation.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-scf-vs-sdf-enterprise-fund",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite keeps the path distinctions and the Matching Fund terms; the live Enterprise application and the old copy conflict are handled.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-scout-hackathon-brief-first-hour",
+      "auditVerdict": "move-tool-lane",
+      "decision": "accept",
+      "finalVerdict": "move-tool-lane",
+      "why": "Scout-only composite; the rewrite absorbs the evidence-boundary case.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-scout-hackathon-placed-share-kale-vs-zk",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "Do not activate: a derived corpus statistic. Purpose is a corpus question, not mechanics.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-scout-hackathon-submission-link-comet-hoops",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "The placement is a key fact in the Blend survivor rewrite.",
+      "evidence": [
+        {
+          "class": "C",
+          "ref": "scout.getHackathon({slug:\"stellar-hacks-blend\"}) via Raven execute",
+          "observedAt": "2026-11-14",
+          "quote": "startDate 2025-06-18, endDate 2025-07-07; placementRank 1 Blend Pool Creator, 2 Comet x Hoops Finance, 3 YieldBack.Cash; totalSubmissions 39"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-scout-hackathon-submission-xbid-outcome",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "Do not activate: one result of one event.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-scout-hackathon-winner-libraries-vs-field",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "Do not activate: a corpus statistic that has already moved.",
+      "evidence": [],
+      "finalRewrite": null
+    }
+  ],
+  "summary": {
+    "accept": 53,
+    "amend": 5,
+    "reject": 0
+  },
+  "patterns": [
+    "Sample rule: every record was checked, because all 58 fall under checks 1 to 3 (no keep verdicts).",
+    "Rot \"changed\" is misused for a stated claim that still holds: the awards page still says rounds run every 6 weeks (q-scf-how-to-apply, q-scf-submission-lifecycle-deadlines). Record that as holds; the uneven deadlines were already in the golden.",
+    "Live and scheduled rewrites pin the current example in key facts (q-scf-hackathons-active Waterloo dates; q-scf-open-rfps Q4 brief names and SCF #46 phase). Key facts must accept a later dated roster; keep the example in notes.",
+    "Directory and corpus-statistic questions are labelled raven-mechanics (q-builder-by-region-latam, q-builder-rust-soroban-devs, q-scf-funding-by-category, q-scout-hackathon-placed-share-kale-vs-zk). The retire verdicts still hold on duplication and no-stable-fact grounds, but the label should be corrected wherever it feeds the taxonomy.",
+    "Merges name survivors that other lanes retire or merge (q-edge-lumenloop-person-entity-empty, q-edge-open-world-recovery-after-narrow-miss, q-comp-cross-moneygram-partnership-sep24, q-defi-category-funding-ratio-live) or whose own rewrite drops the absorbed fact (q-sor-confidential-tokens). The orchestrator should resolve survivor chains across lanes before applying.",
+    "A rewrite can drop the half of a two-part question when compacting (q-scf-sdf-bug-bounty lost the Soroban-app scope). Check each rewrite against its question."
+  ]
+}

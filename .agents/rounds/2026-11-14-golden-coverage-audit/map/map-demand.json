@@ -1,0 +1,3126 @@
+{
+  "lane": "map-demand",
+  "observedAt": "2026-11-14",
+  "method": "Demand-first: eval/discovery mined queries and cases, Stellar Stack Exchange API (tag counts, top-voted, recent questions), most-commented GitHub issues in nine stellar/* repos since 2024-06, Reddit r/Stellar, and persona searches (builder, integrator, analyst, investor, grant applicant, retail holder) via parallel-cli. Raven spot checks use one search plus one execute per checked leaf; a reach verdict records what Raven returned, not whether it is true.",
+  "domains": [
+    {
+      "id": "fundamentals",
+      "title": "Accounts, assets, and transactions",
+      "leaves": [
+        {
+          "id": "fundamentals.accounts-reserves",
+          "title": "Accounts, base reserve, and minimum balance",
+          "scope": "How an account is created and funded, the base reserve, subentry reserves, and selling liabilities. Excludes sponsorship mechanics.",
+          "weight": 3,
+          "weightReason": "Every wallet, exchange, and contract integrator meets reserve math; a wrong value causes op_underfunded failures and stuck funds.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens"
+            },
+            {
+              "class": "D",
+              "ref": "https://lobstr.freshdesk.com/support/solutions/articles/151000001057"
+            },
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens#minimum-balance",
+              "observedAt": "2026-11-14",
+              "quote": "Stellar accounts must maintain a minimum balance to exist, which is calculated using the base reserve."
+            },
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/learn/glossary#base-reserve",
+              "observedAt": "2026-11-14",
+              "quote": "One base reserve is currently 0.5 XLM."
+            }
+          ],
+          "question": "What minimum XLM balance must a Stellar account hold, and how does each trustline or offer change it?",
+          "ravenReach": "yes",
+          "evidence": "SE \"What is the rationale behind locking up base_reserve?\" and recent \"Minimum Account Balance Requirement\"; cases.json op_underfunded/selling-liabilities case; LOBSTR help article on reserved balance.",
+          "ravenReachNote": "stellarDocs.search_protocol_concepts_docs returned Accounts#base-reserves-and-subentries and Lumens#minimum-balance; glossary states the base reserve value."
+        },
+        {
+          "id": "fundamentals.keys-seeds",
+          "title": "Keypairs, strkeys, and recovery phrases",
+          "scope": "G/S strkey encoding, ed25519 keys, and SEP-5 mnemonic derivation. Excludes custody practice.",
+          "weight": 2,
+          "weightReason": "Wallet and backend builders derive keys regularly; confusing seed and secret key loses access.",
+          "volatility": "stable",
+          "canonicalSources": [],
+          "question": "How does a Stellar S secret key relate to a 12- or 24-word recovery phrase, and why can one phrase yield many accounts?",
+          "ravenReach": "unchecked",
+          "evidence": "SE keypair tag (16) and \"Which cryptographic algorithm is used to generate the secret and public keys?\" (1043 views); cases.json SEP-5 derivation case."
+        },
+        {
+          "id": "fundamentals.assets-trustlines",
+          "title": "Issued assets and trustlines",
+          "scope": "Asset codes, issuers, trustlines and their limits, and removing a trustline. Excludes issuer flags.",
+          "weight": 3,
+          "weightReason": "Receiving any non-XLM asset needs a trustline; it is the most common integration failure (op_no_trust).",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tokens/how-to-issue-an-asset"
+            },
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/tokens/anatomy-of-an-asset",
+              "observedAt": "2026-11-14",
+              "quote": "Accounts must have an active trustline to receive, hold, and transact."
+            }
+          ],
+          "question": "Why must a Stellar account add a trustline before it can receive a non-XLM asset, and what does the trustline cost?",
+          "ravenReach": "yes",
+          "evidence": "SE assets (113) and trustline (45) tags; \"How to create a token on the stellar network?\" (2414 views); recent \"Removing trustlines\".",
+          "ravenReachNote": "stellarDocs.search_asset_token_docs returned anatomy-of-an-asset tradeoffs (trustline required; Protocol 26 programmatic trustlines). Trustline reserve cost needs the accounts page too."
+        },
+        {
+          "id": "fundamentals.operations",
+          "title": "Operations and transaction structure",
+          "scope": "The operation catalog, the per-transaction operation limit, and atomicity. Excludes individual operation deep dives covered by other leaves.",
+          "weight": 2,
+          "weightReason": "Builders compose transactions daily; batching limits and atomicity shape designs.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations"
+            }
+          ],
+          "question": "How many operations can a single Stellar transaction contain, and what happens to the others if one fails?",
+          "ravenReach": "unchecked",
+          "evidence": "SE operations tag (53) and \"Instantly distributing payments to multiple parties\" (22 votes)."
+        },
+        {
+          "id": "fundamentals.sequence-numbers",
+          "title": "Sequence numbers",
+          "scope": "How sequence numbers work, tx_bad_seq, ordering, and replacing a pending transaction. Excludes high-throughput channel patterns.",
+          "weight": 3,
+          "weightReason": "Every submitter hits tx_bad_seq; an EVM nonce mental model gives wrong fixes.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/learn/glossary#sequence-number",
+              "observedAt": "2026-11-14",
+              "quote": "A transaction's sequence number must always increase by one (unless minimum sequence"
+            }
+          ],
+          "question": "How do Stellar account sequence numbers work, and what causes a tx_bad_seq error?",
+          "ravenReach": "yes",
+          "evidence": "cases.json sequence-vs-EVM-nonce and tx_bad_seq cases; SE \"When is account sequence number incremented?\" (890 views); SE sequence-number tag (16).",
+          "ravenReachNote": "Protocol concepts search returned glossary Sequence Number, minimum sequence number, and bump sequence sections."
+        },
+        {
+          "id": "fundamentals.timebounds-preconditions",
+          "title": "Timebounds and transaction preconditions",
+          "scope": "Timebounds, tx_too_late, and CAP-21 preconditions (min sequence age, ledger bounds, extra signers).",
+          "weight": 2,
+          "weightReason": "Pre-signed and saved transactions fail with tx_too_late; multisig flows rely on preconditions.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions#time-bounds",
+              "observedAt": "2026-11-14",
+              "quote": "Page title: Operations and Transactions — Time bounds (stellarDocs.search_doc_titles pointer; not a reach check)"
+            }
+          ],
+          "question": "Why does a saved, pre-signed Stellar transaction fail with tx_too_late, and how do you fix it?",
+          "ravenReach": "unchecked",
+          "evidence": "cases.json tx_too_late case; SE recent \"Setting preconditions in Stellar Laboratory?\"."
+        },
+        {
+          "id": "fundamentals.fees-surge",
+          "title": "Transaction fees and surge pricing",
+          "scope": "Base fee in stroops, inclusion fee, surge pricing, and fee estimation. Excludes Soroban resource fees.",
+          "weight": 3,
+          "weightReason": "Every transaction sets a fee; a too-low max fee stalls payments during surges.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering"
+            },
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering#surge-pricing",
+              "observedAt": "2026-11-14",
+              "quote": "The network can enter surge pricing mode under two circumstances"
+            }
+          ],
+          "question": "What is the minimum base fee for a Stellar transaction, and what happens to a transaction whose max fee is too low during surge pricing?",
+          "ravenReach": "yes",
+          "evidence": "cases.json TransactionBuilder fee case; SE fees tag (35), \"Benefit of overpaying fees\", \"Reason for base fee change?\".",
+          "ravenReachNote": "Returned fees-resource-limits-metering#surge-pricing, glossary Base Fee, and networks/resource-limits-fees."
+        },
+        {
+          "id": "fundamentals.fee-bump-sponsorship",
+          "title": "Fee-bump transactions and sponsored reserves",
+          "scope": "Fee-bump transactions and sponsored reserves, so a third party pays fees or reserves.",
+          "weight": 2,
+          "weightReason": "Wallets and apps that onboard users without XLM rely on both.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves"
+            }
+          ],
+          "question": "How can an application pay a user's transaction fees and account reserves on Stellar?",
+          "ravenReach": "unchecked",
+          "evidence": "SE \"Is it possible to forward transaction fee onto someone else?\"; docs sponsored-reserves guide surfaced in FAQ search."
+        },
+        {
+          "id": "fundamentals.memos-muxed",
+          "title": "Memos and muxed accounts",
+          "scope": "Memo types, muxed (M) addresses, and pooled-account deposit attribution. Excludes SEP-29 enforcement.",
+          "weight": 3,
+          "weightReason": "Exchanges and custodians attribute deposits by memo or muxed ID; a wrong design loses customer funds.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/encyclopedia/transactions-specialized/pooled-accounts-muxed-accounts-memos"
+            },
+            {
+              "class": "A",
+              "ref": "https://stellar.org/blog/developers/muxed-accounts-faq"
+            },
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos#muxed-accounts",
+              "observedAt": "2026-11-14",
+              "quote": "Muxed accounts are embedded into the protocol for convenience and standardization."
+            }
+          ],
+          "question": "How should an exchange attribute deposits from many customers to one Stellar account: memos or muxed accounts?",
+          "ravenReach": "yes",
+          "evidence": "SE memo tag (21) and \"correct way to implement sub-accounts\" (13 votes); Kraken XLM memo help page; stellar.org muxed accounts FAQ.",
+          "ravenReachNote": "stellarDocs.search_docs returned the pooled-accounts guide (muxed accounts) and a C-account memo guide."
+        },
+        {
+          "id": "fundamentals.multisig-thresholds",
+          "title": "Multisignature, signers, and thresholds",
+          "scope": "Signer weights, low/medium/high thresholds, and signer types (ed25519, hash-x, pre-auth). Excludes custody practice.",
+          "weight": 2,
+          "weightReason": "Issuers, treasuries, and escrow designs use multisig; wrong thresholds lock accounts.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/signatures-multisig#thresholds",
+              "observedAt": "2026-11-14",
+              "quote": "Page title: Signatures and Multisig — Thresholds (stellarDocs.search_doc_titles pointer; not a reach check)"
+            }
+          ],
+          "question": "How do signer weights and low, medium, and high thresholds decide whether a Stellar transaction is authorized?",
+          "ravenReach": "unchecked",
+          "evidence": "SE multi-sig tag (32); \"Why is SHA256 a signature type option for a multisig transaction?\"."
+        },
+        {
+          "id": "fundamentals.claimable-balances",
+          "title": "Claimable balances",
+          "scope": "Creating and claiming claimable balances, claim predicates, and their use for unsolicited sends.",
+          "weight": 2,
+          "weightReason": "Wallets show pending claimable balances; spam and airdrops use them.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "D",
+              "ref": "https://lobstr.freshdesk.com/support/solutions/articles/151000007282-what-are-claimable-balances-and-how-can-i-claim-a-pending-payment-on-lobstr-"
+            }
+          ],
+          "question": "What is a Stellar claimable balance, and how does a recipient claim it?",
+          "ravenReach": "unchecked",
+          "evidence": "LOBSTR help article on claimable balances; Reddit spam-dust threads."
+        },
+        {
+          "id": "fundamentals.account-merge",
+          "title": "Account merge and closing an account",
+          "scope": "Account merge requirements (no subentries), reclaiming reserves, and closing an account.",
+          "weight": 2,
+          "weightReason": "Users and apps reclaim locked XLM; merge failures are common.",
+          "volatility": "stable",
+          "canonicalSources": [],
+          "question": "What must be cleared before a Stellar account can be merged, and what happens to its XLM?",
+          "ravenReach": "unchecked",
+          "evidence": "SE \"How can I close a Stellar Account?\" (1795 views); cases.json account-merge case."
+        },
+        {
+          "id": "fundamentals.path-payments",
+          "title": "Path payments and cross-asset sends",
+          "scope": "Path payment strict send and strict receive, path finding, and slippage bounds. Excludes DEX order management.",
+          "weight": 2,
+          "weightReason": "Cross-currency payment apps and anchors use them; wrong bounds lose value.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/build/guides/transactions/path-payments",
+              "observedAt": "2026-11-14",
+              "quote": "Page title: Path payments (stellarDocs.search_doc_titles pointer; not a reach check)"
+            }
+          ],
+          "question": "How does a Stellar path payment let a sender pay in one asset while the recipient receives another?",
+          "ravenReach": "unchecked",
+          "evidence": "SE path-payment tag (13), \"What is the Path Payment response without paths?\", \"Allowed Number of Assets In Swapping\"; \"Does every transaction on Stellar need XLM as a bridge?\" (12 votes)."
+        },
+        {
+          "id": "fundamentals.networks-testnet",
+          "title": "Networks, passphrases, and testnet funding",
+          "scope": "Mainnet, testnet, and futurenet, network passphrases, Friendbot, and testnet resets.",
+          "weight": 2,
+          "weightReason": "Every new developer funds testnet accounts; mixed passphrases cause signature failures.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/networks#friendbot",
+              "observedAt": "2026-11-14",
+              "quote": "Page title: Networks — Friendbot (stellarDocs.search_doc_titles pointer; not a reach check)"
+            }
+          ],
+          "question": "How do you fund an account on Stellar testnet, and how does testnet differ from mainnet?",
+          "ravenReach": "unchecked",
+          "evidence": "SE \"How do you fund an account on the testnet?\" (4037 views); \"What's networkPassphrase used for?\"; cases.json Friendbot rate-limit and testnet USDC cases."
+        },
+        {
+          "id": "fundamentals.ledgers-finality",
+          "title": "Ledgers, finality, and throughput",
+          "scope": "Ledger close time, transaction finality, irreversibility, and throughput claims.",
+          "weight": 2,
+          "weightReason": "Payment integrators and analysts ask how fast and how final a payment is.",
+          "volatility": "scheduled",
+          "canonicalSources": [],
+          "question": "How long does a Stellar payment take to become final, and can a confirmed transaction be reversed?",
+          "ravenReach": "unchecked",
+          "evidence": "SE \"What is the maximum tps achievable by Stellar?\", \"Scalability on Stellar network\", \"How does Stellar solve the problem of double-spending?\" (14 votes)."
+        },
+        {
+          "id": "fundamentals.xdr",
+          "title": "XDR encoding",
+          "scope": "What XDR is, where it appears (envelopes, results, meta), and how to decode it.",
+          "weight": 1,
+          "weightReason": "Debugging raw envelopes and RPC results requires it; niche outside tooling.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/data-format/xdr#more-about-xdr",
+              "observedAt": "2026-11-14",
+              "quote": "Page title: XDR (stellarDocs.search_doc_titles pointer; not a reach check)"
+            }
+          ],
+          "question": "What is XDR on Stellar, and how do you decode a transaction envelope or result?",
+          "ravenReach": "unchecked",
+          "evidence": "SE \"Why did the project settle on XDR?\" (1234 views); SE xdr tag (34); \"Cannot Sign XDR\" hot question."
+        },
+        {
+          "id": "fundamentals.data-entries-home-domain",
+          "title": "Account data entries and home domain",
+          "scope": "manageData entries, their size limits and reserve cost, and the home_domain field.",
+          "weight": 1,
+          "weightReason": "Used for metadata and asset verification; niche.",
+          "volatility": "stable",
+          "canonicalSources": [],
+          "question": "How much data can a Stellar account store with manageData, and what does each entry cost?",
+          "ravenReach": "unchecked",
+          "evidence": "SE \"Upper limit for managed data\", \"How much extra balance is needed per DataEntry\"."
+        }
+      ]
+    },
+    {
+      "id": "soroban",
+      "title": "Smart contracts (Soroban)",
+      "leaves": [
+        {
+          "id": "soroban.overview",
+          "title": "Soroban overview and contract model",
+          "scope": "What Soroban is, Rust and Wasm, the host environment, and how it differs from EVM. Excludes tutorials.",
+          "weight": 2,
+          "weightReason": "Every newcomer and EVM porter asks; drives architecture choices.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/smart-contracts/overview"
+            },
+            {
+              "class": "A",
+              "ref": "https://stellar.org/soroban"
+            }
+          ],
+          "question": "What language are Stellar smart contracts written in, and how does the Soroban execution model differ from the EVM?",
+          "ravenReach": "unchecked",
+          "evidence": "SE \"Is something like smart contracts possible in Stellar?\" (1475 views); stellar-docs issue \"Documentation on onboarding Solana Developers\"."
+        },
+        {
+          "id": "soroban.storage-types",
+          "title": "Contract storage types",
+          "scope": "Instance, persistent, and temporary storage: lifetime, cost, and when each is right.",
+          "weight": 3,
+          "weightReason": "Every contract uses storage; picking temporary for durable data loses it.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/persisting-data#best-practices",
+              "observedAt": "2026-11-14",
+              "quote": "Prefer `Temporary` over `Persistent` and `Instance` storage"
+            }
+          ],
+          "question": "What are Soroban's three contract storage types, and what happens to each type's data when its TTL expires?",
+          "ravenReach": "yes",
+          "evidence": "CertiK \"Soroban Contract State Management\" and Soroban Cookbook troubleshooting surfaced for common-errors search.",
+          "ravenReachNote": "Soroban docs search returned persisting-data best practices and the storage example (extend_ttl)."
+        },
+        {
+          "id": "soroban.state-archival-ttl",
+          "title": "State archival, TTL, and restore",
+          "scope": "Entry TTLs, extending TTL, archived-entry errors, and restoring persistent entries.",
+          "weight": 3,
+          "weightReason": "Production contracts break when entries archive; a wrong answer bricks a dApp.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival"
+            },
+            {
+              "class": "A",
+              "ref": "https://stellar.org/blog/foundation-news/state-archival-issue-post-mortem"
+            },
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/build/guides/archival/create-restoration-footprint",
+              "observedAt": "2026-11-14",
+              "quote": "The manual operation (`RestoreFootprintOp`) is, for the most part, no longer needed starting in Protocol 23"
+            }
+          ],
+          "question": "What happens when a persistent Soroban entry's TTL expires, and how is it restored?",
+          "ravenReach": "yes",
+          "evidence": "stellar-rpc issue on archived getLedgerEntries responses (13 comments); Freighter \"UX for archived token balances\"; state archival docs top-ranked for fees search.",
+          "ravenReachNote": "Soroban docs search returned state-archival automatic restoration (CAP-66, Protocol 23) and the manual restoration-footprint guide."
+        },
+        {
+          "id": "soroban.resource-fees-limits",
+          "title": "Soroban resource fees and limits",
+          "scope": "Instruction, read/write, event, and size limits per transaction and ledger, rent, refundable vs non-refundable fees.",
+          "weight": 3,
+          "weightReason": "Every contract call pays resource fees; exceeding a limit fails the call.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering"
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0007.md"
+            },
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies#appendix-mainnet-limits",
+              "observedAt": "2026-11-14",
+              "quote": "SLP-0007 (live on Mainnet since October 22, 2026)."
+            },
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/build/guides/transactions/simulateTransaction-Deep-Dive#fees-and-resource-usage",
+              "observedAt": "2026-11-14",
+              "quote": "Soroban smart contracts on Stellar use a multidimensional resource fee model"
+            }
+          ],
+          "question": "How are Soroban transaction fees computed, and which per-transaction resource limits can make a contract call fail?",
+          "ravenReach": "yes",
+          "evidence": "GitHub discussions \"Revisiting the Soroban non-refundable resource fees\" and \"Increase per-transaction memory limit\"; SLP-0007 in stellar-protocol.",
+          "ravenReachNote": "Returned simulateTransaction deep-dive fee model and storage-strategies mainnet-limits appendix naming SLP-0007 live since 2026-10-22."
+        },
+        {
+          "id": "soroban.auth-require-auth",
+          "title": "Authorization and require_auth",
+          "scope": "Address, require_auth, auth entries, invoker vs non-invoker signing, and the msg.sender equivalent.",
+          "weight": 3,
+          "weightReason": "Every state-changing contract needs auth; misuse is the top security bug.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/build/guides/auth/contract-authorization#require_auth",
+              "observedAt": "2026-11-14",
+              "quote": "The `require_auth()` method authenticates and authorizes a user invoking a smart contract function."
+            }
+          ],
+          "question": "What does Soroban's require_auth verify, and what is the equivalent of Solidity's msg.sender?",
+          "ravenReach": "partial",
+          "evidence": "cases.json msg.sender/require_auth case; js-stellar-sdk issue \"needsNonInvokerSigningBy() assumes all auth addresses are stellar accounts\"; rs-soroban-sdk register_at auth issue.",
+          "ravenReachNote": "Docs content is reachable (Authorization page, auth example, contract-authorization guide), but Raven search for 'require_auth authorization Address invoker' ranked lumenloop.find_content_by_entity and search_content_semantic first, not the Soroban docs op; lumenloop returned generic articles."
+        },
+        {
+          "id": "soroban.custom-accounts",
+          "title": "Contract accounts and __check_auth",
+          "scope": "Custom account contracts, __check_auth, signer policies, and smart-wallet account abstraction.",
+          "weight": 2,
+          "weightReason": "Smart wallets and agent spending policies build on it.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets"
+            }
+          ],
+          "question": "How does a Soroban custom account contract authorize transactions through __check_auth?",
+          "ravenReach": "unchecked",
+          "evidence": "stellar-protocol issue \"SEP-43: contract account support\" (10 comments); SEP-53 for C addresses issue."
+        },
+        {
+          "id": "soroban.token-interface",
+          "title": "Token interface (SEP-41) and token choice",
+          "scope": "The SEP-41 token interface, CAP-46-6 history, and choosing a classic asset with SAC vs a custom contract token.",
+          "weight": 3,
+          "weightReason": "Every token issuer picks a standard; a wrong pick breaks wallet and DEX compatibility.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tokens/token-interface"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/issuing-assets"
+            },
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/tokens/anatomy-of-an-asset#contract-tokens",
+              "observedAt": "2026-11-14",
+              "quote": "you can create a contract token that implements the **[SEP-41 token interface][ti]**."
+            }
+          ],
+          "question": "Which interface should a custom Soroban token implement to work with Stellar wallets and DeFi, and when should you issue a classic asset instead?",
+          "ravenReach": "yes",
+          "evidence": "cases.json \"Is CAP-46-6 the token standard I should implement?\"; docs \"Issuing Assets vs. Creating Custom Tokens\" page.",
+          "ravenReachNote": "Asset/token docs search returned token-interface and anatomy-of-an-asset contract-token sections."
+        },
+        {
+          "id": "soroban.stellar-asset-contract",
+          "title": "Stellar Asset Contract (SAC)",
+          "scope": "The built-in SAC for classic assets including native XLM, deriving its contract ID, and deploying it.",
+          "weight": 3,
+          "weightReason": "Any contract that moves XLM or USDC uses the SAC; wrong IDs per network lose funds.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract"
+            },
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract#interacting-with-classic-stellar-assets",
+              "observedAt": "2026-11-14",
+              "quote": "The Stellar Asset Contract is the only way for contracts to interact with Stellar assets, either the native XLM asset, or those issued by Stellar accounts."
+            }
+          ],
+          "question": "How do you get the contract address of the native XLM Stellar Asset Contract, and why does it differ between testnet and mainnet?",
+          "ravenReach": "partial",
+          "evidence": "cases.json native-XLM SAC address case; js-stellar-sdk issue \"contract.Client#fromContractID that also handles built-in contracts (SAC)\".",
+          "ravenReachNote": "SAC docs page reachable; the snippet did not show the contract-ID derivation command or per-network IDs, so the specific question needs the full section content."
+        },
+        {
+          "id": "soroban.deploy-upgrade",
+          "title": "Deploying, constructors, and upgrades",
+          "scope": "Uploading Wasm, deploying instances, constructors, and upgrading a contract's Wasm in place.",
+          "weight": 2,
+          "weightReason": "Every deployment; upgrade design is a security decision.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/build/guides/conventions/upgrading-contracts#tests",
+              "observedAt": "2026-11-14",
+              "quote": "Page title: Upgrading Wasm bytecode for a deployed contract (stellarDocs.search_doc_titles pointer; not a reach check)"
+            }
+          ],
+          "question": "How do you deploy a Soroban contract with constructor arguments, and how can a deployed contract be upgraded?",
+          "ravenReach": "unchecked",
+          "evidence": "stellar-cli issue \"contract install|deploy build the current project\" (16 comments); rs-soroban-sdk \"typed constructor calls\" issue."
+        },
+        {
+          "id": "soroban.events",
+          "title": "Contract events",
+          "scope": "Emitting events, topics and data, and how clients read them.",
+          "weight": 2,
+          "weightReason": "Indexers and frontends depend on events.",
+          "volatility": "stable",
+          "canonicalSources": [],
+          "question": "How does a Soroban contract emit events, and how can an off-chain app read them?",
+          "ravenReach": "unchecked",
+          "evidence": "stellar-rpc issues \"Expand events in getTransaction response\" and \"getEvents filter matches on number of topics\"."
+        },
+        {
+          "id": "soroban.cross-contract",
+          "title": "Cross-contract calls",
+          "scope": "Calling other contracts, generated clients, and importing contracts.",
+          "weight": 2,
+          "weightReason": "Composable DeFi relies on it.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/cross-contract-call#contract-b-the-contract-doing-the-calling",
+              "observedAt": "2026-11-14",
+              "quote": "Page title: Cross Contract Calls (stellarDocs.search_doc_titles pointer; not a reach check)"
+            }
+          ],
+          "question": "How does one Soroban contract call another, and how are the callee's types made available?",
+          "ravenReach": "unchecked",
+          "evidence": "rs-soroban-sdk issue \"Prevent importing contracts into each other or make it safe\" (12 comments)."
+        },
+        {
+          "id": "soroban.testing-debugging",
+          "title": "Testing and debugging contracts",
+          "scope": "Test environment, snapshots, HostError and diagnostic events, and common error codes.",
+          "weight": 2,
+          "weightReason": "Every developer debugs HostErrors.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/errors-and-debugging/debugging-errors"
+            }
+          ],
+          "question": "How do you interpret a Soroban HostError such as Error(Auth, InvalidAction) during a failed contract call?",
+          "ravenReach": "unchecked",
+          "evidence": "SE \"xdr value invalid\" and \"Contract pre-release number does not match host\"; rs-soroban-sdk \"Improve the error message when the wrong type is passed\"; docs debugging-errors page."
+        },
+        {
+          "id": "soroban.wasm-size-optimization",
+          "title": "Contract size limits and optimization",
+          "scope": "Maximum Wasm size, build optimization, and splitting contracts.",
+          "weight": 1,
+          "weightReason": "Large contracts hit the size limit; niche.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/build/guides/fees/analyzing-smart-contract-cost#6-contract-size",
+              "observedAt": "2026-11-14",
+              "quote": "Page title: Analyzing smart contract cost and efficiency — Contract size (stellarDocs.search_doc_titles pointer; not a reach check)"
+            }
+          ],
+          "question": "What is the maximum Soroban contract Wasm size, and how do developers shrink a contract that exceeds it?",
+          "ravenReach": "unchecked",
+          "evidence": "Soroban Cookbook troubleshooting and community CONTRACT_RESOURCE_LIMITS docs surfaced in common-errors search."
+        },
+        {
+          "id": "soroban.openzeppelin-contracts",
+          "title": "OpenZeppelin Stellar contracts",
+          "scope": "The OpenZeppelin library for Soroban (tokens, access control, upgradeability) and its Wizard.",
+          "weight": 2,
+          "weightReason": "The default audited building blocks for tokens and access control.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/tools/openzeppelin-contracts#openzeppelin-stellar-contracts-and-utilities",
+              "observedAt": "2026-11-14",
+              "quote": "Page title: OpenZeppelin Contracts and Toolings (stellarDocs.search_doc_titles pointer; not a reach check)"
+            }
+          ],
+          "question": "What does the OpenZeppelin Stellar Contracts library provide for Soroban developers?",
+          "ravenReach": "unchecked",
+          "evidence": "Rumble Fish and ecosystem-resources pages; OpenZeppelin Relayer case in cases.json shows OpenZeppelin as a Stellar vendor."
+        },
+        {
+          "id": "soroban.zk-crypto-primitives",
+          "title": "Cryptographic host functions and ZK",
+          "scope": "BN254, Poseidon, secp256r1, other curve and hash host functions, and ZK verifiers available to contracts.",
+          "weight": 2,
+          "weightReason": "Privacy and ZK builders ask about status constantly; status changes with protocols.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/apps/zk"
+            },
+            {
+              "class": "A",
+              "ref": "https://stellar.org/blog/developers/announcing-stellar-x-ray-protocol-25"
+            }
+          ],
+          "question": "Which zero-knowledge cryptographic primitives can Soroban contracts use natively, and in which protocol did they arrive?",
+          "ravenReach": "unchecked",
+          "evidence": "cases.json BN254/Poseidon status case; X-Ray Protocol 25 blog; noir-lang UltraHonk verifier discussion; Boundless verifier blog."
+        },
+        {
+          "id": "soroban.privacy",
+          "title": "Privacy on Stellar",
+          "scope": "Privacy pools, private payments previews, and what is and is not private on chain.",
+          "weight": 1,
+          "weightReason": "Emerging topic with active previews.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/apps/privacy"
+            },
+            {
+              "class": "A",
+              "ref": "https://stellar.org/blog/developers/developer-preview-stellar-private-payments"
+            }
+          ],
+          "question": "What privacy features exist on Stellar today, and are private payments live on mainnet?",
+          "ravenReach": "unchecked",
+          "evidence": "Search for ZK returned \"Privacy on Stellar\" docs and \"Developer Preview: Stellar Private Payments\" blog."
+        }
+      ]
+    },
+    {
+      "id": "data",
+      "title": "RPC, Horizon, and data access",
+      "leaves": [
+        {
+          "id": "data.rpc-vs-horizon",
+          "title": "Stellar RPC vs Horizon",
+          "scope": "Which API to use for a new app, Horizon's status, and migration.",
+          "weight": 3,
+          "weightReason": "Every new integration chooses; following stale Horizon advice wastes builds.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/data/apis"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/data/apis/migrate-from-horizon-to-rpc"
+            },
+            {
+              "class": "A",
+              "ref": "https://stellar.org/blog/foundation-news/stellar-rpc-has-arrived"
+            },
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/data/apis",
+              "observedAt": "2026-11-14",
+              "quote": "Horizon is nearing end-of-life and will eventually be deprecated in favor of Stellar RPC and Portfolio APIs"
+            }
+          ],
+          "question": "Should a new Stellar application use Stellar RPC or Horizon, and what does Horizon still offer that RPC does not?",
+          "ravenReach": "yes",
+          "evidence": "cases.json \"latest official advice for Horizon vs Stellar RPC\"; exchange-integration search returned the migration guide.",
+          "ravenReachNote": "RPC/Horizon docs search returned APIs overview (Horizon nearing end-of-life), the migration guide, and Horizon intro."
+        },
+        {
+          "id": "data.rpc-simulate-submit",
+          "title": "RPC simulate, prepare, and send",
+          "scope": "simulateTransaction, assembling footprints and auth, sendTransaction, and polling for status.",
+          "weight": 3,
+          "weightReason": "Every Soroban transaction goes through simulate and submit; mistakes fail every call.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/simulateTransaction#using-the-lab",
+              "observedAt": "2026-11-14",
+              "quote": "The `simulateTransaction` method allows you to **simulate a smart contract invocation** without actually submitting it to the network."
+            }
+          ],
+          "question": "Why must a Soroban transaction be simulated before submission, and what does simulateTransaction return?",
+          "ravenReach": "yes",
+          "evidence": "js-stellar-sdk issues \"PrepareTransaction returns an error\" (12) and \"Add send_transaction_polling\"; stellar-rpc tracing issue.",
+          "ravenReachNote": "RPC docs search returned simulateTransaction, sendTransaction, and getTransaction method references."
+        },
+        {
+          "id": "data.rpc-retention-history",
+          "title": "RPC data retention and history",
+          "scope": "The RPC history window, getTransactions/getEvents pagination, and getting older data.",
+          "weight": 2,
+          "weightReason": "Apps that need history beyond the window must plan for it.",
+          "volatility": "scheduled",
+          "canonicalSources": [],
+          "question": "How far back can Stellar RPC return transactions and events, and where do you get older history?",
+          "ravenReach": "unchecked",
+          "evidence": "stellar-rpc issue \"Serve recent historical state\" (27 comments) and \"Full history for getTransaction(hash)\"; cases.json getTransactions pagination case."
+        },
+        {
+          "id": "data.horizon-api",
+          "title": "Horizon API usage and streaming",
+          "scope": "Horizon resources, pagination cursors, and streaming payments for an account.",
+          "weight": 2,
+          "weightReason": "Many wallets and exchanges still run on Horizon.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/structure/streaming",
+              "observedAt": "2026-11-14",
+              "quote": "Page title: Streaming (stellarDocs.search_doc_titles pointer; not a reach check)"
+            }
+          ],
+          "question": "How do you stream incoming payments to an account with Horizon, and how do pagination cursors work?",
+          "ravenReach": "unchecked",
+          "evidence": "SE horizon tag (244); \"How do I keep track of payments to an address with JS SDK?\"; \"How to close a stream event?\"."
+        },
+        {
+          "id": "data.result-codes",
+          "title": "Transaction and operation result codes",
+          "scope": "Reading tx and op result codes (tx_failed, op_underfunded, op_no_trust, tx_insufficient_fee) and HTTP errors.",
+          "weight": 3,
+          "weightReason": "Every failed submission returns one; correct diagnosis is daily work.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/transactions"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/error-handling"
+            },
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/troubleshooting#common-operation-codes",
+              "observedAt": "2026-11-14",
+              "quote": "`op_no_trust` | Receiver hasn't established a trustline for this asset"
+            }
+          ],
+          "question": "What does a Stellar op_underfunded or op_no_trust result code mean, and how do you fix each?",
+          "ravenReach": "partial",
+          "evidence": "cases.json result-code taxonomy case; docs FAQ search returned the Horizon result-code pages first.",
+          "ravenReachNote": "stellarDocs.search_docs for 'op_underfunded op_no_trust result codes' ranked the SDP troubleshooting table and per-operation result-code pages; the transaction result-code reference and an op_underfunded explanation did not surface in the top 3."
+        },
+        {
+          "id": "data.rpc-providers",
+          "title": "RPC and Horizon providers",
+          "scope": "Who operates public and commercial RPC/Horizon endpoints, and SDF's public endpoints.",
+          "weight": 2,
+          "weightReason": "Builders need an endpoint; the list changes.",
+          "volatility": "live",
+          "canonicalSources": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/data/apis/rpc/providers",
+              "observedAt": "2026-11-14",
+              "quote": "Multiple infrastructure providers have made Stellar RPC services available, and offer plans ranging from free to dedicated instances."
+            }
+          ],
+          "question": "Which providers offer Stellar RPC endpoints for mainnet, and does SDF run a public mainnet RPC?",
+          "ravenReach": "yes",
+          "evidence": "cases.json \"push the same signed tx to multiple RPC providers\" case; stellar-rpc \"release and maintenance plan for rpc v1 and v2\".",
+          "ravenReachNote": "Returned RPC providers, Horizon providers (publicly accessible APIs table), and Galexie providers pages."
+        },
+        {
+          "id": "data.hubble-analytics",
+          "title": "Hubble and analytics datasets",
+          "scope": "The Hubble BigQuery dataset, stellar-etl, and running analytics queries.",
+          "weight": 2,
+          "weightReason": "Analysts and researchers start here.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/data/analytics/hubble"
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-etl"
+            },
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/data/analytics",
+              "observedAt": "2026-11-14",
+              "quote": "Hubble is an open-source, read-only BigQuery data warehouse maintained by SDF that provides a complete historical record of the Stellar network"
+            }
+          ],
+          "question": "What is Hubble, and how can an analyst query full Stellar history with it?",
+          "ravenReach": "yes",
+          "evidence": "SE \"How do I conduct data analysis on Stellar?\" (11 votes); analyst persona search returned Hubble and stellar-etl first.",
+          "ravenReachNote": "RPC/data docs search returned Hubble overview, BigQuery rationale, and data-import guide."
+        },
+        {
+          "id": "data.indexers",
+          "title": "Indexers and data providers",
+          "scope": "Third-party indexers (for example Goldsky, Mercury, SubQuery) and when to use one.",
+          "weight": 2,
+          "weightReason": "dApp frontends need indexed contract data.",
+          "volatility": "live",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/data/data-indexers/indexer-providers"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/data/indexers"
+            }
+          ],
+          "question": "Which indexers support Stellar and Soroban data, and when should an app use one instead of RPC?",
+          "ravenReach": "unchecked",
+          "evidence": "stellar-docs issue \"end-to-end guide on fetching data from an indexer (Goldsky)\" (11 comments)."
+        },
+        {
+          "id": "data.ingestion-archives",
+          "title": "History archives, Galexie, and ingestion",
+          "scope": "History archives, ledger metadata export, the Composable Data Platform, and custom ingestion pipelines.",
+          "weight": 1,
+          "weightReason": "Infrastructure teams need it; niche.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/validators/admin-guide/publishing-history-archives",
+              "observedAt": "2026-11-14",
+              "quote": "Page title: Publishing History Archives (stellarDocs.search_doc_titles pointer; not a reach check)"
+            }
+          ],
+          "question": "What are Stellar history archives, and how can a team ingest full ledger history without running Horizon?",
+          "ravenReach": "unchecked",
+          "evidence": "SE \"Browsing Stellar's history archive\" (990 views); stellar-core history tag (34)."
+        },
+        {
+          "id": "data.explorers",
+          "title": "Block explorers and network dashboards",
+          "scope": "Explorers (for example StellarExpert, StellarChain) and network monitors like Stellarbeat.",
+          "weight": 2,
+          "weightReason": "Users and support staff verify transactions in explorers.",
+          "volatility": "live",
+          "canonicalSources": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/tools/developer-tools/block-explorers",
+              "observedAt": "2026-11-14",
+              "quote": "Page title: Block Explorers (stellarDocs.search_doc_titles pointer; not a reach check)"
+            }
+          ],
+          "question": "Which block explorers can you use to look up a Stellar transaction or account?",
+          "ravenReach": "unchecked",
+          "evidence": "SE \"accountviewer.org access problem\"; recent liquidity pool \"inconsistently displayed across explorers\" question."
+        },
+        {
+          "id": "data.contract-state-offchain",
+          "title": "Reading contract state off-chain",
+          "scope": "getLedgerEntries, ledger keys for contract data, and decoding values.",
+          "weight": 1,
+          "weightReason": "Backends read balances and state directly; niche.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLedgerEntries#actually-fetching-the-ledger-entry-data",
+              "observedAt": "2026-11-14",
+              "quote": "Page title: getLedgerEntries (stellarDocs.search_doc_titles pointer; not a reach check)"
+            }
+          ],
+          "question": "How can an off-chain app read a Soroban contract's stored data or token balance without invoking it?",
+          "ravenReach": "unchecked",
+          "evidence": "SE \"How to read data of contract storage from offchain?\" and \"How to get contract balance from contract data in python sdk?\"."
+        }
+      ]
+    },
+    {
+      "id": "tooling",
+      "title": "SDKs and developer tools",
+      "leaves": [
+        {
+          "id": "tooling.stellar-cli",
+          "title": "Stellar CLI",
+          "scope": "Installing the stellar CLI, keys, contract build/deploy/invoke, and tx commands.",
+          "weight": 3,
+          "weightReason": "The primary developer tool; command changes break tutorials.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/tools/cli/stellar-cli#stellar-contract",
+              "observedAt": "2026-11-14",
+              "quote": "Tools for smart contract developers **Usage:** `stellar contract `"
+            }
+          ],
+          "question": "How do you build, deploy, and invoke a Soroban contract with the Stellar CLI?",
+          "ravenReach": "yes",
+          "evidence": "stellar-cli issues: \"How to set fields on Transactions\" (22), \"keys generate should no longer fund\" (18), \"cargo-binstall release install broken\" (15).",
+          "ravenReachNote": "SDK/CLI docs search returned the Stellar CLI manual (stellar contract), the SAC deploy cookbook, and the Quickstart deploy/invoke guide."
+        },
+        {
+          "id": "tooling.js-sdk-contract-client",
+          "title": "JavaScript SDK and contract clients",
+          "scope": "@stellar/stellar-sdk, contract.Client, AssembledTransaction, and generated TypeScript bindings.",
+          "weight": 2,
+          "weightReason": "Most dApp frontends use it.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/js-stellar-sdk"
+            }
+          ],
+          "question": "How do you call a Soroban contract from JavaScript with the Stellar SDK's contract client?",
+          "ravenReach": "unchecked",
+          "evidence": "js-stellar-sdk issues on AssembledTransaction, timeouts, and signTransaction; stellar-docs \"JS SDK AssembledTransaction cookbooks\"."
+        },
+        {
+          "id": "tooling.sdk-landscape",
+          "title": "SDK landscape by language",
+          "scope": "Official and community SDKs (JS, Python, Java, Go, Rust, Swift, Flutter, PHP, .NET) and their maintenance status.",
+          "weight": 2,
+          "weightReason": "Builders pick a language SDK first.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tools/sdks/client-sdks"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tools/sdks/contract-sdks"
+            }
+          ],
+          "question": "Which Stellar SDKs are maintained by SDF, and which languages rely on community SDKs?",
+          "ravenReach": "unchecked",
+          "evidence": "SE tags javascript-sdk (87), java-sdk (62), python-sdk (31), go-sdk (26)."
+        },
+        {
+          "id": "tooling.stellar-lab",
+          "title": "Stellar Lab",
+          "scope": "What Stellar Laboratory does: building, signing, and submitting transactions, and contract tools.",
+          "weight": 1,
+          "weightReason": "Used for manual testing; niche.",
+          "volatility": "scheduled",
+          "canonicalSources": [],
+          "question": "What can a developer do in Stellar Lab?",
+          "ravenReach": "unchecked",
+          "evidence": "SE stellar-laboratory tag (47); recent \"Setting preconditions in Stellar Laboratory?\"."
+        },
+        {
+          "id": "tooling.quickstart-local",
+          "title": "Local networks and Quickstart",
+          "scope": "Running a local network with the Quickstart image and private networks.",
+          "weight": 2,
+          "weightReason": "Integration tests need a local network.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/tools/quickstart",
+              "observedAt": "2026-11-14",
+              "quote": "Page title: Quickstart (stellarDocs.search_doc_titles pointer; not a reach check)"
+            }
+          ],
+          "question": "How do you run a local Stellar network for development and testing?",
+          "ravenReach": "unchecked",
+          "evidence": "SE private-network tag (25) and docker tag (33); stellar-cli \"Automatically update quickstart to use the latest image\"."
+        },
+        {
+          "id": "tooling.dapp-scaffolding",
+          "title": "dApp scaffolding and templates",
+          "scope": "Scaffold Stellar and starter templates for contract plus frontend projects.",
+          "weight": 1,
+          "weightReason": "Speeds new projects; niche.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/tools/scaffold-stellar#video-series",
+              "observedAt": "2026-11-14",
+              "quote": "Page title: Scaffold Stellar (stellarDocs.search_doc_titles pointer; not a reach check)"
+            }
+          ],
+          "question": "What tools generate a starter Stellar dApp with contracts and a frontend?",
+          "ravenReach": "unchecked",
+          "evidence": "stellar-docs issue \"Remove links to Gitpod, use Devcontainer file(s)\"; hackathon builder demand."
+        },
+        {
+          "id": "tooling.wallet-connect-dapp",
+          "title": "Connecting dApps to wallets",
+          "scope": "Stellar Wallets Kit, the Varial (formerly Freighter) wallet API, and signing flows from a dApp.",
+          "weight": 2,
+          "weightReason": "Every dApp frontend connects a wallet.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "D",
+              "ref": "https://docs.freighter.app/"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tools/developer-tools/wallets"
+            }
+          ],
+          "question": "How does a Stellar dApp connect to users' wallets such as Varial (formerly Freighter) and request signatures?",
+          "ravenReach": "unchecked",
+          "evidence": "Stellar-Wallets-Kit issue #91 on passkeys; Freighter repo activity."
+        },
+        {
+          "id": "tooling.passkey-smart-wallets",
+          "title": "Passkey smart wallets",
+          "scope": "Building passkey (secp256r1) smart wallets, passkey-kit, and relaying their transactions.",
+          "weight": 2,
+          "weightReason": "Current recommended UX path; guidance changes.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/passkey-kit"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/apps/smart-wallets"
+            }
+          ],
+          "question": "What is the recommended way to build a passkey-based smart wallet on Stellar?",
+          "ravenReach": "unchecked",
+          "evidence": "cases.json \"latest recommendation for building passkey smart wallets\"; wallet persona search."
+        },
+        {
+          "id": "tooling.relayers-fee-sponsorship",
+          "title": "Relayers and gasless transactions",
+          "scope": "OpenZeppelin Relayer, Launchtube-style services, and paying users' fees from a backend.",
+          "weight": 2,
+          "weightReason": "Consumer apps abstract fees; service status changes.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/tools/openzeppelin-relayer#account-transfer",
+              "observedAt": "2026-11-14",
+              "quote": "Page title: OpenZeppelin Relayer (stellarDocs.search_doc_titles pointer; not a reach check)"
+            }
+          ],
+          "question": "How can a backend submit Stellar transactions and pay fees for its users through a relayer?",
+          "ravenReach": "unchecked",
+          "evidence": "cases.json OpenZeppelin Relayer case; passkey-kit \"keyless relayer submission\"."
+        },
+        {
+          "id": "tooling.high-throughput-submission",
+          "title": "High-throughput submission",
+          "scope": "Channel accounts, retriable errors (TRY_AGAIN_LATER), and parallel submission.",
+          "weight": 2,
+          "weightReason": "Payment processors and exchanges need throughput.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/build/guides/transactions/channel-accounts",
+              "observedAt": "2026-11-14",
+              "quote": "Page title: Channel accounts (stellarDocs.search_doc_titles pointer; not a reach check)"
+            }
+          ],
+          "question": "How do you submit many Stellar transactions in parallel without tx_bad_seq errors?",
+          "ravenReach": "unchecked",
+          "evidence": "cases.json channel-accounts/TRY_AGAIN_LATER case; SE \"How to reserve a transaction sequence number?\"."
+        },
+        {
+          "id": "tooling.protocol-sdk-compat",
+          "title": "SDK and protocol-version compatibility",
+          "scope": "Which SDK and CLI versions a protocol upgrade requires, and version-mismatch errors.",
+          "weight": 2,
+          "weightReason": "Every upgrade forces SDK bumps; stale SDKs fail to parse XDR.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/networks/software-versions",
+              "observedAt": "2026-11-14",
+              "quote": "Page title: Software Versions (stellarDocs.search_doc_titles pointer; not a reach check)"
+            }
+          ],
+          "question": "Why must Stellar SDKs be upgraded before a protocol upgrade, and what fails if they are not?",
+          "ravenReach": "unchecked",
+          "evidence": "SE \"Contract pre-release number does not match host\"; stellar-core issue on XDR checks between core and host; Bell P30 upgrade guide."
+        }
+      ]
+    },
+    {
+      "id": "standards",
+      "title": "SEPs, anchors, and interoperability",
+      "leaves": [
+        {
+          "id": "standards.sep-process",
+          "title": "SEP catalog and lifecycle",
+          "scope": "What SEPs are, their statuses, and how one is proposed and adopted.",
+          "weight": 2,
+          "weightReason": "Agents must know whether a SEP is draft or final before recommending it.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals"
+            }
+          ],
+          "question": "What is a SEP, and what statuses can a SEP have?",
+          "ravenReach": "unchecked",
+          "evidence": "stellar-protocol issues show active SEP drafts (SEP-43, hierarchical mandate tokens); anchor persona search."
+        },
+        {
+          "id": "standards.sep1-stellar-toml",
+          "title": "SEP-1 stellar.toml and home domains",
+          "scope": "stellar.toml contents, home domain linking, and verifying an issuer.",
+          "weight": 2,
+          "weightReason": "Asset issuers, anchors, and wallets depend on it for identity.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/build/apps/example-application-tutorial/anchor-integration/sep1",
+              "observedAt": "2026-11-14",
+              "quote": "Page title: SEP-1: Stellar TOML (stellarDocs.search_doc_titles pointer; not a reach check)"
+            }
+          ],
+          "question": "What does a stellar.toml file declare, and how does it link an asset issuer to a domain?",
+          "ravenReach": "unchecked",
+          "evidence": "SE stellar.toml tag (28); \"demo wallet is not considering anchor home domain as valid\"."
+        },
+        {
+          "id": "standards.sep10-auth",
+          "title": "SEP-10 web authentication",
+          "scope": "The SEP-10 challenge-response flow, client domain, and JWT.",
+          "weight": 2,
+          "weightReason": "Every anchor and wallet integration starts with it.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep10#how-to-test-the-authentication-flow",
+              "observedAt": "2026-11-14",
+              "quote": "The SEP-10 authentication flow consists of two steps: 1. GET /auth - Request a challenge transaction"
+            }
+          ],
+          "question": "How does SEP-10 authentication prove control of a Stellar account to an anchor?",
+          "ravenReach": "yes",
+          "evidence": "SE \"SEP-10 Authentication Sample\"; stellar-protocol issue on client_domain communication.",
+          "ravenReachNote": "Anchor/SEP docs search returned the Anchor Platform SEP-10 guide and SDP challenge endpoints."
+        },
+        {
+          "id": "standards.sep45-contract-auth",
+          "title": "SEP-45 auth for contract accounts",
+          "scope": "Web authentication for C (contract) addresses.",
+          "weight": 1,
+          "weightReason": "Needed as smart wallets meet anchors; niche today.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep45",
+              "observedAt": "2026-11-14",
+              "quote": "Page title: Stellar Authentication for Contract Accounts (SEP-45) (stellarDocs.search_doc_titles pointer; not a reach check)"
+            }
+          ],
+          "question": "How does SEP-45 extend web authentication to contract accounts?",
+          "ravenReach": "unchecked",
+          "evidence": "stellar-protocol SEP-43 contract account issue; SEP-53 for C addresses follow-up."
+        },
+        {
+          "id": "standards.sep24-interactive",
+          "title": "SEP-24 interactive deposit and withdrawal",
+          "scope": "Hosted (interactive) deposit and withdrawal flows between wallets and anchors.",
+          "weight": 3,
+          "weightReason": "The dominant wallet-anchor flow; mistakes strand fiat.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals",
+              "observedAt": "2026-11-14",
+              "quote": "SEP-24 - Hosted Deposit and Withdrawal ... Defines the standard way for anchors and wallets to interact on behalf of us"
+            }
+          ],
+          "question": "How does a SEP-24 interactive deposit work between a wallet and an anchor?",
+          "ravenReach": "yes",
+          "evidence": "SE \"SEP-24 deposit failed: source account is not equal to the server\"; stellar-protocol \"SEP-24 improvements\".",
+          "ravenReachNote": "Anchor/SEP docs search returned the Anchor Platform SEP-24 guide, the SEPs overview, and the SEP-6 vs SEP-24 section."
+        },
+        {
+          "id": "standards.sep6-programmatic",
+          "title": "SEP-6 programmatic deposit and withdrawal",
+          "scope": "Non-interactive deposit/withdraw API and when to choose it over SEP-24.",
+          "weight": 2,
+          "weightReason": "Exchanges and businesses integrate without UI.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0006.md"
+            }
+          ],
+          "question": "When should an integrator use SEP-6 instead of SEP-24?",
+          "ravenReach": "unchecked",
+          "evidence": "Exchange persona search returned SEP-6; stellar-protocol client_domain SEP-24/SEP-6 issue."
+        },
+        {
+          "id": "standards.sep31-cross-border",
+          "title": "SEP-31 cross-border payments",
+          "scope": "Sending-to-receiving anchor payments, SEP-31 flow, and its dependencies.",
+          "weight": 2,
+          "weightReason": "Remittance and B2B builders use it.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "http://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep31/configuration"
+            }
+          ],
+          "question": "How does a SEP-31 payment move funds between a sending and a receiving anchor?",
+          "ravenReach": "unchecked",
+          "evidence": "SE \"List of Anchors for SEP31 and SEP24\"; anchor persona search."
+        },
+        {
+          "id": "standards.sep12-kyc",
+          "title": "SEP-12 KYC",
+          "scope": "Customer information exchange with anchors.",
+          "weight": 2,
+          "weightReason": "Every regulated anchor flow collects KYC.",
+          "volatility": "stable",
+          "canonicalSources": [],
+          "question": "What does SEP-12 standardize for anchors?",
+          "ravenReach": "unchecked",
+          "evidence": "Anchor persona search (SEP-12 KYC); SE compliance tag (19)."
+        },
+        {
+          "id": "standards.sep38-quotes",
+          "title": "SEP-38 quotes",
+          "scope": "Firm and indicative quotes for cross-asset anchor transactions.",
+          "weight": 1,
+          "weightReason": "Used in cross-asset ramps; niche.",
+          "volatility": "stable",
+          "canonicalSources": [],
+          "question": "What does SEP-38 provide in an anchor transaction?",
+          "ravenReach": "unchecked",
+          "evidence": "Anchor Platform SEP guides surfaced in anchor search."
+        },
+        {
+          "id": "standards.sep7-uri",
+          "title": "SEP-7 payment and signing URIs",
+          "scope": "web+stellar URIs for payment requests and transaction signing, QR codes.",
+          "weight": 1,
+          "weightReason": "Point-of-sale and deep-link flows; niche.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/build/apps/wallet/sep7#pay-operation",
+              "observedAt": "2026-11-14",
+              "quote": "Page title: URI Scheme to facilitate delegated signing (stellarDocs.search_doc_titles pointer; not a reach check)"
+            }
+          ],
+          "question": "What is a SEP-7 URI, and how does a wallet use it?",
+          "ravenReach": "unchecked",
+          "evidence": "SE \"Which wallets are supporting SEP-0007\"; recent \"SEP-0007 for Point of sale transactions (offline)\"."
+        },
+        {
+          "id": "standards.sep2-federation",
+          "title": "SEP-2 federation addresses",
+          "scope": "name*domain addresses and federation server lookups.",
+          "weight": 1,
+          "weightReason": "Legacy but still asked; niche.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/learn/glossary#federation",
+              "observedAt": "2026-11-14",
+              "quote": "Page title: Glossary — Federation (stellarDocs.search_doc_titles pointer; not a reach check)"
+            }
+          ],
+          "question": "How does a Stellar federation address like name*domain.com resolve to an account?",
+          "ravenReach": "unchecked",
+          "evidence": "SE federation tag (28); \"Is the client responsible for the federation lookup?\""
+        },
+        {
+          "id": "standards.sep29-memo-required",
+          "title": "SEP-29 memo-required accounts",
+          "scope": "Flagging accounts that require a memo and wallet checks before sending.",
+          "weight": 2,
+          "weightReason": "Prevents the lost-memo deposits that dominate support tickets.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/blog/developers/fixing-memo-less-payments"
+            }
+          ],
+          "question": "How does SEP-29 help wallets prevent sending memo-less payments to exchanges?",
+          "ravenReach": "unchecked",
+          "evidence": "stellar.org \"Fixing Memo-less Payments\" in exchange search; SE \"Transfer without memo\"."
+        },
+        {
+          "id": "standards.sep30-recovery",
+          "title": "SEP-30 account recovery",
+          "scope": "Multi-party key recovery servers for non-custodial wallets.",
+          "weight": 1,
+          "weightReason": "Wallets with social recovery; niche.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/build/apps/wallet/sep30#create-recoverable-account",
+              "observedAt": "2026-11-14",
+              "quote": "Page title: Recovery (SEP-30) (stellarDocs.search_doc_titles pointer; not a reach check)"
+            }
+          ],
+          "question": "How does SEP-30 let a user recover a non-custodial Stellar account?",
+          "ravenReach": "unchecked",
+          "evidence": "Reddit \"Any way to recover my xlm without recovery phrase?\"."
+        },
+        {
+          "id": "standards.sep53-message-signing",
+          "title": "Signing messages (SEP-53)",
+          "scope": "Signing and verifying arbitrary messages to prove account ownership.",
+          "weight": 1,
+          "weightReason": "Login and proof-of-ownership flows; niche.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/tools/cli/agent-cli/guides/sign-messages#flag-names-are-not-symmetric",
+              "observedAt": "2026-11-14",
+              "quote": "Page title: Sign messages (stellarDocs.search_doc_titles pointer; not a reach check)"
+            }
+          ],
+          "question": "How can a user prove ownership of a Stellar address by signing a message?",
+          "ravenReach": "unchecked",
+          "evidence": "SE recent \"Signing a message to prove ownership\"; stellar-protocol \"Signed messages for contract accounts (SEP-53 profile for C addresses)\"."
+        },
+        {
+          "id": "standards.anchor-platform",
+          "title": "Anchor Platform",
+          "scope": "SDF's Anchor Platform: what it implements and how an anchor deploys it.",
+          "weight": 2,
+          "weightReason": "Fastest path to becoming an anchor.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/platforms/anchor-platform"
+            }
+          ],
+          "question": "What is the Stellar Anchor Platform, and which SEPs does it implement for an anchor?",
+          "ravenReach": "unchecked",
+          "evidence": "Anchor persona search ranked the Anchor Platform first; SE \"How to set up an anchor on stellar?\"."
+        },
+        {
+          "id": "standards.disbursement-platform",
+          "title": "Stellar Disbursement Platform",
+          "scope": "The SDP for bulk payouts: wallets, receivers, and operations.",
+          "weight": 2,
+          "weightReason": "Aid and payroll disbursements use it.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/troubleshooting"
+            }
+          ],
+          "question": "What does the Stellar Disbursement Platform do, and who uses it?",
+          "ravenReach": "unchecked",
+          "evidence": "Docs FAQ search surfaced SDP troubleshooting; SE \"Instantly distributing payments to multiple parties\"."
+        },
+        {
+          "id": "standards.nft-standards",
+          "title": "NFTs on Stellar",
+          "scope": "Classic NFT patterns and Soroban NFT standards.",
+          "weight": 1,
+          "weightReason": "Recurring newcomer question; niche usage.",
+          "volatility": "scheduled",
+          "canonicalSources": [],
+          "question": "How are NFTs created on Stellar, with classic assets or Soroban contracts?",
+          "ravenReach": "unchecked",
+          "evidence": "SE \"Can I create a non-fungible token?\" (1100 views)."
+        }
+      ]
+    },
+    {
+      "id": "network",
+      "title": "Consensus, validators, and protocol governance",
+      "leaves": [
+        {
+          "id": "network.scp",
+          "title": "Stellar Consensus Protocol",
+          "scope": "Federated Byzantine agreement, quorum slices, safety over liveness, and Sybil resistance.",
+          "weight": 2,
+          "weightReason": "Analysts, investors, and researchers ask how Stellar reaches consensus.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol"
+            },
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol",
+              "observedAt": "2026-11-14",
+              "quote": "As mentioned above, each Core node decides on which other nodes it would like to trust to reach agreement."
+            }
+          ],
+          "question": "How does the Stellar Consensus Protocol reach agreement, and does it favor safety or liveness?",
+          "ravenReach": "yes",
+          "evidence": "SE top-voted: \"How are Stellar and Ripple protocols different?\" (39 votes), \"known weaknesses in SCP\" (22), \"prevent Sybil attacks\" (1246 views).",
+          "ravenReachNote": "scout.searchResearch returned the 2016 SCP paper and the docs SCP overview (quorum set section)."
+        },
+        {
+          "id": "network.validators-tier1",
+          "title": "Validators and Tier 1 organizations",
+          "scope": "Who validates the network, Tier 1 organizations, and quorum structure.",
+          "weight": 2,
+          "weightReason": "Decentralization questions recur among analysts and investors.",
+          "volatility": "live",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/validators/tier-1-orgs"
+            },
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/validators/tier-1-orgs",
+              "observedAt": "2026-11-14",
+              "quote": "Tier 1 organizations are a group of organizations that bear the safety and liveness of the Stellar network on their shoulders."
+            }
+          ],
+          "question": "What is a Tier 1 organization on Stellar, and how many validators must one run?",
+          "ravenReach": "yes",
+          "evidence": "SE validators tag (33); \"How to become a Verified entity on Stellar Dashboard?\".",
+          "ravenReachNote": "Search ranked meeting notes first; stellarDocs.search_docs returned the Tier 1 Organizations page and validator prerequisites. The live roster itself is not exposed (no Stellarbeat-style op)."
+        },
+        {
+          "id": "network.run-node",
+          "title": "Running a validator or watcher node",
+          "scope": "Node prerequisites, configuration, history archive publishing, and incentives.",
+          "weight": 2,
+          "weightReason": "Infrastructure operators; the most-viewed SE question.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/validators/admin-guide/prerequisites"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/validators/admin-guide/configuring"
+            }
+          ],
+          "question": "What is the incentive to run a Stellar validator, and what does running one require?",
+          "ravenReach": "unchecked",
+          "evidence": "SE \"What is the incentive to run a Stellar node?\" (9982 views, top-voted); stellar-core tag (352, largest)."
+        },
+        {
+          "id": "network.core-ops",
+          "title": "Operating stellar-core, Horizon, and RPC",
+          "scope": "Disk usage, catchup, captive core, and upgrade operations for infrastructure.",
+          "weight": 1,
+          "weightReason": "Operators need it; niche.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/validators/admin-guide/maintenance",
+              "observedAt": "2026-11-14",
+              "quote": "Page title: Maintenance (stellarDocs.search_doc_titles pointer; not a reach check)"
+            }
+          ],
+          "question": "Why does a Stellar node's disk usage keep growing, and how do operators control it?",
+          "ravenReach": "unchecked",
+          "evidence": "SE hot \"How to stop evergrowing disk usage by Stellar node\"; \"High Disk Space Usage ... after update to 22\"."
+        },
+        {
+          "id": "network.upgrade-process",
+          "title": "Protocol upgrade process",
+          "scope": "CAP lifecycle, validator votes to arm an upgrade, testnet-first schedule.",
+          "weight": 2,
+          "weightReason": "Integrators and analysts must know how and when changes land.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/protocol-upgrades"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/validators/admin-guide/network-upgrades"
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/README.md"
+            }
+          ],
+          "question": "How does a Stellar protocol upgrade get proposed, approved, and activated on mainnet?",
+          "ravenReach": "unchecked",
+          "evidence": "SE \"How are changes in the stellar protocol implemented?\"; governance search returned stellar.org protocol-upgrades."
+        },
+        {
+          "id": "network.current-protocol",
+          "title": "Current and next protocol version",
+          "scope": "What protocol is live on mainnet now, what is scheduled next, and key dates.",
+          "weight": 3,
+          "weightReason": "Agents constantly answer \"is X live yet\"; stale answers are wrong.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide"
+            },
+            {
+              "class": "E",
+              "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+              "observedAt": "2026-11-14",
+              "quote": "Bell, Protocol 30 Upgrade Guide (sdf-blog, publishedAt 2026-10-20)"
+            }
+          ],
+          "question": "Which protocol version is live on Stellar mainnet, and what is the next scheduled upgrade?",
+          "ravenReach": "yes",
+          "evidence": "cases.json \"Has Protocol 24 landed yet?\", \"Are Protocol 23 features live?\", \"Has protocol Zipper landed yet?\"; Bell (Protocol 30) testnet live Nov 3, 2026, mainnet vote Nov 23 (CoinMarketCap, blockchainreporter).",
+          "ravenReachNote": "scout.searchResearch returned the Bell Protocol 30 upgrade guide and announcement (sdf-blog, 2026-10-20) and Lumenloop weekly roundups through 2026-11-06. Live-version wording was not read in full."
+        },
+        {
+          "id": "network.protocol-history",
+          "title": "Protocol release history",
+          "scope": "What each named upgrade introduced (Soroban in Protocol 20, Whisk, X-Ray, Yardstick, Bell) and when.",
+          "weight": 2,
+          "weightReason": "Agents date features and reconcile names with numbers.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "D",
+              "ref": "https://whalehub.io/blog/stellar-protocol-upgrades-2026"
+            },
+            {
+              "class": "A",
+              "ref": "https://stellar.org/blog/foundation-news/stellar-yardstick-protocol-26-upgrade-guide"
+            },
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/networks/software-versions",
+              "observedAt": "2026-11-14",
+              "quote": "Mainnet activated Protocol 20 on February 20, 2024 at 1700 UTC"
+            }
+          ],
+          "question": "Which protocol upgrade enabled Soroban smart contracts on Stellar mainnet?",
+          "ravenReach": "yes",
+          "evidence": "WhaleHub \"Protocol Upgrades 2025-2026: Whisk to Protocol 29\"; Yardstick and X-Ray blogs; cases.json protocol status cases.",
+          "ravenReachNote": "scout.searchResearch returned docs Software Versions (2026-10-07) with Protocol 20 mainnet activation date, plus CAP-46."
+        },
+        {
+          "id": "network.cap-status",
+          "title": "CAP lookup and status",
+          "scope": "What a given Core Advancement Proposal does and whether it is implemented.",
+          "weight": 2,
+          "weightReason": "\"Is CAP-N implemented\" is a recurring question.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/tree/master/core"
+            },
+            {
+              "class": "E",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0062.md",
+              "observedAt": "2026-11-14",
+              "quote": "CAP: 0062 Title: Soroban Live State Prioritization (capStatus Final, protocol 23)"
+            }
+          ],
+          "question": "Is a given CAP (for example CAP-62) implemented on mainnet, and what does it change?",
+          "ravenReach": "yes",
+          "evidence": "cases.json \"Is CAP-62 implemented?\"; stellar-protocol issue \"Fix CAP-0075 protocol-version contradictions\".",
+          "ravenReachNote": "Search ranked scout.getStatus (off-target); scout.searchResearch source=cap returned CAP-0062 with capStatus Final, capProtocolVersion 23."
+        },
+        {
+          "id": "network.network-settings",
+          "title": "Network configuration settings and SLPs",
+          "scope": "Soroban network settings, Stellar Limits Proposals, and how limits are raised.",
+          "weight": 1,
+          "weightReason": "Explains limit changes; niche.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0007.md"
+            }
+          ],
+          "question": "How are Soroban network limits changed, and what is a Stellar Limits Proposal?",
+          "ravenReach": "unchecked",
+          "evidence": "SLP-0007 surfaced in fees search; stellar-protocol issue \"Add SLPs to the canonical proposal index\"."
+        },
+        {
+          "id": "network.spam-protection",
+          "title": "Spam and DoS protection",
+          "scope": "How fees, surge pricing, and limits deter spam, and how they can be gamed.",
+          "weight": 1,
+          "weightReason": "Enterprise risk reviews ask; niche.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering#surge-pricing",
+              "observedAt": "2026-11-14",
+              "quote": "Page title: Fees, Resource Limits, and Metering — Surge pricing (stellarDocs.search_doc_titles pointer; not a reach check)"
+            }
+          ],
+          "question": "How does Stellar prevent transaction spam from overwhelming the network?",
+          "ravenReach": "unchecked",
+          "evidence": "SE \"Are there any steps taken to prevent spamming the Stellar network?\" (13 votes); cases.json surge-pricing abuse case."
+        }
+      ]
+    },
+    {
+      "id": "xlm",
+      "title": "XLM and tokenomics",
+      "leaves": [
+        {
+          "id": "xlm.xlm-role",
+          "title": "What XLM is for",
+          "scope": "XLM's role in fees, reserves, anti-spam, and as a bridge asset.",
+          "weight": 2,
+          "weightReason": "Retail users and investors ask first.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/learn/lumens"
+            }
+          ],
+          "question": "What is XLM used for on the Stellar network?",
+          "ravenReach": "unchecked",
+          "evidence": "SE \"Does every transaction on Stellar need XLM as a bridge?\"; Reddit \"XLM TOKEN VALUE\"."
+        },
+        {
+          "id": "xlm.supply",
+          "title": "XLM supply",
+          "scope": "Total and circulating supply, fixed supply, and supply metrics.",
+          "weight": 2,
+          "weightReason": "Investors ask repeatedly; confusion between 100B and 50B is common.",
+          "volatility": "live",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/encyclopedia/lumen-supply-metrics"
+            },
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens",
+              "observedAt": "2026-11-14",
+              "quote": "Lumen Supply Metrics: This section explains how lumen supply metrics are calculated and made available via API."
+            }
+          ],
+          "question": "What is the total supply of XLM, and can new XLM be created?",
+          "ravenReach": "yes",
+          "evidence": "Reddit \"Fixed supply?\", \"What is the correct total supply of XLM? ~100B or 50B?\".",
+          "ravenReachNote": "scout.searchResearch returned docs Lumen Supply Metrics (dev-docs, 2026-09-28) and historical SDF mandate pages (2017: 100 billion created at genesis)."
+        },
+        {
+          "id": "xlm.burn-2019",
+          "title": "The 2019 SDF burn",
+          "scope": "SDF's November 2019 burn of about 55 billion XLM and its rationale.",
+          "weight": 2,
+          "weightReason": "A frequent historical fact; wrong numbers mislead investors.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "D",
+              "ref": "https://www.coindesk.com/markets/2019/11/05/stellars-foundation-just-destroyed-half-the-supply-of-its-lumens-cryptocurrency"
+            },
+            {
+              "class": "A",
+              "ref": "https://stellar.org/blog/foundation-news/sdfs-next-steps"
+            },
+            {
+              "class": "E",
+              "ref": "https://decrypt.co/11077/stellar-xlm-price-up-25-percent-55-billion-tokens-burned",
+              "observedAt": "2026-11-14",
+              "quote": "Stellar (XLM) price rockets 25% as foundation burns 55 billion tokens (2019-11-05)"
+            }
+          ],
+          "question": "How much XLM did the Stellar Development Foundation burn in 2019, and why?",
+          "ravenReach": "yes",
+          "evidence": "Reddit \"SDF Burned 55 billion XLM\", \"Question about XLM burn\"; CoinDesk 2019 report.",
+          "ravenReachNote": "Search offered only lumenloop.search_content_semantic (no strong hit); it returned Decrypt and The Block 2019-11-05 articles on the 55 billion XLM burn. No SDF primary source surfaced in that call."
+        },
+        {
+          "id": "xlm.inflation-ended",
+          "title": "End of inflation",
+          "scope": "The former inflation mechanism and its removal by the Protocol 12 validator vote in 2019.",
+          "weight": 2,
+          "weightReason": "Old guides still describe inflation; agents must say it ended.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/ledgers#inflation-sequence",
+              "observedAt": "2026-11-14",
+              "quote": "the inflation operation was deprecated when validators voted to upgrade the network to Protocol 12 on 10/28/2019."
+            }
+          ],
+          "question": "Does XLM still have inflation, and when did it end?",
+          "ravenReach": "yes",
+          "evidence": "SE inflation tag (29) with many top-voted questions (\"What day of the week does the network pay out inflation?\" 27 votes); Reddit \"Disable Inflation Mechanism CAP\".",
+          "ravenReachNote": "Docs learn-category search returned Ledgers 'Inflation sequence' stating the inflation operation was deprecated by the Protocol 12 vote on 2019-10-28."
+        },
+        {
+          "id": "xlm.sdf-holdings",
+          "title": "SDF XLM holdings and mandate",
+          "scope": "How much XLM SDF holds, its mandate and use categories, and its distribution.",
+          "weight": 2,
+          "weightReason": "Investors weigh SDF holdings; numbers change.",
+          "volatility": "live",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/encyclopedia/lumen-supply-metrics"
+            },
+            {
+              "class": "E",
+              "ref": "https://stellar.org/foundation/mandate/2019",
+              "observedAt": "2026-11-14",
+              "quote": "SDF uses lumens from the Direct Development fund to directly develop and advocate for the Stellar network."
+            }
+          ],
+          "question": "How much XLM does the Stellar Development Foundation hold, and what may it use it for?",
+          "ravenReach": "partial",
+          "evidence": "SE \"What prevents SDF from flooding the market with the ~90M XLM?\"; Reddit \"how is it a good thing that the SDF...\"",
+          "ravenReachNote": "scout.searchResearch returned historical SDF mandate pages (2017, 2019) and the docs supply-metrics section; no current holding figure surfaced. The figure lives behind the supply-metrics API/dashboard, which Raven does not expose."
+        },
+        {
+          "id": "xlm.no-native-staking",
+          "title": "Staking, yield, and XLM rewards",
+          "scope": "XLM has no protocol staking; where yield comes from (lending, LP); and the status of the XLM rewards concept SDF introduced at Meridian 2026.",
+          "weight": 2,
+          "weightReason": "Retail users ask about staking; a wrong yes misleads, and the rewards concept changes the answer.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "E",
+              "ref": "https://lumenloop.com/research/stellar-weekly-roundup-week-oct-30-2026",
+              "observedAt": "2026-11-14",
+              "quote": "At Meridian, SDF CPO Tomer Weller introduced a concept for rewarding XLM held, transacted, and settled onchain"
+            }
+          ],
+          "question": "Can you stake XLM on the Stellar protocol, and what are the alternatives for earning yield?",
+          "ravenReach": "partial",
+          "evidence": "cases.json \"Since XLM has no native protocol staking...\"; inflation-pool SE questions.",
+          "ravenReachNote": "Search ranked meeting notes (2026-06-11 Blend earn segment). scout.searchResearch returned a Lumenloop roundup (2026-10-30) saying SDF CPO Tomer Weller introduced a concept for rewarding XLM held, transacted, and settled onchain at Meridian; an earlier call surfaced stellar.org/xlm-utility 'XLM Rewards Pool Explorer'. No row states plainly that XLM has no protocol staking."
+        },
+        {
+          "id": "xlm.market-listings",
+          "title": "XLM market data and listings",
+          "scope": "Where XLM trades, price and market cap, and investment products such as trusts and ETPs.",
+          "weight": 1,
+          "weightReason": "Agents should defer to live market sources.",
+          "volatility": "live",
+          "canonicalSources": [
+            {
+              "class": "D",
+              "ref": "https://www.sec.gov/Archives/edgar/data/1761325/000095017024130176/gxlm-20240930.htm"
+            }
+          ],
+          "question": "Where can investors get regulated exposure to XLM, such as trusts or exchange-traded products?",
+          "ravenReach": "unchecked",
+          "evidence": "Investor search returned the Grayscale Stellar Lumens Trust 10-K; CoinMarketCap Nov 13, 2026 note on Coinbase halting XLM/BTC."
+        },
+        {
+          "id": "xlm.stellar-vs-xrp-origins",
+          "title": "Origins and comparison with XRP",
+          "scope": "Stellar's origin, its relation to Ripple, and protocol differences.",
+          "weight": 1,
+          "weightReason": "Common framing question; niche for agents.",
+          "volatility": "stable",
+          "canonicalSources": [],
+          "question": "How did Stellar originate, and how does it differ from XRP Ledger?",
+          "ravenReach": "unchecked",
+          "evidence": "SE \"How are the Stellar (XLM) and Ripple (XRP) protocols different?\" (955 views, 39 votes); \"Where is the name Stellar derived from?\"."
+        }
+      ]
+    },
+    {
+      "id": "defi",
+      "title": "DeFi, DEX, and bridges",
+      "leaves": [
+        {
+          "id": "defi.sdex-offers",
+          "title": "SDEX order book and offers",
+          "scope": "Manage buy/sell offers, offer IDs, fills, and order-book queries.",
+          "weight": 2,
+          "weightReason": "Traders, market makers, and wallets use the built-in DEX.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools#sdex",
+              "observedAt": "2026-11-14",
+              "quote": "Page title: Liquidity on Stellar: SDEX & Liquidity Pools — SDEX (stellarDocs.search_doc_titles pointer; not a reach check)"
+            }
+          ],
+          "question": "How do you place and track an offer on the Stellar DEX order book?",
+          "ravenReach": "unchecked",
+          "evidence": "cases.json SDEX offer-tracking case; SE offer (23) and manageofferoperation (23) tags; \"Offers have an amount and a price. Why not just two amounts?\"."
+        },
+        {
+          "id": "defi.classic-amm",
+          "title": "Classic liquidity pools",
+          "scope": "Protocol-level liquidity pools, deposits, and withdrawals.",
+          "weight": 2,
+          "weightReason": "LPs and wallets interact with them.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools",
+              "observedAt": "2026-11-14",
+              "quote": "Page title: Liquidity on Stellar: SDEX & Liquidity Pools (stellarDocs.search_doc_titles pointer; not a reach check)"
+            }
+          ],
+          "question": "How do Stellar's built-in liquidity pools work, and how are they different from Soroban AMMs?",
+          "ravenReach": "unchecked",
+          "evidence": "SE recent \"liquidity pool visibility or indexing issues after Protocol 24\"; mined query \"AMM liquidity pool documentation Soroban\"."
+        },
+        {
+          "id": "defi.defi-landscape",
+          "title": "DeFi landscape and TVL",
+          "scope": "The main DeFi protocols by category and their relative TVL.",
+          "weight": 3,
+          "weightReason": "Investors, analysts, and builders ask constantly; data is live.",
+          "volatility": "live",
+          "canonicalSources": [
+            {
+              "class": "D",
+              "ref": "https://defillama.com/chain/stellar"
+            },
+            {
+              "class": "D",
+              "ref": "https://whalehub.io/blog/best-defi-platforms-stellar-2026"
+            },
+            {
+              "class": "E",
+              "ref": "scout.getLeaderboard({sort:'tvl'})",
+              "observedAt": "2026-11-14",
+              "quote": "Blend tvlUSD 114404215, tvlAsOf 2026-11-12T00:57:21Z, types [Lending]"
+            }
+          ],
+          "question": "What are the largest DeFi protocols on Stellar by TVL?",
+          "ravenReach": "yes",
+          "evidence": "Mined queries \"total value locked TVL growth ecosystem stats Stellar\", \"DeFi lending protocol total value locked\".",
+          "ravenReachNote": "scout.getLeaderboard sort=tvl returned 898 projects with dataAsOf 2026-11-13; top rows Blend 114.4M, Upshift 86.2M, Sentora 84.8M, Aquarius 37.6M USD (tvlAsOf 2026-11-12)."
+        },
+        {
+          "id": "defi.blend",
+          "title": "Blend lending",
+          "scope": "Blend protocol: isolated pools, backstop, and TVL.",
+          "weight": 2,
+          "weightReason": "Most-asked DeFi protocol in mined queries.",
+          "volatility": "live",
+          "canonicalSources": [],
+          "question": "What is Blend on Stellar, and how do its lending pools work?",
+          "ravenReach": "unchecked",
+          "evidence": "Mined queries: 16 occurrences of Blend TVL; cases.json \"What's Blend's TVL today?\"."
+        },
+        {
+          "id": "defi.soroswap",
+          "title": "Soroswap",
+          "scope": "Soroswap AMM and aggregator, and how it differs from other DEXes.",
+          "weight": 2,
+          "weightReason": "Frequently asked DEX.",
+          "volatility": "live",
+          "canonicalSources": [],
+          "question": "What is Soroswap, and what makes it different from other Stellar DEXes?",
+          "ravenReach": "unchecked",
+          "evidence": "Mined queries: 12 Soroswap occurrences; cases.json \"Did Soroswap ship concentrated liquidity?\"."
+        },
+        {
+          "id": "defi.aquarius",
+          "title": "Aquarius and AQUA",
+          "scope": "Aquarius AMM, AQUA token, and liquidity voting.",
+          "weight": 2,
+          "weightReason": "Frequently asked.",
+          "volatility": "live",
+          "canonicalSources": [],
+          "question": "What is Aquarius on Stellar, and what role does the AQUA token play?",
+          "ravenReach": "unchecked",
+          "evidence": "Mined queries \"Aquarius AQUA token Stellar\"; cases.json Aquarius case."
+        },
+        {
+          "id": "defi.other-dexes-pools",
+          "title": "Other DEXes and weighted pools",
+          "scope": "Phoenix, Comet weighted pools, and other AMMs.",
+          "weight": 1,
+          "weightReason": "Niche but recurring.",
+          "volatility": "live",
+          "canonicalSources": [],
+          "question": "What is Comet on Stellar, and how do its weighted pools work?",
+          "ravenReach": "unchecked",
+          "evidence": "Mined queries on \"weighted AMM Balancer-style pools Soroban\" (14 Comet occurrences) and Phoenix SCF history."
+        },
+        {
+          "id": "defi.oracles",
+          "title": "Oracles",
+          "scope": "Price-feed providers on Stellar (Reflector, Chainlink, Band, RedStone, DIA).",
+          "weight": 2,
+          "weightReason": "Every lending or derivatives protocol needs one.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/data/oracles/oracle-providers"
+            },
+            {
+              "class": "D",
+              "ref": "https://reflector.network/docs"
+            },
+            {
+              "class": "D",
+              "ref": "https://docs.chain.link/data-feeds/stellar"
+            },
+            {
+              "class": "E",
+              "ref": "scout.searchProjects({type:'Oracle',status:'Live'})",
+              "observedAt": "2026-11-14",
+              "quote": "Reflector, DIA, Band, Lightecho, Redstone Finance, Orally, Chainlink, Pyth"
+            }
+          ],
+          "question": "Which oracle providers supply price feeds to Soroban contracts?",
+          "ravenReach": "yes",
+          "evidence": "Oracle search: docs oracle-providers page, Reflector, Chainlink, DIA docs.",
+          "ravenReachNote": "scout.searchProjects type=Oracle status=Live returned Reflector, DIA, Band, Lightecho, Redstone Finance, Orally, Chainlink, Pyth."
+        },
+        {
+          "id": "defi.bridges",
+          "title": "Bridges and cross-chain transfers",
+          "scope": "Bridges and messaging to Stellar (CCTP, Allbridge, Axelar, Wormhole, LayerZero, NEAR Intents) and their trust models.",
+          "weight": 3,
+          "weightReason": "Bridging mistakes lose funds; options change.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "D",
+              "ref": "https://developers.circle.com/cctp/references/stellar"
+            },
+            {
+              "class": "D",
+              "ref": "https://www.axelar.network/blog/axelar-stellar-integration"
+            },
+            {
+              "class": "D",
+              "ref": "https://whalehub.io/blog/bridge-usdc-to-stellar"
+            },
+            {
+              "class": "E",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-dev-skill/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills/cross-chain/SKILL.md",
+              "observedAt": "2026-11-14",
+              "quote": "Bridging USDC between Stellar and Ethereum, Base, Arbitrum, Solana, or another CCTP-supported chain"
+            }
+          ],
+          "question": "How can a user move USDC from Ethereum to Stellar, and which bridges support Stellar?",
+          "ravenReach": "yes",
+          "evidence": "cases.json MetaMask-to-Stellar bridging case; bridge search returned Circle CCTP Stellar docs and Axelar.",
+          "ravenReachNote": "Search ranked skills.stellar-dev.cross-chain first; its sections cover CCTP V2, USDT0 over LayerZero, Axelar, and NEAR Intents, with a forwarder warning."
+        },
+        {
+          "id": "defi.token-listing",
+          "title": "Listing a token",
+          "scope": "Getting an asset shown on wallets, explorers, and exchanges; asset directories.",
+          "weight": 1,
+          "weightReason": "Issuers ask; niche.",
+          "volatility": "live",
+          "canonicalSources": [],
+          "question": "How does a new Stellar asset get listed or displayed in wallets and exchanges?",
+          "ravenReach": "unchecked",
+          "evidence": "SE \"How can I list and sell Stellar based Tokens (not XLM)?\" (1263 views); recent \"submit a token to the directory such as StellarTerm\"."
+        }
+      ]
+    },
+    {
+      "id": "payments",
+      "title": "Stablecoins, ramps, and payments",
+      "leaves": [
+        {
+          "id": "payments.usdc",
+          "title": "USDC on Stellar",
+          "scope": "Circle's USDC on Stellar, its issuer, and verifying the genuine asset.",
+          "weight": 3,
+          "weightReason": "The most-used asset; a fake issuer loses funds.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "D",
+              "ref": "https://www.circle.com/legal/usdc-terms"
+            },
+            {
+              "class": "E",
+              "ref": "scout.getStablecoins({limit:6})",
+              "observedAt": "2026-11-14",
+              "quote": "USDC issuer GA5ZSEJYB37J… company Circle marketCapUSD 328494094 updatedAt 2026-11-13"
+            }
+          ],
+          "question": "Who issues USDC on Stellar, and how do you verify you hold the genuine asset?",
+          "ravenReach": "yes",
+          "evidence": "SE \"I sent USDC via the wrong blockchain\"; cases.json testnet USDC and cash-out cases.",
+          "ravenReachNote": "scout.getStablecoins (dataAsOf 2026-11-13, 37 tracked) returned USDC, company Circle, issuer prefix GA5ZSEJYB37J, market cap ~328M USD. Verification guidance (home domain) not checked."
+        },
+        {
+          "id": "payments.stablecoin-landscape",
+          "title": "Other stablecoins",
+          "scope": "Other stablecoins on Stellar (EURC, PYUSD, and others) and their issuers.",
+          "weight": 2,
+          "weightReason": "Integrators choose assets; listings change.",
+          "volatility": "live",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/solutions/stablecoins"
+            },
+            {
+              "class": "D",
+              "ref": "https://whalehub.io/blog/stablecoins-on-stellar"
+            }
+          ],
+          "question": "Which stablecoins besides USDC are issued on Stellar, and by whom?",
+          "ravenReach": "unchecked",
+          "evidence": "Stablecoin search: WhaleHub \"USDC, EURC, sUSD & PYUSD\"; Messari State of Stellar Q1 2026."
+        },
+        {
+          "id": "payments.moneygram-ramps",
+          "title": "MoneyGram ramps",
+          "scope": "MoneyGram's USDC cash-in/cash-out on Stellar and its coverage.",
+          "weight": 2,
+          "weightReason": "The flagship cash ramp.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "D",
+              "ref": "https://www.moneygram.com/stellar"
+            },
+            {
+              "class": "A",
+              "ref": "https://stellar.org/case-studies/moneygram-international"
+            },
+            {
+              "class": "E",
+              "ref": "scout.searchProjects({type:'Anchor',status:'Live'})",
+              "observedAt": "2026-11-14",
+              "quote": "Moneygram: MoneyGram Access (MoneyGram Ramps) is a fiat on- and off-ramp anchor o…"
+            }
+          ],
+          "question": "How does MoneyGram's Stellar integration let users cash USDC in and out?",
+          "ravenReach": "partial",
+          "evidence": "Corridor search ranked MoneyGram case study and moneygram.com/stellar.",
+          "ravenReachNote": "scout.matchPartners (top search hit) failed with HTTP 503 ('AI matchmaking isn't available right now'); the earlier anchor check returned a Scout row 'MoneyGram Access (MoneyGram Ramps) is a fiat on- and off-ramp anchor'. Coverage and corridor detail were not checked."
+        },
+        {
+          "id": "payments.anchors-corridors",
+          "title": "Anchors and cash-out corridors by region",
+          "scope": "Which anchors and ramps serve which countries and rails.",
+          "weight": 3,
+          "weightReason": "Payment builders need a live directory; wrong coverage breaks flows.",
+          "volatility": "live",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/blog/ecosystem/fiat-on-off-ramps-and-cross-border-payments-on-stellar"
+            },
+            {
+              "class": "E",
+              "ref": "scout.searchProjects({type:'Anchor',status:'Live'})",
+              "observedAt": "2026-11-14",
+              "quote": "Yellow Card is Africa's largest licensed stablecoin fiat on-ramp and o…"
+            }
+          ],
+          "question": "Which anchors or ramps let users cash Stellar USDC out to local bank or mobile money in a given country?",
+          "ravenReach": "partial",
+          "evidence": "cases.json mobile-money cash-out case; SE \"List of Anchors for SEP31 and SEP24\", \"Fiat ramp providers?\".",
+          "ravenReachNote": "scout.searchProjects type=Anchor status=Live returned 82 anchors (MoneyGram, Bitso, Yellow Card, Fonbnk, Coins PH, ...) with short descriptions; per-country rail coverage needs anchorProfile detail per row, and docs have no anchor directory."
+        },
+        {
+          "id": "payments.cross-border-use",
+          "title": "Cross-border payments and remittances",
+          "scope": "How businesses use Stellar for remittances and B2B payouts, and settlement without prefunding.",
+          "weight": 2,
+          "weightReason": "Enterprise evaluators ask; core use case.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/solutions/cross-border-payments"
+            },
+            {
+              "class": "A",
+              "ref": "https://stellar.org/solutions/remittances"
+            }
+          ],
+          "question": "How do payment companies use Stellar for cross-border payments?",
+          "ravenReach": "unchecked",
+          "evidence": "Corridor search; stellar.org remittances and cross-border solution pages."
+        },
+        {
+          "id": "payments.aid-disbursement",
+          "title": "Aid and disbursement programs",
+          "scope": "Humanitarian disbursements and aid programs, including those run on the SDP.",
+          "weight": 1,
+          "weightReason": "Recurring case study; niche.",
+          "volatility": "scheduled",
+          "canonicalSources": [],
+          "question": "How have humanitarian organizations used Stellar to deliver aid?",
+          "ravenReach": "unchecked",
+          "evidence": "Ecosystem org search returned Stellar Aid Assist; SDP docs."
+        }
+      ]
+    },
+    {
+      "id": "rwa",
+      "title": "Real-world assets and compliance",
+      "leaves": [
+        {
+          "id": "rwa.rwa-landscape",
+          "title": "RWA landscape",
+          "scope": "Which tokenized real-world assets are live on Stellar and who issues them.",
+          "weight": 3,
+          "weightReason": "The top mined topic; institutional buyers ask.",
+          "volatility": "live",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/solutions/real-world-assets"
+            },
+            {
+              "class": "D",
+              "ref": "https://whalehub.io/blog/best-rwa-platforms-stellar"
+            },
+            {
+              "class": "E",
+              "ref": "scout.searchProjects({type:'RWA',status:'Live'})",
+              "observedAt": "2026-11-14",
+              "quote": "Benji is Franklin Templeton's tokenized real-world asset (RWA) platfor…"
+            }
+          ],
+          "question": "Which tokenized real-world assets are live on Stellar, and who issues them?",
+          "ravenReach": "yes",
+          "evidence": "Mined queries: 15 RWA-freshness occurrences, \"real world asset RWA products live on Stellar\"; cases.json RWA products case.",
+          "ravenReachNote": "scout.searchProjects type=RWA status=Live returned 37 rows (Benji, Ondo, WisdomTree, Spiko, Etherfuse, RedSwan, ...)."
+        },
+        {
+          "id": "rwa.rwa-metrics",
+          "title": "RWA value and growth",
+          "scope": "Total tokenized RWA value on Stellar and its trend.",
+          "weight": 2,
+          "weightReason": "Analysts ask; numbers move.",
+          "volatility": "live",
+          "canonicalSources": [
+            {
+              "class": "D",
+              "ref": "https://messari.io/report/state-of-stellar-real-world-assets"
+            },
+            {
+              "class": "D",
+              "ref": "https://bitquery.io/investigations/stellar-real-world-assets"
+            }
+          ],
+          "question": "How much tokenized real-world asset value is on Stellar, and how fast is it growing?",
+          "ravenReach": "unchecked",
+          "evidence": "Mined queries \"RWA market cap growth stats metrics network\"; cases.json RWA value case."
+        },
+        {
+          "id": "rwa.franklin-benji",
+          "title": "Franklin Templeton BENJI",
+          "scope": "FOBXX/BENJI: the first US-registered mutual fund on a public blockchain.",
+          "weight": 2,
+          "weightReason": "The headline RWA example.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/case-studies/franklin-templeton"
+            }
+          ],
+          "question": "What is Franklin Templeton's BENJI fund on Stellar, and why is it notable?",
+          "ravenReach": "unchecked",
+          "evidence": "RWA search returned the Franklin Templeton case study and onchain analysis report."
+        },
+        {
+          "id": "rwa.issuer-controls",
+          "title": "Issuer controls: authorization and clawback",
+          "scope": "Authorization required/revocable/immutable flags and clawback (CAP-35).",
+          "weight": 3,
+          "weightReason": "Regulated issuers must configure them; wrong flags are irreversible.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tokens/control-asset-access"
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md"
+            },
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/tokens/asset-issuance-stack",
+              "observedAt": "2026-11-14",
+              "quote": "the **clawback-enabled** flag applies only to trustlines created after the flag is set, and it requires **authorization revocable**"
+            }
+          ],
+          "question": "Which account flags let a Stellar asset issuer approve holders and claw back tokens, and which flag is irreversible?",
+          "ravenReach": "yes",
+          "evidence": "SE \"How do I use the flag: authorization revocable\", \"Authorization immutable (0x4) - Use case\"; compliance search returned CAP-35 and asset design docs.",
+          "ravenReachNote": "Asset docs search returned control-asset-access (Authorization Revocable), asset-issuance-stack clawback ordering, and SAC revoking authorization."
+        },
+        {
+          "id": "rwa.regulated-assets-sep8",
+          "title": "SEP-8 regulated assets",
+          "scope": "Approval-server pattern for transfers that need issuer sign-off.",
+          "weight": 1,
+          "weightReason": "Regulated securities; niche.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0008.md"
+            }
+          ],
+          "question": "How does SEP-8 let an issuer approve each transfer of a regulated asset?",
+          "ravenReach": "unchecked",
+          "evidence": "Compliance search returned SEP-8."
+        },
+        {
+          "id": "rwa.permissioned-tokens",
+          "title": "Permissioned token standards",
+          "scope": "ERC-3643/T-REX style compliance stacks on Soroban.",
+          "weight": 1,
+          "weightReason": "Securities issuers ask; niche.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/tokens/asset-issuance-stack",
+              "observedAt": "2026-11-14",
+              "quote": "Page title: Asset Issuance Stack (stellarDocs.search_doc_titles pointer; not a reach check)"
+            }
+          ],
+          "question": "Has anyone built an ERC-3643 or T-REX style regulated token stack on Stellar?",
+          "ravenReach": "unchecked",
+          "evidence": "cases.json ERC-3643 case."
+        },
+        {
+          "id": "rwa.regulation",
+          "title": "Regulation and compliance landscape",
+          "scope": "MiCA, Travel Rule, and stablecoin regulation as they apply to Stellar assets and services.",
+          "weight": 1,
+          "weightReason": "Compliance teams ask; sources are thin.",
+          "volatility": "live",
+          "canonicalSources": [
+            {
+              "class": "D",
+              "ref": "https://www.circle.com/legal/mica-usdc-whitepaper"
+            }
+          ],
+          "question": "How does MiCA affect USDC and other stablecoins used on Stellar in the EU?",
+          "ravenReach": "no",
+          "evidence": "Compliance search surfaced Circle MiCA white paper; SE compliance tag (19).",
+          "ravenReachNote": "Search routed to asset/token docs; results were the asset-issuance-stack table ('does not constitute a compliance opinion') and token comparisons. No MiCA or Travel Rule content surfaced."
+        },
+        {
+          "id": "rwa.public-sector",
+          "title": "Government and public-sector use",
+          "scope": "Government debt, CBDC, and public-sector pilots on Stellar.",
+          "weight": 1,
+          "weightReason": "Recurring narrative; niche.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/blog/ecosystem/the-worlds-government-debt-is-coming-onchain-its-choosing-stellar"
+            }
+          ],
+          "question": "Which governments or public institutions have issued assets or run pilots on Stellar?",
+          "ravenReach": "unchecked",
+          "evidence": "RWA search returned stellar.org \"government debt is coming onchain\"."
+        }
+      ]
+    },
+    {
+      "id": "retail",
+      "title": "Wallets, retail use, and support",
+      "leaves": [
+        {
+          "id": "retail.wallet-landscape",
+          "title": "Consumer wallets",
+          "scope": "Popular wallets (LOBSTR, Varial (formerly Freighter), xBull, and others), custodial vs non-custodial; agents must use the current Varial name.",
+          "weight": 2,
+          "weightReason": "Retail users ask which wallet to use.",
+          "volatility": "live",
+          "canonicalSources": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/build/guides/freighter",
+              "observedAt": "2026-11-14",
+              "quote": "Varial (formerly Freighter) is a browser extension wallet provided by the Stellar Development Foundation."
+            }
+          ],
+          "question": "Which non-custodial wallets support Stellar, and how do they differ?",
+          "ravenReach": "yes",
+          "evidence": "Mined queries on LOBSTR (12 occurrences); Reddit \"How secure is Lobstr Wallet?\"; SE wallets tag (45).",
+          "ravenReachNote": "scout.searchProjects type=Wallet status=Live returned 67 rows (Lobstr, xBull, Varial, Hana, Beans, Albedo, Rabet, Vesseo); docs Wallet Integration page lists Varial. Docs state Freighter was renamed Varial."
+        },
+        {
+          "id": "retail.hardware-wallets",
+          "title": "Hardware wallets",
+          "scope": "Ledger and Trezor support for XLM and Stellar assets.",
+          "weight": 1,
+          "weightReason": "Security-conscious holders ask; niche.",
+          "volatility": "scheduled",
+          "canonicalSources": [],
+          "question": "Can you hold XLM on a Ledger hardware wallet, and which apps support it?",
+          "ravenReach": "unchecked",
+          "evidence": "SE ledger-nano tag (17); \"How do I install the Stellar app on my Ledger Nano S\"."
+        },
+        {
+          "id": "retail.wrong-memo",
+          "title": "Missing or wrong memo to an exchange",
+          "scope": "What happens to a deposit sent without the right memo and how recovery works.",
+          "weight": 3,
+          "weightReason": "The top support case; a wrong answer causes loss or scams.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "D",
+              "ref": "https://support.kraken.com/articles/360000184543-memo-for-stellar-lumens-xlm-deposits"
+            },
+            {
+              "class": "E",
+              "ref": "https://stellar.org/blog/developers/fixing-memo-less-payments",
+              "observedAt": "2026-11-14",
+              "quote": "Fixing memo-less payments (2020-04-07)"
+            }
+          ],
+          "question": "What happens if you send XLM to an exchange without the required memo, and can it be recovered?",
+          "ravenReach": "partial",
+          "evidence": "cases.json wrong-memo case; SE hot \"Exchange claiming they do not received my stellar after entering the wrong tag\"; \"Transfer without memo\".",
+          "ravenReachNote": "Raven search ranked lumenloop.search_content_semantic; it surfaced the 2020 SDF blog 'Fixing memo-less payments' among off-target rows (an XLM explainer video, a 2019 burn article). Docs search returned SEP-24 and C-account memo pages; no source states the recovery path (contact exchange support with tx hash)."
+        },
+        {
+          "id": "retail.lost-keys",
+          "title": "Lost keys and account access",
+          "scope": "Recovery without a secret key or phrase, and wallet migration.",
+          "weight": 2,
+          "weightReason": "Frequent support case; scammers prey on it.",
+          "volatility": "stable",
+          "canonicalSources": [],
+          "question": "Can a Stellar account be recovered without its secret key or recovery phrase?",
+          "ravenReach": "unchecked",
+          "evidence": "Reddit \"Any way to recover my xlm without recovery phrase?\", \"Help Me Recover My Lost XLM\"; SE recent \"How do I get into a stellar account?\"."
+        },
+        {
+          "id": "retail.scams",
+          "title": "Scams and phishing",
+          "scope": "Common scams (fake airdrops, fake support, phishing sites) and what to do after theft.",
+          "weight": 3,
+          "weightReason": "Loss of funds; agents must warn correctly.",
+          "volatility": "live",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers"
+            },
+            {
+              "class": "D",
+              "ref": "https://lobstr.freshdesk.com/support/solutions/articles/151000109419-how-to-protect-yourself-from-scammers-beware-of-scam"
+            },
+            {
+              "class": "E",
+              "ref": "https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers",
+              "observedAt": "2026-11-14",
+              "quote": "What are common scams and exploits? Phishing scams: malicious entities set up dummy websites"
+            }
+          ],
+          "question": "What are the most common scams targeting Stellar users, and what should a victim do?",
+          "ravenReach": "partial",
+          "evidence": "SE recent \"What should I do after being the victim of phishing / theft?\"; Reddit security reminder; Cyberint \"Phishing for Lumens\".",
+          "ravenReachNote": "Content exists (scout.searchResearch returned the SDF 2022 'Protect Yourself from Scammers' post; Lumenloop returned the 2023 SDF security reminders), but Raven search for 'scams phishing fake airdrop protect users' ranked SCF and digest skills first with no strong hit; sources are dated 2022-2023."
+        },
+        {
+          "id": "retail.spam-assets",
+          "title": "Spam assets and unsolicited payments",
+          "scope": "Dust payments, spam tokens, and removing unwanted trustlines or claimable balances.",
+          "weight": 2,
+          "weightReason": "Users see unknown tokens and ask if they are safe.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "D",
+              "ref": "https://stellarprune.com/guides/stellar-airdrop-scam-tokens"
+            }
+          ],
+          "question": "Why did an unknown token or tiny XLM payment appear in a Stellar wallet, and is it safe to interact with?",
+          "ravenReach": "unchecked",
+          "evidence": "Reddit \"Mysteriously received 0.0000001 XLM to my hardware wallet\"; Stellar Asset Pruner guide."
+        },
+        {
+          "id": "retail.naming-confusion",
+          "title": "Stellar vs Lumens naming",
+          "scope": "Stellar (network) vs Lumens/XLM (asset), and exchange network labels.",
+          "weight": 1,
+          "weightReason": "Retail confusion before sending; niche.",
+          "volatility": "stable",
+          "canonicalSources": [],
+          "question": "Are \"Stellar\" and \"Stellar Lumens\" the same network when withdrawing from an exchange?",
+          "ravenReach": "unchecked",
+          "evidence": "SE recent \"Is Stellar network the same as Stellar Lumens?\"."
+        },
+        {
+          "id": "retail.pi-network",
+          "title": "Pi Network and other Stellar-derived networks",
+          "scope": "How Pi Network relates to Stellar (code lineage vs a separate network) and whether Pi can be sent to Stellar addresses. Lineage claims need a sourced witness; none was found in this lane.",
+          "weight": 2,
+          "weightReason": "Frequent confusion; wrong answers send funds to the wrong network.",
+          "volatility": "stable",
+          "canonicalSources": [],
+          "question": "Is Pi Network part of Stellar, and can Pi be sent to a Stellar address?",
+          "ravenReach": "no",
+          "evidence": "SE recent \"Is mined Pi the same as Pi bought on an exchange?\" tagged horizon/payments.",
+          "ravenReachNote": "Raven search for 'Pi Network Stellar fork' ranked SDK/CLI docs; stellarDocs.search_docs('Pi Network') returned network-passphrase pages, and Lumenloop semantic search returned generic SCP articles. No row mentions Pi Network."
+        },
+        {
+          "id": "retail.buy-move-xlm",
+          "title": "Buying XLM and exchange compatibility",
+          "scope": "Buying XLM, EVM wallet incompatibility (MetaMask), and moving between exchanges and wallets.",
+          "weight": 2,
+          "weightReason": "Retail newcomers ask; EVM habits lose funds.",
+          "volatility": "stable",
+          "canonicalSources": [],
+          "question": "Can XLM be held in MetaMask, and how does a newcomer buy and hold XLM?",
+          "ravenReach": "unchecked",
+          "evidence": "cases.json MetaMask/XLM contract address case; SE \"How to send my Lumens from Keybase to Coinbase\" (5909 views)."
+        },
+        {
+          "id": "retail.wrong-network-send",
+          "title": "Sends to the wrong network",
+          "scope": "Sending USDC or XLM over the wrong chain and what recovery is possible.",
+          "weight": 2,
+          "weightReason": "Common loss scenario.",
+          "volatility": "stable",
+          "canonicalSources": [],
+          "question": "What happens if USDC is sent to a Stellar address over a different blockchain network?",
+          "ravenReach": "unchecked",
+          "evidence": "SE recent \"I sent USDC via the wrong blockchain\"; Reddit \"I sent my XLM to my Coinbase Wallet & they disappeared\"."
+        },
+        {
+          "id": "retail.tax-history",
+          "title": "Transaction history export and taxes",
+          "scope": "Exporting account history for accounting and tax tools.",
+          "weight": 1,
+          "weightReason": "Annual demand; niche.",
+          "volatility": "stable",
+          "canonicalSources": [],
+          "question": "How can a Stellar user export a complete transaction history for tax reporting?",
+          "ravenReach": "unchecked",
+          "evidence": "cases.json tax/export case."
+        }
+      ]
+    },
+    {
+      "id": "ecosystem",
+      "title": "Ecosystem, organizations, people, and funding",
+      "leaves": [
+        {
+          "id": "ecosystem.sdf",
+          "title": "Stellar Development Foundation",
+          "scope": "What SDF is, its nonprofit status, mandate, and leadership.",
+          "weight": 2,
+          "weightReason": "Basic orientation for investors, press, and partners.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/foundation"
+            },
+            {
+              "class": "A",
+              "ref": "https://stellar.org/foundation/team"
+            },
+            {
+              "class": "E",
+              "ref": "https://stellar.org/foundation/team",
+              "observedAt": "2026-11-14",
+              "quote": "Denelle Dixon — CEO and Executive Director (scout.getPeople, observedAt 2026-07-19)"
+            }
+          ],
+          "question": "What is the Stellar Development Foundation, and who leads it?",
+          "ravenReach": "yes",
+          "evidence": "Ecosystem org search returned the SDF team page and leadership profiles.",
+          "ravenReachNote": "Search ranked scout.getPeople; Leadership section returned Denelle Dixon (CEO and Executive Director), David Mazières (Founder and Chief Scientist), observedAt 2026-07-19 from stellar.org/foundation/team."
+        },
+        {
+          "id": "ecosystem.project-lookup",
+          "title": "Project identity and profile",
+          "scope": "What a named ecosystem project does, its category, and status.",
+          "weight": 3,
+          "weightReason": "The most common mined query shape; agents meet it constantly.",
+          "volatility": "live",
+          "canonicalSources": [
+            {
+              "class": "E",
+              "ref": "scout.resolveProject({q:'Soroswap'})",
+              "observedAt": "2026-11-14",
+              "quote": "{slug: soroswap, name: Soroswap, status: Live, url: https://stellarlight.xyz/project/soroswap}"
+            }
+          ],
+          "question": "What does a named Stellar ecosystem project do, and is it live on mainnet?",
+          "ravenReach": "yes",
+          "evidence": "Mined queries: \"Soroswap project profile\", \"LOBSTR project profile builder\", \"lumenloop get project details directory\".",
+          "ravenReachNote": "Search ranked lumenloop.find_content_by_entity and scout.resolveProject; resolveProject('Soroswap') returned found=true, slug soroswap, status Live."
+        },
+        {
+          "id": "ecosystem.project-builders",
+          "title": "Who builds a project",
+          "scope": "The company or team behind a project and its scale.",
+          "weight": 2,
+          "weightReason": "Partnership and diligence questions.",
+          "volatility": "live",
+          "canonicalSources": [],
+          "question": "Who builds LOBSTR, and what is its scale and chain support?",
+          "ravenReach": "unchecked",
+          "evidence": "Mined queries \"LOBSTR wallet builder company\"; cases.json LOBSTR builder case."
+        },
+        {
+          "id": "ecosystem.institutional-partners",
+          "title": "Institutional partners",
+          "scope": "Major companies building on or integrating Stellar (Circle, MoneyGram, Franklin Templeton, PayPal, and others).",
+          "weight": 2,
+          "weightReason": "Investors and enterprise buyers ask.",
+          "volatility": "live",
+          "canonicalSources": [
+            {
+              "class": "D",
+              "ref": "https://whalehub.io/blog/stellar-institutions-2026"
+            }
+          ],
+          "question": "Which major financial institutions build on Stellar, and for what?",
+          "ravenReach": "unchecked",
+          "evidence": "Stablecoin search returned \"Institutions Building on Stellar in 2026\"; mined partner/directory queries."
+        },
+        {
+          "id": "ecosystem.network-metrics",
+          "title": "Network and ecosystem metrics",
+          "scope": "Accounts, transactions, payment volume, and growth statistics.",
+          "weight": 2,
+          "weightReason": "Analysts and press ask; numbers move.",
+          "volatility": "live",
+          "canonicalSources": [
+            {
+              "class": "D",
+              "ref": "https://messari.io/report/state-of-stellar-q1-2026"
+            },
+            {
+              "class": "E",
+              "ref": "scout.getLeaderboard({limit:1}).ecosystem",
+              "observedAt": "2026-11-14",
+              "quote": "asOf 2026-11-05, activeDevs28d 4276, commits28d 95878, fullTimeDevs 520"
+            }
+          ],
+          "question": "How many transactions and active accounts does Stellar process, and how is it trending?",
+          "ravenReach": "partial",
+          "evidence": "Mined queries \"ecosystem stats network growth\", \"stellar network stats market cap\"; SE \"Historical Traffic Chart\".",
+          "ravenReachNote": "scout.getLeaderboard returned ecosystem developer metrics (asOf 2026-11-05: activeDevs28d 4276, commits28d 95878) but no on-chain accounts, transactions, or payment volume; that needs research reports (Messari, Nansen Q2 2026 surfaced elsewhere)."
+        },
+        {
+          "id": "ecosystem.research-reports",
+          "title": "Research reports",
+          "scope": "Third-party and commissioned research (Messari State of Stellar and others).",
+          "weight": 1,
+          "weightReason": "Analysts cite them; niche.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "D",
+              "ref": "https://messari.io/report/state-of-stellar-q1-2026"
+            }
+          ],
+          "question": "What do recent State of Stellar research reports say about the network's growth?",
+          "ravenReach": "unchecked",
+          "evidence": "Mined queries \"commission research report Stellar RWA\"."
+        },
+        {
+          "id": "ecosystem.editorial-content",
+          "title": "What has been said about a topic",
+          "scope": "Community, editorial, and talk content about a technical or market topic.",
+          "weight": 1,
+          "weightReason": "Supports landscape questions; niche.",
+          "volatility": "live",
+          "canonicalSources": [],
+          "question": "What has the Stellar community said about Balancer-style weighted pools on Soroban?",
+          "ravenReach": "unchecked",
+          "evidence": "Mined queries \"search articles tweets content about a topic Balancer weighted pools\"; cases.json weighted-pools case."
+        },
+        {
+          "id": "ecosystem.founding-history",
+          "title": "Founding history and people",
+          "scope": "Who founded Stellar, when the network launched, and who designed SCP. Names and dates need sourced witnesses.",
+          "weight": 1,
+          "weightReason": "Background questions; niche.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/blog/foundation-news/stellar-outage-9-20-14"
+            }
+          ],
+          "question": "Who founded Stellar, and when did the network launch?",
+          "ravenReach": "unchecked",
+          "evidence": "SE \"Where is the name Stellar derived from?\", \"Original Stellar Consensus Protocol Whitepaper\" hot question."
+        },
+        {
+          "id": "ecosystem.meridian-events",
+          "title": "Meridian and ecosystem events",
+          "scope": "Meridian conference, dates and locations, and major ecosystem events.",
+          "weight": 1,
+          "weightReason": "Event questions recur yearly; niche.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://meridian.stellar.org/schedule"
+            }
+          ],
+          "question": "What is Meridian, and where was the most recent one held?",
+          "ravenReach": "unchecked",
+          "evidence": "Ecosystem search returned Meridian 2026 schedule and a Lisbon recap."
+        },
+        {
+          "id": "ecosystem.hackathons",
+          "title": "Hackathons and prior-art builds",
+          "scope": "Stellar hackathons, winners, and what has already been built.",
+          "weight": 1,
+          "weightReason": "Builders check prior art; niche.",
+          "volatility": "scheduled",
+          "canonicalSources": [],
+          "question": "Which Stellar hackathons ran recently, and what kinds of projects won?",
+          "ravenReach": "unchecked",
+          "evidence": "Raven Scout covers hackathon builds; stellar-docs issue \"Learning\"; sorobanathon discussions."
+        },
+        {
+          "id": "ecosystem.scf-program",
+          "title": "Stellar Community Fund structure",
+          "scope": "SCF award types, tracks, amounts, and tranches.",
+          "weight": 2,
+          "weightReason": "Grant applicants ask constantly; terms change by version.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://communityfund.stellar.org/awards"
+            },
+            {
+              "class": "A",
+              "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award"
+            },
+            {
+              "class": "E",
+              "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/budget-and-deliverable-guidelines",
+              "observedAt": "2026-11-14",
+              "quote": "SCF Build Awards are structured around three tranches, tied to measurable outcomes."
+            }
+          ],
+          "question": "What award types does the Stellar Community Fund offer, and how much can a Build Award provide?",
+          "ravenReach": "yes",
+          "evidence": "SCF search: \"Build Awards $150K+\", SCF 7.0 blog, SCF handbook FAQ.",
+          "ravenReachNote": "Unfiltered search ranked skills (stellar-scout, scf-submission-radar); scout.searchResearch source=scf-handbook returned Build Award budget/tranche guidelines and submission criteria. The award ceiling was not in the snippet."
+        },
+        {
+          "id": "ecosystem.scf-apply",
+          "title": "Applying to SCF",
+          "scope": "Eligibility, submission criteria, review and voting, and rounds.",
+          "weight": 2,
+          "weightReason": "Grant applicants need the current process.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/submission-criteria"
+            },
+            {
+              "class": "A",
+              "ref": "https://stellar.gitbook.io/scf-handbook/additional-support/faq"
+            }
+          ],
+          "question": "How does a team apply for an SCF Build Award, and how are submissions reviewed?",
+          "ravenReach": "unchecked",
+          "evidence": "SCF search: submission criteria and official rules pages."
+        },
+        {
+          "id": "ecosystem.project-funding-history",
+          "title": "A project's SCF and funding history",
+          "scope": "Which SCF rounds and amounts a named project received.",
+          "weight": 2,
+          "weightReason": "Mined queries ask for it by name.",
+          "volatility": "live",
+          "canonicalSources": [
+            {
+              "class": "E",
+              "ref": "https://communityfund.stellar.org/project/phoenix-svj",
+              "observedAt": "2026-11-14",
+              "quote": "Phoenix scfTotalAwardedUSD 394500, scfAwardedRounds [16,20,25], scfAsOf 2026-09-04 (via scout.searchProjects)"
+            }
+          ],
+          "question": "What SCF awards has a named project such as Phoenix received?",
+          "ravenReach": "yes",
+          "evidence": "Mined queries \"SCF submission history project\", \"Phoenix SCF submission history\"; cases.json Phoenix case.",
+          "ravenReachNote": "Search ranked skills.lumenloop.scf-submission-radar; scout.searchProjects q=Phoenix scfAwarded=true returned scfTotalAwardedUSD 394500, rounds [16,20,25], scfAsOf 2026-09-04."
+        },
+        {
+          "id": "ecosystem.sdf-investments",
+          "title": "SDF investments and other funding",
+          "scope": "SDF Enterprise Fund investments and other non-SCF funding.",
+          "weight": 1,
+          "weightReason": "Founders and investors ask; niche.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "D",
+              "ref": "https://fundraisingfox.com/investors/stellar-development-foundation"
+            }
+          ],
+          "question": "Which companies has the SDF Enterprise Fund invested in?",
+          "ravenReach": "unchecked",
+          "evidence": "Ecosystem search returned an SDF investor profile."
+        },
+        {
+          "id": "ecosystem.community-programs",
+          "title": "Community programs",
+          "scope": "Ambassadors, regional chapters, and education programs.",
+          "weight": 1,
+          "weightReason": "Community members ask; niche.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://stellar.gitbook.io/scf-handbook/additional-support/navigating-discord"
+            }
+          ],
+          "question": "What community programs, such as ambassadors or regional chapters, does the Stellar ecosystem run?",
+          "ravenReach": "unchecked",
+          "evidence": "SCF handbook Discord navigation; SE \"status of the Stellar Open Institute?\"."
+        }
+      ]
+    },
+    {
+      "id": "security",
+      "title": "Security, audits, and incidents",
+      "leaves": [
+        {
+          "id": "security.contract-security",
+          "title": "Soroban contract security practices",
+          "scope": "Common vulnerability classes (missing auth, overflow, unsafe upgrades, storage misuse) and defenses.",
+          "weight": 3,
+          "weightReason": "A wrong answer ships exploitable code.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "E",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-dev-skill/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills/smart-contracts/SKILL.md",
+              "observedAt": "2026-11-14",
+              "quote": "authorization, reinitialization, arithmetic, storage TTLs, and cross-contract validation are the recurring failure modes"
+            }
+          ],
+          "question": "What are the most common security mistakes in Soroban contracts, and how are they prevented?",
+          "ravenReach": "yes",
+          "evidence": "Audit search: Veridise Soroban audits, CertiK state management; rs-soroban-sdk checked I256 arithmetic issue.",
+          "ravenReachNote": "skills.stellar-dev.smart-contracts 'before-mainnet' points to security.md checklists (authorization, reinitialization, arithmetic, storage TTLs, cross-contract validation); Soroban docs op ranked first in search."
+        },
+        {
+          "id": "security.audit-bank",
+          "title": "Soroban Security Audit Bank",
+          "scope": "SDF-funded audits for SCF projects: eligibility and firms.",
+          "weight": 2,
+          "weightReason": "Builders seeking audits ask.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/blog/developers/the-soroban-audit-bank-fostering-a-secure-smart-contract-ecosystem"
+            },
+            {
+              "class": "A",
+              "ref": "https://stellar.gitbook.io/scf-handbook/supporting-programs/audit-bank/official-rules"
+            }
+          ],
+          "question": "What is the Soroban Security Audit Bank, and who is eligible?",
+          "ravenReach": "unchecked",
+          "evidence": "Audit search ranked Audit Bank rules and blogs."
+        },
+        {
+          "id": "security.audited-projects",
+          "title": "Audit status of a project",
+          "scope": "Whether a named project was audited, by whom, and when.",
+          "weight": 2,
+          "weightReason": "Users and integrators check before depositing funds.",
+          "volatility": "live",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/audit-bank/projects"
+            },
+            {
+              "class": "E",
+              "ref": "scout.searchProjects({q:'Blend',fields:'audits'})",
+              "observedAt": "2026-11-14",
+              "quote": "Blend audits count 6, auditors [OtterSec, Certora, Code4rena], latestAt 2025-08-13, codeChangedSinceAudit true"
+            }
+          ],
+          "question": "Has a named Soroban project been audited, and by which firm?",
+          "ravenReach": "yes",
+          "evidence": "stellar.org \"Security Audited Soroban Projects\" directory in audit search.",
+          "ravenReachNote": "scout.searchProjects q=Blend returned audits {count 6, auditors OtterSec/Certora/Code4rena, latestAt 2025-08-13, codeChangedSinceAudit true}."
+        },
+        {
+          "id": "security.core-audits",
+          "title": "Audits of the core platform",
+          "scope": "Audits of stellar-core and the Soroban host environment.",
+          "weight": 1,
+          "weightReason": "Diligence teams ask; niche.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "D",
+              "ref": "https://veridise.com/wp-content/uploads/2025/02/VAR_Stellar_Soroban.pdf"
+            }
+          ],
+          "question": "Which firms have audited the Soroban host environment and stellar-core?",
+          "ravenReach": "unchecked",
+          "evidence": "Audit search returned Runtime Verification core v25 audit and Veridise Soroban core report."
+        },
+        {
+          "id": "security.bug-bounty",
+          "title": "Bug bounty",
+          "scope": "SDF's bug bounty programs, scope, and how to report vulnerabilities.",
+          "weight": 1,
+          "weightReason": "Researchers ask; niche.",
+          "volatility": "scheduled",
+          "canonicalSources": [],
+          "question": "How do security researchers report a vulnerability in Stellar software, and is there a bug bounty?",
+          "ravenReach": "unchecked",
+          "evidence": "SE security tag (37)."
+        },
+        {
+          "id": "security.outages",
+          "title": "Network outages",
+          "scope": "Past network halts (2014 outage, May 2019 halt) and their causes.",
+          "weight": 1,
+          "weightReason": "Analysts weigh reliability; niche.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "D",
+              "ref": "https://medium.com/stellar-developers-blog/may-15th-network-halt-a7b933103984"
+            },
+            {
+              "class": "D",
+              "ref": "https://www.theblock.co/news/business/2019-05-16-stellar-was-down-for-2-hours-23614"
+            }
+          ],
+          "question": "What caused the Stellar network halt in May 2019, and how long did it last?",
+          "ravenReach": "no",
+          "evidence": "Incident search returned the May 15 halt post-mortem and press.",
+          "ravenReachNote": "scout.searchResearch for 'May 2019 network halt validators' returned the 2025 'Decentralization, Double Time' blog and validator maintenance docs; no row describes the May 2019 halt. Scout declares an 'incident' source that was not filtered on in this check."
+        },
+        {
+          "id": "security.protocol-bugs",
+          "title": "Protocol bugs and post-mortems",
+          "scope": "Major bugs (2017 inflation bug, state archival issue) and disclosures.",
+          "weight": 1,
+          "weightReason": "Risk reviews ask; niche.",
+          "volatility": "stable",
+          "canonicalSources": [
+            {
+              "class": "D",
+              "ref": "https://messari.io/report/messari-research-stellar-suffered-and-quietly-patched-a-2-2-billion-xlm-inflation-bug-in-2017"
+            },
+            {
+              "class": "A",
+              "ref": "https://stellar.org/blog/foundation-news/state-archival-issue-post-mortem"
+            }
+          ],
+          "question": "What major protocol bugs has Stellar disclosed, such as the 2017 inflation bug?",
+          "ravenReach": "unchecked",
+          "evidence": "Incident search: Messari 2017 inflation bug report and SDF state archival post-mortem."
+        },
+        {
+          "id": "security.key-custody",
+          "title": "Key management and custody",
+          "scope": "Secure key storage, multisig custody for issuers and treasuries, and issuer key hygiene.",
+          "weight": 2,
+          "weightReason": "Issuers and treasuries lose funds to bad custody.",
+          "volatility": "stable",
+          "canonicalSources": [],
+          "question": "How should an asset issuer or treasury secure its Stellar signing keys?",
+          "ravenReach": "unchecked",
+          "evidence": "SE \"Storing Secret Key for Smart Contracts\", \"Securing Stellar node\"; SE security tag (37)."
+        },
+        {
+          "id": "security.signing-safety",
+          "title": "Transaction signing safety",
+          "scope": "What to verify before signing XDR, blind signing, and wallet transaction scanning.",
+          "weight": 2,
+          "weightReason": "Phishing drains accounts via malicious signing requests.",
+          "volatility": "stable",
+          "canonicalSources": [],
+          "question": "What should a user or wallet check before signing a Stellar transaction from a website?",
+          "ravenReach": "unchecked",
+          "evidence": "SE \"What is the Safest Way for Users to Sign Transactions Over the Web?\"; Freighter \"Only use Blockaid API for mainnet transactions\"."
+        }
+      ]
+    },
+    {
+      "id": "agents",
+      "title": "AI and agent tooling",
+      "leaves": [
+        {
+          "id": "agents.x402",
+          "title": "x402 on Stellar",
+          "scope": "HTTP 402 per-request payments on Stellar, facilitators, and status.",
+          "weight": 2,
+          "weightReason": "Fast-growing agent payment topic.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/agentic-payments/x402"
+            },
+            {
+              "class": "A",
+              "ref": "https://stellar.org/x402"
+            },
+            {
+              "class": "E",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-dev-skill/ceeb2f17a0fd1da3f47e28c6a73a026883020c09/skills/agentic-payments/SKILL.md",
+              "observedAt": "2026-11-14",
+              "quote": "x402 | MPP Charge | MPP Session ... Needs facilitator? | Yes — hosted or your own"
+            }
+          ],
+          "question": "How does x402 work on Stellar, and is there a live facilitator?",
+          "ravenReach": "yes",
+          "evidence": "cases.json \"Is there a live Stellar x402 facilitator?\"; GitHub discussion \"Classic vs Soroban USDC routing for x402 facilitators\"; Rumble Fish SCF grant.",
+          "ravenReachNote": "Search ranked skills.stellar-dev.agentic-payments first; its quick-decision table compares x402 (facilitator, fee-sponsored) with MPP Charge and Session. Live facilitator status was not checked."
+        },
+        {
+          "id": "agents.mpp",
+          "title": "Machine Payments Protocol",
+          "scope": "MPP on Stellar, including off-chain payment channels.",
+          "weight": 1,
+          "weightReason": "Emerging; niche.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/agentic-payments/mpp"
+            }
+          ],
+          "question": "What is the Machine Payments Protocol on Stellar, and how does it differ from x402?",
+          "ravenReach": "unchecked",
+          "evidence": "AI search returned docs \"MPP on Stellar\"."
+        },
+        {
+          "id": "agents.agentic-protocols",
+          "title": "Agentic commerce protocols compared",
+          "scope": "AP2, ACP, x402, and MPP and how they relate on Stellar.",
+          "weight": 1,
+          "weightReason": "Agent builders compare; niche.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/agentic-payments"
+            }
+          ],
+          "question": "How do AP2 and the Agentic Commerce Protocol compare with x402 and MPP on Stellar?",
+          "ravenReach": "unchecked",
+          "evidence": "cases.json AP2/ACP comparison case."
+        },
+        {
+          "id": "agents.mcp-servers",
+          "title": "MCP servers and agent tools",
+          "scope": "MCP servers, CLIs, and agent skills for Stellar development.",
+          "weight": 2,
+          "weightReason": "Coding agents ask what to install.",
+          "volatility": "live",
+          "canonicalSources": [
+            {
+              "class": "B",
+              "ref": "https://github.com/trionlabs/awesome-stellar-ai"
+            }
+          ],
+          "question": "Which MCP servers can a coding agent install to work with Stellar and Soroban?",
+          "ravenReach": "no",
+          "evidence": "cases.json \"Are there any MCP servers for Stellar/Soroban?\" and install-ready tooling case.",
+          "ravenReachNote": "Search ranked skills.stellar-dev.standards; its resources.md has no MCP mention. Scout type=AI projects and Lumenloop directory were not probed in this check, so absence is unconfirmed."
+        },
+        {
+          "id": "agents.agent-skills-llms",
+          "title": "Agent skills and LLM-ready docs",
+          "scope": "stellar-dev-skill, llms.txt, and agent-oriented CLI docs.",
+          "weight": 2,
+          "weightReason": "Determines what agents read first.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-dev-skill/blob/main/skills/agentic-payments/SKILL.md"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/llms.txt"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tools/cli/agent-cli/reference/troubleshooting"
+            }
+          ],
+          "question": "What official resources does Stellar provide to make AI coding agents effective?",
+          "ravenReach": "unchecked",
+          "evidence": "AI search returned stellar-dev-skill; docs index advertises llms.txt; docs have an agent-cli section."
+        },
+        {
+          "id": "agents.agent-spending-policies",
+          "title": "Agent spending limits and policies",
+          "scope": "Smart account policies, session keys, and mandates that bound an agent's spending.",
+          "weight": 1,
+          "weightReason": "Agent-safety builders ask; niche.",
+          "volatility": "scheduled",
+          "canonicalSources": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/complex-account#authorization-policy",
+              "observedAt": "2026-11-14",
+              "quote": "Page title: Complex Account — Authorization policy (stellarDocs.search_doc_titles pointer; not a reach check)"
+            }
+          ],
+          "question": "How can a Stellar smart account limit what an AI agent may spend?",
+          "ravenReach": "unchecked",
+          "evidence": "stellar-protocol draft SEP \"Hierarchical Mandate Tokens for Autonomous Agent Authority\"."
+        },
+        {
+          "id": "agents.ai-projects",
+          "title": "AI projects on Stellar",
+          "scope": "Ecosystem projects that combine AI agents and Stellar.",
+          "weight": 1,
+          "weightReason": "Landscape questions; niche.",
+          "volatility": "live",
+          "canonicalSources": [
+            {
+              "class": "B",
+              "ref": "https://github.com/trionlabs/awesome-stellar-ai"
+            }
+          ],
+          "question": "Which AI agent projects are building on Stellar?",
+          "ravenReach": "unchecked",
+          "evidence": "awesome-stellar-ai list in AI search."
+        }
+      ]
+    }
+  ],
+  "notes": "EXCLUSIONS. (1) Retired tools and patterns that dominate old Stack Exchange tags: bridge-server (16), compliance server (19), Kelp (14), Bifrost (16), ICO tooling (15), inflation pools. Agents should treat them as history; the live leaves inflation-ended and burn-2019 carry the history that still matters. (2) Price prediction and investment advice. Only market-listings stays, as a pointer to live sources. (3) Exchange-specific support procedures (Coinbase, Kraken, Trust Wallet). wrong-memo and wrong-network-send hold the Stellar-side truth; each exchange's policy is not Stellar truth. (4) Tax law. tax-history covers export only. (5) Minor SEPs with no demand signal: SEP-11 Txrep, SEP-23 strkey, SEP-35 operation IDs, and the SEP-46/47/48 contract-meta SEPs. keys-seeds and protocol-history cover strkey and contract meta indirectly. (6) stellar-core internals (bucket list, parallel apply design). current-protocol and protocol-history cover what users see; core-ops covers operators. (7) Per-project leaves beyond Blend, Soroswap, Aquarius, and Comet/Phoenix. These four have concentrated mined demand. All other projects fall under project-lookup, project-builders, and project-funding-history. (8) Pi Network's own tokenomics. pi-network covers only its relation to Stellar. (9) Stellar Open Institute and other dormant programs.\n\nDEMAND-SOURCE LIMITS. The Stack Exchange API (observed 2026-11-14, 1,456 questions) skews toward 2017-2019. Its top-voted questions are about inflation, nodes, and SCP; its recent questions are mostly retail support (wrong memo, phishing, Pi, wrong chain). Discord is not indexed on the web: the search returned only the SCF handbook's Discord navigation page. eval/discovery/mined-lumenloop-queries.json was generated by agents from committed eval questions (sourcePolicy says no raw user traffic), so its concentration on 8 topics reflects eval design rather than user demand. Weights lean on GitHub issue comment counts (stellar-cli, rs-soroban-sdk, js-stellar-sdk, stellar-rpc, freighter, stellar-protocol, stellar-docs since 2024-06) and on persona searches.\n\nRAVEN SPOT-CHECK METHOD. 52 of 156 leaves checked, all 27 weight-3 leaves first. Each checked leaf got one Raven search. Executes grouped 4 to 7 leaves per script, with at least one targeted operation call per leaf. A verdict records what Raven returned; it does not judge whether the content is true. Results: 38 yes, 10 partial, 4 no.\n\nFINDINGS FOR THE RECONCILER AND THE GAP LEDGER. (a) The Freighter wallet is now called Varial: docs say 'Varial (formerly Freighter)', and Scout lists Varial. Any battery case or answer that names Freighter as current may be stale. (b) SDF introduced an XLM rewards concept at Meridian 2026 (Lumenloop roundup 2026-10-30; stellar.org/xlm-utility 'XLM Rewards Pool Explorer'), so xlm.no-native-staking is now scheduled rather than stable. (c) Bell (Protocol 30) is live on testnet since 2026-11-03 with a mainnet vote on 2026-11-23, so current-protocol answers change within days of this map. (d) SLP-0007 has been live on mainnet since 2026-10-22 (docs storage-strategies appendix), so the resource-limit values have recently changed. (e) Search routing weak spots: 'require_auth' ranked Lumenloop above the Soroban docs; 'scams phishing' ranked SCF skills; 'Pi Network' ranked SDK docs; 'CAP-62 status' ranked scout.getStatus; scout.matchPartners returned HTTP 503. (f) Leaves where no Raven source answered: retail.pi-network, rwa.regulation, security.outages (the May 2019 halt; Scout's incident source was not filtered on), agents.mcp-servers (Scout type=AI was not probed). (g) Leaves with thin or dated sources: retail.scams (2022-2023 SDF posts), retail.wrong-memo (2020 blog only, no recovery path), xlm.sdf-holdings (only historical mandates), and ecosystem.network-metrics (developer metrics only, no on-chain activity).\n\nCANONICAL SOURCES. Class A, B, and D refs are URLs observed in this lane's searches. Class E refs marked 'pointer' come from one stellarDocs.search_doc_titles pass over leaves that had no observed URL. They locate a page and do not count as a reach check. Off-target title hits were discarded (for SEP-12, SEP-38, NFTs, hardware wallets, key custody, events, ledgers, account merge, Lab, and RPC retention). 30 leaves still have no canonical source. Most are project, retail-support, or history topics whose canonical source is a third party (a project's own docs, an exchange's help center) that this lane did not verify."
+}

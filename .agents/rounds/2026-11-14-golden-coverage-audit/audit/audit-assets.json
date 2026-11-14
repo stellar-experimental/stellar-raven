@@ -1,0 +1,4045 @@
+{
+  "lane": "audit-assets",
+  "records": [
+    {
+      "id": "q-aas-burn-clawback-redemption-mechanics",
+      "purpose": "stellar-truth",
+      "topics": [
+        "classic asset burn and redemption",
+        "clawback versus voluntary return",
+        "issuer account cannot hold own asset"
+      ],
+      "tests": "Whether the agent knows that returning a classic asset to its issuer burns it and that clawback is a separate, flag-gated, issuer-initiated burn.",
+      "questionIssues": [
+        "'Redemption' is an off-chain business process; the protocol facts are burn and clawback, so the question blends two layers.",
+        "Realistic and answerable; the 'do tokens return to the issuer' clause is the useful trap."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "'issued supply' is vague and restates what key fact 1 implies"
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "overlaps key fact 1 and the clawback prerequisite owned by the compliance clawback case"
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Sending a classic asset back to its issuing account burns it; the issuer cannot hold its own asset.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets",
+              "observedAt": "2026-11-14",
+              "quote": "To delete, or \"burn\", an asset, you must send it back to the account that issued it."
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+              "observedAt": "2026-11-14",
+              "quote": "Transfers to the issuer account will burn the token, while transfers from the issuer account will mint."
+            }
+          ]
+        },
+        {
+          "claim": "A clawed-back amount is burned, not credited to another address; needs a clawback-enabled balance.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md",
+              "observedAt": "2026-11-14",
+              "quote": "asset clawed back is burned and is not sent to any other address."
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+              "observedAt": "2026-11-14",
+              "quote": "A balance can only be clawed back if the issuer account had the `AUTH_CLAWBACK_ENABLED_FLAG` set when the balance was created."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-comp-clawback-cap0035",
+          "survivor": "q-comp-clawback-cap0035",
+          "why": "Cross-category: clawback mechanics, flags and CAP-35 are owned there; this case should keep only the burn and redemption half."
+        },
+        {
+          "id": "q-aas-issuer-fees-supply-cap-freeze",
+          "survivor": "q-aas-burn-clawback-redemption-mechanics",
+          "why": "Same lane; the golden already splits scope (this one owns burn and redemption)."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Needed for the burn-to-issuer fact, but the 356-word golden restates flag mechanics owned by the compliance clawback case and carries provenance in notes.",
+      "rewrite": {
+        "question": null,
+        "answer": "Sending a classic asset back to its issuing account burns it. The issuer cannot hold its own asset, so holder balances are the issued supply. Redemption for off-chain value is a business process on top of that payment. Clawback differs: the issuer burns an amount from a clawback-enabled trustline without the holder's signature, and nothing is credited to the issuer.",
+        "keyFacts": [
+          "Sending a classic asset to its issuing account burns it.",
+          "The issuing account cannot hold a balance of its own asset.",
+          "Clawback burns a holder's balance without the holder's signature.",
+          "Clawback applies only to balances created with clawback enabled."
+        ],
+        "avoid": [
+          "The issuer holds its own classic asset as a normal balance.",
+          "Clawed-back tokens become a spendable issuer balance."
+        ],
+        "notes": "Redemption for cash is off-chain; do not penalize an answer that treats it as outside the protocol.",
+        "movedToTruth": [
+          "Differentiation note versus q-aas-issuer-fees-supply-cap-freeze",
+          "Verified-against list and the 2026-06-29 live stamp",
+          "Golden-cites line",
+          "'Also good if' items (clawback needs enabled flags; supply accounting)"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 369,
+      "wordsAfter": 134
+    },
+    {
+      "id": "q-aas-claim-received-claimable-balances",
+      "purpose": "stellar-truth",
+      "topics": [
+        "finding claimable balances for an account",
+        "ClaimClaimableBalance operation",
+        "claim predicates and trustline needs"
+      ],
+      "tests": "How an account lists and claims the claimable balances addressed to it and why a listed balance can still fail to claim.",
+      "questionIssues": [
+        "Three asks in one ('find', 'claim one or several', 'confirm none remain'); acceptable as a procedure.",
+        "The Horizon-only discovery path is a deployment-dependent fact; Stellar RPC has no claimant filter, so a non-Horizon answer is genuinely harder, not wrong."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Weak: 'requires claimant-account submission' restates key fact 1 and says nothing checkable"
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Horizon's claimable_balances collection filters by claimant and responds.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "https://horizon.stellar.org/claimable_balances?claimant=GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN&limit=1",
+              "observedAt": "2026-11-14",
+              "quote": "Horizon returned a claimable_balances page (self and next links) for the claimant filter"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
+              "observedAt": "2026-11-14",
+              "quote": "A trustline must be established by the claimant to the asset before it can claim ... otherwise, the claim will result in an `op_no_trust` error."
+            }
+          ]
+        },
+        {
+          "claim": "Predicate must be true at claim time (docs wording).",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
+              "observedAt": "2026-11-14",
+              "quote": "a ClaimPredicate that must evaluate to true for the claim to succeed."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-aas-claimable-predicates-expiry-reserves",
+          "survivor": "q-aas-claimable-predicates-expiry-reserves",
+          "why": "Shares the predicate-must-be-true fact; this case still owns discovery and the claim procedure, so keep both."
+        },
+        {
+          "id": "q-raph-claimable-balance-safety",
+          "survivor": "q-aas-claim-received-claimable-balances",
+          "why": "Cross-category (retail): 'can I claim if my wallet lacks the token' is the trustline half of this case."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "A realistic procedural question worth keeping, but 331 words with RPC provenance and batching detail in notes.",
+      "rewrite": {
+        "question": null,
+        "answer": "List the balances with Horizon's claimable-balances endpoint filtered by `claimant`, paging to the end. Claim each by submitting a `ClaimClaimableBalance` operation with its balance id, with the claimant as source; one transaction can carry several. A claim fails if the claimant's predicate is false at that ledger or a non-native asset lacks a trustline. Re-query to confirm none remain.",
+        "keyFacts": [
+          "Horizon lists claimable balances for an account through the claimant filter.",
+          "Each balance is claimed by a ClaimClaimableBalance operation naming its id.",
+          "A claim succeeds only if the claimant's predicate is true at that ledger.",
+          "Claiming a non-native asset needs a trustline from the claimant."
+        ],
+        "avoid": [
+          "Claiming a claimable balance with a normal payment."
+        ],
+        "notes": "Stellar RPC reads a balance only by a known id and has no claimant filter; do not require an RPC discovery step.",
+        "movedToTruth": [
+          "As-of 2026-11-02 RPC getLedgerEntries note provenance",
+          "'Also good if' items (batching, re-query)",
+          "Golden-cites line"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 331,
+      "wordsAfter": 134
+    },
+    {
+      "id": "q-aas-claimable-predicates-expiry-reserves",
+      "purpose": "stellar-truth",
+      "topics": [
+        "claimable balance predicates",
+        "expiry and creator reclaim",
+        "claimable balance reserve cost"
+      ],
+      "tests": "That a claimable balance is governed by per-claimant predicates, so listing yourself as claimant gives no at-will reclaim, and that each claimant costs the creator a base reserve.",
+      "questionIssues": [
+        "The 'if I list myself as a claimant, can I reclaim anytime?' probe is a good misconception trap.",
+        "The opening list (predicates, expiry, multi-claimant, cancellation, reserves) is five asks at once."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Vague 'before/after absolute or relative time predicates'; says nothing about the reclaim question the prompt asks"
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Should say one base reserve per claimant, the checkable number"
+        }
+      ],
+      "rot": [
+        {
+          "claim": "A claimable balance holds at most 10 claimants.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-xdr/blob/main/Stellar-transaction.x",
+              "observedAt": "2026-11-14",
+              "quote": "Claimant claimants<10>;"
+            }
+          ]
+        },
+        {
+          "claim": "Each claimant raises the source account's minimum balance by one base reserve.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md",
+              "observedAt": "2026-11-14",
+              "quote": "each claimant in that entry increases the source account’s minimum balance by one base reserve."
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
+              "observedAt": "2026-11-14",
+              "quote": "each claimant in that entry increases the source account’s minimum balance by one base reserve."
+            }
+          ]
+        },
+        {
+          "claim": "Predicate shapes: before absolute/relative time, NOT, AND, OR, unconditional.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
+              "observedAt": "2026-11-14",
+              "quote": "Can claim if the close time of the ledger including the claim is before X (Unix timestamp) - `BEFORE_ABSOLUTE_TIME(X)`"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-asset-claimable-balance",
+          "survivor": "q-aas-claimable-predicates-expiry-reserves",
+          "why": "'What is a claimable balance and when to use one' is the same primitive; fold it in here."
+        },
+        {
+          "id": "q-raph-claimable-balance-safety",
+          "survivor": "q-aas-claimable-predicates-expiry-reserves",
+          "why": "Cross-category retail restatement of the trustline requirement."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Survivor of the claimable-balance concept cluster. It must absorb the 'native ledger entry, no smart contract' and 'useful when the recipient has no trustline yet' facts from q-asset-claimable-balance.",
+      "rewrite": {
+        "question": null,
+        "answer": "A claimable balance is a native ledger entry (no Soroban contract) holding an asset for up to 10 claimants, each with a predicate (time bounds, AND, OR, NOT) that must be true to claim. It suits recipients without a trustline yet. Listing yourself as claimant gives no at-will reclaim. Each claimant costs the creator one base reserve.",
+        "keyFacts": [
+          "A claimable balance is a native ledger entry with up to 10 claimants.",
+          "Each claimant has a predicate that must be true at the ledger of the claim.",
+          "A creator listed as claimant has no at-will reclaim beyond its own predicate.",
+          "Each claimant adds one base reserve to the creator's minimum balance."
+        ],
+        "avoid": [
+          "A claimable balance expires and refunds itself without a claim operation.",
+          "A claimable balance is a smart-contract escrow that needs Soroban."
+        ],
+        "notes": "Issuer clawback is a separate feature; do not penalize an answer that mentions it as distinct.",
+        "movedToTruth": [
+          "Folded-in history (q-aas-claimable-balance-reclaim)",
+          "CAP-23 and lumens reserve provenance and the 2026-06-29 live stamp",
+          "'Also good if' items (recipient-before/sender-after pattern)",
+          "Golden-cites line"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 414,
+      "wordsAfter": 146
+    },
+    {
+      "id": "q-aas-issuer-fees-supply-cap-freeze",
+      "purpose": "stellar-truth",
+      "topics": [
+        "issuer transfer fees on classic assets",
+        "supply caps and locking the issuer",
+        "authorization flags and freezing"
+      ],
+      "tests": "Whether the agent knows classic assets have no protocol transfer-fee hook or max-supply field, and that freezing runs through authorization flags.",
+      "questionIssues": [
+        "Realistic issuer question; three asks, one per fact.",
+        "Answerable, but the negative claim (no protocol fee hook) is an inference from the operation model, not a quoted statement."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Vague: 'supply caps use operational/governance controls' says nothing checkable and overlaps key fact 2"
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Restates key fact 1: lock the issuer is the operational cap"
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Overlaps the clawback case; the question asks about freeze"
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Locking the issuer (master weight 0, no other signers) stops further issuance; a SAC admin moved by set_admin can still mint.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tokens/control-asset-access",
+              "observedAt": "2026-11-14",
+              "quote": "If the admin was not the issuer, then the admin would be able to mint the asset even with the issuing account locked."
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+              "observedAt": "2026-11-14",
+              "quote": "administrative authority is mutable and can be transferred afterwards with the SAC's `set_admin` function."
+            }
+          ]
+        },
+        {
+          "claim": "AUTH_CLAWBACK_ENABLED needs AUTH_REVOCABLE; AUTH_REQUIRED/REVOCABLE govern authorize/deauthorize.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md",
+              "observedAt": "2026-11-14",
+              "quote": "The account `AUTH_REVOCABLE_FLAG` flag must also be set because for clawback to succeed"
+            }
+          ]
+        },
+        {
+          "claim": "No protocol per-transfer issuer fee (inferred negative).",
+          "result": "unverifiable",
+          "evidence": []
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-comp-auth-flags-overview",
+          "survivor": "q-comp-auth-flags-overview",
+          "why": "Cross-category: the authorization-flag enumeration is owned there; this case should reduce flags to 'freeze = deauthorize'."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "A good misconception case (issuers cannot tax transfers or encode a max supply). Five key facts and five avoid items re-derive flag and clawback material owned elsewhere.",
+      "rewrite": {
+        "question": null,
+        "answer": "Classic assets have no protocol per-transfer issuer fee and no max-supply field. An issuer caps supply operationally by locking the issuing account after issuance; a SAC admin moved away from the issuer can still mint. An issuer can freeze a holder by deauthorizing the trustline when AUTH_REQUIRED and AUTH_REVOCABLE are set. Custom transfer logic needs a Soroban token.",
+        "keyFacts": [
+          "Classic assets have no protocol per-transfer issuer fee hook.",
+          "Classic assets have no protocol max-supply field.",
+          "Locking the issuing account stops further issuance of the classic asset.",
+          "Deauthorizing a trustline freezes a holder when the revocable flag is set."
+        ],
+        "avoid": [
+          "Classic Stellar assets have a built-in issuer transfer tax or an immutable max-supply field."
+        ],
+        "notes": "A SAC admin moved with set_admin can still mint after the issuer is locked; do not penalize an answer that adds this.",
+        "movedToTruth": [
+          "Differentiation note versus q-aas-burn-clawback-redemption-mechanics",
+          "Inference note on the transfer-fee absence",
+          "Source list for CAP-35 and SAC contract.rs",
+          "'Also good if' items"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 417,
+      "wordsAfter": 133
+    },
+    {
+      "id": "q-aas-sep30-recoverable-wallets",
+      "purpose": "stellar-truth",
+      "topics": [
+        "SEP-30 account recovery",
+        "recovery signer server",
+        "signers and thresholds"
+      ],
+      "tests": "What SEP-30 is and why its server can recover an account without holding the user's master key.",
+      "questionIssues": [
+        "Answerable and realistic; two asks (what, how)."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Overlaps key fact 3; 'signer or signer-change coordinator' is imprecise"
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Vague: 'wallet-server flow' is not a predicate"
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SEP-30 'Recoverysigner / Account Recovery' is Draft (v0.8.1) and uses a SEP-10 JWT to prove high-threshold control.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0030.md",
+              "observedAt": "2026-11-14",
+              "quote": "Status: Draft ... Updated: 2021-05-04 ... Version: 0.8.1"
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0030.md",
+              "observedAt": "2026-11-14",
+              "quote": "The client uses [SEP-10] to get a [JWT] proving high threshold control of an"
+            }
+          ]
+        },
+        {
+          "claim": "Official docs still document the flow.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals",
+              "observedAt": "2026-11-14",
+              "quote": "### SEP-30 - Account Recovery: Multi-Party Recovery of Stellar Accounts"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-passkey-wallet-recovery",
+          "survivor": "q-aas-sep30-recoverable-wallets",
+          "why": "Cross-category (soroban): smart-wallet passkey recovery is a different mechanism; keep both but confirm no SEP-30 prose is duplicated there."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Needed as the only account-recovery standard case; the 296-word golden carries a Draft-status note, 'Phase 3' to-do text, and SEP-10 detail the question does not ask for.",
+      "rewrite": {
+        "question": null,
+        "answer": "SEP-30 is Stellar's Draft account-recovery standard. The account adds recovery signer servers as signers with the right thresholds before a key is lost. After loss, the user authenticates with the recovery server, which can sign to replace signers and restore control. The server never holds the user's master secret key, and an account never enrolled cannot be recovered.",
+        "keyFacts": [
+          "SEP-30 is Stellar's account recovery standard using recovery signer servers.",
+          "Recovery works through signers and thresholds set on the account in advance.",
+          "The recovery server does not hold the user's master secret key.",
+          "An account that was never enrolled cannot be recovered through SEP-30."
+        ],
+        "avoid": [
+          "The recovery server custodies the user's master secret key."
+        ],
+        "notes": "SEP-30 is Draft; do not penalize an answer that notes this or contrasts it with passkey smart-account recovery.",
+        "movedToTruth": [
+          "Phase 3 verification to-do text",
+          "SEP-10 JWT / identity-provider detail",
+          "Golden-cites line",
+          "'Also good if' items"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 307,
+      "wordsAfter": 129
+    },
+    {
+      "id": "q-aas-trustline-limit-lifecycle",
+      "purpose": "stellar-truth",
+      "topics": [
+        "trustline limit",
+        "op_invalid_limit result code",
+        "removing a trustline"
+      ],
+      "tests": "What a trustline limit does, what causes op_invalid_limit, and the removal sequence (zero balance, then limit zero).",
+      "questionIssues": [
+        "Realistic troubleshooting question; three asks.",
+        "Slightly under-asked: op_invalid_limit has a second documented cause (reserve) that the golden handles loosely."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Vague 'outside protocol constraints'; the precise cause is limit below current balance plus buying liabilities"
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Overlaps key fact 3 (removal needs zero balance and limit 0 are one procedure)"
+        }
+      ],
+      "rot": [
+        {
+          "claim": "op_invalid_limit: limit not sufficient to hold current balance and satisfy buying liabilities.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/change-trust",
+              "observedAt": "2026-11-14",
+              "quote": "The limit is not sufficient to hold the current balance of the trustline and still satisfy its buying liabilities."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-asset-trustline-basics",
+          "survivor": "q-asset-trustline-basics",
+          "why": "Both state the base-reserve cost; keep the reserve in basics only."
+        },
+        {
+          "id": "q-sor-contract-trustlines-c-address",
+          "survivor": "q-sor-contract-trustlines-c-address",
+          "why": "Cross-category (soroban): C-address trustline semantics are separate; no duplicate."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Keep: a practical error-code fact worth testing. Trim reserve prose that trustline-basics owns and key fact 1.",
+      "rewrite": {
+        "question": null,
+        "answer": "A trustline `limit` is the most of that asset the account will hold, changed with `ChangeTrust`. `op_invalid_limit` means the new limit is below the current balance plus buying liabilities, typically from removing a trustline that still holds tokens. To remove one, bring the balance to zero, cancel related offers, then submit ChangeTrust with limit 0.",
+        "keyFacts": [
+          "A trustline limit caps the balance the account will hold of that asset.",
+          "op_invalid_limit means the new limit is below balance plus buying liabilities.",
+          "A trustline can be removed only when its asset balance is zero.",
+          "Removal is a ChangeTrust operation with limit 0."
+        ],
+        "avoid": [
+          "Removing a trustline while it still holds a nonzero balance."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "Result-code docs provenance",
+          "Reserve-release 'also good if' (owned by q-asset-trustline-basics)",
+          "Golden-cites line"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 276,
+      "wordsAfter": 109
+    },
+    {
+      "id": "q-anchor-endpoint-discovery",
+      "purpose": "stellar-truth",
+      "topics": [
+        "anchor endpoint discovery via stellar.toml",
+        "SEP-10 or SEP-45 auth before SEP-24",
+        "directory is not an integration contract"
+      ],
+      "tests": "That a wallet finds an anchor's SEP-24 and auth endpoints in the issuer's own stellar.toml and authenticates before calling protected endpoints.",
+      "questionIssues": [
+        "Question never mentions directories, yet key fact 2 grades directory-vs-toml behavior; the notes have to explain this, which is a smell.",
+        "Answerable and realistic."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "process",
+          "issue": "Grades a behavior (does not rely on a directory), not a stated Stellar fact; needs a 400-char note to be gradable"
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SEP-1 stellar.toml advertises TRANSFER_SERVER_SEP0024 and WEB_AUTH_FOR_CONTRACTS_ENDPOINT.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md",
+              "observedAt": "2026-11-14",
+              "quote": "| TRANSFER_SERVER_SEP0024         | uses `https://`        | The server used for [SEP-24](sep-0024.md) Anchor/Client interoperability"
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md",
+              "observedAt": "2026-11-14",
+              "quote": "| WEB_AUTH_FOR_CONTRACTS_ENDPOINT | uses `https://`        | The endpoint used for [SEP-45 Web Authentication](sep-0045.md)"
+            }
+          ]
+        },
+        {
+          "claim": "SEP-24 requires anchors and clients to support SEP-10 or SEP-45 or both (v3.8.0, Active).",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
+              "observedAt": "2026-11-14",
+              "quote": "Anchors and clients must support one of the [SEP-10](sep-0010.md) or"
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
+              "observedAt": "2026-11-14",
+              "quote": "Status: Active ... Version 3.8.0"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-sep-1-toml",
+          "survivor": "q-anchor-endpoint-discovery",
+          "why": "SEP-1 stellar.toml at /.well-known is the first step here; absorb the well-known path."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Survivor of the SEP-1 and endpoint-discovery pair. Replace the process-flavored key fact with a world fact and drop the 400-character grading note.",
+      "rewrite": {
+        "question": null,
+        "answer": "The wallet starts from the issuer's home domain and fetches https://<domain>/.well-known/stellar.toml (SEP-1). It reads TRANSFER_SERVER_SEP0024 and the web-auth endpoint (WEB_AUTH_ENDPOINT for SEP-10, WEB_AUTH_FOR_CONTRACTS_ENDPOINT for SEP-45), authenticates, then calls the SEP-24 info and interactive endpoints. The issuer's current stellar.toml is authoritative, not a directory listing.",
+        "keyFacts": [
+          "The issuer's home-domain stellar.toml is served at /.well-known/stellar.toml.",
+          "The stellar.toml advertises the anchor's SEP-24 server and web-auth endpoint.",
+          "SEP-24 protected calls need SEP-10 or SEP-45 authentication first."
+        ],
+        "avoid": [
+          "An anchor directory supplies each anchor's authenticated SEP-24 endpoint."
+        ],
+        "notes": "Naming SEP-45 for contract-account wallets is correct, not an error.",
+        "movedToTruth": [
+          "SEP-24 v3.8.0 status stamp",
+          "400-character keyFacts[2] grading explanation",
+          "Sandbox-testing remark"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 240,
+      "wordsAfter": 90
+    },
+    {
+      "id": "q-anchor-list-builders-discovery",
+      "purpose": "mixed",
+      "topics": [
+        "anchors and on/off-ramp operators",
+        "roster dating and freshness",
+        "anchor operators versus anchor tooling"
+      ],
+      "tests": "Whether the agent names real anchor operators from a current directory, dates the roster, and separates operators from tooling such as the Anchor Platform.",
+      "questionIssues": [
+        "The question is a plain roster ask; the golden's content is a source-relative count of the Scout directory (21 profiles), which only a Scout-reading agent can match.",
+        "Key facts 0 and 1 are generic freshness boilerplate shared with three other live cases."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": "Boilerplate freshness behavior shared with other live cases"
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "Boilerplate: duplicates key fact 0 and the 'as-of' point"
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Scout directory filtered to type=anchor returns 21 anchor profiles (24 with all=1).",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "scout.getPartners({type:'anchor',limit:100})",
+              "observedAt": "2026-11-14",
+              "quote": "counts: returned 21, total 21, filteredOut 3; all=1 returned 24 (2026-11-14T02:50:22Z)"
+            }
+          ]
+        },
+        {
+          "claim": "Roster includes Etherfuse, Transparent Network, APS Money.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "scout.getPartners({type:'anchor'})",
+              "observedAt": "2026-11-14",
+              "quote": "names[0..2]: Etherfuse, Transparent Network, APS Money"
+            }
+          ]
+        },
+        {
+          "claim": "MoneyGram is a Stellar anchor.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://xramps.moneygram.com/ops/dev/stellar",
+              "observedAt": "2026-11-14",
+              "quote": "Legacy integration path. Whitelist anchor path: SEP-10 authentication, SEP-24 interactive cash-in and cash-out"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-crp-anchors-by-corridor",
+          "survivor": "q-anchor-list-builders-discovery",
+          "why": "Cross-category (compliance): both derive anchors from a dated directory; the corridor case adds cost and build-vs-buy parts, so only the roster behavior overlaps."
+        },
+        {
+          "id": "q-asset-stablecoin-issuers-discovery",
+          "survivor": "q-eco-stablecoins-on-stellar",
+          "why": "Same roster-discovery boilerplate; one generic freshness case could cover all roster asks."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Roster discovery is a legitimate behavior, but the golden pins one directory's count. Rewrite so it requires named, sourced operators and a dated roster, with the freshness boilerplate expressed once.",
+      "rewrite": {
+        "question": null,
+        "answer": "Examples a current source supports include MoneyGram Ramps (SEP-24 cash-in and cash-out) and Etherfuse (a Mexico USDC and MXN ramp). The Stellar Light partner directory listed 21 anchor profiles on 2026-11-14. The roster changes, so quote it with its source and date. Anchor operators differ from anchor tooling such as SDF's Anchor Platform.",
+        "keyFacts": [
+          "Names specific anchors or ramp operators supported by a cited source.",
+          "Dates the roster as of its observation time.",
+          "Separates anchor operators from tooling such as the Anchor Platform."
+        ],
+        "avoid": [
+          "Anchor names that no source lists, or a listing presented as a complete permanent roster."
+        ],
+        "notes": "Counts differ by source basis (directory profiles versus project search); do not penalize a dated count from either.",
+        "movedToTruth": [
+          "Re-check history (stellar.org/use-cases/ramps redirect, anchors docs page)",
+          "Routing note (scout_projects)",
+          "Golden-cites line",
+          "Observed counts as example only"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 285,
+      "wordsAfter": 115
+    },
+    {
+      "id": "q-anchor-moneygram-ramps",
+      "purpose": "stellar-truth",
+      "topics": [
+        "MoneyGram Ramps cash-in and cash-out",
+        "SEP-24 legacy path versus widget SDK",
+        "USDC settlement and cash coverage"
+      ],
+      "tests": "What MoneyGram Ramps is on Stellar, the asset it settles in, and that new partners now use a widget SDK while the SEP-10/SEP-24 path is legacy.",
+      "questionIssues": [
+        "Vague 'fit into the anchor model' wording; the useful content is the legacy-versus-widget distinction, which the question does not hint at.",
+        "Duplicated three times across categories (q-pay-moneygram-ramps, q-comp-cross-moneygram-partnership-sep24)."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Weak: 'one integration reaches the cash locations' is marketing, not a Stellar fact"
+        }
+      ],
+      "rot": [
+        {
+          "claim": "New Stellar partners use the Ramps widget SDK with API keys; the SEP-10/SEP-24 guide is the legacy path for allowlisted partners.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://xramps.moneygram.com/stellar",
+              "observedAt": "2026-11-14",
+              "quote": "Integrate USDC cash-in and cash-out for Stellar wallets with the Ramps widget SDK and API keys. Cash access across 170+ countries and territories."
+            },
+            {
+              "class": "A",
+              "ref": "https://xramps.moneygram.com/ops/dev/stellar",
+              "observedAt": "2026-11-14",
+              "quote": "Legacy integration path. Whitelist anchor path: SEP-10 authentication, SEP-24 interactive cash-in and cash-out, on-chain USDC with memo"
+            }
+          ]
+        },
+        {
+          "claim": "170+ countries with USDC cash-out.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/case-studies/moneygram-international",
+              "observedAt": "2026-11-14",
+              "quote": "170+ Countries with USDC cash-out"
+            }
+          ]
+        },
+        {
+          "claim": "Avoid item: MoneyGram was not yet in the Tier-1 quorum in July or early August 2026.",
+          "result": "unverifiable",
+          "evidence": []
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-pay-moneygram-ramps",
+          "survivor": "q-pay-moneygram-ramps",
+          "why": "Cross-category: same product, asset, SEP and path facts; that case also asks per-transaction limits. Keep one MoneyGram case."
+        },
+        {
+          "id": "q-comp-cross-moneygram-partnership-sep24",
+          "survivor": "q-pay-moneygram-ramps",
+          "why": "Cross-category: Scout role plus SEP-24 flow; subsumed by the Ramps product case plus a tool-lane cross item."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Content holds as of 2026-11-14. Tighten, and let the reconciler choose between this and q-pay-moneygram-ramps. The July/August Tier-1 avoid is a historical timing trap that cannot be false today; remove it.",
+      "rewrite": {
+        "question": null,
+        "answer": "MoneyGram Ramps lets Stellar wallets cash in and cash out physical cash, settling in Stellar USDC. As of 2026-11-14 MoneyGram directs new partners to a widget SDK with API keys and server-side sessions; the SEP-10/SEP-24 anchor path is documented as legacy for existing allowlisted partners. MoneyGram states USDC cash-out in 170+ countries.",
+        "keyFacts": [
+          "MoneyGram Ramps settles cash-in and cash-out in Stellar USDC.",
+          "New partners use a widget SDK with API keys, as of 2026-11-14.",
+          "The SEP-10/SEP-24 anchor path is legacy for existing allowlisted partners."
+        ],
+        "avoid": [
+          "MGUSD is the Ramps settlement asset."
+        ],
+        "notes": "Describing either the widget path or the legacy SEP-24 path is correct; naming only SEP-24 is incomplete, not wrong.",
+        "movedToTruth": [
+          "Tier-1 quorum timing avoid and Obsrvr node evidence",
+          "Developer-portal URL history and guide version (1.2, July 2026)",
+          "SEP-38 not primary flow note",
+          "Source list"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 416,
+      "wordsAfter": 108
+    },
+    {
+      "id": "q-anchor-platform-what",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Anchor Platform",
+        "SEPs implemented by the Anchor Platform",
+        "anchor backend versus wallet SDK"
+      ],
+      "tests": "What the SDF Anchor Platform is and which SEPs it implements.",
+      "questionIssues": [
+        "Clear and realistic, but a strict subset of the three-way comparison case."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Overlaps key fact 0"
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Holds a seven-number list; answer is checkable but one predicate per SEP would be unwieldy"
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Anchor Platform docs list SEP-1, 6, 10, 12, 24, 31, 38 and 45.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/platforms/anchor-platform.md",
+              "observedAt": "2026-11-14",
+              "quote": "SEP-10 and SEP-45 support for both traditional and smart"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/platforms/anchor-platform.md",
+              "observedAt": "2026-11-14",
+              "quote": "SEP-12 integration for KYC/AML compliance and customer d"
+            }
+          ]
+        },
+        {
+          "claim": "Anchor Platform needs an operator-built business server.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/platforms/anchor-platform/admin-guide/architecture.md",
+              "observedAt": "2026-11-14",
+              "quote": "The business server is a service that you (the business) must implement to connect the Anchor Platform with your internal systems."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-anchor-sdp-vs-anchor-platform",
+          "survivor": "q-anchor-sdp-vs-anchor-platform",
+          "why": "The three-way comparison already tests Anchor Platform role and SEP list."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Fold into q-anchor-sdp-vs-anchor-platform, which must keep the Anchor Platform SEP list (1, 6, 10, 12, 24, 31, 38, plus 45) and 'backend for anchor operators, not a wallet'.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 211,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-anchor-sdp-vs-anchor-platform",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Anchor Platform versus Disbursement Platform versus Wallet SDK",
+        "SEPs per component",
+        "who runs each component"
+      ],
+      "tests": "Whether the agent assigns the right role and SEP set to each of the three SDF anchor-stack components.",
+      "questionIssues": [
+        "Realistic and the best framing of the cluster; a three-way comparison avoids three single-product questions.",
+        "The 10,000-instruction cap is application detail, correctly kept out of the golden."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Packs a SEP list and a Java claim; split between Java (trivia) and the SEP set"
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Says 'optional downstream anchor rails' beside the SEP claim: two predicates"
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Two predicates: TypeScript, and SEP set; negative SEP-31 is already an avoid"
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SDP Core implements SEP-10 and SEP-24 natively; SDP is three services (Core, TSS, Dashboard) and does not require the Anchor Platform.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/design-and-architecture.md",
+              "observedAt": "2026-11-14",
+              "quote": "Wallet Registration: a web application registers a recipient by collecting and verifying their OTP code and verification information via Stellar’s [SEP-24"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/design-and-architecture.md",
+              "observedAt": "2026-11-14",
+              "quote": "The Stellar Disbursement Platform consists of three services deployed together:"
+            }
+          ]
+        },
+        {
+          "claim": "Wallet SDK wraps SEP-1, 6, 7, 10, 12, 24, 38 client-side; not SEP-31.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/apps/wallet/intro.md",
+              "observedAt": "2026-11-14",
+              "quote": "* [SEP-24]: explored on [Hosted Deposit and Withdrawal] section * [SEP-6]: explored on [Programmatic Deposit and Withdrawal] section"
+            }
+          ]
+        },
+        {
+          "claim": "Anchor Platform SEP list (1, 6, 10, 12, 24, 31, 38, 45).",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/platforms/anchor-platform.md",
+              "observedAt": "2026-11-14",
+              "quote": "SEP-45 ... SEP-38 integration for price discovery and exchange rate"
+            }
+          ]
+        },
+        {
+          "claim": "SDP 10,000-instruction cap is an application limit, not a protocol limit.",
+          "result": "holds",
+          "evidence": []
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-anchor-platform-what",
+          "survivor": "q-anchor-sdp-vs-anchor-platform",
+          "why": "Subset: Anchor Platform role and SEP list."
+        },
+        {
+          "id": "q-anchor-sdp-what",
+          "survivor": "q-anchor-sdp-vs-anchor-platform",
+          "why": "Subset: SDP role and native SEP-10/24 architecture."
+        },
+        {
+          "id": "q-asset-wallet-sdk-seps",
+          "survivor": "q-anchor-sdp-vs-anchor-platform",
+          "why": "Subset: Wallet SDK role and SEP set."
+        },
+        {
+          "id": "q-pay-sdp-disbursement",
+          "survivor": "q-anchor-sdp-vs-anchor-platform",
+          "why": "Cross-category: 'What is SDP' restates the SDP half; recommend one SDP definition."
+        },
+        {
+          "id": "q-crp-sdp-operation",
+          "survivor": "q-crp-sdp-operation",
+          "why": "Cross-category: deploy-and-operate and recipient account types are a different ask; keep."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Survivor of four cases. It already holds the role and SEP split; rewrite to one predicate per fact and absorb the SDP 'not a wallet, no Anchor Platform required' and Wallet SDK 'client library' facts.",
+      "rewrite": {
+        "question": null,
+        "answer": "All three are SDF-maintained. The Anchor Platform is the backend an anchor operator runs, implementing SEP-1, 6, 10, 12, 24, 31, 38 and 45. The Disbursement Platform is a bulk-payout application whose Core implements SEP-10 and SEP-24 itself, with no Anchor Platform needed. The Wallet SDK is a client library wrapping SEP-1, 6, 10, 12, 24 and 38, not SEP-31.",
+        "keyFacts": [
+          "The Anchor Platform is the anchor operator backend: SEP-1/6/10/12/24/31/38/45.",
+          "The Disbursement Platform is a bulk-payment application, not a wallet or anchor.",
+          "SDP Core implements SEP-10 and SEP-24 natively without the Anchor Platform.",
+          "The Wallet SDK is a client library for SEP-1/6/10/12/24/38, not SEP-31."
+        ],
+        "avoid": [
+          "The SDP 10,000-instruction per-disbursement cap is a Stellar protocol limit."
+        ],
+        "notes": "Listing SEP-7 or SEP-30 for the Wallet SDK, or SEP-45 for the Anchor Platform, is not misnumbering.",
+        "movedToTruth": [
+          "10,000-instruction MaxInstructionsPerDisbursement evidence",
+          "Language notes (Java/Kotlin, Kotlin SDK archived)",
+          "Roster of source URLs",
+          "SEP-45 status and 2026-08-05 reverify stamp"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 328,
+      "wordsAfter": 130
+    },
+    {
+      "id": "q-anchor-sdp-what",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Stellar Disbursement Platform",
+        "SDP Core and TSS architecture",
+        "receiver wallets and anchor rails"
+      ],
+      "tests": "What the SDP is and that current SDP implements SEP-10/24 natively with optional downstream anchor rails.",
+      "questionIssues": [
+        "Duplicate of the SDP half of the three-way comparison; also restated by q-pay-sdp-disbursement."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Restates key fact 1 as 'optional rails'; two predicates"
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SDP has Core and TSS; Core handles SEP-24 registration and SEP-10; TSS submits through channel accounts.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/design-and-architecture.md",
+              "observedAt": "2026-11-14",
+              "quote": "The TSS pulls payments that ready to be processed then submits them to the Stellar Network through Channel Accounts."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-anchor-sdp-vs-anchor-platform",
+          "survivor": "q-anchor-sdp-vs-anchor-platform",
+          "why": "Same SDP role and native SEP-10/24 facts."
+        },
+        {
+          "id": "q-pay-sdp-disbursement",
+          "survivor": "q-anchor-sdp-vs-anchor-platform",
+          "why": "Cross-category: 'What is SDP' duplicate."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Fold into q-anchor-sdp-vs-anchor-platform; the surviving rewrite already carries 'bulk-payment application' and 'SDP Core implements SEP-10/24 natively without the Anchor Platform'.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 308,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-ass-cross-bando-stablebonds-sac",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "SCF #42 Bando submission",
+        "Etherfuse Stablebonds",
+        "classic asset access through the SAC"
+      ],
+      "tests": "Whether the agent joins a Lumenloop SCF record and a Scout project record, then explains SAC access to a classic asset.",
+      "questionIssues": [
+        "The question names Scout and Lumenloop outcomes ('according to Scout'), so another toolset could not satisfy it.",
+        "Two unrelated halves; the SAC half is already tested by q-asset-trustline-vs-sac."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": "Identifies the SCF record via Lumenloop; corpus-relative"
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": "Scout's wording about Bando"
+        },
+        {
+          "i": 2,
+          "kind": "operation",
+          "issue": "Scout's wording about Etherfuse"
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Duplicates q-asset-trustline-vs-sac"
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Duplicates q-sep-41-token-interface / trustline-vs-sac"
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Lumenloop SCF record for Bando: 'Tokenized CETES for SMEs in Mexico', SCF #42.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "lumenloop.get_scf_submissions({slug:'bando'})",
+              "observedAt": "2026-11-14",
+              "quote": "count 1; title 'Tokenized CETES for SMEs in Mexico'; round 'SCF #42'"
+            }
+          ]
+        },
+        {
+          "claim": "Scout lists Bando as Live and links it to Etherfuse Stablebonds.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "scout.searchProjects({q:'Bando'})",
+              "observedAt": "2026-11-14",
+              "quote": "status Live; scfTotalAwardedUSD 75000; 'through the Stellar network using Etherfuse's Stablebonds'"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-asset-trustline-vs-sac",
+          "survivor": "q-asset-trustline-vs-sac",
+          "why": "SAC half."
+        },
+        {
+          "id": "q-defi-cross-blend-rivool-sac",
+          "survivor": "q-defi-cross-blend-rivool-sac",
+          "why": "Cross-category: same cross-service pattern (Scout project, then SAC)."
+        }
+      ],
+      "verdict": "move-tool-lane",
+      "reason": "The cross-service join (Lumenloop SCF record, Scout project, docs) is visible only through Raven; without this case nothing checks that those three families compose. The SAC half duplicates q-asset-trustline-vs-sac and leaves the headline.",
+      "rewrite": null,
+      "confidence": "medium",
+      "wordsBefore": 206,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-ass-cross-etherfuse-cetes-controls",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Anchorage custody of Etherfuse CETES",
+        "Scout identification of Etherfuse",
+        "regulated asset issuer controls"
+      ],
+      "tests": "Whether the agent joins a Lumenloop article, a Scout project record and official docs on issuer flags.",
+      "questionIssues": [
+        "'What product does Scout identify' is Raven-specific wording.",
+        "The controls half repeats q-comp-auth-flags-overview."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": "Anchorage custody announcement from a Lumenloop article"
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Overlaps key fact 0"
+        },
+        {
+          "i": 2,
+          "kind": "operation",
+          "issue": "Scout record wording"
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Duplicates q-comp-auth-flags-overview"
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Duplicates q-comp-auth-flags-overview"
+        }
+      ],
+      "rot": [
+        {
+          "claim": "2026-06-15 Anchorage custody announcement for Etherfuse CETES on Stellar.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "lumenloop.search_content_semantic('Anchorage Digital custody Etherfuse CETES Stellar')",
+              "observedAt": "2026-11-14",
+              "quote": "2026-06-15 'Anchorage Digital Supports Custody for Tokenized CETES, Etherfuse's Tokenized Mexican Government Debt on Stellar'"
+            },
+            {
+              "class": "A",
+              "ref": "https://www.anchorage.com/insights/anchorage-digital-supports-custody-for-tokenized-cetes-etherfuses-tokenized-mexican-government-debt-on-stellar",
+              "observedAt": "2026-11-14",
+              "quote": "Anchorage Digital Supports Custody for Tokenized CETES, Etherfuse's Tokenized Mexican Government Debt on Stellar"
+            }
+          ]
+        },
+        {
+          "claim": "Scout lists Etherfuse as Live: Stablebonds issuer plus Etherfuse FX ramp.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "scout.searchProjects({q:'Etherfuse'})",
+              "observedAt": "2026-11-14",
+              "quote": "status Live; 'issues Stablebonds ... operates Etherfuse FX, a Mexico fiat on/off-ramp API'"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-comp-auth-flags-overview",
+          "survivor": "q-comp-auth-flags-overview",
+          "why": "Cross-category: issuer-control flags."
+        },
+        {
+          "id": "q-defi-etherfuse-stablebonds",
+          "survivor": "q-defi-etherfuse-stablebonds",
+          "why": "Cross-category: Etherfuse Stablebonds product facts."
+        }
+      ],
+      "verdict": "move-tool-lane",
+      "reason": "Same as the Bando case: only the join of Lumenloop article, Scout project and docs gives visibility nothing else does. The flags half leaves the headline.",
+      "rewrite": null,
+      "confidence": "medium",
+      "wordsBefore": 177,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-asset-amm-fee-reserve",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Stellar AMM swap fee",
+        "pool-share trustline reserve",
+        "constant-product invariant"
+      ],
+      "tests": "Two exact protocol numbers: the 30 bp pool fee and the two-base-reserve pool-share trustline.",
+      "questionIssues": [
+        "A pure number lookup; answerable and unambiguous but trivia-shaped on its own."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "AMM fee is 30 bps (0.30%); a pool share trustline requires 2 base reserves instead of 1.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools",
+              "observedAt": "2026-11-14",
+              "quote": "The fee rate on Stellar is 30 bps, which is equal to 0.30%."
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools",
+              "observedAt": "2026-11-14",
+              "quote": "A pool share trustline requires 2 base reserves instead of 1."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-asset-sdex-vs-amm",
+          "survivor": "q-asset-sdex-vs-amm",
+          "why": "The comparison golden already states both numbers; absorb 'pool-share trustline = 2 base reserves'."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Fold into q-asset-sdex-vs-amm. The facts hold; two number lookups do not need their own case.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 228,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-asset-claimable-balance",
+      "purpose": "stellar-truth",
+      "topics": [
+        "claimable balance concept",
+        "when to use instead of a payment",
+        "native versus Soroban escrow"
+      ],
+      "tests": "What a claimable balance is and when it beats a direct payment (recipient has no trustline, deferred or conditional payout).",
+      "questionIssues": [
+        "Good beginner question, but the concept is already the subject of q-aas-claimable-predicates-expiry-reserves."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Overlaps key fact 2 'conditional or deferred'"
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Claimable balances suit sending non-native assets to accounts lacking a trustline; created and claimed by dedicated operations.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
+              "observedAt": "2026-11-14",
+              "quote": "They can be used when you send a non-native asset to an account that has not yet established a trustline"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-aas-claimable-predicates-expiry-reserves",
+          "survivor": "q-aas-claimable-predicates-expiry-reserves",
+          "why": "Same primitive; the survivor carries predicates, reserve, and the trustline use case."
+        },
+        {
+          "id": "q-raph-claimable-balance-safety",
+          "survivor": "q-aas-claimable-predicates-expiry-reserves",
+          "why": "Cross-category retail restatement."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Fold into q-aas-claimable-predicates-expiry-reserves, which must keep 'native entry, no Soroban' and 'useful when the recipient lacks a trustline'.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 324,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-asset-deploy-sac-cli",
+      "purpose": "stellar-truth",
+      "topics": [
+        "deploying a Stellar Asset Contract",
+        "stellar contract asset deploy",
+        "SAC admin is the issuer"
+      ],
+      "tests": "That the SAC is deployed from the classic asset with a built-in command rather than a new token contract, and who administers it.",
+      "questionIssues": [
+        "Realistic how-to; answerable."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Process-leaning: names an XDR enum (CONTRACT_ID_PREIMAGE_FROM_ASSET) that few answers will quote; trivia beside the main point"
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Command is `stellar contract asset deploy --asset CODE:ISSUER` (and `--asset native`).",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tools/cli/cookbook/deploy-stellar-asset-contract.md",
+              "observedAt": "2026-11-14",
+              "quote": "stellar contract asset deploy \\ --source S... --asset USDC:GCYEIQEWOCTTSA72VPZ6LYIZIK4W4KNGJR72UADIXUXG45VDFRVCQTYE"
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-cli/blob/main/cmd/soroban-cli/src/commands/contract/deploy/asset.rs",
+              "observedAt": "2026-11-14",
+              "quote": "/// ID of the Stellar classic asset to wrap, e.g. \"USDC:G...5\""
+            }
+          ]
+        },
+        {
+          "claim": "Anyone can deploy; the issuer is the initial administrator, transferable with set_admin.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract.md",
+              "observedAt": "2026-11-14",
+              "quote": "The asset issuer becomes the *initial* administrator once the contract has been deployed"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-asset-trustline-vs-sac",
+          "survivor": "q-asset-deploy-sac-cli",
+          "why": "Overlap only on 'same asset, issuer is admin'; different questions, keep both."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Keep. Drop the XDR enum fact and the defunct-command avoid; the answer carries a flag-level command that adds rot risk.",
+      "rewrite": {
+        "question": null,
+        "answer": "Deploy the asset's built-in Stellar Asset Contract; do not write a token contract. Run `stellar contract asset deploy --asset CODE:ISSUER` (`--asset native` for XLM). The contract id derives deterministically from the asset and `stellar contract id asset` prints it. Anyone can deploy it, and the issuer is the initial admin; deploying wraps the same classic asset.",
+        "keyFacts": [
+          "`stellar contract asset deploy` deploys the SAC for an existing classic asset.",
+          "No new token contract has to be written; the SAC is built in.",
+          "The SAC represents the same classic asset, with a deterministic contract id.",
+          "The issuer is the initial SAC admin."
+        ],
+        "avoid": [
+          "Writing and deploying a separate ERC-20-style token contract is the way to use a classic asset in Soroban."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "CONTRACT_ID_PREIMAGE_FROM_ASSET and InvokeHostFunction/CREATE_CONTRACT detail",
+          "Defunct 'soroban lab token wrap' history",
+          "Source list (stellar-xdr, cli deploy/asset.rs)"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 259,
+      "wordsAfter": 118
+    },
+    {
+      "id": "q-asset-issue-asset-howto",
+      "purpose": "stellar-truth",
+      "topics": [
+        "issuing a classic asset step by step",
+        "issuer and distribution accounts",
+        "trustline then payment",
+        "locking the issuer"
+      ],
+      "tests": "That issuance is a trustline plus issuer payment with no create-asset operation, normally using separate issuing and distribution accounts.",
+      "questionIssues": [
+        "Realistic walkthrough; answer is a six-step list (long), but the core is four facts."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Overlaps key fact 1 'exists after issuer sends'; it is the same issuance predicate"
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "No create-asset operation; issuing is sending from the issuer to a trustline holder.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets",
+              "observedAt": "2026-11-14",
+              "quote": "There is no dedicated operation to create an asset on Stellar."
+            }
+          ]
+        },
+        {
+          "claim": "Two-account practice is recommended; locking the issuer needs master weight 0 and no other signers, and a SAC admin can still mint.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tokens/control-asset-access.md",
+              "observedAt": "2026-11-14",
+              "quote": "It is best practice on the Stellar network to create two accounts when issuing an asset: 1) the issuing account and 2) the distribution account."
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tokens/control-asset-access.md",
+              "observedAt": "2026-11-14",
+              "quote": "set the issuing account’s master weight to 0 using the Set Options operation. This disables the master key, but it does not disable other signers"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-asset-two-account-issuer",
+          "survivor": "q-asset-issue-asset-howto",
+          "why": "Two-account structure is step 1 here; absorb it as a key fact."
+        },
+        {
+          "id": "q-aas-issuer-fees-supply-cap-freeze",
+          "survivor": "q-aas-issuer-fees-supply-cap-freeze",
+          "why": "Locking the issuer appears in both; keep it in step 6 only as a mention."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Survivor of the issuance pair. Absorb the two-account recommendation and its rationale, and trim the six-step prose and the multisig lock details the question does not ask for.",
+      "rewrite": {
+        "question": null,
+        "answer": "There is no create-asset operation. An asset is an asset code plus issuer. Fund a separate issuing account and distribution account, set any authorization flags first, have the distribution account open a trustline with `ChangeTrust`, then have the issuer pay the supply to it. Publish a stellar.toml (SEP-1). Locking the issuer afterwards stops further issuance.",
+        "keyFacts": [
+          "A classic asset is defined by its asset code and issuing account.",
+          "The distribution account opens a trustline with ChangeTrust before it receives the asset.",
+          "The issuer creates supply by paying it to the distribution account.",
+          "Separate issuing and distribution accounts are recommended practice, not a requirement."
+        ],
+        "avoid": [
+          "Issuing an asset by deploying an ERC-20-style contract.",
+          "A dedicated createAsset operation exists in the protocol."
+        ],
+        "notes": "A SAC admin moved with set_admin can still mint after the issuer is locked; do not penalize an answer that adds this.",
+        "movedToTruth": [
+          "Multisig lock details (master weight 0, remaining signers)",
+          "AUTH_IMMUTABLE does not cap supply",
+          "stellar-core source list",
+          "'Also good if' items"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 344,
+      "wordsAfter": 140
+    },
+    {
+      "id": "q-asset-path-payment-ops",
+      "purpose": "stellar-truth",
+      "topics": [
+        "path payments",
+        "PathPaymentStrictSend and StrictReceive",
+        "routing through DEX and AMM"
+      ],
+      "tests": "The two path-payment operations and what each fixes (send amount versus receive amount).",
+      "questionIssues": [
+        "Clear; the 'which two operations' clause makes it a name lookup, which is fine because the semantic difference is in the answer."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Vague: 'converts one asset to another' restates the definition"
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "'atomic in one transaction' is the property, but is not asked"
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Not re-checked: stable operation names and semantics (confirmed in the 2026-11-02 audit; Stellar docs unchanged protocol surface).",
+          "result": "holds",
+          "evidence": []
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-asset-usdc-eurc-path-fx",
+          "survivor": "q-asset-path-payment-ops",
+          "why": "Cross-category (retail): applies path payments to a USDC to EURC case; keep one operations case here and let retail keep the scenario."
+        },
+        {
+          "id": "q-raph-remittance-path-payment",
+          "survivor": "q-asset-usdc-eurc-path-fx",
+          "why": "Cross-category retail restatement."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Keep the operation names and the strict-send versus strict-receive semantics; trim the speed and fee claims, which are unsourced detail beside the question.",
+      "rewrite": {
+        "question": null,
+        "answer": "A path payment converts one asset to another in a single atomic transaction, routing through the order book, AMM pools, or both, so the recipient can receive a different asset than the sender pays. `PathPaymentStrictSend` fixes the amount sent and the recipient gets at least `destMin`. `PathPaymentStrictReceive` fixes the amount received and the sender pays at most `sendMax`.",
+        "keyFacts": [
+          "The two operations are PathPaymentStrictSend and PathPaymentStrictReceive.",
+          "Strict send fixes the source amount; strict receive fixes the destination amount.",
+          "Routing can use the DEX order book, AMM pools, or both.",
+          "The conversion executes atomically in one transaction."
+        ],
+        "avoid": [
+          "Path payments require an off-chain bridge or a third-party DEX router."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "Dossier reference",
+          "~5 s settlement 'also good if' item (unsourced here)",
+          "Golden-cites line",
+          "Invented operation name examples"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 256,
+      "wordsAfter": 106
+    },
+    {
+      "id": "q-asset-rwa-tokenized-freshness",
+      "purpose": "behavior",
+      "topics": [
+        "tokenized RWA value on Stellar",
+        "dated figures and freshness honesty"
+      ],
+      "tests": "That the agent reports the current tokenized-RWA figure with its source and date instead of a stale number.",
+      "questionIssues": [
+        "The golden's dated example ($2.8B, June 2026) is stale: Lumenloop and the web now report about $4B or more by Q3 2026.",
+        "Generic boilerplate answer; the world fact is the dated figure."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": "Boilerplate freshness behavior"
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "Boilerplate duplicate of key fact 0"
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Fine in intent but pinned to a moved value"
+        },
+        {
+          "i": 3,
+          "kind": "process",
+          "issue": "Measurement-scope instruction"
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Figure moved: $2.8B (June 2026) is superseded.",
+          "result": "changed",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "lumenloop.search_content_semantic('tokenized real-world assets on Stellar total value billion')",
+              "observedAt": "2026-11-14",
+              "quote": "2026-09-02 'Tokenized RWAs on Stellar cross $4 billion as euro-denominated assets lead growth'"
+            },
+            {
+              "class": "D",
+              "ref": "https://bsc.news/news/stellar-q3-2026-rwa-stablecoin-volume",
+              "observedAt": "2026-11-14",
+              "quote": "Stellar (XLM) reported $4.1 billion in tokenized real-world assets and $33.2 billion in Q3 2026 volume"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-eco-stellar-rwa-stablecoin-volume",
+          "survivor": "q-eco-stellar-rwa-stablecoin-volume",
+          "why": "Cross-category: same ask ('how big is RWA on Stellar'); that golden already lists the SDF Q3 2026 report ($4.1B) with scope and date."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Fold into q-eco-stellar-rwa-stablecoin-volume, which already carries the SDF Q3 2026 dated metrics. This case's value is stale ($2.8B June) and its behavior part is generic freshness.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 389,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-asset-sdex-vs-amm",
+      "purpose": "stellar-truth",
+      "topics": [
+        "SDEX order book versus AMM pools",
+        "constant-product pricing and the 30 bp fee",
+        "pool-share trustline reserve"
+      ],
+      "tests": "How the on-ledger order book and constant-product pools price trades, the fixed 30 bp pool fee, and the cost of a pool-share trustline.",
+      "questionIssues": [
+        "Realistic comparison. 'Cost differences' invites the two exact numbers, which the key facts partly miss."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "'In addition to the network fee' restates key fact 2 and the docs say the fee is separate from network fees"
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Trivia: maker discretion over tighter or wider prices is not a Stellar fact worth grading"
+        }
+      ],
+      "rot": [
+        {
+          "claim": "AMM fee is a fixed 30 bps (0.30%), separate from network fees; pool-share trustline needs 2 base reserves; constant-product invariant.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools",
+              "observedAt": "2026-11-14",
+              "quote": "The fee rate on Stellar is 30 bps, which is equal to 0.30%. These fees are completely separate from the network fees."
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools",
+              "observedAt": "2026-11-14",
+              "quote": "A pool share trustline requires 2 base reserves instead of 1."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-asset-amm-fee-reserve",
+          "survivor": "q-asset-sdex-vs-amm",
+          "why": "Its two numbers are key facts here."
+        },
+        {
+          "id": "q-protocol-amm-cap-0038",
+          "survivor": "q-protocol-amm-cap-0038",
+          "why": "Cross-category: when and via which CAP AMMs launched; different fact."
+        },
+        {
+          "id": "q-defi-sdex-offer-lifecycle",
+          "survivor": "q-defi-sdex-offer-lifecycle",
+          "why": "Cross-category: order-book tracking procedure; different ask."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Survivor of the AMM cluster. Absorb the 'pool-share trustline needs two base reserves' fact into key facts and drop the maker-pricing and network-fee trivia.",
+      "rewrite": {
+        "question": null,
+        "answer": "The SDEX is an on-ledger order book: makers post offers (ManageBuyOffer, ManageSellOffer) at prices they choose. AMM liquidity pools price along a constant-product curve (x*y=k) and charge a fixed 30 basis point (0.30%) fee, separate from network fees, which accrues to liquidity providers. A pool-share trustline needs two base reserves. A path payment can route across both.",
+        "keyFacts": [
+          "The SDEX is an on-ledger order book of ManageBuyOffer and ManageSellOffer offers.",
+          "AMM pools price by a constant-product (x*y=k) invariant.",
+          "AMM swaps charge a fixed 30 basis points (0.30%) fee.",
+          "A pool-share trustline requires two base reserves."
+        ],
+        "avoid": [
+          "The AMM swap fee is a number other than 30 basis points."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "Dossier references",
+          "Merged note from q-asset-amm-fee-reserve (precise-number provenance, 1.0 XLM at 0.5 XLM base reserve)",
+          "'Also good if' items (in-ledger matching, LP fee share)",
+          "Golden-cites line"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 261,
+      "wordsAfter": 106
+    },
+    {
+      "id": "q-asset-stablecoin-issuers-discovery",
+      "purpose": "mixed",
+      "topics": [
+        "stablecoin issuers on Stellar",
+        "Circle USDC and EURC",
+        "registry reading behavior (null versus zero)"
+      ],
+      "tests": "That the agent names real stablecoin issuers from a dated source; the long notes also grade how an agent reads Scout's stablecoin registry.",
+      "questionIssues": [
+        "Same ask as q-eco-stablecoins-on-stellar ('which stablecoins'). The 520-word golden is mostly Scout registry semantics (meta.dataAsOf, counts, null handling), which no other tool exposes."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": "Boilerplate freshness behavior"
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "Boilerplate duplicate"
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Circle issues USDC and EURC on Stellar.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.circle.com/stablecoins/usdc-contract-addresses",
+              "observedAt": "2026-11-14",
+              "quote": "| Stellar | USDC-GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.circle.com/stablecoins/eurc-contract-addresses",
+              "observedAt": "2026-11-14",
+              "quote": "| Stellar | EURC-GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2"
+            }
+          ]
+        },
+        {
+          "claim": "Scout registry lists Circle USDC (since 2026-08-19) and now reports 37 rows.",
+          "result": "changed",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "scout.getStablecoins({limit:100})",
+              "observedAt": "2026-11-14",
+              "quote": "counts total 37 (was 38 on 2026-07-11); USDC Circle marketCapUSD 328494094.59; dataAsOf 2026-11-13T19:54:49Z"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-eco-stablecoins-on-stellar",
+          "survivor": "q-eco-stablecoins-on-stellar",
+          "why": "Cross-category: same question; that survivor must absorb 'Circle issues USDC and EURC on Stellar'."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Fold into q-eco-stablecoins-on-stellar with the Circle USDC/EURC key fact. The registry-reading cautions (cite dataAsOf, null is not zero, marketCapUSD for cross-peg size) are Raven mechanics and belong in the tool lane, not the headline.",
+      "rewrite": null,
+      "confidence": "medium",
+      "wordsBefore": 521,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-asset-trustline-basics",
+      "purpose": "stellar-truth",
+      "topics": [
+        "trustline definition",
+        "base reserve cost",
+        "native XLM needs no trustline"
+      ],
+      "tests": "That a trustline is an explicit opt-in to hold a non-native asset, without which payments fail, and that its cost is a held base reserve, not a fee.",
+      "questionIssues": [
+        "Foundational and well-formed; the XLM figure is network-set and needs a date."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "'Keep enough XLM for each trustline's reserve' restates the cost fact in the question"
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Base reserve is 0.5 XLM on Mainnet.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=1",
+              "observedAt": "2026-11-14",
+              "quote": "\"base_reserve_in_stroops\": 5000000 (ledger closed 2026-11-14T02:49:07Z)"
+            }
+          ]
+        },
+        {
+          "claim": "A trustline adds one base reserve to the minimum balance; pool-share trustline two.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools",
+              "observedAt": "2026-11-14",
+              "quote": "A pool share trustline requires 2 base reserves instead of 1."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-aas-trustline-limit-lifecycle",
+          "survivor": "q-asset-trustline-basics",
+          "why": "Both mention reserve; basics owns the reserve cost, lifecycle owns limit and removal."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Keep: the most basic asset-holding fact. Date the XLM figure; because 0.5 XLM is a validator-voted network setting, tags.freshness should be scheduled rather than stable. Move pool-share cost to the SDEX/AMM case.",
+      "rewrite": {
+        "question": null,
+        "answer": "A trustline is an account's explicit opt-in, created with `ChangeTrust`, to hold a non-native asset from a given issuer, with its own limit. Without one, payments of that asset fail. Each trustline raises the account's minimum XLM balance by one base reserve (0.5 XLM as of 2026-11-14), a held minimum rather than a fee. XLM itself needs no trustline.",
+        "keyFacts": [
+          "A trustline is an account's opt-in to hold a specific non-native asset.",
+          "It is created with ChangeTrust for an asset code and issuer.",
+          "Without a trustline, payments of that asset fail.",
+          "Each trustline raises the minimum XLM balance by one base reserve."
+        ],
+        "avoid": [
+          "Assets can be received with no trustline, like ERC-20 tokens.",
+          "The base reserve is a spent fee rather than a held minimum balance."
+        ],
+        "notes": "Do not penalize an answer that dates the XLM amount or states it in base-reserve units.",
+        "movedToTruth": [
+          "Horizon ledger 65269774 / 2026-11-02 reserve observation",
+          "Pool-share trustline two-reserve fact (now in q-asset-sdex-vs-amm)",
+          "Dossier reference",
+          "Golden-cites line"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 273,
+      "wordsAfter": 140
+    },
+    {
+      "id": "q-asset-trustline-vs-sac",
+      "purpose": "stellar-truth",
+      "topics": [
+        "trustline versus Stellar Asset Contract",
+        "one asset, two interfaces",
+        "SAC admin and SEP-41"
+      ],
+      "tests": "That the SAC and the trustline are two views of one classic asset, with no separate Soroban copy to migrate to.",
+      "questionIssues": [
+        "Good concept question; the core misconception ('is SAC-USDC a different token?') is answerable."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Overlaps key fact 0: both say the SAC exposes the classic asset"
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Narrow implementation detail beside the main point"
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SAC is a protocol-built contract wrapping the same classic asset; issuer is initial admin, movable with set_admin; implements SEP-41.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract.md",
+              "observedAt": "2026-11-14",
+              "quote": "The asset issuer becomes the *initial* administrator once the contract has been deployed"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract.md",
+              "observedAt": "2026-11-14",
+              "quote": "Transfers to the issuer account will burn the token, while transfers from the issuer account will mint."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-asset-deploy-sac-cli",
+          "survivor": "q-asset-trustline-vs-sac",
+          "why": "Shares 'same asset, issuer is admin'; different ask."
+        },
+        {
+          "id": "q-sor-contract-trustlines-c-address",
+          "survivor": "q-sor-contract-trustlines-c-address",
+          "why": "Cross-category (soroban): the contract-holder side."
+        },
+        {
+          "id": "q-comp-sac-inherits-flags",
+          "survivor": "q-comp-sac-inherits-flags",
+          "why": "Cross-category: flag inheritance through the SAC."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Keep. Merge key facts 0 and 1, drop the contract-data-entries detail, and trim 'also good if' content already covered.",
+      "rewrite": {
+        "question": null,
+        "answer": "They are two views of one asset, not two tokens. Classic holdings are trustline entries used by classic operations. The Stellar Asset Contract is a protocol-built contract that exposes that same asset to Soroban by contract id and implements the SEP-41 token interface. The issuer is the initial SAC admin. Nothing is redeployed, bridged or wrapped.",
+        "keyFacts": [
+          "The SAC is a protocol-built contract exposing the same classic asset to Soroban.",
+          "Classic holdings are trustline ledger entries.",
+          "Soroban contracts move the asset through the SAC by contract id.",
+          "The issuer is the initial SAC admin."
+        ],
+        "avoid": [
+          "The SAC is a separate token that users must migrate balances into or bridge to."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "Contract-data-entry holder detail",
+          "CAP-46-6 reference",
+          "Dossier references",
+          "'Also good if' items"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 306,
+      "wordsAfter": 108
+    },
+    {
+      "id": "q-asset-two-account-issuer",
+      "purpose": "stellar-truth",
+      "topics": [
+        "issuing and distribution accounts",
+        "why separate them"
+      ],
+      "tests": "That issuing an asset from a separate cold issuing account plus a hot distribution account is the documented best practice.",
+      "questionIssues": [
+        "Fine, but it is step 1 of q-asset-issue-asset-howto."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Overlaps key fact 0"
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Docs recommend two accounts: issuing and distribution; the issuing account cannot hold its own asset.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tokens/control-asset-access.md",
+              "observedAt": "2026-11-14",
+              "quote": "It is best practice on the Stellar network to create two accounts when issuing an asset: 1) the issuing account and 2) the distribution account."
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tokens/control-asset-access.md",
+              "observedAt": "2026-11-14",
+              "quote": "It is best practice to issue an asset by sending it from the issuing account to a distribution account for two main reasons: security and auditing."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-asset-issue-asset-howto",
+          "survivor": "q-asset-issue-asset-howto",
+          "why": "The how-to's step 1 is this case."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Fold into q-asset-issue-asset-howto, whose rewrite carries 'separate issuing and distribution accounts are recommended practice, not a requirement'.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 262,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-asset-wallet-sdk-seps",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Stellar Wallet SDK",
+        "anchor SEPs the SDK wraps"
+      ],
+      "tests": "That the Wallet SDK is a TypeScript client library for SEP-1/6/10/12/24/38, not anchor infrastructure and not SEP-31.",
+      "questionIssues": [
+        "Subset of the three-way comparison."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Two predicates (TypeScript library, wallet apps)"
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Packs six SEPs and a negative"
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Wallet SDK anchor class supports SEP-1/6/10/12/24/38, plus SEP-7.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/apps/wallet/intro.md",
+              "observedAt": "2026-11-14",
+              "quote": "* [SEP-24]: explored on [Hosted Deposit and Withdrawal] section * [SEP-6]: explored on [Programmatic Deposit and Withdrawal] section"
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/typescript-wallet-sdk",
+              "observedAt": "2026-11-14",
+              "quote": "Typescript Wallet SDK is a library that allows developers to build wallet"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-anchor-sdp-vs-anchor-platform",
+          "survivor": "q-anchor-sdp-vs-anchor-platform",
+          "why": "The comparison tests the same SEP set and role."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Fold into q-anchor-sdp-vs-anchor-platform, which carries the Wallet SDK role and SEP-1/6/10/12/24/38, not SEP-31.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 255,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-gap-match-partners-degrade",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Scout matchPartners degradation",
+        "fallback to getPartners filters"
+      ],
+      "tests": "Whether an agent falls back to getPartners filters rather than inventing a ranking when the AI partner-matching call is unavailable.",
+      "questionIssues": [
+        "The question names a Raven operation's behavior, so no other tool can satisfy it.",
+        "Depends on a live outage: matchPartners succeeded on 2026-07-11, returned 502 on 2026-11-02, and returned the documented 503 on 2026-11-14, so the scenario is unstable."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": "Names scout.matchPartners"
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": "Names getPartners fallback and no fabricated ranking"
+        }
+      ],
+      "rot": [
+        {
+          "claim": "matchPartners currently fails with a 503 and a hint to use getPartners.",
+          "result": "changed",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "scout.matchPartners({need:'Mexico USDC SEP-24 off-ramp'})",
+              "observedAt": "2026-11-14",
+              "quote": "{\"ok\":false,... \"status\":503,\"hint\":\"AI partner endpoints are unavailable — fall back to GET /api/partners filters (scout.getPartners); do not retry.\"}"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-edge-partner-detail-soft-empty",
+          "survivor": "q-edge-partner-detail-soft-empty",
+          "why": "Cross-category: same shape (honest handling of a degraded Scout partner response)."
+        }
+      ],
+      "verdict": "move-tool-lane",
+      "reason": "A unit test (adapters.test.ts, 'maps 503 unavailable AI endpoints ... fallback hint') covers the mapping, but nothing checks that an agent follows the hint instead of fabricating a ranking. That visibility needs an injected-failure tool lane, not a live outage in the headline.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 161,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-gap-related-projects-empty",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Lumenloop get_related_projects",
+        "empty array as soft absence"
+      ],
+      "tests": "Whether the agent treats an empty get_related_projects array as inconclusive and keeps the content-to-projects direction.",
+      "questionIssues": [
+        "Pure tool contract; unanswerable without Raven operation knowledge."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": "Names content id and type inputs"
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": "Soft-absence rule"
+        }
+      ],
+      "rot": [
+        {
+          "claim": "IDs 1 and 99999999 return ok with empty data; get_document reports no article.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "lumenloop.get_related_projects({content_id:1,content_type:'article'})",
+              "observedAt": "2026-11-14",
+              "quote": "{\"ok\":true,\"data\":[],\"caveat\":\"no-rows\"} (and for 99999999)"
+            },
+            {
+              "class": "C",
+              "ref": "lumenloop.get_document({id:1,collection:'articles'})",
+              "observedAt": "2026-11-14",
+              "quote": "kind soft-empty: No document found with ID 1 in articles"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-ti-related-projects-from-content",
+          "survivor": "q-ti-related-projects-from-content",
+          "why": "Cross-category (tooling-infra): same operation and direction; this case adds only the empty-array rule."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "The host response now carries `caveat: \"no-rows\"` and a soft-empty envelope for the empty case, catalog.test.ts pins the operation description, and q-ti-related-projects-from-content already grades the direction. Add the empty-array line to that tool-lane case instead.",
+      "rewrite": null,
+      "confidence": "medium",
+      "wordsBefore": 166,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-production-anchor-architecture",
+      "purpose": "mixed",
+      "topics": [
+        "production anchor stack",
+        "SEPs an anchor publishes",
+        "off-chain compliance and operations"
+      ],
+      "tests": "That a production anchor is more than SEP endpoints (KYC/AML, banking rails, liquidity, reconciliation) and that the Anchor Platform is not the off-chain bank.",
+      "questionIssues": [
+        "Realistic, but most of the golden is generic operations advice (segregated keys, idempotent webhooks, runbooks) that no Stellar source states and no judge can verify as Stellar truth."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "SEP-1/10/12/24-or-6 list is checkable"
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Mostly generic fintech requirements; not Stellar-specific or source-verifiable"
+        },
+        {
+          "i": 2,
+          "kind": "process",
+          "issue": "Operational hygiene list (segregated keys, idempotency, runbooks) is advice, not a fact"
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Anchor Platform needs an operator-built business server and is not the off-chain bank.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/platforms/anchor-platform/admin-guide/architecture.md",
+              "observedAt": "2026-11-14",
+              "quote": "The business server is a service that you (the business) must implement to connect the Anchor Platform with your internal systems."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-crp-become-an-anchor-licensing",
+          "survivor": "q-crp-become-an-anchor-licensing",
+          "why": "Cross-category: 'what does it take to become an anchor' covers SEP and Anchor Platform setup, licensing, float and operating requirements."
+        },
+        {
+          "id": "q-comp-anchor-compliance-stack",
+          "survivor": "q-comp-anchor-compliance-stack",
+          "why": "Cross-category: SEP order and controls for onboarding."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Fold into q-crp-become-an-anchor-licensing (cross-category), which must keep 'the Anchor Platform is not the off-chain bank or licence' and 'KYC, banking rails, liquidity and reconciliation are the operator's job'. Drop the unverifiable hygiene list.",
+      "rewrite": null,
+      "confidence": "medium",
+      "wordsBefore": 154,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-sep-1-toml",
+      "purpose": "stellar-truth",
+      "topics": [
+        "SEP-1 stellar.toml",
+        "well-known location"
+      ],
+      "tests": "That SEP-1 defines stellar.toml, served at https://<domain>/.well-known/stellar.toml.",
+      "questionIssues": [
+        "Trivial lookup; its only distinctive fact (the well-known path) belongs in the endpoint-discovery case."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SEP-1 is Active (v2.7.0), the Stellar Info File.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md",
+              "observedAt": "2026-11-14",
+              "quote": "Title: Stellar Info File Status: Active Version: 2.7.0"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals",
+              "observedAt": "2026-11-14",
+              "quote": "### SEP-1 - Stellar Info File"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-anchor-endpoint-discovery",
+          "survivor": "q-anchor-endpoint-discovery",
+          "why": "Discovery via SEP-1 is the first step there."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Fold into q-anchor-endpoint-discovery; its rewrite states the /.well-known/stellar.toml path.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 151,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-sep-12-kyc",
+      "purpose": "stellar-truth",
+      "topics": [
+        "SEP-12 KYC API",
+        "SEP-9 standard KYC fields",
+        "SEP-10 and SEP-45 authentication"
+      ],
+      "tests": "That SEP-12 is the KYC API, SEP-9 only the field dictionary, and which calls upload and read customer data.",
+      "questionIssues": [
+        "The question asks only which SEPs; the golden's endpoint-level detail (files, DELETE) goes well past it."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Packs two endpoints"
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Trivia: optional binary-file endpoint, beside the main point"
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Auth detail the question does not ask; keep as one predicate"
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SEP-12 endpoints: GET/PUT /customer, DELETE /customer/[account], POST /customer/files; JWT from SEP-10 or SEP-45.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0012.md",
+              "observedAt": "2026-11-14",
+              "quote": "- [`PUT /customer`](#customer-put): Idempotent upload of customer info"
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0012.md",
+              "observedAt": "2026-11-14",
+              "quote": "- [`GET /customer`](#customer-get): Check the status of a customers info"
+            }
+          ]
+        },
+        {
+          "claim": "SEP-9 is Active (v1.17.0) and SEP-12 Active (v1.15.0).",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0009.md",
+              "observedAt": "2026-11-14",
+              "quote": "Title: Standard KYC Fields Status: Active Version 1.17.0"
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0012.md",
+              "observedAt": "2026-11-14",
+              "quote": "Title: KYC API Status: Active Version 1.15.0"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-comp-sep6-vs-sep12-roles",
+          "survivor": "q-sep-12-kyc",
+          "why": "Cross-category: 'which SEP carries KYC data in a SEP-6 deposit' is answered by this case's SEP-12 fact; recommend one."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Keep: core wallet-to-anchor KYC fact. Cut the endpoint trivia and the CORRECTION history; keep the PUT/GET split and the SEP-9 distinction.",
+      "rewrite": {
+        "question": null,
+        "answer": "SEP-12 is the KYC API between wallet and anchor: `PUT /customer` idempotently uploads customer fields and `GET /customer` returns the fields still required and the KYC status. SEP-9 is only the dictionary of standard field names such as `first_name`. Requests carry a SEP-10 JWT for G or M accounts, or a SEP-45 JWT for contract accounts.",
+        "keyFacts": [
+          "SEP-12 is the KYC API between a wallet and an anchor.",
+          "PUT /customer uploads fields; GET /customer returns required fields and status.",
+          "SEP-9 is the standard KYC field dictionary, not an API.",
+          "SEP-12 requests authenticate with a SEP-10 or SEP-45 JWT."
+        ],
+        "avoid": [
+          "Customer fields are uploaded with POST /customer."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "CORRECTION 2026-07-10 provenance (Solo scratchpad references)",
+          "POST /customer/files and DELETE /customer/[account] detail",
+          "Pinned spec commit URLs",
+          "'Also good if' items"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 290,
+      "wordsAfter": 104
+    },
+    {
+      "id": "q-sep-31-cross-border",
+      "purpose": "stellar-truth",
+      "topics": [
+        "SEP-31 cross-border payments",
+        "SEP-31 versus SEP-24"
+      ],
+      "tests": "That SEP-31 is anchor-to-anchor with no end-user UI and SEP-24 is the interactive wallet-to-anchor flow.",
+      "questionIssues": [
+        "Same triple as the SEP-6/24/31 choice case."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Overlaps key fact 4"
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Trivia beside the point: 'uses a hosted interface'"
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Negative restatement of key fact 1"
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SEP-31 Cross-Border Payments API is Active (v3.1.0); sending anchor pays a receiving anchor.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0031.md",
+              "observedAt": "2026-11-14",
+              "quote": "Title: Cross-Border Payments API Status: Active Version 3.1.0"
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0031.md",
+              "observedAt": "2026-11-14",
+              "quote": "A **Sending Anchor**: The business receiving funds from the Sending Client"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-sep6-sep24-sep31-choice",
+          "survivor": "q-sep6-sep24-sep31-choice",
+          "why": "Same three SEPs."
+        },
+        {
+          "id": "q-sep-6-vs-31-misnumber-trap",
+          "survivor": "q-sep-6-vs-31-misnumber-trap",
+          "why": "The trap tests the same distinction under a false premise; kept as a behavior case."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Fold into q-sep6-sep24-sep31-choice, which already states SEP-31 as Sending-to-Receiving Anchor.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 267,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-sep-38-quotes",
+      "purpose": "stellar-truth",
+      "topics": [
+        "SEP-38 Anchor RFQ API"
+      ],
+      "tests": "That SEP-38 is the quote/RFQ standard.",
+      "questionIssues": [
+        "A one-fact number lookup; the SEP-38 role is already a key fact in q-sep-catalog-list."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SEP-38 Anchor RFQ API is Draft (v2.5.0); GET /prices, /price, POST /quote.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0038.md",
+              "observedAt": "2026-11-14",
+              "quote": "Title: Anchor RFQ API Status: Draft Updated: 2025-02-26 Version 2.5.0"
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/README.md",
+              "observedAt": "2026-11-14",
+              "quote": "| [SEP-0038](sep-0038.md) | Anchor RFQ API | Jake Urban and Leigh McCulloch | Draft"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-sep-catalog-list",
+          "survivor": "q-sep-catalog-list",
+          "why": "SEP-38 = Anchor RFQ is key fact 4 there."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Fold into q-sep-catalog-list; the single fact needs no case of its own.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 144,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-sep-41-token-interface",
+      "purpose": "stellar-truth",
+      "topics": [
+        "SEP-41 token interface",
+        "relation to the Stellar Asset Contract",
+        "Draft status and signature changes"
+      ],
+      "tests": "That SEP-41 is the common Soroban fungible-token interface, a subset of the SAC interface in CAP-46-6, and still Draft.",
+      "questionIssues": [
+        "Good question, but the golden is mostly freshness boilerplate and a 330-word SDK/signature detail dump."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": "Boilerplate freshness behavior"
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "Boilerplate duplicate"
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Process-leaning: 'version-qualify signatures' packs a behavior with a status fact"
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SEP-41 is Draft v0.5.2, updated 2026-08-24; a subset of the SAC interface compatible with CAP-46-6.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
+              "observedAt": "2026-11-14",
+              "quote": "Title: Soroban Token Interface Status: Draft Updated: 2026-08-24 Version 0.5.2"
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
+              "observedAt": "2026-11-14",
+              "quote": "is a subset of the Stellar Asset contract, and compatible with its descriptive"
+            }
+          ]
+        },
+        {
+          "claim": "transfer takes MuxedAddress `to`; approve uses live_until_ledger; mint is an event, not a required function.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
+              "observedAt": "2026-11-14",
+              "quote": "fn transfer(env: Env, from: Address, to: MuxedAddress, amount: i128);"
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
+              "observedAt": "2026-11-14",
+              "quote": "fn approve(env: Env, from: Address, spender: Address, amount: i128, live_until_ledger: u32);"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-asset-trustline-vs-sac",
+          "survivor": "q-sep-41-token-interface",
+          "why": "Both mention the SAC implementing SEP-41; keep the standard here."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Keep: SEP-41 is the central Soroban token standard. Replace boilerplate key facts with world facts and move signature and SDK-name detail out.",
+      "rewrite": {
+        "question": null,
+        "answer": "SEP-41 is the Draft Soroban Token Interface: the common fungible-token functions (balance, transfer, approve and allowance, burn, metadata) that custom token contracts implement. It is a subset of the Stellar Asset Contract interface in CAP-46-6, so the SAC implements it and adds admin functions. As of 2026-11-14 it is v0.5.2, and signatures changed between drafts, so version-qualify code.",
+        "keyFacts": [
+          "SEP-41 is the Draft Soroban Token Interface for fungible tokens.",
+          "Custom token contracts implement the SEP-41 interface.",
+          "SEP-41 is a subset of the CAP-46-6 SAC interface, so the SAC implements it.",
+          "As of 2026-11-14 SEP-41 is v0.5.2; Draft signatures changed between versions."
+        ],
+        "avoid": [
+          "SAC admin functions such as mint and clawback are required generic SEP-41 methods."
+        ],
+        "notes": "Do not penalize v0.5.0 or v0.5.1 when dated to an earlier observation.",
+        "movedToTruth": [
+          "Approve expiry naming (live_until_ledger versus expiration_ledger) and MuxedAddress transfer detail",
+          "Update history (v0.5.0 on 2026-08-04)",
+          "Source list (raw GitHub, commits API)",
+          "'Also good if' items"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 329,
+      "wordsAfter": 125
+    },
+    {
+      "id": "q-sep-43-web-wallet-api",
+      "purpose": "stellar-truth",
+      "topics": [
+        "SEP-43 web wallet API",
+        "dapp-to-wallet methods",
+        "wallet error codes"
+      ],
+      "tests": "That SEP-43 exists and standardizes the dapp-to-wallet JavaScript interface (five methods plus error shapes).",
+      "questionIssues": [
+        "Clear and answerable. The golden carries a dossier correction story ('SEP-43 DOES exist') that is provenance, not truth."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": "Boilerplate freshness behavior"
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "Boilerplate duplicate"
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Trivia: 'file exists in the repo' is a retrieval check, not a fact about the standard"
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SEP-43 is Draft v1.2.1 with getAddress, signTransaction, signAuthEntry, signMessage, getNetwork and error codes -1 to -4.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md",
+              "observedAt": "2026-11-14",
+              "quote": "Title: Standard Web Wallet API Interface Status: Draft Version: 1.2.1"
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md",
+              "observedAt": "2026-11-14",
+              "quote": "-4: user rejected the request, client app should not try to retry the request"
+            }
+          ]
+        },
+        {
+          "claim": "'The ecosystem README main table omits SEP-43.'",
+          "result": "changed",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/README.md",
+              "observedAt": "2026-11-14",
+              "quote": "| [SEP-0043](sep-0043.md) | Standard Web Wallet API Interface | Piyal Basu, Leigh McCulloch, George Kudrayvtsev, Enrique Arrieta, OrbitLens | Draft"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-sep-45-contract-auth",
+          "survivor": "q-sep-45-contract-auth",
+          "why": "SEP-45's golden contrasts SEP-43; keep distinct."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Keep: SEP-43 is the wallet-integration standard. The README no longer omits SEP-43 (changed since 2026-11-02), so that note is stale; remove the existence key fact and boilerplate.",
+      "rewrite": {
+        "question": null,
+        "answer": "SEP-43 is the Draft Standard Web Wallet API Interface (v1.2.1 as of 2026-11-14). It defines the JavaScript API a web wallet exposes to dapps: getAddress, signTransaction, signAuthEntry, signMessage and getNetwork, with standard error codes. Dapps integrate once instead of writing per-wallet code. It is not an authentication or anchor standard.",
+        "keyFacts": [
+          "SEP-43 is the Standard Web Wallet API Interface for dapp-to-wallet calls.",
+          "It defines getAddress, signTransaction, signAuthEntry, signMessage and getNetwork.",
+          "It standardizes error shapes so dapps need no per-wallet code."
+        ],
+        "avoid": [
+          "SEP-43 does not exist, or is an authentication, anchor or payment standard."
+        ],
+        "notes": "SEP-43 is Draft; do not penalize an answer that states a later dated version.",
+        "movedToTruth": [
+          "Dossier correction story (SEP-43 exists) and README-omission note (now stale: README lists SEP-43)",
+          "Error code table (-1 to -4)",
+          "SEP-42 and SEP-44 sibling remark",
+          "Source list"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 357,
+      "wordsAfter": 105
+    },
+    {
+      "id": "q-sep-45-contract-auth",
+      "purpose": "stellar-truth",
+      "topics": [
+        "SEP-45 contract-account web authentication",
+        "SEP-10 versus SEP-45",
+        "Draft status"
+      ],
+      "tests": "That SEP-45 is the web-authentication standard for contract (C) accounts, a Draft complement to SEP-10.",
+      "questionIssues": [
+        "Good question; the stale asOf (2026-06-22) is the only problem."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": "Boilerplate freshness behavior"
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "Boilerplate duplicate"
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SEP-45 is Draft v0.1.1 (updated 2025-12-16); C accounts via WEB_AUTH_CONTRACT_ID and web_auth_verify; SEP-10 stays for G/M.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0045.md",
+              "observedAt": "2026-11-14",
+              "quote": "Title: Stellar Web Authentication for Contract Accounts Status: Draft Updated: 2025-12-16 Version: 0.1.1"
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0045.md",
+              "observedAt": "2026-11-14",
+              "quote": "A **Web Auth Contract**: a contract that implements the `web_auth_verify`"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-anchor-endpoint-discovery",
+          "survivor": "q-anchor-endpoint-discovery",
+          "why": "SEP-45 appears there as a variant; no overlap in the tested fact."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Keep. Re-verified 2026-11-14 with an unchanged SEP; boilerplate key facts replaced by world facts, with a current as-of date.",
+      "rewrite": {
+        "question": null,
+        "answer": "Yes: SEP-45, Stellar Web Authentication for Contract Accounts (Draft, v0.1.1 as of 2026-11-14). It is the Soroban analog of SEP-10: a client authenticates a contract (C...) account by signing Soroban authorization entries for the anchor's web-auth contract and receives a session JWT. SEP-10 still covers G and M accounts. SEP-43 is an unrelated wallet API.",
+        "keyFacts": [
+          "SEP-45 is Stellar Web Authentication for Contract Accounts.",
+          "SEP-45 is the Soroban analog of SEP-10 for C accounts, using auth entries.",
+          "SEP-45 complements SEP-10 rather than replacing it.",
+          "SEP-45 is Draft, not final, as of 2026-11-14."
+        ],
+        "avoid": [
+          "Contract-account web authentication is SEP-10 or SEP-43."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "2026-06-22 verification stamp and reference contract deployment",
+          "SEP-43 contrast sentence sources",
+          "Draft-status gating note"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 366,
+      "wordsAfter": 98
+    },
+    {
+      "id": "q-sep-53-sign-verify-message",
+      "purpose": "stellar-truth",
+      "topics": [
+        "SEP-53 message signing",
+        "prefix, SHA-256 and ed25519",
+        "message signing versus transaction signing"
+      ],
+      "tests": "That SEP-53 standardizes signing arbitrary off-chain messages with a fixed prefix, one SHA-256 and an ed25519 signature, and is Final.",
+      "questionIssues": [
+        "Clear. It shares its topic with q-sep53-message-signing, whose question adds 'versus signing a transaction'."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SEP-53 'Sign and Verify Messages' is Final v1.0.0 (updated 2026-06-18); prefix 'Stellar Signed Message:\\n', single SHA-256, ed25519.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md",
+              "observedAt": "2026-11-14",
+              "quote": "Title: Sign and Verify Messages Status: Final Updated: 2026-06-18 Version: 1.0.0"
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md",
+              "observedAt": "2026-11-14",
+              "quote": "fixed prefix string is used: `\"Stellar Signed Message:\\n\"`,"
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/README.md",
+              "observedAt": "2026-11-14",
+              "quote": "| [SEP-0053](sep-0053.md) | Sign and Verify Messages | Jun Luo, Pamphile Roy, OrbitLens, Piyal Basu | Final"
+            }
+          ]
+        },
+        {
+          "claim": "A single-key signature does not prove control of a multi-signer account.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md",
+              "observedAt": "2026-11-14",
+              "quote": "In multi-signer scenarios, possession of just one key may not grant full control over the account."
+            }
+          ]
+        },
+        {
+          "claim": "Stellar CLI has a `message` subcommand implementing SEP-53.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-cli/blob/main/cmd/soroban-cli/src/commands/message/mod.rs",
+              "observedAt": "2026-11-14",
+              "quote": "/// The prefix used for SEP-53 message signing."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-sep53-message-signing",
+          "survivor": "q-sep-53-sign-verify-message",
+          "why": "Same standard; the other case is a scheduled restatement with rot-prone SDK roster."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Survivor of the SEP-53 pair. Absorb the 'not a transaction, and a key signature proves no multisig threshold' caution and dated Final status; drop the SEP-10 comparison avoid.",
+      "rewrite": {
+        "question": null,
+        "answer": "SEP-53, Sign and Verify Messages, is Final (v1.0.0 as of 2026-11-14). To sign an arbitrary message, prefix its exact bytes with `Stellar Signed Message:\\n` (with the newline), apply one SHA-256, and ed25519-sign the 32-byte digest with the Stellar key. It is off-chain, not a transaction, and proves control of one key, not a multisig threshold or contract-account policy.",
+        "keyFacts": [
+          "SEP-53 is titled Sign and Verify Messages and is Final.",
+          "The message is prefixed with 'Stellar Signed Message:\\n' before hashing.",
+          "The prefixed bytes are hashed once with SHA-256 and signed with ed25519.",
+          "A SEP-53 signature is off-chain and is not a Stellar transaction."
+        ],
+        "avoid": [
+          "SEP-53 message signing is broadcast as a Stellar transaction.",
+          "SEP-53 is the SEP-10 web authentication challenge."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "Per-language SDK support roster (unverifiable from the spec; check each release)",
+          "SEP-43 relation (separate Draft wallet API)",
+          "Nonce/expiry caution provenance",
+          "2026-07-11 status-sensitive stamp"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 199,
+      "wordsAfter": 117
+    },
+    {
+      "id": "q-sep-6-24-deprecation",
+      "purpose": "stellar-truth",
+      "topics": [
+        "SEP-6 interactive deprecation",
+        "SEP-24 as the interactive replacement"
+      ],
+      "tests": "That only SEP-6's interactive components are deprecated in favor of SEP-24, while SEP-6's programmatic API stays Active.",
+      "questionIssues": [
+        "Good nuance trap, already a key fact in q-sep6-sep24-sep31-choice. The grade-cap note ('while sd-009 stands') is a documented upstream-docs gap."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SEP-6 status: 'Active (Interactive components are deprecated in favor of SEP-24)'.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0006.md",
+              "observedAt": "2026-11-14",
+              "quote": "Status: Active (Interactive components are deprecated in favor of SEP-24)"
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/README.md",
+              "observedAt": "2026-11-14",
+              "quote": "| [SEP-0006](sep-0006.md) | Deposit and Withdrawal API | SDF | Active"
+            }
+          ]
+        },
+        {
+          "claim": "sd-009 is declined-upstream (docs omit the deprecation), so the partial cap stays valid.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "improvements/INDEX.md",
+              "observedAt": "2026-11-14",
+              "quote": "| sd-009 | The docs omit SEP-6's canonical interactive-component deprecation status | declined-upstream | 2026-07-09 |"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-sep6-sep24-sep31-choice",
+          "survivor": "q-sep6-sep24-sep31-choice",
+          "why": "Key fact 1 there is this case."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Fold into q-sep6-sep24-sep31-choice, which must keep 'only SEP-6's interactive flow is deprecated; SEP-6 stays Active' and the sd-009 partial-cap caution.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 282,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-sep-6-vs-31-misnumber-trap",
+      "purpose": "behavior",
+      "topics": [
+        "false-premise SEP number",
+        "SEP-31 versus SEP-24 versus SEP-6"
+      ],
+      "tests": "Whether the agent rejects the false premise that SEP-31 is the wallet-facing hosted deposit API and names SEP-24 (and SEP-6 programmatic).",
+      "questionIssues": [
+        "A real misconception worth a behavior case; the question title says 'SEP-6 vs 31' but it asks about SEP-31 and hosted UI. The golden's SEP-10/45/38 closing bullet is extra."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SEP-31 is anchor-to-anchor (Sending Anchor, Receiving Anchor); SEP-24 is hosted interactive; SEP-6 programmatic; all Active.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0031.md",
+              "observedAt": "2026-11-14",
+              "quote": "Title: Cross-Border Payments API Status: Active Version 3.1.0"
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
+              "observedAt": "2026-11-14",
+              "quote": "Title: Hosted Deposit and Withdrawal Status: Active Version 3.8.0"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-sep6-sep24-sep31-choice",
+          "survivor": "q-sep-6-vs-31-misnumber-trap",
+          "why": "Same triple, but this keeps the false-premise behavior (rejects the user's wrong belief) distinct."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Keep as the single false-premise SEP case. Key facts become required behavior: reject the premise, name SEP-24, and describe SEP-31 correctly.",
+      "rewrite": {
+        "question": null,
+        "answer": "The premise is wrong. SEP-31 is the Cross-Border Payments API, an anchor-to-anchor rail from a sending anchor to a receiving anchor, with no end-user hosted UI. The hosted, interactive deposit and withdrawal flow a wallet uses is SEP-24; SEP-6 is the programmatic counterpart.",
+        "keyFacts": [
+          "Rejects the premise that SEP-31 is the wallet hosted-UI deposit standard.",
+          "Names SEP-24 as the hosted interactive deposit and withdrawal standard.",
+          "Describes SEP-31 as the anchor-to-anchor Cross-Border Payments API."
+        ],
+        "avoid": [
+          "SEP-31 is the hosted-UI deposit standard wallets use."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "SEP-10/SEP-45 and SEP-38 closing bullet",
+          "Source list incl. Soneso SDK docs",
+          "'Also good if' items (sending anchor collects sender KYC)"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 204,
+      "wordsAfter": 80
+    },
+    {
+      "id": "q-sep-7-uri",
+      "purpose": "stellar-truth",
+      "topics": [
+        "SEP-7 URI scheme",
+        "tx and pay operations",
+        "web+stellar:"
+      ],
+      "tests": "That delegated signing requests use SEP-7's web+stellar: scheme with tx and pay operations.",
+      "questionIssues": [
+        "Clear and answerable; the answer carries parameter detail the question does not require."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SEP-7 scheme is `web+stellar:<operation>?...` with tx and pay operations; Active.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0007.md",
+              "observedAt": "2026-11-14",
+              "quote": "The scheme name will be `web+stellar` and should always be followed by a colon"
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0007.md",
+              "observedAt": "2026-11-14",
+              "quote": "Title: URI Scheme to facilitate delegated signing Status: Active Version: 2.1.0"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-sep-catalog-list",
+          "survivor": "q-sep-7-uri",
+          "why": "The catalog lists SEP-7 by name; this case owns the URI form."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Keep. Trim the optional-parameter list and origin-signing detail the question does not ask.",
+      "rewrite": {
+        "question": null,
+        "answer": "SEP-7, URI Scheme to facilitate delegated signing, defines the `web+stellar:` scheme (no slashes) so an app can ask a wallet to sign without seeing the secret key. Two operations: `web+stellar:tx?xdr=<URL-encoded TransactionEnvelope>` requests a signature on a transaction, and `web+stellar:pay?destination=G...&amount=...&asset_code=...` requests a payment. It is distinct from SEP-10 web authentication.",
+        "keyFacts": [
+          "SEP-7 defines the URI scheme for delegated signing requests.",
+          "The scheme is web+stellar: followed by an operation and query parameters.",
+          "The operations are tx (sign a transaction XDR) and pay (request a payment)."
+        ],
+        "avoid": [
+          "The signing URI scheme is SEP-10 or SEP-24."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "Optional parameters (callback, pubkey, msg, origin_domain, signature)",
+          "URI_REQUEST_SIGNING_KEY origin verification",
+          "Dossier reference",
+          "Golden-cites line"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 208,
+      "wordsAfter": 90
+    },
+    {
+      "id": "q-sep-8-regulated-assets",
+      "purpose": "stellar-truth",
+      "topics": [
+        "SEP-8 regulated assets",
+        "approval server in stellar.toml",
+        "issuer flags"
+      ],
+      "tests": "That SEP-8 adds per-transaction issuer approval through an approval_server declared in stellar.toml, on assets with the required auth flags.",
+      "questionIssues": [
+        "Duplicate of q-comp-sep8-regulated-assets-approval-server."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SEP-8 requires Authorization Required and Authorization Revocable and an approval_server in stellar.toml; statuses success, revised, pending, action_required, rejected.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0008.md",
+              "observedAt": "2026-11-14",
+              "quote": "Regulated asset issuers must have both `Authorization Required` and `Authorization Revocable` flags set on their account."
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0008.md",
+              "observedAt": "2026-11-14",
+              "quote": "- `approval_server` is the URL of an approval service that signs validated"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-comp-sep8-regulated-assets-approval-server",
+          "survivor": "q-comp-sep8-regulated-assets-approval-server",
+          "why": "Cross-category: same ask, richer golden; its key facts already cover flags, toml fields and statuses."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Fold into q-comp-sep8-regulated-assets-approval-server; nothing here is missing there.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 208,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-sep-catalog-list",
+      "purpose": "stellar-truth",
+      "topics": [
+        "SEP catalog for wallets and anchors",
+        "SEP number to purpose map",
+        "wallet SEP checklist"
+      ],
+      "tests": "That the agent maps the common wallet and anchor SEP numbers to the right titles without misnumbering.",
+      "questionIssues": [
+        "A list question tests recall of a registry: realistic ('which SEPs do I need?') but trivia-heavy. The 11-row table is the golden; scoring a long list punishes omission."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Two predicates: SEP-31 and SEP-38"
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Titles and statuses of SEP-1, 6, 7, 8, 9, 10, 12, 24, 31, 38, 41, 43, 45.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/README.md",
+              "observedAt": "2026-11-14",
+              "quote": "| [SEP-0001](sep-0001.md) | Stellar Info File | SDF | Active"
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/README.md",
+              "observedAt": "2026-11-14",
+              "quote": "| [SEP-0038](sep-0038.md) | Anchor RFQ API | Jake Urban and Leigh McCulloch | Draft"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals",
+              "observedAt": "2026-11-14",
+              "quote": "### SEP-12 - KYC API"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-sep-wallet-seps-list",
+          "survivor": "q-sep-catalog-list",
+          "why": "Same list for wallets; the catalog is a strict superset."
+        },
+        {
+          "id": "q-sep-38-quotes",
+          "survivor": "q-sep-catalog-list",
+          "why": "Single-fact SEP-38 lookup."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Survivor of the SEP-list trio. Shrink to the six wallet-critical SEPs and add SEP-6 and SEP-38 from the retired lists; dropping the eleven-row table cuts rot and judge prose.",
+      "rewrite": {
+        "question": null,
+        "answer": "SEP-1: Stellar Info File (stellar.toml). SEP-6: programmatic deposit and withdrawal. SEP-10: web authentication (challenge, then JWT). SEP-12: KYC API. SEP-24: hosted interactive deposit and withdrawal. SEP-31: cross-border payments between anchors. SEP-38: Anchor RFQ quotes. Wallets also use SEP-7 (delegated-signing URI) and SEP-8 (regulated assets).",
+        "keyFacts": [
+          "SEP-1 is the stellar.toml info file; SEP-10 is web authentication.",
+          "SEP-12 is the KYC API; SEP-24 is hosted deposit and withdrawal.",
+          "SEP-6 is programmatic deposit and withdrawal; SEP-31 is anchor-to-anchor payments.",
+          "SEP-38 is the Anchor RFQ quote API."
+        ],
+        "avoid": [
+          "Any SEP number paired with the wrong standard, such as SEP-24 as KYC or SEP-31 as interactive deposit."
+        ],
+        "notes": "Lifecycle status is not required for this purpose-list question.",
+        "movedToTruth": [
+          "Eleven-row table including SEP-9, 41, 43, 45",
+          "Conflict history (README versus preamble for SEP-7/8, resolved 2026-11-03)",
+          "Pinned README commit URLs",
+          "'Also good if' items"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 383,
+      "wordsAfter": 109
+    },
+    {
+      "id": "q-sep-clawback-prereq-flag",
+      "purpose": "stellar-truth",
+      "topics": [
+        "clawback flag prerequisite",
+        "AUTH_REVOCABLE before AUTH_CLAWBACK_ENABLED"
+      ],
+      "tests": "That setting AUTH_CLAWBACK_ENABLED requires AUTH_REVOCABLE on the issuer account.",
+      "questionIssues": [
+        "A realistic troubleshooting framing, but a one-fact lookup already held by q-comp-clawback-cap0035."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "AUTH_CLAWBACK_ENABLED needs AUTH_REVOCABLE.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0035.md",
+              "observedAt": "2026-11-14",
+              "quote": "The account `AUTH_REVOCABLE_FLAG` flag must also be set because for clawback to succeed"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-comp-clawback-cap0035",
+          "survivor": "q-comp-clawback-cap0035",
+          "why": "Cross-category: key fact 3 there is 'requires AUTH_REVOCABLE and AUTH_CLAWBACK_ENABLED'."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "Duplicated: q-comp-clawback-cap0035 already tests the prerequisite flags; this single fact adds no distinct measurement.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 183,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-sep-interactive-deposit-withdraw",
+      "purpose": "stellar-truth",
+      "topics": [
+        "SEP-24 versus SEP-6",
+        "interactive versus programmatic deposit"
+      ],
+      "tests": "That SEP-24 is the hosted interactive standard and SEP-6 the programmatic one.",
+      "questionIssues": [
+        "Same triple as the choice case; SEP-6 versus SEP-24 is its first key fact."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SEP-24 hosted/interactive; SEP-6 programmatic, interactive part deprecated; both Active.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
+              "observedAt": "2026-11-14",
+              "quote": "Title: Hosted Deposit and Withdrawal Status: Active Updated: 2025-09-10 Version 3.8.0"
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0006.md",
+              "observedAt": "2026-11-14",
+              "quote": "Status: Active (Interactive components are deprecated in favor of SEP-24)"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-sep6-sep24-sep31-choice",
+          "survivor": "q-sep6-sep24-sep31-choice",
+          "why": "Key fact 0 there maps SEP-24 to hosted and SEP-6 to programmatic."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Fold into q-sep6-sep24-sep31-choice.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 213,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-sep-wallet-seps-list",
+      "purpose": "stellar-truth",
+      "topics": [
+        "wallet SEP checklist"
+      ],
+      "tests": "That an agent lists SEP-1, 10, 24, 6, 12, 38 as the wallet-side anchor SEPs.",
+      "questionIssues": [
+        "Subset of q-sep-catalog-list."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Numbers and titles of SEP-1, 6, 7, 10, 12, 24, 31, 38.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals",
+              "observedAt": "2026-11-14",
+              "quote": "### SEP-7 - URI Scheme to Facilitate Delegated Signing"
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/README.md",
+              "observedAt": "2026-11-14",
+              "quote": "| [SEP-0010](sep-0010.md) | Stellar Authentication | Sergey Nebolsin, Tom Quisel | Active"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-sep-catalog-list",
+          "survivor": "q-sep-catalog-list",
+          "why": "Same SEP set; the catalog also maps SEP-12, SEP-31 and SEP-38 purposes."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Fold into q-sep-catalog-list; its rewrite carries the wallet-critical SEPs.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 233,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-sep53-message-signing",
+      "purpose": "stellar-truth",
+      "topics": [
+        "SEP-53 message signing",
+        "installed-release support",
+        "SEP-43 separation"
+      ],
+      "tests": "SEP-53's prefix, hash and signature steps, its Final status, and what a message signature does not prove.",
+      "questionIssues": [
+        "Duplicate of q-sep-53-sign-verify-message. The key facts bury three predicates in 'current support spans JS/TS, Python, Java, Flutter, iOS, PHP, KMP, CLI', a roster that no primary source lists and that rots with every SDK release."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Two predicates plus an escaped newline that renders badly"
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Packs status, version and date"
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Unverifiable SDK roster; rot-prone trivia"
+        },
+        {
+          "i": 4,
+          "kind": "process",
+          "issue": "'Requires installed-release checks' prescribes behavior, not a Stellar fact"
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SEP-53 is Final v1.0.0 updated 2026-06-18.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md",
+              "observedAt": "2026-11-14",
+              "quote": "Title: Sign and Verify Messages Status: Final Updated: 2026-06-18 Version: 1.0.0"
+            }
+          ]
+        },
+        {
+          "claim": "Current SDK support across JS/TS, Python, Java, Flutter, iOS, PHP, KMP and the CLI.",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-cli/blob/main/cmd/soroban-cli/src/commands/message/mod.rs",
+              "observedAt": "2026-11-14",
+              "quote": "/// The prefix used for SEP-53 message signing."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-sep-53-sign-verify-message",
+          "survivor": "q-sep-53-sign-verify-message",
+          "why": "Same standard; the survivor's rewrite adds 'not a transaction' and a dated Final status."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Fold into q-sep-53-sign-verify-message. The SDK roster is unverifiable beyond the CLI and is dropped; the multisig caution (spec Limitations: one key does not imply control of the account) is folded into its answer, and the unsourced nonce/expiry avoid is dropped.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 205,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-sep6-sep24-sep31-choice",
+      "purpose": "stellar-truth",
+      "topics": [
+        "SEP-6, SEP-24 and SEP-31 selection",
+        "SEP-6 interactive deprecation",
+        "SEP-1 transfer-server keys"
+      ],
+      "tests": "Which of the three on/off-ramp and cross-border SEPs to use for a hosted UI, a programmatic API, or anchor-to-anchor payout.",
+      "questionIssues": [
+        "Best framing of the cluster: a decision question, not a number lookup.",
+        "The SEP-1 key names (TRANSFER_SERVER, TRANSFER_SERVER_SEP0024, DIRECT_PAYMENT_SERVER) are trivia beside the choice."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Overlaps key fact 0's SEP-31 and uses 'established bilateral ties' wording not found in the spec as such"
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Process-leaning: asks for a dated status, not a fact"
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Trivia: three TOML key names"
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SEP-6, SEP-24 and SEP-31 are Active; SEP-38 is Draft; SEP-6 interactive components deprecated in favor of SEP-24.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/README.md",
+              "observedAt": "2026-11-14",
+              "quote": "| [SEP-0031](sep-0031.md) | Cross-Border Payments API | SDF | Active"
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0038.md",
+              "observedAt": "2026-11-14",
+              "quote": "Title: Anchor RFQ API Status: Draft"
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0006.md",
+              "observedAt": "2026-11-14",
+              "quote": "Status: Active (Interactive components are deprecated in favor of SEP-24)"
+            }
+          ]
+        },
+        {
+          "claim": "SEP-1 keys TRANSFER_SERVER (SEP-6), TRANSFER_SERVER_SEP0024, DIRECT_PAYMENT_SERVER (SEP-31).",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0001.md",
+              "observedAt": "2026-11-14",
+              "quote": "| DIRECT_PAYMENT_SERVER           | uses `https://`        | The server used for receiving [SEP-31](sep-0031.md) direct fiat-to-fiat payments."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-sep-interactive-deposit-withdraw",
+          "survivor": "q-sep6-sep24-sep31-choice",
+          "why": "SEP-24 versus SEP-6."
+        },
+        {
+          "id": "q-sep-6-24-deprecation",
+          "survivor": "q-sep6-sep24-sep31-choice",
+          "why": "SEP-6 interactive deprecation."
+        },
+        {
+          "id": "q-sep-31-cross-border",
+          "survivor": "q-sep6-sep24-sep31-choice",
+          "why": "SEP-31 versus SEP-24."
+        },
+        {
+          "id": "q-comp-sep6-vs-sep12-roles",
+          "survivor": "q-sep-12-kyc",
+          "why": "Cross-category: which SEP carries KYC data in SEP-6 is the SEP-12 case."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Survivor of four cases (6/24/31 triple, deprecation nuance). Reduce to one predicate per fact, add the 'SEP-31 has no end-user UI' fact, drop TOML key names and the SEP-38 status avoid.",
+      "rewrite": {
+        "question": null,
+        "answer": "Use SEP-24 when the anchor hosts the interactive deposit and withdrawal UI. Use SEP-6 for a programmatic API with no hosted UI; only SEP-6's old interactive flow is deprecated in favor of SEP-24. Use SEP-31 for anchor-to-anchor cross-border payments, where a sending anchor pays a receiving anchor with no end-user UI. SEP-38 adds quotes.",
+        "keyFacts": [
+          "SEP-24 is the anchor-hosted interactive deposit and withdrawal standard.",
+          "SEP-6 is the programmatic API; only its interactive flow is deprecated.",
+          "SEP-31 is a sending anchor paying a receiving anchor, with no end-user hosted UI.",
+          "SEP-6, SEP-24 and SEP-31 are Active as of 2026-11-14."
+        ],
+        "avoid": [
+          "SEP-31 replaces both SEP-6 and SEP-24.",
+          "SEP-24 requires the wallet to host the anchor's KYC user interface."
+        ],
+        "notes": "Quoting official docs on SEP-6 programmatic use without the interactive deprecation is not a wrong claim while sd-009 stands; the grade caps at partial for that claim.",
+        "movedToTruth": [
+          "SEP-38 Draft check (2026-08-27 sweep)",
+          "SEP-1 TOML key names TRANSFER_SERVER, TRANSFER_SERVER_SEP0024, DIRECT_PAYMENT_SERVER",
+          "Soneso SEP-38 compatibility matrix",
+          "'Also good if' SEP-38 item"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 266,
+      "wordsAfter": 141
+    }
+  ],
+  "summary": {
+    "keep": 0,
+    "tighten": 25,
+    "merge": 17,
+    "retire": 2,
+    "move-tool-lane": 3,
+    "factsChanged": 0
+  },
+  "crossCategoryDuplicates": [
+    "MoneyGram Ramps: q-anchor-moneygram-ramps, q-pay-moneygram-ramps, q-comp-cross-moneygram-partnership-sep24 (and the MoneyGram clause of q-scf-cross-decaf-sep24). Keep one product case (q-pay-moneygram-ramps also asks limits); fold the Scout-role question into a tool-lane cross item.",
+    "Stellar Disbursement Platform: q-anchor-sdp-what and q-anchor-sdp-vs-anchor-platform (this lane) with q-pay-sdp-disbursement ('what is SDP') and q-crp-sdp-operation (deploy and operate). Keep the three-way comparison here and q-crp-sdp-operation; retire the plain 'what is SDP' duplicate.",
+    "SEP-8 regulated assets: q-sep-8-regulated-assets (this lane) is covered by q-comp-sep8-regulated-assets-approval-server.",
+    "Clawback: q-sep-clawback-prereq-flag (this lane) and the clawback half of q-aas-burn-clawback-redemption-mechanics overlap q-comp-clawback-cap0035 and q-comp-auth-flags-overview; also q-comp-clawback-holder-risk and q-comp-sac-inherits-flags touch it. One owner (q-comp-clawback-cap0035) should hold the prerequisite flags.",
+    "Stablecoin roster: q-asset-stablecoin-issuers-discovery (this lane) equals q-eco-stablecoins-on-stellar (defi-ecosystem).",
+    "RWA size: q-asset-rwa-tokenized-freshness (this lane) equals q-eco-stellar-rwa-stablecoin-volume (defi-ecosystem), which already carries the SDF Q3 2026 $4.1B metric.",
+    "Anchor roster and anchor build: q-anchor-list-builders-discovery overlaps q-crp-anchors-by-corridor; q-production-anchor-architecture overlaps q-crp-become-an-anchor-licensing and q-comp-anchor-compliance-stack; q-pay-anchor-msb-licensing is adjacent.",
+    "Claimable balances: q-asset-claimable-balance and q-aas-claimable-predicates-expiry-reserves (this lane) overlap q-raph-claimable-balance-safety (retail) on the 'recipient lacks a trustline' point.",
+    "Path payments: q-asset-path-payment-ops (this lane) overlaps q-asset-usdc-eurc-path-fx, q-raph-remittance-path-payment and q-defi-arbitrage-pathpayment-bots (scenario cases).",
+    "SAC bridge: the 'classic asset through SAC' half of q-ass-cross-bando-stablebonds-sac repeats q-defi-cross-blend-rivool-sac and q-asset-trustline-vs-sac; q-comp-sac-inherits-flags and q-sor-contract-trustlines-c-address cover the flag and contract-holder sides.",
+    "Cross-service 'Scout says X, then standard Y' cases (q-ass-cross-bando-stablebonds-sac, q-ass-cross-etherfuse-cetes-controls, q-defi-cross-blend-rivool-sac, q-comp-cross-bitso-sep31, q-comp-cross-moneygram-partnership-sep24, q-scf-cross-decaf-sep24) share one raven-mechanics pattern; consider a single tool lane for them.",
+    "SEP-30 recovery: q-aas-sep30-recoverable-wallets is distinct from q-passkey-wallet-recovery (smart-account recovery); no merge, but confirm no SEP-30 prose is repeated there.",
+    "Tool-contract pair: q-gap-related-projects-empty (retired here) duplicates q-ti-related-projects-from-content; q-gap-match-partners-degrade (tool lane) is the same shape as q-edge-partner-detail-soft-empty."
+  ],
+  "missing": [
+    "SEP-10 Stellar Web Authentication: no case tests the challenge-transaction and JWT flow (only mentioned inside other goldens). It is the base auth for every anchor SEP.",
+    "SEP-29 Account Memo Requirements and exchange/anchor deposit memo handling (memo required flag, lost-funds risk).",
+    "SEP-42 Stellar Asset List and SEP-14 / SEP-1 asset metadata: how a wallet identifies and verifies an asset (only retail's q-aas-trusted-asset-list-whitelist touches it).",
+    "SEP-56 Tokenized Vault and SEP-57 T-REX regulated-token standards for RWAs (Draft); only the Etherfuse controls case brushes regulated assets.",
+    "SEP-24 interactive flow itself (deposit/withdraw status values, interactive URL, polling) and SEP-6 transaction states: only the choice of SEP is tested, not the flow.",
+    "SEP-31 flow details (quote, /transactions, status transitions) and SEP-38 firm quotes versus indicative prices.",
+    "SEP-34 Wallet Attribution for Anchors and SEP-2 Federation (low weight, but part of the anchor interface family).",
+    "Classic asset operations beyond issuance: SetTrustLineFlags authorize and deauthorize, liquidity-pool deposit/withdraw operations, and asset-code length/type rules (alphanum4 vs alphanum12).",
+    "USDC on Stellar specifics (CCTP, Circle mint/redeem, native versus bridged USDC) are covered only by retail's issuer case; no assets-lane case tests the on/off-chain flow."
+  ],
+  "laneNotes": [
+    "Zero keeps: no case is compact enough as written (smallest golden about 140 words, most 200-400). The dominant defect is provenance, dated verification history and 'also good if' lists sitting in judge-facing notes.",
+    "Rot findings: q-asset-rwa-tokenized-freshness dated figure is stale ($2.8B June 2026 versus about $4.1B at Q3 2026 end); q-sep-43-web-wallet-api note that the ecosystem README omits SEP-43 is stale (README now lists it as Draft); scout stablecoin registry now 37 rows (was 38); matchPartners is back to the documented 503 (502 on 2026-11-02).",
+    "No golden fact was found wrong, so factsChanged is 0. The moved values above are dated examples (RWA size, README omission note, registry row count) in behavior or note text, not protocol facts, and are re-dated or dropped in the rewrites.",
+    "Boilerplate key facts ('Presents source-supported content as a current or dated observation', 'Makes the as-of date visible...') recur in q-anchor-list-builders-discovery, q-asset-stablecoin-issuers-discovery, q-asset-rwa-tokenized-freshness, q-sep-41, q-sep-43, q-sep-45 and q-eco-* cases. They are process facts; express freshness once in a judge-level rule, not per case.",
+    "Source classes used for live checks: SEP specs and CAPs (B), official docs and vendor sites (A), Horizon and Raven Scout/Lumenloop operations (C), Circle docs (A), web search (D). Independent second classes are recorded where the claim was volatile.",
+    "Not checked live: SDP 10,000-instruction cap (source and product page agreed on 2026-11-02), Anchor Platform repo language, Wallet SDK Kotlin archive status."
+  ]
+}

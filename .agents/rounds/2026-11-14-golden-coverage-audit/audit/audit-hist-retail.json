@@ -1,0 +1,4038 @@
+{
+  "lane": "audit-hist-retail",
+  "records": [
+    {
+      "id": "q-hist-cctp-stellar-live-announcement",
+      "purpose": "stellar-truth",
+      "topics": [
+        "CCTP on Stellar",
+        "USDC burn-and-mint",
+        "CCTP launch date"
+      ],
+      "tests": "CCTP moves native USDC by burn-and-mint with no wrapped asset, and the public live announcement was 2026-05-19.",
+      "questionIssues": [
+        "Two-part question mixes announcement-date trivia with the durable mechanism; the date is event trivia, the mechanism is the categorical knowledge."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Announcement-date trivia; q-cctp-v2-usdc-stellar already pins 2026-05-18 support and 2026-05-19 public-live."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SDF/Circle announced CCTP live on Stellar on 2026-05-19 (not 2026-05-08).",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/blog/foundation-news",
+              "observedAt": "2026-11-14",
+              "quote": "Not re-read this pass: the 2026-11-02 audit holds two class A hits (SDF post dated 2026-05-19, Circle post) and nothing here moves a past date."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-cctp-v2-usdc-stellar",
+          "survivor": "q-cctp-v2-usdc-stellar",
+          "why": "Same CCTP-on-Stellar knowledge with both May milestones already in its key facts; it lacks only the burn-and-mint/no-wrapped-USDC fact."
+        },
+        {
+          "id": "q-token-circle-usdc-on-stellar",
+          "survivor": "q-asset-usdc-eurc-issuer",
+          "why": "Also carries the 05-18/05-19 milestones."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Fold into q-cctp-v2-usdc-stellar (compliance-rwa-payments lane). It must absorb one world fact: CCTP moves native USDC by burn on the source chain and mint on the destination, creating no wrapped USDC. Drop the avoid about May 8 only if that case keeps both dated milestones.",
+      "rewrite": null,
+      "confidence": "medium",
+      "wordsBefore": 150,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-hist-meridian-2026-corrected-venue",
+      "purpose": "behavior",
+      "topics": [
+        "Meridian 2026 venue",
+        "superseded announcements",
+        "event dates"
+      ],
+      "tests": "An agent reports the event that took place (Lisbon, Oct 28-29) instead of the superseded Abu Dhabi announcement.",
+      "questionIssues": [
+        "Past-tense now correct (event finished 2026-10-29). Purpose is stale-source resistance, not Stellar knowledge; keep only because it is one of few supersession probes."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "HackMeridian dates and venue are trivia beside the main point."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Announcement date of the move is secondary; fold into one fact with the superseded dates."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Meridian 2026 was October 28-29, 2026 at Convento do Beato, Lisbon.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://meridian.stellar.org/?locale=en",
+              "observedAt": "2026-11-14",
+              "quote": "October 28-29.2026 · Convento do Beato, Lisbon, Portugal"
+            }
+          ]
+        },
+        {
+          "claim": "SDF announced the move to Lisbon on 2026-04-01.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://x.com/StellarOrg/status/2039405316803031315",
+              "observedAt": "2026-11-14",
+              "quote": "Status id decodes (snowflake) to 2026-04-01T18:11:32Z; text not re-read"
+            }
+          ]
+        }
+      ],
+      "duplicates": [],
+      "verdict": "tighten",
+      "reason": "Keep as a compact supersession probe; drop HackMeridian and the redundant \"not upcoming\" avoid (the event is over).",
+      "rewrite": {
+        "question": null,
+        "answer": "Meridian 2026 was held October 28–29, 2026 at Convento do Beato in Lisbon, Portugal. Earlier announcements of Abu Dhabi (Yas Marina, October 21–22) were superseded when SDF announced the move to Lisbon on April 1, 2026.",
+        "keyFacts": [
+          "Meridian 2026 was held October 28–29, 2026 at Convento do Beato, Lisbon.",
+          "Abu Dhabi, October 21–22 was superseded; SDF announced Lisbon on 2026-04-01."
+        ],
+        "avoid": [
+          "Do NOT claim Meridian 2026 took place in Abu Dhabi/Yas Marina or on October 21–22."
+        ],
+        "notes": "Stale sponsored recaps and leftover listings show the superseded schedule; official SDF sources control.",
+        "movedToTruth": [
+          "HackMeridian October 25–26, 2026 at ONE16, Lisbon",
+          "Source list: meridian.stellar.org, hackmeridian.com, StellarOrg post; stale CoinDesk sponsored recap as the trap source"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 137,
+      "wordsAfter": 88
+    },
+    {
+      "id": "q-hist-quantum-preparedness-plan",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Quantum Preparedness Plan",
+        "ML-DSA host functions",
+        "post-quantum roadmap"
+      ],
+      "tests": "SDF’s June 2026 plan is a three-stage roadmap with ML-DSA Soroban verification in 2026 and account-level quantum-safe signers by end of 2027, not a shipped capability.",
+      "questionIssues": [
+        "Answerable and well aimed."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Stage 1 detail is split across KF1 and KF2 (same predicate: host functions for Soroban contract accounts)."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "\"Treats the plan as a roadmap\" is a process-style phrasing; restate as a world fact."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Plan published 2026-06-09 as a three-stage roadmap; every account expected able to add a quantum-safe signer by end of 2027; enterprise wallets via Soroban contract accounts in 2026.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan",
+              "observedAt": "2026-11-14",
+              "quote": "every Stellar account is expected to be able to add a quantum-safe signer through a native protocol upgrade"
+            },
+            {
+              "class": "A",
+              "ref": "https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan",
+              "observedAt": "2026-11-14",
+              "quote": "the three-stage roadmap to quantum-safe cryptography"
+            }
+          ]
+        },
+        {
+          "claim": "Pubnet runs Protocol 29; Bell (P30, CAP-0087) is live on Testnet; Mainnet vote 2026-11-23.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "https://horizon.stellar.org/",
+              "observedAt": "2026-11-14",
+              "quote": "current_protocol_version=29; core_supported_protocol_version=30 (ledger closed 2026-11-14T03:13:12Z)"
+            },
+            {
+              "class": "C",
+              "ref": "https://status.stellar.org/api/v2/scheduled-maintenances/upcoming.json",
+              "observedAt": "2026-11-14",
+              "quote": "Stellar Public Network Protocol Upgrade Vote, scheduled_for 2026-11-23T17:00:00.000Z"
+            },
+            {
+              "class": "A",
+              "ref": "https://stellar.org/blog/developers/introducing-bell-protocol-30-on-stellar",
+              "observedAt": "2026-11-14",
+              "quote": "The testnet vote is on November 3, 2026 and the mainnet vote on November 23, 2026."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-pc-quantum-preparedness-dormant",
+          "survivor": "q-hist-quantum-preparedness-plan",
+          "why": "protocol-core case asks for the same plan; its key facts are process-style. This case holds the concrete roadmap facts; the other should keep only the dormant-account half."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Facts are right; the answer and notes carry volatile status prose that belongs in the judge-blind block. Mainnet vote on 2026-11-23 falls inside reverifyBy 2026-12-01.",
+      "rewrite": {
+        "question": null,
+        "answer": "SDF published the Quantum Preparedness Plan on June 9, 2026 as a three-stage roadmap, not a claim that Stellar is already quantum-safe. Stage 1 adds ML-DSA signature-verification host functions for Soroban contract accounts during 2026. Every account is expected to be able to add a quantum-safe signer by the end of 2027 through a native protocol upgrade. Those primitives did not yet exist at publication.",
+        "keyFacts": [
+          "SDF published the Quantum Preparedness Plan on June 9, 2026.",
+          "The plan is a three-stage roadmap, not a shipped capability.",
+          "Stage 1 plans ML-DSA verification host functions for Soroban accounts in 2026.",
+          "Every account is expected able to add a quantum-safe signer by end of 2027."
+        ],
+        "avoid": [
+          "Do NOT claim ML-DSA host functions or a native quantum-safe signer had shipped when the plan was published.",
+          "Do NOT present the 2026/2027 targets as guaranteed dates."
+        ],
+        "notes": "Grade what the plan said at publication. Accept later sourced developments, including Bell (Protocol 30, CAP-0087) and a sourced Mainnet activation.",
+        "movedToTruth": [
+          "As of 2026-11-14: Pubnet Protocol 29, Testnet Protocol 30 since 2026-11-03, Bell Mainnet vote 2026-11-23",
+          "Native post-quantum signer for classic accounts still future per SDF",
+          "Deprecation timing depends on the threat"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 243,
+      "wordsAfter": 159
+    },
+    {
+      "id": "q-hist-remittance-corridors",
+      "purpose": "mixed",
+      "topics": [
+        "remittance deployments",
+        "MoneyGram Ramps",
+        "corridor status labels"
+      ],
+      "tests": "Which remittance/cash-out deployments are live versus announced, historical or capability-only, with dated status.",
+      "questionIssues": [
+        "Good question for a real user. Today’s golden answer is a template that never states the concrete facts it grades."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": "process: \"presents ... as current or dated\""
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "process: boilerplate as-of rule shared by five cases"
+        },
+        {
+          "i": 2,
+          "kind": "process",
+          "issue": "process: asks for corridors but names none"
+        },
+        {
+          "i": 3,
+          "kind": "process",
+          "issue": "Only world-shaped fact, but unnamed."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "MoneyGram Ramps is a live USDC cash-in/cash-out service on Stellar.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://xramps.moneygram.com/stellar",
+              "observedAt": "2026-11-14",
+              "quote": "Live since 2022 USDC cash on-ramps and off-ramps on Stellar ... Cash access across 170+ countries and territories."
+            },
+            {
+              "class": "A",
+              "ref": "https://www.moneygram.com/stellar",
+              "observedAt": "2026-11-14",
+              "quote": "Stellar since 2022 ... cash on-ramps and off-ramps at 480,000+ MoneyGram locations across 170+ countries"
+            }
+          ]
+        },
+        {
+          "claim": "Nium ~190-country payout (2022) is a capability claim; Velo/PDAX Philippines was an announced corridor; Coins.ph is historical.",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "D",
+              "ref": "https://pdax.ph/2022/03/25/velo-labs-and-pdax-open-remittance-corridor-using-stellar-network",
+              "observedAt": "2026-11-14",
+              "quote": "Not re-read this pass; carried from the 2026-07-10 verification."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-anchor-moneygram-ramps",
+          "survivor": "q-hist-remittance-corridors",
+          "why": "assets-anchors-seps and compliance (q-pay-moneygram-ramps) cases restate MoneyGram Ramps; this case should own the status-labelling lesson."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Replace the boilerplate answer and process key facts with the concrete, status-labelled facts. Keep the lumenloop cap note (ll-008) in lint form.",
+      "rewrite": {
+        "question": null,
+        "answer": "As of 2026-11-14, MoneyGram Ramps is a live production example: USDC cash-in and cash-out on Stellar since 2022, covering 170+ countries by MoneyGram’s own figure. Other cited items are not current corridors: Nium’s ~190-country payout statement (2022) is a capability claim, Velo/PDAX (Philippines) was an announced corridor, and Coins.ph is a historical route. Label each live, announced, historical or capability-only.",
+        "keyFacts": [
+          "MoneyGram Ramps provides live USDC cash-in/cash-out on Stellar, in service since 2022.",
+          "Nium’s ~190-country payout statement (2022) is a capability claim, not a corridor.",
+          "Velo/PDAX (Philippines) was an announced corridor, not proof of current service.",
+          "A partner roster or corporate footprint does not prove a current Stellar deployment."
+        ],
+        "avoid": [
+          "Do NOT present announced, historical or capability-only items as current corridors."
+        ],
+        "notes": "Quoting the canonical Lumenloop source on MoneyGram’s 200+ footprint is not a wrong claim while ll-008 stands; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source. Counts are source- and date-scoped.",
+        "movedToTruth": [
+          "GT-27 dated provenance notes",
+          "MoneyGram coverage wording (200+ vs 170+) as a finding trail",
+          "Onafriq footprint caveat and Coins.ph history"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 325,
+      "wordsAfter": 160
+    },
+    {
+      "id": "q-hist-scp-rewrite-2015",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Stellar Consensus Protocol",
+        "2015 network upgrade",
+        "Ripple fork history"
+      ],
+      "tests": "SCP is Mazières’s Federated Byzantine Agreement design adopted in 2015, and why Stellar replaced its Ripple-derived consensus is a documented SDF-versus-Ripple dispute.",
+      "questionIssues": [
+        "Three-part question; the \"why\" is deliberately disputed, so the case grades attribution, not a cause."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Two predicates: FBA design and the 2015 rollout date."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Attributes a disputed cause; sound, but phrased as process (\"Attributes\")."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SCP paper and code announced April 8, 2015; upgraded SCP network live November 3, 2015.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/blog/developers/upgraded-network-is-here",
+              "observedAt": "2026-11-14",
+              "quote": "Not re-read: stable 2015 history, two class A hits confirmed 2026-11-02."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-org-mazieres-chief-scientist",
+          "survivor": "q-hist-scp-rewrite-2015",
+          "why": "Both state Mazières authored SCP; keep that fact here and let the person case hold identity only."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Right content, too much prose. Four world facts; the causation dispute stays as an attributed claim.",
+      "rewrite": {
+        "question": null,
+        "answer": "In 2015 Stellar adopted the Stellar Consensus Protocol, authored by David Mazières, using Federated Byzantine Agreement with node-chosen quorum slices rather than PoW or PoS. SDF announced the paper and code on April 8, and the upgraded network was live on November 3, 2015. Why it replaced the earlier Ripple-derived design is disputed: SDF cited weaknesses the 2014 fork exposed; Ripple said the fork showed no flaw in Ripple consensus.",
+        "keyFacts": [
+          "David Mazières authored the 2015 SCP paper.",
+          "SCP is Federated Byzantine Agreement with node-chosen quorum slices, not PoW or PoS.",
+          "The upgraded SCP network was live on November 3, 2015.",
+          "Why the original consensus was replaced is disputed between SDF and Ripple."
+        ],
+        "avoid": [
+          "Do NOT call SCP proof-of-work or proof-of-stake.",
+          "Do NOT state SDF’s fork explanation as uncontested fact."
+        ],
+        "notes": "Quoting the canonical Lumenloop source on the SDF-only causal account of the 2014 fork is not a wrong claim while ll-016 stands; grade caps at partial for that claim unless the answer contradicts the golden fact independently of the quoted source.",
+        "movedToTruth": [
+          "GT-27 correction narrative (Wikipedia replaced by attributed primary-source conflict)",
+          "Source list incl. xrpl.org 2014 response"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 202,
+      "wordsAfter": 169
+    },
+    {
+      "id": "q-hist-soroban-launch-protocol20",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Soroban mainnet launch",
+        "Protocol 20 phases",
+        "Soroban Adoption Fund"
+      ],
+      "tests": "Soroban reached Mainnet via a phased Protocol 20 rollout (Feb 20 activation, Mar 19 general availability), distinct from the 2022 fund announcement; it is Wasm and non-EVM.",
+      "questionIssues": [
+        "Good and answerable. Sibling soroban lanes may hold a \"what is Soroban\" case; check before the next round."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Holds three predicates (activation, phased GA, 2022 fund)."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Rust-first vs Wasm in one fact; fine."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Protocol 20 activated Mainnet Feb 20, 2024; Phase 2 (GA) March 19, 2024.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/blog/developers/protocol-20-upgrade-guide",
+              "observedAt": "2026-11-14",
+              "quote": "On February 20 at 1700 UTC, the Stellar Mainnet upgraded to Protocol 20"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/networks/software-versions",
+              "observedAt": "2026-11-14",
+              "quote": "Protocol 20: Soroban Phase 2 (March 19, 2024)"
+            }
+          ]
+        },
+        {
+          "claim": "Phase 1 followed on February 27.",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/blog/developers/validator-guide-to-soroban-mainnet-phase-1",
+              "observedAt": "2026-11-14",
+              "quote": "Page exists; no Feb 27 date found in the excerpt read"
+            }
+          ]
+        },
+        {
+          "claim": "The ~$100M Soroban Adoption Fund was not a 2024 launch event.",
+          "result": "changed",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/press/smart-contracts-launch-on-stellar",
+              "observedAt": "2026-11-14",
+              "quote": "Smart contracts launch on Stellar with $100m allocated to Soroban adoption fund (March 19, 2024)"
+            }
+          ]
+        }
+      ],
+      "duplicates": [],
+      "verdict": "tighten",
+      "reason": "Drop the unverified Phase 1 date. The avoid \"fund was a 2024 launch event\" can punish an answer that cites SDF’s own March 2024 headline tying the $100M to launch; reword to a sourcing guard.",
+      "rewrite": {
+        "question": null,
+        "answer": "Soroban launched on Mainnet in phases: Protocol 20 activated it on February 20, 2024, and general availability (Phase 2) arrived March 19, 2024. SDF’s roughly $100M Soroban Adoption Fund was first announced with Futurenet on October 12, 2022 and reaffirmed at the March 2024 launch. Soroban is a Wasm-based, non-EVM contract platform with a Rust-first toolchain.",
+        "keyFacts": [
+          "Protocol 20 activated Soroban on Mainnet on February 20, 2024.",
+          "General availability (Phase 2) followed on March 19, 2024.",
+          "The ~$100M Soroban Adoption Fund was announced in 2022 with Futurenet.",
+          "Soroban is a Wasm-based, non-EVM platform with a Rust-first toolchain."
+        ],
+        "avoid": [
+          "Do NOT claim a 2021/22 Mainnet launch or use one 2024 date for every stage.",
+          "Do NOT call Soroban Solidity/EVM, or Rust-only."
+        ],
+        "notes": "The SDF March 19, 2024 release ties the $100M fund to the launch; an answer citing it is not wrong as long as the fund’s 2022 announcement is not denied.",
+        "movedToTruth": [
+          "Phase 1 date (Feb 27) pending a primary source",
+          "GT-27 correction narrative"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 165,
+      "wordsAfter": 148
+    },
+    {
+      "id": "q-hist-unhcr-stellar-aid-assist",
+      "purpose": "stellar-truth",
+      "topics": [
+        "UNHCR Ukraine pilot",
+        "Stellar Aid Assist",
+        "USDC humanitarian disbursement"
+      ],
+      "tests": "The UNHCR/Ukraine pilot delivered Circle USDC on Stellar with MoneyGram cash-out; later adoption snapshots are separately attributed.",
+      "questionIssues": [
+        "Fine. \"How has Stellar been used\" invites enumeration; the golden narrows to the Ukraine flow."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "Process: tells the answer how to attribute snapshots; state as the world fact that issuer-reported snapshots differ in unit, country and date."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "UNHCR with UNICC and SDF announced the Ukraine pilot in December 2022, USDC with MoneyGram cash-out.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://www.unhcr.org/ua/en/news/unhcr-launches-pilot-cash-based-intervention-using-blockchain-technology-humanitarian-payments",
+              "observedAt": "2026-11-14",
+              "quote": "Not re-read: stable 2022 fact, class A + D confirmed 2026-11-02."
+            }
+          ]
+        }
+      ],
+      "duplicates": [],
+      "verdict": "tighten",
+      "reason": "Correct content; answer is 3x the 60-word target and KF1 is process-shaped.",
+      "rewrite": {
+        "question": null,
+        "answer": "UNHCR, with UNICC and SDF, announced a Ukraine cash-assistance pilot in December 2022. Recipients received Circle USDC on Stellar in their wallets and could cash out through MoneyGram. SDF later published adoption snapshots, but they differ in unit, country and date, so they must not be added together.",
+        "keyFacts": [
+          "UNHCR, UNICC and SDF announced the Ukraine aid pilot in December 2022.",
+          "Recipients received Circle USDC on Stellar, with cash-out through MoneyGram.",
+          "SDF’s later adoption figures use different units, countries and dates."
+        ],
+        "avoid": [
+          "Do NOT call the aid speculative XLM or Ripple-based.",
+          "Do NOT merge households with individuals, or Ukraine with multi-country totals."
+        ],
+        "notes": "Later anniversary figures are issuer-reported; do not require any of them.",
+        "movedToTruth": [
+          "Independent contemporary reporting (CoinDesk 2023-04-17) corroborating the flow",
+          "Two-year anniversary page dated 2024-12-19; exact metrics removed for lack of independent source"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 163,
+      "wordsAfter": 111
+    },
+    {
+      "id": "q-hist-x402-stellar-announcement",
+      "purpose": "stellar-truth",
+      "topics": [
+        "x402 on Stellar",
+        "HTTP 402 payments",
+        "SEP status of x402"
+      ],
+      "tests": "x402 on Stellar was announced 2026-03-10, enables per-request HTTP payments via Soroban auth and SEP-41 tokens, and is not itself a SEP.",
+      "questionIssues": [
+        "Three questions in one, yet each is a real developer question. \"What did that announcement mean\" is vague; the golden narrows it."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Restates KF1 with implementation detail."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Announcement-time tooling status is nuance beyond the main point."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SDF announced x402 on Stellar on 2026-03-10.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/blog/foundation-news/x402-on-stellar",
+              "observedAt": "2026-11-14",
+              "quote": "x402 on Stellar: unlocking payments for the new agent economy ... Publishing date March 10, 2026"
+            }
+          ]
+        },
+        {
+          "claim": "x402 has no SEP number as of now.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://api.github.com/repos/stellar/stellar-protocol/contents/ecosystem?ref=master",
+              "observedAt": "2026-11-14",
+              "quote": "Listing runs to sep-0061; gh code search \"x402\" in stellar/stellar-protocol returned []; no open PR matches 402"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/agentic-payments/x402",
+              "observedAt": "2026-11-14",
+              "quote": "On Stellar, x402 works with Soroban authorization so that clients can pay for API requests via signed auth entries"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-defi-x402-on-stellar-what",
+          "survivor": "q-hist-x402-stellar-announcement",
+          "why": "defi-ecosystem case also defines x402-on-Stellar; the dated no-SEP fact lives here."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Facts hold today. Merge KF1/KF2 and drop the announcement-time tooling nuance; refresh the no-SEP date.",
+      "rewrite": {
+        "question": null,
+        "answer": "SDF announced x402 on Stellar on March 10, 2026. x402 uses HTTP 402 Payment Required for per-request programmatic payments; on Stellar it relies on Soroban authorization and SEP-41-compatible tokens. As of 2026-11-14 x402 is not a SEP and has no SEP number; SEP-41 is the token interface it uses, not its specification.",
+        "keyFacts": [
+          "SDF announced x402 on Stellar on March 10, 2026.",
+          "x402 enables per-request HTTP payments, settled on Stellar via Soroban authorization.",
+          "As of 2026-11-14, x402 is not a SEP and has no SEP number.",
+          "SEP-41 is the token interface x402 uses, not the x402 specification."
+        ],
+        "avoid": [
+          "Do NOT invent SEP-402 or any other SEP number for x402."
+        ],
+        "notes": "The no-SEP statement is dated; a later sourced SEP assignment is acceptable.",
+        "movedToTruth": [
+          "At announcement the settlement layer was live while agent and MCP tooling were in development",
+          "ecosystem-directory and web sweep method"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 184,
+      "wordsAfter": 119
+    },
+    {
+      "id": "q-hist-yieldblox-v2-2026-exploit",
+      "purpose": "stellar-truth",
+      "topics": [
+        "YieldBlox V2 exploit",
+        "Reflector oracle manipulation",
+        "incident loss figures"
+      ],
+      "tests": "The 2026-02-22 YieldBlox V2 incident was an oracle-manipulation drain; token quantities, quarantine and USD valuations are different measures.",
+      "questionIssues": [
+        "The title question fits incident knowledge, but \"which XLM figures must not be conflated\" signals the grading trap and leaks the rubric."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Exact token quantities to the cent are trivia; two roundings carry the lesson."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Single quarantined-subset number is fine but belongs with KF2."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Valuation provenance, not a Stellar fact; fold into notes."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "The “separate 2022 YieldBlox hack” the answer says not to conflate with.",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "D",
+              "ref": "https://itokenly.com/hacks/yieldblox-blend-v2",
+              "observedAt": "2026-11-14",
+              "quote": "YieldBlox hack: February 2026 ... Date of incident February 22, 2026; no earlier YieldBlox incident listed on the page"
+            }
+          ]
+        },
+        {
+          "claim": "Incident date 2026-02-22 and oracle-manipulation cause.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "D",
+              "ref": "https://blocksec.com/blog/yieldblox-dao-incident-on-stellar-oracle-misconfiguration-enabled-a-10m-drain",
+              "observedAt": "2026-11-14",
+              "quote": "On February 22, 2026, a lending pool operated by YieldBlox DAO on Stellar’s Blend V2 was exploited"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-comp-yieldblox-oracle-incident",
+          "survivor": "q-comp-yieldblox-oracle-incident",
+          "why": "Same incident, same 61,249,278 XLM / 1,000,196 USDC figures, plus remediation and design lessons."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Keep one YieldBlox case: q-comp-yieldblox-oracle-incident (compliance-rwa-payments) has the incident and the design lessons. It must absorb: ~$10M is a combined USD valuation, not a USDC quantity; about 1.01M USDC was borrowed across two transactions, so 1,014,196.70 as one borrow is wrong; quarantined XLM is not recovery. Drop the 2022-conflation avoid: no earlier YieldBlox incident could be found, so it is an unverified avoid.",
+      "rewrite": null,
+      "confidence": "medium",
+      "wordsBefore": 504,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-history-ecosystem-index-freshness-live",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Scout status endpoint",
+        "index freshness",
+        "collection counts"
+      ],
+      "tests": "An agent calls Scout’s status and reports per-source generatedAt/count/lastUpdatedAt without a single global freshness claim.",
+      "questionIssues": [
+        "\"The served index\" only exists in Raven/Scout; another tool cannot answer. Not a question a Stellar user asks."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": "operation-shaped: names status fields"
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "process"
+        },
+        {
+          "i": 2,
+          "kind": "process",
+          "issue": "process"
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Scout status reports generatedAt plus per-source count and lastUpdatedAt with collection notes.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "https://stellarlight.xyz/api/status",
+              "observedAt": "2026-11-14",
+              "quote": "{\"generatedAt\":\"2026-11-14T03:14:14.456Z\",\"sources\":[{\"name\":\"projects\",\"count\":1158,\"lastUpdatedAt\":...}]}"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-gap-scout-status-envelope",
+          "survivor": "q-gap-scout-status-envelope",
+          "why": "protocol-core case already covers the Scout status envelope; test/adapters.test.ts and the live lane cover the adapter."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "Measures Raven’s own status envelope, not Stellar truth. Unit tests and q-gap-scout-status-envelope already cover the behavior, so no visibility would be lost.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 80,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-hot-fee-pool-burn-deflation",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Stellar fee pool",
+        "XLM burn and inflation",
+        "total supply accounting"
+      ],
+      "tests": "Transaction fees go to a non-circulating fee pool that stays inside totalCoins, so ongoing fees are not an automatic burn; inflation removal and the SDF 2019 burn are separate events.",
+      "questionIssues": [
+        "Good: a common misconception (\"fees are burned\"). Three questions but one topic."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "The fee pool is non-circulating and counted in total supply; fees are not automatically burned.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/encyclopedia/lumen-supply-metrics",
+              "observedAt": "2026-11-14",
+              "quote": "Lumens in the Total Supply, but not in the SDF Mandate, Upgrade Reserve, or Fee Pool are assumed to be circulating."
+            }
+          ]
+        },
+        {
+          "claim": "SDF’s Oct 2026 fee-pool rewards paper is only a discussion proposal.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/xlm-utility",
+              "observedAt": "2026-11-14",
+              "quote": "Model how ... funding choices could support rewards for locked XLM over ten years. Illustrative scenarios, not forecasts or commitments."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-token-initial-supply-distribution",
+          "survivor": "q-hot-fee-pool-burn-deflation",
+          "why": "Initial-supply case also states CAP-26 and the treasury burn; those facts should live only here."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Facts hold. Answer is 3x target length and the notes carry a dated paper narrative that belongs in the judge-blind block.",
+      "rewrite": {
+        "question": null,
+        "answer": "Transaction fees (inclusion and Soroban resource fees) are paid in XLM into the protocol fee pool. No account can spend from it, so it is non-circulating, but Core still counts it inside totalCoins: fees are sequestered, not automatically burned, and are not validator rewards. Separately, CAP-26 ended the 1% inflation on 2019-10-28 and SDF burned about 55.44B XLM on 2019-11-04.",
+        "keyFacts": [
+          "Fees go to an inaccessible, non-circulating fee pool still counted in totalCoins.",
+          "Ongoing fees are therefore not an automatic burn and are not validator rewards.",
+          "CAP-26 ended inflation on 2019-10-28, separate from SDF’s 2019-11-04 treasury burn."
+        ],
+        "avoid": [
+          "Do NOT say ongoing fees are automatically burned from total supply.",
+          "Do NOT cite CAP-5 for inflation removal."
+        ],
+        "notes": "SDF’s October 2026 fee-pool rewards paper (stellar.org/xlm-utility) is an undecided proposal: a dated mention is correct; saying the fee pool already pays holder rewards, or that the proposal was adopted, is wrong.",
+        "movedToTruth": [
+          "GT-27 correction narrative",
+          "Paper background: presented at Meridian 2026 on 2026-10-28; SDF has not decided to fund it; needs a validator vote"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 288,
+      "wordsAfter": 146
+    },
+    {
+      "id": "q-hot-sdf-transparency-wallets-reports",
+      "purpose": "mixed",
+      "topics": [
+        "SDF mandate disclosures",
+        "SDF XLM accounts",
+        "quarterly reports"
+      ],
+      "tests": "Where SDF’s XLM accounts and reports are disclosed, and that balances are dated and ownership comes from official attribution.",
+      "questionIssues": [
+        "Two questions (wallets, reports). The answer is the generic \"grounded answer\" template, not facts."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": "process"
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "process boilerplate"
+        },
+        {
+          "i": 2,
+          "kind": "process",
+          "issue": "Mixes sources (mandate page, report landing) into one process line"
+        },
+        {
+          "i": 3,
+          "kind": "process",
+          "issue": "Only world-shaped fact: named accounts are non-exhaustive."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "The Mandate page lists bucket accounts with live-balance links; quarterly reports exist as a series.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/foundation/mandate",
+              "observedAt": "2026-11-14",
+              "quote": "accounts are being updated ... SDF Development, Stellar Growth, Product and Innovation and Assets and Liquidity"
+            },
+            {
+              "class": "A",
+              "ref": "https://stellar.org/foundation/mandate",
+              "observedAt": "2026-11-14",
+              "quote": "real-time public balances of XLM held by SDF will be made available again on this page imminently"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-org-sdf-structure-mandate",
+          "survivor": "q-org-sdf-structure-mandate",
+          "why": "Same mandate page, same accounts, same \"dated, non-exhaustive\" lesson."
+        },
+        {
+          "id": "q-org-sdf-mandate-buckets",
+          "survivor": "q-org-sdf-structure-mandate",
+          "why": "Same page and bucket accounts."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Fold into q-org-sdf-structure-mandate. It must absorb: SDF’s official Mandate page (named StellarExpert account links) and Quarterly Reports page are the disclosure sources; ownership evidence is official attribution, not account size; every balance needs a date and sample accounts are not exhaustive.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 333,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-hot-sdf-xlm-holdings-sales",
+      "purpose": "stellar-truth",
+      "topics": [
+        "SDF XLM sales",
+        "XLM price support myth",
+        "2019 burn"
+      ],
+      "tests": "SDF funds operations by selling existing mandate XLM, discloses no price guarantee, and the 2019 burn was one-time with none announced since.",
+      "questionIssues": [
+        "Three myth-checks in one question, but each is a real user question."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": "process: boilerplate"
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "process: boilerplate"
+        },
+        {
+          "i": 2,
+          "kind": "process",
+          "issue": "process; the real facts (sales channels, no price support, one-time burn) are not in the key facts at all"
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SDF sells existing XLM on Kraken, Coinbase, Bitstamp and via direct sales to fund operations and mandate work.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/foundation/mandate",
+              "observedAt": "2026-11-14",
+              "quote": "The SDF sells XLM from this account on public exchanges like Kraken, Coinbase, and Bitstamp and through direct sales"
+            }
+          ]
+        },
+        {
+          "claim": "No newer SDF burn announcement exists.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/foundation/mandate",
+              "observedAt": "2026-11-14",
+              "quote": "No mention of a burn on the current mandate page (searched for \"burn\"); class A only this pass."
+            }
+          ]
+        }
+      ],
+      "duplicates": [],
+      "verdict": "tighten",
+      "reason": "The key facts do not state the facts the avoid list guards. Replace three boilerplate process facts with the three world facts; cut the answer from 475 words.",
+      "rewrite": {
+        "question": null,
+        "answer": "SDF sells existing XLM held under its mandate—on exchanges such as Kraken, Coinbase and Bitstamp and through direct sales—to fund operating expenses and mandate work; sales mint no new XLM. SDF discloses no XLM price peg, floor or guarantee. After the one-time November 2019 burn it said it would not burn more lumens, and as of 2026-11-14 no new burn is announced.",
+        "keyFacts": [
+          "SDF funds operations by selling existing mandate XLM on exchanges and directly.",
+          "SDF discloses no XLM price peg, floor or guarantee.",
+          "The November 2019 burn was one-time; none is announced as of 2026-11-14."
+        ],
+        "avoid": [
+          "Do NOT claim SDF pegs or guarantees the XLM price.",
+          "Do NOT predict a future burn or call the 2019 statement a protocol impossibility."
+        ],
+        "notes": "Any balance needs a report date and scope; do not sum mixed-timestamp bucket rows. Since 2026-07-27 the docs lumens page lists bucket accounts without fixed balances: pre-2026-07-27 labels or fixed balances presented as current docs content are wrong.",
+        "movedToTruth": [
+          "GT-28 correction narrative",
+          "\"Also good if\" / \"Golden cites\" scaffolding",
+          "Distinction note vs q-hot-sdf-transparency-wallets-reports"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 475,
+      "wordsAfter": 157
+    },
+    {
+      "id": "q-org-mazieres-chief-scientist",
+      "purpose": "mixed",
+      "topics": [
+        "David Mazières",
+        "SDF founders",
+        "SCP authorship"
+      ],
+      "tests": "Mazières is a Stellar/SDF founder or co-founder, sole author of the SCP paper, a Stanford professor, and not SDF’s CEO.",
+      "questionIssues": [
+        "Fine as a \"who is\" question. The case name (chief-scientist) points at a title the live page no longer displays."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "The title is dated and page-state dependent: low-value to grade."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Two predicates (SCP author, Stanford professor)."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SDF’s team page still shows Mazières under Leadership with only his name; \"Founder and Chief Scientist\" survives only in page data.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/foundation/team",
+              "observedAt": "2026-11-14",
+              "quote": "Leadership list: ... ### David Mazières ... (name only, no title rendered)"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-hist-scp-rewrite-2015",
+          "survivor": "q-hist-scp-rewrite-2015",
+          "why": "SCP authorship is graded there; keep identity facts here."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Keep a person-identity case; demote the unrenderable title to a caution and drop it as a key fact.",
+      "rewrite": {
+        "question": null,
+        "answer": "David Mazières is a co-founder of Stellar and SDF, the sole author of the 2015 Stellar Consensus Protocol paper, and a Stanford computer-science professor. SDF page data has described him as “Founder and Chief Scientist”, but the rendered team page shows only his name, so treat that title as dated. He is not SDF’s CEO.",
+        "keyFacts": [
+          "Mazières is a Stellar/SDF founder or co-founder.",
+          "He is the sole author of the 2015 SCP paper.",
+          "He is a Stanford computer-science professor and not SDF’s CEO."
+        ],
+        "avoid": [
+          "Do NOT deny Mazières founder or co-founder status, or call him SDF’s CEO.",
+          "Do NOT present “Chief Scientist” as a currently displayed title without a dated source."
+        ],
+        "notes": "Quoting the canonical Lumenloop source on its empty David Mazières person lane is not a wrong claim while ll-005 stands; grade caps at partial for that claim unless the answer independently contradicts the golden fact. Do not impose an exclusive founder list.",
+        "movedToTruth": [
+          "2026-07-13/14 freshness repair detail (team-page payload vs rendered card)",
+          "Early-source scope differences among McCaleb, Kim, Mazières"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 256,
+      "wordsAfter": 151
+    },
+    {
+      "id": "q-org-sdf-board-directors",
+      "purpose": "stellar-truth",
+      "topics": [
+        "SDF board of directors",
+        "SDF governance",
+        "volatile roster"
+      ],
+      "tests": "The SDF board roster, dated, from SDF’s official team page.",
+      "questionIssues": [
+        "Good and answerable. The golden answer prescribes a Scout call (scout.getPeople, paging), which is a process instruction for one tool."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Process: restates that the roster is dated."
+        },
+        {
+          "i": 2,
+          "kind": "process",
+          "issue": "Operation: names scout.getPeople, section, pagination."
+        },
+        {
+          "i": 3,
+          "kind": "process",
+          "issue": "Operation-flavored: separates people roster from builder directory."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Board: Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker, Asiff Hirji.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/foundation/team",
+              "observedAt": "2026-11-14",
+              "quote": "Board of directors: Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker, Asiff Hirji"
+            },
+            {
+              "class": "A",
+              "ref": "https://stellar.org/press/stellar-development-foundation-appoints-asiff-hirji-of-moonpay-to-board-of-directors",
+              "observedAt": "2026-11-14",
+              "quote": "announced the appointment of Asiff Hirji, President of MoonPay, to its board of directors"
+            }
+          ]
+        },
+        {
+          "claim": "Roles and affiliations are listed per member.",
+          "result": "changed",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/foundation/team",
+              "observedAt": "2026-11-14",
+              "quote": "Board of directors: Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker, Asiff Hirji"
+            }
+          ]
+        }
+      ],
+      "duplicates": [],
+      "verdict": "tighten",
+      "reason": "Roster holds today. The rendered page lists names only, so \"report each role and affiliation\" asks for more than the official page shows; drop it and the tool-specific steps.",
+      "rewrite": {
+        "question": null,
+        "answer": "As of 2026-11-14, SDF’s official team page lists five board members: Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker and Asiff Hirji. The roster changes over time, so date it and confirm it on SDF’s team page.",
+        "keyFacts": [
+          "As of 2026-11-14 the SDF board is McCaleb, Wu, Lemos, Baker and Hirji.",
+          "The roster is dated; confirm it on SDF’s official team page."
+        ],
+        "avoid": [
+          "Do NOT present the roster as timeless or confuse SDF board members with the builder directory."
+        ],
+        "notes": "Accept later official changes when the answer cites its observation date.",
+        "movedToTruth": [
+          "scout.getPeople section/pagination procedure",
+          "Role and affiliation fields (Scout rows only)"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 165,
+      "wordsAfter": 88
+    },
+    {
+      "id": "q-org-sdf-enterprise-fund",
+      "purpose": "stellar-truth",
+      "topics": [
+        "SDF Enterprise Fund",
+        "portfolio size wording",
+        "MoneyGram investment funding"
+      ],
+      "tests": "The Enterprise Fund is a venture-style ecosystem fund whose portfolio SDF describes as over $100M, and the MoneyGram stake was not funded by it.",
+      "questionIssues": [
+        "\"Roughly how much\" invites a scalar the sources cannot reconcile; the golden handles it with source-wording."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": "process: boilerplate"
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "process: boilerplate"
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SDF describes the Enterprise Fund portfolio as totaling over $100 million.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/enterprise-fund",
+              "observedAt": "2026-11-14",
+              "quote": "Discover the Stellar Enterprise Fund’s investments in Web3 innovation, spanning the globe with over $100m."
+            }
+          ]
+        },
+        {
+          "claim": "MoneyGram stake came from SDF’s cash treasury, not the Enterprise Fund.",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/blog/foundation-news/sdfs-investment-in-moneygram-international",
+              "observedAt": "2026-11-14",
+              "quote": "Page found; funding-source sentence not re-read this pass. Carried from the 2026-07-10 verification."
+            }
+          ]
+        }
+      ],
+      "duplicates": [],
+      "verdict": "tighten",
+      "reason": "Two of three key facts are boilerplate and the real facts sit in the answer and avoid. Re-state as world facts; refresh date.",
+      "rewrite": {
+        "question": null,
+        "answer": "The SDF Enterprise Fund is a venture-style fund investing in companies that grow the Stellar ecosystem. As of 2026-11-14 SDF describes its portfolio as totaling over $100 million—SDF’s wording, not a reconciled cumulative-cash or fair-value figure. The MoneyGram stake was funded from SDF’s cash treasury, not the Enterprise Fund.",
+        "keyFacts": [
+          "The Enterprise Fund invests in companies that grow the Stellar ecosystem.",
+          "SDF describes the portfolio as totaling over $100 million, not an exact deployed total.",
+          "The MoneyGram stake came from SDF’s cash treasury, not the Enterprise Fund."
+        ],
+        "avoid": [
+          "Do NOT convert “over $100 million” into an exact cumulative cash-invested or fair-value figure."
+        ],
+        "notes": "Quoting SDF’s dated figure is correct; historical public totals do not fully reconcile. Any investee amount needs its own dated announcement.",
+        "movedToTruth": [
+          "GT-28 correction and process-number confirmations",
+          "2023-08-16 independent reporting of the treasury distinction"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 280,
+      "wordsAfter": 121
+    },
+    {
+      "id": "q-org-sdf-mandate-buckets",
+      "purpose": "stellar-truth",
+      "topics": [
+        "SDF mandate buckets",
+        "2019 vs current allocation",
+        "spending priorities"
+      ],
+      "tests": "SDF’s mandate buckets changed from the 2019 set to four current buckets; displayed balances are dated page state.",
+      "questionIssues": [
+        "Real user question. The answer is the boilerplate template and the key facts are process."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": "process"
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "process"
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "process",
+          "issue": "Describes a page-state quirk (rows visible while page says balances return \"imminently\"): interface trivia, not Stellar truth."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Current buckets are SDF Development, Stellar Growth, Product & Innovation, Assets & Liquidity; 2019 set differs.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/foundation/mandate",
+              "observedAt": "2026-11-14",
+              "quote": "accounts are being updated ... SDF Development, Stellar Growth, Product and Innovation and Assets and Liquidity"
+            },
+            {
+              "class": "A",
+              "ref": "https://stellar.org/foundation/mandate/2019",
+              "observedAt": "2026-11-14",
+              "quote": "SDF Mandate (2019) ... See current mandate"
+            }
+          ]
+        },
+        {
+          "claim": "Page says real-time balances return \"imminently\" while rows are shown.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/foundation/mandate",
+              "observedAt": "2026-11-14",
+              "quote": "real-time public balances of XLM held by SDF will be made available again on this page imminently"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-org-sdf-structure-mandate",
+          "survivor": "q-org-sdf-structure-mandate",
+          "why": "Same page; the bucket taxonomy is one fact there."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Fold into q-org-sdf-structure-mandate. It must absorb: the four current buckets replace the 2019 set (Direct Development, Ecosystem Support, Use-Case Investment, User Acquisition); presenting a 2019 bucket as current is wrong, a mention labeled 2019 is correct. The page-state \"imminently\" quirk is trivia and stays in the truth block.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 475,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-org-sdf-structure-mandate",
+      "purpose": "stellar-truth",
+      "topics": [
+        "SDF legal structure",
+        "SDF mandate buckets",
+        "SDF disclosures"
+      ],
+      "tests": "SDF is a Delaware non-stock nonprofit with no shareholders, distinct from Ripple, using mandate XLM in four current buckets disclosed through dated pages.",
+      "questionIssues": [
+        "Three questions, one subject: acceptable. Survivor of three mandate/transparency cases."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Three predicates: legal form, mission, funding."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "process",
+          "issue": "Process: \"keeps reserve totals dated\"."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Current mandate names SDF Development, Stellar Growth, Product & Innovation, Assets & Liquidity; the ~30B reserve figure is gone.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/foundation/mandate",
+              "observedAt": "2026-11-14",
+              "quote": "accounts are being updated ... SDF Development, Stellar Growth, Product and Innovation and Assets and Liquidity"
+            },
+            {
+              "class": "A",
+              "ref": "http://developers.stellar.org/docs/learn/fundamentals/lumens",
+              "observedAt": "2026-11-14",
+              "quote": "Page now describes lumens without a ~30B XLM reserve figure (re-read 2026-11-14)."
+            }
+          ]
+        },
+        {
+          "claim": "SDF is a Delaware non-stock nonprofit corporation.",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/foundation",
+              "observedAt": "2026-11-14",
+              "quote": "The Stellar Development Foundation (SDF) is a nonprofit organization creating equitable access to the global financial system"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-org-sdf-mandate-buckets",
+          "survivor": "q-org-sdf-structure-mandate",
+          "why": "Absorbed."
+        },
+        {
+          "id": "q-hot-sdf-transparency-wallets-reports",
+          "survivor": "q-org-sdf-structure-mandate",
+          "why": "Absorbed."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Merge survivor. Absorb the bucket taxonomy and disclosure sources; trim the 303-word case to four world facts.",
+      "rewrite": {
+        "question": null,
+        "answer": "SDF is a Delaware non-stock nonprofit that supports the public Stellar network; it is self-funded, has no shareholders and is distinct from Ripple. It uses mandate XLM in four current buckets—SDF Development, Stellar Growth, Product and Innovation, Assets and Liquidity—replacing the 2019 set. XLM holdings are disclosed on the Mandate page and in quarterly reports, as dated figures.",
+        "keyFacts": [
+          "SDF is a Delaware non-stock nonprofit with no shareholders, distinct from Ripple.",
+          "SDF supports Stellar’s growth; it does not unilaterally own or control the network.",
+          "Buckets: SDF Development, Stellar Growth, Product & Innovation, Assets & Liquidity.",
+          "Holdings appear only as dated Mandate-page and quarterly-report figures."
+        ],
+        "avoid": [
+          "Do NOT call SDF for-profit, Ripple, or the unilateral owner of Stellar.",
+          "Do NOT present ~30B XLM as the current reserve, or Direct Development/Ecosystem Support as current buckets."
+        ],
+        "notes": "A mention of the 2019 buckets labeled as the 2019 taxonomy is correct. The Mandate page says live balances return “imminently” while showing rows; accept dated descriptions of either. Named accounts are not exhaustive and mixed timestamps must not be summed.",
+        "movedToTruth": [
+          "sd-012 docs-page label and balance history (resolved 2026-07-27)",
+          "WEF/LobbyFacts non-stock corroboration",
+          "/foundation/mandate/2019 vs /previous-mandate (2017) route note",
+          "Official Mandate-page and Quarterly Reports URLs; ownership by official attribution, not account size"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 303,
+      "wordsAfter": 172
+    },
+    {
+      "id": "q-token-circle-usdc-on-stellar",
+      "purpose": "stellar-truth",
+      "topics": [
+        "USDC on Stellar",
+        "Circle issuer account",
+        "CCTP milestones"
+      ],
+      "tests": "USDC on Stellar is a native classic asset issued from a specific Mainnet account, with a distinct Testnet issuer.",
+      "questionIssues": [
+        "Two questions; the answer packs legal-entity nuance and two CCTP dates that the question did not ask for."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "CCTP milestone dates duplicate q-cctp-v2-usdc-stellar."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Legal-entity jurisdiction nuance is trivia for this question."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Mainnet USDC issuer is GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://www.circle.com/.well-known/stellar.toml",
+              "observedAt": "2026-11-14",
+              "quote": "code=\"USDC\" issuer=\"GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN\""
+            }
+          ]
+        },
+        {
+          "claim": "GBBD47…FLA5 is the Testnet issuer.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "https://horizon-testnet.stellar.org/assets?asset_code=USDC&asset_issuer=GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5",
+              "observedAt": "2026-11-14",
+              "quote": "Testnet asset record USDC / GBBD47..., 148733 authorized accounts"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-asset-usdc-eurc-issuer",
+          "survivor": "q-asset-usdc-eurc-issuer",
+          "why": "Same \"who issues USDC on Stellar\" knowledge."
+        },
+        {
+          "id": "q-hist-cctp-stellar-live-announcement",
+          "survivor": "q-cctp-v2-usdc-stellar",
+          "why": "CCTP dates."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Fold into q-asset-usdc-eurc-issuer. It must absorb: USDC is a native classic asset (not wrapped, not XLM); Mainnet issuer GA5ZSEJ...KZVN, with GBBD...FLA5 being Testnet. CCTP dates move to q-cctp-v2-usdc-stellar.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 247,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-token-initial-supply-distribution",
+      "purpose": "stellar-truth",
+      "topics": [
+        "XLM genesis supply",
+        "original allocation plan",
+        "inflation and burn history"
+      ],
+      "tests": "Stellar created 100B XLM at genesis (not mined) under a 50/25/20/5 allocation plan that was not fully distributed at launch.",
+      "questionIssues": [
+        "Good question. The golden drags in four later events (Stripe repayment, CAP-26, burn, current supply) the question did not ask for."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Holds three predicates: 100B, not mined, 50/25/20/5."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Mixes planned allocations, Stripe loan and inflation removal."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Treasury burn and current supply: owned by q-hot-fee-pool-burn-deflation."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "100B genesis; 50% sign-up, 25% partners/nonprofits, 20% BTC/XRP holders, 5% operations.",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/learn/lumens",
+              "observedAt": "2026-11-14",
+              "quote": "Not re-read this pass; stable 2014-15 history confirmed in the 2026-11-02 audit."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-hot-fee-pool-burn-deflation",
+          "survivor": "q-hot-fee-pool-burn-deflation",
+          "why": "Owns CAP-26 inflation removal and the 2019 treasury burn."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Keep the genesis and allocation facts; move inflation, burn and Stripe-repayment trivia out.",
+      "rewrite": {
+        "question": null,
+        "answer": "Stellar created 100 billion lumens at genesis; XLM was not mined. The original allocation plan earmarked 50% for direct sign-up, 25% for nonprofit and partnership distribution, 20% for Bitcoin and XRP holders, and 5% for operations. These were plans, not proof that every amount was distributed at launch. Today’s total or circulating supply is a different number.",
+        "keyFacts": [
+          "Genesis created 100 billion XLM; it was not mined.",
+          "The plan was 50% sign-up, 25% partners/nonprofits, 20% BTC/XRP holders, 5% operations.",
+          "Allocations were plans, not proof of launch-day distribution."
+        ],
+        "avoid": [
+          "Do NOT say XLM was mined or that today’s supply equals genesis.",
+          "Do NOT call planned allocations fully distributed at launch."
+        ],
+        "notes": "Later events (inflation, burn, Stripe loan repayment) are out of scope.",
+        "movedToTruth": [
+          "Stripe $3M 2014 loan repaid with 2B lumens (not a launch bucket)",
+          "CAP-26 and the 2019 burn, owned by q-hot-fee-pool-burn-deflation",
+          "19% BTC / 1% XRP split"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 225,
+      "wordsAfter": 118
+    },
+    {
+      "id": "q-aas-list-token-on-exchanges-aggregators",
+      "purpose": "stellar-truth",
+      "topics": [
+        "asset listing prerequisites",
+        "SEP-1 stellar.toml",
+        "markets and liquidity"
+      ],
+      "tests": "Issuance alone does not list an asset; it needs a home_domain, a valid SEP-1 stellar.toml, trustlines and real markets, and each venue sets its own policy.",
+      "questionIssues": [
+        "Good issuer-side question. Four-part \"tradable and visible on exchanges, wallets, explorers and aggregators\" is broad but answerable."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Holds two predicates (issuance, trustlines)."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Holds home domain, SEP-1 metadata, logo and issuer details: split or trim."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SEP-1 is the metadata standard; SEP-42 asset lists are a community catalog.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0001.md",
+              "observedAt": "2026-11-14",
+              "quote": "Title: Stellar Info File; Status: Active"
+            },
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0042.md",
+              "observedAt": "2026-11-14",
+              "quote": "Title: Stellar Asset List (SAL); Status: Draft"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-aas-trusted-asset-list-whitelist",
+          "survivor": "q-aas-trusted-asset-list-whitelist",
+          "why": "Both hinge on SEP-1/SEP-42 and \"no universal official list\"; issuer side vs wallet side, so both can stay if each states the other’s overlap once."
+        },
+        {
+          "id": "q-edge-asset-site-scam-detection",
+          "survivor": "q-aas-list-token-on-exchanges-aggregators",
+          "why": "edge-behavior case shares the bidirectional issuer-domain/TOML check."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Facts are right and not volatile; answer is 347 words with \"Also good if\" and \"Golden cites\" scaffolding. Cut to the checklist.",
+      "rewrite": {
+        "question": null,
+        "answer": "Issuing an asset does not make it listed, trusted or liquid. Set the issuer’s home_domain and publish a valid SEP-1 stellar.toml with [[CURRENCIES]] metadata for the exact code and issuer, let holders create trustlines, and build real markets (SDEX offers, liquidity pools). Each wallet, explorer, exchange and aggregator applies its own listing policy; SEP-42 asset lists are optional and not an endorsement.",
+        "keyFacts": [
+          "Listing needs the issuer’s home_domain and a valid SEP-1 stellar.toml for the asset.",
+          "Tradability needs trustlines plus real markets: SDEX offers or liquidity pools.",
+          "Each wallet, exchange or aggregator sets its own listing and verification policy."
+        ],
+        "avoid": [
+          "Do NOT guarantee listing, verification, price or market-cap display from issuance alone.",
+          "Do NOT claim an official universal Stellar whitelist governs every venue."
+        ],
+        "notes": "Do not require any specific venue’s policy beyond a dated current-source citation.",
+        "movedToTruth": [
+          "SEP-42 confirmed as Stellar Asset List (re-verified 2026-06-29)",
+          "stellar.expert/asset-lists is a client-rendered SPA; route valid but content not fetchable",
+          "\"Also good if\" and \"Golden cites\" scaffolding"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 347,
+      "wordsAfter": 133
+    },
+    {
+      "id": "q-aas-trusted-asset-list-whitelist",
+      "purpose": "stellar-truth",
+      "topics": [
+        "trusted asset lists",
+        "SEP-42",
+        "wallet scam-asset filtering"
+      ],
+      "tests": "No protocol-level whitelist exists; SEP-42 community asset lists are optional inputs, and a wallet policy combines issuer, domain, liquidity and risk signals.",
+      "questionIssues": [
+        "Two questions (official list? how to build a whitelist). Good wallet-dev question."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Holds issuer, home_domain, SEP-1."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Overlaps KF1 (known sources) and KF3 (liquidity); merge into one policy-inputs fact."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Single-signal fact; fold in KF2."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Restates KF0."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SEP-42 defines Stellar Asset Lists.",
+          "result": "changed",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0042.md",
+              "observedAt": "2026-11-14",
+              "quote": "Title: Stellar Asset List (SAL); Status: Draft"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-aas-list-token-on-exchanges-aggregators",
+          "survivor": "q-aas-trusted-asset-list-whitelist",
+          "why": "See that record."
+        },
+        {
+          "id": "q-edge-asset-site-scam-detection",
+          "survivor": "q-aas-trusted-asset-list-whitelist",
+          "why": "Asset-legitimacy checks overlap."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "SEP-42 is still Draft; the golden calls it a \"standards-based allowlist mechanism\" without that status. Fold five key facts to three; drop package names and scaffolding.",
+      "rewrite": {
+        "question": null,
+        "answer": "No protocol-level or SDF whitelist makes a Stellar asset trusted across all wallets; an asset can be valid on-chain yet warned or hidden by a wallet or explorer. SEP-42 (Draft) defines community Stellar Asset Lists that apps may adopt, but inclusion is not endorsement. A wallet whitelist should combine exact code and issuer, home_domain and SEP-1 metadata, liquidity, and user-risk signals.",
+        "keyFacts": [
+          "No protocol-level or SDF whitelist makes an asset trusted across all wallets.",
+          "SEP-42 (Draft) defines asset lists apps may adopt; inclusion is not endorsement.",
+          "Wallets judge exact code+issuer, home_domain/SEP-1, liquidity and risk signals."
+        ],
+        "avoid": [
+          "Do NOT claim Stellar or SDF maintains a universal trusted-token whitelist.",
+          "Do NOT label a specific asset safe or scam without cited, current evidence."
+        ],
+        "notes": "An SDK can read asset metadata but cannot certify trust by itself.",
+        "movedToTruth": [
+          "@stellar-asset-lists/sdk and stellar-asset-lists/index catalog references",
+          "Provider-specific freshness caveat"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 295,
+      "wordsAfter": 130
+    },
+    {
+      "id": "q-asset-usdc-eurc-issuer",
+      "purpose": "stellar-truth",
+      "topics": [
+        "USDC and EURC issuer",
+        "EURC launch date",
+        "Circle legal entities"
+      ],
+      "tests": "Circle issues both USDC and EURC as native classic Stellar assets from known issuer accounts; EURC launched 2023-09-26.",
+      "questionIssues": [
+        "Good. Merge survivor for q-token-circle-usdc-on-stellar."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Holds two predicates, fine."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Single date."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Legal-entity naming is secondary but carries a correction (Circle Mint Europe)."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Circle issues USDC and EURC on Stellar; issuer accounts GA5ZSEJ… (USDC) and GDHU6WR… (EURC).",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://www.circle.com/.well-known/stellar.toml",
+              "observedAt": "2026-11-14",
+              "quote": "code=\"USDC\" issuer=\"GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN\""
+            },
+            {
+              "class": "A",
+              "ref": "https://www.circle.com/.well-known/stellar.toml",
+              "observedAt": "2026-11-14",
+              "quote": "code=\"EURC\" issuer=\"GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2\""
+            }
+          ]
+        },
+        {
+          "claim": "EURC launched on Stellar September 26, 2023.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://www.circle.com/pressroom/eurc-launches-on-the-stellar-network",
+              "observedAt": "2026-11-14",
+              "quote": "EURC Launches on the Stellar Network September 26, 2023"
+            }
+          ]
+        },
+        {
+          "claim": "EURC legal issuer is Circle Internet Financial Europe SAS.",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://www.circle.com/eurc",
+              "observedAt": "2026-11-14",
+              "quote": "Not re-read this pass; corrected 2026-07-09 and confirmed 2026-11-02."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-token-circle-usdc-on-stellar",
+          "survivor": "q-asset-usdc-eurc-issuer",
+          "why": "Absorbed."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Absorb the USDC Mainnet issuer and native-not-wrapped fact from q-token-circle-usdc-on-stellar; remove scaffolding; keep the MyKobo same-ticker caution short.",
+      "rewrite": {
+        "question": null,
+        "answer": "Circle issues both USDC and EURC on Stellar, as native classic assets (not wrapped, not XLM). The Mainnet USDC issuer is GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN; GBBD…FLA5 is Testnet. EURC launched on Stellar on September 26, 2023. Circle’s licensed EURC issuer is Circle Internet Financial Europe SAS.",
+        "keyFacts": [
+          "Circle issues USDC and EURC on Stellar as native classic assets, not wrapped.",
+          "Mainnet USDC issuer is GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN.",
+          "EURC launched on Stellar on September 26, 2023.",
+          "EURC’s EU legal issuer is Circle Internet Financial Europe SAS."
+        ],
+        "avoid": [
+          "Do NOT present the Testnet issuer GBBD…FLA5 as Mainnet, or call Circle Mint Europe the current legal issuer.",
+          "Do NOT attribute USDC or EURC issuance to Tether, Paxos or SDF."
+        ],
+        "notes": "MyKobo issues a separate asset with code EURC under its own issuer; naming it as a distinct asset is correct, attributing Circle’s EURC to MyKobo is wrong.",
+        "movedToTruth": [
+          "Circle EURC issuer GDHU6WR…ITNPP2 and MyKobo EURC issuer GAQRF3U…Z7NM details (12,804 trustlines on 2026-11-02; MyKobo transition 2024-07-04)",
+          "Jurisdiction split: Circle Internet Financial, LLC (non-EEA) vs Europe SAS",
+          "Dossier citations"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 315,
+      "wordsAfter": 136
+    },
+    {
+      "id": "q-asset-usdc-eurc-path-fx",
+      "purpose": "stellar-truth",
+      "topics": [
+        "path payments",
+        "USDC to EURC conversion",
+        "trustline requirement"
+      ],
+      "tests": "A USDC-holder can pay EURC via a path payment that converts atomically through SDEX/AMM; the recipient needs an EURC trustline.",
+      "questionIssues": [
+        "Good applied question. \"without the wallet touching the intermediate assets\" is a leading phrase that nearly states the answer."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Holds two ops; fine."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Path discovery is off-chain (Horizon /paths); path payment ops convert atomically through SDEX/AMM.",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+              "observedAt": "2026-11-14",
+              "quote": "Not re-read: stable protocol behavior confirmed 2026-11-02."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-raph-remittance-path-payment",
+          "survivor": "q-asset-usdc-eurc-path-fx",
+          "why": "Absorbed."
+        },
+        {
+          "id": "q-asset-path-payment-ops",
+          "survivor": "q-asset-usdc-eurc-path-fx",
+          "why": "assets-anchors-seps case is the conceptual twin; keep one (this applied one) and absorb the two op names."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Survivor for the remittance path-payment case; drop the citation markers and scaffolding; add the one fact it contributes (anchors handle local cash in/out).",
+      "rewrite": {
+        "question": null,
+        "answer": "Use a path payment (PathPaymentStrictSend or PathPaymentStrictReceive) from USDC to EURC. A wallet or Horizon finds a candidate route, the operation lists any intermediate assets in its path, and the network converts through SDEX offers and/or AMM pools, delivering EURC atomically in one transaction. The recipient needs an EURC trustline. For cross-border use, anchors still handle local-currency cash in and out.",
+        "keyFacts": [
+          "A path payment from USDC to EURC converts through SDEX offers, AMM pools, or both.",
+          "The conversion is atomic, in one transaction; the wallet holds no intermediate asset.",
+          "The recipient must hold an EURC trustline.",
+          "Anchors handle local-currency in/out; Stellar settles only the on-chain leg."
+        ],
+        "avoid": [
+          "Do NOT recommend an off-chain FX bridge or manual external swap as the canonical mechanism."
+        ],
+        "notes": "Path discovery is off-chain (Horizon /paths/strict-receive or strict-send); accept “the wallet” or “Horizon” finding the path and “the network” routing the payment.",
+        "movedToTruth": [
+          "Strict-receive sendMax vs strict-send destMin detail",
+          "[1] citation markers; Dossier §3.5, §4.5 references"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 308,
+      "wordsAfter": 143
+    },
+    {
+      "id": "q-eco-freighter-wallet",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Freighter wallet",
+        "SDF wallet ownership",
+        "Freighter/Varial rename"
+      ],
+      "tests": "Freighter (now Varial) is SDF’s open-source, non-custodial Stellar wallet.",
+      "questionIssues": [
+        "Identical in intent to q-tool-freighter-wallet (\"is it the official wallet?\"); surfaces list Lumenloop ops, so it also tests Raven retrieval."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "Process: \"dates platform claims\"."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Freighter was renamed Varial on 2026-10-29; SDF-provided, open-source, non-custodial.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial",
+              "observedAt": "2026-11-14",
+              "quote": "Freighter is now Varial, with a new name and a new focus"
+            },
+            {
+              "class": "A",
+              "ref": "https://varialwallet.com/changelog",
+              "observedAt": "2026-11-14",
+              "quote": "v5.50.0 extension October 29, 2026: Freighter is now Varial. This is the first release under the new name."
+            },
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/freighter/master/README.md",
+              "observedAt": "2026-11-14",
+              "quote": "Varial (formerly Freighter) is a non-custodial wallet extension that enables you to sign Stellar transactions"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/guides/freighter",
+              "observedAt": "2026-11-14",
+              "quote": "Varial (formerly Freighter) is a browser extension wallet provided by the Stellar Development Foundation."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-tool-freighter-wallet",
+          "survivor": "q-tool-freighter-wallet",
+          "why": "Same wallet, same identity facts; the tool case adds the non-exclusive and Wallets Kit distinctions."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Fold into q-tool-freighter-wallet, which already holds SDF-provided, open-source and non-custodial. Nothing further to absorb.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 283,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-eco-xbull-wallet",
+      "purpose": "stellar-truth",
+      "topics": [
+        "xBull wallet",
+        "wallet directory facts",
+        "platform availability"
+      ],
+      "tests": "xBull is Creit-Tech’s open-source non-custodial wallet; V2 passkey support is not yet shipped; no confirmed mobile store listing.",
+      "questionIssues": [
+        "\"What is X and who builds it\" is a directory lookup. One wallet among many; the categorical knowledge (the Stellar wallet landscape) is better tested once."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "Process: \"dates verified platform claims\"."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Absence-of-listing claim: only checked store URLs."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Repo/release still v1.x (v1.40.0); no V2 shipped.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://api.github.com/repos/Creit-Tech/xBull-Wallet/releases",
+              "observedAt": "2026-11-14",
+              "quote": "Latest tag v1.40.0, published 2025-08-12; repo pushed_at 2025-08-13, 32 stars"
+            }
+          ]
+        },
+        {
+          "claim": "App Store and Google Play listings return 404.",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "D",
+              "ref": "https://play.google.com/store/apps/details?id=com.xbull.wallet",
+              "observedAt": "2026-11-14",
+              "quote": "404 on the URLs I tried, but they are not the ones checked on 2026-11-02"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-eco-stellar-wallets-list",
+          "survivor": "q-eco-stellar-wallets-list",
+          "why": "defi-ecosystem wallet-landscape case; q-eco-lobstr-wallet and q-eco-hana-wallet-scf are siblings."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Fold into q-eco-stellar-wallets-list (defi-ecosystem lane). It must absorb one fact: xBull is Creit-Tech’s open-source non-custodial wallet (extension and web), not an SDF or Ultra Stellar product. Platform and V2 status are volatile and stay in truth.",
+      "rewrite": null,
+      "confidence": "medium",
+      "wordsBefore": 336,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-jutsu-cash-crypto-ramps",
+      "purpose": "behavior",
+      "topics": [
+        "cash on/off-ramp count",
+        "corridor-specific availability"
+      ],
+      "tests": "An agent refuses to invent a network-wide ramp count and says availability is provider- and corridor-specific.",
+      "questionIssues": [
+        "Authentic phrasing but ambiguous (\"cash to crypto\" = on-ramp?). A fabrication-bait case."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Restates the question’s non-answer."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "No durable network-wide ramp count exists.",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://anchors.stellar.org/",
+              "observedAt": "2026-11-14",
+              "quote": "Directory exists; no network-wide supported-ramp total stated on the page index"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-raph-buy-xlm-safely",
+          "survivor": "q-raph-buy-xlm-safely",
+          "why": "Both say availability is country- and provider-specific; buy case adds the Stellar-specific network/memo check."
+        },
+        {
+          "id": "q-raph-offramp-xlm-usdc",
+          "survivor": "q-raph-offramp-xlm-usdc",
+          "why": "Off-ramp direction."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Fold into q-raph-buy-xlm-safely. It must absorb: no network-wide ramp count is durable; availability is corridor- and provider-specific.",
+      "rewrite": null,
+      "confidence": "medium",
+      "wordsBefore": 121,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-jutsu-check-account-history",
+      "purpose": "stellar-truth",
+      "topics": [
+        "block explorers",
+        "account and transaction lookup",
+        "network selection"
+      ],
+      "tests": "Look up an account by public address or tx hash on the correct network, never with a secret key; history is public.",
+      "questionIssues": [
+        "Real user question. Survivor of two lookup cases."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Holds two predicates (identifiers, never a secret)."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "StellarExpert is a supported public-network explorer; explorers differ in network coverage.",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tools/block-explorers",
+              "observedAt": "2026-11-14",
+              "quote": "Not re-read this pass; carried from the 2026-11-02 verification."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-ti-block-explorer-basics",
+          "survivor": "q-jutsu-check-account-history",
+          "why": "Absorbed."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Absorb the explorer-basics facts that matter (network first, a wrong-network miss is not nonexistence, asset = code + issuer) and drop the Futurenet/Soroscan trivia.",
+      "rewrite": {
+        "question": null,
+        "answer": "Use a block explorer such as StellarExpert for a quick public view, or query a Horizon or RPC provider if you are building something. Pick the right network (Mainnet or Testnet) first, then search by public account address, transaction hash, or asset code plus issuer—never a secret key. A miss on the wrong network is not proof something does not exist, and on-chain history is public.",
+        "keyFacts": [
+          "Look up by public address, tx hash, or asset code plus issuer, never a secret key.",
+          "Select the correct network first; a miss on another network is not proof of nonexistence.",
+          "On-chain history is public, so linking an address to an identity exposes its activity."
+        ],
+        "avoid": [
+          "Do NOT ask for or accept a secret key to look up an account.",
+          "Do NOT claim blockchain transaction history is private."
+        ],
+        "notes": "Any reputable explorer or Stellar Lab is acceptable; do not require a specific one.",
+        "movedToTruth": [
+          "Explorer network coverage (StellarExpert unavailable for Futurenet; Soroscan lists Mainnet/Testnet/Futurenet; Soroban Scan Mainnet/Testnet)",
+          "Lab as official developer inspection complement"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 113,
+      "wordsAfter": 147
+    },
+    {
+      "id": "q-jutsu-what-is-a-memo",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Stellar memo",
+        "exchange deposit crediting"
+      ],
+      "tests": "A memo is optional transaction metadata of several types, used by pooled services to credit deposits; copy it exactly.",
+      "questionIssues": [
+        "Authentic and clear, but a definition question that two other cases already cover."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Memo types and exchange-crediting use.",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions",
+              "observedAt": "2026-11-14",
+              "quote": "Stable protocol fact; not re-read."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-pc-memos-reference",
+          "survivor": "q-pc-memos-reference",
+          "why": "protocol-core case grades memo types, limits and the pooled-custody purpose."
+        },
+        {
+          "id": "q-raph-exchange-memo",
+          "survivor": "q-raph-exchange-memo",
+          "why": "Grades exact-copy use at an exchange."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "Duplicated twice: q-pc-memos-reference holds the definition and types, q-raph-exchange-memo holds the \"copy it exactly\" behavior. No predicate here is untested elsewhere.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 118,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-raph-buy-xlm-safely",
+      "purpose": "behavior",
+      "topics": [
+        "buying XLM",
+        "provider comparison",
+        "withdrawal network and memo check"
+      ],
+      "tests": "No provider is universally cheapest; compare all-in cost and confirm the Stellar withdrawal network and memo before buying.",
+      "questionIssues": [
+        "\"Lowest fees\" invites a provider name, which the case is built to refuse. The Stellar-specific content is thin."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Provider availability and fees vary by country and change.",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://anchors.stellar.org/",
+              "observedAt": "2026-11-14",
+              "quote": "General volatility claim; nothing pinned to re-check."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-jutsu-cash-crypto-ramps",
+          "survivor": "q-raph-buy-xlm-safely",
+          "why": "Absorbed."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Survivor for the ramp-count case. Make the behavior predicates explicit and drop the \"scheduled-free\" ambiguity; one Stellar-specific fact (network and memo check) is what keeps it from being generic.",
+      "rewrite": {
+        "question": null,
+        "answer": "There is no universal cheapest place to buy XLM, and no durable network-wide count of ramps: availability, spreads, withdrawal fees and payment methods vary by country and change often. Compare regulated providers that serve your location by all-in cost for your amount, and confirm the Stellar withdrawal network and any memo requirement before buying. Treat unsolicited “discount XLM” offers as red flags.",
+        "keyFacts": [
+          "No provider or ramp count is universally valid; availability varies by country and time.",
+          "Compare all-in cost, and confirm the Stellar withdrawal network and any memo requirement.",
+          "Unsolicited discount offers and DMs are not trusted on-ramps."
+        ],
+        "avoid": [
+          "Do NOT name a universally cheapest provider or invent a network-wide ramp count."
+        ],
+        "notes": "Consumer comparison, not investment advice.",
+        "movedToTruth": []
+      },
+      "confidence": "medium",
+      "wordsBefore": 115,
+      "wordsAfter": 116
+    },
+    {
+      "id": "q-raph-claimable-balance-safety",
+      "purpose": "mixed",
+      "topics": [
+        "claimable balances",
+        "trustline requirement",
+        "unexpected-balance scam check"
+      ],
+      "tests": "A claimable balance is a conditional ledger entry; a non-XLM claim needs a trustline (op_no_trust otherwise); an unexpected one is not proof of a reward.",
+      "questionIssues": [
+        "Two-part and good. Slight overlap with the assets-category claimable-balance cases."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Claiming a non-XLM balance without a trustline fails with op_no_trust.",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+              "observedAt": "2026-11-14",
+              "quote": "Stable protocol behavior; not re-read."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-asset-claimable-balance",
+          "survivor": "q-raph-claimable-balance-safety",
+          "why": "assets lane definition case; safety half lives here."
+        },
+        {
+          "id": "q-aas-claim-received-claimable-balances",
+          "survivor": "q-raph-claimable-balance-safety",
+          "why": "Both ask how to claim and the trustline prerequisite."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Facts and key facts are fine; shorten the answer and notes.",
+      "rewrite": {
+        "question": null,
+        "answer": "A claimable balance is a ledger entry created for named claimants, claimed in a separate operation once its conditions are met. To claim a non-XLM asset the claimant must already hold a matching trustline, or the claim fails with op_no_trust. An unexpected one is not proof of a reward: verify the issuer and never pay or follow links to unlock it.",
+        "keyFacts": [
+          "A claimable balance is a conditional ledger entry claimed in a separate operation.",
+          "A non-XLM claim needs the claimant’s matching trustline, else op_no_trust.",
+          "Verify the issuer; never pay or follow links to unlock an unexpected balance."
+        ],
+        "avoid": [
+          "Do NOT say every claimable balance is a scam.",
+          "Do NOT say a non-XLM claim succeeds without its trustline."
+        ],
+        "notes": "The scam warning is required behavior, not background.",
+        "movedToTruth": []
+      },
+      "confidence": "high",
+      "wordsBefore": 152,
+      "wordsAfter": 124
+    },
+    {
+      "id": "q-raph-exchange-memo",
+      "purpose": "stellar-truth",
+      "topics": [
+        "exchange deposit memo",
+        "pooled deposit address"
+      ],
+      "tests": "Use the exchange’s address as destination and copy its memo exactly; the memo credits the individual customer.",
+      "questionIssues": [],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Pooled exchange addresses need the supplied memo to credit a customer.",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions",
+              "observedAt": "2026-11-14",
+              "quote": "Stable; not re-read."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-pc-memos-reference",
+          "survivor": "q-pc-memos-reference",
+          "why": "Definition and types; this case is the behavior."
+        }
+      ],
+      "verdict": "keep",
+      "reason": "110 words, two world facts, each tested nowhere else as a user action. No change.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 110,
+      "wordsAfter": 110
+    },
+    {
+      "id": "q-raph-hardware-wallet",
+      "purpose": "behavior",
+      "topics": [
+        "hardware wallet security boundary",
+        "purchase decision"
+      ],
+      "tests": "A hardware wallet keeps the key in the device but cannot protect a revealed phrase or an approved malicious transaction; no universal dollar threshold.",
+      "questionIssues": [
+        "Asks \"is it worth it\", i.e. advice; a strong generic answer passes without any Stellar knowledge."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Ledger supports Stellar.",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tools/developer-tools/wallets",
+              "observedAt": "2026-11-14",
+              "quote": "Wallets Kit lists Ledger Hardware Wallet and Trezor Hardware Wallet among supported wallets."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-edge-ambig-best-wallet",
+          "survivor": "q-edge-ambig-best-wallet",
+          "why": "edge-behavior best-wallet case covers the same advice-style behavior."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "No Stellar-specific predicate: the key facts hold for any chain, so a generic answer scores the same as a grounded one. The case also carries a \"scheduled\" tag with nothing volatile to re-verify.",
+      "rewrite": null,
+      "confidence": "medium",
+      "wordsBefore": 136,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-raph-lobstr-legitimacy",
+      "purpose": "mixed",
+      "topics": [
+        "LOBSTR legitimacy",
+        "recovery phrase custody",
+        "download phishing"
+      ],
+      "tests": "LOBSTR is a real third-party wallet by Ultra Stellar, not an SDF product; the recovery phrase stays with the user and LOBSTR cannot recover it.",
+      "questionIssues": [
+        "Two questions, one scam-check. The golden answer drifts into LOBSTR’s internal key-storage architecture, which the question does not need."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Process: dating the activity assessment."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Vendor-doc architecture claim, single source class, not re-verified."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Pre-2020 unmigrated-account exception: same."
+        },
+        {
+          "i": 4,
+          "kind": "process",
+          "issue": "Process wording (\"Requires credentials to remain unshared\")."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Keys are encrypted on-device with an encrypted server copy LOBSTR cannot decrypt; pre-2020 unmigrated accounts are an exception.",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://lobstr.co/vault",
+              "observedAt": "2026-11-14",
+              "quote": "LOBSTR Vault ... keys that are stored locally on device (vault product only; the wallet claim could not be re-read)"
+            }
+          ]
+        },
+        {
+          "claim": "LOBSTR is operated by Ultra Stellar.",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://lobstr.co/terms",
+              "observedAt": "2026-11-14",
+              "quote": "Terms page found; operator sentence not extracted this pass"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-eco-lobstr-wallet",
+          "survivor": "q-eco-lobstr-wallet",
+          "why": "defi-ecosystem case holds Ultra Stellar as operator and non-custodial."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "The durable, checkable core is operator identity, phrase custody and download safety. The key-storage and 2020-migration details are single-vendor, unrechecked, and beyond the question; move them to the truth block.",
+      "rewrite": {
+        "question": null,
+        "answer": "LOBSTR is a real, actively maintained third-party Stellar wallet operated by Ultra Stellar; it is not an SDF product, and being real does not make any download link or support contact safe. Keep the recovery phrase private and offline: LOBSTR says it cannot recover a lost phrase, code or password. Install only from links reached through lobstr.co, and verify the app publisher.",
+        "keyFacts": [
+          "LOBSTR is a third-party wallet run by Ultra Stellar, not an SDF product.",
+          "The recovery phrase stays private and offline; LOBSTR and SDF cannot recover a lost one.",
+          "Install only from links reached through lobstr.co and verify the publisher."
+        ],
+        "avoid": [
+          "Do NOT say a wallet provider or SDF can recover a lost secret phrase.",
+          "Do NOT say the LOBSTR name, app-store presence or popularity makes a link or contact safe."
+        ],
+        "notes": "A dated product assessment, not an endorsement. 2FA, multisig and hardware signing are conditional extras.",
+        "movedToTruth": [
+          "On-device encrypted key + encrypted server copy; PRF passkey accounts; pre-2020-09-01 unmigrated exception (LOBSTR docs, 2026-11-02, needs second class)",
+          "Apple listing observation 2026-11-02",
+          "12-word phrase / 10-word code detail"
+        ]
+      },
+      "confidence": "low",
+      "wordsBefore": 286,
+      "wordsAfter": 146
+    },
+    {
+      "id": "q-raph-low-xlm-transfer-fail",
+      "purpose": "stellar-truth",
+      "topics": [
+        "minimum balance and reserves",
+        "failed transaction fees",
+        "AccountMerge"
+      ],
+      "tests": "Low-XLM failures come from the reserve and fee; a failed transaction moves no funds; subentry cleanup and AccountMerge free XLM.",
+      "questionIssues": [
+        "Real user problem; \"is my money stuck\" is the behavioral hook."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Two predicates (cleanup lowers reserve; eligible)."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Fine."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Reserve and fee requirements; AccountMerge preconditions.",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens",
+              "observedAt": "2026-11-14",
+              "quote": "Base reserves ... A unit of measurement used to calculate an account’s minimum balance"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-protocol-base-reserve-min-balance",
+          "survivor": "q-protocol-base-reserve-min-balance",
+          "why": "protocol-core owns the reserve formula; keep this as the user-symptom case."
+        },
+        {
+          "id": "q-pc-account-merge-reclaim-reserve",
+          "survivor": "q-pc-account-merge-reclaim-reserve",
+          "why": "AccountMerge detail lives there."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Answer is 205 words; reduce to four world facts and drop the repeated \"do not assume 1 XLM\" prose.",
+      "rewrite": {
+        "question": null,
+        "answer": "An account must keep its minimum-balance reserve plus enough XLM for the fee, so spending every lumen makes a transaction fail. A failed transaction does not move the intended funds, though one included in a ledger still pays its small fee. Cancelling offers and removing zero-balance trustlines or other subentries lowers the reserve; AccountMerge can close the account once blocking subentries are cleared. Never pay a stranger to “unstick” funds.",
+        "keyFacts": [
+          "Low-XLM failures come from the minimum-balance reserve and the fee.",
+          "A failed transaction does not move the intended funds, but an included one pays its fee.",
+          "Removing eligible offers, trustlines and subentries lowers the reserve.",
+          "AccountMerge closes an account only after blocking subentries are cleared."
+        ],
+        "avoid": [
+          "Do NOT quote a timeless exact minimum balance.",
+          "Do NOT tell the user to pay a stranger to unlock funds."
+        ],
+        "notes": "",
+        "movedToTruth": []
+      },
+      "confidence": "high",
+      "wordsBefore": 205,
+      "wordsAfter": 135
+    },
+    {
+      "id": "q-raph-merchant-payments",
+      "purpose": "behavior",
+      "topics": [
+        "merchant acceptance",
+        "off-ramp and compliance"
+      ],
+      "tests": "A shop can accept XLM/USDC through a provider, decides hold-vs-convert, and must check local compliance.",
+      "questionIssues": [
+        "Real question, but the golden contains only generic business advice."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": "Generic: any crypto, any chain."
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "Generic compliance."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Protocol/behavior claim is stable.",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/guides/anchors",
+              "observedAt": "2026-11-14",
+              "quote": "No Stellar-specific claim to re-check"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-raph-offramp-xlm-usdc",
+          "survivor": "q-raph-offramp-xlm-usdc",
+          "why": "The off-ramp half is graded there."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "No Stellar predicate: a generic answer about providers, tax and refunds passes. The Stellar-specific part of merchant acceptance (payment requests, memo or muxed matching, path-payment settlement) is not graded at all.",
+      "rewrite": null,
+      "confidence": "medium",
+      "wordsBefore": 109,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-raph-missing-exchange-memo",
+      "purpose": "behavior",
+      "topics": [
+        "missing deposit memo",
+        "exchange support recovery"
+      ],
+      "tests": "A memo-less deposit is not reversible by Stellar or SDF; recovery is an exchange support process.",
+      "questionIssues": [
+        "Clear and realistic."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Confirmed transactions cannot be edited or reversed by Stellar/SDF.",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions",
+              "observedAt": "2026-11-14",
+              "quote": "Stable; not re-read."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-edge-exchange-memo-lost-funds",
+          "survivor": "q-edge-exchange-memo-lost-funds",
+          "why": "Same scenario (forgot or wrong memo, can I recover?) with richer key facts."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Fold into q-edge-exchange-memo-lost-funds (edge-behavior lane). It must absorb: Stellar and SDF cannot edit or reverse a confirmed payment; the exchange credits a memo-less deposit manually, so give support the transaction hash, asset, amount, destination and time; never share a secret key or resend.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 127,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-raph-offramp-xlm-usdc",
+      "purpose": "stellar-truth",
+      "topics": [
+        "cash-out",
+        "anchors and exchanges",
+        "memo or muxed deposit address"
+      ],
+      "tests": "Cash-out goes through an eligible exchange or anchor, with exact asset, network and memo/muxed address checks; no promise of payout everywhere.",
+      "questionIssues": [
+        "Real user question."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Availability is country- and provider-specific.",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://xramps.moneygram.com/stellar",
+              "observedAt": "2026-11-14",
+              "quote": "Live since 2022 USDC cash on-ramps and off-ramps on Stellar ... Cash access across 170+ countries and territories."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-pay-moneygram-ramps",
+          "survivor": "q-raph-offramp-xlm-usdc",
+          "why": "MoneyGram-specific; this is the generic path."
+        }
+      ],
+      "verdict": "keep",
+      "reason": "124 words, two world facts, the only retail case on the cash-out path.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 124,
+      "wordsAfter": 124
+    },
+    {
+      "id": "q-raph-phishing-pending-claim",
+      "purpose": "behavior",
+      "topics": [
+        "phishing DM",
+        "pending XLM scam",
+        "independent verification"
+      ],
+      "tests": "An unsolicited message demanding a payment, wallet connection or credentials to release XLM is a scam signal; verify through your own wallet or official channel.",
+      "questionIssues": [
+        "Realistic scam-check."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SDF never asks users for private keys or deposits.",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org",
+              "observedAt": "2026-11-14",
+              "quote": "Negative claim; blind re-derivation was done 2026-11-02, not repeated."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-raph-unsolicited-airdrop",
+          "survivor": "q-raph-phishing-pending-claim",
+          "why": "Overlapping safe-boundary behavior (DM scenario vs unsolicited token); both stay because the trigger differs."
+        },
+        {
+          "id": "q-edge-send-me-free-xlm",
+          "survivor": "q-edge-send-me-free-xlm",
+          "why": "edge-behavior free-XLM bait."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Shorten the answer; the case is tagged \"scheduled\" with no volatile fact, so truth.reverifyBy can drop.",
+      "rewrite": {
+        "question": null,
+        "answer": "Treat an unsolicited message that demands a payment, wallet connection or recovery credentials to release XLM as a scam signal. Do not click its link, sign anything, pay a “rectification” fee, or share a secret key or recovery phrase. Check your wallet yourself and verify any announcement through an official channel you reach independently. A legitimate claimable-balance mechanism exists, but a DM does not authenticate an offer.",
+        "keyFacts": [
+          "Do not click, pay, sign, or disclose secrets because of an unsolicited message.",
+          "Not every claimable balance is a scam; a DM does not authenticate one.",
+          "Verify through your wallet or an official channel reached independently."
+        ],
+        "avoid": [
+          "Do NOT tell the user to connect a wallet to the message’s site.",
+          "Do NOT say SDF asks users for private keys or deposits."
+        ],
+        "notes": "The independent-verification redirect is required behavior.",
+        "movedToTruth": [
+          "reverifyBy scheduling (nothing volatile)"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 152,
+      "wordsAfter": 133
+    },
+    {
+      "id": "q-raph-remittance-path-payment",
+      "purpose": "stellar-truth",
+      "topics": [
+        "cross-currency remittance",
+        "path payment",
+        "anchors at each end"
+      ],
+      "tests": "Cross-currency sending uses anchors at each end and an atomic path payment where liquidity exists; provider and FX risk remain.",
+      "questionIssues": [
+        "Garbled phrasing (\"if I need one currency and they have another\")."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Protocol/behavior claim is stable.",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+              "observedAt": "2026-11-14",
+              "quote": "Not re-read this pass; stable behavior confirmed 2026-11-02."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-asset-usdc-eurc-path-fx",
+          "survivor": "q-asset-usdc-eurc-path-fx",
+          "why": "Same path-payment fact, applied USDC→EURC."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Fold into q-asset-usdc-eurc-path-fx. It must absorb: anchors handle local-currency in and out, and Stellar settles only the on-chain leg (added there as a fourth key fact).",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 122,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-raph-remove-scam-token",
+      "purpose": "mixed",
+      "topics": [
+        "asset identity (code + issuer)",
+        "removing a trustline",
+        "scam-asset safety"
+      ],
+      "tests": "An asset is identified by code plus issuer; a trustline is removed only at zero balance and liabilities via ChangeTrust limit 0; hiding is not removal.",
+      "questionIssues": [
+        "Two questions; good."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Holds two predicates (zero balance, wallet support)."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Process-like warning but required behavior."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Protocol/behavior claim is stable.",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts",
+              "observedAt": "2026-11-14",
+              "quote": "Not re-read this pass; stable behavior confirmed 2026-11-02."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-aas-trustline-limit-lifecycle",
+          "survivor": "q-aas-trustline-limit-lifecycle",
+          "why": "assets lane owns the ChangeTrust lifecycle; this case adds the scam-identity framing."
+        },
+        {
+          "id": "q-edge-asset-site-scam-detection",
+          "survivor": "q-edge-asset-site-scam-detection",
+          "why": "code+issuer legitimacy check."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Facts hold; the answer is 221 words with an issuer-return aside folded into prose.",
+      "rewrite": {
+        "question": null,
+        "answer": "An issued asset is identified by its code plus issuer, so a matching ticker or logo proves nothing; get the issuer from the project’s own site and compare it with the wallet entry. To delete a trustline, cancel offers, bring the balance and liabilities to zero, then submit ChangeTrust with limit 0. Hiding an asset only changes display. Never sign unfamiliar links or send the balance to a random address.",
+        "keyFacts": [
+          "An asset’s identity is code plus issuer; a ticker or logo alone proves nothing.",
+          "A trustline is removed only at zero balance and liabilities, via ChangeTrust limit 0.",
+          "Hiding an asset is display-only and does not delete its trustline.",
+          "Never sign unfamiliar links or send the balance to a random address."
+        ],
+        "avoid": [
+          "Do NOT identify an asset by ticker alone.",
+          "Do NOT promise a trustline can be removed while it has balance or liabilities.",
+          "Do NOT promise that returning a balance to its issuer always succeeds."
+        ],
+        "notes": "Safety advice, not an assertion that a specific asset is fraudulent. Returning a balance to the issuer may burn it but can be blocked by authorization or account state.",
+        "movedToTruth": []
+      },
+      "confidence": "high",
+      "wordsBefore": 221,
+      "wordsAfter": 184
+    },
+    {
+      "id": "q-raph-restore-wallet",
+      "purpose": "mixed",
+      "topics": [
+        "wallet restore",
+        "recovery phrase vs secret key",
+        "credential safety"
+      ],
+      "tests": "A secret key controls the account but recovery phrases are wallet-specific in derivation; use only official recovery flows and never paste credentials into support chats.",
+      "questionIssues": [
+        "Real question."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Protocol/behavior claim is stable.",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0005.md",
+              "observedAt": "2026-11-14",
+              "quote": "SEP-5 key derivation; not re-read"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-ti-find-export-secret-key",
+          "survivor": "q-ti-find-export-secret-key",
+          "why": "Adjacent (export vs import); both keep."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Shorten; tagged \"scheduled\" but nothing volatile.",
+      "rewrite": {
+        "question": null,
+        "answer": "It depends on the target wallet’s documented import format. A secret key controls its Stellar account, but recovery phrases can be wallet-specific or use different derivation paths, so a phrase from one wallet is not automatically safe to import into another. Follow the target wallet’s official instructions, verify the app publisher, and never enter a phrase or key into a support chat, link or someone else’s form.",
+        "keyFacts": [
+          "A secret key controls its account; recovery phrases can be wallet-specific.",
+          "Follow official recovery steps; never paste credentials into chat or links."
+        ],
+        "avoid": [
+          "Do NOT promise every wallet accepts every recovery phrase.",
+          "Do NOT advise sending a recovery phrase to support."
+        ],
+        "notes": "No product-specific compatibility promise.",
+        "movedToTruth": []
+      },
+      "confidence": "medium",
+      "wordsBefore": 125,
+      "wordsAfter": 111
+    },
+    {
+      "id": "q-raph-scam-spam-tokens",
+      "purpose": "mixed",
+      "topics": [
+        "unsolicited assets",
+        "open-network design",
+        "trustline requirement"
+      ],
+      "tests": "Anyone can create an asset or claimable balance without approval; holding a non-XLM asset needs a trustline; judge by issuer.",
+      "questionIssues": [
+        "Good \"why\" question."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Protocol/behavior claim is stable.",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts",
+              "observedAt": "2026-11-14",
+              "quote": "Not re-read this pass; stable behavior confirmed 2026-11-02."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-raph-unsolicited-airdrop",
+          "survivor": "q-raph-unsolicited-airdrop",
+          "why": "Same unsolicited-asset mechanism; the airdrop case also carries the action advice."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Fold into q-raph-unsolicited-airdrop. It must absorb: anyone can create an asset or claimable balance without your approval; holding a non-XLM asset needs your trustline; judge an asset by issuer and independent official information.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 145,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-raph-unsolicited-airdrop",
+      "purpose": "mixed",
+      "topics": [
+        "unsolicited token",
+        "claimable balance legitimacy",
+        "independent issuer verification"
+      ],
+      "tests": "An unsolicited token or claim is untrusted; do not sign, pay or disclose; verify the issuer independently.",
+      "questionIssues": [
+        "Realistic. Survivor of the spam-token \"why\" case."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Protocol/behavior claim is stable.",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts",
+              "observedAt": "2026-11-14",
+              "quote": "Not re-read this pass; stable behavior confirmed 2026-11-02."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-raph-scam-spam-tokens",
+          "survivor": "q-raph-unsolicited-airdrop",
+          "why": "Absorbed."
+        },
+        {
+          "id": "q-raph-claimable-balance-safety",
+          "survivor": "q-raph-claimable-balance-safety",
+          "why": "Protocol half."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Survivor; absorb the open-network and trustline explanation, cut from 195 words.",
+      "rewrite": {
+        "question": null,
+        "answer": "Treat an unsolicited token or claimable balance as untrusted. Anyone can create one without your approval; that does not make the asset or any linked offer legitimate, and holding a non-XLM asset needs your trustline. Do not use its link, sign an opaque transaction, pay an “unlock” fee, or reveal a recovery phrase. Verify the issuer through an official source you find independently, or ignore it.",
+        "keyFacts": [
+          "Anyone can create an asset or claimable balance unasked; that proves no legitimacy.",
+          "Do not sign, pay or disclose credentials because of an unsolicited token or message.",
+          "Verify the issuer through an independently found official source.",
+          "A non-XLM asset needs your trustline, which adds a reserve effect."
+        ],
+        "avoid": [
+          "Do NOT call every claimable balance a scam.",
+          "Do NOT say an unsolicited asset gives its sender access to the wallet or funds."
+        ],
+        "notes": "The trap is an absolute scam claim; independent issuer verification is required behavior.",
+        "movedToTruth": []
+      },
+      "confidence": "high",
+      "wordsBefore": 195,
+      "wordsAfter": 149
+    },
+    {
+      "id": "q-raph-usdc-onto-stellar",
+      "purpose": "stellar-truth",
+      "topics": [
+        "moving USDC to Stellar",
+        "trustline and issuer",
+        "ERC-20 vs Stellar network"
+      ],
+      "tests": "An ERC-20 USDC transfer to a Stellar address does not arrive as a Stellar payment; use a Stellar-supporting provider and the exact issuer trustline.",
+      "questionIssues": [
+        "Clear."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Mainnet USDC issuer GA5ZSEJ…KZVN; USDC code alone is not identity.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://www.circle.com/.well-known/stellar.toml",
+              "observedAt": "2026-11-14",
+              "quote": "code=\"USDC\" issuer=\"GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN\""
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-cctp-v2-usdc-stellar",
+          "survivor": "q-cctp-v2-usdc-stellar",
+          "why": "CCTP route in compliance lane; this is the consumer path."
+        }
+      ],
+      "verdict": "keep",
+      "reason": "124 words, two world facts, not duplicated for the consumer path.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 124,
+      "wordsAfter": 124
+    },
+    {
+      "id": "q-raph-withdraw-exchange-self-custody",
+      "purpose": "stellar-truth",
+      "topics": [
+        "exchange withdrawal",
+        "public address vs secret",
+        "memo on withdrawals"
+      ],
+      "tests": "Withdraw to the wallet’s public address on the Stellar/XLM network, usually with no memo, and never give an exchange a secret key.",
+      "questionIssues": [
+        "Real question."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Protocol/behavior claim is stable.",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions",
+              "observedAt": "2026-11-14",
+              "quote": "Not re-read this pass; stable behavior confirmed 2026-11-02."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-raph-exchange-memo",
+          "survivor": "q-raph-exchange-memo",
+          "why": "Opposite direction; kept separate."
+        }
+      ],
+      "verdict": "keep",
+      "reason": "128 words, two world facts. The \"scheduled\" tag and reverifyBy 2027-02-11 have nothing volatile behind them; suggest stable.",
+      "rewrite": null,
+      "confidence": "medium",
+      "wordsBefore": 128,
+      "wordsAfter": 128
+    },
+    {
+      "id": "q-raph-xlm-network-role",
+      "purpose": "stellar-truth",
+      "topics": [
+        "XLM role",
+        "fees and reserves",
+        "native asset vs issued assets"
+      ],
+      "tests": "XLM pays fees and backs reserves, and needs no issuer or trustline; \"gas\" is a partial analogy.",
+      "questionIssues": [
+        "Good misconception question. Survivor of the simple-explainer case."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "The lumen is the only token that does not require an issuer or trustline; pays fees, rent, reserves.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "http://developers.stellar.org/docs/learn/fundamentals/lumens",
+              "observedAt": "2026-11-14",
+              "quote": "The lumen is the only token that doesn’t require an issuer or trustline."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-raph-xlm-simple",
+          "survivor": "q-raph-xlm-network-role",
+          "why": "Absorbed."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Absorb the \"not a price prediction\" caution and split the roles fact.",
+      "rewrite": {
+        "question": null,
+        "answer": "XLM (the lumen) is Stellar’s native asset. It pays network fees and backs account reserves, and it can also be sent and traded. “Gas” is a rough analogy for the fee role but misses reserves, and it does not make Stellar’s economics identical to Ethereum’s. Unlike issued tokens such as stablecoins, XLM needs no issuer or trustline.",
+        "keyFacts": [
+          "XLM is Stellar’s native asset and pays network fees.",
+          "XLM also backs account reserves, so “gas” is only a partial analogy.",
+          "XLM needs no issuer or trustline, unlike issued assets."
+        ],
+        "avoid": [
+          "Do NOT say XLM requires a trustline or issuer, or is an issuer-backed stablecoin.",
+          "Do NOT turn the explanation into a price prediction."
+        ],
+        "notes": "",
+        "movedToTruth": []
+      },
+      "confidence": "high",
+      "wordsBefore": 103,
+      "wordsAfter": 110
+    },
+    {
+      "id": "q-raph-xlm-simple",
+      "purpose": "stellar-truth",
+      "topics": [
+        "XLM explainer",
+        "native asset"
+      ],
+      "tests": "XLM is the native asset, pays fees and backs reserves, and is not an issuer-backed token.",
+      "questionIssues": [
+        "\"In normal-person terms\" is a tone request; same knowledge as the network-role case."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "XLM native; fees and reserves.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "http://developers.stellar.org/docs/learn/fundamentals/lumens",
+              "observedAt": "2026-11-14",
+              "quote": "The lumen is the only token that doesn’t require an issuer or trustline."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-raph-xlm-network-role",
+          "survivor": "q-raph-xlm-network-role",
+          "why": "Same three facts."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Fold into q-raph-xlm-network-role, which already has the fee, reserve and no-issuer facts; the no-price-prediction avoid moves with it.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 116,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-raph-xlm-staking",
+      "purpose": "behavior",
+      "topics": [
+        "native staking",
+        "third-party yield",
+        "fee-pool rewards proposal"
+      ],
+      "tests": "Stellar has no native proof-of-stake staking reward; third-party \"staking\" is a provider’s product; SDF’s 2026 fee-pool rewards paper is undecided.",
+      "questionIssues": [
+        "Real question with a false-premise element; the golden handles it well."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "No accepted or proposed CAP adds native staking or validator rewards.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://api.github.com/repos/stellar/stellar-protocol/contents/core?ref=master",
+              "observedAt": "2026-11-14",
+              "quote": "CAP listing runs to cap-0090; gh code search \"staking\" in stellar/stellar-protocol hits only ecosystem/sep-0037.md and sep-0056.md"
+            },
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0089.md",
+              "observedAt": "2026-11-14",
+              "quote": "Title: Host functions for invoker-less authorization (Draft); cap-0088 Millisecond-Resolution Close Times"
+            }
+          ]
+        },
+        {
+          "claim": "SDF’s fee-pool rewards paper is a discussion proposal, not a decision.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/xlm-utility",
+              "observedAt": "2026-11-14",
+              "quote": "Illustrative scenarios, not forecasts or commitments."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-edge-noinfo-stellar-pos-staking-rewards",
+          "survivor": "q-raph-xlm-staking",
+          "why": "Edge case is the false-premise variant of the same knowledge with one key fact; this case is the richer survivor."
+        },
+        {
+          "id": "q-hot-fee-pool-burn-deflation",
+          "survivor": "q-hot-fee-pool-burn-deflation",
+          "why": "Shares the fee-pool rewards paper note."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Facts hold today. Answer is 247 words; the dated CAP-sweep and paper background can live in the truth block.",
+      "rewrite": {
+        "question": null,
+        "answer": "Stellar uses SCP, not proof-of-stake, so holding XLM does not natively stake it or earn protocol staking rewards. A third-party “XLM staking” offer is that provider’s own product: check custody, lockup and scam risk, and never send keys or funds to “activate” staking. As of 2026-11-14 no accepted or proposed CAP adds native staking. SDF’s October 2026 fee-pool rewards paper is an undecided discussion proposal.",
+        "keyFacts": [
+          "Stellar has no native proof-of-stake reward for holding XLM.",
+          "Third-party “staking” is the provider’s own product, not a native feature.",
+          "As of 2026-11-14 no accepted or proposed CAP adds native staking.",
+          "SDF’s Oct 2026 fee-pool rewards paper is an undecided discussion proposal."
+        ],
+        "avoid": [
+          "Do NOT say SDF runs an official staking program.",
+          "Do NOT say native staking will never exist, or that the fee-pool paper was adopted."
+        ],
+        "notes": "An accurate dated mention of the paper is correct and does not contradict the CAP-sweep negative.",
+        "movedToTruth": [
+          "SDF says locked XLM would not secure the network or confer validator rights",
+          "Blind re-derivation requirement for the negative claim"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 247,
+      "wordsAfter": 147
+    },
+    {
+      "id": "q-ti-block-explorer-basics",
+      "purpose": "stellar-truth",
+      "topics": [
+        "block explorers",
+        "network and identifier selection",
+        "Stellar Lab"
+      ],
+      "tests": "Pick the network first, search by canonical identifiers, treat explorer output as indexed views; coverage differs between explorers.",
+      "questionIssues": [
+        "Question embeds the answer (\"stellar.expert\") and asks \"what can it show me\", inviting a UI inventory."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Volatile product-coverage trivia (Futurenet)."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Process-flavored."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Restates KF0."
+        },
+        {
+          "i": 4,
+          "kind": "process",
+          "issue": "Lab role: secondary."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "StellarExpert is not listed for Futurenet; Soroscan lists Mainnet/Testnet/Futurenet.",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tools/block-explorers",
+              "observedAt": "2026-11-14",
+              "quote": "Page not re-read this pass."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-jutsu-check-account-history",
+          "survivor": "q-jutsu-check-account-history",
+          "why": "Same lookup behavior."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Fold into q-jutsu-check-account-history. It must absorb: select the network first, wrong-network misses prove nothing, identify assets by code plus issuer. The explorer-by-explorer network coverage is trivia and moves to truth.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 336,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-ti-find-export-secret-key",
+      "purpose": "mixed",
+      "topics": [
+        "secret key export",
+        "recovery phrase",
+        "Freighter/Varial limits"
+      ],
+      "tests": "A public address cannot reveal its secret; export or recovery works only through the holding product’s documented flow; some signers are non-exportable.",
+      "questionIssues": [
+        "Two questions (export from Freighter; derive from address). The second is a safety false-premise."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Process-style: \"keeps exports local\"."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Wallet-UI specific; version-sensitive."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Fine."
+        },
+        {
+          "i": 4,
+          "kind": "process",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Freighter (now Varial) shows a password-gated recovery phrase for mnemonic-derived accounts only.",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://varialwallet.com/changelog",
+              "observedAt": "2026-11-14",
+              "quote": "v5.50.0 extension October 29, 2026: Freighter is now Varial. This is the first release under the new name."
+            }
+          ]
+        },
+        {
+          "claim": "Freighter renamed Varial 2026-10-29; same wallet.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial",
+              "observedAt": "2026-11-14",
+              "quote": "Freighter is now Varial, with a new name and a new focus"
+            },
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/freighter/master/README.md",
+              "observedAt": "2026-11-14",
+              "quote": "Varial (formerly Freighter) is a non-custodial wallet extension that enables you to sign Stellar transactions"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-raph-restore-wallet",
+          "survivor": "q-ti-find-export-secret-key",
+          "why": "Adjacent; both keep."
+        },
+        {
+          "id": "q-tool-freighter-wallet",
+          "survivor": "q-tool-freighter-wallet",
+          "why": "Freighter identity and rename live there."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Core facts hold; the answer (379 words) packs CLI, wallet UI and lost-backup detail. Keep protocol truth and safe guidance; drop menu specifics.",
+      "rewrite": {
+        "question": null,
+        "answer": "A public G… address cannot be reversed into its secret key. A secret can be exported or recovered only from the wallet, CLI keystore, recovery phrase or custody provider that holds it, through that product’s documented local flow—never pasted into chat, forms or logs. Freighter (now Varial) shows a recovery phrase only for mnemonic-derived accounts; an imported raw secret is not recoverable from it. Hardware, smart-account and custodial signers may be non-exportable.",
+        "keyFacts": [
+          "A public address cannot be reversed into its secret key.",
+          "Export or recovery works only through the holding wallet’s documented flow, done locally.",
+          "Freighter/Varial’s phrase covers mnemonic-derived accounts, not imported secrets.",
+          "Hardware, smart-account and custodial signers can be intentionally non-exportable."
+        ],
+        "avoid": [
+          "Do NOT request, reveal or echo a real secret key or recovery phrase.",
+          "Do NOT imply a G address is reversible, or invent an export menu for imported keys."
+        ],
+        "notes": "Wallet UI changes; grade protocol truth and safe guidance, not menu labels. Freighter and Varial are the same SDF wallet; either name is acceptable.",
+        "movedToTruth": [
+          "Stellar CLI secret/recovery export detail",
+          "Lost-backup advice (move funds with another authorized signer)",
+          "Firefox listing still read Freighter on 2026-11-02"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 379,
+      "wordsAfter": 165
+    },
+    {
+      "id": "q-ti-testnet-usdc-faucet",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Testnet USDC",
+        "Friendbot limits",
+        "classic issuer vs SAC"
+      ],
+      "tests": "Friendbot gives fake XLM only; test USDC needs a trustline to Circle’s Testnet issuer and a payment from Circle’s faucet; the SAC is the same asset.",
+      "questionIssues": [
+        "Good developer question."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Process: dating volatile values."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Fine."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Holds two predicates."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Testnet USDC issuer is GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5; Circle faucet supports Stellar Testnet.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.circle.com/stablecoins/usdc-contract-addresses",
+              "observedAt": "2026-11-14",
+              "quote": "GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5 appears on the page"
+            },
+            {
+              "class": "C",
+              "ref": "https://horizon-testnet.stellar.org/assets?asset_code=USDC&asset_issuer=GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5",
+              "observedAt": "2026-11-14",
+              "quote": "USDC GBBD47..., 148733 authorized accounts"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-n3-issues-842-backup-faucet-wallet",
+          "survivor": "q-ti-testnet-usdc-faucet",
+          "why": "Name suggests a faucet scenario; confirm in the owning lane."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Facts hold today. Answer is 396 words including a hand-written maintenance instruction; keep the four predicates, drop faucet UI amount and cooldown.",
+      "rewrite": {
+        "question": null,
+        "answer": "Friendbot funds a Testnet account with fake XLM only; it is not a USDC faucet. Fund the account first, add a trustline to Circle’s Testnet USDC (issuer GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5 as of 2026-11-14), then request test USDC from Circle’s faucet. A trustline only permits holding; it credits nothing. The same classic asset has a deterministic SAC contract address for Soroban, not a wrapped copy.",
+        "keyFacts": [
+          "Friendbot funds fake Testnet XLM only, not USDC.",
+          "Holding Testnet USDC needs XLM for reserves and a trustline to Circle’s Testnet issuer.",
+          "A trustline credits nothing; test USDC arrives by payment, such as from Circle’s faucet.",
+          "The deterministic SAC address is the same classic asset, not a wrapped copy."
+        ],
+        "avoid": [
+          "Do NOT use a Mainnet or wrong-network issuer, or treat test USDC as redeemable value.",
+          "Do NOT state faucet amount, cooldown or issuer as durable without a date."
+        ],
+        "notes": "Faucet availability, amount and cooldown are volatile; do not require them or a faucet call.",
+        "movedToTruth": [
+          "Circle faucet UI observation: 20 test USDC per address and chain per two hours (2026-11-02)",
+          "Lab shows no USDC path-payment distribution demo",
+          "Maintenance rule: inspect issuer data, never call a faucet"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 396,
+      "wordsAfter": 154
+    },
+    {
+      "id": "q-tool-freighter-wallet",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Freighter / Varial wallet",
+        "official-wallet claim",
+        "Stellar Wallets Kit"
+      ],
+      "tests": "Freighter (now Varial) is an SDF-provided, open-source, non-custodial wallet, not the network’s only official wallet, and not the Stellar Wallets Kit.",
+      "questionIssues": [
+        "Good: \"is it the official wallet\" is the real user question. Survivor of the eco-freighter case."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Holds three predicates."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "process",
+          "issue": "Process: \"Dates browser/mobile scope\"."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Freighter renamed Varial on 2026-10-29; SDF-provided, open-source, non-custodial, same wallet.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial",
+              "observedAt": "2026-11-14",
+              "quote": "Freighter is now Varial, with a new name and a new focus"
+            },
+            {
+              "class": "A",
+              "ref": "https://varialwallet.com/changelog",
+              "observedAt": "2026-11-14",
+              "quote": "v5.50.0 extension October 29, 2026: Freighter is now Varial. This is the first release under the new name."
+            },
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/freighter/master/README.md",
+              "observedAt": "2026-11-14",
+              "quote": "Varial (formerly Freighter) is a non-custodial wallet extension that enables you to sign Stellar transactions"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/guides/freighter",
+              "observedAt": "2026-11-14",
+              "quote": "Varial (formerly Freighter) is a browser extension wallet provided by the Stellar Development Foundation."
+            }
+          ]
+        },
+        {
+          "claim": "Wallets Kit lists Varial among supported wallets.",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tools/developer-tools/wallets",
+              "observedAt": "2026-11-14",
+              "quote": "The Stellar Wallets Kit supports many wallets including: Albedo, Varial, Hana, Ledger Hardware Wallet"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-eco-freighter-wallet",
+          "survivor": "q-tool-freighter-wallet",
+          "why": "Absorbed."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Survivor. 347 words with scaffolding; state the four world facts.",
+      "rewrite": {
+        "question": null,
+        "answer": "Freighter (renamed Varial on 2026-10-29; the same product) is an open-source, non-custodial Stellar wallet provided by SDF, available as a browser extension and mobile app as of 2026-11-14. Users hold their own keys, sign transactions and connect to Stellar and Soroban apps. It is not the network’s only “official wallet”, and it is not the Stellar Wallets Kit, a separate multi-wallet integration library.",
+        "keyFacts": [
+          "Freighter/Varial is SDF-provided, open-source and non-custodial; users control their keys.",
+          "Freighter was renamed Varial on 2026-10-29; both names are the same wallet.",
+          "It is not the network’s exclusive official wallet; other independent wallets are valid.",
+          "Stellar Wallets Kit is a separate multi-wallet library, not Freighter."
+        ],
+        "avoid": [
+          "Do NOT call Freighter custodial or say SDF holds user keys.",
+          "Do NOT call it the exclusive official wallet or confuse it with Stellar Wallets Kit."
+        ],
+        "notes": "Using either name, or stating or omitting the rename, is not penalized. Platform availability is dated.",
+        "movedToTruth": [
+          "Wallets Kit 2.8.0 renamed FreighterModule to VarialModule",
+          "Repo is still stellar/freighter; freighter.app redirects to varialwallet.com",
+          "GT-55 correction narrative"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 347,
+      "wordsAfter": 150
+    }
+  ],
+  "summary": {
+    "keep": 4,
+    "tighten": 32,
+    "merge": 13,
+    "retire": 4,
+    "move-tool-lane": 0,
+    "factsChanged": 3
+  },
+  "crossCategoryDuplicates": [
+    "CCTP-on-Stellar: q-hist-cctp-stellar-live-announcement, q-token-circle-usdc-on-stellar (history) vs q-cctp-v2-usdc-stellar (compliance-rwa-payments); survivor q-cctp-v2-usdc-stellar",
+    "YieldBlox V2 incident: q-hist-yieldblox-v2-2026-exploit (history) vs q-comp-yieldblox-oracle-incident (compliance-rwa-payments); survivor the compliance case",
+    "Quantum Preparedness Plan: q-hist-quantum-preparedness-plan vs q-pc-quantum-preparedness-dormant (protocol-core); keep the history case for roadmap facts",
+    "x402 on Stellar: q-hist-x402-stellar-announcement vs q-defi-x402-on-stellar-what (defi-ecosystem), q-x402-payment-verification (compliance)",
+    "MoneyGram Ramps: q-hist-remittance-corridors vs q-anchor-moneygram-ramps (assets-anchors-seps), q-pay-moneygram-ramps (compliance)",
+    "Memo knowledge: q-jutsu-what-is-a-memo, q-raph-exchange-memo vs q-pc-memos-reference (protocol-core); missing-memo scenario q-raph-missing-exchange-memo vs q-edge-exchange-memo-lost-funds (edge-behavior)",
+    "Native staking: q-raph-xlm-staking vs q-edge-noinfo-stellar-pos-staking-rewards (edge-behavior); keep q-raph-xlm-staking",
+    "Path payment: q-asset-usdc-eurc-path-fx, q-raph-remittance-path-payment vs q-asset-path-payment-ops (assets-anchors-seps); keep one",
+    "Claimable balances: q-raph-claimable-balance-safety vs q-asset-claimable-balance, q-aas-claim-received-claimable-balances (assets-anchors-seps)",
+    "Wallet landscape: q-eco-xbull-wallet, q-eco-freighter-wallet vs q-eco-stellar-wallets-list, q-eco-lobstr-wallet, q-eco-hana-wallet-scf (defi-ecosystem); q-raph-lobstr-legitimacy vs q-eco-lobstr-wallet",
+    "Scout status envelope: q-history-ecosystem-index-freshness-live vs q-gap-scout-status-envelope (protocol-core)",
+    "Asset legitimacy: q-raph-remove-scam-token, q-aas-trusted-asset-list-whitelist vs q-edge-asset-site-scam-detection (edge-behavior)"
+  ],
+  "missing": [
+    "SEP-24 / SEP-6 anchor deposit and withdrawal flow from a consumer perspective (interactive flow, KYC, memo)",
+    "Merchant payment acceptance mechanics on Stellar (SEP-7 payment URIs, memo or muxed matching, strict-receive settlement), replacing the generic merchant case",
+    "Stellar wallet landscape in one case: custodial vs non-custodial and who maintains each, instead of per-wallet lookups",
+    "Ledger/Trezor support on Stellar (hardware-signing facts), if the owner wants hardware coverage in retail",
+    "Muxed (M...) addresses for exchange deposits as a consumer topic, beyond a passing mention in the off-ramp case"
+  ]
+}

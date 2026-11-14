@@ -1,0 +1,719 @@
+{
+  "lane": "verify-audit-assets",
+  "decisions": [
+    {
+      "id": "q-aas-burn-clawback-redemption-mechanics",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "The rewrite keeps the burn-to-issuer, issuer-cannot-hold, and clawback-burns-without-consent facts, and it now states the redemption versus clawback split plainly. No new claim.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+          "observedAt": "2026-11-14",
+          "quote": "Transfers to the issuer account will burn the token, while transfers from the issuer account will mint."
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-aas-claim-received-claimable-balances",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Same facts, compacted. The trustline-for-non-native-claim key fact is supported by the existing body and by q-raph-claimable-balance-safety.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-aas-claimable-predicates-expiry-reserves",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "It keeps up to 10 claimants, predicate-at-claim, no at-will creator reclaim, and one reserve per claimant, and it absorbs q-asset-claimable-balance correctly. Non-automatic expiry stays as an avoid item.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-aas-issuer-fees-supply-cap-freeze",
+      "auditVerdict": "tighten",
+      "decision": "amend",
+      "finalVerdict": "tighten",
+      "why": "The rewrite answer says a freeze needs AUTH_REQUIRED and AUTH_REVOCABLE, but only AUTH_REVOCABLE is needed to revoke trustline authorization; its own key fact 4 already says so. The corrected answer drops AUTH_REQUIRED. Everything else holds.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://github.com/stellar/stellar-docs/blob/main/docs/tokens/control-asset-access.mdx",
+          "observedAt": "2026-11-14",
+          "quote": "When AUTH_REVOCABLE_FLAG is enabled, an issuer can revoke an existing trustline's authorization, thereby freezing the asset held by an account."
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0018.md",
+          "observedAt": "2026-11-14",
+          "quote": "If AUTH_REVOCABLE_FLAG is not set, the transition from AUTHORIZED_FLAG to AUTHORIZED_TO_MAINTAIN_LIABILITIES_FLAG is invalid."
+        }
+      ],
+      "finalRewrite": {
+        "question": null,
+        "answer": "Classic assets have no protocol per-transfer issuer fee and no max-supply field. An issuer caps supply operationally by locking the issuing account after issuance; a SAC admin moved away from the issuer can still mint. An issuer can freeze a holder by deauthorizing the trustline when AUTH_REVOCABLE is set. Custom transfer logic needs a Soroban token.",
+        "keyFacts": [
+          "Classic assets have no protocol per-transfer issuer fee hook.",
+          "Classic assets have no protocol max-supply field.",
+          "Locking the issuing account stops further issuance of the classic asset.",
+          "Deauthorizing a trustline freezes a holder when the revocable flag is set."
+        ],
+        "avoid": [
+          "Classic Stellar assets have a built-in issuer transfer tax or an immutable max-supply field."
+        ],
+        "notes": "A SAC admin moved with set_admin can still mint after the issuer is locked; do not penalize an answer that adds this.",
+        "movedToTruth": [
+          "Differentiation note versus q-aas-burn-clawback-redemption-mechanics",
+          "Inference note on the transfer-fee absence",
+          "Source list for CAP-35 and SAC contract.rs",
+          "'Also good if' items"
+        ]
+      }
+    },
+    {
+      "id": "q-aas-sep30-recoverable-wallets",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "It keeps recovery signer servers, signers set before loss, and no custody of the master secret. 'Draft' is correct: SEP-30 is Draft v0.8.1.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0030.md",
+          "observedAt": "2026-11-14",
+          "quote": "Title: Account Recovery: multi-party recovery of Stellar accounts Status: Draft Version: 0.8.1"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-aas-trustline-limit-lifecycle",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "op_invalid_limit is tightened to 'below balance plus buying liabilities', matching the result-code definition. Removal needs zero balance and ChangeTrust with limit 0. Nothing is weakened.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-anchor-endpoint-discovery",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "It keeps the SEP-1 path, the advertised endpoints, and SEP-10 or SEP-45 auth before protected SEP-24 calls, and it correctly absorbs q-sep-1-toml's /.well-known path.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
+          "observedAt": "2026-11-14",
+          "quote": "Title: Hosted Deposit and Withdrawal Status: Active Updated: 2025-09-10 Version 3.8.0"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-anchor-list-builders-discovery",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "A live roster case: the key facts accept any dated, sourced roster, and the count appears only in the answer. The 21-profile count was observed on 2026-11-14 (auditor's Scout probe). This is a directory question, so the 'mixed' label is right.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-anchor-moneygram-ramps",
+      "auditVerdict": "tighten",
+      "decision": "amend",
+      "finalVerdict": "tighten",
+      "why": "The facts hold as of 2026-11-14 (widget SDK for new partners, SEP-10/SEP-24 legacy, USDC settlement). But the rewrite requires both the widget key fact and the legacy key fact while its note says either path is correct. The corrected version demands one path and keeps the anchor and one-integration fact from the current golden.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://xramps.moneygram.com/stellar",
+          "observedAt": "2026-11-14",
+          "quote": "Integrate USDC cash-in and cash-out for Stellar wallets with the Ramps widget SDK and API keys."
+        },
+        {
+          "class": "A",
+          "ref": "https://stellar.org/case-studies/moneygram-international",
+          "observedAt": "2026-11-14",
+          "quote": "170+ Countries with USDC cash-out"
+        }
+      ],
+      "finalRewrite": {
+        "question": null,
+        "answer": "MoneyGram Ramps lets Stellar wallets cash in and cash out physical cash, settling in Stellar USDC. As of 2026-11-14 MoneyGram directs new partners to a widget SDK with API keys and server-side sessions; the SEP-10/SEP-24 anchor path is documented as legacy for existing allowlisted partners. MoneyGram states USDC cash-out in 170+ countries.",
+        "keyFacts": [
+          "MoneyGram Ramps settles cash-in and cash-out in Stellar USDC.",
+          "MoneyGram acts as an anchor: one integration reaches its cash network.",
+          "Names a path: the widget SDK for new partners (2026-11-14) or legacy SEP-10/SEP-24."
+        ],
+        "avoid": [
+          "Do NOT claim MGUSD is the Ramps settlement asset."
+        ],
+        "notes": "Naming only SEP-24 without the legacy label is incomplete, not wrong.",
+        "movedToTruth": [
+          "Tier-1 quorum timing avoid and Obsrvr node evidence",
+          "Developer-portal URL history and guide version (1.2, July 2026)",
+          "SEP-38 not primary flow note",
+          "Source list"
+        ]
+      }
+    },
+    {
+      "id": "q-anchor-platform-what",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "Survivor q-anchor-sdp-vs-anchor-platform tests the Anchor Platform's role (operator backend) and its SEP set; nothing else here matters (Java vs Kotlin is a grading caution).",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-anchor-sdp-vs-anchor-platform",
+      "auditVerdict": "tighten",
+      "decision": "amend",
+      "finalVerdict": "tighten",
+      "why": "The facts hold, but key fact 1 requires all eight Anchor Platform SEPs, including SEP-1 and SEP-45, while the note treats SEP-45 as an optional extra. The corrected key fact requires the anchor-endpoint set from the current golden; the note accepts SEP-1 and SEP-45.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0045.md",
+          "observedAt": "2026-11-14",
+          "quote": "Title: Stellar Web Authentication for Contract Accounts Status: Draft Updated: 2025-12-16 Version: 0.1.1"
+        }
+      ],
+      "finalRewrite": {
+        "question": null,
+        "answer": "All three are SDF-maintained. The Anchor Platform is the backend an anchor operator runs, implementing SEP-1, 6, 10, 12, 24, 31, 38 and 45. The Disbursement Platform is a bulk-payout application whose Core implements SEP-10 and SEP-24 itself, with no Anchor Platform needed. The Wallet SDK is a client library wrapping SEP-1, 6, 10, 12, 24 and 38, not SEP-31.",
+        "keyFacts": [
+          "The Anchor Platform is the anchor operator backend for SEP-6/10/12/24/31/38.",
+          "The Disbursement Platform is a bulk-payment application, not a wallet or anchor.",
+          "SDP Core implements SEP-10 and SEP-24 natively without the Anchor Platform.",
+          "The Wallet SDK is a client library for SEP-1/6/10/12/24/38, not SEP-31."
+        ],
+        "avoid": [
+          "Do NOT claim the SDP 10,000-instruction per-disbursement cap is a Stellar protocol limit."
+        ],
+        "notes": "Adding SEP-1 or SEP-45 for the Anchor Platform, or SEP-7 or SEP-30 for the Wallet SDK, is not misnumbering.",
+        "movedToTruth": [
+          "10,000-instruction MaxInstructionsPerDisbursement evidence",
+          "Language notes (Java/Kotlin, Kotlin SDK archived)",
+          "Roster of source URLs",
+          "SEP-45 status and 2026-08-05 reverify stamp"
+        ]
+      }
+    },
+    {
+      "id": "q-anchor-sdp-what",
+      "auditVerdict": "merge",
+      "decision": "amend",
+      "finalVerdict": "merge",
+      "why": "Merge is right, but the survivor for 'what SDP is and how its Core/TSS architecture works' should be q-crp-sdp-operation, as the compliance lane decided; q-anchor-sdp-vs-anchor-platform keeps only the role comparison and drops the Core/TSS architecture. Replacement IDs: q-crp-sdp-operation, q-anchor-sdp-vs-anchor-platform.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-ass-cross-bando-stablebonds-sac",
+      "auditVerdict": "move-tool-lane",
+      "decision": "accept",
+      "finalVerdict": "move-tool-lane",
+      "why": "A cross-service join ('according to Scout') that only Raven can satisfy as phrased. Both world halves are tested elsewhere: SAC access in q-asset-trustline-vs-sac, and Bando and Etherfuse in q-defi-rwa-treasury-funding-live and q-defi-etherfuse-stablebonds. Moving it to the tool lane loses no Stellar topic.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-ass-cross-etherfuse-cetes-controls",
+      "auditVerdict": "move-tool-lane",
+      "decision": "accept",
+      "finalVerdict": "move-tool-lane",
+      "why": "Same shape as the Bando case. Issuer flags live in q-comp-auth-flags-overview and Etherfuse Stablebonds in q-defi-etherfuse-stablebonds. Only the 2026-06-15 Anchorage custody news fact leaves the headline, and it is a news item, not durable knowledge.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-asset-amm-fee-reserve",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "The survivor q-asset-sdex-vs-amm rewrite keeps the 30 bps fee and the two-base-reserve pool-share trustline as key facts, which are this case's only two facts.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-asset-claimable-balance",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "The survivor rewrite keeps native ledger entry, not Soroban escrow, and the no-trustline-yet use case. q-raph-claimable-balance-safety keeps the trustline-before-claim rule (op_no_trust).",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-asset-deploy-sac-cli",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "It keeps the command, no new token contract, the same asset with a deterministic id, and the issuer as initial admin (true per SAC docs). The XDR preimage name moving out of the key facts is fine.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-asset-issue-asset-howto",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "It keeps the no-createAsset, code-plus-issuer, ChangeTrust-then-payment sequence and absorbs the two-account practice as a key fact. The SAC-admin caveat stays as a note.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-asset-path-payment-ops",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "It keeps both operation names, routing, and atomicity, and promotes the strict-send versus strict-receive semantics from 'also good' to a key fact, which is supported by the current answer.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-asset-rwa-tokenized-freshness",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "Same measurement as q-eco-stellar-rwa-stablecoin-volume (dated RWA value with its basis), and the survivor carries the $4.1B Q3 figure with QoQ growth. The rot 'changed' is ordinary drift of a dated figure; it should be recorded as holds. The survivor's live key facts pinning Q3 numbers belong to the defi verifier.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-asset-sdex-vs-amm",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "The rewrite absorbs q-asset-amm-fee-reserve's two-reserve fact. Dropping 'makers set tighter or wider prices' removes a weak key fact.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-asset-stablecoin-issuers-discovery",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "Same knowledge as q-eco-stablecoins-on-stellar (issuers versus stablecoins, Circle USDC/EURC, a non-exhaustive dated roster). The 38-to-37 row change is registry drift, not a changed fact.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-asset-trustline-basics",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Same four facts. The base reserve is 0.5 XLM on 2026-11-14, so the dated figure in the answer holds.",
+      "evidence": [
+        {
+          "class": "F",
+          "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=1",
+          "observedAt": "2026-11-14",
+          "quote": "ledger 65468029 base_reserve_in_stroops 5000000 protocol_version 29"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-asset-trustline-vs-sac",
+      "auditVerdict": "tighten",
+      "decision": "amend",
+      "finalVerdict": "tighten",
+      "why": "The rewrite drops the current golden's storage distinction (contract-address balances live in contract data, not trustlines), which answers 'what is the difference', and puts in an off-question 'issuer is initial admin' key fact. Its answer also says nothing is 'redeployed or wrapped', which clashes with q-asset-deploy-sac-cli: the SAC must be deployed once, and the old CLI called that 'wrap'.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://github.com/stellar/stellar-docs/blob/main/docs/tokens/stellar-asset-contract.mdx",
+          "observedAt": "2026-11-14",
+          "quote": "Using Address::Contract - The balance and authorization state will be stored in contract storage, as opposed to a trustline."
+        }
+      ],
+      "finalRewrite": {
+        "question": null,
+        "answer": "They are two views of one asset, not two tokens. A G-account holds it on a trustline, used by classic operations. The Stellar Asset Contract is a protocol-built contract that exposes the same asset to Soroban by contract id and implements SEP-41. A contract address's balance lives in SAC contract storage, not a trustline. The SAC is deployed once per asset; no balance is migrated or bridged.",
+        "keyFacts": [
+          "The SAC is a protocol-built contract exposing the same classic asset to Soroban.",
+          "G-account holdings are trustline ledger entries.",
+          "Soroban contracts move the asset through the SAC by contract id.",
+          "A contract address's balance is SAC contract storage, not a trustline."
+        ],
+        "avoid": [
+          "Do NOT claim the SAC is a separate token that users must migrate balances into or bridge to."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "Contract-data-entry holder detail",
+          "CAP-46-6 reference",
+          "Dossier references",
+          "'Also good if' items"
+        ]
+      }
+    },
+    {
+      "id": "q-asset-two-account-issuer",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "The survivor q-asset-issue-asset-howto rewrite adds 'separate issuing and distribution accounts are recommended practice' as a key fact. The issuer-cannot-hold-own-asset fact stays in q-aas-burn-clawback-redemption-mechanics.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-asset-wallet-sdk-seps",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "The survivor's Wallet SDK key fact keeps the client-side SEP set and 'not SEP-31', which is everything this case tests.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-gap-match-partners-degrade",
+      "auditVerdict": "move-tool-lane",
+      "decision": "accept",
+      "finalVerdict": "move-tool-lane",
+      "why": "This is pure degradation handling. The 503-to-getPartners hint is Raven's own adapter contract, so it fits an injected-failure tool lane. The 502-to-503 change is real, but it is not a world fact.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "src/adapters/scout.ts:175",
+          "observedAt": "2026-11-14",
+          "quote": "hint: \"AI partner endpoints are unavailable — fall back to GET /api/partners filters (scout.getPartners); do not retry.\""
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-gap-related-projects-empty",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "Raven mechanics only. The host now returns caveat 'no-rows' for an empty ok result (src/adapters/types.ts:55 ResultCaveat), and q-ti-related-projects-from-content grades the same operation's direction. Fold the empty-array line into that case.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "src/adapters/types.ts:55",
+          "observedAt": "2026-11-14",
+          "quote": "export type ResultCaveat = \"no-rows\" | \"unverified-match\";"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-production-anchor-architecture",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "Its Stellar facts (SEP set, Anchor Platform is not the bank or licence, banking rails, liquidity) are in the q-crp-become-an-anchor-licensing rewrite and q-comp-anchor-compliance-stack. Only the generic ops-hygiene list (segregated keys, idempotency, runbooks) is lost, and that is not Stellar truth.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-sep-1-toml",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "The survivor q-anchor-endpoint-discovery rewrite keeps SEP-1 and /.well-known/stellar.toml as key facts. SEP-1 numbering also stays in q-sep-catalog-list.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-sep-12-kyc",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "It keeps the SEP-12 versus SEP-9 split, PUT and GET /customer, and SEP-10 or SEP-45 auth. Dropping /customer/files and DELETE is fine. Conflict: the compliance lane merges this case into q-comp-anchor-compliance-stack. If the reconciler takes that merge, the SEP-9 versus SEP-12 dictionary-versus-API fact must move to the survivor.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0012.md",
+          "observedAt": "2026-11-14",
+          "quote": "Title: KYC API Status: Active Updated: 2024-07-23 Version 1.15.0"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-sep-31-cross-border",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "SEP-31 sending-to-receiving anchor with no hosted UI is a key fact in both the q-sep6-sep24-sep31-choice rewrite and the q-sep-6-vs-31-misnumber-trap rewrite.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-sep-38-quotes",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "The q-sep-catalog-list rewrite keeps 'SEP-38 is the Anchor RFQ quote API' as a key fact. SEP-38 is Draft v2.5.0, so the status nuance is not lost.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0038.md",
+          "observedAt": "2026-11-14",
+          "quote": "Title: Anchor RFQ API Status: Draft Updated: 2025-02-26 Version: 2.5.0"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-sep-41-token-interface",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "v0.5.2 Draft is re-read on 2026-11-14, so the as-of move is earned. 'Subset of the SAC interface' is the spec's own wording.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
+          "observedAt": "2026-11-14",
+          "quote": "Title: Soroban Token Interface Status: Draft Updated: 2026-08-24 Version 0.5.2"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
+          "observedAt": "2026-11-14",
+          "quote": "An interface is needed that is a subset of the Stellar Asset contract"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-sep-43-web-wallet-api",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "The rot 'changed' is real: SEP-43 entered the ecosystem README (Draft Proposals table) on 2026-11-03, after the golden's claim that the README omits it. The rewrite drops that claim. v1.2.1 and the error shapes are confirmed.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/commit/ded60f5620",
+          "observedAt": "2026-11-14",
+          "quote": "README at ded60f5620 (2026-11-03, 'Sync SEP statuses', #2058) lists | [SEP-0043](sep-0043.md) | Standard Web Wallet API Interface | ... | Draft |; parent 7a59fafa2e lacks it"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md",
+          "observedAt": "2026-11-14",
+          "quote": "the interface defines common error message shapes to ensure wallets adhere to informative and usable error"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-sep-45-contract-auth",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Draft v0.1.1 is confirmed on 2026-11-14. The SEP-10 complement and auth-entry mechanism key facts match the spec.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0045.md",
+          "observedAt": "2026-11-14",
+          "quote": "Status: Draft Updated: 2025-12-16 Version: 0.1.1"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-sep-53-sign-verify-message",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "It correctly absorbs q-sep53-message-signing. 'v1.0.0 as of 2026-11-14' was re-read today. Off-chain-not-a-transaction is a useful key fact.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md",
+          "observedAt": "2026-11-14",
+          "quote": "Status: Final Updated: 2026-06-18 Version: 1.0.0"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-sep-6-24-deprecation",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "The survivor's key fact 'SEP-6 is the programmatic API; only its interactive flow is deprecated' and the sd-009 cap note carry the whole case.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0006.md",
+          "observedAt": "2026-11-14",
+          "quote": "Status: Active (Interactive components are deprecated in favor of SEP-24)"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-sep-6-vs-31-misnumber-trap",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "The behavior case still demands rejecting the premise (key fact 1). The correct SEP-24 and SEP-31 identities are kept.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-sep-7-uri",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "It matches SEP-7 v2.1.0: web+stellar: with tx and pay operations.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0007.md",
+          "observedAt": "2026-11-14",
+          "quote": "### Operation `tx` ... ### Operation `pay`; Status: Active Version: 2.1.0"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-sep-8-regulated-assets",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "The survivor q-comp-sep8-regulated-assets-approval-server rewrite keeps the required flags, the approval_server, regulated and approval_criteria stellar.toml fields, and the five statuses.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-sep-catalog-list",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "It keeps the core number-to-purpose pairs. 'Lifecycle status is not required' fits a purpose-list question. It absorbs q-sep-38-quotes and q-sep-wallet-seps-list.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-sep-clawback-prereq-flag",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "A one-fact duplicate. The q-comp-clawback-cap0035 rewrite key fact is 'Clawback needs AUTH_REVOCABLE and AUTH_CLAWBACK_ENABLED set before trustlines are created'. The compliance lane names q-comp-auth-flags-overview as the replacement instead; either works, so the reconciler should list both.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://github.com/stellar/stellar-docs/blob/main/docs/tokens/control-asset-access.mdx",
+          "observedAt": "2026-11-14",
+          "quote": "Note that this flag requires that revocable is also set."
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-sep-interactive-deposit-withdraw",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "The survivor's first two key facts are exactly SEP-24 hosted interactive versus SEP-6 programmatic.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-sep-wallet-seps-list",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "The q-sep-catalog-list rewrite tests the same numbers and purposes (SEP-1, 6, 10, 12, 24); 'wallet needs' versus 'commonly used' is the same knowledge.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-sep53-message-signing",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "The survivor q-sep-53-sign-verify-message rewrite keeps the prefix, single SHA-256, ed25519, Final status, off-chain nature, and one-key-is-not-multisig. The per-SDK roster is unverifiable and correctly moved to truth.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md",
+          "observedAt": "2026-11-14",
+          "quote": "Title: Sign and Verify Messages Status: Final Updated: 2026-06-18 Version: 1.0.0"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-sep6-sep24-sep31-choice",
+      "auditVerdict": "tighten",
+      "decision": "amend",
+      "finalVerdict": "tighten",
+      "why": "Key fact 4 requires a dated Active status for all three SEPs, but the rewrite answer never states the status, so the golden fails its own key fact. The corrected version adds the status sentence to the answer; statuses were re-read on 2026-11-14.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0006.md",
+          "observedAt": "2026-11-14",
+          "quote": "Status: Active (Interactive components are deprecated in favor of SEP-24)"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
+          "observedAt": "2026-11-14",
+          "quote": "Status: Active"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0031.md",
+          "observedAt": "2026-11-14",
+          "quote": "Title: Cross-Border Payments API Status: Active Version 3.1.0"
+        }
+      ],
+      "finalRewrite": {
+        "question": null,
+        "answer": "Use SEP-24 when the anchor hosts the interactive deposit and withdrawal UI. Use SEP-6 for a programmatic API with no hosted UI; only SEP-6's old interactive flow is deprecated in favor of SEP-24. Use SEP-31 for anchor-to-anchor cross-border payments, where a sending anchor pays a receiving anchor with no end-user UI. SEP-38 adds quotes. SEP-6, SEP-24 and SEP-31 are all Active as of 2026-11-14; SEP-38 is Draft.",
+        "keyFacts": [
+          "SEP-24 is the anchor-hosted interactive deposit and withdrawal standard.",
+          "SEP-6 is the programmatic API; only its interactive flow is deprecated.",
+          "SEP-31 is a sending anchor paying a receiving anchor, with no end-user hosted UI.",
+          "SEP-6, SEP-24 and SEP-31 are Active as of 2026-11-14."
+        ],
+        "avoid": [
+          "Do NOT claim SEP-31 replaces both SEP-6 and SEP-24.",
+          "Do NOT claim SEP-24 requires the wallet to host the anchor's KYC user interface."
+        ],
+        "notes": "Quoting official docs on SEP-6 programmatic use without the interactive deprecation is not a wrong claim while sd-009 stands; the grade caps at partial for that claim.",
+        "movedToTruth": [
+          "SEP-38 Draft check (2026-08-27 sweep)",
+          "SEP-1 TOML key names TRANSFER_SERVER, TRANSFER_SERVER_SEP0024, DIRECT_PAYMENT_SERVER",
+          "Soneso SEP-38 compatibility matrix",
+          "'Also good if' SEP-38 item"
+        ]
+      }
+    }
+  ],
+  "summary": {
+    "accept": 41,
+    "amend": 6,
+    "reject": 0
+  },
+  "patterns": [
+    "Sample rule: there are no keep verdicts, so the one-in-five keep sample is empty. All 47 records were checked (22 merge, retire, or move; 25 tighten).",
+    "Avoid items in every rewrite drop the corpus form: they state the false claim ('SEP-31 replaces both...') instead of 'Do NOT ...'. Fix them mechanically in phase 4. Amended rewrites here use the corpus form.",
+    "Self-consistency: a rewrite key fact can demand what its own answer or note does not support (q-sep6-sep24-sep31-choice status; q-anchor-moneygram-ramps 'either path' note against two required paths; q-anchor-sdp-vs-anchor-platform SEP-45). Check each key fact against the rewrite's own answer and notes.",
+    "Rot 'changed' is used for ordinary drift of a dated value (RWA $2.8B to $4.1B, Scout registry 38 to 37 rows). Record drift as holds with the date. The SEP-43 README change is a real change.",
+    "Survivor conflicts with other lanes: q-anchor-sdp-what (this lane names q-anchor-sdp-vs-anchor-platform; compliance names q-crp-sdp-operation; the latter is right), q-sep-clawback-prereq-flag (q-comp-clawback-cap0035 versus q-comp-auth-flags-overview), and q-sep-12-kyc (tighten here, merge in compliance).",
+    "Otherwise reliable: every merge and retire keeps its Stellar facts in a survivor, rot checks used primary sources observed 2026-11-14, and as-of dates moved to today only where the auditor re-read the source."
+  ]
+}

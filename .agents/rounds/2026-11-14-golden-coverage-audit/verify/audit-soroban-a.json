@@ -1,0 +1,499 @@
+{
+  "lane": "verify-audit-soroban-a",
+  "decisions": [
+    {
+      "id": "q-gap-digest-soroban-adjacent",
+      "auditVerdict": "retire",
+      "decision": "amend",
+      "finalVerdict": "retire",
+      "why": "Retire is right: pure digest-envelope mechanics with no Soroban truth. The named survivor, q-gap-digest-defi-adjacent, is itself retired by the defi lane, so the tombstone must name the frozen live cases q-live-digest-rwa-recent and q-live-digest-blend-coverage (eval/qa/corpus/live/live-digest-supplement-cases.json) as replacements.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-gap-explainrepo-payload-ok",
+      "auditVerdict": "move-tool-lane",
+      "decision": "accept",
+      "finalVerdict": "move-tool-lane",
+      "why": "Raven envelope-versus-payload reading only. The world question beneath it (where stellar-core handles result codes) is not what the golden grades. No other case covers explainRepo payload reading, so a tool lane is the right home.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-gap-scout-list-skill-directory",
+      "auditVerdict": "retire",
+      "decision": "amend",
+      "finalVerdict": "retire",
+      "why": "Retire is right (Raven mechanics; routing tests cover listSkills surfacing), but the named survivor q-ti-skill-builder-quickstart tests the builder-quickstart workflow, not listSkills versus getSkill. Replacement IDs: q-tool-cli-skills-discovery (listSkills catalog) and q-gap-scout-get-skill-detail (getSkill for one slug).",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-passkey-smart-account-architecture",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "It keeps __check_auth, CAP-0051 secp256r1 in Protocol 21, challenge binding, and on-chain public state only. The symmetric origin and RP-ID note resolves the conflict with q-infra-secp256r1-passkeys; the tooling lane should adopt the same note.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-passkey-wallet-recovery",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Same five facts compressed to four. The Ed25519 fallback moves to a non-penalizing note, which matches the current key fact 1 qualifier.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-smart-account-scoped-policy-signers",
+      "auditVerdict": "tighten",
+      "decision": "amend",
+      "finalVerdict": "tighten",
+      "why": "Absorbing the signer-mutation fact from q-soroban-add-signer-smart-wallet-howto is right. New key fact 4 makes one vendor's architecture (OpenZeppelin context rules, signers, policies) required, which the question does not ask and the current golden lacks. It is true (OZ accounts README), so it stays in the answer, and the current golden's policy or verifier co-signing fact returns as key fact 4.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "https://github.com/OpenZeppelin/stellar-contracts/blob/main/packages/accounts/README.md",
+          "observedAt": "2026-11-14",
+          "quote": "It separates authentication (signers prove identity), authorization scope (context rules bind signers and policies to specific operations), and enforcement logic"
+        }
+      ],
+      "finalRewrite": {
+        "question": "How can a Stellar smart account authorize scoped calls, spending limits, time windows, and co-signing without giving every signer full control, and how is a signer added or changed?",
+        "answer": "A contract account enforces scope inside `__check_auth`, which sees the invocation's authorization contexts, so rules can limit contracts, functions, amounts, and time windows. OpenZeppelin smart accounts compose context rules (scope), signers (authentication), and policies (limits, thresholds). Give delegated or session signers narrow rules instead of a master key. The signer set is contract state: add a signer by calling the deployed contract's signer-management method, authorized by an existing signer. Classic SetOptions does not apply to a C-address.",
+        "keyFacts": [
+          "`__check_auth` can restrict calls, amounts, and time windows by auth context.",
+          "Narrow session or delegated signers replace sharing a full-control key.",
+          "Signer changes are contract state authorized by an existing signer, not SetOptions.",
+          "Policy or verifier contracts handle co-signing and limits instead of unrestricted signers."
+        ],
+        "avoid": [
+          "Do NOT claim classic account thresholds are the only way to scope authorization on Stellar.",
+          "Do NOT claim a session signer needs the wallet's master private key."
+        ],
+        "notes": "Method names and signer schemas are implementation-specific; do not require one ABI. Naming OpenZeppelin smart accounts or Smart Account Kit as an example is correct, not required.",
+        "movedToTruth": [
+          "Library-choice facts (Passkey Kit and Smart Account Kit as non-drop-in siblings) belong to q-tool-passkeykit-smart-wallet",
+          "Source list"
+        ]
+      }
+    },
+    {
+      "id": "q-sor-build-target-wasm32v1",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "The rot 'changed' (CLI 28.1.0 to 30.0.1) is real version drift, and the rewrite takes the version pins out of the key facts. CLI v30.0.1 still builds wasm32v1-none, and the soroban-sdk 28+ marker and Rust 1.82/1.84 facts come from the current golden.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-cli/releases/tag/v30.0.1",
+          "observedAt": "2026-11-14",
+          "quote": "30.0.1 Latest v30.0.1 2026-11-03"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-cli/blob/v30.0.1/cmd/soroban-cli/src/commands/contract/build.rs#L271",
+          "observedAt": "2026-11-14",
+          "quote": "pub(crate) const WASM_TARGET: &str = \"wasm32v1-none\";"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-sor-classic-dex-from-contract",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "The question change absorbs the claimable-balance arbiter. The key facts keep FAQ wording and the one-host-function-op rule. Nothing true is dropped.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-sor-confidential-tokens",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "It matches the current golden's 2026-11-02 refresh; the auditor re-read the OZ announcement and the v0.8.0 release today. The dated status leaves the key facts and stays in the answer. This is a privacy-status question, so the 'mixed' label is right.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-sor-contract-as-claimable-arbiter",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "The q-sor-classic-dex-from-contract rewrite absorbs 'contracts cannot interact with claimable balances' and 'escrow is a contract holding SAC or SEP-41 balances'. The approve-needs-from-authorization half is in the q-sor-sep41-transfer-vs-transferfrom answer.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
+          "observedAt": "2026-11-14",
+          "quote": "fn approve(env: Env, from: Address, spender: Address, amount: i128, live_until_ledger: u32);"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-sor-contract-trustlines-c-address",
+      "auditVerdict": "tighten",
+      "decision": "amend",
+      "finalVerdict": "tighten",
+      "why": "The rewrite's Protocol 26 `trust` sentence ('a contract can create it') drops the current golden's point that the recipient's opt-in authorization is preserved. CAP-0073 calls `address.require_auth`. The corrected answer and key fact 4 restore that.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0073.md",
+          "observedAt": "2026-11-14",
+          "quote": "authorization from `address` (i.e. `address.require_auth` will be called)."
+        },
+        {
+          "class": "A",
+          "ref": "https://github.com/stellar/stellar-docs/blob/main/docs/tokens/stellar-asset-contract.mdx",
+          "observedAt": "2026-11-14",
+          "quote": "Using Address::Contract - The balance and authorization state will be stored in contract storage, as opposed to a trustline."
+        }
+      ],
+      "finalRewrite": {
+        "question": "Does a Soroban contract or smart-wallet (C…) need a trustline to receive, hold, and send a classic asset like USDC, and how does a contract send assets back out?",
+        "answer": "Contracts reach classic assets through the Stellar Asset Contract (SAC). A C-address holds its balance and authorization state in contract storage, not a trustline, so it never opens one with Change Trust. To send out, the contract calls SAC `transfer` with Soroban authorization. A G-address recipient still needs a funded trustline; since Protocol 26 the SAC `trust` function can create it inside an invocation, with that account's authorization. A classic Payment to a C-address is not equivalent to one to a G-address; use SAC transfers.",
+        "keyFacts": [
+          "Contracts interact with classic assets through the SAC.",
+          "A C-address balance lives in contract storage; it opens no trustline.",
+          "Sending out is an authorized SAC `transfer`.",
+          "A G recipient needs a trustline; since Protocol 26 SAC `trust` creates one with its authorization."
+        ],
+        "avoid": [
+          "Do NOT tell users to use classic Change Trust on a C-address.",
+          "Do NOT claim a classic payment operation to a C-address is equivalent to one to a G-address."
+        ],
+        "notes": "i64 trustline versus i128 contract-storage internals belong to q-soroban-sac-balance-storage; do not require them.",
+        "movedToTruth": [
+          "Cited URLs",
+          "2026-06-29 differentiation note",
+          "Exchange and memo-support warning (also good)"
+        ]
+      }
+    },
+    {
+      "id": "q-sor-cross-socketfi-auth",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "Not a real user ask. Its portable fact (__check_auth) is a key fact of q-soroban-check-auth-custom-account. The SocketFi profile is a corpus snapshot, and smart-wallet project discovery stays in q-tool-smart-wallet-repos-discovery.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-sor-cross-warmancer-zk-stack",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "The curve route facts (BLS12-381 CAP-0059 P22; BN254 CAP-0074 P25; CAP-0080 P26) are key facts of the q-zk-host-functions-status rewrite, and q-zk-proof-systems-stellar keeps the Groth16 verifier-contract fact. The Warmancer lookup is corpus trivia. Note: soroban-b's record for q-zk-proof-systems-stellar has verdict 'merge' but its reason calls it the survivor; the reconciler must fix that so this merge has a living target.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-sor-decode-hosterror-codes",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "The kitchen-sink question is narrowed to diagnostics and try_* results. The test-failure sub-questions it drops (mock_all_auths, set_timestamp) are SDK-testutils trivia. The nested Result semantics match soroban-sdk try_ clients.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-sor-deploy-invoke-from-js-sdk",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Same facts. The builder-versus-built distinction is kept and version-qualified to JS SDK 16 and 17 (npm latest 17.4.0 on 2026-11-14).",
+      "evidence": [
+        {
+          "class": "D",
+          "ref": "npm view @stellar/stellar-sdk version",
+          "observedAt": "2026-11-14",
+          "quote": "version = '17.4.0'"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-sor-doc-page-sections-followup",
+      "auditVerdict": "retire",
+      "decision": "amend",
+      "finalVerdict": "retire",
+      "why": "Retire is right: get_doc_page is Raven's own contract and test/adapters.test.ts (lines 846, 874) covers it. But the named survivor q-edge-doc-page-sections-soft-empty is also retired by the edge lane, so the tombstone needs a living replacement. Together the two lanes leave no battery case using get_doc_page. The orchestrator must either accept that (and drop the operation floor) or keep one in the tool lane.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-sor-doc-timestamping-manage-data",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "It keeps the 32-byte digest, the 64-byte Manage Data limits and reserve, the past-transaction proof boundary, and MEMO_HASH. The sd-014 cap note is preserved.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-sor-doc-title-discovery",
+      "auditVerdict": "retire",
+      "decision": "amend",
+      "finalVerdict": "retire",
+      "why": "Retire is right (unit test test/adapters.test.ts:760 covers search_doc_titles ranking), but the named survivor q-edge-doc-title-zero-hits is also retired by the edge lane. The replacement for the transferable zero-hit behavior is q-edge-strupey-ambiguous-stellar-history, the edge lane's own survivor. As with get_doc_page, no battery case keeps search_doc_titles.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-sor-evm-to-soroban-porting",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "It keeps the auth footgun, SAC/SEP-41 and Draft SEP-57, no null address, and Solang pre-alpha. The dated versions in the note were confirmed today.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0057.md",
+          "observedAt": "2026-11-14",
+          "quote": "Title: T-REX (Token for Regulated EXchanges) Status: Draft Updated: 2026-09-08 Version: 0.4.0"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/hyperledger-solang/solang/blob/main/README.md",
+          "observedAt": "2026-11-14",
+          "quote": "The Soroban target is still pre-alpha."
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-sor-force-fast-archival-localnet",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "After the duplicated P23 restore facts go, what remains is Core test-config flag names that the golden itself says need re-checking per release. The durable restore and TTL behavior lives in q-sor-p23-auto-restore-extendto and q-sor-ttl-defaults-extend. That is a score-independent reason (volatile, non-categorical).",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-sor-p23-auto-restore-extendto",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "It keeps the archivedSorobanEntries atomic restore, both formulas, and Temporary-not-restorable, with avoid items for the absolute extendTo and mandatory-restore traps.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-sor-persistent-unbounded-collection-cap",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Same facts. The two key facts on bounding and splitting merge into one; the network-configured limit stays undated.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-sor-recurring-escrow-patterns",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "It makes the three-clocks separation and transfer_from spender pattern explicit. These were already in the current golden's answer and key fact 2.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-sor-reflector-integration-code",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Signatures and registry types were re-read in source and the registry on 2026-11-14. The x_last_price stale-name trap and DAO-not-oracle avoid come from the current golden; volatile IDs leave judge text.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "https://github.com/reflector-network/reflector-contract/blob/main/beam-contract/src/lib.rs",
+          "observedAt": "2026-11-14",
+          "quote": "pub fn lastprice(e: &Env, caller: Address, asset: Asset) -> Option<PriceData>"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-sor-require-auth-propagation",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "The same three facts in clearer form, plus a no-msg.sender avoid that matches the docs.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-sor-sac-introspection",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "It keeps the derivation, executable check, name/symbol identity, and admin-is-not-issuer. The cs-008 cap note is preserved.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-sor-scval-conversion",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "The question change correctly absorbs the stale-spec-after-upgrade fact. The JS SDK 17.4.0 date move is backed by today's npm read.",
+      "evidence": [
+        {
+          "class": "D",
+          "ref": "npm view @stellar/stellar-sdk version time.modified",
+          "observedAt": "2026-11-14",
+          "quote": "version = '17.4.0'; time.modified = '2026-10-25'"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-sor-sep41-transfer-vs-transferfrom",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "The MuxedAddress and Address destination types and the live_until_ledger name match SEP-41 v0.5.2.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
+          "observedAt": "2026-11-14",
+          "quote": "fn transfer(env: Env, from: Address, to: MuxedAddress, amount: i128); fn transfer_from(env: Env, spender: Address, from: Address, to: Address, amount: i128);"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-sor-skill-openzeppelin-setup",
+      "auditVerdict": "retire",
+      "decision": "amend",
+      "finalVerdict": "retire",
+      "why": "Retire is right: the golden states no world fact, and the skills routing set (eval/skills-cases.json q-skill-oz-project-setup) measures skill surfacing. The named survivor q-ti-skill-builder-quickstart does not test OpenZeppelin setup. The world topic (OZ Stellar contracts for a SEP-41 token) is q-soroban-oz-token. Replacement IDs: q-soroban-oz-token and the q-skill-oz-project-setup routing case.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-sor-stale-spec-after-upgrade",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "The q-sor-scval-conversion rewrite absorbs its durable fact as key fact 4 (regenerate spec-aware clients; raw Contract.call is spec-free). The rest is bug-report detail. The lane's 'missing' list rightly flags contract upgrade and migration as a gap.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-sor-test-event-assertion-ordering",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Same facts compacted. 'Reading does not clear the list' is in the current golden.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-sor-ttl-defaults-extend",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "The 2026-11-14 date on the Mainnet TTL key fact rests on the auditor's same-day getLedgerEntries CONFIG_SETTING read of both networks. The figures are unchanged from 2026-07-10, so this is a true re-read, not a date bump.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-soroban-add-signer-smart-wallet-howto",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "Signer mutation goes to the q-smart-account-scoped-policy-signers rewrite (key fact 3), and the kit-sibling facts to q-tool-passkeykit-smart-wallet.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-soroban-auth-delegation-p27",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "The rot 'changed' (Protocol 29 is now current on Mainnet) is confirmed. The rewrite only says P27 has been live since 2026-07-08, which still holds, and the pending-on-Mainnet avoid stays true.",
+      "evidence": [
+        {
+          "class": "F",
+          "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=1",
+          "observedAt": "2026-11-14",
+          "quote": "ledger 65468029 protocol_version 29 closed_at 2026-11-14T03:16:27Z"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/README.md",
+          "observedAt": "2026-11-14",
+          "quote": "CAP-0071 listed Final for Protocol 27 (registry index)"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-soroban-auth-recursion-dos-audit",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "A score-independent reason: identifier history of one audit PDF, no durable Stellar knowledge. Soroban security coverage stays in q-soroban-vuln-classes and q-soroban-reentrancy, and q-tool-soroban-auth-audit-live holds the Scout side.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-soroban-av-passkeys-talk",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "The world ask ('find the talk') is a content-discovery behavior, and the survivor q-gap-av-offset-not-timestamp covers the same operation and the no-transcript rule. Whether that survivor leaves the headline is the tooling lane's call.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-soroban-check-auth-custom-account",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "It keeps the reserved ABI, host dispatch, policy over auth_contexts, and host-handled replay. The recursion avoid comes from the current golden.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-soroban-cli-bindings",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "The CLI version moved to 30.0.1, and the rewrite takes version pins out of the key facts. I checked that the deprecation and external-plugin placeholders still hold in v30.0.1 source.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-cli/blob/v30.0.1/cmd/soroban-cli/src/commands/contract/bindings.rs#L15",
+          "observedAt": "2026-11-14",
+          "quote": "Deprecated, use the JavaScript Stellar SDK instead ... Generate Python bindings (requires external plugin)"
+        }
+      ],
+      "finalRewrite": null
+    }
+  ],
+  "summary": {
+    "accept": 31,
+    "amend": 7,
+    "reject": 0
+  },
+  "patterns": [
+    "Sample rule: there are no keep verdicts, so the one-in-five keep sample is empty. All 38 records were checked (14 retire, merge, or move; 24 tighten).",
+    "Replacement IDs point at cases other lanes also retire or merge: q-gap-digest-defi-adjacent (defi retires), q-edge-doc-page-sections-soft-empty and q-edge-doc-title-zero-hits (edge retires), q-zk-proof-systems-stellar (soroban-b marks it 'merge' yet calls it a survivor). The reconciler should resolve every tombstone's replacement IDs against final verdicts.",
+    "Named survivors that do not test the same knowledge: q-ti-skill-builder-quickstart was named for both skill-mechanics retires. The retire verdicts hold, but the replacement IDs were wrong.",
+    "Edge and soroban-a together leave no battery case for stellarDocs.get_doc_page or search_doc_titles. That is a deliberate coverage decision for the orchestrator, and phase 4 operation floors must change with it.",
+    "Avoid items in rewrites drop the 'Do NOT ...' corpus form, as in the assets lane. Amended rewrites here use it.",
+    "Rewrites sometimes add a true but vendor-specific required key fact (OpenZeppelin smart-account architecture) or soften a qualifier from the current golden (CAP-0073 trust needs the recipient's authorization). Check new key facts against the question's scope and against qualifiers being dropped.",
+    "Otherwise reliable: version drifts (CLI 30.0.1, Protocol 29) were caught with primary sources, and as-of dates moved to 2026-11-14 only where re-read today."
+  ]
+}

@@ -1,0 +1,4043 @@
+{
+  "lane": "audit-protocol",
+  "records": [
+    {
+      "id": "q-gap-scout-changelog-envelope",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Scout changelog operation",
+        "Raven result envelope",
+        "service status vs data"
+      ],
+      "tests": "Which Raven operation lists Scout contract changes and that the envelope ok, the payload ok and ecosystem data are separate; no Stellar knowledge is tested.",
+      "questionIssues": [
+        "Answerable only through Raven operation names; another tool or the open web cannot satisfy it."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": "Names a Raven operation (scout.getChangelog)."
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "Prescribes envelope vocabulary, not a world fact."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Operation and payload shape (entries, payload ok) as probed 2026-07-11",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "test/adapters.test.ts",
+              "observedAt": "2026-11-14",
+              "quote": "adapter tests cover scout.getStatus call and envelope; test/catalog.test.ts, test/plan-grade.test.mjs and eval/discovery/cases.json reference getChangelog"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-gap-scout-status-envelope",
+          "survivor": null,
+          "why": "Same envelope-vs-payload ok lesson; both retire."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "Pure Raven mechanics with no Stellar truth. Catalog and adapter unit tests, discovery cases (eval/discovery/cases.json) and the live execute lane (test/live/run-live-execute.mjs) already cover the operation and envelope, so it adds no visibility.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 81,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-gap-scout-status-envelope",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Scout getStatus operation",
+        "Raven result envelope",
+        "service freshness"
+      ],
+      "tests": "That getStatus carries an envelope ok distinct from payload data.ok and source freshness; no Stellar knowledge is tested.",
+      "questionIssues": [
+        "Answerable only through Raven operation names."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": "Prescribes envelope vocabulary."
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": "Names a Raven operation and its payload fields."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "getStatus payload fields (apiVersion, generatedAt, sources, endpoints)",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "test/adapters.test.ts:142",
+              "observedAt": "2026-11-14",
+              "quote": "callScout(entry(\"scout.getStatus\"), {}, {}, fetchImpl) is exercised by a unit test"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-gap-scout-changelog-envelope",
+          "survivor": null,
+          "why": "Same lesson."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "Raven mechanics already covered by test/adapters.test.ts and the live execute lane (test/live/run-live-execute.mjs calls scout.getStatus); no headline value.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 96,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-pc-account-activation-not-found",
+      "verdict": "tighten",
+      "purpose": "stellar-truth",
+      "topics": [
+        "account creation",
+        "minimum balance",
+        "sponsored creation"
+      ],
+      "tests": "A keypair is not an account until CreateAccount creates it, with a reserve-based minimum or sponsored zero-balance creation.",
+      "questionIssues": [
+        "Three questions in one; the \"why does payment fail\" part is the common user error and is the aim."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Holds two predicates (unsponsored minimum, CAP-0033 sponsored zero)."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Base reserve 0.5 XLM so an empty unsponsored account needs 1 XLM",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "F",
+              "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=5",
+              "observedAt": "2026-11-14",
+              "quote": "closed_at 02:48:27, :32, :37, :42, :47Z; base_reserve_in_stroops 5000000; max_tx_set_size 1000; protocol_version 29"
+            },
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens#minimum-balance",
+              "observedAt": "2026-11-14",
+              "quote": "An account must always maintain a minimum balance of two base reserves (currently 1 XLM)."
+            }
+          ]
+        },
+        {
+          "claim": "Payment to a nonexistent destination fails with PAYMENT_NO_DESTINATION; CAP-0033 sponsored creation with startingBalance 0",
+          "result": "unverifiable",
+          "evidence": []
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-protocol-base-reserve-min-balance",
+          "survivor": "q-protocol-base-reserve-min-balance",
+          "why": "Owns the reserve formula; this case should only state the creation fact and the two-reserve minimum."
+        }
+      ],
+      "reason": "Real user question with distinct knowledge (CreateAccount, PAYMENT_NO_DESTINATION). Cut the reserve-formula restatement, drop Friendbot and process language, and date the 1 XLM.",
+      "rewrite": {
+        "question": null,
+        "answer": "A keypair is only an identity until a CreateAccount operation creates its ledger entry, so a Payment to a nonexistent G-address fails with PAYMENT_NO_DESTINATION. An unsponsored empty account needs two base reserves, 1 XLM at the 0.5 XLM reserve as of 2026-11-14. A sponsored CreateAccount (CAP-0033) can use startingBalance 0.",
+        "keyFacts": [
+          "CreateAccount, not key generation or Payment, creates the ledger account.",
+          "The unsponsored minimum is two base reserves (1 XLM at 0.5 XLM, dated).",
+          "Sponsored creation can start at 0 XLM."
+        ],
+        "avoid": [
+          "Do NOT say Payment creates a missing destination or that every generated address exists."
+        ],
+        "notes": "Accept 1 XLM only when dated or tied to the reserve; the reserve is validator-set.",
+        "movedToTruth": [
+          "GT-29 correction history",
+          "sd-013 docs-gap record",
+          "Friendbot Testnet remark"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 208,
+      "wordsAfter": 109
+    },
+    {
+      "id": "q-pc-account-merge-reclaim-reserve",
+      "verdict": "tighten",
+      "purpose": "stellar-truth",
+      "topics": [
+        "AccountMerge",
+        "reserve reclamation",
+        "sponsorship blockers"
+      ],
+      "tests": "AccountMerge moves native XLM and deletes the account; non-signer subentries and sponsorship the source provides block it; signers are removed automatically.",
+      "questionIssues": [],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Holds sponsor-vs-sponsored as one predicate pair; fine but dense."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Merge allowed when numSubEntries == signers.size(); sponsoring > 0 blocks; remaining signers removed",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-core/blob/master/src/transactions/MergeOpFrame.cpp",
+              "observedAt": "2026-11-14",
+              "quote": "if (sourceAccount.numSubEntries != sourceAccount.signers.size()) … HAS_SUB_ENTRIES; if (getNumSponsoring(...) > 0) … IS_SPONSOR; while (!sourceAccount.signers.empty())"
+            }
+          ]
+        }
+      ],
+      "duplicates": [],
+      "reason": "Distinct, correct, practical. The answer is 213 words; compress and drop the signer-minutiae from avoid.",
+      "rewrite": {
+        "question": null,
+        "answer": "AccountMerge closes the source account, moves its native XLM to a different destination and deletes the entry, releasing its reserve. It is blocked while non-signer subentries (trustlines, offers, data) remain or while the account sponsors other entries; remaining signers are removed automatically. Issued-asset balances do not transfer.",
+        "keyFacts": [
+          "AccountMerge transfers native XLM to the destination and deletes the source.",
+          "Trustlines, offers and data entries must be cleared first; signers need not be.",
+          "An account that sponsors entries cannot merge; being sponsored is not a blocker."
+        ],
+        "avoid": [
+          "Do NOT say issued assets move through AccountMerge or that trustlines can remain."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "GT-29 correction history and process ids",
+          "sd-013 gap record"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 213,
+      "wordsAfter": 97
+    },
+    {
+      "id": "q-pc-address-types-strkey",
+      "verdict": "tighten",
+      "purpose": "stellar-truth",
+      "topics": [
+        "G/C/M/S address types",
+        "StrKey encoding",
+        "SEP-0023"
+      ],
+      "tests": "What each address prefix denotes and how StrKey composes version byte, payload and CRC16 in base32.",
+      "questionIssues": [
+        "The encode/decode half asks for code; an agent can pass without a worked example."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Vague (\"at a high level\") and restates 1."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Behavior caution folded into a world fact; keep one."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SEP-0023 StrKey: version byte, payload, CRC16, base32 without padding; C and G payload 32 bytes",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0023.md",
+              "observedAt": "2026-11-14",
+              "quote": "StrKey: version byte, binary payload, CRC16 checksum, RFC4648 base32 without padding (read via prior audit; not re-fetched)"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-pc-muxed-accounts",
+          "survivor": "q-pc-muxed-accounts",
+          "why": "Muxed M semantics are owned there; this case should only name M."
+        }
+      ],
+      "reason": "Core knowledge but 276 words and five key facts. Compress to four predicates.",
+      "rewrite": {
+        "question": null,
+        "answer": "G is an Ed25519 public account key, S its secret seed, M a muxed account (G plus a uint64 ID) and C a contract address. StrKey (SEP-0023) is a version byte, a payload and a CRC16 checksum, base32-encoded without padding. G and C payloads are 32 bytes. Decoding a G-address yields the raw 32-byte Ed25519 key. An S-seed must never be shared.",
+        "keyFacts": [
+          "G is the public account key, S the secret seed, M muxed, C a contract.",
+          "StrKey is version byte, payload and CRC16 in base32, not base58 or hex.",
+          "A G-address decodes to the raw 32-byte Ed25519 public key.",
+          "An S-seed is secret material that must not be shared."
+        ],
+        "avoid": [
+          "Do NOT treat C as an EVM 0x address or ask a user to paste an S-seed."
+        ],
+        "notes": "Extra SEP-0023 prefixes (such as W for muxed contracts in Protocol 30) are acceptable.",
+        "movedToTruth": [
+          "SEP-0023 v1.4.0 W-prefix note and Mainnet-protocol aside",
+          "golden cites line"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 276,
+      "wordsAfter": 141
+    },
+    {
+      "id": "q-pc-bucketlist-vs-merkle-inclusion-proof",
+      "verdict": "tighten",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Bucket List vs transaction proofs",
+        "txSetHash and txSetResultHash",
+        "SCP finality"
+      ],
+      "tests": "The Bucket List commits ledger state; proving a transaction in a ledger needs full tx-set/result hashes, the header chain and SCP finality.",
+      "questionIssues": [
+        "Presupposes a premise (\"not a classic Merkle tree\") that a source could contest; acceptable framing."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "No standard compact one-call transaction inclusion proof exists (negative, as of date)",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "D",
+              "ref": "parallel-cli search \"Stellar transaction inclusion proof ledger header SCP signatures\" (developers.stellar.org, stellar.org, github.com)",
+              "observedAt": "2026-11-14",
+              "quote": "ten results; none describes a compact transaction inclusion proof API (HerderImpl.cpp, ledgers docs, Peer.cpp)"
+            }
+          ]
+        },
+        {
+          "claim": "Header carries txSetResultHash and bucketListHash; scpValue carries txSetHash",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-xdr/blob/v30.0/Stellar-ledger.x",
+              "observedAt": "2026-11-14",
+              "quote": "StellarValue scpValue; Hash txSetResultHash; Hash bucketListHash"
+            }
+          ]
+        }
+      ],
+      "duplicates": [],
+      "reason": "Valuable boundary between state and transaction commitments. Compress; the CAP-0083 empty-tx-set edge case stays as a one-line caution; sd-014 stays named because the cap-finding lint needs it.",
+      "rewrite": {
+        "question": null,
+        "answer": "The Bucket List and bucketListHash commit ledger state, not a per-transaction Merkle branch. To show a transaction is in a ledger, fetch the full transaction-set and result XDR, recompute txSetHash and txSetResultHash, check the ledger-header hash chain, and establish header finality through SCP. Horizon, RPC and archives retrieve data but do not authenticate it. As of 2026-11-14 no standard compact proof API is documented.",
+        "keyFacts": [
+          "The Bucket List commits ledger state, not per-transaction inclusion.",
+          "Inclusion needs full tx-set/result hashes, the header chain and SCP finality."
+        ],
+        "avoid": [
+          "Do NOT call the Bucket List a per-transaction Merkle proof or an RPC/Horizon row self-authenticating."
+        ],
+        "notes": "Accurately quoting the canonical docs on Bucket List state commitments without a full-XDR recipe is not a wrong claim while sd-014 stands; cap at partial for that claim. Stating the CAP-0083 empty-tx-set edge case (txSetHash 0x0) is correct.",
+        "movedToTruth": [
+          "GT-29 correction history",
+          "CAP-0083 Mainnet date and Protocol 28 explanation"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 296,
+      "wordsAfter": 137
+    },
+    {
+      "id": "q-pc-cross-redstone-sep40",
+      "verdict": "tighten",
+      "purpose": "mixed",
+      "topics": [
+        "SEP-40 oracle interface",
+        "RedStone on Stellar",
+        "price oracle providers"
+      ],
+      "tests": "SEP-40 is the oracle price-feed consumer interface and RedStone is a live SEP-40-compatible provider on Stellar.",
+      "questionIssues": [
+        "Keyed to one June 2026 article, so passing depends on the Lumenloop corpus holding it; a correct answer from official docs alone cannot identify \"the article\".",
+        "Counts of assets/feeds are deliberately excluded, so the case tests identity plus a definition only."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Corpus-relative article identification, not a world fact about Stellar."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Holds live-status plus oracle role."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Names a source class (process)."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "RedStone publishes a SEP-40-compliant contract on Stellar; SEP-40 interface lastprice, price, prices",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/data/oracles/oracle-providers",
+              "observedAt": "2026-11-14",
+              "quote": "A single SEP-40 -compliant contract that serves the supported Stellar assets through the standard lastprice , price , and prices interface."
+            }
+          ]
+        },
+        {
+          "claim": "Lumenloop directory lists Redstone Finance (oracle infrastructure)",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "lumenloop.search_directory({query:\"RedStone\"})",
+              "observedAt": "2026-11-14",
+              "quote": "slug redstone-finance, title Redstone Finance, tags Oracle, Infrastructure, DeFi"
+            }
+          ]
+        },
+        {
+          "claim": "The 2026-06-04 RedStone article title and nine-asset count",
+          "result": "unverifiable",
+          "evidence": []
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "oracle topic (defi lane)",
+          "survivor": "check the DeFi/oracle case; keep one oracle case",
+          "why": "Oracle providers and SEP-40 belong to the DeFi/oracles leaf."
+        }
+      ],
+      "reason": "Retarget from \"one article\" to the durable knowledge (what SEP-40 is, who serves it). Counts and article title go to truth.",
+      "rewrite": {
+        "question": "Which oracle providers publish SEP-40-compatible price feeds on Stellar, and what is SEP-40 for?",
+        "answer": "SEP-40 is the oracle consumer interface: a price-feed contract exposes lastprice, price and prices, so lending or derivatives contracts can switch providers without custom integration. RedStone is a modular oracle whose official oracle-provider docs describe a SEP-40-compliant Stellar contract (as of 2026-11-14). Check each provider for compliance.",
+        "keyFacts": [
+          "SEP-40 is the standard price-feed interface (lastprice, price, prices) for oracle contracts.",
+          "RedStone offers a SEP-40-compliant price-feed contract on Stellar (docs, dated)."
+        ],
+        "avoid": [
+          "Do NOT assert a single reconciled asset or feed count for RedStone."
+        ],
+        "notes": "Asset and feed counts differ across sources; accept any dated, attributed count.",
+        "movedToTruth": [
+          "2026-06-04 article title and nine-asset count",
+          "Scout ten-feed launch figure",
+          "live re-check history"
+        ]
+      },
+      "confidence": "low",
+      "wordsBefore": 240,
+      "wordsAfter": 93
+    },
+    {
+      "id": "q-pc-doc-category-validator-search",
+      "purpose": "raven-mechanics",
+      "topics": [
+        "Stellar Docs category search",
+        "validator documentation",
+        "Raven search adapter"
+      ],
+      "tests": "That an agent calls search_docs_in_category with the supported category and knows the adapter path-filters; no Stellar knowledge is tested.",
+      "questionIssues": [
+        "Answerable only through a Raven operation and its vocabulary."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "operation",
+          "issue": "Names a Raven operation argument."
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "Prescribes workflow."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "pathFiltered: true, /docs/validators path filter, soft-empty semantics",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "test/adapters.test.ts:665-713",
+              "observedAt": "2026-11-14",
+              "quote": "expect(result).toMatchObject({ ok: true, data: { candidates: 50, pathFiltered: true } })"
+            }
+          ]
+        }
+      ],
+      "duplicates": [],
+      "verdict": "retire",
+      "reason": "Raven mechanics fully asserted by test/adapters.test.ts (category fill, pathFiltered, meetings switch) and routed by eval/discovery cases; nothing unseen without it.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 145,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-pc-fee-bump-channel-accounts-feepool",
+      "verdict": "tighten",
+      "purpose": "stellar-truth",
+      "topics": [
+        "fee-bump transactions",
+        "channel accounts",
+        "fee pool"
+      ],
+      "tests": "Fee-bump mechanics (who signs and pays, inner data unchanged, total fee not additive), channel accounts as sequence lanes, and where fees go.",
+      "questionIssues": [
+        "Five sub-questions; \"why can fees look doubled\" is the sharp one."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Overlaps 1 in spirit but separable."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Fee-bump: total max bid for inner operations plus one; replaces same source/sequence only at a 10x bid",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/guides/transactions/fee-bump-transactions",
+              "observedAt": "2026-11-14",
+              "quote": "the total number of operations is equal to the number of operations in the inner transaction plus one … if and only if the fee bid of the second transaction is 10x"
+            }
+          ]
+        },
+        {
+          "claim": "Fees go to the fee pool, not validators",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-xdr/blob/v30.0/Stellar-ledger.x",
+              "observedAt": "2026-11-14",
+              "quote": "int64 feePool; // fees burned since last inflation run"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-pc-practical-fee-setting",
+          "survivor": "q-pc-practical-fee-setting",
+          "why": "Fee selection and surge belong there; this case owns fee-bump and channel accounts."
+        }
+      ],
+      "reason": "380 words before; notes carry review history and fee-layer detail. Compress and keep one symmetric caution on per-op vs total bid wording.",
+      "rewrite": {
+        "question": null,
+        "answer": "A fee-bump wraps a signed inner transaction. The outer fee source signs and pays; the inner source, sequence and signatures stay authoritative and the fee source's own sequence is not used. The outer fee is one total bid for inner operations plus one, charged once, so inner and outer fee fields do not add. Channel accounts are separate source accounts whose sequence lanes give parallel throughput. Fees go to the fee pool, not validators.",
+        "keyFacts": [
+          "The outer fee source signs and pays; the inner source, sequence and signatures are unchanged.",
+          "The charged outer fee and the inner fee field are not additive.",
+          "Channel accounts are separate transaction sources giving sequence-number lanes."
+        ],
+        "avoid": [
+          "Do NOT say a fee-bump replaces inner authorization, consumes the fee source sequence, or doubles the fee."
+        ],
+        "notes": "Either the XDR total-bid or the SDK per-operation baseFee description is correct if consistent.",
+        "movedToTruth": [
+          "2026-06-29 differentiation review",
+          "GT-29 correction history",
+          "feePool wording verification",
+          "golden cites and also-good lines"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 380,
+      "wordsAfter": 141
+    },
+    {
+      "id": "q-pc-l2-payment-channels-starlight",
+      "verdict": "tighten",
+      "purpose": "mixed",
+      "topics": [
+        "Starlight payment channels",
+        "Layer-2 options on Stellar",
+        "CAP-0021/0040 primitives"
+      ],
+      "tests": "Starlight is archived experimental work; CAP-0021/0040 are primitives, not a live channel network; L2 claims need dated deployment evidence.",
+      "questionIssues": [
+        "Asks about Starlight, CAP-21/40, commit-chains, rollups and Lightning in one breath.",
+        "Answer is a generic \"grounded answer\" preamble plus a dated example, which gives a judge nothing exact to check."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": "Prescribes how to answer."
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "Prescribes how to answer; restates 0."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Starlight is experimental, no longer maintained, repository archived",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/learn/glossary#starlight",
+              "observedAt": "2026-11-14",
+              "quote": "An experimental layer 2 payment channel protocol … The project is no longer maintained, and its repository … ha[s been archived]"
+            }
+          ]
+        },
+        {
+          "claim": "Scout marks Centaurus Inactive; Perun Live",
+          "result": "changed",
+          "evidence": [
+            {
+              "class": "C",
+              "ref": "scout.searchProjects({query:\"Centaurus\"})",
+              "observedAt": "2026-11-14",
+              "quote": "status Inactive"
+            },
+            {
+              "class": "C",
+              "ref": "scout.searchProjects({query:\"Perun\"})",
+              "observedAt": "2026-11-14",
+              "quote": "status Live (Scout directory label, not deployment proof)"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-protocol-19-preconditions-cap-0021",
+          "survivor": "q-protocol-19-preconditions-cap-0021",
+          "why": "Preconditions and payment-channel enablement are tested there."
+        }
+      ],
+      "reason": "Drop the project-directory labels (volatile, corpus-relative) and the process key facts; keep the durable Starlight, primitives and deployment-evidence distinction.",
+      "rewrite": {
+        "question": null,
+        "answer": "Starlight was SDF's experimental Lightning-like payment-channel protocol built from Stellar transactions; it is no longer maintained and its repository is archived (as of 2026-11-14). CAP-0021 preconditions and CAP-0040 signed-payload signers are Final primitives that channels use, but they are not a deployed channel network. Commit-chains and rollups are separate architectures. Require dated primary deployment evidence before calling any live.",
+        "keyFacts": [
+          "Starlight is archived, unmaintained experimental work.",
+          "It pursued Lightning-like off-chain updates using Stellar accounts and transactions.",
+          "CAP-0021 and CAP-0040 are primitives, not evidence of a live channel network."
+        ],
+        "avoid": [
+          "Do NOT call Starlight maintained production Mainnet infrastructure or say Stellar runs Bitcoin Lightning unchanged."
+        ],
+        "notes": "Naming the unaudited stellar-experimental one-way-channel contract from the docs MPP guide as an integrator-deployed option is correct.",
+        "movedToTruth": [
+          "Perun and Centaurus Scout label history",
+          "GT-29 correction history",
+          "MPP one-way-channel re-check"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 369,
+      "wordsAfter": 119
+    },
+    {
+      "id": "q-pc-memos-reference",
+      "verdict": "tighten",
+      "purpose": "stellar-truth",
+      "topics": [
+        "transaction memos",
+        "pooled-account deposits",
+        "Soroban memo restriction"
+      ],
+      "tests": "Memo types and limits, one per classic transaction, inside the inner fee-bump transaction, and MEMO_NONE for InvokeHostFunction.",
+      "questionIssues": [
+        "\"case-sensitivity\" is asked but the golden only says matching policy is application-defined; drop it from the question."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Holds types, limits, placement and purpose; split or compress."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "InvokeHostFunction transactions must use MEMO_NONE (validateSorobanMemo, V_25+)",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-core/v30.0.0/src/transactions/TransactionFrame.cpp",
+              "observedAt": "2026-11-14",
+              "quote": "validateSorobanMemo: if (op.body.type() != INVOKE_HOST_FUNCTION) return true; if (getMemo().type() != MemoType::MEMO_NONE …) return false (read 2026-11-02, v30.0.0 is current release per gh releases)"
+            },
+            {
+              "class": "F",
+              "ref": "https://horizon.stellar.org/",
+              "observedAt": "2026-11-14",
+              "quote": "current_protocol_version 29, core_supported_protocol_version 30, core_version stellar-core 30.0.0, history_latest_ledger 65467697"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-pc-muxed-accounts",
+          "survivor": "q-pc-memos-reference",
+          "why": "Both state the Soroban memo/muxed-source restriction; keep the rule here and cross-reference only."
+        }
+      ],
+      "reason": "Good question; cut notes history and trim the answer. Bell does not change the rule (CAP-0084 only adds W addresses).",
+      "rewrite": {
+        "question": "How do memos work on Stellar: types, size limit, whether one transaction can carry multiple, which transactions support them, and why do exchanges require them?",
+        "answer": "A memo is optional transaction-level metadata, at most one per classic transaction: MEMO_TEXT (up to 28 bytes), MEMO_ID (uint64), MEMO_HASH or MEMO_RETURN (32 bytes). Exchanges use it to map deposits into one pooled account to customers. A fee-bump has no outer memo; any memo sits in the inner transaction. An InvokeHostFunction transaction must use MEMO_NONE.",
+        "keyFacts": [
+          "Memo types and limits, with at most one memo per classic transaction.",
+          "Exchanges use memos to map pooled-account deposits to customers.",
+          "An InvokeHostFunction transaction must use MEMO_NONE; a fee-bump memo is the inner one."
+        ],
+        "avoid": [
+          "Do NOT claim multiple memos per transaction or that InvokeHostFunction accepts a memo."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "GT-29 correction history",
+          "Protocol 30 release-bound rule verification"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 189,
+      "wordsAfter": 102
+    },
+    {
+      "id": "q-pc-multisig-setup-lifecycle",
+      "verdict": "tighten",
+      "purpose": "stellar-truth",
+      "topics": [
+        "classic multisig setup",
+        "SetOptions signer management",
+        "lockout risk"
+      ],
+      "tests": "Configuring a 2-of-3, signer rotation order, and master-weight-0 lockout.",
+      "questionIssues": [
+        "\"exactly three effective authorities\" is a precision a real asker rarely needs; acceptable but narrow."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Specific to the example arithmetic."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Process advice; keep as the safe-rotation fact."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Signer, threshold and master-weight changes need high-threshold authorization",
+          "result": "unverifiable",
+          "evidence": []
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-protocol-accounts-signers-thresholds",
+          "survivor": "q-protocol-accounts-signers-thresholds",
+          "why": "Owns the weight/threshold model; this case owns the lifecycle."
+        }
+      ],
+      "reason": "Distinct operational value. Stable; not re-verified (last 2026-08-27, no reason to doubt). Compress the answer and notes.",
+      "rewrite": {
+        "question": null,
+        "answer": "Classic multisig gives signers weights and sets low, medium and high thresholds. SetOptions adds or removes signers and changes thresholds and master weight, and needs the high threshold. A 2-of-3 has exactly three effective authorities (master plus two weight-1 signers, or three signers with master weight 0) and threshold 2. Add and test a replacement signer before removing the old one; master weight 0 without working alternatives locks the account.",
+        "keyFacts": [
+          "SetOptions changes to signers, thresholds and master weight need the high threshold.",
+          "A 2-of-3 has exactly three effective authorities and threshold 2.",
+          "Add and test the replacement before removal; master weight 0 risks permanent lockout."
+        ],
+        "avoid": [
+          "Do NOT zero the master weight before alternates are proven, or confuse classic multisig with Soroban custom accounts."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "2026-06-29 differentiation review",
+          "GT-29 precision note",
+          "also-good and golden cites lines"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 281,
+      "wordsAfter": 123
+    },
+    {
+      "id": "q-pc-muxed-accounts",
+      "verdict": "tighten",
+      "purpose": "stellar-truth",
+      "topics": [
+        "muxed accounts",
+        "M-address conversion",
+        "pooled deposits"
+      ],
+      "tests": "M is a G-account plus a uint64 ID, owns nothing itself, converts to G plus ID, and is accepted only in certain fields.",
+      "questionIssues": [
+        "Five sub-questions; the position list is the volatile part."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Enumerates \"current supported positions\"; long and trivia-adjacent."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "InvokeHostFunction rejects muxed transaction/operation sources",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionFrame.cpp",
+              "observedAt": "2026-11-14",
+              "quote": "Soroban transactions are not allowed to use memo or muxed source account (read 2026-11-02)"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-pc-address-types-strkey",
+          "survivor": "q-pc-muxed-accounts",
+          "why": "M semantics belong here; the strkey case only names the prefix."
+        },
+        {
+          "id": "q-pc-memos-reference",
+          "survivor": "q-pc-memos-reference",
+          "why": "Memo-versus-muxed contrast appears in both; keep contrast here, memo mechanics there."
+        }
+      ],
+      "reason": "Distinct from memos and strkey if each stays in its lane. Compress and drop the full position list into truth.",
+      "rewrite": {
+        "question": null,
+        "answer": "A muxed M-address encodes a G-account plus a uint64 ID; it is not a ledger account, so the G-account still owns funds, reserves and sequence. Decoding yields the G-address and ID. Unlike a memo, the ID travels in an account field such as a source or payment destination. Not every field accepts M, InvokeHostFunction rejects muxed sources, and many services still require G plus memo.",
+        "keyFacts": [
+          "M is a G-account plus a uint64 ID; the G-account owns funds, reserves and sequence.",
+          "M converts to G plus ID and is valid only in certain account fields.",
+          "InvokeHostFunction sources and some services do not accept M."
+        ],
+        "avoid": [
+          "Do NOT call M an independent account or say it replaces memos everywhere."
+        ],
+        "notes": "Service support is dated; grade the protocol rule, not any one exchange.",
+        "movedToTruth": [
+          "full supported-position list",
+          "GT-29 correction history",
+          "also-good and golden cites lines"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 225,
+      "wordsAfter": 128
+    },
+    {
+      "id": "q-pc-practical-fee-setting",
+      "verdict": "tighten",
+      "purpose": "stellar-truth",
+      "topics": [
+        "transaction fee bidding",
+        "surge pricing",
+        "fee estimation APIs"
+      ],
+      "tests": "The builder fee is a maximum per-operation bid, 100 stroops is a floor not a guarantee, and estimates come from getFeeStats or fee_stats. Absorbs fee-spike defense from the surge-griefing case.",
+      "questionIssues": [],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Holds three predicates (max bid, 100 floor, surge delay)."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Hubble: trivia beside the main point."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Effective base-fee floor 100 stroops per operation",
+          "result": "unverifiable",
+          "evidence": []
+        },
+        {
+          "claim": "Horizon described as nearing end-of-life; RPC getFeeStats and stellar fees stats are the estimators",
+          "result": "unverifiable",
+          "evidence": []
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-pc-surge-griefing-threat-model",
+          "survivor": "q-pc-practical-fee-setting",
+          "why": "Surge defense merges here."
+        },
+        {
+          "id": "q-pc-fee-bump-channel-accounts-feepool",
+          "survivor": "q-pc-fee-bump-channel-accounts-feepool",
+          "why": "Fee-bump mechanics stay there."
+        }
+      ],
+      "reason": "Scheduled case: its two volatile claims were not re-read this pass (reverifyBy 2027-01-30 still stands), but the most important claim, the dated 100-stroop floor, is flagged for the golden-truth pass. Merge the surge-defense facts (timebounds, bid cap, bounded retry) and drop Hubble.",
+      "rewrite": {
+        "question": null,
+        "answer": "The TransactionBuilder fee is a maximum per-operation inclusion bid, not guaranteed spend. The network floor is 100 stroops per operation (re-check before quoting), but under surge pricing a low bid can be delayed or dropped, and Soroban transactions also pay resource fees. Estimate just before submission with RPC getFeeStats (or stellar fees stats; Horizon /fee_stats remains available), cap the bid, set time bounds, and retry with backoff.",
+        "keyFacts": [
+          "The builder fee is a maximum per-operation bid; 100 stroops does not guarantee inclusion.",
+          "Estimate fees live with RPC getFeeStats, the CLI, or Horizon fee_stats.",
+          "Cap the bid, set time bounds and back off on retry."
+        ],
+        "avoid": [
+          "Do NOT say 100 stroops always wins or use gas/gwei framing."
+        ],
+        "notes": "Date any quoted floor or percentile; Horizon is legacy but not formally deprecated.",
+        "movedToTruth": [
+          "GT-29/GT-32 correction history",
+          "sd-003 and sd-042 discoverability records",
+          "Hubble historical-analytics note",
+          "Horizon end-of-life wording as of 2026-09-08"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 251,
+      "wordsAfter": 127
+    },
+    {
+      "id": "q-pc-protocol-26-yardstick",
+      "verdict": "tighten",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Protocol 26 Yardstick",
+        "CAP membership",
+        "activation date"
+      ],
+      "tests": "Yardstick went live 2026-05-06 with six named CAPs, excluding CAP-0081, and extended BN254 that Protocol 25 introduced.",
+      "questionIssues": [],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Lists six CAPs with roles in one fact; keep, it is the point."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Protocol 26 Mainnet 2026-05-06",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/networks/software-versions",
+              "observedAt": "2026-11-14",
+              "quote": "Protocol 26 (Mainnet, May 6, 2026)"
+            },
+            {
+              "class": "F",
+              "ref": "https://horizon.stellar.org/ledgers/62447231",
+              "observedAt": "2026-11-14",
+              "quote": "closed_at 2026-05-06T17:00:06Z, protocol_version 26 (first ledger found by bisection)"
+            }
+          ]
+        },
+        {
+          "claim": "CAP-0081 not in Protocol 26; CAP-0080 is P26",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0081.md",
+              "observedAt": "2026-11-14",
+              "quote": "Status: Accepted … Protocol version: TBD"
+            },
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0080.md",
+              "observedAt": "2026-11-14",
+              "quote": "Title: Host functions for efficient ZK BN254 use cases / Status: Final / Protocol version: 26"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-protocol-version-history-list",
+          "survivor": "q-protocol-version-history-list",
+          "why": "Carries the date and one-line headline; this case owns CAP membership."
+        }
+      ],
+      "reason": "Correct and needed; the answer and notes can be shorter. CAP-0081 is now Accepted with version TBD, consistent with the golden.",
+      "rewrite": {
+        "question": null,
+        "answer": "Protocol 26 Yardstick went live on Mainnet on 2026-05-06 with six CAPs: 0073 (SAC management of G-account balances), 0077 (validator-governed ledger-entry freezing), 0078 (bounded TTL-extension host functions), 0079 (muxed-address strkey conversions), 0080 (extra BN254 host functions) and 0082 (checked 256-bit arithmetic). CAP-0081 did not ship in it. BN254 and Poseidon primitives first came in Protocol 25.",
+        "keyFacts": [
+          "Protocol 26 Yardstick went live on Mainnet on 2026-05-06.",
+          "It contains CAP-0073, 0077, 0078, 0079, 0080 and 0082 with materially correct roles.",
+          "CAP-0081 was not in Protocol 26; CAP-0080 extends the BN254 set from Protocol 25."
+        ],
+        "avoid": [
+          "Do NOT call May 6 only a Testnet date or list CAP-0081 in Protocol 26."
+        ],
+        "notes": "CAP status labels are not network-activation evidence.",
+        "movedToTruth": [
+          "2026-11-02 CAP-0081 correction and PR #2009 reference"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 245,
+      "wordsAfter": 114
+    },
+    {
+      "id": "q-pc-protocol-27-zipper",
+      "verdict": "tighten",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Protocol 27 Zipper",
+        "CAP-0071 auth delegation",
+        "Mainnet activation"
+      ],
+      "tests": "Zipper activated on 2026-07-08 and CAP-0071 adds delegated authentication and address-bound V2 credentials; absorbs the duplicate cap-0071 case.",
+      "questionIssues": [
+        "\"distinguish its July 8 vote date from live Mainnet status\" is an odd framing; the useful question is what Zipper changed and when it activated.",
+        "KF0 and KF1 both state the July 8 date."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Duplicates 1."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Duplicates 0."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Zipper activated 2026-07-08 (ledger 63386819)",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "F",
+              "ref": "https://horizon.stellar.org/ledgers/63386819",
+              "observedAt": "2026-11-14",
+              "quote": "closed_at 2026-07-08T17:00:10Z, protocol_version 27"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/networks/software-versions",
+              "observedAt": "2026-11-14",
+              "quote": "Protocol 27 (Mainnet, July 8, 2026)"
+            }
+          ]
+        },
+        {
+          "claim": "CAP-0071 credential names; \"CAP-0071-01/-02\" labels",
+          "result": "changed",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0071.md",
+              "observedAt": "2026-11-14",
+              "quote": "SOROBAN_CREDENTIALS_ADDRESS_WITH_DELEGATES … SOROBAN_CREDENTIALS_ADDRESS_V2 (the -01/-02 sub-labels were not found by name in the preamble)"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-protocol-27-cap-0071",
+          "survivor": "q-pc-protocol-27-zipper",
+          "why": "Merged in."
+        },
+        {
+          "id": "q-protocol-version-history-list",
+          "survivor": "q-protocol-version-history-list",
+          "why": "Carries the one-line summary."
+        }
+      ],
+      "reason": "Survivor of the Protocol 27 merge. Reframe the question and drop the unverified \"-01/-02\" sub-labels and the Horizon status trivia.",
+      "rewrite": {
+        "question": "What did Stellar Protocol 27 \"Zipper\" (CAP-0071) change, and when did it activate on Mainnet?",
+        "answer": "Protocol 27 Zipper activated on Mainnet at ledger 63386819, closed 2026-07-08 17:00 UTC. CAP-0071 adds authentication delegation for custom accounts (SOROBAN_CREDENTIALS_ADDRESS_WITH_DELEGATES and recursive delegate signatures) and the address-bound SOROBAN_CREDENTIALS_ADDRESS_V2. It is a Soroban authorization change, not ZK, consensus or parallelism.",
+        "keyFacts": [
+          "Zipper activated on Mainnet on 2026-07-08 (ledger 63386819).",
+          "CAP-0071 adds delegated authentication for custom accounts.",
+          "CAP-0071 adds the address-bound SOROBAN_CREDENTIALS_ADDRESS_V2 credential."
+        ],
+        "avoid": [
+          "Do NOT call Protocol 27 pending or CAP-0071 a ZK, consensus or parallelism change."
+        ],
+        "notes": "Protocol 27 is historical; a newer Mainnet protocol is not an error.",
+        "movedToTruth": [
+          "Horizon 2026-08-30 observation",
+          "CAP-0072 trap rationale",
+          "CAP-0071 Final-status observation history"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 211,
+      "wordsAfter": 87
+    },
+    {
+      "id": "q-pc-protocol-upgrade-timing",
+      "verdict": "tighten",
+      "purpose": "stellar-truth",
+      "topics": [
+        "upcoming protocol upgrade",
+        "validator upgrade vote",
+        "SDK upgrade deadlines"
+      ],
+      "tests": "The next announced Mainnet vote with an as-of date, how validators arm and SCP activates it, and the SDK deadline; absorbs the validator-upgrade-vote case.",
+      "questionIssues": [
+        "Live case: its answer is a dated snapshot and a judge needs a fresh source."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "Prescribes dating; fold into 0."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Holds why-SDK; fine."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Bell (Protocol 30): Testnet vote 2026-11-03, Mainnet vote 2026-11-23 17:00 UTC; SDKs must upgrade before Mainnet vote",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+              "observedAt": "2026-11-14",
+              "quote": "November 3, 2026, 1700 UTC —Testnet upgrade vote. November 23, 2026, 1700 UTC —Mainnet upgrade vote."
+            },
+            {
+              "class": "A",
+              "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+              "observedAt": "2026-11-14",
+              "quote": "For your Mainnet integration, upgrade before November 23, 2026. … an older SDK may fail to decode Protocol 30 ledgers."
+            }
+          ]
+        },
+        {
+          "claim": "Mainnet still Protocol 29; Testnet Protocol 30",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "F",
+              "ref": "https://horizon.stellar.org/",
+              "observedAt": "2026-11-14",
+              "quote": "current_protocol_version 29, core_supported_protocol_version 30, core_version stellar-core 30.0.0, history_latest_ledger 65467697"
+            },
+            {
+              "class": "F",
+              "ref": "https://horizon-testnet.stellar.org/",
+              "observedAt": "2026-11-14",
+              "quote": "current_protocol_version 30, core_supported_protocol_version 30"
+            }
+          ]
+        },
+        {
+          "claim": "upgrades http-command arms a scheduled bump",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/validators/admin-guide/network-upgrades",
+              "observedAt": "2026-11-14",
+              "quote": "http-command 'upgrades?mode=set&upgradetime=…&protocolversion=9'"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-protocol-validator-upgrade-vote",
+          "survivor": "q-pc-protocol-upgrade-timing",
+          "why": "Merged in."
+        },
+        {
+          "id": "q-protocol-cap-process",
+          "survivor": "q-protocol-cap-process",
+          "why": "Owns CAP lifecycle; only a boundary mention here."
+        }
+      ],
+      "reason": "Live and still correct as of 2026-11-14 (reverifyBy 2026-11-24, ten days before the vote). Absorb the arming mechanism and drop the dated Testnet deadline narrative.",
+      "rewrite": {
+        "question": null,
+        "answer": "As of 2026-11-14 Mainnet runs Protocol 29 and Bell (Protocol 30) is live on Testnet; the announced Mainnet vote is 2026-11-23 17:00 UTC. Validators install the matching stellar-core release and arm the upgrade for a fixed UTC time; SCP agreement then applies it in-band through the ledger header's upgrades field. It is not a token-holder vote. SDKs must be upgraded before 2026-11-23 for Mainnet integrations because CAP-0088 changes the ledger-header encoding.",
+        "keyFacts": [
+          "Reports the next announced Mainnet vote, or its absence, with an as-of date.",
+          "Validators arm a scheduled upgrade and SCP activates it in-band, not by token vote.",
+          "Gives the SDK upgrade deadline for the network and why (CAP-0088 encoding)."
+        ],
+        "avoid": [
+          "Do NOT present a completed upgrade as upcoming or invent a vote date without a dated primary source."
+        ],
+        "notes": "Accept a later dated status or a reschedule; report the target network.",
+        "movedToTruth": [
+          "Testnet 2026-11-03 deadline history",
+          "CAP-0088 nested StellarValue detail",
+          "pre-activation arming-command syntax"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 273,
+      "wordsAfter": 140
+    },
+    {
+      "id": "q-pc-quantum-preparedness-dormant",
+      "verdict": "tighten",
+      "purpose": "mixed",
+      "topics": [
+        "quantum preparedness plan",
+        "Ed25519 migration",
+        "dormant accounts"
+      ],
+      "tests": "Stellar is not quantum-resistant today; the QPP stages and CAP-0087; and that no source defines a dormant-account rule (a dated negative).",
+      "questionIssues": [
+        "\"How do I know if mine qualifies\" presupposes a rule; the golden handles it as a negative, which is honest but a trap-style item."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": "Prescribes sourcing."
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "Prescribes dating."
+        },
+        {
+          "i": 2,
+          "kind": "process",
+          "issue": "Prescribes sourcing."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Restates 4."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "QPP stages: Soroban PQ verification 2026, classic quantum-safe signers 2027, deprecation timed by threat",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan",
+              "observedAt": "2026-11-14",
+              "quote": "Stage 1—Building blocks and contract accounts (2026). … Stage 2—Protocol-level enshrinement and opt-in migration (2027). … Stage 3—Deprecation (timing determined by the threat)."
+            }
+          ]
+        },
+        {
+          "claim": "CAP-0087 ML-DSA host functions, Implemented, Protocol 30; Bell Mainnet vote 2026-11-23",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0087.md",
+              "observedAt": "2026-11-14",
+              "quote": "Title: Host functions for ML-DSA signature verification / Status: Implemented / Protocol version: 30 (ML-DSA-44, -65, -87 named)"
+            },
+            {
+              "class": "A",
+              "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+              "observedAt": "2026-11-14",
+              "quote": "November 3, 2026, 1700 UTC —Testnet upgrade vote. November 23, 2026, 1700 UTC —Mainnet upgrade vote."
+            }
+          ]
+        },
+        {
+          "claim": "No primary source defines a dormant-account eligibility rule (negative)",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan",
+              "observedAt": "2026-11-14",
+              "quote": "dormant accounts that have never authorized a transaction … no deterministic eligibility test appears on the page"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "cryptography / post-quantum topic (security lane)",
+          "survivor": "this case if no other covers QPP",
+          "why": "Check the compliance/security categories for a second QPP case."
+        }
+      ],
+      "reason": "Timely and primary-sourced, but 624 words with generic preamble. Compress to three world facts; keep the symmetric caution about the negative claim.",
+      "rewrite": {
+        "question": null,
+        "answer": "Not today: a sufficiently powerful quantum computer could break Ed25519, and SDF's Quantum Preparedness Plan stages the response. Stage 1 (2026) adds post-quantum signature verification to Soroban (CAP-0087 ML-DSA, in Bell/Protocol 30, not yet on Mainnet as of 2026-11-14); Stage 2 (2027) adds quantum-safe signers for classic accounts; Stage 3 deprecates Ed25519 when the threat requires. No primary source defines a dormant-account qualification rule as of 2026-11-14.",
+        "keyFacts": [
+          "Stellar is not quantum-resistant today; Ed25519 is the exposed primitive.",
+          "QPP stages: Soroban PQ verification 2026, classic quantum-safe signers 2027, then deprecation.",
+          "As of the date, no QPP or CAP source defines a dormant-account eligibility rule."
+        ],
+        "avoid": [
+          "Do NOT claim Stellar is quantum-safe today or invent dormant-account thresholds or deadlines."
+        ],
+        "notes": "The no-rule claim is a dated negative: accept it only when source-relative; penalize undated absolutes and invented thresholds, not a note that a later CAP could define criteria.",
+        "movedToTruth": [
+          "2026-08-24 grader caution detail",
+          "2026-11-02 CAP sweep through cap-0090",
+          "golden cites line"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 624,
+      "wordsAfter": 144
+    },
+    {
+      "id": "q-pc-sequence-numbers-ordering-replace",
+      "verdict": "tighten",
+      "purpose": "stellar-truth",
+      "topics": [
+        "sequence numbers",
+        "CAP-0021 minSeqNum",
+        "stuck-transaction replacement"
+      ],
+      "tests": "Per-source ordering, default +1, the minSeqNum gap exception, application-only consumption and 10x fee-bump replacement.",
+      "questionIssues": [
+        "Compares with an EVM nonce, which is a good real-user framing."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Holds duplicates, consumption and replacement: split or trim."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Fee-bump replaces a same source/sequence queued transaction only at a 10x bid",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/guides/transactions/fee-bump-transactions",
+              "observedAt": "2026-11-14",
+              "quote": "the second transaction will replace the first transaction in the queue if and only if the fee bid of the second transaction is 10x the fee bid of the first transaction"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-pc-tx-finality-failure-semantics",
+          "survivor": "q-pc-tx-finality-failure-semantics",
+          "why": "Owns \"failed or expired consumes sequence?\"; here keep only applied-consumption."
+        },
+        {
+          "id": "q-protocol-accounts-signers-thresholds",
+          "survivor": "q-pc-sequence-numbers-ordering-replace",
+          "why": "Its sequence/minSeqNum material belongs here."
+        }
+      ],
+      "reason": "Core case for sequence and minSeqNum; absorb the minSeqNum fact from accounts-signers. Compress to 70 words.",
+      "rewrite": {
+        "question": null,
+        "answer": "Sequence numbers are per source account, with no global order across accounts. By default a transaction needs current sequence + 1, so N+2 at N fails tx_bad_seq. CAP-0021 minSeqNum is the exception: it is valid when minSeqNum <= current < transaction sequence, then advances the account to that sequence. Only an applied transaction consumes the sequence. A queued same-source, same-sequence transaction can be replaced by a fee-bump bidding 10x.",
+        "keyFacts": [
+          "Sequence is per source account; the default is exactly current + 1.",
+          "CAP-0021 minSeqNum can permit a gap and advance the sequence directly.",
+          "Only an applied transaction consumes the sequence; replacement needs a 10x fee-bump bid."
+        ],
+        "avoid": [
+          "Do NOT say N+2 can never apply, or that rejected transactions consume sequence."
+        ],
+        "notes": "Grade queue replacement separately from preconditions; behavior depends on the submission path.",
+        "movedToTruth": [
+          "GT-31 overlap correction history",
+          "also-good and golden cites lines"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 327,
+      "wordsAfter": 130
+    },
+    {
+      "id": "q-pc-slp-0004-0006-status",
+      "verdict": "tighten",
+      "purpose": "mixed",
+      "topics": [
+        "Stellar Limits Proposals",
+        "network-configuration changes",
+        "SLP vs CAP"
+      ],
+      "tests": "What an SLP is, that it is not a CAP/SEP, and that a Final SLP takes effect via a validator-voted configuration upgrade.",
+      "questionIssues": [
+        "The question is pinned to \"as of July 11, 2026\" and asks for statuses that have since changed (SLP-0006 is Final), so a correct current answer contradicts the golden's headline.",
+        "Asks for per-proposal numbers (400M instructions, 200 write entries) that are trivia."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Date-pinned status, now stale."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Numeric trivia in one fact."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Fee-cut trivia."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Proposal detail."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Holds a count and a story."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SLP-0004 Final; SLP-0006 now Final; SLP-0007 Final and live since 2026-10-22; SLP-0008 (Mercado Bitcoin freeze) Final",
+          "result": "changed",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/limits/slp-0004.md",
+              "observedAt": "2026-11-14",
+              "quote": "Status: Final"
+            },
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/limits/slp-0006.md",
+              "observedAt": "2026-11-14",
+              "quote": "Status: Final (Created 2026-05-07)"
+            },
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/limits/slp-0007.md",
+              "observedAt": "2026-11-14",
+              "quote": "Status: Final … dependent transaction clusters (2 to 3)"
+            },
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/limits/slp-0008.md",
+              "observedAt": "2026-11-14",
+              "quote": "Status: Final (Created 2026-11-02)"
+            },
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies",
+              "observedAt": "2026-11-14",
+              "quote": "SLP-0007 (live on Mainnet since October 22, 2026)"
+            }
+          ]
+        },
+        {
+          "claim": "SLP-0004 per-tx instructions 100M to 400M, write entries 50 to 200",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/limits/slp-0004.md",
+              "observedAt": "2026-11-14",
+              "quote": "| Instructions/threads | 100'000'000 | 400'000'000 …; Write Entries 50 200"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-pc-parallel-execution",
+          "survivor": "q-pc-parallel-execution",
+          "why": "Carries SLP-0004/0007 cluster values."
+        }
+      ],
+      "reason": "Retarget to the durable SLP concept instead of a stale status snapshot. Verified numbers move to truth; SLP-0006/0008 freezes are corpus-style detail.",
+      "rewrite": {
+        "question": "What are Stellar Limits Proposals (SLPs), how do they differ from CAPs and SEPs, and how does an approved one take effect?",
+        "answer": "A Stellar Limits Proposal (SLP) proposes changes to network-configuration limits and fees, such as Soroban ledger caps; it is neither a CAP nor a SEP and lives under limits/ in stellar-protocol. An approved SLP takes effect through a validator-voted configuration upgrade, not a protocol-version change. SLP-0007, for example, raised dependent clusters from 2 to 3 and halved Soroban resource fees, live on Mainnet from 2026-10-22.",
+        "keyFacts": [
+          "SLPs propose network-configuration limit and fee changes; they are not CAPs or SEPs.",
+          "An approved SLP takes effect via a validator-voted configuration upgrade, not a protocol version.",
+          "Document status and network application are separate states."
+        ],
+        "avoid": [
+          "Do NOT call an SLP a CAP or SEP."
+        ],
+        "notes": "Accept any current SLP example if dated.",
+        "movedToTruth": [
+          "SLP-0004 numbers (100M to 400M instructions, 50 to 200 write entries, fourfold fee cut)",
+          "SLP-0006 YieldBlox freeze details and frozen_ledger_keys ledger 63073409",
+          "SLP-0008 existence"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 251,
+      "wordsAfter": 116
+    },
+    {
+      "id": "q-pc-sponsored-reserves",
+      "verdict": "tighten",
+      "purpose": "stellar-truth",
+      "topics": [
+        "sponsored reserves",
+        "sponsorship sandwich",
+        "revoking sponsorship"
+      ],
+      "tests": "The Begin/End sponsoring sandwich, numSponsoring/numSponsored accounting, RevokeSponsorship, and the limits of a 0-XLM sponsored account.",
+      "questionIssues": [],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Restates 3."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Restates 0."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Sandwich operations and numSponsored/numSponsoring tracking",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves",
+              "observedAt": "2026-11-14",
+              "quote": "BeginSponsoringFutureReserves … EndSponsoringFutureReserves; minimum balance (2 + numSubEntries + numSponsoring - numSponsored) * baseReserve (read 2026-11-02)"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-protocol-base-reserve-min-balance",
+          "survivor": "q-protocol-base-reserve-min-balance",
+          "why": "Owns the minimum-balance formula; drop it here."
+        },
+        {
+          "id": "q-pc-account-activation-not-found",
+          "survivor": "q-pc-account-activation-not-found",
+          "why": "Owns sponsored zero-balance creation."
+        }
+      ],
+      "reason": "Distinct practical topic. Remove the formula and liabilities detail (owned by base-reserve) and the repeated URLs; 333 words down to about 90.",
+      "rewrite": {
+        "question": null,
+        "answer": "Sponsored reserves let a sponsor carry another account's or entry's base reserve: BeginSponsoringFutureReserves, the sponsored account's entry-creating operation, then EndSponsoringFutureReserves in one transaction. numSponsoring and numSponsored track the obligations, and RevokeSponsorship removes or transfers them. Sponsorship mints no XLM; a 0-XLM sponsored account can hold an authorized sponsored trustline but still needs someone to pay fees.",
+        "keyFacts": [
+          "A sponsor takes on another account's or entry's reserve via Begin/EndSponsoringFutureReserves.",
+          "numSponsoring and numSponsored track sponsorship; RevokeSponsorship removes or transfers it.",
+          "A 0-XLM sponsored account still needs fees paid and issuer authorization."
+        ],
+        "avoid": [
+          "Do NOT say sponsorship mints XLM or lets a 0-XLM account transact without fees or authorization."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "minimum-balance and selling-liability formula sources",
+          "also-good and golden cites lines"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 333,
+      "wordsAfter": 104
+    },
+    {
+      "id": "q-pc-surge-griefing-threat-model",
+      "purpose": "mixed",
+      "topics": [
+        "surge pricing",
+        "fee-spike defense",
+        "retry and timebounds"
+      ],
+      "tests": "Surge pricing prioritizes higher bids; defenses are fee caps, timebounds, backoff, fee-bump and status visibility; and no step-by-step spam playbook (behavior).",
+      "questionIssues": [
+        "\"How could ... be abused\" is vague; the golden answers a generic best-practice list."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Holds several predicates (spam, delays, fee-bump misuse); abuse patterns are unsourced."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Lists four defenses in one fact."
+        },
+        {
+          "i": 3,
+          "kind": "process",
+          "issue": "Queues, monitoring and UX are process advice, not Stellar facts."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Surge pricing: higher fee bids win when ledger capacity is exceeded",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/ledgers",
+              "observedAt": "2026-11-14",
+              "quote": "If more transactions are submitted than this number, the network will enter into surge pricing mode."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-pc-practical-fee-setting",
+          "survivor": "q-pc-practical-fee-setting",
+          "why": "Surge behavior, bid caps, getFeeStats and retry are already its subject."
+        },
+        {
+          "id": "q-pc-fee-bump-channel-accounts-feepool",
+          "survivor": "q-pc-fee-bump-channel-accounts-feepool",
+          "why": "Fee-bump and channel-account use."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Duplicates q-pc-practical-fee-setting; the only additions are timebounds and bounded retry, which the survivor absorbs as one key fact. The \"no playbook\" trap is thin and not Stellar truth.",
+      "rewrite": null,
+      "mergeInto": "q-pc-practical-fee-setting",
+      "confidence": "high",
+      "wordsBefore": 298,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-pc-tx-finality-failure-semantics",
+      "verdict": "tighten",
+      "purpose": "stellar-truth",
+      "topics": [
+        "transaction finality",
+        "failed vs expired transactions",
+        "getTransaction statuses"
+      ],
+      "tests": "Pre-inclusion rejection costs nothing; included failure costs fee and sequence; getTransaction is SUCCESS/FAILED/NOT_FOUND and NOT_FOUND is ambiguous.",
+      "questionIssues": [],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Restates 1 and 2."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Holds two predicates."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "getTransaction returns only SUCCESS, FAILED or NOT_FOUND; PENDING is a sendTransaction status",
+          "result": "unverifiable",
+          "evidence": []
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-pc-sequence-numbers-ordering-replace",
+          "survivor": "q-pc-tx-finality-failure-semantics",
+          "why": "This case owns failed-versus-expired consumption."
+        }
+      ],
+      "reason": "Stable API semantics last verified 2026-11-02; not re-read. Merge key facts 0-2 into two.",
+      "rewrite": {
+        "question": null,
+        "answer": "A transaction rejected before ledger inclusion consumes no sequence or fee. One included with tx_failed is ledger history: it consumes the fee and sequence while operation effects roll back. RPC getTransaction returns only SUCCESS, FAILED or NOT_FOUND; PENDING belongs to sendTransaction. NOT_FOUND may mean not yet processed, expired, never submitted or outside retention, so check timebounds and retained history.",
+        "keyFacts": [
+          "Pre-inclusion rejection or drop consumes neither fee nor sequence; an included failure consumes both.",
+          "getTransaction returns SUCCESS, FAILED or NOT_FOUND; PENDING is a sendTransaction status.",
+          "NOT_FOUND alone cannot prove a transaction never existed."
+        ],
+        "avoid": [
+          "Do NOT say every submission is on-ledger or that send acceptance is finality."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "GT-30 correction history",
+          "sd-003 discoverability record"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 219,
+      "wordsAfter": 105
+    },
+    {
+      "id": "q-protocol-19-preconditions-cap-0021",
+      "verdict": "tighten",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Protocol 19",
+        "CAP-0021 preconditions",
+        "timebounds"
+      ],
+      "tests": "Protocol 19 introduced generalized transaction preconditions via CAP-0021 (time/ledger bounds, minSeq, age, gap, extra signers).",
+      "questionIssues": [
+        "The date (~2022-06-08) is trivia; the useful knowledge is the precondition set."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Date trivia duplicated by version-history-list."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Protocol 19 activated 2022-06-08 with CAP-0021 Final",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0021.md",
+              "observedAt": "2026-11-14",
+              "quote": "Status: Final / Protocol version: 19"
+            },
+            {
+              "class": "D",
+              "ref": "https://stellar.org/blog (parallel-cli search, Protocol 19 announcement)",
+              "observedAt": "2026-11-14",
+              "quote": "Today, June 8, 2022 at 15:00 UTC, the Stellar public network [upgraded to Protocol 19]"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-protocol-version-history-list",
+          "survivor": "q-protocol-version-history-list",
+          "why": "Carries the P19 date."
+        },
+        {
+          "id": "q-pc-sequence-numbers-ordering-replace",
+          "survivor": "q-pc-sequence-numbers-ordering-replace",
+          "why": "Carries minSeqNum behavior."
+        }
+      ],
+      "reason": "Needed as the owner of the precondition set; drop the date key fact and the also-good lines.",
+      "rewrite": {
+        "question": null,
+        "answer": "Protocol 19 (June 2022) added generalized transaction preconditions via CAP-0021: time bounds, ledger bounds, minimum sequence number, minimum sequence age and ledger gap, and extra signers. They enable time-locked and sequence-conditioned transactions such as payment channels. CAP-0040 signed-payload signers shipped alongside. Soroban arrived in Protocol 20.",
+        "keyFacts": [
+          "Protocol 19 introduced generalized preconditions through CAP-0021.",
+          "CAP-0021 adds time/ledger bounds, minimum sequence number/age/gap and extra signers."
+        ],
+        "avoid": [
+          "Do NOT attribute preconditions to another protocol or CAP, or claim Protocol 19 introduced Soroban."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "golden cites line",
+          "also-good lines"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 187,
+      "wordsAfter": 78
+    },
+    {
+      "id": "q-protocol-23-whisk-caps",
+      "verdict": "tighten",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Protocol 23 Whisk",
+        "CAP membership",
+        "activation date"
+      ],
+      "tests": "Whisk (2025-09-03) contained eight named CAPs; CAP-0064 was rejected.",
+      "questionIssues": [
+        "Naming all eight CAPs is a roster recital; the headline (parallel scheduling and live/archival separation) is what matters."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": "Prescribes dating."
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "Prescribes dating; restates 0."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Cluster values duplicate the parallel-execution case."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Source-path trivia."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Protocol 23 Mainnet 2025-09-03; eight Final CAPs 0062,0063,0065-0070",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/networks/software-versions",
+              "observedAt": "2026-11-14",
+              "quote": "Whisk, Protocol 23 (Mainnet, September 3, 2025)"
+            },
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0070.md",
+              "observedAt": "2026-11-14",
+              "quote": "Title: Configurable SCP Timing Parameters / Status: Final / Protocol version: 23"
+            }
+          ]
+        },
+        {
+          "claim": "Mainnet dependent clusters now 3 (SLP-0007)",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies",
+              "observedAt": "2026-11-14",
+              "quote": "Dependent transaction clusters 3 … SLP-0007 (live on Mainnet since October 22, 2026)"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-protocol-parallel-execution",
+          "survivor": "q-protocol-parallel-execution",
+          "why": "Owns cluster values and CAP-0063."
+        },
+        {
+          "id": "q-protocol-version-history-list",
+          "survivor": "q-protocol-version-history-list",
+          "why": "Date and headline."
+        }
+      ],
+      "reason": "Keep the roster (an agent could mis-assign CAPs) but remove cluster and SLP-path content; 493 words down to about 110.",
+      "rewrite": {
+        "question": null,
+        "answer": "Protocol 23 (Whisk) activated on Mainnet on 2025-09-03 with eight Final CAPs: 0062 live-state prioritization, 0063 parallelism-friendly scheduling, 0065 reusable module cache, 0066 in-memory read resource, 0067 unified asset events, 0068 executable-for-Address host function, 0069 String/Bytes conversions and 0070 configurable SCP timing. CAP-0064 was rejected. Parallel execution was not enabled at activation.",
+        "keyFacts": [
+          "Whisk activated on Mainnet on 2025-09-03.",
+          "Lists CAP-0062, 0063, 0065, 0066, 0067, 0068, 0069 and 0070 as the eight CAPs.",
+          "CAP-0064 was rejected and is not part of Protocol 23."
+        ],
+        "avoid": [
+          "Do NOT include CAP-0064 or attribute Soroban itself to Protocol 23."
+        ],
+        "notes": "Do not accept 2025-06-10; that was a blog date.",
+        "movedToTruth": [
+          "cluster values 1, 2, 3 and SLP ledger numbers",
+          "core/slp path trap",
+          "GT-31 and 2026-11-02 re-check history"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 493,
+      "wordsAfter": 102
+    },
+    {
+      "id": "q-protocol-24-whisk-incident",
+      "verdict": "tighten",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Protocol 24 corrective upgrade",
+        "state-archival bug",
+        "CAP-0076 remediation"
+      ],
+      "tests": "Why Protocol 24 followed Protocol 23: an eviction bug archived stale entry versions; CAP-0076 amended the never-restored entries and the fee pool.",
+      "questionIssues": [
+        "Exact counts (478/84/77/394, 31,879,035 stroops) are worth testing only if sourced; 77 is not in the primary CAP."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Holds three counts; \"77 restored and modified\" is not found in CAP-0076 or the CSV."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Stroop figure is trivia beside the main point; keep as one fact with the burn cause."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "478 corrupted, 394 never restored (so 84 restored), fee pool +31,879,035 stroops",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0076.md",
+              "observedAt": "2026-11-14",
+              "quote": "478 ledger entries have been archived with an incorrect state … 394 entries out of these have never been restored"
+            },
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0076.md",
+              "observedAt": "2026-11-14",
+              "quote": "`31879035` stroops will be added to the `feePool`"
+            }
+          ]
+        },
+        {
+          "claim": "77 of the 84 restored entries were subsequently modified",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "D",
+              "ref": "parallel-cli search \"Protocol 24 CAP-0076 corrupted entries 478 restored 84 modified 77\"",
+              "observedAt": "2026-11-14",
+              "quote": "no result states the 77 figure"
+            }
+          ]
+        },
+        {
+          "claim": "Protocol 24 Mainnet 2025-10-22",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/networks/software-versions",
+              "observedAt": "2026-11-14",
+              "quote": "Protocol 24 (Mainnet, October 22, 2025)"
+            }
+          ]
+        }
+      ],
+      "duplicates": [],
+      "reason": "Real incident knowledge. Remove the unsourced 77 figure (not a correction to the facts, a withdrawal of an unverified one), compress.",
+      "rewrite": {
+        "question": null,
+        "answer": "Protocol 24 (2025-10-22) corrected a Protocol 23 bug: eviction loaded an entry's latest TTL but not its latest version, so 478 entries were archived with stale values. CAP-0076 amended the 394 never-restored entries to their correct values and left the 84 restored ones untouched. It also added 31,879,035 stroops to the fee pool for two XLM contract balances that had burned. There was no chain fork.",
+        "keyFacts": [
+          "The bug loaded the latest TTL but not the latest entry version during eviction.",
+          "478 entries were corrupted; CAP-0076 amended the 394 never restored.",
+          "CAP-0076 added 31,879,035 stroops to the fee pool for two XLM burns; no fork."
+        ],
+        "avoid": [
+          "Do NOT say Protocol 24 rewrote all 478 entries or that no funds were affected."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "GT-31 correction history",
+          "84 restored figure derivation",
+          "unsourced 77 modified figure (re-source before reuse)"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 306,
+      "wordsAfter": 119
+    },
+    {
+      "id": "q-protocol-27-cap-0071",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Protocol 27 Zipper",
+        "CAP-0071 auth delegation",
+        "Soroban credentials"
+      ],
+      "tests": "What CAP-0071 changes (delegated authentication, address-bound V2 credentials) and that CAP status differs from network activation.",
+      "questionIssues": [
+        "\"queued Protocol 27\" is stale: Protocol 27 has been live since 2026-07-08, so the question presupposes a false state."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": "Prescribes dating style."
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "Prescribes dating style; restates 0."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "CAP-0071 Final, Protocol 27; names WITH_DELEGATES and ADDRESS_V2 credentials",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0071.md",
+              "observedAt": "2026-11-14",
+              "quote": "Title: Authentication delegation and address-bound Soroban credentials / Status: Final / Protocol version: 27"
+            }
+          ]
+        },
+        {
+          "claim": "Protocol 27 activated at ledger 63386819, 2026-07-08 17:00:10 UTC",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "F",
+              "ref": "https://horizon.stellar.org/ledgers/63386819",
+              "observedAt": "2026-11-14",
+              "quote": "closed_at 2026-07-08T17:00:10Z, protocol_version 27"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/networks/software-versions",
+              "observedAt": "2026-11-14",
+              "quote": "Protocol 27 (Mainnet, July 8, 2026)"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-pc-protocol-27-zipper",
+          "survivor": "q-pc-protocol-27-zipper",
+          "why": "Same protocol, same CAP, same activation date."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Same knowledge as q-pc-protocol-27-zipper with a stale premise. The survivor absorbs the credential type names and the \"not ZK/consensus\" boundary.",
+      "rewrite": null,
+      "mergeInto": "q-pc-protocol-27-zipper",
+      "confidence": "high",
+      "wordsBefore": 312,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-protocol-accounts-signers-thresholds",
+      "verdict": "tighten",
+      "purpose": "stellar-truth",
+      "topics": [
+        "signers and weights",
+        "thresholds",
+        "SignerKey types"
+      ],
+      "tests": "Classic multisig weights and thresholds, the four SignerKey forms, and secp256r1 as Soroban-only.",
+      "questionIssues": [
+        "Sequence-number content is outside the question's core and duplicates the sequence case."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "minSeqNum belongs to the sequence case."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SignerKey has ed25519, pre-auth tx, hashX and signed payload arms",
+          "result": "unverifiable",
+          "evidence": []
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-pc-multisig-setup-lifecycle",
+          "survivor": "q-pc-multisig-setup-lifecycle",
+          "why": "Lifecycle there; model here."
+        },
+        {
+          "id": "q-pc-sequence-numbers-ordering-replace",
+          "survivor": "q-pc-sequence-numbers-ordering-replace",
+          "why": "Sequence content moves there."
+        }
+      ],
+      "reason": "Keep the signer model and the four-arm SignerKey fact; remove sequence content.",
+      "rewrite": {
+        "question": "How do Stellar accounts handle signing: what are signers, weights and thresholds?",
+        "answer": "A classic account has a master key plus optional signers, each with a weight. Each operation needs a low, medium or high threshold, met when the combined weight of valid signatures reaches it; this is native multisig. A SignerKey is ed25519, a pre-authorized transaction hash, hashX, or an ed25519 signed payload (CAP-0040). secp256r1 is not a classic signer; it is Soroban custom-account authentication.",
+        "keyFacts": [
+          "Signer weights must meet the operation's low, medium or high threshold.",
+          "Classic SignerKey has four forms including the CAP-0040 signed payload.",
+          "secp256r1 belongs to Soroban custom-account auth, not classic signers."
+        ],
+        "avoid": [
+          "Do NOT list secp256r1 as a classic SignerKey or confuse signer weight with a threshold."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "sequence/minSeqNum material (now owned by the sequence case)",
+          "GT-31 correction history"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 312,
+      "wordsAfter": 108
+    },
+    {
+      "id": "q-protocol-amm-cap-0038",
+      "verdict": "tighten",
+      "purpose": "stellar-truth",
+      "topics": [
+        "native AMM liquidity pools",
+        "Protocol 18",
+        "CAP-0038"
+      ],
+      "tests": "Native liquidity pools launched with Protocol 18 via CAP-0038 as a protocol-level primitive, not a Soroban contract.",
+      "questionIssues": [],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Holds date, protocol and CAP; fine as one anchor."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "CAP-0038 / Protocol 18 / 2021-11-03",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "D",
+              "ref": "https://stellar.org/blog (parallel-cli search, AMM announcement)",
+              "observedAt": "2026-11-14",
+              "quote": "Today, November 3, 2021 at 15:00 UTC, the Stellar public network [upgraded]"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "DeFi liquidity-pool leaf (defi lane)",
+          "survivor": "check",
+          "why": "Native pools vs Soroban AMMs may be tested in a DeFi case."
+        }
+      ],
+      "reason": "Correct and small; the answer carries citation markers and two extras. Compress and add the one structural fact (pool-share ledger entry).",
+      "rewrite": {
+        "question": null,
+        "answer": "Native AMM liquidity pools (constant-product) launched with Protocol 18 via CAP-0038, activated around 2021-11-03. They add a liquidity-pool ledger entry type and let path payments route through pools alongside the order book. They are a protocol-level primitive, not a Soroban contract.",
+        "keyFacts": [
+          "Native AMM pools launched with Protocol 18 via CAP-0038 around 2021-11-03.",
+          "They are a protocol-level ledger entry, not a Soroban contract."
+        ],
+        "avoid": [
+          "Do NOT attribute native AMMs to Protocol 20/Soroban or another CAP."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "golden cites and also-good lines"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 184,
+      "wordsAfter": 73
+    },
+    {
+      "id": "q-protocol-base-reserve-min-balance",
+      "verdict": "tighten",
+      "purpose": "stellar-truth",
+      "topics": [
+        "base reserve",
+        "minimum balance formula",
+        "sponsorship-aware reserves"
+      ],
+      "tests": "The sponsorship-aware minimum-balance formula, pool-share trustlines cost two reserves, selling liabilities affect spendability only, and 0.5 XLM is the dated current value.",
+      "questionIssues": [
+        "The question is simple; the golden demands sponsorship and liability depth the question does not ask for. Acceptable because a strong answer includes the formula."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Sponsored-zero creation is also in the activation case."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Soroban rent: trivia beside the main point."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Base reserve 0.5 XLM (5,000,000 stroops) on Mainnet",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "F",
+              "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=5",
+              "observedAt": "2026-11-14",
+              "quote": "closed_at 02:48:27, :32, :37, :42, :47Z; base_reserve_in_stroops 5000000; max_tx_set_size 1000; protocol_version 29"
+            },
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts#base-reserves",
+              "observedAt": "2026-11-14",
+              "quote": "One base reserve is currently 0.5 XLM."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-pc-sponsored-reserves",
+          "survivor": "q-protocol-base-reserve-min-balance",
+          "why": "Formula lives here only."
+        },
+        {
+          "id": "q-pc-account-activation-not-found",
+          "survivor": "q-pc-account-activation-not-found",
+          "why": "Creation lives there."
+        }
+      ],
+      "reason": "Scheduled case; the important claim (0.5 XLM) re-checked live. Re-date to 2026-11-14 and compress; drop the ledger number.",
+      "rewrite": {
+        "question": null,
+        "answer": "The base reserve is a validator-voted network setting, 0.5 XLM (5,000,000 stroops) on Mainnet as of 2026-11-14. Minimum balance = (2 + numSubEntries + numSponsoring - numSponsored) × baseReserve, so an unsponsored empty account needs 1 XLM. A pool-share trustline counts as two subentries. Selling liabilities reduce spendable balance but are not in the minimum.",
+        "keyFacts": [
+          "Minimum balance is (2 + subentries + sponsoring - sponsored) times the base reserve.",
+          "A pool-share trustline costs two reserve units.",
+          "Selling liabilities reduce spendable XLM but are not in the minimum balance.",
+          "The base reserve is validator-set: 0.5 XLM as of the stated date."
+        ],
+        "avoid": [
+          "Do NOT present 0.5 XLM as timeless or add liabilities to the minimum-balance formula."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "ledger 63426130 observation",
+          "GT-31 correction history",
+          "Soroban rent aside"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 337,
+      "wordsAfter": 114
+    },
+    {
+      "id": "q-protocol-bls12-381-cap59",
+      "purpose": "stellar-truth",
+      "topics": [
+        "BLS12-381 host functions",
+        "Protocol 22",
+        "ZK primitives on Soroban"
+      ],
+      "tests": "BLS12-381 arrived in Protocol 22 via CAP-0059, distinct from the later BN254/Poseidon work.",
+      "questionIssues": [],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Restates 0 (Soroban use); 2 and 3 are elaboration beside the main point."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "CAP-0059 / Protocol 22 / activated 2024-12-05",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/networks/software-versions",
+              "observedAt": "2026-11-14",
+              "quote": "Protocol 22 (Mainnet, December 5, 2024)"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-protocol-bn254-poseidon-xray",
+          "survivor": "q-protocol-bn254-poseidon-xray",
+          "why": "Same leaf: ZK-oriented crypto host functions by protocol; the answer already contrasts BLS12-381 with BN254."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "One leaf (ZK crypto primitives and their protocols) split across two cases. Fold BLS12-381 (P22, CAP-0059) into the X-Ray case as one key fact.",
+      "rewrite": null,
+      "mergeInto": "q-protocol-bn254-poseidon-xray",
+      "confidence": "high",
+      "wordsBefore": 177,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-protocol-bn254-poseidon-xray",
+      "verdict": "tighten",
+      "purpose": "stellar-truth",
+      "topics": [
+        "BLS12-381 and BN254 host functions",
+        "Poseidon permutations",
+        "ZK primitives by protocol"
+      ],
+      "tests": "Which ZK-oriented crypto host functions Soroban gained in which protocol and CAP; absorbs the BLS12-381 case.",
+      "questionIssues": [
+        "Question names only Protocol 25; widen to cover BLS12-381 and the CAP-0080 follow-up."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": "Prescribes dating."
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "Prescribes dating."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Protocol 25 X-Ray activated 2026-01-22; CAP-0074 (3 BN254 functions) and CAP-0075 (poseidon_permutation, poseidon2_permutation)",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "F",
+              "ref": "https://horizon.stellar.org/ledgers/60889907",
+              "observedAt": "2026-11-14",
+              "quote": "closed_at 2026-01-22T17:00:06Z, protocol_version 25 (first ledger found by bisection)"
+            },
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0074.md",
+              "observedAt": "2026-11-14",
+              "quote": "bn254_g1_add, bn254_g1_mul, bn254_multi_pairing_check; Status: Final; Protocol version: 25"
+            },
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0075.md",
+              "observedAt": "2026-11-14",
+              "quote": "poseidon_permutation, poseidon2_permutation; Status: Final; Protocol version: 25"
+            }
+          ]
+        },
+        {
+          "claim": "BLS12-381 in Protocol 22 via CAP-0059, 2024-12-05",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/networks/software-versions",
+              "observedAt": "2026-11-14",
+              "quote": "Protocol 22 (Mainnet, December 5, 2024)"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-protocol-bls12-381-cap59",
+          "survivor": "q-protocol-bn254-poseidon-xray",
+          "why": "Merged in."
+        },
+        {
+          "id": "q-pc-protocol-26-yardstick",
+          "survivor": "q-pc-protocol-26-yardstick",
+          "why": "Owns CAP-0080; only a pointer here."
+        }
+      ],
+      "reason": "Survivor of the ZK-primitives merge. Widen the question and drop process key facts and the generic preamble.",
+      "rewrite": {
+        "question": "Which ZK-related cryptographic host functions did Soroban gain (BLS12-381, BN254, Poseidon), in which protocols and CAPs?",
+        "answer": "BLS12-381 pairing and curve host functions arrived in Protocol 22 via CAP-0059 (2024-12-05). Protocol 25 X-Ray (2026-01-22) added BN254 via CAP-0074 (bn254_g1_add, bn254_g1_mul, bn254_multi_pairing_check) and Poseidon/Poseidon2 via CAP-0075 (poseidon_permutation, poseidon2_permutation). Protocol 26 extended BN254 with CAP-0080. The Poseidon functions are permutations, not turnkey hash helpers, and none makes transactions private.",
+        "keyFacts": [
+          "BLS12-381 host functions landed in Protocol 22 via CAP-0059.",
+          "CAP-0074 adds three BN254 functions and CAP-0075 two Poseidon permutations, in Protocol 25.",
+          "CAP-0080 extends BN254 in Protocol 26; Poseidon functions are permutations, not hash helpers."
+        ],
+        "avoid": [
+          "Do NOT attribute BN254/Poseidon to Protocol 22 or BLS12-381 to Protocol 25, or claim default privacy."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "generic dated-example preamble",
+          "golden cites lines"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 304,
+      "wordsAfter": 101
+    },
+    {
+      "id": "q-protocol-cap-process",
+      "verdict": "tighten",
+      "purpose": "stellar-truth",
+      "topics": [
+        "CAP lifecycle",
+        "CAP vs SEP",
+        "network activation"
+      ],
+      "tests": "CAP statuses (Draft to Final) are separate from validator-driven activation; SEPs are ecosystem standards. Absorbs cap-vs-sep.",
+      "questionIssues": [],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Restates 1."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Overlaps 3."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Current CAP statuses include Accepted, Implemented, Final",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0081.md",
+              "observedAt": "2026-11-14",
+              "quote": "Status: Accepted"
+            },
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0084.md",
+              "observedAt": "2026-11-14",
+              "quote": "Status: Implemented"
+            },
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0071.md",
+              "observedAt": "2026-11-14",
+              "quote": "Status: Final"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-protocol-cap-vs-sep",
+          "survivor": "q-protocol-cap-process",
+          "why": "Merged in."
+        },
+        {
+          "id": "q-pc-protocol-upgrade-timing",
+          "survivor": "q-pc-protocol-upgrade-timing",
+          "why": "Owns activation mechanics."
+        }
+      ],
+      "reason": "Survivor of the CAP/SEP merge. Compress 339 words to about 120.",
+      "rewrite": {
+        "question": null,
+        "answer": "A CAP starts as public discussion and a Draft markdown PR in stellar-protocol/core, moves to Awaiting Decision, then a Final Comment Period leads to Accepted or rejection (or back to Draft). Accepted means the specification is approved; Implemented and Final follow. None of these is network activation, which happens when validators agree to a scheduled upgrade through SCP quorum sets, not a node-count majority or XLM-holder vote. SEPs set ecosystem conventions and do not change consensus rules.",
+        "keyFacts": [
+          "CAP path: Draft, Awaiting Decision, FCP, Accepted, Implemented, Final.",
+          "CAP status is separate from implementation, release and network activation.",
+          "Activation is validator agreement through quorum sets, not a token or majority vote.",
+          "CAPs change protocol; SEPs are ecosystem interoperability standards."
+        ],
+        "avoid": [
+          "Do NOT list Implementation Review as a current status or equate Accepted or Final with activation."
+        ],
+        "notes": "core/README describes Final as accepted by a majority of validators; an answer quoting that as the registry definition is not wrong.",
+        "movedToTruth": [
+          "2026-08-04 correction history",
+          "GT-32 correction history"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 339,
+      "wordsAfter": 154
+    },
+    {
+      "id": "q-protocol-cap-vs-sep",
+      "purpose": "stellar-truth",
+      "topics": [
+        "CAP vs SEP",
+        "protocol vs ecosystem standards"
+      ],
+      "tests": "CAPs change core protocol; SEPs are ecosystem conventions; acceptance is not activation.",
+      "questionIssues": [],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "CAP vs SEP definitions",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://github.com/stellar/stellar-protocol",
+              "observedAt": "2026-11-14",
+              "quote": "core/ holds CAPs and ecosystem/ holds SEPs (repository layout, observed via gh api)"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-protocol-cap-process",
+          "survivor": "q-protocol-cap-process",
+          "why": "Its answer and key fact 4 already state the CAP/SEP difference and acceptance-vs-activation."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Strict subset of q-protocol-cap-process; nothing to absorb.",
+      "rewrite": null,
+      "mergeInto": "q-protocol-cap-process",
+      "confidence": "high",
+      "wordsBefore": 152,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-protocol-ledger-close-time",
+      "verdict": "tighten",
+      "purpose": "stellar-truth",
+      "topics": [
+        "ledger close time",
+        "target close time setting",
+        "closeTime semantics"
+      ],
+      "tests": "Mainnet closes about every 5 seconds, set by a validator-voted target (5000 ms) rather than a fixed constant.",
+      "questionIssues": [],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Holds two predicates (configurable target, closeTime semantics)."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Mainnet closes about every 5 seconds (all five sampled deltas 5 s) as of 2026-11-14",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "F",
+              "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=5",
+              "observedAt": "2026-11-14",
+              "quote": "closed_at 02:48:27, :32, :37, :42, :47Z; base_reserve_in_stroops 5000000; max_tx_set_size 1000; protocol_version 29"
+            }
+          ]
+        },
+        {
+          "claim": "Docs now say about 5 seconds",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies",
+              "observedAt": "2026-11-14",
+              "quote": "Per ledger (target ~5 s today)"
+            }
+          ]
+        }
+      ],
+      "duplicates": [],
+      "reason": "Scheduled case; important claim re-checked live. 449 words is mostly grading rules for a single number: compress and move page-correction history to truth.",
+      "rewrite": {
+        "question": null,
+        "answer": "As of 2026-11-14 Mainnet closes a ledger about every 5 seconds: the network setting ledger_target_close_time_milliseconds is 5000, in force since Protocol 28 (2026-09-16); before that closes ran about 5 to 7 seconds. The target is a validator-voted setting (CAP-0070), not a fixed protocol constant.",
+        "keyFacts": [
+          "About 5 seconds, dated or sourced; 5 to 7 seconds only as the pre-Protocol-28 cadence.",
+          "The target is a validator-set network setting, not a fixed constant."
+        ],
+        "avoid": [
+          "Do NOT call the close time a fixed constant or import Bitcoin or Ethereum block times."
+        ],
+        "notes": "A 5 to 7 second figure presented as current is stale (minor, blocks correct); 3 to 5 seconds is retired wording. CAP-0088 millisecond close times do not change the 5000 ms target.",
+        "movedToTruth": [
+          "sd-100 USDT0 page correction",
+          "2026-11-09 Docs corrections",
+          "sampling method",
+          "also-good and golden cites lines"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 449,
+      "wordsAfter": 118
+    },
+    {
+      "id": "q-protocol-ledger-entry-types",
+      "verdict": "tighten",
+      "purpose": "stellar-truth",
+      "topics": [
+        "LedgerEntryType variants",
+        "ledger state",
+        "Soroban entries"
+      ],
+      "tests": "The ten ledger entry types and the roles of trustlines versus account balances.",
+      "questionIssues": [
+        "Enumeration case; acceptable because an exhaustive-versus-example distinction is the trap."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Ten LedgerEntryType variants ACCOUNT through TTL",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-xdr/blob/v30.0/Stellar-ledger-entries.x",
+              "observedAt": "2026-11-14",
+              "quote": "ACCOUNT = 0 … TRUSTLINE, OFFER, DATA, CLAIMABLE_BALANCE, LIQUIDITY_POOL, CONTRACT_DATA, CONTRACT_CODE, CONFIG_SETTING, TTL = 9"
+            }
+          ]
+        }
+      ],
+      "duplicates": [],
+      "reason": "Survivor of the ledger-structure leaf. Compress; the XDR version aside goes to truth.",
+      "rewrite": {
+        "question": null,
+        "answer": "Ledger state has ten LedgerEntryType variants: ACCOUNT, TRUSTLINE, OFFER, DATA, CLAIMABLE_BALANCE, LIQUIDITY_POOL, CONTRACT_DATA, CONTRACT_CODE, CONFIG_SETTING and TTL. Native XLM lives on account entries; trustlines hold non-native balances; the last four support Soroban.",
+        "keyFacts": [
+          "Lists all ten LedgerEntryType variants.",
+          "Native XLM is on Account entries; trustlines hold non-native balances."
+        ],
+        "avoid": [
+          "Do NOT present a subset as exhaustive."
+        ],
+        "notes": "An answer that labels a partial list as examples is acceptable.",
+        "movedToTruth": [
+          "stellar-xdr v27/v28/v30 identity statement",
+          "GT-32 history",
+          "also-good and golden cites lines"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 173,
+      "wordsAfter": 65
+    },
+    {
+      "id": "q-protocol-ledger-header-fields",
+      "purpose": "stellar-truth",
+      "topics": [
+        "LedgerHeader XDR fields",
+        "direct vs nested scpValue fields",
+        "hash commitments"
+      ],
+      "tests": "The exact field list of the XDR LedgerHeader and which fields nest inside scpValue.",
+      "questionIssues": [
+        "Asks for an XDR struct dump; no agent decision depends on reciting it, and the XDR is the authoritative source for any agent.",
+        "A strong answer from another source that names fewer fields still conveys the knowledge."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Exhaustive 15-field list; trivia."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Holds several predicates (txSetHash, closeTime, upgrades)."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "LedgerHeader direct fields: ledgerVersion … skipList[4], ext",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-xdr/blob/v30.0/Stellar-ledger.x",
+              "observedAt": "2026-11-14",
+              "quote": "uint32 ledgerVersion; Hash previousLedgerHash; StellarValue scpValue; Hash txSetResultHash; Hash bucketListHash; … Hash skipList[4]; union switch (int v)"
+            }
+          ]
+        },
+        {
+          "claim": "Protocol 30 adds closeTimeMs inside StellarValue, not the header",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+              "observedAt": "2026-11-14",
+              "quote": "Protocol 30 changes the ledger header format (CAP-88)"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-pc-bucketlist-vs-merkle-inclusion-proof",
+          "survivor": "q-pc-bucketlist-vs-merkle-inclusion-proof",
+          "why": "Tests the useful distinction (txSetHash vs txSetResultHash vs bucketListHash) in a question people ask."
+        },
+        {
+          "id": "q-protocol-ledger-entry-types",
+          "survivor": "q-protocol-ledger-entry-types",
+          "why": "Same \"what is in a ledger\" topic and the more useful half."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "Trivia: reciting struct fields is retrievable from the XDR and decides nothing. The substantive header distinction is tested by the bucketlist/inclusion case. Retire without replacement unless the taxonomy asks for a ledger-structure leaf, which the entry-types case covers.",
+      "rewrite": null,
+      "confidence": "medium",
+      "wordsBefore": 232,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-protocol-max-tx-set-size",
+      "verdict": "tighten",
+      "purpose": "stellar-truth",
+      "topics": [
+        "ledger transaction capacity",
+        "classic operations per ledger",
+        "Soroban transaction limit"
+      ],
+      "tests": "The classic limit counts operations, not transactions, and Soroban has a separate transaction count; both are validator-set.",
+      "questionIssues": [
+        "\"maximum transaction set size (operations per ledger)\" mixes the two limits; the golden clarifies."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Holds the dated numeric value; keep."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "1,000 classic operations per ledger",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "F",
+              "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=5",
+              "observedAt": "2026-11-14",
+              "quote": "closed_at 02:48:27, :32, :37, :42, :47Z; base_reserve_in_stroops 5000000; max_tx_set_size 1000; protocol_version 29"
+            }
+          ]
+        },
+        {
+          "claim": "2,000 smart-contract transactions per ledger (live since SLP-0007 table; docs storage page)",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies",
+              "observedAt": "2026-11-14",
+              "quote": "Smart-contract transactions 2,000 Soroban transaction bytes 864,000 B Dependent transaction clusters 3"
+            }
+          ]
+        }
+      ],
+      "duplicates": [],
+      "reason": "Scheduled case; both numbers re-checked live. Re-date to 2026-11-14 and compress.",
+      "rewrite": {
+        "question": null,
+        "answer": "As of 2026-11-14 Mainnet allows 1,000 classic operations per ledger (the maxTxSetSize counts operations, not transactions) and 2,000 smart-contract transactions per ledger, plus separate Soroban resource limits. These are validator-set network settings, not protocol constants.",
+        "keyFacts": [
+          "The classic limit of 1,000 counts operations, not transactions.",
+          "Soroban has a separate transaction count and resource limits, 2,000 per ledger as of 2026-11-14."
+        ],
+        "avoid": [
+          "Do NOT equate 1,000 operations with 1,000 transactions or state either as permanent."
+        ],
+        "notes": "Date any figure; a later sourced change is acceptable.",
+        "movedToTruth": [
+          "2026-08-21 observation",
+          "v27 XDR ledgerMaxTxCount remark",
+          "CORRECTION 2026-08-04 history"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 153,
+      "wordsAfter": 81
+    },
+    {
+      "id": "q-protocol-network-passphrases-list",
+      "verdict": "tighten",
+      "purpose": "stellar-truth",
+      "topics": [
+        "network passphrases",
+        "Public, Testnet, Futurenet"
+      ],
+      "tests": "The exact passphrase strings for the three networks.",
+      "questionIssues": [
+        "Key facts omit Futurenet although the question asks for it."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Three passphrase strings exact",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/networks",
+              "observedAt": "2026-11-14",
+              "quote": "Public Global Stellar Network ; September 2015 / Test SDF Network ; September 2015 / Test SDF Future Network ; October 2022 (each present on page)"
+            }
+          ]
+        }
+      ],
+      "duplicates": [],
+      "reason": "Small, correct, error-prone to recall. Add Futurenet to the key facts and drop the citation formatting.",
+      "rewrite": {
+        "question": null,
+        "answer": "Public network: \"Public Global Stellar Network ; September 2015\". Testnet: \"Test SDF Network ; September 2015\". Futurenet: \"Test SDF Future Network ; October 2022\". There is no separate \"mainnet\" passphrase.",
+        "keyFacts": [
+          "The public passphrase is \"Public Global Stellar Network ; September 2015\".",
+          "The Testnet passphrase is \"Test SDF Network ; September 2015\".",
+          "The Futurenet passphrase is \"Test SDF Future Network ; October 2022\"."
+        ],
+        "avoid": [
+          "Do NOT garble the strings or invent a separate mainnet passphrase."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "trap rationale",
+          "golden cites line"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 142,
+      "wordsAfter": 73
+    },
+    {
+      "id": "q-protocol-operation-types-list",
+      "verdict": "tighten",
+      "purpose": "stellar-truth",
+      "topics": [
+        "classic operation types",
+        "transaction vs operation",
+        "Soroban operations"
+      ],
+      "tests": "The grouped classic operation set and that a transaction bundles operations atomically; no ERC-style Transfer/Mint/Burn. Absorbs operations-vs-transactions.",
+      "questionIssues": [
+        "An enumeration; acceptable because inventing operations is the failure mode."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Fragments one list into five facts; collapse."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Same."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Same."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Same."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Classic OperationType set including InvokeHostFunction, ExtendFootprintTTL, RestoreFootprint",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-xdr/blob/v30.0/Stellar-transaction.x",
+              "observedAt": "2026-11-14",
+              "quote": "enum OperationType { CREATE_ACCOUNT = 0, PAYMENT = 1, … INVOKE_HOST_FUNCTION = 24, EXTEND_FOOTPRINT_TTL = 25, RESTORE_FOOTPRINT = 26 }"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-protocol-operations-vs-transactions",
+          "survivor": "q-protocol-operation-types-list",
+          "why": "Merged in."
+        }
+      ],
+      "reason": "Survivor. Collapse five list fragments into three facts and add the atomic-bundling relation.",
+      "rewrite": {
+        "question": null,
+        "answer": "A transaction is the signed, atomic unit that bundles one or more operations. Classic operation types: CreateAccount, Payment, PathPaymentStrictSend/Receive; ManageBuyOffer, ManageSellOffer, CreatePassiveSellOffer; ChangeTrust, SetTrustLineFlags; SetOptions, AccountMerge, ManageData, BumpSequence; claimable-balance, liquidity-pool, clawback and sponsorship operations; and Soroban InvokeHostFunction, ExtendFootprintTTL, RestoreFootprint. There are no ERC-style Transfer, Mint or Burn operations.",
+        "keyFacts": [
+          "A transaction bundles one or more operations atomically and is the signed unit.",
+          "Names the main payment, DEX, trustline, account, claimable-balance, pool and Soroban operations.",
+          "There are no Transfer, Mint or Burn operations."
+        ],
+        "avoid": [
+          "Do NOT invent operation names or say operations are signed and submitted on their own."
+        ],
+        "notes": "Legacy AllowTrust and Inflation need not be listed.",
+        "movedToTruth": [
+          "axis-C rebalance note",
+          "also-good and golden cites lines"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 199,
+      "wordsAfter": 104
+    },
+    {
+      "id": "q-protocol-operations-vs-transactions",
+      "purpose": "stellar-truth",
+      "topics": [
+        "operations vs transactions",
+        "atomic transaction bundling"
+      ],
+      "tests": "A transaction is the signed atomic unit bundling operations.",
+      "questionIssues": [
+        "Elementary; any competent source answers it."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Restates 0 by example."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Transaction bundles operations, executes atomically",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions",
+              "observedAt": "2026-11-14",
+              "quote": "Operations are executed atomically as a unit (docs index hit via stellarDocs.search_docs)"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-protocol-operation-types-list",
+          "survivor": "q-protocol-operation-types-list",
+          "why": "The operations list answer already opens with the transaction-bundles-operations relation."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Foundational statement is a single sentence that the operation-types case can carry; a separate case adds a trivially passed item.",
+      "rewrite": null,
+      "mergeInto": "q-protocol-operation-types-list",
+      "confidence": "high",
+      "wordsBefore": 211,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-protocol-parallel-execution",
+      "verdict": "tighten",
+      "purpose": "stellar-truth",
+      "topics": [
+        "parallel smart-contract execution",
+        "CAP-0063",
+        "dependent-cluster setting"
+      ],
+      "tests": "Stellar schedules non-conflicting contract transactions in parallel clusters from CAP-0063 (Protocol 23), with the cluster count a later network setting (now 3).",
+      "questionIssues": [],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Holds footprint mechanism and the current value; split value into the dated fact."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Cluster setting 1 at P23, 2 on 2026-01-29 (ledger 60993066), 3 on 2026-10-22 (SLP-0007, ledger 65080525)",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "F",
+              "ref": "https://horizon.stellar.org/ledgers/60993066",
+              "observedAt": "2026-11-14",
+              "quote": "closed_at 2026-01-29T17:00:09Z, protocol_version 25"
+            },
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/limits/slp-0007.md",
+              "observedAt": "2026-11-14",
+              "quote": "dependent transaction clusters (2 to 3) … Status: Final"
+            },
+            {
+              "class": "E",
+              "ref": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies",
+              "observedAt": "2026-11-14",
+              "quote": "SLP-0007 (live on Mainnet since October 22, 2026) … raised the dependent transaction cluster count (2 → 3)"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-protocol-23-whisk-caps",
+          "survivor": "q-protocol-parallel-execution",
+          "why": "Cluster-setting history lives here."
+        }
+      ],
+      "reason": "Scheduled case; important claim (current value 3) re-checked. Compress; re-date to 2026-11-14.",
+      "rewrite": {
+        "question": null,
+        "answer": "Yes. CAP-0063, shipped in Protocol 23 (Whisk, 2025-09-03), schedules non-conflicting smart-contract transactions into parallel clusters, but it started with ledgerMaxDependentTxClusters at 1. Network-setting votes raised it to 2 on 2026-01-29 (SLP-0004) and to 3 on 2026-10-22 (SLP-0007). It is a validator-set value as of 2026-11-14, and this is bounded parallel scheduling, not sharding.",
+        "keyFacts": [
+          "CAP-0063 in Protocol 23 introduced parallel contract-transaction scheduling.",
+          "The cluster setting started at 1 and was raised to 2, then 3, by network settings.",
+          "The current value (3 as of 2026-11-14) is a validator-set number, not a constant."
+        ],
+        "avoid": [
+          "Do NOT call it sharding or say Protocol 23 activation itself enabled multiple clusters."
+        ],
+        "notes": "An undated claim that the value is still 2 is stale.",
+        "movedToTruth": [
+          "ledger numbers and times",
+          "RPC read method",
+          "GT-25/31/33 and 2026-11-02 audit history",
+          "also-good and golden cites lines"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 281,
+      "wordsAfter": 116
+    },
+    {
+      "id": "q-protocol-quorum-slice-vs-quorum",
+      "verdict": "tighten",
+      "purpose": "stellar-truth",
+      "topics": [
+        "quorum set",
+        "quorum slice",
+        "quorum"
+      ],
+      "tests": "The three SCP definitions: quorum set, slice, and quorum, and that each node picks its own.",
+      "questionIssues": [],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Restates 2."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SCP definitions",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol",
+              "observedAt": "2026-11-14",
+              "quote": "quorum slice: a subset of a quorum set that convinces one node; quorum: set where each member has a slice (stable concept; not re-read)"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-protocol-scp-consensus-algorithm",
+          "survivor": "q-protocol-scp-consensus-algorithm",
+          "why": "Same SCP leaf; keep both because one is definitional and one is comparative, but trim overlap on quorum sets."
+        }
+      ],
+      "reason": "Correct, small definitional case; remove the blocking-set bullet and citations.",
+      "rewrite": {
+        "question": null,
+        "answer": "A quorum set is the nodes a validator chooses to trust plus a threshold. A quorum slice is a threshold-sized subset of that set that is enough to convince that node. A quorum is a set of nodes in which every member has at least one slice inside the set. Each node picks its own quorum set; no central authority assigns it.",
+        "keyFacts": [
+          "A quorum set is a node's configured trusted nodes plus a threshold.",
+          "A quorum slice is a sufficient threshold subset of one node's quorum set.",
+          "A quorum is a node set where each member has a slice inside it."
+        ],
+        "avoid": [
+          "Do NOT define a slice as the global validator set or claim a central authority assigns quorum sets."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "blocking-set note",
+          "also-good and golden cites lines"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 289,
+      "wordsAfter": 119
+    },
+    {
+      "id": "q-protocol-scp-consensus-algorithm",
+      "verdict": "tighten",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Stellar Consensus Protocol",
+        "FBA vs PoW and PoS",
+        "safety over liveness"
+      ],
+      "tests": "Stellar uses SCP, an FBA construction using user-chosen quorum sets, with no mining or staking rewards, favoring safety over liveness.",
+      "questionIssues": [],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "About PoW; not a Stellar fact."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "About PoS; not a Stellar fact."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SCP/FBA, no validator rewards, safety over liveness",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/validators",
+              "observedAt": "2026-11-14",
+              "quote": "No staking and no block rewards for running a validator (read via prior audit; stable)"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-protocol-quorum-slice-vs-quorum",
+          "survivor": "q-protocol-scp-consensus-algorithm",
+          "why": "Both stay; this one is the foundational anchor."
+        }
+      ],
+      "reason": "Foundational and stable. Merge five key facts into three; drop the authorship fact.",
+      "rewrite": {
+        "question": null,
+        "answer": "Stellar uses the Stellar Consensus Protocol (SCP), a Federated Byzantine Agreement construction in which each node picks the quorum sets it trusts. It needs no mining hashpower (Proof-of-Work) or staked capital (Proof-of-Stake), and validators earn no block rewards. SCP favors safety over liveness: it can halt rather than fork.",
+        "keyFacts": [
+          "Stellar uses SCP, a Federated Byzantine Agreement construction.",
+          "Agreement comes from user-defined quorum sets, not mining hashpower or staked capital.",
+          "SCP favors safety over liveness and pays no validator block rewards."
+        ],
+        "avoid": [
+          "Do NOT say Stellar uses Proof-of-Work, Proof-of-Stake, PBFT or Tendermint."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "Mazières authorship note",
+          "also-good and golden cites lines"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 235,
+      "wordsAfter": 90
+    },
+    {
+      "id": "q-protocol-state-archival-ttl",
+      "verdict": "tighten",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Soroban state archival",
+        "TTL and rent",
+        "storage durability types"
+      ],
+      "tests": "Contract entries have a TTL; expired persistent entries are archived and restorable, temporary ones are deleted; archival bounds live state.",
+      "questionIssues": [
+        "Overlaps Soroban storage cases in the soroban lanes."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Restates 1."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Restates 4."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Temporary deleted, Persistent/Instance archived and restorable; extend_ttl / ExtendFootprintTTL",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/stellar-xdr/blob/v30.0/Stellar-transaction.x",
+              "observedAt": "2026-11-14",
+              "quote": "EXTEND_FOOTPRINT_TTL = 25, RESTORE_FOOTPRINT = 26 are classic-visible operation types"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "Soroban storage/TTL case in soroban-a or soroban-b",
+          "survivor": "keep the one with the stronger question",
+          "why": "Same storage-rent knowledge from the Soroban developer side."
+        }
+      ],
+      "reason": "Core knowledge; compress, and de-duplicate against the Soroban storage case across lanes.",
+      "rewrite": {
+        "question": null,
+        "answer": "Soroban storage entries have a TTL in ledgers. When it expires the entry is archived and a Persistent or Instance entry must be restored before use, while a Temporary entry is deleted. Archival bounds live state and charges rent so validators do not host unused data forever. TTL is extended with extend_ttl or ExtendFootprintTTL.",
+        "keyFacts": [
+          "Expired entries are archived; Persistent and Instance entries can be restored, Temporary are deleted.",
+          "Archival bounds live state size and ties storage to rent.",
+          "TTL is extended with extend_ttl or ExtendFootprintTTL."
+        ],
+        "avoid": [
+          "Do NOT say contract data is free and permanent or that archived persistent data is destroyed."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "CAP-0046-12, CAP-0053 and CAP-0062 lineage",
+          "also-good and golden cites lines"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 266,
+      "wordsAfter": 101
+    },
+    {
+      "id": "q-protocol-tier1-requirements",
+      "verdict": "tighten",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Tier 1 organizations",
+        "validator quorum trust",
+        "uptime and self-verification"
+      ],
+      "tests": "Tier 1 means three dispersed Full Validators with separate archives, earned by other Tier 1 orgs including you in their quorum sets.",
+      "questionIssues": [],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Three geographically dispersed Full Validators, 99.9%+ uptime, SEP-1 and SEP-20, months not weeks, inclusion by other orgs",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/validators/tier-1-orgs",
+              "observedAt": "2026-11-14",
+              "quote": "Run three geographically dispersed Full Validators, achieve sustained 99.9%+ uptime … complete SEP-20 and SEP-1 self-verification … Expect a process measured in months, not weeks."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-protocol-validator-node-roles",
+          "survivor": "q-protocol-validator-node-roles",
+          "why": "Full Validator definition there."
+        }
+      ],
+      "reason": "Correct and verified live; the answer can be shorter.",
+      "rewrite": {
+        "question": null,
+        "answer": "A Tier 1 organization runs three geographically dispersed Full Validators, each publishing its own history archive, with sustained 99.9%+ uptime and SEP-1 and SEP-20 self-verification. It is not granted by SDF or bought by staking: other Tier 1 organizations must choose to include you in their quorum sets, which takes months. Three validators let 2-of-3 still vote for you during a failure.",
+        "keyFacts": [
+          "Requires three geographically dispersed Full Validators, each with its own history archive.",
+          "Tier 1 status comes from other Tier 1 orgs including you in their quorum sets.",
+          "It is not granted by SDF application or staking XLM."
+        ],
+        "avoid": [
+          "Do NOT claim a stake, fee, SDF approval, or a validator count other than three."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "also-good and golden cites lines"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 243,
+      "wordsAfter": 114
+    },
+    {
+      "id": "q-protocol-validator-node-roles",
+      "verdict": "tighten",
+      "purpose": "stellar-truth",
+      "topics": [
+        "node roles",
+        "Basic vs Full Validator",
+        "history archives"
+      ],
+      "tests": "Watcher, Basic Validator and Full Validator differ in voting and archive publishing; no staking or rewards.",
+      "questionIssues": [],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Holds validator role and part of Basic/Full; fine."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Full Validators publish a history archive; Basic do not; no staking or rewards",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/validators/tier-1-orgs",
+              "observedAt": "2026-11-14",
+              "quote": "Full Validators … each publishing a complete separate history archive; no block rewards (tier-1 page, observed 2026-11-14)"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-protocol-tier1-requirements",
+          "survivor": "q-protocol-tier1-requirements",
+          "why": "Tier 1 needs three Full Validators."
+        }
+      ],
+      "reason": "Correct; compress.",
+      "rewrite": {
+        "question": null,
+        "answer": "A Watcher follows the network without voting. A Validator votes in consensus: a Basic Validator does not publish a history archive, while a Full Validator also publishes one so other nodes can catch up. RPC and Galexie nodes serve data and do not vote. There is no staking or block reward.",
+        "keyFacts": [
+          "A Watcher does not vote in consensus.",
+          "Validators vote; only a Full Validator also publishes a public history archive."
+        ],
+        "avoid": [
+          "Do NOT say Basic and Full Validators differ by stake or that validators earn rewards."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "RPC/Galexie aside sources",
+          "also-good and golden cites lines"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 223,
+      "wordsAfter": 85
+    },
+    {
+      "id": "q-protocol-validator-upgrade-vote",
+      "purpose": "stellar-truth",
+      "topics": [
+        "validator upgrade arming",
+        "upgrades http-command",
+        "SCP in-band activation"
+      ],
+      "tests": "Validators arm a scheduled version bump and SCP agreement activates it in-band; not a token vote or off-chain switch.",
+      "questionIssues": [
+        "Key facts 1 and 2 pin the http-command syntax, which is trivia an operator reads from the admin guide."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Command syntax trivia."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Restates 1."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Restates the question."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "upgrades?mode=set&upgradetime=…&protocolversion=N arming command",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/validators/admin-guide/network-upgrades",
+              "observedAt": "2026-11-14",
+              "quote": "http-command 'upgrades?mode=set&upgradetime=2018-01-31T20:00:00Z&protocolversion=9'"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-pc-protocol-upgrade-timing",
+          "survivor": "q-pc-protocol-upgrade-timing",
+          "why": "Its question already asks how validators vote an upgrade in."
+        },
+        {
+          "id": "q-protocol-cap-process",
+          "survivor": "q-protocol-cap-process",
+          "why": "Covers SCP activation vs token vote."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Three cases test validator-side activation. Fold the arming-then-in-band mechanism into q-pc-protocol-upgrade-timing; the command syntax is dropped as trivia.",
+      "rewrite": null,
+      "mergeInto": "q-pc-protocol-upgrade-timing",
+      "confidence": "high",
+      "wordsBefore": 265,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-protocol-version-history-list",
+      "verdict": "tighten",
+      "purpose": "stellar-truth",
+      "topics": [
+        "protocol upgrade history",
+        "protocol headline features",
+        "current Mainnet version"
+      ],
+      "tests": "The feature and Mainnet date of each protocol from 19 through the live tail, with the Bell vote scheduled.",
+      "questionIssues": [
+        "Live case that doubles as the anchor for per-protocol cases; its answer is a 399-word wall."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": "Prescribes dating."
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "Prescribes dating; restates 0."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Restates 2."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Repeats the parallel-execution case."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Mainnet dates: P25 2026-01-22, P26 2026-05-06, P27 2026-07-08, P28 2026-09-16 (ledger 64458446), P29 2026-10-01 (ledger 64717645)",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "F",
+              "ref": "https://horizon.stellar.org/ledgers/64458446 and /64717645 (first-ledger bisection)",
+              "observedAt": "2026-11-14",
+              "quote": "closed_at 2026-09-16T17:00:06Z (P28); 2026-10-01T17:00:07Z (P29)"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/networks/software-versions",
+              "observedAt": "2026-11-14",
+              "quote": "Protocol 29 (Mainnet, October 1, 2026)"
+            }
+          ]
+        },
+        {
+          "claim": "P19 2022-06-08, P20 2024-02-20, P21 2024-06-18, P22 2024-12-05, P23 2025-09-03, P24 2025-10-22",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/networks/software-versions",
+              "observedAt": "2026-11-14",
+              "quote": "Protocol 20 (Mainnet, February 20, 2024) … Protocol 21 (Mainnet, June 18, 2024) … Protocol 22 (Mainnet, December 5, 2024)"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/networks/software-versions",
+              "observedAt": "2026-11-14",
+              "quote": "Whisk Protocol 23 (Mainnet, September 3, 2025) … Protocol 24 (Mainnet, October 22, 2025)"
+            },
+            {
+              "class": "D",
+              "ref": "https://stellar.org/blog (Protocol 19 announcement)",
+              "observedAt": "2026-11-14",
+              "quote": "Today, June 8, 2022 at 15:00 UTC, the Stellar public network [upgraded]"
+            }
+          ]
+        },
+        {
+          "claim": "Mainnet still P29; Bell vote 2026-11-23; Testnet P30",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "F",
+              "ref": "https://horizon.stellar.org/",
+              "observedAt": "2026-11-14",
+              "quote": "current_protocol_version 29, core_supported_protocol_version 30, core_version stellar-core 30.0.0, history_latest_ledger 65467697"
+            },
+            {
+              "class": "F",
+              "ref": "https://horizon-testnet.stellar.org/",
+              "observedAt": "2026-11-14",
+              "quote": "current_protocol_version 30, core_supported_protocol_version 30"
+            },
+            {
+              "class": "A",
+              "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+              "observedAt": "2026-11-14",
+              "quote": "November 3, 2026, 1700 UTC —Testnet upgrade vote. November 23, 2026, 1700 UTC —Mainnet upgrade vote."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-pc-protocol-26-yardstick, q-pc-protocol-27-zipper, q-protocol-23-whisk-caps, q-protocol-24-whisk-incident, q-protocol-19-preconditions-cap-0021, q-protocol-bn254-poseidon-xray",
+          "survivor": "each keeps its own depth",
+          "why": "This case owns date-to-feature mapping; the others own CAP detail. Keep dates here and CAP specifics there."
+        }
+      ],
+      "reason": "Live case with the highest drift risk (reverifyBy 2026-11-24, right after the 2026-11-23 vote). Replace the wall with a compact table and require a dated live tail.",
+      "rewrite": {
+        "question": null,
+        "answer": "As of 2026-11-14 Mainnet runs Protocol 29. P19 2022-06-08 preconditions; P20 2024-02-20 Soroban; P21 2024-06-18 secp256r1; P22 2024-12-05 BLS12-381; P23 Whisk 2025-09-03 parallel scheduling (CAP-0063) and live/archival state; P24 2025-10-22 archival-bug fix; P25 X-Ray 2026-01-22 BN254/Poseidon; P26 Yardstick 2026-05-06; P27 Zipper 2026-07-08 CAP-0071 auth delegation; P28 2026-09-16 CAP-0083/0085/0086; P29 2026-10-01 a security release with no new CAPs. Bell (P30) is on Testnet with its Mainnet vote scheduled for 2026-11-23.",
+        "keyFacts": [
+          "Maps each of Protocols 19 to 29 to its headline feature.",
+          "Gives each Mainnet activation date.",
+          "States the live Mainnet protocol with an as-of date."
+        ],
+        "avoid": [
+          "Do NOT mis-pair features and versions or call P26, P27 or P28 the latest after 2026-10-01."
+        ],
+        "notes": "Accept a later sourced Mainnet tail (for example Bell once activated).",
+        "movedToTruth": [
+          "P23 cluster-setting detail",
+          "P20 phased rollout note",
+          "dated-example preamble",
+          "sources and ledger numbers"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 399,
+      "wordsAfter": 121
+    }
+  ],
+  "summary": {
+    "keep": 0,
+    "tighten": 39,
+    "merge": 6,
+    "retire": 4,
+    "move-tool-lane": 0,
+    "factsChanged": 2
+  },
+  "crossCategoryDuplicates": [
+    "ZK crypto primitives (BLS12-381, BN254, Poseidon, ML-DSA): q-protocol-bn254-poseidon-xray here; check soroban lanes for a ZK-verifier or crypto-host-function case.",
+    "Soroban storage rent and TTL: q-protocol-state-archival-ttl here; the Soroban storage cases in audit-soroban-a/b test the same knowledge.",
+    "Liquidity pools / AMMs: q-protocol-amm-cap-0038 here (native, Protocol 18); DeFi lane likely has Soroban AMM cases; keep native-vs-contract distinction in one place.",
+    "Oracles and SEP-40: q-pc-cross-redstone-sep40 here; the DeFi/oracle lane likely has a Reflector or oracle case.",
+    "Quantum preparedness (QPP, ML-DSA): q-pc-quantum-preparedness-dormant here; check compliance/security lanes for a second QPP case.",
+    "Fee-bump and sponsored fees: q-pc-fee-bump-channel-accounts-feepool and q-pc-sponsored-reserves here; check tooling/SDK lanes for fee-bump builder cases.",
+    "Validator roles and Tier 1: q-protocol-validator-node-roles and q-protocol-tier1-requirements here; check the edge lane for any validator or SCP overlap."
+  ],
+  "missing": [
+    "Soroban resource fees and the inclusion-fee/resource-fee split (the fee cases are classic-first).",
+    "Classic asset flags and authorization at protocol level (AUTH_REQUIRED, clawback, trustline authorization) as protocol behavior; may sit in the assets lane.",
+    "Claimable balances and liquidity-pool operation semantics (as protocol features, beyond the operation name list).",
+    "Path payments and the DEX order book/offer matching rules at protocol level.",
+    "Data entries (ManageData) and account flags; low value, only if the taxonomy asks.",
+    "Protocol-level security events and responses (the YieldBlox freeze via CAP-0077, SLP-0006/0008 account freezes) as a general mechanism: who can freeze, how, and how it is reversed.",
+    "Network configuration settings (CONFIG_SETTING entries) and how Soroban limits are changed beyond SLP naming.",
+    "History archives and ledger close metadata for data consumers (Galexie, ledger meta) at protocol level."
+  ]
+}

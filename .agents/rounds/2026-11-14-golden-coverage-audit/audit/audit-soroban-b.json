@@ -1,0 +1,3611 @@
+{
+  "lane": "audit-soroban-b",
+  "records": [
+    {
+      "id": "q-soroban-constructor-lifecycle",
+      "purpose": "stellar-truth",
+      "topics": [
+        "contract constructors",
+        "CAP-0058 / Protocol 22",
+        "deploy-time initialization"
+      ],
+      "tests": "Soroban has a protocol-level `__constructor` that runs once, atomically, at contract creation, replacing the guarded `initialize` pattern.",
+      "questionIssues": [],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Holds two predicates (CAP-0058 and Protocol 22) but they are one fact; acceptable."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "CAP-0058 (constructors) is Final and shipped in Protocol 22",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0058.md",
+              "observedAt": "2026-11-14",
+              "quote": "CAP: 0058 Title: Constructors for Soroban contracts ... Status: Final"
+            },
+            {
+              "class": "F",
+              "ref": "local stellar 30.0.1 `stellar contract deploy --help`",
+              "observedAt": "2026-11-14",
+              "quote": "stellar contract deploy [OPTIONS] --source-account <SOURCE_ACCOUNT> [-- <CONTRACT_CONSTRUCTOR_ARGS>...]"
+            }
+          ]
+        },
+        {
+          "claim": "Dates (mainnet vote 2024-12-05) are historical",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "truth.verified 2026-11-02 (stellar.org protocol-22-upgrade-guide)",
+              "observedAt": "2026-11-14",
+              "quote": "Not re-fetched: a past event cannot move and the 2026-11-02 audit confirmed it with two classes."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-soroban-factory-pattern",
+          "survivor": "q-soroban-constructor-lifecycle",
+          "why": "Factory case only needs to say a child `__constructor` can initialize at deploy; the constructor semantics live here."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Right topic and correct, but the answer is a 200-word markdown essay and the notes carry provenance and dates the judge does not need. The fact is historical, so `freshness: stable` fits better than `scheduled` with a 2027 reverifyBy.",
+      "rewrite": {
+        "question": null,
+        "answer": "Yes. Since Protocol 22 (CAP-0058), a contract defines a constructor as a function named `__constructor` in its `#[contractimpl]` block. The host runs it exactly once, atomically, when the contract is created. A trap or a non-Void return fails creation. Arguments are supplied at deploy time (`stellar contract deploy ... -- <args>`). It is not re-run on a Wasm upgrade.",
+        "keyFacts": [
+          "A Soroban constructor is a function named `__constructor` in `#[contractimpl]`.",
+          "The host runs `__constructor` exactly once, atomically, at contract creation.",
+          "Constructors arrived at the protocol level with CAP-0058 in Protocol 22.",
+          "Constructor arguments are passed at deploy time."
+        ],
+        "avoid": [
+          "Do NOT claim Soroban has no constructor mechanism, or describe Solidity `constructor`/`selfdestruct` semantics."
+        ],
+        "notes": "Mentioning the pre-Protocol-22 guarded `initialize` pattern as history is correct, not a stale claim.",
+        "movedToTruth": [
+          "CAP-0058 Final; testnet 2024-11-12, mainnet vote 2024-12-05",
+          "`__constructor` must return Val::Void; created via HOST_FUNCTION_TYPE_CREATE_CONTRACT_V2",
+          "Golden-cites line (docs page or CAP-0058)",
+          "Suggest tags.freshness stable and drop reverifyBy"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 289,
+      "wordsAfter": 124
+    },
+    {
+      "id": "q-soroban-contract-build-verification",
+      "purpose": "stellar-truth",
+      "topics": [
+        "contract build verification",
+        "SEP-55 attestations",
+        "SEP-58 reproducible builds"
+      ],
+      "tests": "A deployed Wasm is tied to its source by SEP-55 CI attestations and SEP-58 rebuild-and-compare, both Draft, and verification proves provenance rather than safety.",
+      "questionIssues": [
+        "Two questions in one (how to verify, and which standards cover it); acceptable because the standards are the answer to how."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Vague: does not say which metadata entry (`source_repo`) links the Wasm to its repo."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Tool-name trivia (Lab 'Build Info' UI); the CLI command that shows build info is `stellar contract info build`, while `info meta` prints only the raw metadata entries."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Restates facts 0 and 1 as status; keep only the Draft-as-of part."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SEP-55 is Draft v0.4.1 (Updated 2025-03-12)",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0055.md",
+              "observedAt": "2026-11-14",
+              "quote": "SEP: 0055 Title: Contract Build Verification ... Status: Draft ... Updated: 2025-03-12 Version: 0.4.1"
+            }
+          ]
+        },
+        {
+          "claim": "SEP-58 is Draft v0.6.0, complementary to SEP-55",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0058.md",
+              "observedAt": "2026-11-14",
+              "quote": "SEP: 0058 Title: Contract Build Reproducibility for Verification Status: Draft Updated: 2026-07-15 Version: 0.6.0"
+            }
+          ]
+        },
+        {
+          "claim": "SEP-49 is Upgradeable Contracts, not build verification",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0049.md",
+              "observedAt": "2026-11-14",
+              "quote": "SEP: 0049 Title: Upgradeable Contracts"
+            }
+          ]
+        },
+        {
+          "claim": "Attestation is looked up by Wasm SHA-256 via GitHub's attestations API",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0055.md",
+              "observedAt": "2026-11-14",
+              "quote": "https://api.github.com/repos/<user_name>/<repo_name>/attestations/sha256:<wasm_hash>"
+            },
+            {
+              "class": "F",
+              "ref": "local stellar 30.0.1 `stellar contract info --help`",
+              "observedAt": "2026-11-14",
+              "quote": "build  Output the contract build information, if available"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-soroban-contractmeta-vs-contractevent",
+          "survivor": "q-soroban-contract-build-verification",
+          "why": "Only the `contractmetav0` fact overlaps; this case already carries it."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Needed: it is the only case on build verification and the SEP statuses still hold. Key facts 3 and 4 are weak (UI trivia, restated status), and the answer is 190 words with version numbers that will drift.",
+      "rewrite": {
+        "question": null,
+        "answer": "Verify by build provenance. SEP-55 (Draft) has CI build the Wasm and publish GitHub Attestations, with a `source_repo=github:<org>/<repo>` entry in the Wasm's `contractmetav0`; a verifier looks up the attestation by Wasm hash. SEP-58 (Draft) defines digest-pinned build metadata so anyone can rebuild the Wasm and compare bytes. The two are complementary. 'Build verified' proves provenance, not safety, and Stellar stores no source on-chain. Statuses as of 2026-11-14.",
+        "keyFacts": [
+          "SEP-55 verifies CI-built Wasm through GitHub Attestations looked up by Wasm hash.",
+          "SEP-58 verifies by rebuilding the Wasm from pinned build metadata and comparing bytes.",
+          "SEP-55 and SEP-58 are both Draft, complementary standards (as of 2026-11-14).",
+          "A `contractmetav0` `source_repo` entry links the Wasm to its repository."
+        ],
+        "avoid": [
+          "Do NOT call contract build verification SEP-49 (that is Upgradeable Contracts).",
+          "Do NOT claim Stellar stores contract source code on-chain."
+        ],
+        "notes": "SEP statuses can change: grade Draft against the as-of date. Accept either standard named first. 'Build verified' meaning provenance rather than audit is a bonus, not required.",
+        "movedToTruth": [
+          "SEP-55 v0.4.1 (Updated 2025-03-12), SEP-58 v0.6.0 (Updated 2026-07-15) preamble values",
+          "soroban-build-workflow action name",
+          "`stellar contract info build` vs `info meta` command detail",
+          "Golden-cites line"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 329,
+      "wordsAfter": 160
+    },
+    {
+      "id": "q-soroban-contract-id-derivation",
+      "purpose": "stellar-truth",
+      "topics": [
+        "contract address derivation",
+        "deployer plus salt",
+        "address stability across upgrades"
+      ],
+      "tests": "A contract's C... address is a deterministic hash of a ContractIDPreimage and the network ID (deployer + salt), not of the Wasm, so upgrades keep the address.",
+      "questionIssues": [],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Same predicate as fact 3 (determinism); merge them."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Merge with fact 2."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Address is derived from ContractIDPreimage + network ID, deployer+salt, independent of Wasm hash",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/stellar-transaction",
+              "observedAt": "2026-11-14",
+              "quote": "Not re-fetched; stable fact confirmed 2026-11-02 against XDR (Stellar-transaction.x) and `stellar contract id wasm --salt` output."
+            },
+            {
+              "class": "B",
+              "ref": "https://github.com/stellar/rs-soroban-sdk/blob/v29.0.1/soroban-sdk/src/deploy.rs",
+              "observedAt": "2026-11-14",
+              "quote": "pub fn deployed_address(&self) -> Address"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-soroban-factory-pattern",
+          "survivor": "q-soroban-contract-id-derivation",
+          "why": "Factory case restates deterministic-address and 'Wasm hash not in derivation' key facts that belong here."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "The most important discriminator (address is not derived from the Wasm, so upgrades keep it) sits only in avoid and the answer, not in a key fact, while two key facts repeat one determinism predicate. Answer and notes can shrink by half.",
+      "rewrite": {
+        "question": null,
+        "answer": "A contract address (`C...`) is deterministic: the SHA-256 of a ContractIDPreimage plus the network ID. For a normal deploy the preimage is the deployer address plus a salt, so the same deployer, salt and network always give the same address, and a different salt gives a different one. The Wasm hash is not an input: upload and create are separate steps, so upgrading the Wasm keeps the address.",
+        "keyFacts": [
+          "A contract address is the hash of a ContractIDPreimage and the network ID.",
+          "A deploy preimage is deployer address plus salt; same inputs give the same address.",
+          "The Wasm hash is not an input, so a Wasm upgrade keeps the contract address."
+        ],
+        "avoid": [
+          "Do NOT claim the address is Ethereum-style keccak(sender, nonce) or a CREATE2 of the bytecode.",
+          "Do NOT claim the contract id changes when the Wasm is upgraded."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "CONTRACT_ID_PREIMAGE_FROM_ADDRESS vs FROM_ASSET (SAC) variants",
+          "Upload vs create host-function names",
+          "Golden-cites line"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 293,
+      "wordsAfter": 137
+    },
+    {
+      "id": "q-soroban-contractmeta-vs-contractevent",
+      "purpose": "stellar-truth",
+      "topics": [
+        "soroban-sdk macros",
+        "contract metadata",
+        "contract events"
+      ],
+      "tests": "`contractmeta!` embeds static key/value metadata in the Wasm `contractmetav0` section, while `#[contractevent]` defines typed runtime events.",
+      "questionIssues": [
+        "The question writes the metadata macro as `#[contractmeta]`, an attribute the SDK does not have, yet the golden penalizes an answer that spells it that way: an agent that echoes the question is marked down for the question's own wording.",
+        "Narrow SDK API trivia; a real user asks how to emit an event or how to put metadata in a Wasm, not for a macro-vs-macro comparison."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "`contractmeta!` is a function-like macro writing to the `contractmetav0` custom section; `#[contractevent]` is an attribute macro",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk-macros/src/lib.rs",
+              "observedAt": "2026-11-14",
+              "quote": "pub fn contractmeta(metadata: TokenStream) -> TokenStream"
+            },
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk-macros/src/lib.rs",
+              "observedAt": "2026-11-14",
+              "quote": "#[cfg_attr(target_family = \"wasm\", link_section = \"contractmetav0\")]"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-soroban-sdk-macros",
+          "survivor": "q-soroban-sdk-macros",
+          "why": "Survivor: absorbs the metadata and event macros."
+        },
+        {
+          "id": "q-soroban-publish-events",
+          "survivor": "q-soroban-publish-events",
+          "why": "Owns runtime event emission."
+        },
+        {
+          "id": "q-soroban-contract-build-verification",
+          "survivor": "q-soroban-contract-build-verification",
+          "why": "Owns the `contractmetav0` purpose."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Trivia as a standalone comparison: the event half is owned by q-soroban-publish-events and the `contractmetav0` half by build-verification. Survivor q-soroban-sdk-macros absorbs one key fact: `contractmeta!(...)` is a function-like macro that embeds static metadata in `contractmetav0`, and `#[contractevent]` defines typed runtime events. Question issue: it spells the macro `#[contractmeta]`, which the golden then penalizes.",
+      "rewrite": null,
+      "confidence": "medium",
+      "wordsBefore": 174,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-soroban-cross-contract-call",
+      "purpose": "stellar-truth",
+      "topics": [
+        "cross-contract calls",
+        "generated contract clients",
+        "authorization invocation tree"
+      ],
+      "tests": "One contract calls another through a typed client or `Env::invoke_contract`, sharing the budget, with auth governed by the invocation tree plus the direct-invoker-contract exception.",
+      "questionIssues": [
+        "The plain question asks only how to call; the golden grades a subtle two-part auth rule the question never prompts, so a correct but auth-silent answer misses two of four key facts."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Mechanism fact."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Same topic as fact 0 (two call mechanisms); merge into one predicate."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Duplicates q-soroban-require-auth's direct-invoker fact; move there."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "A direct invoker contract's require_auth calls are implicitly authorized, but not calls deeper in the stack; external addresses need explicit coverage",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization.md",
+              "observedAt": "2026-11-14",
+              "quote": "all the `require_auth` calls made on behalf of the **direct** invoker contract `Address` are considered to be authorized (but not any calls ..."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-soroban-require-auth",
+          "survivor": "q-soroban-require-auth",
+          "why": "Owns the direct-invoker implicit-authorization rule and require_auth semantics; this case keeps only the nested external-auth pointer."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Correct and useful, but notes carry tool hints ('scout_repos acceptable'), provenance and a correction history. Key facts 0 and 1 are one fact, and the direct-invoker rule moves to q-soroban-require-auth to keep one owner.",
+      "rewrite": {
+        "question": null,
+        "answer": "Call a deployed contract through a typed client (from `contractimport!` or generated bindings) or `Env::invoke_contract`; the whole call tree shares the transaction's resource budget. Authorization follows the invocation tree: an external address's `require_auth` must be covered for the nested invocation and its arguments, while the direct-invoker rule is covered by the require_auth case.",
+        "keyFacts": [
+          "A contract calls another via a generated typed client or `Env::invoke_contract`.",
+          "An external address must authorize the nested invocation and its arguments."
+        ],
+        "avoid": [
+          "Do NOT use Solidity interface/call/delegatecall semantics.",
+          "Do NOT claim nested external-address auth is inherited automatically."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "GT-45 blind-correction history",
+          "Golden-cites line",
+          "Also-good-if line on shared instruction/memory budget"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 177,
+      "wordsAfter": 90
+    },
+    {
+      "id": "q-soroban-deploy-cli",
+      "purpose": "stellar-truth",
+      "topics": [
+        "deploying a contract to testnet",
+        "Stellar CLI build/deploy/invoke",
+        "funded testnet identity"
+      ],
+      "tests": "The current Stellar CLI flow to build, deploy and invoke a contract on testnet: `stellar contract build`, `keys generate --fund`, `deploy --source-account`, `invoke`.",
+      "questionIssues": [
+        "Key fact 2 requires `--wasm`, but the current CLI builds automatically when neither `--wasm` nor `--wasm-hash` is given inside a Cargo workspace, and `--wasm-hash` is also valid; the golden should accept both."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Names three flags in one predicate; fine as one command shape, but drop the fixed `--wasm` requirement."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Restates fact 3 (invoke by ID) with the flag tail."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Deploy takes `--source-account`, `--alias`, constructor args after `--`; `--wasm` or `--wasm-hash`",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "F",
+              "ref": "local stellar 30.0.1 `stellar contract deploy --help`",
+              "observedAt": "2026-11-14",
+              "quote": "Usage: stellar contract deploy [OPTIONS] --source-account <SOURCE_ACCOUNT> [-- <CONTRACT_CONSTRUCTOR_ARGS>...]"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/smart-contracts/getting-started/deploy-to-testnet.md",
+              "observedAt": "2026-11-14",
+              "quote": "--wasm target/wasm32v1-none/release/hello_world.wasm \\ --source-account alice"
+            }
+          ]
+        },
+        {
+          "claim": "Build output under target/wasm32v1-none/release; identity funded by `stellar keys generate alice --network testnet --fund`",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/smart-contracts/getting-started/deploy-to-testnet.md",
+              "observedAt": "2026-11-14",
+              "quote": "stellar keys generate alice --network testnet --fund"
+            }
+          ]
+        },
+        {
+          "claim": "`--global` is not a current deploy flag; `--source` is only an alias",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "F",
+              "ref": "local stellar 30.0.1 `stellar contract deploy --help`",
+              "observedAt": "2026-11-14",
+              "quote": "no `--global` option listed"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tools/cli/stellar-cli.md",
+              "observedAt": "2026-11-14",
+              "quote": "`-s`, `--source-account <SOURCE_ACCOUNT>` [alias: `source`]"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-sor-build-target-wasm32v1",
+          "survivor": "q-soroban-deploy-cli",
+          "why": "Cross-lane: build target wasm32v1-none is a sub-fact of this flow; confirm in the other lane."
+        },
+        {
+          "id": "q-tool-cli-testnet-identity-howto",
+          "survivor": "q-soroban-deploy-cli",
+          "why": "Cross-category (tooling): identity creation and funding is step 2 of this flow."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "A top real-world question that earns its place, but the golden is 470 words of procedure, history and grading nuance. Five key facts overlap and two avoid items are vague ('invent flags').",
+      "rewrite": {
+        "question": null,
+        "answer": "Build with `stellar contract build` (Wasm lands in `target/wasm32v1-none/release/`), create a funded identity with `stellar keys generate alice --network testnet --fund`, then run `stellar contract deploy --wasm <file>.wasm --source-account alice --network testnet [--alias name]`, which prints the `C...` contract ID. Invoke with `stellar contract invoke --id <C...> --source-account alice --network testnet -- <fn> ...`. The CLI is `stellar`, not `soroban`.",
+        "keyFacts": [
+          "`stellar contract build` writes Wasm under `target/wasm32v1-none/release/`.",
+          "`stellar keys generate <name> --network testnet --fund` creates a funded testnet identity.",
+          "`stellar contract deploy --source-account <id> --network testnet` deploys the Wasm.",
+          "Deploy returns a `C...` contract ID used by `stellar contract invoke --id`."
+        ],
+        "avoid": [
+          "Do NOT present `soroban deploy`, `--global`, or `wasm32-unknown-unknown` as the current flow."
+        ],
+        "notes": "`--source` is an alias of `--source-account`: do not mark an answer wrong for using it unless it also shows the obsolete target or `--global`. Accept `--wasm-hash` or an auto-build deploy inside a workspace.",
+        "movedToTruth": [
+          "Correction history (2026-07-07, sk-001 skill fix)",
+          "Exemplar / Phase-1 note and docs-verification narrative",
+          "Friendbot-before-deploy and Rust/soroban-sdk context lines"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 468,
+      "wordsAfter": 146
+    },
+    {
+      "id": "q-soroban-event-indexing-design",
+      "purpose": "stellar-truth",
+      "topics": [
+        "event topic design",
+        "indexing contract events",
+        "SEP-41 and CAP-67 event schemas"
+      ],
+      "tests": "How to shape Soroban token event topics and consume them reliably off-chain: SEP-41 topic layout, the CAP-67 asset topic on SAC/Classic events, filterable leading topics, durable cursors.",
+      "questionIssues": [
+        "The question asks how to design topics; the golden answers a broad indexer-ops checklist (dedupe, finality, retention, muxed data) that the question does not request, so an on-topic topic-design answer can miss every key fact.",
+        "Ambiguous scope: a token author designing events and an indexer author consuming them need different answers."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Bundles IDs, cursors and provenance into one fact; trim to the stable-ID idea."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Two schemas in one fact."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Overlaps fact 1; same predicate about the asset topic."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Indexer-ops detail, tangential to the question."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Direct SAC transfer events now carry a fourth SEP-11 asset topic",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "F",
+              "ref": "POST https://soroban-testnet.stellar.org getEvents topics [transfer,*,*,*]",
+              "observedAt": "2026-11-14",
+              "quote": "2 events returned for CDLZFC3S... each with 4 topics, last topic ScvString \"native\""
+            },
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0067.md",
+              "observedAt": "2026-11-14",
+              "quote": "topics: [\"transfer\", from:Address, to:Address, sep0011_asset:String], data: amount:i128"
+            }
+          ]
+        },
+        {
+          "claim": "Custom SEP-41 transfer topics are [transfer, from, to]",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md",
+              "observedAt": "2026-11-14",
+              "quote": "topics - `[\"transfer\", from: Address, to: Address]`"
+            }
+          ]
+        },
+        {
+          "claim": "RPC retains a bounded window (~7 days); topics filter by leading segments with `*` wildcard",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents.md",
+              "observedAt": "2026-11-14",
+              "quote": "stock default of 120960 ledgers (about 7 days) ... The string \"*\" functions as a wildcard that matches exactly one segment."
+            },
+            {
+              "class": "F",
+              "ref": "POST https://soroban-testnet.stellar.org getHealth",
+              "observedAt": "2026-11-14",
+              "quote": "\"ledgerRetentionWindow\":120960"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-soroban-publish-events",
+          "survivor": "q-soroban-event-indexing-design",
+          "why": "Emitting events and designing their topics overlap; confirm after reading publish-events."
+        },
+        {
+          "id": "q-soroban-oz-token",
+          "survivor": "q-soroban-oz-token",
+          "why": "Token event conventions may overlap; confirm after reading."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Right topic but the golden answers a different question than asked and mixes two audiences. Rewrite to the topic-design question (topic layout, filterable leading topics, SEP-41 vs SAC asset topic) and move indexer-ops detail out.",
+      "rewrite": {
+        "question": null,
+        "answer": "Put the values indexers filter on in leading topics and the amount in data, because `getEvents` filters topics by leading segments (`*` matches one). A custom SEP-41 token emits `[transfer, from, to]` and `[mint, to]`. Since CAP-67, direct SAC and Classic events append a fourth SEP-11 asset topic, so they are not three-topic. Treat topic layout as a stable public API and page durably with the RPC cursor, since RPC keeps only about seven days.",
+        "keyFacts": [
+          "Indexers filter on leading event topics, not data fields, so key values go in topics.",
+          "Custom SEP-41 transfer events use topics [transfer, from, to]; mint uses [mint, to].",
+          "Since CAP-67, SAC and Classic asset events append a SEP-11 asset topic.",
+          "RPC keeps only a bounded window (about seven days); backfill needs another source."
+        ],
+        "avoid": [
+          "Do NOT describe direct SAC transfer events as three-topic, or assume RPC keeps all history."
+        ],
+        "notes": "Indexer-side points (dedupe by event ID, reorg handling, muxed data) are welcome extras, not required.",
+        "movedToTruth": [
+          "GT-42 / GT-45 history lines",
+          "Golden-cites line",
+          "Spec/WASM-version provenance and muxed-destination detail",
+          "Event ID / transaction-hash dedupe guidance"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 246,
+      "wordsAfter": 158
+    },
+    {
+      "id": "q-soroban-factory-pattern",
+      "purpose": "stellar-truth",
+      "topics": [
+        "factory contracts",
+        "on-chain deployer API",
+        "deterministic child addresses"
+      ],
+      "tests": "A contract deploys child contracts on-chain through `env.deployer()` from an already-uploaded Wasm hash plus a salt, optionally initializing via `__constructor`.",
+      "questionIssues": [],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "API-name fact; deploy_contract replaced deploy_v2; fine but volatile."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Duplicates q-soroban-contract-id-derivation."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Restates the 'Wasm hash not in derivation' point owned by q-soroban-contract-id-derivation."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "soroban-sdk >=28 deploys with `deploy_contract(ContractExecutable, args)`; `deploy_v2` is deprecated but present",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/deploy.rs",
+              "observedAt": "2026-11-14",
+              "quote": "#[deprecated(note = \"use deploy_contract\")] pub fn deploy_v2<A>("
+            },
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/deploy.rs",
+              "observedAt": "2026-11-14",
+              "quote": "pub fn deploy_contract<A>(&self, executable: ContractExecutable, constructor_args: A) -> Address"
+            }
+          ]
+        },
+        {
+          "claim": "Latest soroban-sdk release",
+          "result": "changed",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "gh api repos/stellar/rs-soroban-sdk/releases/latest",
+              "observedAt": "2026-11-14",
+              "quote": "v29.0.1 2026-10-12 (golden names SDK 28 only as the version where the rename happened; still true)"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-soroban-contract-id-derivation",
+          "survivor": "q-soroban-contract-id-derivation",
+          "why": "Deterministic address and 'Wasm hash is not in the derivation' are owned there; drop key facts 3 and 4 here."
+        },
+        {
+          "id": "q-soroban-constructor-lifecycle",
+          "survivor": "q-soroban-constructor-lifecycle",
+          "why": "Constructor semantics are owned there."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "A real, practical question worth keeping, but 390 words, with two key facts that duplicate the contract-id case. Keep the mechanism: on-chain deployer, upload first, hash plus salt, constructor args.",
+      "rewrite": {
+        "question": null,
+        "answer": "A factory deploys children on-chain with `env.deployer()`. First upload the child Wasm once (`stellar contract upload`) to get its hash; the factory references it by hash. It then calls `env.deployer().with_current_contract(salt)` (or `with_address`) and `.deploy_contract(ContractExecutable::Wasm(hash), constructor_args)`; in soroban-sdk 28+ this replaces the deprecated `deploy_v2`. A child `__constructor` can initialize each instance atomically.",
+        "keyFacts": [
+          "A factory deploys child contracts on-chain through `env.deployer()`.",
+          "The child Wasm is uploaded first; the factory deploys by Wasm hash plus a salt.",
+          "`deploy_contract` (SDK 28+) or deprecated `deploy_v2` creates the child."
+        ],
+        "avoid": [
+          "Do NOT claim a contract cannot deploy another contract and only the CLI can."
+        ],
+        "notes": "Accept either `deploy_contract` or `deploy_v2`; do not penalize naming only one, or omitting the deprecation.",
+        "movedToTruth": [
+          "Deterministic-address and Wasm-hash-not-in-ID facts (owned by q-soroban-contract-id-derivation)",
+          "SDK 28 (2026-09-18) rename provenance and CAP-85 reference",
+          "Duplicate-section cleanup note, Golden-cites line"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 393,
+      "wordsAfter": 112
+    },
+    {
+      "id": "q-soroban-fuzz-testing",
+      "purpose": "stellar-truth",
+      "topics": [
+        "fuzz testing",
+        "property-based testing",
+        "in-process contract tests"
+      ],
+      "tests": "Soroban contracts are fuzzed and property-tested with Rust tooling (`proptest`, `cargo-fuzz` with `SorobanArbitrary`) against the in-process `Env`, not with EVM tools.",
+      "questionIssues": [],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "process",
+          "issue": "Prescribes how the answer is worded ('presents ... as test recommendations'); not a Stellar fact."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "`SorobanArbitrary` is in soroban-sdk testutils for structured fuzz inputs",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/testutils/arbitrary.rs",
+              "observedAt": "2026-11-14",
+              "quote": "defines the [`SorobanArbitrary`] trait"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-soroban-unit-testing",
+          "survivor": "q-soroban-unit-testing",
+          "why": "Fuzz and property tests run in the same in-process Env; fold in as one key fact."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Correct (verified `SorobanArbitrary` in SDK v29.0.1), but the testing topic needs one case: q-soroban-unit-testing absorbs `proptest` and `cargo-fuzz` with `SorobanArbitrary` as a key fact, and the Echidna/Foundry trap as a note. Key fact 2 here is process wording, not a Stellar fact.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 216,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-soroban-greenfield-escrow-prior-art-preflight",
+      "purpose": "mixed",
+      "topics": [
+        "greenfield contract design",
+        "prior-art discovery before building",
+        "escrow patterns"
+      ],
+      "tests": "Behavior (bounded prior-art pass before choosing an architecture, honest unknowns on license/audit) plus raven-mechanics (Scout repo rows expose no license; run it in the same step as the skill and Docs lookup).",
+      "questionIssues": [
+        "The question says nothing about prior art on purpose, so the case grades a hidden process expectation; a strong answer from another tool that designs a sound escrow without searching prior art would fail.",
+        "Answer text names illustrative products and cites a Raven limitation; it is a rubric for one tool's behavior, not a Stellar fact."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "process",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "operation",
+          "issue": "Names skills and Docs as sources of truth."
+        },
+        {
+          "i": 2,
+          "kind": "process",
+          "issue": "Overlaps fact 0."
+        },
+        {
+          "i": 3,
+          "kind": "process",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "process",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Illustrative roster: Trustless Work repo has no in-tree license; DevAsign bounty-escrow is Apache-2.0; soroban-examples is Apache-2.0",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "gh api repos/Trustless-Work/trustlesswork-smart-contract-stellar",
+              "observedAt": "2026-11-14",
+              "quote": "archived=false license=none"
+            },
+            {
+              "class": "B",
+              "ref": "gh api repos/devasignhq/bounty-escrow",
+              "observedAt": "2026-11-14",
+              "quote": "archived=false license=Apache-2.0"
+            }
+          ]
+        },
+        {
+          "claim": "Official classic Claimable Balances docs include an 'Escrow-Style Payment' pattern",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/tools/cli/cookbook/tx-new-create-claimable-balance.md",
+              "observedAt": "2026-11-14",
+              "quote": "### Escrow-Style Payment"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-sor-recurring-escrow-patterns",
+          "survivor": "q-sor-recurring-escrow-patterns",
+          "why": "Another lane's escrow-pattern case; this one adds only the process behavior."
+        },
+        {
+          "id": "q-sor-build-target-wasm32v1",
+          "survivor": "q-sor-build-target-wasm32v1",
+          "why": "Documented as the paired no-detour control; keep or retire them together."
+        }
+      ],
+      "verdict": "move-tool-lane",
+      "reason": "No other tool could satisfy the Raven-specific parts, but the visibility is unique: whether Raven's guidance makes an agent do one bounded Scout prior-art pass and report unknown license/audit status. The frozen live lane (`eval/qa/corpus/live/`) has no escrow or prior-art case, so a retire would lose that signal. It does not measure Stellar truth.",
+      "rewrite": {
+        "question": null,
+        "answer": "Before choosing the architecture, do one bounded prior-art pass in the same research step as the smart-contract skill and a Docs lookup: at most three distinct candidates, used to find requirements and build-versus-integrate options, not to copy. Then state a short design delta and a lifecycle-enum skeleton with role-authenticated entry points. Mark license, audit and deployment unknown unless a source shows them; if nothing close appears, say what was searched.",
+        "keyFacts": [
+          "Runs one bounded prior-art search before selecting a greenfield architecture.",
+          "Separates exact escrow products from adjacent patterns such as timelock or atomic swap.",
+          "Marks license, audit, deployment and compatibility unknown unless a source shows them.",
+          "Takes APIs and security procedure from the smart-contract skill and official Docs."
+        ],
+        "avoid": [
+          "Do NOT require a fixed repository roster; re-query and accept a different current set with URLs.",
+          "Do NOT infer license, audit or production readiness from stars, repoScore, funding or visibility."
+        ],
+        "notes": "Grade the discovery-and-vetting behavior and the resulting skeleton, not keyword recall.",
+        "movedToTruth": [
+          "Dated illustrative roster (Claimable Balances, soroban-examples, Trustless Work, DevAsign)",
+          "Paired-regression and control-case description",
+          "Independent-lane verification record"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 450,
+      "wordsAfter": 158
+    },
+    {
+      "id": "q-soroban-instance-storage-dos",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Instance storage limits",
+        "unbounded storage growth",
+        "Soroban storage types"
+      ],
+      "tests": "Instance storage is one ledger entry loaded whole on every call, so a growing per-user map raises cost and can hit size limits; per-user data belongs in Persistent keys.",
+      "questionIssues": [],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Vague: 'fail at resource or entry limits' with no cause."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Correct but peripheral to the question."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Entry-size limit is validator-voted, may be lowered, with a protocol floor of 2,000 bytes",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-core/v30.0.0/src/ledger/NetworkConfig.h",
+              "observedAt": "2026-11-14",
+              "quote": "static constexpr uint32_t MAX_CONTRACT_DATA_ENTRY_SIZE_BYTES = 2'000;"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/guides/storage/choosing-the-right-storage.md",
+              "observedAt": "2026-11-14",
+              "quote": "The limit is set by validator vote, and the protocol only requires it to stay at or above a small fixed minimum"
+            }
+          ]
+        },
+        {
+          "claim": "Instance storage is stored in the same ledger entry as the contract instance",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/guides/storage/choosing-the-right-storage.md",
+              "observedAt": "2026-11-14",
+              "quote": "It is physically stored in the same ledger entry as the contract itself and shares TTL with it."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-soroban-storage-types",
+          "survivor": "q-soroban-instance-storage-dos",
+          "why": "Storage-types case covers the same Instance-vs-Persistent distinction; confirm after reading."
+        },
+        {
+          "id": "q-sor-persistent-unbounded-collection-cap",
+          "survivor": "q-sor-persistent-unbounded-collection-cap",
+          "why": "Another lane's unbounded-collection case; same sharding remedy."
+        },
+        {
+          "id": "q-soroban-vuln-classes",
+          "survivor": "q-soroban-vuln-classes",
+          "why": "Lists Instance-storage DoS as one class."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "A sound, specific vulnerability question with a nuanced correct answer, but the golden is 320 words with a read-path qualifier and correction history in the judge-facing notes. Verified against core and docs.",
+      "rewrite": {
+        "question": null,
+        "answer": "Instance storage lives in the contract-instance ledger entry, which is loaded whole on every invocation. A growing per-user map raises every call's cost and eventually hits resource or entry-size limits, so growth-dependent paths fail. An over-limit write fails atomically and prior state is kept: a DoS risk, not an automatic permanent brick. The size limit is validator-voted and can be lowered, so leave headroom. Keep Instance small; shard per-user data into Persistent keys.",
+        "keyFacts": [
+          "Instance storage is one ledger entry loaded in full on every invocation.",
+          "Unbounded Instance growth raises every call's cost and can hit entry-size limits.",
+          "An over-limit write fails atomically and prior valid state is preserved.",
+          "Per-user or growing data belongs in separate, sharded Persistent keys."
+        ],
+        "avoid": [
+          "Do NOT call the first over-limit write an irreversible permanent brick.",
+          "Do NOT say Instance storage loads lazily like separate Persistent keys."
+        ],
+        "notes": "An instance entry left above a later-lowered validator-voted size limit failing every call is correct, not a brick claim.",
+        "movedToTruth": [
+          "Core read-path size-check detail (v30.0.0 InvokeHostFunctionOpFrame)",
+          "GT-46 correction history, Golden-cites line",
+          "scout_research routing hint"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 319,
+      "wordsAfter": 159
+    },
+    {
+      "id": "q-soroban-no-std-constraints",
+      "purpose": "stellar-truth",
+      "topics": [
+        "no_std contracts",
+        "no floating point",
+        "SDK host types"
+      ],
+      "tests": "Contracts are `#![no_std]` deterministic Wasm, so `std`, HashMap and floats are unavailable and SDK host-backed types replace them.",
+      "questionIssues": [
+        "The question asks why; the key facts never state the reason (determinism) and instead add time and PRNG caveats that the question does not touch."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Holds three predicates (no_std, no floats, host types)."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Vague as written ('Allocation is optional')."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Off-question: ledger time is not a std/HashMap/float topic."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Off-question PRNG caveat."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Floating point is prohibited; `no_std` is the recommended mode; allocation discouraged but not prohibited",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/rust-dialect.md",
+              "observedAt": "2026-11-14",
+              "quote": "Floating-point arithmetic in the guest is completely prohibited."
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/rust-dialect.md",
+              "observedAt": "2026-11-14",
+              "quote": "Dynamic memory allocation within the guest is **strongly** discouraged, but not completely prohibited."
+            }
+          ]
+        },
+        {
+          "claim": "SDK `alloc` feature is optional",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/Cargo.toml",
+              "observedAt": "2026-11-14",
+              "quote": "[features] alloc = []"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-soroban-wasm-language",
+          "survivor": "q-soroban-no-std-constraints",
+          "why": "Absorbs the Rust-to-Wasm and not-EVM-bytecode fact; no_std and alloc already live here."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Correct, but the key facts drift to time and PRNG and never state why (determinism). As the survivor it also absorbs q-soroban-wasm-language's one unique fact: contracts are Rust with soroban-sdk compiled to Wasm (`wasm32v1-none`), not EVM bytecode.",
+      "rewrite": {
+        "question": null,
+        "answer": "Soroban contracts are Rust (`soroban-sdk`) compiled to Wasm (`wasm32v1-none`), not EVM bytecode. They are `#![no_std]` and must run deterministically on every validator, so `std`, `HashMap` and floating point are unavailable; floating-point code is rejected at instantiation. Use the SDK's host-backed `Vec`, `Map`, `Bytes` and `Symbol`. Heap allocation is off by default but discouraged rather than banned: the SDK `alloc` feature enables it at a CPU and code-size cost.",
+        "keyFacts": [
+          "Contracts are Rust with `soroban-sdk` compiled to Wasm (`wasm32v1-none`), not EVM.",
+          "Contracts are `no_std`: `std` collections such as `HashMap`, and floats, are unavailable.",
+          "Floats are barred because execution must be deterministic across validators.",
+          "The SDK's host-backed `Vec`, `Map`, `Bytes` replace std collections; `alloc` is optional."
+        ],
+        "avoid": [
+          "Do NOT claim Solidity/EVM bytecode is the runtime, or that `std` or floating point is supported.",
+          "Do NOT claim heap allocation is categorically impossible."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "Ledger-time and Env::prng caveats (secure-randomness limits) if a separate case wants them",
+          "GT-46 correction history, Golden-cites line"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 218,
+      "wordsAfter": 137
+    },
+    {
+      "id": "q-soroban-oracle-defensive-consumption",
+      "purpose": "mixed",
+      "topics": [
+        "oracle consumption",
+        "price-manipulation defense",
+        "Reflector / SEP-40 and the YieldBlox incident"
+      ],
+      "tests": "Layered defenses for a lending protocol consuming oracles (fresh-but-poisoned data, independent sources, robust aggregation, liquidity gates, caps, circuit breakers), anchored on the YieldBlox incident.",
+      "questionIssues": [
+        "Open-ended design question graded against a six-layer checklist; a correct answer that covers four layers well may still miss key facts. Acceptable only with a small, clearly stated set of required layers."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Two predicates (independent sources, robust aggregation)."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Overlaps fact 1 on deviation checks."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Vague: 'include caps'."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "YieldBlox pool on Blend V2 lost about $10M to USTRY oracle manipulation; prices were fresh, and a deviation check compared each price only to the preceding window",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "D",
+              "ref": "https://www.blockaid.io/blog/73-quarantined-how-blockaid-and-stellar-validators-contained-a-10m-price-manipulation-attack",
+              "observedAt": "2026-11-14",
+              "quote": "deviation check using max_dev = 10 ... compared each new price onl[y to the] preceding window ... the calculated deviation was zero"
+            },
+            {
+              "class": "D",
+              "ref": "https://blocksec.com/blog/yieldblox-dao-incident-on-stellar-oracle-misconfiguration-enabled-a-10m-drain",
+              "observedAt": "2026-11-14",
+              "quote": "YieldBlox DAO pool exploit on Blend V2 (Stellar) ... enabled a $10M+ drain"
+            }
+          ]
+        },
+        {
+          "claim": "A 'five-minute VWAP' was the aggregation",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "D",
+              "ref": "blockaid.io and blocksec.com pages above",
+              "observedAt": "2026-11-14",
+              "quote": "The phrase 'five-minute VWAP' did not appear in the text I could retrieve; left out of the rewrite."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-comp-yieldblox-oracle-incident",
+          "survivor": "q-soroban-oracle-defensive-consumption",
+          "why": "Cross-category (compliance): the incident facts overlap; this case owns the defensive design question."
+        },
+        {
+          "id": "q-hist-yieldblox-v2-2026-exploit",
+          "survivor": "q-hist-yieldblox-v2-2026-exploit",
+          "why": "Cross-category (history): incident chronology is its job."
+        },
+        {
+          "id": "q-defi-reflector-oracle",
+          "survivor": "q-defi-reflector-oracle",
+          "why": "Cross-category (defi): what Reflector is."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Valuable, concrete security guidance, but 390 words and six numbered layers. Reduce to four required layers; the incident name is a bonus, not a gate.",
+      "rewrite": {
+        "question": null,
+        "answer": "Treat an oracle as an economic risk, not a timestamp check. Enforce SEP-40 freshness and fail closed, but note that fresh data can still be poisoned: YieldBlox's manipulated prices were fresh. Use genuinely independent sources, aggregate robustly (medians, minimum observations, deviation checks against a longer baseline), gate collateral on market depth and volume, cap per-asset exposure, and keep circuit breakers and a recovery path.",
+        "keyFacts": [
+          "Freshness checks are necessary but not sufficient; fresh poisoned prices can pass them.",
+          "Sources are independent; aggregation is robust with longer-baseline deviation checks.",
+          "Collateral is gated on minimum market depth and volume, with per-asset exposure caps.",
+          "Circuit breakers and a recovery plan limit the damage of a bad price."
+        ],
+        "avoid": [
+          "Do NOT claim oracles are trustless, that freshness alone suffices, or that TWAP/VWAP alone would have prevented YieldBlox.",
+          "Do NOT call feeds independent when they derive from one thin market."
+        ],
+        "notes": "Naming the YieldBlox/USTRY incident is a bonus. Do not gate on the loss figure; reports vary from about $10.2M to $10.97M.",
+        "movedToTruth": [
+          "Incident narrative and dollar-figure variance",
+          "Blend oracle-wrapper detail (max_dev = 10, two consecutive windows)",
+          "CORRECTION 2026-07-10 history, Golden-cites line"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 391,
+      "wordsAfter": 164
+    },
+    {
+      "id": "q-soroban-oz-token",
+      "purpose": "stellar-truth",
+      "topics": [
+        "OpenZeppelin Stellar Contracts",
+        "SEP-41 fungible token library",
+        "token extensions"
+      ],
+      "tests": "OpenZeppelin ships a Rust `stellar-contracts` library with a SEP-41 fungible base and extensions, and its audits are release-scoped.",
+      "questionIssues": [],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Several predicates in one fact (extensions, pausing, upgrading, access)."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Latest OZ stellar-contracts release is v0.8.0 (2026-10-20); tokens package has burnable, capped, allowlist, blocklist, votes extensions",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "gh api repos/OpenZeppelin/stellar-contracts/releases",
+              "observedAt": "2026-11-14",
+              "quote": "v0.8.0 2026-10-20T16:58:32Z"
+            },
+            {
+              "class": "B",
+              "ref": "gh api repos/OpenZeppelin/stellar-contracts/contents/packages/tokens/src/fungible/extensions?ref=v0.8.0",
+              "observedAt": "2026-11-14",
+              "quote": "allowlist blocklist burnable capped combinations mod.rs total_supply votes"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-sor-skill-openzeppelin-setup",
+          "survivor": "q-soroban-oz-token",
+          "why": "Another lane's OZ-skill case; confirm overlap there."
+        },
+        {
+          "id": "q-soroban-oz-upgradeable-macro",
+          "survivor": "q-soroban-oz-token",
+          "why": "Same library, different module; keep distinct only if upgradeable case survives."
+        },
+        {
+          "id": "q-sep-41-token-interface",
+          "survivor": "q-sep-41-token-interface",
+          "why": "Cross-category (assets): the SEP-41 interface itself."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Library existence and release-scoped audits are worth testing; the golden mixes a version stamp, a module taxonomy and a history note. Shrink.",
+      "rewrite": {
+        "question": null,
+        "answer": "Yes. OpenZeppelin maintains `OpenZeppelin/stellar-contracts`, a Rust library for Stellar separate from its Solidity packages. Its tokens package provides a SEP-41 fungible base with extensions such as burnable, capped, allowlist, blocklist and votes (v0.8.0, 2026-10-20). Pausing, upgrading, access control and accounts are separate modules to compose. Audits are scoped to specific releases and do not make an application audited.",
+        "keyFacts": [
+          "OpenZeppelin maintains a Rust `stellar-contracts` library, apart from its Solidity ones.",
+          "Its tokens package gives a SEP-41 fungible base plus extensions such as burnable, capped.",
+          "Audits cover specific releases; using the library does not make an application audited."
+        ],
+        "avoid": [
+          "Do NOT cite OpenZeppelin's Solidity ERC-20 library as the Stellar package."
+        ],
+        "notes": "The extension list is illustrative; accept the current roster and modules described as separate packages.",
+        "movedToTruth": [
+          "v0.8.0 release date and package layout",
+          "Contract Wizard Stellar tab note",
+          "GT-46 history, Golden-cites line"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 261,
+      "wordsAfter": 122
+    },
+    {
+      "id": "q-soroban-oz-upgradeable-macro",
+      "purpose": "stellar-truth",
+      "topics": [
+        "OpenZeppelin Upgradeable module",
+        "in-place Wasm upgrade",
+        "upgrade plus migration"
+      ],
+      "tests": "OZ's Upgradeable wraps Soroban's native executable replacement (same address, no proxy), needs explicit auth, and pairs migration with an Upgrader flow.",
+      "questionIssues": [
+        "The id and title say 'macro' but the right answer is that the old derive macros are retired; the question is answerable but the case partly tests API-name currency."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Names the `Upgradeable` trait surface; volatile API naming."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Names `Upgrader`; correct but depends on OZ release."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "OZ v0.8.0 upgrades via `e.deployer().update_current_contract(ContractExecutable::Wasm(..))`",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/OpenZeppelin/stellar-contracts/v0.8.0/packages/contract-utils/src/upgradeable/storage.rs",
+              "observedAt": "2026-11-14",
+              "quote": "e.deployer().update_current_contract(ContractExecutable::Wasm(new_wasm_hash.clone()));"
+            },
+            {
+              "class": "B",
+              "ref": "gh api repos/OpenZeppelin/stellar-contracts/releases/latest",
+              "observedAt": "2026-11-14",
+              "quote": "v0.8.0 (still the latest release)"
+            }
+          ]
+        },
+        {
+          "claim": "An `Upgrader` helper combines upgrade and migrate atomically",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/OpenZeppelin/stellar-contracts/v0.8.0/packages/contract-utils/src/upgradeable/mod.rs",
+              "observedAt": "2026-11-14",
+              "quote": "`Upgrader` helper that atomically combines upgrade+migrate."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-soroban-upgradeable-storage-compat",
+          "survivor": "q-soroban-upgradeable-storage-compat",
+          "why": "Storage layout across upgrades overlaps the 'application's responsibility' line; confirm after reading."
+        },
+        {
+          "id": "q-soroban-storage-migration",
+          "survivor": "q-soroban-storage-migration",
+          "why": "Migration pattern overlaps; confirm after reading."
+        },
+        {
+          "id": "q-sor-stale-spec-after-upgrade",
+          "survivor": "q-sor-stale-spec-after-upgrade",
+          "why": "Another lane's upgrade-adjacent case."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Correct and checked live against v0.8.0 source, but the golden is dominated by retired API names a judge must keep straight. Shrink to the mechanism, the auth responsibility and the migration option.",
+      "rewrite": {
+        "question": null,
+        "answer": "OpenZeppelin's `Upgradeable` module wraps Soroban's native in-place executable replacement; it is not an EVM proxy or delegatecall. As of OZ v0.8.0 (soroban-sdk 28) the call is `env.deployer().update_current_contract(ContractExecutable::Wasm(hash))`; v0.7.x used the deprecated `update_current_contract_wasm`. The contract address and storage stay; the implementor adds authorization and handles storage compatibility, and the `Upgrader` helper can upgrade and migrate atomically.",
+        "keyFacts": [
+          "The upgrade replaces the Wasm in place at the same contract address and state.",
+          "The implementor must add authorization to the upgrade entry point.",
+          "Migration runs through an explicit migrate step or the `Upgrader` helper for atomicity."
+        ],
+        "avoid": [
+          "Do NOT describe EVM proxy/delegatecall mechanics.",
+          "Do NOT present the retired `#[derive(Upgradeable)]` or `UpgradeableMigratable` as the current API."
+        ],
+        "notes": "Accept either `update_current_contract` or the deprecated `update_current_contract_wasm` name.",
+        "movedToTruth": [
+          "v0.7.x vs v0.8.0 API history and verification 2026-08-04",
+          "Retired `*Internal` API names",
+          "Golden-cites line"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 260,
+      "wordsAfter": 118
+    },
+    {
+      "id": "q-soroban-publish-events",
+      "purpose": "stellar-truth",
+      "topics": [
+        "emitting contract events",
+        "getEvents retrieval",
+        "event history retention"
+      ],
+      "tests": "Emit with a typed `#[contractevent]` and `publish(&env)` (raw publish is deprecated), read via RPC `getEvents` within a bounded retention window.",
+      "questionIssues": [],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Two predicates (typed publish; raw deprecated)."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Vague: diagnostic events are peripheral to the question."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Raw `env.events().publish` is deprecated in favor of `#[contractevent]`",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/events.rs",
+              "observedAt": "2026-11-14",
+              "quote": "#[deprecated(note = \"use the #[contractevent] macro on a contract event type\")] pub fn publish<T, D>(&self, topics: T, data: D)"
+            }
+          ]
+        },
+        {
+          "claim": "RPC retains a bounded window, stock default 120960 ledgers (about 7 days)",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getEvents.md",
+              "observedAt": "2026-11-14",
+              "quote": "stock default of 120960 ledgers (about 7 days, depending on ledger cadence)"
+            },
+            {
+              "class": "F",
+              "ref": "POST https://soroban-testnet.stellar.org getHealth",
+              "observedAt": "2026-11-14",
+              "quote": "\"ledgerRetentionWindow\":120960"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-soroban-contractmeta-vs-contractevent",
+          "survivor": "q-soroban-publish-events",
+          "why": "Event half of that case belongs here."
+        },
+        {
+          "id": "q-soroban-event-indexing-design",
+          "survivor": "q-soroban-event-indexing-design",
+          "why": "Topic layout and retention overlap; keep this for emission and retention, the other for topic design, and drop duplicated retention there if tightened."
+        },
+        {
+          "id": "q-sor-test-event-assertion-ordering",
+          "survivor": "q-sor-test-event-assertion-ordering",
+          "why": "Another lane: asserting events in tests."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Practical, correct and verified; the golden carries correction history and a provider-retention caveat in five places. Shrink and keep the as-of for the retention default.",
+      "rewrite": {
+        "question": null,
+        "answer": "Define a typed event with `#[contractevent]` and call its generated `publish(&env)`; raw `env.events().publish` is deprecated. Successful contract events are recorded in transaction meta and read off-chain with RPC `getEvents`, a paginated query, not a subscription. RPC history is bounded: the stock default is 120960 ledgers (about seven days, as of 2026-11-14) and providers differ, so use an indexer for durable history.",
+        "keyFacts": [
+          "Emit with a `#[contractevent]` type's generated `publish(&env)`.",
+          "Raw `env.events().publish` is deprecated.",
+          "Events are read with RPC `getEvents`, a paginated query, not a subscription.",
+          "RPC event history is bounded (stock default about seven days); use an indexer for more."
+        ],
+        "avoid": [
+          "Do NOT promise permanent event history or call `getEvents` a subscription."
+        ],
+        "notes": "Retention is provider-configured: accept a stated window with the as-of caveat, and reject 'forever'.",
+        "movedToTruth": [
+          "Failed-invocation rollback and diagnostic-event distinction",
+          "GT-46 correction history, Golden-cites line"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 246,
+      "wordsAfter": 124
+    },
+    {
+      "id": "q-soroban-reentrancy",
+      "purpose": "stellar-truth",
+      "topics": [
+        "reentrancy",
+        "host call-stack rule",
+        "EVM comparison"
+      ],
+      "tests": "The Soroban host rejects re-entering a contract already on the call stack in ordinary calls, so Ethereum-style reentrancy is structurally blocked and cross-contract ordering still needs care.",
+      "questionIssues": [],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Restates fact 0 as its consequence."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Obscure host-internal detail (custom-account `__check_auth` path); trivia beside the main point."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "The host prohibits re-entry by default and has narrow Allowed/SelfAllowed modes",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-env/v30.0.0/soroban-env-host/src/host/frame.rs",
+              "observedAt": "2026-11-14",
+              "quote": "reentry_mode: ContractReentryMode::Prohibited"
+            },
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-env/v30.0.0/soroban-env-host/src/host/frame.rs",
+              "observedAt": "2026-11-14",
+              "quote": "(_, None) | (ContractReentryMode::Allowed, _) => ()"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-soroban-vuln-classes",
+          "survivor": "q-soroban-reentrancy",
+          "why": "Vuln-classes may list reentrancy; confirm after reading."
+        },
+        {
+          "id": "q-soroban-auth-recursion-dos-audit",
+          "survivor": "q-soroban-auth-recursion-dos-audit",
+          "why": "Another lane's case on recursion in auth; distinct."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "A strong EVM-to-Soroban question with a correct, source-verified answer; trim the host-internal qualifier and the duplicated key facts.",
+      "rewrite": {
+        "question": null,
+        "answer": "Not in the Ethereum sense. For ordinary public calls the Soroban host rejects re-entering a contract that is already on the call stack, so classic same-contract reentrancy is structurally blocked and a Solidity-style `nonReentrant` guard is not the primary defense. The host has narrow internal exceptions that are not general public reentry. Cross-contract ordering, authorization and state assumptions still need careful design.",
+        "keyFacts": [
+          "The host rejects re-entering a contract already on the call stack in ordinary calls.",
+          "Classic same-contract reentrancy is therefore structurally blocked.",
+          "Cross-contract ordering, auth and state assumptions still need analysis."
+        ],
+        "avoid": [
+          "Do NOT prescribe a Solidity `nonReentrant` guard as the primary Soroban defense.",
+          "Do NOT claim the host has no internal exceptions or that cross-contract risk is zero."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "Host reentry-mode names and the custom-account `__check_auth` path",
+          "GT-46 correction history, Golden-cites line",
+          "Dominant-risk remark (storage-growth DoS, auth, oracle)"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 206,
+      "wordsAfter": 119
+    },
+    {
+      "id": "q-soroban-require-auth",
+      "purpose": "stellar-truth",
+      "topics": [
+        "require_auth",
+        "Soroban authorization",
+        "custom account auth"
+      ],
+      "tests": "`require_auth` / `require_auth_for_args` ask the host to check an Address authorized this invocation, via credentials or a contract account's `__check_auth`, with its own nonce and expiration, and contract-business rules stay separate.",
+      "questionIssues": [],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Names two credential paths (classic host check, `__check_auth`); fine."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Two predicates (source-account sequence; direct-invoker auth)."
+        },
+        {
+          "i": 4,
+          "kind": "process",
+          "issue": "Prescribes a framing ('three layers') rather than stating a Stellar fact."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "A direct invoker contract's own address is implicitly authorized for its direct call, not deeper in the stack",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization.md",
+              "observedAt": "2026-11-14",
+              "quote": "all the `require_auth` calls made on behalf of the **direct** invoker contract `Address` are considered to be authorized"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-soroban-cross-contract-call",
+          "survivor": "q-soroban-require-auth",
+          "why": "The direct-invoker and nested-authorization rule belongs here; cross-contract-call should keep one pointer fact."
+        },
+        {
+          "id": "q-sor-require-auth-propagation",
+          "survivor": "q-sor-require-auth-propagation",
+          "why": "Another lane's auth-tree case; confirm overlap there."
+        },
+        {
+          "id": "q-soroban-check-auth-custom-account",
+          "survivor": "q-soroban-check-auth-custom-account",
+          "why": "Custom-account internals; distinct if kept narrow."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "The primary auth how-to; correct, but 290 words with five key facts that overlap. Make it the owner of the direct-invoker rule.",
+      "rewrite": {
+        "question": null,
+        "answer": "Call `address.require_auth()` or `require_auth_for_args(args)` on the Address whose authority is required. `require_auth_for_args` binds authorization to the exact argument vector you give. The host checks classic credentials or, for a contract account, invokes its `__check_auth`. Auth entries carry their own nonce and ledger expiration, not the source account's sequence number. A contract directly invoking another is implicitly authorized for that call. Business rules such as roles still need their own checks.",
+        "keyFacts": [
+          "`require_auth` makes the host check that the Address authorized this invocation.",
+          "`require_auth_for_args` binds authorization to an explicit argument vector.",
+          "Contract accounts are checked by `__check_auth`; classic accounts by their credentials.",
+          "Auth entries use their own nonce and ledger expiration, not the source account sequence."
+        ],
+        "avoid": [
+          "Do NOT use msg.sender/tx.origin or reduce auth to the transaction source account.",
+          "Do NOT call `require_auth_for_args` a fixed-subset mechanism."
+        ],
+        "notes": "A direct-invoker contract being implicitly authorized for its own direct call is correct, not a bypass claim.",
+        "movedToTruth": [
+          "GT-46 correction history, Golden-cites line",
+          "Ownership note for the EVM msg.sender comparison",
+          "Testing note that tests may mock auth"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 293,
+      "wordsAfter": 150
+    },
+    {
+      "id": "q-soroban-resource-limits",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Soroban resource limits",
+        "validation vs apply-time failure",
+        "tunable network settings"
+      ],
+      "tests": "Soroban meters several independent resources under validator-voted limits, with declared maxima failing at validation and actual use failing at apply time.",
+      "questionIssues": [],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "An enumeration of seven limit kinds in one fact."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Overlaps fact 0 (adds tx size)."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Per-transaction memory is capped but there is no ledger-wide memory limit; other resources have ledger-wide budgets",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "F",
+              "ref": "`stellar network settings --network testnet`",
+              "observedAt": "2026-11-14",
+              "quote": "compute: ledger_max_instructions 580000000, tx_max_instructions 400000000, tx_memory_limit 41943040 (no ledger memory field)"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering.md",
+              "observedAt": "2026-11-14",
+              "quote": "A transaction's memory (RAM) is also capped, though not subject to any charge."
+            }
+          ]
+        },
+        {
+          "claim": "Docs use `sorobanData.resourceFee` and describe pre-execution and apply-time enforcement",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering.md",
+              "observedAt": "2026-11-14",
+              "quote": "Before execution, the declared `sorobanData.resourceFee` must be at least the fee computed ... the transaction fails at apply time"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-soroban-wasm-size-limit",
+          "survivor": "q-soroban-resource-limits",
+          "why": "Wasm size is one limit within this family; confirm after reading."
+        },
+        {
+          "id": "q-infra-simulate-transaction-howto",
+          "survivor": "q-soroban-simulate-resource-fee",
+          "why": "Cross-category: fees/resources appear in both; no direct duplicate with this case."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "A good non-numeric limits question that avoids freezing volatile values; the golden has an enumerated fact, restated fact, and 100 words of renamed-field history in notes.",
+      "rewrite": {
+        "question": null,
+        "answer": "Soroban meters several independent resources: transaction size, footprint entry counts and bytes, disk reads and writes, CPU instructions, memory, ledger-entry size, event bytes and return-value size. The limits are validator-voted network settings that change, so inspect the target network instead of quoting numbers. Declared maxima can fail at validation or simulation; actual CPU, memory, I/O and event use fails at apply time. Most have ledger-wide budgets, but memory is capped per transaction only.",
+        "keyFacts": [
+          "Limits span tx size, footprint, I/O, CPU, memory, entry size, event and return bytes.",
+          "Limits are validator-voted settings that change; values should not be frozen.",
+          "Declared maxima fail at validation; actual CPU, memory, I/O, event use fails at apply.",
+          "Many limits have ledger-wide budgets, but memory is capped per transaction only."
+        ],
+        "avoid": [
+          "Do NOT reduce limits to one gas scalar or freeze network numbers.",
+          "Do NOT say every limit fails only during execution."
+        ],
+        "notes": "Naming `readBytes` or `refundableFee` as current XDR field names is stale; labelling them older XDR is correct.",
+        "movedToTruth": [
+          "Field-name history (`readBytes` to `diskReadBytes`, sd-024)",
+          "GT-47 blind-correction history, Golden-cites line",
+          "Wasm-memory-has-no-fee remark"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 309,
+      "wordsAfter": 162
+    },
+    {
+      "id": "q-soroban-sdk-cve",
+      "purpose": "stellar-truth",
+      "topics": [
+        "soroban-sdk security advisories",
+        "CVE/GHSA patch versions",
+        "dependency patching"
+      ],
+      "tests": "The three published soroban-sdk repository advisories (CVE/GHSA to package to patched releases) and that the list is time-sensitive and must be re-checked.",
+      "questionIssues": [
+        "A dated list agents answer from memory risks being stale; the golden needs the as-of date and a live-check behavior, which it has."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Packs three advisories and their fixed versions into one fact; split per advisory so partial answers are graded fairly."
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "Behavioral (re-check live); keep as a freshness behavior, not a world fact."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "The repository publishes exactly three advisories: GHSA-96xm-fv9w-pf3f / CVE-2026-24889 (soroban-sdk, fixed 25.0.2/23.5.1/22.0.9), GHSA-4chv-4c6w-w254 / CVE-2026-26267 (soroban-sdk-macros, fixed 25.1.1/23.5.2/22.0.10), GHSA-x2hw-px52-wp4m / CVE-2026-32322 (soroban-sdk, fixed 25.3.0/23.5.3/22.0.11)",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "gh api repos/stellar/rs-soroban-sdk/security-advisories",
+              "observedAt": "2026-11-14",
+              "quote": "GHSA-x2hw-px52-wp4m CVE-2026-32322 medium published soroban-sdk fixed=25.3.0; 23.5.3; 22.0.11"
+            },
+            {
+              "class": "D",
+              "ref": "https://api.osv.dev/v1/query crates.io soroban-sdk and soroban-sdk-macros",
+              "observedAt": "2026-11-14",
+              "quote": "soroban-sdk: GHSA-96xm-fv9w-pf3f (CVE-2026-24889), GHSA-x2hw-px52-wp4m (CVE-2026-32322); soroban-sdk-macros: GHSA-4chv-4c6w-w254 (CVE-2026-26267)"
+            }
+          ]
+        },
+        {
+          "claim": "GHSA-pm4j-7r4q-ccg8 is a soroban-env advisory, not an SDK repository advisory",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "gh api repos/stellar/rs-soroban-env/security-advisories",
+              "observedAt": "2026-11-14",
+              "quote": "GHSA-pm4j-7r4q-ccg8 published"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-soroban-vuln-classes",
+          "survivor": "q-soroban-sdk-cve",
+          "why": "Different: classes of contract bugs versus SDK library advisories."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Verified unchanged; the advisory list is real volatile Stellar truth. Split the one key fact so partial answers are graded fairly, and keep the as-of date and live-check behavior.",
+      "rewrite": {
+        "question": null,
+        "answer": "As of 2026-11-14 the rs-soroban-sdk repository lists three advisories; check the live advisory feed and releases, because the list grows. CVE-2026-24889 / GHSA-96xm-fv9w-pf3f (`soroban-sdk`): fixed in 25.0.2, 23.5.1, 22.0.9. CVE-2026-26267 / GHSA-4chv-4c6w-w254 (`soroban-sdk-macros`): fixed in 25.1.1, 23.5.2, 22.0.10. CVE-2026-32322 / GHSA-x2hw-px52-wp4m (`soroban-sdk`): fixed in 25.3.0, 23.5.3, 22.0.11. Upgrade to a patched release and recompile; impacts are conditional.",
+        "keyFacts": [
+          "CVE-2026-24889 (GHSA-96xm-fv9w-pf3f): soroban-sdk, fixed in 25.0.2, 23.5.1, 22.0.9.",
+          "CVE-2026-26267 (GHSA-4chv-4c6w-w254): soroban-sdk-macros, fixed 25.1.1, 23.5.2, 22.0.10.",
+          "CVE-2026-32322 (GHSA-x2hw-px52-wp4m): soroban-sdk, fixed in 25.3.0, 23.5.3, 22.0.11.",
+          "The advisory list is time-sensitive; check the live advisories and releases and recompile."
+        ],
+        "avoid": [
+          "Do NOT claim there is only one advisory or that this list is permanent.",
+          "Do NOT describe conditional impacts as universal."
+        ],
+        "notes": "GHSA-pm4j-7r4q-ccg8 is a soroban-env-host advisory, not an SDK repository advisory; naming it as adjacent is correct.",
+        "movedToTruth": [
+          "Advisory subject lines (Bytes/Vec slice overflow, contractimpl name collision, Fr equality)",
+          "Severities and publish months",
+          "GT-47 correction history, Golden-cites line"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 279,
+      "wordsAfter": 130
+    },
+    {
+      "id": "q-soroban-sdk-macros",
+      "purpose": "stellar-truth",
+      "topics": [
+        "soroban-sdk macros",
+        "contract, contractimpl, contracttype",
+        "contractevent and contractmeta"
+      ],
+      "tests": "What each core SDK macro does: `#[contract]` marks the contract type, `#[contractimpl]` exports functions and a client, `#[contracttype]` makes types usable as Soroban values, and (absorbed) `#[contractevent]` / `contractmeta!`.",
+      "questionIssues": [
+        "Beginner reference question; the roles are documented in every tutorial, but the case is cheap and catches macro-role confusion."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Mixes a wording rule ('Val conversion plus spec wording rather than direct XDR encoding') into the fact."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "`contractmeta!` is function-like, `#[contractevent]` is an attribute macro",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk-macros/src/lib.rs",
+              "observedAt": "2026-11-14",
+              "quote": "pub fn contractmeta(metadata: TokenStream) -> TokenStream"
+            }
+          ]
+        },
+        {
+          "claim": "Roles of #[contract], #[contractimpl], #[contracttype] unchanged",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://docs.rs/soroban-sdk/latest/soroban_sdk/",
+              "observedAt": "2026-11-14",
+              "quote": "Not re-read: stable API documented since launch; last audit confirmed it."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-soroban-contractmeta-vs-contractevent",
+          "survivor": "q-soroban-sdk-macros",
+          "why": "That case folds in here as the metadata and event macro facts."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Survivor of the macro cluster: absorbs `contractmeta!` / `#[contractevent]` from q-soroban-contractmeta-vs-contractevent so one cheap reference case covers all five macros.",
+      "rewrite": {
+        "question": "What do the main soroban-sdk macros (`#[contract]`, `#[contractimpl]`, `#[contracttype]`, `#[contractevent]`, `contractmeta!`) do?",
+        "answer": "`#[contract]` marks the type that carries the contract's functions. `#[contractimpl]` exports its public functions into the contract spec and generates a client. `#[contracttype]` makes structs and enums usable as contract values, with conversions to and from `Val` and a spec entry. `#[contractevent]` defines a typed runtime event. `contractmeta!` embeds static key/value metadata in the Wasm `contractmetav0` section.",
+        "keyFacts": [
+          "`#[contract]` marks the contract type; `#[contractimpl]` exports its functions and client.",
+          "`#[contracttype]` makes types usable as contract values and adds them to the spec.",
+          "`#[contractevent]` defines typed runtime events; it is an attribute macro.",
+          "`contractmeta!(...)` embeds static metadata in the Wasm `contractmetav0` section."
+        ],
+        "avoid": [
+          "Do NOT swap macro roles or import Solidity ABI concepts.",
+          "Do NOT write the metadata macro as the attribute `#[contractmeta]`."
+        ],
+        "notes": "Do not require direct SCVal/XDR codec wording for `#[contracttype]`.",
+        "movedToTruth": [
+          "GT-47 correction history, Golden-cites line",
+          "Also-good-if lines on `&Env` first argument"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 186,
+      "wordsAfter": 129
+    },
+    {
+      "id": "q-soroban-simulate-resource-fee",
+      "purpose": "stellar-truth",
+      "topics": [
+        "simulateTransaction",
+        "resource fee and footprint",
+        "restore preamble"
+      ],
+      "tests": "Simulate with RPC `simulateTransaction` (or SDK prepare/assemble or CLI) and apply the returned data, fee and auth, handling restore and stale state.",
+      "questionIssues": [],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Four predicates in one fact (auth, restorePreamble, leeway, re-simulation)."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Footprint fact 1 of 3 (footprint must list entries)."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Footprint fact 2 of 3; same topic."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Footprint fact 3 of 3; same topic."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "`simulateTransaction` returns `minResourceFee`, `transactionData`, optional `restorePreamble`, accepts `instructionLeeway`",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/simulateTransaction.md",
+              "observedAt": "2026-11-14",
+              "quote": "Since Protocol 23, this field [restorePreamble] is normally absent: the simulation adds archived persistent entries ... (`archivedSorobanEntries`)"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-infra-simulate-transaction-howto",
+          "survivor": "q-soroban-simulate-resource-fee",
+          "why": "Cross-category (tooling): same question, fewer details; retire that one and keep this."
+        },
+        {
+          "id": "q-soroban-resource-limits",
+          "survivor": "q-soroban-resource-limits",
+          "why": "Related topic, different question."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Verified; one nuance: since Protocol 23 `restorePreamble` is normally absent because simulation populates the restore list for auto-restore. Three key facts repeat the footprint point and one fact packs four predicates.",
+      "rewrite": {
+        "question": null,
+        "answer": "Call RPC `simulateTransaction` (or the SDK prepare/assemble helper, or `stellar tx simulate`) on the unsigned transaction. It returns the Soroban transaction data with the footprint, the minimum resource fee and required auth; apply them, then add an inclusion fee on top of the resource fee. Since Protocol 23 archived entries are normally restored automatically, so `restorePreamble` is usually absent. Simulation does not guarantee success: state can change, so re-simulate stale transactions.",
+        "keyFacts": [
+          "`simulateTransaction` returns the footprint, resource fee and auth before submission.",
+          "The transaction applies the simulated data; a missing footprint entry is a `HostError`.",
+          "The resource fee is separate from the inclusion fee; both go in the transaction fee.",
+          "Simulation is not a success guarantee; re-simulate stale transactions."
+        ],
+        "avoid": [
+          "Do NOT hand-pick a footprint or claim simulation submits or guarantees success."
+        ],
+        "notes": "Accept `instructionLeeway` or a stated margin; `restorePreamble` still appears when a separate restore is needed.",
+        "movedToTruth": [
+          "Protocol 23 auto-restore and `archivedSorobanEntries` detail",
+          "GT-47 correction history, eth_estimateGas trap note, Golden-cites line"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 215,
+      "wordsAfter": 145
+    },
+    {
+      "id": "q-soroban-storage-migration",
+      "purpose": "stellar-truth",
+      "topics": [
+        "contract storage migration",
+        "upgrade data compatibility",
+        "sparse struct decoding (CAP-86)"
+      ],
+      "tests": "A Wasm upgrade keeps address and storage but does not rewrite values; migrate with versioned records, lazy or batched entrypoints; SDK v28+ reads named-field structs sparsely.",
+      "questionIssues": [],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Two predicates (idempotent, batched)."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "CAP-86 (sparse Symbol-keyed map unpacking) is Final; SDK 28+ reads added Option fields as None",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0086.md",
+              "observedAt": "2026-11-14",
+              "quote": "CAP: 0086 Title: Host functions for sparse Symbol-keyed map creation and unpacking ... Status: Final"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/guides/storage/migrate-contract-storage.md",
+              "observedAt": "2026-11-14",
+              "quote": "This traps with `Error(Object, UnexpectedSize)` (guide still unscoped to SDK version)"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-soroban-upgradeable-storage-compat",
+          "survivor": "q-soroban-storage-migration",
+          "why": "Same question and same CAP-86 paragraph; absorbed as a key fact: keys and layouts must stay compatible or be migrated."
+        },
+        {
+          "id": "q-soroban-oz-upgradeable-macro",
+          "survivor": "q-soroban-oz-upgradeable-macro",
+          "why": "Distinct: owns the upgrade call and Upgrader flow."
+        },
+        {
+          "id": "q-sor-stale-spec-after-upgrade",
+          "survivor": "q-sor-stale-spec-after-upgrade",
+          "why": "Another lane: adjacent upgrade case."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Valuable and current. As the survivor it absorbs q-soroban-upgradeable-storage-compat's one distinct point (keys and value layouts must stay compatible or be migrated, or data is stranded). Notes move the sd-070 improvement narrative to truth.",
+      "rewrite": {
+        "question": null,
+        "answer": "Updating a contract's Wasm keeps its address and storage but converts nothing: keys and value layouts must stay compatible or be migrated, or old data is stranded. As of 2026-11-14, contracts built with soroban-sdk v28+ (CAP-86) read named-field structs sparsely: an added `Option` field reads as `None` and a removed field is ignored; other changes still need migration. Version stored records; migrate lazily or through an idempotent entrypoint over bounded batches. Test on production-shaped state.",
+        "keyFacts": [
+          "An upgrade converts no stored data; keys and layouts must stay compatible or migrate.",
+          "Versioned records support lazy migration or an explicit controlled migration entrypoint.",
+          "Large migrations are idempotent and batched to fit transaction resource limits.",
+          "SDK v28+ reads an added `Option` field as `None`; other schema changes need migration."
+        ],
+        "avoid": [
+          "Do NOT say uploading new Wasm re-encodes existing storage values.",
+          "Do NOT say every migration must fit in one transaction."
+        ],
+        "notes": "Saying a pre-v28 build traps with `UnexpectedSize` on an added field is correct; it is wrong only for an added `Option` field or removed field of a named-field struct on a v28+ build.",
+        "movedToTruth": [
+          "Docs-guide scope gap (improvements/stellar-docs/sd-070)",
+          "CAP-86 / SDK v28 release provenance",
+          "Enum, tuple-struct and non-Option limits"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 267,
+      "wordsAfter": 178
+    },
+    {
+      "id": "q-soroban-storage-types",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Soroban storage types",
+        "TTL and archival",
+        "Protocol 23 auto-restore"
+      ],
+      "tests": "Persistent, Temporary and Instance storage differ in lifetime and use (archived and restorable vs deleted; Instance shares the instance entry), with Protocol 23 auto-restore.",
+      "questionIssues": [
+        "The answer's XDR-durability and archivedSorobanEntries mechanics go well beyond 'three types and when to use each'; a correct beginner answer misses two of five key facts."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "XDR durability detail is trivia beside the three SDK types."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Two predicates (Persistent use, Temporary use)."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Protocol 23 restore mechanics; belongs to a restore/TTL case, not this one."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Temporary data is removed forever; Persistent/Instance are archived and automatically restorable since Protocol 23",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/guides/storage/choosing-the-right-storage.md",
+              "observedAt": "2026-11-14",
+              "quote": "| Temporary | `env.storage().temporary()` | Cheapest | Data is removed forever | Unlimited |"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival.md",
+              "observedAt": "2026-11-14",
+              "quote": "archived entries included in a transaction's restore list ... are automatically restored when the `InvokeHostFunctionOp` executes."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-soroban-instance-storage-dos",
+          "survivor": "q-soroban-instance-storage-dos",
+          "why": "Instance-vs-Persistent sizing is owned there."
+        },
+        {
+          "id": "q-sor-ttl-defaults-extend",
+          "survivor": "q-sor-ttl-defaults-extend",
+          "why": "Another lane: TTL extension."
+        },
+        {
+          "id": "q-sor-p23-auto-restore-extendto",
+          "survivor": "q-sor-p23-auto-restore-extendto",
+          "why": "Another lane owns auto-restore; drop that key fact here."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "A core foundations question; trim to the three types and their expiry behavior and drop the XDR and auto-restore mechanics that other cases own.",
+      "rewrite": {
+        "question": null,
+        "answer": "`env.storage()` offers three types. Persistent holds long-lived per-key data such as balances; on TTL expiry it is archived and can be restored. Temporary holds short-lived or recreatable data, is cheapest, and is deleted permanently on expiry. Instance holds small contract-wide configuration in the contract-instance entry, shares that entry's TTL and is loaded on every call. Since Protocol 23, archived entries are restored automatically when the transaction's restore list includes them.",
+        "keyFacts": [
+          "Persistent storage holds long-lived data; expired entries are archived and restorable.",
+          "Temporary storage is cheapest and its expired entries are deleted permanently.",
+          "Instance storage is small contract-wide config tied to the instance entry and TTL.",
+          "Since Protocol 23, archived entries listed in the restore list restore automatically."
+        ],
+        "avoid": [
+          "Do NOT invent storage types such as Solidity's storage/memory/calldata.",
+          "Do NOT say Temporary data is restorable after expiry, or Persistent/Instance data is deleted on expiry."
+        ],
+        "notes": "Noting that XDR has only two durability variants is a correct bonus, not a requirement.",
+        "movedToTruth": [
+          "XDR ContractDataDurability detail",
+          "archivedSorobanEntries and RestoreFootprintOp fallback",
+          "GT-47 refinement history, Golden-cites line"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 349,
+      "wordsAfter": 157
+    },
+    {
+      "id": "q-soroban-token-transfer-pattern",
+      "purpose": "stellar-truth",
+      "topics": [
+        "moving tokens from a contract",
+        "SEP-41 / SAC transfer authorization",
+        "transfer_from allowances"
+      ],
+      "tests": "Move SAC/SEP-41 tokens through a typed client; `transfer` needs `from`'s authorization, which a contract spending its own balance gets as the direct invoker, while `transfer_from` uses spender auth plus an allowance.",
+      "questionIssues": [],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Interface-detail trivia (MuxedAddress destination) beside the auth point; version-qualified (SEP-41 is Draft)."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Restates the direct-invoker rule owned by q-soroban-require-auth, but applied to tokens; keep only here as the token case."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Peripheral; deeper-call authorization belongs to the auth case."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "SEP-41 `transfer(from, to: MuxedAddress, amount)`; SEP-41 is Draft",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md",
+              "observedAt": "2026-11-14",
+              "quote": "fn transfer(env: Env, from: Address, to: MuxedAddress, amount: i128);  Status: Draft Updated: 2026-08-24 Version 0.5.2"
+            }
+          ]
+        },
+        {
+          "claim": "The direct invoker contract is implicitly authorized for its own direct call",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization.md",
+              "observedAt": "2026-11-14",
+              "quote": "all the `require_auth` calls made on behalf of the **direct** invoker contract `Address` are considered to be authorized"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-sor-sep41-transfer-vs-transferfrom",
+          "survivor": "q-soroban-token-transfer-pattern",
+          "why": "Another lane's SEP-41 transfer vs transfer_from case; this file already owns in-contract movement and auth, so that case may fold in."
+        },
+        {
+          "id": "q-soroban-require-auth",
+          "survivor": "q-soroban-require-auth",
+          "why": "Owns the direct-invoker rule."
+        },
+        {
+          "id": "q-sep-41-token-interface",
+          "survivor": "q-sep-41-token-interface",
+          "why": "Cross-category (assets): the SEP-41 interface."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "A practical question with a correct, nuanced answer; the key facts mix interface trivia with the auth rule and the avoid clause pins a Draft-spec signature as a trap.",
+      "rewrite": {
+        "question": null,
+        "answer": "Use a typed SAC/SEP-41 token client. `transfer(from, to, amount)` requires `from`'s authorization. When the contract sends its own balance, `from` is the contract address; as the direct invoker it is automatically authorized, so no user signature is needed. For allowance-based pulls use `transfer_from(spender, from, to, amount)`: the spender authorizes and the owner's prior bounded allowance applies. Validate amounts and update state before external calls. Explicit current-contract authorization is only for deeper calls.",
+        "keyFacts": [
+          "Direct `transfer` requires the `from` address's authorization.",
+          "A contract spending its own balance is `from` and is auto-authorized as direct invoker.",
+          "`transfer_from` needs the spender's authorization and a prior bounded allowance.",
+          "Current SEP-41 types the `transfer` destination as MuxedAddress (SEP-41 is Draft)."
+        ],
+        "avoid": [
+          "Do NOT require an external user signature to move the contract's own balance, or an approve/transferFrom step for every transfer."
+        ],
+        "notes": "SEP-41 is Draft (v0.5.2 as of 2026-11-14): accept `to: Address` for versions before MuxedAddress support.",
+        "movedToTruth": [
+          "SAC/CAP-67 asset topic on transfer events",
+          "Checks-effects-interactions and i128 range remarks",
+          "Ownership split with q-sor-sep41-transfer-vs-transferfrom, Golden-cites line"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 258,
+      "wordsAfter": 149
+    },
+    {
+      "id": "q-soroban-unit-testing",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Soroban unit testing",
+        "mocking authorization",
+        "fuzz and property tests"
+      ],
+      "tests": "Native in-process tests with `Env` and `testutils`, the difference between blanket `mock_all_auths` and verifying the auth tree, and (absorbed) Rust fuzz/property tools.",
+      "questionIssues": [
+        "Question is limited to unit tests and auth; widened below to take the fuzz/property-testing options."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Lists five steps in one fact."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Restates fact 1 as 'negative paths and exact failure assertions'."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "`Env::default()`, `mock_all_auths()` and `env.auths()` are the documented test surface",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/guides/testing/test-contract-auth.md",
+              "observedAt": "2026-11-14",
+              "quote": "env.mock_all_auths(); ... env.auths()"
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/guides/testing/unit-tests.md",
+              "observedAt": "2026-11-14",
+              "quote": "let env = Env::default();"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-soroban-fuzz-testing",
+          "survivor": "q-soroban-unit-testing",
+          "why": "Fuzz and property tools run in the same in-process Env; fold in as one key fact."
+        },
+        {
+          "id": "q-sor-decode-hosterror-codes",
+          "survivor": "q-sor-decode-hosterror-codes",
+          "why": "Another lane: negative-auth failure classes."
+        },
+        {
+          "id": "q-sor-test-event-assertion-ordering",
+          "survivor": "q-sor-test-event-assertion-ordering",
+          "why": "Another lane: event assertions in tests."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Survivor of the testing cluster: absorbs q-soroban-fuzz-testing as one key fact (`proptest`, `cargo-fuzz` + `SorobanArbitrary`) so a single case covers how to test a contract.",
+      "rewrite": {
+        "question": "How do I test a Soroban contract, including faking authorization and fuzz or property-based testing?",
+        "answer": "Write Rust tests with `soroban-sdk`'s `testutils` feature: build `Env::default()`, register the contract, call it through the generated client and assert results, errors and events. `mock_all_auths()` makes every `require_auth` pass and can hide a missing check; use `mock_auths` or `env.auths()` plus negative paths to prove the auth tree. For property and fuzz tests run `proptest` or `cargo-fuzz` with the SDK's `SorobanArbitrary` against the same in-process `Env`. No network is needed.",
+        "keyFacts": [
+          "Tests run in-process with `Env::default()`, `testutils` and the generated client.",
+          "`mock_all_auths` can hide a missing `require_auth`; `env.auths()` checks it.",
+          "Property and fuzz tests use `proptest` and `cargo-fuzz` with the SDK's `SorobanArbitrary`.",
+          "Tests are native `cargo test` runs; Testnet or RPC integration is a separate layer."
+        ],
+        "avoid": [
+          "Do NOT claim unit tests require Testnet or RPC deployment.",
+          "Do NOT treat `mock_all_auths` success as proof that authorization is correct."
+        ],
+        "notes": "Echidna and Foundry are EVM tools, not the native path; do not require any vendor's fuzzing practice.",
+        "movedToTruth": [
+          "Case-differentiation notes (decode-hosterror, event-ordering)",
+          "GT-48 correction history, Golden-cites line",
+          "Constructor-auth recording-mode detail"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 220,
+      "wordsAfter": 152
+    },
+    {
+      "id": "q-soroban-upgradeable-storage-compat",
+      "purpose": "stellar-truth",
+      "topics": [
+        "upgrade storage compatibility",
+        "storage key/layout stability",
+        "migration patterns"
+      ],
+      "tests": "A Wasm upgrade keeps storage and address, so keys and value layouts must stay compatible or be migrated explicitly; Soroban uses named keys, not EVM slots.",
+      "questionIssues": [],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Restates fact 0 as its consequence."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "The upgrade call name duplicates q-soroban-oz-upgradeable-macro and factory-pattern API facts."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Same fact as q-soroban-storage-migration's first key fact."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "update_current_contract / CAP-86 sparse unpacking statements",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/deploy.rs",
+              "observedAt": "2026-11-14",
+              "quote": "#[deprecated(note = \"use update_current_contract\")]"
+            },
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0086.md",
+              "observedAt": "2026-11-14",
+              "quote": "Status: Final"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-soroban-storage-migration",
+          "survivor": "q-soroban-storage-migration",
+          "why": "Answers the same question (upgrade changes data structures) with the same CAP-86 paragraph; this case adds only 'keep keys and layouts compatible'."
+        },
+        {
+          "id": "q-soroban-oz-upgradeable-macro",
+          "survivor": "q-soroban-oz-upgradeable-macro",
+          "why": "Owns the upgrade call and Upgrader flow."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Near-duplicate of q-soroban-storage-migration (identical CAP-86 paragraph, same remedy). The survivor absorbs one key fact: keys and value layouts must stay compatible or be migrated, or old data is stranded.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 487,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-soroban-vuln-classes",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Soroban audit findings",
+        "common vulnerability classes",
+        "security checklist"
+      ],
+      "tests": "The broad families auditors check in Soroban contracts (authorization, storage/TTL, external calls, arithmetic, DoS), with Protocol 23 restore semantics.",
+      "questionIssues": [
+        "'Most common' is unprovable; the golden correctly reframes it as a non-exhaustive checklist, which makes the grading depend on breadth rather than a fact."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Vague umbrella ('names major families'); a judge cannot tell what is required."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Vague umbrella."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Protocol-23 restore scoping; peripheral to the checklist and owned by the storage cases."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Atomic-failure scoping; owned by q-soroban-instance-storage-dos."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Audit guidance lists authorization, arithmetic/rounding, error handling and storage-key issues",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "D",
+              "ref": "https://www.certora.com/blog/roadmap-to-a-soroban-security-audit",
+              "observedAt": "2026-11-14",
+              "quote": "Check your code for authorization/authentication issues, integer overflow, arithmetic bugs and rounding errors, improper error handling, and storage key"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-soroban-instance-storage-dos",
+          "survivor": "q-soroban-instance-storage-dos",
+          "why": "DoS and storage-growth family detail lives there."
+        },
+        {
+          "id": "q-soroban-reentrancy",
+          "survivor": "q-soroban-reentrancy",
+          "why": "Reentrancy remark lives there."
+        },
+        {
+          "id": "q-soroban-require-auth",
+          "survivor": "q-soroban-require-auth",
+          "why": "Authorization detail lives there."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Worth a breadth case, but only if the key facts name the families concretely and the storage restore and atomicity scoping, which other cases own, leaves.",
+      "rewrite": {
+        "question": null,
+        "answer": "A non-exhaustive Soroban audit checklist: missing or wrong authorization (including initialization and Wasm upgrades); unsafe storage, TTL and archival assumptions; unchecked results of external token or contract calls; arithmetic, rounding and input-validation errors; panics and unbounded work that cause denial of service; and application-specific economic or state-transition flaws. The host blocks same-contract reentrancy, so Ethereum's reentrancy list does not transfer unchanged.",
+        "keyFacts": [
+          "Missing or wrong authorization, including at initialization and upgrade, is a core class.",
+          "Storage, TTL and archival assumptions are a Soroban-specific class.",
+          "Arithmetic, rounding, input validation and unchecked external-call results are common.",
+          "Panics and unbounded growth or work cause denial of service."
+        ],
+        "avoid": [
+          "Do NOT present one list as exhaustive or import EVM-only vulnerabilities unchanged.",
+          "Do NOT claim pre-Protocol-23 manual-only restoration, or an automatic permanent brick, as current."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "Protocol 23 auto-restore scoping and atomic-failure remark",
+          "Veridise/Inferara/Certora source list",
+          "GT-48 correction history, Golden-cites line"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 214,
+      "wordsAfter": 128
+    },
+    {
+      "id": "q-soroban-wasm-language",
+      "purpose": "stellar-truth",
+      "topics": [
+        "contract language",
+        "Wasm compile target",
+        "execution model"
+      ],
+      "tests": "Soroban contracts are Rust (`soroban-sdk`) compiled to deterministic Wasm (`wasm32v1-none`), not Solidity/EVM bytecode.",
+      "questionIssues": [
+        "Basic orientation question whose every fact is owned elsewhere: no_std/alloc in q-soroban-no-std-constraints, the 128 KiB code cap in q-soroban-wasm-size-limit, and the build target in q-sor-build-target-wasm32v1 and q-soroban-deploy-cli."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Four predicates (Rust, soroban-sdk, wasm32v1-none, no_std, allocation) in one fact."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Duplicates q-soroban-wasm-size-limit."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Contract code cap is 131072 bytes (128 KiB) and data-entry cap 65536 on Mainnet and Testnet",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "F",
+              "ref": "`stellar network settings --rpc-url https://mainnet.sorobanrpc.com`",
+              "observedAt": "2026-11-14",
+              "quote": "contract_max_size_bytes 131072; contract_data_entry_size_bytes 65536"
+            },
+            {
+              "class": "F",
+              "ref": "`stellar network settings --network testnet`",
+              "observedAt": "2026-11-14",
+              "quote": "{\"contract_max_size_bytes\":131072} ... {\"contract_data_entry_size_bytes\":65536}"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-soroban-no-std-constraints",
+          "survivor": "q-soroban-no-std-constraints",
+          "why": "Absorbs the Rust-to-Wasm fact; no_std and alloc are already there."
+        },
+        {
+          "id": "q-soroban-wasm-size-limit",
+          "survivor": "q-soroban-wasm-size-limit",
+          "why": "Owns the 128 KiB cap."
+        },
+        {
+          "id": "q-sor-build-target-wasm32v1",
+          "survivor": "q-sor-build-target-wasm32v1",
+          "why": "Owns the build target."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Every fact here is owned by another case. Fold the one unique fact (Rust with soroban-sdk compiled to Wasm, not EVM bytecode) into q-soroban-no-std-constraints.",
+      "rewrite": null,
+      "confidence": "high",
+      "wordsBefore": 231,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-soroban-wasm-size-limit",
+      "purpose": "stellar-truth",
+      "topics": [
+        "contract Wasm size limit",
+        "network settings",
+        "build optimization"
+      ],
+      "tests": "Uploaded contract Wasm is capped at 128 KiB (a network setting, distinct from the 64 KiB data-entry cap); builds optimize by default and the standalone optimize command is deprecated.",
+      "questionIssues": [],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Two predicates (default-on optimization, deprecated command)."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "contract_max_size_bytes = 131072 and contract_data_entry_size_bytes = 65536 on Mainnet and Testnet",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "F",
+              "ref": "`stellar network settings --rpc-url https://mainnet.sorobanrpc.com --network-passphrase \"Public Global Stellar Network ; September 2015\"`",
+              "observedAt": "2026-11-14",
+              "quote": "contract_max_size_bytes 131072; contract_data_entry_size_bytes 65536"
+            },
+            {
+              "class": "F",
+              "ref": "`stellar network settings --network testnet`",
+              "observedAt": "2026-11-14",
+              "quote": "{\"contract_max_size_bytes\":131072} ... {\"contract_data_entry_size_bytes\":65536}"
+            }
+          ]
+        },
+        {
+          "claim": "Builds optimize by default; `stellar contract optimize` is deprecated",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "F",
+              "ref": "local stellar 30.0.1 `stellar contract optimize --help`",
+              "observedAt": "2026-11-14",
+              "quote": "Deprecated, use `build --optimize`. Optimize a WASM file"
+            },
+            {
+              "class": "F",
+              "ref": "local stellar 30.0.1 `stellar contract build --help`",
+              "observedAt": "2026-11-14",
+              "quote": "Optimize the generated wasm. Enabled by default; pass `--optimize=false` to disable."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-soroban-resource-limits",
+          "survivor": "q-soroban-wasm-size-limit",
+          "why": "Size cap is one limit in the resource-limits family; keep both, distinct questions."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Specific, practical and verified live on both networks; shrink to the cap, the distinct data-entry cap and the optimize flow. Re-date to 2026-11-14.",
+      "rewrite": {
+        "question": null,
+        "answer": "As of 2026-11-14, Mainnet and Testnet set `contract_max_size_bytes` to 131072 (128 KiB) for uploaded contract Wasm. The separate 64 KiB `contract_data_entry_size_bytes` caps a data entry, not code. Both are network settings, so read the target network (Stellar Lab or `stellar network settings`) instead of assuming them. The CLI optimizes builds by default (`stellar contract optimize` is deprecated); if still too large, trim dependencies and features or split logic across contracts.",
+        "keyFacts": [
+          "Uploaded contract Wasm is capped at 131072 bytes (128 KiB) as of 2026-11-14.",
+          "The 64 KiB contract-data-entry cap is a separate network setting, not the code cap.",
+          "`stellar contract build` optimizes by default; standalone `optimize` is deprecated.",
+          "Limits are network settings; read them live from the target network."
+        ],
+        "avoid": [
+          "Do NOT call 64 KiB the contract-code limit, or 24 KB (EIP-170) the Stellar limit."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "2026-07-28 verification narrative",
+          "`--optimize` redundant flag detail, GT-48 correction history, Golden-cites line"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 250,
+      "wordsAfter": 133
+    },
+    {
+      "id": "q-soroban-x402-auth-entry-signing",
+      "purpose": "mixed",
+      "topics": [
+        "x402 on Stellar",
+        "wallet auth-entry signing",
+        "facilitator payment flow"
+      ],
+      "tests": "Stellar x402: the payer signs Soroban auth entries and a facilitator builds, sponsors and submits the transaction (world), and the volatile official wallet roster, with honesty that a roster is not end-to-end proof (behavior).",
+      "questionIssues": [
+        "Two questions in one (which wallets, what flow); the wallet roster churns and rests on one official page, so the stable flow is the better measurement.",
+        "Key facts mostly prescribe how to word the roster (process), not Stellar facts."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "process",
+          "issue": "Prescribes attribution wording."
+        },
+        {
+          "i": 2,
+          "kind": "process",
+          "issue": "Prescribes a caveat; overlaps fact 1."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Names Albedo's absence plus a process instruction; two predicates."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Hosted-provider API-key scope; off the question."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "The official Stellar x402 page lists Varial extension and mobile (WalletConnect), Hana, HOT, Klever, OneKey and Scopuly, without Albedo",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/agentic-payments/x402.md",
+              "observedAt": "2026-11-14",
+              "quote": "* Varial Browser Extension * Varial Mobile (through WalletConnect) * Hana * HOT * Klever * OneKey * Scopuly"
+            },
+            {
+              "class": "A",
+              "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial",
+              "observedAt": "2026-11-14",
+              "quote": "Freighter is now Varial: Your wallet for discovering Stellar (page title)"
+            }
+          ]
+        },
+        {
+          "claim": "Hosted provider is Build on Stellar Relayer with the OpenZeppelin x402 plugin (bearer API key)",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://github.com/OpenZeppelin/relayer-plugin-x402-facilitator",
+              "observedAt": "2026-11-14",
+              "quote": "Not re-read in this pass; claim is off the question and dropped from the rewrite."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-x402-payment-verification",
+          "survivor": "q-soroban-x402-auth-entry-signing",
+          "why": "Cross-category (compliance): x402 payment verification; confirm flow overlap in that lane."
+        },
+        {
+          "id": "q-defi-x402-on-stellar-what",
+          "survivor": "q-defi-x402-on-stellar-what",
+          "why": "Cross-category (defi): what x402 is; this case owns the signing flow and wallets."
+        },
+        {
+          "id": "q-hist-x402-stellar-announcement",
+          "survivor": "q-hist-x402-stellar-announcement",
+          "why": "Cross-category (history): announcement chronology."
+        },
+        {
+          "id": "q-mpp-discovery-and-modes",
+          "survivor": "q-mpp-discovery-and-modes",
+          "why": "Cross-category: sibling agentic payments protocol."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "The signing flow is real Stellar truth and the roster is checkable (matches the official page today), but the golden is 500 words of roster provenance hedging. Keep the flow, a dated roster, and one caveat.",
+      "rewrite": {
+        "question": null,
+        "answer": "The payer wallet signs the Soroban authorization entries, not the whole settlement transaction. The facilitator rebuilds the transaction with its own source account, verifies or simulates the auth, sponsors fees, signs and submits, and the client retries the paid request. As of 2026-11-14 the official x402 page lists Varial (extension and WalletConnect mobile), Hana, HOT, Klever, OneKey and Scopuly, not Albedo. A roster is no end-to-end guarantee; check the exact wallet and transport.",
+        "keyFacts": [
+          "The payer signs Soroban auth entries; the facilitator builds, sponsors and submits.",
+          "Official x402 page lists Varial, Hana, HOT, Klever, OneKey, Scopuly (2026-11-14).",
+          "Albedo is not on the current official roster.",
+          "A listed wallet is not end-to-end proof; check the exact wallet and transport."
+        ],
+        "avoid": [
+          "Do NOT say the payer signs the facilitator's full settlement transaction."
+        ],
+        "notes": "Freighter and Varial name the same SDF wallet; do not penalize either name. Grade the flow and honest roster dating, not a rote list.",
+        "movedToTruth": [
+          "Wallets Kit adapter evidence and Albedo adapter rejection",
+          "Hosted-provider (OZ Relayer) API-key scoping and Coinbase Testnet-only note",
+          "Freighter to Varial rename provenance (2026-10-29); GT-48 correction history, Golden-cites line"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 496,
+      "wordsAfter": 152
+    },
+    {
+      "id": "q-zk-circuit-setup",
+      "purpose": "stellar-truth",
+      "topics": [
+        "ZK application roles",
+        "trusted setup",
+        "proving and verification keys"
+      ],
+      "tests": "The app team defines the circuit and produces keys and the verifier material; whether a trusted-setup ceremony is needed depends on the proof system (Groth16 circuit-specific, transparent none, universal reusable), not on Stellar.",
+      "questionIssues": [
+        "The answer is general zero-knowledge knowledge; Stellar adds only 'it does not generate keys for you'. Any correct ZK source passes, so it measures general cryptography more than Stellar."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Third proof-system class; generic."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Circuit-specific Groth16 needs a Phase 2 setup; transparent systems do not",
+          "result": "unverifiable",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/apps/zk.md",
+              "observedAt": "2026-11-14",
+              "quote": "Observation: the Stellar ZK page names Noir, Risc0 and Circom/Groth16 verifiers but never mentions trusted setup; the claim is general cryptography."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-zk-proof-systems-stellar",
+          "survivor": "q-zk-proof-systems-stellar",
+          "why": "Same topic: which proof systems apply on Stellar; the setup-by-proof-system point folds in as one key fact."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Mostly generic ZK knowledge with no Stellar primary source, and the proof-systems case already covers which systems apply. Survivor absorbs two facts: the app team owns the circuit and keys, and circuit-specific Groth16 normally needs a trusted setup while transparent systems do not.",
+      "rewrite": null,
+      "confidence": "medium",
+      "wordsBefore": 133,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-zk-host-functions-status",
+      "purpose": "stellar-truth",
+      "topics": [
+        "ZK host functions",
+        "CAP-59/74/75/80",
+        "STARK verification gap"
+      ],
+      "tests": "Which ZK primitives are live (BLS12-381 in P22, BN254 and Poseidon in P25, BN254 additions in P26), that they are primitives and not proof systems, and that native Goldilocks/NTT/FRI support is absent.",
+      "questionIssues": [
+        "The question hard-codes 'as of July 2026' and a past protocol; a real agent asks about now. Make it date-neutral and put the as-of date in the answer."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Records the status 'Implemented, later Final'; the status moved, only 'live' matters."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Restates facts 0 to 2 as live-date framing."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "CAP-0059 (P22), CAP-0074 and CAP-0075 (P25), CAP-0080 (P26) are all Final",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0080.md",
+              "observedAt": "2026-11-14",
+              "quote": "Title: Host functions for efficient ZK BN254 use cases Status: Final Protocol version: 26"
+            },
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/README.md",
+              "observedAt": "2026-11-14",
+              "quote": "| CAP-0074 | 25 | Host functions for BN254 | ... | Final |"
+            }
+          ]
+        },
+        {
+          "claim": "Pubnet and testnet protocol versions",
+          "result": "changed",
+          "evidence": [
+            {
+              "class": "F",
+              "ref": "POST https://mainnet.sorobanrpc.com getVersionInfo",
+              "observedAt": "2026-11-14",
+              "quote": "\"protocolVersion\":29"
+            },
+            {
+              "class": "F",
+              "ref": "POST https://soroban-testnet.stellar.org getNetwork",
+              "observedAt": "2026-11-14",
+              "quote": "\"protocolVersion\":30"
+            }
+          ]
+        },
+        {
+          "claim": "No documented native Goldilocks, NTT or FRI host functions; CAP-0087 (ML-DSA) is not one",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/README.md",
+              "observedAt": "2026-11-14",
+              "quote": "| CAP-0087 | 30 | Host functions for ML-DSA signature verification | ... | Implemented |"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-protocol-bls12-381-cap59",
+          "survivor": "q-zk-host-functions-status",
+          "why": "Cross-category (protocol-core): the CAP-59 detail rolls up here."
+        },
+        {
+          "id": "q-protocol-bn254-poseidon-xray",
+          "survivor": "q-zk-host-functions-status",
+          "why": "Cross-category (protocol-core): BN254/Poseidon P25 content overlaps."
+        },
+        {
+          "id": "q-protocol-23-whisk-caps",
+          "survivor": "q-protocol-23-whisk-caps",
+          "why": "Distinct protocol (23)."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "Right and verified, but the dated July framing and protocol numbers are stale (testnet is Protocol 30, pubnet 29 today) and the key facts restate each other. Make the question date-neutral and dated in the answer.",
+      "rewrite": {
+        "question": "Which zero-knowledge host functions are live on Stellar, which CAPs introduced them, and what gaps remain for STARK-style verification?",
+        "answer": "As of 2026-11-14 the live ZK primitives are BLS12-381 (CAP-0059, Protocol 22), BN254 (CAP-0074) and Poseidon/Poseidon2 (CAP-0075) in Protocol 25, and CAP-0080's further BN254 operations in Protocol 26; all are Final. They are primitives, not proof systems. No native Goldilocks, NTT or FRI host functions are documented, so STARK-style verifiers need extra Wasm work or another design.",
+        "keyFacts": [
+          "CAP-0059 added BLS12-381 host functions in Protocol 22.",
+          "CAP-0074 (BN254) and CAP-0075 (Poseidon/Poseidon2) landed in Protocol 25.",
+          "CAP-0080 added further BN254 ZK operations in Protocol 26.",
+          "As of 2026-11-14 no native Goldilocks, NTT or FRI host functions exist."
+        ],
+        "avoid": [
+          "Do NOT call CAP-0074 or CAP-0075 proposed-only, or the host functions complete proof systems."
+        ],
+        "notes": "Later dated protocol versions are not wrong (pubnet 29, testnet 30 on 2026-11-14). CAP-0087 (ML-DSA, Protocol 30) is not an NTT/FRI primitive.",
+        "movedToTruth": [
+          "Protocol 27 observation of 2026-07-11 and CAP-0080 'Implemented' status history",
+          "Per-network protocol versions on 2026-11-02 and 2026-11-14",
+          "Source list (software-versions, Horizon roots)"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 216,
+      "wordsAfter": 131
+    },
+    {
+      "id": "q-zk-nullifier-storage",
+      "purpose": "stellar-truth",
+      "topics": [
+        "privacy-pool nullifiers",
+        "persistent storage and TTL",
+        "double-spend prevention"
+      ],
+      "tests": "A spent nullifier must stay enforceable while its note is spendable: individually keyed persistent entries with TTL/rent handling, or an authenticated root with non-membership proofs; prune only when old notes are unspendable.",
+      "questionIssues": [],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Detail of fact 2 (witness availability); merge."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": "Restates fact 0 (pruning reopens double spends)."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Under Protocol 23 archived Persistent entries in the restore list are restored automatically; expired Temporary entries are deleted permanently",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival.md",
+              "observedAt": "2026-11-14",
+              "quote": "archived entries included in a transaction's restore list ... are automatically restored when the `InvokeHostFunctionOp` executes."
+            },
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/guides/storage/choosing-the-right-storage.md",
+              "observedAt": "2026-11-14",
+              "quote": "| Temporary | `env.storage().temporary()` | Cheapest | Data is removed forever | Unlimited |"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-sor-persistent-unbounded-collection-cap",
+          "survivor": "q-sor-persistent-unbounded-collection-cap",
+          "why": "Another lane: same per-key persistent remedy for unbounded sets; confirm there."
+        },
+        {
+          "id": "q-soroban-instance-storage-dos",
+          "survivor": "q-soroban-instance-storage-dos",
+          "why": "Same 'not one unbounded instance value' point."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "A good applied design question mixing ZK protocol logic with Soroban storage; keep, shorten, and drop overlapping facts.",
+      "rewrite": {
+        "question": null,
+        "answer": "A spent nullifier must stay enforceable while its note could be accepted. For an exact set, store each domain-separated nullifier as its own persistent entry with explicit TTL and rent handling, never one unbounded instance map or a full scan. Alternatively keep an authenticated root on-chain, with non-membership and insertion proofs and a stated witness model. Prune only when the matching old notes also become unspendable.",
+        "keyFacts": [
+          "Deleting or expiring a nullifier whose note is still spendable reopens double spends.",
+          "Exact sets use one persistent entry per nullifier with explicit TTL and rent handling.",
+          "An on-chain root needs non-membership and insertion proofs and a defined witness model.",
+          "Pruning is sound only once the corresponding old notes are unspendable."
+        ],
+        "avoid": [
+          "Do NOT keep an unbounded nullifier map in one instance value, rely on an off-chain database alone, or call expired Temporary entries restorable."
+        ],
+        "notes": "Stating that Protocol 23 auto-restores archived Persistent entries (never Temporary) with normal rent and fees is correct.",
+        "movedToTruth": [
+          "CAP-0066 restore mechanics",
+          "Zcash/Nethermind pool references"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 248,
+      "wordsAfter": 157
+    },
+    {
+      "id": "q-zk-poseidon-input-encoding",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Poseidon / Poseidon2 hashing",
+        "field-element encoding",
+        "cross-implementation mismatch"
+      ],
+      "tests": "Poseidon hashes mismatch across implementations unless field, parameters, width, domain separation, byte order, padding and byte-to-field mapping all match; inputs must be canonical field elements.",
+      "questionIssues": [],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Overlaps fact 2 (matching field/mapping vs matching parameters)."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Lists six predicates in one fact."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Stellar's Poseidon host functions expose the permutation, so the hash/sponge construction is built on top",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/apps/zk.md",
+              "observedAt": "2026-11-14",
+              "quote": "The Poseidon host functions expose the underlying *permutation primitives*, not complete hash functions"
+            },
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0075.md",
+              "observedAt": "2026-11-14",
+              "quote": "Title: Cryptographic Primitives for Poseidon/Poseidon2 Hash Functions Status: Final"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-zk-host-functions-status",
+          "survivor": "q-zk-host-functions-status",
+          "why": "Distinct: encoding vs which host functions exist."
+        }
+      ],
+      "verdict": "tighten",
+      "reason": "A distinctive, practical, answerable ZK pitfall. Trim overlapping facts and add the verified reason that the host exposes only the permutation, so the construction is the developer's to match.",
+      "rewrite": {
+        "question": null,
+        "answer": "Poseidon works on field elements, not byte strings, and Stellar's host functions expose only the permutation, so you build the hash on top. Both sides must match the field, Poseidon versus Poseidon2, width, round parameters, domain separation, byte order, padding and byte-to-field conversion. Each BN254 value must be a canonical scalar or use a shared reduction rule. Any difference changes the hash; do not assume a library default matches Noir.",
+        "keyFacts": [
+          "Poseidon inputs are field elements, not arbitrary byte strings.",
+          "Both sides need the same field, Poseidon variant, width, parameters and domain separation.",
+          "Both sides need the same byte order, padding and byte-to-field conversion.",
+          "Each value must be a canonical scalar below the modulus or use one shared reduction rule."
+        ],
+        "avoid": [
+          "Do NOT claim zero-padding alone guarantees identical hashes, or that Poseidon and Poseidon2 are interchangeable."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "Source list"
+        ]
+      },
+      "confidence": "high",
+      "wordsBefore": 134,
+      "wordsAfter": 134
+    },
+    {
+      "id": "q-zk-proof-systems-stellar",
+      "purpose": "stellar-truth",
+      "topics": [
+        "ZK proof systems on Stellar",
+        "on-chain proof verification",
+        "trusted setup"
+      ],
+      "tests": "Stellar mandates no ZK toolchain; builders use Circom/Groth16, Noir/UltraHonk or RISC Zero with a Soroban verifier contract and native host functions, and (absorbed) when a trusted setup is needed.",
+      "questionIssues": [
+        "Widened below to take the trusted-setup question from q-zk-circuit-setup."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Overlaps fact 0."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Restates fact 2 as a version list."
+        },
+        {
+          "i": 4,
+          "kind": "world",
+          "issue": null
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Verifiers exist for Groth16/RISC Zero and UltraHonk; the current UltraHonk verifier accepts only non-zero-knowledge proofs",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/build/apps/privacy.md",
+              "observedAt": "2026-11-14",
+              "quote": "The current verifier accepts only non-zero-knowledge UltraHonk proofs, so OpenZeppelin does not guarantee that proofs keep balances and amounts private."
+            },
+            {
+              "class": "B",
+              "ref": "https://raw.githubusercontent.com/NethermindEth/rs-soroban-ultrahonk/main/crates/ultrahonk-soroban-verifier/README.md",
+              "observedAt": "2026-11-14",
+              "quote": "Supported flavor: `UltraKeccakFlavor` — non-ZK, non-recursive."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-zk-circuit-setup",
+          "survivor": "q-zk-proof-systems-stellar",
+          "why": "Absorbed: app team owns the circuit and keys; trusted setup depends on the proof system."
+        }
+      ],
+      "verdict": "merge",
+      "reason": "Survivor of the ZK-application cluster. Absorbs the circuit/keys ownership and trusted-setup-by-proof-system facts from q-zk-circuit-setup; the answer drops version-specific host-function dates already owned by q-zk-host-functions-status.",
+      "rewrite": {
+        "question": "Which proof systems and circuit languages can I use for a zero-knowledge application on Stellar, how are proofs verified on-chain, and when is a trusted setup needed?",
+        "answer": "Stellar mandates no single toolchain: use Circom/Groth16, Noir (UltraHonk) or zkVMs such as RISC Zero, with a compatible Soroban verifier contract. The app team defines the circuit and keys. The verifier contract uses the native BLS12-381, BN254 and Poseidon host functions, which are primitives, not a private-payment system. Circuit-specific Groth16 normally needs a trusted setup; transparent systems do not.",
+        "keyFacts": [
+          "Stellar mandates no ZK toolchain; Circom/Groth16, Noir and RISC Zero verifiers exist.",
+          "A verifier contract checks proofs using BLS12-381, BN254 and Poseidon host functions.",
+          "Host functions are primitives; they do not make payments private automatically.",
+          "Circuit-specific Groth16 normally needs a trusted setup; transparent systems do not."
+        ],
+        "avoid": [
+          "Do NOT claim Noir is the only supported route, or that Protocol 25 makes every payment private."
+        ],
+        "notes": "As of 2026-11-14 the OpenZeppelin confidential-token UltraHonk verifier accepts only non-zero-knowledge proofs; an answer that states this limit is correct.",
+        "movedToTruth": [
+          "Trusted-setup background (general cryptography, no Stellar source)",
+          "2026-07-11 and 2026-11-02 verification narrative"
+        ]
+      },
+      "confidence": "medium",
+      "wordsBefore": 177,
+      "wordsAfter": 142
+    },
+    {
+      "id": "q-zk-verification-resource-budget",
+      "purpose": "stellar-truth",
+      "topics": [
+        "ZK verifier cost",
+        "simulating against the target network",
+        "native vs pure-Wasm crypto"
+      ],
+      "tests": "A verifier that fits in unlimited localnet may exceed public-network limits: simulate on the target network, read the resource estimates, prefer native host functions and smaller inputs.",
+      "questionIssues": [],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Duplicates q-soroban-resource-limits (limits differ by network)."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": "Duplicates q-soroban-simulate-resource-fee."
+        },
+        {
+          "i": 2,
+          "kind": "world",
+          "issue": "Duplicates q-soroban-simulate-resource-fee."
+        },
+        {
+          "i": 3,
+          "kind": "world",
+          "issue": "Only unique fact; covered in spirit by host-function cases."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "Public networks enforce CPU, memory, footprint and size limits that unlimited localnet does not",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering.md",
+              "observedAt": "2026-11-14",
+              "quote": "All resources mentioned in the prior section are subject to a per-transaction limit."
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-soroban-simulate-resource-fee",
+          "survivor": "q-soroban-simulate-resource-fee",
+          "why": "Simulating the exact transaction and reading resource estimates is its core."
+        },
+        {
+          "id": "q-soroban-resource-limits",
+          "survivor": "q-soroban-resource-limits",
+          "why": "Network limits differ from local; moved there."
+        },
+        {
+          "id": "q-zk-host-functions-status",
+          "survivor": "q-zk-host-functions-status",
+          "why": "Native host functions lower verification cost."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "Three of four key facts duplicate the simulate and resource-limits cases; the remaining 'prefer native host functions over pure-Wasm curve arithmetic' is already implied by the host-function cases. No unique measurement remains; a ZK framing alone does not make a new fact.",
+      "rewrite": null,
+      "confidence": "medium",
+      "wordsBefore": 146,
+      "wordsAfter": 0
+    },
+    {
+      "id": "q-sor-reflector-testnet-contract-addresses",
+      "purpose": "stellar-truth",
+      "topics": [
+        "Reflector oracle on testnet",
+        "exact contract addresses",
+        "network verification"
+      ],
+      "tests": "The three public Reflector Testnet oracle addresses (Stellar DEX, external exchanges, forex), the fact that the DEX oracle is deployed on Testnet while reporting Mainnet data, and checking the network passphrase.",
+      "questionIssues": [
+        "Tests exact 56-character identifiers that change when Testnet resets; reverifyBy is four weeks out. It measures retrieval of a docs-page table row more than Stellar knowledge."
+      ],
+      "keyFacts": [
+        {
+          "i": 0,
+          "kind": "world",
+          "issue": "Three full addresses in one fact; any shortening fails all."
+        },
+        {
+          "i": 1,
+          "kind": "world",
+          "issue": null
+        },
+        {
+          "i": 2,
+          "kind": "process",
+          "issue": "Prescribes verification steps."
+        },
+        {
+          "i": 3,
+          "kind": "process",
+          "issue": "Prescribes a recheck behavior."
+        }
+      ],
+      "rot": [
+        {
+          "claim": "The three addresses are listed on Stellar's Oracle Providers page as Reflector Testnet contracts with those labels",
+          "result": "holds",
+          "evidence": [
+            {
+              "class": "A",
+              "ref": "https://developers.stellar.org/docs/data/oracles/oracle-providers.md",
+              "observedAt": "2026-11-14",
+              "quote": "CAVLP5DH2GJPZMVO7IJY4CVOD5MWEFTJFVPD2YY2FQXOQHRGHK4D6HLP | Stellar Mainnet DEX | Testnet"
+            },
+            {
+              "class": "C",
+              "ref": "https://orchestrator-testnet.reflector.network/config",
+              "observedAt": "2026-11-14",
+              "quote": "all three addresses present as contract keys in Reflector's testnet config"
+            },
+            {
+              "class": "F",
+              "ref": "`stellar contract info interface --id <addr> --network testnet`",
+              "observedAt": "2026-11-14",
+              "quote": "Network: Test SDF Network ; September 2015 ... Downloading contract spec (all three resolve)"
+            }
+          ]
+        }
+      ],
+      "duplicates": [
+        {
+          "id": "q-sor-reflector-integration-code",
+          "survivor": "q-sor-reflector-integration-code",
+          "why": "Another lane: Reflector ABI and integration; already exercises finding a deployed oracle."
+        },
+        {
+          "id": "q-defi-reflector-oracle",
+          "survivor": "q-defi-reflector-oracle",
+          "why": "Cross-category (defi): what Reflector is."
+        }
+      ],
+      "verdict": "retire",
+      "reason": "Proposal that should not activate: an exact-identifier snapshot that the next Testnet reset invalidates, with a four-week reverify cycle, whose measurement (read a row from the Oracle Providers page) is covered by the Reflector integration and landscape cases. The addresses are correct today.",
+      "rewrite": null,
+      "confidence": "medium",
+      "wordsBefore": 298,
+      "wordsAfter": 0
+    }
+  ],
+  "summary": {
+    "keep": 0,
+    "tighten": 25,
+    "merge": 10,
+    "retire": 2,
+    "move-tool-lane": 1,
+    "factsChanged": 0
+  },
+  "crossCategoryDuplicates": [
+    "simulateTransaction how-to: q-infra-simulate-transaction-howto (tooling-infra) duplicates q-soroban-simulate-resource-fee; keep the soroban one, retire the infra one",
+    "Stellar CLI build/deploy/identity flow: q-tool-cli-testnet-identity-howto (tooling-infra), q-sor-build-target-wasm32v1 and q-sor-deploy-invoke-from-js-sdk (soroban lane A) overlap q-soroban-deploy-cli",
+    "YieldBlox oracle incident: q-comp-yieldblox-oracle-incident (compliance), q-hist-yieldblox-v2-2026-exploit (history), q-defi-oracle-landscape-live (defi) overlap the incident facts in q-soroban-oracle-defensive-consumption; defensive design stays here",
+    "x402 on Stellar: q-x402-payment-verification (compliance), q-defi-x402-on-stellar-what and q-defi-agentic-payment-standards-compare (defi), q-hist-x402-stellar-announcement (history), q-agent-payment-standard-choice (compliance) overlap the x402 flow in q-soroban-x402-auth-entry-signing",
+    "ZK host functions: q-protocol-bls12-381-cap59 and q-protocol-bn254-poseidon-xray (protocol-core) overlap q-zk-host-functions-status; keep one roll-up",
+    "SEP-41 tokens: q-sep-41-token-interface (assets), q-sor-sep41-transfer-vs-transferfrom (soroban lane A) overlap q-soroban-token-transfer-pattern and q-soroban-oz-token",
+    "Reflector: q-sor-reflector-integration-code (soroban lane A), q-defi-reflector-oracle (defi), q-pc-cross-redstone-sep40 (protocol-core) overlap the retired q-sor-reflector-testnet-contract-addresses proposal",
+    "Storage growth and TTL/restore: q-sor-persistent-unbounded-collection-cap, q-sor-ttl-defaults-extend, q-sor-p23-auto-restore-extendto (soroban lane A) overlap q-soroban-instance-storage-dos, q-soroban-storage-types and q-zk-nullifier-storage",
+    "OpenZeppelin Stellar library: q-sor-skill-openzeppelin-setup (soroban lane A), q-crp-oz-rwa-erc3643-trex (compliance) overlap q-soroban-oz-token and q-soroban-oz-upgradeable-macro",
+    "Upgrade mechanics: q-sor-stale-spec-after-upgrade (soroban lane A) is adjacent to q-soroban-storage-migration and q-soroban-oz-upgradeable-macro",
+    "Authorization trees: q-sor-require-auth-propagation and q-soroban-check-auth-custom-account (soroban lane A) overlap q-soroban-require-auth and q-soroban-cross-contract-call",
+    "Event assertions and indexing: q-sor-test-event-assertion-ordering (soroban lane A) and q-infra-rpc-methods-list (tooling-infra) adjoin q-soroban-publish-events and q-soroban-event-indexing-design"
+  ],
+  "missing": [
+    "Custom contract errors (`#[contracterror]`, `panic_with_error!`) and how errors surface to callers: no case in this list",
+    "SEP-48 contract spec and interface discovery (`stellar contract info interface`): no case",
+    "Debugging contracts (`log!`, diagnostic events, simulation errors): only indirect coverage",
+    "Contract administration and initialization safety (admin roles, front-running a separate `initialize`): partly in constructor-lifecycle, no dedicated case",
+    "Soroban randomness and time (`Env::prng`, ledger timestamp) caveats: dropped from q-soroban-no-std-constraints, tested nowhere in this list",
+    "Stellar Asset Contract versus custom token choice for new tokens: only touched by token-transfer-pattern and oz-token"
+  ]
+}

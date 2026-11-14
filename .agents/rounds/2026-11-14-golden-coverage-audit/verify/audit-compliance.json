@@ -1,0 +1,649 @@
+{
+  "lane": "verify-audit-compliance",
+  "decisions": [
+    {
+      "id": "q-agent-identity-erc8004-stellar",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite keeps the three durable facts (registries, signals not proof, community port). Note: the defi lane also keeps q-defi-agent-identity-stellar-experimental as 'tighten', so the duplicate the auditor named is unresolved; the reconciler must pick one.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-agent-payment-standard-choice",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "Its distinct content is the x402/MPP/AP2/ACP comparison and an adapter design pattern. q-defi-agentic-payment-standards-compare (defi: tighten, survives) owns the four-protocol comparison and q-mpp-discovery-and-modes owns x402-versus-MPP; the adapter advice is design guidance, not Stellar truth. Tombstone replacements: both IDs.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-cctp-v2-usdc-stellar",
+      "auditVerdict": "tighten",
+      "decision": "amend",
+      "finalVerdict": "tighten",
+      "why": "The 'changed' rot is a dead source URL, not a changed fact; facts hold. But hist-retail merges q-hist-cctp-stellar-live-announcement into this case, and the rewrite moves the 2026-05-19 announcement date to truth and leaves no dated launch key fact, so the merged knowledge is lost. The dated fee figures as a key fact also fail the 'accept a later dated figure' rule, and the question's 'which fee claims must be checked live' is no longer graded.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://developers.circle.com/release-notes/cctp-2026.md",
+          "observedAt": "2026-11-14",
+          "quote": "**2026.05.18** ... Added support for Stellar mainnet."
+        },
+        {
+          "class": "A",
+          "ref": "https://stellar.org/blog/foundation-news/circle-cctp-is-live-on-stellar",
+          "observedAt": "2026-11-14",
+          "quote": "Publishing date <time dateTime=\"2026-05-19T14:00:00.000Z\"> ... Circle CCTP (Cross-Chain Transfer Protocol) is live"
+        },
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/tokens/cross-chain-transfers.md",
+          "observedAt": "2026-11-14",
+          "quote": "Stellar's CCTP domain is `27`. ... Stellar USDC has 7 decimals, while CCTP messages use 6."
+        },
+        {
+          "class": "A",
+          "ref": "https://developers.circle.com/cctp/references/stellar.md",
+          "observedAt": "2026-11-14",
+          "quote": "Set both `mintRecipient` and `destinationCaller` to the `CctpForwarder`"
+        },
+        {
+          "class": "F",
+          "ref": "https://iris-api.circle.com/v2/burn/USDC/fees/0/27",
+          "observedAt": "2026-11-14",
+          "quote": "[{\"finalityThreshold\":1000,\"minimumFee\":1},{\"finalityThreshold\":2000,\"minimumFee\":0}]"
+        }
+      ],
+      "finalRewrite": {
+        "question": null,
+        "answer": "Circle added Stellar mainnet CCTP support on 2026-05-18, and SDF and Circle announced it live on 2026-05-19; Stellar is CCTP domain 27. CCTP burns native USDC on the source chain and mints native USDC on the destination, with no wrapped token. Stellar G, M or C recipients are reached through CctpForwarder, and Stellar USDC's seventh decimal stays on Stellar because CCTP messages use 6. Fees are live values: as of 2026-11-14 Circle's fee API showed Fast/Standard 0/0 for 27→0 and 1 bp/0 for 0→27.",
+        "keyFacts": [
+          "Circle added Stellar mainnet support on 2026-05-18; SDF and Circle announced it live on 2026-05-19.",
+          "CCTP burns native USDC on the source chain and mints native USDC on the destination.",
+          "Stellar recipients go through CctpForwarder; CCTP's 6 decimals leave the seventh on Stellar.",
+          "Fees are dated live values from Circle's fee API, not fixed."
+        ],
+        "avoid": [
+          "Do NOT say CCTP locks USDC and issues a wrapped Stellar token.",
+          "Do NOT present CCTP fees as permanent or the transfer as exactly 1:1 after all costs."
+        ],
+        "notes": "Accept either milestone date when it is labeled (technical support 2026-05-18, public announcement 2026-05-19). Fee figures are dated observations; accept a later dated figure from Circle's fee API.",
+        "movedToTruth": [
+          "unrecovered 2026-02-24 launch-date provenance",
+          "2026-07-11 and 2026-11-14 fee observations",
+          "Circle, network, relayer, integrator and swap charges as separate costs",
+          "replace the dead fees-and-finality source URL"
+        ]
+      }
+    },
+    {
+      "id": "q-comp-anchor-compliance-stack",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite keeps the capability-driven order, account-scoped SEP-10/SEP-45, SEP-12 as KYC, and SEP-8's Required plus Revocable. Legal-duty scoping is owned by q-pay-anchor-msb-licensing, so moving it out drops nothing the battery needs.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-comp-auth-flags-overview",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Same four flags and semantics; the clawback-requires-revocable precondition is kept in a key fact. Nothing correct is weakened.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-comp-clawback-cap0035",
+      "auditVerdict": "tighten",
+      "decision": "amend",
+      "finalVerdict": "tighten",
+      "why": "Rewrite correctly absorbs the holder-risk case. One precision loss: clawback of a claimable balance takes the whole balance, not 'a specified amount', which the current golden states. Corrected wording below; avoid items in corpus form.",
+      "evidence": [],
+      "finalRewrite": {
+        "question": null,
+        "answer": "Clawback (CAP-0035, Protocol 17) lets an issuer burn a specified amount of its asset from a holder's clawback-enabled trustline, or an entire clawback-enabled claimable balance, without the holder's cooperation; the amount is burned, not returned. The issuer must set AUTH_REVOCABLE, then AUTH_CLAWBACK_ENABLED, before trustlines are created. It is an intentional, issuer-only regulatory tool, not a vulnerability, so holders carry issuer counterparty risk; XLM and unflagged assets are unaffected.",
+        "keyFacts": [
+          "An issuer can burn a set amount from a clawback-enabled trustline without holder consent.",
+          "CAP-0035 introduced clawback in Protocol 17.",
+          "Clawback needs AUTH_REVOCABLE and AUTH_CLAWBACK_ENABLED set before trustlines are created.",
+          "It is intentional and issuer-only, so holders bear issuer risk; it is not a vulnerability."
+        ],
+        "avoid": [
+          "Do NOT attribute clawback to another protocol or CAP, or to Soroban.",
+          "Do NOT claim clawed-back assets return to the issuer, that any account can claw back, or that XLM is clawbackable."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "~2021-06-01 activation date (not re-verified)",
+          "Clawback and Clawback Claimable Balance operation names",
+          "WisdomTree-style example",
+          "also-good-if items"
+        ]
+      }
+    },
+    {
+      "id": "q-comp-clawback-holder-risk",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "Same facts as q-comp-clawback-cap0035 framed as holder risk. The survivor's rewrite carries 'intentional, issuer-only, not a vulnerability, holders bear issuer risk, XLM unaffected', so nothing that matters is lost.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-comp-cross-bitso-sep31",
+      "auditVerdict": "retire",
+      "decision": "amend",
+      "finalVerdict": "retire",
+      "why": "Retire holds: SEP-31 versus SEP-24 is owned by q-sep6-sep24-sep31-choice, and Bitso's directory role is an entity detail that anchor discovery (q-anchor-list-builders-discovery) already exercises. The purpose label is wrong: the case asks a world question (Bitso's role, SEP-31 vs SEP-24), so it is 'mixed', not 'raven-mechanics'. Drop q-sep-31-cross-border from the replacement IDs (assets merges it into q-sep6-sep24-sep31-choice).",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-comp-cross-moneygram-partnership-sep24",
+      "auditVerdict": "retire",
+      "decision": "amend",
+      "finalVerdict": "retire",
+      "why": "Retire holds: MoneyGram's Stellar role and SEP-24 path are owned by q-pay-moneygram-ramps; the dated April 2026 partnership-extension event is unverified by the auditor and a single vendor news item. Purpose is 'mixed' (a world question composed across sources), not 'raven-mechanics'.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-comp-finclusive-caas",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "Travel Rule versus KYC is owned by q-pay-travel-rule-aid-flows and licensing-by-actor by q-pay-anchor-msb-licensing. FinClusive is a single-vendor detail whose golden is mostly negative guards; no topic visibility is lost.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-comp-sac-inherits-flags",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite keeps the G-trustline versus C-ContractData split and the initial-versus-delegated admin distinction the 2026-07-10 correction requires.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-comp-security-disclosure-programs",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "The 'changed' rot on the OpenZeppelin bounty is ordinary drift (its last-updated date moved); the program is still live and separate, so record it as 'holds'. Rewrite keeps the three-part map; the incident paragraph belongs to q-comp-yieldblox-oracle-incident.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://hackerone.com/stellar",
+          "observedAt": "2026-11-14",
+          "quote": "Effective 7 MAY 2026, SDF has consolidated its bug bounty programs into this single HackerOne program."
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-comp-sep6-vs-sep12-roles",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "The SEP-6 versus SEP-12 role split is one step of q-comp-anchor-compliance-stack, whose rewrite keeps 'SEP-12 carries customer KYC; SEP-6 and SEP-24 are the flows' and the conditional-auth guard. q-sep-12-kyc (assets: tighten) also survives.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-comp-sep8-number-lookup-no-deepresearch",
+      "auditVerdict": "retire",
+      "decision": "accept",
+      "finalVerdict": "retire",
+      "why": "SEP-8's identity is carried by q-comp-sep8-regulated-assets-approval-server, and the paid-bait proportionality behavior stays covered by q-edge-exhaustive-defi-deep-report (edge: tighten). Score-independent duplicate.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-comp-sep8-regulated-assets-approval-server",
+      "auditVerdict": "tighten",
+      "decision": "amend",
+      "finalVerdict": "tighten",
+      "why": "Rewrite is accurate, but q-sep-8-regulated-assets (assets) merges into this case and its question is specifically 'what does SEP-8 require in stellar.toml'. The rewrite moves the stellar.toml fields to truth, so the merged knowledge is lost. Restore one key fact for them.",
+      "evidence": [],
+      "finalRewrite": {
+        "question": null,
+        "answer": "SEP-8 lets an issuer require approval of each transaction for a classic regulated asset. The issuer sets Authorization Required and Revocable (clawback is optional) and publishes regulated, approval_server and approval_criteria in stellar.toml. The wallet posts its signed transaction to the approval server, which returns success, revised, pending, action_required or rejected. The wallet re-signs revisions and submits; the server does not. No Soroban is needed.",
+        "keyFacts": [
+          "SEP-8 lets an issuer require approval-server sign-off on each regulated-asset transaction.",
+          "The issuer sets Authorization Required and Revocable (clawback optional) and declares regulated and approval_server in stellar.toml.",
+          "The wallet posts its signed transaction, and inspects and re-signs any revised one.",
+          "The wallet, not the approval server, submits the final transaction; Soroban is not needed."
+        ],
+        "avoid": [
+          "Do NOT call SEP-8 a KYC or authentication standard.",
+          "Do NOT substitute AUTH_CLAWBACK_ENABLED for the required AUTH_REVOCABLE.",
+          "Do NOT say the approval server submits the transaction."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "approval_criteria field detail",
+          "five-status list as a spec detail",
+          "2026-07-10 correction history",
+          "WisdomTree-style also-good-if item"
+        ]
+      }
+    },
+    {
+      "id": "q-comp-yieldblox-oracle-incident",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite keeps date, vector, approximate quantities, source-specific dollar loss, quarantine-is-not-recovery, and the no-protocol-compromise guard; the design-lessons key fact is drawn from the current answer. Exact figures belong in truth.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-crp-anchors-by-corridor",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "Cost drivers and integrate-first move into q-crp-remittance-founder-advisory and build-your-own into q-crp-become-an-anchor-licensing; both rewrites carry them. The corridor-discovery half is a directory question owned by q-anchor-list-builders-discovery (assets: tighten); add it to the replacement IDs. The MoneyGram 174-versus-200+ trap remains in q-pay-moneygram-ramps.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-crp-become-an-anchor-licensing",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite keeps the three workstreams, conditional SEPs, Anchor Platform is not a licence, classification by entity/activity/jurisdiction, and settlement capacity with prefunding as one option.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-crp-cme-xlm-futures-dates",
+      "auditVerdict": "keep",
+      "decision": "accept",
+      "finalVerdict": "keep",
+      "why": "The only keep record (sampled). Compact (three single-predicate facts) and current; dates and sizes re-read from CME primary pages.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://www.cmegroup.com/media-room/press-releases/2026/1/15/cme_group_to_expandcryptoderivativessuitewithlaunchofcardanochai.html",
+          "observedAt": "2026-11-14",
+          "quote": "Lumens futures (250,000 Lumens) and Micro Lumens futures (12,500 Lumens)"
+        },
+        {
+          "class": "A",
+          "ref": "https://www.cmegroup.com/content/dam/cmegroup/notices/clearing/2026/01/chadv26-023r.pdf",
+          "observedAt": "2026-11-14",
+          "quote": "Trade Date Monday, February 9, 2026"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-crp-custodial-vs-noncustodial-wallets",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "Custody scope is carried by q-pay-anchor-msb-licensing ('custodial operators can be in scope; non-custodial software alone generally not'), and the custody classification of wallets by q-tool-wallets-comparison (tooling-b, not yet audited; reconciler should confirm it survives). The SEP-31 custody-to-auth mapping is a niche composition.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-crp-dtcc-stellar-connection-plan",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "q-rwa-projects-tokenizing-stellar's rewrite keeps the 2026-05-27 announcement, the 1H27 Stellar target and 'live only on Canton and private Besu', which is everything this case grades.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-crp-export-tx-history-taxes",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "The question rewrite drops the volatile tax-tool half, which is vendor detail rather than Stellar truth. Retention-aware source choice, Hubble for all-time history, getTransactions as a ledger range, and full-scope export are kept.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-crp-oz-rwa-erc3643-trex",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite keeps Draft status, normative core versus appendix versus library, and compliance-is-external. The as-of date is backed by a same-day read.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0057.md",
+          "observedAt": "2026-11-14",
+          "quote": "Title: T-REX (Token for Regulated EXchanges) ... Status: Draft ... Updated: 2026-09-08 Version: 0.4.0"
+        }
+      ],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-crp-partner-detail-after-discovery",
+      "auditVerdict": "retire",
+      "decision": "amend",
+      "finalVerdict": "move-tool-lane",
+      "why": "Pure Raven mechanics (getPartner by exact slug), so it leaves the headline. But its named survivor q-edge-partner-detail-soft-empty is also retired by the edge lane, and these are the only two battery cases whose surface is scout.getPartner. Retiring both drops the operation entirely; move this one to the tool-contract lane instead.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-crp-regional-offramp-mobilemoney",
+      "auditVerdict": "tighten",
+      "decision": "amend",
+      "finalVerdict": "tighten",
+      "why": "The question asks 'which wallets or anchors', a directory question, but the rewrite's answer and key facts name no provider and never require one. An answer could name none and pass. Add a key fact that requires dated, sourced candidates without pinning a roster.",
+      "evidence": [],
+      "finalRewrite": {
+        "question": null,
+        "answer": "Stellar itself has no bank, card or mobile-money payout rail. Anchors, wallets, payment processors and local partners provide them, usually behind a SEP-24 or SEP-6 withdrawal (SEP-31 for cross-border). A directory listing is a candidate, not proof of a supported corridor, so check each provider's assets, countries, KYC, fees, limits and settlement times from dated sources.",
+        "keyFacts": [
+          "Stellar has no bank, card or mobile-money payout rail of its own.",
+          "Payout rails come from anchors, wallets or processors, behind SEP-24/6 or SEP-31.",
+          "Names candidate providers from a dated source and labels them candidates, not confirmed corridors.",
+          "Checks each provider's assets, countries, KYC, fees and limits before integrating."
+        ],
+        "avoid": [
+          "Do NOT claim a mobile-money corridor is supported without current provider evidence.",
+          "Do NOT imply Stellar pushes funds to bank or mobile-money rails without an off-chain partner."
+        ],
+        "notes": "A dated, sourced candidate provider is not wrong; presenting it as a confirmed Stellar corridor without evidence is.",
+        "movedToTruth": [
+          "2026-11-02 Lumenloop 'mobile money' roster (Blink, Bloccpay, ElementPay, Joona Pay, PeerPesa, Wave)",
+          "HoneyCoin supported-chain finding",
+          "failed-payout remediation and consumer-versus-builder also-good-if items",
+          "2026-06-29 history"
+        ]
+      }
+    },
+    {
+      "id": "q-crp-remittance-founder-advisory",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite keeps settlement-layer framing, the corridor components, per-corridor stablecoin choice, and integrate-first. The SEP rail list was a should-have and is now a key fact, but the question asks 'which SEP rails', so this is in scope and true.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-crp-sdp-operation",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "The question rewrite folds in the merged 'what is SDP' case. Key facts keep native SEP-10/24 without Anchor Platform, the three recipient models, and M-address rejection (re-read today by the auditor).",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-crp-tokenize-personal-rwa",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "q-rwa-tokenization-standards' rewrite absorbs 'minting creates no ownership rights' and 'flags or code create no legal compliance; take counsel', the case's two durable points. SPV/trust options are rightly moved to truth.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-mpp-discovery-and-modes",
+      "auditVerdict": "tighten",
+      "decision": "amend",
+      "finalVerdict": "tighten",
+      "why": "Rewrite is accurate, but key fact 3 adds 'choose by settlement model', which comes from the merged case and answers a question this case does not ask. Keep the distinct-protocols fact only.",
+      "evidence": [],
+      "finalRewrite": {
+        "question": null,
+        "answer": "MPP is an HTTP-402 payment protocol. On Stellar, Charge settles a SAC transfer per request on-chain, and Session uses a funded channel with cumulative off-chain commitments. An API advertises payment through an OpenAPI 3.1 document with x-payment-info.offers, but the runtime 402 challenge is authoritative for price, token, network and expiry. MPP and x402 both use HTTP 402 with different payloads and headers; never relabel one as the other.",
+        "keyFacts": [
+          "MPP Charge settles a SAC transfer per request; Session uses a funded off-chain channel.",
+          "APIs advertise MPP via OpenAPI x-payment-info; the runtime 402 challenge is authoritative.",
+          "x402 and MPP both use HTTP 402 but are distinct protocols with distinct payloads."
+        ],
+        "avoid": [
+          "Do NOT claim MPP Session needs a new on-chain transfer for every call.",
+          "Do NOT claim an MPP directory listing verifies client payments, or relabel one protocol's payload as the other's."
+        ],
+        "notes": "A single mppx endpoint serving both protocols, or separate adapters, is acceptable (mpp.dev, as of 2026-11-14).",
+        "movedToTruth": [
+          "MPPScan, mpp.dev registry and https://mpp.dev/mcp/services names",
+          "AP2 and ACP positioning from q-agent-payment-standard-choice",
+          "2026-11-02 mpp-vs-x402 observation"
+        ]
+      }
+    },
+    {
+      "id": "q-pay-anchor-msb-licensing",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite keeps the classification framework, the registration-versus-licensing split, and the custody scope that absorbs the custodial-wallet case.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-pay-moneygram-ramps",
+      "auditVerdict": "tighten",
+      "decision": "amend",
+      "finalVerdict": "tighten",
+      "why": "Values re-read live today and unchanged. But key fact 3 pins the 950/2,500 maximums in a live case, against the 'accept a later dated figure' rule. The question asks for the limits, so require dated, direction-specific limits and keep today's values as the example.",
+      "evidence": [
+        {
+          "class": "F",
+          "ref": "https://mgxanchor.moneygram.com/stellarsepservice/sep24/info",
+          "observedAt": "2026-11-14",
+          "quote": "\"deposit\":{\"USDC\":{\"enabled\":true,\"min_amount\":15,\"max_amount\":950}},\"withdraw\":{\"USDC\":{\"enabled\":true,\"min_amount\":15,\"max_amount\":2500}}"
+        },
+        {
+          "class": "F",
+          "ref": "https://stellar.moneygram.com/stellaradapterservice/sep24/info",
+          "observedAt": "2026-11-14",
+          "quote": "\"min_amount\":1,\"max_amount\":950 ... \"withdraw\":{\"USDC\":{...\"min_amount\":1,\"max_amount\":2500}}"
+        }
+      ],
+      "finalRewrite": {
+        "question": null,
+        "answer": "As of 2026-11-14, MoneyGram Ramps moves Stellar USDC between supported wallets and MoneyGram cash locations. New partners are directed to a widget SDK plus API keys; legacy whitelist anchors use SEP-10 authentication and SEP-24. Published maximums are 950 USDC cash-in and 2,500 USDC cash-out; the minimum is 15 USDC at the production anchor but 1 USDC at an older endpoint, so attribute it. Country coverage is surface- and direction-specific.",
+        "keyFacts": [
+          "MoneyGram Ramps moves Stellar USDC between wallets and MoneyGram cash locations.",
+          "New partners use a widget SDK and API keys; legacy partners use SEP-10 and SEP-24.",
+          "Gives dated, attributed limits with separate cash-in and cash-out maximums.",
+          "Country coverage varies by source, date and direction; do not pin one global count."
+        ],
+        "avoid": [
+          "Do NOT use the off-ramp maximum as the on-ramp maximum.",
+          "Do NOT pin 174, 180+ or 200+ as one bidirectional Stellar cash-coverage count.",
+          "Do NOT conflate MoneyGram Ramps with SDP."
+        ],
+        "notes": "As of 2026-11-14: 950 USDC cash-in and 2,500 USDC cash-out maximums; minimum 15 USDC at mgxanchor.moneygram.com and 1 USDC at stellar.moneygram.com. Accept a later dated, attributed MoneyGram figure, either integration path when dated, and either minimum when attributed.",
+        "movedToTruth": [
+          "Legacy guide version and host-by-host /info observations",
+          "the 2026-11-02 correction and sibling caution",
+          "174 / 170+ / 180+ / 200+ provenance"
+        ]
+      }
+    },
+    {
+      "id": "q-pay-sdp-disbursement",
+      "auditVerdict": "merge",
+      "decision": "accept",
+      "finalVerdict": "merge",
+      "why": "'What SDP is' is the first half of q-crp-sdp-operation's rewritten question, which keeps Dashboard/Core/TSS, native SEP-10/24 without Anchor Platform, and the optional-MoneyGram note.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-pay-travel-rule-aid-flows",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite keeps duty allocation by intermediary and route, the distinct duties, and the three route types; thresholds stay as optional detail.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-rwa-projects-tokenizing-stellar",
+      "auditVerdict": "tighten",
+      "decision": "amend",
+      "finalVerdict": "tighten",
+      "why": "Rewrite correctly absorbs the DTCC case. But key fact 1 lists four named issuers in a live case, so a judge may demand all four, while the note says any dated issuer is acceptable. Key facts must accept any correct dated roster.",
+      "evidence": [],
+      "finalRewrite": {
+        "question": null,
+        "answer": "As of 2026-11-14, issuer sources show products live on Stellar from Franklin Templeton (BENJI), WisdomTree, Ondo (USDY) and Figure (YLDS), among others. DTCC announced on 2026-05-27 a Stellar connection expected in 1H27; its tokenization service is live only on Canton and a private Besu network, so DTCC on Stellar is planned, not live. Directory presence is not proof of a live Stellar product, and control models differ.",
+        "keyFacts": [
+          "Names dated, issuer-sourced RWA products live on Stellar (for example BENJI, WisdomTree, Ondo USDY or Figure YLDS).",
+          "DTCC's Stellar link is planned for 1H27; its service is live only on other networks.",
+          "Directory presence or Live status does not prove a live Stellar-issued product."
+        ],
+        "avoid": [
+          "Do NOT put planned DTCC Stellar work in the live bucket.",
+          "Do NOT claim every RWA product uses SEP-8 or one control model, or freeze AUM or roster counts without dated evidence."
+        ],
+        "notes": "Accept any dated, primary-sourced issuer; a complete roster is not required.",
+        "movedToTruth": [
+          "Scout RWA-filter counts (101: 84/12/5) as of 2026-11-02",
+          "Franklin Templeton AUM and Figure YLDS dates",
+          "DTCC 2026-10-28 service launch",
+          "Etherfuse stablebonds source",
+          "2026-06-29 and 2026-07-10 history"
+        ]
+      }
+    },
+    {
+      "id": "q-rwa-stellar-vs-erc20-regulated",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite keeps layer separation (ledger-native flags, off-chain SEP-8, SAC, Draft SEP-57) and the ERC-20 versus ERC-3643 split.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-rwa-tokenization-standards",
+      "auditVerdict": "tighten",
+      "decision": "amend",
+      "finalVerdict": "tighten",
+      "why": "The 'changed' rot is mislabelled: SEP-41 is still the Soroban token interface; the golden simply never stated its Draft status. Adding '(Draft)' is true per the SEP preamble but is a new, volatile status claim with only one source class, and the question does not ask for it. Drop it; the rest of the rewrite (legal claim first, controls create no compliance, SEP-56 not attestation) holds.",
+      "evidence": [
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
+          "observedAt": "2026-11-14",
+          "quote": "Title: Soroban Token Interface ... Status: Draft ... Updated: 2026-08-24 Version 0.5.2"
+        },
+        {
+          "class": "B",
+          "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0056.md",
+          "observedAt": "2026-11-14",
+          "quote": "Title: Tokenized Vault Standard ... Status: Draft ... Version: 0.1.2"
+        }
+      ],
+      "finalRewrite": {
+        "question": null,
+        "answer": "Start with the legal claim, custody and redemption: a token creates no title or redemption rights by itself, and Stellar controls enforce policy rather than create legal compliance, so take counsel. A classic asset can use authorization-required, revocable and clawback controls; a Soroban token can encode richer policy. SEP-41 is the contract-token interface; SEP-56 is a Draft tokenized-vault interface, not an attestation standard. Use SEP-6/24/31 only for fiat or cross-border flows.",
+        "keyFacts": [
+          "Start with the legal claim, custody and redemption; minting creates no ownership rights.",
+          "Classic flags or Soroban code can restrict transfers but create no legal compliance.",
+          "SEP-41 is the contract-token interface; SEP-56 is a Draft tokenized-vault standard.",
+          "SEP-56 does not attest that an off-chain asset exists or is reserved."
+        ],
+        "avoid": [
+          "Do NOT claim SEP-56 proves that an off-chain asset exists and is fully reserved.",
+          "Do NOT claim issuing a token removes the need for custody, redemption and securities-law analysis, or give definitive legal advice."
+        ],
+        "notes": "Standards statuses are volatile; grade later dated, sourced changes leniently.",
+        "movedToTruth": [
+          "SEP-41 Draft v0.5.2 and SEP-56 v0.1.2 versions",
+          "SEC staff statement (nonbinding) and BENJI as one transfer-agent model",
+          "SPV and trust options from q-crp-tokenize-personal-rwa",
+          "as-of 2026-11-02"
+        ]
+      }
+    },
+    {
+      "id": "q-smart-wallet-fee-sponsorship",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite keeps C-address SAC balance without trustline reserve, fee bump versus reserve sponsorship, and costs-shift-not-vanish. No new claims.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-stellar-recurring-payments",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite keeps every graded fact; 'no native recurring-payment operation' restates the current avoid item positively and is the protocol's operation set.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-tw-escrow-api-auth-custody",
+      "auditVerdict": "tighten",
+      "decision": "accept",
+      "finalVerdict": "tighten",
+      "why": "Rewrite keeps x-api-key as valid without exclusivity, unsigned XDR, local signing, and the API never signs. Auth rot re-read today.",
+      "evidence": [],
+      "finalRewrite": null
+    },
+    {
+      "id": "q-x402-payment-verification",
+      "auditVerdict": "tighten",
+      "decision": "amend",
+      "finalVerdict": "tighten",
+      "why": "Key fact 4 pins a dated facilitator roster (scheduled case) and garbles it: the Built on Stellar/OpenZeppelin facilitator serves testnet and mainnet, not mainnet only. Require a dated facilitator option instead of a fixed roster.",
+      "evidence": [
+        {
+          "class": "A",
+          "ref": "https://developers.stellar.org/docs/build/agentic-payments/x402.md",
+          "observedAt": "2026-11-14",
+          "quote": "Coinbase's x402 facilitator supports Stellar on **Testnet** ... This x402 facilitator service is available on Testnet and Mainnet."
+        }
+      ],
+      "finalRewrite": {
+        "question": null,
+        "answer": "In Stellar's x402 scheme the client signs a Soroban authorization entry for an exact SAC transfer and a facilitator or relayer submits it, so it is not necessarily a classic payment operation. Before fulfilling, verify network, amount, expiry, simulation, final settlement and replay binding. A Horizon operation-list match is insufficient for an inner transfer; audit transaction meta and events. As of 2026-11-14 Stellar docs list Coinbase's facilitator (testnet) and Built on Stellar's OpenZeppelin Relayer facilitator (testnet and mainnet); none is mandatory.",
+        "keyFacts": [
+          "The client signs a Soroban auth entry for an exact SAC transfer; a facilitator submits it.",
+          "Verify network, amount, expiry, settlement and replay binding before fulfilling.",
+          "Audit inner SAC transfers from transaction meta and events, not Horizon operations.",
+          "Names a dated facilitator option; none is mandatory."
+        ],
+        "avoid": [
+          "Do NOT treat possession of any Stellar transaction hash as proof of the required x402 payment.",
+          "Do NOT treat checking only the asset code and amount as sufficient verification."
+        ],
+        "notes": "Facilitator availability is status-sensitive; grade later dated, sourced changes leniently.",
+        "movedToTruth": [
+          "OpenZeppelin relayer-plugin and x402.org/facilitator/supported sources",
+          "full check list (scheme, CAIP network, token contract, parties, exact invocation shape)",
+          "community facilitators"
+        ]
+      }
+    }
+  ],
+  "summary": {
+    "accept": 28,
+    "amend": 12,
+    "reject": 0
+  },
+  "patterns": [
+    "Sample rule: every fifth keep record by position among keeps, starting with the first; compliance has one keep, which was checked. All 13 retire/merge/move records, all 26 tighten rewrites, and all 3 'changed' rot results were checked.",
+    "'changed' is misused for drift and for source-URL rot: a dead fee page (CCTP), a moved last-updated date (OpenZeppelin bounty) and a status the golden never stated (SEP-41) were all marked 'changed' while the fact held. Re-label them 'holds'.",
+    "Merge survivors' rewrites move the merged case's distinctive fact into truth: the CCTP announcement date (merged q-hist-cctp-stellar-live-announcement) and SEP-8's stellar.toml fields (merged q-sep-8-regulated-assets). Check every survivor rewrite against each absorbed case's question.",
+    "Live and scheduled rewrites put dated values or named rosters into key facts (MoneyGram limits, RWA issuers, x402 facilitators); key facts must accept a later dated figure or any correct roster.",
+    "Raven-mechanics label applied to composed world questions (Bitso role + SEP-31, MoneyGram role + SEP-24). The retires still hold on duplication grounds, but the purpose field is wrong.",
+    "Operation coverage: both scout.getPartner cases are retired across lanes (this one and q-edge-partner-detail-soft-empty); one must survive in the tool lane or the floors must change.",
+    "Unresolved cross-lane duplicate where both sides survive: q-agent-identity-erc8004-stellar (compliance) and q-defi-agent-identity-stellar-experimental (defi) each claim to be the ERC-8004 survivor.",
+    "Avoid items in rewrites drop the 'Do NOT ...' corpus form throughout; amended rewrites here restore it, the orchestrator should restore it everywhere."
+  ]
+}
