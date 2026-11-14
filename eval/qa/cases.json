@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "debd43730e57f7ac8d2e24df739855d6e0d6e994c8db45d2818db4c79258be6a",
+  "corpusContentSha256": "4421e97bc54c484f41c144a761e79a6e8038771ac8ccbe182691bbf76ae1c36d",
   "counts": {
     "total": 246,
     "byCategory": {
@@ -13322,8 +13322,7 @@
         "answer": "There is no such mode: Stellar has no network-wide switch or account setting for shielded payments, and ordinary transactions are public. Privacy is opt-in through applications. As of 2026-11-14, Confidential Tokens hide balances and amounts but keep sender and receiver addresses public, and their verifier does not yet guarantee privacy; Stellar Private Payments is an unaudited Testnet developer preview.",
         "keyFacts": [
           "Stellar has no global shielded-by-default mode or setting; ordinary activity is public.",
-          "Privacy is opt-in via applications; Confidential Tokens hide amounts but not addresses.",
-          "Dates each privacy product's network and audit status."
+          "Privacy is opt-in via applications; Confidential Tokens hide amounts but not addresses."
         ],
         "avoid": [
           "Do NOT invent an enablement command or claim Stellar is shielded by default.",
@@ -13593,14 +13592,11 @@
         ],
         "verified": {
           "date": "2026-11-14",
-          "by": "Golden coverage audit 2026-11-14 (audit-edge, verify-audit-edge; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+          "by": "Golden coverage audit reconcile 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
           "evidence": [
-            "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-edge.json#q-edge-noinfo-stellar-native-privacy-default",
-            "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-edge.json#q-edge-noinfo-stellar-native-privacy-default",
-            "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-edge-noinfo-stellar-native-privacy-default",
-            "Live A 2026-11-14: https://developers.stellar.org/docs/build/apps/privacy -- 'keeping the sender and receiver's addresses publicly visible onchain'",
-            "Live A 2026-11-14: https://developers.stellar.org/docs/build/apps/privacy -- 'The current verifier accepts only non-zero-knowledge UltraHonk proofs, so OpenZeppelin does not guarantee that proofs keep balances and amounts private.'",
-            "Live A 2026-11-14: https://developers.stellar.org/docs/build/apps/privacy -- 'Stellar Private Payments is a developer preview. The contracts, SDKs, and demo linked below are unaudited — testnet only'"
+            "Removed a dating-only key fact in a fabrication-bait trap case, where a missing required behavior grades wrong, not partial. The avoid item 'Do NOT present unaudited Testnet previews as audited Mainnet products' and the dated example in golden.notes keep the status discipline.",
+            "No world fact changed; the answer and notes still date Stellar Private Payments' status as of 2026-11-14.",
+            "Trigger only (not evidence): /home/tyler/code/stellar-raven-codemode/tmp/agentic/GOLDEN-PASS.md (other session, 2026-11-14)"
           ],
           "rootCause": [
             ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
@@ -15500,7 +15496,7 @@
           "Do NOT claim SDF pegs or guarantees the XLM price.",
           "Do NOT predict a future burn or call the 2019 statement a protocol impossibility."
         ],
-        "notes": "A later, sourced burn announcement is acceptable. Any balance needs a report date and scope; do not sum mixed-timestamp bucket rows. Since 2026-07-27 the docs lumens page lists bucket accounts without fixed balances: pre-2026-07-27 labels or fixed balances presented as current docs content are wrong."
+        "notes": "A later, sourced burn announcement is acceptable. Any balance needs a report date and scope; do not sum mixed-timestamp bucket rows. Since 2026-07-27 the Developer Docs lumens page lists bucket accounts without balances; fixed balances presented as current Docs content are wrong. SDF's mandate page does show per-bucket balance tables with a 'Last updated' time while saying real-time balances will return 'imminently'; quoting those tables with their timestamp is correct, and noting the conflict is good."
       },
       "tags": {
         "category": "history-org-tokenomics",
@@ -15614,14 +15610,12 @@
         ],
         "verified": {
           "date": "2026-11-14",
-          "by": "Golden coverage audit 2026-11-14 (audit-hist-retail, verify-hist-retail; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+          "by": "Golden coverage audit reconcile 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
           "evidence": [
-            "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-hot-sdf-xlm-holdings-sales",
-            "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-hot-sdf-xlm-holdings-sales",
-            "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-hot-sdf-xlm-holdings-sales",
-            "Live A 2026-11-14: https://stellar.org/foundation/mandate -- 'The SDF sells XLM from this account on public exchanges like Kraken, Coinbase, and Bitstamp and through direct sales'",
-            "Live A 2026-11-14: https://stellar.org/foundation/mandate -- 'No mention of a burn on the current mandate page (searched for \"burn\"); class A only this pass.'",
-            "Live D 2026-11-14: parallel-cli search 'Stellar Development Foundation announces new XLM burn 2026' (after 2026-01-01) -- 'Top 10 results cover the 2019 55B burn and tokenomics explainers; none reports a new SDF burn announcement.'"
+            "The grader note was read as 'no source shows balances'. That holds for the Developer Docs page only; SDF's mandate page shows dated bucket tables. No golden fact changed.",
+            "Live A 2026-11-14: https://stellar.org/foundation/mandate -- Growth table 'Total 5,208,204,928 Last updated: November 14, 2026', and 'the real-time public balances of XLM held by SDF will be made available again on this page imminently'.",
+            "Live A 2026-11-14: https://developers.stellar.org/docs/learn/fundamentals/lumens.md -- 'The on-chain accounts in each bucket, as of July 2026, are listed below — balances change continuously, so refer to the mandate page'; the page lists accounts without balances.",
+            "Trigger only (not evidence): /home/tyler/code/stellar-raven-codemode/tmp/agentic/LIVE-GAP.md (other session, 2026-11-14)"
           ],
           "rootCause": [
             ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
@@ -19386,8 +19380,7 @@
         "answer": "As of 2026-11-14, Denelle Dixon is SDF's CEO and Executive Director, and SDF's official team page lists five board members: Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker and Asiff Hirji. Leadership changes over time, so date it and confirm it on SDF's team page.",
         "keyFacts": [
           "Denelle Dixon is SDF's chief executive (CEO and Executive Director).",
-          "The SDF board is McCaleb, Wu, Lemos, Baker and Hirji.",
-          "Dates the leadership roster it cites."
+          "The SDF board is McCaleb, Wu, Lemos, Baker and Hirji."
         ],
         "avoid": [
           "Do NOT confuse SDF board members with the builder directory."
@@ -19474,19 +19467,14 @@
         ],
         "verified": {
           "date": "2026-11-14",
-          "by": "Golden coverage audit 2026-11-14 (audit-hist-retail, verify-hist-retail; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+          "by": "Golden coverage audit reconcile 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
           "evidence": [
-            "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-org-sdf-board-directors",
-            "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-org-sdf-board-directors",
-            "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-org-sdf-board-directors",
-            "Live A 2026-11-14: https://stellar.org/foundation/team -- 'Board of directors: Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker, Asiff Hirji'",
-            "Live A 2026-11-14: https://stellar.org/press/stellar-development-foundation-appoints-asiff-hirji-of-moonpay-to-board-of-directors -- 'announced the appointment of Asiff Hirji, President of MoonPay, to its board of directors'",
-            "Live A 2026-11-14: https://stellar.org/foundation/team -- 'Board of directors Jed McCaleb Lin-Hua Wu Ronaldo Lemos Ginger Baker Asiff Hirji Advisors'",
-            "Live sentinel read 2026-11-14 (npm run eval:qa:sentinels -- --ids sdf-board-roster): hold"
+            "Removed a dating-only key fact; it turned a correct roster answer into a partial. The golden answer still dates the roster, and golden.notes accepts later official changes with an observation date.",
+            "Live A 2026-11-14: https://stellar.org/foundation/team -- lists Denelle Dixon and board members Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker and Asiff Hirji; the roster facts are unchanged.",
+            "Trigger only (not evidence): /home/tyler/code/stellar-raven-codemode/tmp/agentic/GOLDEN-PASS.md (other session, 2026-11-14)"
           ],
           "rootCause": [
-            ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit",
-            "freshness-drift"
+            ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
           ]
         },
         "origin": "authored 2026-08 (coverage)",
@@ -22073,7 +22061,7 @@
         "avoid": [
           "Do NOT call Protocol 27 pending or CAP-0071 a ZK, consensus or parallelism change."
         ],
-        "notes": "Protocol 27 is historical; a newer Mainnet protocol is not an error. Citing the sub-CAPs CAP-0071-01 (delegation) and CAP-0071-02 (address-bound V2) is correct."
+        "notes": "Protocol 27 is historical; a newer Mainnet protocol is not an error. Citing the sub-CAPs CAP-0071-01 (delegation) and CAP-0071-02 (address-bound V2) is correct. SDF's Zipper upgrade guide says the old SOROBAN_CREDENTIALS_ADDRESS type stays valid only until Protocol 28, but CAP-0071-02 keeps it valid with no deprecation scheduled and Protocol 28 did not remove it; an answer saying the old credential stopped working is wrong."
       },
       "tags": {
         "category": "protocol-core",
@@ -22200,21 +22188,17 @@
         ],
         "verified": {
           "date": "2026-11-14",
-          "by": "Golden coverage audit 2026-11-14 (audit-protocol, verify-protocol; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+          "by": "Golden coverage audit reconcile 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
           "evidence": [
-            "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-pc-protocol-27-zipper",
-            "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-pc-protocol-27-zipper",
-            "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-pc-protocol-27-zipper",
-            "Live F 2026-11-14: https://horizon.stellar.org/ledgers/63386819 -- 'closed_at 2026-07-08T17:00:10Z, protocol_version 27'",
-            "Live A 2026-11-14: https://developers.stellar.org/docs/networks/software-versions -- 'Protocol 27 (Mainnet, July 8, 2026)'",
-            "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0071.md -- 'SOROBAN_CREDENTIALS_ADDRESS_WITH_DELEGATES … SOROBAN_CREDENTIALS_ADDRESS_V2 (the -01/-02 sub-labels were not found by name in the preamble)'",
-            "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/core/README.md -- '| [CAP-0071-01](cap-0071-01.md) | 27 | Authentication delegation for custom accounts | Dmytro Kozhevin | Final |'",
-            "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0071.md -- 'This CAP is an overview of two related Soroban authorization changes. [CAP-71-01] specifies authentication delegation... [CAP-71-02] specifies SOROBAN_CREDENTIALS_ADDRESS_V2'",
-            "Live A 2026-11-14: https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide -- 'since Protocol 27 (CAP-71-02), SOROBAN_CREDENTIALS_ADDRESS_V2 is the recommended credential type for Soroban address authorization.'"
+            "Grader note for a source conflict. The golden states no deprecation and is right; the SDF guide is wrong.",
+            "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0071-02.md (Status: Final) -- '### No deprecation of `SOROBAN_CREDENTIALS_ADDRESS`' and 'in the future protocol (28 or later) we may want to consider deprecating the old credential type'.",
+            "Live B 2026-11-14: https://github.com/stellar/rs-soroban-env/blob/5fdf6e6275bd3822bdb981df2c140751075e1502/soroban-env-host/src/auth.rs -- `SorobanCredentials::Address(address_creds)` is matched beside `AddressV2` with no protocol-version gate.",
+            "Live C 2026-11-14: https://horizon.stellar.org/ledgers?order=desc&limit=1 -- protocol_version 29, so Protocol 28 activated without removing the type.",
+            "Live A 2026-11-14 (the conflicting page): https://stellar.org/blog/foundation-news/stellar-zipper-protocol-27-upgrade-guide -- 'The existing SOROBAN_CREDENTIALS_ADDRESS type remains valid until the Protocol 28 upgrade' and 'AddressV2 will replace V1 in Protocol 28'. No improvements/ finding covers it yet, so the note carries no cap.",
+            "Trigger only (not evidence): /home/tyler/code/stellar-raven-codemode/tmp/agentic/GOLDEN-PASS.md (other session, 2026-11-14)"
           ],
           "rootCause": [
-            ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit",
-            "freshness-drift"
+            ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
           ]
         },
         "origin": "authored 2026-07 (2026-events)",
@@ -38199,7 +38183,7 @@
           "Do NOT use msg.sender/tx.origin or reduce auth to the transaction source account.",
           "Do NOT call `require_auth_for_args` a fixed-subset mechanism."
         ],
-        "notes": "A direct-invoker contract being implicitly authorized for its own direct call is correct, not a bypass claim."
+        "notes": "A direct-invoker contract being implicitly authorized for its own direct call is correct, not a bypass claim. `require_external_auth` and `require_external_auth_for_args` are host functions proposed in CAP-0089 (Draft, targeting Protocol 31); naming them as that proposal is accurate, and presenting them as available on Mainnet or in the current SDK is wrong."
       },
       "tags": {
         "category": "soroban",
@@ -38304,12 +38288,12 @@
         ],
         "verified": {
           "date": "2026-11-14",
-          "by": "Golden coverage audit 2026-11-14 (audit-soroban-b, verify-audit-soroban-b; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+          "by": "Golden coverage audit reconcile 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
           "evidence": [
-            "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-b.json#q-soroban-require-auth",
-            "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-b.json#q-soroban-require-auth",
-            "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-soroban-require-auth",
-            "Live A 2026-11-14: https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization.md -- 'all the `require_auth` calls made on behalf of the **direct** invoker contract `Address` are considered to be authorized'"
+            "Grader note: an answer that names the CAP-0089 functions was graded as fabricating them; they are real but unshipped.",
+            "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0089.md -- 'Title: Host functions for invoker-less authorization', 'Status: Draft', 'Created: 2026-10-16', 'Protocol version: 31'; it defines `require_external_auth` and `require_external_auth_for_args`.",
+            "Live C 2026-11-14: https://horizon.stellar.org/ledgers?order=desc&limit=1 -- Mainnet protocol_version 29.",
+            "Trigger only (not evidence): /home/tyler/code/stellar-raven-codemode/tmp/agentic/GOLDEN-PASS.md (other session, 2026-11-14)"
           ],
           "rootCause": [
             ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"

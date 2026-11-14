@@ -16,7 +16,7 @@
       "Do NOT claim SDF pegs or guarantees the XLM price.",
       "Do NOT predict a future burn or call the 2019 statement a protocol impossibility."
     ],
-    "notes": "A later, sourced burn announcement is acceptable. Any balance needs a report date and scope; do not sum mixed-timestamp bucket rows. Since 2026-07-27 the docs lumens page lists bucket accounts without fixed balances: pre-2026-07-27 labels or fixed balances presented as current docs content are wrong."
+    "notes": "A later, sourced burn announcement is acceptable. Any balance needs a report date and scope; do not sum mixed-timestamp bucket rows. Since 2026-07-27 the Developer Docs lumens page lists bucket accounts without balances; fixed balances presented as current Docs content are wrong. SDF's mandate page does show per-bucket balance tables with a 'Last updated' time while saying real-time balances will return 'imminently'; quoting those tables with their timestamp is correct, and noting the conflict is good."
   },
   "tags": {
     "category": "history-org-tokenomics",
@@ -130,14 +130,12 @@
     ],
     "verified": {
       "date": "2026-11-14",
-      "by": "Golden coverage audit 2026-11-14 (audit-hist-retail, verify-hist-retail; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+      "by": "Golden coverage audit reconcile 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-hot-sdf-xlm-holdings-sales",
-        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-hot-sdf-xlm-holdings-sales",
-        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-hot-sdf-xlm-holdings-sales",
-        "Live A 2026-11-14: https://stellar.org/foundation/mandate -- 'The SDF sells XLM from this account on public exchanges like Kraken, Coinbase, and Bitstamp and through direct sales'",
-        "Live A 2026-11-14: https://stellar.org/foundation/mandate -- 'No mention of a burn on the current mandate page (searched for \"burn\"); class A only this pass.'",
-        "Live D 2026-11-14: parallel-cli search 'Stellar Development Foundation announces new XLM burn 2026' (after 2026-01-01) -- 'Top 10 results cover the 2019 55B burn and tokenomics explainers; none reports a new SDF burn announcement.'"
+        "The grader note was read as 'no source shows balances'. That holds for the Developer Docs page only; SDF's mandate page shows dated bucket tables. No golden fact changed.",
+        "Live A 2026-11-14: https://stellar.org/foundation/mandate -- Growth table 'Total 5,208,204,928 Last updated: November 14, 2026', and 'the real-time public balances of XLM held by SDF will be made available again on this page imminently'.",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/learn/fundamentals/lumens.md -- 'The on-chain accounts in each bucket, as of July 2026, are listed below — balances change continuously, so refer to the mandate page'; the page lists accounts without balances.",
+        "Trigger only (not evidence): /home/tyler/code/stellar-raven-codemode/tmp/agentic/LIVE-GAP.md (other session, 2026-11-14)"
       ],
       "rootCause": [
         ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"

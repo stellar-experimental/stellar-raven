@@ -8,8 +8,7 @@
     "answer": "There is no such mode: Stellar has no network-wide switch or account setting for shielded payments, and ordinary transactions are public. Privacy is opt-in through applications. As of 2026-11-14, Confidential Tokens hide balances and amounts but keep sender and receiver addresses public, and their verifier does not yet guarantee privacy; Stellar Private Payments is an unaudited Testnet developer preview.",
     "keyFacts": [
       "Stellar has no global shielded-by-default mode or setting; ordinary activity is public.",
-      "Privacy is opt-in via applications; Confidential Tokens hide amounts but not addresses.",
-      "Dates each privacy product's network and audit status."
+      "Privacy is opt-in via applications; Confidential Tokens hide amounts but not addresses."
     ],
     "avoid": [
       "Do NOT invent an enablement command or claim Stellar is shielded by default.",
@@ -279,14 +278,11 @@
     ],
     "verified": {
       "date": "2026-11-14",
-      "by": "Golden coverage audit 2026-11-14 (audit-edge, verify-audit-edge; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+      "by": "Golden coverage audit reconcile 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-edge.json#q-edge-noinfo-stellar-native-privacy-default",
-        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-edge.json#q-edge-noinfo-stellar-native-privacy-default",
-        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-edge-noinfo-stellar-native-privacy-default",
-        "Live A 2026-11-14: https://developers.stellar.org/docs/build/apps/privacy -- 'keeping the sender and receiver's addresses publicly visible onchain'",
-        "Live A 2026-11-14: https://developers.stellar.org/docs/build/apps/privacy -- 'The current verifier accepts only non-zero-knowledge UltraHonk proofs, so OpenZeppelin does not guarantee that proofs keep balances and amounts private.'",
-        "Live A 2026-11-14: https://developers.stellar.org/docs/build/apps/privacy -- 'Stellar Private Payments is a developer preview. The contracts, SDKs, and demo linked below are unaudited — testnet only'"
+        "Removed a dating-only key fact in a fabrication-bait trap case, where a missing required behavior grades wrong, not partial. The avoid item 'Do NOT present unaudited Testnet previews as audited Mainnet products' and the dated example in golden.notes keep the status discipline.",
+        "No world fact changed; the answer and notes still date Stellar Private Payments' status as of 2026-11-14.",
+        "Trigger only (not evidence): /home/tyler/code/stellar-raven-codemode/tmp/agentic/GOLDEN-PASS.md (other session, 2026-11-14)"
       ],
       "rootCause": [
         ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"

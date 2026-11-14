@@ -15,7 +15,7 @@
     "avoid": [
       "Do NOT call Protocol 27 pending or CAP-0071 a ZK, consensus or parallelism change."
     ],
-    "notes": "Protocol 27 is historical; a newer Mainnet protocol is not an error. Citing the sub-CAPs CAP-0071-01 (delegation) and CAP-0071-02 (address-bound V2) is correct."
+    "notes": "Protocol 27 is historical; a newer Mainnet protocol is not an error. Citing the sub-CAPs CAP-0071-01 (delegation) and CAP-0071-02 (address-bound V2) is correct. SDF's Zipper upgrade guide says the old SOROBAN_CREDENTIALS_ADDRESS type stays valid only until Protocol 28, but CAP-0071-02 keeps it valid with no deprecation scheduled and Protocol 28 did not remove it; an answer saying the old credential stopped working is wrong."
   },
   "tags": {
     "category": "protocol-core",
@@ -142,21 +142,17 @@
     ],
     "verified": {
       "date": "2026-11-14",
-      "by": "Golden coverage audit 2026-11-14 (audit-protocol, verify-protocol; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+      "by": "Golden coverage audit reconcile 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-pc-protocol-27-zipper",
-        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-pc-protocol-27-zipper",
-        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-pc-protocol-27-zipper",
-        "Live F 2026-11-14: https://horizon.stellar.org/ledgers/63386819 -- 'closed_at 2026-07-08T17:00:10Z, protocol_version 27'",
-        "Live A 2026-11-14: https://developers.stellar.org/docs/networks/software-versions -- 'Protocol 27 (Mainnet, July 8, 2026)'",
-        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0071.md -- 'SOROBAN_CREDENTIALS_ADDRESS_WITH_DELEGATES … SOROBAN_CREDENTIALS_ADDRESS_V2 (the -01/-02 sub-labels were not found by name in the preamble)'",
-        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/core/README.md -- '| [CAP-0071-01](cap-0071-01.md) | 27 | Authentication delegation for custom accounts | Dmytro Kozhevin | Final |'",
-        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0071.md -- 'This CAP is an overview of two related Soroban authorization changes. [CAP-71-01] specifies authentication delegation... [CAP-71-02] specifies SOROBAN_CREDENTIALS_ADDRESS_V2'",
-        "Live A 2026-11-14: https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide -- 'since Protocol 27 (CAP-71-02), SOROBAN_CREDENTIALS_ADDRESS_V2 is the recommended credential type for Soroban address authorization.'"
+        "Grader note for a source conflict. The golden states no deprecation and is right; the SDF guide is wrong.",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0071-02.md (Status: Final) -- '### No deprecation of `SOROBAN_CREDENTIALS_ADDRESS`' and 'in the future protocol (28 or later) we may want to consider deprecating the old credential type'.",
+        "Live B 2026-11-14: https://github.com/stellar/rs-soroban-env/blob/5fdf6e6275bd3822bdb981df2c140751075e1502/soroban-env-host/src/auth.rs -- `SorobanCredentials::Address(address_creds)` is matched beside `AddressV2` with no protocol-version gate.",
+        "Live C 2026-11-14: https://horizon.stellar.org/ledgers?order=desc&limit=1 -- protocol_version 29, so Protocol 28 activated without removing the type.",
+        "Live A 2026-11-14 (the conflicting page): https://stellar.org/blog/foundation-news/stellar-zipper-protocol-27-upgrade-guide -- 'The existing SOROBAN_CREDENTIALS_ADDRESS type remains valid until the Protocol 28 upgrade' and 'AddressV2 will replace V1 in Protocol 28'. No improvements/ finding covers it yet, so the note carries no cap.",
+        "Trigger only (not evidence): /home/tyler/code/stellar-raven-codemode/tmp/agentic/GOLDEN-PASS.md (other session, 2026-11-14)"
       ],
       "rootCause": [
-        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit",
-        "freshness-drift"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
     "origin": "authored 2026-07 (2026-events)",

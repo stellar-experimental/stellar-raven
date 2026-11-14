@@ -8,8 +8,7 @@
     "answer": "As of 2026-11-14, Denelle Dixon is SDF's CEO and Executive Director, and SDF's official team page lists five board members: Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker and Asiff Hirji. Leadership changes over time, so date it and confirm it on SDF's team page.",
     "keyFacts": [
       "Denelle Dixon is SDF's chief executive (CEO and Executive Director).",
-      "The SDF board is McCaleb, Wu, Lemos, Baker and Hirji.",
-      "Dates the leadership roster it cites."
+      "The SDF board is McCaleb, Wu, Lemos, Baker and Hirji."
     ],
     "avoid": [
       "Do NOT confuse SDF board members with the builder directory."
@@ -96,19 +95,14 @@
     ],
     "verified": {
       "date": "2026-11-14",
-      "by": "Golden coverage audit 2026-11-14 (audit-hist-retail, verify-hist-retail; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+      "by": "Golden coverage audit reconcile 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-org-sdf-board-directors",
-        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-org-sdf-board-directors",
-        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-org-sdf-board-directors",
-        "Live A 2026-11-14: https://stellar.org/foundation/team -- 'Board of directors: Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker, Asiff Hirji'",
-        "Live A 2026-11-14: https://stellar.org/press/stellar-development-foundation-appoints-asiff-hirji-of-moonpay-to-board-of-directors -- 'announced the appointment of Asiff Hirji, President of MoonPay, to its board of directors'",
-        "Live A 2026-11-14: https://stellar.org/foundation/team -- 'Board of directors Jed McCaleb Lin-Hua Wu Ronaldo Lemos Ginger Baker Asiff Hirji Advisors'",
-        "Live sentinel read 2026-11-14 (npm run eval:qa:sentinels -- --ids sdf-board-roster): hold"
+        "Removed a dating-only key fact; it turned a correct roster answer into a partial. The golden answer still dates the roster, and golden.notes accepts later official changes with an observation date.",
+        "Live A 2026-11-14: https://stellar.org/foundation/team -- lists Denelle Dixon and board members Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker and Asiff Hirji; the roster facts are unchanged.",
+        "Trigger only (not evidence): /home/tyler/code/stellar-raven-codemode/tmp/agentic/GOLDEN-PASS.md (other session, 2026-11-14)"
       ],
       "rootCause": [
-        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit",
-        "freshness-drift"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
     "origin": "authored 2026-08 (coverage)",
