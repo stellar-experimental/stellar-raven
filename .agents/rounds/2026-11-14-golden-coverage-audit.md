@@ -77,7 +77,18 @@ Orchestrator: Claude Fable 5.2 on the Mac, terminal `t40f`. Briefs are in
 
 | lane | agent (model, effort) | terminal | write set | status |
 |---|---|---|---|---|
+| map-supply | Claude Fable 5.2, high: taste and product judgment | `agentpc/t1hd` | `map/map-supply.json` | running |
+| map-demand | Claude Opus 5.5, high: a second model for an independent map | `agentpc/t1hf` | `map/map-demand.json` | running |
+| audit-protocol | Claude Sonnet 5.5, high: bounded per-case review | `agentpc/t1hg` | `audit/audit-protocol.json` | running |
+| audit-assets | Claude Sonnet 5.5, high | `agentpc/t1hh` | `audit/audit-assets.json` | running |
+| audit-defi | Claude Sonnet 5.5, high | `agentpc/t1hj` | `audit/audit-defi.json` | running |
+| audit-soroban-a | Claude Sonnet 5.5, high | `agentpc/t1hk` | `audit/audit-soroban-a.json` | running |
+| audit-compliance, audit-edge, audit-hist-retail, audit-scf, audit-soroban-b, audit-tooling-a, audit-tooling-b | Claude Sonnet 5.5, high | queued | `audit/<lane>.json` | queued behind the six-lane cap |
 
 ## Ledger
+
+- 2026-11-14 05:50 UTC. Opened the round at `920ae9f2`. Created the box worktree and launched six
+  lanes with `hc run --bg --on agentpc --outlive-parent ... claude --model <alias> --effort high`.
+  All six reported `working` on their brief.
 
 ## Outcome
