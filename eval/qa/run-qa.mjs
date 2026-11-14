@@ -7,7 +7,7 @@
  * per case and writes eval/qa/results/<stamp>.json + a console summary.
  *
  * For each case:
- *   1. drive an answering agent — headless `claude -p --model claude-sonnet-5`
+ *   1. drive an answering agent — headless `claude -p --model claude-sonnet-5-5`
  *      with a generated temp .mcp.json pointing at the live server
  *      (http://localhost:PORT/mcp), allowed tools = the variant's search tool
  *      + execute (verified working 2026-07-02)
@@ -47,7 +47,7 @@
  *                      hand-authored contracts include live-data-canonical-v3
  *                      (corpus/live/live-cases.json) and live-digest-supplement-v2
  *                      (corpus/live/live-digest-supplement-cases.json); run separately.
- *   --model name       answering-agent model (default claude-sonnet-5)
+ *   --model name       answering-agent model (default claude-sonnet-5-5)
  *   --judge-model name judge model (default judge.mjs JUDGE_MODEL)
  *   --judge-panel N    force a 2- or 3-call judge panel. The default tier
  *                      starts with one call and can escalate to three.
@@ -217,7 +217,7 @@ import { createPairedCollectionChildControl } from "./paired-collection-control.
 // registered top-level; re-testing it requires a build exposing a code-shaped
 // tool via a --search-tool override.
 const VARIANT_TOOL = { A: "search", B: null };
-const AGENT_MODEL = "claude-sonnet-5";
+const AGENT_MODEL = "claude-sonnet-5-5";
 const MAX_TURNS = 24;
 const AGENT_TIMEOUT_MS = 10 * 60_000;
 const SURFACES = new Set(["search-execute", "per-operation"]);

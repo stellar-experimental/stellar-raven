@@ -81,7 +81,7 @@ Three roles stay separate. The **orchestrating agent** runs this skill and never
 itself. The **answering agent** and the **judge** are spawned by the runner. Their defaults
 (`AGENT_MODEL` in `eval/qa/run-qa.mjs`, `JUDGE_MODEL` in `eval/qa/judge.mjs`) are a measurement
 contract: they move only by a recorded eval decision, never by the repo-work routing in
-`AGENTS.md`. Report the answering model, judge model, rubric, pack, case count, and results stamp
+`AGENTS.md`. The judge stays on its pinned model so that verdicts remain comparable across runs. Report the answering model, judge model, rubric, pack, case count, and results stamp
 with every QA number.
 
 ## 3. Pick the instrument

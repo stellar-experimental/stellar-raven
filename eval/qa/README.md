@@ -305,7 +305,11 @@ A projected answer without that envelope can remain `indeterminate`.
 
 ## Judging rubric and score comparability
 
+The default answering model is `claude-sonnet-5-5`.
 The default judge model is `claude-sonnet-5`, with rubric `v2.11` and evidence pack `p9`.
+The judge stays on that model so that new verdicts remain comparable with stored verdicts and the judge-stability register.
+Move it only with a recorded decision and a new baseline.
+An artifact answered by an earlier model differs in answering identity; compare it with a new one only as a labeled cross-model comparison.
 [judge.mjs](judge.mjs) owns the prompt and rubric. [evidence-pack.mjs](evidence-pack.mjs) owns evidence selection and serialization.
 
 For ordinary cases, `correct` requires all substantive key facts and no wrong claim or fired avoid.
