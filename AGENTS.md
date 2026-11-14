@@ -123,7 +123,9 @@ The independent reviewer:
 - **Forward-only.** Prefer the best current design. Add no compatibility shim, dual format, or
   deprecation path only to preserve deployed behavior. A deviation needs evidence.
 - **The manifest is the exposed surface** (ADR-0003). Model code never owns endpoints, arguments,
-  auth, or exposure. Never emit a reference to a non-exposed operation or a retired skill.
+  auth, or exposure. Never emit a reference to a non-exposed operation or a retired skill. Two
+  guards enforce it: `assertNoNonExposedRefsInText` on emitted text in `prebuild`, and
+  `assertNoNonExposedRefs` on manifest entries at catalog rebuild and in `npm test`.
   `npm run build` does not rebuild the catalog, so `npm test` and CI catch a hand-edited
   manifest, not the build.
 - Skill and tool IDs resolve by exact match. Keep soft-empty, error, and data responses distinct.
