@@ -700,8 +700,8 @@ filter reason; it should also say a zero-candidate result is inconclusive.
 - *Audit answers.* The author says the eight audit answers were identified by firm-name queries
   against the search under test. The register holds 77 records and renders only the first page
   server-side, so a question whose answer the search cannot surface could not have been included.
-  The 6 audit-question rows that still read as misses (a01, a03, a04, a07 in question form) show
-  the set was not pruned to pass.
+  The four audit questions that still miss in question form (a01, a03, a04, a07) show the set was
+  not pruned to pass.
 - *Not censored.* Seven question forms miss for the raw search too (a01, a03, a04, a07, d12, p11
   at snapshot, p12), and the doc reports each with a cause.
 - *Design decisions on the set.* Keeping partner rows and the blog/press/events filter were decided
