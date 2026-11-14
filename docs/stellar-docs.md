@@ -1,259 +1,193 @@
 # Stellar Docs integration and operator guardrails
 
-Raven reads the Stellar developer documentation through a host-side Mintlify REST adapter.
-The docs site at `developers.stellar.org` runs on Mintlify.
-The [authored spec](../specs/stellar-docs.json) defines operation IDs, arguments, output shapes, and path scopes.
-The generated [catalog](../catalog/manifest.json) defines the exposed operations.
-[The architecture guide](../ARCHITECTURE.md) describes the MCP and sandbox boundaries.
-[Run locally](../README.md#run-locally) describes development setup.
-[The operator guide](operations.md) describes deployment, observability, and account-data deletion.
-[The migration research](../research/services/stellar-docs-mintlify.md) records the dated API measurements.
+Raven reads the Stellar developer documentation (`developers.stellar.org`, hosted on Mintlify)
+through a host-side adapter for the Mintlify discovery API. This file is the adapter's contract
+and its maintenance rules. Dated API measurements are in
+[the migration research](../research/services/stellar-docs-mintlify.md).
 
 ## Sources of truth
 
 | Concern | Source |
 | --- | --- |
-| Operation descriptions, schemas, and path scopes | [specs/stellar-docs.json](../specs/stellar-docs.json) |
-| Runtime request and response handling | [src/adapters/stellar-docs.ts](../src/adapters/stellar-docs.ts) |
-| Catalog emission | [scripts/build-catalog.mjs](../scripts/build-catalog.mjs) |
+| Operation IDs, descriptions, schemas, path scopes, transport | [specs/stellar-docs.json](../specs/stellar-docs.json) |
+| Exposed operations | [catalog/manifest.json](../catalog/manifest.json), emitted by [scripts/build-catalog.mjs](../scripts/build-catalog.mjs) |
+| Request and response handling | [src/adapters/stellar-docs.ts](../src/adapters/stellar-docs.ts) |
 | Title-derived routing vocabulary | [inventory/stellar-docs-titles.json](../inventory/stellar-docs-titles.json) |
 | Inventory refresh | [scripts/refresh-inventory.mjs](../scripts/refresh-inventory.mjs) |
 
-The adapter sends every request to the Mintlify discovery API.
-It does not route runtime searches through the public docs MCP server at `developers.stellar.org/mcp`.
-External service investigations do not define a callable fallback in Raven.
-The model can call only manifest operations.
-It cannot choose request hosts, credentials, request bodies, or write operations.
+The model can call only manifest operations. It cannot choose a host, a credential, a request
+body, or a write. The adapter does not use the public docs MCP server at
+`developers.stellar.org/mcp`, and an external service investigation never defines a callable
+fallback.
 
-## Endpoints and transport
+## Credentials and boundaries
 
-The authored backend block defines the transport.
+| Key | Scope | Permitted use | Forbidden use |
+| --- | --- | --- | --- |
+| `MINTLIFY_ASSISTANT_API_KEY` (prefix `mint_dsc_`) | Mintlify project | Search and page reads: the Worker at runtime, local development, the refresh workflow | Assistant messages. Printing or committing. |
+| `MINTLIFY_ADMIN_API_KEY` (prefix `mint_`) | Mintlify organization | Local maintenance reads from an operator `.env`: search analytics exports | Worker secret. Sandbox binding. Deploy triggers or agent jobs without an owner decision. |
+
+- The host reads the assistant key from the Worker environment. It never appears in model code,
+  catalog output, logs, or sandbox bindings. A missing key returns `error` before any request.
+- The assistant endpoint `POST /discovery/v1/assistant/{domain}/message` consumes Mintlify
+  credits. Raven does not call it. Any use is a paid model operation under the hard rules in
+  [AGENTS.md](../AGENTS.md#hard-rules), as is any model-callable write.
+- Mintlify limits search and page reads to 10,000 requests per organization per hour. Keep
+  automated sweeps inside that budget.
+
+## Transport
+
+The spec's backend block defines the transport.
 
 | Field | Value |
 | --- | --- |
-| `apiBase` | `https://api.mintlify.com` |
+| `apiBase` | `https://api.mintlify.com` (one host, no host ladder) |
 | `searchPath` | `/discovery/v1/search/stellardevelopmentfoundation` |
 | `pagePath` | `/discovery/v1/page/stellardevelopmentfoundation` |
 | `siteOrigin` | `https://developers.stellar.org` |
 | `candidateWindow` | `50` |
 | `attemptTimeoutsMs` | `[8000, 12000]` |
 
-Each request is a `POST` with `Authorization: Bearer <MINTLIFY_ASSISTANT_API_KEY>` and a JSON body.
-A search request sends `{ query, pageSize }`.
-A page request sends `{ path }` without a leading slash.
-The API has one host, so there is no host ladder.
+Each request is a `POST` with `Authorization: Bearer <MINTLIFY_ASSISTANT_API_KEY>` and a JSON
+body: `{ query, pageSize }` for a search, `{ path }` (no leading slash) for a page.
 
-The adapter makes at most two attempts for one request.
-The first attempt times out after 8,000 ms and the second after 12,000 ms.
-A network failure, a timeout, or an HTTP 5xx response allows the second attempt.
-An HTTP 4xx response, including `429`, returns immediately.
-Malformed JSON in a successful response returns an error, not a retry.
+- **Attempts.** At most two per request. A network failure, a timeout, or an HTTP 5xx allows the
+  second. An HTTP 4xx, including `429`, returns at once. Malformed JSON in a successful response
+  is an error, not a retry.
+- **Budget.** One operation has 24,000 ms of wall-clock time (`OPERATION_BUDGET_MS`) for every
+  attempt, the `/index` retry, and the redirect probe. Each attempt timeout is clipped to the
+  time left, and nothing starts with less than 500 ms left.
+- **404.** The API uses `404` for absence and for configuration failures. Only
+  `{"message":"No results found"}` (search) and `{"message":"Page not found"}` (page) mean
+  absence. Any other `404` body, such as `{"error":"No deployment related to <domain> exists"}`,
+  returns `error` with `status: 404`.
 
-One operation has a wall-clock budget of 24,000 ms (`OPERATION_BUDGET_MS`).
-The budget covers every attempt, the `/index` retry, and the site redirect probe.
-Each attempt timeout is clipped to the time left.
-The adapter does not start an attempt or a probe with less than 500 ms left.
-
-The API uses `404` for both absence and configuration failures.
-Only two `404` bodies mean absence:
-
-- `{"message":"No results found"}` from the search endpoint.
-- `{"message":"Page not found"}` from the page endpoint.
-
-Any other `404` body returns `error` with `status: 404`.
-An example is `{"error":"No deployment related to <domain> exists"}` for an unknown project subdomain.
-The adapter has no persistent host-health cache and installs no Mintlify SDK.
-
-## Credentials and boundaries
-
-`MINTLIFY_ASSISTANT_API_KEY` is the only runtime docs secret.
-It is a project-scoped Mintlify assistant key with the prefix `mint_dsc_`.
-It permits search and page reads, and nothing else that Raven calls.
-The host reads it from the Worker environment.
-It never appears in model code, catalog output, logs, or sandbox bindings.
-A missing key returns `error` before any request.
-
-`MINTLIFY_ADMIN_API_KEY` is an org-scoped Mintlify admin key with the prefix `mint_`.
-It covers analytics exports, deploy triggers, and agent jobs.
-It is maintenance-only.
-It must never become a Worker secret or a sandbox binding.
-Store it only in a local operator `.env`.
-
-The assistant endpoint `POST /discovery/v1/assistant/{domain}/message` consumes Mintlify credits.
-Raven does not call it.
-Any future use is a paid model operation under the hard rules in [AGENTS.md](../AGENTS.md).
-
-Mintlify applies a rate limit of 10,000 requests per organization per hour to search and page reads.
-Raven makes one search request per search operation and at most four page requests per page read.
-Keep automated sweeps inside that budget.
+The adapter keeps no host-health cache and installs no Mintlify SDK.
 
 ## Operations
 
-The spec authors 12 operations.
-Each operation's `mintlify` block names the endpoint and the path scope.
+The spec authors 12 operations. Each one's `mintlify` block names its endpoint and path scope.
 
-| Operation | Endpoint | Scope |
-| --- | --- | --- |
-| `search_docs` | search | Exclude `/meetings/` unless `includeMeetings: true` |
-| `search_doc_titles` | search, grouped by page | Exclude `/meetings/` unless `includeMeetings: true` |
-| `search_docs_in_category` | search | Include `/docs/{category}`; `category: meetings` includes `/meetings/` |
-| `search_soroban_contract_docs` | search | `/docs/build/smart-contracts`, `/docs/build/guides/`, `/docs/learn/fundamentals/contract-development/`, `/docs/tools/cli/` |
-| `search_asset_token_docs` | search | `/docs/tokens`, `/docs/build/guides/tokens/` |
-| `search_protocol_concepts_docs` | search | `/docs/learn/`, `/docs/networks` |
-| `search_rpc_horizon_data_docs` | search | `/docs/data`, `/docs/build/guides/rpc/` |
-| `search_anchor_sep_docs` | search | `/docs/platforms`, `/docs/learn/fundamentals/anchors`, `/docs/learn/fundamentals/stellar-ecosystem-proposals` |
-| `search_sdk_cli_tools_docs` | search | `/docs/tools`, `/docs/tools/cli/agent-cli` |
-| `search_wallet_dapp_docs` | search | `/docs/build/apps`, `/docs/build/guides/dapps`, `/docs/build/guides/freighter` |
-| `search_meeting_notes` | search | `/meetings/` |
-| `get_doc_page` | page | One page by `path` |
+| Operation | Scope |
+| --- | --- |
+| `search_docs` | Exclude `/meetings/` unless `includeMeetings: true` |
+| `search_doc_titles` | Same scope; hits grouped by page |
+| `search_docs_in_category` | Include `/docs/{category}`; `category: meetings` includes `/meetings/` |
+| `search_soroban_contract_docs` | `/docs/build/smart-contracts`, `/docs/build/guides/`, `/docs/learn/fundamentals/contract-development/`, `/docs/tools/cli/` |
+| `search_asset_token_docs` | `/docs/tokens`, `/docs/build/guides/tokens/` |
+| `search_protocol_concepts_docs` | `/docs/learn/`, `/docs/networks` |
+| `search_rpc_horizon_data_docs` | `/docs/data`, `/docs/build/guides/rpc/` |
+| `search_anchor_sep_docs` | `/docs/platforms`, `/docs/learn/fundamentals/anchors`, `/docs/learn/fundamentals/stellar-ecosystem-proposals` |
+| `search_sdk_cli_tools_docs` | `/docs/tools`, `/docs/tools/cli/agent-cli` |
+| `search_wallet_dapp_docs` | `/docs/build/apps`, `/docs/build/guides/dapps`, `/docs/build/guides/freighter` |
+| `search_meeting_notes` | `/meetings/` |
+| `get_doc_page` | One page by `path` (the page endpoint) |
 
-Search operations accept `query`, `hitsPerPage` (1 to 20, default 5), and `includeContent`.
-`search_doc_titles` accepts no `includeContent`.
-`search_docs_in_category` requires `category`.
-`get_doc_page` accepts only `path`.
-The operation schema validates model arguments before the adapter runs.
-The adapter uses only the host-captured manifest entry.
-Catalog entries do not contain runtime `auth` or `cost` policy fields.
+A search operation accepts `query`, `hitsPerPage` (1 to 20, default 5), and `includeContent`.
+`search_doc_titles` takes no `includeContent`, `search_docs_in_category` requires `category`,
+and `get_doc_page` accepts only `path`. The operation schema validates model arguments before
+the adapter runs. The adapter uses only the host-captured manifest entry, and catalog entries
+carry no runtime `auth` or `cost` field.
 
-## Search scoping
+## Search
 
-Every search operation makes one search call with `pageSize` equal to the candidate window of 50.
-The search service has no facets, scores, or counts.
-Its `filter` fields and `scoreThreshold` do not change the result set for this site.
-Category and meetings scoping therefore happens in the adapter.
+Every search operation makes one search call with `pageSize` 50, the candidate window. The
+service has no facets, scores, or counts, and its `filter` and `scoreThreshold` fields do not
+change the result set for this site. Scoping therefore happens in the adapter:
 
-The adapter resolves the scope in this order:
+1. Take the operation's `include` and `exclude` prefixes.
+2. Apply each matching `conditional` override, keyed as `argument=value`; `null` clears a list.
+3. Fill `{category}` placeholders from the arguments.
 
-1. Operation `include` and `exclude` prefixes.
-2. Matching `conditional` overrides, keyed as `argument=value`; `null` clears a list.
-3. `{category}` placeholders filled from the arguments.
+A prefix matches whole path segments: `/docs/tokens` keeps `/docs/tokens/x`, not
+`/docs/tokens-legacy`. An excluded prefix wins over an included one. The adapter then applies
+`hitsPerPage`. A scoped result shows only the part of the corpus inside the 50-candidate window.
 
-A prefix matches on whole path segments.
-`/docs/tokens` keeps `/docs/tokens` and `/docs/tokens/x`, not `/docs/tokens-legacy`.
-An excluded prefix wins over an included prefix.
-The adapter then applies the caller's `hitsPerPage` limit.
-A scoped result can show only the part of the corpus inside the 50-candidate window.
+`search_doc_titles` keeps the first section of each page and ranks pages by query words in the
+title, then in the path, then by search rank. It returns no `content`. With
+`includeContent: true`, each hit carries its whole section as `content`; the adapter makes no
+second request.
 
-`search_doc_titles` groups the kept sections by page.
-It keeps the first section of each page.
-It ranks pages by query words in the page title, then by query words in the path, then by search rank.
-This operation returns no `content`.
+### Search output
 
-With `includeContent: true`, each hit carries the whole section as `content`.
-The adapter does not make a second request for content.
+The payload is `{ hits, candidates, pathFiltered? }`. `candidates` counts the sections returned
+before scoping, and `pathFiltered: true` marks a result that passed an `include` scope. A hit is
+`{ url, path, title, section?, snippet, content? }`:
+
+- `url` is the site URL. It carries a section anchor only when the section starts with an ATX
+  heading that matches exactly one heading recorded for that page in
+  `src/adapters/stellar-docs-anchors.json` (rendered text and IDs, including custom IDs; inline
+  code delimiters are removed before matching). Repeated, unknown, or otherwise formatted
+  headings and unknown pages keep the page URL. A search makes no extra request for this.
+- `path` is site-relative, with a leading slash and no `/index` suffix.
+- `title` is the page title from the search metadata, or the final path segment.
+- `section` is the section's first heading, when it starts with one.
+- `snippet` is at most 300 characters of the section text, centered on the first query term. It
+  drops the first heading and code-fence lines and shrinks MDX component tags such as
+  `<Tab title="x">` to their attribute values.
+- `content` appears only with `includeContent: true` and keeps MDX component tags unchanged.
 
 ## Page retrieval
 
-`get_doc_page` sends the normalized `path` to the page endpoint.
-Normalization removes an origin, a query or fragment, a trailing slash, a `.md` or `.mdx` suffix, and leading slashes.
-The page store holds an index page only as `<dir>/index`.
-A "Page not found" `404` for a path without the `/index` suffix triggers one retry with `<path>/index`.
-Any other failure, including any other `404`, returns `error`.
+`get_doc_page` normalizes `path` (it removes an origin, a query or fragment, a trailing slash, a
+`.md` or `.mdx` suffix, and leading slashes) and sends it to the page endpoint.
 
-When both lookups return "Page not found", the adapter checks for a moved page.
-The live site redirects moved pages; the page store does not.
-The adapter makes one `GET` to `https://developers.stellar.org/<path>` with `redirect: "manual"` and no credentials.
-It reads only the status and the `Location` header, and discards the body.
-This probe uses the first attempt timeout of 8,000 ms, clipped to the operation budget, and has no retry.
-A probe failure counts as no redirect.
+- **Index pages.** The page store holds an index page only as `<dir>/index`. A "Page not found"
+  for a path without that suffix triggers one retry with `<path>/index`. Any other failure,
+  including any other `404`, returns `error`.
+- **Moved pages.** The live site redirects moved pages; the page store does not. When both
+  lookups return "Page not found", the adapter makes one `GET` to
+  `https://developers.stellar.org/<path>` with `redirect: "manual"` and no credentials. It reads
+  only the status and the `Location` header. The probe has the first attempt timeout and no
+  retry, and a probe failure counts as no redirect. The adapter follows the redirect only when
+  the status is 3xx with a `Location`, the target origin is `https://developers.stellar.org`, the
+  target path starts with `/docs/` or `/meetings/`, and the normalized target differs from the
+  request. It then fetches the target once, with the same `/index` retry, and returns the new
+  location as `url` and `path`.
+- A page that is still missing returns `soft-empty` with `status: 404`.
 
-The adapter follows the redirect only when all of these hold:
-
-- The status is 3xx and a `Location` header exists.
-- The target origin is `https://developers.stellar.org`.
-- The target path starts with `/docs/` or `/meetings/`.
-- The normalized target path differs from the requested path.
-
-It then fetches the target page once, with the same `<path>/index` retry.
-The result's `url` and `path` are the new location.
-A cross-origin or non-docs redirect is not followed.
-A page that is still missing returns `soft-empty` with `status: 404`.
-
-The result is `{ url, path, title, content }`.
-`content` is the whole page as Markdown in on-page order.
-`title` comes from the first H1 heading, or from the final path segment.
-This operation reads one page from the configured project.
-A path argument does not create a general URL-fetch capability.
-The site probe returns no page body to the model.
+The result is `{ url, path, title, content }`. `content` is the whole page as Markdown in
+on-page order. `title` comes from the first H1 heading, or from the final path segment. The
+operation reads one page of the configured project; a path argument does not create a general
+URL fetch, and the site probe returns no page body to the model.
 
 ## Content cleanup
 
-The adapter cleans every `content` value and every page body before it returns them.
-It removes the `theme={...}` metadata from code-fence opening lines.
-It makes relative Markdown links absolute against the page URL.
-A root-relative link resolves against `siteOrigin`.
-Links from an index page resolve against the page directory.
-The cleanup removes `.md` and `.mdx` suffixes and trailing `/index` from resolved links.
-Absolute links and fragment links stay unchanged.
-
-## Output shape
-
-A search hit has this shape:
-
-```text
-{ url, path, title, section?, snippet, content? }
-```
-
-`url` is the site URL, with a section anchor when the captured page has one matching heading.
-The adapter reads `src/adapters/stellar-docs-anchors.json`; searches make no additional network requests.
-The index records rendered heading text and IDs, including custom IDs.
-The adapter uses these IDs only when the section starts with an ATX heading.
-The adapter removes inline code delimiters before matching a section heading.
-
-Repeated headings, unknown headings, and unknown pages keep the page URL without an anchor.
-Other unsupported heading formatting also keeps the page URL.
-
-`path` is the site-relative page path with a leading slash and no `/index` suffix.
-`title` is the page title from the search metadata, or the final path segment.
-`section` is the first heading of the section when the section starts with one.
-`snippet` is at most 300 characters of the section text, centered on the first query term.
-The snippet drops the first heading and code-fence lines.
-It shrinks MDX component tags such as `<Tab title="x">` to their attribute values.
-`content` appears only with `includeContent: true` on an operation that returns sections.
-`content` keeps the MDX component tags unchanged.
-
-The search payload is `{ hits, candidates, pathFiltered? }`.
-`candidates` is the number of sections the search returned before scoping.
-`pathFiltered: true` marks a result that passed through an `include` scope.
-Callers must read hit paths and snippets before treating a match as evidence.
+The adapter cleans every `content` value and page body. It removes `theme={...}` metadata from
+code-fence opening lines. It makes relative Markdown links absolute against the page URL (a
+root-relative link against `siteOrigin`, a link from an index page against the page directory)
+and removes `.md` and `.mdx` suffixes and a trailing `/index` from them. Absolute links and
+fragment links stay unchanged.
 
 ## Result and absence semantics
 
-Successful calls return `{ ok: true, data }`.
-The sandbox dispatcher adds `asOf` and `asOfBasis` to each successful result.
-Docs payloads state no data date, so `asOfBasis` is `"observed"`.
-Docs operations use the `corpus`, `detail`, or `exact` retrieval lane, so a successful result with hits carries no `caveat`.
-Adapter failures return `{ ok: false, error }`.
-`error.kind` distinguishes `error` from `soft-empty`.
+A successful call returns `{ ok: true, data }`, and the sandbox dispatcher adds `asOf` and
+`asOfBasis`. Docs payloads state no data date, so `asOfBasis` is `"observed"`. Docs operations
+use the `corpus`, `detail`, or `exact` retrieval lane, so a result with hits carries no `caveat`.
+A failure returns `{ ok: false, error }`, where `error.kind` is `error` or `soft-empty`.
 
-A search returns `soft-empty` in three cases:
+A search returns `soft-empty` in three cases. Each hint names a broader operation to try.
 
-1. The search returned no sections: an empty array, or the "No results found" `404`.
-2. No candidate section is under the operation's paths.
-   This is a candidate-window result.
-   The message states the candidate count.
-3. No in-scope section contains a query term.
-   This is the query-term relevance guard.
-   The message names the terms.
-
-The relevance guard exists because the semantic search always returns its nearest sections.
-A nonsense query still receives candidates.
-Query terms are words of 3 or more characters, or words with a digit, minus a small stopword set.
-A hyphenated identifier such as `SEP-10` matches both `sep 10` and its parts.
-The guard checks the section title, path, and content.
+1. The search returned no section: an empty array, or the "No results found" `404`.
+2. No candidate section is under the operation's paths. The message states the candidate count.
+3. No in-scope section contains a query term; the message names the terms. This guard exists
+   because the semantic search always returns its nearest sections, even for a nonsense query.
+   Query terms are words of 3 or more characters, or words with a digit, minus a small stopword
+   set. A hyphenated identifier such as `SEP-10` matches `sep 10` and its parts. The guard checks
+   the section title, path, and content.
 
 A page read returns `soft-empty` when the page does not exist.
-Each soft-empty hint names a broader operation to try.
 
-A soft-empty response describes this query, operation scope, and candidate window.
-It does not prove that the docs lack the topic.
-A failed transport or credential check provides no corpus-absence evidence.
-A nonzero candidate count does not establish that the returned matches answer the question.
+What a result proves:
 
-For a docs-scoped question, report the observed result and its scope.
-For an open-world identity or history question, corroborate through broad exposed sources before making a negative claim.
-Use the returned paths and snippets to select follow-up evidence.
-Use `get_doc_page` to read a whole page after a search hit.
+- A soft-empty describes this query, this scope, and this candidate window. It does not prove
+  that the docs lack the topic.
+- A failed transport or credential check is no evidence about the corpus.
+- A nonzero candidate count does not show that the hits answer the question. Read hit paths and
+  snippets before you treat a match as evidence, and read a whole page with `get_doc_page`.
+- For a docs-scoped question, report the observed result and its scope. For an open-world
+  identity or history question, corroborate through broad exposed sources before a negative
+  claim.
 
 ## Limits
 
@@ -263,59 +197,38 @@ Use `get_doc_page` to read a whole page after a search hit.
 | Hits per search | 1 to 20, default 5 | `hitsPerPage` in each operation schema |
 | Snippet length | 300 characters | `SNIPPET_CHARS` in the adapter |
 | Attempts per request | 2, with 8,000 ms and 12,000 ms timeouts | `attemptTimeoutsMs` in the spec backend |
-| Wall-clock budget per operation | 24,000 ms, across all requests and the redirect probe | `OPERATION_BUDGET_MS` in the adapter |
-| Page requests per read | At most 4: 2 for the requested path, 2 for a redirect target | The `/index` retry and the redirect follow in the adapter |
-| Site redirect probes per read | At most 1, with an 8,000 ms timeout and no retry | `siteRedirectPath` in the adapter |
+| Wall-clock budget per operation | 24,000 ms | `OPERATION_BUDGET_MS` in the adapter |
+| Requests per search | 1 search request | The adapter |
+| Page requests per read | At most 4: 2 for the requested path, 2 for a redirect target | The `/index` retry and the redirect follow |
+| Site redirect probes per read | At most 1, 8,000 ms, no retry | `siteRedirectPath` in the adapter |
 | Mintlify rate limit | 10,000 requests per organization per hour | Mintlify API reference |
 | Error text from the API | 1,024 characters | `MAX_ERROR_BODY_CHARS` in the adapter |
 
 ## Maintenance
 
-### Keys and permitted use
+**Content and ranking.** The Mintlify project belongs to the Stellar docs team, and Raven has no
+write path to its content or search configuration. A wrong, stale, or missing page is corrected
+in `stellar/stellar-docs` through the
+[improvements workflow](../.agents/skills/improvements-pipeline/SKILL.md). Do not replace
+upstream content with a Raven-owned version, and do not build a second index without a measured
+benefit that justifies its upkeep.
 
-| Key | Scope | Permitted use | Forbidden use |
-| --- | --- | --- | --- |
-| `MINTLIFY_ASSISTANT_API_KEY` | Mintlify project | Runtime search and page reads in the Worker. Local development and the refresh workflow. | Assistant messages. Printing or committing. |
-| `MINTLIFY_ADMIN_API_KEY` | Mintlify organization | Local maintenance reads: search analytics exports. | Worker secret. Sandbox binding. Deploy triggers or agent jobs without an owner decision. |
+**Search-mechanism changes.** A change inside Raven, such as a new scope or a guard change, needs
+a measured win on a free, read-only, retrieval-level A/B against the golden docs pages. The
+mechanism must be general, not a per-query or per-page exception.
 
-Never print or commit a key.
-Never add a maintenance key to a model-facing service interface.
-A model-callable write requires host-side request-context approval, elicitation, and budget enforcement before release.
+**Anchor index.** Run `npm run docs:anchors:build` after a docs site update. The keyless command
+reads the public sitemap and the rendered docs and meeting pages, records rendered heading IDs
+(duplicates included), and replaces the index only after every page succeeds. An unchanged
+capture keeps the file and its capture time. The daily refresh workflow also runs it, and its
+drift report includes anchor changes; a Worker build does not. A committed fixture pins rendered
+heading pairs from eleven pages. The index is a snapshot: headings can change before the next
+refresh, and uniqueness is judged against the headings in the server response.
 
-### Docs content and ranking
+**Generated files.** Refresh scripts own the inventory files; the authored spec owns operation
+mappings. A schema or mapping change needs the adapter tests and the normal gates, and the
+catalog and spec are regenerated through their scripts.
 
-The Mintlify project belongs to the Stellar docs team.
-Raven holds no write path to its content or search configuration.
-Content corrections belong in `stellar/stellar-docs` when a page is wrong, stale, or missing.
-Do not replace upstream content with a Raven-owned version.
-Do not create a second index without a measured benefit that justifies its maintenance burden.
-
-A docs search-mechanism change inside Raven, such as a new scope or a guard change, needs a measured win.
-Measure it with a free, read-only, retrieval-level A/B against the golden docs pages.
-The mechanism must be general, not a per-query or per-page exception.
-
-### Verification
-
-Run `npm run docs:anchors:build` to refresh the section anchor index after a docs site update.
-This keyless command reads the public sitemap and rendered docs and meeting pages.
-It records rendered section heading IDs and preserves duplicate headings.
-It replaces the index only after every page succeeds.
-An unchanged capture preserves the file and its capture time.
-The index is a snapshot; headings can change before the next refresh.
-
-The committed fixture pins rendered heading pairs from eleven pages.
-The daily refresh workflow updates the index before it creates `.env`.
-Its drift report includes anchor changes.
-The refresh also supports manual runs and does not run during a Worker build.
-The index judges uniqueness against headings in the server response.
-Other headings can share a recorded heading's text.
-
-Refresh scripts own generated inventory files.
-The authored spec owns operation mappings; the runtime adapter consumes those mappings.
-Changes to schemas or mappings require the relevant adapter tests and normal repository gates.
-The catalog and spec builders must regenerate their outputs through the owning scripts.
-Do not hand-edit generated artifacts.
-
-Use [the improvements workflow](../.agents/skills/improvements-pipeline/SKILL.md) for evidence-backed upstream findings.
-Use [the observability workflow](../.agents/skills/cloudflare-observability-review/SKILL.md) for runtime request investigation.
-Do not treat old probe counts, keys, or endpoint surveys as current operating instructions.
+Investigate a runtime request with the
+[observability workflow](../.agents/skills/cloudflare-observability-review/SKILL.md). Old probe
+counts, keys, and endpoint surveys in `research/` are not operating instructions.
