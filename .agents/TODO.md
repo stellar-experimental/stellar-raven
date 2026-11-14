@@ -227,6 +227,59 @@ instructions are dropped, so the tool descriptions are the whole contract there.
 Done when: the table's rows match the current client versions, and the owner decides whether Grok's
 2,033-character cut needs a guard like the Claude Code one (BASE is 1,899 characters, so it fits today).
 
+## Family decider follow-ups
+
+Source: [family decider record](../research/audits/2026-11-14-family-decider.md). The engine question
+is closed for the search page; nothing below reopens it. The record also bears on M1: seven lexical
+cards against five was +3/−0 on 64 FAM development rows.
+
+### Settle the routing-row overlap with the held-out QA questions
+
+73 of 338 legacy and 26 of 122 extended routing rows are exact or near duplicates (token Jaccard at
+least 0.8) of the 168 held-out and reserve QA questions. The skills rows (0 of 23) and the FAM and
+stellar.org question sets (0 of 150, 0 of 40) have none. The orchestrator holds the matching ids and
+no file names them, because naming them reveals which QA cases are held out. Until this is settled, a
+frame, threshold, or rule tuned on a routing row can touch held-out content. Options: (1) re-draw the
+QA split without the duplicates; (2) mark the matching routing rows confirmation-only for all routing
+work.
+
+Done when: the owner picks one, and either the new split and its SHA-256 are recorded or the routing
+partition marks those rows and the routing eval README says no lane tunes on them.
+
+### Decide what test earns the sealed FAM confirmation rows
+
+82 FAM confirmation questions, written without goldens and labeled by two lanes, are sealed and
+unspent (SHA-256 `07587dc04e2c993a92736d18610e4fc8fa78e04e77541863df4cfa83c85244ec`, held by the
+orchestrator; the record lists the paths). They can be used once. A routing-reach test does not earn
+them: the rows a decider can win are reached by general search operations the base instructions
+already name. A test earns them when its outcome is an answer, not a card on the page, it states the
+decision it changes, and its pass rule is fixed before the rows open. Free first step: in the stored
+agent transcripts that M1 replays, count how often an agent called a family's general search
+operation (`stellarDocs.search_docs`, `lumenloop.search_content_semantic`, `scout.searchResearch`)
+when the page lacked it. A high rate means no page change helps; a low rate points to a static fix (a
+`nextSteps` clause, or two named general ids after the page) inside M1's paired QA.
+
+Done when: such a test is written and the rows are spent on it once, or the owner retires the set;
+record which.
+
+### Treat stellar.org routing reach as a lexical and description question
+
+The "Routing reach" bullet (a `stellarOrg` operation in the top five for 7 of 40 off-golden questions)
+sits under "Finish the stellar.org source after merge" on `feat/stellar-org-source`, not on `main`.
+When that branch merges, link that bullet to the [family decider
+record](../research/audits/2026-11-14-family-decider.md). The record's answer: an engine is not the
+fix. On the 20 development stellar.org questions (natural form) today's page reaches 3, a model-free
+family floor 19, and the engines on the rewritten statements +10 to +12 over seven lexical cards
+against the floor's +16. The floor is not a ship either: it admitted a `stellarOrg` card on 33 of the 46 FAM development rows that do not
+label it. The lead is the family text and the `stellarOrg` descriptions, which the frozen statements
+in `research/audits/2026-11-14-family-decider/statements/` show can raise a model's family precision
+from 0.73 to 0.95. Under ADR-0009 a change needs +3 at top five with per-case review, and the owner's
+rule stands: do not fit the service to the stellar.org slice at the expense of other categories.
+
+Done when: a general description or lexical change raises stellar.org reach on the off-golden
+questions with no loss elsewhere, measured on FAM development and the SORG development rows and
+confirmed on questions not used to write it, or the owner closes the item.
+
 ## Golden answers
 
 ### Finish the 2026-11-14 golden coverage audit

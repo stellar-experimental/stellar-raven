@@ -1,0 +1,32 @@
+[
+  {
+    "family": "lumenloop",
+    "label": "Lumenloop",
+    "grounds": "What the Stellar community and press have published: dated summaries of articles, talks, podcasts, events and Lumenloop's own research about a topic, project or named entity; a project directory with links and regions; Stellar Community Fund submissions with proposal text, round, award and amount.",
+    "notFor": "Protocol or API rules (Stellar Docs); repo, contract, audit, partner or people records (Scout); SDF's own positions (stellar.org)."
+  },
+  {
+    "family": "scout",
+    "label": "Scout",
+    "grounds": "Structured, dated records of who builds what on Stellar: projects, GitHub repos and code answers, verified mainnet contracts, audit reports, hackathons and submissions, builders, SDF leadership, service partners, stablecoins, RFPs, activity rankings and market gaps; plus cited passages from SEPs, CAPs, audits and SDF posts.",
+    "notFor": "Editorial coverage, talks or SCF proposal text (Lumenloop); authoritative protocol and API wording (Stellar Docs); SDF strategy pages (stellar.org)."
+  },
+  {
+    "family": "stellarDocs",
+    "label": "Stellar Docs",
+    "grounds": "Official wording from developers.stellar.org on how the protocol, accounts, transactions, fees, assets, Soroban contracts, RPC, Horizon, SDKs, CLI, wallets, dapps, anchors and SEP integrations work, as doc sections or whole pages; plus protocol and developer meeting notes on when and why changes were decided.",
+    "notFor": "Which projects, people or funding exist (Scout, Lumenloop); audit records (Scout, stellar.org); SDF strategy (stellar.org); build and security playbooks (Skills)."
+  },
+  {
+    "family": "stellarOrg",
+    "label": "stellar.org",
+    "grounds": "What the Stellar Development Foundation says about itself on stellar.org: strategy and objectives, product roadmap, grant and funding programs, product and learning pages, video tutorials, the Soroban Security Audit Bank's audited-project records with report links, and the partner and service-provider directory.",
+    "notFor": "Protocol or API behavior (Stellar Docs); SDF blog, press and event posts (Scout, Lumenloop); project funding history (Lumenloop, Scout)."
+  },
+  {
+    "family": "skills",
+    "label": "Skills",
+    "grounds": "Pinned step-by-step playbooks read by section: writing, testing, securing and upgrading Soroban contracts, OpenZeppelin libraries, dapp and wallet frontends, assets, chain data, choosing standards, cross-chain rails, ZK proofs, agent payments and escrow integration; plus recipes for ecosystem research, SCF positioning and project dossiers.",
+    "notFor": "Live ecosystem facts (Scout, Lumenloop); current official reference wording (Stellar Docs); SDF's own positions (stellar.org)."
+  }
+]
