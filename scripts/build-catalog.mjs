@@ -39,6 +39,7 @@ import { writeFileAtomic } from "./lib/shared.mjs";
 import { loadSkillTexts, skillFileUrl } from "./lib/skill-mirror.mjs";
 import { RETRIEVAL_PROFILES } from "./catalog-data/retrieval-profiles.mjs";
 import { KNOWN_ALIAS_PACKS } from "./catalog-data/known-aliases.mjs";
+import { CARD_CAVEATS, CARD_CAVEAT_MAX_CHARS } from "./catalog-data/card-caveats.mjs";
 import { applyModelContractCorrection } from "./catalog-data/model-contract-corrections.mjs";
 import { lumenloopInputSchema, lumenloopOutputSchema } from "../src/adapters/lumenloop-shape.ts";
 
@@ -1174,6 +1175,31 @@ export function attachRetrievalProfiles(entries, profiles = RETRIEVAL_PROFILES) 
   return out;
 }
 
+/** Attach the one-line caveat a compact search card must keep. Fails on drift. */
+export function attachCardCaveats(entries, caveats = CARD_CAVEATS) {
+  const attached = new Set();
+  const out = entries.map((entry) => {
+    const caveat = caveats[entry.id];
+    if (caveat === undefined) return entry;
+    if (entry.kind !== "operation") throw new Error(`card caveat key "${entry.id}" is not an operation`);
+    if (
+      typeof caveat !== "string" ||
+      !/^\S[^\r\n\u2028\u2029]*\.$/u.test(caveat) ||
+      caveat.length > CARD_CAVEAT_MAX_CHARS
+    ) {
+      throw new Error(
+        `card caveat "${entry.id}" must be one line of at most ${CARD_CAVEAT_MAX_CHARS} characters that ends with a period`
+      );
+    }
+    attached.add(entry.id);
+    return { ...entry, cardCaveat: caveat };
+  });
+  for (const id of Object.keys(caveats)) {
+    if (!attached.has(id)) throw new Error(`card caveat key "${id}" matched no exposed operation`);
+  }
+  return out;
+}
+
 // ---------------------------------------------------------------------------
 // Assemble
 // ---------------------------------------------------------------------------
@@ -1204,6 +1230,7 @@ export function assertNoNonExposedRefs(entries) {
   for (const entry of entries) {
     const text = [
       entry.description ?? "",
+      entry.cardCaveat ?? "",
       ...(entry.keywords ?? []),
       ...(entry.routingKeywords ?? []),
       ...(entry.routingPhrases ?? []).flatMap((phrase) => phrase.tokens),
@@ -1278,7 +1305,7 @@ async function main() {
   // Runnable attachment runs over the FULLY assembled set: its declared-op
   // guard needs every service's operation entries in scope, not just skills.
   const entries = applySkillsFormArm(
-    attachKnownAliases(attachRetrievalProfiles(attachRunnableSkills(
+    attachCardCaveats(attachKnownAliases(attachRetrievalProfiles(attachRunnableSkills(
       [
         ...lumenloopEntries,
         ...scoutEntries,
@@ -1292,7 +1319,7 @@ async function main() {
         ),
         ...skillEntries
       ].sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0))
-    ))),
+    )))),
     arm
   );
 
