@@ -14,6 +14,8 @@ evidence:
   - GT-38 recurrence: Aquarius submissions exposed four bare budgets totaling $391K without statuses while the project summary returned the three-Awarded-row $291K basis; Blend and Soroswap still required official status/paid fields
   - GT-37 recurrence: oracle/passkey/payroll rows exposed populated budgets without awarded/paid status, including partial-payment and non-awarded fixtures
 recurrences:
+  - date: 2026-11-14
+    evidence: "2026-11-14T02:36:36Z POST https://api.lumenloop.com/v1/tools/get_scf_submissions {slug:'blend'} returns one row (recRSgNDEycVg2xG8, round 'Liquidity Award - '24 Q1', award_type 'Liquidity Award', budget '50000'). Row keys: application, architecture_url, award_type, budget, category, description, github_url, linked_project_slug, linked_project_slugs, project, round, round_number, slug, submission_url, title, website. No award status, awarded or paid amount, currency, amount basis, source URL or as-of. Still reproduces."
   - date: 2026-11-09
     evidence: "2026-11-09 sweep at 2026-11-09T20:31:05.685224+00:00: still-repro. Blend submission still exposes budget=50000 with no normalized currency/awardStatus/awardedAmount/paidAmount/basis fields. Aquarius4 and Soroswap4 share the structured gap, even where application prose says Awarded. LOBSTR awarded_total=267463 still equals rounded official totalPaid=267462.64 rather than totalAwarded=232000 in the fresh SCF project payload. Read-only exact requests and response hashes: research/audits/2026-11-09-improvements-sweep/lane-lumenloop.md; upstream issue state/comments freshly read; no maintainer comments or claimed fix."
   - date: 2026-11-06

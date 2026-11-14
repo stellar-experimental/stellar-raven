@@ -213,12 +213,21 @@ Recheck only when the named change or new evidence arrives. An untouched issue n
 reminder. The [November 5 ledger](rounds/2026-11-05-truth-maintenance.md) and its per-finding
 tables cover every finding.
 
-- **sls-033** stays active: nine unavailable platform facts lack a source URL
-  ([result](https://github.com/Stellar-Light/stellarlight/issues/519#issuecomment-6827190900)).
-  Recheck when the owner adds a source field.
-- **sls-107**: require the owner-enabled issuer-of-record write (PR1923) to populate issuer,
-  source, and date for the nine AUDD/Currency One records and the MGUSD control. On 2026-11-12
-  all 37 rows still had null issuer fields.
+- **sls-033**: the source-URL gap is fixed live (2026-11-14, Scout 1.9.150, PR1967; inbound
+  handoff #429), and the finding holds the receipt. It stays `reported-upstream` only because a
+  golden partial cap still names it. In one change: remove that cap with `golden-truth`
+  (`rg -l sls-033 eval/qa/corpus/battery`), set `fixed-upstream`, run the distinct retirement
+  review, and post the resolution comment on stellarlight#519 and PR1967.
+- **sls-107** is `fixed-upstream` on the 2026-11-14 live recheck (inbound handoff #425). It
+  waits for the distinct retirement review and the resolution comment on stellarlight#1900 and
+  PR1944. The reviewer should scan one adjacent row: BRLT has a null `issuerOfRecordCheck` and
+  no note.
+- **sls-116** is partly fixed (PR1962; inbound handoff #427). One named round-44 page
+  (`soroban-contract-source-verification-service-bax`) is on no Scout row, and the owner's own
+  check reports 20 rounds short by 27 awards. Reply with the 2026-11-14 result; retire only when
+  the remainder is sourced or explicitly out of scope.
+- **Inbound handoff #426 (sls-029)** arrived after the finding was retired on 2026-11-12. Reply
+  with the receipt in `improvements/resolved.json` and close it.
 - **Docs pull requests.** The [Docs table](rounds/2026-11-05-truth-maintenance/docs.md) and the
   [continuation table](rounds/2026-11-06-remaining-sweep/docs.md) name each unmerged pull
   request, its blocker, and its live trigger, including draft2752 and the generated-skill

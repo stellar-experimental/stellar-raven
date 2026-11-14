@@ -13,6 +13,8 @@ evidence:
   - 2026-07-14 normalized semantic fallback made the exact playground question recover despite the unchanged empty person-entity lane
   - https://github.com/lumenloop/lumenloop-backend/issues/19 (filed 2026-07-13)
 recurrences:
+  - date: 2026-11-14
+    evidence: "2026-11-14T02:37:02Z POST https://api.lumenloop.com/v1/tools/find_content_by_entity with entity_type 'person': 'Tyler van der Hoeven' and 'Denelle Dixon' both return success true, meta.format json and five empty groups. The organization control 'MoneyGram' returns 30 articles, 30 AV rows, 16 events and 30 SCF submissions. Still reproduces."
   - date: 2026-11-09
     evidence: "2026-11-09 sweep at 2026-11-09T20:30:59.482327+00:00: still-repro. Denelle Dixon, Tyler van der Hoeven, and Justin Rice person calls each return success=true and five empty groups. The SDF organization control returns 5 rows in each group. Published schema still includes person; the response does not flag the restriction. Read-only exact requests and response hashes: research/audits/2026-11-09-improvements-sweep/lane-lumenloop.md; upstream issue state/comments freshly read; no maintainer comments or claimed fix."
   - date: 2026-11-06
