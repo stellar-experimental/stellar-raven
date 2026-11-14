@@ -8,7 +8,7 @@
     "date": "2026-11-14",
     "author": "audit-hist-retail (golden coverage audit)",
     "reviewer": "verify-hist-retail (golden coverage audit)",
-    "reason": "Retire is right: it grades Raven's Scout status envelope, not Stellar truth. But the named survivor q-gap-scout-status-envelope is itself proposed for retirement by the protocol auditor, so the reason must rest on test/adapters.test.ts (scout.getStatus URL) and test/live/run-live-execute.mjs (calls scout.getStatus), not on that case.",
+    "reason": "Retired with no replacement because it grades Raven's Scout status envelope rather than a Stellar fact, and test/adapters.test.ts and test/live/run-live-execute.mjs exercise scout.getStatus.",
     "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
     "evidence": [
       "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-history-ecosystem-index-freshness-live",

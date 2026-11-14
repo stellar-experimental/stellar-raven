@@ -11,8 +11,7 @@
     "keyFacts": [
       "Contracts reach assets via the SAC, not the SDEX, claimable balances, or sponsorships.",
       "A transaction with an invoke, extend, or restore operation holds only that operation.",
-      "Classic operations and contract invocations therefore need separate transactions.",
-      "Programmable escrow is a Soroban contract holding SAC or SEP-41 balances."
+      "Classic operations and contract invocations therefore need separate transactions."
     ],
     "avoid": [
       "Do NOT claim that a contract can call classic ManageOffer, PathPayment, liquidity-pool, or claim operations directly.",
@@ -56,14 +55,11 @@
     ],
     "verified": {
       "date": "2026-11-14",
-      "by": "Golden coverage audit 2026-11-14 (audit-soroban-a, verify-audit-soroban-a; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+      "by": "Golden coverage audit closeout 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-a.json#q-sor-classic-dex-from-contract",
-        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-a.json#q-sor-classic-dex-from-contract",
-        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-sor-classic-dex-from-contract",
-        "Live A 2026-11-14: https://developers.stellar.org/docs/build/smart-contracts/overview -- 'Soroban contracts cannot interact with the SDEX, claimable balances, or sponsorships.'",
-        "Live B 2026-11-14: https://github.com/stellar/rs-soroban-env/blob/main/soroban-env-common/env.json -- '202 host functions; none named for offers, claim, pool, liquidity, or sponsor'",
-        "Live A 2026-11-14: https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions -- 'can only have one operation per transaction'"
+        "Removed a key fact on programmable escrow: the question does not ask for it and the golden answer does not state it.",
+        "The remaining facts keep their 2026-11-14 corroboration (smart-contract overview, operations-and-transactions).",
+        "Trigger only (not evidence): .agents/rounds/2026-11-14-golden-coverage-audit/qa/RESULT.md, 'Cases to fix'"
       ],
       "rootCause": [
         ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"

@@ -10,7 +10,8 @@
       "A 2026-02-22 USTRY price pump fed through Reflector's VWAP drained a YieldBlox pool.",
       "About 61.2M XLM and 1M USDC were borrowed; dollar loss (~$10M) varies by source.",
       "About 48M XLM was quarantined by validators; quarantine is not recovery.",
-      "Staleness was not causal; depth minimums, value bounds and supply caps are defenses."
+      "The manipulated price was fresh, so oracle staleness was not the cause.",
+      "Defenses for thin collateral include market-depth minimums, value bounds and supply caps."
     ],
     "avoid": [
       "Do NOT call the quarantined XLM recovered, or assert attacker repayment without proof.",
@@ -405,14 +406,11 @@
     ],
     "verified": {
       "date": "2026-11-14",
-      "by": "Golden coverage audit 2026-11-14 (audit-compliance, verify-audit-compliance; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+      "by": "Golden coverage audit closeout 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-compliance.json#q-comp-yieldblox-oracle-incident",
-        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-compliance.json#q-comp-yieldblox-oracle-incident",
-        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-comp-yieldblox-oracle-incident",
-        "Live F 2026-11-14: https://horizon.stellar.org/transactions/01c2ba7553c2e22d64adca8849a30f296c76fcd91f49a2eca383113d7d307b8b -- 'created_at 2026-02-22T00:20:50Z, successful true'",
-        "Live F 2026-11-14: https://horizon.stellar.org/ledgers/63073409 -- 'closed_at 2026-06-17T17:00:08Z'",
-        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-protocol/master/limits/slp-0006.md -- 'Title: Freeze YieldBlox Exploit Stellar Accounts ... Status: Final'"
+        "Split one key fact that bundled a causal claim with a list of defenses; no fact added or dropped. The 'accept any two defenses' relaxation was declined: it would only ease grading.",
+        "Existing corroboration rows (Script3 post-mortem 2026-03-04, Reflector and Blend sources) carry both facts unchanged.",
+        "Trigger only (not evidence): .agents/rounds/2026-11-14-golden-coverage-audit/qa/RESULT.md, 'Cases to fix'"
       ],
       "rootCause": [
         ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"

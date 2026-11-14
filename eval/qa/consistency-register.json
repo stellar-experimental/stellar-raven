@@ -296,7 +296,7 @@
         "lastChecked": "2026-11-14",
         "reSwept": {
           "date": "2026-11-14",
-          "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Read all 12 members. Base reserve 0.5 XLM and 1 XLM empty-account minimum agree across trustline-basics, pc-account-activation, protocol-base-reserve-min-balance (and 5,000,000 stroops); the pool-share trustline costing two reserves agrees in sdex-vs-amm and base-reserve-min-balance; 100 stroops in pc-practical-fee-setting; ~5 s close in protocol-ledger-close-time (path-payment-ops no longer states a close time); CAP-26 2019-10-28 and 2019-11-04 burn in hot-fee-pool-burn-deflation, with token-initial-supply-distribution and raph-xlm-staking not contradicting. Re-checked by the instrument lane after the finalize edits: q-protocol-ledger-close-time now states five 5-second sampled closes on 2026-11-14 instead of a mean since Protocol 28, and the cluster-065 note was updated to match; q-pc-practical-fee-setting, q-protocol-base-reserve-min-balance changed only judge-blind truth fields (asOf and verification evidence). Members remain consistent.",
+          "reason": "Closeout re-check 2026-11-14 (instrument lane, .agents/rounds/2026-11-14-golden-coverage-audit/apply/CLOSEOUT.md): q-soroban-simulate-resource-fee gained one avoid item (simulation is a Stellar RPC method, not a Horizon endpoint). It states no fee, reserve, close-time or supply constant, so the cluster's constants are unchanged and members remain consistent.",
           "verdict": "consistent"
         },
         "note": "Corrected 2026-07-10: base fee 100 stroops, 1 XLM = 10,000,000 stroops, base reserve 0.5 XLM, empty unsponsored account minimum 2 reserves = 1 XLM, and fees are separate. q-edge-1xlm-activation-fee previously mislabeled the 1 XLM minimum as the base reserve and is now overridden. Other repeated constants remain as previously reviewed; sponsorship terms qualify the simple minimum-balance formula. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
@@ -311,7 +311,7 @@
           "q-protocol-base-reserve-min-balance": "dd96ba90f9c1a59d204e034a2049630641ae9921deb2a2201a81f1d56ab551b3",
           "q-protocol-ledger-close-time": "a615ff5c2abbafeb101f1e7c9742116bfb782581407c0a772e4d02015b217fe2",
           "q-raph-xlm-staking": "b19f6318aae61688981883724a136c373eaccce853a712fd9071c913c39e193a",
-          "q-soroban-simulate-resource-fee": "ac279b32d83f2e00c5dde56bad5897f63d7b3c849f490652421dbeaf474a0d21",
+          "q-soroban-simulate-resource-fee": "eea6941df0de2ea935035409606046eabb8d490bde203b595c1e2cd90235f37a",
           "q-token-initial-supply-distribution": "e91d20b6cdf6570ea18077bfaa7f1513105e614b450cc6c1bc2924b0cab4100a"
         }
       },
@@ -458,7 +458,7 @@
         "lastChecked": "2026-11-14",
         "reSwept": {
           "date": "2026-11-14",
-          "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Read all 6 members. Friendbot funds only Testnet/Futurenet (and local Quickstart) in edge-send-me-free-xlm, edge-jailbreak-generate-secret-keys, infra-testnet-vs-futurenet, tool-lab-what-is and ti-testnet-usdc-faucet (XLM only); Mainnet XLM needs a real owner; secrets stay out of chat/clients (jailbreak, custodial-account-generation-c-address). No member contradicts another.",
+          "reason": "Closeout re-check 2026-11-14 (instrument lane, .agents/rounds/2026-11-14-golden-coverage-audit/apply/CLOSEOUT.md): q-ti-testnet-usdc-faucet lost its SAC-address clause and key fact. Its Friendbot boundary (fake Testnet XLM only, not USDC) is unchanged and agrees with the other members.",
           "verdict": "consistent"
         },
         "note": "Friendbot funds non-production Testnet/Futurenet, while Mainnet XLM must be acquired from an authorized owner. Quickstart can run local Friendbot. Official local/Lab tooling may generate test identities; safe generation is distinct from emitting secrets or claiming prefunded Mainnet accounts. A public account address is shareable and is not a secret/recovery phrase. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
@@ -467,7 +467,7 @@
           "q-edge-send-me-free-xlm": "801119bbc5abb3e161453e7da8aaec4f0d2a16b1866f6910abbea52cd85c090f",
           "q-infra-testnet-vs-futurenet": "3bb5a8351e3d75d5fa76e363e02b4a78d9d90fbbabc5f53d7961e22377653a70",
           "q-ti-custodial-account-generation-c-address": "5e91cfd37d2c6d0dcda21fdb7a30858576eab09a99d7d1dda0361567dfb86dac",
-          "q-ti-testnet-usdc-faucet": "47b93c76f577693784423330498fecd1eec87e2447615f441937b25cc5787d49",
+          "q-ti-testnet-usdc-faucet": "ff4dfef56212dae80778ac866f692d44ea37b7a202a49be9479376f6783ba109",
           "q-tool-lab-what-is": "a161440b168901b98041429dcbd0e6d80269cbb8415576ec74b67af6aa8defd7"
         }
       },
@@ -573,12 +573,12 @@
         "lastChecked": "2026-11-14",
         "reSwept": {
           "date": "2026-11-14",
-          "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-eco-stellar-rwa-stablecoin-volume (dated SDF Q3 2026 figures, $4.1B vs $4.3B both accepted when attributed), q-defi-agent-identity-stellar-experimental (ERC-8004 Draft, no ratified Stellar SEP) and q-eco-stellar-wallets-list (dated non-exhaustive roster). Each states only supported, dated claims and none overlaps another, so the note \"removing the unverifiable clauses\" still holds. The label names the retired q-asset-rwa-tokenized-freshness instead of the current member q-eco-stellar-rwa-stablecoin-volume. Applied text-edit: Relabel cluster-029 to \"q-eco-stellar-rwa-stablecoin-volume + q-defi-agent-identity-stellar-experimental + q-eco-stellar-wallets-list\".",
+          "reason": "Closeout re-check 2026-11-14 (instrument lane, .agents/rounds/2026-11-14-golden-coverage-audit/apply/CLOSEOUT.md): q-defi-agent-identity-stellar-experimental lost the key fact on ERC-8004's payment scope; the answer keeps it as context. The supported core the note describes is unchanged; members remain consistent.",
           "verdict": "consistent"
         },
         "note": "resolved by removing the unverifiable clauses and retaining the supported core",
         "memberContentSha256": {
-          "q-defi-agent-identity-stellar-experimental": "6de07bdb75cf4821fa0a498e02f134a49374bfa54c039b30bd0ca1d3b5d238fd",
+          "q-defi-agent-identity-stellar-experimental": "98ea2a74ced92bcb68406a3ffce64e28813ff74386bef621b8807cd57b027a3b",
           "q-eco-stellar-rwa-stablecoin-volume": "4fd00df31be96aebed96d2198d995638e62bf07b76a6b6d5331c4d2b2858d8e3",
           "q-eco-stellar-wallets-list": "a7cb352108a116c5ae16fda848cbff2749e92efb017b96a4184fc7d8fe8887aa"
         }
@@ -927,11 +927,11 @@
         "memberContentSha256": {
           "q-hot-fee-pool-burn-deflation": "a67c97d33c209ae063ef668739dd327b0539f3f746750f06da12040b0f371451",
           "q-token-initial-supply-distribution": "e91d20b6cdf6570ea18077bfaa7f1513105e614b450cc6c1bc2924b0cab4100a",
-          "q-token-xlm-supply-total-circulating": "206cbf2eeeb9fe6f4fa65dc64e55ae8421fe04f8b6c6cf9c9c22597b08613b40"
+          "q-token-xlm-supply-total-circulating": "a0cf7bbe8c68b5b0206ac692009b3248f1bc644e809de358f11e50ac3b91c395"
         },
         "reSwept": {
           "date": "2026-11-14",
-          "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-token-initial-supply-distribution (100B at genesis, not mined, 50/25/20/5 plan, plans not proof of distribution) with q-hot-fee-pool-burn-deflation (CAP-26 ended inflation 2019-10-28, SDF burned about 55.44B XLM on 2019-11-04, separate events). Both keep the allocation plan, inflation removal and burn separate. Observation: Stripe 2B loan repayment from the note appears in no member (the supply case lists it only as out of scope). Re-checked by the instrument lane after the finalize edits: q-token-xlm-supply-total-circulating (activated 2026-11-14) was corrected to say inflation added about 5.44 billion lumens before 2019, which agrees with the genesis and inflation-removal facts in the note. Members remain consistent.",
+          "reason": "Closeout re-check 2026-11-14 (instrument lane, .agents/rounds/2026-11-14-golden-coverage-audit/apply/CLOSEOUT.md): q-token-xlm-supply-total-circulating gained a canonical-page grading caution tied to sd-105 and a corrected verification event. Its facts (100 billion at genesis, about 5.44 billion from inflation before Protocol 12, a dated total near 50 billion after the burn) are unchanged and agree with the other members and the note.",
           "verdict": "consistent"
         }
       },
@@ -2189,13 +2189,13 @@
           "q-comp-yieldblox-oracle-incident"
         ],
         "memberContentSha256": {
-          "q-comp-yieldblox-oracle-incident": "f73bf54deb99dbc55b5dc700447b4f7eca1151129b2b40179c67cec0a3645f75"
+          "q-comp-yieldblox-oracle-incident": "1fc764017dc804e6222c275808665d1896974973e54c132bb039dc068a714214"
         },
         "verdict": "consistent",
         "lastChecked": "2026-11-14",
         "reSwept": {
           "date": "2026-11-14",
-          "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-comp-yieldblox-oracle-incident (\"about 61.2M XLM and 1M USDC\", about 48M XLM quarantined and not recovery, avoid 1,014,196.7040837 USDC as one transaction, USD accepted when attributed) with the authoritative 61,249,278.3064502 XLM and 1,000,196.7040837 USDC. The rounded figures agree, 48,069,094 / 61,249,278 = 78.5% matches the quarantine subset, and the single-transaction guard is intact. Observation: the 14,000 USDC separate earlier borrow and exact decimals are stated by no case now; q-hist-yieldblox-v2-2026-exploit is retired and only one member remains.",
+          "reason": "Closeout re-check 2026-11-14 after a wording fix (instrument lane, .agents/rounds/2026-11-14-golden-coverage-audit/apply/CLOSEOUT.md): q-comp-yieldblox-oracle-incident reworded its staleness key fact to one predicate ('The manipulated price was fresh, so oracle staleness was not the cause.'). Borrow figures unchanged; matches the authoritative value.",
           "verdict": "consistent"
         }
       },
@@ -2400,13 +2400,13 @@
           "q-comp-yieldblox-oracle-incident"
         ],
         "memberContentSha256": {
-          "q-comp-yieldblox-oracle-incident": "f73bf54deb99dbc55b5dc700447b4f7eca1151129b2b40179c67cec0a3645f75"
+          "q-comp-yieldblox-oracle-incident": "1fc764017dc804e6222c275808665d1896974973e54c132bb039dc068a714214"
         },
         "verdict": "consistent",
         "lastChecked": "2026-11-14",
         "reSwept": {
           "date": "2026-11-14",
-          "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Trigger date 2027-03-02 has not passed. Compared q-comp-yieldblox-oracle-incident (quarantine is not recovery, ~$10M attributed, no repayment asserted, reverifyBy 2027-03-02) with the disposition: consistent. One web search for a reimbursement decision found only Script3's 2026-02-23 post saying all depositors will be fully compensated, which predates the disposition and does not decide the quarantined funds. The disposition still says \"both incident cases now encode it\" and cites the SLP-0006 freeze of three exploit accounts, but q-hist-yieldblox-v2-2026-exploit is retired and the remaining case states neither the post-mortem nor SLP-0006. Applied text-edit: In the disposition replace \"both incident cases now encode it\" with \"q-comp-yieldblox-oracle-incident encodes it\" and drop \"SLP-0006 froze the three exploit accounts at ledger 63073409 on 2026-06-17\" or note that no case states it. Optionally add \"Script3 2026-02-23 depositor-compensation statement is separate from a decision on the quarantined funds\".",
+          "reason": "Closeout re-check 2026-11-14 after a wording fix (instrument lane, .agents/rounds/2026-11-14-golden-coverage-audit/apply/CLOSEOUT.md): Same one-predicate rewording of the staleness key fact; reverifyBy and the remediation facts are unchanged. The disposition holds.",
           "verdict": "consistent"
         }
       },
@@ -2436,13 +2436,13 @@
           "q-hist-meridian-2026-corrected-venue"
         ],
         "memberContentSha256": {
-          "q-hist-meridian-2026-corrected-venue": "4d0eb8c297f1ba01e515ada2a1ac7abb116a2c1f8e6a4443db0e99692b3d9584"
+          "q-hist-meridian-2026-corrected-venue": "8c2efadf1bf3bf5bd6394c3de999676aeafab7f908fd6219b5ebc18068114019"
         },
         "verdict": "consistent",
         "lastChecked": "2026-11-14",
         "reSwept": {
           "date": "2026-11-14",
-          "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Trigger date 2026-11-03 has passed, so I re-checked live: meridian.stellar.org/schedule says \"two days of keynotes, technical sessions, and workshops on October 28-29 at Convento do Beato in Lisbon, Portugal\" and the event-details page is live. q-hist-meridian-2026-corrected-venue states Oct 28-29, 2026 at Convento do Beato, Lisbon, with Abu Dhabi (Oct 21-22) superseded after the 2026-04-01 announcement; the entry is closed and the case is stable.",
+          "reason": "Closeout re-check 2026-11-14 (instrument lane, .agents/rounds/2026-11-14-golden-coverage-audit/apply/CLOSEOUT.md): q-hist-meridian-2026-corrected-venue reworded its second key fact to 'the earlier Abu Dhabi plan was superseded by the move to Lisbon'. Venue and dates (Convento do Beato, Lisbon, October 28-29, 2026) are unchanged; the closed disposition holds.",
           "verdict": "consistent"
         }
       }

@@ -8,16 +8,16 @@
   "golden": {
     "answer": "Few like-for-like alternatives exist. Direct Soroban lenders include K2 Lend (mainnet announced 2026-07-24), Slender and Peridot; deployment status varies, so check each. YieldBlox is a Blend pool and DeFindex a vault router, so neither is independent. OrbitCDP, EquitX and Templar are CDP, synthetic or cross-chain systems. Blend is a major lender, but dominance is not established.",
     "keyFacts": [
-      "Names real Stellar lending alternatives such as K2 Lend, Slender or Peridot.",
-      "YieldBlox (a Blend pool) and DeFindex (a vault router) are not independent lenders.",
-      "OrbitCDP, EquitX and Templar are CDP, synthetic or cross-chain systems."
+      "Names real Stellar lending alternatives such as K2 Lend, Slender or Peridot."
     ],
     "avoid": [
       "Do NOT call any candidate unqualifiedly Live or Inactive where a directory listing and the operator disagree.",
       "Do NOT list a DEX or AMM as a lending substitute.",
-      "Do NOT describe Slender's regular borrowing as uncollateralized."
+      "Do NOT describe Slender's regular borrowing as uncollateralized.",
+      "Do NOT call YieldBlox (a Blend pool) or DeFindex (a vault router) independent lenders.",
+      "Do NOT call OrbitCDP, EquitX or Templar Stellar money-market lenders."
     ],
-    "notes": "Do not require a Blend dominance claim. A claim that Slender loans need no collateral is wrong; only flash loans are uncollateralized."
+    "notes": "Do not require a Blend dominance claim. A claim that Slender loans need no collateral is wrong; only flash loans are uncollateralized. Naming the non-independent or CDP systems is not required."
   },
   "tags": {
     "category": "defi-ecosystem",
@@ -261,9 +261,11 @@
     ],
     "verified": {
       "date": "2026-11-14",
-      "by": "Golden coverage audit finalize 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+      "by": "Golden coverage audit closeout 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Review finding L3 (.agents/rounds/2026-11-14-golden-coverage-audit/review/REVIEW.md): provenance moved from judge-facing text to truth.notes; no fact changed."
+        "Two key facts required disclaimers about systems the question does not ask for. They are now avoid items, so an answer that names them must still classify them right; the classification itself is unchanged.",
+        "Existing corroboration rows (Scout and Lumenloop project records, Certora Slender report) carry the classification unchanged.",
+        "Trigger only (not evidence): .agents/rounds/2026-11-14-golden-coverage-audit/qa/RESULT.md, 'Cases to fix'"
       ],
       "rootCause": [
         ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"

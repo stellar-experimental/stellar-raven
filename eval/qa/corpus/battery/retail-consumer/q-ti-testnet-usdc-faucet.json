@@ -8,12 +8,11 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "Friendbot funds a Testnet account with fake XLM only; it is not a USDC faucet. Fund the account first, add a trustline to Circle’s Testnet USDC (issuer GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5 as of 2026-11-14), then request test USDC from Circle’s faucet. A trustline only permits holding; it credits nothing. The same classic asset has a deterministic SAC contract address for Soroban, not a wrapped copy.",
+    "answer": "Friendbot funds a Testnet account with fake XLM only; it is not a USDC faucet. Fund the account first, add a trustline to Circle’s Testnet USDC (issuer GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5 as of 2026-11-14), then request test USDC from Circle’s faucet. A trustline only permits holding; it credits nothing.",
     "keyFacts": [
       "Friendbot funds fake Testnet XLM only, not USDC.",
       "Holding Testnet USDC needs XLM for reserves and a trustline to Circle’s Testnet issuer.",
-      "A trustline credits nothing; test USDC arrives by payment, such as from Circle’s faucet.",
-      "The deterministic SAC address is the same classic asset, not a wrapped copy."
+      "A trustline credits nothing; test USDC arrives by payment, such as from Circle’s faucet."
     ],
     "avoid": [
       "Do NOT use a Mainnet or wrong-network issuer, or treat test USDC as redeemable value.",
@@ -165,13 +164,11 @@
     ],
     "verified": {
       "date": "2026-11-14",
-      "by": "Golden coverage audit 2026-11-14 (audit-hist-retail, verify-hist-retail; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+      "by": "Golden coverage audit closeout 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-ti-testnet-usdc-faucet",
-        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-ti-testnet-usdc-faucet",
-        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-ti-testnet-usdc-faucet",
-        "Live A 2026-11-14: https://developers.circle.com/stablecoins/usdc-contract-addresses -- 'GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5 appears on the page'",
-        "Live C 2026-11-14: https://horizon-testnet.stellar.org/assets?asset_code=USDC&asset_issuer=GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5 -- 'USDC GBBD47..., 148733 authorized accounts'"
+        "Removed the SAC clause from the answer and key facts: the question asks how to get test USDC after the trustline, not about Soroban addresses.",
+        "Remaining facts keep their 2026-11-14 corroboration (Circle USDC addresses page, Horizon Testnet asset record).",
+        "Trigger only (not evidence): .agents/rounds/2026-11-14-golden-coverage-audit/qa/RESULT.md, 'Cases to fix'"
       ],
       "rootCause": [
         ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"

@@ -10,7 +10,6 @@
     "answer": "ERC-8004 ('Trustless Agents') is an Ethereum ERC, still a Draft as of 2026-11-14, for agent identity, reputation and validation; payments are out of scope and compose with x402. Stellar has no ratified agent-identity SEP. Community Soroban implementations (trionlabs/stellar-8004, progax01/stellar8004) are deployed but unratified, so describe them as early community work.",
     "keyFacts": [
       "ERC-8004 is an Ethereum Draft for agent identity, reputation and validation.",
-      "ERC-8004 leaves payments out of scope; it composes with x402.",
       "Stellar has no ratified SEP for agent identity (as of a stated date).",
       "Community Soroban implementations exist, such as trionlabs/stellar-8004."
     ],
@@ -185,17 +184,12 @@
     ],
     "verified": {
       "date": "2026-11-14",
-      "by": "Golden coverage audit 2026-11-14 (audit-defi, verify-defi; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+      "by": "Golden coverage audit closeout 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-defi-agent-identity-stellar-experimental",
-        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-defi-agent-identity-stellar-experimental",
-        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-defi-agent-identity-stellar-experimental",
-        "Live B 2026-11-14: https://github.com/ethereum/ERCs/blob/master/ERCS/erc-8004.md -- 'status: Draft ... type: Standards Track ... created: 2025-08-13'",
-        "Live B 2026-11-14: gh search code 8004 --repo stellar/stellar-protocol -- 'one hit only: ecosystem/sep-0002.md (a false positive); no SEP-8004 file'",
-        "Live B 2026-11-14: gh api repos/trionlabs/stellar-8004 -- 'archived false, pushed_at 2026-11-14T00:53:24Z'",
-        "Live B 2026-11-14: gh api repos/progax01/stellar8004 -- 'archived false, pushed_at 2026-06-15T03:32:16Z'",
-        "Live B 2026-11-14: https://github.com/ethereum/ERCs/blob/master/ERCS/erc-8004.md -- 'title: Trustless Agents / status: Draft'",
-        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/README.md -- 'no SEP title matches agent, identity, or 8004 (grep of the SEP index)'"
+        "Removed the key fact that ERC-8004 leaves payments to x402: the question asks what exists on Stellar and how mature it is, not ERC-8004's payment scope. The answer keeps it as context.",
+        "Key fact 1 kept: the external Draft standard is one side of the case's three-way distinction (truth.notes, GT-12).",
+        "Live A 2026-11-14: https://eips.ethereum.org/EIPS/eip-8004 -- status badge 'Draft' ('This EIP is not yet recommended for general use or implementation').",
+        "Trigger only (not evidence): .agents/rounds/2026-11-14-golden-coverage-audit/qa/RESULT.md, 'Cases to fix'"
       ],
       "rootCause": [
         ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"

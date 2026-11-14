@@ -8,7 +8,7 @@
     "date": "2026-11-14",
     "author": "audit-tooling-a (golden coverage audit)",
     "reviewer": "verify-audit-tooling-a (golden coverage audit)",
-    "reason": "Merged into q-soroban-simulate-resource-fee. q-soroban-simulate-resource-fee asks the same question with more detail. Its soroban-b rewrite lacks the Horizon boundary, so the orchestrator must add the avoid 'Do NOT claim simulation runs through a Horizon endpoint; it is a Stellar RPC method.' The sign-after-simulate ordering is already implied by 'on the unsigned transaction'.",
+    "reason": "Merged into q-soroban-simulate-resource-fee, which asks the same question in more detail and carries the avoid item that simulation is a Stellar RPC method, not a Horizon endpoint.",
     "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
     "evidence": [
       "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-a.json#q-infra-simulate-transaction-howto",

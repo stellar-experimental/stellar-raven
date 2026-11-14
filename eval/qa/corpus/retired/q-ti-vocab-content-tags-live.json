@@ -8,7 +8,7 @@
     "date": "2026-11-14",
     "author": "audit-tooling-b (golden coverage audit)",
     "reviewer": "verify-audit-tooling-b (golden coverage audit)",
-    "reason": "Retire holds: no Stellar truth, and op ranking is unit-tested (test/search.test.ts, test/lumenloop-shape.test.ts). But the named survivor q-gap-lumen-content-tag-vocabulary is itself retired by tooling-a, so no QA case keeps get_tags_vocabulary; the tombstone must name no battery replacement.",
+    "reason": "Retired with no replacement because Lumenloop's content-tag vocabulary is Raven mechanics with no Stellar fact, and test/search.test.ts and test/lumenloop-shape.test.ts cover the operation.",
     "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
     "evidence": [
       "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-b.json#q-ti-vocab-content-tags-live",

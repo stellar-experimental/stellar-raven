@@ -9,7 +9,7 @@
     "answer": "Meridian 2026 was held October 28–29, 2026 at Convento do Beato in Lisbon, Portugal. Earlier announcements of Abu Dhabi (Yas Marina, October 21–22) were superseded when SDF announced the move to Lisbon on April 1, 2026.",
     "keyFacts": [
       "Meridian 2026 was held October 28–29, 2026 at Convento do Beato, Lisbon.",
-      "Abu Dhabi, October 21–22 was superseded; SDF announced Lisbon on 2026-04-01."
+      "The earlier Abu Dhabi plan for Meridian 2026 was superseded by the move to Lisbon."
     ],
     "avoid": [
       "Do NOT claim Meridian 2026 took place in Abu Dhabi/Yas Marina or on October 21–22."
@@ -150,13 +150,11 @@
     ],
     "verified": {
       "date": "2026-11-14",
-      "by": "Golden coverage audit 2026-11-14 (audit-hist-retail, verify-hist-retail; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+      "by": "Golden coverage audit closeout 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-hist-meridian-2026-corrected-venue",
-        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-hist-meridian-2026-corrected-venue",
-        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-hist-meridian-2026-corrected-venue",
-        "Live A 2026-11-14: https://meridian.stellar.org/?locale=en -- 'October 28-29.2026 · Convento do Beato, Lisbon, Portugal'",
-        "Live A 2026-11-14: https://x.com/StellarOrg/status/2039405316803031315 -- 'Status id decodes (snowflake) to 2026-04-01T18:11:32Z; text not re-read'"
+        "The key fact bundled the superseded plan with its dates and an announcement date the question does not ask for. The answer keeps the dates; the avoid item still rejects Abu Dhabi or October 21-22 as the event.",
+        "Existing corroboration rows (SDF Meridian sources) carry the venue history unchanged.",
+        "Trigger only (not evidence): .agents/rounds/2026-11-14-golden-coverage-audit/qa/RESULT.md, 'Cases to fix'"
       ],
       "rootCause": [
         ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"

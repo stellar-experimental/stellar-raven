@@ -19,6 +19,9 @@ evidence:
   - "The round's gap and verify lanes reached the same result on 2026-11-14 (.agents/rounds/2026-11-14-golden-coverage-audit/gap/gap-3.json and gap/verify-gap.json, q-pc-quorum-freeze-cap77). The verify lane read the live frozen-keys configuration entry from three RPC providers."
   - "Classification: research-corpus coverage. The corpus declares cap and sep sources from the same repository, so the limits/ directory is in its stated scope."
   - "Affected golden case: eval/qa/corpus/battery/protocol-core/q-pc-quorum-freeze-cap77.json, key fact 4. Ledger: .agents/rounds/2026-11-14-golden-coverage-audit/gaps/GAPS.md."
+recurrences:
+  - date: 2026-11-14
+    evidence: "2026-11-14 QA test of the rebuilt battery (claude-sonnet-5-5 answering, results stamp 2026-11-14T06-06-31-variantA): two unrelated cases missed the Limits Proposals. q-pc-slp-0004-0006-status: no Stellar Docs page, meeting note, Scout or Lumenloop hit mentioned SLPs, so the agent could not confirm the proposal type exists. q-pc-quorum-freeze-cap77: the agent found no source tying the YieldBlox freeze to CAP-0077 or SLP-0006. Evidence/owner state: .agents/rounds/2026-11-14-golden-coverage-audit/qa/RESULT.md, 'Upstream gaps by leaf'."
 ---
 
 ## Finding

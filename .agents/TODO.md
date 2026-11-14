@@ -139,6 +139,38 @@ Outcome: activating reviewed proposals, closing `openSlots`, and filing the sour
 Done when: `eval/qa/taxonomy.json` has no `openSlots` entry that awaits a proposal, and every
 unreachable topic in the ledger has an `improvements/` finding or a recorded decision not to file.
 
+### Decide whether stellar.org pages outside Docs belong in a Raven source
+
+Three unrelated golden cases miss for one reason: the fact lives only on a `stellar.org` page that
+no Raven source holds. The leaves are `ecosystem.strategy-roadmap` (the SDF strategy and roadmap
+pages), `security.audit-registry` (the Audit Bank projects page), and `funding.service-providers`
+(the service-providers directory). The 2026-11-14 QA test showed all three
+([result](rounds/2026-11-14-golden-coverage-audit/qa/RESULT.md), "Corpus-coverage
+diagnostics"). `sls-117` covers only the Scout research-corpus part: four `sdf-org` pages its
+`sls-055` fix left out. Whether Raven should hold `stellar.org` itself is an owner decision, not
+a finding.
+
+Next step: the owner chooses one of three options. Rely on `sls-117` and wait for Scout. Add a
+`stellar.org` source to Raven, with the exposure change and a read-only A/B. Or keep the cases
+and accept that they test facts outside Raven's sources.
+
+Done when: the decision is recorded under "Owner decisions" and the three leaves' cases follow
+it.
+
+### Check Docs search for the SEP-7 payment-request page before filing
+
+`stellarDocs.search_docs('web+stellar:pay payment request QR code')` does not return
+`/docs/build/apps/wallet/sep7`, though the page holds that exact string; Scout returns it. The
+leaf is `standards.payment-patterns` ([gap ledger](rounds/2026-11-14-golden-coverage-audit/gaps/GAPS.md)).
+Nothing is filed: the owner is not established, because the miss may come from Raven's scoping
+or from upstream ranking.
+
+Next step: run the same query against the Mintlify search backend directly, and through Raven
+with and without its scoping, and compare where the page ranks.
+
+Done when: either an `sd-` docs-search finding is filed with the retrieval-level evidence, or a
+Raven-side fix lands with its A/B, or the check shows no defect and that result is recorded here.
+
 ### Re-verify the event-tied goldens after SCF #46 Panel Review and the Bell vote
 
 `npm run eval:qa:lint -- --stale --enforce-floors` fails every pull request once a `reverifyBy`

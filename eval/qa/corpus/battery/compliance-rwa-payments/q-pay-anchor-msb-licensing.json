@@ -10,7 +10,7 @@
     "answer": "Do not decide licensing from the word 'anchor'. Identify each legal entity and who accepts, transmits, exchanges, issues, redeems or custodies value for others, which jurisdictions apply, and whether an exemption, agent or bank partner changes the picture. In the US, FinCEN MSB registration and state money-transmitter licensing are separate. A custodial wallet or on/off-ramp operator can be in scope; non-custodial signing software alone generally is not. Travel Rule duties likewise attach to covered intermediaries, not to the protocol or to software. Not legal advice.",
     "keyFacts": [
       "Licensing duties follow entity, activity, custody and jurisdiction, not the word 'anchor'.",
-      "US FinCEN MSB registration and state money-transmitter licensing are separate regimes.",
+      "Registration and licensing are distinct duties that differ by jurisdiction.",
       "Custodial wallet operators can be in scope; non-custodial software alone generally is not."
     ],
     "avoid": [
@@ -88,11 +88,11 @@
     ],
     "verified": {
       "date": "2026-11-14",
-      "by": "Golden coverage audit 2026-11-14 (audit-compliance, verify-audit-compliance; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+      "by": "Golden coverage audit closeout 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-compliance.json#q-pay-anchor-msb-licensing",
-        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-compliance.json#q-pay-anchor-msb-licensing",
-        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-pay-anchor-msb-licensing"
+        "The question names no jurisdiction, and golden.notes says no jurisdictional rules are asserted, yet a key fact required the US regimes. The key fact now states the jurisdiction-neutral rule; the answer keeps the US example.",
+        "Live A 2026-11-13 (Parallel extract): https://www.fincen.gov/money-services-business-msb-registration -- 'each money services business (MSB) must register with the Department of the Treasury'; re-registration is triggered by a change 'under State law', a separate regime.",
+        "Trigger only (not evidence): .agents/rounds/2026-11-14-golden-coverage-audit/qa/RESULT.md, 'Cases to fix'"
       ],
       "rootCause": [
         ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"

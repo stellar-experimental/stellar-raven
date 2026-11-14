@@ -15,7 +15,8 @@
       "Simulation is not a success guarantee; re-simulate stale transactions."
     ],
     "avoid": [
-      "Do NOT hand-pick a footprint or claim simulation submits or guarantees success."
+      "Do NOT hand-pick a footprint or claim simulation submits or guarantees success.",
+      "Do NOT claim simulation runs through a Horizon endpoint; it is a Stellar RPC method."
     ],
     "notes": "Accept `instructionLeeway` or a stated margin; `restorePreamble` still appears when a separate restore is needed."
   },
@@ -123,13 +124,10 @@
     ],
     "verified": {
       "date": "2026-11-14",
-      "by": "Golden coverage audit 2026-11-14 (audit-soroban-b, verify-audit-soroban-b; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+      "by": "Golden coverage audit closeout 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-b.json#q-soroban-simulate-resource-fee",
-        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-b.json#q-soroban-simulate-resource-fee",
-        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-soroban-simulate-resource-fee",
-        "Live A 2026-11-14: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/simulateTransaction.md -- 'Since Protocol 23, this field [restorePreamble] is normally absent: the simulation adds archived persistent entries ... (`archivedSorobanEntries`)'",
-        "Live A 2026-11-14: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/simulateTransaction.md -- 'Since Protocol 23, this field is normally absent: the simulation adds archived persistent entries, including contract code, to the restore list'"
+        "Added the avoid item that the merged case q-infra-simulate-transaction-howto carried (its tombstone named it for the survivor; delta review D1).",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/simulateTransaction.md -- an RPC API reference method: 'Submit a trial contract invocation to simulate how it would be executed by the network.'"
       ],
       "rootCause": [
         ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"

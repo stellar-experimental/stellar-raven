@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "555cf3eda3397237acff65776332294f8ecf2cca63cf54e91d8b2ab011a0143e",
+  "corpusContentSha256": "debd43730e57f7ac8d2e24df739855d6e0d6e994c8db45d2818db4c79258be6a",
   "counts": {
     "total": 246,
     "byCategory": {
@@ -4554,7 +4554,8 @@
           "A 2026-02-22 USTRY price pump fed through Reflector's VWAP drained a YieldBlox pool.",
           "About 61.2M XLM and 1M USDC were borrowed; dollar loss (~$10M) varies by source.",
           "About 48M XLM was quarantined by validators; quarantine is not recovery.",
-          "Staleness was not causal; depth minimums, value bounds and supply caps are defenses."
+          "The manipulated price was fresh, so oracle staleness was not the cause.",
+          "Defenses for thin collateral include market-depth minimums, value bounds and supply caps."
         ],
         "avoid": [
           "Do NOT call the quarantined XLM recovered, or assert attacker repayment without proof.",
@@ -4949,14 +4950,11 @@
         ],
         "verified": {
           "date": "2026-11-14",
-          "by": "Golden coverage audit 2026-11-14 (audit-compliance, verify-audit-compliance; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+          "by": "Golden coverage audit closeout 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
           "evidence": [
-            "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-compliance.json#q-comp-yieldblox-oracle-incident",
-            "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-compliance.json#q-comp-yieldblox-oracle-incident",
-            "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-comp-yieldblox-oracle-incident",
-            "Live F 2026-11-14: https://horizon.stellar.org/transactions/01c2ba7553c2e22d64adca8849a30f296c76fcd91f49a2eca383113d7d307b8b -- 'created_at 2026-02-22T00:20:50Z, successful true'",
-            "Live F 2026-11-14: https://horizon.stellar.org/ledgers/63073409 -- 'closed_at 2026-06-17T17:00:08Z'",
-            "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-protocol/master/limits/slp-0006.md -- 'Title: Freeze YieldBlox Exploit Stellar Accounts ... Status: Final'"
+            "Split one key fact that bundled a causal claim with a list of defenses; no fact added or dropped. The 'accept any two defenses' relaxation was declined: it would only ease grading.",
+            "Existing corroboration rows (Script3 post-mortem 2026-03-04, Reflector and Blend sources) carry both facts unchanged.",
+            "Trigger only (not evidence): .agents/rounds/2026-11-14-golden-coverage-audit/qa/RESULT.md, 'Cases to fix'"
           ],
           "rootCause": [
             ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
@@ -6596,7 +6594,6 @@
         "answer": "ERC-8004 ('Trustless Agents') is an Ethereum ERC, still a Draft as of 2026-11-14, for agent identity, reputation and validation; payments are out of scope and compose with x402. Stellar has no ratified agent-identity SEP. Community Soroban implementations (trionlabs/stellar-8004, progax01/stellar8004) are deployed but unratified, so describe them as early community work.",
         "keyFacts": [
           "ERC-8004 is an Ethereum Draft for agent identity, reputation and validation.",
-          "ERC-8004 leaves payments out of scope; it composes with x402.",
           "Stellar has no ratified SEP for agent identity (as of a stated date).",
           "Community Soroban implementations exist, such as trionlabs/stellar-8004."
         ],
@@ -6771,17 +6768,12 @@
         ],
         "verified": {
           "date": "2026-11-14",
-          "by": "Golden coverage audit 2026-11-14 (audit-defi, verify-defi; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+          "by": "Golden coverage audit closeout 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
           "evidence": [
-            "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-defi-agent-identity-stellar-experimental",
-            "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-defi-agent-identity-stellar-experimental",
-            "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-defi-agent-identity-stellar-experimental",
-            "Live B 2026-11-14: https://github.com/ethereum/ERCs/blob/master/ERCS/erc-8004.md -- 'status: Draft ... type: Standards Track ... created: 2025-08-13'",
-            "Live B 2026-11-14: gh search code 8004 --repo stellar/stellar-protocol -- 'one hit only: ecosystem/sep-0002.md (a false positive); no SEP-8004 file'",
-            "Live B 2026-11-14: gh api repos/trionlabs/stellar-8004 -- 'archived false, pushed_at 2026-11-14T00:53:24Z'",
-            "Live B 2026-11-14: gh api repos/progax01/stellar8004 -- 'archived false, pushed_at 2026-06-15T03:32:16Z'",
-            "Live B 2026-11-14: https://github.com/ethereum/ERCs/blob/master/ERCS/erc-8004.md -- 'title: Trustless Agents / status: Draft'",
-            "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/README.md -- 'no SEP title matches agent, identity, or 8004 (grep of the SEP index)'"
+            "Removed the key fact that ERC-8004 leaves payments to x402: the question asks what exists on Stellar and how mature it is, not ERC-8004's payment scope. The answer keeps it as context.",
+            "Key fact 1 kept: the external Draft standard is one side of the case's three-way distinction (truth.notes, GT-12).",
+            "Live A 2026-11-14: https://eips.ethereum.org/EIPS/eip-8004 -- status badge 'Draft' ('This EIP is not yet recommended for general use or implementation').",
+            "Trigger only (not evidence): .agents/rounds/2026-11-14-golden-coverage-audit/qa/RESULT.md, 'Cases to fix'"
           ],
           "rootCause": [
             ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
@@ -7297,16 +7289,16 @@
       "golden": {
         "answer": "Few like-for-like alternatives exist. Direct Soroban lenders include K2 Lend (mainnet announced 2026-07-24), Slender and Peridot; deployment status varies, so check each. YieldBlox is a Blend pool and DeFindex a vault router, so neither is independent. OrbitCDP, EquitX and Templar are CDP, synthetic or cross-chain systems. Blend is a major lender, but dominance is not established.",
         "keyFacts": [
-          "Names real Stellar lending alternatives such as K2 Lend, Slender or Peridot.",
-          "YieldBlox (a Blend pool) and DeFindex (a vault router) are not independent lenders.",
-          "OrbitCDP, EquitX and Templar are CDP, synthetic or cross-chain systems."
+          "Names real Stellar lending alternatives such as K2 Lend, Slender or Peridot."
         ],
         "avoid": [
           "Do NOT call any candidate unqualifiedly Live or Inactive where a directory listing and the operator disagree.",
           "Do NOT list a DEX or AMM as a lending substitute.",
-          "Do NOT describe Slender's regular borrowing as uncollateralized."
+          "Do NOT describe Slender's regular borrowing as uncollateralized.",
+          "Do NOT call YieldBlox (a Blend pool) or DeFindex (a vault router) independent lenders.",
+          "Do NOT call OrbitCDP, EquitX or Templar Stellar money-market lenders."
         ],
-        "notes": "Do not require a Blend dominance claim. A claim that Slender loans need no collateral is wrong; only flash loans are uncollateralized."
+        "notes": "Do not require a Blend dominance claim. A claim that Slender loans need no collateral is wrong; only flash loans are uncollateralized. Naming the non-independent or CDP systems is not required."
       },
       "tags": {
         "category": "defi-ecosystem",
@@ -7550,9 +7542,11 @@
         ],
         "verified": {
           "date": "2026-11-14",
-          "by": "Golden coverage audit finalize 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+          "by": "Golden coverage audit closeout 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
           "evidence": [
-            "Review finding L3 (.agents/rounds/2026-11-14-golden-coverage-audit/review/REVIEW.md): provenance moved from judge-facing text to truth.notes; no fact changed."
+            "Two key facts required disclaimers about systems the question does not ask for. They are now avoid items, so an answer that names them must still classify them right; the classification itself is unchanged.",
+            "Existing corroboration rows (Scout and Lumenloop project records, Certora Slender report) carry the classification unchanged.",
+            "Trigger only (not evidence): .agents/rounds/2026-11-14-golden-coverage-audit/qa/RESULT.md, 'Cases to fix'"
           ],
           "rootCause": [
             ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
@@ -7578,7 +7572,7 @@
         "keyFacts": [
           "Blend v1 was audited by Certora and OtterSec.",
           "Blend v2 was audited by Certora and through a Code4rena competition in 2025.",
-          "The audit reports are published in Blend's docs and contract repositories.",
+          "Names a place to read the reports: Blend's docs, its repositories or the Security Portal.",
           "States the date of the latest audit report it relies on."
         ],
         "avoid": [
@@ -7778,21 +7772,12 @@
         ],
         "verified": {
           "date": "2026-11-14",
-          "by": "verify-gap lane (Claude Opus 5.5) amendment of the gap proposal; applied by the instrument lane (Claude Opus 5.5), .agents/rounds/2026-11-14-golden-coverage-audit.md",
+          "by": "Golden coverage audit closeout 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
           "evidence": [
-            "Independent verification: .agents/rounds/2026-11-14-golden-coverage-audit/gap/verify-gap.json#q-defi-blend-audit-record (amend)",
-            "Core facts hold: v1 reports are Certora and OtterSec (blend-contracts/audits), v2 reports are Certora and Code4rena (blend-contracts-v2/audits; Code4rena ran Feb 24 to Mar 17, 2025). But the Certora v2 reports are dated April and June 2025, so 'early 2025' in key fact 2 is too narrow. A web search for Blend audits also returns github.com/BlendMoney/audits, a different project (Blend Money, blend.money) with Cantina, Zellic, Sherlock and yAudit reports through 2026; a grader caution prevents crediting or penalizing that confusion wrongly.",
-            "Live B 2026-11-14: https://github.com/blend-capital/blend-contracts-v2/tree/main/audits -- 'Code4rena x Blend V2 audit report.pdf; Script3 - Certora - Blend v2 - Security Assessment Draft v3 Report - April 2025.pdf'",
-            "Live B 2026-11-14: https://github.com/code-423n4/2025-02-blend -- 'Starts February 24, 2025 20:00 UTC / Ends March 17, 2025 20:00 UTC'",
-            "Live A 2026-11-14: https://docs-v1.blend.capital/audits-and-bug-bounties -- 'Blend has been Audited by both Certora and Ottersec. All issues have been addressed.'",
-            "Live B 2026-11-14: https://github.com/BlendMoney/audits -- 'org BlendMoney: name 'Blend Money', blog https://blend.money; README lists Cantina, Zellic, Sherlock audits 2025-2026'",
-            "https://docs.blend.capital/audits-and-bug-bounties.md",
-            "https://docs-v1.blend.capital/audits-and-bug-bounties",
-            "https://code4rena.com/audits/2025-02-blend-v2-audit-certora-formal-verification",
-            "https://github.com/blend-capital/blend-contracts/tree/main/audits",
-            "https://github.com/blend-capital/blend-contracts-v2/tree/main/audits",
-            "scout.listAudits({q:'Blend'}) observed 2026-11-14",
-            "Sibling sweep: q-scf-audit-bank and q-comp-security-disclosure-programs cover programs, not one project's audit record; q-defi-blend-alternatives and q-edge-fresh-latest-blend-tvl do not state auditors or dates. No conflict."
+            "The question asks where the reports can be read; any one hosting location answers it. The key fact required two of the three locations the golden answer lists.",
+            "Live A 2026-11-14: https://docs.blend.capital/audits-and-bug-bounties.md -- '## V2 Audits ### Certora ... ### Code4rena' with report files.",
+            "Existing corroboration row: reports are published in Blend's docs, its contract repositories' audits folders, and the Stellar Security Portal.",
+            "Trigger only (not evidence): .agents/rounds/2026-11-14-golden-coverage-audit/qa/RESULT.md, 'Cases to fix'"
           ],
           "rootCause": [
             ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
@@ -14427,7 +14412,7 @@
         "answer": "Meridian 2026 was held October 28–29, 2026 at Convento do Beato in Lisbon, Portugal. Earlier announcements of Abu Dhabi (Yas Marina, October 21–22) were superseded when SDF announced the move to Lisbon on April 1, 2026.",
         "keyFacts": [
           "Meridian 2026 was held October 28–29, 2026 at Convento do Beato, Lisbon.",
-          "Abu Dhabi, October 21–22 was superseded; SDF announced Lisbon on 2026-04-01."
+          "The earlier Abu Dhabi plan for Meridian 2026 was superseded by the move to Lisbon."
         ],
         "avoid": [
           "Do NOT claim Meridian 2026 took place in Abu Dhabi/Yas Marina or on October 21–22."
@@ -14568,13 +14553,11 @@
         ],
         "verified": {
           "date": "2026-11-14",
-          "by": "Golden coverage audit 2026-11-14 (audit-hist-retail, verify-hist-retail; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+          "by": "Golden coverage audit closeout 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
           "evidence": [
-            "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-hist-meridian-2026-corrected-venue",
-            "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-hist-meridian-2026-corrected-venue",
-            "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-hist-meridian-2026-corrected-venue",
-            "Live A 2026-11-14: https://meridian.stellar.org/?locale=en -- 'October 28-29.2026 · Convento do Beato, Lisbon, Portugal'",
-            "Live A 2026-11-14: https://x.com/StellarOrg/status/2039405316803031315 -- 'Status id decodes (snowflake) to 2026-04-01T18:11:32Z; text not re-read'"
+            "The key fact bundled the superseded plan with its dates and an announcement date the question does not ask for. The answer keeps the dates; the avoid item still rejects Abu Dhabi or October 21-22 as the event.",
+            "Existing corroboration rows (SDF Meridian sources) carry the venue history unchanged.",
+            "Trigger only (not evidence): .agents/rounds/2026-11-14-golden-coverage-audit/qa/RESULT.md, 'Cases to fix'"
           ],
           "rootCause": [
             ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
@@ -20251,7 +20234,7 @@
         "answer": "Do not decide licensing from the word 'anchor'. Identify each legal entity and who accepts, transmits, exchanges, issues, redeems or custodies value for others, which jurisdictions apply, and whether an exemption, agent or bank partner changes the picture. In the US, FinCEN MSB registration and state money-transmitter licensing are separate. A custodial wallet or on/off-ramp operator can be in scope; non-custodial signing software alone generally is not. Travel Rule duties likewise attach to covered intermediaries, not to the protocol or to software. Not legal advice.",
         "keyFacts": [
           "Licensing duties follow entity, activity, custody and jurisdiction, not the word 'anchor'.",
-          "US FinCEN MSB registration and state money-transmitter licensing are separate regimes.",
+          "Registration and licensing are distinct duties that differ by jurisdiction.",
           "Custodial wallet operators can be in scope; non-custodial software alone generally is not."
         ],
         "avoid": [
@@ -20329,11 +20312,11 @@
         ],
         "verified": {
           "date": "2026-11-14",
-          "by": "Golden coverage audit 2026-11-14 (audit-compliance, verify-audit-compliance; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+          "by": "Golden coverage audit closeout 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
           "evidence": [
-            "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-compliance.json#q-pay-anchor-msb-licensing",
-            "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-compliance.json#q-pay-anchor-msb-licensing",
-            "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-pay-anchor-msb-licensing"
+            "The question names no jurisdiction, and golden.notes says no jurisdictional rules are asserted, yet a key fact required the US regimes. The key fact now states the jurisdiction-neutral rule; the answer keeps the US example.",
+            "Live A 2026-11-13 (Parallel extract): https://www.fincen.gov/money-services-business-msb-registration -- 'each money services business (MSB) must register with the Department of the Treasury'; re-registration is triggered by a change 'under State law', a separate regime.",
+            "Trigger only (not evidence): .agents/rounds/2026-11-14-golden-coverage-audit/qa/RESULT.md, 'Cases to fix'"
           ],
           "rootCause": [
             ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
@@ -34110,8 +34093,7 @@
         "keyFacts": [
           "Contracts reach assets via the SAC, not the SDEX, claimable balances, or sponsorships.",
           "A transaction with an invoke, extend, or restore operation holds only that operation.",
-          "Classic operations and contract invocations therefore need separate transactions.",
-          "Programmable escrow is a Soroban contract holding SAC or SEP-41 balances."
+          "Classic operations and contract invocations therefore need separate transactions."
         ],
         "avoid": [
           "Do NOT claim that a contract can call classic ManageOffer, PathPayment, liquidity-pool, or claim operations directly.",
@@ -34155,14 +34137,11 @@
         ],
         "verified": {
           "date": "2026-11-14",
-          "by": "Golden coverage audit 2026-11-14 (audit-soroban-a, verify-audit-soroban-a; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+          "by": "Golden coverage audit closeout 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
           "evidence": [
-            "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-a.json#q-sor-classic-dex-from-contract",
-            "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-a.json#q-sor-classic-dex-from-contract",
-            "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-sor-classic-dex-from-contract",
-            "Live A 2026-11-14: https://developers.stellar.org/docs/build/smart-contracts/overview -- 'Soroban contracts cannot interact with the SDEX, claimable balances, or sponsorships.'",
-            "Live B 2026-11-14: https://github.com/stellar/rs-soroban-env/blob/main/soroban-env-common/env.json -- '202 host functions; none named for offers, claim, pool, liquidity, or sponsor'",
-            "Live A 2026-11-14: https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions -- 'can only have one operation per transaction'"
+            "Removed a key fact on programmable escrow: the question does not ask for it and the golden answer does not state it.",
+            "The remaining facts keep their 2026-11-14 corroboration (smart-contract overview, operations-and-transactions).",
+            "Trigger only (not evidence): .agents/rounds/2026-11-14-golden-coverage-audit/qa/RESULT.md, 'Cases to fix'"
           ],
           "rootCause": [
             ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
@@ -38487,7 +38466,8 @@
           "Simulation is not a success guarantee; re-simulate stale transactions."
         ],
         "avoid": [
-          "Do NOT hand-pick a footprint or claim simulation submits or guarantees success."
+          "Do NOT hand-pick a footprint or claim simulation submits or guarantees success.",
+          "Do NOT claim simulation runs through a Horizon endpoint; it is a Stellar RPC method."
         ],
         "notes": "Accept `instructionLeeway` or a stated margin; `restorePreamble` still appears when a separate restore is needed."
       },
@@ -38595,13 +38575,10 @@
         ],
         "verified": {
           "date": "2026-11-14",
-          "by": "Golden coverage audit 2026-11-14 (audit-soroban-b, verify-audit-soroban-b; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+          "by": "Golden coverage audit closeout 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
           "evidence": [
-            "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-b.json#q-soroban-simulate-resource-fee",
-            "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-b.json#q-soroban-simulate-resource-fee",
-            "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-soroban-simulate-resource-fee",
-            "Live A 2026-11-14: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/simulateTransaction.md -- 'Since Protocol 23, this field [restorePreamble] is normally absent: the simulation adds archived persistent entries ... (`archivedSorobanEntries`)'",
-            "Live A 2026-11-14: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/simulateTransaction.md -- 'Since Protocol 23, this field is normally absent: the simulation adds archived persistent entries, including contract code, to the restore list'"
+            "Added the avoid item that the merged case q-infra-simulate-transaction-howto carried (its tombstone named it for the survivor; delta review D1).",
+            "Live A 2026-11-14: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/simulateTransaction.md -- an RPC API reference method: 'Submit a trial contract invocation to simulate how it would be executed by the network.'"
           ],
           "rootCause": [
             ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
@@ -39610,17 +39587,17 @@
         "scout.searchResearch"
       ],
       "golden": {
-        "answer": "Stellar began in 2014 on Ripple-derived code and moved to its own Stellar Consensus Protocol in 2015. In SCP each validator chooses its own quorum set; XRP Ledger servers each trust a Unique Node List. The XRP Ledger destroys transaction fees; Stellar sends them to a locked fee pool. Both issue non-native assets through trust lines to an issuer.",
+        "answer": "In the Stellar Consensus Protocol (SCP), each validator chooses its own quorum set; XRP Ledger servers each trust a Unique Node List. Stellar launched in 2014 on Ripple-derived code and switched to SCP in 2015. Stellar sends fees to a locked account no one can spend; the XRP Ledger destroys them. On Stellar every asset but XLM has an issuer, and holders opt in with a trustline; XRP Ledger tokens also use trust lines.",
         "keyFacts": [
-          "Stellar's SCP lets each validator choose its own quorum set.",
-          "XRP Ledger servers each rely on a Unique Node List of trusted validators.",
-          "The XRP Ledger destroys fees, whereas Stellar sends fees to a locked fee pool.",
-          "Both networks issue non-native assets through trust lines."
+          "In Stellar's SCP, each validator chooses its own quorum set.",
+          "Stellar replaced its original Ripple-derived consensus with SCP in 2015.",
+          "Stellar transaction fees go to a locked account that no one can spend.",
+          "Stellar classic assets have an issuer, and holders opt in with a trustline."
         ],
         "avoid": [
           "Do NOT say Stellar still runs the Ripple or XRP Ledger consensus protocol."
         ],
-        "notes": "Mentioning XRP Ledger Multi-Purpose Tokens or Stellar contract tokens alongside trust lines is correct, not required."
+        "notes": "XRP Ledger properties (Unique Node List, destroyed fees, trust-line tokens) are context an answer may attribute to the XRP Ledger; they are not required. A false XRP Ledger claim is still wrong. Mentioning XRP Ledger Multi-Purpose Tokens or Stellar contract tokens alongside trust lines is correct, not required."
       },
       "tags": {
         "category": "protocol-core",
@@ -39787,31 +39764,61 @@
                 "note": "Current docs describe SCP as the network's consensus protocol."
               }
             ]
+          },
+          {
+            "claim": "The upgraded Stellar network running the Stellar Consensus Protocol went live on 2015-11-03.",
+            "verdict": "confirmed",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://stellar.org/blog/developers/upgraded-network-is-here",
+                "observedAt": "2026-11-14",
+                "note": "Post dated 2015-11-03: 'The upgraded Stellar network is here! ... It uses the Stellar Consensus Protocol (SCP)'; the code is 'less than half the size of the previous codebase'."
+              },
+              {
+                "class": "D",
+                "ref": "https://www.sec.gov/Archives/edgar/data/1761325/000095017024130176/gxlm-20240930.htm",
+                "observedAt": "2026-11-14",
+                "note": "Carried from the existing row: the network 'initially employed the Ripple Protocol Consensus Algorithm ... which was replaced with the Stellar Consensus' Protocol."
+              }
+            ]
+          },
+          {
+            "claim": "Every Stellar asset except the lumen has an issuer, and an account opts in to hold it with a trustline.",
+            "verdict": "confirmed",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets.md",
+                "observedAt": "2026-11-14",
+                "note": "'Trustlines are an explicit opt-in for an account to hold a particular asset. To hold a specific asset, an account must establish a trustline with the issuing account'."
+              },
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens.md",
+                "observedAt": "2026-11-14",
+                "note": "'The lumen is the only token that doesn't require an issuer or trustline.'"
+              }
+            ]
           }
         ],
         "verified": {
           "date": "2026-11-14",
-          "by": "verify-gap lane (Claude Opus 5.5) amendment of the gap proposal; applied by the instrument lane (Claude Opus 5.5), .agents/rounds/2026-11-14-golden-coverage-audit.md",
+          "by": "Golden coverage audit closeout 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
           "evidence": [
-            "Independent verification: .agents/rounds/2026-11-14-golden-coverage-audit/gap/verify-gap.json#q-stellar-vs-xrp-ledger (amend)",
-            "Every key fact holds: xrpl.org defines the UNL, says each transaction must destroy XRP, and calls trust line tokens its original token standard; Stellar docs define per-node quorum sets and a locked fee account; Stellar relaunched on SCP in 2015. Notes-only amend: both chains now also have non-trust-line token forms (XRPL Multi-Purpose Tokens, Stellar contract tokens), so key fact 4 must not punish an answer that adds them.",
-            "Live A 2026-11-14: https://xrpl.org/docs/concepts/consensus-protocol/unl -- 'Every XRP Ledger server is configured with a UNL, which determines which validation votes it listens to'",
-            "Live A 2026-11-14: https://xrpl.org/docs/concepts/transactions/transaction-cost -- 'each transaction must destroy a small amount of XRP'",
-            "Live A 2026-11-14: https://xrpl.org/docs/concepts/tokens/fungible-tokens/trust-line-tokens -- 'This is the original token standard of the XRP Ledger, in contrast to [Multi-Purpose Tokens]'",
-            "Live A 2026-11-14: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering -- 'The lumens collected from transaction fees go into a locked account and are not given to or used by anyone.'",
-            "Live D 2026-11-14: https://www.coindesk.com/markets/2014/12/09/stellar-network-fork-prompts-concerns-over-ripple-consensus-protocol -- 'A ledger fork in the Stellar network sparked debate over the Ripple consensus protocol's safety.'",
-            "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol.md",
-            "https://xrpl.org/docs/concepts/consensus-protocol/unl",
-            "https://xrpl.org/docs/concepts/consensus-protocol/consensus-structure",
-            "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering.md",
-            "https://xrpl.org/docs/concepts/tokens/fungible-tokens/trust-line-tokens",
-            "https://developers.stellar.org/docs/learn/fundamentals/lumens.md"
+            "Key facts restated to Stellar-side facts (per-node quorum sets, fee handling, the 2015 SCP relaunch, issuer and trustline); XRP Ledger properties moved to attributed context in golden.notes.",
+            "Live A 2026-11-14: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol.md -- 'each Core node decides on which other nodes it would like to trust to reach agreement. A node's trusted set of nodes is called a quorum set.'",
+            "Live A 2026-11-14: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering.md -- 'The lumens collected from transaction fees go into a locked account and are not given to or used by anyone.'",
+            "Live A 2026-11-14: https://stellar.org/blog/developers/upgraded-network-is-here (dated 2015-11-03) -- 'It uses the Stellar Consensus Protocol (SCP)'.",
+            "Live A 2026-11-14: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets.md -- 'To hold a specific asset, an account must establish a trustline with the issuing account'.",
+            "Sibling check: q-hist-scp-rewrite-2015 (SCP network live 2015-11-03; the fork's causation stays disputed and is not asserted here).",
+            "Trigger and instruction: qa/RESULT.md (trigger only) and briefs/closeout.md section 1."
           ],
           "rootCause": [
             ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
           ]
         },
-        "notes": "Sibling check: q-hist-scp-rewrite-2015 treats the 2014 fork causation as disputed; this case does not assert a cause. q-hot-fee-pool-burn-deflation: fee pool is sequestration, not a burn; this golden says 'locked fee pool'.",
+        "notes": "Sibling check: q-hist-scp-rewrite-2015 treats the 2014 fork causation as disputed; this case does not assert a cause. q-hot-fee-pool-burn-deflation: fee pool is sequestration, not a burn; this golden says 'locked fee pool'.\nRestated 2026-11-14 so the key facts are Stellar-side; the XRP Ledger facts stay in the answer as attributed context and keep their xrpl.org corroboration rows.",
         "origin": "authored golden-coverage-audit 2026-11-14"
       }
     },
@@ -41113,10 +41120,9 @@
         "stellarDocs.search_soroban_contract_docs"
       ],
       "golden": {
-        "answer": "Decode by source field. In default base64 mode, RPC `getLedgers.headerXdr` is a `LedgerHeaderHistoryEntry` and `metadataXdr` a `LedgerCloseMeta`; `getTransactions` returns `envelopeXdr` (`TransactionEnvelope`), `resultXdr` (`TransactionResult`) and `resultMetaXdr` (`TransactionMeta`). The public JS SDK may already parse these, so do not double-decode. With `xdrFormat=json` the fields are renamed `*Json` and the form is less stable. The CLI path is `stellar xdr decode --type <Type> --input single-base64`. For `.xdr.zst` data-lake files, decompress zstd first; the official Galexie format stores a `LedgerCloseMetaBatch` per file, not a bare `LedgerCloseMeta`.",
+        "answer": "Decode by source field. In default base64 mode, RPC `getLedgers.headerXdr` is a `LedgerHeaderHistoryEntry` and `metadataXdr` a `LedgerCloseMeta`. The public JS SDK may already parse these, so do not double-decode. With `xdrFormat=json` the fields are renamed `*Json` and the form is less stable. The CLI path is `stellar xdr decode --type <Type> --input single-base64`. For `.xdr.zst` data-lake files, decompress zstd first; the official Galexie format stores a `LedgerCloseMetaBatch` per file, not a bare `LedgerCloseMeta`.",
         "keyFacts": [
           "getLedgers maps headerXdr to LedgerHeaderHistoryEntry and metadataXdr to LedgerCloseMeta.",
-          "getTransactions maps to TransactionEnvelope, TransactionResult and TransactionMeta.",
           "xdrFormat=json renames fields to *Json and is less stable; SDK-parsed values skip decode.",
           ".xdr.zst files need zstd decompression, then decoding as the dataset's documented type."
         ],
@@ -41268,19 +41274,18 @@
         ],
         "verified": {
           "date": "2026-11-14",
-          "by": "Golden coverage audit 2026-11-14 (audit-tooling-a, verify-audit-tooling-a; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+          "by": "Golden coverage audit closeout 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
           "evidence": [
-            "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-a.json#q-ti-parse-raw-ledger-data",
-            "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-a.json#q-ti-parse-raw-ledger-data",
-            "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-ti-parse-raw-ledger-data",
-            "Live B 2026-11-14: github.com/stellar/stellar-docs docs/data/indexers/build-your-own/galexie/data-lake-format.mdx -- 'Each ledger file is a [Zstandard] compressed [`LedgerCloseMetaBatch`] XDR value'"
+            "Removed getTransactions from the answer and key facts: the question names LedgerCloseMeta, getLedgers, v4 meta and .xdr.zst files, not getTransactions.",
+            "Remaining facts keep their corroboration (getLedgers types 2026-07-11; Galexie data-lake format 2026-11-14).",
+            "Trigger only (not evidence): .agents/rounds/2026-11-14-golden-coverage-audit/qa/RESULT.md, 'Cases to fix'"
           ],
           "rootCause": [
             ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
           ]
         },
         "origin": "raven-next q-ti-parse-raw-ledger-data",
-        "notes": "Also good if the answer: Mentions the AWS Open Data S3 path `s3://aws-public-blockchain/v1.1/stellar/ledgers/pubnet` as the public data lake cited by Stellar RPC docs. | Mentions `.zst` decompression before XDR decode when consuming compressed files directly.\nGolden cites: Primary Stellar Ingest SDK and RPC/data-lake docs.\nGT-53 independently verified the exact getLedgers types and JSON-mode field renaming on 2026-07-11. Gate method/field/type boundaries; do not require a universal data-lake framing that the evidence did not establish.\nDATA-LAKE NOTE 2026-11-02: the official Galexie data-lake format page documents a zstd-compressed LedgerCloseMetaBatch per file; ledger 50000000 from the AWS Pubnet store decodes as LedgerCloseMetaBatch and not as LedgerCloseMeta. Naming LedgerCloseMetaBatch is correct; key fact 5 does not require it.",
+        "notes": "Also good if the answer: Mentions the AWS Open Data S3 path `s3://aws-public-blockchain/v1.1/stellar/ledgers/pubnet` as the public data lake cited by Stellar RPC docs. | Mentions `.zst` decompression before XDR decode when consuming compressed files directly.\nGolden cites: Primary Stellar Ingest SDK and RPC/data-lake docs.\nGT-53 independently verified the exact getLedgers types and JSON-mode field renaming on 2026-07-11. Gate method/field/type boundaries; do not require a universal data-lake framing that the evidence did not establish.\nDATA-LAKE NOTE 2026-11-02: the official Galexie data-lake format page documents a zstd-compressed LedgerCloseMetaBatch per file; ledger 50000000 from the AWS Pubnet store decodes as LedgerCloseMetaBatch and not as LedgerCloseMeta. Naming LedgerCloseMetaBatch is correct; the .xdr.zst key fact does not require it.",
         "leaf": "protocol.xdr",
         "secondaryLeaf": "data.galexie-ingest"
       }
@@ -42342,12 +42347,11 @@
         "stellarDocs.search_soroban_contract_docs"
       ],
       "golden": {
-        "answer": "Friendbot funds a Testnet account with fake XLM only; it is not a USDC faucet. Fund the account first, add a trustline to Circle’s Testnet USDC (issuer GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5 as of 2026-11-14), then request test USDC from Circle’s faucet. A trustline only permits holding; it credits nothing. The same classic asset has a deterministic SAC contract address for Soroban, not a wrapped copy.",
+        "answer": "Friendbot funds a Testnet account with fake XLM only; it is not a USDC faucet. Fund the account first, add a trustline to Circle’s Testnet USDC (issuer GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5 as of 2026-11-14), then request test USDC from Circle’s faucet. A trustline only permits holding; it credits nothing.",
         "keyFacts": [
           "Friendbot funds fake Testnet XLM only, not USDC.",
           "Holding Testnet USDC needs XLM for reserves and a trustline to Circle’s Testnet issuer.",
-          "A trustline credits nothing; test USDC arrives by payment, such as from Circle’s faucet.",
-          "The deterministic SAC address is the same classic asset, not a wrapped copy."
+          "A trustline credits nothing; test USDC arrives by payment, such as from Circle’s faucet."
         ],
         "avoid": [
           "Do NOT use a Mainnet or wrong-network issuer, or treat test USDC as redeemable value.",
@@ -42499,13 +42503,11 @@
         ],
         "verified": {
           "date": "2026-11-14",
-          "by": "Golden coverage audit 2026-11-14 (audit-hist-retail, verify-hist-retail; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+          "by": "Golden coverage audit closeout 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
           "evidence": [
-            "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-ti-testnet-usdc-faucet",
-            "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-ti-testnet-usdc-faucet",
-            "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-ti-testnet-usdc-faucet",
-            "Live A 2026-11-14: https://developers.circle.com/stablecoins/usdc-contract-addresses -- 'GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5 appears on the page'",
-            "Live C 2026-11-14: https://horizon-testnet.stellar.org/assets?asset_code=USDC&asset_issuer=GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5 -- 'USDC GBBD47..., 148733 authorized accounts'"
+            "Removed the SAC clause from the answer and key facts: the question asks how to get test USDC after the trustline, not about Soroban addresses.",
+            "Remaining facts keep their 2026-11-14 corroboration (Circle USDC addresses page, Horizon Testnet asset record).",
+            "Trigger only (not evidence): .agents/rounds/2026-11-14-golden-coverage-audit/qa/RESULT.md, 'Cases to fix'"
           ],
           "rootCause": [
             ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
@@ -42789,7 +42791,7 @@
           "Do NOT give 100 billion or 105 billion XLM as the supply that exists today.",
           "Do NOT say XLM is mined or still inflates by 1% a year."
         ],
-        "notes": "Accept a later dated circulating figure; it rises as SDF distributes lumens. The ledger header's total_coins still reads about 105.44 billion because the 55.44 billion lumens burned in November 2019 sit in a signerless account. An answer that explains this is correct. A future protocol change could alter issuance; saying so is not wrong."
+        "notes": "Accept a later dated circulating figure; it rises as SDF distributes lumens. The ledger header's total_coins still reads about 105.44 billion because the 55.44 billion lumens burned in November 2019 sit in a signerless account. An answer that explains this is correct. A future protocol change could alter issuance; saying so is not wrong. Quoting the canonical Stellar Docs Lumens page sentence that all XLM that will ever exist was created at launch is not a wrong claim while sd-105 stands; grade caps at partial."
       },
       "tags": {
         "category": "history-org-tokenomics",
@@ -43020,21 +43022,19 @@
         ],
         "verified": {
           "date": "2026-11-14",
-          "by": "Golden coverage audit finalize 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+          "by": "Golden coverage audit closeout 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
           "evidence": [
             "Correction found in the register sweep for new cases (cluster-053 shares the genesis and inflation facts with q-token-initial-supply-distribution): the answer said all lumens were created at genesis, but inflation created lumens until 2019. Key fact 3 was already correct.",
-            "Live A 2026-11-14: https://developers.stellar.org/docs/learn/fundamentals/lumens.md -- 'For the first five or so years of Stellar's existence, the supply of lumens increased by 1% annually. ... The total number of lumens generated by inflation was 5,443,902,087.3472865.'",
+            "Independent check of the correction: .agents/rounds/2026-11-14-golden-coverage-audit/review/REVIEW.md, 'Delta review', 'Re-derived correction' (Claude Sonnet 5.5, 2026-11-14). verify-gap.json accepted the case before the correction and is not the check for it.",
+            "Live A 2026-11-14: https://developers.stellar.org/docs/learn/fundamentals/lumens.md -- 'all XLM that has ever existed and will ever exist was created when the Stellar network went live' (contradicted on the same page: 'The total number of lumens generated by inflation was 5,443,902,087.3472865'); filed as improvements/stellar-docs/sd-105-lumens-page-genesis-supply-contradiction.md.",
             "https://dashboard.stellar.org/api/v3/lumens",
-            "https://developers.stellar.org/docs/learn/fundamentals/lumens.md",
             "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0026.md",
             "https://horizon.stellar.org/ledgers?order=desc&limit=1",
-            "https://stellar.org/blog/foundation-news/sdfs-next-steps",
-            "parallel-cli research trun_04740bf111ed4e89a59aa8fb7d610892 (core-fast): no source disagreement beyond snapshot timing.",
-            "Sibling sweep: q-token-initial-supply-distribution (genesis allocation), q-hot-fee-pool-burn-deflation (fee pool accounting) and q-hot-sdf-xlm-holdings-sales (SDF sales) agree and pin no current total or circulating figure.",
-            "Independent verification: .agents/rounds/2026-11-14-golden-coverage-audit/gap/verify-gap.json#q-token-xlm-supply-total-circulating (accept)"
+            "https://stellar.org/blog/foundation-news/sdfs-next-steps"
           ],
           "rootCause": [
-            ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
+            ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit",
+            "improvements/stellar-docs/sd-105-lumens-page-genesis-supply-contradiction.md"
           ]
         },
         "origin": "authored golden-coverage-audit 2026-11-14"

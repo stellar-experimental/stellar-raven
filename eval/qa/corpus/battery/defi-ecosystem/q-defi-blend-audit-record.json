@@ -11,7 +11,7 @@
     "keyFacts": [
       "Blend v1 was audited by Certora and OtterSec.",
       "Blend v2 was audited by Certora and through a Code4rena competition in 2025.",
-      "The audit reports are published in Blend's docs and contract repositories.",
+      "Names a place to read the reports: Blend's docs, its repositories or the Security Portal.",
       "States the date of the latest audit report it relies on."
     ],
     "avoid": [
@@ -211,21 +211,12 @@
     ],
     "verified": {
       "date": "2026-11-14",
-      "by": "verify-gap lane (Claude Opus 5.5) amendment of the gap proposal; applied by the instrument lane (Claude Opus 5.5), .agents/rounds/2026-11-14-golden-coverage-audit.md",
+      "by": "Golden coverage audit closeout 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Independent verification: .agents/rounds/2026-11-14-golden-coverage-audit/gap/verify-gap.json#q-defi-blend-audit-record (amend)",
-        "Core facts hold: v1 reports are Certora and OtterSec (blend-contracts/audits), v2 reports are Certora and Code4rena (blend-contracts-v2/audits; Code4rena ran Feb 24 to Mar 17, 2025). But the Certora v2 reports are dated April and June 2025, so 'early 2025' in key fact 2 is too narrow. A web search for Blend audits also returns github.com/BlendMoney/audits, a different project (Blend Money, blend.money) with Cantina, Zellic, Sherlock and yAudit reports through 2026; a grader caution prevents crediting or penalizing that confusion wrongly.",
-        "Live B 2026-11-14: https://github.com/blend-capital/blend-contracts-v2/tree/main/audits -- 'Code4rena x Blend V2 audit report.pdf; Script3 - Certora - Blend v2 - Security Assessment Draft v3 Report - April 2025.pdf'",
-        "Live B 2026-11-14: https://github.com/code-423n4/2025-02-blend -- 'Starts February 24, 2025 20:00 UTC / Ends March 17, 2025 20:00 UTC'",
-        "Live A 2026-11-14: https://docs-v1.blend.capital/audits-and-bug-bounties -- 'Blend has been Audited by both Certora and Ottersec. All issues have been addressed.'",
-        "Live B 2026-11-14: https://github.com/BlendMoney/audits -- 'org BlendMoney: name 'Blend Money', blog https://blend.money; README lists Cantina, Zellic, Sherlock audits 2025-2026'",
-        "https://docs.blend.capital/audits-and-bug-bounties.md",
-        "https://docs-v1.blend.capital/audits-and-bug-bounties",
-        "https://code4rena.com/audits/2025-02-blend-v2-audit-certora-formal-verification",
-        "https://github.com/blend-capital/blend-contracts/tree/main/audits",
-        "https://github.com/blend-capital/blend-contracts-v2/tree/main/audits",
-        "scout.listAudits({q:'Blend'}) observed 2026-11-14",
-        "Sibling sweep: q-scf-audit-bank and q-comp-security-disclosure-programs cover programs, not one project's audit record; q-defi-blend-alternatives and q-edge-fresh-latest-blend-tvl do not state auditors or dates. No conflict."
+        "The question asks where the reports can be read; any one hosting location answers it. The key fact required two of the three locations the golden answer lists.",
+        "Live A 2026-11-14: https://docs.blend.capital/audits-and-bug-bounties.md -- '## V2 Audits ### Certora ... ### Code4rena' with report files.",
+        "Existing corroboration row: reports are published in Blend's docs, its contract repositories' audits folders, and the Stellar Security Portal.",
+        "Trigger only (not evidence): .agents/rounds/2026-11-14-golden-coverage-audit/qa/RESULT.md, 'Cases to fix'"
       ],
       "rootCause": [
         ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
