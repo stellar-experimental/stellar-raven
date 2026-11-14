@@ -882,6 +882,38 @@ function buildStellarDocs(spec) {
 }
 
 // ---------------------------------------------------------------------------
+// stellar.org — 2 authored operations from specs/stellar-org.json
+// research/services/stellar-org-site.md records the measured contract.
+// ---------------------------------------------------------------------------
+
+function buildStellarOrg(spec) {
+  const { backend } = spec;
+  return spec.operations.map((op) => ({
+    id: op.id,
+    service: spec.service,
+    kind: "operation",
+    description: op.returns ? `${op.description}\n\nReturns: ${op.returns}` : op.description,
+    inputSchema: op.params,
+    outputSchema: op.outputSchema ?? null,
+    // Descriptive only: src/adapters/stellar-org.ts fixes the origin and reads `endpoint`.
+    transport: {
+      type: "http",
+      method: "GET",
+      base: backend.origin,
+      ...(op.endpoint === "search" ? { path: backend.searchPath } : {}),
+      endpoint: op.endpoint,
+      constraints: backend.constraints
+    },
+    provenance: {
+      source: backend.origin,
+      fetchedAt: spec.authoredAt,
+      spec: "specs/stellar-org.json",
+      note: "authored spec-as-data operation, live-verified against stellar.org"
+    }
+  }));
+}
+
+// ---------------------------------------------------------------------------
 // Ecosystem skills mirror — skill + per-##-section + per-extra-file entries
 // ---------------------------------------------------------------------------
 
@@ -1225,7 +1257,7 @@ export function assertNoNonExposedRefs(entries) {
   // Service-callable tokens ("scout.matchPartners"); the lookbehind skips
   // dotted prefixes so skill ids like "skills.lumenloop.<name>" never match,
   // and TLD-shaped tokens ("lumenloop.com" in prose URLs) are ignored.
-  const callableRe = /(?<![.\w])(?:lumenloop|scout|stellarDocs)\.[A-Za-z_]\w*/g;
+  const callableRe = /(?<![.\w])(?:lumenloop|scout|stellarDocs|stellarOrg)\.[A-Za-z_]\w*/g;
   const TLDS = new Set(["com", "org", "net", "io", "xyz", "dev", "app", "buzz"]);
   for (const entry of entries) {
     const text = [
@@ -1262,6 +1294,7 @@ async function main() {
   const stellarLight = readJson("inventory/stellar-light.json");
   const stellarDocsSpec = readJson("specs/stellar-docs.json");
   const stellarDocsTitles = readJson("inventory/stellar-docs-titles.json");
+  const stellarOrgSpec = readJson("specs/stellar-org.json");
   const skillsManifest = readJson("ecosystem-skills/MANIFEST.json");
   assertRetirementNamesResolve(skillsManifest);
   assertLumenloopExclusionsResolve(lumenloop);
@@ -1292,6 +1325,7 @@ async function main() {
   });
 
   const stellarDocsEntries = buildStellarDocs(stellarDocsSpec);
+  const stellarOrgEntries = attachOperationKeywords(buildStellarOrg(stellarOrgSpec));
   const scout = buildScout(stellarLight);
   const lumenloopEntries = attachOperationKeywords(buildLumenloop(lumenloop));
   // Curated routing vocabulary precedes schema keywords, which exclude it.
@@ -1317,6 +1351,7 @@ async function main() {
           titleExtras,
           { cap: 256 }
         ),
+        ...stellarOrgEntries,
         ...skillEntries
       ].sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0))
     )))),
@@ -1345,6 +1380,7 @@ async function main() {
     stellarLight.fetchedAt,
     stellarDocsSpec.authoredAt,
     stellarDocsTitles.fetchedAt,
+    stellarOrgSpec.authoredAt,
     skillsManifest.synced_at
   ].reduce((max, ts) => (Date.parse(ts) > Date.parse(max) ? ts : max));
 

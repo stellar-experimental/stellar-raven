@@ -59,6 +59,16 @@ const MINTLIFY_PROBE_QUERY = "glossary";
 // layout change, so the refresh fails instead of recording a partial corpus.
 const MAX_LLMS_INDEX_FILES = 50;
 
+// ---------------------------------------------------------------------------
+// stellar.org — keyless site search and one page probe; mirrors specs/stellar-org.json `backend`.
+// ---------------------------------------------------------------------------
+const STELLAR_ORG_ORIGIN = "https://stellar.org";
+const STELLAR_ORG_SEARCH_PATH = "/api/search";
+const STELLAR_ORG_USER_AGENT = "RavenMCP/1.0";
+// Fixed probes: only the response shape is recorded, so ranking and page copy cannot produce drift.
+const STELLAR_ORG_PROBE_QUERY = "roadmap";
+const STELLAR_ORG_PROBE_PATH = "/foundation/roadmap";
+
 // .env parser + JSON fetch + deep key sort live in scripts/lib/shared.mjs
 // (shared with scripts/check-skills-drift.mjs; this file's behavior is canonical).
 const ENV = { ...parseEnvFile(join(ROOT, ".env")), ...process.env };
@@ -537,16 +547,61 @@ async function refreshStellarDocs() {
 }
 
 // ---------------------------------------------------------------------------
+// stellar.org — research/services/stellar-org-site.md records the contract.
+// ---------------------------------------------------------------------------
+async function refreshStellarOrg() {
+  const search = await fetchJson(
+    `${STELLAR_ORG_ORIGIN}${STELLAR_ORG_SEARCH_PATH}?${new URLSearchParams({ q: STELLAR_ORG_PROBE_QUERY, locale: "en" })}`,
+    { headers: { "User-Agent": STELLAR_ORG_USER_AGENT }, label: "stellar.org search" },
+  );
+  if (!Array.isArray(search?.results) || search.results.length === 0) {
+    throw new Error("stellar.org search: expected a non-empty results array");
+  }
+  const rowKeys = [...new Set(search.results.flatMap((row) => Object.keys(row ?? {})))].sort();
+  const res = await fetch(`${STELLAR_ORG_ORIGIN}${STELLAR_ORG_PROBE_PATH}`, {
+    headers: { "User-Agent": STELLAR_ORG_USER_AGENT },
+    redirect: "manual",
+    signal: AbortSignal.timeout(30_000),
+  });
+  const html = await res.text();
+  writeInventory("stellar-org.json", {
+    service: "stellar-org",
+    fetchedAt: new Date().toISOString(),
+    source: {
+      origin: STELLAR_ORG_ORIGIN,
+      searchPath: STELLAR_ORG_SEARCH_PATH,
+      auth: "none (keyless)",
+      spec: "specs/stellar-org.json",
+      research: "research/services/stellar-org-site.md",
+    },
+    contract: {
+      searchProbe: {
+        query: STELLAR_ORG_PROBE_QUERY,
+        responseKeys: Object.keys(search).sort(),
+        rowKeys,
+      },
+      pageProbe: {
+        path: STELLAR_ORG_PROBE_PATH,
+        status: res.status,
+        contentType: (res.headers.get("content-type") ?? "").split(";")[0].trim(),
+        hasMain: /<main\b/i.test(html),
+      },
+    },
+  });
+  return { rowKeyCount: rowKeys.length };
+}
+
+// ---------------------------------------------------------------------------
 // main
 // ---------------------------------------------------------------------------
 export function parseServiceArg(args) {
   if (args.length === 0) return "all";
   if (args.length !== 2 || args[0] !== "--service") {
-    throw new Error("usage: node scripts/refresh-inventory.mjs [--service lumenloop|stellar-light|stellar-docs]");
+    throw new Error("usage: node scripts/refresh-inventory.mjs [--service lumenloop|stellar-light|stellar-docs|stellar-org]");
   }
   const service = args[1];
-  if (!["lumenloop", "stellar-light", "stellar-docs"].includes(service)) {
-    throw new Error(`unknown service "${service}" (expected lumenloop, stellar-light, or stellar-docs)`);
+  if (!["lumenloop", "stellar-light", "stellar-docs", "stellar-org"].includes(service)) {
+    throw new Error(`unknown service "${service}" (expected lumenloop, stellar-light, stellar-docs, or stellar-org)`);
   }
   return service;
 }
@@ -563,15 +618,19 @@ async function main() {
   } else if (service === "stellar-docs") {
     const result = await refreshStellarDocs();
     console.log(`done: stellar-docs Mintlify contract + ${result.pageTitleCount} page titles from ${result.indexFileCount} llms.txt files`);
+  } else if (service === "stellar-org") {
+    await refreshStellarOrg();
+    console.log("done: stellar-org site search and page contract");
   } else {
     const [lumenloop, stellarLight, stellarDocs] = await Promise.all([
       refreshLumenloop(),
       refreshStellarLight(),
       refreshStellarDocs(),
+      refreshStellarOrg(),
     ]);
     console.log(
       `done: lumenloop ${lumenloop.toolCount} tools (${lumenloop.partnerToolCount} partner, hidden from /v1/tools) + ${lumenloop.skillCount} skills + openapi (${lumenloop.openapiOperationCount} ops); ` +
-        `stellar-light ${stellarLight.operationCount} ops; stellar-docs Mintlify contract + ${stellarDocs.pageTitleCount} page titles`,
+        `stellar-light ${stellarLight.operationCount} ops; stellar-docs Mintlify contract + ${stellarDocs.pageTitleCount} page titles; stellar-org site contract`,
     );
   }
 }

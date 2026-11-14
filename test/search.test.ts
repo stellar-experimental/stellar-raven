@@ -1197,7 +1197,7 @@ describe("searchCatalogPage — tier marker + total/truncated", () => {
     );
     // Admission runs before scoring. It can reduce total when an operation
     // publishes exclusions but lacks positive evidence for this query.
-    expect(page.total).toBe(37);
+    expect(page.total).toBe(39);
     expect(page.truncated).toBe(true);
   });
 

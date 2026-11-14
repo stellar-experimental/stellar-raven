@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { classifyDocsBackend, classifyOpenapiOperations, diffDocsTitles, readHeadJson, summarizeDocsAnchors } from "../scripts/summarize-live-drift.mjs";
+import { classifyDocsBackend, classifyOpenapiOperations, classifyStellarOrg, diffDocsTitles, readHeadJson, summarizeDocsAnchors } from "../scripts/summarize-live-drift.mjs";
 
 const spec = (operation) => ({ paths: { "/api/example": { get: operation } } });
 
@@ -86,6 +86,32 @@ describe("live drift Stellar Docs classification", () => {
     const oldInv = { titles: [{ path: "/docs/a", title: "A" }, { path: "/docs/b", title: "B" }] };
     const nextInv = { titles: [{ path: "/docs/a", title: "A" }, { path: "/docs/b", title: "B2" }] };
     expect(diffDocsTitles(oldInv, nextInv)).toEqual({ added: ["/docs/b B2"], removed: ["/docs/b B"] });
+  });
+});
+
+describe("live drift stellar.org classification", () => {
+  const orgInventory = (overrides = {}) => ({
+    service: "stellar-org",
+    source: { origin: "https://stellar.org", searchPath: "/api/search" },
+    contract: {
+      searchProbe: { query: "roadmap", responseKeys: ["locale", "query", "results"], rowKeys: ["kind", "title", "url"] },
+      pageProbe: { path: "/foundation/roadmap", status: 200, contentType: "text/html", hasMain: true }
+    },
+    ...overrides
+  });
+
+  it("reports nothing when origin and contract hold", () => {
+    expect(classifyStellarOrg(orgInventory(), orgInventory({ fetchedAt: "later" }))).toEqual([]);
+  });
+
+  it("flags an origin change and a lost main element", () => {
+    const next = orgInventory({
+      source: { origin: "https://www.stellar.org", searchPath: "/api/search" },
+      contract: { ...orgInventory().contract, pageProbe: { path: "/foundation/roadmap", status: 200, contentType: "text/html", hasMain: false } }
+    });
+    const text = classifyStellarOrg(orgInventory(), next).join("\n");
+    expect(text).toContain("origin or search path changed");
+    expect(text).toContain("live smoke of stellarOrg.search_site and stellarOrg.get_page");
   });
 });
 

@@ -14,7 +14,7 @@
  */
 import { z } from "zod";
 
-export const CATALOG_SERVICES = ["lumenloop", "scout", "stellarDocs", "skills"] as const;
+export const CATALOG_SERVICES = ["lumenloop", "scout", "stellarDocs", "stellarOrg", "skills"] as const;
 
 export const CATALOG_KINDS = ["operation", "skill", "skill-section"] as const;
 export type CatalogKind = (typeof CATALOG_KINDS)[number];

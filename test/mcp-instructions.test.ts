@@ -155,7 +155,7 @@ describe("tool descriptions — one contract inside the 2,048-character cap", ()
     for (const phrase of [
       "sandbox with no network",
       // Two scripting rules whose absence showed up as failed scripts.
-      "The ONLY globals are `lumenloop`, `scout`, `stellarDocs`, `codemode`, and standard JavaScript",
+      "The ONLY globals are `lumenloop`, `scout`, `stellarDocs`, `stellarOrg`, `codemode`, and standard JavaScript",
       "Artifact reads resolve to the same envelope shape",
       // An operation id is not a tool name: a client once called one at the top level.
       "are called inside this script, never as top-level tools",

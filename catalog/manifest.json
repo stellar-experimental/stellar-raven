@@ -32064,8 +32064,229 @@
         "siteOrigin": "https://developers.stellar.org",
         "type": "mintlify"
       }
+    },
+    {
+      "description": "Read the main text from one stellar.org page, given its path: /foundation/strategy, /foundation/roadmap, /audit-bank/projects, /ecosystem/service-providers and other paths from stellarOrg.search_site rows. Returns the page title, URL and text with headings and list items kept.\n\nReturns: { url, path, title, content, truncated? }.",
+      "id": "stellarOrg.get_page",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "path": {
+            "description": "Site-relative page path starting with /, such as \"/foundation/strategy\". Full URLs, query strings and /api paths are refused.",
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "type": "object"
+      },
+      "kind": "operation",
+      "outputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "content": {
+            "description": "Main page text. Client-side lists, such as later pages of the audited-projects list, are not in the server-rendered text.",
+            "type": "string"
+          },
+          "path": {
+            "description": "The path served, after any same-origin redirect.",
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "truncated": {
+            "description": "Present and true when content was cut at 40,000 characters.",
+            "type": "boolean"
+          },
+          "url": {
+            "format": "uri",
+            "type": "string"
+          }
+        },
+        "required": [
+          "url",
+          "path",
+          "title",
+          "content"
+        ],
+        "type": "object"
+      },
+      "provenance": {
+        "fetchedAt": "2026-11-14T00:00:00Z",
+        "note": "authored spec-as-data operation, live-verified against stellar.org",
+        "source": "https://stellar.org",
+        "spec": "specs/stellar-org.json"
+      },
+      "retrievalProfile": {
+        "emptyScope": "operation",
+        "lane": "detail",
+        "recoverWith": [
+          {
+            "id": "stellarOrg.search_site",
+            "on": [
+              "empty",
+              "weak",
+              "adjacent",
+              "ambiguous"
+            ],
+            "relation": "corpus-wide"
+          }
+        ]
+      },
+      "service": "stellarOrg",
+      "transport": {
+        "base": "https://stellar.org",
+        "constraints": {
+          "filtered": "Rows whose path is under /blog, /press or /events, and rows with isExternal true, are dropped. Partner rows link to a query string on /ecosystem and are returned with path /ecosystem.",
+          "pages": "Pages are server-rendered HTML of 410-500 KB (2026-11-14). The adapter keeps the <main> text, follows same-origin redirects only, refuses a body over 2,000,000 bytes and cuts content at 40,000 characters.",
+          "searchShape": "GET /api/search?q=<query>&locale=en returns { query, locale, results: [{ id, kind, title, description, tags, url, isExternal }] } with at most 10 rows; kind is page or partner. A missing q returns 400 { error: \"invalid_query\" }."
+        },
+        "endpoint": "page",
+        "method": "GET",
+        "type": "http"
+      }
+    },
+    {
+      "description": "Search the SDF website, stellar.org, for pages the Stellar Development Foundation publishes about itself: the SDF strategy and annual objectives, the product roadmap, the Soroban Security Audit Bank and its security-audited projects list, and the service providers directory listing agencies and audit partners. Returns site-search rows with title, description, page path, kind and tags; read one page with stellarOrg.get_page.\n\nReturns: { hits: [{ title, description, path, kind, tags }], meta: { candidates } }.",
+      "id": "stellarOrg.search_site",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "limit": {
+            "default": 5,
+            "maximum": 10,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "query": {
+            "description": "Keywords for the stellar.org site search, such as \"strategy\", \"roadmap\" or \"service providers\".",
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "type": "object"
+      },
+      "keywords": [
+        "query",
+        "limit"
+      ],
+      "kind": "operation",
+      "outputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "hits": {
+            "description": "The hits live under `data.hits`. Empty when every site-search row was a blog, press, events or external row.",
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "description": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "kind": {
+                  "description": "page or partner.",
+                  "type": "string"
+                },
+                "path": {
+                  "description": "Site-relative path on https://stellar.org; pass it to stellarOrg.get_page. Partner rows carry /ecosystem, whose page does not render partner detail.",
+                  "type": "string"
+                },
+                "tags": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "title": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "title",
+                "description",
+                "path",
+                "kind",
+                "tags"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "meta": {
+            "additionalProperties": false,
+            "properties": {
+              "candidates": {
+                "description": "Rows the site search returned before filtering.",
+                "type": "integer"
+              }
+            },
+            "required": [
+              "candidates"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "hits",
+          "meta"
+        ],
+        "type": "object"
+      },
+      "provenance": {
+        "fetchedAt": "2026-11-14T00:00:00Z",
+        "note": "authored spec-as-data operation, live-verified against stellar.org",
+        "source": "https://stellar.org",
+        "spec": "specs/stellar-org.json"
+      },
+      "retrievalProfile": {
+        "emptyScope": "corpus",
+        "lane": "corpus",
+        "recoverWith": [
+          {
+            "id": "scout.searchResearch",
+            "on": [
+              "empty",
+              "weak",
+              "adjacent",
+              "ambiguous"
+            ],
+            "relation": "cited-research"
+          },
+          {
+            "id": "lumenloop.search_content_semantic",
+            "on": [
+              "empty",
+              "weak",
+              "adjacent",
+              "ambiguous"
+            ],
+            "relation": "cross-family"
+          }
+        ]
+      },
+      "service": "stellarOrg",
+      "transport": {
+        "base": "https://stellar.org",
+        "constraints": {
+          "filtered": "Rows whose path is under /blog, /press or /events, and rows with isExternal true, are dropped. Partner rows link to a query string on /ecosystem and are returned with path /ecosystem.",
+          "pages": "Pages are server-rendered HTML of 410-500 KB (2026-11-14). The adapter keeps the <main> text, follows same-origin redirects only, refuses a body over 2,000,000 bytes and cuts content at 40,000 characters.",
+          "searchShape": "GET /api/search?q=<query>&locale=en returns { query, locale, results: [{ id, kind, title, description, tags, url, isExternal }] } with at most 10 rows; kind is page or partner. A missing q returns 400 { error: \"invalid_query\" }."
+        },
+        "endpoint": "search",
+        "method": "GET",
+        "path": "/api/search",
+        "type": "http"
+      }
     }
   ],
-  "generatedAt": "2026-11-12T14:25:31.643Z",
+  "generatedAt": "2026-11-14T00:00:00Z",
   "version": 1
 }

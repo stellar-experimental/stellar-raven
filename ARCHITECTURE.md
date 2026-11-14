@@ -366,7 +366,7 @@ The manifest defines the exposed surface under [ADR-0003](research/decisions/000
 
 | Inputs | Builder | Output |
 | --- | --- | --- |
-| Service snapshots, authored docs spec, title snapshot, skill pins and files, runner registry | `scripts/build-catalog.mjs` | `catalog/manifest.json` |
+| Service snapshots, authored docs and stellar.org specs, title snapshot, skill pins and files, runner registry | `scripts/build-catalog.mjs` | `catalog/manifest.json` |
 | Manifest and source-family purposes | `scripts/build-micro-map.mjs` | `src/mcp/micro-map.ts` |
 | Manifest, service mappings, runner registry | `scripts/build-super-spec.mjs` | `specs/super-spec.json` |
 
@@ -376,6 +376,9 @@ Its gitignored file cache supports repeated builds.
 The builder scopes those titles by each docs operation's `mintlify.include` prefixes.
 Stellar Docs operations come from the authored spec, not from a fetched descriptor.
 [docs/stellar-docs.md](docs/stellar-docs.md) defines the docs transport, scoping, and soft-empty contract.
+stellar.org operations come from `specs/stellar-org.json`. The adapter fixes the origin, guards the
+page path, follows same-origin redirects only, and caps the page size;
+[research/services/stellar-org-site.md](research/services/stellar-org-site.md) records the contract.
 Sorted entries, stable keys, and input-derived timestamps make catalog generation deterministic.
 
 `src/policy/scout-exposure.ts` owns excluded Scout operations.

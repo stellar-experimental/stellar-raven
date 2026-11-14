@@ -1385,7 +1385,7 @@ The eight allowed codemode helpers (${helperList}) are functions on one host pro
 inside the same sandbox boundary. This is the working loop:</p>
 ${docTrace()}
 
-<h2>The four source families</h2>
+<h2>The five source families</h2>
 <p>Each family answers different questions, and Raven's guidance tells your agent which to trust:</p>
 <ul>
   <li><b>Lumenloop</b> (lumenloop.*), run by the independent
@@ -1396,6 +1396,8 @@ ${docTrace()}
     hackathons, audits, and stablecoins.</li>
   <li><b>Stellar Docs</b> (stellarDocs.*), run by the Stellar Development Foundation — official Stellar documentation. The authority for
     protocol behavior, standards status, and API shapes.</li>
+  <li><b>stellar.org</b> (stellarOrg.*), the Stellar Development Foundation's own website — SDF's strategy, roadmap,
+    programs, and the service-provider and audited-project directories. Blog, press, and events are left to Scout and Lumenloop.</li>
   <li><b>Skills</b> (skills.*), from Lumen Loop, OpenZeppelin, the Stellar Development Foundation, Stellar Light,
     and Trustless Work — pinned operational playbooks read section by section: tested
     build, integration, security, and data procedures.</li>

@@ -183,5 +183,13 @@ export const RETRIEVAL_PROFILES = {
     { id: "stellarDocs.search_docs", relation: "corpus-wide", on: BROAD_MISS },
     { id: "scout.searchResearch", relation: "cited-research", on: CORROBORATE },
     { id: "lumenloop.search_content_semantic", relation: "cross-family", on: CORROBORATE }
+  ] },
+
+  "stellarOrg.search_site": { lane: "corpus", emptyScope: "corpus", recoverWith: [
+    { id: "scout.searchResearch", relation: "cited-research", on: BROAD_MISS },
+    { id: "lumenloop.search_content_semantic", relation: "cross-family", on: BROAD_MISS }
+  ] },
+  "stellarOrg.get_page": { lane: "detail", emptyScope: "operation", recoverWith: [
+    { id: "stellarOrg.search_site", relation: "corpus-wide", on: BROAD_MISS }
   ] }
 };

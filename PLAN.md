@@ -7,7 +7,8 @@ decisions.
 ## Scope
 
 Stellar Raven is a Cloudflare Workers MCP server at https://raven.stellar.org. It connects agents
-to Lumenloop, Stellar Light/Scout, Stellar Docs, and selected ecosystem skills through two tools:
+to Lumenloop, Stellar Light/Scout, Stellar Docs, the stellar.org website, and selected ecosystem
+skills through two tools:
 
 - `search` finds service operations and skills through a host-side ranked query.
 - `execute` runs model-written JavaScript in a fresh Dynamic Worker with no network access.

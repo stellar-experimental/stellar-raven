@@ -2,7 +2,7 @@
 /**
  * Isolated plain-tool arm for the per-operation architecture A/B.
  *
- * The server exposes the manifest's 60 service operations as ordinary MCP tools.
+ * The server exposes the manifest's 62 service operations as ordinary MCP tools.
  * Each call is translated into one call to the existing local Raven `execute`
  * tool, so adapter dispatch, manifest argument validation, normalization,
  * redaction, truncation, telemetry, and the networkless Worker boundary remain
@@ -22,8 +22,8 @@ import { CallToolRequestSchema, ListToolsRequestSchema } from "@modelcontextprot
 const QA_DIR = path.dirname(fileURLToPath(import.meta.url));
 export const REPO_ROOT = path.resolve(QA_DIR, "..", "..");
 export const MANIFEST_PATH = path.join(REPO_ROOT, "catalog", "manifest.json");
-export const EXPECTED_OPERATION_COUNTS = Object.freeze({ lumenloop: 18, scout: 30, stellarDocs: 12 });
-export const EXPECTED_OPERATION_COUNT = 60;
+export const EXPECTED_OPERATION_COUNTS = Object.freeze({ lumenloop: 18, scout: 30, stellarDocs: 12, stellarOrg: 2 });
+export const EXPECTED_OPERATION_COUNT = 62;
 
 export const PLAIN_SERVER_INSTRUCTIONS = `Plain per-operation Stellar gateway used only by the architecture eval.
 
@@ -33,6 +33,7 @@ Source families:
 - lumenloop: community/editorial projects, content, research, SCF and funding context.
 - scout: live ecosystem graph for projects, repos, builders, hackathons, partners and rankings.
 - stellarDocs: official protocol, SDK, CLI, contract, RPC, asset, anchor and wallet documentation.
+- stellarOrg: SDF's own website for its strategy, roadmap, programs, and service-provider and audited-project directories.
 
 Every tool returns the same service envelope as the shipped execute path: { ok: true, data } or { ok: false, error: { service, kind, message, status?, hint? } }. Read payload fields under data. kind="soft-empty" is inconclusive, not evidence of absence. Returned data can be truncated at the same model boundary as execute; narrow later calls and request only the fields needed.`;
 
@@ -41,7 +42,7 @@ function sha256(value) {
 }
 
 export function plainToolName(operationId) {
-  if (!/^(lumenloop|scout|stellarDocs)\.[A-Za-z0-9_]+$/.test(operationId)) {
+  if (!/^(lumenloop|scout|stellarDocs|stellarOrg)\.[A-Za-z0-9_]+$/.test(operationId)) {
     throw new Error(`cannot map non-operation id to a plain tool name: ${operationId}`);
   }
   const operationName = operationId.slice(operationId.indexOf(".") + 1);
@@ -52,7 +53,7 @@ export function plainToolName(operationId) {
 }
 
 export function operationIdFromPlainTool(name) {
-  const match = /^(lumenloop|scout|stellarDocs)_([A-Za-z0-9_]+)$/.exec(String(name));
+  const match = /^(lumenloop|scout|stellarDocs|stellarOrg)_([A-Za-z0-9_]+)$/.exec(String(name));
   if (match?.[2].includes("__")) return null;
   return match ? `${match[1]}.${match[2]}` : null;
 }

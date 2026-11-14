@@ -398,8 +398,15 @@ describe("build-catalog.mjs", () => {
     expect(count((e) => e.id.includes("lumenloop-api-"))).toBe(0);
     expect(count((e) => e.id.includes("lumenloop-mcp-connect"))).toBe(0);
 
-    // Grand total: 60 operations + 20 whole skills + 204 skill sections.
-    expect(catalog.entries).toHaveLength(284);
+    // stellar.org: two authored operations whose adapter reads `transport.endpoint`.
+    const org = catalog.entries.filter((e) => e.service === "stellarOrg");
+    expect(org.map((e) => [e.id, (e.transport as Record<string, unknown>).endpoint])).toEqual([
+      ["stellarOrg.get_page", "page"],
+      ["stellarOrg.search_site", "search"]
+    ]);
+
+    // Grand total: 62 operations + 20 whole skills + 204 skill sections.
+    expect(catalog.entries).toHaveLength(286);
   });
 
   it("carries exactly version/generatedAt/entries at the top level", () => {

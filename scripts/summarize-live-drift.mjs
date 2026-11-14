@@ -297,6 +297,33 @@ export function classifyDocsBackend(oldInv, nextInv) {
   return lines;
 }
 
+/**
+ * Classify a change to inventory/stellar-org.json. Origin or contract changes
+ * can break src/adapters/stellar-org.ts.
+ */
+export function classifyStellarOrg(oldInv, nextInv) {
+  const lines = [];
+  if (!sameJson(oldInv?.source, nextInv?.source)) {
+    lines.push("  - stellar.org origin or search path changed; reconcile specs/stellar-org.json and src/adapters/stellar-org.ts.");
+  }
+  if (!sameJson(oldInv?.contract, nextInv?.contract)) {
+    lines.push(
+      "  - stellar.org search row keys or page probe changed (status, content type, or `<main>` element).",
+      "  - Run the adapter tests and a live smoke of stellarOrg.search_site and stellarOrg.get_page."
+    );
+  }
+  return lines;
+}
+
+function summarizeStellarOrgInventory(path) {
+  if (!changedFiles([path]).includes(path)) return [];
+  const oldInv = readHeadJson(path);
+  const nextInv = readJson(path);
+  if (!oldInv) return [`- ${path}: new inventory file; classify manually.`];
+  if (sameJson({ ...oldInv, fetchedAt: nextInv.fetchedAt }, nextInv)) return [`- ${path}: unchanged ignoring fetchedAt.`];
+  return [`- ${path}: stellar.org site contract changed.`, ...classifyStellarOrg(oldInv, nextInv)];
+}
+
 /** Added and removed `path title` pairs between two titles snapshots. */
 export function diffDocsTitles(oldInv, nextInv) {
   const key = (entry) => `${entry.path} ${entry.title}`;
@@ -396,6 +423,7 @@ function main() {
 
   classificationLines.push(...summarizeDocsInventory("inventory/stellar-docs.json"));
   classificationLines.push(...summarizeDocsInventory("inventory/stellar-docs-titles.json"));
+  classificationLines.push(...summarizeStellarOrgInventory("inventory/stellar-org.json"));
   if (generatedChanged.includes(anchorPath)) {
     classificationLines.push(...summarizeDocsAnchors(readHeadJson(anchorPath), readJson(anchorPath)));
   }

@@ -7,7 +7,7 @@ Issues and pull requests are welcome. [README.md](./README.md) describes the pro
 | You found | Send it to |
 |---|---|
 | A bug or a gap in Raven | A GitHub issue or a pull request |
-| Wrong or missing data in Lumenloop, Stellar Light/Scout, Stellar Docs, or an upstream skill | A GitHub issue. Raven records it as a finding in [`improvements/`](./improvements/README.md) and files it with the service owner. |
+| Wrong or missing data in Lumenloop, Stellar Light/Scout, Stellar Docs, stellar.org, or an upstream skill | A GitHub issue. Raven records it as a finding in [`improvements/`](./improvements/README.md) and files it with the service owner. |
 | An upstream fix for a recorded finding | The **Upstream improvement ready for verification** issue form |
 | A security problem | [SECURITY.md](./SECURITY.md). Do not open a public issue. |
 | A question | The `#raven` channel in the [Stellar Developers Discord](https://discord.gg/stellardev) |

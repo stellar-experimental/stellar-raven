@@ -36,6 +36,14 @@ export const SERVICE_FAMILY_PURPOSES = [
       "Authority for protocol behavior, standards status, API shape, implementation reference, and current official wording."
   },
   {
+    family: "stellarOrg",
+    label: "stellar.org",
+    line:
+      "SDF's own website outside its blog, press, and events: Foundation strategy, roadmap, programs, service-provider and audited-project directories, and public statements.",
+    authority:
+      "Primary for SDF's strategy, roadmap, programs, those directories, and SDF's stated positions; not for protocol behavior (Stellar Docs) or blog, press, and events (Scout, Lumenloop)."
+  },
+  {
     family: "skills",
     label: "Skills",
     line:
@@ -46,7 +54,7 @@ export const SERVICE_FAMILY_PURPOSES = [
 ];
 
 export const FAMILY_LINE =
-  "Families: lumenloop=community/editorial projects, research, content, SCF/funding; use for what's-been-said/editorial/freshness skims; scout=live ecosystem graph: projects, repos, people, hackathon builds, audits, stablecoins, partners; stellarDocs=official protocol/SDK/CLI/contracts/RPC/anchor/wallet docs; skills=tested build/integration/security playbooks.";
+  "Families: lumenloop=community/editorial projects, research, content, SCF/funding; use for what's-been-said/editorial/freshness skims; scout=live ecosystem graph: projects, repos, people, hackathon builds, audits, stablecoins, partners; stellarDocs=official protocol/SDK/CLI/contracts/RPC/anchor/wallet docs; stellarOrg=SDF site: strategy, roadmap, programs, provider and audit directories; skills=tested build/integration/security playbooks.";
 
 export const AUTHORITY_RULES = [
   "Use the family that can actually ground the claim, then add a corroborating family when the question crosses source boundaries.",

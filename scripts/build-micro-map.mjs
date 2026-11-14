@@ -63,7 +63,7 @@ export function validateFamilyPurposes(entries, familyPurposes = SERVICE_FAMILY_
 
 export function assertGeneratedTextNoNonExposedRefs(text, entries, label) {
   const opIds = new Set(entries.filter((entry) => entry.kind === "operation").map((entry) => entry.id));
-  const callableRe = /(?<![.\w])(?:lumenloop|scout|stellarDocs)\.[A-Za-z_]\w*/g;
+  const callableRe = /(?<![.\w])(?:lumenloop|scout|stellarDocs|stellarOrg)\.[A-Za-z_]\w*/g;
   const TLDS = new Set(["com", "org", "net", "io", "xyz", "dev", "app", "buzz"]);
   for (const token of text.match(callableRe) ?? []) {
     if (TLDS.has(token.split(".")[1])) continue;

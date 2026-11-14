@@ -1,0 +1,164 @@
+{
+  "spec": "stellar-org-site/1",
+  "service": "stellarOrg",
+  "title": "stellar.org site search and page text (keyless)",
+  "description": "Two authored operations over the Stellar Development Foundation's website, stellar.org: the site's own keyless search endpoint and a host-side read of one server-rendered page. Blog, press and events rows are filtered out because other sources hold that content. The catalog builder maps each operation 1:1 to a CatalogEntry; the adapter (src/adapters/stellar-org.ts) owns the origin, the path guard, the redirect rule and the size cap.",
+  "authoredAt": "2026-11-14T00:00:00Z",
+  "authoredBy": "Golden coverage audit, lane sorg (.agents/rounds/2026-11-14-golden-coverage-audit/decisions/SORG.md); measurements in research/services/stellar-org-site.md",
+  "backend": {
+    "type": "http",
+    "origin": "https://stellar.org",
+    "searchPath": "/api/search",
+    "auth": "none (keyless)",
+    "cost": "free",
+    "constraints": {
+      "searchShape": "GET /api/search?q=<query>&locale=en returns { query, locale, results: [{ id, kind, title, description, tags, url, isExternal }] } with at most 10 rows; kind is page or partner. A missing q returns 400 { error: \"invalid_query\" }.",
+      "filtered": "Rows whose path is under /blog, /press or /events, and rows with isExternal true, are dropped. Partner rows link to a query string on /ecosystem and are returned with path /ecosystem.",
+      "pages": "Pages are server-rendered HTML of 410-500 KB (2026-11-14). The adapter keeps the <main> text, follows same-origin redirects only, refuses a body over 2,000,000 bytes and cuts content at 40,000 characters."
+    }
+  },
+  "operations": [
+    {
+      "id": "stellarOrg.search_site",
+      "name": "search_site",
+      "endpoint": "search",
+      "description": "Search the SDF website, stellar.org, for pages the Stellar Development Foundation publishes about itself: the SDF strategy and annual objectives, the product roadmap, the Soroban Security Audit Bank and its security-audited projects list, and the service providers directory listing agencies and audit partners. Returns site-search rows with title, description, page path, kind and tags; read one page with stellarOrg.get_page.",
+      "params": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "query"
+        ],
+        "properties": {
+          "query": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Keywords for the stellar.org site search, such as \"strategy\", \"roadmap\" or \"service providers\"."
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10,
+            "default": 5
+          }
+        }
+      },
+      "returns": "{ hits: [{ title, description, path, kind, tags }], meta: { candidates } }.",
+      "outputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "hits",
+          "meta"
+        ],
+        "properties": {
+          "hits": {
+            "type": "array",
+            "description": "The hits live under `data.hits`. Empty when every site-search row was a blog, press, events or external row.",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "title",
+                "description",
+                "path",
+                "kind",
+                "tags"
+              ],
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "path": {
+                  "type": "string",
+                  "description": "Site-relative path on https://stellar.org; pass it to stellarOrg.get_page. Partner rows carry /ecosystem, whose page does not render partner detail."
+                },
+                "kind": {
+                  "type": "string",
+                  "description": "page or partner."
+                },
+                "tags": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "meta": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "candidates"
+            ],
+            "properties": {
+              "candidates": {
+                "type": "integer",
+                "description": "Rows the site search returned before filtering."
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "stellarOrg.get_page",
+      "name": "get_page",
+      "endpoint": "page",
+      "description": "Read the main text from one stellar.org page, given its path: /foundation/strategy, /foundation/roadmap, /audit-bank/projects, /ecosystem/service-providers and other paths from stellarOrg.search_site rows. Returns the page title, URL and text with headings and list items kept.",
+      "params": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "path"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Site-relative page path starting with /, such as \"/foundation/strategy\". Full URLs, query strings and /api paths are refused."
+          }
+        }
+      },
+      "returns": "{ url, path, title, content, truncated? }.",
+      "outputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "url",
+          "path",
+          "title",
+          "content"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "path": {
+            "type": "string",
+            "description": "The path served, after any same-origin redirect."
+          },
+          "title": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string",
+            "description": "Main page text. Client-side lists, such as later pages of the audited-projects list, are not in the server-rendered text."
+          },
+          "truncated": {
+            "type": "boolean",
+            "description": "Present and true when content was cut at 40,000 characters."
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,11 +1,11 @@
 # inventory/ — service inventory snapshots
 
-This directory holds generated snapshots of the three upstream services. Catalog assembly and
+This directory holds generated snapshots of the four upstream services. Catalog assembly and
 drift detection use them.
 
 `scripts/build-catalog.mjs` reads the Lumenloop and Stellar Light snapshots and the Stellar Docs
 title snapshot. The Mintlify backend snapshot is drift evidence only. The builder also reads the
-authored `specs/stellar-docs.json`, the skills manifest, the pinned skill files, and the
+authored `specs/stellar-docs.json` and `specs/stellar-org.json`, the skills manifest, the pinned skill files, and the
 runnable-skill registry. It reads pinned skill files through the hash-verified cache, and a cache
 miss fetches the pinned upstream file. See [the scripts guide](../scripts/README.md).
 
@@ -47,6 +47,7 @@ On a fork, also set two repository variables:
 | `stellar-light.json` | The full keyless `GET /api/openapi.json` spec under `openapi`, plus a `GET /api/status` snapshot with volatile fields (`generatedAt`, `usage`) stripped. The snapshot owns its operation count. | `changelogLatest` = latest `GET /api/changelog` entry; `openapiVersion` |
 | `stellar-docs.json` | The Mintlify backend identity (API base, search and page paths, project subdomain, auth env name), the response shapes of one search and one page probe, and a fingerprint of the keyless `llms.txt` page index (page count, plus the SHA-256 and page count of each index file). Stellar Docs operation definitions are authored separately in `specs/stellar-docs.json`. | `source` (backend identity), `contract` (response shapes), `pageIndex` (page-index content) |
 | `stellar-docs-titles.json` | Deduplicated page titles and paths from `llms.txt` and every nested `/_llms/*.txt` index it links. The catalog builder scopes these titles by each Docs operation's path prefixes and distills them into routing keywords. The committed file is held at its Algolia-era snapshot until the general routing repair (#223) lands, so the daily refresh reports it as drift. | page-title/path additions, removals, and rewords |
+| `stellar-org.json` | The stellar.org origin and search path, the response and row keys of one keyless site-search probe, and the status, content type, and `<main>` presence of one page probe. Drift evidence only; the operations are authored in `specs/stellar-org.json`. | `source` (origin, search path), `contract` (row keys, page probe) |
 
 ### `lumenloop.json` details
 
@@ -71,7 +72,7 @@ On a fork, also set two repository variables:
 `scripts/refresh-inventory.mjs` rebuilds every file here. Do not edit them directly
 ([`AGENTS.md` “Commands and verification”](../AGENTS.md#commands-and-verification)).
 
-- Stellar Docs operation definitions are not inventory content. Edit the authored
-  `specs/stellar-docs.json` instead.
+- Stellar Docs and stellar.org operation definitions are not inventory content. Edit the authored
+  `specs/stellar-docs.json` or `specs/stellar-org.json` instead.
 - `scripts/refresh-inventory.mjs` holds the authored `LUMENLOOP_PARTNER_TOOLS` name list. Edit
   it there and run the refresh again. A count mismatch against `/v1/me` fails the run.
