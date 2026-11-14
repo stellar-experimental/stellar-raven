@@ -8,16 +8,17 @@
     "date": "2026-11-14",
     "author": "audit-compliance (golden coverage audit)",
     "reviewer": "verify-audit-compliance (golden coverage audit)",
-    "reason": "Merged into q-pay-anchor-msb-licensing, which carries the custody scope (custodial operators can be in scope; non-custodial software alone generally is not), while q-tool-wallets-comparison classifies wallets by custody.",
+    "reason": "Merged into q-pay-anchor-msb-licensing, which later retired as outside Raven sources; custody models (self-custody, wallet infrastructure, regulated custodian) now live, for issuers, in the proposed q-comp-issuer-institutional-custody, and q-tool-wallets-comparison classifies wallets by custody.",
     "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
     "evidence": [
       "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-compliance.json#q-crp-custodial-vs-noncustodial-wallets",
       "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-compliance.json#q-crp-custodial-vs-noncustodial-wallets",
-      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-crp-custodial-vs-noncustodial-wallets"
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-crp-custodial-vs-noncustodial-wallets",
+      "Survivor repointed 2026-11-14 after q-pay-anchor-msb-licensing retired: .agents/rounds/2026-11-14-golden-coverage-audit/decisions/APPLY.md"
     ],
     "lastCaseContentSha256": "db4306033bd76f50694c1b53734c2df1fbc883963c184f69d4dee0a45fc74fcd",
     "replacementIds": [
-      "q-pay-anchor-msb-licensing"
+      "q-comp-issuer-institutional-custody"
     ]
   }
 }

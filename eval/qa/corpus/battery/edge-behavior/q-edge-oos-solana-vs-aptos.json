@@ -5,13 +5,12 @@
   "golden": {
     "answer": "I can't give a reliable current Solana-versus-Aptos recommendation from this Stellar-focused service. Compare current primary evidence for execution model, finality, fees, tooling, liquidity, security record, validator structure, and your protocol requirements. I can answer a separate Stellar/Soroban question if useful, but I won't insert Stellar as the answer unless asked.",
     "keyFacts": [
-      "Avoids an unsupported Solana-versus-Aptos verdict.",
-      "Supplies a practical current-evidence comparison framework."
+      "Avoids an unsupported Solana-versus-Aptos verdict."
     ],
     "avoid": [
-      "Do NOT give a confident Solana/Aptos verdict, inject Stellar as a third-option resolution, or provide only refusal boilerplate."
+      "Do NOT give a confident Solana/Aptos verdict or inject Stellar as a third-option resolution."
     ],
-    "notes": "GT-26 2026-07-10: require honest source-coverage limits plus a useful current-primary-evidence comparison framework. No unsupported verdict and no forced Stellar third option.\nGT-26 OOS REWRITE 2026-07-10: scope honesty plus decision support replaces refusal-only grading."
+    "notes": "A current-evidence comparison framework is welcome, not required; do not penalize a brief, scope-honest reply."
   },
   "tags": {
     "category": "edge-behavior",
@@ -60,21 +59,18 @@
       }
     ],
     "verified": {
-      "date": "2026-08-29",
-      "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
+      "date": "2026-11-14",
+      "by": "scope-apply lane (Claude Opus 5.5, high), golden coverage audit 2026-11-14; applies owner-approved decisions/SCOPE.md A6",
       "evidence": [
-        "Solo scratchpad 575 GT-26 primary 3269 and blind 3271.",
-        "Live re-check (class A, 2026-08-29): https://solana.com/docs/core/fees/fee-structure documents Solana-specific fees and transaction priorities.",
-        "Live re-check (class A, 2026-08-29): https://aptos.dev/build/guides/application-integration documents Aptos-specific finality, SDK, transaction, and account behavior.",
-        "Live re-check (class B, 2026-08-29): README.md limits the current repository scope to Stellar ecosystem services and skills.",
-        "Sibling sweep (2026-08-29): Solana, Aptos, unsupported-verdict, and comparison-framework cases showed no contradiction."
+        "Owner decision 2026-11-14: .agents/rounds/2026-11-14-golden-coverage-audit/decisions/SCOPE.md A6 (non-Stellar key facts move to optional context); applied in decisions/APPLY.md.",
+        "Made the comparison-framework key fact welcome, not required, and dropped \"or provide only refusal boilerplate\" from the avoid item. This reverses the 2026-07-10 GT-26 choice by the owner’s decision; no fact about either chain is asserted."
       ],
       "rootCause": [
-        "Strict none-route scoring optimized tool non-use rather than end-answer usefulness.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
     "origin": "raven-next q-edge-oos-solana-vs-aptos",
-    "leaf": "behavior.out-of-scope"
+    "leaf": "behavior.out-of-scope",
+    "notes": "GT-26 2026-07-10 required honest source-coverage limits plus a current-primary-evidence comparison framework, replacing refusal-only grading. The 2026-11-14 owner decision (decisions/SCOPE.md A6) made the framework welcome, not required, and dropped the refusal-boilerplate avoid clause."
   }
 }

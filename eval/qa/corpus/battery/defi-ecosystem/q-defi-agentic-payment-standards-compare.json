@@ -5,18 +5,17 @@
     "skills.stellar-dev.agentic-payments"
   ],
   "golden": {
-    "answer": "None of x402, MPP, AP2 or ACP is a Stellar standard. x402 and MPP are general payment protocols; Stellar supplies methods that settle SEP-41 token transfers through Soroban authorization. MPP covers one-time charge plus session and channel payments. AP2 is an emerging mandate-based authorization protocol that can use x402 but does not require it. ACP is a checkout protocol that delegates payment to PSPs.",
+    "answer": "None of x402, MPP, AP2 or ACP is a Stellar standard. x402 and MPP are general payment protocols; Stellar docs define methods for them that settle SEP-41 token transfers through Soroban authorization, and, as of November 2026, none for AP2 or ACP. MPP covers one-time charge plus session and channel payments. AP2 is an emerging mandate-based authorization protocol that can use x402 but does not require it. ACP is a checkout protocol that delegates payment to PSPs.",
     "keyFacts": [
       "x402 and MPP are general protocols; Stellar methods settle SEP-41 tokens.",
       "MPP covers one-time charge plus session and channel payments, not only streaming.",
-      "AP2 is an emerging authorization protocol; x402 is optional there.",
-      "ACP is a checkout protocol that delegates payment; it is not a settlement rail."
+      "As of November 2026, Stellar docs define payment methods for x402 and MPP, not for AP2 or ACP."
     ],
     "avoid": [
       "Do NOT call x402 or MPP a Stellar-native standard.",
       "Do NOT describe ACP as a blockchain settlement rail or MPP as a Stripe/Tempo chain."
     ],
-    "notes": "The exposed Stellar agentic-payments skill covers x402 and MPP only; accept source-faithful limits on AP2 and ACP."
+    "notes": "AP2 and ACP descriptions are optional context, but a false one is wrong. The exposed Stellar agentic-payments skill covers x402 and MPP only; accept source-faithful limits on AP2 and ACP. Accept a later Stellar docs method for AP2 or ACP when the answer names its source."
   },
   "tags": {
     "category": "defi-ecosystem",
@@ -30,7 +29,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-14",
     "sources": [
       {
         "class": "A",
@@ -176,19 +175,45 @@
             "note": "Building the Trust Layer for Agentic Payments with AP2 and Verifiable Intent (May 26, 2026)"
           }
         ]
+      },
+      {
+        "claim": "As of 2026-11-14, Stellar docs define payment methods for x402 and MPP and none for AP2 or ACP.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/agentic-payments.md",
+            "observedAt": "2026-11-14",
+            "note": "Index lists two methods: x402 on Stellar and MPP on Stellar; the page has no AP2 or ACP mention."
+          },
+          {
+            "class": "B",
+            "ref": "gh search code AP2 / \"Agent Payments Protocol\" / \"Agentic Commerce Protocol\" / ACP --repo stellar/stellar-docs; gh api repos/stellar/stellar-docs/contents/docs/build/agentic-payments",
+            "observedAt": "2026-11-14",
+            "note": "Directory holds index.mdx, mpp, x402. Code hits are only hash or base64 substrings in Horizon and RPC examples and pnpm-lock.yaml."
+          },
+          {
+            "class": "E",
+            "ref": "stellarDocs.search_docs({query: \"AP2 Agent Payments Protocol\"}) and ({query: \"ACP Agentic Commerce Protocol checkout\"})",
+            "observedAt": "2026-11-14",
+            "note": "Both return only agentic-payments, x402 and MPP pages; no AP2 or ACP page."
+          },
+          {
+            "class": "D",
+            "ref": "parallel-cli search: Stellar AP2 agent payments protocol; Stellar ACP agentic commerce protocol",
+            "observedAt": "2026-11-14",
+            "note": "Results: Stellar x402 and MPP pages, Stripe ACP docs, ap2-protocol.org spec; no Stellar AP2 or ACP method."
+          }
+        ]
       }
     ],
     "verified": {
       "date": "2026-11-14",
-      "by": "Golden coverage audit 2026-11-14 (audit-defi, verify-defi; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+      "by": "scope-finalize (Claude Opus 5.5), applying independent review finding F2 from scope-review (Claude Sonnet 5.5), decisions/REVIEW.md",
       "evidence": [
-        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-defi-agentic-payment-standards-compare",
-        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-defi-agentic-payment-standards-compare",
-        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-defi-agentic-payment-standards-compare",
-        "Live A 2026-11-14: https://developers.stellar.org/docs/build/agentic-payments/mpp -- 'Use the Machine Payments Protocol (MPP) for per-request HTTP payments on Stellar, with ... off-chain payment channels.'",
-        "Live D 2026-11-14: https://mpp.dev/payment-methods/stellar/charge -- 'The Stellar implementation of the charge intent. The client signs a SEP-41 transfer invocation'",
-        "Live D 2026-11-14: https://fidoalliance.org/building-the-trust-layer-for-agentic-payments-with-ap2-and-verifiable-intent -- 'Building the Trust Layer for Agentic Payments with AP2 and Verifiable Intent (May 26, 2026)'",
-        "Live A 2026-11-14: https://docs.stripe.com/agentic-commerce/protocols/acp -- 'an open standard created by Stripe, OpenAI, and Meta that defines how AI agents interact with businesses to complete purchases'"
+        "F2: the negative key fact and answer clause are now dated (as of November 2026), and golden.notes accepts a later Stellar docs method for AP2 or ACP; golden-truth section 3 (negative claims) and the live-case rule.",
+        "Negative claim unchanged in substance: truth.corroboration row dated 2026-11-14 (A, B, E, D).",
+        "Review: .agents/rounds/2026-11-14-golden-coverage-audit/decisions/REVIEW.md F2; application: decisions/APPLY.md, section Review reconciliation"
       ],
       "rootCause": [
         ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"

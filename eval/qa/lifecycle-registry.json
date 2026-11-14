@@ -4,9 +4,9 @@
   "digestSchema": "canonical-json-sha256-v1",
   "counts": {
     "proposed": 0,
-    "active": 252,
+    "active": 253,
     "quarantined": 0,
-    "retired": 291
+    "retired": 292
   },
   "reservedIds": [
     "q-aas-burn-clawback-redemption-mechanics",
@@ -60,11 +60,13 @@
     "q-comp-cross-bitso-sep31",
     "q-comp-cross-moneygram-partnership-sep24",
     "q-comp-finclusive-caas",
+    "q-comp-issuer-institutional-custody",
     "q-comp-sac-inherits-flags",
     "q-comp-security-disclosure-programs",
     "q-comp-sep6-vs-sep12-roles",
     "q-comp-sep8-number-lookup-no-deepresearch",
     "q-comp-sep8-regulated-assets-approval-server",
+    "q-comp-xlm-us-classification",
     "q-comp-yieldblox-oracle-incident",
     "q-consumer-apps-spend-save-send",
     "q-crp-anchors-by-corridor",
@@ -826,7 +828,7 @@
       "path": "eval/qa/corpus/battery/retail-consumer/q-asset-usdc-eurc-issuer.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "6b9e41cadcd5660aa5a4b897fe4a0979fd3b9cc6789960cb9e461352880b6efd"
+      "caseContentSha256": "b8b4ff07b05141f72b42adec92e826a9213d791c82a3c723c9ed835aca759ed2"
     },
     {
       "id": "q-asset-usdc-eurc-path-fx",
@@ -989,9 +991,16 @@
       "path": "eval/qa/corpus/retired/q-comp-finclusive-caas.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "ae7ae18fd7133e94b3f03e47edd2343519e40fc77a36f347ab2b698b7511e832",
+      "tombstoneContentSha256": "4af2f52a5979c1f02c39e484da991953dc76cf414d1dc15df0d84321bf5f097c",
       "lastCaseContentSha256": "97b985a2a801d21ad9fbc0f0cdf3d1d27f31bca7037290482b08e28d938a95fc",
       "replacementIds": []
+    },
+    {
+      "id": "q-comp-issuer-institutional-custody",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-comp-issuer-institutional-custody.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "5cab39070b90cddf42f0c63839121592fa157e16cd9c41cd355c55718706266b"
     },
     {
       "id": "q-comp-sac-inherits-flags",
@@ -1041,6 +1050,13 @@
       "caseContentSha256": "87cdabdf46c9ea12477372a9d5be506ee271e304e6a9113de3153dc125e8470f"
     },
     {
+      "id": "q-comp-xlm-us-classification",
+      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-comp-xlm-us-classification.json",
+      "state": "active",
+      "reviewState": "none",
+      "caseContentSha256": "917685387938d86e205d435b8f0ba1630a709e3d5640401f62a9f9834dea14f7"
+    },
+    {
       "id": "q-comp-yieldblox-oracle-incident",
       "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-comp-yieldblox-oracle-incident.json",
       "state": "active",
@@ -1070,7 +1086,7 @@
       "path": "eval/qa/corpus/retired/q-crp-become-an-anchor-licensing.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "90c53e856c34da707d149cc7526c4d2e1ab6dfd9d48c8e65d8d0c9b25f996641",
+      "tombstoneContentSha256": "94ef46b1398f0eb02a470a865232f09cd186b0129d539434b7f1a24cfa57b8f2",
       "lastCaseContentSha256": "2388e136089e3ad537319f3ad1609b9f8baded28d3c2e8b7dec6c18be9c2dc0d",
       "replacementIds": [
         "q-anchor-sdp-vs-anchor-platform"
@@ -1090,10 +1106,10 @@
       "path": "eval/qa/corpus/retired/q-crp-custodial-vs-noncustodial-wallets.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "1767c49c11972196e357e756dcbe478f6b74427445039684ad19732662816773",
+      "tombstoneContentSha256": "f9c8029c26357a7ba5513380f99d6acbe423518807d01079b40589ebf1aeab1a",
       "lastCaseContentSha256": "db4306033bd76f50694c1b53734c2df1fbc883963c184f69d4dee0a45fc74fcd",
       "replacementIds": [
-        "q-pay-anchor-msb-licensing"
+        "q-comp-issuer-institutional-custody"
       ]
     },
     {
@@ -1181,14 +1197,14 @@
       "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-agent-identity-stellar-experimental.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "96b7992275af6491ddf46f10c7d6e98aff331ee39eacbf9462d0a8b3326ed262"
+      "caseContentSha256": "3309839ab131b727dc8a3806c6f3aa7eb93fe960f46e22a964f01d462d774cce"
     },
     {
       "id": "q-defi-agentic-payment-standards-compare",
       "path": "eval/qa/corpus/battery/defi-ecosystem/q-defi-agentic-payment-standards-compare.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "2cecf450214ae10b56f6413a57cadc5f7bd2bc36bdb7e17a785cb947883e6bca"
+      "caseContentSha256": "64f05c96487a6989601021a31ffdf89d1ea9a2c59a3347fa7e1f2c59b36fc5b8"
     },
     {
       "id": "q-defi-allbridge-what-is",
@@ -1882,7 +1898,7 @@
       "path": "eval/qa/corpus/battery/edge-behavior/q-edge-oos-solana-vs-aptos.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "5915428e1650ef0d52e181cfbbf1f44bdb1744eb684cde16db012c5c77425a80"
+      "caseContentSha256": "8881160ebe223734a0467dc9d18ffb838d09209e36da08995a0c5364da955768"
     },
     {
       "id": "q-edge-open-world-recovery-after-narrow-miss",
@@ -2487,7 +2503,7 @@
       "path": "eval/qa/corpus/battery/edge-behavior/q-n3-pi-network-wrong-chain.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "8955cb0d5afd02ec7c6313770d4dcf6af6b5422e30a33637b616594e231bae3a"
+      "caseContentSha256": "a302c9f14c25f2a7edcfec8b6b8f1c1cde6e2ab83daff9f6c4f516aff44e6694"
     },
     {
       "id": "q-n3-ssrf-localhost-probe",
@@ -2632,10 +2648,15 @@
     },
     {
       "id": "q-pay-anchor-msb-licensing",
-      "path": "eval/qa/corpus/battery/compliance-rwa-payments/q-pay-anchor-msb-licensing.json",
-      "state": "active",
-      "reviewState": "none",
-      "caseContentSha256": "d31b48f4995264885ed84bf286b3be88a5c8b9f1b54f475d8526064e104a6aff"
+      "path": "eval/qa/corpus/retired/q-pay-anchor-msb-licensing.json",
+      "state": "retired",
+      "reviewState": "resolved",
+      "tombstoneContentSha256": "38bf02594198b7a90eb18a291eae0961ce0452763d62dd56db04c76a7d8e9643",
+      "lastCaseContentSha256": "d31b48f4995264885ed84bf286b3be88a5c8b9f1b54f475d8526064e104a6aff",
+      "replacementIds": [
+        "q-comp-aml-analytics-vendors",
+        "q-crp-remittance-founder-advisory"
+      ]
     },
     {
       "id": "q-pay-merchant-request-detect-reconcile",
@@ -2669,11 +2690,9 @@
       "path": "eval/qa/corpus/retired/q-pay-travel-rule-aid-flows.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "2971c3366649d7d74184d993830c51234a30ed1f75035dd76b8614cc28953139",
+      "tombstoneContentSha256": "e3f12a35315a155f6df0989c8102f0f065c859b2e62ee61404330e916998e6ed",
       "lastCaseContentSha256": "5930ce901ec2d30d28fcbf0f6d69c13acdaa08723808a33f7ee24da7755c23a4",
-      "replacementIds": [
-        "q-pay-anchor-msb-licensing"
-      ]
+      "replacementIds": []
     },
     {
       "id": "q-pc-account-activation-not-found",
@@ -2756,7 +2775,7 @@
       "path": "eval/qa/corpus/battery/protocol-core/q-pc-multisig-setup-lifecycle.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "4f07772d7c76779ac9a3aff6db30521d9c7257cce58b2c8fe529b9f98a63aab6"
+      "caseContentSha256": "9b7686c7a0b32f6147c5f7f09700f42a1cc717bf6b49077d1cb4ce4d5ddb8d3e"
     },
     {
       "id": "q-pc-muxed-accounts",

@@ -8,12 +8,13 @@
     "date": "2026-11-14",
     "author": "audit-compliance (golden coverage audit)",
     "reviewer": "verify-audit-compliance (golden coverage audit)",
-    "reason": "Travel Rule versus KYC is owned by q-pay-travel-rule-aid-flows and licensing-by-actor by q-pay-anchor-msb-licensing. FinClusive is a single-vendor detail whose golden is mostly negative guards; no topic visibility is lost.",
+    "reason": "Travel Rule versus KYC and licensing by actor left the battery with q-pay-travel-rule-aid-flows and q-pay-anchor-msb-licensing, whose law no Raven source holds; q-comp-aml-analytics-vendors keeps the anchor-owned KYC and AML duty, and FinClusive is a single-vendor detail whose golden is mostly negative guards.",
     "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
     "evidence": [
       "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-compliance.json#q-comp-finclusive-caas",
       "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-compliance.json#q-comp-finclusive-caas",
-      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-comp-finclusive-caas"
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-comp-finclusive-caas",
+      "Survivor repointed 2026-11-14 after q-pay-anchor-msb-licensing retired: .agents/rounds/2026-11-14-golden-coverage-audit/decisions/APPLY.md"
     ],
     "lastCaseContentSha256": "97b985a2a801d21ad9fbc0f0cdf3d1d27f31bca7037290482b08e28d938a95fc",
     "replacementIds": []

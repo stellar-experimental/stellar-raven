@@ -1,0 +1,24 @@
+{
+  "id": "q-pay-anchor-msb-licensing",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "scope-apply (golden coverage audit, Claude Opus 5.5)",
+    "reviewer": "Owner approval of decisions/SCOPE.md A6 on 2026-11-14 (scope lane, Claude Fable 5.2); diff reviewed in decisions/REVIEW.md",
+    "reason": "Lost relevance: it grades US money-transmitter and Travel Rule law that no Raven source holds, and the Stellar-tied fact that compliance duties sit with the anchor, not the protocol, survives in q-comp-aml-analytics-vendors and q-crp-remittance-founder-advisory.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Scope decision: .agents/rounds/2026-11-14-golden-coverage-audit/decisions/SCOPE.md#a5-options-and-cost and #a6-per-case-actions",
+      "Applied: .agents/rounds/2026-11-14-golden-coverage-audit/decisions/APPLY.md",
+      "Survivors checked 2026-11-14: q-comp-aml-analytics-vendors key fact 2 ('Meeting KYC and AML rules is the anchor's own obligation.'); q-crp-remittance-founder-advisory key fact 4 ('SEPs guarantee no liquidity, licence or coverage') and its avoid item on definitive legal or licensing advice."
+    ],
+    "lastCaseContentSha256": "d31b48f4995264885ed84bf286b3be88a5c8b9f1b54f475d8526064e104a6aff",
+    "replacementIds": [
+      "q-comp-aml-analytics-vendors",
+      "q-crp-remittance-founder-advisory"
+    ]
+  }
+}

@@ -127,7 +127,7 @@ disputes disappear, and no answer with a truly unsupported claim is graded up.
 
 The round rebuilt the battery around a taxonomy of Stellar (`eval/qa/taxonomy.json`):
 
-- 246 headline cases and 6 tool-lane cases;
+- 247 headline cases and 6 tool-lane cases;
 - 164 of 167 leaves covered;
 - the two remaining `openSlots` are waived.
 
@@ -139,22 +139,21 @@ remains:
     to `sd-108`) and Stellar-Light/stellarlight#1969 and #1970 (`sls-117`, `sls-118`). On the next
     drift refresh, read each ref and re-run each finding's reproduction commands.
   - The stellar.org source question: the next item.
-  - Out-of-source topics and the custody leaf: the advice is in
-    [`decisions/SCOPE.md`](rounds/2026-11-14-golden-coverage-audit/decisions/SCOPE.md) (Claude
-    Fable, with live probes). It recommends: keep the XRP Ledger and Pi Network cases unchanged;
-    retire `q-pay-anchor-msb-licensing` and propose a case on XLM's US classification; move
-    non-Stellar key facts to optional context in three cases; add one issuer and institutional
-    custody case and move the multisig case to the multisig leaf. Apply through `golden-truth`
-    once the owner confirms.
-  - Whether the four envelope traps that no case covers since the floors were deleted
-    (`person-entity-empty`, `av-offset`, `semantic-fallback`, `matchPartners-503`) get a tool-lane
-    case or a unit test (review M2). The host envelope turns three of them into the `no-rows` and
-    `unverified-match` caveats, which unit tests pin; the tool lane exercises a closed-world miss
-    and an AV passage lookup.
+  - Done 2026-11-14: the scope advice in
+    [`decisions/SCOPE.md`](rounds/2026-11-14-golden-coverage-audit/decisions/SCOPE.md) is applied
+    ([`decisions/APPLY.md`](rounds/2026-11-14-golden-coverage-audit/decisions/APPLY.md), reviewed in
+    [`decisions/REVIEW.md`](rounds/2026-11-14-golden-coverage-audit/decisions/REVIEW.md)). Outcome:
+    `q-pay-anchor-msb-licensing` retired, four cases now grade Stellar-side facts only, and the
+    XLM US-classification and issuer custody cases are active on their own leaves.
+  - Done 2026-11-14: the four envelope traps without a case get nothing added. The `no-rows` and
+    `unverified-match` caveats are pinned by unit tests, and the `matchPartners-503` path is pinned
+    in `test/adapters.test.ts`.
+  - `sls-119` (Scout names Circle's reseller as EURC's issuer of record) is `verified` and not
+    posted upstream. Posting it is an owner decision.
 - **Optional key-fact polish.** 72 cases still carry lint warnings: 98 warnings in all, 58 of
   them on key facts with multiple predicates, over 90 characters, or with a negative predicate.
   Polish through the `golden-truth` skill, case by case; no warning blocks a gate.
-- **A first full baseline run** on the 246 headline cases. It needs its own `run-evals` plan
+- **A first full baseline run** on the 247 headline cases. It needs its own `run-evals` plan
   (decision, cap, stop rule) and its own spend authorization. Keep the held-out discipline
   stated at the top of this file.
 

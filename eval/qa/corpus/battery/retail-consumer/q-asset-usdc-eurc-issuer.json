@@ -5,18 +5,17 @@
     "stellarDocs.search_asset_token_docs"
   ],
   "golden": {
-    "answer": "Circle issues both USDC and EURC on Stellar, as native classic assets (not wrapped, not XLM). The Mainnet USDC issuer is GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN; GBBD…FLA5 is Testnet. EURC launched on Stellar on September 26, 2023. Circle’s licensed EURC issuer is Circle Internet Financial Europe SAS.",
+    "answer": "Circle issues both USDC and EURC on Stellar, as native classic assets (not wrapped, not XLM). The Mainnet USDC issuer is GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN; GBBD…FLA5 is Testnet. EURC launched on Stellar on September 26, 2023. EURC’s legal issuer is Circle Internet Financial Europe SAS.",
     "keyFacts": [
       "Circle issues USDC and EURC on Stellar as native classic assets, not wrapped.",
       "Mainnet USDC issuer is GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN.",
-      "EURC launched on Stellar on September 26, 2023.",
-      "EURC’s EU legal issuer is Circle Internet Financial Europe SAS."
+      "EURC launched on Stellar on September 26, 2023."
     ],
     "avoid": [
       "Do NOT present the Testnet issuer GBBD…FLA5 as Mainnet, or call Circle Mint Europe the current legal issuer.",
       "Do NOT attribute USDC or EURC issuance to Tether, Paxos or SDF."
     ],
-    "notes": "MyKobo issues a separate asset with code EURC under its own issuer; naming it as a distinct asset is correct, attributing Circle’s EURC to MyKobo is wrong."
+    "notes": "Naming Circle suffices; the EURC legal entity is optional context. EURC’s legal issuer is Circle Internet Financial Europe SAS; Circle Internet Financial, LLC is an affiliate reseller and the organization named in Circle's stellar.toml; an answer that names it as EURC's issuer, attributed to that file, does not fail on that point alone. MyKobo issues a separate asset with code EURC under its own issuer; naming it as a distinct asset is correct, attributing Circle’s EURC to MyKobo is wrong."
   },
   "tags": {
     "category": "retail-consumer",
@@ -187,19 +186,46 @@
             "note": "EURC Launches on the Stellar Network September 26, 2023"
           }
         ]
+      },
+      {
+        "claim": "EURC is issued by Circle Internet Financial Europe SAS; Circle Internet Financial, LLC, the ORG_NAME in Circle’s stellar.toml, is an affiliate that resells EURC.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://www.circle.com/legal/eurc-terms",
+            "observedAt": "2026-11-14",
+            "note": "Section 1: \"EURC is a digital token issued by Circle Internet Financial Europe SAS\"; \"Circle Internet Financial, LLC (“Circle”) is an affiliate of Circle Europe and acts as a reseller of EURC\"."
+          },
+          {
+            "class": "A",
+            "ref": "https://www.circle.com/eurc",
+            "observedAt": "2026-11-14",
+            "note": "\"EURC is issued by Circle Internet Financial Europe SAS, an electronic money institution authorized by the ACPR in France\"."
+          },
+          {
+            "class": "C",
+            "ref": "scout.getStablecoins({peg: \"EUR\"})",
+            "observedAt": "2026-11-14",
+            "note": "EURC issuerOfRecord \"Circle Internet Financial, LLC\", source https://circle.com/.well-known/stellar.toml: the toml organization, not the legal issuer (improvements/stellar-light-scout/sls-119-eurc-issuer-of-record-names-reseller.md)."
+          },
+          {
+            "class": "F",
+            "ref": "https://www.circle.com/.well-known/stellar.toml",
+            "observedAt": "2026-11-14",
+            "note": "ORG_NAME=\"Circle Internet Financial, LLC\"; the EURC entry has no issuing-entity field."
+          }
+        ]
       }
     ],
     "verified": {
       "date": "2026-11-14",
-      "by": "Golden coverage audit 2026-11-14 (audit-hist-retail, verify-hist-retail; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+      "by": "scope-finalize (Claude Opus 5.5), applying independent review finding F4 from scope-review (Claude Sonnet 5.5), decisions/REVIEW.md",
       "evidence": [
-        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-asset-usdc-eurc-issuer",
-        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-asset-usdc-eurc-issuer",
-        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-asset-usdc-eurc-issuer",
-        "Live A 2026-11-14: https://www.circle.com/.well-known/stellar.toml -- 'code=\"USDC\" issuer=\"GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN\"'",
-        "Live A 2026-11-14: https://www.circle.com/.well-known/stellar.toml -- 'code=\"EURC\" issuer=\"GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2\"'",
-        "Live A 2026-11-14: https://www.circle.com/pressroom/eurc-launches-on-the-stellar-network -- 'EURC Launches on the Stellar Network September 26, 2023'",
-        "Live A 2026-11-14: https://www.circle.com/eurc -- 'Not re-read this pass; corrected 2026-07-09 and confirmed 2026-11-02.'"
+        "F4: golden.notes no longer names Scout (a tool) or carries provenance; the legal-entity truth (Circle Internet Financial Europe SAS) and the leniency for a stellar.toml-attributed LLC answer are unchanged.",
+        "Reviewer re-read https://www.circle.com/legal/eurc-terms 2026-11-14: 'EURC is a digital token issued by Circle Internet Financial Europe SAS'; the LLC 'acts as a reseller of EURC'.",
+        "Scout's repetition of the LLC stays recorded in improvements/stellar-light-scout/sls-119-eurc-issuer-of-record-names-reseller.md.",
+        "Review: .agents/rounds/2026-11-14-golden-coverage-audit/decisions/REVIEW.md F4; application: decisions/APPLY.md, section Review reconciliation"
       ],
       "rootCause": [
         ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
