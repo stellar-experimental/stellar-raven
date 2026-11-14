@@ -421,3 +421,153 @@ Warnings by kind: 78 key-fact (60 "multiple predicates"), 20 avoid, 2 numeric, 1
 
 I wrote only this file. An untracked `gap/verify-gap.json` appeared in the worktree during the review;
 it belongs to another lane and I did not touch it.
+
+## Delta review: `c7dbdc87..aaaf107f`
+
+Reviewer: Claude Sonnet 5.5 (same lane). Scope: `git diff c7dbdc87 aaaf107f` without the `origin/main`
+merge (`9b4c9a52`: the catalog search, MCP tools, and their tests are not reviewed here). I checked out
+`aaaf107f` for the checks, read `apply/FINAL.md` only to know what to verify, and returned to the branch
+afterwards; the branch tip `fc566aaf` adds only ledger and brief files. Scripts are in the same
+scratchpad (`act.mjs`, `lifecycle-proof.mjs`); live reads are dated 2026-11-14.
+
+**Verdict: fit to merge.** M1 to M4 and L1 to L3 are fixed as claimed, with two small residues (D1,
+D2) that do not block. The 36 activations carry exactly the verify-gap decisions. The register closure
+matches the re-sweep. The one post-review correction is right. D1 to D4 are optional.
+
+### Findings
+
+**D1 (low). Two more merge survivors lost a fact their tombstone says to add.** M4 is fixed for the
+three cases I named, but my keyword scan missed a second wording ("the orchestrator must add the
+avoid ..."). `q-infra-simulate-transaction-howto` says the survivor `q-soroban-simulate-resource-fee`
+must carry "Do NOT claim simulation runs through a Horizon endpoint; it is a Stellar RPC method." The
+survivor's only avoid item is "Do NOT hand-pick a footprint or claim simulation submits or guarantees
+success." Fix: add the avoid item, with a `truth.verified` event. A grep of every tombstone for
+"must add" or "must name" returns only this id and `q-infra-secp256r1-passkeys` (fixed).
+
+**D2 (low). Tombstone reasons: 16 still carry audit-process commentary; two instructions are now
+stale.** FINAL.md says 90 reasons were rewritten as self-contained sentences. I confirmed it: 90
+tombstones changed, nothing else in them changed, no reason matches a score word, none names a round
+file or says "see", and the five "Proposal (not active)." reasons now say why (for example "never-
+activated proposal ... a Raven-mechanics question with no taxonomy leaf"). Sixteen unchanged reasons
+still read as verifier commentary ("Retire is right ... but the named survivor X is itself retired by
+the defi lane, so the tombstone must name ..."): `q-builder-content-by-person`,
+`q-defi-skill-ecosystem-scout`, `q-gap-digest-soroban-adjacent`, `q-gap-scout-list-skill-directory`,
+`q-history-ecosystem-index-freshness-live`, `q-scf-cross-decaf-sep24`, `q-scf-skill-stellar-scout`,
+`q-sor-doc-page-sections-followup`, `q-sor-doc-title-discovery`, `q-sor-skill-openzeppelin-setup`,
+`q-ti-vocab-content-tags-live`, `q-ti-vocab-project-tags-live`, `q-tool-oracle-repo-live`,
+`q-tool-taxonomy-dispatch-live`, plus `q-infra-secp256r1-passkeys` and `q-infra-simulate-transaction-howto`
+(both still say "the orchestrator must add ..."; the first is done, the second is D1). They pass the
+lint and name evidence. Fix: one self-contained sentence each; drop the instruction in the last two.
+
+**D3 (low). A residue of as-of lag.** L1 is fixed for what it names. `q-protocol-ledger-close-time` now
+says "five sampled closes on 2026-11-14 were 5 seconds apart" (I re-sampled: 5, 5, 5, 5, 5 s,
+protocol 29). `q-pc-practical-fee-setting` now cites Horizon `fee_stats` (base fee 100) and the Docs
+"cannot be lower than 100 stroops per operation". `truth.asOf` moved to 2026-11-14 in the 18 cases
+FINAL lists, and the move is evidenced: the 14 sentinels behind them re-ran live (`source-sentinels.mjs
+--ids ...`: 14 of 14 `hold`), and the other cases were observed in the audit's rot checks or in the two
+stamp fixes. Seven cases still have an answer date later than `asOf`: three because the later date is a
+future event (`q-edge-fresh-latest-protocol-version`, `q-pc-protocol-upgrade-timing`,
+`q-protocol-version-history-list`), four because a rot entry was `unverifiable` or `changed`
+(`q-scf-audit-bank`, `q-scf-sdf-bug-bounty`, `q-ti-openzeppelin-relayer`, `q-infra-software-versions-
+current-protocol`, whose newer `asOf` is correct and whose date is the Protocol 30 vote). All are
+defensible; FINAL's "all 18" counts what moved, not what is left.
+
+**D4 (low). The correction's event overstates its review, and the canonical page contradicts the
+answer.** `q-token-xlm-supply-total-circulating` cites `verify-gap.json#...(accept)` as "independent
+verification", but verify-gap reviewed the pre-correction answer. This delta review is the independent
+check (below). Separately, the Docs `lumens.md` page that the case cites still says "all XLM that has
+ever existed and will ever exist was created when the Stellar network went live", a few lines above its
+own inflation paragraph. An agent quoting that sentence contradicts the golden; the skill's
+canonical-page rule asks for a grading caution in `golden.notes` and a cap tied to an active
+`improvements/` finding. Fix (optional): file the Docs contradiction as a finding and add the caution.
+
+### M1 to M4 and L1 to L3: confirmed
+
+| Item | Result |
+|---|---|
+| M1 | `ecosystem-skills/README.md` step 6 now points to `eval/skills-cases.json` (file exists) and asks for a QA case only for a taxonomy leaf. `skill floor` appears nowhere in live docs. |
+| M2 | One paragraph added to `eval/qa/README.md`: the headline battery does not measure operation reach, skill reach, or envelope traps. The four trap gaps remain, by the orchestrator's decision. |
+| M3 | `golden-truth` `SKILL.md` now sends unverifiable facts to `truth.notes`, states the compaction rule and `truth.lane`, and extends the Leaf and Retire lines. Timeless: no dates, IDs, or run stamps. |
+| M4 | All three answers gained the clause; key facts, avoid, and notes are unchanged. Each carries a `truth.verified` event citing the tombstone and a live source: Docs smart-wallets and W3C WebAuthn L3 (alg -7 and -257), `soroban-examples` `groth16_verifier/README.md`, Docs `control-asset-access.md` ("an issuing account can't actually hold a balance of its own asset"). Answer lengths 98, 78, 72 words. D1 is the one miss. |
+| L1 | See D3. |
+| L2 | See D2. |
+| L3 | `q-defi-blend-alternatives`: the avoid item now says "a directory listing" and the `ll-033` provenance is in `truth.notes`. `q-defi-liquid-staking-whitespace`: the sweep sentence is gone from the answer, now "As of 2026-11-02 no native XLM liquid-staking token was found". The seven cap cases keep finding IDs because `lintCapFindings` needs them. The compile of the battery finds tool or product names in only four headline cases (`q-ai-mcp-servers-connect`, whose subject is Raven; the three cap cases). |
+
+L4 to L8: unchanged or fixed as stated. `isToolLaneCase` is no longer exported (L7); the COMPUTE
+caution moved from `avoid` to `notes` (L8, with the avoid list down to two items). Warnings are 100 (78
+key-fact, 20 avoid, 1 corroboration, 1 numeric); median headline answer is 60 words, 121 of 246 over 60.
+
+### The 36 activations
+
+`gap/verify-gap.json` holds 36 decisions (29 accept, 7 amend, 0 reject). `act.mjs` compared each
+activated case with its proposal at `c7dbdc87` plus the amendment: question, answer, key facts, avoid,
+and notes equal the amended text where the decision gives one and the proposal text otherwise; `surface`
+and `tags` are unchanged except the two freshness amends (`q-validator-why-run-no-rewards` and
+`q-soroban-fee-refundable-rent` are `stable` with no `reverifyBy`); each case sits in the directory
+named by `tags.category`; every `truth.leaf` equals the proposal's. Lifecycle records are complete in
+all 36: `state: active`, `activation` with date, author (gap-1, gap-2, gap-3), reviewer (verify-gap,
+Opus 5.5, never the author), ledger, and evidence. Every `truth.verified` event cites verify-gap, and
+the seven amended cases cite the reviewer's decision. `truth.origin` is `authored ...`, which the ledger
+exempts. The only deviations from "proposal plus amendment" are the ones FINAL.md names:
+
+- four `reverifyBy` re-spreads (`q-asset-usdt0-layerzero-oft` 2027-02-09 to 02-10,
+  `q-token-xlm-supply-total-circulating` 02-09 to 02-11, `q-nft-vault-contract-standards` 02-23 to 02-25,
+  `q-pc-core-software-audits` 03-23 to 03-24), which resolve the collisions verify-gap flagged (no
+  duplicate date remains among the 36);
+- the supply answer correction (below).
+
+Lifecycle proof re-run on the new tree: 0 problems. 252 battery cases (246 headline, 6 tool), 0
+proposals, 291 retired, 543 reserved, no id reused, all 36 new ids absent from the old reserved set.
+Not carried into any case: `ravenReach` (grep of the battery finds none). Open work this delta does not
+do: verify-gap marks 8 proposals `unreachable` and 1 `reachable-not-surfaced` for Raven
+(`q-crp-public-sector-cbdc-pilots-stellar`, `q-sdf-2026-strategy-priorities`, `q-net-tier1-roster-current`,
+`q-pc-quorum-freeze-cap77`, `q-stellar-vs-xrp-ledger`, `q-signing-safety-website-request`,
+`q-scf-service-provider-directories`, `q-infra-version-lag-errors`; `q-pay-merchant-request-detect-
+reconcile`). The TODO's done-when needs an `improvements/` finding or a recorded decision for each;
+none appears in this diff.
+
+### Register closure
+
+The re-sweep lanes hold 105 entries (57 consistent, 26 text-edit, 12 drop-member, 10 delete-entry).
+Applied: all 10 deletions are gone from the register; all 12 drop-member entries lost the named member
+(`cluster-008`, `-009`, `-015`, `-016`, `-019`, `-021`, `-042`, `-044`, `-045`, `-090`, `-129`, and the
+base-reserve invariant); the text-edit entries changed (the Confidential Tokens trap's
+`triggerDateEvent` was rewritten, as FINAL says). `resweep/review.json` has 95 entries (82 clusters, 7
+invariants, 6 traps) and the register has 96; the one entry without a review is `cluster-099`, which was
+never reopened (`lastChecked` 2026-11-02, not in the re-sweep). Every review entry matches a register
+entry, none targets a deleted entry, and each `reSwept.reason` carries the re-sweep text with the
+instrument lane's re-check sentence where members changed later. `npm run eval:qa:register -- --check`:
+exit 0, up to date. The four new-case cluster additions (`cluster-053`, `-024`, `-009`, `-008`) share a
+real fact with the added case (genesis and inflation supply; Protocol 29 and the 2026-11-23 vote;
+SEP-31 Active and SEP-38 Draft; CAP-0077 in Protocol 26).
+
+### Re-derived correction: `q-token-xlm-supply-total-circulating`
+
+The answer now says: 100 billion created at genesis, about 5.44 billion added by 1% annual inflation,
+Protocol 12 disabled inflation in October 2019, total supply 50,001,786,837 and about 35.4 billion
+circulating as of 2026-11-14. Re-derived from primary sources, 2026-11-14:
+
+| Claim | Source | Result |
+|---|---|---|
+| 100 billion at genesis; 5,443,902,087.35 from inflation | SDF dashboard API `/api/v3/lumens`: `originalSupply 100000000000`, `inflationLumens 5443902087.3472865` | holds |
+| 105,443,902,087 ever existed | Horizon `ledgers?order=desc&limit=1`: `total_coins 105443902087.3472865` | holds |
+| Inflation ended by validator vote, October 28, 2019 | Docs `lumens.md`: "network inflation was ended by validator vote on October 28, 2019" | holds |
+| Protocol 12 disabled it | `stellar-protocol` `core/cap-0026.md`: Status Final, Protocol version 12 | holds |
+| Total 50,001,786,837; circulating about 35.4 billion | Dashboard: `totalSupply 50001786837.397`, `circulatingSupply 35407570603.996`, `burnedLumens 55442115249.95` | holds (the answer's figures match the first read of the day; they drift by units) |
+| The burn leaves `total_coins` at 105.44 billion (notes) | Docs: burned lumens are "sent to accounts with no signers" | holds |
+
+The correction is right and the earlier "all lumens were created at genesis" wording was wrong. The
+fact is corroborated by three source classes (A, B, C). Key fact 3 and the avoid items stand. D4 covers
+the verification event and the contradicting Docs sentence.
+
+### Gates (bare, on `aaaf107f`)
+
+| Command | Exit | Result |
+|---|---|---|
+| `npm run eval:qa:lint -- --stale --enforce-floors` | 0 | 0 errors, 100 warnings; `headline=246; tool=6; leaves=167; covered=164; openSlots=2` |
+| `npm test` | 0 | 150 files passed, 1 skipped; 3,398 tests passed, 3 expected fail |
+| `npm run eval:qa:register -- --check` | 0 | up to date |
+| `npm run eval:qa:compile` (extra) | 0 | no file changed |
+| `npm run eval:qa:sentinels -- --ids` (14 changed anchors, live, extra) | 0 | 14 of 14 `hold` |
+
+Untracked `qa/` appeared beside the round files during this review (another lane); I did not touch it.

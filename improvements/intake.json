@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "updated": "2026-11-03",
+  "updated": "2026-11-14",
   "notes": [
     "Verified with gh on 2026-07-13. Lumenloop API/content-pipeline issues belong in lumenloop/lumenloop-backend; directory-record corrections belong in lumenloop/stellar-ecosystem-db.",
     "Verified 2026-11-02 (sd-059 filed as stellar/stellar-docs#2995). developers.stellar.org runs on Mintlify, and the docs team owns both its content and its search; content and search findings file in stellar/stellar-docs."
@@ -246,6 +246,22 @@
     "sd-096": {
       "repo": "stellar/stellar-docs",
       "reason": "redirects.json at the stellar/stellar-docs repository root owns the wildcard redirect rules."
+    },
+    "sd-105": {
+      "repo": "stellar/stellar-docs",
+      "reason": "docs/learn/fundamentals/lumens.mdx is source content owned by stellar/stellar-docs."
+    },
+    "sd-106": {
+      "repo": "stellar/stellar-docs",
+      "reason": "docs/validators/tier-1-orgs.mdx is source content owned by stellar/stellar-docs."
+    },
+    "sd-107": {
+      "repo": "stellar/stellar-docs",
+      "reason": "The Environment Meta section of docs/learn/fundamentals/contract-development/overview.mdx is source content owned by stellar/stellar-docs."
+    },
+    "sd-108": {
+      "repo": "stellar/stellar-docs",
+      "reason": "Docs content gap: the wallet and signing guides under docs/build are owned by stellar/stellar-docs."
     }
   }
 }
