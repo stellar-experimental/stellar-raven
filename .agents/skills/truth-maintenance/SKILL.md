@@ -5,152 +5,81 @@ description: Coordinate a full truth-maintenance pass for stellar-raven-codemode
 
 # Truth maintenance
 
-This is the coordinator skill. It does not replace the lane runbooks:
+This skill coordinates; the lane skills do the work:
 
-- `live-drift-resolution` owns catalog/inventory/spec/op-class drift from live upstream services.
-- `run-evals` owns eval instrument selection, result review, and eval-round closeout.
-- `golden-truth` owns any golden question/answer/key-fact/avoid/source/grader-note change.
-- `improvements-pipeline` owns `improvements/`, intake, probes, upstream issue/PR tracking, and index/lint.
+| Lane | Skill | Owns |
+|---|---|---|
+| Drift | `live-drift-resolution` | Inventory, catalog, spec, and op-class drift |
+| Eval | `run-evals` | Instrument choice, spend, and result review |
+| Golden | `golden-truth` | Every golden question, answer, key fact, avoid, and note change |
+| Improvements | `improvements-pipeline` | Findings, intake, probes, and upstream issue and PR state |
 
-Use this skill when the work crosses lanes or when the user asks for "truth is up to date"
-rather than a single drift issue. The product is a maintenance round recorded in a ledger, with
-lane verdicts, evidence, follow-ups, and cleaned-up spawned work.
+Use it when the work crosses lanes or the request is "is repo truth current?". For one drift issue
+or one stale case, use the lane skill directly.
 
-## Orchestration contract
+## 1. Scope the round
 
-Spawn one agent per lane as `AGENTS.md` "Coordination" describes. This skill adds only
-truth-maintenance lane structure.
+Size the work before you start it. Write in the ledger
+(`.agents/rounds/<YYYY-MM-DD>-truth-maintenance.md`):
 
-Open one ledger for the round at `.agents/rounds/<YYYY-MM-DD>-truth-maintenance.md`.
-Use fixed headings so spawned agents can append without clobbering each other:
+- the question the round answers: stale-queue triage, drift, upstream follow-up, golden health, or
+  release readiness;
+- only the lanes that question needs, and for each its commands or probes, expected artifact, and
+  stop rule;
+- the expected time and cost. Lanes run here on `hc` with subscription CLI agents; any paid eval
+  follows the `run-evals` spend rule.
 
-```
-# Truth maintenance <YYYY-MM-DD>
-## Scope
-## Lane plan
-## Drift verdict
-## Eval verdict
-## Golden verdict
-## Improvements/issues/PR verdict
-## Own-repo todos
-## Decisions
-## Final checklist
-```
+Run one session when the lanes are small. Spawn a lane agent (`AGENTS.md` "Coordination") only when
+the lane is independent and large enough to pay for the handoff. Workers research and append to the
+ledger under their own heading; the coordinator owns repo edits unless a write set is narrow,
+explicit, and disjoint. A reviewer re-derives from files, diffs, live probes, or GitHub state, not
+from the coordinator's summary.
 
-By default, workers research/review and append to ledger; coordinator owns repo edits. Delegate
-patches only when write set is narrow, explicit, and disjoint.
+Ledger headings: `Scope`, `Lane plan`, one verdict section per lane in scope, `Own-repo todos`,
+`Decisions`, `Final checklist`.
 
-Reviewer and author are separate roles. A spawned reviewer must re-derive from files, diffs,
-live probes, or GitHub state, not rubber-stamp the coordinator's summary. Let reviewers finish
-unless the user cancels or they clearly error.
+## 2. The stale-gospel queue
 
-## Stale-gospel queue (the freshness lane — owned by this skill)
+This skill owns golden freshness as a standing due-date queue. Every `scheduled` case has a
+`truth.reverifyBy` date, and `npm run eval:qa:lint -- --stale` fails on a past-due case in PR CI
+and the daily refresh.
 
-Golden freshness is not maintained by batch re-audits; it is a **standing due-date queue**.
-Every `scheduled`-freshness QA case carries a `truth.reverifyBy` date, and
-`npm run eval:qa:lint -- --stale` fails on any past-due case — wired into PR CI and the daily
-refresh workflow, so a date passing fires within 24 hours. This skill owns that queue:
+- **When the gate fires**, send each past-due case through `golden-truth`: re-verify it (update
+  `truth.verified`, `truth.asOf`, and `reverifyBy`), or record a dated extension with a root cause.
+  The gospel-change lint does not require evidence when only `reverifyBy` changes, so a reviewer
+  checks the evidence for either action.
+- **Stagger new dates** by quarter across cases. A wall of identical dates is a review finding.
+- **Source sentinels fire early.** The daily `golden-sentinels` workflow keeps one labeled issue
+  open while an anchor drifts. Queue each drifted case ahead of its `reverifyBy` date. A drift is a
+  trigger, never evidence; when the fact holds and only the wording moved, re-author the anchor.
+- **Look ahead.** Fold cases due in the next two to four weeks into the current round.
+- **Corpus health**, when the round asks for it: scan `eval/qa/consistency-register.json` clusters
+  for cross-question contradictions, sample a refute-then-repair sweep weighted toward
+  freshness-sensitive, numeric, and non-`confirmed` cases, and re-verify any `dateContingentTraps`
+  whose trigger has passed. Fixes go through `golden-truth`.
 
-- **Triage on fire.** When the stale gate fails, dispatch each past-due case through the
-  `golden-truth` lane: re-verify (update `truth.verified` + `truth.asOf` + a new
-  `reverifyBy`) or record an explicit dated extension with rootCause.
-  Reviewers must check the evidence for either action.
-  The gospel-change lint checks changes to questions, golden content, freshness tags, and trap tags.
-  It does not require new evidence when only `truth.reverifyBy` changes.
-- **Drip policy.** `reverifyBy` dates are set by the verifying author, quarter-granular and
-  staggered across cases, so re-verification arrives as a steady drip instead of a cliff.
-  When a round re-verifies many cases at once, spread the new dates; a wall of identical
-  dates is a review finding.
-- **Source sentinels fire early.** The daily `golden-sentinels` workflow re-reads each
-  sentinel's primary source and keeps one issue, labeled `golden-sentinels`, open while any
-  anchor drifts. Queue each drifted case into the `golden-truth` lane ahead of its
-  `reverifyBy` date. A drift is a trigger, never evidence: when the fact still holds and only
-  the wording moved, re-author the anchor instead of the case.
-- **Look ahead, not just behind.** A maintenance round should also sweep upcoming dates
-  (e.g. the next 2–4 weeks) and fold near-due cases into the current round's golden lane
-  rather than waiting for the gate to fire.
+## 3. Reconcile across lanes
 
-## Round plan
+- Drift changed a fact that a golden or eval case consumes.
+- An eval failure implies a new or updated finding.
+- An upstream issue or PR resolution needs a live re-run of the original trigger. A closed issue or
+  merged PR is not proof.
+- A golden change needs its root cause in `improvements/` or `.agents/TODO.md`.
 
-1. Define the question: scheduled truth refresh, stale-queue triage, drift issue, post-eval
-   closeout, upstream PR/issue follow-up, golden-health sweep, or release/CI readiness.
-2. Open the ledger and write the lane plan: lanes in scope, spawned agents, exact
-   commands/probes, expected artifacts, and stopping criteria.
-3. Run the lane runbooks in parallel where independent:
-   - Drift lane: use `live-drift-resolution` for service inventory/catalog/spec/op-class
-     refresh and drift classification.
-   - Eval lane: use `run-evals` for selected instruments and result review.
-   - Golden lane: use `golden-truth` for stale, contradictory, disputed, or volatile truth;
-     the stale-gospel queue above feeds this lane its due and near-due cases.
-   - Improvements lane: use `improvements-pipeline` for findings, probes, intake, and
-     upstream issue/PR state.
-4. Reconcile cross-lane effects:
-   - Drift changed facts consumed by goldens or eval cases.
-   - Eval failures imply new or updated improvements.
-   - Upstream issue/PR resolution requires live re-probe of the original trigger.
-   - Golden gospel changes require root-cause capture in improvements or `.agents/TODO.md` (the
-     gospel-change lint enforces `truth.verified` evidence + rootCause in the same diff).
-5. Run the final gates from the affected lane runbooks, then record exact commands, result
-   stamps, issue/PR URLs, commit refs, and remaining risks in the ledger.
+Track improvements, issues, and PRs in the state table from `improvements-pipeline` ("Follow up on
+filed findings"). A `fixed-upstream` finding retires only after a second reviewer repeats the live
+trigger. Declined findings stay active while the trigger reproduces.
 
-## Lane briefs
+## 4. Close
 
-Use briefs like these; keep each agent's task bounded and append-only to the ledger.
+Stop when each lane in scope has a verdict with evidence. Then confirm:
 
-**Drift reviewer**
-
-Rebuild or inspect the generated drift artifacts, classify each changed service as
-provenance/data, operation-surface, routing-text, or runner-affecting, run the relevant
-guards, and append file:line/diff evidence plus a close/block verdict.
-
-**Eval reviewer**
-
-Review stored or newly produced eval results. Join rows with goldens, re-check wrong/partial
-claims live, classify failures with the `run-evals` root-cause table, and identify new or
-updated improvements and own-repo `.agents/TODO.md` entries.
-
-**Golden reviewer**
-
-For candidate golden changes or contradiction clusters, build the `golden-truth`
-corroboration matrix from independent source classes. Do not edit files; return confirmed,
-disputed, contradicted, or unverifiable with exact sources and as-of dates.
-
-**Improvements/PR reviewer**
-
-Enumerate findings with upstream issue/PR evidence, check current GitHub state, inspect
-unresolved reviews/checks/comments for PRs this repo opened, re-run the original trigger or
-probe, and append a deterministic status table plus recommended file updates. Treat
-`fixed-upstream` as a deletion-candidate queue: a second reviewer, distinct from the author lane,
-must independently repeat the live trigger and reconcile repo references before the active file is
-retired through the `improvements-pipeline` resolved-ledger workflow. Declined/wontfix/legacy/overfit
-findings remain active while the trigger reproduces; they are not resolution shortcuts.
-
-## Deterministic state table
-
-Use the state table from the `improvements-pipeline` skill ("Upstream issue and PR follow-up",
-step 2) in the ledger for improvements, issues, and PRs.
-
-Only mark `fixed-upstream` when the live re-check of the original trigger passes. A closed
-GitHub issue or merged PR is evidence to inspect, not proof of resolution. If a PR is open
-and waiting on review/CI/author changes, track the blocker and add a dated `.agents/TODO.md` entry
-for the next follow-up instead of relying on memory.
-
-## Closeout checklist
-
-- The ledger has lane verdicts, exact commands/probes, spawned terminal IDs, and final status.
-- Every spawned agent is idle/finished; useful output is incorporated; no orphan follow-up
-  `.agents/TODO.md` entry remains unless it names a concrete next check.
-- Drift-generated artifacts are regenerated, not hand-edited.
-- Golden changes went through `golden-truth` and include root-cause capture; the stale queue
-  has no past-due `reverifyBy` dates left (`npm run eval:qa:lint -- --stale` is green) and
-  newly set dates are staggered.
-- Improvements index/lint/probes ran when `improvements/` changed.
-- Every retired finding has a complete `improvements/resolved.json` receipt, a commit-pinned source,
-  an upstream resolution comment when applicable, and no stale intake/probe/golden/research refs.
-- Open upstream PRs/issues have deterministic next actions or scheduled follow-up.
-- Every newly recorded GitHub issue, PR, or comment URL was read back successfully before being
-  accepted as evidence; dangling refs and unposted drafts were removed or corrected.
-- Filing waves were paced for owner-readable, deduplicated issues. Untouched open issues stayed
-  silent unless the `improvements-pipeline` comment budget allowed a substantive response.
-- `npm run secrets:scan -- --tree` runs before any commit that includes generated artifacts
-  or copied upstream content.
+- Each lane ran its own final gates; the ledger records commands, result stamps, URLs, and commits.
+- `npm run eval:qa:lint -- --stale` is green and new `reverifyBy` dates are staggered.
+- Improvements index, lint, and probes ran if `improvements/` changed; every retired finding has a
+  complete `resolved.json` receipt and no stale references.
+- Every recorded GitHub URL was read back; untouched open issues stayed silent.
+- Open upstream refs have a next action or a dated `.agents/TODO.md` entry that names a concrete
+  check.
+- Lanes you started are finished and their output is incorporated.
+- `npm run secrets:scan -- --tree` ran before any commit with generated or copied upstream content.

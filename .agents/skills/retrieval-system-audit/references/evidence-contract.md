@@ -35,7 +35,7 @@ Record these items before implementation or spend:
 - Exact case identifiers and order.
 - Runner, server, manifest, corpus, prompt, evidence-pack, rubric, and judge pins.
 - Model roles and repetitions.
-- Expected cost, hard cap, and checkpoint intervals.
+- Expected time and cost, hard cap, and checkpoint intervals.
 - Stop rules and acceptance thresholds.
 - Author and independent reviewers.
 

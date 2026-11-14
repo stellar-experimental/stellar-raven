@@ -3,101 +3,76 @@ name: retrieval-system-audit
 description: Audit and improve stellar-raven-codemode retrieval across every exposed service operation and skill. Use for comprehensive endpoint, response-shape, catalog-description, search-ranking, execute-grounding, evaluation-coverage, golden-truth, or cross-source weighting reviews that require live probes and measured A/B evidence.
 ---
 
-# Retrieval System Audit
+# Retrieval system audit
 
-Measure the complete retrieval system before changing it. Ship only general improvements that survive real endpoint calls and reviewed golden questions.
+Measure the retrieval system before changing it. Ship only general improvements that survive real
+endpoint calls and reviewed golden questions.
 
-## Use the companion runbooks
+## Scope first
 
-1. Read `PLAN.md`, `ARCHITECTURE.md`, `eval/EVALS.md`, and `eval/qa/README.md`.
-2. Run an explicitly requested multi-model audit as `AGENTS.md` "Coordination" describes, one agent per lane.
-3. Use `run-evals` for every evaluation run and spend decision.
-4. Use `golden-truth` before changing a golden question or answer.
-5. Use `improvements-pipeline` for verified upstream defects.
-6. Use `live-drift-resolution` first when the committed catalog differs from the live surfaces.
+A full audit is the largest task in this repo. Before you start, write in the round ledger the
+question the audit answers, the surfaces and steps below that it needs, and the expected time and
+cost. Run only those steps. Probes and offline instruments are free and run here against the local
+dev server; every paid run follows the `run-evals` spend rule. Stop when the question is answered.
 
-## Keep fixed boundaries
+Companion skills: `run-evals` for every evaluation and spend decision, `golden-truth` before any
+golden change, `improvements-pipeline` for verified upstream defects, and `live-drift-resolution`
+first when the committed catalog differs from the live surfaces. Read `PLAN.md`,
+`ARCHITECTURE.md`, `eval/EVALS.md`, and `eval/qa/README.md` for the parts in scope.
 
-- Treat the manifest as the exposed surface.
-- Keep exact operation and skill identifiers.
+## Fixed boundaries
+
+- The manifest is the exposed surface. Keep exact operation and skill IDs.
 - Keep data, soft-empty, and error responses distinct.
 - Keep secrets and service traffic outside model-authored code.
-- Do not call a paid or side-effecting service operation during inventory work.
-- Do not tune production behavior for one question.
-- Prefer deletion, simpler descriptions, and existing interfaces before new code.
-- Keep raw paid results local and gitignored.
-- Give Git, spending, deployment, and external filing authority to the coordinator.
+- Never call a paid or side-effecting operation during inventory work.
+- Never tune production behavior for one question.
+- Prefer deletion, simpler descriptions, and existing interfaces to new code.
+- Raw paid results stay local and gitignored.
+- The coordinator holds Git, spending, deployment, and external filing authority.
 
-## Run the audit
+## Steps
 
-### 1. Isolate and pin
-
-Create a dedicated Git worktree and a round ledger under `.agents/rounds/`. Record the revision, clean-tree digest, manifest digest, runner digest, corpus digest, and evaluation gates.
-
-Run the free baseline from `AGENTS.md`. Compile generated artifacts and verify that regeneration leaves the tree clean.
-
-### 2. Build one surface ledger
-
-Inventory every exposed operation and whole skill. Compare the committed manifest, generated specification, adapters, live catalog, and fresh-client MCP descriptions.
-
-Record each input schema, output schema, retrieval description, retrieval profile, response class, authority scope, safety class, and evaluation coverage. Use `references/evidence-contract.md` for the required fields.
-
-Separate deployed drift from a client that cached an older MCP schema.
-
-### 3. Probe live response contracts
-
-Design the probe matrix before calling services. Mark every probe as read-only, paid, side-effecting, secret-bearing, or unsafe.
-
-Call each safe read-only operation with a valid representative input. Add bounded soft-empty and invalid-input probes by response class, not by individual question.
-
-Compare returned keys and nested shapes with the model-visible schema. Preserve hashes and compact projections instead of raw large bodies.
-
-### 4. Trace retrieval decisions
-
-Trace `search` from catalog generation through lexical scoring, tiering, quotas, descriptions, keywords, profiles, recovery guidance, and prompt text. Trace `execute` through adapters, envelopes, truncation, artifacts, evidence packing, and final answers.
-
-For each suspected defect, identify the first failed boundary. Classify it as discovery, schema, retrieval, execution, upstream data, synthesis, judge, or golden truth.
-
-Reject a runtime change when the required evidence is absent upstream. File or update an improvement instead.
-
-### 5. Audit evaluation coverage
-
-Map every operation and skill to routing, holdout, discovery, plan, QA, live, temporal, and agentic coverage. Distinguish direct case labels from operations that agents actually called.
-
-Treat scores as instruments. Review every consequential verdict change against the transcript and golden requirements.
-
-Do not claim a gain below the documented noise floor. Do not compare different case memberships without a common-case analysis.
-
-### 6. Pre-register experiments and spend
-
-Write one hypothesis for each candidate. Name the mechanism, target cases, symmetric controls, one mechanism metric, cost estimate, hard cap, repetition count, stop rules, and acceptance threshold.
-
-Use identical case identifiers, runner code, judge tuple, and arm order for comparisons. Collect answers before judging when the runner supports stored judging.
-
-Require an independent adversarial review before any paid run. Review every brief change before additional spend.
-
-### 7. Implement the smallest proven change
-
-Assign disjoint write ownership. Keep measurement changes separate from product changes.
-
-Use generated-artifact scripts instead of hand edits. Remove rejected experimental code and dormant flags.
-
-Advance a candidate only after two unrelated targets show the intended mechanism. Stop after a verified control, security, exposure, or exact-match regression.
-
-### 8. Maintain truth and upstream findings
-
-Change goldens only through `golden-truth`. Triangulate volatile, disputed, or high-stakes claims with independent source classes.
-
-Record service defects in `improvements/`. Do not hide an upstream defect with a local answer patch.
-
-### 9. Review and close
-
-Use reviewers who did not author the change. Reconcile every finding before final verification.
-
-Run the required tests, smoke tests, build, routing gate, relevant evals, improvements lint, and secret scan. Record exact artifacts, costs, failures, and rejected hypotheses.
-
-Stop only the lanes you started, after reviewing their handoffs. Reconcile `.agents/TODO.md`, the round ledger, and the worktree.
+1. **Pin.** Work in a dedicated worktree with a round ledger. Record the revision and the manifest,
+   runner, and corpus digests. Run the free baseline from `AGENTS.md` and confirm that regeneration
+   leaves the tree clean.
+2. **Build one surface ledger.** For each operation and skill in scope, compare the committed
+   manifest, generated spec, adapters, live catalog, and fresh-client MCP descriptions. Use the
+   fields in [`references/evidence-contract.md`](references/evidence-contract.md). Separate
+   deployed drift from a client that cached an older MCP schema.
+3. **Probe live response contracts.** Design the probe matrix first and mark every probe read-only,
+   paid, side-effecting, secret-bearing, or unsafe. Call each safe read-only operation with a
+   representative input, then add bounded soft-empty and invalid-input probes by response class.
+   Compare returned keys and nested shapes with the model-visible schema. Keep hashes and compact
+   projections, not raw bodies.
+4. **Trace retrieval decisions.** Follow `search` from catalog generation through scoring, tiering,
+   quotas, descriptions, profiles, and recovery guidance. Follow `execute` through adapters,
+   envelopes, truncation, artifacts, and evidence packing. For each suspected defect, name the
+   first failed boundary: discovery, schema, retrieval, execution, upstream data, synthesis, judge,
+   or golden truth. When the evidence is absent upstream, file a finding and make no runtime
+   change.
+5. **Audit evaluation coverage.** Map each operation and skill to its routing, holdout, discovery,
+   plan, QA, live, temporal, and agentic coverage. Separate direct case labels from operations
+   that agents called. Review every consequential verdict change against the transcript and
+   golden. Claim no gain below the documented noise floor, and compare different memberships only
+   on common cases.
+6. **Pre-register each experiment.** One hypothesis per candidate: mechanism, target cases,
+   symmetric controls, one mechanism metric, expected time and cost, hard cap, stop rule, and
+   acceptance threshold. Use identical case IDs, runner code, judge tuple, and arm order across
+   arms. Collect answers before judging when the runner supports it.
+7. **Implement the smallest proven change.** Keep measurement changes separate from product
+   changes, with disjoint write ownership. Use generation scripts. Remove rejected experimental
+   code and dormant flags. Advance a candidate only after two unrelated targets show the intended
+   mechanism. Stop after a verified control, security, exposure, or exact-match regression.
+8. **Close.** Goldens change only through `golden-truth`; service defects go to `improvements/`,
+   never behind a local answer patch. A reviewer who did not author the change reviews it, and
+   every finding is reconciled. Run the tests, smoke tests, build, routing gate, relevant evals,
+   improvements lint, and secret scan that the change touches. Record artifacts, costs, failures,
+   and rejected hypotheses. Stop only the lanes you started.
 
 ## Evidence rule
 
-Do not use an aggregate score to override a blocking regression. A shipped change needs reviewed correctness, causal evidence, stable retrieval, complete accounting, and no security or exposure regression.
+An aggregate score never overrides a blocking regression. A shipped change needs reviewed
+correctness, causal evidence, stable retrieval, complete accounting, and no security or exposure
+regression. Cost counts as `run-evals` states: a much cheaper path that is only slightly less
+correct can be the better product.
