@@ -1,12 +1,12 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "4421e97bc54c484f41c144a761e79a6e8038771ac8ccbe182691bbf76ae1c36d",
+  "corpusContentSha256": "5da51e2e158e5503acc43590661260e2c649635cabaff1cb44b09e5cfcb76878",
   "counts": {
-    "total": 246,
+    "total": 247,
     "byCategory": {
       "assets-anchors-seps": 25,
-      "compliance-rwa-payments": 20,
+      "compliance-rwa-payments": 21,
       "defi-ecosystem": 23,
       "edge-behavior": 20,
       "history-org-tokenomics": 12,
@@ -17,16 +17,16 @@
       "tooling-infra": 37
     },
     "byService": {
-      "lumenloop": 19,
+      "lumenloop": 20,
       "none": 10,
       "scout": 48,
       "skills": 11,
       "stellarDocs": 158
     },
     "byFreshness": {
-      "live": 56,
-      "scheduled": 98,
-      "stable": 92
+      "live": 57,
+      "scheduled": 99,
+      "stable": 91
     },
     "traps": {
       "ambiguous": 2,
@@ -39,10 +39,10 @@
       "speculation": 1
     },
     "byLifecycleState": {
-      "active": 246
+      "active": 247
     },
     "byReviewState": {
-      "none": 244,
+      "none": 245,
       "resolved": 2
     }
   },
@@ -2956,18 +2956,17 @@
         "stellarDocs.search_asset_token_docs"
       ],
       "golden": {
-        "answer": "Circle issues both USDC and EURC on Stellar, as native classic assets (not wrapped, not XLM). The Mainnet USDC issuer is GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN; GBBD…FLA5 is Testnet. EURC launched on Stellar on September 26, 2023. Circle’s licensed EURC issuer is Circle Internet Financial Europe SAS.",
+        "answer": "Circle issues both USDC and EURC on Stellar, as native classic assets (not wrapped, not XLM). The Mainnet USDC issuer is GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN; GBBD…FLA5 is Testnet. EURC launched on Stellar on September 26, 2023. EURC’s legal issuer is Circle Internet Financial Europe SAS.",
         "keyFacts": [
           "Circle issues USDC and EURC on Stellar as native classic assets, not wrapped.",
           "Mainnet USDC issuer is GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN.",
-          "EURC launched on Stellar on September 26, 2023.",
-          "EURC’s EU legal issuer is Circle Internet Financial Europe SAS."
+          "EURC launched on Stellar on September 26, 2023."
         ],
         "avoid": [
           "Do NOT present the Testnet issuer GBBD…FLA5 as Mainnet, or call Circle Mint Europe the current legal issuer.",
           "Do NOT attribute USDC or EURC issuance to Tether, Paxos or SDF."
         ],
-        "notes": "MyKobo issues a separate asset with code EURC under its own issuer; naming it as a distinct asset is correct, attributing Circle’s EURC to MyKobo is wrong."
+        "notes": "Naming Circle suffices; the EURC legal entity is optional context. EURC’s legal issuer is Circle Internet Financial Europe SAS; Circle Internet Financial, LLC is an affiliate reseller and the organization named in Circle's stellar.toml; an answer that names it as EURC's issuer, attributed to that file, does not fail on that point alone. MyKobo issues a separate asset with code EURC under its own issuer; naming it as a distinct asset is correct, attributing Circle’s EURC to MyKobo is wrong."
       },
       "tags": {
         "category": "retail-consumer",
@@ -3138,19 +3137,46 @@
                 "note": "EURC Launches on the Stellar Network September 26, 2023"
               }
             ]
+          },
+          {
+            "claim": "EURC is issued by Circle Internet Financial Europe SAS; Circle Internet Financial, LLC, the ORG_NAME in Circle’s stellar.toml, is an affiliate that resells EURC.",
+            "verdict": "confirmed",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://www.circle.com/legal/eurc-terms",
+                "observedAt": "2026-11-14",
+                "note": "Section 1: \"EURC is a digital token issued by Circle Internet Financial Europe SAS\"; \"Circle Internet Financial, LLC (“Circle”) is an affiliate of Circle Europe and acts as a reseller of EURC\"."
+              },
+              {
+                "class": "A",
+                "ref": "https://www.circle.com/eurc",
+                "observedAt": "2026-11-14",
+                "note": "\"EURC is issued by Circle Internet Financial Europe SAS, an electronic money institution authorized by the ACPR in France\"."
+              },
+              {
+                "class": "C",
+                "ref": "scout.getStablecoins({peg: \"EUR\"})",
+                "observedAt": "2026-11-14",
+                "note": "EURC issuerOfRecord \"Circle Internet Financial, LLC\", source https://circle.com/.well-known/stellar.toml: the toml organization, not the legal issuer (improvements/stellar-light-scout/sls-119-eurc-issuer-of-record-names-reseller.md)."
+              },
+              {
+                "class": "F",
+                "ref": "https://www.circle.com/.well-known/stellar.toml",
+                "observedAt": "2026-11-14",
+                "note": "ORG_NAME=\"Circle Internet Financial, LLC\"; the EURC entry has no issuing-entity field."
+              }
+            ]
           }
         ],
         "verified": {
           "date": "2026-11-14",
-          "by": "Golden coverage audit 2026-11-14 (audit-hist-retail, verify-hist-retail; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+          "by": "scope-finalize (Claude Opus 5.5), applying independent review finding F4 from scope-review (Claude Sonnet 5.5), decisions/REVIEW.md",
           "evidence": [
-            "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-asset-usdc-eurc-issuer",
-            "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-asset-usdc-eurc-issuer",
-            "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-asset-usdc-eurc-issuer",
-            "Live A 2026-11-14: https://www.circle.com/.well-known/stellar.toml -- 'code=\"USDC\" issuer=\"GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN\"'",
-            "Live A 2026-11-14: https://www.circle.com/.well-known/stellar.toml -- 'code=\"EURC\" issuer=\"GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2\"'",
-            "Live A 2026-11-14: https://www.circle.com/pressroom/eurc-launches-on-the-stellar-network -- 'EURC Launches on the Stellar Network September 26, 2023'",
-            "Live A 2026-11-14: https://www.circle.com/eurc -- 'Not re-read this pass; corrected 2026-07-09 and confirmed 2026-11-02.'"
+            "F4: golden.notes no longer names Scout (a tool) or carries provenance; the legal-entity truth (Circle Internet Financial Europe SAS) and the leniency for a stellar.toml-attributed LLC answer are unchanged.",
+            "Reviewer re-read https://www.circle.com/legal/eurc-terms 2026-11-14: 'EURC is a digital token issued by Circle Internet Financial Europe SAS'; the LLC 'acts as a reseller of EURC'.",
+            "Scout's repetition of the LLC stays recorded in improvements/stellar-light-scout/sls-119-eurc-issuer-of-record-names-reseller.md.",
+            "Review: .agents/rounds/2026-11-14-golden-coverage-audit/decisions/REVIEW.md F4; application: decisions/APPLY.md, section Review reconciliation"
           ],
           "rootCause": [
             ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
@@ -4384,6 +4410,216 @@
       }
     },
     {
+      "id": "q-comp-issuer-institutional-custody",
+      "question": "We are a regulated issuer about to tokenize a fund on Stellar. How should we protect the issuing account's keys, and which institutional custodians support Stellar assets?",
+      "surface": [
+        "stellarDocs.search_asset_token_docs",
+        "scout.searchProjects",
+        "lumenloop.search_content_semantic"
+      ],
+      "golden": {
+        "answer": "Keep the issuing account's keys offline in cold storage, such as a hardware wallet, or require several signers through Stellar multisig. Depending on jurisdiction and investor type, an issuer may self-custody, use institutional wallet infrastructure such as MPC or HSM, or appoint a regulated custodian. Custodians with documented Stellar support include Anchorage, BitGo and Taurus. Confirm that a custodian supports your exact asset or contract token: support for the network does not imply it.",
+        "keyFacts": [
+          "Keep issuing-account keys in cold storage, such as a hardware wallet, or under multisig.",
+          "An issuer may self-custody, use wallet infrastructure, or appoint a regulated custodian.",
+          "Names at least two institutional custodians with documented Stellar support, such as Anchorage, BitGo or Taurus.",
+          "Network support does not mean a custodian supports a specific asset or contract token."
+        ],
+        "avoid": [
+          "Do NOT call institutional wallet or key-management software by itself a regulated custodian."
+        ],
+        "notes": "The custodian roster changes: accept any two custodians that a current source shows supporting Stellar assets. Do not require a ranking or an endorsement."
+      },
+      "tags": {
+        "category": "compliance-rwa-payments",
+        "service": "stellarDocs",
+        "freshness": "live"
+      },
+      "truth": {
+        "lifecycle": {
+          "state": "active",
+          "reviewState": "none",
+          "activation": {
+            "author": "scope-apply (golden coverage audit, Claude Opus 5.5)",
+            "date": "2026-11-14",
+            "evidence": [
+              ".agents/rounds/2026-11-14-golden-coverage-audit/decisions/REVIEW.md",
+              ".agents/rounds/2026-11-14-golden-coverage-audit/decisions/APPLY.md"
+            ],
+            "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+            "reviewer": "scope-review (Claude Sonnet 5.5)"
+          }
+        },
+        "domain": "real-world",
+        "status": "confirmed",
+        "asOf": "2026-11-14",
+        "leaf": "security.key-custody",
+        "origin": "authored golden-coverage-audit 2026-11-14 (decisions/SCOPE.md B4)",
+        "sources": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/how-to-issue-an-asset",
+            "observedAt": "2026-11-14",
+            "quote": "Many users secure their issuing account with cold storage techniques, such as a hardware wallet or multisignature setup."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/asset-issuance-stack",
+            "observedAt": "2026-11-14",
+            "quote": "an institution may self-custody, use institutional wallet infrastructure, or appoint a regulated/qualified custodian"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-dev-skill/blob/b1785b7b74deef345b16b9ee7022afc334e24ea4/skills/assets/SKILL.md",
+            "observedAt": "2026-11-14",
+            "quote": "Consider multisig for issuer account"
+          },
+          {
+            "class": "C",
+            "ref": "scout.searchProjects({q: 'custody'})",
+            "observedAt": "2026-11-14",
+            "quote": "strict mode, 27 matches, including DFNS, BitGo, Fordefi, MPCVault, Cobo, Archax and Taurus"
+          },
+          {
+            "class": "A",
+            "ref": "https://www.taurushq.com/blog/taurus-expands-stellar-integration-with-soroban-smart-contract-support-across-custody-and-tokenization",
+            "observedAt": "2026-11-14",
+            "quote": "announced live support for smart contract-based assets on the Stellar network through Taurus-PROTECT, its institutional custody platform"
+          },
+          {
+            "class": "D",
+            "ref": "https://www.abra.com/learn/how-to-custody-digital-assets",
+            "observedAt": "2026-11-14",
+            "quote": "Qualified custodian is a regulatory designation; cold storage, multi-signature and MPC are security techniques."
+          }
+        ],
+        "corroboration": [
+          {
+            "claim": "An issuing account's keys are commonly kept in cold storage, such as a hardware wallet, or under multisig.",
+            "verdict": "confirmed",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/tokens/how-to-issue-an-asset",
+                "observedAt": "2026-11-14",
+                "note": "'Many users secure their issuing account with cold storage techniques, such as a hardware wallet or multisignature setup.'"
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar/stellar-dev-skill/blob/b1785b7b74deef345b16b9ee7022afc334e24ea4/skills/assets/SKILL.md",
+                "observedAt": "2026-11-14",
+                "note": "Best Practices, Asset Issuance: 'Consider multisig for issuer account'. Also a pinned Raven skill."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/stellar-deprecated/docs/blob/master/guides/security.md",
+                "observedAt": "2026-11-14",
+                "note": "Archived SDF guide, 'Secure offline accounts': 'keeping its secret seed stored offline'; sensitive accounts can require authorization from multiple individuals."
+              }
+            ]
+          },
+          {
+            "claim": "An issuer may self-custody, use institutional wallet infrastructure, or appoint a regulated custodian; wallet software alone is not a regulated custody status.",
+            "verdict": "confirmed",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/tokens/asset-issuance-stack",
+                "observedAt": "2026-11-14",
+                "note": "Layer 3: 'an institution may self-custody, use institutional wallet infrastructure, or appoint a regulated/qualified custodian'. Layer 2: wallet software 'is not, by itself, a regulatory custody status'."
+              },
+              {
+                "class": "D",
+                "ref": "https://www.abra.com/learn/how-to-custody-digital-assets",
+                "observedAt": "2026-11-14",
+                "note": "Published 2026-09-16: 'Three ways to custody digital assets: self-custody, third-party and hybrid.' 'Qualified custodian is a regulatory designation; cold storage, multi-signature and MPC are security techniques.'"
+              }
+            ]
+          },
+          {
+            "claim": "Anchorage, BitGo and Taurus document custody support for Stellar assets as of 2026-11-14.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/tokens/asset-issuance-stack",
+                "observedAt": "2026-11-14",
+                "note": "Layer 3 Digital-asset custody: 'Examples: Anchorage · BitGo · Taurus.' Section 5: firms 'with documented Stellar support as at November 2026'."
+              },
+              {
+                "class": "A",
+                "ref": "https://www.anchorage.com/press-room/anchorage-digital-supports-custody-for-tokenized-cetes-etherfuses-tokenized-mexican-government-debt-on-stellar",
+                "observedAt": "2026-11-14",
+                "note": "datePublished Jun 15, 2026: 'announced custody support for CETES, tokenized Mexican government debt issued by Etherfuse on the Stellar blockchain'."
+              },
+              {
+                "class": "A",
+                "ref": "https://developers.bitgo.com/docs/stellar-tokens",
+                "observedAt": "2026-11-14",
+                "note": "'Stellar tokens can be accessed with the following coin types', listing xlm:AQUA-…, xlm:VELO-… and others."
+              },
+              {
+                "class": "C",
+                "ref": "scout.searchProjects({q: 'BitGo'}) and ({q: 'Taurus'})",
+                "observedAt": "2026-11-14",
+                "note": "BitGo row: 'a regulated qualified custodian and multisignature wallet provider supporting Stellar (XLM)'. Taurus row, Live: 'enterprise-grade solutions for custody, tokenization'. Scout has no Anchorage row (semantic fallback)."
+              },
+              {
+                "class": "C",
+                "ref": "lumenloop.search_content_semantic({query: 'Anchorage BitGo custody Stellar assets institutional'})",
+                "observedAt": "2026-11-14",
+                "note": "First row: 'Custodian Anchorage adds support for Tezos and Stellar' (The Block, 2019-08-21)."
+              }
+            ]
+          },
+          {
+            "claim": "A custodian's support for Stellar does not imply support for a specific asset or contract token.",
+            "verdict": "confirmed",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/tokens/asset-issuance-stack",
+                "observedAt": "2026-11-14",
+                "note": "'Do not assume support for Stellar generally means support for a specific contract token or permissioned standard.'"
+              },
+              {
+                "class": "A",
+                "ref": "https://www.taurushq.com/blog/taurus-custody-and-issuance-platforms-now-available-on-stellar",
+                "observedAt": "2026-11-14",
+                "note": "Taurus custody available on Stellar from 2024-06-24; its smart contract-based asset support was announced separately on 2026-10-29 (taurushq.com, same date)."
+              },
+              {
+                "class": "C",
+                "ref": "lumenloop.search_content_semantic({query: 'Taurus Soroban smart contract support custody October 2026'})",
+                "observedAt": "2026-11-14",
+                "note": "Row dated 2026-10-29: 'Taurus adds Soroban smart contract support to its institutional custody and tokenization platforms on Stellar'."
+              },
+              {
+                "class": "A",
+                "ref": "https://developers.bitgo.com/docs/stellar-tokens",
+                "observedAt": "2026-11-14",
+                "note": "BitGo enables Stellar tokens per coin type (one entry per asset code and issuer), not network-wide."
+              }
+            ]
+          }
+        ],
+        "verified": {
+          "date": "2026-11-14",
+          "by": "scope-review lane (Claude Sonnet 5.5), independent diff review, decisions/REVIEW.md; blind re-derivation, amendment F6 applied by scope-finalize (Claude Opus 5.5)",
+          "evidence": [
+            "Reviewer blind derivation 2026-11-14 (decisions/REVIEW.md Q2) matched key-protection and custodian facts; every author source re-read (how-to-issue-an-asset, asset-issuance-stack, Anchorage press page, developers.bitgo.com/docs/stellar-tokens).",
+            "F6: key fact 3 now states the count the notes already graded ('at least two'), so the key fact grades alone.",
+            "Additional custodian evidence from the reviewer: https://www.fireblocks.com/supported-assets (vendor) and https://stellar.org/institutions-solutions (A) document Fireblocks; 'such as' keeps the roster open.",
+            "Application record: .agents/rounds/2026-11-14-golden-coverage-audit/decisions/APPLY.md, section Review reconciliation"
+          ],
+          "rootCause": [
+            ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
+          ]
+        },
+        "notes": "Authored for security.key-custody (decisions/SCOPE.md B4). Also the survivor for the custody-model distinction once q-crp-custodial-vs-noncustodial-wallets lost q-pay-anchor-msb-licensing. The Docs Asset Issuance Stack names its providers as illustrative examples 'with documented Stellar support as at November 2026', not an endorsement. Scout's directory lists BitGo and Taurus but no Anchorage project; Anchorage rests on its own press page and Lumenloop."
+      }
+    },
+    {
       "id": "q-comp-sep8-regulated-assets-approval-server",
       "question": "How does SEP-8 let an issuer enforce compliance on a regulated asset, and what is the approval server's role in the transaction flow?",
       "surface": [
@@ -4540,6 +4776,215 @@
         "origin": "raven-next q-comp-sep8-regulated-assets-approval-server",
         "notes": "Canonical on-chain mechanic. Verified vs SEP-0008: title 'Regulated Assets'; the Approval Server 'receives a signed transaction, checks for compliance, and signs it on success' (the wallet then submits). Trap is conflating SEP-8 (regulated assets) with SEP-12 (KYC)/SEP-10 (auth).\nAlso good if the answer: The regulated asset is configured so transfers require issuer approval (authorization gating), tied to the asset's authorization flags. | WisdomTree-style issuers used SEP-8 to create assets that require issuer approval to transact, without a smart contract.\nGolden cites: The SEP-8 spec (stellar-protocol GitHub) or developers.stellar.org regulated-assets docs.\nCORRECTION 2026-07-10: mandatory flags are Required + Revocable. Clawback is optional. The approval server signs/returns; the wallet inspects and re-signs revised transactions and submits the final transaction.",
         "leaf": "assets.regulated-tokenization"
+      }
+    },
+    {
+      "id": "q-comp-xlm-us-classification",
+      "question": "Is XLM a security in the United States?",
+      "surface": [
+        "lumenloop.search_content_semantic",
+        "scout.searchResearch"
+      ],
+      "golden": {
+        "answer": "Not under current SEC guidance. A joint SEC–CFTC release of March 17, 2026 names Stellar (XLM) a digital commodity, which the SEC treats as not itself a security. That is an SEC interpretation, not rule text, and the SEC says it may revise it. Not legal advice.",
+        "keyFacts": [
+          "A joint SEC–CFTC release of March 2026 classes XLM as a digital commodity, not a security.",
+          "The classification is SEC interpretive guidance, not codified rule text."
+        ],
+        "avoid": [
+          "Do NOT present a pre-2026 risk disclosure, such as Grayscale's 2022 information statement, as XLM's current US status."
+        ],
+        "notes": "Accept a later dated SEC or CFTC action that codifies, narrows or withdraws the classification when the answer names it. Accept the nuance that a digital commodity sold under an investment contract makes the contract, not the asset, a security."
+      },
+      "tags": {
+        "category": "compliance-rwa-payments",
+        "service": "lumenloop",
+        "freshness": "scheduled"
+      },
+      "truth": {
+        "lifecycle": {
+          "state": "active",
+          "reviewState": "none",
+          "activation": {
+            "author": "scope-apply (golden coverage audit, Claude Opus 5.5)",
+            "date": "2026-11-14",
+            "evidence": [
+              ".agents/rounds/2026-11-14-golden-coverage-audit/decisions/REVIEW.md",
+              ".agents/rounds/2026-11-14-golden-coverage-audit/decisions/APPLY.md"
+            ],
+            "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+            "reviewer": "scope-review (Claude Sonnet 5.5)"
+          }
+        },
+        "domain": "real-world",
+        "status": "confirmed",
+        "asOf": "2026-11-14",
+        "reverifyBy": "2027-02-11",
+        "leaf": "security.regulation-policy",
+        "origin": "authored golden-coverage-audit 2026-11-14 (decisions/SCOPE.md A5)",
+        "sources": [
+          {
+            "class": "A",
+            "ref": "https://www.sec.gov/files/rules/interp/2026/33-11412.pdf",
+            "observedAt": "2026-11-14",
+            "quote": "Examples of digital commodities include ... Solana (SOL); Stellar (XLM); Tezos (XTZ); and XRP (XRP)."
+          },
+          {
+            "class": "A",
+            "ref": "https://www.sec.gov/comments/S7-2026-27/s7202627-1103179-3882886.pdf",
+            "observedAt": "2026-11-14",
+            "quote": "The final rules should also codify the 2026 Interpretation’s digital commodity classification"
+          },
+          {
+            "class": "A",
+            "ref": "https://www.sec.gov/comments/S7-2026-27/s7202627-1102859-3882366.pdf",
+            "observedAt": "2026-11-14",
+            "quote": "Reinforcing the 2026 Interpretation’s “Digital Commodity” Classification in the Rule Text"
+          },
+          {
+            "class": "C",
+            "ref": "lumenloop.search_content_semantic({query: 'SDF comment letter Regulation Crypto Assets codify digital commodity October 2026'})",
+            "observedAt": "2026-11-14",
+            "quote": "The signatories called on the SEC to embed the \"digital commodity\" classification (already established in the March 2026 SEC interpretation) directly into the regulation text."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.coindaro.com/sec-digital-commodity-rule-text-six-blockchains/",
+            "observedAt": "2026-11-14",
+            "quote": "Chainlink, Cardano, Hedera, Aptos, Ava Labs and Stellar asked the SEC to put the digital commodity label into Regulation Crypto Assets' binding text."
+          },
+          {
+            "class": "A",
+            "ref": "https://www.sec.gov/about/divisions-offices/division-corporation-finance/faqs-crypto-assets",
+            "observedAt": "2026-11-14",
+            "quote": "The Interpretive Release states that digital commodities are not themselves securities"
+          },
+          {
+            "class": "A",
+            "ref": "https://www.sec.gov/Archives/edgar/data/1761325/000119312522222422/d348502dex991.htm",
+            "observedAt": "2026-11-14",
+            "quote": "may affect the Sponsor’s analysis regarding the status of XLM as a “security”"
+          },
+          {
+            "class": "A",
+            "ref": "https://www.govinfo.gov/content/pkg/FR-2026-03-23/html/2026-05635.htm",
+            "observedAt": "2026-11-14",
+            "quote": "Stellar (XLM); Tezos (XTZ); and XRP (XRP)."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.lowenstein.com/news-insights/publications/client-alerts/sec-issues-interpretive-framework-for-crypto-asset-classification-fctm",
+            "observedAt": "2026-11-14",
+            "quote": "Stellar (XLM), Tezos (XTZ), and XRP."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.bakerbotts.com/thought-leadership/publications/2026/march/sec-and-cftc-issue-interpretive-guidance-establishing-crypto-asset-classification-framework",
+            "observedAt": "2026-11-14",
+            "quote": "an interpretation — not a binding regulation"
+          }
+        ],
+        "corroboration": [
+          {
+            "claim": "SEC Release 33-11412, a joint release with CFTC guidance dated March 17, 2026, names Stellar (XLM) a digital commodity, which is not itself a security.",
+            "verdict": "confirmed",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://www.sec.gov/files/rules/interp/2026/33-11412.pdf",
+                "observedAt": "2026-11-14",
+                "note": "Read in full. 'Dated: March 17, 2026.' Section III.A lists 'Stellar (XLM)'; 'Digital commodities, digital collectibles, and digital tools ... are not themselves securities.'"
+              },
+              {
+                "class": "A",
+                "ref": "https://www.sec.gov/comments/S7-2026-27/s7202627-1103179-3882886.pdf",
+                "observedAt": "2026-11-14",
+                "note": "SDF letter, read in full: XLM 'is recognized as a “digital commodity” in the Commission’s March 2026 joint interpretive release'; fn 2 dates it Mar. 17, 2026, 91 Fed. Reg. 13714."
+              },
+              {
+                "class": "C",
+                "ref": "lumenloop.search_content_semantic, SEC comment letter row (id 12600)",
+                "observedAt": "2026-11-14",
+                "note": "Summary: 'the \"digital commodity\" classification (already established in the March 2026 SEC interpretation)'."
+              },
+              {
+                "class": "D",
+                "ref": "https://www.cornerstone.com/wp-content/uploads/2026/10/The-SEC-on-Crypto-Assets-2026-Developments.pdf",
+                "observedAt": "2026-11-14",
+                "note": "'March 17, 2026, Interpretive Release explaining how federal securities laws apply to certain crypto assets'."
+              }
+            ]
+          },
+          {
+            "claim": "The classification is an SEC interpretation, not codified rule text, and the SEC may revise it.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://www.sec.gov/files/rules/interp/2026/33-11412.pdf",
+                "observedAt": "2026-11-14",
+                "note": "'the Commission may refine, revise, or expand upon the interpretation'. ACTION line reads 'Final rule; interpretation; guidance': the release is filed in the interpretive-release parts 17 CFR 231 and 241."
+              },
+              {
+                "class": "A",
+                "ref": "https://www.sec.gov/comments/S7-2026-27/s7202627-1103179-3882886.pdf",
+                "observedAt": "2026-11-14",
+                "note": "'The 2026 Interpretation’s “digital commodity” classification ... appears only in the preamble ... Both would remain guidance that could be narrowed or withdrawn without notice and comment.'"
+              },
+              {
+                "class": "D",
+                "ref": "https://www.coinsrate.org/news/sec-regulation-crypto-assets-comments",
+                "observedAt": "2026-11-14",
+                "note": "Published 2026-10-25: 'The SEC has not adopted the proposal or announced a timetable.'"
+              },
+              {
+                "class": "D",
+                "ref": "https://www.paulhastings.com/thought-leadership/100th-edition-midterms-reshape-congress-sec-issues-crypto-faqs-and-noaction-letter",
+                "observedAt": "2026-11-14",
+                "note": "2026-11-09 roundup: the SEC staff FAQ update of Nov. 2 adds three classification questions, and the Clarity Act must be reintroduced in the new Congress; no change to the named digital commodities."
+              }
+            ]
+          },
+          {
+            "claim": "On October 20, 2026, SDF asked the SEC to codify the digital commodity classification in Regulation Crypto Assets (File S7-2026-27).",
+            "verdict": "confirmed",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://www.sec.gov/comments/S7-2026-27/s7202627-1103179-3882886.pdf",
+                "observedAt": "2026-11-14",
+                "note": "Letter dated 'October 20, 2026', signed by Candace Kelly, Chief Legal and Policy Officer: 'The final rules should also codify the 2026 Interpretation’s digital commodity classification'."
+              },
+              {
+                "class": "C",
+                "ref": "lumenloop.search_content_semantic, SEC comment letter row (id 12600)",
+                "observedAt": "2026-11-14",
+                "note": "Six L1 organizations 'including the Stellar Development Foundation jointly submitted a comment letter to the SEC urging codification of the \"digital commodity\" classification'."
+              },
+              {
+                "class": "D",
+                "ref": "https://www.cryptotimes.io/2026/10/21/chainlink-cardano-hedera-avalanche-stellar-aptos-urge-sec-to-codify-digital-commodity-status",
+                "observedAt": "2026-11-14",
+                "note": "Published 2026-10-21: six groups 'asked the U.S. Securities and Exchange Commission (SEC) to write the definition of a “digital commodity,” and its status as a non-security' into rule text."
+              }
+            ]
+          }
+        ],
+        "verified": {
+          "date": "2026-11-14",
+          "by": "scope-review lane (Claude Sonnet 5.5), independent diff review, decisions/REVIEW.md; blind re-derivation, amendments F1 and F5 applied by scope-finalize (Claude Opus 5.5)",
+          "evidence": [
+            "Reviewer blind derivation 2026-11-14 (decisions/REVIEW.md Q1): https://www.sec.gov/files/rules/interp/2026/33-11412.pdf and https://www.govinfo.gov/content/pkg/FR-2026-03-23/html/2026-05635.htm (A) and Lowenstein and Baker Botts client alerts (D) name Stellar (XLM) a digital commodity in interpretive guidance, not a binding rule.",
+            "F1: removed the key fact and answer sentence on SDF's October 20, 2026 comment letter; the question does not ask for it. The letter and its date stay in truth.sources, truth.corroboration and truth.notes.",
+            "F5: the avoid item now names a pre-2026 risk disclosure. Source class A, SEC EDGAR: https://www.sec.gov/Archives/edgar/data/1761325/000119312522222422/d348502dex991.htm says the XRP action 'may affect the Sponsor’s analysis regarding the status of XLM as a “security”', a risk disclosure, not a statement that XLM may be a security.",
+            "Reviewer also read the SEC staff FAQ (updated 2026-11-02): restates that digital commodities are not themselves securities; withdraws nothing.",
+            "Application record: .agents/rounds/2026-11-14-golden-coverage-audit/decisions/APPLY.md, section Review reconciliation"
+          ],
+          "rootCause": [
+            ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
+          ]
+        },
+        "notes": "Authored as the replacement for the retired q-pay-anchor-msb-licensing on security.regulation-policy (decisions/SCOPE.md A5). The SEC release is Release Nos. 33-11412 and 34-105020, File S7-2026-09, 91 FR 13714 (Mar. 23, 2026). The rule-making SDF commented on is Regulation Crypto Assets, Release Nos. 33-11434 and 34-106150, File S7-2026-27, 91 FR 54510 (Aug. 21, 2026); comments closed 2026-10-20. SDF also joined the L1 Coalition letter of the same date (s7202627-1102859-3882366.pdf). Re-check on any SEC action on S7-2026-27 or any market-structure law. The 2022 Grayscale row comes from Lumenloop (CoinDesk, 2022-08-27); the primary is Grayscale's EDGAR information statement, a risk disclosure."
       }
     },
     {
@@ -6593,7 +7038,6 @@
       "golden": {
         "answer": "ERC-8004 ('Trustless Agents') is an Ethereum ERC, still a Draft as of 2026-11-14, for agent identity, reputation and validation; payments are out of scope and compose with x402. Stellar has no ratified agent-identity SEP. Community Soroban implementations (trionlabs/stellar-8004, progax01/stellar8004) are deployed but unratified, so describe them as early community work.",
         "keyFacts": [
-          "ERC-8004 is an Ethereum Draft for agent identity, reputation and validation.",
           "Stellar has no ratified SEP for agent identity (as of a stated date).",
           "Community Soroban implementations exist, such as trionlabs/stellar-8004."
         ],
@@ -6601,7 +7045,7 @@
           "Do NOT call ERC-8004, SRC-8004 or SEP-8004 a ratified Stellar standard.",
           "Do NOT claim no Stellar implementation exists."
         ],
-        "notes": "Do not require the Ethereum mainnet deployment date. Do not infer audit, adoption or reliability from deployment."
+        "notes": "Stating that ERC-8004 is an Ethereum Draft for agent identity, reputation and validation is accepted context, not required. Do not require the Ethereum mainnet deployment date. Do not infer audit, adoption or reliability from deployment."
       },
       "tags": {
         "category": "defi-ecosystem",
@@ -6768,12 +7212,11 @@
         ],
         "verified": {
           "date": "2026-11-14",
-          "by": "Golden coverage audit closeout 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+          "by": "scope-apply lane (Claude Opus 5.5, high), golden coverage audit 2026-11-14; applies owner-approved decisions/SCOPE.md A6",
           "evidence": [
-            "Removed the key fact that ERC-8004 leaves payments to x402: the question asks what exists on Stellar and how mature it is, not ERC-8004's payment scope. The answer keeps it as context.",
-            "Key fact 1 kept: the external Draft standard is one side of the case's three-way distinction (truth.notes, GT-12).",
-            "Live A 2026-11-14: https://eips.ethereum.org/EIPS/eip-8004 -- status badge 'Draft' ('This EIP is not yet recommended for general use or implementation').",
-            "Trigger only (not evidence): .agents/rounds/2026-11-14-golden-coverage-audit/qa/RESULT.md, 'Cases to fix'"
+            "Owner decision 2026-11-14: .agents/rounds/2026-11-14-golden-coverage-audit/decisions/SCOPE.md A6 (non-Stellar key facts move to optional context); applied in decisions/APPLY.md.",
+            "Moved the key fact that ERC-8004 is an Ethereum Draft to golden.notes as accepted context; the answer and the avoid item that bars calling it a ratified Stellar standard are unchanged.",
+            "Live B 2026-11-14 (unchanged from the prior event): https://github.com/ethereum/ERCs/blob/master/ERCS/erc-8004.md -- status: Draft."
           ],
           "rootCause": [
             ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
@@ -6791,18 +7234,17 @@
         "skills.stellar-dev.agentic-payments"
       ],
       "golden": {
-        "answer": "None of x402, MPP, AP2 or ACP is a Stellar standard. x402 and MPP are general payment protocols; Stellar supplies methods that settle SEP-41 token transfers through Soroban authorization. MPP covers one-time charge plus session and channel payments. AP2 is an emerging mandate-based authorization protocol that can use x402 but does not require it. ACP is a checkout protocol that delegates payment to PSPs.",
+        "answer": "None of x402, MPP, AP2 or ACP is a Stellar standard. x402 and MPP are general payment protocols; Stellar docs define methods for them that settle SEP-41 token transfers through Soroban authorization, and, as of November 2026, none for AP2 or ACP. MPP covers one-time charge plus session and channel payments. AP2 is an emerging mandate-based authorization protocol that can use x402 but does not require it. ACP is a checkout protocol that delegates payment to PSPs.",
         "keyFacts": [
           "x402 and MPP are general protocols; Stellar methods settle SEP-41 tokens.",
           "MPP covers one-time charge plus session and channel payments, not only streaming.",
-          "AP2 is an emerging authorization protocol; x402 is optional there.",
-          "ACP is a checkout protocol that delegates payment; it is not a settlement rail."
+          "As of November 2026, Stellar docs define payment methods for x402 and MPP, not for AP2 or ACP."
         ],
         "avoid": [
           "Do NOT call x402 or MPP a Stellar-native standard.",
           "Do NOT describe ACP as a blockchain settlement rail or MPP as a Stripe/Tempo chain."
         ],
-        "notes": "The exposed Stellar agentic-payments skill covers x402 and MPP only; accept source-faithful limits on AP2 and ACP."
+        "notes": "AP2 and ACP descriptions are optional context, but a false one is wrong. The exposed Stellar agentic-payments skill covers x402 and MPP only; accept source-faithful limits on AP2 and ACP. Accept a later Stellar docs method for AP2 or ACP when the answer names its source."
       },
       "tags": {
         "category": "defi-ecosystem",
@@ -6816,7 +7258,7 @@
         },
         "domain": "real-world",
         "status": "confirmed",
-        "asOf": "2026-11-02",
+        "asOf": "2026-11-14",
         "sources": [
           {
             "class": "A",
@@ -6962,19 +7404,45 @@
                 "note": "Building the Trust Layer for Agentic Payments with AP2 and Verifiable Intent (May 26, 2026)"
               }
             ]
+          },
+          {
+            "claim": "As of 2026-11-14, Stellar docs define payment methods for x402 and MPP and none for AP2 or ACP.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/build/agentic-payments.md",
+                "observedAt": "2026-11-14",
+                "note": "Index lists two methods: x402 on Stellar and MPP on Stellar; the page has no AP2 or ACP mention."
+              },
+              {
+                "class": "B",
+                "ref": "gh search code AP2 / \"Agent Payments Protocol\" / \"Agentic Commerce Protocol\" / ACP --repo stellar/stellar-docs; gh api repos/stellar/stellar-docs/contents/docs/build/agentic-payments",
+                "observedAt": "2026-11-14",
+                "note": "Directory holds index.mdx, mpp, x402. Code hits are only hash or base64 substrings in Horizon and RPC examples and pnpm-lock.yaml."
+              },
+              {
+                "class": "E",
+                "ref": "stellarDocs.search_docs({query: \"AP2 Agent Payments Protocol\"}) and ({query: \"ACP Agentic Commerce Protocol checkout\"})",
+                "observedAt": "2026-11-14",
+                "note": "Both return only agentic-payments, x402 and MPP pages; no AP2 or ACP page."
+              },
+              {
+                "class": "D",
+                "ref": "parallel-cli search: Stellar AP2 agent payments protocol; Stellar ACP agentic commerce protocol",
+                "observedAt": "2026-11-14",
+                "note": "Results: Stellar x402 and MPP pages, Stripe ACP docs, ap2-protocol.org spec; no Stellar AP2 or ACP method."
+              }
+            ]
           }
         ],
         "verified": {
           "date": "2026-11-14",
-          "by": "Golden coverage audit 2026-11-14 (audit-defi, verify-defi; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+          "by": "scope-finalize (Claude Opus 5.5), applying independent review finding F2 from scope-review (Claude Sonnet 5.5), decisions/REVIEW.md",
           "evidence": [
-            "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-defi-agentic-payment-standards-compare",
-            "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-defi-agentic-payment-standards-compare",
-            "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-defi-agentic-payment-standards-compare",
-            "Live A 2026-11-14: https://developers.stellar.org/docs/build/agentic-payments/mpp -- 'Use the Machine Payments Protocol (MPP) for per-request HTTP payments on Stellar, with ... off-chain payment channels.'",
-            "Live D 2026-11-14: https://mpp.dev/payment-methods/stellar/charge -- 'The Stellar implementation of the charge intent. The client signs a SEP-41 transfer invocation'",
-            "Live D 2026-11-14: https://fidoalliance.org/building-the-trust-layer-for-agentic-payments-with-ap2-and-verifiable-intent -- 'Building the Trust Layer for Agentic Payments with AP2 and Verifiable Intent (May 26, 2026)'",
-            "Live A 2026-11-14: https://docs.stripe.com/agentic-commerce/protocols/acp -- 'an open standard created by Stripe, OpenAI, and Meta that defines how AI agents interact with businesses to complete purchases'"
+            "F2: the negative key fact and answer clause are now dated (as of November 2026), and golden.notes accepts a later Stellar docs method for AP2 or ACP; golden-truth section 3 (negative claims) and the live-case rule.",
+            "Negative claim unchanged in substance: truth.corroboration row dated 2026-11-14 (A, B, E, D).",
+            "Review: .agents/rounds/2026-11-14-golden-coverage-audit/decisions/REVIEW.md F2; application: decisions/APPLY.md, section Review reconciliation"
           ],
           "rootCause": [
             ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
@@ -13615,13 +14083,12 @@
       "golden": {
         "answer": "I can't give a reliable current Solana-versus-Aptos recommendation from this Stellar-focused service. Compare current primary evidence for execution model, finality, fees, tooling, liquidity, security record, validator structure, and your protocol requirements. I can answer a separate Stellar/Soroban question if useful, but I won't insert Stellar as the answer unless asked.",
         "keyFacts": [
-          "Avoids an unsupported Solana-versus-Aptos verdict.",
-          "Supplies a practical current-evidence comparison framework."
+          "Avoids an unsupported Solana-versus-Aptos verdict."
         ],
         "avoid": [
-          "Do NOT give a confident Solana/Aptos verdict, inject Stellar as a third-option resolution, or provide only refusal boilerplate."
+          "Do NOT give a confident Solana/Aptos verdict or inject Stellar as a third-option resolution."
         ],
-        "notes": "GT-26 2026-07-10: require honest source-coverage limits plus a useful current-primary-evidence comparison framework. No unsupported verdict and no forced Stellar third option.\nGT-26 OOS REWRITE 2026-07-10: scope honesty plus decision support replaces refusal-only grading."
+        "notes": "A current-evidence comparison framework is welcome, not required; do not penalize a brief, scope-honest reply."
       },
       "tags": {
         "category": "edge-behavior",
@@ -13670,22 +14137,19 @@
           }
         ],
         "verified": {
-          "date": "2026-08-29",
-          "by": "golden-truth session 3 (2026-08-29, long-fact batch, worker gt3-sol-c)",
+          "date": "2026-11-14",
+          "by": "scope-apply lane (Claude Opus 5.5, high), golden coverage audit 2026-11-14; applies owner-approved decisions/SCOPE.md A6",
           "evidence": [
-            "Solo scratchpad 575 GT-26 primary 3269 and blind 3271.",
-            "Live re-check (class A, 2026-08-29): https://solana.com/docs/core/fees/fee-structure documents Solana-specific fees and transaction priorities.",
-            "Live re-check (class A, 2026-08-29): https://aptos.dev/build/guides/application-integration documents Aptos-specific finality, SDK, transaction, and account behavior.",
-            "Live re-check (class B, 2026-08-29): README.md limits the current repository scope to Stellar ecosystem services and skills.",
-            "Sibling sweep (2026-08-29): Solana, Aptos, unsupported-verdict, and comparison-framework cases showed no contradiction."
+            "Owner decision 2026-11-14: .agents/rounds/2026-11-14-golden-coverage-audit/decisions/SCOPE.md A6 (non-Stellar key facts move to optional context); applied in decisions/APPLY.md.",
+            "Made the comparison-framework key fact welcome, not required, and dropped \"or provide only refusal boilerplate\" from the avoid item. This reverses the 2026-07-10 GT-26 choice by the owner’s decision; no fact about either chain is asserted."
           ],
           "rootCause": [
-            "Strict none-route scoring optimized tool non-use rather than end-answer usefulness.",
-            ".agents/TODO.md — Golden authoring lint warnings burn-down (long-fact class)"
+            ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
           ]
         },
         "origin": "raven-next q-edge-oos-solana-vs-aptos",
-        "leaf": "behavior.out-of-scope"
+        "leaf": "behavior.out-of-scope",
+        "notes": "GT-26 2026-07-10 required honest source-coverage limits plus a current-primary-evidence comparison framework, replacing refusal-only grading. The 2026-11-14 owner decision (decisions/SCOPE.md A6) made the framework welcome, not required, and dropped the refusal-boilerplate avoid clause."
       }
     },
     {
@@ -18337,6 +18801,12 @@
             "ref": "https://api.mainnet.minepi.com/ (network_passphrase 'Pi Network') vs https://horizon.stellar.org/ (network_passphrase 'Public Global Stellar Network ; September 2015')",
             "note": "Live Horizon root reads: distinct passphrases, so the ledgers are separate.",
             "observedAt": "2026-11-02"
+          },
+          {
+            "class": "A",
+            "ref": "https://minepi.com/blog/pi-linux-node",
+            "observedAt": "2026-11-14",
+            "note": "Pi Network post of 2025-08-27, for the lineage note: \"The Pi protocol is adapted from Stellar protocol.\""
           }
         ],
         "corroboration": [
@@ -20211,111 +20681,6 @@
       }
     },
     {
-      "id": "q-pay-anchor-msb-licensing",
-      "question": "Who holds the money-transmitter / MSB license when a wallet uses a Stellar anchor to on/off-ramp fiat — the wallet, the anchor, or Stellar?",
-      "surface": [
-        "stellarDocs.search_anchor_sep_docs",
-        "stellarDocs.search_asset_token_docs",
-        "stellarDocs.search_wallet_dapp_docs"
-      ],
-      "golden": {
-        "answer": "Do not decide licensing from the word 'anchor'. Identify each legal entity and who accepts, transmits, exchanges, issues, redeems or custodies value for others, which jurisdictions apply, and whether an exemption, agent or bank partner changes the picture. In the US, FinCEN MSB registration and state money-transmitter licensing are separate. A custodial wallet or on/off-ramp operator can be in scope; non-custodial signing software alone generally is not. Travel Rule duties likewise attach to covered intermediaries, not to the protocol or to software. Not legal advice.",
-        "keyFacts": [
-          "Licensing duties follow entity, activity, custody and jurisdiction, not the word 'anchor'.",
-          "Registration and licensing are distinct duties that differ by jurisdiction.",
-          "Custodial wallet operators can be in scope; non-custodial software alone generally is not."
-        ],
-        "avoid": [
-          "Do NOT say every anchor holds one universal MSB or money-transmitter license.",
-          "Do NOT call FinCEN registration a licence, or give definitive legal advice from a directory label."
-        ],
-        "notes": "Grade the classification framework; no jurisdictional rules are asserted."
-      },
-      "tags": {
-        "category": "compliance-rwa-payments",
-        "service": "stellarDocs",
-        "freshness": "stable"
-      },
-      "truth": {
-        "lifecycle": {
-          "state": "active",
-          "reviewState": "none"
-        },
-        "domain": "real-world",
-        "status": "confirmed",
-        "sources": [
-          {
-            "class": "D",
-            "ref": "https://www.ecfr.gov/current/title-31/subtitle-B/chapter-X/part-1010/section-1010.100",
-            "note": "class inferred at migration"
-          },
-          {
-            "class": "D",
-            "ref": "https://www.ecfr.gov/current/title-31/subtitle-B/chapter-X/part-1022/section-1022.380",
-            "note": "class inferred at migration"
-          },
-          {
-            "class": "D",
-            "ref": "https://www.fincen.gov/resources/statutes-regulations/guidance/application-fincens-regulations-persons-administering",
-            "note": "class inferred at migration"
-          }
-        ],
-        "corroboration": [
-          {
-            "claim": "The anchor always holds the MSB/money-transmitter license for the fiat leg",
-            "verdict": "contradicted",
-            "evidence": [
-              {
-                "class": "A",
-                "ref": "A: eCFR/FinCEN acceptance/transmission and hosted/unhosted guidance",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
-              },
-              {
-                "class": "A",
-                "ref": "A: network/software exclusions and federal registration rules",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
-              },
-              {
-                "class": "D",
-                "ref": "D: independent legal corroboration",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
-              },
-              {
-                "class": "D",
-                "ref": "Independent reviews: Solo GT-11 processes 3231/3236",
-                "observedAt": "2026-07-11",
-                "note": "verbatim legacy evidence descriptor imported at migration"
-              },
-              {
-                "class": "A",
-                "ref": "https://www.fincen.gov/system/files/2019-05/FinCEN%20Guidance%20CVC%20FINAL%20508.pdf",
-                "observedAt": "2026-10-01",
-                "note": "FIN-2019-G001: 'Although when describing a business model this guidance may use a label by which the general type of product or service may be commonly known, the interpretation provided herein applies only to the business model the guidance describes'. Regulatory treatment follows the facts and circumstances of the activity, not the label."
-              }
-            ]
-          }
-        ],
-        "verified": {
-          "date": "2026-11-14",
-          "by": "Golden coverage audit closeout 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
-          "evidence": [
-            "The question names no jurisdiction, and golden.notes says no jurisdictional rules are asserted, yet a key fact required the US regimes. The key fact now states the jurisdiction-neutral rule; the answer keeps the US example.",
-            "Live A 2026-11-13 (Parallel extract): https://www.fincen.gov/money-services-business-msb-registration -- 'each money services business (MSB) must register with the Department of the Treasury'; re-registration is triggered by a change 'under State law', a separate regime.",
-            "Trigger only (not evidence): .agents/rounds/2026-11-14-golden-coverage-audit/qa/RESULT.md, 'Cases to fix'"
-          ],
-          "rootCause": [
-            ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
-          ]
-        },
-        "origin": "raven-next q-pay-anchor-msb-licensing",
-        "notes": "Grade the durable classification framing; specific jurisdictional requirements are not asserted. Trap: licensing on the protocol.\nAlso good if the answer: The wallet/app may also have its own MSB/money-transmitter obligations depending on custody and jurisdiction. | Each regulated participant maps its licenses to every jurisdiction in which it onboards customers.\nGolden cites: developers.stellar.org anchor docs; reputable regulatory reference where relevant.\nCORRECTION 2026-07-10: reject noun-based legal allocation. Require entity/activity/custody/route/jurisdiction analysis and distinguish registration from licensing.",
-        "leaf": "security.regulation-policy"
-      }
-    },
-    {
       "id": "q-pay-merchant-request-detect-reconcile",
       "question": "How does a merchant or app request a Stellar payment from a customer, detect that it arrived, and match it to the right order?",
       "surface": [
@@ -21778,8 +22143,8 @@
         },
         "origin": "raven-next q-pc-multisig-setup-lifecycle",
         "notes": "Reviewed 2026-06-29: differentiated (D1) from q-protocol-accounts-signers-thresholds — this question owns the operational lifecycle verbs (SetOptions add/remove/rotate, master-weight-0 lockout, safe rotation); the conceptual weight/threshold model is demoted to assumed background (owned by the sibling). Verified against official signatures/multisig, SetOptions, and CLI docs. Covers classic account multisig, not Soroban custom-account authentication.\nAlso good if the answer: Assumes the weight/threshold model (signers have weights; low/medium/high thresholds) as background; deep threshold theory is owned by q-protocol-accounts-signers-thresholds. | Mentions sequence/fee and that the SetOptions transaction itself must be authorized under current thresholds.\nGolden cites: At least one primary Stellar source such as developers.stellar.org, stellar-core docs, or the stellar-protocol repository.\nGT-29 PRECISION 2026-07-10: a 2-of-3 example must name exactly three effective authorities; master is one if its weight is nonzero.",
-        "leaf": "security.key-custody",
-        "secondaryLeaf": "protocol.signatures-multisig"
+        "leaf": "protocol.signatures-multisig",
+        "secondaryLeaf": "security.key-custody"
       }
     },
     {

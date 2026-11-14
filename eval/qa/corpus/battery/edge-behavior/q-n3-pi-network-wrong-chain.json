@@ -48,6 +48,12 @@
         "ref": "https://api.mainnet.minepi.com/ (network_passphrase 'Pi Network') vs https://horizon.stellar.org/ (network_passphrase 'Public Global Stellar Network ; September 2015')",
         "note": "Live Horizon root reads: distinct passphrases, so the ledgers are separate.",
         "observedAt": "2026-11-02"
+      },
+      {
+        "class": "A",
+        "ref": "https://minepi.com/blog/pi-linux-node",
+        "observedAt": "2026-11-14",
+        "note": "Pi Network post of 2025-08-27, for the lineage note: \"The Pi protocol is adapted from Stellar protocol.\""
       }
     ],
     "corroboration": [

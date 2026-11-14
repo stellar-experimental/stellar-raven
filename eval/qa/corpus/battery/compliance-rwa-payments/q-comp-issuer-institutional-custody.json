@@ -1,0 +1,210 @@
+{
+  "id": "q-comp-issuer-institutional-custody",
+  "question": "We are a regulated issuer about to tokenize a fund on Stellar. How should we protect the issuing account's keys, and which institutional custodians support Stellar assets?",
+  "surface": [
+    "stellarDocs.search_asset_token_docs",
+    "scout.searchProjects",
+    "lumenloop.search_content_semantic"
+  ],
+  "golden": {
+    "answer": "Keep the issuing account's keys offline in cold storage, such as a hardware wallet, or require several signers through Stellar multisig. Depending on jurisdiction and investor type, an issuer may self-custody, use institutional wallet infrastructure such as MPC or HSM, or appoint a regulated custodian. Custodians with documented Stellar support include Anchorage, BitGo and Taurus. Confirm that a custodian supports your exact asset or contract token: support for the network does not imply it.",
+    "keyFacts": [
+      "Keep issuing-account keys in cold storage, such as a hardware wallet, or under multisig.",
+      "An issuer may self-custody, use wallet infrastructure, or appoint a regulated custodian.",
+      "Names at least two institutional custodians with documented Stellar support, such as Anchorage, BitGo or Taurus.",
+      "Network support does not mean a custodian supports a specific asset or contract token."
+    ],
+    "avoid": [
+      "Do NOT call institutional wallet or key-management software by itself a regulated custodian."
+    ],
+    "notes": "The custodian roster changes: accept any two custodians that a current source shows supporting Stellar assets. Do not require a ranking or an endorsement."
+  },
+  "tags": {
+    "category": "compliance-rwa-payments",
+    "service": "stellarDocs",
+    "freshness": "live"
+  },
+  "truth": {
+    "lifecycle": {
+      "state": "active",
+      "reviewState": "none",
+      "activation": {
+        "author": "scope-apply (golden coverage audit, Claude Opus 5.5)",
+        "date": "2026-11-14",
+        "evidence": [
+          ".agents/rounds/2026-11-14-golden-coverage-audit/decisions/REVIEW.md",
+          ".agents/rounds/2026-11-14-golden-coverage-audit/decisions/APPLY.md"
+        ],
+        "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+        "reviewer": "scope-review (Claude Sonnet 5.5)"
+      }
+    },
+    "domain": "real-world",
+    "status": "confirmed",
+    "asOf": "2026-11-14",
+    "leaf": "security.key-custody",
+    "origin": "authored golden-coverage-audit 2026-11-14 (decisions/SCOPE.md B4)",
+    "sources": [
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/tokens/how-to-issue-an-asset",
+        "observedAt": "2026-11-14",
+        "quote": "Many users secure their issuing account with cold storage techniques, such as a hardware wallet or multisignature setup."
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/tokens/asset-issuance-stack",
+        "observedAt": "2026-11-14",
+        "quote": "an institution may self-custody, use institutional wallet infrastructure, or appoint a regulated/qualified custodian"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-dev-skill/blob/b1785b7b74deef345b16b9ee7022afc334e24ea4/skills/assets/SKILL.md",
+        "observedAt": "2026-11-14",
+        "quote": "Consider multisig for issuer account"
+      },
+      {
+        "class": "C",
+        "ref": "scout.searchProjects({q: 'custody'})",
+        "observedAt": "2026-11-14",
+        "quote": "strict mode, 27 matches, including DFNS, BitGo, Fordefi, MPCVault, Cobo, Archax and Taurus"
+      },
+      {
+        "class": "A",
+        "ref": "https://www.taurushq.com/blog/taurus-expands-stellar-integration-with-soroban-smart-contract-support-across-custody-and-tokenization",
+        "observedAt": "2026-11-14",
+        "quote": "announced live support for smart contract-based assets on the Stellar network through Taurus-PROTECT, its institutional custody platform"
+      },
+      {
+        "class": "D",
+        "ref": "https://www.abra.com/learn/how-to-custody-digital-assets",
+        "observedAt": "2026-11-14",
+        "quote": "Qualified custodian is a regulatory designation; cold storage, multi-signature and MPC are security techniques."
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "An issuing account's keys are commonly kept in cold storage, such as a hardware wallet, or under multisig.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/how-to-issue-an-asset",
+            "observedAt": "2026-11-14",
+            "note": "'Many users secure their issuing account with cold storage techniques, such as a hardware wallet or multisignature setup.'"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-dev-skill/blob/b1785b7b74deef345b16b9ee7022afc334e24ea4/skills/assets/SKILL.md",
+            "observedAt": "2026-11-14",
+            "note": "Best Practices, Asset Issuance: 'Consider multisig for issuer account'. Also a pinned Raven skill."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar-deprecated/docs/blob/master/guides/security.md",
+            "observedAt": "2026-11-14",
+            "note": "Archived SDF guide, 'Secure offline accounts': 'keeping its secret seed stored offline'; sensitive accounts can require authorization from multiple individuals."
+          }
+        ]
+      },
+      {
+        "claim": "An issuer may self-custody, use institutional wallet infrastructure, or appoint a regulated custodian; wallet software alone is not a regulated custody status.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/asset-issuance-stack",
+            "observedAt": "2026-11-14",
+            "note": "Layer 3: 'an institution may self-custody, use institutional wallet infrastructure, or appoint a regulated/qualified custodian'. Layer 2: wallet software 'is not, by itself, a regulatory custody status'."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.abra.com/learn/how-to-custody-digital-assets",
+            "observedAt": "2026-11-14",
+            "note": "Published 2026-09-16: 'Three ways to custody digital assets: self-custody, third-party and hybrid.' 'Qualified custodian is a regulatory designation; cold storage, multi-signature and MPC are security techniques.'"
+          }
+        ]
+      },
+      {
+        "claim": "Anchorage, BitGo and Taurus document custody support for Stellar assets as of 2026-11-14.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/asset-issuance-stack",
+            "observedAt": "2026-11-14",
+            "note": "Layer 3 Digital-asset custody: 'Examples: Anchorage · BitGo · Taurus.' Section 5: firms 'with documented Stellar support as at November 2026'."
+          },
+          {
+            "class": "A",
+            "ref": "https://www.anchorage.com/press-room/anchorage-digital-supports-custody-for-tokenized-cetes-etherfuses-tokenized-mexican-government-debt-on-stellar",
+            "observedAt": "2026-11-14",
+            "note": "datePublished Jun 15, 2026: 'announced custody support for CETES, tokenized Mexican government debt issued by Etherfuse on the Stellar blockchain'."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.bitgo.com/docs/stellar-tokens",
+            "observedAt": "2026-11-14",
+            "note": "'Stellar tokens can be accessed with the following coin types', listing xlm:AQUA-…, xlm:VELO-… and others."
+          },
+          {
+            "class": "C",
+            "ref": "scout.searchProjects({q: 'BitGo'}) and ({q: 'Taurus'})",
+            "observedAt": "2026-11-14",
+            "note": "BitGo row: 'a regulated qualified custodian and multisignature wallet provider supporting Stellar (XLM)'. Taurus row, Live: 'enterprise-grade solutions for custody, tokenization'. Scout has no Anchorage row (semantic fallback)."
+          },
+          {
+            "class": "C",
+            "ref": "lumenloop.search_content_semantic({query: 'Anchorage BitGo custody Stellar assets institutional'})",
+            "observedAt": "2026-11-14",
+            "note": "First row: 'Custodian Anchorage adds support for Tezos and Stellar' (The Block, 2019-08-21)."
+          }
+        ]
+      },
+      {
+        "claim": "A custodian's support for Stellar does not imply support for a specific asset or contract token.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/asset-issuance-stack",
+            "observedAt": "2026-11-14",
+            "note": "'Do not assume support for Stellar generally means support for a specific contract token or permissioned standard.'"
+          },
+          {
+            "class": "A",
+            "ref": "https://www.taurushq.com/blog/taurus-custody-and-issuance-platforms-now-available-on-stellar",
+            "observedAt": "2026-11-14",
+            "note": "Taurus custody available on Stellar from 2024-06-24; its smart contract-based asset support was announced separately on 2026-10-29 (taurushq.com, same date)."
+          },
+          {
+            "class": "C",
+            "ref": "lumenloop.search_content_semantic({query: 'Taurus Soroban smart contract support custody October 2026'})",
+            "observedAt": "2026-11-14",
+            "note": "Row dated 2026-10-29: 'Taurus adds Soroban smart contract support to its institutional custody and tokenization platforms on Stellar'."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.bitgo.com/docs/stellar-tokens",
+            "observedAt": "2026-11-14",
+            "note": "BitGo enables Stellar tokens per coin type (one entry per asset code and issuer), not network-wide."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-11-14",
+      "by": "scope-review lane (Claude Sonnet 5.5), independent diff review, decisions/REVIEW.md; blind re-derivation, amendment F6 applied by scope-finalize (Claude Opus 5.5)",
+      "evidence": [
+        "Reviewer blind derivation 2026-11-14 (decisions/REVIEW.md Q2) matched key-protection and custodian facts; every author source re-read (how-to-issue-an-asset, asset-issuance-stack, Anchorage press page, developers.bitgo.com/docs/stellar-tokens).",
+        "F6: key fact 3 now states the count the notes already graded ('at least two'), so the key fact grades alone.",
+        "Additional custodian evidence from the reviewer: https://www.fireblocks.com/supported-assets (vendor) and https://stellar.org/institutions-solutions (A) document Fireblocks; 'such as' keeps the roster open.",
+        "Application record: .agents/rounds/2026-11-14-golden-coverage-audit/decisions/APPLY.md, section Review reconciliation"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
+      ]
+    },
+    "notes": "Authored for security.key-custody (decisions/SCOPE.md B4). Also the survivor for the custody-model distinction once q-crp-custodial-vs-noncustodial-wallets lost q-pay-anchor-msb-licensing. The Docs Asset Issuance Stack names its providers as illustrative examples 'with documented Stellar support as at November 2026', not an endorsement. Scout's directory lists BitGo and Taurus but no Anchorage project; Anchorage rests on its own press page and Lumenloop."
+  }
+}

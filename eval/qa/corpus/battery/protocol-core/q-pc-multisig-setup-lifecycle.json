@@ -75,7 +75,7 @@
     },
     "origin": "raven-next q-pc-multisig-setup-lifecycle",
     "notes": "Reviewed 2026-06-29: differentiated (D1) from q-protocol-accounts-signers-thresholds — this question owns the operational lifecycle verbs (SetOptions add/remove/rotate, master-weight-0 lockout, safe rotation); the conceptual weight/threshold model is demoted to assumed background (owned by the sibling). Verified against official signatures/multisig, SetOptions, and CLI docs. Covers classic account multisig, not Soroban custom-account authentication.\nAlso good if the answer: Assumes the weight/threshold model (signers have weights; low/medium/high thresholds) as background; deep threshold theory is owned by q-protocol-accounts-signers-thresholds. | Mentions sequence/fee and that the SetOptions transaction itself must be authorized under current thresholds.\nGolden cites: At least one primary Stellar source such as developers.stellar.org, stellar-core docs, or the stellar-protocol repository.\nGT-29 PRECISION 2026-07-10: a 2-of-3 example must name exactly three effective authorities; master is one if its weight is nonzero.",
-    "leaf": "security.key-custody",
-    "secondaryLeaf": "protocol.signatures-multisig"
+    "leaf": "protocol.signatures-multisig",
+    "secondaryLeaf": "security.key-custody"
   }
 }

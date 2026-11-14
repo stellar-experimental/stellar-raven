@@ -1,0 +1,209 @@
+{
+  "id": "q-comp-xlm-us-classification",
+  "question": "Is XLM a security in the United States?",
+  "surface": [
+    "lumenloop.search_content_semantic",
+    "scout.searchResearch"
+  ],
+  "golden": {
+    "answer": "Not under current SEC guidance. A joint SEC–CFTC release of March 17, 2026 names Stellar (XLM) a digital commodity, which the SEC treats as not itself a security. That is an SEC interpretation, not rule text, and the SEC says it may revise it. Not legal advice.",
+    "keyFacts": [
+      "A joint SEC–CFTC release of March 2026 classes XLM as a digital commodity, not a security.",
+      "The classification is SEC interpretive guidance, not codified rule text."
+    ],
+    "avoid": [
+      "Do NOT present a pre-2026 risk disclosure, such as Grayscale's 2022 information statement, as XLM's current US status."
+    ],
+    "notes": "Accept a later dated SEC or CFTC action that codifies, narrows or withdraws the classification when the answer names it. Accept the nuance that a digital commodity sold under an investment contract makes the contract, not the asset, a security."
+  },
+  "tags": {
+    "category": "compliance-rwa-payments",
+    "service": "lumenloop",
+    "freshness": "scheduled"
+  },
+  "truth": {
+    "lifecycle": {
+      "state": "active",
+      "reviewState": "none",
+      "activation": {
+        "author": "scope-apply (golden coverage audit, Claude Opus 5.5)",
+        "date": "2026-11-14",
+        "evidence": [
+          ".agents/rounds/2026-11-14-golden-coverage-audit/decisions/REVIEW.md",
+          ".agents/rounds/2026-11-14-golden-coverage-audit/decisions/APPLY.md"
+        ],
+        "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+        "reviewer": "scope-review (Claude Sonnet 5.5)"
+      }
+    },
+    "domain": "real-world",
+    "status": "confirmed",
+    "asOf": "2026-11-14",
+    "reverifyBy": "2027-02-11",
+    "leaf": "security.regulation-policy",
+    "origin": "authored golden-coverage-audit 2026-11-14 (decisions/SCOPE.md A5)",
+    "sources": [
+      {
+        "class": "A",
+        "ref": "https://www.sec.gov/files/rules/interp/2026/33-11412.pdf",
+        "observedAt": "2026-11-14",
+        "quote": "Examples of digital commodities include ... Solana (SOL); Stellar (XLM); Tezos (XTZ); and XRP (XRP)."
+      },
+      {
+        "class": "A",
+        "ref": "https://www.sec.gov/comments/S7-2026-27/s7202627-1103179-3882886.pdf",
+        "observedAt": "2026-11-14",
+        "quote": "The final rules should also codify the 2026 Interpretation’s digital commodity classification"
+      },
+      {
+        "class": "A",
+        "ref": "https://www.sec.gov/comments/S7-2026-27/s7202627-1102859-3882366.pdf",
+        "observedAt": "2026-11-14",
+        "quote": "Reinforcing the 2026 Interpretation’s “Digital Commodity” Classification in the Rule Text"
+      },
+      {
+        "class": "C",
+        "ref": "lumenloop.search_content_semantic({query: 'SDF comment letter Regulation Crypto Assets codify digital commodity October 2026'})",
+        "observedAt": "2026-11-14",
+        "quote": "The signatories called on the SEC to embed the \"digital commodity\" classification (already established in the March 2026 SEC interpretation) directly into the regulation text."
+      },
+      {
+        "class": "D",
+        "ref": "https://www.coindaro.com/sec-digital-commodity-rule-text-six-blockchains/",
+        "observedAt": "2026-11-14",
+        "quote": "Chainlink, Cardano, Hedera, Aptos, Ava Labs and Stellar asked the SEC to put the digital commodity label into Regulation Crypto Assets' binding text."
+      },
+      {
+        "class": "A",
+        "ref": "https://www.sec.gov/about/divisions-offices/division-corporation-finance/faqs-crypto-assets",
+        "observedAt": "2026-11-14",
+        "quote": "The Interpretive Release states that digital commodities are not themselves securities"
+      },
+      {
+        "class": "A",
+        "ref": "https://www.sec.gov/Archives/edgar/data/1761325/000119312522222422/d348502dex991.htm",
+        "observedAt": "2026-11-14",
+        "quote": "may affect the Sponsor’s analysis regarding the status of XLM as a “security”"
+      },
+      {
+        "class": "A",
+        "ref": "https://www.govinfo.gov/content/pkg/FR-2026-03-23/html/2026-05635.htm",
+        "observedAt": "2026-11-14",
+        "quote": "Stellar (XLM); Tezos (XTZ); and XRP (XRP)."
+      },
+      {
+        "class": "D",
+        "ref": "https://www.lowenstein.com/news-insights/publications/client-alerts/sec-issues-interpretive-framework-for-crypto-asset-classification-fctm",
+        "observedAt": "2026-11-14",
+        "quote": "Stellar (XLM), Tezos (XTZ), and XRP."
+      },
+      {
+        "class": "D",
+        "ref": "https://www.bakerbotts.com/thought-leadership/publications/2026/march/sec-and-cftc-issue-interpretive-guidance-establishing-crypto-asset-classification-framework",
+        "observedAt": "2026-11-14",
+        "quote": "an interpretation — not a binding regulation"
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "SEC Release 33-11412, a joint release with CFTC guidance dated March 17, 2026, names Stellar (XLM) a digital commodity, which is not itself a security.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://www.sec.gov/files/rules/interp/2026/33-11412.pdf",
+            "observedAt": "2026-11-14",
+            "note": "Read in full. 'Dated: March 17, 2026.' Section III.A lists 'Stellar (XLM)'; 'Digital commodities, digital collectibles, and digital tools ... are not themselves securities.'"
+          },
+          {
+            "class": "A",
+            "ref": "https://www.sec.gov/comments/S7-2026-27/s7202627-1103179-3882886.pdf",
+            "observedAt": "2026-11-14",
+            "note": "SDF letter, read in full: XLM 'is recognized as a “digital commodity” in the Commission’s March 2026 joint interpretive release'; fn 2 dates it Mar. 17, 2026, 91 Fed. Reg. 13714."
+          },
+          {
+            "class": "C",
+            "ref": "lumenloop.search_content_semantic, SEC comment letter row (id 12600)",
+            "observedAt": "2026-11-14",
+            "note": "Summary: 'the \"digital commodity\" classification (already established in the March 2026 SEC interpretation)'."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.cornerstone.com/wp-content/uploads/2026/10/The-SEC-on-Crypto-Assets-2026-Developments.pdf",
+            "observedAt": "2026-11-14",
+            "note": "'March 17, 2026, Interpretive Release explaining how federal securities laws apply to certain crypto assets'."
+          }
+        ]
+      },
+      {
+        "claim": "The classification is an SEC interpretation, not codified rule text, and the SEC may revise it.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://www.sec.gov/files/rules/interp/2026/33-11412.pdf",
+            "observedAt": "2026-11-14",
+            "note": "'the Commission may refine, revise, or expand upon the interpretation'. ACTION line reads 'Final rule; interpretation; guidance': the release is filed in the interpretive-release parts 17 CFR 231 and 241."
+          },
+          {
+            "class": "A",
+            "ref": "https://www.sec.gov/comments/S7-2026-27/s7202627-1103179-3882886.pdf",
+            "observedAt": "2026-11-14",
+            "note": "'The 2026 Interpretation’s “digital commodity” classification ... appears only in the preamble ... Both would remain guidance that could be narrowed or withdrawn without notice and comment.'"
+          },
+          {
+            "class": "D",
+            "ref": "https://www.coinsrate.org/news/sec-regulation-crypto-assets-comments",
+            "observedAt": "2026-11-14",
+            "note": "Published 2026-10-25: 'The SEC has not adopted the proposal or announced a timetable.'"
+          },
+          {
+            "class": "D",
+            "ref": "https://www.paulhastings.com/thought-leadership/100th-edition-midterms-reshape-congress-sec-issues-crypto-faqs-and-noaction-letter",
+            "observedAt": "2026-11-14",
+            "note": "2026-11-09 roundup: the SEC staff FAQ update of Nov. 2 adds three classification questions, and the Clarity Act must be reintroduced in the new Congress; no change to the named digital commodities."
+          }
+        ]
+      },
+      {
+        "claim": "On October 20, 2026, SDF asked the SEC to codify the digital commodity classification in Regulation Crypto Assets (File S7-2026-27).",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://www.sec.gov/comments/S7-2026-27/s7202627-1103179-3882886.pdf",
+            "observedAt": "2026-11-14",
+            "note": "Letter dated 'October 20, 2026', signed by Candace Kelly, Chief Legal and Policy Officer: 'The final rules should also codify the 2026 Interpretation’s digital commodity classification'."
+          },
+          {
+            "class": "C",
+            "ref": "lumenloop.search_content_semantic, SEC comment letter row (id 12600)",
+            "observedAt": "2026-11-14",
+            "note": "Six L1 organizations 'including the Stellar Development Foundation jointly submitted a comment letter to the SEC urging codification of the \"digital commodity\" classification'."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.cryptotimes.io/2026/10/21/chainlink-cardano-hedera-avalanche-stellar-aptos-urge-sec-to-codify-digital-commodity-status",
+            "observedAt": "2026-11-14",
+            "note": "Published 2026-10-21: six groups 'asked the U.S. Securities and Exchange Commission (SEC) to write the definition of a “digital commodity,” and its status as a non-security' into rule text."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-11-14",
+      "by": "scope-review lane (Claude Sonnet 5.5), independent diff review, decisions/REVIEW.md; blind re-derivation, amendments F1 and F5 applied by scope-finalize (Claude Opus 5.5)",
+      "evidence": [
+        "Reviewer blind derivation 2026-11-14 (decisions/REVIEW.md Q1): https://www.sec.gov/files/rules/interp/2026/33-11412.pdf and https://www.govinfo.gov/content/pkg/FR-2026-03-23/html/2026-05635.htm (A) and Lowenstein and Baker Botts client alerts (D) name Stellar (XLM) a digital commodity in interpretive guidance, not a binding rule.",
+        "F1: removed the key fact and answer sentence on SDF's October 20, 2026 comment letter; the question does not ask for it. The letter and its date stay in truth.sources, truth.corroboration and truth.notes.",
+        "F5: the avoid item now names a pre-2026 risk disclosure. Source class A, SEC EDGAR: https://www.sec.gov/Archives/edgar/data/1761325/000119312522222422/d348502dex991.htm says the XRP action 'may affect the Sponsor’s analysis regarding the status of XLM as a “security”', a risk disclosure, not a statement that XLM may be a security.",
+        "Reviewer also read the SEC staff FAQ (updated 2026-11-02): restates that digital commodities are not themselves securities; withdraws nothing.",
+        "Application record: .agents/rounds/2026-11-14-golden-coverage-audit/decisions/APPLY.md, section Review reconciliation"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
+      ]
+    },
+    "notes": "Authored as the replacement for the retired q-pay-anchor-msb-licensing on security.regulation-policy (decisions/SCOPE.md A5). The SEC release is Release Nos. 33-11412 and 34-105020, File S7-2026-09, 91 FR 13714 (Mar. 23, 2026). The rule-making SDF commented on is Regulation Crypto Assets, Release Nos. 33-11434 and 34-106150, File S7-2026-27, 91 FR 54510 (Aug. 21, 2026); comments closed 2026-10-20. SDF also joined the L1 Coalition letter of the same date (s7202627-1102859-3882366.pdf). Re-check on any SEC action on S7-2026-27 or any market-structure law. The 2022 Grayscale row comes from Lumenloop (CoinDesk, 2022-08-27); the primary is Grayscale's EDGAR information statement, a risk disclosure."
+  }
+}

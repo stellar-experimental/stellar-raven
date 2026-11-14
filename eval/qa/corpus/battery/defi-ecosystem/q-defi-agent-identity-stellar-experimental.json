@@ -9,7 +9,6 @@
   "golden": {
     "answer": "ERC-8004 ('Trustless Agents') is an Ethereum ERC, still a Draft as of 2026-11-14, for agent identity, reputation and validation; payments are out of scope and compose with x402. Stellar has no ratified agent-identity SEP. Community Soroban implementations (trionlabs/stellar-8004, progax01/stellar8004) are deployed but unratified, so describe them as early community work.",
     "keyFacts": [
-      "ERC-8004 is an Ethereum Draft for agent identity, reputation and validation.",
       "Stellar has no ratified SEP for agent identity (as of a stated date).",
       "Community Soroban implementations exist, such as trionlabs/stellar-8004."
     ],
@@ -17,7 +16,7 @@
       "Do NOT call ERC-8004, SRC-8004 or SEP-8004 a ratified Stellar standard.",
       "Do NOT claim no Stellar implementation exists."
     ],
-    "notes": "Do not require the Ethereum mainnet deployment date. Do not infer audit, adoption or reliability from deployment."
+    "notes": "Stating that ERC-8004 is an Ethereum Draft for agent identity, reputation and validation is accepted context, not required. Do not require the Ethereum mainnet deployment date. Do not infer audit, adoption or reliability from deployment."
   },
   "tags": {
     "category": "defi-ecosystem",
@@ -184,12 +183,11 @@
     ],
     "verified": {
       "date": "2026-11-14",
-      "by": "Golden coverage audit closeout 2026-11-14 (instrument lane, Claude Opus 5.5; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+      "by": "scope-apply lane (Claude Opus 5.5, high), golden coverage audit 2026-11-14; applies owner-approved decisions/SCOPE.md A6",
       "evidence": [
-        "Removed the key fact that ERC-8004 leaves payments to x402: the question asks what exists on Stellar and how mature it is, not ERC-8004's payment scope. The answer keeps it as context.",
-        "Key fact 1 kept: the external Draft standard is one side of the case's three-way distinction (truth.notes, GT-12).",
-        "Live A 2026-11-14: https://eips.ethereum.org/EIPS/eip-8004 -- status badge 'Draft' ('This EIP is not yet recommended for general use or implementation').",
-        "Trigger only (not evidence): .agents/rounds/2026-11-14-golden-coverage-audit/qa/RESULT.md, 'Cases to fix'"
+        "Owner decision 2026-11-14: .agents/rounds/2026-11-14-golden-coverage-audit/decisions/SCOPE.md A6 (non-Stellar key facts move to optional context); applied in decisions/APPLY.md.",
+        "Moved the key fact that ERC-8004 is an Ethereum Draft to golden.notes as accepted context; the answer and the avoid item that bars calling it a ratified Stellar standard are unchanged.",
+        "Live B 2026-11-14 (unchanged from the prior event): https://github.com/ethereum/ERCs/blob/master/ERCS/erc-8004.md -- status: Draft."
       ],
       "rootCause": [
         ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
