@@ -28,7 +28,8 @@ Record these items before implementation or spend:
 
 - One causal hypothesis.
 - Two unrelated targets when available.
-- Symmetric controls for a product change, sized to the decision.
+- Symmetric controls for a product change, sized to the decision. State the control coverage and
+  justify it here before any outcome is read.
 - The unchanged baseline arm.
 - The single changed variable.
 - One mechanism metric.

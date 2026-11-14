@@ -58,7 +58,8 @@ first when the committed catalog differs from the live surfaces. Read `PLAN.md`,
    on common cases.
 6. **Pre-register each experiment.** One hypothesis per candidate: mechanism, target cases,
    symmetric controls, one mechanism metric, expected time and cost, hard cap, stop rule, and
-   acceptance threshold. Use identical case IDs, runner code, judge tuple, and arm order across
+   acceptance threshold. Size the controls to the decision, and state and justify their coverage
+   before any outcome is read. Use identical case IDs, runner code, judge tuple, and arm order across
    arms. Collect answers before judging when the runner supports it.
 7. **Implement the smallest proven change.** Keep measurement changes separate from product
    changes, with disjoint write ownership. Use generation scripts. Remove rejected experimental
