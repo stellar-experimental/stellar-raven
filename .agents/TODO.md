@@ -135,19 +135,22 @@ The corpus work is done ([ledger](rounds/2026-11-14-golden-coverage-audit.md), O
 remains:
 
 - **Owner decisions:**
-  - File the six `verified` findings upstream (`sd-105` to `sd-108`, `sls-117`, `sls-118`). The
-    round posted nothing.
+  - Done 2026-11-14: the six findings are filed as stellar/stellar-docs#3143 to #3146 (`sd-105`
+    to `sd-108`) and Stellar-Light/stellarlight#1969 and #1970 (`sls-117`, `sls-118`). On the next
+    drift refresh, read each ref and re-run each finding's reproduction commands.
   - The stellar.org source question: the next item.
-  - Whether chain-comparison, Pi Network, and stablecoin-regulation topics stay in scope. No Raven
-    source holds the other chain's half or SDF's current policy
-    ([gap ledger](rounds/2026-11-14-golden-coverage-audit/gaps/GAPS.md), "Source-coverage
-    questions").
-  - Whether key custody needs its own case. `security.key-custody` is covered only by a multisig
-    setup case that is primary there
-    ([review](rounds/2026-11-14-golden-coverage-audit/review/REVIEW.md), L5).
+  - Out-of-source topics and the custody leaf: the advice is in
+    [`decisions/SCOPE.md`](rounds/2026-11-14-golden-coverage-audit/decisions/SCOPE.md) (Claude
+    Fable, with live probes). It recommends: keep the XRP Ledger and Pi Network cases unchanged;
+    retire `q-pay-anchor-msb-licensing` and propose a case on XLM's US classification; move
+    non-Stellar key facts to optional context in three cases; add one issuer and institutional
+    custody case and move the multisig case to the multisig leaf. Apply through `golden-truth`
+    once the owner confirms.
   - Whether the four envelope traps that no case covers since the floors were deleted
     (`person-entity-empty`, `av-offset`, `semantic-fallback`, `matchPartners-503`) get a tool-lane
-    case or a unit test (review M2).
+    case or a unit test (review M2). The host envelope turns three of them into the `no-rows` and
+    `unverified-match` caveats, which unit tests pin; the tool lane exercises a closed-world miss
+    and an AV passage lookup.
 - **Optional key-fact polish.** 72 cases still carry lint warnings: 98 warnings in all, 58 of
   them on key facts with multiple predicates, over 90 characters, or with a negative predicate.
   Polish through the `golden-truth` skill, case by case; no warning blocks a gate.
@@ -169,9 +172,20 @@ diagnostics"). `sls-117` covers only the Scout research-corpus part: four `sdf-o
 `sls-055` fix left out. Whether Raven should hold `stellar.org` itself is an owner decision, not
 a finding.
 
-Next step: the owner chooses one of three options. Rely on `sls-117` and wait for Scout. Add a
-`stellar.org` source to Raven, with the exposure change and a read-only A/B. Or keep the cases
-and accept that they test facts outside Raven's sources.
+The owner wants the source if it does not muddy other results (2026-11-14). `stellar.org` is a
+Next.js site on Sanity. SDF's Algolia application `TYESA7T7LE` holds an index `pages` (5,782
+section records with title, URL, `_type`, and full body text; rebuilt daily; Spanish, staging,
+and dev copies beside it). Read in the dashboard on 2026-11-14: "SDF strategy" ranks
+`/foundation/strategy` first, "service providers" ranks `/ecosystem/service-providers` first, and
+"audit bank projects" ranks `/audit-bank/projects` first; "forgot memo deposit" misses the
+`/community` answer. About half the sitemap is blog and press that Scout and Lumenloop already
+hold (580 blog and 127 press of 1,244 URLs).
+
+Next step: a free, read-only retrieval A/B before any adapter work. The owner creates a
+search-only key limited to the `pages` index. Query the gap-ledger leaves through it and through
+Raven, with the pass condition fixed first: more supporting passages and no displaced correct
+row. If it passes, add one operation in its own source family, filtered away from blog, press,
+and event records, with the exposure change in one reviewed change.
 
 Done when: the decision is recorded under "Owner decisions" and the three leaves' cases follow
 it.

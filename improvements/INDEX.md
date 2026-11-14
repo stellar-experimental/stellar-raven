@@ -30,8 +30,8 @@ Total findings: 83
 | sls-039 | Scout's project-level tvlUSD/tvlAsOf point cannot answer a trend question or distinguish current, quarter start/end, quarter peak, and…     | declined-upstream | 2026-07-10 | 1           |
 | sls-107 | GET /api/stablecoins has one company field, and it holds a brand name. For two issuers the brand differs from the ORG_NAME in the issuer's… | fixed-upstream    | 2026-11-02 | 2           |
 | sls-116 | Scout SCF award records miss awards that official SCF project pages publish for rounds before 45. For example, three official pages mark…   | reported-upstream | 2026-11-12 | 1           |
-| sls-117 | The sdf-org source of the Scout research corpus holds nine SDF pages. It does not hold four pages that answer common questions about SDF    | verified          | 2026-11-14 | 0           |
-| sls-118 | The Scout research corpus indexes CAPs and SEPs from stellar/stellar-protocol. It does not index the Stellar Limits Proposals (SLPs) in…    | verified          | 2026-11-14 | 1           |
+| sls-117 | The sdf-org source of the Scout research corpus holds nine SDF pages. It does not hold four pages that answer common questions about SDF    | reported-upstream | 2026-11-14 | 0           |
+| sls-118 | The Scout research corpus indexes CAPs and SEPs from stellar/stellar-protocol. It does not index the Stellar Limits Proposals (SLPs) in…    | reported-upstream | 2026-11-14 | 1           |
 
 ## stellar-docs
 
@@ -52,10 +52,10 @@ Total findings: 83
 | sd-081 | The contract-restoration example on two docs pages does not parse and cannot build a valid restoration transaction. getWasmLedgerKey has…   | reported-upstream | 2026-11-02 | 2           |
 | sd-096 | Three invented source paths redirect to pages that do not exist. The original old-page premise was incorrect; the maintainer confirmed…     | declined-upstream | 2026-11-03 | 1           |
 | sd-102 | RPC backfill checks existing local ledger history for internal sequence gaps before fetching older history. A gap returns db verify: gap…   | declined-upstream | 2026-11-09 | 0           |
-| sd-105 | The Lumens page contradicts itself about how lumens were created                                                                            | verified          | 2026-11-14 | 0           |
-| sd-106 | The Tier 1 Organizations page explains the role, the cost, and the path to join. It does not say which organizations are Tier 1 today       | verified          | 2026-11-14 | 1           |
-| sd-107 | Stellar Docs do not state what happens when a contract is built for a newer protocol than the network runs                                  | verified          | 2026-11-14 | 0           |
-| sd-108 | Stellar Docs explain how an application asks a wallet to sign. They do not explain what a person or a wallet must review before approval    | verified          | 2026-11-14 | 0           |
+| sd-105 | The Lumens page contradicts itself about how lumens were created                                                                            | reported-upstream | 2026-11-14 | 0           |
+| sd-106 | The Tier 1 Organizations page explains the role, the cost, and the path to join. It does not say which organizations are Tier 1 today       | reported-upstream | 2026-11-14 | 1           |
+| sd-107 | Stellar Docs do not state what happens when a contract is built for a newer protocol than the network runs                                  | reported-upstream | 2026-11-14 | 0           |
+| sd-108 | Stellar Docs explain how an application asks a wallet to sign. They do not explain what a person or a wallet must review before approval    | reported-upstream | 2026-11-14 | 0           |
 
 ## lumenloop
 
