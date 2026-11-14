@@ -98,3 +98,29 @@ missing fact. The reviewer of each arm's diff checks that neither changed afterw
 ## A11 (orchestrator)
 
 PR 442 edited four tuning cases after the stored baseline (q-token-xlm-supply-total-circulating, q-scf-hackathons-active, q-infra-testnet-vs-futurenet, q-raph-stolen-wallet-recovery), and PR 441 changed tests only. Step 0-prime and every arm therefore run from origin/main at 6ce86dce or later, not from 66301389. Before step 0-prime, assert that the live surface SHA-256 still equals b336fa142e9a618a8857179d5b1f96495f08d36d7af15c13556c8e95c67c3404; stop if it does not. The four edited cases are left out of the step 0 against step 0-prime movement, because their judge input changed, and are compared from step 0-prime onward only.
+
+## A2 (add to section 2, "Method", before the Step 0 bullet; change Step 0 references in the four lines, the pass rule, and section 5 step 3 to step 0′):
+
+- **Step 0′.** Before arm 1, collect the 48-row panel once on the baseline revision
+  (`66301389…`, surface `b336fa14…3404`), under its own authorization, cap USD 12, with exactly the
+  flags every arm run will use. Arm 1 is compared with step 0′, not with the stored run. Step 0
+  against step 0′ is the panel's measured same-surface movement (verdict changes, net downs minus
+  ups, and new wrongs), reported before arm 1 is read. A row that differs between step 0 and step
+  0′ is marked unstable. Its later moves are noise observations unless traced. Step 0′ also serves
+  as the remote-vector re-baseline, so the existing "if the vector moved" amendment folds into it.
+- **Judge tiering.** Every panel run (0′, 1, 2, 3) uses the same `--max-panel-cases`, set so that
+  no boundary-eligible panel row is skipped (48), and the same stability register.
+
+## A5 (replace section 2's arm 2 row in "Which rows each change can affect", the arm 2 part of the K1 paragraph, the "Arm 2 gives the loop its noise floor" paragraph, and section 5 step 4):
+
+Arm 2 is a contract fix, decided by its free checks plus one targeted behaviour read, not by a
+panel run. After free checks 1 to 3 pass, collect the panel rows whose baseline research query
+names an identifier (`q-sep-43-web-wallet-api`, `q-sep-53-sign-verify-message`,
+`q-pc-sponsored-reserves`, `q-comp-aml-analytics-vendors`, `q-edge-asset-site-scam-detection`).
+Collect each three times on the arm 2 commit, under its own authorization, cap USD 4. Keep arm 2
+when, in at least 2 of the 3 rows where an exact row came back, a majority of repeats use the
+exact row's text (the answer cites it, or states what it shows). The other gate: no repeat states
+a status or date that the returned text does not show, and no control repeat loses its correct
+core answer by a traced down. Otherwise revert. The same-surface noise floor comes from step 0′
+(A2). Arm 3's "with map" side is the arm 1 run (step 1). Rows where an exact row appeared in
+either arm 3 side are left out of arm 3's comparison and reported apart.
