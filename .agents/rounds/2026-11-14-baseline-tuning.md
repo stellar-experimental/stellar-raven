@@ -59,3 +59,15 @@ sentence before collection.
 step 0-prime, `--max-budget-usd 12.5`, after the live check above passes and after the two trap
 rows that fail on step 0-prime are reviewed from their transcripts. Compared with step 0-prime
 under K0 to K5 as amended. No resume, no re-judge.
+
+**Arm 1 result.** Stamp `2026-11-14T23-04-27-variantA`, 50 of 50, USD 9.61 (ARM-1.md). By the
+pre-registered rules: **not kept**. K0 failed by one row (21 of 44 rows that saw the sentence then
+read a page; 22 needed), so the verdict changes count as noise. Evidence recorded for the owner:
+page reads 10 to 34; target rows reading a page 0 of 9 to 4 of 9; two traced ups, no traced down,
+one traced wrong claim removed; K2, K3, K5 held; cost per answer down 3.3%. The run lane recommends
+keeping it. The orchestrator does not override a pre-registered rule: arm 1 stays on its commit,
+unmerged, and the keep decision goes to the owner as a named exception with this evidence.
+
+**Authorization, arm 2 (amendment A5).** Arm 2 is measured without arm 1: a commit that is
+`origin/main` plus arm 2 only. After free checks 1 to 3 pass on that commit, collect the five
+identifier-naming panel rows three times each, `--max-budget-usd 4`. Keep rule as A5 states.
