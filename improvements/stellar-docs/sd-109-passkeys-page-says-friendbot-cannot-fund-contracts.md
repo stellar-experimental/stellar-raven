@@ -1,7 +1,7 @@
 ---
 id: sd-109
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-14
 upstreamTitle: Passkeys prerequisites page says Friendbot cannot fund a contract address
 probe:
@@ -22,6 +22,7 @@ evidence:
   - "Introducing change: stellar/stellar-docs#2837 (2026-10-12) added the sentence to docs/build/apps/guestbook/passkeys-prerequisites.mdx (2dd75fef); earlier file versions 03411a21 and abd0066f contain no Friendbot line."
   - "Classification: docs-content. The page states a Friendbot limit that the deployed Friendbot does not have and that two other Docs pages contradict."
   - "Affected golden case: eval/qa/corpus/battery/tooling-infra/q-infra-testnet-vs-futurenet.json (grading caution). Ledger: .agents/rounds/2026-11-14-baseline-tuning/CASE-DEFECTS.md."
+  - upstream issue filed 2026-11-14: https://github.com/stellar/stellar-docs/issues/3150
 ---
 
 ## Finding
