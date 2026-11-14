@@ -105,5 +105,39 @@ Orchestrator: Claude Fable 5.2 on the Mac, terminal `t40f`. Briefs are in
   partition, and `apply/apply.mjs`. In a scratch clone with fixture leaves: compile, register,
   lint (`--stale --enforce-floors`, and `--since`), selftest, and sentinels exit 0; `npm test`
   fails in 6 files that pin case content. 17 records were refused (`apply/REPORT.md`).
+- 09:05 to 11:30 UTC. Phases 3 and 4. `verify-coverage` (Opus) accepted 92 of the 94 extra cuts
+  and turned 2 into merges, accepted all 22 merge fixes, and cut the tool lane from 7 to 6
+  (`coverage/verify-coverage.json`). `polish` (Fable) wrote 71 overrides (`coverage/POLISH.md`).
+  `gap-1` to `gap-3` (Fable) proposed 36 cases; `verify-gap` (Opus) re-derived each one blind: 29
+  accepted, 7 amended, 0 rejected (`gap/verify-gap.json`). Raven reach on the 36: 27 answerable, 8
+  unreachable, 1 reachable but not surfaced.
+- 11:30 UTC. `instrument` ran `apply/apply.mjs` for real: `c7dbdc87`, 210 headline and 6 tool-lane
+  cases, 291 tombstones. Gate table in `apply/RUN.md` (all exit 0).
+- 11:40 to 13:20 UTC. `review` (Sonnet 5.5, high; it differs from the Opus instrument author, the
+  Fable polish and gap authors, and the Fable orchestrator; the Codex tiers were skipped because
+  the owner asked for Fable, Opus, and Sonnet) found four must-fix and eight optional items and
+  no truth error in a 30-case read (`review/REVIEW.md`). `resweep-1` and `resweep-2` (Sonnet)
+  re-checked the 105 reopened register entries: 57 consistent, 26 text edits, 12 dropped members,
+  10 deleted entries, 0 conflicts.
+- 13:20 UTC. `instrument` fixed M1 to M4 and L1 to L3, activated the 36 proposals, applied the
+  re-sweep, closed the register, and merged `origin/main` (`d7e13d98`): `aaaf107f`, 246 headline
+  and 6 tool-lane cases, 164 of 167 leaves covered. Gate table in `apply/FINAL.md` (all exit 0).
+  Left open there: optional key-fact polish (L4), one leaf question (L5), and one correction made
+  after review (`q-token-xlm-supply-total-circulating`), which goes back to `review`.
+
+### QA test plan (before any runner call)
+
+1. **Decision.** Which new or rewritten cases are unanswerable, ambiguous, or mis-goldened, and
+   which topics Raven's sources cannot answer. It is a test of the battery; it yields no headline
+   score.
+2. **Smallest run.** 70 cases at `aaaf107f`, variant A, one client (the runner's default
+   answering and judge models): the 36 activated cases plus 34 rewritten cases drawn by hash,
+   stratified by domain.
+3. **Stop rule, cap, estimate.** One collection, `--max-budget-usd 40`, no re-run or re-judge.
+   Stored runs cost USD 0.32 to 0.41 per case (`2026-08-28T19-27-08` and `2026-08-30T03-43-11`,
+   100 cases each), so USD 22 to 29 and one to two hours. Billing is the subscription CLI on
+   agentpc; the owner approved subscription spend on 2026-11-14.
+4. **Review coverage.** Every `wrong` and `partial` row against transcript and golden, and every
+   fifth `correct` row.
 
 ## Outcome
