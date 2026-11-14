@@ -9,17 +9,11 @@ import { fileURLToPath } from "node:url";
 import {
   assertGeneratedTextNoNonExposedRefs,
   buildMicroMap,
-  estimateTokens,
   renderTs,
   validateFamilyPurposes
 } from "../scripts/build-micro-map.mjs";
 import { SERVICE_FAMILY_PURPOSES } from "../scripts/catalog-data/source-families.mjs";
-import {
-  FAMILY_LINE,
-  FAMILY_LINE_TOKEN_ESTIMATE,
-  MICRO_MAP,
-  MICRO_MAP_TOKEN_ESTIMATE
-} from "../src/mcp/micro-map.ts";
+import { FAMILY_LINE, MICRO_MAP } from "../src/mcp/micro-map.ts";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const MANIFEST_PATH = join(ROOT, "catalog", "manifest.json");
@@ -35,16 +29,11 @@ describe("build-micro-map.mjs", () => {
     );
   });
 
-  it("emits text within the model-facing token budgets", () => {
+  it("emits the committed micro-map and family line", () => {
+    // Length is bounded by test/mcp-instructions.test.ts, against Claude Code's character limit.
     const rendered = buildMicroMap(manifest);
     expect(rendered.microMap).toBe(MICRO_MAP);
     expect(rendered.familyLine).toBe(FAMILY_LINE);
-    expect(rendered.microMapTokens).toBe(MICRO_MAP_TOKEN_ESTIMATE);
-    expect(rendered.familyLineTokens).toBe(FAMILY_LINE_TOKEN_ESTIMATE);
-    expect(MICRO_MAP_TOKEN_ESTIMATE).toBeLessThanOrEqual(700);
-    expect(FAMILY_LINE_TOKEN_ESTIMATE).toBeLessThanOrEqual(150);
-    expect(estimateTokens(MICRO_MAP)).toBe(MICRO_MAP_TOKEN_ESTIMATE);
-    expect(estimateTokens(FAMILY_LINE)).toBe(FAMILY_LINE_TOKEN_ESTIMATE);
   });
 
   it("names every catalog family once, with its live counts, and no operation chain", () => {

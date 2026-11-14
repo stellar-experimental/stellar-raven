@@ -1,10 +1,12 @@
 /**
- * Model-facing text budget and contract. Claude Code keeps exactly 2,048
- * characters of injected MCP server instructions and of each tool description
- * (measured in production 2026-07-13: a 2,160-char BASE cut off mid-sentence
- * inside the envelope contract). Each field must therefore be one complete
- * contract inside that budget. The micro-map after BASE is the only text a
- * clipping client is allowed to miss.
+ * Model-facing text budget and contract. Claude Code keeps 4,096 characters of
+ * injected MCP server instructions and of each tool description that loads up
+ * front (the limit and its source are in test/helpers/mcp-tool-metadata.ts).
+ * Before v2.1.296 it kept 2,048: a 2,160-char BASE was cut off mid-sentence
+ * inside the envelope contract (measured in production 2026-07-13). BASE
+ * therefore stays a complete contract that also fits the old limit, and the
+ * micro-map follows it, so a client on the old limit loses only the map. The
+ * whole instructions string must fit the current limit.
  *
  * These tests hold what each contract must say and where it may say it. They
  * do not pin wording beyond the rules a model acts on.
@@ -12,6 +14,7 @@
 import { describe, expect, it } from "vitest";
 import { assertGeneratedTextNoNonExposedRefs } from "../scripts/build-micro-map.mjs";
 import { getCatalog } from "../src/catalog/load";
+import { CLAUDE_CODE_INSTRUCTIONS_CAP_CHARS, CLAUDE_CODE_TOOL_DESCRIPTION_CAP_CHARS } from "./helpers/mcp-tool-metadata";
 import {
   BASE_SERVER_INSTRUCTIONS,
   EXECUTE_DESCRIPTION,
@@ -23,24 +26,27 @@ import {
   searchNextSteps
 } from "../src/mcp/tools";
 
-const CLAUDE_CODE_INSTRUCTIONS_CAP = 2048;
-// Headroom so ordinary wording edits don't silently creep back over the cap.
-const BUDGET = 2000;
+// BASE keeps headroom under the pre-v2.1.296 limit of 2,048 characters, for clients that still cut there.
+const BASE_BUDGET = 2000;
 
-describe("server instructions — Claude Code 2KB budget", () => {
-  it(`keeps BASE within ${BUDGET} chars (hard client cap ${CLAUDE_CODE_INSTRUCTIONS_CAP})`, () => {
-    expect(BASE_SERVER_INSTRUCTIONS.length).toBeLessThanOrEqual(BUDGET);
+describe("server instructions — Claude Code character budget", () => {
+  it(`keeps the whole instructions string within ${CLAUDE_CODE_INSTRUCTIONS_CAP_CHARS} chars, so no client on the current limit cuts the micro-map`, () => {
+    expect(SERVER_INSTRUCTIONS.length).toBeLessThanOrEqual(CLAUDE_CODE_INSTRUCTIONS_CAP_CHARS);
+  });
+
+  it(`keeps BASE within ${BASE_BUDGET} chars, inside the pre-v2.1.296 limit of 2,048`, () => {
+    expect(BASE_SERVER_INSTRUCTIONS.length).toBeLessThanOrEqual(BASE_BUDGET);
   });
 
   it("what survives truncation IS the whole contract — BASE ends on a sentence boundary", () => {
-    // Budget + prefix invariants above/below make containment automatic; the
-    // check that isn't automatic is that BASE reads complete where the client
-    // cuts — it must end mid-nothing, not mid-sentence.
+    // The budget and prefix invariants make containment automatic; the check
+    // that isn't automatic is that BASE reads complete where an old-limit
+    // client cuts — it must end mid-nothing, not mid-sentence.
     expect(BASE_SERVER_INSTRUCTIONS.endsWith(".")).toBe(true);
   });
 
   it("the surviving prefix carries every load-bearing rule", () => {
-    const survived = SERVER_INSTRUCTIONS.slice(0, CLAUDE_CODE_INSTRUCTIONS_CAP);
+    const survived = SERVER_INSTRUCTIONS.slice(0, CLAUDE_CODE_INSTRUCTIONS_CAP_CHARS);
     for (const phrase of [
       "ok: true, data", // envelope shape
       "soft-empty", // two-way error.kind + inconclusive semantics
@@ -89,9 +95,9 @@ describe("server instructions — Claude Code 2KB budget", () => {
     expect(EXECUTE_DESCRIPTION).toMatch(/"no-rows" is ok data/);
   });
 
-  it("micro-map still rides after BASE for full-injection clients", () => {
+  it("micro-map rides after BASE, so a client that cuts early loses only the map", () => {
     expect(SERVER_INSTRUCTIONS.startsWith(`${BASE_SERVER_INSTRUCTIONS}\n\n`)).toBe(true);
-    expect(SERVER_INSTRUCTIONS.length).toBeGreaterThan(CLAUDE_CODE_INSTRUCTIONS_CAP);
+    expect(SERVER_INSTRUCTIONS.length).toBeGreaterThan(BASE_SERVER_INSTRUCTIONS.length);
   });
 
   it("binds the surface to one official upstream doc URL per service, on `search`", () => {
@@ -125,10 +131,10 @@ describe("server instructions — Claude Code 2KB budget", () => {
   });
 });
 
-describe("tool descriptions — one contract inside the 2,048-character cap", () => {
-  it("fits each whole description inside the cap, so nothing is clipped", () => {
-    expect(SEARCH_DESCRIPTION.length).toBeLessThanOrEqual(CLAUDE_CODE_INSTRUCTIONS_CAP);
-    expect(EXECUTE_DESCRIPTION.length).toBeLessThanOrEqual(CLAUDE_CODE_INSTRUCTIONS_CAP);
+describe("tool descriptions — one contract inside the character cap", () => {
+  it(`fits each whole description inside ${CLAUDE_CODE_TOOL_DESCRIPTION_CAP_CHARS} chars, so nothing is clipped`, () => {
+    expect(SEARCH_DESCRIPTION.length).toBeLessThanOrEqual(CLAUDE_CODE_TOOL_DESCRIPTION_CAP_CHARS);
+    expect(EXECUTE_DESCRIPTION.length).toBeLessThanOrEqual(CLAUDE_CODE_TOOL_DESCRIPTION_CAP_CHARS);
   });
 
   it("search carries the plan-then-compose workflow and the card shape", () => {

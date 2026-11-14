@@ -334,3 +334,57 @@ M1 and M2 are independent, and M2 needs no code. M3 is the lowest priority.
 - Lengths: `BASE_SERVER_INSTRUCTIONS` 1,899, `SERVER_INSTRUCTIONS` 4,066, `MICRO_MAP` 2,165,
   `SEARCH_DESCRIPTION` 1,930, and `EXECUTE_DESCRIPTION` 2,029 characters, read from the modules at
   this commit.
+
+## Applied
+
+Date: 2026-11-14. The two recommendations that change no model-facing text and no runtime
+behaviour. The audit above was written before these changes and is left as it was. No description,
+instruction, micro-map, card, limit, or timeout changed. `src/mcp/micro-map.ts` lost two unused
+exports and its text is byte-identical.
+
+**1. Claude Code limit recalibrated to 4,096.**
+
+- Re-verified first. The Claude Code MCP docs page (`code.claude.com/docs/en/mcp`, "Connect Claude
+  Code to tools via MCP", the section on tool search for MCP server authors) reads: "Server
+  instructions, and the description of a tool that loads upfront: 4,096 characters", and "Before
+  v2.1.296, the shorter limit was 2,048 characters". The page shows no date or version of its own.
+  The check ran while v2.1.325 was current, and the audit's session check agrees.
+- `test/helpers/mcp-tool-metadata.ts` now holds `CLAUDE_CODE_INSTRUCTIONS_CAP_CHARS` and
+  `CLAUDE_CODE_TOOL_DESCRIPTION_CAP_CHARS`, both 4,096. Its comment cites the page, the section,
+  the v2.1.296 change, and the date read.
+- `test/mcp-instructions.test.ts` imports both. A new assertion holds the whole `SERVER_INSTRUCTIONS`
+  (4,066 characters, 30 under) to 4,096. The tool description test uses the description constant.
+  The load-bearing-phrase test slices at the new limit.
+- Kept: the BASE-first order test, and BASE at most 2,000 characters (BASE is 1,899), which
+  protects a client still on the old limit. Retiring the 2,000 stays open until Codex and Grok
+  instruction handling is known. The old assertion that the whole string exceeds the limit became
+  "longer than BASE", because it is no longer true.
+- Comments and `ARCHITECTURE.md` now state 4,096, with 2,048 as the pre-v2.1.296 limit.
+
+**2. `MICRO_MAP_MAX_TOKENS` and `FAMILY_LINE_MAX_TOKENS` retired.**
+
+- Removed both constants, their two build failures, `estimateTokens`, and the two
+  `*_TOKEN_ESTIMATE` exports in the generated file. Nothing outside the build script and
+  `test/micro-map.test.mjs` read them. The build log now prints character counts.
+- The total guard and the description guard replace them. `test/micro-map.test.mjs` keeps the
+  staleness check and compares the committed text to a fresh render.
+- Left alone, as the task required: `SEARCH_DEFAULT_LIMIT`, `MAX_SEARCH_LIMIT`, the `execute`
+  boundary, card lengths, timeouts.
+
+**Open items.** `.agents/TODO.md`, section "Caps audit follow-ups": M1, M2, M3, the free telemetry
+reads (`requestedLimit`, Lumenloop and Scout tail latency, artifact cap hits, `execute` timeout
+rate), and the external client limit re-check. Each has a done-when rule. None is authorized to
+spend.
+
+**Gates**, each run bare in this worktree after `npm run typegen` (the first `typecheck` failed
+only because the ignored `env.d.ts` was missing, as `AGENTS.md` warns for a fresh clone):
+
+| Command | Exit | Result |
+|---|---:|---|
+| `npm run typecheck` | 0 | clean |
+| `npm test` | 0 | 150 files passed, 1 skipped; 3,399 tests passed, 3 expected fail, 1 skipped |
+| `npm run build` | 0 | dry run completed |
+| `npm run test:smoke` | 0 | 9 files, 141 tests passed |
+| `npm run eval:routing -- --gate` | 0 | GATE PASS, committed evidence verified |
+| CI "generated artifacts in sync" steps, then `git diff --exit-code` over its paths | 0, 0 | no drift |
+| `npm run secrets:scan -- --tree` | 0 | clean |

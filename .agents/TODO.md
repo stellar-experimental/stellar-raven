@@ -121,6 +121,80 @@ and is a judging-semantics change under the `run-evals` skill.
 Done when: the disputed verdicts are traced to one of those causes. Any fix is measured: the
 disputes disappear, and no answer with a truly unsupported claim is graded up.
 
+## Caps audit follow-ups
+
+Source: [caps audit](../research/audits/2026-11-14-caps-audit.md). The audit changed no cap that
+reaches the model. These items measure the three caps with the largest cost and accuracy effect,
+and read the free telemetry before touching four more. Each paid test (M1 to M3) needs its own
+written authorization under the `run-evals` skill; none is granted here. Run the free step first
+and stop there when it decides.
+
+### M1: search default of 7 against 5
+
+`SEARCH_DEFAULT_LIMIT` is 5, copied from the playground and only bundle-measured. Free check: 7
+cards adds 11 operation-card hits on 182 legacy rows and loses none, at about 475 more tokens per
+page. A default of 6 ranks worse than 5; do not test it. Next: replay the stored arm B search
+queries through the scorer at 5 and 7 and count live-data wrong answers whose needed operation
+sits at rank 6 or 7. If there are none, stop and keep 5. Otherwise run the audit's smallest paid
+test: default 7 against 5, interleaved, on the live-data cases of the tuning split.
+
+Done when: the replay finds no rank 6 or 7 case and 5 stays, or the paid run moves the default to 7
+or keeps 5. The paid run keeps 5 when client tokens rise more than 5% with no score gain.
+
+### M2: execute boundary of 4,000 tokens against 6,000
+
+The 6,000-token boundary is inherited from `@cloudflare/codemode` and never measured here; 275 of
+565 held-out `execute` results exceeded 20,000 bytes. It is the environment variable
+`EXECUTE_MODEL_BOUNDARY_MAX_TOKENS`, so the test needs no code change. This is the measurement
+"Keep a default `execute` result under the Grok CLI clip" needs. Next: count how often a returned
+value exceeds 16,000 characters before truncation (telemetry or stored results); then run 4,000
+against 6,000 on the tuning split with Sonnet 5.5, GPT-6.1 Terra, and Grok 4.7, Grok in the Grok
+CLI so its 20 KB clip applies.
+
+Done when: the boundary stays 6,000 or moves to 4,000, with score, client tokens, and artifact
+reads per question recorded. Keep 6,000 if the score falls by more than 0.03 or artifact reads
+rise enough to cancel the saving.
+
+### M3: the micro-map's value
+
+The micro-map costs about 542 tokens on every model call in a client that injects instructions,
+and Claude Code v2.1.296 or later now reads all of it. Only two routing cases have checked its
+value. The audit ranks this lowest. Next, if the owner wants it: Claude Code v2.1.296 or later
+(Sonnet 5.5), instructions with and without the map, on the tuning split. Compare score and
+source-family misses.
+
+Done when: the map is dropped because the score is within noise, or kept with the measured gain
+recorded.
+
+### Read the free telemetry before changing four caps
+
+Four caps wait on a read of Workers observability (`cloudflare-observability-review`). Keep the
+counts out of the repo; record only the decision.
+
+- `requestedLimit` on `search`: if callers rarely ask for more than 10, lower the public
+  `MAX_SEARCH_LIMIT` from 50 to 10 and keep 50 for `codemode.search` inside `execute`. At 50 a page
+  averages 41.8 KB and the Grok CLI clips 459 of 460 audit pages.
+- Lumenloop and Scout tail latency per operation: then give each adapter a per-call timeout sized
+  like the Stellar Docs budget. Neither adapter has one today, so one hung call holds a script
+  until the 60-second limit.
+- Artifact caps (`ARTIFACT_INFO_CAP` 8, `ARTIFACT_READ_CAP` 4): whether any run reaches them.
+- `execute` timeout rate against `EXECUTE_TIMEOUT_MS` (60 s).
+
+Done when: each of the four has a recorded decision, and a change ships only where the read
+supports it.
+
+### Re-verify each external client limit when its version changes
+
+The test constants copy limits that belong to clients. Re-check a limit whenever its client
+version changes, and update the cited page and version. Claude Code: 4,096 characters for server
+instructions and for tools loaded up front, 16,384 through tool search, a 25,000-token MCP output
+cap, and a spill to file above 50,000 characters. Grok CLI: a 20,000-byte MCP result clip. Codex:
+handling of server instructions and long results, never verified. The audit's "Re-verifying the
+external facts" table has the method for each.
+
+Done when: the table's rows match the current client versions, and Codex has a recorded answer or
+an owner decision to leave it.
+
 ## Golden answers
 
 ### Finish the 2026-11-14 golden coverage audit
