@@ -339,6 +339,16 @@ judge-blind provenance.)
 
 Done when: the live contract's next reviewed revision carries the reworded label.
 
+### Add a canonical-page caution to `q-soroban-cli-bindings`
+
+The 2026-11-14 baseline graded this case `wrong` because the answer quoted the Lab Contract
+Explorer page, with attribution, as the CLI's binding language coverage. That page is wrong
+(`sd-110`), and the canonical-page rule caps such a quote at `partial`. The golden is correct
+(key fact 3). Make a separate `golden-truth` edit that adds the canonical-page caution naming
+`sd-110` ([ledger](rounds/2026-11-14-baseline-tuning/CASE-DEFECTS.md)).
+
+Done when: the case's notes carry the caution and `truth.verified` records the edit.
+
 ### Resolve held source ownership and bounty policy
 
 The [source triage](../research/audits/2026-11-03-qa-followup/additional-source-triage.md) and

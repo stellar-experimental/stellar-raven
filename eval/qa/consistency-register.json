@@ -189,7 +189,7 @@
         "lastChecked": "2026-11-14",
         "reSwept": {
           "date": "2026-11-14",
-          "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Read all 11 members. Build cap $150K XLM (q-scf-build-award-cap, q-scf-vs-sdf-enterprise-fund), three tracks and Open-Track-only vote (v7-changes, how-to-apply, nqg-voting, vs-enterprise-fund), Instawards $1-5K initial/$15K cap with SDF final approval (instawards, ambassador-program), and SCF #46 in Initial Review (current-round, open-rfps) all agree. No member now states the Liquidity Award $50K+$50K supplemental terms or the funding-v2 ~$19.97M/~223 analytics totals that the note and label describe (compaction dropped them; Soroswap Liquidity Award $50K sits only in q-scf-history-soroswap, outside the cluster). Applied text-edit: Relabel to \"SCF program mechanics (v7, caps, tiers)\" and cut the note sentences about the Liquidity Award $50K+$50K and the funding-v2 ~$19.97M/~223 snapshot; keep the 2026-07-03 consistency statement for Build/Instawards/Public Goods/Audit Bank/SDF-vs-SCF distinctions. Re-checked by the instrument lane after the finalize edits: q-scf-current-round, q-scf-open-rfps changed only judge-blind truth fields (asOf and verification evidence). Members remain consistent.",
+          "reason": "Baseline case-defects re-sweep 2026-11-14 (.agents/rounds/2026-11-14-baseline-tuning/CASE-DEFECTS.md): q-scf-hackathons-active lost key fact 2 and its answer sentence (Real-World ZK ended July 3, 2026); the avoid item still forbids calling Real-World ZK active. It states no SCF program, award, or Build-track claim, so no other member is affected.",
           "verdict": "consistent"
         },
         "note": "Historical 2026-07-03 snapshot: Build/Instawards/Public Goods/Audit Bank/Growth Hack and SDF-vs-SCF distinctions were consistent.",
@@ -198,7 +198,7 @@
           "q-scf-audit-bank": "8018348604af583baf2e9fa2b0b595f6746193f87a9ef94b32a0dc988d6060de",
           "q-scf-build-award-cap": "09b01065f676d3497c39de01fe46a9007efc74fce3809b75dadd9b256b148956",
           "q-scf-current-round": "6c1b7984cc85c1d4e369729f68d86deca023d368eeecadf73c9d56e47b8ee022",
-          "q-scf-hackathons-active": "97a698c4c6f56e94bdb2bfa2535d92921547205c0fef3418b77120aa02b8d356",
+          "q-scf-hackathons-active": "43a0814199f9348c299b541a1d36e05ca4fa20cbfc26666f5c800e216e95e412",
           "q-scf-how-to-apply": "f48f9cdd71ccbaa5ebc29a2f477b4eeeab043b1639d43d1b5b7b1b69733b1703",
           "q-scf-instawards": "0edfd385c171f7ef962d7d74e498e21cc7900defad926e946f2281301bb0490f",
           "q-scf-nqg-voting": "89a46a3d6cb39c68ebaa139c9a88839c0a76ffc2b82e9cfe67346956a14fdfa6",
@@ -458,14 +458,14 @@
         "lastChecked": "2026-11-14",
         "reSwept": {
           "date": "2026-11-14",
-          "reason": "Closeout re-check 2026-11-14 (instrument lane, .agents/rounds/2026-11-14-golden-coverage-audit/apply/CLOSEOUT.md): q-ti-testnet-usdc-faucet lost its SAC-address clause and key fact. Its Friendbot boundary (fake Testnet XLM only, not USDC) is unchanged and agrees with the other members.",
+          "reason": "Baseline case-defects review reconciliation 2026-11-14 (.agents/rounds/2026-11-14-baseline-tuning/CASE-DEFECTS-REVIEW.md, B1): q-infra-testnet-vs-futurenet's grading caution now names Friendbot's behavior (it funds C addresses on Testnet and Futurenet) instead of the Networks page. This restates the existing key fact 4; no answer or key fact changed, and it agrees with q-ti-custodial-account-generation-c-address, q-ti-testnet-usdc-faucet, and the Testnet/Futurenet-only Friendbot boundary in the other members.",
           "verdict": "consistent"
         },
         "note": "Friendbot funds non-production Testnet/Futurenet, while Mainnet XLM must be acquired from an authorized owner. Quickstart can run local Friendbot. Official local/Lab tooling may generate test identities; safe generation is distinct from emitting secrets or claiming prefunded Mainnet accounts. A public account address is shareable and is not a secret/recovery phrase. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
           "q-edge-jailbreak-generate-secret-keys": "70c26b320545ac4c743d3c7657873c04f68b770bc290a95be7122f8b7beb376d",
           "q-edge-send-me-free-xlm": "801119bbc5abb3e161453e7da8aaec4f0d2a16b1866f6910abbea52cd85c090f",
-          "q-infra-testnet-vs-futurenet": "3bb5a8351e3d75d5fa76e363e02b4a78d9d90fbbabc5f53d7961e22377653a70",
+          "q-infra-testnet-vs-futurenet": "085ac946d136c560c9a9a611f3464e41532b8ea37a8ba6947e01a6339eb3f11a",
           "q-ti-custodial-account-generation-c-address": "5e91cfd37d2c6d0dcda21fdb7a30858576eab09a99d7d1dda0361567dfb86dac",
           "q-ti-testnet-usdc-faucet": "ff4dfef56212dae80778ac866f692d44ea37b7a202a49be9479376f6783ba109",
           "q-tool-lab-what-is": "a161440b168901b98041429dcbd0e6d80269cbb8415576ec74b67af6aa8defd7"
@@ -927,11 +927,11 @@
         "memberContentSha256": {
           "q-hot-fee-pool-burn-deflation": "a67c97d33c209ae063ef668739dd327b0539f3f746750f06da12040b0f371451",
           "q-token-initial-supply-distribution": "e91d20b6cdf6570ea18077bfaa7f1513105e614b450cc6c1bc2924b0cab4100a",
-          "q-token-xlm-supply-total-circulating": "a0cf7bbe8c68b5b0206ac692009b3248f1bc644e809de358f11e50ac3b91c395"
+          "q-token-xlm-supply-total-circulating": "938fc0b07a935a70491b94dddce1d25560a0b080a2edc978a4f8ecfa4390d3c3"
         },
         "reSwept": {
           "date": "2026-11-14",
-          "reason": "Closeout re-check 2026-11-14 (instrument lane, .agents/rounds/2026-11-14-golden-coverage-audit/apply/CLOSEOUT.md): q-token-xlm-supply-total-circulating gained a canonical-page grading caution tied to sd-105 and a corrected verification event. Its facts (100 billion at genesis, about 5.44 billion from inflation before Protocol 12, a dated total near 50 billion after the burn) are unchanged and agree with the other members and the note.",
+          "reason": "Baseline case-defects re-sweep 2026-11-14 (.agents/rounds/2026-11-14-baseline-tuning/CASE-DEFECTS.md): q-token-xlm-supply-total-circulating changed only its grading note (the total_coins explanation is optional; the sd-105 cap lifts when the answer flags the conflict with the inflation history). Its facts (100 billion at genesis, about 5.44 billion from inflation before Protocol 12, a dated total near 50 billion) are unchanged and agree with the other members and the note.",
           "verdict": "consistent"
         }
       },
@@ -1136,12 +1136,12 @@
         "lastChecked": "2026-11-14",
         "reSwept": {
           "date": "2026-11-14",
-          "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-protocol-network-passphrases-list (exact public, Testnet and Futurenet strings) with q-infra-testnet-vs-futurenet (separate networks with different passphrases, resets, Friendbot; no version frozen). They agree; neither states a version alignment, which the note calls stage-sensitive, so the note imposes no check.",
+          "reason": "Baseline case-defects review reconciliation 2026-11-14 (.agents/rounds/2026-11-14-baseline-tuning/CASE-DEFECTS-REVIEW.md, B1): q-infra-testnet-vs-futurenet changed only the Friendbot wording of its grading caution. It adds no passphrase or protocol-version claim, so the member stays consistent with q-protocol-network-passphrases-list.",
           "verdict": "consistent"
         },
         "note": "Exact passphrases are stable; Testnet/Futurenet/Mainnet version alignment is stage-sensitive and live-verified.",
         "memberContentSha256": {
-          "q-infra-testnet-vs-futurenet": "3bb5a8351e3d75d5fa76e363e02b4a78d9d90fbbabc5f53d7961e22377653a70",
+          "q-infra-testnet-vs-futurenet": "085ac946d136c560c9a9a611f3464e41532b8ea37a8ba6947e01a6339eb3f11a",
           "q-protocol-network-passphrases-list": "3d7b33bcf16bcb7c0495d3d87564f0a026b77b936c94cc21ba8cea8ff8986c7c"
         }
       },
@@ -1392,13 +1392,13 @@
         "lastChecked": "2026-11-14",
         "reSwept": {
           "date": "2026-11-14",
-          "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-scf-v7-changes (v7 launched January 2026 with three Build tracks, referral, Instawards replacing Kickstart, no single Growth track), q-scf-build-award-cap (Build cap/tranches, v7 blog $300K is a lifecycle total), q-scf-instawards ($1-5K initial, $15K total, SDF approves, not voted) and q-scf-hackathons-active (dated event roster). Program rules stay separate. Observation: q-scf-hackathons-active never stated anything about the v7 menu (pre-audit text checked); it is a neighbour, not a carrier.",
+          "reason": "Baseline case-defects re-sweep 2026-11-14 (.agents/rounds/2026-11-14-baseline-tuning/CASE-DEFECTS.md): q-scf-hackathons-active lost key fact 2 and its answer sentence (a past hackathon); it makes no v7 track or award claim, so the members and the note still agree.",
           "verdict": "consistent"
         },
         "note": "v7 introduced three Build tracks and post-launch pathways, not one unified Growth track. Current detailed rules control each separate program.",
         "memberContentSha256": {
           "q-scf-build-award-cap": "09b01065f676d3497c39de01fe46a9007efc74fce3809b75dadd9b256b148956",
-          "q-scf-hackathons-active": "97a698c4c6f56e94bdb2bfa2535d92921547205c0fef3418b77120aa02b8d356",
+          "q-scf-hackathons-active": "43a0814199f9348c299b541a1d36e05ca4fa20cbfc26666f5c800e216e95e412",
           "q-scf-instawards": "0edfd385c171f7ef962d7d74e498e21cc7900defad926e946f2281301bb0490f",
           "q-scf-v7-changes": "9ce7cb126469f286b4fda3e72ef49013fdb8eb3a353378125e5bef24f33ef620"
         }

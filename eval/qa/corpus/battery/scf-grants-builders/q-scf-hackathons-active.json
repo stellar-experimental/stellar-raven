@@ -6,10 +6,9 @@
     "scout.getHackathons"
   ],
   "golden": {
-    "answer": "As of 2026-11-14, the Blockchain Innovation Challenge powered by Stellar (Velocity, University of Waterloo) is active, November 2 to 18, 2026, open to Waterloo students. Scout's feed lists no upcoming event, which does not prove none exists elsewhere. Stellar Hacks: Real-World ZK ended July 3, 2026.",
+    "answer": "As of 2026-11-14, the Blockchain Innovation Challenge powered by Stellar (Velocity, University of Waterloo) is active, November 2 to 18, 2026, open to Waterloo students. Scout's feed lists no upcoming event, which does not prove none exists elsewhere.",
     "keyFacts": [
       "Names a current or upcoming hackathon from a dated source, or says none is listed.",
-      "Stellar Hacks: Real-World ZK ended on July 3, 2026 and is not active.",
       "An empty upcoming list in one feed is not proof that none exists."
     ],
     "avoid": [
@@ -207,15 +206,12 @@
     ],
     "verified": {
       "date": "2026-11-14",
-      "by": "Golden coverage audit 2026-11-14 (audit-scf, verify-audit-scf; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+      "by": "Baseline case-defects lane 2026-11-14 (Claude Opus 5.5; .agents/rounds/2026-11-14-baseline-tuning/CASE-DEFECTS.md)",
       "evidence": [
-        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-scf-hackathons-active",
-        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-scf-hackathons-active",
-        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-scf-hackathons-active",
-        "Live C 2026-11-14: https://stellarlight.xyz/api/hackathons?status=active -- '1 active: blockchain-innovation-challenge-waterloo-2026, 2026-11-02 to 2026-11-18 (generatedAt 2026-11-14T03:00Z)'",
-        "Live A 2026-11-14: https://uwaterloo.ca/events/events/blockchain-innovation-challenge-powered-stellar -- 'Monday, November 2, 2026 - Wednesday, November 18, 2026 (all day)'",
-        "Live C 2026-11-14: https://stellarlight.xyz/api/hackathons?status=upcoming -- 'counts total 0; fallbackChannels present'",
-        "Live C 2026-11-14: https://stellarlight.xyz/api/hackathons?status=active -- 'Blockchain Innovation Challenge powered by Stellar, Waterloo | 2026-11-02 | 2026-11-18 | active'"
+        "Defect: .agents/rounds/2026-11-14-baseline-tuning/BASELINE.md ('Case defects'). Key fact 2 required naming a past event (Real-World ZK) as ended, which restates the avoid item as a required fact; the question asks only for active or upcoming events. Removed key fact 2 and the matching answer sentence; the avoid item still forbids calling Real-World ZK active. No fact changed.",
+        "Live C 2026-11-14T20:28Z: https://stellarlight.xyz/api/hackathons?status=active -- one row, blockchain-innovation-challenge-waterloo-2026, 2026-11-02 to 2026-11-18, active.",
+        "Live C 2026-11-14T20:28Z: https://stellarlight.xyz/api/hackathons?q=zk&limit=20 -- stellar-hacks-zk 'Stellar Hacks: Real-World ZK' 2026-06-15 to 2026-07-03, completed.",
+        ".agents/rounds/2026-11-14-baseline-tuning/CASE-DEFECTS.md"
       ],
       "rootCause": [
         ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"

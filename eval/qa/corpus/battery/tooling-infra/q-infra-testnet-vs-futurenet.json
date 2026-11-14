@@ -17,7 +17,7 @@
       "Do NOT swap the two roles, equate either with Mainnet, or claim real-value assets.",
       "Do NOT freeze a protocol version or provider count without a date."
     ],
-    "notes": "Futurenet need not run a higher protocol than Testnet on a given day; a dated answer showing them equal is correct."
+    "notes": "Futurenet need not run a higher protocol than Testnet on a given day; a dated answer showing them equal is correct. The canonical Stellar Docs passkeys prerequisites page says Friendbot only funds classic G accounts; quoting it is not a wrong claim while sd-109 stands, and unless the answer reconciles it with Friendbot's actual behavior (it funds C addresses on Testnet and Futurenet), grade caps at partial."
   },
   "tags": {
     "category": "tooling-infra",
@@ -60,6 +60,43 @@
         "ref": "https://status.stellar.org/",
         "note": "Protocol 30 Testnet upgrade 2026-11-03; Mainnet vote 2026-11-23",
         "observedAt": "2026-10-21"
+      },
+      {
+        "class": "F",
+        "ref": "GET https://friendbot.stellar.org/?addr=CALMAURYIR6LLJWOSEKKSKWB75BAR5LRXZWFCVOXP246WHL4P44MN6MB",
+        "observedAt": "2026-11-14",
+        "note": "HTTP 200 \"successful\": true, hash 191ea1c8b23cf887bbe9d49db8c5e4efae1f81bd7a11e3116e7eecb62a8e8e51; RPC getTransaction SUCCESS at ledger 5732868; native asset contract transfer of 10,000 XLM to the C address."
+      },
+      {
+        "class": "F",
+        "ref": "GET https://friendbot-futurenet.stellar.org/?addr=CALMAURYIR6LLJWOSEKKSKWB75BAR5LRXZWFCVOXP246WHL4P44MN6MB",
+        "observedAt": "2026-11-14",
+        "note": "HTTP 200 \"successful\": true, hash d2a93391edfb847f646f40c6d6a8ec57e0733a621af26415b61eb3378d1958a1; RPC getTransaction SUCCESS at ledger 1613141."
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/friendbot/blob/main/internal/friendbot_handler.go",
+        "observedAt": "2026-11-14",
+        "note": "Lines 108-111 accept a valid C address when the deployment enables fund_contract_addresses; README: 'account G... address, or contract C... address'. Added in stellar/friendbot#21 (2025-12-15)."
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/networks.md",
+        "observedAt": "2026-11-14",
+        "quote": "Friendbot is a bot that funds accounts and contracts with fake XLM on Testnet or Futurenet."
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/tools/quickstart/faucet.md",
+        "observedAt": "2026-11-14",
+        "quote": "Friendbot is available on `:8000/friendbot` and can be used to fund accounts and contracts."
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/build/apps/guestbook/passkeys-prerequisites.md",
+        "observedAt": "2026-11-14",
+        "quote": "Friendbot only funds classic `G...` accounts, so it can't top up a `C...` contract address directly.",
+        "note": "Conflicting page; contradicted by the live Friendbots, the Friendbot source, and the Networks and faucet pages. Filed locally as sd-109."
       }
     ],
     "corroboration": [
@@ -163,28 +200,41 @@
             "ref": "github.com/stellar/stellar-docs docs/networks/index.mdx",
             "observedAt": "2026-11-14",
             "note": "Friendbot is a bot that funds accounts and contracts with fake XLM on Testnet or Futurenet."
+          },
+          {
+            "class": "F",
+            "ref": "https://friendbot.stellar.org/?addr=C... and https://friendbot-futurenet.stellar.org/?addr=C...",
+            "observedAt": "2026-11-14",
+            "note": "Both funded a fresh C address (10,000 XLM via the native asset contract transfer); RPC getTransaction SUCCESS on Testnet ledger 5732868 and Futurenet ledger 1613141."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/networks.md",
+            "observedAt": "2026-11-14",
+            "note": "\"Friendbot is a bot that funds accounts and contracts with fake XLM on Testnet or Futurenet.\""
           }
-        ]
+        ],
+        "note": "Docs conflict disclosed: https://developers.stellar.org/docs/build/apps/guestbook/passkeys-prerequisites.md says Friendbot \"only funds classic `G...` accounts\". Live execution on both networks, the Friendbot source, and two other Docs pages contradict it; improvements/stellar-docs/sd-109-passkeys-page-says-friendbot-cannot-fund-contracts.md."
       }
     ],
     "verified": {
       "date": "2026-11-14",
-      "by": "Golden coverage audit 2026-11-14 (audit-tooling-a, verify-audit-tooling-a; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+      "by": "Baseline case-defects lane 2026-11-14 (Claude Opus 5.5; .agents/rounds/2026-11-14-baseline-tuning/CASE-DEFECTS.md)",
       "evidence": [
-        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-a.json#q-infra-testnet-vs-futurenet",
-        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-a.json#q-infra-testnet-vs-futurenet",
-        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-infra-testnet-vs-futurenet",
-        "Live F 2026-11-14: POST https://soroban-testnet.stellar.org getNetwork -- '\"passphrase\":\"Test SDF Network ; September 2015\",\"protocolVersion\":30'",
-        "Live F 2026-11-14: POST https://rpc-futurenet.stellar.org getNetwork -- '\"passphrase\":\"Test SDF Future Network ; October 2022\",\"protocolVersion\":30'",
-        "Live B 2026-11-14: github.com/stellar/stellar-docs docs/networks/index.mdx -- 'Friendbot is a bot that funds accounts and contracts with fake XLM on Testnet or Futurenet.'",
-        "Live F 2026-11-14: POST https://soroban-testnet.stellar.org getVersionInfo -- '\"protocolVersion\":30'"
+        "Defect: .agents/rounds/2026-11-14-baseline-tuning/BASELINE.md ('Case defects'). The baseline review found the live passkeys prerequisites page contradicting key fact 4. Re-verified from primary sources: key fact 4 is confirmed; the page is wrong. Added a canonical-page grading caution tied to sd-109; answer and key facts unchanged. Independent review (B1) reworded the lifting condition to name Friendbot's behavior instead of the Networks page.",
+        "Live F 2026-11-14T20:26:23Z: GET https://friendbot.stellar.org/?addr=CALMAURYIR6LLJWOSEKKSKWB75BAR5LRXZWFCVOXP246WHL4P44MN6MB -- '\"successful\": true', hash 191ea1c8b23cf887bbe9d49db8c5e4efae1f81bd7a11e3116e7eecb62a8e8e51; soroban-testnet getTransaction SUCCESS ledger 5732868.",
+        "Live F 2026-11-14: GET https://friendbot-futurenet.stellar.org/?addr=CALMAURYIR6LLJWOSEKKSKWB75BAR5LRXZWFCVOXP246WHL4P44MN6MB -- '\"successful\": true', hash d2a93391edfb847f646f40c6d6a8ec57e0733a621af26415b61eb3378d1958a1; rpc-futurenet getTransaction SUCCESS ledger 1613141.",
+        "Live B 2026-11-14: https://github.com/stellar/friendbot/blob/main/internal/friendbot_handler.go lines 108-111 -- 'Check if it's a valid C address (contract)' gated by SupportsContractAddresses().",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/networks.md -- 'Friendbot is a bot that funds accounts and contracts with fake XLM on Testnet or Futurenet.'",
+        "Live A 2026-11-14 (conflicting): https://developers.stellar.org/docs/build/apps/guestbook/passkeys-prerequisites.md -- 'Friendbot only funds classic `G...` accounts, so it can't top up a `C...` contract address directly.'",
+        ".agents/rounds/2026-11-14-baseline-tuning/CASE-DEFECTS.md"
       ],
       "rootCause": [
-        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
+        "improvements/stellar-docs/sd-109-passkeys-page-says-friendbot-cannot-fund-contracts.md"
       ]
     },
     "origin": "raven-next q-infra-testnet-vs-futurenet",
-    "notes": "CORRECTION 2026-08-04: current Networks docs say Friendbot accepts both G-account and C-contract addresses on Testnet/Futurenet. Preserve the durable role, passphrase, fake-value, reset, and freshness boundaries. RECHECK 2026-11-02: live RPC getNetwork reported protocol 29 on both Testnet and Futurenet (Mainnet Horizon also 29); status.stellar.org schedules the Protocol 30 Testnet upgrade for 2026-11-03 and the Mainnet vote for 2026-11-23. Futurenet's documented preview role does not guarantee a higher live protocol at every moment: a dated answer whose live probe shows Futurenet equal to or behind Testnet is correct and does not contradict that role.",
+    "notes": "CORRECTION 2026-08-04: current Networks docs say Friendbot accepts both G-account and C-contract addresses on Testnet/Futurenet. Preserve the durable role, passphrase, fake-value, reset, and freshness boundaries. RECHECK 2026-11-02: live RPC getNetwork reported protocol 29 on both Testnet and Futurenet (Mainnet Horizon also 29); status.stellar.org schedules the Protocol 30 Testnet upgrade for 2026-11-03 and the Mainnet vote for 2026-11-23. Futurenet's documented preview role does not guarantee a higher live protocol at every moment: a dated answer whose live probe shows Futurenet equal to or behind Testnet is correct and does not contradict that role. RECHECK 2026-11-14 (baseline case defects): the passkeys prerequisites page says Friendbot funds only G accounts; live Friendbot funded a C address on Testnet and Futurenet, so key fact 4 stands and the page conflict is sd-109.",
     "leaf": "protocol.networks-passphrases"
   }
 }
