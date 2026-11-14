@@ -25,8 +25,13 @@ variant.
 Round `fp-2026-11-12`: [ledger](rounds/2026-11-12-fp.md),
 [record](../research/audits/2026-11-12-first-principles-round.md), and
 [ADR-0011](../research/decisions/0011-tool-surface-stays-code-mode-trimmed.md). The tool surface
-stays `search` + `execute`, trimmed for cost. The 100 odd-position held-out cases and the 150
-reserve cases are unopened; keep them unseen.
+stays `search` + `execute`, trimmed for cost.
+
+Held-out status: the 100 even-position cases are spent, and the stopped second look opened 4
+odd-position cases. 96 odd-position cases and the 150 reserve cases are unopened; keep them
+unseen. The ledger's
+[held-out status](rounds/2026-11-12-fp.md#held-out-status-after-the-round) is authoritative. Never
+copy a held-out or reserve case ID into this file.
 
 ### Find what costs the trimmed surface accuracy on live-data questions
 
@@ -67,14 +72,23 @@ wrong ones.
 
 Done when: the classification is recorded and the owner decides which source, if any, to test.
 
-### Report per-source upstream status
+### Report per-source attempts and final status
 
-A successful response hides which source failed. HTTP 429 and 5xx codes are lost inside the
-adapters before the result is built, including Mintlify retry exhaustion. Record attempts and
-final status per source on each request. This is also the precondition for the coverage audit.
+A failed call already carries its upstream status: HTTP 429 survives all three adapters, and 5xx
+survives Lumenloop and Scout. Two gaps remain:
 
-Done when: an `execute` result and its log event show each source's attempts and final status,
-with tests.
+- Mintlify retry exhaustion on 5xx returns an error with no numeric status
+  (`mintlifyRequest` in `src/adapters/stellar-docs.ts`).
+- No result or log event records how many attempts each source took, or each source's final
+  status across one `execute`.
+
+The round also reported that a successful response hid a failed source. That came from the
+round's own aggregation layer and is not reproduced in production Raven; reproduce it before
+treating it as a product defect. Keep the per-operation failure envelopes as they are. This work
+comes before the coverage audit.
+
+Done when: a Mintlify retry exhaustion carries the last HTTP status, and the `execute` log event
+records attempts and final status per source, with tests.
 
 ### Keep a default `execute` result under the Grok CLI clip
 
@@ -85,16 +99,26 @@ lines first and bound the default result (about 18 KB) with the artifact path fo
 
 Done when: a reviewed change ships, or the check shows the clip does not lose answer evidence.
 
-### Let the judge see the cited source text
+### Check what the judge saw before changing how it weighs cited text
 
-The QA judge reads the question, the golden, and the answer, not what the agent was handed. In a
-fixed review it called a correctly quoted fact "fabricated" in about 2% of the new variants'
-answers and in none of the current design's. A fix is a judging-semantics change under the
-`run-evals` skill: give the judge the excerpts behind each citation, then re-judge stored
-answers. Pass condition: the disputed verdicts disappear and no answer with a truly unsupported
-claim is graded up.
+In the round's harness, the judge called a correctly quoted fact "fabricated" in about 2% of the
+new variants' answers and in none of the current design's. That is a finding about the round's
+judge input, not about the committed QA judge. The committed judge does receive tool evidence:
+`eval/qa/judge.mjs` adds a compact source-basis block from pack `p9`, built from the answer's
+`execute` results, and `eval/qa/evidence-pack.mjs` leaves it out for a case tagged
+`freshness: stable`. Two different gaps can therefore produce the same verdict:
 
-Done when: the measured judge change is accepted, or the owner accepts the limit.
+- No evidence block at all: a stable case, or an answer whose sources did not come through
+  `execute` (the prototype `retrieve` and `read` tools; unverified).
+- An evidence block that omits the cited text: the p9 limits in "Close the remaining
+  claim-support gaps of judge pack p9" below.
+
+Next: read the exact stored judge prompt of the disputed answers, then choose between a harness
+input fix, a pack change, and a rubric change. A pack or rubric change belongs to the p9 item
+and is a judging-semantics change under the `run-evals` skill.
+
+Done when: the disputed verdicts are traced to one of those causes. Any fix is measured: the
+disputes disappear, and no answer with a truly unsupported claim is graded up.
 
 ## Golden answers
 
@@ -522,6 +546,8 @@ The judge uses pack `p9` ([result](rounds/2026-10-12-pack-p9/result-p9.md)). Kno
   ERC-8004 0 of 2.
 - Five control rows lose 1 to 3 answer probes against p8.
 - The R8-1 sentence scope is unresolved.
+- The round follow-up "Check what the judge saw before changing how it weighs cited text" may
+  add a cited-text gap here.
 
 Done when: a reviewed later pack closes these gaps with an authorized measurement, or the owner
 accepts them as the standing limits of p9.
@@ -533,7 +559,7 @@ NOT claim unsupported memory is a source-supported current observation", which f
 under rubric `v2.11`. The saved evidence does not show memory (review R8, PR #264). A rubric or
 prompt change that separates a misread source from unsupported memory is a judging-semantics
 change: it needs the paid seven-call self-test, an independent review, and a paired re-judge.
-It fits the same change as the cited-text item above.
+It fits the same change as the judge-evidence item in the round follow-ups.
 
 Done when: a reviewed decision is recorded, and any rubric change has its measurement.
 

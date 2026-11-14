@@ -33,7 +33,7 @@ fallback.
   credits. Raven does not call it. Any use is a paid model operation under the hard rules in
   [AGENTS.md](../AGENTS.md#hard-rules), as is any model-callable write.
 - Mintlify limits search and page reads to 10,000 requests per organization per hour. Keep
-  automated sweeps inside that budget.
+  automated sweeps inside that budget, and count HTTP attempts, not lookups (see Limits).
 
 ## Transport
 
@@ -51,9 +51,10 @@ The spec's backend block defines the transport.
 Each request is a `POST` with `Authorization: Bearer <MINTLIFY_ASSISTANT_API_KEY>` and a JSON
 body: `{ query, pageSize }` for a search, `{ path }` (no leading slash) for a page.
 
-- **Attempts.** At most two per request. A network failure, a timeout, or an HTTP 5xx allows the
-  second. An HTTP 4xx, including `429`, returns at once. Malformed JSON in a successful response
-  is an error, not a retry.
+- **Attempts.** A lookup is one logical search or page request. Each lookup makes at most two
+  HTTP attempts. A network failure, a timeout, or an HTTP 5xx allows the second. An HTTP 4xx,
+  including `429`, returns at once. Malformed JSON in a successful response is an error, not a
+  retry.
 - **Budget.** One operation has 24,000 ms of wall-clock time (`OPERATION_BUDGET_MS`) for every
   attempt, the `/index` retry, and the redirect probe. Each attempt timeout is clipped to the
   time left, and nothing starts with less than 500 ms left.
@@ -91,7 +92,7 @@ carry no runtime `auth` or `cost` field.
 
 ## Search
 
-Every search operation makes one search call with `pageSize` 50, the candidate window. The
+Every search operation makes one search lookup with `pageSize` 50, the candidate window. The
 service has no facets, scores, or counts, and its `filter` and `scoreThreshold` fields do not
 change the result set for this site. Scoping therefore happens in the adapter:
 
@@ -106,7 +107,7 @@ A prefix matches whole path segments: `/docs/tokens` keeps `/docs/tokens/x`, not
 `search_doc_titles` keeps the first section of each page and ranks pages by query words in the
 title, then in the path, then by search rank. It returns no `content`. With
 `includeContent: true`, each hit carries its whole section as `content`; the adapter makes no
-second request.
+second lookup.
 
 ### Search output
 
@@ -196,11 +197,11 @@ What a result proves:
 | Candidate window per search | 50 sections | `candidateWindow` in the spec backend |
 | Hits per search | 1 to 20, default 5 | `hitsPerPage` in each operation schema |
 | Snippet length | 300 characters | `SNIPPET_CHARS` in the adapter |
-| Attempts per request | 2, with 8,000 ms and 12,000 ms timeouts | `attemptTimeoutsMs` in the spec backend |
-| Wall-clock budget per operation | 24,000 ms | `OPERATION_BUDGET_MS` in the adapter |
-| Requests per search | 1 search request | The adapter |
-| Page requests per read | At most 4: 2 for the requested path, 2 for a redirect target | The `/index` retry and the redirect follow |
-| Site redirect probes per read | At most 1, 8,000 ms, no retry | `siteRedirectPath` in the adapter |
+| HTTP attempts per lookup | 2, with 8,000 ms and 12,000 ms timeouts | `attemptTimeoutsMs` in the spec backend |
+| Wall-clock budget per operation | 24,000 ms, for every attempt and the probe | `OPERATION_BUDGET_MS` in the adapter |
+| Search: lookups and HTTP attempts | 1 lookup, so at most 2 API requests | `mintlifyRequest` in the adapter |
+| Page read: lookups and HTTP attempts | At most 4 lookups (the path, its `/index`, a redirect target, its `/index`), so at most 8 API requests | The `/index` retry and the redirect follow |
+| Site redirect probes per read | At most 1 `GET` to the docs site, separate from the API requests; 8,000 ms, no retry | `siteRedirectPath` in the adapter |
 | Mintlify rate limit | 10,000 requests per organization per hour | Mintlify API reference |
 | Error text from the API | 1,024 characters | `MAX_ERROR_BODY_CHARS` in the adapter |
 
