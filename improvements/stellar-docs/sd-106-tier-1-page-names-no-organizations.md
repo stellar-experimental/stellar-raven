@@ -1,7 +1,7 @@
 ---
 id: sd-106
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-14
 upstreamTitle: Tier 1 Organizations page does not name the current Tier 1 organizations
 probe:
@@ -20,6 +20,7 @@ evidence:
   - "Second witness for the set: the round's verify lane read the same ten organizations from Obsrvr Radar's transitive quorum set on 2026-11-14 (.agents/rounds/2026-11-14-golden-coverage-audit/gap/verify-gap.json, q-net-tier1-roster-current)."
   - "Classification: docs-content. The page title and description define Tier 1 organizations, and the page says \"The standard Tier 1 quorum set configuration is updated to include your organization\", but it never shows the set."
   - "Affected golden case: eval/qa/corpus/battery/protocol-core/q-net-tier1-roster-current.json. Ledger: .agents/rounds/2026-11-14-golden-coverage-audit/gaps/GAPS.md."
+  - upstream issue filed 2026-11-14: https://github.com/stellar/stellar-docs/issues/3144
 recurrences:
   - date: 2026-11-14
     evidence: "2026-11-14 QA test of the rebuilt battery (claude-sonnet-5-5 answering, results stamp 2026-11-14T06-06-31-variantA): q-net-tier1-roster-current. The Docs Tier 1 page gave requirements and Obsrvr Radar but none of the ten organizations, and the agent said it could not retrieve the roster. Evidence/owner state: .agents/rounds/2026-11-14-golden-coverage-audit/qa/RESULT.md, 'Upstream gaps by leaf'."

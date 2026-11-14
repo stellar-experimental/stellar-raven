@@ -1,7 +1,7 @@
 ---
 id: sd-108
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-14
 upstreamTitle: Docs have no guidance on what to review before signing or how to treat unsolicited assets
 evidence:
@@ -13,6 +13,7 @@ evidence:
   - "The round's gap and verify lanes reached the same result on 2026-11-14 (gap/gap-1.json and gap/verify-gap.json). The taxonomy mapper found no canonical page for unsolicited assets (map/taxonomy.json, wallets.unsolicited-assets)."
   - "Classification: docs-content, missing guidance. Placement is a judgment: Stellar Docs already host the wallet tutorial, the SEP-7 guide, and the Varial signing guides, so signing review fits there. No canonical page exists elsewhere."
   - "Affected golden cases: eval/qa/corpus/battery/retail-consumer/q-signing-safety-website-request.json and eval/qa/corpus/battery/retail-consumer/q-raph-unsolicited-airdrop.json. Ledger: .agents/rounds/2026-11-14-golden-coverage-audit/gaps/GAPS.md."
+  - upstream issue filed 2026-11-14: https://github.com/stellar/stellar-docs/issues/3146
 ---
 
 ## Finding

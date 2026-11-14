@@ -1,7 +1,7 @@
 ---
 id: sd-105
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-14
 upstreamTitle: Lumens page says all XLM was created at launch, then describes 5.44 billion inflation lumens
 probe:
@@ -18,6 +18,7 @@ evidence:
   - "Adjacent prose, 2026-11-14: gh search code 'will ever exist' in stellar/stellar-docs returns this file and one unrelated asset-issuance sentence. The claim has no second copy in the docs repository."
   - "Classification: docs-content. First seen in .agents/rounds/2026-11-14-golden-coverage-audit/review/REVIEW.md, finding D4. Ledger: .agents/rounds/2026-11-14-golden-coverage-audit/gaps/GAPS.md."
   - "Affected golden case: eval/qa/corpus/battery/history-org-tokenomics/q-token-xlm-supply-total-circulating.json. Its golden states 100 billion at genesis plus about 5.44 billion from inflation. The proposed grading caution is in gaps/GAPS.md under Case cautions."
+  - upstream issue filed 2026-11-14: https://github.com/stellar/stellar-docs/issues/3143
 ---
 
 ## Finding

@@ -1,7 +1,7 @@
 ---
 id: sls-117
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-11-14
 upstreamTitle: Research source sdf-org omits the SDF strategy, roadmap, service-provider, and community pages
 probe:
@@ -20,6 +20,7 @@ evidence:
   - "The round's gap and verify lanes reached the same result for the strategy and service-provider pages on 2026-11-14 (.agents/rounds/2026-11-14-golden-coverage-audit/gap/gap-1.json, gap/gap-3.json, gap/verify-gap.json)."
   - "Predecessor: sls-055 (canonical SDF organizational pages) was resolved on 2026-08-19; its receipt is in improvements/resolved.json. Its live re-check covered five canonical SDF page families. This finding names four pages that the source does not hold."
   - "Affected golden cases: eval/qa/corpus/battery/history-org-tokenomics/q-sdf-2026-strategy-priorities.json, eval/qa/corpus/battery/scf-grants-builders/q-scf-service-provider-directories.json, and eval/qa/corpus/battery/retail-consumer/q-raph-missing-exchange-memo.json. Ledger: .agents/rounds/2026-11-14-golden-coverage-audit/gaps/GAPS.md."
+  - upstream issue filed 2026-11-14: https://github.com/Stellar-Light/stellarlight/issues/1969
 ---
 
 ## Finding

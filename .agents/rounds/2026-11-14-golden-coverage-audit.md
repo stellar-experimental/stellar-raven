@@ -192,7 +192,10 @@ outside the repository.
 
 ### Owner decisions waiting
 
-1. Post the six findings upstream as issues.
+1. Post the six findings upstream as issues. Done 2026-11-14 on the owner's instruction:
+   stellar/stellar-docs#3143 to #3146 and Stellar-Light/stellarlight#1969 and #1970. Advice on
+   decisions 3 and 4 is in `decisions/SCOPE.md`; the Algolia evidence for decision 2 is in
+   `.agents/TODO.md`.
 2. Whether `stellar.org` pages outside Docs belong in a Raven source (three leaves miss for that
    one reason).
 3. Whether topics outside Raven's sources stay in the battery: chain comparisons (now graded on

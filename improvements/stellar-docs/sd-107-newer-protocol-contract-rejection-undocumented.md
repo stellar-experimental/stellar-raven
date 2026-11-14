@@ -1,7 +1,7 @@
 ---
 id: sd-107
 service: stellar-docs
-status: verified
+status: reported-upstream
 discovered: 2026-11-14
 upstreamTitle: Docs do not say that the network rejects a contract built for a newer protocol
 probe:
@@ -22,6 +22,7 @@ evidence:
   - "The round's gap and verify lanes reached the same result on 2026-11-14 (.agents/rounds/2026-11-14-golden-coverage-audit/gap/gap-3.json and gap/verify-gap.json, q-infra-version-lag-errors)."
   - "Classification: docs-content. The Environment Meta section undertakes to explain the interface version and omits the rule that the host enforces."
   - "Affected golden case: eval/qa/corpus/battery/tooling-infra/q-infra-version-lag-errors.json, key fact 4. Ledger: .agents/rounds/2026-11-14-golden-coverage-audit/gaps/GAPS.md."
+  - upstream issue filed 2026-11-14: https://github.com/stellar/stellar-docs/issues/3145
 ---
 
 ## Finding
