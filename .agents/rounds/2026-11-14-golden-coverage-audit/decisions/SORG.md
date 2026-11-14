@@ -213,3 +213,53 @@ numbers against `origin/main` (0 grade, 0 top-1, six top-five lists) therefore s
 Still open: Worker egress to stellar.org after deploy, a scoped QA run on the affected cases, and
 the Blend audit and Anchor Directory facts this source does not hold (`.agents/TODO.md`). The
 vendor-diverse (Grok) attack on the adapter was not run.
+
+## Delta reconciliation and regex audit
+
+Lane `sorg-fix`, Claude Opus 5.5 (author), 2026-11-14, against the "Delta review" in
+[SORG-REVIEW.md](SORG-REVIEW.md).
+
+**D1 (blocking): applied as written.** `documentTitle` uses `/<title\b[^<>]*>([^<]*)<\/title>/i`.
+Test: `"<title ".repeat(280_000)` in `<head>` and again after `<main>`. Through
+`callStellarOrg` each returns `ok: true` in under one second. With the old regex the test ran
+for more than 30 s before `timeout` killed it (exit 124).
+
+**Audit.** The defect is a regex that rescans a long run of input from many positions, by
+retrying from many start positions or by backtracking inside one match. I checked every regex in
+`src/adapters/stellar-org.ts`. The audit found one more quadratic pattern, in `TAG_RE`.
+
+| Pattern (where) | Input | Verdict |
+|---|---|---|
+| `PATH_RE` `^\/[A-Za-z0-9._~\-/]*$` (`normalizeSitePath`) | path, ≤ 512 chars (length is checked first) | Linear: anchored, one character class, bounded input. |
+| `/\/$/` (`normalizeSitePath`) | the same path | Linear: one literal, then `$`; bounded input. |
+| `&(#x[0-9a-f]+\|#\d+\|[a-z]+\d*);` (`decodeEntities`) | the whole page text and the title | Linear. No class contains `&`, so a scan from one `&` stops at the next one. The scanned runs do not overlap, and the backtracking inside a run is linear. |
+| `TAG_RE` comment branch `<!--(?:[\s\S]*?-->\|[\s\S]*$)` | the whole body (`mainHtml`), then `<main>` (`htmlToText`) | Linear. A terminated comment consumes what it scanned. An unterminated one matches to the end, which ends the scan. |
+| `TAG_RE` tag branch `<(\/?)([A-Za-z][A-Za-z0-9-]*)\b[^<>]*>` | the same | **Quadratic, fixed.** `[^<>]*` stops at the next `<`. But `\b` holds at each hyphen of `<a-a-a…`, so a failed match backtracks into the name and rescans the rest of the run from every hyphen. Measured: 40 KB took 1.3 s, and the time grew 4× for each doubling. The fix uses `(?![\w-])` in place of `\b`: the name is maximal, and backtracking into it fails in one step. 1.9 MB now takes 11 ms. Semantics change only for a name that ends in `-` and is followed by a non-word character (`<a- >`); before, that parsed as `<a>`, and now it is text. |
+| `^h([1-6])$` (`htmlToText`) | a tag name | Linear: anchored, fixed length. |
+| `[ \t\r\f\v ]+` (`htmlToText`) | each text line | Linear: one class with nothing after it, and each run is consumed. |
+| `^(#{1,6}\|-)$` (`htmlToText`) | each text line | Linear: anchored, at most 7 characters examined. |
+| `<title\b[^<>]*>([^<]*)<\/title>` (`documentTitle`) | the whole body | Linear after D1. Each scan stops at the next `<`. |
+| `\s+` (`documentTitle`) | the title text | Linear: one class, consumed runs. |
+| `^text\/html\b` (`page`) | the `content-type` header | Linear: anchored literal. |
+
+**Timing test.** `it.each` in `test/stellar-org-adapter.test.ts` feeds one adversarial body of
+1.88-2.0 MB per body-facing family through `callStellarOrg`. Each case asserts the byte size, a
+time under one second, and `ok: true`. The families are title, tag name (`<a-a-a…`), tag body
+(`<a `), comment (`<!--`), entity (`&a1` runs and a 10,000-digit `&#x`), and whitespace. The
+families that read the path and the header take bounded or anchored input, so they have no
+1.9 MB case. With the old `TAG_RE`, the tag-name case ran for more than 30 s before `timeout`
+killed it (exit 124).
+
+The manifest is unchanged, so the routing gate needed no re-stamp. The optional case-insensitive
+`/api` check was not applied; it stays the owner's call.
+
+**Gates**, run bare in this order after the last edit:
+
+| Command | Exit |
+|---|---|
+| `npm run typecheck` | 0 |
+| `npm test` | 0 (151 files passed, 1 skipped; 3,465 passed, 3 expected fail, 1 skipped) |
+| `npm run build` | 0 |
+| `npm run test:smoke` | 0 (141 tests) |
+| `npm run eval:routing -- --gate` | 0, `GATE PASS` |
+| `npm run secrets:scan -- --tree` | 0 |

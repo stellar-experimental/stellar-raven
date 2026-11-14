@@ -116,8 +116,12 @@ const BLOCKS = new Set([
   "p", "div", "section", "article", "header", "footer", "aside", "nav", "ul", "ol", "table", "tr",
   "blockquote", "figure", "figcaption", "dl", "dt", "dd", "br", "hr", "form", "details", "summary"
 ]);
-/** An unterminated comment runs to the end and a tag body stops at the next `<`, so a scan stays linear. */
-const TAG_RE = /<!--(?:[\s\S]*?-->|[\s\S]*$)|<(\/?)([A-Za-z][A-Za-z0-9-]*)\b[^<>]*>/g;
+/**
+ * An unterminated comment runs to the end, a tag body stops at the next `<`, and
+ * the lookahead keeps the name from backtracking (`\b` rescanned `<a-a-a…` per hyphen),
+ * so a scan stays linear.
+ */
+const TAG_RE = /<!--(?:[\s\S]*?-->|[\s\S]*$)|<(\/?)([A-Za-z][A-Za-z0-9-]*)(?![\w-])[^<>]*>/g;
 
 /**
  * Readable text of an HTML fragment: headings become `#` lines, list items
@@ -209,7 +213,7 @@ export function mainHtml(html: string): string {
 }
 
 function documentTitle(html: string): string | undefined {
-  const match = /<title\b[^>]*>([^<]*)<\/title>/i.exec(html);
+  const match = /<title\b[^<>]*>([^<]*)<\/title>/i.exec(html);
   const title = match ? decodeEntities(match[1]!).replace(/\s+/g, " ").trim() : "";
   return title || undefined;
 }

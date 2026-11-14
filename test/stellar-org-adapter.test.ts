@@ -393,6 +393,34 @@ describe("htmlToText and mainHtml", () => {
     }
   });
 
+  it("reads a page with an unterminated title tag in linear time", async () => {
+    const titles = "<title ".repeat(280_000);
+    for (const body of [`<head>${titles}</head><main>ok</main>`, `<main>ok</main>${titles}`]) {
+      const started = performance.now();
+      const result = await callStellarOrg(PAGE, { path: "/t" }, async () => html(body));
+      expect(performance.now() - started).toBeLessThan(1_000);
+      expect(result.ok).toBe(true);
+    }
+  });
+
+  // One ~1.9 MB body per regex family that sees the page body; each must stay linear.
+  it.each([
+    ["title", `<head>${"<title ".repeat(270_000)}</head><main>ok</main>`],
+    ["tag name", `<main>ok<a${"-a".repeat(945_000)}`],
+    ["tag body", `<main>ok${"<a ".repeat(630_000)}`],
+    ["comment", `<main>ok${"<!--".repeat(470_000)}`],
+    ["entity", `<main>ok${"&a1".repeat(630_000)}&#x${"f".repeat(10_000)}`],
+    ["whitespace", `<main>ok${" \u00a0\t".repeat(474_000)}x</main>`]
+  ])("reads a 1.9 MB adversarial %s body in under a second", async (_family, body) => {
+    const bytes = new TextEncoder().encode(body).length;
+    expect(bytes).toBeGreaterThan(1_880_000);
+    expect(bytes).toBeLessThanOrEqual(MAX_PAGE_BYTES);
+    const started = performance.now();
+    const result = await callStellarOrg(PAGE, { path: "/t" }, async () => html(body));
+    expect(performance.now() - started).toBeLessThan(1_000);
+    expect(result.ok).toBe(true);
+  });
+
   it("decodes numeric and named entities and leaves unknown ones", () => {
     expect(htmlToText("<p>&#x27;a&#39; &lt;b&gt; &quot;c&quot; &unknown; &#0;</p>")).toBe("'a' <b> \"c\" &unknown; &#0;");
   });
