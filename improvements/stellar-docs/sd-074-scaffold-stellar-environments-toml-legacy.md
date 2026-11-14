@@ -13,6 +13,8 @@ evidence:
   - 2026-11-02 pre-existing upstream PR https://github.com/stellar/stellar-docs/pull/2708 (OPEN, opened 2026-07-28 by zachfedor) covers this defect; Raven did not file a separate issue
   - golden case q-ti-scaffold-stellar (golden audit pass 2, 2026-11-02)
 recurrences:
+  - date: 2026-11-14
+    evidence: "2026-11-14T20:27:56Z GET https://developers.stellar.org/docs/tools/scaffold-stellar.md HTTP 200: three environments.toml references (lines 75, 90, 110, including \"Explore the `environments.toml` file to customize your development environment(s)\") and no scaffold.yml; hello-world-frontend.md still has one. stellar-scaffold/cli main config/mod.rs line 36 CONFIG_FILE \"scaffold.yml\" and line 15 calls environments.toml deprecated; latest CLI release stellar-scaffold-cli-v0.0.34 (2026-10-25). PR2708 OPEN, mergeStateStatus DIRTY (now conflicts), REVIEW_REQUIRED, last updated 2026-11-03. Eval recurrence: in the 2026-11-14 baseline run (q-ti-scaffold-stellar, graded wrong) the agent read the full Scaffold page and repeated environments.toml as current. Ledger: .agents/rounds/2026-11-14-baseline-tuning/CASE-DEFECTS.md."
   - date: 2026-11-09
     evidence: "Both Scaffold overview (three references) and Hello World frontend still name environments.toml; current CLI config source names scaffold.yml and explicitly recognizes environments.toml as deprecated. PR2708 is mergeable but BLOCKED/REVIEW_REQUIRED; checks green except fork preview NEUTRAL awaiting approval."
   - date: 2026-11-06

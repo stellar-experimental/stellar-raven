@@ -262,6 +262,14 @@
     "sd-108": {
       "repo": "stellar/stellar-docs",
       "reason": "Docs content gap: the wallet and signing guides under docs/build are owned by stellar/stellar-docs."
+    },
+    "sd-109": {
+      "repo": "stellar/stellar-docs",
+      "reason": "Docs content correction: docs/build/apps/guestbook/passkeys-prerequisites.mdx is owned by stellar/stellar-docs."
+    },
+    "sd-110": {
+      "repo": "stellar/stellar-docs",
+      "reason": "Docs content correction: docs/tools/lab/smart-contracts/contract-explorer.mdx is owned by stellar/stellar-docs; the same sentence in stellar/laboratory Bindings.tsx is named in the recommendation."
     }
   }
 }
