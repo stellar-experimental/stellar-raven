@@ -4,9 +4,10 @@
  *
  * Two keyless requests against one fixed origin:
  *  - search: GET /api/search?q=<query>&locale=en, the site's own search. It
- *    returns at most 10 rows of kind "page" or "partner". Partner rows, rows
- *    under /blog, /press and /events, and external rows are dropped here:
- *    other sources own that content.
+ *    returns at most 10 rows of kind "page", "audit", "tutorial" or "partner".
+ *    Rows under /blog, /press and /events are dropped here (Scout and
+ *    Lumenloop return those posts for the same questions), as are external
+ *    rows other than audits, whose report link is the record.
  *  - page: GET <path>, server-rendered HTML. The adapter keeps the `<main>`
  *    text with headings and list items, follows same-origin redirects only,
  *    and caps the bytes it reads and the time one read takes.
@@ -32,7 +33,7 @@ export const MAX_PAGE_BYTES = 2_000_000;
 export const MAX_CONTENT_CHARS = 40_000;
 const MAX_REDIRECTS = 3;
 const MAX_SEARCH_LIMIT = 10;
-/** Path prefixes another source owns: Scout and Lumenloop hold blog and press, Scout holds events. */
+/** Path prefixes another source owns: Scout and Lumenloop return these posts for the same questions (2026-11-14). */
 export const EXCLUDED_PREFIXES = ["/blog", "/press", "/events"] as const;
 /** No `%`: fetch would decode `%2e` segments and the server `%61`, so encoded forms could reach /api. */
 const PATH_RE = /^\/[A-Za-z0-9._~\-/]*$/;
@@ -47,7 +48,18 @@ type SiteRow = {
   isExternal?: unknown;
 };
 
-export type SiteHit = { title: string; description: string | null; path: string; kind: string; tags: string[] };
+/** A page to read with get_page. */
+export type PageHit = { kind: "page"; title: string; description: string | null; path: string; tags: string[] };
+/** A video tutorial; its `url` opens a client-side player, so there is no page text to read. */
+export type TutorialHit = { kind: "tutorial"; title: string; description: string | null; url: string; tags: string[] };
+/** An ecosystem directory listing; `tags` holds the directory categories. */
+export type PartnerHit = { kind: "partner"; title: string; description: string | null; url: string; tags: string[] };
+/** An audit-register record: `reportUrl` is the auditor's report, cited, never fetched. */
+export type AuditHit = { kind: "audit"; title: string; project: string | null; firm: string | null; reportUrl: string };
+export type SiteHit = PageHit | TutorialHit | PartnerHit | AuditHit;
+
+const SLUG_RE = /^[a-z0-9][a-z0-9-]{0,199}$/i;
+const MAX_REPORT_URL_CHARS = 2048;
 
 function underPrefix(path: string, prefix: string): boolean {
   return path === prefix || path.startsWith(`${prefix}/`);
@@ -67,17 +79,89 @@ export function normalizeSitePath(raw: unknown): string | null {
   return trimmed;
 }
 
+function text(value: unknown, max: number): string | null {
+  return typeof value === "string" && value.trim() ? value.trim().slice(0, max) : null;
+}
+
+function stringTags(value: unknown): string[] {
+  return Array.isArray(value) ? value.filter((tag): tag is string => typeof tag === "string") : [];
+}
+
+/** "Project - Firm"; the site writes "Unnamed record" when the register has no project. */
+function auditHit(title: string, rawUrl: unknown): AuditHit | null {
+  if (typeof rawUrl !== "string" || rawUrl.length > MAX_REPORT_URL_CHARS) return null;
+  let url: URL;
+  try {
+    url = new URL(rawUrl);
+  } catch {
+    return null;
+  }
+  if (url.protocol !== "https:" && url.protocol !== "http:") return null;
+  const cut = title.lastIndexOf(" -");
+  const project = cut >= 0 ? title.slice(0, cut).trim() : title;
+  const firm = cut >= 0 ? title.slice(cut + 2).trim() : "";
+  return {
+    kind: "audit",
+    title,
+    project: project && project !== "Unnamed record" ? project : null,
+    firm: firm || null,
+    reportUrl: url.href
+  };
+}
+
+/** The `?name=` slug of a site-relative directory or tutorial link on `pathname`, or null. */
+function siteSlug(rawUrl: unknown, pathname: string, name: string): string | null {
+  if (typeof rawUrl !== "string") return null;
+  let url: URL;
+  try {
+    url = new URL(rawUrl, `${STELLAR_ORG_ORIGIN}${pathname}`);
+  } catch {
+    return null;
+  }
+  const slug = url.searchParams.get(name);
+  return url.origin === STELLAR_ORG_ORIGIN && url.pathname === pathname && slug && SLUG_RE.test(slug) ? slug : null;
+}
+
 /**
- * Keep same-origin page rows outside the excluded prefixes. Partner rows point
- * at the ecosystem directory, which renders no partner detail; Scout and
- * Lumenloop own partners.
+ * Site-search rows in site order, by kind: same-origin pages outside the
+ * excluded prefixes, audit records with their report link, tutorials, and
+ * partner listings (one hit per partner; the site returns one row per
+ * directory category, merged here into `tags`). Unknown kinds are dropped.
  */
 export function siteHits(results: SiteRow[]): SiteHit[] {
   const hits: SiteHit[] = [];
+  const partners = new Map<string, PartnerHit>();
   for (const row of results) {
-    if (!row || row.isExternal === true || typeof row.url !== "string" || typeof row.title !== "string") continue;
+    if (!row || typeof row.title !== "string" || !row.title.trim()) continue;
+    const title = row.title.trim();
+    const description = text(row.description, MAX_DESCRIPTION_CHARS);
     const kind = typeof row.kind === "string" ? row.kind : "page";
-    if (kind !== "page") continue;
+    if (kind === "audit") {
+      const hit = auditHit(title, row.url);
+      if (hit) hits.push(hit);
+      continue;
+    }
+    if (row.isExternal === true) continue;
+    if (kind === "tutorial") {
+      const slug = siteSlug(row.url, "/learn", "tutorial");
+      if (slug) hits.push({ kind, title, description, url: `${STELLAR_ORG_ORIGIN}/learn?tutorial=${slug}`, tags: stringTags(row.tags) });
+      continue;
+    }
+    if (kind === "partner") {
+      const slug = siteSlug(row.url, "/ecosystem", "partner");
+      if (!slug) continue;
+      const category = siteSlug(row.url, "/ecosystem", "category");
+      const seen = partners.get(slug);
+      if (seen) {
+        if (category && !seen.tags.includes(category)) seen.tags.push(category);
+        continue;
+      }
+      const hit: PartnerHit = { kind, title, description, url: `${STELLAR_ORG_ORIGIN}/ecosystem?partner=${slug}`, tags: category ? [category] : [] };
+      partners.set(slug, hit);
+      hits.push(hit);
+      continue;
+    }
+    if (kind !== "page" || typeof row.url !== "string") continue;
     let url: URL;
     try {
       url = new URL(row.url, STELLAR_ORG_ORIGIN);
@@ -87,10 +171,7 @@ export function siteHits(results: SiteRow[]): SiteHit[] {
     if (url.origin !== STELLAR_ORG_ORIGIN) continue;
     const path = normalizeSitePath(url.pathname);
     if (!path || EXCLUDED_PREFIXES.some((prefix) => underPrefix(path.toLowerCase(), prefix))) continue;
-    const description =
-      typeof row.description === "string" && row.description.trim() ? row.description.trim().slice(0, MAX_DESCRIPTION_CHARS) : null;
-    const tags = Array.isArray(row.tags) ? row.tags.filter((tag): tag is string => typeof tag === "string") : [];
-    hits.push({ title: row.title.trim(), description, path, kind, tags });
+    hits.push({ kind, title, description, path, tags: stringTags(row.tags) });
   }
   return hits;
 }

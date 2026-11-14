@@ -1,6 +1,6 @@
 /**
  * stellar.org adapter: both operations against recorded fixtures, the path
- * guard, the partner and blog/press/events filter, redirects, size and time
+ * guard, the row kinds and the blog/press/events filter, redirects, size and time
  * caps, and the envelope the sandbox sees. No live calls.
  */
 import { describe, expect, it, vi } from "vitest";
@@ -75,21 +75,78 @@ describe("stellarOrg.search_site", () => {
     expect(JSON.stringify(init.headers)).not.toMatch(/authorization|cookie/i);
   });
 
-  it("drops partner, blog, press, events and external rows", async () => {
+  it("keeps page, partner, audit and tutorial rows in site order and drops blog, press, events and external pages", async () => {
     const { fetchImpl } = recorder(() => new Response(fixture("stellar-org-search.json")));
     const result = await callStellarOrg(SEARCH, { query: "moneygram", limit: 10 }, fetchImpl);
     expect(result.ok).toBe(true);
     if (!result.ok) return;
-    const data = result.data as { hits: { path: string; kind: string; title: string; tags: string[] }[]; meta: { candidates: number } };
-    expect(data.meta).toEqual({ candidates: 12 });
-    expect(data.hits.map((hit) => [hit.kind, hit.path])).toEqual([
+    const data = result.data as { hits: Record<string, unknown>[]; meta: { candidates: number } };
+    expect(data.meta).toEqual({ candidates: 14 });
+    expect(data.hits.map((hit) => [hit.kind, hit.path ?? hit.url ?? hit.reportUrl])).toEqual([
       ["page", "/products-and-tools/moneygram"],
-      ["page", "/case-studies/moneygram-international"]
+      ["partner", `${STELLAR_ORG_ORIGIN}/ecosystem?partner=moneygram`],
+      ["page", "/case-studies/moneygram-international"],
+      ["audit", "https://www.halborn.com/portal/reports/stellar-amm-6f9223"],
+      ["tutorial", `${STELLAR_ORG_ORIGIN}/learn?tutorial=write-your-first-smart-contract-in-rust-pt-1-hello-world`]
     ]);
+    const keys = Object.fromEntries(data.hits.map((hit) => [hit.kind, Object.keys(hit).sort()]));
+    expect(keys).toEqual({
+      page: ["description", "kind", "path", "tags", "title"],
+      partner: ["description", "kind", "tags", "title", "url"],
+      audit: ["firm", "kind", "project", "reportUrl", "title"],
+      tutorial: ["description", "kind", "tags", "title", "url"]
+    });
+    // The site returns one partner row per directory category; they merge into one hit.
+    expect(data.hits[1]!.tags).toEqual(["applications", "on-off-ramps", "tokenized-assets"]);
+    expect(data.hits[3]).toMatchObject({ project: "Normal", firm: "Halborn" });
     for (const hit of data.hits) {
-      expect(Object.keys(hit).sort()).toEqual(["description", "kind", "path", "tags", "title"]);
-      for (const prefix of EXCLUDED_PREFIXES) expect(hit.path.startsWith(`${prefix}/`)).toBe(false);
+      if (typeof hit.path === "string") for (const prefix of EXCLUDED_PREFIXES) expect(hit.path.startsWith(`${prefix}/`)).toBe(false);
     }
+  });
+
+  it("splits audit titles into project and firm and keeps only http report links", () => {
+    const audit = (title: string, url: string) => ({ kind: "audit", title, url, isExternal: true });
+    const hits = siteHits([
+      audit("Spectra - Interest Rate Markets on Stellar - Certora Ltd", "https://www.certora.com/reports/spectra-bridge"),
+      audit("Unnamed record - Certora Ltd, Code4rena / Zellic", "https://www.certora.com/reports/blend"),
+      audit("Volta Circuit -", "https://example.com/volta"),
+      audit("Bad link - Firm", "javascript:alert(1)"),
+      audit("Relative link - Firm", "/audit-bank/projects")
+    ]);
+    expect(hits).toEqual([
+      {
+        kind: "audit",
+        title: "Spectra - Interest Rate Markets on Stellar - Certora Ltd",
+        project: "Spectra - Interest Rate Markets on Stellar",
+        firm: "Certora Ltd",
+        reportUrl: "https://www.certora.com/reports/spectra-bridge"
+      },
+      {
+        kind: "audit",
+        title: "Unnamed record - Certora Ltd, Code4rena / Zellic",
+        project: null,
+        firm: "Certora Ltd, Code4rena / Zellic",
+        reportUrl: "https://www.certora.com/reports/blend"
+      },
+      { kind: "audit", title: "Volta Circuit -", project: "Volta Circuit", firm: null, reportUrl: "https://example.com/volta" }
+    ]);
+  });
+
+  it("rebuilds tutorial and partner links on the fixed origin from a safe slug", () => {
+    const rows = [
+      { kind: "tutorial", title: "ok", url: "/learn?tutorial=hello-world" },
+      { kind: "tutorial", title: "off origin", url: "https://evil.example/learn?tutorial=x" },
+      { kind: "tutorial", title: "wrong page", url: "/blog?tutorial=x" },
+      { kind: "tutorial", title: "bad slug", url: "/learn?tutorial=..%2Fapi" },
+      { kind: "tutorial", title: "external", url: "/learn?tutorial=y", isExternal: true },
+      { kind: "partner", title: "Blend", url: "?partner=blend&category=defi" },
+      { kind: "partner", title: "no slug", url: "?category=defi" },
+      { kind: "newkind", title: "unknown", url: "/x" }
+    ];
+    expect(siteHits(rows).map((hit) => [hit.kind, "url" in hit ? hit.url : null])).toEqual([
+      ["tutorial", `${STELLAR_ORG_ORIGIN}/learn?tutorial=hello-world`],
+      ["partner", `${STELLAR_ORG_ORIGIN}/ecosystem?partner=blend`]
+    ]);
   });
 
   it("applies the prefix filter on whole path segments", () => {
@@ -98,12 +155,12 @@ describe("stellarOrg.search_site", () => {
       title: url,
       url
     }));
-    expect(siteHits(rows).map((hit) => hit.path)).toEqual(["/blogger", "/pressroom/x", "/eventsuite"]);
+    expect(siteHits(rows).map((hit) => ("path" in hit ? hit.path : null))).toEqual(["/blogger", "/pressroom/x", "/eventsuite"]);
   });
 
   it("clips a long description", () => {
     const [hit] = siteHits([{ kind: "page", title: "t", url: "/t", description: "d".repeat(100_000) }]);
-    expect(hit!.description).toHaveLength(500);
+    expect(hit && "description" in hit && hit.description).toHaveLength(500);
   });
 
   it("drops rows that leave the origin even when isExternal is false", () => {
@@ -111,7 +168,7 @@ describe("stellarOrg.search_site", () => {
       { kind: "page", title: "elsewhere", url: "https://developers.stellar.org/docs", isExternal: false },
       { kind: "page", title: "absolute same-origin", url: "https://stellar.org/foundation/roadmap/", isExternal: false }
     ];
-    expect(siteHits(rows).map((hit) => hit.path)).toEqual(["/foundation/roadmap"]);
+    expect(siteHits(rows).map((hit) => ("path" in hit ? hit.path : null))).toEqual(["/foundation/roadmap"]);
   });
 
   it("honors limit and defaults to five hits", async () => {

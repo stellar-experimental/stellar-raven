@@ -179,9 +179,14 @@ independent review and its reconciliation are in
   in Blend's docs and the Security Portal, not on stellar.org's server-rendered audited-projects
   page. The Anchor Directory is `anchors.stellar.org`, not stellar.org. Each case needs another
   source or a golden-truth edit.
+- **Routing reach and body text.** On a 40-question general set, `search_site` now returns what
+  the site search returns, but Raven's catalog `search` puts a `stellarOrg` operation in the top
+  five for only 7 questions, and the keyless search misses 12 of 21 body-text phrases. Decide
+  whether the Algolia `pages` index is worth a search-only key
+  ([SORG-GENERAL.md](rounds/2026-11-14-golden-coverage-audit/decisions/SORG-GENERAL.md)).
 
-Done when: Worker egress is verified, the scoped QA run is recorded, and the two out-of-source
-facts are routed.
+Done when: Worker egress is verified, the scoped QA run is recorded, the two out-of-source
+facts are routed, and the Algolia decision is recorded.
 
 ### Check Docs search for the SEP-7 payment-request page before filing
 

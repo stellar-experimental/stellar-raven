@@ -39,9 +39,9 @@ export const SERVICE_FAMILY_PURPOSES = [
     family: "stellarOrg",
     label: "stellar.org",
     line:
-      "SDF's own website outside its blog, press, and events: Foundation strategy, roadmap, programs, service-provider and audited-project directories, and public statements.",
+      "SDF's own website outside its blog, press, and events: Foundation strategy, roadmap, programs, products and tools, case studies, video tutorials, the audit register (project, firm, report link), service-provider and partner directories, and public statements.",
     authority:
-      "Primary for SDF's strategy, roadmap, programs, those directories, and SDF's stated positions; not for protocol behavior (Stellar Docs) or blog, press, and events (Scout, Lumenloop)."
+      "Primary for SDF's strategy, roadmap, programs, products, that register, those directories, and SDF's stated positions; not for protocol behavior (Stellar Docs) or blog, press, and events (Scout, Lumenloop)."
   },
   {
     family: "skills",

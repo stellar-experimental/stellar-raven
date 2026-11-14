@@ -1,0 +1,720 @@
+{
+  "$comment": "General-purpose query set for the stellar.org source (2026-11-14). Written from the stellar.org sitemap, page text, the record kinds the site search returns, and eval/qa/taxonomy.json leaf names only; no golden case was read. Each answer was confirmed by reading the page (page answers) or the record (audit, tutorial, partner answers). `answers` lists every record that answers the question; a row matches when it is any of them. Page answers match on path; tutorial answers on the `tutorial` slug; partner answers on the `partner` slug; audit answers on a title prefix or report-URL substring. `evidence` is text on the page or record that carries the fact. `bodyText: true` marks a fact that is in the page body but not in its title or search description.",
+  "measured": "2026-11-14",
+  "queries": [
+    {
+      "id": "a01",
+      "group": "audit",
+      "leaf": "security.audit-registry",
+      "question": "Who audited the Soroswap AMM aggregator on Stellar?",
+      "keyword": "Soroswap audit",
+      "answers": [
+        {
+          "kind": "audit",
+          "titlePrefix": "Soroswap.Finance - "
+        }
+      ],
+      "evidence": "Soroswap.Finance - OtterSec; Soroswap.Finance - Runtime Verification"
+    },
+    {
+      "id": "a02",
+      "group": "audit",
+      "leaf": "security.audit-registry",
+      "question": "Where can I read the Certora security report for the Reflector oracle?",
+      "keyword": "Reflector Certora",
+      "answers": [
+        {
+          "kind": "audit",
+          "titlePrefix": "Reflector - Certora"
+        }
+      ],
+      "evidence": "https://www.certora.com/reports/reflector-security-assessment-v1"
+    },
+    {
+      "id": "a03",
+      "group": "audit",
+      "leaf": "security.audit-registry",
+      "question": "Which firm audited Spiko's Stellar smart contracts?",
+      "keyword": "Spiko audit",
+      "answers": [
+        {
+          "kind": "audit",
+          "titlePrefix": "Spiko - "
+        }
+      ],
+      "evidence": "Spiko - Halborn"
+    },
+    {
+      "id": "a04",
+      "group": "audit",
+      "leaf": "security.audit-registry",
+      "question": "Has the Blend lending protocol had a security audit, and where is the report?",
+      "keyword": "Blend audit",
+      "answers": [
+        {
+          "kind": "audit",
+          "urlContains": "certora.com/reports/blend"
+        }
+      ],
+      "evidence": "Unnamed record - Certora Ltd -> https://www.certora.com/reports/blend (the record has no project name)"
+    },
+    {
+      "id": "a05",
+      "group": "audit",
+      "leaf": "security.audit-registry",
+      "question": "Which Stellar projects has Veridise audited?",
+      "keyword": "Veridise",
+      "answers": [
+        {
+          "kind": "audit",
+          "titleContains": "Veridise"
+        }
+      ],
+      "evidence": "Phoenix - Veridise Inc; OrbitCDP - Veridise Inc; Wombat Exchange - Veridise Inc"
+    },
+    {
+      "id": "a06",
+      "group": "audit",
+      "leaf": "security.audit-registry",
+      "question": "Was the Stellar Attestation Service smart contract audited?",
+      "keyword": "Stellar Attestation Service audit",
+      "answers": [
+        {
+          "kind": "audit",
+          "titlePrefix": "Stellar Attestation Service - "
+        }
+      ],
+      "evidence": "Stellar Attestation Service - Halborn"
+    },
+    {
+      "id": "a07",
+      "group": "audit",
+      "leaf": "security.audit-registry",
+      "question": "Who audited the Phoenix DEX contracts on Soroban?",
+      "keyword": "Phoenix audit",
+      "answers": [
+        {
+          "kind": "audit",
+          "titlePrefix": "Phoenix - "
+        }
+      ],
+      "evidence": "Phoenix - Veridise Inc"
+    },
+    {
+      "id": "a08",
+      "group": "audit",
+      "leaf": "security.audit-registry",
+      "question": "Is there a published audit of the DeFindex vaults?",
+      "keyword": "DeFindex audit",
+      "answers": [
+        {
+          "kind": "audit",
+          "titlePrefix": "DeFindex"
+        }
+      ],
+      "evidence": "DeFindex: DeFi Made Easy - OtterSec"
+    },
+    {
+      "id": "a09",
+      "group": "audit",
+      "leaf": "security.audit-bank",
+      "question": "What does the Soroban Security Audit Bank give SCF-funded projects?",
+      "keyword": "Soroban Security Audit Bank",
+      "answers": [
+        {
+          "kind": "page",
+          "path": "/grants-and-funding/soroban-audit-bank"
+        }
+      ],
+      "evidence": "Complimentary Initial Audit"
+    },
+    {
+      "id": "a10",
+      "group": "audit",
+      "leaf": "security.audit-bank",
+      "question": "How much does a project pay upfront for an Audit Bank audit, and when is it refunded?",
+      "keyword": "audit bank co-payment refund",
+      "answers": [
+        {
+          "kind": "page",
+          "path": "/grants-and-funding/soroban-audit-bank"
+        }
+      ],
+      "evidence": "Projects will need to contribute 5% of the audit cost upfront ... within 20 business days",
+      "bodyText": true
+    },
+    {
+      "id": "a11",
+      "group": "audit",
+      "leaf": "security.audit-bank",
+      "question": "Which audit firms review Audit Bank projects at pre-negotiated rates?",
+      "keyword": "audit bank partner firms",
+      "answers": [
+        {
+          "kind": "page",
+          "path": "/grants-and-funding/soroban-audit-bank"
+        }
+      ],
+      "evidence": "Audit Bank funding can be used to help cover costs of security review by industry-leading audit firms at pre-negotiated rates",
+      "bodyText": true
+    },
+    {
+      "id": "a12",
+      "group": "audit",
+      "leaf": "security.audit-bank",
+      "question": "Which projects have recently completed audits through the Audit Bank?",
+      "keyword": "audited projects",
+      "answers": [
+        {
+          "kind": "page",
+          "path": "/audit-bank/projects"
+        }
+      ],
+      "evidence": "Security audited projects ... 77 Results"
+    },
+    {
+      "id": "a13",
+      "group": "audit",
+      "leaf": "security.bug-bounty",
+      "question": "How do I report a vulnerability in Stellar Core, and is there a bounty?",
+      "keyword": "bug bounty",
+      "answers": [
+        {
+          "kind": "page",
+          "path": "/grants-and-funding/bug-bounty"
+        },
+        {
+          "kind": "page",
+          "path": "/bounty-eligibility-guidelines"
+        }
+      ],
+      "evidence": "The Stellar Development Foundation has partnered with HackerOne"
+    },
+    {
+      "id": "a14",
+      "group": "audit",
+      "leaf": "security.bug-bounty",
+      "question": "How long does SDF take to fix a reported vulnerability before it may be disclosed?",
+      "keyword": "responsible disclosure",
+      "answers": [
+        {
+          "kind": "page",
+          "path": "/grants-and-funding/bug-bounty"
+        },
+        {
+          "kind": "page",
+          "path": "/bounty-eligibility-guidelines"
+        }
+      ],
+      "evidence": "Our development team has up to 90 days to implement a fix",
+      "bodyText": true
+    },
+    {
+      "id": "d01",
+      "group": "appdev",
+      "leaf": "standards.disbursements",
+      "question": "What is the Stellar Disbursement Platform, and how many payments can it send in one batch?",
+      "keyword": "disbursement platform",
+      "answers": [
+        {
+          "kind": "page",
+          "path": "/products-and-tools/disbursement-platform"
+        }
+      ],
+      "evidence": "Send up to 10,000 payments",
+      "bodyText": true
+    },
+    {
+      "id": "d02",
+      "group": "appdev",
+      "leaf": "standards.anchor-platform",
+      "question": "How does the Anchor Platform help a business offer deposits and withdrawals on Stellar?",
+      "keyword": "anchor platform",
+      "answers": [
+        {
+          "kind": "page",
+          "path": "/products-and-tools/anchor-platform"
+        }
+      ],
+      "evidence": "payment rails specializing in cross-border payments, deposits and withdrawals"
+    },
+    {
+      "id": "d03",
+      "group": "appdev",
+      "leaf": "tooling.wallet-sdk",
+      "question": "What does the Stellar Wallet SDK provide for building a wallet app?",
+      "keyword": "wallet sdk",
+      "answers": [
+        {
+          "kind": "page",
+          "path": "/products-and-tools/wallet-sdk"
+        }
+      ],
+      "evidence": "Enable account creation, transaction signing, querying the network for users"
+    },
+    {
+      "id": "d04",
+      "group": "appdev",
+      "leaf": "soroban.overview",
+      "question": "Is there a video tutorial for writing a hello world smart contract in Rust on Stellar?",
+      "keyword": "hello world contract tutorial",
+      "answers": [
+        {
+          "kind": "tutorial",
+          "slug": "write-your-first-smart-contract-in-rust-pt-1-hello-world"
+        }
+      ],
+      "evidence": "Write Your First Smart Contract in Rust Pt. 1 | Hello World | 5/30/2023"
+    },
+    {
+      "id": "d05",
+      "group": "appdev",
+      "leaf": "tooling.wallet-connection",
+      "question": "Is there a tutorial on building passkey smart wallets with WebAuthn on Stellar?",
+      "keyword": "passkey tutorial",
+      "answers": [
+        {
+          "kind": "tutorial",
+          "slug": "webauthn-passkey-smart-wallets"
+        }
+      ],
+      "evidence": "WebAuthn Passkey Smart Wallets w/ James Bachini | 8/30/2024"
+    },
+    {
+      "id": "d06",
+      "group": "appdev",
+      "leaf": "soroban.overview",
+      "question": "How do I build a payments dApp with Soroban, step by step?",
+      "keyword": "payments dapp tutorial",
+      "answers": [
+        {
+          "kind": "tutorial",
+          "slug": "build-a-soroban-payments-dapp-or-soroban-dapps-challenge"
+        }
+      ],
+      "evidence": "Build a Soroban Payments dApp | 8/9/2023"
+    },
+    {
+      "id": "d07",
+      "group": "appdev",
+      "leaf": "standards.moneygram-ramps",
+      "question": "How does MoneyGram use Stellar to let people cash out USDC?",
+      "keyword": "MoneyGram case study",
+      "answers": [
+        {
+          "kind": "page",
+          "path": "/case-studies/moneygram-international"
+        },
+        {
+          "kind": "page",
+          "path": "/products-and-tools/moneygram"
+        }
+      ],
+      "evidence": "170+ Countries with USDC cash-out"
+    },
+    {
+      "id": "d08",
+      "group": "appdev",
+      "leaf": "defi.lending",
+      "question": "How does the Meru wallet use Blend to earn yield for its users?",
+      "keyword": "Meru Blend",
+      "answers": [
+        {
+          "kind": "page",
+          "path": "/case-studies/meru-wallet-uses-blend-defi-protocol-for-yield"
+        },
+        {
+          "kind": "page",
+          "path": "/case-studies/meru-wallet-uses-blend-defi-protocol-for-yield-v2"
+        }
+      ],
+      "evidence": "How Blend runs lending pools on Stellar, and how Meru wallet uses Blend"
+    },
+    {
+      "id": "d09",
+      "group": "appdev",
+      "leaf": "assets.rwa-issuers",
+      "question": "How did Franklin Templeton put its money market fund on Stellar?",
+      "keyword": "Franklin Templeton BENJI",
+      "answers": [
+        {
+          "kind": "page",
+          "path": "/case-studies/franklin-templeton"
+        }
+      ],
+      "evidence": "launched the Franklin OnChain U.S. Government Money Fund (FOBXX) on Stellar"
+    },
+    {
+      "id": "d10",
+      "group": "appdev",
+      "leaf": "ai.x402",
+      "question": "How can I charge per request for my API with x402 on Stellar?",
+      "keyword": "x402",
+      "answers": [
+        {
+          "kind": "page",
+          "path": "/x402"
+        }
+      ],
+      "evidence": "x402 is an open payment protocol that lets any API or web service charge per request"
+    },
+    {
+      "id": "d11",
+      "group": "appdev",
+      "leaf": "standards.stellar-toml",
+      "question": "How do I publish a Stellar info file so SDF lists my service in its directories?",
+      "keyword": "stellar info file",
+      "answers": [
+        {
+          "kind": "page",
+          "path": "/ecosystem/stellar-info-file"
+        }
+      ],
+      "evidence": "SDF also uses these files to populate information on our website, like the Stellar Anchor Directory and Ecosystem pages"
+    },
+    {
+      "id": "d12",
+      "group": "appdev",
+      "leaf": "assets.usdt0",
+      "question": "Is USDT available on Stellar, and how does it get there without a bridge?",
+      "keyword": "USDT0 Stellar",
+      "answers": [
+        {
+          "kind": "page",
+          "path": "/products-and-tools/tether-usdt0"
+        }
+      ],
+      "evidence": "USDT0 moves USDT across 26+ chains as a single unified supply, built on LayerZero's OFT standard",
+      "bodyText": true
+    },
+    {
+      "id": "d13",
+      "group": "appdev",
+      "leaf": "network.current-protocol",
+      "question": "What does Protocol 30 change for smart contract developers, and when are the upgrade votes?",
+      "keyword": "Protocol 30 upgrade",
+      "answers": [
+        {
+          "kind": "page",
+          "path": "/protocol-upgrades"
+        }
+      ],
+      "evidence": "Bell, Protocol 30 ... Mainnet upgrade vote: November 23, 2026"
+    },
+    {
+      "id": "p01",
+      "group": "programs",
+      "leaf": "funding.other-sdf-funding",
+      "question": "Which companies are in SDF's Enterprise Fund portfolio?",
+      "keyword": "enterprise fund portfolio",
+      "answers": [
+        {
+          "kind": "page",
+          "path": "/enterprise-fund/portfolio"
+        }
+      ],
+      "evidence": "Puntored; Aku Fintech; Shift Markets; Etherfuse; Chipper Cash"
+    },
+    {
+      "id": "p02",
+      "group": "programs",
+      "leaf": "funding.other-sdf-funding",
+      "question": "How much will the Stellar Matching Fund match from a lead investor?",
+      "keyword": "matching fund",
+      "answers": [
+        {
+          "kind": "page",
+          "path": "/grants-and-funding/matching-fund"
+        }
+      ],
+      "evidence": "We will match investments raised from lead investors of up to $500,000 USD"
+    },
+    {
+      "id": "p03",
+      "group": "programs",
+      "leaf": "funding.other-sdf-funding",
+      "question": "Does SDF fund academic research, and who is on its research team?",
+      "keyword": "academic research grants",
+      "answers": [
+        {
+          "kind": "page",
+          "path": "/grants-and-funding/academic-research-grants"
+        }
+      ],
+      "evidence": "David Mazières, Chief Scientist at the SDF"
+    },
+    {
+      "id": "p04",
+      "group": "programs",
+      "leaf": "ecosystem.sdf",
+      "question": "Where can I download SDF's quarterly reports?",
+      "keyword": "quarterly reports",
+      "answers": [
+        {
+          "kind": "page",
+          "path": "/quarterly-reports"
+        }
+      ],
+      "evidence": "Every quarter, we report on SDF's achievements"
+    },
+    {
+      "id": "p05",
+      "group": "programs",
+      "leaf": "ecosystem.strategy-roadmap",
+      "question": "What are the North Stars that guide SDF's work?",
+      "keyword": "SDF north stars",
+      "answers": [
+        {
+          "kind": "page",
+          "path": "/foundation/north-stars"
+        }
+      ],
+      "evidence": "A trustworthy technology stack advances adoption for everyday financial services"
+    },
+    {
+      "id": "p06",
+      "group": "programs",
+      "leaf": "security.regulation-policy",
+      "question": "How much electricity does the Stellar network consume?",
+      "keyword": "Stellar electricity consumption",
+      "answers": [
+        {
+          "kind": "page",
+          "path": "/sustainability"
+        },
+        {
+          "kind": "page",
+          "path": "/insights/sustainability-report"
+        },
+        {
+          "kind": "page",
+          "path": "/resources/sustainability-report"
+        }
+      ],
+      "evidence": "How much electricity does the Stellar network consume?",
+      "bodyText": true
+    },
+    {
+      "id": "p07",
+      "group": "programs",
+      "leaf": "ecosystem.sdf",
+      "question": "Who leads the Stellar Development Foundation?",
+      "keyword": "SDF team",
+      "answers": [
+        {
+          "kind": "page",
+          "path": "/foundation/team"
+        }
+      ],
+      "evidence": "Leadership: Candace Kelly, David Mazières, Denelle Dixon, Jason Karsh, Jed McCaleb, ...",
+      "bodyText": true
+    },
+    {
+      "id": "p08",
+      "group": "programs",
+      "leaf": "network.scp-consensus",
+      "question": "How does the Stellar Consensus Protocol reach agreement without mining?",
+      "keyword": "Stellar Consensus Protocol",
+      "answers": [
+        {
+          "kind": "page",
+          "path": "/learn/stellar-consensus-protocol"
+        }
+      ],
+      "evidence": "The Stellar Consensus Protocol (SCP) provides a way to reach consensus without relying on a closed system"
+    },
+    {
+      "id": "p09",
+      "group": "programs",
+      "leaf": "security.regulation-policy",
+      "question": "What are SDF's public policy positions on tokenization and financial inclusion?",
+      "keyword": "SDF policy hub",
+      "answers": [
+        {
+          "kind": "page",
+          "path": "/policy-hub"
+        },
+        {
+          "kind": "page",
+          "path": "/policy-hub/tokenization"
+        },
+        {
+          "kind": "page",
+          "path": "/policy-hub/asset-tokenization"
+        },
+        {
+          "kind": "page",
+          "path": "/policy-hub/financial-inclusion"
+        }
+      ],
+      "evidence": "SDF policy hub: Insights and analyses from the SDF Policy team; 2025 policy briefs: Payments, Tokenization, DeFi"
+    },
+    {
+      "id": "p10",
+      "group": "programs",
+      "leaf": "ecosystem.sdf-mandate-holdings",
+      "question": "How does SDF's mandate say the foundation will use its XLM?",
+      "keyword": "SDF mandate",
+      "answers": [
+        {
+          "kind": "page",
+          "path": "/foundation/mandate"
+        }
+      ],
+      "evidence": "At its inception in 2014, SDF was vested with the authority to use the XLM to enhance and promote Stellar",
+      "bodyText": true
+    },
+    {
+      "id": "p11",
+      "group": "programs",
+      "leaf": "ecosystem.project-directory",
+      "question": "What does Soroswap.Finance do on Stellar?",
+      "keyword": "Soroswap",
+      "answers": [
+        {
+          "kind": "partner",
+          "slug": "soroswapfinance"
+        }
+      ],
+      "evidence": "Open-source AMM protocol and AMM Aggregator with Ecosystem Interoperability"
+    },
+    {
+      "id": "p12",
+      "group": "programs",
+      "leaf": "ecosystem.project-directory",
+      "question": "Is MoneyGram listed as a Stellar ecosystem partner, and in which category?",
+      "keyword": "MoneyGram partner",
+      "answers": [
+        {
+          "kind": "partner",
+          "slug": "moneygram"
+        }
+      ],
+      "evidence": "partner row ?partner=moneygram"
+    },
+    {
+      "id": "p13",
+      "group": "programs",
+      "leaf": "tooling.sdk-landscape",
+      "question": "Is there a Flutter SDK for building Stellar wallets?",
+      "keyword": "Flutter wallet SDK",
+      "answers": [
+        {
+          "kind": "partner",
+          "slug": "flutter-wallet-sdk"
+        }
+      ],
+      "evidence": "partner row ?partner=flutter-wallet-sdk&category=developer-tools"
+    }
+  ],
+  "bodyProbes": {
+    "$comment": "Phrases copied or paraphrased from page body text, each naming a fact that sits on `path`. Used to test whether the keyless search reaches body text (it matches title, description and tags). `x` rows came from the orchestrator's note.",
+    "probes": [
+      {
+        "for": "a10",
+        "phrase": "5% of the audit cost upfront",
+        "path": "/grants-and-funding/soroban-audit-bank"
+      },
+      {
+        "for": "a10",
+        "phrase": "audit co-payment refunded within 20 business days",
+        "path": "/grants-and-funding/soroban-audit-bank"
+      },
+      {
+        "for": "a10",
+        "phrase": "STRIDE threat modeling",
+        "path": "/grants-and-funding/soroban-audit-bank"
+      },
+      {
+        "for": "a14",
+        "phrase": "90 days to implement a fix",
+        "path": "/grants-and-funding/bug-bounty"
+      },
+      {
+        "for": "a13",
+        "phrase": "HackerOne",
+        "path": "/grants-and-funding/bug-bounty"
+      },
+      {
+        "for": "d01",
+        "phrase": "send up to 10,000 payments",
+        "path": "/products-and-tools/disbursement-platform"
+      },
+      {
+        "for": "d12",
+        "phrase": "LayerZero OFT",
+        "path": "/products-and-tools/tether-usdt0"
+      },
+      {
+        "for": "d09",
+        "phrase": "FOBXX",
+        "path": "/case-studies/franklin-templeton"
+      },
+      {
+        "for": "d09",
+        "phrase": "0.15% management fee",
+        "path": "/case-studies/franklin-templeton"
+      },
+      {
+        "for": "d10",
+        "phrase": "x402 Foundation governing board",
+        "path": "/x402"
+      },
+      {
+        "for": "d10",
+        "phrase": "Tomer Weller",
+        "path": "/x402"
+      },
+      {
+        "for": "d13",
+        "phrase": "CAP-0087 ML-DSA post-quantum signatures",
+        "path": "/protocol-upgrades"
+      },
+      {
+        "for": "p02",
+        "phrase": "match up to $500,000",
+        "path": "/grants-and-funding/matching-fund"
+      },
+      {
+        "for": "p03",
+        "phrase": "David Mazieres chief scientist",
+        "path": "/grants-and-funding/academic-research-grants"
+      },
+      {
+        "for": "p06",
+        "phrase": "PwC electricity consumption",
+        "path": "/sustainability"
+      },
+      {
+        "for": "p07",
+        "phrase": "Candace Kelly",
+        "path": "/foundation/team"
+      },
+      {
+        "for": "p10",
+        "phrase": "SDF sells XLM on Kraken Coinbase Bitstamp",
+        "path": "/foundation/mandate"
+      },
+      {
+        "for": "p10",
+        "phrase": "Direct Development Ecosystem Support Use-Case Investment User Acquisition",
+        "path": "/foundation/mandate"
+      },
+      {
+        "for": "p01",
+        "phrase": "Puntored",
+        "path": "/enterprise-fund/portfolio"
+      },
+      {
+        "for": "p01",
+        "phrase": "Chipper Cash investment",
+        "path": "/enterprise-fund/portfolio"
+      },
+      {
+        "for": null,
+        "phrase": "transformational enterprises",
+        "path": "/foundation/strategy"
+      }
+    ]
+  }
+}

@@ -1,7 +1,9 @@
 # stellar.org — site search and page text
 
 _Measured 2026-11-14 with keyless requests from a generic client (`User-Agent: RavenMCP/1.0`).
-Decision record: [SORG](../../.agents/rounds/2026-11-14-golden-coverage-audit/decisions/SORG.md)._
+Decision records: [SORG](../../.agents/rounds/2026-11-14-golden-coverage-audit/decisions/SORG.md),
+[SORG-GENERAL](../../.agents/rounds/2026-11-14-golden-coverage-audit/decisions/SORG-GENERAL.md)
+(general-purpose query set: [`stellar-org-queries.json`](stellar-org-queries.json))._
 
 ## Trigger
 
@@ -15,18 +17,30 @@ Raven source held. The 2026-11-14 QA test showed all three
 `GET https://stellar.org/api/search?q=<query>&locale=en` is the site's own search. No key.
 
 - Response: `{ query, locale, results: [{ id, kind, title, description, tags, url, isExternal }] }`,
-  at most 10 rows. `kind` is `page` or `partner`. `description` can be `null` or `""`.
+  at most 10 rows and no paging (`limit`, `page`, `offset`, and `kind` parameters are ignored).
+  `kind` is `page`, `audit`, `tutorial`, or `partner`. `description` can be `null` or `""`.
+- It matches title, description, and tags, not page body text: 12 of 21 phrases taken from page
+  bodies miss their page (SORG-GENERAL). Some queries return no rows at all, for example "Flutter
+  wallet SDK", although "wallet" returns the Flutter Wallet SDK partner row.
 - A missing `q`, or one longer than 200 characters, returns 400 `{"error":"invalid_query"}`. A
   query with no match returns 200 with `results: []`.
 - Page rows carry a site-relative `url` such as `/foundation/strategy`. Partner rows carry a query
   string, `?partner=moneygram&category=applications`, one row per directory category. The
   `/ecosystem` page renders the same HTML with or without that query string, so partner detail is
   client-side.
-- External rows (`isExternal: true`) link off the site, for example to an auditor's portal.
+- Audit rows are external (`isExternal: true`): title `Project - Firm`, `url` the auditor's
+  report, `description` null. Some carry `Unnamed record` as the project, Blend's among them, so a
+  project-name query cannot find them. The site's audit register overlaps Scout's `listAudits`
+  (71 reports from the Stellar Security Portal) for most projects; about ten stellar.org records
+  have no Scout counterpart by project name.
+- Tutorial rows carry `/learn?tutorial=<slug>`. `/learn` renders the same HTML with or without
+  the query, so a tutorial's title, date, description, and tags are all the text there is.
+- External rows other than audits link off the site.
 - Ranking, measured: `/foundation/strategy` first for "SDF strategy" (second for the full golden
   question), `/foundation/roadmap` first for "roadmap", `/ecosystem/service-providers` first for
   "service providers directory", `/audit-bank/projects` first for "audited projects" and second
-  for "audit bank projects". Full natural-language questions work.
+  for "audit bank projects". On the 40-question general set, the answering row is in the top 10
+  for 33 natural questions and 37 keyword forms.
 - Latency 0.12–0.49 s; `cache-control: private, no-cache`.
 - 707 of the 1,244 sitemap URLs are `/blog` and `/press`, and 350 are `/events` (orchestrator
   measurement). Search rows under those prefixes are a large share of most result sets.
@@ -50,11 +64,17 @@ Raven source held. The 2026-11-14 QA test showed all three
 Two authored operations in [`specs/stellar-org.json`](../../specs/stellar-org.json), served by
 [`src/adapters/stellar-org.ts`](../../src/adapters/stellar-org.ts):
 
-- `stellarOrg.search_site({ query, limit? })` drops partner rows (their page renders no partner
-  detail; Scout and Lumenloop own partners), rows under `/blog`, `/press`, and `/events` (whole
-  path segments, any case), and external or off-origin rows. It returns
-  `{ hits: [{ title, description, path, kind, tags }], meta: { candidates } }` with `kind` always
-  `page` and `description` clipped at 500 characters. The search body is read up to 256,000
+- `stellarOrg.search_site({ query, limit? })` keeps rows in site order by kind. Page rows outside
+  `/blog`, `/press`, and `/events` (whole path segments, any case) and on the origin return
+  `{ kind, title, description, path, tags }`. Audit rows return `{ kind, title, project, firm,
+  reportUrl }`; `reportUrl` must be http(s) and is cited, never fetched. Tutorial rows return
+  `{ kind, title, description, url, tags }` with `url` rebuilt on the fixed origin from a checked
+  slug. Partner rows return one hit per partner with the same fields, `url`
+  `https://stellar.org/ecosystem?partner=<slug>`, and the directory categories as `tags`. Other
+  external rows and unknown kinds are dropped. Descriptions are clipped at 500 characters. The
+  result is `{ hits, meta: { candidates } }`. The blog, press, and events filter is kept because
+  Scout or Lumenloop returned a stellar.org post under those prefixes for each of ten sampled
+  questions (SORG-GENERAL). The search body is read up to 256,000
   bytes. An all-filtered result is ok with no rows, so the host adds the `no-rows` caveat.
 - `stellarOrg.get_page({ path })` fetches `https://stellar.org<path>`. The path must be
   site-relative with unreserved characters only (no `%`, since `fetch` decodes `%2e` dot segments
@@ -85,3 +105,8 @@ to 215. Two changes fixed it:
 
 Result on all 544 routing rows: no grade or top-1 change; six top-five lists gain a `stellarOrg`
 operation at rank 3 to 5.
+
+On the 40-question general set (SORG-GENERAL), catalog `search` on the natural question puts a
+`stellarOrg` operation in the top five for 7 questions. A description naming products, case
+studies, tutorials, and the audit register raised that to 9 and changed 18 routing top-five
+lists, so the narrow description stays and the micro-map carries the wider scope.

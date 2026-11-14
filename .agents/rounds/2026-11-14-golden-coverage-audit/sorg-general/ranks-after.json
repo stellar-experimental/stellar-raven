@@ -1,0 +1,1543 @@
+[
+  {
+    "id": "a01",
+    "group": "audit",
+    "form": "question",
+    "text": "Who audited the Soroswap AMM aggregator on Stellar?",
+    "raw": null,
+    "adapter": null,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "audit"
+  },
+  {
+    "id": "a01",
+    "group": "audit",
+    "form": "keyword",
+    "text": "Soroswap audit",
+    "raw": 5,
+    "adapter": 2,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "audit",
+      "audit"
+    ],
+    "answerKind": "audit"
+  },
+  {
+    "id": "a02",
+    "group": "audit",
+    "form": "question",
+    "text": "Where can I read the Certora security report for the Reflector oracle?",
+    "raw": 1,
+    "adapter": 1,
+    "rawKinds": [
+      "audit",
+      "audit",
+      "page",
+      "page",
+      "page",
+      "page",
+      "audit",
+      "page",
+      "page",
+      "audit"
+    ],
+    "answerKind": "audit"
+  },
+  {
+    "id": "a02",
+    "group": "audit",
+    "form": "keyword",
+    "text": "Reflector Certora",
+    "raw": 1,
+    "adapter": 1,
+    "rawKinds": [
+      "audit",
+      "audit",
+      "audit",
+      "audit",
+      "audit",
+      "audit",
+      "audit",
+      "audit",
+      "audit",
+      "audit"
+    ],
+    "answerKind": "audit"
+  },
+  {
+    "id": "a03",
+    "group": "audit",
+    "form": "question",
+    "text": "Which firm audited Spiko's Stellar smart contracts?",
+    "raw": null,
+    "adapter": null,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "audit"
+  },
+  {
+    "id": "a03",
+    "group": "audit",
+    "form": "keyword",
+    "text": "Spiko audit",
+    "raw": 5,
+    "adapter": 3,
+    "rawKinds": [
+      "partner",
+      "page",
+      "partner",
+      "page",
+      "audit"
+    ],
+    "answerKind": "audit"
+  },
+  {
+    "id": "a04",
+    "group": "audit",
+    "form": "question",
+    "text": "Has the Blend lending protocol had a security audit, and where is the report?",
+    "raw": null,
+    "adapter": null,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "partner",
+      "page"
+    ],
+    "answerKind": "audit"
+  },
+  {
+    "id": "a04",
+    "group": "audit",
+    "form": "keyword",
+    "text": "Blend audit",
+    "raw": null,
+    "adapter": null,
+    "rawKinds": [
+      "partner"
+    ],
+    "answerKind": "audit"
+  },
+  {
+    "id": "a05",
+    "group": "audit",
+    "form": "question",
+    "text": "Which Stellar projects has Veridise audited?",
+    "raw": 3,
+    "adapter": 3,
+    "rawKinds": [
+      "page",
+      "page",
+      "audit",
+      "page",
+      "audit",
+      "audit",
+      "audit",
+      "audit",
+      "page",
+      "page"
+    ],
+    "answerKind": "audit"
+  },
+  {
+    "id": "a05",
+    "group": "audit",
+    "form": "keyword",
+    "text": "Veridise",
+    "raw": 1,
+    "adapter": 1,
+    "rawKinds": [
+      "audit",
+      "audit",
+      "audit",
+      "audit",
+      "audit",
+      "audit",
+      "audit",
+      "audit"
+    ],
+    "answerKind": "audit"
+  },
+  {
+    "id": "a06",
+    "group": "audit",
+    "form": "question",
+    "text": "Was the Stellar Attestation Service smart contract audited?",
+    "raw": 4,
+    "adapter": 2,
+    "rawKinds": [
+      "partner",
+      "page",
+      "page",
+      "audit",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "audit"
+  },
+  {
+    "id": "a06",
+    "group": "audit",
+    "form": "keyword",
+    "text": "Stellar Attestation Service audit",
+    "raw": 2,
+    "adapter": 2,
+    "rawKinds": [
+      "partner",
+      "audit",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "audit"
+  },
+  {
+    "id": "a07",
+    "group": "audit",
+    "form": "question",
+    "text": "Who audited the Phoenix DEX contracts on Soroban?",
+    "raw": null,
+    "adapter": null,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "audit"
+  },
+  {
+    "id": "a07",
+    "group": "audit",
+    "form": "keyword",
+    "text": "Phoenix audit",
+    "raw": 1,
+    "adapter": 1,
+    "rawKinds": [
+      "audit",
+      "page",
+      "page"
+    ],
+    "answerKind": "audit"
+  },
+  {
+    "id": "a08",
+    "group": "audit",
+    "form": "question",
+    "text": "Is there a published audit of the DeFindex vaults?",
+    "raw": 3,
+    "adapter": 2,
+    "rawKinds": [
+      "page",
+      "page",
+      "audit",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "partner"
+    ],
+    "answerKind": "audit"
+  },
+  {
+    "id": "a08",
+    "group": "audit",
+    "form": "keyword",
+    "text": "DeFindex audit",
+    "raw": 2,
+    "adapter": 2,
+    "rawKinds": [
+      "page",
+      "audit"
+    ],
+    "answerKind": "audit"
+  },
+  {
+    "id": "a09",
+    "group": "audit",
+    "form": "question",
+    "text": "What does the Soroban Security Audit Bank give SCF-funded projects?",
+    "raw": 1,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "partner",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "a09",
+    "group": "audit",
+    "form": "keyword",
+    "text": "Soroban Security Audit Bank",
+    "raw": 2,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "partner",
+      "page",
+      "audit",
+      "page",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "a10",
+    "group": "audit",
+    "form": "question",
+    "text": "How much does a project pay upfront for an Audit Bank audit, and when is it refunded?",
+    "raw": 1,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "partner"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "a10",
+    "group": "audit",
+    "form": "keyword",
+    "text": "audit bank co-payment refund",
+    "raw": 1,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "a11",
+    "group": "audit",
+    "form": "question",
+    "text": "Which audit firms review Audit Bank projects at pre-negotiated rates?",
+    "raw": 1,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "a11",
+    "group": "audit",
+    "form": "keyword",
+    "text": "audit bank partner firms",
+    "raw": 2,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "a12",
+    "group": "audit",
+    "form": "question",
+    "text": "Which projects have recently completed audits through the Audit Bank?",
+    "raw": 3,
+    "adapter": 2,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "a12",
+    "group": "audit",
+    "form": "keyword",
+    "text": "audited projects",
+    "raw": 1,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "a13",
+    "group": "audit",
+    "form": "question",
+    "text": "How do I report a vulnerability in Stellar Core, and is there a bounty?",
+    "raw": 1,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "a13",
+    "group": "audit",
+    "form": "keyword",
+    "text": "bug bounty",
+    "raw": 1,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "partner"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "a14",
+    "group": "audit",
+    "form": "question",
+    "text": "How long does SDF take to fix a reported vulnerability before it may be disclosed?",
+    "raw": 3,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "a14",
+    "group": "audit",
+    "form": "keyword",
+    "text": "responsible disclosure",
+    "raw": 1,
+    "adapter": 1,
+    "rawKinds": [
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "d01",
+    "group": "appdev",
+    "form": "question",
+    "text": "What is the Stellar Disbursement Platform, and how many payments can it send in one batch?",
+    "raw": 2,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "d01",
+    "group": "appdev",
+    "form": "keyword",
+    "text": "disbursement platform",
+    "raw": 1,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "d02",
+    "group": "appdev",
+    "form": "question",
+    "text": "How does the Anchor Platform help a business offer deposits and withdrawals on Stellar?",
+    "raw": 1,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "d02",
+    "group": "appdev",
+    "form": "keyword",
+    "text": "anchor platform",
+    "raw": 1,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "d03",
+    "group": "appdev",
+    "form": "question",
+    "text": "What does the Stellar Wallet SDK provide for building a wallet app?",
+    "raw": 2,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "page",
+      "partner",
+      "page",
+      "page",
+      "page",
+      "partner",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "d03",
+    "group": "appdev",
+    "form": "keyword",
+    "text": "wallet sdk",
+    "raw": 1,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "page",
+      "partner",
+      "partner",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "partner"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "d04",
+    "group": "appdev",
+    "form": "question",
+    "text": "Is there a video tutorial for writing a hello world smart contract in Rust on Stellar?",
+    "raw": 1,
+    "adapter": 1,
+    "rawKinds": [
+      "tutorial",
+      "page",
+      "page",
+      "page",
+      "tutorial",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "tutorial"
+  },
+  {
+    "id": "d04",
+    "group": "appdev",
+    "form": "keyword",
+    "text": "hello world contract tutorial",
+    "raw": 2,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "tutorial",
+      "page",
+      "page",
+      "tutorial",
+      "page",
+      "partner"
+    ],
+    "answerKind": "tutorial"
+  },
+  {
+    "id": "d05",
+    "group": "appdev",
+    "form": "question",
+    "text": "Is there a tutorial on building passkey smart wallets with WebAuthn on Stellar?",
+    "raw": 3,
+    "adapter": 2,
+    "rawKinds": [
+      "page",
+      "page",
+      "tutorial",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "tutorial"
+  },
+  {
+    "id": "d05",
+    "group": "appdev",
+    "form": "keyword",
+    "text": "passkey tutorial",
+    "raw": 4,
+    "adapter": 2,
+    "rawKinds": [
+      "page",
+      "partner",
+      "page",
+      "tutorial",
+      "page"
+    ],
+    "answerKind": "tutorial"
+  },
+  {
+    "id": "d06",
+    "group": "appdev",
+    "form": "question",
+    "text": "How do I build a payments dApp with Soroban, step by step?",
+    "raw": 1,
+    "adapter": 1,
+    "rawKinds": [
+      "tutorial",
+      "page",
+      "page",
+      "tutorial",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "tutorial"
+  },
+  {
+    "id": "d06",
+    "group": "appdev",
+    "form": "keyword",
+    "text": "payments dapp tutorial",
+    "raw": 2,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "tutorial",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "tutorial",
+      "page",
+      "page"
+    ],
+    "answerKind": "tutorial"
+  },
+  {
+    "id": "d07",
+    "group": "appdev",
+    "form": "question",
+    "text": "How does MoneyGram use Stellar to let people cash out USDC?",
+    "raw": 1,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "d07",
+    "group": "appdev",
+    "form": "keyword",
+    "text": "MoneyGram case study",
+    "raw": 2,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "partner",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "d08",
+    "group": "appdev",
+    "form": "question",
+    "text": "How does the Meru wallet use Blend to earn yield for its users?",
+    "raw": 1,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "partner",
+      "page",
+      "page",
+      "partner",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "d08",
+    "group": "appdev",
+    "form": "keyword",
+    "text": "Meru Blend",
+    "raw": 1,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "partner"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "d09",
+    "group": "appdev",
+    "form": "question",
+    "text": "How did Franklin Templeton put its money market fund on Stellar?",
+    "raw": 2,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "partner",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "d09",
+    "group": "appdev",
+    "form": "keyword",
+    "text": "Franklin Templeton BENJI",
+    "raw": 1,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "partner",
+      "partner",
+      "partner"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "d10",
+    "group": "appdev",
+    "form": "question",
+    "text": "How can I charge per request for my API with x402 on Stellar?",
+    "raw": 1,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "d10",
+    "group": "appdev",
+    "form": "keyword",
+    "text": "x402",
+    "raw": 1,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "d11",
+    "group": "appdev",
+    "form": "question",
+    "text": "How do I publish a Stellar info file so SDF lists my service in its directories?",
+    "raw": 1,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "d11",
+    "group": "appdev",
+    "form": "keyword",
+    "text": "stellar info file",
+    "raw": 1,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "d12",
+    "group": "appdev",
+    "form": "question",
+    "text": "Is USDT available on Stellar, and how does it get there without a bridge?",
+    "raw": null,
+    "adapter": null,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "d12",
+    "group": "appdev",
+    "form": "keyword",
+    "text": "USDT0 Stellar",
+    "raw": null,
+    "adapter": null,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "d13",
+    "group": "appdev",
+    "form": "question",
+    "text": "What does Protocol 30 change for smart contract developers, and when are the upgrade votes?",
+    "raw": 2,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "d13",
+    "group": "appdev",
+    "form": "keyword",
+    "text": "Protocol 30 upgrade",
+    "raw": 3,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "p01",
+    "group": "programs",
+    "form": "question",
+    "text": "Which companies are in SDF's Enterprise Fund portfolio?",
+    "raw": 1,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "p01",
+    "group": "programs",
+    "form": "keyword",
+    "text": "enterprise fund portfolio",
+    "raw": 1,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "p02",
+    "group": "programs",
+    "form": "question",
+    "text": "How much will the Stellar Matching Fund match from a lead investor?",
+    "raw": 1,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "p02",
+    "group": "programs",
+    "form": "keyword",
+    "text": "matching fund",
+    "raw": 1,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "p03",
+    "group": "programs",
+    "form": "question",
+    "text": "Does SDF fund academic research, and who is on its research team?",
+    "raw": 2,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "p03",
+    "group": "programs",
+    "form": "keyword",
+    "text": "academic research grants",
+    "raw": 1,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "partner"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "p04",
+    "group": "programs",
+    "form": "question",
+    "text": "Where can I download SDF's quarterly reports?",
+    "raw": 1,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "p04",
+    "group": "programs",
+    "form": "keyword",
+    "text": "quarterly reports",
+    "raw": 1,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "p05",
+    "group": "programs",
+    "form": "question",
+    "text": "What are the North Stars that guide SDF's work?",
+    "raw": 1,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "p05",
+    "group": "programs",
+    "form": "keyword",
+    "text": "SDF north stars",
+    "raw": 1,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "p06",
+    "group": "programs",
+    "form": "question",
+    "text": "How much electricity does the Stellar network consume?",
+    "raw": 1,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "p06",
+    "group": "programs",
+    "form": "keyword",
+    "text": "Stellar electricity consumption",
+    "raw": 1,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "p07",
+    "group": "programs",
+    "form": "question",
+    "text": "Who leads the Stellar Development Foundation?",
+    "raw": 2,
+    "adapter": 2,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "p07",
+    "group": "programs",
+    "form": "keyword",
+    "text": "SDF team",
+    "raw": 1,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "p08",
+    "group": "programs",
+    "form": "question",
+    "text": "How does the Stellar Consensus Protocol reach agreement without mining?",
+    "raw": 1,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "p08",
+    "group": "programs",
+    "form": "keyword",
+    "text": "Stellar Consensus Protocol",
+    "raw": 1,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "p09",
+    "group": "programs",
+    "form": "question",
+    "text": "What are SDF's public policy positions on tokenization and financial inclusion?",
+    "raw": 2,
+    "adapter": 2,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "p09",
+    "group": "programs",
+    "form": "keyword",
+    "text": "SDF policy hub",
+    "raw": 1,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "p10",
+    "group": "programs",
+    "form": "question",
+    "text": "How does SDF's mandate say the foundation will use its XLM?",
+    "raw": 1,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "p10",
+    "group": "programs",
+    "form": "keyword",
+    "text": "SDF mandate",
+    "raw": 1,
+    "adapter": 1,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "page"
+  },
+  {
+    "id": "p11",
+    "group": "programs",
+    "form": "question",
+    "text": "What does Soroswap.Finance do on Stellar?",
+    "raw": null,
+    "adapter": null,
+    "rawKinds": [],
+    "answerKind": "partner"
+  },
+  {
+    "id": "p11",
+    "group": "programs",
+    "form": "keyword",
+    "text": "Soroswap",
+    "raw": 3,
+    "adapter": 2,
+    "rawKinds": [
+      "page",
+      "page",
+      "partner",
+      "partner",
+      "audit",
+      "audit",
+      "partner",
+      "partner"
+    ],
+    "answerKind": "partner"
+  },
+  {
+    "id": "p12",
+    "group": "programs",
+    "form": "question",
+    "text": "Is MoneyGram listed as a Stellar ecosystem partner, and in which category?",
+    "raw": null,
+    "adapter": null,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "partner"
+  },
+  {
+    "id": "p12",
+    "group": "programs",
+    "form": "keyword",
+    "text": "MoneyGram partner",
+    "raw": 9,
+    "adapter": 3,
+    "rawKinds": [
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "page",
+      "partner",
+      "page"
+    ],
+    "answerKind": "partner"
+  },
+  {
+    "id": "p13",
+    "group": "programs",
+    "form": "question",
+    "text": "Is there a Flutter SDK for building Stellar wallets?",
+    "raw": 1,
+    "adapter": 1,
+    "rawKinds": [
+      "partner",
+      "page",
+      "page",
+      "page",
+      "partner",
+      "page",
+      "partner",
+      "page",
+      "page",
+      "page"
+    ],
+    "answerKind": "partner"
+  },
+  {
+    "id": "p13",
+    "group": "programs",
+    "form": "keyword",
+    "text": "Flutter wallet SDK",
+    "raw": null,
+    "adapter": null,
+    "rawKinds": [],
+    "answerKind": "partner"
+  }
+]
