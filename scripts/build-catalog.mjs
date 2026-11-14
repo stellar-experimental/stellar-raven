@@ -35,6 +35,7 @@ import { isGenericAliasTrigger } from "../src/catalog/known-aliases.ts";
 // src/skills/README.md defines the runnable-skill contract.
 // Runtime dispatch and both emitters use the same registry to preserve the exposed callable contract.
 import { RUNNERS } from "../src/skills/runners/index.ts";
+import { detailJoinKeys } from "../src/catalog/detail-relation.ts";
 import { writeFileAtomic } from "./lib/shared.mjs";
 import { loadSkillTexts, skillFileUrl } from "./lib/skill-mirror.mjs";
 import { RETRIEVAL_PROFILES } from "./catalog-data/retrieval-profiles.mjs";
@@ -1165,6 +1166,11 @@ export function attachRetrievalProfiles(entries, profiles = RETRIEVAL_PROFILES) 
       targets.add(edge.id);
       if (!Array.isArray(edge.on) || edge.on.length === 0) {
         throw new Error(`retrieval profile "${entry.id}" target "${edge.id}" has no trigger reasons`);
+      }
+      if (edge.relation === "detail" && detailJoinKeys(entry, { ...target, retrievalProfile: profiles[edge.id] }) === null) {
+        throw new Error(
+          `retrieval profile "${entry.id}" detail edge to "${edge.id}" needs a detail-lane target whose required inputs the source's rows carry`
+        );
       }
     }
     return { ...entry, retrievalProfile: profile };

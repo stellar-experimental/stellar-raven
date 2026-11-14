@@ -87,6 +87,7 @@ This section gives only the stages.
 `total` and `truncated` describe catalog navigation, not completeness of upstream evidence.
 `widerCandidates` and `recovery` supply advice that stays separate from the ranked hits.
 [ADR-0007](research/decisions/0007-structural-recovery-guidance.md) records the structural, advisory, bounded recovery decision.
+A recovery edge with relation `detail` marks a different fact: the source returns parts of records and the target returns one whole record its rows address (a Docs search hit and `stellarDocs.get_doc_page`). Search advice skips it. After a successful Docs search that returned rows and no page read in the same `execute`, the evidence checkpoint adds one generated sentence that says the hits are sections and names the page read. The Playground does not count that sentence as its one recovery-advice cycle.
 A public card carries no output type. In catalog entries and the sandbox `codemode.search` page, an oversized rendered output type becomes a compact stub that names the exact `codemode.describe` call.
 The manifest and detail helpers retain the complete schemas.
 

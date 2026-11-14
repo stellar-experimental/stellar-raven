@@ -218,6 +218,54 @@ describe("build-catalog.mjs", () => {
     })).toThrow(/non-exposed operation/);
   });
 
+  it("fails loud on a detail edge whose target lane or join key does not hold", () => {
+    const entries = catalog.entries.map(({ retrievalProfile: _profile, ...entry }) => entry);
+    const detail = { id: "stellarDocs.get_doc_page", relation: "detail", on: ["partial"] } as const;
+    const docsProfiles = {
+      "stellarDocs.get_doc_page": { lane: "detail", emptyScope: "operation", recoverWith: [
+        { id: "stellarDocs.search_docs", relation: "corpus-wide", on: ["empty"] }
+      ] }
+    } as const;
+    // A valid edge: the source's rows carry `path`, the target is detail-lane and requires `path`.
+    expect(() => attachRetrievalProfiles(entries, {
+      ...docsProfiles,
+      "stellarDocs.search_docs": { lane: "corpus", emptyScope: "corpus", recoverWith: [detail] }
+    })).not.toThrow();
+    // The target is not detail-lane.
+    expect(() => attachRetrievalProfiles(entries, {
+      "stellarDocs.get_doc_page": { lane: "corpus", emptyScope: "operation", recoverWith: [
+        { id: "stellarDocs.search_docs", relation: "corpus-wide", on: ["empty"] }
+      ] },
+      "stellarDocs.search_docs": { lane: "corpus", emptyScope: "corpus", recoverWith: [detail] }
+    })).toThrow(/detail edge .* needs a detail-lane target/);
+    // The source's rows do not carry the target's required input.
+    expect(() => attachRetrievalProfiles(entries, {
+      ...docsProfiles,
+      "scout.getBuilders": { lane: "directory", emptyScope: "operation", recoverWith: [detail] }
+    })).toThrow(/detail edge .* needs a detail-lane target/);
+  });
+
+  it("rejects a manifest whose detail edge no longer holds", () => {
+    const broken = {
+      ...catalog,
+      entries: catalog.entries.map((entry) =>
+        entry.id === "scout.getBuilders" && entry.retrievalProfile
+          ? {
+              ...entry,
+              retrievalProfile: {
+                ...entry.retrievalProfile,
+                recoverWith: [
+                  ...entry.retrievalProfile.recoverWith,
+                  { id: "stellarDocs.get_doc_page", relation: "detail", on: ["partial"] }
+                ]
+              }
+            }
+          : entry
+      )
+    };
+    expect(() => loadManifest(broken)).toThrow(/detail edge/);
+  });
+
   it("fails loud on an orphaned, non-operation, or over-long card caveat", () => {
     const entries = catalog.entries.map(({ cardCaveat: _caveat, ...entry }) => entry);
     const attached = attachCardCaveats(entries, { "scout.listAudits": "Absent is not unaudited." });

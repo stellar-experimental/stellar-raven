@@ -19,7 +19,7 @@ import { tracing } from "cloudflare:workers";
 import { DynamicWorkerExecutor } from "@cloudflare/codemode";
 import superSpecJson from "../../specs/super-spec.json";
 import { getCatalog } from "../catalog/load.ts";
-import { recoveryCandidatesFromSources } from "../catalog/search.ts";
+import { detailTargetsFromSources, recoveryCandidatesFromSources } from "../catalog/search.ts";
 import type { BuildAuthorityRole, Catalog } from "../catalog/types.ts";
 import { buildSandbox, type ArtifactReadStats, type OpLedgerCall, type SandboxProvider } from "./providers.ts";
 import {
@@ -147,7 +147,7 @@ export function assertExecutorEvidenceOperationIds(catalog: Catalog): void {
 
 const BROAD_RETRIEVAL_LANES = new Set(["semantic", "research", "av", "corpus"]);
 
-function summarizeOperationLedger(calls: readonly OpLedgerCall[]): ExecuteOperationSummary {
+export function summarizeOperationLedger(calls: readonly OpLedgerCall[]): ExecuteOperationSummary {
   const summary: ExecuteOperationSummary = { total: calls.length, ok: 0, error: 0, softEmpty: 0 };
   let evidenceData = 0;
   let caveats = 0;
@@ -185,7 +185,32 @@ function latestObservedAt(calls: readonly OpLedgerCall[]): string | undefined {
   return latest;
 }
 
-function evidenceRecoveryHint(
+export function evidenceRecoveryHint(
+  calls: readonly OpLedgerCall[],
+  summary: ExecuteOperationSummary
+): EvidenceRecoveryHint | undefined {
+  const alternatives = evidenceAlternativesHint(calls, summary);
+  // A detail pointer makes no claim about what the run did not call, so it does not wait on the
+  // unprofiled-operation rule or on the mode that guards "narrow lookups only".
+  const sources = calls
+    .filter((call) => call.outcome === "ok" && call.hasServiceData !== false)
+    .map((call) => call.op);
+  const detail = detailTargetsFromSources(
+    getCatalog(),
+    [...new Set(sources)],
+    [...new Set(calls.map((call) => call.op))]
+  ).map(({ id, sources: from, keys }) => ({ target: id, sourceOperations: from, keys }));
+  if (detail.length === 0) return alternatives;
+  if (alternatives) return { ...alternatives, detail };
+  return {
+    mode: "detail-only",
+    sourceOperations: [...new Set(detail.flatMap((pointer) => pointer.sourceOperations))],
+    candidates: [],
+    detail
+  };
+}
+
+function evidenceAlternativesHint(
   calls: readonly OpLedgerCall[],
   summary: ExecuteOperationSummary
 ): EvidenceRecoveryHint | undefined {

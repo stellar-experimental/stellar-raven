@@ -115,7 +115,9 @@ export const RETRIEVAL_RELATIONS = [
   "cross-family",
   "corpus-wide",
   "structured-identity",
-  "source-code"
+  "source-code",
+  /** The source returns parts of records; the target returns one whole record its rows can address. */
+  "detail"
 ] as const;
 
 /**

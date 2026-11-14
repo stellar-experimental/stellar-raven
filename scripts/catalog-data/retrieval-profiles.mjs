@@ -132,21 +132,25 @@ export const RETRIEVAL_PROFILES = {
   "stellarDocs.search_docs": { lane: "corpus", emptyScope: "corpus", recoverWith: [
     { id: "scout.searchResearch", relation: "cited-research", on: BROAD_MISS },
     { id: "lumenloop.search_content_semantic", relation: "cross-family", on: BROAD_MISS },
-    { id: "stellarDocs.search_meeting_notes", relation: "corpus-wide", on: ["empty", "partial"] }
+    { id: "stellarDocs.search_meeting_notes", relation: "corpus-wide", on: ["empty", "partial"] },
+    { id: "stellarDocs.get_doc_page", relation: "detail", on: ["partial"] }
   ] },
   "stellarDocs.search_doc_titles": { lane: "exact", emptyScope: "corpus", recoverWith: [
     { id: "stellarDocs.search_docs", relation: "corpus-wide", on: BROAD_MISS },
-    { id: "scout.searchResearch", relation: "cited-research", on: CORROBORATE }
+    { id: "scout.searchResearch", relation: "cited-research", on: CORROBORATE },
+    { id: "stellarDocs.get_doc_page", relation: "detail", on: ["partial"] }
   ] },
   "stellarDocs.search_docs_in_category": { lane: "corpus", emptyScope: "operation", recoverWith: [
     { id: "stellarDocs.search_docs", relation: "corpus-wide", on: BROAD_MISS },
     { id: "scout.searchResearch", relation: "cited-research", on: CORROBORATE },
-    { id: "lumenloop.search_content_semantic", relation: "cross-family", on: CORROBORATE }
+    { id: "lumenloop.search_content_semantic", relation: "cross-family", on: CORROBORATE },
+    { id: "stellarDocs.get_doc_page", relation: "detail", on: ["partial"] }
   ] },
   "stellarDocs.search_meeting_notes": { lane: "corpus", emptyScope: "corpus", recoverWith: [
     { id: "stellarDocs.search_docs", relation: "corpus-wide", on: BROAD_MISS },
     { id: "scout.searchResearch", relation: "cited-research", on: CORROBORATE },
-    { id: "lumenloop.search_content_semantic", relation: "cross-family", on: CORROBORATE }
+    { id: "lumenloop.search_content_semantic", relation: "cross-family", on: CORROBORATE },
+    { id: "stellarDocs.get_doc_page", relation: "detail", on: ["partial"] }
   ] },
   "stellarDocs.get_doc_page": { lane: "detail", emptyScope: "operation", recoverWith: [
     { id: "stellarDocs.search_docs", relation: "corpus-wide", on: BROAD_MISS },
@@ -155,33 +159,40 @@ export const RETRIEVAL_PROFILES = {
   "stellarDocs.search_protocol_concepts_docs": { lane: "corpus", emptyScope: "operation", recoverWith: [
     { id: "stellarDocs.search_docs", relation: "corpus-wide", on: BROAD_MISS },
     { id: "scout.searchResearch", relation: "cited-research", on: CORROBORATE },
-    { id: "lumenloop.search_content_semantic", relation: "cross-family", on: CORROBORATE }
+    { id: "lumenloop.search_content_semantic", relation: "cross-family", on: CORROBORATE },
+    { id: "stellarDocs.get_doc_page", relation: "detail", on: ["partial"] }
   ] },
   "stellarDocs.search_rpc_horizon_data_docs": { lane: "corpus", emptyScope: "operation", recoverWith: [
     { id: "stellarDocs.search_docs", relation: "corpus-wide", on: BROAD_MISS },
     { id: "scout.searchResearch", relation: "cited-research", on: CORROBORATE },
-    { id: "scout.explainRepo", relation: "source-code", on: CORROBORATE }
+    { id: "scout.explainRepo", relation: "source-code", on: CORROBORATE },
+    { id: "stellarDocs.get_doc_page", relation: "detail", on: ["partial"] }
   ] },
   "stellarDocs.search_sdk_cli_tools_docs": { lane: "corpus", emptyScope: "operation", recoverWith: [
     { id: "stellarDocs.search_docs", relation: "corpus-wide", on: BROAD_MISS },
-    { id: "scout.searchResearch", relation: "cited-research", on: CORROBORATE }
+    { id: "scout.searchResearch", relation: "cited-research", on: CORROBORATE },
+    { id: "stellarDocs.get_doc_page", relation: "detail", on: ["partial"] }
   ] },
   "stellarDocs.search_soroban_contract_docs": { lane: "corpus", emptyScope: "operation", recoverWith: [
     { id: "stellarDocs.search_docs", relation: "corpus-wide", on: BROAD_MISS },
-    { id: "scout.searchResearch", relation: "cited-research", on: CORROBORATE }
+    { id: "scout.searchResearch", relation: "cited-research", on: CORROBORATE },
+    { id: "stellarDocs.get_doc_page", relation: "detail", on: ["partial"] }
   ] },
   "stellarDocs.search_wallet_dapp_docs": { lane: "corpus", emptyScope: "operation", recoverWith: [
     { id: "stellarDocs.search_docs", relation: "corpus-wide", on: BROAD_MISS },
-    { id: "scout.searchResearch", relation: "cited-research", on: CORROBORATE }
+    { id: "scout.searchResearch", relation: "cited-research", on: CORROBORATE },
+    { id: "stellarDocs.get_doc_page", relation: "detail", on: ["partial"] }
   ] },
   "stellarDocs.search_anchor_sep_docs": { lane: "corpus", emptyScope: "operation", recoverWith: [
     { id: "stellarDocs.search_docs", relation: "corpus-wide", on: BROAD_MISS },
     { id: "scout.searchResearch", relation: "cited-research", on: CORROBORATE },
-    { id: "lumenloop.search_content_semantic", relation: "cross-family", on: CORROBORATE }
+    { id: "lumenloop.search_content_semantic", relation: "cross-family", on: CORROBORATE },
+    { id: "stellarDocs.get_doc_page", relation: "detail", on: ["partial"] }
   ] },
   "stellarDocs.search_asset_token_docs": { lane: "corpus", emptyScope: "operation", recoverWith: [
     { id: "stellarDocs.search_docs", relation: "corpus-wide", on: BROAD_MISS },
     { id: "scout.searchResearch", relation: "cited-research", on: CORROBORATE },
-    { id: "lumenloop.search_content_semantic", relation: "cross-family", on: CORROBORATE }
+    { id: "lumenloop.search_content_semantic", relation: "cross-family", on: CORROBORATE },
+    { id: "stellarDocs.get_doc_page", relation: "detail", on: ["partial"] }
   ] }
 };

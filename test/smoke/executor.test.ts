@@ -630,6 +630,9 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
           { path: "docs/example", content: "## Example\nExact official wording", metadata: { title: "Example" } }
         ]);
       }
+      if (url.pathname.includes("/discovery/v1/page/")) {
+        return Response.json({ path: "docs/example", content: "# Example\nExact official wording, whole page." });
+      }
       return Response.json({ error: `unexpected ${url.pathname}` }, { status: 500 });
     });
 
@@ -727,6 +730,30 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
     expect(docsOnly.recoveryHint?.mode).toBe("conditional-alternatives");
     expect(docsOnly.recoveryHint?.sourceOperations).toEqual(["stellarDocs.search_docs"]);
     expect(docsOnly.recoveryHint?.candidates.map((candidate) => candidate.id)).toEqual([
+      "scout.searchResearch",
+      "lumenloop.search_content_semantic",
+      "stellarDocs.search_meeting_notes"
+    ]);
+    // The whole-page read rides beside the three alternatives, not among them.
+    expect(docsOnly.recoveryHint?.detail).toEqual([
+      {
+        target: "stellarDocs.get_doc_page",
+        sourceOperations: ["stellarDocs.search_docs"],
+        keys: ["path"]
+      }
+    ]);
+
+    // Once the same execute reads a page, no pointer remains and the alternatives are unchanged.
+    const searchThenRead = await run(`async () => {
+      const docs = await stellarDocs.search_docs({ query: "exact official wording", hitsPerPage: 1 });
+      const page = await stellarDocs.get_doc_page({ path: "/docs/example" });
+      return { docsOk: docs.ok, pageOk: page.ok };
+    }`);
+    expect(searchThenRead.ok).toBe(true);
+    if (!searchThenRead.ok) throw new Error(searchThenRead.error);
+    expect(searchThenRead.recoveryHint?.detail).toBeUndefined();
+    expect(searchThenRead.recoveryHint?.mode).toBe("conditional-alternatives");
+    expect(searchThenRead.recoveryHint?.candidates.map((candidate) => candidate.id)).toEqual([
       "scout.searchResearch",
       "lumenloop.search_content_semantic",
       "stellarDocs.search_meeting_notes"

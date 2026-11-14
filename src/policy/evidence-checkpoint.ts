@@ -12,10 +12,31 @@ export type EvidenceRecoveryCandidate = {
  * irrelevant; the model still owns that answer-level judgment.
  */
 export type EvidenceRecoveryHint = {
-  mode: "narrow-only" | "conditional-alternatives";
+  mode: "narrow-only" | "conditional-alternatives" | "detail-only";
   sourceOperations: string[];
   candidates: EvidenceRecoveryCandidate[];
+  /** Whole-record reads that complete evidence the run already holds. Not alternatives. */
+  detail?: EvidenceDetailPointer[];
 };
+
+/** A source whose rows are parts of records, and the operation that returns one whole record. */
+export type EvidenceDetailPointer = {
+  target: string;
+  sourceOperations: string[];
+  /** The target's required inputs, each carried by a source row. */
+  keys: string[];
+};
+
+/** The hint with only its detail pointers, or null when it has none. */
+export function detailOnlyHint(hint: EvidenceRecoveryHint | null | undefined): EvidenceRecoveryHint | null {
+  if (!hint?.detail?.length) return null;
+  return {
+    mode: "detail-only",
+    sourceOperations: [...new Set(hint.detail.flatMap((pointer) => pointer.sourceOperations))],
+    candidates: [],
+    detail: hint.detail
+  };
+}
 
 /**
  * Runtime guidance for broad candidate lanes. Keeping this beside the narrow
@@ -28,14 +49,27 @@ export function candidateEvidenceBlock(count: number | undefined, suppressed = f
   return `\n\n--- CANDIDATE EVIDENCE ---\nThis run used ${count} semantic, research, A/V, or fallback-directory call(s). These rows are candidates, not identity or absence proof: require an exact identity or canonical slug plus source and date, date current or mutable claims by observation time, discard adjacent matches, and keep any non-verification source-scoped. For a closed-world directory answer, inspect match_mode and report only that source's exact result.`;
 }
 
+/** One sentence per target, built from the edge: its source operations, target, and join keys. */
+function detailSentences(detail: readonly EvidenceDetailPointer[] | undefined): string {
+  return (detail ?? [])
+    .map(({ target, sourceOperations, keys }) => {
+      const joined = keys.map((key) => `\`${key}\``).join(" and ");
+      return `\`${sourceOperations.join(", ")}\` returned sections of pages, not whole pages. A section is exact evidence only for what it shows whole. Before you state a list, number, formula, code, or status it does not show whole, read the page: \`${target}({ ${keys.join(", ")} })\` with that hit's ${joined}.`;
+    })
+    .join(" ");
+}
+
 export function evidenceCheckpointBlock(hint: EvidenceRecoveryHint | undefined): string {
-  if (!hint?.candidates.length) return "";
+  if (!hint) return "";
+  const detail = detailSentences(hint.detail);
+  if (!hint.candidates.length) return detail ? `\n\n--- EVIDENCE CHECKPOINT ---\n${detail}` : "";
+  const lead = detail ? `${detail} ` : "";
   const sources = hint.sourceOperations.join(", ");
   const candidates = hint.candidates
     .map((candidate) => `${candidate.id} (${candidate.relation}; ${candidate.reasons.join("/")})`)
     .join(", ");
   if (hint.mode === "conditional-alternatives") {
-    return `\n\n--- EVIDENCE CHECKPOINT ---\nThe host observed successful broad operation class(es) (${sources}); it did not inspect or judge the returned rows. If exact evidence already answers the request, or the user asked a closed-world question about a named source, stop at that scope without extra calls. If the open-world question remains unanswered, make at most one bounded alternative pass using an uncalled exact recovery candidate: ${candidates}. Candidate rows still require exact identity or canonical slug plus source and date before attribution.`;
+    return `\n\n--- EVIDENCE CHECKPOINT ---\n${lead}The host observed successful broad operation class(es) (${sources}); it did not inspect or judge the returned rows. If exact evidence already answers the request, or the user asked a closed-world question about a named source, stop at that scope without extra calls. If the open-world question remains unanswered, make at most one bounded alternative pass using an uncalled exact recovery candidate: ${candidates}. Candidate rows still require exact identity or canonical slug plus source and date before attribution.`;
   }
-  return `\n\n--- EVIDENCE CHECKPOINT ---\nThis run used successful narrow, operation-scoped lookup(s) only (${sources}); the host did not observe a semantic, research, A/V, or corpus-wide candidate lane. Inspect the returned projection before stopping. If it exactly answers the request, or the user asked a closed-world question about the named source, answer at that scope without extra calls. If an open-world identity, history, or footprint remains empty, weak, adjacent, ambiguous, or partial, make one bounded wider pass using an exact recovery candidate: ${candidates}. Candidate rows still require exact identity or canonical slug plus source and date before attribution.`;
+  return `\n\n--- EVIDENCE CHECKPOINT ---\n${lead}This run used successful narrow, operation-scoped lookup(s) only (${sources}); the host did not observe a semantic, research, A/V, or corpus-wide candidate lane. Inspect the returned projection before stopping. If it exactly answers the request, or the user asked a closed-world question about the named source, answer at that scope without extra calls. If an open-world identity, history, or footprint remains empty, weak, adjacent, ambiguous, or partial, make one bounded wider pass using an exact recovery candidate: ${candidates}. Candidate rows still require exact identity or canonical slug plus source and date before attribution.`;
 }

@@ -31,6 +31,7 @@ import {
   type CatalogKind,
   type RetrievalReason
 } from "./types.ts";
+import { detailJoinKeys } from "./detail-relation.ts";
 import { lastIdSegment, VALID_IDENT } from "./id.ts";
 import {
   STOPWORDS,
@@ -326,6 +327,12 @@ const refinedCatalogSchema = catalogSchema.superRefine((catalog, ctx) => {
         ctx.addIssue({ code: "custom", message: `retrieval profile ${entry.id} repeats target ${edge.id}` });
       }
       seenTargets.add(edge.id);
+      if (edge.relation === "detail" && target?.kind === "operation" && detailJoinKeys(entry, target) === null) {
+        ctx.addIssue({
+          code: "custom",
+          message: `retrieval profile ${entry.id} detail edge to ${edge.id} needs a detail-lane target whose required inputs its rows carry`
+        });
+      }
     }
   }
 });
@@ -1617,6 +1624,8 @@ function walkRecoveryCandidates(
     const source = byId.get(from);
     if (!source?.retrievalProfile) continue;
     for (const edge of source.retrievalProfile.recoverWith) {
+      // A `detail` edge completes evidence already in hand; it is not an alternative pass.
+      if (edge.relation === "detail") continue;
       if (reason && !edge.on.includes(reason)) continue;
       if (excluded.has(edge.id) || selected.has(edge.id)) continue;
       const target = byId.get(edge.id);
@@ -1669,4 +1678,43 @@ export function recoveryCandidatesFromSources(
   limit = 3
 ): RecoveryCandidate[] {
   return walkRecoveryCandidates(catalog, fromIds, new Set(excludeIds), undefined, limit);
+}
+
+export type DetailTarget = {
+  /** The whole-record operation. */
+  id: string;
+  /** The source operations among `fromIds` whose rows can address it. */
+  sources: string[];
+  /** The target's required inputs, which each source row carries. */
+  keys: string[];
+};
+
+/**
+ * The `detail` edges of the given source operations, grouped by target, minus targets already
+ * called. They are kept out of `recoveryCandidatesFromSources` because a whole-record read is not
+ * an alternative pass for an unanswered question; it completes evidence the run already holds.
+ */
+export function detailTargetsFromSources(
+  catalog: Catalog,
+  fromIds: readonly string[],
+  excludeIds: readonly string[]
+): DetailTarget[] {
+  const byId = new Map(catalog.entries.map((entry) => [entry.id, entry]));
+  const excluded = new Set(excludeIds);
+  const out = new Map<string, DetailTarget>();
+  for (const from of fromIds) {
+    const source = byId.get(from);
+    if (source?.kind !== "operation") continue;
+    for (const edge of source.retrievalProfile?.recoverWith ?? []) {
+      if (edge.relation !== "detail" || excluded.has(edge.id)) continue;
+      const target = byId.get(edge.id);
+      if (target?.kind !== "operation") continue;
+      const keys = detailJoinKeys(source, target);
+      if (!keys) continue;
+      const found = out.get(edge.id);
+      if (found) found.sources.push(from);
+      else out.set(edge.id, { id: edge.id, sources: [from], keys });
+    }
+  }
+  return [...out.values()];
 }
