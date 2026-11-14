@@ -1036,12 +1036,12 @@
         "lastChecked": "2026-11-14",
         "reSwept": {
           "date": "2026-11-14",
-          "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Read q-pc-multisig-setup-lifecycle and q-protocol-accounts-signers-thresholds. Both say a classic account's signers carry weights that must reach the low, medium or high threshold; multisig-lifecycle adds the high-threshold SetOptions rule, the three effective authorities of a 2-of-3, and add-before-remove rotation, none of which the signers case contradicts.",
+          "reason": "scope-apply (Claude Opus 5.5, .agents/rounds/2026-11-14-golden-coverage-audit/decisions/APPLY.md): q-pc-multisig-setup-lifecycle changed only truth.leaf and truth.secondaryLeaf (swapped to protocol.signatures-multisig primary). question, golden and tags are byte-identical, so the members stay consistent. Pending confirmation by the scope-apply diff reviewer.",
           "verdict": "consistent"
         },
         "note": "SetOptions signer/threshold/master-weight changes use current high-threshold authority. A 2-of-3 example has exactly three effective authorities; master counts when nonzero. Add/test replacement authority before removing the old signer or disabling master.",
         "memberContentSha256": {
-          "q-pc-multisig-setup-lifecycle": "447bbd0dc866fca9b9b84644f0d71a8b655d50529d7174c44ca11cd2917cab29",
+          "q-pc-multisig-setup-lifecycle": "13c38cdd9cd86e774e003c1fef791188cb960dfd3d735584ca8554d6459ff33f",
           "q-protocol-accounts-signers-thresholds": "7e4387a958568c3d3a0b2c8c72ef740ffc460d8acd1bd67c297d0b5e1aab2246"
         }
       },

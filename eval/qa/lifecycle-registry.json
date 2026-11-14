@@ -3,7 +3,7 @@
   "schema": "qa-lifecycle-registry-v1",
   "digestSchema": "canonical-json-sha256-v1",
   "counts": {
-    "proposed": 1,
+    "proposed": 2,
     "active": 251,
     "quarantined": 0,
     "retired": 292
@@ -60,6 +60,7 @@
     "q-comp-cross-bitso-sep31",
     "q-comp-cross-moneygram-partnership-sep24",
     "q-comp-finclusive-caas",
+    "q-comp-issuer-institutional-custody",
     "q-comp-sac-inherits-flags",
     "q-comp-security-disclosure-programs",
     "q-comp-sep6-vs-sep12-roles",
@@ -995,6 +996,13 @@
       "replacementIds": []
     },
     {
+      "id": "q-comp-issuer-institutional-custody",
+      "path": "eval/qa/corpus/proposed/compliance-rwa-payments/q-comp-issuer-institutional-custody.json",
+      "state": "proposed",
+      "reviewState": "none",
+      "caseContentSha256": "66cb6eacd71191e92983dc0e2019a6cf6148aadd1b4b3c3028e615882be377a1"
+    },
+    {
       "id": "q-comp-sac-inherits-flags",
       "path": "eval/qa/corpus/retired/q-comp-sac-inherits-flags.json",
       "state": "retired",
@@ -1098,10 +1106,10 @@
       "path": "eval/qa/corpus/retired/q-crp-custodial-vs-noncustodial-wallets.json",
       "state": "retired",
       "reviewState": "resolved",
-      "tombstoneContentSha256": "1767c49c11972196e357e756dcbe478f6b74427445039684ad19732662816773",
+      "tombstoneContentSha256": "c2737e329fb3529044515ef389b6c0f04bc57955bcaadd9e72b49ef0f03517e2",
       "lastCaseContentSha256": "db4306033bd76f50694c1b53734c2df1fbc883963c184f69d4dee0a45fc74fcd",
       "replacementIds": [
-        "q-pay-anchor-msb-licensing"
+        "q-comp-issuer-institutional-custody"
       ]
     },
     {
@@ -2767,7 +2775,7 @@
       "path": "eval/qa/corpus/battery/protocol-core/q-pc-multisig-setup-lifecycle.json",
       "state": "active",
       "reviewState": "none",
-      "caseContentSha256": "4f07772d7c76779ac9a3aff6db30521d9c7257cce58b2c8fe529b9f98a63aab6"
+      "caseContentSha256": "9b7686c7a0b32f6147c5f7f09700f42a1cc717bf6b49077d1cb4ce4d5ddb8d3e"
     },
     {
       "id": "q-pc-muxed-accounts",
