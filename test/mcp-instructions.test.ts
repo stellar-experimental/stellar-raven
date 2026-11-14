@@ -199,7 +199,17 @@ describe("tool descriptions — one contract inside the 2,048-character cap", ()
       catalog.entries.filter((entry) => entry.kind === "operation").map((entry) => [entry.id, entry])
     );
     // The guard checks every `service.name` token, in prose or in a call, against the manifest.
-    for (const [label, text] of Object.entries({ SEARCH_DESCRIPTION, EXECUTE_DESCRIPTION, SERVER_INSTRUCTIONS })) {
+    const buildPageHint = searchNextSteps(
+      { hits: [{}], truncated: true, widerCandidates: [] } as unknown as Parameters<typeof searchNextSteps>[0],
+      { buildPlaybookHit: true }
+    );
+    expect(buildPageHint).toContain("scout.searchRepos");
+    for (const [label, text] of Object.entries({
+      SEARCH_DESCRIPTION,
+      EXECUTE_DESCRIPTION,
+      SERVER_INSTRUCTIONS,
+      buildPageHint
+    })) {
       expect(() => assertGeneratedTextNoNonExposedRefs(text, catalog.entries, label)).not.toThrow();
     }
     // It rejects an id that exists nowhere, written as prose and written as a call.

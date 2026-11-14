@@ -11,6 +11,9 @@ evidence:
   - "Context: Scout 1.9.135. Stellar-Light/stellarlight PR 1946 fixed SCF #45 coverage (40 of 40 source pages) and adds a per-round count check. Its reviewed baseline discloses remaining shortfalls in earlier rounds but does not resolve them. Predecessor sls-111 (round 45) is retired; its receipt is in improvements/resolved.json."
   - "Dedupe 2026-11-12: no active Scout finding or resolved receipt covers earlier-round award gaps or the StellarPay join. Review: research/audits/2026-11-12-truth-maintenance/review-retire-astra.md (sls-111 section)."
   - upstream issue filed 2026-11-12: https://github.com/Stellar-Light/stellarlight/issues/1952
+recurrences:
+  - date: 2026-11-14
+    evidence: "Partial after https://github.com/Stellar-Light/stellarlight/pull/1962 (Scout OpenAPI 1.9.150), live 2026-11-14T02:32:08Z to 02:33:59Z. Fixed: stellarpay now has scfAwardedRounds [2], a null total and scfSourceUrl stellarpay-dy1; gatewayfm has [16, 44]; soropass carries the passkey-ui-sj6 page with round 44; scfAwarded=true returns 711 rows (635 on 2026-11-12). Remaining: no row of the 711 carries soroban-contract-source-verification-service-bax as scfSourceUrl, and the official page still shows lastAwardedRound 44, so one of the three named round-44 awards is still absent. The owner's own count check reports 20 rounds short by 27 awards (https://github.com/Stellar-Light/stellarlight/issues/1952#issuecomment-6842154037). One awarded row, peer (rounds 22 and 26), has null scfSourceUrl and scfAsOf. Inbound handoff: stellar-raven issue 427. Next: reply with this result; retire only when the named page and the 27-award baseline are sourced or explicitly out of scope."
 ---
 
 ## Finding

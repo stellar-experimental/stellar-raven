@@ -11,6 +11,8 @@ evidence:
   - GT-18 recurrence 2026-07-10: Soroswap resolves as Financial Protocols in Lumenloop while sibling Scout records use Protocol/Contract and DEX type fields
   - https://github.com/lumenloop/stellar-ecosystem-db/issues/3
 recurrences:
+  - date: 2026-11-14
+    evidence: "2026-11-14T02:36:36Z POST https://api.lumenloop.com/v1/tools/get_project: slug lobstr still returns based_in 'Estonia' with operating_region ['Indonesia']; slug moneygram still describes 'operating in over 200 countries and territories' with no Stellar-rail scope or date. Still reproduces."
   - date: 2026-11-09
     evidence: "2026-11-09 sweep at 2026-11-09T20:31:00.561897+00:00: still-repro. LOBSTR remains operating_region=[Indonesia], based_in=Estonia; MoneyGram description still uses over 200 countries and territories without Stellar-rail scope or as-of date. Current YAML agrees with both records. Soroswap taxonomy remains Financial Protocols; source-specific taxonomy is not itself an incorrect category. Read-only exact requests and response hashes: research/audits/2026-11-09-improvements-sweep/lane-lumenloop.md; upstream issue state/comments freshly read; no maintainer comments or claimed fix."
   - date: 2026-11-06
