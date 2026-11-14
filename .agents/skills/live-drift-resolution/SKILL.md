@@ -14,8 +14,9 @@ mechanical regeneration plus one judgment:
 
 Both errors cost: absorbing a bump that added a callable operation ships an unvetted surface, and
 re-baselining a gate for a bump that did not touch routing hides a regression. Size the work to the
-class: pure provenance drift, the common daily case, needs steps 1, 2, 4, 7, and 8, all free and
-local, with no reviewer lanes. For a pass across
+class: pure provenance drift, the common daily case, needs steps 1, 2, 4, 6, 7, and 8, all free
+and local, with no reviewer lanes. There, step 6 is a bounded local search that ends in recorded
+"no edit needed" evidence or a routed edit. For a pass across
 evals, goldens, and improvements as well, `truth-maintenance` coordinates and this skill is the
 drift lane.
 
@@ -125,8 +126,10 @@ Search for consumers of what changed and record "no edit needed" with its eviden
   `improvements-pipeline` and re-run the original trigger before any status change.
 - **Runtime source and docs**: adapters, runners, tests, and runbooks that quote the old behavior.
 
-For pure provenance drift this is a quick search. For a larger drift, give each category to a
-reviewer lane that returns file:line evidence.
+For pure provenance drift this is a bounded local search: versions, changelog entries, and counts
+can still make a golden stale or resolve a finding. Record what you searched and the result in the
+commit body. For a larger drift, give each category to a reviewer lane that returns file:line
+evidence.
 
 ## 7. Verify, review, commit
 
