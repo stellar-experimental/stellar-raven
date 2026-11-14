@@ -96,15 +96,26 @@ Collection also requires the server revision, surface hash, probe path, probe ha
 The runner checks local identities before and after collection.
 A stable local listener does not establish remote service identity.
 
-Compute the environment hash after all Claude-related variables have their final values.
-Use the same shell for hashing and collection:
+Pin the versioned executable, not a self-updating launcher.
+A launcher such as `~/.local/bin/claude` is a link that another session can move during an update.
+Put a private directory that holds only a link to the versioned executable first on `PATH`.
+Turn off the CLI's auto-update in the collection shell; for Claude Code, set `DISABLE_AUTOUPDATER=1`.
+A changed pin stops the method before the next paid call. A new pin needs a new authorization.
+
+Compute every pin in the collection shell, after all Claude-related variables have their final values:
 
 ```sh
+SERVER_REVISION=<clean 40-character server commit>
+node eval/report-live-surface.mjs --port "$PORT" --expect-source-revision "$SERVER_REVISION" --json /tmp/raven-eval-surface.json
+SURFACE_SHA256=<surfaceSha256 from the report>
+AGENT_BINARY_SHA256=<SHA-256 of the capped Claude wrapper resolved on PATH>
 AGENT_ENVIRONMENT_SHA256=$(node --input-type=module -e 'import { agentEnvironmentIdentity } from "./eval/lib/executable-identity.mjs"; process.stdout.write(agentEnvironmentIdentity().sha256)')
 ```
 
 The artifact records environment names and hashes, never their values.
 [executable-identity.mjs](../lib/executable-identity.mjs) defines the executable and environment identity checks.
+After collection, confirm the `meta.*` identity fields and `meta.comparable` in the artifact.
+Loopback sessions use a fixed `dev-local` artifact owner and write artifacts to the local simulated R2 binding.
 
 Before a new paid authorization, run the committed public identity probe:
 
