@@ -1,7 +1,7 @@
 ---
 id: sls-119
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-11-14
 upstreamTitle: "EURC stablecoin row names Circle's US reseller as issuer of record instead of Circle Internet Financial Europe SAS"
 evidence:
@@ -12,6 +12,7 @@ evidence:
   - "2026-11-14T16:53Z Raven execute scout.getStablecoins({peg: 'EUR'}) returned the same EURC issuerOfRecord. Prevalence: only the EURC row was checked against the issuer's legal disclosure; the USDC row carries the same toml-derived value and was not assessed."
   - "Dedupe 2026-11-14: sls-107 (fixed-upstream, Stellar-Light/stellarlight#1900, PR 1944) added issuerOfRecord from the toml ORG_NAME. This finding is its residual: ORG_NAME names the toml publisher, which for EURC is not the legal issuer. No open issue on Stellar-Light/stellarlight mentions EURC issuer of record."
   - "Affected golden case: eval/qa/corpus/battery/retail-consumer/q-asset-usdc-eurc-issuer.json (the EU legal-issuer key fact moved to grading notes on 2026-11-14; .agents/rounds/2026-11-14-golden-coverage-audit/decisions/APPLY.md)."
+  - upstream issue filed 2026-11-14: https://github.com/Stellar-Light/stellarlight/issues/1971
 ---
 
 ## Finding
