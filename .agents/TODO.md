@@ -510,18 +510,6 @@ Done when: a committed runner drives the Codex and Grok CLIs as answering client
 local server and writes results the judge can grade, or a recorded decision keeps the hand-run
 lanes.
 
-### Review a fresh finalization comparison and capability canary
-
-The [candidate](../research/audits/2026-11-03-qa-followup/finalization-candidate.md) has no
-measured completion or quality benefit, and its expired deadline authorizes no collection. A
-measurement needs a separate paired protocol: fresh control and candidate results, matched
-selection and corpus, pinned source and provider identities, a fixed judge contract, independent
-review, and explicit paid authorization with an active deadline.
-
-Done when: an authorized canary checks `tool_choice: "none"` and fresh paired evidence measures
-completion, factual quality, refusals, violations, latency, and cost; or the owner drops the
-candidate.
-
 ### Close the remaining claim-support gaps of judge pack p9
 
 The judge uses pack `p9` ([result](rounds/2026-10-12-pack-p9/result-p9.md)). Known limits:
@@ -569,17 +557,6 @@ indeterminate and does not ship without a new design or an owner decision.
 
 Done when: an authorized QA round on current `main` recounts section misreads, `.data`
 omissions, and failed calls with an omitted reason, and records them here.
-
-### Measure the execute annotation change in isolation
-
-`execute` carries `readOnlyHint: true` and `openWorldHint: false`. Two rounds could not separate
-an annotation effect on artifact reads from description edits or answering variance
-([tool-surface round](rounds/2026-10-07-tool-surface-qa.md),
-[re-collection](rounds/2026-10-08-flagged-row-recollection.md)). QA transcripts now record
-`assistantTurn` and `assistantTurnBasis`, so a free transcript audit is possible.
-
-Done when: a free transcript audit over more stored runs, or a separately authorized
-annotation-only comparison, decides whether the annotations change artifact-read behavior.
 
 ### Monitor Raven capability-boundary offers
 
