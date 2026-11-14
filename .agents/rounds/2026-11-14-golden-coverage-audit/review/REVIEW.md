@@ -683,3 +683,60 @@ Two unreachable cases, `q-stellar-vs-xrp-ledger` and `q-crp-public-sector-cbdc-p
 recorded in `gaps/GAPS.md` only as "outside Raven's scope". That is the lane's judgment, not a
 recorded owner decision. The TODO "Finish the audit" done-when stays open until the owner records it.
 This does not block merging the branch, because that entry stays in the queue.
+
+---
+
+# Reconcile review: f3a2607f..5b4db31a (HEAD)
+
+Reviewer: review lane, Claude Sonnet 5.5. Scope: `git diff f3a2607f..HEAD`, the five case edits in
+`apply/RECONCILE.md` "Cases changed". Each changed claim was re-derived on 2026-11-14 from the
+primary source, not from the reconcile report or `reconcile-review.json`.
+
+## Verdict
+
+**Fit to merge.** All five edits are true, justified, and lose nothing that matters. There is no
+blocking finding. Two low-severity notes follow; neither needs a code or case change before merge.
+
+## The five edits
+
+| Case | Edit | True? | Justified? | Loses nothing that matters? |
+|---|---|---|---|---|
+| `q-pc-protocol-27-zipper` | Grader note: the SDF guide says `SOROBAN_CREDENTIALS_ADDRESS` stays valid only until Protocol 28; it stays valid; an answer saying it stopped working is wrong | Yes | Yes: adds a guard against a real source conflict; no key fact, answer or avoid changed | Yes: nothing removed |
+| `q-soroban-require-auth` | Grader note: `require_external_auth` and `require_external_auth_for_args` are a Draft CAP-0089 proposal for Protocol 31; naming them as that is accurate, presenting them as shipped is wrong | Yes | Yes: a correct answer that cites the proposal would otherwise read as fabrication | Yes: nothing removed |
+| `q-hot-sdf-xlm-holdings-sales` | Grader note scoped to the Developer Docs lumens page; SDF's mandate page does show dated per-bucket balance tables | Yes | Yes: the old note ("docs page lists accounts without balances") could be read as "no source shows balances", which the mandate page contradicts | Yes: the guard on undated and summed balances stays |
+| `q-org-sdf-board-directors` | Removed key fact "Dates the leadership roster it cites" | Yes (roster unchanged) | Yes: a phrasing requirement, not a world fact | Yes: the answer still dates the roster, and the notes accept later official changes with an observation date |
+| `q-edge-noinfo-stellar-native-privacy-default` | Removed key fact "Dates each privacy product's network and audit status" | Yes (no world fact changed) | Yes: in a fabrication-bait trap a missing phrasing fact grades the case wrong | Yes: the avoid item "Do NOT present unaudited Testnet previews as audited Mainnet products" and the dated answer remain |
+
+## Re-derived claims
+
+| Claim | Source (read 2026-11-14) | Result |
+|---|---|---|
+| CAP-0071-02 keeps `SOROBAN_CREDENTIALS_ADDRESS` valid | `stellar-protocol/core/cap-0071-02.md`: Status Final, Protocol version 27. Section "No deprecation of `SOROBAN_CREDENTIALS_ADDRESS`": "we keep the existing credential type and preimage type valid ... there is no rush to update clients". It adds only that a later protocol (28 or later) "may want to consider deprecating" | Holds. "No deprecation scheduled" is a fair reading: the CAP schedules nothing |
+| The Zipper guide says otherwise | `stellar.org/blog/foundation-news/stellar-zipper-protocol-27-upgrade-guide`: "The existing SOROBAN_CREDENTIALS_ADDRESS type remains valid until the Protocol 28 upgrade" and "AddressV2 will replace V1 in Protocol 28" | Holds. The conflict is real |
+| Protocol 28 did not remove it | Horizon `ledgers?order=desc&limit=1`: ledger 65470502, `protocol_version` 29. `rs-soroban-env` `main` `auth.rs` lines 2366, 2375: `SorobanCredentials::Address` is matched beside `AddressV2` and `AddressWithDelegates`, with no protocol gate (the note cites `5fdf6e62`; `main` agrees) | Holds. The source reading is inference, not a ledger submission, and it is enough: a removal would have had to delete the match arm |
+| CAP-0089 is a Draft for Protocol 31 | `stellar-protocol/core/cap-0089.md`: "Host functions for invoker-less authorization", Status Draft, Created 2026-10-16, Protocol version 31; it defines `require_external_auth` and `require_external_auth_for_args`. Mainnet is Protocol 29 | Holds |
+| SDF mandate page shows dated per-bucket tables and promises balances "imminently" | `stellar.org/foundation/mandate`: Growth "Total 5,208,204,928 Last updated: November 14, 2026 at 1.08 AM UTC"; other buckets updated November 11 and 13; "the real-time public balances of XLM held by SDF will be made available again on this page imminently" | Holds. The differing timestamps also show why the existing "do not sum mixed-timestamp bucket rows" guard stays right |
+| Docs lumens page lists accounts without balances | `developers.stellar.org/docs/learn/fundamentals/lumens.md`: "The on-chain accounts in each bucket, as of July 2026, are listed below — balances change continuously, so refer to the mandate page ..." | Holds |
+| Board and CEO unchanged | `stellar.org/foundation/team`: Denelle Dixon, Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker, Asiff Hirji all present | Holds |
+| The two removed key facts were dating-only | Read both cases in full: each answer still carries the date ("As of 2026-11-14") and the world facts are unchanged | Holds |
+
+## Notes
+
+| # | Severity | Where | Note |
+|---|---|---|---|
+| R1 | Low | `q-pc-protocol-27-zipper` `truth.verified` event | It says "The golden states no deprecation and is right". The golden answer does not mention deprecation; it names the V2 credential only. The grader note is correct and needed, but the event overstates what the golden says. Judge-blind text only. Fix by wording: "The golden is silent on deprecation; the note guards against the guide's claim." |
+| R2 | Note | same case, record | The note carries no cap because no finding covers the guide: it is `stellar.org` content (class `site-content`), and Raven holds no `improvements/` collection for it. The note's own text records this. If the owner files it, the cap form follows. No action needed before merge. |
+
+The removal of `freshness-drift` from two events' `rootCause` lists is consistent: each remaining
+root cause is the TODO entry, and the lint accepts both.
+
+## Gates
+
+Run bare at `5b4db31a`, clean tree.
+
+| Command | Exit | Result |
+|---|---|---|
+| `npm run eval:qa:lint -- --stale --enforce-floors` | 0 | 0 errors, 98 warnings (unchanged); `headline=246; tool=6; leaves=167; covered=164; openSlots=2` |
+| `npm run eval:qa:register -- --check` | 0 | up to date (the 15 reopened entries are closed) |
+| `npm run eval:qa:compile` | 0 | no tracked file changed |
+| Lifecycle proof script | 0 problems | 291 retired; no id added, retired or reused; only the five case files changed under `battery/` |
