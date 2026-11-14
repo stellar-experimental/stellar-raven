@@ -10,7 +10,7 @@
  * do not pin wording beyond the rules a model acts on.
  */
 import { describe, expect, it } from "vitest";
-import { assertNoNonExposedRefsInText } from "../scripts/emitted-text-guard.mjs";
+import { assertGeneratedTextNoNonExposedRefs } from "../scripts/build-micro-map.mjs";
 import { getCatalog } from "../src/catalog/load";
 import {
   BASE_SERVER_INSTRUCTIONS,
@@ -198,11 +198,13 @@ describe("tool descriptions — one contract inside the 2,048-character cap", ()
     const operations = new Map(
       catalog.entries.filter((entry) => entry.kind === "operation").map((entry) => [entry.id, entry])
     );
+    // The guard checks every `service.name` token, in prose or in a call, against the manifest.
     for (const [label, text] of Object.entries({ SEARCH_DESCRIPTION, EXECUTE_DESCRIPTION, SERVER_INSTRUCTIONS })) {
-      expect(() => assertNoNonExposedRefsInText(text, label)).not.toThrow();
-      for (const [id] of text.matchAll(/\b(?:lumenloop|scout|stellarDocs)\.[A-Za-z_]\w*(?=\()/g)) {
-        expect(operations.has(id), `${label} names ${id}`).toBe(true);
-      }
+      expect(() => assertGeneratedTextNoNonExposedRefs(text, catalog.entries, label)).not.toThrow();
+    }
+    // It rejects an id that exists nowhere, written as prose and written as a call.
+    for (const typo of ["Use `scout.searchReserch` for history.", "await scout.searchReserch({ query })"]) {
+      expect(() => assertGeneratedTextNoNonExposedRefs(typo, catalog.entries, "fixture")).toThrow(/scout\.searchReserch/);
     }
     // Each call in the example passes only declared input fields.
     for (const [, id, args] of EXECUTE_DESCRIPTION.matchAll(/\b((?:lumenloop|stellarDocs)\.\w+)\(\{([^}]*)\}\)/g)) {

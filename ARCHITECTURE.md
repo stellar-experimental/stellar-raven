@@ -64,7 +64,7 @@ The MCP response supplies matching text and `structuredContent`, and the tool ad
   confidence, recoveryMetadata, nextSteps }
 ```
 
-The public page renders each entry as a compact card: a description of at most 220 characters, an input-only signature with short field prose, and the payload field names (`outputKeys`, `outputItemKeys`). `codemode.describe(id)` returns the full description and types. The sandbox `codemode.search` page keeps full entries, because data inside the sandbox costs no context. `nextSteps` is at most 400 characters and says only what to do with this page.
+The public page renders each entry as a compact card: a description of at most 220 characters, an input-only signature with short field prose, and, for operations, the payload field names (`outputKeys`, `outputItemKeys`). A runnable skill's card has the input-only signature and no payload field names. `codemode.describe(id)` returns the full description and types. The sandbox `codemode.search` page keeps full entries, because data inside the sandbox costs no context. On a successful page, `nextSteps` is at most 400 characters and says only what to do with this page. An error response for an unknown `service` or `recoverFrom` id echoes the caller's value and has no cap.
 
 An unknown service produces zero MCP hits and names the valid services in `nextSteps`. The sandbox adapter returns an error envelope for the same invalid filter. Neither adapter treats a spelling variant as a service alias. `getCatalog()` validates the bundled manifest once per isolate and throws on invalid catalog data.
 
@@ -87,7 +87,7 @@ This section gives only the stages.
 `total` and `truncated` describe catalog navigation, not completeness of upstream evidence.
 `widerCandidates` and `recovery` supply advice that stays separate from the ranked hits.
 [ADR-0007](research/decisions/0007-structural-recovery-guidance.md) records the structural, advisory, bounded recovery decision.
-An oversized rendered output type becomes a compact stub that names the exact `codemode.describe` call.
+A public card carries no output type. In catalog entries and the sandbox `codemode.search` page, an oversized rendered output type becomes a compact stub that names the exact `codemode.describe` call.
 The manifest and detail helpers retain the complete schemas.
 
 ## 3. An `execute` call, end to end

@@ -841,11 +841,13 @@ describe("search behavior (host-side ranked)", () => {
     }
   });
 
-  it("keeps nextSteps inside its bound on every kind of page", async () => {
+  // Successful pages only: an unknown `service` or `recoverFrom` id is an error
+  // response whose `nextSteps` echoes the caller's value and is not capped.
+  it("keeps nextSteps inside its bound on every kind of successful page", async () => {
     const queries = [
       { query: "search directory" }, // gated hits
       { query: "freighter" }, // short-name directory advice
-      { query: "hypertron" }, // zero hits plus directory and broad advice
+      { query: "hypertron" }, // zero hits: directory advice in the hint, broad candidates in the page
       { query: "zzzzqqqq zzqqzzqq" }, // zero hits plus broad advice
       { query: "Tomer Weller", kind: "operation", service: "lumenloop" }, // lexical-only hits
       { query: "stellar soroban contract", limit: 1 } // truncated
@@ -893,13 +895,24 @@ describe("search behavior (host-side ranked)", () => {
     expect(structured.nextSteps).toContain("directory operation in `widerCandidates`");
   });
 
-  it("retains bounded broad guidance after a zero-hit name lookup", async () => {
+  it("points a zero-hit name lookup at the directory and keeps bounded broad candidates", async () => {
     const result = await client.callTool({ name: "search", arguments: { query: "hypertron", limit: 5 } });
     expect(result.isError).toBeFalsy();
-    const structured = result.structuredContent as { hits: unknown[]; nextSteps: string };
+    const structured = result.structuredContent as {
+      hits: unknown[];
+      widerCandidates: Array<{ id: string; lane: string; basis: string }>;
+      nextSteps: string;
+    };
     expect(structured.hits).toEqual([]);
+    // The hint names the directory lookup only.
     expect(structured.nextSteps).toMatch(/no hits/i);
-    expect(structured.nextSteps).toContain("`widerCandidates`");
+    expect(structured.nextSteps).toContain("directory operation in `widerCandidates`");
+    // The broad candidates ride in the page, after the directory one, at most three in all.
+    expect(structured.widerCandidates.map(({ id, lane, basis }) => ({ id, lane, basis }))).toEqual([
+      { id: "scout.searchProjects", lane: "directory", basis: "short-query-directory" },
+      { id: "scout.searchResearch", lane: "research", basis: "catalog-anchor" },
+      { id: "lumenloop.search_content_semantic", lane: "semantic", basis: "catalog-anchor" }
+    ]);
   });
 
   it("returns bounded exact-ID recovery separately from ranked hits", async () => {

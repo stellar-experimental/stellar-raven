@@ -19,7 +19,7 @@ They remain available through exact-ID reads and section navigation.
 Its stages validate the service, validate exact recovery IDs, then resolve the page and requested recovery candidates.
 Adapters own their input schemas, error shapes, response prose, and telemetry.
 
-The default page limit is 10; the maximum is 50.
+The catalog and sandbox `codemode.search` default page limit is 10; the public MCP `search` tool defaults to 5. The maximum is 50.
 A non-finite limit uses the default before clamping.
 Kind and service filters use exact values.
 Unknown services produce structured issues at the adapter boundary.
@@ -118,7 +118,7 @@ For a short page, `total` also counts novel candidates from the complete ungated
 Catalog pagination does not measure completeness of a service response.
 
 [output-compaction.ts](output-compaction.ts) defines the shared 2,000-character rendered output threshold.
-Larger search signatures retain a field stub and an exact `codemode.describe` pointer.
+Larger signatures in catalog entries and the sandbox `codemode.search` page retain a field stub and an exact `codemode.describe` pointer. Public MCP search cards carry no output type.
 Detail helpers and the manifest keep full schemas.
 
 ## Advisory recovery
