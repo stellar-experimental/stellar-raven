@@ -115,8 +115,9 @@ export const executeInputSchema = {
 // text. ADR-0003: name only exposed operations and runnable skills here.
 // The Playground uses the same exported tool contract.
 //
-// One official upstream documentation URL per source family rides last on both
-// tool descriptions, as reference metadata.
+// One official upstream documentation URL per source family rides last on the
+// `search` description, as reference metadata. The `execute` description has
+// no room for it inside the cap.
 export const UPSTREAM_DOC_LINKS = `Upstream docs: Lumenloop https://api.lumenloop.com/v1/docs; Scout https://stellarlight.xyz/api/openapi.json; Stellar Docs https://developers.stellar.org/docs.`;
 
 export const SEARCH_DESCRIPTION = `Ranked search over every exposed service operation (lumenloop.*, scout.*, stellarDocs.*) and whole skill. Hits are cards to compose in \`execute\`; they are not evidence.
@@ -136,7 +137,7 @@ Each hit has its exact \`id\`, a short description, a \`signature\` (input type 
 
 ${UPSTREAM_DOC_LINKS}`;
 
-export const EXECUTE_DESCRIPTION = `Run one JavaScript async arrow function in a sandbox with no network. It can call only the operations found with \`search\` (\`lumenloop.*\`, \`scout.*\`, \`stellarDocs.*\`) and the \`codemode.*\` helpers. Ids are exact-match: copy them from search hits.
+export const EXECUTE_DESCRIPTION = `Run one JavaScript async arrow function in a sandbox with no network. It can call only the operations found with \`search\` (\`lumenloop.*\`, \`scout.*\`, \`stellarDocs.*\`) and the \`codemode.*\` helpers. The ONLY globals are \`lumenloop\`, \`scout\`, \`stellarDocs\`, \`codemode\`, and standard JavaScript (\`fetch()\` fails). Operation ids such as \`scout.searchResearch\` are called inside this script, never as top-level tools. Ids are exact-match: copy them from search hits.
 
 Compose in ONE script: independent calls in parallel, then follow-ups built from their results, then return a small projection. The return value is the result, capped near 6k tokens: select fields and slice arrays in the script. A list row is a summary; call the detail operation before answering specifics.
 
@@ -150,14 +151,12 @@ async () => {
   return { project: detail?.ok ? detail.data : null, docs: docs.ok ? docs.data.hits.map(h => h.url) : docs.error };
 }
 
-Every call resolves, never throws, to { ok: true, data, asOf, asOfBasis, caveat? } or { ok: false, error: { kind, message, hint? } }. Check \`r.ok\` first. Payload fields live under \`.data\`: \`r.data.projects\`, never \`r.projects\`. \`error.kind\` "soft-empty" means the service had nothing for that lookup: inconclusive, not evidence of absence. \`caveat\` "no-rows" is ok data with no rows, true only at that source's scope; "unverified-match" marks semantic candidates, not confirmed identity.
+Every call resolves, never throws, to { ok: true, data, asOf, asOfBasis, caveat? } or { ok: false, error: { kind, message, hint? } }. Check \`r.ok\` first. Payload fields live under \`.data\`: \`r.data.projects\`, never \`r.projects\`. Artifact reads resolve to the same envelope shape. \`error.kind\` "soft-empty" means the service had nothing for that lookup: inconclusive, not evidence of absence. \`caveat\` "no-rows" is ok data with no rows, true only at that source's scope; "unverified-match" marks semantic candidates, not confirmed identity.
 
 Helpers:
 - \`codemode.describe(id)\`: full types for an operation or skill.
 - \`codemode.search(query)\`: search, mid-script.
-- \`codemode.skill.read(id, { sections: [...] })\`: playbook sections; \`r.data.sections\` is an ARRAY of { section, content, url }.
-
-${UPSTREAM_DOC_LINKS}`;
+- \`codemode.skill.read(id, { sections: [...] })\`: playbook sections; \`r.data.sections\` is an ARRAY of { section, content, url }.`;
 
 /**
  * MCP initialize-time instructions (SDK ServerOptions.instructions). Clients

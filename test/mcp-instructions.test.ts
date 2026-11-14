@@ -94,17 +94,17 @@ describe("server instructions — Claude Code 2KB budget", () => {
     expect(SERVER_INSTRUCTIONS.length).toBeGreaterThan(CLAUDE_CODE_INSTRUCTIONS_CAP);
   });
 
-  it("binds each freeform tool to one official upstream doc URL per service", () => {
+  it("binds the surface to one official upstream doc URL per service, on `search`", () => {
     const urls = [
       "https://api.lumenloop.com/v1/docs",
       "https://stellarlight.xyz/api/openapi.json",
       "https://developers.stellar.org/docs"
     ];
     for (const url of urls) expect(UPSTREAM_DOC_LINKS).toContain(url);
-    for (const contract of [SEARCH_DESCRIPTION, EXECUTE_DESCRIPTION]) {
-      // Reference metadata rides last, behind the contract the model acts on.
-      expect(contract.endsWith(UPSTREAM_DOC_LINKS)).toBe(true);
-    }
+    // Reference metadata rides last, behind the contract the model acts on.
+    expect(SEARCH_DESCRIPTION.endsWith(UPSTREAM_DOC_LINKS)).toBe(true);
+    // The execute description spends that room on scripting rules instead.
+    expect(EXECUTE_DESCRIPTION).not.toContain("Upstream docs");
   });
 
   it("advertises only searchable kinds while preserving exact section reads", () => {
@@ -154,6 +154,11 @@ describe("tool descriptions — one contract inside the 2,048-character cap", ()
   it("execute carries the envelope, the evidence signals, and the helpers", () => {
     for (const phrase of [
       "sandbox with no network",
+      // Two scripting rules whose absence showed up as failed scripts.
+      "The ONLY globals are `lumenloop`, `scout`, `stellarDocs`, `codemode`, and standard JavaScript",
+      "Artifact reads resolve to the same envelope shape",
+      // An operation id is not a tool name: a client once called one at the top level.
+      "are called inside this script, never as top-level tools",
       "Ids are exact-match",
       "capped near 6k tokens",
       "{ ok: true, data, asOf, asOfBasis, caveat? }",
@@ -181,8 +186,9 @@ describe("tool descriptions — one contract inside the 2,048-character cap", ()
   });
 
   it("teaches mechanics through host errors, not prefix text", () => {
-    // src/executor/script-hints.ts and the providers own these lessons.
-    for (const mechanic of [/\bfetch\b/, /TypeScript/, /named functions/, /\brequire\b/, /SOURCE BASIS/]) {
+    // src/executor/script-hints.ts and the providers own these lessons. The globals
+    // rule is the exception: it is stated up front, with `fetch` as its one example.
+    for (const mechanic of [/TypeScript/, /named functions/, /\brequire\b/, /SOURCE BASIS/]) {
       expect(EXECUTE_DESCRIPTION).not.toMatch(mechanic);
     }
   });
