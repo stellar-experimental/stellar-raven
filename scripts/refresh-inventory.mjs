@@ -67,7 +67,7 @@ const STELLAR_ORG_SEARCH_PATH = "/api/search";
 const STELLAR_ORG_USER_AGENT = "RavenMCP/1.0";
 // Fixed probes: only the response shape is recorded, so ranking and page copy cannot produce drift.
 const STELLAR_ORG_PROBE_QUERY = "roadmap";
-const STELLAR_ORG_PROBE_PATH = "/foundation/roadmap";
+const STELLAR_ORG_PROBE_PATH = "/";
 
 // .env parser + JSON fetch + deep key sort live in scripts/lib/shared.mjs
 // (shared with scripts/check-skills-drift.mjs; this file's behavior is canonical).

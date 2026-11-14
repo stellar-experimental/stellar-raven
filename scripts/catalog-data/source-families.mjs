@@ -59,5 +59,5 @@ export const FAMILY_LINE =
 export const AUTHORITY_RULES = [
   "Use the family that can actually ground the claim, then add a corroborating family when the question crosses source boundaries.",
   "Treat Scout research items and Lumenloop articles/content as community-aggregated sources; protocol-governance, standards-authorship, incident, and audit claims stay unverified until corroborated by Stellar Docs or skills content.",
-  "Official docs are authority for protocol, standards, API, and implementation claims; for ecosystem facts (funding/awards/amounts, program names, coverage/directories, who-builds-what, adoption), start Scout/Lumenloop even when docs mention the topic, then use docs only to corroborate standards mechanics."
+  "Official docs are authority for protocol, standards, API, and implementation claims; for ecosystem facts (funding/awards/amounts, program names, coverage/directories, who-builds-what, adoption), start Scout/Lumenloop even when docs mention the topic, then use docs only to corroborate standards mechanics. SDF's own strategy, roadmap, and its stellar.org service-provider and audited-project directories start with stellar.org."
 ];

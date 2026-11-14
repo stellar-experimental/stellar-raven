@@ -1,9 +1,9 @@
 /**
  * stellar.org adapter: both operations against recorded fixtures, the path
- * guard, the blog/press/events filter, redirects, size caps, and the envelope
- * the sandbox sees. No live calls.
+ * guard, the partner and blog/press/events filter, redirects, size and time
+ * caps, and the envelope the sandbox sees. No live calls.
  */
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -75,7 +75,7 @@ describe("stellarOrg.search_site", () => {
     expect(JSON.stringify(init.headers)).not.toMatch(/authorization|cookie/i);
   });
 
-  it("drops blog, press, events and external rows, and merges per-category partner rows", async () => {
+  it("drops partner, blog, press, events and external rows", async () => {
     const { fetchImpl } = recorder(() => new Response(fixture("stellar-org-search.json")));
     const result = await callStellarOrg(SEARCH, { query: "moneygram", limit: 10 }, fetchImpl);
     expect(result.ok).toBe(true);
@@ -84,10 +84,8 @@ describe("stellarOrg.search_site", () => {
     expect(data.meta).toEqual({ candidates: 12 });
     expect(data.hits.map((hit) => [hit.kind, hit.path])).toEqual([
       ["page", "/products-and-tools/moneygram"],
-      ["partner", "/ecosystem"],
       ["page", "/case-studies/moneygram-international"]
     ]);
-    expect(data.hits[1]).toEqual({ title: "MoneyGram", description: null, path: "/ecosystem", kind: "partner", tags: ["Non Custodial", "Issuers"] });
     for (const hit of data.hits) {
       expect(Object.keys(hit).sort()).toEqual(["description", "kind", "path", "tags", "title"]);
       for (const prefix of EXCLUDED_PREFIXES) expect(hit.path.startsWith(`${prefix}/`)).toBe(false);
@@ -95,12 +93,17 @@ describe("stellarOrg.search_site", () => {
   });
 
   it("applies the prefix filter on whole path segments", () => {
-    const rows = ["/blog", "/blog/x", "/press/x", "/events/x", "/blogger", "/pressroom/x", "/eventsuite"].map((url) => ({
+    const rows = ["/blog", "/blog/x", "/BLOG/x", "/press/x", "/events/x", "/blogger", "/pressroom/x", "/eventsuite"].map((url) => ({
       kind: "page",
       title: url,
       url
     }));
     expect(siteHits(rows).map((hit) => hit.path)).toEqual(["/blogger", "/pressroom/x", "/eventsuite"]);
+  });
+
+  it("clips a long description", () => {
+    const [hit] = siteHits([{ kind: "page", title: "t", url: "/t", description: "d".repeat(100_000) }]);
+    expect(hit!.description).toHaveLength(500);
   });
 
   it("drops rows that leave the origin even when isExternal is false", () => {
@@ -198,6 +201,14 @@ describe("stellarOrg.get_page path guard", () => {
     "/api",
     "/api/search",
     "/foundation strategy",
+    "/%2e%2e/api/search",
+    "/foo/%2e%2e/api/x",
+    "/.%2e/api/search",
+    "/%2E/api",
+    "/%61pi/search",
+    "/foundation%2fstrategy",
+    "/foundation%5cstrategy",
+    "/foundation/strategy%00",
     "/" + "a".repeat(600),
     "",
     42
@@ -264,12 +275,38 @@ describe("stellarOrg.get_page", () => {
     ["a scheme change", "http://stellar.org/foundation"],
     ["a protocol-relative host", "//evil.example/x"],
     ["an /api path", "/api/search?q=x"],
-    ["a query string", "/ecosystem?partner=x"]
+    ["a query string", "/ecosystem?partner=x"],
+    ["an encoded /api path", "/%2e%2e/api/x"]
   ])("refuses a redirect to %s without following it", async (_label, location) => {
     const { fetchImpl, calls } = recorder(() => new Response(null, { status: 307, headers: { location } }));
     const result = await callStellarOrg(PAGE, { path: "/developers" }, fetchImpl);
     expect(calls).toHaveLength(1);
     expect(result).toMatchObject({ ok: false, error: { kind: "error", status: 307 } });
+  });
+
+  it("names an on-site refusal differently from an off-site redirect", async () => {
+    const respond = (location: string) => async () => new Response(null, { status: 302, headers: { location } });
+    const offSite = await callStellarOrg(PAGE, { path: "/a" }, respond("https://evil.example/b"));
+    const onSite = await callStellarOrg(PAGE, { path: "/a" }, respond("/b?x=1"));
+    expect(offSite).toMatchObject({ ok: false, error: { message: expect.stringMatching(/redirects off stellar\.org/) } });
+    expect(onSite).toMatchObject({ ok: false, error: { message: expect.stringMatching(/stellar\.org URL this tool does not read/) } });
+    expect(onSite.ok ? "" : onSite.error.message).not.toMatch(/off stellar\.org/);
+  });
+
+  it("stops following redirects when the operation budget runs out", async () => {
+    let now = 1_000_000;
+    const clock = vi.spyOn(Date, "now").mockImplementation(() => now);
+    try {
+      const { fetchImpl, calls } = recorder((_url, index) => {
+        now += 13_000;
+        return new Response(null, { status: 301, headers: { location: `/hop${index + 1}` } });
+      });
+      const result = await callStellarOrg(PAGE, { path: "/hop0" }, fetchImpl);
+      expect(calls).toHaveLength(2);
+      expect(result).toMatchObject({ ok: false, error: { kind: "error", message: expect.stringMatching(/did not load within 24 s/) } });
+    } finally {
+      clock.mockRestore();
+    }
   });
 
   it("stops a redirect loop", async () => {
@@ -286,6 +323,13 @@ describe("stellarOrg.get_page", () => {
     expect(missing).toMatchObject({ ok: false, error: { kind: "soft-empty", status: 404 } });
     const failed = await callStellarOrg(PAGE, { path: "/foundation" }, async () => new Response("boom", { status: 500 }));
     expect(failed).toMatchObject({ ok: false, error: { kind: "error", status: 500 } });
+  });
+
+  it("reports a page with no server-side main text as soft-empty", async () => {
+    for (const body of ["<html><body><nav>menu</nav></body></html>", "<html><body></body></html>", "<main> <div></div> </main>"]) {
+      const result = await callStellarOrg(PAGE, { path: "/shell" }, async () => html(body));
+      expect(result).toMatchObject({ ok: false, error: { kind: "soft-empty", message: expect.stringMatching(/no server-side text/) } });
+    }
   });
 
   it("refuses a non-HTML response", async () => {
@@ -337,8 +381,16 @@ describe("htmlToText and mainHtml", () => {
     expect(htmlToText(mainHtml(page))).toBe("inner outer");
   });
 
-  it("falls back to the body when the page has no main element", () => {
-    expect(htmlToText(mainHtml("<html><head><title>t</title></head><body><p>Body text</p></body></html>"))).toBe("Body text");
+  it("returns no text when the page has no main element", () => {
+    expect(mainHtml("<html><head><title>t</title></head><body><p>Body chrome</p></body></html>")).toBe("");
+  });
+
+  it("scans unterminated comments and tags in linear time", () => {
+    for (const tail of ["<!--".repeat(500_000), "<a ".repeat(500_000)]) {
+      const started = performance.now();
+      htmlToText(mainHtml(`<main>${tail}`));
+      expect(performance.now() - started).toBeLessThan(1_000);
+    }
   });
 
   it("decodes numeric and named entities and leaves unknown ones", () => {

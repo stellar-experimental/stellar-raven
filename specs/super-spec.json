@@ -7439,7 +7439,7 @@
                 "additionalProperties": false,
                 "properties": {
                   "path": {
-                    "description": "Site-relative page path starting with /, such as \"/foundation/strategy\". Full URLs, query strings and /api paths are refused.",
+                    "description": "Site-relative page path starting with /, such as \"/foundation/strategy\". Full URLs, query strings, percent-encoded characters and /api paths are refused.",
                     "minLength": 1,
                     "type": "string"
                   }
@@ -7553,11 +7553,11 @@
                             ]
                           },
                           "kind": {
-                            "description": "page or partner.",
+                            "description": "Always page.",
                             "type": "string"
                           },
                           "path": {
-                            "description": "Site-relative path on https://stellar.org; pass it to stellarOrg.get_page. Partner rows carry /ecosystem, whose page does not render partner detail.",
+                            "description": "Site-relative path on https://stellar.org; pass it to stellarOrg.get_page.",
                             "type": "string"
                           },
                           "tags": {
@@ -7767,8 +7767,8 @@
       "backend": {
         "auth": "none (keyless)",
         "constraints": {
-          "filtered": "Rows whose path is under /blog, /press or /events, and rows with isExternal true, are dropped. Partner rows link to a query string on /ecosystem and are returned with path /ecosystem.",
-          "pages": "Pages are server-rendered HTML of 410-500 KB (2026-11-14). The adapter keeps the <main> text, follows same-origin redirects only, refuses a body over 2,000,000 bytes and cuts content at 40,000 characters.",
+          "filtered": "Rows whose path is under /blog, /press or /events, rows with isExternal true, and partner rows are dropped. Partner rows link to a query string on /ecosystem, whose page renders no partner detail; Scout and Lumenloop own partners.",
+          "pages": "Pages are server-rendered HTML of 410-500 KB (2026-11-14). The adapter keeps the <main> text, follows same-origin redirects only, refuses a body over 2,000,000 bytes, bounds one read to 24 s, cuts content at 40,000 characters, and returns soft-empty when the page renders no server-side text.",
           "searchShape": "GET /api/search?q=<query>&locale=en returns { query, locale, results: [{ id, kind, title, description, tags, url, isExternal }] } with at most 10 rows; kind is page or partner. A missing q, or one over 200 characters, returns 400 { error: \"invalid_query\" }."
         },
         "cost": "free",

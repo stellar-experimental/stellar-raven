@@ -1,6 +1,6 @@
 ---
 name: live-drift-resolution
-description: Resolve a "Live service drift detected" issue — the daily CI that diffs the committed catalog against the live upstream surfaces (Lumenloop, Stellar Light/Scout, Stellar Docs). Regenerate the artifacts, classify the drift, decide whether it needs a policy or routing-baseline change or is a clean mechanical bump, dual-verify, commit, deploy when authorized, verify production, and close. Use when a drift issue is filed, when refreshing inventory, or when deciding if an upstream version bump is routing-neutral.
+description: Resolve a "Live service drift detected" issue — the daily CI that diffs the committed catalog against the live upstream surfaces (Lumenloop, Stellar Light/Scout, Stellar Docs, stellar.org). Regenerate the artifacts, classify the drift, decide whether it needs a policy or routing-baseline change or is a clean mechanical bump, dual-verify, commit, deploy when authorized, verify production, and close. Use when a drift issue is filed, when refreshing inventory, or when deciding if an upstream version bump is routing-neutral.
 ---
 
 # Live service drift resolution
@@ -40,6 +40,9 @@ node eval/plan/build-op-classes.mjs   # catalog -> eval/plan/op-classes.json
 - **Anchors.** When `stellar-docs-anchors.json` changes, read the summary's changed pages, removed
   pages, and ambiguous headings, then run `test/adapters.test.ts` and the two
   `test/stellar-docs-anchor*` tests. An anchor change does not touch the catalog or routing.
+- **stellar.org.** When `inventory/stellar-org.json` changes, run
+  `test/stellar-org-adapter.test.ts` and a live smoke of `stellarOrg.search_site` and
+  `stellarOrg.get_page`.
 - **Skill pins.** When `ecosystem-skills/` pins move, also run:
 
   ```sh

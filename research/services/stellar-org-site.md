@@ -50,21 +50,24 @@ Raven source held. The 2026-11-14 QA test showed all three
 Two authored operations in [`specs/stellar-org.json`](../../specs/stellar-org.json), served by
 [`src/adapters/stellar-org.ts`](../../src/adapters/stellar-org.ts):
 
-- `stellarOrg.search_site({ query, limit? })` drops rows under `/blog`, `/press`, and `/events`
-  (whole path segments) and external or off-origin rows, merges partner rows that share kind, path,
-  and title, and returns `{ hits: [{ title, description, path, kind, tags }], meta: { candidates } }`.
-  Partner rows carry `path: "/ecosystem"`. An all-filtered result is ok with no rows, so the host
-  adds the `no-rows` caveat.
+- `stellarOrg.search_site({ query, limit? })` drops partner rows (their page renders no partner
+  detail; Scout and Lumenloop own partners), rows under `/blog`, `/press`, and `/events` (whole
+  path segments, any case), and external or off-origin rows. It returns
+  `{ hits: [{ title, description, path, kind, tags }], meta: { candidates } }` with `kind` always
+  `page` and `description` clipped at 500 characters. The search body is read up to 256,000
+  bytes. An all-filtered result is ok with no rows, so the host adds the `no-rows` caveat.
 - `stellarOrg.get_page({ path })` fetches `https://stellar.org<path>`. The path must be
-  site-relative with URL-safe characters and no `//`, dot segments, query, fragment, or `/api`
-  prefix. Redirects are followed only to a same-origin path without a query (at most three hops).
-  A body over 2,000,000 bytes is refused. The adapter keeps the first `<main>` element's text,
+  site-relative with unreserved characters only (no `%`, since `fetch` decodes `%2e` dot segments
+  and the server decodes encoded letters) and no `//`, dot segments, query, fragment, or `/api`
+  prefix. Redirects are followed only to a same-origin path without a query (at most three hops),
+  and one call, redirects included, is bounded to 24 s. A body over 2,000,000 bytes is refused. The adapter keeps the first `<main>` element's text,
   skips script, style, SVG, and similar elements, writes headings as `#` lines and list items as
   `- ` lines, drops responsive duplicate lines, and cuts content at 40,000 characters with
-  `truncated: true`. A 404 or 410 is soft-empty; every other failure is an error.
+  `truncated: true`. A 404 or 410, or a page with no server-side `<main>` text, is soft-empty;
+  every other failure is an error.
 
 The origin is a constant in the adapter, not a manifest field. There is no key, binding, or cache.
-`inventory/stellar-org.json` records the search row keys and one page probe for the daily drift
+`inventory/stellar-org.json` records the search row keys and a probe of `/` for the daily drift
 check.
 
 ## Routing

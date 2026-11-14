@@ -4,12 +4,12 @@
  *
  * Two keyless requests against one fixed origin:
  *  - search: GET /api/search?q=<query>&locale=en, the site's own search. It
- *    returns at most 10 rows of kind "page" or "partner". Rows under /blog,
- *    /press and /events, and external rows, are dropped here: other sources
- *    own that content.
+ *    returns at most 10 rows of kind "page" or "partner". Partner rows, rows
+ *    under /blog, /press and /events, and external rows are dropped here:
+ *    other sources own that content.
  *  - page: GET <path>, server-rendered HTML. The adapter keeps the `<main>`
  *    text with headings and list items, follows same-origin redirects only,
- *    and caps the bytes it reads.
+ *    and caps the bytes it reads and the time one read takes.
  *
  * The catalog entry's `transport.endpoint` selects the request. The origin is
  * a constant here, never read from the manifest.
@@ -22,6 +22,10 @@ export const STELLAR_ORG_ORIGIN = "https://stellar.org";
 const SEARCH_PATH = "/api/search";
 export const USER_AGENT = "RavenMCP/1.0";
 const REQUEST_TIMEOUT_MS = 12_000;
+/** One get_page call, redirects included, as the Docs adapter bounds one operation. */
+const OPERATION_BUDGET_MS = 24_000;
+const MAX_SEARCH_BYTES = 256_000;
+const MAX_DESCRIPTION_CHARS = 500;
 const MAX_ERROR_BODY_CHARS = 512;
 /** Rendered pages measured 410-500 KB (2026-11-14); a larger body is refused, not truncated. */
 export const MAX_PAGE_BYTES = 2_000_000;
@@ -30,9 +34,8 @@ const MAX_REDIRECTS = 3;
 const MAX_SEARCH_LIMIT = 10;
 /** Path prefixes another source owns: Scout and Lumenloop hold blog and press, Scout holds events. */
 export const EXCLUDED_PREFIXES = ["/blog", "/press", "/events"] as const;
-/** Partner rows link to a query string on the ecosystem directory, which renders no partner detail. */
-const PARTNER_DIRECTORY_PATH = "/ecosystem";
-const PATH_RE = /^\/[A-Za-z0-9._~%\-/]*$/;
+/** No `%`: fetch would decode `%2e` segments and the server `%61`, so encoded forms could reach /api. */
+const PATH_RE = /^\/[A-Za-z0-9._~\-/]*$/;
 const MAX_PATH_CHARS = 512;
 
 type SiteRow = {
@@ -65,43 +68,29 @@ export function normalizeSitePath(raw: unknown): string | null {
 }
 
 /**
- * Keep same-origin page and partner rows outside the excluded prefixes. The
- * site returns one partner row per directory category; rows that share kind,
- * path, and title merge into one row with the union of their tags.
+ * Keep same-origin page rows outside the excluded prefixes. Partner rows point
+ * at the ecosystem directory, which renders no partner detail; Scout and
+ * Lumenloop own partners.
  */
 export function siteHits(results: SiteRow[]): SiteHit[] {
   const hits: SiteHit[] = [];
-  const byKey = new Map<string, SiteHit>();
   for (const row of results) {
     if (!row || row.isExternal === true || typeof row.url !== "string" || typeof row.title !== "string") continue;
     const kind = typeof row.kind === "string" ? row.kind : "page";
-    let path: string | null;
-    if (kind === "partner" && row.url.startsWith("?")) {
-      path = PARTNER_DIRECTORY_PATH;
-    } else {
-      let url: URL;
-      try {
-        url = new URL(row.url, STELLAR_ORG_ORIGIN);
-      } catch {
-        continue;
-      }
-      if (url.origin !== STELLAR_ORG_ORIGIN) continue;
-      path = normalizeSitePath(url.pathname);
-    }
-    if (!path || EXCLUDED_PREFIXES.some((prefix) => underPrefix(path, prefix))) continue;
-    const description = typeof row.description === "string" && row.description.trim() ? row.description.trim() : null;
-    const tags = Array.isArray(row.tags) ? row.tags.filter((tag): tag is string => typeof tag === "string") : [];
-    const title = row.title.trim();
-    const key = `${kind}\n${path}\n${title}`;
-    const seen = byKey.get(key);
-    if (seen) {
-      for (const tag of tags) if (!seen.tags.includes(tag)) seen.tags.push(tag);
-      seen.description ??= description;
+    if (kind !== "page") continue;
+    let url: URL;
+    try {
+      url = new URL(row.url, STELLAR_ORG_ORIGIN);
+    } catch {
       continue;
     }
-    const hit = { title, description, path, kind, tags };
-    byKey.set(key, hit);
-    hits.push(hit);
+    if (url.origin !== STELLAR_ORG_ORIGIN) continue;
+    const path = normalizeSitePath(url.pathname);
+    if (!path || EXCLUDED_PREFIXES.some((prefix) => underPrefix(path.toLowerCase(), prefix))) continue;
+    const description =
+      typeof row.description === "string" && row.description.trim() ? row.description.trim().slice(0, MAX_DESCRIPTION_CHARS) : null;
+    const tags = Array.isArray(row.tags) ? row.tags.filter((tag): tag is string => typeof tag === "string") : [];
+    hits.push({ title: row.title.trim(), description, path, kind, tags });
   }
   return hits;
 }
@@ -127,7 +116,8 @@ const BLOCKS = new Set([
   "p", "div", "section", "article", "header", "footer", "aside", "nav", "ul", "ol", "table", "tr",
   "blockquote", "figure", "figcaption", "dl", "dt", "dd", "br", "hr", "form", "details", "summary"
 ]);
-const TAG_RE = /<!--[\s\S]*?-->|<(\/?)([A-Za-z][A-Za-z0-9-]*)\b[^>]*>/g;
+/** An unterminated comment runs to the end and a tag body stops at the next `<`, so a scan stays linear. */
+const TAG_RE = /<!--(?:[\s\S]*?-->|[\s\S]*$)|<(\/?)([A-Za-z][A-Za-z0-9-]*)\b[^<>]*>/g;
 
 /**
  * Readable text of an HTML fragment: headings become `#` lines, list items
@@ -182,15 +172,15 @@ export function htmlToText(html: string): string {
 }
 
 /**
- * The first `<main>` element's inner HTML, else the `<body>`'s, else the whole
- * document. Tags inside skipped elements (a `<main>` string in a script) never count.
+ * The first `<main>` element's inner HTML, or "" when the page has none (body
+ * chrome is not page text). Tags inside skipped elements (a `<main>` string in
+ * a script) never count.
  */
 export function mainHtml(html: string): string {
   let skipping: string | null = null;
   let depth = 0;
   let mainStart = -1;
   let mainDepth = 0;
-  let bodyStart = -1;
   for (const match of html.matchAll(TAG_RE)) {
     const name = (match[2] ?? "").toLowerCase();
     if (!name) continue;
@@ -206,19 +196,16 @@ export function mainHtml(html: string): string {
       depth = 1;
       continue;
     }
-    const end = match.index + match[0].length;
-    if (name === "body" && !closing && bodyStart < 0) bodyStart = end;
     if (name !== "main") continue;
     if (!closing) {
-      if (mainStart < 0) mainStart = end;
+      if (mainStart < 0) mainStart = match.index + match[0].length;
       if (mainDepth >= 0) mainDepth += 1;
     } else if (mainDepth > 0) {
       mainDepth -= 1;
       if (mainDepth === 0) return html.slice(mainStart, match.index);
     }
   }
-  if (mainStart >= 0) return html.slice(mainStart);
-  return bodyStart >= 0 ? html.slice(bodyStart) : html;
+  return mainStart >= 0 ? html.slice(mainStart) : "";
 }
 
 function documentTitle(html: string): string | undefined {
@@ -256,12 +243,12 @@ async function readCapped(res: Response, maxBytes: number): Promise<string | nul
   return new TextDecoder().decode(bytes);
 }
 
-function get(url: string, accept: string, fetchImpl: FetchLike): Promise<Response> {
+function get(url: string, accept: string, fetchImpl: FetchLike, timeoutMs = REQUEST_TIMEOUT_MS): Promise<Response> {
   return fetchImpl(url, {
     method: "GET",
     headers: { Accept: accept, "User-Agent": USER_AGENT },
     redirect: "manual",
-    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS)
+    signal: AbortSignal.timeout(timeoutMs)
   });
 }
 
@@ -272,7 +259,10 @@ async function search(args: Record<string, unknown>, fetchImpl: FetchLike): Prom
     typeof args.limit === "number" && Number.isInteger(args.limit) ? Math.min(Math.max(args.limit, 1), MAX_SEARCH_LIMIT) : 5;
   const url = `${STELLAR_ORG_ORIGIN}${SEARCH_PATH}?${new URLSearchParams({ q: query, locale: "en" })}`;
   const res = await get(url, "application/json", fetchImpl);
-  const bodyText = await res.text();
+  const bodyText = await readCapped(res, MAX_SEARCH_BYTES);
+  if (bodyText === null) {
+    return errResult({ service: SERVICE, kind: "error", message: `stellar.org search response exceeds ${MAX_SEARCH_BYTES} bytes` });
+  }
   if (!res.ok) {
     return errResult({
       service: SERVICE,
@@ -302,24 +292,50 @@ async function page(args: Record<string, unknown>, fetchImpl: FetchLike): Promis
       service: SERVICE,
       kind: "error",
       message: "path must be a site-relative stellar.org page path such as /foundation/roadmap",
-      hint: "Use `path` from a stellarOrg.search_site hit. Full URLs, query strings, and /api paths are refused."
+      hint: "Use `path` from a stellarOrg.search_site hit. Full URLs, query strings, percent-encoded characters, and /api paths are refused."
     });
   }
   let path = requested;
+  const deadline = Date.now() + OPERATION_BUDGET_MS;
   for (let hop = 0; ; hop += 1) {
-    const res = await get(`${STELLAR_ORG_ORIGIN}${path}`, "text/html", fetchImpl);
+    const remaining = deadline - Date.now();
+    if (remaining <= 0) {
+      return errResult({ service: SERVICE, kind: "error", message: `${requested} did not load within ${OPERATION_BUDGET_MS / 1000} s` });
+    }
+    const res = await get(`${STELLAR_ORG_ORIGIN}${path}`, "text/html", fetchImpl, Math.min(REQUEST_TIMEOUT_MS, remaining));
     if (res.status >= 300 && res.status < 400) {
       await res.body?.cancel();
       const location = res.headers.get("location");
-      const target = location ? new URL(location, `${STELLAR_ORG_ORIGIN}${path}`) : null;
-      const next = target && target.origin === STELLAR_ORG_ORIGIN && !target.search ? normalizeSitePath(target.pathname) : null;
+      let target: URL | null = null;
+      try {
+        target = location ? new URL(location, `${STELLAR_ORG_ORIGIN}${path}`) : null;
+      } catch {
+        target = null;
+      }
+      if (!target) {
+        return errResult({
+          service: SERVICE,
+          kind: "error",
+          status: res.status,
+          message: `${path} redirects with ${location ? "an unparsable" : "no"} Location header`
+        });
+      }
+      if (target.origin !== STELLAR_ORG_ORIGIN) {
+        return errResult({
+          service: SERVICE,
+          kind: "error",
+          status: res.status,
+          message: `${path} redirects off stellar.org to ${target.origin}${target.pathname}; it is not a stellar.org page`,
+          hint: "Read the target with the source that owns that site."
+        });
+      }
+      const next = target.search ? null : normalizeSitePath(target.pathname);
       if (!next) {
         return errResult({
           service: SERVICE,
           kind: "error",
           status: res.status,
-          message: `${path} redirects off stellar.org${target ? ` to ${target.origin}${target.pathname}` : ""}; it is not a stellar.org page`,
-          hint: "Read the target with the source that owns that site."
+          message: `${path} redirects to ${target.pathname}${target.search}, a stellar.org URL this tool does not read (query string, /api, or an unsafe path)`
         });
       }
       if (hop >= MAX_REDIRECTS || next === path) {
@@ -357,6 +373,14 @@ async function page(args: Record<string, unknown>, fetchImpl: FetchLike): Promis
       return errResult({ service: SERVICE, kind: "error", message: `${path} exceeds the ${MAX_PAGE_BYTES}-byte page limit` });
     }
     const text = htmlToText(mainHtml(html));
+    if (!text) {
+      return errResult({
+        service: SERVICE,
+        kind: "soft-empty",
+        message: `${path} rendered no server-side text.`,
+        hint: "The page may load its content in the browser. This is not evidence the topic is absent."
+      });
+    }
     const truncated = text.length > MAX_CONTENT_CHARS;
     const title = documentTitle(html) ?? path;
     return okResult({

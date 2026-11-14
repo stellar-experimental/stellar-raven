@@ -163,3 +163,53 @@ Every command below ran again on the final tree; the table shows the final exit 
   pattern does not match, and Raven fetches on demand for a user, not as a crawler.
 - **Audited-projects coverage.** Only the first server-rendered page of `/audit-bank/projects` is
   readable; later pages load client-side.
+
+## Review reconciliation
+
+Lane `sorg-fix`, Claude Opus 5.5 (author), 2026-11-14, against
+[SORG-REVIEW.md](SORG-REVIEW.md) (Claude Sonnet 5.5). `origin/main` (`66301389`, PR 438) was
+merged first; it touched no generated file this branch owns. Each new regression test was run
+against the pre-fix adapter: all 16 new or changed cases failed there (the linear-scan test took
+288 s) and pass now.
+
+| Finding | Done |
+|---|---|
+| F1 path guard (blocking) | `PATH_RE` no longer allows `%`. The reviewer's eight inputs are in the refusal table, and a redirect to `/%2e%2e/api/x` is refused. The `path` description and the error hint now name percent-encoded characters. |
+| F2 quadratic `TAG_RE` (blocking) | The reviewer's regex. Test: `<main>` plus 500,000 `<!--`, and plus 500,000 `<a `, each under one second. |
+| F3 empty page | `get_page` returns soft-empty "rendered no server-side text" with the reviewer's hint. The optional part is taken too: `mainHtml` drops the `<body>` fallback and returns `""` without `<main>`, so chrome-only bodies are soft-empty. Test covers a nav-only body, an empty body, and an empty `<main>`. |
+| F4 redirect message | Off-origin keeps its text; a same-origin refusal says "a stellar.org URL this tool does not read (query string, /api, or an unsafe path)"; an unparsable `Location` is caught and named. Test. |
+| F5 deadline | One 24 s budget per `get_page`; each hop gets `min(12 s, remaining)`. Test with a mocked clock: two 13 s hops, then "did not load within 24 s". |
+| F6 search bounds | Applied, since the file was open: `readCapped(res, 256_000)` for the search body, descriptions clipped at 500 characters. Test for the clip. |
+| F7 case | Applied: the excluded-prefix test lowercases the path. `/BLOG/x` added to the prefix test. The `/en/` locale prefix is not handled; the reviewer saw none. |
+| F8 | No change, as recommended. |
+| Bloat 1, partner rows | Cut: `siteHits` keeps `kind === "page"` only; the merge map and `PARTNER_DIRECTORY_PATH` are gone. Output shape kept (`kind`, `tags`). The recorded fixture keeps its live partner rows, so the existing test now asserts they are dropped instead of deleting it. Spec `filtered`, `kind`, and `path` texts updated. |
+| Drift classifier | Cut (`classifyStellarOrg`, its summarizer and test, restored to `origin/main`). `live-drift-resolution` gains one bullet: on an `inventory/stellar-org.json` change, run the adapter tests and a live smoke of both operations. |
+| Inventory probe | Probes `/` instead of `/foundation/roadmap`; `refresh-inventory --service stellar-org` re-run live (200, `text/html`, `<main>` present; row keys unchanged). |
+| Rule 3 | The reviewer's sentence, appended unchanged. Micro-map estimate 638 to 668 tokens; `test/mcp-instructions.test.ts` passes. |
+| Stale docs | `ARCHITECTURE.md` names the four services; `AGENTS.md` names the stellar.org site; the drift skill description names four surfaces; the research note describes the `%` refusal, the deadline, the soft-empty page, the partner cut, and the `/` probe. |
+
+Lines, against the pre-fix merge commit, excluding this record, the review, and the briefs:
+17 files, 209 added, 187 removed. Hand-written code: adapter +78 / -54, adapter tests +62 / -10,
+drift classifier and its test -55 (+1 import line restored).
+
+**Routing.** The manifest text moved (spec constraints and output-schema descriptions), so
+`eval/gates.json` re-stamps the manifest fingerprint, `localTrace`, and the note; totals and
+baseline date are unchanged. Compared per case against the pre-fix branch manifest on all 544
+rows: 0 grade changes, 0 top-1 changes, 0 top-five list changes, 0 score changes. The reviewer's
+numbers against `origin/main` (0 grade, 0 top-1, six top-five lists) therefore stand unchanged.
+
+**Gates**, run bare in this order after the last edit:
+
+| Command | Exit |
+|---|---|
+| `npm run typecheck` | 0 |
+| `npm test` | 0 (151 files passed, 1 skipped; 3,458 passed, 3 expected fail, 1 skipped) |
+| `npm run build` | 0 |
+| `npm run test:smoke` | 0 (9 files, 141 tests) |
+| `npm run eval:routing -- --gate` | 0, `GATE PASS` (1 before the re-stamp: fingerprint mismatch only) |
+| CI generated-artifacts sequence, then `git diff --exit-code` over the CI path list | 0, 0 |
+| `npm run secrets:scan -- --tree` | 0 |
+
+Still open: Worker egress to stellar.org after deploy, a scoped QA run on the affected cases, and
+the Blend audit and Anchor Directory facts this source does not hold (`.agents/TODO.md`). The
+vendor-diverse (Grok) attack on the adapter was not run.

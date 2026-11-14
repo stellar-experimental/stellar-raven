@@ -160,34 +160,28 @@ remains:
 Done when: each owner decision is recorded under "Owner decisions", and the baseline plan is
 written or declined.
 
-### Decide whether stellar.org pages outside Docs belong in a Raven source
+### Finish the stellar.org source after merge
 
-Three unrelated golden cases miss for one reason: the fact lives only on a `stellar.org` page that
-no Raven source holds. The leaves are `ecosystem.strategy-roadmap` (the SDF strategy and roadmap
-pages), `security.audit-registry` (the Audit Bank projects page), and `funding.service-providers`
-(the service-providers directory). The 2026-11-14 QA test showed all three
-([result](rounds/2026-11-14-golden-coverage-audit/qa/RESULT.md), "Corpus-coverage
-diagnostics"). `sls-117` covers only the Scout research-corpus part: four `sdf-org` pages its
-`sls-055` fix left out. Whether Raven should hold `stellar.org` itself is an owner decision, not
-a finding.
+The owner decided to add stellar.org as a Raven source (2026-11-14). Branch
+`feat/stellar-org-source` adds `stellarOrg.search_site` and `stellarOrg.get_page` for the leaves
+`ecosystem.strategy-roadmap`, `security.audit-registry`, and `funding.service-providers`; the
+independent review and its reconciliation are in
+[SORG.md](rounds/2026-11-14-golden-coverage-audit/decisions/SORG.md) and
+[SORG-REVIEW.md](rounds/2026-11-14-golden-coverage-audit/decisions/SORG-REVIEW.md). What remains:
 
-The owner wants the source if it does not muddy other results (2026-11-14). `stellar.org` is a
-Next.js site on Sanity. SDF's Algolia application `TYESA7T7LE` holds an index `pages` (5,782
-section records with title, URL, `_type`, and full body text; rebuilt daily; Spanish, staging,
-and dev copies beside it). Read in the dashboard on 2026-11-14: "SDF strategy" ranks
-`/foundation/strategy` first, "service providers" ranks `/ecosystem/service-providers` first, and
-"audit bank projects" ranks `/audit-bank/projects` first; "forgot memo deposit" misses the
-`/community` answer. About half the sitemap is blog and press that Scout and Lumenloop already
-hold (580 blog and 127 press of 1,244 URLs).
+- **Worker egress.** Every live read so far ran from Node on a workstation. After deploy, call
+  both operations from the Worker and confirm stellar.org's front serves them.
+- **Answer quality.** A scoped QA run on the affected cases (`q-sdf-2026-strategy-priorities`,
+  `q-audit-reports-where-published`, `q-defi-blend-audit-record`, and
+  `q-scf-service-provider-directories`). It needs its own `run-evals` plan and spend
+  authorization.
+- **Facts the source does not hold.** The Blend audit record (Certora, OtterSec, Code4rena) lives
+  in Blend's docs and the Security Portal, not on stellar.org's server-rendered audited-projects
+  page. The Anchor Directory is `anchors.stellar.org`, not stellar.org. Each case needs another
+  source or a golden-truth edit.
 
-Next step: a free, read-only retrieval A/B before any adapter work. The owner creates a
-search-only key limited to the `pages` index. Query the gap-ledger leaves through it and through
-Raven, with the pass condition fixed first: more supporting passages and no displaced correct
-row. If it passes, add one operation in its own source family, filtered away from blog, press,
-and event records, with the exposure change in one reviewed change.
-
-Done when: the decision is recorded under "Owner decisions" and the three leaves' cases follow
-it.
+Done when: Worker egress is verified, the scoped QA run is recorded, and the two out-of-source
+facts are routed.
 
 ### Check Docs search for the SEP-7 payment-request page before filing
 
