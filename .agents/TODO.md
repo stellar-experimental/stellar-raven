@@ -556,6 +556,17 @@ A new attempt needs one of:
 The upstream card and the Scout inventory have both changed since the contracts froze (the PH1
 trigger). That allows the free diagnostic and authorizes no mechanism.
 
+2026-11-14 evidence for PH4 ([baseline](rounds/2026-11-14-baseline-tuning/BASELINE.md), stored run
+`2026-11-14T20-13-51-variantA`): on nine standards questions from three families, seven never
+called `scout.searchResearch` (`q-sep-45-contract-auth`, `q-crp-oz-rwa-erc3643-trex`,
+`q-sep6-sep24-sep31-choice`, `q-nft-vault-contract-standards`,
+`q-net-protocol-meeting-notes-find-cap`, `q-protocol-ledger-close-time`,
+`q-edge-factcheck-soroswap-first-amm`), and `search` returned the research operation on none of the
+eight that searched, at limits of 5, 8, and 10. The same lane is absent for a wallet SEP, a
+token-compliance SEP, and a CAP's status. Whether this meets PH4's bar is the owner's decision; the
+routing repair stays held until the owner rules on PH3. The tuning loop
+([plan](rounds/2026-11-14-baseline-tuning/TUNING-PLAN.md)) does not try to fix it.
+
 Done when: a reviewed mechanism passes both contracts (19 of 19 required top-five hits, zero
 forbidden captures) and all routing gates.
 
@@ -634,6 +645,17 @@ A/B on the golden docs pages and the probe, and the routing gate.
 Done when: the `op_bad_signer` query yields the `SET_OPTIONS_BAD_SIGNER` mapping in one search
 call or one hinted page read. Remove when `sd-059` is fixed upstream.
 
+2026-11-14 evidence: in the stored baseline, 56 of 79 tuning rows ran a Docs search with no page
+read, and 10 of the 66 rows that searched read one. The nine rows below stopped at snippets; the
+fact each missed is on a page the agent already had a path for, except `q-sep-45-contract-auth`
+(its status is in the research preamble, not in a Docs page) and `q-soroban-contract-id-derivation`
+(on no page it was shown). `q-soroban-cli-bindings`, `q-pc-account-activation-not-found`,
+`q-pc-cross-redstone-sep40`, `q-pc-sequence-numbers-ordering-replace`, and
+`q-ti-classic-submission-errors` have it on one of the first two pages; `q-infra-rpc-methods-list`
+and `q-smart-wallet-fee-sponsorship` have it on a later path. Tuning arm 1 (a `detail` relation
+that renders a page-read pointer in the checkpoint) is the change under measurement
+([record](rounds/2026-11-14-baseline-tuning/TUNE-IMPL-1.md)).
+
 ### Measure "read past the snippet" guidance
 
 In the HackMeridian review, 11 of 29 weaker answers stopped at a cut snippet, the first page, or
@@ -642,6 +664,10 @@ and name the call that reads the rest. Upstream codemode is the default, so a ch
 measured win.
 
 Done when: a measured change ships, or the measurement shows no gain and this item is deleted.
+
+2026-11-14: tuning arm 1 is that measurement. It marks a Docs search result as sections of pages
+and names the page read, in the checkpoint. The nine baseline rows that stopped at snippets are
+listed under "Point agents at the page when a docs hit has no body".
 
 ### Clarify the model-facing `codemode.describe` response shape
 
