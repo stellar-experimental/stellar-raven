@@ -159,20 +159,27 @@ export function panelRole(row, scan) {
   return null;
 }
 
-/** Scan the tuning rows of a results file. The split's `sets.tuning` is read first. */
-export function scanTuningRows({ split, results }) {
+/**
+ * The tuning rows of a results file. The split's `sets.tuning` is read first, and the results rows
+ * are selected by id before any other field of any row is read.
+ */
+export function selectTuningRows({ split, results }) {
   const tuningIds = split?.sets?.tuning;
   if (!Array.isArray(tuningIds) || tuningIds.length !== TUNING_ROW_COUNT) {
     throw new Error(`sets.tuning must list ${TUNING_ROW_COUNT} ids, got ${tuningIds?.length}`);
   }
   const wanted = new Set(tuningIds);
   if (wanted.size !== TUNING_ROW_COUNT) throw new Error("sets.tuning has duplicate ids");
-  // Select by id first: no other field of a row outside the tuning set is read.
   const selected = (results?.rows ?? []).filter((row) => wanted.has(row.id));
   if (selected.length !== TUNING_ROW_COUNT) {
     throw new Error(`results hold ${selected.length} of the ${TUNING_ROW_COUNT} tuning rows`);
   }
-  return selected
+  return selected;
+}
+
+/** Scan the tuning rows of a results file. */
+export function scanTuningRows({ split, results }) {
+  return selectTuningRows({ split, results })
     .map((row) => {
       const scan = scanTranscript(row.transcript);
       const scanned = {
