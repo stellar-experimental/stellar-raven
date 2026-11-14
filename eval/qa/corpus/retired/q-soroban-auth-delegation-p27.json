@@ -1,0 +1,21 @@
+{
+  "id": "q-soroban-auth-delegation-p27",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-soroban-a (golden coverage audit)",
+    "reviewer": "verify-audit-soroban-a (golden coverage audit)",
+    "reason": "Duplicate of q-pc-protocol-27-zipper kf1/kf2 (CAP-0071 delegation, address-bound credential, same date).",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-a.json#q-soroban-auth-delegation-p27",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-a.json#q-soroban-auth-delegation-p27",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-soroban-auth-delegation-p27"
+    ],
+    "lastCaseContentSha256": "5bbb9b43c091287cce26291cf47cf82f3aba7f6f9d9ee53bba5a1ae19511d025",
+    "replacementIds": []
+  }
+}

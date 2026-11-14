@@ -1,0 +1,21 @@
+{
+  "id": "q-gap-lumen-documents-browse",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-tooling-a (golden coverage audit)",
+    "reviewer": "verify-audit-tooling-a (golden coverage audit)",
+    "reason": "The move reason is false: test/skill-runners.test.ts:180 pins the exact list_documents({collection:'events', period:'upcoming'}) call for the digest skill, the frozen live digest cases run that skill, and the host rejects a guessed `time_period` before any call, so a wrong guess fails loudly. No visibility is left for a tool lane; retire. The world question under it (upcoming Stellar ecosystem events) is a coverage question for phase 3, not a reason to keep this case.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-a.json#q-gap-lumen-documents-browse",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-a.json#q-gap-lumen-documents-browse",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-gap-lumen-documents-browse"
+    ],
+    "lastCaseContentSha256": "ea464cc633938b5efba6243b8412fa872c020a537303ba1e3aba210c5f559e93",
+    "replacementIds": []
+  }
+}

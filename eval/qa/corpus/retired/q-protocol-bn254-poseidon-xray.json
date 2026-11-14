@@ -1,0 +1,21 @@
+{
+  "id": "q-protocol-bn254-poseidon-xray",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-protocol (golden coverage audit)",
+    "reviewer": "verify-protocol (golden coverage audit)",
+    "reason": "Same CAP-to-protocol table as q-zk-host-functions-status kf0-kf2.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-protocol-bn254-poseidon-xray",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-protocol-bn254-poseidon-xray",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-protocol-bn254-poseidon-xray"
+    ],
+    "lastCaseContentSha256": "bc6ba426a08910b6d0587203dd39e46a4e1e211ebedd2410205b4cd4b8adf5c7",
+    "replacementIds": []
+  }
+}

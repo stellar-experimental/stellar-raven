@@ -1,0 +1,21 @@
+{
+  "id": "q-hist-remittance-corridors",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-hist-retail (golden coverage audit)",
+    "reviewer": "verify-hist-retail (golden coverage audit)",
+    "reason": "MoneyGram is q-anchor-moneygram-ramps; live-versus-announced discipline is q-rwa-projects-tokenizing-stellar kf2.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-hist-remittance-corridors",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-hist-remittance-corridors",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-hist-remittance-corridors"
+    ],
+    "lastCaseContentSha256": "3956367bb945bec7deabcce5fb09af8f6f905cf67fff91685cd684bbdfe6365f",
+    "replacementIds": []
+  }
+}

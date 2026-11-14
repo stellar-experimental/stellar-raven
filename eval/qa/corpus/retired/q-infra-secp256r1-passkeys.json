@@ -1,0 +1,23 @@
+{
+  "id": "q-infra-secp256r1-passkeys",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-tooling-a (golden coverage audit)",
+    "reviewer": "verify-audit-tooling-a (golden coverage audit)",
+    "reason": "Merged into q-passkey-smart-account-architecture. Same knowledge as q-passkey-smart-account-architecture (CAP-0051 P-256 primitive is not full WebAuthn validation; __check_auth binds the challenge). The survivor's accepted soroban-a rewrite contains neither absorbed item, so the orchestrator must add them when applying, as answer clauses rather than new key facts: 'WebAuthn also permits algorithms other than P-256' and 'a separate G account submits and pays fees; the C account only authorizes'. Both are already in this case's verified golden; no fact changes.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-a.json#q-infra-secp256r1-passkeys",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-a.json#q-infra-secp256r1-passkeys",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-infra-secp256r1-passkeys"
+    ],
+    "lastCaseContentSha256": "3f0dac96e2a97cdbeb4cedbe79c05840a5db04bd6266214d9728f8c8b3cbf86f",
+    "replacementIds": [
+      "q-passkey-smart-account-architecture"
+    ]
+  }
+}

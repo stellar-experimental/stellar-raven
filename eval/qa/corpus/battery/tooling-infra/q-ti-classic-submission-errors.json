@@ -1,26 +1,23 @@
 {
   "id": "q-ti-classic-submission-errors",
-  "question": "Why do classic txs fail with tx_bad_seq or op_underfunded even when balance/sequence look right (selling liabilities + base reserve + subentry reserves), and how do I interpret/fix the broader result-code taxonomy (op_no_destination, op_bad_signer, PAYMENT_SRC_NO_TRUST, TRY_AGAIN_LATER)?",
+  "question": "Why do classic txs fail with tx_bad_seq or op_underfunded even when balance and sequence look right (selling liabilities, base reserve, subentry reserves), and how do I read the wider result-code taxonomy (op_no_destination, op_bad_signer, PAYMENT_SRC_NO_TRUST)?",
   "surface": [
     "stellarDocs.search_protocol_concepts_docs",
     "stellarDocs.search_rpc_horizon_data_docs",
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "Start with HTTP status and Horizon `extras.result_codes.transaction` plus `operations`. `tx_bad_seq` is a source-sequence mismatch; `tx_failed` means an operation failed and the transaction stayed atomic, so inspect the operation array. Underfunded means **spendable** balance after minimum reserve, subentries, offers, and selling liabilities—not merely the displayed nominal balance.\n\nUse the exact operation family and namespace. Payment mappings include `PAYMENT_NO_DESTINATION` and `PAYMENT_SRC_NO_TRUST`; SetOptions documents `op_bad_signer` paired with `SET_OPTIONS_BAD_SIGNER`; generic operation authorization is `op_bad_auth`. These labels are not interchangeable. Treat deterministic 400/result-code failures differently from 429/5xx/timeouts: back off for transport/admission uncertainty and query the known hash before rebuilding, preserving idempotency and bounds.",
+    "answer": "Read the HTTP status and Horizon `extras.result_codes`: a transaction code plus per-operation codes. `tx_bad_seq` means the source sequence did not match; `tx_failed` means an operation failed and the whole transaction rolled back. Underfunded refers to spendable balance: balance minus base reserve, subentry reserves and selling liabilities, not the displayed total. Codes are namespaced: `PAYMENT_NO_DESTINATION` and `PAYMENT_SRC_NO_TRUST` for Payment, `op_bad_signer` with `SET_OPTIONS_BAD_SIGNER` for SetOptions, `op_bad_auth` generically. Retry 429, 5xx and timeouts hash-first; deterministic 400 failures need a fix.",
     "keyFacts": [
-      "Reads transaction and operation result codes and preserves transaction atomicity.",
-      "Explains spendable balance from reserves, subentries, offers, liabilities, and trustlines.",
-      "Scopes Payment codes to PAYMENT_NO_DESTINATION and PAYMENT_SRC_NO_TRUST.",
-      "Scopes SetOptions to op_bad_signer and SET_OPTIONS_BAD_SIGNER.",
-      "Uses hash-first/idempotent handling for 429/5xx/timeouts instead of retrying every 400."
+      "Reads transaction and operation result codes; tx_failed is an atomic operation failure.",
+      "Underfunded means spendable balance after reserves, subentries and selling liabilities.",
+      "Result codes are namespaced: Payment codes, SetOptions op_bad_signer, generic op_bad_auth.",
+      "Retries 429, 5xx and timeouts hash-first; does not retry deterministic 400 failures."
     ],
     "avoid": [
-      "Do NOT retry every HTTP 400 or call a timeout/polling miss definitive failure.",
-      "Do NOT ignore operation-level codes or mix generic, Payment, and SetOptions namespaces.",
-      "Do NOT diagnose all underfunding as a faucet/provider issue or advise bypassing reserves/trustlines."
-    ],
-    "notes": "Verified official docs on 2026-06-29.\nAlso good if the answer: Cites official Horizon error handling and operation-specific result-code docs. | Mentions that Horizon 400 transaction_failed often means the submitted transaction will never succeed, with a `tx_bad_seq` high-sequence caveat.\nGolden cites: Official transaction result-code docs. | Official payment and/or offer result-code docs for underfunded/liability behavior.\nGT-51 CORRECTION 2026-07-11: `op_bad_signer` is valid only as the documented SetOptions-specific label; do not genericize or delete it."
+      "Do NOT retry every HTTP 400 or call a polling timeout a definitive failure.",
+      "Do NOT mix generic, Payment and SetOptions code namespaces."
+    ]
   },
   "tags": {
     "category": "tooling-infra",
@@ -95,15 +92,20 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-02)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-tooling-a, verify-audit-tooling-a; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Live A 2026-11-02: https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/payment — PAYMENT_SRC_NO_TRUST and PAYMENT_NO_DESTINATION.",
-        "Live B 2026-11-02: https://github.com/stellar/stellar-horizon/blob/main/internal/codes/main.go — 'PaymentResultCodePaymentSrcNoTrust: return \"op_src_no_trust\"', 'SetOptionsResultCodeSetOptionsBadSigner: return \"op_bad_signer\"', 'OperationResultCodeOpBadAuth: return \"op_bad_auth\"'.",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/set-options — 'op_bad_signer' maps to SET_OPTIONS_BAD_SIGNER; transactions page lists tx_failed and tx_bad_seq.",
-        "Sibling sweep 2026-11-02: q-ti-channel-accounts-throughput; no contradiction. No gospel change."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-a.json#q-ti-classic-submission-errors",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-a.json#q-ti-classic-submission-errors",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-ti-classic-submission-errors"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-ti-classic-submission-errors"
+    "origin": "raven-next q-ti-classic-submission-errors",
+    "notes": "Verified official docs on 2026-06-29.\nAlso good if the answer: Cites official Horizon error handling and operation-specific result-code docs. | Mentions that Horizon 400 transaction_failed often means the submitted transaction will never succeed, with a `tx_bad_seq` high-sequence caveat.\nGolden cites: Official transaction result-code docs. | Official payment and/or offer result-code docs for underfunded/liability behavior.\nGT-51 CORRECTION 2026-07-11: `op_bad_signer` is valid only as the documented SetOptions-specific label; do not genericize or delete it.",
+    "leaf": "data.result-codes",
+    "secondaryLeaf": "protocol.sequence-numbers"
   }
 }

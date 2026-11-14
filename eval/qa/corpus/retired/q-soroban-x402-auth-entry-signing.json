@@ -1,0 +1,21 @@
+{
+  "id": "q-soroban-x402-auth-entry-signing",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-soroban-b (golden coverage audit)",
+    "reviewer": "verify-audit-soroban-b (golden coverage audit)",
+    "reason": "Flow is q-x402-payment-verification kf0; the rest is a volatile wallet roster.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-b.json#q-soroban-x402-auth-entry-signing",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-b.json#q-soroban-x402-auth-entry-signing",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-soroban-x402-auth-entry-signing"
+    ],
+    "lastCaseContentSha256": "a7c591d05d0c817c8e85f728fc229cae29fa3e3a1c9bf67fcef5c67c51ea930f",
+    "replacementIds": []
+  }
+}

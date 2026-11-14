@@ -1,0 +1,21 @@
+{
+  "id": "q-scf-regional-india",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-scf (golden coverage audit)",
+    "reviewer": "verify-audit-scf (golden coverage audit)",
+    "reason": "Map leaf funding.ambassadors-chapters stays covered by q-scf-ambassador-program; one chapter is an instance.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-scf-regional-india",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-scf-regional-india",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-scf-regional-india"
+    ],
+    "lastCaseContentSha256": "9ea7472cb5fe6050ce035e36067c99323b47de3296c8e0193850f60eae4daa56",
+    "replacementIds": []
+  }
+}

@@ -6,17 +6,16 @@
     "stellarDocs.search_wallet_dapp_docs"
   ],
   "golden": {
-    "answer": "A muxed `M...` address encodes an underlying `G...` Ed25519 account plus a uint64 ID. It is not a separate ledger account: the G-account owns funds, reserves, authorization, and sequence. Decode M to G + unsigned 8-byte ID; that conversion moves nothing. M differs from a transaction memo because the ID travels in a supported account field. Current protocol positions include transaction/operation source, fee-bump fee source, Payment and strict-send/strict-receive path-payment destination, AccountMerge destination, and Clawback `from`. Not every AccountID field accepts M, and current InvokeHostFunction transactions reject muxed transaction/operation sources. Wallet/exchange/anchor support changes, so verify the receiving service as of use time; otherwise use its required G+memo flow.",
+    "answer": "A muxed M-address encodes a G-account plus a uint64 ID; it is not a ledger account, so the G-account still owns funds, reserves and sequence. Decoding yields the G-address and ID. Unlike a memo, the ID travels in an account field such as a source or payment destination. Not every field accepts M, InvokeHostFunction rejects muxed sources, and many services still require G plus memo.",
     "keyFacts": [
-      "Defines M as G+uint64 with the underlying G owning sequence/funds/state.",
-      "Lists current supported positions.",
-      "Warns against universal Soroban/source or service support."
+      "M is a G-account plus a uint64 ID; the G-account owns funds, reserves and sequence.",
+      "M converts to G plus ID and is valid only in certain account fields.",
+      "InvokeHostFunction sources and some services do not accept M."
     ],
     "avoid": [
-      "Do NOT call M an independent account or say it replaces memos everywhere.",
-      "Do NOT assume every AccountID field, InvokeHostFunction source, or service accepts M."
+      "Do NOT call M an independent account or say it replaces memos everywhere."
     ],
-    "notes": "Verified against official pooled-account docs, CAP-0027, and SEP-0023. Compatibility caveat remains service-specific: some wallets/exchanges still require G+memo.\nAlso good if the answer: Explains conversion requires decoding the muxed account into base G-account and ID, not changing ownership.\nGolden cites: At least one primary Stellar source such as developers.stellar.org, stellar-core docs, or the stellar-protocol repository.\nGT-29 CORRECTION 2026-07-10: grade the official supported-position matrix and current InvokeHostFunction source restriction; external service support is dated."
+    "notes": "Service support is dated; grade the protocol rule, not any one exchange."
   },
   "tags": {
     "category": "protocol-core",
@@ -89,19 +88,35 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "InvokeHostFunction rejects muxed transaction/operation sources",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionFrame.cpp",
+            "observedAt": "2026-11-14",
+            "note": "Soroban transactions are not allowed to use memo or muxed source account (read 2026-11-02)"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-02)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-protocol, verify-protocol; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Verification-only event: no judge-facing field changed.",
-        "https://developers.stellar.org/docs/build/guides/transactions/pooled-accounts-muxed-accounts-memos#supported-operations (via stellarDocs.search_docs) — 'The source account of any operation or transaction; The fee source of a fee-bump transaction; The destination of all three types of payments ... The destination of an AccountMerge' (observedAt 2026-11-02).",
-        "https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionFrame.cpp (master at dbe95a705e, 2026-10-14) — 'Soroban transactions are not allowed to use memo or muxed source account'; validateSorobanMemo rejects KEY_TYPE_MUXED_ED25519 transaction and operation sources (observedAt 2026-11-02).",
-        "https://horizon.stellar.org/ — 'current_protocol_version 29, core_supported_protocol_version 30, core_version stellar-core 30.0.0' (observedAt 2026-11-02); the Core rule holds through v30. CAP-0084 muxed contract (W) addresses for P30 do not change M-account rules.",
-        "Sibling sweep 2026-11-02: q-pc-memos-reference (same validateSorobanMemo rule, re-dated to P29 in this batch); no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-pc-muxed-accounts",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-pc-muxed-accounts",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-pc-muxed-accounts",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionFrame.cpp -- 'Soroban transactions are not allowed to use memo or muxed source account (read 2026-11-02)'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-pc-muxed-accounts"
+    "origin": "raven-next q-pc-muxed-accounts",
+    "notes": "Verified against official pooled-account docs, CAP-0027, and SEP-0023. Compatibility caveat remains service-specific: some wallets/exchanges still require G+memo.\nAlso good if the answer: Explains conversion requires decoding the muxed account into base G-account and ID, not changing ownership.\nGolden cites: At least one primary Stellar source such as developers.stellar.org, stellar-core docs, or the stellar-protocol repository.\nGT-29 CORRECTION 2026-07-10: grade the official supported-position matrix and current InvokeHostFunction source restriction; external service support is dated.",
+    "leaf": "protocol.memos-muxed"
   }
 }

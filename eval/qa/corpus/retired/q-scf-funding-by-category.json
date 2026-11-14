@@ -1,0 +1,21 @@
+{
+  "id": "q-scf-funding-by-category",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-scf (golden coverage audit)",
+    "reviewer": "verify-audit-scf (golden coverage audit)",
+    "reason": "No Stellar fact survives (all values are Scout reconstructions that change daily); the labeling behavior is owned by q-scf-total-distributed.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-scf-funding-by-category",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-scf-funding-by-category",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-scf-funding-by-category"
+    ],
+    "lastCaseContentSha256": "ebc3d8b94e76030bb2a35c20f0226ba54a2f7df7e42d45596b4a45488f7d7dab",
+    "replacementIds": []
+  }
+}

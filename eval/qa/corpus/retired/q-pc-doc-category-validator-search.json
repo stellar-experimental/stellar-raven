@@ -1,0 +1,21 @@
+{
+  "id": "q-pc-doc-category-validator-search",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-protocol (golden coverage audit)",
+    "reviewer": "verify-protocol (golden coverage audit)",
+    "reason": "Adapter behaviour (pathFiltered, /docs/validators filter, soft-empty) is asserted in test/adapters.test.ts and routed in eval/gates.json; nothing an outside agent could satisfy. Retire, not tool lane.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-pc-doc-category-validator-search",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-pc-doc-category-validator-search",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-pc-doc-category-validator-search"
+    ],
+    "lastCaseContentSha256": "25557adef117cfabeb9d3de39f25689b5457c6062586cd21dff1b340cd942960",
+    "replacementIds": []
+  }
+}

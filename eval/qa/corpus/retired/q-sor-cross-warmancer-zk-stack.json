@@ -1,0 +1,23 @@
+{
+  "id": "q-sor-cross-warmancer-zk-stack",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-soroban-a (golden coverage audit)",
+    "reviewer": "verify-audit-soroban-a (golden coverage audit)",
+    "reason": "Merged into q-zk-proof-systems-stellar. Survivor q-zk-proof-systems-stellar, which must absorb: native Groth16 verifies on BLS12-381 (CAP-0059, P22) or BN254 (CAP-0074, P25) provided circuit and verifier use the same curve. Drop the Warmancer project lookup; the entity half is corpus-only trivia.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-a.json#q-sor-cross-warmancer-zk-stack",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-a.json#q-sor-cross-warmancer-zk-stack",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-sor-cross-warmancer-zk-stack"
+    ],
+    "lastCaseContentSha256": "5e78aeaccbbf8c3fa60040f865dc80915302a05f8ade8fa81e22304e4cd45d68",
+    "replacementIds": [
+      "q-zk-proof-systems-stellar"
+    ]
+  }
+}

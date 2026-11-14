@@ -1,0 +1,23 @@
+{
+  "id": "q-infra-simulate-transaction-howto",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-tooling-a (golden coverage audit)",
+    "reviewer": "verify-audit-tooling-a (golden coverage audit)",
+    "reason": "Merged into q-soroban-simulate-resource-fee. q-soroban-simulate-resource-fee asks the same question with more detail. Its soroban-b rewrite lacks the Horizon boundary, so the orchestrator must add the avoid 'Do NOT claim simulation runs through a Horizon endpoint; it is a Stellar RPC method.' The sign-after-simulate ordering is already implied by 'on the unsigned transaction'.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-a.json#q-infra-simulate-transaction-howto",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-a.json#q-infra-simulate-transaction-howto",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-infra-simulate-transaction-howto"
+    ],
+    "lastCaseContentSha256": "f3e78317b267a37da67b452e13ca720e998bc4d4d5361b2853708c1ec0a1e0b7",
+    "replacementIds": [
+      "q-soroban-simulate-resource-fee"
+    ]
+  }
+}

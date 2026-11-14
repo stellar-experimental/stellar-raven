@@ -5,15 +5,15 @@
     "stellarDocs.search_docs"
   ],
   "golden": {
-    "answer": "**SEP-9999 does not appear in the current official Stellar SEP registry.** Verify against a dated commit/as-of of `stellar/stellar-protocol/ecosystem`; do not infer a permanent numeric ceiling from the highest visible proposal. Say no specification for SEP-9999 was found, avoid inventing scope or implementation steps, and offer to check a different SEP number the user may have meant.",
+    "answer": "SEP-9999 is not in the official Stellar SEP registry (stellar/stellar-protocol), so I can't summarize it or give implementation steps. If you meant a different SEP, give me its number or topic and I'll look it up.",
     "keyFacts": [
-      "States SEP-9999 is absent from a dated official registry lookup.",
-      "Does not fabricate a specification or pin a stale maximum SEP number."
+      "States SEP-9999 is absent from the official SEP registry.",
+      "Invents no scope or implementation steps and offers to look up a real SEP."
     ],
     "avoid": [
-      "Do NOT invent SEP-9999 or claim the registry permanently ends near SEP-0050/0051."
+      "Do NOT describe SEP-9999's content, or claim the registry permanently ends near SEP-0050."
     ],
-    "notes": "Honest-no-info: SEP-9999 is absent from the official registry (verified 2026-11-02 against stellar/stellar-protocol ecosystem/ at commit f2d36490: no SEP-9999 file or index entry). The trap is hallucinating a spec for a real-looking SEP number. Strict profile because fabrication is the failure mode.\nAlso good if the answer: Offers to help with a real SEP if the user had a different number in mind. | Notes SEPs live in the stellar/stellar-protocol repo as where to verify.\nGolden cites: If referencing the SEP catalog, point to the stellar-protocol SEP index.\nGT-21 SIBLING CORRECTION 2026-07-10: remove the stale SEP-0050/0051 ceiling; gate on dated official-registry absence, not a maximum number."
+    "notes": "Strict profile: fabrication is the failure mode."
   },
   "tags": {
     "category": "edge-behavior",
@@ -113,24 +113,43 @@
             "note": "no-contradiction web sweep: no SEP-9999 specification anywhere"
           }
         ]
+      },
+      {
+        "claim": "SEP-9999 is not in stellar/stellar-protocol ecosystem/",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/tree/master/ecosystem",
+            "observedAt": "2026-11-14",
+            "note": "Directory listing ends at sep-0061.md; no sep-9999 file (2026-11-14)"
+          },
+          {
+            "class": "D",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals",
+            "observedAt": "2026-11-14",
+            "note": "Web search for 'SEP-9999 Stellar Ecosystem Proposal' returns only the SEP index pages"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch edge-behavior-02)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-edge, verify-audit-edge; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Live 2026-11-02 (class B): gh api repos/stellar/stellar-protocol/contents/ecosystem?ref=f2d364902615af726b3533021403c8b225aa6e5d — highest files sep-0059.md, sep-0060.md, sep-0061.md; no sep-9999 file. gh api repos/stellar/stellar-protocol/commits?path=ecosystem&per_page=1 — f2d36490 2026-10-14T23:36:06Z is the latest ecosystem/ commit.",
-        "Live 2026-11-02 (class B): https://raw.githubusercontent.com/stellar/stellar-protocol/0da06899c02f818be0132f42cea1f45d6396e20a/ecosystem/README.md — repo master has no SEP-9999 index entry.",
-        "Live 2026-11-02T16:28:34Z (class E): Raven stellarDocs.search_docs({query:'SEP-9999'}) — only adjacent anchor-platform sep6 and sep45 pages.",
-        "Live 2026-11-02 (class D): Perplexity search \"SEP-9999\" Stellar Ecosystem Proposal — no SEP-9999 specification; only the generic SEP index.",
-        "Independent verifier accepted the golden.notes change; .agents/rounds/2026-11-02-golden-audit/pass1/edge-behavior-02.json.",
-        "Sibling sweep 2026-11-02: grep 'SEP-0050|SEP-0051|SEP-9999' over eval/qa/corpus/battery → only q-edge-noinfo-sep-9999; proposer siblings q-sep-catalog-list, q-edge-deep-comprehensive-sep-audit, q-sep53-message-signing carry no catalog ceiling that contradicts SEP-0061; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-edge.json#q-edge-noinfo-sep-9999",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-edge.json#q-edge-noinfo-sep-9999",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-edge-noinfo-sep-9999",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/tree/master/ecosystem -- 'Directory listing ends at sep-0061.md; no sep-9999 file (2026-11-14)'",
+        "Live D 2026-11-14: https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals -- 'Web search for 'SEP-9999 Stellar Ecosystem Proposal' returns only the SEP index pages'"
       ],
       "rootCause": [
-        "Eval-side authoring flaw: the 2026-07-10 GT-21 correction removed the SEP-0050/0051 ceiling from answer and avoid but left it in golden.notes as a verified fact, contradicting the registry (now SEP-0061) and the case's own avoid item."
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
     "origin": "raven-next q-edge-noinfo-sep-9999",
-    "asOf": "2026-11-02"
+    "asOf": "2026-11-14",
+    "notes": "Honest-no-info: SEP-9999 is absent from the official registry (verified 2026-11-02 against stellar/stellar-protocol ecosystem/ at commit f2d36490: no SEP-9999 file or index entry). The trap is hallucinating a spec for a real-looking SEP number. Strict profile because fabrication is the failure mode.\nAlso good if the answer: Offers to help with a real SEP if the user had a different number in mind. | Notes SEPs live in the stellar/stellar-protocol repo as where to verify.\nGolden cites: If referencing the SEP catalog, point to the stellar-protocol SEP index.\nGT-21 SIBLING CORRECTION 2026-07-10: remove the stale SEP-0050/0051 ceiling; gate on dated official-registry absence, not a maximum number.",
+    "leaf": "behavior.fabrication-bait"
   }
 }

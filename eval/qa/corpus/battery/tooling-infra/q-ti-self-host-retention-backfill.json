@@ -1,29 +1,24 @@
 {
   "id": "q-ti-self-host-retention-backfill",
-  "question": "When self-hosting Horizon/RPC, how do HISTORY_RETENTION_COUNT / HISTORY_RETENTION_WINDOW affect DB size (~1.3 TB for 30d), and why doesn't increasing the window backfill older history?",
+  "question": "When self-hosting Horizon or Stellar RPC, how do HISTORY_RETENTION_COUNT and HISTORY_RETENTION_WINDOW affect database size, and why doesn't increasing the window backfill older history?",
   "surface": [
     "stellarDocs.search_rpc_horizon_data_docs",
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "Horizon and Stellar RPC have different retention and recovery mechanisms. As of **2026-11-02**, RPC **v30.0.0** (unchanged since v27.1.1) defaults `HISTORY_RETENTION_WINDOW=120960`, `SERVE_LEDGERS_FROM_DATASTORE=false`, and `BACKFILL=false`. RPC retention is a positive ledger count; zero is invalid, and current source does not impose a seven-day maximum. An ordinary empty RPC database starts at the current History Archive State tip and accumulates forward. Increasing retention preserves more future local ledgers, transactions, and events; it does not recreate rows already pruned or never ingested.\n\nCurrent RPC does have an explicit backfill path. Since v25.1, `BACKFILL=true` can synchronously materialize approximately the configured trailing window from a compatible datastore before normal serving/live ingestion. It requires `SERVE_LEDGERS_FROM_DATASTORE=true`, available datastore coverage, and compatible/gapless local state; checkpoint alignment makes exact one-ledger coverage unsafe to promise. Without materialization, direct datastore fallback remains limited to `getLedgers`—`getTransaction`, `getTransactions`, and `getEvents` read retained local data.\n\nHorizon **v30.0.0** (unchanged since v27.0.0) has a different executable default: `HISTORY_RETENTION_COUNT=0` means unlimited/no automatic history reaping. Current official docs agree: `518400` is the recommended approximate one-month window, not the binary default. Missing Horizon history requires explicit `stellar-horizon db reingest range`; a nonzero active retention window can purge reingested rows outside that trailing window, and a requested ledger 1 normalizes to 2. Do not turn dated estimates such as 40 GB/day, 1.3 TB/month, or the v25.1 one-week backfill benchmark into universal sizing requirements—measure the chosen release, filters, schema, datastore, and workload.",
+    "answer": "Retention only bounds how much history a node keeps; it never fetches older data. As of 2026-11-14 (stellar-rpc v30.0.1) RPC's HISTORY_RETENTION_WINDOW defaults to 120960 ledgers, about 7 days, and RPC backfills only with BACKFILL=true from a datastore. Horizon's HISTORY_RETENTION_COUNT defaults to 0, meaning keep everything; 518400 is the recommended 30-day setting. Missing Horizon history needs `db reingest range`.",
     "keyFacts": [
-      "States dated RPC defaults: 120960 retention, false datastore serving, false BACKFILL.",
-      "Explains fresh tip starts, forward retention, and no restoration from larger windows.",
-      "Explains synchronous datastore BACKFILL with serve, coverage, state, and checkpoint scope.",
-      "Keeps datastore getLedgers-only; transaction/event methods on retained/materialized rows.",
-      "States Horizon's 0/unlimited default, with 518400 only the recommended one-month window.",
-      "Requires range reingestion, nonzero reaping, ledger-1 normalization, and size caution."
+      "A larger retention window never restores pruned or never-ingested history.",
+      "RPC HISTORY_RETENTION_WINDOW defaults to 120960 ledgers, about 7 days (dated release).",
+      "RPC backfills only with BACKFILL=true, from a datastore.",
+      "Horizon HISTORY_RETENTION_COUNT defaults to 0 (unlimited); 518400 is the 30-day advice.",
+      "Missing Horizon history needs `stellar-horizon db reingest range`."
     ],
     "avoid": [
-      "Do NOT describe retention as downloading/backfilling history or promise that a larger window restores deleted or never-ingested rows.",
-      "Do NOT use zero for unlimited RPC retention, claim seven days is a hard maximum, or use the retired transaction-retention-window setting.",
-      "Do NOT enable/describe BACKFILL without the compatible datastore, serve flag, local-state, coverage and checkpoint qualifications.",
-      "Do NOT claim a datastore extends every RPC method or infer datastore depth from a local oldestLedger field.",
-      "Do NOT call 518400 the Horizon executable default or expect reingested rows outside a nonzero trailing window to remain.",
-      "Do NOT conflate RPC BACKFILL, Horizon reingestion, Core catchup, schema migration/state rebuild, Galexie export or provider policy, and do not gate on a fixed GB/day figure."
+      "Do NOT claim a larger retention window downloads or restores pruned or never-ingested history.",
+      "Do NOT use zero for unlimited RPC retention or call 518400 Horizon's default."
     ],
-    "notes": "GT-54 CORRECTION 2026-07-11: this case owns executable retention, RPC BACKFILL and Horizon reingestion mechanics. The full-history sibling owns component/query boundaries; neither may collapse retention-only behavior into a universal no-backfill claim. GT-54 CORRECTION 2026-07-11: current Horizon source defaults HISTORY_RETENTION_COUNT to 0/unlimited; 518400 is the official one-month recommendation, not the executable default (official pages called it the default until sd-028 was fixed on 2026-07-27). RPC v27.1.1 ships 120960 as a dated binary default, not a hard maximum or universal provider policy. The user's ~1.3 TB/30d figure was not made a required exact claim; exact DB size depends on version, filters, and workload.\nAlso good if the answer: Mentions changing Horizon ingestion filters also does not retroactively backfill matching historical data; a historical range ingestion is needed. | Caveats storage estimates like 1.3TB/30d as workload/version-dependent rather than a universal constant.\nGolden cites: Horizon ingestion storage/retention docs. | RPC retention/data-lake docs. | Horizon filtering docs if discussing retroactive filtering/backfill.\nGrade the version-dated executable semantics and product/method boundaries, not an exact database size, provider window, checkpoint floor, or backfill duration. The v25.1 150 GB/<3h/<3 GB figures are release notes, not requirements.\nRe-verified 2026-11-02: stellar-rpc v30.0.0 and stellar-horizon v30.0.0 keep these defaults and behaviors. Since sd-028 (2026-07-27) the official Horizon pages state the 0 default, so an answer need not report an official-prose conflict.\nDocumentation reconciliation 2026-11-09: the official RPC configuring page now explains empty-database startup at the archive tip and why retention alone adds no older ledgers. sd-102 preserves the RPC team's declined request to document the internal-gap corruption sanity check. BACKFILL can create a database from scratch; an empty database counts as gapless. Do not require an otherwise correct answer to recite that sanity check, or treat the owner's omission as a contradiction of the implementation."
+    "notes": "Do not require a database size such as 1.3 TB per 30 days or 40 GB per day; it depends on version, filters and workload. Accept a newer dated RPC default."
   },
   "tags": {
     "category": "tooling-infra",
@@ -37,7 +32,7 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-03-18",
     "sources": [
       {
@@ -231,24 +226,95 @@
           }
         ],
         "note": "Supersedes the 2026-07-11 'conflicting official wording' qualifier in the row above for current pages; cached copies stay covered by the golden.notes caution."
+      },
+      {
+        "claim": "RPC HISTORY_RETENTION_WINDOW defaults to 120960 ledgers and must be positive; SERVE_LEDGERS_FROM_DATASTORE and BACKFILL default false",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-rpc/blob/v30.0.1/cmd/stellar-rpc/internal/rpcv1/config/options.go",
+            "observedAt": "2026-11-14",
+            "note": "DefaultValue: uint32(limits.SevenDayOfLedgers), Validate: positive; serve-ledgers-from-datastore DefaultValue: false; backfill DefaultValue: false"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/data/apis/rpc/admin-guide/configuring.md",
+            "observedAt": "2026-11-14",
+            "note": "the default value is 120960 which corresponds to about 7 days of history"
+          }
+        ]
+      },
+      {
+        "claim": "Horizon HISTORY_RETENTION_COUNT defaults to 0 (unlimited); 518400 is the recommended 30-day window",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-horizon/blob/v30.0.1/internal/flags.go",
+            "observedAt": "2026-11-14",
+            "note": "history-retention-count FlagDefault uint(0): (0 = retain an unlimited number of ledgers)"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/data/apis/horizon/admin-guide/configuring.md",
+            "observedAt": "2026-11-14",
+            "note": "It is defaulted to 0, which means it will not purge any history from the database."
+          }
+        ]
+      },
+      {
+        "claim": "A nonzero Horizon retention purges reingested rows outside the window; gaps need `db reingest range`",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/data/apis/horizon/admin-guide/ingestion.md",
+            "observedAt": "2026-11-14",
+            "note": "any data ingested beyond that limit will be automatically purged"
+          }
+        ]
+      },
+      {
+        "claim": "Latest stellar-rpc and stellar-horizon release (golden says v30.0.0 as of 2026-11-02)",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://api.github.com/repos/stellar/stellar-rpc/releases",
+            "observedAt": "2026-11-14",
+            "note": "v30.0.1 2026-11-12 (v30.0.0 2026-10-21); stellar-horizon v30.0.1 2026-11-12; defaults unchanged at v30.0.1"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-09",
-      "by": "Upstream handoff author reconciliation; independent live re-derivation by reviewer t38s; .agents/rounds/2026-11-09-upstream-handoffs.md",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-tooling-b, verify-audit-tooling-b; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Class A 2026-11-09: https://developers.stellar.org/docs/data/apis/rpc/admin-guide/configuring.md now states that ordinary empty-database startup begins at the latest history archive ledger and that a larger HISTORY_RETENTION_WINDOW alone adds no older ledgers.",
-        "Class B 2026-11-09: https://github.com/stellar/stellar-rpc/blob/v30.0.0/cmd/stellar-rpc/internal/ingest/service.go lines 182–191 uses root.CurrentLedger on db.ErrEmptyDB. https://github.com/stellar/stellar-rpc/blob/v30.0.0/cmd/stellar-rpc/internal/ingest/backfill.go lines 245–264 accepts empty DB and rejects internal gaps.",
-        "Owner scope decision: Shaptic explicitly declined documenting the corruption sanity check in https://github.com/stellar/stellar-docs/pull/2899#discussion_r4516284001 and approved the final patch. This does not reverse the runtime fact or require an existing database. sd-102 preserves the declined half of sd-053; the startup half is deployed.",
-        "The former observation that sd-053 covers two open documentation omissions is superseded. The historical sd-023/sd-028/sd-029 resolved receipts remain unchanged, and no expired canonical-page cap is restored.",
-        "Independent author/reviewer source reads agree on the shipped startup statement and intentional gap-check omission; .agents/rounds/2026-11-09-upstream-handoffs.md. Dated 2026-11-02 RPC/Horizon defaults were not changed by this documentation reconciliation.",
-        "Sibling sweep 2026-11-09: q-ti-self-host-core-rpc-full-history, q-infra-rpc-methods-list, q-soroban-event-indexing-design and q-tool-greenfield-indexer-prior-art-preflight keep retained-data/provider and indexing boundaries distinct. None claims larger retention alone recreates rows or requires an existing DB for BACKFILL; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-b.json#q-ti-self-host-retention-backfill",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-b.json#q-ti-self-host-retention-backfill",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-ti-self-host-retention-backfill",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-rpc/blob/v30.0.1/cmd/stellar-rpc/internal/rpcv1/config/options.go -- 'DefaultValue: uint32(limits.SevenDayOfLedgers), Validate: positive; serve-ledgers-from-datastore DefaultValue: false; backfill DefaultValue: false'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/data/apis/rpc/admin-guide/configuring.md -- 'the default value is 120960 which corresponds to about 7 days of history'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-horizon/blob/v30.0.1/internal/flags.go -- 'history-retention-count FlagDefault uint(0): (0 = retain an unlimited number of ledgers)'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/data/apis/horizon/admin-guide/configuring.md -- 'It is defaulted to 0, which means it will not purge any history from the database.'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/data/apis/horizon/admin-guide/ingestion.md -- 'any data ingested beyond that limit will be automatically purged'",
+        "Live B 2026-11-14: https://api.github.com/repos/stellar/stellar-rpc/releases -- 'v30.0.1 2026-11-12 (v30.0.0 2026-10-21); stellar-horizon v30.0.1 2026-11-12; defaults unchanged at v30.0.1'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-rpc/blob/v30.0.1/cmd/stellar-rpc/internal/rpcv1/config/options.go -- 'the default value is %d which corresponds to about 7 days of history ... DefaultValue: uint32(limits.SevenDayOfLedgers), Validate: positive'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-rpc/blob/v30.0.1/cmd/stellar-rpc/internal/limits/limits.go -- 'OneDayOfLedgers = 17280; SevenDayOfLedgers = OneDayOfLedgers * 7'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-rpc/blob/v30.0.1/cmd/stellar-rpc/internal/rpcv1/config/options.go -- 'Name: \"backfill\", Usage: \"Populates database with `history-retention-window` ledgers synchronously on startup...\" DefaultValue: false'",
+        "Live B 2026-11-14: https://api.github.com/repos/stellar/stellar-rpc/releases -- 'v30.0.1 2026-11-12T17:06:18Z pre=false; v30.0.0 2026-10-21'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-horizon/blob/v30.0.1/internal/flags.go -- 'Name: \"history-retention-count\" ... FlagDefault: uint(0) ... (0 = retain an unlimited number of ledgers)'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/data/apis/horizon/admin-guide/configuring -- 'It is defaulted to 0, which means it will not purge any history from the database. To enact the recommended sliding window of one month, set this to 518400'"
       ],
       "rootCause": [
-        "improvements/resolved.json (sd-053; startup half deployed through PR2899)",
-        "improvements/stellar-docs/sd-102-rpc-backfill-gap-check-declined.md"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-ti-self-host-retention-backfill"
+    "origin": "raven-next q-ti-self-host-retention-backfill",
+    "notes": "GT-54 CORRECTION 2026-07-11: this case owns executable retention, RPC BACKFILL and Horizon reingestion mechanics. The full-history sibling owns component/query boundaries; neither may collapse retention-only behavior into a universal no-backfill claim. GT-54 CORRECTION 2026-07-11: current Horizon source defaults HISTORY_RETENTION_COUNT to 0/unlimited; 518400 is the official one-month recommendation, not the executable default (official pages called it the default until sd-028 was fixed on 2026-07-27). RPC v27.1.1 ships 120960 as a dated binary default, not a hard maximum or universal provider policy. The user's ~1.3 TB/30d figure was not made a required exact claim; exact DB size depends on version, filters, and workload.\nAlso good if the answer: Mentions changing Horizon ingestion filters also does not retroactively backfill matching historical data; a historical range ingestion is needed. | Caveats storage estimates like 1.3TB/30d as workload/version-dependent rather than a universal constant.\nGolden cites: Horizon ingestion storage/retention docs. | RPC retention/data-lake docs. | Horizon filtering docs if discussing retroactive filtering/backfill.\nGrade the version-dated executable semantics and product/method boundaries, not an exact database size, provider window, checkpoint floor, or backfill duration. The v25.1 150 GB/<3h/<3 GB figures are release notes, not requirements.\nRe-verified 2026-11-02: stellar-rpc v30.0.0 and stellar-horizon v30.0.0 keep these defaults and behaviors. Since sd-028 (2026-07-27) the official Horizon pages state the 0 default, so an answer need not report an official-prose conflict.\nDocumentation reconciliation 2026-11-09: the official RPC configuring page now explains empty-database startup at the archive tip and why retention alone adds no older ledgers. sd-102 preserves the RPC team's declined request to document the internal-gap corruption sanity check. BACKFILL can create a database from scratch; an empty database counts as gapless. Do not require an otherwise correct answer to recite that sanity check, or treat the owner's omission as a contradiction of the implementation.",
+    "leaf": "network.node-operations",
+    "secondaryLeaf": "data.events-retention"
   }
 }

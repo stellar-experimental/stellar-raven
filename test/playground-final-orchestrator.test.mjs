@@ -349,7 +349,8 @@ describe('explicit first-attempt-preserving partial recovery',()=>{
   });
   it('verifies all25 source cases without inventing rows and plans exactly two B calls',()=>{
     const f=partialFixture();
-    const rawPath=path.join(f.dir,'raw.json'),bytes=JSON.stringify(f.raw);writeFileSync(rawPath,bytes);
+    // Beside the frozen measurement snapshot, so meta.casesPath resolves to it, not the live battery.
+    const rawPath=path.join(f.dir,'measurement','raw.json'),bytes=JSON.stringify(f.raw);writeFileSync(rawPath,bytes);
     f.recovery.receipt={path:rawPath,sha256:sha256(bytes)};
     writeFileSync(f.recoveryIdentity.path,JSON.stringify(f.recovery));f.recoveryIdentity.sha256=h(f.recovery);
     const p={schema:'gateway-judge-plan-v1',mode:'rejudge',allowNonIdentical:true,runId:'partial-test',out:path.join(f.dir,'out.json'),config:{...B_CONFIG,gatewayId:f.config.gatewayId},identitySha256:S,auth:{kind:'env',variable:'CF_AIG_TOKEN'},

@@ -5,18 +5,15 @@
     "stellarDocs.search_protocol_concepts_docs"
   ],
   "golden": {
-    "answer": "`AccountMerge` destructively closes the source, transfers its native XLM balance to a different destination, and deletes the source ledger entry. It can reclaim the account-level minimum balance only after blocking **non-signer** subentries—trustlines, offers, data entries, and similar state—are removed and the account's sponsorship obligations are resolved. Current Core permits signer-only subentries and removes those remaining signers as part of deletion, including sponsored signers; they need not be cleared manually. The important sponsorship asymmetry is that an account providing sponsorship or responsible for future reserves cannot merge merely by being otherwise empty, while being sponsored is not the same blocker. AccountMerge does not transfer issued-asset balances. Verify destination control and conditions before this irreversible operation.",
+    "answer": "AccountMerge closes the source account, moves its native XLM to a different destination and deletes the entry, releasing its reserve. It is blocked while non-signer subentries (trustlines, offers, data) remain or while the account sponsors other entries; remaining signers are removed automatically. Issued-asset balances do not transfer.",
     "keyFacts": [
-      "Explains native-XLM transfer, source deletion, and reserve reclamation.",
-      "Requires clearing non-signer blockers before merge.",
-      "States current Core removes remaining signers during merge.",
-      "Treats sponsorship provided and received as different merge conditions."
+      "AccountMerge transfers native XLM to the destination and deletes the source.",
+      "Trustlines, offers and data entries must be cleared first; signers need not be.",
+      "An account that sponsors entries cannot merge; being sponsored is not a blocker."
     ],
     "avoid": [
-      "Do NOT say issued assets transfer through AccountMerge or ignore trustlines/offers/data.",
-      "Do NOT require removal of all signers or all sponsorship relationships without the sponsor-versus-sponsored distinction."
-    ],
-    "notes": "GT-29 CORRECTION 2026-07-10: current Core allows signer-only subentries and deletes remaining signers during merge. Clear non-signer entries and resolve sponsorship obligations the source provides; do not collapse sponsor and sponsored states.\nGT-29 independently confirmed by processes 3276/3278; sd-013 owns the Docs gap."
+      "Do NOT say issued assets move through AccountMerge or that trustlines can remain."
+    ]
   },
   "tags": {
     "category": "protocol-core",
@@ -106,29 +103,35 @@
             "note": "https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations#account-merge: 'The source account still has non-signer subentries (trustlines, offers, or data entries). Signers do not block the merge and are remov..."
           }
         ]
+      },
+      {
+        "claim": "Merge allowed when numSubEntries == signers.size(); sponsoring > 0 blocks; remaining signers removed",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-core/blob/master/src/transactions/MergeOpFrame.cpp",
+            "observedAt": "2026-11-14",
+            "note": "if (sourceAccount.numSubEntries != sourceAccount.signers.size()) … HAS_SUB_ENTRIES; if (getNumSponsoring(...) > 0) … IS_SPONSOR; while (!sourceAccount.signers.empty())"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-01)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-protocol, verify-protocol; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Live A 2026-10-11 (Parallel cache, fetched 2026-11-02): https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/account-merge -- 'The source account still has non-signer subentries (trustlines, offers, or data entries). Signers are not a blocker — they are removed automatically as part of the merge.'",
-        "Live B 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-core/master/src/transactions/MergeOpFrame.cpp -- 'if (sourceAccount.numSubEntries != sourceAccount.signers.size()) ... ACCOUNT_MERGE_HAS_SUB_ENTRIES; if (getNumSponsoring(...) > 0) ... ACCOUNT_MERGE_IS_SPONSOR; while (!sourceAccount.signers.empty()) remove'",
-        "Live E 2026-11-02: stellarDocs.search_docs(query=\"account merge has sub entries signers removed\") via Raven execute -- 'https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations#account-merge: 'The source account still has non-signer subentries (trustlines, offers, or data entries). Signers do not block the merge and are removed automatically.''",
-        "Live A 2026-11-02: improvements/resolved.json sd-013 (repo record, not live evidence) -- 'resolved 2026-07-27 via stellar/stellar-docs#2590 / PR #2657'",
-        "Live B 2026-11-02: https://github.com/stellar/stellar-core/blob/master/src/transactions/MergeOpFrame.cpp -- 'if (sourceAccount.numSubEntries != sourceAccount.signers.size()) ... ACCOUNT_MERGE_HAS_SUB_ENTRIES ... while (!sourceAccount.signers.empty()) removeSignerWithPossibleSponsorship(...)'",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations#account-merge -- 'Signers are *not* a blocker — they (including sponsored signers) are removed automatically during the merge.'",
-        "Live B 2026-11-02: MergeOpFrame.cpp -- 'if (getNumSponsoring(sourceAccountEntry.current()) > 0) ... ACCOUNT_MERGE_IS_SPONSOR'",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/operation-specific/account-merge -- 'Merely being sponsored by another account is not a blocker.'",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations#account-merge -- 'Signers are *not* a blocker'",
-        "Live E 2026-11-02: Raven stellarDocs.search_docs('account merge signers removed sub entries') -- 'snippet: '(including sponsored signers) are removed automatically during the merge''",
-        "Independent verifier decisions: golden.notes (accept) -- .agents/rounds/2026-11-02-golden-audit/pass1/protocol-core-01.json.",
-        "Sibling sweep 2026-11-02: grep sd-013 / AccountMerge across the battery -> q-pc-account-activation-not-found, q-pc-sponsored-reserves, q-edge-1xlm-activation-fee, q-ti-custodial-account-generation-c-address; no golden contradicts the merge semantics. q-ti-custodial-account-generation-c-address still carries its own sd-013 cached-copy caution (outside this batch)."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-pc-account-merge-reclaim-reserve",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-pc-account-merge-reclaim-reserve",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-pc-account-merge-reclaim-reserve",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-core/blob/master/src/transactions/MergeOpFrame.cpp -- 'if (sourceAccount.numSubEntries != sourceAccount.signers.size()) … HAS_SUB_ENTRIES; if (getNumSponsoring(...) > 0) … IS_SPONSOR; while (!sourceAccount.signers.empty())'"
       ],
       "rootCause": [
-        "freshness-drift"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-pc-account-merge-reclaim-reserve"
+    "origin": "raven-next q-pc-account-merge-reclaim-reserve",
+    "notes": "GT-29 CORRECTION 2026-07-10: current Core allows signer-only subentries and deletes remaining signers during merge. Clear non-signer entries and resolve sponsorship obligations the source provides; do not collapse sponsor and sponsored states.\nGT-29 independently confirmed by processes 3276/3278; sd-013 owns the Docs gap.",
+    "leaf": "protocol.account-merge"
   }
 }

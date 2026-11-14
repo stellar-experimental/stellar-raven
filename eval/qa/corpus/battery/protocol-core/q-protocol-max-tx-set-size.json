@@ -6,17 +6,16 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "As observed **2026-08-21**, current official Docs and live Mainnet configuration report **1,000 classic operations per ledger** and **2,000 smart-contract transactions per ledger**. The v27 XDR schema defines the separate `ledgerMaxTxCount` contract-transaction setting; it does not encode either current numeric value. The classic limit counts operations, not necessarily transactions, because a classic transaction may contain multiple operations. Resource budgets can reduce effective throughput below the count ceiling, and validator-controlled settings are not permanent constants.",
+    "answer": "As of 2026-11-14 Mainnet allows 1,000 classic operations per ledger (maxTxSetSize counts operations, not transactions) and 2,000 smart-contract transactions per ledger, plus separate Soroban resource limits. These are validator-voted network settings, not protocol constants: read current values from Stellar Lab's Network Limits page or `stellar network settings`.",
     "keyFacts": [
-      "Treats classic maxTxSetSize as an operation limit.",
-      "Treats Soroban transaction and resource limits as separately configured.",
-      "Reports the dated current 2,000 smart-contract-transactions-per-ledger setting."
+      "The classic limit of 1,000 counts operations, not transactions.",
+      "Soroban has its own per-ledger transaction limit (2,000, dated) and resource limits.",
+      "Limits are validator-voted settings, read live from Lab's Network Limits page or the CLI."
     ],
     "avoid": [
-      "Do NOT equate 1,000 operations with 1,000 transactions, hard-code 100 Soroban transactions as current, or ignore resource constraints.",
-      "Do NOT invent a stale Docs conflict about the 2,000 smart-contract transaction setting."
+      "Do NOT equate 1,000 operations with 1,000 transactions or state either as permanent."
     ],
-    "notes": "CORRECTION 2026-08-04: current official Docs support 1,000 classic operations and 2,000 smart-contract transactions per ledger. Preserve the operation-versus-transaction distinction, separate resource limits, and validator-controlled freshness caveat."
+    "notes": "Date any figure; a later sourced change is acceptable."
   },
   "tags": {
     "category": "protocol-core",
@@ -30,7 +29,7 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-03-23",
     "sources": [
       {
@@ -139,19 +138,50 @@
           }
         ],
         "note": "The live configuration, not the XDR schema, supplies the current value. Corroborated across three independent classes (B schema text, A official Docs attribution, C live on-ledger ConfigSettingEntry)."
+      },
+      {
+        "claim": "1,000 classic operations per ledger",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "F",
+            "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=5",
+            "observedAt": "2026-11-14",
+            "note": "closed_at 02:48:27, :32, :37, :42, :47Z; base_reserve_in_stroops 5000000; max_tx_set_size 1000; protocol_version 29"
+          }
+        ]
+      },
+      {
+        "claim": "2,000 smart-contract transactions per ledger (live since SLP-0007 table; docs storage page)",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "E",
+            "ref": "https://developers.stellar.org/docs/build/guides/storage/storage-strategies",
+            "observedAt": "2026-11-14",
+            "note": "Smart-contract transactions 2,000 Soroban transaction bytes 864,000 B Dependent transaction clusters 3"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-04)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-protocol, verify-protocol; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Class C 2026-11-02: https://horizon.stellar.org/ledgers?order=desc&limit=200 — all 200 ledgers 65269731-65269930 (protocol 29) have max_tx_set_size 1000.",
-        "Class C 2026-11-02: https://mainnet.sorobanrpc.com getLedgerEntries ConfigSetting contract_execution_lanes — 'ledger_max_tx_count': 2000 (lastModifiedLedgerSeq 60993066).",
-        "Class A 2026-10-28: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — 'on Mainnet, as of July 2026, 1,000 non-smart-contract operations and 2,000 smart contract transactions'; https://developers.stellar.org/docs/networks (2026-10-21) — Operations per Ledger 1,000*, Smart Contract Transactions per Ledger Max 2,000*.",
-        "Class B 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-xdr/v28.0/Stellar-contract-config-setting.x — 'struct ConfigSettingContractExecutionLanesV0 { // maximum number of Soroban transactions per ledger uint32 ledgerMaxTxCount; };' (same in v30.0).",
-        "No gospel change; truth.asOf 2026-11-02; reverifyBy moved into the 2027-03 window. Sibling sweep: q-protocol-ledger-header-fields — consistent."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-protocol-max-tx-set-size",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-protocol-max-tx-set-size",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-protocol-max-tx-set-size",
+        "Live F 2026-11-14: https://horizon.stellar.org/ledgers?order=desc&limit=5 -- 'closed_at 02:48:27, :32, :37, :42, :47Z; base_reserve_in_stroops 5000000; max_tx_set_size 1000; protocol_version 29'",
+        "Live E 2026-11-14: https://developers.stellar.org/docs/build/guides/storage/storage-strategies -- 'Smart-contract transactions 2,000 Soroban transaction bytes 864,000 B Dependent transaction clusters 3'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/build/guides/storage/storage-strategies -- '| Smart-contract transactions | 2,000 |'",
+        "Live F 2026-11-14: https://horizon.stellar.org/ledgers?order=desc&limit=1 -- '\"max_tx_set_size\": 1000'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-protocol-max-tx-set-size"
+    "origin": "raven-next q-protocol-max-tx-set-size",
+    "notes": "CORRECTION 2026-08-04: current official Docs support 1,000 classic operations and 2,000 smart-contract transactions per ledger. Preserve the operation-versus-transaction distinction, separate resource limits, and validator-controlled freshness caveat.",
+    "leaf": "network.limits-settings"
   }
 }

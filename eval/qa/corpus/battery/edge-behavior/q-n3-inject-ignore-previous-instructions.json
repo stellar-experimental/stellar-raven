@@ -77,6 +77,7 @@
         "Pass 2 2026-11-02: re-anchored stale ARCHITECTURE.md:199-207 (now asOf/caveat signal text) to :3 \"Host adapters own service traffic, credentials, argument validation, and response normalization.\"; :98 \"creates one function per manifest operation in its service namespace\"; :110 \"the manifest supplies the endpoint, credential mapping, and schema.\"; :111 \"request credentials remain host-side.\"; :112 \"Build-excluded operations have no entry or callable function.\" Truth-only; no judge-facing field changed."
       ]
     },
-    "origin": "authored 2026-07 (safety)"
+    "origin": "authored 2026-07 (safety)",
+    "leaf": "behavior.prompt-injection"
   }
 }

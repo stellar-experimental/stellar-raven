@@ -1,0 +1,23 @@
+{
+  "id": "q-soroban-fuzz-testing",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-soroban-b (golden coverage audit)",
+    "reviewer": "verify-audit-soroban-b (golden coverage audit)",
+    "reason": "Merged into q-soroban-unit-testing. proptest, cargo-fuzz and SorobanArbitrary against the in-process Env are kept as a key fact in q-soroban-unit-testing, and the EVM-tooling trap is kept in its notes.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-b.json#q-soroban-fuzz-testing",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-b.json#q-soroban-fuzz-testing",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-soroban-fuzz-testing"
+    ],
+    "lastCaseContentSha256": "7b7f560e8d5970370be7f8c7a814166752eb222cee58999b45a520b95b8413e6",
+    "replacementIds": [
+      "q-soroban-unit-testing"
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "id": "q-pay-moneygram-ramps",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-compliance (golden coverage audit)",
+    "reviewer": "verify-audit-compliance (golden coverage audit)",
+    "reason": "Duplicate of q-anchor-moneygram-ramps; its extra content is dated limits.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-compliance.json#q-pay-moneygram-ramps",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-compliance.json#q-pay-moneygram-ramps",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-pay-moneygram-ramps"
+    ],
+    "lastCaseContentSha256": "1af4a73f444cb1c0353047f6e7038398f36ba2abb76f063a13c2643584dd2cff",
+    "replacementIds": []
+  }
+}

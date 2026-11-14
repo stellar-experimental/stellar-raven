@@ -1,0 +1,21 @@
+{
+  "id": "q-ti-related-projects-from-content",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-tooling-a (golden coverage audit)",
+    "reviewer": "verify-audit-tooling-a (golden coverage audit)",
+    "reason": "Operation contract pinned by test/catalog.test.ts and lumenloop-shape tests; no Stellar fact. Chain conflict: audit-assets retired q-gap-related-projects-empty saying to fold its empty-array line into this case, and that verify accepted it. With both retired, drop that fold instruction.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-a.json#q-ti-related-projects-from-content",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-a.json#q-ti-related-projects-from-content",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-ti-related-projects-from-content"
+    ],
+    "lastCaseContentSha256": "47e81663a3f7b446c43aa5dde0f40a5eb9cef2c8db0ba44ff13eb48c89a0a51b",
+    "replacementIds": []
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "id": "q-soroban-factory-pattern",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-soroban-b (golden coverage audit)",
+    "reviewer": "verify-audit-soroban-b (golden coverage audit)",
+    "reason": "Deploy by Wasm hash plus salt is q-soroban-contract-id-derivation kf1; the leaf facet is held by q-soroban-cross-contract-call.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-b.json#q-soroban-factory-pattern",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-b.json#q-soroban-factory-pattern",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-soroban-factory-pattern"
+    ],
+    "lastCaseContentSha256": "d114100e71c44ec4014305efa77a67478b80388c87c00efcb7b751fd974aa591",
+    "replacementIds": []
+  }
+}

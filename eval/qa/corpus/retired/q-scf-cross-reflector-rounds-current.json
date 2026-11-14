@@ -1,0 +1,21 @@
+{
+  "id": "q-scf-cross-reflector-rounds-current",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-scf (golden coverage audit)",
+    "reviewer": "verify-audit-scf (golden coverage audit)",
+    "reason": "q-scf-history-soroswap keeps one project-funding-history case (map leaf ecosystem.project-funding-history); the live lane covers the cross-service join.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-scf-cross-reflector-rounds-current",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-scf-cross-reflector-rounds-current",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-scf-cross-reflector-rounds-current"
+    ],
+    "lastCaseContentSha256": "1ed6c880d66e29f50892bf57bbfbfc7e35641f5b1f22f1a97633006fbabfdb77",
+    "replacementIds": []
+  }
+}

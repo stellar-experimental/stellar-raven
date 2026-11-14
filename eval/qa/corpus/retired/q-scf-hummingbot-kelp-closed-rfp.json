@@ -1,0 +1,21 @@
+{
+  "id": "q-scf-hummingbot-kelp-closed-rfp",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-scf (golden coverage audit)",
+    "reviewer": "verify-audit-scf (golden coverage audit)",
+    "reason": "One closed brief is trivia; the survivor keeps \"do not call former briefs open\".",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-scf-hummingbot-kelp-closed-rfp",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-scf-hummingbot-kelp-closed-rfp",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-scf-hummingbot-kelp-closed-rfp"
+    ],
+    "lastCaseContentSha256": "a0ce5e9ab46b82df67043c9116284331d6036d81f1c01f2331527ab5d4d9f0cc",
+    "replacementIds": []
+  }
+}

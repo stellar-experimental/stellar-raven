@@ -1,22 +1,20 @@
 {
   "id": "q-org-sdf-board-directors",
-  "question": "Who currently sits on the Stellar Development Foundation board of directors?",
+  "question": "Who leads the Stellar Development Foundation today: who is its chief executive, and who sits on its board of directors?",
   "surface": [
     "scout.getPeople"
   ],
   "golden": {
-    "answer": "Query `scout.getPeople` with `section: \"Board of directors\"`, page until the returned count reaches the filtered total, and verify the names against SDF's official team page. As of 2026-11-02, the official page listed Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker, and Asiff Hirji. Report each returned role and affiliation with the row's `observedAt` and `sourceUrl`; treat both the roster and roles as dated facts. These are SDF governance records, not builder or availability records.",
+    "answer": "As of 2026-11-14, Denelle Dixon is SDF's CEO and Executive Director, and SDF's official team page lists five board members: Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker and Asiff Hirji. Leadership changes over time, so date it and confirm it on SDF's team page.",
     "keyFacts": [
-      "Names Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker, and Asiff Hirji.",
-      "Dates the official SDF board roster to an observation date.",
-      "Uses board section, pagination counts, sourceUrl, and observedAt for current answers.",
-      "Keeps the SDF people roster distinct from the builder directory."
+      "Denelle Dixon is SDF's chief executive (CEO and Executive Director).",
+      "The SDF board is McCaleb, Wu, Lemos, Baker and Hirji.",
+      "Dates the leadership roster it cites."
     ],
     "avoid": [
-      "Do NOT claim the dated roster or roles are timeless facts.",
-      "Do NOT treat an SDF board member as a GitHub builder or as available for contact."
+      "Do NOT confuse SDF board members with the builder directory."
     ],
-    "notes": "The roster is volatile. Grade a current, source-qualified roster and accept later official changes when the answer cites its observation date."
+    "notes": "Accept later official changes when the answer cites its observation date."
   },
   "tags": {
     "category": "history-org-tokenomics",
@@ -76,24 +74,44 @@
             "note": "\"The foundation's board of directors includes co-founder Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker, and Asiff Hirji.\" (dated 2026-06-15)"
           }
         ]
+      },
+      {
+        "claim": "Board: Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker, Asiff Hirji.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/foundation/team",
+            "observedAt": "2026-11-14",
+            "note": "Board of directors: Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker, Asiff Hirji"
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/press/stellar-development-foundation-appoints-asiff-hirji-of-moonpay-to-board-of-directors",
+            "observedAt": "2026-11-14",
+            "note": "announced the appointment of Asiff Hirji, President of MoonPay, to its board of directors"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch history-org-tokenomics-02)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-hist-retail, verify-hist-retail; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "[A] golden.keyFacts[0] (confirmed-as-of): https://stellar.org/foundation/team :: \"'Board of directors', 'Jed McCaleb', 'Lin-Hua Wu', 'Ronaldo Lemos', 'Ginger Baker', 'Asiff Hirji', 'Advisors'\" (observedAt 2026-11-02)",
-        "[C] golden.keyFacts[0] (confirmed-as-of): https://stellarlight.xyz/api/people?section=Board%20of%20directors&limit=100 :: \"counts {'returned': 5, 'total': 5}; same five names; meta.observedAt '2026-07-19'\" (observedAt 2026-11-02)",
-        "[D] golden.keyFacts[0] (confirmed-as-of): https://legalclarity.org/who-owns-lumens-stellar-foundation-and-xlm-holders/ (perplexity_search) :: \"The foundation's board of directors includes co-founder Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker, and Asiff Hirji.\" (observedAt 2026-11-02)",
-        "[C] golden.answer (confirmed-as-of): https://stellarlight.xyz/api/people?section=Board%20of%20directors&limit=100 :: \"{'name': 'Asiff Hirji', 'role': 'President of MoonPay', 'section': 'Board of directors', 'sourceUrl': 'https://stellar.org/foundation/team', 'observedAt': '2026-07-19'}\" (observedAt 2026-11-02)",
-        "[C] golden.answer (confirmed-as-of): Raven scout.getPeople({section:'Board of directors'}) :: \"counts returned 5 total 5; source https://stellar.org/foundation/team\" (observedAt 2026-11-02)",
-        "Upstream note: Stellar Light /api/people roster row observedAt is 2026-07-19 although the official page is live; content still matches.",
-        "Sibling sweep 2026-11-02: grep 'Asiff Hirji|Board of directors' across eval/qa/corpus/battery -> only this case; q-org-mazieres-chief-scientist checked; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-org-sdf-board-directors",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-org-sdf-board-directors",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-org-sdf-board-directors",
+        "Live A 2026-11-14: https://stellar.org/foundation/team -- 'Board of directors: Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker, Asiff Hirji'",
+        "Live A 2026-11-14: https://stellar.org/press/stellar-development-foundation-appoints-asiff-hirji-of-moonpay-to-board-of-directors -- 'announced the appointment of Asiff Hirji, President of MoonPay, to its board of directors'",
+        "Live A 2026-11-14: https://stellar.org/foundation/team -- 'Board of directors Jed McCaleb Lin-Hua Wu Ronaldo Lemos Ginger Baker Asiff Hirji Advisors'"
       ],
       "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit",
         "freshness-drift"
       ]
     },
-    "origin": "authored 2026-08 (coverage)"
+    "origin": "authored 2026-08 (coverage)",
+    "notes": "The roster is volatile. Grade a current, source-qualified roster and accept later official changes when the answer cites its observation date.",
+    "leaf": "ecosystem.sdf"
   }
 }

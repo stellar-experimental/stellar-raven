@@ -1,0 +1,21 @@
+{
+  "id": "q-crp-partner-detail-after-discovery",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-compliance (golden coverage audit)",
+    "reviewer": "verify-audit-compliance (golden coverage audit)",
+    "reason": "Confirmed: live guessed-slug case kf1 (detail only with the returned slug), test/plan-grade.test.mjs:116-166 (discovery before getPartner), test/adapters.test.ts:399 (unknown slug is soft-empty).",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-compliance.json#q-crp-partner-detail-after-discovery",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-compliance.json#q-crp-partner-detail-after-discovery",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-crp-partner-detail-after-discovery"
+    ],
+    "lastCaseContentSha256": "06ae8fe93cbcbf0317f4e1951246a41e67dac87a41200d24f0972881c8de5a52",
+    "replacementIds": []
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "id": "q-defi-category-saturation-live",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-defi (golden coverage audit)",
+    "reviewer": "verify-defi (golden coverage audit)",
+    "reason": "Scout crowdedness-formula mechanics; the frozen live lane already holds q-live-ecosystem-crowded-underbuilt (eval/qa/corpus/live/live-cases.json). No Stellar truth lost.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-defi-category-saturation-live",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-defi-category-saturation-live",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-defi-category-saturation-live"
+    ],
+    "lastCaseContentSha256": "eb472a985fa644775bff962a120d11ea9903d3c9fb4f7aa4d52d5a02e0241c70",
+    "replacementIds": []
+  }
+}

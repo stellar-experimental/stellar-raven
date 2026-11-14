@@ -1,0 +1,21 @@
+{
+  "id": "q-org-mazieres-chief-scientist",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-hist-retail (golden coverage audit)",
+    "reviewer": "verify-hist-retail (golden coverage audit)",
+    "reason": "SCP authorship is q-hist-scp-rewrite-2015 kf0. See the ecosystem.sdf leaf finding.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-org-mazieres-chief-scientist",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-org-mazieres-chief-scientist",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-org-mazieres-chief-scientist"
+    ],
+    "lastCaseContentSha256": "ca5428898f7ed2c2549b5cc132849f9edf03492895093ad020f4280e3b339988",
+    "replacementIds": []
+  }
+}

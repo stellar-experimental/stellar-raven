@@ -1,0 +1,156 @@
+{
+  "id": "q-pc-core-software-audits",
+  "question": "Has SDF's own network software been independently audited? Which components have published audit reports, and where are they listed?",
+  "surface": [
+    "stellarDocs.search_docs",
+    "stellarDocs.get_doc_page"
+  ],
+  "golden": {
+    "answer": "Yes. Stellar Docs has an Audits section under Networks that lists third-party audit reports by product and version. As of 2026-11-14 it covers Stellar Core with the Soroban host environment, Stellar RPC, the Soroban Rust SDK and the Soroban Poseidon SDK. Each audit covers one version; an unlisted version has no published report.",
+    "keyFacts": [
+      "Stellar Docs has an Audits section that lists third-party audit reports by product.",
+      "Published audits cover Stellar Core together with the Soroban host environment.",
+      "Published audits cover Stellar RPC and the Soroban Rust SDK.",
+      "Each audit covers a specific software version."
+    ],
+    "avoid": [
+      "Do NOT say an audit of one version covers later versions."
+    ],
+    "notes": "Accept auditor names (Veridise, Oak Security, Runtime Verification, OtterSec, Halborn) when given; do not require them. Accept later listed audits."
+  },
+  "tags": {
+    "category": "protocol-core",
+    "service": "stellarDocs",
+    "freshness": "scheduled"
+  },
+  "truth": {
+    "lifecycle": {
+      "state": "proposed",
+      "reviewState": "none"
+    },
+    "domain": "real-world",
+    "status": "confirmed",
+    "asOf": "2026-11-14",
+    "reverifyBy": "2027-03-23",
+    "leaf": "security.core-audits",
+    "notes": "Rows observed 2026-11-14. Stellar Core and Soroban host: v25.0.0 Runtime Verification, v24.0.0 Oak Security, v23.0.0 Oak Security, v20.0.0 Veridise. Stellar RPC: v22.1.0 OtterSec. Soroban Rust SDK: v25.1.0 Halborn, plus bytes-lit, crate-git-revision and stellar-strkey reports. Soroban Poseidon SDK: v25.0.0 Halborn. The Halborn report file names carry the date 2027-03-07, which is in the future; no audit date is pinned. No client SDK other than the Soroban Rust SDK has a page.",
+    "sources": [
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/networks/audits/index.md",
+        "observedAt": "2026-11-14",
+        "quote": "Audits are performed by third-party firms and cover a specific version of the software. A version that isn't listed here hasn't been audited, or its report hasn't been published."
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/networks/audits/stellar-core.md",
+        "observedAt": "2026-11-14",
+        "quote": "Audits of stellar-core, the reference implementation of the Stellar protocol, and rs-soroban-env, the smart contract host environment."
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/networks/audits/stellar-rpc.md",
+        "observedAt": "2026-11-14",
+        "quote": "v22.1.0 | OtterSec | Soroban RPC Security Assessment"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/networks/audits/soroban-sdk.md",
+        "observedAt": "2026-11-14",
+        "quote": "Audits of soroban-sdk, the Rust SDK for building smart contracts. v25.1.0 Halborn"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/networks/audits/soroban-poseidon.md",
+        "observedAt": "2026-11-14",
+        "quote": "v25.0.0 | Halborn | Report"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-docs/tree/main/docs/networks/audits",
+        "observedAt": "2026-11-14",
+        "quote": "index.mdx, soroban-poseidon.mdx, soroban-sdk.mdx, stellar-core.mdx, stellar-rpc.mdx"
+      },
+      {
+        "class": "F",
+        "ref": "https://developers.stellar.org/assets/audits/2024-12-20-ottersec-stellar-rpc-commit-a60044e.pdf",
+        "observedAt": "2026-11-14",
+        "quote": "HTTP 200, content-type application/pdf"
+      },
+      {
+        "class": "D",
+        "ref": "https://veridise.com/wp-content/uploads/2025/02/VAR_Stellar_Soroban.pdf",
+        "observedAt": "2026-11-14",
+        "quote": "Auditor-hosted Veridise report for Stellar Soroban (URL from the taxonomy; not opened)"
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "Stellar Docs has an Audits section that lists third-party audit reports by product and version.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/networks/audits/index.md",
+            "observedAt": "2026-11-14",
+            "note": "Index page text read on 2026-11-14."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-docs/tree/main/docs/networks/audits",
+            "observedAt": "2026-11-14",
+            "note": "Repository holds one source file per product page."
+          }
+        ]
+      },
+      {
+        "claim": "As of 2026-11-14 the listed products are Stellar Core with the Soroban host environment, Stellar RPC, the Soroban Rust SDK and the Soroban Poseidon SDK.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/networks/audits/stellar-core.md",
+            "observedAt": "2026-11-14",
+            "note": "Four rows, one per audited version."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/networks/audits/stellar-rpc.md",
+            "observedAt": "2026-11-14",
+            "note": "One row, OtterSec."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/networks/audits/soroban-sdk.md",
+            "observedAt": "2026-11-14",
+            "note": "Halborn rows."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-docs/tree/main/docs/networks/audits",
+            "observedAt": "2026-11-14",
+            "note": "The directory listing matches the four product pages."
+          },
+          {
+            "class": "F",
+            "ref": "https://developers.stellar.org/assets/audits/2024-12-20-ottersec-stellar-rpc-commit-a60044e.pdf",
+            "observedAt": "2026-11-14",
+            "note": "A linked report file is served as a PDF."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-11-14",
+      "by": "gap-3 lane (Claude Fable 5.2, high), golden-coverage-audit 2026-11-14",
+      "evidence": [
+        "https://developers.stellar.org/docs/networks/audits/index.md",
+        "https://developers.stellar.org/docs/networks/audits/stellar-core.md",
+        "https://github.com/stellar/stellar-docs/tree/main/docs/networks/audits",
+        "Sibling sweep: q-scf-audit-bank covers ecosystem project audits, not SDF software; q-soroban-auth-recursion-dos-audit and q-tool-soroban-auth-audit-live are retired in the coverage plan. No contradiction.",
+        ".agents/rounds/2026-11-14-golden-coverage-audit/gap/gap-3.json"
+      ]
+    },
+    "origin": "golden-coverage-audit 2026-11-14"
+  }
+}

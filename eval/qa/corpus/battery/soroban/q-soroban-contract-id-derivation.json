@@ -6,18 +6,16 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "A Soroban contract address (the `C...` strkey) is **deterministic**: it is the **SHA-256 of a\n`ContractIDPreimage` together with the network identifier** (as a `HashIDPreimage`). [tx]\n\n- The common deploy path uses **`CONTRACT_ID_PREIMAGE_FROM_ADDRESS`** = **deployer/source address +\n  salt** (and requires that address's authorization). Same deployer + same salt ⇒ **same address**;\n  varying the salt ⇒ distinct addresses. (A second variant, `..._FROM_ASSET`, derives the SAC address\n  from the asset.) [tx]\n- The address is **NOT** derived from the **Wasm hash**. **Upload** (`UPLOAD_CONTRACT_WASM`, keyed by\n  the SHA-256 of the Wasm) and **create/deploy** (`CREATE_CONTRACT`, the instance) are **separate\n  steps**. [tx]\n- Therefore **upgrading the Wasm does not change the contract address** — the instance address is\n  preserved; only the executable behind it changes. This enables counterfactual/pre-computed addresses\n  for factory patterns.\n\nTraps: claiming it is Ethereum-style `keccak(sender, nonce)` / CREATE2 of the bytecode; or claiming the\ncontract id changes when you upgrade the Wasm.",
+    "answer": "A contract address (`C...`) is deterministic: the SHA-256 of a ContractIDPreimage plus the network ID. For a normal deploy the preimage is the deployer address plus a salt, so the same deployer, salt and network always give the same address, and a different salt gives a different one. The Wasm hash is not an input: upload and create are separate steps, so upgrading the Wasm keeps the address.",
     "keyFacts": [
-      "A contract address derives from a `ContractIDPreimage` and the network ID.",
-      "An address preimage can combine a deployer address with a salt.",
-      "The same deployer and salt produce the same contract address.",
-      "A different salt produces a different contract address."
+      "A contract address is the hash of a ContractIDPreimage and the network ID.",
+      "A deploy preimage is deployer address plus salt; same inputs give the same address.",
+      "The Wasm hash is not an input, so a Wasm upgrade keeps the contract address."
     ],
     "avoid": [
-      "Do NOT claim the address is the Ethereum-style `keccak(sender, nonce)` / CREATE2 of the bytecode.",
-      "Do NOT claim the contract id changes when you upgrade the Wasm."
-    ],
-    "notes": "Address = SHA-256 over ContractIDPreimage (CONTRACT_ID_PREIMAGE_FROM_ADDRESS: deployer address + salt) plus network id; NOT the Wasm hash. Upload vs create are separate ops. Verified against the Stellar transaction fundamentals page.\nAlso good if the answer: The address is NOT derived from the Wasm hash itself, so upgrading the Wasm does not change the address. | Upload (Wasm hash) and create/deploy (instance address) are separate steps.\nGolden cites: A developers.stellar.org page on contract creation / addresses / deployment."
+      "Do NOT claim the address is Ethereum-style keccak(sender, nonce) or a CREATE2 of the bytecode.",
+      "Do NOT claim the contract id changes when the Wasm is upgraded."
+    ]
   },
   "tags": {
     "category": "soroban",
@@ -74,20 +72,43 @@
             "note": "Exact source: `update_current_contract_wasm` `Replaces the executable of the current contract with the provided Wasm`; `The contract executable will only be updated after the invocation has successfully finished`."
           }
         ]
+      },
+      {
+        "claim": "Address is derived from ContractIDPreimage + network ID, deployer+salt, independent of Wasm hash",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/stellar-transaction",
+            "observedAt": "2026-11-14",
+            "note": "Not re-fetched; stable fact confirmed 2026-11-02 against XDR (Stellar-transaction.x) and `stellar contract id wasm --salt` output."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/rs-soroban-sdk/blob/v29.0.1/soroban-sdk/src/deploy.rs",
+            "observedAt": "2026-11-14",
+            "note": "pub fn deployed_address(&self) -> Address"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-04)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-soroban-b, verify-audit-soroban-b; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "https://github.com/stellar/stellar-xdr/blob/main/Stellar-transaction.x — \"case ENVELOPE_TYPE_CONTRACT_ID: struct { Hash networkID; ContractIDPreimage contractIDPreimage; } contractID;\" (observedAt 2026-11-02).",
-        "Raven stellarDocs.search_docs \"ContractIDPreimage network id salt contract address\" → https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/stellar-transaction#function (observedAt 2026-11-02).",
-        "Local stellar 28.1.0 `stellar contract id wasm --salt` — salt 1 twice gives CBFWMUHSXHMUWUEWWUUYDW4PC64WBT3PR4VYK6JPDUU6ORYFSR24G2AK both times; salt 2 gives CALMTUW27NKNJQOZCQJSXE5I374KENMSTN7HRWOTVTHJCFZZJLP2GYAR; testnet and pubnet passphrases give different ids; no --wasm input (observedAt 2026-11-02).",
-        "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0058.md — \"When the contract has its code updated it is not considered created\" (observedAt 2026-11-02).",
-        "No gospel change; no proposal (verifier noProposalCases).",
-        "Sibling sweep 2026-11-02: q-soroban-cross-contract-call, q-soroban-oz-upgradeable-macro, q-pc-address-types-strkey; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-b.json#q-soroban-contract-id-derivation",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-b.json#q-soroban-contract-id-derivation",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-soroban-contract-id-derivation",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/stellar-transaction -- 'Not re-fetched; stable fact confirmed 2026-11-02 against XDR (Stellar-transaction.x) and `stellar contract id wasm --salt` output.'",
+        "Live B 2026-11-14: https://github.com/stellar/rs-soroban-sdk/blob/v29.0.1/soroban-sdk/src/deploy.rs -- 'pub fn deployed_address(&self) -> Address'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-soroban-contract-id-derivation"
+    "origin": "raven-next q-soroban-contract-id-derivation",
+    "notes": "Address = SHA-256 over ContractIDPreimage (CONTRACT_ID_PREIMAGE_FROM_ADDRESS: deployer address + salt) plus network id; NOT the Wasm hash. Upload vs create are separate ops. Verified against the Stellar transaction fundamentals page.\nAlso good if the answer: The address is NOT derived from the Wasm hash itself, so upgrading the Wasm does not change the address. | Upload (Wasm hash) and create/deploy (instance address) are separate steps.\nGolden cites: A developers.stellar.org page on contract creation / addresses / deployment.",
+    "leaf": "soroban.deploy-lifecycle",
+    "secondaryLeaf": "protocol.address-types"
   }
 }

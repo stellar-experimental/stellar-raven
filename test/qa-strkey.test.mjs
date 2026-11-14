@@ -1,4 +1,4 @@
-import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { mkdtempSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -109,13 +109,12 @@ describe("QA strkey validation", () => {
   });
 
   it("rejects a CRC-broken strkey through the case compiler hook", () => {
-    const source = join(
-      ROOT,
-      "eval/qa/corpus/battery/defi-ecosystem/q-defi-wisdomtree-crdt.json"
-    );
-    const kase = JSON.parse(readFileSync(source, "utf8"));
+    // Any valid battery case works; the test only needs the compiler to see a broken strkey.
+    const categoryDir = join(ROOT, "eval/qa/corpus/battery/defi-ecosystem");
+    const name = readdirSync(categoryDir).filter((item) => item.endsWith(".json")).sort()[0];
+    const kase = JSON.parse(readFileSync(join(categoryDir, name), "utf8"));
     const broken = mutate(ACCOUNT);
-    kase.golden.answer = kase.golden.answer.replace(ACCOUNT, broken);
+    kase.golden.answer = `The issuer account is ${broken}.`;
 
     const tempRoot = mkdtempSync(join(tmpdir(), "qa-strkey-"));
     const file = join(tempRoot, "defi-ecosystem", `${kase.id}.json`);

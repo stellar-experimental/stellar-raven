@@ -1,0 +1,23 @@
+{
+  "id": "q-soroban-upgradeable-storage-compat",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-soroban-b (golden coverage audit)",
+    "reviewer": "verify-audit-soroban-b (golden coverage audit)",
+    "reason": "Merged into q-soroban-storage-migration. Same question as q-soroban-storage-migration with the same CAP-86 paragraph; the survivor keeps key/layout compatibility. Its other unique fact, the native `update_current_contract` call, would then sit in no key fact anywhere in the battery; that is fixed in the q-soroban-oz-upgradeable-macro amendment.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-b.json#q-soroban-upgradeable-storage-compat",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-b.json#q-soroban-upgradeable-storage-compat",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-soroban-upgradeable-storage-compat"
+    ],
+    "lastCaseContentSha256": "1b5daa4750332f79cabcf556193529a4cff4f47cac1813768c6f37698446dc33",
+    "replacementIds": [
+      "q-soroban-storage-migration"
+    ]
+  }
+}

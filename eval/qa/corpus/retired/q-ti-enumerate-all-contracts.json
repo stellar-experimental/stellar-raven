@@ -1,0 +1,21 @@
+{
+  "id": "q-ti-enumerate-all-contracts",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-tooling-a (golden coverage audit)",
+    "reviewer": "verify-audit-tooling-a (golden coverage audit)",
+    "reason": "Third Hubble how-to on a target-one leaf.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-a.json#q-ti-enumerate-all-contracts",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-a.json#q-ti-enumerate-all-contracts",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-ti-enumerate-all-contracts"
+    ],
+    "lastCaseContentSha256": "6d28d3d90159c9beeb0887b7d34cbe84d4ce1ee7f728ddb5d8feda8e4538e21f",
+    "replacementIds": []
+  }
+}

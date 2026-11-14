@@ -1,0 +1,21 @@
+{
+  "id": "q-gap-compare-hackathons",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-scf (golden coverage audit)",
+    "reviewer": "verify-audit-scf (golden coverage audit)",
+    "reason": "Named survivor does not survive; retire (see mergeFixes).",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-gap-compare-hackathons",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-gap-compare-hackathons",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-gap-compare-hackathons"
+    ],
+    "lastCaseContentSha256": "d5718dc212c192c33137e39ded7ee48b534eb2597479cf38b615239a08eea133",
+    "replacementIds": []
+  }
+}

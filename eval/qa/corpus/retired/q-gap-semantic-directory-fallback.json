@@ -1,0 +1,21 @@
+{
+  "id": "q-gap-semantic-directory-fallback",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-defi (golden coverage audit)",
+    "reviewer": "verify-defi (golden coverage audit)",
+    "reason": "Tool-lane case; propose retire (see toolLane).",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-gap-semantic-directory-fallback",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-gap-semantic-directory-fallback",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-gap-semantic-directory-fallback"
+    ],
+    "lastCaseContentSha256": "e892e982bbdabf91fb1afaf87944abf4f22bcf75757ae52fb6803e83985774e1",
+    "replacementIds": []
+  }
+}

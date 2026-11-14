@@ -1,0 +1,21 @@
+{
+  "id": "q-scf-round-43-results",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-scf (golden coverage audit)",
+    "reviewer": "verify-audit-scf (golden coverage audit)",
+    "reason": "One past round's recap numbers.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-scf-round-43-results",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-scf-round-43-results",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-scf-round-43-results"
+    ],
+    "lastCaseContentSha256": "030638876243c7d3ebc5acaf60ade066d155c61ff6ba7a9eb2ab912d884abdfd",
+    "replacementIds": []
+  }
+}

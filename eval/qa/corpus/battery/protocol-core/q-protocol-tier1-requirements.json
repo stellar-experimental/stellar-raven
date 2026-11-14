@@ -6,18 +6,15 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "- A Tier 1 org must run **three (3) geographically dispersed Full Validators**, each publishing a **separate history archive** [1].\n- Tier 1 status is **earned** by other Tier 1 orgs including you in their **quorum sets** (trust / invitation) — **not** granted by application to SDF, and **not** by staking XLM or paying a fee [1].\n- Targets **~99.9%+ uptime** with 24/7 monitoring [1], and requires **SEP-1** (`stellar.toml`) and **SEP-20** self-verification [1].\n- **Why three**: if one node is down for maintenance/failure, **2-of-3** of your nodes can still vote on your behalf [1].\n- The process takes **months, not weeks**; starting with a single validator builds experience first [1].",
+    "answer": "A Tier 1 organization runs three geographically dispersed Full Validators, each publishing its own history archive, with sustained 99.9%+ uptime and SEP-1 and SEP-20 self-verification. It is not granted by SDF or bought by staking: other Tier 1 organizations must choose to include you in their quorum sets, which takes months. Three validators let 2-of-3 still vote for you during a failure.",
     "keyFacts": [
-      "Requires three (3) geographically dispersed Full Validators.",
-      "Requires a different history archive for each validator.",
-      "Attributes Tier 1 status to quorum-set trust from Tier 1 peers."
+      "Requires three geographically dispersed Full Validators, each with its own archive.",
+      "Tier 1 status comes from other Tier 1 orgs including you in their quorum sets.",
+      "It is not granted by SDF application or staking XLM."
     ],
     "avoid": [
-      "Do NOT claim Tier 1 requires staking a minimum amount of XLM or paying a fee.",
-      "Do NOT claim Tier 1 status is assigned by the Stellar Development Foundation by application/approval.",
-      "Do NOT state the wrong validator count (e.g. one, two, or five validators)."
-    ],
-    "notes": "Three full validators + quorum-set trust are defining. Trap is staking/application framing or wrong count.\nAlso good if the answer: Mentions the ~99.9%+ uptime target with 24/7 monitoring. | Mentions SEP-1 (stellar.toml) and SEP-20 self-verification as requirements. | Explains the 'why three': 2-of-3 of your nodes can still vote on your behalf during maintenance/failure.\nGolden cites: The Tier 1 Organizations page on developers.stellar.org/docs/validators/tier-1-orgs."
+      "Do NOT claim a stake, fee, SDF approval, or a validator count other than three."
+    ]
   },
   "tags": {
     "category": "protocol-core",
@@ -63,24 +60,35 @@
             "note": "Dated web sweep query `Stellar Tier 1 organization quorum set invitation SDF staking fee`: Range says each validator chooses trusted peers, `Tier 1 is not a designation an organization can claim on its own`, operators coordinate with existing operators, and they run `not for financial return`. No primary result described an SDF application, stake, or fee."
           }
         ]
+      },
+      {
+        "claim": "Three geographically dispersed Full Validators, 99.9%+ uptime, SEP-1 and SEP-20, months not weeks, inclusion by other orgs",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/validators/tier-1-orgs",
+            "observedAt": "2026-11-14",
+            "note": "Run three geographically dispersed Full Validators, achieve sustained 99.9%+ uptime … complete SEP-20 and SEP-1 self-verification … Expect a process measured in months, not weeks."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-05)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-protocol, verify-protocol; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Verification-only event 2026-11-02: every judge-facing field is unchanged; the proposer and an independent verifier re-derived the claims from at least two source classes.",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/validators/tier-1-orgs — 'Full Validators | 3, each publishing a complete separate history archive' (claim: Three geographically dispersed Full Validators, separate archive each; verdict confirmed)",
-        "Live B 2026-11-02: https://github.com/stellar/stellar-docs/blob/main/docs/validators/admin-guide/configuring.mdx — 'HIGH quality requires publishing a history archive and at least three validators under the same home domain — both requirements are programmatically enforced.' (claim: Three geographically dispersed Full Validators, separate archive each; verdict confirmed)",
-        "Live D 2026-11-02: https://thefintechtimes.com/moneygram-figure-markets-and-range-join-stellar-as-tier-1-validators/ — 'Each organisation must operate three geographically dispersed full validators, maintain uptime of 99.9% or above, publish complete history archives' (claim: Three geographically dispersed Full Validators, separate archive each; verdict confirmed)",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/validators/tier-1-orgs — 'Joining is not a unilateral SDF decision — every existing Tier 1 organization independently decides whether to add you to their quorum set.' (claim: Tier 1 status from quorum-set trust of Tier 1 peers; verdict confirmed)",
-        "Live D 2026-11-02: https://github.com/nemorixgroup/Stellar-Knowledge-Base/blob/main/module-02-consensus/README.md — 'Every existing Tier 1 organization independently decides whether to add a new organization to its quorum set.' (claim: Tier 1 status from quorum-set trust of Tier 1 peers; verdict confirmed)",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/validators/tier-1-orgs — 'Uptime | 99.9%+ target with 24/7 monitoring and alerting ... Expect a process measured in months, not weeks. ... other participants can require ⅔ of your nodes to agree.' (claim: 99.9%+ uptime, SEP-1 and SEP-20, months not weeks, 2-of-3; verdict confirmed)",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/validators/tier-1-orgs — 'Becoming Tier 1 is not a unilateral decision by SDF — it depends on the quorum set choices of all existing Tier 1 organizations.' (claim: Staking/fee, SDF-assigned, wrong count are false; verdict confirmed)",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — 'There are no monetary rewards for being a validator on the Stellar network.' (claim: Staking/fee, SDF-assigned, wrong count are false; verdict confirmed)",
-        "Sibling sweep 2026-11-02: q-protocol-validator-node-roles, q-comp-yieldblox-oracle-incident, q-infra-which-indexer checked; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-protocol-tier1-requirements",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-protocol-tier1-requirements",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-protocol-tier1-requirements",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/validators/tier-1-orgs -- 'Run three geographically dispersed Full Validators, achieve sustained 99.9%+ uptime … complete SEP-20 and SEP-1 self-verification … Expect a process measured in months, not weeks.'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-protocol-tier1-requirements"
+    "origin": "raven-next q-protocol-tier1-requirements",
+    "notes": "Three full validators + quorum-set trust are defining. Trap is staking/application framing or wrong count.\nAlso good if the answer: Mentions the ~99.9%+ uptime target with 24/7 monitoring. | Mentions SEP-1 (stellar.toml) and SEP-20 self-verification as requirements. | Explains the 'why three': 2-of-3 of your nodes can still vote on your behalf during maintenance/failure.\nGolden cites: The Tier 1 Organizations page on developers.stellar.org/docs/validators/tier-1-orgs.",
+    "leaf": "network.tier1-quorum"
   }
 }

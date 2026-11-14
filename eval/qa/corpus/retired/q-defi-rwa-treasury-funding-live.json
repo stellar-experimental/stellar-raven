@@ -1,0 +1,21 @@
+{
+  "id": "q-defi-rwa-treasury-funding-live",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-defi (golden coverage audit)",
+    "reviewer": "verify-defi (golden coverage audit)",
+    "reason": "Process-only; treasury/RWA identity and SCF-funding provenance stay covered by q-defi-rwa-scf-similar, q-defi-benji-franklin-templeton, q-defi-ondo-usdy and q-defi-wisdomtree-crdt.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-defi-rwa-treasury-funding-live",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-defi-rwa-treasury-funding-live",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-defi-rwa-treasury-funding-live"
+    ],
+    "lastCaseContentSha256": "49c52aca5a71a8cf76cece2e1bfd56afe7f8d557a3c3c9bec34793f99c1f0876",
+    "replacementIds": []
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "id": "q-gap-scout-get-skill-detail",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-tooling-a (golden coverage audit)",
+    "reviewer": "verify-audit-tooling-a (golden coverage audit)",
+    "reason": "q-tool-skill-detail-install grades the same getSkill slug-resolve and soft-empty-miss behavior inside a user task; the adapter's 404 mapping is unit-tested.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-a.json#q-gap-scout-get-skill-detail",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-a.json#q-gap-scout-get-skill-detail",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-gap-scout-get-skill-detail"
+    ],
+    "lastCaseContentSha256": "f28cbb40b2d342d4cb9c02da0d28cc038be44ba8ae9971b6055046a8c8412c6e",
+    "replacementIds": []
+  }
+}

@@ -1,0 +1,171 @@
+{
+  "id": "q-nft-vault-contract-standards",
+  "question": "I want to build an NFT collection and a tokenized vault as Stellar smart contracts. Which SEPs define them, and is there a library that implements them?",
+  "surface": [
+    "stellarDocs.search_asset_token_docs",
+    "stellarDocs.search_docs",
+    "scout.searchResearch"
+  ],
+  "golden": {
+    "answer": "SEP-50 defines the non-fungible token contract interface, similar to ERC-721. SEP-56 defines the tokenized vault, the counterpart of ERC-4626: depositors receive SEP-41 share tokens over a SEP-41 underlying asset. As of 2026-11-14 both are Draft. OpenZeppelin's Stellar Contracts library implements both. SEP-39 separately gives guidance for NFTs issued as classic assets.",
+    "keyFacts": [
+      "SEP-50 defines the non-fungible token contract interface.",
+      "SEP-56 defines the tokenized vault standard for Soroban contracts.",
+      "Reports each SEP's status with a date.",
+      "OpenZeppelin's Stellar Contracts library implements both standards."
+    ],
+    "avoid": [
+      "Do NOT say SEP-39 defines the smart contract NFT interface."
+    ],
+    "notes": "Both SEPs were Draft on 2026-11-14. Accept a later dated status."
+  },
+  "tags": {
+    "category": "assets-anchors-seps",
+    "service": "stellarDocs",
+    "freshness": "scheduled"
+  },
+  "truth": {
+    "lifecycle": {
+      "state": "proposed",
+      "reviewState": "none"
+    },
+    "leaf": "assets.nft-vault-standards",
+    "domain": "real-world",
+    "status": "confirmed",
+    "asOf": "2026-11-14",
+    "reverifyBy": "2027-02-23",
+    "sources": [
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0050.md",
+        "observedAt": "2026-11-14",
+        "quote": "SEP: 0050 Title: Non-Fungible Tokens ... Status: Draft ... The interface is a similar to ERC721"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0056.md",
+        "observedAt": "2026-11-14",
+        "quote": "SEP: 0056 Title: Tokenized Vault Standard ... Status: Draft ... The vault itself must also comply with SEP-41 and further extend it."
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0039.md",
+        "observedAt": "2026-11-14",
+        "quote": "This SEP provides informational guidelines on how NFTs can be managed on the Stellar network and within the ecosystem."
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/tools/openzeppelin-contracts.md",
+        "observedAt": "2026-11-14",
+        "quote": "The Fungible Token Vault extends the Fungible Token and implements SEP-56 Tokenized Vault Standard"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/OpenZeppelin/stellar-contracts/tree/main/packages/tokens/src",
+        "observedAt": "2026-11-14",
+        "quote": "fungible lib.rs non_fungible rwa vault"
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "SEP-50 is the non-fungible token contract interface and SEP-56 is the tokenized vault standard.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0050.md",
+            "observedAt": "2026-11-14",
+            "note": "Preamble title 'Non-Fungible Tokens'; summary defines a standard contract interface for non-fungible tokens."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0056.md",
+            "observedAt": "2026-11-14",
+            "note": "Preamble title 'Tokenized Vault Standard'; shares and underlying asset must be SEP-41 compliant."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tools/openzeppelin-contracts.md",
+            "observedAt": "2026-11-14",
+            "note": "Audited modules list names Non-Fungible Token and a Token Vault implementing SEP-56."
+          }
+        ]
+      },
+      {
+        "claim": "SEP-50 and SEP-56 both had Status: Draft on 2026-11-14.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0050.md",
+            "observedAt": "2026-11-14",
+            "note": "Preamble: Status: Draft, Version 0.1.0, Updated 2025-03-10."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0056.md",
+            "observedAt": "2026-11-14",
+            "note": "Preamble: Status: Draft, Version 0.1.2, Updated 2025-11-06."
+          },
+          {
+            "class": "E",
+            "ref": "stellarDocs.search_docs + scout.searchResearch (source sep)",
+            "observedAt": "2026-11-14",
+            "note": "Indexed SEP-0050 and SEP-0056 preambles both show Status: Draft."
+          }
+        ]
+      },
+      {
+        "claim": "OpenZeppelin's Stellar Contracts library implements both SEP-50 and SEP-56.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/OpenZeppelin/stellar-contracts/tree/main/packages/tokens/src",
+            "observedAt": "2026-11-14",
+            "note": "packages/tokens/src holds non_fungible and vault modules; latest release v0.8.0 (2026-10-20)."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tools/openzeppelin-contracts.md",
+            "observedAt": "2026-11-14",
+            "note": "Lists Non-Fungible Token and Token Vault (SEP-56) among audited modules."
+          }
+        ]
+      },
+      {
+        "claim": "SEP-39 is informational guidance for NFTs issued as classic assets, not a contract interface.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0039.md",
+            "observedAt": "2026-11-14",
+            "note": "Title 'Interoperability Recommendations for NFTs'; extends the SEP-1 currency specification."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0050.md",
+            "observedAt": "2026-11-14",
+            "note": "Motivation contrasts contract NFTs with classic assets 'as outlined in SEP-39'."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-11-14",
+      "by": "gap-1 lane (Claude Fable 5.2), golden-coverage-audit 2026-11-14",
+      "evidence": [
+        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0050.md",
+        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0056.md",
+        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0039.md",
+        "https://developers.stellar.org/docs/tools/openzeppelin-contracts.md",
+        "https://github.com/OpenZeppelin/stellar-contracts/tree/main/packages/tokens/src"
+      ],
+      "rootCause": [
+        ".agents/rounds/2026-11-14-golden-coverage-audit.md"
+      ]
+    },
+    "origin": "golden-coverage-audit 2026-11-14"
+  }
+}

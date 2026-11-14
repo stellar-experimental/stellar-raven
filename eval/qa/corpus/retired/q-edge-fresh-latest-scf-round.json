@@ -1,0 +1,21 @@
+{
+  "id": "q-edge-fresh-latest-scf-round",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-edge (golden coverage audit)",
+    "reviewer": "verify-audit-edge (golden coverage audit)",
+    "reason": "The changed fact is false: the live awards page badge reads \"Initial Review\", not \"Submission\", so the 2026-11-10 golden still holds. The edge copy is the same question and golden as q-scf-current-round (the SCF lane names it a duplicate), so retire it and keep the SCF copy.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-edge.json#q-edge-fresh-latest-scf-round",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-edge.json#q-edge-fresh-latest-scf-round",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-edge-fresh-latest-scf-round"
+    ],
+    "lastCaseContentSha256": "1225625ac8c8d87169669f4126acd1865637fef56001b8b660b421e862efdeb9",
+    "replacementIds": []
+  }
+}

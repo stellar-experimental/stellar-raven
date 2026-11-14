@@ -5,19 +5,17 @@
     "scout.searchResearch"
   ],
   "golden": {
-    "answer": "A grounded answer obtains the requested current value or state from the live Stellar Scout directory or research data, states the measurement basis, and makes the observation date visible. As of 2026-07-11, the live SCF Handbook result stated an award size of up to $150,000 worth of XLM, paid through milestone-based tranches.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "An SCF Build Award is up to $150,000 worth of XLM (as of 2026-11-14), paid in milestone-based tranches: 10% on acceptance, then 20%, 30% and 40% on three deliverables. The USD value is converted to XLM when each payment is scheduled.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation.",
-      "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "States that the SCF Build single-award cap is $150,000 worth of XLM.",
-      "States that Build funding is paid through milestone-based tranches."
+      "The SCF Build Award cap is $150,000 worth of XLM.",
+      "Funding is paid in milestone-based tranches, not up front.",
+      "The split is 10% on acceptance, then 20%, 30% and 40% on three deliverables."
     ],
     "avoid": [
-      "Do NOT substitute another SDF program's $500K cap or call $300K the ordinary single Build award.",
-      "Do NOT claim Build began with v7 or that payment is fixed XLM/USDC/USD by default.",
-      "Do NOT present a changeable current measurement without its provider, scope, and observation date; registered invariants and explicitly historical quantities are not current measurements."
+      "Do NOT say Build is paid in fixed USD or USDC by default.",
+      "Do NOT call acceptance a fourth deliverable milestone."
     ],
-    "notes": "GT-36 CORRECTION 2026-07-10: grade $150K USD-equivalent paid in XLM. The current v7 three-track structure launched January 2026; Build itself predates v7. Do not require stale sibling-program examples.\nGT-36 independently confirmed by processes 3290/3291."
+    "notes": "$300K is a lifecycle total in the v7 blog, not the single Build award."
   },
   "tags": {
     "category": "scf-grants-builders",
@@ -31,7 +29,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-11-14",
     "sources": [
       {
         "class": "A",
@@ -62,20 +60,52 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "Award size up to $150,000 worth of XLM; milestone tranches; tranche split 10/20/30/40.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/build-award/README.md",
+            "observedAt": "2026-11-14",
+            "note": "Award size: up to $150,000 worth of XLM*; Structure: Milestone-based funding (paid in tranches)"
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/main/README.md",
+            "observedAt": "2026-11-14",
+            "note": "Tranche #0: 10% of budget -> Tranche #1: 20% -> Tranche #2: 30% -> Tranche #3: 40%"
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/grants-and-funding",
+            "observedAt": "2026-11-14",
+            "note": "Apply for up to $150,000 in XLM* to transition your validated idea from concept to launch on Stellar."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch scf-grants-builders-02)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-scf, verify-audit-scf; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "https://github.com/stellar/scf-handbook/blob/main/scf-awards/build-award/README.md (last edit 0d5dbc1269, 2026-08-14; observedAt 2026-11-02): \"Award size: up to $150,000 worth of XLM\"; \"Structure: Milestone-based funding (paid in tranches)\"",
-        "https://communityfund.stellar.org/awards (observedAt 2026-10-22): \"$150K in XLM* Max. Award Amount\"",
-        "https://github.com/stellar/scf-handbook/blob/main/.gitbook/includes/xlm-award-valuation-disclaimer.md (observedAt 2026-11-02): \"The USD valuation of XLM for any particular Award shall be calculated using the CF Stellar Lumens-Dollar Settlement Price ... on the day such Award is scheduled to be paid.\"",
-        "https://stellar.org/blog/ecosystem/introducing-scf-v7 (observedAt 2026-10-25): \"up to $300K in total funding over the project’s full lifecycle\"",
-        "Raven scout.searchResearch(q=\"SCF Build Award maximum award XLM tranches\") (observedAt 2026-11-02T16:12:44Z): \"Award size: up to $150,000 worth of XLM* - Structure: Milestone-based funding (paid in tranches)\"",
-        "Proposer verdict: all claims confirmed; no gospel change. Independent verifier: unchanged."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-scf-build-award-cap",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-scf-build-award-cap",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-scf-build-award-cap",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/scf-handbook/main/scf-awards/build-award/README.md -- 'Award size: up to $150,000 worth of XLM*; Structure: Milestone-based funding (paid in tranches)'",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/scf-handbook/main/README.md -- 'Tranche #0: 10% of budget -> Tranche #1: 20% -> Tranche #2: 30% -> Tranche #3: 40%'",
+        "Live A 2026-11-14: https://stellar.org/grants-and-funding -- 'Apply for up to $150,000 in XLM* to transition your validated idea from concept to launch on Stellar.'",
+        "Live B 2026-11-14: https://github.com/stellar/scf-handbook/blob/main/scf-awards/build-award/README.md -- 'Award size: up to $150,000 worth of XLM* ... Structure: Milestone-based funding (paid in tranches)'",
+        "Live B 2026-11-14: https://github.com/stellar/scf-handbook/blob/main/scf-awards/build-award/budget-and-deliverable-guidelines.md -- '#0 n/a (paid upon award acceptance) 10% | #1 MVP 20% | #2 Testnet 30% | #3 Mainnet Launch 40%'",
+        "Live B 2026-11-14: https://github.com/stellar/scf-handbook/blob/main/.gitbook/includes/xlm-award-valuation-disclaimer.md -- 'calculated using the CF Stellar Lumens-Dollar Settlement Price ... reported on the day such Award is scheduled to be paid'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-scf-build-award-cap"
+    "origin": "raven-next q-scf-build-award-cap",
+    "notes": "GT-36 CORRECTION 2026-07-10: grade $150K USD-equivalent paid in XLM. The current v7 three-track structure launched January 2026; Build itself predates v7. Do not require stale sibling-program examples.\nGT-36 independently confirmed by processes 3290/3291.",
+    "leaf": "funding.scf-overview"
   }
 }

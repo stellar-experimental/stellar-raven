@@ -1,0 +1,21 @@
+{
+  "id": "q-defi-etherfuse-stablebonds",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-defi (golden coverage audit)",
+    "reviewer": "verify-defi (golden coverage audit)",
+    "reason": "Named-product case; the roster is q-rwa-projects-tokenizing-stellar and the YieldBlox oracle point is q-comp-yieldblox-oracle-incident.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-defi-etherfuse-stablebonds",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-defi-etherfuse-stablebonds",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-defi-etherfuse-stablebonds"
+    ],
+    "lastCaseContentSha256": "9f94d06487f0fb91a7839bb2f90120e6fb620fff75dfab82595c53cb1618e522",
+    "replacementIds": []
+  }
+}

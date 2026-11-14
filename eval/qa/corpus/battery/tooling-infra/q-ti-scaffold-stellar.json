@@ -7,21 +7,19 @@
     "stellarDocs.search_wallet_dapp_docs"
   ],
   "golden": {
-    "answer": "For a full-stack Stellar smart-contract dApp, install the separate Scaffold Stellar plugin and initialize a project:\n\n`cargo install --locked stellar-scaffold-cli`\n`stellar scaffold init <project>`\n\n`cargo binstall stellar-scaffold-cli` is the project's faster documented alternative when available. The plugin generates/coordinates Rust contracts, TypeScript clients/bindings, frontend templates, environment configuration, and build/watch workflows. Inspect the generated package scripts rather than assuming `npm start` and `npm run dev` are interchangeable. Local-network workflows require their documented Docker/local prerequisites.\n\nFor only a Rust contract workspace/sample contract, use `stellar contract init <project-path> --name <contract-name>` instead; that is not the full-stack scaffold. As of **2026-11-02**, `stellar-scaffold-cli` is **0.0.34** on crates.io (published 2026-10-25), and the official template source includes React and Svelte choices. Current projects keep networks, accounts, and contracts in a version 2 `scaffold.yml`. `environments.toml` is the legacy format: `build` and `watch` still read it when the project has no version 2 `scaffold.yml`. On that date, the Stellar Docs Scaffold page still described `environments.toml`. The crate version, template roster, config format, repository redirects, and exact subcommands/scripts are volatile. Community `owner/repo[#ref]` templates are third-party code and should be reviewed/pinned before execution. `stellar-registry-cli` is optional for registry publishing/deployment, not required merely to scaffold.",
+    "answer": "Scaffold Stellar is a separate plugin: `cargo install --locked stellar-scaffold-cli`, then `stellar scaffold init <project>`. It coordinates Rust contracts, TypeScript clients and bindings, a frontend template and environment configuration. It is not part of the core CLI, and it differs from `stellar contract init`, which creates only a contract workspace. As of 2026-11-14 the crate is 0.0.34. Current projects keep networks, accounts and contracts in a version 2 `scaffold.yml`; `environments.toml` is the legacy format, and the Stellar Docs Scaffold page still describes it. Review generated scripts and community templates before running them; local networks need Docker.",
     "keyFacts": [
-      "Gives stellar-scaffold-cli install and stellar scaffold init commands.",
-      "Defines contract, client, frontend, and config tooling (v2 scaffold.yml; legacy TOML).",
-      "Separates the full-stack scaffold from contract-only stellar contract init.",
-      "Records registry claims and official React/Svelte templates with observation dates.",
-      "Requires review of generated scripts, prerequisites, and community supply-chain inputs."
+      "Installs with cargo install --locked stellar-scaffold-cli, then stellar scaffold init.",
+      "Scaffold is a separate full-stack plugin, not core CLI and not `stellar contract init`.",
+      "Current config is a v2 scaffold.yml; environments.toml is legacy (as of a stated date).",
+      "Community templates are third-party code to review and pin; local networks need Docker."
     ],
     "avoid": [
-      "Do NOT imply stellar scaffold is bundled automatically with every core Stellar CLI install.",
-      "Do NOT equate stellar scaffold init with stellar contract init.",
-      "Do NOT freeze a crate version, template roster, config format, repository path, or npm start/dev script without an as-of/source check.",
-      "Do NOT execute an unreviewed floating community template or omit Docker/local-network prerequisites."
+      "Do NOT imply stellar scaffold ships with every core CLI install.",
+      "Do NOT equate `stellar scaffold init` with `stellar contract init`.",
+      "Do NOT present environments.toml as the current format for new projects."
     ],
-    "notes": "GT-53 CORRECTION 2026-07-11: do not grade against the old local core-CLI 25.2.0 command snapshot. Gate the separate plugin install, full-stack-versus-contract-init boundary, and dated current source/registry evidence. Template frameworks, repository paths, and generated scripts are freshness-sensitive.\nCONFIG NOTE 2026-11-02: stellar-scaffold-cli 0.0.34 (version 2 support landed in 0.0.28 per its changelog), the stellar-scaffold/ui template, and the stellarscaffold.org Configuration page use a version 2 scaffold.yml for networks, accounts, and contracts. environments.toml is the legacy format for projects without a version 2 scaffold.yml. The Stellar Docs Scaffold page still describes environments.toml. An answer that describes environments.toml for legacy projects is correct. An answer that presents environments.toml as the current format for new projects misses key fact 2."
+    "notes": "`cargo binstall stellar-scaffold-cli` is an accepted install alternative. Describing environments.toml for legacy projects is correct. A later crate version, template roster or config format is acceptable if dated."
   },
   "tags": {
     "category": "tooling-infra",
@@ -35,7 +33,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-02-22",
     "sources": [
       {
@@ -166,40 +164,55 @@
             "note": "Stellar Docs page still describes environments.toml (stale relative to the owner docs; grading caution in golden.notes)."
           }
         ]
+      },
+      {
+        "claim": "stellar-scaffold-cli is 0.0.34 on crates.io (2026-10-25)",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://crates.io/api/v1/crates/stellar-scaffold-cli",
+            "observedAt": "2026-11-14",
+            "note": "max_version 0.0.34, updated_at 2026-10-25T16:56:34Z"
+          }
+        ]
+      },
+      {
+        "claim": "Stellar Docs Scaffold page still describes environments.toml while v2 uses scaffold.yml",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "github.com/stellar/stellar-docs docs/tools/scaffold-stellar.mdx",
+            "observedAt": "2026-11-14",
+            "note": "Explore the `environments.toml` file to customize your development environment(s)"
+          },
+          {
+            "class": "B",
+            "ref": "github.com/stellar-scaffold/cli crates/stellar-scaffold-cli/CHANGELOG.md",
+            "observedAt": "2026-11-14",
+            "note": "Feat/scaffold config v2 docs (#612)"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-03)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-tooling-a, verify-audit-tooling-a; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Gospel change 2026-11-02: golden.answer (accept); golden.keyFacts[1] (modify); golden.avoid[2] (accept); golden.notes (modify). The independent verifier re-derived each change without reading the proposer matrix.",
-        "Class C (verifier): https://crates.io/api/v1/crates/stellar-scaffold-cli — \"max_version 0.0.34, max_stable_version 0.0.34, updated_at 2026-10-25T16:56:34Z; 0.0.28 created 2026-10-14\" (observedAt 2026-11-02)",
-        "Class B (verifier): gh api repos/stellar-scaffold/cli/releases — \"stellar-scaffold-cli-v0.0.34 published 2026-10-25T16:56:37Z\" (observedAt 2026-11-02)",
-        "Class B (verifier): https://github.com/stellar-scaffold/cli/blob/main/crates/stellar-scaffold-cli/CHANGELOG.md — \"## [0.0.28] - 2026-10-12 ... Feat/scaffold config v2 (#610) ... Feat/scaffold config v2 build (#611); ## [0.0.31] - 2026-10-21 config-driven builds with per-checkout deployment state (#630)\" (observedAt 2026-11-02)",
-        "Class B (verifier): gh api repos/stellar-scaffold/cli/contents/crates/stellar-scaffold-cli/src/commands/build/v2.rs?ref=<tag> — \"v0.0.27 -> 404; v0.0.28, v0.0.30, v0.0.31 -> file present\" (observedAt 2026-11-02)",
-        "Class A (verifier): https://stellarscaffold.org/docs/configuration (source docs/site/docs/configuration.md in stellar-scaffold/cli) — \"Every Stellar Scaffold project is configured by one file at its root: scaffold.yml ... Projects created before scaffold.yml version 2 use environments.toml instead. build and watch still read it as long as the project has an environments.toml and no version 2 scaffold.yml.\" (observedAt 2026-11-02)",
-        "Class B (verifier): https://github.com/stellar-scaffold/ui (root scaffold.yml; templates/) — \"scaffold.yml begins 'version: 2'; no environments.toml at repo root; templates: react, svelte\" (observedAt 2026-11-02)",
-        "Class A (verifier): https://developers.stellar.org/docs/tools/scaffold-stellar — \"cargo install --locked stellar-scaffold-cli ... Explore the environments.toml file to customize your development environment(s) ... Network configuration via environments.toml\" (observedAt 2026-11-02)",
-        "Class D (verifier): Parallel web_fetch of https://stellarscaffold.org/docs/configuration (cache acquired 2026-10-03) — \"Projects created before scaffold.yml version 2 use environments.toml instead. build and watch still read it as long as scaffold.yml says version: 1. [older wording; live page now says 'no version 2 scaffold.yml']\" (observedAt 2026-11-02)",
-        "Class B (proposer, golden.answer/keyFacts[0], confirmed): https://github.com/stellar-scaffold/cli/blob/main/README.md — \"cargo binstall stellar-scaffold-cli ... To build from source ... run `cargo install --locked stellar-scaffold-cli`. The Scaffold Stellar CLI is installed as a plugin under the `stellar` CLI.\" (observedAt 2026-11-02)",
-        "Class A (proposer, golden.answer/keyFacts[0], confirmed): https://developers.stellar.org/docs/tools/scaffold-stellar — \"cargo install --locked stellar-scaffold-cli # Install registry CLI (to easily deploy your contract to the registry) cargo install --locked stellar-registry-cli\" (observedAt 2026-11-02)",
-        "Class C (proposer, golden.answer, confirmed-as-of): https://crates.io/api/v1/crates/stellar-scaffold-cli — \"max_version 0.0.34; 0.0.34 created 2026-10-25\" (observedAt 2026-11-02)",
-        "Class B (proposer, golden.answer, confirmed-as-of): https://github.com/stellar-scaffold/cli/blob/main/crates/stellar-scaffold-cli/Cargo.toml — \"version = \"0.0.34\"\" (observedAt 2026-11-02)",
-        "Class A (proposer, golden.answer, contradicted): https://stellarscaffold.org/docs/configuration — \"Every Stellar Scaffold project is configured by one file at its root: scaffold.yml ... Projects created before scaffold.yml version 2 use environments.toml instead.\" (observedAt 2026-11-02)",
-        "Class B (proposer, golden.answer, contradicted): https://github.com/stellar-scaffold/ui/blob/main/scaffold.yml — \"version: 2 ... project: contracts-dir: contracts (no environments.toml at repo root)\" (observedAt 2026-11-02)",
-        "Class B (proposer, golden.answer, contradicted): https://github.com/stellar-scaffold/cli/releases/tag/stellar-scaffold-cli-v0.0.31 — \"config-driven builds with per-checkout deployment state (#630)\" (observedAt 2026-11-02)",
-        "Class D (proposer, golden.answer, contradicted): Parallel web_search \"stellar scaffold scaffold.yml version 2\" — \"stellarscaffold.org Configuration page: Legacy: environments.toml\" (observedAt 2026-11-02)",
-        "Class A (proposer, golden.answer, contradicted): https://developers.stellar.org/docs/tools/scaffold-stellar — \"Explore the environments.toml file to customize your development environment(s) ... ├── environments.toml # Configuration per environment\" (observedAt 2026-11-02)",
-        "Class B (proposer, golden.answer, confirmed-as-of): https://github.com/stellar-scaffold/ui/tree/main/templates — \"react, svelte\" (observedAt 2026-11-02)",
-        "Class B (proposer, golden.answer, confirmed-as-of): crates/stellar-scaffold-cli/src/commands/init/mod.rs — \"DEFAULT_UI_REPO: &str = \"stellar-scaffold/ui\"\" (observedAt 2026-11-02)",
-        "Class F (proposer, golden.answer, confirmed): stellar contract init --help (CLI 28.1.0) — \"Usage: stellar contract init [OPTIONS] <PROJECT_PATH> ... --name <NAME> [default: hello-world]\" (observedAt 2026-11-02)",
-        "Class A (proposer, golden.answer, confirmed): https://developers.stellar.org/docs/tools/cli/stellar-cli#stellar-contract-init — \"(prior verified)\" (observedAt 2026-11-02)",
-        "Sibling sweep 2026-11-02: grep environments.toml|scaffold.yml|stellar-scaffold-cli|scaffold across the battery -> q-ti-video-tutorials, q-sor-skill-openzeppelin-setup, q-sor-doc-page-sections-followup, q-ti-explain-repo-payload-status checked; only q-ti-scaffold-stellar names the config file or crate version; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-a.json#q-ti-scaffold-stellar",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-a.json#q-ti-scaffold-stellar",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-ti-scaffold-stellar",
+        "Live C 2026-11-14: https://crates.io/api/v1/crates/stellar-scaffold-cli -- 'max_version 0.0.34, updated_at 2026-10-25T16:56:34Z'",
+        "Live B 2026-11-14: github.com/stellar/stellar-docs docs/tools/scaffold-stellar.mdx -- 'Explore the `environments.toml` file to customize your development environment(s)'",
+        "Live B 2026-11-14: github.com/stellar-scaffold/cli crates/stellar-scaffold-cli/CHANGELOG.md -- 'Feat/scaffold config v2 docs (#612)'"
       ],
       "rootCause": [
-        "freshness-drift"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-ti-scaffold-stellar"
+    "origin": "raven-next q-ti-scaffold-stellar",
+    "notes": "GT-53 CORRECTION 2026-07-11: do not grade against the old local core-CLI 25.2.0 command snapshot. Gate the separate plugin install, full-stack-versus-contract-init boundary, and dated current source/registry evidence. Template frameworks, repository paths, and generated scripts are freshness-sensitive.\nCONFIG NOTE 2026-11-02: stellar-scaffold-cli 0.0.34 (version 2 support landed in 0.0.28 per its changelog), the stellar-scaffold/ui template, and the stellarscaffold.org Configuration page use a version 2 scaffold.yml for networks, accounts, and contracts. environments.toml is the legacy format for projects without a version 2 scaffold.yml. The Stellar Docs Scaffold page still describes environments.toml. An answer that describes environments.toml for legacy projects is correct. An answer that presents environments.toml as the current format for new projects misses key fact 2.",
+    "leaf": "tooling.scaffold-bindings"
   }
 }

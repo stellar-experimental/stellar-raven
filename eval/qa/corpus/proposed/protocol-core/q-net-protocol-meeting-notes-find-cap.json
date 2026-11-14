@@ -1,0 +1,189 @@
+{
+  "id": "q-net-protocol-meeting-notes-find-cap",
+  "question": "Where are Stellar's protocol and developer meetings published, and how do I find what a meeting said about a specific CAP?",
+  "surface": [
+    "stellarDocs.search_meeting_notes",
+    "stellarDocs.search_docs_in_category",
+    "stellarDocs.get_doc_page"
+  ],
+  "golden": {
+    "answer": "Notes and recordings are published at developers.stellar.org/meetings, one dated page per meeting with its video; as of 2026-11-14 the index ran from January 2024 to November 12, 2026. Search those notes for the CAP number to find the discussion. The decision itself is recorded in the CAP's file in the stellar/stellar-protocol repository, whose preamble holds its status and discussion link.",
+    "keyFacts": [
+      "The official meeting record is published at developers.stellar.org/meetings.",
+      "Each meeting has its own dated page with the recording.",
+      "A CAP's file in stellar/stellar-protocol records its status and discussion link."
+    ],
+    "avoid": [],
+    "notes": "Accept a later index range. Protocol discussions and developer meetings share the same index; some dates have a separate protocol-discussion page. Pointing to the recordings on YouTube as well is correct, not required."
+  },
+  "tags": {
+    "category": "protocol-core",
+    "service": "stellarDocs",
+    "freshness": "scheduled"
+  },
+  "truth": {
+    "lifecycle": {
+      "state": "proposed",
+      "reviewState": "none"
+    },
+    "domain": "real-world",
+    "status": "confirmed",
+    "leaf": "network.protocol-meetings",
+    "asOf": "2026-11-14",
+    "reverifyBy": "2027-04-08",
+    "sources": [
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/meetings/index.md",
+        "observedAt": "2026-11-14",
+        "quote": "Notes and recordings from the Stellar protocol & developers meetings"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/meetings/index.md",
+        "observedAt": "2026-11-14",
+        "quote": "**2026-11-12** This week Chad Ostrowski and Pam Selle of The Aha Company showed Stellar Registry"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/meetings/index.md",
+        "observedAt": "2026-11-14",
+        "quote": "**2026-09-10** This week was planned as a protocol discussion on CAP-87 and CAP-88, with Jay Geng and Garand Tyson from the core team."
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/meetings/index.md",
+        "observedAt": "2026-11-14",
+        "quote": "**2024-01-18** (oldest entry; 93 \"Read the meeting notes\" links on the index)"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/meetings/2026/11/12.md",
+        "observedAt": "2026-11-14",
+        "quote": "*November 12, 2026* · [Kaan Kacar](https://github.com/kaankacar), Developer Advocate [YouTube video player](https://www.youtube-nocookie.com/embed/zTZtF1jL2H0"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-docs/tree/main/meetings",
+        "observedAt": "2026-11-14",
+        "quote": "meetings/: 2024 2025 2026 atom.xml index.mdx"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0087.md",
+        "observedAt": "2026-11-14",
+        "quote": "CAP: 0087 ... Status: Implemented ... Discussion: https://github.com/orgs/stellar/discussions/1915 / Protocol version: 30"
+      },
+      {
+        "class": "C",
+        "ref": "lumenloop.list_documents collection=events search=\"Developers Meeting\"",
+        "observedAt": "2026-11-14",
+        "quote": "Stellar Developers Meeting - 11/12/2026 | https://www.youtube.com/watch?v=zTZtF1jL2H0"
+      },
+      {
+        "class": "E",
+        "ref": "https://developers.stellar.org/meetings/2026/09/17/protocol#what-cap-87-adds",
+        "observedAt": "2026-11-14",
+        "quote": "2026-09-17 Protocol Discussion | What CAP-87 Adds | Three host functions, one per ML-DSA parameter set"
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "Meeting notes and recordings are published at developers.stellar.org/meetings, one dated page per meeting with its recording.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/meetings/index.md",
+            "observedAt": "2026-11-14",
+            "note": "Page description: \"Notes and recordings from the Stellar protocol & developers meetings\"; each entry links to /meetings/<yyyy>/<mm>/<dd>."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/meetings/2026/11/12.md",
+            "observedAt": "2026-11-14",
+            "note": "The 2026-11-12 page carries the date, the host, an embedded YouTube player and written notes."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-docs/tree/main/meetings",
+            "observedAt": "2026-11-14",
+            "note": "The docs repository holds the meeting pages under meetings/2024, meetings/2025 and meetings/2026 plus an Atom feed."
+          },
+          {
+            "class": "C",
+            "ref": "lumenloop.list_documents collection=events search=\"Developers Meeting\"",
+            "observedAt": "2026-11-14",
+            "note": "An independent event record for the 11/12/2026 meeting points to the same YouTube video id zTZtF1jL2H0."
+          }
+        ]
+      },
+      {
+        "claim": "As of 2026-11-14 the meeting index ran from January 2024 (2024-01-18) to 2026-11-12.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/meetings/index.md",
+            "observedAt": "2026-11-14",
+            "note": "Newest entry 2026-11-12; oldest entry 2024-01-18; 93 entries."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-docs/tree/main/meetings",
+            "observedAt": "2026-11-14",
+            "note": "Year directories 2024, 2025 and 2026 only."
+          }
+        ]
+      },
+      {
+        "claim": "Searching the meeting notes for a CAP number finds the meeting that discussed it.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/meetings/index.md",
+            "observedAt": "2026-11-14",
+            "note": "Index summaries name CAPs: CAP-87 and CAP-88 (2026-09-10), CAP-71 (2026-04-30), CAP-81 and CAP-82, CAP-80, CAP-74."
+          },
+          {
+            "class": "E",
+            "ref": "https://developers.stellar.org/meetings/2026/09/17/protocol#what-cap-87-adds",
+            "observedAt": "2026-11-14",
+            "note": "A meetings-only docs search for \"CAP-87\" returned the 2026-09-17 Protocol Discussion page and the 2026-09-10 meeting."
+          }
+        ]
+      },
+      {
+        "claim": "A CAP's file in stellar/stellar-protocol records its status and discussion link.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0087.md",
+            "observedAt": "2026-11-14",
+            "note": "Preamble fields: Status: Implemented; Discussion: https://github.com/orgs/stellar/discussions/1915; Protocol version: 30."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0026.md",
+            "observedAt": "2026-11-14",
+            "note": "Preamble fields: Status: Final; Discussion: a stellar-dev mailing-list thread; Protocol version: 12."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-11-14",
+      "by": "Claude Fable 5.2, gap-2 lane, 2026-11-14 golden-coverage-audit",
+      "evidence": [
+        "https://developers.stellar.org/meetings/index.md",
+        "https://developers.stellar.org/meetings/2026/11/12.md",
+        "https://github.com/stellar/stellar-docs/tree/main/meetings",
+        "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0087.md",
+        "Sibling sweep: q-protocol-cap-process covers CAP statuses and who decides, and agrees; no battery case names the meetings index. Battery cases that mention meeting notes use them as a search surface only."
+      ]
+    },
+    "origin": "golden-coverage-audit 2026-11-14"
+  }
+}

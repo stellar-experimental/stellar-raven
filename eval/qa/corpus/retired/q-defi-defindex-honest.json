@@ -1,0 +1,21 @@
+{
+  "id": "q-defi-defindex-honest",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-defi (golden coverage audit)",
+    "reviewer": "verify-defi (golden coverage audit)",
+    "reason": "DeFindex is classified in q-defi-blend-alternatives kf1; the dated-TVL rule is q-eco-defi-tvl-current.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-defi-defindex-honest",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-defi-defindex-honest",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-defi-defindex-honest"
+    ],
+    "lastCaseContentSha256": "dc3e8ab4ce084bef45628c15a282fb2f4b081ef92ed471a2bd6e7314909016e9",
+    "replacementIds": []
+  }
+}

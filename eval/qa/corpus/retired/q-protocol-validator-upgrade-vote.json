@@ -1,0 +1,23 @@
+{
+  "id": "q-protocol-validator-upgrade-vote",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-protocol (golden coverage audit)",
+    "reviewer": "verify-protocol (golden coverage audit)",
+    "reason": "Merged into q-pc-protocol-upgrade-timing. Survivor q-pc-protocol-upgrade-timing rewrite absorbs arming a scheduled UTC upgrade, in-band SCP activation, and 'not a token vote'. The exact http-command syntax is reasonable to drop from judge-facing text.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-protocol-validator-upgrade-vote",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-protocol-validator-upgrade-vote",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-protocol-validator-upgrade-vote"
+    ],
+    "lastCaseContentSha256": "d4742a4545298e15434754fb439a5c4b48bcb421431599b4a9e878b7714d701b",
+    "replacementIds": [
+      "q-pc-protocol-upgrade-timing"
+    ]
+  }
+}

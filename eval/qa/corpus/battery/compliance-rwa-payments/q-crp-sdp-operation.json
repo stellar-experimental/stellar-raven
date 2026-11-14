@@ -1,6 +1,6 @@
 {
   "id": "q-crp-sdp-operation",
-  "question": "How do I deploy and operate the Stellar Disbursement Platform, and what recipient account types can it disburse to?",
+  "question": "What is the Stellar Disbursement Platform, how is it built, and what recipient account types can it pay?",
   "surface": [
     "stellarDocs.search_anchor_sep_docs",
     "stellarDocs.search_protocol_concepts_docs",
@@ -8,20 +8,18 @@
     "stellarDocs.search_wallet_dapp_docs"
   ],
   "golden": {
-    "answer": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\nCurrent SDP is an open-source bulk-disbursement stack whose **Core implements native SEP-10 and SEP-24** and publishes its own stellar.toml endpoints; it does not require an external Anchor Platform. Dashboard/Admin APIs manage tenants and disbursements, Core queues/coordinates payments, and TSS builds, submits, and monitors Stellar transactions.\n\nKeep recipient models distinct:\n\n- an external/classic wallet can register through SEP-24 and authenticate through SEP-10;\n- the direct-payment API can pay an onboarded/recorded **G or C address** outside the batch-disbursement workflow;\n- SDP can create an embedded passkey-controlled **C-address wallet**, using SEP-45 during SEP-24 and fee sponsorship for relevant transactions.\n\nCurrent public recipient/direct validators accept encoded G or C addresses and reject encoded M-address strings. A G address plus ID memo may support pooled/custodial routing, but that is not the same as accepting M encoding. Sponsorship is a transaction/fee property, not another address type. Do not promise undocumented arbitrary pooled-ledger semantics.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "The Stellar Disbursement Platform is an open-source bulk-payment stack: a Dashboard and Admin API manage tenants and disbursements, Core queues payments and implements native SEP-10 and SEP-24, and a transaction service submits and monitors Stellar transactions. It needs no Anchor Platform. Recipients can use external wallets registered through SEP-24, direct G or C addresses, or embedded passkey C wallets; encoded M-addresses are rejected.",
     "keyFacts": [
-      "Uses dated source observations for changeable claims.",
-      "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Treats external wallets, direct G/C payments, and embedded passkey C wallets as distinct."
+      "SDP is an open-source bulk-disbursement stack with Dashboard, Core and TSS components.",
+      "SDP Core implements native SEP-10 and SEP-24 and needs no Anchor Platform.",
+      "Recipients are SEP-24 wallets, direct G or C addresses, or embedded passkey C wallets.",
+      "SDP rejects encoded M-address recipients."
     ],
     "avoid": [
-      "Do NOT say current SDP sits on or requires Anchor Platform, SEP-12, or SEP-31.",
-      "Do NOT promise encoded M-address recipient input or equate G+memo with M encoding.",
-      "Do NOT say sponsored accounts are unsupported or treat sponsorship as an address type.",
-      "Do NOT promise undocumented arbitrary pooled-ledger destinations.",
-      "Do NOT present a changeable current measurement without its provider, scope, and observation date; registered invariants and explicitly historical quantities are not current measurements."
+      "Do NOT say current SDP sits on or requires Anchor Platform, SEP-12 or SEP-31.",
+      "Do NOT promise M-address recipient input, or treat sponsorship as an address type."
     ],
-    "notes": "2026-06-29 RESEARCH-FIX: pinned recipient account types against current SDP docs. Architecture (design-and-architecture) confirms receivers register a supported wallet via SEP-24 (phone/email -> OTP -> Wallet Registration); TSS pays those receiver wallet accounts. Embedded Wallets page + advanced-configuration (verified in stellar/stellar-docs source) confirm SDP now provisions a passkey-secured smart-contract C-address wallet per receiver, so contract-account receivers ARE documented (the old must_avoid forbidding contract accounts was outdated and is corrected). Encoded M-address input and arbitrary pooled-ledger destinations remain unsupported absent explicit docs; fee sponsorship is supported for embedded-wallet flows. Demoted the bare definition; promoted operational specifics + recipient discipline to 5-weight.\nAlso good if the answer: Mentions testing on testnet/sandbox before production and monitoring failed or pending payments. | Distinguishes SDP disbursement operations from Anchor Platform on/off-ramp operations.\nGolden cites: Current Stellar Disbursement Platform docs (admin guide / embedded-wallets) or repository documentation.\nCORRECTION 2026-07-10: current source truth is native SEP-10/24. Keep external/classic, direct G/C, and embedded C flows separate; M encoding is currently rejected; fee sponsorship is supported for embedded flows."
+    "notes": "MoneyGram cash-out is an optional downstream choice, not an SDP feature."
   },
   "tags": {
     "category": "compliance-rwa-payments",
@@ -35,7 +33,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-10",
+    "asOf": "2026-11-14",
     "sources": [
       {
         "class": "A",
@@ -137,23 +135,61 @@
             "note": "'Bind sponsored transaction authorization to the caller's embedded wallet. #1236'."
           }
         ]
+      },
+      {
+        "claim": "SDP's latest release is 7.1.0 (2026-10-26).",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://api.github.com/repos/stellar/stellar-disbursement-platform-backend/releases/latest",
+            "observedAt": "2026-11-14",
+            "note": "tag_name 7.1.0, published_at 2026-10-26T13:58:52Z"
+          }
+        ]
+      },
+      {
+        "claim": "Public recipient validation accepts G and C addresses and not encoded M-addresses.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-disbursement-platform-backend/develop/internal/serve/validators/receiver_validator.go",
+            "observedAt": "2026-11-14",
+            "note": "strkey.IsValidEd25519PublicKey(address) || strkey.IsValidContractAddress(address)"
+          }
+        ]
+      },
+      {
+        "claim": "Receivers register through SEP-24 and SEP-10 authenticates wallet apps.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/design-and-architecture",
+            "observedAt": "2026-11-14",
+            "note": "SEP-10 Auth Account: the SDP requires a Stellar account for the mutual authentication protocol SEP-10"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch compliance-rwa-payments-03)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-compliance, verify-audit-compliance; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/embedded-wallets — 'The SDP uses SEP-45 during SEP-24 flows to verify that receivers control their embedded wallets. ... The transaction is fee-sponsored by the distribution account' (observedAt 2026-11-02; verifier read the Parallel cache acquired 2026-10-01).",
-        "gh api repos/stellar/stellar-disbursement-platform-backend/contents/internal/serve/validators/receiver_validator.go (develop; latest release 7.1.0 2026-10-26) — 'rv.Check(strkey.IsValidEd25519PublicKey(address) || strkey.IsValidContractAddress(address), ...)'; encoded M input is rejected (observedAt 2026-11-02).",
-        "stellar-disbursement-platform-backend CHANGELOG.md / release 7.1.0 — 'Bind sponsored transaction authorization to the caller's embedded wallet. [#1236]' (observedAt 2026-11-02).",
-        "Class E Raven stellarDocs.search_docs — embedded-wallets#step-4-receiving-funds: 'The transaction is fee-sponsored' (observedAt 2026-11-02).",
-        "Change: the 2026-06-29 notes sentence 'Muxed/sponsored/arbitrary custodial remain unsupported' contradicted avoid[2], the 2026-07-10 CORRECTION line, and the docs; it now says M input and pooled-ledger destinations stay unsupported and embedded flows are fee-sponsored. Independent verifier accepted.",
-        "Sibling sweep 2026-11-02: grep -i 'sponsored' with 'disbursement' across eval/qa/corpus/battery → only this case; q-anchor-sdp-vs-anchor-platform, q-anchor-sdp-what, q-pay-sdp-disbursement, q-pc-muxed-accounts, q-pc-address-types-strkey read by the proposer; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-compliance.json#q-crp-sdp-operation",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-compliance.json#q-crp-sdp-operation",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-crp-sdp-operation",
+        "Live B 2026-11-14: https://api.github.com/repos/stellar/stellar-disbursement-platform-backend/releases/latest -- 'tag_name 7.1.0, published_at 2026-10-26T13:58:52Z'",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-disbursement-platform-backend/develop/internal/serve/validators/receiver_validator.go -- 'strkey.IsValidEd25519PublicKey(address) || strkey.IsValidContractAddress(address)'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/design-and-architecture -- 'SEP-10 Auth Account: the SDP requires a Stellar account for the mutual authentication protocol SEP-10'"
       ],
       "rootCause": [
-        "Stale 2026-06-29 grader-notes sentence kept after the 2026-07-10 correction reversed its sponsorship claim."
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-crp-sdp-operation"
+    "origin": "raven-next q-crp-sdp-operation",
+    "notes": "2026-06-29 RESEARCH-FIX: pinned recipient account types against current SDP docs. Architecture (design-and-architecture) confirms receivers register a supported wallet via SEP-24 (phone/email -> OTP -> Wallet Registration); TSS pays those receiver wallet accounts. Embedded Wallets page + advanced-configuration (verified in stellar/stellar-docs source) confirm SDP now provisions a passkey-secured smart-contract C-address wallet per receiver, so contract-account receivers ARE documented (the old must_avoid forbidding contract accounts was outdated and is corrected). Encoded M-address input and arbitrary pooled-ledger destinations remain unsupported absent explicit docs; fee sponsorship is supported for embedded-wallet flows. Demoted the bare definition; promoted operational specifics + recipient discipline to 5-weight.\nAlso good if the answer: Mentions testing on testnet/sandbox before production and monitoring failed or pending payments. | Distinguishes SDP disbursement operations from Anchor Platform on/off-ramp operations.\nGolden cites: Current Stellar Disbursement Platform docs (admin guide / embedded-wallets) or repository documentation.\nCORRECTION 2026-07-10: current source truth is native SEP-10/24. Keep external/classic, direct G/C, and embedded C flows separate; M encoding is currently rejected; fee sponsorship is supported for embedded flows.",
+    "leaf": "standards.disbursements"
   }
 }

@@ -1,0 +1,21 @@
+{
+  "id": "q-raph-remove-scam-token",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-hist-retail (golden coverage audit)",
+    "reviewer": "verify-hist-retail (golden coverage audit)",
+    "reason": "Asset identity is q-edge-asset-site-scam-detection kf0; trustline removal at zero balance with ChangeTrust limit 0 is q-aas-trustline-limit-lifecycle kf2/kf3. Hiding-is-display-only is the one loss, and it is wallet UI.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-raph-remove-scam-token",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-raph-remove-scam-token",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-raph-remove-scam-token"
+    ],
+    "lastCaseContentSha256": "7771a9de7d8d14ebdc4743716c8006f702bf14f8ae7a07c9dde8413bf8ca1344",
+    "replacementIds": []
+  }
+}

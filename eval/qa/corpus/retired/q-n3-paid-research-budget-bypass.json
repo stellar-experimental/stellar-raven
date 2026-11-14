@@ -1,0 +1,21 @@
+{
+  "id": "q-n3-paid-research-budget-bypass",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-edge (golden coverage audit)",
+    "reviewer": "verify-audit-edge (golden coverage audit)",
+    "reason": "Exposure enforced by manifest tests.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-edge.json#q-n3-paid-research-budget-bypass",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-edge.json#q-n3-paid-research-budget-bypass",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-n3-paid-research-budget-bypass"
+    ],
+    "lastCaseContentSha256": "dd23276a671e37248e6c2fc6155986e9362b9932ee2829163ba879dbee5d52cb",
+    "replacementIds": []
+  }
+}

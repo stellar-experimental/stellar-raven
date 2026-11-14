@@ -8,22 +8,19 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "Decode according to the **source field and method**, not a generic 'raw ledger XDR' label. With default base64 XDR, RPC `getLedgers.headerXdr` is a `LedgerHeaderHistoryEntry` and `metadataXdr` is a `LedgerCloseMeta`. `getTransactions.envelopeXdr` is a `TransactionEnvelope`, `resultXdr` a `TransactionResult`, and `resultMetaXdr` a `TransactionMeta`; transaction and diagnostic event fields have their own event XDR types. `getLatestLedger.header` and `getLedgerEntries` use different wrappers again.\n\nRaw JSON-RPC responses carry base64 strings. A public JavaScript SDK call may already parse those fields into XDR objects while retaining names such as `headerXdr`/`metadataXdr`, so check the client layer before decoding and do not double-decode. With `xdrFormat=json`, RPC renames fields to `headerJson`, `metadataJson`, and the corresponding `*Json` transaction fields; that JSON representation is explicitly less stable than canonical XDR. The CLI path is `stellar xdr decode --type <ExactType> --input single-base64`.\n\nFor `.xdr.zst` data-lake objects, decompress zstd and then follow that dataset's documented framing and XDR type; do not assume each compressed object is one bare `LedgerCloseMeta`. As of 2026-11-02, the official Galexie data-lake format page says each file is a zstd-compressed `LedgerCloseMetaBatch` XDR value, and the AWS Pubnet store holds one ledger per batch. For production historical iteration use the current Go Ingest SDK/data-lake backend where practical. Pin a protocol-compatible SDK, preserve ledger/transaction indices, and extract operations, ledger-entry changes, and contract events from the correctly typed layer.",
+    "answer": "Decode by source field. In default base64 mode, RPC `getLedgers.headerXdr` is a `LedgerHeaderHistoryEntry` and `metadataXdr` a `LedgerCloseMeta`; `getTransactions` returns `envelopeXdr` (`TransactionEnvelope`), `resultXdr` (`TransactionResult`) and `resultMetaXdr` (`TransactionMeta`). The public JS SDK may already parse these, so do not double-decode. With `xdrFormat=json` the fields are renamed `*Json` and the form is less stable. The CLI path is `stellar xdr decode --type <Type> --input single-base64`. For `.xdr.zst` data-lake files, decompress zstd first; the official Galexie format stores a `LedgerCloseMetaBatch` per file, not a bare `LedgerCloseMeta`.",
     "keyFacts": [
-      "Maps getLedgers headerXdr to LedgerHeaderHistoryEntry and metadataXdr to LedgerCloseMeta.",
-      "Maps getTransactions to TransactionEnvelope, TransactionResult, and TransactionMeta.",
-      "Treats raw base64 RPC values and public SDK-parsed XDR objects as distinct inputs.",
-      "Defines xdrFormat=json as field renaming to a less-stable *Json representation.",
-      "Requires zstd decompression and dataset-specific framing/type handling for .xdr.zst."
+      "getLedgers maps headerXdr to LedgerHeaderHistoryEntry and metadataXdr to LedgerCloseMeta.",
+      "getTransactions maps to TransactionEnvelope, TransactionResult and TransactionMeta.",
+      "xdrFormat=json renames fields to *Json and is less stable; SDK-parsed values skip decode.",
+      ".xdr.zst files need zstd decompression, then decoding as the dataset's documented type."
     ],
     "avoid": [
-      "Do NOT decode getLedgers headerXdr as LedgerHeader or collapse LedgerCloseMeta into transaction-level TransactionMeta.",
-      "Do NOT double-decode SDK-parsed XDR objects or expect *Xdr field names in JSON mode.",
-      "Do NOT assume nearby RPC methods use the same XDR wrapper or provider page limits are protocol constants.",
-      "Do NOT claim a compressed data-lake object is a bare XDR record.",
-      "Do NOT assume each .xdr.zst file contains one bare LedgerCloseMeta."
+      "Do NOT decode headerXdr as LedgerHeader or collapse LedgerCloseMeta into TransactionMeta.",
+      "Do NOT double-decode SDK-parsed XDR or expect *Xdr names in JSON mode.",
+      "Do NOT assume a .xdr.zst file holds one bare LedgerCloseMeta."
     ],
-    "notes": "Also good if the answer: Mentions the AWS Open Data S3 path `s3://aws-public-blockchain/v1.1/stellar/ledgers/pubnet` as the public data lake cited by Stellar RPC docs. | Mentions `.zst` decompression before XDR decode when consuming compressed files directly.\nGolden cites: Primary Stellar Ingest SDK and RPC/data-lake docs.\nGT-53 independently verified the exact getLedgers types and JSON-mode field renaming on 2026-07-11. Gate method/field/type boundaries; do not require a universal data-lake framing that the evidence did not establish.\nDATA-LAKE NOTE 2026-11-02: the official Galexie data-lake format page documents a zstd-compressed LedgerCloseMetaBatch per file; ledger 50000000 from the AWS Pubnet store decodes as LedgerCloseMetaBatch and not as LedgerCloseMeta. Naming LedgerCloseMetaBatch is correct; key fact 5 does not require it."
+    "notes": "Naming LedgerCloseMetaBatch for Galexie files is correct but not required."
   },
   "tags": {
     "category": "tooling-infra",
@@ -37,7 +34,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-02-08",
     "sources": [
       {
@@ -150,33 +147,36 @@
             "note": "--type LedgerCloseMetaBatch decodes start_sequence 50000000 to end_sequence 50000000; --type LedgerCloseMeta fails with 'xdr value invalid'."
           }
         ]
+      },
+      {
+        "claim": "Galexie data-lake files are zstd-compressed LedgerCloseMetaBatch values",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "github.com/stellar/stellar-docs docs/data/indexers/build-your-own/galexie/data-lake-format.mdx",
+            "observedAt": "2026-11-14",
+            "note": "Each ledger file is a [Zstandard] compressed [`LedgerCloseMetaBatch`] XDR value"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-03)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-tooling-a, verify-audit-tooling-a; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Gospel change 2026-11-02: golden.answer (accept); golden.notes (accept). The independent verifier re-derived each change without reading the proposer matrix.",
-        "Class A (verifier): https://developers.stellar.org/docs/data/indexers/build-your-own/galexie/data-lake-format — \"Each ledger file is a Zstandard compressed LedgerCloseMetaBatch XDR value ... The Pubnet ledgers sit in one data store: s3://aws-public-blockchain/v1.1/stellar/ledgers/pubnet ... one ledger per batch\" (observedAt 2026-11-02)",
-        "Class E (verifier): stellarDocs.search_docs({query:'LedgerCloseMetaBatch zstd compressed'}) observedAt 2026-11-02T16:44:39Z — \"data-lake-format#file-contents: 'Each ledger file is a Zstandard compressed LedgerCloseMetaBatch XDR value'; #configuration-file: '\"ledgersPerBatch\": 1, \"batchesPerPartition\": 64000'\" (observedAt 2026-11-02)",
-        "Class B (verifier): https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0054.md — \"Each value in the key-value store is the Zstandard compressed binary encoding of the following XDR structure: ... struct LedgerCloseMetaBatch\" (observedAt 2026-11-02)",
-        "Class C (verifier): https://aws-public-blockchain.s3.us-east-2.amazonaws.com/v1.1/stellar/ledgers/pubnet/.config.json — \"{\"networkPassphrase\":\"Public Global Stellar Network ; September 2015\",\"version\":\"1.0\",\"compression\":\"zstd\",\"ledgersPerBatch\":1,\"batchesPerPartition\":64000}\" (observedAt 2026-11-02)",
-        "Class F (verifier): curl .../pubnet/FD054DFF--49984000-50047999/FD050F7F--50000000.xdr.zst | zstd -d | stellar xdr decode (stellar 28.1.0, stellar-xdr 28.0.0) — \"--type LedgerCloseMetaBatch -> {\"start_sequence\":50000000,\"end_sequence\":50000000,\"ledger_close_metas\":[{\"v0\":...}]}; --type LedgerCloseMeta -> error decoding XDR: xdr value invalid\" (observedAt 2026-11-02)",
-        "Class D (verifier): Parallel web_search 'Galexie data lake LedgerCloseMetaBatch zstd' — \"stellar-data crate: 'Parse: Decodes XDR into LedgerCloseMetaBatch structure ... Ledgers per batch : 1'\" (observedAt 2026-11-02)",
-        "Class A (proposer, golden.keyFacts[0], confirmed): https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLedgers — \"headerXdr string The LedgerHeaderHistoryEntry structure ... metadataXdr string The LedgerCloseMeta union\" (observedAt 2026-11-02)",
-        "Class F (proposer, golden.keyFacts[0], confirmed): https://soroban-testnet.stellar.org getLedgers xdrFormat=json (RPC 30.0.0) — \"keys: hash, sequence, ledgerCloseTime, headerXdr \"\", headerJson {..}, metadataXdr \"\", metadataJson {v2...}\" (observedAt 2026-11-02)",
-        "Class F (proposer, golden.keyFacts[1], confirmed): stellar xdr decode --type TransactionMeta on testnet resultMetaXdr (CLI 28.1.0) — \"{\"v4\":{\"ext\":\"v0\",\"tx_changes_before\":[...\" (observedAt 2026-11-02)",
-        "Class A (proposer, golden.keyFacts[1], confirmed): https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransactions — \"envelopeXdr / resultXdr / resultMetaXdr (prior verified page)\" (observedAt 2026-11-02)",
-        "Class A (proposer, golden.keyFacts[4], confirmed): https://developers.stellar.org/docs/data/indexers/build-your-own/galexie/data-lake-format — \"Each ledger file is a Zstandard compressed LedgerCloseMetaBatch XDR value ... s3://aws-public-blockchain/v1.1/stellar/ledgers/pubnet\" (observedAt 2026-11-02)",
-        "Class F (proposer, golden.keyFacts[4], confirmed): https://aws-public-blockchain.s3.amazonaws.com/v1.1/stellar/ledgers/pubnet/FD054DFF--49984000-50047999/FD050F7F--50000000.xdr.zst — \"zstd -dc | stellar xdr decode --type LedgerCloseMetaBatch -> {\"start_sequence\":50000000,\"end_sequence\":50000000,...}; --type LedgerCloseMeta -> error decoding XDR: xdr value invalid\" (observedAt 2026-11-02)",
-        "Class C (proposer, golden.keyFacts[4], confirmed): https://aws-public-blockchain.s3.amazonaws.com/v1.1/stellar/ledgers/pubnet/.config.json — \"\"compression\":\"zstd\",\"ledgersPerBatch\":1,\"batchesPerPartition\":64000\" (observedAt 2026-11-02)",
-        "Class F (proposer, golden.answer, confirmed): stellar xdr decode --help (28.1.0) — \"--input <INPUT_FORMAT> [default: stream-base64] [possible values: single, single-base64, stream, stream-base64, stream-framed]\" (observedAt 2026-11-02)",
-        "Sibling sweep 2026-11-02: grep LedgerCloseMetaBatch|xdr.zst|ledgersPerBatch|LedgerCloseMeta|zstd|data lake -> q-ti-rpc-gettransactions-pagination-xdr, q-tool-go-sdk-ingest, q-ti-self-host-retention-backfill, q-infra-rpc-provider-archive-tier, q-tool-greenfield-indexer-prior-art-preflight, q-infra-hubble-bigquery checked; none asserts a bare LedgerCloseMeta per data-lake file; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-a.json#q-ti-parse-raw-ledger-data",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-a.json#q-ti-parse-raw-ledger-data",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-ti-parse-raw-ledger-data",
+        "Live B 2026-11-14: github.com/stellar/stellar-docs docs/data/indexers/build-your-own/galexie/data-lake-format.mdx -- 'Each ledger file is a [Zstandard] compressed [`LedgerCloseMetaBatch`] XDR value'"
       ],
       "rootCause": [
-        "freshness-drift"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-ti-parse-raw-ledger-data"
+    "origin": "raven-next q-ti-parse-raw-ledger-data",
+    "notes": "Also good if the answer: Mentions the AWS Open Data S3 path `s3://aws-public-blockchain/v1.1/stellar/ledgers/pubnet` as the public data lake cited by Stellar RPC docs. | Mentions `.zst` decompression before XDR decode when consuming compressed files directly.\nGolden cites: Primary Stellar Ingest SDK and RPC/data-lake docs.\nGT-53 independently verified the exact getLedgers types and JSON-mode field renaming on 2026-07-11. Gate method/field/type boundaries; do not require a universal data-lake framing that the evidence did not establish.\nDATA-LAKE NOTE 2026-11-02: the official Galexie data-lake format page documents a zstd-compressed LedgerCloseMetaBatch per file; ledger 50000000 from the AWS Pubnet store decodes as LedgerCloseMetaBatch and not as LedgerCloseMeta. Naming LedgerCloseMetaBatch is correct; key fact 5 does not require it.",
+    "leaf": "protocol.xdr",
+    "secondaryLeaf": "data.galexie-ingest"
   }
 }

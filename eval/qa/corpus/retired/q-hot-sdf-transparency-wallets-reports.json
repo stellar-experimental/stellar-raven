@@ -1,0 +1,23 @@
+{
+  "id": "q-hot-sdf-transparency-wallets-reports",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-hist-retail (golden coverage audit)",
+    "reviewer": "verify-hist-retail (golden coverage audit)",
+    "reason": "Merged into q-org-sdf-structure-mandate. Same Mandate page, same dated non-exhaustive holdings lesson as q-org-sdf-structure-mandate; the survivor rewrite carries Mandate page plus quarterly reports and the non-exhaustive, no-summing caution in notes.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-hot-sdf-transparency-wallets-reports",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-hot-sdf-transparency-wallets-reports",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-hot-sdf-transparency-wallets-reports"
+    ],
+    "lastCaseContentSha256": "439f9f4ac210685a025562ce7cecd8e8be99a5129218d88a07ff35bf72aa3255",
+    "replacementIds": [
+      "q-org-sdf-structure-mandate"
+    ]
+  }
+}

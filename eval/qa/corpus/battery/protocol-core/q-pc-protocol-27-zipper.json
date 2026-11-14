@@ -1,24 +1,21 @@
 {
   "id": "q-pc-protocol-27-zipper",
-  "question": "What did Stellar Protocol 27 \"Zipper\" activate, and how can you distinguish its July 8 vote date from its live Mainnet status?",
+  "question": "What did Stellar Protocol 27 \"Zipper\" (CAP-0071) change, and when did it activate on Mainnet?",
   "surface": [
     "stellarDocs.search_protocol_concepts_docs",
     "lumenloop.search_content_semantic"
   ],
   "golden": {
-    "answer": "The official software-versions page records Protocol 27 Zipper on Mainnet from July 8, 2026, the scheduled upgrade-vote date. Live Horizon independently reported protocol version 27 on July 11, 2026 and still reported `current_protocol_version` 27 on 2026-08-30 while `core_supported_protocol_version` was 28; Protocol 28 was not live on Mainnet at that check. Zipper comprises CAP-0071-01, which adds built-in authentication delegation for custom accounts, and CAP-0071-02, which adds the address-bound SOROBAN_CREDENTIALS_ADDRESS_V2 credential. The older SOROBAN_CREDENTIALS_ADDRESS remains valid in Protocol 27; CAP-0071-02 says deprecation may be considered in Protocol 28 **or later**, not that Protocol 28 definitely replaces it. A vote schedule alone is not proof of passage; use a dated live-network or post-vote source for activation.",
+    "answer": "Protocol 27 Zipper activated on Mainnet at ledger 63386819, closed 2026-07-08 17:00 UTC. CAP-0071 adds authentication delegation for custom accounts (SOROBAN_CREDENTIALS_ADDRESS_WITH_DELEGATES and recursive delegate signatures) and the address-bound SOROBAN_CREDENTIALS_ADDRESS_V2. It is a Soroban authorization change, not ZK, consensus or parallelism.",
     "keyFacts": [
-      "Dates the Protocol 27 Mainnet vote to July 8, 2026.",
-      "Gives July 8, 2026 as the official Protocol 27 Mainnet date.",
-      "CAP-0071-01 adds authentication delegation for custom accounts.",
-      "CAP-0071-02 adds SOROBAN_CREDENTIALS_ADDRESS_V2 with an address-bound payload."
+      "Zipper activated on Mainnet on 2026-07-08 (ledger 63386819).",
+      "CAP-0071 adds delegated authentication for custom accounts.",
+      "CAP-0071 adds the address-bound SOROBAN_CREDENTIALS_ADDRESS_V2 credential."
     ],
     "avoid": [
-      "Do NOT treat the pre-vote upgrade guide by itself as proof that the vote passed.",
-      "Do NOT claim Protocol 27 remained pending after the dated live-network check.",
-      "Do NOT attribute CAP-0072 contract signers for classic G-accounts to Protocol 27."
+      "Do NOT call Protocol 27 pending or CAP-0071 a ZK, consensus or parallelism change."
     ],
-    "notes": "Grade the historical activation and CAP split. A newer truthful network version must not be penalized if the answer preserves Protocol 27's activation history."
+    "notes": "Protocol 27 is historical; a newer Mainnet protocol is not an error. Citing the sub-CAPs CAP-0071-01 (delegation) and CAP-0071-02 (address-bound V2) is correct."
   },
   "tags": {
     "category": "protocol-core",
@@ -123,21 +120,48 @@
             "observedAt": "2026-07-11"
           }
         ]
+      },
+      {
+        "claim": "Zipper activated 2026-07-08 (ledger 63386819)",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "F",
+            "ref": "https://horizon.stellar.org/ledgers/63386819",
+            "observedAt": "2026-11-14",
+            "note": "closed_at 2026-07-08T17:00:10Z, protocol_version 27"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/networks/software-versions",
+            "observedAt": "2026-11-14",
+            "note": "Protocol 27 (Mainnet, July 8, 2026)"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-02)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-protocol, verify-protocol; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Verification-only event: no judge-facing field changed.",
-        "https://developers.stellar.org/docs/networks/software-versions — '## Protocol 29 (Mainnet, October 1, 2026) ... It introduces no new CAPs. ... ## Protocol 28 (Mainnet, September 16, 2026) ... ## Protocol 27 (Mainnet, July 8, 2026)' (observedAt 2026-11-02).",
-        "https://horizon.stellar.org/ledgers/64458446 — 64458445 protocol_version 27 closed 2026-09-16T17:00:01Z; 64458446 protocol_version 28 closed 2026-09-16T17:00:06Z (observedAt 2026-11-02); consistent with the golden's dated 2026-08-30 'P28 not live' history.",
-        "https://horizon.stellar.org/ — 'current_protocol_version 29, core_supported_protocol_version 30' (observedAt 2026-11-02).",
-        "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0071-02.md — 'in the future protocol (28 or later) we may want to consider deprecating the old credential type'; https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide — 'The original SOROBAN_CREDENTIALS_ADDRESS still works and has no deprecation date, but a future protocol may retire it.' (observedAt 2026-11-02).",
-        "https://github.com/stellar/stellar-protocol/blob/master/core/README.md — '| [CAP-0072](cap-0072.md) | Contract signers for Stellar accounts | Dmytro Kozhevin | Draft |' (observedAt 2026-11-02); the CAP-0072 avoid stays true.",
-        "Sibling sweep 2026-11-02: q-protocol-27-cap-0071, q-edge-fresh-latest-protocol-version, q-pc-protocol-upgrade-timing (re-dated in this batch with P28/P29 activation ledgers); no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-pc-protocol-27-zipper",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-pc-protocol-27-zipper",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-pc-protocol-27-zipper",
+        "Live F 2026-11-14: https://horizon.stellar.org/ledgers/63386819 -- 'closed_at 2026-07-08T17:00:10Z, protocol_version 27'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/networks/software-versions -- 'Protocol 27 (Mainnet, July 8, 2026)'",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0071.md -- 'SOROBAN_CREDENTIALS_ADDRESS_WITH_DELEGATES … SOROBAN_CREDENTIALS_ADDRESS_V2 (the -01/-02 sub-labels were not found by name in the preamble)'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/core/README.md -- '| [CAP-0071-01](cap-0071-01.md) | 27 | Authentication delegation for custom accounts | Dmytro Kozhevin | Final |'",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0071.md -- 'This CAP is an overview of two related Soroban authorization changes. [CAP-71-01] specifies authentication delegation... [CAP-71-02] specifies SOROBAN_CREDENTIALS_ADDRESS_V2'",
+        "Live A 2026-11-14: https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide -- 'since Protocol 27 (CAP-71-02), SOROBAN_CREDENTIALS_ADDRESS_V2 is the recommended credential type for Soroban address authorization.'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit",
+        "freshness-drift"
       ]
     },
-    "origin": "authored 2026-07 (2026-events)"
+    "origin": "authored 2026-07 (2026-events)",
+    "notes": "Grade the historical activation and CAP split. A newer truthful network version must not be penalized if the answer preserves Protocol 27's activation history.",
+    "leaf": "network.cap-process-status",
+    "secondaryLeaf": "network.protocol-history"
   }
 }

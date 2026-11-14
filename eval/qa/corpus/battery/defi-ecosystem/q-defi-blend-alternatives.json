@@ -6,20 +6,18 @@
     "lumenloop.get_scf_submissions"
   ],
   "golden": {
-    "answer": "As of **2026-07-10**, Blend is a major Stellar lending primitive, but there is no source basis for grading it as the timeless \"dominant\" or \"near-single\" lender. Compare alternatives by category and label status by source:\n- **Direct lending designs:** Slender, Laina, K2 Lend, and Peridot are relevant candidates, but their deployment labels are not uniform. As of 2026-11-02, Scout marks Slender Inactive, Laina Pre-Release, and K2 Lend and Peridot Live. Laina's own site says it operates only on Stellar Testnet. K2 announced its Stellar mainnet launch on 2026-07-24. The slender.fi domain did not resolve on 2026-11-02, while DefiLlama still tracks a small Slender balance. Report each label with its source and date rather than declaring every candidate Live.\n- **Built on or routing into Blend:** YieldBlox is a Blend money-market/pool; DeFindex is vault/yield-routing infrastructure. They are not independent base-protocol substitutes.\n- **Adjacent credit:** OrbitCDP, EquitX, and Templar are CDP, synthetic-asset, or cross-chain/cypher-lending systems rather than like-for-like isolated Soroban money markets. OrbitCDP's Scout and operator lifecycle labels also conflict.\n\nA useful answer names real projects, distinguishes these categories, and rechecks current operator plus directory evidence before asserting availability.",
+    "answer": "Few like-for-like alternatives exist. Direct Soroban lenders include K2 Lend (mainnet announced 2026-07-24), Slender and Peridot; deployment status varies, so check each. YieldBlox is a Blend pool and DeFindex a vault router, so neither is independent. OrbitCDP, EquitX and Templar are CDP, synthetic or cross-chain systems. Blend is a major lender, but dominance is not established.",
     "keyFacts": [
-      "Names real Stellar lending and credit candidates.",
-      "Treats direct lenders, Blend-built pools, and yield routers as different categories.",
-      "Treats CDPs and synthetic or cross-chain systems as different categories.",
-      "Treats lifecycle and market-rank claims as dated, source-relative claims."
+      "Names real Stellar lending alternatives such as K2 Lend, Slender or Peridot.",
+      "YieldBlox (a Blend pool) and DeFindex (a vault router) are not independent lenders.",
+      "OrbitCDP, EquitX and Templar are CDP, synthetic or cross-chain systems."
     ],
     "avoid": [
-      "Do NOT call Slender, Laina, K2 Lend, OrbitCDP, or any other candidate unqualifiedly Live/Inactive when current directory and operator surfaces conflict.",
-      "Do NOT call YieldBlox or DeFindex an independent base lending protocol, and do not list a DEX/AMM as a lending substitute.",
-      "Do NOT require an unsupported timeless claim that Blend is dominant, canonical, or the near-single lending backbone.",
-      "Do NOT describe Slender's regular borrowing as uncollateralized or collateral-free."
+      "Do NOT call any candidate unqualifiedly Live or Inactive where Scout and the operator disagree.",
+      "Do NOT list a DEX or AMM as a lending substitute.",
+      "Do NOT describe Slender's regular borrowing as uncollateralized."
     ],
-    "notes": "DIFFERENTIATED 2026-06-29: this file OWNS the 'are there DIRECT money-market substitutes for Blend' lane (find_similar_projects_semantic; the 2026-06-29 near-single-backbone reading is superseded by the 2026-07-10 correction below). DISTINCT from q-defi-lending-scf-flagships (scout_projects; 'who built lending + which have SCF backing' landscape roster). Added must_avoid against drifting into the SCF-roster lane. Inherited 2026-06-29 Scout grounding: Blend is a major Soroban money market; closest 'alternatives' are Blend-derived (YieldBlox built ON Blend) or Blend-routing (DeFindex vaults), plus CDP-style adjacents (Orbit CDP) — not independent head-to-head lenders. NB live Scout (2026-06-29) confirms Slender is itself a noncustodial money-market by eq-lab (a real adjacent lender), so 'no competitor at all' should be softened to 'few independent head-to-head competitors'.\nSlender's regular loans are over-collateralized (Certora audit report 2024-05-22; DefiLlama, 2026-11-02). Slender's own site used 'no collateral' only for flash loans; the Lumenloop record's general 'without collateral' wording is wrong (ll-033).\nAlso good if the answer: Notes, with a dated source, that much Stellar lending and yield routing runs through Blend or Blend-aware routers like DeFindex.\nGolden cites: Sources for Blend's dominance and any named adjacent protocols.\nCorrected 2026-07-10 by GT-14 primary + blind golden-truth review. Grade category accuracy and dated/source-labeled status discipline, not a frozen roster or dominance claim. Current Scout/operator conflicts are evidence to disclose, not permission to silently select one surface."
+    "notes": "Do not require a Blend dominance claim. A Lumenloop wording that Slender loans need no collateral is wrong (ll-033); flash loans only are uncollateralized."
   },
   "tags": {
     "category": "defi-ecosystem",
@@ -241,68 +239,45 @@
             "note": "Defective witness (ll-033): 'enabling users to lend and borrow assets without collateral'. The 'no collateral' wording on slender.fi (cached excerpt; host NXDOMAIN on 2026-11-02) applied only to flash loans."
           }
         ]
+      },
+      {
+        "claim": "K2 Lend announced its Stellar mainnet launch on 2026-07-24",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "D",
+            "ref": "https://x.com/K2_Lend/article/2080737079974154476",
+            "observedAt": "2026-11-14",
+            "note": "K2 Brings Institution-Ready Lending Infrastructure to Stellar ... 2026-07-24"
+          },
+          {
+            "class": "A",
+            "ref": "https://docs.k2lend.com/",
+            "observedAt": "2026-11-14",
+            "note": "K2 is a decentralized borrowing and lending protocol deployed on Stellar's Soroban smart contract platform."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task defi-protocols)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-defi, verify-defi; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "2026-11-02 [C] https://stellarlight.xyz/api/projects/search?q=laina — \"laina Pre-Release statusAsOf 2026-08-27 human-verified https://github.com/laina-defi/laina/blob/main/src/lib/horizon.ts\" (proposer claim, contradicted: Scout marks Slender Inactive and Laina/K2 Live)",
-        "2026-11-02 [C] https://stellarlight.xyz/api/projects/search?q=k2 — \"k2-lend Live statusAsOf 2026-08-17 site-liveness https://k2lend.com/\" (proposer claim, contradicted: Scout marks Slender Inactive and Laina/K2 Live)",
-        "2026-11-02 [C] https://stellarlight.xyz/api/projects/search?q=slender — \"slender Inactive statusAsOf 2026-07-09 human-verified https://defillama.com/protocol/slender\" (proposer claim, contradicted: Scout marks Slender Inactive and Laina/K2 Live)",
-        "2026-11-02 [A] https://docs.k2lend.com/ — \"K2 is a decentralized borrowing and lending protocol deployed on Stellar's Soroban ... Liquidation Permissionless (the live liquidation whitelist is currently empty)\" (proposer claim, contradicted: Operator surfaces describe K2 as coming soon)",
-        "2026-10-28 [A] https://app.k2lend.com/ — \"Live K2 market data. Fetched Oct 28, 2026 ... Total Value Locked $1.8K\" (proposer claim, contradicted: Operator surfaces describe K2 as coming soon)",
-        "2026-11-02 [C] https://lumenloop.com/projects/k2-lend — \"2026-07-24 — News: K2 Brings Institution-Ready Lending Infrastructure to Stellar (x.com)\" (proposer claim, contradicted: Operator surfaces describe K2 as coming soon)",
-        "2026-11-02 [D] https://x.com/Kinetic_Markets — \"Jul 24 ... today @K2_Lend is live on Stellar mainnet.\" (proposer claim, contradicted: Operator surfaces describe K2 as coming soon)",
-        "2026-11-02 [D] https://defillama.com/protocol/k2-lend — \"Daily values are UTC snapshots from Jul 23, 2026 to Oct 28, 2026 ... TVL by Chain Stellar $1,651\" (proposer claim, contradicted: Operator surfaces describe K2 as coming soon)",
-        "2026-10-05 [A] https://laina-de.fi — \"Laina is currently in the early development stage and is only operating on the Stellar Testnet.\" (proposer claim, confirmed-as-of: Operator surfaces describe Laina as early/testnet)",
-        "2026-11-02 [C] https://api.lumenloop.com/v1/tools/search_directory (laina) — \"Low-fee, trustless lending protocol on Soroban with looping functionality\" (proposer claim, confirmed-as-of: Operator surfaces describe Laina as early/testnet)",
-        "2026-11-02 [F] dig slender.fi @1.1.1.1 / @8.8.8.8 — \"status: NXDOMAIN (also app.slender.fi)\" (proposer claim, unverifiable: Operator surfaces describe Slender as still accessible)",
-        "2026-11-02 [D] https://defillama.com/protocol/slender — \"As of Oct 30, 2026, Slender has $87.71 in total value locked.\" (proposer claim, unverifiable: Operator surfaces describe Slender as still accessible)",
-        "2026-10-06 [D] https://whalehub.io/blog/best-lending-protocols-stellar — \"Slender is tracked by DefiLlama at zero.\" (proposer claim, unverifiable: Operator surfaces describe Slender as still accessible)",
-        "2026-08-08 [D] https://slender.fi (Parallel cache) — \"Enter App ... #1 lending protocol on\" (proposer claim, unverifiable: Operator surfaces describe Slender as still accessible)",
-        "2026-11-02 [C] https://stellarlight.xyz/api/projects/search?q=orbit — \"orbitcdp Inactive statusAsOf 2026-09-05 human-verified https://orbitcdp.finance/\" (proposer claim, confirmed: Peridot is a direct-lending candidate; YieldBlox Blend pool; DeFindex router; OrbitCDP/EquitX/Templar adjacent; OrbitCDP Scout vs operator conflict)",
-        "2026-10-25 [A] https://orbitcdp.finance — \"OrbitCDP Live on Stellar ... deposit XLM as collateral into Blend lending pools to borrow stablecoins\" (proposer claim, confirmed: Peridot is a direct-lending candidate; YieldBlox Blend pool; DeFindex router; OrbitCDP/EquitX/Templar adjacent; OrbitCDP Scout vs operator conflict)",
-        "2026-11-02 [C] https://stellarlight.xyz/api/projects/search?q=peridot — \"peridot-finance Live onchain-activity, deployment mainnet\" (proposer claim, confirmed: Peridot is a direct-lending candidate; YieldBlox Blend pool; DeFindex router; OrbitCDP/EquitX/Templar adjacent; OrbitCDP Scout vs operator conflict)",
-        "2026-11-02 [D] https://investors.defillama.com/active-loans/chain/stellar — \"Blend $44.15m; Templar Protocol $11.45m; XOXNO Lending; K2 Lend; Slender; Peridot\" (proposer claim, confirmed: Peridot is a direct-lending candidate; YieldBlox Blend pool; DeFindex router; OrbitCDP/EquitX/Templar adjacent; OrbitCDP Scout vs operator conflict)",
-        "2026-11-02 [A] https://orbitcdp.finance — \"Live on Stellar\" (proposer claim, confirmed: avoid items (unqualified Live/Inactive under conflict; YieldBlox/DeFindex as base lenders; timeless dominance))",
-        "2026-11-02 [C] https://stellarlight.xyz/api/projects/search?q=slender — \"slender | Slender | status Inactive | statusAsOf 2026-07-09 | basis human-verified | src https://defillama.com/protocol/slender\" (independent verifier, accept on golden.answer)",
-        "2026-11-02 [C] https://stellarlight.xyz/api/projects/search?q=laina — \"laina | Laina | status Pre-Release | statusAsOf 2026-08-27 | basis human-verified\" (independent verifier, accept on golden.answer)",
-        "2026-11-02 [C] https://stellarlight.xyz/api/projects/search?q=k2 — \"k2-lend | K2 Lend | status Live | statusAsOf 2026-08-17 | basis site-liveness\" (independent verifier, accept on golden.answer)",
-        "2026-11-02 [C] https://stellarlight.xyz/api/projects/search?q=peridot — \"peridot-finance | Peridot Finance | status Live | statusAsOf 2026-10-27 | basis onchain-activity\" (independent verifier, accept on golden.answer)",
-        "2026-11-02 [A] https://laina-de.fi/ — \"Laina is currently in the early development stage and is only operating on the Stellar Testnet.\" (independent verifier, accept on golden.answer)",
-        "2026-11-02 [A] https://x.com/Kinetic_Markets (K2_Lend post quoted) — \"Jul 24 ... today @K2_Lend is live on Stellar mainnet.\" (independent verifier, accept on golden.answer)",
-        "2026-11-02 [D] https://lumenloop.com/research/stellar-weekly-roundup-week-jul-24-2026 — \"K2 Lend launched this week with pooled, isolated, and gated lending markets built for regulated assets and institutions\" (independent verifier, accept on golden.answer)",
-        "2026-11-02 [F] host slender.fi; curl https://slender.fi — \"Host slender.fi not found: 3(NXDOMAIN); curl HTTP 000\" (independent verifier, accept on golden.answer)",
-        "2026-11-02 [C] https://api.llama.fi/protocol/slender — \"chains ['Stellar']; latest tvl totalLiquidityUSD 87; currentChainTvls Stellar 87.98\" (independent verifier, accept on golden.answer)",
-        "Change: the direct-lending bullet now gives the 2026-11-02 Scout labels (Slender Inactive, Laina Pre-Release, K2 Lend and Peridot Live) plus dated operator evidence (Laina testnet-only, K2 mainnet 2026-07-24, slender.fi unresolved, DefiLlama Slender balance); the old \"Laina/K2 Live\" and \"K2 coming soon\" statements were superseded. keyFacts and avoid unchanged; avoid[0] is conditional on a conflict, so it stays honest.",
-        "Open, not changed: the unchanged OrbitCDP sentence still holds (Scout Inactive, statusAsOf 2026-09-05; orbitcdp.finance \"Live on Stellar\" 2026-10-25/2026-11-02).",
-        "Sibling sweep 2026-11-02: checked q-defi-flash-loans, q-defi-named-newer-protocols, q-defi-rwa-scf-similar, q-defi-etherfuse-stablebonds; q-defi-flash-loans still describes Slender \"operator marketing\" without a date while slender.fi is NXDOMAIN on 2026-11-02 (escalated; outside this batch); q-defi-named-newer-protocols, q-defi-rwa-scf-similar, q-defi-etherfuse-stablebonds: no contradiction. (Pass 2: resolved; q-defi-flash-loans now dates the slender.fi non-resolution.)",
-        "Pass 2 (.agents/rounds/2026-11-02-golden-audit.md, task defi-protocols) evidence follows; pass-1 lines above remain the provenance for the pass-1 diff.",
-        "2026-11-02 [B] https://www.certora.com/reports/slender — \"May 22, 2024 ... Users are able to borrow assets from the protocol via an over-collateralized loan which issues them a dToken (debt token).\" (pass-2 verifier modify on golden.notes)",
-        "2026-11-02 [D] https://api.llama.fi/protocol/slender — \"Slender is a noncustodial overcollateralized lending protocol on Soroban (Stellar).\" (pass-2 verifier modify on golden.notes)",
-        "2026-11-02 [C] https://stellarlight.xyz/api/projects/search?q=slender&limit=3 — \"slender | Inactive | statusAsOf 2026-07-09 | human-verified ... borrow against their collateral ... It also supports same-block flash loans.\" (pass-2 verifier modify on golden.notes)",
-        "2026-11-02 [D] https://slender.fi/ (Parallel web_search cached excerpt; live host NXDOMAIN) — \"Flash loans Borrow and repay in the same block with no collateral\" (pass-2 verifier modify on golden.notes)",
-        "2026-11-02 [C] POST https://api.lumenloop.com/v1/tools/get_project {\"slug\":\"slender\"} — \"Slender is a decentralized lending protocol built on the Stellar blockchain, enabling users to lend and borrow assets without collateral\" (pass-2 verifier modify on golden.notes)",
-        "2026-11-02 [F] dig slender.fi @1.1.1.1 / @8.8.8.8; dig app.slender.fi @1.1.1.1; curl https://slender.fi/ — \"status: NXDOMAIN (both resolvers, both hosts); curl: (6) Could not resolve host: slender.fi\" (pass-2 verifier modify on golden.notes)",
-        "2026-11-02 [B] https://www.certora.com/reports/slender — \"May 22, 2024 ... Users are able to borrow assets from the protocol via an over-collateralized loan which issues them a dToken (debt token).\" (pass-2 verifier accept on golden.avoid[+])",
-        "2026-11-02 [D] https://api.llama.fi/protocol/slender — \"Slender is a noncustodial overcollateralized lending protocol on Soroban (Stellar).\" (pass-2 verifier accept on golden.avoid[+])",
-        "2026-11-02 [C] https://stellarlight.xyz/api/projects/search?q=slender&limit=3 — \"slender | Inactive | statusAsOf 2026-07-09 | human-verified ... borrow against their collateral ... It also supports same-block flash loans.\" (pass-2 verifier accept on golden.avoid[+])",
-        "2026-11-02 [C] POST https://api.lumenloop.com/v1/tools/get_project {\"slug\":\"slender\"} — \"Slender is a decentralized lending protocol built on the Stellar blockchain, enabling users to lend and borrow assets without collateral\" (pass-2 verifier accept on golden.avoid[+])",
-        "2026-11-02 [C] https://stellarlight.xyz/api/projects/search?q=slender&limit=3 — \"slender | Inactive | statusAsOf 2026-07-09 | human-verified ... borrow against their collateral ... It also supports same-block flash loans.\" (pass-2 verifier accept on tags.freshness)",
-        "2026-11-02 [C] POST https://api.lumenloop.com/v1/tools/get_project {\"slug\":\"slender\"} — \"Slender is a decentralized lending protocol built on the Stellar blockchain, enabling users to lend and borrow assets without collateral\" (pass-2 verifier accept on truth.verified.rootCause)",
-        "Pass 2 change: golden.notes drop the 2026-06-29 'answer = near-single backbone' and 'canonical money-market' framing and the Also-good line that credited 'near-single backbone' (they contradicted the answer and avoid[2]); the notes now record that Slender's regular loans are over-collateralized and that the Lumenloop 'without collateral' wording is wrong (ll-033). New avoid: 'Do NOT describe Slender's regular borrowing as uncollateralized or collateral-free.' It is a plain wrong-claim avoid backed by B (Certora), D (DefiLlama), and C (Scout) evidence, and it excludes flash loans; contradicted corroboration row added. No cap (ADR-0008). tags.freshness stable → scheduled because the answer pins dated Scout lifecycle labels and operator observations; truth.reverifyBy 2027-01-27 (staggered one week from q-defi-soroswap-what-is).",
-        "Pass 2 sibling sweep 2026-11-02: q-defi-flash-loans (flash-loan 'no collateral' pattern; consistent with the regular-borrowing avoid), q-defi-named-newer-protocols, q-defi-rwa-scf-similar, q-defi-etherfuse-stablebonds (OrbitCDP lifecycle now ungraded there; consistent), q-defi-lending-landscape-live, cluster-012 figures unchanged; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-defi-blend-alternatives",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-defi-blend-alternatives",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-defi-blend-alternatives",
+        "Live D 2026-11-14: https://x.com/K2_Lend/article/2080737079974154476 -- 'K2 Brings Institution-Ready Lending Infrastructure to Stellar ... 2026-07-24'",
+        "Live A 2026-11-14: https://docs.k2lend.com/ -- 'K2 is a decentralized borrowing and lending protocol deployed on Stellar's Soroban smart contract platform.'",
+        "Live C 2026-11-14: not re-queried 2026-11-14 -- 'volatile labels were not re-read; the rewrite drops per-project labels'"
       ],
       "rootCause": [
-        "freshness-drift",
-        "improvements/stellar-light-scout/sls-024-project-lifecycle-operator-conflicts.md",
-        "improvements/lumenloop/ll-033-slender-record-collateral-misstatement.md",
-        "Eval-side authoring flaw (.agents/rounds/2026-11-02-golden-audit.md, pass 2 defi-protocols): 2026-06-29 notes kept the near-single-backbone and canonical framing that the 2026-07-10 correction and avoid[2] reject."
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
     "origin": "raven-next q-defi-blend-alternatives",
     "asOf": "2026-11-02",
-    "reverifyBy": "2027-01-27"
+    "reverifyBy": "2027-01-27",
+    "notes": "DIFFERENTIATED 2026-06-29: this file OWNS the 'are there DIRECT money-market substitutes for Blend' lane (find_similar_projects_semantic; the 2026-06-29 near-single-backbone reading is superseded by the 2026-07-10 correction below). DISTINCT from q-defi-lending-scf-flagships (scout_projects; 'who built lending + which have SCF backing' landscape roster). Added must_avoid against drifting into the SCF-roster lane. Inherited 2026-06-29 Scout grounding: Blend is a major Soroban money market; closest 'alternatives' are Blend-derived (YieldBlox built ON Blend) or Blend-routing (DeFindex vaults), plus CDP-style adjacents (Orbit CDP) — not independent head-to-head lenders. NB live Scout (2026-06-29) confirms Slender is itself a noncustodial money-market by eq-lab (a real adjacent lender), so 'no competitor at all' should be softened to 'few independent head-to-head competitors'.\nSlender's regular loans are over-collateralized (Certora audit report 2024-05-22; DefiLlama, 2026-11-02). Slender's own site used 'no collateral' only for flash loans; the Lumenloop record's general 'without collateral' wording is wrong (ll-033).\nAlso good if the answer: Notes, with a dated source, that much Stellar lending and yield routing runs through Blend or Blend-aware routers like DeFindex.\nGolden cites: Sources for Blend's dominance and any named adjacent protocols.\nCorrected 2026-07-10 by GT-14 primary + blind golden-truth review. Grade category accuracy and dated/source-labeled status discipline, not a frozen roster or dominance claim. Current Scout/operator conflicts are evidence to disclose, not permission to silently select one surface.",
+    "leaf": "defi.lending"
   }
 }

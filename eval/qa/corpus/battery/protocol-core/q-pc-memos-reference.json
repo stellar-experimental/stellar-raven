@@ -1,21 +1,19 @@
 {
   "id": "q-pc-memos-reference",
-  "question": "How do memos work on Stellar: types, size limit, case-sensitivity, whether one transaction can carry multiple, which transactions support them, and why do exchanges require them?",
+  "question": "How do memos work on Stellar: types, size limit, whether one transaction can carry multiple, which transactions support them, and why do exchanges require them?",
   "surface": [
     "stellarDocs.search_protocol_concepts_docs"
   ],
   "golden": {
-    "answer": "A Stellar memo is optional **transaction-level** metadata; a classic transaction carries at most one. Types are `MEMO_TEXT` (UTF-8, up to 28 bytes), `MEMO_ID` (uint64), `MEMO_HASH` (32 bytes), and `MEMO_RETURN` (32-byte refund-reference hash). Exchanges/anchors/custodians use it to map deposits to customers sharing one pooled G-account; copy the service's value exactly because matching/case policy is application-defined. Ordinary classic transactions may carry the memo. A fee-bump outer envelope has no second memo—the memo, if any, is inside the inner transaction. An `InvokeHostFunction` Soroban transaction must use `MEMO_NONE` (stellar-core `validateSorobanMemo`; the rule still holds in the Protocol 30 release); do not assume every transaction form accepts a memo.",
+    "answer": "A memo is optional transaction-level metadata, at most one per classic transaction: MEMO_TEXT (up to 28 bytes), MEMO_ID (uint64), MEMO_HASH or MEMO_RETURN (32 bytes). Exchanges use it to map deposits into one pooled account to customers. A fee-bump has no outer memo; any memo sits in the inner transaction. An InvokeHostFunction transaction must use MEMO_NONE.",
     "keyFacts": [
-      "Names memo types/limits, one-per-transaction placement, and pooled-custody purpose.",
-      "Places the memo inside a fee-bump transaction's inner transaction.",
-      "States that an InvokeHostFunction transaction must use MEMO_NONE."
+      "At most one memo per transaction: text (28 bytes), ID (uint64), hash or return (32 bytes).",
+      "Exchanges use memos to map pooled-account deposits to customers.",
+      "An InvokeHostFunction transaction must use MEMO_NONE; a fee-bump memo is the inner one."
     ],
     "avoid": [
-      "Do NOT claim multiple memos, treat a memo as an account/operation field, or assume Soroban InvokeHostFunction accepts one.",
-      "Do NOT normalize exchange memo text without the recipient's policy."
-    ],
-    "notes": "GT-29 CORRECTION 2026-07-10: transaction support is explicitly asked and therefore gating. Fee-bump has no second outer memo; current InvokeHostFunction transactions require MEMO_NONE.\nGT-29 blind completeness correction; base mechanics independently confirmed by primary."
+      "Do NOT claim multiple memos per transaction or that InvokeHostFunction accepts a memo."
+    ]
   },
   "tags": {
     "category": "protocol-core",
@@ -148,31 +146,42 @@
             "note": "CAP-0089 and CAP-0090 are Protocol 31 Drafts; neither relaxes the memo rule ('enum MemoType' appears only as unchanged diff context)."
           }
         ]
+      },
+      {
+        "claim": "InvokeHostFunction transactions must use MEMO_NONE (validateSorobanMemo, V_25+)",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-core/v30.0.0/src/transactions/TransactionFrame.cpp",
+            "observedAt": "2026-11-14",
+            "note": "validateSorobanMemo: if (op.body.type() != INVOKE_HOST_FUNCTION) return true; if (getMemo().type() != MemoType::MEMO_NONE …) return false (read 2026-11-02, v30.0.0 is current release per gh releases)"
+          },
+          {
+            "class": "F",
+            "ref": "https://horizon.stellar.org/",
+            "observedAt": "2026-11-14",
+            "note": "current_protocol_version 29, core_supported_protocol_version 30, core_version stellar-core 30.0.0, history_latest_ledger 65467697"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task protocol-current)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-protocol, verify-protocol; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Gospel change (pass 2): golden.answer drops the dated 'As of 2026-11-02 (Mainnet Protocol 29)' pin and states the MEMO_NONE rule release-bounded (verifier-modified wording 'the rule still holds in the Protocol 30 release'); keyFacts[2] drops the time-relative 'current' (verifier accept).",
-        "Class B 2026-11-02 (pass-2 verifier): https://raw.githubusercontent.com/stellar/stellar-core/master/src/transactions/TransactionFrame.cpp — if (protocolVersionStartsFrom(ledgerVersion, ProtocolVersion::V_25)) { if (!validateSorobanMemo()) ... \"Soroban transactions are not allowed to use memo or muxed source account\"; validateSorobanMemo: if (op.body.type() != INVOKE_HOST_FUNCTION) return true; if (getMemo().type() != MemoType::MEMO_NONE || ...) return false; (observedAt 2026-11-02)",
-        "Class B 2026-11-02 (pass-2 verifier): https://raw.githubusercontent.com/stellar/stellar-core/v30.0.0/src/transactions/TransactionFrame.cpp — validateSorobanMemo present in the v30.0.0 tag (released 2026-10-16 per gh api repos/stellar/stellar-core/releases); gate is protocolVersionStartsFrom(V_25) with no upper bound. (observedAt 2026-11-02)",
-        "Class A 2026-11-02 (pass-2 verifier): https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/stellar-transaction — Soroban transactions containing InvokeHostFunctionOp have the following restrictions: The transaction cannot include a memo — the memo must be set to MEMO_NONE. (observedAt 2026-11-02)",
-        "Class B 2026-11-02 (pass-2 verifier): https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0090.md — CAP-0090 Status: Draft, Protocol version: 31; 'enum MemoType' appears only as unchanged diff context. CAP-0084 (Protocol 30) memo mention concerns CAP-67 event mapping only. (observedAt 2026-11-02)",
-        "Class F 2026-11-02 (pass-2 verifier): https://horizon.stellar.org/ — current_protocol_version 29, core_supported_protocol_version 30, core_version stellar-core 30.0.0 (0e49751a...), history_latest_ledger 65271116 (observedAt 2026-11-02)",
-        "Sibling sweep 2026-11-02 (pass 2): q-pc-muxed-accounts (same Core rule; consistent), q-jutsu-what-is-a-memo (memo enum only), q-edge-fresh-latest-protocol-version (no conflict with release-bounded text), q-edge-exchange-memo-lost-funds (cluster-058; consistent); no contradiction.",
-        "Pass 1 (batch protocol-core-02): Gospel change: golden.answer 'On current Protocol 27' replaced by 'As of 2026-11-02 (Mainnet Protocol 29)'; proposer change accepted by the independent verifier.",
-        "Pass 1 (batch protocol-core-02): https://horizon.stellar.org/ — 'current_protocol_version 29, core_supported_protocol_version 30, core_version stellar-core 30.0.0' (observedAt 2026-11-02; applier re-read the same values 2026-11-02).",
-        "Pass 1 (batch protocol-core-02): https://raw.githubusercontent.com/stellar/stellar-core/master/src/transactions/TransactionFrame.cpp — validateSorobanMemo: 'if (op.body.type() != INVOKE_HOST_FUNCTION) return true; if (getMemo().type() != MemoType::MEMO_NONE || ...) return false;' (observedAt 2026-11-02).",
-        "Pass 1 (batch protocol-core-02): https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/stellar-transaction#xdr-usage — 'The transaction cannot include a memo — the memo must be set to MEMO_NONE.' (observedAt 2026-11-02).",
-        "Pass 1 (batch protocol-core-02): https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0084.md — CAP-0084 Muxed Contract Addresses, Protocol version 30; no change to the InvokeHostFunction memo rule (observedAt 2026-11-02).",
-        "Pass 1 (batch protocol-core-02): Memo types, one-memo placement, and fee-bump inner-memo mechanics: https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions#memo via stellarDocs.search_docs — 'Memos are an optional unstructured data field' (observedAt 2026-11-02); no drift.",
-        "Pass 1 (batch protocol-core-02): Sibling sweep 2026-11-02: grep MEMO_NONE and 'current Protocol 27' across the battery → q-jutsu-what-is-a-memo (memo enum only), q-pc-muxed-accounts (same Core rule, consistent), q-edge-fresh-latest-protocol-version (already flags this case's undated P27 wording), q-raph-xlm-staking (dated 2026-07-11 P27 wording, not memo-related); no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-pc-memos-reference",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-pc-memos-reference",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-pc-memos-reference",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-core/v30.0.0/src/transactions/TransactionFrame.cpp -- 'validateSorobanMemo: if (op.body.type() != INVOKE_HOST_FUNCTION) return true; if (getMemo().type() != MemoType::MEMO_NONE …) return false (read 2026-11-02, v30.0.0 is current release per gh releases)'",
+        "Live F 2026-11-14: https://horizon.stellar.org/ -- 'current_protocol_version 29, core_supported_protocol_version 30, core_version stellar-core 30.0.0, history_latest_ledger 65467697'"
       ],
       "rootCause": [
-        "freshness-drift"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-pc-memos-reference"
+    "origin": "raven-next q-pc-memos-reference",
+    "notes": "GT-29 CORRECTION 2026-07-10: transaction support is explicitly asked and therefore gating. Fee-bump has no second outer memo; current InvokeHostFunction transactions require MEMO_NONE.\nGT-29 blind completeness correction; base mechanics independently confirmed by primary.",
+    "leaf": "protocol.memos-muxed"
   }
 }

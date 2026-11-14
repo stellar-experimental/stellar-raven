@@ -1,0 +1,140 @@
+{
+  "lane": "gap-3",
+  "generatedAt": "2026-11-14",
+  "agent": "Claude Fable 5.2, high",
+  "method": "Per slot: primary pages fetched directly, source read with gh, parallel-cli search as the web engine, one parallel-cli research run for each weight-3 slot, endpoint and on-chain probes where a fact is observable. Raven check: one search per source family, then execute; a direct exact probe followed wherever a key fact did not surface. ravenReach records the weakest key fact of the case; the note says how many key facts Raven returned. perplexity was not needed: no claim stayed unsettled after two searches.",
+  "slots": [
+    {
+      "leaf": "ai.mcp-servers",
+      "facet": "which MCP servers an agent can connect and what each provides",
+      "result": "proposed",
+      "caseId": "q-ai-mcp-servers-connect",
+      "coveredBy": null,
+      "ravenReach": "answerable",
+      "ravenEvidence": "search (stellarDocs, scout), then stellarDocs.search_docs('MCP server AI agents Raven Stellar Docs MCP') returned 'Building with AI' section 'Raven (MCP server)' first and the Agent CLI architecture page (Raven endpoint, OAuth, read-only). scout.listSkills({kind:'mcp-server'}) returned Stellar Scout MCP and LumenLoop MCP.",
+      "owner": null,
+      "note": "4 of 4 key facts on the surfaced docs page. Raven is also the system under test; the golden rests on the docs page, the SDF ecosystem-resources repository and endpoint probes."
+    },
+    {
+      "leaf": "assets.usdt0",
+      "facet": "how USDT0 reaches Stellar and what kind of token it is",
+      "result": "proposed",
+      "caseId": "q-asset-usdt0-layerzero-oft",
+      "coveredBy": null,
+      "ravenReach": "answerable",
+      "ravenEvidence": "search (stellarDocs, scout), then stellarDocs.search_asset_token_docs('USDT0 LayerZero OFT') returned 'USDT0 Transfers with LayerZero' first. scout.getStablecoins({peg:'USD'}) listed USDT0, issuer of record 'Tether (USDT0)', Crypto-Backed.",
+      "owner": null,
+      "note": "4 of 4 key facts on the surfaced page. Every getStablecoins row carried the note 'Measurement failed: HTTP 402', so market figures were absent; the case does not use them."
+    },
+    {
+      "leaf": "data.providers",
+      "facet": "which endpoints SDF hosts and which it does not",
+      "result": "proposed",
+      "caseId": "q-infra-sdf-hosted-endpoints",
+      "coveredBy": null,
+      "ravenReach": "answerable",
+      "ravenEvidence": "search (stellarDocs, scout), then stellarDocs.search_rpc_horizon_data_docs and search_docs returned the RPC Providers 'Publicly Accessible APIs' table (SDF: Futurenet and Testnet only), the Horizon Providers page (SDF-hosted Horizon truncated to one year) and Networks 'Network Comparison'.",
+      "owner": null,
+      "note": "4 of 4 key facts. Existing case q-infra-rpc-provider-archive-tier tests the archive roster, a different facet."
+    },
+    {
+      "leaf": "ecosystem.project-directory",
+      "facet": "telling apart similarly named or renamed projects",
+      "result": "proposed",
+      "caseId": "q-eco-hermes-renamed-zenex",
+      "coveredBy": null,
+      "ravenReach": "answerable",
+      "ravenEvidence": "search (scout, lumenloop) ranked scout.resolveProject first. scout.resolveProject({q:'hermes'}) returned superseded: true, current {slug: zenex, status: Live}. scout.searchProjects({q:'perpetuals'}) returned 'Zenex (formerly Hermes) … Live on Stellar mainnet'. lumenloop.get_project('zenex') lists other_names ['Hermes'].",
+      "owner": null,
+      "note": "2 of 2 key facts. The draft question was kept; the rename is proven outside Raven by the zenith-protocols GitHub organization and the operator's deployments page. q-defi-perps-whitespace states the same rename and is cut in the coverage plan."
+    },
+    {
+      "leaf": "funding.service-providers",
+      "facet": "where to find a vetted audit firm or integration partner",
+      "result": "proposed",
+      "caseId": "q-scf-service-provider-directories",
+      "coveredBy": null,
+      "ravenReach": "unreachable",
+      "ravenEvidence": "search (scout, lumenloop) ranked scout.getPartners first: 43 published partners (21 anchors, 5 audit firms, no agency rows). scout.searchResearch({source:'scf-handbook'}) returned the Audit Bank Official Rules, and the docs Anchors page (Anchor Directory) surfaced. Direct probes for the SDF service providers page (searchResearch with sdf-org and sdf-blog; stellarDocs.search_docs) returned nothing.",
+      "owner": "SDF. https://stellar.org/ecosystem/service-providers should be held by Scout's research corpus (sdf-org source) or linked from Stellar Docs; Scout's partner directory has no development or integration agencies.",
+      "note": "2 of 3 key facts answerable (Anchor Directory, Audit Bank firms). The SDF directory page, the only source of integration and developer-service firms, is not in any Raven source."
+    },
+    {
+      "leaf": "network.quorum-freeze",
+      "facet": "what CAP-77 lets validators freeze and how it is reversed",
+      "result": "proposed",
+      "caseId": "q-pc-quorum-freeze-cap77",
+      "coveredBy": null,
+      "ravenReach": "unreachable",
+      "ravenEvidence": "search (stellarDocs, lumenloop), then stellarDocs.search_docs returned validators 'Soroban Settings > Frozen ledger keys' (CAP-77, protocol 26, freeze and unfreeze by the standard upgrade) and the 2026-01-22 meeting note; scout.searchResearch returned the CAP and the SDF Quorum Freeze post. Direct probes for SLP-0006 and SLP-0008 (searchResearch, lumenloop.search_content_semantic with date windows, stellarDocs.search_docs with meetings) returned no record of either freeze.",
+      "owner": "SDF. stellar/stellar-protocol limits/slp-0006.md and slp-0008.md are the records; Scout's research corpus indexes CAPs and SEPs but not SLPs, and no Stellar Docs page lists enacted freezes.",
+      "note": "3 of 4 key facts answerable (what can be frozen, how it is voted, how it is reversed). The use on Mainnet is the unreachable fact. q-comp-yieldblox-oracle-incident mentions the SLP-0006 freeze in its answer but does not test the mechanism."
+    },
+    {
+      "leaf": "security.aml-screening",
+      "facet": "which compliance and analytics vendors cover Stellar",
+      "result": "proposed",
+      "caseId": "q-comp-aml-analytics-vendors",
+      "coveredBy": null,
+      "ravenReach": "answerable",
+      "ravenEvidence": "search (scout), then scout.searchProjects({q:'compliance AML analytics'}) returned Scorechain, Merkle Science and Certik as live compliance analytics; stellarDocs.search_anchor_sep_docs returned the Anchor Platform KYC sections (the business collects and validates KYC). A direct probe for Chainalysis, Elliptic and TRM Labs in scout.searchResearch returned nothing.",
+      "owner": null,
+      "note": "3 of 3 key facts, because the case accepts any two covered vendors with a source. Chainalysis, Elliptic and TRM Labs are absent from Raven's sources; an answer limited to Raven names Scorechain and Merkle Science. The draft's 'what anchors are expected to screen' has no official statement, so the case grades whose obligation screening is."
+    },
+    {
+      "leaf": "security.core-audits",
+      "facet": "which SDF-maintained components have published audits",
+      "result": "proposed",
+      "caseId": "q-pc-core-software-audits",
+      "coveredBy": null,
+      "ravenReach": "answerable",
+      "ravenEvidence": "search (stellarDocs), then stellarDocs.search_docs('security audits Stellar Core Soroban host environment RPC Rust SDK auditor') returned the four Audits pages (Stellar Core and Soroban Host Environment, Soroban Rust SDK, Stellar RPC, Soroban Poseidon SDK) with their version and auditor rows. scout.listAudits({q:'stellar-core'}) returned no rows of 71.",
+      "owner": null,
+      "note": "4 of 4 key facts. Scout's audit registry holds ecosystem project audits only; the docs pages carry this leaf."
+    },
+    {
+      "leaf": "soroban.resource-fees",
+      "facet": "rent and refundable versus non-refundable fees",
+      "result": "proposed",
+      "caseId": "q-soroban-fee-refundable-rent",
+      "coveredBy": null,
+      "ravenReach": "answerable",
+      "ravenEvidence": "search (stellarDocs), then stellarDocs.search_docs('refundable non-refundable resource fee rent inclusion fee') returned 'Fees, Resource Limits, and Metering > Refundable and non-refundable resource fees' first, with both lists and the refund rule in the section text.",
+      "owner": null,
+      "note": "4 of 4 key facts. Weight 3: one parallel-cli research run agreed with the docs and CAP-0046-07."
+    },
+    {
+      "leaf": "standards.sep31-sep38",
+      "facet": "the SEP-31 flow between a sending and a receiving anchor",
+      "result": "proposed",
+      "caseId": "q-sep31-flow-sep38-quotes",
+      "coveredBy": null,
+      "ravenReach": "answerable",
+      "ravenEvidence": "search (stellarDocs, skills), then stellarDocs.search_anchor_sep_docs returned the Anchor Platform SEP-31 guide ('Funds Received': the Sending Anchor has sent the funds, status pending_receiver) and 'Firm vs. Indicative Quotes' (firm needs id and expires_at). skills.stellar-dev.standards lists the SEPs.",
+      "owner": null,
+      "note": "4 of 4 key facts, from the Anchor Platform guide rather than the SEP text. Active cases q-sep-31-cross-border and q-sep-38-quotes test parts of this today; the coverage plan merges both away and opens this slot, so one new case replaces them."
+    },
+    {
+      "leaf": "tooling.version-compat",
+      "facet": "what fails when an SDK or CLI lags a protocol upgrade",
+      "result": "proposed",
+      "caseId": "q-infra-version-lag-errors",
+      "coveredBy": null,
+      "ravenReach": "unreachable",
+      "ravenEvidence": "search (stellarDocs), then stellarDocs.search_sdk_cli_tools_docs returned SDK and CLI install pages only. scout.searchResearch({sources:['sdf-blog','release','dev-docs']}) returned the Bell Protocol 30 upgrade guide (older SDK may fail to decode; upgrade before the Testnet and Mainnet votes) and Software Versions. Direct probes for the host error 'contract protocol number is newer than host' (searchResearch, stellarDocs.search_docs) returned nothing.",
+      "owner": "SDF. The rule lives only in stellar/rs-soroban-env (soroban-env-host/src/vm/parsed_module.rs) and stellar-core docs/versioning-soroban.md; the Stellar Docs Software Versions page or the contract upload guide should state it.",
+      "note": "3 of 4 key facts answerable through Scout's research corpus. The Stellar Docs search did not surface Software Versions for this query; Scout did. Weight 3: one parallel-cli research run agreed on all four facts."
+    },
+    {
+      "leaf": "security.contract-security",
+      "facet": "pre-Mainnet security practice",
+      "result": "proposed",
+      "caseId": "q-soroban-pre-mainnet-security-steps",
+      "coveredBy": null,
+      "ravenReach": "answerable",
+      "ravenEvidence": "search (stellarDocs, skills), then stellarDocs.search_docs returned the Threat Modeling pages, Security Best Practices and the builder monitoring template; search_sdk_cli_tools_docs returned Security Tools (Scout first); codemode.skill.read('skills.stellar-dev.smart-contracts', before-mainnet and file:security.md) returned the checklist, tooling and audit sections; scout.searchResearch returned SDF's 2026-07-20 DeFi security standards post (audit before material user funds).",
+      "owner": null,
+      "note": "4 of 4 key facts. Added by orchestrator follow-up; the slot is not in gap-3.slots.json. Weight 3: one parallel-cli research run agreed; perplexity confirmed the post's date. The question is scoped to a contract holding user funds because SDF's audit expectation is addressed to such protocols."
+    }
+  ]
+}

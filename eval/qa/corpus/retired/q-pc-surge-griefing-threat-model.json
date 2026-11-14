@@ -1,0 +1,23 @@
+{
+  "id": "q-pc-surge-griefing-threat-model",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-protocol (golden coverage audit)",
+    "reviewer": "verify-protocol (golden coverage audit)",
+    "reason": "Merged into q-pc-practical-fee-setting. Surge-pricing behaviour, bid caps, live fee estimation and backoff are q-pc-practical-fee-setting's subject; the survivor rewrite absorbs time bounds and backoff. The 'abuse model' adds only generic ops advice.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-pc-surge-griefing-threat-model",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-pc-surge-griefing-threat-model",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-pc-surge-griefing-threat-model"
+    ],
+    "lastCaseContentSha256": "ade9f5f226494a69d255f1623d604fb0e72b4ff26e63d559498899fbdc5ca0c4",
+    "replacementIds": [
+      "q-pc-practical-fee-setting"
+    ]
+  }
+}

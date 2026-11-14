@@ -7,21 +7,17 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "Soroban/Stellar smart contracts are written in **Rust** with `soroban-sdk`, built to a **Wasm** artifact, and deployed with the unified **Stellar CLI** (`stellar`, formerly `soroban-cli`). Canonical testnet flow:\n\n1. Build the contract: `stellar contract build`. Current output is under `target/wasm32v1-none/release/<contract>.wasm`.\n2. Create and fund a testnet identity: `stellar keys generate alice --network testnet --fund` (or create/fund by another Friendbot/Lab flow).\n3. Deploy with the canonical source-account flag: `stellar contract deploy --wasm target/wasm32v1-none/release/<contract>.wasm --source-account alice --network testnet` plus `--alias <name>` if desired. Constructor arguments go after the separator, e.g. `-- --admin alice`.\n4. Invoke with the returned `C...` contract ID: `stellar contract invoke --id <C...> --source-account alice --network testnet -- <fn> ...`.\n\n`--source` is still accepted by the CLI as an alias for `--source-account`, but canonical docs/help should show `--source-account`. Source of truth: current developers.stellar.org contract/CLI docs and `stellar contract deploy --help`.",
+    "answer": "Build with `stellar contract build` (Wasm lands in `target/wasm32v1-none/release/`), create a funded identity with `stellar keys generate alice --network testnet --fund`, then run `stellar contract deploy --wasm <file>.wasm --source-account alice --network testnet [--alias name]`, which prints the `C...` contract ID. Invoke with `stellar contract invoke --id <C...> --source-account alice --network testnet -- <fn> ...`. The CLI is `stellar`, not `soroban`.",
     "keyFacts": [
-      "Builds Wasm artifact first via stellar contract build into target/wasm32v1-none/release/.",
-      "Uses stellar contract deploy with .wasm, --source-account, and --network testnet.",
-      "Uses funded identity/account from stellar keys generate <name> --network testnet --fund.",
-      "Uses the returned C... ID via stellar contract invoke --id <C...>.",
-      "Gives the invoke tail: `--source-account <identity> --network testnet -- <fn> ...`."
+      "`stellar contract build` writes Wasm under `target/wasm32v1-none/release/`.",
+      "`stellar keys generate <name> --network testnet --fund` creates a funded testnet identity.",
+      "`stellar contract deploy --source-account <id> --network testnet` deploys the Wasm.",
+      "Deploy returns a `C...` contract ID used by `stellar contract invoke --id`."
     ],
     "avoid": [
-      "Do NOT say Soroban contracts are written in Solidity or compiled to EVM bytecode.",
-      "Do NOT claim `soroban deploy` is the current canonical command; the CLI is now `stellar` (soroban-cli was renamed/merged into stellar-cli).",
-      "Do NOT claim `wasm32-unknown-unknown`, `--global`, or `--source` are the current canonical happy-path deploy flow. `--source` may be mentioned only as an alias for `--source-account`.",
-      "Do NOT invent flags/commands that are not in the Stellar CLI."
+      "Do NOT present `soroban deploy`, `--global`, or `wasm32-unknown-unknown` as the current flow."
     ],
-    "notes": "Exemplar (Phase-1 hand-authored). VERIFIED against the live 'Deploy to Testnet' docs (2026-06): binary is `stellar`; canonical command is `stellar contract deploy --wasm target/wasm32v1-none/release/<name>.wasm --source-account <id> --network testnet --alias <name>`; returns a C... contract id. Build target is wasm32v1-none.\nAlso good if the answer: Deploy returns a contract ID (C... address) used for subsequent `stellar contract invoke`. | A testnet account can be funded via Friendbot before deploying.\nGolden cites: At least one primary developers.stellar.org docs page (getting-started / deploy guide).\nCorrected 2026-07-07 via golden-truth workflow after Discord feedback on the demo: active golden answer now uses `wasm32v1-none`, omits obsolete `--global`, and shows canonical `--source-account`. Grading nuance: do not mark an answer wrong solely for using `--source`, because CLI 27.0.0 confirms it is an alias; do mark it stale/noncanonical if it presents `--source` as the preferred docs-form while omitting `--source-account`, or if it also uses the old target/`--global` path.\nSince the 2026-07-15 sk-001 fix, the stellar-dev smart-contracts skill uses `wasm32v1-none` and `--source-account` and has no `--global`. An answer that presents `wasm32-unknown-unknown` or `--global` as the current deploy flow is wrong, even when it cites an older copy of that skill; an answer that labels them as historical is correct, and the `--source` alias rule above still applies."
+    "notes": "`--source` is an alias of `--source-account`: do not mark an answer wrong for using it unless it also shows the obsolete target or `--global`. Accept `--wasm-hash` or an auto-build deploy inside a workspace."
   },
   "tags": {
     "category": "soroban",
@@ -35,7 +31,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-06-24",
     "sources": [
       {
@@ -143,24 +139,76 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "Deploy takes `--source-account`, `--alias`, constructor args after `--`; `--wasm` or `--wasm-hash`",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "F",
+            "ref": "local stellar 30.0.1 `stellar contract deploy --help`",
+            "observedAt": "2026-11-14",
+            "note": "Usage: stellar contract deploy [OPTIONS] --source-account <SOURCE_ACCOUNT> [-- <CONTRACT_CONSTRUCTOR_ARGS>...]"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/smart-contracts/getting-started/deploy-to-testnet.md",
+            "observedAt": "2026-11-14",
+            "note": "--wasm target/wasm32v1-none/release/hello_world.wasm \\ --source-account alice"
+          }
+        ]
+      },
+      {
+        "claim": "Build output under target/wasm32v1-none/release; identity funded by `stellar keys generate alice --network testnet --fund`",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/smart-contracts/getting-started/deploy-to-testnet.md",
+            "observedAt": "2026-11-14",
+            "note": "stellar keys generate alice --network testnet --fund"
+          }
+        ]
+      },
+      {
+        "claim": "`--global` is not a current deploy flag; `--source` is only an alias",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "F",
+            "ref": "local stellar 30.0.1 `stellar contract deploy --help`",
+            "observedAt": "2026-11-14",
+            "note": "no `--global` option listed"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tools/cli/stellar-cli.md",
+            "observedAt": "2026-11-14",
+            "note": "`-s`, `--source-account <SOURCE_ACCOUNT>` [alias: `source`]"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "golden cap backlog 2026-11-02 (caps-2)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-soroban-b, verify-audit-soroban-b; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Cap ended 2026-11-02: sk-001 is resolved (improvements/resolved.json, resolved 2026-07-15, stellar/stellar-dev-skill#44 and PR #45 merged 2026-07-07) and the live skill no longer carries the stale values, so the partial cap became a plain rule.",
-        "B 2026-11-02T21:24:12Z: GET https://raw.githubusercontent.com/stellar/stellar-dev-skill/main/skills/smart-contracts/SKILL.md HTTP 200 — 0 matches for wasm32-unknown-unknown and --global; \"Compile for the **`wasm32v1-none`** target (Rust ≥ 1.84)\"; deploy block uses \"--wasm target/wasm32v1-none/release/my_contract.wasm\" and \"--source-account alice\".",
-        "C 2026-11-02T21:26:00Z: Raven codemode.skill.read('skills.stellar-dev.smart-contracts') pinned https://raw.githubusercontent.com/stellar/stellar-dev-skill/cac64041d0c759a3b10ce6fba4fa3e0672bcbe0f/skills/smart-contracts/SKILL.md — wasm32-unknown-unknown 0, --global 0, --source-account 2, wasm32v1-none 4.",
-        "A 2026-11-02T21:24:12Z: GET https://developers.stellar.org/docs/build/smart-contracts/getting-started/deploy-to-testnet.md HTTP 200 (canonical deploy flow unchanged from the golden).",
-        "Sibling sweep 2026-11-02: grep of the battery for wasm32-unknown-unknown, --global, and sk-001 — q-sor-build-target-wasm32v1 avoids old wasm32-unknown-unknown guidance as a final answer; q-tool-cli-testnet-identity-howto gets the same plain rule in this change; q-ti-cli-rust-windows-troubleshooting names wasm32-unknown-unknown only as the stale target; no contradiction.",
-        "Prior verification event: Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-04) (2026-11-02); see git history."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-b.json#q-soroban-deploy-cli",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-b.json#q-soroban-deploy-cli",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-soroban-deploy-cli",
+        "Live F 2026-11-14: local stellar 30.0.1 `stellar contract deploy --help` -- 'Usage: stellar contract deploy [OPTIONS] --source-account <SOURCE_ACCOUNT> [-- <CONTRACT_CONSTRUCTOR_ARGS>...]'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/build/smart-contracts/getting-started/deploy-to-testnet.md -- '--wasm target/wasm32v1-none/release/hello_world.wasm \\ --source-account alice'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/build/smart-contracts/getting-started/deploy-to-testnet.md -- 'stellar keys generate alice --network testnet --fund'",
+        "Live F 2026-11-14: local stellar 30.0.1 `stellar contract deploy --help` -- 'no `--global` option listed'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/tools/cli/stellar-cli.md -- '`-s`, `--source-account <SOURCE_ACCOUNT>` [alias: `source`]'"
       ],
       "rootCause": [
-        ".agents/rounds/2026-11-02-grading-policy.md (ADR-0008 amendment 2026-11-02: partial caps follow open upstream findings)",
-        "improvements/resolved.json entry sk-001 (resolved 2026-07-15; the cap it backed ended)"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-soroban-deploy-cli"
+    "origin": "raven-next q-soroban-deploy-cli",
+    "notes": "Exemplar (Phase-1 hand-authored). VERIFIED against the live 'Deploy to Testnet' docs (2026-06): binary is `stellar`; canonical command is `stellar contract deploy --wasm target/wasm32v1-none/release/<name>.wasm --source-account <id> --network testnet --alias <name>`; returns a C... contract id. Build target is wasm32v1-none.\nAlso good if the answer: Deploy returns a contract ID (C... address) used for subsequent `stellar contract invoke`. | A testnet account can be funded via Friendbot before deploying.\nGolden cites: At least one primary developers.stellar.org docs page (getting-started / deploy guide).\nCorrected 2026-07-07 via golden-truth workflow after Discord feedback on the demo: active golden answer now uses `wasm32v1-none`, omits obsolete `--global`, and shows canonical `--source-account`. Grading nuance: do not mark an answer wrong solely for using `--source`, because CLI 27.0.0 confirms it is an alias; do mark it stale/noncanonical if it presents `--source` as the preferred docs-form while omitting `--source-account`, or if it also uses the old target/`--global` path.\nSince the 2026-07-15 sk-001 fix, the stellar-dev smart-contracts skill uses `wasm32v1-none` and `--source-account` and has no `--global`. An answer that presents `wasm32-unknown-unknown` or `--global` as the current deploy flow is wrong, even when it cites an older copy of that skill; an answer that labels them as historical is correct, and the `--source` alias rule above still applies.",
+    "leaf": "tooling.stellar-cli",
+    "secondaryLeaf": "soroban.deploy-lifecycle"
   }
 }

@@ -1,0 +1,21 @@
+{
+  "id": "q-gap-contracts-domain-empty",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-defi (golden coverage audit)",
+    "reviewer": "verify-defi (golden coverage audit)",
+    "reason": "Scout listContracts empty-success semantics; the general 'registry absence is not world absence' behaviour is carried by Raven's envelope contract and other no-info cases. Medium confidence, as the audit says.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-gap-contracts-domain-empty",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-gap-contracts-domain-empty",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-gap-contracts-domain-empty"
+    ],
+    "lastCaseContentSha256": "5864c86b439bb0b1b6ca8fb52c99e6d9409bb7b4df5cdff9b33d228d6bb08e35",
+    "replacementIds": []
+  }
+}

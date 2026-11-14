@@ -1,0 +1,141 @@
+{
+  "id": "q-agent-cli-authority-limits",
+  "question": "What is the Stellar CLI for agents, what can an AI agent do with it, and what actually limits what the agent can spend or sign?",
+  "surface": [
+    "stellarDocs.search_sdk_cli_tools_docs",
+    "stellarDocs.search_docs"
+  ],
+  "golden": {
+    "answer": "It is the standard Stellar CLI driven by an AI agent as a wallet and toolchain: it reads balances, transfers tokens, builds transactions, and deploys or invokes contracts. As of 2026-11-14 the CLI enforces no spend caps, allowlists, or confirmations. Limits come from a dedicated low-balance key, an on-chain token allowance, build-only handoff to a human signer, or multisig thresholds.",
+    "keyFacts": [
+      "The agent CLI is the standard Stellar CLI used by an AI agent as a wallet.",
+      "The CLI enforces no built-in spend caps, allowlists, or confirmation prompts.",
+      "An on-chain token allowance caps what the agent can spend.",
+      "Build-only mode hands the unsigned transaction to a human signer."
+    ],
+    "avoid": [
+      "Do NOT claim the CLI itself blocks, scans, or asks approval for an agent's risky transactions."
+    ],
+    "notes": "Accept a later dated description if the CLI has since added policy controls."
+  },
+  "tags": {
+    "category": "tooling-infra",
+    "service": "stellarDocs",
+    "freshness": "scheduled"
+  },
+  "truth": {
+    "lifecycle": {
+      "state": "proposed",
+      "reviewState": "none"
+    },
+    "leaf": "ai.agent-cli",
+    "domain": "real-world",
+    "status": "confirmed",
+    "asOf": "2026-11-14",
+    "reverifyBy": "2027-02-09",
+    "sources": [
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/tools/cli/agent-cli/index.md",
+        "observedAt": "2026-11-14",
+        "quote": "Use the Stellar CLI and CLI Skills to give your AI agents an agent-friendly wallet and native way to inspect, move, and manage assets on Stellar."
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/tools/cli/agent-cli/reference/authority-model.md",
+        "observedAt": "2026-11-14",
+        "quote": "The CLI is an execution engine, not a policy controller. It does not include: Built-in Spend Caps or Allowlists"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/tools/cli/agent-cli/quickstart.md",
+        "observedAt": "2026-11-14",
+        "quote": "You need `stellar-cli` 28.1.0 or later. That release adds the `stellar token` metadata, allowance, `transfer-from`, and burn subcommands"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-cli/releases/tag/v28.1.0",
+        "observedAt": "2026-11-14",
+        "quote": "`stellar token approve` and `stellar token allowance` to manage and check spending allowances."
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-cli/blob/main/cmd/soroban-cli/src/commands/skill/mod.rs",
+        "observedAt": "2026-11-14",
+        "quote": "Print an AI-agent skill guide for using the Stellar CLI"
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "The agent CLI is the ordinary stellar-cli binary; agents use it to read balances, transfer tokens, build transactions and deploy or invoke contracts.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tools/cli/agent-cli/index.md",
+            "observedAt": "2026-11-14",
+            "note": "Capability Surface table: stellar token balance / transfer / approve, stellar tx new, stellar contract deploy / invoke."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-cli/releases/tag/v28.1.0",
+            "observedAt": "2026-11-14",
+            "note": "Release 28.1.0 (2026-09-26) adds the token subcommands and the `stellar skill` command."
+          }
+        ]
+      },
+      {
+        "claim": "As of 2026-11-14 the CLI has no built-in spend caps, allowlists, threat scanning or general confirmation prompts.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tools/cli/agent-cli/reference/authority-model.md",
+            "observedAt": "2026-11-14",
+            "note": "'A key capable of signing a payment can sign for the account's full balance to any address.' 'Standard payments and token transfers never prompt for interactive confirmation.'"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-cli/tree/main/cmd/soroban-cli/src/commands",
+            "observedAt": "2026-11-14",
+            "note": "Command tree holds keys, token, tx, contract, skill, doctor; no policy or approval command."
+          }
+        ]
+      },
+      {
+        "claim": "Spending is bounded by a dedicated key, a token allowance set with `stellar token approve`, `--build-only` handoff, or multisig thresholds.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tools/cli/agent-cli/reference/authority-model.md",
+            "observedAt": "2026-11-14",
+            "note": "Security Mechanisms 1 to 4: dedicated agent keypairs, protocol allowances, build-only handoffs, native multisig thresholds."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-cli/releases/tag/v28.1.0",
+            "observedAt": "2026-11-14",
+            "note": "`stellar token approve`, `allowance` and `transfer-from` shipped in 28.1.0."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-11-14",
+      "by": "gap-1 lane (Claude Fable 5.2), golden-coverage-audit 2026-11-14",
+      "evidence": [
+        "https://developers.stellar.org/docs/tools/cli/agent-cli/index.md",
+        "https://developers.stellar.org/docs/tools/cli/agent-cli/reference/authority-model.md",
+        "https://developers.stellar.org/docs/tools/cli/agent-cli/quickstart.md",
+        "https://github.com/stellar/stellar-cli/releases/tag/v28.1.0",
+        "https://github.com/stellar/stellar-cli/blob/main/cmd/soroban-cli/src/commands/skill/mod.rs"
+      ],
+      "rootCause": [
+        ".agents/rounds/2026-11-14-golden-coverage-audit.md"
+      ]
+    },
+    "notes": "The docs state they were verified against stellar-cli 28.1.0; the latest release on 2026-11-14 was v30.0.1.",
+    "origin": "golden-coverage-audit 2026-11-14"
+  }
+}

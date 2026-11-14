@@ -1,0 +1,21 @@
+{
+  "id": "q-edge-doc-page-sections-soft-empty",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-edge (golden coverage audit)",
+    "reviewer": "verify-audit-edge (golden coverage audit)",
+    "reason": "Adapter contract covered by unit tests.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-edge.json#q-edge-doc-page-sections-soft-empty",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-edge.json#q-edge-doc-page-sections-soft-empty",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-edge-doc-page-sections-soft-empty"
+    ],
+    "lastCaseContentSha256": "e66e793a7319348545af3e1452fba176bc7865a51898b14541ec4effdae7369a",
+    "replacementIds": []
+  }
+}

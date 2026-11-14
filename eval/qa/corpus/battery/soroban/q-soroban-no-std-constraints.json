@@ -7,18 +7,17 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "Soroban contracts use `#![no_std]`; `std` and `std::collections` are unavailable, and floating-point types are unsupported. Prefer host-backed `soroban_sdk::Vec`, `Map`, `Bytes`, `Symbol`, and related types. Guest allocation is off by default, but the SDK's `alloc` feature or a custom allocator can enable `alloc` types at CPU/code-size cost, so heap allocation is not impossible. Contracts can read consensus ledger time and use `Env::prng`; that PRNG is public/validator-influenceable and must not be treated as secret or unbiased randomness.",
+    "answer": "Soroban contracts are Rust (`soroban-sdk`) compiled to Wasm (`wasm32v1-none`), not EVM bytecode. They are `#![no_std]` and must run deterministically on every validator, so `std`, `HashMap` and floating point are unavailable; floating-point code is rejected at instantiation. Use the SDK's host-backed `Vec`, `Map`, `Bytes` and `Symbol`. Heap allocation is off by default but discouraged rather than banned: the SDK `alloc` feature enables it at a CPU and code-size cost.",
     "keyFacts": [
-      "Explains no_std/std/floating-point limits and the preferred host-backed SDK types.",
-      "Allocation is optional.",
-      "Contracts can read consensus ledger time.",
-      "`Env::prng` exists with security limitations."
+      "Contracts are Rust with `soroban-sdk` compiled to Wasm (`wasm32v1-none`), not EVM.",
+      "Contracts are `no_std`: `std` collections such as `HashMap`, and floats, are unavailable.",
+      "Floats are barred because execution must be deterministic across validators.",
+      "The SDK's host-backed `Vec`, `Map`, `Bytes` replace std collections; `alloc` is optional."
     ],
     "avoid": [
-      "Do NOT claim `std` or floating point is supported.",
-      "Do NOT claim heap allocation, time, or RNG access is categorically impossible, or treat Env PRNG as secure secret randomness."
-    ],
-    "notes": "2026-06-29: removed duplicated Why-these-cards/Edge sections (verified 2026-06-29). Determinism + no_std are the real reasons; the trap is 'std/floats are fine'. Verified: contracts are #![no_std], guest allocation is off by default (the SDK `alloc` feature is optional), SDK host types replace std collections, no floating point for determinism.\nAlso good if the answer: Floating point is disallowed because execution must be deterministic across validators. | Determinism is required for consensus; non-deterministic ops would break agreement.\nGolden cites: A developers.stellar.org contract-development page covering types/no_std constraints.\nGT-46 CORRECTION 2026-07-11: no_std is not a no-allocation/no-time/no-PRNG absolute."
+      "Do NOT claim Solidity/EVM bytecode is the runtime, or that `std` or floating point is supported.",
+      "Do NOT claim heap allocation is categorically impossible."
+    ]
   },
   "tags": {
     "category": "soroban",
@@ -97,23 +96,57 @@
             "note": "Exact quote: 'Dynamic memory allocation within the guest is **strongly** discouraged, but not completely prohibited.'"
           }
         ]
+      },
+      {
+        "claim": "Floating point is prohibited; `no_std` is the recommended mode; allocation discouraged but not prohibited",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/rust-dialect.md",
+            "observedAt": "2026-11-14",
+            "note": "Floating-point arithmetic in the guest is completely prohibited."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/rust-dialect.md",
+            "observedAt": "2026-11-14",
+            "note": "Dynamic memory allocation within the guest is **strongly** discouraged, but not completely prohibited."
+          }
+        ]
+      },
+      {
+        "claim": "SDK `alloc` feature is optional",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/Cargo.toml",
+            "observedAt": "2026-11-14",
+            "note": "[features] alloc = []"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-05)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-soroban-b, verify-audit-soroban-b; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/alloc/mod.rs — \"The `alloc` feature is **disabled by default**.\" (observedAt 2026-11-02)",
-        "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/Cargo.toml — \"[features] alloc = []\" (not in default) (observedAt 2026-11-02)",
-        "https://developers.stellar.org/docs/learn/fundamentals/contract-development/rust-dialect — \"Dynamic memory allocation within the guest is **strongly** discouraged, but not completely prohibited.\"; \"Floating-point arithmetic in the guest is completely prohibited.\" (observedAt 2026-11-02)",
-        "https://developers.stellar.org/docs/build/smart-contracts/getting-started/hello-world — \"there is no allocator and no heap memory in Soroban contracts by default (the SDK does provide an opt-in allocator through its alloc feature\" (observedAt 2026-11-02)",
-        "Independent verifier (verify/soroban-05.json): accept on golden.notes.",
-        "Sibling sweep 2026-11-02: grep 'no allocator' → q-soroban-wasm-language also-good line still says '(no standard library / no allocator)' (escalated, outside batch); q-soroban-wasm-size-limit, q-sor-recurring-escrow-patterns: no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-b.json#q-soroban-no-std-constraints",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-b.json#q-soroban-no-std-constraints",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-soroban-no-std-constraints",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/learn/fundamentals/contract-development/rust-dialect.md -- 'Floating-point arithmetic in the guest is completely prohibited.'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/learn/fundamentals/contract-development/rust-dialect.md -- 'Dynamic memory allocation within the guest is **strongly** discouraged, but not completely prohibited.'",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/Cargo.toml -- '[features] alloc = []'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/learn/fundamentals/contract-development/rust-dialect.md -- 'To avoid the complexity, all floating-point code is rejected at instantiation time.'"
       ],
       "rootCause": [
-        "Eval-side note residue: a pre-correction 'no allocator' note line survived the 2026-07-11 correction and contradicted the golden answer and avoid[1]."
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-soroban-no-std-constraints"
+    "origin": "raven-next q-soroban-no-std-constraints",
+    "notes": "2026-06-29: removed duplicated Why-these-cards/Edge sections (verified 2026-06-29). Determinism + no_std are the real reasons; the trap is 'std/floats are fine'. Verified: contracts are #![no_std], guest allocation is off by default (the SDK `alloc` feature is optional), SDK host types replace std collections, no floating point for determinism.\nAlso good if the answer: Floating point is disallowed because execution must be deterministic across validators. | Determinism is required for consensus; non-deterministic ops would break agreement.\nGolden cites: A developers.stellar.org contract-development page covering types/no_std constraints.\nGT-46 CORRECTION 2026-07-11: no_std is not a no-allocation/no-time/no-PRNG absolute.",
+    "leaf": "soroban.sdk-dialect-types",
+    "secondaryLeaf": "soroban.overview"
   }
 }

@@ -6,19 +6,19 @@
     "stellarDocs.search_protocol_concepts_docs"
   ],
   "golden": {
-    "answer": "A claimable balance contains an amount, an asset, a creator, and up to 10 claimants. Each claimant is an account plus a `ClaimPredicate`; that claimant can claim only when its predicate is true. Supported predicate shapes include unconditional, AND, OR, NOT, before absolute time, and before relative time. The docs also show after-time windows by negating a before-time predicate.\n\nExpiry is not automatic deletion. A common expiring-payment design is: recipient claimant can claim before a deadline; sender/creator claimant can claim after the deadline. After the deadline, someone still has to submit the claim operation from the reclaim claimant to consume the entry. If no predicate ever becomes usable by a real claimant, the claimable balance can be stranded.\n\nIf you list yourself (the sender/creator) as a claimant, that does NOT give you an at-will reclaim right: you can only claim when your own predicate evaluates true, and listing yourself never overrides another claimant's predicate. A claimable balance is not a custodial balance the creator can pull back at will, and the predicate set — not an issuer clawback flag — is the control surface. (Issuer clawback under CAP-35 is a separate regulated-asset feature, not the creator's ordinary reclaim mechanism.)\n\nReserve matters for high-volume or long-lived designs. Creating a claimable balance increases the creator's minimum balance by one base reserve per claimant, and the Stellar lumens docs describe claimable balances as ledger entries that require a base reserve per claimant. The reserve is released when the entry is consumed.",
+    "answer": "A claimable balance is a native ledger entry (no Soroban contract) holding an asset for up to 10 claimants, each with a predicate (time bounds, AND, OR, NOT) that must be true to claim. It can be created for a recipient with no trustline, who needs one only to claim a non-native asset. Listing yourself as claimant gives no at-will reclaim. Each claimant costs the creator one base reserve.",
     "keyFacts": [
-      "Pairs each claimant with a predicate.",
-      "Requires the claimant's predicate to be true at claim time.",
-      "Uses before/after absolute or relative time predicates for expiry or reclaim windows.",
-      "Mentions each claimable balance consumes reserve while it exists."
+      "A claimable balance is a native ledger entry with up to 10 claimants.",
+      "Each claimant has a predicate that must be true at the ledger of the claim.",
+      "A creator listed as claimant has no at-will reclaim beyond its own predicate.",
+      "Each claimant adds one base reserve to the creator's minimum balance.",
+      "The recipient needs no trustline at creation, but needs one to claim a non-native asset."
     ],
     "avoid": [
-      "Do NOT claim claimable balances expire automatically without a claim/reclaim operation removing them.",
-      "Do NOT say the creator can always claw back or cancel a claimable balance at will.",
-      "Do NOT conflate claimable-balance predicates with asset issuer clawback flags."
+      "Do NOT claim that a claimable balance expires and refunds itself without a claim operation.",
+      "Do NOT claim that a claimable balance is a smart-contract escrow that needs Soroban."
     ],
-    "notes": "Verified predicate types, reserve-per-claimant wording, and non-automatic expiry semantics against CAP-23 and the build/guides claimable-balances page (live 2026-06-29). Folded in q-aas-claimable-balance-reclaim: added must_avoid on at-will creator reclaim and on conflating predicates with issuer clawback flags, plus the self-as-claimant probe.\nAlso good if the answer: Explains multi-claimant designs such as recipient can claim before a deadline and sender can reclaim after a deadline. | Notes that reclaim/cancel is implemented as a claimant path, not a special unilateral cancellation by the creator.\nGolden cites: Official Stellar claimable balance docs or operation reference."
+    "notes": "Issuer clawback is a separate feature; do not penalize an answer that mentions it as distinct."
   },
   "tags": {
     "category": "assets-anchors-seps",
@@ -132,22 +132,68 @@
             "note": "Exact source: clawback operations ‘only apply to assets issued by the source account.’"
           }
         ]
+      },
+      {
+        "claim": "A claimable balance holds at most 10 claimants.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-xdr/blob/main/Stellar-transaction.x",
+            "observedAt": "2026-11-14",
+            "note": "Claimant claimants<10>;"
+          }
+        ]
+      },
+      {
+        "claim": "Each claimant raises the source account's minimum balance by one base reserve.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md",
+            "observedAt": "2026-11-14",
+            "note": "each claimant in that entry increases the source account’s minimum balance by one base reserve."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
+            "observedAt": "2026-11-14",
+            "note": "each claimant in that entry increases the source account’s minimum balance by one base reserve."
+          }
+        ]
+      },
+      {
+        "claim": "Predicate shapes: before absolute/relative time, NOT, AND, OR, unconditional.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances",
+            "observedAt": "2026-11-14",
+            "note": "Can claim if the close time of the ledger including the claim is before X (Unix timestamp) - `BEFORE_ABSOLUTE_TIME(X)`"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-01)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-assets, verify-audit-assets; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Verification-only event 2026-11-02: every judge-facing field is unchanged; the proposer and an independent verifier re-derived the claims from at least two source classes.",
-        "Live B 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md — 'Claimant claimants<10>; CLAIM_PREDICATE_UNCONDITIONAL = 0, CLAIM_PREDICATE_AND = 1, CLAIM_PREDICATE_OR = 2, CLAIM_PREDICATE_NOT = 3, CLAIM_PREDICATE_BEFORE_ABSOLUTE_TIME = 4, CLAIM_PREDICATE_BEFORE_RELATIVE_TIME = 5' (claim: Up to 10 claimants; predicate types unconditional/AND/OR/NOT/before-absolute/before-relative.; verdict confirmed)",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/build/guides/transactions/claimable-balances.md — 'let aCanReclaim = StellarSdk.Claimant.predicateNot(StellarSdk.Claimant.predicateBeforeAbsoluteTime(soon.toString()))' (claim: Up to 10 claimants; predicate types unconditional/AND/OR/NOT/before-absolute/before-relative.; verdict confirmed)",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/build/guides/transactions/claimable-balances.md — 'Each ClaimableBalanceEntry is a ledger entry, and each claimant in that entry increases the source account's minimum balance by one base reserve.' (claim: Each claimant raises the creator's minimum balance by one base reserve while the entry exists.; verdict confirmed)",
-        "Live B 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md — '// Amount of native asset to pay the reserve  int64 reserve;' (claim: Each claimant raises the creator's minimum balance by one base reserve while the entry exists.; verdict confirmed)",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/build/guides/transactions/claimable-balances.md — 'if a claimable balance isn't claimed, it sits on the ledger forever ... there is no recovery mechanism for a claimable balance in general — if none of the predicates can be fulfilled, the balance cannot be recovered.' (claim: No automatic expiry; no at-will creator reclaim; balances can be stranded.; verdict confirmed)",
-        "Live B 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md — 'struct Claimant ... ClaimPredicate predicate; // Claimable if predicate is true' (claim: No automatic expiry; no at-will creator reclaim; balances can be stranded.; verdict confirmed)",
-        "Sibling sweep 2026-11-02: q-asset-claimable-balance, q-raph-claimable-balance-safety, q-comp-clawback-cap0035 checked; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-assets.json#q-aas-claimable-predicates-expiry-reserves",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-assets.json#q-aas-claimable-predicates-expiry-reserves",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-aas-claimable-predicates-expiry-reserves",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-xdr/blob/main/Stellar-transaction.x -- 'Claimant claimants<10>;'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md -- 'each claimant in that entry increases the source account’s minimum balance by one base reserve.'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/build/guides/transactions/claimable-balances -- 'each claimant in that entry increases the source account’s minimum balance by one base reserve.'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/build/guides/transactions/claimable-balances -- 'Can claim if the close time of the ledger including the claim is before X (Unix timestamp) - `BEFORE_ABSOLUTE_TIME(X)`'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-aas-claimable-predicates-expiry-reserves"
+    "origin": "raven-next q-aas-claimable-predicates-expiry-reserves",
+    "notes": "Verified predicate types, reserve-per-claimant wording, and non-automatic expiry semantics against CAP-23 and the build/guides claimable-balances page (live 2026-06-29). Folded in q-aas-claimable-balance-reclaim: added must_avoid on at-will creator reclaim and on conflating predicates with issuer clawback flags, plus the self-as-claimant probe.\nAlso good if the answer: Explains multi-claimant designs such as recipient can claim before a deadline and sender can reclaim after a deadline. | Notes that reclaim/cancel is implemented as a claimant path, not a special unilateral cancellation by the creator.\nGolden cites: Official Stellar claimable balance docs or operation reference.",
+    "leaf": "protocol.claimable-balances"
   }
 }

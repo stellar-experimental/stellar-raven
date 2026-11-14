@@ -1,0 +1,1466 @@
+{
+  "$comment": "Coverage map for the QA battery (2026-11-14 golden coverage audit). Each headline case names one leaf in truth.leaf. openSlots lists empty weight-2/3 leaves; a slot is removed when its leaf gains an active case.",
+  "schema": "qa-taxonomy-v1",
+  "domains": [
+    {
+      "id": "protocol",
+      "title": "Ledger fundamentals: accounts, transactions, and fees"
+    },
+    {
+      "id": "network",
+      "title": "Consensus, validators, and protocol upgrades"
+    },
+    {
+      "id": "assets",
+      "title": "Assets, tokens, stablecoins, and real-world assets"
+    },
+    {
+      "id": "soroban",
+      "title": "Smart contracts"
+    },
+    {
+      "id": "data",
+      "title": "APIs, data, and indexing"
+    },
+    {
+      "id": "tooling",
+      "title": "SDKs and developer tooling"
+    },
+    {
+      "id": "standards",
+      "title": "SEPs, anchors, ramps, and payments"
+    },
+    {
+      "id": "defi",
+      "title": "DeFi and markets"
+    },
+    {
+      "id": "security",
+      "title": "Security, audits, and compliance"
+    },
+    {
+      "id": "wallets",
+      "title": "Wallets, retail use, and support"
+    },
+    {
+      "id": "ecosystem",
+      "title": "SDF, XLM, and the ecosystem"
+    },
+    {
+      "id": "funding",
+      "title": "Funding, programs, and events"
+    },
+    {
+      "id": "ai",
+      "title": "AI and agent tooling"
+    },
+    {
+      "id": "behavior",
+      "title": "Trap and safety behaviors"
+    }
+  ],
+  "leaves": [
+    {
+      "id": "protocol.accounts-reserves",
+      "title": "Accounts, reserves, and account creation",
+      "domain": "protocol",
+      "weight": 3,
+      "volatility": "stable",
+      "cases": 3
+    },
+    {
+      "id": "protocol.account-merge",
+      "title": "Account merge and closing an account",
+      "domain": "protocol",
+      "weight": 2,
+      "volatility": "stable",
+      "cases": 1
+    },
+    {
+      "id": "protocol.operations-transactions",
+      "title": "Operations and transaction structure",
+      "domain": "protocol",
+      "weight": 2,
+      "volatility": "stable",
+      "cases": 1
+    },
+    {
+      "id": "protocol.sequence-numbers",
+      "title": "Sequence numbers",
+      "domain": "protocol",
+      "weight": 3,
+      "volatility": "stable",
+      "cases": 2
+    },
+    {
+      "id": "protocol.timebounds-preconditions",
+      "title": "Timebounds and transaction preconditions",
+      "domain": "protocol",
+      "weight": 2,
+      "volatility": "stable",
+      "cases": 1
+    },
+    {
+      "id": "protocol.signatures-multisig",
+      "title": "Signatures, thresholds, and multisig",
+      "domain": "protocol",
+      "weight": 2,
+      "volatility": "stable",
+      "cases": 1
+    },
+    {
+      "id": "protocol.tx-lifecycle-finality",
+      "title": "Transaction lifecycle, ledger close, and finality",
+      "domain": "protocol",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 2
+    },
+    {
+      "id": "protocol.fees-surge",
+      "title": "Classic fees and surge pricing",
+      "domain": "protocol",
+      "weight": 3,
+      "volatility": "scheduled",
+      "cases": 2
+    },
+    {
+      "id": "protocol.fee-bump-sponsorship",
+      "title": "Fee-bump transactions and sponsored reserves",
+      "domain": "protocol",
+      "weight": 2,
+      "volatility": "stable",
+      "cases": 2
+    },
+    {
+      "id": "protocol.networks-passphrases",
+      "title": "Mainnet, Testnet, Futurenet, and Friendbot",
+      "domain": "protocol",
+      "weight": 3,
+      "volatility": "scheduled",
+      "cases": 2
+    },
+    {
+      "id": "protocol.memos-muxed",
+      "title": "Memos, muxed accounts, and memo-required deposits",
+      "domain": "protocol",
+      "weight": 3,
+      "volatility": "stable",
+      "cases": 2
+    },
+    {
+      "id": "protocol.claimable-balances",
+      "title": "Claimable balances",
+      "domain": "protocol",
+      "weight": 2,
+      "volatility": "stable",
+      "cases": 1
+    },
+    {
+      "id": "protocol.xdr",
+      "title": "XDR and XDR-JSON",
+      "domain": "protocol",
+      "weight": 2,
+      "volatility": "stable",
+      "cases": 1
+    },
+    {
+      "id": "protocol.address-types",
+      "title": "Address types: G, C, and M",
+      "domain": "protocol",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "protocol.keys-recovery-phrases",
+      "title": "Keypairs, secret keys, and recovery phrases (SEP-5)",
+      "domain": "protocol",
+      "weight": 2,
+      "volatility": "stable",
+      "cases": 1
+    },
+    {
+      "id": "network.scp-consensus",
+      "title": "Stellar Consensus Protocol",
+      "domain": "network",
+      "weight": 2,
+      "volatility": "stable",
+      "cases": 2
+    },
+    {
+      "id": "network.running-a-node",
+      "title": "Running a validator or watcher node",
+      "domain": "network",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 2
+    },
+    {
+      "id": "network.node-operations",
+      "title": "History archives and node operations",
+      "domain": "network",
+      "weight": 1,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "network.tier1-quorum",
+      "title": "Tier 1 organizations and quorum sets",
+      "domain": "network",
+      "weight": 2,
+      "volatility": "live",
+      "cases": 2
+    },
+    {
+      "id": "network.upgrade-process",
+      "title": "How protocol and settings upgrades take effect",
+      "domain": "network",
+      "weight": 2,
+      "volatility": "stable",
+      "cases": 1
+    },
+    {
+      "id": "network.cap-process-status",
+      "title": "The CAP process and CAP status lookup",
+      "domain": "network",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 2
+    },
+    {
+      "id": "network.limits-settings",
+      "title": "Current network limits and how they change",
+      "domain": "network",
+      "weight": 3,
+      "volatility": "scheduled",
+      "cases": 2
+    },
+    {
+      "id": "network.current-protocol",
+      "title": "Current and next protocol version",
+      "domain": "network",
+      "weight": 3,
+      "volatility": "scheduled",
+      "cases": 2
+    },
+    {
+      "id": "network.protocol-history",
+      "title": "Protocol release history",
+      "domain": "network",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 2
+    },
+    {
+      "id": "network.incidents",
+      "title": "Network halts and protocol incidents",
+      "domain": "network",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 2
+    },
+    {
+      "id": "network.quorum-freeze",
+      "title": "Quorum Freeze (CAP-77)",
+      "domain": "network",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "network.protocol-meetings",
+      "title": "Protocol and developer meeting notes",
+      "domain": "network",
+      "weight": 1,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "assets.issuance",
+      "title": "Issuing a classic asset",
+      "domain": "assets",
+      "weight": 2,
+      "volatility": "stable",
+      "cases": 2
+    },
+    {
+      "id": "assets.trustlines",
+      "title": "Trustlines",
+      "domain": "assets",
+      "weight": 3,
+      "volatility": "stable",
+      "cases": 2
+    },
+    {
+      "id": "assets.issuer-controls",
+      "title": "Issuer controls: authorization flags and clawback",
+      "domain": "assets",
+      "weight": 3,
+      "volatility": "stable",
+      "cases": 2
+    },
+    {
+      "id": "assets.sac",
+      "title": "Stellar Asset Contract (SAC)",
+      "domain": "assets",
+      "weight": 3,
+      "volatility": "scheduled",
+      "cases": 2
+    },
+    {
+      "id": "assets.token-interface",
+      "title": "Contract tokens and the token interface (SEP-41)",
+      "domain": "assets",
+      "weight": 2,
+      "volatility": "stable",
+      "cases": 2
+    },
+    {
+      "id": "assets.asset-info-lists",
+      "title": "Publishing asset information and getting listed",
+      "domain": "assets",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "assets.usdc",
+      "title": "USDC and EURC on Stellar",
+      "domain": "assets",
+      "weight": 3,
+      "volatility": "stable",
+      "cases": 2
+    },
+    {
+      "id": "assets.stablecoin-landscape",
+      "title": "Stablecoins on Stellar",
+      "domain": "assets",
+      "weight": 2,
+      "volatility": "live",
+      "cases": 2
+    },
+    {
+      "id": "assets.usdt0",
+      "title": "USDT0 on Stellar",
+      "domain": "assets",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "assets.nft-vault-standards",
+      "title": "NFT and vault token standards",
+      "domain": "assets",
+      "weight": 1,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "assets.rwa-issuers",
+      "title": "Real-world asset issuers and tokenized funds",
+      "domain": "assets",
+      "weight": 3,
+      "volatility": "live",
+      "cases": 3
+    },
+    {
+      "id": "assets.regulated-tokenization",
+      "title": "Tokenizing a regulated asset (SEP-8, T-REX)",
+      "domain": "assets",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 2
+    },
+    {
+      "id": "assets.public-sector-cbdc",
+      "title": "Government, public-sector, and CBDC use",
+      "domain": "assets",
+      "weight": 1,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "soroban.overview",
+      "title": "Smart contract model and how it differs from the EVM",
+      "domain": "soroban",
+      "weight": 2,
+      "volatility": "stable",
+      "cases": 2
+    },
+    {
+      "id": "soroban.sdk-dialect-types",
+      "title": "Rust SDK, contract dialect, types, and Wasm size",
+      "domain": "soroban",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "soroban.deploy-lifecycle",
+      "title": "Deploying a contract: upload, instance, and constructor",
+      "domain": "soroban",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 2
+    },
+    {
+      "id": "soroban.storage-types",
+      "title": "Contract storage types",
+      "domain": "soroban",
+      "weight": 3,
+      "volatility": "stable",
+      "cases": 2
+    },
+    {
+      "id": "soroban.state-archival-ttl",
+      "title": "State archival, TTL, and restoration",
+      "domain": "soroban",
+      "weight": 3,
+      "volatility": "scheduled",
+      "cases": 3
+    },
+    {
+      "id": "soroban.authorization",
+      "title": "Contract authorization",
+      "domain": "soroban",
+      "weight": 3,
+      "volatility": "stable",
+      "cases": 3
+    },
+    {
+      "id": "soroban.contract-accounts",
+      "title": "Contract accounts, smart wallets, and passkeys",
+      "domain": "soroban",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 2
+    },
+    {
+      "id": "soroban.resource-fees",
+      "title": "Resource fees, metering, and rent",
+      "domain": "soroban",
+      "weight": 3,
+      "volatility": "scheduled",
+      "cases": 2
+    },
+    {
+      "id": "soroban.simulation",
+      "title": "Transaction simulation and footprints",
+      "domain": "soroban",
+      "weight": 3,
+      "volatility": "stable",
+      "cases": 2
+    },
+    {
+      "id": "soroban.events",
+      "title": "Contract events",
+      "domain": "soroban",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "soroban.testing",
+      "title": "Contract testing",
+      "domain": "soroban",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "soroban.errors-debugging",
+      "title": "Contract errors and debugging",
+      "domain": "soroban",
+      "weight": 2,
+      "volatility": "stable",
+      "cases": 2
+    },
+    {
+      "id": "soroban.upgrades",
+      "title": "Upgrading contracts and migrating storage",
+      "domain": "soroban",
+      "weight": 2,
+      "volatility": "stable",
+      "cases": 1
+    },
+    {
+      "id": "soroban.cross-contract",
+      "title": "Cross-contract calls and contract interfaces",
+      "domain": "soroban",
+      "weight": 2,
+      "volatility": "stable",
+      "cases": 1
+    },
+    {
+      "id": "soroban.crypto-zk",
+      "title": "Cryptographic host functions and zero-knowledge proofs",
+      "domain": "soroban",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 2
+    },
+    {
+      "id": "soroban.openzeppelin",
+      "title": "OpenZeppelin contracts and tooling",
+      "domain": "soroban",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "soroban.metadata-verification",
+      "title": "Contract metadata and source verification",
+      "domain": "soroban",
+      "weight": 1,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "data.rpc-api",
+      "title": "Stellar RPC API",
+      "domain": "data",
+      "weight": 3,
+      "volatility": "scheduled",
+      "cases": 2
+    },
+    {
+      "id": "data.horizon-api",
+      "title": "Horizon API",
+      "domain": "data",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "data.rpc-vs-horizon",
+      "title": "Choosing between RPC and Horizon",
+      "domain": "data",
+      "weight": 3,
+      "volatility": "scheduled",
+      "cases": 2
+    },
+    {
+      "id": "data.providers",
+      "title": "RPC and Horizon providers and endpoints",
+      "domain": "data",
+      "weight": 2,
+      "volatility": "live",
+      "cases": 2
+    },
+    {
+      "id": "data.result-codes",
+      "title": "Result codes and API errors",
+      "domain": "data",
+      "weight": 3,
+      "volatility": "stable",
+      "cases": 3
+    },
+    {
+      "id": "data.events-retention",
+      "title": "Reading events and RPC history retention",
+      "domain": "data",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 2
+    },
+    {
+      "id": "data.indexers",
+      "title": "Indexers",
+      "domain": "data",
+      "weight": 2,
+      "volatility": "live",
+      "cases": 1
+    },
+    {
+      "id": "data.galexie-ingest",
+      "title": "Galexie, the ingest SDK, and ledger data lakes",
+      "domain": "data",
+      "weight": 1,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "data.hubble-analytics",
+      "title": "Hubble and analytics datasets",
+      "domain": "data",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "data.explorers-status",
+      "title": "Block explorers and network status",
+      "domain": "data",
+      "weight": 2,
+      "volatility": "live",
+      "cases": 2
+    },
+    {
+      "id": "data.network-metrics",
+      "title": "Network and ecosystem metrics",
+      "domain": "data",
+      "weight": 2,
+      "volatility": "live",
+      "cases": 1
+    },
+    {
+      "id": "tooling.stellar-cli",
+      "title": "Stellar CLI",
+      "domain": "tooling",
+      "weight": 3,
+      "volatility": "scheduled",
+      "cases": 2
+    },
+    {
+      "id": "tooling.sdk-landscape",
+      "title": "Client SDK landscape",
+      "domain": "tooling",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "tooling.js-sdk",
+      "title": "JavaScript SDK",
+      "domain": "tooling",
+      "weight": 3,
+      "volatility": "scheduled",
+      "cases": 2
+    },
+    {
+      "id": "tooling.lab",
+      "title": "Stellar Lab",
+      "domain": "tooling",
+      "weight": 1,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "tooling.quickstart-local",
+      "title": "Quickstart and local networks",
+      "domain": "tooling",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "tooling.scaffold-bindings",
+      "title": "Scaffold Stellar, frontends, and generated bindings",
+      "domain": "tooling",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "tooling.wallet-connection",
+      "title": "Connecting a dapp to wallets",
+      "domain": "tooling",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "tooling.wallet-sdk",
+      "title": "Wallet SDK and wallet backend",
+      "domain": "tooling",
+      "weight": 1,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "tooling.version-compat",
+      "title": "Software versions for the current protocol",
+      "domain": "tooling",
+      "weight": 3,
+      "volatility": "scheduled",
+      "cases": 2
+    },
+    {
+      "id": "tooling.channel-accounts",
+      "title": "High-throughput submission and channel accounts",
+      "domain": "tooling",
+      "weight": 2,
+      "volatility": "stable",
+      "cases": 1
+    },
+    {
+      "id": "tooling.relayers",
+      "title": "Relayers and gasless transactions",
+      "domain": "tooling",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "tooling.renames-repos",
+      "title": "Renamed tools and canonical repositories",
+      "domain": "tooling",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 2
+    },
+    {
+      "id": "standards.sep-process",
+      "title": "SEPs and their statuses",
+      "domain": "standards",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "standards.stellar-toml",
+      "title": "stellar.toml (SEP-1) and home domains",
+      "domain": "standards",
+      "weight": 2,
+      "volatility": "stable",
+      "cases": 2
+    },
+    {
+      "id": "standards.web-auth",
+      "title": "Web authentication (SEP-10 and SEP-45)",
+      "domain": "standards",
+      "weight": 2,
+      "volatility": "stable",
+      "cases": 2
+    },
+    {
+      "id": "standards.deposit-withdrawal",
+      "title": "Deposit and withdrawal (SEP-24 and SEP-6)",
+      "domain": "standards",
+      "weight": 3,
+      "volatility": "stable",
+      "cases": 2
+    },
+    {
+      "id": "standards.sep31-sep38",
+      "title": "Cross-border payments and quotes (SEP-31 and SEP-38)",
+      "domain": "standards",
+      "weight": 2,
+      "volatility": "stable",
+      "cases": 2
+    },
+    {
+      "id": "standards.sep12-kyc",
+      "title": "KYC API and fields (SEP-12 and SEP-9)",
+      "domain": "standards",
+      "weight": 2,
+      "volatility": "stable",
+      "cases": 1
+    },
+    {
+      "id": "standards.anchors-directory",
+      "title": "Anchors and where they operate",
+      "domain": "standards",
+      "weight": 3,
+      "volatility": "live",
+      "cases": 2
+    },
+    {
+      "id": "standards.anchor-platform",
+      "title": "Anchor Platform",
+      "domain": "standards",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "standards.disbursements",
+      "title": "Disbursement Platform and aid programs",
+      "domain": "standards",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 2
+    },
+    {
+      "id": "standards.moneygram-ramps",
+      "title": "MoneyGram ramps",
+      "domain": "standards",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "standards.wallet-utility-seps",
+      "title": "Signing links, message signing, and federation (SEP-7, SEP-53, SEP-2)",
+      "domain": "standards",
+      "weight": 1,
+      "volatility": "stable",
+      "cases": 1
+    },
+    {
+      "id": "standards.cross-border-payments",
+      "title": "Cross-border payments and remittance corridors",
+      "domain": "standards",
+      "weight": 2,
+      "volatility": "live",
+      "cases": 1
+    },
+    {
+      "id": "standards.exchange-integration",
+      "title": "Exchange integration",
+      "domain": "standards",
+      "weight": 2,
+      "volatility": "stable",
+      "cases": 1
+    },
+    {
+      "id": "standards.payment-patterns",
+      "title": "Accepting payments and recurring payment designs",
+      "domain": "standards",
+      "weight": 2,
+      "volatility": "stable",
+      "cases": 2
+    },
+    {
+      "id": "defi.sdex-orderbook",
+      "title": "The native order book (SDEX)",
+      "domain": "defi",
+      "weight": 2,
+      "volatility": "stable",
+      "cases": 1
+    },
+    {
+      "id": "defi.liquidity-pools",
+      "title": "Protocol liquidity pools",
+      "domain": "defi",
+      "weight": 2,
+      "volatility": "stable",
+      "cases": 1
+    },
+    {
+      "id": "defi.path-payments",
+      "title": "Path payments and conversion",
+      "domain": "defi",
+      "weight": 2,
+      "volatility": "stable",
+      "cases": 1
+    },
+    {
+      "id": "defi.dex-amm",
+      "title": "Contract DEXes, AMMs, and aggregators",
+      "domain": "defi",
+      "weight": 2,
+      "volatility": "live",
+      "cases": 2
+    },
+    {
+      "id": "defi.lending",
+      "title": "Lending and yield protocols",
+      "domain": "defi",
+      "weight": 2,
+      "volatility": "live",
+      "cases": 2
+    },
+    {
+      "id": "defi.tvl-landscape",
+      "title": "DeFi TVL and protocol rankings",
+      "domain": "defi",
+      "weight": 2,
+      "volatility": "live",
+      "cases": 2
+    },
+    {
+      "id": "defi.bridges",
+      "title": "Bridges and cross-chain transfers",
+      "domain": "defi",
+      "weight": 3,
+      "volatility": "live",
+      "cases": 2
+    },
+    {
+      "id": "defi.oracles",
+      "title": "Oracles",
+      "domain": "defi",
+      "weight": 2,
+      "volatility": "live",
+      "cases": 1
+    },
+    {
+      "id": "defi.prices-market-data",
+      "title": "Prices and market data",
+      "domain": "defi",
+      "weight": 2,
+      "volatility": "live",
+      "cases": 1
+    },
+    {
+      "id": "defi.protocol-governance",
+      "title": "DeFi protocol governance",
+      "domain": "defi",
+      "weight": 1,
+      "volatility": "live",
+      "cases": 1
+    },
+    {
+      "id": "security.contract-security",
+      "title": "Smart contract security practices",
+      "domain": "security",
+      "weight": 3,
+      "volatility": "scheduled",
+      "cases": 2
+    },
+    {
+      "id": "security.audit-registry",
+      "title": "Audit reports for ecosystem projects",
+      "domain": "security",
+      "weight": 2,
+      "volatility": "live",
+      "cases": 2
+    },
+    {
+      "id": "security.core-audits",
+      "title": "Audits of Core, RPC, and the SDKs",
+      "domain": "security",
+      "weight": 1,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "security.audit-bank",
+      "title": "Soroban Security Audit Bank",
+      "domain": "security",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "security.bug-bounty",
+      "title": "Bug bounty program",
+      "domain": "security",
+      "weight": 1,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "security.app-exploits",
+      "title": "Exploits of Stellar applications",
+      "domain": "security",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "security.key-custody",
+      "title": "Key management and custody",
+      "domain": "security",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "security.signing-safety",
+      "title": "Transaction signing safety",
+      "domain": "security",
+      "weight": 2,
+      "volatility": "stable",
+      "cases": 1
+    },
+    {
+      "id": "security.aml-screening",
+      "title": "AML, sanctions screening, and analytics vendors",
+      "domain": "security",
+      "weight": 1,
+      "volatility": "live",
+      "cases": 1
+    },
+    {
+      "id": "security.regulation-policy",
+      "title": "Regulation and SDF policy positions",
+      "domain": "security",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "security.privacy",
+      "title": "Privacy on Stellar",
+      "domain": "security",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "security.quantum-preparedness",
+      "title": "Quantum preparedness",
+      "domain": "security",
+      "weight": 1,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "wallets.landscape",
+      "title": "Wallets that support Stellar",
+      "domain": "wallets",
+      "weight": 2,
+      "volatility": "live",
+      "cases": 2
+    },
+    {
+      "id": "wallets.sdf-wallet",
+      "title": "SDF's wallet (Freighter, now Varial)",
+      "domain": "wallets",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "wallets.wrong-memo",
+      "title": "Missing or wrong memo to an exchange",
+      "domain": "wallets",
+      "weight": 3,
+      "volatility": "stable",
+      "cases": 2
+    },
+    {
+      "id": "wallets.wrong-network",
+      "title": "Wrong-network sends and incompatible wallets",
+      "domain": "wallets",
+      "weight": 2,
+      "volatility": "stable",
+      "cases": 2
+    },
+    {
+      "id": "wallets.scams-phishing",
+      "title": "Scams, phishing, and impersonation",
+      "domain": "wallets",
+      "weight": 3,
+      "volatility": "live",
+      "cases": 2
+    },
+    {
+      "id": "wallets.lost-keys",
+      "title": "Lost keys and account recovery (SEP-30)",
+      "domain": "wallets",
+      "weight": 2,
+      "volatility": "stable",
+      "cases": 1
+    },
+    {
+      "id": "wallets.unsolicited-assets",
+      "title": "Unknown tokens and unsolicited payments",
+      "domain": "wallets",
+      "weight": 2,
+      "volatility": "stable",
+      "cases": 1
+    },
+    {
+      "id": "wallets.consumer-apps",
+      "title": "Consumer payment apps and cards",
+      "domain": "wallets",
+      "weight": 2,
+      "volatility": "live",
+      "cases": 1
+    },
+    {
+      "id": "wallets.support-channels",
+      "title": "Where to get help",
+      "domain": "wallets",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "wallets.pi-network",
+      "title": "Pi Network and other Stellar-derived networks",
+      "domain": "wallets",
+      "weight": 2,
+      "volatility": "stable",
+      "cases": 1
+    },
+    {
+      "id": "wallets.history-export",
+      "title": "Transaction history export and taxes",
+      "domain": "wallets",
+      "weight": 1,
+      "volatility": "stable",
+      "cases": 1
+    },
+    {
+      "id": "ecosystem.sdf",
+      "title": "The Stellar Development Foundation and its leadership",
+      "domain": "ecosystem",
+      "weight": 2,
+      "volatility": "live",
+      "cases": 2
+    },
+    {
+      "id": "ecosystem.sdf-mandate-holdings",
+      "title": "SDF mandate and XLM holdings",
+      "domain": "ecosystem",
+      "weight": 2,
+      "volatility": "live",
+      "cases": 1
+    },
+    {
+      "id": "ecosystem.xlm-supply",
+      "title": "XLM supply, the 2019 burn, and the end of inflation",
+      "domain": "ecosystem",
+      "weight": 3,
+      "volatility": "scheduled",
+      "cases": 3
+    },
+    {
+      "id": "ecosystem.xlm-staking-rewards",
+      "title": "XLM staking and the 2026 rewards proposal",
+      "domain": "ecosystem",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 2
+    },
+    {
+      "id": "ecosystem.xlm-role",
+      "title": "What XLM is for",
+      "domain": "ecosystem",
+      "weight": 2,
+      "volatility": "stable",
+      "cases": 1
+    },
+    {
+      "id": "ecosystem.xlm-markets",
+      "title": "XLM listings and investment products",
+      "domain": "ecosystem",
+      "weight": 1,
+      "volatility": "live",
+      "cases": 1
+    },
+    {
+      "id": "ecosystem.history-origins",
+      "title": "Origins and history of Stellar",
+      "domain": "ecosystem",
+      "weight": 2,
+      "volatility": "stable",
+      "cases": 1
+    },
+    {
+      "id": "ecosystem.chain-comparisons",
+      "title": "Stellar compared with other networks",
+      "domain": "ecosystem",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "ecosystem.strategy-roadmap",
+      "title": "SDF strategy, roadmap, and reports",
+      "domain": "ecosystem",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "ecosystem.project-directory",
+      "title": "Finding and identifying ecosystem projects",
+      "domain": "ecosystem",
+      "weight": 3,
+      "volatility": "live",
+      "cases": 3
+    },
+    {
+      "id": "ecosystem.project-builders",
+      "title": "Who builds and maintains what",
+      "domain": "ecosystem",
+      "weight": 2,
+      "volatility": "live",
+      "cases": 1
+    },
+    {
+      "id": "ecosystem.institutional-adoption",
+      "title": "Institutional and enterprise adoption",
+      "domain": "ecosystem",
+      "weight": 2,
+      "volatility": "live",
+      "cases": 1
+    },
+    {
+      "id": "funding.scf-overview",
+      "title": "Stellar Community Fund: what it is and what it awards",
+      "domain": "funding",
+      "weight": 3,
+      "volatility": "scheduled",
+      "cases": 2
+    },
+    {
+      "id": "funding.scf-apply",
+      "title": "Applying to SCF: tracks, rules, and review",
+      "domain": "funding",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 2
+    },
+    {
+      "id": "funding.scf-rounds-status",
+      "title": "Current SCF round and schedule",
+      "domain": "funding",
+      "weight": 2,
+      "volatility": "live",
+      "cases": 1
+    },
+    {
+      "id": "funding.scf-rfps",
+      "title": "Open RFPs",
+      "domain": "funding",
+      "weight": 2,
+      "volatility": "live",
+      "cases": 1
+    },
+    {
+      "id": "funding.scf-funded-projects",
+      "title": "SCF-funded projects and amounts",
+      "domain": "funding",
+      "weight": 2,
+      "volatility": "live",
+      "cases": 1
+    },
+    {
+      "id": "funding.scf-supporting-programs",
+      "title": "Instawards, Public Goods, Liquidity, and Growth Hack awards",
+      "domain": "funding",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "funding.other-sdf-funding",
+      "title": "Enterprise Fund and other SDF funding",
+      "domain": "funding",
+      "weight": 1,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "funding.hackathons",
+      "title": "Hackathons and prior-art builds",
+      "domain": "funding",
+      "weight": 2,
+      "volatility": "live",
+      "cases": 1
+    },
+    {
+      "id": "funding.meridian",
+      "title": "Meridian",
+      "domain": "funding",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "funding.community-programs",
+      "title": "Ambassadors, chapters, and community programs",
+      "domain": "funding",
+      "weight": 1,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "funding.service-providers",
+      "title": "Service providers and partners for hire",
+      "domain": "funding",
+      "weight": 1,
+      "volatility": "live",
+      "cases": 1
+    },
+    {
+      "id": "ai.x402",
+      "title": "x402 payments on Stellar",
+      "domain": "ai",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 2
+    },
+    {
+      "id": "ai.mpp-agentic-protocols",
+      "title": "Machine Payments Protocol and other agentic protocols",
+      "domain": "ai",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 2
+    },
+    {
+      "id": "ai.agent-cli",
+      "title": "Stellar CLI for agents",
+      "domain": "ai",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "ai.mcp-servers",
+      "title": "MCP servers for Stellar",
+      "domain": "ai",
+      "weight": 2,
+      "volatility": "live",
+      "cases": 1
+    },
+    {
+      "id": "ai.skills-llms-docs",
+      "title": "Agent skills and LLM-readable docs",
+      "domain": "ai",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "ai.agent-delegation",
+      "title": "Delegated spending and agent wallets",
+      "domain": "ai",
+      "weight": 2,
+      "volatility": "scheduled",
+      "cases": 1
+    },
+    {
+      "id": "ai.ecosystem-projects",
+      "title": "AI projects in the ecosystem",
+      "domain": "ai",
+      "weight": 1,
+      "volatility": "live",
+      "cases": 1
+    },
+    {
+      "id": "behavior.scam-check",
+      "title": "Scam check",
+      "domain": "behavior",
+      "weight": 3,
+      "volatility": "stable",
+      "cases": 2
+    },
+    {
+      "id": "behavior.prompt-injection",
+      "title": "Prompt injection",
+      "domain": "behavior",
+      "weight": 3,
+      "volatility": "stable",
+      "cases": 2
+    },
+    {
+      "id": "behavior.fabrication-bait",
+      "title": "Fabrication bait",
+      "domain": "behavior",
+      "weight": 3,
+      "volatility": "stable",
+      "cases": 2
+    },
+    {
+      "id": "behavior.no-info-honesty",
+      "title": "No-information honesty",
+      "domain": "behavior",
+      "weight": 3,
+      "volatility": "stable",
+      "cases": 2
+    },
+    {
+      "id": "behavior.freshness-honesty",
+      "title": "Freshness honesty",
+      "domain": "behavior",
+      "weight": 2,
+      "volatility": "stable",
+      "cases": 2
+    },
+    {
+      "id": "behavior.out-of-scope",
+      "title": "Out of scope",
+      "domain": "behavior",
+      "weight": 2,
+      "volatility": "stable",
+      "cases": 1
+    },
+    {
+      "id": "behavior.paid-action-refusal",
+      "title": "Paid action refusal",
+      "domain": "behavior",
+      "weight": 2,
+      "volatility": "stable",
+      "cases": 1
+    },
+    {
+      "id": "behavior.ambiguity",
+      "title": "Ambiguity",
+      "domain": "behavior",
+      "weight": 2,
+      "volatility": "stable",
+      "cases": 1
+    },
+    {
+      "id": "behavior.speculation",
+      "title": "Speculation",
+      "domain": "behavior",
+      "weight": 2,
+      "volatility": "stable",
+      "cases": 1
+    },
+    {
+      "id": "behavior.wallet-authority",
+      "title": "Wallet authority boundary",
+      "domain": "behavior",
+      "weight": 3,
+      "volatility": "stable",
+      "cases": 2
+    }
+  ],
+  "openSlots": [
+    {
+      "leaf": "network.upgrade-process",
+      "reason": "Waived, covered by a case on another leaf: how validators vote a protocol version or setting onto Mainnet (tested by q-pc-protocol-upgrade-timing)."
+    },
+    {
+      "leaf": "network.quorum-freeze",
+      "reason": "Awaiting a verified proposal for: what CAP-77 lets validators freeze and how it is reversed."
+    },
+    {
+      "leaf": "assets.usdt0",
+      "reason": "Awaiting a verified proposal for: how USDT0 reaches Stellar and what kind of token it is."
+    },
+    {
+      "leaf": "data.network-metrics",
+      "reason": "Awaiting a verified proposal for: where authoritative activity and developer figures come from."
+    },
+    {
+      "leaf": "tooling.version-compat",
+      "reason": "Awaiting a verified proposal for: which releases match the protocol on Mainnet; what fails when an SDK or CLI lags a protocol upgrade."
+    },
+    {
+      "leaf": "standards.sep31-sep38",
+      "reason": "Awaiting a verified proposal for: the SEP-31 flow between a sending and a receiving anchor. Waived, covered by a case on another leaf: SEP-38 quotes and which SEPs use them (tested by q-sep-catalog-list)."
+    },
+    {
+      "leaf": "security.audit-registry",
+      "reason": "Awaiting a verified proposal for: where audit reports are published and which firms wrote them; whether a named project has been audited."
+    },
+    {
+      "leaf": "security.signing-safety",
+      "reason": "Awaiting a verified proposal for: what to check before signing a transaction from a website."
+    },
+    {
+      "leaf": "wallets.consumer-apps",
+      "reason": "Awaiting a verified proposal for: which consumer apps let people spend or save on Stellar."
+    },
+    {
+      "leaf": "wallets.support-channels",
+      "reason": "Awaiting a verified proposal for: the official help channels and what SDF does not do."
+    },
+    {
+      "leaf": "ecosystem.chain-comparisons",
+      "reason": "Awaiting a verified proposal for: how Stellar differs from the XRP Ledger and other chains."
+    },
+    {
+      "leaf": "ecosystem.strategy-roadmap",
+      "reason": "Awaiting a verified proposal for: SDF's stated priorities for the current year."
+    },
+    {
+      "leaf": "ecosystem.institutional-adoption",
+      "reason": "Awaiting a verified proposal for: which major institutions use Stellar and for what."
+    },
+    {
+      "leaf": "ai.agent-cli",
+      "reason": "Awaiting a verified proposal for: what the agent CLI does and how it limits what an agent can sign."
+    },
+    {
+      "leaf": "ai.mcp-servers",
+      "reason": "Awaiting a verified proposal for: which MCP servers an agent can connect and what each provides."
+    },
+    {
+      "leaf": "behavior.paid-action-refusal",
+      "reason": "Waived, covered by a case on another leaf: a request to trigger a paid or side-effecting operation (tested by test/policy.test.ts)."
+    }
+  ]
+}

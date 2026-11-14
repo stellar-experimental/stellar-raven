@@ -5,22 +5,18 @@
     "skills.stellar-dev.agentic-payments"
   ],
   "golden": {
-    "answer": "A grounded answer derives its named examples and status claims from the current source data named by the case, then dates the roster so it is not presented as permanent. As of 2026-07-10, the verified sources supported this observed answer:\n\nAll four are **general/external protocols or commerce layers**; none is intrinsically a Stellar standard. Their Stellar relationship differs:\n\n- **x402:** an open HTTP-402 payment protocol created at Coinbase and now governed through the x402 Foundation/Linux Foundation ecosystem. Stellar has an available x402 scheme using signed Soroban authorization entries, a facilitator, and SEP-41 tokens such as USDC.\n- **MPP (Machine Payments Protocol):** a payment-method-agnostic Challenge–Credential–Receipt protocol. General MPP supports charge, session, and subscription intents; it is not streaming-only. The draft Stellar method supports one-time SEP-41 charge transfers and optional session/channel work.\n- **AP2 (Agent Payments Protocol):** an emerging authorization/commerce protocol built around signed mandates and moving through FIDO standardization. x402 is an optional extension/composition path, not a required AP2 settlement route.\n- **ACP (Agentic Commerce Protocol):** a beta checkout/commerce interaction protocol. It delegates payment to compatible handlers/PSPs and is not a Stellar-native settlement rail.\n- **SEP-41:** Stellar's Soroban Token Interface and the token substrate used by Stellar x402/MPP implementations. It does not turn x402 or MPP into SEPs and does not apply to AP2/ACP as whole protocols.\n\nUse dated maturity terms: available integration, beta, Draft/Internet-Draft, proposed, or emerging are not interchangeable.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "None of x402, MPP, AP2 or ACP is a Stellar standard. x402 and MPP are general payment protocols; Stellar supplies methods that settle SEP-41 token transfers through Soroban authorization. MPP covers one-time charge plus session and channel payments. AP2 is an emerging mandate-based authorization protocol that can use x402 but does not require it. ACP is a checkout protocol that delegates payment to PSPs.",
     "keyFacts": [
-      "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Classifies x402 and MPP as general protocols with Stellar methods for SEP-41 settlement.",
-      "MPP includes charge, session, and channel behavior beyond streaming.",
-      "AP2: emerging authorization/coordination with optional x402; ACP: beta non-rail checkout.",
-      "Keeps SEP-41's Stellar token role distinct from each protocol's status and scope."
+      "x402 and MPP are general protocols; Stellar methods settle SEP-41 tokens.",
+      "MPP covers one-time charge plus session and channel payments, not only streaming.",
+      "AP2 is an emerging authorization protocol; x402 is optional there.",
+      "ACP is a checkout protocol that delegates payment; it is not a settlement rail."
     ],
     "avoid": [
-      "Do NOT call x402 or MPP Stellar standards merely because Stellar implements methods for them.",
-      "Do NOT equate MPP with sessions/streaming or omit its one-time charge intent.",
-      "Do NOT claim AP2 always routes payment through x402 or that SEP-41/USDC applies across AP2 and ACP as whole protocols.",
-      "Do NOT describe ACP as a Stellar/blockchain settlement mechanism or MPP as a Stripe/Tempo chain.",
-      "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical."
+      "Do NOT call x402 or MPP a Stellar-native standard.",
+      "Do NOT describe ACP as a blockchain settlement rail or MPP as a Stripe/Tempo chain."
     ],
-    "notes": "VERIFIED 2026-06-22: developers.stellar.org/docs/build/agentic-payments documents EXACTLY TWO Stellar-settlement patterns side-by-side — x402 (Coinbase, per-request, Soroban authorization entries, facilitator verify/settle) and MPP (Machine Payments Protocol: direct on-chain settlement via Soroban SAC transfers, supporting one-time charge payments AND high-frequency off-chain payment channels). AP2 (Google Agent Payments Protocol) and ACP are general/coordination standards NOT documented as Stellar-native settlement. The AP2 'routes the actual payment through x402' framing is reasonable coordination-vs-settlement industry framing but NOT a Stellar-docs claim — DEMOTED from must_have to should_have. Freshness:true (fast-moving). 2026-06-29 RE-VERIFIED: both source docs pages (agentic-payments, agentic-payments/x402) resolve 200; AP2=Google Agent Payments Protocol composing with x402 corroborated by independent writeups (The Graph, foojay.io). No fabricated SEP/contract/project names — SEP-41 is real. Confidence stays medium (fast-moving standards space).\nAlso good if the answer: Distinguishes Stellar-settlement standards (x402, MPP) from general/coordination standards (AP2, ACP). | Notes AP2 is a coordination layer that can route the underlying payment through a settlement protocol like x402 (industry framing, not a Stellar-docs claim).\nGolden cites: At least one primary developers.stellar.org agentic-payments docs page (x402 + MPP).\nAdded 2026-07-10 after GT-12 primary + blind agreement. Grade protocol layer, optionality, and maturity precisely. The safe comparison is general protocol versus Stellar implementation/token substrate—not a binary list of 'Stellar standards' and 'coordination standards'. Coverage diagnostic 2026-07-14: the exposed Stellar agentic-payments skill supports x402/MPP, not AP2/ACP. Do not penalize a source-faithful limitation as a factual error or turn that absence alone into a Docs finding; any asserted AP2/ACP characterization still requires primary sourcing."
+    "notes": "The exposed Stellar agentic-payments skill covers x402 and MPP only; accept source-faithful limits on AP2 and ACP."
   },
   "tags": {
     "category": "defi-ecosystem",
@@ -150,29 +146,57 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "MPP has charge, session and channel intents and a Stellar charge method over SEP-41 transfers",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/agentic-payments/mpp",
+            "observedAt": "2026-11-14",
+            "note": "Use the Machine Payments Protocol (MPP) for per-request HTTP payments on Stellar, with ... off-chain payment channels."
+          },
+          {
+            "class": "D",
+            "ref": "https://mpp.dev/payment-methods/stellar/charge",
+            "observedAt": "2026-11-14",
+            "note": "The Stellar implementation of the charge intent. The client signs a SEP-41 transfer invocation"
+          }
+        ]
+      },
+      {
+        "claim": "AP2 moves through FIDO Alliance work",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "D",
+            "ref": "https://fidoalliance.org/building-the-trust-layer-for-agentic-payments-with-ap2-and-verifiable-intent",
+            "observedAt": "2026-11-14",
+            "note": "Building the Trust Layer for Agentic Payments with AP2 and Verifiable Intent (May 26, 2026)"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch defi-ecosystem-01)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-defi, verify-defi; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "2026-11-02 [A] https://docs.cdp.coinbase.com/x402/support/faq — \"x402 was incubated at Coinbase and contributed to the x402 Foundation, which launched under the Linux Foundation\" (proposer claim, confirmed: x402 created at Coinbase, now governed via x402 Foundation / Linux Foundation)",
-        "2026-11-02 [D] https://theagenteconomy.si/tools/protocol-compatibility — \"Linux Foundation announcement of the x402 Foundation, 14 July 2026\" (proposer claim, confirmed: x402 created at Coinbase, now governed via x402 Foundation / Linux Foundation)",
-        "2026-10-09 [A] https://developers.stellar.org/docs/build/agentic-payments — \"x402 on Stellar — An open protocol from the Coinbase Developer Platform for per-request payments using Soroban authorization\" (proposer claim, confirmed: Stellar x402 uses Soroban auth entries + facilitator; Stellar MPP supports charge and session)",
-        "2026-10-22 [A] https://developers.stellar.org/docs/build/agentic-payments/mpp — \"The @stellar/mpp SDK supports two payment intents: Charge ... Session\" (proposer claim, confirmed: Stellar x402 uses Soroban auth entries + facilitator; Stellar MPP supports charge and session)",
-        "2026-11-02 [B] https://github.com/tempoxyz/mpp-specs/tree/main/specs/methods/stellar — \"specs/methods/stellar/draft-stellar-charge-00.md\" (proposer claim, confirmed: Stellar x402 uses Soroban auth entries + facilitator; Stellar MPP supports charge and session)",
-        "2026-04-06 [A] https://mpp.dev/intents/ — \"The charge intent requests an immediate one-time payment ... For metered billing ... use the session intent\" (proposer claim, confirmed: General MPP supports charge, session, subscription; IETF Internet-Draft)",
-        "2026-11-02 [D] https://zeroclick.ai/resources/mpp-for-api-sellers — \"The current intent reference lists Tempo support for all three [charge, session, subscription]\" (proposer claim, confirmed: General MPP supports charge, session, subscription; IETF Internet-Draft)",
-        "2026-11-02 [D] https://www.quicknode.com/docs/build-with-ai/agentic-payments — \"MPP (Machine Payments Protocol) is an IETF Internet-Draft by Tempo Labs and Stripe\" (proposer claim, confirmed: General MPP supports charge, session, subscription; IETF Internet-Draft)",
-        "2026-11-02 [A] https://fidoalliance.org/fido-alliance-agentic-ai — \"These specifications will draw from initial contributions from Google (AP2) and Mastercard (Verifiable Intent)\" (proposer claim, confirmed: AP2 is moving through FIDO standardization; x402 optional)",
-        "2026-11-02 [D] https://fidoalliance.org/pymnts-google-and-mastercard-contribute-agentic-commerce-standards-to-fido-alliance — \"Google ... donated AP2 to the FIDO Alliance\" (proposer claim, confirmed: AP2 is moving through FIDO standardization; x402 optional)",
-        "2026-11-02 [B] https://github.com/agentic-commerce-protocol/agentic-commerce-protocol — \"The specification is maintained by OpenAI and Stripe and is currently in beta\" (proposer claim, confirmed: ACP is a beta checkout/commerce protocol delegating payment to handlers)",
-        "2026-11-02 [A] https://docs.stripe.com/agentic-commerce/protocols/acp — \"Delegate payment: Securely pass payment tokens between buyers, agents, and businesses using payment handlers.\" (proposer claim, confirmed: ACP is a beta checkout/commerce protocol delegating payment to handlers)",
-        "2026-11-02 [A] https://developers.stellar.org/docs/build/agentic-payments/mpp — \"Session ... unidirectional payment channels\" (proposer claim, confirmed: keyFacts and avoid items match current sources)",
-        "No gospel change: proposer verdict 'unchanged'; every answer, keyFact, and avoid claim was re-checked against the sources above on 2026-11-02.",
-        "Sibling sweep 2026-11-02: checked q-mpp-discovery-and-modes; no gospel change in this case, so no sibling contradiction can arise from this event."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-defi-agentic-payment-standards-compare",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-defi-agentic-payment-standards-compare",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-defi-agentic-payment-standards-compare",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/build/agentic-payments/mpp -- 'Use the Machine Payments Protocol (MPP) for per-request HTTP payments on Stellar, with ... off-chain payment channels.'",
+        "Live D 2026-11-14: https://mpp.dev/payment-methods/stellar/charge -- 'The Stellar implementation of the charge intent. The client signs a SEP-41 transfer invocation'",
+        "Live D 2026-11-14: https://fidoalliance.org/building-the-trust-layer-for-agentic-payments-with-ap2-and-verifiable-intent -- 'Building the Trust Layer for Agentic Payments with AP2 and Verifiable Intent (May 26, 2026)'",
+        "Live A 2026-11-14: https://docs.stripe.com/agentic-commerce/protocols/acp -- 'an open standard created by Stripe, OpenAI, and Meta that defines how AI agents interact with businesses to complete purchases'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-defi-agentic-payment-standards-compare"
+    "origin": "raven-next q-defi-agentic-payment-standards-compare",
+    "notes": "VERIFIED 2026-06-22: developers.stellar.org/docs/build/agentic-payments documents EXACTLY TWO Stellar-settlement patterns side-by-side — x402 (Coinbase, per-request, Soroban authorization entries, facilitator verify/settle) and MPP (Machine Payments Protocol: direct on-chain settlement via Soroban SAC transfers, supporting one-time charge payments AND high-frequency off-chain payment channels). AP2 (Google Agent Payments Protocol) and ACP are general/coordination standards NOT documented as Stellar-native settlement. The AP2 'routes the actual payment through x402' framing is reasonable coordination-vs-settlement industry framing but NOT a Stellar-docs claim — DEMOTED from must_have to should_have. Freshness:true (fast-moving). 2026-06-29 RE-VERIFIED: both source docs pages (agentic-payments, agentic-payments/x402) resolve 200; AP2=Google Agent Payments Protocol composing with x402 corroborated by independent writeups (The Graph, foojay.io). No fabricated SEP/contract/project names — SEP-41 is real. Confidence stays medium (fast-moving standards space).\nAlso good if the answer: Distinguishes Stellar-settlement standards (x402, MPP) from general/coordination standards (AP2, ACP). | Notes AP2 is a coordination layer that can route the underlying payment through a settlement protocol like x402 (industry framing, not a Stellar-docs claim).\nGolden cites: At least one primary developers.stellar.org agentic-payments docs page (x402 + MPP).\nAdded 2026-07-10 after GT-12 primary + blind agreement. Grade protocol layer, optionality, and maturity precisely. The safe comparison is general protocol versus Stellar implementation/token substrate—not a binary list of 'Stellar standards' and 'coordination standards'. Coverage diagnostic 2026-07-14: the exposed Stellar agentic-payments skill supports x402/MPP, not AP2/ACP. Do not penalize a source-faithful limitation as a factual error or turn that absence alone into a Docs finding; any asserted AP2/ACP characterization still requires primary sourcing.",
+    "leaf": "ai.mpp-agentic-protocols",
+    "secondaryLeaf": "ai.x402"
   }
 }

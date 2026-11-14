@@ -6,20 +6,16 @@
     "lumenloop.get_scf_submissions"
   ],
   "golden": {
-    "answer": "A grounded answer consults the current LumenLoop corpus, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-11, the live submission lookup returned four Soroswap awards, including records for rounds 15, 17, and 21.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "Yes. Soroswap has four SCF awards: SCF #15 ($57,600), SCF #17 ($139,150), SCF #21 ($100,000) and a Liquidity Award (2024 Q1, $50,000), about $346,750 in total, per its communityfund.stellar.org record (checked 2026-11-14).",
     "keyFacts": [
-      "Dates each specific source-supported observation.",
-      "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Resolves Soroswap (the Stellar/Soroban DEX/AMM) and returns its SCF submission history.",
-      "Confirms Soroswap received SCF funding.",
-      "Reports rounds 15, 17, and 21 plus the '24 Q1 Liquidity Award."
+      "Soroswap has received SCF funding.",
+      "It has four awards: SCF #15, #17 and #21, plus the 2024 Q1 Liquidity Award.",
+      "The awards total about $346,750."
     ],
     "avoid": [
-      "Do NOT state per-round dollar figures without sourcing them to the submissions record or communityfund.stellar.org (unsourced figures that contradict the record's 57,600 / 139,150 / 100,000 / 50,000 are wrong).",
-      "Do NOT confuse Soroswap with Soroban (the smart-contract platform) or with another DEX.",
-      "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
+      "Do NOT confuse Soroswap with Soroban or another DEX."
     ],
-    "notes": "Per-project SCF history. 'Has X been funded' phrasing borders on find_similar_scf_submissions, but a named project → get_scf_submissions. Verified 2026-06-29 via /api/projects: Soroswap scf.awarded=true, totalAwarded=$346,750, category Protocol/Contract, awardedRounds [15,17,21] (3 rounds). Funding total is live → freshness-sensitive.\nAlso good if the answer: Reports the award type(s) (e.g. Build) where the record shows them.\nGolden cites: Soroswap's SCF submissions record (Lumenloop) / its communityfund project page.\nThe live submissions record and canonical official project page carry SCF #15 $57,600 + SCF #17 $139,150 + SCF #21 $100,000 + Liquidity Award '24 Q1 $50,000 = $346,750 exactly. GT-38 independently re-confirmed the structure on 2026-07-10. Record-consistent per-submission detail is not fabrication: '3 numbered rounds' and '4 awarded submissions' are both correct framings."
+    "notes": "\"Three numbered rounds\" and \"four awarded submissions\" are both correct. Per-round amounts must match the record."
   },
   "tags": {
     "category": "scf-grants-builders",
@@ -33,7 +29,7 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-11-14",
     "sources": [
       {
         "class": "A",
@@ -100,18 +96,44 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "Soroswap has four SCF awards: #15, #17, #21 and a 2024 Q1 Liquidity Award, about $346,750 in total.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "codemode lumenloop.get_scf_submissions {slug:\"soroswap\"}",
+            "observedAt": "2026-11-14",
+            "note": "SCF #21 Soroswap.Finance Aggregator; #17 and #15 Soroswap Protocol; Liquidity Award - '24 Q1 (Raven execute 2026-11-14)"
+          },
+          {
+            "class": "A",
+            "ref": "https://communityfund.stellar.org/project/soroswapfinance-yax",
+            "observedAt": "2026-11-14",
+            "note": "Total awarded $346.8K*; Awarded Submissions 4 (case record 2026-11-02; not re-fetched)"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer re-verification, no gospel change; applier refreshed provenance; .agents/rounds/2026-11-02-golden-audit.md, batch scf-grants-builders-03)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-scf, verify-audit-scf; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "C 2026-11-02: POST https://api.lumenloop.com/v1/tools/get_scf_submissions {slug:soroswap} — 'Soroswap.Finance Aggregator' SCF #21 100000; 'Soroswap Protocol' SCF #17 139150; 'Soroswap Protocol' SCF #15 57600; 'Soroswap.Finance' \"Liquidity Award - '24 Q1\" 50000.",
-        "A 2026-11-02: https://communityfund.stellar.org/project/soroswapfinance-yax (embedded page data) — 'Total awarded $346.8K*'; 'Awarded Submissions 4'; \"totalAwarded\":346750.",
-        "C 2026-11-02: https://stellarlight.xyz/api/projects/search?q=soroswap — scfTotalAwardedUSD 346750, scfAwardedRounds [15,17,21], category Protocol/Contract.",
-        "No gospel change. Sibling sweep: q-defi-soroswap-what-is, q-defi-soroswap-vs-stellarx, q-edge-factcheck-soroswap-first-amm; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-scf-history-soroswap",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-scf-history-soroswap",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-scf-history-soroswap",
+        "Live C 2026-11-14: codemode lumenloop.get_scf_submissions {slug:\"soroswap\"} -- 'SCF #21 Soroswap.Finance Aggregator; #17 and #15 Soroswap Protocol; Liquidity Award - '24 Q1 (Raven execute 2026-11-14)'",
+        "Live A 2026-11-14: https://communityfund.stellar.org/project/soroswapfinance-yax -- 'Total awarded $346.8K*; Awarded Submissions 4 (case record 2026-11-02; not re-fetched)'",
+        "Live A 2026-11-14: https://communityfund.stellar.org/project/soroswapfinance-yax -- 'Total awarded $346.8K* Awarded Submissions 4 ... Liquidity Award - '24 Q1 $50.0K ... SCF #17 budget 139150'",
+        "Live C 2026-11-14: lumenloop.get_scf_submissions({slug:\"soroswap\"}) via Raven execute -- 'count 4; SCF #21 Soroswap.Finance Aggregator, budget 100000, Legacy v5.0 Community Award'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-scf-history-soroswap"
+    "origin": "raven-next q-scf-history-soroswap",
+    "notes": "Per-project SCF history. 'Has X been funded' phrasing borders on find_similar_scf_submissions, but a named project → get_scf_submissions. Verified 2026-06-29 via /api/projects: Soroswap scf.awarded=true, totalAwarded=$346,750, category Protocol/Contract, awardedRounds [15,17,21] (3 rounds). Funding total is live → freshness-sensitive.\nAlso good if the answer: Reports the award type(s) (e.g. Build) where the record shows them.\nGolden cites: Soroswap's SCF submissions record (Lumenloop) / its communityfund project page.\nThe live submissions record and canonical official project page carry SCF #15 $57,600 + SCF #17 $139,150 + SCF #21 $100,000 + Liquidity Award '24 Q1 $50,000 = $346,750 exactly. GT-38 independently re-confirmed the structure on 2026-07-10. Record-consistent per-submission detail is not fabrication: '3 numbered rounds' and '4 awarded submissions' are both correct framings.",
+    "leaf": "funding.scf-funded-projects"
   }
 }

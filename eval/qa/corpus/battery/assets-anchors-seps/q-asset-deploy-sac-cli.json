@@ -7,19 +7,16 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "- You **deploy the asset's reserved built-in SAC** — you do **not** write a new token contract. Current Stellar CLI command [1]:\n  `stellar contract asset deploy --source-account <ACCT> --network <NET> --asset USDC:GCYE...` (use `--asset native` for XLM, which already exists on testnet/mainnet).\n- The SAC's contract ID is **deterministically derived from the asset** with the `CONTRACT_ID_PREIMAGE_FROM_ASSET` XDR variant; it represents the *same* classic asset, not a copy. Fetch it without deploying via `stellar contract id asset --asset CODE:ISSUER` [1][2].\n- Anyone can deploy it (no authorization required); after deployment the **asset's issuer is automatically the admin** (controls `mint`/`clawback`/`set_authorized`) [2].\n- Mechanically this is an **`InvokeHostFunction`** with the `CREATE_CONTRACT` host function [2].",
+    "answer": "Deploy the asset's built-in Stellar Asset Contract; do not write a token contract. Run `stellar contract asset deploy --asset CODE:ISSUER` (`--asset native` for XLM). The contract id derives deterministically from the asset and `stellar contract id asset` prints it. Anyone can deploy it, and the issuer is the initial admin; deploying wraps the same classic asset.",
     "keyFacts": [
-      "Uses `stellar contract asset deploy` or an SDK to deploy the asset's SAC.",
-      "Does not require writing a new token contract.",
-      "The SAC contract ID uses CONTRACT_ID_PREIMAGE_FROM_ASSET.",
-      "The SAC represents the same classic asset."
+      "`stellar contract asset deploy` deploys the SAC for an existing classic asset.",
+      "The SAC is built in, so no new token contract is written.",
+      "The SAC represents the same classic asset, with a deterministic contract id.",
+      "The issuer is the initial SAC admin."
     ],
     "avoid": [
-      "Do NOT instruct the user to write/deploy a brand-new ERC-20-style token contract instead of deploying the asset's SAC.",
-      "Do NOT use a defunct command name (e.g. 'soroban token wrap' presented as the current canonical command without noting the current CLI).",
-      "Do NOT call the XDR variant CONTRACT_ID_FROM_ASSET."
-    ],
-    "notes": "How-to. Dossier §2.3. Verified current CLI command: `stellar contract asset deploy --asset CODE:ISSUER`; id via `stellar contract id asset`. (Legacy `soroban lab token wrap` is superseded by the `stellar` CLI.)\nAlso good if the answer: After deployment the issuer is automatically the admin (controls mint/clawback/set_authorized). | Mechanically it is an InvokeHostFunction with CREATE_CONTRACT host function.\nGolden cites: The SAC page or the 'deploy-stellar-asset-contract' CLI guide on developers.stellar.org."
+      "Do NOT say using a classic asset in Soroban needs a separately written and deployed token contract."
+    ]
   },
   "tags": {
     "category": "assets-anchors-seps",
@@ -134,20 +131,55 @@
             "note": "Exact source: ‘anyone can deploy the contract for any asset’; ‘The admin is initally set to the issuer.’"
           }
         ]
+      },
+      {
+        "claim": "Command is `stellar contract asset deploy --asset CODE:ISSUER` (and `--asset native`).",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tools/cli/cookbook/deploy-stellar-asset-contract.md",
+            "observedAt": "2026-11-14",
+            "note": "stellar contract asset deploy \\ --source S... --asset USDC:GCYEIQEWOCTTSA72VPZ6LYIZIK4W4KNGJR72UADIXUXG45VDFRVCQTYE"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-cli/blob/main/cmd/soroban-cli/src/commands/contract/deploy/asset.rs",
+            "observedAt": "2026-11-14",
+            "note": "/// ID of the Stellar classic asset to wrap, e.g. \"USDC:G...5\""
+          }
+        ]
+      },
+      {
+        "claim": "Anyone can deploy; the issuer is the initial administrator, transferable with set_admin.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract.md",
+            "observedAt": "2026-11-14",
+            "note": "The asset issuer becomes the *initial* administrator once the contract has been deployed"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-03",
-      "by": "lane urls (Codex gpt-6.1-sol high)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-assets, verify-audit-assets; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "https://developers.stellar.org/docs/build/guides/cli/deploy-stellar-asset-contract (HTTP 308, 2026-11-03): The cookbook documents asset deploy, native SAC deployment, and deterministic contract ID lookup. Current source: https://developers.stellar.org/docs/tools/cli/cookbook/deploy-stellar-asset-contract (HTTP 200).",
-        "https://raw.githubusercontent.com/stellar/stellar-cli/main/cmd/soroban-cli/src/commands/contract/deploy/asset.rs (HTTP 200, class B, 2026-11-03): asset argument, asset-to-contract resolution, and asset wrapping implementation corroborate the cookbook.",
-        "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-assets.json#q-asset-deploy-sac-cli",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-assets.json#q-asset-deploy-sac-cli",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-asset-deploy-sac-cli",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/tools/cli/cookbook/deploy-stellar-asset-contract.md -- 'stellar contract asset deploy \\ --source S... --asset USDC:GCYEIQEWOCTTSA72VPZ6LYIZIK4W4KNGJR72UADIXUXG45VDFRVCQTYE'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-cli/blob/main/cmd/soroban-cli/src/commands/contract/deploy/asset.rs -- '/// ID of the Stellar classic asset to wrap, e.g. \"USDC:G...5\"'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/tokens/stellar-asset-contract.md -- 'The asset issuer becomes the *initial* administrator once the contract has been deployed'"
       ],
       "rootCause": [
-        "freshness-drift"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-asset-deploy-sac-cli"
+    "origin": "raven-next q-asset-deploy-sac-cli",
+    "notes": "How-to. Dossier §2.3. Verified current CLI command: `stellar contract asset deploy --asset CODE:ISSUER`; id via `stellar contract id asset`. (Legacy `soroban lab token wrap` is superseded by the `stellar` CLI.)\nAlso good if the answer: After deployment the issuer is automatically the admin (controls mint/clawback/set_authorized). | Mechanically it is an InvokeHostFunction with CREATE_CONTRACT host function.\nGolden cites: The SAC page or the 'deploy-stellar-asset-contract' CLI guide on developers.stellar.org.",
+    "leaf": "assets.sac"
   }
 }

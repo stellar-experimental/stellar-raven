@@ -1,0 +1,160 @@
+{
+  "id": "q-renamed-tools-rpc-cli-go-sdk",
+  "question": "Older tutorials use Soroban RPC, the soroban CLI, and the github.com/stellar/go monorepo. What is each called now?",
+  "surface": [
+    "stellarDocs.search_docs",
+    "scout.searchResearch",
+    "scout.searchRepos"
+  ],
+  "golden": {
+    "answer": "Soroban RPC is now Stellar RPC (repository stellar/stellar-rpc), rebranded with Protocol 22. The Soroban CLI is now the Stellar CLI (stellar/stellar-cli, command `stellar`). The stellar/go monorepo is archived; since October 2025 the Go SDK lives at github.com/stellar/go-stellar-sdk. As of 2026-11-14 the old soroban-rpc and soroban-cli repository URLs redirect to the new names.",
+    "keyFacts": [
+      "Soroban RPC was renamed Stellar RPC.",
+      "The Soroban CLI was renamed the Stellar CLI.",
+      "The Go SDK moved from the stellar/go monorepo to stellar/go-stellar-sdk."
+    ],
+    "avoid": [
+      "Do NOT describe Soroban RPC and Stellar RPC as two separate current products."
+    ],
+    "notes": "Accept later repository names if a dated source shows a further move."
+  },
+  "tags": {
+    "category": "tooling-infra",
+    "service": "stellarDocs",
+    "freshness": "scheduled"
+  },
+  "truth": {
+    "lifecycle": {
+      "state": "proposed",
+      "reviewState": "none"
+    },
+    "leaf": "tooling.renames-repos",
+    "domain": "real-world",
+    "status": "confirmed",
+    "asOf": "2026-11-14",
+    "reverifyBy": "2027-04-20",
+    "sources": [
+      {
+        "class": "A",
+        "ref": "https://stellar.org/blog/foundation-news/stellar-rpc-has-arrived",
+        "observedAt": "2026-11-14",
+        "quote": "With the rollout of Protocol 22, it has been rebranded to Stellar RPC."
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/networks/software-versions",
+        "observedAt": "2026-11-14",
+        "quote": "Stellar CLI (Previously Soroban CLI) ... Soroban CLI has been renamed to Stellar CLI."
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/go-stellar-sdk",
+        "observedAt": "2026-11-14",
+        "quote": "As of October 2025, it has been refactored to focus exclusively on developer-facing SDK packages."
+      },
+      {
+        "class": "B",
+        "ref": "https://api.github.com/repos/stellar/soroban-rpc",
+        "observedAt": "2026-11-14",
+        "quote": "full_name: stellar/stellar-rpc (redirect)"
+      },
+      {
+        "class": "B",
+        "ref": "https://api.github.com/repos/stellar/soroban-cli",
+        "observedAt": "2026-11-14",
+        "quote": "full_name: stellar/stellar-cli (redirect)"
+      },
+      {
+        "class": "B",
+        "ref": "https://api.github.com/repos/stellar/go",
+        "observedAt": "2026-11-14",
+        "quote": "archived: true; description: Archived public monorepo of go code"
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "Soroban RPC was rebranded Stellar RPC with Protocol 22, and stellar/soroban-rpc now resolves to stellar/stellar-rpc.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/foundation-news/stellar-rpc-has-arrived",
+            "observedAt": "2026-11-14",
+            "note": "'With the rollout of Protocol 22, it has been rebranded to Stellar RPC.'"
+          },
+          {
+            "class": "B",
+            "ref": "https://api.github.com/repos/stellar/soroban-rpc",
+            "observedAt": "2026-11-14",
+            "note": "API returns full_name stellar/stellar-rpc on 2026-11-14."
+          }
+        ]
+      },
+      {
+        "claim": "The Soroban CLI was renamed the Stellar CLI, and stellar/soroban-cli now resolves to stellar/stellar-cli.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/networks/software-versions",
+            "observedAt": "2026-11-14",
+            "note": "'Soroban CLI has been renamed to Stellar CLI.' under the Protocol 21 software list."
+          },
+          {
+            "class": "B",
+            "ref": "https://api.github.com/repos/stellar/soroban-cli",
+            "observedAt": "2026-11-14",
+            "note": "API returns full_name stellar/stellar-cli; stellar/soroban-tools resolves there too."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-cli/issues/1187",
+            "observedAt": "2026-11-14",
+            "note": "Issue opened 2024-02-01: 'soroban-cli: rename the Soroban CLI to Stellar CLI'."
+          }
+        ]
+      },
+      {
+        "claim": "The stellar/go monorepo is archived and the Go SDK lives at stellar/go-stellar-sdk since October 2025.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/go-stellar-sdk",
+            "observedAt": "2026-11-14",
+            "note": "README: refactored in October 2025 to hold only developer-facing SDK packages."
+          },
+          {
+            "class": "B",
+            "ref": "https://api.github.com/repos/stellar/go",
+            "observedAt": "2026-11-14",
+            "note": "archived=true on 2026-11-14."
+          },
+          {
+            "class": "C",
+            "ref": "scout.searchRepos",
+            "observedAt": "2026-11-14",
+            "note": "Directory lists stellar/go-stellar-sdk as 'Stellar's Go SDK', not archived."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-11-14",
+      "by": "gap-1 lane (Claude Fable 5.2), golden-coverage-audit 2026-11-14",
+      "evidence": [
+        "https://stellar.org/blog/foundation-news/stellar-rpc-has-arrived",
+        "https://developers.stellar.org/docs/networks/software-versions",
+        "https://github.com/stellar/go-stellar-sdk",
+        "https://api.github.com/repos/stellar/soroban-rpc",
+        "https://api.github.com/repos/stellar/soroban-cli",
+        "https://api.github.com/repos/stellar/go"
+      ],
+      "rootCause": [
+        ".agents/rounds/2026-11-14-golden-coverage-audit.md"
+      ]
+    },
+    "notes": "The Freighter to Varial rename belongs to wallets.sdf-wallet and is left out. Sibling check: q-tool-go-sdk-ingest names the go-stellar-sdk module and ingest packages; it does not test the renames.",
+    "origin": "golden-coverage-audit 2026-11-14"
+  }
+}

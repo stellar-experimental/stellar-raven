@@ -137,6 +137,7 @@ contract. The decisions this skill owns:
 
 - **Propose, then activate.** A new ID lands as a proposal in one commit and activates in a later
   commit after source verification, duplicate and boundary checks, and an independent reviewer.
+- **Leaf.** A new case names its taxonomy leaf from `eval/qa/taxonomy.json` in `truth.leaf`.
 - **Quarantine** before the next aggregate when an independent reviewer confirms a
   score-independent truth or validity conflict. Record author, reviewer, evidence, start date, and
   a decision date within 30 days. That decision corrects, retires, or independently renews the

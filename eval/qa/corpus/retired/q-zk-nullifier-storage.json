@@ -1,0 +1,21 @@
+{
+  "id": "q-zk-nullifier-storage",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-soroban-b (golden coverage audit)",
+    "reviewer": "verify-audit-soroban-b (golden coverage audit)",
+    "reason": "Application design for one privacy-pool pattern; no taxonomy facet.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-b.json#q-zk-nullifier-storage",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-b.json#q-zk-nullifier-storage",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-zk-nullifier-storage"
+    ],
+    "lastCaseContentSha256": "943e1961491eabde8f57b99eeb3523a1c6faf7bcf3c5122161cb8207fc8e6158",
+    "replacementIds": []
+  }
+}

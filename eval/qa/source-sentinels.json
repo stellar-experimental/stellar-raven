@@ -33,34 +33,13 @@
       }
     },
     {
-      "id": "scf-46-submission-deadline-edge",
-      "caseId": "q-edge-fresh-latest-scf-round",
-      "caseAsOf": "2026-11-10",
-      "url": "https://communityfund.stellar.org/awards",
-      "check": {
-        "kind": "present",
-        "pattern": "SCF #46 (?!Submission\\b)[A-Z][A-Za-z ]+ Deadline to submit: November 9, 2026"
-      }
-    },
-    {
-      "id": "scf-47-not-listed-edge",
-      "caseId": "q-edge-fresh-latest-scf-round",
-      "caseAsOf": "2026-11-10",
-      "url": "https://communityfund.stellar.org/awards",
-      "check": {
-        "kind": "absent",
-        "pattern": "SCF #47\\b",
-        "guard": "SCF #46 [A-Za-z ]+ Deadline to submit: November 9, 2026"
-      }
-    },
-    {
       "id": "rpc-archive-provider-rows",
       "caseId": "q-infra-rpc-provider-archive-tier",
       "caseAsOf": "2026-11-02",
       "url": "https://github.com/stellar/stellar-docs/blob/main/docs/data/apis/rpc/providers.mdx",
       "check": {
         "kind": "count",
-        "pattern": "\\| \\[[^\\]]+\\]\\([^)]*\\)[^|]*\\|(?:[^|]*\\|){4} \u2705 \\|",
+        "pattern": "\\| \\[[^\\]]+\\]\\([^)]*\\)[^|]*\\|(?:[^|]*\\|){4} ✅ \\|",
         "count": 9,
         "guard": "\\| Provider \\| Futurenet \\| Testnet \\| Mainnet \\| Dedicated Nodes \\| RPC Archive \\|"
       }
@@ -72,29 +51,9 @@
       "url": "https://github.com/stellar/stellar-docs/blob/main/docs/data/apis/rpc/providers.mdx",
       "check": {
         "kind": "count",
-        "pattern": "\\| \\[(?:Validation Cloud|Gateway|Ankr|Obsrvr|OnFinality|Lightsail Network - Quasar|Exaion|GetBlock|node101)(?:\\\\\\*)?\\]\\([^)]*\\)[^|]*\\|(?:[^|]*\\|){4} \u2705 \\|",
+        "pattern": "\\| \\[(?:Validation Cloud|Gateway|Ankr|Obsrvr|OnFinality|Lightsail Network - Quasar|Exaion|GetBlock|node101)(?:\\\\\\*)?\\]\\([^)]*\\)[^|]*\\|(?:[^|]*\\|){4} ✅ \\|",
         "count": 9,
         "guard": "\\| Provider \\| Futurenet \\| Testnet \\| Mainnet \\| Dedicated Nodes \\| RPC Archive \\|"
-      }
-    },
-    {
-      "id": "zenex-mainnet-deployment",
-      "caseId": "q-defi-perps-whitespace",
-      "caseAsOf": "2026-10-15",
-      "url": "https://docs.zenex.trade/deployments/contract-addresses",
-      "check": {
-        "kind": "present",
-        "pattern": "live Zenex deployment on Stellar mainnet"
-      }
-    },
-    {
-      "id": "zenex-xlm-usd-market-active",
-      "caseId": "q-defi-perps-whitespace",
-      "caseAsOf": "2026-10-15",
-      "url": "https://docs.zenex.trade/deployments/contract-addresses",
-      "check": {
-        "kind": "present",
-        "pattern": "Market XLM-USD Status Active"
       }
     },
     {
@@ -105,16 +64,6 @@
       "check": {
         "kind": "present",
         "pattern": "Board of directors Jed McCaleb Lin-Hua Wu Ronaldo Lemos Ginger Baker Asiff Hirji Advis"
-      }
-    },
-    {
-      "id": "mazieres-chief-scientist",
-      "caseId": "q-org-mazieres-chief-scientist",
-      "caseAsOf": "2026-07-13",
-      "url": "https://stellar.org/foundation/team",
-      "check": {
-        "kind": "present",
-        "pattern": "\"description\":\"Founder and Chief Scientist\"(?:(?!\"_type\":\"card\").){0,4000}?\"title\":\"David Mazi\u00e8res\""
       }
     },
     {
@@ -138,16 +87,6 @@
       }
     },
     {
-      "id": "flutter-sdk-soneso",
-      "caseId": "q-tool-flutter-mobile-sdk",
-      "caseAsOf": "2026-11-02",
-      "url": "https://developers.stellar.org/docs/tools/sdks/client-sdks",
-      "check": {
-        "kind": "present",
-        "pattern": "The Flutter Stellar SDK is maintained by dedicated community developer, Soneso"
-      }
-    },
-    {
       "id": "go-sdk-module",
       "caseId": "q-tool-go-sdk-ingest",
       "caseAsOf": "2026-11-02",
@@ -155,16 +94,6 @@
       "check": {
         "kind": "present",
         "pattern": "all of which you can find in the .{0,60}?https://github\\.com/stellar/go-stellar-sdk(?![-\\w])"
-      }
-    },
-    {
-      "id": "enterprise-fund-portfolio",
-      "caseId": "q-org-sdf-enterprise-fund",
-      "caseAsOf": "2026-10-06",
-      "url": "https://stellar.org/enterprise-fund",
-      "check": {
-        "kind": "present",
-        "pattern": "portfolio totaling over \\$100m"
       }
     },
     {
@@ -219,39 +148,6 @@
       }
     },
     {
-      "id": "sdp-transaction-submission-service",
-      "caseId": "q-anchor-sdp-what",
-      "caseAsOf": "2026-11-02",
-      "url": "https://developers.stellar.org/docs/platforms/stellar-disbursement-platform/admin-guide/design-and-architecture",
-      "check": {
-        "kind": "present",
-        "pattern": "Transaction Submission Service ?: the service that submits all payment transactions"
-      }
-    },
-    {
-      "id": "soroban-sdk-advisories",
-      "caseId": "q-soroban-sdk-cve",
-      "caseAsOf": "2026-11-02",
-      "url": "https://api.github.com/repos/stellar/rs-soroban-sdk/security-advisories?per_page=100",
-      "check": {
-        "kind": "count",
-        "pattern": "\\\"ghsa_id\\\": ?\\\"GHSA-",
-        "count": 3
-      }
-    },
-    {
-      "id": "x402-no-sep",
-      "caseId": "q-hist-x402-stellar-announcement",
-      "caseAsOf": "2026-11-02",
-      "url": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/README.md",
-      "check": {
-        "kind": "absent",
-        "pattern": "x402",
-        "flags": "i",
-        "guard": "\\| \\[SEP-0001\\]\\(sep-0001\\.md\\) \\| Stellar Info File \\|"
-      }
-    },
-    {
       "id": "scf-audit-bank-initial-stage-copay",
       "caseId": "q-scf-audit-bank",
       "caseAsOf": "2026-11-03",
@@ -285,29 +181,8 @@
       }
     },
     {
-      "id": "x402-albedo-absent",
-      "caseId": "q-soroban-x402-auth-entry-signing",
-      "caseAsOf": "2026-11-06",
-      "url": "https://developers.stellar.org/docs/build/agentic-payments/x402.md",
-      "check": {
-        "kind": "absent",
-        "pattern": "Albedo",
-        "guard": "Varial Browser Extension"
-      }
-    },
-    {
       "id": "scf-rfp-q4-roster",
       "caseId": "q-scf-open-rfps",
-      "caseAsOf": "2026-11-12",
-      "url": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
-      "check": {
-        "kind": "present",
-        "pattern": "Current Open RFPs [^<]*<details> <summary><strong>Web and API Analytics for Stellar Ecosystem Projects</strong></summary>(?:(?!<summary>)[\\s\\S])*<details> <summary><strong>XDR/CAP-Coverage Audit Tool and Indexer-Hardening Guide</strong></summary>(?:(?!<summary>)[\\s\\S])*</details> If you have"
-      }
-    },
-    {
-      "id": "scf-rfp-q4-tooling-roster",
-      "caseId": "q-scf-rfp-tooling",
       "caseAsOf": "2026-11-12",
       "url": "https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/rfp-track.md",
       "check": {

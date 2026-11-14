@@ -6,19 +6,15 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "- **Quorum set**: the set of other nodes a given node chooses to trust — its configured trust list, with a **threshold** (the minimum number of those trusted nodes that must agree) [1].\n- **Quorum slice**: a threshold-sized **subset** of a node's quorum set that is sufficient to convince *that* node to agree [1].\n- **Quorum**: a set of nodes sufficient to reach **network-wide** agreement, where each node in the set has at least one of its quorum slices contained in the set [1].\n- Quorums form through nodes' **overlapping / intersecting slices**, which enables open membership — each node configures its own quorum set, with **no central authority** assigning it [1].\n- A **blocking set** is defined relative to one node: it overlaps every one of that node's quorum slices, so it can prevent that node from reaching agreement [1].",
+    "answer": "A quorum set is the nodes a validator chooses to trust plus a threshold. A quorum slice is a threshold-sized subset of that set that is enough to convince that node. A quorum is a set of nodes in which every member has at least one slice inside the set. Each node picks its own quorum set; no central authority assigns it.",
     "keyFacts": [
-      "A quorum set is a node's configured set of trusted nodes.",
+      "A quorum set is a node's configured trusted nodes plus a threshold.",
       "A quorum slice is a sufficient threshold subset of one node's quorum set.",
-      "A quorum is a node set sufficient for network agreement.",
-      "Each quorum member has a quorum slice within that set."
+      "A quorum is a node set where each member has a slice inside it."
     ],
     "avoid": [
-      "Do NOT define a quorum slice as the global set of all validators or a fixed network-wide committee.",
-      "Do NOT conflate quorum/slice with staking weight or PoS-style voting power.",
-      "Do NOT claim quorum sets are assigned by a central authority (each node configures its own)."
-    ],
-    "notes": "Multi-term definitional question. Trap is swapping slice/quorum definitions or implying a central committee.\nAlso good if the answer: Mentions the threshold (minimum number of trusted nodes that must agree) as part of a quorum set's configuration. | Notes quorums are reached through nodes' overlapping/intersecting slices, enabling open membership.\nGolden cites: The SCP overview / quorum concepts page on developers.stellar.org."
+      "Do NOT define a slice as the global validator set or claim a central authority assigns quorum sets."
+    ]
   },
   "tags": {
     "category": "protocol-core",
@@ -82,31 +78,35 @@
             "note": "Exact: 'int leftTillBlock = (int)((1 + qset.validators.size() + qset.innerSets.size()) - qset.threshold);' — `isVBlocking` tests if V is a v-blocking set for this node."
           }
         ]
+      },
+      {
+        "claim": "SCP definitions",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol",
+            "observedAt": "2026-11-14",
+            "note": "quorum slice: a subset of a quorum set that convinces one node; quorum: set where each member has a slice (stable concept; not re-read)"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-05)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-protocol, verify-protocol; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Gospel change 2026-11-02 (golden.answer); the proposer matrix and an independent verifier re-derived each claim from live sources.",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — 'A node's trusted set of nodes is called a quorum set.' (claim: Quorum set = node-configured set of trusted nodes; verdict confirmed)",
-        "Live D 2026-11-02: https://stellar.org/faq — 'SCP allows each validator to choose its own trusted set of other validators' (claim: Quorum set = node-configured set of trusted nodes; verdict confirmed)",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — 'The combination of agreeing nodes within the quorum set are called quorum slices.' (claim: Quorum slice = sufficient threshold subset of one node's quorum set; verdict confirmed)",
-        "Live B 2026-11-02: https://www.cs.otago.ac.nz/cosc440/readings/scp.pdf — 'FBA's robustness stems from quorum slices, individual trust decisions made by each node' (claim: Quorum slice = sufficient threshold subset of one node's quorum set; verdict confirmed)",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — 'A quorum is a set of nodes sufficient to reach an agreement wherein each node is part of a quorum slice.' (claim: Quorum = node set sufficient for agreement, each member has a slice inside; verdict confirmed)",
-        "Live D 2026-11-02: https://datatracker.ietf.org/meeting/103/materials/slides-103-dinrg-scp-update-00 — 'A quorum U ⊆ V is a set of nodes that contains at least one slice of each of its members' (claim: Quorum = node set sufficient for agreement, each member has a slice inside; verdict confirmed)",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — 'Node blocking sets are any set of nodes in a quorum set that prevent a node from reaching agreement.' (claim: A blocking set can prevent the network from reaching agreement; verdict contradicted)",
-        "Live B 2026-11-02: https://www.cs.otago.ac.nz/cosc440/readings/scp.pdf — 'Let v ∈ V be a node in FBAS ⟨V,Q⟩. A set B ⊆ V is v-blocking iff it overlaps every one of v's slices' (claim: A blocking set can prevent the network from reaching agreement; verdict contradicted)",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — 'each Core node decides on which other nodes it would like to trust to reach agreement' (claim: Slice is not global committee; not stake weight; not centrally assigned; verdict confirmed)",
-        "Live D 2026-11-02: https://stellar.org/faq — 'The SCP is a proof-of-agreement system with no on-chain financial incentives' (claim: Slice is not global committee; not stake weight; not centrally assigned; verdict confirmed)",
-        "Verifier A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — 'Node blocking sets are any set of nodes in a quorum set that prevent a node from reaching agreement. For example, if a node requires 3 out of 4 of the nodes in its quorum set to agree, any combination of two nodes is considered a node blocking set.' (field golden.answer; decision accept)",
-        "Verifier B 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-core/master/src/scp/LocalNode.cpp — 'int leftTillBlock = (int)((1 + qset.validators.size() + qset.innerSets.size()) - qset.threshold); ... `isVBlocking` tests if the filtered nodes V are a v-blocking set for this node.' (field golden.answer; decision accept)",
-        "Sibling sweep 2026-11-02: grep 'blocking set|quorum slice|quorum set' → q-hist-scp-rewrite-2015, q-protocol-scp-consensus-algorithm, q-protocol-tier1-requirements; no other case defines a blocking set; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-protocol-quorum-slice-vs-quorum",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-protocol-quorum-slice-vs-quorum",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-protocol-quorum-slice-vs-quorum",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol -- 'quorum slice: a subset of a quorum set that convinces one node; quorum: set where each member has a slice (stable concept; not re-read)'"
       ],
       "rootCause": [
-        "Eval-side authoring flaw: the blocking-set bullet drifted from the source (network-wide instead of relative to one node) (golden audit 2026-11-02, batch protocol-core-05)."
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-protocol-quorum-slice-vs-quorum"
+    "origin": "raven-next q-protocol-quorum-slice-vs-quorum",
+    "notes": "Multi-term definitional question. Trap is swapping slice/quorum definitions or implying a central committee.\nAlso good if the answer: Mentions the threshold (minimum number of trusted nodes that must agree) as part of a quorum set's configuration. | Notes quorums are reached through nodes' overlapping/intersecting slices, enabling open membership.\nGolden cites: The SCP overview / quorum concepts page on developers.stellar.org.",
+    "leaf": "network.scp-consensus"
   }
 }

@@ -1,0 +1,23 @@
+{
+  "id": "q-defi-arbitrage-pathpayment-bots",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-defi (golden coverage audit)",
+    "reviewer": "verify-defi (golden coverage audit)",
+    "reason": "Merged into q-asset-path-payment-ops. Bot economics and Kelp are not facets, but the leaf scope names slippage bounds and the survivor never grades them: q-asset-path-payment-ops kf1 says what each operation fixes, not what bounds the other side. Extend that key fact rather than add one.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-defi-arbitrage-pathpayment-bots",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-defi-arbitrage-pathpayment-bots",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-defi-arbitrage-pathpayment-bots"
+    ],
+    "lastCaseContentSha256": "258a9b3559d1d55b45959b7327d70c936816ccdb6e3f260b37c8578639545807",
+    "replacementIds": [
+      "q-asset-path-payment-ops"
+    ]
+  }
+}

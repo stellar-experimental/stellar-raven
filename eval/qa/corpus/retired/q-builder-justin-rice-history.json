@@ -1,0 +1,21 @@
+{
+  "id": "q-builder-justin-rice-history",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-scf (golden coverage audit)",
+    "reviewer": "verify-audit-scf (golden coverage audit)",
+    "reason": "One person and two post titles. The author calls q-org-sdf-board-directors the leadership facet; it covers the board only (see leaf finding).",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-builder-justin-rice-history",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-builder-justin-rice-history",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-builder-justin-rice-history"
+    ],
+    "lastCaseContentSha256": "2b96b24bcc6f585cf04ca77e961ffcb2238fcbf45b09f27a208e2f21eaf2f190",
+    "replacementIds": []
+  }
+}

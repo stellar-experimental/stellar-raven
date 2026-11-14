@@ -1,0 +1,23 @@
+{
+  "id": "q-asset-claimable-balance",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-assets (golden coverage audit)",
+    "reviewer": "verify-audit-assets (golden coverage audit)",
+    "reason": "Merged into q-aas-claimable-predicates-expiry-reserves. The survivor rewrite keeps native ledger entry, not Soroban escrow, and the no-trustline-yet use case. q-raph-claimable-balance-safety keeps the trustline-before-claim rule (op_no_trust).",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-assets.json#q-asset-claimable-balance",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-assets.json#q-asset-claimable-balance",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-asset-claimable-balance"
+    ],
+    "lastCaseContentSha256": "c4b69d3f54291a174af7c2c6f61540ab351b91f3d17f9bf110278aecdef92f17",
+    "replacementIds": [
+      "q-aas-claimable-predicates-expiry-reserves"
+    ]
+  }
+}

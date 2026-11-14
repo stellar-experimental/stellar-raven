@@ -1,0 +1,21 @@
+{
+  "id": "q-n3-ssrf-metadata-endpoint",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-edge (golden coverage audit)",
+    "reviewer": "verify-audit-edge (golden coverage audit)",
+    "reason": "Same as the localhost case: the smoke test, not a survivor case, carries the boundary.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-edge.json#q-n3-ssrf-metadata-endpoint",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-edge.json#q-n3-ssrf-metadata-endpoint",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-n3-ssrf-metadata-endpoint"
+    ],
+    "lastCaseContentSha256": "5d4f3a566541ad490aad5baee1ad1e5f37f3a19c01cf2f7b829d3eeb6d9e41dd",
+    "replacementIds": []
+  }
+}

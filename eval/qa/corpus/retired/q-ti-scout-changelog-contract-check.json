@@ -1,0 +1,21 @@
+{
+  "id": "q-ti-scout-changelog-contract-check",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-tooling-a (golden coverage audit)",
+    "reviewer": "verify-audit-tooling-a (golden coverage audit)",
+    "reason": "The manifest states what the case rewards; its protocol-lane twin q-gap-scout-changelog-envelope is already retired with verify acceptance.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-a.json#q-ti-scout-changelog-contract-check",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-a.json#q-ti-scout-changelog-contract-check",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-ti-scout-changelog-contract-check"
+    ],
+    "lastCaseContentSha256": "9f1664b371766105162325fb6fb8dc39529d8e83f441b04a5c584c26ea9e2b3f",
+    "replacementIds": []
+  }
+}

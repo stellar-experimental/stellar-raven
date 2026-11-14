@@ -5,7 +5,7 @@
  * The module exports the individual lanes for fixture tests. The CLI reads the
  * real corpus and enables diff-aware gospel checks with --since <ref> (or the
  * CI merge base), frozen live-contract validation with --live-contract <path>
- * --since <ref>, coverage reporting with --coverage, and the due-date gate
+ * --since <ref>, taxonomy coverage with --coverage, and the due-date gate
  * with --stale.
  */
 import { execFileSync } from "node:child_process";
@@ -35,23 +35,11 @@ const DEFAULTS = {
   manifestPath: path.join(ROOT, "catalog/manifest.json"),
   registerPath: path.join(ROOT, "eval/qa/consistency-register.json"),
   ledgerPath: path.join(ROOT, "eval/qa/corpus/migration-ledger.json"),
+  taxonomyPath: path.join(ROOT, "eval/qa/taxonomy.json"),
   lifecycleRegistryPath: path.join(ROOT, "eval/qa/lifecycle-registry.json"),
   lifecyclePolicyPath: path.join(ROOT, "eval/qa/corpus/lifecycle-policy.json")
 };
 
-const CATEGORY_FLOORS = {
-  "protocol-core": 46,
-  soroban: 68,
-  "tooling-infra": 58,
-  "assets-anchors-seps": 47,
-  "defi-ecosystem": 55,
-  "scf-grants-builders": 46,
-  "compliance-rwa-payments": 38,
-  "history-org-tokenomics": 19,
-  "retail-consumer": 33,
-  "edge-behavior": 40
-};
-const DIGEST_SKILL = "skills.lumenloop.stellar-ecosystem-digest";
 const LEDGER_SOURCE_COUNTS = {
   "battery-2026-07": 493,
   boxy: 21,
@@ -60,15 +48,6 @@ const LEDGER_SOURCE_COUNTS = {
   "core-35": 35,
   flue: 1
 };
-const CATALOG_NOTE_TRAPS = [
-  { id: "person-entity-empty", surface: "lumenloop.find_content_by_entity", re: /\bperson\b.*\bempty|\bempty\b.*\bperson\b/i },
-  { id: "winner-order", surface: "scout.getHackathon", re: /\bwinner\b.*\border|\border\b.*\bwinner\b/i },
-  { id: "av-offset", surface: "lumenloop.find_av_passages", re: /\boffset\b.*\b(?:timestamp|seconds?)|\b(?:timestamp|seconds?)\b.*\boffset\b/i },
-  { id: "payload-data-ok", surface: null, re: /\bdata\.ok\b/i },
-  { id: "semantic-fallback", surface: "lumenloop.search_directory", re: /\bsemantic\b.*\bfallback|\bfallback\b.*\bsemantic\b/i },
-  { id: "matchPartners-503", surface: "scout.matchPartners", re: /\b503\b/ },
-  { id: "zero-upcoming", surface: "scout.getHackathons", re: /\b(?:zero|no)\b.*\bupcoming|\bupcoming\b.*\b(?:zero|none|empty)\b/i }
-];
 const ROOT_CAUSE_SCORE_ONLY = [
   /\bscore(?:d|s|ing)?\b/i,
   /\b(?:qa|eval|judge|grader)\s+(?:result|verdict|failure|fail|metric|accuracy)\b/i,
@@ -661,60 +640,63 @@ function inc(map, key) {
   map.set(key, (map.get(key) ?? 0) + 1);
 }
 
-function familyOf(surfaceId) {
-  return surfaceId.startsWith("skills.") ? "skills" : surfaceId.split(".")[0];
+export function isToolLaneCase(kase) {
+  return kase.truth?.lane === "tool";
 }
 
-export function lintCoverage(cases, manifest, enforceFloors = false) {
+/**
+ * Taxonomy coverage. Every headline case names an existing leaf; no leaf holds more than its
+ * target plus one primary case; a weight-2 or weight-3 leaf has an active case unless an open
+ * slot names it with a reason. Tool-lane cases have their own denominator and no leaf.
+ */
+export function lintCoverage(cases, taxonomy, enforceFloors = false) {
   const findings = [];
+  if (!taxonomy || !Array.isArray(taxonomy.leaves)) {
+    return [finding("error", "coverage", "-", "eval/qa/taxonomy.json is missing or has no leaves[]")];
+  }
+  const leaves = new Map(taxonomy.leaves.map((leaf) => [leaf.id, leaf]));
+  const primary = new Map();
+  const active = new Map();
+  const headline = cases.filter((kase) => !isToolLaneCase(kase));
+  for (const kase of headline) {
+    const leaf = kase.truth?.leaf;
+    const secondary = kase.truth?.secondaryLeaf;
+    if (!leaves.has(leaf)) {
+      findings.push(finding("error", "coverage", kase.id, `truth.leaf ${JSON.stringify(leaf)} is not a taxonomy leaf`));
+      continue;
+    }
+    if (secondary !== undefined && (!leaves.has(secondary) || secondary === leaf)) {
+      findings.push(finding("error", "coverage", kase.id, `truth.secondaryLeaf ${JSON.stringify(secondary)} must be another taxonomy leaf`));
+    }
+    inc(primary, leaf);
+    if (kase.truth?.lifecycle?.state === "active") inc(active, leaf);
+  }
+  const openSlots = new Map();
+  for (const slot of taxonomy.openSlots ?? []) {
+    if (!leaves.has(slot?.leaf)) findings.push(finding("error", "coverage", String(slot?.leaf), "open slot names no taxonomy leaf"));
+    else if (!isNonEmptyString(slot.reason)) findings.push(finding("error", "coverage", slot.leaf, "open slot requires a reason"));
+    else if (active.has(slot.leaf)) findings.push(finding("error", "coverage", slot.leaf, "open slot leaf now has an active case; remove the slot"));
+    else openSlots.set(slot.leaf, slot);
+  }
   const level = enforceFloors ? "error" : "warn";
-  const counts = new Map();
-  const categories = new Map();
-  let crossService = 0;
-  let freshnessPinned = 0;
-  let negativeOrEmpty = 0;
-  let vocab = 0;
-  for (const kase of cases) {
-    for (const id of new Set(kase.surface ?? [])) inc(counts, id);
-    inc(categories, kase.tags?.category ?? "(missing)");
-    if (new Set((kase.surface ?? []).map(familyOf)).size >= 2) crossService++;
-    if (kase.tags?.freshness === "scheduled") freshnessPinned++;
-    const text = caseText(kase);
-    if (/\b(?:NEG|soft[- ]empty|empty result|degrad|unavailable|not found|zero result)\b/i.test(`${kase.id} ${text}`)) negativeOrEmpty++;
-    if (/\bVOCAB\b/i.test(`${kase.id} ${text}`)) vocab++;
+  for (const leaf of leaves.values()) {
+    const count = primary.get(leaf.id) ?? 0;
+    if (count > leaf.cases + 1) {
+      findings.push(finding("error", "coverage", leaf.id, `leaf target ${leaf.cases}; ${count} primary cases exceed target plus one`));
+    }
+    if (leaf.weight >= 2 && !active.has(leaf.id) && !openSlots.has(leaf.id)) {
+      findings.push(finding(level, "coverage", leaf.id, `weight-${leaf.weight} leaf has no active case and no open slot`));
+    }
   }
-  for (const entry of (manifest.entries ?? []).filter((item) => item.kind === "operation")) {
-    const count = counts.get(entry.id) ?? 0;
-    if (count < 2) findings.push(finding(level, "coverage", entry.id, `operation floor 2; found ${count}`));
-  }
-  for (const entry of (manifest.entries ?? []).filter((item) => item.kind === "skill")) {
-    const floor = entry.id === DIGEST_SKILL ? 2 : 1;
-    const count = counts.get(entry.id) ?? 0;
-    if (count < floor) findings.push(finding(level, "coverage", entry.id, `skill floor ${floor}; found ${count}`));
-  }
-  for (const [category, floor] of Object.entries(CATEGORY_FLOORS)) {
-    const count = categories.get(category) ?? 0;
-    if (count < floor) findings.push(finding(level, "coverage", category, `category floor ${floor}; found ${count}`));
-  }
-  if (crossService < 12) findings.push(finding(level, "coverage", "cross-service", `cross-service floor 12; found ${crossService}`));
-  if (negativeOrEmpty < 20) findings.push(finding(level, "coverage", "NEG/soft-empty", `floor 20; heuristic found ${negativeOrEmpty}`));
-  if (vocab < 6) findings.push(finding(level, "coverage", "VOCAB", `floor 6; marker found ${vocab}`));
-  for (const trap of CATALOG_NOTE_TRAPS) {
-    const count = cases.filter((kase) =>
-      (!trap.surface || (kase.surface ?? []).includes(trap.surface)) && trap.re.test(caseText(kase))
-    ).length;
-    if (count < 1) findings.push(finding(level, "coverage", trap.id, "catalog-note trap floor 1; found 0"));
-  }
-  const share = cases.length === 0 ? 0 : freshnessPinned / cases.length;
-  if (share > 0.35) findings.push(finding(level, "coverage", "freshness", `scheduled share ${(share * 100).toFixed(1)}% exceeds 35%`));
+  const covered = [...leaves.keys()].filter((id) => active.has(id)).length;
   const serviceCounts = new Map();
-  for (const kase of cases) inc(serviceCounts, kase.tags?.service ?? "(missing)");
-  findings.push(finding("info", "coverage", "summary", `cases=${cases.length}; cross-service=${crossService}; NEG/soft-empty=${negativeOrEmpty}; VOCAB=${vocab}; scheduled=${freshnessPinned}`));
+  for (const kase of headline) inc(serviceCounts, kase.tags?.service ?? "(missing)");
+  findings.push(finding("info", "coverage", "summary", `headline=${headline.length}; tool=${cases.length - headline.length}; leaves=${leaves.size}; covered=${covered}; openSlots=${openSlots.size}`));
   findings.push(finding("info", "coverage", "services", [...serviceCounts].sort(([a], [b]) => a.localeCompare(b)).map(([name, count]) => `${name}=${count}`).join(", ")));
   return findings;
 }
 
-export function lintLedger(cases, ledger, enforceCompleteness = false) {
+export function lintLedger(cases, ledger, enforceCompleteness = false, retiredIds = new Set()) {
   const findings = [];
   if (!ledger) return [finding("error", "ledger", "-", "migration ledger is missing")];
   const rows = Array.isArray(ledger) ? ledger : ledger.entries ?? ledger.rows;
@@ -738,8 +720,9 @@ export function lintLedger(cases, ledger, enforceCompleteness = false) {
       findings.push(finding("error", "ledger", row.sourceId, `${row.disposition} requires reason`));
     }
     for (const destination of row.destination ?? []) {
+      // A destination may since have retired; its tombstone carries the forward pointer.
       const destCase = caseById.get(destination);
-      if (!destCase) findings.push(finding("error", "ledger", row.sourceId, `destination does not exist: ${destination}`));
+      if (!destCase && !retiredIds.has(destination)) findings.push(finding("error", "ledger", row.sourceId, `destination does not exist: ${destination}`));
       if (["carry", "redefine"].includes(row.disposition) && destCase && !String(destCase.truth?.origin ?? "").includes(row.sourceId)) {
         findings.push(finding("error", "ledger", row.sourceId, `destination ${destination} truth.origin does not name sourceId`));
       }
@@ -904,7 +887,7 @@ function parseArgs(argv) {
     if (arg === "--coverage") options.coverage = true;
     else if (arg === "--enforce-floors") { options.coverage = true; options.enforceFloors = true; }
     else if (arg === "--stale") options.stale = true;
-    else if (["--since", "--corpus", "--proposed", "--retired", "--manifest", "--register", "--ledger", "--today", "--live-contract", "--lifecycle-registry", "--lifecycle-policy"].includes(arg)) {
+    else if (["--since", "--corpus", "--proposed", "--retired", "--manifest", "--register", "--ledger", "--taxonomy", "--today", "--live-contract", "--lifecycle-registry", "--lifecycle-policy"].includes(arg)) {
       if (!argv[index + 1]) throw new Error(`${arg} requires a value`);
       const option = {
         "--live-contract": "liveContract",
@@ -986,7 +969,7 @@ function printFindings(findings) {
   return errors;
 }
 
-export function runLint({ cases, proposedCases = [], tombstones = [], laneFindings = [], manifest, register = {}, ledger, findingStatuses, lifecycleRegistry, lifecyclePolicy, previousCases, coverage = false, enforceFloors = false, stale = false, today }) {
+export function runLint({ cases, proposedCases = [], tombstones = [], laneFindings = [], manifest, register = {}, ledger, taxonomy, findingStatuses, lifecycleRegistry, lifecyclePolicy, previousCases, coverage = false, enforceFloors = false, stale = false, today }) {
   const findings = [
     ...lintLifecycle(cases, lifecycleRegistry, lifecyclePolicy, today, { proposedCases, tombstones, laneFindings }),
     ...lintSurface(cases, manifest),
@@ -996,10 +979,10 @@ export function runLint({ cases, proposedCases = [], tombstones = [], laneFindin
     ...lintGoldenAuthoring(cases),
     ...lintCorroboration(cases, register),
     ...lintCapFindings(cases, findingStatuses),
-    ...lintLedger(cases, ledger, enforceFloors)
+    ...lintLedger(cases, ledger, enforceFloors, new Set(tombstones.map((tombstone) => tombstone.id)))
   ];
   if (previousCases) findings.push(...lintGospelChanges(cases, previousCases));
-  if (coverage) findings.push(...lintCoverage(cases, manifest, enforceFloors));
+  if (coverage) findings.push(...lintCoverage(cases, taxonomy, enforceFloors));
   if (stale) findings.push(...lintStale(cases, today));
   return findings;
 }
@@ -1020,6 +1003,7 @@ function main() {
   const manifestPath = path.resolve(options.manifest ?? DEFAULTS.manifestPath);
   const registerPath = path.resolve(options.register ?? DEFAULTS.registerPath);
   const ledgerPath = path.resolve(options.ledger ?? DEFAULTS.ledgerPath);
+  const taxonomyPath = path.resolve(options.taxonomy ?? DEFAULTS.taxonomyPath);
   const lifecycleRegistryPath = path.resolve(options.lifecycleRegistry ?? DEFAULTS.lifecycleRegistryPath);
   const lifecyclePolicyPath = path.resolve(options.lifecyclePolicy ?? DEFAULTS.lifecyclePolicyPath);
   if (isPullRequestCI(process.env) && !since) {
@@ -1053,6 +1037,7 @@ function main() {
     manifest: json(manifestPath),
     register: existsSync(registerPath) ? json(registerPath) : {},
     ledger: existsSync(ledgerPath) ? json(ledgerPath) : undefined,
+    taxonomy: existsSync(taxonomyPath) ? json(taxonomyPath) : undefined,
     findingStatuses: loadFindingStatuses(path.join(ROOT, "improvements")),
     lifecycleRegistry: existsSync(lifecycleRegistryPath) ? json(lifecycleRegistryPath) : undefined,
     lifecyclePolicy: existsSync(lifecyclePolicyPath) ? json(lifecyclePolicyPath) : undefined,

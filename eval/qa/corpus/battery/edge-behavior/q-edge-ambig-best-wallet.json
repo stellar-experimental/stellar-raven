@@ -3,19 +3,16 @@
   "question": "What's the best wallet?",
   "surface": [],
   "golden": {
-    "answer": "**Behavioral case — the correct answer is the behavior, not a verdict.** \"Best wallet\" is subjective\nand use-case-dependent, and it implicitly assumes a Stellar context. Raven should **clarify the\ncriteria before recommending** — developer vs end-user, mobile vs browser-extension, custodial vs\nself-custody, passkey/smart-wallet needs — and confirm this is a Stellar wallet question (not e.g.\nMetaMask). It should **not crown a single \"best\" wallet** as objective fact. If it offers options, it\nframes \"best\" as situational and notes several reputable Stellar wallets suited to different needs\n(e.g. Varial (formerly Freighter), Lobstr, Hana, xBull). The directory lookup\n(`scout_projects` / `lumenloop_search_directory`) belongs to a *later* run, after the use-case is set.",
+    "answer": "\"Best wallet\" depends on the need, so ask first: developer or end user, mobile or browser extension, custodial or self-custody, passkey or smart-wallet support, and confirm it is a Stellar wallet question. Several reputable Stellar wallets (for example LOBSTR, xBull, Hana, Freighter/Varial) suit different needs; none is objectively best.",
     "keyFacts": [
-      "Clarifies the wallet use case before recommending.",
-      "Covers developer/end-user, mobile/browser-extension, and custody criteria.",
-      "Covers passkey and smart-wallet needs.",
-      "Confirms it is a Stellar wallet question.",
-      "Does NOT declare a single 'best' wallet as an objective fact."
+      "Scopes the use case before recommending, including that this is a Stellar wallet question.",
+      "Names criteria such as developer vs end user, mobile vs extension, and custody model.",
+      "Frames any options as situational, not one objectively best wallet."
     ],
     "avoid": [
-      "Do NOT crown one wallet 'the best' without scoping the use-case.",
-      "Do NOT assume a non-Stellar wallet (e.g. MetaMask) is meant and answer accordingly."
+      "Do NOT name one wallet as the best without scoping the use case."
     ],
-    "notes": "Ambiguous: 'best' is subjective + use-case-dependent. Reward scoping by criteria and offering options. Trap is an absolute verdict or assuming a non-Stellar wallet. Behavioral: the gospel is the GATE (clarify, no absolute verdict) not a factual essay.\nAlso good if the answer: Notes there are several reputable Stellar wallets (e.g. Varial (formerly Freighter), Lobstr, Hana, xBull) suited to different needs, if it offers options.\nRENAME (verified 2026-11-02): SDF renamed the Freighter wallet to Varial on 2026-10-29 (stellar.org blog \"Freighter is now Varial\"; extension 5.50.0 is the first Varial release). Freighter and Varial name the same SDF wallet; do not penalize either name."
+    "notes": "Freighter was renamed Varial on 2026-10-29; either name is correct. Do not penalize any reputable Stellar wallet named."
   },
   "tags": {
     "category": "edge-behavior",
@@ -68,20 +65,17 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch varial-dev)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-edge, verify-audit-edge; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "https://stellar.org/blog/foundation-news/freighter-is-now-varial (RSS https://stellar.org/blog/rss.xml pubDate Thu, 29 Oct 2026) — \"Freighter is now Varial, with a new name and a new focus\" (observedAt 2026-11-02).",
-        "https://github.com/stellar/freighter/releases/tag/5.50.0 (published_at 2026-10-29T20:32:42Z) — \"Freighter is now **Varial**. This is the first release under the new name.\" (observedAt 2026-11-02).",
-        "https://github.com/stellar/freighter README and rebrand commit db6d022b (2026-10-28, \"Freighter is now Varial (#3048)\") — \"Varial (formerly Freighter) is a non-custodial wallet extension\"; manifest name \"Varial Wallet\" (observedAt 2026-11-02).",
-        "curl -I: https://www.freighter.app -> 301 https://varialwallet.com/ ; https://docs.freighter.app -> 307 https://docs.varialwallet.com/ (observedAt 2026-11-02).",
-        "General web (Parallel search + Perplexity, one class): https://blockchain.news/news/stellar-freighter-rebrands-varial-discover-directory ; https://www.tokenpost.com/news/technology/43511 — \"according to a Stellar Foundation blog post published on 2026-10-29\" (observedAt 2026-11-02).",
-        "Store and maintainer: Chrome Web Store listing \"Varial Wallet\" 5.51.0; Firefox AMO API still names \"Freighter\" 5.49.0; repo stays stellar/freighter and npm packages stay under the SDF @stellar scope (observedAt 2026-11-02).",
-        "Sibling sweep 2026-11-02: grep -rli 'freighter|varial' eval/qa/corpus/battery -> 20 Freighter cases; 11 are in batch varial-dev; the other Varial-lane siblings (q-eco-freighter-wallet, q-tool-freighter-wallet, q-ti-find-export-secret-key) already state the same 2026-10-29 rename and same-product identity; no sibling names a different date, a different wallet, or a removed @stellar/freighter-api."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-edge.json#q-edge-ambig-best-wallet",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-edge.json#q-edge-ambig-best-wallet",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-edge-ambig-best-wallet",
+        "Live A 2026-11-14: https://stellar.org/blog/foundation-news/freighter-is-now-varial -- 'Stellar | Freighter is now Varial: Your wallet for discovering Stellar'",
+        "Live B 2026-11-14: https://github.com/stellar/freighter/releases/tag/5.50.0 -- 'Release 5.50.0, published_at 2026-10-29T20:32:42Z'"
       ],
       "rootCause": [
-        "freshness-drift",
-        ".agents/TODO.md — Add the Varial rename to the goldens that name Freighter"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
     "origin": "raven-next q-edge-ambig-best-wallet",
@@ -121,7 +115,28 @@
             "note": "www.freighter.app -> https://varialwallet.com/ ; docs.freighter.app -> https://docs.varialwallet.com/."
           }
         ]
+      },
+      {
+        "claim": "SDF renamed Freighter to Varial (same wallet), effective 2026-10-29",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/foundation-news/freighter-is-now-varial",
+            "observedAt": "2026-11-14",
+            "note": "Stellar | Freighter is now Varial: Your wallet for discovering Stellar"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/freighter/releases/tag/5.50.0",
+            "observedAt": "2026-11-14",
+            "note": "Release 5.50.0, published_at 2026-10-29T20:32:42Z"
+          }
+        ]
       }
-    ]
+    ],
+    "notes": "Ambiguous: 'best' is subjective + use-case-dependent. Reward scoping by criteria and offering options. Trap is an absolute verdict or assuming a non-Stellar wallet. Behavioral: the gospel is the GATE (clarify, no absolute verdict) not a factual essay.\nAlso good if the answer: Notes there are several reputable Stellar wallets (e.g. Varial (formerly Freighter), Lobstr, Hana, xBull) suited to different needs, if it offers options.\nRENAME (verified 2026-11-02): SDF renamed the Freighter wallet to Varial on 2026-10-29 (stellar.org blog \"Freighter is now Varial\"; extension 5.50.0 is the first Varial release). Freighter and Varial name the same SDF wallet; do not penalize either name.",
+    "leaf": "behavior.ambiguity",
+    "secondaryLeaf": "wallets.landscape"
   }
 }

@@ -5,19 +5,16 @@
     "scout.searchResearch"
   ],
   "golden": {
-    "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\nSCF v7 launched in **January 2026** around SCF #41. It introduced three Build tracks—Open, Integration, and RFP—plus a unified interest/referral entry, Instawards as the successor/evolution of Kickstart, and stronger mainnet/UX-readiness expectations. For payments, the launch blog's 'four-tranche' shorthand should be reconciled with current detailed mechanics: **four payments**, consisting of 10% acceptance plus **three deliverable tranches** at 20%, 30%, and 40%. v7 also described multiple post-launch growth pathways; it did **not** create one unified 'Growth track.' Current Instaward, Growth Hack, Liquidity, Marketing, and other program rules must be checked separately rather than inferred from the launch blog.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "SCF v7.0 launched in January 2026. It introduced three Build tracks (Open, Integration, RFP), a unified interest and referral entry, a referral program, and Instawards as the successor to Kickstart. It did not create a single Growth track.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation.",
-      "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "States four payments/three deliverable tranches."
+      "SCF v7.0 launched in January 2026.",
+      "v7 introduced three Build tracks: Open, Integration and RFP.",
+      "Instawards succeeded Kickstart, and a referral program was added."
     ],
     "avoid": [
-      "Do NOT substitute an unsupported memory claim for source-supported content.",
-      "Do NOT call acceptance a fourth deliverable milestone.",
-      "Do NOT merge distinct post-launch/supporting programs into one Growth track or freeze launch shorthand as current terms.",
-      "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
+      "Do NOT describe v7 as creating one unified Growth track."
     ],
-    "notes": "Dossier §8/§9. Version-transition fact set; trap is attributing v6 features to v7.\nAlso good if the answer: A Referral Program was added. | At launch, v7 tied the final 40% tranche to mainnet launch plus UX readiness; awarded Build teams may receive a UX audit and user testing.\nGolden cites: The 'Introducing SCF v7' blog post / SCF handbook history page.\nGT-36/39/40 independently reconciled 2026-07-10. Accept 'four tranches' only when the candidate accurately distinguishes the acceptance payment from three deliverables."
+    "notes": "Payment mechanics are graded in q-scf-build-award-cap. Do not freeze the launch blog's \"four-tranche\" shorthand as current terms."
   },
   "tags": {
     "category": "scf-grants-builders",
@@ -31,7 +28,7 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-14",
     "sources": [
       {
         "class": "A",
@@ -105,22 +102,42 @@
             "note": "Handbook HEAD e07b4bfc lists a referral program and UX audit/user testing; no unified Growth track."
           }
         ]
+      },
+      {
+        "claim": "SCF 7.0 launched in January 2026; three tracks; referral program; Instawards.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/scf-handbook/main/README.md",
+            "observedAt": "2026-11-14",
+            "note": "SCF 7.0 officially launched in January 2026."
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/ecosystem/introducing-scf-v7",
+            "observedAt": "2026-11-14",
+            "note": "4. Instawards: ambassador-led incubation. Instawards are a decentralized evolution of SCF Kickstart"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch scf-grants-builders-05)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-scf, verify-audit-scf; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "B 2026-11-02: https://raw.githubusercontent.com/stellar/scf-handbook/main/README.md (HEAD e07b4bfc, 2026-10-16) — 'Implementation of a robust referral program to sharpen selection processes ... awarded Build teams may receive a UX audit and rigorous user testing as part of the award process.'",
-        "A 2026-11-02: https://stellar.org/blog/ecosystem/introducing-scf-v7 — '40% at verified mainnet launch + UX readiness ... To receive the final tranche, projects must demonstrate UX readiness'.",
-        "A 2026-11-02: https://stellar.gitbook.io/scf-handbook/scf-awards/build-award/integration-track — 'For Integration Track awards, the final tranche (#3, 40% of the award) releases when your project reaches its committed, panel-ratified onchain metric — not on mainnet launch alone.' The verifier modified the proposed note to frame the UX gate as a launch-time term, as avoid[2] requires.",
-        "The removed nice-to-have ('unified Growth track') contradicted the case's own avoid[2].",
-        "Sibling sweep 2026-11-02: grep -i 'growth track' over eval/qa/corpus/battery -> only this case; q-edge-scf-v7-centralization-myths, q-scf-instawards, and q-scf-build-award-cap do not assert a unified Growth track."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-scf-v7-changes",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-scf-v7-changes",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-scf-v7-changes",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/scf-handbook/main/README.md -- 'SCF 7.0 officially launched in January 2026.'",
+        "Live A 2026-11-14: https://stellar.org/blog/ecosystem/introducing-scf-v7 -- '4. Instawards: ambassador-led incubation. Instawards are a decentralized evolution of SCF Kickstart'"
       ],
       "rootCause": [
-        "Eval-side authoring flaw: a legacy nice-to-have note kept the unified Growth track claim that the golden's own avoid item punishes."
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-scf-v7-changes"
+    "origin": "raven-next q-scf-v7-changes",
+    "notes": "Dossier §8/§9. Version-transition fact set; trap is attributing v6 features to v7.\nAlso good if the answer: A Referral Program was added. | At launch, v7 tied the final 40% tranche to mainnet launch plus UX readiness; awarded Build teams may receive a UX audit and user testing.\nGolden cites: The 'Introducing SCF v7' blog post / SCF handbook history page.\nGT-36/39/40 independently reconciled 2026-07-10. Accept 'four tranches' only when the candidate accurately distinguishes the acceptance payment from three deliverables.",
+    "leaf": "funding.scf-overview"
   }
 }

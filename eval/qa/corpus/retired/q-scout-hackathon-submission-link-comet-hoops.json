@@ -1,0 +1,23 @@
+{
+  "id": "q-scout-hackathon-submission-link-comet-hoops",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-scf (golden coverage audit)",
+    "reviewer": "verify-audit-scf (golden coverage audit)",
+    "reason": "Merged into q-scf-blend-winners-live. Proposal (not active).",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-scout-hackathon-submission-link-comet-hoops",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-scout-hackathon-submission-link-comet-hoops",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-scout-hackathon-submission-link-comet-hoops"
+    ],
+    "lastCaseContentSha256": "de3bb36f020b5138763ab15d18ceebbdd6c9ad1dce95b3580276655fba98f043",
+    "replacementIds": [
+      "q-scf-blend-winners-live"
+    ]
+  }
+}

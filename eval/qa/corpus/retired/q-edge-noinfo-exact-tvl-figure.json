@@ -1,0 +1,23 @@
+{
+  "id": "q-edge-noinfo-exact-tvl-figure",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-edge (golden coverage audit)",
+    "reviewer": "verify-audit-edge (golden coverage audit)",
+    "reason": "Merged into q-eco-defi-tvl-current. See mergeFixes.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-edge.json#q-edge-noinfo-exact-tvl-figure",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-edge.json#q-edge-noinfo-exact-tvl-figure",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-edge-noinfo-exact-tvl-figure"
+    ],
+    "lastCaseContentSha256": "002249d5757173de0b1e096be6dd68e67dd9a490798b704f3b820fec5fb60027",
+    "replacementIds": [
+      "q-eco-defi-tvl-current"
+    ]
+  }
+}

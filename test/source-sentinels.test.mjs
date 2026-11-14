@@ -186,13 +186,6 @@ describe("committed sentinel set", () => {
     expect(validateSentinels(committed, loadBatteryCases())).toEqual({ problems: [], stale: [] });
   });
 
-  it("binds the Chief Scientist title to Mazières's own team card", () => {
-    const card = (title, description) => `{"_type":"card","description":"${description}","image":{"url":"x"},"title":"${title}"}`;
-    const check = byId("mazieres-chief-scientist");
-    expect(evaluate(check, card("David Mazières", "Founder and Chief Scientist")).verdict).toBe("hold");
-    expect(evaluate(check, card("Someone Else", "Founder and Chief Scientist") + card("David Mazières", "Founder")).verdict).toBe("drift");
-  });
-
   it("binds the Go SDK recommendation to the go-stellar-sdk repository", () => {
     const check = byId("go-sdk-module");
     const text = (repo) => `This SDK is split up into separate packages, all of which you can find in the \`,_jsx(_components.a,{href:\`https://github.com/stellar/${repo}\``;

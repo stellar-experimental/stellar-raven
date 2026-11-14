@@ -12,18 +12,18 @@
     "lumenloop.search_documents"
   ],
   "golden": {
-    "answer": "**LOBSTR** is a non-custodial wallet operated by the **Ultra Stellar** brand, not an SDF-operated wallet. As of **2026-09-17**, current operator and live directory evidence supported Stellar and XRPL, plus web/mobile wallet surfaces; date those network/platform claims. LOBSTR's own site says 1M+ users and 10M+ monthly transactions, Google Play shows 1M+ downloads, and another ecosystem source says 1.5M users: these are differently defined, attributed claims, not one independently measured current scale. Use the operator brand unless a dated jurisdiction-specific legal entity matters. Do not assert absolute non-affiliation with SDF. SCF funding is not required for this question; if an answer cites a LOBSTR SCF total, it should name the source, its date, and whether the figure is an awarded or a paid total, because the official SCF project record reports those separately.",
+    "answer": "LOBSTR is a non-custodial Stellar wallet operated by the Ultra Stellar brand, not by SDF. It runs on web, iOS and Android and, per its operator, also supports XRPL (as of 2026-09-17). User counts are differently defined, attributed claims, such as LOBSTR's own 1M+ users and a third-party 1.5M, not one verified current total.",
     "keyFacts": [
-      "Identifies Ultra Stellar as LOBSTR's operator.",
-      "Identifies LOBSTR as non-custodial.",
-      "Dates Stellar, XRPL, and platform support.",
-      "Attributes every scale claim to its source."
+      "Ultra Stellar operates LOBSTR.",
+      "LOBSTR is non-custodial.",
+      "LOBSTR supports Stellar and XRPL as of 2026-09-17.",
+      "User and download figures are attributed claims, not one verified total."
     ],
     "avoid": [
-      "Do NOT claim LOBSTR is built/operated by the Stellar Development Foundation.",
-      "Do NOT claim user/download/transaction figures are one verified current total, assert absolute SDF non-affiliation, freeze a legal suffix, or call a paid SCF total an awarded total, or the reverse."
+      "Do NOT claim SDF builds or operates LOBSTR.",
+      "Do NOT present user, download or transaction figures as one verified current total."
     ],
-    "notes": "GROUNDED 2026-06-22: Scout confirms Lobstr (User-Facing App, type Wallet, Live, lobstr.co): 'a widely used non-custodial Stellar wallet on iOS, Android, web and a browser extension. Users hold, send, receive, buy and swap XLM, USDC and Stellar assets... fiat on/off-ramp.' Built by Ultra Stellar (independent of SDF). The dossier's '1M+ users / 10M+ monthly tx' figures are LOBSTR's own marketing claims — kept as nice_to_have, not hard-gated. Per-project identity → lumenloop.get_project.\nAlso good if the answer: Spans web, iOS, and Android, with components like LOBSTR Vault and a Signer Extension. | Supports Stellar plus the XRP Ledger.\nGolden cites: A source identifying LOBSTR / Ultra Stellar.\nGT-19 CORRECTION 2026-07-10: current Scout/operator evidence now supports XRPL, so the old 'not corpus-answerable' note is superseded. Keep Ultra Stellar/non-custody, date network/platform support, attribute conflicting scale claims, and avoid absolute affiliation/legal-entity claims.\nSCF CORRECTION 2026-09-17: SCF amounts are optional. The official SCF project record reports a total awarded and a total paid separately, and the two aggregator totals follow those two bases. A sourced, dated SCF total with its awarded-or-paid basis named is not a wrong claim; do not require or grade any specific amount.\nAccurately quoting the canonical LumenLoop source's `scf.awarded_total` as an awarded amount, or its `operating_region: [\"Indonesia\"]`, is not a wrong claim while ll-013 and ll-008 stand; grade caps at partial for those claims unless the answer contradicts the golden fact independently of the quoted source."
+    "notes": "A dated, sourced SCF total that names its awarded-or-paid basis is not wrong; do not require one. Quoting Lumenloop scf.awarded_total or its operating_region is not wrong while ll-013 and ll-008 stand (cap partial)."
   },
   "tags": {
     "category": "defi-ecosystem",
@@ -122,25 +122,22 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Grading-policy round 2026-11-02 (owner decision D2; .agents/rounds/2026-11-02-grading-policy.md)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-defi, verify-defi; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Ultra Stellar operates LOBSTR [confirmed] — A: https://play.google.com/store/apps/details?id=com.lobstr.client — \"developer Ultra Stellar OU\" (observedAt 2026-11-02)",
-        "Ultra Stellar operates LOBSTR [confirmed] — C: https://stellarlight.xyz/api/projects/search?q=lobstr — \"Lobstr | Live | Wallet; Ultra Stellar | Live\" (observedAt 2026-11-02)",
-        "Stellar + XRPL support; 1M+ users and 10M+ monthly tx (operator claims); 1M+ Google Play downloads [confirmed-as-of] — A: https://lobstr.co/ — \"LOBSTR is the easiest way to get started with Stellar and XRP Ledger ... 1,000,000+ Total users ... 10,000,000+ Monthly transactions\" (observedAt 2026-11-01)",
-        "Stellar + XRPL support; 1M+ users and 10M+ monthly tx (operator claims); 1M+ Google Play downloads [confirmed-as-of] — A: https://play.google.com/store/apps/details?id=com.lobstr.client — \"1M+ Downloads\" (observedAt 2026-11-02)",
-        "LOBSTR is non-custodial [confirmed] — A: https://lobstr.co/ (inherited 2026-09-17) — \"You control your keys\" (observedAt 2026-09-17)",
-        "LOBSTR is non-custodial [confirmed] — C: Stellar Light Lobstr shortDescription — \"a widely used non-custodial Stellar wallet\" (observedAt 2026-11-02)",
-        "SCF record reports totalAwarded and totalPaid separately [confirmed] — A: https://communityfund.stellar.org/project/lobstr-gcn (inherited) — \"separate project totalAwarded and totalPaid fields\" (observedAt 2026-09-17)",
-        "SCF record reports totalAwarded and totalPaid separately [confirmed] — C: lumenloop get_scf_submissions {name:LOBSTR} — \"3 submissions incl. recLPGmYh7sNVjRz7\" (observedAt 2026-11-02)",
-        "No gospel change: every audited claim was confirmed or confirmed-as-of. Proposer sibling list q-eco-stellar-wallets-list, q-edge-ambig-best-wallet; no contradiction recorded.",
-        "Freshness change 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): tags.freshness stable -> scheduled, truth.asOf 2026-11-02, truth.reverifyBy 2027-01-19. The 2026-11-02 evidence above confirms the dated values live; no other judge-facing field changed."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-eco-lobstr-wallet",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-eco-lobstr-wallet",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-eco-lobstr-wallet",
+        "Live A 2026-11-14: https://lobstr.co/ -- 'not re-read 2026-11-14; operator and XRPL support last confirmed 2026-09-17'"
       ],
       "rootCause": [
-        "Eval-side authoring flaw: the golden carries a dated point-in-time value but was tagged stable, so no reverifyBy date forced a re-check; the golden-truth skill requires scheduled plus truth.reverifyBy for such values (.agents/rounds/2026-11-02-grading-policy.md)."
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
     "origin": "raven-next q-eco-lobstr-wallet",
-    "reverifyBy": "2027-01-19"
+    "reverifyBy": "2027-01-19",
+    "notes": "GROUNDED 2026-06-22: Scout confirms Lobstr (User-Facing App, type Wallet, Live, lobstr.co): 'a widely used non-custodial Stellar wallet on iOS, Android, web and a browser extension. Users hold, send, receive, buy and swap XLM, USDC and Stellar assets... fiat on/off-ramp.' Built by Ultra Stellar (independent of SDF). The dossier's '1M+ users / 10M+ monthly tx' figures are LOBSTR's own marketing claims — kept as nice_to_have, not hard-gated. Per-project identity → lumenloop.get_project.\nAlso good if the answer: Spans web, iOS, and Android, with components like LOBSTR Vault and a Signer Extension. | Supports Stellar plus the XRP Ledger.\nGolden cites: A source identifying LOBSTR / Ultra Stellar.\nGT-19 CORRECTION 2026-07-10: current Scout/operator evidence now supports XRPL, so the old 'not corpus-answerable' note is superseded. Keep Ultra Stellar/non-custody, date network/platform support, attribute conflicting scale claims, and avoid absolute affiliation/legal-entity claims.\nSCF CORRECTION 2026-09-17: SCF amounts are optional. The official SCF project record reports a total awarded and a total paid separately, and the two aggregator totals follow those two bases. A sourced, dated SCF total with its awarded-or-paid basis named is not a wrong claim; do not require or grade any specific amount.\nAccurately quoting the canonical LumenLoop source's `scf.awarded_total` as an awarded amount, or its `operating_region: [\"Indonesia\"]`, is not a wrong claim while ll-013 and ll-008 stand; grade caps at partial for those claims unless the answer contradicts the golden fact independently of the quoted source.",
+    "leaf": "ecosystem.project-builders",
+    "secondaryLeaf": "wallets.landscape"
   }
 }

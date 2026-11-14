@@ -1,0 +1,23 @@
+{
+  "id": "q-protocol-cap-vs-sep",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-protocol (golden coverage audit)",
+    "reviewer": "verify-protocol (golden coverage audit)",
+    "reason": "Merged into q-protocol-cap-process. The survivor q-protocol-cap-process rewrite keeps 'CAPs change protocol; SEPs are ecosystem interoperability standards' as a key fact and keeps status-vs-activation separation. Nothing unique is lost.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-protocol-cap-vs-sep",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-protocol-cap-vs-sep",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-protocol-cap-vs-sep"
+    ],
+    "lastCaseContentSha256": "683019a66ab62e341ee8f33314ee271a35b5e77e3cf2a49bad7d0d84a1d5175c",
+    "replacementIds": [
+      "q-protocol-cap-process"
+    ]
+  }
+}

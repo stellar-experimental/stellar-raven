@@ -1,6 +1,6 @@
 {
   "id": "q-pc-cross-redstone-sep40",
-  "question": "A June 2026 ecosystem article says an oracle rolled out SEP-40 for Stellar's RWA moment. Which live project is it, and what do official Stellar docs say SEP-40-compatible feeds are for?",
+  "question": "Which oracle providers do the official Stellar docs list as SEP-40 compatible, and what is SEP-40 for?",
   "surface": [
     "lumenloop.search_directory",
     "lumenloop.find_content_about_project",
@@ -8,18 +8,17 @@
     "stellarDocs.search_docs"
   ],
   "golden": {
-    "answer": "As observed on 2026-07-11, the article is RedStone's 2026-06-04 piece, 'Reliability at Scale: RedStone and the Data Standard for Stellar's RWA Moment.' Scout identifies Redstone Finance as a live modular price oracle on Stellar/Soroban that implements SEP-40 and delivers price feeds to contracts. The official Stellar oracle-provider docs describe public price-oracle feeds as compatible with the SEP-40 ecosystem interface, so consumers such as lending or derivatives contracts can integrate a common feed interface instead of a provider-specific one. The live records use different counts for assets/feeds, so the answer should not freeze any one count.",
+    "answer": "SEP-40, the Oracle Consumer Interface (a Draft SEP), gives price-feed contracts a common interface (lastprice, price, prices, plus base, assets, decimals, resolution), so lending or derivatives contracts can switch providers without custom code. As of 2026-11-14 the official oracle-providers page lists Reflector's public feeds and RedStone's Mainnet contract as SEP-40 compatible; Chainlink's Stellar proxy is not.",
     "keyFacts": [
-      "Links the June 2026 RWA-moment article to RedStone Finance's SEP-40 rollout.",
-      "Identifies Redstone Finance as a live Stellar/Soroban modular price oracle.",
-      "Uses official Stellar docs for SEP-40 compatibility.",
-      "Explains SEP-40 as the oracle-feed interface for contract consumers."
+      "SEP-40 is a common price-feed interface for contracts that consume oracle data.",
+      "Official docs list Reflector's public feeds as SEP-40 compatible (dated).",
+      "Official docs list RedStone's Mainnet contract as SEP-40 compatible (dated)."
     ],
     "avoid": [
-      "Do NOT identify Reflector, DIA, or Band as the project named by the June 2026 RedStone article.",
-      "Do NOT pin nine assets or ten feeds as a single reconciled count; the live sources use different scopes/counts."
+      "Do NOT call Chainlink's Stellar proxy SEP-40 compatible.",
+      "Do NOT assert a single reconciled asset or feed count for RedStone."
     ],
-    "notes": "Cross-service grading is strict: an answer with only the article/project identity or only the SEP-40 explanation is incomplete. The count discrepancy is intentionally not a key fact.\nLive re-check 2026-11-02: the article still lists nine live assets (USST in progress); Scout says it launched with 10 feeds; the oracle-providers page now has a RedStone section naming a SEP-40-compliant Mainnet contract and a longer asset list. Any one dated, attributed count is acceptable."
+    "notes": "Naming other providers (DIA, Band, Pyth, Chainlink) is fine if their SEP-40 status is not misstated. Accept any dated, attributed feed count."
   },
   "tags": {
     "category": "protocol-core",
@@ -139,38 +138,52 @@
             "note": "A single SEP-40-compliant contract that serves the supported Stellar assets through the standard lastprice, price, and prices interface. ... CBMGLKUQZVSAIL5CPDDAWSUY7MAKXISHMOZEVLMBUWBMFGHRJSR4WYRF | SEP-40 price oracle (supported Stella... [observed Parallel cache, fetched 2026-11-02]"
           }
         ]
+      },
+      {
+        "claim": "RedStone publishes a SEP-40-compliant contract on Stellar; SEP-40 interface lastprice, price, prices",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/data/oracles/oracle-providers",
+            "observedAt": "2026-11-14",
+            "note": "A single SEP-40 -compliant contract that serves the supported Stellar assets through the standard lastprice , price , and prices interface."
+          }
+        ]
+      },
+      {
+        "claim": "Lumenloop directory lists Redstone Finance (oracle infrastructure)",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "lumenloop.search_directory({query:\"RedStone\"})",
+            "observedAt": "2026-11-14",
+            "note": "slug redstone-finance, title Redstone Finance, tags Oracle, Infrastructure, DeFi"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-01)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-protocol, verify-protocol; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Live A 2026-10-27 (Parallel cache, fetched 2026-11-02): https://developers.stellar.org/docs/data/oracles/oracle-providers -- 'A single SEP-40-compliant contract that serves the supported Stellar assets through the standard lastprice, price, and prices interface. ... CBMGLKUQZVSAIL5CPDDAWSUY7MAKXISHMOZEVLMBUWBMFGHRJSR4WYRF | SEP-40 price oracle (supported Stellar assets) | Mainnet'",
-        "Live C 2026-11-02: GET https://stellarlight.xyz/api/projects/resolve?q=redstone-finance -- 'shortDescription: 'Modular price oracle live on Stellar/Soroban mainnet (since March 2026) ... Launched with 10 feeds''",
-        "Live A 2026-09-20 (Parallel cache, fetched 2026-11-02): https://blog.redstone.finance/2026/06/04/reliability-at-scale-redstone-and-the-data-standard-for-stellars-rwa-moment/ -- 'Nine assets are now live under SEP-40 ... | USST | STBL | In Progress |'",
-        "Live C 2026-11-02: GET https://stellarlight.xyz/api/projects/search?q=redstone and /api/projects/resolve?q=redstone-finance -- 'status Live, statusAsOf 2026-07-14, statusBasis human-verified; 'Launched with 10 feeds including BTC, ETH, USDC, PYUSD and Franklin Templeton's BE...''",
-        "Live A 2026-10-27 (Parallel cache, fetched 2026-11-02): https://developers.stellar.org/docs/data/oracles/oracle-providers -- 'On Stellar, RedStone delivers price feeds for XLM, BTC, ETH, USDC, EURC, PYUSD, USDT0, Ethena's USDe and sUSDe, and a growing set of tokenized assets ...'",
-        "Live E 2026-11-02: stellarDocs.search_docs(query=\"RedStone SEP-40 oracle provider\") via Raven execute -- 'top hit https://developers.stellar.org/docs/data/oracles/oracle-providers#redstone'",
-        "Live A 2026-11-02: https://blog.redstone.finance/2026/06/04/reliability-at-scale-redstone-and-the-data-standard-for-stellars-rwa-moment/ -- '# Reliability at Scale: RedStone and the Data Standard for Stellar's RWA Moment June 4, 2026 ... RedStone has implemented the SEP-40 oracle standard on Stellar'",
-        "Live C 2026-11-02: Raven lumenloop.search_content_semantic('RedStone SEP-40 data standard Stellar RWA moment') -- 'title 'Reliability at Scale: RedStone and the Data Standard for Stellar's RWA Moment', 2026-06-04 12:52:52+00; other RedStone SEP-40 posts dated 2026-08-26'",
-        "Live D 2026-11-02: Perplexity search 'RedStone SEP-40 Stellar RWA June 2026 nine assets live' -- 'BY Wolf • JUNE 4, 2026 ... Nine assets are now live under SEP-40'",
-        "Live C 2026-11-02: Raven scout.searchProjects({q:'Redstone Finance'}) -- 'status Live, statusAsOf 2026-07-14, category Infrastructure; shortDescription 'Modular price oracle live on Stellar/Soroban mainnet (since March 2026) ... Launched with 10 feeds ... implements the SEP-40 oracle standard.''",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/data/oracles/oracle-providers#redstone -- 'Deployed RedStone contracts: CBMGLKUQZVSAIL5CPDDAWSUY7MAKXISHMOZEVLMBUWBMFGHRJSR4WYRF | SEP-40 price oracle (supported Stellar assets) | Mainnet'",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/data/oracles/oracle-providers -- 'A single SEP-40-compliant contract that serves the supported Stellar assets through the standard lastprice, price, and prices interface. Protocols already integrated with a SEP-40 oracle can add RedStone without changing their contract logic.'",
-        "Live E 2026-11-02: Raven stellarDocs.search_docs('SEP-40 oracle providers price feeds') -- 'top hit oracle-providers#redstone'",
-        "Live B 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0040.md -- 'Status: Draft; Version: 0.1.0 (Oracle Consumer Interface)'",
-        "Live A 2026-11-02: blog.redstone.finance 2026-06-04 article -- 'Nine assets are now live under SEP-40 ... USST | STBL | In Progress'",
-        "Live C 2026-11-02: Scout redstone-finance -- 'Launched with 10 feeds'",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/data/oracles/oracle-providers -- 'On Stellar, RedStone delivers price feeds for XLM, BTC, ETH, USDC, EURC, PYUSD, USDT0, ... (about 30 named assets)'",
-        "Live D 2026-11-02: https://www.redstone.finance/research/next-phase-rwa-stellar-2026/ -- 'In our August report, 18 of the 47 Stellar feeds were implemented with the SEP-40 standard. As of late October, that count is at 21 feeds.'",
-        "Live A 2026-11-02: RedStone 2026-06-04 article -- 'RedStone has implemented the SEP-40 oracle standard on Stellar'",
-        "Independent verifier decisions: golden.answer (accept); golden.notes (accept) -- .agents/rounds/2026-11-02-golden-audit/pass1/protocol-core-01.json.",
-        "Sibling sweep 2026-11-02: grep RedStone -> q-defi-reflector-oracle, q-sor-reflector-integration-code, q-eco-defi-market-map, q-scf-cross-reflector-rounds-current; none pins a RedStone asset/feed count; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-pc-cross-redstone-sep40",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-pc-cross-redstone-sep40",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-pc-cross-redstone-sep40",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/data/oracles/oracle-providers -- 'A single SEP-40 -compliant contract that serves the supported Stellar assets through the standard lastprice , price , and prices interface.'",
+        "Live C 2026-11-14: lumenloop.search_directory({query:\"RedStone\"}) -- 'slug redstone-finance, title Redstone Finance, tags Oracle, Infrastructure, DeFi'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/data/oracles/oracle-providers -- 'Reflector: Publicly availble free price oracles are compatible with SEP40 ecosystem standard interface.'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/data/oracles/oracle-providers -- 'RedStone: A single SEP-40-compliant contract that serves the supported Stellar assets through the standard lastprice, price, and prices interface.'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/data/oracles/oracle-providers -- 'Chainlink: Data Feeds on Stellar use a single proxy contract that serves every feed... The proxy is not SEP-40 compatible.'",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0040.md -- 'Title: Oracle Consumer Interface / Authors: Alex Mootz, OrbitLens, Markus Paulson-Luna / Status: Draft; fn base, assets, decimals, resolution, price, prices, lastprice'"
       ],
       "rootCause": [
-        "freshness-drift"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "authored 2026-07 (cross-service)"
+    "origin": "authored 2026-07 (cross-service)",
+    "notes": "Cross-service grading is strict: an answer with only the article/project identity or only the SEP-40 explanation is incomplete. The count discrepancy is intentionally not a key fact.\nLive re-check 2026-11-02: the article still lists nine live assets (USST in progress); Scout says it launched with 10 feeds; the oracle-providers page now has a RedStone section naming a SEP-40-compliant Mainnet contract and a longer asset list. Any one dated, attributed count is acceptable.",
+    "leaf": "defi.oracles"
   }
 }

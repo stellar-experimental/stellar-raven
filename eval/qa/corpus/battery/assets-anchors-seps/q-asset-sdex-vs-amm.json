@@ -7,19 +7,16 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "- **SDEX** is an on-chain **central-limit orderbook**: accounts post offers via `ManageBuyOffer`/`ManageSellOffer`/`CreatePassiveSellOffer`; matching is on-ledger and atomic. Offers can be priced **tighter or wider** at the maker's discretion [1].\n- **AMM liquidity pools** price via a **constant-product (x·y=k)** curve; each swap charges a **fixed 30 basis points (0.30%)** fee, separate from the network fee. Fees accrue into the pool (growing `k`) and are paid out to LPs proportional to their pool shares [1].\n- Both live **in-ledger (no off-chain matching engine)**, and a single **path payment** can route across **both** offers and pools in one atomic transaction [1].\n- **AMM pool-share trustlines cost two base reserves** (vs one for a normal asset trustline). High-volume pairs tend to concentrate on offers; exotic/long-tail pairs on pools [1].",
+    "answer": "The SDEX is an on-ledger order book: makers post offers (ManageBuyOffer, ManageSellOffer) at prices they choose. AMM liquidity pools price along a constant-product curve (x*y=k) and charge a fixed 30 basis point (0.30%) fee, separate from network fees, which accrues to liquidity providers. A pool-share trustline needs two base reserves. A path payment can route across both.",
     "keyFacts": [
-      "SDEX uses an on-chain central-limit orderbook with ManageBuyOffer or ManageSellOffer.",
-      "AMM pools use a constant-product (x*y=k) pricing curve.",
+      "The SDEX is an on-ledger order book of ManageBuyOffer and ManageSellOffer offers.",
+      "AMM pools price by a constant-product (x*y=k) invariant.",
       "AMM swaps charge a fixed 30 basis points (0.30%) fee.",
-      "The AMM swap fee applies in addition to the network fee.",
-      "Orderbook makers set tighter or wider prices."
+      "A pool-share trustline requires two base reserves."
     ],
     "avoid": [
-      "Do NOT state the AMM fee is a different number (e.g. 0.03%, 1%, 0.25%) as the canonical Stellar pool fee.",
-      "Do NOT claim Stellar's DEX is an off-chain or order-matching-server based exchange."
-    ],
-    "notes": "Required comparison (SDEX vs AMM). Dossier §3, §8.2. AMM fee = fixed 30 bps.\nAlso good if the answer: Both live in-ledger (no off-chain matching engine); path payments can route across both. | AMM pool-share trustlines cost two base reserves; LPs earn the accumulated fees proportional to their share.\nGolden cites: The SDEX / liquidity-pools page on developers.stellar.org."
+      "Do NOT claim that the AMM swap fee is a number other than 30 basis points."
+    ]
   },
   "tags": {
     "category": "assets-anchors-seps",
@@ -64,20 +61,43 @@
             "observedAt": "2026-08-29"
           }
         ]
+      },
+      {
+        "claim": "AMM fee is a fixed 30 bps (0.30%), separate from network fees; pool-share trustline needs 2 base reserves; constant-product invariant.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools",
+            "observedAt": "2026-11-14",
+            "note": "The fee rate on Stellar is 30 bps, which is equal to 0.30%. These fees are completely separate from the network fees."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools",
+            "observedAt": "2026-11-14",
+            "note": "A pool share trustline requires 2 base reserves instead of 1."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-02)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-assets, verify-audit-assets; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "2026-11-02 [A] https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — \"Stellar uses order books to operate its decentralized exchange ... Orders in Stellar behave like limit orders\" (claim: golden.keyFacts[0] confirmed: SDEX is an on-chain order book with ManageBuyOffer/ManageSellOffer)",
-        "2026-11-02 [B] https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-transaction.x — \"MANAGE_SELL_OFFER = 3, CREATE_PASSIVE_SELL_OFFER = 4, MANAGE_BUY_OFFER = 12\" (claim: golden.keyFacts[0] confirmed: SDEX is an on-chain order book with ManageBuyOffer/ManageSellOffer)",
-        "2026-11-02 [A] https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — \"Stellar enforces a constant product invariant ... The fee rate on Stellar is 30 bps, which is equal to 0.30%. These fees are completely separate from the network fees.\" (claim: golden.keyFacts[1..3] confirmed: Constant product; fixed 30 bps; separate from network fee)",
-        "2026-11-02 [B] https://github.com/stellar/stellar-protocol/blob/master/core/cap-0038.md — \"LIQUIDITY_POOL_FEE_V18 = 30\" (claim: golden.keyFacts[1..3] confirmed: Constant product; fixed 30 bps; separate from network fee)",
-        "2026-11-02 [A] https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools — \"Orders in Stellar behave like limit orders ... the order is saved on the orderbook until it is either consumed ... or canceled\" (claim: golden.keyFacts[4] confirmed: Orderbook makers set tighter or wider prices)",
-        "Sibling sweep 2026-11-02: proposer checked q-asset-amm-fee-reserve, q-asset-path-payment-ops; no gospel change in this case, so no sibling contradiction can arise from this event."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-assets.json#q-asset-sdex-vs-amm",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-assets.json#q-asset-sdex-vs-amm",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-asset-sdex-vs-amm",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools -- 'The fee rate on Stellar is 30 bps, which is equal to 0.30%. These fees are completely separate from the network fees.'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools -- 'A pool share trustline requires 2 base reserves instead of 1.'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-asset-sdex-vs-amm"
+    "origin": "raven-next q-asset-sdex-vs-amm",
+    "notes": "Required comparison (SDEX vs AMM). Dossier §3, §8.2. AMM fee = fixed 30 bps.\nAlso good if the answer: Both live in-ledger (no off-chain matching engine); path payments can route across both. | AMM pool-share trustlines cost two base reserves; LPs earn the accumulated fees proportional to their share.\nGolden cites: The SDEX / liquidity-pools page on developers.stellar.org.",
+    "leaf": "defi.liquidity-pools",
+    "secondaryLeaf": "defi.sdex-orderbook"
   }
 }

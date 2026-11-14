@@ -6,16 +6,16 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "A Stellar keypair is only cryptographic identity until a successful **CreateAccount** operation creates its ledger entry. A normal Payment to a nonexistent G-address fails with `PAYMENT_NO_DESTINATION`; Payment is not account creation. For the ordinary **unsponsored** path, an empty account needs two base reserves—**currently 1 XLM** with the 0.5 XLM base reserve (a network parameter that validators can vote to change). CAP-0033 also permits **sponsored account creation with `startingBalance=0`**, shifting those reserves to the sponsor when the sponsorship sandwich and authorizations are correct. On Testnet, Friendbot can create/fund test accounts; on Mainnet use CreateAccount directly or through a real sponsoring/funding service. Re-read current reserve configuration before quoting the numeric minimum.",
+    "answer": "A keypair is only an identity until a CreateAccount operation creates its ledger entry, so a Payment to a nonexistent G-address fails with PAYMENT_NO_DESTINATION. An unsponsored empty account needs two base reserves, 1 XLM at the 0.5 XLM base reserve, which validators can change. A sponsored CreateAccount (CAP-0033) can use startingBalance 0.",
     "keyFacts": [
       "CreateAccount, not key generation or Payment, creates the ledger account.",
-      "Distinguishes the current unsponsored minimum (two base reserves) from CAP-0033 sponsored zero-balance creation."
+      "The unsponsored minimum is two base reserves (1 XLM at the 0.5 XLM reserve).",
+      "Sponsored creation can start at 0 XLM."
     ],
     "avoid": [
-      "Do NOT say every generated G-address exists or that Payment creates a nonexistent destination.",
-      "Do NOT claim every new account must itself receive 1 XLM when sponsored creation is available, or freeze the reserve amount without a date."
+      "Do NOT say Payment creates a missing destination or that every generated address exists."
     ],
-    "notes": "GT-29 CORRECTION 2026-07-10: 1 XLM is the current unsponsored empty-account minimum, not a universal activation rule. CAP-0033 permits sponsored CreateAccount with startingBalance=0. Payment to a nonexistent destination still fails.\nGT-29 author/reviewer reconciliation; sd-013 records the Docs lifecycle gap."
+    "notes": "Accept 1 XLM only when dated or tied to the reserve; the reserve is validator-set."
   },
   "tags": {
     "category": "protocol-core",
@@ -88,27 +88,43 @@
             "note": "Fetched CAP-0033 source defines sponsored reserves, including sponsored zero-starting-balance creation."
           }
         ]
+      },
+      {
+        "claim": "Base reserve 0.5 XLM so an empty unsponsored account needs 1 XLM",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "F",
+            "ref": "https://horizon.stellar.org/ledgers?order=desc&limit=5",
+            "observedAt": "2026-11-14",
+            "note": "closed_at 02:48:27, :32, :37, :42, :47Z; base_reserve_in_stroops 5000000; max_tx_set_size 1000; protocol_version 29"
+          },
+          {
+            "class": "E",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/lumens#minimum-balance",
+            "observedAt": "2026-11-14",
+            "note": "An account must always maintain a minimum balance of two base reserves (currently 1 XLM)."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Grading-policy round 2026-11-02 (owner decision D2; .agents/rounds/2026-11-02-grading-policy.md)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-protocol, verify-protocol; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Live A 2026-11-02: https://developers.stellar.org/docs/build/guides/transactions/create-account -- 'A valid keypair alone does not make an account.'",
-        "Live B 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-xdr/curr/Stellar-transaction.x -- 'PAYMENT_NO_DESTINATION = -5, // destination account does not exist'",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/lumens -- 'One base reserve is currently 0.5 XLM. ... An account must always maintain a minimum balance of two base reserves (currently 1 XLM).'",
-        "Live F 2026-11-02: https://horizon.stellar.org/ledgers?order=desc&limit=1 -- 'ledger 65269900 closed 2026-11-02T16:01:24Z base_reserve_in_stroops=5000000 protocol_version=29'",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves -- 'a brand-new account can be created with a startingBalance of 0: wrap the CreateAccount operation in a BeginSponsoringFutureReserves/EndSponsoringFutureReserves sandwich'",
-        "Live B 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0033.md -- 'Status: Final; Protocol version: 14/15'",
-        "Re-verified with no gospel change; proposer matrix .agents/rounds/2026-11-02-golden-audit/pass1/protocol-core-01.json (no proposal, so no verifier decision).",
-        "Sibling sweep 2026-11-02: q-edge-1xlm-activation-fee, q-pc-sponsored-reserves, q-pc-account-merge-reclaim-reserve checked; base reserve 0.5 XLM / 1 XLM minimum consistent; no contradiction.",
-        "Durable wording 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): golden.answer \"**1 XLM as of 2026-07-10** with a 0.5 XLM base reserve\" -> \"**currently 1 XLM** with the 0.5 XLM base reserve (a network parameter that validators can vote to change)\". The 2026-11-02 Horizon ledger reads above (base_reserve_in_stroops 5000000) and the Lumens page (\"One base reserve is currently 0.5 XLM\") confirm the value; tags.freshness stays stable.",
-        "Durable wording 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md, independent review F6): golden.keyFacts[1] \"Distinguishes the dated unsponsored minimum from CAP-0033 sponsored zero-balance creation.\" -> \"Distinguishes the current unsponsored minimum (two base reserves) from CAP-0033 sponsored zero-balance creation.\", because the answer no longer dates the minimum. The value is unchanged."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-pc-account-activation-not-found",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-pc-account-activation-not-found",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-pc-account-activation-not-found",
+        "Live F 2026-11-14: https://horizon.stellar.org/ledgers?order=desc&limit=5 -- 'closed_at 02:48:27, :32, :37, :42, :47Z; base_reserve_in_stroops 5000000; max_tx_set_size 1000; protocol_version 29'",
+        "Live E 2026-11-14: https://developers.stellar.org/docs/learn/fundamentals/lumens#minimum-balance -- 'An account must always maintain a minimum balance of two base reserves (currently 1 XLM).'",
+        "Live F 2026-11-14: https://horizon.stellar.org/ledgers?order=desc&limit=1 -- '\"base_reserve_in_stroops\": 5000000 (ledger 65467844)'"
       ],
       "rootCause": [
-        "Eval-side authoring flaw: a stable golden pinned the base reserve with an \"as of <date>\" value. The base reserve is a network parameter that changes only by validator vote, so the golden now states it as the current value with that caveat (durable-fact gating), and the register numericInvariants \"base reserve\" entry keeps sibling cases consistent (.agents/rounds/2026-11-02-grading-policy.md)."
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-pc-account-activation-not-found"
+    "origin": "raven-next q-pc-account-activation-not-found",
+    "notes": "GT-29 CORRECTION 2026-07-10: 1 XLM is the current unsponsored empty-account minimum, not a universal activation rule. CAP-0033 permits sponsored CreateAccount with startingBalance=0. Payment to a nonexistent destination still fails.\nGT-29 author/reviewer reconciliation; sd-013 records the Docs lifecycle gap.",
+    "leaf": "protocol.accounts-reserves"
   }
 }

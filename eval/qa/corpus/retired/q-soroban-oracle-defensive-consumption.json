@@ -1,0 +1,21 @@
+{
+  "id": "q-soroban-oracle-defensive-consumption",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-soroban-b (golden coverage audit)",
+    "reviewer": "verify-audit-soroban-b (golden coverage audit)",
+    "reason": "Defenses are q-comp-yieldblox-oracle-incident kf3 (depth minimums, value bounds, supply caps; staleness not causal). See the security.contract-security leaf finding: facet 2 still has no case.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-b.json#q-soroban-oracle-defensive-consumption",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-b.json#q-soroban-oracle-defensive-consumption",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-soroban-oracle-defensive-consumption"
+    ],
+    "lastCaseContentSha256": "6e431f6e3f091443d09497ceacbb4dc4bc74193c7982363c6f8025dc66b7bed0",
+    "replacementIds": []
+  }
+}

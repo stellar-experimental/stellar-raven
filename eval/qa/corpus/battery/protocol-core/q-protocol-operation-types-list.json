@@ -8,19 +8,16 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "Operations are the unit of action inside a transaction (a tx bundles 1+ operations) [1]. The classic\noperation types are [1]:\n\n- **Payment / asset:** CreateAccount, Payment, PathPaymentStrictSend, PathPaymentStrictReceive\n- **DEX / trustline:** ManageBuyOffer, ManageSellOffer, CreatePassiveSellOffer, ChangeTrust,\n  SetTrustLineFlags (and legacy AllowTrust)\n- **Account / admin:** SetOptions, AccountMerge, ManageData, BumpSequence\n- **Claimable balances:** CreateClaimableBalance, ClaimClaimableBalance\n- **Liquidity pools:** LiquidityPoolDeposit, LiquidityPoolWithdraw\n- **Clawback:** Clawback, ClawbackClaimableBalance\n- **Sponsorship:** BeginSponsoringFutureReserves, EndSponsoringFutureReserves, RevokeSponsorship\n- **Soroban:** InvokeHostFunction, ExtendFootprintTTL, RestoreFootprint\n\nThere are **no** ERC-style `Transfer`/`Mint`/`Burn` classic operations [1].\n\n- [1] developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations",
+    "answer": "A transaction is the signed, atomic unit that bundles one or more operations. Classic operation types: CreateAccount, Payment, PathPaymentStrictSend/Receive; ManageBuyOffer, ManageSellOffer, CreatePassiveSellOffer; ChangeTrust, SetTrustLineFlags; SetOptions, AccountMerge, ManageData, BumpSequence; claimable-balance, liquidity-pool, clawback and sponsorship operations; and Soroban InvokeHostFunction, ExtendFootprintTTL, RestoreFootprint. There are no ERC-style Transfer, Mint or Burn operations.",
     "keyFacts": [
-      "Payment and CreateAccount are core payment/asset operations.",
-      "PathPaymentStrictSend and PathPaymentStrictReceive are core payment/asset operations.",
-      "DEX operations include ManageBuyOffer and ManageSellOffer.",
-      "Trustline operations include ChangeTrust and SetTrustLineFlags.",
-      "Enumerates account/admin operations: SetOptions, AccountMerge, ManageData, BumpSequence."
+      "A transaction bundles one or more operations atomically and is the signed unit.",
+      "Names the main payment, offer, trustline, account and Soroban operations.",
+      "There are no Transfer, Mint or Burn operations."
     ],
     "avoid": [
-      "Do NOT invent non-existent operation names (e.g. 'Transfer', 'Mint', 'Burn' as classic operations).",
-      "Do NOT conflate operations with transactions (operations are bundled inside a transaction)."
+      "Do NOT invent operation names or say operations are signed and submitted on their own."
     ],
-    "notes": "Axis-C list rebalance. Enumeration of classic operation types → stellar_docs_mcp. Distinct from q-protocol-operations-vs-transactions (factual concept). Trap = inventing ERC-style 'Mint'/'Burn' ops or conflating ops with txs.\nAlso good if the answer: Names claimable-balance and liquidity-pool operations (CreateClaimableBalance/ClaimClaimableBalance, LiquidityPoolDeposit/Withdraw). | Names Clawback / ClawbackClaimableBalance and the InvokeHostFunction operation (Soroban contract invocation).\nGolden cites: A list-of-operations page on developers.stellar.org."
+    "notes": "Legacy AllowTrust and Inflation need not be listed."
   },
   "tags": {
     "category": "protocol-core",
@@ -65,18 +62,35 @@
             "note": "Dated web sweep query: ‘site:developers.stellar.org full list Stellar operations Transfer Mint Burn’. Top primary results: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations and https://github.com/orgs/stellar/discussions/1553. Exact observed text: ‘Explore the full list of Stellar operations’; CAP-67 describes Transfer, Mint, Burn, and Clawback as emitted events for Classic operations. The exhaustive primary list contains no classic operations with those ERC-style names, and no primary result contradicted that absence."
           }
         ]
+      },
+      {
+        "claim": "Classic OperationType set including InvokeHostFunction, ExtendFootprintTTL, RestoreFootprint",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-xdr/blob/v30.0/Stellar-transaction.x",
+            "observedAt": "2026-11-14",
+            "note": "enum OperationType { CREATE_ACCOUNT = 0, PAYMENT = 1, … INVOKE_HOST_FUNCTION = 24, EXTEND_FOOTPRINT_TTL = 25, RESTORE_FOOTPRINT = 26 }"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-04)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-protocol, verify-protocol; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Class B 2026-11-02: https://raw.githubusercontent.com/stellar/stellar-xdr/v28.0/Stellar-transaction.x — 'enum OperationType { CREATE_ACCOUNT = 0, PAYMENT = 1, PATH_PAYMENT_STRICT_RECEIVE = 2, ...' with no TRANSFER, MINT, or BURN member; v30.0 is byte-identical to v27.0.",
-        "Class A 2026-10-24: https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations — sections Payment, Path payment strict receive, Manage buy offer, Change trust, Account merge, Invoke Host Function, Extend Footprint TTL, Restore Footprint.",
-        "Class A 2026-10-28: https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering — 'Transactions can have up to 100 operations per transaction except for transactions that execute a smart contract.'",
-        "No gospel change. Sibling sweep: q-asset-path-payment-ops, q-sep-clawback-prereq-flag, q-defi-arbitrage-pathpayment-bots, q-asset-usdc-eurc-path-fx — consistent."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-protocol-operation-types-list",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-protocol-operation-types-list",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-protocol-operation-types-list",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-xdr/blob/v30.0/Stellar-transaction.x -- 'enum OperationType { CREATE_ACCOUNT = 0, PAYMENT = 1, … INVOKE_HOST_FUNCTION = 24, EXTEND_FOOTPRINT_TTL = 25, RESTORE_FOOTPRINT = 26 }'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-protocol-operation-types-list"
+    "origin": "raven-next q-protocol-operation-types-list",
+    "notes": "Axis-C list rebalance. Enumeration of classic operation types → stellar_docs_mcp. Distinct from q-protocol-operations-vs-transactions (factual concept). Trap = inventing ERC-style 'Mint'/'Burn' ops or conflating ops with txs.\nAlso good if the answer: Names claimable-balance and liquidity-pool operations (CreateClaimableBalance/ClaimClaimableBalance, LiquidityPoolDeposit/Withdraw). | Names Clawback / ClawbackClaimableBalance and the InvokeHostFunction operation (Soroban contract invocation).\nGolden cites: A list-of-operations page on developers.stellar.org.",
+    "leaf": "protocol.operations-transactions"
   }
 }

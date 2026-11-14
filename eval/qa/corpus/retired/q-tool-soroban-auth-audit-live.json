@@ -1,0 +1,21 @@
+{
+  "id": "q-tool-soroban-auth-audit-live",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-tooling-b (golden coverage audit)",
+    "reviewer": "verify-audit-tooling-b (golden coverage audit)",
+    "reason": "q-soroban-auth-recursion-dos-audit tests exactly the same finding with the same key facts; the extra Scout exactMiss fact is a resolved defect (sls-071, sls-074) with no measurement value in a truth battery.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-b.json#q-tool-soroban-auth-audit-live",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-b.json#q-tool-soroban-auth-audit-live",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-tool-soroban-auth-audit-live"
+    ],
+    "lastCaseContentSha256": "d908dbe0fd60ab9f6d48327b9561736da55f4d485d2cd4b1b2c6e6f4dc4530aa",
+    "replacementIds": []
+  }
+}

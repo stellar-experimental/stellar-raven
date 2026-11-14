@@ -9,18 +9,18 @@
     "stellarDocs.search_wallet_dapp_docs"
   ],
   "golden": {
-    "answer": "There is **no 'create asset' operation** — a classic asset is defined by its **`(asset_code, issuer account)`** pair and simply comes into existence the first time the issuer pays it out [1][2]. The flow:\n\n1. Create/fund the **issuing account** and a separate **distribution account** (two-account best practice) [1].\n2. Optionally set issuer **authorization flags** first (e.g. AUTH_REQUIRED/REVOCABLE, or clawback) — AUTH_REQUIRED and clawback affect trustlines created afterward; AUTH_REVOCABLE also lets the issuer revoke existing trustlines [1].\n3. The **distribution account opens a trustline** to the asset via **`ChangeTrust`** [2].\n4. The **issuer sends** (a `Payment`) the desired supply to the distribution account — this is the issuance/mint [2].\n5. Publish a **`stellar.toml` (SEP-1)** so wallets can discover and identify the asset [1].\n6. Optionally cap supply by locking the issuer after full issuance [1]. Setting master weight to 0 disables the master key. No remaining signing authority may authorize further issuance. AUTH_IMMUTABLE only freezes the auth flags and blocks account merge; it does not cap supply.",
+    "answer": "There is no create-asset operation. An asset is an asset code plus issuer. Fund a separate issuing account and distribution account, set any authorization flags first, have the distribution account open a trustline with `ChangeTrust`, then have the issuer pay the supply to it. Publish a stellar.toml (SEP-1). Locking the issuer afterwards stops further issuance; paying the asset back to the issuer burns it.",
     "keyFacts": [
       "A classic asset is defined by its asset code and issuing account.",
-      "The asset exists after the issuer sends it to an account with a trustline.",
-      "The distribution account establishes the asset trustline with ChangeTrust.",
-      "The issuer sends the supply to the distribution account with a Payment."
+      "The distribution account opens a trustline with ChangeTrust before it receives the asset.",
+      "The issuer creates supply by paying it to the distribution account.",
+      "Using distinct issuing and distribution accounts is recommended, not required."
     ],
     "avoid": [
-      "Do NOT describe issuing a Stellar asset as deploying a Solidity/ERC-20 contract.",
-      "Do NOT claim there is a dedicated 'createAsset' operation on the protocol."
+      "Do NOT describe issuing a classic asset as deploying an ERC-20-style contract.",
+      "Do NOT claim that a dedicated createAsset operation exists in the protocol."
     ],
-    "notes": "End-to-end issuance how-to. Dossier §1.\nAlso good if the answer: Recommends the two-account (issuing + distribution) pattern and setting any needed auth flags first. | Recommends publishing a stellar.toml (SEP-1) so wallets can discover/identify the asset.\nGolden cites: An asset-issuance page on developers.stellar.org.\nLocking the issuer caps supply only while any deployed SAC's admin is still the issuer: the control-asset-access docs warn that a SAC admin moved with `set_admin` can still mint. Do not penalize an answer that adds this caveat to step 6.\nFor step 6, master weight 0 disables only the master key. No remaining signing authority may authorize further issuance or restore issuance permission."
+    "notes": "A SAC admin moved with set_admin can still mint after the issuer is locked; do not penalize an answer that adds this."
   },
   "tags": {
     "category": "assets-anchors-seps",
@@ -202,22 +202,55 @@
             "note": "fn mint reads the administrator and calls admin.require_auth(); fn set_admin requires the current admin's auth."
           }
         ]
+      },
+      {
+        "claim": "No create-asset operation; issuing is sending from the issuer to a trustline holder.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets",
+            "observedAt": "2026-11-14",
+            "note": "There is no dedicated operation to create an asset on Stellar."
+          }
+        ]
+      },
+      {
+        "claim": "Two-account practice is recommended; locking the issuer needs master weight 0 and no other signers, and a SAC admin can still mint.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/control-asset-access.md",
+            "observedAt": "2026-11-14",
+            "note": "It is best practice on the Stellar network to create two accounts when issuing an asset: 1) the issuing account and 2) the distribution account."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/control-asset-access.md",
+            "observedAt": "2026-11-14",
+            "note": "set the issuing account’s master weight to 0 using the Set Options operation. This disables the master key, but it does not disable other signers"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-03",
-      "by": "Codex t55 proposer; Grok 4.7 high, independent verifier t5q; Codex root applier; research/audits/2026-11-02-golden-overnight/reference-correction-review.md",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-assets, verify-audit-assets; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Primary classes A/B checked 2026-11-03. Official multisig documentation and immutable Stellar Core revision b8c4f12d6f1159d67be8743c87a3c7df839ae7f4 support the signing-authority distinction.",
-        "Durable source receipts: research/audits/2026-11-02-golden-overnight/issuer-lock-core-receipts.json.",
-        "The shown recipe creates new default accounts and adds no other signer; the qualification does not declare that recipe false.",
-        "The owned sibling sweep covered 501 battery cases, four proposals, two live cases, and supporting corpus files. Only q-asset-issue-asset-howto requires this narrow answer qualification.",
-        "Exact independent review, including threshold and authority-restoration behavior, is recorded in research/audits/2026-11-02-golden-overnight/reference-correction-review.md. Original recorded grades remain unchanged."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-assets.json#q-asset-issue-asset-howto",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-assets.json#q-asset-issue-asset-howto",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-asset-issue-asset-howto",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets -- 'There is no dedicated operation to create an asset on Stellar.'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/tokens/control-asset-access.md -- 'It is best practice on the Stellar network to create two accounts when issuing an asset: 1) the issuing account and 2) the distribution account.'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/tokens/control-asset-access.md -- 'set the issuing account’s master weight to 0 using the Set Options operation. This disables the master key, but it does not disable other signers'"
       ],
       "rootCause": [
-        "https://github.com/stellar-experimental/stellar-raven/blob/e5865654902461d4a46b140871d929a70e72c1c6/improvements/stellar-docs/sd-082-issuer-lock-omits-other-signers.md"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-asset-issue-asset-howto"
+    "origin": "raven-next q-asset-issue-asset-howto",
+    "notes": "End-to-end issuance how-to. Dossier §1.\nAlso good if the answer: Recommends the two-account (issuing + distribution) pattern and setting any needed auth flags first. | Recommends publishing a stellar.toml (SEP-1) so wallets can discover/identify the asset.\nGolden cites: An asset-issuance page on developers.stellar.org.\nLocking the issuer caps supply only while any deployed SAC's admin is still the issuer: the control-asset-access docs warn that a SAC admin moved with `set_admin` can still mint. Do not penalize an answer that adds this caveat to step 6.\nFor step 6, master weight 0 disables only the master key. No remaining signing authority may authorize further issuance or restore issuance permission.",
+    "leaf": "assets.issuance"
   }
 }

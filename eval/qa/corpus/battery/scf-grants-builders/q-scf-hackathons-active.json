@@ -6,18 +6,16 @@
     "scout.getHackathons"
   ],
   "golden": {
-    "answer": "A grounded answer reads current event records and dates the roster. As of 2026-11-05, Scout returns Velocity’s Blockchain Innovation Challenge powered by Stellar at the University of Waterloo as active, November 2–18, 2026, for University of Waterloo students. Its full feed contains 29 events; the upcoming filter returns no rows. Those are feed-relative observations, not a complete real-world roster.\n\nThe dated example is illustrative: a later answer must report the records supported then.",
+    "answer": "As of 2026-11-14, the Blockchain Innovation Challenge powered by Stellar (Velocity, University of Waterloo) is active, November 2 to 18, 2026, open to Waterloo students. Scout's feed lists no upcoming event, which does not prove none exists elsewhere. Stellar Hacks: Real-World ZK ended July 3, 2026.",
     "keyFacts": [
-      "Dates each specific source-supported observation.",
-      "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Identifies specific current or recently-completed hackathons from dated event records."
+      "Names a current or upcoming hackathon from a dated source, or says none is listed.",
+      "Stellar Hacks: Real-World ZK ended on July 3, 2026 and is not active.",
+      "An empty upcoming list in one feed is not proof that none exists."
     ],
     "avoid": [
-      "Do NOT call Real-World ZK currently active after 2026-07-03.",
-      "Do NOT turn a scoped catalog zero-result into a permanent global absence claim.",
-      "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical."
+      "Do NOT call Real-World ZK currently active."
     ],
-    "notes": "Grade dated source-bound event reporting and live re-check behavior. The prior November2 active-feed zero is obsolete: Waterloo now appears, agreeing with university and organizer sources. The completed Istanbul event also appears. Upcoming still returns ok-empty with fallback channels; that does not prove no opportunity exists elsewhere. Historic Real-World ZK and HackMeridian dates remain historical."
+    "notes": "Accept any dated, sourced active or upcoming event; the roster changes. Example: as of 2026-11-14 the Waterloo Blockchain Innovation Challenge ran Nov 2 to 18, 2026."
   },
   "tags": {
     "category": "scf-grants-builders",
@@ -31,7 +29,7 @@
     },
     "domain": "corpus-grounded",
     "status": "confirmed",
-    "asOf": "2026-11-05",
+    "asOf": "2026-11-14",
     "sources": [
       {
         "class": "C",
@@ -181,22 +179,50 @@
             "note": "ok, partial=false, zero upcoming rows; fallback explicitly says no upcoming hackathons in this feed, not none worldwide."
           }
         ]
+      },
+      {
+        "claim": "Active: Blockchain Innovation Challenge powered by Stellar at Waterloo, 2026-11-02 to 2026-11-18; upcoming empty; 29 events in the feed.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/hackathons?status=active",
+            "observedAt": "2026-11-14",
+            "note": "1 active: blockchain-innovation-challenge-waterloo-2026, 2026-11-02 to 2026-11-18 (generatedAt 2026-11-14T03:00Z)"
+          },
+          {
+            "class": "A",
+            "ref": "https://uwaterloo.ca/events/events/blockchain-innovation-challenge-powered-stellar",
+            "observedAt": "2026-11-14",
+            "note": "Monday, November 2, 2026 - Wednesday, November 18, 2026 (all day)"
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/hackathons?status=upcoming",
+            "observedAt": "2026-11-14",
+            "note": "counts total 0; fallbackChannels present"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-05",
-      "by": "Scout Astra high author lane; independent final review assigned to t2dv; .agents/rounds/2026-11-05-truth-maintenance/scout-golden-changes.md",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-scf, verify-audit-scf; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "A https://uwaterloo.ca/events/events/blockchain-innovation-challenge-powered-stellar — \"Monday, November 2, 2026 - Wednesday, November 18, 2026\"; \"Host: Velocity\"; Blockchain Innovation Challenge powered by Stellar.",
-        "A https://www.velocityincubator.com/programs-events/the-blockchain-innovation-challenge-powered-by-stellar — \"Who: All University of Waterloo students\"; \"When: Nov 2-18, 2026\"; \"$15,000 in prizes to be awarded\".",
-        "C https://stellarlight.xyz/api/hackathons?status=active — One active row: blockchain-innovation-challenge-waterloo-2026, November2–18, Velocity. limit=100 returns29 events. q=istanbul finds completed Stellar Pro Hackathon.",
-        "C https://stellarlight.xyz/api/hackathons?status=upcoming — ok, partial=false, zero upcoming rows; fallback explicitly says no upcoming hackathons in this feed, not none worldwide.",
-        "Scoped sibling sweep and exact replay commands: .agents/rounds/2026-11-05-truth-maintenance/scout-golden-changes.md; primary matrix scout.md. November5 America/New_York observations have November6 UTC receipt timestamps. Existing reverifyBy dates retained; unrelated historical claims were not re-dated."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-scf-hackathons-active",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-scf-hackathons-active",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-scf-hackathons-active",
+        "Live C 2026-11-14: https://stellarlight.xyz/api/hackathons?status=active -- '1 active: blockchain-innovation-challenge-waterloo-2026, 2026-11-02 to 2026-11-18 (generatedAt 2026-11-14T03:00Z)'",
+        "Live A 2026-11-14: https://uwaterloo.ca/events/events/blockchain-innovation-challenge-powered-stellar -- 'Monday, November 2, 2026 - Wednesday, November 18, 2026 (all day)'",
+        "Live C 2026-11-14: https://stellarlight.xyz/api/hackathons?status=upcoming -- 'counts total 0; fallbackChannels present'",
+        "Live C 2026-11-14: https://stellarlight.xyz/api/hackathons?status=active -- 'Blockchain Innovation Challenge powered by Stellar, Waterloo | 2026-11-02 | 2026-11-18 | active'"
       ],
       "rootCause": [
-        "freshness-drift"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-scf-hackathons-active"
+    "origin": "raven-next q-scf-hackathons-active",
+    "notes": "Grade dated source-bound event reporting and live re-check behavior. The prior November2 active-feed zero is obsolete: Waterloo now appears, agreeing with university and organizer sources. The completed Istanbul event also appears. Upcoming still returns ok-empty with fallback channels; that does not prove no opportunity exists elsewhere. Historic Real-World ZK and HackMeridian dates remain historical.",
+    "leaf": "funding.hackathons"
   }
 }

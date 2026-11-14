@@ -1,0 +1,21 @@
+{
+  "id": "q-scf-academic-research-grant",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-scf (golden coverage audit)",
+    "reviewer": "verify-audit-scf (golden coverage audit)",
+    "reason": "Weight-1, target-one leaf already held.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-scf-academic-research-grant",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-scf-academic-research-grant",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-scf-academic-research-grant"
+    ],
+    "lastCaseContentSha256": "275b58ff639a6bace718923680e098f8cca439f26cc5bb90114489c23d3a3a2a",
+    "replacementIds": []
+  }
+}

@@ -6,22 +6,18 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "Protocol `txTOO_LATE` (Horizon `tx_too_late`) means the ledger close time is later than the transaction's `maxTime`; `maxTime=0` has no upper bound. It is distinct from `txBAD_SEQ`. For an ordinary outer transaction rejected during precondition validation, expiry itself does not apply the transaction, increment the source sequence, or charge an on-chain fee. A concurrent or successful transaction may still have changed the account sequence, and fee-bump inner/outer or post-inclusion failures must be analyzed separately.\n\nIf the original submission outcome is ambiguous, query the old transaction hash and current account state until the transaction is found or the time bound has expired. A lookup miss before expiry is not proof it was never submitted. If it is found/included, do not rebuild the same intent. If it remains absent after expiry, resubmitting the unchanged envelope will still be too late: reload the current next sequence, choose appropriate future bounds and current fee, re-simulate Soroban transactions/authorization/footprint, rebuild, re-sign, submit, and track the **new hash**.\n\nDo not edit signed XDR and retain the old signatures—bounds, sequence, fee and Soroban data are signed contents, so any change creates a new signature base. Preserve idempotency/intent records so a timeout cannot turn into a duplicate payment.",
+    "answer": "`tx_too_late` (txTOO_LATE) means ledger close time passed the transaction's `maxTime`; maxTime 0 means no upper bound. It is not `tx_bad_seq`. An expired transaction consumes no sequence number or fee. Resending the same envelope fails again: confirm by hash it was not included, then rebuild with the current sequence and new time bounds, re-simulate if Soroban, re-sign, and submit under a new hash.",
     "keyFacts": [
-      "Treats txTOO_LATE/maxTime=0 and txBAD_SEQ as different result-code cases.",
-      "Keeps no-sequence/no-fee scope at ordinary outer precondition rejection.",
-      "Uses old-hash/account-state polling for ambiguity, with early misses still nonfinal.",
-      "Covers absence/expiry, current sequence/fee, future bounds, Soroban resim/sign, new hash.",
-      "Forbids signed-XDR edits, retained signatures, and duplicate intent without idempotency."
+      "txTOO_LATE means ledger close time passed maxTime (0 = no bound); it is not txBAD_SEQ.",
+      "A transaction rejected as expired before inclusion consumes no sequence number or fee.",
+      "Resubmit by rebuilding with the current sequence and new time bounds, then re-signing.",
+      "Check by hash that the old transaction was not included before rebuilding it."
     ],
     "avoid": [
-      "Do NOT simply resubmit an expired signed envelope or call tx_too_late tx_bad_seq.",
-      "Do NOT claim every failed transaction preserves sequence/fee or apply the ordinary precondition rule to all fee-bump/post-inclusion outcomes.",
-      "Do NOT treat a hash lookup miss before expiry as proof of rejection or rebuild when the old transaction was found.",
-      "Do NOT reuse a stale sequence, manually alter XDR with old signatures, or skip Soroban re-simulation.",
-      "Do NOT claim a higher fee or fee bump fixes an expired maxTime, or create duplicate intent after a timeout."
+      "Do NOT resubmit the expired signed envelope unchanged or edit signed XDR while keeping the old signatures.",
+      "Do NOT claim a higher fee or a fee bump cures an expired maxTime."
     ],
-    "notes": "GT-54 CORRECTION 2026-07-11: grade the ordinary outer precondition scope, ambiguous old-hash decision flow, current-sequence rebuild/re-sign/new-hash path, and separate Soroban/fee-bump stages. Higher fee or fee bump does not cure an expired maxTime."
+    "notes": "Fee-bump and post-inclusion failures follow separate rules; do not penalize an answer that scopes the no-fee rule to ordinary pre-inclusion rejection."
   },
   "tags": {
     "category": "tooling-infra",
@@ -110,22 +106,49 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "txTOO_LATE is returned when maxTime is nonzero and earlier than ledger close time",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionFrame.cpp",
+            "observedAt": "2026-11-14",
+            "note": "if (tb->maxTime && (tb->maxTime < (closeTime.timePoint() + upperBoundCloseTimeOffset))) ... txTOO_LATE"
+          }
+        ]
+      },
+      {
+        "claim": "Horizon documents tx_too_late as a transaction result code distinct from tx_bad_seq",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/transactions.md",
+            "observedAt": "2026-11-14",
+            "note": "**tx_too_late** `txTOO_LATE`"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-04)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-tooling-b, verify-audit-tooling-b; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Verification-only event 2026-11-02: no judge-facing field changed.",
-        "Live B 2026-11-02: https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionFrame.cpp — 'if (tb->maxTime && (tb->maxTime < (closeTime.timePoint() + upperBoundCloseTimeOffset))) ... txResult.setInnermostError(txTOO_LATE);' (validity check before apply)",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/transactions — 'tx_too_late txTOO_LATE The ledger closeTime was after the maxTime.' and 'tx_bad_seq txBAD_SEQ sequence number does not match source account'",
-        "Scope 2026-11-02: the transaction lifecycle page was not re-fetched; the claims are protocol-stable and no drift was found.",
-        "Sibling sweep 2026-11-02: no battery sibling restates txTOO_LATE resubmission semantics against this case; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-b.json#q-ti-tx-too-late-resubmit",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-b.json#q-ti-tx-too-late-resubmit",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-ti-tx-too-late-resubmit",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-core/blob/master/src/transactions/TransactionFrame.cpp -- 'if (tb->maxTime && (tb->maxTime < (closeTime.timePoint() + upperBoundCloseTimeOffset))) ... txTOO_LATE'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/transactions.md -- '**tx_too_late** `txTOO_LATE`'"
       ],
       "rootCause": [
-        "Verification-only event 2026-11-02: every judge-facing field is unchanged; Core source and the official result-code page were re-read."
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-ti-tx-too-late-resubmit"
+    "origin": "raven-next q-ti-tx-too-late-resubmit",
+    "notes": "GT-54 CORRECTION 2026-07-11: grade the ordinary outer precondition scope, ambiguous old-hash decision flow, current-sequence rebuild/re-sign/new-hash path, and separate Soroban/fee-bump stages. Higher fee or fee bump does not cure an expired maxTime.",
+    "leaf": "data.result-codes",
+    "secondaryLeaf": "protocol.timebounds-preconditions"
   }
 }

@@ -1,0 +1,23 @@
+{
+  "id": "q-production-anchor-architecture",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-assets (golden coverage audit)",
+    "reviewer": "verify-audit-assets (golden coverage audit)",
+    "reason": "Merged into q-anchor-sdp-vs-anchor-platform. See mergeFixes.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-assets.json#q-production-anchor-architecture",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-assets.json#q-production-anchor-architecture",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-production-anchor-architecture"
+    ],
+    "lastCaseContentSha256": "4bf3ce80c15167ff53c200f972d9a8c90768ae1603318a8b91057e607c7a56eb",
+    "replacementIds": [
+      "q-anchor-sdp-vs-anchor-platform"
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "id": "q-ti-block-explorer-basics",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-hist-retail (golden coverage audit)",
+    "reviewer": "verify-hist-retail (golden coverage audit)",
+    "reason": "Merged into q-jutsu-check-account-history. Same lookup knowledge as q-jutsu-check-account-history; the network-first and wrong-network rules are absorbed there, and per-explorer network coverage is volatile product trivia.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-ti-block-explorer-basics",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-ti-block-explorer-basics",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-ti-block-explorer-basics"
+    ],
+    "lastCaseContentSha256": "dbf8bda7c3a85098e47b8473fda236f718730814981b9b45f6b18ceaee870e3f",
+    "replacementIds": [
+      "q-jutsu-check-account-history"
+    ]
+  }
+}

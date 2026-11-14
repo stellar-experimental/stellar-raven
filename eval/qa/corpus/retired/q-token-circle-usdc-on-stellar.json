@@ -1,0 +1,23 @@
+{
+  "id": "q-token-circle-usdc-on-stellar",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-hist-retail (golden coverage audit)",
+    "reviewer": "verify-hist-retail (golden coverage audit)",
+    "reason": "Merged into q-asset-usdc-eurc-issuer. q-asset-usdc-eurc-issuer asks the same who-issues-USDC question; its rewrite absorbs native-not-wrapped, the GA5Z…KZVN Mainnet issuer and the Testnet GBBD…FLA5 guard. CCTP dates go to q-cctp-v2-usdc-stellar, subject to the condition on q-hist-cctp-stellar-live-announcement.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-token-circle-usdc-on-stellar",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-token-circle-usdc-on-stellar",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-token-circle-usdc-on-stellar"
+    ],
+    "lastCaseContentSha256": "209a28f41d9396d621e7fd9a740d28038806426f4c27d3705c1ba6935fbabae3",
+    "replacementIds": [
+      "q-asset-usdc-eurc-issuer"
+    ]
+  }
+}

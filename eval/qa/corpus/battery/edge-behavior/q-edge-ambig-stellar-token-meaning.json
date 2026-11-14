@@ -7,18 +7,17 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "\"Token on Stellar\" is **ambiguous** and the best answer disambiguates the two valid paths:\n\n- **Classic Stellar asset** — an issuing account, an asset code, and **trustlines**; recipients\n  establish a trustline and the issuer can set auth flags / clawback. No smart contract required\n  ([issue an asset](https://developers.stellar.org/docs/tokens/how-to-issue-an-asset)).\n- **Soroban token contract** — a Wasm contract implementing the token interface; any classic asset is\n  also reachable from Soroban via its **Stellar Asset Contract (SAC)** wrapper\n  ([SAC](https://developers.stellar.org/docs/tokens/stellar-asset-contract)).\n\nRaven should name this fork (or cover both) and route to the right docs. Traps: silently assuming one\npath, conflating classic assets with Soroban token contracts, or describing it as a Solidity/ERC-20\ndeployment.",
+    "answer": "\"Token\" is ambiguous on Stellar. A classic asset is an issuer account plus an asset code, held by recipients through trustlines; no smart contract is needed. A custom Soroban token is its own contract implementing SEP-41. Every classic asset, including XLM, also has a Stellar Asset Contract (SAC) that exposes it to Soroban. Ask which is meant, or cover both; it is not an ERC-20 deployment.",
     "keyFacts": [
-      "Describes a Classic issued asset with code, issuer, and trustlines.",
-      "Describes SAC as the contract API for the same Classic or native asset.",
-      "Describes a custom Soroban token as its own contract.",
-      "Does NOT silently assume one path is the only way to create or expose a token on Stellar."
+      "A classic asset is an issuer's asset code held through trustlines, with no smart contract.",
+      "A custom Soroban token is its own contract implementing SEP-41.",
+      "The SAC is the contract interface to a classic or native asset, not a separate token."
     ],
     "avoid": [
-      "Do NOT conflate a classic asset, its SAC API, and a custom Soroban token contract.",
-      "Do NOT describe native Stellar token creation as Solidity/ERC-20 deployment."
+      "Do NOT describe Stellar token creation as Solidity or ERC-20 deployment.",
+      "Do NOT treat a SAC as a custom token contract or as a different asset from its classic asset."
     ],
-    "notes": "Ambiguous but answerable: 'token' = classic asset vs Soroban token contract. Reward disambiguating/covering both; trap is conflation or ERC-20 framing. Cross-checks assets skill.\nAlso good if the answer: Briefly contrasts the classic asset model (issuer account, trustlines, asset code) with Soroban token contracts / the Stellar Asset Contract. | Points to the relevant docs for whichever path the user means.\nGolden cites: Cite developers.stellar.org docs for the asset/issuance or SAC path covered.\nGT-21 KEYFACT CORRECTION 2026-07-10: SAC is the same classic/native asset's contract API and implements SEP-41; it is not shorthand for a custom contract token."
+    "notes": "Accept asking which path is meant or covering both; penalize silently assuming one."
   },
   "tags": {
     "category": "edge-behavior",
@@ -73,18 +72,43 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "SAC is the contract interface to a classic or native asset and implements SEP-41",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract",
+            "observedAt": "2026-11-14",
+            "note": "Stellar Asset Contract; verified 2026-11-02, stable, not re-fetched."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md",
+            "observedAt": "2026-11-14",
+            "note": "SEP-0041 Soroban Token Interface"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer re-verification + applier; .agents/rounds/2026-11-02-golden-audit.md, batch edge-behavior-01)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-edge, verify-audit-edge; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "https://developers.stellar.org/docs/tokens/anatomy-of-an-asset (observedAt 2026-11-02): 'Assets are uniquely identified by the combination of their asset code and issuer.'",
-        "https://developers.stellar.org/docs/tokens/stellar-asset-contract (observedAt 2026-11-02): 'The SAC implements the SEP-41 Token Interface ... a Stellar asset is simply an API for interacting with the asset.'",
-        "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md (observedAt 2026-11-02): HTTP 200; SEP-41 token interface spec present.",
-        "No gospel change. Sibling sweep 2026-11-02: q-asset-trustline-vs-sac, q-asset-issue-asset-howto, q-sep-41-token-interface, q-asset-deploy-sac-cli; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-edge.json#q-edge-ambig-stellar-token-meaning",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-edge.json#q-edge-ambig-stellar-token-meaning",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-edge-ambig-stellar-token-meaning",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/tokens/stellar-asset-contract -- 'Stellar Asset Contract; verified 2026-11-02, stable, not re-fetched.'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md -- 'SEP-0041 Soroban Token Interface'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-edge-ambig-stellar-token-meaning"
+    "origin": "raven-next q-edge-ambig-stellar-token-meaning",
+    "notes": "Ambiguous but answerable: 'token' = classic asset vs Soroban token contract. Reward disambiguating/covering both; trap is conflation or ERC-20 framing. Cross-checks assets skill.\nAlso good if the answer: Briefly contrasts the classic asset model (issuer account, trustlines, asset code) with Soroban token contracts / the Stellar Asset Contract. | Points to the relevant docs for whichever path the user means.\nGolden cites: Cite developers.stellar.org docs for the asset/issuance or SAC path covered.\nGT-21 KEYFACT CORRECTION 2026-07-10: SAC is the same classic/native asset's contract API and implements SEP-41; it is not shorthand for a custom contract token.",
+    "leaf": "assets.token-interface",
+    "secondaryLeaf": "behavior.ambiguity"
   }
 }

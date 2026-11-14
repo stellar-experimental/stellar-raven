@@ -7,19 +7,17 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "Use RPC `simulateTransaction` (or the SDK prepare/assemble helper or `stellar tx simulate`) before signing. Apply the returned Soroban transaction data/footprint and resource fee, include required authorization, handle any `restorePreamble`, and add the transaction's inclusion bid separately from the minimum resource fee. Simulation is not submission or a final-success guarantee: state can change, so re-simulate stale transactions. Where supported, use `instructionLeeway` rather than inventing an arbitrary blanket margin.",
+    "answer": "Call RPC `simulateTransaction` (or the SDK prepare/assemble helper, or `stellar tx simulate`) on the unsigned transaction. It returns the Soroban transaction data with the footprint, the minimum resource fee and required auth; apply them, then add an inclusion fee on top of the resource fee. Since Protocol 23 archived entries are normally restored automatically, so `restorePreamble` is usually absent. Simulation does not guarantee success: state can change, so re-simulate stale transactions.",
     "keyFacts": [
-      "Applies simulated transaction data/resources plus resource and inclusion fees.",
-      "Handles auth/restorePreamble, supported instruction leeway, and stale-state re-simulation.",
-      "Each storage entry used across the call chain must appear in the transaction footprint.",
-      "A missing footprint entry causes a runtime `HostError`.",
-      "Simulation normally computes the footprint entries touched by inner calls."
+      "`simulateTransaction` returns the footprint, resource fee and auth before submission.",
+      "The simulated data, resource fee and auth are applied to the transaction before signing.",
+      "The resource fee is separate from the inclusion fee; both go in the transaction fee.",
+      "Simulation is not a success guarantee; re-simulate stale transactions."
     ],
     "avoid": [
-      "Do NOT hand-pick a footprint or claim simulation submits/guarantees success.",
-      "Do NOT prescribe an arbitrary universal margin instead of current API behavior."
+      "Do NOT hand-pick a footprint or claim simulation submits or guarantees success."
     ],
-    "notes": "2026-06-29: removed duplicated Why-these-cards/Edge sections. eth_estimateGas is the EVM trap. Verified: RPC simulateTransaction / `stellar tx simulate` returns the resource fee + footprint (SorobanTransactionData) and the predicted return value.\nAlso good if the answer: Simulation also returns the function's predicted return value without committing state. | You should add some margin / re-simulate because resource usage can vary.\nGolden cites: The developers.stellar.org simulateTransaction / RPC documentation.\nGT-47 CORRECTION 2026-07-11: prefer current prepare/assemble, instructionLeeway, auth, and restorePreamble semantics."
+    "notes": "Accept `instructionLeeway` or a stated margin; `restorePreamble` still appears when a separate restore is needed."
   },
   "tags": {
     "category": "soroban",
@@ -33,7 +31,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-03-09",
     "sources": [
       {
@@ -109,19 +107,37 @@
             "observedAt": "2026-07-11"
           }
         ]
+      },
+      {
+        "claim": "`simulateTransaction` returns `minResourceFee`, `transactionData`, optional `restorePreamble`, accepts `instructionLeeway`",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/simulateTransaction.md",
+            "observedAt": "2026-11-14",
+            "note": "Since Protocol 23, this field [restorePreamble] is normally absent: the simulation adds archived persistent entries ... (`archivedSorobanEntries`)"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-03",
-      "by": "lane urls (Codex gpt-6.1-sol high)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-soroban-b, verify-audit-soroban-b; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "https://developers.stellar.org/docs/data/apis/rpc/guide (HTTP 404, 2026-11-03): The conceptual guide explains footprints, authorization, stale snapshots, and resimulation. The existing simulateTransaction API page documents resource fees, restorePreamble, and instructionLeeway. Current source: https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/transaction-simulation (HTTP 200).",
-        "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-b.json#q-soroban-simulate-resource-fee",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-b.json#q-soroban-simulate-resource-fee",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-soroban-simulate-resource-fee",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/simulateTransaction.md -- 'Since Protocol 23, this field [restorePreamble] is normally absent: the simulation adds archived persistent entries ... (`archivedSorobanEntries`)'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/simulateTransaction.md -- 'Since Protocol 23, this field is normally absent: the simulation adds archived persistent entries, including contract code, to the restore list'"
       ],
       "rootCause": [
-        "freshness-drift"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-soroban-simulate-resource-fee"
+    "origin": "raven-next q-soroban-simulate-resource-fee",
+    "notes": "2026-06-29: removed duplicated Why-these-cards/Edge sections. eth_estimateGas is the EVM trap. Verified: RPC simulateTransaction / `stellar tx simulate` returns the resource fee + footprint (SorobanTransactionData) and the predicted return value.\nAlso good if the answer: Simulation also returns the function's predicted return value without committing state. | You should add some margin / re-simulate because resource usage can vary.\nGolden cites: The developers.stellar.org simulateTransaction / RPC documentation.\nGT-47 CORRECTION 2026-07-11: prefer current prepare/assemble, instructionLeeway, auth, and restorePreamble semantics.",
+    "leaf": "soroban.simulation",
+    "secondaryLeaf": "soroban.resource-fees"
   }
 }

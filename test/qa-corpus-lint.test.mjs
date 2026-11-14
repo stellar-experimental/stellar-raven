@@ -11,6 +11,8 @@ import {
   lintGoldenAuthoring,
   lintCapFindings,
   lintGospelChanges,
+  lintCoverage,
+  lintLedger,
   runLint,
   lintStale,
   lintSurface
@@ -325,18 +327,51 @@ describe("QA corpus lint lanes", () => {
     ]));
   });
 
-  it("permits the dated seven-, eight-, and current nine-row archive rosters", () => {
-    const kase = JSON.parse(readFileSync(
-      join(dirname(fileURLToPath(import.meta.url)), "..", "eval", "qa", "corpus", "battery", "tooling-infra", "q-infra-rpc-provider-archive-tier.json"),
-      "utf8"
-    ));
-    const rosterKeyFact = kase.golden.keyFacts.find((fact) => /archive/i.test(fact) && /row|roster|subset|provider/i.test(fact));
-    expect(rosterKeyFact).toBeDefined();
-    expect(rosterKeyFact).toMatch(/seven/i);
-    expect(rosterKeyFact).toMatch(/eight/i);
-    expect(rosterKeyFact).toMatch(/nine/i);
-    expect(rosterKeyFact).toMatch(/attribut|dated/i);
-    expect(rosterKeyFact).not.toMatch(/must name only|exactly seven|only the seven/i);
+  it("checks taxonomy leaves, leaf caps, and open slots instead of category floors", () => {
+    const taxonomy = {
+      leaves: [
+        { id: "protocol.fees", weight: 3, cases: 1 },
+        { id: "protocol.xdr", weight: 2, cases: 1 },
+        { id: "network.meetings", weight: 1, cases: 1 }
+      ],
+      openSlots: [{ leaf: "protocol.xdr", reason: "Awaiting a verified proposal." }]
+    };
+    const leafCase = (id, leaf, extra = {}) => ({ id, truth: { lifecycle: { state: "active" }, leaf, ...extra }, tags: { service: "stellarDocs" } });
+    const errors = (cases, tax = taxonomy, enforce = true) => lintCoverage(cases, tax, enforce)
+      .filter((item) => item.level === "error").map((item) => `${item.id}: ${item.message}`);
+
+    expect(errors([leafCase("q-a", "protocol.fees")])).toEqual([]);
+    expect(errors([leafCase("q-a", "protocol.nope"), leafCase("q-b", "protocol.fees", { secondaryLeaf: "protocol.fees" })])).toEqual([
+      'q-a: truth.leaf "protocol.nope" is not a taxonomy leaf',
+      'q-b: truth.secondaryLeaf "protocol.fees" must be another taxonomy leaf'
+    ]);
+    expect(errors(["q-a", "q-b", "q-c"].map((id) => leafCase(id, "protocol.fees")))).toEqual([
+      "protocol.fees: leaf target 1; 3 primary cases exceed target plus one"
+    ]);
+    // An empty weight-3 leaf fails only when floors are enforced; an open slot or weight 1 never fails.
+    expect(errors([], taxonomy)).toEqual(["protocol.fees: weight-3 leaf has no active case and no open slot"]);
+    expect(lintCoverage([], taxonomy, false).find((item) => item.id === "protocol.fees").level).toBe("warn");
+    expect(errors([leafCase("q-a", "protocol.fees"), leafCase("q-b", "protocol.xdr")])).toEqual([
+      "protocol.xdr: open slot leaf now has an active case; remove the slot"
+    ]);
+    expect(errors([leafCase("q-a", "protocol.fees")], { ...taxonomy, openSlots: [{ leaf: "protocol.xdr" }, { leaf: "x.y", reason: "r" }] })).toEqual([
+      "protocol.xdr: open slot requires a reason",
+      "x.y: open slot names no taxonomy leaf",
+      "protocol.xdr: weight-2 leaf has no active case and no open slot"
+    ]);
+    // Tool-lane cases have their own denominator and need no leaf.
+    expect(errors([leafCase("q-a", "protocol.fees"), leafCase("q-tool", undefined, { lane: "tool" })])).toEqual([]);
+    expect(lintCoverage([leafCase("q-a", "protocol.fees")], undefined, true)).toEqual([
+      expect.objectContaining({ level: "error", message: "eval/qa/taxonomy.json is missing or has no leaves[]" })
+    ]);
+  });
+
+  it("accepts a retired ledger destination and still rejects an unknown one", () => {
+    const ledger = { rows: [{ sourceId: "q-old", source: "boxy", disposition: "carry", destination: ["q-gone"] }] };
+    const messages = (retired) => lintLedger([], ledger, false, retired)
+      .filter((item) => item.level === "error").map((item) => item.message);
+    expect(messages(new Set())).toEqual(["destination does not exist: q-gone"]);
+    expect(messages(new Set(["q-gone"]))).toEqual([]);
   });
 
   // Regression: the gospel gate must fail-closed only for PRs. A push to a

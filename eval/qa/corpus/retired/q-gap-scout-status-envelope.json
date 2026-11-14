@@ -1,0 +1,21 @@
+{
+  "id": "q-gap-scout-status-envelope",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-protocol (golden coverage audit)",
+    "reviewer": "verify-protocol (golden coverage audit)",
+    "reason": "Same as the changelog case: envelope-vs-payload ok is covered by adapter unit tests (callScout getStatus) and test/live/run-live-execute.mjs. No Stellar truth lost.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-gap-scout-status-envelope",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-gap-scout-status-envelope",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-gap-scout-status-envelope"
+    ],
+    "lastCaseContentSha256": "ade0cac1b6842e249e2530d39c08f231bf4ff59cfbd7bfdc91bb4bd4c173651f",
+    "replacementIds": []
+  }
+}

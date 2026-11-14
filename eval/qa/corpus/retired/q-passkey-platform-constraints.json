@@ -1,0 +1,21 @@
+{
+  "id": "q-passkey-platform-constraints",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-tooling-a (golden coverage audit)",
+    "reviewer": "verify-audit-tooling-a (golden coverage audit)",
+    "reason": "WebAuthn platform behaviour, not Stellar knowledge; the Stellar binding is q-passkey-smart-account-architecture kf2.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-a.json#q-passkey-platform-constraints",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-a.json#q-passkey-platform-constraints",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-passkey-platform-constraints"
+    ],
+    "lastCaseContentSha256": "ef5b0f2083e9d910a74670000087bdd10f174be5143ddc29eeef73c04652eafc",
+    "replacementIds": []
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "id": "q-protocol-ledger-entry-types",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-protocol (golden coverage audit)",
+    "reviewer": "verify-protocol (golden coverage audit)",
+    "reason": "Enum recital; no leaf.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-protocol-ledger-entry-types",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-protocol-ledger-entry-types",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-protocol-ledger-entry-types"
+    ],
+    "lastCaseContentSha256": "81e191805b9c42b938cb503b3173b88ad7ebf9c0a71c391a950183e0adf31f7b",
+    "replacementIds": []
+  }
+}

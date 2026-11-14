@@ -1,0 +1,23 @@
+{
+  "id": "q-aas-trusted-asset-list-whitelist",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-hist-retail (golden coverage audit)",
+    "reviewer": "verify-hist-retail (golden coverage audit)",
+    "reason": "Merged into q-aas-list-token-on-exchanges-aggregators. Target-one leaf; the absorbed fact (no protocol or SDF whitelist; SEP-42 lists are opt-in) is what this case adds over q-aas-list-token-on-exchanges-aggregators kf2.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-aas-trusted-asset-list-whitelist",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-aas-trusted-asset-list-whitelist",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-aas-trusted-asset-list-whitelist"
+    ],
+    "lastCaseContentSha256": "4050aebaad69b3753df129f7b156c88ade7d150d2ecf1bf8d00aa9c88d3820c0",
+    "replacementIds": [
+      "q-aas-list-token-on-exchanges-aggregators"
+    ]
+  }
+}

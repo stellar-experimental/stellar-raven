@@ -5,16 +5,17 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "TTL is ledger-based and network-configured; reads/popularity do not automatically extend every entry. Fresh code/contract-instance entries use the network's minimum Persistent TTL. Dated 2026-07-10 settings: Mainnet min persistent 2,073,600, min temporary 17,280, max 3,110,400 ledgers; Testnet 120,960, 720, and 3,110,400. Re-query rather than freezing them. Current APIs include `instance().extend_ttl(threshold, extend_to)`, `persistent().extend_ttl(&key, threshold, extend_to)` (temporary equivalent), and deployer `extend_ttl`, `extend_ttl_for_contract_instance`, or `extend_ttl_for_code` with contract/threshold/extend_to. Instance extension covers instance/current code but threshold checks can leave different resulting TTLs; per-key calls are separate. Temporary expires permanently; Persistent/Instance archive and may auto-restore under P23 when simulation supplies archived entries—restoration is not extension. ExtendFootprintTTLOp applies one relative offset to its read-only footprint and is unrelated to account sequence bumping.",
+    "answer": "TTL is counted in ledgers and set by network configuration; reads and activity do not extend an entry. A freshly deployed contract's code and instance entries start at the network's minimum Persistent TTL. As of 2026-11-14, Mainnet: min Persistent 2,073,600, min Temporary 17,280, max 3,110,400 ledgers; Testnet: 120,960, 720, 3,110,400. Re-query rather than hard-code. Extend with `instance().extend_ttl(threshold, extend_to)`, `persistent().extend_ttl(&key, threshold, extend_to)`, and the deployer's `extend_ttl_for_contract_instance` and `extend_ttl_for_code`; there is no `bump()`. Temporary entries expire for good; Persistent and Instance entries archive and, since Protocol 23, auto-restore, which is not extension.",
     "keyFacts": [
-      "Gives dated network minimum/maximum settings and complete current extension method shapes.",
-      "Treats explicit extension, P23 restoration, and Temporary deletion as distinct behaviors.",
-      "ExtendFootprintTTLOp applies to a read-only footprint."
+      "Mainnet TTL, dated: min Persistent 2,073,600, min Temporary 17,280, max 3,110,400.",
+      "Extension is explicit per entry, instance, or code; activity does not extend TTL.",
+      "Temporary entries are deleted; Persistent and Instance entries archive and restore."
     ],
     "avoid": [
-      "Do NOT freeze settings, use one-argument pseudo-code as current API, claim activity auto-extends state, or conflate restoration with extension."
+      "Do NOT state network TTL settings as undated, fixed constants.",
+      "Do NOT claim that reads or activity extend an entry's TTL."
     ],
-    "notes": "Also good if the answer: Says default/max TTLs are network settings and tests should set or read them rather than freezing a stale number.\nGolden cites: Official state archival docs. | Official TTL extension testing/client-side docs.\nGT-43 live settings are dated examples; behavior and explicit re-query are required."
+    "notes": "Settings are network values; a dated figure with a re-query note is correct."
   },
   "tags": {
     "category": "soroban",
@@ -28,7 +29,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-05-25",
     "sources": [
       {
@@ -95,20 +96,55 @@
             "note": "TestSimulateTransactionAutoRestore requires nil RestorePreamble and nonempty ArchivedSorobanEntries; the manual test skips protocols above 22."
           }
         ]
+      },
+      {
+        "claim": "Mainnet min Persistent 2,073,600, min Temporary 17,280, max 3,110,400 ledgers; Testnet 120,960, 720, 3,110,400",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "POST https://mainnet.sorobanrpc.com getLedgerEntries CONFIG_SETTING_STATE_ARCHIVAL (ledger 65467702)",
+            "observedAt": "2026-11-14",
+            "note": "min_persistent_ttl 2073600; min_temporary_ttl 17280; max_entry_ttl 3110400"
+          },
+          {
+            "class": "C",
+            "ref": "POST https://soroban-testnet.stellar.org getLedgerEntries same key",
+            "observedAt": "2026-11-14",
+            "note": "min_persistent_ttl 120960; min_temporary_ttl 720; max_entry_ttl 3110400"
+          }
+        ]
+      },
+      {
+        "claim": "SDK deployer has extend_ttl, extend_ttl_for_contract_instance, extend_ttl_for_code",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/rs-soroban-sdk/blob/v29.0.1/soroban-sdk/src/deploy.rs",
+            "observedAt": "2026-11-14",
+            "note": "pub fn extend_ttl_for_contract_instance( ... pub fn extend_ttl_for_code(&self, contract_address: Address, threshold: u32, extend_to: u32)"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-06",
-      "by": "2026-11-05 truth-maintenance coordinator; independent Astra high reviewer t2dx, docs-independent.md",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-soroban-a, verify-audit-soroban-a; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Fresh A/B checks: https://developers.stellar.org/docs/build/guides/transactions/simulateTransaction-Deep-Dive.md — Since Protocol 23, you usually do not need a separate restore step. The same InvokeHostFunction transaction restores listed entries first.",
-        "Fresh A/B checks: https://raw.githubusercontent.com/stellar/stellar-rpc/main/cmd/stellar-rpc/internal/integrationtest/simulate_transaction_test.go — TestSimulateTransactionAutoRestore requires nil RestorePreamble and nonempty ArchivedSorobanEntries; the manual test skips protocols above 22.",
-        "Sibling sweep: q-sor-ttl-defaults-extend, q-sor-p23-auto-restore-extendto, q-sor-force-fast-archival-localnet, q-soroban-storage-types; all retain the same restoration behavior and lose only the expired sd-078 attribution cap. q-soroban-simulate-resource-fee and q-infra-simulate-transaction-howto retain conditional restorePreamble handling. No numeric TTL value or avoid clause changed."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-a.json#q-sor-ttl-defaults-extend",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-a.json#q-sor-ttl-defaults-extend",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-sor-ttl-defaults-extend",
+        "Live C 2026-11-14: POST https://mainnet.sorobanrpc.com getLedgerEntries CONFIG_SETTING_STATE_ARCHIVAL (ledger 65467702) -- 'min_persistent_ttl 2073600; min_temporary_ttl 17280; max_entry_ttl 3110400'",
+        "Live C 2026-11-14: POST https://soroban-testnet.stellar.org getLedgerEntries same key -- 'min_persistent_ttl 120960; min_temporary_ttl 720; max_entry_ttl 3110400'",
+        "Live B 2026-11-14: https://github.com/stellar/rs-soroban-sdk/blob/v29.0.1/soroban-sdk/src/deploy.rs -- 'pub fn extend_ttl_for_contract_instance( ... pub fn extend_ttl_for_code(&self, contract_address: Address, threshold: u32, extend_to: u32)'"
       ],
       "rootCause": [
-        "improvements/resolved.json entry sd-078: live Docs correction removes the source conflict that justified the cap."
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-sor-ttl-defaults-extend"
+    "origin": "raven-next q-sor-ttl-defaults-extend",
+    "notes": "Also good if the answer: Says default/max TTLs are network settings and tests should set or read them rather than freezing a stale number.\nGolden cites: Official state archival docs. | Official TTL extension testing/client-side docs.\nGT-43 live settings are dated examples; behavior and explicit re-query are required.",
+    "leaf": "soroban.state-archival-ttl"
   }
 }

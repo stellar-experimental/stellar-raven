@@ -8,19 +8,18 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "For raw JS deployment, upload/install Wasm, then create the contract from `wasmHash` plus address/salt preimage and constructor args. Current `contract.Client.deploy` wraps `Operation.createCustomContract` and returns a simulated `AssembledTransaction` by default. For invocation, build the contract call transaction, simulate with RPC, fold the simulation data/resource fee/auth into it, sign, submit, and poll for final result. In SDK 16 and in SDK 17 (17.4.0 is the latest as of 2026-11-02), `assembleTransaction(tx, simulation)` returns a **builder**, so call `.build()` before signing; RPC `prepareTransaction(tx)` performs simulation and returns the **built transaction**. Check installed typings because these helpers are version-sensitive. Decode only a successful `ScVal` return with `scValToNative`; a valid but different XDR union is a typed mismatch, while an invalid discriminant can produce `Bad union switch`. Generated bindings remain safer for normal application code.",
+    "answer": "To deploy from the JS SDK, upload the Wasm, then create the contract with `Operation.createCustomContract` using the `wasmHash`, an address and salt, and any constructor args; `contract.Client.deploy` wraps this. To invoke, build the call, simulate through RPC, assemble the simulation's data, resource fee, and auth into the transaction, sign, submit, and poll for the result. In js-stellar-sdk 16 and 17, `assembleTransaction(tx, simulation)` returns a builder, so call `.build()` before signing, while `Server.prepareTransaction(tx)` simulates and returns a built transaction. Decode only a successful return with `scValToNative`.",
     "keyFacts": [
-      "Covers upload, contract creation, deployment, and constructor args.",
-      "Covers simulation, signing, submission, and result polling.",
-      "`assembleTransaction` returns a builder under current SDK semantics.",
-      "`prepareTransaction` returns a built transaction under current SDK semantics.",
-      "Decodes only a successful expected ScVal."
+      "Deploying uploads Wasm, then calls `createCustomContract` with wasmHash, salt, and args.",
+      "Invocation builds, simulates, assembles, signs, submits, and polls.",
+      "`assembleTransaction` returns a builder; call `.build()` before signing.",
+      "`prepareTransaction` simulates and returns a built transaction."
     ],
     "avoid": [
-      "Do NOT sign/submit an unbuilt builder or the original unsimulated transaction.",
-      "Do NOT pass simulation errors or guessed XDR unions to scValToNative."
+      "Do NOT sign or submit an unbuilt builder or the original unsimulated transaction.",
+      "Do NOT pass a simulation error to `scValToNative`."
     ],
-    "notes": "Official docs verify the transaction phases and typed-client recommendation. Phase 3 checked the current npm package/repo: @stellar/stellar-sdk 16.0.1 includes `Operation.createCustomContract` usage inside `contract.Client.deploy` with wasmHash/salt/constructorArgs, but raw helper examples remain package-version-sensitive.\nAlso good if the answer: Recommends generated TypeScript bindings or `contract.Client` for most apps before raw XDR helpers. | Mentions Horizon is not the simulation/invocation API for Soroban; use Stellar RPC.\nGolden cites: Must cite official Stellar SDK transaction guide and/or fully typed contracts docs.\nGT-41 API snapshot 2026-07-10 used SDK 16.0.1. Re-checked 2026-11-02 against @stellar/stellar-sdk 17.4.0: `assembleTransaction` still returns `TransactionBuilder`, `prepareTransaction` returns `Promise<Transaction>`, and `contract.Client.deploy` still wraps `Operation.createCustomContract`. Accept version-qualified alternatives; require the candidate to inspect installed typings rather than freeze these returns forever."
+    "notes": "Helper signatures are version-sensitive; credit checking the installed typings and accept version-qualified answers."
   },
   "tags": {
     "category": "soroban",
@@ -34,7 +33,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-04-13",
     "sources": [
       {
@@ -125,23 +124,64 @@
             "note": "Shipped typings: assembleTransaction(...): TransactionBuilder; prepareTransaction(...): Promise<Transaction>."
           }
         ]
+      },
+      {
+        "claim": "assembleTransaction returns a TransactionBuilder; prepareTransaction returns a built Transaction (SDK 17.4.0)",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/js-stellar-sdk/blob/v17.4.0/src/rpc/transaction.ts",
+            "observedAt": "2026-11-14",
+            "note": "export function assembleTransaction( ... ): TransactionBuilder"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/js-stellar-sdk/blob/v17.4.0/src/rpc/server.ts",
+            "observedAt": "2026-11-14",
+            "note": "return assembleTransaction(tx, simResponse).build();"
+          }
+        ]
+      },
+      {
+        "claim": "17.4.0 is npm latest; lts-16 is 16.4.1; contract.Client.deploy wraps Operation.createCustomContract",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "D",
+            "ref": "npm view @stellar/stellar-sdk dist-tags",
+            "observedAt": "2026-11-14",
+            "note": "latest 17.4.0, lts-16 16.4.1; 17.4.0 published 2026-10-25"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/js-stellar-sdk/blob/v17.4.0/src/contract/client.ts",
+            "observedAt": "2026-11-14",
+            "note": "const operation = Operation.createCustomContract({"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-02)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-soroban-a, verify-audit-soroban-a; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "https://registry.npmjs.org/@stellar/stellar-sdk — \"dist-tags: latest 17.4.0 (published 2026-10-25T11:30:46Z), lts-16 16.4.1\" (class B, observedAt 2026-11-02)",
-        "https://raw.githubusercontent.com/stellar/js-stellar-sdk/v17.4.0/src/rpc/transaction.ts and src/rpc/server.ts and src/contract/client.ts — \"assembleTransaction(...): TransactionBuilder {; prepareTransaction: return assembleTransaction(tx, simResponse).build(); deploy: const operation = Operation.createCustomContract({ ... salt, constructorArgs: ... })\" (class B, observedAt 2026-11-02)",
-        "npm pack @stellar/stellar-sdk@17.4.0, lib/esm/rpc/transaction.d.ts and server.d.ts — \"export declare function assembleTransaction(...): TransactionBuilder; prepareTransaction(tx: Transaction | FeeBumpTransaction, useUpgradedAuth?: boolean): Promise<Transaction>;\" (class F, observedAt 2026-11-02)",
-        "https://raw.githubusercontent.com/stellar/js-stellar-sdk/v16.4.1/src/rpc/transaction.ts — \"): TransactionBuilder {\" (class B, observedAt 2026-11-02)",
-        "Sibling sweep 2026-11-02: grep assembleTransaction|prepareTransaction|SDK 16 — q-sor-scval-conversion (batch soroban-03, refreshed concurrently) now says 'SDK 16 and 17 (npm latest 17...)' — consistent; semantics agree (builder vs built transaction).",
-        "Independent verifier decisions: .agents/rounds/2026-11-02-golden-audit/pass1/soroban-02.json; proposer matrix: .agents/rounds/2026-11-02-golden-audit/pass1/soroban-02.json."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-a.json#q-sor-deploy-invoke-from-js-sdk",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-a.json#q-sor-deploy-invoke-from-js-sdk",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-sor-deploy-invoke-from-js-sdk",
+        "Live B 2026-11-14: https://github.com/stellar/js-stellar-sdk/blob/v17.4.0/src/rpc/transaction.ts -- 'export function assembleTransaction( ... ): TransactionBuilder'",
+        "Live B 2026-11-14: https://github.com/stellar/js-stellar-sdk/blob/v17.4.0/src/rpc/server.ts -- 'return assembleTransaction(tx, simResponse).build();'",
+        "Live D 2026-11-14: npm view @stellar/stellar-sdk dist-tags -- 'latest 17.4.0, lts-16 16.4.1; 17.4.0 published 2026-10-25'",
+        "Live B 2026-11-14: https://github.com/stellar/js-stellar-sdk/blob/v17.4.0/src/contract/client.ts -- 'const operation = Operation.createCustomContract({'",
+        "Live D 2026-11-14: npm view @stellar/stellar-sdk version -- 'version = '17.4.0''"
       ],
       "rootCause": [
-        "freshness-drift"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-sor-deploy-invoke-from-js-sdk"
+    "origin": "raven-next q-sor-deploy-invoke-from-js-sdk",
+    "notes": "Official docs verify the transaction phases and typed-client recommendation. Phase 3 checked the current npm package/repo: @stellar/stellar-sdk 16.0.1 includes `Operation.createCustomContract` usage inside `contract.Client.deploy` with wasmHash/salt/constructorArgs, but raw helper examples remain package-version-sensitive.\nAlso good if the answer: Recommends generated TypeScript bindings or `contract.Client` for most apps before raw XDR helpers. | Mentions Horizon is not the simulation/invocation API for Soroban; use Stellar RPC.\nGolden cites: Must cite official Stellar SDK transaction guide and/or fully typed contracts docs.\nGT-41 API snapshot 2026-07-10 used SDK 16.0.1. Re-checked 2026-11-02 against @stellar/stellar-sdk 17.4.0: `assembleTransaction` still returns `TransactionBuilder`, `prepareTransaction` returns `Promise<Transaction>`, and `contract.Client.deploy` still wraps `Operation.createCustomContract`. Accept version-qualified alternatives; require the candidate to inspect installed typings rather than freeze these returns forever.",
+    "leaf": "tooling.js-sdk",
+    "secondaryLeaf": "soroban.deploy-lifecycle"
   }
 }

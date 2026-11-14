@@ -7,20 +7,18 @@
     "skills.stellar-dev.smart-contracts"
   ],
   "golden": {
-    "answer": "A Stellar smart wallet is a contract account whose reserved __check_auth validates credentials and policy for the Soroban authorization context. CAP-0051 added native secp256r1/P-256 verification in Protocol 21, but that primitive alone is not complete WebAuthn validation: the contract must bind the WebAuthn challenge to the Soroban authorization payload and check client data and authenticator flags such as user presence. W3C WebAuthn assigns origin and RP-ID-hash checks to the Relying Party; production Stellar verifiers (OpenZeppelin, Passkey Kit) deliberately leave those two checks to the authenticator, client, and platform. Store the P-256 public key and, when needed, credential ID plus policy/recovery state; the private key remains in the authenticator/provider. Per-user instances commonly share one Wasm hash; an external shared verifier or policy contract is optional.",
+    "answer": "A Stellar smart wallet is a contract account whose reserved `__check_auth` validates credentials and policy for each authorization. CAP-0051 added native secp256r1 (P-256) verification in Protocol 21, but a valid P-256 signature alone is not complete WebAuthn validation: the contract must bind the WebAuthn challenge to the Soroban authorization payload and check client data and authenticator flags. The contract stores public keys and policy or recovery state; the private key stays in the authenticator.",
     "keyFacts": [
-      "__check_auth validates contract-account credentials and authorization policy.",
-      "CAP-0051 added native secp256r1/P-256 verification in Protocol 21.",
-      "Contract checks bind the challenge to the Soroban payload and check client data and flags.",
-      "On-chain state stores public credentials and optional policy/recovery data.",
-      "Per-user wallets can use shared Wasm and optional verifier or policy contracts."
+      "`__check_auth` validates a contract account's credentials and authorization policy.",
+      "CAP-0051 added native secp256r1 (P-256) signature verification in Protocol 21.",
+      "Contract checks bind the WebAuthn challenge to the Soroban payload and verify flags.",
+      "Only public keys and policy state go on-chain; the private key stays in the authenticator."
     ],
     "avoid": [
-      "A raw valid P-256 signature is complete WebAuthn assertion validation.",
-      "The private passkey key should be stored on-chain.",
-      "All users of a shared wallet Wasm hash share one contract account and balance."
+      "Do NOT claim that a valid raw P-256 signature is complete WebAuthn assertion validation.",
+      "Do NOT claim that the private passkey key is stored on-chain."
     ],
-    "notes": "Status-sensitive details are stated as of 2026-07-11; grade later sourced changes leniently and require dated primary evidence. Origin and RP-ID checks: W3C WebAuthn requires them of the Relying Party, while the OpenZeppelin and Passkey Kit verifiers deliberately omit them on-chain. Do not penalize an answer that requires them in the overall flow, or one that says production Stellar wallet contracts leave them to the client and platform. Penalize only a claim that the P-256 signature alone is complete WebAuthn validation."
+    "notes": "Origin and RP-ID checks: W3C WebAuthn assigns them to the Relying Party, and OpenZeppelin's on-chain verifier omits them by design. Do not penalize an answer that requires them in the overall flow, or one that leaves them to the client and platform. Penalize only a claim that the P-256 signature alone is complete validation."
   },
   "tags": {
     "category": "soroban",
@@ -270,19 +268,48 @@
             "observedAt": "2026-07-11"
           }
         ]
+      },
+      {
+        "claim": "CAP-0051 adds native secp256r1 verification in Protocol 21",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0051.md",
+            "observedAt": "2026-11-14",
+            "note": "Status: Final ... Protocol version: 21"
+          }
+        ]
+      },
+      {
+        "claim": "Production Stellar verifiers deliberately leave origin and RP-ID checks off-chain",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/OpenZeppelin/stellar-contracts/blob/main/packages/accounts/src/verifiers/webauthn.rs",
+            "observedAt": "2026-11-14",
+            "note": "Origin verification in `clientDataJSON` is omitted; RP ID hash validation ... omitted"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-01)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-soroban-a, verify-audit-soroban-a; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Re-verified unchanged 2026-11-02 (no gospel change; no proposal for this case). The earlier 2026-11-02 event (.agents/rounds/2026-11-02-golden-reverify.md) corrected the RP-ID/origin wording; this audit re-checked that text and kept it.",
-        "golden.keyFacts[1]: B https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0051.md — 'Title: Smart Contract Host Functionality: Secp256r1 Verification ... Status: Final ... Protocol version: 21' | A https://stellar.org/protocol-upgrades — 'Protocol 21 6/18/2024 - CAP-0051 (Support secp256r1 verification)' (observedAt 2026-11-02).",
-        "golden.keyFacts[0]: A https://developers.stellar.org/docs/build/guides/contract-accounts/smart-wallets — 'They hold assets and enforce authorization in `__check_auth` instead of a single secret key.' | B https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0071-01.md — delegate_account_auth delegates from an Address's __check_auth (observedAt 2026-11-02).",
-        "golden.answer confirmed-as-of: B https://github.com/OpenZeppelin/stellar-contracts/blob/ddc327eb92d63709436da3a8455f641c2d5476c5/packages/accounts/src/verifiers/webauthn.rs — OZ main HEAD still ddc327eb (2026-10-20), so the pinned verifier citations still match (observedAt 2026-11-02).",
-        "Sibling sweep 2026-11-02: q-infra-secp256r1-passkeys, q-passkey-platform-constraints, q-passkey-wallet-recovery checked; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-a.json#q-passkey-smart-account-architecture",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-a.json#q-passkey-smart-account-architecture",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-passkey-smart-account-architecture",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/core/cap-0051.md -- 'Status: Final ... Protocol version: 21'",
+        "Live B 2026-11-14: https://github.com/OpenZeppelin/stellar-contracts/blob/main/packages/accounts/src/verifiers/webauthn.rs -- 'Origin verification in `clientDataJSON` is omitted; RP ID hash validation ... omitted'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "kaan passkey-smart-wallet-architecture"
+    "origin": "kaan passkey-smart-wallet-architecture",
+    "notes": "Status-sensitive details are stated as of 2026-07-11; grade later sourced changes leniently and require dated primary evidence. Origin and RP-ID checks: W3C WebAuthn requires them of the Relying Party, while the OpenZeppelin and Passkey Kit verifiers deliberately omit them on-chain. Do not penalize an answer that requires them in the overall flow, or one that says production Stellar wallet contracts leave them to the client and platform. Penalize only a claim that the P-256 signature alone is complete WebAuthn validation.",
+    "leaf": "soroban.contract-accounts"
   }
 }

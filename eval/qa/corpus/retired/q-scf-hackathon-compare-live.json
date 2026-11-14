@@ -1,0 +1,21 @@
+{
+  "id": "q-scf-hackathon-compare-live",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-scf (golden coverage audit)",
+    "reviewer": "verify-audit-scf (golden coverage audit)",
+    "reason": "Confirmed: live-cases.json q-live-hackathon-recent-winners kf2 (placement only if the data gives it) and q-live-ll-guessed-slug-soft-empty kf1 (resolve then detail); test/argument-aliases.test.ts:109 normalizes compareHackathons slugs. Null-not-zero stays in q-scf-pitch-prep-live.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-scf-hackathon-compare-live",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-scf-hackathon-compare-live",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-scf-hackathon-compare-live"
+    ],
+    "lastCaseContentSha256": "4d21041040bed4ccd35dffd9ed5ba58b4076706ec13422e90f960586e94748a8",
+    "replacementIds": []
+  }
+}

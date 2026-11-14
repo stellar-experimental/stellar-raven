@@ -1,0 +1,23 @@
+{
+  "id": "q-eco-defi-projects-discovery",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-defi (golden coverage audit)",
+    "reviewer": "verify-defi (golden coverage audit)",
+    "reason": "Merged into q-eco-defi-market-map. Merge is right, but the audit's purpose label (raven-mechanics) is wrong: 'who is building DeFi on Stellar' is world truth any source can answer. The survivor must ask it; see the amended q-eco-defi-market-map rewrite.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-eco-defi-projects-discovery",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-eco-defi-projects-discovery",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-eco-defi-projects-discovery"
+    ],
+    "lastCaseContentSha256": "f02fbe3c6a136c9eb040196ebafb637fa9892947c2a68df15453b5776060c2b0",
+    "replacementIds": [
+      "q-eco-defi-market-map"
+    ]
+  }
+}

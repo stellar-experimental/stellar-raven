@@ -1,0 +1,21 @@
+{
+  "id": "q-asset-usdc-eurc-path-fx",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-hist-retail (golden coverage audit)",
+    "reviewer": "verify-hist-retail (golden coverage audit)",
+    "reason": "Applied restatement of q-asset-path-payment-ops kf0-kf3.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-asset-usdc-eurc-path-fx",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-asset-usdc-eurc-path-fx",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-asset-usdc-eurc-path-fx"
+    ],
+    "lastCaseContentSha256": "d4ec2a4aa61df1d668a0025aa8c2a0b092815512ea018e91516ce9026b6f2be6",
+    "replacementIds": []
+  }
+}

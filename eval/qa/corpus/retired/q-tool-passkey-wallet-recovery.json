@@ -1,0 +1,23 @@
+{
+  "id": "q-tool-passkey-wallet-recovery",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-tooling-b (golden coverage audit)",
+    "reviewer": "verify-audit-tooling-b (golden coverage audit)",
+    "reason": "Merged into q-passkey-wallet-recovery. Survivor q-passkey-wallet-recovery (soroban-a rewrite, verifier-accepted) covers pre-authorized recovery, total-loss irrecoverability and sync-is-not-recovery. SEP-30's classic-account scope stays in q-aas-sep30-recoverable-wallets (tighten).",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-b.json#q-tool-passkey-wallet-recovery",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-b.json#q-tool-passkey-wallet-recovery",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-tool-passkey-wallet-recovery"
+    ],
+    "lastCaseContentSha256": "4ca0430b4653386ceb4dd8a6965158534d6a4a6ca45626eccd6f1f704b48d23e",
+    "replacementIds": [
+      "q-passkey-wallet-recovery"
+    ]
+  }
+}

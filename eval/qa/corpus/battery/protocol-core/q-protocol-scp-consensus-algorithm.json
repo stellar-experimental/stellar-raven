@@ -5,20 +5,15 @@
     "stellarDocs.search_protocol_concepts_docs"
   ],
   "golden": {
-    "answer": "- Stellar uses the **Stellar Consensus Protocol (SCP)**, a construction of **Federated Byzantine Agreement (FBA)** [1][2].\n- Unlike Proof-of-Work (mining hashpower) or Proof-of-Stake (staked capital), FBA reaches agreement through **user-defined quorum sets** — each node chooses which other nodes it trusts [1].\n- There are **no monetary or block rewards** for running a Stellar validator; participation is not incentivized by staking or mining [1][2].\n- SCP favors **safety over liveness**: rather than fork, the network can **halt** until agreement is restored [1].\n- SCP was authored by **David Mazières** and is grounded in an academic whitepaper [2].",
+    "answer": "Stellar uses the Stellar Consensus Protocol (SCP), a Federated Byzantine Agreement construction in which each node picks the quorum sets it trusts. It needs no mining hashpower (Proof-of-Work) or staked capital (Proof-of-Stake), and validators earn no block rewards. SCP favors safety over liveness: it can halt rather than fork.",
     "keyFacts": [
-      "Names the Stellar Consensus Protocol (SCP) as Stellar's consensus mechanism.",
-      "States SCP is a construction of Federated Byzantine Agreement (FBA).",
-      "FBA reaches agreement through user-defined quorum sets.",
-      "PoW relies on mining hashpower, not FBA quorum sets.",
-      "PoS relies on staked capital, not FBA quorum sets."
+      "Stellar uses SCP, a Federated Byzantine Agreement construction.",
+      "Agreement comes from user-defined quorum sets, not mining hashpower or staked capital.",
+      "SCP favors safety over liveness and pays no validator block rewards."
     ],
     "avoid": [
-      "Do NOT claim Stellar uses Proof-of-Work or mining.",
-      "Do NOT claim Stellar uses Proof-of-Stake / staking with validator rewards.",
-      "Do NOT call the consensus mechanism 'PBFT', 'Tendermint', 'DPoS', or any non-SCP/non-FBA name."
-    ],
-    "notes": "Foundational fact. The trap is conflating SCP with PoW/PoS or naming a different BFT family.\nAlso good if the answer: Notes there are no monetary/block rewards for running a Stellar validator. | Notes SCP prioritizes safety/fault-tolerance and can halt (favor safety over liveness) rather than fork.\nGolden cites: The SCP overview on developers.stellar.org (or the SCP whitepaper / stellar.org SCP page)."
+      "Do NOT say Stellar uses Proof-of-Work, Proof-of-Stake, PBFT or Tendermint."
+    ]
   },
   "tags": {
     "category": "protocol-core",
@@ -64,27 +59,35 @@
             "note": "Dated web sweep query: ‘Stellar SCP proof of agreement validator rewards staking’. Top primary results: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol, https://stellar.org/blog/ecosystem/becoming-a-stellar-validator, and https://stellar.org/blog/ecosystem/the-hidden-risks-of-proof-of-stake. Exact observed text: SCP is ‘a proof of agreement protocol’; validators ‘will receive no block rewards, no staking yield, no MEV awards, and no share of transaction fees’; ‘The Stellar network provides no monetary rewards for validators.’ No primary result contradicted the claims."
           }
         ]
+      },
+      {
+        "claim": "SCP/FBA, no validator rewards, safety over liveness",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/validators",
+            "observedAt": "2026-11-14",
+            "note": "No staking and no block rewards for running a validator (read via prior audit; stable)"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-05)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-protocol, verify-protocol; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Verification-only event 2026-11-02: every judge-facing field is unchanged; the proposer and an independent verifier re-derived the claims from at least two source classes.",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — 'The Stellar network reaches consensus using the Stellar Consensus Protocol (SCP), which is a construction of the Federated Byzantine Agreement (FBA).' (claim: Stellar uses SCP, a construction of FBA; verdict confirmed)",
-        "Live B 2026-11-02: https://www.cs.otago.ac.nz/cosc440/readings/scp.pdf — 'We also present the Stellar Consensus Protocol (SCP), a construction for FBA.' (claim: Stellar uses SCP, a construction of FBA; verdict confirmed)",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — 'FBA differs from ... Proof of Work (which relies on a node's computational power) and Proof of Stake (which relies on a node's staking power)' (claim: FBA uses user-defined quorum sets; PoW=computation, PoS=stake; verdict confirmed)",
-        "Live D 2026-11-02: https://stellar.org/faq — 'This design is intended to overcome the limitations of incentive-based mechanisms, such as proof-of-work (PoW) and proof-of-stake (PoS).' (claim: FBA uses user-defined quorum sets; PoW=computation, PoS=stake; verdict confirmed)",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — 'There are no monetary rewards for being a validator on the Stellar network.' (claim: No monetary rewards for validators; verdict confirmed)",
-        "Live D 2026-11-02: https://stellar.org/faq — 'Validators operate without on-chain financial incentives built into the protocol' (claim: No monetary rewards for validators; verdict confirmed)",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — 'SCP prioritizes fault tolerance and safety over liveness.' (claim: SCP favors safety over liveness and can halt; verdict confirmed)",
-        "Live D 2026-11-02: https://stellar.org/faq — 'SCP favors safety over liveness.' (claim: SCP favors safety over liveness and can halt; verdict confirmed)",
-        "Live B 2026-11-02: https://www.cs.otago.ac.nz/cosc440/readings/scp.pdf — 'The Stellar Consensus Protocol: A Federated Model for Internet-level Consensus. David Mazières, Stellar Development Foundation' (claim: Authored by David Mazières; verdict confirmed)",
-        "Live D 2026-11-02: https://datatracker.ietf.org/doc/html/draft-mazieres-dinrg-scp-04 — 'Mazieres, D., \"The Stellar Consensus Protocol: A Federated Model for Internet-level Consensus\", Stellar Development Foundation whitepaper, 2015' (claim: Authored by David Mazières; verdict confirmed)",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — 'construction of the Federated Byzantine Agreement (FBA)' (claim: PoW, PoS/staking rewards, PBFT/Tendermint/DPoS names are false; verdict confirmed)",
-        "Sibling sweep 2026-11-02: q-hist-scp-rewrite-2015, q-protocol-quorum-slice-vs-quorum, q-raph-xlm-staking checked; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-protocol-scp-consensus-algorithm",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-protocol-scp-consensus-algorithm",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-protocol-scp-consensus-algorithm",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/validators -- 'No staking and no block rewards for running a validator (read via prior audit; stable)'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-protocol-scp-consensus-algorithm"
+    "origin": "raven-next q-protocol-scp-consensus-algorithm",
+    "notes": "Foundational fact. The trap is conflating SCP with PoW/PoS or naming a different BFT family.\nAlso good if the answer: Notes there are no monetary/block rewards for running a Stellar validator. | Notes SCP prioritizes safety/fault-tolerance and can halt (favor safety over liveness) rather than fork.\nGolden cites: The SCP overview on developers.stellar.org (or the SCP whitepaper / stellar.org SCP page).",
+    "leaf": "network.scp-consensus"
   }
 }

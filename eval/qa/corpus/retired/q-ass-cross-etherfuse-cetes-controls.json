@@ -1,0 +1,21 @@
+{
+  "id": "q-ass-cross-etherfuse-cetes-controls",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-assets (golden coverage audit)",
+    "reviewer": "verify-audit-assets (golden coverage audit)",
+    "reason": "Raven-mechanics case covered by eval/qa/corpus/live/live-cases.json q-live-beans-cross-service-reconcile.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-assets.json#q-ass-cross-etherfuse-cetes-controls",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-assets.json#q-ass-cross-etherfuse-cetes-controls",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-ass-cross-etherfuse-cetes-controls"
+    ],
+    "lastCaseContentSha256": "bb8ca4bbb1d8c4e95dc143621cbe685f196d0e6802d83f159af131cc894d992e",
+    "replacementIds": []
+  }
+}

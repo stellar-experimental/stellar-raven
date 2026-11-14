@@ -1,25 +1,23 @@
 {
   "id": "q-sor-decode-hosterror-codes",
-  "question": "How do I read a Soroban HostError diagnostic log — `Error(Contract, #N)`, `Error(WasmVm,…)`, `Error(Budget, ExceededLimit)`, `Bad union switch` from scValToNative — where's the standard contract-error reference, and how do I fix common test/runtime failures (`Error(Auth, InternalError)` despite mock_all_auths, 'no contract ID', empty `events().all()`, `set_timestamp` not found)?",
+  "question": "How do I read a Soroban HostError diagnostic: `Error(Contract, #N)`, `Error(Budget, ExceededLimit)`, `Error(WasmVm, …)`, and a `Bad union switch` from `scValToNative`, and what does a generated `try_*` client return on failure?",
   "surface": [
     "stellarDocs.search_rpc_horizon_data_docs",
     "stellarDocs.search_sdk_cli_tools_docs",
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "Start with diagnostic events/meta. `Error(Contract, #N)` is contract-defined: inspect that contract's error enum/spec/source; there is no global #N table. `Error(Budget, ExceededLimit)` is resource exhaustion; simulate and inspect CPU/memory/read/write/resource fees. `Error(WasmVm, …)` is a Wasm execution/type/trap class. `Bad union switch` from `scValToNative` means the XDR union/expected return type is wrong, stale, or invalid—decode only a successful expected `ScVal`.\n\nKeep auth/context failures distinct. A nested non-root auth tree under `mock_all_auths` can produce `Error(Auth, InvalidAction)`; use `mock_all_auths_allowing_non_root_auth` only for that intended test shape. `Error(Context, InternalError)` with “no contract running” or “Current context has no contract ID” means code requiring contract context ran outside an invocation; call through the generated client or use `env.as_contract` in tests. Literal `Error(Auth, InternalError)` requires its diagnostics and must not be automatically assigned the non-root remedy.\n\nGenerated client `try_*` methods preserve layers you must inspect. For a declared `Result<T, E>` function, the generated type is `Result<Result<T, T::Error>, Result<E, InvokeError>>`. Common branches are `Ok(Ok(value))` for success, `Err(Ok(contract_error))` for a decodable declared error, and `Err(Err(invoke_error))` for another invocation failure. A caller may map a caught failure to its own error, so a returned domain error does not prove the original host failure class. Preserve diagnostics and the original branch before remapping. For events import `testutils::Events as _` and inspect `env.events().all().events()`; failed calls roll events back. For time import `testutils::Ledger as _` before `env.ledger().set_timestamp(...)`.",
+    "answer": "Start with diagnostic events. `Error(Contract, #N)` is a contract-defined code: read that contract's error enum or spec, since there is no global #N table. `Error(Budget, ExceededLimit)` is resource exhaustion: simulate and inspect CPU, memory, and ledger I/O. `Error(WasmVm, …)` is a Wasm execution or type trap. `Bad union switch` from `scValToNative` means the XDR does not match the expected type, so decode only a successful expected ScVal. A generated `try_*` client returns nested Results: `Ok(Ok(value))` on success, `Err(Ok(contract_error))` for a declared error, `Err(Err(invoke_error))` for any other invocation failure; keep the original branch before remapping.",
     "keyFacts": [
-      "Names contract, budget, WasmVM, XDR-union, auth, and missing-context error classes.",
-      "Matches non-root auth, context, event, and ledger-testutils remedies to diagnostics.",
-      "Generated `try_*` clients expose both nested `Result` layers.",
-      "Preserve the original failure class before caller remapping."
+      "`Error(Contract, #N)` is defined by that contract's error enum; no global table exists.",
+      "`Error(Budget, ExceededLimit)` means resource exhaustion, diagnosed by simulation.",
+      "`Bad union switch` from `scValToNative` means the XDR does not match the expected type.",
+      "A `try_*` client returns `Err(Ok(contract_error))` or `Err(Err(invoke_error))` on failure."
     ],
     "avoid": [
-      "Do NOT use a universal Contract #N table or guess an SCVal union.",
-      "Do NOT claim mock_all_auths_allowing_non_root_auth explains every Auth/InternalError or that no contract ID always means an unregistered client.",
-      "Do NOT treat one HostError remedy as universal."
+      "Do NOT claim that a universal `Error(Contract, #N)` table exists."
     ],
-    "notes": "Verified core guidance with official docs and SDK source. The generated `try_*` nested Result is the required failure-path interpretation surface. The broad claim that callers must never catch or remap authorization failures is false; grade preservation and inspection of the original branch instead. Some example-specific fixes (`set_timestamp` import path, custom auth internals) are SDK-version-sensitive.\nAlso good if the answer: Cites official debugging-errors docs, error-enum convention docs, and testing docs/examples. | Recommends re-running with CLI/RPC simulation and verbose diagnostics before changing contract logic.\nGolden cites: Must cite Stellar debugging-errors docs and at least one official testing or contract-error convention source.\nGT-41 independently confirmed exact empirical distinctions on SDK 27. The current rendered diagnostic is Error(Budget, ExceededLimit); do not hard-gate older LimitExceeded wording."
+    "notes": "Do not hard-gate the older `LimitExceeded` wording. A caller may legitimately remap a caught failure; grade preserving diagnostics and the original branch."
   },
   "tags": {
     "category": "soroban",
@@ -33,7 +31,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-08-12",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-04-09",
     "sources": [
       {
@@ -141,22 +139,48 @@
             "note": "SDK tests cover success, decodable contract error, and InvokeError branches."
           }
         ]
+      },
+      {
+        "claim": "A generated try_* client returns Result<Result<T, T::Error>, Result<E, InvokeError>>",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/rs-soroban-sdk/blob/v29.0.1/soroban-sdk-macros/src/syn_ext.rs",
+            "observedAt": "2026-11-14",
+            "note": "try_output emits Result<Result<T, <T as TryFromVal<Env, Val>>::Error>, Result<E, InvokeError>>"
+          }
+        ]
+      },
+      {
+        "claim": "mock_all_auths_allowing_non_root_auth exists in the current SDK",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/rs-soroban-sdk (code search)",
+            "observedAt": "2026-11-14",
+            "note": "match in soroban-sdk/src/env.rs and testutils/client_call.rs"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-02)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-soroban-a, verify-audit-soroban-a; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "https://github.com/stellar/stellar-xdr/blob/main/Stellar-contract.x — \"SCEC_EXCEEDED_LIMIT = 5,    // Some arbitrary limit -- gas or otherwise -- was hit.\" (class B, observedAt 2026-11-02)",
-        "https://developers.stellar.org/docs/learn/fundamentals/contract-development/errors-and-debugging/debugging-errors — \"| `HostError(Budget, LimitExceeded)` | A network-defined resource limit has been exceeded\" (class A, observedAt 2026-11-02)",
-        "https://github.com/stellar/rs-soroban-sdk/blob/main/soroban-sdk-macros/src/syn_ext.rs (v29.0.1 latest, 2026-10-12) — \"Result<#t, <#t as #crate_path::TryFromVal<#crate_path::Env, #crate_path::Val>>::Error>, Result<#e, #crate_path::InvokeError>\" (class B, observedAt 2026-11-02)",
-        "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/errors — \"(prior verification evidence; unchanged)\" (class A, observedAt 2026-08-30)",
-        "https://github.com/stellar/rs-soroban-sdk/blob/main/soroban-sdk/src/env.rs — \"this won't return an error when `require_auth` hasn't been called in the root invocation ... pub fn as_contract<T>(&self, id: &Address, f: impl FnOnce() -> T) -> T\" (class B, observedAt 2026-11-02)",
-        "https://github.com/stellar/rs-soroban-sdk/blob/main/soroban-sdk/src/testutils.rs — \"pub trait Ledger { ... fn set_timestamp(&self, timestamp: u64); ... pub trait Events { ... fn all(&self) -> ContractEvents;\" (class B, observedAt 2026-11-02)",
-        "Sibling sweep 2026-11-02: q-soroban-unit-testing, q-soroban-publish-events — no contradiction; no gospel change.",
-        "Proposer re-verification only; no change proposed and no gospel change: .agents/rounds/2026-11-02-golden-audit/pass1/soroban-02.json."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-a.json#q-sor-decode-hosterror-codes",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-a.json#q-sor-decode-hosterror-codes",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-sor-decode-hosterror-codes",
+        "Live B 2026-11-14: https://github.com/stellar/rs-soroban-sdk/blob/v29.0.1/soroban-sdk-macros/src/syn_ext.rs -- 'try_output emits Result<Result<T, <T as TryFromVal<Env, Val>>::Error>, Result<E, InvokeError>>'",
+        "Live B 2026-11-14: https://github.com/stellar/rs-soroban-sdk (code search) -- 'match in soroban-sdk/src/env.rs and testutils/client_call.rs'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-sor-decode-hosterror-codes"
+    "origin": "raven-next q-sor-decode-hosterror-codes",
+    "notes": "Verified core guidance with official docs and SDK source. The generated `try_*` nested Result is the required failure-path interpretation surface. The broad claim that callers must never catch or remap authorization failures is false; grade preservation and inspection of the original branch instead. Some example-specific fixes (`set_timestamp` import path, custom auth internals) are SDK-version-sensitive.\nAlso good if the answer: Cites official debugging-errors docs, error-enum convention docs, and testing docs/examples. | Recommends re-running with CLI/RPC simulation and verbose diagnostics before changing contract logic.\nGolden cites: Must cite Stellar debugging-errors docs and at least one official testing or contract-error convention source.\nGT-41 independently confirmed exact empirical distinctions on SDK 27. The current rendered diagnostic is Error(Budget, ExceededLimit); do not hard-gate older LimitExceeded wording.",
+    "leaf": "soroban.errors-debugging"
   }
 }

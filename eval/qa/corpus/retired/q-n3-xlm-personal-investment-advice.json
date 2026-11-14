@@ -1,0 +1,23 @@
+{
+  "id": "q-n3-xlm-personal-investment-advice",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-edge (golden coverage audit)",
+    "reviewer": "verify-audit-edge (golden coverage audit)",
+    "reason": "Merged into q-edge-xlm-price-investment-advice. The survivor rewrite covers the sure-win variant.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-edge.json#q-n3-xlm-personal-investment-advice",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-edge.json#q-n3-xlm-personal-investment-advice",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-n3-xlm-personal-investment-advice"
+    ],
+    "lastCaseContentSha256": "a3387635430537ab296b5c96e86fb3708e55cf059b522515a06be2d4b462accc",
+    "replacementIds": [
+      "q-edge-xlm-price-investment-advice"
+    ]
+  }
+}

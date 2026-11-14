@@ -1,0 +1,23 @@
+{
+  "id": "q-raph-xlm-simple",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-hist-retail (golden coverage audit)",
+    "reviewer": "verify-hist-retail (golden coverage audit)",
+    "reason": "Merged into q-raph-xlm-network-role. Same three facts as q-raph-xlm-network-role. Note: the edge auditor's rewrite of q-edge-retail-everyday-use-eli5 defers the XLM definition to this case; point it at q-raph-xlm-network-role instead.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-raph-xlm-simple",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-raph-xlm-simple",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-raph-xlm-simple"
+    ],
+    "lastCaseContentSha256": "711ada7e587b0bedce4772fe5c6263beca626bd74db59ad382f8ea37ef28c587",
+    "replacementIds": [
+      "q-raph-xlm-network-role"
+    ]
+  }
+}

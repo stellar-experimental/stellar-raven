@@ -1,0 +1,23 @@
+{
+  "id": "q-soroban-add-signer-smart-wallet-howto",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-soroban-a (golden coverage audit)",
+    "reviewer": "verify-audit-soroban-a (golden coverage audit)",
+    "reason": "Merged into q-smart-account-scoped-policy-signers. Signer mutation goes to the q-smart-account-scoped-policy-signers rewrite (key fact 3), and the kit-sibling facts to q-tool-passkeykit-smart-wallet.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-a.json#q-soroban-add-signer-smart-wallet-howto",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-a.json#q-soroban-add-signer-smart-wallet-howto",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-soroban-add-signer-smart-wallet-howto"
+    ],
+    "lastCaseContentSha256": "c913d93eb4bd8c213bf573a50e7d0a9433df815526a4b65c3a3b3c22530d4e9e",
+    "replacementIds": [
+      "q-smart-account-scoped-policy-signers"
+    ]
+  }
+}

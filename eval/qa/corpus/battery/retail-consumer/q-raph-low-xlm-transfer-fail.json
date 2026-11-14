@@ -5,18 +5,17 @@
     "stellarDocs.search_protocol_concepts_docs"
   ],
   "golden": {
-    "answer": "Usually the account needs to retain enough XLM for its minimum balance/reserves and to pay the transaction fee, so spending every last lumen can make a transaction fail. Check the operation error, your available XLM after reserves, and whether new trustlines or other ledger entries would require more reserve. A failed transaction does not move the intended funds, though one included in a ledger still pays its small network fee; do not send recovery fees to someone who claims it is 'stuck.' Exact reserve settings can change, so use current wallet/network information rather than a memorized number. To free XLM, cancel eligible offers, clear liabilities, and remove zero-balance trustlines or other unnecessary subentries; if you intend to close the account, `AccountMerge` can transfer the remainder only after its blocking subentries and sponsorship conditions are cleared. Do not assume “balance minus 1 XLM” is universally spendable.",
+    "answer": "An account must keep its minimum-balance reserve plus enough XLM for the fee, so spending every lumen makes a transaction fail. A failed transaction does not move the intended funds, though one included in a ledger still pays its small fee. Cancelling offers and removing zero-balance trustlines or other subentries lowers the reserve; AccountMerge can close the account once blocking subentries are cleared. Never pay a stranger to “unstick” funds.",
     "keyFacts": [
-      "Explains reserves and fees as reasons low-XLM operations fail.",
-      "Says a failed transaction does not normally transfer the intended funds.",
-      "States eligible subentry cleanup lowers reserve.",
-      "Treats Account Merge as a conditional account-closing path."
+      "Low-XLM failures come from the minimum-balance reserve and the fee.",
+      "A failed transaction does not move the intended funds, but an included one pays its fee.",
+      "Removing eligible offers, trustlines and subentries lowers the reserve.",
+      "AccountMerge closes an account only after blocking subentries are cleared."
     ],
     "avoid": [
       "Do NOT quote a timeless exact minimum balance.",
-      "Do NOT tell the user to pay a stranger to unlock the wallet."
-    ],
-    "notes": "Avoids a volatile numeric reserve."
+      "Do NOT tell the user to pay a stranger to unlock funds."
+    ]
   },
   "tags": {
     "category": "retail-consumer",
@@ -192,41 +191,20 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch retail-consumer-02)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-hist-retail, verify-hist-retail; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "A https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations — \"PAYMENT_UNDERFUNDED ... Note that if sending XLM, the sender must additionally maintain its minimum XLM reserve.\" (observedAt 2026-11-02 (cache 2026-10-24); supports golden.answer / keyFacts[0]: confirmed)",
-        "A https://developers.stellar.org/docs/learn/fundamentals/lumens — \"available balance = balance - minimum balance - liabilities.selling\" (observedAt 2026-11-02 (cache 2026-10-31); supports golden.answer / keyFacts[0]: confirmed)",
-        "B https://github.com/stellar/stellar-xdr/blob/curr/Stellar-transaction.x — \"txINSUFFICIENT_BALANCE = -7, // fee would bring account below reserve\" (observedAt 2026-11-02; supports golden.answer / keyFacts[0]: confirmed)",
-        "A https://developers.stellar.org/docs/data/analytics/hubble/data-catalog/data-dictionary/gold/hourly-fee-agg-account — \"Failed transactions are still charged fees and included in all fee aggregates.\" (observedAt 2026-11-02; supports golden.answer: contradicted)",
-        "A https://developers.stellar.org/docs/learn/fundamentals/transactions/transaction-lifecycle — \"If the transaction is invalid, it will be rejected immediately by Stellar Core, the account's sequence number will not be incremented, and no fee will be consumed ... For each transaction, the account's sequence number is consumed\" (observedAt 2026-11-02; supports golden.answer: contradicted)",
-        "F https://horizon.stellar.org/transactions/81b3be6d421d99b2f00e324ddbefc676897f152705e0fecd23f0ab43df65b86c — \"successful=false, fee_charged=200 (2 ops), ledger 65269972, 2026-11-02T16:07:24Z\" (observedAt 2026-11-02; supports golden.answer: contradicted)",
-        "A https://developers.stellar.org/docs/learn/fundamentals/transactions/operations-and-transactions — \"Transactions are atomic. Meaning if one operation in a transaction fails, all operations fail, and the entire transaction is not applied to the ledger.\" (observedAt 2026-11-02; supports golden.keyFacts[1]: confirmed)",
-        "B https://github.com/stellar/stellar-xdr/blob/curr/Stellar-transaction.x — \"txFAILED = -1, // one of the operations failed (none were applied)\" (observedAt 2026-11-02; supports golden.keyFacts[1]: confirmed)",
-        "A https://developers.stellar.org/docs/learn/fundamentals/lumens — \"When you close a subentry, the associated base reserve will be added to your available balance.\" (observedAt 2026-11-02; supports golden.keyFacts[2]: confirmed)",
-        "A https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts — \"each subentry increases the account's required minimum balance\" (observedAt 2026-11-02; supports golden.keyFacts[2]: confirmed)",
-        "B https://github.com/stellar/stellar-core/blob/master/src/transactions/ChangeTrustOpFrame.cpp — \"limit == 0 path deletes the trustline; CHANGE_TRUST_CANNOT_DELETE when liquidityPoolUseCount != 0\" (observedAt 2026-11-02; supports golden.keyFacts[2]: confirmed)",
-        "A https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations — \"A source account can only be merged once it holds no non-signer subentries ... ACCOUNT_MERGE_IS_SPONSOR ... cannot be merged because it is sponsoring reserves.\" (observedAt 2026-11-02; supports golden.keyFacts[3] / answer AccountMerge: confirmed)",
-        "B https://github.com/stellar/stellar-xdr/blob/curr/Stellar-transaction.x — \"ACCOUNT_MERGE_HAS_SUB_ENTRIES = -4 ... ACCOUNT_MERGE_IS_SPONSOR = -7\" (observedAt 2026-11-02; supports golden.keyFacts[3] / answer AccountMerge: confirmed)",
-        "A https://developers.stellar.org/docs/learn/fundamentals/lumens — \"One base reserve is currently 0.5 XLM. Validators can vote to change the base reserve, but that's uncommon\" (observedAt 2026-11-02; supports golden.answer / avoid[0]: confirmed-as-of)",
-        "F https://horizon.stellar.org/ledgers?order=desc&limit=1 — \"ledger 65269970 closed 2026-11-02T16:07:14Z base_reserve_in_stroops=5000000 protocol_version=29\" (observedAt 2026-11-02; supports golden.answer / avoid[0]: confirmed-as-of)",
-        "A https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers — \"SDF ... DOES NOT have the capability to freeze or return XLM held in a Stellar account.\" (observedAt 2026-11-02; supports golden.avoid[1]: confirmed)",
-        "Verifier (golden.answer, accept): A https://developers.stellar.org/docs/learn/fundamentals/transactions/transaction-lifecycle — \"For each transaction, the account's sequence number is consumed (increased by 1) ... The entire transaction will fail if any operation fails, and all previous operations will be rolled back.\" (observedAt 2026-11-02)",
-        "Verifier (golden.answer, accept): A https://developers.stellar.org/docs/data/analytics/hubble/data-catalog/data-dictionary/gold/hourly-fee-agg-account — \"Failed transactions are still charged fees and included in all fee aggregates.\" (observedAt 2026-11-02)",
-        "Verifier (golden.answer, accept): A https://developers.stellar.org/docs/tools/cli/agent-cli/reference/troubleshooting — \"TxInsufficientBalance ... The source account cannot cover the transaction's base fee, currently 100 stroops.\" (observedAt 2026-11-02)",
-        "Verifier (golden.answer, accept): B https://raw.githubusercontent.com/stellar/stellar-core/master/src/transactions/TransactionFrame.cpp — \"TransactionFrame::processFeeSeqNum(AbstractLedgerTxn& ltx, ... (fee and sequence processed in a separate phase before operation apply)\" (observedAt 2026-11-02)",
-        "Verifier (golden.answer, accept): F https://horizon.stellar.org/ledgers/65270251/transactions?include_failed=true&limit=200 — \"tx 075f946ceb03c6e459988b23d7f314002ec4b678477569aca923e5c98e8ae6d3 successful=false fee_charged=100; tx d3d1a50d1ff4c98770bb7414687f1e4063ddf7da97685e21a0c495ca1ce76805 successful=false fee_charged=10000\" (observedAt 2026-11-02)",
-        "Verifier (golden.answer, accept): F https://horizon.stellar.org/ledgers?order=desc&limit=1 — \"ledger 65270251 closed 2026-11-02T16:30:39Z base_fee_in_stroops 100 base_reserve_in_stroops 5000000 failed_transaction_count 17\" (observedAt 2026-11-02)",
-        "Verifier (golden.answer, accept): D perplexity_search: 'Stellar failed transaction still pays fee tx_failed fee charged' — \"Even failed Soroban transactions are charged inclusion_fee_charged and non_refundable_resource_fee_charged (developers.stellar.org ledger-fee-stats-agg, surfaced by Perplexity)\" (observedAt 2026-11-02)",
-        "Verifier (golden.answer, accept): E stellarDocs.search_docs 'failed transaction fee charged' -> https://developers.stellar.org/docs/tools/cli/agent-cli/guides/delegate-spending#spending-the-allowance — \"fee_charged: 17315, result: TxFailed([OpInner(InvokeHostFunction(Trapped))])\" (observedAt 2026-11-02T16:31:03Z)",
-        "Sibling set checked by the proposer 2026-11-02: q-pc-tx-finality-failure-semantics, q-pc-account-merge-reclaim-reserve, q-protocol-base-reserve-min-balance, q-edge-1xlm-activation-fee, q-ti-classic-submission-errors; no contradiction recorded.",
-        "Sibling sweep 2026-11-02 (applier): grep 'failed transaction|tx_failed|txFAILED' over the battery -> q-pc-tx-finality-failure-semantics (included failures consume fee/sequence), q-ti-tx-too-late-resubmit (avoid: every failed tx preserves sequence/fee), q-defi-arbitrage-pathpayment-bots, q-soroban-resource-limits, q-ti-classic-submission-errors, q-ti-rpc-gettransactions-pagination-xdr, q-defi-market-making-kelp; also read q-pc-account-merge-reclaim-reserve and q-edge-1xlm-activation-fee: no 'failed tx costs nothing' wording; the new answer now agrees with q-pc-tx-finality-failure-semantics."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-raph-low-xlm-transfer-fail",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-raph-low-xlm-transfer-fail",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-raph-low-xlm-transfer-fail",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/learn/fundamentals/lumens -- 'Base reserves ... A unit of measurement used to calculate an account’s minimum balance'"
       ],
       "rootCause": [
-        "Eval-side authoring flaw: the answer conflated 'the intended funds do not move' with 'the balance is unchanged', ignoring the fee charged on a failed transaction that is included in a ledger.",
-        ".agents/rounds/2026-11-02-golden-audit.md — golden audit batch retail-consumer-02"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raph min-balance-reserve-transfer-fail"
+    "origin": "raph min-balance-reserve-transfer-fail",
+    "notes": "Avoids a volatile numeric reserve.",
+    "leaf": "protocol.accounts-reserves"
   }
 }

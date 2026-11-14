@@ -8,17 +8,17 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "Yes — Soroban supports a **constructor** since **Protocol 22 (CAP-0058, status Final;** mainnet vote\nDec 5, 2024**)**. [cap0058][p22]\n\n- **Define it** as a reserved function named **`__constructor`** inside the `#[contractimpl]` block. A\n  Wasm that exports `__constructor` is treated as having a constructor. [cap0058]\n- **Runs exactly once, atomically, at contract creation** — the host calls it immediately after\n  creating the instance entry; if it traps or returns a non-`Void` value, contract creation **fails\n  and rolls back**. It cannot be re-invoked afterward (and is NOT re-run on a Wasm code upgrade).\n  [cap0058]\n- **Arguments** are passed at create/deploy time via the `HOST_FUNCTION_TYPE_CREATE_CONTRACT_V2`\n  host function (CLI `stellar contract deploy ... -- <args>` / SDK deployer). It may take 0..N args.\n  [cap0058]\n- **Before P22** the standard pattern was a separately-called `initialize`/`init` function guarded\n  against re-initialization; constructors remove that round-trip and reduce front-running risk on\n  init. [p22]\n\nTraps: claiming Soroban has no constructor at all (stale, pre-P22); or describing a Solidity\n`constructor` keyword / `selfdestruct` semantics.",
+    "answer": "Yes. Since Protocol 22 (CAP-0058), a contract defines a constructor as a function named `__constructor` in its `#[contractimpl]` block. The host runs it exactly once, atomically, when the contract is created. A trap or a non-Void return fails creation. Arguments are supplied at deploy time (`stellar contract deploy ... -- <args>`). It is not re-run on a Wasm upgrade.",
     "keyFacts": [
-      "Soroban defines constructors as `__constructor` functions in `#[contractimpl]`.",
-      "The host runs `__constructor` exactly once at instantiation or deploy time.",
-      "Constructor support was added at the protocol level via CAP-0058 (Protocol 22)."
+      "A Soroban constructor is a function named `__constructor` in `#[contractimpl]`.",
+      "The host runs `__constructor` exactly once, atomically, at contract creation.",
+      "Constructors arrived at the protocol level with CAP-0058 in Protocol 22.",
+      "Constructor arguments are passed at deploy time."
     ],
     "avoid": [
-      "Do NOT claim Soroban has no constructor mechanism at all (it does, since P22/CAP-0058).",
-      "Do NOT describe a Solidity `constructor` keyword or `selfdestruct` semantics."
+      "Do NOT claim Soroban has no constructor mechanism, or describe Solidity `constructor`/`selfdestruct` semantics."
     ],
-    "notes": "CAP-0058 (Final), Protocol 22 — Testnet 2024-11-12, Mainnet vote 2024-12-05. __constructor must return Val::Void; runs atomically once at create-contract time via HOST_FUNCTION_TYPE_CREATE_CONTRACT_V2.\nAlso good if the answer: Constructor arguments are passed at deploy/create-contract time (e.g., via the CLI deploy `--` args or SDK deployer). | Before constructors existed, the common pattern was a separately-called `initialize`/`init` function guarded against re-init.\nGolden cites: A developers.stellar.org page or CAP-0058 reference for the constructor lifecycle."
+    "notes": "Mentioning the pre-Protocol-22 guarded `initialize` pattern as history is correct, not a stale claim."
   },
   "tags": {
     "category": "soroban",
@@ -32,7 +32,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2024-12-05",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-06-03",
     "sources": [
       {
@@ -47,15 +47,18 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-04)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-soroban-b, verify-audit-soroban-b; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0058.md — \"Title: Constructors for Soroban contracts Status: Final ... Protocol version: 22\"; \"When the contract has its code updated it is not considered created and thus constructor won't be called.\"; \"`__constructor` must return `Val::VOID`\" (observedAt 2026-11-02).",
-        "https://stellar.org/blog/developers/protocol-22-upgrade-guide — \"December 5: Mainnet upgrade vote ... upgradetime=2024-12-05T17:00:00Z&protocolversion=22\" (observedAt 2026-11-02).",
-        "https://x.com/StellarOrg/status/1856427537536262237 — \"Today, the Testnet upgraded to Protocol 22! Next up, validators vote on the Mainnet Upgrade on December 5th.\" (observedAt 2026-11-02).",
-        "Local stellar 28.1.0 `stellar contract deploy --help` — \"Usage: stellar contract deploy [OPTIONS] --source-account <SOURCE_ACCOUNT> [-- <CONTRACT_CONSTRUCTOR_ARGS>...]\" (observedAt 2026-11-02).",
-        "No gospel change; no proposal (verifier noProposalCases). reverifyBy moved into the 2027-06 audit window.",
-        "Sibling sweep 2026-11-02: q-soroban-factory-pattern, q-soroban-deploy-cli; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-b.json#q-soroban-constructor-lifecycle",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-b.json#q-soroban-constructor-lifecycle",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-soroban-constructor-lifecycle",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0058.md -- 'CAP: 0058 Title: Constructors for Soroban contracts ... Status: Final'",
+        "Live F 2026-11-14: local stellar 30.0.1 `stellar contract deploy --help` -- 'stellar contract deploy [OPTIONS] --source-account <SOURCE_ACCOUNT> [-- <CONTRACT_CONSTRUCTOR_ARGS>...]'",
+        "Live A 2026-11-14: truth.verified 2026-11-02 (stellar.org protocol-22-upgrade-guide) -- 'Not re-fetched: a past event cannot move and the 2026-11-02 audit confirmed it with two classes.'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
     "origin": "raven-next q-soroban-constructor-lifecycle",
@@ -77,7 +80,39 @@
             "note": "Fetched CAP-0058 source defines smart-contract constructors and its protocol assignment."
           }
         ]
+      },
+      {
+        "claim": "CAP-0058 (constructors) is Final and shipped in Protocol 22",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0058.md",
+            "observedAt": "2026-11-14",
+            "note": "CAP: 0058 Title: Constructors for Soroban contracts ... Status: Final"
+          },
+          {
+            "class": "F",
+            "ref": "local stellar 30.0.1 `stellar contract deploy --help`",
+            "observedAt": "2026-11-14",
+            "note": "stellar contract deploy [OPTIONS] --source-account <SOURCE_ACCOUNT> [-- <CONTRACT_CONSTRUCTOR_ARGS>...]"
+          }
+        ]
+      },
+      {
+        "claim": "Dates (mainnet vote 2024-12-05) are historical",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "truth.verified 2026-11-02 (stellar.org protocol-22-upgrade-guide)",
+            "observedAt": "2026-11-14",
+            "note": "Not re-fetched: a past event cannot move and the 2026-11-02 audit confirmed it with two classes."
+          }
+        ]
       }
-    ]
+    ],
+    "notes": "CAP-0058 (Final), Protocol 22 — Testnet 2024-11-12, Mainnet vote 2024-12-05. __constructor must return Val::Void; runs atomically once at create-contract time via HOST_FUNCTION_TYPE_CREATE_CONTRACT_V2.\nAlso good if the answer: Constructor arguments are passed at deploy/create-contract time (e.g., via the CLI deploy `--` args or SDK deployer). | Before constructors existed, the common pattern was a separately-called `initialize`/`init` function guarded against re-init.\nGolden cites: A developers.stellar.org page or CAP-0058 reference for the constructor lifecycle.",
+    "leaf": "soroban.deploy-lifecycle"
   }
 }

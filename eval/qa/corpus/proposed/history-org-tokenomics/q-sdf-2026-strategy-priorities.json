@@ -1,0 +1,159 @@
+{
+  "id": "q-sdf-2026-strategy-priorities",
+  "question": "What are SDF's stated strategic priorities for 2026, and where are its strategy and product roadmap published?",
+  "surface": [
+    "scout.searchResearch",
+    "lumenloop.search_content_semantic"
+  ],
+  "golden": {
+    "answer": "As of 2026-11-14, SDF's 2026 strategy sets three objectives: asset adoption, targeting $1 billion growth in network asset value; enterprise and institutional adoption, targeting 15 new enterprises signed and at least 5 deployed; and faster, safer infrastructure through network performance and protocol releases. It is published at stellar.org/foundation/strategy. The roadmap page, stellar.org/foundation/roadmap, still showed the 2025 product roadmap.",
+    "keyFacts": [
+      "SDF's 2026 strategy targets $1 billion growth in network asset value.",
+      "It targets 15 new enterprises signed and at least 5 deployed in 2026.",
+      "It prioritizes network performance and faster, safer protocol releases.",
+      "SDF publishes the strategy on stellar.org's foundation strategy page."
+    ],
+    "avoid": [
+      "Do NOT give 2025 product roadmap items as SDF's 2026 priorities."
+    ],
+    "notes": "Accept a later dated strategy or roadmap if SDF has published one."
+  },
+  "tags": {
+    "category": "history-org-tokenomics",
+    "service": "scout",
+    "freshness": "scheduled"
+  },
+  "truth": {
+    "lifecycle": {
+      "state": "proposed",
+      "reviewState": "none"
+    },
+    "leaf": "ecosystem.strategy-roadmap",
+    "domain": "real-world",
+    "status": "confirmed",
+    "asOf": "2026-11-14",
+    "reverifyBy": "2027-02-16",
+    "sources": [
+      {
+        "class": "A",
+        "ref": "https://stellar.org/foundation/strategy",
+        "observedAt": "2026-11-14",
+        "quote": "We're targeting $1 billion in growth for network asset value on Stellar"
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.org/foundation/strategy",
+        "observedAt": "2026-11-14",
+        "quote": "Our year-end target: sign 15 new transformational enterprises and deploy at least 5 in 2026."
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.org/foundation/roadmap",
+        "observedAt": "2026-11-14",
+        "quote": "2025 Product Roadmap ... Our roadmap is focused on scalability and usability"
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.org/quarterly-reports",
+        "observedAt": "2026-11-14",
+        "quote": "Every quarter, we report on SDF's achievements ... Summary of Q3 2026"
+      },
+      {
+        "class": "D",
+        "ref": "https://www.crypto-news-flash.com/sdf-outlines-stellars-2026-strategy",
+        "observedAt": "2026-11-14",
+        "quote": "The foundation established year-end targets to sign 15 new transformational enterprises and implement at least five of them in 2026"
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "SDF's 2026 strategy targets $1 billion growth in network asset value.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/foundation/strategy",
+            "observedAt": "2026-11-14",
+            "note": "Section 'Asset adoption and utilization': 'We're targeting $1 billion in growth for network asset value on Stellar'."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.crypto-news-flash.com/sdf-outlines-stellars-2026-strategy",
+            "observedAt": "2026-11-14",
+            "note": "2026-02-05: SDF 'aims to increase network asset value by $1 billion'."
+          }
+        ]
+      },
+      {
+        "claim": "The 2026 strategy targets 15 new transformational enterprises signed and at least 5 deployed in 2026.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/foundation/strategy",
+            "observedAt": "2026-11-14",
+            "note": "'sign 15 new transformational enterprises and deploy at least 5 in 2026'."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.crypto-news-flash.com/sdf-outlines-stellars-2026-strategy",
+            "observedAt": "2026-11-14",
+            "note": "'sign 15 new transformational enterprises and implement at least five of them in 2026'."
+          }
+        ]
+      },
+      {
+        "claim": "The third 2026 objective is infrastructure: increase network performance and release protocols fast and securely.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/foundation/strategy",
+            "observedAt": "2026-11-14",
+            "note": "'Build the fastest, safest infrastructure for next-generation finance'; subsections 'Increase network performance' and 'Release protocols fast and securely'."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.crypto-news-flash.com/sdf-outlines-stellars-2026-strategy",
+            "observedAt": "2026-11-14",
+            "note": "SDF 'will focus on increasing mainnet transactions per second, improving close times' and 'streamlining protocol delivery'."
+          }
+        ]
+      },
+      {
+        "claim": "On 2026-11-14 stellar.org/foundation/roadmap still carried the 2025 SDF Product Roadmap.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/foundation/roadmap",
+            "observedAt": "2026-11-14",
+            "note": "Page title 'Stellar | 2025 SDF Product Roadmap'; quarters Q1 to Q4 2025."
+          },
+          {
+            "class": "C",
+            "ref": "scout.searchResearch source=sdf-org",
+            "observedAt": "2026-11-14",
+            "note": "The sdf-org corpus returned the quarterly-reports index and no 2026 roadmap page."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-11-14",
+      "by": "gap-1 lane (Claude Fable 5.2), golden-coverage-audit 2026-11-14",
+      "evidence": [
+        "https://stellar.org/foundation/strategy",
+        "https://stellar.org/foundation/strategy",
+        "https://stellar.org/foundation/roadmap",
+        "https://stellar.org/quarterly-reports",
+        "https://www.crypto-news-flash.com/sdf-outlines-stellars-2026-strategy"
+      ],
+      "rootCause": [
+        ".agents/rounds/2026-11-14-golden-coverage-audit.md"
+      ]
+    },
+    "notes": "Sibling check: q-hot-sdf-transparency-wallets-reports already tests the quarterly-reports landing page, so this case leaves it out of the key facts.",
+    "origin": "golden-coverage-audit 2026-11-14"
+  }
+}

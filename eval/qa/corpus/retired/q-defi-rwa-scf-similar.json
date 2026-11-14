@@ -1,0 +1,21 @@
+{
+  "id": "q-defi-rwa-scf-similar",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-defi (golden coverage audit)",
+    "reviewer": "verify-defi (golden coverage audit)",
+    "reason": "Target-one leaf held by q-scf-history-soroswap; three awards from one round.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-defi-rwa-scf-similar",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-defi-rwa-scf-similar",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-defi-rwa-scf-similar"
+    ],
+    "lastCaseContentSha256": "01e1d81b70e71c721e8b7adc46d6f1abe201e34589b25b7928f65a22ea9963b6",
+    "replacementIds": []
+  }
+}

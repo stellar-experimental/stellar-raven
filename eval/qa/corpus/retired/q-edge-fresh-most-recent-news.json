@@ -1,0 +1,21 @@
+{
+  "id": "q-edge-fresh-most-recent-news",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-edge (golden coverage audit)",
+    "reviewer": "verify-audit-edge (golden coverage audit)",
+    "reason": "Retire holds: no stable fact, and the frozen live digest cases cover recency handling. The rot row records ordinary drift of an example as \"changed\" with no evidence; it is not a changed fact.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-edge.json#q-edge-fresh-most-recent-news",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-edge.json#q-edge-fresh-most-recent-news",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-edge-fresh-most-recent-news"
+    ],
+    "lastCaseContentSha256": "94017bd044c27dd6f2cc2340e872ac9879bb44b9ca665241cb63138ad9a45562",
+    "replacementIds": []
+  }
+}

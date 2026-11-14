@@ -6,19 +6,16 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "They are **two views of the same asset, not two different tokens.** Holding a classic asset means\nyour account has a **trustline ledger entry** to `<code:issuer>`; the **Stellar Asset Contract\n(SAC)** is a **protocol-reserved contract** that exposes that *same* classic asset to Soroban so\ncontracts can move it by contract ID [1]. There is **no separate \"USDC-on-Soroban\"** to migrate to\nor hold alongside — one source of truth backs both [1].\n\n- **Classic / trustline:** balances live in trustline entries; payments use classic operations and\n  respect issuer auth flags. Each trustline costs a base reserve.\n- **SAC:** a Soroban contract calls `transfer`/`balance`/etc. on the asset's SAC by contract ID;\n  account balances still resolve to the underlying **trustline**, while contract-to-contract\n  movements use **contract-data** entries [1].\n- Both share one supply; the SAC implements **CAP-46-6** and the **SEP-41** token interface; the\n  **issuer is the initial admin** (mint/clawback/set_authorized are admin-only, and `set_admin` can transfer the role) [1].\n\nYou never redeploy, bridge, or wrap the asset to use it in Soroban.\n\nSource: [1] developers.stellar.org Stellar Asset Contract page.",
+    "answer": "They are two views of one asset, not two tokens. A G-account holds it on a trustline, used by classic operations. The Stellar Asset Contract is a protocol-built contract that exposes the same asset to Soroban by contract id and implements SEP-41. A contract address's balance lives in SAC contract storage, not a trustline. The SAC is deployed once per asset; no balance is migrated or bridged, and the issuer's authorization and clawback controls apply in both views.",
     "keyFacts": [
-      "The SAC is a protocol-reserved contract for the same classic asset.",
-      "It exposes that classic asset to Soroban.",
-      "Classic holdings use trustline ledger entries.",
-      "The SAC lets Soroban contracts move the asset by contract ID.",
-      "Contract-to-contract transfers use contract data entries."
+      "The SAC is a protocol-built contract exposing the same classic asset to Soroban.",
+      "G-account holdings are trustline ledger entries.",
+      "Soroban contracts move the asset through the SAC by contract id.",
+      "A contract address's balance is SAC contract storage, not a trustline."
     ],
     "avoid": [
-      "Do NOT claim the SAC is a distinct token requiring users to migrate balances or hold two versions of the asset.",
-      "Do NOT claim you must redeploy/bridge the asset to use it in Soroban."
-    ],
-    "notes": "Required comparison (trustline vs SAC). Dossier §2, §8.1. Verified against developers.stellar.org SAC page.\nAlso good if the answer: Both share one source of truth (e.g. one USDC), so there is no separate 'USDC-on-Soroban' to keep in sync. | The SAC implements CAP-46-6 and the SEP-41 token interface.\nGolden cites: The Stellar Asset Contract (SAC) page on developers.stellar.org."
+      "Do NOT claim the SAC is a separate token that users must migrate balances into or bridge to."
+    ]
   },
   "tags": {
     "category": "assets-anchors-seps",
@@ -117,28 +114,43 @@
             "note": "Exact quote: \"write_administrator(e, Address::from_account(e, &asset4.issuer)?)?; ... pub(crate) fn clawback(...) { ... let admin = read_administrator(e)?; admin.require_auth()?; ... fn set_authorized ... admin.require_auth()?; ... fn mint ... admin.require_auth()?; ... fn set_admin ... write_administrator(e, new\""
           }
         ]
+      },
+      {
+        "claim": "SAC is a protocol-built contract wrapping the same classic asset; issuer is initial admin, movable with set_admin; implements SEP-41.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract.md",
+            "observedAt": "2026-11-14",
+            "note": "The asset issuer becomes the *initial* administrator once the contract has been deployed"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tokens/stellar-asset-contract.md",
+            "observedAt": "2026-11-14",
+            "note": "Transfers to the issuer account will burn the token, while transfers from the issuer account will mint."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-02)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-assets, verify-audit-assets; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "2026-11-02 [A] https://developers.stellar.org/docs/tokens/stellar-asset-contract — \"The asset issuer becomes the *initial* administrator once the contract has been deployed; administrative authority is mutable and can be transferred afterwards with the SAC's `set_admin` function. ... only the administrator can `mint` more of the token. Similarly, only the administrator can appoint a new administrator.\" (claim: verifier accept golden.answer)",
-        "2026-11-02 [B] stellar/rs-soroban-env soroban-env-host/src/builtin_contracts/stellar_asset_contract/contract.rs — \"write_administrator(e, Address::from_account(e, &asset4.issuer)?)?; ... pub(crate) fn clawback(...) { ... let admin = read_administrator(e)?; admin.require_auth()?; ... fn set_authorized ... admin.require_auth()?; ... fn mint ... admin.require_auth()?; ... fn set_admin ... write_administrator(e, new_admin...)\" (claim: verifier accept golden.answer)",
-        "2026-11-02 [A] https://developers.stellar.org/docs/tokens/stellar-asset-contract — \"Each Stellar asset has an instance of the SAC reserved on the network ... After the contract has been deployed, users can use their classic account (for lumens) or trustline (for other assets) balance.\" (claim: golden.keyFacts[0..3] confirmed: SAC is the protocol-reserved contract for the same classic asset; balances of accounts stay in trustlines)",
-        "2026-11-02 [B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0046-06.md — \"Smart Contract Standardized Asset for classic assets\" (claim: golden.keyFacts[0..3] confirmed: SAC is the protocol-reserved contract for the same classic asset; balances of accounts stay in trustlines)",
-        "2026-11-02 [A] https://developers.stellar.org/docs/tokens/stellar-asset-contract — \"Using Address::Account — The balance must exist in a trustline ... This means the contract will not store the balance in ContractData.\" (claim: golden.keyFacts[4] confirmed: Contract-to-contract transfers use contract data entries)",
-        "2026-11-02 [B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0046-06.md — \"`ContractDataEntry` to hold the balance, along with an `authorized` and ...\" (claim: golden.keyFacts[4] confirmed: Contract-to-contract transfers use contract data entries)",
-        "2026-11-02 [A] https://developers.stellar.org/docs/tokens/stellar-asset-contract — \"The asset issuer becomes the initial administrator once the contract has been deployed; administrative authority is mutable and can be transferred afterwards with the SAC's set_admin function.\" (claim: golden.answer contradicted: The issuer stays admin; mint/clawback/set_authorized are issuer-only)",
-        "2026-11-02 [A] https://developers.stellar.org/docs/build/guides/tokens/custom-sac-admin — \"If an asset's issuer account is locked after the SAC Admin address has been changed, tokens will still be mint-able and/or clawback-able (if enabled) from the SAC as long as it's authorized by the current Admin address.\" (claim: golden.answer contradicted: The issuer stays admin; mint/clawback/set_authorized are issuer-only)",
-        "2026-11-02 [B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0046-06.md — \"fn set_admin(env: Env, new_admin: Address); ... The admin is initally set to the issuer\" (claim: golden.answer contradicted: The issuer stays admin; mint/clawback/set_authorized are issuer-only)",
-        "2026-11-02 [E] stellarDocs.search_docs('SAC set_admin initial administrator issuer') — \"stellar-asset-contract#deployment: authority is mutable and can be transferred afterwards with the SAC's set_admin function\" (claim: golden.answer contradicted: The issuer stays admin; mint/clawback/set_authorized are issuer-only)",
-        "Sibling sweep 2026-11-02: grep 'issuer stays admin|issuer-only|set_admin' over eval/qa/corpus/battery → q-sor-sac-introspection already says 'issuer is initial admin, but set_admin makes current administration mutable'; q-comp-clawback-holder-risk 'issuer-only' refers to classic ClawbackOp, not the SAC admin; q-asset-deploy-sac-cli and q-comp-sac-inherits-flags agree; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-assets.json#q-asset-trustline-vs-sac",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-assets.json#q-asset-trustline-vs-sac",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-asset-trustline-vs-sac",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/tokens/stellar-asset-contract.md -- 'The asset issuer becomes the *initial* administrator once the contract has been deployed'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/tokens/stellar-asset-contract.md -- 'Transfers to the issuer account will burn the token, while transfers from the issuer account will mint.'",
+        "Live A 2026-11-14: https://github.com/stellar/stellar-docs/blob/main/docs/tokens/stellar-asset-contract.mdx -- 'Using Address::Contract - The balance and authorization state will be stored in contract storage, as opposed to a trustline.'"
       ],
       "rootCause": [
-        "eval-side authoring flaw: SAC admin role stated as permanently issuer-held"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-asset-trustline-vs-sac"
+    "origin": "raven-next q-asset-trustline-vs-sac",
+    "notes": "Required comparison (trustline vs SAC). Dossier §2, §8.1. Verified against developers.stellar.org SAC page.\nAlso good if the answer: Both share one source of truth (e.g. one USDC), so there is no separate 'USDC-on-Soroban' to keep in sync. | The SAC implements CAP-46-6 and the SEP-41 token interface.\nGolden cites: The Stellar Asset Contract (SAC) page on developers.stellar.org.",
+    "leaf": "assets.sac"
   }
 }

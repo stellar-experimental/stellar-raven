@@ -1,0 +1,18 @@
+{
+  "$comment": "Frozen golden copied from q-gap-vet-pitch-vertical-null at the 2026-11-14 coverage audit base; a verdict-consistency fixture, not a live case.",
+  "golden": {
+    "answer": "In both composites, `vertical: null` means the idea did not map to Scout's closed measurable vertical axis. It does not mean the idea has no market, competitors, prior art, demand, or funding history. Read any returned competitor, maturity, and prior-art blocks on their stated basis. Treat `gap: null` and `funding: null` as unavailable vertical-derived analyses, not zero values. In `scout.scfPitch`, evaluate the separate round block through `round.source` even when the vertical is null. Cite `generatedAt` and keep every conclusion source-relative.",
+    "keyFacts": [
+      "Defines a null vertical as an unmapped measurable axis, not a market-absence verdict.",
+      "Treats null gap and funding blocks as unavailable vertical-derived analyses.",
+      "Inspects returned competitors, maturity, and prior art.",
+      "Treats the pitch-round source as an independent block."
+    ],
+    "avoid": [
+      "Do NOT claim that `vertical: null` proves the market, competition, demand, or prior art does not exist.",
+      "Do NOT convert null gap or funding blocks to numeric zero.",
+      "Do NOT ignore `round.source` because the pitch vertical is null."
+    ],
+    "notes": "This is a source-relative service-semantics case. The probe idea and returned rows are examples, not permanent targets."
+  }
+}

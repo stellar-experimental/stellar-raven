@@ -7,18 +7,17 @@
     "scout.searchResearch"
   ],
   "golden": {
-    "answer": "Issuing a Stellar asset makes it technically valid, not automatically visible, trusted, liquid, or listed. The durable prerequisites are: issue the asset from the correct issuer account, make trustlines possible for holders, set the issuer account's `home_domain`, and publish a valid SEP-1 `https://DOMAIN/.well-known/stellar.toml` with `[[CURRENCIES]]` metadata for the exact code and issuer. SEP-1 says clients and exchanges can use that information to decide whether a token should be listed.\n\nTradability requires markets. On Stellar that can mean SDEX offers, liquidity pools, or integrations/listings in wallets, explorers, exchanges, and aggregators. Visibility and pricing usually require enough real liquidity, supply/issuer metadata, and a venue-specific policy review. SEP-42/Stellar Asset Lists define a community asset-list format and catalog that apps may use, but the catalog itself warns that inclusion in a list is not an endorsement or recommendation.\n\nThe practical answer is therefore a checklist, not a guarantee: publish correct SEP-1 metadata; keep issuer/domain/logo/contact/reserve information consistent; create real markets; apply to each target venue using its current listing process; and keep dated evidence for any verification, market-cap, or safety claim.",
+    "answer": "Issuing an asset does not make it listed, trusted or liquid. Set the issuer’s home_domain and publish a valid SEP-1 stellar.toml with [[CURRENCIES]] metadata for the exact code and issuer, let holders create trustlines, and build real markets (SDEX offers, liquidity pools). Each wallet, explorer, exchange and aggregator applies its own listing policy; SEP-42 asset lists are optional and not an endorsement.",
     "keyFacts": [
-      "Requires asset issuance and trustlines.",
-      "Requires a home domain, valid SEP-1 metadata, logo, and issuer details.",
-      "Tradability needs SDEX offers, AMM pools, or wallet/exchange/aggregator listings.",
-      "These services set their own listing, verification, and liquidity policies."
+      "Listing needs the issuer’s home_domain and a valid SEP-1 stellar.toml for the asset.",
+      "Tradability needs trustlines plus real markets: SDEX offers or liquidity pools.",
+      "Each wallet, exchange or aggregator sets its own listing and verification policy."
     ],
     "avoid": [
-      "Do NOT guarantee listing, verification, price, or market-cap display just because a Stellar asset exists.",
-      "Do NOT claim an official universal Stellar whitelist governs every exchange or aggregator."
+      "Do NOT guarantee listing, verification, price or market-cap display from issuance alone.",
+      "Do NOT claim an official universal Stellar whitelist governs every venue."
     ],
-    "notes": "Freshness-sensitive. Verified durable prerequisites with SEP-1 and SEP-42; do not require any specific exchange/aggregator policy beyond dated current-source citation. Re-verified 2026-06-29: SEP-0042 confirmed as 'Stellar Asset List (SAL)', SEP-0001 + the build/apps SEP-1 tutorial resolve; stellar.expert/asset-lists is a client-rendered SPA so its catalog couldn't be content-fetched but the route is valid (load-bearing SEP claims verified via the protocol repo).\nAlso good if the answer: Mentions liquidity and price/market-cap visibility generally require real markets and supply metadata rather than mere asset issuance. | Advises checking the current listing docs/forms for the specific venue or aggregator.\nGolden cites: SEP-1 or Stellar asset docs, plus dated venue/listing sources for freshness-specific claims."
+    "notes": "Do not require any specific venue’s policy beyond a dated current-source citation."
   },
   "tags": {
     "category": "retail-consumer",
@@ -32,7 +31,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-05-12",
     "sources": [
       {
@@ -57,17 +56,17 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch retail-consumer-01)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-hist-retail, verify-hist-retail; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "2026-11-02 [B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0001.md — \"Clients and exchanges can use this information to decide whether a token should be listed.\" (claim: golden.answer confirmed: SEP-1 says clients and exchanges can use stellar.toml information to decide whether a token should be listed)",
-        "2026-11-02 [E] https://developers.stellar.org/docs/tokens/publishing-asset-info#how-to-publish-your-stellar-info-file — \"post it at the following location: https://YOUR_DOMAIN/.well-known/stellar.toml\" (claim: golden.answer confirmed: SEP-1 says clients and exchanges can use stellar.toml information to decide whether a token should be listed)",
-        "2026-11-02 [A] https://developers.stellar.org/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools.md — \"Users can trade and convert assets on the Stellar network with the use of path payments through Stellar's decentralized exchange and liquidity pools.\" (claim: golden.keyFacts[2] confirmed: Tradability needs SDEX offers, AMM pools, or listings)",
-        "2026-11-02 [B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0042.md — \"Any organization can create, maintain, and publish an asset list following the guidelines outlined in this standard. Inclusion of any particular asset in a list should not be considered as endorsement or recommendation of any kind.\" (claim: golden.keyFacts[3] confirmed: Venues set their own listing, verification, liquidity policies)",
-        "2026-11-02 [B] https://raw.githubusercontent.com/stellar-asset-lists/index/main/index.json — \"Providers: Lobstr Curated List (UltraStellar), Soroswap List, StellarExpert Top 50 ('Assets included in this list were not verified by StellarExpert team')\" (claim: golden.keyFacts[3] confirmed: Venues set their own listing, verification, liquidity policies)",
-        "2026-11-02 [B] https://raw.githubusercontent.com/stellar-asset-lists/index/main/README.md — \"Inclusion of any particular asset in a list should not be considered as endorsement or recommendation. ... The easiest way to utilize asset lists in your web app is a @stellar-asset-lists/sdk NPM package.\" (claim: golden.answer confirmed: SEP-42 Stellar Asset Lists catalog warns inclusion is not endorsement)",
-        "2026-11-02 [D] https://stellar.expert/asset-lists (via Perplexity search) — \"Community-managed catalogue of Stellar asset lists ... Inclusion of any particular asset in a list should not be considered as endorsement or recommendation.\" (claim: golden.answer confirmed: SEP-42 Stellar Asset Lists catalog warns inclusion is not endorsement)",
-        "Sibling sweep 2026-11-02: siblings checked q-aas-trusted-asset-list-whitelist, q-asset-usdc-eurc-path-fx, q-defi-sdex-offer-lifecycle; no gospel change in this case, no contradiction found."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-aas-list-token-on-exchanges-aggregators",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-aas-list-token-on-exchanges-aggregators",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-aas-list-token-on-exchanges-aggregators",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0001.md -- 'Title: Stellar Info File; Status: Active'",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0042.md -- 'Title: Stellar Asset List (SAL); Status: Draft'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
     "origin": "raven-next q-aas-list-token-on-exchanges-aggregators",
@@ -89,7 +88,27 @@
             "note": "The fetched SEP-1 source defines the stellar.toml fields and publication contract."
           }
         ]
+      },
+      {
+        "claim": "SEP-1 is the metadata standard; SEP-42 asset lists are a community catalog.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0001.md",
+            "observedAt": "2026-11-14",
+            "note": "Title: Stellar Info File; Status: Active"
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0042.md",
+            "observedAt": "2026-11-14",
+            "note": "Title: Stellar Asset List (SAL); Status: Draft"
+          }
+        ]
       }
-    ]
+    ],
+    "notes": "Freshness-sensitive. Verified durable prerequisites with SEP-1 and SEP-42; do not require any specific exchange/aggregator policy beyond dated current-source citation. Re-verified 2026-06-29: SEP-0042 confirmed as 'Stellar Asset List (SAL)', SEP-0001 + the build/apps SEP-1 tutorial resolve; stellar.expert/asset-lists is a client-rendered SPA so its catalog couldn't be content-fetched but the route is valid (load-bearing SEP claims verified via the protocol repo).\nAlso good if the answer: Mentions liquidity and price/market-cap visibility generally require real markets and supply metadata rather than mere asset issuance. | Advises checking the current listing docs/forms for the specific venue or aggregator.\nGolden cites: SEP-1 or Stellar asset docs, plus dated venue/listing sources for freshness-specific claims.",
+    "leaf": "assets.asset-info-lists"
   }
 }

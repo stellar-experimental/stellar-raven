@@ -7,18 +7,19 @@
     "stellarDocs.search_rpc_horizon_data_docs"
   ],
   "golden": {
-    "answer": "A grounded answer derives its named examples and status claims from the current official Stellar documentation, then dates the roster so it is not presented as permanent. As of 2026-11-02, the verified sources supported this observed answer:\n\nYou need an **indexer** rather than RPC alone for historical cross-account filtering: RPC event history is bounded and Horizon does not provide arbitrary cross-account filtered indexes ([Indexers Overview](https://developers.stellar.org/docs/data/indexers)).\n\nEstablished Stellar choices include **SubQuery**, **OBSRVR**, **Goldsky Turbo pipelines** (Goldsky's docs list Stellar as Turbo-only, no longer Mirror), **OnFinality**, **Mercury**, and **The Graph via Substreams only** (not Stellar Subgraphs or Token API). For deep historical SQL, **Hubble/BigQuery** is another fit.\n\nThe official Stellar Indexers Overview and Alchemy's provider documentation both describe Alchemy's indexed Stellar Data API as live. Its address-centric APIs cover transfer history, account/token balances, and NFT holdings across native, Classic, and Soroban assets.\n\nSelection: use **OBSRVR** for a Stellar-native stream-to-warehouse workflow, **SubQuery** for its multi-chain indexing stack, **Goldsky** if it matches an existing EVM data platform, **Alchemy** if its address-centric indexed APIs cover the needed query, or **Hubble/BigQuery** for SQL-oriented deep history. Verify retention, data model, and current network coverage before committing.",
+    "answer": "Historical cross-account filtering needs an indexer: RPC history is retention-bounded and Horizon has no arbitrary cross-account filters. As of 2026-11-14 the official Indexers overview lists SubQuery, OBSRVR, Goldsky (Turbo pipelines), OnFinality, Mercury, Alchemy's live Stellar Data API, and The Graph through Substreams only. Hubble/BigQuery fits deep historical SQL. Verify retention, data model and network coverage before committing.",
     "keyFacts": [
-      "Dates each specific source-supported observation.",
-      "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "The Graph supports Stellar through Substreams, not Subgraphs or Token API."
+      "Historical cross-account filtering needs an indexer; RPC history is bounded.",
+      "Names dated indexers from the official overview (e.g. SubQuery, OBSRVR, Goldsky, Alchemy).",
+      "The Graph supports Stellar through Substreams only, not Subgraphs or Token API.",
+      "Hubble/BigQuery suits deep historical SQL."
     ],
     "avoid": [
-      "Do NOT state that Alchemy's Stellar indexed Data API is still merely targeted for H1 2026; current official Docs describe it as live.",
-      "Do NOT claim The Graph offers full Subgraph/Token API support for Stellar, or recommend RPC alone for arbitrary historical cross-account filtering.",
-      "Do NOT present a changeable current measurement without its provider, scope, and observation date; registered invariants and explicitly historical quantities are not current measurements."
+      "Do NOT say Alchemy's Stellar Data API is still only planned; official docs call it live.",
+      "Do NOT claim The Graph has full Subgraph or Token API support for Stellar.",
+      "Do NOT recommend RPC alone for arbitrary historical cross-account filtering."
     ],
-    "notes": "CORRECTION 2026-08-04: the official Indexers Overview now says Alchemy is live, resolving the former roadmap disagreement. Preserve The Graph's Substreams-only boundary and require dated provider/network/retention checks.\nRECHECK 2026-11-06: the Stellar Indexers Overview now names Goldsky Turbo, agreeing with Goldsky's Stellar documentation. The former Mirror naming conflict is resolved; it no longer warrants a source-conflict allowance. This scoped copy check does not reverify the entire provider roster."
+    "notes": "The roster changes; accept a later dated roster from the official overview. Goldsky serves Stellar through Turbo pipelines; naming Mirror is out of date."
   },
   "tags": {
     "category": "tooling-infra",
@@ -32,7 +33,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-14",
     "sources": [
       {
         "class": "D",
@@ -214,20 +215,49 @@
             "note": "Merged documentation correction; same publication lineage as Stellar Docs, not independent provider proof."
           }
         ]
+      },
+      {
+        "claim": "Official Indexers overview: Alchemy live, The Graph Substreams-only, Goldsky Turbo, OnFinality, Mercury, OBSRVR, SubQuery",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "github.com/stellar/stellar-docs docs/data/indexers/index.mdx",
+            "observedAt": "2026-11-14",
+            "note": "The Graph offers Stellar support for Substreams, with no current plans to expand Subgraph or Token API support to Stellar."
+          },
+          {
+            "class": "B",
+            "ref": "docs/data/indexers/index.mdx",
+            "observedAt": "2026-11-14",
+            "note": "Alchemy: a widely-used data provider (popular on Ethereum), now live on Stellar."
+          },
+          {
+            "class": "B",
+            "ref": "docs/data/indexers/index.mdx",
+            "observedAt": "2026-11-14",
+            "note": "Turbo is how Goldsky serves Stellar data, for both Mainnet and Testnet"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-06",
-      "by": "2026-11-05 truth-maintenance coordinator; independent Astra high reviewer t2dx, docs-independent.md",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-tooling-a, verify-audit-tooling-a; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "https://developers.stellar.org/docs/data/indexers.md now names Goldsky Turbo.",
-        "https://docs.goldsky.com/chains/stellar.md confirms Turbo for Stellar; PR3021 corrects Stellar Docs copy.",
-        "Sibling sweep: q-ti-compute-token-lp-market-data and q-ti-enumerate-all-contracts do not name Mirror. Answer/keyFacts/avoid and the dated full-provider roster remain unchanged; only the resolved source-conflict allowance is removed."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-a.json#q-infra-which-indexer",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-a.json#q-infra-which-indexer",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-infra-which-indexer",
+        "Live B 2026-11-14: github.com/stellar/stellar-docs docs/data/indexers/index.mdx -- 'The Graph offers Stellar support for Substreams, with no current plans to expand Subgraph or Token API support to Stellar.'",
+        "Live B 2026-11-14: docs/data/indexers/index.mdx -- 'Alchemy: a widely-used data provider (popular on Ethereum), now live on Stellar.'",
+        "Live B 2026-11-14: docs/data/indexers/index.mdx -- 'Turbo is how Goldsky serves Stellar data, for both Mainnet and Testnet'"
       ],
       "rootCause": [
-        "improvements/resolved.json entry sd-073: deployed Goldsky naming correction."
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-infra-which-indexer"
+    "origin": "raven-next q-infra-which-indexer",
+    "notes": "CORRECTION 2026-08-04: the official Indexers Overview now says Alchemy is live, resolving the former roadmap disagreement. Preserve The Graph's Substreams-only boundary and require dated provider/network/retention checks.\nRECHECK 2026-11-06: the Stellar Indexers Overview now names Goldsky Turbo, agreeing with Goldsky's Stellar documentation. The former Mirror naming conflict is resolved; it no longer warrants a source-conflict allowance. This scoped copy check does not reverify the entire provider roster.",
+    "leaf": "data.indexers"
   }
 }

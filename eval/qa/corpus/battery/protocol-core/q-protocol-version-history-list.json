@@ -5,20 +5,16 @@
     "stellarDocs.search_protocol_concepts_docs"
   ],
   "golden": {
-    "answer": "A grounded answer obtains the requested current value or state from the current official Stellar documentation, states the measurement basis, and makes the observation date visible. As of 2026-11-10, the verified sources supported this observed answer:\n\nStellar protocol history from P19 through live **Protocol 29**: P19 (2022-06-08) generalized transaction preconditions and signed-payload signers; P20/Soroban (2024-02-20) introduced Wasm smart contracts; P21 (2024-06-18) added secp256r1/passkeys and separate instance/code TTL extension (CAP-0053); P22 (2024-12-05) added BLS12-381 and constructors; P23/Whisk (2025-09-03) introduced CAP-0063 parallel-scheduling support, CAP-0062 live/archival separation, and unified events—but initialized the dependent-cluster setting at one, with multi-cluster activation handled later through network settings; P24 (2025-10-22) corrected Whisk archival stability; P25/X-Ray (2026-01-22) added BN254 and Poseidon/Poseidon2; P26/Yardstick (2026-05-06) added configuration, arithmetic, TTL-v2, BN254, SAC, and strkey host changes; P27/Zipper (2026-07-08) activated CAP-0071 authentication delegation/address-bound credentials at ledger 63386819; P28/Adapter (2026-09-16, ledger 64458446) added CAP-0083 validator votes to drop a ledger's transaction set, CAP-0085 externally managed contract executables, and CAP-0086 sparse-map host functions; P29 (2026-10-01, ledger 64717645) is a security-focused Stellar Core release with no new CAPs. Bell/Protocol 30 (muxed contract addresses, ML-DSA verification host functions, and millisecond ledger close times) activated on Testnet on 2026-11-03. As of 2026-11-10 the Mainnet vote is still scheduled for 2026-11-23 at 17:00 UTC. The feature mappings are durable, but re-check the live network for the latest tail and current configuration.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "As of 2026-11-14 Mainnet runs Protocol 29. P19 2022-06-08 preconditions; P20 2024-02-20 Soroban; P21 2024-06-18 secp256r1; P22 2024-12-05 BLS12-381; P23 Whisk 2025-09-03 parallel scheduling (CAP-0063) and live/archival state; P24 2025-10-22 archival-bug fix; P25 X-Ray 2026-01-22 BN254/Poseidon; P26 Yardstick 2026-05-06 SAC G-account balances, more BN254 and checked 256-bit math; P27 Zipper 2026-07-08 CAP-0071 auth delegation; P28 2026-09-16 CAP-0083/0085/0086; P29 2026-10-01 a security release with no new CAPs. Bell (P30) is on Testnet with its Mainnet vote scheduled for 2026-11-23.",
     "keyFacts": [
-      "Dates each specific source-supported observation.",
-      "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Correctly maps P19-P29 headline features; P29 is a security-focused release.",
-      "Gives each listed protocol's Mainnet activation date.",
-      "P23 introduced the capability with one dependent cluster configured initially."
+      "Maps each of Protocols 19 to 29 to its headline feature.",
+      "Gives each Mainnet activation date.",
+      "States the live Mainnet protocol with an as-of date."
     ],
     "avoid": [
-      "Do NOT mis-pair features and protocol versions.",
-      "Do NOT call P26, P27, or P28 the latest Mainnet version after 2026-10-01, or imply P23 immediately enabled multiple dependent clusters.",
-      "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
+      "Do NOT mis-pair features and versions or call P26, P27 or P28 the latest after 2026-10-01."
     ],
-    "notes": "Grade the historical feature-to-version and Mainnet activation-date mappings plus a dated check of the live Mainnet tail. P23 introduced CAP-0063 support with one dependent cluster configured initially. Later settings enabled multiple clusters. P20 introduced Soroban in phases. As of 2026-11-10 Testnet runs Bell/P30 and Mainnet runs P29. Accept a later sourced Mainnet activation."
+    "notes": "Accept a later sourced Mainnet tail (for example Bell once activated)."
   },
   "tags": {
     "category": "protocol-core",
@@ -365,35 +361,100 @@
             "note": "The protocol 23 transition initializes ledgerMaxDependentTxClusters to one."
           }
         ]
+      },
+      {
+        "claim": "Mainnet dates: P25 2026-01-22, P26 2026-05-06, P27 2026-07-08, P28 2026-09-16 (ledger 64458446), P29 2026-10-01 (ledger 64717645)",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "F",
+            "ref": "https://horizon.stellar.org/ledgers/64458446 and /64717645 (first-ledger bisection)",
+            "observedAt": "2026-11-14",
+            "note": "closed_at 2026-09-16T17:00:06Z (P28); 2026-10-01T17:00:07Z (P29)"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/networks/software-versions",
+            "observedAt": "2026-11-14",
+            "note": "Protocol 29 (Mainnet, October 1, 2026)"
+          }
+        ]
+      },
+      {
+        "claim": "P19 2022-06-08, P20 2024-02-20, P21 2024-06-18, P22 2024-12-05, P23 2025-09-03, P24 2025-10-22",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/networks/software-versions",
+            "observedAt": "2026-11-14",
+            "note": "Protocol 20 (Mainnet, February 20, 2024) … Protocol 21 (Mainnet, June 18, 2024) … Protocol 22 (Mainnet, December 5, 2024)"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/networks/software-versions",
+            "observedAt": "2026-11-14",
+            "note": "Whisk Protocol 23 (Mainnet, September 3, 2025) … Protocol 24 (Mainnet, October 22, 2025)"
+          },
+          {
+            "class": "D",
+            "ref": "https://stellar.org/blog (Protocol 19 announcement)",
+            "observedAt": "2026-11-14",
+            "note": "Today, June 8, 2022 at 15:00 UTC, the Stellar public network [upgraded]"
+          }
+        ]
+      },
+      {
+        "claim": "Mainnet still P29; Bell vote 2026-11-23; Testnet P30",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "F",
+            "ref": "https://horizon.stellar.org/",
+            "observedAt": "2026-11-14",
+            "note": "current_protocol_version 29, core_supported_protocol_version 30, core_version stellar-core 30.0.0, history_latest_ledger 65467697"
+          },
+          {
+            "class": "F",
+            "ref": "https://horizon-testnet.stellar.org/",
+            "observedAt": "2026-11-14",
+            "note": "current_protocol_version 30, core_supported_protocol_version 30"
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+            "observedAt": "2026-11-14",
+            "note": "November 3, 2026, 1700 UTC —Testnet upgrade vote. November 23, 2026, 1700 UTC —Mainnet upgrade vote."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-10",
-      "by": "Codex golden-truth author lane, 2026-11-10 truth-maintenance round",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-protocol, verify-protocol; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "https://stellar.org/blog/developers/protocol-19-upgrade-complete",
-        "https://github.com/stellar/stellar-protocol/blob/master/core/README.md",
-        "https://developers.stellar.org/docs/networks/software-versions.md",
-        "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0063.md",
-        "https://horizon.stellar.org/ledgers/63386819",
-        "https://horizon.stellar.org/ledgers/64458446",
-        "https://horizon.stellar.org/ledgers/64717645",
-        "https://horizon.stellar.org/",
-        "https://horizon.stellar.org/ledgers?order=desc&limit=1",
-        "https://mainnet.sorobanrpc.com",
-        "https://horizon-testnet.stellar.org/ledgers?order=desc&limit=1",
-        "https://soroban-testnet.stellar.org",
-        "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
-        "https://status.stellar.org/api/v2/scheduled-maintenances/upcoming.json",
-        "https://status.stellar.org/api/v2/scheduled-maintenances.json",
-        "https://github.com/stellar/stellar-core/releases/tag/v30.0.0",
-        "Sibling sweep: Protocol history, upgrade timing, current Pubnet version, P27/CAP-0071 and P23 settings cases agree. q-pc-quantum-preparedness-dormant, q-infra-testnet-vs-futurenet, q-zk-host-functions-status, q-pc-address-types-strkey and SDK cases keep explicitly dated earlier observations. q-protocol-ledger-header-fields and q-protocol-ledger-close-time preserve CAP-0088 semantics."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-protocol-version-history-list",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-protocol-version-history-list",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-protocol-version-history-list",
+        "Live F 2026-11-14: https://horizon.stellar.org/ledgers/64458446 and /64717645 (first-ledger bisection) -- 'closed_at 2026-09-16T17:00:06Z (P28); 2026-10-01T17:00:07Z (P29)'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/networks/software-versions -- 'Protocol 29 (Mainnet, October 1, 2026)'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/networks/software-versions -- 'Protocol 20 (Mainnet, February 20, 2024) … Protocol 21 (Mainnet, June 18, 2024) … Protocol 22 (Mainnet, December 5, 2024)'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/networks/software-versions -- 'Whisk Protocol 23 (Mainnet, September 3, 2025) … Protocol 24 (Mainnet, October 22, 2025)'",
+        "Live D 2026-11-14: https://stellar.org/blog (Protocol 19 announcement) -- 'Today, June 8, 2022 at 15:00 UTC, the Stellar public network [upgraded]'",
+        "Live F 2026-11-14: https://horizon.stellar.org/ -- 'current_protocol_version 29, core_supported_protocol_version 30, core_version stellar-core 30.0.0, history_latest_ledger 65467697'",
+        "Live F 2026-11-14: https://horizon-testnet.stellar.org/ -- 'current_protocol_version 30, core_supported_protocol_version 30'",
+        "Live A 2026-11-14: https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide -- 'November 3, 2026, 1700 UTC —Testnet upgrade vote. November 23, 2026, 1700 UTC —Mainnet upgrade vote.'",
+        "Live F 2026-11-14: https://horizon.stellar.org/ledgers/64458446 -- 'closed_at 2026-09-16T17:00:06Z, protocol_version 28 (64458445 is 27)'",
+        "Live F 2026-11-14: https://horizon.stellar.org/ledgers/64717645 -- 'closed_at 2026-10-01T17:00:07Z, protocol_version 29 (64717644 is 28)'",
+        "Live A 2026-11-14: https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide -- 'November 23, 2026, 1700 UTC—Mainnet upgrade vote.'"
       ],
       "rootCause": [
-        "freshness-drift"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
     "origin": "raven-next q-protocol-version-history-list",
-    "reverifyBy": "2026-11-24"
+    "reverifyBy": "2026-11-24",
+    "notes": "Grade the historical feature-to-version and Mainnet activation-date mappings plus a dated check of the live Mainnet tail. P23 introduced CAP-0063 support with one dependent cluster configured initially. Later settings enabled multiple clusters. P20 introduced Soroban in phases. As of 2026-11-10 Testnet runs Bell/P30 and Mainnet runs P29. Accept a later sourced Mainnet activation.",
+    "leaf": "network.protocol-history"
   }
 }

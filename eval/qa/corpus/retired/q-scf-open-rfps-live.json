@@ -1,0 +1,21 @@
+{
+  "id": "q-scf-open-rfps-live",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-scf (golden coverage audit)",
+    "reviewer": "verify-audit-scf (golden coverage audit)",
+    "reason": "Duplicate of the survivor and the live lane; the Scout-lag claim is now false.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-scf-open-rfps-live",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-scf-open-rfps-live",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-scf-open-rfps-live"
+    ],
+    "lastCaseContentSha256": "8d400fad8e1f79f731070fb25a3f146ce7123d69a51667c4ae37f840c446e814",
+    "replacementIds": []
+  }
+}

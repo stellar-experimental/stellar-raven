@@ -1,0 +1,21 @@
+{
+  "id": "q-sor-skill-openzeppelin-setup",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-soroban-a (golden coverage audit)",
+    "reviewer": "verify-audit-soroban-a (golden coverage audit)",
+    "reason": "Retire is right: the golden states no world fact, and the skills routing set (eval/skills-cases.json q-skill-oz-project-setup) measures skill surfacing. The named survivor q-ti-skill-builder-quickstart does not test OpenZeppelin setup. The world topic (OZ Stellar contracts for a SEP-41 token) is q-soroban-oz-token. Replacement IDs: q-soroban-oz-token and the q-skill-oz-project-setup routing case.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-a.json#q-sor-skill-openzeppelin-setup",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-a.json#q-sor-skill-openzeppelin-setup",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-sor-skill-openzeppelin-setup"
+    ],
+    "lastCaseContentSha256": "311b569c5a4df780c2f8d35781eb208dfce724619ce57ef5634415ab49bb3338",
+    "replacementIds": []
+  }
+}

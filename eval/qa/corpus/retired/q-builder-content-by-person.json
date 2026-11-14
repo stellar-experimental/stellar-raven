@@ -1,0 +1,21 @@
+{
+  "id": "q-builder-content-by-person",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-scf (golden coverage audit)",
+    "reviewer": "verify-audit-scf (golden coverage audit)",
+    "reason": "Retire holds with q-builder-justin-rice-history as the person-history survivor. Two named survivors (q-edge-lumenloop-person-entity-empty, q-edge-open-world-recovery-after-narrow-miss) are themselves retired by the edge lane, so only the Justin Rice case carries this topic.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-builder-content-by-person",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-builder-content-by-person",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-builder-content-by-person"
+    ],
+    "lastCaseContentSha256": "9357880b74a1c0d4915b0c0539164257fa8a4dc6ce4fc4d7cde1c3a995a5a158",
+    "replacementIds": []
+  }
+}

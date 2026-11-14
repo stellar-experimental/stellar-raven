@@ -5,20 +5,16 @@
     "stellarDocs.search_wallet_dapp_docs"
   ],
   "golden": {
-    "answer": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-11-02, the verified sources supported this observed answer:\n\n- **SEP-43 — \"Standard Web Wallet API Interface\"** (Status: **Draft**, v1.2.1, created 2024-04-11) defines a common JavaScript API that web wallets expose to dapps so developers integrate once instead of writing per-wallet abstractions [1].\n- The interface methods are **`getAddress`, `signTransaction`, `signAuthEntry`, `signMessage`, and `getNetwork`**, plus standardized error shapes (`message`/`code`/`ext`, with codes -1 internal, -2 external service, -3 invalid request, -4 user rejected) [1].\n- It exists as `ecosystem/sep-0043.md` in stellar/stellar-protocol — it is **not** an unassigned gap [1].\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "SEP-43 is the Draft Standard Web Wallet API Interface (v1.2.1 as of 2026-11-14). It defines the JavaScript API a web wallet exposes to dapps: getAddress, signTransaction, signAuthEntry, signMessage and getNetwork, with standard error codes. Dapps integrate once instead of writing per-wallet code. It is not an authentication or anchor standard.",
     "keyFacts": [
-      "Presents specific source-supported content as a current or dated observation.",
-      "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Names SEP-43 as the Standard Web Wallet API Interface.",
-      "Lists `getAddress`, `signTransaction`, `signAuthEntry`, `signMessage`, and `getNetwork`.",
-      "Confirms `ecosystem/sep-0043.md` exists in stellar-protocol."
+      "SEP-43 is the Standard Web Wallet API Interface for dapp-to-wallet calls.",
+      "It defines getAddress, signTransaction, signAuthEntry, signMessage and getNetwork.",
+      "It standardizes error shapes so dapps need no per-wallet code."
     ],
     "avoid": [
-      "Do NOT claim SEP-43 does not exist or that the numbering skips 43 (it does exist as of 2024-04).",
-      "Do NOT invent an unrelated scope (e.g. call it an auth/anchor/payment standard).",
-      "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
+      "Do NOT claim that SEP-43 does not exist, or is an authentication, anchor or payment standard."
     ],
-    "notes": "CORRECTION vs dossier: SEP-43 DOES exist (sep-0043.md, 'Standard Web Wallet API Interface', Draft, created 2024-04-11) — verified live in the master ecosystem dir. The dossier (and the Phase-1 'nonexistent' framing) is stale: the ecosystem README main table omits it but the file is present. The repo also now has sep-0042 and sep-0044. Freshness-sensitive (status could advance).\nAlso good if the answer: States SEP-43 is in Draft status. | Notes its purpose: remove the need for per-wallet abstractions by defining one common wallet API + standard error shapes.\nGolden cites: The SEP-0043 spec in stellar/stellar-protocol (ecosystem/sep-0043.md).\nRe-verified 2026-11-02: sep-0043.md is Draft v1.2.1 with the same five methods and error codes -1 to -4; the ecosystem README table still omits SEP-43."
+    "notes": "SEP-43 is Draft; do not penalize an answer that states a later dated version."
   },
   "tags": {
     "category": "assets-anchors-seps",
@@ -32,7 +28,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-14",
     "sources": [
       {
         "class": "B",
@@ -53,22 +49,21 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch assets-anchors-seps-03)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-assets, verify-audit-assets; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0043.md — \"Title: Standard Web Wallet API Interface / Status: Draft / Created: 2024-04-11 / Version: 1.2.1 ... getAddress ... signTransaction ... signAuthEntry ... signMessage ... getNetwork ... -1: internal wallet error ... -4: user rejected the request\" (observedAt 2026-11-02; supports golden.keyFacts[2-4]: confirmed)",
-        "[D] perplexity_search SEP-43; https://brain.ckelley.dev/references/Blockchain-Wallet-Connectors — \"SEP-43 (Draft, v1.2.1) | Standard web wallet interface: getAddress, signTransaction, signAuthEntry, signMessage, getNetwork\" (observedAt 2026-11-02; supports golden.keyFacts[2-4]: confirmed)",
-        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0043.md — \"Created: 2024-04-11 / Version: 1.2.1 (v1.1.0/v1.2.0 later changes in PR #1478; 'adjust types for errors' commit 2024-07-15)\" (observedAt 2026-11-02; supports golden.answer: contradicted)",
-        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0043.md — \"Title: Standard Web Wallet API Interface / Status: Draft / Created: 2024-04-11 / Version: 1.2.1; getAddress, signTransaction, signAuthEntry, signMessage, getNetwork; '-1: internal wallet error' ... '-4: user rejected the request'\" (observedAt 2026-11-02; supports golden.answer: verifier accept)",
-        "[B] gh api repos/stellar/stellar-protocol/commits?path=ecosystem/sep-0043.md — \"latest commit d4d17e6c73 2025-06-17 (SEP process); earlier 45c7c78621 2024-07-15 'adjust types for errors'\" (observedAt 2026-11-02; supports golden.answer: verifier accept)",
-        "[D] Parallel web_search 'SEP-0043 Standard Web Wallet API Interface version 1.2.1' -> github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md — \"SEP: 0043 Title: Standard Web Wallet API Interface ... Status: Draft Created: 2024-04-11 Version: 1.2.1\" (observedAt 2026-11-02; supports golden.answer: verifier accept)",
-        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0043.md — \"Title: Standard Web Wallet API Interface / Status: Draft / Created: 2024-04-11 / Version: 1.2.1; getAddress, signTransaction, signAuthEntry, signMessage, getNetwork; '-1: internal wallet error' ... '-4: user rejected the request'\" (observedAt 2026-11-02; supports golden.notes: verifier accept)",
-        "[B] https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/README.md — \"grep '0043|SEP-43' -> no match; table lists SEP-0041 then SEP-0045\" (observedAt 2026-11-02; supports golden.notes: verifier accept)",
-        "[D] Parallel web_search 'SEP-0043 Standard Web Wallet API Interface version 1.2.1' -> github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md — \"SEP: 0043 Title: Standard Web Wallet API Interface ... Status: Draft Created: 2024-04-11 Version: 1.2.1\" (observedAt 2026-11-02; supports golden.notes: verifier accept)",
-        "Sibling sweep 2026-11-02: grep SEP-43 -> q-sep-catalog-list ('SEP-43 is the Standard Web Wallet API Interface'), q-sep53-message-signing ('SEP-43 is a separate Draft wallet API'), q-sep-45-contract-auth (SEP-43 exists, unrelated); no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-assets.json#q-sep-43-web-wallet-api",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-assets.json#q-sep-43-web-wallet-api",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-sep-43-web-wallet-api",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md -- 'Title: Standard Web Wallet API Interface Status: Draft Version: 1.2.1'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md -- '-4: user rejected the request, client app should not try to retry the request'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/README.md -- '| [SEP-0043](sep-0043.md) | Standard Web Wallet API Interface | Piyal Basu, Leigh McCulloch, George Kudrayvtsev, Enrique Arrieta, OrbitLens | Draft'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/commit/ded60f5620 -- 'README at ded60f5620 (2026-11-03, 'Sync SEP statuses', #2058) lists | [SEP-0043](sep-0043.md) | Standard Web Wallet API Interface | ... | Draft |; parent 7a59fafa2e lacks it'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md -- 'the interface defines common error message shapes to ensure wallets adhere to informative and usable error'"
       ],
       "rootCause": [
-        "Eval-side authoring flaw: as-of date set to the SEP creation date instead of the observation date."
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit",
+        "freshness-drift"
       ]
     },
     "origin": "raven-next q-sep-43-web-wallet-api",
@@ -114,7 +109,27 @@
             "note": "SEP: 0043 ... Status: Draft Created: 2024-04-11 Version: 1.2.1"
           }
         ]
+      },
+      {
+        "claim": "SEP-43 is Draft v1.2.1 with getAddress, signTransaction, signAuthEntry, signMessage, getNetwork and error codes -1 to -4.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md",
+            "observedAt": "2026-11-14",
+            "note": "Title: Standard Web Wallet API Interface Status: Draft Version: 1.2.1"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md",
+            "observedAt": "2026-11-14",
+            "note": "-4: user rejected the request, client app should not try to retry the request"
+          }
+        ]
       }
-    ]
+    ],
+    "notes": "CORRECTION vs dossier: SEP-43 DOES exist (sep-0043.md, 'Standard Web Wallet API Interface', Draft, created 2024-04-11) — verified live in the master ecosystem dir. The dossier (and the Phase-1 'nonexistent' framing) is stale: the ecosystem README main table omits it but the file is present. The repo also now has sep-0042 and sep-0044. Freshness-sensitive (status could advance).\nAlso good if the answer: States SEP-43 is in Draft status. | Notes its purpose: remove the need for per-wallet abstractions by defining one common wallet API + standard error shapes.\nGolden cites: The SEP-0043 spec in stellar/stellar-protocol (ecosystem/sep-0043.md).\nRe-verified 2026-11-02: sep-0043.md is Draft v1.2.1 with the same five methods and error codes -1 to -4; the ecosystem README table still omits SEP-43.",
+    "leaf": "tooling.wallet-connection"
   }
 }

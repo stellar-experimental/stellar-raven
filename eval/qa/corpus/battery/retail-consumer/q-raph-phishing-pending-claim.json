@@ -5,17 +5,17 @@
     "stellarDocs.search_wallet_dapp_docs"
   ],
   "golden": {
-    "answer": "Treat an unsolicited message demanding a payment, a wallet connection, or recovery credentials to release XLM as a phishing/scam signal. Do not click its link, sign a transaction, pay a 'rectification' fee, or share a secret key or recovery phrase. Instead, open your wallet yourself, inspect any on-chain entry there, and verify announcements through an official Stellar or wallet channel that you navigate to independently. A legitimate claimable-balance mechanism exists, but a DM does not authenticate an offer.",
+    "answer": "Treat an unsolicited message that demands a payment, wallet connection or recovery credentials to release XLM as a scam signal. Do not click its link, sign anything, pay a “rectification” fee, or share a secret key or recovery phrase. Check your wallet yourself and verify any announcement through an official channel you reach independently. A legitimate claimable-balance mechanism exists, but a DM does not authenticate an offer.",
     "keyFacts": [
-      "Sets a safe boundary: no link, payment, signature, or secret disclosure.",
-      "Does not falsely equate every claimable balance with a scam.",
-      "Directs verification through the wallet or an official channel reached independently."
+      "Do not click, pay, sign, or disclose secrets because of an unsolicited message.",
+      "Not every claimable balance is a scam; a DM does not authenticate one.",
+      "Verify through your wallet or an official channel reached independently."
     ],
     "avoid": [
-      "Do NOT tell the user to connect a wallet to the message's site.",
+      "Do NOT tell the user to connect a wallet to the message’s site.",
       "Do NOT say SDF asks users for private keys or deposits."
     ],
-    "notes": "Safety case; re-derive the negative claim blind. The independent-verification redirect (key fact 3) is required behavior, not background."
+    "notes": "The independent-verification redirect is required behavior."
   },
   "tags": {
     "category": "retail-consumer",
@@ -99,29 +99,21 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch retail-consumer-02)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-hist-retail, verify-hist-retail; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "A https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers — \"NEVER cold direct-message (DM) people to participate in airdrops and giveaways. NEVER cold DM people regarding support issues or security alerts.\" (observedAt 2026-11-02 (live curl, HTTP 200); supports golden.answer / keyFacts[0]: confirmed)",
-        "D https://www.cisa.gov/secure-our-world/recognize-and-report-phishing — \"Requests to send personal and financial information ... if you think it could be real, don't click on any link ... Look up another way to contact the company\" (observedAt 2026-11-02; supports golden.answer / keyFacts[0]: confirmed)",
-        "A https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers — \"NEVER ask you for your private keys. NEVER ask you to deposit funds to any wallet address.\" (observedAt 2026-11-02 (live curl); supports golden.avoid[1]: confirmed-as-of)",
-        "D perplexity_search 'Stellar XLM phishing scam pending claim DM rectification fee 2026' — \"no source reports an SDF policy change; results describe seed-phrase/connect-wallet scams\" (observedAt 2026-11-02; supports golden.avoid[1]: confirmed-as-of)",
-        "A https://developers.stellar.org/docs/build/guides/transactions/claimable-balances — \"Claimable balances allow an account to send a payment to another account that is not necessarily prepared to receive the payment.\" (observedAt 2026-11-02; supports golden.keyFacts[1]: confirmed)",
-        "B https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md — \"Status: Final ... payment to an account that is not necessarily prepared to receive the payment.\" (observedAt 2026-11-02; supports golden.keyFacts[1]: confirmed)",
-        "A https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers — \"type the URL into your browser address bar and then bookmark the site. Only use the bookmark to visit the site.\" (observedAt 2026-11-02; supports golden.keyFacts[2]: confirmed)",
-        "D https://www.cisa.gov/secure-our-world/recognize-and-report-phishing — \"Search for the site in your web browser or type the address yourself\" (observedAt 2026-11-02; supports golden.keyFacts[2]: confirmed)",
-        "Verifier (truth.asOf, accept): A https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers — \"NEVER ask you for your private keys. NEVER ask you to deposit funds to any wallet address. NEVER cold DM people regarding support issues or security alerts.\" (observedAt 2026-11-02)",
-        "Verifier (truth.asOf, accept): D https://www.cisa.gov/secure-our-world/recognize-and-report-phishing — \"if you think it could be real, don't click on any link or call any number in the message. Look up another way to contact the company or person directly\" (observedAt 2026-11-02)",
-        "Verifier (truth.asOf, accept): A https://developers.stellar.org/docs/build/guides/transactions/claimable-balances — \"HTTP 200; page title 'Claimable balances - Stellar Developer Docs'\" (observedAt 2026-11-02)",
-        "Verifier (truth.asOf, accept): B https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0023.md — \"ClaimableBalanceEntry ... claimable balance entries, which permits temporal separation of\" (observedAt 2026-11-02)",
-        "Verifier (truth.asOf, accept): E stellarDocs.search_docs 'claimable balance claimant claim' -> https://developers.stellar.org/docs/learn/fundamentals/transactions/list-of-operations#claim-claimable-balance — \"The account claiming the ClaimableBalanceEntry does not have sufficient limits to receive amount of the asset\" (observedAt 2026-11-02T16:31:03Z)",
-        "Verifier (truth.reverifyBy, accept): A https://stellar.org/blog/foundation-news/how-to-protect-yourself-from-scammers — \"How to protect yourself from scammers (updated july 2022)\" (observedAt 2026-11-02)",
-        "Sibling set checked by the proposer 2026-11-02: q-raph-claimable-balance-safety, q-raph-unsolicited-airdrop, q-raph-lobstr-legitimacy, q-edge-1xlm-activation-fee, q-raph-scam-spam-tokens, q-raph-remove-scam-token; no contradiction recorded."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-raph-phishing-pending-claim",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-raph-phishing-pending-claim",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-raph-phishing-pending-claim",
+        "Live A 2026-11-14: https://stellar.org -- 'Negative claim; blind re-derivation was done 2026-11-02, not repeated.'"
       ],
       "rootCause": [
-        "freshness-drift"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raph scam-stellar-phishing-pending-claim"
+    "origin": "raph scam-stellar-phishing-pending-claim",
+    "notes": "Safety case; re-derive the negative claim blind. The independent-verification redirect (key fact 3) is required behavior, not background.",
+    "leaf": "behavior.scam-check",
+    "secondaryLeaf": "wallets.scams-phishing"
   }
 }

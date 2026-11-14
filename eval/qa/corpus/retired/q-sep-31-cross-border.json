@@ -1,0 +1,23 @@
+{
+  "id": "q-sep-31-cross-border",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-assets (golden coverage audit)",
+    "reviewer": "verify-audit-assets (golden coverage audit)",
+    "reason": "Merged into q-sep6-sep24-sep31-choice. See mergeFixes.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-assets.json#q-sep-31-cross-border",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-assets.json#q-sep-31-cross-border",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-sep-31-cross-border"
+    ],
+    "lastCaseContentSha256": "05725d1e2e9b25fcc31d5fb924596171798db708edf4157c2b0036524469ea8a",
+    "replacementIds": [
+      "q-sep6-sep24-sep31-choice"
+    ]
+  }
+}

@@ -7,21 +7,18 @@
     "scout.searchRepos"
   ],
   "golden": {
-    "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\n**ERC-8004 ('Trustless Agents')** is an external **Ethereum Draft** for agent identity, reputation, and validation; payments are explicitly separate and can compose with protocols such as x402. As of **2026-07-10**, the pinned official Stellar SEP registry contains no corresponding ratified agent-identity SEP. `SRC-8004` and `SEP-8004` labels seen in project material are not official Stellar registry entries.\n\nStellar nevertheless has real community Soroban adaptations. **trionlabs/stellar-8004** provides three registries plus SDK/CLI/explorer/test material and verifiable pubnet deployments; **progax01/stellar8004** independently deploys an agent registry. That makes them available and substantial early implementations—not merely hackathon-stage—but deployment does **not** prove a ratified standard, independent audit, mature adoption, or production reliability.\n\nThe exact January-2026 Ethereum deployment date is not established by the primary ERC record and is not a correctness gate.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "ERC-8004 ('Trustless Agents') is an Ethereum ERC, still a Draft as of 2026-11-14, for agent identity, reputation and validation; payments are out of scope and compose with x402. Stellar has no ratified agent-identity SEP. Community Soroban implementations (trionlabs/stellar-8004, progax01/stellar8004) are deployed but unratified, so describe them as early community work.",
     "keyFacts": [
-      "Dates each specific source-supported observation.",
-      "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Defines ERC-8004 as an Ethereum Draft for identity, reputation, and validation.",
-      "Keeps payments outside ERC-8004's scope."
+      "ERC-8004 is an Ethereum Draft for agent identity, reputation and validation.",
+      "ERC-8004 leaves payments out of scope; it composes with x402.",
+      "Stellar has no ratified SEP for agent identity (as of a stated date).",
+      "Community Soroban implementations exist, such as trionlabs/stellar-8004."
     ],
     "avoid": [
-      "Do NOT promote ERC-8004, SRC-8004, or SEP-8004 into a ratified Stellar standard.",
-      "Do NOT claim no Stellar implementation exists or dismiss the current deployed repositories as merely hackathon-stage.",
-      "Do NOT infer ratification, audit, mature adoption, or reliability from pubnet deployment alone.",
-      "Do NOT gate the answer on an exact Ethereum deployment date that the primary ERC record does not establish.",
-      "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
+      "Do NOT call ERC-8004, SRC-8004 or SEP-8004 a ratified Stellar standard.",
+      "Do NOT claim no Stellar implementation exists."
     ],
-    "notes": "Freshness:true + honesty case. Phase-2 VERIFIED: ERC-8004 ('Trustless Agents') proposed Aug 13 2025, went LIVE on Ethereum mainnet Jan 29 2026 (still EIP 'Draft' status), excludes payments and composes with x402. On Stellar, agent-identity is real but EARLY/hackathon-stage — Scout shows trionlabs/stellar-8004 ('Trustless Agents (8004) on Stellar/Soroban', repoScore 69, Agentic Hackathon, judgeScore 0.8, homepage stellar8004.com) and progax01/stellar8004 — NOT a ratified Stellar standard. emperorsixpacks/-bear-protocol also bundles agent identity. Reward honest immaturity-flagging. 2026-06-29 RE-VERIFIED: ERC-8004 EIP still 'Draft' (eips.ethereum.org) and composes with x402 for payments per The Graph/eco.com writeups; Scout repos confirm trionlabs/stellar-8004 (repoScore 69, judge 0.8, homepage stellar8004.com) and progax01/stellar8004 (repoScore 53, judge 0.6). CORRECTED repo handle bear-protocol -> emperorsixpacks/-bear-protocol (leading dash; bare 'bear-protocol' 404s); GitHub-confirmed (desc: 'commerce layer for AI agent payments on Stellar. Job escrow, agent identity, and x402 micropayments'). Confidence stays medium: the exact Jan-29 mainnet date leans on a single social-post source.\nAlso good if the answer: Surfaces real Stellar agent-identity experiments with provenance (Scout repo links, e.g. trionlabs/stellar-8004 from the Agentic Hackathon).\nGolden cites: Scout repo provenance for any Stellar experiment named; an ERC-8004 reference for the Ethereum framing.\nGT-12 CORRECTION 2026-07-10: supersedes the prior 'experimental/hackathon-stage' gate. Grade the three-way distinction: external Draft standard; registry-relative absence of Stellar ratification; real deployed but early/unratified community implementations. Never convert one of those into the other.\nFRESHNESS NOTE 2026-11-02: Scout repoScore values drift (trionlabs/stellar-8004 showed 54 on 2026-11-02, not 69). The repoScore and judgeScore figures above are dated history; do not grade an answer on them."
+    "notes": "Do not require the Ethereum mainnet deployment date. Do not infer audit, adoption or reliability from deployment."
   },
   "tags": {
     "category": "defi-ecosystem",
@@ -35,7 +32,7 @@
     },
     "domain": "real-world",
     "status": "mixed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-14",
     "sources": [
       {
         "class": "D",
@@ -142,31 +139,70 @@
             "note": "proposer read: \"fullName\": \"trionlabs/stellar-8004\", \"repoScore\": 54. Scout owns its own score, so one class suffices for this source-relative figure."
           }
         ]
+      },
+      {
+        "claim": "ERC-8004 is still status Draft",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/ethereum/ERCs/blob/master/ERCS/erc-8004.md",
+            "observedAt": "2026-11-14",
+            "note": "status: Draft ... type: Standards Track ... created: 2025-08-13"
+          }
+        ]
+      },
+      {
+        "claim": "The stellar-protocol ecosystem has no agent-identity SEP",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "gh search code 8004 --repo stellar/stellar-protocol",
+            "observedAt": "2026-11-14",
+            "note": "one hit only: ecosystem/sep-0002.md (a false positive); no SEP-8004 file"
+          }
+        ]
+      },
+      {
+        "claim": "trionlabs/stellar-8004 and progax01/stellar8004 exist and are not archived",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "gh api repos/trionlabs/stellar-8004",
+            "observedAt": "2026-11-14",
+            "note": "archived false, pushed_at 2026-11-14T00:53:24Z"
+          },
+          {
+            "class": "B",
+            "ref": "gh api repos/progax01/stellar8004",
+            "observedAt": "2026-11-14",
+            "note": "archived false, pushed_at 2026-06-15T03:32:16Z"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch defi-ecosystem-01)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-defi, verify-defi; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "2026-10-18 [A] https://eips.ethereum.org/EIPS/eip-8004 — \"Payments are orthogonal to this protocol and not covered here. However, examples are provided showing how x402 payments can enrich feedback signals.\" (proposer claim, confirmed: ERC-8004 Trustless Agents is an Ethereum Draft for identity, reputation, validation; payments out of scope, composes with x402)",
-        "2026-11-02 [B] https://github.com/ethereum/ERCs/blob/master/ERCS/erc-8004.md — \"status: Draft ... created: 2025-08-13\" (proposer claim, confirmed: ERC-8004 Trustless Agents is an Ethereum Draft for identity, reputation, validation; payments out of scope, composes with x402)",
-        "2026-11-02 [D] https://theagenteconomy.si/tools/protocol-compatibility — \"payments are outside the ERC. ERC-8004 Trustless Agents As of 2026-10-21\" (proposer claim, confirmed: ERC-8004 Trustless Agents is an Ethereum Draft for identity, reputation, validation; payments out of scope, composes with x402)",
-        "2026-11-02 [B] https://github.com/stellar/stellar-protocol/blob/master/ecosystem/README.md — \"Registry lists SEP-0001..SEP-0061; none is an agent identity/reputation SEP (latest: SEP-0061 Trustline Onboarder, Draft)\" (proposer claim, confirmed-as-of: No ratified agent-identity SEP in the official Stellar SEP registry (as of date))",
-        "2026-11-02 [B] https://github.com/stellar/stellar-protocol/pull/1926 — \"Only open agent PR: \"Hierarchical Mandate Tokens for Autonomous Agent Authority (SEP Draft)\" (not ratified, not identity registry)\" (proposer claim, confirmed-as-of: No ratified agent-identity SEP in the official Stellar SEP registry (as of date))",
-        "2026-11-02 [D] perplexity/parallel sweep — \"No web source reports a ratified Stellar SEP for ERC-8004-style identity\" (proposer claim, confirmed-as-of: No ratified agent-identity SEP in the official Stellar SEP registry (as of date))",
-        "2026-11-02 [B] https://github.com/trionlabs/stellar-8004 — \"three smart contracts for identity, reputation, and validation, a TypeScript SDK, a live explorer at stellar8004.com ... Deployed on testnet and mainnet. (mainnet Identity Registry CBGPDCJI...GMCL6X35)\" (proposer claim, confirmed: trionlabs/stellar-8004 has three registries, SDK/explorer and pubnet deployments; progax01/stellar8004 deploys an agent registry)",
-        "2026-11-02 [B] https://github.com/progax01/stellar8004 — \"All contracts are deployed and verified on Stellar Mainnet ... Agent Registry — On-chain identity (SRC-8004)\" (proposer claim, confirmed: trionlabs/stellar-8004 has three registries, SDK/explorer and pubnet deployments; progax01/stellar8004 deploys an agent registry)",
-        "2026-11-02 [C] https://stellarlight.xyz/api/repos/search?q=8004 — \"trionlabs/stellar-8004 repoScore 54 judgeScore 0.8; progax01/stellar8004 repoScore 53 judgeScore 0.6\" (proposer claim, confirmed: trionlabs/stellar-8004 has three registries, SDK/explorer and pubnet deployments; progax01/stellar8004 deploys an agent registry)",
-        "2026-11-02 [C] https://stellarlight.xyz/api/repos/search?q=8004 — \"\"fullName\": \"trionlabs/stellar-8004\", \"repoScore\": 54\" (proposer claim, contradicted: Scout shows trionlabs/stellar-8004 repoScore 69)",
-        "2026-11-02 [B] https://github.com/ethereum/ERCs/blob/master/ERCS/erc-8004.md — \"status: Draft\" (proposer claim, confirmed: All five avoid items punish false claims today (ratified standard; no implementation; inferring audit from deployment; gating on deploy date; timeless claims))",
-        "2026-11-02 [C] https://stellarlight.xyz/api/repos/search?q=stellar-8004&limit=10 — \"trionlabs/stellar-8004 | repoScore 54 | judge 0.8 | label medium | home https://stellar8004.com; progax01/stellar8004 | repoScore 53 | judge 0.6\" (independent verifier, accept on golden.notes)",
-        "Change: golden.notes gains a dated FRESHNESS NOTE that de-gates the drifting Scout repoScore (69 -> 54); answer, keyFacts, and avoid unchanged.",
-        "Sibling sweep 2026-11-02: checked q-agent-identity-erc8004-stellar, q-mpp-discovery-and-modes; q-agent-identity-erc8004-stellar cites the repo without a repoScore; q-mpp-discovery-and-modes names no 8004 score; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-defi-agent-identity-stellar-experimental",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-defi-agent-identity-stellar-experimental",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-defi-agent-identity-stellar-experimental",
+        "Live B 2026-11-14: https://github.com/ethereum/ERCs/blob/master/ERCS/erc-8004.md -- 'status: Draft ... type: Standards Track ... created: 2025-08-13'",
+        "Live B 2026-11-14: gh search code 8004 --repo stellar/stellar-protocol -- 'one hit only: ecosystem/sep-0002.md (a false positive); no SEP-8004 file'",
+        "Live B 2026-11-14: gh api repos/trionlabs/stellar-8004 -- 'archived false, pushed_at 2026-11-14T00:53:24Z'",
+        "Live B 2026-11-14: gh api repos/progax01/stellar8004 -- 'archived false, pushed_at 2026-06-15T03:32:16Z'",
+        "Live B 2026-11-14: https://github.com/ethereum/ERCs/blob/master/ERCS/erc-8004.md -- 'title: Trustless Agents / status: Draft'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/README.md -- 'no SEP title matches agent, identity, or 8004 (grep of the SEP index)'"
       ],
       "rootCause": [
-        "freshness-drift"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-defi-agent-identity-stellar-experimental"
+    "origin": "raven-next q-defi-agent-identity-stellar-experimental",
+    "notes": "Freshness:true + honesty case. Phase-2 VERIFIED: ERC-8004 ('Trustless Agents') proposed Aug 13 2025, went LIVE on Ethereum mainnet Jan 29 2026 (still EIP 'Draft' status), excludes payments and composes with x402. On Stellar, agent-identity is real but EARLY/hackathon-stage — Scout shows trionlabs/stellar-8004 ('Trustless Agents (8004) on Stellar/Soroban', repoScore 69, Agentic Hackathon, judgeScore 0.8, homepage stellar8004.com) and progax01/stellar8004 — NOT a ratified Stellar standard. emperorsixpacks/-bear-protocol also bundles agent identity. Reward honest immaturity-flagging. 2026-06-29 RE-VERIFIED: ERC-8004 EIP still 'Draft' (eips.ethereum.org) and composes with x402 for payments per The Graph/eco.com writeups; Scout repos confirm trionlabs/stellar-8004 (repoScore 69, judge 0.8, homepage stellar8004.com) and progax01/stellar8004 (repoScore 53, judge 0.6). CORRECTED repo handle bear-protocol -> emperorsixpacks/-bear-protocol (leading dash; bare 'bear-protocol' 404s); GitHub-confirmed (desc: 'commerce layer for AI agent payments on Stellar. Job escrow, agent identity, and x402 micropayments'). Confidence stays medium: the exact Jan-29 mainnet date leans on a single social-post source.\nAlso good if the answer: Surfaces real Stellar agent-identity experiments with provenance (Scout repo links, e.g. trionlabs/stellar-8004 from the Agentic Hackathon).\nGolden cites: Scout repo provenance for any Stellar experiment named; an ERC-8004 reference for the Ethereum framing.\nGT-12 CORRECTION 2026-07-10: supersedes the prior 'experimental/hackathon-stage' gate. Grade the three-way distinction: external Draft standard; registry-relative absence of Stellar ratification; real deployed but early/unratified community implementations. Never convert one of those into the other.\nFRESHNESS NOTE 2026-11-02: Scout repoScore values drift (trionlabs/stellar-8004 showed 54 on 2026-11-02, not 69). The repoScore and judgeScore figures above are dated history; do not grade an answer on them.",
+    "leaf": "ai.mpp-agentic-protocols"
   }
 }

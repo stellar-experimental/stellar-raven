@@ -1,0 +1,21 @@
+{
+  "id": "q-protocol-ledger-header-fields",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-protocol (golden coverage audit)",
+    "reviewer": "verify-protocol (golden coverage audit)",
+    "reason": "A full XDR struct dump is reference trivia. The decision-relevant header knowledge (state vs tx-set/result commitments, header chain) survives in q-pc-bucketlist-vs-merkle-inclusion-proof, and baseFee/baseReserve/maxTxSetSize/upgrades each have their own case. No topic loses visibility.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-protocol-ledger-header-fields",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-protocol-ledger-header-fields",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-protocol-ledger-header-fields"
+    ],
+    "lastCaseContentSha256": "2240fc78acc99f9d25f529f5e748aa3418a54e0f2c5f5ab7be70890e476e2dbc",
+    "replacementIds": []
+  }
+}

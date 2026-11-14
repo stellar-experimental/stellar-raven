@@ -1,0 +1,23 @@
+{
+  "id": "q-sep-7-uri",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-assets (golden coverage audit)",
+    "reviewer": "verify-audit-assets (golden coverage audit)",
+    "reason": "Merged into q-sep-53-sign-verify-message. Target-one leaf. The absorb keeps SEP-7 graded on q-sep-53-sign-verify-message; I endorse the author's option to re-ask that survivor as the SEP mapping (signing links, message signing, federation), since today it asks only about SEP-53.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-assets.json#q-sep-7-uri",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-assets.json#q-sep-7-uri",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-sep-7-uri"
+    ],
+    "lastCaseContentSha256": "a37c8a32b114eb1d84671bc5bbfe9fc8a36a605a7acb68764bddce34287d8c9b",
+    "replacementIds": [
+      "q-sep-53-sign-verify-message"
+    ]
+  }
+}

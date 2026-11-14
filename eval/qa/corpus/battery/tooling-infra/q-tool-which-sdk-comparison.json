@@ -5,21 +5,17 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "Choose by **execution role first**, then language and operational fit.\n\n1. **On-chain contract:** use SDF-maintained Rust **`soroban-sdk`** as the canonical/default path. Consider the documented community Solang/Solidity or AssemblyScript paths only with their current maturity, compatibility, and security limits.\n2. **Off-chain client:** choose the SDK that actually covers your transactions, XDR, Horizon/RPC methods, contract bindings, ingestion, mobile runtime, wallet/SEP flows, or hardware integration. Current examples include SDF-maintained `@stellar/stellar-sdk`, `go-stellar-sdk`, and focused Rust client crates, plus officially documented community Python, Java, iOS/macOS, Flutter, Kotlin Multiplatform, PHP, .NET, and other client components.\n3. **Validate the exact choice:** required feature parity, target-network/protocol compatibility, package/runtime support, release cadence, maintainer and issue response, upgrade history, dependency/security posture, tests, deployment constraints, and application-specific review.\n\nSDF maintenance can be a reasonable default when its actual support and upgrade path fit the workload, but the catalog does not establish a universal SLA or make every community SDK consumer-only, best-effort, unsafe, or unsuitable for production. Community SDKs can be valid production choices after exact capability and risk review. Date versions and recheck before pinning.",
+    "answer": "SDF maintains the JavaScript and Go client SDKs, the Rust `soroban-sdk` for contracts and several Rust client crates (`stellar-xdr`, `stellar-strkey`, an RPC client). Python, Java, iOS, Flutter, Kotlin Multiplatform, PHP and .NET SDKs are community-maintained, though Stellar's docs list them. Choose by role and feature coverage first; maintainer tier alone is not a production verdict.",
     "keyFacts": [
-      "Selects contract or client SDKs by execution role.",
-      "Rust `soroban-sdk` is SDF's canonical contract path.",
-      "Documented community contract SDKs need maturity checks.",
-      "Compares language, runtime, features, releases, compatibility, dependencies, and tests.",
-      "Treats maintainer tier as evidence only."
+      "SDF maintains the JavaScript and Go client SDKs and the Rust `soroban-sdk` contract SDK.",
+      "Python, Java, iOS, Flutter, KMP, PHP and .NET SDKs are community-maintained.",
+      "Choose by role and feature coverage; maintainer tier alone is not a production verdict."
     ],
     "avoid": [
-      "Do NOT conflate client SDKs with contract SDKs or assume every language has identical Horizon/RPC/contract/SEP coverage.",
-      "Do NOT claim SDF-maintained automatically means production/institutional/safe or that community-maintained automatically means best-effort/consumer/unsafe.",
-      "Do NOT infer a support SLA from official documentation or maintainer labels.",
-      "Do NOT omit documented community contract alternatives, use deprecated package names, or pin versions without date and compatibility checks."
+      "Do NOT conflate contract SDKs with client SDKs or assume every language has the same Horizon, RPC and SEP coverage.",
+      "Do NOT claim an SDF-maintained SDK carries a support SLA or that community SDKs are unfit for production."
     ],
-    "notes": "GT-56 DECISION-FRAMEWORK CORRECTION 2026-07-11: choose execution role first, then exact capability/runtime/release/compatibility/risk. Maintainer tier matters but supplies no blanket SLA, safety, audience, institutional, or production ranking. Include documented community contract alternatives with maturity caveats."
+    "notes": "Accept the documented community contract paths (Solang, AssemblyScript) as extra detail, not requirements."
   },
   "tags": {
     "category": "tooling-infra",
@@ -33,7 +29,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-05-18",
     "sources": [
       {
@@ -113,20 +109,45 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "SDF maintains the JS, Go and Rust contract SDKs; Python, iOS, Flutter, PHP, KMP, Java and .NET are community-maintained",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tools/sdks/client-sdks.md",
+            "observedAt": "2026-11-14",
+            "note": "The JavaScript SDK is maintained by SDF; The Go SDK is maintained by SDF; The Python SDK is maintained by dedicated community developers"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tools/sdks/contract-sdks.md",
+            "observedAt": "2026-11-14",
+            "note": "**The Rust SDK is maintained by SDF.**"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer verification, no gospel change; applier refreshed; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-06)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-tooling-b, verify-audit-tooling-b; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "A https://developers.stellar.org/docs/tools/sdks/contract-sdks (observedAt 2026-11-02): 'The Rust SDK is maintained by SDF. ... The Solang compiler is maintained by the Hyperledger community. ... The AssemblyScript SDK is maintained by dedicated community developers.'",
-        "A https://developers.stellar.org/docs/tools/sdks/client-sdks (observedAt 2026-11-02): 'The JavaScript SDK is maintained by SDF. ... The Go SDK is maintained by SDF ... Kotlin Multiplatform SDK Maintained by a dedicated community developer.'; 'All SDKs are open-source; file a GitHub issue or pull request in the specific SDK repository'.",
-        "B https://raw.githubusercontent.com/stellar/stellar-docs/main/docs/tools/sdks/client-sdks.mdx (observedAt 2026-11-02): '## Go **The Go SDK is maintained by SDF.** ## Java SDK **Maintained by a dedicated community developer.**'.",
-        "E Raven stellarDocs.search_docs 'client SDKs maintained by SDF community' (observedAt 2026-11-02): 'rs-stellar-rpc-client - Code Rust Stellar RPC client. Maintained by SDF.'",
-        "D Perplexity perplexity_search -> https://crates.io/crates/soroban-sdk/29.0.1 (observedAt 2026-11-02): 'The two most recent soroban-sdk major releases are supported with critical security fixes' (per-SDK policy, not a catalog SLA).",
-        "Sibling sweep 2026-11-02: q-tool-rust-soroban-sdk (now v29.0.1 as of 2026-11-02) and q-tool-go-sdk-ingest stay consistent; this golden pins no SDK version. No gospel change."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-b.json#q-tool-which-sdk-comparison",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-b.json#q-tool-which-sdk-comparison",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-tool-which-sdk-comparison",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/tools/sdks/client-sdks.md -- 'The JavaScript SDK is maintained by SDF; The Go SDK is maintained by SDF; The Python SDK is maintained by dedicated community developers'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/tools/sdks/contract-sdks.md -- '**The Rust SDK is maintained by SDF.**'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/tools/sdks/client-sdks -- 'The JavaScript SDK is maintained by SDF. ... The Python SDK is maintained by dedicated community developers. ... The Go SDK is maintained by SDF.'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/tools/sdks/client-sdks -- 'The Flutter Stellar SDK is maintained by dedicated community developer, Soneso. (iOS, PHP, KMP likewise; Java and C# .NET community)'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/tools/sdks/contract-sdks -- 'The Rust SDK is maintained by SDF. ... The Solang compiler is maintained by the Hyperledger community.'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-tool-which-sdk-comparison"
+    "origin": "raven-next q-tool-which-sdk-comparison",
+    "notes": "GT-56 DECISION-FRAMEWORK CORRECTION 2026-07-11: choose execution role first, then exact capability/runtime/release/compatibility/risk. Maintainer tier matters but supplies no blanket SLA, safety, audience, institutional, or production ranking. Include documented community contract alternatives with maturity caveats.",
+    "leaf": "tooling.sdk-landscape"
   }
 }

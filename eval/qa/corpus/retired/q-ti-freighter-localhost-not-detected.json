@@ -1,0 +1,21 @@
+{
+  "id": "q-ti-freighter-localhost-not-detected",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-tooling-a (golden coverage audit)",
+    "reviewer": "verify-audit-tooling-a (golden coverage audit)",
+    "reason": "One troubleshooting symptom; the connect flow is q-ti-connect-wallet-button-code.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-a.json#q-ti-freighter-localhost-not-detected",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-a.json#q-ti-freighter-localhost-not-detected",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-ti-freighter-localhost-not-detected"
+    ],
+    "lastCaseContentSha256": "e17f0c194b085b0a0f9d4473e9a486739dee97bf28b909c6d1400ffd0b808443",
+    "replacementIds": []
+  }
+}

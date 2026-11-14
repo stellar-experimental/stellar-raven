@@ -5,19 +5,16 @@
     "scout.scfPitch"
   ],
   "golden": {
-    "answer": "Call `scout.scfPitch` with the concrete idea and cite the response's `generatedAt`. Use `report.round` for current timing only after checking `round.source`. A `live` source permits reporting the returned open-round rows; an `unavailable` source means the round state is unknown and must be checked on the official SCF awards page. Use funded peers, the funding bar, competitor maturity, prior art, and each deterministic angle as dated corpus evidence for differentiation. State each block's basis, and do not treat the composite as a funding decision or a complete market study.",
+    "answer": "Call scout.scfPitch with the idea and cite generatedAt. Use report.round only after checking round.source: \"live\" allows reporting the open rounds, \"unavailable\" means timing is unknown and the official SCF awards page must be checked. A null vertical means the idea did not map to Scout's axis, not that no market exists; null gap or funding is unavailable, not zero.",
     "keyFacts": [
-      "Checks `round.source` before describing current SCF timing.",
-      "An unavailable round result routes to the official SCF awards page.",
-      "Dates funded peers, funding-bar basis, competitor maturity, prior art, and pitch angles.",
-      "Reports `generatedAt`, corpus scope, and each block's evidence limits."
+      "round.source \"unavailable\" means the round state is unknown, not that no round is open.",
+      "A null vertical means unmapped, not that no market or competition exists.",
+      "Null gap or funding blocks are unavailable analyses, not zero."
     ],
     "avoid": [
-      "Do NOT convert `round.source: \"unavailable\"` into a claim that no submission round is open.",
-      "Do NOT claim deterministic angles are reviewer judgments or predict that SCF will fund the idea.",
-      "Do NOT pin a round number, peer count, or award total as a timeless pitch requirement."
+      "Do NOT claim deterministic pitch angles are reviewer judgments or predict an SCF award."
     ],
-    "notes": "Grade the service contract and evidence use. Current round phases, peer rows, and award totals can change."
+    "notes": "Returned peers, totals and round numbers are examples, not durable facts."
   },
   "tags": {
     "category": "scf-grants-builders",
@@ -31,7 +28,7 @@
     },
     "domain": "corpus-grounded",
     "status": "confirmed",
-    "asOf": "2026-08-18",
+    "asOf": "2026-11-14",
     "sources": [
       {
         "class": "C",
@@ -85,20 +82,35 @@
             "note": "The page published current round phases and submission deadlines."
           }
         ]
+      },
+      {
+        "claim": "scfPitch returns report.round with source live or unavailable.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/Stellar-Light/stellarlight/blob/main/src/lib/scf-pitch.ts",
+            "observedAt": "2026-11-14",
+            "note": "source: \"live\" | \"unavailable\" (case record 2026-11-02; not re-fetched)"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch scf-grants-builders-04)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-scf, verify-audit-scf; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Verification-only event 2026-11-02: every judge-facing field is unchanged; the proposer re-derived the claims from two or more source classes (no change proposed, so no verifier pass).",
-        "Live B 2026-11-02: https://github.com/Stellar-Light/stellarlight/blob/main/src/lib/scf-pitch.ts — 'source: \"live\" | \"unavailable\"; note: \"Live round check failed. Verify at https://communityfund.stellar.org before assuming anything about round state.\"' (claim: round.source is live|unavailable; unavailable routes to communityfund.stellar.org; verdict confirmed)",
-        "Live C 2026-11-02: https://stellarlight.xyz/api/scf-pitch?q=streaming%20recurring%20payments%20contract%20on%20Soroban — '\"round\": {\"source\": \"live\", \"open\": [{\"round\": 46, \"phase\": \"Submission\", \"submissionDeadline\": \"2026-11-09\"}]}; meta.generatedAt 2026-11-02T16:10:00.100Z' (claim: round.source is live|unavailable; unavailable routes to communityfund.stellar.org; verdict confirmed)",
-        "Live A 2026-11-02: https://communityfund.stellar.org/awards — 'SCF #46 Submission Deadline to submit: November 9, 2026' (claim: round.source is live|unavailable; unavailable routes to communityfund.stellar.org; verdict confirmed)",
-        "Live B 2026-11-02: catalog/manifest.json#scout.scfPitch — 'composite performs no prose generation (prior verification)' (claim: Composite returns funded peers, funding bar, maturity, prior art, deterministic angles; not a funding decision; verdict confirmed)",
-        "Sibling sweep 2026-11-02: q-gap-vet-pitch-vertical-null checked by the proposer; no contradiction (no gospel change)."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-scf-pitch-prep-live",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-scf-pitch-prep-live",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-scf-pitch-prep-live",
+        "Live B 2026-11-14: https://github.com/Stellar-Light/stellarlight/blob/main/src/lib/scf-pitch.ts -- 'source: \"live\" | \"unavailable\" (case record 2026-11-02; not re-fetched)'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "authored 2026-08 (coverage)"
+    "origin": "authored 2026-08 (coverage)",
+    "notes": "Grade the service contract and evidence use. Current round phases, peer rows, and award totals can change.",
+    "lane": "tool"
   }
 }

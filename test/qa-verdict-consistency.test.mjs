@@ -11,16 +11,11 @@ import { buildJudgePrompt, isRetryableJudgeError, JUDGE_RUBRIC } from "../eval/q
 import { checkVerdictConsistency } from "../eval/qa/verdict-consistency.mjs";
 import { judgeWithFakeClaude } from "./helpers/fake-judge-cli.mjs";
 
-const CORPUS = join(import.meta.dirname, "..", "eval", "qa", "corpus", "battery");
-const NULL_VERTICAL_GOLDEN = JSON.parse(
-  readFileSync(join(CORPUS, "scf-grants-builders", "q-gap-vet-pitch-vertical-null.json"), "utf8")
-).golden;
-const ARBITRAGE_GOLDEN = JSON.parse(
-  readFileSync(join(CORPUS, "defi-ecosystem", "q-defi-arbitrage-pathpayment-bots.json"), "utf8")
-).golden;
-const SEQUENCE_GOLDEN = JSON.parse(
-  readFileSync(join(CORPUS, "protocol-core", "q-pc-sequence-numbers-ordering-replace.json"), "utf8")
-).golden;
+const FIXTURES = join(import.meta.dirname, "fixtures", "qa-verdict-consistency");
+const fixtureGolden = (id) => JSON.parse(readFileSync(join(FIXTURES, `${id}.json`), "utf8")).golden;
+const NULL_VERTICAL_GOLDEN = fixtureGolden("q-gap-vet-pitch-vertical-null");
+const ARBITRAGE_GOLDEN = fixtureGolden("q-defi-arbitrage-pathpayment-bots");
+const SEQUENCE_GOLDEN = fixtureGolden("q-pc-sequence-numbers-ordering-replace");
 
 const TRAP_BEHAVIOR_FIXTURES = [
   {

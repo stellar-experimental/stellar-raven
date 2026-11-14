@@ -1,0 +1,21 @@
+{
+  "id": "q-defi-reflector-oracle",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-defi (golden coverage audit)",
+    "reviewer": "verify-defi (golden coverage audit)",
+    "reason": "q-pc-cross-redstone-sep40 kf1 names Reflector as SEP-40 compatible; signer counts and product tiers are operator detail.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-defi-reflector-oracle",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-defi-reflector-oracle",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-defi-reflector-oracle"
+    ],
+    "lastCaseContentSha256": "285a368100c1a27805b3877188a1a23aa8aa463597634d7486a6f5c4fb78f527",
+    "replacementIds": []
+  }
+}

@@ -9,21 +9,19 @@
     "stellarDocs.search_wallet_dapp_docs"
   ],
   "golden": {
-    "answer": "- **SEP-8 is the Regulated Assets standard** for classic assets whose issuer requires per-transaction approval. The issuer sets both **Authorization Required and Authorization Revocable** and publishes regulated=true, approval_server, and approval_criteria in the asset's SEP-1 stellar.toml. **Clawback is separate and optional; it is not a SEP-8 prerequisite.**\n- The wallet builds and signs a transaction, detects the regulated asset, and POSTs its encoded transaction to the approval server. The server checks policy and returns success, revised, pending, action_required, or rejected. Success adds issuer approval to the compliant transaction. A revised transaction must preserve user intent, be inspected, and be re-signed by the wallet.\n- After all required signatures are present, **the wallet submits the transaction**. The approval server does not submit it. This is a classic-asset authorization flow and does not require Soroban.",
+    "answer": "SEP-8 lets an issuer require approval of each transaction for a classic regulated asset. The issuer sets Authorization Required and Revocable (clawback is optional) and publishes regulated, approval_server and approval_criteria in stellar.toml. The wallet posts its signed transaction to the approval server, which returns success, revised, pending, action_required or rejected. The wallet re-signs revisions and submits; the server does not. No Soroban is needed.",
     "keyFacts": [
-      "Names SEP-8 as the Regulated Assets standard.",
-      "SEP-8 requires Authorization Required/Authorization Revocable, with optional clawback.",
-      "It requires regulated, approval_server, and approval_criteria stellar.toml fields.",
-      "Wallet duties include signed-transaction posting and five approval statuses.",
-      "Wallet duties include revision re-signing and final-transaction submission."
+      "SEP-8 lets an issuer require approval-server sign-off on each regulated-asset transaction.",
+      "The issuer sets the Authorization Required and Revocable flags; clawback is optional.",
+      "stellar.toml marks the asset regulated and names its approval_server.",
+      "The wallet posts its signed transaction, and inspects and re-signs any revised one.",
+      "The wallet, not the approval server, submits the final transaction; Soroban is not needed."
     ],
     "avoid": [
-      "Do NOT call SEP-8 KYC or authentication.",
-      "Do NOT substitute AUTH_CLAWBACK_ENABLED for SEP-8's AUTH_REVOCABLE requirement.",
-      "Do NOT say the approval server submits the transaction or omit wallet inspection/re-signing of revisions.",
-      "Do NOT claim Soroban is required."
-    ],
-    "notes": "Canonical on-chain mechanic. Verified vs SEP-0008: title 'Regulated Assets'; the Approval Server 'receives a signed transaction, checks for compliance, and signs it on success' (the wallet then submits). Trap is conflating SEP-8 (regulated assets) with SEP-12 (KYC)/SEP-10 (auth).\nAlso good if the answer: The regulated asset is configured so transfers require issuer approval (authorization gating), tied to the asset's authorization flags. | WisdomTree-style issuers used SEP-8 to create assets that require issuer approval to transact, without a smart contract.\nGolden cites: The SEP-8 spec (stellar-protocol GitHub) or developers.stellar.org regulated-assets docs.\nCORRECTION 2026-07-10: mandatory flags are Required + Revocable. Clawback is optional. The approval server signs/returns; the wallet inspects and re-signs revised transactions and submits the final transaction."
+      "Do NOT call SEP-8 a KYC or authentication standard.",
+      "Do NOT substitute AUTH_CLAWBACK_ENABLED for the required AUTH_REVOCABLE.",
+      "Do NOT say the approval server submits the transaction."
+    ]
   },
   "tags": {
     "category": "compliance-rwa-payments",
@@ -114,25 +112,48 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "Issuers must set Authorization Required and Authorization Revocable.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0008.md",
+            "observedAt": "2026-11-14",
+            "note": "Regulated asset issuers must have both `Authorization Required` and `Authorization Revocable` flags set on their account."
+          }
+        ]
+      },
+      {
+        "claim": "The approval server returns success, revised, pending, action_required or rejected.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0008.md",
+            "observedAt": "2026-11-14",
+            "note": "4. _Action Required?_ ... 5. _Rejected?_ Wallet should display the associated error message to the user."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-08-27",
-      "by": "golden-truth burn-down 2026-08-27 (compound-predicate batch, worker gt2-sol-b)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-compliance, verify-audit-compliance; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Solo scratchpad 575 GT-08 primary and blind matrices",
-        "Structural re-form (compound-predicate): Split two compound key facts into four atomic facts; all SEP-8 flag, stellar.toml, clawback, status, signing, revision, and submission claims remain unchanged.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0008.md — required Authorization Required and Authorization Revocable; https://developers.stellar.org/docs/tokens/control-asset-access showed clawback as a separate optional flag.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0008.md — listed regulated, approval_server, and approval_criteria in stellar.toml.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0008.md — showed wallet posting of a signed transaction and handling of five approval statuses.",
-        "Live re-check 2026-08-27: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0008.md — showed wallet inspection/re-signing of revisions and final transaction submission.",
-        "Sibling sweep 2026-08-27: grep SEP-8|approval_server|Authorization Revocable → q-sep-8-regulated-assets, q-comp-sep8-number-lookup-no-deepresearch, q-comp-anchor-compliance-stack; no contradiction"
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-compliance.json#q-comp-sep8-regulated-assets-approval-server",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-compliance.json#q-comp-sep8-regulated-assets-approval-server",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-comp-sep8-regulated-assets-approval-server",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0008.md -- 'Regulated asset issuers must have both `Authorization Required` and `Authorization Revocable` flags set on their account.'",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0008.md -- '4. _Action Required?_ ... 5. _Rejected?_ Wallet should display the associated error message to the user.'"
       ],
       "rootCause": [
-        "Partial paraphrase lost the normative flag pair and compressed success, revised, and submission responsibilities.",
-        ".agents/TODO.md — Golden authoring lint warnings burn-down (compound-predicate class)"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-comp-sep8-regulated-assets-approval-server"
+    "origin": "raven-next q-comp-sep8-regulated-assets-approval-server",
+    "notes": "Canonical on-chain mechanic. Verified vs SEP-0008: title 'Regulated Assets'; the Approval Server 'receives a signed transaction, checks for compliance, and signs it on success' (the wallet then submits). Trap is conflating SEP-8 (regulated assets) with SEP-12 (KYC)/SEP-10 (auth).\nAlso good if the answer: The regulated asset is configured so transfers require issuer approval (authorization gating), tied to the asset's authorization flags. | WisdomTree-style issuers used SEP-8 to create assets that require issuer approval to transact, without a smart contract.\nGolden cites: The SEP-8 spec (stellar-protocol GitHub) or developers.stellar.org regulated-assets docs.\nCORRECTION 2026-07-10: mandatory flags are Required + Revocable. Clawback is optional. The approval server signs/returns; the wallet inspects and re-signs revised transactions and submits the final transaction.",
+    "leaf": "assets.regulated-tokenization"
   }
 }

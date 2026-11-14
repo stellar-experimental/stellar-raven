@@ -1,0 +1,23 @@
+{
+  "id": "q-scf-submission-lifecycle-deadlines",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-scf (golden coverage audit)",
+    "reviewer": "verify-audit-scf (golden coverage audit)",
+    "reason": "Merged into q-scf-how-to-apply. Same funnel as how-to-apply; the no-fixed-duration caution is in the survivor notes. Its rot \"changed\" label is wrong, as on q-scf-how-to-apply.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-scf-submission-lifecycle-deadlines",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-scf-submission-lifecycle-deadlines",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-scf-submission-lifecycle-deadlines"
+    ],
+    "lastCaseContentSha256": "158170f8164046a4383cf98801cb8fdb9168263d5eea17fb34cc351960e3f1e0",
+    "replacementIds": [
+      "q-scf-how-to-apply"
+    ]
+  }
+}

@@ -6,17 +6,15 @@
     "lumenloop.search_documents"
   ],
   "golden": {
-    "answer": "Meridian 2026 took place October 28–29, 2026 at Convento do Beato in Lisbon, Portugal. HackMeridian ran October 25–26, 2026 at ONE16 in Lisbon. Older sources saying October 21–22 at Yas Marina in Abu Dhabi reflect the original announcement, not the event that took place. SDF publicly announced the move to Lisbon and the new dates on April 1, 2026.",
+    "answer": "Meridian 2026 was held October 28–29, 2026 at Convento do Beato in Lisbon, Portugal. Earlier announcements of Abu Dhabi (Yas Marina, October 21–22) were superseded when SDF announced the move to Lisbon on April 1, 2026.",
     "keyFacts": [
       "Meridian 2026 was held October 28–29, 2026 at Convento do Beato, Lisbon.",
-      "HackMeridian ran October 25–26, 2026 in Lisbon.",
-      "SDF announced Lisbon and October 28–29 on April 1, 2026."
+      "Abu Dhabi, October 21–22 was superseded; SDF announced Lisbon on 2026-04-01."
     ],
     "avoid": [
-      "Do NOT claim Meridian 2026 took place in Abu Dhabi/Yas Marina or on October 21–22.",
-      "Do NOT describe Meridian 2026 as still upcoming."
+      "Do NOT claim Meridian 2026 took place in Abu Dhabi/Yas Marina or on October 21–22."
     ],
-    "notes": "Corrected-fact, now-historical case. The stale CoinDesk sponsored recap and leftover event listings show the superseded Abu Dhabi schedule; they must not override the official SDF sources."
+    "notes": "Stale sponsored recaps and leftover listings show the superseded schedule; official SDF sources control."
   },
   "tags": {
     "category": "history-org-tokenomics",
@@ -30,7 +28,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-14",
     "sources": [
       {
         "class": "A",
@@ -124,24 +122,49 @@
             "note": "'at Meridian 2026, the Stellar Development Foundation’s annual conference in Lisbon' (the article discloses a sponsored trip)."
           }
         ]
+      },
+      {
+        "claim": "Meridian 2026 was October 28-29, 2026 at Convento do Beato, Lisbon.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://meridian.stellar.org/?locale=en",
+            "observedAt": "2026-11-14",
+            "note": "October 28-29.2026 · Convento do Beato, Lisbon, Portugal"
+          }
+        ]
+      },
+      {
+        "claim": "SDF announced the move to Lisbon on 2026-04-01.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://x.com/StellarOrg/status/2039405316803031315",
+            "observedAt": "2026-11-14",
+            "note": "Status id decodes (snowflake) to 2026-04-01T18:11:32Z; text not re-read"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "golden-truth near-due re-verification 2026-11-02 (round ledger .agents/rounds/2026-11-02-golden-reverify.md; research lane plus author re-check, Claude Opus 5.5)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-hist-retail, verify-hist-retail; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "The event ended on 2026-10-29, so the scheduled/upcoming framing became false by tense. Question, answer, keyFacts, and avoid moved to past tense; venue and dates are unchanged.",
-        "Live A 2026-11-02: https://meridian.stellar.org/ thanks attendees and points to 2027; https://meridian.stellar.org/event-details keeps October 28–29, 2026, Convento do Beato, Lisbon.",
-        "Live A 2026-11-02: https://www.hackmeridian.com/ shows '25–26 October 2026 · ONE16, Lisbon'; @BuildOnStellar posted the HackMeridian 2026 winners on 2026-10-29.",
-        "Live D 2026-11-02: on-site coverage (h-x.technology, tearsheet.co, cryptobriefing.com, CoinDesk 2026-10-28) places the event in Lisbon on October 28–29.",
-        "The expired avoid item (an as-of qualifier while the event was upcoming) became a trap against calling the event upcoming. freshness moved from scheduled to stable; reverifyBy is removed.",
-        "Sibling sweep 2026-11-02: grep Meridian 2026|HackMeridian|Convento do Beato|Yas Marina|Abu Dhabi finds q-scf-hackathons-active and q-builder-justin-rice-history (truth evidence only); no contradiction.",
-        "Review reconciliation 2026-11-02 (PR #310 review finding 7): the hackmeridian.com source row notes its stale countdown."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-hist-meridian-2026-corrected-venue",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-hist-meridian-2026-corrected-venue",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-hist-meridian-2026-corrected-venue",
+        "Live A 2026-11-14: https://meridian.stellar.org/?locale=en -- 'October 28-29.2026 · Convento do Beato, Lisbon, Portugal'",
+        "Live A 2026-11-14: https://x.com/StellarOrg/status/2039405316803031315 -- 'Status id decodes (snowflake) to 2026-04-01T18:11:32Z; text not re-read'"
       ],
       "rootCause": [
-        "freshness-drift"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "authored 2026-07 (2026-events)"
+    "origin": "authored 2026-07 (2026-events)",
+    "notes": "Corrected-fact, now-historical case. The stale CoinDesk sponsored recap and leftover event listings show the superseded Abu Dhabi schedule; they must not override the official SDF sources.",
+    "leaf": "funding.meridian",
+    "secondaryLeaf": "behavior.freshness-honesty"
   }
 }

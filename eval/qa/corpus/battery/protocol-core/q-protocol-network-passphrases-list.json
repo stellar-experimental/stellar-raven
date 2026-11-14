@@ -5,16 +5,15 @@
     "stellarDocs.search_protocol_concepts_docs"
   ],
   "golden": {
-    "answer": "Exact passphrase string per network [1][2]:\n\n- **Public network**: `Public Global Stellar Network ; September 2015`\n- **Testnet**: `Test SDF Network ; September 2015`\n- **Futurenet**: `Test SDF Future Network ; October 2022`\n\nThere is no separate \"mainnet\" passphrase distinct from the public-network one.",
+    "answer": "Public network: \"Public Global Stellar Network ; September 2015\". Testnet: \"Test SDF Network ; September 2015\". Futurenet: \"Test SDF Future Network ; October 2022\". There is no separate \"mainnet\" passphrase.",
     "keyFacts": [
-      "Gives the exact public passphrase: 'Public Global Stellar Network ; September 2015'.",
-      "Gives the testnet passphrase exactly: 'Test SDF Network ; September 2015'."
+      "The public passphrase is \"Public Global Stellar Network ; September 2015\".",
+      "The Testnet passphrase is \"Test SDF Network ; September 2015\".",
+      "The Futurenet passphrase is \"Test SDF Future Network ; October 2022\"."
     ],
     "avoid": [
-      "Do NOT garble the passphrase strings (e.g. wrong date, missing the ' ; ' separator, or swapping public/test strings).",
-      "Do NOT invent a separate 'mainnet' passphrase distinct from the public-network one."
-    ],
-    "notes": "Bare per-network enumeration: the network-id/replay/signing rationale is not required. Strings verified against developers.stellar.org/docs/networks. Trap = garbling the strings.\nAlso good if the answer: Gives the futurenet passphrase exactly ('Test SDF Future Network ; October 2022').\nGolden cites: A networks / network-passphrase page on developers.stellar.org."
+      "Do NOT garble the strings or invent a separate mainnet passphrase."
+    ]
   },
   "tags": {
     "category": "protocol-core",
@@ -90,20 +89,37 @@
             "note": "Index record carries the testnet and futurenet strings."
           }
         ]
+      },
+      {
+        "claim": "Three passphrase strings exact",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/networks",
+            "observedAt": "2026-11-14",
+            "note": "Public Global Stellar Network ; September 2015 / Test SDF Network ; September 2015 / Test SDF Future Network ; October 2022 (each present on page)"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-03",
-      "by": "lane urls (Codex gpt-6.1-sol high)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-protocol, verify-protocol; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "https://developers.stellar.org/docs/learn/fundamentals/networks (HTTP 308, 2026-11-03): The page lists all three exact network passphrases. Live Horizon roots independently return the same strings. Current source: https://developers.stellar.org/docs/networks (HTTP 200).",
-        "Class F, HTTP 200 on 2026-11-03: https://horizon.stellar.org/ ; https://horizon-testnet.stellar.org/ ; https://horizon-futurenet.stellar.org/ . Each network_passphrase exactly matches the current Networks page and the unchanged golden.",
-        "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-protocol-network-passphrases-list",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-protocol-network-passphrases-list",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-protocol-network-passphrases-list",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/networks -- 'Public Global Stellar Network ; September 2015 / Test SDF Network ; September 2015 / Test SDF Future Network ; October 2022 (each present on page)'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/networks -- 'Network Passphrase | Public Global Stellar Network ; September 2015 | Test SDF Network ; September 2015 | Test SDF Future Network ; October 2022'",
+        "Live B 2026-11-14: https://github.com/stellar/js-stellar-base/blob/master/src/network.js -- 'FUTURENET: 'Test SDF Future Network ; October 2022''"
       ],
       "rootCause": [
-        "freshness-drift"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-protocol-network-passphrases-list"
+    "origin": "raven-next q-protocol-network-passphrases-list",
+    "notes": "Bare per-network enumeration: the network-id/replay/signing rationale is not required. Strings verified against developers.stellar.org/docs/networks. Trap = garbling the strings.\nAlso good if the answer: Gives the futurenet passphrase exactly ('Test SDF Future Network ; October 2022').\nGolden cites: A networks / network-passphrase page on developers.stellar.org.",
+    "leaf": "protocol.networks-passphrases"
   }
 }

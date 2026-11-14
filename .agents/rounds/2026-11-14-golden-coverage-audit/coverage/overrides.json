@@ -1,0 +1,1565 @@
+{
+  "cases": [
+    {
+      "id": "q-aas-claimable-predicates-expiry-reserves",
+      "rewrite": {
+        "question": null,
+        "answer": "A claimable balance is a native ledger entry (no Soroban contract) holding an asset for up to 10 claimants, each with a predicate (time bounds, AND, OR, NOT) that must be true to claim. It can be created for a recipient with no trustline, who needs one only to claim a non-native asset. Listing yourself as claimant gives no at-will reclaim. Each claimant costs the creator one base reserve.",
+        "keyFacts": [
+          "A claimable balance is a native ledger entry with up to 10 claimants.",
+          "Each claimant has a predicate that must be true at the ledger of the claim.",
+          "A creator listed as claimant has no at-will reclaim beyond its own predicate.",
+          "Each claimant adds one base reserve to the creator's minimum balance.",
+          "The recipient needs no trustline at creation, but needs one to claim a non-native asset."
+        ],
+        "avoid": [
+          "Do NOT claim that a claimable balance expires and refunds itself without a claim operation.",
+          "Do NOT claim that a claimable balance is a smart-contract escrow that needs Soroban."
+        ],
+        "notes": "Issuer clawback is a separate feature; do not penalize an answer that mentions it as distinct.",
+        "movedToTruth": [
+          "Folded-in history (q-aas-claimable-balance-reclaim)",
+          "CAP-23 and lumens reserve provenance and the 2026-06-29 live stamp",
+          "'Also good if' items (recipient-before/sender-after pattern)",
+          "Golden-cites line"
+        ]
+      }
+    },
+    {
+      "id": "q-anchor-list-builders-discovery",
+      "rewrite": {
+        "question": null,
+        "answer": "Examples a current source supports include MoneyGram Ramps (SEP-24 cash-in and cash-out) and Etherfuse (a Mexico USDC and MXN ramp). The Stellar Light partner directory listed 21 anchor profiles on 2026-11-14. The roster changes, so quote it with its source and date. Anchor operators differ from anchor tooling such as SDF's Anchor Platform.",
+        "keyFacts": [
+          "Names specific anchors or ramp operators supported by a cited source.",
+          "Dates the roster as of its observation time.",
+          "Separates anchor operators from tooling such as the Anchor Platform."
+        ],
+        "avoid": [
+          "Do NOT name anchors that no source lists, or call a listing a complete permanent roster."
+        ],
+        "notes": "Counts differ by source basis (directory profiles versus project search); do not penalize a dated count from either.",
+        "movedToTruth": [
+          "Re-check history (stellar.org/use-cases/ramps redirect, anchors docs page)",
+          "Routing note (scout_projects)",
+          "Golden-cites line",
+          "Observed counts as example only"
+        ]
+      }
+    },
+    {
+      "id": "q-anchor-moneygram-ramps",
+      "rewrite": {
+        "question": null,
+        "answer": "MoneyGram Ramps lets Stellar wallets cash in and cash out physical cash, settling in Stellar USDC. As of 2026-11-14 MoneyGram directs new partners to a widget SDK with API keys and server-side sessions; the SEP-10/SEP-24 anchor path is documented as legacy for existing allowlisted partners. MoneyGram states USDC cash-out in 170+ countries.",
+        "keyFacts": [
+          "MoneyGram Ramps settles cash-in and cash-out in Stellar USDC.",
+          "MoneyGram acts as an anchor: one integration reaches its cash network.",
+          "Names a dated path: the widget SDK for new partners or legacy SEP-10/SEP-24."
+        ],
+        "avoid": [
+          "Do NOT claim MGUSD is the Ramps settlement asset."
+        ],
+        "notes": "Naming only SEP-24 without the legacy label is incomplete, not wrong.",
+        "movedToTruth": [
+          "Tier-1 quorum timing avoid and Obsrvr node evidence",
+          "Developer-portal URL history and guide version (1.2, July 2026)",
+          "SEP-38 not primary flow note",
+          "Source list"
+        ]
+      }
+    },
+    {
+      "id": "q-anchor-sdp-vs-anchor-platform",
+      "rewrite": {
+        "question": null,
+        "answer": "All three are SDF-maintained. The Anchor Platform is the backend an anchor operator runs, implementing SEP-1, 6, 10, 12, 24, 31, 38 and 45; it is software, not a licence. The Disbursement Platform is a bulk-payout application whose Core implements SEP-10 and SEP-24 itself, with no Anchor Platform needed. The Wallet SDK is a client library wrapping SEP-1, 6, 10, 12, 24 and 38, not SEP-31.",
+        "keyFacts": [
+          "The Anchor Platform is the anchor operator backend for SEP-6/10/12/24/31/38.",
+          "The Disbursement Platform is a bulk-payment application, not a wallet or anchor.",
+          "SDP Core implements SEP-10 and SEP-24 natively without the Anchor Platform.",
+          "The Wallet SDK is a client library for SEP-1/6/10/12/24/38, not SEP-31."
+        ],
+        "avoid": [
+          "Do NOT claim the SDP 10,000-instruction per-disbursement cap is a Stellar protocol limit."
+        ],
+        "notes": "Adding SEP-1 or SEP-45 for the Anchor Platform, or SEP-7 or SEP-30 for the Wallet SDK, is not misnumbering.",
+        "movedToTruth": [
+          "10,000-instruction MaxInstructionsPerDisbursement evidence",
+          "Language notes (Java/Kotlin, Kotlin SDK archived)",
+          "Roster of source URLs",
+          "SEP-45 status and 2026-08-05 reverify stamp"
+        ]
+      }
+    },
+    {
+      "id": "q-asset-deploy-sac-cli",
+      "rewrite": {
+        "question": null,
+        "answer": "Deploy the asset's built-in Stellar Asset Contract; do not write a token contract. Run `stellar contract asset deploy --asset CODE:ISSUER` (`--asset native` for XLM). The contract id derives deterministically from the asset and `stellar contract id asset` prints it. Anyone can deploy it, and the issuer is the initial admin; deploying wraps the same classic asset.",
+        "keyFacts": [
+          "`stellar contract asset deploy` deploys the SAC for an existing classic asset.",
+          "The SAC is built in, so no new token contract is written.",
+          "The SAC represents the same classic asset, with a deterministic contract id.",
+          "The issuer is the initial SAC admin."
+        ],
+        "avoid": [
+          "Do NOT say using a classic asset in Soroban needs a separately written and deployed token contract."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "CONTRACT_ID_PREIMAGE_FROM_ASSET and InvokeHostFunction/CREATE_CONTRACT detail",
+          "Defunct 'soroban lab token wrap' history",
+          "Source list (stellar-xdr, cli deploy/asset.rs)"
+        ]
+      }
+    },
+    {
+      "id": "q-asset-issue-asset-howto",
+      "rewrite": {
+        "question": null,
+        "answer": "There is no create-asset operation. An asset is an asset code plus issuer. Fund a separate issuing account and distribution account, set any authorization flags first, have the distribution account open a trustline with `ChangeTrust`, then have the issuer pay the supply to it. Publish a stellar.toml (SEP-1). Locking the issuer afterwards stops further issuance; paying the asset back to the issuer burns it.",
+        "keyFacts": [
+          "A classic asset is defined by its asset code and issuing account.",
+          "The distribution account opens a trustline with ChangeTrust before it receives the asset.",
+          "The issuer creates supply by paying it to the distribution account.",
+          "Using distinct issuing and distribution accounts is recommended, not required."
+        ],
+        "avoid": [
+          "Do NOT describe issuing a classic asset as deploying an ERC-20-style contract.",
+          "Do NOT claim that a dedicated createAsset operation exists in the protocol."
+        ],
+        "notes": "A SAC admin moved with set_admin can still mint after the issuer is locked; do not penalize an answer that adds this.",
+        "movedToTruth": [
+          "Multisig lock details (master weight 0, remaining signers)",
+          "AUTH_IMMUTABLE does not cap supply",
+          "stellar-core source list",
+          "'Also good if' items"
+        ]
+      }
+    },
+    {
+      "id": "q-asset-path-payment-ops",
+      "rewrite": {
+        "question": null,
+        "answer": "A path payment converts one asset to another in a single atomic transaction, routing through the order book, AMM pools, or both, so the recipient can receive a different asset than the sender pays. `PathPaymentStrictSend` fixes the amount sent and the recipient gets at least `destMin`. `PathPaymentStrictReceive` fixes the amount received and the sender pays at most `sendMax`.",
+        "keyFacts": [
+          "PathPaymentStrictSend fixes the amount sent; the recipient gets at least destMin.",
+          "PathPaymentStrictReceive fixes the amount received; the sender pays at most sendMax.",
+          "Routing can use the DEX order book, AMM pools, or both.",
+          "The conversion executes atomically in one transaction."
+        ],
+        "avoid": [
+          "Do NOT claim that path payments require an off-chain bridge or a third-party DEX router."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "Dossier reference",
+          "~5 s settlement 'also good if' item (unsourced here)",
+          "Golden-cites line",
+          "Invented operation name examples"
+        ]
+      }
+    },
+    {
+      "id": "q-asset-trustline-basics",
+      "rewrite": {
+        "question": null,
+        "answer": "A trustline is an account's explicit opt-in, created with `ChangeTrust`, to hold a non-native asset from a given issuer, with its own limit. Without one, payments of that asset fail. Each trustline raises the account's minimum XLM balance by one base reserve (0.5 XLM; validators can change it), a held minimum rather than a fee. XLM itself needs no trustline.",
+        "keyFacts": [
+          "A trustline is an account's opt-in to hold a specific non-native asset.",
+          "It is created with ChangeTrust for an asset code and issuer.",
+          "Without a trustline, payments of that asset fail.",
+          "Each trustline raises the minimum XLM balance by one base reserve."
+        ],
+        "avoid": [
+          "Do NOT claim that assets can be received with no trustline, like ERC-20 tokens.",
+          "Do NOT claim that the base reserve is a spent fee rather than a held minimum balance."
+        ],
+        "notes": "Do not penalize an answer that dates the XLM amount or states it in base-reserve units.",
+        "movedToTruth": [
+          "Horizon ledger 65269774 / 2026-11-02 reserve observation",
+          "Pool-share trustline two-reserve fact (now in q-asset-sdex-vs-amm)",
+          "Dossier reference",
+          "Golden-cites line"
+        ]
+      }
+    },
+    {
+      "id": "q-asset-trustline-vs-sac",
+      "rewrite": {
+        "question": null,
+        "answer": "They are two views of one asset, not two tokens. A G-account holds it on a trustline, used by classic operations. The Stellar Asset Contract is a protocol-built contract that exposes the same asset to Soroban by contract id and implements SEP-41. A contract address's balance lives in SAC contract storage, not a trustline. The SAC is deployed once per asset; no balance is migrated or bridged, and the issuer's authorization and clawback controls apply in both views.",
+        "keyFacts": [
+          "The SAC is a protocol-built contract exposing the same classic asset to Soroban.",
+          "G-account holdings are trustline ledger entries.",
+          "Soroban contracts move the asset through the SAC by contract id.",
+          "A contract address's balance is SAC contract storage, not a trustline."
+        ],
+        "avoid": [
+          "Do NOT claim the SAC is a separate token that users must migrate balances into or bridge to."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "Contract-data-entry holder detail",
+          "CAP-46-6 reference",
+          "Dossier references",
+          "'Also good if' items"
+        ]
+      }
+    },
+    {
+      "id": "q-cctp-v2-usdc-stellar",
+      "rewrite": {
+        "question": null,
+        "answer": "Circle added Stellar mainnet CCTP support on 2026-05-18, and SDF and Circle announced it live on 2026-05-19; Stellar is CCTP domain 27. CCTP burns native USDC on the source chain and mints native USDC on the destination, with no wrapped token. Inbound transfers set both mintRecipient and destinationCaller to the CctpForwarder contract, which forwards to the G, M or C recipient named in hook data. Stellar USDC's seventh decimal stays on Stellar because CCTP messages use 6. Fees are live values: as of 2026-11-14 Circle's fee API showed Fast/Standard 0/0 for 27→0 and 1 bp/0 for 0→27.",
+        "keyFacts": [
+          "Stellar mainnet CCTP support came on 2026-05-18 and was announced live on 2026-05-19.",
+          "CCTP burns native USDC on the source chain and mints native USDC on the destination.",
+          "Inbound transfers set mintRecipient and destinationCaller to the CctpForwarder contract.",
+          "CCTP messages use 6 decimals, so Stellar USDC's seventh decimal stays on Stellar.",
+          "Fees are dated live values from Circle's fee API, not fixed."
+        ],
+        "avoid": [
+          "Do NOT say CCTP locks USDC and issues a wrapped Stellar token.",
+          "Do NOT present CCTP fees as permanent or the transfer as exactly 1:1 after all costs."
+        ],
+        "notes": "Accept either milestone date when it is labeled (technical support 2026-05-18, public announcement 2026-05-19). Fee figures are dated observations; accept a later dated figure from Circle's fee API.",
+        "movedToTruth": [
+          "unrecovered 2026-02-24 launch-date provenance",
+          "2026-07-11 and 2026-11-14 fee observations",
+          "Circle, network, relayer, integrator and swap charges as separate costs",
+          "replace the dead fees-and-finality source URL"
+        ]
+      }
+    },
+    {
+      "id": "q-comp-sep8-number-lookup-no-deepresearch",
+      "note": "Duplicate: q-comp-sep8-regulated-assets-approval-server carries the SEP-8 identity and q-edge-exhaustive-defi-deep-report carries the paid-research proportionality behavior."
+    },
+    {
+      "id": "q-comp-sep8-regulated-assets-approval-server",
+      "rewrite": {
+        "question": null,
+        "answer": "SEP-8 lets an issuer require approval of each transaction for a classic regulated asset. The issuer sets Authorization Required and Revocable (clawback is optional) and publishes regulated, approval_server and approval_criteria in stellar.toml. The wallet posts its signed transaction to the approval server, which returns success, revised, pending, action_required or rejected. The wallet re-signs revisions and submits; the server does not. No Soroban is needed.",
+        "keyFacts": [
+          "SEP-8 lets an issuer require approval-server sign-off on each regulated-asset transaction.",
+          "The issuer sets the Authorization Required and Revocable flags; clawback is optional.",
+          "stellar.toml marks the asset regulated and names its approval_server.",
+          "The wallet posts its signed transaction, and inspects and re-signs any revised one.",
+          "The wallet, not the approval server, submits the final transaction; Soroban is not needed."
+        ],
+        "avoid": [
+          "Do NOT call SEP-8 a KYC or authentication standard.",
+          "Do NOT substitute AUTH_CLAWBACK_ENABLED for the required AUTH_REVOCABLE.",
+          "Do NOT say the approval server submits the transaction."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "approval_criteria field detail",
+          "five-status list as a spec detail",
+          "2026-07-10 correction history",
+          "WisdomTree-style also-good-if item"
+        ]
+      }
+    },
+    {
+      "id": "q-comp-yieldblox-oracle-incident",
+      "rewrite": {
+        "question": null,
+        "answer": "On 2026-02-22 an attacker pumped the thin USTRY/USDC Stellar DEX market from about $1.06 to $106. Reflector's five-minute VWAP feed published the fresh manipulated price, and the community YieldBlox Blend V2 pool accepted it as collateral, so the attacker borrowed about 61.2M XLM and 1M USDC (roughly $10M, valuations differ by source). Validators quarantined about 48M XLM, which is not recovery. Reflector, Blend core and Stellar were not compromised. Defenses are market-depth minimums, value bounds and supply caps on thin collateral.",
+        "keyFacts": [
+          "A 2026-02-22 USTRY price pump fed through Reflector's VWAP drained a YieldBlox pool.",
+          "About 61.2M XLM and 1M USDC were borrowed; dollar loss (~$10M) varies by source.",
+          "About 48M XLM was quarantined by validators; quarantine is not recovery.",
+          "Staleness was not causal; depth minimums, value bounds and supply caps are defenses."
+        ],
+        "avoid": [
+          "Do NOT call the quarantined XLM recovered, or assert attacker repayment without proof.",
+          "Do NOT claim Reflector, Blend core, Etherfuse or Stellar protocol was compromised.",
+          "Do NOT present 1,014,196.7040837 USDC as a single borrow transaction."
+        ],
+        "notes": "Do not require an exact dollar figure. Script3's ~$10M (2026-02-22) and ~$10.5M net (2026-03-04) are both acceptable when attributed.",
+        "movedToTruth": [
+          "exact exploit quantities 61,249,278.3064502 XLM and 1,000,196.7040837 USDC",
+          "14,000 USDC borrow tx 01c2ba75…",
+          "PoC $10.86M, Blockaid 48,069,094 XLM, rekt $10.97M attributions",
+          "SLP-0006 / CAP-0077 freeze at ledger 63073409",
+          "2026-02-27 and 2026-03-20 remediation",
+          "2026-11-02 frozen-balance observation",
+          "2026-06-29, 2026-07-10 and 2026-11-02 correction history"
+        ]
+      }
+    },
+    {
+      "id": "q-crp-cme-xlm-futures-dates",
+      "finalVerdict": "retire",
+      "note": "Surplus on ecosystem.xlm-markets, a one-facet leaf that q-raph-buy-xlm-safely holds: the case grades two dates and two contract sizes, dated trivia with no reasoning tested (verify-coverage leaf finding)."
+    },
+    {
+      "id": "q-crp-regional-offramp-mobilemoney",
+      "rewrite": {
+        "question": null,
+        "answer": "Stellar itself has no bank, card or mobile-money payout rail. Anchors, wallets, payment processors and local partners provide them, usually behind a SEP-24 or SEP-6 withdrawal (SEP-31 for cross-border). A directory listing is a candidate, not proof of a supported corridor, so check each provider's assets, countries, KYC, fees, limits and settlement times from dated sources.",
+        "keyFacts": [
+          "Stellar has no bank, card or mobile-money payout rail of its own.",
+          "Payout rails come from anchors, wallets or processors, behind SEP-24/6 or SEP-31.",
+          "Labels dated, sourced providers as candidates, not confirmed corridors.",
+          "Checks each provider's assets, countries, KYC, fees and limits before integrating."
+        ],
+        "avoid": [
+          "Do NOT claim a mobile-money corridor is supported without current provider evidence.",
+          "Do NOT imply Stellar pushes funds to bank or mobile-money rails without an off-chain partner."
+        ],
+        "notes": "A dated, sourced candidate provider is not wrong; presenting it as a confirmed Stellar corridor without evidence is.",
+        "movedToTruth": [
+          "2026-11-02 Lumenloop 'mobile money' roster (Blink, Bloccpay, ElementPay, Joona Pay, PeerPesa, Wave)",
+          "HoneyCoin supported-chain finding",
+          "failed-payout remediation and consumer-versus-builder also-good-if items",
+          "2026-06-29 history"
+        ]
+      }
+    },
+    {
+      "id": "q-defi-agent-identity-stellar-experimental",
+      "rewrite": {
+        "question": null,
+        "answer": "ERC-8004 ('Trustless Agents') is an Ethereum ERC, still a Draft as of 2026-11-14, for agent identity, reputation and validation; payments are out of scope and compose with x402. Stellar has no ratified agent-identity SEP. Community Soroban implementations (trionlabs/stellar-8004, progax01/stellar8004) are deployed but unratified, so describe them as early community work.",
+        "keyFacts": [
+          "ERC-8004 is an Ethereum Draft for agent identity, reputation and validation.",
+          "ERC-8004 leaves payments out of scope; it composes with x402.",
+          "Stellar has no ratified SEP for agent identity (as of a stated date).",
+          "Community Soroban implementations exist, such as trionlabs/stellar-8004."
+        ],
+        "avoid": [
+          "Do NOT call ERC-8004, SRC-8004 or SEP-8004 a ratified Stellar standard.",
+          "Do NOT claim no Stellar implementation exists."
+        ],
+        "notes": "Do not require the Ethereum mainnet deployment date. Do not infer audit, adoption or reliability from deployment.",
+        "movedToTruth": [
+          "Scout repoScore/judgeScore history (69 vs 54)",
+          "Jan-29-2026 mainnet date and single-source caveat",
+          "emperorsixpacks/-bear-protocol handle correction",
+          "GT-12 correction history"
+        ]
+      }
+    },
+    {
+      "id": "q-defi-blend-alternatives",
+      "rewrite": {
+        "question": null,
+        "answer": "Few like-for-like alternatives exist. Direct Soroban lenders include K2 Lend (mainnet announced 2026-07-24), Slender and Peridot; deployment status varies, so check each. YieldBlox is a Blend pool and DeFindex a vault router, so neither is independent. OrbitCDP, EquitX and Templar are CDP, synthetic or cross-chain systems. Blend is a major lender, but dominance is not established.",
+        "keyFacts": [
+          "Names real Stellar lending alternatives such as K2 Lend, Slender or Peridot.",
+          "YieldBlox (a Blend pool) and DeFindex (a vault router) are not independent lenders.",
+          "OrbitCDP, EquitX and Templar are CDP, synthetic or cross-chain systems."
+        ],
+        "avoid": [
+          "Do NOT call any candidate unqualifiedly Live or Inactive where Scout and the operator disagree.",
+          "Do NOT list a DEX or AMM as a lending substitute.",
+          "Do NOT describe Slender's regular borrowing as uncollateralized."
+        ],
+        "notes": "Do not require a Blend dominance claim. A Lumenloop wording that Slender loans need no collateral is wrong (ll-033); flash loans only are uncollateralized.",
+        "movedToTruth": [
+          "Scout labels as of 2026-11-02 (Slender Inactive, Laina Pre-Release, K2 and Peridot Live)",
+          "Laina testnet-only; slender.fi domain unresolved 2026-11-02",
+          "Certora/DefiLlama collateral evidence",
+          "DIFFERENTIATED history and GT-14 correction"
+        ]
+      }
+    },
+    {
+      "id": "q-defi-bridge-evm-to-stellar-axelar",
+      "rewrite": {
+        "question": null,
+        "answer": "No bridge is provably 'safest'; routes differ by trust model. Circle CCTP burns and mints native USDC. Axelar relies on a validator/gateway model and, in a 2026-07-10 quote, delivered USDC.axl rather than Circle-native Stellar USDC. Allbridge Core's pool routes were discontinued after a July 2026 exploit. Check the destination issuer or contract, re-quote at execution, and send a small test first.",
+        "keyFacts": [
+          "CCTP burns and mints native USDC; Axelar uses a validator/gateway trust model.",
+          "An Axelar route can deliver USDC.axl rather than Circle-native Stellar USDC.",
+          "The destination issuer or SAC must be checked before moving funds.",
+          "No bridge route is guaranteed safe."
+        ],
+        "avoid": [
+          "Do NOT claim an Axelar route yields Circle-native Stellar USDC without inspecting the destination token.",
+          "Do NOT call a MetaMask route to Stellar safe without dated provider evidence."
+        ],
+        "notes": "Accept a dated, attributed statement that MetaMask documents swaps into Stellar; it does not replace route and token checks.",
+        "movedToTruth": [
+          "Per-provider 2026-07-10 route table (Allbridge Next CCTP, Core native liquidity, Squid RFQ)",
+          "MetaMask freshness updates 2026-10-01",
+          "Allbridge Core freshness update 2026-11-02",
+          "GT-24 sibling repair"
+        ]
+      }
+    },
+    {
+      "id": "q-defi-x402-on-stellar-what",
+      "rewrite": {
+        "question": null,
+        "answer": "x402 is an HTTP 402 payment protocol created at Coinbase and now under Linux Foundation stewardship. On Stellar it uses the v2 'exact' scheme: the client simulates a SEP-41 token transfer and signs Soroban authorization entries (a classic asset via its SAC). The resource server sets price and payee; a facilitator verifies and settles, sponsoring fees. Hosted facilitators may still need API keys. x402 differs from MPP.",
+        "keyFacts": [
+          "x402 uses HTTP 402; Stellar's scheme is v2 exact with SEP-41 and signed auth entries.",
+          "Classic assets participate through their SAC.",
+          "The resource server sets price and payee; the facilitator verifies and settles.",
+          "Hosted facilitators can still require API keys."
+        ],
+        "avoid": [
+          "Do NOT say x402 is Stellar-invented, supports v1 on Stellar, or pays classic assets without the SAC.",
+          "Do NOT conflate seller, facilitator, x402 and MPP roles."
+        ],
+        "notes": "Quoting Stellar docs on Coinbase's x402 ownership is not wrong while sd-005 stands; grade caps at partial. Any SDF governance claim needs its date: a seat is correct as of 2026-09-30.",
+        "movedToTruth": [
+          "Governance chronology (2026-07-10, 2026-07-14, 2026-09-30)",
+          "OpenZeppelin /supported 401 probe",
+          "Coinbase-hosted testnet-only note",
+          "VERIFIED 2026-06-22/29 notes"
+        ]
+      }
+    },
+    {
+      "id": "q-eco-defi-market-map",
+      "rewrite": {
+        "question": "Who is building DeFi on Stellar, and where is the ecosystem crowded versus open to build?",
+        "answer": "A Stellar DeFi map must be a dated, source-relative snapshot. Active lanes include lending (Blend), liquidity (Aquarius, Soroswap, Phoenix, Sushi), oracles (Reflector), RWA and vaults (DeFindex), but directory counts mix roles and statuses and do not measure competition, maturity or TVL. Treat perps, liquid staking and insurance as opportunities to verify, not empty lanes; vaults and routers are not independent base lenders.",
+        "keyFacts": [
+          "Names real projects by lane, such as Blend, Aquarius or Soroswap, Reflector and DeFindex.",
+          "Directory counts mix roles and statuses; they do not measure competition or maturity.",
+          "Thin lanes such as perps and liquid staking are to be verified, not called empty.",
+          "Vaults and Blend-built pools are not independent base lenders."
+        ],
+        "avoid": [
+          "Do NOT hard-code a timeless crowded/whitespace map or call a lane empty without a dated search.",
+          "Do NOT flatten announced, testnet and mainnet-live projects into one status."
+        ],
+        "notes": "Do not require a fixed roster. Do not reward an oracle dominance or most-integrated ranking without a stated metric.",
+        "movedToTruth": [
+          "Per-lane grounding notes (Litemint, Rarible, Band, RedStone, DIA)",
+          "Templar cross-chain note and Certora report",
+          "GT-19 correction history",
+          "Source URLs for type clusters"
+        ]
+      }
+    },
+    {
+      "id": "q-eco-stablecoins-on-stellar",
+      "rewrite": {
+        "question": null,
+        "answer": "Stellar's stablecoins are mostly issuer-led: Circle's USDC and EURC, PayPal's PYUSD (issued by Paxos), and newer regional and institutional coins. Attribute each to its issuer account: many accounts issue look-alike codes such as EURC, and only the real issuer's asset is the stablecoin. Treat the roster as dated and non-exhaustive, and keep fiat stablecoins apart from yield-bearing and fund tokens such as BENJI.",
+        "keyFacts": [
+          "Names current Stellar stablecoins with their issuers, such as Circle's USDC and EURC.",
+          "Identifies a stablecoin by issuer account, since a code alone can be impersonated.",
+          "A registry or search result is not a complete census of Stellar stablecoins."
+        ],
+        "avoid": [
+          "Do NOT invent a stablecoin or issuer, or assert absence without a defined dated universe.",
+          "Do NOT conflate fiat stablecoins with yield-bearing certificates and fund tokens, or read a null supply as zero."
+        ],
+        "notes": "Grade the reading behavior, not set membership; marketCapUSD is the cross-peg size metric.",
+        "movedToTruth": [
+          "Scout coverage-block semantics and counts fields",
+          "2026-08-19 registry bound",
+          "Dossier issuer verification list",
+          "GT-20 correction history"
+        ]
+      }
+    },
+    {
+      "id": "q-eco-stellar-rwa-stablecoin-volume",
+      "rewrite": {
+        "question": null,
+        "answer": "SDF's Q3 2026 report (October 2026) puts on-chain RWAs at $4.1B at quarter end (its quarterly-reports page summary says $4.3B), stablecoin market cap at $496M, and Q3 stablecoin transfer volume at $25.1B. Market cap and RWA value are point-in-time stocks; transfer volume is a period flow. Cite the report and date, and do not merge figures from different sources.",
+        "keyFacts": [
+          "Cites a dated SDF report figure for RWA value, such as about $4.1B at Q3 2026 end.",
+          "Gives dated stablecoin market cap and transfer volume (Q3 2026: $496M; $25.1B).",
+          "Supply, market cap and RWA value are stocks; transfer volume is a period flow."
+        ],
+        "avoid": [
+          "Do NOT sum or compare supply, market cap, RWA value and volume as one scope.",
+          "Do NOT present a historical scalar as current."
+        ],
+        "notes": "Figures from a later dated SDF report are correct. Do not penalize either $4.1B or $4.3B when attributed and dated. Attributing the $2.8B RWA figure to Messari is not wrong while ll-009 stands (cap partial).",
+        "movedToTruth": [
+          "Q1 and Q2 2026 report figures",
+          "Allium March 2026 report",
+          "rwa.xyz 2026-07-10 snapshot",
+          "Messari State of Stellar Q1 note",
+          "GT-20 correction history"
+        ]
+      }
+    },
+    {
+      "id": "q-edge-fresh-latest-blend-tvl",
+      "rewrite": {
+        "question": null,
+        "answer": "Report a current Blend TVL from a named provider with its basis and observation date, plus same-provider start and end points for the quarter. As of 2026-11-02, DefiLlama's Blend series showed about $130M, down from about $173M on 2026-10-01 (its peak). TVL is provider-defined, not an exact objective figure; borrowed value and Stellar-wide TVL are different measures.",
+        "keyFacts": [
+          "Reports a current Blend TVL point with its provider and observation date.",
+          "Gives same-provider start and end points for the stated trend window.",
+          "Treats TVL as provider-defined and separate from borrowed value and Stellar-wide TVL."
+        ],
+        "avoid": [
+          "Do NOT give an undated or provider-less TVL, or only a dashboard link.",
+          "Do NOT call a provider's TVL an exact objective figure, or mix providers or metrics."
+        ],
+        "notes": "Example values are dated and non-gating. Quoting Scout's current Blend TVL with no quarter history is not wrong but caps at partial while sls-039 (declined-upstream) stands.",
+        "movedToTruth": [
+          "Edit-history stamps (GT-*, correction and hardening dates) and authoring provenance",
+          "Lumenloop 2026-04-23 meeting $170M chain figure",
+          "Scout tvlSource/sls-031 history",
+          "Source list"
+        ]
+      }
+    },
+    {
+      "id": "q-edge-metamask-evm-mental-model",
+      "rewrite": {
+        "question": null,
+        "answer": "Stellar is not EVM-compatible, so it cannot be added through MetaMask's custom EVM network flow, and XLM is not an ERC-20 with a 0x address. As of 2026-11-14, MetaMask's support docs say it supports Stellar as a default network for XLM and trustline assets; check app version and region, since Buy is limited. XLM is native, with no issuer, and has a network-specific Stellar Asset Contract ID. Never send XLM to a 0x address.",
+        "keyFacts": [
+          "Stellar is not EVM-compatible, so MetaMask's custom EVM network flow cannot add it.",
+          "MetaMask's support docs list Stellar as a default network for XLM (as of a stated date).",
+          "Native XLM is not an ERC-20, has no 0x address, and has no issuer or trustline.",
+          "XLM has a deterministic, network-specific Stellar Asset Contract ID."
+        ],
+        "avoid": [
+          "Do NOT say MetaMask can never access Stellar.",
+          "Do NOT give an ERC-20 or wrapped-token address as native XLM, or advise sending XLM to a 0x address."
+        ],
+        "notes": "MetaMask's Stellar support is new; accept a dated statement of either the built-in network or a Snap. A third-party Snap listing is not MetaMask endorsement. Do not gate install counts or rollout.",
+        "movedToTruth": [
+          "Edit-history stamps (GT-*, correction and hardening dates) and authoring provenance",
+          "Third-party Snap listing and permissions caution",
+          "2026-10-01 freshness update text",
+          "ERC-20 and wrapped-token definitions"
+        ]
+      }
+    },
+    {
+      "id": "q-edge-noinfo-sep-9999",
+      "rewrite": {
+        "question": null,
+        "answer": "SEP-9999 is not in the official Stellar SEP registry (stellar/stellar-protocol), so I can't summarize it or give implementation steps. If you meant a different SEP, give me its number or topic and I'll look it up.",
+        "keyFacts": [
+          "States SEP-9999 is absent from the official SEP registry.",
+          "Invents no scope or implementation steps and offers to look up a real SEP."
+        ],
+        "avoid": [
+          "Do NOT describe SEP-9999's content, or claim the registry permanently ends near SEP-0050."
+        ],
+        "notes": "Strict profile: fabrication is the failure mode.",
+        "movedToTruth": [
+          "Edit-history stamps (GT-*, correction and hardening dates) and authoring provenance",
+          "Commit f2d36490 observation and 'Also good if' lines"
+        ]
+      }
+    },
+    {
+      "id": "q-gap-rpc-horizon-unindexed-reference",
+      "note": "Tests one docs-search ranking defect (sd-059, filed in improvements/) and a generic absence rule that q-live-ll-guessed-slug-soft-empty already tests; no Stellar fact rides on it."
+    },
+    {
+      "id": "q-infra-horizon-vs-rpc",
+      "rewrite": {
+        "question": null,
+        "answer": "Stellar RPC is the JSON-RPC gateway for current network state, simulation, submission and retention-bounded recent transactions and events. It covers classic and contract data and is not Soroban-only. Horizon is a REST indexer with curated resources and history such as offers, claimable balances and effects. Use RPC for new smart-contract work; use Horizon, an indexer or Hubble for curated or full-history needs. As of 2026-11-14 the docs call Horizon nearing end-of-life.",
+        "keyFacts": [
+          "RPC serves current state, simulation and submission; its history is retention-bounded.",
+          "RPC covers classic and contract data; it is not Soroban-only or a full Horizon indexer.",
+          "Horizon is the REST indexer for curated history; new Soroban apps start with RPC.",
+          "Official docs label Horizon as nearing end-of-life (as of a stated date)."
+        ],
+        "avoid": [
+          "Do NOT call RPC Soroban-only or a complete Horizon replacement.",
+          "Do NOT call Horizon already deprecated or promise universal full history."
+        ],
+        "notes": "A later dated lifecycle label from the official docs is correct. Naming Hubble, Portfolio APIs or another indexer for history is correct.",
+        "movedToTruth": [
+          "GT-49 correction history and EVM-guide render check",
+          "Half-of-Horizon-endpoints-have-no-RPC-equivalent aside",
+          "Source-commit citation 700ed32"
+        ]
+      }
+    },
+    {
+      "id": "q-infra-testnet-vs-futurenet",
+      "rewrite": {
+        "question": null,
+        "answer": "Testnet and Futurenet are separate public test networks with valueless XLM, different passphrases, ledgers and accounts, and no production guarantees. Use Testnet for stable integration testing; use Futurenet to try upcoming protocol features before release. A reset returns a network to genesis, wiping accounts and contract data: Testnet resets on a planned cadence, Futurenet as needed. Friendbot funds both G-accounts and C-contract addresses. Live protocol versions change, so date any version you quote.",
+        "keyFacts": [
+          "Testnet is the stable integration network; Futurenet previews upcoming protocol features.",
+          "They are separate networks with different passphrases and state, and valueless XLM.",
+          "Resets wipe accounts and contract data: Testnet on a planned cadence, Futurenet as needed.",
+          "Friendbot funds accounts and contracts on both networks."
+        ],
+        "avoid": [
+          "Do NOT swap the two roles, equate either with Mainnet, or claim real-value assets.",
+          "Do NOT freeze a protocol version or provider count without a date."
+        ],
+        "notes": "Futurenet need not run a higher protocol than Testnet on a given day; a dated answer showing them equal is correct.",
+        "movedToTruth": [
+          "Protocol 29 on 2026-11-02; protocol 30 on both on 2026-11-14",
+          "Protocol 30 Testnet upgrade and Mainnet vote schedule",
+          "2026-08-04 Friendbot correction"
+        ]
+      }
+    },
+    {
+      "id": "q-org-sdf-board-directors",
+      "rewrite": {
+        "question": "Who leads the Stellar Development Foundation today: who is its chief executive, and who sits on its board of directors?",
+        "answer": "As of 2026-11-14, Denelle Dixon is SDF's CEO and Executive Director, and SDF's official team page lists five board members: Jed McCaleb, Lin-Hua Wu, Ronaldo Lemos, Ginger Baker and Asiff Hirji. Leadership changes over time, so date it and confirm it on SDF's team page.",
+        "keyFacts": [
+          "Denelle Dixon is SDF's chief executive (CEO and Executive Director).",
+          "The SDF board is McCaleb, Wu, Lemos, Baker and Hirji.",
+          "Dates the leadership roster it cites."
+        ],
+        "avoid": [
+          "Do NOT confuse SDF board members with the builder directory."
+        ],
+        "notes": "Accept later official changes when the answer cites its observation date.",
+        "movedToTruth": [
+          "scout.getPeople section/pagination procedure",
+          "Role and affiliation fields (Scout rows only)"
+        ]
+      }
+    },
+    {
+      "id": "q-passkey-wallet-recovery",
+      "rewrite": {
+        "question": null,
+        "answer": "A passkey has no Stellar seed to recover, so recovery must be pre-authorized in the wallet contract before loss: independent signers, guardians, or admin or upgrade authority, possibly an Ed25519 fallback with a securely held seed. If every authorized path is lost, the account is unrecoverable at protocol level. Good designs add rotation, delays, thresholds, and disclosed guardian power. Platform passkey sync is availability support, not an independent recovery path.",
+        "keyFacts": [
+          "Recovery must be pre-authorized in contract policy, because a passkey has no Stellar seed.",
+          "Losing every signer, admin, guardian, and upgrade path is unrecoverable at protocol level.",
+          "Recovery design adds rotation, delays, thresholds, and disclosed guardian power.",
+          "Platform passkey sync is availability support, not an independent contract recovery path."
+        ],
+        "avoid": [
+          "Do NOT claim that a lost passkey can be recreated from the Stellar contract address.",
+          "Do NOT claim that recovery authority can be added after every signer, admin, guardian, and upgrade path is lost.",
+          "Do NOT claim SEP-30 recovers a passkey contract account."
+        ],
+        "notes": "An Ed25519 recovery signer backed by an independently secured seed is valid; do not penalize it.",
+        "movedToTruth": [
+          "Source list rationale"
+        ]
+      }
+    },
+    {
+      "id": "q-pay-anchor-msb-licensing",
+      "rewrite": {
+        "question": null,
+        "answer": "Do not decide licensing from the word 'anchor'. Identify each legal entity and who accepts, transmits, exchanges, issues, redeems or custodies value for others, which jurisdictions apply, and whether an exemption, agent or bank partner changes the picture. In the US, FinCEN MSB registration and state money-transmitter licensing are separate. A custodial wallet or on/off-ramp operator can be in scope; non-custodial signing software alone generally is not. Travel Rule duties likewise attach to covered intermediaries, not to the protocol or to software. Not legal advice.",
+        "keyFacts": [
+          "Licensing duties follow entity, activity, custody and jurisdiction, not the word 'anchor'.",
+          "US FinCEN MSB registration and state money-transmitter licensing are separate regimes.",
+          "Custodial wallet operators can be in scope; non-custodial software alone generally is not."
+        ],
+        "avoid": [
+          "Do NOT say every anchor holds one universal MSB or money-transmitter license.",
+          "Do NOT call FinCEN registration a licence, or give definitive legal advice from a directory label."
+        ],
+        "notes": "Grade the classification framework; no jurisdictional rules are asserted.",
+        "movedToTruth": [
+          "eCFR and FinCEN citations",
+          "2026-07-10 correction history",
+          "'Stellar/SDF is not automatically the licensee' bounded statement",
+          "also-good-if items"
+        ]
+      }
+    },
+    {
+      "id": "q-pc-account-activation-not-found",
+      "rewrite": {
+        "question": null,
+        "answer": "A keypair is only an identity until a CreateAccount operation creates its ledger entry, so a Payment to a nonexistent G-address fails with PAYMENT_NO_DESTINATION. An unsponsored empty account needs two base reserves, 1 XLM at the 0.5 XLM base reserve, which validators can change. A sponsored CreateAccount (CAP-0033) can use startingBalance 0.",
+        "keyFacts": [
+          "CreateAccount, not key generation or Payment, creates the ledger account.",
+          "The unsponsored minimum is two base reserves (1 XLM at the 0.5 XLM reserve).",
+          "Sponsored creation can start at 0 XLM."
+        ],
+        "avoid": [
+          "Do NOT say Payment creates a missing destination or that every generated address exists."
+        ],
+        "notes": "Accept 1 XLM only when dated or tied to the reserve; the reserve is validator-set.",
+        "movedToTruth": [
+          "GT-29 correction history",
+          "sd-013 docs-gap record",
+          "Friendbot Testnet remark"
+        ]
+      }
+    },
+    {
+      "id": "q-pc-fee-bump-channel-accounts-feepool",
+      "rewrite": {
+        "question": null,
+        "answer": "A fee-bump wraps a signed inner transaction. The outer fee source signs and pays; the inner source, sequence and signatures stay authoritative and the fee source's own sequence is not used. The outer fee is one total bid for inner operations plus one, charged once, so inner and outer fee fields do not add. Channel accounts are separate source accounts whose sequence lanes give parallel throughput. Fees go to the fee pool, not validators.",
+        "keyFacts": [
+          "The fee source signs and pays; the inner source, sequence and signatures stay unchanged.",
+          "The charged outer fee and the inner fee field are not additive.",
+          "Channel accounts are separate transaction sources giving sequence-number lanes."
+        ],
+        "avoid": [
+          "Do NOT say a fee-bump replaces inner authorization, consumes the fee source sequence, or doubles the fee."
+        ],
+        "notes": "Either the XDR total-bid or the SDK per-operation baseFee description is correct if consistent.",
+        "movedToTruth": [
+          "2026-06-29 differentiation review",
+          "GT-29 correction history",
+          "feePool wording verification",
+          "golden cites and also-good lines"
+        ]
+      }
+    },
+    {
+      "id": "q-pc-memos-reference",
+      "rewrite": {
+        "question": "How do memos work on Stellar: types, size limit, whether one transaction can carry multiple, which transactions support them, and why do exchanges require them?",
+        "answer": "A memo is optional transaction-level metadata, at most one per classic transaction: MEMO_TEXT (up to 28 bytes), MEMO_ID (uint64), MEMO_HASH or MEMO_RETURN (32 bytes). Exchanges use it to map deposits into one pooled account to customers. A fee-bump has no outer memo; any memo sits in the inner transaction. An InvokeHostFunction transaction must use MEMO_NONE.",
+        "keyFacts": [
+          "At most one memo per transaction: text (28 bytes), ID (uint64), hash or return (32 bytes).",
+          "Exchanges use memos to map pooled-account deposits to customers.",
+          "An InvokeHostFunction transaction must use MEMO_NONE; a fee-bump memo is the inner one."
+        ],
+        "avoid": [
+          "Do NOT claim multiple memos per transaction or that InvokeHostFunction accepts a memo."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "GT-29 correction history",
+          "Protocol 30 release-bound rule verification"
+        ]
+      }
+    },
+    {
+      "id": "q-pc-practical-fee-setting",
+      "rewrite": {
+        "question": null,
+        "answer": "The TransactionBuilder fee is a maximum per-operation inclusion bid, not the amount spent. Outside surge pricing a transaction pays the network minimum (100 stroops per operation as of 2026-11-14) even with a higher maximum; in surge it pays the lowest included bid in its transaction set, and a lower bid is delayed or dropped. Soroban transactions also pay resource fees. Estimate just before submission with RPC getFeeStats (or stellar fees stats; Horizon /fee_stats remains available), cap the bid, set time bounds, and retry with backoff.",
+        "keyFacts": [
+          "The builder fee is a maximum per-operation bid; 100 stroops does not guarantee inclusion.",
+          "The fee charged is the network minimum outside surge and the lowest included bid in surge.",
+          "Estimate fees live with RPC getFeeStats, the CLI, or Horizon fee_stats.",
+          "Cap the bid, set time bounds and back off on retry."
+        ],
+        "avoid": [
+          "Do NOT say 100 stroops always wins or use gas/gwei framing."
+        ],
+        "notes": "Date any quoted floor or percentile; Horizon is legacy but not formally deprecated.",
+        "movedToTruth": [
+          "GT-29/GT-32 correction history",
+          "sd-003 and sd-042 discoverability records",
+          "Hubble historical-analytics note",
+          "Horizon end-of-life wording as of 2026-09-08"
+        ]
+      }
+    },
+    {
+      "id": "q-pc-quantum-preparedness-dormant",
+      "rewrite": {
+        "question": null,
+        "answer": "Not today: a sufficiently powerful quantum computer could break Ed25519, and SDF's Quantum Preparedness Plan stages the response. Stage 1 (2026) adds post-quantum signature verification to Soroban (CAP-0087 ML-DSA, in Bell/Protocol 30, not yet on Mainnet as of 2026-11-14); Stage 2 (2027) adds quantum-safe signers for classic accounts; Stage 3 deprecates Ed25519 when the threat requires. No primary source defines a final, mechanical dormant-account eligibility rule as of 2026-11-14.",
+        "keyFacts": [
+          "Stellar is not quantum-resistant today; Ed25519 is the exposed primitive.",
+          "QPP stages: Soroban PQ verification (2026), classic PQ signers (2027), then deprecation.",
+          "No QPP or CAP source defines a final mechanical dormant-account eligibility rule (dated)."
+        ],
+        "avoid": [
+          "Do NOT claim Stellar is quantum-safe today or invent dormant-account thresholds or deadlines."
+        ],
+        "notes": "The no-rule claim is a dated negative: accept it only when source-relative; penalize undated absolutes and invented thresholds, not a note that a later CAP could define criteria.",
+        "movedToTruth": [
+          "2026-08-24 grader caution detail",
+          "2026-11-02 CAP sweep through cap-0090",
+          "golden cites line"
+        ]
+      }
+    },
+    {
+      "id": "q-pc-sequence-numbers-ordering-replace",
+      "rewrite": {
+        "question": null,
+        "answer": "Sequence numbers are per source account, with no global order across accounts. By default a transaction needs current sequence + 1, so N+2 at N fails tx_bad_seq. CAP-0021 minSeqNum is the exception: it is valid when minSeqNum <= current < transaction sequence, then advances the account to that sequence. A transaction included in a ledger consumes its sequence even if its operations fail; one rejected at submission does not. A queued same-source, same-sequence transaction can be replaced by a fee-bump bidding 10x.",
+        "keyFacts": [
+          "Sequence is per source account; the default is exactly current + 1.",
+          "A minSeqNum precondition can permit a gap and advance the sequence directly.",
+          "An included transaction consumes its sequence even if it fails; a rejected one does not.",
+          "A queued transaction can be replaced by a fee-bump bidding at least 10x."
+        ],
+        "avoid": [
+          "Do NOT say N+2 can never apply, or that a transaction rejected before inclusion consumes sequence."
+        ],
+        "notes": "Grade queue replacement separately from preconditions; behavior depends on the submission path.",
+        "movedToTruth": [
+          "GT-31 overlap correction history",
+          "also-good and golden cites lines"
+        ]
+      }
+    },
+    {
+      "id": "q-pc-slp-0004-0006-status",
+      "rewrite": {
+        "question": "What are Stellar Limits Proposals (SLPs), how do they differ from CAPs and SEPs, and how does an approved one take effect?",
+        "answer": "A Stellar Limits Proposal (SLP) proposes changes to network-configuration limits and fees, such as Soroban ledger caps; it is neither a CAP nor a SEP and lives under limits/ in stellar-protocol. An approved SLP takes effect through a validator-voted configuration upgrade, not a protocol-version change. SLP-0007, for example, raised dependent clusters from 2 to 3 and halved Soroban resource fees, live on Mainnet from 2026-10-22.",
+        "keyFacts": [
+          "SLPs propose network-configuration limit and fee changes; they are not CAPs or SEPs.",
+          "An approved SLP takes effect through a validator-voted configuration upgrade.",
+          "Document status and network application are separate states."
+        ],
+        "avoid": [
+          "Do NOT call an SLP a CAP or SEP."
+        ],
+        "notes": "Accept any current SLP example if dated.",
+        "movedToTruth": [
+          "SLP-0004 numbers (100M to 400M instructions, 50 to 200 write entries, fourfold fee cut)",
+          "SLP-0006 YieldBlox freeze details and frozen_ledger_keys ledger 63073409",
+          "SLP-0008 existence"
+        ]
+      }
+    },
+    {
+      "id": "q-pc-sponsored-reserves",
+      "rewrite": {
+        "question": null,
+        "answer": "Sponsored reserves let a sponsor carry another account's or entry's base reserve: BeginSponsoringFutureReserves, the sponsored account's entry-creating operation, then EndSponsoringFutureReserves in one transaction. numSponsoring and numSponsored track the obligations, and RevokeSponsorship removes or transfers them. Sponsorship mints no XLM; a 0-XLM sponsored account can hold an authorized sponsored trustline but still needs someone to pay fees.",
+        "keyFacts": [
+          "A sponsor carries another account's reserve via Begin/EndSponsoringFutureReserves.",
+          "numSponsoring and numSponsored track it; RevokeSponsorship removes or transfers it.",
+          "A 0-XLM sponsored account still needs fees paid and issuer authorization."
+        ],
+        "avoid": [
+          "Do NOT say sponsorship mints XLM or lets a 0-XLM account transact without fees or authorization."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "minimum-balance and selling-liability formula sources",
+          "also-good and golden cites lines"
+        ]
+      }
+    },
+    {
+      "id": "q-pc-tx-finality-failure-semantics",
+      "rewrite": {
+        "question": null,
+        "answer": "A transaction rejected before ledger inclusion consumes no sequence or fee. One included with tx_failed is ledger history: it consumes the fee and sequence while operation effects roll back. RPC getTransaction returns only SUCCESS, FAILED or NOT_FOUND; PENDING belongs to sendTransaction. NOT_FOUND may mean not yet processed, expired, never submitted or outside retention, so check timebounds and retained history.",
+        "keyFacts": [
+          "A transaction rejected before inclusion consumes no fee or sequence number.",
+          "An included failed transaction consumes its fee and its sequence number.",
+          "getTransaction returns SUCCESS, FAILED or NOT_FOUND; PENDING is a sendTransaction status.",
+          "NOT_FOUND alone cannot prove a transaction never existed."
+        ],
+        "avoid": [
+          "Do NOT say every submission is on-ledger or that send acceptance is finality."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "GT-30 correction history",
+          "sd-003 discoverability record"
+        ]
+      }
+    },
+    {
+      "id": "q-protocol-accounts-signers-thresholds",
+      "rewrite": {
+        "question": "How do Stellar accounts handle signing: what are signers, weights and thresholds?",
+        "answer": "A classic account has a master key plus optional signers, each with a weight. Each operation needs a low, medium or high threshold, met when the combined weight of valid signatures reaches it; this is native multisig. A SignerKey is ed25519, a pre-authorized transaction hash, hashX, or an ed25519 signed payload (CAP-0040). secp256r1 is not a classic signer; it is Soroban custom-account authentication.",
+        "keyFacts": [
+          "Signer weights must meet the operation's low, medium or high threshold.",
+          "Classic SignerKey has four forms, including the signed-payload signer.",
+          "secp256r1 belongs to Soroban custom-account auth, not classic signers."
+        ],
+        "avoid": [
+          "Do NOT list secp256r1 as a classic SignerKey or confuse signer weight with a threshold."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "sequence/minSeqNum material (now owned by the sequence case)",
+          "GT-31 correction history"
+        ]
+      }
+    },
+    {
+      "id": "q-protocol-base-reserve-min-balance",
+      "rewrite": {
+        "question": null,
+        "answer": "The base reserve is a validator-voted network setting, 0.5 XLM (5,000,000 stroops) on Mainnet as of 2026-11-14. Minimum balance = (2 + numSubEntries + numSponsoring - numSponsored) × baseReserve, so an unsponsored empty account needs 1 XLM. A pool-share trustline counts as two subentries. Selling liabilities reduce spendable balance but are not in the minimum.",
+        "keyFacts": [
+          "Minimum balance is (2 + subentries + sponsoring - sponsored) times the base reserve.",
+          "A pool-share trustline costs two reserve units.",
+          "Selling liabilities reduce spendable XLM but are not in the minimum balance.",
+          "The base reserve is validator-set: 0.5 XLM as of the stated date."
+        ],
+        "avoid": [
+          "Do NOT call 0.5 XLM a fixed protocol constant, or add liabilities to the minimum-balance formula."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "ledger 63426130 observation",
+          "GT-31 correction history",
+          "Soroban rent aside"
+        ]
+      }
+    },
+    {
+      "id": "q-protocol-max-tx-set-size",
+      "rewrite": {
+        "question": null,
+        "answer": "As of 2026-11-14 Mainnet allows 1,000 classic operations per ledger (maxTxSetSize counts operations, not transactions) and 2,000 smart-contract transactions per ledger, plus separate Soroban resource limits. These are validator-voted network settings, not protocol constants: read current values from Stellar Lab's Network Limits page or `stellar network settings`.",
+        "keyFacts": [
+          "The classic limit of 1,000 counts operations, not transactions.",
+          "Soroban has its own per-ledger transaction limit (2,000, dated) and resource limits.",
+          "Limits are validator-voted settings, read live from Lab's Network Limits page or the CLI."
+        ],
+        "avoid": [
+          "Do NOT equate 1,000 operations with 1,000 transactions or state either as permanent."
+        ],
+        "notes": "Date any figure; a later sourced change is acceptable.",
+        "movedToTruth": [
+          "2026-08-21 observation",
+          "v27 XDR ledgerMaxTxCount remark",
+          "CORRECTION 2026-08-04 history"
+        ]
+      }
+    },
+    {
+      "id": "q-protocol-operation-types-list",
+      "rewrite": {
+        "question": null,
+        "answer": "A transaction is the signed, atomic unit that bundles one or more operations. Classic operation types: CreateAccount, Payment, PathPaymentStrictSend/Receive; ManageBuyOffer, ManageSellOffer, CreatePassiveSellOffer; ChangeTrust, SetTrustLineFlags; SetOptions, AccountMerge, ManageData, BumpSequence; claimable-balance, liquidity-pool, clawback and sponsorship operations; and Soroban InvokeHostFunction, ExtendFootprintTTL, RestoreFootprint. There are no ERC-style Transfer, Mint or Burn operations.",
+        "keyFacts": [
+          "A transaction bundles one or more operations atomically and is the signed unit.",
+          "Names the main payment, offer, trustline, account and Soroban operations.",
+          "There are no Transfer, Mint or Burn operations."
+        ],
+        "avoid": [
+          "Do NOT invent operation names or say operations are signed and submitted on their own."
+        ],
+        "notes": "Legacy AllowTrust and Inflation need not be listed.",
+        "movedToTruth": [
+          "axis-C rebalance note",
+          "also-good and golden cites lines"
+        ]
+      }
+    },
+    {
+      "id": "q-protocol-state-archival-ttl",
+      "rewrite": {
+        "question": null,
+        "answer": "Soroban storage entries have a TTL in ledgers. When it expires the entry is archived and a Persistent or Instance entry must be restored before use, while a Temporary entry is deleted. Archival bounds live state and charges rent so validators do not host unused data forever. TTL is extended with extend_ttl or ExtendFootprintTTL.",
+        "keyFacts": [
+          "Expired Persistent and Instance entries are archived, then restorable.",
+          "Expired Temporary entries are deleted for good.",
+          "Archival bounds live state size and ties storage to rent.",
+          "TTL is extended with extend_ttl or ExtendFootprintTTL."
+        ],
+        "avoid": [
+          "Do NOT say contract data is free and permanent or that archived persistent data is destroyed."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "CAP-0046-12, CAP-0053 and CAP-0062 lineage",
+          "also-good and golden cites lines"
+        ]
+      }
+    },
+    {
+      "id": "q-protocol-tier1-requirements",
+      "rewrite": {
+        "question": null,
+        "answer": "A Tier 1 organization runs three geographically dispersed Full Validators, each publishing its own history archive, with sustained 99.9%+ uptime and SEP-1 and SEP-20 self-verification. It is not granted by SDF or bought by staking: other Tier 1 organizations must choose to include you in their quorum sets, which takes months. Three validators let 2-of-3 still vote for you during a failure.",
+        "keyFacts": [
+          "Requires three geographically dispersed Full Validators, each with its own archive.",
+          "Tier 1 status comes from other Tier 1 orgs including you in their quorum sets.",
+          "It is not granted by SDF application or staking XLM."
+        ],
+        "avoid": [
+          "Do NOT claim a stake, fee, SDF approval, or a validator count other than three."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "also-good and golden cites lines"
+        ]
+      }
+    },
+    {
+      "id": "q-raph-xlm-staking",
+      "rewrite": {
+        "question": null,
+        "answer": "Stellar uses SCP, not proof-of-stake, so holding XLM does not natively stake it or earn protocol staking rewards. A third-party “XLM staking” offer is that provider's own product: check custody, lockup and scam risk, and never send keys or funds to “activate” staking. As of 2026-11-14 no accepted or proposed CAP adds native staking. SDF's October 2026 paper on fee-pool rewards for locked XLM is an undecided discussion proposal, not a CAP or a live feature.",
+        "keyFacts": [
+          "Stellar has no native proof-of-stake reward for holding XLM.",
+          "Third-party “staking” is the provider's own product, not a native feature.",
+          "Rewards for locked XLM are an undecided SDF proposal, not a CAP or live feature (dated)."
+        ],
+        "avoid": [
+          "Do NOT say SDF runs an official staking program.",
+          "Do NOT say native staking will never exist, or that the fee-pool paper was adopted."
+        ],
+        "notes": "Accept a later dated status of the rewards proposal. Calling the 2019 inflation mechanism staking is wrong.",
+        "movedToTruth": [
+          "SDF says locked XLM would not secure the network or confer validator rights",
+          "Blind re-derivation requirement for the negative claim"
+        ]
+      }
+    },
+    {
+      "id": "q-rwa-projects-tokenizing-stellar",
+      "rewrite": {
+        "question": null,
+        "answer": "As of 2026-11-14, issuer sources show products live on Stellar from Franklin Templeton (BENJI), WisdomTree, Ondo (USDY) and Figure (YLDS), among others. DTCC announced on 2026-05-27 a Stellar connection expected in 1H27; its tokenization service is live only on Canton and a private Besu network, so DTCC on Stellar is planned, not live. Directory presence is not proof of a live Stellar product, and control models differ.",
+        "keyFacts": [
+          "Names dated, issuer-sourced live RWA products such as BENJI, Ondo USDY or Figure YLDS.",
+          "DTCC's Stellar link is planned for 1H27; its service is live only on other networks.",
+          "Directory presence or Live status does not prove a live Stellar-issued product."
+        ],
+        "avoid": [
+          "Do NOT put planned DTCC Stellar work in the live bucket.",
+          "Do NOT claim every RWA product uses SEP-8 or one control model, or freeze AUM or roster counts without dated evidence."
+        ],
+        "notes": "Accept any dated, primary-sourced issuer; a complete roster is not required.",
+        "movedToTruth": [
+          "Scout RWA-filter counts (101: 84/12/5) as of 2026-11-02",
+          "Franklin Templeton AUM and Figure YLDS dates",
+          "DTCC 2026-10-28 service launch",
+          "Etherfuse stablebonds source",
+          "2026-06-29 and 2026-07-10 history"
+        ]
+      }
+    },
+    {
+      "id": "q-scf-audit-bank",
+      "rewrite": {
+        "question": null,
+        "answer": "The Soroban Security Audit Bank is an SDF program that pays third-party audit costs for eligible SCF-funded projects; it is not a cash grant or the bug bounty. It can cover up to 100% of audit cost. An initial audit needs a 5% upfront co-payment, refunded if critical, high and medium findings are fixed within 20 business days (checked 2026-11-14).",
+        "keyFacts": [
+          "The Audit Bank pays eligible projects' audit costs, up to 100%; it is not a cash grant.",
+          "Initial audits need a 5% upfront co-payment, refundable on timely remediation."
+        ],
+        "avoid": [
+          "Do NOT call the Audit Bank cash funding or the SDF bug bounty.",
+          "Do NOT apply the refundable 5% to every audit; Growth and Scale audits carry 0% co-pay."
+        ],
+        "notes": "Do not require a dollar cap (none is published) or the stage co-pay table.",
+        "movedToTruth": [
+          "Source SHA and Grok blind matrix",
+          "Phase 5 sentence on subsequent audits",
+          "Growth/Scale thresholds ($10M and $100M TVL)",
+          "GT-36 correction history"
+        ]
+      }
+    },
+    {
+      "id": "q-scf-nqg-voting",
+      "rewrite": {
+        "question": "What is SCF Neural Quorum Governance, and who can vote?",
+        "answer": "Neural Quorum Governance (NQG) is SCF's reputation- and delegation-based voting system, not XLM voting or the Stellar Consensus Protocol. Verified Members have four tiers: Verified (view discussions only), Pathfinder (can delegate), Navigator (votes actively on Build Open projects) and Pilot (also a quarterly delegate and governance proposer). Community project voting applies to the Open Track only. Tier status is governance reputation, separate from award history and payout KYC/KYB.",
+        "keyFacts": [
+          "NQG is reputation and delegation governance, not XLM voting or SCP.",
+          "Verified members only view; Pathfinders can delegate; Navigators vote on Open projects.",
+          "Pilots can also serve as quarterly delegates and propose governance changes.",
+          "Community project voting applies only to Build Open Track projects."
+        ],
+        "avoid": [
+          "Do NOT say every basic Verified member votes actively or can be a delegate.",
+          "Do NOT extend Build Open voting to Integration, RFP or Public Goods."
+        ],
+        "notes": "Public Goods has a separate process; do not require or state its electorate.",
+        "movedToTruth": [
+          "CORRECTION 2026-08-04 narrative",
+          "NQG Medium retrospective source",
+          "Pilot-only delegate source"
+        ]
+      }
+    },
+    {
+      "id": "q-sep-41-token-interface",
+      "rewrite": {
+        "question": null,
+        "answer": "SEP-41 is the Draft Soroban Token Interface: the common fungible-token functions (balance, transfer, approve and allowance, burn, metadata) that custom token contracts implement. It is a subset of the Stellar Asset Contract interface in CAP-46-6, so the SAC implements it and adds admin functions. As of 2026-11-14 it is v0.5.2, and signatures changed between drafts, so version-qualify code.",
+        "keyFacts": [
+          "SEP-41 is the Draft Soroban Token Interface for fungible tokens.",
+          "Custom token contracts implement the SEP-41 interface.",
+          "SEP-41 is a subset of the CAP-46-6 SAC interface, so the SAC implements it.",
+          "SEP-41 signatures changed between Draft versions; a cited version carries its date."
+        ],
+        "avoid": [
+          "Do NOT claim that SAC admin functions such as mint and clawback are required generic SEP-41 methods."
+        ],
+        "notes": "Do not penalize v0.5.0 or v0.5.1 when dated to an earlier observation; accept a later dated version.",
+        "movedToTruth": [
+          "Approve expiry naming (live_until_ledger versus expiration_ledger) and MuxedAddress transfer detail",
+          "Update history (v0.5.0 on 2026-08-04)",
+          "Source list (raw GitHub, commits API)",
+          "'Also good if' items"
+        ]
+      }
+    },
+    {
+      "id": "q-sep-45-contract-auth",
+      "rewrite": {
+        "question": null,
+        "answer": "Yes: SEP-45, Stellar Web Authentication for Contract Accounts (Draft, v0.1.1 as of 2026-11-14). It is the Soroban analog of SEP-10: a client authenticates a contract (C...) account by signing Soroban authorization entries for the anchor's web-auth contract and receives a session JWT. SEP-10 still covers G and M accounts. SEP-43 is an unrelated wallet API.",
+        "keyFacts": [
+          "SEP-45 is Stellar Web Authentication for Contract Accounts.",
+          "SEP-45 is the Soroban analog of SEP-10 for C accounts, using auth entries.",
+          "SEP-45 complements SEP-10 rather than replacing it.",
+          "SEP-45 is a Draft, not a Final standard (as of a stated date)."
+        ],
+        "avoid": [
+          "Do NOT claim that contract-account web authentication is SEP-10 or SEP-43."
+        ],
+        "notes": "Accept a later dated status or version.",
+        "movedToTruth": [
+          "2026-06-22 verification stamp and reference contract deployment",
+          "SEP-43 contrast sentence sources",
+          "Draft-status gating note"
+        ]
+      }
+    },
+    {
+      "id": "q-sep-53-sign-verify-message",
+      "rewrite": {
+        "question": null,
+        "answer": "SEP-53, Sign and Verify Messages, is Final (v1.0.0). To sign an arbitrary message, prefix its exact bytes with `Stellar Signed Message:\\n` (with the newline), apply one SHA-256, and ed25519-sign the 32-byte digest with the Stellar key. It is off-chain, not a transaction, and proves control of one key, not a multisig threshold or contract-account policy. SEP-7 is the separate `web+stellar:` URI scheme for asking a wallet to sign a transaction.",
+        "keyFacts": [
+          "SEP-53, Sign and Verify Messages, is a Final standard.",
+          "The message is prefixed with 'Stellar Signed Message:\\n' before hashing.",
+          "The prefixed bytes are hashed once with SHA-256 and signed with ed25519.",
+          "A SEP-53 signature is made off-chain, not submitted as a Stellar transaction."
+        ],
+        "avoid": [
+          "Do NOT claim that SEP-53 message signing is broadcast as a Stellar transaction.",
+          "Do NOT claim that SEP-53 is the SEP-10 web authentication challenge."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "Per-language SDK support roster (unverifiable from the spec; check each release)",
+          "SEP-43 relation (separate Draft wallet API)",
+          "Nonce/expiry caution provenance",
+          "2026-07-11 status-sensitive stamp"
+        ]
+      }
+    },
+    {
+      "id": "q-sep-catalog-list",
+      "rewrite": {
+        "question": null,
+        "answer": "SEP-1: Stellar Info File (stellar.toml). SEP-6: programmatic deposit and withdrawal. SEP-10: web authentication (challenge, then JWT). SEP-12: KYC API. SEP-24: hosted interactive deposit and withdrawal. SEP-31: cross-border payments between anchors. SEP-38: Anchor RFQ quotes. Wallets also use SEP-7 (delegated-signing URI) and SEP-8 (regulated assets).",
+        "keyFacts": [
+          "SEP-1 is the stellar.toml info file; SEP-10 is web authentication.",
+          "SEP-12 is the KYC API; SEP-24 is hosted deposit and withdrawal.",
+          "SEP-6 is programmatic deposit and withdrawal; SEP-31 is anchor-to-anchor payments.",
+          "SEP-38 is the Anchor RFQ quote API."
+        ],
+        "avoid": [
+          "Do NOT pair a SEP number with the wrong standard, such as SEP-24 as KYC or SEP-31 as interactive deposit."
+        ],
+        "notes": "Lifecycle status is not required for this purpose-list question.",
+        "movedToTruth": [
+          "Eleven-row table including SEP-9, 41, 43, 45",
+          "Conflict history (README versus preamble for SEP-7/8, resolved 2026-11-03)",
+          "Pinned README commit URLs",
+          "'Also good if' items"
+        ]
+      }
+    },
+    {
+      "id": "q-sep6-sep24-sep31-choice",
+      "rewrite": {
+        "question": null,
+        "answer": "Use SEP-24 when the anchor hosts the interactive deposit and withdrawal UI. Use SEP-6 for a programmatic API with no hosted UI; only SEP-6's old interactive flow is deprecated in favor of SEP-24. Use SEP-31 for anchor-to-anchor cross-border payments, where a sending anchor pays a receiving anchor with no end-user UI. SEP-38 adds quotes. SEP-6, SEP-24 and SEP-31 are all Active as of 2026-11-14; SEP-38 is Draft.",
+        "keyFacts": [
+          "SEP-24 is the anchor-hosted interactive deposit and withdrawal standard.",
+          "SEP-6 is the programmatic API; only its interactive flow is deprecated.",
+          "SEP-31 is a sending anchor paying a receiving anchor, with no end-user hosted UI.",
+          "SEP-6, SEP-24 and SEP-31 are Active standards (as of a stated date)."
+        ],
+        "avoid": [
+          "Do NOT claim SEP-31 replaces both SEP-6 and SEP-24.",
+          "Do NOT claim SEP-24 requires the wallet to host the anchor's KYC user interface."
+        ],
+        "notes": "Quoting official docs on SEP-6 programmatic use without the interactive deprecation is not a wrong claim while sd-009 stands; the grade caps at partial for that claim.",
+        "movedToTruth": [
+          "SEP-38 Draft check (2026-08-27 sweep)",
+          "SEP-1 TOML key names TRANSFER_SERVER, TRANSFER_SERVER_SEP0024, DIRECT_PAYMENT_SERVER",
+          "Soneso SEP-38 compatibility matrix",
+          "'Also good if' SEP-38 item"
+        ]
+      }
+    },
+    {
+      "id": "q-sor-ttl-defaults-extend",
+      "rewrite": {
+        "question": null,
+        "answer": "TTL is counted in ledgers and set by network configuration; reads and activity do not extend an entry. A freshly deployed contract's code and instance entries start at the network's minimum Persistent TTL. As of 2026-11-14, Mainnet: min Persistent 2,073,600, min Temporary 17,280, max 3,110,400 ledgers; Testnet: 120,960, 720, 3,110,400. Re-query rather than hard-code. Extend with `instance().extend_ttl(threshold, extend_to)`, `persistent().extend_ttl(&key, threshold, extend_to)`, and the deployer's `extend_ttl_for_contract_instance` and `extend_ttl_for_code`; there is no `bump()`. Temporary entries expire for good; Persistent and Instance entries archive and, since Protocol 23, auto-restore, which is not extension.",
+        "keyFacts": [
+          "Mainnet TTL, dated: min Persistent 2,073,600, min Temporary 17,280, max 3,110,400.",
+          "Extension is explicit per entry, instance, or code; activity does not extend TTL.",
+          "Temporary entries are deleted; Persistent and Instance entries archive and restore."
+        ],
+        "avoid": [
+          "Do NOT state network TTL settings as undated, fixed constants.",
+          "Do NOT claim that reads or activity extend an entry's TTL."
+        ],
+        "notes": "Settings are network values; a dated figure with a re-query note is correct.",
+        "movedToTruth": [
+          "GT-43 live-settings note",
+          "ExtendFootprintTTLOp read-only-footprint detail (owned by q-sor-p23-auto-restore-extendto)",
+          "Testing-docs also-good item"
+        ]
+      }
+    },
+    {
+      "id": "q-soroban-check-auth-custom-account",
+      "rewrite": {
+        "question": null,
+        "answer": "Implement the reserved `CustomAccountInterface::__check_auth(signature_payload: BytesN<32>, signature, auth_contexts: Vec<Context>)`. The host, not a direct user call, invokes it when another invocation requires that C-address's authorization. The contract verifies its chosen signatures (Ed25519, secp256r1/WebAuthn, multisig) and applies policy over `auth_contexts`, returning success only when valid. For standard address credentials the host consumes the nonce and enforces expiry and replay protection before `__check_auth`. Never call `require_auth` on the account's own address inside it: that recurses.",
+        "keyFacts": [
+          "`__check_auth(signature_payload, signature, auth_contexts)` is reserved and host-invoked.",
+          "The contract verifies signatures and applies policy over `auth_contexts`.",
+          "The host handles nonces, expiry, and replay for standard address credentials."
+        ],
+        "avoid": [
+          "Do NOT describe `__check_auth` as called directly by users, or model it on EIP-4337.",
+          "Do NOT claim that a home-grown nonce is mandatory for standard credentials.",
+          "Do NOT call `require_auth` on the account's own address inside `__check_auth`."
+        ],
+        "notes": "A separate application protocol may define its own replay domain; do not penalize that.",
+        "movedToTruth": [
+          "2026-06-29 duplicate-section removal note",
+          "GT-44 correction note",
+          "scout_repos acceptable-for-templates remark"
+        ]
+      }
+    },
+    {
+      "id": "q-soroban-contract-build-verification",
+      "rewrite": {
+        "question": null,
+        "answer": "Verify by build provenance. SEP-55 (Draft) has CI build the Wasm and publish GitHub Attestations, with a `source_repo=github:<org>/<repo>` entry in the Wasm's `contractmetav0`; a verifier looks up the attestation by Wasm hash. SEP-58 (Draft) defines digest-pinned build metadata so anyone can rebuild the Wasm and compare bytes. The two are complementary. 'Build verified' proves provenance, not safety, and Stellar stores no source on-chain. Statuses as of 2026-11-14.",
+        "keyFacts": [
+          "SEP-55 verifies CI-built Wasm through GitHub Attestations looked up by Wasm hash.",
+          "SEP-58 verifies by rebuilding the Wasm from pinned build metadata and comparing bytes.",
+          "SEP-55 and SEP-58 are complementary Draft standards (as of a stated date).",
+          "A `contractmetav0` `source_repo` entry links the Wasm to its repository."
+        ],
+        "avoid": [
+          "Do NOT call contract build verification SEP-49 (that is Upgradeable Contracts).",
+          "Do NOT claim Stellar stores contract source code on-chain."
+        ],
+        "notes": "SEP statuses can change: grade Draft against the as-of date. Accept either standard named first. 'Build verified' meaning provenance rather than audit is a bonus, not required.",
+        "movedToTruth": [
+          "SEP-55 v0.4.1 (Updated 2025-03-12), SEP-58 v0.6.0 (Updated 2026-07-15) preamble values",
+          "soroban-build-workflow action name",
+          "`stellar contract info build` vs `info meta` command detail",
+          "Golden-cites line"
+        ]
+      }
+    },
+    {
+      "id": "q-soroban-event-indexing-design",
+      "rewrite": {
+        "question": null,
+        "answer": "Put the values indexers filter on in leading topics and the amount in data, because `getEvents` filters topics by leading segments (`*` matches one). A custom SEP-41 token emits `[transfer, from, to]` and `[mint, to]`. Since CAP-67, direct SAC and Classic events append a fourth SEP-11 asset topic, so they are not three-topic. Treat topic layout as a stable public API and page durably with the RPC cursor, since RPC keeps a bounded window (about seven days by default).",
+        "keyFacts": [
+          "Indexers filter on leading event topics, not data fields, so key values go in topics.",
+          "Custom SEP-41 transfer events use topics [transfer, from, to]; mint uses [mint, to].",
+          "Since CAP-67, SAC and Classic asset events append a SEP-11 asset topic.",
+          "RPC keeps a bounded event window, about seven days by default."
+        ],
+        "avoid": [
+          "Do NOT describe direct SAC transfer events as three-topic, or assume RPC keeps all history."
+        ],
+        "notes": "Indexer-side points (dedupe by event ID, reorg handling, muxed data) are welcome extras, not required.",
+        "movedToTruth": [
+          "GT-42 / GT-45 history lines",
+          "Golden-cites line",
+          "Spec/WASM-version provenance and muxed-destination detail",
+          "Event ID / transaction-hash dedupe guidance"
+        ]
+      }
+    },
+    {
+      "id": "q-soroban-simulate-resource-fee",
+      "rewrite": {
+        "question": null,
+        "answer": "Call RPC `simulateTransaction` (or the SDK prepare/assemble helper, or `stellar tx simulate`) on the unsigned transaction. It returns the Soroban transaction data with the footprint, the minimum resource fee and required auth; apply them, then add an inclusion fee on top of the resource fee. Since Protocol 23 archived entries are normally restored automatically, so `restorePreamble` is usually absent. Simulation does not guarantee success: state can change, so re-simulate stale transactions.",
+        "keyFacts": [
+          "`simulateTransaction` returns the footprint, resource fee and auth before submission.",
+          "The simulated data, resource fee and auth are applied to the transaction before signing.",
+          "The resource fee is separate from the inclusion fee; both go in the transaction fee.",
+          "Simulation is not a success guarantee; re-simulate stale transactions."
+        ],
+        "avoid": [
+          "Do NOT hand-pick a footprint or claim simulation submits or guarantees success."
+        ],
+        "notes": "Accept `instructionLeeway` or a stated margin; `restorePreamble` still appears when a separate restore is needed.",
+        "movedToTruth": [
+          "Protocol 23 auto-restore and `archivedSorobanEntries` detail",
+          "GT-47 correction history, eth_estimateGas trap note, Golden-cites line"
+        ]
+      }
+    },
+    {
+      "id": "q-soroban-storage-migration",
+      "rewrite": {
+        "question": null,
+        "answer": "A Wasm update, which the contract must gate with its own authorization check, keeps the contract's address and storage but converts nothing: keys and value layouts must stay compatible or be migrated, or old data is stranded. As of 2026-11-14, contracts built with soroban-sdk v28+ (CAP-86) read named-field structs sparsely: an added `Option` field reads as `None` and a removed field is ignored; other changes still need migration. Version stored records; migrate lazily or through an idempotent entrypoint over bounded batches. Test on production-shaped state.",
+        "keyFacts": [
+          "An upgrade converts no stored data; keys and layouts must stay compatible or migrate.",
+          "Versioned records support lazy migration or an explicit controlled migration entrypoint.",
+          "Large migrations are idempotent and batched to fit transaction resource limits.",
+          "SDK v28+ reads an added `Option` field as `None`; other schema changes need migration."
+        ],
+        "avoid": [
+          "Do NOT say uploading new Wasm re-encodes existing storage values.",
+          "Do NOT say every migration must fit in one transaction."
+        ],
+        "notes": "Saying a pre-v28 build traps with `UnexpectedSize` on an added field is correct; it is wrong only for an added `Option` field or removed field of a named-field struct on a v28+ build.",
+        "movedToTruth": [
+          "Docs-guide scope gap (improvements/stellar-docs/sd-070)",
+          "CAP-86 / SDK v28 release provenance",
+          "Enum, tuple-struct and non-Option limits"
+        ]
+      }
+    },
+    {
+      "id": "q-soroban-token-transfer-pattern",
+      "rewrite": {
+        "question": null,
+        "answer": "Use a typed SAC/SEP-41 token client. `transfer(from, to, amount)` requires `from`'s authorization. When the contract sends its own balance, `from` is the contract address; as the direct invoker it is automatically authorized, so no user signature is needed. For allowance-based pulls use `transfer_from(spender, from, to, amount)`: the spender authorizes and the owner's prior bounded allowance applies until its expiration, an absolute ledger number. Validate amounts and update state before external calls. Explicit current-contract authorization is only for deeper calls.",
+        "keyFacts": [
+          "Direct `transfer` requires the `from` address's authorization.",
+          "A contract spending its own balance is `from` and is auto-authorized as direct invoker.",
+          "`transfer_from` needs the spender's authorization and a prior bounded allowance."
+        ],
+        "avoid": [
+          "Do NOT require an external user signature to move the contract's own balance, or an approve/transferFrom step for every transfer."
+        ],
+        "notes": "SEP-41 is Draft (v0.5.2 as of 2026-11-14): accept `to: Address` for versions before MuxedAddress support.",
+        "movedToTruth": [
+          "SAC/CAP-67 asset topic on transfer events",
+          "Checks-effects-interactions and i128 range remarks",
+          "Ownership split with q-sor-sep41-transfer-vs-transferfrom, Golden-cites line"
+        ]
+      }
+    },
+    {
+      "id": "q-stellar-recurring-payments",
+      "rewrite": {
+        "question": null,
+        "answer": "Stellar has no native recurring-payment operation, and a past payment authorizes no future charge. Implement recurrence in the application or a contract-account policy: the user authorizes a scoped session or delegated signer limited to a named contract, asset, maximum amount, cadence and expiry, and a backend scheduler submits each charge. A token allowance is the other pull pattern: the payer approves a bounded amount and the charger calls `transfer_from`. Provide revocation, pause, idempotency and failed-payment handling; never take an unrestricted private key.",
+        "keyFacts": [
+          "Stellar has no native recurring payments; the app or a contract account schedules charges.",
+          "A delegated credential should limit merchant, asset, amount, cadence and expiry.",
+          "Users need revocation and pause controls, and never share unrestricted keys."
+        ],
+        "avoid": [
+          "Do NOT claim Stellar automatically repeats a payment at a set interval.",
+          "Do NOT say a subscription merchant needs the user's unrestricted private key."
+        ],
+        "notes": "",
+        "movedToTruth": [
+          "OpenZeppelin accounts package and advanced-patterns source links",
+          "idempotency, receipts and failed-payment advice (kept in the answer only)"
+        ]
+      }
+    },
+    {
+      "id": "q-ti-openzeppelin-relayer",
+      "rewrite": {
+        "question": "What is the OpenZeppelin Relayer on Stellar, how is the relayer account funded, and how do I integrate it with my backend to pay fees?",
+        "answer": "OpenZeppelin Relayer is a self-hostable AGPL relaying service. Its Stellar support covers prepared-XDR submission, classic payments, Soroban invocation, fee-bump or sponsorship flows, policies and several signer backends. When self-hosted you configure and fund the relayer account yourself. OpenZeppelin Channels is the separate managed offering with hosted authentication, parallel accounts and fee handling; its hosted service publishes no generic top-up address. Keep credentials and signing server-side, validate transaction intent, and date any release, network-support or service-health claim.",
+        "keyFacts": [
+          "Self-hosted OpenZeppelin Relayer and managed Channels are different products.",
+          "Relayer on Stellar supports XDR, payment and Soroban submission, fee-bump and sponsorship.",
+          "Self-hosting means funding your own relayer account; Channels has no top-up address.",
+          "Release, network-support and health claims carry an as-of date."
+        ],
+        "avoid": [
+          "Do NOT conflate self-hosted Relayer with managed Channels.",
+          "Do NOT publish a generic hosted top-up address.",
+          "Do NOT pin a release, network support or provider health without an as-of date."
+        ],
+        "notes": "Repository and rendered-docs versions can disagree (2026-11-02: release v1.9.0 while docs showed 1.8.x as stable; 2026-11-14: still no 1.9.x docs path); either dated observation is correct.",
+        "movedToTruth": [
+          "2026-09-02 and 2026-11-02 observation pairs (v1.8.0/1.5.x; v1.9.0/1.8.x)",
+          "Docs top-nav /relayer/1.5.x link",
+          "Dead status.channels.openzeppelin.com host and deleted Statuspage page",
+          "Channels fair-use stroop-limit terms",
+          "disputed status basis"
+        ]
+      }
+    },
+    {
+      "id": "q-ti-rpc-gettransactions-pagination-xdr",
+      "rewrite": {
+        "question": "How do I reliably page Stellar RPC getTransactions and getEvents with the cursor, and detect when my poller falls behind the per-call 200 limit?",
+        "answer": "For the first `getTransactions` page send an inclusive `startLedger` and optional `limit`; afterward omit `startLedger` and send the response's opaque `pagination.cursor`, which resumes after the last item. The two are mutually exclusive. Persist the new cursor only after downstream writes succeed. As of 2026-11-14 stock stellar-rpc defaults `getTransactions` to 50 with a maximum of 200, `getEvents` to 100/10000 and `getLedgers` to 50/200; these are operator-configurable options, so providers can differ. Horizon is 10 default, 200 max. A cursor cannot recover history outside retention, so a poller that falls behind needs an indexer or data lake. RPC returns failed as well as successful transactions.",
+        "keyFacts": [
+          "First page uses an inclusive startLedger; later pages use the opaque cursor alone.",
+          "Stock limits, dated: getTransactions 50/200, getEvents 100/10000, getLedgers 50/200.",
+          "These are configurable defaults that providers can change, not protocol constants.",
+          "A cursor cannot recover history beyond retention; falling behind needs an indexer or lake."
+        ],
+        "avoid": [
+          "Do NOT repeat startLedger with a cursor, edit the cursor or treat it as a ledger number.",
+          "Do NOT claim the 200 limit is Horizon-only or that RPC has no 200-record cap.",
+          "Do NOT claim the stock 50/200 is immutable for every provider."
+        ],
+        "notes": "Canonical-page caution: the official getTransactions page calls the cap hardcoded. An attributed quote of that page is not a wrong claim while improvements/stellar-docs/sd-004-rpc-limits-described-as-hardcoded.md stays declined-upstream; grade caps at partial. This does not accept universal immutability. Either the documented stock 50/200 or a dated source-level configurable-default qualifier is correct.",
+        "movedToTruth": [
+          "GT-53 correction history and sd-003/sd-004 notes",
+          "stellar-docs#2567 reference",
+          "XDR type mapping (now owned by q-ti-parse-raw-ledger-data)",
+          "Idempotency-by-hash also-good item"
+        ]
+      }
+    },
+    {
+      "id": "q-ti-scaffold-stellar",
+      "rewrite": {
+        "question": null,
+        "answer": "Scaffold Stellar is a separate plugin: `cargo install --locked stellar-scaffold-cli`, then `stellar scaffold init <project>`. It coordinates Rust contracts, TypeScript clients and bindings, a frontend template and environment configuration. It is not part of the core CLI, and it differs from `stellar contract init`, which creates only a contract workspace. As of 2026-11-14 the crate is 0.0.34. Current projects keep networks, accounts and contracts in a version 2 `scaffold.yml`; `environments.toml` is the legacy format, and the Stellar Docs Scaffold page still describes it. Review generated scripts and community templates before running them; local networks need Docker.",
+        "keyFacts": [
+          "Installs with cargo install --locked stellar-scaffold-cli, then stellar scaffold init.",
+          "Scaffold is a separate full-stack plugin, not core CLI and not `stellar contract init`.",
+          "Current config is a v2 scaffold.yml; environments.toml is legacy (as of a stated date).",
+          "Community templates are third-party code to review and pin; local networks need Docker."
+        ],
+        "avoid": [
+          "Do NOT imply stellar scaffold ships with every core CLI install.",
+          "Do NOT equate `stellar scaffold init` with `stellar contract init`.",
+          "Do NOT present environments.toml as the current format for new projects."
+        ],
+        "notes": "`cargo binstall stellar-scaffold-cli` is an accepted install alternative. Describing environments.toml for legacy projects is correct. A later crate version, template roster or config format is acceptable if dated.",
+        "movedToTruth": [
+          "GT-53 correction (old 25.2.0 snapshot)",
+          "Version 2 landed in 0.0.28 per changelog",
+          "React and Svelte template roster",
+          "stellar-registry-cli aside"
+        ]
+      }
+    },
+    {
+      "id": "q-ti-secret-key-vs-mnemonic-derivation",
+      "rewrite": {
+        "question": "What's the difference between my S... secret key and my 12/24-word recovery phrase, how does SEP-5 derive keypairs from a mnemonic (why one phrase yields many addresses), where does SEP-52 fit, and why does `stellar keys generate --seed` not import my phrase?",
+        "answer": "An `S...` key is the StrKey of one 32-byte Ed25519 secret seed, not a mnemonic. SEP-5 derives forward: a BIP-39 mnemonic plus optional passphrase gives a seed, then SLIP-10 hardened derivation at m/44'/148'/x' gives each account. No standard recovers the phrase, passphrase, path or index from an S-key. SEP-52 is a Draft SLIP-39 share-splitting extension, not a 24-word encoding of one key. In the Stellar CLI, `keys generate --seed` only seeds a new phrase; import an existing phrase with `stellar keys add` at its prompt.",
+        "keyFacts": [
+          "An S... key is the StrKey of one 32-byte Ed25519 secret seed, not a BIP-39 mnemonic.",
+          "SEP-5 derives forward from mnemonic and optional passphrase via SLIP-10 at m/44'/148'/x'.",
+          "No standard derives the mnemonic, passphrase, path or index back from an S-key.",
+          "SEP-52 is a Draft SLIP-39 share-splitting extension of SEP-5, not a one-key encoding.",
+          "`keys generate --seed` seeds a new phrase; `stellar keys add` imports an existing one."
+        ],
+        "avoid": [
+          "Do NOT call SEP-52 a Final 24-word representation of one S-key.",
+          "Do NOT say an S-key or G-address can reveal its original mnemonic, passphrase, path or index.",
+          "Do NOT put a mnemonic or secret key in a command-line argument."
+        ],
+        "notes": "Accept any equivalent wording of the no-inverse rule. Whether a directly imported S-key is covered by a wallet's mnemonic backup is wallet-specific; do not penalize either claim. Accept `keys add --secure-store` or the deprecated prompted flags as the import path.",
+        "movedToTruth": [
+          "CLI checked on stellar 30.0.1 (2026-11-14): `--seed` is 'Optional seed to use when generating seed phrase'; `keys add --secret-key/--seed-phrase` are deprecated in favour of `--secure-store`; `--hd-path` picks the account.",
+          "Lab Saved Keypairs: Testnet/Futurenet only, obfuscated not encrypted (owned by q-tool-lab-what-is).",
+          "SEP-52 details: 256-bit entropy recommended, 33-word SLIP-39 shares; BIP-39 64-byte seed vs 32-byte child; SEP-23 StrKey.",
+          "GT-54 correction history and the rejected '24-word representation' proposal."
+        ]
+      }
+    },
+    {
+      "id": "q-ti-self-host-retention-backfill",
+      "rewrite": {
+        "question": "When self-hosting Horizon or Stellar RPC, how do HISTORY_RETENTION_COUNT and HISTORY_RETENTION_WINDOW affect database size, and why doesn't increasing the window backfill older history?",
+        "answer": "Retention only bounds how much history a node keeps; it never fetches older data. As of 2026-11-14 (stellar-rpc v30.0.1) RPC's HISTORY_RETENTION_WINDOW defaults to 120960 ledgers, about 7 days, and RPC backfills only with BACKFILL=true from a datastore. Horizon's HISTORY_RETENTION_COUNT defaults to 0, meaning keep everything; 518400 is the recommended 30-day setting. Missing Horizon history needs `db reingest range`.",
+        "keyFacts": [
+          "A larger retention window never restores pruned or never-ingested history.",
+          "RPC HISTORY_RETENTION_WINDOW defaults to 120960 ledgers, about 7 days (dated release).",
+          "RPC backfills only with BACKFILL=true, from a datastore.",
+          "Horizon HISTORY_RETENTION_COUNT defaults to 0 (unlimited); 518400 is the 30-day advice.",
+          "Missing Horizon history needs `stellar-horizon db reingest range`."
+        ],
+        "avoid": [
+          "Do NOT claim a larger retention window downloads or restores pruned or never-ingested history.",
+          "Do NOT use zero for unlimited RPC retention or call 518400 Horizon's default."
+        ],
+        "notes": "Do not require a database size such as 1.3 TB per 30 days or 40 GB per day; it depends on version, filters and workload. Accept a newer dated RPC default.",
+        "movedToTruth": [
+          "RPC datastore fallback serves only getLedgers; getTransaction/getTransactions/getEvents read retained or materialized rows.",
+          "BACKFILL needs gapless compatible local state; checkpoint alignment makes exact coverage unsafe to promise; an empty database counts as gapless.",
+          "A nonzero Horizon retention count purges reingested rows outside the trailing window; ledger 1 normalizes to 2 on reingest.",
+          "sd-028 (2026-07-27) fixed official Horizon pages that called 518400 the default; sd-102 records the declined request to document the internal-gap sanity check.",
+          "v25.1 benchmark figures (150 GB, under 3 hours) are release notes, not requirements.",
+          "Release pins: stellar-rpc and stellar-horizon v30.0.1 (2026-11-12) keep these defaults (source read 2026-11-14)."
+        ]
+      }
+    },
+    {
+      "id": "q-tool-passkeykit-smart-wallet",
+      "rewrite": {
+        "question": null,
+        "answer": "Two maintained SDKs fit. `stellar/passkey-kit` ships its own smart-wallet contract with a flat multi-signer `Signatures` model; `stellar/smart-account-kit` wraps the OpenZeppelin smart-account contracts with context rules and policies. They are not drop-in compatible, so choose by authorization model. As of 2026-11-14 Passkey Kit labels its contract, SDKs and relayer unaudited, Smart Account Kit labels its SDK unaudited, and the OpenZeppelin contract audit does not cover either SDK.",
+        "keyFacts": [
+          "`stellar/passkey-kit` ships its own contract with flat multi-signer authorization.",
+          "`stellar/smart-account-kit` builds on OpenZeppelin smart accounts with context rules.",
+          "The two kits are not drop-in compatible; choose by authorization model.",
+          "Passkey Kit and the Smart Account Kit SDK are labeled unaudited (as of a stated date)."
+        ],
+        "avoid": [
+          "Do NOT call Passkey Kit legacy, superseded or demo-only; its README presents Smart Account Kit as a sibling.",
+          "Do NOT say the OpenZeppelin contract audit covers either SDK, relayer or indexer."
+        ],
+        "notes": "Saying Passkey Kit is unaudited is accurate and must not be penalized.",
+        "movedToTruth": [
+          "Passkey Kit commit 69185164 (2026-08-19) replaced the review-before-meaningful-value line with an Unaudited software caution; SECURITY.md lists known-vulnerable legacy wallet WASM hashes.",
+          "Former kalepail repositories are archived move pointers.",
+          "A relayer or fee-paying G-account submits and pays; authorization stays in the C-account's __check_auth and signer/policy contracts.",
+          "Smart Account Kit deployed artifacts use later source revisions than the OpenZeppelin audit scope (README read 2026-11-14)."
+        ]
+      }
+    },
+    {
+      "id": "q-zk-host-functions-status",
+      "rewrite": {
+        "question": "Which zero-knowledge host functions are live on Stellar, which CAPs introduced them, and what gaps remain for STARK-style verification?",
+        "answer": "As of 2026-11-14 the live ZK primitives are BLS12-381 (CAP-0059, Protocol 22), BN254 (CAP-0074) and Poseidon/Poseidon2 (CAP-0075) in Protocol 25, and CAP-0080's further BN254 operations in Protocol 26; all are Final. They are primitives, not proof systems. No native Goldilocks, NTT or FRI host functions are documented, so STARK-style verifiers need extra Wasm work or another design.",
+        "keyFacts": [
+          "CAP-0059 added BLS12-381 host functions in Protocol 22.",
+          "CAP-0074 (BN254) and CAP-0075 (Poseidon/Poseidon2) landed in Protocol 25.",
+          "CAP-0080 added further BN254 ZK operations in Protocol 26.",
+          "No native Goldilocks, NTT or FRI host functions exist (as of a stated date)."
+        ],
+        "avoid": [
+          "Do NOT call CAP-0074 or CAP-0075 proposed-only, or the host functions complete proof systems."
+        ],
+        "notes": "Later dated protocol versions are not wrong (pubnet 29, testnet 30 on 2026-11-14). CAP-0087 (ML-DSA, Protocol 30) is not an NTT/FRI primitive.",
+        "movedToTruth": [
+          "Protocol 27 observation of 2026-07-11 and CAP-0080 'Implemented' status history",
+          "Per-network protocol versions on 2026-11-02 and 2026-11-14",
+          "Source list (software-versions, Horizon roots)"
+        ]
+      }
+    },
+    {
+      "id": "q-zk-proof-systems-stellar",
+      "rewrite": {
+        "question": "Which proof systems and circuit languages can I use for a zero-knowledge application on Stellar, how are proofs verified on-chain, and when is a trusted setup needed?",
+        "answer": "Stellar mandates no single toolchain: use Circom/Groth16, Noir (UltraHonk) or zkVMs such as RISC Zero, with a compatible Soroban verifier contract. The app team defines the circuit and keys. The verifier contract uses the native BLS12-381, BN254 and Poseidon host functions, which are primitives, not a private-payment system. Circuit-specific Groth16 normally needs a trusted setup; transparent systems do not.",
+        "keyFacts": [
+          "Stellar mandates no ZK toolchain; Circom/Groth16, Noir and RISC Zero verifiers exist.",
+          "A Soroban verifier contract checks proofs with native BN254 or BLS12-381 host functions.",
+          "Host functions are primitives; they do not make payments private automatically.",
+          "Circuit-specific Groth16 normally needs a trusted setup; transparent systems do not."
+        ],
+        "avoid": [
+          "Do NOT claim Noir is the only supported route, or that Protocol 25 makes every payment private."
+        ],
+        "notes": "As of 2026-11-14 the OpenZeppelin confidential-token UltraHonk verifier accepts only non-zero-knowledge proofs; an answer that states this limit is correct.",
+        "movedToTruth": [
+          "Trusted-setup background (general cryptography, no Stellar source)",
+          "2026-07-11 and 2026-11-02 verification narrative"
+        ]
+      }
+    }
+  ]
+}

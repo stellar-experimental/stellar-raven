@@ -1,0 +1,23 @@
+{
+  "id": "q-aas-claim-received-claimable-balances",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-assets (golden coverage audit)",
+    "reviewer": "verify-audit-assets (golden coverage audit)",
+    "reason": "Merged into q-aas-claimable-predicates-expiry-reserves. The author says its trustline fact repeats the survivor; it does not. q-aas-claimable-predicates-expiry-reserves states the trustline only in answer prose (\"suits recipients without a trustline yet\"), not as a key fact. The leaf scope names \"paying an account that has no trustline yet\", so the survivor must grade it.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-assets.json#q-aas-claim-received-claimable-balances",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-assets.json#q-aas-claim-received-claimable-balances",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-aas-claim-received-claimable-balances"
+    ],
+    "lastCaseContentSha256": "37c96ac2743d8babbb75951b96413214363f197b7d4de7c15415e999d3882a4e",
+    "replacementIds": [
+      "q-aas-claimable-predicates-expiry-reserves"
+    ]
+  }
+}

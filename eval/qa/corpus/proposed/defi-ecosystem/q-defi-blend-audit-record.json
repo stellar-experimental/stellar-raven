@@ -1,0 +1,217 @@
+{
+  "id": "q-defi-blend-audit-record",
+  "question": "Has Blend been audited? By which firms, when, and where can I read the reports?",
+  "surface": [
+    "scout.listAudits",
+    "scout.searchProjects",
+    "scout.searchResearch"
+  ],
+  "golden": {
+    "answer": "Yes. Blend v1 was audited by Certora and OtterSec, with reports dated late 2023 to early 2024. Blend v2 was audited in early 2025 by Certora, with formal verification, and through a Code4rena competition from February 24 to March 17, 2025. Reports are in Blend's docs, its contract repositories' `audits` folders, and the Stellar Security Portal. Check for newer ones.",
+    "keyFacts": [
+      "Blend v1 was audited by Certora and OtterSec.",
+      "Blend v2 was audited by Certora and through a Code4rena competition in early 2025.",
+      "The audit reports are published in Blend's docs and contract repositories.",
+      "States the date of the latest audit report it relies on."
+    ],
+    "avoid": [
+      "Do NOT say Blend has never been audited."
+    ],
+    "notes": "Accept a later audit record that adds reports. Publication dates differ by source for the same report (for example the v1 Certora report is dated December 2023 on the Stellar Security Portal and January 25, 2024 on Certora's site); do not penalize either. An audit covers the reviewed version, not later code; saying so is correct, not required."
+  },
+  "tags": {
+    "category": "defi-ecosystem",
+    "service": "scout",
+    "freshness": "live"
+  },
+  "truth": {
+    "lifecycle": {
+      "state": "proposed",
+      "reviewState": "none"
+    },
+    "domain": "mixed",
+    "status": "confirmed",
+    "leaf": "security.audit-registry",
+    "asOf": "2026-11-14",
+    "sources": [
+      {
+        "class": "A",
+        "ref": "https://docs-v1.blend.capital/audits-and-bug-bounties",
+        "observedAt": "2026-11-14",
+        "quote": "Blend has been Audited by both Certora and Ottersec. All issues have been addressed."
+      },
+      {
+        "class": "A",
+        "ref": "https://docs.blend.capital/audits-and-bug-bounties.md",
+        "observedAt": "2026-11-14",
+        "quote": "## V1 Audits Blend v1 audits can be found here: <https://docs-v1.blend.capital/audits-and-bug-bounties> ## V2 Audits ### Certora ... ### Code4rena"
+      },
+      {
+        "class": "A",
+        "ref": "https://code4rena.com/audits/2025-02-blend-v2-audit-certora-formal-verification",
+        "observedAt": "2026-11-14",
+        "quote": "Blend V2 Audit + Certora Formal Verification ... Start date 24 Feb 2025 * End date 17 Mar 2025 * Total awards $125,000 in USDC"
+      },
+      {
+        "class": "A",
+        "ref": "https://www.certora.com/reports/blend",
+        "observedAt": "2026-11-14",
+        "quote": "# Blend Protocol ### Blend #### January 25, 2024 Blend is a lending protocol implemented on Soroban"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/blend-capital/blend-contracts/tree/main/audits",
+        "observedAt": "2026-11-14",
+        "quote": "audits/: BlendCertoraReport.pdf, blend_capital_final.pdf; README: Conducted audits can be viewed in the `audits` folder."
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/blend-capital/blend-contracts-v2/tree/main/audits",
+        "observedAt": "2026-11-14",
+        "quote": "audits/: Code4rena x Blend V2 audit report.pdf; Script3 - Certora - Blend v2 - Formal Verification Draft v2 Report - June 2025.pdf"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/blend-capital/blend-contracts-v2/tree/main/audits",
+        "observedAt": "2026-11-14",
+        "quote": "audits/: Script3 - Certora - Blend v2 - Security Assessment Draft v3 Report - April 2025.pdf"
+      },
+      {
+        "class": "C",
+        "ref": "scout.searchProjects({q:'Blend',fields:'name,slug,audits'})",
+        "observedAt": "2026-11-14",
+        "quote": "Blend audits: count 6, auditors [OtterSec, Certora, Code4rena], latestAt 2025-08-13, codeChangedSinceAudit true"
+      },
+      {
+        "class": "C",
+        "ref": "scout.listAudits({q:'Blend'})",
+        "observedAt": "2026-11-14",
+        "quote": "matched 6 of 71; report/40 Certora, Blend Protocol V2, published 2025-08-13, engagement 2025-02-03 to 2025-03-27; report/38 Code4rena"
+      },
+      {
+        "class": "C",
+        "ref": "scout.searchResearch({protocol:'Blend',source:'audit'})",
+        "observedAt": "2026-11-14",
+        "quote": "Blend Protocol: OtterSec (Blend Capital Security Assessment) 2024-02-28; Blend Protocol: Certora (Security Assessment Report) 2023-12-31"
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "Blend v1 was audited by Certora and OtterSec, with reports dated late 2023 to early 2024.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://docs-v1.blend.capital/audits-and-bug-bounties",
+            "observedAt": "2026-11-14",
+            "note": "\"Blend has been Audited by both Certora and Ottersec.\" Both reports are attached."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/blend-capital/blend-contracts/tree/main/audits",
+            "observedAt": "2026-11-14",
+            "note": "The v1 contracts repository carries BlendCertoraReport.pdf and blend_capital_final.pdf in audits/."
+          },
+          {
+            "class": "C",
+            "ref": "scout.searchResearch({protocol:'Blend',source:'audit'})",
+            "observedAt": "2026-11-14",
+            "note": "Stellar Security Portal rows: OtterSec report dated 2024-02-28; Certora report dated 2023-12-31."
+          },
+          {
+            "class": "A",
+            "ref": "https://www.certora.com/reports/blend",
+            "observedAt": "2026-11-14",
+            "note": "Certora's own report page for Blend is dated January 25, 2024."
+          }
+        ]
+      },
+      {
+        "claim": "Blend v2 was audited by Certora (security assessment and formal verification) and through a Code4rena competition from 2025-02-24 to 2025-03-17.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://code4rena.com/audits/2025-02-blend-v2-audit-certora-formal-verification",
+            "observedAt": "2026-11-14",
+            "note": "Start date 24 Feb 2025, end date 17 Mar 2025, total awards $125,000 in USDC, status Completed."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/blend-capital/blend-contracts-v2/tree/main/audits",
+            "observedAt": "2026-11-14",
+            "note": "audits/ holds the Code4rena report and two Certora reports (Security Assessment, April 2025; Formal Verification, June 2025)."
+          },
+          {
+            "class": "A",
+            "ref": "https://docs.blend.capital/audits-and-bug-bounties.md",
+            "observedAt": "2026-11-14",
+            "note": "V2 Audits section lists Certora (two files) and Code4rena (one file)."
+          },
+          {
+            "class": "C",
+            "ref": "scout.listAudits({q:'Blend'})",
+            "observedAt": "2026-11-14",
+            "note": "Certora Blend v2 engagement 2025-02-03 to 2025-03-27; Code4rena report published 2025-08-12."
+          }
+        ]
+      },
+      {
+        "claim": "The audit reports are published in Blend's docs, its contract repositories' audits folders, and the Stellar Security Portal.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://docs.blend.capital/audits-and-bug-bounties.md",
+            "observedAt": "2026-11-14",
+            "note": "Audits & Bug Bounties page attaches the v2 reports and links the v1 page."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/blend-capital/blend-contracts-v2/tree/main/audits",
+            "observedAt": "2026-11-14",
+            "note": "README: \"Conducted audits can be viewed in the audits folder.\""
+          },
+          {
+            "class": "C",
+            "ref": "scout.listAudits({q:'Blend'})",
+            "observedAt": "2026-11-14",
+            "note": "Six Blend rows, each with a stellarsecurityportal.com/report/<id> link, observed 2026-11-13."
+          }
+        ]
+      },
+      {
+        "claim": "Blend has never been audited.",
+        "verdict": "contradicted",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://code4rena.com/audits/2025-02-blend-v2-audit-certora-formal-verification",
+            "observedAt": "2026-11-14",
+            "note": "A completed public audit competition with a published report."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/blend-capital/blend-contracts/tree/main/audits",
+            "observedAt": "2026-11-14",
+            "note": "Audit report PDFs are committed to the repository."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-11-14",
+      "by": "Claude Fable 5.2, gap-2 lane, 2026-11-14 golden-coverage-audit",
+      "evidence": [
+        "https://docs.blend.capital/audits-and-bug-bounties.md",
+        "https://docs-v1.blend.capital/audits-and-bug-bounties",
+        "https://code4rena.com/audits/2025-02-blend-v2-audit-certora-formal-verification",
+        "https://github.com/blend-capital/blend-contracts/tree/main/audits",
+        "https://github.com/blend-capital/blend-contracts-v2/tree/main/audits",
+        "scout.listAudits({q:'Blend'}) observed 2026-11-14",
+        "Sibling sweep: q-scf-audit-bank and q-comp-security-disclosure-programs cover programs, not one project's audit record; q-defi-blend-alternatives and q-edge-fresh-latest-blend-tvl do not state auditors or dates. No conflict."
+      ]
+    },
+    "origin": "golden-coverage-audit 2026-11-14"
+  }
+}

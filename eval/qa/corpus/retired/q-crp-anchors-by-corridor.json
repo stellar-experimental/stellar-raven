@@ -1,0 +1,23 @@
+{
+  "id": "q-crp-anchors-by-corridor",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-compliance (golden coverage audit)",
+    "reviewer": "verify-audit-compliance (golden coverage audit)",
+    "reason": "Merged into q-crp-remittance-founder-advisory. Cost drivers and integrate-first move into q-crp-remittance-founder-advisory and build-your-own into q-crp-become-an-anchor-licensing; both rewrites carry them. The corridor-discovery half is a directory question owned by q-anchor-list-builders-discovery (assets: tighten); add it to the replacement IDs. The MoneyGram 174-versus-200+ trap remains in q-pay-moneygram-ramps.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-compliance.json#q-crp-anchors-by-corridor",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-compliance.json#q-crp-anchors-by-corridor",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-crp-anchors-by-corridor"
+    ],
+    "lastCaseContentSha256": "129c0a5fc386c123ee6f676610927de139799bf46f791d1490e1c87ccc13b258",
+    "replacementIds": [
+      "q-crp-remittance-founder-advisory"
+    ]
+  }
+}

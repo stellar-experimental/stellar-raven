@@ -5,20 +5,18 @@
     "scout.searchResearch"
   ],
   "golden": {
-    "answer": "A grounded answer derives its named examples and status claims from the live Stellar Scout directory or research data, then dates the roster so it is not presented as permanent. As of 2026-06-29, the verified sources supported this observed answer:\n\nStellar can be a good settlement layer for a remittance business because it gives fast settlement, standardized anchor protocols, and liquid stablecoin rails, but it is not a complete remittance company by itself. A real corridor needs: source on-ramp, customer onboarding/KYC, settlement asset, FX/quote path, destination off-ramp, liquidity/float, sanctions/fraud controls, reconciliation, refunds, customer support, and legal/compliance coverage in each jurisdiction.\n\nMap rails to the job. SEP-1 lets wallets discover anchor metadata; SEP-10 authenticates account control; SEP-12 handles KYC/customer data; SEP-24/SEP-6 handle deposit and withdrawal flows; SEP-31 handles cross-border payments; SEP-38 gives price/FX quotes. MoneyGram Access is an example of a USDC cash-in/cash-out integration using SEP-10 and SEP-24, not proof that every remittance corridor is available.\n\nStablecoin choice should be corridor-specific: use issuer quality, liquidity, redemption, geography, compliance fit, and anchor support rather than defaulting universally to XLM or one stablecoin. Most founders should first integrate existing anchors/ramp partners in a narrow corridor, measure quote quality and failure handling, and only become an anchor where owning licensing, payout rails, liquidity, and support creates an advantage.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "Stellar is a fast, low-cost settlement layer, not a complete remittance business. A corridor also needs an on-ramp, KYC, FX quotes, an off-ramp, liquidity, fraud controls and legal cover in each jurisdiction. Rails: SEP-1 discovery, SEP-10 auth, SEP-12 KYC, SEP-6/24 ramps, SEP-31 cross-border, SEP-38 quotes. Choose stablecoins per corridor. Integrate existing anchors first: SEPs guarantee no liquidity, licence or coverage, and costs depend on each anchor's fees and FX.",
     "keyFacts": [
-      "Dates each specific source-supported observation.",
-      "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Frames Stellar as fast, low-cost settlement, not a complete remittance business.",
-      "Requires a complete remittance corridor, not only a protocol.",
-      "Chooses stablecoins by issuer, liquidity, geography, redemption, and regulatory fit."
+      "Stellar is a settlement layer; corridors also need ramps, KYC, liquidity and legal cover.",
+      "SEP rails: SEP-1 discovery, 10 auth, 12 KYC, 6/24 ramps, 31 cross-border, 38 quotes.",
+      "Pick stablecoins per corridor by issuer, liquidity, redemption, geography and regulation.",
+      "Integrate existing anchors first; SEPs guarantee no liquidity, licence or coverage."
     ],
     "avoid": [
-      "Do NOT give legal or licensing advice as definitive for all jurisdictions.",
-      "Do NOT imply Stellar removes the need for fiat partners, KYC/AML, liquidity, or customer remediation.",
-      "Do NOT claim the observed live result set is a complete or permanent roster; explicitly historical facts remain historical."
+      "Do NOT give definitive legal or licensing advice for all jurisdictions.",
+      "Do NOT imply Stellar removes the need for fiat partners, KYC/AML, liquidity or customer remediation."
     ],
-    "notes": "2026-06-29: Differentiated toward stablecoin-selection + business architecture — promoted stablecoin-choice to a 5-weight must_have, demoted the SEP rail-map to should_have (the rail-map lane is owned by q-crp-become-an-anchor-licensing). Specific corridor/provider recommendations still require fresh provider checks; architecture/stablecoin-selection guidance is high confidence.\nAlso good if the answer: Maps relevant SEP rails as applicable: SEP-1 discovery, SEP-10 auth, SEP-12 KYC, SEP-24/6 deposit-withdrawal, SEP-31 cross-border payments, SEP-38 quotes. | Mentions integrating existing anchors is usually lower lift than becoming an anchor in every corridor.\nGolden cites: Stellar SEP/anchor docs plus dated corridor/provider sources for concrete recommendations."
+    "notes": "Named corridor or provider examples need a dated source; accept any dated, sourced example."
   },
   "tags": {
     "category": "compliance-rwa-payments",
@@ -32,7 +30,7 @@
     },
     "domain": "mixed",
     "status": "confirmed",
-    "asOf": "2026-06-29",
+    "asOf": "2026-11-14",
     "sources": [
       {
         "class": "A",
@@ -86,20 +84,42 @@
             "note": "Exact source defines ‘a protocol for enabling payments between two financial accounts’ and requires separate Sending and Receiving Anchor businesses."
           }
         ]
+      },
+      {
+        "claim": "SEP-31 (cross-border) and SEP-24/SEP-6 (ramps) are Active standards; MoneyGram Access uses SEP-10 and SEP-24 for USDC cash-in and cash-out on its legacy path.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0031.md",
+            "observedAt": "2026-11-14",
+            "note": "Title: Cross-Border Payments API ... Status: Active"
+          },
+          {
+            "class": "A",
+            "ref": "https://xramps.moneygram.com/ops/dev/stellar",
+            "observedAt": "2026-11-14",
+            "note": "Legacy integration path. This guide is for partners on the Stellar whitelist + SEP-10 / SEP-24 anchor model."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-03",
-      "by": "lane urls (Codex gpt-6.1-sol high)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-compliance, verify-audit-compliance; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "https://developers.stellar.org/docs/build/apps/moneygram-access-integration-guide (HTTP 308, 2026-11-03): The redirect target confirms Stellar USDC cash-in and cash-out. The linked MoneyGram Stellar guide retains legacy SEP-10/SEP-24 and custodial authentication details. Current source: https://developer.moneygram.com/moneygram-developer/docs/integrate-moneygram-ramps (HTTP 200).",
-        "https://xramps.moneygram.com/ops/developer/guides/stellar (HTTP 200, 2026-11-03): legacy Stellar SEP integration, USDC settlement, custodial/non-custodial table, and new-partner widget guidance.",
-        "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-compliance.json#q-crp-remittance-founder-advisory",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-compliance.json#q-crp-remittance-founder-advisory",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-crp-remittance-founder-advisory",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0031.md -- 'Title: Cross-Border Payments API ... Status: Active'",
+        "Live A 2026-11-14: https://xramps.moneygram.com/ops/dev/stellar -- 'Legacy integration path. This guide is for partners on the Stellar whitelist + SEP-10 / SEP-24 anchor model.'"
       ],
       "rootCause": [
-        "freshness-drift"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-crp-remittance-founder-advisory"
+    "origin": "raven-next q-crp-remittance-founder-advisory",
+    "notes": "2026-06-29: Differentiated toward stablecoin-selection + business architecture — promoted stablecoin-choice to a 5-weight must_have, demoted the SEP rail-map to should_have (the rail-map lane is owned by q-crp-become-an-anchor-licensing). Specific corridor/provider recommendations still require fresh provider checks; architecture/stablecoin-selection guidance is high confidence.\nAlso good if the answer: Maps relevant SEP rails as applicable: SEP-1 discovery, SEP-10 auth, SEP-12 KYC, SEP-24/6 deposit-withdrawal, SEP-31 cross-border payments, SEP-38 quotes. | Mentions integrating existing anchors is usually lower lift than becoming an anchor in every corridor.\nGolden cites: Stellar SEP/anchor docs plus dated corridor/provider sources for concrete recommendations.",
+    "leaf": "standards.cross-border-payments"
   }
 }

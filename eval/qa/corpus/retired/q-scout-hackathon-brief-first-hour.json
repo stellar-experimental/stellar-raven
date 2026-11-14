@@ -1,0 +1,21 @@
+{
+  "id": "q-scout-hackathon-brief-first-hour",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-scf (golden coverage audit)",
+    "reviewer": "verify-audit-scf (golden coverage audit)",
+    "reason": "Same composite-block reading as q-scf-pitch-prep-live (kf0 empty list is not none on mainnet); test/drift-141-routing.test.ts:73 is ranking only, but the behavior is carried by the kept case.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-scout-hackathon-brief-first-hour",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-scout-hackathon-brief-first-hour",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-scout-hackathon-brief-first-hour"
+    ],
+    "lastCaseContentSha256": "077f6809137f8d582e983f64cdca3f95abaab53912c97ba3b071a727c8fbd542",
+    "replacementIds": []
+  }
+}

@@ -6,17 +6,14 @@
     "stellarDocs.search_rpc_horizon_data_docs"
   ],
   "golden": {
-    "answer": "- **Watcher**: reads the network but does **not** vote in consensus [1].\n- **Validator**: votes on / signs ledgers [1]. The key Basic-vs-Full distinction: a **Full Validator additionally publishes a public history archive**; a **Basic Validator does not** [1].\n- The history archive lets other nodes **catch up** on history and supports network **resilience** [1].\n- **Non-consensus roles**: a **Stellar RPC node** (state queries / tx simulation) and a **Galexie node** (bulk ledger data for analytics) [1].\n- Running even a single Basic or Full Validator is a meaningful **decentralization contribution** before attempting Tier 1. There is **no staking and no block rewards** — Basic vs Full is not a stake-size difference [1].",
+    "answer": "A Watcher follows the network without voting. A Validator votes in consensus: a Basic Validator does not publish a history archive, while a Full Validator also publishes one so other nodes can catch up. RPC and Galexie nodes serve data and do not vote. There is no staking or block reward.",
     "keyFacts": [
-      "Watcher nodes remain passive outside consensus.",
-      "Validators sign ledger changes through consensus voting.",
-      "Only Full Validators publish a public history archive."
+      "A Watcher does not vote in consensus.",
+      "Validators vote; only a Full Validator also publishes a public history archive."
     ],
     "avoid": [
-      "Do NOT claim Basic and Full Validators differ by staking amount or that validators earn block rewards.",
-      "Do NOT claim a Watcher participates in consensus voting."
-    ],
-    "notes": "The Full-vs-Basic distinction is the publish-history-archive bit. Trap is staking/reward framing.\nAlso good if the answer: Mentions non-consensus node roles such as a Stellar RPC node (state queries / tx simulation) and a Galexie node (bulk ledger data for analytics). | Notes the history archive lets other nodes catch up on history / supports network resilience.\nGolden cites: The validators overview on developers.stellar.org/docs/validators."
+      "Do NOT say Basic and Full Validators differ by stake or that validators earn rewards."
+    ]
   },
   "tags": {
     "category": "protocol-core",
@@ -98,23 +95,35 @@
             "note": "Dated web sweep query `Stellar validator watcher history archive no rewards staking`; the top official SCP result and this independent result state that Stellar has no staking mechanism and no validator monetary rewards. No primary result contradicted the claim."
           }
         ]
+      },
+      {
+        "claim": "Full Validators publish a history archive; Basic do not; no staking or rewards",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/validators/tier-1-orgs",
+            "observedAt": "2026-11-14",
+            "note": "Full Validators … each publishing a complete separate history archive; no block rewards (tier-1 page, observed 2026-11-14)"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch protocol-core-05)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-protocol, verify-protocol; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Verification-only event 2026-11-02: every judge-facing field is unchanged; the proposer and an independent verifier re-derived the claims from at least two source classes.",
-        "Live B 2026-11-02: https://github.com/stellar/stellar-core/blob/master/docs/stellar-core_example.cfg — 'should not be used on a node participating in consensus, only a passive \"watcher\" node. ... Only nodes that want to participate in SCP should set NODE_IS_VALIDATOR=true.' (claim: Watcher nodes are passive outside consensus; verdict confirmed)",
-        "Live B 2026-11-02: https://github.com/stellar/packages/blob/master/docs/running-a-full-validator.md — 'start off with a working `watcher` config and simply add the required validator configuration parameters (NODE_IS_VALIDATOR, NODE_SEED)' (claim: Watcher nodes are passive outside consensus; verdict confirmed)",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/validators — 'configured to participate in consensus by voting on — and signing off on — changes to the ledger' (claim: Validators sign ledger changes through consensus voting; verdict confirmed)",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/validators — 'a Basic Validator does not publish a history archive; a Full Validator publishes one covering the network's complete history.' (claim: Only Full Validators publish a public history archive; verdict confirmed)",
-        "Live D 2026-11-02: https://github.com/nemorixgroup/Stellar-Knowledge-Base/blob/main/module-02-consensus/README.md — 'Basic Validator: participates in consensus, does not publish a history archive' (claim: Only Full Validators publish a public history archive; verdict confirmed)",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/validators — 'There are two varieties of non-validating nodes ... Stellar RPC Nodes ... Galexie Nodes' (claim: RPC and Galexie are non-consensus roles; verdict confirmed)",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol — 'There are no monetary rewards for being a validator on the Stellar network.' (claim: Stake-size difference / watchers vote are false; verdict confirmed)",
-        "Sibling sweep 2026-11-02: q-protocol-tier1-requirements checked; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-protocol-validator-node-roles",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-protocol-validator-node-roles",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-protocol-validator-node-roles",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/validators/tier-1-orgs -- 'Full Validators … each publishing a complete separate history archive; no block rewards (tier-1 page, observed 2026-11-14)'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-protocol-validator-node-roles"
+    "origin": "raven-next q-protocol-validator-node-roles",
+    "notes": "The Full-vs-Basic distinction is the publish-history-archive bit. Trap is staking/reward framing.\nAlso good if the answer: Mentions non-consensus node roles such as a Stellar RPC node (state queries / tx simulation) and a Galexie node (bulk ledger data for analytics). | Notes the history archive lets other nodes catch up on history / supports network resilience.\nGolden cites: The validators overview on developers.stellar.org/docs/validators.",
+    "leaf": "network.running-a-node"
   }
 }

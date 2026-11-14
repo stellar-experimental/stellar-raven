@@ -5,18 +5,18 @@
     "scout.searchResearch"
   ],
   "golden": {
-    "answer": "A grounded answer consults the live Stellar Scout directory or research data, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\nSDF uses XLM entrusted under its published mandate and describes selling existing XLM through **Kraken, Coinbase, Bitstamp, and direct sales** to fund operating expenses and broader mandate work. Those sales do not mint new XLM. Current mandate disclosures discuss liquidity and market-making support, but they do not promise an XLM price peg, floor, or guarantee. SDF's **November 2019** burn announcement also said it would not burn additional lumens. As of **2026-07-10**, no newer primary SDF announcement of another burn was found in the current mandate/reporting surfaces. Treat both the 2019 statement and current absence as dated evidence—not a perpetual guarantee or forecast. Use the live mandate/dashboard or latest quarterly report for any balance, and do not sum mixed-timestamp bucket rows as a synchronized exhaustive holding.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "SDF sells existing XLM held under its mandate (on exchanges such as Kraken, Coinbase and Bitstamp and through direct sales) to fund operating expenses and mandate work; sales mint no new XLM. SDF discloses no XLM price peg, floor or guarantee. After the one-time November 2019 burn it said it would not burn more lumens, and as of 2026-11-14 no new burn is announced.",
     "keyFacts": [
-      "Presents specific current or dated source evidence, not unsupported memory.",
-      "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Reports SDF holdings or sales figures with their report date and accounting scope."
+      "SDF funds operations by selling existing mandate XLM on exchanges and directly.",
+      "SDF discloses no XLM price peg, floor or guarantee.",
+      "The November 2019 burn was a one-time event.",
+      "No further SDF burn is announced (as of a stated date)."
     ],
     "avoid": [
-      "Do NOT claim SDF pegs or guarantees XLM's price.",
-      "Do NOT predict a burn, turn the 2019 statement into a protocol impossibility, or treat named mixed-timestamp accounts as exhaustive current holdings.",
-      "Do NOT present version-, provider-, interface-, or availability-sensitive observations as timeless; date the changeable part without weakening stable protocol or historical facts."
+      "Do NOT claim SDF pegs or guarantees the XLM price.",
+      "Do NOT predict a future burn or call the 2019 statement a protocol impossibility."
     ],
-    "notes": "Snapshot 2026-06-29. No current primary source found announcing another burn (the November 2019 burn remains a one-time historical event). Reserve/sales details are report-sensitive; verify the latest SDF report if exact figures are needed. DIFFERENTIATED from q-hot-sdf-transparency-wallets-reports (which owns address/report discovery); this file owns the price-support-myth plus future-burn-myth debunk.\nAlso good if the answer: References SDF mandate, transparency, or quarterly reporting as the proper source for current reserve/use disclosures. | Contrasts the 2019 supply burn as a one-time historical event rather than a recurring tokenomics mechanism.\nGolden cites: A current SDF mandate/transparency/reporting source, plus a dated source for any stated future-burn claim.\nGT-28 CORRECTION 2026-07-10: sales fund operations/mandate work; no price guarantee is disclosed. The 2019 no-additional-burn statement and the current no-new-plan sweep are dated evidence, not eternal promises.\nThe Stellar docs lumens page has used the current bucket labels (SDF Development, Stellar Growth, Product & Innovation, Assets & Liquidity) and listed bucket accounts without fixed XLM balances since 2026-07-27 (sd-012, resolved; re-checked live 2026-11-02). An answer that labels the pre-2026-07-27 labels or fixed balances as historical is correct; an answer that presents them as the current docs content, or as a current reserve figure, is wrong."
+    "notes": "A later, sourced burn announcement is acceptable. Any balance needs a report date and scope; do not sum mixed-timestamp bucket rows. Since 2026-07-27 the docs lumens page lists bucket accounts without fixed balances: pre-2026-07-27 labels or fixed balances presented as current docs content are wrong."
   },
   "tags": {
     "category": "history-org-tokenomics",
@@ -30,7 +30,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-10",
+    "asOf": "2026-11-14",
     "sources": [
       {
         "class": "A",
@@ -102,24 +102,50 @@
             "note": "\"Assets and Liquidity : 3.5 billion XLM ... market-making programs\""
           }
         ]
+      },
+      {
+        "claim": "SDF sells existing XLM on Kraken, Coinbase, Bitstamp and via direct sales to fund operations and mandate work.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/foundation/mandate",
+            "observedAt": "2026-11-14",
+            "note": "The SDF sells XLM from this account on public exchanges like Kraken, Coinbase, and Bitstamp and through direct sales"
+          }
+        ]
+      },
+      {
+        "claim": "No newer SDF burn announcement exists.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/foundation/mandate",
+            "observedAt": "2026-11-14",
+            "note": "No mention of a burn on the current mandate page (searched for \"burn\"); class A only this pass."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "golden cap backlog 2026-11-02 (caps-1)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-hist-retail, verify-hist-retail; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "[A] 2026-11-02T21:25:32Z GET https://developers.stellar.org/docs/learn/fundamentals/lumens (HTTP 200) → \"SDF organizes these holdings into four buckets. The on-chain accounts in each bucket, as of July 2026, are listed below — balances change continuously, so refer to the mandate page or each account's stellar.expert page for live figures:\" then headings SDF Development (accounts \"Direct Development, Available Funds\", \"Direct Development (Hot 1)\" to \"(Hot 3)\"), Stellar Growth, Product & Innovation, Assets & Liquidity. The page text contains 0 occurrences of \"Ecosystem Support\", \"Use-Case Investment\", \"30 billion\", or \"30B XLM\", and no per-account balance figures.",
-        "[A] 2026-11-02T21:25:32Z GET https://stellar.org/foundation/mandate (HTTP 200) → \"In 2019, SDF divided its XLM holdings into four main accounts: Direct Development, Ecosystem Support, Use-Case Investment and User Acquisition.\" ... \"in 2025, the accounts are being updated to reflect current priorities ...: SDF Development, Stellar Growth, Product and Innovation and Assets and Liquidity.\" The page still says live balances \"will be made available again on this page imminently\" while rendering Current Balance rows with \"Last updated: November 2, 2026 at 6.10 PM UTC\" (the mixed signal the golden already describes; unchanged).",
-        "[E] 2026-11-02T21:27:06Z (observedAt; calls generated 21:24:46Z to 21:26:34Z) Raven stellarDocs.search_docs(\"lumen supply metrics SDF accounts mandate\") → hit 1 https://developers.stellar.org/docs/learn/fundamentals/lumens (\"This section explains how lumen supply metrics are calculated...\"); the canonical page is discoverable through the docs search.",
-        "Finding: sd-012 is in improvements/resolved.json (resolved 2026-07-27; refs stellar/stellar-docs#2610 and PR #2658; live recheck 2026-07-27 recorded the four current labels and no fixed balances). No active finding backs the cap, and the live page carries the fix, so the cap ends (ADR-0008 amendment 2026-11-02).",
-        "Change: only the cap sentence in golden.notes was replaced by a plain rule; answer, keyFacts, and avoid are unchanged.",
-        "Sibling sweep 2026-11-02: grep 'sd-012' over eval/qa/corpus/battery → q-org-sdf-mandate-buckets, q-org-sdf-structure-mandate, q-hot-sdf-transparency-wallets-reports (all edited in this lane with the same rule); no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-hot-sdf-xlm-holdings-sales",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-hot-sdf-xlm-holdings-sales",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-hot-sdf-xlm-holdings-sales",
+        "Live A 2026-11-14: https://stellar.org/foundation/mandate -- 'The SDF sells XLM from this account on public exchanges like Kraken, Coinbase, and Bitstamp and through direct sales'",
+        "Live A 2026-11-14: https://stellar.org/foundation/mandate -- 'No mention of a burn on the current mandate page (searched for \"burn\"); class A only this pass.'",
+        "Live D 2026-11-14: parallel-cli search 'Stellar Development Foundation announces new XLM burn 2026' (after 2026-01-01) -- 'Top 10 results cover the 2019 55B burn and tokenomics explainers; none reports a new SDF burn announcement.'"
       ],
       "rootCause": [
-        ".agents/rounds/2026-11-02-grading-policy.md (ADR-0008 amendment 2026-11-02: a partial cap needs an active improvements finding; this cap's finding is resolved, so the cap ends)",
-        "improvements/resolved.json entry sd-012 (resolved 2026-07-27; live fix re-confirmed 2026-11-02)"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-hot-sdf-xlm-holdings-sales"
+    "origin": "raven-next q-hot-sdf-xlm-holdings-sales",
+    "notes": "Snapshot 2026-06-29. No current primary source found announcing another burn (the November 2019 burn remains a one-time historical event). Reserve/sales details are report-sensitive; verify the latest SDF report if exact figures are needed. DIFFERENTIATED from q-hot-sdf-transparency-wallets-reports (which owns address/report discovery); this file owns the price-support-myth plus future-burn-myth debunk.\nAlso good if the answer: References SDF mandate, transparency, or quarterly reporting as the proper source for current reserve/use disclosures. | Contrasts the 2019 supply burn as a one-time historical event rather than a recurring tokenomics mechanism.\nGolden cites: A current SDF mandate/transparency/reporting source, plus a dated source for any stated future-burn claim.\nGT-28 CORRECTION 2026-07-10: sales fund operations/mandate work; no price guarantee is disclosed. The 2019 no-additional-burn statement and the current no-new-plan sweep are dated evidence, not eternal promises.\nThe Stellar docs lumens page has used the current bucket labels (SDF Development, Stellar Growth, Product & Innovation, Assets & Liquidity) and listed bucket accounts without fixed XLM balances since 2026-07-27 (sd-012, resolved; re-checked live 2026-11-02). An answer that labels the pre-2026-07-27 labels or fixed balances as historical is correct; an answer that presents them as the current docs content, or as a current reserve figure, is wrong.",
+    "leaf": "ecosystem.sdf-mandate-holdings",
+    "secondaryLeaf": "ecosystem.xlm-supply"
   }
 }

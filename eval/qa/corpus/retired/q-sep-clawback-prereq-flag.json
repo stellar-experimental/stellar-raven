@@ -1,0 +1,21 @@
+{
+  "id": "q-sep-clawback-prereq-flag",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-assets (golden coverage audit)",
+    "reviewer": "verify-audit-assets (golden coverage audit)",
+    "reason": "A one-fact duplicate. The q-comp-clawback-cap0035 rewrite key fact is 'Clawback needs AUTH_REVOCABLE and AUTH_CLAWBACK_ENABLED set before trustlines are created'. The compliance lane names q-comp-auth-flags-overview as the replacement instead; either works, so the reconciler should list both.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-assets.json#q-sep-clawback-prereq-flag",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-assets.json#q-sep-clawback-prereq-flag",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-sep-clawback-prereq-flag"
+    ],
+    "lastCaseContentSha256": "9edd601637db8312004d3577c895f8e1764c2cb8b82d2c60d1effc1d1a50305d",
+    "replacementIds": []
+  }
+}

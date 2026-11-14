@@ -1,0 +1,21 @@
+{
+  "id": "q-hist-x402-stellar-announcement",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-hist-retail (golden coverage audit)",
+    "reviewer": "verify-hist-retail (golden coverage audit)",
+    "reason": "An announcement date; mechanism is q-defi-x402-on-stellar-what.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-hist-x402-stellar-announcement",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-hist-x402-stellar-announcement",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-hist-x402-stellar-announcement"
+    ],
+    "lastCaseContentSha256": "667788dbd839778857d91201713fd8d8ff85aaafcc15a0928bca6dd1b9b697f8",
+    "replacementIds": []
+  }
+}

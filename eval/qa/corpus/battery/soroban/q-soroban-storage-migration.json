@@ -7,17 +7,18 @@
     "skills.stellar-dev.smart-contracts"
   ],
   "golden": {
-    "answer": "Updating a contract's Wasm keeps the contract address and storage; it does not rewrite stored values into a new schema. As of 2026-11-02, contracts built with soroban-sdk v28+ (Protocol 28, CAP-86) read named-field `#[contracttype]` structs sparsely: an added `Option` field reads as `None` and a removed field is ignored, so only those changes can skip migration. Version stored records and use either lazy migration on read/write or a controlled migration entrypoint that converts bounded batches. Keep old and new decoding paths only for the migration window, make the operation idempotent, test against production-shaped state, and retain rollback or pause controls. Large migrations should be batched to stay within transaction resources.",
+    "answer": "A Wasm update, which the contract must gate with its own authorization check, keeps the contract's address and storage but converts nothing: keys and value layouts must stay compatible or be migrated, or old data is stranded. As of 2026-11-14, contracts built with soroban-sdk v28+ (CAP-86) read named-field structs sparsely: an added `Option` field reads as `None` and a removed field is ignored; other changes still need migration. Version stored records; migrate lazily or through an idempotent entrypoint over bounded batches. Test on production-shaped state.",
     "keyFacts": [
-      "A Wasm upgrade does not automatically transform existing contract storage.",
-      "Versioned records support lazy migration or a controlled explicit entrypoint.",
-      "Large migrations should be idempotent and batched to fit transaction resource limits."
+      "An upgrade converts no stored data; keys and layouts must stay compatible or migrate.",
+      "Versioned records support lazy migration or an explicit controlled migration entrypoint.",
+      "Large migrations are idempotent and batched to fit transaction resource limits.",
+      "SDK v28+ reads an added `Option` field as `None`; other schema changes need migration."
     ],
     "avoid": [
-      "Uploading new Wasm automatically re-encodes all existing storage values.",
-      "Every migration must fit into one transaction."
+      "Do NOT say uploading new Wasm re-encodes existing storage values.",
+      "Do NOT say every migration must fit in one transaction."
     ],
-    "notes": "As of 2026-11-02: CAP-86 sparse unpacking applies only to contracts rebuilt with soroban-sdk v28+. Non-Option field additions, type changes, enums, and tuple structs still need migration. Recommending versioned records for every schema change remains correct. The official migrate-contract-storage guide still says reading a stored DataV1 as a DataV2 with an added Option field traps with Error(Object, UnexpectedSize), with no SDK-version scope (observed 2026-11-02; improvements/stellar-docs/sd-070-migrate-contract-storage-cap-86-scope.md). That trap claim is correct for pre-v28 builds, and a v28+ read still errors on a missing non-Option field. It is wrong only when the answer says that, on a v28+ build, an added Option field or a removed field of a named-field struct traps."
+    "notes": "Saying a pre-v28 build traps with `UnexpectedSize` on an added field is correct; it is wrong only for an added `Option` field or removed field of a named-field struct on a v28+ build."
   },
   "tags": {
     "category": "soroban",
@@ -31,7 +32,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-03-15",
     "sources": [
       {
@@ -231,32 +232,42 @@
             "note": "current_protocol_version 29; protocolVersion 29 (Protocol 28 behavior is live)."
           }
         ]
+      },
+      {
+        "claim": "CAP-86 (sparse Symbol-keyed map unpacking) is Final; SDK 28+ reads added Option fields as None",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0086.md",
+            "observedAt": "2026-11-14",
+            "note": "CAP: 0086 Title: Host functions for sparse Symbol-keyed map creation and unpacking ... Status: Final"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/storage/migrate-contract-storage.md",
+            "observedAt": "2026-11-14",
+            "note": "This traps with `Error(Object, UnexpectedSize)` (guide still unscoped to SDK version)"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 pass 2 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task soroban-api)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-soroban-b, verify-audit-soroban-b; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "https://github.com/stellar/rs-soroban-sdk/releases/tag/v28.0.0 (observedAt 2026-11-02): \"A contracttype struct can be read from stored data with extra or missing fields (CAP-86). A field missing from the map reads as None if it is an Option, and errors otherwise, and a map key that is not a field of the struct is ignored and dropped, where both used to panic. ... Writing is unchanged and still writes every field.\"",
-        "https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0086.md (observedAt 2026-11-02): \"Status: Final ... Protocol version: 28\"; https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v28.0.0/soroban-sdk-macros/src/derive_struct.rs uses env.sparse_map_unpack_to_slice (v27.0.6 used env.map_unpack_to_slice).",
-        "https://stellar.org/blog/developers/soroban-rust-sdk-v28 (observedAt 2026-11-02): \"v28 of the SDK uses them for contracttype unpacking. A field absent from the map unpacks as void. Void unpacks into an Option as None\"; https://docs.rs/soroban-sdk/28.0.0/soroban_sdk/_migrating: \"A key in the map that is not a field of the struct is ignored and discarded, and is lost if the value is packed and written back.\"",
-        "stellarDocs.search_docs -> https://developers.stellar.org/docs/networks/software-versions (observedAt 2026-11-02): \"Host Functions for Sparse Symbol-Keyed Map Creation and Unpacking: CAP-86 (Protocol 28 Mainnet, September 16, 2026)\"; Horizon and mainnet RPC getNetwork report protocol 29 (observedAt 2026-11-02).",
-        "Conflict recorded: https://developers.stellar.org/docs/build/guides/storage/migrate-contract-storage (observedAt 2026-11-02) still says \"This traps with Error(Object, UnexpectedSize)\" with no SDK-version scope; true for pre-v28 builds only, so golden.notes carries a symmetric caution. Filed as improvements/stellar-docs/sd-070-migrate-contract-storage-cap-86-scope.md.",
-        "https://developers.stellar.org/docs/build/guides/storage/migrate-contract-storage (observedAt 2026-11-02): guide still documents lazy migration, eager batched migration, and \"a single transaction cannot migrate an unbounded number of records\"; keyFacts and avoid items unchanged.",
-        "Independent verifier accepted the answer, freshness, asOf, and reverifyBy changes and modified golden.notes to add the symmetric pre-v28 trap clause.",
-        "Sibling sweep 2026-11-02: grep update_current_contract_wasm|UnexpectedSize|lazy migration|versioned record|stranded across eval/qa/corpus/battery → q-soroban-upgradeable-storage-compat (updated in this batch with the same CAP-86 nuance), q-soroban-oz-upgradeable-macro and q-soroban-contract-id-derivation (outside the batch; still name only update_current_contract_wasm, escalated); no contradiction with this case.",
-        "https://developers.stellar.org/docs/build/guides/storage/migrate-contract-storage — \"This traps with Error(Object, UnexpectedSize). The Soroban host validates the field count of the XDR-encoded value against the type definition before returning anything to the contract.\" (class A, observedAt 2026-11-02)",
-        "https://api.github.com/repos/stellar/rs-soroban-sdk/releases/tags/v28.0.0 — \"A field missing from the map reads as `None` if it is an `Option`, and errors otherwise, and a map key that is not a field of the struct is ignored and dropped, where both used to panic. An `Option` field can now be added or removed without migrating everything already stored.\" (class B, observedAt 2026-11-02)",
-        "Raven stellarDocs.search_docs \"migrate contract storage UnexpectedSize Option field\" — \"migrate-contract-storage#approach-1-read-old-entries-directly-with-the-new-type: \"This traps with Error(Object, UnexpectedSize).\"\" (class E, observedAt 2026-11-02)",
-        "https://crates.io/api/v1/crates/soroban-sdk — \"max_stable_version 29.0.1\" (class C, observedAt 2026-11-02)",
-        "Sibling sweep 2026-11-02 (pass 2): q-soroban-upgradeable-storage-compat carries the same verifier-modified trap rule (consistent); only these two battery cases mention UnexpectedSize.",
-        "Pass-2 proposer matrix, proposals, and independent verifier decisions: .agents/rounds/2026-11-02-golden-audit.md, task soroban-api."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-b.json#q-soroban-storage-migration",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-b.json#q-soroban-storage-migration",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-soroban-storage-migration",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-protocol/master/core/cap-0086.md -- 'CAP: 0086 Title: Host functions for sparse Symbol-keyed map creation and unpacking ... Status: Final'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/build/guides/storage/migrate-contract-storage.md -- 'This traps with `Error(Object, UnexpectedSize)` (guide still unscoped to SDK version)'"
       ],
       "rootCause": [
-        "freshness-drift",
-        "improvements/stellar-docs/sd-070-migrate-contract-storage-cap-86-scope.md"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "kaan soroban-storage-migration-upgrade"
+    "origin": "kaan soroban-storage-migration-upgrade",
+    "notes": "As of 2026-11-02: CAP-86 sparse unpacking applies only to contracts rebuilt with soroban-sdk v28+. Non-Option field additions, type changes, enums, and tuple structs still need migration. Recommending versioned records for every schema change remains correct. The official migrate-contract-storage guide still says reading a stored DataV1 as a DataV2 with an added Option field traps with Error(Object, UnexpectedSize), with no SDK-version scope (observed 2026-11-02; improvements/stellar-docs/sd-070-migrate-contract-storage-cap-86-scope.md). That trap claim is correct for pre-v28 builds, and a v28+ read still errors on a missing non-Option field. It is wrong only when the answer says that, on a v28+ build, an added Option field or a removed field of a named-field struct traps.",
+    "leaf": "soroban.upgrades"
   }
 }

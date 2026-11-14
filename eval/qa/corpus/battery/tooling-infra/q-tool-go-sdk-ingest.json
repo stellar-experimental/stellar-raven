@@ -7,19 +7,16 @@
     "stellarDocs.search_sdk_cli_tools_docs"
   ],
   "golden": {
-    "answer": "Use SDF's current Go module **`github.com/stellar/go-stellar-sdk`**. For a ledger-streaming/ingestion service, import **`github.com/stellar/go-stellar-sdk/ingest`** to parse raw ledger XDR into higher-level models and use **`github.com/stellar/go-stellar-sdk/ingest/ledgerbackend`** for the selected ledger source. Backend choice is architecture-specific: Captive Core, history/data-lake/Galexie, or supported RPC/archive inputs have different retention and operating costs.\n\nThe module also contains `txnbuild`, `clients/horizonclient`, and `clients/rpcclient`, but Horizon API polling is not the same thing as raw ledger ingestion. The old **`github.com/stellar/go/...`** SDK import path and `stellar/go` monorepo provenance are deprecated/archived after the October 2025 split; do not start new code there. As of **2026-11-02**, the latest split SDK release was v0.8.0 (published 2026-10-20), but recheck Go module/release metadata before pinning.",
+    "answer": "Use SDF's Go module `github.com/stellar/go-stellar-sdk`. For ledger streaming and ingestion, import its `ingest` package to parse raw ledger XDR and `ingest/ledgerbackend` to choose the ledger source, such as Captive Core or a data lake. The old `github.com/stellar/go` repository is archived; do not start new code there.",
     "keyFacts": [
-      "Names the current official module `github.com/stellar/go-stellar-sdk`.",
-      "Uses `github.com/stellar/go-stellar-sdk/ingest` for raw ledger parsing.",
-      "Uses `.../ingest/ledgerbackend` for source backends.",
-      "Treats raw ingestion and Horizon polling as distinct workflows."
+      "The official Go SDK module is `github.com/stellar/go-stellar-sdk`.",
+      "Raw ledger ingestion uses `go-stellar-sdk/ingest` with `ingest/ledgerbackend`.",
+      "`github.com/stellar/go` is archived and not for new code."
     ],
     "avoid": [
-      "Do NOT cite or import `github.com/stellar/go/ingest` as the current SDK path.",
-      "Do NOT claim the official Go SDK has no ingest package, require Horizon polling for ledger streaming, or confuse Horizon/API streaming with raw ledger ingestion.",
-      "Do NOT promise one backend has unbounded history or pin a release without a date."
-    ],
-    "notes": "GT-55 CORRECTION 2026-07-11: current module/import root is github.com/stellar/go-stellar-sdk; ingestion packages are /ingest and /ingest/ledgerbackend. The former stellar/go SDK path is deprecated/archived and must not be taught as current."
+      "Do NOT cite `github.com/stellar/go/ingest` as the current SDK path.",
+      "Do NOT pin a go-stellar-sdk release without an as-of date."
+    ]
   },
   "tags": {
     "category": "tooling-infra",
@@ -212,32 +209,64 @@
             "note": "archived: true"
           }
         ]
+      },
+      {
+        "claim": "Module path go-stellar-sdk with ingest and ingest/ledgerbackend packages; stellar/go archived",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://api.github.com/repos/stellar/go-stellar-sdk/contents/ingest",
+            "observedAt": "2026-11-14",
+            "note": "directories: ledger, ledgerbackend, loadtest, sac, tutorial"
+          },
+          {
+            "class": "B",
+            "ref": "https://api.github.com/repos/stellar/go",
+            "observedAt": "2026-11-14",
+            "note": "archived true"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tools/sdks/client-sdks.md",
+            "observedAt": "2026-11-14",
+            "note": "**The Go SDK is maintained by SDF.**"
+          }
+        ]
+      },
+      {
+        "claim": "Latest go-stellar-sdk release (golden: v0.8.0 as of 2026-11-02)",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://proxy.golang.org/github.com/stellar/go-stellar-sdk/@latest",
+            "observedAt": "2026-11-14",
+            "note": "Version v0.9.0, Time 2026-11-10T14:46:09Z; GitHub release v0.9.0 2026-11-12"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-05)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-tooling-b, verify-audit-tooling-b; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "A: https://developers.stellar.org/docs/tools/sdks/client-sdks — \"The Go SDK is maintained by SDF. This SDK is split up into separate packages, all of which you can find in the [Go SDK](https://github.com/stellar/go-stellar-sdk).\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[0]",
-        "B: https://proxy.golang.org/github.com/stellar/go-stellar-sdk/@latest — \"{\"Version\":\"v0.8.0\",\"Time\":\"2026-10-20T21:30:21Z\"}\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[0]",
-        "E: stellarDocs.search_rpc_horizon_data_docs 'go-stellar-sdk ingest ledgerbackend' -> https://developers.stellar.org/docs/data/indexers/build-your-own/ingest-sdk/examples/changes — \"github.com/stellar/go-stellar-sdk/ingest\" \"github.com/stellar/go-stellar-sdk/ingest/ledgerbackend\"\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[1..2]",
-        "A: https://developers.stellar.org/docs/data/indexers — \"Ingest SDK: A set of Golang packages ... which can acquire and parse ledger meta data and ledger entries from Stellar network.\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[1..2]",
-        "A: https://developers.stellar.org/docs/tools/sdks/client-sdks — \"Horizon Client ... web client for interfacing with Horizon server REST endpoints; Ingest SDK: acquire and parse data from the Stellar network.\" (observedAt 2026-11-02) → confirmed: golden.keyFacts[3]",
-        "B: https://github.com/stellar/go (gh api: archived true, pushed 2025-12-10) — \"⚠️ REPOSITORY DEPRECATED ⚠️ This repository has been moved to: github.com/stellar/go-stellar-sdk\" (observedAt 2026-11-02) → confirmed: golden.answer / golden.avoid[0]",
-        "D: Parallel search -> https://pkg.go.dev/github.com/stellar/go-stellar-sdk — \"This repo previously served as the Go Monorepo for all SDF Go projects. As of October 2025, it has been refactored to focus exclusively on developer-facing SDK packages.\" (observedAt 2026-11-02) → confirmed: golden.answer / golden.avoid[0]",
-        "D: Parallel search -> https://pkg.go.dev/github.com/stellar/go-stellar-sdk@v0.8.0?tab=versions — \"v0.8.0 Oct 20, 2026; v0.7.3 Aug 20, 2026; ... v0.6.1 Aug 10, 2026; v0.6.0 Jun 9, 2026\" (observedAt 2026-11-02) → confirmed-as-of: golden.answer",
-        "B: https://api.github.com/repos/stellar/go-stellar-sdk/releases/latest — \"tag v0.8.0 published 2026-10-20T21:30:48Z\" (observedAt 2026-11-02) → confirmed-as-of: golden.answer",
-        "A: https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide — \"SDF-maintained SDKs ... Go SDK v0.8.0\" (observedAt 2026-11-02) → confirmed-as-of: golden.answer",
-        "Verifier (accept golden.answer) B: https://api.github.com/repos/stellar/go-stellar-sdk/releases — \"v0.8.0 2026-10-20T21:30:48Z prerelease=false (latest); v0.7.3 2026-08-24\" (observedAt 2026-11-02)",
-        "Verifier (accept golden.answer) F: https://proxy.golang.org/github.com/stellar/go-stellar-sdk/@latest — \"{\"Version\":\"v0.8.0\",\"Time\":\"2026-10-20T21:30:21Z\"}\" (observedAt 2026-11-02)",
-        "Verifier (accept golden.answer) D: https://pkg.go.dev/github.com/stellar/go-stellar-sdk@v0.8.0?tab=versions (via Parallel web_search) — \"v0.8.0 Oct 20, 2026\" (observedAt 2026-11-02)",
-        "Verifier (accept golden.answer) B: https://api.github.com/repos/stellar/go — \"archived: true\" (observedAt 2026-11-02)",
-        "Sibling sweep 2026-11-02: q-tool-which-sdk-comparison, q-ti-parse-raw-ledger-data, q-tool-sdk-repos-discovery, q-tool-indexer-repos-discovery, q-tool-greenfield-indexer-prior-art-preflight, q-soroban-contract-build-verification; grep v0.6.0|v0.7|v0.8 + go-stellar-sdk over battery → only this case pins a release; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-b.json#q-tool-go-sdk-ingest",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-b.json#q-tool-go-sdk-ingest",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-tool-go-sdk-ingest",
+        "Live B 2026-11-14: https://api.github.com/repos/stellar/go-stellar-sdk/contents/ingest -- 'directories: ledger, ledgerbackend, loadtest, sac, tutorial'",
+        "Live B 2026-11-14: https://api.github.com/repos/stellar/go -- 'archived true'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/tools/sdks/client-sdks.md -- '**The Go SDK is maintained by SDF.**'",
+        "Live B 2026-11-14: https://proxy.golang.org/github.com/stellar/go-stellar-sdk/@latest -- 'Version v0.9.0, Time 2026-11-10T14:46:09Z; GitHub release v0.9.0 2026-11-12'",
+        "Live B 2026-11-14: https://api.github.com/repos/stellar/go-stellar-sdk/releases -- 'v0.9.0 2026-11-12T17:05:35Z pre=false; v0.8.0 2026-10-20T21:30:48Z'"
       ],
       "rootCause": [
-        "freshness-drift"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-tool-go-sdk-ingest"
+    "origin": "raven-next q-tool-go-sdk-ingest",
+    "notes": "GT-55 CORRECTION 2026-07-11: current module/import root is github.com/stellar/go-stellar-sdk; ingestion packages are /ingest and /ingest/ledgerbackend. The former stellar/go SDK path is deprecated/archived and must not be taught as current.",
+    "leaf": "tooling.renames-repos",
+    "secondaryLeaf": "data.galexie-ingest"
   }
 }

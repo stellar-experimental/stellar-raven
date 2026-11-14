@@ -1,0 +1,21 @@
+{
+  "id": "q-protocol-parallel-execution",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-protocol (golden coverage audit)",
+    "reviewer": "verify-protocol (golden coverage audit)",
+    "reason": "CAP-0063 in Protocol 23 is in q-protocol-version-history-list's answer (\"P23 Whisk ... parallel scheduling (CAP-0063)\"); the cluster-count value is a validator setting, and SLP-0007 raising it to 3 is in q-pc-slp-0004-0006-status's answer.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-protocol-parallel-execution",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-protocol-parallel-execution",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-protocol-parallel-execution"
+    ],
+    "lastCaseContentSha256": "1edfbe4547f4298e8f6a3ddbf7b0499c52582c8a1a203459316f0ecaf9b6ec44",
+    "replacementIds": []
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "id": "q-soroban-auth-recursion-dos-audit",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-soroban-a (golden coverage audit)",
+    "reviewer": "verify-audit-soroban-a (golden coverage audit)",
+    "reason": "Trivia about one audit report's identifier history, unanswerable from a general Stellar source without that exact PDF, and its Raven-specific half (Scout exactMiss behavior) belongs to Scout contract tests. A general 'what audits cover Soroban core and how to read a finding' case would earn the slot instead.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-a.json#q-soroban-auth-recursion-dos-audit",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-a.json#q-soroban-auth-recursion-dos-audit",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-soroban-auth-recursion-dos-audit"
+    ],
+    "lastCaseContentSha256": "3ea1ec2e1314c32bc54b4d59676385562c0d9fe7fe267fc7e67d2212e73b0f4f",
+    "replacementIds": []
+  }
+}

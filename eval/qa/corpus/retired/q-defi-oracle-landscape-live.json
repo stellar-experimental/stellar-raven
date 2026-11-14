@@ -1,0 +1,21 @@
+{
+  "id": "q-defi-oracle-landscape-live",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-defi (golden coverage audit)",
+    "reviewer": "verify-defi (golden coverage audit)",
+    "reason": "Process-only directory case. Oracle topic stays visible via q-defi-reflector-oracle and q-pc-cross-redstone-sep40 (amended in the protocol verify file to name Reflector and RedStone as the docs' SEP-40 providers).",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-defi-oracle-landscape-live",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-defi-oracle-landscape-live",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-defi-oracle-landscape-live"
+    ],
+    "lastCaseContentSha256": "555a984a1e65d1cf3e5302c4dfdd2be97c0805ac3b7bd96f7fe5f648e90b9953",
+    "replacementIds": []
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "id": "q-edge-doc-title-zero-hits",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-edge (golden coverage audit)",
+    "reviewer": "verify-audit-edge (golden coverage audit)",
+    "reason": "Adapter behavior covered by unit tests; the portable lesson lives in the Strupey case.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-edge.json#q-edge-doc-title-zero-hits",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-edge.json#q-edge-doc-title-zero-hits",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-edge-doc-title-zero-hits"
+    ],
+    "lastCaseContentSha256": "3cf2e8551d3fdd8dbf0c7b52800f1532781a0d7fc47458ac2ea2a6ac0bc2046b",
+    "replacementIds": []
+  }
+}

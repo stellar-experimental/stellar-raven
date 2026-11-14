@@ -1,21 +1,22 @@
 {
   "id": "q-soroban-unit-testing",
-  "question": "How do I write unit tests for a Soroban contract, including faking authorization?",
+  "question": "How do I test a Soroban contract, including faking authorization and fuzz or property-based testing?",
   "surface": [
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "Write ordinary Rust tests with the matching `soroban-sdk` dev dependency and its `testutils` feature. Create `Env::default()`, register the contract (including constructor args), create the generated client, invoke methods, and assert results/errors/events/storage. `env.mock_all_auths()` makes every `require_auth` succeed; use `mock_auths(...)`, negative paths, and/or `env.auths()` assertions when you need to prove the expected authorization tree. Blanket mocking alone can hide a missing `require_auth`. These are native in-process unit tests; RPC/Testnet integration is a separate layer.",
+    "answer": "Write Rust tests with `soroban-sdk`'s `testutils` feature: build `Env::default()`, register the contract, call it through the generated client and assert results, errors and events. `mock_all_auths()` makes every `require_auth` pass and can hide a missing check; use `mock_auths` or `env.auths()` plus negative paths to prove the auth tree. For property and fuzz tests run `proptest` or `cargo-fuzz` with the SDK's `SorobanArbitrary` against the same in-process `Env`. No network is needed.",
     "keyFacts": [
-      "Uses Env/testutils, registration, generated client, invocation, and assertions.",
-      "Distinguishes blanket auth mocking from specific/negative/auth-tree verification.",
-      "Uses true negative auth paths and exact failure assertions."
+      "Tests run in-process with `Env::default()`, `testutils` and the generated client.",
+      "`mock_all_auths` can hide a missing `require_auth`; `env.auths()` checks it.",
+      "Property and fuzz tests use `proptest` and `cargo-fuzz` with the SDK's `SorobanArbitrary`.",
+      "Tests are native `cargo test` runs; Testnet or RPC integration is a separate layer."
     ],
     "avoid": [
-      "Do NOT claim unit tests require Testnet/RPC deployment.",
-      "Do NOT treat mock_all_auths success as proof that authorization was required correctly."
+      "Do NOT claim unit tests require Testnet or RPC deployment.",
+      "Do NOT treat `mock_all_auths` success as proof that authorization is correct."
     ],
-    "notes": "Env::default() + register + mock_all_auths is the canonical in-process test surface; runs under cargo test, no network. Foundry/Hardhat is the EVM trap. 2026-08-12 differentiation: this file is the happy-path unit-testing how-to where mock_all_auths is the recommended convenience; q-sor-decode-hosterror-codes owns exact negative-auth failure classes, generated `try_*` results, and failed-call event rollback.\nAlso good if the answer: Tests run with normal `cargo test`; no live network is needed (the host is in-process). | You can assert emitted events, returned values, and authorizations via `env` test utilities.\nGolden cites: The developers.stellar.org testing documentation.\nGT-48 CORRECTION 2026-07-11: native in-process tests; blanket auth mocking is not an authorization assertion."
+    "notes": "Echidna and Foundry are EVM tools, not the native path; do not require any vendor's fuzzing practice."
   },
   "tags": {
     "category": "soroban",
@@ -29,7 +30,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-08-12",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-03-26",
     "sources": [
       {
@@ -96,18 +97,42 @@
             "observedAt": "2026-07-11"
           }
         ]
+      },
+      {
+        "claim": "`Env::default()`, `mock_all_auths()` and `env.auths()` are the documented test surface",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/testing/test-contract-auth.md",
+            "observedAt": "2026-11-14",
+            "note": "env.mock_all_auths(); ... env.auths()"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/testing/unit-tests.md",
+            "observedAt": "2026-11-14",
+            "note": "let env = Env::default();"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-06)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-soroban-b, verify-audit-soroban-b; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "https://developers.stellar.org/docs/build/guides/testing/unit-tests (observedAt 2026-10-09): \"let contract_id = env.register(IncrementContract, ());\"; \"The Env created at the beginning of the test is not a simulation\".",
-        "https://raw.githubusercontent.com/stellar/rs-soroban-sdk/v29.0.1/soroban-sdk/src/env.rs (observedAt 2026-11-02): \"pub fn register<'a, C, A>(&self, contract: C, constructor_args: A) -> Address\"; \"pub fn mock_auths(&self, auths: &[MockAuth])\"; \"pub fn mock_all_auths(&self)\"; \"pub fn auths(&self)\".",
-        "Raven stellarDocs.search_docs({query:'mock_all_auths unit test authorization'}) (observedAt 2026-11-02): deployer#test-code shows env.mock_all_auths.",
-        "Verification only: no gospel change. Sibling sweep 2026-11-02: q-sor-decode-hosterror-codes; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-b.json#q-soroban-unit-testing",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-b.json#q-soroban-unit-testing",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-soroban-unit-testing",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/build/guides/testing/test-contract-auth.md -- 'env.mock_all_auths(); ... env.auths()'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/build/guides/testing/unit-tests.md -- 'let env = Env::default();'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-soroban-unit-testing"
+    "origin": "raven-next q-soroban-unit-testing",
+    "notes": "Env::default() + register + mock_all_auths is the canonical in-process test surface; runs under cargo test, no network. Foundry/Hardhat is the EVM trap. 2026-08-12 differentiation: this file is the happy-path unit-testing how-to where mock_all_auths is the recommended convenience; q-sor-decode-hosterror-codes owns exact negative-auth failure classes, generated `try_*` results, and failed-call event rollback.\nAlso good if the answer: Tests run with normal `cargo test`; no live network is needed (the host is in-process). | You can assert emitted events, returned values, and authorizations via `env` test utilities.\nGolden cites: The developers.stellar.org testing documentation.\nGT-48 CORRECTION 2026-07-11: native in-process tests; blanket auth mocking is not an authorization assertion.",
+    "leaf": "soroban.testing"
   }
 }

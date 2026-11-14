@@ -1,0 +1,23 @@
+{
+  "id": "q-sor-recurring-escrow-patterns",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-soroban-a (golden coverage audit)",
+    "reviewer": "verify-audit-soroban-a (golden coverage audit)",
+    "reason": "Merged into q-stellar-recurring-payments. Same facet as q-stellar-recurring-payments; the absorbed transfer_from-against-allowance fact is the contract half that survivor lacks.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-a.json#q-sor-recurring-escrow-patterns",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-a.json#q-sor-recurring-escrow-patterns",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-sor-recurring-escrow-patterns"
+    ],
+    "lastCaseContentSha256": "788005174ffc855b530de818404cb5ab172fe6e22a1871dc653ee79b9d3f97c4",
+    "replacementIds": [
+      "q-stellar-recurring-payments"
+    ]
+  }
+}

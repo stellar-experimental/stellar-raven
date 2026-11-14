@@ -1,0 +1,21 @@
+{
+  "id": "q-edge-deep-full-history-report",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-edge (golden coverage audit)",
+    "reviewer": "verify-audit-edge (golden coverage audit)",
+    "reason": "Named survivor does not survive; retire (see mergeFixes).",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-edge.json#q-edge-deep-full-history-report",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-edge.json#q-edge-deep-full-history-report",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-edge-deep-full-history-report"
+    ],
+    "lastCaseContentSha256": "9206a2d82972a9f7d3846b781e33e6a51c168cd89928abeaa80a5d062503b1c2",
+    "replacementIds": []
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "id": "q-ti-friendbot-ratelimit-alternatives",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-tooling-a (golden coverage audit)",
+    "reviewer": "verify-audit-tooling-a (golden coverage audit)",
+    "reason": "Friendbot scope is q-infra-testnet-vs-futurenet kf3 and q-edge-send-me-free-xlm kf1; the backup-faucet bait is q-n3-issues-842-backup-faucet-wallet. The 429 back-off detail is operational, not a facet.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-a.json#q-ti-friendbot-ratelimit-alternatives",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-a.json#q-ti-friendbot-ratelimit-alternatives",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-ti-friendbot-ratelimit-alternatives"
+    ],
+    "lastCaseContentSha256": "577eb622b4a43476971b0c0b69a8534a8cc038838052f4424496f181b1307357",
+    "replacementIds": []
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "id": "q-jutsu-what-is-a-memo",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-hist-retail (golden coverage audit)",
+    "reviewer": "verify-hist-retail (golden coverage audit)",
+    "reason": "Duplicated twice: q-pc-memos-reference holds the definition and types, q-raph-exchange-memo holds the \"copy it exactly\" behavior. No predicate here is untested elsewhere.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-jutsu-what-is-a-memo",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-jutsu-what-is-a-memo",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-jutsu-what-is-a-memo"
+    ],
+    "lastCaseContentSha256": "d5d3ebbe44e3a264c090a2b3fea70ed5600094bb2f06b4fc3409893eb08cb148",
+    "replacementIds": []
+  }
+}

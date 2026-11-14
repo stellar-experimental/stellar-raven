@@ -1,0 +1,21 @@
+{
+  "id": "q-gap-lumen-exact-document-empty",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-tooling-a (golden coverage audit)",
+    "reviewer": "verify-audit-tooling-a (golden coverage audit)",
+    "reason": "Substring-only search is pinned in the manifest; the soft-empty-is-not-absence behavior is graded by frozen q-live-ll-guessed-slug-soft-empty.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-a.json#q-gap-lumen-exact-document-empty",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-a.json#q-gap-lumen-exact-document-empty",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-gap-lumen-exact-document-empty"
+    ],
+    "lastCaseContentSha256": "6f322de942dac0871a9e992853394c58b48f798cce3401a864b24c34dcc241d5",
+    "replacementIds": []
+  }
+}

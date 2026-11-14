@@ -1,0 +1,933 @@
+{
+  "$comment": "Generated tool-contract lane: battery cases with truth.lane tool. Regenerate with npm run eval:qa:compile.",
+  "schema": "qa-case-v1",
+  "corpusContentSha256": "fdb738dc9ed1ac439731c127bd29616955c36382d699ddddea09f870cfd93f68",
+  "counts": {
+    "total": 6,
+    "byCategory": {
+      "defi-ecosystem": 1,
+      "edge-behavior": 1,
+      "scf-grants-builders": 2,
+      "soroban": 2
+    },
+    "byService": {
+      "lumenloop": 1,
+      "scout": 5
+    },
+    "byFreshness": {
+      "live": 3,
+      "scheduled": 3
+    },
+    "traps": {
+      "fabrication-bait": 1
+    },
+    "byLifecycleState": {
+      "active": 6
+    },
+    "byReviewState": {
+      "none": 6
+    }
+  },
+  "cases": [
+    {
+      "id": "q-defi-cluster-rollup-live",
+      "question": "Give a current quantitative view of Stellar ecosystem clusters and the ecosystem-wide category/funding rollup.",
+      "surface": [
+        "scout.getClusters",
+        "scout.analyzeEcosystem"
+      ],
+      "golden": {
+        "answer": "Call getClusters and analyzeEcosystem({dimension:\"all\"}), or separate analyzeEcosystem category and funding calls. Report each view's generatedAt, scope, and meta.population id: matching ids mean mechanically comparable numbers, and different ids mean different populations. Label SCF dollars as the service's reconstructed project-based total, and state that overlapping type clusters are not summable.",
+        "keyFacts": [
+          "Uses cluster analysis plus analyzeEcosystem all or separate category and funding rollups.",
+          "Labels SCF dollars as the service's reconstructed project-based total.",
+          "Compares each view's population id before combining cluster and rollup numbers.",
+          "Reports generatedAt and scope for each view.",
+          "Treats overlapping type clusters as nonsummable."
+        ],
+        "avoid": [
+          "Treats views with different population ids as one population, or sums type clusters as a project total."
+        ]
+      },
+      "tags": {
+        "category": "defi-ecosystem",
+        "service": "scout",
+        "freshness": "live"
+      },
+      "truth": {
+        "lifecycle": {
+          "state": "active",
+          "reviewState": "none"
+        },
+        "domain": "corpus-grounded",
+        "status": "confirmed",
+        "asOf": "2026-11-02",
+        "sources": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/clusters?dimension=category"
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/analyze?dimension=categories"
+          },
+          {
+            "class": "B",
+            "ref": "catalog/manifest.json#scout.analyzeEcosystem"
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/analyze?dimension=funding"
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/clusters?dimension=types",
+            "note": "population.id projects|status:Development+Live+Pre-Release, included 906; 25 type clusters sum to 1206 (overlapping).",
+            "observedAt": "2026-11-02"
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/analyze?dimension=all",
+            "note": "meta.population.id projects|status:Development+Live+Pre-Release; gaps: 'A project counts under EACH of its types.'",
+            "observedAt": "2026-11-02"
+          },
+          {
+            "class": "A",
+            "ref": "https://stellarlight.xyz/api/openapi.json#/components/schemas/PopulationScope",
+            "note": "'Identical `id`s across responses (e.g. analyze vs clusters) mean the numbers are mechanically comparable; different `id`s are DIFFERENT populations'",
+            "observedAt": "2026-11-02"
+          }
+        ],
+        "corroboration": [
+          {
+            "claim": "Cluster and rollup views each report a meta.population id; identical ids are mechanically comparable. On 2026-11-02 clusters and analyzeEcosystem shared projects|status:Development+Live+Pre-Release (906 projects).",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "C",
+                "ref": "https://stellarlight.xyz/api/clusters?dimension=category",
+                "observedAt": "2026-11-02",
+                "note": "population.id projects|status:Development+Live+Pre-Release, totalAvailable 906, included 906, truncated false"
+              },
+              {
+                "class": "C",
+                "ref": "https://stellarlight.xyz/api/analyze?dimension=funding",
+                "observedAt": "2026-11-02",
+                "note": "meta.population.id projects|status:Development+Live+Pre-Release; methodologyVersion funding-v2 (2026-07-05)"
+              },
+              {
+                "class": "A",
+                "ref": "https://stellarlight.xyz/api/openapi.json#/components/schemas/PopulationScope",
+                "observedAt": "2026-11-02",
+                "note": "Identical ids are mechanically comparable; different ids are DIFFERENT populations"
+              }
+            ]
+          },
+          {
+            "claim": "SCF dollars are the service's reconstructed project-based total.",
+            "verdict": "confirmed",
+            "evidence": [
+              {
+                "class": "C",
+                "ref": "https://stellarlight.xyz/api/analyze?dimension=funding",
+                "observedAt": "2026-11-02",
+                "note": "'Dollar totals are in-house reconstructions: SCF does not publish per-award amounts for all rounds'"
+              },
+              {
+                "class": "A",
+                "ref": "https://stellarlight.xyz/api/openapi.json",
+                "observedAt": "2026-11-02",
+                "note": "funding methodologyVersion funding-v2 (2026-07-05)"
+              }
+            ]
+          },
+          {
+            "claim": "Overlapping type clusters can be summed as a project total.",
+            "verdict": "contradicted",
+            "evidence": [
+              {
+                "class": "C",
+                "ref": "https://stellarlight.xyz/api/clusters?dimension=types",
+                "observedAt": "2026-11-02",
+                "note": "25 type clusters, summed size 1206 over a 906-project population"
+              },
+              {
+                "class": "C",
+                "ref": "https://stellarlight.xyz/api/analyze?dimension=all#gaps",
+                "observedAt": "2026-11-02",
+                "note": "'A project counts under EACH of its types.'"
+              }
+            ]
+          }
+        ],
+        "verified": {
+          "date": "2026-11-02",
+          "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch defi-ecosystem-02)",
+          "evidence": [
+            "2026-11-02 [C] https://stellarlight.xyz/api/analyze?dimension=all — \"validDimensions: all, hackathons, categories, funding, tvl, gaps, developers, toolchain\" (proposer claim, confirmed: getClusters plus analyzeEcosystem all, or separate category and funding rollups, give the quantitative view.)",
+            "2026-11-02 [A] https://stellarlight.xyz/api/openapi.json#/api/clusters — \"Groups the active Stellar project directory into topic clusters ... dimension=category|types\" (proposer claim, confirmed: getClusters plus analyzeEcosystem all, or separate category and funding rollups, give the quantitative view.)",
+            "2026-11-02 [C] https://stellarlight.xyz/api/analyze?dimension=funding — \"Counts distinct PROJECTS with scf.awarded=true ... Dollar totals are in-house reconstructions: SCF does not publish per-award amounts for all rounds\" (proposer claim, confirmed: SCF dollars are the service's reconstructed project-based total.)",
+            "2026-11-02 [A] https://stellarlight.xyz/api/openapi.json — \"funding methodologyVersion funding-v2 (2026-07-05); scfTotalDistributedUSD 58585451.99 over 582 projects\" (proposer claim, confirmed: SCF dollars are the service's reconstructed project-based total.)",
+            "2026-11-02 [C] https://stellarlight.xyz/api/clusters?dimension=category — \"population.id projects|status:Development+Live+Pre-Release, totalAvailable 906, included 906; 7 category clusters sum to size 906, scfFunded 582, scfTotalUSD 58585451.99\" (proposer claim, contradicted: Clusters and rollups have separate denominators / are not an identical population.)",
+            "2026-11-02 [C] https://stellarlight.xyz/api/analyze?dimension=categories — \"population.id projects|status:Development+Live+Pre-Release; totalProjects 906; per-category counts identical to clusters\" (proposer claim, contradicted: Clusters and rollups have separate denominators / are not an identical population.)",
+            "2026-11-02 [A] https://stellarlight.xyz/api/openapi.json#/components/schemas/PopulationScope — \"Identical `id`s across responses (e.g. analyze vs clusters) mean the numbers are mechanically comparable; different `id`s are DIFFERENT populations\" (proposer claim, contradicted: Clusters and rollups have separate denominators / are not an identical population.)",
+            "2026-11-02 [C] https://stellarlight.xyz/api/clusters?dimension=types — \"25 type clusters, summed size 1206 over a 906-project population\" (proposer claim, confirmed: Type clusters overlap and are not summable.)",
+            "2026-11-02 [C] https://stellarlight.xyz/api/analyze?dimension=all#gaps — \"A project counts under EACH of its types.\" (proposer claim, confirmed: Type clusters overlap and are not summable.)",
+            "2026-11-02 [C] https://stellarlight.xyz/api/clusters — \"meta.generatedAt 2026-11-02T15:50:21.826Z; population.statusScope [Development, Live, Pre-Release]\" (proposer claim, confirmed: Each view carries generatedAt and scope.)",
+            "2026-11-02 [C] https://stellarlight.xyz/api/clusters?dimension=category — \"\"population\": {\"id\": \"projects|status:Development+Live+Pre-Release\", ... \"totalAvailable\": 906, \"included\": 906, \"truncated\": false}\" (independent verifier, accept on golden.answer)",
+            "2026-11-02 [C] https://stellarlight.xyz/api/clusters?dimension=types — \"\"population\": {\"id\": \"projects|status:Development+Live+Pre-Release\", ... \"included\": 906}\" (independent verifier, accept on golden.answer)",
+            "2026-11-02 [C] https://stellarlight.xyz/api/analyze?dimension=all — \"meta.population.id \"projects|status:Development+Live+Pre-Release\"; categories.scope \"Active projects only ... don't merge the two without labeling the source.\"\" (independent verifier, accept on golden.answer)",
+            "2026-11-02 [C] https://stellarlight.xyz/api/analyze?dimension=funding — \"meta.population.id \"projects|status:Development+Live+Pre-Release\"; funding.methodologyVersion \"funding-v2 (2026-07-05)\", scfTotalDistributedUSD 58585451.99\" (independent verifier, accept on golden.answer)",
+            "2026-11-02 [B] catalog/manifest.json#scout.analyzeEcosystem outputSchema meta.population (upstream OpenAPI https://stellarlight.xyz/api/openapi.json) — \"Identical `id`s across responses (e.g. analyze vs clusters) mean the numbers are mechanically comparable; different `id`s are DIFFERENT populations — never merge/sum them without labeling the scopes.\" (independent verifier, accept on golden.answer)",
+            "Change: answer now asks for each view's meta.population id (matching ids comparable, different ids are different populations); keyFacts[2] and avoid[0] replaced so they no longer assert a cluster/rollup denominator split; prior 'identical population' contradicted corroboration row removed (live ids match); asOf 2026-07-11 -> 2026-11-02.",
+            "Root-cause note: the 2026-07-11 golden assumed clusters and rollups use separate populations (the clusters endpoint then truncated at 500); the live service now reports one shared 906-project population id, so the old avoid punished a true claim.",
+            "Sibling sweep 2026-11-02: grep 'separate denominators|identical population|population id' over the battery → only this case. Checked q-defi-category-funding-ratio-live, q-scf-funding-by-category, q-defi-tooling-whitespace-live, q-defi-category-saturation-live, q-scf-total-distributed, q-eco-defi-market-map. No direct contradiction; q-defi-category-funding-ratio-live ('report it as a separate population') and q-scf-funding-by-category ('/api/clusters truncates at 500') carry older population assumptions and are escalated to their own batches."
+          ],
+          "rootCause": [
+            "freshness-drift",
+            ".agents/TODO.md — eval-side authoring flaw: the avoid asserted a cluster/rollup population split that the service does not guarantee"
+          ]
+        },
+        "origin": "core-35 ecosystem-cluster-and-rollup",
+        "lane": "tool"
+      }
+    },
+    {
+      "id": "q-edge-closed-world-builder-directory-miss",
+      "question": "Does Scout's builder directory currently contain an exact builder record for “Strupey”?",
+      "surface": [
+        "scout.getBuilders"
+      ],
+      "golden": {
+        "answer": "No exact `Strupey` builder record was returned by Scout's builder directory when checked on 2026-07-13. That answers this closed-world directory-membership question at Scout's scope; it does not establish that the name has no history or footprint elsewhere. A broader ecosystem search is unnecessary unless the user expands the question beyond this directory.",
+        "keyFacts": [
+          "Directly answers exact Scout builder-directory membership from its result.",
+          "Scopes the negative to Scout's builder directory and the observation date.",
+          "Avoids semantic, research, A/V, and docs searches for this closed-world request."
+        ],
+        "avoid": [
+          "Do NOT turn the directory miss into an absolute claim that Strupey does not exist or has no Stellar history.",
+          "Do NOT force an open-world research pass when the user asked only about one named directory.",
+          "Do NOT substitute a semantic neighbor or unrelated namesake for an exact builder record."
+        ],
+        "notes": "Closed-world negative control paired with q-edge-strupey-ambiguous-stellar-history. The same token should stop at Scout scope here but trigger one bounded broad pass for the open-world history question."
+      },
+      "tags": {
+        "category": "edge-behavior",
+        "service": "scout",
+        "freshness": "scheduled",
+        "trap": "fabrication-bait"
+      },
+      "truth": {
+        "lifecycle": {
+          "state": "active",
+          "reviewState": "none"
+        },
+        "domain": "corpus-grounded",
+        "status": "confirmed",
+        "asOf": "2026-11-02",
+        "reverifyBy": "2027-04-22",
+        "sources": [
+          {
+            "class": "C",
+            "ref": "http://localhost:8787/mcp scout.getBuilders(q=Strupey)",
+            "note": "Observed 2026-07-13: returned=0 and total=0 for the exact directory query."
+          },
+          {
+            "class": "B",
+            "ref": "catalog/manifest.json#scout.getBuilders",
+            "note": "Current exposed operation contract identifies this as the Scout builder-directory surface."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/builders?q=Strupey",
+            "note": "generatedAt 2026-11-02T15:57:55Z; counts returned=0 total=0; partial=false; advisory: 'The directory has 399 builder profiles, but none match ... This is a filter miss'.",
+            "observedAt": "2026-11-02"
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/builders?q=Strupey",
+            "observedAt": "2026-11-05",
+            "note": "Still ok empty/partialfalse, returned0,total0; advisory now names401 profiles and explicitly calls this a filter miss, not an empty directory. Historical399 was a dated prior observation."
+          }
+        ],
+        "corroboration": [
+          {
+            "claim": "Scout's builder directory returned no exact Strupey record on 2026-07-13.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "C",
+                "ref": "https://stellarlight.xyz/api/builders?q=Strupey",
+                "observedAt": "2026-10-06",
+                "note": "generatedAt 2026-10-06T14:52:43Z; counts returned=0, total=0; partial=false; advisory says this is a filter miss over 320 builder profiles, not absence."
+              },
+              {
+                "class": "B",
+                "ref": "catalog/manifest.json#scout.getBuilders",
+                "observedAt": "2026-10-06",
+                "note": "The exposed operation contract still defines the Scout builder-directory surface."
+              },
+              {
+                "class": "C",
+                "ref": "https://stellarlight.xyz/api/builders?q=Strupey",
+                "observedAt": "2026-11-02",
+                "note": "generatedAt 2026-11-02T15:57:55Z; returned=0, total=0; partial=false; advisory calls it a filter miss over 399 builder profiles, not absence."
+              }
+            ]
+          }
+        ],
+        "verified": {
+          "date": "2026-11-05",
+          "by": "Scout Astra high author lane; independent final review assigned to t2dv; .agents/rounds/2026-11-05-truth-maintenance/scout-golden-changes.md",
+          "evidence": [
+            "C https://stellarlight.xyz/api/builders?q=Strupey — Still ok empty/partialfalse, returned0,total0; advisory now names401 profiles and explicitly calls this a filter miss, not an empty directory. Historical399 was a dated prior observation.",
+            "Scoped sibling sweep and exact replay commands: .agents/rounds/2026-11-05-truth-maintenance/scout-golden-changes.md; primary matrix scout.md. November5 America/New_York observations have November6 UTC receipt timestamps. Existing reverifyBy dates retained; unrelated historical claims were not re-dated."
+          ],
+          "rootCause": [
+            "freshness-drift"
+          ]
+        },
+        "origin": "authored 2026-07-13 as the closed-world over-recovery control",
+        "lane": "tool"
+      }
+    },
+    {
+      "id": "q-scf-pitch-prep-live",
+      "question": "How should I prepare an evidence-grounded SCF pitch for my Stellar idea right now?",
+      "surface": [
+        "scout.scfPitch"
+      ],
+      "golden": {
+        "answer": "Call scout.scfPitch with the idea and cite generatedAt. Use report.round only after checking round.source: \"live\" allows reporting the open rounds, \"unavailable\" means timing is unknown and the official SCF awards page must be checked. A null vertical means the idea did not map to Scout's axis, not that no market exists; null gap or funding is unavailable, not zero.",
+        "keyFacts": [
+          "round.source \"unavailable\" means the round state is unknown, not that no round is open.",
+          "A null vertical means unmapped, not that no market or competition exists.",
+          "Null gap or funding blocks are unavailable analyses, not zero."
+        ],
+        "avoid": [
+          "Do NOT claim deterministic pitch angles are reviewer judgments or predict an SCF award."
+        ],
+        "notes": "Returned peers, totals and round numbers are examples, not durable facts."
+      },
+      "tags": {
+        "category": "scf-grants-builders",
+        "service": "scout",
+        "freshness": "live"
+      },
+      "truth": {
+        "lifecycle": {
+          "state": "active",
+          "reviewState": "none"
+        },
+        "domain": "corpus-grounded",
+        "status": "confirmed",
+        "asOf": "2026-11-14",
+        "sources": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/scf-pitch?q=streaming%20recurring%20payments%20contract%20on%20Soroban",
+            "note": "The read-only probe returned a live round block, funded peers, a funding bar, vetting evidence, and deterministic angles."
+          },
+          {
+            "class": "B",
+            "ref": "catalog/manifest.json#scout.scfPitch",
+            "note": "The exposed contract defines the live or unavailable round-source boundary and the evidence-grounded composite."
+          },
+          {
+            "class": "A",
+            "ref": "https://communityfund.stellar.org/awards",
+            "note": "The official SCF awards page is the fallback authority for current round state."
+          }
+        ],
+        "corroboration": [
+          {
+            "claim": "The pitch composite provides dated round, funding, competitor, prior-art, and deterministic-angle evidence without making a funding decision.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "C",
+                "ref": "https://stellarlight.xyz/api/scf-pitch?q=streaming%20recurring%20payments%20contract%20on%20Soroban",
+                "observedAt": "2026-08-18",
+                "note": "The response carried all five evidence blocks and described the angles as deterministic derivations."
+              },
+              {
+                "class": "B",
+                "ref": "catalog/manifest.json#scout.scfPitch",
+                "observedAt": "2026-08-18",
+                "note": "The manifest defines the composite and says it performs no prose generation."
+              }
+            ]
+          },
+          {
+            "claim": "An unavailable round source means unknown round state, while the official SCF awards page remains the authority for current phase information.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "B",
+                "ref": "catalog/manifest.json#scout.scfPitch",
+                "observedAt": "2026-08-18",
+                "note": "The contract permits `live` or `unavailable` and forbids a negative conclusion on fetch failure."
+              },
+              {
+                "class": "A",
+                "ref": "https://communityfund.stellar.org/awards",
+                "observedAt": "2026-08-18",
+                "note": "The page published current round phases and submission deadlines."
+              }
+            ]
+          },
+          {
+            "claim": "scfPitch returns report.round with source live or unavailable.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "B",
+                "ref": "https://github.com/Stellar-Light/stellarlight/blob/main/src/lib/scf-pitch.ts",
+                "observedAt": "2026-11-14",
+                "note": "source: \"live\" | \"unavailable\" (case record 2026-11-02; not re-fetched)"
+              }
+            ]
+          }
+        ],
+        "verified": {
+          "date": "2026-11-14",
+          "by": "Golden coverage audit 2026-11-14 (audit-scf, verify-audit-scf; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+          "evidence": [
+            "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-scf-pitch-prep-live",
+            "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-scf-pitch-prep-live",
+            "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-scf-pitch-prep-live",
+            "Live B 2026-11-14: https://github.com/Stellar-Light/stellarlight/blob/main/src/lib/scf-pitch.ts -- 'source: \"live\" | \"unavailable\" (case record 2026-11-02; not re-fetched)'"
+          ],
+          "rootCause": [
+            ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
+          ]
+        },
+        "origin": "authored 2026-08 (coverage)",
+        "notes": "Grade the service contract and evidence use. Current round phases, peer rows, and award totals can change.",
+        "lane": "tool"
+      }
+    },
+    {
+      "id": "q-scf-resolve-passport-superseded-slug",
+      "question": "An old post links https://stellarlight.xyz/project/passport. What is that project now, and is it still active?",
+      "surface": [
+        "scout.resolveProject"
+      ],
+      "golden": {
+        "answer": "Resolve the old slug with scout.resolveProject and cite meta.generatedAt. As of 2026-11-14, \"passport\" matches on slug as a Draft record with superseded true; the current record is stellar-passport, status Live. The old slug is a duplicate directory record, not a rename. The evidence block describes the matched record, and site-liveness shows only that a page answered.",
+        "keyFacts": [
+          "The old slug is superseded; the current record is stellar-passport, status Live.",
+          "The old slug is a duplicate directory record, not a real-world rename.",
+          "Site-liveness shows a page answered, not that the product is active."
+        ],
+        "avoid": [
+          "Do NOT report the superseded record's Draft or Inactive status as the project's current status."
+        ],
+        "notes": "Accept a later dated status; the matched record read Inactive on 2026-08-28 and Draft on 2026-11-02."
+      },
+      "tags": {
+        "category": "scf-grants-builders",
+        "service": "scout",
+        "freshness": "scheduled"
+      },
+      "truth": {
+        "lifecycle": {
+          "state": "active",
+          "reviewState": "none"
+        },
+        "domain": "corpus-grounded",
+        "status": "confirmed",
+        "asOf": "2026-11-14",
+        "reverifyBy": "2027-06-03",
+        "sources": [
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/projects/resolve?q=Passport",
+            "note": "generatedAt 2026-08-28T17:11:33.764Z, searched 1025; subject passport/Inactive, current stellar-passport/Live, superseded true, evidence statusAsOf 2026-08-17T03:02:29.060Z, statusBasis site-liveness, statusSourceUrl https://demo.stellarpassport.xyz/, unsourced false."
+          },
+          {
+            "class": "C",
+            "ref": "https://raven.stellar.org/mcp — execute scout.resolveProject({q:\"Passport\"}) and ({q:\"stellar-passport\"}), observed 2026-08-28",
+            "note": "Same payload through the exposed operation; the stellar-passport query returns superseded false and note \"stellar-passport is current\"."
+          },
+          {
+            "class": "A",
+            "ref": "https://stellarpassport.xyz/",
+            "note": "Project site live on 2026-08-28 under the name Stellar Passport (onboarding and activation platform; stamps, smart wallets)."
+          },
+          {
+            "class": "A",
+            "ref": "https://stellarlight.xyz/project/stellar-passport",
+            "note": "Current Scout page: Live, Verified (Community), SCF round 40, $150,000; /project/passport answers 307 to this page."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/Tellus-Cooperative",
+            "note": "GitHub org linked from the Scout record; 10 public repos, no rename signal."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/projects/resolve?q=passport",
+            "note": "generatedAt 2026-11-02T16:34:40.509Z, matchedOn slug; subject passport/Draft; current stellar-passport/Live; superseded true; evidence statusAsOf 2026-08-17T03:02:29.060Z site-liveness https://demo.stellarpassport.xyz/ unsourced false.",
+            "observedAt": "2026-11-02T16:34:40.509Z"
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/projects/resolve?q=stellar-passport",
+            "note": "superseded false; evidence statusAsOf 2026-09-06T00:00:00.000Z human-verified https://stellarpassport.xyz/; note 'stellar-passport is current'.",
+            "observedAt": "2026-11-02T16:34:41.102Z"
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/Stellar-Light/stellarlight/blob/main/src/lib/resolve-project.ts",
+            "note": "Last commit 2719551583 (2026-10-24): 'const evidence: ResolutionEvidence = { statusAsOf: hit.statusAsOf ?? null, statusBasis: hit.statusBasis ?? null, statusSourceUrl: hit.statusSourceUrl ?? null, unsourced, };' — evidence comes from the matched record.",
+            "observedAt": "2026-11-02"
+          }
+        ],
+        "corroboration": [
+          {
+            "claim": "Scout's resolver returns the passport record as superseded with stellar-passport as the current Live record.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "C",
+                "ref": "https://stellarlight.xyz/api/projects/resolve?q=Passport",
+                "observedAt": "2026-08-28",
+                "note": "superseded true; current.slug stellar-passport; current.status Live; statusAsOf 2026-08-17."
+              },
+              {
+                "class": "A",
+                "ref": "https://stellarlight.xyz/project/passport",
+                "observedAt": "2026-08-28",
+                "note": "HTTP 307 to /project/stellar-passport; the rendered page shows Live."
+              }
+            ]
+          },
+          {
+            "claim": "The old slug is a duplicate directory record, not a real-world rename; the project is live under the same name.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://stellarpassport.xyz/",
+                "observedAt": "2026-08-28",
+                "note": "Site answers with the name Stellar Passport."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/Tellus-Cooperative",
+                "observedAt": "2026-08-28",
+                "note": "Linked GitHub org is active; no rename announcement or successor repo."
+              },
+              {
+                "class": "C",
+                "ref": "improvements/stellar-light-scout/sls-033-wallet-type-enumeration-availability.md",
+                "observedAt": "2026-07-13",
+                "note": "Prior finding recorded duplicate Stellar Passport rows under different slugs and statuses."
+              }
+            ]
+          },
+          {
+            "claim": "The resolver's evidence block describes the matched (superseded) record, not the current record; as of 2026-11-02 the matched passport record shows Draft and the current stellar-passport record has its own human-verified evidence.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "B",
+                "ref": "https://github.com/Stellar-Light/stellarlight/blob/main/src/lib/resolve-project.ts",
+                "observedAt": "2026-11-02",
+                "note": "evidence is built from `hit`, the matched record."
+              },
+              {
+                "class": "C",
+                "ref": "https://stellarlight.xyz/api/projects/resolve?q=passport",
+                "observedAt": "2026-11-02T16:34:40.509Z",
+                "note": "subject Draft; evidence statusAsOf 2026-08-17 site-liveness demo URL."
+              },
+              {
+                "class": "C",
+                "ref": "https://stellarlight.xyz/api/projects/resolve?q=stellar-passport",
+                "observedAt": "2026-11-02T16:34:41.102Z",
+                "note": "current record evidence statusAsOf 2026-09-06 human-verified."
+              },
+              {
+                "class": "A",
+                "ref": "https://stellarpassport.xyz/",
+                "observedAt": "2026-11-02",
+                "note": "200, '<title>Stellar Passport — Proof you showed up. Proof you shipped.</title>'; same name, no rename."
+              }
+            ]
+          },
+          {
+            "claim": "passport resolves as superseded to stellar-passport (Live); the matched record is Draft.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "C",
+                "ref": "https://stellarlight.xyz/api/projects/resolve?q=passport",
+                "observedAt": "2026-11-14",
+                "note": "found true, matchedOn slug, superseded true, current stellar-passport Live, subject status Draft, evidence statusBasis site-liveness (2026-11-14T03:02Z)"
+              }
+            ]
+          }
+        ],
+        "verified": {
+          "date": "2026-11-14",
+          "by": "Golden coverage audit 2026-11-14 (audit-scf, verify-audit-scf; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+          "evidence": [
+            "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-scf-resolve-passport-superseded-slug",
+            "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-scf-resolve-passport-superseded-slug",
+            "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-scf-resolve-passport-superseded-slug",
+            "Live C 2026-11-14: https://stellarlight.xyz/api/projects/resolve?q=passport -- 'found true, matchedOn slug, superseded true, current stellar-passport Live, subject status Draft, evidence statusBasis site-liveness (2026-11-14T03:02Z)'",
+            "Live C 2026-11-14: scout.resolveProject({q:\"passport\"}) via Raven execute -- 'matchedOn slug; subject passport status Draft; superseded true; current stellar-passport status Live (generatedAt 2026-11-14T03:20Z)'"
+          ],
+          "rootCause": [
+            ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
+          ]
+        },
+        "origin": "authored 2026-08 (coverage)",
+        "notes": "Grade the resolver semantics: matched record, superseded flag, current record, and dated evidence. The Live status and the observation dates can change; do not penalize a later dated status if the answer cites its as-of date. The observed generatedAt value is an example; a later run must cite its own response's value, not this one. The resolver's `evidence` block is built from the matched record, not from `current` (Stellar-Light src/lib/resolve-project.ts). Dating the Live status from that block is an imprecision to name, not a wrong answer. The matched record showed Inactive on 2026-08-28 and Draft on 2026-11-02; accept either when it is dated as the superseded record's status.",
+        "lane": "tool"
+      }
+    },
+    {
+      "id": "q-soroban-av-passkeys-talk",
+      "question": "Find the conference talk or podcast where Stellar passkeys / smart-wallet signing was discussed — I want the actual recorded passage, not a docs page.",
+      "surface": [
+        "lumenloop.find_av_passages",
+        "lumenloop.list_research"
+      ],
+      "golden": {
+        "answer": "Use the exact exposed operation `lumenloop.find_av_passages` with a query for Stellar passkeys, secp256r1, WebAuthn, or smart-wallet signing. Return each AI-generated `summary`/`long_summary` with the parent recording title, URL, and channel; do not present `created_at` as the recording date. The exposed response does **not** contain transcript text, so do not quote it as spoken words or attribute a summary to a named speaker. Treat `start_offset` as an opaque chunk/order key, not seconds or playback timestamp. If no relevant row appears, report a corpus-bounded miss and do not substitute a docs page as an A/V passage.",
+        "keyFacts": [
+          "Uses the exposed dot-qualified operation and returns summary-plus-source provenance.",
+          "States transcript text is absent.",
+          "Treats `start_offset` as opaque."
+        ],
+        "avoid": [
+          "Do NOT emit retired lumenloop_find_av_passages, fabricate quotes/speakers/timestamps, or turn summary text into verbatim evidence.",
+          "Do NOT silently substitute docs when the requested A/V corpus misses."
+        ],
+        "notes": "2026-06-29: removed duplicated Why-these-cards/Edge sections (verified 2026-06-29). Routing/behavior case — the 'answer' is the correct tool + honest corpus-bounded behavior, not a factual essay. `lumenloop.find_av_passages` is the A/V summary lane; semantic content search is acceptable but the explicit 'recorded passage, not docs' intent favors the av_passages card. No fixed source URL: graded on returning real summary rows with their talk/podcast provenance or honestly reporting none in corpus. Fabrication is the trap.\nAlso good if the answer: Frames the topic as passkeys / secp256r1 smart-wallet signing on Stellar when surfacing passages.\nGolden cites: Each surfaced summary row carries its talk/podcast source through `lumenloop.find_av_passages`.\nGT-44 live service contract 2026-09-02. Grade routing/output honesty; source URLs come from returned rows and are volatile.\nAccurately quoting the canonical upstream skill source that `find_av_passages` returns verbatim transcript passages is not a wrong claim while sk-004 stands; grade caps at partial for that claim unless the answer independently contradicts the golden fact."
+      },
+      "tags": {
+        "category": "soroban",
+        "service": "lumenloop",
+        "freshness": "scheduled"
+      },
+      "truth": {
+        "lifecycle": {
+          "state": "active",
+          "reviewState": "none"
+        },
+        "domain": "corpus-grounded",
+        "status": "confirmed",
+        "asOf": "2026-11-02",
+        "reverifyBy": "2027-06-15",
+        "sources": [
+          {
+            "class": "B",
+            "ref": "eval/corpus/raven-next/research/golden/soroban/q-soroban-av-passkeys-talk.md",
+            "note": "class inferred at migration"
+          },
+          {
+            "class": "C",
+            "ref": "POST https://api.lumenloop.com/v1/tools/find_av_passages {query:'Stellar passkeys secp256r1 smart wallet signing'}",
+            "note": "Row keys av_id,title,url,channel,summary,long_summary,slug,created_at,start_offset,similarity; no transcript field; DEVCON 2024 workshop row has created_at 2026-04-02T23:21:21.744Z.",
+            "observedAt": "2026-11-02"
+          },
+          {
+            "class": "D",
+            "ref": "https://stellar.org/events/community/sdf-at-devcon-2024",
+            "note": "Event-date witness: Multichain Day at DEVCON 2024 was held November 12, 2024, so created_at is not the recording date.",
+            "observedAt": "2026-11-02"
+          }
+        ],
+        "corroboration": [
+          {
+            "claim": "The exposed A/V operation returns AI summaries with source metadata, but no transcript text, as of 2026-09-02.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "E",
+                "ref": "catalog/manifest.json entry lumenloop.find_av_passages",
+                "observedAt": "2026-09-02",
+                "note": "The exposed operation is dot-qualified and documents summary-only output."
+              },
+              {
+                "class": "C",
+                "ref": "live stellar_raven.execute result recorded in .agents/rounds/2026-09-01-stale-gospel-refresh/passkeys-relayer-matrix.md",
+                "observedAt": "2026-09-02",
+                "note": "Rows contained summary, long_summary, title, URL, channel, created_at, and start_offset, but no transcript text."
+              },
+              {
+                "class": "F",
+                "ref": ".agents/rounds/2026-09-01-stale-gospel-refresh/passkeys-relayer-matrix.md",
+                "observedAt": "2026-09-02",
+                "note": "The lane inspected live row shapes and confirmed that start_offset is not a playback timestamp."
+              }
+            ]
+          },
+          {
+            "claim": "find_av_passages `created_at` is ingestion metadata, not the recording date; the response carries no transcript text, as of 2026-11-02.",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "C",
+                "ref": "POST https://api.lumenloop.com/v1/tools/find_av_passages (raw) and Raven MCP execute lumenloop.find_av_passages",
+                "observedAt": "2026-11-02",
+                "note": "'Workshop: Stellar | Multichain Day | DEVCON 2024' created_at '2026-04-02T23:21:21.744Z'; 'Engineering Stellar Smart Wallets ... | Meridian 2025' created_at '2026-05-02T05:49:58.776Z'. Raw and Raven reads are one upstream witness."
+              },
+              {
+                "class": "D",
+                "ref": "https://stellar.org/events/community/sdf-at-devcon-2024 ; https://luma.com/multichaindaydevcon ; https://archive.devcon.org/",
+                "observedAt": "2026-11-02",
+                "note": "\"Wrapped: multichain day — November 12, 2024\"; DEVCON \"Bangkok, Thailand Nov 12 - Nov 15, 2024\"."
+              },
+              {
+                "class": "E",
+                "ref": "catalog/manifest.json entry lumenloop.find_av_passages",
+                "observedAt": "2026-11-02",
+                "note": "\"created_at (upstream metadata; do not treat it as the recording date or recency evidence)\"; \"Transcript text itself is never returned\"."
+              },
+              {
+                "class": "A",
+                "ref": "GET https://api.lumenloop.com/v1/tools",
+                "observedAt": "2026-11-02",
+                "note": "Conflicting upstream doc: \"created_at (the recording's date — use it to judge and cite how recent the talk is)\". Refuted by the live data above; tracked as improvements/lumenloop/ll-019-av-output-contract-shape-and-date.md."
+              }
+            ]
+          }
+        ],
+        "verified": {
+          "date": "2026-11-02",
+          "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-04)",
+          "evidence": [
+            "POST https://api.lumenloop.com/v1/tools/find_av_passages {query:'Stellar passkeys secp256r1 smart wallet signing'} — row keys av_id,title,url,channel,summary,long_summary,slug,created_at,start_offset,similarity; 'Workshop: Stellar | Multichain Day | DEVCON 2024' created_at '2026-04-02T23:21:21.744Z' (observedAt 2026-11-02).",
+            "Raven MCP execute lumenloop.find_av_passages (observedAt 2026-11-02T16:37:29.857Z) — same rows and keys; no transcript field.",
+            "https://stellar.org/events/community/sdf-at-devcon-2024 — \"Wrapped: multichain day — November 12, 2024 11 am - 7 pm\" (observedAt 2026-11-02): the recording predates created_at by 16 months.",
+            "catalog/manifest.json lumenloop.find_av_passages — \"created_at (upstream metadata; do not treat it as the recording date or recency evidence)\"; GET https://api.lumenloop.com/v1/tools still says \"the recording's date\" (conflict, ll-019 open).",
+            "Independent verifier accepted the answer, asOf, and reverifyBy changes: .agents/rounds/2026-11-02-golden-audit/pass1/soroban-04.json.",
+            "Sibling sweep 2026-11-02: grep created_at over the battery → q-gap-av-offset-not-timestamp (notes only list created_at as a row field; no recording-date claim), q-ti-video-tutorials, q-edge-open-world-recovery-after-narrow-miss, q-builder-justin-rice-history; no contradiction found."
+          ],
+          "rootCause": [
+            "improvements/lumenloop/ll-019-av-output-contract-shape-and-date.md",
+            "freshness-drift"
+          ]
+        },
+        "origin": "raven-next q-soroban-av-passkeys-talk",
+        "lane": "tool"
+      }
+    },
+    {
+      "id": "q-soroban-greenfield-escrow-prior-art-preflight",
+      "question": "Help me design and implement a production-minded milestone escrow contract on Soroban. Pick the architecture and start with the contract skeleton.",
+      "surface": [
+        "scout.searchProjects",
+        "scout.searchRepos",
+        "stellarDocs.search_soroban_contract_docs",
+        "skills.stellar-dev.smart-contracts"
+      ],
+      "golden": {
+        "answer": "Before choosing the architecture, do one bounded prior-art pass in the same research step as the smart-contract skill and a Docs lookup: at most three distinct candidates, used to find requirements and build-versus-integrate options, not to copy. Then state a short design delta and a lifecycle-enum skeleton with role-authenticated entry points. Mark license, audit and deployment unknown unless a source shows them; if nothing close appears, say what was searched.",
+        "keyFacts": [
+          "Runs one bounded prior-art search before selecting a greenfield architecture.",
+          "Separates exact escrow products from adjacent patterns such as timelock or atomic swap.",
+          "Marks license, audit, deployment and compatibility unknown unless a source shows them.",
+          "Takes APIs and security procedure from the smart-contract skill and official Docs."
+        ],
+        "avoid": [
+          "Do NOT require a fixed repository roster; re-query and accept a different current set with URLs.",
+          "Do NOT infer license, audit or production readiness from stars, repoScore, funding or visibility."
+        ],
+        "notes": "Grade the discovery-and-vetting behavior and the resulting skeleton, not keyword recall."
+      },
+      "tags": {
+        "category": "soroban",
+        "service": "scout",
+        "freshness": "live"
+      },
+      "truth": {
+        "lifecycle": {
+          "state": "active",
+          "reviewState": "none"
+        },
+        "domain": "mixed",
+        "status": "confirmed",
+        "asOf": "2026-11-14",
+        "reverifyBy": "2027-02-05",
+        "sources": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/meetings/2024/12/05",
+            "note": "Official SDF developer call dated 2024-12-05 about Trustless Work building an escrow service on Stellar; accessed 2026-07-13."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/tools/cli/cookbook/tx-new-create-claimable-balance#escrow-style-payment",
+            "note": "Official classic-protocol escrow-style Claimable Balance pattern, not a Soroban contract; accessed 2026-07-13."
+          },
+          {
+            "class": "A",
+            "ref": "https://runtimeverification.com/public-report/trustless-work",
+            "note": "Runtime Verification public report observed 2026-08-11; it describes the Trustless Work Stellar code-review audit and milestone-approval escrow flow."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/soroban-examples",
+            "note": "Direct official repository observed 2026-07-13; Apache-2.0 teaching examples include timelock and atomic-exchange patterns."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/Trustless-Work/trustlesswork-smart-contract-stellar",
+            "note": "Direct exact milestone-escrow repository inspected 2026-07-13; no in-tree LICENSE was verified at the observed revision."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/devasignhq/bounty-escrow",
+            "note": "Direct bounty-escrow repository inspected 2026-08-11; Apache-2.0 license was visible and no audit evidence was found in the bounded repository/web sweep."
+          },
+          {
+            "class": "C",
+            "ref": "https://stellarlight.xyz/api/repos/search",
+            "note": "Live Scout repository discovery/freshness source; discovery metadata is not quality or license proof."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/meetings/2026/08/06#auditors-viewing-keys-and-the-escrow-question",
+            "note": "2026-08-06 developer meeting notes mention Trustless Work escrow",
+            "observedAt": "2026-11-02"
+          }
+        ],
+        "corroboration": [
+          {
+            "claim": "Escrow prior art spans exact products, official conceptual patterns, and misleading adjacent repositories, so applicability and provenance must be checked before architecture or reuse.",
+            "verdict": "confirmed",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/meetings/2024/12/05",
+                "observedAt": "2026-07-13",
+                "note": "Exact-product context from an official dated developer call."
+              },
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/tools/cli/cookbook/tx-new-create-claimable-balance#escrow-style-payment",
+                "observedAt": "2026-07-13",
+                "note": "Official adjacent classic-protocol pattern, explicitly not a Soroban contract."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/Trustless-Work/trustlesswork-smart-contract-stellar",
+                "observedAt": "2026-07-13",
+                "note": "Direct exact-product source and license-file inspection."
+              },
+              {
+                "class": "B",
+                "ref": "https://github.com/devasignhq/bounty-escrow",
+                "observedAt": "2026-08-11",
+                "note": "Direct adjacent bounty-escrow source, license, and bounded audit-evidence inspection."
+              },
+              {
+                "class": "C",
+                "ref": "https://stellarlight.xyz/api/repos/search",
+                "observedAt": "2026-07-13",
+                "note": "Live discovery/freshness metadata only; it does not establish license, audit, deployment, compatibility, or production readiness."
+              },
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/tools/cli/cookbook/tx-new-create-claimable-balance#escrow-style-payment",
+                "observedAt": "2026-11-02",
+                "note": "Exact quote: 'Escrow-Style Payment ... Create an escrow where the recipient has 30 days to claim, otherwise it returns to sender'."
+              },
+              {
+                "class": "B",
+                "ref": "gh api repos/stellar/soroban-examples",
+                "observedAt": "2026-11-02",
+                "note": "license Apache-2.0; top-level dirs include timelock, atomic_swap, atomic_multiswap."
+              },
+              {
+                "class": "B",
+                "ref": "gh api repos/Trustless-Work/trustlesswork-smart-contract-stellar/contents",
+                "observedAt": "2026-11-02",
+                "note": "Root has no LICENSE file; GitHub license null; contracts/escrow/src/core/milestone.rs present."
+              },
+              {
+                "class": "D",
+                "ref": "https://runtimeverification.com/public-report/trustless-work",
+                "observedAt": "2026-11-02",
+                "note": "Exact quote: 'September 12, 2025 Stellar Code Review Audit ... securing funds until clients approve milestones.'"
+              },
+              {
+                "class": "B",
+                "ref": "gh api repos/devasignhq/bounty-escrow/contents",
+                "observedAt": "2026-11-02",
+                "note": "license Apache-2.0; no audit path in tree; code search 'audit' total_count=0."
+              },
+              {
+                "class": "C",
+                "ref": "https://stellarlight.xyz/api/repos/search?q=milestone%20escrow&limit=5",
+                "observedAt": "2026-11-02",
+                "note": "Repo row keys include fullName, url, description, stars, topics; no license field."
+              },
+              {
+                "class": "E",
+                "ref": "https://developers.stellar.org/meetings/2026/08/06#auditors-viewing-keys-and-the-escrow-question",
+                "observedAt": "2026-11-02",
+                "note": "Exact quote: 'Alberto of Trustless Work (the escrow project) showed me a confidential-marketplace'."
+              }
+            ]
+          },
+          {
+            "claim": "Illustrative roster: Trustless Work repo has no in-tree license; DevAsign bounty-escrow is Apache-2.0; soroban-examples is Apache-2.0",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "B",
+                "ref": "gh api repos/Trustless-Work/trustlesswork-smart-contract-stellar",
+                "observedAt": "2026-11-14",
+                "note": "archived=false license=none"
+              },
+              {
+                "class": "B",
+                "ref": "gh api repos/devasignhq/bounty-escrow",
+                "observedAt": "2026-11-14",
+                "note": "archived=false license=Apache-2.0"
+              }
+            ]
+          },
+          {
+            "claim": "Official classic Claimable Balances docs include an 'Escrow-Style Payment' pattern",
+            "verdict": "confirmed-as-of",
+            "evidence": [
+              {
+                "class": "A",
+                "ref": "https://developers.stellar.org/docs/tools/cli/cookbook/tx-new-create-claimable-balance.md",
+                "observedAt": "2026-11-14",
+                "note": "### Escrow-Style Payment"
+              }
+            ]
+          }
+        ],
+        "verified": {
+          "date": "2026-11-14",
+          "by": "Golden coverage audit 2026-11-14 (audit-soroban-b, verify-audit-soroban-b; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+          "evidence": [
+            "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-b.json#q-soroban-greenfield-escrow-prior-art-preflight",
+            "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-b.json#q-soroban-greenfield-escrow-prior-art-preflight",
+            "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-soroban-greenfield-escrow-prior-art-preflight",
+            "Live B 2026-11-14: gh api repos/Trustless-Work/trustlesswork-smart-contract-stellar -- 'archived=false license=none'",
+            "Live B 2026-11-14: gh api repos/devasignhq/bounty-escrow -- 'archived=false license=Apache-2.0'",
+            "Live A 2026-11-14: https://developers.stellar.org/docs/tools/cli/cookbook/tx-new-create-claimable-balance.md -- '### Escrow-Style Payment'"
+          ],
+          "rootCause": [
+            ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
+          ]
+        },
+        "origin": "authored prior-art build-route review 2026-07-13",
+        "notes": "This is the proactive design-stage half of a paired regression. It deliberately asks for architecture plus implementation without mentioning prior art. Grade the bounded discovery-and-vetting behavior and the resulting architecture/skeleton, not keyword recall or a permanent repo list; accept a different current roster with exact URLs/dates and honest caveats. Independent Opus truth lane verified the illustrative escrow taxonomy on 2026-07-13; known-step no-detour control is q-sor-build-target-wasm32v1.",
+        "lane": "tool"
+      }
+    }
+  ]
+}

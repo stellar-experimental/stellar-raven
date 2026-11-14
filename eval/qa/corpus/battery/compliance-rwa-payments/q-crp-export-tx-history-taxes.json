@@ -1,27 +1,24 @@
 {
   "id": "q-crp-export-tx-history-taxes",
-  "question": "How do I export a complete Stellar account transaction history for tax or accounting, and what should I know about TurboTax or CoinTracker-style integrations?",
+  "question": "How do I export a complete Stellar account transaction history for tax or accounting, and what limits do Horizon and RPC have?",
   "surface": [
     "stellarDocs.search_protocol_concepts_docs",
     "stellarDocs.search_rpc_horizon_data_docs",
     "stellarDocs.search_wallet_dapp_docs"
   ],
   "golden": {
-    "answer": "A grounded answer consults the current official Stellar documentation, directly answers the question with source-supported content, and dates any version-, provider-, or availability-sensitive claim. As of 2026-07-10, the verified sources supported this observed answer:\n\nFirst determine the data source's retained range. Horizon pagination can enumerate the classic transactions, operations, and effects that **that Horizon instance still retains**, but reaching the final page does not prove all-time completeness. Check history_elder_ledger/provider retention and record the export's first and last ledger.\n\nFor complete historical coverage, use an archival/indexed source such as **Hubble/BigQuery**, a Galexie-derived data lake, or another provider that explicitly documents the needed history. RPC getTransactions scans a retained **ledger range**; it is not an account-history endpoint, and ordinary getTransactions/getEvents retention is not made all-time merely because getLedgers archival export exists.\n\nExport more than payments: transactions, operations, effects/ledger-entry changes, fees, trades, claimable balances, and contract events as relevant. Decode XDR with a current SDK. Deduplicate/idempotently checkpoint by transaction/operation/event identity and reconcile classic plus contract activity.\n\nTax software is a separate, volatile provider workflow. As of 2026-07-10, CoinTracker documents CSV import for Stellar rather than direct sync; verify current format, jurisdiction, plan, and transaction limits. This is data-export guidance, not tax advice.\n\nThe dated example is illustrative: a later grounded answer should report what the same source basis supports at its own observation time while preserving the stable distinctions above.",
+    "answer": "Horizon and RPC list only the history their instance retains, so reaching the last page does not prove complete history; check the retention window and record the first and last ledger. For all-time history use an archival source such as Hubble on BigQuery or a Galexie data lake. RPC getTransactions scans a ledger range and is not an account-history endpoint. Export operations, effects, fees and contract events, not only payments.",
     "keyFacts": [
-      "Makes the as-of date visible for every changeable roster, status, version, or measurement.",
-      "Checks Horizon retention/history_elder_ledger before claiming pagination is complete.",
-      "Uses Hubble/BigQuery or another explicitly archival source for all-time history.",
-      "Treats RPC getTransactions as retained ledger-range data, not full account history.",
-      "Requires operations, effects, events, and fees beyond payments in a reconciled export."
+      "Horizon and RPC pagination covers only retained history, not all-time history.",
+      "Complete history needs an archival source such as Hubble on BigQuery.",
+      "RPC getTransactions scans a retained ledger range; it is not an account-history endpoint.",
+      "A tax export needs operations, effects, fees and events, not only payments."
     ],
     "avoid": [
-      "Do NOT equate page exhaustion with network-history exhaustion.",
-      "Do NOT call RPC getTransactions account-filtered or all-time because getLedgers archival export exists.",
-      "Do NOT export payments only or give definitive tax advice.",
-      "Do NOT present a changeable current measurement without its provider, scope, and observation date; registered invariants and explicitly historical quantities are not current measurements."
+      "Do NOT treat page exhaustion as network-history exhaustion.",
+      "Do NOT export payments only, or give definitive tax advice."
     ],
-    "notes": "As of 2026-11-02, CoinTracker's Stellar integration page pairs a generic \"connect your Stellar wallet\" blurb with CSV-only connection steps, while other CoinTracker pages imply XLM public-address sync. Accept a dated CSV-import answer, one that flags the mismatch, or a dated, CoinTracker-attributed sync claim that tells the user to confirm the method in the app.\nAlso good if the answer: Mentions reconciling CSV/export data with wallet/exchange records and fiat cost basis where applicable. | Notes Horizon is not the only possible data source; RPC/indexers/archive providers may be relevant for historical completeness.\nGolden cites: Stellar Horizon/RPC/indexer docs for export mechanics and dated tax-tool docs for named integrations.\nCORRECTION 2026-07-10 (GT-10 processes 3230/3232): gate retention-aware source selection, not volatile ledger numbers. Horizon/RPC pagination exhausts retained data only; RPC getTransactions is ledger-range."
+    "notes": "Accept a dated, sourced statement about any tax tool's import method."
   },
   "tags": {
     "category": "compliance-rwa-payments",
@@ -35,7 +32,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-10",
+    "asOf": "2026-11-14",
     "sources": [
       {
         "class": "A",
@@ -161,20 +158,62 @@
             "note": "Via Perplexity search, post dated 2025-02-24: 'Users may be missing XLM transactions when syncing their Stellar Wallet. ... Users can add their transaction history via CSV'."
           }
         ]
+      },
+      {
+        "claim": "RPC getTransactions pages only within its provider's history retention.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransactions",
+            "observedAt": "2026-11-14",
+            "note": "paginate as long as the pages fall within the history retention of their corresponding RPC provider"
+          }
+        ]
+      },
+      {
+        "claim": "Hubble on BigQuery serves historical data retrieval; Horizon history retention is limited.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/data/analytics/hubble",
+            "observedAt": "2026-11-14",
+            "note": "hosted on BigQuery ... suitable for large, analytic workloads, historical data retrieval"
+          }
+        ]
+      },
+      {
+        "claim": "CoinTracker's Stellar page shows CSV-import steps.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "D",
+            "ref": "https://www.cointracker.io/integrations/stellar",
+            "observedAt": "2026-11-14",
+            "note": "Download the CSV export of your transactions from Stellar ... Import your CSV export to CoinTracker"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-03",
-      "by": "lane urls (Codex gpt-6.1-sol high)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-compliance, verify-audit-compliance; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "https://developers.stellar.org/docs/data/indexers/hubble (HTTP 404, 2026-11-03): Hubble documents complete historical network data hosted on BigQuery, with historical retrieval and analytical workloads. Current source: https://developers.stellar.org/docs/data/analytics/hubble (HTTP 200).",
-        "https://developers.stellar.org/docs/data/galexie (HTTP 308, 2026-11-03): Galexie documents ledger-metadata export to cloud storage and data lakes. Use the canonical path without the trailing slash. Current source: https://developers.stellar.org/docs/data/indexers/build-your-own/galexie (HTTP 200).",
-        "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-compliance.json#q-crp-export-tx-history-taxes",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-compliance.json#q-crp-export-tx-history-taxes",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-crp-export-tx-history-taxes",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransactions -- 'paginate as long as the pages fall within the history retention of their corresponding RPC provider'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/data/analytics/hubble -- 'hosted on BigQuery ... suitable for large, analytic workloads, historical data retrieval'",
+        "Live D 2026-11-14: https://www.cointracker.io/integrations/stellar -- 'Download the CSV export of your transactions from Stellar ... Import your CSV export to CoinTracker'"
       ],
       "rootCause": [
-        "freshness-drift"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-crp-export-tx-history-taxes"
+    "origin": "raven-next q-crp-export-tx-history-taxes",
+    "notes": "As of 2026-11-02, CoinTracker's Stellar integration page pairs a generic \"connect your Stellar wallet\" blurb with CSV-only connection steps, while other CoinTracker pages imply XLM public-address sync. Accept a dated CSV-import answer, one that flags the mismatch, or a dated, CoinTracker-attributed sync claim that tells the user to confirm the method in the app.\nAlso good if the answer: Mentions reconciling CSV/export data with wallet/exchange records and fiat cost basis where applicable. | Notes Horizon is not the only possible data source; RPC/indexers/archive providers may be relevant for historical completeness.\nGolden cites: Stellar Horizon/RPC/indexer docs for export mechanics and dated tax-tool docs for named integrations.\nCORRECTION 2026-07-10 (GT-10 processes 3230/3232): gate retention-aware source selection, not volatile ledger numbers. Horizon/RPC pagination exhausts retained data only; RPC getTransactions is ledger-range.",
+    "leaf": "wallets.history-export",
+    "secondaryLeaf": "data.hubble-analytics"
   }
 }

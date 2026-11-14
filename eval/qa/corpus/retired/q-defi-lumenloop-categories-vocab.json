@@ -1,0 +1,21 @@
+{
+  "id": "q-defi-lumenloop-categories-vocab",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-defi (golden coverage audit)",
+    "reviewer": "verify-defi (golden coverage audit)",
+    "reason": "Enumerates Lumenloop's controlled vocabulary; only Raven could satisfy it and it is a routing assertion, which the routing lane owns.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-defi-lumenloop-categories-vocab",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-defi-lumenloop-categories-vocab",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-defi-lumenloop-categories-vocab"
+    ],
+    "lastCaseContentSha256": "3686e5e29b18fce3117b48aa510706b8656133946997884c8f2916be613d47b1",
+    "replacementIds": []
+  }
+}

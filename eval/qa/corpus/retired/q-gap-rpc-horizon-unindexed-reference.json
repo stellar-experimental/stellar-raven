@@ -1,0 +1,21 @@
+{
+  "id": "q-gap-rpc-horizon-unindexed-reference",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-tooling-a (golden coverage audit)",
+    "reviewer": "verify-audit-tooling-a (golden coverage audit)",
+    "reason": "Tests one docs-search ranking defect (sd-059, filed in improvements/) and a generic absence rule that q-live-ll-guessed-slug-soft-empty already tests; no Stellar fact rides on it.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-a.json#q-gap-rpc-horizon-unindexed-reference",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-a.json#q-gap-rpc-horizon-unindexed-reference",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-gap-rpc-horizon-unindexed-reference"
+    ],
+    "lastCaseContentSha256": "dd4cd1b425ff2fddc3b8ccc8b413fdbbe873fb9f100f6886393617420705fe21",
+    "replacementIds": []
+  }
+}

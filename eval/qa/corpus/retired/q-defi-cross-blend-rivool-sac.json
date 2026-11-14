@@ -1,0 +1,21 @@
+{
+  "id": "q-defi-cross-blend-rivool-sac",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-defi (golden coverage audit)",
+    "reviewer": "verify-defi (golden coverage audit)",
+    "reason": "The Rivool news link is trivia; Blend identity survives in q-defi-blend-what-is and classic-USDC-via-SAC/SEP-41 is owned by q-asset-trustline-vs-sac and q-sep-41-token-interface.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-defi-cross-blend-rivool-sac",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-defi-cross-blend-rivool-sac",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-defi-cross-blend-rivool-sac"
+    ],
+    "lastCaseContentSha256": "cbfa15cdce2f1d8152b02435f05d64adbcb25ac0d2b3c6aa2f7e5971a5d59ea1",
+    "replacementIds": []
+  }
+}

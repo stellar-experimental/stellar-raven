@@ -7,18 +7,16 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "Use a typed SAC/SEP-41 token client. Current direct `transfer(from: Address, to: MuxedAddress, amount: i128)` requires `from` authorization. When the contract sends its own balance, use its contract address as `from`; the immediate contract invoker is automatically authorized, so no external user signature or `authorize_as_current_contract` entry is needed for that direct token call. Explicit current-contract authorization is only for deeper calls. For allowance-based pulls use `transfer_from(spender, from, to: Address, amount)`, where spender auth and the owner's prior bounded allowance apply. Validate amount/order state, follow checks-effects-interactions, and rely on rollback for atomic failure. Current SAC/CAP-67 transfer events append the asset topic. SEP-41 is Draft, so version-qualify MuxedAddress support.",
+    "answer": "Use a typed SAC/SEP-41 token client. `transfer(from, to, amount)` requires `from`'s authorization. When the contract sends its own balance, `from` is the contract address; as the direct invoker it is automatically authorized, so no user signature is needed. For allowance-based pulls use `transfer_from(spender, from, to, amount)`: the spender authorizes and the owner's prior bounded allowance applies until its expiration, an absolute ledger number. Validate amounts and update state before external calls. Explicit current-contract authorization is only for deeper calls.",
     "keyFacts": [
-      "`transfer` uses MuxedAddress for the direct destination.",
-      "Direct `transfer` requires authorization from `from`.",
-      "The immediate contract invoker has automatic authorization for a direct call.",
-      "`transfer_from` uses spender authorization with a prior bounded allowance.",
-      "`authorize_as_current_contract` applies to deeper calls."
+      "Direct `transfer` requires the `from` address's authorization.",
+      "A contract spending its own balance is `from` and is auto-authorized as direct invoker.",
+      "`transfer_from` needs the spender's authorization and a prior bounded allowance."
     ],
     "avoid": [
-      "Do NOT require ERC-20 allowance dance for every transfer, require an external signature to move the contract's own balance, or type current direct destination as plain Address."
+      "Do NOT require an external user signature to move the contract's own balance, or an approve/transferFrom step for every transfer."
     ],
-    "notes": "Auth-for-transfer nuance; SAC/SEP-41 transfer(from,to,amount) requires from.require_auth(). When the contract spends its own balance, the contract address is `from` and it authorizes by invoking. 2026-06-29 differentiation: this file owns in-contract token movement + authorization; the interface/method choice (transfer vs approve/transfer_from and the absolute expiration_ledger) is owned by q-sor-sep41-transfer-vs-transferfrom.\nAlso good if the answer: Amounts are i128; validate non-negative/within-range amounts to avoid overflow/abort. | Follow checks-effects-interactions discipline: update internal state before/around external token calls.\nGolden cites: The developers.stellar.org token / SEP-41 / SAC interface documentation.\nGT-42/43 atomic auth/signature/event alignment."
+    "notes": "SEP-41 is Draft (v0.5.2 as of 2026-11-14): accept `to: Address` for versions before MuxedAddress support."
   },
   "tags": {
     "category": "soroban",
@@ -32,7 +30,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-06-29",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-03-23",
     "sources": [
       {
@@ -75,18 +73,50 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "SEP-41 `transfer(from, to: MuxedAddress, amount)`; SEP-41 is Draft",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md",
+            "observedAt": "2026-11-14",
+            "note": "fn transfer(env: Env, from: Address, to: MuxedAddress, amount: i128);  Status: Draft Updated: 2026-08-24 Version 0.5.2"
+          }
+        ]
+      },
+      {
+        "claim": "The direct invoker contract is implicitly authorized for its own direct call",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization.md",
+            "observedAt": "2026-11-14",
+            "note": "all the `require_auth` calls made on behalf of the **direct** invoker contract `Address` are considered to be authorized"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-06)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-soroban-b, verify-audit-soroban-b; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md (observedAt 2026-11-02): \"fn transfer(env: Env, from: Address, to: MuxedAddress, amount: i128); ... fn transfer_from(env: Env, spender: Address, from: Address, to: Address, amount: i128);\"; header \"Status: Draft; Updated: 2026-08-24; Version 0.5.2\".",
-        "https://developers.stellar.org/docs/tokens/stellar-asset-contract (observedAt 2026-10-24): \"the to argument of the SAC's transfer function is a MuxedAddress\"; \"The exceptions are xfer_from and burn_from operations where the Address that require authorization from the 'spender'\".",
-        "https://raw.githubusercontent.com/stellar/soroban-examples/main/token/src/contract.rs (observedAt 2026-11-02): \"fn transfer(e: Env, from: Address, to_muxed: MuxedAddress, amount: i128) { from.require_auth();\"; https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization (observedAt 2026-10-27) confirms direct-invoker auth.",
-        "Verification only: no gospel change. Sibling sweep 2026-11-02: q-sor-sep41-transfer-vs-transferfrom, q-sep-41-token-interface, q-tool-sep41-status-live; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-b.json#q-soroban-token-transfer-pattern",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-b.json#q-soroban-token-transfer-pattern",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-soroban-token-transfer-pattern",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem/sep-0041.md -- 'fn transfer(env: Env, from: Address, to: MuxedAddress, amount: i128);  Status: Draft Updated: 2026-08-24 Version 0.5.2'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization.md -- 'all the `require_auth` calls made on behalf of the **direct** invoker contract `Address` are considered to be authorized'",
+        "Live B 2026-11-14: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0041.md -- 'fn transfer(env: Env, from: Address, to: MuxedAddress, amount: i128); ... Status: Draft ... Version 0.5.2'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-soroban-token-transfer-pattern"
+    "origin": "raven-next q-soroban-token-transfer-pattern",
+    "notes": "Auth-for-transfer nuance; SAC/SEP-41 transfer(from,to,amount) requires from.require_auth(). When the contract spends its own balance, the contract address is `from` and it authorizes by invoking. 2026-06-29 differentiation: this file owns in-contract token movement + authorization; the interface/method choice (transfer vs approve/transfer_from and the absolute expiration_ledger) is owned by q-sor-sep41-transfer-vs-transferfrom.\nAlso good if the answer: Amounts are i128; validate non-negative/within-range amounts to avoid overflow/abort. | Follow checks-effects-interactions discipline: update internal state before/around external token calls.\nGolden cites: The developers.stellar.org token / SEP-41 / SAC interface documentation.\nGT-42/43 atomic auth/signature/event alignment.",
+    "leaf": "soroban.authorization",
+    "secondaryLeaf": "assets.token-interface"
   }
 }

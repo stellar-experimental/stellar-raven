@@ -96,6 +96,8 @@
         "Sibling set checked by the proposer 2026-11-02: q-raph-missing-exchange-memo, q-jutsu-what-is-a-memo, q-raph-withdraw-exchange-self-custody, q-raph-buy-xlm-safely; no contradiction recorded."
       ]
     },
-    "origin": "raph memo-types-exchange-deposit"
+    "origin": "raph memo-types-exchange-deposit",
+    "leaf": "wallets.wrong-memo",
+    "secondaryLeaf": "protocol.memos-muxed"
   }
 }

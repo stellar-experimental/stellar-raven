@@ -7,16 +7,18 @@
     "stellarDocs.search_wallet_dapp_docs"
   ],
   "golden": {
-    "answer": "Implement reserved `CustomAccountInterface::__check_auth(signature_payload: BytesN<32>, signature: Val, auth_contexts: Vec<Context>)`. When another invocation requires that C-address, the host—not a direct user call—dispatches this function. The contract decodes/verifies its chosen signatures (Ed25519, WebAuthn/secp256r1, multisig, etc.) and applies policy over `auth_contexts`, returning success only when valid. For standard Soroban address credentials the host validates/consumes the nonce before `__check_auth`, enforces expiry/replay/invocation exhaustion, and normally makes a second contract replay nonce unnecessary; a separate application protocol may define a separate replay domain. Never call `require_auth` on the account's own address inside `__check_auth`, which recurses.",
+    "answer": "Implement the reserved `CustomAccountInterface::__check_auth(signature_payload: BytesN<32>, signature, auth_contexts: Vec<Context>)`. The host, not a direct user call, invokes it when another invocation requires that C-address's authorization. The contract verifies its chosen signatures (Ed25519, secp256r1/WebAuthn, multisig) and applies policy over `auth_contexts`, returning success only when valid. For standard address credentials the host consumes the nonce and enforces expiry and replay protection before `__check_auth`. Never call `require_auth` on the account's own address inside it: that recurses.",
     "keyFacts": [
-      "Gives the reserved ABI and host-only dispatch.",
-      "The contract checks signatures and authorization policy.",
-      "The host handles standard nonces, expiry, and replay protection."
+      "`__check_auth(signature_payload, signature, auth_contexts)` is reserved and host-invoked.",
+      "The contract verifies signatures and applies policy over `auth_contexts`.",
+      "The host handles nonces, expiry, and replay for standard address credentials."
     ],
     "avoid": [
-      "Do NOT model this as EIP-4337, direct user invocation, mandatory home-grown standard nonce, or recursive own-address require_auth."
+      "Do NOT describe `__check_auth` as called directly by users, or model it on EIP-4337.",
+      "Do NOT claim that a home-grown nonce is mandatory for standard credentials.",
+      "Do NOT call `require_auth` on the account's own address inside `__check_auth`."
     ],
-    "notes": "2026-06-29: removed duplicated Why-these-cards/Edge sections. ERC-4337 confusion is the EVM trap. scout_repos acceptable for code templates. Verified against the docs 'complex-account' multisig example + authorization docs.\nAlso good if the answer: It enables account abstraction: arbitrary signature schemes (e.g., Ed25519, secp256r1/passkeys, multisig) instead of a classic Stellar keypair. | The contract is responsible for its own replay protection (e.g., nonces) when relevant.\nGolden cites: The developers.stellar.org custom-account / authorization docs (complex-account example).\nGT-44 independently corrected the replay responsibility and generic signature: Val ABI."
+    "notes": "A separate application protocol may define its own replay domain; do not penalize that."
   },
   "tags": {
     "category": "soroban",
@@ -74,17 +76,19 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-04)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-soroban-a, verify-audit-soroban-a; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-11.md — \"fn __check_auth(signature_payload: BytesN<32>, signature: Val, auth_contexts: Vec<Context>) -> Result<(), Error>;\"; \"Nonce is an arbitrary int64 number used for replay prevention\" (observedAt 2026-11-02).",
-        "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/complex-account — \"__check_auth is a reserved function and can only be called by the Soroban environment in response to a call to require_auth.\"; \"`__check_auth` function shouldn't call `require_auth` on the contract's own address in order to avoid infinite recursion.\" (observedAt 2026-11-02).",
-        "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization — \"Replay protection is also implemented in the host, i.e., there is normally no need for a contract to manage its own nonces.\" (observedAt 2026-11-02).",
-        "https://github.com/stellar/rs-soroban-sdk/blob/v29.0.1/soroban-sdk/src/auth.rs — the SDK trait spells the payload `Hash<32>` with an associated Signature type; the key facts do not bind the type (observedAt 2026-11-02).",
-        "No gospel change; no proposal (verifier noProposalCases).",
-        "Sibling sweep 2026-11-02: q-soroban-require-auth, q-passkey-smart-account-architecture, q-soroban-auth-recursion-dos-audit; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-a.json#q-soroban-check-auth-custom-account",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-a.json#q-soroban-check-auth-custom-account",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-soroban-check-auth-custom-account"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-soroban-check-auth-custom-account"
+    "origin": "raven-next q-soroban-check-auth-custom-account",
+    "notes": "2026-06-29: removed duplicated Why-these-cards/Edge sections. ERC-4337 confusion is the EVM trap. scout_repos acceptable for code templates. Verified against the docs 'complex-account' multisig example + authorization docs.\nAlso good if the answer: It enables account abstraction: arbitrary signature schemes (e.g., Ed25519, secp256r1/passkeys, multisig) instead of a classic Stellar keypair. | The contract is responsible for its own replay protection (e.g., nonces) when relevant.\nGolden cites: The developers.stellar.org custom-account / authorization docs (complex-account example).\nGT-44 independently corrected the replay responsibility and generic signature: Val ABI.",
+    "leaf": "soroban.contract-accounts"
   }
 }

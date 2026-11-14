@@ -1,0 +1,23 @@
+{
+  "id": "q-asset-wallet-sdk-seps",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-assets (golden coverage audit)",
+    "reviewer": "verify-audit-assets (golden coverage audit)",
+    "reason": "Merged into q-anchor-sdp-vs-anchor-platform. The survivor's Wallet SDK key fact keeps the client-side SEP set and 'not SEP-31', which is everything this case tests.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-assets.json#q-asset-wallet-sdk-seps",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-assets.json#q-asset-wallet-sdk-seps",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-asset-wallet-sdk-seps"
+    ],
+    "lastCaseContentSha256": "ed5e0868bfddbfbee8f8c0ec8f2f9303fa0e4c91133d759a5da3751c6034829a",
+    "replacementIds": [
+      "q-anchor-sdp-vs-anchor-platform"
+    ]
+  }
+}

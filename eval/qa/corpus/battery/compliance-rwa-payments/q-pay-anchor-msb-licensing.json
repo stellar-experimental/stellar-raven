@@ -7,18 +7,17 @@
     "stellarDocs.search_wallet_dapp_docs"
   ],
   "golden": {
-    "answer": "Do not decide licensing from the word anchor. Identify each participating legal entity and ask who accepts, transmits, exchanges, issues, redeems, or custodies fiat/crypto for another person; who controls hosted-wallet value; which customer/transaction jurisdictions apply; and whether an exemption, agent, bank, payment partner, or other structure changes the perimeter.\n\nAn on/off-ramp operator doing fiat/crypto exchange or transmission is commonly regulated, but the exact US analysis separates **FinCEN MSB registration** from **state money-transmitter licensing** and remains facts-and-circumstances. A custodial wallet or program operator can also be in scope; noncustodial signing software alone generally is not. Each route participant assesses its own duties.\n\nStellar/SDF is not automatically the licensee merely because the network settles a transfer, but that statement is bounded by the actual network/SDF activity and custody posture. This is a classification framework, not legal advice; use current primary law and counsel for each jurisdiction.",
+    "answer": "Do not decide licensing from the word 'anchor'. Identify each legal entity and who accepts, transmits, exchanges, issues, redeems or custodies value for others, which jurisdictions apply, and whether an exemption, agent or bank partner changes the picture. In the US, FinCEN MSB registration and state money-transmitter licensing are separate. A custodial wallet or on/off-ramp operator can be in scope; non-custodial signing software alone generally is not. Travel Rule duties likewise attach to covered intermediaries, not to the protocol or to software. Not legal advice.",
     "keyFacts": [
-      "Maps duties to legal entity/activity/custody/control/route/jurisdiction—not anchor label.",
-      "Separates federal MSB registration from state money-transmitter licensing.",
-      "Frames wallet/operator scope by custody/activity; no automatic infrastructure licensee."
+      "Licensing duties follow entity, activity, custody and jurisdiction, not the word 'anchor'.",
+      "US FinCEN MSB registration and state money-transmitter licensing are separate regimes.",
+      "Custodial wallet operators can be in scope; non-custodial software alone generally is not."
     ],
     "avoid": [
-      "Do NOT say every anchor holds one universal MSB/money-transmitter license.",
-      "Do NOT call FinCEN registration a license or ignore state/jurisdictional rules.",
-      "Do NOT give definitive legal advice from an Anchor Directory label."
+      "Do NOT say every anchor holds one universal MSB or money-transmitter license.",
+      "Do NOT call FinCEN registration a licence, or give definitive legal advice from a directory label."
     ],
-    "notes": "Grade the durable classification framing; specific jurisdictional requirements are not asserted. Trap: licensing on the protocol.\nAlso good if the answer: The wallet/app may also have its own MSB/money-transmitter obligations depending on custody and jurisdiction. | Each regulated participant maps its licenses to every jurisdiction in which it onboards customers.\nGolden cites: developers.stellar.org anchor docs; reputable regulatory reference where relevant.\nCORRECTION 2026-07-10: reject noun-based legal allocation. Require entity/activity/custody/route/jurisdiction analysis and distinguish registration from licensing."
+    "notes": "Grade the classification framework; no jurisdictional rules are asserted."
   },
   "tags": {
     "category": "compliance-rwa-payments",
@@ -88,15 +87,19 @@
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier; .agents/rounds/2026-11-02-golden-audit.md, batch compliance-rwa-payments-03; verification only, no gospel change)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-compliance, verify-audit-compliance; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "https://www.fincen.gov/system/files/2019-05/FinCEN%20Guidance%20CVC%20FINAL%20508.pdf — 'the provider will also qualify as a money transmitter, regardless of the label the person applies to itself or its activities. ... Hosted wallet providers are account-based money transmitters' (observedAt 2026-11-02).",
-        "Class D perplexity_ask 2026-11-02 — no 2026 statute changed the federal MSB perimeter for noncustodial software or ramps: CLARITY Act H.R. 3633 'Passed House' after the Senate's September 15, 2026 cloture vote failed; BRCA S. 3611 in committee. State money-transmitter licensing is a separate question.",
-        "https://www.ecfr.gov/current/title-31/subtitle-B/chapter-X/part-1022/section-1022.380 — MSB registration rule (existing source, observed 2026-10-01).",
-        "Sibling sweep 2026-11-02: q-crp-become-an-anchor-licensing, q-crp-custodial-vs-noncustodial-wallets, q-comp-anchor-compliance-stack; no contradiction. No gospel change."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-compliance.json#q-pay-anchor-msb-licensing",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-compliance.json#q-pay-anchor-msb-licensing",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-pay-anchor-msb-licensing"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-pay-anchor-msb-licensing"
+    "origin": "raven-next q-pay-anchor-msb-licensing",
+    "notes": "Grade the durable classification framing; specific jurisdictional requirements are not asserted. Trap: licensing on the protocol.\nAlso good if the answer: The wallet/app may also have its own MSB/money-transmitter obligations depending on custody and jurisdiction. | Each regulated participant maps its licenses to every jurisdiction in which it onboards customers.\nGolden cites: developers.stellar.org anchor docs; reputable regulatory reference where relevant.\nCORRECTION 2026-07-10: reject noun-based legal allocation. Require entity/activity/custody/route/jurisdiction analysis and distinguish registration from licensing.",
+    "leaf": "security.regulation-policy"
   }
 }

@@ -1,0 +1,21 @@
+{
+  "id": "q-ass-cross-bando-stablebonds-sac",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-assets (golden coverage audit)",
+    "reviewer": "verify-audit-assets (golden coverage audit)",
+    "reason": "Raven-mechanics case covered by eval/qa/corpus/live/live-cases.json q-live-beans-cross-service-reconcile (queries both services and attributes each separately).",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-assets.json#q-ass-cross-bando-stablebonds-sac",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-assets.json#q-ass-cross-bando-stablebonds-sac",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-ass-cross-bando-stablebonds-sac"
+    ],
+    "lastCaseContentSha256": "024a60247666c8e7ac4d7a1af3273f34e12dafa327318873e3667853b8a25f98",
+    "replacementIds": []
+  }
+}

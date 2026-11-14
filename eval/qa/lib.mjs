@@ -12,6 +12,7 @@ import path from "node:path";
 export const QA_DIR = path.dirname(fileURLToPath(import.meta.url));
 export const CASES_PATH = path.join(QA_DIR, "cases.json");
 export const SAMPLE_PATH = path.join(QA_DIR, "sample.json");
+export const TOOL_CASES_PATH = path.join(QA_DIR, "tool-cases.json");
 export const LIFECYCLE_REGISTRY_PATH = path.join(QA_DIR, "lifecycle-registry.json");
 export const LIFECYCLE_POLICY_PATH = path.join(QA_DIR, "corpus/lifecycle-policy.json");
 

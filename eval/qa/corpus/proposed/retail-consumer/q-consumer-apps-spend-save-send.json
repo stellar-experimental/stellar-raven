@@ -1,0 +1,181 @@
+{
+  "id": "q-consumer-apps-spend-save-send",
+  "question": "Which consumer apps or cards let people spend, save, or send money on Stellar, and in which regions?",
+  "surface": [
+    "scout.searchProjects",
+    "lumenloop.search_directory"
+  ],
+  "golden": {
+    "answer": "Answer from a current ecosystem directory and date it. As of 2026-11-14, examples included MoneyGram cash-in and cash-out for USDC on Stellar in many countries, consumer wallets such as Vesseo and Decaf that hold and send stablecoins and cash out through MoneyGram, and card products such as Wirex. Coverage differs by app and country, so confirm with each provider.",
+    "keyFacts": [
+      "Names current live consumer apps or cards on Stellar with a date.",
+      "States what each named app does: spend, save, send, or cash out.",
+      "States that availability differs by app and country."
+    ],
+    "avoid": [
+      "Do NOT claim that a named app is available in every country."
+    ],
+    "notes": "Named apps are dated examples. Accept other live apps that a current directory shows."
+  },
+  "tags": {
+    "category": "retail-consumer",
+    "service": "scout",
+    "freshness": "live"
+  },
+  "truth": {
+    "lifecycle": {
+      "state": "proposed",
+      "reviewState": "none"
+    },
+    "leaf": "wallets.consumer-apps",
+    "domain": "mixed",
+    "status": "confirmed",
+    "asOf": "2026-11-14",
+    "sources": [
+      {
+        "class": "C",
+        "ref": "scout.searchProjects type=Card Issuing status=Live",
+        "observedAt": "2026-11-14",
+        "quote": "meta.counts.total=5: Bridge, Amulets, Blockroll, Wirex, Rain"
+      },
+      {
+        "class": "C",
+        "ref": "scout.searchProjects category=User-Facing App status=Live",
+        "observedAt": "2026-11-14",
+        "quote": "total 24; Vesseo (formerly Vibrant), the consumer USDC wallet from SDF subsidiary Sunship"
+      },
+      {
+        "class": "A",
+        "ref": "https://www.moneygram.com/stellar",
+        "observedAt": "2026-11-14",
+        "quote": "Give your users cash on-ramps and off-ramps at 480,000+ MoneyGram locations across 170+ countries."
+      },
+      {
+        "class": "A",
+        "ref": "https://help.vesseoapp.com/hc/en-us/articles/31455120630807-Sending-Money-via-MoneyGram",
+        "observedAt": "2026-11-14",
+        "quote": "You can send digital assets (ARST, USDC, and XLM) to Vesseo users who reside in other countries. It's possible to cash out, through MoneyGram"
+      },
+      {
+        "class": "A",
+        "ref": "https://intercom.help/decaf/en/articles/11403352-withdraw-to-cash-using-moneygram",
+        "observedAt": "2026-11-14",
+        "quote": "You can use Moneygram in the Decaf Wallet to withdraw your USDC into CASH. ... Make sure you have USDC on Stellar"
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.org/case-studies/decaf",
+        "observedAt": "2026-11-14",
+        "quote": "Learn how Decaf makes crypto usable and accessible across the world with the Stellar network."
+      },
+      {
+        "class": "D",
+        "ref": "https://stellarlumens.asia/stellar-apps",
+        "observedAt": "2026-11-14",
+        "quote": "MoneyGram app | Hold USDC, cash out ... Vesseo | USDC account, bill pay ... Wirex | Card spending ... Decaf | Payouts, payroll"
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "A live directory lists consumer apps and card products on Stellar (Scout: 5 live card-issuing projects, 24 live user-facing apps matching a payments query on 2026-11-14).",
+        "verdict": "corpus-only",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "scout.searchProjects type=Card Issuing status=Live",
+            "observedAt": "2026-11-14",
+            "note": "Bridge, Amulets, Blockroll, Wirex, Rain."
+          },
+          {
+            "class": "C",
+            "ref": "scout.searchProjects category=User-Facing App status=Live",
+            "observedAt": "2026-11-14",
+            "note": "Rows include Vesseo, Felix Pago, Sendana, Myaza, Azza, Amulets, Linq."
+          }
+        ]
+      },
+      {
+        "claim": "MoneyGram offers cash on-ramps and off-ramps for USDC on Stellar across many countries.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://www.moneygram.com/stellar",
+            "observedAt": "2026-11-14",
+            "note": "'Stellar since 2022 ... cash on-ramps and off-ramps at 480,000+ MoneyGram locations across 170+ countries.'"
+          },
+          {
+            "class": "D",
+            "ref": "https://messari.io/report/stellar-ecosystem-overview",
+            "observedAt": "2026-11-14",
+            "note": "2025-06-30: MoneyGram Ramps supports on-ramp in more than 30 countries and off-ramp in more than 170."
+          }
+        ]
+      },
+      {
+        "claim": "Vesseo and Decaf are consumer wallets that hold and send stablecoins on Stellar and cash out through MoneyGram.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://help.vesseoapp.com/hc/en-us/articles/31455120630807-Sending-Money-via-MoneyGram",
+            "observedAt": "2026-11-14",
+            "note": "Updated 2026-03-24: cash out through MoneyGram in the United States, Ukraine, Colombia, Guatemala and other listed countries."
+          },
+          {
+            "class": "A",
+            "ref": "https://intercom.help/decaf/en/articles/11403352-withdraw-to-cash-using-moneygram",
+            "observedAt": "2026-11-14",
+            "note": "2025-11-07: withdraw USDC on Stellar to cash through MoneyGram."
+          },
+          {
+            "class": "C",
+            "ref": "scout.searchProjects category=User-Facing App status=Live",
+            "observedAt": "2026-11-14",
+            "note": "Vesseo row marked Live, type Wallet."
+          },
+          {
+            "class": "D",
+            "ref": "https://stellarlumens.asia/stellar-apps",
+            "observedAt": "2026-11-14",
+            "note": "Table lists Vesseo and Decaf among Stellar payment apps."
+          }
+        ]
+      },
+      {
+        "claim": "Wirex offers card spending connected to Stellar.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "scout.searchProjects type=Card Issuing status=Live",
+            "observedAt": "2026-11-14",
+            "note": "'Wirex is a crypto wallet and payments platform (7M+ users) whose Visa card programme settl[es]' on Stellar."
+          },
+          {
+            "class": "D",
+            "ref": "https://stellarlumens.asia/stellar-apps",
+            "observedAt": "2026-11-14",
+            "note": "Table row: Wirex, card spending, cardholders."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-11-14",
+      "by": "gap-1 lane (Claude Fable 5.2), golden-coverage-audit 2026-11-14",
+      "evidence": [
+        "https://www.moneygram.com/stellar",
+        "https://help.vesseoapp.com/hc/en-us/articles/31455120630807-Sending-Money-via-MoneyGram",
+        "https://intercom.help/decaf/en/articles/11403352-withdraw-to-cash-using-moneygram",
+        "https://stellar.org/case-studies/decaf",
+        "https://stellarlumens.asia/stellar-apps"
+      ],
+      "rootCause": [
+        ".agents/rounds/2026-11-14-golden-coverage-audit.md"
+      ]
+    },
+    "notes": "External footprints sampled for five items: MoneyGram, Vesseo, Decaf, Wirex (above) and Beans (stellarlumens.asia only, so left out of the golden). Region claims are per provider pages and change often; the golden grades the behaviour.",
+    "origin": "golden-coverage-audit 2026-11-14"
+  }
+}

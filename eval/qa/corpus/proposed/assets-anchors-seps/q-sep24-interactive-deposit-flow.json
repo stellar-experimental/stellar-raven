@@ -1,0 +1,157 @@
+{
+  "id": "q-sep24-interactive-deposit-flow",
+  "question": "From the wallet's side, how does a SEP-24 interactive deposit run, from authentication to the funds arriving?",
+  "surface": [
+    "stellarDocs.search_anchor_sep_docs",
+    "stellarDocs.search_wallet_dapp_docs",
+    "scout.searchResearch"
+  ],
+  "golden": {
+    "answer": "The wallet authenticates with SEP-10 (or SEP-45), then POSTs to /transactions/deposit/interactive. The anchor returns a hosted URL and a transaction id. The wallet opens the URL in a popup or webview, where the anchor collects KYC and deposit details. The wallet then listens for a callback or polls GET /transaction until the status is completed and the asset has arrived.",
+    "keyFacts": [
+      "The wallet authenticates with SEP-10 or SEP-45 before requesting the deposit.",
+      "POST /transactions/deposit/interactive returns an anchor-hosted URL and an id.",
+      "The anchor collects KYC in the hosted page that the wallet opens.",
+      "The wallet tracks status by callback or by polling GET /transaction."
+    ],
+    "avoid": [
+      "Do NOT describe the SEP-6 pattern in which the wallet itself must collect and submit KYC."
+    ],
+    "notes": "Passing optional SEP-9 fields to pre-fill the anchor's form is correct."
+  },
+  "tags": {
+    "category": "assets-anchors-seps",
+    "service": "stellarDocs",
+    "freshness": "stable"
+  },
+  "truth": {
+    "lifecycle": {
+      "state": "proposed",
+      "reviewState": "none"
+    },
+    "leaf": "standards.deposit-withdrawal",
+    "domain": "real-world",
+    "status": "confirmed",
+    "asOf": "2026-11-14",
+    "sources": [
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
+        "observedAt": "2026-11-14",
+        "quote": "SEP: 0024 Title: Hosted Deposit and Withdrawal Author: SDF Status: Active ... Version 3.8.0"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
+        "observedAt": "2026-11-14",
+        "quote": "The wallet must either listen for a callback or poll the `/transaction` endpoint for updates about the transaction from the anchor."
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/build/apps/wallet/sep24.md",
+        "observedAt": "2026-11-14",
+        "quote": "a wallet makes several requests to the anchor, and finally receives an interactive URL to open in iframe."
+      },
+      {
+        "class": "D",
+        "ref": "parallel-cli research trun_0109eca42fd042999500976531184240",
+        "observedAt": "2026-11-14",
+        "quote": "The transaction starts `incomplete` ... then `pending_external`/`pending_stellar` while funds propagate, then `completed`."
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "The wallet authenticates with SEP-10 or SEP-45 before calling the SEP-24 endpoints.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
+            "observedAt": "2026-11-14",
+            "note": "Basic Wallet Implementation: 'Perform authentication via SEP-10 or SEP-45 before hitting those endpoints'."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/apps/wallet/sep24.md",
+            "observedAt": "2026-11-14",
+            "note": "Wallet guide authenticates and passes the auth token to the SEP-24 calls."
+          },
+          {
+            "class": "D",
+            "ref": "parallel-cli research trun_0109eca42fd042999500976531184240",
+            "observedAt": "2026-11-14",
+            "note": "Research report step 1 quotes the JWT requirement from SEP-10 or SEP-45."
+          }
+        ]
+      },
+      {
+        "claim": "POST /transactions/deposit/interactive returns type interactive_customer_info_needed with a url and an id.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
+            "observedAt": "2026-11-14",
+            "note": "Response fields: `type` always interactive_customer_info_needed, `url` hosted by the anchor, `id` used to query /transaction."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/apps/wallet/sep24.md",
+            "observedAt": "2026-11-14",
+            "note": "'Open the received URL in an iframe and save the transaction ID for future reference.'"
+          }
+        ]
+      },
+      {
+        "claim": "The wallet opens the URL in a popup or webview and the anchor collects KYC there.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
+            "observedAt": "2026-11-14",
+            "note": "'A wallet that receives this response should open a popup browser window or embedded webview to the specified URL.'"
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep24/index.md",
+            "observedAt": "2026-11-14",
+            "note": "'SEP-24 allows for a means by which wallets and/or exchanges allow the user to directly interact with an on & off-ramp.'"
+          }
+        ]
+      },
+      {
+        "claim": "The wallet tracks the deposit by callback or by polling GET /transaction; the record starts incomplete and ends completed.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
+            "observedAt": "2026-11-14",
+            "note": "'This transaction must be in the `incomplete` status until the user has provided the anchor all information'; status list ends with `completed`."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/apps/wallet/sep24.md",
+            "observedAt": "2026-11-14",
+            "note": "'the wallet would get transaction data to notify users about status updates ... via the SEP-24 GET /transaction and GET /transactions endpoint'."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-11-14",
+      "by": "gap-1 lane (Claude Fable 5.2), golden-coverage-audit 2026-11-14",
+      "evidence": [
+        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
+        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
+        "https://developers.stellar.org/docs/build/apps/wallet/sep24.md"
+      ],
+      "rootCause": [
+        ".agents/rounds/2026-11-14-golden-coverage-audit.md"
+      ]
+    },
+    "notes": "Sibling check: q-sep-interactive-deposit-withdraw, q-sep6-sep24-sep31-choice, q-sep-6-24-deprecation and q-anchor-endpoint-discovery test which SEP to use and endpoint discovery; none tests the wallet-side step sequence. SEP-24 was Active, version 3.8.0, on 2026-11-14.",
+    "origin": "golden-coverage-audit 2026-11-14"
+  }
+}

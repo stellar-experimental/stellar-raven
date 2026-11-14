@@ -1,0 +1,20 @@
+{
+  "id": "q-raph-withdraw-exchange-self-custody",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-hist-retail (golden coverage audit)",
+    "reviewer": "coverage (golden coverage audit)",
+    "reason": "Two thin facts; network choice is q-raph-usdc-onto-stellar kf0 and q-edge-metamask-evm-mental-model, and secret-key safety is graded across the wallets domain. My unverified-keep check found the record sound.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-raph-withdraw-exchange-self-custody",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-raph-withdraw-exchange-self-custody"
+    ],
+    "lastCaseContentSha256": "4a0076a7e938d51251018a18e53eefc7ef017fc4ae60e9c0334915577c7ab845",
+    "replacementIds": []
+  }
+}

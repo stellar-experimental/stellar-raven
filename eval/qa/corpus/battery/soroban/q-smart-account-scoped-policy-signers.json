@@ -1,22 +1,24 @@
 {
   "id": "q-smart-account-scoped-policy-signers",
-  "question": "How can a Stellar smart account authorize scoped calls, spending limits, time windows, and regulated co-signing without giving every signer full control?",
+  "question": "How can a Stellar smart account authorize scoped calls, spending limits, time windows, and co-signing without giving every signer full control, and how is a signer added or changed?",
   "surface": [
     "stellarDocs.search_wallet_dapp_docs",
     "skills.stellar-dev.dapp",
     "skills.stellar-dev.smart-contracts"
   ],
   "golden": {
-    "answer": "Put the rules in the contract account's __check_auth policy: bind authorization to the invocation tree and enforce allowed contracts/functions, asset and amount caps, expiry windows, and threshold or guardian requirements. Use delegated or session credentials with narrow scope rather than sharing a master key. For many partners, route approvals through policy or verifier contracts instead of adding every participant as an unrestricted signer. Include revocation, pause, replay protection, and auditable policy updates.",
+    "answer": "A contract account enforces scope inside `__check_auth`, which sees the invocation's authorization contexts, so rules can limit contracts, functions, amounts, and time windows. OpenZeppelin smart accounts compose context rules (scope), signers (authentication), and policies (limits, thresholds). Give delegated or session signers narrow rules instead of a master key. The signer set is contract state: add a signer by calling the deployed contract's signer-management method, authorized by an existing signer. Classic SetOptions does not apply to a C-address.",
     "keyFacts": [
-      "Contract-account credentials can bind calls, amounts, assets, and time windows.",
-      "Delegated or session credentials use narrow scope instead of a full-control key.",
-      "Policy or verifier contracts support partner co-signing without unrestricted signers."
+      "`__check_auth` can restrict calls, amounts, and time windows by auth context.",
+      "Narrow session or delegated signers replace sharing a full-control key.",
+      "Signer changes are contract state authorized by an existing signer, not SetOptions.",
+      "Policy or verifier contracts handle co-signing and limits instead of unrestricted signers."
     ],
     "avoid": [
-      "Classic account thresholds are the only way to implement scoped authorization on Stellar.",
-      "A session signer must receive the wallet's master private key."
-    ]
+      "Do NOT claim classic account thresholds are the only way to scope authorization on Stellar.",
+      "Do NOT claim a session signer needs the wallet's master private key."
+    ],
+    "notes": "Method names and signer schemas are implementation-specific; do not require one ABI. Naming OpenZeppelin smart accounts or Smart Account Kit as an example is correct, not required."
   },
   "tags": {
     "category": "soroban",
@@ -120,20 +122,36 @@
             "observedAt": "2026-07-11"
           }
         ]
+      },
+      {
+        "claim": "OpenZeppelin smart accounts compose context rules, signers, and policies (spending limits, thresholds)",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://docs.openzeppelin.com/stellar-contracts/accounts/smart-account",
+            "observedAt": "2026-11-14",
+            "note": "authorization as a composition of three core elements: context rules, signers, and policies"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch soroban-01)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-soroban-a, verify-audit-soroban-a; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Re-verified unchanged 2026-11-02 (no gospel change; no proposal for this case).",
-        "golden.keyFacts[0]: A https://developers.stellar.org/docs/build/guides/contract-accounts/advanced-patterns — 'Put the logic in `__check_auth` ... Spend limits ... Allow lists ... Time rules' | B https://github.com/OpenZeppelin/stellar-contracts/blob/ddc327eb92d63709436da3a8455f641c2d5476c5/packages/accounts/src/policies/spending_limit.rs — 'enforces spending limits over a configurable rolling time window' (observedAt 2026-11-02).",
-        "golden.keyFacts[1]: A advanced-patterns — 'Generate a short-lived session key ... limit it to one function plus a maximum amount ... Reject if the session key is unknown, expired, out of allowance, or used outside its allowed scope.' (observedAt 2026-11-02).",
-        "golden.keyFacts[2]: A advanced-patterns — 'For high-risk contract calls ... require the end user plus a policy signer' | B OpenZeppelin smart_account/mod.rs at ddc327eb — 'Policies - External contracts attached to context rules that enforce business logic' (observedAt 2026-11-02).",
-        "golden.avoid[0..1] contradicted: A advanced-patterns — 'Layer spend limits, allow lists, time rules, and other guardrails onto contract accounts.' and 'a p256 key created client-side and kept in secure browser storage' (observedAt 2026-11-02).",
-        "Sibling sweep 2026-11-02: q-passkey-wallet-recovery, q-smart-account-limits-recovery, q-smart-account-what checked; no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-a.json#q-smart-account-scoped-policy-signers",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-a.json#q-smart-account-scoped-policy-signers",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-smart-account-scoped-policy-signers",
+        "Live A 2026-11-14: https://docs.openzeppelin.com/stellar-contracts/accounts/smart-account -- 'authorization as a composition of three core elements: context rules, signers, and policies'",
+        "Live B 2026-11-14: https://github.com/OpenZeppelin/stellar-contracts/blob/main/packages/accounts/README.md -- 'It separates authentication (signers prove identity), authorization scope (context rules bind signers and policies to specific operations), and enforcement logic'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "kaan policy-signers-scoped-auth"
+    "origin": "kaan policy-signers-scoped-auth",
+    "leaf": "ai.agent-delegation",
+    "secondaryLeaf": "soroban.contract-accounts"
   }
 }

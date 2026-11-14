@@ -1,0 +1,203 @@
+{
+  "id": "q-eco-institutions-payment-networks-banks",
+  "question": "Which major payment networks and banks have integrated with or tested Stellar, what did each do, and when?",
+  "surface": [
+    "lumenloop.search_content_semantic",
+    "scout.searchResearch"
+  ],
+  "golden": {
+    "answer": "Visa added Stellar to its stablecoin settlement platform on July 31, 2025; Wirex went live in November 2025 settling Visa card payments in USDC and EURC on Stellar. Mastercard's Crypto Credential integration was announced in October 2024. U.S. Bank ran its first live pilot payment with its USBDC stablecoin on Stellar in September 2026. Check for newer launches.",
+    "keyFacts": [
+      "Visa added Stellar to its stablecoin settlement platform in July 2025.",
+      "Wirex settles Visa card payments in USDC and EURC on Stellar, live since November 2025.",
+      "U.S. Bank ran a live pilot payment with its USBDC stablecoin on Stellar in September 2026.",
+      "Mastercard's Crypto Credential integration with Stellar was announced in October 2024."
+    ],
+    "avoid": [],
+    "notes": "Accept other correctly dated institutions, such as PayPal's PYUSD, MoneyGram, Franklin Templeton, or DTCC's planned connection, and newer launches from a current source. U.S. Bank's own headline says it launched USBDC while its text calls the first transaction a pilot; accept either word. A planned or pilot item described as generally available is wrong."
+  },
+  "tags": {
+    "category": "defi-ecosystem",
+    "service": "lumenloop",
+    "freshness": "live"
+  },
+  "truth": {
+    "lifecycle": {
+      "state": "proposed",
+      "reviewState": "none"
+    },
+    "domain": "real-world",
+    "status": "confirmed",
+    "leaf": "ecosystem.institutional-adoption",
+    "asOf": "2026-11-14",
+    "notes": "Whether Mastercard Crypto Credential is in production use on Stellar was not established; the key fact grades the announcement only.",
+    "sources": [
+      {
+        "class": "A",
+        "ref": "https://usa.visa.com/about-visa/newsroom/press-releases.releaseId.21581.html",
+        "observedAt": "2026-11-14",
+        "quote": "**More chains:** Visa has added support for two blockchains, Stellar and Avalanche, in addition to already supported chains, Ethereum and Solana"
+      },
+      {
+        "class": "D",
+        "ref": "https://www.coindesk.com/business/2025/07/31/visa-expands-settlement-platform-to-stellar-avalanche-adds-support-for-3-stablecoins",
+        "observedAt": "2026-11-14",
+        "quote": "Visa Expands Settlement Platform to Stellar, Avalanche, Adds Support for 3 Stablecoins (Jul 31, 2025)"
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.org/press/wirex-and-stellar-go-live-with-dual-stablecoin-visa-settlement-in-usdc-and-eurc-for-7-million-users",
+        "observedAt": "2026-11-14",
+        "quote": "dual-stablecoin settlement using USDC and EURC on the Stellar blockchain is now live"
+      },
+      {
+        "class": "D",
+        "ref": "https://www.prnewswire.com/news-releases/wirex-and-stellar-go-live-with-dual-stablecoin-visa-settlement-in-usdc-and-eurc-for-7-million-users-302618287.html",
+        "observedAt": "2026-11-14",
+        "quote": "LONDON, Nov. 18, 2025 /PRNewswire/ -- Wirex, a global leader in digital payments and principal member of Visa"
+      },
+      {
+        "class": "A",
+        "ref": "https://ir.usbank.com/news-events/news/news-details/2026/U-S--Bank-Launches-USBDC-Stablecoin/default.aspx",
+        "observedAt": "2026-11-14",
+        "quote": "U.S. Bank today announced the successful execution of a live pilot transaction utilizing USBDC, the bank's proprietary U.S. dollar-backed stablecoin"
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.org/blog/ecosystem/a-bank-issued-stablecoin-moves-real-money-on-stellar",
+        "observedAt": "2026-11-14",
+        "quote": "U.S. Bank completed its first pilot transaction on the Stellar network, using USBDC, its proprietary dollar-backed stablecoin"
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.org/blog/ecosystem/u-s-bank-is-testing-custom-stablecoin-issuance-on-the-stellar-network",
+        "observedAt": "2026-11-14",
+        "quote": "U.S. Bank, PwC, and the Stellar Development Foundation (SDF) unveiled ... U.S. Bank is testing custom stablecoin issuance on the Stellar network."
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.org/press/stellar-joins-the-mastercard-crypto-credential-ecosystem-to-unlock-verified-interactions-across-public-blockchain-networks",
+        "observedAt": "2026-11-14",
+        "quote": "At Meridian 2024 in London, U.K., the Stellar Development Foundation announced a new partnership with Mastercard to integrate the company’s Crypto Credential"
+      },
+      {
+        "class": "D",
+        "ref": "https://www.pymnts.com/blockchain/2024/stellar-adds-mastercard-crypto-credential-tool-to-its-blockchain/",
+        "observedAt": "2026-11-14",
+        "quote": "Stellar Adds Mastercard Crypto Credential Tool to Its Blockchain | October 15, 2024"
+      },
+      {
+        "class": "D",
+        "ref": "https://www.reuters.com/legal/transactional/us-bancorp-executes-first-live-transaction-using-dollar-backed-usbdc-stablecoin-2026-09-09",
+        "observedAt": "2026-11-14",
+        "quote": "U.S. Bancorp said on Wednesday it completed a live pilot transaction using its proprietary U.S. dollar-backed stablecoin, USBDC"
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "Visa added Stellar to its stablecoin settlement platform in July 2025 (announced 2025-07-31).",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://usa.visa.com/about-visa/newsroom/press-releases.releaseId.21581.html",
+            "observedAt": "2026-11-14",
+            "note": "Visa press release dated 2025-07-31: \"Visa has added support for two blockchains, Stellar and Avalanche\"."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.coindesk.com/business/2025/07/31/visa-expands-settlement-platform-to-stellar-avalanche-adds-support-for-3-stablecoins",
+            "observedAt": "2026-11-14",
+            "note": "CoinDesk, Jul 31, 2025, reports the same expansion."
+          }
+        ]
+      },
+      {
+        "claim": "Wirex went live in November 2025 (announced 2025-11-18) settling Visa card payments in USDC and EURC on Stellar.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/press/wirex-and-stellar-go-live-with-dual-stablecoin-visa-settlement-in-usdc-and-eurc-for-7-million-users",
+            "observedAt": "2026-11-14",
+            "note": "\"USDC and EURC settlements are now live and operational on the Stellar network\"; Wirex is a principal member of Visa."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.prnewswire.com/news-releases/wirex-and-stellar-go-live-with-dual-stablecoin-visa-settlement-in-usdc-and-eurc-for-7-million-users-302618287.html",
+            "observedAt": "2026-11-14",
+            "note": "PR Newswire release dated Nov. 18, 2025."
+          },
+          {
+            "class": "C",
+            "ref": "scout.searchResearch({q:'Visa stablecoin settlement Stellar Wirex'})",
+            "observedAt": "2026-11-14",
+            "note": "Returned the same release dated 2025-11-18 from the Lumenloop news archive."
+          }
+        ]
+      },
+      {
+        "claim": "U.S. Bank ran a live pilot payment with its USBDC stablecoin on Stellar in September 2026 (announced 2026-09-09), after testing issuance from November 2025.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://ir.usbank.com/news-events/news/news-details/2026/U-S--Bank-Launches-USBDC-Stablecoin/default.aspx",
+            "observedAt": "2026-11-14",
+            "note": "U.S. Bancorp investor-relations release dated September 09, 2026, titled \"U.S. Bank Launches USBDC Stablecoin\", describing a live pilot cross-border payment between its entities."
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/ecosystem/a-bank-issued-stablecoin-moves-real-money-on-stellar",
+            "observedAt": "2026-11-14",
+            "note": "SDF post: \"U.S. Bank completed its first pilot transaction on the Stellar network, using USBDC\"."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.reuters.com/legal/transactional/us-bancorp-executes-first-live-transaction-using-dollar-backed-usbdc-stablecoin-2026-09-09",
+            "observedAt": "2026-11-14",
+            "note": "Reuters, 2026-09-09, reports the live pilot transaction."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.coindesk.com/business/2025/11/25/u-s-bank-tests-custom-stablecoin-issuance-on-stellar-network",
+            "observedAt": "2026-11-14",
+            "note": "CoinDesk, Nov 25, 2025: U.S. Bank tests custom stablecoin issuance on Stellar."
+          }
+        ]
+      },
+      {
+        "claim": "Mastercard's Crypto Credential integration with Stellar was announced in October 2024 (2024-10-15) at Meridian 2024.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/press/stellar-joins-the-mastercard-crypto-credential-ecosystem-to-unlock-verified-interactions-across-public-blockchain-networks",
+            "observedAt": "2026-11-14",
+            "note": "SDF press release: announced at Meridian 2024 in London a partnership with Mastercard to integrate Crypto Credential with the Stellar network."
+          },
+          {
+            "class": "D",
+            "ref": "https://www.pymnts.com/blockchain/2024/stellar-adds-mastercard-crypto-credential-tool-to-its-blockchain/",
+            "observedAt": "2026-11-14",
+            "note": "PYMNTS, October 15, 2024: \"Stellar Development Foundation is integrating Mastercard’s Crypto Credential solution into its blockchain network.\""
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-11-14",
+      "by": "Claude Fable 5.2, gap-2 lane, 2026-11-14 golden-coverage-audit",
+      "evidence": [
+        "https://usa.visa.com/about-visa/newsroom/press-releases.releaseId.21581.html",
+        "https://stellar.org/press/wirex-and-stellar-go-live-with-dual-stablecoin-visa-settlement-in-usdc-and-eurc-for-7-million-users",
+        "https://ir.usbank.com/news-events/news/news-details/2026/U-S--Bank-Launches-USBDC-Stablecoin/default.aspx",
+        "https://stellar.org/blog/ecosystem/a-bank-issued-stablecoin-moves-real-money-on-stellar",
+        "https://stellar.org/press/stellar-joins-the-mastercard-crypto-credential-ecosystem-to-unlock-verified-interactions-across-public-blockchain-networks",
+        "perplexity_ask 2026-11-14 (recency: year): U.S. Bank's latest dated announcement is the 2026-09-09 USBDC pilot; no production launch found.",
+        "Sibling sweep: q-eco-pyusd-stellar-freshness (PayPal), q-pay-moneygram-ramps and q-anchor-moneygram-ramps (MoneyGram), q-defi-benji-franklin-templeton, q-defi-wisdomtree-crdt and q-crp-dtcc-stellar-connection-plan each cover one institution and agree. A scan of judge-facing battery text found no case stating the Visa, Wirex, Mastercard or U.S. Bank facts."
+      ]
+    },
+    "origin": "golden-coverage-audit 2026-11-14"
+  }
+}

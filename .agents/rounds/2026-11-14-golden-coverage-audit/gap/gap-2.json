@@ -1,0 +1,137 @@
+{
+  "lane": "gap-2",
+  "slots": [
+    {
+      "leaf": "network.tier1-quorum",
+      "facet": "who validates today and where the roster is published",
+      "result": "proposed",
+      "caseId": "q-net-tier1-roster-current",
+      "coveredBy": null,
+      "ravenReach": "unreachable",
+      "ravenEvidence": "search (Tier 1 validator organizations current list) then execute: stellarDocs.search_docs returned the Tier 1 Organizations page, which names Obsrvr Radar but lists no organizations; scout.searchResearch returned the same page plus a Lumenloop roundup; lumenloop.search_content_semantic returned the 2026-07-16 SDF press release naming MoneyGram, Figure and Range. Where the roster is published is answerable; three of ten members are named; no Raven source holds the full current roster.",
+      "owner": "SDF validators docs: developers.stellar.org/docs/validators/tier-1-orgs links to Obsrvr Radar but carries no dated list of Tier 1 organizations. The live owner is Obsrvr Radar (radar.withobsrvr.com); SDF's stellar/packages pubnet-validator-full example config mirrors the set. A dated roster on the Tier 1 page, or a Scout validator-organization record sourced from Radar, would close it.",
+      "note": "Radar's API field quorumSetConfiguration is stale (six organizations, SatoshiPay included); the live roster comes from transitiveQuorumSet."
+    },
+    {
+      "leaf": "ecosystem.xlm-supply",
+      "facet": "total and circulating supply, and whether new XLM can be created",
+      "result": "proposed",
+      "caseId": "q-token-xlm-supply-total-circulating",
+      "coveredBy": null,
+      "ravenReach": "answerable",
+      "ravenEvidence": "search (XLM total supply circulating supply) then execute: stellarDocs.search_docs returned Lumens (XLM) > Lumen Supply Metrics as the first hit (total and circulating supply, the dashboard API, inflation ended 2019-10-28) and Ledgers > Total coins; scout.searchResearch returned the same page and CAP-0026. The page's own figures are a 2026-07-21 snapshot; the live value needs the dashboard API, which Raven does not call.",
+      "owner": null,
+      "note": "Weight 3: one parallel-cli research run (trun_04740bf111ed4e89a59aa8fb7d610892) agreed with the primary sources."
+    },
+    {
+      "leaf": "tooling.version-compat",
+      "facet": "which releases match the protocol on Mainnet",
+      "result": "proposed",
+      "caseId": "q-infra-software-versions-current-protocol",
+      "coveredBy": null,
+      "ravenReach": "answerable",
+      "ravenEvidence": "search (software versions for current protocol) then execute: stellarDocs.search_docs returned Software Versions > Software as the first hit with the Protocol 29 table (Core 29.0.0, Rust XDR 28.0.1, ...); scout.searchResearch with sources release,dev-docs returned the same page (an old Protocol 21 chunk) and release rows including stellar-core v30.0.0. The docs hit carries the key facts.",
+      "owner": null,
+      "note": "The pinned set changes when Mainnet adopts Protocol 30 (vote scheduled 2026-11-23); re-verify then, ahead of the quarter-spread reverifyBy. Weight 3: research run trun_04740bf111ed4e8985800b541cbda276 agreed."
+    },
+    {
+      "leaf": "wallets.support-channels",
+      "facet": "the official help channels and what SDF does not do",
+      "result": "proposed",
+      "caseId": "q-raph-official-help-sdf-cannot-recover",
+      "coveredBy": null,
+      "ravenReach": "answerable",
+      "ravenEvidence": "search (official support channels, SDF cannot recover funds) then execute: scout.searchResearch returned SDF's Protect Yourself from Scammers post (SDF cannot freeze or return funds, never asks for keys) and the stellar.org Terms of Service; stellarDocs.search_docs returned Building with AI > Additional resources naming the Stellar Developer Discord for help; lumenloop.search_content_semantic returned two SDF phishing statements. stellar.org/community itself was not returned.",
+      "owner": null,
+      "note": null
+    },
+    {
+      "leaf": "soroban.errors-debugging",
+      "facet": "finding why an invocation failed",
+      "result": "proposed",
+      "caseId": "q-sor-custom-errors-find-failure-cause",
+      "coveredBy": null,
+      "ravenReach": "answerable",
+      "ravenEvidence": "search (define custom contract errors, debug a failed invocation) then execute: stellarDocs.search_docs returned the error-enum convention guide, Errors > Panicking with an Error, and Generate Contract Errors for the definition query; for the failure query it returned simulateTransaction and Debugging Contract Errors > 4. Core Applies the Transaction to the Ledger. Those pages carry all four key facts.",
+      "owner": null,
+      "note": "Kept apart from q-sor-decode-hosterror-codes, which grades reading HostError classes."
+    },
+    {
+      "leaf": "standards.payment-patterns",
+      "facet": "accepting and reconciling a merchant payment",
+      "result": "proposed",
+      "caseId": "q-pay-merchant-request-detect-reconcile",
+      "coveredBy": null,
+      "ravenReach": "reachable-not-surfaced",
+      "ravenEvidence": "search (accept merchant payment, detect, match to order) then execute: stellarDocs.search_docs for the merchant wording returned Anchor Platform payment-observer pages, the example-app payment page and the disbursement-platform payments page; a second query naming SEP-7 returned the wallet guide's Pay Operation. Exact reads with stellarDocs.get_doc_page confirmed the send-and-receive-payments page (getEvents monitoring) and the pooled-accounts page (memo and muxed matching) are held.",
+      "owner": null,
+      "note": "The slot's second canonical source, docs/build/guides/basics/follow-received-payments, returned Page Not Found as .md on 2026-11-14."
+    },
+    {
+      "leaf": "network.protocol-meetings",
+      "facet": "where meetings are recorded and how to find a decision",
+      "result": "proposed",
+      "caseId": "q-net-protocol-meeting-notes-find-cap",
+      "coveredBy": null,
+      "ravenReach": "answerable",
+      "ravenEvidence": "search (protocol developer meeting notes, CAP discussion) found stellarDocs.search_meeting_notes first; execute: stellarDocs.search_docs with includeMeetings returned the Meeting Notes index and dated pages; stellarDocs.search_docs_in_category(meetings, CAP-87) returned the 2026-09-17 Protocol Discussion and the 2026-09-10 meeting; lumenloop.list_documents(events) returned the 11/12/2026 meeting with its YouTube link.",
+      "owner": null,
+      "note": "The CAP file's status and discussion link live in stellar/stellar-protocol; Raven reaches CAP text through scout.searchResearch source=cap, which this check did not exercise."
+    },
+    {
+      "leaf": "security.audit-registry",
+      "facet": "whether a named project has been audited",
+      "result": "proposed",
+      "caseId": "q-defi-blend-audit-record",
+      "coveredBy": null,
+      "ravenReach": "answerable",
+      "ravenEvidence": "search (has Blend been audited) found scout.listAudits first; execute: scout.listAudits(q Blend) matched 6 of 71 reports with auditor, protocol version, publication date and report links; scout.searchProjects(Blend) returned audits count 6, auditors OtterSec, Certora, Code4rena, latestAt 2025-08-13; scout.searchResearch(source audit) returned the v1 OtterSec and Certora rows.",
+      "owner": null,
+      "note": "Scout's dates are portal publication dates; the Code4rena competition dates and Blend's own docs and repositories are outside Raven."
+    },
+    {
+      "leaf": "ai.ecosystem-projects",
+      "facet": "which AI or agent projects are built on Stellar",
+      "result": "proposed",
+      "caseId": "q-scf-ai-agent-projects-agents-hackathon",
+      "coveredBy": null,
+      "ravenReach": "answerable",
+      "ravenEvidence": "search (AI agent projects built on Stellar, hackathon) found scout.searchHackathonBuilds, scout.hackathonBrief and scout.searchProjects; execute: scout.searchProjects(type AI, status Live) returned 49 projects; scout.getHackathons returned Stellar Hacks: Agents (2026-03-30 to 2026-04-13, completed, 10000 USD, SDF); lumenloop.search_content_semantic returned the hackathon announcement and SDF's x402 post.",
+      "owner": null,
+      "note": "The draft question was a list request; the case grades the dedicated hackathon, the payment protocols, and naming projects from a dated listing."
+    },
+    {
+      "leaf": "assets.public-sector-cbdc",
+      "facet": "which public institutions have issued or piloted on Stellar",
+      "result": "proposed",
+      "caseId": "q-crp-public-sector-cbdc-pilots-stellar",
+      "coveredBy": null,
+      "ravenReach": "reachable-not-surfaced",
+      "ravenEvidence": "search (government central bank CBDC pilot on Stellar) surfaced only skills and a docs search; execute: scout.searchResearch returned CAP-49, asset docs and the government-debt blog; lumenloop.search_content_semantic returned U.S. Bank stablecoin articles; stellarDocs.search_docs returned wallet pages. Exact title reads with lumenloop.list_documents found both hryvnia press releases (search hryvnia) and the USDM1 universal-basic-income release (search USDM1).",
+      "owner": null,
+      "note": "The National Bank of Ukraine statement that the pilot was not its e-hryvnia sits on bank.gov.ua, outside Raven's sources; SDF's press release carries the e-money framing."
+    },
+    {
+      "leaf": "data.network-metrics",
+      "facet": "where authoritative activity and developer figures come from",
+      "result": "proposed",
+      "caseId": "q-data-network-metrics-sources",
+      "coveredBy": null,
+      "ravenReach": "answerable",
+      "ravenEvidence": "search (network metrics accounts operations developer activity source) found stellarDocs.search_docs and scout.getLeaderboard; execute: stellarDocs.search_docs returned Public Dashboards and Hubble; scout.getLeaderboard returned the ecosystem developer block dated asOf 2026-11-05; scout.searchResearch returned the SDF Quarterly Reports index (source sdf-org).",
+      "owner": null,
+      "note": "stellar.org/learn/the-power-of-stellar still shows 12 billion lifetime operations while the Q3 2026 report shows 23.5 billion: an upstream page-freshness observation."
+    },
+    {
+      "leaf": "ecosystem.institutional-adoption",
+      "facet": "which major institutions use Stellar and for what",
+      "result": "proposed",
+      "caseId": "q-eco-institutions-payment-networks-banks",
+      "coveredBy": null,
+      "ravenReach": "answerable",
+      "ravenEvidence": "search (which banks and payment networks integrated Stellar) surfaced docs searches only; execute: lumenloop.search_content_semantic returned five U.S. Bank articles, including the 2026-09 pilot; scout.searchResearch returned the Wirex Visa settlement release (2025-11-18) and Visa's Stellar support (2025-07-31). The Mastercard Crypto Credential release was not in either result; an exact title read with lumenloop.list_documents(search Mastercard) found it.",
+      "owner": null,
+      "note": "Three of four key facts surfaced on the ordinary pass; the Mastercard fact is reachable but not surfaced. The case names institutions no other battery case covers; PayPal, MoneyGram, Franklin Templeton, WisdomTree and DTCC have their own cases."
+    }
+  ]
+}

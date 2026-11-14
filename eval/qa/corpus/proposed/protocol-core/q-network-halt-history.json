@@ -1,0 +1,215 @@
+{
+  "id": "q-network-halt-history",
+  "question": "Has the Stellar mainnet ever halted? What happened, and how was it resolved?",
+  "surface": [
+    "scout.searchResearch",
+    "lumenloop.search_content_semantic"
+  ],
+  "golden": {
+    "answer": "Yes. On May 15, 2019 the network stopped closing ledgers for about an hour because too many validators were offline to reach consensus. Nothing forked and no funds were lost; validators restarted it by coordinating a quorum-set change. On April 6, 2021 SDF's validators and Horizon stalled, but the network kept closing ledgers; the Protocol 16 upgrade fixed that bug.",
+    "keyFacts": [
+      "Stellar mainnet halted on May 15, 2019 when validators could not reach consensus.",
+      "The 2019 halt caused no fork and no loss of funds.",
+      "Validators ended the 2019 halt by coordinating a quorum-set change.",
+      "In April 2021 SDF's validators stalled but the network kept closing ledgers."
+    ],
+    "avoid": [
+      "Do NOT claim the Stellar mainnet has never halted.",
+      "Do NOT describe the April 2021 SDF validator outage as a network-wide halt."
+    ],
+    "notes": "SDF reports 67 minutes for the 2019 halt; press reported about two hours. Accept either."
+  },
+  "tags": {
+    "category": "protocol-core",
+    "service": "scout",
+    "freshness": "scheduled"
+  },
+  "truth": {
+    "lifecycle": {
+      "state": "proposed",
+      "reviewState": "none"
+    },
+    "leaf": "network.incidents",
+    "domain": "real-world",
+    "status": "mixed",
+    "asOf": "2026-11-14",
+    "reverifyBy": "2027-03-23",
+    "sources": [
+      {
+        "class": "A",
+        "ref": "https://stellar.org/blog/developers/may-15th-network-halt",
+        "observedAt": "2026-11-14",
+        "quote": "At 1:14pm Pacific time, May 15th, the Stellar network halted for 67 minutes due to an inability to reach consensus."
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.org/press/statement-on-halted-sdf-validators",
+        "observedAt": "2026-11-14",
+        "quote": "During the entirety of the SDF node downtime, the Stellar network remained online. ... The network itself did not halt."
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.org/blog/ecosystem/decentralized-to-the-core",
+        "observedAt": "2026-11-14",
+        "quote": "On April 10, 2021, Stellar network validators voted to upgrade the network to Protocol 16, which contains a fix"
+      },
+      {
+        "class": "C",
+        "ref": "https://status.stellar.org/incidents/7h0czw6mnjzs",
+        "observedAt": "2026-11-14",
+        "quote": "Certain validators dropped off the network ... The SDF horizon cluster and validators are back up. Posted Apr 06, 2021 - 19:00 UTC"
+      },
+      {
+        "class": "D",
+        "ref": "https://cointelegraph.com/news/stellar-node-outage-causes-two-hour-complete-transaction-freeze",
+        "observedAt": "2026-11-14",
+        "quote": "Stellar (XLM) stopped confirming transactions for two hours on May 15 ... went down entirely for around 110 minutes"
+      },
+      {
+        "class": "D",
+        "ref": "https://thenextweb.com/news/stellar-blockchain-cascading-failure-crash-nobody-noticed-cryptocurrency-xlm",
+        "observedAt": "2026-11-14",
+        "quote": "Stellar's blockchain suffered a 'cascading failure' that halted transactions for roughly two hours on May 15."
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.org/faq",
+        "observedAt": "2026-11-14",
+        "quote": "In the history of Stellar, the network has only halted once-for 67 minutes on May 15, 2019."
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "The Stellar public network stopped closing ledgers on May 15, 2019 because it could not reach consensus.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/developers/may-15th-network-halt",
+            "observedAt": "2026-11-14",
+            "note": "'During that time no ledgers were closed and no transactions were processed.' Keybase took a validator down for maintenance while others were shaky or down."
+          },
+          {
+            "class": "D",
+            "ref": "https://cointelegraph.com/news/stellar-node-outage-causes-two-hour-complete-transaction-freeze",
+            "observedAt": "2026-11-14",
+            "note": "2019-05-16 report of the May 15 transaction freeze."
+          }
+        ]
+      },
+      {
+        "claim": "The 2019 halt lasted 67 minutes.",
+        "verdict": "disputed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/developers/may-15th-network-halt",
+            "observedAt": "2026-11-14",
+            "note": "SDF post-mortem: halted 1:14pm PT, ledgers resumed 2:21pm PT, 67 minutes."
+          },
+          {
+            "class": "D",
+            "ref": "https://cointelegraph.com/news/stellar-node-outage-causes-two-hour-complete-transaction-freeze",
+            "observedAt": "2026-11-14",
+            "note": "'around 110 minutes'."
+          },
+          {
+            "class": "D",
+            "ref": "https://thenextweb.com/news/stellar-blockchain-cascading-failure-crash-nobody-noticed-cryptocurrency-xlm",
+            "observedAt": "2026-11-14",
+            "note": "'roughly two hours'. The golden does not pin a duration."
+          },
+          {
+            "class": "D",
+            "ref": "parallel-cli research trun_9061a9e460964094a8328269f0a5a354",
+            "observedAt": "2026-11-14",
+            "note": "Research run found no source that reconciles the figures; it infers that press counted through a later brief stoppage. Left disputed."
+          }
+        ]
+      },
+      {
+        "claim": "SDF's FAQ says the network has halted once, for 67 minutes on May 15, 2019; the 2019 post-mortem also records a brief second stoppage that day.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/faq",
+            "observedAt": "2026-11-14",
+            "note": "'In the history of Stellar, the network has only halted once-for 67 minutes on May 15, 2019.'"
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/developers/may-15th-network-halt",
+            "observedAt": "2026-11-14",
+            "note": "UPDATE: 'The network was taken down briefly while we repaired this.' The golden names the May 15, 2019 halt and does not count halts."
+          },
+          {
+            "class": "D",
+            "ref": "parallel-cli research trun_9061a9e460964094a8328269f0a5a354",
+            "observedAt": "2026-11-14",
+            "note": "Research run found no other full mainnet halt through 2026 and quotes the same FAQ line."
+          }
+        ]
+      },
+      {
+        "claim": "The 2019 halt caused no fork and no loss of funds, and ended when key validators coordinated a quorum-set change.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/developers/may-15th-network-halt",
+            "observedAt": "2026-11-14",
+            "note": "'No one lost their money; no one's balances were confused by a fork.' 'key validators on the network coordinated a configuration change in which quourumsets were reduced'."
+          },
+          {
+            "class": "D",
+            "ref": "https://cointelegraph.com/news/stellar-node-outage-causes-two-hour-complete-transaction-freeze",
+            "observedAt": "2026-11-14",
+            "note": "'no transactions were validated until developers resolved the issue'."
+          }
+        ]
+      },
+      {
+        "claim": "On April 6, 2021 SDF's validators and public Horizon stopped while the network kept processing transactions; Protocol 16 (voted April 10, 2021) fixed the bug.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://stellar.org/press/statement-on-halted-sdf-validators",
+            "observedAt": "2026-11-14",
+            "note": "SDF nodes stopped around 1:00 am PDT and were back at 11:28 am PDT; 'The network itself did not halt.'"
+          },
+          {
+            "class": "C",
+            "ref": "https://status.stellar.org/incidents/7h0czw6mnjzs",
+            "observedAt": "2026-11-14",
+            "note": "Incident 'Certain validators dropped off the network', resolved 2021-04-06 19:00 UTC."
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/blog/ecosystem/decentralized-to-the-core",
+            "observedAt": "2026-11-14",
+            "note": "Protocol 16 'contains a fix that resolves the issue that caused several nodes to go offline'."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-11-14",
+      "by": "gap-1 lane (Claude Fable 5.2), golden-coverage-audit 2026-11-14",
+      "evidence": [
+        "https://stellar.org/blog/developers/may-15th-network-halt",
+        "https://stellar.org/press/statement-on-halted-sdf-validators",
+        "https://stellar.org/blog/ecosystem/decentralized-to-the-core",
+        "https://status.stellar.org/incidents/7h0czw6mnjzs",
+        "https://cointelegraph.com/news/stellar-node-outage-causes-two-hour-complete-transaction-freeze",
+        "https://thenextweb.com/news/stellar-blockchain-cascading-failure-crash-nobody-noticed-cryptocurrency-xlm"
+      ],
+      "rootCause": [
+        ".agents/rounds/2026-11-14-golden-coverage-audit.md"
+      ]
+    },
+    "notes": "The 2019 post-mortem's update records a brief second stoppage while quorum sets were repaired, so the golden does not say the network halted only once. Sibling check: q-protocol-24-whisk-incident covers the October 2025 state-archival bug, which was not a halt.",
+    "origin": "golden-coverage-audit 2026-11-14"
+  }
+}

@@ -6,19 +6,18 @@
     "stellarDocs.search_docs"
   ],
   "golden": {
-    "answer": "In the current Stellar x402 scheme, the client signs a Soroban authorization entry for an exact SAC transfer and a facilitator or relayer submits it; this is not necessarily a classic payment operation from the user. Verify scheme/version, CAIP network, token contract, parties, amount, exact invocation/auth shape, expiration, simulation, unexpected effects, final successful settlement, and request-level idempotency/replay binding before fulfillment. A Horizon operation-list match is insufficient for an inner contract transfer: post-settlement audit must decode successful transaction meta/events and exact SAC effects. As of 2026-11-02, Stellar Docs list Built on Stellar's hosted facilitator (OpenZeppelin Relayer x402 plugin, also self-hostable; testnet and mainnet), Coinbase's x402.org facilitator (stellar:testnet only), and community facilitators; none is mandatory.",
+    "answer": "In Stellar's x402 scheme the client signs a Soroban authorization entry for an exact SAC transfer and a facilitator or relayer submits it, so it is not necessarily a classic payment operation. Before fulfilling, verify network, amount, expiry, simulation, final settlement and replay binding. A Horizon operation-list match is insufficient for an inner transfer; audit transaction meta and events. As of 2026-11-14 Stellar docs list Coinbase's facilitator (testnet) and Built on Stellar's OpenZeppelin Relayer facilitator (testnet and mainnet); none is mandatory.",
     "keyFacts": [
-      "Clients sign exact SAC-transfer auth entries for facilitator or relayer submission.",
-      "Checks scheme, network, auth, expiry, simulation, effects, finality, and replay binding.",
-      "Audits inner transfers from successful transaction metadata, events, and SAC effects.",
-      "Names Built on Stellar (hosted) and OpenZeppelin (self-hosted) as facilitator options.",
-      "Dates facilitator availability to an observation date."
+      "The client signs a Soroban auth entry for an exact SAC transfer; a facilitator submits it.",
+      "Verify network, amount, expiry, settlement and replay binding before fulfilling.",
+      "Audit inner SAC transfers from transaction meta and events, not Horizon operations.",
+      "Names a dated facilitator option; none is mandatory."
     ],
     "avoid": [
-      "Possession of any Stellar transaction hash proves the required x402 payment.",
-      "Checking only the asset code and amount is sufficient payment verification."
+      "Do NOT treat possession of any Stellar transaction hash as proof of the required x402 payment.",
+      "Do NOT treat checking only the asset code and amount as sufficient verification."
     ],
-    "notes": "Status-sensitive details are stated as of 2026-11-02; grade later sourced changes leniently and require dated primary evidence."
+    "notes": "Facilitator availability is status-sensitive; grade later dated, sourced changes leniently."
   },
   "tags": {
     "category": "compliance-rwa-payments",
@@ -32,7 +31,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-03-30",
     "sources": [
       {
@@ -270,25 +269,43 @@
             "note": "\"Coinbase's hosted facilitator supports Stellar on testnet only.\""
           }
         ]
+      },
+      {
+        "claim": "Stellar docs list Coinbase's facilitator (Stellar testnet) and a Build on Stellar relayer facilitator on testnet and mainnet.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/agentic-payments/x402",
+            "observedAt": "2026-11-14",
+            "note": "Coinbase's x402 facilitator supports Stellar on **Testnet** with sponsored fees."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/agentic-payments/x402",
+            "observedAt": "2026-11-14",
+            "note": "This x402 facilitator service is available on Testnet and Mainnet."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch compliance-rwa-payments-04)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-compliance, verify-audit-compliance; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "curl -L https://developers.stellar.org/docs/build/apps/agentic-payments/x402 (observedAt 2026-11-02): 404. https://developers.stellar.org/docs/build/agentic-payments/x402: 200.",
-        "https://developers.stellar.org/docs/build/agentic-payments/x402 (observedAt 2026-11-02): \"Coinbase's x402 facilitator supports Stellar on **Testnet** with sponsored fees ... This x402 facilitator service is available on Testnet and Mainnet ... ### Community Facilitators ... They are not maintained by SDF\".",
-        "https://developers.stellar.org/docs/build/agentic-payments/x402/built-on-stellar.md (observedAt 2026-11-02): \"## Self-hosting If you want to run your own instance of the facilitator instead of using the hosted service, you can deploy the OpenZeppelin Relayer with the x402 Facilitator Plugin directly.\"",
-        "https://www.x402.org/facilitator/supported (observedAt 2026-11-02): the only Stellar kind is {\"x402Version\": 2, \"scheme\": \"exact\", \"network\": \"stellar:testnet\"}.",
-        "gh api repos/OpenZeppelin/relayer-plugin-x402-facilitator (observedAt 2026-11-02): archived false, pushed_at 2026-10-28T11:07:33Z.",
-        "Raven stellarDocs.search_docs -> https://developers.stellar.org/docs/tools/cli/agent-cli/guides/pay-for-apis-x402#facilitators (observedAt 2026-11-02): \"Coinbase's hosted facilitator supports Stellar on testnet only.\"",
-        "Independent verifier 2026-11-02: golden.answer modify (adds the Community Facilitators section generically, 'none' instead of 'neither'; names no community project because the page says 'Varial' in its wallet list and 'Vellar Facilitator' in its facilitator section), golden.notes and truth.sources[0].ref accept (.agents/rounds/2026-11-02-golden-audit/pass1/compliance-rwa-payments-04.json). keyFacts[3] still holds.",
-        "Sibling sweep 2026-11-02: q-defi-x402-on-stellar-what, q-soroban-x402-auth-entry-signing, q-ti-openzeppelin-relayer, q-hist-x402-stellar-announcement, q-agent-payment-standard-choice, q-smart-wallet-fee-sponsorship (grep x402.org facilitator|Coinbase facilitator|facilitator mandatory); no contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-compliance.json#q-x402-payment-verification",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-compliance.json#q-x402-payment-verification",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-x402-payment-verification",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/build/agentic-payments/x402 -- 'Coinbase's x402 facilitator supports Stellar on **Testnet** with sponsored fees.'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/build/agentic-payments/x402 -- 'This x402 facilitator service is available on Testnet and Mainnet.'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/build/agentic-payments/x402.md -- 'Coinbase's x402 facilitator supports Stellar on **Testnet** ... This x402 facilitator service is available on Testnet and Mainnet.'"
       ],
       "rootCause": [
-        "freshness-drift"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "kaan x402-payment-verification-stellar"
+    "origin": "kaan x402-payment-verification-stellar",
+    "notes": "Status-sensitive details are stated as of 2026-11-02; grade later sourced changes leniently and require dated primary evidence.",
+    "leaf": "ai.x402"
   }
 }

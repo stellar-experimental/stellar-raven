@@ -1,6 +1,6 @@
 {
   "id": "q-ti-rpc-gettransactions-pagination-xdr",
-  "question": "How do I reliably page Stellar RPC getTransactions/ getEvents with the cursor (and detect when my poller falls behind the per-call 200 limit), and decode resultMetaXdr to extract ops, affected accounts, and trustline changes?",
+  "question": "How do I reliably page Stellar RPC getTransactions and getEvents with the cursor, and detect when my poller falls behind the per-call 200 limit?",
   "surface": [
     "stellarDocs.search_asset_token_docs",
     "stellarDocs.search_protocol_concepts_docs",
@@ -10,22 +10,19 @@
     "scout.explainRepo"
   ],
   "golden": {
-    "answer": "For the first `getTransactions` page, send an inclusive `startLedger` and an optional `limit`. For continuation, omit `startLedger` and send the prior response's opaque `pagination.cursor`; the cursor resumes after the last returned position. `startLedger` and `cursor` are mutually exclusive. Process idempotently and persist the new cursor only after downstream writes succeed.\n\nAs of **2026-09-03**, stock Stellar RPC configuration defaults `getTransactions` to 50 records and a maximum of 200, but source exposes operator-configurable default/max options; treat provider behavior as configurable rather than a protocol constant. Horizon is separately 1–200/default 10; stock `getEvents` is 100/10000 and `getLedgers` is 50/200. Check the current provider and `getHealth` retention bounds. RPC returns failed as well as successful transactions, diagnostic events may be absent, and a cursor cannot recover history outside retention; use a suitable indexer/data-lake path when falling behind.\n\nIn default base64 mode, decode `envelopeXdr` as `TransactionEnvelope`, `resultXdr` as `TransactionResult`, `resultMetaXdr` as `TransactionMeta`, `diagnosticEventsXdr` entries as `DiagnosticEvent`, and `transactionEventsXdr` entries as `TransactionEvent`; contract-event payloads use `ContractEvent`. The public JS SDK may already parse these fields. With `xdrFormat=json`, the response uses corresponding `*Json` names, so do not expect base64-field names or double-decode SDK values.",
+    "answer": "For the first `getTransactions` page send an inclusive `startLedger` and optional `limit`; afterward omit `startLedger` and send the response's opaque `pagination.cursor`, which resumes after the last item. The two are mutually exclusive. Persist the new cursor only after downstream writes succeed. As of 2026-11-14 stock stellar-rpc defaults `getTransactions` to 50 with a maximum of 200, `getEvents` to 100/10000 and `getLedgers` to 50/200; these are operator-configurable options, so providers can differ. Horizon is 10 default, 200 max. A cursor cannot recover history outside retention, so a poller that falls behind needs an indexer or data lake. RPC returns failed as well as successful transactions.",
     "keyFacts": [
-      "Uses inclusive startLedger first, then the returned opaque cursor without startLedger.",
-      "Lists getTransactions 50/200, getEvents 100/10000, getLedgers 50/200, Horizon 10/200.",
-      "Treats RPC limits as dated stock defaults that providers can configure.",
-      "Covers retention/fall-behind, failed txs, optional diagnostics, idempotent persistence.",
-      "Maps envelope/result/meta/event *Xdr to exact types, *Json names, and SDK-parsed values."
+      "First page uses an inclusive startLedger; later pages use the opaque cursor alone.",
+      "Stock limits, dated: getTransactions 50/200, getEvents 100/10000, getLedgers 50/200.",
+      "These are configurable defaults that providers can change, not protocol constants.",
+      "A cursor cannot recover history beyond retention; falling behind needs an indexer or lake."
     ],
     "avoid": [
-      "Do NOT claim the 200 limit is Horizon-only or that Stellar RPC has no 200-record cap — RPC `getTransactions` itself is capped at 200 (default 50).",
-      "Do NOT repeat startLedger with cursor, edit the opaque cursor, or treat it as a ledger number.",
-      "Do NOT claim stock 200/50 is an immutable limit for every provider.",
-      "Do NOT hard-code Horizon's 200 limit as the RPC getEvents limit.",
-      "Do NOT expect *Xdr names in xdrFormat=json or double-decode SDK-parsed XDR values."
+      "Do NOT repeat startLedger with a cursor, edit the cursor or treat it as a ledger number.",
+      "Do NOT claim the 200 limit is Horizon-only or that RPC has no 200-record cap.",
+      "Do NOT claim the stock 50/200 is immutable for every provider."
     ],
-    "notes": "GT-53 CORRECTION 2026-07-11: getTransactions has stock 50/default and 200/max options, but providers may configure them. First-page startLedger is inclusive; continuation uses cursor without startLedger. The old Horizon-only premise is false.\nAlso good if the answer: Mentions that RPC/Horizon are not perfect substitutes and some Horizon endpoints/effects require XDR decoding or an indexer. | Recommends idempotent processing keyed by transaction hash/ledger/index to survive retries.\nGolden cites: Primary RPC pagination docs and Horizon-to-RPC migration/XDR docs.\nPreserve the 2026-07-03 sd-003/sd-004 correction: the then-Algolia search missed the RPC method page (sd-003, resolved 2026-11-02) and docs call configurable defaults hardcoded (sd-004). GT-53 adds exact cursor exclusivity and XDR/JSON types. Do not penalize provider-configurability precision or a dated live limit that differs from stock defaults. Per stellar-docs#2567, grade either the documented effective stock 50/200 cap or a dated source-level configurable-default qualifier as correct, provided the answer does not call the cap compile-time immutable or recommend raising it.\nCanonical-page caution: The official getTransactions page calls the cap hardcoded. An attributed quote of that page is not a wrong claim while sd-004 stays declined-upstream; grade caps at partial. This does not accept universal immutability. improvements/stellar-docs/sd-004-rpc-limits-described-as-hardcoded.md is declined-upstream, so this durable caution has no expiry date and remains until a later owner decision."
+    "notes": "Canonical-page caution: the official getTransactions page calls the cap hardcoded. An attributed quote of that page is not a wrong claim while improvements/stellar-docs/sd-004-rpc-limits-described-as-hardcoded.md stays declined-upstream; grade caps at partial. This does not accept universal immutability. Either the documented stock 50/200 or a dated source-level configurable-default qualifier is correct."
   },
   "tags": {
     "category": "tooling-infra",
@@ -39,7 +36,7 @@
     },
     "domain": "real-world",
     "status": "disputed",
-    "asOf": "2026-11-02",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-02-18",
     "sources": [
       {
@@ -158,25 +155,60 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "Stock limits: getTransactions 50/200, getEvents 100/10000, getLedgers 50/200, as configurable options",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "github.com/stellar/stellar-rpc @v30.0.1 cmd/stellar-rpc/internal/rpcv1/config/options.go",
+            "observedAt": "2026-11-14",
+            "note": "Name: \"max-transactions-limit\" ... DefaultValue: uint(200) ... Name: \"default-transactions-limit\" ... DefaultValue: uint(50)"
+          },
+          {
+            "class": "B",
+            "ref": "options.go @v30.0.1",
+            "observedAt": "2026-11-14",
+            "note": "Name: \"max-events-limit\" DefaultValue: uint(10000); \"default-events-limit\" DefaultValue: uint(100)"
+          }
+        ]
+      },
+      {
+        "claim": "Official getTransactions page still calls the 200 cap hardcoded",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "github.com/stellar/stellar-docs docs/data/apis/rpc/api-reference/methods/getTransactions.mdx",
+            "observedAt": "2026-11-14",
+            "note": "an upper limit that is hardcoded in Stellar-RPC for performance reasons"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "golden cap backlog 2026-11-02 (caps-2)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-tooling-a, verify-audit-tooling-a; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Notes-only change 2026-11-02: the existing sd-004 cap sentence now names its finding id in the cap sentence itself (ADR-0008 amendment); grading behavior is unchanged.",
-        "A 2026-11-02T21:24:12Z: GET https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getTransactions.md — \"The limit for getTransactions can range from 1 to 200 - an upper limit that is hardcoded in Stellar-RPC for performance reasons. If this argument isn't designated, it defaults to 50.\"",
-        "B 2026-11-02: stellar/stellar-rpc main c436cd7ddf cmd/stellar-rpc/internal/rpcv1/config/options.go — \"max-transactions-limit\" DefaultValue uint(200); \"default-transactions-limit\" DefaultValue uint(50), validated not to exceed the max (configurable, not compile-time fixed).",
-        "E 2026-11-02T21:26:00Z: Raven stellarDocs.search_docs 'getTransactions limit hardcoded 200' — hit 1 is the getTransactions method page.",
-        "improvements/stellar-docs/sd-004-rpc-limits-described-as-hardcoded.md status declined-upstream (stellar/stellar-docs#2567 closed 2026-07-13 with owner operational-policy guidance) — active.",
-        "Sibling sweep 2026-11-02: grep of the battery for 'hardcoded' finds only this case; no contradiction.",
-        "Prior verification event: sd-003 retirement 2026-11-02 (Claude Opus 5.5; ledger .agents/rounds/2026-11-02-mintlify-migration.md, section \"sd-003 retirement\"; independent re-derivation .agents/rounds/2026-11-02-mintlify-migration/sd003-golden-review.md), on top of the golden audit 2026-11-02 event (2026-11-02); see git history."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-a.json#q-ti-rpc-gettransactions-pagination-xdr",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-a.json#q-ti-rpc-gettransactions-pagination-xdr",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-ti-rpc-gettransactions-pagination-xdr",
+        "Live B 2026-11-14: github.com/stellar/stellar-rpc @v30.0.1 cmd/stellar-rpc/internal/rpcv1/config/options.go -- 'Name: \"max-transactions-limit\" ... DefaultValue: uint(200) ... Name: \"default-transactions-limit\" ... DefaultValue: uint(50)'",
+        "Live B 2026-11-14: options.go @v30.0.1 -- 'Name: \"max-events-limit\" DefaultValue: uint(10000); \"default-events-limit\" DefaultValue: uint(100)'",
+        "Live B 2026-11-14: github.com/stellar/stellar-docs docs/data/apis/rpc/api-reference/methods/getTransactions.mdx -- 'an upper limit that is hardcoded in Stellar-RPC for performance reasons'",
+        "Live B 2026-11-14: github.com/stellar/stellar-rpc @v30.0.1 cmd/stellar-rpc/internal/rpcv1/config/options.go:353-384 -- 'max-transactions-limit 200; default-transactions-limit 50; max-ledgers-limit 200; default-ledgers-limit 50'",
+        "Live B 2026-11-14: options.go:331-340 @v30.0.1 -- 'max-events-limit DefaultValue uint(10000); default-events-limit DefaultValue uint(100)'",
+        "Live F 2026-11-14: POST https://soroban-testnet.stellar.org getTransactions limit 201 -- '\"message\":\"limit must not exceed 200\"'",
+        "Live F 2026-11-14: POST https://soroban-testnet.stellar.org getEvents limit 10001 -- '\"message\":\"limit must not exceed 10000\"'"
       ],
       "rootCause": [
-        ".agents/rounds/2026-11-02-grading-policy.md (ADR-0008 amendment 2026-11-02: partial caps follow open upstream findings)",
-        "improvements/stellar-docs/sd-004-rpc-limits-described-as-hardcoded.md"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-ti-rpc-gettransactions-pagination-xdr"
+    "origin": "raven-next q-ti-rpc-gettransactions-pagination-xdr",
+    "notes": "GT-53 CORRECTION 2026-07-11: getTransactions has stock 50/default and 200/max options, but providers may configure them. First-page startLedger is inclusive; continuation uses cursor without startLedger. The old Horizon-only premise is false.\nAlso good if the answer: Mentions that RPC/Horizon are not perfect substitutes and some Horizon endpoints/effects require XDR decoding or an indexer. | Recommends idempotent processing keyed by transaction hash/ledger/index to survive retries.\nGolden cites: Primary RPC pagination docs and Horizon-to-RPC migration/XDR docs.\nPreserve the 2026-07-03 sd-003/sd-004 correction: the then-Algolia search missed the RPC method page (sd-003, resolved 2026-11-02) and docs call configurable defaults hardcoded (sd-004). GT-53 adds exact cursor exclusivity and XDR/JSON types. Do not penalize provider-configurability precision or a dated live limit that differs from stock defaults. Per stellar-docs#2567, grade either the documented effective stock 50/200 cap or a dated source-level configurable-default qualifier as correct, provided the answer does not call the cap compile-time immutable or recommend raising it.\nCanonical-page caution: The official getTransactions page calls the cap hardcoded. An attributed quote of that page is not a wrong claim while sd-004 stays declined-upstream; grade caps at partial. This does not accept universal immutability. improvements/stellar-docs/sd-004-rpc-limits-described-as-hardcoded.md is declined-upstream, so this durable caution has no expiry date and remains until a later owner decision.",
+    "leaf": "data.events-retention",
+    "secondaryLeaf": "data.rpc-api"
   }
 }

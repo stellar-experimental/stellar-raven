@@ -1,0 +1,23 @@
+{
+  "id": "q-sep53-message-signing",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-assets (golden coverage audit)",
+    "reviewer": "verify-audit-assets (golden coverage audit)",
+    "reason": "Merged into q-sep-53-sign-verify-message. The survivor q-sep-53-sign-verify-message rewrite keeps the prefix, single SHA-256, ed25519, Final status, off-chain nature, and one-key-is-not-multisig. The per-SDK roster is unverifiable and correctly moved to truth.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-assets.json#q-sep53-message-signing",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-assets.json#q-sep53-message-signing",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-sep53-message-signing"
+    ],
+    "lastCaseContentSha256": "bbee5946cda0871dcc5e12a6c5be9c558aadeeb8071af6d954fb29c7af8d51f1",
+    "replacementIds": [
+      "q-sep-53-sign-verify-message"
+    ]
+  }
+}

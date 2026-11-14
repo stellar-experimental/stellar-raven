@@ -1,0 +1,156 @@
+{
+  "id": "q-soroban-fee-refundable-rent",
+  "question": "What is the fee for a Soroban transaction made of? Explain the inclusion fee, the resource fee, which part is refundable, and where rent fits.",
+  "surface": [
+    "stellarDocs.search_docs",
+    "stellarDocs.search_soroban_contract_docs"
+  ],
+  "golden": {
+    "answer": "The transaction fee is the resource fee plus the inclusion fee, which is the bid for a place in the ledger. The resource fee has a non-refundable part (CPU instructions, ledger read and write bytes, transaction size), charged on declared resources, and a refundable part (rent, events, return value), charged on actual use with the remainder refunded.",
+    "keyFacts": [
+      "A Soroban transaction's fee is its resource fee plus its inclusion fee.",
+      "The non-refundable resource fee covers instructions, ledger I/O, and transaction size.",
+      "The refundable resource fee covers rent, events, and the return value.",
+      "Unused refundable fee is refunded after the transaction executes."
+    ],
+    "avoid": [
+      "Do NOT say unused instructions or read and write bytes are refunded."
+    ],
+    "notes": "Do not require fee rates or stroop amounts; rates are set by validator vote. Accept 'bandwidth' or 'historical storage' for transaction size."
+  },
+  "tags": {
+    "category": "soroban",
+    "service": "stellarDocs",
+    "freshness": "scheduled"
+  },
+  "truth": {
+    "lifecycle": {
+      "state": "proposed",
+      "reviewState": "none"
+    },
+    "domain": "real-world",
+    "status": "confirmed",
+    "asOf": "2026-11-14",
+    "reverifyBy": "2027-04-13",
+    "leaf": "soroban.resource-fees",
+    "notes": "The fee split is protocol mechanism (CAP-0046-07, Final, Protocol 20) and has no volatile value; the scheduled tag follows the leaf, whose rates change by validator vote. CAP-0046-07 names the two parts competitiveResourcesFee and refundableResourcesFee, and refunds apply to failed transactions as well. One parallel-cli research run (core-fast, 2026-11-14) reproduced the split from the docs, the CAP and rs-soroban-env fees.rs with no disagreement. Boundary: q-soroban-simulate-resource-fee tests fee estimation by simulation; q-soroban-resource-limits tests limits.",
+    "sources": [
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering.md",
+        "observedAt": "2026-11-14",
+        "quote": "Transaction Fee (Tx.fee) = Resource Fee (sorobanData.resourceFee) + Inclusion Fee"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering.md#refundable-and-non-refundable-resource-fees",
+        "observedAt": "2026-11-14",
+        "quote": "Non-refundable fees: calculated from CPU instructions, read bytes, write bytes, and bandwidth (transaction size, including its signatures)."
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering.md#refundable-and-non-refundable-resource-fees",
+        "observedAt": "2026-11-14",
+        "quote": "Refundable fees: calculated from rent, events, and return value."
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-07.md",
+        "observedAt": "2026-11-14",
+        "quote": "Protocol refunds that amount (when non-zero) to the transaction source account."
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-07.md",
+        "observedAt": "2026-11-14",
+        "quote": "effectiveRefundableFee = Events_fee(emittedContractEventsSizeBytes) + Rent_fee"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/rs-soroban-env/blob/main/soroban-env-host/src/fees.rs",
+        "observedAt": "2026-11-14",
+        "quote": "Fee computation library the docs call canonical (named by the docs page; not opened)"
+      },
+      {
+        "class": "D",
+        "ref": "parallel-cli research run (core-fast, 2026-11-14)",
+        "observedAt": "2026-11-14",
+        "quote": "Total fee = inclusion fee + resource fee … Refundable: contract events size and invocation return value size, plus ledger space rent"
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "A Soroban transaction's fee is the resource fee plus the inclusion fee.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering.md",
+            "observedAt": "2026-11-14",
+            "note": "Formula in the 'Resource fee' section."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-07.md",
+            "observedAt": "2026-11-14",
+            "note": "The CAP defines the resource fee as a component of the transaction fee alongside the inclusion fee bid."
+          }
+        ]
+      },
+      {
+        "claim": "The non-refundable resource fee covers CPU instructions, ledger read and write bytes and transaction size; the refundable part covers rent, events and the return value.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering.md#refundable-and-non-refundable-resource-fees",
+            "observedAt": "2026-11-14",
+            "note": "Both lists appear verbatim."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-07.md",
+            "observedAt": "2026-11-14",
+            "note": "effectiveRefundableFee is Events_fee plus Rent_fee; the competitive resources fee is charged on declared values."
+          },
+          {
+            "class": "D",
+            "ref": "parallel-cli research run (core-fast, 2026-11-14)",
+            "observedAt": "2026-11-14",
+            "note": "Independent run reported the same split and no source disagreement."
+          }
+        ]
+      },
+      {
+        "claim": "Unused refundable fee is refunded to the source account after execution; unused declared instructions and I/O are not refunded.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-07.md",
+            "observedAt": "2026-11-14",
+            "note": "Refund = sorobanData.resourceFee - resourceFee(tx) - effectiveRefundableFee, credited to the source account; 'No refund for unused capacity on market based resources'."
+          },
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering.md",
+            "observedAt": "2026-11-14",
+            "note": "If the transaction uses fewer resources than declared, there will be no refunds (with a couple of exceptions); any unused refundable portion is refunded."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-11-14",
+      "by": "gap-3 lane (Claude Fable 5.2, high), golden-coverage-audit 2026-11-14",
+      "evidence": [
+        "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering.md",
+        "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0046-07.md",
+        "parallel-cli research run (core-fast) on 2026-11-14.",
+        "Sibling sweep: q-soroban-simulate-resource-fee, q-soroban-resource-limits, q-pc-fee-bump-channel-accounts-feepool and q-pc-slp-0004-0006-status do not state the refundable split and do not contradict it.",
+        ".agents/rounds/2026-11-14-golden-coverage-audit/gap/gap-3.json"
+      ]
+    },
+    "origin": "golden-coverage-audit 2026-11-14"
+  }
+}

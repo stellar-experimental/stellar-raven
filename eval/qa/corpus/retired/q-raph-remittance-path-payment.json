@@ -1,0 +1,21 @@
+{
+  "id": "q-raph-remittance-path-payment",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-hist-retail (golden coverage audit)",
+    "reviewer": "verify-hist-retail (golden coverage audit)",
+    "reason": "Its path-payment fact is graded by q-asset-usdc-eurc-path-fx and q-asset-path-payment-ops, and its ramp-at-each-end fact by the SEP-24/SEP-31 cases (q-sep6-sep24-sep31-choice) and q-hist-remittance-corridors. Absorbing the anchor fact into the USDC-to-EURC case would grade content that question does not ask, so this is a duplicate retirement, not a merge.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-raph-remittance-path-payment",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-raph-remittance-path-payment",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-raph-remittance-path-payment"
+    ],
+    "lastCaseContentSha256": "814e7ee0934dc9bc3ae9f98484e0d31e18c4692695fc58dd9d3a73321db03dda",
+    "replacementIds": []
+  }
+}

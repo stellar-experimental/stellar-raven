@@ -1,0 +1,21 @@
+{
+  "id": "q-raph-restore-wallet",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-hist-retail (golden coverage audit)",
+    "reviewer": "verify-hist-retail (golden coverage audit)",
+    "reason": "Two thin facts; the phrase-versus-key distinction is q-ti-secret-key-vs-mnemonic-derivation kf0-kf2.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-raph-restore-wallet",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-raph-restore-wallet",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-raph-restore-wallet"
+    ],
+    "lastCaseContentSha256": "c0e40200f7fcb5ac46321193e15e8c56e071cd82cae38bdc798f804b9884d4a9",
+    "replacementIds": []
+  }
+}

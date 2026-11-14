@@ -1,0 +1,23 @@
+{
+  "id": "q-eco-freighter-wallet",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-hist-retail (golden coverage audit)",
+    "reviewer": "verify-hist-retail (golden coverage audit)",
+    "reason": "Merged into q-tool-freighter-wallet. Same question as q-tool-freighter-wallet (what is Freighter), whose rewrite keeps SDF-provided, open-source, non-custodial and the Varial rename caution.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json#q-eco-freighter-wallet",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json#q-eco-freighter-wallet",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-eco-freighter-wallet"
+    ],
+    "lastCaseContentSha256": "91fcf6ded7fa2eedd27786aa1473fc2b898832dde3a49684c7bf3b7232207223",
+    "replacementIds": [
+      "q-tool-freighter-wallet"
+    ]
+  }
+}

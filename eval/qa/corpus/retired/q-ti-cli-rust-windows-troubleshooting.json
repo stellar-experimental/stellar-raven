@@ -1,0 +1,21 @@
+{
+  "id": "q-ti-cli-rust-windows-troubleshooting",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-tooling-a (golden coverage audit)",
+    "reviewer": "verify-audit-tooling-a (golden coverage audit)",
+    "reason": "Grab-bag of symptoms; the wasm32v1-none fix is q-sor-build-target-wasm32v1 kf2. Version-skew errors get the tooling.version-compat slot.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-a.json#q-ti-cli-rust-windows-troubleshooting",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-a.json#q-ti-cli-rust-windows-troubleshooting",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-ti-cli-rust-windows-troubleshooting"
+    ],
+    "lastCaseContentSha256": "6207343cda782d0fd12d8d80407f30011e4f00473da189ea4f51d2f1e880fe26",
+    "replacementIds": []
+  }
+}

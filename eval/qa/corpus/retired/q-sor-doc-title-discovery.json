@@ -1,0 +1,21 @@
+{
+  "id": "q-sor-doc-title-discovery",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-soroban-a (golden coverage audit)",
+    "reviewer": "verify-audit-soroban-a (golden coverage audit)",
+    "reason": "Retire is right (unit test test/adapters.test.ts:760 covers search_doc_titles ranking), but the named survivor q-edge-doc-title-zero-hits is also retired by the edge lane. The replacement for the transferable zero-hit behavior is q-edge-strupey-ambiguous-stellar-history, the edge lane's own survivor. As with get_doc_page, no battery case keeps search_doc_titles.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-a.json#q-sor-doc-title-discovery",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-a.json#q-sor-doc-title-discovery",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-sor-doc-title-discovery"
+    ],
+    "lastCaseContentSha256": "d01aad0cf5b7c87aab5435317851efc73bcc1848e496e02ffbde4c1b9f9be527",
+    "replacementIds": []
+  }
+}

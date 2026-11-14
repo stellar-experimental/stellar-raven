@@ -1,0 +1,21 @@
+{
+  "id": "q-comp-anchor-compliance-stack",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-compliance (golden coverage audit)",
+    "reviewer": "verify-audit-compliance (golden coverage audit)",
+    "reason": "Restates the SEP role map that q-sep6-sep24-sep31-choice, q-sep-12-kyc and q-comp-sep8-regulated-assets-approval-server test one by one.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-compliance.json#q-comp-anchor-compliance-stack",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-compliance.json#q-comp-anchor-compliance-stack",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-comp-anchor-compliance-stack"
+    ],
+    "lastCaseContentSha256": "80947cb901fc9ed5f04e259db0a1ea6c7244ae767cc8d5ee29b825cd7faccf20",
+    "replacementIds": []
+  }
+}

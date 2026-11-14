@@ -7,21 +7,19 @@
     "stellarDocs.search_soroban_contract_docs"
   ],
   "golden": {
-    "answer": "High-throughput classic submission is mostly sequence-lane management. A Stellar transaction is bound to its source account sequence; if multiple workers build from the same stale account snapshot, all but the first can hit `tx_bad_seq`. The official error-handling page says invalid sequence errors commonly come from concurrent submissions or outdated account views, and warns that blindly rebuilding with a new sequence can duplicate payments if the original user intent was only one payment (https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/error-handling).\n\nUse channel accounts when you need parallelism: pre-create/fund N accounts, assign each worker or queue partition to one channel account as transaction source, and serialize sequence consumption within each lane. For user-funded operations, keep the user or business account as the operation source/signer where needed, but use the channel account as the transaction source that pays fees and advances sequence.\n\nRetry policy should be conservative. `TRY_AGAIN_LATER` is explicitly a temporary submission status: wait before resubmitting, because Core may already have another transaction from the same source in memory or the fee was too low and retried too soon (https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/error-handling). Terminal transaction result codes such as `tx_bad_seq`, `tx_insufficient_balance`, and `tx_insufficient_fee` are documented separately and should be handled by inspecting the result code, not by generic retry loops (https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/result-codes/transactions). Fee-bump replacement exists for the \"same sequence, higher fee\" case and has its own replacement rule (https://developers.stellar.org/docs/build/guides/transactions/fee-bump-transactions).\n\nSubmitting the same signed envelope to more than one provider is generally safe as a broadcast tactic because the transaction hash/envelope is identical; one provider may report pending, duplicate, not found yet, or accepted before another catches up. The unsafe move is changing the sequence or contents and treating that as the same intent. If a library throws `invalid u32` around sequence handling, debug the client/library typing path: Stellar sequence numbers are not a u32 throughput counter.",
+    "answer": "Each transaction consumes its source account's sequence, so workers sharing one source collide with `tx_bad_seq`. Use funded channel accounts, one lane per worker, as transaction sources; keep the real account as operation source and signer where the operation needs it. After `tx_bad_seq` do not blindly rebuild a payment with a new sequence, which can duplicate it; check the original hash first. `TRY_AGAIN_LATER` is temporary: wait and resubmit the same envelope. An identical signed envelope can be submitted to more than one provider; expect duplicate, pending or not-found responses during lag. An `invalid u32` error usually means a client typing bug, because sequences are 64-bit.",
     "keyFacts": [
-      "Maps funded channel lanes, tx_bad_seq, tx sources, and operation-source signatures.",
-      "Frames post-tx_bad_seq payment rebuild/resubmit as duplicate user-intent risk.",
-      "Maps TRY_AGAIN_LATER→delayed/same-envelope/queue retry; terminal result codes→fix/rebuild.",
-      "Same Horizon/RPC envelope is hash-idempotent; handle duplicate/pending/not-found/lag.",
-      "Usually maps invalid u32 to client parsing/typing bugs in 64-bit ledger/account sequences."
+      "Funded channel accounts as transaction sources give parallel sequence lanes.",
+      "After tx_bad_seq, a rebuilt payment with a new sequence can duplicate; check the hash.",
+      "TRY_AGAIN_LATER is temporary: wait, resubmit the same envelope; terminal codes need a fix.",
+      "An identical signed envelope is hash-idempotent; expect duplicate or pending replies."
     ],
     "avoid": [
-      "Do NOT submit uncoordinated transactions in one source-account sequence lane.",
-      "Do NOT blindly rebuild an uncertain payment after tx_bad_seq with a new sequence, or treat a sequence/fee-mutated envelope as the same transaction; mutate only when intentionally fee-bumping or rebuilding.",
-      "Do NOT claim clients can ignore duplicate/pending/not-found/provider-lag responses, or retry terminal transaction result codes without fixing/rebuilding the transaction.",
-      "Do NOT promise fixed/linear TPS, bypass network/provider limits, confuse channel accounts with payment channels/contract accounts, or treat invalid u32 as a Stellar protocol sequence limit."
+      "Do NOT submit uncoordinated transactions from one source-account sequence lane.",
+      "Do NOT retry terminal result codes without fixing or rebuilding the transaction.",
+      "Do NOT promise fixed throughput or treat invalid u32 as a protocol sequence limit."
     ],
-    "notes": "Primary docs verify sequence and retry semantics. The multi-provider RPC submission guidance is an inference from signed-envelope/hash idempotence plus documented duplicate/pending behavior; no live two-provider submission was run in Phase 3.\nAlso good if the answer: Mentions fee-bump replacement rules where relevant instead of using sequence changes as a replacement strategy. | Cites Horizon error handling/result-code docs and Soroban/Core retry guidance.\nGolden cites: Official Stellar error-handling docs for `tx_bad_seq` and `TRY_AGAIN_LATER`. | Official result-code docs for transaction-level failures.\nGT-51 PRECISION CORRECTION 2026-07-11: require transaction-source/operation-source/signature mapping, immutable-envelope hash handling, and no throughput guarantee."
+    "notes": "Fee-bump replacement for 'same sequence, higher fee' is correct to mention. Multi-provider resubmission rests on hash idempotence plus documented duplicate and pending behavior; no live two-provider run backs it."
   },
   "tags": {
     "category": "tooling-infra",
@@ -35,7 +33,7 @@
     },
     "domain": "real-world",
     "status": "confirmed",
-    "asOf": "2026-07-11",
+    "asOf": "2026-11-14",
     "reverifyBy": "2027-06-11",
     "sources": [
       {
@@ -95,19 +93,36 @@
             "note": "verbatim legacy evidence descriptor imported at migration"
           }
         ]
+      },
+      {
+        "claim": "Horizon error docs: TRY_AGAIN_LATER means wait before resubmitting",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "github.com/stellar/stellar-docs docs/data/apis/horizon/api-reference/errors/error-handling.mdx",
+            "observedAt": "2026-11-14",
+            "note": "TRY_AGAIN_LATER: This indicates that the Stellar-Core instance is currently unable to process submission of this particular transaction."
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, batch tooling-infra-02)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-tooling-a, verify-audit-tooling-a; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Live A 2026-11-02: https://developers.stellar.org/docs/build/guides/transactions/channel-accounts — 'the sequence number and fees will be consumed by the channel account ... sign the transaction with both the base account key and the channel account key'.",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/data/apis/horizon/api-reference/errors/error-handling — blind resubmission with a new sequence number can cause 'more than one payment being made'; resubmission is safe only when the transaction is unchanged; TRY_AGAIN_LATER means wait.",
-        "Live A 2026-11-02: https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/sendTransaction — statuses 'PENDING', 'DUPLICATE', 'TRY_AGAIN_LATER', 'ERROR'.",
-        "Live B 2026-11-02: https://github.com/stellar/stellar-xdr/blob/curr/Stellar-ledger-entries.x — 'typedef int64 SequenceNumber;'.",
-        "Sibling sweep 2026-11-02: q-ti-classic-submission-errors; no contradiction. No gospel change."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-a.json#q-ti-channel-accounts-throughput",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-a.json#q-ti-channel-accounts-throughput",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-ti-channel-accounts-throughput",
+        "Live B 2026-11-14: github.com/stellar/stellar-docs docs/data/apis/horizon/api-reference/errors/error-handling.mdx -- 'TRY_AGAIN_LATER: This indicates that the Stellar-Core instance is currently unable to process submission of this particular transaction.'"
+      ],
+      "rootCause": [
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-ti-channel-accounts-throughput"
+    "origin": "raven-next q-ti-channel-accounts-throughput",
+    "notes": "Primary docs verify sequence and retry semantics. The multi-provider RPC submission guidance is an inference from signed-envelope/hash idempotence plus documented duplicate/pending behavior; no live two-provider submission was run in Phase 3.\nAlso good if the answer: Mentions fee-bump replacement rules where relevant instead of using sequence changes as a replacement strategy. | Cites Horizon error handling/result-code docs and Soroban/Core retry guidance.\nGolden cites: Official Stellar error-handling docs for `tx_bad_seq` and `TRY_AGAIN_LATER`. | Official result-code docs for transaction-level failures.\nGT-51 PRECISION CORRECTION 2026-07-11: require transaction-source/operation-source/signature mapping, immutable-envelope hash handling, and no throughput guarantee.",
+    "leaf": "tooling.channel-accounts",
+    "secondaryLeaf": "data.result-codes"
   }
 }

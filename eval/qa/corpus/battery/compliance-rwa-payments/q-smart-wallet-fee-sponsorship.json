@@ -7,21 +7,18 @@
     "stellarDocs.search_wallet_dapp_docs"
   ],
   "golden": {
-    "answer": "Start with the account type. A C-address can hold USDC through its Stellar Asset Contract interface/balance without a G-account or trustline reserve; a G-account still has activation and trustline reserves unless those entries are sponsored. A fee bump or relayer pays transaction fees, while beginSponsoringFutureReserves/endSponsoringFutureReserves assigns eligible reserve liability. Deployment and resources still cost someone. Token-paid FeeForwarder designs and hosted facilitators are current provider designs with caps, liquidity, and abuse controls, not a universal native paymaster.",
+    "answer": "A C-address can hold USDC through its Stellar Asset Contract balance without a trustline reserve, whereas a G-account needs activation and trustline reserves unless sponsored. A fee bump or relayer pays transaction fees, and beginSponsoringFutureReserves/endSponsoringFutureReserves assigns eligible reserve liability to a sponsor. Costs shift to the sponsor rather than vanish, and Stellar has no universal native paymaster.",
     "keyFacts": [
-      "Activation/trustline reserves apply only to unsponsored G-accounts in this comparison.",
-      "Fee bumps or relayers pay transaction fees.",
-      "`beginSponsoringFutureReserves`/`endSponsoringFutureReserves` assign reserve liability.",
-      "USDC uses its Stellar Asset Contract interface and balance.",
-      "Token-relay or hosted-facilitator designs use caps, liquidity, and abuse controls."
+      "A C-address holds USDC via its SAC balance with no trustline reserve.",
+      "A fee bump or relayer pays fees; begin/endSponsoringFutureReserves shifts reserves.",
+      "Gasless onboarding shifts cost to a sponsor; Stellar has no universal native paymaster."
     ],
     "avoid": [
-      "Gasless onboarding eliminates all network and reserve costs rather than shifting them to a sponsor.",
-      "A classic account can hold an issued USDC asset without a trustline or sponsored trustline.",
-      "Do NOT claim USDC is a separate wrapped asset.",
-      "Do NOT claim Stellar has a universal native paymaster."
+      "Do NOT claim gasless onboarding eliminates all costs rather than shifting them.",
+      "Do NOT claim a classic account holds issued USDC without a trustline.",
+      "Do NOT call USDC on a C-address a separate wrapped asset."
     ],
-    "notes": "Status-sensitive details are stated as of 2026-11-02; grade later sourced changes leniently and require dated primary evidence."
+    "notes": "Token-paid relay and hosted facilitators are provider designs; grade later sourced changes leniently."
   },
   "tags": {
     "category": "compliance-rwa-payments",
@@ -245,19 +242,36 @@
             "observedAt": "2026-07-11"
           }
         ]
+      },
+      {
+        "claim": "Fee-bump transactions, sponsored reserves and relayers are the distinct sponsorship approaches.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/build/guides/transactions/fee-sponsorship",
+            "observedAt": "2026-11-14",
+            "note": "Compare fee-bump transactions, sponsored reserves, and relayers for paying a user's fees and reserves"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-03",
-      "by": "lane urls (Codex gpt-6.1-sol high)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-compliance, verify-audit-compliance; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "https://developers.stellar.org/docs/learn/encyclopedia/sponsored-reserves (HTTP 308, 2026-11-03): The guide documents begin/end operations and the transfer of reserve liability. CAP-33 independently defines the accounting. Current source: https://developers.stellar.org/docs/build/guides/transactions/sponsored-reserves (HTTP 200).",
-        "Sibling sweep: tmp/urls/sibling-sweep.json. All related cases retain their judge-facing content. This change repairs current sources only; historical evidence remains dated."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-compliance.json#q-smart-wallet-fee-sponsorship",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-compliance.json#q-smart-wallet-fee-sponsorship",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-smart-wallet-fee-sponsorship",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/build/guides/transactions/fee-sponsorship -- 'Compare fee-bump transactions, sponsored reserves, and relayers for paying a user's fees and reserves'"
       ],
       "rootCause": [
-        "freshness-drift"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "kaan smart-wallet-fee-sponsorship-onboarding"
+    "origin": "kaan smart-wallet-fee-sponsorship-onboarding",
+    "notes": "Status-sensitive details are stated as of 2026-11-02; grade later sourced changes leniently and require dated primary evidence.",
+    "leaf": "tooling.relayers",
+    "secondaryLeaf": "protocol.fee-bump-sponsorship"
   }
 }

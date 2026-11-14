@@ -1,0 +1,21 @@
+{
+  "id": "q-edge-1xlm-activation-fee",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-edge (golden coverage audit)",
+    "reviewer": "verify-audit-edge (golden coverage audit)",
+    "reason": "Reserve math is tested three times on its leaf (q-protocol-base-reserve-min-balance kf0, q-pc-account-activation-not-found kf1); the pay-to-unlock lure is q-raph-phishing-pending-claim (rectification fee).",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-edge.json#q-edge-1xlm-activation-fee",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-edge.json#q-edge-1xlm-activation-fee",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-edge-1xlm-activation-fee"
+    ],
+    "lastCaseContentSha256": "4b73c5dbe6a497155b3296f5bfce248c5566c116e8a00ffbc70dfd32d13eac0b",
+    "replacementIds": []
+  }
+}

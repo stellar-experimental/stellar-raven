@@ -6,16 +6,16 @@
     "scout.searchProjects"
   ],
   "golden": {
-    "answer": "There is no stable count of 'serious players' until the criterion is stated. A dated analysis should separate: **native Stellar SDEX/AMM liquidity**, **independent AMM venues**, **routers/aggregators**, and **wallet/UI/order-book clients**. As of 2026-07-10, a strict live venue-family review had to consider at least native Stellar liquidity, Aquarius, Sushi, Soroswap, and Phoenix; products such as StellarX, StellarTerm, Scopuly, StellarBroker, or AXIS require role and independent-liquidity verification before counting them as venues. Report mainnet status plus measurable TVL/volume/integration evidence instead of one timeless total.",
+    "answer": "There is no stable count until the criterion is stated. Separate native Stellar liquidity (the SDEX orderbook and classic pools), independent Soroban AMM venues such as Aquarius, Soroswap, Phoenix and Sushi, aggregators and routers, and wallet or trading interfaces such as StellarX. Count a product as a venue only with evidence of its own liquidity and mainnet activity, and date the answer.",
     "keyFacts": [
-      "Defines the counting criterion before discussing saturation.",
-      "Treats native venues, AMMs, aggregators/routers, and UIs as distinct roles."
+      "Defines the counting criterion before counting venues.",
+      "Separates native SDEX liquidity, AMM venues, routers and trading interfaces.",
+      "A DEX directory tag does not prove independent liquidity."
     ],
     "avoid": [
-      "Do NOT hard-code three serious players, equate a DEX tag with independent liquidity, or claim routing absorbs competitors.",
-      "Do NOT exclude or include a product as a venue without a dated role/liquidity test."
-    ],
-    "notes": "Saturation → scout_clusters. Reinforces aggregator-capture + StellarX/Comet caveats. Inherited Scout grounding named Soroswap (aggregator), Aquarius (AQUA AMM), and Phoenix (AMM hub); that three-name list is not a gate, and as of 2026-11-02 Sushi (SushiSwap V3, live on Stellar since 2026-02-10) is also a live Stellar AMM venue. Soroswap's on-chain aggregator routes across its Soroban AMM adapters only. Soroswap's API quotes can also include classic SDEX liquidity. Do not treat those two layers as one. StellarX (Ultra Stellar) = trading UI; Comet = Balancer-style reference impl; WOWMAX = an expanding multi-chain aggregator.\nAlso good if the answer: Notes StellarX is a trading UI (not an aggregator) and Comet is a reference/research implementation, not a high-traffic DEX.\nGolden cites: Sources for the DEX/AMM landscape composition.\nGT-19 CORRECTION 2026-07-10: grade the explicit venue/role/usage criterion, not 'roughly three.' Directory DEX counts mix venues, routers, and UIs."
+      "Do NOT hard-code three serious players or equate a DEX tag with independent liquidity.",
+      "Do NOT include or exclude a product as a venue without a dated role or liquidity test."
+    ]
   },
   "tags": {
     "category": "defi-ecosystem",
@@ -166,36 +166,38 @@
             "note": "Sushi is now live on Stellar, bringing battle-tested decentralized exchange infrastructure"
           }
         ]
+      },
+      {
+        "claim": "Soroswap's aggregator hops across Soroswap, Aqua, Sushi, Phoenix and Comet venues in its interface",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://docs.soroswap.finance/aggregator/technical-reference/contracts/aggregator-v3",
+            "observedAt": "2026-11-14",
+            "note": "Hop enum: Soroswap, Aqua, Sushi, Phoenix, Comet"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Grading-policy round 2026-11-02 (owner decision D2; .agents/rounds/2026-11-02-grading-policy.md)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-defi, verify-defi; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "A: https://docs.sushi.com/sdk/reference/stellar/config — \"The Stellar config module exports native address constants, SushiSwap V3 contract constants ... SUSHISWAP_V3_FACTORY_ADDRESS\" (observedAt 2026-11-02)",
-        "A: https://www.sushi.com/blog/swap-anything (latest-articles list) — \"Sushi is Live on the Stellar Network 10 Feb 2026\" (observedAt 2026-11-02)",
-        "C: https://defillama.com/protocol/sushi-stellar — \"Sushi Stellar ... Total Value Locked $15.61m ... Category: Dexs Sub Category: AMM ... As of Oct 31, 2026\" (observedAt 2026-11-02)",
-        "D: https://stellarindex.io/amm — \"SushiSwap V3 Concentrated-liquidity Soroban pools priced by tick range, not reserves.\" (observedAt 2026-11-02)",
-        "C: Raven lumenloop.search_directory {query:'sushi'} -> slug sushi; https://lumenloop.com/projects/sushi — \"Sushi is now live on Stellar, bringing battle-tested decentralized exchange infrastructure\" (observedAt 2026-11-02)",
-        "Sibling sweep 2026-11-02: grep -i sushi over the battery → q-eco-defi-projects-discovery (Sushi in liquidity/DEX row), q-defi-perps-whitespace (Sushi Stellar listed as a DEX, not perps), q-defi-soroswap-vs-stellarx; proposer siblings q-defi-phoenix-what-is, q-defi-aquarius-what-is, q-defi-comet-what-is, q-eco-defi-market-map; no contradiction.",
-        "Pass 2 (.agents/rounds/2026-11-02-golden-audit.md, task defi-protocols) evidence follows; pass-1 lines above remain the provenance for the pass-1 diff.",
-        "2026-11-02 [B] https://github.com/soroswap/docs/blob/1d7a3c8a85616918415056ad2a0f6d2177fc1948/concepts/aggregator.mdx — \"HTTP 404 (also api.github.com contents at that ref: 404)\" (pass-2 verifier accept on truth.corroboration[1].evidence[2].note)",
-        "2026-11-02 [B] https://api.github.com/repos/soroswap/docs — \"HTTP 404\" (pass-2 verifier accept on truth.corroboration[1].evidence[2].note)",
-        "2026-11-02 [B] improvements/canonical-source/cs-002-soroswap-aggregator-docs-stale-adapter-status.md — \"status: fixed-upstream\" (pass-2 verifier accept on truth.corroboration[1].evidence[2].note)",
-        "2026-11-02 [A] https://docs.soroswap.finance/aggregator/supported-amms.md — \"The venues the Soroswap Aggregator API routes through and their protocols values: soroswap, aqua (Aquarius), sushi (SushiSwap V3), comet and sdex (the Stellar classic DEX, quoted only when listed)\" (pass-2 verifier accept on truth.corroboration[1].evidence[2].note)",
-        "2026-11-02 [A] https://docs.soroswap.finance/api/sdex.md — \"An SDEX quote has platform sdex and decimal amounts in rawTrade, executes as a classic path payment from a G... account, and cannot pay a C... address.\" (pass-2 verifier accept on truth.corroboration[1].evidence[2].note)",
-        "2026-11-02 [A] https://docs.soroswap.finance/aggregator/supported-amms.md — \"Soroban routes can split one trade across several venues, hop by hop, and execute in a single atomic transaction through [Aggregator v3](...). SDEX is quoted alongside as a separate classic path.\" (pass-2 verifier accept on truth.sources[+])",
-        "Pass 2 change (truth only): corroboration[1].evidence[2].note records the soroswap/docs HTTP 404 and live replacements; truth.sources adds https://docs.soroswap.finance/aggregator/supported-amms.md as the live class-A source for the Soroban-route versus classic-SDEX layer split in golden.notes. Question, answer, keyFacts, avoid, and notes unchanged. Observation only: the notes call Comet a reference implementation while Soroswap's 2026-11-02 venue list includes Comet weighted pools; q-defi-comet-what-is does not claim a major standalone DEX, so no contradiction and no change.",
-        "Pass 2 sibling sweep 2026-11-02: q-defi-soroswap-vs-stellarx (same annotation), q-defi-comet-what-is, q-eco-defi-market-map; no contradiction.",
-        "Freshness change 2026-11-02 (.agents/rounds/2026-11-02-grading-policy.md): tags.freshness stable -> scheduled, truth.asOf 2026-11-02, truth.reverifyBy 2027-01-16. The 2026-11-02 evidence above confirms the dated values live; no other judge-facing field changed."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json#q-eco-dex-saturation",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-defi.json#q-eco-dex-saturation",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-eco-dex-saturation",
+        "Live A 2026-11-14: https://docs.soroswap.finance/aggregator/technical-reference/contracts/aggregator-v3 -- 'Hop enum: Soroswap, Aqua, Sushi, Phoenix, Comet'",
+        "Live C 2026-11-14: scout.searchProjects -- 'Soroswap/Phoenix Live checked 2026-11-14 via Scout; Sushi and Aquarius not re-queried'"
       ],
       "rootCause": [
-        "Eval-side authoring flaw (recorded in .agents/rounds/2026-11-02-golden-audit.md, batch defi-ecosystem-04): a pre-GT-19 grader note that pinned three serious players survived the GT-19 correction and contradicted avoid[0].",
-        "Eval-side authoring flaw: the golden carries a dated point-in-time value but was tagged stable, so no reverifyBy date forced a re-check; the golden-truth skill requires scheduled plus truth.reverifyBy for such values (.agents/rounds/2026-11-02-grading-policy.md)."
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
     "origin": "raven-next q-eco-dex-saturation",
     "asOf": "2026-11-02",
-    "reverifyBy": "2027-01-16"
+    "reverifyBy": "2027-01-16",
+    "notes": "Saturation → scout_clusters. Reinforces aggregator-capture + StellarX/Comet caveats. Inherited Scout grounding named Soroswap (aggregator), Aquarius (AQUA AMM), and Phoenix (AMM hub); that three-name list is not a gate, and as of 2026-11-02 Sushi (SushiSwap V3, live on Stellar since 2026-02-10) is also a live Stellar AMM venue. Soroswap's on-chain aggregator routes across its Soroban AMM adapters only. Soroswap's API quotes can also include classic SDEX liquidity. Do not treat those two layers as one. StellarX (Ultra Stellar) = trading UI; Comet = Balancer-style reference impl; WOWMAX = an expanding multi-chain aggregator.\nAlso good if the answer: Notes StellarX is a trading UI (not an aggregator) and Comet is a reference/research implementation, not a high-traffic DEX.\nGolden cites: Sources for the DEX/AMM landscape composition.\nGT-19 CORRECTION 2026-07-10: grade the explicit venue/role/usage criterion, not 'roughly three.' Directory DEX counts mix venues, routers, and UIs.",
+    "leaf": "defi.dex-amm"
   }
 }

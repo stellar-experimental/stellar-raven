@@ -1,0 +1,21 @@
+{
+  "id": "q-gap-scout-changelog-envelope",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-protocol (golden coverage audit)",
+    "reviewer": "verify-protocol (golden coverage audit)",
+    "reason": "Pure Raven envelope mechanics; test/adapters.test.ts exercises scout.getStatus and the live execute runner calls it, so a tool lane adds no visibility a judge-graded case gives. Retire is right.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json#q-gap-scout-changelog-envelope",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json#q-gap-scout-changelog-envelope",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-gap-scout-changelog-envelope"
+    ],
+    "lastCaseContentSha256": "c37d7439a7bb7b1b9ab23e1cc4bff9ce9b23b2679facf70c221218af711207ad",
+    "replacementIds": []
+  }
+}

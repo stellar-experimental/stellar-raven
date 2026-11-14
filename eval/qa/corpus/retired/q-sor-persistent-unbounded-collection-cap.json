@@ -1,0 +1,21 @@
+{
+  "id": "q-sor-persistent-unbounded-collection-cap",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-soroban-a (golden coverage audit)",
+    "reviewer": "verify-audit-soroban-a (golden coverage audit)",
+    "reason": "Same lesson as q-soroban-instance-storage-dos kf1/kf3 (one growing entry hits the size limit; shard per key).",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-a.json#q-sor-persistent-unbounded-collection-cap",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-a.json#q-sor-persistent-unbounded-collection-cap",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-sor-persistent-unbounded-collection-cap"
+    ],
+    "lastCaseContentSha256": "37f9747704308a2d8a7f8d89209dd0e32077fe4ea51f8f288a7831b170758f0f",
+    "replacementIds": []
+  }
+}

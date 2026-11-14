@@ -1,0 +1,23 @@
+{
+  "id": "q-sep-1-toml",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-assets (golden coverage audit)",
+    "reviewer": "verify-audit-assets (golden coverage audit)",
+    "reason": "Merged into q-anchor-endpoint-discovery. The survivor q-anchor-endpoint-discovery rewrite keeps SEP-1 and /.well-known/stellar.toml as key facts. SEP-1 numbering also stays in q-sep-catalog-list.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-assets.json#q-sep-1-toml",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-assets.json#q-sep-1-toml",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-sep-1-toml"
+    ],
+    "lastCaseContentSha256": "867a9abb526160cdbd1a58ff24641202b10d8c4a391e077d5080ef8b20d4ef8c",
+    "replacementIds": [
+      "q-anchor-endpoint-discovery"
+    ]
+  }
+}

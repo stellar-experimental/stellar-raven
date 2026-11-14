@@ -1,0 +1,21 @@
+{
+  "id": "q-sor-confidential-tokens",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-soroban-a (golden coverage audit)",
+    "reviewer": "verify-audit-soroban-a (golden coverage audit)",
+    "reason": "Duplicate of q-edge-noinfo-stellar-native-privacy-default kf0/kf1; the offline-leaf half has no fact.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-a.json#q-sor-confidential-tokens",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-a.json#q-sor-confidential-tokens",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-sor-confidential-tokens"
+    ],
+    "lastCaseContentSha256": "06c025474dfdd4149af08e8cff297e6b24f69891002aee52ef4b74a5dcc577f0",
+    "replacementIds": []
+  }
+}

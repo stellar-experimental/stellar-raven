@@ -1,0 +1,21 @@
+{
+  "id": "q-scf-eligibility-criteria",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-scf (golden coverage audit)",
+    "reviewer": "verify-audit-scf (golden coverage audit)",
+    "reason": "Prescreen detail within q-scf-how-to-apply kf2.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json#q-scf-eligibility-criteria",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-scf.json#q-scf-eligibility-criteria",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-scf-eligibility-criteria"
+    ],
+    "lastCaseContentSha256": "7550c942acd43790bd88befd9b8cfd05840bb59a4db89ec3affd9d69c18fd877",
+    "replacementIds": []
+  }
+}

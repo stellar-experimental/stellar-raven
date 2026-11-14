@@ -1,0 +1,23 @@
+{
+  "id": "q-comp-clawback-holder-risk",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-compliance (golden coverage audit)",
+    "reviewer": "verify-audit-compliance (golden coverage audit)",
+    "reason": "Merged into q-comp-clawback-cap0035. Same facts as q-comp-clawback-cap0035 framed as holder risk. The survivor's rewrite carries 'intentional, issuer-only, not a vulnerability, holders bear issuer risk, XLM unaffected', so nothing that matters is lost.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-compliance.json#q-comp-clawback-holder-risk",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-compliance.json#q-comp-clawback-holder-risk",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-comp-clawback-holder-risk"
+    ],
+    "lastCaseContentSha256": "c00216c6be298dd632f1a2cd3231000fb25c8fcfdae4029ac4928fa16869d989",
+    "replacementIds": [
+      "q-comp-clawback-cap0035"
+    ]
+  }
+}

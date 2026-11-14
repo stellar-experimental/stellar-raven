@@ -1,0 +1,23 @@
+{
+  "id": "q-comp-sep6-vs-sep12-roles",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-compliance (golden coverage audit)",
+    "reviewer": "verify-audit-compliance (golden coverage audit)",
+    "reason": "Merged into q-sep-12-kyc. See mergeFixes.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-compliance.json#q-comp-sep6-vs-sep12-roles",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-compliance.json#q-comp-sep6-vs-sep12-roles",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-comp-sep6-vs-sep12-roles"
+    ],
+    "lastCaseContentSha256": "05b52f675745e1de2fd6606963b2d6e12ad040ed517622789ad662557c79f247",
+    "replacementIds": [
+      "q-sep-12-kyc"
+    ]
+  }
+}

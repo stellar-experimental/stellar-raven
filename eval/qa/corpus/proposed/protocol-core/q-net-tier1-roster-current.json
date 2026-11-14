@@ -1,0 +1,184 @@
+{
+  "id": "q-net-tier1-roster-current",
+  "question": "Which organizations are Tier 1 validators on Stellar right now, and where can I check the current set myself?",
+  "surface": [
+    "stellarDocs.search_docs",
+    "lumenloop.search_content_semantic"
+  ],
+  "golden": {
+    "answer": "As of 2026-11-14 the Tier 1 set was ten organizations, each running three validators: SDF, Blockdaemon, Franklin Templeton, LOBSTR, Public Node, Creit Technologies, OBSRVR, Figure (YLDS), MoneyGram, and Range. Obsrvr Radar shows the live validator set and network quorum set; SDF's example Mainnet validator configuration lists the same organizations. Check a live view, because the set changes.",
+    "keyFacts": [
+      "Names the Tier 1 organizations as of a stated date.",
+      "Obsrvr Radar publishes the live validator set and network quorum set.",
+      "SDF is one of the Tier 1 organizations."
+    ],
+    "avoid": [
+      "Do NOT name SatoshiPay as a current Tier 1 organization; it left the set in 2026."
+    ],
+    "notes": "Grade the roster against a live quorum-set view and accept a later dated roster that differs. The set changed twice in 2026: OBSRVR replaced SatoshiPay, then MoneyGram, Figure and Range joined. A roster that matches the pre-2026 set and carries no date is stale, not current."
+  },
+  "tags": {
+    "category": "protocol-core",
+    "service": "stellarDocs",
+    "freshness": "live"
+  },
+  "truth": {
+    "lifecycle": {
+      "state": "proposed",
+      "reviewState": "none"
+    },
+    "domain": "real-world",
+    "status": "confirmed",
+    "leaf": "network.tier1-quorum",
+    "asOf": "2026-11-14",
+    "notes": "Roster is live. The complete roster is not on developers.stellar.org; the Tier 1 page links to Obsrvr Radar. Radar's API field quorumSetConfiguration is stale (six organizations, SatoshiPay included) and must not be used as the roster.",
+    "sources": [
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/validators/tier-1-orgs.md",
+        "observedAt": "2026-11-14",
+        "quote": "achieve sustained 99.9%+ uptime visible on [Obsrvr Radar](https://radar.withobsrvr.com/)"
+      },
+      {
+        "class": "A",
+        "ref": "https://developers.stellar.org/docs/validators/tier-1-orgs.md",
+        "observedAt": "2026-11-14",
+        "quote": "Obsrvr Radar — public validator uptime and quorum monitoring"
+      },
+      {
+        "class": "C",
+        "ref": "https://radar.withobsrvr.com/api/v1",
+        "observedAt": "2026-11-14",
+        "quote": "\"transitiveQuorumSetSize\":30 ... \"time\":\"2026-11-14T04:01:25.054Z\"; 30 nodes group into 10 organizations, 3 each"
+      },
+      {
+        "class": "C",
+        "ref": "https://radar.withobsrvr.com/api/v1",
+        "observedAt": "2026-11-14",
+        "quote": "node \"SDF 1\" quorumSet: threshold 7, 10 inner sets, one per home domain (www.stellar.org, lobstr.co, moneygram.com, ...)"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/packages/blob/master/docs/examples/pubnet-validator-full/stellar-core.cfg",
+        "observedAt": "2026-11-14",
+        "quote": "HOME_DOMAIN=\"publicnode.org\" ... \"lobstr.co\" ... \"www.franklintempleton.com\" ... \"stellar.withobsrvr.com\" ... \"stellar.creit.tech\""
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/packages/commit/e3a92b9d",
+        "observedAt": "2026-11-14",
+        "quote": "Add Figure (YLDS), MoneyGram, and Range to pubnet validator example (#226) [2026-08-25]"
+      },
+      {
+        "class": "B",
+        "ref": "https://github.com/stellar/packages/commit/b78a86f2",
+        "observedAt": "2026-11-14",
+        "quote": "Replace SatoshiPay with OBSRVR in pubnet full validator example (#223) [2026-07-14]"
+      },
+      {
+        "class": "A",
+        "ref": "https://stellar.org/press/moneygram-figure-markets-and-range-to-help-secure-the-stellar-network-by-joining-as-tier-1-validators",
+        "observedAt": "2026-11-14",
+        "quote": "today announced that MoneyGram, Figure Markets, and Range will operate Tier 1 validators on the Stellar network"
+      },
+      {
+        "class": "C",
+        "ref": "https://radar.withobsrvr.com/",
+        "observedAt": "2026-11-14",
+        "quote": "Franklin Templeton LOBSTR MoneyGram OBSRVR Public Node Range Stellar Development Foundation * Validators Network transitive quorumset"
+      }
+    ],
+    "corroboration": [
+      {
+        "claim": "On 2026-11-14 the Tier 1 set was ten organizations with three validators each: SDF, Blockdaemon, Franklin Templeton, LOBSTR, Public Node, Creit Technologies, OBSRVR, Figure (YLDS), MoneyGram, Range.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://radar.withobsrvr.com/api/v1",
+            "observedAt": "2026-11-14",
+            "note": "transitiveQuorumSet holds 30 public keys; grouped by organization: Figure Certificate Company, Public Node, Creit Technologies LLP, LOBSTR, Range, MoneyGram, Franklin Templeton, OBSRVR, Stellar Development Foundation, Blockdaemon Inc., 3 each."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/packages/blob/master/docs/examples/pubnet-validator-full/stellar-core.cfg",
+            "observedAt": "2026-11-14",
+            "note": "Ten HOME_DOMAINS entries at HIGH quality: publicnode.org, lobstr.co, www.franklintempleton.com, stellar.withobsrvr.com, stellar.creit.tech, www.stellar.org, stellar.blockdaemon.com, www.ylds.com, moneygram.com, stellar.validator.range.org."
+          },
+          {
+            "class": "A",
+            "ref": "https://stellar.org/press/moneygram-figure-markets-and-range-to-help-secure-the-stellar-network-by-joining-as-tier-1-validators",
+            "observedAt": "2026-11-14",
+            "note": "SDF announced that MoneyGram, Figure Markets, and Range will operate Tier 1 validators; integration into the quorum configuration expected by mid-August."
+          }
+        ]
+      },
+      {
+        "claim": "Obsrvr Radar is the public live view of validators and the network quorum set that the official Tier 1 page points to.",
+        "verdict": "confirmed",
+        "evidence": [
+          {
+            "class": "A",
+            "ref": "https://developers.stellar.org/docs/validators/tier-1-orgs.md",
+            "observedAt": "2026-11-14",
+            "note": "Resources table: \"Obsrvr Radar — public validator uptime and quorum monitoring\"; candidates must show uptime \"visible on Obsrvr Radar\"."
+          },
+          {
+            "class": "C",
+            "ref": "https://radar.withobsrvr.com/api/v1",
+            "observedAt": "2026-11-14",
+            "note": "The API returns nodes, organizations, each node's quorumSet, and the computed transitiveQuorumSet with a scan time."
+          }
+        ]
+      },
+      {
+        "claim": "SDF runs three Tier 1 validators (SDF 1, SDF 2, SDF 3).",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "C",
+            "ref": "https://radar.withobsrvr.com/api/v1",
+            "observedAt": "2026-11-14",
+            "note": "Nodes SDF 1, SDF 2 and SDF 3 (home domain www.stellar.org) are in the transitive quorum set."
+          },
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/packages/blob/master/docs/examples/pubnet-validator-full/stellar-core.cfg",
+            "observedAt": "2026-11-14",
+            "note": "[[VALIDATORS]] NAME=\"SDF 1\", \"SDF 2\", \"SDF 3\" with HOME_DOMAIN=\"www.stellar.org\"."
+          }
+        ]
+      },
+      {
+        "claim": "SatoshiPay was a current Tier 1 organization on 2026-11-14.",
+        "verdict": "contradicted",
+        "evidence": [
+          {
+            "class": "B",
+            "ref": "https://github.com/stellar/packages/commit/b78a86f2",
+            "observedAt": "2026-11-14",
+            "note": "2026-07-14 commit: \"Replace SatoshiPay with OBSRVR in pubnet full validator example (#223)\"."
+          },
+          {
+            "class": "C",
+            "ref": "https://radar.withobsrvr.com/api/v1",
+            "observedAt": "2026-11-14",
+            "note": "No satoshipay.io node is in the transitive quorum set or in SDF 1's quorum set. Radar's own static quorumSetConfiguration field still lists SatoshiPay; that field is the scanner's configuration, not the live network set."
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "date": "2026-11-14",
+      "by": "Claude Fable 5.2, gap-2 lane, 2026-11-14 golden-coverage-audit",
+      "evidence": [
+        "https://radar.withobsrvr.com/api/v1",
+        "https://github.com/stellar/packages/blob/master/docs/examples/pubnet-validator-full/stellar-core.cfg",
+        "https://developers.stellar.org/docs/validators/tier-1-orgs.md",
+        "https://stellar.org/press/moneygram-figure-markets-and-range-to-help-secure-the-stellar-network-by-joining-as-tier-1-validators",
+        "Sibling sweep: q-protocol-tier1-requirements tests the joining requirements and names no roster; q-protocol-validator-node-roles and q-protocol-quorum-slice-vs-quorum name no organizations. No conflict."
+      ]
+    },
+    "origin": "golden-coverage-audit 2026-11-14"
+  }
+}

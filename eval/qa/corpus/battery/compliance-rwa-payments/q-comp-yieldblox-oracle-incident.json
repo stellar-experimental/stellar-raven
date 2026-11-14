@@ -5,24 +5,19 @@
     "scout.searchResearch"
   ],
   "golden": {
-    "answer": "On **February 22, 2026**, after setup beginning late February 21, an attacker manipulated the thin USTRY/USDC Stellar DEX market from roughly $1.06 to about $106. Reflector Pulse's five-minute volume-weighted market feed published the manipulated value in two fresh rounds, which passed the YieldBlox pool's adjacent-round max_dev=10 check. The community-managed YieldBlox Blend V2 pool then accepted the value as collateral. No compromise of Reflector contracts, Blend core, Etherfuse's issuer contract, Stellar consensus, or Stellar core was established; the failure chain was market quality, feed methodology, and pool/oracle-consumer configuration and exposure.\n\nThe two exploit transactions transferred **61,249,278.3064502 XLM** and **1,000,196.7040837 USDC**. Script3's 2026-03-04 post-mortem and Horizon also show an earlier attacker borrow of 14,000 USDC at 00:20:50 UTC (tx 01c2ba75…), so total USDC borrowed was about 1.01M across two transactions; do not present **1,014,196.7040837 USDC** as one transaction. Do not turn the token quantities into a settled dollar loss: the PoC values them at about **$10.86M** at incident-time prices, while Blockaid, BlockSec and other reports use different dated valuations and definitions. Script3's 2026-03-04 post-mortem separately states that the borrows represent a net loss of about **$10.5M**; its first public post on 2026-02-22 put the loss at about $10M in USDC and XLM. Keep each figure attributed to Script3 with its date.\n\nAbout **48M XLM** was quarantined through coordinated validator transaction filtering; Blockaid attributes 48,069,094 XLM. On 2026-06-17 (ledger 63073409) the three exploit accounts were frozen in network configuration under CAP-0077 (SLP-0006); as of 2026-11-02 they still held about 48.07M XLM. Quarantine means identified accounts could not originate accepted transactions—it is not repayment, a rollback, or recovered funds. Script3's remediation repository and dated notices show direct supplier remediation on **February 27** and backstop remediation on **March 20**, with small-value/nonexistent-account handling and liquidated-user exclusions. The reviewed evidence does not prove attacker-held funds were returned.\n\nDesign lessons are layered: timestamp checks remain necessary but were not causal here because the poisoned values were fresh; require independent value/NAV bounds, market-depth and active-trader minimums, robust multi-window aggregation, longer clean baselines, per-asset supply/borrow/value caps, isolation and circuit breakers, pool-ice and migration paths, and first-anomaly monitoring. A TWAP/VWAP may be one layer, but the incident does not prove that TWAP alone would have prevented the drain.",
+    "answer": "On 2026-02-22 an attacker pumped the thin USTRY/USDC Stellar DEX market from about $1.06 to $106. Reflector's five-minute VWAP feed published the fresh manipulated price, and the community YieldBlox Blend V2 pool accepted it as collateral, so the attacker borrowed about 61.2M XLM and 1M USDC (roughly $10M, valuations differ by source). Validators quarantined about 48M XLM, which is not recovery. Reflector, Blend core and Stellar were not compromised. Defenses are market-depth minimums, value bounds and supply caps on thin collateral.",
     "keyFacts": [
-      "Dates the YieldBlox Blend V2 USTRY-SDEX/Reflector 5-minute-VWAP drain to 2026-02-22.",
-      "Reports 61,249,278.3064502 XLM and 1,000,196.7040837 USDC as exploit transfers.",
-      "Treats each USD loss valuation as source-specific.",
-      "Records 48M XLM quarantine and 2026-02-27/2026-03-20 remediation with exclusions.",
-      "Identifies fresh poisoned values as the values that passed the pool checks."
+      "A 2026-02-22 USTRY price pump fed through Reflector's VWAP drained a YieldBlox pool.",
+      "About 61.2M XLM and 1M USDC were borrowed; dollar loss (~$10M) varies by source.",
+      "About 48M XLM was quarantined by validators; quarantine is not recovery.",
+      "Staleness was not causal; depth minimums, value bounds and supply caps are defenses."
     ],
     "avoid": [
-      "Do NOT average gross borrow, dated valuation, net loss, defaults, quarantine, compensation, and recovery into one range.",
-      "Do NOT claim 1,014,196.7040837 USDC moved in one borrow transaction; it was a 14,000 USDC borrow plus a 1,000,196.7040837 USDC borrow.",
-      "Do NOT attribute rekt.news's $10.97M figure to Script3, or call any dollar loss ledger-confirmed.",
-      "Do NOT call quarantined funds recovered or assert attacker repayment without primary/on-chain proof.",
-      "Do NOT say the incident happened in May, was merely attempted, or was contained before significant loss.",
-      "Do NOT claim Reflector, Blend core, Etherfuse, or Stellar protocol was compromised.",
-      "Do NOT claim staleness caused this event or that TWAP/VWAP alone would have prevented it."
+      "Do NOT call the quarantined XLM recovered, or assert attacker repayment without proof.",
+      "Do NOT claim Reflector, Blend core, Etherfuse or Stellar protocol was compromised.",
+      "Do NOT present 1,014,196.7040837 USDC as a single borrow transaction."
     ],
-    "notes": "2026-06-29 reviewed; rubric correctly gates on the approximate-range/reconcile discipline, not one exact figure. Freshness:true; figures approximate. RECONCILED across dated sources (2026-02): loss ~$10.2M (range to ~$10.86M; some say $10.8M); ~48,069,094 XLM (~$7.2M–$7.5M) frozen by Tier-1 validators ~Feb 22; date Feb 21–22 (~00:25 UTC Feb 22). Vector: USTRY (Etherfuse US-Treasury Stablebond) pumped ~$1.06→~$106 on illiquid SDEX, poisoning Reflector's VWAP feed; attacker borrowed ~61.25M XLM + ~1M USDC. Pool-operator/oracle config failure, NOT a Blend V2 core or Stellar-protocol flaw; Script3 reports supplier remediation (2026-02-27) and backstop remediation (2026-03-20), with no remediation for liquidated users; recovery of attacker-held funds remains unverified. Don't gate on one exact $.\nAlso good if the answer: Ties USTRY (an Etherfuse US-Treasury Stablebond) priced on illiquid SDEX into the Reflector VWAP oracle as the manipulation vector; attacker borrowed ~61M XLM + ~1M USDC. | Frames it as a pool-operator/oracle-config failure, NOT a Blend V2 core-contract or Stellar-protocol flaw.\nGolden cites: A dated Scout / news source for the incident and the loss/recovery figures.\nCORRECTION 2026-07-10 (GT-09 processes 3226/3235): require separate labels for token borrow, dated gross valuation, operator net loss, defaults, validator quarantine, remediation, and recovery. About 48M quarantined is safe; the exact Blockaid number must stay attributed. Recovery remains unverified. Staleness was not causal; never promise TWAP alone.\nCORRECTION 2026-11-02: Script3's 2026-03-04 post-mortem lists a separate 14,000 USDC attacker borrow (tx 01c2ba75…, 00:20:50 UTC; Horizon confirms) and a ~$10.5M net-loss estimate. SLP-0006 froze the three exploit accounts in network configuration at ledger 63073409 (2026-06-17). Accept 1.01M USDC as total borrowed; still reject it as one transaction. Script3 gave two dated figures: about $10M loss (2026-02-22 X post) and about $10.5M net loss (2026-03-04 post-mortem); do not penalize either when attributed. The $10.97M figure is rekt.news's own valuation, not a Script3 statement."
+    "notes": "Do not require an exact dollar figure. Script3's ~$10M (2026-02-22) and ~$10.5M net (2026-03-04) are both acceptable when attributed."
   },
   "tags": {
     "category": "compliance-rwa-payments",
@@ -376,39 +371,56 @@
             "note": "\"A higher figure of about $10.97 million circulates but could not be traced to a citable statement.\""
           }
         ]
+      },
+      {
+        "claim": "An attacker borrow of 14,000 USDC occurred 2026-02-22T00:20:50Z (tx 01c2ba75…).",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "F",
+            "ref": "https://horizon.stellar.org/transactions/01c2ba7553c2e22d64adca8849a30f296c76fcd91f49a2eca383113d7d307b8b",
+            "observedAt": "2026-11-14",
+            "note": "created_at 2026-02-22T00:20:50Z, successful true"
+          }
+        ]
+      },
+      {
+        "claim": "The three exploit accounts were frozen at ledger 63073409 on 2026-06-17 under SLP-0006 / CAP-0077.",
+        "verdict": "confirmed-as-of",
+        "evidence": [
+          {
+            "class": "F",
+            "ref": "https://horizon.stellar.org/ledgers/63073409",
+            "observedAt": "2026-11-14",
+            "note": "closed_at 2026-06-17T17:00:08Z"
+          },
+          {
+            "class": "B",
+            "ref": "https://raw.githubusercontent.com/stellar/stellar-protocol/master/limits/slp-0006.md",
+            "observedAt": "2026-11-14",
+            "note": "Title: Freeze YieldBlox Exploit Stellar Accounts ... Status: Final"
+          }
+        ]
       }
     ],
     "verified": {
-      "date": "2026-11-02",
-      "by": "Golden audit 2026-11-02 pass 3 (proposer + independent verifier + applier; .agents/rounds/2026-11-02-golden-audit.md, task critic-cleanup)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-compliance, verify-audit-compliance; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Live A 2026-11-02 (read via api.fxtwitter.com mirror): https://x.com/script3official/status/2029289721114051073 — Script3 article 'YieldBlox USTRY Oracle Manipulation - Post Mortem', created 2026-03-04, modified 2026-03-20: \"[00:20:50 UTC] Attacker borrows 14,000 USDC against their USTRY | ... | [00:22:09 UTC] Attacker borrows an additional 1,000,196 USDC against their USTRY\" and \"In total, they supplied 153k USTRY, and borrowed 61.3M XLM and 1.01M USDC. This represents a net loss of ~$10.5M.\"",
-        "Live F 2026-11-02: https://horizon.stellar.org/transactions/01c2ba7553c2e22d64adca8849a30f296c76fcd91f49a2eca383113d7d307b8b/effects — created_at 2026-02-22T00:20:50Z; contract_debited CCCCIQSDILITHMM7PBSLVDT5MISSY7R26MNZXCX4H7J5JQ5FPIYOGYFS 14000.0000000 USDC; account_credited GBO7VUL2… 14000.0000000 USDC.",
-        "Live F 2026-11-02: https://horizon.stellar.org/transactions/ae721cacee382bdecac8d2c47286ecd42cb4711f658bb2aec7cba60dc64a31ff/effects — contract_debited, credited to GBO7VUL2… 1000196.7040837 USDC at 00:22:09Z.",
-        "Live B 2026-11-02: https://github.com/stellar/stellar-protocol/blob/master/limits/slp-0006.md (Status Final; status commit 1ae39233, 2026-10-22) — \"According to the Script3 incident report, the attacker borrowed about 61.3M XLM and 1.01M USDC against inflated USTRY collateral.\" and \"This proposal freezes three account entries using the frozen ledger key mechanism defined in CAP-0077.\"",
-        "Live F 2026-11-02: Stellar RPC getLedgerEntries CONFIG_SETTING_FROZEN_LEDGER_KEYS (key AAAACAAAABE=) at https://mainnet.sorobanrpc.com and https://soroban-rpc.mainnet.stellar.gateway.fm — 3 account keys (GATD…, GBO7…, GCJO…), lastModifiedLedgerSeq 63073409; https://horizon.stellar.org/ledgers/63073409 closed_at 2026-06-17T17:00:08Z.",
-        "Live F 2026-11-02: https://horizon.stellar.org/accounts/{GBO7VUL2…, GATDQL76…, GCJOPSQN…} — native 45068299.8771009 + 2500813.4261406 + 500006.5000039 = 48,069,119.80 XLM still held.",
-        "Live A 2026-11-02: https://x.com/script3official/status/2027462360294953200 (2026-02-27) \"Remediation for depositors in the pool has been fully distributed\"; https://x.com/script3official/status/2035066332887023761 (2026-03-20) \"As a reminder, there will be no remediation for those liquidated during the manipulation.\"",
-        "Live D 2026-11-02: https://olympixai.medium.com/yieldblox-exploit-post-mortem-how-a-single-trade-drained-10m-274e88721008 (~$10.2M), https://newsletter.rekt.news/p/yieldblox-rekt ($10.97M), https://itokenly.com/hacks/yieldblox ($10.2M–$10.97M); a Perplexity answer misattributed $10.97M to Script3, so avoid[2] guards that misattribution only (verifier modify).",
-        "Pass 1 sibling sweep 2026-11-02: grep '14,000 USDC|10\\.5M|63073409|SLP-0006' over eval/qa/corpus/battery → q-hist-yieldblox-v2-2026-exploit (avoid[1..2] still encode the pre-existing-liability and unverified-$10.5M claims; CONTRADICTS this correction, escalated to its owning batch) and q-pc-slp-0004-0006-status (avoid[1] punishes stating the SLP-0006 freeze was applied; CONTRADICTS ledger 63073409, escalated). Also checked q-soroban-oracle-defensive-consumption and q-defi-reflector-oracle: no contradiction. (Resolved in pass 2: q-hist-yieldblox-v2-2026-exploit is now aligned; see the pass-2 sibling sweep below.)",
-        "Live A 2026-11-02 (pass 2, read via api.fxtwitter.com mirror): https://x.com/script3official/status/2025403423840141450 — Script3 post 2026-02-22T02:53:01Z (read via api.fxtwitter.com mirror): \"At 00:25:00 UTC the Reflector USTRY oracle was manipulated ... This resulted in a loss of ~10 million USD in a mixture of USDC and XLM from the Blend YieldBlox pool.\" This true dated Script3 figure is why avoid[2] was narrowed from 'any net-loss figure other than ~$10.5M' to the rekt.news $10.97M misattribution.",
-        "Live D 2026-11-02 (pass 2): https://whalehub.io/blog/reflector-oracle-explained — (dated 2026-10-09) \"the YieldBlox pool on Blend let the attacker borrow about 61.3M XLM and 1.01M USDC against the inflated collateral. Script3's post-mortem gives the timing. ... Script3 put the net loss at about $10.5M; other sources give $10.2M to $11M.\"",
-        "Live D 2026-11-02 (pass 2): https://rekt.news/yieldblox-rekt — \"Combined, $10.97 million drained\" (rekt's own figure); it quotes Script3 separately: \"This resulted in a loss of ~10 million USD in a mixture of USDC and XLM\".; https://itokenly.com/hacks/yieldblox — \"A higher figure of about $10.97 million circulates but could not be traced to a citable statement.\"",
-        "Live F/B 2026-11-02 (pass 2): https://horizon.stellar.org/accounts/GBO7VUL2TOKPWFAWKATIW7K3QYA7WQ63VDY5CAE6AFUUX6BHZBOC2WXC/operations?order=asc&limit=200 — Attacker op sequence 2026-02-22: 00:04:54 submit type 2 (a1577284); 00:20:50 submit type 4 (01c2ba75); 00:21:51 submit type 2 (b810ba4a); 00:22:09 submit type 4 (ae721cac); 00:24:10 submit type 2 (81f304ae); 00:24:27 submit type 4 (3e81a3f7). Matches the Script3 post-mortem transaction log line for line. https://github.com/blend-capital/blend-contracts-v2/blob/main/pool/src/pool/actions.rs — pub enum RequestType { Supply = 0, Withdraw = 1, SupplyCollateral = 2, WithdrawCollateral = 3, Borrow = 4, Repay = 5, ... }",
-        "Sibling sweep 2026-11-02 (pass 2): q-hist-yieldblox-v2-2026-exploit aligned in the same pass (14,000 USDC as a separate attacker borrow; Script3 ~$10M on 2026-02-22 and ~$10.5M on 2026-03-04 both accepted when attributed); q-comp-security-disclosure-programs (~$10M, Feb 2026) and q-soroban-oracle-defensive-consumption (~$10M+, fresh poisoned values) do not contradict. The consistency-register numericInvariant 'YieldBlox borrowed XLM USDC totals' rule and the cluster notes still say 'PRE-EXISTING liability' and 'Script3 ~$10.5M unverified' and need the orchestrator's update plus npm run eval:qa:register.",
-        "Gospel change (pass 3): golden.keyFacts[2] now carries one predicate (each USD loss valuation as source-specific). The separate 14,000 USDC borrow stays gated by avoid[1], as in q-hist-yieldblox-v2-2026-exploit; keyFacts stay at five (compile limit). No fact changed.",
-        "Class F 2026-11-02: https://horizon.stellar.org/transactions/01c2ba7553c2e22d64adca8849a30f296c76fcd91f49a2eca383113d7d307b8b/effects - contract_debited 14000.0000000 USDC and account_credited 14000.0000000 USDC at 2026-02-22T00:20:50Z.",
-        "Class A 2026-11-02 (api.fxtwitter.com mirror): https://x.com/script3official/status/2029289721114051073 - '[00:20:50 UTC] Attacker borrows 14,000 USDC against their USTRY'; 'borrowed 61.3M XLM and 1.01M USDC. This represents a net loss of ~$10.5M.'",
-        "Class D 2026-11-02 (Parallel web_search/web_fetch): https://newsletter.rekt.news/p/yieldblox-rekt '$10.97 million gone'; https://protos.com/yieldblox-lending-pool-hit-by-10m-hack-on-stellar/ 'losses valued at over $10 million'; https://www.bankless.com/read/news/lending-market-blend-suffers-10m-exploit 'exploited for approximately $10.8M'; https://itokenly.com/hacks/yieldblox-blend-v2 'Published estimates range $10,200,000 to$10,850,000' - valuations differ by source.",
-        "Sibling sweep 2026-11-02 (pass 3): q-hist-yieldblox-v2-2026-exploit keeps the separate 14,000 USDC borrow avoid and a source-specific valuation keyFact; cluster-013, cluster-126, and numericInvariant 'YieldBlox borrowed XLM USDC totals' agree. No contradiction."
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-compliance.json#q-comp-yieldblox-oracle-incident",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-compliance.json#q-comp-yieldblox-oracle-incident",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-comp-yieldblox-oracle-incident",
+        "Live F 2026-11-14: https://horizon.stellar.org/transactions/01c2ba7553c2e22d64adca8849a30f296c76fcd91f49a2eca383113d7d307b8b -- 'created_at 2026-02-22T00:20:50Z, successful true'",
+        "Live F 2026-11-14: https://horizon.stellar.org/ledgers/63073409 -- 'closed_at 2026-06-17T17:00:08Z'",
+        "Live B 2026-11-14: https://raw.githubusercontent.com/stellar/stellar-protocol/master/limits/slp-0006.md -- 'Title: Freeze YieldBlox Exploit Stellar Accounts ... Status: Final'"
       ],
       "rootCause": [
-        "freshness-drift",
-        "eval-authoring: the prior verification read the PoC pre-transaction state relative to tx ae721cac and missed the Script3 2026-03-04 post-mortem article, so a separate attacker borrow and an attributed Script3 figure were encoded as unverified.",
-        "eval-authoring: the pass-1 avoid[2] forbade any Script3 net-loss figure other than ~$10.5M, which punished Script3's true dated 2026-02-22 ~$10M statement; avoid[1] was a presentation rule rather than a false-content item.",
-        "Eval-side authoring flaw: pass 2 joined two predicates in keyFacts[2]."
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
-    "origin": "raven-next q-comp-yieldblox-oracle-incident"
+    "origin": "raven-next q-comp-yieldblox-oracle-incident",
+    "notes": "2026-06-29 reviewed; rubric correctly gates on the approximate-range/reconcile discipline, not one exact figure. Freshness:true; figures approximate. RECONCILED across dated sources (2026-02): loss ~$10.2M (range to ~$10.86M; some say $10.8M); ~48,069,094 XLM (~$7.2M–$7.5M) frozen by Tier-1 validators ~Feb 22; date Feb 21–22 (~00:25 UTC Feb 22). Vector: USTRY (Etherfuse US-Treasury Stablebond) pumped ~$1.06→~$106 on illiquid SDEX, poisoning Reflector's VWAP feed; attacker borrowed ~61.25M XLM + ~1M USDC. Pool-operator/oracle config failure, NOT a Blend V2 core or Stellar-protocol flaw; Script3 reports supplier remediation (2026-02-27) and backstop remediation (2026-03-20), with no remediation for liquidated users; recovery of attacker-held funds remains unverified. Don't gate on one exact $.\nAlso good if the answer: Ties USTRY (an Etherfuse US-Treasury Stablebond) priced on illiquid SDEX into the Reflector VWAP oracle as the manipulation vector; attacker borrowed ~61M XLM + ~1M USDC. | Frames it as a pool-operator/oracle-config failure, NOT a Blend V2 core-contract or Stellar-protocol flaw.\nGolden cites: A dated Scout / news source for the incident and the loss/recovery figures.\nCORRECTION 2026-07-10 (GT-09 processes 3226/3235): require separate labels for token borrow, dated gross valuation, operator net loss, defaults, validator quarantine, remediation, and recovery. About 48M quarantined is safe; the exact Blockaid number must stay attributed. Recovery remains unverified. Staleness was not causal; never promise TWAP alone.\nCORRECTION 2026-11-02: Script3's 2026-03-04 post-mortem lists a separate 14,000 USDC attacker borrow (tx 01c2ba75…, 00:20:50 UTC; Horizon confirms) and a ~$10.5M net-loss estimate. SLP-0006 froze the three exploit accounts in network configuration at ledger 63073409 (2026-06-17). Accept 1.01M USDC as total borrowed; still reject it as one transaction. Script3 gave two dated figures: about $10M loss (2026-02-22 X post) and about $10.5M net loss (2026-03-04 post-mortem); do not penalize either when attributed. The $10.97M figure is rekt.news's own valuation, not a Script3 statement.",
+    "leaf": "security.app-exploits",
+    "secondaryLeaf": "defi.oracles"
   }
 }

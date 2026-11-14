@@ -1,0 +1,21 @@
+{
+  "id": "q-comp-sep8-number-lookup-no-deepresearch",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-compliance (golden coverage audit)",
+    "reviewer": "verify-audit-compliance (golden coverage audit)",
+    "reason": "Duplicate: q-comp-sep8-regulated-assets-approval-server carries the SEP-8 identity and q-edge-exhaustive-defi-deep-report carries the paid-research proportionality behavior.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-compliance.json#q-comp-sep8-number-lookup-no-deepresearch",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-compliance.json#q-comp-sep8-number-lookup-no-deepresearch",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-comp-sep8-number-lookup-no-deepresearch"
+    ],
+    "lastCaseContentSha256": "d84f1c444b083542b129c82882b7aa6a2cf7493d09e20c780e686fd3ba61b619",
+    "replacementIds": []
+  }
+}

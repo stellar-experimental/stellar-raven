@@ -1,0 +1,21 @@
+{
+  "id": "q-gap-lumen-content-tag-vocabulary",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-tooling-a (golden coverage audit)",
+    "reviewer": "verify-audit-tooling-a (golden coverage audit)",
+    "reason": "Operation-lookup mechanics. q-ti-vocab-content-tags-live (tooling-b) asks the same question and the frozen live lane holds q-live-ll-regions-vocab, so no visibility is lost.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-a.json#q-gap-lumen-content-tag-vocabulary",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-a.json#q-gap-lumen-content-tag-vocabulary",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-gap-lumen-content-tag-vocabulary"
+    ],
+    "lastCaseContentSha256": "7f1533849a539dba84170ce72e3f25f34ace2f771767bef2397712bb08c23ab1",
+    "replacementIds": []
+  }
+}

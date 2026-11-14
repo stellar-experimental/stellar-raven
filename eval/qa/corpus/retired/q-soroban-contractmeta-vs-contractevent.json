@@ -1,0 +1,23 @@
+{
+  "id": "q-soroban-contractmeta-vs-contractevent",
+  "lifecycle": {
+    "state": "retired",
+    "reviewState": "resolved"
+  },
+  "retired": {
+    "date": "2026-11-14",
+    "author": "audit-soroban-b (golden coverage audit)",
+    "reviewer": "verify-audit-soroban-b (golden coverage audit)",
+    "reason": "Merged into q-soroban-publish-events. See mergeFixes.",
+    "ledger": ".agents/rounds/2026-11-14-golden-coverage-audit.md",
+    "evidence": [
+      "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-b.json#q-soroban-contractmeta-vs-contractevent",
+      "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-b.json#q-soroban-contractmeta-vs-contractevent",
+      "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-soroban-contractmeta-vs-contractevent"
+    ],
+    "lastCaseContentSha256": "c0dfcdb02c7c5b047d5299a60baf47bbce11894886e359cd5d3555fdbff26f50",
+    "replacementIds": [
+      "q-soroban-publish-events"
+    ]
+  }
+}
