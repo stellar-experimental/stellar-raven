@@ -153,6 +153,11 @@ Orchestrator: Claude Fable 5.2 on the Mac, terminal `t40f`. Briefs are in
   review, added recurrences to `sls-118` and `sd-106`, and drew the new split
   (`apply/CLOSEOUT.md`). `review` passed the final delta as fit to merge with three low items,
   fixed in `391ffd69`.
+- 17:00 to 17:50 UTC. Session `t3r0` left golden findings for this round on the Linux machine
+  (`tmp/agentic/GOLDEN-PASS.md`, `LIVE-GAP.md` in the main clone). `instrument` matched every item
+  to the rebuilt battery (`apply/RECONCILE.md`): most were already resolved or retired, and five
+  cases were corrected against primary sources (`5b4db31a`). `review` re-derived the five and
+  passed them ("Reconcile review").
 
 ## Outcome
 
