@@ -1,4 +1,4 @@
-// usage (repo root): npx tsx .agents/rounds/2026-11-14-golden-coverage-audit/sorg-general/measure.mts research/services/stellar-org-queries.json <snapshot.json> <out.json> [--fetch]
+// usage (repo root, Node 26 or later): node .agents/rounds/2026-11-14-golden-coverage-audit/sorg-general/measure.mts research/services/stellar-org-queries.json <snapshot.json> <out.json> [--fetch]
 // Ranks each answer in the raw site-search rows and in the adapter hits (limit 10) for both query forms.
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { callStellarOrg } from "../../../../src/adapters/stellar-org.ts";

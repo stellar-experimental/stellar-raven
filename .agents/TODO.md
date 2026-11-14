@@ -169,24 +169,31 @@ independent review and its reconciliation are in
 [SORG.md](rounds/2026-11-14-golden-coverage-audit/decisions/SORG.md) and
 [SORG-REVIEW.md](rounds/2026-11-14-golden-coverage-audit/decisions/SORG-REVIEW.md). What remains:
 
-- **Worker egress.** Every live read so far ran from Node on a workstation. After deploy, call
-  both operations from the Worker and confirm stellar.org's front serves them.
-- **Answer quality.** A scoped QA run on the affected cases (`q-sdf-2026-strategy-priorities`,
-  `q-audit-reports-where-published`, `q-defi-blend-audit-record`, and
-  `q-scf-service-provider-directories`). It needs its own `run-evals` plan and spend
-  authorization.
-- **Facts the source does not hold.** The Blend audit record (Certora, OtterSec, Code4rena) lives
-  in Blend's docs and the Security Portal, not on stellar.org's server-rendered audited-projects
-  page. The Anchor Directory is `anchors.stellar.org`, not stellar.org. Each case needs another
-  source or a golden-truth edit.
-- **Routing reach and body text.** On a 40-question general set, `search_site` now returns what
-  the site search returns, but Raven's catalog `search` puts a `stellarOrg` operation in the top
-  five for only 7 questions, and the keyless search misses 12 of 21 body-text phrases. Decide
-  whether the Algolia `pages` index is worth a search-only key
-  ([SORG-GENERAL.md](rounds/2026-11-14-golden-coverage-audit/decisions/SORG-GENERAL.md)).
+- **Answer quality and Worker egress.** A paired QA run on the affected cases
+  (`q-sdf-2026-strategy-priorities`, `q-audit-reports-where-published`,
+  `q-defi-blend-audit-record`, `q-scf-service-provider-directories`) before and after deploy, under
+  its own `run-evals` plan and spend authorization. After deploy, call both operations from the
+  Worker and confirm stellar.org's front serves them; every live read so far ran from Node on a
+  workstation.
+- **Routing reach.** Raven's catalog `search` ranks a `stellarOrg` operation in the top five for 7
+  of 40 off-golden questions
+  ([SORG-GENERAL.md](rounds/2026-11-14-golden-coverage-audit/decisions/SORG-GENERAL.md)). This is
+  a general-mechanism question for the tuning round, never a per-source boost. Owner, 2026-11-14:
+  do not fit the service to the stellar.org slice at the expense of other categories.
+- **Algolia `pages` index.** Orchestrator evidence, 2026-11-14, read in the Algolia dashboard: of
+  nine body-text phrases the keyless search missed, the `pages` index ranked the right page in its
+  top four for about five (the audit co-payment clause, the bug-bounty fix window, a fund fee,
+  "transformational enterprises", the Mazieres page). Whether it holds audit records is
+  unconfirmed. Add it only if tuning shows detail-lookup failures, and then with a search-only key.
+- **Candidate upstream finding.** The stellar.org audit register titles Blend's records
+  `Unnamed record - Certora Ltd`, so a project-name query cannot find them; only the report URL
+  says "blend". Route it through `improvements/` if confirmed.
+- **Out-of-source fact.** The Anchor Directory is `anchors.stellar.org`, not stellar.org; that case
+  needs another source or a golden-truth edit.
 
-Done when: Worker egress is verified, the scoped QA run is recorded, the two out-of-source
-facts are routed, and the Algolia decision is recorded.
+Done when: the paired QA run and the Worker egress check are recorded, the routing-reach question
+is settled in the tuning round, the Algolia decision is recorded, the Blend register finding is
+filed or dropped, and the Anchor Directory case is routed.
 
 ### Check Docs search for the SEP-7 payment-request page before filing
 

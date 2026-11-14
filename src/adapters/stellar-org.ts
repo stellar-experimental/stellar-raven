@@ -89,7 +89,7 @@ function stringTags(value: unknown): string[] {
 
 /** "Project - Firm"; the site writes "Unnamed record" when the register has no project. */
 function auditHit(title: string, rawUrl: unknown): AuditHit | null {
-  if (typeof rawUrl !== "string" || rawUrl.length > MAX_REPORT_URL_CHARS) return null;
+  if (typeof rawUrl !== "string") return null;
   let url: URL;
   try {
     url = new URL(rawUrl);
@@ -97,6 +97,9 @@ function auditHit(title: string, rawUrl: unknown): AuditHit | null {
     return null;
   }
   if (url.protocol !== "https:" && url.protocol !== "http:") return null;
+  // Userinfo can disguise the host (`https://stellar.org@evil.com/`). The cap
+  // applies after normalization, which percent-encodes and can grow the string.
+  if (url.username || url.password || url.href.length > MAX_REPORT_URL_CHARS) return null;
   const cut = title.lastIndexOf(" -");
   const project = cut >= 0 ? title.slice(0, cut).trim() : title;
   const firm = cut >= 0 ? title.slice(cut + 2).trim() : "";

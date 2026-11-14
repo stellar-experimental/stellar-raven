@@ -103,8 +103,7 @@ the answering row is in the site search's own top N. "Adapter" means it is in
   the search contract and design are updated.
 - Measurement kit:
   [`sorg-general/`](../sorg-general/). `measure.mts` reruns the table from `snapshot.json` (the
-  80 raw responses) or `--fetch`. It also holds `ranks-before.json`, `ranks-after.json`, and
-  `body-probes.tsv`.
+  80 raw responses) or `--fetch`.
 - `eval/gates.json` re-stamps the manifest fingerprint, `localTrace`, and the note.
 
 ## Body-text misses (the Algolia case)
@@ -199,5 +198,40 @@ returns two pages and the merged partner.
   counterpart by project name: Crossmint, Normal, Rivool Finance, Stellar Attestation Service,
   Pelago, Tricorn, Aquarius–Coinfabrik, Reyts, Team Finance, and Rubic. DeFindex and Balanced are
   uncertain. This comparison is by name only.
-- **Zero-row queries** (p11 question, p13 keyword). The cause was not investigated.
+- **Zero-row queries** (p11 question, p13 keyword). These are upstream glitches, not misses: the
+  site search intermittently returns an empty `results` array for a valid query. Live, both forms
+  hit at rank 1, and the totals read 34/40 (question) and 38/40 (keyword)
+  ([SORG-REVIEW.md](SORG-REVIEW.md), "Generality review", G3).
+- **Question-set bias.** The set is title-biased and the audit group is survivorship-biased. Most
+  question and keyword forms reuse page-title words, the easiest match for a search over title,
+  description, and tags, so 33/40 and 37/40 are an upper bound for real questions; the body-text
+  probes (9 of 21 found) show the other side. The audit answers were found with the search under
+  test, so an audit record it cannot surface could not enter the set. The raw-versus-adapter gap,
+  the claim under test, does not depend on either bias, because both sides see the same rows.
 - **Workers egress.** All live calls ran from this machine with Node `fetch`, as in SORG.
+
+## Generality review reconciliation
+
+Author Claude Opus 5.5, 2026-11-14, applying [SORG-REVIEW.md](SORG-REVIEW.md), "Generality review".
+
+- **G1.** `auditHit` drops a `reportUrl` that carries userinfo (`url.username` or `url.password`).
+- **G2.** The 2,048-character cap now tests `url.href`, after normalization, not the raw string.
+  Each fix has a regression test in `test/stellar-org-adapter.test.ts` (now 71 tests); both fail
+  against the previous adapter. The `title` cap the reviewer also suggested is not in this change.
+- **G3.** "Not verified" now records the zero-row queries as upstream glitches.
+- **Bloat.** `sorg-general/ranks-before.json`, `ranks-after.json`, and `body-probes.tsv` are
+  deleted; `measure.mts` regenerates them. Its usage line now says `node`, not `npx tsx`. Rerun on
+  the patched adapter, the table above reproduces unchanged.
+- **Question-set bias** is recorded under "Not verified".
+
+Gates, bare, repo root, on this tree:
+
+| Command | Exit |
+|---|---|
+| `npm run typecheck` | 0 |
+| `npm test` | 0 (151 files passed, 1 skipped; 3,469 passed, 3 expected fail, 1 skipped) |
+| `npm run build` | 0 |
+| `npm run test:smoke` | 0 (9 files, 141 tests) |
+| `npm run eval:routing -- --gate` | 0 (GATE PASS, legacy 338) |
+| CI "generated artifacts in sync" (all ten scripts), then its `git diff --exit-code --stat` | 0, 0 |
+| `npm run secrets:scan -- --tree` | 0 |

@@ -132,6 +132,30 @@ describe("stellarOrg.search_site", () => {
     ]);
   });
 
+  it("drops audit report links that carry userinfo", () => {
+    const audit = (url: string) => ({ kind: "audit", title: "P - F", url, isExternal: true });
+    const hits = siteHits([
+      audit("https://stellar.org@evil.example/r.pdf"),
+      audit("https://user:pass@evil.example/a"),
+      audit("https://:pass@evil.example/a"),
+      audit("https://reports.example/ok.pdf")
+    ]);
+    expect(hits.map((hit) => ("reportUrl" in hit ? hit.reportUrl : null))).toEqual(["https://reports.example/ok.pdf"]);
+  });
+
+  it("caps the audit report link after normalization, not on the raw string", () => {
+    const audit = (url: string) => ({ kind: "audit", title: "P - F", url, isExternal: true });
+    const base = "https://reports.example/";
+    // U+202E percent-encodes to nine characters: a raw string under the cap grows past it.
+    const grows = base + "\u202e".repeat(300);
+    expect(grows.length).toBeLessThan(2048);
+    expect(new URL(grows).href.length).toBeGreaterThan(2048);
+    const atCap = base + "a".repeat(2048 - base.length);
+    const overCap = atCap + "a";
+    const hits = siteHits([audit(grows), audit(overCap), audit(atCap)]);
+    expect(hits.map((hit) => ("reportUrl" in hit ? hit.reportUrl : null))).toEqual([atCap]);
+  });
+
   it("rebuilds tutorial and partner links on the fixed origin from a safe slug", () => {
     const rows = [
       { kind: "tutorial", title: "ok", url: "/learn?tutorial=hello-world" },
