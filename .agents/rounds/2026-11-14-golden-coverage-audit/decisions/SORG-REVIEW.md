@@ -513,3 +513,79 @@ Apply D1 (one character class plus the test), re-run `npm run typecheck`, `npm t
 `npm run test:smoke`, `npm run secrets:scan -- --tree`. With D1 closed this branch is fit to
 merge from this reviewer's side; the optional `/api` lowercase one-liner and the open
 vendor-diverse attack stay the owner's call.
+
+## Final delta
+
+Reviewer Claude Sonnet 5.5, 2026-11-14. Reviewed `11c58871` ("Close D1 and a second quadratic tag
+regex") against my Delta review at `ca025654`. The diff is `src/adapters/stellar-org.ts` (+7/-3),
+`test/stellar-org-adapter.test.ts` (+28) and the regex audit in `decisions/SORG.md` (+50). No
+deploy, no model-calling eval, no Wrangler.
+
+### Verdict: **fit to merge.** D1 is closed, the audit holds, and I found no pattern it called linear that is not.
+
+### D1 re-run: closed
+
+Through `callStellarOrg` (fake 200 `text/html`), 1.90 MB bodies:
+
+| Input | Before (`ca025654`) | Now |
+|---|---|---|
+| `<head>` + `"<title "` repeated + `</head><main>ok</main>` | > 40 s at 280,000 repeats | 37 ms, `ok` |
+| `<main>ok</main>` + `"<title "` repeated | not run | 26 ms, `ok` |
+
+The regex is `/<title\b[^<>]*>([^<]*)<\/title>/i` as I proposed. The new `TAG_RE` change
+(`(?![\w-])` in place of `\b`) is a real second defect that I missed: `\b` holds at every hyphen of
+`<a-a-a…`, so a failed match backtracked into the name. My `<a<a` and `<a ` cases did not reach it.
+`<a` followed by `-a` repeated now takes 51 ms at 1.9 MB.
+
+### Attack on the audit
+
+I read the audit table against every regex use in the file (`grep` for literals, `.test`, `.exec`,
+`.replace`, `.match`): eleven sites, all eleven in the table, none missing. Then I tried to find
+one that is not linear, with a 1.9 MB body each, through `callStellarOrg`. Times are wall clock,
+one run, Node 26.
+
+| Family (what it targets) | Body | Time |
+|---|---|---|
+| Tag name, hyphens: `<a` + `-a` repeated | 1.90 MB | 51 ms |
+| Tag name, many short hyphen tags: `<a-a-a-a ` repeated | 1.90 MB | 76 ms |
+| Tag name, `_` and digits: `<a` + `_a` repeated; `<a` + `1` repeated | 1.90 MB | 27 ms, 46 ms |
+| Title, hyphen after `<title`: `<title-` repeated; `<title` + `-t` repeated | 1.90 MB | 39 ms, 39 ms |
+| Title, `>` but no `</title>`: `<title>a` repeated | 1.90 MB | 65 ms |
+| Comment, far close: `<!--` repeated then one `-->` | 1.90 MB | 26 ms |
+| Comment, near miss: `<!-- -- ` repeated; `<!--->` repeated | 1.90 MB | 27 ms, 52 ms |
+| Entity, many `&aaaa…1` runs; one 1.9 M `a` run; 1.9 M digit run; `&#xff` repeated | 1.90 MB | 29-31 ms |
+| Whitespace, `" \t"` repeated; `#` x 1.9 M; `>` x 1.9 M; `<` x 1.9 M; `</` repeated | 1.90 MB | 27-32 ms |
+| Nested skip: `<svg>` repeated | 1.90 MB | 97 ms |
+| Output-heavy: `<li>a</li>`, `<h1>a</h1>`, `<p>a</p>`, `<td>a` repeated | 1.90 MB | 202-328 ms |
+| Attribute with `<`: `<a b="<">` repeated | 1.90 MB | 68 ms |
+
+The slowest is 328 ms, linear in the number of output lines. I also ran a token fuzz: six seeds, 40
+bodies each (240 bodies, 1.9 MB each), each body a random mix of three tokens drawn from 34 markup
+fragments (`<`, `>`, `<a-`, `<!--`, `-->`, `&#x`, `<title `, `</title>`, `<script>`, `<svg`,
+`<li>`, `<h1>`, `#`, `_`, and others) in runs of up to 2,000. Worst single body: 248 ms. No body
+passed 500 ms.
+
+The sites outside the body (`PATH_RE`, `/\/$/`, `/^text\/html\b/i`) read a path of at most 512
+characters or a header, which the audit says and which I confirmed from the code: the length check
+runs before `PATH_RE`.
+
+I could not construct a counterexample. The audit's reasoning (no character class contains the
+delimiter, so each scan stops at the next one) matches what the timings show.
+
+### What I did not do
+
+- One run per body, not repeated; the margin between 328 ms and a quadratic result (minutes) is
+  large enough that noise does not matter.
+- I did not test a Workers runtime. Workers and Node both run V8's irregexp, but CPU limits differ;
+  the worst case measured is far under any limit.
+- The optional case-insensitive `/api` check was not applied (the author left it to the owner, as
+  I did); `/API/search` still sends one request that is answered by a redirect and refused.
+- The vendor-diverse attack (Grok) on the adapter is still open if the owner wants it.
+
+### Gate
+
+`npm test`, bare, exit 0: 151 files passed, 1 skipped; 3,465 passed, 3 expected fail, 1 skipped
+(3,469). That equals the author's recorded count. I did not re-run the other gates: the commit
+changes no manifest or spec text (the author records the routing gate as unchanged), so my last
+full bare sweep at `bd971784` (typecheck, build, smoke, secrets scan, routing gate, CI generated
+sync) stands for everything but these two regexes.
