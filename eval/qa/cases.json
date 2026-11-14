@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "bdeab2512044ee72c0166525c30509a5880f5310e023a77df9d205d6cb2bb3ea",
+  "corpusContentSha256": "2e7952af255926b163f16fb7a8300327946243962e1837a7fcda36e6ac4cc3a6",
   "counts": {
     "total": 245,
     "byCategory": {
@@ -18385,6 +18385,12 @@
             "ref": "https://api.mainnet.minepi.com/ (network_passphrase 'Pi Network') vs https://horizon.stellar.org/ (network_passphrase 'Public Global Stellar Network ; September 2015')",
             "note": "Live Horizon root reads: distinct passphrases, so the ledgers are separate.",
             "observedAt": "2026-11-02"
+          },
+          {
+            "class": "A",
+            "ref": "https://minepi.com/blog/pi-linux-node",
+            "observedAt": "2026-11-14",
+            "note": "Pi Network post of 2025-08-27, for the lineage note: \"The Pi protocol is adapted from Stellar protocol.\""
           }
         ],
         "corroboration": [

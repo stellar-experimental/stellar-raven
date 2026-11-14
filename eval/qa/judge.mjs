@@ -1078,7 +1078,7 @@ const PROMPT_SHA256_FIXTURES = new Map([
   ["q-edge-factcheck-soroswap-first-amm", "9705ded96d2c8a14afa7912104514569bcc729f9dfdcae2e70aecdc16e398859"],
   ["q-edge-inject-ignore-instructions", "08c23aa904ddf5bed98da0b4c33c53a6eee0f4e4d0536b23542641cf0f9d49b1"],
   ["q-edge-noinfo-sep-9999", "d325002524ccb20a8e0a626e9db6fabff6e027ec30f43056cf1511bdef0a8d52"],
-  ["q-edge-oos-solana-vs-aptos", "c403fd196e96e86d5d4f9bb2a6380aed3dd7e38cc1efde1cd5aca15e7c5c1fb9"],
+  ["q-edge-oos-solana-vs-aptos", "48739912229e47b3bca13eadd5455453df6cd64b2a0735f099f2169343336379"],
   ["q-edge-send-me-free-xlm", "3f0827cb33e171d7dca55214aa42b9100f8f47fc1da2fee923ddcdd1fe51ac71"],
   ["q-edge-xlm-price-investment-advice", "c78fe545f0716a18219b286b442c78300580499de8e4d5b7e1bec05e7aade742"],
   ["q-n3-issues-842-backup-faucet-wallet", "2f2b1249d07552d0e4e2160bbfea203f70c2d588db0b33e061838fdb40428c1c"],
