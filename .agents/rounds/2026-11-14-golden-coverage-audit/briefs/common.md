@@ -54,3 +54,22 @@ never fill a gap from memory. An unverified item is recorded as unverified.
   `node -e 'JSON.parse(require("fs").readFileSync(process.argv[1],"utf8"))' <file>`.
 - When done or stuck, send one line with the path of your output file to the address in your
   launch line. Send nothing else.
+
+## Errors the first verifier found (avoid them; verifiers, look for them)
+
+- A rewrite moved a volatile claim's as-of date to today although the rot check did not re-read
+  it. Keep the last verified date unless you hold evidence observed today.
+- A `live` case's dated example figure was moved into key facts. A `live` or `scheduled` key fact
+  must accept a later dated figure.
+- Ordinary drift of a dated value, or a stale secondary page, was recorded as `changed`. Record
+  drift as `holds` with the date, and check a legal-entity or status change against the primary
+  record.
+- A label or document was called wrong because a preamble did not mention it. Check the registry
+  index.
+- A rewrite turned an observation into a mechanism claim that the golden did not make.
+- A compacted key fact kept ambiguous wording, or demanded coverage that its own answer lacks.
+- A merge named a survivor that does not test the same knowledge, or one outside the battery
+  without saying so.
+- A directory question ("who is building X") was labelled `raven-mechanics`. Look for the world
+  question under it first.
+- Write avoid items in the corpus form: "Do NOT ...".
