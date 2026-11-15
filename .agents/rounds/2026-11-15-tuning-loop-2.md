@@ -433,3 +433,30 @@ improvement.
 **Authorization.** One collection of the held-out set on the kept commit, launched by the
 orchestrator with `eval/qa/heldout-read.sh` from the sealed id list, `--max-budget-usd 30`, counts
 only; results sealed outside the repository.
+
+## Held-out harm check, result
+
+119 planned, 119 completed, 118 judged, USD 25.01; results SHA-256
+`1902171b4cd930459f4b3baf149cc20a2b581c0df5dc2ff28cd6c5405851f9d3` (sealed, outside the
+repository). Correct 50, partial 59, wrong 9, ungraded 1 (the judge's consistency check, not an
+agent failure); core answer correct on 110; trap rows graded correct 5 of 7. Paired with loop 1's
+read on 118 rows: 14 up, 16 down, 7 became wrong, 5 left wrong. Reference: 51, 61, 7; core 115;
+traps 7 of 7.
+
+**Reading (thresholds fixed before launch): no harm shown; ship the kept set.** Correct is above
+44 and wrong is below 12. Not an improvement, and not evidence of one. Recorded beside the reading,
+because the rule does not use them: core-answer-correct is 5 lower, downs exceed ups by 2, and two
+trap rows are not graded correct. Counts-only detail on those two (no id or text): both are
+scam-check rows; one is the ungraded row; the other is graded wrong with no wrong claim and no
+must-avoid match (two missing facts). Neither shows the forbidden behaviour by the judge's fields;
+neither transcript was opened.
+
+**Deviation: one held-out row's answer text was exposed to the orchestrator.** A counts-only script
+over the sealed results printed a field that embeds the answer, for one row; the orchestrator saw
+the opening of that answer (the ungraded scam-check row). The output file was deleted and the
+script re-run with a safe projection. No lane saw it, and no product change has been made since.
+The row is identified only by its case-input hash in the sealed directory
+(`exposed-row.sha256`); at the next split draw it is treated as exposed and leaves the held-out set.
+
+**Loop 2 closed.** Spend: P0 11.81, P1 16.10, P2 11.62, R 7.05, held-out 25.01; USD 71.59
+subscription-equivalent (plan estimate 72, caps 92).
