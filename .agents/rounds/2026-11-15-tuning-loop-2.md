@@ -273,3 +273,25 @@ unreachable-by-question, as the plan's literal rule says; the orchestrator does 
 **Cap: `--max-budget-usd 17`**, raised from the plan's 14.5 before launch, because P1 pass 1 cost
 USD 12.02 and this surface adds page reads; a cap stop would void the run, and 17 is a 41% margin.
 Changed rows are compared with P0 as well as with P1 pass 1. No resume, no re-judge.
+
+### 2026-11-15: P2 result, step 2 decided
+
+Run record: `P2.md` on `origin/tune/loop-2-runs` (Claude Sonnet 5.5 run lane `loop2-run`; the file lives on that branch, not here). Surface: `bd9719fb`. Stamp
+`2026-11-15T07-33-40-variantA`, 58 of 58, USD 11.62 of the 17 cap, no stop event. 23 correct, 34 partial, 1 wrong (P1 pass 1: 23, 33, 2; P0: 25, 32, 1). T = 5.
+
+Orchestrator direct instruction (2026-11-15): **step 2 is decided by rule. The `stellarOrg` source, item 4 (the description openings) and seven cards are all kept.**
+
+- **Source, kept, and unproven.** The rule keeps it unless H1 or H2 fails on a source-exposed row or two unrelated rows go down by a traced displacement. None did: 0 traced
+  displacements, 0 intrusions as calls (every `stellarOrg` call is on a source row), 2 rows outside the 12 carried a source card on their `search` page and neither called it.
+  Caveats from the run lane, carried here: the source was **called on 3 of 58 rows** (3 of the 12 source rows); one answer used a fact from it (a dated balance table that no
+  judged fact needed); **0 traced ups**. Nothing is read as shipped value, as a result about the guard line on `stellarOrg` results (no claim statement rests on one), as a
+  result for Worker egress (A7 tested the account's Workers, not the adapter's own path from a deployed Worker), or as evidence that the source causes no displacement: S3's
+  tail effect is below what T = 5 on 58 rows can see.
+- **Item 4, kept.** The 40 rows in neither exposure set are net 0 against P1 (tier-matched -1, 26 rows) and +4 against P0 (tier-matched +3), all untraced, under T. P2
+  cannot separate the delivery text from item 2's always-on description text (A8).
+- **Seven cards, kept.** One seven-used row, unchanged and correct; median input tokens +2.5% against P1, -1.6% against P0. P2 says nothing about seven cards' benefit.
+  Explicit limits moved to 10 (36 of 48 calls); no transcript ties that to a sentence.
+- Both nets (P2 against P1 pass 1 +1, tier-matched -1; against P0 +3, tier-matched +2) are under T on all rows and on the tier-matched rows: no decision on harm, H3 does not
+  trip. Required-service coverage 55 of 58 (P1 56, P0 58): the three misses are rows whose verdict did not move for coverage reasons. Zero violations in 25 claim-word answers.
+  Research-call share on the 17 identifier rows: P0 25%, P1 29%, P2 23%; R0's bar stays above 33% and above the highest of these.
+- Step 3 free work starts from this decision. No paid run is authorized by this entry.
