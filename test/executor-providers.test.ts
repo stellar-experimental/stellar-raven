@@ -265,6 +265,17 @@ describe("host structural service evidence", () => {
       expect(keys("", sep43, { q: "SEP-43" })).toEqual([{ index: 0, key: "sep-0043" }]);
     });
 
+    it("does not read the prefix of a longer identifier (`CVE-2024-1234`, `SEP-43.1`) as the document of that prefix", () => {
+      const cve = { results: [row("cve", "cve-2024")] };
+      expect(keys("CVE-2024-1234", cve)).toEqual([]);
+      expect(keys("CVE-2024-1234 details", cve)).toEqual([]);
+      expect(keys("SEP-43.1")).toEqual([]);
+      // a plain identifier followed by a dash and a word, or by sentence punctuation, still names the document
+      expect(keys("SEP-43-draft")).toEqual([{ index: 0, key: "sep-0043" }]);
+      expect(keys("what is SEP-43?")).toEqual([{ index: 0, key: "sep-0043" }]);
+      expect(keys("SEP-43, SEP-43.")).toEqual([{ index: 0, key: "sep-0043" }]);
+    });
+
     it("marks each document when a query names two identifiers", () => {
       expect(keys("SEP-43 and CAP-38")).toEqual([
         { index: 0, key: "sep-0043" },

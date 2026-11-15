@@ -24,11 +24,16 @@ describe("exact rows in the candidate evidence block", () => {
     expect(withExactEvidence(plain, exact)).toBe(`${plain}${SENTENCE}`);
   });
 
-  it("quotes every exact row of a call, with a URL only when one is plain", () => {
-    const block = withExactEvidence(candidateEvidenceBlock(1), [
+  it("writes one sentence per exact row of a call, with a URL only when one is plain", () => {
+    const plain = candidateEvidenceBlock(1);
+    const block = withExactEvidence(plain, [
       { op: "scout.searchResearch", rows: [{ key: "sep-0043" }, { key: "cap-0038", url: "https://x.org/cap-0038.md" }] }
     ]);
-    expect(block).toContain("(`sep-0043`; `cap-0038`, `https://x.org/cap-0038.md`)");
+    const sentences = block.slice(plain.length).split(" Exception: ").filter(Boolean);
+    expect(sentences).toHaveLength(2);
+    expect(sentences[0]).toContain("identifier (`sep-0043`). That row is the document itself");
+    expect(sentences[1]).toContain("identifier (`cap-0038`, `https://x.org/cap-0038.md`). That row is the document itself");
+    expect(block).not.toContain("`; `");
   });
 
   it("stays silent when the block is suppressed or there is no candidate call", () => {

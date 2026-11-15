@@ -57,7 +57,7 @@ export type ResultCaveat = "no-rows" | "unverified-match";
 /**
  * A row of a candidate-lane result that the host recognized as the document its query names by
  * identifier. `index` is the row's position in the payload's rows array; `key` is the row URL's
- * own slug (for example `sep-0043`). The host judges no relevance: it reports an agreement between
+ * own slug (a slug such as `<series>-<number>`). The host judges no relevance: it reports an agreement between
  * the query, the row's source label, and the row's URL.
  */
 export type ExactRow = { index: number; key: string };

@@ -289,7 +289,8 @@ export function resultCaveat(
   return candidateMode ? "unverified-match" : undefined;
 }
 
-const IDENTIFIER_TOKEN_RE = /\b([A-Za-z]+)[- ]?(\d+)\b/g;
+// A token followed by `-` or `.` and another digit (`CVE-2024-1234`, `SEP-43.1`) is a longer identifier, not a prefix match.
+const IDENTIFIER_TOKEN_RE = /\b([A-Za-z]+)[- ]?(\d+)\b(?![-.]\d)/g;
 const MAX_EXACT_ROWS = 5;
 const MAX_EXACT_URL_CHARS = 200;
 
