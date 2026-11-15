@@ -1,0 +1,2074 @@
+[
+ {
+  "id": "a01",
+  "group": "audit",
+  "form": "question",
+  "text": "Who audited the Soroswap AMM aggregator on Stellar?",
+  "raw": null,
+  "adapter": null,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/developers/amms-in-the-stellar-ecosystem",
+   "/blog/developers/fast-forwarding-stellar-amms-liquidity-pools",
+   "/press/state-street-galaxy-onchain-liquidity-sweep-fund-goes-live-on-stellar",
+   "/blog/developers/the-soroban-audit-bank-fostering-a-secure-smart-contract-ecosystem",
+   "/events/community/get-to-know-soroswap-alterscope-and-kwickbit",
+   "/press/stably-launches-stablecoin-on-off-ramps-on-the-stellar-network",
+   "/press/automated-market-maker-functionality-is-live-on-stellar"
+  ],
+  "answerKind": "audit"
+ },
+ {
+  "id": "a01",
+  "group": "audit",
+  "form": "keyword",
+  "text": "Soroswap audit",
+  "raw": 5,
+  "adapter": 2,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "audit",
+   "audit"
+  ],
+  "ownedRows": [
+   "/blog/developers/the-soroban-audit-bank-fostering-a-secure-smart-contract-ecosystem",
+   "/blog/developers/soroban-security-audit-bank-raising-the-standard-for-smart-contract-security",
+   "/events/community/get-to-know-soroswap-alterscope-and-kwickbit"
+  ],
+  "answerKind": "audit"
+ },
+ {
+  "id": "a02",
+  "group": "audit",
+  "form": "question",
+  "text": "Where can I read the Certora security report for the Reflector oracle?",
+  "raw": 1,
+  "adapter": 1,
+  "rawKinds": [
+   "audit",
+   "audit",
+   "page",
+   "page",
+   "page",
+   "page",
+   "audit",
+   "page",
+   "page",
+   "audit"
+  ],
+  "ownedRows": [
+   "/blog/developers/soroban-security-bug-bounty",
+   "/blog/developers/soroban-security-audit-bank-raising-the-standard-for-smart-contract-security",
+   "/press/a-milestone-in-smart-contract-security-certora-teams-up-with-the-stellar-network-s-smart-contract-platform-soroban",
+   "/blog/developers/the-soroban-audit-bank-fostering-a-secure-smart-contract-ecosystem"
+  ],
+  "answerKind": "audit"
+ },
+ {
+  "id": "a02",
+  "group": "audit",
+  "form": "keyword",
+  "text": "Reflector Certora",
+  "raw": 1,
+  "adapter": 1,
+  "rawKinds": [
+   "audit",
+   "audit",
+   "audit",
+   "audit",
+   "audit",
+   "audit",
+   "audit",
+   "audit",
+   "audit",
+   "audit"
+  ],
+  "ownedRows": [],
+  "answerKind": "audit"
+ },
+ {
+  "id": "a03",
+  "group": "audit",
+  "form": "question",
+  "text": "Which firm audited Spiko's Stellar smart contracts?",
+  "raw": null,
+  "adapter": null,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/developers/smart-contracts-on-stellar",
+   "/press/smart-contracts-launch-on-stellar",
+   "/blog/developers/the-definitive-guide-to-testing-smart-contracts-on-stellar",
+   "/blog/developers/risc-zero-verifier",
+   "/blog/foundation-news/sdf-partners-with-openzeppelin-to-enhance-stellar-smart-contract-development",
+   "/blog/developers/smart-contracts-on-stellar-why-now",
+   "/blog/developers/the-stellar-network-s-phased-rollout-of-smart-contracts-the-road-to-mainnet",
+   "/blog/developers/the-soroban-audit-bank-fostering-a-secure-smart-contract-ecosystem"
+  ],
+  "answerKind": "audit"
+ },
+ {
+  "id": "a03",
+  "group": "audit",
+  "form": "keyword",
+  "text": "Spiko audit",
+  "raw": 5,
+  "adapter": 3,
+  "rawKinds": [
+   "partner",
+   "page",
+   "partner",
+   "page",
+   "audit"
+  ],
+  "ownedRows": [
+   "/blog/developers/the-soroban-audit-bank-fostering-a-secure-smart-contract-ecosystem"
+  ],
+  "answerKind": "audit"
+ },
+ {
+  "id": "a04",
+  "group": "audit",
+  "form": "question",
+  "text": "Has the Blend lending protocol had a security audit, and where is the report?",
+  "raw": null,
+  "adapter": null,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "partner",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/developers/soroban-security-audit-bank-raising-the-standard-for-smart-contract-security",
+   "/blog/developers/the-soroban-audit-bank-fostering-a-secure-smart-contract-ecosystem",
+   "/blog/ecosystem/stellar-defi-security-standards-and-best-practices",
+   "/blog/developers/fee-bump-bug-disclosure"
+  ],
+  "answerKind": "audit"
+ },
+ {
+  "id": "a04",
+  "group": "audit",
+  "form": "keyword",
+  "text": "Blend audit",
+  "raw": null,
+  "adapter": null,
+  "rawKinds": [
+   "partner"
+  ],
+  "ownedRows": [],
+  "answerKind": "audit"
+ },
+ {
+  "id": "a05",
+  "group": "audit",
+  "form": "question",
+  "text": "Which Stellar projects has Veridise audited?",
+  "raw": 3,
+  "adapter": 3,
+  "rawKinds": [
+   "page",
+   "page",
+   "audit",
+   "page",
+   "audit",
+   "audit",
+   "audit",
+   "audit",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/foundation-news/stellar-development-foundation-q2-in-review",
+   "/blog/foundation-news/stellar-development-foundation-q3-in-review"
+  ],
+  "answerKind": "audit"
+ },
+ {
+  "id": "a05",
+  "group": "audit",
+  "form": "keyword",
+  "text": "Veridise",
+  "raw": 1,
+  "adapter": 1,
+  "rawKinds": [
+   "audit",
+   "audit",
+   "audit",
+   "audit",
+   "audit",
+   "audit",
+   "audit",
+   "audit"
+  ],
+  "ownedRows": [],
+  "answerKind": "audit"
+ },
+ {
+  "id": "a06",
+  "group": "audit",
+  "form": "question",
+  "text": "Was the Stellar Attestation Service smart contract audited?",
+  "raw": 4,
+  "adapter": 2,
+  "rawKinds": [
+   "partner",
+   "page",
+   "page",
+   "audit",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/developers/risc-zero-verifier",
+   "/blog/developers/the-definitive-guide-to-testing-smart-contracts-on-stellar",
+   "/blog/developers/soroban-security-audit-bank-raising-the-standard-for-smart-contract-security",
+   "/blog/developers/the-soroban-audit-bank-fostering-a-secure-smart-contract-ecosystem",
+   "/press/a-milestone-in-smart-contract-security-certora-teams-up-with-the-stellar-network-s-smart-contract-platform-soroban",
+   "/blog/developers/smart-contracts-on-stellar"
+  ],
+  "answerKind": "audit"
+ },
+ {
+  "id": "a06",
+  "group": "audit",
+  "form": "keyword",
+  "text": "Stellar Attestation Service audit",
+  "raw": 2,
+  "adapter": 2,
+  "rawKinds": [
+   "partner",
+   "audit",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/developers/the-soroban-audit-bank-fostering-a-secure-smart-contract-ecosystem",
+   "/blog/developers/soroban-security-audit-bank-raising-the-standard-for-smart-contract-security",
+   "/blog/policy/stellar-receives-sharia-compliance-certification-transfers-tokenization",
+   "/blog/developers/the-definitive-guide-to-testing-smart-contracts-on-stellar"
+  ],
+  "answerKind": "audit"
+ },
+ {
+  "id": "a07",
+  "group": "audit",
+  "form": "question",
+  "text": "Who audited the Phoenix DEX contracts on Soroban?",
+  "raw": null,
+  "adapter": null,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/developers/the-soroban-audit-bank-fostering-a-secure-smart-contract-ecosystem",
+   "/blog/developers/smart-contracts-made-simple-dogfooding-soroban-at-the-sdf",
+   "/blog/developers/building-on-soroban-three-teams-journeys-smart-contracts",
+   "/press/soroban-smart-contracts-platform-native-to-the-stellar-network-is-live-on-futurenet",
+   "/blog/developers/building-on-soroban-analyzing-soroban-vs-ethereum-solana",
+   "/events/community/soroban-developer-workshop-write-your-first-smart-contract-on-soroban",
+   "/blog/developers/soroban-a-new-smart-contract-standard",
+   "/blog/developers/soroban-the-high-performance-smart-contract-platform-built-for-developers"
+  ],
+  "answerKind": "audit"
+ },
+ {
+  "id": "a07",
+  "group": "audit",
+  "form": "keyword",
+  "text": "Phoenix audit",
+  "raw": 1,
+  "adapter": 1,
+  "rawKinds": [
+   "audit",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/developers/soroban-security-audit-bank-raising-the-standard-for-smart-contract-security"
+  ],
+  "answerKind": "audit"
+ },
+ {
+  "id": "a08",
+  "group": "audit",
+  "form": "question",
+  "text": "Is there a published audit of the DeFindex vaults?",
+  "raw": 3,
+  "adapter": 2,
+  "rawKinds": [
+   "page",
+   "page",
+   "audit",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "partner"
+  ],
+  "ownedRows": [
+   "/blog/developers/the-soroban-audit-bank-fostering-a-secure-smart-contract-ecosystem",
+   "/blog/policy/digital-assets-and-the-future-of-finance-testifying-before-the-us-house-committee-on-financial-services",
+   "/blog/developers/soroban-security-audit-bank-raising-the-standard-for-smart-contract-security",
+   "/blog/ecosystem/stellar-defi-security-standards-and-best-practices",
+   "/blog/ecosystem/what-the-defi-is-happening-on-stellar",
+   "/blog/policy/the-state-of-stablecoins"
+  ],
+  "answerKind": "audit"
+ },
+ {
+  "id": "a08",
+  "group": "audit",
+  "form": "keyword",
+  "text": "DeFindex audit",
+  "raw": 2,
+  "adapter": 2,
+  "rawKinds": [
+   "page",
+   "audit"
+  ],
+  "ownedRows": [],
+  "answerKind": "audit"
+ },
+ {
+  "id": "a09",
+  "group": "audit",
+  "form": "question",
+  "text": "What does the Soroban Security Audit Bank give SCF-funded projects?",
+  "raw": 1,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "partner",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/developers/the-soroban-audit-bank-fostering-a-secure-smart-contract-ecosystem",
+   "/blog/developers/soroban-security-audit-bank-raising-the-standard-for-smart-contract-security",
+   "/blog/developers/soroban-security-bug-bounty",
+   "/press/stellar-community-fund-kicks-off-10m-open-application-funding-program-for-soroban-projects",
+   "/blog/ecosystem/stellar-community-fund-recap-soroban-infrastructure",
+   "/blog/developers/a-developers-guide-to-soroban-adoption-fund-programs"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "a09",
+  "group": "audit",
+  "form": "keyword",
+  "text": "Soroban Security Audit Bank",
+  "raw": 2,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "partner",
+   "page",
+   "audit",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/developers/soroban-security-audit-bank-raising-the-standard-for-smart-contract-security",
+   "/blog/developers/the-soroban-audit-bank-fostering-a-secure-smart-contract-ecosystem",
+   "/blog/developers/soroban-security-bug-bounty",
+   "/blog/developers/soroban-is-feature-complete",
+   "/press/a-milestone-in-smart-contract-security-certora-teams-up-with-the-stellar-network-s-smart-contract-platform-soroban"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "a10",
+  "group": "audit",
+  "form": "question",
+  "text": "How much does a project pay upfront for an Audit Bank audit, and when is it refunded?",
+  "raw": 1,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "partner"
+  ],
+  "ownedRows": [
+   "/blog/developers/the-soroban-audit-bank-fostering-a-secure-smart-contract-ecosystem",
+   "/blog/developers/soroban-security-audit-bank-raising-the-standard-for-smart-contract-security"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "a10",
+  "group": "audit",
+  "form": "keyword",
+  "text": "audit bank co-payment refund",
+  "raw": 1,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/developers/the-soroban-audit-bank-fostering-a-secure-smart-contract-ecosystem",
+   "/blog/developers/soroban-security-audit-bank-raising-the-standard-for-smart-contract-security"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "a11",
+  "group": "audit",
+  "form": "question",
+  "text": "Which audit firms review Audit Bank projects at pre-negotiated rates?",
+  "raw": 1,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/developers/the-soroban-audit-bank-fostering-a-secure-smart-contract-ecosystem",
+   "/blog/developers/soroban-security-audit-bank-raising-the-standard-for-smart-contract-security"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "a11",
+  "group": "audit",
+  "form": "keyword",
+  "text": "audit bank partner firms",
+  "raw": 2,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/developers/the-soroban-audit-bank-fostering-a-secure-smart-contract-ecosystem",
+   "/blog/developers/soroban-security-audit-bank-raising-the-standard-for-smart-contract-security"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "a12",
+  "group": "audit",
+  "form": "question",
+  "text": "Which projects have recently completed audits through the Audit Bank?",
+  "raw": 3,
+  "adapter": 2,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/developers/the-soroban-audit-bank-fostering-a-secure-smart-contract-ecosystem",
+   "/blog/developers/soroban-security-audit-bank-raising-the-standard-for-smart-contract-security"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "a12",
+  "group": "audit",
+  "form": "keyword",
+  "text": "audited projects",
+  "raw": 1,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/developers/the-soroban-audit-bank-fostering-a-secure-smart-contract-ecosystem"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "a13",
+  "group": "audit",
+  "form": "question",
+  "text": "How do I report a vulnerability in Stellar Core, and is there a bounty?",
+  "raw": 1,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/ecosystem/stellar-bridge-bounty-program-grants-up-to-5-million-to-finalists",
+   "/blog/developers/announcing-the-deep-dive-docs-bounty",
+   "/blog/developers/why-quorums-matter-and-how-stellar-approaches-them",
+   "/blog/developers/soroban-security-bug-bounty",
+   "/blog/developers/announcing-the-stellar-i-award-winners",
+   "/blog/ecosystem/stellar-defi-security-standards-and-best-practices",
+   "/events/community/building-a-stellar-browser-extension"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "a13",
+  "group": "audit",
+  "form": "keyword",
+  "text": "bug bounty",
+  "raw": 1,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "partner"
+  ],
+  "ownedRows": [
+   "/blog/developers/soroban-security-bug-bounty",
+   "/blog/ecosystem/stellar-bridge-bounty-program-grants-up-to-5-million-to-finalists",
+   "/blog/developers/announcing-the-deep-dive-docs-bounty",
+   "/blog/developers/fee-bump-bug-disclosure"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "a14",
+  "group": "audit",
+  "form": "question",
+  "text": "How long does SDF take to fix a reported vulnerability before it may be disclosed?",
+  "raw": 3,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/foundation-news/updates-and-reminders-from-your-sdf-security-team",
+   "/blog/developers/our-decision-to-disarm-validators-and-vote-to-postpone-the-protocol-20-upgrade",
+   "/events/community/hack-the-system",
+   "/press/statement-on-halted-sdf-validators",
+   "/blog/foundation-news/sdf-statement-november-29-email",
+   "/blog/policy/sdf-on-capitol-hill",
+   "/blog/policy/sdfs-comment-letter-on-fincen-nprm",
+   "/blog/developers/soroban-security-bug-bounty"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "a14",
+  "group": "audit",
+  "form": "keyword",
+  "text": "responsible disclosure",
+  "raw": 1,
+  "adapter": 1,
+  "rawKinds": [
+   "page"
+  ],
+  "ownedRows": [],
+  "answerKind": "page"
+ },
+ {
+  "id": "d01",
+  "group": "appdev",
+  "form": "question",
+  "text": "What is the Stellar Disbursement Platform, and how many payments can it send in one batch?",
+  "raw": 2,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/developers/explore-the-open-source-solution-for-bulk-payments-the-stellar-disbursement-platform",
+   "/blog/ecosystem/bulk-disbursements-with-beans-app-and-boss-money",
+   "/blog/developers/welcoming-zodia-custody-as-a-technical-host-of-the-stellar-disbursement-platform",
+   "/blog/foundation-news/one-year-of-stellar-aid-assist",
+   "/blog/ecosystem/what-the-defi-is-happening-on-stellar",
+   "/press/world-s-first-on-chain-disbursement-of-universal-basic-income-delivered-on-the-stellar-network-via-digital-sovereign-bond-usdm1"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "d01",
+  "group": "appdev",
+  "form": "keyword",
+  "text": "disbursement platform",
+  "raw": 1,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/developers/explore-the-open-source-solution-for-bulk-payments-the-stellar-disbursement-platform",
+   "/blog/developers/welcoming-zodia-custody-as-a-technical-host-of-the-stellar-disbursement-platform",
+   "/blog/ecosystem/bulk-disbursements-with-beans-app-and-boss-money"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "d02",
+  "group": "appdev",
+  "form": "question",
+  "text": "How does the Anchor Platform help a business offer deposits and withdrawals on Stellar?",
+  "raw": 1,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/events/community/anchor-basics-the-business-and-benefits-of-anchors-on-the-stellar-network",
+   "/blog/developers/the-anchor-platform-creating-access-through-on-and-off-ramps",
+   "/press/new-stellar-anchor-platform-bridges-businesses-to-the-blockchain-and-to-a-global-network-of-wallets-and-exchanges",
+   "/events/community/stellar-sep24-interactive-deposits-withdrawals",
+   "/events/community/deposits-and-withdrawals-in-vibrant",
+   "/blog/developers/the-stellar-anchor-platform-connecting-to-stellar-made-simple",
+   "/events/community/how-to-build-an-anchor-with-polaris",
+   "/blog/developers/how-wallets-can-integrate-with-global-on-and-off-ramps-on-stellar"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "d02",
+  "group": "appdev",
+  "form": "keyword",
+  "text": "anchor platform",
+  "raw": 1,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/developers/the-anchor-platform-creating-access-through-on-and-off-ramps",
+   "/press/new-stellar-anchor-platform-bridges-businesses-to-the-blockchain-and-to-a-global-network-of-wallets-and-exchanges",
+   "/blog/developers/the-stellar-anchor-platform-connecting-to-stellar-made-simple",
+   "/events/community/anchor-basics-the-business-and-benefits-of-anchors-on-the-stellar-network",
+   "/blog/ecosystem/stellar-anchor-basics-webinar-recap",
+   "/blog/developers/introducing-anchor-network-interactive-map",
+   "/events/community/code-hacks-crea-tu-propio-anchor-con-stellar"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "d03",
+  "group": "appdev",
+  "form": "question",
+  "text": "What does the Stellar Wallet SDK provide for building a wallet app?",
+  "raw": 2,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "page",
+   "partner",
+   "page",
+   "page",
+   "page",
+   "partner",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/developers/announcing-the-stellar-wallet-sdk-build-on-stellar-faster-than-ever-before",
+   "/blog/ecosystem/building-meridian-pay-smart-wallet-on-stellar",
+   "/blog/developers/a-new-go-sdk-for-the-stellar-network",
+   "/blog/developers/how-to-use-a-wallet-employing-stellar-aid-assist",
+   "/press/topnod-brings-non-custodial-wallet-to-the-stellar-network-expanding-stellar-ecosystem-in-asia",
+   "/blog/developers/rethinking-and-relaunching-the-demo-wallet"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "d03",
+  "group": "appdev",
+  "form": "keyword",
+  "text": "wallet sdk",
+  "raw": 1,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "page",
+   "partner",
+   "partner",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "partner"
+  ],
+  "ownedRows": [
+   "/blog/developers/announcing-the-stellar-wallet-sdk-build-on-stellar-faster-than-ever-before",
+   "/blog/developers/how-to-use-a-wallet-employing-stellar-aid-assist",
+   "/blog/ecosystem/building-meridian-pay-smart-wallet-on-stellar",
+   "/blog/developers/freighter-wallet-evolves",
+   "/press/moneygram-announces-plans-to-launch-non-custodial-digital-wallet"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "d04",
+  "group": "appdev",
+  "form": "question",
+  "text": "Is there a video tutorial for writing a hello world smart contract in Rust on Stellar?",
+  "raw": 1,
+  "adapter": 1,
+  "rawKinds": [
+   "tutorial",
+   "page",
+   "page",
+   "page",
+   "tutorial",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/developers/smart-contracts-on-stellar",
+   "/events/community/code-hacks-crea-tu-primer-smart-contract-con-stellar",
+   "/blog/developers/risc-zero-verifier",
+   "/blog/developers/build-better-on-stellar-smart-contract-challenge-winners",
+   "/events/community/build-better-smart-contract-challenge"
+  ],
+  "answerKind": "tutorial"
+ },
+ {
+  "id": "d04",
+  "group": "appdev",
+  "form": "keyword",
+  "text": "hello world contract tutorial",
+  "raw": 2,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "tutorial",
+   "page",
+   "page",
+   "tutorial",
+   "page",
+   "partner"
+  ],
+  "ownedRows": [
+   "/events/community/code-hacks-crea-tu-primer-smart-contract-con-stellar",
+   "/events/community/turing-complete-contract-proposal-for-stellar",
+   "/events/community/soroban-developer-workshop-write-your-first-smart-contract-on-soroban",
+   "/blog/developers/how-to-use-the-openzeppelin-contract-wizard"
+  ],
+  "answerKind": "tutorial"
+ },
+ {
+  "id": "d05",
+  "group": "appdev",
+  "form": "question",
+  "text": "Is there a tutorial on building passkey smart wallets with WebAuthn on Stellar?",
+  "raw": 3,
+  "adapter": 2,
+  "rawKinds": [
+   "page",
+   "page",
+   "tutorial",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/foundation-news/introducing-the-new-stellar-passkey-feature-seamless-web3-smart-wallet-functionality-on-mainnet",
+   "/blog/ecosystem/building-meridian-pay-smart-wallet-on-stellar",
+   "/blog/developers/smart-contracts-on-stellar",
+   "/blog/developers/announcing-the-stellar-wallet-sdk-build-on-stellar-faster-than-ever-before",
+   "/events/community/building-a-stellar-browser-extension",
+   "/blog/ecosystem/prototyping-privacy-pools-on-stellar",
+   "/blog/developers/how-wallets-can-integrate-with-global-on-and-off-ramps-on-stellar",
+   "/blog/developers/the-definitive-guide-to-testing-smart-contracts-on-stellar"
+  ],
+  "answerKind": "tutorial"
+ },
+ {
+  "id": "d05",
+  "group": "appdev",
+  "form": "keyword",
+  "text": "passkey tutorial",
+  "raw": 4,
+  "adapter": 2,
+  "rawKinds": [
+   "page",
+   "partner",
+   "page",
+   "tutorial",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/foundation-news/introducing-the-new-stellar-passkey-feature-seamless-web3-smart-wallet-functionality-on-mainnet",
+   "/blog/developers/key-management-101",
+   "/blog/developers/sep-30-recoverysigner-user-friendly-key-management"
+  ],
+  "answerKind": "tutorial"
+ },
+ {
+  "id": "d06",
+  "group": "appdev",
+  "form": "question",
+  "text": "How do I build a payments dApp with Soroban, step by step?",
+  "raw": 1,
+  "adapter": 1,
+  "rawKinds": [
+   "tutorial",
+   "page",
+   "page",
+   "tutorial",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/developers/sorobounty-spectacular-dapp-tutorials",
+   "/events/community/encode-x-stellar-educate-develop-your-first-dapp-on-stellar-using-soroban",
+   "/events/community/soroban-developer-workshop-write-your-first-smart-contract-on-soroban",
+   "/blog/developers/soroban-a-new-smart-contract-standard",
+   "/blog/developers/building-on-soroban-analyzing-soroban-vs-ethereum-solana",
+   "/blog/developers/soroban-the-high-performance-smart-contract-platform-built-for-developers",
+   "/blog/developers/a-developers-guide-to-soroban-adoption-fund-programs"
+  ],
+  "answerKind": "tutorial"
+ },
+ {
+  "id": "d06",
+  "group": "appdev",
+  "form": "keyword",
+  "text": "payments dapp tutorial",
+  "raw": 2,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "tutorial",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "tutorial",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/developers/sorobounty-spectacular-dapp-tutorials",
+   "/events/community/encode-x-stellar-educate-develop-your-first-dapp-on-stellar-using-soroban",
+   "/events/community/practical-path-payments",
+   "/press/vottun-to-develop-payment-solution-in-spanish-regulatory-sandbox-with-support-from-pwc-stellar-development-foundation"
+  ],
+  "answerKind": "tutorial"
+ },
+ {
+  "id": "d07",
+  "group": "appdev",
+  "form": "question",
+  "text": "How does MoneyGram use Stellar to let people cash out USDC?",
+  "raw": 1,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/foundation-news/three-years-with-moneygram",
+   "/blog/ecosystem/usdc-is-coming-to-stellar",
+   "/press/moneygram-launches-pioneering-global-crypto-to-cash-service-on-the-stellar-network",
+   "/press/moneygram-and-stellar-extend-partnership-to-scale-real-world-stablecoin-utility-globally",
+   "/events/community/how-wallets-and-apps-can-reach-cash-users-globally-with-moneygram",
+   "/press/moneygram-announces-plans-to-launch-non-custodial-digital-wallet",
+   "/blog/ecosystem/moneygram-international-launches-a-new-pilot-on-stellar"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "d07",
+  "group": "appdev",
+  "form": "keyword",
+  "text": "MoneyGram case study",
+  "raw": 2,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "partner",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/ecosystem/moneygram-international-launches-a-new-pilot-on-stellar",
+   "/blog/foundation-news/three-years-with-moneygram",
+   "/press/moneygram-announces-innovative-partnership-with-the-stellar-development-foundation-to-utilize-blockchain-technology",
+   "/events/community/how-wallets-and-apps-can-reach-cash-users-globally-with-moneygram",
+   "/blog/foundation-news/sdfs-investment-in-moneygram-international",
+   "/press/moneygram-launches-pioneering-global-crypto-to-cash-service-on-the-stellar-network"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "d08",
+  "group": "appdev",
+  "form": "question",
+  "text": "How does the Meru wallet use Blend to earn yield for its users?",
+  "raw": 1,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "partner",
+   "page",
+   "page",
+   "partner",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/developers/how-to-use-a-wallet-employing-stellar-aid-assist",
+   "/blog/ecosystem/building-meridian-pay-smart-wallet-on-stellar",
+   "/blog/developers/yield-bearing-assets-stellar-soroban",
+   "/blog/developers/how-to-use-the-openzeppelin-contract-wizard",
+   "/blog/ecosystem/how-wyre-enables-businesses-to-build-on-stellar-with-usdc"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "d08",
+  "group": "appdev",
+  "form": "keyword",
+  "text": "Meru Blend",
+  "raw": 1,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "partner"
+  ],
+  "ownedRows": [],
+  "answerKind": "page"
+ },
+ {
+  "id": "d09",
+  "group": "appdev",
+  "form": "question",
+  "text": "How did Franklin Templeton put its money market fund on Stellar?",
+  "raw": 2,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "partner",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/press/franklin-templeton-stellar-development-foundation-mark-five-years-of-benji-the-first-u-s-registered-tokenized-money-market-fund",
+   "/press/franklin-templeton-announces-the-franklin-onchain-u-s-government-money-fund-surpasses-270-million-in-assets-under-management",
+   "/blog/ecosystem/how-winning-the-stellar-community-fund-opened-new-doors-for-alfred-pay",
+   "/blog/foundation-news/introducing-stellar-community-fund-2-0",
+   "/blog/ecosystem/looking-back-on-the-stellar-community-fund-with-litemint",
+   "/press/automated-market-maker-functionality-is-live-on-stellar",
+   "/blog/foundation-news/sdfs-investment-in-moneygram-international"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "d09",
+  "group": "appdev",
+  "form": "keyword",
+  "text": "Franklin Templeton BENJI",
+  "raw": 1,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "partner",
+   "partner",
+   "partner"
+  ],
+  "ownedRows": [
+   "/press/franklin-templeton-announces-the-franklin-onchain-u-s-government-money-fund-surpasses-270-million-in-assets-under-management",
+   "/press/franklin-templeton-stellar-development-foundation-mark-five-years-of-benji-the-first-u-s-registered-tokenized-money-market-fund"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "d10",
+  "group": "appdev",
+  "form": "question",
+  "text": "How can I charge per request for my API with x402 on Stellar?",
+  "raw": 1,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/foundation-news/x402-on-stellar",
+   "/blog/developers/experiment-with-payment-channels-on-stellar",
+   "/press/wyre-announces-new-savings-api-powered-by-the-stellar-network",
+   "/blog/developers/introducing-stellar-ramps-access-stellars-on-off-ramps-with-a-single-integration",
+   "/events/community/code-hacks-aprende-a-usar-la-api-de-stellar-horizon",
+   "/blog/developers/how-wallets-can-integrate-with-global-on-and-off-ramps-on-stellar",
+   "/press/stably-launches-stablecoin-on-off-ramps-on-the-stellar-network",
+   "/blog/developers/the-stellar-anchor-platform-connecting-to-stellar-made-simple"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "d10",
+  "group": "appdev",
+  "form": "keyword",
+  "text": "x402",
+  "raw": 1,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/foundation-news/x402-on-stellar"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "d11",
+  "group": "appdev",
+  "form": "question",
+  "text": "How do I publish a Stellar info file so SDF lists my service in its directories?",
+  "raw": 1,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/developers/accelerating-analytics-on-stellar",
+   "/events/community/how-to-create-an-scf-submission-worth-exploring",
+   "/blog/developers/how-trust-works-on-the-stellar-network",
+   "/blog/foundation-news/stellar-development-foundation-q1-2023-in-review"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "d11",
+  "group": "appdev",
+  "form": "keyword",
+  "text": "stellar info file",
+  "raw": 1,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/developers/accelerating-analytics-on-stellar",
+   "/blog/developers/whats-new-with-stellar-dev-docs",
+   "/press",
+   "/blog/foundation-news",
+   "/blog/foundation-news/stellar-development-foundation-q1-2023-in-review"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "d12",
+  "group": "appdev",
+  "form": "question",
+  "text": "Is USDT available on Stellar, and how does it get there without a bridge?",
+  "raw": null,
+  "adapter": null,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/foundation-news/usdt0-is-now-live-on-stellar",
+   "/press/usdt0-goes-live-on-stellar-connecting-unified-dollar-liquidity-to-the-world-s-most-accessible-network",
+   "/blog/developers/starbridge-a-trust-minimized-bridge-between-stellar-and-other-blockchains",
+   "/blog/ecosystem/usdc-is-coming-to-stellar",
+   "/press/paypal-pyusd-is-now-available-on-stellar",
+   "/press/usdc-is-live-on-the-stellar-network",
+   "/press/taurus-custody-and-issuance-platforms-now-available-on-stellar",
+   "/blog/foundation-news/circle-cctp-is-live-on-stellar",
+   "/blog/ecosystem/a-bank-issued-stablecoin-moves-real-money-on-stellar"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "d12",
+  "group": "appdev",
+  "form": "keyword",
+  "text": "USDT0 Stellar",
+  "raw": null,
+  "adapter": null,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/foundation-news/usdt0-is-now-live-on-stellar",
+   "/press/usdt0-goes-live-on-stellar-connecting-unified-dollar-liquidity-to-the-world-s-most-accessible-network",
+   "/blog/ecosystem/usdc-is-coming-to-stellar",
+   "/blog/foundation-news/welcoming-ondo-s-usdy-to-the-stellar-network",
+   "/blog/ecosystem/best-of-both-worlds-stellar-usdc",
+   "/blog/ecosystem/usdc-stellar-faq",
+   "/press/usdc-is-live-on-the-stellar-network",
+   "/press/ondo-finance-launches-usdy-on-stellar",
+   "/press/paypal-pyusd-is-now-available-on-stellar",
+   "/press/expansion-of-usdc-on-stellar-continues-with-shift-markets-and-nexus-markets-integration"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "d13",
+  "group": "appdev",
+  "form": "question",
+  "text": "What does Protocol 30 change for smart contract developers, and when are the upgrade votes?",
+  "raw": 2,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/developers/bell-protocol-30-upgrade-guide",
+   "/blog/developers/protocol-20-and-smart-contracts-are-live-on-mainnet",
+   "/blog/developers/protocol-20-upgrade-guide",
+   "/blog/developers/protocol-23-upgrade-guide",
+   "/blog/developers/fee-bump-bug-disclosure",
+   "/blog/developers/protocol-20-preparing-smart-contracts-to-stellar",
+   "/blog/developers/protocol-22-upgrade-guide",
+   "/blog/developers/protocol-24-upgrade-guide",
+   "/blog/developers/introducing-bell-protocol-30-on-stellar"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "d13",
+  "group": "appdev",
+  "form": "keyword",
+  "text": "Protocol 30 upgrade",
+  "raw": 3,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/developers/bell-protocol-30-upgrade-guide",
+   "/blog/developers/protocol-23-upgrade-guide",
+   "/blog/developers/protocol-24-upgrade-guide",
+   "/blog/developers/protocol-19-upgrade-guide",
+   "/blog/developers/protocol-20-upgrade-guide",
+   "/blog/developers/protocol-22-upgrade-guide",
+   "/blog/developers/fee-bump-bug-disclosure",
+   "/blog/developers/protocol-21-upgrade-guide",
+   "/blog/developers/introducing-bell-protocol-30-on-stellar"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "p01",
+  "group": "programs",
+  "form": "question",
+  "text": "Which companies are in SDF's Enterprise Fund portfolio?",
+  "raw": 1,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/press/stellar-development-foundation-enterprise-fund-invests-10-million-in-netxd",
+   "/press/stellar-development-foundation-enterprise-fund-invests-5-million-in-wave",
+   "/press/stellar-development-foundation-enterprise-fund-invests-15-million-in-airtm",
+   "/press/stellar-development-foundation-announces-enterprise-fund-investment-in-satoshipay"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "p01",
+  "group": "programs",
+  "form": "keyword",
+  "text": "enterprise fund portfolio",
+  "raw": 1,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/press/stellar-development-foundation-enterprise-fund-invests-5-million-in-wave",
+   "/press/stellar-development-foundation-enterprise-fund-invests-15-million-in-airtm",
+   "/press/stellar-development-foundation-enterprise-fund-invests-10-million-in-netxd",
+   "/press/stellar-development-foundation-announces-enterprise-fund-investment-in-satoshipay",
+   "/press/stellar-development-foundation-enterprise-fund-invests-in-nigeria-based-cowrie"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "p02",
+  "group": "programs",
+  "form": "question",
+  "text": "How much will the Stellar Matching Fund match from a lead investor?",
+  "raw": 1,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/foundation-news/announcing-the-matching-fund",
+   "/blog/foundation-news/calling-all-female-founders-apply-to-the-stellar-matching-fund",
+   "/blog/ecosystem/how-to-succeed-at-the-stellar-community-fund",
+   "/events/community/how-to-succeed-in-the-stellar-community-fund"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "p02",
+  "group": "programs",
+  "form": "keyword",
+  "text": "matching fund",
+  "raw": 1,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/foundation-news/announcing-the-matching-fund",
+   "/blog/foundation-news/calling-all-female-founders-apply-to-the-stellar-matching-fund",
+   "/blog/foundation-news/sdf-donation-matching-program",
+   "/blog/ecosystem/how-to-succeed-at-the-stellar-community-fund",
+   "/blog/ecosystem/scf-finalists-coinqvest-and-anclap"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "p03",
+  "group": "programs",
+  "form": "question",
+  "text": "Does SDF fund academic research, and who is on its research team?",
+  "raw": 2,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/foundation-news/2024-sdf-research-year-in-review",
+   "/blog/policy/stellar-development-foundation-digital-assets-research-development-rfi-white-house-office-science-technology-policy",
+   "/blog/policy/sdf-joins-wef-humanitarian-and-resilience-investing-initiative-to-support-most-vulnerable-communities",
+   "/blog/foundation-news/sdf-donation-matching-program",
+   "/blog/policy/sdf-on-capitol-hill"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "p03",
+  "group": "programs",
+  "form": "keyword",
+  "text": "academic research grants",
+  "raw": 1,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "partner"
+  ],
+  "ownedRows": [
+   "/blog/foundation-news/the-marketing-grants-programs-first-million",
+   "/blog/ecosystem/stellar-bridge-bounty-program-grants-up-to-5-million-to-finalists",
+   "/blog/foundation-news/2024-sdf-research-year-in-review"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "p04",
+  "group": "programs",
+  "form": "question",
+  "text": "Where can I download SDF's quarterly reports?",
+  "raw": 1,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/policy/sdfs-policy-priorities-for-2023",
+   "/blog/foundation-news/q1-2025-quarterly-report",
+   "/blog/policy/sdfs-comment-letter-on-fincen-nprm",
+   "/blog/foundation-news/stellar-development-foundation-q2-2024-in-review",
+   "/press/stellar-development-foundation-releases-first-quarterly-review",
+   "/blog/policy/sdf-on-capitol-hill",
+   "/events/community/stellar-development-foundation-quarterly-review-q4-2020",
+   "/blog/policy/sdfs-supplemental-comment-letter-on-fincens-nprm",
+   "/blog/policy/sdf-at-imf-world-bank-annual-meetings"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "p04",
+  "group": "programs",
+  "form": "keyword",
+  "text": "quarterly reports",
+  "raw": 1,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/foundation-news/q1-2025-quarterly-report",
+   "/press/stellar-development-foundation-releases-first-quarterly-review",
+   "/blog/foundation-news/stellar-development-foundation-q2-2024-in-review",
+   "/events/community/stellar-development-foundation-quarterly-review-q4-2020",
+   "/blog/foundation-news/stellar-development-foundation-q3-in-review",
+   "/blog/foundation-news/stellar-development-foundation-q4-2023-in-review",
+   "/events/community/stellar-development-foundation-quarter-in-review-q4-2023",
+   "/events/community/stellar-development-foundation-quarter-in-review-q1-2024"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "p05",
+  "group": "programs",
+  "form": "question",
+  "text": "What are the North Stars that guide SDF's work?",
+  "raw": 1,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/foundation-news/sdfs-next-steps",
+   "/blog/policy/sdfs-lesley-chavkin-joins-stablecoin-standard-advisory-board",
+   "/blog/foundation-news/the-stellar-way",
+   "/blog/policy/sdfs-policy-priorities-for-2023",
+   "/blog/foundation-news/stellar-development-foundation-q1-2024-in-review",
+   "/blog/foundation-news/why-im-joining-stellar"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "p05",
+  "group": "programs",
+  "form": "keyword",
+  "text": "SDF north stars",
+  "raw": 1,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/foundation-news/stellar-development-foundation-q1-2024-in-review",
+   "/press/sdf-announces-strategic-investment-in-dstoq",
+   "/blog/policy/sdf-joins-the-blockchain-association",
+   "/blog/foundation-news/2024-sdf-research-year-in-review"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "p06",
+  "group": "programs",
+  "form": "question",
+  "text": "How much electricity does the Stellar network consume?",
+  "raw": 1,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/foundation-news/stellar-development-foundation-announces-new-methodology-to-measure-environmental-impact-of-blockchain-technology-and-releases-findings-on-stellar-network-electricity-consumption",
+   "/blog/policy/compliance-the-stellar-network",
+   "/blog/developers/stellar-network-upgrade",
+   "/blog/developers/upgraded-network-is-here",
+   "/blog/developers/may-15th-network-halt",
+   "/blog/developers/a-new-go-sdk-for-the-stellar-network"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "p06",
+  "group": "programs",
+  "form": "keyword",
+  "text": "Stellar electricity consumption",
+  "raw": 1,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/foundation-news/stellar-development-foundation-announces-new-methodology-to-measure-environmental-impact-of-blockchain-technology-and-releases-findings-on-stellar-network-electricity-consumption",
+   "/blog/ecosystem",
+   "/blog/policy/stellar-spotlighted-on-capitol-hill",
+   "/events/community/stellar-after-hours-k-st",
+   "/blog/foundation-news/stellar-rpc-has-arrived",
+   "/blog/ecosystem/announcing-the-newest-stellar-advocacy-program-stellar-campus-experts",
+   "/blog/developers/introducing-stellar-ramps-access-stellars-on-off-ramps-with-a-single-integration",
+   "/blog/developers/diving-into-energy-use-on-stellar-blockchain-payment-efficiency-examined"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "p07",
+  "group": "programs",
+  "form": "question",
+  "text": "Who leads the Stellar Development Foundation?",
+  "raw": 2,
+  "adapter": 2,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/press/stellar-development-foundation-announces-two-new-members-to-board-of-directors",
+   "/events/community/stellar-development-foundation-q1-in-review",
+   "/events/community/stellar-development-foundation-q2-in-review",
+   "/blog/foundation-news/stellar-development-foundation-q3-2023-in-review",
+   "/events/community/stellar-development-foundation-q3-in-review",
+   "/blog/foundation-news/stellar-development-foundation-q1-2024-in-review"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "p07",
+  "group": "programs",
+  "form": "keyword",
+  "text": "SDF team",
+  "raw": 1,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/developers/talk-that-tech-learn-from-sdfs-engineering-team",
+   "/blog/foundation-news/2024-sdf-research-year-in-review",
+   "/press/sdf-announces-strategic-investment-in-dstoq",
+   "/blog/foundation-news/updates-and-reminders-from-your-sdf-security-team",
+   "/blog/policy/sdf-joins-the-blockchain-association",
+   "/blog/foundation-news/sdf-at-consensus-distributed",
+   "/events/community/sdf-at-istanbul-blockchain-week",
+   "/blog/foundation-news/sdf-onstage-at-consensus-distributed",
+   "/blog/policy/sdf-joins-wef-humanitarian-and-resilience-investing-initiative-to-support-most-vulnerable-communities"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "p08",
+  "group": "programs",
+  "form": "question",
+  "text": "How does the Stellar Consensus Protocol reach agreement without mining?",
+  "raw": 1,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/developers/intuitive-stellar-consensus-protocol",
+   "/events/community/intuitive-stellar-consensus-protocol",
+   "/blog/developers/demystifying-proof-of-agreement",
+   "/blog/foundation-news/on-worldwide-consensus",
+   "/blog/foundation-news/stellar-consensus-protocol-proof-code",
+   "/blog/foundation-news/safety-liveness-and-fault-tolerance-consensus-choice",
+   "/events/community/consensus",
+   "/events/community/consensus-2026"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "p08",
+  "group": "programs",
+  "form": "keyword",
+  "text": "Stellar Consensus Protocol",
+  "raw": 1,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/events/community/intuitive-stellar-consensus-protocol",
+   "/blog/developers/intuitive-stellar-consensus-protocol",
+   "/blog/foundation-news/stellar-consensus-protocol-proof-code",
+   "/blog/foundation-news/on-worldwide-consensus",
+   "/events/community/consensus",
+   "/blog/foundation-news/safety-liveness-and-fault-tolerance-consensus-choice"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "p09",
+  "group": "programs",
+  "form": "question",
+  "text": "What are SDF's public policy positions on tokenization and financial inclusion?",
+  "raw": 2,
+  "adapter": 2,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/policy/open-systems-and-financial-inclusion-sdf-s-treasury-response",
+   "/blog/policy/sdfs-policy-priorities-for-2023",
+   "/blog/foundation-news/together-we-can-a-decentralized-vision-for-financial-inclusion",
+   "/blog/policy/blockchain-as-a-means-to-broaden-digital-financial-inclusion",
+   "/blog/policy"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "p09",
+  "group": "programs",
+  "form": "keyword",
+  "text": "SDF policy hub",
+  "raw": 1,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/policy/sdfs-policy-priorities-for-2023",
+   "/blog/policy/sdf-on-capitol-hill",
+   "/blog/policy",
+   "/blog/policy/sdf-at-imf-world-bank-annual-meetings",
+   "/events/community/sdf-at-fwb-fest",
+   "/blog/policy/sdf-joins-wef-humanitarian-and-resilience-investing-initiative-to-support-most-vulnerable-communities"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "p10",
+  "group": "programs",
+  "form": "question",
+  "text": "How does SDF's mandate say the foundation will use its XLM?",
+  "raw": 1,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/foundation-news/an-updated-mandate-for-a-growing-stellar-ecosystem",
+   "/blog/foundation-news/sdfs-next-steps"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "p10",
+  "group": "programs",
+  "form": "keyword",
+  "text": "SDF mandate",
+  "raw": 1,
+  "adapter": 1,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/foundation-news/an-updated-mandate-for-a-growing-stellar-ecosystem",
+   "/blog/policy/sdf-on-capitol-hill",
+   "/blog/foundation-news/sdfs-next-steps",
+   "/press/statement-on-halted-sdf-validators",
+   "/blog/policy/sdfs-policy-priorities-for-2023"
+  ],
+  "answerKind": "page"
+ },
+ {
+  "id": "p11",
+  "group": "programs",
+  "form": "question",
+  "text": "What does Soroswap.Finance do on Stellar?",
+  "raw": null,
+  "adapter": null,
+  "rawKinds": [],
+  "ownedRows": [],
+  "answerKind": "partner"
+ },
+ {
+  "id": "p11",
+  "group": "programs",
+  "form": "keyword",
+  "text": "Soroswap",
+  "raw": 3,
+  "adapter": 2,
+  "rawKinds": [
+   "page",
+   "page",
+   "partner",
+   "partner",
+   "audit",
+   "audit",
+   "partner",
+   "partner"
+  ],
+  "ownedRows": [
+   "/events/community/get-to-know-soroswap-alterscope-and-kwickbit"
+  ],
+  "answerKind": "partner"
+ },
+ {
+  "id": "p12",
+  "group": "programs",
+  "form": "question",
+  "text": "Is MoneyGram listed as a Stellar ecosystem partner, and in which category?",
+  "raw": null,
+  "adapter": null,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/press/moneygram-and-stellar-extend-partnership-to-scale-real-world-stablecoin-utility-globally",
+   "/blog/foundation-news/three-years-with-moneygram",
+   "/blog/foundation-news/sdfs-investment-in-moneygram-international",
+   "/press/stellar-development-foundation-and-moneygram-partner-with-techstars-to-spur-innovation-on-blockchain-based-cross-border-payments",
+   "/blog/ecosystem/moneygram-international-launches-a-new-pilot-on-stellar",
+   "/press/moneygram-announces-innovative-partnership-with-the-stellar-development-foundation-to-utilize-blockchain-technology",
+   "/press/moneygram-figure-markets-and-range-to-help-secure-the-stellar-network-by-joining-as-tier-1-validators",
+   "/press/moneygram-launches-pioneering-global-crypto-to-cash-service-on-the-stellar-network",
+   "/events/community/how-wallets-and-apps-can-reach-cash-users-globally-with-moneygram"
+  ],
+  "answerKind": "partner"
+ },
+ {
+  "id": "p12",
+  "group": "programs",
+  "form": "keyword",
+  "text": "MoneyGram partner",
+  "raw": 9,
+  "adapter": 3,
+  "rawKinds": [
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "page",
+   "partner",
+   "page"
+  ],
+  "ownedRows": [
+   "/press/stellar-development-foundation-and-moneygram-partner-with-techstars-to-spur-innovation-on-blockchain-based-cross-border-payments",
+   "/press/moneygram-announces-innovative-partnership-with-the-stellar-development-foundation-to-utilize-blockchain-technology",
+   "/press/moneygram-and-stellar-extend-partnership-to-scale-real-world-stablecoin-utility-globally",
+   "/blog/ecosystem/moneygram-international-launches-a-new-pilot-on-stellar",
+   "/events/community/how-wallets-and-apps-can-reach-cash-users-globally-with-moneygram",
+   "/blog/foundation-news/three-years-with-moneygram",
+   "/blog/foundation-news/sdfs-investment-in-moneygram-international"
+  ],
+  "answerKind": "partner"
+ },
+ {
+  "id": "p13",
+  "group": "programs",
+  "form": "question",
+  "text": "Is there a Flutter SDK for building Stellar wallets?",
+  "raw": 1,
+  "adapter": 1,
+  "rawKinds": [
+   "partner",
+   "page",
+   "page",
+   "page",
+   "partner",
+   "page",
+   "partner",
+   "page",
+   "page",
+   "page"
+  ],
+  "ownedRows": [
+   "/blog/developers/announcing-the-stellar-wallet-sdk-build-on-stellar-faster-than-ever-before",
+   "/blog/developers/a-new-go-sdk-for-the-stellar-network",
+   "/blog/ecosystem/building-meridian-pay-smart-wallet-on-stellar",
+   "/press/flutterwave-enables-new-europe-africa-payment-corridors-via-stellar",
+   "/blog/developers/introducing-the-golang-stellar-sdk"
+  ],
+  "answerKind": "partner"
+ },
+ {
+  "id": "p13",
+  "group": "programs",
+  "form": "keyword",
+  "text": "Flutter wallet SDK",
+  "raw": null,
+  "adapter": null,
+  "rawKinds": [],
+  "ownedRows": [],
+  "answerKind": "partner"
+ }
+]
