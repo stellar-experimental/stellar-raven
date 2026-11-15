@@ -152,3 +152,28 @@ judgment between two measured rates, not a measurement.
 (product code of `0a343e3f`): the 58-row panel once and two more passes over the ten guard rows,
 `--max-panel-cases` read from P0 (58), remote vector equal to P0's, `--max-budget-usd 19.5`. Cost
 flags are read against P0, not against loop 1. No resume, no re-judge.
+
+### 2026-11-15: P1 result, step 1 decided
+
+Run record: `P1.md` on `origin/tune/loop-2-runs` (Claude Sonnet 5.5 run lane `loop2-run`; the file lives on that branch, not here).
+Surface: this branch at `42a46274`, whose Worker is the map-removal commit `0a343e3f`. Stamps `2026-11-15T05-28-42-variantA` (58 rows), then
+`05-38-45` and `05-45-31` (10 guard rows each). USD 16.10 of the 19.5 cap. T = 5.
+
+Orchestrator direct instruction (2026-11-15): **step 1 is decided by rule. The guard and the map removal are both kept.**
+
+- **Guard, kept.** Delivered on 35 of 35 block results (and on two standalone lines); 0 violations in 22 claim-word answers on pass 1 against a P0
+  rate that gives a bound of 2 or 3; no traced over-hedging down; no cost flag. Caveat from the run lane, carried here: this is **not** read as the guard
+  lowering violations. The reference is about 1 in 25, so "no rise" is the strongest result the rule can return, the readers' own calls varied as much
+  as the margin (P0 1, 2, 1), and the guard rows still produced a bare absence-of-standard statement on a repeat pass with the guard in the result.
+- **Map removal, kept, and only together with item 4's `search` opening.** All 58 rows: 8 flips, net +2 down (3 up, 5 down); tier-matched 44 rows: net
+  +1; both under T = 5. Six of the eight flips changed judge tier. Required-service coverage in `npm run eval:plan` fell on 2 rows (58 to 56), under the
+  3-row bar. The two downs with a possible map cause (`q-infra-which-indexer`, `q-nft-vault-contract-standards`) are untraced. It is "not shown harmful on
+  Claude Code with Sonnet 5.5", not "harmless": up to about 4 net downs from losing the routing rules would hide under T. R7 therefore binds: the removal
+  ships with the `search` opening that names every family (item 4, A5), or it reverts. OpenCode and Grok are not measured.
+- Carried to step 2: the pointer gap on `q-nft-vault-contract-standards` is item 5's, and the research-call share on the 17 identifier rows was 25% (P0)
+  and 29% (P1), under the 33% bar R0 sets.
+
+### 2026-11-15: step 2, free work (no paid run)
+
+Implementer `loop2-impl` (Claude Sonnet 5.5) under the direct instruction of the orchestrator: the delivery text (item 4), the `stellarOrg` source
+(item 2), seven cards (item 3), the committed scans, and `STEP-2-IMPL.md`. No model-calling command runs. **P2 is not authorized by this entry.**
