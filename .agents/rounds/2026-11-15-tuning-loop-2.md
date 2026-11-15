@@ -55,6 +55,7 @@ per-row output; aggregate gate counts stay allowed. Their ids are not recorded a
 | `loop2-impl` | Claude Sonnet 5.5 | `t1pk`, parent `kalepail-c3614nvxph-mbp/t40f` | Step 1 free work done and review reconciled (R1 to R10); P1 ran, step 1 decided | [STEP-1-IMPL.md](2026-11-15-tuning-loop-2/STEP-1-IMPL.md) |
 | `loop2-impl2` | Claude Sonnet 5.5 | `t1ps`, parent `kalepail-c3614nvxph-mbp/t40f` | Step 2 free work done (items 4, 2, 3 and the scans); awaits the independent review, the A7 check and the P2 authorization | [STEP-2-IMPL.md](2026-11-15-tuning-loop-2/STEP-2-IMPL.md) |
 | `loop2-impl3` | Claude Sonnet 5.5 | `t1py`, parent `kalepail-c3614nvxph-mbp/t40f` | Step 3 free work done (item 5, the identifier pointer, and its free checks); awaits the independent review and the R authorization | [STEP-3-IMPL.md](2026-11-15-tuning-loop-2/STEP-3-IMPL.md) |
+| `loop2-kept` | Claude Sonnet 5.5 | `t1q5`, parent `kalepail-c3614nvxph-mbp/t40f` | R decided; the pointer removed and the kept set prepared (free work, no model call) | [KEPT-SET.md](2026-11-15-tuning-loop-2/KEPT-SET.md) |
 
 ## Ledger
 
@@ -365,3 +366,52 @@ to differ from the reader's own output). No resume, no re-judge.
 **Fired 42 times (23 and 19), followed 9 (21%; 22% and 21% by pass), 9 of 9 follows returned an exact row; baseline 7 of 163 (4%); the bar is above 33%: R0(b) not met, "inconclusive".** R0(a) met (the replay of R's own transcripts predicts the same executes; one execute differs in which three of five identifiers the cap kept). Row share by the committed definition 38%, 50%, pooled 44% (reported, not decided).
 R1: 0 traced ups (the one verdict up has no pointer in its pass). H1 to H3 met: nets -1 and +2 against T = 3, pooled +1 against 4; the two new `wrong` rows (`q-crp-oz-rwa-erc3643-trex` pass 2, `q-edge-inject-ignore-instructions` pass 2) are retrieval variance, one with no pointer in the pass; the trap row kept its trap behaviour. No firing for a series other than `sep` or `cap`, no title-case token; 2 re-fires after a follow; follow cost 0 to +2 turns.
 Governance read: 0 violations in 20 claim-word answers. By the rule: **revert** (`git revert 940dc013 a49ee918`); recommendation the same, with a note that reverting `940dc013` also reverts F2 (the title-case rule on loop 1's exact-row matching). Server stopped, `gca-eval` released at `940dc013`. Nothing else was run.
+
+### 2026-11-15: R result, step 3 decided: the identifier pointer is not shipped
+
+Run record: `R.md` (Claude Sonnet 5.5 run lane `loop2-run`). Frozen Worker `940dc013`, 17 identifier rows twice, USD 7.0453 of the 8.5 cap.
+
+Orchestrator direct instruction (2026-11-15): **step 3 is reverted by rule, and the orchestrator agrees.** The identifier pointer does not ship. Per-fire follow rate 21% (9 of 42; 22% and
+21% by pass) against a bar above 33%, and no traced up (R0(b) and R1 not met: "inconclusive reverts"). Caveats, in the run lane's words:
+
+- **The mechanism worked as built and the model's behaviour was the limit.** Delivery was exact (the replay of R's own transcripts predicts every fire; one execute differs only in which three of
+  five identifiers the cap kept), every follow returned an exact row (9 of 9), and the rate is about five times the 4% baseline (7 of 163). It did not reach the bar and it moved no verdict; three
+  of nine follows cost +2 turns. A higher follow rate would need a different surface, not a longer sentence.
+- **Two general defects for a later attempt:** the cap of three keeps the first three identifiers, not the ones the question names (on `q-sep6-sep24-sep31-choice` it dropped SEP-6 and SEP-31); a
+  token read from a `get_doc_page` path string (`sep24`) fires for a page the agent is already reading.
+- **Not read as:** an improvement for any other source or series (no non-`sep`/`cap` firing); a result about `search` ranking of the research lane; evidence on any set but these 17 rows, a held-out
+  result, or a result for Codex, Grok, OpenCode, the Playground or claude.ai; evidence that an exact row is a better source than the Docs page or skill for a how-to question (the follows added
+  preamble facts and moved no verdict); stability (five rows change judge tier between the two passes, and the two `wrong` grades in pass 2 are retrieval variance with no pointer link, one with no
+  pointer in the pass).
+- Nets against P2, T = 3 per pass and 4 pooled: -1, +2, pooled +1; tier-matched -1, 0, -1. Governance read: 0 violations in 20 claim-word answers. Required services 17 of 17 in both passes.
+- The title-case rule (F2) is the one part of step 3 that touched code deployed in loop 1, and R did not measure it (no title-case token appeared in any R call). It is kept for exact-row matching,
+  see the kept set below.
+
+### 2026-11-15: the kept set (implementer, Claude Sonnet 5.5)
+
+The kept set is the product tree of `bd9719fb` (the P2 surface) plus one change: the shared identifier-token module, with its title-case rule and six-digit bound, now read only by exact-row
+matching. Record: [KEPT-SET.md](2026-11-15-tuning-loop-2/KEPT-SET.md).
+
+**Kept** (each decided by rule at its step): the corroboration guard (`b8ea957d`); the micro-map removal (`0a343e3f`, shipped with item 4's `search` opening, R7); the delivery text, item 4
+(`0b07783a`); the `stellarOrg` source with S1, S2 and the R8 brief (`2796299c`, `bd9719fb`); seven cards (`160cd1fa`); the title-case rule and digit bound for exact rows.
+**Not shipped:** the identifier pointer (`a49ee918`, `940dc013`; the product paths return to `bd9719fb`, the manifest has no `documentSeries` field, `execute` results carry no pointer sentence).
+The pointer's replay tooling is removed with it (git history `3d65d0ff`; the report and summary stay under `scans/step3/`).
+
+Caveats carried from P1 and P2, in the run lane's words: the guard is "delivered, harmless, cost-neutral", not "reduces violations"; the map removal is "not shown harmful on Claude Code with Sonnet
+5.5", not "harmless"; the source is **unproven** (called on 3 of 58 rows, one fact used, 0 traced ups; no displacement shown at what T = 5 on 58 rows can see; Worker egress from the deployed adapter is not
+tested); seven cards and item 4 are kept on a result that cannot isolate either (A8); required-service coverage fell 58 to 56 to 55 of 58 across P0, P1 and P2.
+
+**Spend, per run** (Claude subscription CLI agents and judge; no API-billed path):
+
+| Run | Rows | USD | Cap |
+|---|---|---:|---:|
+| P0 | 58 | 11.8093 | 14.5 |
+| P1 (pass 1 12.0160; two guard-row passes 1.9989 and 2.0803) | 58 + 10 + 10 | 16.0951 | 19.5 |
+| P2 | 58 | 11.6214 | 17 |
+| R (pass 1 3.3025, pass 2 3.7428) | 17 + 17 | 7.0453 | 8.5 |
+| **Total** | | **46.5711** | 59.5 |
+
+Work on the kept set (free, no model call): the pointer removed in `91f6a2d2`, the rule's unit cases and a differential test against the loop 1 matcher, the 90-query live replay (below), the
+TODO items (`.agents/TODO.md`, "Tuning loop 2 follow-ups" and the items this loop closes). Review findings marked "before ship" or "fix now": F1 (the digit bound) was the only one, applied in
+`940dc013` and kept; S1, S2 and the R8 brief were applied in `bd9719fb`. What is left, and why, is in KEPT-SET.md. **No paid run is authorized by this entry.**
+
