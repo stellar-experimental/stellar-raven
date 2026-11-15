@@ -28,3 +28,36 @@ describe("the identifier token rule", () => {
     expect(read("SEP-123456")).toEqual(["sep-123456"]);
   });
 });
+
+describe("against the matcher shipped in loop 1 (bd9719fb)", () => {
+  // The regex and the mapping exactRowsOf used before the shared module existed.
+  const SHIPPED_RE = /\b([A-Za-z]+)[- ]?(\d+)\b(?![-.]\d)/g;
+  const shipped = (text: string) =>
+    [...text.matchAll(SHIPPED_RE)].map((match) => ({
+      letters: match[1]!.toLowerCase(),
+      number: stripLeadingZeros(match[2]!),
+      titleCase: /^[A-Z][a-z]+$/.test(match[1]!),
+      digits: match[2]!.length
+    }));
+
+  const words = ["SEP", "sep", "Sep", "sEp", "CAP", "cap", "Cap", "CVE", "cve", "Protocol", "protocol", "audit", "I", "A", "Q"];
+  const joiners = ["", "-", " ", "--", "_"];
+  const numbers = ["0", "7", "24", "0024", "0045", "123456", "0000045", "1234567", "9".repeat(40)];
+  const tails = ["", " standard", ".1", "-01", "-2024-1", " and SEP-12", ", see Sep-24", "."];
+  const corpus: string[] = [];
+  for (const word of words) for (const joiner of joiners) for (const number of numbers) for (const tail of tails) {
+    corpus.push(`${word}${joiner}${number}${tail}`, `how does ${word}${joiner}${number}${tail} work`);
+  }
+
+  it("reads the shipped tokens, less a title-case word and a run of more than six digits", () => {
+    expect(corpus.length).toBeGreaterThan(5000);
+    let dropped = 0;
+    for (const text of corpus) {
+      const legacy = shipped(text);
+      const kept = legacy.filter((token) => !token.titleCase && token.digits <= 6);
+      expect(identifierTokens(text), text).toEqual(kept.map(({ letters, number }) => ({ letters, number })));
+      dropped += legacy.length - kept.length;
+    }
+    expect(dropped).toBeGreaterThan(0);
+  });
+});
