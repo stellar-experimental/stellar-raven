@@ -411,7 +411,7 @@ tested); seven cards and item 4 are kept on a result that cannot isolate either 
 | R (pass 1 3.3025, pass 2 3.7428) | 17 + 17 | 7.0453 | 8.5 |
 | **Total** | | **46.5711** | 59.5 |
 
-Work on the kept set (free, no model call): the pointer removed in `91f6a2d2`, the rule's unit cases and a differential test against the loop 1 matcher, the 90-query live replay (below), the
+Work on the kept set (free, no model call): the pointer removed in `91f6a2d2`, the rule's unit cases and a differential test against the loop 1 matcher, the 90-query live replay (byte-identical to `bd9719fb`'s, 90 of 90 ok, 17 exact), the
 TODO items (`.agents/TODO.md`, "Tuning loop 2 follow-ups" and the items this loop closes). Review findings marked "before ship" or "fix now": F1 (the digit bound) was the only one, applied in
 `940dc013` and kept; S1, S2 and the R8 brief were applied in `bd9719fb`. What is left, and why, is in KEPT-SET.md. **No paid run is authorized by this entry.**
 

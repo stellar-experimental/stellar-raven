@@ -386,6 +386,11 @@ harm side is clean at what T = 5 on 58 rows can see, not below it. What remains:
   code path from the deployed Worker is not tested. After the next deploy, call both operations from
   the Worker and confirm stellar.org's front serves them.
 - **Routing reach.** See "Treat stellar.org routing reach as a lexical and description question".
+- **Adapter review residue.** The vendor-diverse attack on the adapter (a Codex frontier or Grok
+  reviewer) was never run: both reviews were Claude Opus. The title cap of 300 characters that
+  review G2 suggested was not applied (a 200,000-character title passes through `search_site`; the
+  host's 6,000-token return cap bounds it), and `/API/search` sends one request to stellar.org
+  (G4, the owner's call).
 - **Algolia `pages` index.** Orchestrator evidence, 2026-11-14, read in the Algolia dashboard: of
   nine body-text phrases the keyless search missed, the `pages` index ranked the right page in its
   top four for about five. Whether it holds audit records is unconfirmed. Add it only if a later
@@ -396,7 +401,7 @@ harm side is clean at what T = 5 on 58 rows can see, not below it. What remains:
 - **Out-of-source fact.** The Anchor Directory is `anchors.stellar.org`, not stellar.org; that case
   needs another source or a golden-truth edit.
 
-Done when: the Worker egress check is recorded, a run on the 12 source rows shows the source
+Done when: the Worker egress check is recorded, the vendor-diverse adapter review is done or the owner waives it, a run on the 12 source rows shows the source
 supplying a judged fact (or the owner accepts it as a coverage fix without a scored gain), the
 Algolia decision is recorded, the Blend register finding is filed or dropped, and the Anchor
 Directory case is routed.
