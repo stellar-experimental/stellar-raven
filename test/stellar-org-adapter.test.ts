@@ -219,6 +219,24 @@ describe("stellarOrg.search_site", () => {
     expect(calls[0]).toMatchObject({ op: "stellarOrg.search_site", outcome: "ok", caveat: "no-rows" });
   });
 
+  it("reports a search that returned no rows at all as soft-empty, not a closed-world no-rows", async () => {
+    const fetchImpl: FetchLike = async () => Response.json({ query: "x", locale: "en", results: [] });
+    const calls: OpLedgerCall[] = [];
+    const sandbox = buildSandbox(catalog, skillSource, {}, { fetchImpl, onOpCall: (call) => calls.push(call) });
+    const fns = sandbox.find((provider) => provider.name === "stellarOrg")!.fns;
+    const result = (await fns.search_site!({ query: "x" })) as Record<string, any>;
+    expect(result).toMatchObject({
+      ok: false,
+      error: {
+        kind: "soft-empty",
+        message: "stellar.org site search returned no rows for this query.",
+        hint: expect.stringMatching(/Retry once or use another family; this is not evidence that SDF has no page/)
+      }
+    });
+    expect(result.caveat).toBeUndefined();
+    expect(calls[0]).toMatchObject({ op: "stellarOrg.search_site", outcome: "soft-empty" });
+  });
+
   it("returns rows with no caveat through the sandbox envelope", async () => {
     const fetchImpl: FetchLike = async () => new Response(fixture("stellar-org-search.json"));
     const sandbox = buildSandbox(catalog, skillSource, {}, { fetchImpl });

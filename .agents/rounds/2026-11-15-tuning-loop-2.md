@@ -209,3 +209,43 @@ check covers.
 Orchestrator rulings on the step 2 asks: the 12-row reachability record may run (the questions are
 tuning rows from a public repository); whether `stellarOrg` belongs in `CORROBORATING_FAMILIES` and
 whether the added detail edge and its nouns stay go to the independent reviewer.
+
+### 2026-11-15: step 2 review, adopted by the orchestrator
+
+Review: [STEP-2-REVIEW.md](2026-11-15-tuning-loop-2/STEP-2-REVIEW.md) (Claude Opus 5.5, high; tier Claude Opus, the stable fallback; Fable is the orchestrator and Codex frontier was not launched,
+so the vendor-diverse attack on the adapter that `SORG-REVIEW.md` left open stays open). No model call, no spend. The orchestrator adopts all of it.
+
+- **Verdict.** Item 4 (`0b07783a`), item 2 (`2796299c`) and item 3 (`160cd1fa`): fit to measure. Item 2's adapter, spec, adapter tests, `wrangler.jsonc` and `env.d.ts` are byte-identical to the
+  reviewed branch tip `b81e7a03`; the fetch boundary is unchanged, and the merge adds no egress, secret or binding. Two fixes asked before P2, not blocking: S1 and S2, applied below.
+- **Intrusion measurement (S3).** On the 58 panel questions asked as written, a `stellarOrg` operation enters the top five of **0**. At limit 7 it enters on one (`q-raph-official-help-sdf-cannot-recover`, a source row, rank 7,
+  displacing `stellarDocs.search_asset_token_docs`). The cost is at the **page tail above the default**: at limit 10 a generic probe loses a non-SDF card on 3 of 25 non-SDF questions (for example the OpenZeppelin
+  `develop-secure-contracts` skill on "soroban security best practices"), at the limit the agent uses three times in four. Three causes, not one: (1) the description's words ("Soroban Security Audit Bank",
+  "security-audited") pass the lexical gate on Soroban security queries; (2) the id token `org` matches every query word that starts with "org" under the vendor scorer's prefix rule (no minimum length), which
+  put `stellarOrg.get_page` at rank 1 for "organization" questions, and no description edit removes it; (3) gate fill: `search_site` passes the gate with a weak score (47) and fills the gated page, so a
+  higher-scoring operation that fails the gate (`stellarDocs.search_soroban_contract_docs`, 111, on "soroban reentrancy security" at limit 8) loses its tier-2 backfill slot. Causes 2 and 3 are ranker
+  properties; any new family can trigger them.
+- **Decision: the description is measured as is in P2.** A reworded description (Audit Bank, audited projects) removes the non-SDF security displacement at limit 7 but cuts off-golden reach from 8 to 6 of 40
+  (questions) and 14 to 13 (keywords), and SDF questions at limit 10 from 4 to 2 of 5. That moves cost between audit-category queries and tunes tokens against the scorer, so it is not made. P2 cannot see an
+  effect this small (T = 5 on 58 rows); it checks for gross intrusions only. **Watch rows**, read from both transcripts whatever their verdict: `q-soroban-reentrancy`, `q-protocol-tier1-requirements`,
+  `q-ti-parse-raw-ledger-data`; and every row whose P2 `search` page carries a `stellarOrg` card at a rank above a card that the row's P1 script called. Report the number of source-exposed rows outside the
+  12, and the rank of each `stellarOrg` card. If P2 shows two traced displacements, the remedy is a ranker change, not a description edit or result text. Forward ranker changes (4-character minimum for the
+  prefix rule; a gate-failed candidate that beats the page's weakest gated card keeps its slot) are for `.agents/TODO.md`, which the orchestrator owns.
+- **R8, decided.** `stellarOrg` stays out of `CORROBORATING_FAMILIES`; no code change. Every `stellarOrg` result keeps the standalone guard line. The rule for the P2 claim read is in `eval/qa/claim-read-brief.md`
+  and applies to every run read from now on (neither P0 nor P1 had a `stellarOrg` result, so no earlier call changes). P2's over-hedging check (H1, H2 on source-exposed rows) is the test of whether the
+  guard line makes the agent hedge an SDF programme fact.
+- **The `detail` edge and its `part` nouns: kept**, with S1.
+- **S1, applied.** The `detail` sentence counts a call as a source only when at least one returned row carries every join key of the edge. The ledger records `detailReady` (the targets whose keys a row carried);
+  an unchecked call is not narrowed, so the Docs pointer is byte-identical (a test pins it). A live keyless query had returned `OtterSec`: 8 audit rows, 1 partner row, no `path`.
+- **S2, applied.** A site search that returns no rows at all is `soft-empty` with the retry hint; rows that came back and were all filtered out stay ok with `no-rows`. One adapter test for the empty case; the
+  filtered case's existing test holds.
+- **P2 reading rules (S5).** (a) **P2 compares each changed row with P0 as well as with P1 pass 1.** For every row that changed between P1 and P2, report the P0, P1 and P2 verdicts and judge tiers. A row whose
+  P2 verdict equals its P0 verdict, after a P1 move that the P1 trace classed as noise (`q-hot-sdf-xlm-holdings-sales` up by retrieval variance; `q-asset-usdc-eurc-issuer` down by judge tier), is reported as "returned"
+  and counts only if the P2 transcript traces it: a fact in a `stellarOrg` result for a gain, a displaced or wrong call for a harm. (b) 14 of 58 rows changed judge tier between P0 and P1, and 6 of the 8 flips
+  were tier changes: read the tier-matched net first; a result that reaches T only on all rows is "no decision" (A4). (c) Source gain rests on 12 single samples (A10): report counts; it is not evidence that the
+  source improves answers.
+- **What a P2 result must not be read as:** evidence that the source improves answers; that it causes no displacement harm (S3's tail effect is below what P2 detects, and the panel holds one `org…` question);
+  about seven cards' benefit (P2 has 0 or 1 seven-used rows); about delivery or answers on Codex, Grok, OpenCode, the Playground or claude.ai; that Worker egress works through the adapter's own code path (A7
+  tested the account's Workers); a separation of the delivery text from item 2's always-on description text (A8).
+- **Cap, for the orchestrator's word.** P2's `--max-budget-usd 14.5` is a 21% margin on P1 pass 1's measured USD 12.02. A cap stop voids the run with no resume. The plan's rate (USD 0.25 per case) gives 14.5 for
+  58 rows. Kept at 14.5 only on the orchestrator's acceptance of that risk; a higher cap needs the orchestrator's word. **No paid run is authorized by this entry.**
+- **Still open from the review.** The client probe harness on this tip (it calls models; plan section 6; its own authorization line); the vendor-diverse adapter attack.

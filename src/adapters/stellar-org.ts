@@ -368,6 +368,16 @@ async function search(args: Record<string, unknown>, fetchImpl: FetchLike): Prom
   if (!body || !Array.isArray(body.results)) {
     return errResult({ service: SERVICE, kind: "error", message: "stellar.org search response has no results array" });
   }
+  if (body.results.length === 0) {
+    // The site search sometimes returns no rows for a valid query, so an empty list is not a
+    // closed-world "no rows": it is inconclusive.
+    return errResult({
+      service: SERVICE,
+      kind: "soft-empty",
+      message: "stellar.org site search returned no rows for this query.",
+      hint: "The site search sometimes returns no rows for a valid query. Retry once or use another family; this is not evidence that SDF has no page on the topic."
+    });
+  }
   const hits = siteHits(body.results as SiteRow[]);
   // The site-search row count rides under `meta`, so an all-filtered result still reads as no rows.
   return okResult({ hits: hits.slice(0, limit), meta: { candidates: body.results.length } });
