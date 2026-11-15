@@ -216,14 +216,28 @@ export function evidenceRecoveryHint(
   const alternatives = evidenceAlternativesHint(calls, summary);
   // A detail pointer makes no claim about what the run did not call, so it does not wait on the
   // unprofiled-operation rule or on the mode that guards "narrow lookups only".
-  const sources = calls
-    .filter((call) => call.outcome === "ok" && call.hasServiceData !== false)
-    .map((call) => call.op);
+  const sourceCalls = calls.filter((call) => call.outcome === "ok" && call.hasServiceData !== false);
+  // A call whose rows carried no join key (a site search that returned only audit rows) is no
+  // source for the edge. A call the ledger did not check, or an operation with another unchecked
+  // call, is not narrowed.
+  const ready = new Map<string, Set<string>>();
+  const unchecked = new Set<string>();
+  for (const call of sourceCalls) {
+    if (call.detailReady === undefined) {
+      unchecked.add(call.op);
+      continue;
+    }
+    const targets = ready.get(call.op) ?? new Set<string>();
+    for (const target of call.detailReady) targets.add(target);
+    ready.set(call.op, targets);
+  }
+  for (const op of unchecked) ready.delete(op);
   const detail = detailTargetsFromSources(
     getCatalog(),
-    [...new Set(sources)],
-    [...new Set(calls.map((call) => call.op))]
-  ).map(({ id, sources: from, keys }) => ({ target: id, sourceOperations: from, keys }));
+    [...new Set(sourceCalls.map((call) => call.op))],
+    [...new Set(calls.map((call) => call.op))],
+    ready
+  ).map(({ id, sources: from, keys, part }) => ({ target: id, sourceOperations: from, keys, ...(part ? { part } : {}) }));
   if (detail.length === 0) return alternatives;
   if (alternatives) return { ...alternatives, detail };
   return {

@@ -1,0 +1,36 @@
+{
+  "contract": {
+    "pageProbe": {
+      "contentType": "text/html",
+      "hasMain": true,
+      "path": "/",
+      "status": 200
+    },
+    "searchProbe": {
+      "query": "roadmap",
+      "responseKeys": [
+        "locale",
+        "query",
+        "results"
+      ],
+      "rowKeys": [
+        "description",
+        "id",
+        "isExternal",
+        "kind",
+        "tags",
+        "title",
+        "url"
+      ]
+    }
+  },
+  "fetchedAt": "2026-11-14T17:31:23.523Z",
+  "service": "stellar-org",
+  "source": {
+    "auth": "none (keyless)",
+    "origin": "https://stellar.org",
+    "research": "research/services/stellar-org-site.md",
+    "searchPath": "/api/search",
+    "spec": "specs/stellar-org.json"
+  }
+}

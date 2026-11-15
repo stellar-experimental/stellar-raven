@@ -372,12 +372,13 @@ describe("host structural service evidence", () => {
 describe("sandbox surface shape", () => {
   const providers = buildSandbox(catalog, skillSource, env);
 
-  it("exposes exactly the three service namespaces plus codemode", () => {
+  it("exposes exactly the four service namespaces plus codemode", () => {
     expect(providers.map((p) => p.name).sort()).toEqual([
       "codemode",
       "lumenloop",
       "scout",
-      "stellarDocs"
+      "stellarDocs",
+      "stellarOrg"
     ]);
   });
 

@@ -1,0 +1,74 @@
+{
+  "questions": 460,
+  "limits": {
+    "5": {
+      "bytes": {
+        "n": 460,
+        "mean": 6992,
+        "p50": 6686,
+        "p90": 9839,
+        "max": 14816
+      },
+      "overGrokClip20000": 0,
+      "overClaudeWarning40000": 0,
+      "fullPages": 460
+    },
+    "7": {
+      "bytes": {
+        "n": 460,
+        "mean": 8889,
+        "p50": 8555,
+        "p90": 11616,
+        "max": 16839
+      },
+      "overGrokClip20000": 0,
+      "overClaudeWarning40000": 0,
+      "fullPages": 460
+    }
+  },
+  "meanDeltaBytes": 1897,
+  "storedRuns": {
+    "P0": {
+      "rows": 58,
+      "searchCalls": 54,
+      "defaultLimitSearches": 10,
+      "rowsWithADefaultLimitSearch": 10,
+      "extraBytesPerDefaultPage": {
+        "n": 10,
+        "mean": 1536,
+        "p50": 1541,
+        "p90": 1802,
+        "max": 1870
+      },
+      "extraInputShareAllRows": {
+        "meanPercent": 0.111,
+        "maxPercent": 0.871
+      },
+      "extraInputShareRowsWithADefaultSearch": {
+        "meanPercent": 0.642,
+        "maxPercent": 0.871
+      }
+    },
+    "P1": {
+      "rows": 58,
+      "searchCalls": 62,
+      "defaultLimitSearches": 11,
+      "rowsWithADefaultLimitSearch": 10,
+      "extraBytesPerDefaultPage": {
+        "n": 11,
+        "mean": 1667,
+        "p50": 1600,
+        "p90": 1870,
+        "max": 1947
+      },
+      "extraInputShareAllRows": {
+        "meanPercent": 0.141,
+        "maxPercent": 1.524
+      },
+      "extraInputShareRowsWithADefaultSearch": {
+        "meanPercent": 0.815,
+        "maxPercent": 1.524
+      }
+    }
+  }
+}

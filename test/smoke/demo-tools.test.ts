@@ -18,6 +18,12 @@ it("gives the Playground the complete description with the contradictory clause 
   expect(EXECUTE_DESCRIPTION).not.toContain("purely factual questions use docs first");
 });
 
+it("tells the Playground model its own search default, not the public one", () => {
+  const built = buildDemoTools({ env: env as unknown as Env, emit: () => {} });
+  const search = built.tools.search as unknown as { inputSchema: { shape: { limit: { description?: string } } } };
+  expect(search.inputSchema.shape.limit.description).toBe("Maximum number of hits to return (default 5, max 50).");
+});
+
 afterEach(() => {
   vi.restoreAllMocks();
 });

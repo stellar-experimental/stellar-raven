@@ -8,7 +8,17 @@
  */
 
 export const FAMILY_LINE =
-  "Families: lumenloop=community/editorial projects, research, content, SCF/funding; use for what's-been-said/editorial/freshness skims; scout=live ecosystem graph: projects, repos, people, hackathon builds, audits, stablecoins, partners; stellarDocs=official protocol/SDK/CLI/contracts/RPC/anchor/wallet docs; skills=tested build/integration/security playbooks.";
+  "Families: lumenloop=community/editorial projects, research, content, SCF/funding; use for what's-been-said/editorial/freshness skims; scout=live ecosystem graph: projects, repos, people, hackathon builds, audits, stablecoins, partners; stellarDocs=official protocol/SDK/CLI/contracts/RPC/anchor/wallet docs; stellarOrg=SDF site: strategy, roadmap, programs, provider and audit directories; skills=tested build/integration/security playbooks.";
+
+/**
+ * The opening of the `search` description: one line that stands alone where a client lists only the
+ * first 117 characters (OpenCode), names every operation family, and ends at a sentence end.
+ * `{families}` is replaced by the operation families of the catalog manifest, in manifest order, so
+ * a family added to the catalog is named with no edit here. The generator fails when the rendered
+ * line passes SEARCH_OPENING_MAX_CHARS or does not end in a full stop, which forces a rewording.
+ */
+export const SEARCH_OPENING_TEMPLATE = "Ranked search over {families} operations and skills. Hits are cards, not evidence.";
+export const SEARCH_OPENING_MAX_CHARS = 117;
 
 /**
  * Families whose own text is an official record for audit, incident, governance, and

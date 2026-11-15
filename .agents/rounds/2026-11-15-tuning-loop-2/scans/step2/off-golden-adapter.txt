@@ -1,0 +1,8 @@
+question audit    raw@5 10/14 raw@10 10/14 | adapter@5 10/14 adapter@10 10/14
+question appdev   raw@5 12/13 raw@10 12/13 | adapter@5 12/13 adapter@10 12/13
+question programs raw@5 11/13 raw@10 11/13 | adapter@5 11/13 adapter@10 11/13
+question all      raw@5 33/40 raw@10 33/40 | adapter@5 33/40 adapter@10 33/40
+keyword  audit    raw@5 13/14 raw@10 13/14 | adapter@5 13/14 adapter@10 13/14
+keyword  appdev   raw@5 12/13 raw@10 12/13 | adapter@5 12/13 adapter@10 12/13
+keyword  programs raw@5 11/13 raw@10 12/13 | adapter@5 12/13 adapter@10 12/13
+keyword  all      raw@5 36/40 raw@10 37/40 | adapter@5 37/40 adapter@10 37/40

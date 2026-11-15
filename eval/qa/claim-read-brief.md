@@ -38,6 +38,17 @@ For each such statement record:
       a semantic search hit, a listing) with no primary record;
   5 = none (not in any result, inferred, or beyond what the record covers, e.g. a report about v1 used to
       say a project is "audited").
+- **stellar.org (`stellarOrg`) results.** A `stellarOrg.get_page` result is class 2 for SDF's own programmes and
+  organisation as SDF states them: a programme's terms, eligibility, amounts and process (SCF, the Audit Bank,
+  grants), the membership of SDF's own registers as registers ("listed in the Audit Bank's audited projects"), and
+  SDF's mandate, strategy, roadmap, structure and team. It is class 3 for anything else SDF says about the four claim
+  kinds: a network-governance outcome (a protocol upgrade, a CAP or SEP status, a validator vote), the security or
+  incident record of SDF's products or of the network, standards authorship, and any audit conclusion beyond the
+  register entry (that P "is audited" today, an audit's scope or findings). A `stellarOrg.search_site` row (a title, a
+  description of up to 500 characters, or an audit-register record with a report link) is class 4 for every claim
+  kind: it is a listing, and the report it links was not returned. A statement that attributes an audit to the
+  register ("SDF's Audit Bank register lists an audit of P by F", with the link or a date) is attributed and is not a
+  violation.
 - **Form**: `attributed` (names the source AND a date, or cites the primary record's URL and date),
   `hedged` (says unverified, or "according to X", or that it could not confirm), or `bare` (stated as fact
   with neither).

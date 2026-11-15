@@ -2,10 +2,11 @@
  * Model-facing text budget and contract. Claude Code keeps 4,096 characters of
  * injected MCP server instructions and of each tool description that loads up
  * front (the limit and its source are in test/helpers/mcp-tool-metadata.ts).
- * Before v2.1.296 it kept 2,048: a 2,160-char BASE was cut off mid-sentence
- * inside the envelope contract (measured in production 2026-07-13). BASE
- * therefore stays a complete contract that also fits the old limit. The
- * instructions string is BASE alone and must fit the current limit.
+ * Grok CLI keeps 2,033, the smallest measured cut, so the instructions string
+ * (BASE alone) and each description stay inside it and every measured client
+ * receives them whole. Clients that show only the start of a text get a whole
+ * thought there: Codex lists the first line of the instructions, OpenCode the
+ * first 117 characters of each description.
  *
  * These tests hold what each contract must say and where it may say it. They
  * do not pin wording beyond the rules a model acts on.
@@ -15,9 +16,12 @@ import { assertGeneratedTextNoNonExposedRefs } from "../scripts/build-micro-map.
 import { getCatalog } from "../src/catalog/load";
 import {
   CLAUDE_CODE_INSTRUCTIONS_CAP_CHARS,
-  CLAUDE_CODE_PRE_V2_1_296_CAP_CHARS,
-  CLAUDE_CODE_TOOL_DESCRIPTION_CAP_CHARS
+  CLAUDE_CODE_TOOL_DESCRIPTION_CAP_CHARS,
+  CODEX_CATALOGUE_LINE_CHARS,
+  GROK_CUT_CHARS,
+  OPENCODE_LISTING_CHARS
 } from "./helpers/mcp-tool-metadata";
+import { SEARCH_OPENING } from "../src/mcp/micro-map";
 import {
   BASE_SERVER_INSTRUCTIONS,
   EXECUTE_DESCRIPTION,
@@ -29,23 +33,31 @@ import {
   searchNextSteps
 } from "../src/mcp/tools";
 
-// BASE keeps headroom under the pre-v2.1.296 limit of 2,048 characters, for clients that still cut there.
-const BASE_BUDGET = 2000;
-
 describe("server instructions — Claude Code character budget", () => {
   it(`keeps the whole instructions string within ${CLAUDE_CODE_INSTRUCTIONS_CAP_CHARS} chars, so no client on the current limit cuts the contract`, () => {
     expect(SERVER_INSTRUCTIONS.length).toBeLessThanOrEqual(CLAUDE_CODE_INSTRUCTIONS_CAP_CHARS);
   });
 
-  it(`keeps BASE within ${BASE_BUDGET} chars, inside the pre-v2.1.296 limit of 2,048`, () => {
-    expect(BASE_SERVER_INSTRUCTIONS.length).toBeLessThanOrEqual(BASE_BUDGET);
+  it(`keeps BASE within ${GROK_CUT_CHARS} chars, the smallest measured cut (Grok CLI), so it arrives whole`, () => {
+    expect(BASE_SERVER_INSTRUCTIONS.length).toBeLessThanOrEqual(GROK_CUT_CHARS);
+    expect(SERVER_INSTRUCTIONS.length).toBeLessThanOrEqual(GROK_CUT_CHARS);
   });
 
   it("what survives truncation IS the whole contract — BASE ends on a sentence boundary", () => {
     // The budget and prefix invariants make containment automatic; the check
-    // that isn't automatic is that BASE reads complete where an old-limit
-    // client cuts — it must end mid-nothing, not mid-sentence.
+    // that isn't automatic is that BASE reads complete where a client cuts —
+    // it must end mid-nothing, not mid-sentence.
     expect(BASE_SERVER_INSTRUCTIONS.endsWith(".")).toBe(true);
+  });
+
+  it(`opens with one line of at most ${CODEX_CATALOGUE_LINE_CHARS} chars that ends in a full stop and stands alone`, () => {
+    // Codex puts one catalogue line per server in context: the first line of the instructions,
+    // about 230 characters for one server and 201 for two.
+    const firstLine = SERVER_INSTRUCTIONS.split("\n")[0]!;
+    expect(firstLine.length).toBeLessThanOrEqual(CODEX_CATALOGUE_LINE_CHARS);
+    expect(firstLine.endsWith(".")).toBe(true);
+    expect(firstLine).toContain("`search`");
+    expect(firstLine).toContain("`execute`");
   });
 
   it("the surviving prefix carries every load-bearing rule", () => {
@@ -141,9 +153,29 @@ describe("tool descriptions — one contract inside the character cap", () => {
     expect(EXECUTE_DESCRIPTION.length).toBeLessThanOrEqual(CLAUDE_CODE_TOOL_DESCRIPTION_CAP_CHARS);
   });
 
-  it(`keeps each description within ${CLAUDE_CODE_PRE_V2_1_296_CAP_CHARS} chars, the pre-v2.1.296 limit; growth past it needs a measured reason`, () => {
-    expect(SEARCH_DESCRIPTION.length).toBeLessThanOrEqual(CLAUDE_CODE_PRE_V2_1_296_CAP_CHARS);
-    expect(EXECUTE_DESCRIPTION.length).toBeLessThanOrEqual(CLAUDE_CODE_PRE_V2_1_296_CAP_CHARS);
+  it(`keeps each description within ${GROK_CUT_CHARS} chars, the smallest measured cut; growth past it needs a measured reason`, () => {
+    expect(SEARCH_DESCRIPTION.length).toBeLessThanOrEqual(GROK_CUT_CHARS);
+    expect(EXECUTE_DESCRIPTION.length).toBeLessThanOrEqual(GROK_CUT_CHARS);
+  });
+
+  it(`opens each description with a first line of whole sentences that ends inside ${OPENCODE_LISTING_CHARS} chars, where OpenCode lists them`, () => {
+    for (const [name, text] of Object.entries({ search: SEARCH_DESCRIPTION, execute: EXECUTE_DESCRIPTION })) {
+      const firstLine = text.split("\n")[0]!;
+      expect(firstLine.length, name).toBeLessThanOrEqual(OPENCODE_LISTING_CHARS);
+      expect(firstLine.endsWith("."), name).toBe(true);
+      // The line break follows at once, so the cut falls after the sentence, not inside the next one.
+      expect(text[firstLine.length + 1], name).toBe("\n");
+    }
+  });
+
+  it("the search opening names every operation family of the catalog and says hits are not evidence", () => {
+    const families = new Set(
+      getCatalog().entries.filter((entry) => entry.kind === "operation").map((entry) => entry.service)
+    );
+    const firstLine = SEARCH_DESCRIPTION.split("\n")[0]!;
+    for (const family of families) expect(firstLine, family).toContain(family);
+    expect(firstLine).toContain("not evidence");
+    expect(SEARCH_DESCRIPTION.startsWith(SEARCH_OPENING)).toBe(true);
   });
 
   it("search carries the plan-then-compose workflow and the card shape", () => {
@@ -170,7 +202,7 @@ describe("tool descriptions — one contract inside the character cap", () => {
     for (const phrase of [
       "sandbox with no network",
       // Two scripting rules whose absence showed up as failed scripts.
-      "The ONLY globals are `lumenloop`, `scout`, `stellarDocs`, `codemode`, and standard JavaScript",
+      "The ONLY globals are `lumenloop`, `scout`, `stellarDocs`, `stellarOrg`, `codemode`, and standard JavaScript",
       "Artifact reads resolve to the same envelope shape",
       // An operation id is not a tool name: a client once called one at the top level.
       "are called inside this script, never as top-level tools",

@@ -78,6 +78,7 @@ import {
 } from "../catalog/search.ts";
 import { prepareCatalogSearch } from "../catalog/search-resolution.ts";
 import { lastIdSegment, VALID_IDENT } from "../catalog/id.ts";
+import { detailJoinKeys, rowsCarryJoinKeys } from "../catalog/detail-relation.ts";
 import { callService } from "../adapters/index.ts";
 import type { AdapterEnv, AdapterResult, ExactRow, FetchLike, ResultCaveat } from "../adapters/types.ts";
 import { guard } from "../policy/guard.ts";
@@ -109,6 +110,11 @@ export type OpLedgerCall = {
   outcome: "ok" | "error" | "soft-empty";
   /** Host-only structural evidence signal. It never changes the service envelope. */
   hasServiceData?: boolean;
+  /**
+   * The `detail` targets of this operation whose join keys at least one returned row carries. Set
+   * only for an operation with a `detail` edge; absent means the result was not checked.
+   */
+  detailReady?: string[];
   /** Exact allowlisted response metadata captured before sandbox projection. */
   sourceMetadata?: SourceMetadataField[];
   /** The same host-derived caveat the ok envelope carries. */
@@ -205,6 +211,20 @@ function captureSourceMetadata(payload: unknown): SourceMetadataField[] | undefi
     }
   }
   return fields.length > 0 ? fields : undefined;
+}
+
+/** The ledger's `detailReady` field for an operation with `detail` edges; nothing for one without. */
+function detailReadyOf(catalog: Catalog, entry: CatalogEntry, data: unknown): { detailReady?: string[] } {
+  const edges = (entry.retrievalProfile?.recoverWith ?? []).filter((edge) => edge.relation === "detail");
+  if (edges.length === 0) return {};
+  const byId = new Map(catalog.entries.map((candidate) => [candidate.id, candidate]));
+  const ready: string[] = [];
+  for (const edge of edges) {
+    const target = byId.get(edge.id);
+    const keys = target ? detailJoinKeys(entry, target) : null;
+    if (keys && rowsCarryJoinKeys(data, keys)) ready.push(edge.id);
+  }
+  return { detailReady: ready };
 }
 
 /**
@@ -601,6 +621,7 @@ export function buildOpsFns(
         op: entry.id,
         outcome: "ok",
         hasServiceData: hasServiceData(redactedResult.data),
+        ...detailReadyOf(catalog, entry, redactedResult.data),
         sourceMetadata,
         ...(caveat ? { caveat } : {}),
         ...(exactRows.length > 0 ? { exactRows } : {}),

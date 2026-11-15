@@ -52,6 +52,9 @@ per-row output; aggregate gate counts stay allowed. Their ids are not recorded a
 | `loop2-run` | Claude Sonnet 5.5 | `t1pm`, parent `kalepail-c3614nvxph-mbp/t40f` | P0 collected and read; `gca-eval` released | [P0.md](2026-11-15-tuning-loop-2/P0.md) |
 | `loop2-impl` | Claude Sonnet 5.5 | `t1pk`, parent `kalepail-c3614nvxph-mbp/t40f` | Step 1 free work done and review reconciled (R1 to R10); awaits P0 and the P1 authorization | [STEP-1-IMPL.md](2026-11-15-tuning-loop-2/STEP-1-IMPL.md) |
 
+| `loop2-impl` | Claude Sonnet 5.5 | `t1pk`, parent `kalepail-c3614nvxph-mbp/t40f` | Step 1 free work done and review reconciled (R1 to R10); P1 ran, step 1 decided | [STEP-1-IMPL.md](2026-11-15-tuning-loop-2/STEP-1-IMPL.md) |
+| `loop2-impl2` | Claude Sonnet 5.5 | `t1ps`, parent `kalepail-c3614nvxph-mbp/t40f` | Step 2 free work done (items 4, 2, 3 and the scans); awaits the independent review, the A7 check and the P2 authorization | [STEP-2-IMPL.md](2026-11-15-tuning-loop-2/STEP-2-IMPL.md) |
+
 ## Ledger
 
 ### 2026-11-15: orchestrator rulings on the plan review
@@ -154,9 +157,131 @@ judgment between two measured rates, not a measurement.
 `--max-panel-cases` read from P0 (58), remote vector equal to P0's, `--max-budget-usd 19.5`. Cost
 flags are read against P0, not against loop 1. No resume, no re-judge.
 
+<<<<<<< HEAD
 ### 2026-11-15: P1 collected and read (run lane `loop2-run`)
 
 [P1.md](2026-11-15-tuning-loop-2/P1.md). Surface `dcc295de…` (instructions 1,899 characters), revision `42a46274` (Worker identical to `0a343e3f`), every pin equal, remote vector and `--max-panel-cases` 58 equal to P0's. 58 + 10 + 10 jobs, USD 16.10 of 19.5. Pass 1: 23 correct, 33 partial, 2 wrong.
 Against P0 on 58 rows: 8 flips (3 up, 5 down), **net +2, tier-matched +1 (44 rows)**, T = 5; no row traced to the guard or the map removal (two untraced downs with a possible map cause). Guard delivered on 35 of 35 block results and every repeat-pass block. Governance read (R1 rubric, uncut):
 P1 pass 1 **0 violations in 22 claim-word answers** against P0's 1 to 2 in 23 (bound 2 or 3); class 3 bare 0, unreturned attribution 0; passes 2 and 3 on the guard rows 2 and 1 contested violations, one confirmed by the second reader. No traced over-hedging. Required-service coverage 56 of 58 (P0 58 of 58). Cost, turns and tokens flat or lower. Trap review: 4 of 6 pass; the two fails are a judge-tier grade on a materially
 identical answer (injection row) and the same agent failure as P0 (Soroswap row). Rules: keep the guard; keep the map removal as the rule gives it; recommendation: ship the removal only with item 4's `search` opening (R7). P1 server stopped, `gca-eval` released. No P2 was run.
+=======
+### 2026-11-15: P1 result, step 1 decided
+
+Run record: `P1.md` on `origin/tune/loop-2-runs` (Claude Sonnet 5.5 run lane `loop2-run`; the file lives on that branch, not here).
+Surface: this branch at `42a46274`, whose Worker is the map-removal commit `0a343e3f`. Stamps `2026-11-15T05-28-42-variantA` (58 rows), then
+`05-38-45` and `05-45-31` (10 guard rows each). USD 16.10 of the 19.5 cap. T = 5.
+
+Orchestrator direct instruction (2026-11-15): **step 1 is decided by rule. The guard and the map removal are both kept.**
+
+- **Guard, kept.** Delivered on 35 of 35 block results (and on two standalone lines); 0 violations in 22 claim-word answers on pass 1 against a P0
+  rate that gives a bound of 2 or 3; no traced over-hedging down; no cost flag. Caveat from the run lane, carried here: this is **not** read as the guard
+  lowering violations. The reference is about 1 in 25, so "no rise" is the strongest result the rule can return, the readers' own calls varied as much
+  as the margin (P0 1, 2, 1), and the guard rows still produced a bare absence-of-standard statement on a repeat pass with the guard in the result.
+- **Map removal, kept, and only together with item 4's `search` opening.** All 58 rows: 8 flips, net +2 down (3 up, 5 down); tier-matched 44 rows: net
+  +1; both under T = 5. Six of the eight flips changed judge tier. Required-service coverage in `npm run eval:plan` fell on 2 rows (58 to 56), under the
+  3-row bar. The two downs with a possible map cause (`q-infra-which-indexer`, `q-nft-vault-contract-standards`) are untraced. It is "not shown harmful on
+  Claude Code with Sonnet 5.5", not "harmless": up to about 4 net downs from losing the routing rules would hide under T. R7 therefore binds: the removal
+  ships with the `search` opening that names every family (item 4, A5), or it reverts. OpenCode and Grok are not measured.
+- Carried to step 2: the pointer gap on `q-nft-vault-contract-standards` is item 5's, and the research-call share on the 17 identifier rows was 25% (P0)
+  and 29% (P1), under the 33% bar R0 sets.
+
+### 2026-11-15: step 2, free work (no paid run)
+
+Implementer `loop2-impl2` (Claude Sonnet 5.5, `t1ps`) under the direct instruction of the orchestrator; record: [STEP-2-IMPL.md](2026-11-15-tuning-loop-2/STEP-2-IMPL.md).
+Commits, each reverting alone (section 1 there gives the order): item 4, the delivery text `0b07783a`; item 2, the `stellarOrg` source, a merge commit
+`2796299c` (the map's source line and authority sentence dropped, not re-homed per Q6; one `detail` edge added; `eval/gates.json` re-stamped); item 3,
+seven cards `160cd1fa`; the step 2 scans `b3709f74`; live checks and a guard test `6523ee6e`. All seven gates exit 0 on every tip.
+
+- **Lengths, assembled:** instructions 1,899 (`67a6bd0b…6c00`, unchanged); `search` 1,960 (73 under Grok's 2,033); `execute` 1,964 (69 under; 4 under on `main`). First lines: instructions 133; `search` 116;
+  `execute` 115 (OpenCode lists 117). The `search` opening is generated from the manifest (A5), so R7 holds: the map removal ships with it.
+- **Routing, 544 rows:** 0 grade changes, 0 top-1 changes, 8 top-five lists gain a `stellarOrg` operation (counts only). Off-golden 40: adapter recall 33/40 and 37/40; catalog reach at 5: 8/40 and 14/40.
+- **Seven cards:** a default page is 8,889 bytes against 6,992 on average (max 16,839, none over Grok's clip); 0.11% to 0.14% of input tokens per question on P0 and P1.
+- **Predicted intrusions** on stored queries: `q-protocol-tier1-requirements`, `q-soroban-reentrancy` and `q-ti-parse-raw-ledger-data` would see a `stellarOrg` card in place of a Docs or Lumenloop operation; P2 reads them.
+- **Not run:** the client probe harness (it needs each client's model), the reachability record for the 12 source rows, anything on Cloudflare.
+
+Open for the orchestrator: R8 (SDF site as a corroborating family: left out, so each `stellarOrg` result carries the guard line); whether the `detail` edge and its `part` nouns stay;
+the independent review of the step 2 diff before P2; the A7 Cloudflare check (preview URLs are off in `wrangler.jsonc`); P2's authorization line. **No paid run is authorized by this entry.**
+
+## Step 2 free work; amendment A7 satisfied
+
+Implementer report: `2026-11-15-tuning-loop-2/STEP-2-IMPL.md` (item 4 `0b07783a`, the `stellarOrg`
+source `2796299c`, seven cards `160cd1fa`; all gates exit 0).
+
+**A7 (Worker egress to stellar.org), done by the orchestrator on 2026-11-15 without a preview
+version.** `wrangler.jsonc` has `workers_dev: false` and no preview URLs, and an authenticated MCP
+call on a preview would need OAuth. Instead a throwaway Worker (`raven-egress-probe`, account
+"Ecosystem - Stellar", `workers.dev`) fetched `https://stellar.org/api/search?q=audit+bank&locale=en`
+and `https://stellar.org/foundation/strategy` with the adapter's User-Agent. Three calls: HTTP 200
+for both each time (JSON 1,798 bytes; HTML about 424,600 bytes), no `cf-mitigated` header. The
+Worker was then deleted (its URL returns 404). It did not touch the production Worker. Limit: this
+shows egress from the account's Workers, not the adapter's own code path, which the post-deploy
+check covers.
+
+Orchestrator rulings on the step 2 asks: the 12-row reachability record may run (the questions are
+tuning rows from a public repository); whether `stellarOrg` belongs in `CORROBORATING_FAMILIES` and
+whether the added detail edge and its nouns stay go to the independent reviewer.
+
+### 2026-11-15: step 2 review, adopted by the orchestrator
+
+Review: [STEP-2-REVIEW.md](2026-11-15-tuning-loop-2/STEP-2-REVIEW.md) (Claude Opus 5.5, high; tier Claude Opus, the stable fallback; Fable is the orchestrator and Codex frontier was not launched,
+so the vendor-diverse attack on the adapter that `SORG-REVIEW.md` left open stays open). No model call, no spend. The orchestrator adopts all of it.
+
+- **Verdict.** Item 4 (`0b07783a`), item 2 (`2796299c`) and item 3 (`160cd1fa`): fit to measure. Item 2's adapter, spec, adapter tests, `wrangler.jsonc` and `env.d.ts` are byte-identical to the
+  reviewed branch tip `b81e7a03`; the fetch boundary is unchanged, and the merge adds no egress, secret or binding. Two fixes asked before P2, not blocking: S1 and S2, applied below.
+- **Intrusion measurement (S3).** On the 58 panel questions asked as written, a `stellarOrg` operation enters the top five of **0**. At limit 7 it enters on one (`q-raph-official-help-sdf-cannot-recover`, a source row, rank 7,
+  displacing `stellarDocs.search_asset_token_docs`). The cost is at the **page tail above the default**: at limit 10 a generic probe loses a non-SDF card on 3 of 25 non-SDF questions (for example the OpenZeppelin
+  `develop-secure-contracts` skill on "soroban security best practices"), at the limit the agent uses three times in four. Three causes, not one: (1) the description's words ("Soroban Security Audit Bank",
+  "security-audited") pass the lexical gate on Soroban security queries; (2) the id token `org` matches every query word that starts with "org" under the vendor scorer's prefix rule (no minimum length), which
+  put `stellarOrg.get_page` at rank 1 for "organization" questions, and no description edit removes it; (3) gate fill: `search_site` passes the gate with a weak score (47) and fills the gated page, so a
+  higher-scoring operation that fails the gate (`stellarDocs.search_soroban_contract_docs`, 111, on "soroban reentrancy security" at limit 8) loses its tier-2 backfill slot. Causes 2 and 3 are ranker
+  properties; any new family can trigger them.
+- **Decision: the description is measured as is in P2.** A reworded description (Audit Bank, audited projects) removes the non-SDF security displacement at limit 7 but cuts off-golden reach from 8 to 6 of 40
+  (questions) and 14 to 13 (keywords), and SDF questions at limit 10 from 4 to 2 of 5. That moves cost between audit-category queries and tunes tokens against the scorer, so it is not made. P2 cannot see an
+  effect this small (T = 5 on 58 rows); it checks for gross intrusions only. **Watch rows**, read from both transcripts whatever their verdict: `q-soroban-reentrancy`, `q-protocol-tier1-requirements`,
+  `q-ti-parse-raw-ledger-data`; and every row whose P2 `search` page carries a `stellarOrg` card at a rank above a card that the row's P1 script called. Report the number of source-exposed rows outside the
+  12, and the rank of each `stellarOrg` card. If P2 shows two traced displacements, the remedy is a ranker change, not a description edit or result text. Forward ranker changes (4-character minimum for the
+  prefix rule; a gate-failed candidate that beats the page's weakest gated card keeps its slot) are for `.agents/TODO.md`, which the orchestrator owns.
+- **R8, decided.** `stellarOrg` stays out of `CORROBORATING_FAMILIES`; no code change. Every `stellarOrg` result keeps the standalone guard line. The rule for the P2 claim read is in `eval/qa/claim-read-brief.md`
+  and applies to every run read from now on (neither P0 nor P1 had a `stellarOrg` result, so no earlier call changes). P2's over-hedging check (H1, H2 on source-exposed rows) is the test of whether the
+  guard line makes the agent hedge an SDF programme fact.
+- **The `detail` edge and its `part` nouns: kept**, with S1.
+- **S1, applied.** The `detail` sentence counts a call as a source only when at least one returned row carries every join key of the edge. The ledger records `detailReady` (the targets whose keys a row carried);
+  an unchecked call is not narrowed, so the Docs pointer is byte-identical (a test pins it). A live keyless query had returned `OtterSec`: 8 audit rows, 1 partner row, no `path`.
+- **S2, applied.** A site search that returns no rows at all is `soft-empty` with the retry hint; rows that came back and were all filtered out stay ok with `no-rows`. One adapter test for the empty case; the
+  filtered case's existing test holds.
+- **P2 reading rules (S5).** (a) **P2 compares each changed row with P0 as well as with P1 pass 1.** For every row that changed between P1 and P2, report the P0, P1 and P2 verdicts and judge tiers. A row whose
+  P2 verdict equals its P0 verdict, after a P1 move that the P1 trace classed as noise (`q-hot-sdf-xlm-holdings-sales` up by retrieval variance; `q-asset-usdc-eurc-issuer` down by judge tier), is reported as "returned"
+  and counts only if the P2 transcript traces it: a fact in a `stellarOrg` result for a gain, a displaced or wrong call for a harm. (b) 14 of 58 rows changed judge tier between P0 and P1, and 6 of the 8 flips
+  were tier changes: read the tier-matched net first; a result that reaches T only on all rows is "no decision" (A4). (c) Source gain rests on 12 single samples (A10): report counts; it is not evidence that the
+  source improves answers.
+- **What a P2 result must not be read as:** evidence that the source improves answers; that it causes no displacement harm (S3's tail effect is below what P2 detects, and the panel holds one `org…` question);
+  about seven cards' benefit (P2 has 0 or 1 seven-used rows); about delivery or answers on Codex, Grok, OpenCode, the Playground or claude.ai; that Worker egress works through the adapter's own code path (A7
+  tested the account's Workers); a separation of the delivery text from item 2's always-on description text (A8).
+- **Cap, for the orchestrator's word.** P2's `--max-budget-usd 14.5` is a 21% margin on P1 pass 1's measured USD 12.02. A cap stop voids the run with no resume. The plan's rate (USD 0.25 per case) gives 14.5 for
+  58 rows. Kept at 14.5 only on the orchestrator's acceptance of that risk; a higher cap needs the orchestrator's word. **No paid run is authorized by this entry.**
+- **Still open from the review.** The client probe harness on this tip (it calls models; plan section 6; its own authorization line); the vendor-diverse adapter attack.
+
+### 2026-11-15: step 2 review reconciled; the adapter, scorer inputs and descriptions are frozen
+
+Implementer `loop2-fix2` (Claude Sonnet 5.5), record: [STEP-2-IMPL.md](2026-11-15-tuning-loop-2/STEP-2-IMPL.md) section 10. S1, S2 and the R8 brief landed as one commit, **`bd9719fb`** (pushed before anything else ran).
+All gates exit 0 on it, bare: typecheck, `npm test` (3,602 passed), build, smoke (144), the routing gate, the generated-artifacts sync and diff, the secrets scan. The off-golden 40 is unchanged (adapter 33/40 and 37/40;
+reach 8/40 and 14/40 at 5, 8/40 and 16/40 at 7): neither S1 nor S2 moved a row. The surface pin `42ec6102…f17f` stands (local fingerprint identical on `bd9719fb` and `160cd1fa`); P2's code-identity commit is now `bd9719fb`.
+
+**Reachability record, read-only, 12 source rows, from this workstation** (commit after `bd9719fb`): `search_site` on the question returns a cited page for 7 of 12; `get_page` returns text for a cited page on 12 of 12.
+The five rows whose own search misses (`q-asset-usdc-eurc-issuer`, `q-comp-aml-analytics-vendors`, `q-data-network-metrics-sources`, `q-eco-stellar-rwa-stablecoin-volume`, `q-scf-ambassador-program`) are marked
+unreachable by the question as written, per the plan's two-part test, and are not counted against the source (one sample; the orchestrator may loosen it). **After this read, the `stellarOrg` adapter, scorer inputs and
+descriptions are frozen at `bd9719fb` for this loop.** **No paid run is authorized by this entry.**
+
+## P2 authorization
+
+Step 2 review reconciled in `bd9719fb` (frozen product commit; all gates exit 0). Reachability
+record: `search_site` on the question returns a cited page for 7 of the 12 source rows; `get_page`
+returns text for 12 of 12. The five rows whose own search misses stay marked
+unreachable-by-question, as the plan's literal rule says; the orchestrator does not loosen it.
+
+**Authorization, P2 (Claude Fable 5.2, 2026-11-15).** The final command of STEP-2-IMPL.md section
+10 on `bd9719fb`: the 58-row panel once, `--max-panel-cases 58`, remote vector equal to P0's.
+**Cap: `--max-budget-usd 17`**, raised from the plan's 14.5 before launch, because P1 pass 1 cost
+USD 12.02 and this surface adds page reads; a cap stop would void the run, and 17 is a 41% margin.
+Changed rows are compared with P0 as well as with P1 pass 1. No resume, no re-judge.
+>>>>>>> origin/tune/loop-2

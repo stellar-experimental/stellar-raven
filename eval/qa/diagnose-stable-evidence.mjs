@@ -9,7 +9,7 @@ import { sanitizeCliEvidenceText } from "./evidence-sanitizer.mjs";
 const LIMIT = "Matches support fragments only. They do not establish the full claim, source authority, or a changed grade.";
 const NUMBER_TERM = /^\$?\s?\d[\d,.]*(?:\s?(?:USD|USDC|XLM|EURC|%|[KMB]))?$/i;
 const isExecute = (entry) => /(?:^|__)execute$/.test(entry?.tool ?? "") ||
-  /^mcp__.+__(?:lumenloop|scout|stellarDocs)_/.test(entry?.tool ?? "");
+  /^mcp__.+__(?:lumenloop|scout|stellarDocs|stellarOrg)_/.test(entry?.tool ?? "");
 
 function savedEvidence(transcript) {
   const entries = [];

@@ -134,7 +134,7 @@ describe("prepareCatalogSearch staged resolution", () => {
       issue: {
         code: "unknown-service",
         service: "stellardocs",
-        validServices: ["lumenloop", "scout", "skills", "stellarDocs"]
+        validServices: ["lumenloop", "scout", "skills", "stellarDocs", "stellarOrg"]
       }
     });
   });
@@ -202,7 +202,7 @@ describe("MCP and sandbox search-resolution parity", () => {
       widerCandidates: [],
       confidence: { hitCount: 0, topScoreGap: null, topScoreTiers: null },
       recoveryMetadata: { serviceFilterExcludedSkills: [] },
-      nextSteps: 'Unknown service "stellardocs" — service filter values are exact-match. Valid services: lumenloop, scout, skills, stellarDocs. Retry with one of those exact values, or drop the `service` filter.'
+      nextSteps: 'Unknown service "stellardocs" — service filter values are exact-match. Valid services: lumenloop, scout, skills, stellarDocs, stellarOrg. Retry with one of those exact values, or drop the `service` filter.'
     });
     expect(mcp.content?.[0]?.text).toBe(JSON.stringify(structured));
 
@@ -211,7 +211,7 @@ describe("MCP and sandbox search-resolution parity", () => {
       error: {
         service: "codemode",
         kind: "error",
-        message: 'codemode.search: unknown service "stellardocs" — valid services (exact-match): lumenloop, scout, skills, stellarDocs'
+        message: 'codemode.search: unknown service "stellardocs" — valid services (exact-match): lumenloop, scout, skills, stellarDocs, stellarOrg'
       }
     });
   });

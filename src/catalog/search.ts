@@ -1687,17 +1687,22 @@ export type DetailTarget = {
   sources: string[];
   /** The target's required inputs, which each source row carries. */
   keys: string[];
+  /** What the source's rows are, when not the default (sections of pages). From the first edge that names it. */
+  part?: { plural: string; singular: string };
 };
 
 /**
  * The `detail` edges of the given source operations, grouped by target, minus targets already
  * called. They are kept out of `recoveryCandidatesFromSources` because a whole-record read is not
  * an alternative pass for an unanswered question; it completes evidence the run already holds.
+ * `ready` narrows an edge to the calls whose rows carried the join keys; a source it does not
+ * name is not narrowed.
  */
 export function detailTargetsFromSources(
   catalog: Catalog,
   fromIds: readonly string[],
-  excludeIds: readonly string[]
+  excludeIds: readonly string[],
+  ready?: ReadonlyMap<string, ReadonlySet<string>>
 ): DetailTarget[] {
   const byId = new Map(catalog.entries.map((entry) => [entry.id, entry]));
   const excluded = new Set(excludeIds);
@@ -1707,13 +1712,16 @@ export function detailTargetsFromSources(
     if (source?.kind !== "operation") continue;
     for (const edge of source.retrievalProfile?.recoverWith ?? []) {
       if (edge.relation !== "detail" || excluded.has(edge.id)) continue;
+      if (ready?.has(from) && !ready.get(from)!.has(edge.id)) continue;
       const target = byId.get(edge.id);
       if (target?.kind !== "operation") continue;
       const keys = detailJoinKeys(source, target);
       if (!keys) continue;
       const found = out.get(edge.id);
-      if (found) found.sources.push(from);
-      else out.set(edge.id, { id: edge.id, sources: [from], keys });
+      if (found) {
+        found.sources.push(from);
+        found.part ??= edge.part;
+      } else out.set(edge.id, { id: edge.id, sources: [from], keys, ...(edge.part ? { part: edge.part } : {}) });
     }
   }
   return [...out.values()];

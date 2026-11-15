@@ -35,3 +35,26 @@ export function detailJoinKeys(source: DetailEntryShape, target: DetailEntryShap
   }
   return null;
 }
+
+/**
+ * Whether a returned payload holds at least one row that carries every join key of a `detail`
+ * edge. The schema says the source's rows can carry the keys; a result can still hold rows that
+ * do not (a site search returns audit and partner rows beside page rows, and only page rows have
+ * a `path`). A key counts when its value is a non-empty string.
+ */
+export function rowsCarryJoinKeys(data: unknown, keys: readonly string[]): boolean {
+  if (data === null || typeof data !== "object" || Array.isArray(data) || keys.length === 0) return false;
+  return Object.values(data as Record<string, unknown>).some(
+    (value) =>
+      Array.isArray(value) &&
+      value.some(
+        (row) =>
+          row !== null &&
+          typeof row === "object" &&
+          keys.every((key) => {
+            const field = (row as Record<string, unknown>)[key];
+            return typeof field === "string" && field !== "";
+          })
+      )
+  );
+}
