@@ -328,3 +328,16 @@ reports: no stored output changes.** One difference that this change did not cau
 
 `git revert 940dc013 a49ee918` (in that order) returns the product paths to `bd9719fb` (checked in a scratch worktree). **Open for the orchestrator:** the held-out QA read should be analysed by a lane other than `loop2-impl3`; a TODO item for the
 fingerprint gate's failure message; the `eval/gates.json` note wording; the `live-drift-resolution` checklist line for `documentSeries`. **R is not authorized by this entry. No paid run is authorized.**
+
+## R authorization (step 3)
+
+Step 3 review reconciled; frozen Worker commit `940dc013` (the pointer `a49ee918` plus the digit
+bound and the title-case rule; all gates exit 0). The title-case rule also changes loop 1's
+exact-row matching, which is deployed: `Sep-24` no longer reads as SEP-24. Replays of the 90 live
+research queries and of the nine stored runs are byte-identical before and after.
+
+**Authorization, R (Claude Fable 5.2, 2026-11-15).** The final command of STEP-3-IMPL.md section
+11 on `940dc013`: the 17 identifier rows, two passes, pins equal to P0's, `--max-panel-cases 58`,
+`--max-budget-usd 8.5` in total. Keep rule as amended by B1 and B2; T = 3 per pass and 4 pooled.
+Counts come from the R transcripts, not from the stored replay table (two of its cells are known
+to differ from the reader's own output). No resume, no re-judge.
