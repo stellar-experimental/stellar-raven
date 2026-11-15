@@ -238,9 +238,10 @@ generated paths), `npm run secrets:scan -- --tree`. Each ran with its output to 
 | `160cd1fa` item 3 | 0 | 0 | 0 | 0 | 0 | 0 / 0 | 0 | 3,589 / 144 |
 | `b3709f74` scans | 0 | 0 | 0 | 0 | 0 | 0 / 0 | 0 | 3,594 / 144 |
 | `6523ee6e` live checks | 0 | 0 | 0 | 0 | 0 | 0 / 0 | 0 | 3,596 / 144 |
+| `bd93f437` the record (docs only; Worker identical to `160cd1fa`) | 0 | 0 | 0 | 0 | 0 | 0 / 0 | 0 | 3,596 / 144 |
 
 At item 3's first run `npm run test:smoke` exited 1: the default text is in the shared `limit` schema, and the Playground's wire-hash pin changed. The Playground serves its own default of 5, so the fix is
-`searchLimitSchema(defaultLimit)` and the Playground tells its model "default 5" (its wire hash is unchanged); the row above is the second run, after the amend. The final gate row of the last commit is recorded in its own commit below.
+`searchLimitSchema(defaultLimit)` and the Playground tells its model "default 5" (its wire hash is unchanged); the row above is the second run, after the amend. The row for `bd93f437` was added by the commit after it; that commit changes this file only.
 
 ## 6. Deviations and decisions for the orchestrator
 
