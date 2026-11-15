@@ -283,3 +283,10 @@ unreachable-by-question, as the plan's literal rule says; the orchestrator does 
 **Cap: `--max-budget-usd 17`**, raised from the plan's 14.5 before launch, because P1 pass 1 cost
 USD 12.02 and this surface adds page reads; a cap stop would void the run, and 17 is a 41% margin.
 Changed rows are compared with P0 as well as with P1 pass 1. No resume, no re-judge.
+
+### 2026-11-15: P2 collected and read (run lane `loop2-run`)
+
+[P2.md](2026-11-15-tuning-loop-2/P2.md) (on `tune/loop-2-runs`). Surface `42ec6102…` (instructions 1,899; `search` 1,960; `execute` 1,964), revision `bd9719fb`, every pin equal, remote vector and `--max-panel-cases` 58 equal to P0's. 58 jobs, USD 11.62 of 17, 40 min 39 s. 23 correct, 34 partial, 1 wrong.
+Against P1: 9 flips (4 up, 5 down), **net +1, tier-matched -1** (37 rows); against P0 net +3, tier-matched +2; T = 5. **Traced ups and downs to the source, the search page or the description text: 0 and 0.** `stellarOrg` was called on 3 of 58 rows, all source rows (3 of 12), all calls ok, one answer used a fact from it; 0 intrusions as calls;
+2 rows outside the 12 carried a card (`q-protocol-tier1-requirements`, `q-soroban-reentrancy`) and neither called it. Default-limit searches 14 of 62 (23%; P1 18%); explicit limits moved toward 10. Seven-used rows 1 (unchanged). Governance read (R1 and R8, uncut): **0 violations in 25 claim-word answers**; no claim rested on a `stellarOrg` result, so R8 is untested.
+Required services 55 of 58 (P1 56, P0 58). Tokens +2.5% median against P1. Traps 6 of 6 pass. New `wrong`: `q-ti-enumerate-holders-airdrop`, traced to the agent's own query wording and a stricter tier. Rules: keep the source, keep item 4, keep seven cards. Server stopped, `gca-eval` released. Step 3 was not run.

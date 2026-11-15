@@ -1,0 +1,16 @@
+rows with search 55 searches 62 default-limit searches 14 rows with a default search 12
+limits {"5":2,"7":1,"8":5,"10":36,"12":1,"15":3,"def":14}
+
+rows where a stellarOrg op was called in a script:
+  q-eco-stellar-rwa-stablecoin-volume [SRC] stellarOrg.search_site
+  q-hot-sdf-xlm-holdings-sales [SRC] stellarOrg.search_site,stellarOrg.get_page
+  q-org-sdf-structure-mandate [SRC] stellarOrg.search_site
+
+rows whose P2 search page carries a stellarOrg card (replayed on the frozen catalog):
+  q-data-network-metrics-sources [SRC] rank 1/10 stellarOrg.get_page; rank 2/10 stellarOrg.search_site | P1-called ops below it: none
+  q-hot-sdf-xlm-holdings-sales [SRC] rank 7/10 stellarOrg.search_site | P1-called ops below it: none
+  q-org-sdf-structure-mandate [SRC] rank 1/10 stellarOrg.search_site | P1-called ops below it: scout.searchResearch
+  q-protocol-tier1-requirements [non-source] rank 1/10 stellarOrg.get_page; rank 2/10 stellarOrg.search_site | P1-called ops below it: stellarDocs.search_docs
+  q-soroban-reentrancy [non-source] rank 6/8 stellarOrg.search_site | P1-called ops below it: none
+
+source-exposed rows outside the 12: [ 'q-protocol-tier1-requirements', 'q-soroban-reentrancy' ]

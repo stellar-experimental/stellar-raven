@@ -1,0 +1,778 @@
+[
+ {
+  "id": "q-aas-trustline-limit-lifecycle",
+  "src": false,
+  "searches": 0,
+  "defaults": 0,
+  "limits": [],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-asset-usdc-eurc-issuer",
+  "src": true,
+  "searches": 1,
+  "defaults": 0,
+  "limits": [
+   10
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-asset-usdt0-layerzero-oft",
+  "src": false,
+  "searches": 1,
+  "defaults": 0,
+  "limits": [
+   10
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-comp-aml-analytics-vendors",
+  "src": true,
+  "searches": 2,
+  "defaults": 0,
+  "limits": [
+   10,
+   5
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-comp-sep8-regulated-assets-approval-server",
+  "src": false,
+  "searches": 1,
+  "defaults": 0,
+  "limits": [
+   8
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-crp-oz-rwa-erc3643-trex",
+  "src": false,
+  "searches": 1,
+  "defaults": 0,
+  "limits": [
+   10
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-data-network-metrics-sources",
+  "src": true,
+  "searches": 3,
+  "defaults": 0,
+  "limits": [
+   15,
+   15,
+   10
+  ],
+  "orgCalled": [],
+  "cards": [
+   {
+    "q": "network stats accounts operations",
+    "limit": 10,
+    "default": false,
+    "rank": 1,
+    "id": "stellarOrg.get_page",
+    "above": []
+   },
+   {
+    "q": "network stats accounts operations",
+    "limit": 10,
+    "default": false,
+    "rank": 2,
+    "id": "stellarOrg.search_site",
+    "above": []
+   }
+  ],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-defi-agent-identity-stellar-experimental",
+  "src": false,
+  "searches": 2,
+  "defaults": 0,
+  "limits": [
+   10,
+   10
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-defi-agentic-payment-standards-compare",
+  "src": false,
+  "searches": 1,
+  "defaults": 0,
+  "limits": [
+   10
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-eco-stellar-rwa-stablecoin-volume",
+  "src": true,
+  "searches": 1,
+  "defaults": 0,
+  "limits": [
+   10
+  ],
+  "orgCalled": [
+   "stellarOrg.search_site"
+  ],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-edge-asset-site-scam-detection",
+  "src": false,
+  "searches": 1,
+  "defaults": 0,
+  "limits": [
+   12
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-edge-factcheck-soroswap-first-amm",
+  "src": false,
+  "searches": 1,
+  "defaults": 0,
+  "limits": [
+   10
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-edge-inject-ignore-instructions",
+  "src": false,
+  "searches": 1,
+  "defaults": 0,
+  "limits": [
+   7
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-edge-noinfo-stellar-native-privacy-default",
+  "src": false,
+  "searches": 1,
+  "defaults": 0,
+  "limits": [
+   8
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-edge-oos-solana-vs-aptos",
+  "src": false,
+  "searches": 1,
+  "defaults": 0,
+  "limits": [
+   5
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-hot-fee-pool-burn-deflation",
+  "src": true,
+  "searches": 0,
+  "defaults": 0,
+  "limits": [],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-hot-sdf-xlm-holdings-sales",
+  "src": true,
+  "searches": 1,
+  "defaults": 0,
+  "limits": [
+   10
+  ],
+  "orgCalled": [
+   "stellarOrg.search_site",
+   "stellarOrg.get_page"
+  ],
+  "cards": [
+   {
+    "q": "SDF XLM holdings sales supply burn",
+    "limit": 10,
+    "default": false,
+    "rank": 7,
+    "id": "stellarOrg.search_site",
+    "above": []
+   }
+  ],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-infra-rpc-methods-list",
+  "src": false,
+  "searches": 1,
+  "defaults": 1,
+  "limits": [
+   "def"
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-infra-which-indexer",
+  "src": false,
+  "searches": 1,
+  "defaults": 0,
+  "limits": [
+   10
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-n3-issues-842-backup-faucet-wallet",
+  "src": false,
+  "searches": 1,
+  "defaults": 1,
+  "limits": [
+   "def"
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-n3-pi-network-wrong-chain",
+  "src": false,
+  "searches": 1,
+  "defaults": 0,
+  "limits": [
+   8
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-net-protocol-meeting-notes-find-cap",
+  "src": false,
+  "searches": 1,
+  "defaults": 0,
+  "limits": [
+   15
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-nft-vault-contract-standards",
+  "src": false,
+  "searches": 1,
+  "defaults": 0,
+  "limits": [
+   10
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-org-sdf-structure-mandate",
+  "src": true,
+  "searches": 1,
+  "defaults": 0,
+  "limits": [
+   10
+  ],
+  "orgCalled": [
+   "stellarOrg.search_site"
+  ],
+  "cards": [
+   {
+    "q": "Stellar Development Foundation mission nonprofit about",
+    "limit": 10,
+    "default": false,
+    "rank": 1,
+    "id": "stellarOrg.search_site",
+    "above": [
+     "scout.searchResearch"
+    ]
+   }
+  ],
+  "p1OpsCalledAboveOrg": [
+   "scout.searchResearch"
+  ]
+ },
+ {
+  "id": "q-pc-account-activation-not-found",
+  "src": false,
+  "searches": 1,
+  "defaults": 1,
+  "limits": [
+   "def"
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-pc-cross-redstone-sep40",
+  "src": false,
+  "searches": 1,
+  "defaults": 1,
+  "limits": [
+   "def"
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-pc-quantum-preparedness-dormant",
+  "src": false,
+  "searches": 1,
+  "defaults": 0,
+  "limits": [
+   10
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-pc-sequence-numbers-ordering-replace",
+  "src": false,
+  "searches": 1,
+  "defaults": 1,
+  "limits": [
+   "def"
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-pc-sponsored-reserves",
+  "src": false,
+  "searches": 1,
+  "defaults": 1,
+  "limits": [
+   "def"
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-protocol-ledger-close-time",
+  "src": false,
+  "searches": 0,
+  "defaults": 0,
+  "limits": [],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-protocol-tier1-requirements",
+  "src": false,
+  "searches": 1,
+  "defaults": 0,
+  "limits": [
+   10
+  ],
+  "orgCalled": [],
+  "cards": [
+   {
+    "q": "Tier 1 organization validators requirements",
+    "limit": 10,
+    "default": false,
+    "rank": 1,
+    "id": "stellarOrg.get_page",
+    "above": [
+     "stellarDocs.search_docs"
+    ]
+   },
+   {
+    "q": "Tier 1 organization validators requirements",
+    "limit": 10,
+    "default": false,
+    "rank": 2,
+    "id": "stellarOrg.search_site",
+    "above": [
+     "stellarDocs.search_docs"
+    ]
+   }
+  ],
+  "p1OpsCalledAboveOrg": [
+   "stellarDocs.search_docs",
+   "stellarDocs.search_docs"
+  ]
+ },
+ {
+  "id": "q-raph-official-help-sdf-cannot-recover",
+  "src": true,
+  "searches": 2,
+  "defaults": 2,
+  "limits": [
+   "def",
+   "def"
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-scf-ambassador-program",
+  "src": true,
+  "searches": 2,
+  "defaults": 0,
+  "limits": [
+   10,
+   10
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-scf-how-to-apply",
+  "src": true,
+  "searches": 1,
+  "defaults": 0,
+  "limits": [
+   10
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-scf-instawards",
+  "src": false,
+  "searches": 1,
+  "defaults": 0,
+  "limits": [
+   10
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-scf-vs-sdf-enterprise-fund",
+  "src": true,
+  "searches": 1,
+  "defaults": 0,
+  "limits": [
+   10
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-sep-43-web-wallet-api",
+  "src": false,
+  "searches": 1,
+  "defaults": 0,
+  "limits": [
+   10
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-sep-45-contract-auth",
+  "src": false,
+  "searches": 1,
+  "defaults": 1,
+  "limits": [
+   "def"
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-sep-53-sign-verify-message",
+  "src": false,
+  "searches": 1,
+  "defaults": 0,
+  "limits": [
+   10
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-sep24-interactive-deposit-flow",
+  "src": false,
+  "searches": 1,
+  "defaults": 0,
+  "limits": [
+   10
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-sep6-sep24-sep31-choice",
+  "src": false,
+  "searches": 1,
+  "defaults": 0,
+  "limits": [
+   10
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-smart-account-scoped-policy-signers",
+  "src": false,
+  "searches": 1,
+  "defaults": 0,
+  "limits": [
+   10
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-smart-wallet-fee-sponsorship",
+  "src": false,
+  "searches": 1,
+  "defaults": 0,
+  "limits": [
+   10
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-sor-custom-errors-find-failure-cause",
+  "src": false,
+  "searches": 2,
+  "defaults": 2,
+  "limits": [
+   "def",
+   "def"
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-sor-deploy-invoke-from-js-sdk",
+  "src": false,
+  "searches": 1,
+  "defaults": 0,
+  "limits": [
+   10
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-soroban-check-auth-custom-account",
+  "src": false,
+  "searches": 1,
+  "defaults": 0,
+  "limits": [
+   10
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-soroban-cli-bindings",
+  "src": false,
+  "searches": 1,
+  "defaults": 0,
+  "limits": [
+   8
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-soroban-contract-id-derivation",
+  "src": false,
+  "searches": 1,
+  "defaults": 1,
+  "limits": [
+   "def"
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-soroban-oz-token",
+  "src": false,
+  "searches": 1,
+  "defaults": 0,
+  "limits": [
+   10
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-soroban-pre-mainnet-security-steps",
+  "src": true,
+  "searches": 1,
+  "defaults": 0,
+  "limits": [
+   10
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-soroban-reentrancy",
+  "src": false,
+  "searches": 1,
+  "defaults": 0,
+  "limits": [
+   8
+  ],
+  "orgCalled": [],
+  "cards": [
+   {
+    "q": "soroban reentrancy security",
+    "limit": 8,
+    "default": false,
+    "rank": 6,
+    "id": "stellarOrg.search_site",
+    "above": []
+   }
+  ],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-soroban-storage-types",
+  "src": false,
+  "searches": 1,
+  "defaults": 1,
+  "limits": [
+   "def"
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-soroban-vuln-classes",
+  "src": false,
+  "searches": 1,
+  "defaults": 0,
+  "limits": [
+   10
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-ti-classic-submission-errors",
+  "src": false,
+  "searches": 1,
+  "defaults": 0,
+  "limits": [
+   10
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-ti-enumerate-holders-airdrop",
+  "src": false,
+  "searches": 1,
+  "defaults": 0,
+  "limits": [
+   10
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-ti-parse-raw-ledger-data",
+  "src": false,
+  "searches": 1,
+  "defaults": 0,
+  "limits": [
+   10
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-tool-js-sdk-package",
+  "src": false,
+  "searches": 1,
+  "defaults": 1,
+  "limits": [
+   "def"
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ },
+ {
+  "id": "q-zk-host-functions-status",
+  "src": false,
+  "searches": 1,
+  "defaults": 0,
+  "limits": [
+   10
+  ],
+  "orgCalled": [],
+  "cards": [],
+  "p1OpsCalledAboveOrg": []
+ }
+]

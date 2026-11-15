@@ -1,0 +1,12 @@
+const url="http://localhost:8805/mcp";
+const h={"content-type":"application/json",accept:"application/json, text/event-stream"};
+const parse=async r=>{const t=await r.text();const m=t.match(/data: (.*)/);return JSON.parse(m?m[1]:t)};
+let r=await fetch(url,{method:"POST",headers:h,body:JSON.stringify({jsonrpc:"2.0",id:1,method:"initialize",params:{protocolVersion:"2025-03-26",capabilities:{},clientInfo:{name:"probe",version:"0"}}})});
+const sid=r.headers.get("mcp-session-id"); const hh=sid?{...h,"mcp-session-id":sid}:h; await r.text();
+await fetch(url,{method:"POST",headers:hh,body:JSON.stringify({jsonrpc:"2.0",method:"notifications/initialized"})});
+const call=async code=>{const j=await parse(await fetch(url,{method:"POST",headers:hh,body:JSON.stringify({jsonrpc:"2.0",id:2,method:"tools/call",params:{name:"execute",arguments:{code}}})}));return (j.result?.content??[]).map(c=>c.text).join("")};
+const G="Audit, incident, governance and standards-authorship claims are fact only when";
+const x=await call(process.argv[2]);
+console.log(x.length,"chars; guard count",x.split(G).length-1,"at",x.indexOf(G),"| blocks",(x.match(/--- [A-Z -]+ ---/g)||[]).join(" > "));
+console.log(x.slice(0,900));
+const i=x.indexOf("EVIDENCE CHECKPOINT"); console.log(x.slice(Math.max(i-200,0), i+1800));

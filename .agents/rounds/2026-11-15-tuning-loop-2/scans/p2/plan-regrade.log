@@ -1,0 +1,15 @@
+
+> stellar-raven-codemode@0.1.0 eval:plan
+> node eval/plan/grade-plan.mjs eval/qa/results/2026-11-15T07-33-40-variantA.json
+
+wrote eval/qa/results/2026-11-15T07-33-40-variantA.plan.json
+
+PLAN                       55/58 requiredCovered (95%)  mean onPlanRatio 0.98
+-- verdict × requiredCovered --
+required covered            21 correct   33 partial    1 wrong   0 error  / 55
+required missed              2 correct    1 partial    0 wrong   0 error  / 3
+-- verdict × progression (11 cases where expected) --
+broad→detail used            1 correct    2 partial    0 wrong   0 error  / 3
+broad→detail skipped         2 correct    6 partial    0 wrong   0 error  / 8
+-- off-plan touches (informational) --
+lumenloop                  4 case(s)
