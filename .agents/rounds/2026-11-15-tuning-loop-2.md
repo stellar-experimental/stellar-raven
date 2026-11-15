@@ -49,6 +49,7 @@ per-row output; aggregate gate counts stay allowed. Their ids are not recorded a
 |---|---|---|---|---|
 | `loop2-plan` | Claude Fable 5.2 | (finished) | Plan written | [PLAN.md](2026-11-15-tuning-loop-2/PLAN.md) |
 | plan review | Claude Opus 5.5 | (finished) | Reviewed: launch after amendments | [PLAN-REVIEW.md](2026-11-15-tuning-loop-2/PLAN-REVIEW.md) |
+| `loop2-run` | Claude Sonnet 5.5 | `t1pm`, parent `kalepail-c3614nvxph-mbp/t40f` | P0 collected and read; `gca-eval` released | [P0.md](2026-11-15-tuning-loop-2/P0.md) |
 | `loop2-impl` | Claude Sonnet 5.5 | `t1pk`, parent `kalepail-c3614nvxph-mbp/t40f` | Step 1 free work done and review reconciled (R1 to R10); awaits P0 and the P1 authorization | [STEP-1-IMPL.md](2026-11-15-tuning-loop-2/STEP-1-IMPL.md) |
 
 ## Ledger
@@ -130,3 +131,11 @@ written. The implementer (`loop2-impl`, Claude Sonnet 5.5) applied them; details
   attribution to a second reader. The guard sentence shows in P1 transcripts, so the reader is not blind.
 - **Ordering.** P1 does not check out in `gca-eval` until the P0 lane (`loop2-run`, server `p0-server`) has finished and released that worktree.
   The orchestrator owns the ordering and P1's authorization line.
+
+### 2026-11-15: P0 collected and read (run lane `loop2-run`)
+
+[P0.md](2026-11-15-tuning-loop-2/P0.md). Stamp `2026-11-15T04-31-41-variantA`, `main` at `0a603453`, surface `b336fa14…`, every pin equal, remote vector equal to loop 1's (no drift). 58 jobs
+asserted, 58 judged, USD 11.81 of 14.5, 39 min 15 s collection. **25 correct, 32 partial, 1 wrong.** Same-surface null (P0 against stored arm 1, 50 shared rows minus the 4 frozen exact rows): 6 flips in 46 rows,
+net -2, none of them tier-matched; measured p = 0.13 gives **T = 4 at n = 58** (5 at p = 0.16, 7 at loop 1's 0.34) for the orchestrator to fix. Research-call share on the 17 identifier rows: 25% (loop 1: 19% to 31%).
+Governance read on P0 (R1 rubric, uncut results): 1 violation in 23 claim-word answers (class 3 bare 1, unreturned attribution 0). Trap review: 5 of 6 pass; the Soroswap row is an agent failure on content with the trap behaviour intact.
+Plan regrade: required services 58 of 58. The `gca-eval` worktree is released (detached at `0a603453`, clean). No P1 was run.
