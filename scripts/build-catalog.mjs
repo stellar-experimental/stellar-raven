@@ -36,6 +36,7 @@ import { isGenericAliasTrigger } from "../src/catalog/known-aliases.ts";
 // Runtime dispatch and both emitters use the same registry to preserve the exposed callable contract.
 import { RUNNERS } from "../src/skills/runners/index.ts";
 import { detailJoinKeys } from "../src/catalog/detail-relation.ts";
+import { documentSeriesOf } from "../src/catalog/document-series.ts";
 import { writeFileAtomic } from "./lib/shared.mjs";
 import { loadSkillTexts, skillFileUrl } from "./lib/skill-mirror.mjs";
 import { RETRIEVAL_PROFILES } from "./catalog-data/retrieval-profiles.mjs";
@@ -1213,6 +1214,18 @@ export function attachRetrievalProfiles(entries, profiles = RETRIEVAL_PROFILES) 
   return out;
 }
 
+/**
+ * Record the document series of each operation that declares them: the plain-letter values of its
+ * `source` filter, when its rows carry `source` and `url` (src/catalog/document-series.ts). The
+ * series come from the upstream enum, so a series Scout adds later is covered with no edit.
+ */
+export function attachDocumentSeries(entries) {
+  return entries.map((entry) => {
+    const documentSeries = documentSeriesOf(entry);
+    return documentSeries ? { ...entry, documentSeries } : entry;
+  });
+}
+
 /** Attach the one-line caveat a compact search card must keep. Fails on drift. */
 export function attachCardCaveats(entries, caveats = CARD_CAVEATS) {
   const attached = new Set();
@@ -1345,7 +1358,7 @@ async function main() {
   // Runnable attachment runs over the FULLY assembled set: its declared-op
   // guard needs every service's operation entries in scope, not just skills.
   const entries = applySkillsFormArm(
-    attachCardCaveats(attachKnownAliases(attachRetrievalProfiles(attachRunnableSkills(
+    attachCardCaveats(attachKnownAliases(attachDocumentSeries(attachRetrievalProfiles(attachRunnableSkills(
       [
         ...lumenloopEntries,
         ...scoutEntries,
@@ -1360,7 +1373,7 @@ async function main() {
         ...stellarOrgEntries,
         ...skillEntries
       ].sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0))
-    )))),
+    ))))),
     arm
   );
 
