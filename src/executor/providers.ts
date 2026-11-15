@@ -79,6 +79,8 @@ import {
 import { prepareCatalogSearch } from "../catalog/search-resolution.ts";
 import { lastIdSegment, VALID_IDENT } from "../catalog/id.ts";
 import { detailJoinKeys, rowsCarryJoinKeys } from "../catalog/detail-relation.ts";
+import { CANDIDATE_LANES } from "../catalog/document-series.ts";
+import { identifierTokens, identifiersInArguments, type IdentifierToken } from "../policy/identifier-token.ts";
 import { callService } from "../adapters/index.ts";
 import type { AdapterEnv, AdapterResult, ExactRow, FetchLike, ResultCaveat } from "../adapters/types.ts";
 import { guard } from "../policy/guard.ts";
@@ -121,6 +123,11 @@ export type OpLedgerCall = {
   caveat?: ResultCaveat;
   /** Rows the host recognized as the document the query names; `url` only when it is a plain https URL. */
   exactRows?: Array<ExactRow & { url?: string }>;
+  /**
+   * Identifier tokens of a declared document series that the call's string arguments name
+   * (src/policy/identifier-token.ts). Set on any outcome; absent means none.
+   */
+  identifiers?: IdentifierToken[];
   /** Host clock when an ok response arrived (ISO-8601). */
   observedAt?: string;
   /** Bounded host label; never an upstream message, body, URL, or argument value. */
@@ -260,8 +267,6 @@ export function hasServiceData(value: unknown): boolean {
   return hasData;
 }
 
-/** Catalog retrieval lanes whose rows are similarity or research matches by contract. */
-const CANDIDATE_LANES = new Set(["semantic", "research", "av"]);
 /**
  * Upstream match modes that mark rows as unverified matches: Lumenloop
  * `match_mode: "semantic"` (directory fell back to vector neighbours) and
@@ -309,8 +314,6 @@ export function resultCaveat(
   return candidateMode ? "unverified-match" : undefined;
 }
 
-// A token followed by `-` or `.` and another digit (`CVE-2024-1234`, `SEP-43.1`) is a longer identifier, not a prefix match.
-const IDENTIFIER_TOKEN_RE = /\b([A-Za-z]+)[- ]?(\d+)\b(?![-.]\d)/g;
 const MAX_EXACT_ROWS = 5;
 const MAX_EXACT_URL_CHARS = 200;
 
@@ -365,10 +368,7 @@ export function exactRowsOf(
   if (lane === undefined || !CANDIDATE_LANES.has(lane)) return [];
   const query = [args.q, args.query].find((value): value is string => typeof value === "string");
   if (!query) return [];
-  const wanted = [...query.matchAll(IDENTIFIER_TOKEN_RE)].map((match) => ({
-    letters: match[1]!.toLowerCase(),
-    number: stripLeadingZeros(match[2]!)
-  }));
+  const wanted = identifierTokens(query, { joinedOnly: false });
   const rows = wanted.length > 0 ? sourceRowsOf(data) : undefined;
   if (!rows) return [];
   const out: Array<ExactRow & { url?: string }> = [];
@@ -558,6 +558,8 @@ export function buildOpsFns(
 ): OpsFacade {
   const secrets = secretsFromEnv(env as Record<string, unknown>);
   const fetchImpl = deps?.fetchImpl;
+  // The letters of every declared document series, from the manifest (src/catalog/document-series.ts).
+  const seriesLetters = new Set(catalog.entries.flatMap((entry) => entry.documentSeries?.values ?? []));
 
   const byService: OpsFacade = {};
   for (const entry of catalog.entries) {
@@ -572,6 +574,8 @@ export function buildOpsFns(
       // Documented upstream aliases first (policy/argument-aliases.ts), then
       // validation of what will actually be sent.
       const args = applyArgumentAliases(entry, rawArgs);
+      const identifiers = identifiersInArguments(args, seriesLetters);
+      const named = identifiers.length > 0 ? { identifiers } : {};
       const refused = guard(entry, args); // arg validation only (ADR-0003)
       if (refused) {
         // guard only ever returns the error variant; narrow for the compiler.
@@ -585,6 +589,7 @@ export function buildOpsFns(
           op: entry.id,
           outcome: refused.ok ? "ok" : refused.error.kind,
           reason: failedCallReason(entry, refused, true),
+          ...named,
           ms
         });
         return refused;
@@ -603,6 +608,7 @@ export function buildOpsFns(
           op: entry.id,
           outcome: redactedResult.error.kind,
           reason: failedCallReason(entry, result),
+          ...named,
           ms
         });
         return redactedResult;
@@ -625,6 +631,7 @@ export function buildOpsFns(
         sourceMetadata,
         ...(caveat ? { caveat } : {}),
         ...(exactRows.length > 0 ? { exactRows } : {}),
+        ...named,
         observedAt,
         ms
       });

@@ -168,6 +168,22 @@ The `execute` draft is fine: the globals sentence that follows it names every gl
 > not fire. `audit-2024` fires only if the build records `audit` as a numbered series. The R read
 > lists every firing whose series is not `sep` or `cap`, and each one is a defect.
 
+**Superseded 2026-11-15 (step 3 review, D1; orchestrator ruling).** The last two sentences above
+(`audit-2024` fires only if …; each firing is a defect) are replaced by the text below. The rest of
+A6 stands. Replaced, not edited: the sentences above stay as the plan reviewed them.
+
+> A series name joined to digits fires (`audit-2024`, `release-23`, `paper1`). The manifest cannot
+> say which series are numbered, and a list of the numbered ones is the hand list the owner
+> forbids. The sentence is conditional ("If … names a document") and asserts nothing. Live on
+> 2026-11-15, Scout's rows for `audit`, `release`, `incident`, `paper` and `lumenloop` carry no
+> `<series>-<number>` URL slug: audit rows end in a bare number, release rows in `v23.x.y`,
+> incident rows in `73-…`, and paper and lumenloop rows in file names. So arm 2 can mark no row of
+> theirs exact, and a firing for them can cost one call but cannot deliver a document. The R read
+> lists every firing whose series is not `sep` or `cap`, with whether the agent followed it. Each
+> one is a recorded cost defect. It reverts only through H1 or H2 by a traced down. If one
+> appears, the general fix is to fire only for a series that has produced an exact row. That needs
+> observed data, so it is a design change for a later loop, not a list.
+
 On generality: the pointer is derived from the catalog, not from a list. It changes no ranking, so
 it is not a boost. It does have exactly one instance today: one operation of one source. Its keep
 result is evidence for that operation only, and the plan should say so in the license table.

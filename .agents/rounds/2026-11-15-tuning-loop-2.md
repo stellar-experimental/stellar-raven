@@ -54,6 +54,7 @@ per-row output; aggregate gate counts stay allowed. Their ids are not recorded a
 
 | `loop2-impl` | Claude Sonnet 5.5 | `t1pk`, parent `kalepail-c3614nvxph-mbp/t40f` | Step 1 free work done and review reconciled (R1 to R10); P1 ran, step 1 decided | [STEP-1-IMPL.md](2026-11-15-tuning-loop-2/STEP-1-IMPL.md) |
 | `loop2-impl2` | Claude Sonnet 5.5 | `t1ps`, parent `kalepail-c3614nvxph-mbp/t40f` | Step 2 free work done (items 4, 2, 3 and the scans); awaits the independent review, the A7 check and the P2 authorization | [STEP-2-IMPL.md](2026-11-15-tuning-loop-2/STEP-2-IMPL.md) |
+| `loop2-impl3` | Claude Sonnet 5.5 | `t1py`, parent `kalepail-c3614nvxph-mbp/t40f` | Step 3 free work done (item 5, the identifier pointer, and its free checks); awaits the independent review and the R authorization | [STEP-3-IMPL.md](2026-11-15-tuning-loop-2/STEP-3-IMPL.md) |
 
 ## Ledger
 
@@ -290,3 +291,70 @@ Changed rows are compared with P0 as well as with P1 pass 1. No resume, no re-ju
 Against P1: 9 flips (4 up, 5 down), **net +1, tier-matched -1** (37 rows); against P0 net +3, tier-matched +2; T = 5. **Traced ups and downs to the source, the search page or the description text: 0 and 0.** `stellarOrg` was called on 3 of 58 rows, all source rows (3 of 12), all calls ok, one answer used a fact from it; 0 intrusions as calls;
 2 rows outside the 12 carried a card (`q-protocol-tier1-requirements`, `q-soroban-reentrancy`) and neither called it. Default-limit searches 14 of 62 (23%; P1 18%); explicit limits moved toward 10. Seven-used rows 1 (unchanged). Governance read (R1 and R8, uncut): **0 violations in 25 claim-word answers**; no claim rested on a `stellarOrg` result, so R8 is untested.
 Required services 55 of 58 (P1 56, P0 58). Tokens +2.5% median against P1. Traps 6 of 6 pass. New `wrong`: `q-ti-enumerate-holders-airdrop`, traced to the agent's own query wording and a stricter tier. Rules: keep the source, keep item 4, keep seven cards. Server stopped, `gca-eval` released. Step 3 was not run.
+
+### 2026-11-15: P2 result, step 2 decided
+
+Run record: `P2.md` on `origin/tune/loop-2-runs` (Claude Sonnet 5.5 run lane `loop2-run`; the file lives on that branch, not here). Surface: `bd9719fb`. Stamp
+`2026-11-15T07-33-40-variantA`, 58 of 58, USD 11.62 of the 17 cap, no stop event. 23 correct, 34 partial, 1 wrong (P1 pass 1: 23, 33, 2; P0: 25, 32, 1). T = 5.
+
+Orchestrator direct instruction (2026-11-15): **step 2 is decided by rule. The `stellarOrg` source, item 4 (the description openings) and seven cards are all kept.**
+
+- **Source, kept, and unproven.** The rule keeps it unless H1 or H2 fails on a source-exposed row or two unrelated rows go down by a traced displacement. None did: 0 traced
+  displacements, 0 intrusions as calls (every `stellarOrg` call is on a source row), 2 rows outside the 12 carried a source card on their `search` page and neither called it.
+  Caveats from the run lane, carried here: the source was **called on 3 of 58 rows** (3 of the 12 source rows); one answer used a fact from it (a dated balance table that no
+  judged fact needed); **0 traced ups**. Nothing is read as shipped value, as a result about the guard line on `stellarOrg` results (no claim statement rests on one), as a
+  result for Worker egress (A7 tested the account's Workers, not the adapter's own path from a deployed Worker), or as evidence that the source causes no displacement: S3's
+  tail effect is below what T = 5 on 58 rows can see.
+- **Item 4, kept.** The 40 rows in neither exposure set are net 0 against P1 (tier-matched -1, 26 rows) and +4 against P0 (tier-matched +3), all untraced, under T. P2
+  cannot separate the delivery text from item 2's always-on description text (A8).
+- **Seven cards, kept.** One seven-used row, unchanged and correct; median input tokens +2.5% against P1, -1.6% against P0. P2 says nothing about seven cards' benefit.
+  Explicit limits moved to 10 (36 of 48 calls); no transcript ties that to a sentence.
+- Both nets (P2 against P1 pass 1 +1, tier-matched -1; against P0 +3, tier-matched +2) are under T on all rows and on the tier-matched rows: no decision on harm, H3 does not
+  trip. Required-service coverage 55 of 58 (P1 56, P0 58): the three misses are rows whose verdict did not move for coverage reasons. Zero violations in 25 claim-word answers.
+  Research-call share on the 17 identifier rows: P0 25%, P1 29%, P2 23%; R0's bar stays above 33% and above the highest of these.
+- Step 3 free work starts from this decision. No paid run is authorized by this entry.
+
+### 2026-11-15: step 3, free work (no paid run)
+
+[STEP-3-IMPL.md](2026-11-15-tuning-loop-2/STEP-3-IMPL.md). Implementer `loop2-impl3` (Claude Sonnet 5.5). Code commit **`a49ee918`** (one commit on top of the ledger entry above; reverts alone and returns the product paths to
+`bd9719fb`); the sentence was frozen and pushed there before any stored answer, transcript or golden was read. It changes `execute` results only: the ordered top-five lists of all 495 routing cases are byte-identical, the
+surface pin is P2's (`42ec6102…f17f`), and the new manifest field is not visible to `search`, `describe` or `codemode.catalog()`. `eval/gates.json` is re-baselined for the manifest fingerprint only.
+
+The pointer reads the series from Scout's own `source` enum in the manifest (seven plain-letter values; no list), accepts only a hyphenated or joined token (A6), and fires once per identifier, at most three, when a call
+names it and no call to the research operation does. **Replay over nine stored runs** (tuning rows by id first; scripts and result text only): it fires on 13 to 22 executes and 12 to 15 rows per run, almost all among the 17 identifier rows (the
+committed rule reproduces the plan's 17 exactly), only for `sep` and `cap`, never where research for that identifier came earlier in the row (0 in 163 fires), never without a call that names the identifier. **Live, keyless:**
+the call the sentence names returns an exact row for 22 of 22 distinct identifiers (the ceiling); a named identifier that does not exist returns none. Measured: one sentence is 175 to 181 characters (177 for `SEP-45`),
+three at most 541, 2% of a median firing result. All gates exit 0 on the product commit and on the tip. **Open for the orchestrator:** the independent review of the diff before R; D1 (a series name joined to digits, `audit-2024`, fires:
+the manifest cannot say which series are numbered); T for 17 rows (2, 3 or 4 by the three flip rates; 3 proposed); one incidental exposure of a failed-gate table (D7). **No paid run is authorized by this entry.**
+
+### 2026-11-15: step 3 review reconciled; the pointer is frozen at `940dc013`
+
+Review: [STEP-3-REVIEW.md](2026-11-15-tuning-loop-2/STEP-3-REVIEW.md) (Claude Opus 5.5, the stable Claude fallback for the matched Codex frontier tier; author Sonnet 5.5, orchestrator Fable 5.2). Verdict: fit to measure after two text fixes
+to R's reading rules. Record: [STEP-3-IMPL.md](2026-11-15-tuning-loop-2/STEP-3-IMPL.md) section 11. Implementer `loop2-fix3` (Claude Sonnet 5.5).
+
+**Rulings (orchestrator, direct instruction, all adopted).** B1: R0 measures the per-fire follow rate against the replay's per-fire baseline (7 of 163), with the row share reported beside it. B2: H3 per pass at
+T = 3 (A4's rule at P0's 0.13 for n = 17; "T = 2" in the earlier text used the wrong convention), the pooled 34-row-pass net at T = 4; R1 needs one traced up pass and no contrary pass; H1 and H2 count a traced down in either pass.
+D1: a series name joined to digits fires; A6's two sentences are superseded in `PLAN-AMENDMENTS.md` by the review's text, as a dated supersession (the old sentences stay). D2: accepted. F3 and F4: recorded only.
+
+**Code, one commit: `940dc013`** (the frozen Worker commit; later commits are docs and data). F1: the joined token reads at most six digits. F2: a token whose letters are title case (`Sep-24`, `Cap-12`) is not an
+identifier; all-upper and all-lower are. **F2 sits in the one shared module, so it also changes code deployed in loop 1: arm 2's exact-row matching.** `Sep-24` no longer fires the pointer and no longer marks `sep-0024`
+exact; `SEP-24` and `sep-24` still do (unit cases for both hosts). One loop 1 unit case that pinned `Sep-43` as exact now says `SEP-43`. An all-upper month joined to digits (`10-SEP-2024`) still reads as an identifier; the review
+chose that over a month list. Free replays, old and new code: **the 90 live research queries from loop 1 give byte-identical reports (90 of 90 ok, 17 with an exact row), and the nine-run step 3 replay gives byte-identical
+reports: no stored output changes.** One difference that this change did not cause: the committed `replay-report.json` differs from the committed reader's own output in two `researchedWithIt` flags (arm 1 and P2, row
+`q-comp-aml-analytics-vendors`), so two cells of the 17-row table move (arm 1 3 to 2, P2 2 to 1); R's counts should come from R's own transcripts (STEP-3-IMPL section 11).
+
+`git revert 940dc013 a49ee918` (in that order) returns the product paths to `bd9719fb` (checked in a scratch worktree). **Open for the orchestrator:** the held-out QA read should be analysed by a lane other than `loop2-impl3`; a TODO item for the
+fingerprint gate's failure message; the `eval/gates.json` note wording; the `live-drift-resolution` checklist line for `documentSeries`. **R is not authorized by this entry. No paid run is authorized.**
+
+## R authorization (step 3)
+
+Step 3 review reconciled; frozen Worker commit `940dc013` (the pointer `a49ee918` plus the digit
+bound and the title-case rule; all gates exit 0). The title-case rule also changes loop 1's
+exact-row matching, which is deployed: `Sep-24` no longer reads as SEP-24. Replays of the 90 live
+research queries and of the nine stored runs are byte-identical before and after.
+
+**Authorization, R (Claude Fable 5.2, 2026-11-15).** The final command of STEP-3-IMPL.md section
+11 on `940dc013`: the 17 identifier rows, two passes, pins equal to P0's, `--max-panel-cases 58`,
+`--max-budget-usd 8.5` in total. Keep rule as amended by B1 and B2; T = 3 per pass and 4 pooled.
+Counts come from the R transcripts, not from the stored replay table (two of its cells are known
+to differ from the reader's own output). No resume, no re-judge.

@@ -62,7 +62,7 @@ import {
 import { projectSourceBasisTelemetry } from "../policy/source-basis.ts";
 import {
   candidateEvidenceSection,
-  detailOnlyHint,
+  pointersOnlyHint,
   evidenceCheckpointBlock,
   type EvidenceRecoveryHint
 } from "../policy/evidence-checkpoint.ts";
@@ -509,8 +509,8 @@ export function buildDemoTools(opts: {
       };
       budget.latestExecuteEvidence = outcome.evidenceSummary.kind;
       const recoveryHint = outcome.ok ? (outcome.recoveryHint ?? null) : null;
-      // Detail pointers travel in the result itself and never spend the turn's single
-      // recovery-advice cycle: a detail-only hint must not suppress a later alternatives hint.
+      // Detail and identifier pointers travel in the result itself and never spend the turn's single
+      // recovery-advice cycle: a pointers-only hint must not suppress a later alternatives hint.
       const alternativesHint = recoveryHint && recoveryHint.candidates.length > 0 ? recoveryHint : null;
       let visibleRecoveryHint: EvidenceRecoveryHint | null = null;
       if (alternativesHint) {
@@ -582,7 +582,7 @@ export function buildDemoTools(opts: {
         outcome.ok && outcome.truncated
       );
       const evidenceCheckpoint = outcome.ok
-        ? evidenceCheckpointBlock(visibleRecoveryHint ?? detailOnlyHint(recoveryHint) ?? undefined)
+        ? evidenceCheckpointBlock(visibleRecoveryHint ?? pointersOnlyHint(recoveryHint) ?? undefined)
         : "";
       const hasPriorArtPreflight = Boolean(
         outcome.operationSummary.priorArtCandidates &&

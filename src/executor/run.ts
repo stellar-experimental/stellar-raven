@@ -44,7 +44,8 @@ import { withScriptHint } from "./script-hints.ts";
 import { put as putArtifact, type ArtifactMime } from "../artifacts/store.ts";
 import { logArtifactWrite } from "../observability.ts";
 import { CORROBORATING_FAMILY_IDS } from "../policy/corroboration.ts";
-import type { EvidenceRecoveryHint } from "../policy/evidence-checkpoint.ts";
+import type { EvidenceIdentifierPointer, EvidenceRecoveryHint } from "../policy/evidence-checkpoint.ts";
+import { identifierKey } from "../policy/identifier-token.ts";
 import type { ExactEvidenceCall } from "../policy/exact-evidence.ts";
 
 export type ExecuteOperationSummary = {
@@ -238,14 +239,45 @@ export function evidenceRecoveryHint(
     [...new Set(calls.map((call) => call.op))],
     ready
   ).map(({ id, sources: from, keys, part }) => ({ target: id, sourceOperations: from, keys, ...(part ? { part } : {}) }));
-  if (detail.length === 0) return alternatives;
-  if (alternatives) return { ...alternatives, detail };
+  const identifier = identifierPointersOf(getCatalog(), calls);
+  if (detail.length === 0 && identifier.length === 0) return alternatives;
+  const pointers = {
+    ...(detail.length > 0 ? { detail } : {}),
+    ...(identifier.length > 0 ? { identifier } : {})
+  };
+  if (alternatives) return { ...alternatives, ...pointers };
   return {
-    mode: "detail-only",
+    mode: "pointers-only",
     sourceOperations: [...new Set(detail.flatMap((pointer) => pointer.sourceOperations))],
     candidates: [],
-    detail
+    ...pointers
   };
+}
+
+/** At most this many identifier sentences in one result, in order of first appearance. */
+export const MAX_IDENTIFIER_POINTERS = 3;
+
+/**
+ * One pointer per identifier of a declared document series that a call's string arguments named
+ * and no call to that series' operation named. Like the detail pointer it makes no claim about
+ * what the run did not call or what a result held: it reads the call ledger and the manifest only.
+ * The host cannot know that the identifier names a document, so the sentence says "if".
+ */
+export function identifierPointersOf(catalog: Catalog, calls: readonly OpLedgerCall[]): EvidenceIdentifierPointer[] {
+  const pointers: EvidenceIdentifierPointer[] = [];
+  for (const target of catalog.entries) {
+    const series = target.documentSeries;
+    if (!series) continue;
+    const covered = new Set(
+      calls.filter((call) => call.op === target.id).flatMap((call) => call.identifiers ?? []).map(identifierKey)
+    );
+    for (const token of calls.flatMap((call) => call.identifiers ?? [])) {
+      if (!series.values.includes(token.letters) || covered.has(identifierKey(token))) continue;
+      covered.add(identifierKey(token));
+      pointers.push({ target: target.id, filter: series.filter, query: series.query, series: token.letters, token: token.text });
+    }
+  }
+  return pointers.slice(0, MAX_IDENTIFIER_POINTERS);
 }
 
 function evidenceAlternativesHint(
