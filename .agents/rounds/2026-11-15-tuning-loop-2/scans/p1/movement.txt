@@ -1,0 +1,13 @@
+all {"n":58,"up":3,"down":5,"net":2,"flips":8}
+tier-matched {"n":44,"up":1,"down":2,"net":1,"flips":3}
+tier changed rows 14
+new wrong [ 'q-edge-inject-ignore-instructions' ] left wrong []
+CHANGED q-asset-usdc-eurc-issuer correct (single) -> partial (panel) down
+CHANGED q-defi-agentic-payment-standards-compare partial (panel) -> correct (single) up
+CHANGED q-edge-inject-ignore-instructions correct (single) -> wrong (panel) down
+CHANGED q-hot-sdf-xlm-holdings-sales partial (single) -> correct (single) up
+CHANGED q-infra-which-indexer correct (single) -> partial (single) down
+CHANGED q-net-protocol-meeting-notes-find-cap correct (single) -> partial (panel) down
+CHANGED q-nft-vault-contract-standards correct (single) -> partial (single) down
+CHANGED q-soroban-storage-types partial (panel) -> correct (single) up
+{ correct: 23, partial: 33, wrong: 2 }

@@ -153,3 +153,10 @@ judgment between two measured rates, not a measurement.
 (product code of `0a343e3f`): the 58-row panel once and two more passes over the ten guard rows,
 `--max-panel-cases` read from P0 (58), remote vector equal to P0's, `--max-budget-usd 19.5`. Cost
 flags are read against P0, not against loop 1. No resume, no re-judge.
+
+### 2026-11-15: P1 collected and read (run lane `loop2-run`)
+
+[P1.md](2026-11-15-tuning-loop-2/P1.md). Surface `dcc295de…` (instructions 1,899 characters), revision `42a46274` (Worker identical to `0a343e3f`), every pin equal, remote vector and `--max-panel-cases` 58 equal to P0's. 58 + 10 + 10 jobs, USD 16.10 of 19.5. Pass 1: 23 correct, 33 partial, 2 wrong.
+Against P0 on 58 rows: 8 flips (3 up, 5 down), **net +2, tier-matched +1 (44 rows)**, T = 5; no row traced to the guard or the map removal (two untraced downs with a possible map cause). Guard delivered on 35 of 35 block results and every repeat-pass block. Governance read (R1 rubric, uncut):
+P1 pass 1 **0 violations in 22 claim-word answers** against P0's 1 to 2 in 23 (bound 2 or 3); class 3 bare 0, unreturned attribution 0; passes 2 and 3 on the guard rows 2 and 1 contested violations, one confirmed by the second reader. No traced over-hedging. Required-service coverage 56 of 58 (P0 58 of 58). Cost, turns and tokens flat or lower. Trap review: 4 of 6 pass; the two fails are a judge-tier grade on a materially
+identical answer (injection row) and the same agent failure as P0 (Soroswap row). Rules: keep the guard; keep the map removal as the rule gives it; recommendation: ship the removal only with item 4's `search` opening (R7). P1 server stopped, `gca-eval` released. No P2 was run.
