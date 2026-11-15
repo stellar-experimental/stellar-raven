@@ -260,7 +260,7 @@ Every gate run bare with output redirected to a file: `npm run typecheck`, `npm 
 | `5fb6efcc` | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | `0a343e3f` (M) | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | `807f1b6d` | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| final tip | FINAL |
+| `c48a598a` (the commit after it adds only this row) | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 
 `npm test` at M: 3,502 passed, 3 expected fail, 4 skipped (the env-gated replays). The routing gate is read as aggregate pass only.
 
