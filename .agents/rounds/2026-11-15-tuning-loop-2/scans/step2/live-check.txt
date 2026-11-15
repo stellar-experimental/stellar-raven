@@ -1,0 +1,7 @@
+async()=>{const r=await stellarOrg.search_site({query:"strategy",limit |   1691 chars | guard 1 | org-detail true | docs-detail false | blocks --- SOURCE METADATA --- > --- EVIDENCE CHECKPOINT ---
+async()=>{const r=await stellarOrg.get_page({path:"/foundation/strateg |   1487 chars | guard 1 | org-detail false | docs-detail false | blocks --- SOURCE METADATA --- > --- EVIDENCE CHECKPOINT ---
+async()=>{const s=await stellarOrg.search_site({query:"roadmap",limit: |   1428 chars | guard 1 | org-detail false | docs-detail false | blocks --- SOURCE METADATA --- > --- EVIDENCE CHECKPOINT ---
+async()=>await stellarDocs.search_docs({query:"trustline",hitsPerPage: |   2481 chars | guard 0 | org-detail false | docs-detail true | blocks --- SOURCE METADATA --- > --- EVIDENCE CHECKPOINT ---
+async()=>({sum:1+1})                                                   |      9 chars | guard 0 | org-detail false | docs-detail false | blocks 
+search                                                                 |   5447 chars | 7 hits | stellarDocs,stellarDocs,skills,skills,stellarDocs,skills,scout
+search                                                                 |   4360 chars | 4 hits | stellarOrg,stellarOrg,lumenloop,lumenloop
