@@ -309,3 +309,22 @@ committed rule reproduces the plan's 17 exactly), only for `sep` and `cap`, neve
 the call the sentence names returns an exact row for 22 of 22 distinct identifiers (the ceiling); a named identifier that does not exist returns none. Measured: one sentence is 175 to 181 characters (177 for `SEP-45`),
 three at most 541, 2% of a median firing result. All gates exit 0 on the product commit and on the tip. **Open for the orchestrator:** the independent review of the diff before R; D1 (a series name joined to digits, `audit-2024`, fires:
 the manifest cannot say which series are numbered); T for 17 rows (2, 3 or 4 by the three flip rates; 3 proposed); one incidental exposure of a failed-gate table (D7). **No paid run is authorized by this entry.**
+
+### 2026-11-15: step 3 review reconciled; the pointer is frozen at `940dc013`
+
+Review: [STEP-3-REVIEW.md](2026-11-15-tuning-loop-2/STEP-3-REVIEW.md) (Claude Opus 5.5, the stable Claude fallback for the matched Codex frontier tier; author Sonnet 5.5, orchestrator Fable 5.2). Verdict: fit to measure after two text fixes
+to R's reading rules. Record: [STEP-3-IMPL.md](2026-11-15-tuning-loop-2/STEP-3-IMPL.md) section 11. Implementer `loop2-fix3` (Claude Sonnet 5.5).
+
+**Rulings (orchestrator, direct instruction, all adopted).** B1: R0 measures the per-fire follow rate against the replay's per-fire baseline (7 of 163), with the row share reported beside it. B2: H3 per pass at
+T = 3 (A4's rule at P0's 0.13 for n = 17; "T = 2" in the earlier text used the wrong convention), the pooled 34-row-pass net at T = 4; R1 needs one traced up pass and no contrary pass; H1 and H2 count a traced down in either pass.
+D1: a series name joined to digits fires; A6's two sentences are superseded in `PLAN-AMENDMENTS.md` by the review's text, as a dated supersession (the old sentences stay). D2: accepted. F3 and F4: recorded only.
+
+**Code, one commit: `940dc013`** (the frozen Worker commit; later commits are docs and data). F1: the joined token reads at most six digits. F2: a token whose letters are title case (`Sep-24`, `Cap-12`) is not an
+identifier; all-upper and all-lower are. **F2 sits in the one shared module, so it also changes code deployed in loop 1: arm 2's exact-row matching.** `Sep-24` no longer fires the pointer and no longer marks `sep-0024`
+exact; `SEP-24` and `sep-24` still do (unit cases for both hosts). One loop 1 unit case that pinned `Sep-43` as exact now says `SEP-43`. An all-upper month joined to digits (`10-SEP-2024`) still reads as an identifier; the review
+chose that over a month list. Free replays, old and new code: **the 90 live research queries from loop 1 give byte-identical reports (90 of 90 ok, 17 with an exact row), and the nine-run step 3 replay gives byte-identical
+reports: no stored output changes.** One difference that this change did not cause: the committed `replay-report.json` differs from the committed reader's own output in two `researchedWithIt` flags (arm 1 and P2, row
+`q-comp-aml-analytics-vendors`), so two cells of the 17-row table move (arm 1 3 to 2, P2 2 to 1); R's counts should come from R's own transcripts (STEP-3-IMPL section 11).
+
+`git revert 940dc013 a49ee918` (in that order) returns the product paths to `bd9719fb` (checked in a scratch worktree). **Open for the orchestrator:** the held-out QA read should be analysed by a lane other than `loop2-impl3`; a TODO item for the
+fingerprint gate's failure message; the `eval/gates.json` note wording; the `live-drift-resolution` checklist line for `documentSeries`. **R is not authorized by this entry. No paid run is authorized.**

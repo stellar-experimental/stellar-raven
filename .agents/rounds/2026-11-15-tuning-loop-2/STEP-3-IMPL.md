@@ -266,15 +266,17 @@ the secrets scan and the generated-artifacts diff; both exit 0.
 
 ## 9. The targeted read, R (not run; needs the independent review reconciled and the owner's authorization line in the ledger)
 
+> **Amended by the review reconciliation (end of this file):** the R0 row, the pass-combining text before the table, H3's T and the A6 row below carry the step 3 review's text (B1, B2, D1, T = 3). The rows as first written are in `git show aaabd4ed:.agents/rounds/2026-11-15-tuning-loop-2/STEP-3-IMPL.md`.
+
 **Decision it changes:** keep or revert `a49ee918` (plan section 1, item 5). **Smallest run:** the 17 identifier rows twice (34 collections). The control is P2, the surface this step builds on; each changed row is also compared
 with its P0 and P1 samples (the "returned" rule). Estimate USD 6.8 (P2: USD 0.20 per case; the plan's 6.5), **cap USD 8.5** (pass 1 capped at 4.5, pass 2 at 4.0), about 22 minutes. A cap stop voids that pass; no resume, no re-judge. Stop rules are
 the keep rule below.
 
 ```sh
-cd /home/tyler/code/raven-wt/gca-eval && git fetch origin && git checkout --detach "$R_COMMIT"   # tune/loop-2, this file's commit or later
+cd /home/tyler/code/raven-wt/gca-eval && git fetch origin && git checkout --detach "$R_COMMIT"   # tune/loop-2, the reconciliation commit or later
 npm ci && npm run typegen && test -z "$(git status --porcelain)"
-# The Worker must be code-identical to a49ee918 (the pointer):
-git diff --quiet a49ee918 HEAD -- src scripts catalog specs package.json wrangler.jsonc env.d.ts || { echo "Worker changed since a49ee918"; exit 1; }
+# The Worker must be code-identical to 940dc013 (the pointer with the review's F1 and F2):
+git diff --quiet 940dc013 HEAD -- src scripts catalog specs package.json wrangler.jsonc env.d.ts || { echo "Worker changed since 940dc013"; exit 1; }
 SERVER_REVISION=$(git rev-parse HEAD); PORT=8806
 hc run --bg --name r-server --cwd /home/tyler/code/raven-wt/gca-eval npm run dev:eval -- --port "$PORT"
 hc wait r-server --output Ready        # then the initialize POST from the run-evals skill must return 200
@@ -314,14 +316,22 @@ vector `046b0280…27e8`, stability register `4322dd4d…f458`, `--max-panel-cas
 
 **Keep rule, restated (PLAN.md section 4, "R", with A4 and A6).**
 
+Each row has two R verdicts, one per pass, compared with its P2 verdict (P0 and P1 by reading rule b).
+
+- **H3** is applied to each pass's 17-row untraced net, at T = 3, and fails if either pass reaches it. The pooled 34-row-pass net is reported with its own T = 4 (n = 34, p = 0.13).
+- **R1:** a row counts up when it is up in at least one pass by a trace to an exact row the pointer led to, and it is not down in the other pass.
+- **H1 and H2:** a row counts down when it is down by a trace in either pass.
+
+The tier-matched net is read first (A4).
+
 | Rule | Keep | Otherwise |
 |---|---|---|
-| R0, delivered | The sentence is in every execute result of the 34 passes where the replay (`test/replay-identifier-pointer.test.ts` on R's own transcripts) predicts it, and in none where it does not; **and** research is called with the identifier afterwards in a larger share of passes than the same rows showed without the sentence: **above 33%**, the highest of the stored shares (P0 25%, P1 29%, P2 23%; the four loop 1 runs 19% to 33%). For reference, arm 1's detail pointer was followed on 48% of rows | A missing or extra sentence is a build fault and voids the run for the pointer. A share at or below 33% is "inconclusive" |
-| R1, gain | Two **different** rows go up, each traced to an exact row the pointer led to, and traced ups outnumber traced downs. Two is the skill's bar for acting | Inconclusive |
-| H1 | No row becomes `wrong` by a traced down | Revert |
-| H2 | No row that was correct in the control goes down by a traced down; every trap row among the 17 keeps its trap behaviour (a failure classed as a judge artifact is recorded and does not revert) | Revert |
-| H3 | The untraced net (downs minus ups) is below T. T for n = 17 under A4's model at P0's measured flip rate 0.13 is **2**; at the repository's 0.16 it is 3; at loop 1's mixed-tier 0.34 it is 4. **Proposed T = 3** (the middle value, as T = 5 was for the 58 rows), the orchestrator's to fix before the read; report the tier-matched net and its own T beside the all-rows net | Stop and re-plan; a result that reaches T only on all rows is "no decision" (A4) |
-| A6 read list | Every firing whose series is not `sep` or `cap` is listed, and each is a defect. The replay predicts none | Fix the rule (D1) |
+| R0, delivered and followed | (a) The sentence appears in every execute where the replay of R's own transcripts predicts it, and in no other. A miss either way is a build fault and voids the run for the pointer. (b) **Follow rate:** of the delivered sentences, the share followed by a call to `scout.searchResearch` whose arguments name that identifier, later in the same pass of the row. It passes above 33%. The per-fire baseline from the replay is 7 of 163 (4%): research for the fired identifier in a later execute of the row, with no pointer, over nine runs. Arm 1's detail pointer is the reference at 48%. (c) Reported, not decided: the row share by the committed definition, per pass and pooled, against Q7's bar, above 33% and above P1's 29%. Also reported: re-fires, meaning a sentence for an identifier the pass had already researched. | (a) a miss either way is a build fault and voids the run for the pointer. (b) at or below 33% is "inconclusive" |
+| R1, gain | Two **different** rows go up, each traced to an exact row the pointer led to, and traced ups outnumber traced downs. Two is the skill's bar for acting. A row counts up as the pass-combining text above says | Inconclusive |
+| H1 | No row becomes `wrong` by a traced down, in either pass | Revert |
+| H2 | No row that was correct in the control goes down by a traced down, in either pass; every trap row among the 17 keeps its trap behaviour (a failure classed as a judge artifact is recorded and does not revert) | Revert |
+| H3 | The untraced net (downs minus ups) of each pass's 17 rows is below **T = 3**; H3 fails if either pass reaches it. T = ⌈1.645 × √(n·p)⌉ with n = 17 and P0's measured flip rate p = 0.13 (A4's rule): 3. At the repository's 0.16 it is also 3, at loop 1's mixed-tier 0.34 it is 4. The pooled 34-row-pass net is reported with its own **T = 4** (n = 34, p = 0.13). Report the tier-matched net and its T beside the all-rows net | Stop and re-plan; a result that reaches T only on all rows is "no decision" (A4) |
+| A6 read list | Every firing whose series is not `sep` or `cap` is listed, with whether the agent followed it. Each one is a recorded cost defect; it reverts only through H1 or H2 by a traced down (A6 as superseded by D1). The replay predicts none | Report; the general fix is for a later loop (fire only for a series that has produced an exact row) |
 | Cost flags | Cost per answer up more than 20% or median turns up by more than 1 on unchanged rows is a flag, not a rule | Report |
 
 **Inconclusive reverts** (`git revert a49ee918`), and item 5 leaves the loop red with this record. **A6's generality note:** the pointer is derived from the catalog and is not a boost; it has exactly one instance today (one operation of
@@ -331,10 +341,89 @@ one source, two series that fire), so a keep is evidence for that operation only
 trace classed as noise is "returned" and counts only if the R transcript traces it. (c) Report the research-call share on the 17 rows by the committed definition and by argument (section 6.2), per pass. (d) Report per row whether the sentence was
 delivered, which identifier, and whether a research call followed in a later execute of the pass. (e) Judge tiers are reported for every changed row; the tier-matched net is read first.
 
-**What an R result must not be read as:** an improvement for any other source of documents or any other series than `sep` and `cap`; a result for Codex, Grok, OpenCode, the Playground or claude.ai (the Playground gets the same sentence, not measured); a result about
-`search` ranking of the research lane, which stays red (plan section 1, item 5: three reviewed mechanisms failed and PH3 is the owner's); evidence on any set but these 17 rows; a held-out result.
+**What an R result must not be read as** (the review adds the last five): an improvement for any other source of documents or any other series than `sep` and `cap`; a result for Codex, Grok, OpenCode, the Playground or claude.ai (the Playground gets the same sentence, not measured); a result about
+`search` ranking of the research lane, which stays red (plan section 1, item 5: three reviewed mechanisms failed and PH3 is the owner's); evidence on any set but these 17 rows; a held-out result. Also not: evidence about the five non-`sep`/`cap` series, which cannot produce exact rows today; evidence about title-case or month-shaped tokens (F2: title case no longer fires); evidence about the follow cost in sessions longer than these rows (re-fires); evidence that an exact standard row is a better source than the Docs page or skill for how-to questions; for build-stage runs, anything beyond the two build-stage rows it holds.
 
 ## 10. State
 
 Everything is committed and pushed on `tune/loop-2`. The worktree was clean at each gate run. `step3-server` is killed and ports 8812 and 8813 are closed; two scratch worktrees (the before-manifest routing comparison, the revert check) were
 removed. Nothing in `gca-eval` was touched. No paid run was started or authorized.
+
+## 11. Review reconciliation
+
+Review: [`STEP-3-REVIEW.md`](STEP-3-REVIEW.md) (Claude Opus 5.5, tier Claude Opus, fallback for the matched Codex frontier tier; author Sonnet 5.5, orchestrator Fable 5.2). Implementer of this section: Claude Sonnet 5.5, terminal `loop2-fix3`.
+The orchestrator adopted all of it by direct instruction. **Frozen Worker commit: `940dc013`** (one code commit on top of `38df1477`; every later commit is docs and data only, and R's guard checks that).
+`git diff 940dc013 HEAD -- src scripts catalog specs package.json wrangler.jsonc env.d.ts` must be empty. `git revert 940dc013` alone returns the token module to `a49ee918`'s.
+
+| ID | Ruling | Where it landed |
+|---|---|---|
+| B1 | Adopted. R0 is the per-fire follow rate against the replay's per-fire baseline (7 of 163), plus the row share reported beside it | Section 9, the R0 row (the review's exact text) |
+| B2 | Adopted. H3 per pass at T = 3, pooled T = 4; R1 up needs one traced pass and no contrary pass; H1 and H2 down on either pass | Section 9, the text before the table; the R1, H1, H2, H3 rows |
+| D1 | Adopted. Every plain-letter series fires; the R read lists each non-`sep`/`cap` firing with whether it was followed; each is a recorded cost defect | `PLAN-AMENDMENTS.md` A6, as a dated supersession (the old sentences stay); section 9's A6 row |
+| D2 | Accepted: the series rule uses arm 2's identity fields (`source` and `url` on rows) | Section 8, D2, unchanged |
+| T | 3 per pass (A4's rule at P0's 0.13 for n = 17), 4 pooled. Section 9's earlier "T = 2 at 0.13" used the wrong convention | Section 9, the H3 row |
+| **F1** | **Done.** `JOINED_TOKEN_RE` reads `\d{1,6}`; a run of seven or more digits fails the `\b` and the token is skipped. Unit case: `SEP-` + 200 zeros + `45`, `sep` + 50 nines, seven digits: none; six digits and `CAP-0046` still read; the pointer is silent for the long token | `940dc013`, `test/identifier-pointer.test.ts` |
+| **F2** | **Done, in the one shared module, for both hosts.** A token whose letters are title case (`[A-Z][a-z]+`: `Sep-24`, `Cap-12`) is not an identifier; all-upper and all-lower are. It applies to the joined and the spaced form, so **arm 2's exact-row matching (loop 1 code, deployed) changes too**: `Sep-24` and `Sep 24` no longer mark `sep-0024` exact. Unit cases: both forms, both hosts, `SEP-24` and `sep-24` still fire and still mark | `940dc013`. One loop 1 test pinned `see Sep-43 please` as exact; it now says `see SEP-43 please` (the case is covered by the new title-case test) |
+| F3 | Record only. (a) A research call that named the identifier with the wrong filter (`{ q: "SEP-45", source: "cap" }`) silences the pointer; the review's optional fix (count a call as covering the identifier only when its filter is that series or absent) is **not** made. (b) The pointer is per `execute`, so a later execute that names a researched identifier fires again; R counts re-fires after a follow (section 9, R0 (c)) | R0 (c) |
+| F4 | Record only. The pointer renders in build-stage runs, where the CANDIDATE block is suppressed. The rows `q-soroban-oz-token` and `q-nft-vault-contract-standards` are among the 17: R lists their follow costs | R reading below |
+
+**What F2 does not remove.** An all-upper month joined to digits (`10-SEP-2024`, `2024-SEP-10`) still reads as `SEP-2024` or `SEP-10`: the rule is letter case, not a month list. The review chose this: any month list would be vocabulary. A title-case form of a real identifier (`Sep-45`, `Sep 45`) is now ignored by both hosts, so a person who types it gets neither the pointer nor an exact row.
+
+**Replay after the change (F2 touches loop 1 code, so both replays were re-run; free, no model).**
+
+| Check | Result |
+|---|---|
+| The 90 loop 1 research queries, live against Scout (`test/replay-exact-rows.test.ts`, `RAVEN_REPLAY_LIVE=1`, the 79 stored baseline tuning rows selected by id first; 81 stored queries plus nine probes) | Run on `a49ee918`'s token module and on `940dc013`'s, back to back. **90 of 90 ok both times, 17 calls with an exact row both times, and the two report files are byte-identical** (query, outcome, rows, exact rows, caveat, top three, ledger count). No stored output changes. 21 of the 90 queries hold a title-case word and digits (`Protocol 21`, `Tier 1`, `Pi Network`…): none is a series, so none moves. Output: `scans/step3/review-live-replay-90.json` |
+| The nine-run step 3 replay (`test/replay-identifier-pointer.test.ts`, nine stored runs, rows by id first) | Run on `a49ee918`'s token module and on `940dc013`'s: **the report files are byte-identical.** No stored output changes: the fires, lengths and rows are the same. No title-case token and no digit run over six appears in any stored script that names a series |
+| **A pre-existing difference, not caused by this change** | Both runs above differ from the committed `scans/step3/replay-report.json` in two flags: `researchedWithIt` for `q-comp-aml-analytics-vendors` in arm 1 and in P2 is `true` in the committed report and `false` when the committed test and reader are run. `replay-summary.md` moves in two cells of its "17 identifier rows" table: "Research called with a series identifier in the row", arm 1 3 to 2 and P2 2 to 1. The committed outputs were produced by a version of the reader that is not committed: the committed reader cannot follow the helper call `q(scout.searchResearch, { q: "SEP-12 KYC API purpose", source: "sep" })` in strict mode, although that call does name SEP-12 (a read of the stored script). The pointer's fires, lengths and cap counts are not affected (they match). The committed report and summary are left as they are; `STEP-3-IMPL.md` section 6.2's "P2 2" follows the committed report. **For the orchestrator:** R's per-pass counts of research with an identifier should come from the transcripts of R's own runs, not from this reader |
+
+**Reading additions for R (from the review, section 6 and 7).** Beyond section 9's reading rules:
+- the re-fire count after a follow (R0 (c));
+- for each of the 17 rows, the cost of a follow: calls and turns added; in particular the two build-stage rows (F4);
+- the Docs or skill substitution: a Docs or skill call present in P0, P1 or P2 and absent after a follow, traced per row (a down by this route is the pointer's harm; a judge artifact is recorded and does not revert);
+- every firing whose series is not `sep` or `cap`, with whether it was followed (D1).
+
+**Open follow-ups from the review, not made here (the orchestrator's call).** (1) The held-out QA read at the end of the loop should be analysed by a lane other than `loop2-impl3` (D7). (2) `.agents/TODO.md` could take an item: the fingerprint gate's failure message prints per-case routing tables, which a gate failure can repeat. (3) `eval/gates.json`'s note should say "495 cases compared per case; the 49 holdout-lane cases by gate totals" the next time the file is touched. (4) The `live-drift-resolution` checklist should read a new `documentSeries` field in a manifest diff (review section 1(c)).
+
+**The final R command** (section 9's block, with the Worker guard on `940dc013`; nothing else changed: the surface pin, the agent binary, the probe, the remote vector, the register, the judge cap and the budgets are the same. R is still **not authorized by this file**):
+
+```sh
+cd /home/tyler/code/raven-wt/gca-eval && git fetch origin && git checkout --detach "$R_COMMIT"   # tune/loop-2, the reconciliation commit or later
+npm ci && npm run typegen && test -z "$(git status --porcelain)"
+# The Worker must be code-identical to 940dc013 (the pointer with the review's F1 and F2):
+git diff --quiet 940dc013 HEAD -- src scripts catalog specs package.json wrangler.jsonc env.d.ts || { echo "Worker changed since 940dc013"; exit 1; }
+SERVER_REVISION=$(git rev-parse HEAD); PORT=8806
+hc run --bg --name r-server --cwd /home/tyler/code/raven-wt/gca-eval npm run dev:eval -- --port "$PORT"
+hc wait r-server --output Ready        # then the initialize POST from the run-evals skill must return 200
+node eval/report-live-surface.mjs --port "$PORT" --expect-source-revision "$SERVER_REVISION" \
+  --expect-sha256 42ec61020a5f38c73ac30eb204ff424f30220f68ee3827373071c077ada8f17f --json /tmp/raven-eval-surface-r.json
+# Stop if the report does not show: instructions 1899 chars, sha 67a6bd0b57da385b412a5dc47dc3de3b8ae65f4b39e3a862cb53deec659c6c00,
+# search 1960, execute 1964, descriptions 3924 (all equal to P2's; --expect-sha256 already fails the call on a surface mismatch).
+
+export DISABLE_AUTOUPDATER=1
+PIN_BIN=$(mktemp -d) && ln -s ~/.local/share/claude/versions/2.1.325 "$PIN_BIN/claude" && export PATH="$PIN_BIN:$PATH"
+AGENT_BINARY_SHA256=$(sha256sum "$PIN_BIN/claude" | cut -d' ' -f1)   # must be 0dc4f4a9a165fc60746d7ae8489712e5fc352f1e7ad4eb22e7141bd0812eb0cf
+AGENT_ENVIRONMENT_SHA256=$(node --input-type=module -e 'import { agentEnvironmentIdentity } from "./eval/lib/executable-identity.mjs"; process.stdout.write(agentEnvironmentIdentity().sha256)')
+REMOTE_IDENTITY_PROBE=eval/qa/probe-remote-identities.mjs
+REMOTE_IDENTITY_PROBE_SHA256=$(shasum -a 256 "$REMOTE_IDENTITY_PROBE" | cut -d' ' -f1)   # must be aabfb83fb8e956856d70f9b5657ea6fca2f64551073812fb646b3689a8f28d99
+REMOTE_IDENTITY_SHA256=$(env -i PATH="$PATH" "$REMOTE_IDENTITY_PROBE" --stable-sha256)   # must equal P0's, P1's and P2's: 046b02808eabfdca9477d7e90c2d3ef3a15729911a86280ba4f91471c4a727e8 (a moved vector is reported)
+STABILITY_REGISTER=/home/tyler/code/raven-wt/gca-eval/eval/qa/judge-stability.json   # sha 4322dd4d1ebfc30bc02a9def008039aba4f4b2395b1f9da5cabef56ec24bf458
+IDENTIFIER_IDS=$(tr -d '\n' < .agents/rounds/2026-11-15-tuning-loop-2/scans/step3/identifier-ids.txt)
+test "$(echo "$IDENTIFIER_IDS" | tr ',' '\n' | sort -u | wc -l)" = 17   # the job count, before spend
+
+# One judge policy (R2): P0's value (58), read from P0's results file, on both passes.
+P0_RESULTS=eval/qa/results/2026-11-15T04-31-41-variantA.json
+MAX_PANEL_CASES=$(node -e 'process.stdout.write(String(JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")).meta.judgeTiering.maxPanelCases))' "$P0_RESULTS")
+test "$MAX_PANEL_CASES" = 58 || { echo "P0 judge cap is $MAX_PANEL_CASES, not 58: stop and ask the orchestrator"; exit 1; }
+
+COMMON="--variant A --port $PORT --max-panel-cases $MAX_PANEL_CASES --stability-register $STABILITY_REGISTER --server-revision $SERVER_REVISION \
+  --expect-sha256 42ec61020a5f38c73ac30eb204ff424f30220f68ee3827373071c077ada8f17f \
+  --expect-agent-binary-sha256 $AGENT_BINARY_SHA256 --expect-agent-environment-sha256 $AGENT_ENVIRONMENT_SHA256 \
+  --remote-identity-probe $REMOTE_IDENTITY_PROBE --expect-remote-identity-probe-sha256 $REMOTE_IDENTITY_PROBE_SHA256 \
+  --expect-remote-identity-sha256 $REMOTE_IDENTITY_SHA256"
+node eval/qa/run-qa.mjs $COMMON --ids "$IDENTIFIER_IDS" --max-budget-usd 4.5     # pass 1: the 17 identifier rows
+node eval/qa/run-qa.mjs $COMMON --ids "$IDENTIFIER_IDS" --max-budget-usd 4.0     # pass 2: the same 17 rows (total cap 8.5)
+# then, free: npm run eval:plan -- eval/qa/results/<stamp>-variantA.json ; hc kill r-server
+```
+
+R's cap, time and stop rules are section 9's, with the review's R0, the pass-combining text and T = 3 per pass. Inconclusive reverts the pointer with `git revert 940dc013 a49ee918` (in that order: `940dc013` edits the token module that `a49ee918` created, so reverting `a49ee918` alone no longer applies). Arm 2 shares that module, so its exact-row matching returns to loop 1's form with it.
