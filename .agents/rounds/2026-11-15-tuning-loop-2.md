@@ -49,7 +49,8 @@ per-row output; aggregate gate counts stay allowed. Their ids are not recorded a
 |---|---|---|---|---|
 | `loop2-plan` | Claude Fable 5.2 | (finished) | Plan written | [PLAN.md](2026-11-15-tuning-loop-2/PLAN.md) |
 | plan review | Claude Opus 5.5 | (finished) | Reviewed: launch after amendments | [PLAN-REVIEW.md](2026-11-15-tuning-loop-2/PLAN-REVIEW.md) |
-| `loop2-impl` | Claude Sonnet 5.5 | `t1pk`, parent `kalepail-c3614nvxph-mbp/t40f` | Step 1 free work done and review reconciled (R1 to R10); awaits P0 and the P1 authorization | [STEP-1-IMPL.md](2026-11-15-tuning-loop-2/STEP-1-IMPL.md) |
+| `loop2-impl` | Claude Sonnet 5.5 | `t1pk`, parent `kalepail-c3614nvxph-mbp/t40f` | Step 1 free work done and review reconciled (R1 to R10); P1 ran, step 1 decided | [STEP-1-IMPL.md](2026-11-15-tuning-loop-2/STEP-1-IMPL.md) |
+| `loop2-impl2` | Claude Sonnet 5.5 | `t1ps`, parent `kalepail-c3614nvxph-mbp/t40f` | Step 2 free work done (items 4, 2, 3 and the scans); awaits the independent review, the A7 check and the P2 authorization | [STEP-2-IMPL.md](2026-11-15-tuning-loop-2/STEP-2-IMPL.md) |
 
 ## Ledger
 
@@ -175,5 +176,17 @@ Orchestrator direct instruction (2026-11-15): **step 1 is decided by rule. The g
 
 ### 2026-11-15: step 2, free work (no paid run)
 
-Implementer `loop2-impl` (Claude Sonnet 5.5) under the direct instruction of the orchestrator: the delivery text (item 4), the `stellarOrg` source
-(item 2), seven cards (item 3), the committed scans, and `STEP-2-IMPL.md`. No model-calling command runs. **P2 is not authorized by this entry.**
+Implementer `loop2-impl2` (Claude Sonnet 5.5, `t1ps`) under the direct instruction of the orchestrator; record: [STEP-2-IMPL.md](2026-11-15-tuning-loop-2/STEP-2-IMPL.md).
+Commits, each reverting alone (section 1 there gives the order): item 4, the delivery text `0b07783a`; item 2, the `stellarOrg` source, a merge commit
+`2796299c` (the map's source line and authority sentence dropped, not re-homed per Q6; one `detail` edge added; `eval/gates.json` re-stamped); item 3,
+seven cards `160cd1fa`; the step 2 scans `b3709f74`; live checks and a guard test `6523ee6e`. All seven gates exit 0 on every tip.
+
+- **Lengths, assembled:** instructions 1,899 (`67a6bd0b…6c00`, unchanged); `search` 1,960 (73 under Grok's 2,033); `execute` 1,964 (69 under; 4 under on `main`). First lines: instructions 133; `search` 116;
+  `execute` 115 (OpenCode lists 117). The `search` opening is generated from the manifest (A5), so R7 holds: the map removal ships with it.
+- **Routing, 544 rows:** 0 grade changes, 0 top-1 changes, 8 top-five lists gain a `stellarOrg` operation (counts only). Off-golden 40: adapter recall 33/40 and 37/40; catalog reach at 5: 8/40 and 14/40.
+- **Seven cards:** a default page is 8,889 bytes against 6,992 on average (max 16,839, none over Grok's clip); 0.11% to 0.14% of input tokens per question on P0 and P1.
+- **Predicted intrusions** on stored queries: `q-protocol-tier1-requirements`, `q-soroban-reentrancy` and `q-ti-parse-raw-ledger-data` would see a `stellarOrg` card in place of a Docs or Lumenloop operation; P2 reads them.
+- **Not run:** the client probe harness (it needs each client's model), the reachability record for the 12 source rows, anything on Cloudflare.
+
+Open for the orchestrator: R8 (SDF site as a corroborating family: left out, so each `stellarOrg` result carries the guard line); whether the `detail` edge and its `part` nouns stay;
+the independent review of the step 2 diff before P2; the A7 Cloudflare check (preview URLs are off in `wrangler.jsonc`); P2's authorization line. **No paid run is authorized by this entry.**
