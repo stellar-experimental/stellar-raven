@@ -415,3 +415,21 @@ Work on the kept set (free, no model call): the pointer removed in `91f6a2d2`, t
 TODO items (`.agents/TODO.md`, "Tuning loop 2 follow-ups" and the items this loop closes). Review findings marked "before ship" or "fix now": F1 (the digit bound) was the only one, applied in
 `940dc013` and kept; S1, S2 and the R8 brief were applied in `bd9719fb`. What is left, and why, is in KEPT-SET.md. **No paid run is authorized by this entry.**
 
+
+## Held-out harm check: thresholds and authorization
+
+Kept set: `tune/loop-2`, code tip `ac5756a4` (KEPT-SET.md); surface hash equals P2's.
+
+**Thresholds recomputed from P0's measured rate and fixed before launch (Claude Fable 5.2,
+2026-11-15).** The plan set "ship unless correct is at most 42 or wrong is at least 13" at a 20%
+flip rate. P0 measured 0.13 (6 flips in 46 comparable rows). Scaling the plan's two margins by
+the square root of 0.13 over 0.20 (about 0.81) gives margins of about 7 and 5, so the reading is:
+**ship unless correct is at most 44 or wrong is at least 12.** This is the orchestrator's
+arithmetic on the plan's null model, not a new measurement; it is stricter than the plan's reading.
+Reference: loop 1's read of its kept surface (51 correct, 61 partial, 7 wrong; judge-panel cap
+119, as here), whose sealed results file is the pairing baseline. No held-out result is called an
+improvement.
+
+**Authorization.** One collection of the held-out set on the kept commit, launched by the
+orchestrator with `eval/qa/heldout-read.sh` from the sealed id list, `--max-budget-usd 30`, counts
+only; results sealed outside the repository.
