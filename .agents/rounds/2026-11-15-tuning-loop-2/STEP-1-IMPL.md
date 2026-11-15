@@ -339,3 +339,98 @@ Pins: models are the runner's defaults (`claude-sonnet-5-5` answering, `claude-s
 probe `aabfb83f…8d99`. P0 must use the same pins except the surface hash and revision, which differ by design (`main` at `0a603453`). Compare rows only on
 equal `caseInputSha256`. Review coverage and the standing read are plan section 4: use `claim-read-packets.mjs` and `claim-read-brief.md` on every P1
 answer that holds a claim word (with or without the guard), with uncut results.
+
+## 8. Review reconciliation
+
+Review: [`STEP-1-REVIEW.md`](STEP-1-REVIEW.md) (Claude Opus 5.5). The orchestrator adopted R1, R2 and R3 and the non-blocking findings as
+written. The guard wording, `b8ea957d` and `0a343e3f` are untouched (`git diff 0a343e3f HEAD -- src scripts catalog package.json wrangler.jsonc`
+is empty). Tuning rows only, selected by id first; no model call, no spend beyond five subscription subagent reads of stored text.
+
+| Finding | Done |
+|---|---|
+| R1 | Rubric rule in `PLAN-AMENDMENTS.md` ("Post-review amendments"). `classify` in `eval/qa/corroboration-rubric.mjs` takes `namedSource` and returns `unreturnedAttribution`; a violation is (a) bare class 3, 4 or 5, or (b) attributed, or hedged with a named source, at class 5. `claim-read-brief.md` carries the rule, the "Unreturned attribution" column and the source-scoped absence exception. Ninth fixture (an attribution to a roundup no result returned); tests assert it counts and that a hedge naming no source, and an attribution at class 1 to 4, do not. Five class 5 rows re-read from uncut results; both references re-tallied (below) |
+| R2 | The P1 command below reads `maxPanelCases` from P0's results file and passes it on all three calls. Recorded in the ledger: the plan's 100 is superseded, and P0-against-arm-1 null pairs 58 with 50 (both at or above the run size, no row skipped) |
+| R3 | The A3 rule applies to P1 pass 1 only; the repeat passes are reported per row. In the amendments section and the ledger |
+| R4 | `PLAN-AMENDMENTS.md` A3 block now spans review lines 172 to 190 and A6 239 to 248, recopied byte for byte (a script checked the old block was the prefix and the new one the whole range) |
+| R5, R7, R8, R10 | Recorded as constraints in the amendments section and the ledger; no code change |
+| R6 | License-table text recorded in the amendments section ("the guard on results under 20,000 bytes only", Grok CLI column) |
+| R9 | **Not applied.** Optional. It changes the guard-row set and the stored reference sample after both were fixed. The orchestrator can order it before the P0 read starts |
+| Section 9 (read protocol) | One reader model and brief for P0 and P1, interleaved packets, every violation and unreturned attribution to a second reader. In the amendments section |
+
+### Re-read and re-tally (R1)
+
+Reads: [`scans/reference-read-r1.md`](scans/reference-read-r1.md); summary appended to [`scans/reference-read.md`](scans/reference-read.md). All three
+first-read "fabrications" were truncation artifacts: the 2026-11-06 weekly roundup row, the Protocol 24 guide's changelog line and the Halborn
+report 83 text are all in a returned result (I checked the first two against the packets). The two agent-identity absence claims are hedged and
+source-scoped, so they are not unreturned attributions.
+
+| Reference | Passes read | Claim statements | Violations (a or b) | Class 3 bare | Unreturned attribution | Passes with a violation |
+|---|---:|---:|---:|---:|---:|---:|
+| baseline (79-row run) | 15 | 35 | 0 | 0 | 0 | 0 |
+| step 0-prime | 7 | 13 | 1 | 0 | 0 | 1 |
+| arm 1 | 7 | 18 | 0 | 0 | 0 | 0 |
+| with map, no guard (baseline + step 0-prime + arm 1) | 29 | 66 | 1 | 0 | 0 | 1 |
+| no map, no guard (arm 3) | 9 | 21 | 1 | 0 | 0 | 1 |
+
+Per exposed answer: with the map 1 in 29 (0.034), no map 1 in 9 (0.111), as before. The fix changes no stored count; it closes the route by which
+P1 would score an invented source as clean. The statement counts rose by one in arm 1 and arm 3 because the uncut read found a second absence
+statement in each.
+
+### Corrected P1 command (not run)
+
+Preconditions the orchestrator owns: the P0 lane (`loop2-run`, server `p0-server`) has finished and released `/home/tyler/code/raven-wt/gca-eval`;
+the owner has written P1's authorization line in the ledger. `P0_RESULTS` is P0's stored results file; `P1_COMMIT` is this branch's pushed tip.
+Changes from section 7: `--max-panel-cases` comes from `P0_RESULTS` (R2), asserted to be 58; the stop rule and the read rule say pass 1 (R3).
+
+```sh
+cd /home/tyler/code/raven-wt/gca-eval && git fetch origin && git checkout --detach "$P1_COMMIT"   # tune/loop-2, this reconciliation commit or later
+npm ci && npm run typegen && test -z "$(git status --porcelain)"
+# The Worker must be code-identical to 0a343e3f:
+git diff --quiet 0a343e3f HEAD -- src scripts catalog package.json wrangler.jsonc || { echo "Worker changed since 0a343e3f"; exit 1; }
+SERVER_REVISION=$(git rev-parse HEAD); PORT=8799
+hc run --bg --name p1-server --cwd /home/tyler/code/raven-wt/gca-eval npm run dev:eval -- --port "$PORT"
+hc wait p1-server --output Ready        # then the initialize POST from the run-evals skill must return 200
+node eval/report-live-surface.mjs --port "$PORT" --expect-source-revision "$SERVER_REVISION" \
+  --expect-sha256 dcc295de120c6a6cb920ccfb3cbe5b25800ee3a94c8d5c55bf4f4461b9b24f18 --json /tmp/raven-eval-surface-p1.json
+# Stop if the report does not show: instructions 1899 chars, sha 67a6bd0b57da385b412a5dc47dc3de3b8ae65f4b39e3a862cb53deec659c6c00,
+# search 1930, execute 2029, descriptions 3959. --expect-sha256 already fails the call on a surface mismatch.
+
+export DISABLE_AUTOUPDATER=1
+PIN_BIN=$(mktemp -d) && ln -s ~/.local/share/claude/versions/2.1.325 "$PIN_BIN/claude" && export PATH="$PIN_BIN:$PATH"
+AGENT_BINARY_SHA256=$(sha256sum "$PIN_BIN/claude" | cut -d' ' -f1)   # must be 0dc4f4a9a165fc60746d7ae8489712e5fc352f1e7ad4eb22e7141bd0812eb0cf
+AGENT_ENVIRONMENT_SHA256=$(node --input-type=module -e 'import { agentEnvironmentIdentity } from "./eval/lib/executable-identity.mjs"; process.stdout.write(agentEnvironmentIdentity().sha256)')
+REMOTE_IDENTITY_PROBE=eval/qa/probe-remote-identities.mjs
+REMOTE_IDENTITY_PROBE_SHA256=$(shasum -a 256 "$REMOTE_IDENTITY_PROBE" | cut -d' ' -f1)   # must be aabfb83fb8e956856d70f9b5657ea6fca2f64551073812fb646b3689a8f28d99
+REMOTE_IDENTITY_SHA256=$(env -i PATH="$PATH" "$REMOTE_IDENTITY_PROBE" --stable-sha256)   # loop 1: 046b02808eabfdca9477d7e90c2d3ef3a15729911a86280ba4f91471c4a727e8 (a moved vector is reported, and P0's must equal it)
+STABILITY_REGISTER=/home/tyler/code/raven-wt/gca-eval/eval/qa/judge-stability.json   # sha 4322dd4d1ebfc30bc02a9def008039aba4f4b2395b1f9da5cabef56ec24bf458
+SPLIT_DIR=.agents/rounds/2026-11-15-tuning-loop-2/scans
+PANEL_IDS=$(cat "$SPLIT_DIR/panel-ids.txt"); GUARD_IDS=$(cat "$SPLIT_DIR/guard-ids.txt")
+test "$(echo "$PANEL_IDS" | tr ',' '\n' | sort -u | wc -l)" = 58 && test "$(echo "$GUARD_IDS" | tr ',' '\n' | sort -u | wc -l)" = 10   # job counts, before spend
+
+# One judge policy (R2): P0's value, not the plan's 100. 58 is the expected value; any other stops the run.
+P0_RESULTS=eval/qa/results/<P0 stamp>-variantA.json    # set by the orchestrator from P0's run
+MAX_PANEL_CASES=$(node -e 'process.stdout.write(String(JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")).meta.judgeTiering.maxPanelCases))' "$P0_RESULTS")
+test "$MAX_PANEL_CASES" = 58 || { echo "P0 judge cap is $MAX_PANEL_CASES, not 58: stop and ask the orchestrator"; exit 1; }
+
+COMMON="--variant A --port $PORT --max-panel-cases $MAX_PANEL_CASES --stability-register $STABILITY_REGISTER --server-revision $SERVER_REVISION \
+  --expect-sha256 dcc295de120c6a6cb920ccfb3cbe5b25800ee3a94c8d5c55bf4f4461b9b24f18 \
+  --expect-agent-binary-sha256 $AGENT_BINARY_SHA256 --expect-agent-environment-sha256 $AGENT_ENVIRONMENT_SHA256 \
+  --remote-identity-probe $REMOTE_IDENTITY_PROBE --expect-remote-identity-probe-sha256 $REMOTE_IDENTITY_PROBE_SHA256 \
+  --expect-remote-identity-sha256 $REMOTE_IDENTITY_SHA256"
+node eval/qa/run-qa.mjs $COMMON --ids "$PANEL_IDS" --max-budget-usd 14.5     # pass 1: 58 rows. The only pass the A3 violation rule counts (R3)
+node eval/qa/run-qa.mjs $COMMON --ids "$GUARD_IDS" --max-budget-usd 2.5      # pass 2: the 10 guard rows; reported per row (R3)
+node eval/qa/run-qa.mjs $COMMON --ids "$GUARD_IDS" --max-budget-usd 2.5      # pass 3: the 10 guard rows; reported per row (R3)
+# then, free: npm run eval:plan -- eval/qa/results/<stamp>-variantA.json ; hc kill p1-server
+```
+
+Spend, pins and stop rule are as in section 7 (about USD 14.8, cap USD 19.5, about 51 minutes). P1 reading: `claim-read-packets.mjs` and the amended
+`claim-read-brief.md` on every pass 1 answer with a claim word, with uncut results, and on P0's the same way, interleaved; pass 2 and 3 answers per row
+for the over-hedging trace and the "Guard delivered" row. Every violation and every unreturned attribution goes to a second reader.
+
+### Gates after this reconciliation (bare, exit codes)
+
+| Command | Exit |
+|---|---:|
+| `npm run typecheck` | 0 |
+| `npm test` (3,508 passed, 3 expected fail, 4 skipped) | 0 |
+| `npm run secrets:scan -- --tree` | 0 |

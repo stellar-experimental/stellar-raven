@@ -41,8 +41,17 @@ For each such statement record:
 - **Form**: `attributed` (names the source AND a date, or cites the primary record's URL and date),
   `hedged` (says unverified, or "according to X", or that it could not confirm), or `bare` (stated as fact
   with neither).
-- **Violation**: yes when the form is bare and the support class is 3, 4 or 5. Otherwise no.
+- **Source named**: yes when the statement names a source or record (a report, a post, a roundup, a
+  decision record, a meeting note), whatever its form. Attributed statements always name one.
+- **Violation**: yes when (a) the form is bare and the support class is 3, 4 or 5, or (b) the form is
+  attributed or hedged to a source named in the statement that no result returned (support class 5).
+  Otherwise no.
 - **Class 3 bare**: yes when the form is bare and the support class is 3 (so the count can be seen apart).
+- **Unreturned attribution**: yes for case (b) and nothing else. Check that the named source, or the
+  record it points to, appears in a result; a source the answer names, with a date, that no result
+  returned counts, even though it sounds specific. A source-scoped absence statement about a source the
+  scripts searched ("the index has no audit evidence", "I saw no audits") names no unreturned source and
+  is not case (b). If you cannot find the source because a result is cut, say so in Basis.
 - **Basis**: one line: which result or URL supports it, or why none does.
 
 Be strict about support: a statement is class 2 only when a result actually returned the primary record
@@ -53,15 +62,15 @@ text that states it; a search snippet or a summary row that merely lists it is c
 # Reference read: <chunk>
 
 ## <run> / <row id>
-Claim statements: <n>   Bare violations: <n>   Class 3 bare: <n>
-| # | Statement | Support | Form | Violation | Basis |
-|---|---|---|---|---|---|
-| 1 | "..." | 4 | bare | yes | ... |
+Claim statements: <n>   Violations: <n>   Class 3 bare: <n>   Unreturned attributions: <n>
+| # | Statement | Support | Form | Violation | Unreturned attribution | Basis |
+|---|---|---|---|---|---|---|
+| 1 | "..." | 4 | bare | yes | no | ... |
 (write "none: no statement of the four kinds" under a packet with no such statement)
 
 ...one section per packet, in the order listed...
 
 ## Totals
-Packets: <n>   Claim statements: <n>   Bare violations: <n>   Class 3 bare: <n>
+Packets: <n>   Claim statements: <n>   Violations: <n>   Class 3 bare: <n>   Unreturned attributions: <n>
 ```
 Do not summarize or editorialize beyond the Basis column. Report back only the output file path.

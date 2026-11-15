@@ -49,7 +49,7 @@ per-row output; aggregate gate counts stay allowed. Their ids are not recorded a
 |---|---|---|---|---|
 | `loop2-plan` | Claude Fable 5.2 | (finished) | Plan written | [PLAN.md](2026-11-15-tuning-loop-2/PLAN.md) |
 | plan review | Claude Opus 5.5 | (finished) | Reviewed: launch after amendments | [PLAN-REVIEW.md](2026-11-15-tuning-loop-2/PLAN-REVIEW.md) |
-| `loop2-impl` | Claude Sonnet 5.5 | `t1pk`, parent `kalepail-c3614nvxph-mbp/t40f` | Step 1 free work done, pushed; awaits the diff review and the P0 and P1 authorizations | [STEP-1-IMPL.md](2026-11-15-tuning-loop-2/STEP-1-IMPL.md) |
+| `loop2-impl` | Claude Sonnet 5.5 | `t1pk`, parent `kalepail-c3614nvxph-mbp/t40f` | Step 1 free work done and review reconciled (R1 to R10); awaits P0 and the P1 authorization | [STEP-1-IMPL.md](2026-11-15-tuning-loop-2/STEP-1-IMPL.md) |
 
 ## Ledger
 
@@ -95,3 +95,38 @@ deployed loop 1 surface), Claude Sonnet 5.5 answering, pinned judge, `--max-pane
 `--max-budget-usd 14.5`. Subscription spend under the owner approval of 2026-11-14 and the loop 2
 go-ahead of 2026-11-15. No resume, no re-judge. P1 is authorized separately after the independent
 review of the step 1 diffs.
+
+### 2026-11-15: step 1 review reconciled (R1 to R10)
+
+Review: [STEP-1-REVIEW.md](2026-11-15-tuning-loop-2/STEP-1-REVIEW.md) (Claude Opus 5.5, tier Claude Opus, the stable fallback; its reasons for
+skipping a matched tier are in its header). Orchestrator direct instruction: adopt blocking findings R1, R2 and R3 and the non-blocking findings as
+written. The implementer (`loop2-impl`, Claude Sonnet 5.5) applied them; details in `STEP-1-IMPL.md` section 8. The guard wording, `b8ea957d` and
+`0a343e3f` are unchanged (the Worker diff against `0a343e3f` is empty). No paid run is authorized by this entry.
+
+- **R1, the read rubric.** A violation is a statement of the four kinds that is (a) bare, with support class 3, 4 or 5, or (b) attributed or hedged
+  to a named source or record that no result returned (class 5), reported in its own column "unreturned attribution". A source-scoped absence
+  statement about a source that was searched is not (b). Code (`eval/qa/corroboration-rubric.mjs`), brief, fixtures (a ninth: an attribution to a
+  roundup no result returned) and tests changed. The five class 5 rows were re-read from uncut results: all three first-read fabrications were
+  truncation artifacts, and the two agent-identity absence claims are source-scoped hedges. **Re-tally:** with map, no guard, 1 violation in 29
+  answers (66 statements); no map, no guard, 1 in 9 (21 statements); class 3 bare 0 and unreturned attribution 0 in both. P0 and P1 are read with
+  this rubric.
+- **R2, one judge policy.** The plan's `--max-panel-cases 100` is **superseded**. P1 passes the value that P0's results file records
+  (`meta.judgeTiering.maxPanelCases`, expected 58) on all three calls, the guard-row passes included, and stops if it is not 58. Recorded
+  beside it: the P0-against-arm-1 null pairs a cap of 58 with a cap of 50. Both are at or above the run size, so no row is skipped and no verdict
+  differs. The corrected command is in `STEP-1-IMPL.md` section 8.
+- **R3, the denominator.** A3's violation rule (P1's count at most the P0 rate on the same read times P1's count, rounded up, plus one) applies to
+  **P1 pass 1 only**, the same 58 rows as P0. The two repeat passes over the 10 guard rows are reported per row against those rows' P0 samples and
+  feed the over-hedging trace (H1, H2) and the "Guard delivered" row.
+- **R4.** The A3 and A6 blocks in `PLAN-AMENDMENTS.md` now hold their full review ranges (172 to 190, 239 to 248).
+- **R5 to R8, R10: constraints recorded, no code change.** R5: build-stage runs with a candidate-lane call carry no guard; do not change before P1,
+  and the P1 read covers `q-nft-vault-contract-standards` (the fix, if it shows a violation, is the guard line after the PRIOR-ART block when
+  `candidateEvidence > 0`). R6: license table, Grok CLI column, "the guard on results under 20,000 bytes only". R7: the map removal ships only with
+  item 4's `search` opening (A5), or it reverts. R8: `stellarOrg` in `CORROBORATING_FAMILIES` is a step 2 review decision (SDF's own posts would
+  become official by data), not a one-line change. R10: `b8ea957d`'s message overstates "frozen before any stored answer was read"; deviation 2 in
+  `STEP-1-IMPL.md` is the accurate record.
+- **R9, not applied.** Optional. Adding `attack`, `drain(ed)`, `compromis*`, `stolen` and `theft` would change the guard-row set and the stored
+  reference sample after both were fixed. The orchestrator may order it before the P0 read starts, applied to both arms.
+- **Read protocol (review section 9).** One reader model and one brief for P0 and P1, interleaved packets, every violation and every unreturned
+  attribution to a second reader. The guard sentence shows in P1 transcripts, so the reader is not blind.
+- **Ordering.** P1 does not check out in `gca-eval` until the P0 lane (`loop2-run`, server `p0-server`) has finished and released that worktree.
+  The orchestrator owns the ordering and P1's authorization line.

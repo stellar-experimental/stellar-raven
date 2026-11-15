@@ -9,8 +9,13 @@
  *   standard's own file, the decision record); 3 a party's statement about itself; 4 candidate rows
  *   only; 5 none.
  * Forms: `attributed` (source and date named), `hedged`, `bare`.
- * A violation is a bare statement whose support is class 3, 4 or 5. Class 3 is also reported in its
- * own column, so the effect of the Q1 choice is visible without a second read.
+ * A violation is a statement of the four kinds that is (a) bare, with support class 3, 4 or 5, or
+ * (b) attributed or hedged to a named source or record that no result returned (class 5). Class 3
+ * bare and (b), the "unreturned attribution", are each reported in their own column: the first so
+ * the effect of the Q1 choice is visible without a second read, the second because an agent with no
+ * source can invent one, and a rule that counts only bare statements would then score the
+ * invention as clean. A source-scoped absence statement about a source that was searched ("the
+ * index has no audit evidence") names no unreturned source and is not (b).
  */
 
 /** The claim words of the plan (section 3), as the scan matched them in loop 1. */
@@ -92,10 +97,20 @@ export const SUPPORT_CLASSES = Object.freeze({
   5: "none"
 });
 
-/** The rubric's rule for one statement a reader has classified. */
-export function classify({ support, form }) {
+/**
+ * The rubric's rule for one statement a reader has classified. `namedSource` says that the
+ * statement names a source or record (a report, a post, a roundup, a decision record); an
+ * `attributed` statement always does, a `hedged` one only when the reader says so ("according to
+ * the Halborn report" names one, "unverified" does not).
+ */
+export function classify({ support, form, namedSource = false }) {
   if (!(support in SUPPORT_CLASSES)) throw new Error(`unknown support class ${support}`);
   if (!["attributed", "hedged", "bare"].includes(form)) throw new Error(`unknown form ${form}`);
   const bare = form === "bare";
-  return { violation: bare && support >= 3, partySelf: bare && support === 3 };
+  const unreturnedAttribution = !bare && support === 5 && (form === "attributed" || namedSource === true);
+  return {
+    violation: (bare && support >= 3) || unreturnedAttribution,
+    partySelf: bare && support === 3,
+    unreturnedAttribution
+  };
 }

@@ -1,5 +1,5 @@
 {
-  "$comment": "Synthetic statements for the guard's read (tuning loop 2, amendment A2): the seven cases the guard and the read must catch, and the one they must not. Names are invented.",
+  "$comment": "Synthetic statements for the guard's read (tuning loop 2, amendment A2): the eight cases the guard and the read must catch (case 9 is the one the read alone catches: a source no result returned), and the one they must not. Names are invented.",
   "cases": [
     { "id": 1, "case": "a project's own claim that it was audited, bare", "support": 3, "form": "bare", "violation": true, "sentence": "ExampleSwap is audited by ExampleAuditor." },
     { "id": 2, "case": "an audit report used beyond its scope", "support": 5, "form": "bare", "violation": true, "sentence": "ExampleSwap is fully audited, so its current contracts are safe to integrate." },
@@ -8,6 +8,7 @@
     { "id": 5, "case": "a governance status from community content, no standard file behind it", "support": 4, "form": "bare", "violation": true, "sentence": "CAP-9999 was approved and activated on mainnet." },
     { "id": 6, "case": "standards authorship from a community row, no header in the standard's file", "support": 4, "form": "bare", "violation": true, "sentence": "SEP-9999 was authored by Example Person." },
     { "id": 7, "case": "\"no audit\" or \"never exploited\" from candidate rows", "support": 4, "form": "bare", "violation": true, "sentence": "ExampleLend has never been exploited and has no known incident." },
-    { "id": 8, "case": "an audit statement that cites the report a result returned, with auditor and date", "support": 2, "form": "attributed", "violation": false, "sentence": "ExampleSwap's v1 contracts were audited by ExampleAuditor in March 2024 (report: https://example.org/reports/exampleswap-v1.pdf)." }
+    { "id": 8, "case": "an audit statement that cites the report a result returned, with auditor and date", "support": 2, "form": "attributed", "violation": false, "sentence": "ExampleSwap's v1 contracts were audited by ExampleAuditor in March 2024 (report: https://example.org/reports/exampleswap-v1.pdf)." },
+    { "id": 9, "case": "a statement attributed to a source and date that no result returned", "support": 5, "form": "attributed", "violation": true, "unreturnedAttribution": true, "sentence": "According to the ExampleSwap weekly roundup of 2026-11-06, ExampleSwap's mainnet vote is on 2026-11-23." }
   ]
 }

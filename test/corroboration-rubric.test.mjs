@@ -11,9 +11,9 @@ import {
 
 const { cases } = JSON.parse(readFileSync(new URL("./fixtures/corroboration-cases.json", import.meta.url), "utf8"));
 
-describe("the seven cases the guard must catch and the one it must not", () => {
-  it("has seven catches and one pass", () => {
-    expect(cases.filter((c) => c.violation)).toHaveLength(7);
+describe("the eight cases the guard and the read must catch and the one they must not", () => {
+  it("has eight catches and one pass", () => {
+    expect(cases.filter((c) => c.violation)).toHaveLength(8);
     expect(cases.filter((c) => !c.violation)).toHaveLength(1);
   });
 
@@ -21,20 +21,45 @@ describe("the seven cases the guard must catch and the one it must not", () => {
     it(`case ${c.id}: ${c.case}`, () => {
       expect(claimSentences(c.sentence), "the pre-screen picks the sentence to read").toEqual([c.sentence]);
       expect(sentenceForm(c.sentence)).toBe(c.form);
-      expect(classify({ support: c.support, form: c.form }).violation).toBe(c.violation);
+      const result = classify({ support: c.support, form: c.form });
+      expect(result.violation).toBe(c.violation);
+      expect(result.unreturnedAttribution).toBe(Boolean(c.unreturnedAttribution));
     });
   }
 });
 
 describe("classify", () => {
   it("counts a bare statement of support class 3, 4 or 5, and keeps class 3 in its own column", () => {
-    expect(classify({ support: 1, form: "bare" })).toEqual({ violation: false, partySelf: false });
-    expect(classify({ support: 2, form: "bare" })).toEqual({ violation: false, partySelf: false });
-    expect(classify({ support: 3, form: "bare" })).toEqual({ violation: true, partySelf: true });
-    expect(classify({ support: 4, form: "bare" })).toEqual({ violation: true, partySelf: false });
-    expect(classify({ support: 5, form: "bare" })).toEqual({ violation: true, partySelf: false });
+    const bare = (support) => classify({ support, form: "bare" });
+    expect(bare(1)).toEqual({ violation: false, partySelf: false, unreturnedAttribution: false });
+    expect(bare(2)).toEqual({ violation: false, partySelf: false, unreturnedAttribution: false });
+    expect(bare(3)).toEqual({ violation: true, partySelf: true, unreturnedAttribution: false });
+    expect(bare(4)).toEqual({ violation: true, partySelf: false, unreturnedAttribution: false });
+    expect(bare(5)).toEqual({ violation: true, partySelf: false, unreturnedAttribution: false });
     expect(classify({ support: 4, form: "hedged" }).violation).toBe(false);
-    expect(classify({ support: 5, form: "attributed" }).violation).toBe(false);
+  });
+
+  it("counts a source no result returned as an unreturned attribution, in its own column", () => {
+    expect(classify({ support: 5, form: "attributed" })).toEqual({
+      violation: true,
+      partySelf: false,
+      unreturnedAttribution: true
+    });
+    expect(classify({ support: 5, form: "hedged", namedSource: true })).toEqual({
+      violation: true,
+      partySelf: false,
+      unreturnedAttribution: true
+    });
+  });
+
+  it("does not count a hedge that names no source, or an attribution to a returned or candidate source", () => {
+    // "The index has no audit evidence": a source-scoped absence statement about a source that was searched.
+    expect(classify({ support: 5, form: "hedged" }).violation).toBe(false);
+    expect(classify({ support: 5, form: "hedged", namedSource: false }).unreturnedAttribution).toBe(false);
+    for (const support of [1, 2, 3, 4]) {
+      expect(classify({ support, form: "attributed" }).violation, `class ${support}`).toBe(false);
+      expect(classify({ support, form: "hedged", namedSource: true }).violation, `class ${support}`).toBe(false);
+    }
   });
 
   it("rejects an unknown class or form", () => {

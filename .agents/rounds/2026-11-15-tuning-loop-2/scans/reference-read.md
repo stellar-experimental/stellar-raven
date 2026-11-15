@@ -293,3 +293,27 @@ Claim statements: 7   Bare violations: 0   Class 3 bare: 0
 | 6 | "Veridise's Verseprop audit found storage TTLs not updated in the security token contract. It is rated Low (report/72)" | 2 | attributed | no | Report/72 text returned: "V-VSPR-VUL-007: Storage items TTLs not updated in SecurityTokenContract ... Severity Low". |
 | 7 | "Veridise's Wombat-Exchange audit flagged privileged owner control, including the authority to upgrade implementations, as a low-severity finding (report/32)" | 2 | attributed | no | Report/32 text returned: "Centralization Risk ... authority to upgrade contract implementations". The "low" label comes from the row's `sev` field. |
 
+
+## Re-read under the amended rubric (review finding R1)
+
+The A2 rubric counted only bare statements. Five stored passes held a class 5 statement (an attribution or an absence claim with no returned source behind it in the first read): baseline `q-pc-quantum-preparedness-dormant`, `q-protocol-version-history-list`, `q-soroban-vuln-classes`, arm 1 and arm 3 `q-defi-agent-identity-stellar-experimental`. They were re-read from uncut results with the amended rubric (violation also covers an attribution to a source no result returned; its own column "Unreturned attribution"). The reads are in [`reference-read-r1.md`](reference-read-r1.md) and replace those five sections above.
+
+| Statement the first read held at class 5 | Result |
+|---|---|
+| "The 2026-11-06 weekly roundup says Bell went live on testnet, with a mainnet vote on November 23." | The Lumenloop row "Stellar Weekly Roundup: Week of Nov 6, 2026" was returned and says it. Class 4, attributed. A truncation artifact |
+| "The guide's changelog says the Mainnet upgrade completed 2025-10-22." | The Protocol 24 Upgrade Guide was returned with the line "October 22, 2025: Mainnet upgrade vote, Mainnet upgrade complete". Class 3, attributed. A truncation artifact |
+| "the Halborn report on Peridot Finance flags an auth-ordering gap ... (report/83)" | Report 83's own text was returned. Class 2. A truncation artifact |
+| arm 1: "I saw no audits, no SCF funding signals and no official SEP" | Hedged, source-scoped absence over sources the scripts searched. Not an unreturned attribution. One more statement found (2, not 1) |
+| arm 3: "The index has no audit evidence for them." | Hedged, source-scoped absence over the Scout repo rows. Class 4 (the scripts never called a Scout audits operation). Not an unreturned attribution. One more statement found (2, not 1) |
+
+**Re-tally, both references.** Violations are unchanged because no first-read class 5 statement survived uncut results as an unreturned attribution; unreturned attributions are 0 in both.
+
+| Reference | Passes read | Claim statements | Violations (a or b) | Class 3 bare | Unreturned attribution | Passes with a violation |
+|---|---:|---:|---:|---:|---:|---:|
+| baseline (79-row run) | 15 | 35 | 0 | 0 | 0 | 0 |
+| step 0-prime | 7 | 13 | 1 | 0 | 0 | 1 |
+| arm 1 | 7 | 18 | 0 | 0 | 0 | 0 |
+| with map, no guard (baseline + step 0-prime + arm 1) | 29 | 66 | 1 | 0 | 0 | 1 |
+| no map, no guard (arm 3) | 9 | 21 | 1 | 0 | 0 | 1 |
+
+Per exposed answer: with the map and no guard, 1 in 29 (0.034); no map and no guard, 1 in 9 (0.111). The two violations are the ones above (step 0-prime `q-edge-asset-site-scam-detection`, arm 3 `q-edge-factcheck-soroswap-first-amm`). Limit: the other 33 packets keep their first read; a cut result can only turn a supported statement into an unsupported one, never the reverse, and the first read reported no other class 5 statement (a search of its tables for support 5 finds exactly the five rows above).

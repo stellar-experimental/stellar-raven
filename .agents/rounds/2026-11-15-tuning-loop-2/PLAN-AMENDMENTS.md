@@ -8,6 +8,49 @@ Orchestrator rulings, 2026-11-15: every amendment A1 to A10 is adopted. Q1 is de
 A2 (the primary record counts; a party's statement about itself does not). Q2 to Q7 are decided as
 the reviewer answers them (appendix). [`PLAN.md`](PLAN.md) is read with these amendments applied.
 
+## Post-review amendments (from [`STEP-1-REVIEW.md`](STEP-1-REVIEW.md), adopted by the orchestrator, 2026-11-15)
+
+This section is not copied from the review; it records what the orchestrator adopted from it. These
+change A2, A3 and the plan's P1 command and license table. Where one of them differs from A1 to A10
+below, this section governs.
+
+- **R1, A2's rubric.** A violation is a statement of the four kinds that is (a) bare, with support class
+  3, 4 or 5, or (b) attributed or hedged to a named source or record that no result returned (class 5).
+  Report (b) in its own column, "unreturned attribution". A source-scoped absence statement about a
+  source that was searched ("the index has no audit evidence") is not (b). Code, brief, ninth fixture
+  and the re-read are in the commit that adds this section.
+- **R2, one judge policy.** P1 passes the `--max-panel-cases` value that P0's results file records
+  (`meta.judgeTiering.maxPanelCases`, 58) on all three calls, guard-row passes included. The plan's
+  "100" (PLAN.md, standing method) is superseded. The P0-against-arm-1 null pairs a cap of 58 with a
+  cap of 50; both are at or above the run size, so no row is skipped.
+- **R3, the A3 violation rule.** It applies to P1 pass 1 only (the same 58 rows as P0). The two repeat
+  passes over the 10 guard rows are reported per row against those rows' P0 samples, and feed the
+  over-hedging trace (H1, H2) and the "Guard delivered" row. They are not in the rule's denominator.
+- **R4.** The A3 and A6 blocks above now hold their full review ranges (172 to 190 and 239 to 248).
+- **R5, build-stage runs.** A build-stage run that also made a candidate-lane call carries no guard
+  (the PRIOR-ART block suppresses it, and the CANDIDATE block stays suppressed). Do not change it
+  before P1. P1's read covers `q-nft-vault-contract-standards`; if it shows a violation, the fix is the
+  guard line after the PRIOR-ART block when `candidateEvidence > 0`.
+- **R6, license table, row "Guard, identifier pointer (results)", Grok CLI column:** "the guard on
+  results under 20,000 bytes only" (Grok keeps the first 20,000 bytes of a result; the guard is at the
+  tail, like every host block).
+- **R7, forward.** The map removal ships only with item 4's `search` opening (A5), or it reverts. OpenCode
+  lists 117 characters of each description and has no other up-front family list after the removal.
+- **R8, forward to step 2.** Adding `stellarOrg` to `CORROBORATING_FAMILIES` is not the one-line data
+  change the plan describes: it would make SDF's own posts official by data (A2's class 3 includes "a
+  foundation post asserting a governance outcome"). The step 2 review decides whether the SDF site is an
+  official family for all four claim kinds or only for its programme and directory pages.
+- **R9, not applied.** The claim-word list lacks `attack`, `drain(ed)`, `compromis*`, `stolen` and
+  `theft`. The review calls it optional. Adding them now would change the guard-row set and the stored
+  reference sample after both were fixed, so it is the orchestrator's call, to be made before the P0
+  read starts.
+- **R10.** `b8ea957d`'s message says the wording was "frozen before any stored answer or transcript was
+  read". Deviation 2 in `STEP-1-IMPL.md` discloses one peek before it. The record is accurate; the
+  commit message cannot change.
+- **Read protocol (review section 9).** One reader model and one brief for P0 and P1; interleave their
+  packets; send every violation and every unreturned attribution to a second reader. The guard sentence
+  is visible in P1 transcripts, so the reader is not blind; this is the mitigation.
+
 ## A1 (high). The guard's home — review lines 83 to 95
 
 **Amendment, replacing the first paragraph of "Mechanism, guard (commit G)":**
@@ -71,7 +114,20 @@ with:
 A violation is a bare statement whose support is class 3, 4 or 5. Keep class 3 in its own column,
 so the orchestrator can see what the Q1 choice changes without a second read.
 
-## A3 (high). Denominator and reference — review lines 185 to 190
+## A3 (high). Denominator and reference — review lines 172 to 190
+
+1. **Reference.** The 32 stored answers include arm 3's 8 no-map answers. The "with the map, no
+   guard" reference is the 24 answers from the baseline, step 0-prime and arm 1 (12, 6 and 6).
+   Arm 3's 8 answers form a second reference: no map and no guard. Report both. Also apply the read
+   to P0, which gives a reference from the same week on the same judge policy, at no spend.
+2. **Scope.** Rule 2 of the map covered every answer. The guard covers only answers whose results
+   carry it. Read every answer that contains a claim word, whether or not a block or guard line
+   appeared. A violation in an answer with no guard is exactly the gap the map removal opens, and
+   it counts against removing the map.
+3. **Claim words.** The list has no standards-authorship words and almost no governance-status
+   words. Add: `author*`, `approved`, `accepted`, `activated`, `adopted`, `final` near a SEP or CAP
+   identifier, `vulnerab*`, `CVE`, `security review`, `bug bounty`. Match `hack` as a whole word,
+   not as a prefix, so "hackathon" does not count.
 
 **Amendment, replacing the P1 "No rise in violations" row:**
 
@@ -103,7 +159,7 @@ traced to the guard sentence; n reported".
 
 The `execute` draft is fine: the globals sentence that follows it names every global.
 
-## A6 (medium). Item 5 trigger — review lines 239 to 247
+## A6 (medium). Item 5 trigger — review lines 239 to 248
 
 **Amendment, appended to item 5's "Run" bullet:**
 
@@ -114,6 +170,7 @@ The `execute` draft is fine: the globals sentence that follows it names every gl
 
 On generality: the pointer is derived from the catalog, not from a list. It changes no ranking, so
 it is not a boost. It does have exactly one instance today: one operation of one source. Its keep
+result is evidence for that operation only, and the plan should say so in the license table.
 
 ## A7 (medium). Q5 required before P2 — review lines 256 to 262
 
