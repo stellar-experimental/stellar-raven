@@ -132,10 +132,24 @@ written. The implementer (`loop2-impl`, Claude Sonnet 5.5) applied them; details
 - **Ordering.** P1 does not check out in `gca-eval` until the P0 lane (`loop2-run`, server `p0-server`) has finished and released that worktree.
   The orchestrator owns the ordering and P1's authorization line.
 
-### 2026-11-15: P0 collected and read (run lane `loop2-run`)
+## P0 result, and P1
 
-[P0.md](2026-11-15-tuning-loop-2/P0.md). Stamp `2026-11-15T04-31-41-variantA`, `main` at `0a603453`, surface `b336fa14…`, every pin equal, remote vector equal to loop 1's (no drift). 58 jobs
-asserted, 58 judged, USD 11.81 of 14.5, 39 min 15 s collection. **25 correct, 32 partial, 1 wrong.** Same-surface null (P0 against stored arm 1, 50 shared rows minus the 4 frozen exact rows): 6 flips in 46 rows,
-net -2, none of them tier-matched; measured p = 0.13 gives **T = 4 at n = 58** (5 at p = 0.16, 7 at loop 1's 0.34) for the orchestrator to fix. Research-call share on the 17 identifier rows: 25% (loop 1: 19% to 31%).
-Governance read on P0 (R1 rubric, uncut results): 1 violation in 23 claim-word answers (class 3 bare 1, unreturned attribution 0). Trap review: 5 of 6 pass; the Soroswap row is an agent failure on content with the trap behaviour intact.
-Plan regrade: required services 58 of 58. The `gca-eval` worktree is released (detached at `0a603453`, clean). No P1 was run.
+**P0.** Stamp `2026-11-15T04-31-41-variantA`, `main` at `0a603453`, 58 of 58, USD 11.81 (P0.md on
+`tune/loop-2-runs`). 25 correct, 32 partial, 1 wrong. Same-surface movement against the stored
+loop 1 arm 1 run on the 46 comparable shared rows: 6 flips, net 2 down, none on tier-matched rows.
+Governance and attribution read (R1 rubric, uncut results): 1 violation in 23 claim-word answers;
+unreturned attribution 0. Traps 5 of 6; the one failure is an agent failure on content with the
+trap behaviour intact.
+
+**T fixed before P1 (Claude Fable 5.2, 2026-11-15): T = 5.** The measured flip rate is 0.13 (T
+would be 4); the repository's earlier pairwise rate is 0.16 (T = 5); loop 1's mixed-tier pair gave
+0.34 (T = 7). 5 is the middle value and errs against charging noise to the change. It is a
+judgment between two measured rates, not a measurement.
+
+**Step 1 diff review.** STEP-1-REVIEW.md (Claude Opus 5.5): guard `b8ea957d` and map removal
+`0a343e3f` fit to measure; R1 to R3 applied in `06b15651`.
+
+**Authorization, P1.** The corrected command of STEP-1-IMPL.md section 8, on the map-removal tip
+(product code of `0a343e3f`): the 58-row panel once and two more passes over the ten guard rows,
+`--max-panel-cases` read from P0 (58), remote vector equal to P0's, `--max-budget-usd 19.5`. Cost
+flags are read against P0, not against loop 1. No resume, no re-judge.
