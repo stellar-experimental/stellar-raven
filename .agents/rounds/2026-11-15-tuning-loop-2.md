@@ -260,3 +260,16 @@ reach 8/40 and 14/40 at 5, 8/40 and 16/40 at 7): neither S1 nor S2 moved a row. 
 The five rows whose own search misses (`q-asset-usdc-eurc-issuer`, `q-comp-aml-analytics-vendors`, `q-data-network-metrics-sources`, `q-eco-stellar-rwa-stablecoin-volume`, `q-scf-ambassador-program`) are marked
 unreachable by the question as written, per the plan's two-part test, and are not counted against the source (one sample; the orchestrator may loosen it). **After this read, the `stellarOrg` adapter, scorer inputs and
 descriptions are frozen at `bd9719fb` for this loop.** **No paid run is authorized by this entry.**
+
+## P2 authorization
+
+Step 2 review reconciled in `bd9719fb` (frozen product commit; all gates exit 0). Reachability
+record: `search_site` on the question returns a cited page for 7 of the 12 source rows; `get_page`
+returns text for 12 of 12. The five rows whose own search misses stay marked
+unreachable-by-question, as the plan's literal rule says; the orchestrator does not loosen it.
+
+**Authorization, P2 (Claude Fable 5.2, 2026-11-15).** The final command of STEP-2-IMPL.md section
+10 on `bd9719fb`: the 58-row panel once, `--max-panel-cases 58`, remote vector equal to P0's.
+**Cap: `--max-budget-usd 17`**, raised from the plan's 14.5 before launch, because P1 pass 1 cost
+USD 12.02 and this surface adds page reads; a cap stop would void the run, and 17 is a 41% margin.
+Changed rows are compared with P0 as well as with P1 pass 1. No resume, no re-judge.
