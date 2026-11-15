@@ -1,0 +1,5079 @@
+{
+ "claude": {
+  "A20k-1": {
+   "args": {
+    "instr": 20000,
+    "copies": 1,
+    "mode": "direct",
+    "result": 40000
+   },
+   "rc": 0,
+   "seconds": 5.1,
+   "servers": {
+    "probe": {
+     "instructions": {
+      "delivered": "3982..4109",
+      "last": "IN1-031-fepeka",
+      "last_valid": true,
+      "tail_end": null,
+      "lo": 3982,
+      "hi": 4109
+     },
+     "desc_a": {
+      "delivered": "3982..4109",
+      "last": "TA1-031-ribudu",
+      "last_valid": true,
+      "tail_end": null,
+      "lo": 3982,
+      "hi": 4109
+     },
+     "desc_b": {
+      "delivered": 3000,
+      "last": "TB1-023-dekisu",
+      "last_valid": true,
+      "tail_end": 3000,
+      "lo": 2958,
+      "hi": 3000
+     },
+     "desc_c": {
+      "delivered": 500,
+      "last": "TC1-003-nuvunu",
+      "last_valid": true,
+      "tail_end": 500,
+      "lo": 398,
+      "hi": 500
+     },
+     "schema": {
+      "delivered": 20000,
+      "last": "SC1-156-dubagu",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "result": {
+      "delivered": 40000,
+      "last": "RS1-312-niriko",
+      "last_valid": true,
+      "tail_end": 40000,
+      "lo": 39950,
+      "hi": 40000
+     }
+    }
+   }
+  },
+  "A20k-2": {
+   "args": {
+    "instr": 20000,
+    "copies": 1,
+    "mode": "direct",
+    "result": 40000
+   },
+   "rc": 0,
+   "seconds": 16.1,
+   "servers": {
+    "probe": {
+     "instructions": {
+      "delivered": 4096,
+      "last": "IN1-031-kotaza",
+      "last_valid": true,
+      "tail_end": 4096,
+      "lo": 3982,
+      "hi": 4109
+     },
+     "desc_a": {
+      "delivered": 4096,
+      "last": "TA1-031-mopumo",
+      "last_valid": true,
+      "tail_end": 4096,
+      "lo": 3982,
+      "hi": 4109
+     },
+     "desc_b": {
+      "delivered": 3000,
+      "last": "TB1-023-bedovo",
+      "last_valid": true,
+      "tail_end": 3000,
+      "lo": 2958,
+      "hi": 3000
+     },
+     "desc_c": {
+      "delivered": 500,
+      "last": "TC1-003-kifiba",
+      "last_valid": true,
+      "tail_end": 500,
+      "lo": 398,
+      "hi": 500
+     },
+     "schema": {
+      "delivered": 20000,
+      "last": "SC1-156-zaviro",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "result": {
+      "delivered": 40000,
+      "last": "RS1-312-tikopu",
+      "last_valid": true,
+      "tail_end": 40000,
+      "lo": 39950,
+      "hi": 40000
+     }
+    }
+   }
+  },
+  "A20k-3": {
+   "args": {
+    "instr": 20000,
+    "copies": 1,
+    "mode": "direct",
+    "result": 40000
+   },
+   "rc": 0,
+   "seconds": 5.4,
+   "servers": {
+    "probe": {
+     "instructions": {
+      "delivered": 4096,
+      "last": "IN1-031-bibuvo",
+      "last_valid": true,
+      "tail_end": 4096,
+      "lo": 3982,
+      "hi": 4109
+     },
+     "desc_a": {
+      "delivered": 4096,
+      "last": "TA1-031-gogebe",
+      "last_valid": true,
+      "tail_end": 4096,
+      "lo": 3982,
+      "hi": 4109
+     },
+     "desc_b": {
+      "delivered": 3000,
+      "last": "TB1-023-funofo",
+      "last_valid": true,
+      "tail_end": 3000,
+      "lo": 2958,
+      "hi": 3000
+     },
+     "desc_c": {
+      "delivered": 500,
+      "last": "TC1-003-gurata",
+      "last_valid": true,
+      "tail_end": 500,
+      "lo": 398,
+      "hi": 500
+     },
+     "schema": {
+      "delivered": 20000,
+      "last": "SC1-156-fulosu",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "result": {
+      "delivered": 40000,
+      "last": "RS1-312-nuseko",
+      "last_valid": true,
+      "tail_end": 40000,
+      "lo": 39950,
+      "hi": 40000
+     }
+    }
+   }
+  },
+  "B4090-1": {
+   "args": {
+    "instr": 4090,
+    "copies": 1,
+    "mode": "direct",
+    "result": 40000
+   },
+   "rc": 0,
+   "seconds": 5.0,
+   "servers": {
+    "probe": {
+     "instructions": {
+      "delivered": 4090,
+      "last": "IN1-031-nofete",
+      "last_valid": true,
+      "tail_end": 4090,
+      "lo": 3982,
+      "hi": 4090
+     },
+     "desc_a": {
+      "delivered": 4096,
+      "last": "TA1-031-dulede",
+      "last_valid": true,
+      "tail_end": 4096,
+      "lo": 3982,
+      "hi": 4109
+     },
+     "desc_b": {
+      "delivered": 3000,
+      "last": "TB1-023-vinola",
+      "last_valid": true,
+      "tail_end": 3000,
+      "lo": 2958,
+      "hi": 3000
+     },
+     "desc_c": {
+      "delivered": 500,
+      "last": "TC1-003-pikifu",
+      "last_valid": true,
+      "tail_end": 500,
+      "lo": 398,
+      "hi": 500
+     },
+     "schema": {
+      "delivered": 20000,
+      "last": "SC1-156-nuvufo",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "result": {
+      "delivered": 40000,
+      "last": "RS1-312-sirala",
+      "last_valid": true,
+      "tail_end": 40000,
+      "lo": 39950,
+      "hi": 40000
+     }
+    }
+   }
+  },
+  "B4090-2": {
+   "args": {
+    "instr": 4090,
+    "copies": 1,
+    "mode": "direct",
+    "result": 40000
+   },
+   "rc": 0,
+   "seconds": 26.4,
+   "servers": {
+    "probe": {
+     "instructions": {
+      "delivered": 4090,
+      "last": "IN1-031-kodevu",
+      "last_valid": true,
+      "tail_end": 4090,
+      "lo": 3982,
+      "hi": 4090
+     },
+     "desc_a": {
+      "delivered": 4096,
+      "last": "TA1-031-babelu",
+      "last_valid": true,
+      "tail_end": 4096,
+      "lo": 3982,
+      "hi": 4109
+     },
+     "desc_b": {
+      "delivered": 3000,
+      "last": "TB1-023-kozopi",
+      "last_valid": true,
+      "tail_end": 3000,
+      "lo": 2958,
+      "hi": 3000
+     },
+     "desc_c": {
+      "delivered": 500,
+      "last": "TC1-003-gezone",
+      "last_valid": true,
+      "tail_end": 500,
+      "lo": 398,
+      "hi": 500
+     },
+     "schema": {
+      "delivered": 20000,
+      "last": "SC1-156-pudabu",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "result": {
+      "delivered": 40000,
+      "last": "RS1-312-zoluva",
+      "last_valid": true,
+      "tail_end": 40000,
+      "lo": 39950,
+      "hi": 40000
+     }
+    }
+   }
+  },
+  "B4090-3": {
+   "args": {
+    "instr": 4090,
+    "copies": 1,
+    "mode": "direct",
+    "result": 40000
+   },
+   "rc": 0,
+   "seconds": 5.5,
+   "servers": {
+    "probe": {
+     "instructions": {
+      "delivered": 4090,
+      "last": "IN1-031-ludizi",
+      "last_valid": true,
+      "tail_end": 4090,
+      "lo": 3982,
+      "hi": 4090
+     },
+     "desc_a": {
+      "delivered": "3982..4109",
+      "last": "TA1-031-pokivu",
+      "last_valid": true,
+      "tail_end": null,
+      "lo": 3982,
+      "hi": 4109
+     },
+     "desc_b": {
+      "delivered": 3000,
+      "last": "TB1-023-bepuro",
+      "last_valid": true,
+      "tail_end": 3000,
+      "lo": 2958,
+      "hi": 3000
+     },
+     "desc_c": {
+      "delivered": 500,
+      "last": "TC1-003-limolo",
+      "last_valid": true,
+      "tail_end": 500,
+      "lo": 398,
+      "hi": 500
+     },
+     "schema": {
+      "delivered": 20000,
+      "last": "SC1-156-pudibu",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "result": {
+      "delivered": 40000,
+      "last": "RS1-312-deruza",
+      "last_valid": true,
+      "tail_end": 40000,
+      "lo": 39950,
+      "hi": 40000
+     }
+    }
+   }
+  },
+  "C20kx2-1": {
+   "args": {
+    "instr": 20000,
+    "copies": 2,
+    "mode": "direct",
+    "result": 40000
+   },
+   "rc": 0,
+   "seconds": 7.3,
+   "servers": {
+    "probe1": {
+     "instructions": {
+      "delivered": 4096,
+      "last": "IN1-031-fokado",
+      "last_valid": true,
+      "tail_end": 4096,
+      "lo": 3982,
+      "hi": 4109
+     },
+     "desc_a": {
+      "delivered": 4096,
+      "last": "TA1-031-zugoza",
+      "last_valid": true,
+      "tail_end": 4096,
+      "lo": 3982,
+      "hi": 4109
+     },
+     "desc_b": {
+      "delivered": 3000,
+      "last": "TB1-023-foludu",
+      "last_valid": true,
+      "tail_end": 3000,
+      "lo": 2958,
+      "hi": 3000
+     },
+     "desc_c": {
+      "delivered": 500,
+      "last": "TC1-003-kuvoge",
+      "last_valid": true,
+      "tail_end": 500,
+      "lo": 398,
+      "hi": 500
+     },
+     "schema": {
+      "delivered": 20000,
+      "last": "SC1-156-zikuro",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "result": {
+      "delivered": 40000,
+      "last": "RS1-312-sanofe",
+      "last_valid": true,
+      "tail_end": 40000,
+      "lo": 39950,
+      "hi": 40000
+     }
+    },
+    "probe2": {
+     "instructions": {
+      "delivered": 4096,
+      "last": "IN2-031-kenupo",
+      "last_valid": true,
+      "tail_end": 4096,
+      "lo": 3982,
+      "hi": 4109
+     },
+     "desc_a": {
+      "delivered": 4096,
+      "last": "TA2-031-fotite",
+      "last_valid": true,
+      "tail_end": 4096,
+      "lo": 3982,
+      "hi": 4109
+     },
+     "desc_b": {
+      "delivered": 3000,
+      "last": "TB2-023-kineke",
+      "last_valid": true,
+      "tail_end": 3000,
+      "lo": 2958,
+      "hi": 3000
+     },
+     "desc_c": {
+      "delivered": 500,
+      "last": "TC2-003-lekile",
+      "last_valid": true,
+      "tail_end": 500,
+      "lo": 398,
+      "hi": 500
+     },
+     "schema": {
+      "delivered": 20000,
+      "last": "SC2-156-tasugi",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "result": {
+      "delivered": 40000,
+      "last": "RS2-312-mumubi",
+      "last_valid": true,
+      "tail_end": 40000,
+      "lo": 39950,
+      "hi": 40000
+     }
+    }
+   }
+  },
+  "C20kx2-2": {
+   "args": {
+    "instr": 20000,
+    "copies": 2,
+    "mode": "direct",
+    "result": 40000
+   },
+   "rc": 0,
+   "seconds": 20.6,
+   "servers": {
+    "probe1": {
+     "instructions": {
+      "delivered": 4096,
+      "last": "IN1-031-motovu",
+      "last_valid": true,
+      "tail_end": 4096,
+      "lo": 3982,
+      "hi": 4109
+     },
+     "desc_a": {
+      "delivered": 4096,
+      "last": "TA1-031-kamutu",
+      "last_valid": true,
+      "tail_end": 4096,
+      "lo": 3982,
+      "hi": 4109
+     },
+     "desc_b": {
+      "delivered": 3000,
+      "last": "TB1-023-bunamu",
+      "last_valid": true,
+      "tail_end": 3000,
+      "lo": 2958,
+      "hi": 3000
+     },
+     "desc_c": {
+      "delivered": 500,
+      "last": "TC1-003-kidomu",
+      "last_valid": true,
+      "tail_end": 500,
+      "lo": 398,
+      "hi": 500
+     },
+     "schema": {
+      "delivered": 20000,
+      "last": "SC1-156-pumagu",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "result": {
+      "delivered": 40000,
+      "last": "RS1-312-tutasu",
+      "last_valid": true,
+      "tail_end": 40000,
+      "lo": 39950,
+      "hi": 40000
+     }
+    },
+    "probe2": {
+     "instructions": {
+      "delivered": 4096,
+      "last": "IN2-031-rinomo",
+      "last_valid": true,
+      "tail_end": 4096,
+      "lo": 3982,
+      "hi": 4109
+     },
+     "desc_a": {
+      "delivered": 4096,
+      "last": "TA2-031-zekede",
+      "last_valid": true,
+      "tail_end": 4096,
+      "lo": 3982,
+      "hi": 4109
+     },
+     "desc_b": {
+      "delivered": 3000,
+      "last": "TB2-023-nusemo",
+      "last_valid": true,
+      "tail_end": 3000,
+      "lo": 2958,
+      "hi": 3000
+     },
+     "desc_c": {
+      "delivered": 500,
+      "last": "TC2-003-dezafa",
+      "last_valid": true,
+      "tail_end": 500,
+      "lo": 398,
+      "hi": 500
+     },
+     "schema": {
+      "delivered": 20000,
+      "last": "SC2-156-kafino",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "result": {
+      "delivered": 40000,
+      "last": "RS2-312-tasogi",
+      "last_valid": true,
+      "tail_end": 40000,
+      "lo": 39950,
+      "hi": 40000
+     }
+    }
+   }
+  },
+  "C20kx2-3": {
+   "args": {
+    "instr": 20000,
+    "copies": 2,
+    "mode": "direct",
+    "result": 40000
+   },
+   "rc": 0,
+   "seconds": 8.0,
+   "servers": {
+    "probe1": {
+     "instructions": {
+      "delivered": 4096,
+      "last": "IN1-031-dudopo",
+      "last_valid": true,
+      "tail_end": 4096,
+      "lo": 3982,
+      "hi": 4109
+     },
+     "desc_a": {
+      "delivered": 4096,
+      "last": "TA1-031-sutino",
+      "last_valid": true,
+      "tail_end": 4096,
+      "lo": 3982,
+      "hi": 4109
+     },
+     "desc_b": {
+      "delivered": 3000,
+      "last": "TB1-023-tiveku",
+      "last_valid": true,
+      "tail_end": 3000,
+      "lo": 2958,
+      "hi": 3000
+     },
+     "desc_c": {
+      "delivered": 500,
+      "last": "TC1-003-maduvi",
+      "last_valid": true,
+      "tail_end": 500,
+      "lo": 398,
+      "hi": 500
+     },
+     "schema": {
+      "delivered": 20000,
+      "last": "SC1-156-pegopi",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "result": {
+      "delivered": 40000,
+      "last": "RS1-312-lotelo",
+      "last_valid": true,
+      "tail_end": 40000,
+      "lo": 39950,
+      "hi": 40000
+     }
+    },
+    "probe2": {
+     "instructions": {
+      "delivered": 4096,
+      "last": "IN2-031-nobano",
+      "last_valid": true,
+      "tail_end": 4096,
+      "lo": 3982,
+      "hi": 4109
+     },
+     "desc_a": {
+      "delivered": 4096,
+      "last": "TA2-031-banebu",
+      "last_valid": true,
+      "tail_end": 4096,
+      "lo": 3982,
+      "hi": 4109
+     },
+     "desc_b": {
+      "delivered": 3000,
+      "last": "TB2-023-silofa",
+      "last_valid": true,
+      "tail_end": 3000,
+      "lo": 2958,
+      "hi": 3000
+     },
+     "desc_c": {
+      "delivered": 500,
+      "last": "TC2-003-polevu",
+      "last_valid": true,
+      "tail_end": 500,
+      "lo": 398,
+      "hi": 500
+     },
+     "schema": {
+      "delivered": 20000,
+      "last": "SC2-156-gefene",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "result": {
+      "delivered": 40000,
+      "last": "RS2-312-mogobe",
+      "last_valid": true,
+      "tail_end": 40000,
+      "lo": 39950,
+      "hi": 40000
+     }
+    }
+   }
+  },
+  "C4090x2-1": {
+   "args": {
+    "instr": 4090,
+    "copies": 2,
+    "mode": "direct",
+    "result": 40000
+   },
+   "rc": 0,
+   "seconds": 9.2,
+   "servers": {
+    "probe1": {
+     "instructions": {
+      "delivered": 4090,
+      "last": "IN1-031-suzome",
+      "last_valid": true,
+      "tail_end": 4090,
+      "lo": 3982,
+      "hi": 4090
+     },
+     "desc_a": {
+      "delivered": 4096,
+      "last": "TA1-031-nebage",
+      "last_valid": true,
+      "tail_end": 4096,
+      "lo": 3982,
+      "hi": 4109
+     },
+     "desc_b": {
+      "delivered": 3000,
+      "last": "TB1-023-sogunu",
+      "last_valid": true,
+      "tail_end": 3000,
+      "lo": 2958,
+      "hi": 3000
+     },
+     "desc_c": {
+      "delivered": 500,
+      "last": "TC1-003-mumumu",
+      "last_valid": true,
+      "tail_end": 500,
+      "lo": 398,
+      "hi": 500
+     },
+     "schema": {
+      "delivered": 20000,
+      "last": "SC1-156-vavupa",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "result": {
+      "delivered": 40000,
+      "last": "RS1-312-bemuru",
+      "last_valid": true,
+      "tail_end": 40000,
+      "lo": 39950,
+      "hi": 40000
+     }
+    },
+    "probe2": {
+     "instructions": {
+      "delivered": 4090,
+      "last": "IN2-031-zoditi",
+      "last_valid": true,
+      "tail_end": 4090,
+      "lo": 3982,
+      "hi": 4090
+     },
+     "desc_a": {
+      "delivered": 4096,
+      "last": "TA2-031-bakaba",
+      "last_valid": true,
+      "tail_end": 4096,
+      "lo": 3982,
+      "hi": 4109
+     },
+     "desc_b": {
+      "delivered": 3000,
+      "last": "TB2-023-pabosa",
+      "last_valid": true,
+      "tail_end": 3000,
+      "lo": 2958,
+      "hi": 3000
+     },
+     "desc_c": {
+      "delivered": 500,
+      "last": "TC2-003-vizasu",
+      "last_valid": true,
+      "tail_end": 500,
+      "lo": 398,
+      "hi": 500
+     },
+     "schema": {
+      "delivered": 20000,
+      "last": "SC2-156-tipepo",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "result": {
+      "delivered": 40000,
+      "last": "RS2-312-netami",
+      "last_valid": true,
+      "tail_end": 40000,
+      "lo": 39950,
+      "hi": 40000
+     }
+    }
+   }
+  },
+  "C4090x2-2": {
+   "args": {
+    "instr": 4090,
+    "copies": 2,
+    "mode": "direct",
+    "result": 40000
+   },
+   "rc": 0,
+   "seconds": 14.6,
+   "servers": {
+    "probe1": {
+     "instructions": {
+      "delivered": null,
+      "last": null,
+      "last_valid": null,
+      "tail_end": null,
+      "lo": null,
+      "hi": null
+     },
+     "desc_a": {
+      "delivered": null,
+      "last": null,
+      "last_valid": null,
+      "tail_end": null,
+      "lo": null,
+      "hi": null
+     },
+     "desc_b": {
+      "delivered": null,
+      "last": null,
+      "last_valid": null,
+      "tail_end": null,
+      "lo": null,
+      "hi": null
+     },
+     "desc_c": {
+      "delivered": null,
+      "last": null,
+      "last_valid": null,
+      "tail_end": null,
+      "lo": null,
+      "hi": null
+     },
+     "schema": {
+      "delivered": null,
+      "last": null,
+      "last_valid": null,
+      "tail_end": null,
+      "lo": null,
+      "hi": null
+     },
+     "result": {
+      "delivered": null,
+      "last": null,
+      "last_valid": null,
+      "tail_end": null,
+      "lo": null,
+      "hi": null
+     }
+    },
+    "probe2": {
+     "instructions": {
+      "delivered": null,
+      "last": null,
+      "last_valid": null,
+      "tail_end": null,
+      "lo": null,
+      "hi": null
+     },
+     "desc_a": {
+      "delivered": null,
+      "last": null,
+      "last_valid": null,
+      "tail_end": null,
+      "lo": null,
+      "hi": null
+     },
+     "desc_b": {
+      "delivered": null,
+      "last": null,
+      "last_valid": null,
+      "tail_end": null,
+      "lo": null,
+      "hi": null
+     },
+     "desc_c": {
+      "delivered": null,
+      "last": null,
+      "last_valid": null,
+      "tail_end": null,
+      "lo": null,
+      "hi": null
+     },
+     "schema": {
+      "delivered": null,
+      "last": null,
+      "last_valid": null,
+      "tail_end": null,
+      "lo": null,
+      "hi": null
+     },
+     "result": {
+      "delivered": null,
+      "last": null,
+      "last_valid": null,
+      "tail_end": null,
+      "lo": null,
+      "hi": null
+     }
+    }
+   }
+  },
+  "C4090x2-3": {
+   "args": {
+    "instr": 4090,
+    "copies": 2,
+    "mode": "direct",
+    "result": 40000
+   },
+   "rc": 0,
+   "seconds": 6.9,
+   "servers": {
+    "probe1": {
+     "instructions": {
+      "delivered": 4090,
+      "last": "IN1-031-samona",
+      "last_valid": true,
+      "tail_end": 4090,
+      "lo": 3982,
+      "hi": 4090
+     },
+     "desc_a": {
+      "delivered": "3982..4109",
+      "last": "TA1-031-domila",
+      "last_valid": true,
+      "tail_end": null,
+      "lo": 3982,
+      "hi": 4109
+     },
+     "desc_b": {
+      "delivered": 3000,
+      "last": "TB1-023-rusolu",
+      "last_valid": true,
+      "tail_end": 3000,
+      "lo": 2958,
+      "hi": 3000
+     },
+     "desc_c": {
+      "delivered": 500,
+      "last": "TC1-003-putine",
+      "last_valid": true,
+      "tail_end": 500,
+      "lo": 398,
+      "hi": 500
+     },
+     "schema": {
+      "delivered": 20000,
+      "last": "SC1-156-gemuvo",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "result": {
+      "delivered": 40000,
+      "last": "RS1-312-fegupo",
+      "last_valid": true,
+      "tail_end": 40000,
+      "lo": 39950,
+      "hi": 40000
+     }
+    },
+    "probe2": {
+     "instructions": {
+      "delivered": 4090,
+      "last": "IN2-031-pevela",
+      "last_valid": true,
+      "tail_end": 4090,
+      "lo": 3982,
+      "hi": 4090
+     },
+     "desc_a": {
+      "delivered": "3982..4109",
+      "last": "TA2-031-rakufu",
+      "last_valid": true,
+      "tail_end": null,
+      "lo": 3982,
+      "hi": 4109
+     },
+     "desc_b": {
+      "delivered": 3000,
+      "last": "TB2-023-zobosu",
+      "last_valid": true,
+      "tail_end": 3000,
+      "lo": 2958,
+      "hi": 3000
+     },
+     "desc_c": {
+      "delivered": 500,
+      "last": "TC2-003-refota",
+      "last_valid": true,
+      "tail_end": 500,
+      "lo": 398,
+      "hi": 500
+     },
+     "schema": {
+      "delivered": 20000,
+      "last": "SC2-156-kupabo",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "result": {
+      "delivered": 40000,
+      "last": "RS2-312-bizopi",
+      "last_valid": true,
+      "tail_end": 40000,
+      "lo": 39950,
+      "hi": 40000
+     }
+    }
+   }
+  },
+  "D20k-1": {
+   "args": {
+    "instr": 20000,
+    "copies": 1,
+    "mode": "deferred",
+    "result": 40000
+   },
+   "rc": 0,
+   "seconds": 6.3,
+   "servers": {
+    "probe": {
+     "instructions": {
+      "delivered": 4096,
+      "last": "IN1-031-somoti",
+      "last_valid": true,
+      "tail_end": 4096,
+      "lo": 3982,
+      "hi": 4109
+     },
+     "desc_a": {
+      "delivered": 16384,
+      "last": "TA1-127-pobuda",
+      "last_valid": true,
+      "tail_end": 16384,
+      "lo": 16270,
+      "hi": 16397
+     },
+     "desc_b": {
+      "delivered": 3000,
+      "last": "TB1-023-sasoda",
+      "last_valid": true,
+      "tail_end": 3000,
+      "lo": 2958,
+      "hi": 3000
+     },
+     "desc_c": {
+      "delivered": 500,
+      "last": "TC1-003-luniso",
+      "last_valid": true,
+      "tail_end": 500,
+      "lo": 398,
+      "hi": 500
+     },
+     "schema": {
+      "delivered": 20000,
+      "last": "SC1-156-fikizo",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "result": {
+      "delivered": 40000,
+      "last": "RS1-312-butabe",
+      "last_valid": true,
+      "tail_end": 40000,
+      "lo": 39950,
+      "hi": 40000
+     }
+    }
+   }
+  },
+  "D20k-2": {
+   "args": {
+    "instr": 20000,
+    "copies": 1,
+    "mode": "deferred",
+    "result": 40000
+   },
+   "rc": 0,
+   "seconds": 19.6,
+   "servers": {
+    "probe": {
+     "instructions": {
+      "delivered": 4096,
+      "last": "IN1-031-rebefe",
+      "last_valid": true,
+      "tail_end": 4096,
+      "lo": 3982,
+      "hi": 4109
+     },
+     "desc_a": {
+      "delivered": 16384,
+      "last": "TA1-127-tofugu",
+      "last_valid": true,
+      "tail_end": 16384,
+      "lo": 16270,
+      "hi": 16397
+     },
+     "desc_b": {
+      "delivered": 3000,
+      "last": "TB1-023-nisele",
+      "last_valid": true,
+      "tail_end": 3000,
+      "lo": 2958,
+      "hi": 3000
+     },
+     "desc_c": {
+      "delivered": 500,
+      "last": "TC1-003-suzimo",
+      "last_valid": true,
+      "tail_end": 500,
+      "lo": 398,
+      "hi": 500
+     },
+     "schema": {
+      "delivered": 20000,
+      "last": "SC1-156-kapova",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "result": {
+      "delivered": 40000,
+      "last": "RS1-312-lokina",
+      "last_valid": true,
+      "tail_end": 40000,
+      "lo": 39950,
+      "hi": 40000
+     }
+    }
+   }
+  },
+  "D20k-3": {
+   "args": {
+    "instr": 20000,
+    "copies": 1,
+    "mode": "deferred",
+    "result": 40000
+   },
+   "rc": 0,
+   "seconds": 19.1,
+   "servers": {
+    "probe": {
+     "instructions": {
+      "delivered": 4096,
+      "last": "IN1-031-mepuze",
+      "last_valid": true,
+      "tail_end": 4096,
+      "lo": 3982,
+      "hi": 4109
+     },
+     "desc_a": {
+      "delivered": 16384,
+      "last": "TA1-127-pelinu",
+      "last_valid": true,
+      "tail_end": 16384,
+      "lo": 16270,
+      "hi": 16397
+     },
+     "desc_b": {
+      "delivered": 3000,
+      "last": "TB1-023-vuleru",
+      "last_valid": true,
+      "tail_end": 3000,
+      "lo": 2958,
+      "hi": 3000
+     },
+     "desc_c": {
+      "delivered": 500,
+      "last": "TC1-003-larila",
+      "last_valid": true,
+      "tail_end": 500,
+      "lo": 398,
+      "hi": 500
+     },
+     "schema": {
+      "delivered": 20000,
+      "last": "SC1-156-zamize",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "result": {
+      "delivered": 40000,
+      "last": "RS1-312-vapoga",
+      "last_valid": true,
+      "tail_end": 40000,
+      "lo": 39950,
+      "hi": 40000
+     }
+    }
+   }
+  },
+  "E-bigresult": {
+   "args": {
+    "instr": 4090,
+    "copies": 1,
+    "mode": "direct",
+    "result": 120000
+   },
+   "rc": 0,
+   "seconds": 19.7,
+   "servers": {
+    "probe": {
+     "instructions": {
+      "delivered": 4090,
+      "last": "IN1-031-tegese",
+      "last_valid": true,
+      "tail_end": 4090,
+      "lo": 3982,
+      "hi": 4090
+     },
+     "desc_a": {
+      "delivered": 4096,
+      "last": "TA1-031-kifupo",
+      "last_valid": true,
+      "tail_end": 4096,
+      "lo": 3982,
+      "hi": 4109
+     },
+     "desc_b": {
+      "delivered": 3000,
+      "last": "TB1-023-tofada",
+      "last_valid": true,
+      "tail_end": 3000,
+      "lo": 2958,
+      "hi": 3000
+     },
+     "desc_c": {
+      "delivered": 500,
+      "last": "TC1-003-zuvagu",
+      "last_valid": true,
+      "tail_end": 500,
+      "lo": 398,
+      "hi": 500
+     },
+     "schema": {
+      "delivered": 20000,
+      "last": "SC1-156-buruda",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "result": {
+      "delivered": null,
+      "last": null,
+      "last_valid": null,
+      "tail_end": null,
+      "lo": null,
+      "hi": null
+     }
+    }
+   }
+  },
+  "P1": {
+   "args": {
+    "instr": 20000,
+    "copies": 1,
+    "mode": "direct",
+    "result": 40000
+   },
+   "rc": 0,
+   "seconds": 5.5,
+   "servers": {
+    "probe": {
+     "instructions": {
+      "delivered": 4096,
+      "last": "IN1-031-tazefe",
+      "last_valid": true,
+      "tail_end": 4096,
+      "lo": 3982,
+      "hi": 4109
+     },
+     "desc_a": {
+      "delivered": 4096,
+      "last": "TA1-031-gopesu",
+      "last_valid": true,
+      "tail_end": 4096,
+      "lo": 3982,
+      "hi": 4109
+     },
+     "desc_b": {
+      "delivered": "2958..3000",
+      "last": "TB1-023-zikefe",
+      "last_valid": true,
+      "tail_end": null,
+      "lo": 2958,
+      "hi": 3000
+     },
+     "desc_c": {
+      "delivered": 500,
+      "last": "TC1-003-latofe",
+      "last_valid": true,
+      "tail_end": 500,
+      "lo": 398,
+      "hi": 500
+     },
+     "schema": {
+      "delivered": 20000,
+      "last": "SC1-156-mulasi",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "result": {
+      "delivered": 40000,
+      "last": "RS1-312-kidise",
+      "last_valid": true,
+      "tail_end": 40000,
+      "lo": 39950,
+      "hi": 40000
+     }
+    }
+   }
+  },
+  "P2": {
+   "args": {
+    "instr": 20000,
+    "copies": 1,
+    "mode": "deferred",
+    "result": 40000
+   },
+   "rc": 0,
+   "seconds": 24.6,
+   "servers": {
+    "probe": {
+     "instructions": {
+      "delivered": 4096,
+      "last": "IN1-031-nimoli",
+      "last_valid": true,
+      "tail_end": 4096,
+      "lo": 3982,
+      "hi": 4109
+     },
+     "desc_a": {
+      "delivered": 16384,
+      "last": "TA1-127-tesule",
+      "last_valid": true,
+      "tail_end": 16384,
+      "lo": 16270,
+      "hi": 16397
+     },
+     "desc_b": {
+      "delivered": 3000,
+      "last": "TB1-023-bupovi",
+      "last_valid": true,
+      "tail_end": 3000,
+      "lo": 2958,
+      "hi": 3000
+     },
+     "desc_c": {
+      "delivered": 500,
+      "last": "TC1-003-balidi",
+      "last_valid": true,
+      "tail_end": 500,
+      "lo": 398,
+      "hi": 500
+     },
+     "schema": {
+      "delivered": 20000,
+      "last": "SC1-156-furika",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "result": {
+      "delivered": 40000,
+      "last": "RS1-312-gubuku",
+      "last_valid": true,
+      "tail_end": 40000,
+      "lo": 39950,
+      "hi": 40000
+     }
+    }
+   }
+  },
+  "P3": {
+   "args": {
+    "instr": 20000,
+    "copies": 2,
+    "mode": "direct",
+    "result": 40000
+   },
+   "rc": 0,
+   "seconds": 8.8,
+   "servers": {
+    "probe1": {
+     "instructions": {
+      "delivered": null,
+      "last": null,
+      "last_valid": null,
+      "tail_end": null,
+      "lo": null,
+      "hi": null
+     },
+     "desc_a": {
+      "delivered": null,
+      "last": null,
+      "last_valid": null,
+      "tail_end": null,
+      "lo": null,
+      "hi": null
+     },
+     "desc_b": {
+      "delivered": null,
+      "last": null,
+      "last_valid": null,
+      "tail_end": null,
+      "lo": null,
+      "hi": null
+     },
+     "desc_c": {
+      "delivered": null,
+      "last": null,
+      "last_valid": null,
+      "tail_end": null,
+      "lo": null,
+      "hi": null
+     },
+     "schema": {
+      "delivered": null,
+      "last": null,
+      "last_valid": null,
+      "tail_end": null,
+      "lo": null,
+      "hi": null
+     },
+     "result": {
+      "delivered": null,
+      "last": null,
+      "last_valid": null,
+      "tail_end": null,
+      "lo": null,
+      "hi": null
+     }
+    },
+    "probe2": {
+     "instructions": {
+      "delivered": null,
+      "last": null,
+      "last_valid": null,
+      "tail_end": null,
+      "lo": null,
+      "hi": null
+     },
+     "desc_a": {
+      "delivered": null,
+      "last": null,
+      "last_valid": null,
+      "tail_end": null,
+      "lo": null,
+      "hi": null
+     },
+     "desc_b": {
+      "delivered": null,
+      "last": null,
+      "last_valid": null,
+      "tail_end": null,
+      "lo": null,
+      "hi": null
+     },
+     "desc_c": {
+      "delivered": null,
+      "last": null,
+      "last_valid": null,
+      "tail_end": null,
+      "lo": null,
+      "hi": null
+     },
+     "schema": {
+      "delivered": null,
+      "last": null,
+      "last_valid": null,
+      "tail_end": null,
+      "lo": null,
+      "hi": null
+     },
+     "result": {
+      "delivered": null,
+      "last": null,
+      "last_valid": null,
+      "tail_end": null,
+      "lo": null,
+      "hi": null
+     }
+    }
+   }
+  },
+  "P4": {
+   "args": {
+    "instr": 4090,
+    "copies": 2,
+    "mode": "direct",
+    "result": 40000
+   },
+   "rc": 0,
+   "seconds": 7.7,
+   "servers": {
+    "probe1": {
+     "instructions": {
+      "delivered": 4090,
+      "last": "IN1-031-reruri",
+      "last_valid": true,
+      "tail_end": 4090,
+      "lo": 3982,
+      "hi": 4090
+     },
+     "desc_a": {
+      "delivered": 4096,
+      "last": "TA1-031-ginele",
+      "last_valid": true,
+      "tail_end": 4096,
+      "lo": 3982,
+      "hi": 4109
+     },
+     "desc_b": {
+      "delivered": 3000,
+      "last": "TB1-023-zorune",
+      "last_valid": true,
+      "tail_end": 3000,
+      "lo": 2958,
+      "hi": 3000
+     },
+     "desc_c": {
+      "delivered": 500,
+      "last": "TC1-003-gemutu",
+      "last_valid": true,
+      "tail_end": 500,
+      "lo": 398,
+      "hi": 500
+     },
+     "schema": {
+      "delivered": 20000,
+      "last": "SC1-156-luzevo",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "result": {
+      "delivered": 40000,
+      "last": "RS1-312-zebuni",
+      "last_valid": true,
+      "tail_end": 40000,
+      "lo": 39950,
+      "hi": 40000
+     }
+    },
+    "probe2": {
+     "instructions": {
+      "delivered": 4090,
+      "last": "IN2-031-dakifu",
+      "last_valid": true,
+      "tail_end": 4090,
+      "lo": 3982,
+      "hi": 4090
+     },
+     "desc_a": {
+      "delivered": 4096,
+      "last": "TA2-031-radoru",
+      "last_valid": true,
+      "tail_end": 4096,
+      "lo": 3982,
+      "hi": 4109
+     },
+     "desc_b": {
+      "delivered": 3000,
+      "last": "TB2-023-segipu",
+      "last_valid": true,
+      "tail_end": 3000,
+      "lo": 2958,
+      "hi": 3000
+     },
+     "desc_c": {
+      "delivered": 500,
+      "last": "TC2-003-fuzoti",
+      "last_valid": true,
+      "tail_end": 500,
+      "lo": 398,
+      "hi": 500
+     },
+     "schema": {
+      "delivered": 20000,
+      "last": "SC2-156-nizoku",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "result": {
+      "delivered": 40000,
+      "last": "RS2-312-riravu",
+      "last_valid": true,
+      "tail_end": 40000,
+      "lo": 39950,
+      "hi": 40000
+     }
+    }
+   }
+  },
+  "P5": {
+   "args": {
+    "instr": 4090,
+    "copies": 1,
+    "mode": "direct",
+    "result": 120000
+   },
+   "rc": 0,
+   "seconds": 16.7,
+   "servers": {
+    "probe": {
+     "instructions": {
+      "delivered": 4090,
+      "last": "IN1-031-biseko",
+      "last_valid": true,
+      "tail_end": 4090,
+      "lo": 3982,
+      "hi": 4090
+     },
+     "desc_a": {
+      "delivered": 4096,
+      "last": "TA1-031-lisege",
+      "last_valid": true,
+      "tail_end": 4096,
+      "lo": 3982,
+      "hi": 4109
+     },
+     "desc_b": {
+      "delivered": 3000,
+      "last": "TB1-023-bigupu",
+      "last_valid": true,
+      "tail_end": 3000,
+      "lo": 2958,
+      "hi": 3000
+     },
+     "desc_c": {
+      "delivered": 500,
+      "last": "TC1-003-kozeki",
+      "last_valid": true,
+      "tail_end": 500,
+      "lo": 398,
+      "hi": 500
+     },
+     "schema": {
+      "delivered": 20000,
+      "last": "SC1-156-butali",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "result": {
+      "delivered": null,
+      "last": null,
+      "last_valid": null,
+      "tail_end": null,
+      "lo": null,
+      "hi": null
+     }
+    }
+   }
+  }
+ },
+ "codex": {
+  "A20k-1": {
+   "args": {
+    "instr": 20000,
+    "copies": 1,
+    "mode": "direct",
+    "result": 40000,
+    "schema": null,
+    "flat": true,
+    "model": null
+   },
+   "model": "gpt-6.1-terra",
+   "catalog": {
+    "probe": {
+     "chars": 233,
+     "tail": "unning through the field of..."
+    }
+   },
+   "js": {
+    "desc_a": {
+     "len": 40142,
+     "first": "TA1-000-denoga",
+     "last": "IN1-156-pasesi"
+    },
+    "desc_b": {
+     "len": 23142,
+     "first": "TB1-000-bekisu",
+     "last": "IN1-156-pasesi"
+    },
+    "desc_c": {
+     "len": 20642,
+     "first": "TC1-000-gifule",
+     "last": "IN1-156-pasesi"
+    },
+    "schema_probe": {
+     "len": 20221,
+     "first": "IN1-000-lepuba",
+     "last": "IN1-156-pasesi",
+     "schema_len": 20280
+    },
+    "result_probe": {
+     "len": 40000,
+     "first": "RS1-000-suroka",
+     "last": "RS1-312-puniga"
+    }
+   },
+   "printed": [
+    {
+     "chars": 40100,
+     "first": "TA1-000-denoga",
+     "last": "IN1-156-pasesi",
+     "orig_tokens": 10036,
+     "marker_tokens": 36
+    }
+   ]
+  },
+  "A20k-2": {
+   "args": {
+    "instr": 20000,
+    "copies": 1,
+    "mode": "direct",
+    "result": 40000,
+    "schema": null,
+    "flat": true,
+    "model": null
+   },
+   "model": "gpt-6.1-terra",
+   "catalog": {
+    "probe": {
+     "chars": 233,
+     "tail": "unning through the field of..."
+    }
+   },
+   "js": {
+    "desc_a": {
+     "len": 40142,
+     "first": "TA1-000-vonodo",
+     "last": "IN1-156-zatano"
+    },
+    "desc_b": {
+     "len": 23142,
+     "first": "TB1-000-tovafa",
+     "last": "IN1-156-zatano"
+    },
+    "desc_c": {
+     "len": 20642,
+     "first": "TC1-000-gufevo",
+     "last": "IN1-156-zatano"
+    },
+    "schema_probe": {
+     "len": 20221,
+     "first": "IN1-000-kupeko",
+     "last": "IN1-156-zatano",
+     "schema_len": 20280
+    },
+    "result": {
+     "len": 40000,
+     "first": "RS1-000-niluzo",
+     "last": "RS1-312-fogesu"
+    }
+   },
+   "printed": [
+    {
+     "chars": 40100,
+     "first": "TA1-000-vonodo",
+     "last": "IN1-156-zatano",
+     "orig_tokens": 10036,
+     "marker_tokens": 36
+    }
+   ]
+  },
+  "A20k-3": {
+   "args": {
+    "instr": 20000,
+    "copies": 1,
+    "mode": "direct",
+    "result": 40000,
+    "schema": null,
+    "flat": true,
+    "model": null
+   },
+   "model": "gpt-6.1-terra",
+   "catalog": {
+    "probe": {
+     "chars": 233,
+     "tail": "unning through the field of..."
+    }
+   },
+   "js": {
+    "desc_a": {
+     "len": 40142,
+     "first": "TA1-000-nopira",
+     "last": "IN1-156-vavini"
+    },
+    "desc_b": {
+     "len": 23142,
+     "first": "TB1-000-remanu",
+     "last": "IN1-156-vavini"
+    },
+    "desc_c": {
+     "len": 20642,
+     "first": "TC1-000-tutabi",
+     "last": "IN1-156-vavini"
+    },
+    "schema_probe": {
+     "len": 20221,
+     "first": "IN1-000-fetiba",
+     "last": "IN1-156-vavini",
+     "schema_len": 20280
+    },
+    "result": {
+     "len": 40000,
+     "first": "RS1-000-kipado",
+     "last": "RS1-312-pituzu"
+    }
+   },
+   "printed": [
+    {
+     "chars": 40100,
+     "first": "TA1-000-nopira",
+     "last": "IN1-156-vavini",
+     "orig_tokens": 10036,
+     "marker_tokens": 36
+    }
+   ]
+  },
+  "B4090-1": {
+   "args": {
+    "instr": 4090,
+    "copies": 1,
+    "mode": "direct",
+    "result": 40000,
+    "schema": null,
+    "flat": true,
+    "model": null
+   },
+   "model": "gpt-6.1-terra",
+   "catalog": {
+    "probe": {
+     "chars": 233,
+     "tail": "unning through the field of..."
+    }
+   },
+   "js": {
+    "desc_a": {
+     "len": 24232,
+     "first": "TA1-000-kelado",
+     "last": "IN1-031-gugeza"
+    },
+    "desc_b": {
+     "len": 7232,
+     "first": "TB1-000-suveko",
+     "last": "IN1-031-gugeza"
+    },
+    "desc_c": {
+     "len": 4732,
+     "first": "TC1-000-zodemi",
+     "last": "IN1-031-gugeza"
+    },
+    "schema_probe": {
+     "len": 4311,
+     "first": "IN1-000-digiko",
+     "last": "IN1-031-gugeza",
+     "schema_len": 4370
+    },
+    "result": {
+     "len": 40000,
+     "first": "RS1-000-kepozi",
+     "last": "RS1-312-defute"
+    }
+   },
+   "printed": [
+    {
+     "chars": 24232,
+     "first": "TA1-000-kelado",
+     "last": "IN1-031-gugeza",
+     "orig_tokens": null,
+     "marker_tokens": null
+    }
+   ]
+  },
+  "B4090-2": {
+   "args": {
+    "instr": 4090,
+    "copies": 1,
+    "mode": "direct",
+    "result": 40000,
+    "schema": null,
+    "flat": true,
+    "model": null
+   },
+   "model": "gpt-6.1-terra",
+   "catalog": {
+    "probe": {
+     "chars": 233,
+     "tail": "unning through the field of..."
+    }
+   },
+   "js": {
+    "desc_a": {
+     "len": 24232,
+     "first": "TA1-000-timezo",
+     "last": "IN1-031-vufuge"
+    },
+    "desc_b": {
+     "len": 7232,
+     "first": "TB1-000-rakufa",
+     "last": "IN1-031-vufuge"
+    },
+    "desc_c": {
+     "len": 4732,
+     "first": "TC1-000-davila",
+     "last": "IN1-031-vufuge"
+    },
+    "schema_probe": {
+     "len": 4311,
+     "first": "IN1-000-dulini",
+     "last": "IN1-031-vufuge",
+     "schema_len": 4370
+    },
+    "result": {
+     "len": 40000,
+     "first": "RS1-000-lavemu",
+     "last": "RS1-312-piribi"
+    }
+   },
+   "printed": [
+    {
+     "chars": 24232,
+     "first": "TA1-000-timezo",
+     "last": "IN1-031-vufuge",
+     "orig_tokens": null,
+     "marker_tokens": null
+    }
+   ]
+  },
+  "B4090-3": {
+   "args": {
+    "instr": 4090,
+    "copies": 1,
+    "mode": "direct",
+    "result": 40000,
+    "schema": null,
+    "flat": true,
+    "model": null
+   },
+   "model": "gpt-6.1-terra",
+   "catalog": {
+    "probe": {
+     "chars": 233,
+     "tail": "unning through the field of..."
+    }
+   },
+   "js": {
+    "desc_a": {
+     "len": 24232,
+     "first": "TA1-000-zanisi",
+     "last": "IN1-031-dorobe"
+    },
+    "desc_b": {
+     "len": 7232,
+     "first": "TB1-000-rakute",
+     "last": "IN1-031-dorobe"
+    },
+    "desc_c": {
+     "len": 4732,
+     "first": "TC1-000-rarare",
+     "last": "IN1-031-dorobe"
+    },
+    "schema_probe": {
+     "len": 4311,
+     "first": "IN1-000-govobu",
+     "last": "IN1-031-dorobe",
+     "schema_len": 4370
+    },
+    "result": {
+     "len": 40000,
+     "first": "RS1-000-lifosi",
+     "last": "RS1-312-pobuda"
+    }
+   },
+   "printed": [
+    {
+     "chars": 24232,
+     "first": "TA1-000-zanisi",
+     "last": "IN1-031-dorobe",
+     "orig_tokens": null,
+     "marker_tokens": null
+    }
+   ]
+  },
+  "C20kx2-1": {
+   "args": {
+    "instr": 20000,
+    "copies": 2,
+    "mode": "direct",
+    "result": 40000,
+    "schema": null,
+    "flat": true,
+    "model": null
+   },
+   "model": "gpt-6.1-terra",
+   "catalog": {
+    "probe1": {
+     "chars": 201,
+     "tail": "over the lazy dog and keeps..."
+    }
+   },
+   "js": {
+    "desc_a": {
+     "len": 40143,
+     "first": "TA1-000-nadumo",
+     "last": "IN1-156-zatone"
+    },
+    "desc_b": {
+     "len": 23143,
+     "first": "TB1-000-vadobu",
+     "last": "IN1-156-zatone"
+    },
+    "desc_c": {
+     "len": 20643,
+     "first": "TC1-000-nebude",
+     "last": "IN1-156-zatone"
+    },
+    "schema_probe": {
+     "len": 20222,
+     "first": "IN1-000-vakaku",
+     "last": "IN1-156-zatone",
+     "schema_len": 20282
+    },
+    "result": {
+     "len": 40055,
+     "first": "RS1-000-zusuvu",
+     "last": "RS1-312-somema"
+    }
+   },
+   "printed": [
+    {
+     "chars": 40104,
+     "first": "TA1-000-nadumo",
+     "last": "IN2-156-ziguze",
+     "orig_tokens": 20072,
+     "marker_tokens": 10072
+    }
+   ]
+  },
+  "C20kx2-2": {
+   "args": {
+    "instr": 20000,
+    "copies": 2,
+    "mode": "direct",
+    "result": 40000,
+    "schema": null,
+    "flat": true,
+    "model": null
+   },
+   "model": "gpt-6.1-terra",
+   "catalog": {
+    "probe1": {
+     "chars": 201,
+     "tail": "over the lazy dog and keeps..."
+    }
+   },
+   "js": {
+    "desc_a": {
+     "len": 40143,
+     "first": "TA1-000-vanoso",
+     "last": "IN1-156-negoko"
+    },
+    "desc_b": {
+     "len": 23143,
+     "first": "TB1-000-givape",
+     "last": "IN1-156-negoko"
+    },
+    "desc_c": {
+     "len": 20643,
+     "first": "TC1-000-fepogu",
+     "last": "IN1-156-negoko"
+    },
+    "schema_probe": {
+     "len": 20222,
+     "first": "IN1-000-bunipu",
+     "last": "IN1-156-negoko",
+     "schema_len": 20282
+    },
+    "result": {
+     "len": 40000,
+     "first": "RS1-000-zigosu",
+     "last": "RS1-312-duroza"
+    }
+   },
+   "printed": [
+    {
+     "chars": 40104,
+     "first": "TA1-000-vanoso",
+     "last": "IN2-156-sufosi",
+     "orig_tokens": 20072,
+     "marker_tokens": 10072
+    }
+   ]
+  },
+  "C20kx2-3": {
+   "args": {
+    "instr": 20000,
+    "copies": 2,
+    "mode": "direct",
+    "result": 40000,
+    "schema": null,
+    "flat": true,
+    "model": null
+   },
+   "model": "gpt-6.1-terra",
+   "catalog": {
+    "probe1": {
+     "chars": 201,
+     "tail": "over the lazy dog and keeps..."
+    }
+   },
+   "js": {
+    "desc_a": {
+     "len": 40143,
+     "first": "TA1-000-dorere",
+     "last": "IN1-156-gakasa"
+    },
+    "desc_b": {
+     "len": 23143,
+     "first": "TB1-000-pegebe",
+     "last": "IN1-156-gakasa"
+    },
+    "desc_c": {
+     "len": 20643,
+     "first": "TC1-000-malube",
+     "last": "IN1-156-gakasa"
+    },
+    "schema_probe": {
+     "len": 20222,
+     "first": "IN1-000-fukoge",
+     "last": "IN1-156-gakasa",
+     "schema_len": 20282
+    },
+    "result": {
+     "len": 40000,
+     "first": "RS1-000-lekulo",
+     "last": "RS1-312-vukemo"
+    }
+   },
+   "printed": [
+    {
+     "chars": 40104,
+     "first": "TA1-000-dorere",
+     "last": "IN2-156-vopape",
+     "orig_tokens": 20072,
+     "marker_tokens": 10072
+    }
+   ]
+  },
+  "C4090x2-1": {
+   "args": {
+    "instr": 4090,
+    "copies": 2,
+    "mode": "direct",
+    "result": 40000,
+    "schema": null,
+    "flat": true,
+    "model": null
+   },
+   "model": "gpt-6.1-terra",
+   "catalog": {
+    "probe1": {
+     "chars": 201,
+     "tail": "over the lazy dog and keeps..."
+    }
+   },
+   "js": {
+    "desc_a": {
+     "len": 24233,
+     "first": "TA1-000-lipoba",
+     "last": "IN1-031-turoto"
+    },
+    "desc_b": {
+     "len": 7233,
+     "first": "TB1-000-nunifu",
+     "last": "IN1-031-turoto"
+    },
+    "desc_c": {
+     "len": 4733,
+     "first": "TC1-000-levete",
+     "last": "IN1-031-turoto"
+    },
+    "schema_probe": {
+     "len": 4312,
+     "first": "IN1-000-lapivi",
+     "last": "IN1-031-turoto",
+     "schema_len": 4372
+    },
+    "result": {
+     "len": 40000,
+     "first": "RS1-000-mulavi",
+     "last": "RS1-312-pipuza"
+    }
+   },
+   "printed": [
+    {
+     "chars": 40103,
+     "first": "TA1-000-lipoba",
+     "last": "IN2-031-deleve",
+     "orig_tokens": 12117,
+     "marker_tokens": 2117
+    }
+   ]
+  },
+  "C4090x2-2": {
+   "args": {
+    "instr": 4090,
+    "copies": 2,
+    "mode": "direct",
+    "result": 40000,
+    "schema": null,
+    "flat": true,
+    "model": null
+   },
+   "model": "gpt-6.1-terra",
+   "catalog": {
+    "probe1": {
+     "chars": 201,
+     "tail": "over the lazy dog and keeps..."
+    }
+   },
+   "js": {
+    "desc_a": {
+     "len": 24233,
+     "first": "TA1-000-noleni",
+     "last": "IN1-031-bonele"
+    },
+    "desc_b": {
+     "len": 7233,
+     "first": "TB1-000-papula",
+     "last": "IN1-031-bonele"
+    },
+    "desc_c": {
+     "len": 4733,
+     "first": "TC1-000-zanubo",
+     "last": "IN1-031-bonele"
+    },
+    "schema_probe": {
+     "len": 4312,
+     "first": "IN1-000-pevemo",
+     "last": "IN1-031-bonele",
+     "schema_len": 4372
+    },
+    "result": {
+     "len": 40000,
+     "first": "RS1-000-navema",
+     "last": "RS1-312-nizisu"
+    }
+   },
+   "printed": [
+    {
+     "chars": 40103,
+     "first": "TA1-000-noleni",
+     "last": "IN2-031-zekaso",
+     "orig_tokens": 12117,
+     "marker_tokens": 2117
+    }
+   ]
+  },
+  "C4090x2-3": {
+   "args": {
+    "instr": 4090,
+    "copies": 2,
+    "mode": "direct",
+    "result": 40000,
+    "schema": null,
+    "flat": true,
+    "model": null
+   },
+   "model": "gpt-6.1-terra",
+   "catalog": {
+    "probe1": {
+     "chars": 201,
+     "tail": "over the lazy dog and keeps..."
+    }
+   },
+   "js": {
+    "desc_a": {
+     "len": 24233,
+     "first": "TA1-000-vemifo",
+     "last": "IN1-031-kakula"
+    },
+    "desc_b": {
+     "len": 7233,
+     "first": "TB1-000-mafoda",
+     "last": "IN1-031-kakula"
+    },
+    "desc_c": {
+     "len": 4733,
+     "first": "TC1-000-natezo",
+     "last": "IN1-031-kakula"
+    },
+    "schema_probe": {
+     "len": 4312,
+     "first": "IN1-000-minoti",
+     "last": "IN1-031-kakula",
+     "schema_len": 4372
+    },
+    "result": {
+     "len": 40000,
+     "first": "RS1-000-naderi",
+     "last": "RS1-312-tivepi"
+    }
+   },
+   "printed": [
+    {
+     "chars": 40103,
+     "first": "TA1-000-vemifo",
+     "last": "IN2-031-laseke",
+     "orig_tokens": 12117,
+     "marker_tokens": 2117
+    }
+   ]
+  },
+  "E-bigresult": {
+   "args": {
+    "instr": 4090,
+    "copies": 1,
+    "mode": "direct",
+    "result": 120000,
+    "schema": null,
+    "flat": true,
+    "model": null
+   },
+   "model": "gpt-6.1-terra",
+   "catalog": {
+    "probe": {
+     "chars": 233,
+     "tail": "unning through the field of..."
+    }
+   },
+   "js": {
+    "desc_a": {
+     "len": 24232,
+     "first": "TA1-000-geliku",
+     "last": "IN1-031-vefubu"
+    },
+    "desc_b": {
+     "len": 7232,
+     "first": "TB1-000-zuligu",
+     "last": "IN1-031-vefubu"
+    },
+    "desc_c": {
+     "len": 4732,
+     "first": "TC1-000-ruvasa",
+     "last": "IN1-031-vefubu"
+    },
+    "schema_probe": {
+     "len": 4311,
+     "first": "IN1-000-fakute",
+     "last": "IN1-031-vefubu",
+     "schema_len": 4370
+    },
+    "result": {
+     "len": 120000,
+     "first": "RS1-000-dabubi",
+     "last": "RS1-937-puguro"
+    }
+   },
+   "printed": [
+    {
+     "chars": 24232,
+     "first": "TA1-000-geliku",
+     "last": "IN1-031-vefubu",
+     "orig_tokens": null,
+     "marker_tokens": null
+    }
+   ]
+  },
+  "NL1": {
+   "args": {
+    "instr": 20000,
+    "copies": 1,
+    "mode": "direct",
+    "result": 40000,
+    "schema": 20000,
+    "flat": false,
+    "model": null
+   },
+   "model": "gpt-6.1-terra",
+   "catalog": {
+    "probe": {
+     "chars": 127,
+     "tail": "ld of pale grass until dusk fa"
+    }
+   },
+   "js": {
+    "desc_a": {
+     "len": 40142,
+     "first": "TA1-000-pilobi",
+     "last": "IN1-156-vokazo"
+    },
+    "desc_b": {
+     "len": 23142,
+     "first": "TB1-000-sigiru",
+     "last": "IN1-156-vokazo"
+    },
+    "desc_c": {
+     "len": 20642,
+     "first": "TC1-000-davira",
+     "last": "IN1-156-vokazo"
+    },
+    "schema_probe": {
+     "len": 20221,
+     "first": "IN1-000-perapi",
+     "last": "IN1-156-vokazo",
+     "schema_len": 20436
+    },
+    "result": {
+     "len": 40000,
+     "first": "RS1-000-nununu",
+     "last": "RS1-312-sukote"
+    }
+   },
+   "printed": [
+    {
+     "chars": 40102,
+     "first": "TA1-000-pilobi",
+     "last": "IN1-156-vokazo",
+     "orig_tokens": 10036,
+     "marker_tokens": 36
+    }
+   ]
+  },
+  "S1000": {
+   "args": {
+    "instr": 200,
+    "copies": 1,
+    "mode": "direct",
+    "result": 40000,
+    "schema": 1000,
+    "flat": true,
+    "model": null
+   },
+   "model": "gpt-6.1-terra",
+   "catalog": {
+    "probe": {
+     "chars": 200,
+     "tail": " over the lazy dog and keeps o"
+    }
+   },
+   "js": {
+    "desc_a": {
+     "len": 20342,
+     "first": "TA1-000-ripumo",
+     "last": "IN1-001-gemimi"
+    },
+    "desc_b": {
+     "len": 3342,
+     "first": "TB1-000-bokivo",
+     "last": "IN1-001-gemimi"
+    },
+    "desc_c": {
+     "len": 842,
+     "first": "TC1-000-bumupu",
+     "last": "IN1-001-gemimi"
+    },
+    "schema_probe": {
+     "len": 1429,
+     "first": "IN1-000-keneru",
+     "last": "SC1-007-zemane",
+     "schema_len": 1491
+    },
+    "result": {
+     "len": 40000,
+     "first": "RS1-000-matune",
+     "last": "RS1-312-kozire"
+    }
+   },
+   "printed": [
+    {
+     "chars": 20342,
+     "first": "TA1-000-ripumo",
+     "last": "IN1-001-gemimi",
+     "orig_tokens": null,
+     "marker_tokens": null
+    }
+   ]
+  },
+  "S300": {
+   "args": {
+    "instr": 200,
+    "copies": 1,
+    "mode": "direct",
+    "result": 40000,
+    "schema": 300,
+    "flat": true,
+    "model": null
+   },
+   "model": "gpt-6.1-terra",
+   "catalog": {
+    "probe": {
+     "chars": 200,
+     "tail": " over the lazy dog and keeps o"
+    }
+   },
+   "js": {
+    "desc_a": {
+     "len": 20342,
+     "first": "TA1-000-kulibe",
+     "last": "IN1-001-tiroba"
+    },
+    "desc_b": {
+     "len": 3342,
+     "first": "TB1-000-namele",
+     "last": "IN1-001-tiroba"
+    },
+    "desc_c": {
+     "len": 842,
+     "first": "TC1-000-pinoru",
+     "last": "IN1-001-tiroba"
+    },
+    "schema_probe": {
+     "len": 729,
+     "first": "IN1-000-fozazi",
+     "last": "SC1-002-migede",
+     "schema_len": 791
+    },
+    "result": {
+     "len": 40000,
+     "first": "RS1-000-bamuso",
+     "last": "RS1-312-fikuzi"
+    }
+   },
+   "printed": [
+    {
+     "chars": 20342,
+     "first": "TA1-000-kulibe",
+     "last": "IN1-001-tiroba",
+     "orig_tokens": null,
+     "marker_tokens": null
+    }
+   ]
+  },
+  "S3000": {
+   "args": {
+    "instr": 200,
+    "copies": 1,
+    "mode": "direct",
+    "result": 40000,
+    "schema": 3000,
+    "flat": true,
+    "model": null
+   },
+   "model": "gpt-6.1-terra",
+   "catalog": {
+    "probe": {
+     "chars": 200,
+     "tail": " over the lazy dog and keeps o"
+    }
+   },
+   "js": {
+    "desc_a": {
+     "len": 20342,
+     "first": "TA1-000-vezamu",
+     "last": "IN1-001-kuvubi"
+    },
+    "desc_b": {
+     "len": 3342,
+     "first": "TB1-000-sorima",
+     "last": "IN1-001-kuvubi"
+    },
+    "desc_c": {
+     "len": 842,
+     "first": "TC1-000-kofori",
+     "last": "IN1-001-kuvubi"
+    },
+    "schema_probe": {
+     "len": 3429,
+     "first": "IN1-000-dudeku",
+     "last": "SC1-023-rinazi",
+     "schema_len": 3491
+    },
+    "result": {
+     "len": 40000,
+     "first": "RS1-000-kevupo",
+     "last": "RS1-312-tikizi"
+    }
+   },
+   "printed": [
+    {
+     "chars": 20342,
+     "first": "TA1-000-vezamu",
+     "last": "IN1-001-kuvubi",
+     "orig_tokens": null,
+     "marker_tokens": null
+    }
+   ]
+  },
+  "S4000": {
+   "args": {
+    "instr": 200,
+    "copies": 1,
+    "mode": "direct",
+    "result": 40000,
+    "schema": 4000,
+    "flat": true,
+    "model": null
+   },
+   "model": "gpt-6.1-terra",
+   "catalog": {
+    "probe": {
+     "chars": 200,
+     "tail": " over the lazy dog and keeps o"
+    }
+   },
+   "js": {
+    "desc_a": {
+     "len": 20342,
+     "first": "TA1-000-gifadi",
+     "last": "IN1-001-foferu"
+    },
+    "desc_b": {
+     "len": 3342,
+     "first": "TB1-000-tazaka",
+     "last": "IN1-001-foferu"
+    },
+    "desc_c": {
+     "len": 842,
+     "first": "TC1-000-zobamu",
+     "last": "IN1-001-foferu"
+    },
+    "schema_probe": {
+     "len": 4429,
+     "first": "IN1-000-vegotu",
+     "last": "SC1-031-rodofi",
+     "schema_len": 4491
+    },
+    "result_probe": {
+     "len": 40000,
+     "first": "RS1-000-tafabe",
+     "last": "RS1-312-remano"
+    }
+   },
+   "printed": [
+    {
+     "chars": 20342,
+     "first": "TA1-000-gifadi",
+     "last": "IN1-001-foferu",
+     "orig_tokens": null,
+     "marker_tokens": null
+    }
+   ]
+  },
+  "S4100": {
+   "args": {
+    "instr": 200,
+    "copies": 1,
+    "mode": "direct",
+    "result": 40000,
+    "schema": 4100,
+    "flat": true,
+    "model": null
+   },
+   "model": "gpt-6.1-terra",
+   "catalog": {
+    "probe": {
+     "chars": 200,
+     "tail": " over the lazy dog and keeps o"
+    }
+   },
+   "js": {
+    "desc_a": {
+     "len": 20342,
+     "first": "TA1-000-pitetu",
+     "last": "IN1-001-domelu"
+    },
+    "desc_b": {
+     "len": 3342,
+     "first": "TB1-000-lemode",
+     "last": "IN1-001-domelu"
+    },
+    "desc_c": {
+     "len": 842,
+     "first": "TC1-000-nifupi",
+     "last": "IN1-001-domelu"
+    },
+    "schema_probe": {
+     "len": 4529,
+     "first": "IN1-000-lilira",
+     "last": "SC1-031-mafafe",
+     "schema_len": 4591
+    },
+    "result_probe": {
+     "len": 40000,
+     "first": "RS1-000-fezisu",
+     "last": "RS1-312-vekupu"
+    }
+   },
+   "printed": [
+    {
+     "chars": 20342,
+     "first": "TA1-000-pitetu",
+     "last": "IN1-001-domelu",
+     "orig_tokens": null,
+     "marker_tokens": null
+    }
+   ]
+  },
+  "S4800": {
+   "args": {
+    "instr": 200,
+    "copies": 1,
+    "mode": "direct",
+    "result": 40000,
+    "schema": 4800,
+    "flat": true,
+    "model": null
+   },
+   "model": "gpt-6.1-terra",
+   "catalog": {
+    "probe": {
+     "chars": 200,
+     "tail": " over the lazy dog and keeps o"
+    }
+   },
+   "js": {
+    "desc_a": {
+     "len": 20342,
+     "first": "TA1-000-gizifu",
+     "last": "IN1-001-dumoro"
+    },
+    "desc_b": {
+     "len": 3342,
+     "first": "TB1-000-darala",
+     "last": "IN1-001-dumoro"
+    },
+    "desc_c": {
+     "len": 842,
+     "first": "TC1-000-zapiko",
+     "last": "IN1-001-dumoro"
+    },
+    "schema_probe": {
+     "len": 5229,
+     "first": "IN1-000-sikate",
+     "last": "SC1-037-popela",
+     "schema_len": 5291
+    },
+    "result": {
+     "len": 40000,
+     "first": "RS1-000-sazevi",
+     "last": "RS1-312-gimozo"
+    }
+   },
+   "printed": [
+    {
+     "chars": 20342,
+     "first": "TA1-000-gizifu",
+     "last": "IN1-001-dumoro",
+     "orig_tokens": null,
+     "marker_tokens": null
+    }
+   ]
+  },
+  "S5000": {
+   "args": {
+    "instr": 200,
+    "copies": 1,
+    "mode": "direct",
+    "result": 40000,
+    "schema": 5000,
+    "flat": true,
+    "model": null
+   },
+   "model": "gpt-6.1-terra",
+   "catalog": {
+    "probe": {
+     "chars": 200,
+     "tail": " over the lazy dog and keeps o"
+    }
+   },
+   "js": {
+    "desc_a": {
+     "len": 20342,
+     "first": "TA1-000-dizuna",
+     "last": "IN1-001-zulido"
+    },
+    "desc_b": {
+     "len": 3342,
+     "first": "TB1-000-nisepi",
+     "last": "IN1-001-zulido"
+    },
+    "desc_c": {
+     "len": 842,
+     "first": "TC1-000-fefupe",
+     "last": "IN1-001-zulido"
+    },
+    "schema_probe": {
+     "len": 421,
+     "first": "IN1-000-tubita",
+     "last": "IN1-001-zulido",
+     "schema_len": 480
+    },
+    "result": {
+     "len": 40000,
+     "first": "RS1-000-lilagi",
+     "last": "RS1-312-kadora"
+    }
+   },
+   "printed": [
+    {
+     "chars": 20342,
+     "first": "TA1-000-dizuna",
+     "last": "IN1-001-zulido",
+     "orig_tokens": null,
+     "marker_tokens": null
+    }
+   ]
+  },
+  "S5500": {
+   "args": {
+    "instr": 200,
+    "copies": 1,
+    "mode": "direct",
+    "result": 40000,
+    "schema": 5500,
+    "flat": true,
+    "model": null
+   },
+   "model": "gpt-6.1-terra",
+   "catalog": {
+    "probe": {
+     "chars": 200,
+     "tail": " over the lazy dog and keeps o"
+    }
+   },
+   "js": {
+    "desc_a": {
+     "len": 20342,
+     "first": "TA1-000-mosogo",
+     "last": "IN1-001-vumipo"
+    },
+    "desc_b": {
+     "len": 3342,
+     "first": "TB1-000-vedebu",
+     "last": "IN1-001-vumipo"
+    },
+    "desc_c": {
+     "len": 842,
+     "first": "TC1-000-fafeke",
+     "last": "IN1-001-vumipo"
+    },
+    "schema_probe": {
+     "len": 421,
+     "first": "IN1-000-luneno",
+     "last": "IN1-001-vumipo",
+     "schema_len": 480
+    },
+    "result": {
+     "len": 40055,
+     "first": "RS1-000-kikusi",
+     "last": "RS1-312-kosofe"
+    }
+   },
+   "printed": [
+    {
+     "chars": 20342,
+     "first": "TA1-000-mosogo",
+     "last": "IN1-001-vumipo",
+     "orig_tokens": null,
+     "marker_tokens": null
+    }
+   ]
+  },
+  "S8000": {
+   "args": {
+    "instr": 200,
+    "copies": 1,
+    "mode": "direct",
+    "result": 40000,
+    "schema": 8000,
+    "flat": true,
+    "model": null
+   },
+   "model": "gpt-6.1-terra",
+   "catalog": {
+    "probe": {
+     "chars": 200,
+     "tail": " over the lazy dog and keeps o"
+    }
+   },
+   "js": {
+    "desc_a": {
+     "len": 20342,
+     "first": "TA1-000-vevume",
+     "last": "IN1-001-fafuga"
+    },
+    "desc_b": {
+     "len": 3342,
+     "first": "TB1-000-sulozu",
+     "last": "IN1-001-fafuga"
+    },
+    "desc_c": {
+     "len": 842,
+     "first": "TC1-000-tagumo",
+     "last": "IN1-001-fafuga"
+    },
+    "schema_probe": {
+     "len": 421,
+     "first": "IN1-000-zizoki",
+     "last": "IN1-001-fafuga",
+     "schema_len": 480
+    },
+    "result": {
+     "len": 40055,
+     "first": "RS1-000-kazelu",
+     "last": "RS1-312-natali"
+    }
+   },
+   "printed": [
+    {
+     "chars": 20342,
+     "first": "TA1-000-vevume",
+     "last": "IN1-001-fafuga",
+     "orig_tokens": null,
+     "marker_tokens": null
+    }
+   ]
+  },
+  "t3": {
+   "args": {
+    "instr": 20000,
+    "copies": 1,
+    "mode": "direct",
+    "result": 40000,
+    "schema": null,
+    "flat": true,
+    "model": null
+   },
+   "model": "gpt-6.1-terra",
+   "catalog": {
+    "probe": {
+     "chars": 233,
+     "tail": "unning through the field of..."
+    }
+   },
+   "js": {
+    "desc_a": {
+     "len": 40142,
+     "first": "TA1-000-dokume",
+     "last": "IN1-156-bunasa"
+    },
+    "desc_b": {
+     "len": 23142,
+     "first": "TB1-000-lunili",
+     "last": "IN1-156-bunasa"
+    },
+    "desc_c": {
+     "len": 20642,
+     "first": "TC1-000-mifufu",
+     "last": "IN1-156-bunasa"
+    },
+    "schema_probe": {
+     "len": 20221,
+     "first": "IN1-000-mukake",
+     "last": "IN1-156-bunasa",
+     "schema_len": 20280
+    },
+    "result": {
+     "len": 40000,
+     "first": "RS1-000-kazufi",
+     "last": "RS1-312-vasibu"
+    }
+   },
+   "printed": [
+    {
+     "chars": 40100,
+     "first": "TA1-000-dokume",
+     "last": "IN1-156-bunasa",
+     "orig_tokens": 10036,
+     "marker_tokens": 36
+    }
+   ]
+  },
+  "t5": {
+   "args": {
+    "instr": 20000,
+    "copies": 1,
+    "mode": "plain",
+    "result": 40000,
+    "schema": null,
+    "flat": true,
+    "model": "gpt-6.1-sol"
+   },
+   "model": "gpt-6.1-sol",
+   "catalog": {
+    "probe": {
+     "chars": 233,
+     "tail": "unning through the field of..."
+    }
+   },
+   "js": {},
+   "printed": [
+    {
+     "chars": 40103,
+     "first": "TA1-000-pasopu",
+     "last": "IN1-156-firuge",
+     "orig_tokens": 31168,
+     "marker_tokens": 21168
+    },
+    {
+     "chars": 250,
+     "first": "IN1-000-sazutu",
+     "last": "IN1-001-katoma",
+     "orig_tokens": null,
+     "marker_tokens": null
+    }
+   ]
+  }
+ },
+ "grok": {
+  "A20k-1": {
+   "args": {
+    "instr": 20000,
+    "copies": 1,
+    "mode": "direct",
+    "result": 40000
+   },
+   "instr": {
+    "probe": {
+     "kept": 2033,
+     "marker": true
+    }
+   },
+   "desc": {
+    "probe__desc_c": {
+     "kept": 500,
+     "marker": false
+    },
+    "probe__desc_b": {
+     "kept": 2033,
+     "marker": true
+    },
+    "probe__result_probe": {
+     "kept": 89,
+     "marker": false
+    },
+    "probe__schema_probe": {
+     "kept": 82,
+     "marker": false
+    },
+    "probe__desc_a": {
+     "kept": 2033,
+     "marker": true
+    }
+   },
+   "prop": {
+    "probe__schema_probe": 20000
+   },
+   "result": [
+    {
+     "body_chars": 20000,
+     "truncated": true,
+     "last": "RS1-156-pasufu",
+     "note": "[MCP output truncated: showing first 19.5 KB of 39.1 KB. Full output written t"
+    }
+   ]
+  },
+  "A20k-2": {
+   "args": {
+    "instr": 20000,
+    "copies": 1,
+    "mode": "direct",
+    "result": 40000
+   },
+   "instr": {
+    "probe": {
+     "kept": 2033,
+     "marker": true
+    }
+   },
+   "desc": {
+    "probe__desc_c": {
+     "kept": 500,
+     "marker": false
+    },
+    "probe__desc_b": {
+     "kept": 2033,
+     "marker": true
+    },
+    "probe__result_probe": {
+     "kept": 89,
+     "marker": false
+    },
+    "probe__schema_probe": {
+     "kept": 82,
+     "marker": false
+    },
+    "probe__desc_a": {
+     "kept": 2033,
+     "marker": true
+    }
+   },
+   "prop": {
+    "probe__schema_probe": 20000
+   },
+   "result": [
+    {
+     "body_chars": 20000,
+     "truncated": true,
+     "last": "RS1-156-soziro",
+     "note": "[MCP output truncated: showing first 19.5 KB of 39.1 KB. Full output written t"
+    }
+   ]
+  },
+  "A20k-3": {
+   "args": {
+    "instr": 20000,
+    "copies": 1,
+    "mode": "direct",
+    "result": 40000
+   },
+   "instr": {
+    "probe": {
+     "kept": 2033,
+     "marker": true
+    }
+   },
+   "desc": {
+    "probe__desc_c": {
+     "kept": 500,
+     "marker": false
+    },
+    "probe__desc_b": {
+     "kept": 2033,
+     "marker": true
+    },
+    "probe__result_probe": {
+     "kept": 89,
+     "marker": false
+    },
+    "probe__schema_probe": {
+     "kept": 82,
+     "marker": false
+    },
+    "probe__desc_a": {
+     "kept": 2033,
+     "marker": true
+    }
+   },
+   "prop": {
+    "probe__schema_probe": 20000
+   },
+   "result": [
+    {
+     "body_chars": 20000,
+     "truncated": true,
+     "last": "RS1-156-bozuzu",
+     "note": "[MCP output truncated: showing first 19.5 KB of 39.1 KB. Full output written t"
+    }
+   ]
+  },
+  "B4090-1": {
+   "args": {
+    "instr": 4090,
+    "copies": 1,
+    "mode": "direct",
+    "result": 40000
+   },
+   "instr": {
+    "probe": {
+     "kept": 2033,
+     "marker": true
+    }
+   },
+   "desc": {
+    "probe__desc_c": {
+     "kept": 500,
+     "marker": false
+    },
+    "probe__desc_b": {
+     "kept": 2033,
+     "marker": true
+    },
+    "probe__result_probe": {
+     "kept": 89,
+     "marker": false
+    },
+    "probe__schema_probe": {
+     "kept": 82,
+     "marker": false
+    },
+    "probe__desc_a": {
+     "kept": 2033,
+     "marker": true
+    }
+   },
+   "prop": {
+    "probe__schema_probe": 20000
+   },
+   "result": [
+    {
+     "body_chars": 20000,
+     "truncated": true,
+     "last": "RS1-156-torola",
+     "note": "[MCP output truncated: showing first 19.5 KB of 39.1 KB. Full output written t"
+    }
+   ]
+  },
+  "B4090-2": {
+   "args": {
+    "instr": 4090,
+    "copies": 1,
+    "mode": "direct",
+    "result": 40000
+   },
+   "instr": {
+    "probe": {
+     "kept": 2033,
+     "marker": true
+    }
+   },
+   "desc": {
+    "probe__desc_c": {
+     "kept": 500,
+     "marker": false
+    },
+    "probe__desc_b": {
+     "kept": 2033,
+     "marker": true
+    },
+    "probe__result_probe": {
+     "kept": 89,
+     "marker": false
+    },
+    "probe__schema_probe": {
+     "kept": 82,
+     "marker": false
+    },
+    "probe__desc_a": {
+     "kept": 2033,
+     "marker": true
+    }
+   },
+   "prop": {
+    "probe__schema_probe": 20000
+   },
+   "result": [
+    {
+     "body_chars": 20000,
+     "truncated": true,
+     "last": "RS1-156-dodogi",
+     "note": "[MCP output truncated: showing first 19.5 KB of 39.1 KB. Full output written t"
+    }
+   ]
+  },
+  "B4090-3": {
+   "args": {
+    "instr": 4090,
+    "copies": 1,
+    "mode": "direct",
+    "result": 40000
+   },
+   "instr": {
+    "probe": {
+     "kept": 2033,
+     "marker": true
+    }
+   },
+   "desc": {
+    "probe__desc_c": {
+     "kept": 500,
+     "marker": false
+    },
+    "probe__desc_b": {
+     "kept": 2033,
+     "marker": true
+    },
+    "probe__result_probe": {
+     "kept": 89,
+     "marker": false
+    },
+    "probe__schema_probe": {
+     "kept": 82,
+     "marker": false
+    },
+    "probe__desc_a": {
+     "kept": 2033,
+     "marker": true
+    }
+   },
+   "prop": {
+    "probe__schema_probe": 20000
+   },
+   "result": [
+    {
+     "body_chars": 20000,
+     "truncated": true,
+     "last": "RS1-156-sobami",
+     "note": "[MCP output truncated: showing first 19.5 KB of 39.1 KB. Full output written t"
+    }
+   ]
+  },
+  "C20kx2-1": {
+   "args": {
+    "instr": 20000,
+    "copies": 2,
+    "mode": "direct",
+    "result": 40000
+   },
+   "instr": {
+    "probe1": {
+     "kept": 2033,
+     "marker": true
+    },
+    "probe2": {
+     "kept": 2033,
+     "marker": true
+    }
+   },
+   "desc": {
+    "probe1__result_probe": {
+     "kept": 89,
+     "marker": false
+    },
+    "probe1__schema_probe": {
+     "kept": 82,
+     "marker": false
+    },
+    "probe1__desc_c": {
+     "kept": 500,
+     "marker": false
+    },
+    "probe1__desc_b": {
+     "kept": 2033,
+     "marker": true
+    },
+    "probe1__desc_a": {
+     "kept": 2033,
+     "marker": true
+    },
+    "probe2__result_probe": {
+     "kept": 89,
+     "marker": false
+    },
+    "probe2__schema_probe": {
+     "kept": 82,
+     "marker": false
+    },
+    "probe2__desc_c": {
+     "kept": 500,
+     "marker": false
+    },
+    "probe2__desc_b": {
+     "kept": 2033,
+     "marker": true
+    },
+    "probe2__desc_a": {
+     "kept": 2033,
+     "marker": true
+    }
+   },
+   "prop": {
+    "probe1__schema_probe": 20000,
+    "probe2__schema_probe": 20000
+   },
+   "result": [
+    {
+     "body_chars": 20000,
+     "truncated": true,
+     "last": "RS2-156-tupuzu",
+     "note": "[MCP output truncated: showing first 19.5 KB of 39.1 KB. Full output written t"
+    },
+    {
+     "body_chars": 20000,
+     "truncated": true,
+     "last": "RS1-156-zikedu",
+     "note": "[MCP output truncated: showing first 19.5 KB of 39.1 KB. Full output written t"
+    }
+   ]
+  },
+  "C20kx2-2": {
+   "args": {
+    "instr": 20000,
+    "copies": 2,
+    "mode": "direct",
+    "result": 40000
+   },
+   "instr": {
+    "probe1": {
+     "kept": 2033,
+     "marker": true
+    },
+    "probe2": {
+     "kept": 2033,
+     "marker": true
+    }
+   },
+   "desc": {
+    "probe1__result_probe": {
+     "kept": 89,
+     "marker": false
+    },
+    "probe1__schema_probe": {
+     "kept": 82,
+     "marker": false
+    },
+    "probe1__desc_c": {
+     "kept": 500,
+     "marker": false
+    },
+    "probe1__desc_b": {
+     "kept": 2033,
+     "marker": true
+    },
+    "probe1__desc_a": {
+     "kept": 2033,
+     "marker": true
+    },
+    "probe2__result_probe": {
+     "kept": 89,
+     "marker": false
+    },
+    "probe2__schema_probe": {
+     "kept": 82,
+     "marker": false
+    },
+    "probe2__desc_c": {
+     "kept": 500,
+     "marker": false
+    },
+    "probe2__desc_b": {
+     "kept": 2033,
+     "marker": true
+    },
+    "probe2__desc_a": {
+     "kept": 2033,
+     "marker": true
+    }
+   },
+   "prop": {
+    "probe1__schema_probe": 20000,
+    "probe2__schema_probe": 20000
+   },
+   "result": [
+    {
+     "body_chars": 20000,
+     "truncated": true,
+     "last": "RS2-156-pasere",
+     "note": "[MCP output truncated: showing first 19.5 KB of 39.1 KB. Full output written t"
+    },
+    {
+     "body_chars": 20000,
+     "truncated": true,
+     "last": "RS1-156-puvati",
+     "note": "[MCP output truncated: showing first 19.5 KB of 39.1 KB. Full output written t"
+    }
+   ]
+  },
+  "C20kx2-3": {
+   "args": {
+    "instr": 20000,
+    "copies": 2,
+    "mode": "direct",
+    "result": 40000
+   },
+   "instr": {
+    "probe1": {
+     "kept": 2033,
+     "marker": true
+    },
+    "probe2": {
+     "kept": 2033,
+     "marker": true
+    }
+   },
+   "desc": {
+    "probe1__result_probe": {
+     "kept": 89,
+     "marker": false
+    },
+    "probe1__schema_probe": {
+     "kept": 82,
+     "marker": false
+    },
+    "probe1__desc_c": {
+     "kept": 500,
+     "marker": false
+    },
+    "probe1__desc_b": {
+     "kept": 2033,
+     "marker": true
+    },
+    "probe1__desc_a": {
+     "kept": 2033,
+     "marker": true
+    },
+    "probe2__result_probe": {
+     "kept": 89,
+     "marker": false
+    },
+    "probe2__schema_probe": {
+     "kept": 82,
+     "marker": false
+    },
+    "probe2__desc_c": {
+     "kept": 500,
+     "marker": false
+    },
+    "probe2__desc_b": {
+     "kept": 2033,
+     "marker": true
+    },
+    "probe2__desc_a": {
+     "kept": 2033,
+     "marker": true
+    }
+   },
+   "prop": {
+    "probe1__schema_probe": 20000,
+    "probe2__schema_probe": 20000
+   },
+   "result": [
+    {
+     "body_chars": 20000,
+     "truncated": true,
+     "last": "RS2-156-damili",
+     "note": "[MCP output truncated: showing first 19.5 KB of 39.1 KB. Full output written t"
+    },
+    {
+     "body_chars": 20000,
+     "truncated": true,
+     "last": "RS1-156-retugu",
+     "note": "[MCP output truncated: showing first 19.5 KB of 39.1 KB. Full output written t"
+    }
+   ]
+  },
+  "C4090x2-1": {
+   "args": {
+    "instr": 4090,
+    "copies": 2,
+    "mode": "direct",
+    "result": 40000
+   },
+   "instr": {
+    "probe1": {
+     "kept": 2033,
+     "marker": true
+    },
+    "probe2": {
+     "kept": 2033,
+     "marker": true
+    }
+   },
+   "desc": {
+    "probe1__result_probe": {
+     "kept": 89,
+     "marker": false
+    },
+    "probe1__schema_probe": {
+     "kept": 82,
+     "marker": false
+    },
+    "probe1__desc_c": {
+     "kept": 500,
+     "marker": false
+    },
+    "probe1__desc_b": {
+     "kept": 2033,
+     "marker": true
+    },
+    "probe1__desc_a": {
+     "kept": 2033,
+     "marker": true
+    },
+    "probe2__result_probe": {
+     "kept": 89,
+     "marker": false
+    },
+    "probe2__schema_probe": {
+     "kept": 82,
+     "marker": false
+    },
+    "probe2__desc_c": {
+     "kept": 500,
+     "marker": false
+    },
+    "probe2__desc_b": {
+     "kept": 2033,
+     "marker": true
+    },
+    "probe2__desc_a": {
+     "kept": 2033,
+     "marker": true
+    }
+   },
+   "prop": {
+    "probe1__schema_probe": 20000,
+    "probe2__schema_probe": 20000
+   },
+   "result": [
+    {
+     "body_chars": 20000,
+     "truncated": true,
+     "last": "RS1-156-kusebu",
+     "note": "[MCP output truncated: showing first 19.5 KB of 39.1 KB. Full output written t"
+    },
+    {
+     "body_chars": 20000,
+     "truncated": true,
+     "last": "RS2-156-ketebe",
+     "note": "[MCP output truncated: showing first 19.5 KB of 39.1 KB. Full output written t"
+    }
+   ]
+  },
+  "C4090x2-2": {
+   "args": {
+    "instr": 4090,
+    "copies": 2,
+    "mode": "direct",
+    "result": 40000
+   },
+   "instr": {
+    "probe1": {
+     "kept": 2033,
+     "marker": true
+    },
+    "probe2": {
+     "kept": 2033,
+     "marker": true
+    }
+   },
+   "desc": {
+    "probe1__result_probe": {
+     "kept": 89,
+     "marker": false
+    },
+    "probe1__schema_probe": {
+     "kept": 82,
+     "marker": false
+    },
+    "probe1__desc_c": {
+     "kept": 500,
+     "marker": false
+    },
+    "probe1__desc_b": {
+     "kept": 2033,
+     "marker": true
+    },
+    "probe1__desc_a": {
+     "kept": 2033,
+     "marker": true
+    },
+    "probe2__result_probe": {
+     "kept": 89,
+     "marker": false
+    },
+    "probe2__schema_probe": {
+     "kept": 82,
+     "marker": false
+    },
+    "probe2__desc_c": {
+     "kept": 500,
+     "marker": false
+    },
+    "probe2__desc_b": {
+     "kept": 2033,
+     "marker": true
+    },
+    "probe2__desc_a": {
+     "kept": 2033,
+     "marker": true
+    }
+   },
+   "prop": {
+    "probe1__schema_probe": 20000,
+    "probe2__schema_probe": 20000
+   },
+   "result": [
+    {
+     "body_chars": 20000,
+     "truncated": true,
+     "last": "RS1-156-kedara",
+     "note": "[MCP output truncated: showing first 19.5 KB of 39.1 KB. Full output written t"
+    },
+    {
+     "body_chars": 20000,
+     "truncated": true,
+     "last": "RS2-156-lozula",
+     "note": "[MCP output truncated: showing first 19.5 KB of 39.1 KB. Full output written t"
+    }
+   ]
+  },
+  "C4090x2-3": {
+   "args": {
+    "instr": 4090,
+    "copies": 2,
+    "mode": "direct",
+    "result": 40000
+   },
+   "instr": {
+    "probe1": {
+     "kept": 2033,
+     "marker": true
+    },
+    "probe2": {
+     "kept": 2033,
+     "marker": true
+    }
+   },
+   "desc": {
+    "probe1__result_probe": {
+     "kept": 89,
+     "marker": false
+    },
+    "probe1__schema_probe": {
+     "kept": 82,
+     "marker": false
+    },
+    "probe1__desc_c": {
+     "kept": 500,
+     "marker": false
+    },
+    "probe1__desc_b": {
+     "kept": 2033,
+     "marker": true
+    },
+    "probe1__desc_a": {
+     "kept": 2033,
+     "marker": true
+    },
+    "probe2__result_probe": {
+     "kept": 89,
+     "marker": false
+    },
+    "probe2__schema_probe": {
+     "kept": 82,
+     "marker": false
+    },
+    "probe2__desc_c": {
+     "kept": 500,
+     "marker": false
+    },
+    "probe2__desc_b": {
+     "kept": 2033,
+     "marker": true
+    },
+    "probe2__desc_a": {
+     "kept": 2033,
+     "marker": true
+    }
+   },
+   "prop": {
+    "probe1__schema_probe": 20000,
+    "probe2__schema_probe": 20000
+   },
+   "result": [
+    {
+     "body_chars": 20000,
+     "truncated": true,
+     "last": "RS2-156-deruga",
+     "note": "[MCP output truncated: showing first 19.5 KB of 39.1 KB. Full output written t"
+    },
+    {
+     "body_chars": 20000,
+     "truncated": true,
+     "last": "RS1-156-zumeko",
+     "note": "[MCP output truncated: showing first 19.5 KB of 39.1 KB. Full output written t"
+    }
+   ]
+  },
+  "E-bigresult": {
+   "args": {
+    "instr": 4090,
+    "copies": 1,
+    "mode": "direct",
+    "result": 120000
+   },
+   "instr": {
+    "probe": {
+     "kept": 2033,
+     "marker": true
+    }
+   },
+   "desc": {
+    "probe__desc_c": {
+     "kept": 500,
+     "marker": false
+    },
+    "probe__desc_b": {
+     "kept": 2033,
+     "marker": true
+    },
+    "probe__result_probe": {
+     "kept": 89,
+     "marker": false
+    },
+    "probe__schema_probe": {
+     "kept": 82,
+     "marker": false
+    },
+    "probe__desc_a": {
+     "kept": 2033,
+     "marker": true
+    }
+   },
+   "prop": {
+    "probe__schema_probe": 20000
+   },
+   "result": [
+    {
+     "body_chars": 20000,
+     "truncated": true,
+     "last": "RS1-156-gipuzu",
+     "note": "[MCP output truncated: showing first 19.5 KB of 117.2 KB. Full output written "
+    }
+   ]
+  },
+  "t2": {
+   "args": {
+    "instr": 20000,
+    "copies": 1,
+    "mode": "direct",
+    "result": 40000
+   },
+   "instr": {
+    "probe": {
+     "kept": 2033,
+     "marker": true
+    }
+   },
+   "desc": {
+    "probe__desc_c": {
+     "kept": 500,
+     "marker": false
+    },
+    "probe__desc_b": {
+     "kept": 2033,
+     "marker": true
+    },
+    "probe__result_probe": {
+     "kept": 89,
+     "marker": false
+    },
+    "probe__schema_probe": {
+     "kept": 82,
+     "marker": false
+    },
+    "probe__desc_a": {
+     "kept": 2033,
+     "marker": true
+    }
+   },
+   "prop": {
+    "probe__schema_probe": 20000
+   },
+   "result": [
+    {
+     "body_chars": 20000,
+     "truncated": true,
+     "last": "RS1-156-tunena",
+     "note": "[MCP output truncated: showing first 19.5 KB of 39.1 KB. Full output written t"
+    }
+   ]
+  }
+ },
+ "opencode": {
+  "A20k-1": {
+   "args": {
+    "instr": 20000,
+    "copies": 1,
+    "mode": "direct",
+    "result": 40000
+   },
+   "rc": 0,
+   "seconds": 141.3,
+   "servers": {
+    "probe": {
+     "instructions": {
+      "delivered": 20000,
+      "last": "IN1-156-fumude",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "desc_a": {
+      "delivered": 20000,
+      "last": "TA1-156-zezuze",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "desc_b": {
+      "delivered": 3000,
+      "last": "TB1-023-valogi",
+      "last_valid": true,
+      "tail_end": 3000,
+      "lo": 2958,
+      "hi": 3000
+     },
+     "desc_c": {
+      "delivered": 500,
+      "last": "TC1-003-satofi",
+      "last_valid": true,
+      "tail_end": 500,
+      "lo": 398,
+      "hi": 500
+     },
+     "schema": {
+      "delivered": 20000,
+      "last": "SC1-156-dizana",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "result": {
+      "delivered": 40000,
+      "last": "RS1-312-kuzetu",
+      "last_valid": true,
+      "tail_end": 40000,
+      "lo": 39950,
+      "hi": 40000
+     }
+    }
+   }
+  },
+  "A20k-2": {
+   "args": {
+    "instr": 20000,
+    "copies": 1,
+    "mode": "direct",
+    "result": 40000
+   },
+   "rc": 0,
+   "seconds": 72.9,
+   "servers": {
+    "probe": {
+     "instructions": {
+      "delivered": 20000,
+      "last": "IN1-156-tedoku",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "desc_a": {
+      "delivered": 117,
+      "last": "TA1-000-defasa",
+      "last_valid": true,
+      "tail_end": 117,
+      "lo": 14,
+      "hi": 141
+     },
+     "desc_b": {
+      "delivered": 117,
+      "last": "TB1-000-zabuza",
+      "last_valid": true,
+      "tail_end": 117,
+      "lo": 14,
+      "hi": 141
+     },
+     "desc_c": {
+      "delivered": 117,
+      "last": "TC1-000-gobege",
+      "last_valid": true,
+      "tail_end": 117,
+      "lo": 14,
+      "hi": 141
+     },
+     "schema": {
+      "delivered": 20000,
+      "last": "SC1-156-zarodu",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "result": {
+      "delivered": 40000,
+      "last": "RS1-312-tamine",
+      "last_valid": true,
+      "tail_end": 40000,
+      "lo": 39950,
+      "hi": 40000
+     }
+    }
+   }
+  },
+  "A20k-3": {
+   "args": {
+    "instr": 20000,
+    "copies": 1,
+    "mode": "direct",
+    "result": 40000
+   },
+   "rc": 0,
+   "seconds": 73.6,
+   "servers": {
+    "probe": {
+     "instructions": {
+      "delivered": 20000,
+      "last": "IN1-156-panufa",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "desc_a": {
+      "delivered": 20000,
+      "last": "TA1-156-defamo",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "desc_b": {
+      "delivered": 3000,
+      "last": "TB1-023-dapoti",
+      "last_valid": true,
+      "tail_end": 3000,
+      "lo": 2958,
+      "hi": 3000
+     },
+     "desc_c": {
+      "delivered": 500,
+      "last": "TC1-003-nazuka",
+      "last_valid": true,
+      "tail_end": 500,
+      "lo": 398,
+      "hi": 500
+     },
+     "schema": {
+      "delivered": 20000,
+      "last": "SC1-156-pifipe",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "result": {
+      "delivered": 40000,
+      "last": "RS1-312-kozozi",
+      "last_valid": true,
+      "tail_end": 40000,
+      "lo": 39950,
+      "hi": 40000
+     }
+    }
+   }
+  },
+  "B4090-1": {
+   "args": {
+    "instr": 4090,
+    "copies": 1,
+    "mode": "direct",
+    "result": 40000
+   },
+   "rc": 0,
+   "seconds": 241.3,
+   "servers": {
+    "probe": {
+     "instructions": {
+      "delivered": 4090,
+      "last": "IN1-031-raredo",
+      "last_valid": true,
+      "tail_end": 4090,
+      "lo": 3982,
+      "hi": 4090
+     },
+     "desc_a": {
+      "delivered": 20000,
+      "last": "TA1-156-tumegi",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "desc_b": {
+      "delivered": 3000,
+      "last": "TB1-023-lapeze",
+      "last_valid": true,
+      "tail_end": 3000,
+      "lo": 2958,
+      "hi": 3000
+     },
+     "desc_c": {
+      "delivered": 500,
+      "last": "TC1-003-relese",
+      "last_valid": true,
+      "tail_end": 500,
+      "lo": 398,
+      "hi": 500
+     },
+     "schema": {
+      "delivered": 20000,
+      "last": "SC1-156-nolupi",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "result": {
+      "delivered": 40000,
+      "last": "RS1-312-kuzezo",
+      "last_valid": true,
+      "tail_end": 40000,
+      "lo": 39950,
+      "hi": 40000
+     }
+    }
+   }
+  },
+  "B4090-2": {
+   "args": {
+    "instr": 4090,
+    "copies": 1,
+    "mode": "direct",
+    "result": 40000
+   },
+   "rc": 0,
+   "seconds": 52.7,
+   "servers": {
+    "probe": {
+     "instructions": {
+      "delivered": 4090,
+      "last": "IN1-031-domuza",
+      "last_valid": true,
+      "tail_end": 4090,
+      "lo": 3982,
+      "hi": 4090
+     },
+     "desc_a": {
+      "delivered": 117,
+      "last": "TA1-000-viriko",
+      "last_valid": true,
+      "tail_end": 117,
+      "lo": 14,
+      "hi": 141
+     },
+     "desc_b": {
+      "delivered": 117,
+      "last": "TB1-000-betade",
+      "last_valid": true,
+      "tail_end": 117,
+      "lo": 14,
+      "hi": 141
+     },
+     "desc_c": {
+      "delivered": 117,
+      "last": "TC1-000-rinone",
+      "last_valid": true,
+      "tail_end": 117,
+      "lo": 14,
+      "hi": 141
+     },
+     "schema": {
+      "delivered": null,
+      "last": null,
+      "last_valid": null,
+      "tail_end": null,
+      "lo": null,
+      "hi": null
+     },
+     "result": {
+      "delivered": 40000,
+      "last": "RS1-312-kofode",
+      "last_valid": true,
+      "tail_end": 40000,
+      "lo": 39950,
+      "hi": 40000
+     }
+    }
+   }
+  },
+  "B4090-3": {
+   "args": {
+    "instr": 4090,
+    "copies": 1,
+    "mode": "direct",
+    "result": 40000
+   },
+   "rc": 0,
+   "seconds": 287.0,
+   "servers": {
+    "probe": {
+     "instructions": {
+      "delivered": 4090,
+      "last": "IN1-031-nerosu",
+      "last_valid": true,
+      "tail_end": 4090,
+      "lo": 3982,
+      "hi": 4090
+     },
+     "desc_a": {
+      "delivered": 117,
+      "last": "TA1-000-bakare",
+      "last_valid": true,
+      "tail_end": 117,
+      "lo": 14,
+      "hi": 141
+     },
+     "desc_b": {
+      "delivered": 122,
+      "last": "TB1-000-fimamu",
+      "last_valid": true,
+      "tail_end": 122,
+      "lo": 14,
+      "hi": 141
+     },
+     "desc_c": {
+      "delivered": 122,
+      "last": "TC1-000-gabari",
+      "last_valid": true,
+      "tail_end": 122,
+      "lo": 14,
+      "hi": 141
+     },
+     "schema": {
+      "delivered": 20000,
+      "last": "SC1-156-riluko",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "result": {
+      "delivered": 40000,
+      "last": "RS1-312-neguru",
+      "last_valid": true,
+      "tail_end": 40000,
+      "lo": 39950,
+      "hi": 40000
+     }
+    }
+   }
+  },
+  "C20kx2-1": {
+   "args": {
+    "instr": 20000,
+    "copies": 2,
+    "mode": "direct",
+    "result": 40000
+   },
+   "rc": 0,
+   "seconds": 55.7,
+   "servers": {
+    "probe1": {
+     "instructions": {
+      "delivered": 20000,
+      "last": "IN1-156-vezori",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "desc_a": {
+      "delivered": 117,
+      "last": "TA1-000-divelo",
+      "last_valid": true,
+      "tail_end": 117,
+      "lo": 14,
+      "hi": 141
+     },
+     "desc_b": {
+      "delivered": 117,
+      "last": "TB1-000-lipulo",
+      "last_valid": true,
+      "tail_end": 117,
+      "lo": 14,
+      "hi": 141
+     },
+     "desc_c": {
+      "delivered": 117,
+      "last": "TC1-000-rubemu",
+      "last_valid": true,
+      "tail_end": 117,
+      "lo": 14,
+      "hi": 141
+     },
+     "schema": {
+      "delivered": null,
+      "last": null,
+      "last_valid": null,
+      "tail_end": null,
+      "lo": null,
+      "hi": null
+     },
+     "result": {
+      "delivered": 40000,
+      "last": "RS1-312-fopage",
+      "last_valid": true,
+      "tail_end": 40000,
+      "lo": 39950,
+      "hi": 40000
+     }
+    },
+    "probe2": {
+     "instructions": {
+      "delivered": 20000,
+      "last": "IN2-156-nezuka",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "desc_a": {
+      "delivered": 117,
+      "last": "TA2-000-tanela",
+      "last_valid": true,
+      "tail_end": 117,
+      "lo": 14,
+      "hi": 141
+     },
+     "desc_b": {
+      "delivered": 117,
+      "last": "TB2-000-kigoza",
+      "last_valid": true,
+      "tail_end": 117,
+      "lo": 14,
+      "hi": 141
+     },
+     "desc_c": {
+      "delivered": 117,
+      "last": "TC2-000-fizami",
+      "last_valid": true,
+      "tail_end": 117,
+      "lo": 14,
+      "hi": 141
+     },
+     "schema": {
+      "delivered": null,
+      "last": null,
+      "last_valid": null,
+      "tail_end": null,
+      "lo": null,
+      "hi": null
+     },
+     "result": {
+      "delivered": 40000,
+      "last": "RS2-312-motipu",
+      "last_valid": true,
+      "tail_end": 40000,
+      "lo": 39950,
+      "hi": 40000
+     }
+    }
+   }
+  },
+  "C20kx2-2": {
+   "args": {
+    "instr": 20000,
+    "copies": 2,
+    "mode": "direct",
+    "result": 40000
+   },
+   "rc": 0,
+   "seconds": 93.9,
+   "servers": {
+    "probe1": {
+     "instructions": {
+      "delivered": 20000,
+      "last": "IN1-156-generi",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "desc_a": {
+      "delivered": 20000,
+      "last": "TA1-156-vunipo",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "desc_b": {
+      "delivered": 3000,
+      "last": "TB1-023-lonuva",
+      "last_valid": true,
+      "tail_end": 3000,
+      "lo": 2958,
+      "hi": 3000
+     },
+     "desc_c": {
+      "delivered": 500,
+      "last": "TC1-003-sutalu",
+      "last_valid": true,
+      "tail_end": 500,
+      "lo": 398,
+      "hi": 500
+     },
+     "schema": {
+      "delivered": 20000,
+      "last": "SC1-156-gumosi",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "result": {
+      "delivered": 40000,
+      "last": "RS1-312-borasi",
+      "last_valid": true,
+      "tail_end": 40000,
+      "lo": 39950,
+      "hi": 40000
+     }
+    },
+    "probe2": {
+     "instructions": {
+      "delivered": 20000,
+      "last": "IN2-156-dopisa",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "desc_a": {
+      "delivered": 20000,
+      "last": "TA2-156-neboto",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "desc_b": {
+      "delivered": 3000,
+      "last": "TB2-023-fakifu",
+      "last_valid": true,
+      "tail_end": 3000,
+      "lo": 2958,
+      "hi": 3000
+     },
+     "desc_c": {
+      "delivered": 500,
+      "last": "TC2-003-semeza",
+      "last_valid": true,
+      "tail_end": 500,
+      "lo": 398,
+      "hi": 500
+     },
+     "schema": {
+      "delivered": 20000,
+      "last": "SC2-156-remaso",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "result": {
+      "delivered": 40000,
+      "last": "RS2-312-susula",
+      "last_valid": true,
+      "tail_end": 40000,
+      "lo": 39950,
+      "hi": 40000
+     }
+    }
+   }
+  },
+  "C20kx2-3": {
+   "args": {
+    "instr": 20000,
+    "copies": 2,
+    "mode": "direct",
+    "result": 40000
+   },
+   "rc": 0,
+   "seconds": 55.3,
+   "servers": {
+    "probe1": {
+     "instructions": {
+      "delivered": 20000,
+      "last": "IN1-156-refape",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "desc_a": {
+      "delivered": 117,
+      "last": "TA1-000-tovose",
+      "last_valid": true,
+      "tail_end": 117,
+      "lo": 14,
+      "hi": 141
+     },
+     "desc_b": {
+      "delivered": 117,
+      "last": "TB1-000-zukegi",
+      "last_valid": true,
+      "tail_end": 117,
+      "lo": 14,
+      "hi": 141
+     },
+     "desc_c": {
+      "delivered": 117,
+      "last": "TC1-000-rulege",
+      "last_valid": true,
+      "tail_end": 117,
+      "lo": 14,
+      "hi": 141
+     },
+     "schema": {
+      "delivered": 20000,
+      "last": "SC1-156-fenapo",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "result": {
+      "delivered": 40000,
+      "last": "RS1-312-pefibu",
+      "last_valid": true,
+      "tail_end": 40000,
+      "lo": 39950,
+      "hi": 40000
+     }
+    },
+    "probe2": {
+     "instructions": {
+      "delivered": 20000,
+      "last": "IN2-156-lebemo",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "desc_a": {
+      "delivered": 117,
+      "last": "TA2-000-tizule",
+      "last_valid": true,
+      "tail_end": 117,
+      "lo": 14,
+      "hi": 141
+     },
+     "desc_b": {
+      "delivered": 117,
+      "last": "TB2-000-tigivi",
+      "last_valid": true,
+      "tail_end": 117,
+      "lo": 14,
+      "hi": 141
+     },
+     "desc_c": {
+      "delivered": 117,
+      "last": "TC2-000-sazuri",
+      "last_valid": true,
+      "tail_end": 117,
+      "lo": 14,
+      "hi": 141
+     },
+     "schema": {
+      "delivered": 20000,
+      "last": "SC2-156-simosa",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "result": {
+      "delivered": 40000,
+      "last": "RS2-312-gubuta",
+      "last_valid": true,
+      "tail_end": 40000,
+      "lo": 39950,
+      "hi": 40000
+     }
+    }
+   }
+  },
+  "C4090x2-1": {
+   "args": {
+    "instr": 4090,
+    "copies": 2,
+    "mode": "direct",
+    "result": 40000
+   },
+   "rc": 0,
+   "seconds": 131.3,
+   "servers": {
+    "probe1": {
+     "instructions": {
+      "delivered": 4090,
+      "last": "IN1-031-fanuda",
+      "last_valid": true,
+      "tail_end": 4090,
+      "lo": 3982,
+      "hi": 4090
+     },
+     "desc_a": {
+      "delivered": 117,
+      "last": "TA1-000-dutusa",
+      "last_valid": true,
+      "tail_end": 117,
+      "lo": 14,
+      "hi": 141
+     },
+     "desc_b": {
+      "delivered": 117,
+      "last": "TB1-000-rafotu",
+      "last_valid": true,
+      "tail_end": 117,
+      "lo": 14,
+      "hi": 141
+     },
+     "desc_c": {
+      "delivered": 117,
+      "last": "TC1-000-tikati",
+      "last_valid": true,
+      "tail_end": 117,
+      "lo": 14,
+      "hi": 141
+     },
+     "schema": {
+      "delivered": 20000,
+      "last": "SC1-156-sikiba",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "result": {
+      "delivered": 40000,
+      "last": "RS1-312-natadu",
+      "last_valid": true,
+      "tail_end": 40000,
+      "lo": 39950,
+      "hi": 40000
+     }
+    },
+    "probe2": {
+     "instructions": {
+      "delivered": 4090,
+      "last": "IN2-031-tatogo",
+      "last_valid": true,
+      "tail_end": 4090,
+      "lo": 3982,
+      "hi": 4090
+     },
+     "desc_a": {
+      "delivered": 117,
+      "last": "TA2-000-nipope",
+      "last_valid": true,
+      "tail_end": 117,
+      "lo": 14,
+      "hi": 141
+     },
+     "desc_b": {
+      "delivered": 117,
+      "last": "TB2-000-vabuzi",
+      "last_valid": true,
+      "tail_end": 117,
+      "lo": 14,
+      "hi": 141
+     },
+     "desc_c": {
+      "delivered": 117,
+      "last": "TC2-000-tesudu",
+      "last_valid": true,
+      "tail_end": 117,
+      "lo": 14,
+      "hi": 141
+     },
+     "schema": {
+      "delivered": 20000,
+      "last": "SC2-156-gorama",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "result": {
+      "delivered": 40000,
+      "last": "RS2-312-dinupa",
+      "last_valid": true,
+      "tail_end": 40000,
+      "lo": 39950,
+      "hi": 40000
+     }
+    }
+   }
+  },
+  "C4090x2-2": {
+   "args": {
+    "instr": 4090,
+    "copies": 2,
+    "mode": "direct",
+    "result": 40000
+   },
+   "rc": 0,
+   "seconds": 158.5,
+   "servers": {
+    "probe1": {
+     "instructions": {
+      "delivered": 4090,
+      "last": "IN1-031-zetini",
+      "last_valid": true,
+      "tail_end": 4090,
+      "lo": 3982,
+      "hi": 4090
+     },
+     "desc_a": {
+      "delivered": 20000,
+      "last": "TA1-156-teniri",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "desc_b": {
+      "delivered": 3000,
+      "last": "TB1-023-leleva",
+      "last_valid": true,
+      "tail_end": 3000,
+      "lo": 2958,
+      "hi": 3000
+     },
+     "desc_c": {
+      "delivered": 500,
+      "last": "TC1-003-delasa",
+      "last_valid": true,
+      "tail_end": 500,
+      "lo": 398,
+      "hi": 500
+     },
+     "schema": {
+      "delivered": 20000,
+      "last": "SC1-156-gevulu",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "result": {
+      "delivered": 40000,
+      "last": "RS1-312-tuvide",
+      "last_valid": true,
+      "tail_end": 40000,
+      "lo": 39950,
+      "hi": 40000
+     }
+    },
+    "probe2": {
+     "instructions": {
+      "delivered": 4090,
+      "last": "IN2-031-kufage",
+      "last_valid": true,
+      "tail_end": 4090,
+      "lo": 3982,
+      "hi": 4090
+     },
+     "desc_a": {
+      "delivered": 20000,
+      "last": "TA2-156-nekota",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "desc_b": {
+      "delivered": 3000,
+      "last": "TB2-023-surodo",
+      "last_valid": true,
+      "tail_end": 3000,
+      "lo": 2958,
+      "hi": 3000
+     },
+     "desc_c": {
+      "delivered": 500,
+      "last": "TC2-003-koriro",
+      "last_valid": true,
+      "tail_end": 500,
+      "lo": 398,
+      "hi": 500
+     },
+     "schema": {
+      "delivered": 20000,
+      "last": "SC2-156-vigoro",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "result": {
+      "delivered": 40000,
+      "last": "RS2-312-kimami",
+      "last_valid": true,
+      "tail_end": 40000,
+      "lo": 39950,
+      "hi": 40000
+     }
+    }
+   }
+  },
+  "C4090x2-3": {
+   "args": {
+    "instr": 4090,
+    "copies": 2,
+    "mode": "direct",
+    "result": 40000
+   },
+   "rc": 0,
+   "seconds": 201.9,
+   "servers": {
+    "probe1": {
+     "instructions": {
+      "delivered": 4090,
+      "last": "IN1-031-kotata",
+      "last_valid": true,
+      "tail_end": 4090,
+      "lo": 3982,
+      "hi": 4090
+     },
+     "desc_a": {
+      "delivered": 20000,
+      "last": "TA1-156-gozata",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "desc_b": {
+      "delivered": 3000,
+      "last": "TB1-023-sanime",
+      "last_valid": true,
+      "tail_end": 3000,
+      "lo": 2958,
+      "hi": 3000
+     },
+     "desc_c": {
+      "delivered": 500,
+      "last": "TC1-003-ruzitu",
+      "last_valid": true,
+      "tail_end": 500,
+      "lo": 398,
+      "hi": 500
+     },
+     "schema": {
+      "delivered": 20000,
+      "last": "SC1-156-zikeze",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "result": {
+      "delivered": 40000,
+      "last": "RS1-312-gefomi",
+      "last_valid": true,
+      "tail_end": 40000,
+      "lo": 39950,
+      "hi": 40000
+     }
+    },
+    "probe2": {
+     "instructions": {
+      "delivered": 4090,
+      "last": "IN2-031-luvife",
+      "last_valid": true,
+      "tail_end": 4090,
+      "lo": 3982,
+      "hi": 4090
+     },
+     "desc_a": {
+      "delivered": 20000,
+      "last": "TA2-156-vanuvo",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "desc_b": {
+      "delivered": 3000,
+      "last": "TB2-023-petari",
+      "last_valid": true,
+      "tail_end": 3000,
+      "lo": 2958,
+      "hi": 3000
+     },
+     "desc_c": {
+      "delivered": 500,
+      "last": "TC2-003-gadono",
+      "last_valid": true,
+      "tail_end": 500,
+      "lo": 398,
+      "hi": 500
+     },
+     "schema": {
+      "delivered": 20000,
+      "last": "SC2-156-virava",
+      "last_valid": true,
+      "tail_end": 20000,
+      "lo": 19982,
+      "hi": 20000
+     },
+     "result": {
+      "delivered": 40000,
+      "last": "RS2-312-tizovu",
+      "last_valid": true,
+      "tail_end": 40000,
+      "lo": 39950,
+      "hi": 40000
+     }
+    }
+   }
+  },
+  "E-bigresult": {
+   "args": {
+    "instr": 4090,
+    "copies": 1,
+    "mode": "direct",
+    "result": 120000
+   },
+   "rc": 0,
+   "seconds": 272.4,
+   "servers": {
+    "probe": {
+     "instructions": {
+      "delivered": 4090,
+      "last": "IN1-031-dukogo",
+      "last_valid": true,
+      "tail_end": 4090,
+      "lo": 3982,
+      "hi": 4090
+     },
+     "desc_a": {
+      "delivered": 1959,
+      "last": "TA1-015-fekali",
+      "last_valid": true,
+      "tail_end": 1959,
+      "lo": 1934,
+      "hi": 2061
+     },
+     "desc_b": {
+      "delivered": 1959,
+      "last": "TB1-015-dovipe",
+      "last_valid": true,
+      "tail_end": 1959,
+      "lo": 1934,
+      "hi": 2061
+     },
+     "desc_c": {
+      "delivered": 500,
+      "last": "TC1-003-rigibe",
+      "last_valid": true,
+      "tail_end": 500,
+      "lo": 398,
+      "hi": 500
+     },
+     "schema": {
+      "delivered": 1852,
+      "last": "SC1-014-zuravo",
+      "last_valid": true,
+      "tail_end": 1852,
+      "lo": 1806,
+      "hi": 1933
+     },
+     "result": {
+      "delivered": 1971,
+      "last": "RS1-015-mimono",
+      "last_valid": true,
+      "tail_end": 1971,
+      "lo": 1934,
+      "hi": 2061
+     }
+    }
+   }
+  },
+  "E2-bigresult-only": {
+   "args": {
+    "instr": 4090,
+    "copies": 1,
+    "mode": "direct",
+    "result": 120000
+   },
+   "rc": 0,
+   "seconds": 24.5,
+   "servers": {
+    "probe": {
+     "instructions": {
+      "delivered": null,
+      "last": null,
+      "last_valid": null,
+      "tail_end": null,
+      "lo": null,
+      "hi": null
+     },
+     "desc_a": {
+      "delivered": null,
+      "last": null,
+      "last_valid": null,
+      "tail_end": null,
+      "lo": null,
+      "hi": null
+     },
+     "desc_b": {
+      "delivered": null,
+      "last": null,
+      "last_valid": null,
+      "tail_end": null,
+      "lo": null,
+      "hi": null
+     },
+     "desc_c": {
+      "delivered": null,
+      "last": null,
+      "last_valid": null,
+      "tail_end": null,
+      "lo": null,
+      "hi": null
+     },
+     "schema": {
+      "delivered": null,
+      "last": null,
+      "last_valid": null,
+      "tail_end": null,
+      "lo": null,
+      "hi": null
+     },
+     "result": {
+      "delivered": "51086..51213",
+      "last": "RS1-399-pukoki",
+      "last_valid": true,
+      "tail_end": null,
+      "lo": 51086,
+      "hi": 51213
+     }
+    }
+   }
+  }
+ }
+}
