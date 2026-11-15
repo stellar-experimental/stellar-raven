@@ -92,3 +92,10 @@ descriptions byte-identical).
 step 0-prime, `--max-budget-usd 12.5`. Before any verdict is read: freeze and hash the arm 2
 exclusion list (rows with an exact row on either side). The trap step adds a transcript read for
 governance and attribution claims. Decision rule as A6, threshold 6 net rows, fixed before the run.
+
+**Owner decision, arm 1 (2026-11-14).** The owner keeps arm 1 as a named exception, on the
+orchestrator recommendation: it missed K0 by one row (21 of 44, 22 needed), with two traced ups,
+no traced down, K2, K3 and K5 held, and cost per answer down 3.3%. The pre-registered result
+stands in the record as "not kept by rule"; the exception is the owner decision, not a re-reading
+of the rule. The kept set is therefore arm 1 and arm 2 (the code on `tune/loop-1`), plus arm 3
+if its run deletes the map.
