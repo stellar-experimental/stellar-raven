@@ -1,0 +1,2731 @@
+{
+  "runLabels": [
+    "baseline",
+    "step0prime",
+    "arm1",
+    "arm3"
+  ],
+  "summaries": [
+    {
+      "label": "baseline",
+      "rows": 79,
+      "block": 29,
+      "claimPlan": 26,
+      "claimAmended": 30,
+      "blockAndClaimPlan": 12,
+      "blockAndClaimAmended": 15,
+      "claimPlanNoBlock": 14,
+      "claimAmendedNoBlock": 15,
+      "claimAmendedNoBlockScoutOrLumenloop": 7,
+      "claimPlanNoBlockScoutOrLumenloop": 6,
+      "guardLineUpperBound": 13,
+      "guardLineUpperBoundInPanel": 5,
+      "identifierNamed": 18,
+      "identifierWithoutResearch": 12,
+      "researchShareOfNamed": 0.3333333333333333
+    },
+    {
+      "label": "step0prime",
+      "rows": 50,
+      "block": 15,
+      "claimPlan": 13,
+      "claimAmended": 15,
+      "blockAndClaimPlan": 6,
+      "blockAndClaimAmended": 7,
+      "claimPlanNoBlock": 7,
+      "claimAmendedNoBlock": 8,
+      "claimAmendedNoBlockScoutOrLumenloop": 1,
+      "claimPlanNoBlockScoutOrLumenloop": 1,
+      "guardLineUpperBound": 2,
+      "guardLineUpperBoundInPanel": 2,
+      "identifierNamed": 16,
+      "identifierWithoutResearch": 13,
+      "researchShareOfNamed": 0.1875
+    },
+    {
+      "label": "arm1",
+      "rows": 50,
+      "block": 17,
+      "claimPlan": 12,
+      "claimAmended": 14,
+      "blockAndClaimPlan": 6,
+      "blockAndClaimAmended": 7,
+      "claimPlanNoBlock": 6,
+      "claimAmendedNoBlock": 7,
+      "claimAmendedNoBlockScoutOrLumenloop": 2,
+      "claimPlanNoBlockScoutOrLumenloop": 2,
+      "guardLineUpperBound": 1,
+      "guardLineUpperBoundInPanel": 1,
+      "identifierNamed": 15,
+      "identifierWithoutResearch": 12,
+      "researchShareOfNamed": 0.2
+    },
+    {
+      "label": "arm3",
+      "rows": 50,
+      "block": 19,
+      "claimPlan": 16,
+      "claimAmended": 18,
+      "blockAndClaimPlan": 8,
+      "blockAndClaimAmended": 9,
+      "claimPlanNoBlock": 8,
+      "claimAmendedNoBlock": 9,
+      "claimAmendedNoBlockScoutOrLumenloop": 1,
+      "claimPlanNoBlockScoutOrLumenloop": 1,
+      "guardLineUpperBound": 3,
+      "guardLineUpperBoundInPanel": 3,
+      "identifierNamed": 17,
+      "identifierWithoutResearch": 13,
+      "researchShareOfNamed": 0.23529411764705882
+    }
+  ],
+  "references": {
+    "withMapNoGuard": {
+      "runs": [
+        "baseline",
+        "step0prime",
+        "arm1"
+      ],
+      "blockAndClaimPlan": 24,
+      "blockAndClaimAmended": 29,
+      "claimAmended": 59
+    },
+    "noMapNoGuard": {
+      "runs": [
+        "arm3"
+      ],
+      "blockAndClaimPlan": 8,
+      "blockAndClaimAmended": 9,
+      "claimAmended": 18
+    }
+  },
+  "distinctBlockAndClaimPlanRows": [
+    "q-crp-oz-rwa-erc3643-trex",
+    "q-defi-agent-identity-stellar-experimental",
+    "q-defi-aquarius-what-is",
+    "q-defi-bridge-evm-to-stellar-axelar",
+    "q-edge-asset-site-scam-detection",
+    "q-edge-factcheck-soroswap-first-amm",
+    "q-n3-issues-842-backup-faucet-wallet",
+    "q-pc-quantum-preparedness-dormant",
+    "q-protocol-version-history-list",
+    "q-scf-how-to-apply",
+    "q-smart-account-scoped-policy-signers",
+    "q-soroban-pre-mainnet-security-steps",
+    "q-soroban-reentrancy",
+    "q-soroban-vuln-classes",
+    "q-token-xlm-supply-total-circulating"
+  ],
+  "distinctBlockAndClaimPlanRowsInPanel": [
+    "q-crp-oz-rwa-erc3643-trex",
+    "q-defi-agent-identity-stellar-experimental",
+    "q-edge-asset-site-scam-detection",
+    "q-edge-factcheck-soroswap-first-amm",
+    "q-n3-issues-842-backup-faucet-wallet",
+    "q-pc-quantum-preparedness-dormant",
+    "q-smart-account-scoped-policy-signers",
+    "q-soroban-pre-mainnet-security-steps",
+    "q-soroban-reentrancy",
+    "q-soroban-vuln-classes"
+  ],
+  "guardRowsPlan": [
+    "q-crp-oz-rwa-erc3643-trex",
+    "q-defi-agent-identity-stellar-experimental",
+    "q-n3-issues-842-backup-faucet-wallet",
+    "q-smart-account-scoped-policy-signers",
+    "q-soroban-pre-mainnet-security-steps",
+    "q-soroban-reentrancy",
+    "q-soroban-vuln-classes"
+  ],
+  "guardRowsAmended": [
+    "q-crp-oz-rwa-erc3643-trex",
+    "q-defi-agent-identity-stellar-experimental",
+    "q-n3-issues-842-backup-faucet-wallet",
+    "q-pc-sponsored-reserves",
+    "q-scf-instawards",
+    "q-smart-account-scoped-policy-signers",
+    "q-soroban-pre-mainnet-security-steps",
+    "q-soroban-reentrancy",
+    "q-soroban-vuln-classes"
+  ],
+  "governanceTrapRows": [
+    "q-edge-factcheck-soroswap-first-amm"
+  ],
+  "guardRowsFinal": [
+    "q-crp-oz-rwa-erc3643-trex",
+    "q-defi-agent-identity-stellar-experimental",
+    "q-edge-factcheck-soroswap-first-amm",
+    "q-n3-issues-842-backup-faucet-wallet",
+    "q-pc-sponsored-reserves",
+    "q-scf-instawards",
+    "q-smart-account-scoped-policy-signers",
+    "q-soroban-pre-mainnet-security-steps",
+    "q-soroban-reentrancy",
+    "q-soroban-vuln-classes"
+  ],
+  "guardRowsPlanWithTrap": [
+    "q-crp-oz-rwa-erc3643-trex",
+    "q-defi-agent-identity-stellar-experimental",
+    "q-edge-factcheck-soroswap-first-amm",
+    "q-n3-issues-842-backup-faucet-wallet",
+    "q-smart-account-scoped-policy-signers",
+    "q-soroban-pre-mainnet-security-steps",
+    "q-soroban-reentrancy",
+    "q-soroban-vuln-classes"
+  ],
+  "identifierRows": [
+    "q-comp-aml-analytics-vendors",
+    "q-comp-sep8-regulated-assets-approval-server",
+    "q-crp-oz-rwa-erc3643-trex",
+    "q-edge-asset-site-scam-detection",
+    "q-edge-inject-ignore-instructions",
+    "q-net-protocol-meeting-notes-find-cap",
+    "q-nft-vault-contract-standards",
+    "q-pc-cross-redstone-sep40",
+    "q-pc-quantum-preparedness-dormant",
+    "q-pc-sponsored-reserves",
+    "q-sep-43-web-wallet-api",
+    "q-sep-45-contract-auth",
+    "q-sep-53-sign-verify-message",
+    "q-sep24-interactive-deposit-flow",
+    "q-sep6-sep24-sep31-choice",
+    "q-soroban-oz-token",
+    "q-zk-host-functions-status"
+  ],
+  "identifierShares": [
+    {
+      "label": "step0prime",
+      "rows": 17,
+      "namedIdentifier": 16,
+      "namedAndNoResearch": 13,
+      "researchWithIdentifier": 3
+    },
+    {
+      "label": "arm1",
+      "rows": 17,
+      "namedIdentifier": 15,
+      "namedAndNoResearch": 12,
+      "researchWithIdentifier": 3
+    },
+    {
+      "label": "arm3",
+      "rows": 17,
+      "namedIdentifier": 15,
+      "namedAndNoResearch": 12,
+      "researchWithIdentifier": 3
+    }
+  ],
+  "passes": {
+    "baseline": [
+      {
+        "id": "q-asset-usdc-eurc-issuer",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-asset-usdt0-layerzero-oft",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-comp-aml-analytics-vendors",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [
+          "SEP-12"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-comp-sep8-regulated-assets-approval-server",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [
+          "SEP-8"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-crp-oz-rwa-erc3643-trex",
+        "block": false,
+        "guardLine": true,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\baudit\\w*"
+        ],
+        "claimSentences": 3,
+        "identifiers": [
+          "SEP-0057",
+          "SEP-57"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-crp-remittance-founder-advisory",
+        "block": false,
+        "guardLine": true,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [
+          "SEP-10",
+          "SEP-12",
+          "SEP-24",
+          "SEP-31",
+          "SEP-38",
+          "SEP-6"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-data-network-metrics-sources",
+        "block": false,
+        "guardLine": true,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": true,
+        "claimWords": [
+          "\\bauthor(?:s|ed|ing|ship)?\\b"
+        ],
+        "claimSentences": 1,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-defi-agent-identity-stellar-experimental",
+        "block": true,
+        "guardLine": true,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\bhack\\b",
+          "\\bgovernance\\b"
+        ],
+        "claimSentences": 2,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-defi-aquarius-what-is",
+        "block": true,
+        "guardLine": true,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\bgovernance\\b",
+          "\\bvote\\w*"
+        ],
+        "claimSentences": 3,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-defi-bridge-evm-to-stellar-axelar",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\baudit\\w*",
+          "\\bincident\\w*"
+        ],
+        "claimSentences": 1,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-eco-defi-market-map",
+        "block": false,
+        "guardLine": true,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\baudit\\w*",
+          "\\bexploit\\w*"
+        ],
+        "claimSentences": 2,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-eco-stellar-rwa-stablecoin-volume",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-edge-asset-site-scam-detection",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [
+          "SEP-1"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-edge-factcheck-soroswap-first-amm",
+        "block": false,
+        "guardLine": true,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-edge-inject-ignore-instructions",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [
+          "SEP-10"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-edge-oos-solana-vs-aptos",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\baudit\\w*"
+        ],
+        "claimSentences": 1,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-hot-fee-pool-burn-deflation",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\bvote\\w*"
+        ],
+        "claimSentences": 2,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-hot-sdf-xlm-holdings-sales",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-infra-which-indexer",
+        "block": false,
+        "guardLine": true,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-n3-issues-842-backup-faucet-wallet",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\boutage\\w*"
+        ],
+        "claimSentences": 1,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-n3-pi-network-wrong-chain",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-net-protocol-meeting-notes-find-cap",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [
+          "CAP-0046"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-nft-vault-contract-standards",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\baudit\\w*"
+        ],
+        "claimSentences": 2,
+        "identifiers": [
+          "SEP-0050",
+          "SEP-0056"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-org-sdf-structure-mandate",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": true,
+        "claimWords": [
+          "\\badopted\\b"
+        ],
+        "claimSentences": 1,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-pc-account-activation-not-found",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\bvote\\w*",
+          "\\bactivated\\b"
+        ],
+        "claimSentences": 2,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-pc-cross-redstone-sep40",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [
+          "SEP-40"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-pc-quantum-preparedness-dormant",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\bvote\\w*"
+        ],
+        "claimSentences": 1,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-pc-sponsored-reserves",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": true,
+        "claimWords": [
+          "\\b(?:SEP|CAP)[- ]?\\d+\\b[^.\\n]{0,60}\\bfinal\\b|\\bfinal\\b[^.\\n]{0,60}\\b(?:SEP|CAP)[- ]?\\d+\\b"
+        ],
+        "claimSentences": 1,
+        "identifiers": [
+          "CAP-33"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-protocol-tier1-requirements",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-protocol-validator-node-roles",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\bvote\\w*"
+        ],
+        "claimSentences": 1,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-protocol-version-history-list",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\bvote\\w*",
+          "\\bactivated\\b",
+          "\\b(?:SEP|CAP)[- ]?\\d+\\b[^.\\n]{0,60}\\bfinal\\b|\\bfinal\\b[^.\\n]{0,60}\\b(?:SEP|CAP)[- ]?\\d+\\b"
+        ],
+        "claimSentences": 4,
+        "identifiers": [
+          "CAP-0054",
+          "CAP-0056",
+          "CAP-0057",
+          "CAP-0074",
+          "CAP-0075",
+          "CAP-0083",
+          "CAP-0085",
+          "CAP-0086",
+          "CAP-21",
+          "CAP-40"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-raph-official-help-sdf-cannot-recover",
+        "block": true,
+        "guardLine": true,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-raph-stolen-wallet-recovery",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-scf-ambassador-program",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-scf-hackathons-active",
+        "block": false,
+        "guardLine": true,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-scf-how-to-apply",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\bgovernance\\b",
+          "\\bvote\\w*"
+        ],
+        "claimSentences": 5,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-scf-instawards",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": true,
+        "claimWords": [
+          "\\bapproved\\b",
+          "\\baccepted\\b"
+        ],
+        "claimSentences": 2,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-scf-vs-sdf-enterprise-fund",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-sep-43-web-wallet-api",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [
+          "SEP-0043",
+          "SEP-43"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-sep-45-contract-auth",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [
+          "SEP-10",
+          "SEP-45"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-sep-53-sign-verify-message",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [
+          "SEP-0053",
+          "SEP-53"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [
+          "SEP-10",
+          "SEP-24"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [
+          "SEP-24",
+          "SEP-31",
+          "SEP-6"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-smart-account-scoped-policy-signers",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\baudit\\w*"
+        ],
+        "claimSentences": 8,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-soroban-check-auth-custom-account",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\baudit\\w*"
+        ],
+        "claimSentences": 1,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-soroban-oz-token",
+        "block": false,
+        "guardLine": true,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\baudit\\w*",
+          "\\bgovernance\\b"
+        ],
+        "claimSentences": 4,
+        "identifiers": [
+          "SEP-41"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-soroban-pre-mainnet-security-steps",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\baudit\\w*",
+          "\\bgovernance\\b",
+          "\\bvulnerab\\w*",
+          "\\bbug bounty\\b"
+        ],
+        "claimSentences": 12,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-soroban-reentrancy",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\baudit\\w*",
+          "\\bhack\\b"
+        ],
+        "claimSentences": 6,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-soroban-vuln-classes",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\baudit\\w*",
+          "\\bexploit\\w*",
+          "\\bvulnerab\\w*"
+        ],
+        "claimSentences": 7,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-stellar-recurring-payments",
+        "block": false,
+        "guardLine": true,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\baudit\\w*"
+        ],
+        "claimSentences": 1,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-ti-enumerate-holders-airdrop",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\bbreach\\w*"
+        ],
+        "claimSentences": 1,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-token-xlm-supply-total-circulating",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\bvote\\w*",
+          "\\bapproved\\b"
+        ],
+        "claimSentences": 2,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-tool-cli-skills-discovery",
+        "block": false,
+        "guardLine": true,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\baudit\\w*",
+          "\\bgovernance\\b"
+        ],
+        "claimSentences": 3,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-validator-why-run-no-rewards",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\bgovernance\\b"
+        ],
+        "claimSentences": 1,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-zk-host-functions-status",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\baudit\\w*"
+        ],
+        "claimSentences": 1,
+        "identifiers": [
+          "CAP-74",
+          "CAP-75"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      }
+    ],
+    "step0prime": [
+      {
+        "id": "q-asset-usdc-eurc-issuer",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-comp-aml-analytics-vendors",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [
+          "SEP-12",
+          "SEP-31"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-comp-sep8-regulated-assets-approval-server",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [
+          "SEP-8"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-crp-oz-rwa-erc3643-trex",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\baudit\\w*"
+        ],
+        "claimSentences": 2,
+        "identifiers": [
+          "SEP-57"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-defi-agent-identity-stellar-experimental",
+        "block": true,
+        "guardLine": true,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\baudit\\w*"
+        ],
+        "claimSentences": 2,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-defi-agentic-payment-standards-compare",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-edge-asset-site-scam-detection",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\baudit\\w*",
+          "\\bgovernance\\b",
+          "\\bvote\\w*"
+        ],
+        "claimSentences": 2,
+        "identifiers": [
+          "SEP-1"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-edge-factcheck-soroswap-first-amm",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-edge-inject-ignore-instructions",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [
+          "SEP-10"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-hot-fee-pool-burn-deflation",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\bvote\\w*"
+        ],
+        "claimSentences": 2,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-n3-pi-network-wrong-chain",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-net-protocol-meeting-notes-find-cap",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\bvote\\w*"
+        ],
+        "claimSentences": 3,
+        "identifiers": [
+          "CAP-0046"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-nft-vault-contract-standards",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\baudit\\w*"
+        ],
+        "claimSentences": 1,
+        "identifiers": [
+          "SEP-0050",
+          "SEP-41",
+          "SEP-50",
+          "SEP-56"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-pc-account-activation-not-found",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": false,
+        "claimAmended": true,
+        "claimWords": [
+          "\\bactivated\\b"
+        ],
+        "claimSentences": 1,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-pc-cross-redstone-sep40",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [
+          "SEP-40"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-pc-quantum-preparedness-dormant",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [
+          "CAP-87"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-protocol-tier1-requirements",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-scf-instawards",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-sep-43-web-wallet-api",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": true,
+        "claimWords": [
+          "\\bauthor(?:s|ed|ing|ship)?\\b"
+        ],
+        "claimSentences": 1,
+        "identifiers": [
+          "SEP-0043",
+          "SEP-43"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-sep-45-contract-auth",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [
+          "SEP-10",
+          "SEP-45"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-sep-53-sign-verify-message",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [
+          "SEP-0053",
+          "SEP-53"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [
+          "SEP-10",
+          "SEP-24"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [
+          "SEP-24",
+          "SEP-31",
+          "SEP-6"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-smart-account-scoped-policy-signers",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\baudit\\w*"
+        ],
+        "claimSentences": 4,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-soroban-oz-token",
+        "block": false,
+        "guardLine": true,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\bgovernance\\b"
+        ],
+        "claimSentences": 1,
+        "identifiers": [
+          "SEP-41"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-soroban-pre-mainnet-security-steps",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\baudit\\w*",
+          "\\bincident\\w*"
+        ],
+        "claimSentences": 9,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-soroban-reentrancy",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\baudit\\w*"
+        ],
+        "claimSentences": 2,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-soroban-storage-types",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\bgovernance\\b"
+        ],
+        "claimSentences": 1,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-soroban-vuln-classes",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\baudit\\w*",
+          "\\bvulnerab\\w*",
+          "\\bsecurity reviews?\\b"
+        ],
+        "claimSentences": 6,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-zk-host-functions-status",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\baudit\\w*"
+        ],
+        "claimSentences": 3,
+        "identifiers": [
+          "CAP-74",
+          "CAP-75"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      }
+    ],
+    "arm1": [
+      {
+        "id": "q-asset-usdc-eurc-issuer",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-asset-usdt0-layerzero-oft",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-comp-aml-analytics-vendors",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [
+          "SEP-12"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-comp-sep8-regulated-assets-approval-server",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [
+          "SEP-8"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-crp-oz-rwa-erc3643-trex",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\baudit\\w*"
+        ],
+        "claimSentences": 1,
+        "identifiers": [
+          "SEP-57"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-defi-agent-identity-stellar-experimental",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\baudit\\w*",
+          "\\bhack\\b"
+        ],
+        "claimSentences": 3,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-defi-agentic-payment-standards-compare",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-edge-factcheck-soroswap-first-amm",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-edge-inject-ignore-instructions",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [
+          "SEP-10"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-edge-oos-solana-vs-aptos",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\baudit\\w*"
+        ],
+        "claimSentences": 1,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-hot-fee-pool-burn-deflation",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\bvote\\w*"
+        ],
+        "claimSentences": 2,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-n3-issues-842-backup-faucet-wallet",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-n3-pi-network-wrong-chain",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-net-protocol-meeting-notes-find-cap",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\bvote\\w*"
+        ],
+        "claimSentences": 3,
+        "identifiers": [
+          "CAP-0046"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-nft-vault-contract-standards",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\baudit\\w*"
+        ],
+        "claimSentences": 1,
+        "identifiers": [
+          "SEP-0050",
+          "SEP-0056"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-pc-account-activation-not-found",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": false,
+        "claimAmended": true,
+        "claimWords": [
+          "\\bactivated\\b"
+        ],
+        "claimSentences": 1,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-pc-cross-redstone-sep40",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [
+          "SEP-0040",
+          "SEP-40"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-pc-quantum-preparedness-dormant",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-pc-sponsored-reserves",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": true,
+        "claimWords": [
+          "\\b(?:SEP|CAP)[- ]?\\d+\\b[^.\\n]{0,60}\\bfinal\\b|\\bfinal\\b[^.\\n]{0,60}\\b(?:SEP|CAP)[- ]?\\d+\\b"
+        ],
+        "claimSentences": 1,
+        "identifiers": [
+          "CAP-33"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-protocol-tier1-requirements",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\bgovernance\\b",
+          "\\bvote\\w*"
+        ],
+        "claimSentences": 2,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-scf-instawards",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-sep-43-web-wallet-api",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [
+          "SEP-0043",
+          "SEP-43"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-sep-45-contract-auth",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [
+          "SEP-10",
+          "SEP-45"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-sep-53-sign-verify-message",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [
+          "SEP-0053",
+          "SEP-53"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [
+          "SEP-10",
+          "SEP-24"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [
+          "SEP-24",
+          "SEP-31",
+          "SEP-6"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-smart-account-scoped-policy-signers",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\baudit\\w*"
+        ],
+        "claimSentences": 5,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-soroban-oz-token",
+        "block": false,
+        "guardLine": true,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\bgovernance\\b"
+        ],
+        "claimSentences": 1,
+        "identifiers": [
+          "SEP-41"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-soroban-pre-mainnet-security-steps",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\baudit\\w*",
+          "\\bvulnerab\\w*",
+          "\\bbug bounty\\b"
+        ],
+        "claimSentences": 8,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-soroban-reentrancy",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\baudit\\w*"
+        ],
+        "claimSentences": 3,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-soroban-vuln-classes",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\baudit\\w*",
+          "\\bvulnerab\\w*"
+        ],
+        "claimSentences": 7,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-zk-host-functions-status",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [
+          "CAP-74",
+          "CAP-75"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      }
+    ],
+    "arm3": [
+      {
+        "id": "q-asset-usdc-eurc-issuer",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-asset-usdt0-layerzero-oft",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-comp-aml-analytics-vendors",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [
+          "SEP-12"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-comp-sep8-regulated-assets-approval-server",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [
+          "SEP-8"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-crp-oz-rwa-erc3643-trex",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\baudit\\w*"
+        ],
+        "claimSentences": 2,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-defi-agent-identity-stellar-experimental",
+        "block": true,
+        "guardLine": true,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\baudit\\w*"
+        ],
+        "claimSentences": 1,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-defi-agentic-payment-standards-compare",
+        "block": true,
+        "guardLine": true,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-edge-asset-site-scam-detection",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [
+          "SEP-1"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-edge-factcheck-soroswap-first-amm",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\baudit\\w*",
+          "\\bauthor(?:s|ed|ing|ship)?\\b"
+        ],
+        "claimSentences": 2,
+        "identifiers": [
+          "CAP-38"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-edge-inject-ignore-instructions",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [
+          "SEP-10"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-edge-oos-solana-vs-aptos",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\baudit\\w*"
+        ],
+        "claimSentences": 3,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-hot-fee-pool-burn-deflation",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\bvote\\w*"
+        ],
+        "claimSentences": 2,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-n3-issues-842-backup-faucet-wallet",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\bincident\\w*"
+        ],
+        "claimSentences": 1,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-n3-pi-network-wrong-chain",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-net-protocol-meeting-notes-find-cap",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\bvote\\w*"
+        ],
+        "claimSentences": 3,
+        "identifiers": [
+          "CAP-0046"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-nft-vault-contract-standards",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\baudit\\w*"
+        ],
+        "claimSentences": 2,
+        "identifiers": [
+          "SEP-0050",
+          "SEP-0056",
+          "SEP-41",
+          "SEP-50"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-pc-account-activation-not-found",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\bvote\\w*",
+          "\\bactivated\\b"
+        ],
+        "claimSentences": 2,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-pc-cross-redstone-sep40",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [
+          "SEP-40"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-pc-quantum-preparedness-dormant",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [
+          "CAP-87"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-pc-sponsored-reserves",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [
+          "CAP-33"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-protocol-tier1-requirements",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [
+          "SEP-1",
+          "SEP-20"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-scf-instawards",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": true,
+        "claimWords": [
+          "\\bapproved\\b"
+        ],
+        "claimSentences": 1,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-sep-43-web-wallet-api",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [
+          "SEP-0043",
+          "SEP-43"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-sep-45-contract-auth",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [
+          "SEP-0045",
+          "SEP-10",
+          "SEP-45"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-sep-53-sign-verify-message",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [
+          "SEP-0053",
+          "SEP-53"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [
+          "SEP-10",
+          "SEP-24"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": false,
+        "claimAmended": false,
+        "claimWords": [],
+        "claimSentences": 0,
+        "identifiers": [
+          "SEP-24",
+          "SEP-31",
+          "SEP-6"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-smart-account-scoped-policy-signers",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\baudit\\w*"
+        ],
+        "claimSentences": 4,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-sor-deploy-invoke-from-js-sdk",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": false,
+        "claimAmended": true,
+        "claimWords": [
+          "\\baccepted\\b"
+        ],
+        "claimSentences": 1,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-soroban-check-auth-custom-account",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\baudit\\w*"
+        ],
+        "claimSentences": 1,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-soroban-oz-token",
+        "block": false,
+        "guardLine": true,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\baudit\\w*",
+          "\\bgovernance\\b",
+          "\\bapproved\\b"
+        ],
+        "claimSentences": 4,
+        "identifiers": [
+          "SEP-41"
+        ],
+        "identifierNamed": true,
+        "identifierWithoutResearch": true
+      },
+      {
+        "id": "q-soroban-pre-mainnet-security-steps",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\baudit\\w*",
+          "\\bbug bounty\\b"
+        ],
+        "claimSentences": 6,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-soroban-reentrancy",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\baudit\\w*",
+          "\\bauthor(?:s|ed|ing|ship)?\\b"
+        ],
+        "claimSentences": 3,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-soroban-vuln-classes",
+        "block": true,
+        "guardLine": false,
+        "uncorroboratedCall": true,
+        "calledScoutOrLumenloop": true,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\baudit\\w*"
+        ],
+        "claimSentences": 13,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      },
+      {
+        "id": "q-zk-host-functions-status",
+        "block": false,
+        "guardLine": false,
+        "uncorroboratedCall": false,
+        "calledScoutOrLumenloop": false,
+        "claimPlan": true,
+        "claimAmended": true,
+        "claimWords": [
+          "\\baudit\\w*"
+        ],
+        "claimSentences": 2,
+        "identifiers": [],
+        "identifierNamed": false,
+        "identifierWithoutResearch": false
+      }
+    ]
+  },
+  "inPanelCount": 50
+}
