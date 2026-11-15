@@ -124,3 +124,16 @@ commit, launched by the orchestrator with `eval/qa/heldout-read.sh` from a seale
 `--max-budget-usd 30`, counts only. Reading fixed in A8: ship the kept changes unless wrong is at
 least 15 or correct is at most 31. No held-out result is described as an improvement. The results
 file stays in a sealed directory outside the repository; only its SHA-256 is recorded.
+
+**Held-out harm check, result.** 119 of 119 judged, USD 25.02, results SHA-256
+`a79c4f07e74fa424d377b71ebe2bf8942c68df3440e759c70998dab7824bf2a2` (sealed, outside the
+repository). Correct 51, partial 61, wrong 7; core answer correct on 115; trap rows 7 of 7. Paired
+with the stored baseline on 119 rows: 24 up, 10 down, 5 became wrong, 8 left wrong (stored
+baseline on these rows: 37, 72, 10).
+
+**Reading (A8): no harm; ship the kept changes.** Wrong is below 15 and correct is above 31. This is
+not reported as an improvement: the two runs used different judge-panel caps (34 for the 247-row
+baseline, 119 here), and identical surfaces moved 17 of 50 panel rows in step 0-prime.
+
+**Loop 1 closed.** Kept: arm 1 (owner exception) and arm 2. Not merged: arm 3. Spend: step
+0-prime 9.74, arm 1 9.61, arm 2 2.90, arm 3 9.16, held-out 25.02; USD 56.43 subscription-equivalent.
