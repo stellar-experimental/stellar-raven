@@ -99,3 +99,19 @@ no traced down, K2, K3 and K5 held, and cost per answer down 3.3%. The pre-regis
 stands in the record as "not kept by rule"; the exception is the owner decision, not a re-reading
 of the rule. The kept set is therefore arm 1 and arm 2 (the code on `tune/loop-1`), plus arm 3
 if its run deletes the map.
+
+**Arm 3 result.** Stamp `2026-11-15T00-32-53-variantA`, 50 of 50, USD 9.16 (ARM-3.md). No-map
+26 correct, 22 partial, 2 wrong against 22, 25, 3 with the map; net 4 rows up, inside noise;
+required-service coverage 49 to 50; no traced down; all six traps kept; input tokens per question
+down 4.6%. The governance and attribution read found one unhedged audit attribution on the no-map
+side, taken from a Scout audit row with no Docs corroboration.
+
+**Ruling: the map stays (by rule, clause c), and the orchestrator does not seek an exception.** The
+one counted instance is the behaviour the removed authority rule guards, in the area the owner
+ranks first (audits). One sample with no counterfactual does not show the map caused the
+difference, and it does not show the guard is unneeded. Arm 3 (`d4919118`) is not merged. Next
+loop: carry the corroboration guard on a surface every client receives (a result caveat or the
+base instructions), measure it, and only then remove the map.
+
+**Kept set for the held-out harm check:** arm 1 and arm 2, the code on `tune/loop-1`, after the
+diff review's non-blocking fixes.
