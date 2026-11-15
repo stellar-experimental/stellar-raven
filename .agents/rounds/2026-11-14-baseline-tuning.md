@@ -115,3 +115,12 @@ base instructions), measure it, and only then remove the map.
 
 **Kept set for the held-out harm check:** arm 1 and arm 2, the code on `tune/loop-1`, after the
 diff review's non-blocking fixes.
+
+**Kept set.** `tune/loop-1` at `5fca33a3` (KEPT-SET.md): arm 1, arm 2, and the diff review's
+non-blocking fixes; all gates exit 0.
+
+**Authorization, held-out harm check (A8, D3).** One collection of the held-out set on the kept
+commit, launched by the orchestrator with `eval/qa/heldout-read.sh` from a sealed id list,
+`--max-budget-usd 30`, counts only. Reading fixed in A8: ship the kept changes unless wrong is at
+least 15 or correct is at most 31. No held-out result is described as an improvement. The results
+file stays in a sealed directory outside the repository; only its SHA-256 is recorded.
