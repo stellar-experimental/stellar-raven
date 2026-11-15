@@ -8,8 +8,8 @@ the TODO entries, and the held-out launcher.
 
 `tune/loop-1` = `origin/main` as of `6ce86dce` (the code base of every measured run) plus arm 1 (`a321c5b7`), arm 2 (`3eb40f56`), and this round's records.
 `origin/main` has since moved to `3d2ef5ea` (the client-text-limits and family-decider records, PRs 444 and 445). It changed no file under `src`, `test`,
-`scripts`, `catalog`, `eval` or `package.json`; it changed `.agents/TODO.md` (65 lines added, 8 removed), where this branch also adds entries, so expect a
-text merge in that file and nothing else. `git merge-tree` against `3d2ef5ea` showed no conflict before this round's TODO edits.
+`scripts`, `catalog`, `eval` or `package.json`; it changed `.agents/TODO.md` (65 lines added, 8 removed), where this branch also adds entries. `git merge-tree --write-tree`
+of this branch against `3d2ef5ea` reports no conflict (checked after the TODO edits).
 
 **Gates were run on `5fca33a3`** (the code and TODO commit). The branch tip adds this file only: `git diff 5fca33a3 origin/tune/loop-1 --stat` lists
 `KEPT-SET.md` alone.
@@ -120,4 +120,4 @@ Every figure equals the independently computed step 0-prime numbers (`STEP-0-PRI
 
 - The `ps` exposure above is the one place an id can leave the sealed directory. An `--ids-file` flag on `run-qa.mjs` would close it; I did not touch the runner.
 - The launcher's pin constants are the panel runs' (wrapper, probe, register). If Claude Code or the probe changes before the held-out read, the script stops, by design; a new pin needs a new authorization.
-- Merging `tune/loop-1` into `main` will conflict only in `.agents/TODO.md`.
+- Merging `tune/loop-1` with `origin/main` (`3d2ef5ea`) is clean by `git merge-tree --write-tree`; the TODO links to `research/audits/2026-11-14-client-text-limits.md` resolve after the merge.
