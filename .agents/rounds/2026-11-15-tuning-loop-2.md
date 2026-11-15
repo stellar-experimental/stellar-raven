@@ -51,6 +51,7 @@ per-row output; aggregate gate counts stay allowed. Their ids are not recorded a
 | plan review | Claude Opus 5.5 | (finished) | Reviewed: launch after amendments | [PLAN-REVIEW.md](2026-11-15-tuning-loop-2/PLAN-REVIEW.md) |
 | `loop2-impl` | Claude Sonnet 5.5 | `t1pk`, parent `kalepail-c3614nvxph-mbp/t40f` | Step 1 free work done and review reconciled (R1 to R10); P1 ran, step 1 decided | [STEP-1-IMPL.md](2026-11-15-tuning-loop-2/STEP-1-IMPL.md) |
 | `loop2-impl2` | Claude Sonnet 5.5 | `t1ps`, parent `kalepail-c3614nvxph-mbp/t40f` | Step 2 free work done (items 4, 2, 3 and the scans); awaits the independent review, the A7 check and the P2 authorization | [STEP-2-IMPL.md](2026-11-15-tuning-loop-2/STEP-2-IMPL.md) |
+| `loop2-impl3` | Claude Sonnet 5.5 | `t1py`, parent `kalepail-c3614nvxph-mbp/t40f` | Step 3 free work done (item 5, the identifier pointer, and its free checks); awaits the independent review and the R authorization | [STEP-3-IMPL.md](2026-11-15-tuning-loop-2/STEP-3-IMPL.md) |
 
 ## Ledger
 
@@ -295,3 +296,16 @@ Orchestrator direct instruction (2026-11-15): **step 2 is decided by rule. The `
   trip. Required-service coverage 55 of 58 (P1 56, P0 58): the three misses are rows whose verdict did not move for coverage reasons. Zero violations in 25 claim-word answers.
   Research-call share on the 17 identifier rows: P0 25%, P1 29%, P2 23%; R0's bar stays above 33% and above the highest of these.
 - Step 3 free work starts from this decision. No paid run is authorized by this entry.
+
+### 2026-11-15: step 3, free work (no paid run)
+
+[STEP-3-IMPL.md](2026-11-15-tuning-loop-2/STEP-3-IMPL.md). Implementer `loop2-impl3` (Claude Sonnet 5.5). Code commit **`a49ee918`** (one commit on top of the ledger entry above; reverts alone and returns the product paths to
+`bd9719fb`); the sentence was frozen and pushed there before any stored answer, transcript or golden was read. It changes `execute` results only: the ordered top-five lists of all 495 routing cases are byte-identical, the
+surface pin is P2's (`42ec6102…f17f`), and the new manifest field is not visible to `search`, `describe` or `codemode.catalog()`. `eval/gates.json` is re-baselined for the manifest fingerprint only.
+
+The pointer reads the series from Scout's own `source` enum in the manifest (seven plain-letter values; no list), accepts only a hyphenated or joined token (A6), and fires once per identifier, at most three, when a call
+names it and no call to the research operation does. **Replay over nine stored runs** (tuning rows by id first; scripts and result text only): it fires on 13 to 22 executes and 12 to 15 rows per run, almost all among the 17 identifier rows (the
+committed rule reproduces the plan's 17 exactly), only for `sep` and `cap`, never where research for that identifier came earlier in the row (0 in 163 fires), never without a call that names the identifier. **Live, keyless:**
+the call the sentence names returns an exact row for 22 of 22 distinct identifiers (the ceiling); a named identifier that does not exist returns none. Measured: one sentence is 175 to 181 characters (177 for `SEP-45`),
+three at most 541, 2% of a median firing result. All gates exit 0 on the product commit and on the tip. **Open for the orchestrator:** the independent review of the diff before R; D1 (a series name joined to digits, `audit-2024`, fires:
+the manifest cannot say which series are numbered); T for 17 rows (2, 3 or 4 by the three flip rates; 3 proposed); one incidental exposure of a failed-gate table (D7). **No paid run is authorized by this entry.**
