@@ -427,3 +427,17 @@ node eval/qa/run-qa.mjs $COMMON --ids "$IDENTIFIER_IDS" --max-budget-usd 4.0    
 ```
 
 R's cap, time and stop rules are section 9's, with the review's R0, the pass-combining text and T = 3 per pass. Inconclusive reverts the pointer with `git revert 940dc013 a49ee918` (in that order: `940dc013` edits the token module that `a49ee918` created, so reverting `a49ee918` alone no longer applies). Arm 2 shares that module, so its exact-row matching returns to loop 1's form with it.
+
+**Gates, each bare, exit code** (run on `fa135b34`, which holds the Worker of `940dc013`; a clean tree before and after; this record's own commit is docs only):
+
+| Command | Exit | Note |
+|---|---:|---|
+| `npm run typecheck` | 0 | |
+| `npm test` | 0 | 165 files passed, 6 skipped; 3,642 passed (3,639 + 3 new cases), 3 expected fail, 6 skipped |
+| `npm run build` | 0 | |
+| `npm run test:smoke` | 0 | 9 files, 145 tests |
+| `npm run eval:routing -- --gate` | 0 | GATE PASS (the token module is not read by scoring; no manifest field changed) |
+| The ten CI generators, then `git diff --exit-code --stat` on the CI path list | 0 and 0 | no generated file moved |
+| `npm run secrets:scan -- --tree` | 0 | |
+
+The surface pin `42ec6102…f17f` is unchanged by construction (no served text, catalog or manifest changed); no dev server was started, so the live surface report was not re-run.
