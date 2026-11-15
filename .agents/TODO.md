@@ -178,6 +178,32 @@ characters, and claude.ai web and Desktop drop server instructions entirely.
 Done when: the map is dropped because the score is within noise, or kept with the measured gain
 recorded.
 
+2026-11-15: tuning arm 3 measured it
+([result](rounds/2026-11-14-baseline-tuning/ARM-3.md)). Removing the map cost no rows (net -4 on 50,
+-2 on tier-matched rows, against a cost of 6), no required-service coverage, and no trap behaviour,
+and saved about 750 tokens per question. It stays by the pre-registered rule only because one
+answer stated an audit fact from research rows without official corroboration. The next item is the
+follow-up.
+
+### Carry the corroboration guard on a surface every client receives, then remove the micro-map
+
+The map's one rule with no other home is: governance, standards-authorship, incident, and audit
+claims stay unverified until Stellar Docs or a skill corroborates them. Only Claude Code 2.1.296 or
+later reads the map, so every other client never had it
+([client limits](../research/audits/2026-11-14-client-text-limits.md)). Candidate homes are
+`BASE_SERVER_INSTRUCTIONS` (101 characters of its 2,000 budget remain) and the candidate-evidence
+block that every result with research rows carries. Arm 2's exact-row sentence already covers a
+document the query names by identifier. The rule's other half, "official docs are authority for
+standards status", is false for SEP and CAP files and does not move.
+
+Done when: the guard is stated on one such surface, within its character budget, and a read on a
+panel with governance, incident, and audit rows shows no rise in uncorroborated claims of that kind
+(count them per answer, with-guard against without); then the micro-map is deleted in a commit that
+also fixes `ARCHITECTURE.md`, `README.md`, the public page copy in `src/site.ts` that says the
+agent is told which family to trust, and `.agents/skills/live-drift-resolution/SKILL.md`, and that
+renames `micro-map.ts`, `build-micro-map.mjs`, and `micro-map:build` for what they emit. Revert the
+guard if the read shows no effect and it costs a measurable share of cost or turns.
+
 ### Point the total-guard failure at its sources
 
 The retired build error named the file to edit. The new total guard in
@@ -613,8 +639,34 @@ A new attempt needs one of:
 The upstream card and the Scout inventory have both changed since the contracts froze (the PH1
 trigger). That allows the free diagnostic and authorizes no mechanism.
 
+2026-11-14 evidence for PH4 ([baseline](rounds/2026-11-14-baseline-tuning/BASELINE.md), stored run
+`2026-11-14T20-13-51-variantA`): on nine standards questions from three families, seven never
+called `scout.searchResearch` (`q-sep-45-contract-auth`, `q-crp-oz-rwa-erc3643-trex`,
+`q-sep6-sep24-sep31-choice`, `q-nft-vault-contract-standards`,
+`q-net-protocol-meeting-notes-find-cap`, `q-protocol-ledger-close-time`,
+`q-edge-factcheck-soroswap-first-amm`), and `search` returned the research operation on none of the
+eight that searched, at limits of 5, 8, and 10. The same lane is absent for a wallet SEP, a
+token-compliance SEP, and a CAP's status. Whether this meets PH4's bar is the owner's decision; the
+routing repair stays held until the owner rules on PH3. The tuning loop
+([plan](rounds/2026-11-14-baseline-tuning/TUNING-PLAN.md)) does not try to fix it.
+
 Done when: a reviewed mechanism passes both contracts (19 of 19 required top-five hits, zero
 forbidden captures) and all routing gates.
+
+### Get research called when a question names a SEP or CAP
+
+Tuning arm 2 marks the document a research query names by identifier, but it can act only when the
+agent makes that query. In the five-row read
+([result](rounds/2026-11-14-baseline-tuning/ARM-2.md)), the agent called research with the
+identifier in 8 of 15 repeats; on `q-sep-53-sign-verify-message` it never did, in three repeats, and
+on `q-sep-43-web-wallet-api` a run without the map never called it, and arm 1's run called it with a query that returned no row for the document. The seven
+standards rows in the PH4 note above are the same gap from the other side. This is a routing and
+instruction problem, not a result-marking one.
+
+Done when: a reviewed general mechanism (no list of standards, no per-case vocabulary) raises the
+share of repeats that call `scout.searchResearch` with the identifier on rows that name a SEP or CAP,
+measured on those rows with three repeats each, with no grade, cost, or trap regression. Hold it
+with the PH3 ruling above: it shares the owner's decision.
 
 ### Stop identity substitution on spelling-corrected matches
 
@@ -691,6 +743,35 @@ A/B on the golden docs pages and the probe, and the routing gate.
 Done when: the `op_bad_signer` query yields the `SET_OPTIONS_BAD_SIGNER` mapping in one search
 call or one hinted page read. Remove when `sd-059` is fixed upstream.
 
+2026-11-14 evidence: in the stored baseline, 56 of 79 tuning rows ran a Docs search with no page
+read, and 10 of the 66 rows that searched read one. The nine rows below stopped at snippets; the
+fact each missed is on a page the agent already had a path for, except `q-sep-45-contract-auth`
+(its status is in the research preamble, not in a Docs page) and `q-soroban-contract-id-derivation`
+(on no page it was shown). `q-soroban-cli-bindings`, `q-pc-account-activation-not-found`,
+`q-pc-cross-redstone-sep40`, `q-pc-sequence-numbers-ordering-replace`, and
+`q-ti-classic-submission-errors` have it on one of the first two pages; `q-infra-rpc-methods-list`
+and `q-smart-wallet-fee-sponsorship` have it on a later path. Tuning arm 1 (a `detail` relation
+that renders a page-read pointer in the checkpoint) was measured: 44 of 50 panel rows saw the sentence,
+21 of them read a page, two rows went up from it and none down, and the owner kept it as a named
+exception to the pre-registered rule
+([measurement](rounds/2026-11-14-baseline-tuning/ARM-1.md),
+[implementation](rounds/2026-11-14-baseline-tuning/TUNE-IMPL-1.md)).
+
+### Two snippet-only rows no Docs page can answer
+
+Arm 1 cannot move `q-soroban-contract-id-derivation` and `q-sep-45-contract-auth`. The first needs the
+contract id derivation (a SHA-256 of the `ContractIDPreimage` and the network id): the deployer pages
+say only "derived from the deployer address and salt", and no checked page states the formula. The
+second needs the status "Draft", which is in the research preamble of the SEP file, not in a Docs page
+(arm 2 reaches it only when the agent calls research). In the arm 1 panel run both rows stayed where
+they were
+([record](rounds/2026-11-14-baseline-tuning/ARM-1.md)).
+
+Done when: for each row a live check of the Docs page set says whether any page states the fact. A
+missing fact becomes an `improvements/` finding (upstream content gap), or the golden is changed
+through `golden-truth` with live evidence; a fact on a page becomes a reachability fix. Delete this
+item when both rows are decided.
+
 ### Measure "read past the snippet" guidance
 
 In the HackMeridian review, 11 of 29 weaker answers stopped at a cut snippet, the first page, or
@@ -699,6 +780,10 @@ and name the call that reads the rest. Upstream codemode is the default, so a ch
 measured win.
 
 Done when: a measured change ships, or the measurement shows no gain and this item is deleted.
+
+2026-11-14: tuning arm 1 was that measurement ([result](rounds/2026-11-14-baseline-tuning/ARM-1.md)). It marks a Docs search result as sections of pages
+and names the page read, in the checkpoint. The nine baseline rows that stopped at snippets are
+listed under "Point agents at the page when a docs hit has no body".
 
 ### Clarify the model-facing `codemode.describe` response shape
 
@@ -747,6 +832,26 @@ Done when: probes Q5, R23, R33, and R35 of the HackMeridian review pass again, o
 leaves release data upstream and the finding is filed.
 
 ## Eval instruments
+
+### Method note: same-surface verdict noise, and the judge-tier cap
+
+Standing note, not a task. Two runs of the same 50 panel rows on the same surface differed on 17 rows (8
+up, 9 down, net 1) in the first measurement
+([step 0 to step 0-prime](rounds/2026-11-14-baseline-tuning/STEP-0-PRIME.md)); 7 of 35 rows differed once
+the judge tier matched. Part of that was the judge-tier cap: the stored run capped boundary panels at
+34 and left 10 eligible rows on one judge; the repeat capped at 50. Five of the eight ups in the
+arm 3 run were panel-to-single moves. Rules that follow:
+
+- Fix `--max-panel-cases` and the stability register for every run that will be compared, so no
+  boundary-eligible row is skipped on one side only. Report the tier of every changed row and the
+  net on tier-matched rows beside the all-rows net.
+- A change smaller than the null is not a result: model the null as independent row flips (50 rows,
+  flip rate 0.12 to 0.20 gives a 95th-percentile net of 4 to 5; 0.34 gives 7), and trace each moved
+  row to a cause in the transcript before counting it.
+- A verdict is one sample from one judge tier. Do not read a single row's move as an effect.
+
+Done when: `run-qa.mjs` or a compare script refuses to pair two runs whose panel cap or register
+differ, or a same-surface pair at one cap measures the null directly. Delete this note then.
 
 ### Add a runner for Codex and Grok as QA answering clients
 

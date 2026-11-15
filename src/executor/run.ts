@@ -19,7 +19,7 @@ import { tracing } from "cloudflare:workers";
 import { DynamicWorkerExecutor } from "@cloudflare/codemode";
 import superSpecJson from "../../specs/super-spec.json";
 import { getCatalog } from "../catalog/load.ts";
-import { recoveryCandidatesFromSources } from "../catalog/search.ts";
+import { detailTargetsFromSources, recoveryCandidatesFromSources } from "../catalog/search.ts";
 import type { BuildAuthorityRole, Catalog } from "../catalog/types.ts";
 import { buildSandbox, type ArtifactReadStats, type OpLedgerCall, type SandboxProvider } from "./providers.ts";
 import {
@@ -44,6 +44,7 @@ import { withScriptHint } from "./script-hints.ts";
 import { put as putArtifact, type ArtifactMime } from "../artifacts/store.ts";
 import { logArtifactWrite } from "../observability.ts";
 import type { EvidenceRecoveryHint } from "../policy/evidence-checkpoint.ts";
+import type { ExactEvidenceCall } from "../policy/exact-evidence.ts";
 
 export type ExecuteOperationSummary = {
   total: number;
@@ -58,6 +59,8 @@ export type ExecuteOperationSummary = {
   candidateEvidence?: number;
   /** Successful Scout project/repository calls whose contracts can return prior-art candidates. */
   priorArtCandidates?: number;
+  /** Successful candidate-lane calls with a row that is the document the query names by identifier. */
+  exactEvidence?: number;
 };
 
 export type ExecuteEvidenceSummary = {
@@ -82,6 +85,8 @@ export type ExecuteOutcome =
       evidenceSummary: ExecuteEvidenceSummary;
       /** Conditional wider-pass advice derived only from successful operation ids. */
       recoveryHint?: EvidenceRecoveryHint;
+      /** Candidate-lane calls whose result held the document the query names by identifier. */
+      exactEvidence?: ExactEvidenceCall[];
       resultOriginalChars?: number;
       resultReturnedChars?: number;
       resultMaxTokens?: number;
@@ -147,12 +152,13 @@ export function assertExecutorEvidenceOperationIds(catalog: Catalog): void {
 
 const BROAD_RETRIEVAL_LANES = new Set(["semantic", "research", "av", "corpus"]);
 
-function summarizeOperationLedger(calls: readonly OpLedgerCall[]): ExecuteOperationSummary {
+export function summarizeOperationLedger(calls: readonly OpLedgerCall[]): ExecuteOperationSummary {
   const summary: ExecuteOperationSummary = { total: calls.length, ok: 0, error: 0, softEmpty: 0 };
   let evidenceData = 0;
   let caveats = 0;
   let candidateEvidence = 0;
   let priorArtCandidates = 0;
+  let exactEvidence = 0;
   for (const call of calls) {
     if (call.outcome === "ok") summary.ok += 1;
     else if (call.outcome === "error") summary.error += 1;
@@ -162,12 +168,24 @@ function summarizeOperationLedger(calls: readonly OpLedgerCall[]): ExecuteOperat
     if (call.outcome === "ok" && call.caveat) caveats += 1;
     if (hasEvidenceData && call.caveat === "unverified-match") candidateEvidence += 1;
     if (hasEvidenceData && EVIDENCE_OPERATION_IDS["prior-art"].has(call.op)) priorArtCandidates += 1;
+    if (call.outcome === "ok" && call.exactRows?.length) exactEvidence += 1;
   }
   if (evidenceData > 0) summary.evidenceData = evidenceData;
   if (caveats > 0) summary.caveats = caveats;
   if (candidateEvidence > 0) summary.candidateEvidence = candidateEvidence;
   if (priorArtCandidates > 0) summary.priorArtCandidates = priorArtCandidates;
+  if (exactEvidence > 0) summary.exactEvidence = exactEvidence;
   return summary;
+}
+
+/** The host-block view of the calls whose result held the document a query names by identifier. */
+function exactEvidenceOfLedger(calls: readonly OpLedgerCall[]): ExactEvidenceCall[] {
+  return calls
+    .filter((call) => call.outcome === "ok" && call.exactRows?.length)
+    .map((call) => ({
+      op: call.op,
+      rows: call.exactRows!.map(({ key, url }) => ({ key, ...(url ? { url } : {}) }))
+    }));
 }
 
 function sourceMetadataFromOperationLedger(calls: readonly OpLedgerCall[]): SourceMetadataEntry[] {
@@ -185,7 +203,32 @@ function latestObservedAt(calls: readonly OpLedgerCall[]): string | undefined {
   return latest;
 }
 
-function evidenceRecoveryHint(
+export function evidenceRecoveryHint(
+  calls: readonly OpLedgerCall[],
+  summary: ExecuteOperationSummary
+): EvidenceRecoveryHint | undefined {
+  const alternatives = evidenceAlternativesHint(calls, summary);
+  // A detail pointer makes no claim about what the run did not call, so it does not wait on the
+  // unprofiled-operation rule or on the mode that guards "narrow lookups only".
+  const sources = calls
+    .filter((call) => call.outcome === "ok" && call.hasServiceData !== false)
+    .map((call) => call.op);
+  const detail = detailTargetsFromSources(
+    getCatalog(),
+    [...new Set(sources)],
+    [...new Set(calls.map((call) => call.op))]
+  ).map(({ id, sources: from, keys }) => ({ target: id, sourceOperations: from, keys }));
+  if (detail.length === 0) return alternatives;
+  if (alternatives) return { ...alternatives, detail };
+  return {
+    mode: "detail-only",
+    sourceOperations: [...new Set(detail.flatMap((pointer) => pointer.sourceOperations))],
+    candidates: [],
+    detail
+  };
+}
+
+function evidenceAlternativesHint(
   calls: readonly OpLedgerCall[],
   summary: ExecuteOperationSummary
 ): EvidenceRecoveryHint | undefined {
@@ -386,6 +429,7 @@ export function createExecuteRunner(env: Env, options: ExecuteRunnerOptions = {}
     const logs = shapeLogs(outcome.logs, secrets);
     const operationSummary = summarizeOperationLedger(opLedger);
     const recoveryHint = evidenceRecoveryHint(opLedger, operationSummary);
+    const exactEvidence = exactEvidenceOfLedger(opLedger);
     const evidenceSummary: ExecuteEvidenceSummary = {
       kind:
         operationSummary.evidenceData !== undefined
@@ -513,6 +557,7 @@ export function createExecuteRunner(env: Env, options: ExecuteRunnerOptions = {}
       operationSummary,
       evidenceSummary,
       ...(recoveryHint ? { recoveryHint } : {}),
+      ...(exactEvidence.length > 0 ? { exactEvidence } : {}),
       resultOriginalChars: result.originalChars,
       resultReturnedChars: text.length,
       resultMaxTokens: result.maxTokens,

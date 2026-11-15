@@ -84,6 +84,8 @@ export type SourceBasisCall = {
   reason?: string;
   /** Host-derived caveat on an ok call: no rows, or only unverified matches. */
   caveat?: ResultCaveat;
+  /** Rows the host recognized as the document the query names by identifier. */
+  exactRows?: Array<{ index: number; key: string }>;
 };
 
 export type SourceBasisArtifact =
@@ -336,7 +338,13 @@ function callsLine(calls: SourceBasisCall[], limit: number): string {
     const op = truncateAtom(call.op, MAX_ATOM_CHARS);
     const ms = Number.isFinite(call.ms) ? `${Math.max(0, Math.round(call.ms))}ms` : "?ms";
     const reason = call.reason ? ` [${truncateAtom(call.reason, SOURCE_BASIS_REASON_MAX_CHARS)}]` : "";
-    const caveat = call.outcome === "ok" && call.caveat ? ` [caveat: ${call.caveat}]` : "";
+    const marks = [
+      call.outcome === "ok" && call.caveat ? `caveat: ${call.caveat}` : "",
+      call.outcome === "ok" && call.exactRows?.length
+        ? `exact: ${call.exactRows.map((row) => truncateAtom(row.key, MAX_ATOM_CHARS)).join(", ")}`
+        : ""
+    ].filter(Boolean);
+    const caveat = marks.length > 0 ? ` [${marks.join("; ")}]` : "";
     return `${op}=${call.outcome}/${ms}${reason}${caveat}`;
   });
   const totals = callTotals(calls);

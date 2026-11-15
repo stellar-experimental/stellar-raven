@@ -1421,7 +1421,10 @@ until official docs confirm them.</p>
     An ok result can also carry a <code>caveat</code>: <code>"no-rows"</code> when it has no
     rows, or <code>"unverified-match"</code> when its rows are only similarity, research, or
     spelling-corrected matches. A <code>"no-rows"</code> result is still ok data, not a
-    <code>"soft-empty"</code> error.
+    <code>"soft-empty"</code> error. When the query names a document by identifier (for
+    example a SEP or CAP number) and a row's source label and URL name that same document, the
+    result also lists that row in <code>exactRows</code> as <code>{ index, key }</code>; the
+    <code>caveat</code> stays and the other rows remain candidates.
     Widen the search across families before concluding a negative. Each ok result also carries
     <code>asOf</code>: the upstream data date when the service states one, else the time Raven
     observed the response.</li>

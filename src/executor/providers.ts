@@ -79,7 +79,7 @@ import {
 import { prepareCatalogSearch } from "../catalog/search-resolution.ts";
 import { lastIdSegment, VALID_IDENT } from "../catalog/id.ts";
 import { callService } from "../adapters/index.ts";
-import type { AdapterEnv, AdapterResult, FetchLike, ResultCaveat } from "../adapters/types.ts";
+import type { AdapterEnv, AdapterResult, ExactRow, FetchLike, ResultCaveat } from "../adapters/types.ts";
 import { guard } from "../policy/guard.ts";
 import { applyArgumentAliases } from "../policy/argument-aliases.ts";
 import { redactSecrets, secretsFromEnv } from "../policy/redact.ts";
@@ -113,6 +113,8 @@ export type OpLedgerCall = {
   sourceMetadata?: SourceMetadataField[];
   /** The same host-derived caveat the ok envelope carries. */
   caveat?: ResultCaveat;
+  /** Rows the host recognized as the document the query names; `url` only when it is a plain https URL. */
+  exactRows?: Array<ExactRow & { url?: string }>;
   /** Host clock when an ok response arrived (ISO-8601). */
   observedAt?: string;
   /** Bounded host label; never an upstream message, body, URL, or argument value. */
@@ -287,6 +289,85 @@ export function resultCaveat(
   return candidateMode ? "unverified-match" : undefined;
 }
 
+// A token followed by `-` or `.` and another digit (`CVE-2024-1234`, `SEP-43.1`) is a longer identifier, not a prefix match.
+const IDENTIFIER_TOKEN_RE = /\b([A-Za-z]+)[- ]?(\d+)\b(?![-.]\d)/g;
+const MAX_EXACT_ROWS = 5;
+const MAX_EXACT_URL_CHARS = 200;
+
+const stripLeadingZeros = (digits: string): string => digits.replace(/^0+(?=\d)/, "");
+
+/** The first top-level array of the payload whose items carry a string `source` and `url`. */
+function sourceRowsOf(data: unknown): unknown[] | undefined {
+  if (data === null || typeof data !== "object" || Array.isArray(data)) return undefined;
+  return Object.values(data as Record<string, unknown>).find(
+    (value): value is unknown[] =>
+      Array.isArray(value) &&
+      value.some(
+        (item) =>
+          item !== null &&
+          typeof item === "object" &&
+          typeof (item as { source?: unknown }).source === "string" &&
+          typeof (item as { url?: unknown }).url === "string"
+      )
+  );
+}
+
+/** The last URL path segment without its extension, or undefined when the URL does not parse. */
+function urlSlug(url: string): string | undefined {
+  try {
+    const segment = new URL(url).pathname.split("/").filter(Boolean).at(-1);
+    return segment?.replace(/\.[A-Za-z0-9]+$/, "");
+  } catch {
+    return undefined;
+  }
+}
+
+/** A row URL fit to quote in host text: plain https, no whitespace, backtick, or control character. */
+function quotableUrl(url: string): string | undefined {
+  return url.length <= MAX_EXACT_URL_CHARS && /^https:\/\/[^\s`\u0000-\u001f\u007f]+$/.test(url) ? url : undefined;
+}
+
+/**
+ * Rows of a candidate-lane result that are the document the query names by identifier.
+ *
+ * Identifier agreement, and nothing else: the query (`q` or `query`) holds a token of letters, an
+ * optional hyphen or space, and digits; the row's `source` equals those letters, ignoring case; and
+ * the last path segment of the row's URL, without its extension, is those letters, a hyphen, and the
+ * same number (zero padding ignored). A row that only cites the identifier names another slug and
+ * does not agree. The host judges no relevance and keeps no list of standards.
+ */
+export function exactRowsOf(
+  entry: CatalogEntry,
+  args: Record<string, unknown>,
+  data: unknown
+): Array<ExactRow & { url?: string }> {
+  const lane = entry.retrievalProfile?.lane;
+  if (lane === undefined || !CANDIDATE_LANES.has(lane)) return [];
+  const query = [args.q, args.query].find((value): value is string => typeof value === "string");
+  if (!query) return [];
+  const wanted = [...query.matchAll(IDENTIFIER_TOKEN_RE)].map((match) => ({
+    letters: match[1]!.toLowerCase(),
+    number: stripLeadingZeros(match[2]!)
+  }));
+  const rows = wanted.length > 0 ? sourceRowsOf(data) : undefined;
+  if (!rows) return [];
+  const out: Array<ExactRow & { url?: string }> = [];
+  for (const [index, row] of rows.entries()) {
+    if (out.length >= MAX_EXACT_ROWS) break;
+    const { source, url } = (row ?? {}) as { source?: unknown; url?: unknown };
+    if (typeof source !== "string" || typeof url !== "string") continue;
+    const slug = /^([A-Za-z]+)-(\d+)$/.exec(urlSlug(url) ?? "");
+    if (!slug) continue;
+    const letters = slug[1]!.toLowerCase();
+    const number = stripLeadingZeros(slug[2]!);
+    if (source.toLowerCase() !== letters) continue;
+    if (!wanted.some((token) => token.letters === letters && token.number === number)) continue;
+    const quoted = quotableUrl(url);
+    out.push({ index, key: slug[0]!.toLowerCase(), ...(quoted ? { url: quoted } : {}) });
+  }
+  return out;
+}
+
 /**
  * The upstream-stated data date when an allowlisted data-date path holds a
  * parseable date string (copied exactly), else the host observation time.
@@ -387,7 +468,7 @@ function envelopeGuardPrelude(opsByService: Map<string, string[]>): string {
   );
   return [
     "    const __warned = new Set();",
-    '    const __envelopeKeys = new Set(["ok", "data", "error", "asOf", "asOfBasis", "caveat", "then", "toJSON"]);',
+    '    const __envelopeKeys = new Set(["ok", "data", "error", "asOf", "asOfBasis", "caveat", "exactRows", "then", "toJSON"]);',
     "    const __guardEnvelope = (r, call) => {",
     '      if (r === null || typeof r !== "object" || typeof r.ok !== "boolean") return r;',
     "      const __trap = (key, desc) => {",
@@ -509,6 +590,7 @@ export function buildOpsFns(
       const sourceMetadata = captureSourceMetadata(redactedResult.data);
       const observedAt = new Date().toISOString();
       const caveat = resultCaveat(entry, redactedResult.data, sourceMetadata);
+      const exactRows = exactRowsOf(entry, (args ?? {}) as Record<string, unknown>, redactedResult.data);
       logEvent("op", {
         id: entry.id,
         outcome: "ok",
@@ -521,6 +603,7 @@ export function buildOpsFns(
         hasServiceData: hasServiceData(redactedResult.data),
         sourceMetadata,
         ...(caveat ? { caveat } : {}),
+        ...(exactRows.length > 0 ? { exactRows } : {}),
         observedAt,
         ms
       });
@@ -528,7 +611,8 @@ export function buildOpsFns(
         ok: true,
         data: redactedResult.data,
         ...asOfSignal(sourceMetadata, observedAt),
-        ...(caveat ? { caveat } : {})
+        ...(caveat ? { caveat } : {}),
+        ...(exactRows.length > 0 ? { exactRows: exactRows.map(({ index, key }) => ({ index, key })) } : {})
       };
     };
   }

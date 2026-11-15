@@ -61,9 +61,11 @@ import {
 import { projectSourceBasisTelemetry } from "../policy/source-basis.ts";
 import {
   candidateEvidenceBlock,
+  detailOnlyHint,
   evidenceCheckpointBlock,
   type EvidenceRecoveryHint
 } from "../policy/evidence-checkpoint.ts";
+import { withExactEvidence } from "../policy/exact-evidence.ts";
 import { DEMO_CAPS, createDemoToolBudget, type DemoToolBudget } from "./budget.ts";
 import type { DemoFrame } from "./frames.ts";
 
@@ -507,12 +509,15 @@ export function buildDemoTools(opts: {
       };
       budget.latestExecuteEvidence = outcome.evidenceSummary.kind;
       const recoveryHint = outcome.ok ? (outcome.recoveryHint ?? null) : null;
+      // Detail pointers travel in the result itself and never spend the turn's single
+      // recovery-advice cycle: a detail-only hint must not suppress a later alternatives hint.
+      const alternativesHint = recoveryHint && recoveryHint.candidates.length > 0 ? recoveryHint : null;
       let visibleRecoveryHint: EvidenceRecoveryHint | null = null;
-      if (recoveryHint) {
+      if (alternativesHint) {
         budget.recoveryHintedExecutes += 1;
         if (!budget.recoveryAdviceDelivered && budget.latestRecoveryHint === null) {
-          budget.latestRecoveryHint = recoveryHint;
-          visibleRecoveryHint = recoveryHint;
+          budget.latestRecoveryHint = alternativesHint;
+          visibleRecoveryHint = alternativesHint;
           // The standalone checkpoint is already model-visible in this tool
           // result, so reserve the turn's single hint cycle immediately. The
           // next prepareStep may restate this same pending hint, but no later
@@ -577,14 +582,17 @@ export function buildDemoTools(opts: {
         outcome.ok && outcome.truncated
       );
       const evidenceCheckpoint = outcome.ok
-        ? evidenceCheckpointBlock(visibleRecoveryHint ?? undefined)
+        ? evidenceCheckpointBlock(visibleRecoveryHint ?? detailOnlyHint(recoveryHint) ?? undefined)
         : "";
       const hasPriorArtPreflight = Boolean(
         outcome.operationSummary.priorArtCandidates &&
           outcome.evidenceSummary.buildAuthoritySkillIds?.length
       );
       const candidateBlock = outcome.ok
-        ? candidateEvidenceBlock(outcome.operationSummary.candidateEvidence, hasPriorArtPreflight)
+        ? withExactEvidence(
+            candidateEvidenceBlock(outcome.operationSummary.candidateEvidence, hasPriorArtPreflight),
+            outcome.exactEvidence
+          )
         : "";
 
       const text = outcome.ok

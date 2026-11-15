@@ -87,6 +87,7 @@ This section gives only the stages.
 `total` and `truncated` describe catalog navigation, not completeness of upstream evidence.
 `widerCandidates` and `recovery` supply advice that stays separate from the ranked hits.
 [ADR-0007](research/decisions/0007-structural-recovery-guidance.md) records the structural, advisory, bounded recovery decision.
+A recovery edge with relation `detail` marks a different fact: the source returns parts of records and the target returns one whole record its rows address (a Docs search hit and `stellarDocs.get_doc_page`). Search advice skips it. After a successful Docs search that returned rows and no page read in the same `execute`, the evidence checkpoint adds one generated sentence that says the hits are sections and names the page read. The Playground does not count that sentence as its one recovery-advice cycle.
 A public card carries no output type. In catalog entries and the sandbox `codemode.search` page, an oversized rendered output type becomes a compact stub that names the exact `codemode.describe` call.
 The manifest and detail helpers retain the complete schemas.
 
@@ -141,7 +142,7 @@ The footer has its own bounded character budget after the result cut.
 It includes shape and loss facts, operation outcomes, source metadata, sanitized URLs, and artifact availability.
 A clean ok-only run has no truncation, no failed call, and no captured source metadata.
 Its compact footer keeps only the marker, `calls:`, `observedAt:`, and `guidance:` lines.
-Each ok call with a `caveat` carries a `[caveat: no-rows]` or `[caveat: unverified-match]` marker.
+Each ok call with a `caveat` carries a `[caveat: no-rows]` or `[caveat: unverified-match]` marker. A call whose result has an exact row adds `exact: <key>` to the same bracket.
 The call totals keep the caveat count after the budget drops per-call entries.
 An `observedAt:` line gives the latest host observation time across ok calls.
 Each failed call includes a reason of at most 64 characters.
@@ -211,6 +212,7 @@ A `"no-rows"` result is successful data, so a closed-world exact empty still app
 The signal never judges row relevance, so adjacent or off-target rows stay unmarked.
 Failed envelopes, skill reads, skill runs, and artifact reads carry none of these fields.
 The run-level `candidateEvidence` count, which triggers the candidate-evidence block, counts `"unverified-match"` calls.
+An ok result from a `semantic`, `research`, or `av` operation can also carry `exactRows: [{ index, key }]`. The host marks a row exact when three things agree, and judges no relevance: the query (`q` or `query`) holds a token of letters, an optional hyphen or space, and digits, not followed by a dash or dot and another digit (`CVE-2024-1234` and `SEP-43.1` are longer identifiers, not prefix matches); the row's `source` equals those letters, ignoring case; and the last URL path segment of the row, without its extension, is those letters, a hyphen, and the same number (zero padding ignored). The host trusts the upstream `source` label; it does not check the URL host. A row that only cites the identifier names another slug and is not marked. `exactRows` is present only when non-empty, and `caveat` and `data` do not change; the other rows stay candidates. When a call carries it, the candidate-evidence block appends one generated exception per exact row that names the call, the row's slug and URL, and says to state only what the returned text shows ([exact-evidence.ts](src/policy/exact-evidence.ts)). The upstream `exactKeys` field is not read: a row that only cites a key carries it too.
 [The design note](.agents/rounds/2026-10-10-weekend/answer-style/design.md) records which instruction sentences these signals replace.
 
 Scout can return HTTP 200 for a page that lost a backend read.

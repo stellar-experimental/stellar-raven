@@ -751,6 +751,62 @@ describe("demo tools at the worker boundary", () => {
     });
   });
 
+  it("never spends the turn's recovery-advice cycle on a detail pointer", async () => {
+    const detail = [
+      { target: "stellarDocs.get_doc_page", sourceOperations: ["stellarDocs.search_docs"], keys: ["path"] }
+    ];
+    const alternatives = {
+      mode: "conditional-alternatives" as const,
+      sourceOperations: ["stellarDocs.search_docs"],
+      candidates: [{ id: "scout.searchResearch", relation: "cited-research", reasons: ["weak" as const] }]
+    };
+    const hints = [
+      { mode: "detail-only" as const, sourceOperations: ["stellarDocs.search_docs"], candidates: [], detail },
+      { ...alternatives, detail },
+      { ...alternatives, detail }
+    ];
+    const budget = createDemoToolBudget();
+    const { execute, budgetReport } = makeTools(budget, async () => ({
+      ok: true,
+      result: "rows",
+      truncated: false,
+      logs: [],
+      operationSummary: { total: 1, ok: 1, error: 0, softEmpty: 0 },
+      evidenceSummary: {
+        kind: "service-data",
+        skillRead: false,
+        buildAuthoritySkillIds: [],
+        buildAuthorityRoles: [],
+        skillRuns: 0,
+        artifactReads: 0
+      },
+      recoveryHint: hints.shift()
+    }));
+
+    const first = (await execute.execute({ code: "async () => 1" })) as string;
+    expect(first).toContain("returned sections of pages, not whole pages");
+    expect(first).not.toContain("bounded alternative pass");
+    expect(budget.recoveryAdviceDelivered).toBe(false);
+    expect(budget.latestRecoveryHint).toBeNull();
+    expect(budgetReport()).toMatchObject({ recoveryHintedExecutes: 0, recoveryAdviceSuppressed: 0 });
+    expect(prepareDemoStep({ steps: [], stepNumber: 2, budget })?.system ?? "").not.toContain(
+      "bounded uncalled alternative"
+    );
+
+    // An alternatives hint after it is still shown, with the pointer first.
+    const second = (await execute.execute({ code: "async () => 2" })) as string;
+    expect(second).toContain("returned sections of pages, not whole pages");
+    expect(second).toContain("at most one bounded alternative pass");
+    expect(second.indexOf("returned sections of pages")).toBeLessThan(second.indexOf("at most one bounded"));
+    expect(budget.recoveryAdviceDelivered).toBe(true);
+
+    // The cycle is spent: the alternatives are suppressed, the pointer is not.
+    const third = (await execute.execute({ code: "async () => 3" })) as string;
+    expect(third).toContain("returned sections of pages, not whole pages");
+    expect(third).not.toContain("bounded alternative pass");
+    expect(budgetReport()).toMatchObject({ recoveryHintedExecutes: 2, recoveryAdviceSuppressed: 1 });
+  });
+
   it("adds a demo-only advisory when execute output is truncated", async () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     const { execute, budgetReport } = makeTools();

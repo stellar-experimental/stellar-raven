@@ -54,6 +54,14 @@ export type AdapterError = {
  */
 export type ResultCaveat = "no-rows" | "unverified-match";
 
+/**
+ * A row of a candidate-lane result that the host recognized as the document its query names by
+ * identifier. `index` is the row's position in the payload's rows array; `key` is the row URL's
+ * own slug (a slug such as `<series>-<number>`). The host judges no relevance: it reports an agreement between
+ * the query, the row's source label, and the row's URL.
+ */
+export type ExactRow = { index: number; key: string };
+
 export type AdapterResult =
   | {
       ok: true;
@@ -64,6 +72,8 @@ export type AdapterResult =
       asOfBasis?: string;
       /** Present only when the payload has no rows, or its rows are unverified matches. */
       caveat?: ResultCaveat;
+      /** Present only when a row is the document the query names by identifier. `caveat` is unchanged. */
+      exactRows?: ExactRow[];
     }
   | { ok: false; error: AdapterError };
 

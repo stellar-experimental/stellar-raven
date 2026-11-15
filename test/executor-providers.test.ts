@@ -12,6 +12,7 @@ import {
   asOfSignal,
   buildSandbox,
   buildCodemodeProvider,
+  exactRowsOf,
   hasServiceData,
   resultCaveat,
   type OpLedgerCall
@@ -228,6 +229,110 @@ describe("host structural service evidence", () => {
     const entry = catalog.entries.find((candidate) => candidate.id === id);
     expect(entry, id).toBeDefined();
     expect(resultCaveat(entry!, data, metadata ? [...metadata] : undefined)).toBe(expected);
+  });
+
+  describe("exact rows: the document a query names by identifier", () => {
+    const research = catalog.entries.find((candidate) => candidate.id === "scout.searchResearch")!;
+    const SEP = "https://raw.githubusercontent.com/stellar/stellar-protocol/master/ecosystem";
+    const row = (source: string, slug: string, extra: Record<string, unknown> = {}) => ({
+      source,
+      url: `${SEP}/${slug}.md`,
+      title: `${slug} title`,
+      content: "chunk text",
+      ...extra
+    });
+    // Shapes taken from the production responses the plan recorded: the named file first, a file that only cites it second.
+    const sep43 = { results: [row("sep", "sep-0043"), row("sep", "sep-0060"), row("cap", "cap-0038")] };
+    const keys = (query: string, data: unknown = sep43, args: Record<string, unknown> = { query }) =>
+      exactRowsOf(research, args, data).map(({ index, key }) => ({ index, key }));
+
+    it("marks the row the query names, and not a row that only cites it", () => {
+      expect(keys("SEP-43 standard interface")).toEqual([{ index: 0, key: "sep-0043" }]);
+      expect(keys("SEP-60")).toEqual([{ index: 1, key: "sep-0060" }]);
+    });
+
+    it("does not mark a neighbouring number, an identifier with no document, or a query with no identifier", () => {
+      expect(keys("SEP-44 standard")).toEqual([]);
+      expect(keys("SEP-9999")).toEqual([]);
+      expect(keys("web wallet interface standard")).toEqual([]);
+      expect(keys("")).toEqual([]);
+    });
+
+    it("ignores zero padding and spacing, and reads either `q` or `query`", () => {
+      for (const query of ["SEP-0043", "sep 43", "SEP43", "see Sep-43 please"]) {
+        expect(keys(query), query).toEqual([{ index: 0, key: "sep-0043" }]);
+      }
+      expect(keys("", sep43, { q: "SEP-43" })).toEqual([{ index: 0, key: "sep-0043" }]);
+    });
+
+    it("does not read the prefix of a longer identifier (`CVE-2024-1234`, `SEP-43.1`) as the document of that prefix", () => {
+      const cve = { results: [row("cve", "cve-2024")] };
+      expect(keys("CVE-2024-1234", cve)).toEqual([]);
+      expect(keys("CVE-2024-1234 details", cve)).toEqual([]);
+      expect(keys("SEP-43.1")).toEqual([]);
+      // a plain identifier followed by a dash and a word, or by sentence punctuation, still names the document
+      expect(keys("SEP-43-draft")).toEqual([{ index: 0, key: "sep-0043" }]);
+      expect(keys("what is SEP-43?")).toEqual([{ index: 0, key: "sep-0043" }]);
+      expect(keys("SEP-43, SEP-43.")).toEqual([{ index: 0, key: "sep-0043" }]);
+    });
+
+    it("marks each document when a query names two identifiers", () => {
+      expect(keys("SEP-43 and CAP-38")).toEqual([
+        { index: 0, key: "sep-0043" },
+        { index: 2, key: "cap-0038" }
+      ]);
+    });
+
+    it("needs the row's source to agree: a matching slug under another source is not exact", () => {
+      const data = { results: [row("sdf-blog", "sep-0043"), row("cap", "sep-0043")] };
+      expect(keys("SEP-43", data)).toEqual([]);
+    });
+
+    it("does not treat Scout's own exactKeys as document identity", () => {
+      // exactKeys marks a key the row carries verbatim; a row that only cites the id carries it too.
+      const data = { results: [row("sep", "sep-0060", { exactKeys: ["SEP-43"] })] };
+      expect(keys("SEP-43", data)).toEqual([]);
+    });
+
+    it("marks a matching row whose chunk lacks the document preamble", () => {
+      const data = { results: [row("sep", "sep-0043", { chunkIndex: 7, content: "body text with no preamble or status line" })] };
+      expect(keys("SEP-43", data)).toEqual([{ index: 0, key: "sep-0043" }]);
+    });
+
+    it("reads no row without a parseable slug and applies only to candidate lanes", () => {
+      expect(keys("SEP-43", { results: [{ source: "sep", url: "not a url" }, { source: "sep", url: `${SEP}/README.md` }] })).toEqual([]);
+      const docs = catalog.entries.find((candidate) => candidate.id === "stellarDocs.search_docs")!;
+      expect(exactRowsOf(docs, { query: "SEP-43" }, { hits: [row("sep", "sep-0043")] })).toEqual([]);
+    });
+
+    it("quotes a row URL only when it is plain https", () => {
+      const quoted = exactRowsOf(research, { query: "SEP-43" }, sep43);
+      expect(quoted[0]?.url).toBe(`${SEP}/sep-0043.md`);
+      const odd = exactRowsOf(research, { query: "SEP-43" }, { results: [row("sep", "sep-0043", { url: "http://x/sep-0043.md" })] });
+      expect(odd).toEqual([{ index: 0, key: "sep-0043" }]);
+    });
+
+    it("adds exactRows to the envelope and ledger and leaves the caveat and data alone", async () => {
+      const calls: OpLedgerCall[] = [];
+      const fetchImpl: FetchLike = async () => Response.json(sep43);
+      const providers = buildSandbox(catalog, skillSource, env, { fetchImpl, onOpCall: (call) => calls.push(call) });
+
+      const hit = await fnsOf(providers, "scout").searchResearch!({ query: "SEP-43 standard" });
+      expect(hit).toMatchObject({
+        ok: true,
+        caveat: "unverified-match",
+        exactRows: [{ index: 0, key: "sep-0043" }],
+        data: sep43
+      });
+      expect(Object.keys((hit as { exactRows: object[] }).exactRows[0]!)).toEqual(["index", "key"]);
+      expect(calls[0]?.caveat).toBe("unverified-match");
+      expect(calls[0]?.exactRows).toEqual([{ index: 0, key: "sep-0043", url: `${SEP}/sep-0043.md` }]);
+
+      const miss = await fnsOf(providers, "scout").searchResearch!({ query: "SEP-9999" });
+      expect(miss).toMatchObject({ ok: true, caveat: "unverified-match" });
+      expect(miss).not.toHaveProperty("exactRows");
+      expect(calls[1]).not.toHaveProperty("exactRows");
+    });
   });
 
   it("prefers the most specific parseable upstream date, else the observation time", () => {

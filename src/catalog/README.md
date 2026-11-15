@@ -137,6 +137,15 @@ Caller-supplied exact operation IDs in `recoverFrom` produce separate bounded re
 Omitted or empty `recoverFrom` requests no explicit recovery.
 `reason` selects the supported recovery context; it does not authorize a guessed ID.
 
+A profile edge with relation `detail` is not a recovery alternative. It says the source returns parts of
+records and the target returns one whole record that the source's rows can address, such as a Docs
+search hit and `stellarDocs.get_doc_page`. The build and the manifest check accept it only when the
+target's lane is `detail` and every required input of the target is a field of the source's row items.
+`recovery`, `widerCandidates`, and the execute checkpoint's three alternatives skip `detail` edges. The
+execute checkpoint renders them as their own sentence, once per target not yet called in that run, for
+successful source calls that returned rows. A `detail` edge does not read `on`: the pointer follows the
+source call's rows, not a reason, so `on` on such an edge is cosmetic.
+
 `confidence` describes the page's navigation evidence.
 `recoveryMetadata` identifies skill matches outside the selected service scope and other structural recovery facts.
 A search hit supplies navigation metadata, not answer evidence.

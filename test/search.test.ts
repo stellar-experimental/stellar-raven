@@ -13,6 +13,7 @@ import {
   searchCatalogPage,
   recoveryCandidates,
   recoveryCandidatesFromSources,
+  detailTargetsFromSources,
   renderSignature,
   COMPACT_OUTPUT_THRESHOLD,
   DEFAULT_SEARCH_LIMIT,
@@ -1780,5 +1781,99 @@ describe("alias canonicalization", () => {
     const originalOnly = scoreEntryWeighted(entry, "fee spike");
     expect(withAlias).not.toBeNull();
     expect(originalOnly).not.toBeNull();
+  });
+});
+
+describe("the detail relation in the recovery graph", () => {
+  const DOCS_SEARCHES = catalog_docsSearchIds();
+
+  function catalog_docsSearchIds(): string[] {
+    return [
+      "stellarDocs.search_docs",
+      "stellarDocs.search_doc_titles",
+      "stellarDocs.search_docs_in_category",
+      "stellarDocs.search_meeting_notes",
+      "stellarDocs.search_protocol_concepts_docs",
+      "stellarDocs.search_rpc_horizon_data_docs",
+      "stellarDocs.search_sdk_cli_tools_docs",
+      "stellarDocs.search_soroban_contract_docs",
+      "stellarDocs.search_wallet_dapp_docs",
+      "stellarDocs.search_anchor_sep_docs",
+      "stellarDocs.search_asset_token_docs"
+    ];
+  }
+
+  it("is the last edge of every Docs search profile, targeting the whole-page read", () => {
+    const byId = new Map(catalog.entries.map((entry) => [entry.id, entry]));
+    for (const id of DOCS_SEARCHES) {
+      const edges = byId.get(id)?.retrievalProfile?.recoverWith ?? [];
+      expect(edges.at(-1), id).toEqual({ id: "stellarDocs.get_doc_page", relation: "detail", on: ["partial"] });
+      expect(edges.filter((edge) => edge.relation === "detail"), id).toHaveLength(1);
+    }
+    const detailEdges = catalog.entries.flatMap((entry) =>
+      (entry.retrievalProfile?.recoverWith ?? []).filter((edge) => edge.relation === "detail")
+    );
+    expect(detailEdges).toHaveLength(DOCS_SEARCHES.length);
+  });
+
+  it("never enters the alternatives, the search recovery walk, or the three-candidate cap", () => {
+    for (const id of DOCS_SEARCHES) {
+      expect(recoveryCandidatesFromSources(catalog, [id], []).map((c) => c.id), id).not.toContain(
+        "stellarDocs.get_doc_page"
+      );
+      expect(recoveryCandidates(catalog, [id], "partial").map((c) => c.id), id).not.toContain(
+        "stellarDocs.get_doc_page"
+      );
+    }
+    // The three alternatives after a Docs search are the ones the profile named before the edge.
+    expect(recoveryCandidatesFromSources(catalog, ["stellarDocs.search_docs"], []).map((c) => c.id)).toEqual([
+      "scout.searchResearch",
+      "lumenloop.search_content_semantic",
+      "stellarDocs.search_meeting_notes"
+    ]);
+  });
+
+  it("changes no search page: hits, order, widerCandidates, and recovery cards", () => {
+    const withoutEdges = {
+      ...catalog,
+      entries: catalog.entries.map((entry) =>
+        entry.retrievalProfile
+          ? {
+              ...entry,
+              retrievalProfile: {
+                ...entry.retrievalProfile,
+                recoverWith: entry.retrievalProfile.recoverWith.filter((edge) => edge.relation !== "detail")
+              }
+            }
+          : entry
+      )
+    } as Catalog;
+    for (const query of ["soroban storage types", "freighter", "SEP-10 web authentication", "who is Denelle Dixon"]) {
+      expect(searchCatalogPage(catalog, { query, limit: 8 }), query).toEqual(
+        searchCatalogPage(withoutEdges, { query, limit: 8 })
+      );
+    }
+  });
+
+  it("returns the whole-page read for a Docs search, keyed by the row field its hits carry", () => {
+    expect(detailTargetsFromSources(catalog, ["stellarDocs.search_docs"], [])).toEqual([
+      { id: "stellarDocs.get_doc_page", sources: ["stellarDocs.search_docs"], keys: ["path"] }
+    ]);
+    expect(
+      detailTargetsFromSources(catalog, ["stellarDocs.search_docs", "stellarDocs.search_meeting_notes"], [])
+    ).toEqual([
+      {
+        id: "stellarDocs.get_doc_page",
+        sources: ["stellarDocs.search_docs", "stellarDocs.search_meeting_notes"],
+        keys: ["path"]
+      }
+    ]);
+  });
+
+  it("drops a target the run already called and a source with no detail edge", () => {
+    expect(
+      detailTargetsFromSources(catalog, ["stellarDocs.search_docs"], ["stellarDocs.get_doc_page"])
+    ).toEqual([]);
+    expect(detailTargetsFromSources(catalog, ["scout.getBuilders", "stellarDocs.get_doc_page"], [])).toEqual([]);
   });
 });

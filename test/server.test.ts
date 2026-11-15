@@ -1435,6 +1435,43 @@ describe("execute behavior", () => {
     expect(text).not.toContain("--- EVIDENCE RECOVERY ---");
   });
 
+  it("adds the exact-row exception to the candidate block only when the host marked a row", async () => {
+    const marked = await connectedClient({
+      runExecute: async () => ({
+        ok: true,
+        result: '{"rows":[{"title":"the named document"}]}',
+        truncated: false,
+        logs: [],
+        ...executeSummaries({ total: 1, ok: 1, error: 0, softEmpty: 0, candidateEvidence: 1, exactEvidence: 1 }),
+        exactEvidence: [{ op: "scout.searchResearch", rows: [{ key: "sep-0043", url: "https://example.org/sep-0043.md" }] }]
+      })
+    });
+    const withExact = (
+      (await marked.callTool({ name: "execute", arguments: { code: "async () => 1" } })).content as Array<{ text: string }>
+    )[0]?.text ?? "";
+    expect(withExact).toContain("--- CANDIDATE EVIDENCE ---");
+    expect(withExact).toContain("These rows are candidates, not identity or absence proof");
+    expect(withExact).toContain(
+      "Exception: `scout.searchResearch` returned the document the query names by identifier (`sep-0043`, `https://example.org/sep-0043.md`)."
+    );
+    expect(withExact).toContain("A status or version line that is not in the returned text is unverified.");
+
+    const unmarked = await connectedClient({
+      runExecute: async () => ({
+        ok: true,
+        result: '{"rows":[{"title":"nearby"}]}',
+        truncated: false,
+        logs: [],
+        ...executeSummaries({ total: 1, ok: 1, error: 0, softEmpty: 0, candidateEvidence: 1 })
+      })
+    });
+    const without = (
+      (await unmarked.callTool({ name: "execute", arguments: { code: "async () => 1" } })).content as Array<{ text: string }>
+    )[0]?.text ?? "";
+    expect(without).toContain("--- CANDIDATE EVIDENCE ---");
+    expect(without).not.toContain("Exception:");
+  });
+
   it("adds conditional exact-id recovery advice after successful narrow-only lookups", async () => {
     const execClient = await connectedClient({
       runExecute: async () => ({

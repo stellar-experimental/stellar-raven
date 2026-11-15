@@ -1,0 +1,158 @@
+{
+  "method": "step 0-prime stored research queries, replayed live read-only; exposed = any call gets an exact row; no verdict read",
+  "source": "2026-11-14T22-18-17-variantA.json",
+  "researchCallsReplayed": 18,
+  "callsWithExactRow": 7,
+  "failedCalls": 0,
+  "excludedIds": [
+    "q-comp-aml-analytics-vendors",
+    "q-sep-43-web-wallet-api"
+  ],
+  "excludedSha256": "58127e85e10f99edbedd37ceed69b92f0b3c8f0e205622740f7cfb83cc3da1f5",
+  "scanExposedButNoExactRow": [
+    "q-defi-agent-identity-stellar-experimental",
+    "q-protocol-tier1-requirements"
+  ],
+  "calls": [
+    {
+      "row": "q-comp-aml-analytics-vendors",
+      "query": "blockchain analytics Chainalysis Elliptic TRM Labs Stellar",
+      "ok": true,
+      "exactKeys": [],
+      "scanArm2Exposed": true
+    },
+    {
+      "row": "q-comp-aml-analytics-vendors",
+      "query": "sanctions screening AML compliance anchor",
+      "ok": true,
+      "exactKeys": [],
+      "scanArm2Exposed": true
+    },
+    {
+      "row": "q-comp-aml-analytics-vendors",
+      "query": "SEP-12 KYC customer information",
+      "ok": true,
+      "exactKeys": [
+        "sep-0012"
+      ],
+      "scanArm2Exposed": true
+    },
+    {
+      "row": "q-comp-aml-analytics-vendors",
+      "query": "Travel Rule SEP-31 compliance AML",
+      "ok": true,
+      "exactKeys": [
+        "sep-0031"
+      ],
+      "scanArm2Exposed": true
+    },
+    {
+      "row": "q-defi-agent-identity-stellar-experimental",
+      "query": "ERC-8004 trustless agents Stellar",
+      "ok": true,
+      "exactKeys": [],
+      "scanArm2Exposed": true
+    },
+    {
+      "row": "q-edge-asset-site-scam-detection",
+      "query": "scam phishing fake token airdrop wallet drainer",
+      "ok": true,
+      "exactKeys": [],
+      "scanArm2Exposed": false
+    },
+    {
+      "row": "q-n3-pi-network-wrong-chain",
+      "query": "Pi Network",
+      "ok": true,
+      "exactKeys": [],
+      "scanArm2Exposed": false
+    },
+    {
+      "row": "q-pc-quantum-preparedness-dormant",
+      "query": "dormant accounts quantum Stellar",
+      "ok": true,
+      "exactKeys": [],
+      "scanArm2Exposed": false
+    },
+    {
+      "row": "q-protocol-tier1-requirements",
+      "query": "Tier 1 organization requirements validators uptime",
+      "ok": true,
+      "exactKeys": [],
+      "scanArm2Exposed": true
+    },
+    {
+      "row": "q-sep-43-web-wallet-api",
+      "query": "SEP-43 Stellar wallet interface",
+      "ok": true,
+      "exactKeys": [
+        "sep-0043"
+      ],
+      "scanArm2Exposed": true
+    },
+    {
+      "row": "q-sep-43-web-wallet-api",
+      "query": "SEP-43",
+      "ok": true,
+      "exactKeys": [
+        "sep-0043"
+      ],
+      "scanArm2Exposed": true
+    },
+    {
+      "row": "q-sep-43-web-wallet-api",
+      "query": "SEP-43 Standard Web Wallet API Interface getAddress signTransaction signAuthEntry signMessage",
+      "ok": true,
+      "exactKeys": [
+        "sep-0043"
+      ],
+      "scanArm2Exposed": true
+    },
+    {
+      "row": "q-sep-43-web-wallet-api",
+      "query": "SEP-43 Abstract Specification wallet interface methods",
+      "ok": true,
+      "exactKeys": [
+        "sep-0043"
+      ],
+      "scanArm2Exposed": true
+    },
+    {
+      "row": "q-sep-43-web-wallet-api",
+      "query": "SEP-43 error codes wallet",
+      "ok": true,
+      "exactKeys": [
+        "sep-0043"
+      ],
+      "scanArm2Exposed": true
+    },
+    {
+      "row": "q-smart-account-scoped-policy-signers",
+      "query": "OpenZeppelin smart account context rules policies signers",
+      "ok": true,
+      "exactKeys": [],
+      "scanArm2Exposed": false
+    },
+    {
+      "row": "q-soroban-reentrancy",
+      "query": "Soroban reentrancy",
+      "ok": true,
+      "exactKeys": [],
+      "scanArm2Exposed": false
+    },
+    {
+      "row": "q-soroban-vuln-classes",
+      "query": "Soroban audit findings common vulnerabilities",
+      "ok": true,
+      "exactKeys": [],
+      "scanArm2Exposed": false
+    },
+    {
+      "row": "q-soroban-vuln-classes",
+      "query": "Soroban smart contract security vulnerability classes",
+      "ok": true,
+      "exactKeys": [],
+      "scanArm2Exposed": false
+    }
+  ]
+}
