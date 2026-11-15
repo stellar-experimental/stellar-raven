@@ -31,6 +31,16 @@ export const EXPECTED_TOOL_METADATA = {
 export const CLAUDE_CODE_INSTRUCTIONS_CAP_CHARS = 4_096;
 export const CLAUDE_CODE_TOOL_DESCRIPTION_CAP_CHARS = 4_096;
 
-// The limit before v2.1.296. The base contract and both descriptions still fit it. Retire this
-// constant together with BASE_BUDGET.
-export const CLAUDE_CODE_PRE_V2_1_296_CAP_CHARS = 2_048;
+// Grok CLI 1.0.77 keeps 2,033 characters of server instructions and of each tool description and
+// appends "... [truncated]" (research/audits/2026-11-14-client-text-limits.md, measured). It is
+// the smallest cut among the measured clients, so a field inside it is delivered whole to all of
+// them. It replaces the 2,048 limit of Claude Code before v2.1.296 and the 2,000 base budget.
+export const GROK_CUT_CHARS = 2_033;
+
+// OpenCode v2.2.7 lists 120 characters of each tool description until the model asks for more:
+// 117 characters and "..." (same report).
+export const OPENCODE_LISTING_CHARS = 117;
+
+// Codex 0.167.0 shows one catalogue line per server: the first line of the instructions, cut at
+// about 230 characters for one server and 201 for two (same report).
+export const CODEX_CATALOGUE_LINE_CHARS = 200;
