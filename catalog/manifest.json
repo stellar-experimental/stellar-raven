@@ -32141,8 +32141,272 @@
         "siteOrigin": "https://developers.stellar.org",
         "type": "mintlify"
       }
+    },
+    {
+      "description": "Read the main text from one stellar.org page, given its path: /foundation/strategy, /foundation/roadmap, /audit-bank/projects, /ecosystem/service-providers and other paths from stellarOrg.search_site rows. Returns the page title, URL and text with headings and list items kept.\n\nReturns: { url, path, title, content, truncated? }.",
+      "id": "stellarOrg.get_page",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "path": {
+            "description": "Site-relative page path starting with /, such as \"/foundation/strategy\". Full URLs, query strings, percent-encoded characters and /api paths are refused.",
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "type": "object"
+      },
+      "kind": "operation",
+      "outputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "content": {
+            "description": "Main page text. Client-side lists, such as later pages of the audited-projects list, are not in the server-rendered text.",
+            "type": "string"
+          },
+          "path": {
+            "description": "The path served, after any same-origin redirect.",
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "truncated": {
+            "description": "Present and true when content was cut at 40,000 characters.",
+            "type": "boolean"
+          },
+          "url": {
+            "format": "uri",
+            "type": "string"
+          }
+        },
+        "required": [
+          "url",
+          "path",
+          "title",
+          "content"
+        ],
+        "type": "object"
+      },
+      "provenance": {
+        "fetchedAt": "2026-11-14T00:00:00Z",
+        "note": "authored spec-as-data operation, live-verified against stellar.org",
+        "source": "https://stellar.org",
+        "spec": "specs/stellar-org.json"
+      },
+      "retrievalProfile": {
+        "emptyScope": "operation",
+        "lane": "detail",
+        "recoverWith": [
+          {
+            "id": "stellarOrg.search_site",
+            "on": [
+              "empty",
+              "weak",
+              "adjacent",
+              "ambiguous"
+            ],
+            "relation": "corpus-wide"
+          }
+        ]
+      },
+      "service": "stellarOrg",
+      "transport": {
+        "base": "https://stellar.org",
+        "constraints": {
+          "filtered": "Page rows whose path is under /blog, /press or /events are dropped: Scout and Lumenloop returned a stellar.org blog, press or events post for each of ten sampled questions (research/services/stellar-org-site.md). External rows are dropped except audit rows, whose external url is the auditor's report. Partner rows, one per directory category on the site, merge into one hit per partner. Unknown kinds are dropped.",
+          "pages": "Pages are server-rendered HTML of 410-500 KB (2026-11-14). The adapter keeps the <main> text, follows same-origin redirects only, refuses a body over 2,000,000 bytes, bounds one read to 24 s, cuts content at 40,000 characters, and returns soft-empty when the page renders no server-side text.",
+          "searchShape": "GET /api/search?q=<query>&locale=en returns { query, locale, results: [{ id, kind, title, description, tags, url, isExternal }] } with at most 10 rows and no paging; kind is page, audit, tutorial or partner. The search matches title, description and tags, not page body text. A missing q, or one over 200 characters, returns 400 { error: \"invalid_query\" }."
+        },
+        "endpoint": "page",
+        "method": "GET",
+        "type": "http"
+      }
+    },
+    {
+      "description": "Search the SDF website, stellar.org, for pages the Stellar Development Foundation publishes about itself: the SDF strategy and annual objectives, the product roadmap, the Soroban Security Audit Bank and its security-audited projects list, and the service providers directory listing agencies and audit partners. Returns site-search rows: pages, audit records with report links, video tutorials and partner listings; read one page with stellarOrg.get_page.\n\nReturns: { hits: [{ kind, title, description?, path?, url?, tags?, project?, firm?, reportUrl? }], meta: { candidates } }.",
+      "id": "stellarOrg.search_site",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "limit": {
+            "default": 5,
+            "maximum": 10,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "query": {
+            "description": "Keywords or a short question for the stellar.org site search, such as \"strategy\", \"roadmap\" or \"service providers\". The site refuses more than 200 characters.",
+            "maxLength": 200,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "type": "object"
+      },
+      "keywords": [
+        "query",
+        "limit",
+        "tutorial"
+      ],
+      "kind": "operation",
+      "outputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "hits": {
+            "description": "The hits live under `data.hits`, in site order. Empty when every site-search row was a blog, press, events or external non-audit row.",
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "description": {
+                  "description": "Page, tutorial and partner rows.",
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "firm": {
+                  "description": "Audit rows: the audit firm or firms.",
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "kind": {
+                  "description": "page: read it with stellarOrg.get_page using path. audit: an audit-register record. tutorial: a video tutorial. partner: an ecosystem directory listing.",
+                  "enum": [
+                    "page",
+                    "audit",
+                    "tutorial",
+                    "partner"
+                  ],
+                  "type": "string"
+                },
+                "path": {
+                  "description": "Page rows only: site-relative path on https://stellar.org; pass it to stellarOrg.get_page.",
+                  "type": "string"
+                },
+                "project": {
+                  "description": "Audit rows: the audited project, or null when the register names none.",
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "reportUrl": {
+                  "description": "Audit rows: the auditor's report, off stellar.org. Cite it; get_page does not read it.",
+                  "format": "uri",
+                  "type": "string"
+                },
+                "tags": {
+                  "description": "Page and tutorial tags; for partner rows, the directory categories.",
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "title": {
+                  "description": "For audit rows the site's \"Project - Firm\" title.",
+                  "type": "string"
+                },
+                "url": {
+                  "description": "Tutorial and partner rows: the stellar.org link to cite. The tutorial player and partner detail render in the browser, so get_page has no text for them.",
+                  "format": "uri",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "kind",
+                "title"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "meta": {
+            "additionalProperties": false,
+            "properties": {
+              "candidates": {
+                "description": "Rows the site search returned before filtering.",
+                "type": "integer"
+              }
+            },
+            "required": [
+              "candidates"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "hits",
+          "meta"
+        ],
+        "type": "object"
+      },
+      "provenance": {
+        "fetchedAt": "2026-11-14T00:00:00Z",
+        "note": "authored spec-as-data operation, live-verified against stellar.org",
+        "source": "https://stellar.org",
+        "spec": "specs/stellar-org.json"
+      },
+      "retrievalProfile": {
+        "emptyScope": "corpus",
+        "lane": "corpus",
+        "recoverWith": [
+          {
+            "id": "scout.searchResearch",
+            "on": [
+              "empty",
+              "weak",
+              "adjacent",
+              "ambiguous"
+            ],
+            "relation": "cited-research"
+          },
+          {
+            "id": "lumenloop.search_content_semantic",
+            "on": [
+              "empty",
+              "weak",
+              "adjacent",
+              "ambiguous"
+            ],
+            "relation": "cross-family"
+          },
+          {
+            "id": "stellarOrg.get_page",
+            "on": [
+              "partial"
+            ],
+            "part": {
+              "plural": "page rows",
+              "singular": "row"
+            },
+            "relation": "detail"
+          }
+        ]
+      },
+      "service": "stellarOrg",
+      "transport": {
+        "base": "https://stellar.org",
+        "constraints": {
+          "filtered": "Page rows whose path is under /blog, /press or /events are dropped: Scout and Lumenloop returned a stellar.org blog, press or events post for each of ten sampled questions (research/services/stellar-org-site.md). External rows are dropped except audit rows, whose external url is the auditor's report. Partner rows, one per directory category on the site, merge into one hit per partner. Unknown kinds are dropped.",
+          "pages": "Pages are server-rendered HTML of 410-500 KB (2026-11-14). The adapter keeps the <main> text, follows same-origin redirects only, refuses a body over 2,000,000 bytes, bounds one read to 24 s, cuts content at 40,000 characters, and returns soft-empty when the page renders no server-side text.",
+          "searchShape": "GET /api/search?q=<query>&locale=en returns { query, locale, results: [{ id, kind, title, description, tags, url, isExternal }] } with at most 10 rows and no paging; kind is page, audit, tutorial or partner. The search matches title, description and tags, not page body text. A missing q, or one over 200 characters, returns 400 { error: \"invalid_query\" }."
+        },
+        "endpoint": "search",
+        "method": "GET",
+        "path": "/api/search",
+        "type": "http"
+      }
     }
   ],
-  "generatedAt": "2026-11-12T14:25:31.643Z",
+  "generatedAt": "2026-11-14T00:00:00Z",
   "version": 1
 }

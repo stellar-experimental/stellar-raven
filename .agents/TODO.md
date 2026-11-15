@@ -345,34 +345,42 @@ remains:
 Done when: each owner decision is recorded under "Owner decisions", and the baseline plan is
 written or declined.
 
-### Decide whether stellar.org pages outside Docs belong in a Raven source
+### Finish the stellar.org source after merge
 
-Three unrelated golden cases miss for one reason: the fact lives only on a `stellar.org` page that
-no Raven source holds. The leaves are `ecosystem.strategy-roadmap` (the SDF strategy and roadmap
-pages), `security.audit-registry` (the Audit Bank projects page), and `funding.service-providers`
-(the service-providers directory). The 2026-11-14 QA test showed all three
-([result](rounds/2026-11-14-golden-coverage-audit/qa/RESULT.md), "Corpus-coverage
-diagnostics"). `sls-117` covers only the Scout research-corpus part: four `sdf-org` pages its
-`sls-055` fix left out. Whether Raven should hold `stellar.org` itself is an owner decision, not
-a finding.
+The owner decided to add stellar.org as a Raven source (2026-11-14). Branch
+`feat/stellar-org-source` adds `stellarOrg.search_site` and `stellarOrg.get_page` for the leaves
+`ecosystem.strategy-roadmap`, `security.audit-registry`, and `funding.service-providers`; the
+independent review and its reconciliation are in
+[SORG.md](rounds/2026-11-14-golden-coverage-audit/decisions/SORG.md) and
+[SORG-REVIEW.md](rounds/2026-11-14-golden-coverage-audit/decisions/SORG-REVIEW.md). What remains:
 
-The owner wants the source if it does not muddy other results (2026-11-14). `stellar.org` is a
-Next.js site on Sanity. SDF's Algolia application `TYESA7T7LE` holds an index `pages` (5,782
-section records with title, URL, `_type`, and full body text; rebuilt daily; Spanish, staging,
-and dev copies beside it). Read in the dashboard on 2026-11-14: "SDF strategy" ranks
-`/foundation/strategy` first, "service providers" ranks `/ecosystem/service-providers` first, and
-"audit bank projects" ranks `/audit-bank/projects` first; "forgot memo deposit" misses the
-`/community` answer. About half the sitemap is blog and press that Scout and Lumenloop already
-hold (580 blog and 127 press of 1,244 URLs).
+- **Answer quality and Worker egress.** Tuning loop 2's P2 run reads the 12 `sets.tuning` rows whose
+  golden cites a served stellar.org page, inside its 58-row panel, against their P0 and P1 samples
+  ([the plan](rounds/2026-11-15-tuning-loop-2/PLAN.md), section 5). The four cases the branch named
+  as affected (`q-sdf-2026-strategy-priorities`, `q-audit-reports-where-published`,
+  `q-defi-blend-audit-record`, `q-scf-service-provider-directories`) are outside `sets.tuning`, so
+  no tuning lane runs or opens them. Worker egress is checked before P2 from a non-production
+  version (amendment A7), and again after deploy: call both operations from the Worker and confirm
+  stellar.org's front serves them; every live read so far ran from Node on a workstation.
+- **Routing reach.** Raven's catalog `search` ranks a `stellarOrg` operation in the top five for 7
+  of 40 off-golden questions
+  ([SORG-GENERAL.md](rounds/2026-11-14-golden-coverage-audit/decisions/SORG-GENERAL.md)). This is
+  a general-mechanism question for the tuning round, never a per-source boost. Owner, 2026-11-14:
+  do not fit the service to the stellar.org slice at the expense of other categories.
+- **Algolia `pages` index.** Orchestrator evidence, 2026-11-14, read in the Algolia dashboard: of
+  nine body-text phrases the keyless search missed, the `pages` index ranked the right page in its
+  top four for about five (the audit co-payment clause, the bug-bounty fix window, a fund fee,
+  "transformational enterprises", the Mazieres page). Whether it holds audit records is
+  unconfirmed. Add it only if tuning shows detail-lookup failures, and then with a search-only key.
+- **Candidate upstream finding.** The stellar.org audit register titles Blend's records
+  `Unnamed record - Certora Ltd`, so a project-name query cannot find them; only the report URL
+  says "blend". Route it through `improvements/` if confirmed.
+- **Out-of-source fact.** The Anchor Directory is `anchors.stellar.org`, not stellar.org; that case
+  needs another source or a golden-truth edit.
 
-Next step: a free, read-only retrieval A/B before any adapter work. The owner creates a
-search-only key limited to the `pages` index. Query the gap-ledger leaves through it and through
-Raven, with the pass condition fixed first: more supporting passages and no displaced correct
-row. If it passes, add one operation in its own source family, filtered away from blog, press,
-and event records, with the exposure change in one reviewed change.
-
-Done when: the decision is recorded under "Owner decisions" and the three leaves' cases follow
-it.
+Done when: the paired QA run and the Worker egress check are recorded, the routing-reach question
+is settled in the tuning round, the Algolia decision is recorded, the Blend register finding is
+filed or dropped, and the Anchor Directory case is routed.
 
 ### Check Docs search for the SEP-7 payment-request page before filing
 

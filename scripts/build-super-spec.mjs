@@ -463,6 +463,39 @@ function buildStellarDocs(spec, exposed) {
 }
 
 // ---------------------------------------------------------------------------
+// stellarOrg — 2 authored operations (specs/stellar-org.json)
+// ---------------------------------------------------------------------------
+
+function buildStellarOrg(spec, exposed) {
+  const paths = {};
+  for (const op of spec.operations) {
+    if (!exposed.has(op.id)) continue;
+    paths[`/stellarOrg/${op.name}`] = {
+      post: {
+        operationId: op.id,
+        summary: firstSentence(op.description),
+        description: op.description,
+        tags: ["stellarOrg"],
+        requestBody: {
+          required: true,
+          content: { "application/json": { schema: op.params } }
+        },
+        responses: {
+          200: {
+            description: op.returns ?? "Result",
+            ...(op.outputSchema ? { content: { "application/json": { schema: op.outputSchema } } } : {})
+          }
+        },
+        "x-service": "stellarOrg",
+        "x-endpoint": op.endpoint,
+        "x-execute": `await stellarOrg.${op.name}(args)`
+      }
+    };
+  }
+  return paths;
+}
+
+// ---------------------------------------------------------------------------
 // skills — a synthetic core service: 3 operations, index embedded as data
 // (design doc §3: judicious representation, NOT 278 paths; section-level
 // discovery via a heading-list index per skill)
@@ -717,6 +750,7 @@ async function main() {
   const lumenloop = readJson("inventory/lumenloop.json");
   const stellarLight = readJson("inventory/stellar-light.json");
   const stellarDocsSpec = readJson("specs/stellar-docs.json");
+  const stellarOrgSpec = readJson("specs/stellar-org.json");
   const skillsManifest = readJson("ecosystem-skills/MANIFEST.json");
   const catalogManifest = readJson("catalog/manifest.json");
   const exposed = exposedIds(catalogManifest);
@@ -736,6 +770,7 @@ async function main() {
     ...buildLumenloopPaths(lumenloop, exposed),
     ...scout.paths,
     ...buildStellarDocs(stellarDocsSpec, exposed),
+    ...buildStellarOrg(stellarOrgSpec, exposed),
     ...buildSkillsPaths(skillIndex, runnableIndex)
   };
 
@@ -776,6 +811,11 @@ async function main() {
         "Official Stellar developer docs at developers.stellar.org, searched via the Mintlify search and page-content API (12 intent-named operations)."
     },
     {
+      name: "stellarOrg",
+      description:
+        "The Stellar Development Foundation's website, stellar.org: keyless site search (blog, press and events rows removed) and main-text page reads (2 operations)."
+    },
+    {
       name: "skills",
       description:
         "Ecosystem agent-skill playbooks, served from their pinned upstream commit and hash-verified at read time: list, targeted section reads, and ranked search. The skill index is embedded in /skills/list_skills x-skill-index. Skills marked runnable also execute host-side via /skills/run_skill (codemode.skill.run)."
@@ -793,8 +833,8 @@ async function main() {
       title: "stellar-raven-codemode — unified super spec",
       version: "1.0.0",
       description:
-        "One spec covering every operation this MCP server can execute, across four services: lumenloop, scout " +
-        "(Stellar Light), stellarDocs (Mintlify-backed docs search), and skills (pinned agent playbooks). " +
+        "One spec covering every operation this MCP server can execute, across five services: lumenloop, scout " +
+        "(Stellar Light), stellarDocs (Mintlify-backed docs search), stellarOrg (the stellar.org website), and skills (pinned agent playbooks). " +
         "Paths are keyed '/{service}/{operation}' and each operationId is the exact callable name: an operation " +
         "with operationId 'lumenloop.search_directory' is invoked inside the execute tool's sandbox as " +
         "`await lumenloop.search_directory(args)` — args is ONE object matching the operation's requestBody schema " +
@@ -830,6 +870,12 @@ async function main() {
         authoredAt: stellarDocsSpec.authoredAt,
         source: "specs/stellar-docs.json",
         note: "Authored spec-as-data operations over the Mintlify discovery API; x-mintlify on each op records the exact request mapping."
+      },
+      stellarOrg: {
+        backend: stellarOrgSpec.backend,
+        authoredAt: stellarOrgSpec.authoredAt,
+        source: "specs/stellar-org.json",
+        note: "Authored spec-as-data operations over stellar.org; x-endpoint on each op names the request the host adapter makes."
       },
       skills: {
         mirror: "ecosystem-skills/",

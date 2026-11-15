@@ -223,7 +223,7 @@ export function evidenceRecoveryHint(
     getCatalog(),
     [...new Set(sources)],
     [...new Set(calls.map((call) => call.op))]
-  ).map(({ id, sources: from, keys }) => ({ target: id, sourceOperations: from, keys }));
+  ).map(({ id, sources: from, keys, part }) => ({ target: id, sourceOperations: from, keys, ...(part ? { part } : {}) }));
   if (detail.length === 0) return alternatives;
   if (alternatives) return { ...alternatives, detail };
   return {

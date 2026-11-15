@@ -73,7 +73,7 @@ export const rankedSearchInputSchema = {
     .string()
     .optional()
     .describe(
-      "Restrict results to one service namespace, e.g. \"lumenloop\", \"scout\", or \"stellarDocs\"."
+      "Restrict results to one service namespace, e.g. \"lumenloop\", \"scout\", \"stellarDocs\", or \"stellarOrg\"."
     ),
   limit: z
     .number()
@@ -145,7 +145,7 @@ ${UPSTREAM_DOC_LINKS}`;
 
 export const EXECUTE_DESCRIPTION = `Run one JavaScript async arrow function in a sandbox with no network. It calls only operations found with \`search\`.
 
-The ONLY globals are \`lumenloop\`, \`scout\`, \`stellarDocs\`, \`codemode\`, and standard JavaScript (\`fetch()\` fails). Operation ids such as \`scout.searchResearch\` are called inside this script, never as top-level tools. Ids are exact-match: copy them from search hits.
+The ONLY globals are \`lumenloop\`, \`scout\`, \`stellarDocs\`, \`stellarOrg\`, \`codemode\`, and standard JavaScript (\`fetch()\` fails). Operation ids such as \`scout.searchResearch\` are called inside this script, never as top-level tools. Ids are exact-match: copy them from search hits.
 
 Compose in ONE script: independent calls in parallel, then follow-ups built from their results, then return a small projection. The return value is the result, capped near 6k tokens: select fields and slice arrays in the script. A list row is a summary; call the detail operation before answering specifics.
 

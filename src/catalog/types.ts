@@ -14,7 +14,7 @@
  */
 import { z } from "zod";
 
-export const CATALOG_SERVICES = ["lumenloop", "scout", "stellarDocs", "skills"] as const;
+export const CATALOG_SERVICES = ["lumenloop", "scout", "stellarDocs", "stellarOrg", "skills"] as const;
 
 export const CATALOG_KINDS = ["operation", "skill", "skill-section"] as const;
 export type CatalogKind = (typeof CATALOG_KINDS)[number];
@@ -136,7 +136,9 @@ export const retrievalProfileSchema = z.object({
   recoverWith: z.array(z.object({
     id: z.string().min(1),
     relation: z.enum(RETRIEVAL_RELATIONS),
-    on: z.array(z.enum(RETRIEVAL_REASONS)).min(1)
+    on: z.array(z.enum(RETRIEVAL_REASONS)).min(1),
+    /** `detail` edges only: what the source's rows are, for the checkpoint sentence. Default: sections of pages. */
+    part: z.object({ plural: z.string().min(1), singular: z.string().min(1) }).optional()
   })).min(1).max(6)
 });
 

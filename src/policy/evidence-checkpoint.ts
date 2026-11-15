@@ -27,7 +27,11 @@ export type EvidenceDetailPointer = {
   sourceOperations: string[];
   /** The target's required inputs, each carried by a source row. */
   keys: string[];
+  /** What the source's rows are: the Stellar Docs search rows are sections of pages, the default. */
+  part?: { plural: string; singular: string };
 };
+
+const DEFAULT_DETAIL_PART = { plural: "sections of pages", singular: "section" } as const;
 
 /** The hint with only its detail pointers, or null when it has none. */
 export function detailOnlyHint(hint: EvidenceRecoveryHint | null | undefined): EvidenceRecoveryHint | null {
@@ -82,9 +86,9 @@ export function candidateEvidenceSection(input: CandidateSectionInput): string {
 /** One sentence per target, built from the edge: its source operations, target, and join keys. */
 function detailSentences(detail: readonly EvidenceDetailPointer[] | undefined): string {
   return (detail ?? [])
-    .map(({ target, sourceOperations, keys }) => {
+    .map(({ target, sourceOperations, keys, part = DEFAULT_DETAIL_PART }) => {
       const joined = keys.map((key) => `\`${key}\``).join(" and ");
-      return `\`${sourceOperations.join(", ")}\` returned sections of pages, not whole pages. A section is exact evidence only for what it shows whole. Before you state a list, number, formula, code, or status it does not show whole, read the page: \`${target}({ ${keys.join(", ")} })\` with that hit's ${joined}.`;
+      return `\`${sourceOperations.join(", ")}\` returned ${part.plural}, not whole pages. A ${part.singular} is exact evidence only for what it shows whole. Before you state a list, number, formula, code, or status it does not show whole, read the page: \`${target}({ ${keys.join(", ")} })\` with that hit's ${joined}.`;
     })
     .join(" ");
 }

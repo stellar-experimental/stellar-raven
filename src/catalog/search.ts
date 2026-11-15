@@ -1687,6 +1687,8 @@ export type DetailTarget = {
   sources: string[];
   /** The target's required inputs, which each source row carries. */
   keys: string[];
+  /** What the source's rows are, when not the default (sections of pages). From the first edge that names it. */
+  part?: { plural: string; singular: string };
 };
 
 /**
@@ -1712,8 +1714,10 @@ export function detailTargetsFromSources(
       const keys = detailJoinKeys(source, target);
       if (!keys) continue;
       const found = out.get(edge.id);
-      if (found) found.sources.push(from);
-      else out.set(edge.id, { id: edge.id, sources: [from], keys });
+      if (found) {
+        found.sources.push(from);
+        found.part ??= edge.part;
+      } else out.set(edge.id, { id: edge.id, sources: [from], keys, ...(edge.part ? { part: edge.part } : {}) });
     }
   }
   return [...out.values()];

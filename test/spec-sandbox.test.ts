@@ -165,7 +165,7 @@ describe("generated wrapper — evaluated behavior", () => {
       qParam: { name: string; in: string };
       skillCount: number;
     };
-    expect(parsed.services).toEqual(["lumenloop", "scout", "skills", "stellarDocs"]);
+    expect(parsed.services).toEqual(["lumenloop", "scout", "skills", "stellarDocs", "stellarOrg"]);
     expect(parsed.qParam.in).toBe("query"); // $ref → resolved parameter object
     expect(parsed.skillCount).toBe(manifest.entries.filter((entry) => entry.kind === "skill").length);
   });

@@ -8,7 +8,7 @@
  */
 
 export const FAMILY_LINE =
-  "Families: lumenloop=community/editorial projects, research, content, SCF/funding; use for what's-been-said/editorial/freshness skims; scout=live ecosystem graph: projects, repos, people, hackathon builds, audits, stablecoins, partners; stellarDocs=official protocol/SDK/CLI/contracts/RPC/anchor/wallet docs; skills=tested build/integration/security playbooks.";
+  "Families: lumenloop=community/editorial projects, research, content, SCF/funding; use for what's-been-said/editorial/freshness skims; scout=live ecosystem graph: projects, repos, people, hackathon builds, audits, stablecoins, partners; stellarDocs=official protocol/SDK/CLI/contracts/RPC/anchor/wallet docs; stellarOrg=SDF site: strategy, roadmap, programs, provider and audit directories; skills=tested build/integration/security playbooks.";
 
 /**
  * The opening of the `search` description: one line that stands alone where a client lists only the
