@@ -815,6 +815,21 @@ describe("search behavior (host-side ranked)", () => {
     expect(structured.nextSteps).not.toContain("ok: true");
   });
 
+  it("a search with no limit returns the default page of seven cards, and the schema says so", async () => {
+    expect(SEARCH_DEFAULT_LIMIT).toBe(7);
+    const { tools } = await client.listTools();
+    const limit = (tools.find((t) => t.name === "search")!.inputSchema as JsonSchema).properties!.limit as { description?: string };
+    expect(limit.description).toContain("default 7, max 50");
+    const page = async (args: Record<string, unknown>) =>
+      (await client.callTool({ name: "search", arguments: args })).structuredContent as { hits: unknown[]; total: number };
+    const unlimited = await page({ query: "stellar soroban contract documentation" });
+    expect(unlimited.total).toBeGreaterThan(SEARCH_DEFAULT_LIMIT);
+    expect(unlimited.hits).toHaveLength(SEARCH_DEFAULT_LIMIT);
+    // An explicit limit still governs, and raises or lowers the page.
+    expect((await page({ query: "stellar soroban contract documentation", limit: 3 })).hits).toHaveLength(3);
+    expect((await page({ query: "stellar soroban contract documentation", limit: 10 })).hits).toHaveLength(10);
+  });
+
   it("renders each hit as a compact card that is still callable", async () => {
     const result = await client.callTool({ name: "search", arguments: { query: "search directory" } });
     const { hits } = result.structuredContent as {

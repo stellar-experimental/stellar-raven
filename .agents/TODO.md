@@ -131,18 +131,13 @@ and stop there when it decides.
 
 ### M1: search default of 7 against 5
 
-`SEARCH_DEFAULT_LIMIT` is 5, copied from the playground and only bundle-measured. Free check: 7
-cards adds 11 operation-card hits on 182 legacy rows and loses none, at about 475 more tokens per
-page. A default of 6 ranks worse than 5; do not test it. Next: replay the stored arm B search
-queries through the scorer at 5 and 7 and count live-data wrong answers whose needed operation
-sits at rank 6 or 7. If there are none, stop and keep 5. The client-token change needs no paid run:
-pages are deterministic, so the +1,899 bytes per page times the rereads in the stored arm B
-transcripts gives it exactly. Otherwise run the paid test only on the cases the replay flags (needed
-operation at rank 6 or 7, answer wrong) plus a few controls: default 7 against 5, interleaved.
-
-Done when: the replay finds no rank 6 or 7 case and 5 stays, or the paid run moves the default to 7
-or keeps 5. Move to 7 if the flagged cases gain and the computed token rise is at most 5%;
-otherwise keep 5.
+Decided without a paid run in tuning loop 2 (Q2; [the plan](rounds/2026-11-15-tuning-loop-2/PLAN.md), item 3):
+`SEARCH_DEFAULT_LIMIT` is 7. A paid 7-against-5 arm cannot decide it on Claude Code, because the default
+binds on about a fifth of that client's searches. Free evidence: seven cards add 11 operation-card hits on
+182 legacy rows and lose none; a default of 6 ranks worse than 5 and is not an option; the page-size and
+token measurements are in [`scans/step2/search-page-size.json`](rounds/2026-11-15-tuning-loop-2/scans/step2/search-page-size.json).
+P2 reads harm: the commit reverts if two seven-used rows go down by a traced displacement or the computed token
+rise passes 5%.
 
 ### M2: execute boundary of 4,000 tokens against 6,000
 

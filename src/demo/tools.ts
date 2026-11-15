@@ -42,6 +42,7 @@ import {
   SEARCH_DESCRIPTION,
   EXECUTE_DESCRIPTION,
   rankedSearchInputSchema,
+  searchLimitSchema,
   executeInputSchema
 } from "../mcp/tools.ts";
 import {
@@ -299,7 +300,7 @@ export function buildDemoTools(opts: {
 
   const search = tool({
     description: `${SEARCH_DESCRIPTION}\n\nPlayground evidence rule: search hits are navigation metadata and callable signatures, not sufficient factual evidence for the answer. Use execute to obtain factual service or skill results.`,
-    inputSchema: z.object(rankedSearchInputSchema),
+    inputSchema: z.object({ ...rankedSearchInputSchema, limit: searchLimitSchema(DEMO_SEARCH_DEFAULT_LIMIT) }),
     strict: DEMO_TOOL_STRICT,
     execute: async (args) => {
       const id = crypto.randomUUID();

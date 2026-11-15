@@ -51,10 +51,21 @@ export const EXECUTE_TOOL_NAME = "execute";
 const SEARCH_TOOL_TITLE = "Discover Stellar tools and skills";
 const EXECUTE_TOOL_TITLE = "Run Stellar research code";
 const SOURCE_BASIS_TELEMETRY_CALL_LIMIT = 12;
-/** The public page is five cards; `limit` raises it. The catalog default stays the ranker's own. */
-export const SEARCH_DEFAULT_LIMIT = 5;
+/** The public page is seven cards; `limit` changes it. The catalog default stays the ranker's own. */
+export const SEARCH_DEFAULT_LIMIT = 7;
 export const SEARCH_CARD_DESCRIPTION_CHARS = 220;
 export const SEARCH_NEXT_STEPS_MAX_CHARS = 400;
+
+/** The `limit` input, telling the model the default of the surface that serves it. */
+export function searchLimitSchema(defaultLimit: number) {
+  return z
+    .number()
+    .int()
+    .min(1)
+    .max(50)
+    .optional()
+    .describe(`Maximum number of hits to return (default ${defaultLimit}, max 50).`);
+}
 
 export const rankedSearchInputSchema = {
   query: z
@@ -75,13 +86,7 @@ export const rankedSearchInputSchema = {
     .describe(
       "Restrict results to one service namespace, e.g. \"lumenloop\", \"scout\", \"stellarDocs\", or \"stellarOrg\"."
     ),
-  limit: z
-    .number()
-    .int()
-    .min(1)
-    .max(50)
-    .optional()
-    .describe(`Maximum number of hits to return (default ${SEARCH_DEFAULT_LIMIT}, max 50).`),
+  limit: searchLimitSchema(SEARCH_DEFAULT_LIMIT),
   recoverFrom: z
     .array(z.string().min(1))
     .max(10)
