@@ -130,3 +130,25 @@ written. The implementer (`loop2-impl`, Claude Sonnet 5.5) applied them; details
   attribution to a second reader. The guard sentence shows in P1 transcripts, so the reader is not blind.
 - **Ordering.** P1 does not check out in `gca-eval` until the P0 lane (`loop2-run`, server `p0-server`) has finished and released that worktree.
   The orchestrator owns the ordering and P1's authorization line.
+
+## P0 result, and P1
+
+**P0.** Stamp `2026-11-15T04-31-41-variantA`, `main` at `0a603453`, 58 of 58, USD 11.81 (P0.md on
+`tune/loop-2-runs`). 25 correct, 32 partial, 1 wrong. Same-surface movement against the stored
+loop 1 arm 1 run on the 46 comparable shared rows: 6 flips, net 2 down, none on tier-matched rows.
+Governance and attribution read (R1 rubric, uncut results): 1 violation in 23 claim-word answers;
+unreturned attribution 0. Traps 5 of 6; the one failure is an agent failure on content with the
+trap behaviour intact.
+
+**T fixed before P1 (Claude Fable 5.2, 2026-11-15): T = 5.** The measured flip rate is 0.13 (T
+would be 4); the repository's earlier pairwise rate is 0.16 (T = 5); loop 1's mixed-tier pair gave
+0.34 (T = 7). 5 is the middle value and errs against charging noise to the change. It is a
+judgment between two measured rates, not a measurement.
+
+**Step 1 diff review.** STEP-1-REVIEW.md (Claude Opus 5.5): guard `b8ea957d` and map removal
+`0a343e3f` fit to measure; R1 to R3 applied in `06b15651`.
+
+**Authorization, P1.** The corrected command of STEP-1-IMPL.md section 8, on the map-removal tip
+(product code of `0a343e3f`): the 58-row panel once and two more passes over the ten guard rows,
+`--max-panel-cases` read from P0 (58), remote vector equal to P0's, `--max-budget-usd 19.5`. Cost
+flags are read against P0, not against loop 1. No resume, no re-judge.
