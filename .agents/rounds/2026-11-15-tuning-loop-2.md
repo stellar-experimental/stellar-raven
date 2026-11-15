@@ -47,5 +47,26 @@ per-row output; aggregate gate counts stay allowed. Their ids are not recorded a
 
 | Lane | Model | Terminal | State | Output |
 |---|---|---|---|---|
+| `loop2-plan` | Claude Fable 5.2 | (finished) | Plan written | [PLAN.md](2026-11-15-tuning-loop-2/PLAN.md) |
+| plan review | Claude Opus 5.5 | (finished) | Reviewed: launch after amendments | [PLAN-REVIEW.md](2026-11-15-tuning-loop-2/PLAN-REVIEW.md) |
+| `loop2-impl` | Claude Sonnet 5.5 | `t1pk`, parent `kalepail-c3614nvxph-mbp/t40f` | Step 1, free work only | `STEP-1-IMPL.md` |
 
 ## Ledger
+
+### 2026-11-15: orchestrator rulings on the plan review
+
+Direct instruction to the implementer (`loop2-impl`). The review file is the authoritative text;
+the amendments are copied from it verbatim in [PLAN-AMENDMENTS.md](2026-11-15-tuning-loop-2/PLAN-AMENDMENTS.md).
+
+- Amendments A1 to A10 in `PLAN-REVIEW.md` are all adopted.
+- Q1 is decided as amendment A2: the primary record a result returned counts as support; a
+  party's statement about itself does not.
+- Q2 to Q7 are decided as the reviewer answers them (Q2 ship seven cards inside P2; Q3 item 5 may
+  run, with A6; Q4 the 58-row panel and repeat passes; Q5 required before P2, as A7; Q6 do not
+  re-home the "not for" guidance now; Q7 keep the order, and report each run's research-call share
+  on the 17 identifier rows).
+- No paid run is authorized by these rulings. The implementer does the free work for step 1 only.
+- Implementer reading, to be confirmed by the orchestrator: A10 adopted means P2's two extra
+  passes over the 12 source rows are cut (P2 becomes one pass over the 58 rows plus nothing
+  else), so the plan's "three passes" paired check on the source rows and its gain figure are
+  dropped. P1's guard-row passes and R's passes stay, as A10 says.
