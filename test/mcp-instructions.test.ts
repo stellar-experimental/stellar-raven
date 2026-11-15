@@ -4,9 +4,8 @@
  * front (the limit and its source are in test/helpers/mcp-tool-metadata.ts).
  * Before v2.1.296 it kept 2,048: a 2,160-char BASE was cut off mid-sentence
  * inside the envelope contract (measured in production 2026-07-13). BASE
- * therefore stays a complete contract that also fits the old limit, and the
- * micro-map follows it, so a client on the old limit loses only the map. The
- * whole instructions string must fit the current limit.
+ * therefore stays a complete contract that also fits the old limit. The
+ * instructions string is BASE alone and must fit the current limit.
  *
  * These tests hold what each contract must say and where it may say it. They
  * do not pin wording beyond the rules a model acts on.
@@ -34,7 +33,7 @@ import {
 const BASE_BUDGET = 2000;
 
 describe("server instructions — Claude Code character budget", () => {
-  it(`keeps the whole instructions string within ${CLAUDE_CODE_INSTRUCTIONS_CAP_CHARS} chars, so no client on the current limit cuts the micro-map`, () => {
+  it(`keeps the whole instructions string within ${CLAUDE_CODE_INSTRUCTIONS_CAP_CHARS} chars, so no client on the current limit cuts the contract`, () => {
     expect(SERVER_INSTRUCTIONS.length).toBeLessThanOrEqual(CLAUDE_CODE_INSTRUCTIONS_CAP_CHARS);
   });
 
@@ -99,9 +98,10 @@ describe("server instructions — Claude Code character budget", () => {
     expect(EXECUTE_DESCRIPTION).toMatch(/"no-rows" is ok data/);
   });
 
-  it("micro-map rides after BASE, so a client that cuts early loses only the map", () => {
-    expect(SERVER_INSTRUCTIONS.startsWith(`${BASE_SERVER_INSTRUCTIONS}\n\n`)).toBe(true);
-    expect(SERVER_INSTRUCTIONS.length).toBeGreaterThan(BASE_SERVER_INSTRUCTIONS.length);
+  it("the served instructions are BASE alone: no per-family source map follows it", () => {
+    expect(SERVER_INSTRUCTIONS).toBe(BASE_SERVER_INSTRUCTIONS);
+    expect(SERVER_INSTRUCTIONS).not.toContain("Source Micro-Map");
+    expect(SERVER_INSTRUCTIONS).not.toContain("Authority Rules");
   });
 
   it("binds the surface to one official upstream doc URL per service, on `search`", () => {
@@ -240,15 +240,15 @@ describe("tool descriptions — one contract inside the character cap", () => {
 });
 
 describe("source authority across description surfaces", () => {
-  it("leaves source authority to the micro-map's rules", () => {
+  it("states no source-authority ranking on any description surface", () => {
     for (const text of [EXECUTE_DESCRIPTION, SEARCH_DESCRIPTION, SERVER_INSTRUCTIONS]) {
       expect(text).not.toContain("purely factual questions use docs first");
     }
     expect(EXECUTE_DESCRIPTION).not.toContain("Use Stellar Docs for protocol, standards, API, and implementation claims.");
-    expect(SERVER_INSTRUCTIONS).toContain("start Scout/Lumenloop even when docs mention the topic");
+    expect(SERVER_INSTRUCTIONS).not.toContain("start Scout/Lumenloop even when docs mention the topic");
   });
 
-  it("gives no operation chains: search ranks operations, the map names families", () => {
+  it("gives no operation chains: search ranks operations, the family line names families", () => {
     expect(SERVER_INSTRUCTIONS).not.toContain("Workflow Archetypes");
     expect(SERVER_INSTRUCTIONS).not.toMatch(/\w+\.\w+ -> \w+\.\w+/);
   });

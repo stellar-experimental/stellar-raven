@@ -1,6 +1,6 @@
 /**
  * build-micro-map.mjs — staleness and guard coverage for the generated
- * SERVER_INSTRUCTIONS orientation layer.
+ * family line that sits inside the `search` description.
  */
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
@@ -10,11 +10,9 @@ import {
   assertGeneratedTextNoNonExposedRefs,
   buildMicroMap,
   renderCorroborationTs,
-  renderTs,
-  validateFamilyPurposes
+  renderTs
 } from "../scripts/build-micro-map.mjs";
-import { SERVICE_FAMILY_PURPOSES } from "../scripts/catalog-data/source-families.mjs";
-import { FAMILY_LINE, MICRO_MAP } from "../src/mcp/micro-map.ts";
+import * as emitted from "../src/mcp/micro-map.ts";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const MANIFEST_PATH = join(ROOT, "catalog", "manifest.json");
@@ -38,41 +36,21 @@ describe("build-micro-map.mjs", () => {
     ).toBe(renderCorroborationTs(buildMicroMap(manifest)));
   });
 
-  it("emits the committed micro-map and family line", () => {
-    // Length is bounded by test/mcp-instructions.test.ts, against Claude Code's character limit.
-    const rendered = buildMicroMap(manifest);
-    expect(rendered.microMap).toBe(MICRO_MAP);
-    expect(rendered.familyLine).toBe(FAMILY_LINE);
+  it("emits only the family line to micro-map.ts: the per-family source map is not generated", () => {
+    // Length is bounded by the `search` description guard in test/mcp-instructions.test.ts.
+    expect(Object.keys(emitted)).toEqual(["FAMILY_LINE"]);
+    expect(buildMicroMap(manifest)).toMatchObject({ familyLine: emitted.FAMILY_LINE });
+    expect(committed).not.toContain("MICRO_MAP");
   });
 
-  it("names every catalog family once, with its live counts, and no operation chain", () => {
+  it("names every catalog family in the family line, and no operation chain", () => {
     const families = [...new Set(manifest.entries.map((entry) => entry.service))];
-    for (const family of families) {
-      const lines = MICRO_MAP.split("\n").filter((line) => line.includes(`(${family};`));
-      expect(lines, family).toHaveLength(1);
-      const operations = manifest.entries.filter((e) => e.service === family && e.kind === "operation").length;
-      if (operations > 0) expect(lines[0]).toContain(`${operations} ops`);
-    }
-    expect(MICRO_MAP).not.toMatch(/\w+\.\w+ -> /);
+    for (const family of families) expect(emitted.FAMILY_LINE, family).toContain(`${family}=`);
+    expect(emitted.FAMILY_LINE).not.toMatch(/\w+\.\w+ -> /);
   });
 
-  it("requires purpose prose for each catalog family, and a catalog family for each purpose", () => {
-    expect(() => validateFamilyPurposes(manifest.entries)).not.toThrow();
-    expect(() => validateFamilyPurposes(manifest.entries, SERVICE_FAMILY_PURPOSES.slice(1))).toThrow(
-      /has no micro-map purpose prose/
-    );
-    expect(() =>
-      validateFamilyPurposes(manifest.entries, [
-        ...SERVICE_FAMILY_PURPOSES,
-        { ...SERVICE_FAMILY_PURPOSES[0], family: "notAService" }
-      ])
-    ).toThrow(/family "notAService" is not present/);
-  });
-
-  it("applies ADR-0003 emitted-text guards to micro-map prose", () => {
-    expect(() =>
-      assertGeneratedTextNoNonExposedRefs(MICRO_MAP + "\n" + FAMILY_LINE, manifest.entries, "micro-map")
-    ).not.toThrow();
+  it("applies ADR-0003 emitted-text guards to the family line", () => {
+    expect(() => assertGeneratedTextNoNonExposedRefs(emitted.FAMILY_LINE, manifest.entries, "family line")).not.toThrow();
     expect(() =>
       assertGeneratedTextNoNonExposedRefs("call lumenloop.request_research", manifest.entries, "bad text")
     ).toThrow(/ADR-0003 leak/);

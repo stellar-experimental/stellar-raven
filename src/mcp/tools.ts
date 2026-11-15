@@ -42,7 +42,7 @@ import { logEvent } from "../observability.ts";
 import { searchEventFields } from "../observability-search.ts";
 import { truncateForModel, truncateLogsForModel } from "../policy/truncate.ts";
 import { candidateEvidenceSection, evidenceCheckpointBlock } from "../policy/evidence-checkpoint.ts";
-import { FAMILY_LINE, MICRO_MAP } from "./micro-map.ts";
+import { FAMILY_LINE } from "./micro-map.ts";
 
 export { SEARCH_KINDS };
 
@@ -163,8 +163,9 @@ Helpers:
  * that inject them put them in the system prompt, where they outlive per-tool
  * descriptions over a long session. BASE is the workflow and evidence contract
  * and fits the pre-v2.1.296 2,048-character limit; it names the envelope without restating
- * the payload-access rule, which the execute description owns. The micro-map
- * rides after BASE for clients that inject instructions in full.
+ * the payload-access rule, which the execute description owns. It is the whole
+ * string: the per-family source map that used to follow it is gone, and the
+ * family orientation lives in the `search` description (FAMILY_LINE).
  */
 export const BASE_SERVER_INSTRUCTIONS = `Unified Stellar-ecosystem gateway: \`search\` discovers service operations and skills. \`execute\` composes them in sandboxed JavaScript.
 
@@ -176,7 +177,7 @@ Evidence discipline: copy exact symbols, types, formulas, and identifiers from r
 
 Host blocks preserve metadata and truncation. Read listed artifacts with \`codemode.artifact.info(id)\` / \`codemode.artifact.read(id)\`, then return a compact projection. Operation and skill ids are exact-match — never guess them; discover via \`search\` or \`codemode.search\` mid-script.`;
 
-export const SERVER_INSTRUCTIONS = `${BASE_SERVER_INSTRUCTIONS}\n\n${MICRO_MAP}`;
+export const SERVER_INSTRUCTIONS = BASE_SERVER_INSTRUCTIONS;
 
 type SearchCard = { id: string; description: string; signature?: string };
 

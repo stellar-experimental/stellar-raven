@@ -1386,7 +1386,7 @@ inside the same sandbox boundary. This is the working loop:</p>
 ${docTrace()}
 
 <h2>The four source families</h2>
-<p>Each family answers different questions, and Raven's guidance tells your agent which to trust:</p>
+<p>Each family answers different questions:</p>
 <ul>
   <li><b>Lumenloop</b> (lumenloop.*), run by the independent
     <a href="https://lumenloop.com/" target="_blank" rel="noopener">Lumen Loop</a> team — community and editorial ecosystem intelligence: project
@@ -1400,9 +1400,6 @@ ${docTrace()}
     and Trustless Work — pinned operational playbooks read section by section: tested
     build, integration, security, and data procedures.</li>
 </ul>
-<p>Ecosystem facts start with Lumenloop or Scout. Protocol and standards claims stay unverified
-until official docs confirm them.</p>
-
 <h2>Troubleshooting</h2>
 <ul>
   <li><b>Read the envelope first.</b> Every service call resolves to

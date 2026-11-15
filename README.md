@@ -12,8 +12,8 @@ ecosystem skills.
 - `execute` runs agent-written JavaScript in a Dynamic Worker isolate with no network access.
   Host-side adapters make every service call and hold every secret.
 
-The server instructions also include a generated source-family map. Agents use it to plan which
-source family can answer a question.
+The `search` description names each source family's scope, so agents can plan which family can
+answer a question.
 
 ## Sources and operators
 

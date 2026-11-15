@@ -8,15 +8,14 @@
 import { describe, expect, it } from "vitest";
 import { assertNoNonExposedRefsInText } from "../scripts/emitted-text-guard.mjs";
 import { BASE_SERVER_INSTRUCTIONS, SERVER_INSTRUCTIONS } from "../src/mcp/tools";
-import { MICRO_MAP } from "../src/mcp/micro-map";
 import { DEMO_CAPS } from "../src/demo/budget";
 import { DEMO_PREAMBLE, DEMO_SYSTEM_PROMPT } from "../src/demo/prompt";
 
 describe("demo system prompt", () => {
-  it("contains the complete production instructions and micro-map plus the bounded preamble", () => {
-    expect(SERVER_INSTRUCTIONS).toContain(MICRO_MAP);
+  it("contains the complete production instructions plus the bounded preamble", () => {
     expect(DEMO_SYSTEM_PROMPT.startsWith(SERVER_INSTRUCTIONS)).toBe(true);
-    expect(DEMO_SYSTEM_PROMPT).toContain(MICRO_MAP);
+    expect(DEMO_SYSTEM_PROMPT).not.toContain("Source Micro-Map");
+    expect(DEMO_PREAMBLE).not.toContain("Micro-Map");
     expect(DEMO_SYSTEM_PROMPT.endsWith(DEMO_PREAMBLE)).toBe(true);
     // The demo's turn budget is stated to the model (numbers enforced in
     // src/demo/budget.ts; drift here is a lie to the model, not a crash).
