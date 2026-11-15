@@ -23202,19 +23202,6 @@
     },
     {
       "description": "Vector search over the Stellar research corpus. Semantic search over the Stellar knowledge corpus. SDF blog, SCF Handbook, SEPs/standards, dev docs, papers, audits, incident reports. Returns cited text chunks with source, section, URL, confidence, and provenance dates (publishedAt = the source's own stated date; observedAt = when ingest last crawled the page; audits add auditor/severity, filterable; report-level enumeration → listAudits). THE surface for 'how does X work', 'what does the SEP/spec/audit say', and how-to/feasibility questions. Not for products and their funding/status → use searchProjects.\n\nCatalog note: this is the broad Scout cited-research recovery lane for history, standards, incidents, audits, and unknown technical topics. Treat chunks as leads: preserve their source and date, and require an exact entity match before attribution.",
-      "documentSeries": {
-        "filter": "source",
-        "query": "q",
-        "values": [
-          "sep",
-          "cap",
-          "paper",
-          "lumenloop",
-          "audit",
-          "incident",
-          "release"
-        ]
-      },
       "id": "scout.searchResearch",
       "inputSchema": {
         "properties": {

@@ -771,7 +771,7 @@ describe("demo tools at the worker boundary", () => {
       candidates: [{ id: "scout.searchResearch", relation: "cited-research", reasons: ["weak" as const] }]
     };
     const hints = [
-      { mode: "pointers-only" as const, sourceOperations: ["stellarDocs.search_docs"], candidates: [], detail },
+      { mode: "detail-only" as const, sourceOperations: ["stellarDocs.search_docs"], candidates: [], detail },
       { ...alternatives, detail },
       { ...alternatives, detail }
     ];

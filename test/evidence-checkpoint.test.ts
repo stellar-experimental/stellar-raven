@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   candidateEvidenceBlock,
-  pointersOnlyHint,
+  detailOnlyHint,
   evidenceCheckpointBlock,
   type EvidenceRecoveryHint
 } from "../src/policy/evidence-checkpoint";
@@ -72,9 +72,9 @@ describe("evidence checkpoint prose", () => {
     const SENTENCE =
       "`stellarDocs.search_docs` returned sections of pages, not whole pages. A section is exact evidence only for what it shows whole. Before you state a list, number, formula, code, or status it does not show whole, read the page: `stellarDocs.get_doc_page({ path })` with that hit's `path`.";
 
-    it("renders the frozen sentence alone for a pointers-only hint", () => {
+    it("renders the frozen sentence alone for a detail-only hint", () => {
       const block = evidenceCheckpointBlock({
-        mode: "pointers-only",
+        mode: "detail-only",
         sourceOperations: ["stellarDocs.search_docs"],
         candidates: [],
         detail
@@ -94,7 +94,7 @@ describe("evidence checkpoint prose", () => {
 
     it("names its own rows when an edge says what its source returns, and leaves the Docs sentence alone", () => {
       const block = evidenceCheckpointBlock({
-        mode: "pointers-only",
+        mode: "detail-only",
         sourceOperations: ["stellarOrg.search_site"],
         candidates: [],
         detail: [
@@ -110,7 +110,7 @@ describe("evidence checkpoint prose", () => {
         "\n\n--- EVIDENCE CHECKPOINT ---\n`stellarOrg.search_site` returned page rows, not whole pages. A row is exact evidence only for what it shows whole. Before you state a list, number, formula, code, or status it does not show whole, read the page: `stellarOrg.get_page({ path })` with that hit's `path`."
       );
       // The same edge shape without `part` is the Docs sentence, byte for byte.
-      expect(evidenceCheckpointBlock({ mode: "pointers-only", sourceOperations: ["stellarDocs.search_docs"], candidates: [], detail })).toContain(SENTENCE);
+      expect(evidenceCheckpointBlock({ mode: "detail-only", sourceOperations: ["stellarDocs.search_docs"], candidates: [], detail })).toContain(SENTENCE);
     });
 
     it("renders nothing for a hint with neither alternatives nor detail", () => {
@@ -120,7 +120,7 @@ describe("evidence checkpoint prose", () => {
 
     it("joins several source operations and several keys from the edge", () => {
       const block = evidenceCheckpointBlock({
-        mode: "pointers-only",
+        mode: "detail-only",
         sourceOperations: ["a.search", "a.search_in"],
         candidates: [],
         detail: [{ target: "a.get", sourceOperations: ["a.search", "a.search_in"], keys: ["id", "rev"] }]
@@ -134,11 +134,11 @@ describe("evidence checkpoint prose", () => {
       expect(SENTENCE.toLowerCase()).not.toMatch(/sep|cap-|soroban|stellar docs|meeting/);
     });
 
-    it("splits a hint into its pointers-only part", () => {
-      expect(pointersOnlyHint(alternatives)).toBeNull();
-      expect(pointersOnlyHint(null)).toBeNull();
-      expect(pointersOnlyHint({ ...alternatives, detail })).toEqual({
-        mode: "pointers-only",
+    it("splits a hint into its detail-only part", () => {
+      expect(detailOnlyHint(alternatives)).toBeNull();
+      expect(detailOnlyHint(null)).toBeNull();
+      expect(detailOnlyHint({ ...alternatives, detail })).toEqual({
+        mode: "detail-only",
         sourceOperations: ["stellarDocs.search_docs"],
         candidates: [],
         detail

@@ -142,13 +142,6 @@ export const retrievalProfileSchema = z.object({
   })).min(1).max(6)
 });
 
-/** Operation entries only: the document series the operation declares (src/catalog/document-series.ts). */
-export const documentSeriesSchema = z.object({
-  filter: z.string().min(1),
-  query: z.string().min(1),
-  values: z.array(z.string().regex(/^[a-z]+$/)).min(1)
-});
-
 const catalogEntryBaseSchema = z.object({
   /** Exact-match id, `<namespace>.<name>` (+ `#<section>` for skill sections). */
   id: z.string().min(1),
@@ -191,11 +184,6 @@ const catalogEntryBaseSchema = z.object({
   knownAliasTriggers: z.array(z.string().trim().min(1)).min(1).optional(),
   /** Query-independent exact-ID recovery graph, validated at catalog build/load. */
   retrievalProfile: retrievalProfileSchema.optional(),
-  /**
-   * Operation entries only: the document series (the values of the `source` filter that the
-   * operation's rows also carry). Derived by the build; the manifest check recomputes it.
-   */
-  documentSeries: documentSeriesSchema.optional(),
   /**
    * Operation entries only: one line that a compact search card must keep
    * because the card's clipped description drops it. It restates a caveat the

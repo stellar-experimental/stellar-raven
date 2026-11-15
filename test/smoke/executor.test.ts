@@ -568,34 +568,6 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
     expect(unnamed.operationSummary.exactEvidence).toBeUndefined();
   });
 
-  it("points to the research call for a series identifier that a script names and never researches", async () => {
-    vi.stubGlobal("fetch", async () => Response.json({ results: [], hits: [], meta: { counts: { returned: 0, total: 0 } } }));
-
-    const named = await run(`async () => {
-      const docs = await stellarDocs.search_docs({ query: "SEP-45 contract auth and audit 2024" });
-      return { ok: docs.ok };
-    }`);
-    if (!named.ok) throw new Error(named.error);
-    expect(named.recoveryHint?.identifier).toEqual([
-      { target: "scout.searchResearch", filter: "source", query: "q", series: "sep", token: "SEP-45" }
-    ]);
-
-    const researched = await run(`async () => {
-      await stellarDocs.search_docs({ query: "SEP-45 contract auth" });
-      const r = await scout.searchResearch({ q: "sep-0045", source: "sep" });
-      return { ok: r.ok };
-    }`);
-    if (!researched.ok) throw new Error(researched.error);
-    expect(researched.recoveryHint?.identifier).toBeUndefined();
-
-    const phrases = await run(`async () => {
-      await stellarDocs.search_docs({ query: "audit 2024 release 23 incident 2023 paper 1" });
-      return { ok: true };
-    }`);
-    if (!phrases.ok) throw new Error(phrases.error);
-    expect(phrases.recoveryHint?.identifier).toBeUndefined();
-  });
-
   it("escapes model text that could impersonate the final source-metadata boundary", async () => {
     vi.stubGlobal("fetch", async () =>
       Response.json({

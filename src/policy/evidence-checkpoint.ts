@@ -14,28 +14,11 @@ export type EvidenceRecoveryCandidate = {
  * irrelevant; the model still owns that answer-level judgment.
  */
 export type EvidenceRecoveryHint = {
-  mode: "narrow-only" | "conditional-alternatives" | "pointers-only";
+  mode: "narrow-only" | "conditional-alternatives" | "detail-only";
   sourceOperations: string[];
   candidates: EvidenceRecoveryCandidate[];
   /** Whole-record reads that complete evidence the run already holds. Not alternatives. */
   detail?: EvidenceDetailPointer[];
-  /** Document lookups for an identifier a call named and no research call did. Not alternatives. */
-  identifier?: EvidenceIdentifierPointer[];
-};
-
-/**
- * An identifier that a call's argument named, and the operation that holds documents of that
- * series (src/catalog/document-series.ts). Built from the call ledger and the manifest: no
- * operation, series or identifier is named in this file.
- */
-export type EvidenceIdentifierPointer = {
-  target: string;
-  /** The input that carries the series, and the input that carries the query. */
-  filter: string;
-  query: string;
-  /** The series letters, lower-case, and the identifier as the call wrote it. */
-  series: string;
-  token: string;
 };
 
 /** A source whose rows are parts of records, and the operation that returns one whole record. */
@@ -50,15 +33,14 @@ export type EvidenceDetailPointer = {
 
 const DEFAULT_DETAIL_PART = { plural: "sections of pages", singular: "section" } as const;
 
-/** The hint with only its pointers (detail and identifier), or null when it has none. */
-export function pointersOnlyHint(hint: EvidenceRecoveryHint | null | undefined): EvidenceRecoveryHint | null {
-  if (!hint?.detail?.length && !hint?.identifier?.length) return null;
+/** The hint with only its detail pointers, or null when it has none. */
+export function detailOnlyHint(hint: EvidenceRecoveryHint | null | undefined): EvidenceRecoveryHint | null {
+  if (!hint?.detail?.length) return null;
   return {
-    mode: "pointers-only",
-    sourceOperations: [...new Set((hint.detail ?? []).flatMap((pointer) => pointer.sourceOperations))],
+    mode: "detail-only",
+    sourceOperations: [...new Set(hint.detail.flatMap((pointer) => pointer.sourceOperations))],
     candidates: [],
-    ...(hint.detail?.length ? { detail: hint.detail } : {}),
-    ...(hint.identifier?.length ? { identifier: hint.identifier } : {})
+    detail: hint.detail
   };
 }
 
@@ -111,21 +93,11 @@ function detailSentences(detail: readonly EvidenceDetailPointer[] | undefined): 
     .join(" ");
 }
 
-/** One sentence per identifier, built from the pointer: the target, its two inputs, the series and the token. */
-function identifierSentences(identifier: readonly EvidenceIdentifierPointer[] | undefined): string {
-  return (identifier ?? [])
-    .map(
-      ({ target, filter, query, series, token }) =>
-        `If \`${token}\` names a document, \`${target}\` holds documents of ${filter} \`${series}\`: call it with \`{ ${query}: "${token}", ${filter}: "${series}" }\`. A row it marks exact is the document itself.`
-    )
-    .join(" ");
-}
-
 export function evidenceCheckpointBlock(hint: EvidenceRecoveryHint | undefined): string {
   if (!hint) return "";
-  const pointers = [detailSentences(hint.detail), identifierSentences(hint.identifier)].filter(Boolean).join(" ");
-  if (!hint.candidates.length) return pointers ? `\n\n--- EVIDENCE CHECKPOINT ---\n${pointers}` : "";
-  const lead = pointers ? `${pointers} ` : "";
+  const detail = detailSentences(hint.detail);
+  if (!hint.candidates.length) return detail ? `\n\n--- EVIDENCE CHECKPOINT ---\n${detail}` : "";
+  const lead = detail ? `${detail} ` : "";
   const sources = hint.sourceOperations.join(", ");
   const candidates = hint.candidates
     .map((candidate) => `${candidate.id} (${candidate.relation}; ${candidate.reasons.join("/")})`)

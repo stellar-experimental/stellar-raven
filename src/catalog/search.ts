@@ -32,7 +32,6 @@ import {
   type RetrievalReason
 } from "./types.ts";
 import { detailJoinKeys } from "./detail-relation.ts";
-import { documentSeriesOf } from "./document-series.ts";
 import { lastIdSegment, VALID_IDENT } from "./id.ts";
 import {
   STOPWORDS,
@@ -279,24 +278,6 @@ const refinedCatalogSchema = catalogSchema.superRefine((catalog, ctx) => {
     }
     if (entry.buildAuthorityRoles && (entry.kind !== "skill" || entry.service !== "skills")) {
       ctx.addIssue({ code: "custom", message: `build authority roles on ${entry.id} require a skills whole-skill entry` });
-    }
-
-    // The document series is derived from the schemas, never written by hand: a series the schemas
-    // do not support, or one the schemas support that the entry lacks, is a build bug.
-    const expectedSeries = documentSeriesOf(entry);
-    const carriedSeries = entry.documentSeries;
-    if (
-      (expectedSeries === null) !== (carriedSeries === undefined) ||
-      (expectedSeries !== null &&
-        carriedSeries !== undefined &&
-        (expectedSeries.filter !== carriedSeries.filter ||
-          expectedSeries.query !== carriedSeries.query ||
-          expectedSeries.values.join() !== carriedSeries.values.join()))
-    ) {
-      ctx.addIssue({
-        code: "custom",
-        message: `document series of ${entry.id} does not match what its input filter and its rows declare`
-      });
     }
 
     if (entry.kind !== "operation") continue;
