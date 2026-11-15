@@ -190,3 +190,22 @@ seven cards `160cd1fa`; the step 2 scans `b3709f74`; live checks and a guard tes
 
 Open for the orchestrator: R8 (SDF site as a corroborating family: left out, so each `stellarOrg` result carries the guard line); whether the `detail` edge and its `part` nouns stay;
 the independent review of the step 2 diff before P2; the A7 Cloudflare check (preview URLs are off in `wrangler.jsonc`); P2's authorization line. **No paid run is authorized by this entry.**
+
+## Step 2 free work; amendment A7 satisfied
+
+Implementer report: `2026-11-15-tuning-loop-2/STEP-2-IMPL.md` (item 4 `0b07783a`, the `stellarOrg`
+source `2796299c`, seven cards `160cd1fa`; all gates exit 0).
+
+**A7 (Worker egress to stellar.org), done by the orchestrator on 2026-11-15 without a preview
+version.** `wrangler.jsonc` has `workers_dev: false` and no preview URLs, and an authenticated MCP
+call on a preview would need OAuth. Instead a throwaway Worker (`raven-egress-probe`, account
+"Ecosystem - Stellar", `workers.dev`) fetched `https://stellar.org/api/search?q=audit+bank&locale=en`
+and `https://stellar.org/foundation/strategy` with the adapter's User-Agent. Three calls: HTTP 200
+for both each time (JSON 1,798 bytes; HTML about 424,600 bytes), no `cf-mitigated` header. The
+Worker was then deleted (its URL returns 404). It did not touch the production Worker. Limit: this
+shows egress from the account's Workers, not the adapter's own code path, which the post-deploy
+check covers.
+
+Orchestrator rulings on the step 2 asks: the 12-row reachability record may run (the questions are
+tuning rows from a public repository); whether `stellarOrg` belongs in `CORROBORATING_FAMILIES` and
+whether the added detail edge and its nouns stay go to the independent reviewer.
