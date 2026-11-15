@@ -7,7 +7,7 @@ from the split file beyond `sets.tuning`, and no held-out or reserve row.
 ## 1. The final commit
 
 **The code tip is `ac5756a4`**: the last commit that changes a tracked file outside `.agents/`. Every gate below ran on it, from a clean tree. The commits on top of it touch only `.agents/` (the ledger,
-`.agents/TODO.md`, this file and the scans under `scans/kept/`); the secrets scan and the generated-artifacts diff were run again on the pushed tip (section 4). The pushed tip's hash is in the
+`.agents/TODO.md`, this file and the scans under `scans/kept/`); the secrets scan (`npm run secrets:scan -- --tree`) and the generated-artifacts sync and diff were run again on `7c9899ae`, the tip before this sentence was added: both exit 0, and `git diff ac5756a4 7c9899ae` outside `.agents/` is empty. The pushed tip's hash is in the
 `hc send` report to the orchestrator, because a file cannot name its own commit.
 
 `origin/main` is at `0a603453`, the base of this branch; `git merge origin/main` reports "Already up to date", so there is nothing to regenerate from a newer main.
