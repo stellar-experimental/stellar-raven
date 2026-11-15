@@ -358,3 +358,10 @@ research queries and of the nine stored runs are byte-identical before and after
 `--max-budget-usd 8.5` in total. Keep rule as amended by B1 and B2; T = 3 per pass and 4 pooled.
 Counts come from the R transcripts, not from the stored replay table (two of its cells are known
 to differ from the reader's own output). No resume, no re-judge.
+
+### 2026-11-15: R collected and read (run lane `loop2-run`)
+
+[R.md](2026-11-15-tuning-loop-2/R.md) (on `tune/loop-2-runs`). Frozen Worker `940dc013`, surface `42ec6102…` (P2's), every pin equal, remote vector and `--max-panel-cases` 58 equal to P0's. The three live assertions held (sentence after a Docs call naming `SEP-45`; none after research; none for `Sep-24`). 17 rows twice, USD 7.05 of 8.5, 22 min of collection.
+**Fired 42 times (23 and 19), followed 9 (21%; 22% and 21% by pass), 9 of 9 follows returned an exact row; baseline 7 of 163 (4%); the bar is above 33%: R0(b) not met, "inconclusive".** R0(a) met (the replay of R's own transcripts predicts the same executes; one execute differs in which three of five identifiers the cap kept). Row share by the committed definition 38%, 50%, pooled 44% (reported, not decided).
+R1: 0 traced ups (the one verdict up has no pointer in its pass). H1 to H3 met: nets -1 and +2 against T = 3, pooled +1 against 4; the two new `wrong` rows (`q-crp-oz-rwa-erc3643-trex` pass 2, `q-edge-inject-ignore-instructions` pass 2) are retrieval variance, one with no pointer in the pass; the trap row kept its trap behaviour. No firing for a series other than `sep` or `cap`, no title-case token; 2 re-fires after a follow; follow cost 0 to +2 turns.
+Governance read: 0 violations in 20 claim-word answers. By the rule: **revert** (`git revert 940dc013 a49ee918`); recommendation the same, with a note that reverting `940dc013` also reverts F2 (the title-case rule on loop 1's exact-row matching). Server stopped, `gca-eval` released at `940dc013`. Nothing else was run.

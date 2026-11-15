@@ -1,0 +1,6549 @@
+{
+  "baseline": {
+    "totals": {
+      "rows": 79,
+      "executes": 153,
+      "executesWithCalls": 138,
+      "unparsed": 0,
+      "opSetDiffersFromFooter": 1,
+      "namedASeriesIdentifier": 21,
+      "certainFires": 15,
+      "possibleOnly": 0,
+      "sitesUnresolved": 5,
+      "sites": 254
+    },
+    "rowsNamingASeriesIdentifier": 18,
+    "rowsWithCertainFire": [
+      "q-comp-sep8-regulated-assets-approval-server",
+      "q-crp-oz-rwa-erc3643-trex",
+      "q-crp-remittance-founder-advisory",
+      "q-edge-inject-ignore-instructions",
+      "q-net-protocol-meeting-notes-find-cap",
+      "q-nft-vault-contract-standards",
+      "q-pc-cross-redstone-sep40",
+      "q-sep-43-web-wallet-api",
+      "q-sep-45-contract-auth",
+      "q-sep24-interactive-deposit-flow",
+      "q-sep6-sep24-sep31-choice",
+      "q-soroban-oz-token",
+      "q-zk-host-functions-status"
+    ],
+    "rowsWithPossibleFire": [],
+    "firesBySeries": {
+      "sep": 20,
+      "cap": 3
+    },
+    "fires": [
+      {
+        "id": "q-comp-sep8-regulated-assets-approval-server",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-8",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-crp-oz-rwa-erc3643-trex",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-57",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-crp-remittance-founder-advisory",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-24",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-crp-remittance-founder-advisory",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-6",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-crp-remittance-founder-advisory",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-31",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-edge-inject-ignore-instructions",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-10",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-net-protocol-meeting-notes-find-cap",
+        "execute": 1,
+        "kind": "certain",
+        "token": "CAP-0046",
+        "series": "cap",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-nft-vault-contract-standards",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-0050",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-nft-vault-contract-standards",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-0056",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-pc-cross-redstone-sep40",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-40",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-pc-cross-redstone-sep40",
+        "execute": 2,
+        "kind": "certain",
+        "token": "SEP40",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep-43-web-wallet-api",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-43",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": true
+      },
+      {
+        "id": "q-sep-45-contract-auth",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-45",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep-45-contract-auth",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-10",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-24",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-10",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 2,
+        "kind": "certain",
+        "token": "sep24",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-6",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-24",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-31",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-soroban-oz-token",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-41",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-zk-host-functions-status",
+        "execute": 1,
+        "kind": "certain",
+        "token": "CAP-74",
+        "series": "cap",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-zk-host-functions-status",
+        "execute": 1,
+        "kind": "certain",
+        "token": "CAP-75",
+        "series": "cap",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      }
+    ],
+    "lengths": [
+      {
+        "id": "q-comp-sep8-regulated-assets-approval-server",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 175,
+        "addedToResult": 176,
+        "blockWith": 1222,
+        "blockWithout": 1046,
+        "storedResultChars": 4176,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-crp-oz-rwa-erc3643-trex",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1224,
+        "blockWithout": 1046,
+        "storedResultChars": 11860,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-crp-remittance-founder-advisory",
+        "execute": 1,
+        "sentences": 3,
+        "beforeCap": 6,
+        "sentenceChars": 531,
+        "addedToResult": 532,
+        "blockWith": 1654,
+        "blockWithout": 1122,
+        "storedResultChars": 10637,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-edge-inject-ignore-instructions",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1257,
+        "blockWithout": 1079,
+        "storedResultChars": 5154,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-net-protocol-meeting-notes-find-cap",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 181,
+        "addedToResult": 182,
+        "blockWith": 1257,
+        "blockWithout": 1075,
+        "storedResultChars": 2682,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-nft-vault-contract-standards",
+        "execute": 1,
+        "sentences": 2,
+        "beforeCap": 2,
+        "sentenceChars": 363,
+        "addedToResult": 364,
+        "blockWith": 1410,
+        "blockWithout": 1046,
+        "storedResultChars": 11968,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-pc-cross-redstone-sep40",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1224,
+        "blockWithout": 1046,
+        "storedResultChars": 12850,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-pc-cross-redstone-sep40",
+        "execute": 2,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 175,
+        "addedToResult": 176,
+        "blockWith": 1222,
+        "blockWithout": 1046,
+        "storedResultChars": 2062,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep-43-web-wallet-api",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1224,
+        "blockWithout": 1046,
+        "storedResultChars": 5196,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep-45-contract-auth",
+        "execute": 1,
+        "sentences": 2,
+        "beforeCap": 2,
+        "sentenceChars": 355,
+        "addedToResult": 356,
+        "blockWith": 1402,
+        "blockWithout": 1046,
+        "storedResultChars": 7221,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 1,
+        "sentences": 2,
+        "beforeCap": 2,
+        "sentenceChars": 355,
+        "addedToResult": 356,
+        "blockWith": 1548,
+        "blockWithout": 1192,
+        "storedResultChars": 16611,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 2,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 175,
+        "addedToResult": 176,
+        "blockWith": 1174,
+        "blockWithout": 998,
+        "storedResultChars": 2961,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "execute": 1,
+        "sentences": 3,
+        "beforeCap": 3,
+        "sentenceChars": 531,
+        "addedToResult": 532,
+        "blockWith": 1611,
+        "blockWithout": 1079,
+        "storedResultChars": 10357,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-soroban-oz-token",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1259,
+        "blockWithout": 1081,
+        "storedResultChars": 19327,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-zk-host-functions-status",
+        "execute": 1,
+        "sentences": 2,
+        "beforeCap": 2,
+        "sentenceChars": 355,
+        "addedToResult": 356,
+        "blockWith": 1402,
+        "blockWithout": 1046,
+        "storedResultChars": 7893,
+        "beyondGrokClip": false
+      }
+    ],
+    "opMismatches": [
+      {
+        "id": "q-eco-defi-market-map",
+        "execute": 1,
+        "footer": [
+          "scout.searchProjects"
+        ],
+        "script": [
+          "scout.analyzeEcosystem",
+          "scout.getClusters",
+          "scout.searchProjects"
+        ]
+      }
+    ],
+    "perRow": {
+      "q-aas-trustline-limit-lifecycle": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-asset-sdex-vs-amm": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-asset-usdc-eurc-issuer": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-asset-usdt0-layerzero-oft": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-comp-aml-analytics-vendors": {
+        "named": true,
+        "researchedWithIt": true,
+        "fires": false
+      },
+      "q-comp-sep8-regulated-assets-approval-server": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-crp-export-tx-history-taxes": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-crp-oz-rwa-erc3643-trex": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-crp-remittance-founder-advisory": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-data-network-metrics-sources": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-defi-agent-identity-stellar-experimental": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-defi-agentic-payment-standards-compare": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-defi-aquarius-what-is": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-defi-bridge-evm-to-stellar-axelar": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-eco-defi-market-map": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-eco-stellar-rwa-stablecoin-volume": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-edge-asset-site-scam-detection": {
+        "named": true,
+        "researchedWithIt": true,
+        "fires": false
+      },
+      "q-edge-factcheck-soroswap-first-amm": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-edge-inject-ignore-instructions": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-edge-noinfo-stellar-native-privacy-default": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-hot-fee-pool-burn-deflation": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-hot-sdf-xlm-holdings-sales": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-infra-rpc-methods-list": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-infra-testnet-vs-futurenet": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-infra-which-indexer": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-n3-issues-842-backup-faucet-wallet": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-n3-pi-network-wrong-chain": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-net-protocol-meeting-notes-find-cap": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-nft-vault-contract-standards": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-org-sdf-structure-mandate": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-pc-account-activation-not-found": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-pc-cross-redstone-sep40": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-pc-quantum-preparedness-dormant": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-pc-sequence-numbers-ordering-replace": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-pc-sponsored-reserves": {
+        "named": true,
+        "researchedWithIt": true,
+        "fires": false
+      },
+      "q-protocol-accounts-signers-thresholds": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-protocol-ledger-close-time": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-protocol-tier1-requirements": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-protocol-validator-node-roles": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-protocol-version-history-list": {
+        "named": true,
+        "researchedWithIt": true,
+        "fires": false
+      },
+      "q-raph-official-help-sdf-cannot-recover": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-raph-stolen-wallet-recovery": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-scf-ambassador-program": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-scf-hackathons-active": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-scf-how-to-apply": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-scf-instawards": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-scf-vs-sdf-enterprise-fund": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-sep-43-web-wallet-api": {
+        "named": true,
+        "researchedWithIt": true,
+        "fires": true
+      },
+      "q-sep-45-contract-auth": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-sep-53-sign-verify-message": {
+        "named": true,
+        "researchedWithIt": true,
+        "fires": false
+      },
+      "q-sep24-interactive-deposit-flow": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-sep6-sep24-sep31-choice": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-smart-account-scoped-policy-signers": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-smart-wallet-fee-sponsorship": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-sor-custom-errors-find-failure-cause": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-sor-deploy-invoke-from-js-sdk": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-sor-p23-auto-restore-extendto": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-check-auth-custom-account": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-cli-bindings": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-contract-id-derivation": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-oz-token": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-soroban-pre-mainnet-security-steps": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-publish-events": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-reentrancy": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-storage-types": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-vuln-classes": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-stellar-recurring-payments": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-ti-classic-submission-errors": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-ti-enumerate-holders-airdrop": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-ti-parse-raw-ledger-data": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-ti-scaffold-stellar": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-ti-self-host-retention-backfill": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-token-xlm-supply-total-circulating": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-tool-cli-skills-discovery": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-tool-js-sdk-package": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-validator-why-run-no-rewards": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-zk-host-functions-status": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      }
+    }
+  },
+  "step0prime": {
+    "totals": {
+      "rows": 50,
+      "executes": 84,
+      "executesWithCalls": 84,
+      "unparsed": 0,
+      "opSetDiffersFromFooter": 1,
+      "namedASeriesIdentifier": 26,
+      "certainFires": 22,
+      "possibleOnly": 0,
+      "sitesUnresolved": 1,
+      "sites": 142
+    },
+    "rowsNamingASeriesIdentifier": 16,
+    "rowsWithCertainFire": [
+      "q-comp-sep8-regulated-assets-approval-server",
+      "q-crp-oz-rwa-erc3643-trex",
+      "q-edge-asset-site-scam-detection",
+      "q-edge-inject-ignore-instructions",
+      "q-net-protocol-meeting-notes-find-cap",
+      "q-nft-vault-contract-standards",
+      "q-pc-cross-redstone-sep40",
+      "q-pc-quantum-preparedness-dormant",
+      "q-sep-43-web-wallet-api",
+      "q-sep-45-contract-auth",
+      "q-sep-53-sign-verify-message",
+      "q-sep24-interactive-deposit-flow",
+      "q-sep6-sep24-sep31-choice",
+      "q-soroban-oz-token",
+      "q-zk-host-functions-status"
+    ],
+    "rowsWithPossibleFire": [],
+    "firesBySeries": {
+      "sep": 28,
+      "cap": 4
+    },
+    "fires": [
+      {
+        "id": "q-comp-sep8-regulated-assets-approval-server",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-8",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-crp-oz-rwa-erc3643-trex",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-57",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-edge-asset-site-scam-detection",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-1",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-edge-inject-ignore-instructions",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-10",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-net-protocol-meeting-notes-find-cap",
+        "execute": 1,
+        "kind": "certain",
+        "token": "CAP-0046",
+        "series": "cap",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-nft-vault-contract-standards",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-50",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-nft-vault-contract-standards",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-56",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-nft-vault-contract-standards",
+        "execute": 2,
+        "kind": "certain",
+        "token": "SEP-50",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-nft-vault-contract-standards",
+        "execute": 3,
+        "kind": "certain",
+        "token": "SEP-50",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-nft-vault-contract-standards",
+        "execute": 3,
+        "kind": "certain",
+        "token": "SEP-56",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-nft-vault-contract-standards",
+        "execute": 4,
+        "kind": "certain",
+        "token": "SEP-50",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-nft-vault-contract-standards",
+        "execute": 4,
+        "kind": "certain",
+        "token": "SEP-56",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-nft-vault-contract-standards",
+        "execute": 4,
+        "kind": "certain",
+        "token": "SEP-41",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-pc-cross-redstone-sep40",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-40",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-pc-cross-redstone-sep40",
+        "execute": 2,
+        "kind": "certain",
+        "token": "SEP40",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-pc-cross-redstone-sep40",
+        "execute": 3,
+        "kind": "certain",
+        "token": "SEP-40",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-pc-quantum-preparedness-dormant",
+        "execute": 2,
+        "kind": "certain",
+        "token": "CAP-87",
+        "series": "cap",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep-43-web-wallet-api",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-43",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": true
+      },
+      {
+        "id": "q-sep-45-contract-auth",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-45",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep-45-contract-auth",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-10",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep-53-sign-verify-message",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-0053",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-24",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-10",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 2,
+        "kind": "certain",
+        "token": "sep24",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-6",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-24",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-31",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "execute": 2,
+        "kind": "certain",
+        "token": "SEP-6",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "execute": 2,
+        "kind": "certain",
+        "token": "SEP-24",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-soroban-oz-token",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-41",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-zk-host-functions-status",
+        "execute": 1,
+        "kind": "certain",
+        "token": "CAP-74",
+        "series": "cap",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-zk-host-functions-status",
+        "execute": 1,
+        "kind": "certain",
+        "token": "CAP-75",
+        "series": "cap",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      }
+    ],
+    "lengths": [
+      {
+        "id": "q-comp-sep8-regulated-assets-approval-server",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 175,
+        "addedToResult": 176,
+        "blockWith": 1222,
+        "blockWithout": 1046,
+        "storedResultChars": 10802,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-crp-oz-rwa-erc3643-trex",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1239,
+        "blockWithout": 1061,
+        "storedResultChars": 21217,
+        "beyondGrokClip": true
+      },
+      {
+        "id": "q-edge-asset-site-scam-detection",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 175,
+        "addedToResult": 176,
+        "blockWith": 1189,
+        "blockWithout": 1013,
+        "storedResultChars": 19428,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-edge-inject-ignore-instructions",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1224,
+        "blockWithout": 1046,
+        "storedResultChars": 3250,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-net-protocol-meeting-notes-find-cap",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 181,
+        "addedToResult": 182,
+        "blockWith": 1257,
+        "blockWithout": 1075,
+        "storedResultChars": 2757,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-nft-vault-contract-standards",
+        "execute": 1,
+        "sentences": 2,
+        "beforeCap": 2,
+        "sentenceChars": 355,
+        "addedToResult": 356,
+        "blockWith": 1402,
+        "blockWithout": 1046,
+        "storedResultChars": 8894,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-nft-vault-contract-standards",
+        "execute": 2,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1224,
+        "blockWithout": 1046,
+        "storedResultChars": 1070,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-nft-vault-contract-standards",
+        "execute": 3,
+        "sentences": 2,
+        "beforeCap": 2,
+        "sentenceChars": 355,
+        "addedToResult": 356,
+        "blockWith": 1402,
+        "blockWithout": 1046,
+        "storedResultChars": 1081,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-nft-vault-contract-standards",
+        "execute": 4,
+        "sentences": 3,
+        "beforeCap": 3,
+        "sentenceChars": 533,
+        "addedToResult": 534,
+        "blockWith": 1580,
+        "blockWithout": 1046,
+        "storedResultChars": 3848,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-pc-cross-redstone-sep40",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1224,
+        "blockWithout": 1046,
+        "storedResultChars": 12072,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-pc-cross-redstone-sep40",
+        "execute": 2,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 175,
+        "addedToResult": 176,
+        "blockWith": 1222,
+        "blockWithout": 1046,
+        "storedResultChars": 3884,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-pc-cross-redstone-sep40",
+        "execute": 3,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1224,
+        "blockWithout": 1046,
+        "storedResultChars": 6725,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-pc-quantum-preparedness-dormant",
+        "execute": 2,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1266,
+        "blockWithout": 1088,
+        "storedResultChars": 10940,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep-43-web-wallet-api",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1224,
+        "blockWithout": 1046,
+        "storedResultChars": 5315,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep-45-contract-auth",
+        "execute": 1,
+        "sentences": 2,
+        "beforeCap": 2,
+        "sentenceChars": 355,
+        "addedToResult": 356,
+        "blockWith": 1402,
+        "blockWithout": 1046,
+        "storedResultChars": 6342,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep-53-sign-verify-message",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 181,
+        "addedToResult": 182,
+        "blockWith": 1228,
+        "blockWithout": 1046,
+        "storedResultChars": 5022,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 1,
+        "sentences": 2,
+        "beforeCap": 2,
+        "sentenceChars": 355,
+        "addedToResult": 356,
+        "blockWith": 1509,
+        "blockWithout": 1153,
+        "storedResultChars": 21290,
+        "beyondGrokClip": true
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 2,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 175,
+        "addedToResult": 176,
+        "blockWith": 1174,
+        "blockWithout": 998,
+        "storedResultChars": 3699,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "execute": 1,
+        "sentences": 3,
+        "beforeCap": 3,
+        "sentenceChars": 531,
+        "addedToResult": 532,
+        "blockWith": 1611,
+        "blockWithout": 1079,
+        "storedResultChars": 10199,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "execute": 2,
+        "sentences": 2,
+        "beforeCap": 2,
+        "sentenceChars": 353,
+        "addedToResult": 354,
+        "blockWith": 1433,
+        "blockWithout": 1079,
+        "storedResultChars": 1508,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-soroban-oz-token",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1186,
+        "blockWithout": 1008,
+        "storedResultChars": 11778,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-zk-host-functions-status",
+        "execute": 1,
+        "sentences": 2,
+        "beforeCap": 2,
+        "sentenceChars": 355,
+        "addedToResult": 356,
+        "blockWith": 1402,
+        "blockWithout": 1046,
+        "storedResultChars": 11861,
+        "beyondGrokClip": false
+      }
+    ],
+    "opMismatches": [
+      {
+        "id": "q-sor-custom-errors-find-failure-cause",
+        "execute": 1,
+        "footer": [
+          "stellarDocs.search_rpc_horizon_data_docs",
+          "stellarDocs.search_soroban_contract_docs"
+        ],
+        "script": []
+      }
+    ],
+    "perRow": {
+      "q-aas-trustline-limit-lifecycle": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-asset-usdc-eurc-issuer": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-asset-usdt0-layerzero-oft": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-comp-aml-analytics-vendors": {
+        "named": true,
+        "researchedWithIt": true,
+        "fires": false
+      },
+      "q-comp-sep8-regulated-assets-approval-server": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-crp-oz-rwa-erc3643-trex": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-defi-agent-identity-stellar-experimental": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-defi-agentic-payment-standards-compare": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-edge-asset-site-scam-detection": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-edge-factcheck-soroswap-first-amm": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-edge-inject-ignore-instructions": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-edge-noinfo-stellar-native-privacy-default": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-hot-fee-pool-burn-deflation": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-infra-rpc-methods-list": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-infra-which-indexer": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-n3-issues-842-backup-faucet-wallet": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-n3-pi-network-wrong-chain": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-net-protocol-meeting-notes-find-cap": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-nft-vault-contract-standards": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-pc-account-activation-not-found": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-pc-cross-redstone-sep40": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-pc-quantum-preparedness-dormant": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-pc-sequence-numbers-ordering-replace": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-pc-sponsored-reserves": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-protocol-ledger-close-time": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-protocol-tier1-requirements": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-scf-instawards": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-sep-43-web-wallet-api": {
+        "named": true,
+        "researchedWithIt": true,
+        "fires": true
+      },
+      "q-sep-45-contract-auth": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-sep-53-sign-verify-message": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-sep24-interactive-deposit-flow": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-sep6-sep24-sep31-choice": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-smart-account-scoped-policy-signers": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-smart-wallet-fee-sponsorship": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-sor-custom-errors-find-failure-cause": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-sor-deploy-invoke-from-js-sdk": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-check-auth-custom-account": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-cli-bindings": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-contract-id-derivation": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-oz-token": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-soroban-pre-mainnet-security-steps": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-reentrancy": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-storage-types": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-vuln-classes": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-ti-classic-submission-errors": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-ti-enumerate-holders-airdrop": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-ti-parse-raw-ledger-data": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-tool-js-sdk-package": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-zk-host-functions-status": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      }
+    }
+  },
+  "arm1": {
+    "totals": {
+      "rows": 50,
+      "executes": 81,
+      "executesWithCalls": 81,
+      "unparsed": 0,
+      "opSetDiffersFromFooter": 1,
+      "namedASeriesIdentifier": 18,
+      "certainFires": 15,
+      "possibleOnly": 1,
+      "sitesUnresolved": 2,
+      "sites": 143
+    },
+    "rowsNamingASeriesIdentifier": 15,
+    "rowsWithCertainFire": [
+      "q-comp-sep8-regulated-assets-approval-server",
+      "q-crp-oz-rwa-erc3643-trex",
+      "q-edge-inject-ignore-instructions",
+      "q-net-protocol-meeting-notes-find-cap",
+      "q-nft-vault-contract-standards",
+      "q-pc-cross-redstone-sep40",
+      "q-sep-43-web-wallet-api",
+      "q-sep-45-contract-auth",
+      "q-sep-53-sign-verify-message",
+      "q-sep24-interactive-deposit-flow",
+      "q-sep6-sep24-sep31-choice",
+      "q-soroban-oz-token",
+      "q-zk-host-functions-status"
+    ],
+    "rowsWithPossibleFire": [
+      "q-comp-aml-analytics-vendors"
+    ],
+    "firesBySeries": {
+      "sep": 19,
+      "cap": 3
+    },
+    "fires": [
+      {
+        "id": "q-comp-aml-analytics-vendors",
+        "execute": 1,
+        "kind": "possible",
+        "token": "SEP-12",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-comp-sep8-regulated-assets-approval-server",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-8",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-crp-oz-rwa-erc3643-trex",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-57",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-edge-inject-ignore-instructions",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-10",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-edge-inject-ignore-instructions",
+        "execute": 2,
+        "kind": "certain",
+        "token": "sep10",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-net-protocol-meeting-notes-find-cap",
+        "execute": 1,
+        "kind": "certain",
+        "token": "CAP-0046",
+        "series": "cap",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-nft-vault-contract-standards",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-0050",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-nft-vault-contract-standards",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-0056",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-pc-cross-redstone-sep40",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-40",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep-43-web-wallet-api",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-43",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": true
+      },
+      {
+        "id": "q-sep-45-contract-auth",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-45",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep-45-contract-auth",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-10",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep-53-sign-verify-message",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-53",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-24",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-10",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 2,
+        "kind": "certain",
+        "token": "sep24",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-6",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-24",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-31",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-soroban-oz-token",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-41",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-zk-host-functions-status",
+        "execute": 1,
+        "kind": "certain",
+        "token": "CAP-74",
+        "series": "cap",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-zk-host-functions-status",
+        "execute": 1,
+        "kind": "certain",
+        "token": "CAP-75",
+        "series": "cap",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      }
+    ],
+    "lengths": [
+      {
+        "id": "q-comp-sep8-regulated-assets-approval-server",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 175,
+        "addedToResult": 176,
+        "blockWith": 1222,
+        "blockWithout": 1046,
+        "storedResultChars": 10343,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-crp-oz-rwa-erc3643-trex",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1239,
+        "blockWithout": 1061,
+        "storedResultChars": 18815,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-edge-inject-ignore-instructions",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1224,
+        "blockWithout": 1046,
+        "storedResultChars": 3931,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-edge-inject-ignore-instructions",
+        "execute": 2,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 175,
+        "addedToResult": 176,
+        "blockWith": 984,
+        "blockWithout": 808,
+        "storedResultChars": 4571,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-net-protocol-meeting-notes-find-cap",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 181,
+        "addedToResult": 182,
+        "blockWith": 1257,
+        "blockWithout": 1075,
+        "storedResultChars": 3053,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-nft-vault-contract-standards",
+        "execute": 1,
+        "sentences": 2,
+        "beforeCap": 2,
+        "sentenceChars": 363,
+        "addedToResult": 364,
+        "blockWith": 1410,
+        "blockWithout": 1046,
+        "storedResultChars": 8160,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-pc-cross-redstone-sep40",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1224,
+        "blockWithout": 1046,
+        "storedResultChars": 21171,
+        "beyondGrokClip": true
+      },
+      {
+        "id": "q-sep-43-web-wallet-api",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1224,
+        "blockWithout": 1046,
+        "storedResultChars": 5603,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep-45-contract-auth",
+        "execute": 1,
+        "sentences": 2,
+        "beforeCap": 2,
+        "sentenceChars": 355,
+        "addedToResult": 356,
+        "blockWith": 1402,
+        "blockWithout": 1046,
+        "storedResultChars": 5188,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep-53-sign-verify-message",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1224,
+        "blockWithout": 1046,
+        "storedResultChars": 6567,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 1,
+        "sentences": 2,
+        "beforeCap": 2,
+        "sentenceChars": 355,
+        "addedToResult": 356,
+        "blockWith": 1509,
+        "blockWithout": 1153,
+        "storedResultChars": 21545,
+        "beyondGrokClip": true
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 2,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 175,
+        "addedToResult": 176,
+        "blockWith": 984,
+        "blockWithout": 808,
+        "storedResultChars": 8071,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "execute": 1,
+        "sentences": 3,
+        "beforeCap": 3,
+        "sentenceChars": 531,
+        "addedToResult": 532,
+        "blockWith": 1611,
+        "blockWithout": 1079,
+        "storedResultChars": 13699,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-soroban-oz-token",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1186,
+        "blockWithout": 1008,
+        "storedResultChars": 19615,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-zk-host-functions-status",
+        "execute": 1,
+        "sentences": 2,
+        "beforeCap": 2,
+        "sentenceChars": 355,
+        "addedToResult": 356,
+        "blockWith": 1402,
+        "blockWithout": 1046,
+        "storedResultChars": 14608,
+        "beyondGrokClip": false
+      }
+    ],
+    "opMismatches": [
+      {
+        "id": "q-comp-aml-analytics-vendors",
+        "execute": 1,
+        "footer": [
+          "lumenloop.search_content_semantic",
+          "lumenloop.search_directory",
+          "scout.searchResearch",
+          "stellarDocs.search_anchor_sep_docs",
+          "stellarDocs.search_docs"
+        ],
+        "script": []
+      }
+    ],
+    "perRow": {
+      "q-aas-trustline-limit-lifecycle": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-asset-usdc-eurc-issuer": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-asset-usdt0-layerzero-oft": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-comp-aml-analytics-vendors": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-comp-sep8-regulated-assets-approval-server": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-crp-oz-rwa-erc3643-trex": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-defi-agent-identity-stellar-experimental": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-defi-agentic-payment-standards-compare": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-edge-asset-site-scam-detection": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-edge-factcheck-soroswap-first-amm": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-edge-inject-ignore-instructions": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-edge-noinfo-stellar-native-privacy-default": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-hot-fee-pool-burn-deflation": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-infra-rpc-methods-list": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-infra-which-indexer": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-n3-issues-842-backup-faucet-wallet": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-n3-pi-network-wrong-chain": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-net-protocol-meeting-notes-find-cap": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-nft-vault-contract-standards": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-pc-account-activation-not-found": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-pc-cross-redstone-sep40": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-pc-quantum-preparedness-dormant": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-pc-sequence-numbers-ordering-replace": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-pc-sponsored-reserves": {
+        "named": true,
+        "researchedWithIt": true,
+        "fires": false
+      },
+      "q-protocol-ledger-close-time": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-protocol-tier1-requirements": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-scf-instawards": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-sep-43-web-wallet-api": {
+        "named": true,
+        "researchedWithIt": true,
+        "fires": true
+      },
+      "q-sep-45-contract-auth": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-sep-53-sign-verify-message": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-sep24-interactive-deposit-flow": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-sep6-sep24-sep31-choice": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-smart-account-scoped-policy-signers": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-smart-wallet-fee-sponsorship": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-sor-custom-errors-find-failure-cause": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-sor-deploy-invoke-from-js-sdk": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-check-auth-custom-account": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-cli-bindings": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-contract-id-derivation": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-oz-token": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-soroban-pre-mainnet-security-steps": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-reentrancy": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-storage-types": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-vuln-classes": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-ti-classic-submission-errors": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-ti-enumerate-holders-airdrop": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-ti-parse-raw-ledger-data": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-tool-js-sdk-package": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-zk-host-functions-status": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      }
+    }
+  },
+  "arm3": {
+    "totals": {
+      "rows": 50,
+      "executes": 80,
+      "executesWithCalls": 78,
+      "unparsed": 0,
+      "opSetDiffersFromFooter": 2,
+      "namedASeriesIdentifier": 22,
+      "certainFires": 18,
+      "possibleOnly": 1,
+      "sitesUnresolved": 1,
+      "sites": 135
+    },
+    "rowsNamingASeriesIdentifier": 17,
+    "rowsWithCertainFire": [
+      "q-comp-sep8-regulated-assets-approval-server",
+      "q-edge-asset-site-scam-detection",
+      "q-edge-inject-ignore-instructions",
+      "q-net-protocol-meeting-notes-find-cap",
+      "q-nft-vault-contract-standards",
+      "q-pc-cross-redstone-sep40",
+      "q-pc-quantum-preparedness-dormant",
+      "q-protocol-tier1-requirements",
+      "q-sep-43-web-wallet-api",
+      "q-sep-45-contract-auth",
+      "q-sep-53-sign-verify-message",
+      "q-sep24-interactive-deposit-flow",
+      "q-sep6-sep24-sep31-choice",
+      "q-soroban-oz-token"
+    ],
+    "rowsWithPossibleFire": [
+      "q-sep24-interactive-deposit-flow"
+    ],
+    "firesBySeries": {
+      "sep": 24,
+      "cap": 2
+    },
+    "fires": [
+      {
+        "id": "q-comp-sep8-regulated-assets-approval-server",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-8",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-edge-asset-site-scam-detection",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-1",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-edge-inject-ignore-instructions",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-10",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-net-protocol-meeting-notes-find-cap",
+        "execute": 1,
+        "kind": "certain",
+        "token": "CAP-0046",
+        "series": "cap",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-nft-vault-contract-standards",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-0050",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-nft-vault-contract-standards",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-0056",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-nft-vault-contract-standards",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-41",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-nft-vault-contract-standards",
+        "execute": 2,
+        "kind": "certain",
+        "token": "SEP-50",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-pc-cross-redstone-sep40",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-40",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-pc-cross-redstone-sep40",
+        "execute": 2,
+        "kind": "certain",
+        "token": "SEP-40",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-pc-quantum-preparedness-dormant",
+        "execute": 2,
+        "kind": "certain",
+        "token": "CAP-87",
+        "series": "cap",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-protocol-tier1-requirements",
+        "execute": 3,
+        "kind": "certain",
+        "token": "SEP-20",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-protocol-tier1-requirements",
+        "execute": 3,
+        "kind": "certain",
+        "token": "SEP-1",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep-43-web-wallet-api",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-43",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep-43-web-wallet-api",
+        "execute": 2,
+        "kind": "certain",
+        "token": "SEP-43",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep-45-contract-auth",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-45",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep-45-contract-auth",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-10",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep-53-sign-verify-message",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-53",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep-53-sign-verify-message",
+        "execute": 2,
+        "kind": "certain",
+        "token": "SEP-53",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 1,
+        "kind": "possible",
+        "token": "SEP-24",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 1,
+        "kind": "possible",
+        "token": "SEP-10",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 2,
+        "kind": "certain",
+        "token": "sep24",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-6",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-24",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-31",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-soroban-oz-token",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-41",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      }
+    ],
+    "lengths": [
+      {
+        "id": "q-comp-sep8-regulated-assets-approval-server",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 175,
+        "addedToResult": 176,
+        "blockWith": 1255,
+        "blockWithout": 1079,
+        "storedResultChars": 15848,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-edge-asset-site-scam-detection",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 175,
+        "addedToResult": 176,
+        "blockWith": 1235,
+        "blockWithout": 1059,
+        "storedResultChars": 22237,
+        "beyondGrokClip": true
+      },
+      {
+        "id": "q-edge-inject-ignore-instructions",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1257,
+        "blockWithout": 1079,
+        "storedResultChars": 4906,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-net-protocol-meeting-notes-find-cap",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 181,
+        "addedToResult": 182,
+        "blockWith": 1257,
+        "blockWithout": 1075,
+        "storedResultChars": 2352,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-nft-vault-contract-standards",
+        "execute": 1,
+        "sentences": 3,
+        "beforeCap": 3,
+        "sentenceChars": 541,
+        "addedToResult": 542,
+        "blockWith": 1588,
+        "blockWithout": 1046,
+        "storedResultChars": 12826,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-nft-vault-contract-standards",
+        "execute": 2,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1224,
+        "blockWithout": 1046,
+        "storedResultChars": 6049,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-pc-cross-redstone-sep40",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1224,
+        "blockWithout": 1046,
+        "storedResultChars": 18122,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-pc-cross-redstone-sep40",
+        "execute": 2,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1224,
+        "blockWithout": 1046,
+        "storedResultChars": 2066,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-pc-quantum-preparedness-dormant",
+        "execute": 2,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1246,
+        "blockWithout": 1068,
+        "storedResultChars": 12826,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-protocol-tier1-requirements",
+        "execute": 3,
+        "sentences": 2,
+        "beforeCap": 2,
+        "sentenceChars": 353,
+        "addedToResult": 354,
+        "blockWith": 1400,
+        "blockWithout": 1046,
+        "storedResultChars": 4064,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep-43-web-wallet-api",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1224,
+        "blockWithout": 1046,
+        "storedResultChars": 5713,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep-43-web-wallet-api",
+        "execute": 2,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1266,
+        "blockWithout": 1088,
+        "storedResultChars": 5048,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep-45-contract-auth",
+        "execute": 1,
+        "sentences": 2,
+        "beforeCap": 2,
+        "sentenceChars": 355,
+        "addedToResult": 356,
+        "blockWith": 1402,
+        "blockWithout": 1046,
+        "storedResultChars": 7416,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep-53-sign-verify-message",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1224,
+        "blockWithout": 1046,
+        "storedResultChars": 5815,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep-53-sign-verify-message",
+        "execute": 2,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1224,
+        "blockWithout": 1046,
+        "storedResultChars": 3473,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 2,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 175,
+        "addedToResult": 176,
+        "blockWith": 1174,
+        "blockWithout": 998,
+        "storedResultChars": 9415,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "execute": 1,
+        "sentences": 3,
+        "beforeCap": 3,
+        "sentenceChars": 531,
+        "addedToResult": 532,
+        "blockWith": 1611,
+        "blockWithout": 1079,
+        "storedResultChars": 13035,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-soroban-oz-token",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1224,
+        "blockWithout": 1046,
+        "storedResultChars": 9028,
+        "beyondGrokClip": false
+      }
+    ],
+    "opMismatches": [
+      {
+        "id": "q-defi-agent-identity-stellar-experimental",
+        "execute": 1,
+        "footer": [
+          "stellarDocs.search_docs"
+        ],
+        "script": [
+          "lumenloop.search_content_semantic",
+          "scout.listSkills",
+          "scout.searchRepos",
+          "stellarDocs.search_docs"
+        ]
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 1,
+        "footer": [
+          "stellarDocs.search_docs",
+          "stellarDocs.search_wallet_dapp_docs"
+        ],
+        "script": []
+      }
+    ],
+    "perRow": {
+      "q-aas-trustline-limit-lifecycle": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-asset-usdc-eurc-issuer": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-asset-usdt0-layerzero-oft": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-comp-aml-analytics-vendors": {
+        "named": true,
+        "researchedWithIt": true,
+        "fires": false
+      },
+      "q-comp-sep8-regulated-assets-approval-server": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-crp-oz-rwa-erc3643-trex": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-defi-agent-identity-stellar-experimental": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-defi-agentic-payment-standards-compare": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-edge-asset-site-scam-detection": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-edge-factcheck-soroswap-first-amm": {
+        "named": true,
+        "researchedWithIt": true,
+        "fires": false
+      },
+      "q-edge-inject-ignore-instructions": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-edge-noinfo-stellar-native-privacy-default": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-hot-fee-pool-burn-deflation": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-infra-rpc-methods-list": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-infra-which-indexer": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-n3-issues-842-backup-faucet-wallet": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-n3-pi-network-wrong-chain": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-net-protocol-meeting-notes-find-cap": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-nft-vault-contract-standards": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-pc-account-activation-not-found": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-pc-cross-redstone-sep40": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-pc-quantum-preparedness-dormant": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-pc-sequence-numbers-ordering-replace": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-pc-sponsored-reserves": {
+        "named": true,
+        "researchedWithIt": true,
+        "fires": false
+      },
+      "q-protocol-ledger-close-time": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-protocol-tier1-requirements": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-scf-instawards": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-sep-43-web-wallet-api": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-sep-45-contract-auth": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-sep-53-sign-verify-message": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-sep24-interactive-deposit-flow": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-sep6-sep24-sep31-choice": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-smart-account-scoped-policy-signers": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-smart-wallet-fee-sponsorship": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-sor-custom-errors-find-failure-cause": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-sor-deploy-invoke-from-js-sdk": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-check-auth-custom-account": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-cli-bindings": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-contract-id-derivation": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-oz-token": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-soroban-pre-mainnet-security-steps": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-reentrancy": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-storage-types": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-vuln-classes": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-ti-classic-submission-errors": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-ti-enumerate-holders-airdrop": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-ti-parse-raw-ledger-data": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-tool-js-sdk-package": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-zk-host-functions-status": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      }
+    }
+  },
+  "P0": {
+    "totals": {
+      "rows": 58,
+      "executes": 118,
+      "executesWithCalls": 113,
+      "unparsed": 0,
+      "opSetDiffersFromFooter": 2,
+      "namedASeriesIdentifier": 23,
+      "certainFires": 17,
+      "possibleOnly": 0,
+      "sitesUnresolved": 0,
+      "sites": 201
+    },
+    "rowsNamingASeriesIdentifier": 16,
+    "rowsWithCertainFire": [
+      "q-comp-aml-analytics-vendors",
+      "q-comp-sep8-regulated-assets-approval-server",
+      "q-crp-oz-rwa-erc3643-trex",
+      "q-edge-asset-site-scam-detection",
+      "q-edge-inject-ignore-instructions",
+      "q-net-protocol-meeting-notes-find-cap",
+      "q-pc-cross-redstone-sep40",
+      "q-sep-43-web-wallet-api",
+      "q-sep-45-contract-auth",
+      "q-sep-53-sign-verify-message",
+      "q-sep24-interactive-deposit-flow",
+      "q-sep6-sep24-sep31-choice",
+      "q-soroban-oz-token",
+      "q-zk-host-functions-status"
+    ],
+    "rowsWithPossibleFire": [],
+    "firesBySeries": {
+      "sep": 20,
+      "cap": 3
+    },
+    "fires": [
+      {
+        "id": "q-comp-aml-analytics-vendors",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-12",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": true
+      },
+      {
+        "id": "q-comp-sep8-regulated-assets-approval-server",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-8",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-crp-oz-rwa-erc3643-trex",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-57",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-edge-asset-site-scam-detection",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-1",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-edge-inject-ignore-instructions",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-10",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-net-protocol-meeting-notes-find-cap",
+        "execute": 1,
+        "kind": "certain",
+        "token": "CAP-0046",
+        "series": "cap",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-pc-cross-redstone-sep40",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-40",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep-43-web-wallet-api",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-43",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": true
+      },
+      {
+        "id": "q-sep-45-contract-auth",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-45",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep-45-contract-auth",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-10",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep-53-sign-verify-message",
+        "execute": 2,
+        "kind": "certain",
+        "token": "SEP-0053",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-24",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-10",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 2,
+        "kind": "certain",
+        "token": "sep24",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 3,
+        "kind": "certain",
+        "token": "sep24",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-6",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-24",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-31",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "execute": 2,
+        "kind": "certain",
+        "token": "SEP-6",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "execute": 2,
+        "kind": "certain",
+        "token": "SEP-24",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-soroban-oz-token",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-41",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-zk-host-functions-status",
+        "execute": 2,
+        "kind": "certain",
+        "token": "CAP-0075",
+        "series": "cap",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-zk-host-functions-status",
+        "execute": 2,
+        "kind": "certain",
+        "token": "CAP-0080",
+        "series": "cap",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      }
+    ],
+    "lengths": [
+      {
+        "id": "q-comp-aml-analytics-vendors",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1313,
+        "blockWithout": 1135,
+        "storedResultChars": 27467,
+        "beyondGrokClip": true
+      },
+      {
+        "id": "q-comp-sep8-regulated-assets-approval-server",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 175,
+        "addedToResult": 176,
+        "blockWith": 1222,
+        "blockWithout": 1046,
+        "storedResultChars": 11096,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-crp-oz-rwa-erc3643-trex",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1239,
+        "blockWithout": 1061,
+        "storedResultChars": 20096,
+        "beyondGrokClip": true
+      },
+      {
+        "id": "q-edge-asset-site-scam-detection",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 175,
+        "addedToResult": 176,
+        "blockWith": 1222,
+        "blockWithout": 1046,
+        "storedResultChars": 13400,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-edge-inject-ignore-instructions",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1257,
+        "blockWithout": 1079,
+        "storedResultChars": 3789,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-net-protocol-meeting-notes-find-cap",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 181,
+        "addedToResult": 182,
+        "blockWith": 1257,
+        "blockWithout": 1075,
+        "storedResultChars": 2648,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-pc-cross-redstone-sep40",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1224,
+        "blockWithout": 1046,
+        "storedResultChars": 16939,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep-43-web-wallet-api",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1224,
+        "blockWithout": 1046,
+        "storedResultChars": 5653,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep-45-contract-auth",
+        "execute": 1,
+        "sentences": 2,
+        "beforeCap": 2,
+        "sentenceChars": 355,
+        "addedToResult": 356,
+        "blockWith": 1402,
+        "blockWithout": 1046,
+        "storedResultChars": 7593,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep-53-sign-verify-message",
+        "execute": 2,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 181,
+        "addedToResult": 182,
+        "blockWith": 1228,
+        "blockWithout": 1046,
+        "storedResultChars": 5432,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 1,
+        "sentences": 2,
+        "beforeCap": 2,
+        "sentenceChars": 355,
+        "addedToResult": 356,
+        "blockWith": 1354,
+        "blockWithout": 998,
+        "storedResultChars": 20903,
+        "beyondGrokClip": true
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 2,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 175,
+        "addedToResult": 205,
+        "blockWith": 205,
+        "blockWithout": 0,
+        "storedResultChars": 889,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 3,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 175,
+        "addedToResult": 176,
+        "blockWith": 984,
+        "blockWithout": 808,
+        "storedResultChars": 7571,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "execute": 1,
+        "sentences": 3,
+        "beforeCap": 3,
+        "sentenceChars": 531,
+        "addedToResult": 532,
+        "blockWith": 1611,
+        "blockWithout": 1079,
+        "storedResultChars": 10497,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "execute": 2,
+        "sentences": 2,
+        "beforeCap": 2,
+        "sentenceChars": 353,
+        "addedToResult": 354,
+        "blockWith": 1433,
+        "blockWithout": 1079,
+        "storedResultChars": 3535,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-soroban-oz-token",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1186,
+        "blockWithout": 1008,
+        "storedResultChars": 14490,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-zk-host-functions-status",
+        "execute": 2,
+        "sentences": 2,
+        "beforeCap": 2,
+        "sentenceChars": 363,
+        "addedToResult": 364,
+        "blockWith": 1410,
+        "blockWithout": 1046,
+        "storedResultChars": 4826,
+        "beyondGrokClip": false
+      }
+    ],
+    "opMismatches": [
+      {
+        "id": "q-comp-aml-analytics-vendors",
+        "execute": 1,
+        "footer": [
+          "lumenloop.search_content_semantic",
+          "lumenloop.search_directory",
+          "stellarDocs.search_anchor_sep_docs",
+          "stellarDocs.search_docs"
+        ],
+        "script": [
+          "lumenloop.search_content_semantic",
+          "lumenloop.search_directory",
+          "scout.searchResearch",
+          "stellarDocs.search_anchor_sep_docs",
+          "stellarDocs.search_docs"
+        ]
+      },
+      {
+        "id": "q-defi-agent-identity-stellar-experimental",
+        "execute": 1,
+        "footer": [
+          "lumenloop.search_directory",
+          "scout.searchResearch",
+          "stellarDocs.search_docs"
+        ],
+        "script": [
+          "lumenloop.search_content_semantic",
+          "lumenloop.search_directory",
+          "scout.searchRepos",
+          "scout.searchResearch",
+          "stellarDocs.search_docs"
+        ]
+      }
+    ],
+    "perRow": {
+      "q-aas-trustline-limit-lifecycle": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-asset-usdc-eurc-issuer": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-asset-usdt0-layerzero-oft": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-comp-aml-analytics-vendors": {
+        "named": true,
+        "researchedWithIt": true,
+        "fires": true
+      },
+      "q-comp-sep8-regulated-assets-approval-server": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-crp-oz-rwa-erc3643-trex": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-data-network-metrics-sources": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-defi-agent-identity-stellar-experimental": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-defi-agentic-payment-standards-compare": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-eco-stellar-rwa-stablecoin-volume": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-edge-asset-site-scam-detection": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-edge-factcheck-soroswap-first-amm": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-edge-inject-ignore-instructions": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-edge-noinfo-stellar-native-privacy-default": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-hot-fee-pool-burn-deflation": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-hot-sdf-xlm-holdings-sales": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-infra-rpc-methods-list": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-infra-which-indexer": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-n3-issues-842-backup-faucet-wallet": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-n3-pi-network-wrong-chain": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-net-protocol-meeting-notes-find-cap": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-nft-vault-contract-standards": {
+        "named": true,
+        "researchedWithIt": true,
+        "fires": false
+      },
+      "q-org-sdf-structure-mandate": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-pc-account-activation-not-found": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-pc-cross-redstone-sep40": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-pc-quantum-preparedness-dormant": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-pc-sequence-numbers-ordering-replace": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-pc-sponsored-reserves": {
+        "named": true,
+        "researchedWithIt": true,
+        "fires": false
+      },
+      "q-protocol-ledger-close-time": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-protocol-tier1-requirements": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-raph-official-help-sdf-cannot-recover": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-scf-ambassador-program": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-scf-how-to-apply": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-scf-instawards": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-scf-vs-sdf-enterprise-fund": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-sep-43-web-wallet-api": {
+        "named": true,
+        "researchedWithIt": true,
+        "fires": true
+      },
+      "q-sep-45-contract-auth": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-sep-53-sign-verify-message": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-sep24-interactive-deposit-flow": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-sep6-sep24-sep31-choice": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-smart-account-scoped-policy-signers": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-smart-wallet-fee-sponsorship": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-sor-custom-errors-find-failure-cause": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-sor-deploy-invoke-from-js-sdk": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-check-auth-custom-account": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-cli-bindings": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-contract-id-derivation": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-oz-token": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-soroban-pre-mainnet-security-steps": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-reentrancy": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-storage-types": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-vuln-classes": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-ti-classic-submission-errors": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-ti-enumerate-holders-airdrop": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-ti-parse-raw-ledger-data": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-tool-js-sdk-package": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-zk-host-functions-status": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      }
+    }
+  },
+  "P1": {
+    "totals": {
+      "rows": 58,
+      "executes": 107,
+      "executesWithCalls": 106,
+      "unparsed": 0,
+      "opSetDiffersFromFooter": 1,
+      "namedASeriesIdentifier": 18,
+      "certainFires": 13,
+      "possibleOnly": 0,
+      "sitesUnresolved": 0,
+      "sites": 183
+    },
+    "rowsNamingASeriesIdentifier": 14,
+    "rowsWithCertainFire": [
+      "q-comp-sep8-regulated-assets-approval-server",
+      "q-edge-asset-site-scam-detection",
+      "q-edge-inject-ignore-instructions",
+      "q-net-protocol-meeting-notes-find-cap",
+      "q-nft-vault-contract-standards",
+      "q-pc-cross-redstone-sep40",
+      "q-sep-43-web-wallet-api",
+      "q-sep-45-contract-auth",
+      "q-sep24-interactive-deposit-flow",
+      "q-sep6-sep24-sep31-choice",
+      "q-soroban-oz-token",
+      "q-zk-host-functions-status"
+    ],
+    "rowsWithPossibleFire": [],
+    "firesBySeries": {
+      "sep": 17,
+      "cap": 3
+    },
+    "fires": [
+      {
+        "id": "q-comp-sep8-regulated-assets-approval-server",
+        "execute": 1,
+        "kind": "certain",
+        "token": "sep-0008",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-edge-asset-site-scam-detection",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-1",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-edge-asset-site-scam-detection",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-8",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-edge-inject-ignore-instructions",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-10",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-net-protocol-meeting-notes-find-cap",
+        "execute": 1,
+        "kind": "certain",
+        "token": "CAP-67",
+        "series": "cap",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-nft-vault-contract-standards",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-0050",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-nft-vault-contract-standards",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-0056",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-pc-cross-redstone-sep40",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-40",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep-43-web-wallet-api",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-43",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": true
+      },
+      {
+        "id": "q-sep-45-contract-auth",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-45",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep-45-contract-auth",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-10",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-24",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-10",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 2,
+        "kind": "certain",
+        "token": "sep24",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-6",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-24",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-31",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-soroban-oz-token",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-41",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-zk-host-functions-status",
+        "execute": 1,
+        "kind": "certain",
+        "token": "CAP-74",
+        "series": "cap",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-zk-host-functions-status",
+        "execute": 1,
+        "kind": "certain",
+        "token": "CAP-75",
+        "series": "cap",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      }
+    ],
+    "lengths": [
+      {
+        "id": "q-comp-sep8-regulated-assets-approval-server",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 181,
+        "addedToResult": 182,
+        "blockWith": 1300,
+        "blockWithout": 1118,
+        "storedResultChars": 19524,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-edge-asset-site-scam-detection",
+        "execute": 1,
+        "sentences": 2,
+        "beforeCap": 2,
+        "sentenceChars": 351,
+        "addedToResult": 352,
+        "blockWith": 1365,
+        "blockWithout": 1013,
+        "storedResultChars": 27044,
+        "beyondGrokClip": true
+      },
+      {
+        "id": "q-edge-inject-ignore-instructions",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1257,
+        "blockWithout": 1079,
+        "storedResultChars": 3727,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-net-protocol-meeting-notes-find-cap",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1253,
+        "blockWithout": 1075,
+        "storedResultChars": 3418,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-nft-vault-contract-standards",
+        "execute": 1,
+        "sentences": 2,
+        "beforeCap": 2,
+        "sentenceChars": 363,
+        "addedToResult": 364,
+        "blockWith": 1410,
+        "blockWithout": 1046,
+        "storedResultChars": 10144,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-pc-cross-redstone-sep40",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1224,
+        "blockWithout": 1046,
+        "storedResultChars": 18716,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep-43-web-wallet-api",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1224,
+        "blockWithout": 1046,
+        "storedResultChars": 5560,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep-45-contract-auth",
+        "execute": 1,
+        "sentences": 2,
+        "beforeCap": 2,
+        "sentenceChars": 355,
+        "addedToResult": 356,
+        "blockWith": 1402,
+        "blockWithout": 1046,
+        "storedResultChars": 7728,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 1,
+        "sentences": 2,
+        "beforeCap": 2,
+        "sentenceChars": 355,
+        "addedToResult": 356,
+        "blockWith": 1509,
+        "blockWithout": 1153,
+        "storedResultChars": 15860,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 2,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 175,
+        "addedToResult": 176,
+        "blockWith": 984,
+        "blockWithout": 808,
+        "storedResultChars": 7571,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "execute": 1,
+        "sentences": 3,
+        "beforeCap": 3,
+        "sentenceChars": 531,
+        "addedToResult": 532,
+        "blockWith": 1611,
+        "blockWithout": 1079,
+        "storedResultChars": 8824,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-soroban-oz-token",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1224,
+        "blockWithout": 1046,
+        "storedResultChars": 12956,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-zk-host-functions-status",
+        "execute": 1,
+        "sentences": 2,
+        "beforeCap": 2,
+        "sentenceChars": 355,
+        "addedToResult": 356,
+        "blockWith": 1402,
+        "blockWithout": 1046,
+        "storedResultChars": 11786,
+        "beyondGrokClip": false
+      }
+    ],
+    "opMismatches": [
+      {
+        "id": "q-defi-agent-identity-stellar-experimental",
+        "execute": 1,
+        "footer": [
+          "scout.searchRepos"
+        ],
+        "script": [
+          "lumenloop.search_content_semantic",
+          "scout.listSkills",
+          "scout.searchRepos",
+          "stellarDocs.search_docs"
+        ]
+      }
+    ],
+    "perRow": {
+      "q-aas-trustline-limit-lifecycle": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-asset-usdc-eurc-issuer": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-asset-usdt0-layerzero-oft": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-comp-aml-analytics-vendors": {
+        "named": true,
+        "researchedWithIt": true,
+        "fires": false
+      },
+      "q-comp-sep8-regulated-assets-approval-server": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-crp-oz-rwa-erc3643-trex": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-data-network-metrics-sources": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-defi-agent-identity-stellar-experimental": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-defi-agentic-payment-standards-compare": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-eco-stellar-rwa-stablecoin-volume": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-edge-asset-site-scam-detection": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-edge-factcheck-soroswap-first-amm": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-edge-inject-ignore-instructions": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-edge-noinfo-stellar-native-privacy-default": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-hot-fee-pool-burn-deflation": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-hot-sdf-xlm-holdings-sales": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-infra-rpc-methods-list": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-infra-which-indexer": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-n3-issues-842-backup-faucet-wallet": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-n3-pi-network-wrong-chain": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-net-protocol-meeting-notes-find-cap": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-nft-vault-contract-standards": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-org-sdf-structure-mandate": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-pc-account-activation-not-found": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-pc-cross-redstone-sep40": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-pc-quantum-preparedness-dormant": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-pc-sequence-numbers-ordering-replace": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-pc-sponsored-reserves": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-protocol-ledger-close-time": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-protocol-tier1-requirements": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-raph-official-help-sdf-cannot-recover": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-scf-ambassador-program": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-scf-how-to-apply": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-scf-instawards": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-scf-vs-sdf-enterprise-fund": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-sep-43-web-wallet-api": {
+        "named": true,
+        "researchedWithIt": true,
+        "fires": true
+      },
+      "q-sep-45-contract-auth": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-sep-53-sign-verify-message": {
+        "named": true,
+        "researchedWithIt": true,
+        "fires": false
+      },
+      "q-sep24-interactive-deposit-flow": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-sep6-sep24-sep31-choice": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-smart-account-scoped-policy-signers": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-smart-wallet-fee-sponsorship": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-sor-custom-errors-find-failure-cause": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-sor-deploy-invoke-from-js-sdk": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-check-auth-custom-account": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-cli-bindings": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-contract-id-derivation": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-oz-token": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-soroban-pre-mainnet-security-steps": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-reentrancy": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-storage-types": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-vuln-classes": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-ti-classic-submission-errors": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-ti-enumerate-holders-airdrop": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-ti-parse-raw-ledger-data": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-tool-js-sdk-package": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-zk-host-functions-status": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      }
+    }
+  },
+  "P2": {
+    "totals": {
+      "rows": 58,
+      "executes": 109,
+      "executesWithCalls": 107,
+      "unparsed": 0,
+      "opSetDiffersFromFooter": 3,
+      "namedASeriesIdentifier": 19,
+      "certainFires": 15,
+      "possibleOnly": 1,
+      "sitesUnresolved": 3,
+      "sites": 178
+    },
+    "rowsNamingASeriesIdentifier": 13,
+    "rowsWithCertainFire": [
+      "q-comp-sep8-regulated-assets-approval-server",
+      "q-edge-asset-site-scam-detection",
+      "q-edge-inject-ignore-instructions",
+      "q-net-protocol-meeting-notes-find-cap",
+      "q-nft-vault-contract-standards",
+      "q-pc-cross-redstone-sep40",
+      "q-sep-43-web-wallet-api",
+      "q-sep-45-contract-auth",
+      "q-sep-53-sign-verify-message",
+      "q-sep24-interactive-deposit-flow",
+      "q-sep6-sep24-sep31-choice",
+      "q-soroban-oz-token"
+    ],
+    "rowsWithPossibleFire": [
+      "q-comp-aml-analytics-vendors"
+    ],
+    "firesBySeries": {
+      "sep": 19,
+      "cap": 1
+    },
+    "fires": [
+      {
+        "id": "q-comp-aml-analytics-vendors",
+        "execute": 1,
+        "kind": "possible",
+        "token": "SEP-12",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-comp-sep8-regulated-assets-approval-server",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-8",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-edge-asset-site-scam-detection",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-1",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-edge-inject-ignore-instructions",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-10",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-net-protocol-meeting-notes-find-cap",
+        "execute": 1,
+        "kind": "certain",
+        "token": "CAP-0046",
+        "series": "cap",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-nft-vault-contract-standards",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-0050",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-nft-vault-contract-standards",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-0056",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-pc-cross-redstone-sep40",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-40",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-pc-cross-redstone-sep40",
+        "execute": 2,
+        "kind": "certain",
+        "token": "SEP-40",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep-43-web-wallet-api",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-0043",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": true
+      },
+      {
+        "id": "q-sep-45-contract-auth",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-45",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep-53-sign-verify-message",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-0053",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-24",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-10",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 2,
+        "kind": "certain",
+        "token": "sep24",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 3,
+        "kind": "certain",
+        "token": "sep24",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-6",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-24",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-31",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-soroban-oz-token",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-41",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      }
+    ],
+    "lengths": [
+      {
+        "id": "q-comp-sep8-regulated-assets-approval-server",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 175,
+        "addedToResult": 176,
+        "blockWith": 1255,
+        "blockWithout": 1079,
+        "storedResultChars": 11243,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-edge-asset-site-scam-detection",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 175,
+        "addedToResult": 176,
+        "blockWith": 1189,
+        "blockWithout": 1013,
+        "storedResultChars": 20055,
+        "beyondGrokClip": true
+      },
+      {
+        "id": "q-edge-inject-ignore-instructions",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1257,
+        "blockWithout": 1079,
+        "storedResultChars": 5643,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-net-protocol-meeting-notes-find-cap",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 181,
+        "addedToResult": 182,
+        "blockWith": 1257,
+        "blockWithout": 1075,
+        "storedResultChars": 2978,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-nft-vault-contract-standards",
+        "execute": 1,
+        "sentences": 2,
+        "beforeCap": 2,
+        "sentenceChars": 363,
+        "addedToResult": 364,
+        "blockWith": 1410,
+        "blockWithout": 1046,
+        "storedResultChars": 11411,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-pc-cross-redstone-sep40",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1224,
+        "blockWithout": 1046,
+        "storedResultChars": 20433,
+        "beyondGrokClip": true
+      },
+      {
+        "id": "q-pc-cross-redstone-sep40",
+        "execute": 2,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 937,
+        "blockWithout": 759,
+        "storedResultChars": 1603,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep-43-web-wallet-api",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 181,
+        "addedToResult": 182,
+        "blockWith": 1228,
+        "blockWithout": 1046,
+        "storedResultChars": 5533,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep-45-contract-auth",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1296,
+        "blockWithout": 1118,
+        "storedResultChars": 9697,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep-53-sign-verify-message",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 181,
+        "addedToResult": 182,
+        "blockWith": 1228,
+        "blockWithout": 1046,
+        "storedResultChars": 5436,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 1,
+        "sentences": 2,
+        "beforeCap": 2,
+        "sentenceChars": 355,
+        "addedToResult": 356,
+        "blockWith": 1509,
+        "blockWithout": 1153,
+        "storedResultChars": 25936,
+        "beyondGrokClip": true
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 2,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 175,
+        "addedToResult": 205,
+        "blockWith": 205,
+        "blockWithout": 0,
+        "storedResultChars": 889,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 3,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 175,
+        "addedToResult": 176,
+        "blockWith": 984,
+        "blockWithout": 808,
+        "storedResultChars": 8571,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "execute": 1,
+        "sentences": 3,
+        "beforeCap": 5,
+        "sentenceChars": 531,
+        "addedToResult": 532,
+        "blockWith": 1611,
+        "blockWithout": 1079,
+        "storedResultChars": 11588,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-soroban-oz-token",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1224,
+        "blockWithout": 1046,
+        "storedResultChars": 13639,
+        "beyondGrokClip": false
+      }
+    ],
+    "opMismatches": [
+      {
+        "id": "q-comp-aml-analytics-vendors",
+        "execute": 1,
+        "footer": [
+          "lumenloop.search_content_semantic",
+          "scout.searchResearch",
+          "stellarDocs.search_anchor_sep_docs",
+          "stellarDocs.search_docs"
+        ],
+        "script": []
+      },
+      {
+        "id": "q-defi-agent-identity-stellar-experimental",
+        "execute": 1,
+        "footer": [
+          "lumenloop.search_content_semantic"
+        ],
+        "script": [
+          "lumenloop.search_content_semantic",
+          "lumenloop.search_directory",
+          "scout.listSkills",
+          "scout.searchRepos",
+          "stellarDocs.search_docs"
+        ]
+      },
+      {
+        "id": "q-scf-vs-sdf-enterprise-fund",
+        "execute": 1,
+        "footer": [
+          "scout.searchResearch"
+        ],
+        "script": [
+          "lumenloop.search_content_semantic",
+          "scout.searchResearch"
+        ]
+      }
+    ],
+    "perRow": {
+      "q-aas-trustline-limit-lifecycle": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-asset-usdc-eurc-issuer": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-asset-usdt0-layerzero-oft": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-comp-aml-analytics-vendors": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-comp-sep8-regulated-assets-approval-server": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-crp-oz-rwa-erc3643-trex": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-data-network-metrics-sources": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-defi-agent-identity-stellar-experimental": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-defi-agentic-payment-standards-compare": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-eco-stellar-rwa-stablecoin-volume": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-edge-asset-site-scam-detection": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-edge-factcheck-soroswap-first-amm": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-edge-inject-ignore-instructions": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-edge-noinfo-stellar-native-privacy-default": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-hot-fee-pool-burn-deflation": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-hot-sdf-xlm-holdings-sales": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-infra-rpc-methods-list": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-infra-which-indexer": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-n3-issues-842-backup-faucet-wallet": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-n3-pi-network-wrong-chain": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-net-protocol-meeting-notes-find-cap": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-nft-vault-contract-standards": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-org-sdf-structure-mandate": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-pc-account-activation-not-found": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-pc-cross-redstone-sep40": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-pc-quantum-preparedness-dormant": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-pc-sequence-numbers-ordering-replace": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-pc-sponsored-reserves": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-protocol-ledger-close-time": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-protocol-tier1-requirements": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-raph-official-help-sdf-cannot-recover": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-scf-ambassador-program": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-scf-how-to-apply": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-scf-instawards": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-scf-vs-sdf-enterprise-fund": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-sep-43-web-wallet-api": {
+        "named": true,
+        "researchedWithIt": true,
+        "fires": true
+      },
+      "q-sep-45-contract-auth": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-sep-53-sign-verify-message": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-sep24-interactive-deposit-flow": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-sep6-sep24-sep31-choice": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-smart-account-scoped-policy-signers": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-smart-wallet-fee-sponsorship": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-sor-custom-errors-find-failure-cause": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-sor-deploy-invoke-from-js-sdk": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-check-auth-custom-account": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-cli-bindings": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-contract-id-derivation": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-oz-token": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-soroban-pre-mainnet-security-steps": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-reentrancy": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-storage-types": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-soroban-vuln-classes": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-ti-classic-submission-errors": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-ti-enumerate-holders-airdrop": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-ti-parse-raw-ledger-data": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-tool-js-sdk-package": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-zk-host-functions-status": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      }
+    }
+  },
+  "R1": {
+    "totals": {
+      "rows": 17,
+      "executes": 42,
+      "executesWithCalls": 40,
+      "unparsed": 0,
+      "opSetDiffersFromFooter": 0,
+      "namedASeriesIdentifier": 25,
+      "certainFires": 16,
+      "possibleOnly": 0,
+      "sitesUnresolved": 0,
+      "sites": 72
+    },
+    "rowsNamingASeriesIdentifier": 13,
+    "rowsWithCertainFire": [
+      "q-comp-aml-analytics-vendors",
+      "q-comp-sep8-regulated-assets-approval-server",
+      "q-edge-inject-ignore-instructions",
+      "q-net-protocol-meeting-notes-find-cap",
+      "q-nft-vault-contract-standards",
+      "q-pc-cross-redstone-sep40",
+      "q-sep-43-web-wallet-api",
+      "q-sep-45-contract-auth",
+      "q-sep-53-sign-verify-message",
+      "q-sep24-interactive-deposit-flow",
+      "q-sep6-sep24-sep31-choice",
+      "q-soroban-oz-token",
+      "q-zk-host-functions-status"
+    ],
+    "rowsWithPossibleFire": [],
+    "firesBySeries": {
+      "sep": 20,
+      "cap": 3
+    },
+    "fires": [
+      {
+        "id": "q-comp-aml-analytics-vendors",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-12",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": true
+      },
+      {
+        "id": "q-comp-sep8-regulated-assets-approval-server",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-8",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-edge-inject-ignore-instructions",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-10",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-net-protocol-meeting-notes-find-cap",
+        "execute": 1,
+        "kind": "certain",
+        "token": "CAP-0067",
+        "series": "cap",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-nft-vault-contract-standards",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-50",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": true
+      },
+      {
+        "id": "q-nft-vault-contract-standards",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-56",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": true
+      },
+      {
+        "id": "q-nft-vault-contract-standards",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-41",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-pc-cross-redstone-sep40",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-40",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": true
+      },
+      {
+        "id": "q-sep-43-web-wallet-api",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-0043",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": true
+      },
+      {
+        "id": "q-sep-45-contract-auth",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-45",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep-45-contract-auth",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-10",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep-53-sign-verify-message",
+        "execute": 3,
+        "kind": "certain",
+        "token": "SEP-53",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": true,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-24",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-10",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 2,
+        "kind": "certain",
+        "token": "sep24",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 3,
+        "kind": "certain",
+        "token": "sep24",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 4,
+        "kind": "certain",
+        "token": "sep24",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-6",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-24",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-31",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-soroban-oz-token",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-41",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-zk-host-functions-status",
+        "execute": 2,
+        "kind": "certain",
+        "token": "CAP-0075",
+        "series": "cap",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-zk-host-functions-status",
+        "execute": 2,
+        "kind": "certain",
+        "token": "CAP-0080",
+        "series": "cap",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      }
+    ],
+    "lengths": [
+      {
+        "id": "q-comp-aml-analytics-vendors",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1243,
+        "blockWithout": 1065,
+        "storedResultChars": 15783,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-comp-sep8-regulated-assets-approval-server",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 175,
+        "addedToResult": 176,
+        "blockWith": 1222,
+        "blockWithout": 1046,
+        "storedResultChars": 10418,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-edge-inject-ignore-instructions",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1257,
+        "blockWithout": 1079,
+        "storedResultChars": 3905,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-net-protocol-meeting-notes-find-cap",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 181,
+        "addedToResult": 182,
+        "blockWith": 1257,
+        "blockWithout": 1075,
+        "storedResultChars": 3541,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-nft-vault-contract-standards",
+        "execute": 1,
+        "sentences": 3,
+        "beforeCap": 3,
+        "sentenceChars": 533,
+        "addedToResult": 534,
+        "blockWith": 1580,
+        "blockWithout": 1046,
+        "storedResultChars": 11041,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-pc-cross-redstone-sep40",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1224,
+        "blockWithout": 1046,
+        "storedResultChars": 15767,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep-43-web-wallet-api",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 181,
+        "addedToResult": 182,
+        "blockWith": 1228,
+        "blockWithout": 1046,
+        "storedResultChars": 5895,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep-45-contract-auth",
+        "execute": 1,
+        "sentences": 2,
+        "beforeCap": 2,
+        "sentenceChars": 355,
+        "addedToResult": 356,
+        "blockWith": 1402,
+        "blockWithout": 1046,
+        "storedResultChars": 7505,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep-53-sign-verify-message",
+        "execute": 3,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1224,
+        "blockWithout": 1046,
+        "storedResultChars": 5223,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 1,
+        "sentences": 2,
+        "beforeCap": 2,
+        "sentenceChars": 355,
+        "addedToResult": 356,
+        "blockWith": 1509,
+        "blockWithout": 1153,
+        "storedResultChars": 17306,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 2,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 175,
+        "addedToResult": 205,
+        "blockWith": 205,
+        "blockWithout": 0,
+        "storedResultChars": 1452,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 3,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 175,
+        "addedToResult": 176,
+        "blockWith": 984,
+        "blockWithout": 808,
+        "storedResultChars": 14978,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 4,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 175,
+        "addedToResult": 176,
+        "blockWith": 984,
+        "blockWithout": 808,
+        "storedResultChars": 9618,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "execute": 1,
+        "sentences": 3,
+        "beforeCap": 3,
+        "sentenceChars": 531,
+        "addedToResult": 532,
+        "blockWith": 1611,
+        "blockWithout": 1079,
+        "storedResultChars": 12024,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-soroban-oz-token",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1224,
+        "blockWithout": 1046,
+        "storedResultChars": 12613,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-zk-host-functions-status",
+        "execute": 2,
+        "sentences": 2,
+        "beforeCap": 2,
+        "sentenceChars": 363,
+        "addedToResult": 364,
+        "blockWith": 1415,
+        "blockWithout": 1051,
+        "storedResultChars": 5253,
+        "beyondGrokClip": false
+      }
+    ],
+    "opMismatches": [],
+    "perRow": {
+      "q-comp-aml-analytics-vendors": {
+        "named": true,
+        "researchedWithIt": true,
+        "fires": true
+      },
+      "q-comp-sep8-regulated-assets-approval-server": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-crp-oz-rwa-erc3643-trex": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-edge-asset-site-scam-detection": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-edge-inject-ignore-instructions": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-net-protocol-meeting-notes-find-cap": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-nft-vault-contract-standards": {
+        "named": true,
+        "researchedWithIt": true,
+        "fires": true
+      },
+      "q-pc-cross-redstone-sep40": {
+        "named": true,
+        "researchedWithIt": true,
+        "fires": true
+      },
+      "q-pc-quantum-preparedness-dormant": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-pc-sponsored-reserves": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-sep-43-web-wallet-api": {
+        "named": true,
+        "researchedWithIt": true,
+        "fires": true
+      },
+      "q-sep-45-contract-auth": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-sep-53-sign-verify-message": {
+        "named": true,
+        "researchedWithIt": true,
+        "fires": true
+      },
+      "q-sep24-interactive-deposit-flow": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-sep6-sep24-sep31-choice": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-soroban-oz-token": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-zk-host-functions-status": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      }
+    }
+  },
+  "R2": {
+    "totals": {
+      "rows": 17,
+      "executes": 34,
+      "executesWithCalls": 34,
+      "unparsed": 0,
+      "opSetDiffersFromFooter": 1,
+      "namedASeriesIdentifier": 24,
+      "certainFires": 14,
+      "possibleOnly": 0,
+      "sitesUnresolved": 0,
+      "sites": 60
+    },
+    "rowsNamingASeriesIdentifier": 14,
+    "rowsWithCertainFire": [
+      "q-comp-sep8-regulated-assets-approval-server",
+      "q-edge-asset-site-scam-detection",
+      "q-edge-inject-ignore-instructions",
+      "q-net-protocol-meeting-notes-find-cap",
+      "q-pc-cross-redstone-sep40",
+      "q-sep-43-web-wallet-api",
+      "q-sep-45-contract-auth",
+      "q-sep-53-sign-verify-message",
+      "q-sep24-interactive-deposit-flow",
+      "q-sep6-sep24-sep31-choice",
+      "q-soroban-oz-token",
+      "q-zk-host-functions-status"
+    ],
+    "rowsWithPossibleFire": [],
+    "firesBySeries": {
+      "sep": 16,
+      "cap": 3
+    },
+    "fires": [
+      {
+        "id": "q-comp-sep8-regulated-assets-approval-server",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-8",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-edge-asset-site-scam-detection",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-1",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-edge-inject-ignore-instructions",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-10",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-net-protocol-meeting-notes-find-cap",
+        "execute": 1,
+        "kind": "certain",
+        "token": "CAP-0067",
+        "series": "cap",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-pc-cross-redstone-sep40",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-40",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": true
+      },
+      {
+        "id": "q-sep-43-web-wallet-api",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-43",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": true
+      },
+      {
+        "id": "q-sep-45-contract-auth",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-45",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep-45-contract-auth",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-10",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep-53-sign-verify-message",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-53",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": true
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-24",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": true
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-10",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 4,
+        "kind": "certain",
+        "token": "sep24",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": true,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 5,
+        "kind": "certain",
+        "token": "sep24",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": true,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-6",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-24",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-31",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-soroban-oz-token",
+        "execute": 1,
+        "kind": "certain",
+        "token": "SEP-41",
+        "series": "sep",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-zk-host-functions-status",
+        "execute": 1,
+        "kind": "certain",
+        "token": "CAP-74",
+        "series": "cap",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      },
+      {
+        "id": "q-zk-host-functions-status",
+        "execute": 1,
+        "kind": "certain",
+        "token": "CAP-75",
+        "series": "cap",
+        "inScriptLiterals": true,
+        "researchEarlierInRow": false,
+        "researchLaterInRow": false
+      }
+    ],
+    "lengths": [
+      {
+        "id": "q-comp-sep8-regulated-assets-approval-server",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 175,
+        "addedToResult": 176,
+        "blockWith": 1255,
+        "blockWithout": 1079,
+        "storedResultChars": 14394,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-edge-asset-site-scam-detection",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 175,
+        "addedToResult": 176,
+        "blockWith": 1235,
+        "blockWithout": 1059,
+        "storedResultChars": 17015,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-edge-inject-ignore-instructions",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1224,
+        "blockWithout": 1046,
+        "storedResultChars": 3223,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-net-protocol-meeting-notes-find-cap",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 181,
+        "addedToResult": 182,
+        "blockWith": 1257,
+        "blockWithout": 1075,
+        "storedResultChars": 3278,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-pc-cross-redstone-sep40",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1224,
+        "blockWithout": 1046,
+        "storedResultChars": 20605,
+        "beyondGrokClip": true
+      },
+      {
+        "id": "q-sep-43-web-wallet-api",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1224,
+        "blockWithout": 1046,
+        "storedResultChars": 8776,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep-45-contract-auth",
+        "execute": 1,
+        "sentences": 2,
+        "beforeCap": 2,
+        "sentenceChars": 355,
+        "addedToResult": 356,
+        "blockWith": 1435,
+        "blockWithout": 1079,
+        "storedResultChars": 7563,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep-53-sign-verify-message",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1224,
+        "blockWithout": 1046,
+        "storedResultChars": 8866,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 1,
+        "sentences": 2,
+        "beforeCap": 2,
+        "sentenceChars": 355,
+        "addedToResult": 356,
+        "blockWith": 1509,
+        "blockWithout": 1153,
+        "storedResultChars": 17087,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 4,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 175,
+        "addedToResult": 176,
+        "blockWith": 984,
+        "blockWithout": 808,
+        "storedResultChars": 4349,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep24-interactive-deposit-flow",
+        "execute": 5,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 175,
+        "addedToResult": 176,
+        "blockWith": 984,
+        "blockWithout": 808,
+        "storedResultChars": 4936,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-sep6-sep24-sep31-choice",
+        "execute": 1,
+        "sentences": 3,
+        "beforeCap": 5,
+        "sentenceChars": 531,
+        "addedToResult": 532,
+        "blockWith": 1611,
+        "blockWithout": 1079,
+        "storedResultChars": 12199,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-soroban-oz-token",
+        "execute": 1,
+        "sentences": 1,
+        "beforeCap": 1,
+        "sentenceChars": 177,
+        "addedToResult": 178,
+        "blockWith": 1224,
+        "blockWithout": 1046,
+        "storedResultChars": 17200,
+        "beyondGrokClip": false
+      },
+      {
+        "id": "q-zk-host-functions-status",
+        "execute": 1,
+        "sentences": 2,
+        "beforeCap": 2,
+        "sentenceChars": 355,
+        "addedToResult": 356,
+        "blockWith": 1431,
+        "blockWithout": 1075,
+        "storedResultChars": 11528,
+        "beyondGrokClip": false
+      }
+    ],
+    "opMismatches": [
+      {
+        "id": "q-comp-aml-analytics-vendors",
+        "execute": 2,
+        "footer": [
+          "stellarDocs.get_doc_page"
+        ],
+        "script": [
+          "scout.searchResearch",
+          "stellarDocs.get_doc_page"
+        ]
+      }
+    ],
+    "perRow": {
+      "q-comp-aml-analytics-vendors": {
+        "named": true,
+        "researchedWithIt": true,
+        "fires": false
+      },
+      "q-comp-sep8-regulated-assets-approval-server": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-crp-oz-rwa-erc3643-trex": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-edge-asset-site-scam-detection": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-edge-inject-ignore-instructions": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-net-protocol-meeting-notes-find-cap": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-nft-vault-contract-standards": {
+        "named": true,
+        "researchedWithIt": true,
+        "fires": false
+      },
+      "q-pc-cross-redstone-sep40": {
+        "named": true,
+        "researchedWithIt": true,
+        "fires": true
+      },
+      "q-pc-quantum-preparedness-dormant": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-pc-sponsored-reserves": {
+        "named": false,
+        "researchedWithIt": false,
+        "fires": false
+      },
+      "q-sep-43-web-wallet-api": {
+        "named": true,
+        "researchedWithIt": true,
+        "fires": true
+      },
+      "q-sep-45-contract-auth": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-sep-53-sign-verify-message": {
+        "named": true,
+        "researchedWithIt": true,
+        "fires": true
+      },
+      "q-sep24-interactive-deposit-flow": {
+        "named": true,
+        "researchedWithIt": true,
+        "fires": true
+      },
+      "q-sep6-sep24-sep31-choice": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-soroban-oz-token": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      },
+      "q-zk-host-functions-status": {
+        "named": true,
+        "researchedWithIt": false,
+        "fires": true
+      }
+    }
+  },
+  "identifierRows": {
+    "rows": [
+      "q-comp-aml-analytics-vendors",
+      "q-comp-sep8-regulated-assets-approval-server",
+      "q-crp-oz-rwa-erc3643-trex",
+      "q-edge-asset-site-scam-detection",
+      "q-edge-inject-ignore-instructions",
+      "q-net-protocol-meeting-notes-find-cap",
+      "q-nft-vault-contract-standards",
+      "q-pc-cross-redstone-sep40",
+      "q-pc-quantum-preparedness-dormant",
+      "q-pc-sponsored-reserves",
+      "q-sep-43-web-wallet-api",
+      "q-sep-45-contract-auth",
+      "q-sep-53-sign-verify-message",
+      "q-sep24-interactive-deposit-flow",
+      "q-sep6-sep24-sep31-choice",
+      "q-soroban-oz-token",
+      "q-zk-host-functions-status"
+    ],
+    "committedScanRows": [
+      "q-comp-aml-analytics-vendors",
+      "q-comp-sep8-regulated-assets-approval-server",
+      "q-crp-oz-rwa-erc3643-trex",
+      "q-edge-asset-site-scam-detection",
+      "q-edge-inject-ignore-instructions",
+      "q-net-protocol-meeting-notes-find-cap",
+      "q-nft-vault-contract-standards",
+      "q-pc-cross-redstone-sep40",
+      "q-pc-quantum-preparedness-dormant",
+      "q-pc-sponsored-reserves",
+      "q-sep-43-web-wallet-api",
+      "q-sep-45-contract-auth",
+      "q-sep-53-sign-verify-message",
+      "q-sep24-interactive-deposit-flow",
+      "q-sep6-sep24-sep31-choice",
+      "q-soroban-oz-token",
+      "q-zk-host-functions-status"
+    ],
+    "equal": true
+  }
+}

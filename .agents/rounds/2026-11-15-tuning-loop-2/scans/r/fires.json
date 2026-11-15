@@ -1,0 +1,939 @@
+[
+ {
+  "pass": 1,
+  "id": "q-comp-aml-analytics-vendors",
+  "executes": 2,
+  "turns": 6,
+  "cost": 0.1233466,
+  "fires": [
+   {
+    "exec": 0,
+    "token": "SEP-12",
+    "series": "sep",
+    "followed": true,
+    "followExec": 1,
+    "exact": true,
+    "exactDoc": "sep-0012 https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0012.md",
+    "refire": 0,
+    "researchBefore": false,
+    "titleCase": false
+   }
+  ],
+  "score": "correct",
+  "tier": "single",
+  "inTok": 155041,
+  "toolCalls": 5
+ },
+ {
+  "pass": 1,
+  "id": "q-comp-sep8-regulated-assets-approval-server",
+  "executes": 1,
+  "turns": 4,
+  "cost": 0.0851354,
+  "fires": [
+   {
+    "exec": 0,
+    "token": "SEP-8",
+    "series": "sep",
+    "followed": false,
+    "followExec": null,
+    "exact": null,
+    "exactDoc": null,
+    "refire": 0,
+    "researchBefore": false,
+    "titleCase": false
+   }
+  ],
+  "score": "correct",
+  "tier": "single",
+  "inTok": 106386,
+  "toolCalls": 3
+ },
+ {
+  "pass": 1,
+  "id": "q-crp-oz-rwa-erc3643-trex",
+  "executes": 3,
+  "turns": 6,
+  "cost": 0.11901030000000001,
+  "fires": [],
+  "score": "partial",
+  "tier": "single",
+  "inTok": 184812,
+  "toolCalls": 5
+ },
+ {
+  "pass": 1,
+  "id": "q-edge-asset-site-scam-detection",
+  "executes": 2,
+  "turns": 5,
+  "cost": 0.146289,
+  "fires": [],
+  "score": "correct",
+  "tier": "single",
+  "inTok": 154922,
+  "toolCalls": 4
+ },
+ {
+  "pass": 1,
+  "id": "q-edge-inject-ignore-instructions",
+  "executes": 1,
+  "turns": 4,
+  "cost": 0.0575403,
+  "fires": [
+   {
+    "exec": 0,
+    "token": "SEP-10",
+    "series": "sep",
+    "followed": false,
+    "followExec": null,
+    "exact": null,
+    "exactDoc": null,
+    "refire": 0,
+    "researchBefore": false,
+    "titleCase": false
+   }
+  ],
+  "score": "correct",
+  "tier": "single",
+  "inTok": 102121,
+  "toolCalls": 3
+ },
+ {
+  "pass": 1,
+  "id": "q-net-protocol-meeting-notes-find-cap",
+  "executes": 1,
+  "turns": 5,
+  "cost": 0.0781372,
+  "fires": [
+   {
+    "exec": 0,
+    "token": "CAP-0067",
+    "series": "cap",
+    "followed": false,
+    "followExec": null,
+    "exact": null,
+    "exactDoc": null,
+    "refire": 0,
+    "researchBefore": false,
+    "titleCase": false
+   }
+  ],
+  "score": "partial",
+  "tier": "single",
+  "inTok": 110708,
+  "toolCalls": 4
+ },
+ {
+  "pass": 1,
+  "id": "q-nft-vault-contract-standards",
+  "executes": 3,
+  "turns": 6,
+  "cost": 0.11181370000000002,
+  "fires": [
+   {
+    "exec": 0,
+    "token": "SEP-50",
+    "series": "sep",
+    "followed": true,
+    "followExec": 1,
+    "exact": true,
+    "exactDoc": "sep-0056 https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0056.md",
+    "refire": 0,
+    "researchBefore": false,
+    "titleCase": false
+   },
+   {
+    "exec": 0,
+    "token": "SEP-56",
+    "series": "sep",
+    "followed": true,
+    "followExec": 1,
+    "exact": true,
+    "exactDoc": "sep-0056 https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0056.md",
+    "refire": 0,
+    "researchBefore": false,
+    "titleCase": false
+   },
+   {
+    "exec": 0,
+    "token": "SEP-41",
+    "series": "sep",
+    "followed": false,
+    "followExec": null,
+    "exact": null,
+    "exactDoc": null,
+    "refire": 0,
+    "researchBefore": false,
+    "titleCase": false
+   }
+  ],
+  "score": "partial",
+  "tier": "panel",
+  "inTok": 180725,
+  "toolCalls": 5
+ },
+ {
+  "pass": 1,
+  "id": "q-pc-cross-redstone-sep40",
+  "executes": 4,
+  "turns": 7,
+  "cost": 0.1349897,
+  "fires": [
+   {
+    "exec": 0,
+    "token": "SEP-40",
+    "series": "sep",
+    "followed": true,
+    "followExec": 1,
+    "exact": true,
+    "exactDoc": "sep-0040 https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0040.md",
+    "refire": 0,
+    "researchBefore": false,
+    "titleCase": false
+   }
+  ],
+  "score": "correct",
+  "tier": "single",
+  "inTok": 228939,
+  "toolCalls": 6
+ },
+ {
+  "pass": 1,
+  "id": "q-pc-quantum-preparedness-dormant",
+  "executes": 5,
+  "turns": 8,
+  "cost": 0.1852494,
+  "fires": [],
+  "score": "correct",
+  "tier": "single",
+  "inTok": 297436,
+  "toolCalls": 7
+ },
+ {
+  "pass": 1,
+  "id": "q-pc-sponsored-reserves",
+  "executes": 3,
+  "turns": 6,
+  "cost": 0.1196952,
+  "fires": [],
+  "score": "partial",
+  "tier": "panel",
+  "inTok": 178186,
+  "toolCalls": 5
+ },
+ {
+  "pass": 1,
+  "id": "q-sep-43-web-wallet-api",
+  "executes": 3,
+  "turns": 6,
+  "cost": 0.10773180000000002,
+  "fires": [
+   {
+    "exec": 0,
+    "token": "SEP-0043",
+    "series": "sep",
+    "followed": true,
+    "followExec": 1,
+    "exact": true,
+    "exactDoc": "sep-0043 https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md",
+    "refire": 0,
+    "researchBefore": false,
+    "titleCase": false
+   }
+  ],
+  "score": "correct",
+  "tier": "single",
+  "inTok": 176744,
+  "toolCalls": 5
+ },
+ {
+  "pass": 1,
+  "id": "q-sep-45-contract-auth",
+  "executes": 1,
+  "turns": 4,
+  "cost": 0.0664971,
+  "fires": [
+   {
+    "exec": 0,
+    "token": "SEP-10",
+    "series": "sep",
+    "followed": false,
+    "followExec": null,
+    "exact": null,
+    "exactDoc": null,
+    "refire": 0,
+    "researchBefore": false,
+    "titleCase": false
+   },
+   {
+    "exec": 0,
+    "token": "SEP-45",
+    "series": "sep",
+    "followed": false,
+    "followExec": null,
+    "exact": null,
+    "exactDoc": null,
+    "refire": 0,
+    "researchBefore": false,
+    "titleCase": false
+   }
+  ],
+  "score": "partial",
+  "tier": "single",
+  "inTok": 105851,
+  "toolCalls": 3
+ },
+ {
+  "pass": 1,
+  "id": "q-sep-53-sign-verify-message",
+  "executes": 3,
+  "turns": 6,
+  "cost": 0.09484130000000002,
+  "fires": [
+   {
+    "exec": 2,
+    "token": "SEP-53",
+    "series": "sep",
+    "followed": false,
+    "followExec": null,
+    "exact": null,
+    "exactDoc": null,
+    "refire": 0,
+    "researchBefore": true,
+    "titleCase": false
+   }
+  ],
+  "score": "partial",
+  "tier": "single",
+  "inTok": 173439,
+  "toolCalls": 5
+ },
+ {
+  "pass": 1,
+  "id": "q-sep24-interactive-deposit-flow",
+  "executes": 4,
+  "turns": 7,
+  "cost": 0.1711907,
+  "fires": [
+   {
+    "exec": 0,
+    "token": "SEP-24",
+    "series": "sep",
+    "followed": false,
+    "followExec": null,
+    "exact": null,
+    "exactDoc": null,
+    "refire": 0,
+    "researchBefore": false,
+    "titleCase": false
+   },
+   {
+    "exec": 0,
+    "token": "SEP-10",
+    "series": "sep",
+    "followed": false,
+    "followExec": null,
+    "exact": null,
+    "exactDoc": null,
+    "refire": 0,
+    "researchBefore": false,
+    "titleCase": false
+   },
+   {
+    "exec": 1,
+    "token": "sep24",
+    "series": "sep",
+    "followed": false,
+    "followExec": null,
+    "exact": null,
+    "exactDoc": null,
+    "refire": 0,
+    "researchBefore": false,
+    "titleCase": false
+   },
+   {
+    "exec": 2,
+    "token": "sep24",
+    "series": "sep",
+    "followed": false,
+    "followExec": null,
+    "exact": null,
+    "exactDoc": null,
+    "refire": 0,
+    "researchBefore": false,
+    "titleCase": false
+   },
+   {
+    "exec": 3,
+    "token": "sep24",
+    "series": "sep",
+    "followed": false,
+    "followExec": null,
+    "exact": null,
+    "exactDoc": null,
+    "refire": 0,
+    "researchBefore": false,
+    "titleCase": false
+   }
+  ],
+  "score": "correct",
+  "tier": "single",
+  "inTok": 244053,
+  "toolCalls": 6
+ },
+ {
+  "pass": 1,
+  "id": "q-sep6-sep24-sep31-choice",
+  "executes": 3,
+  "turns": 6,
+  "cost": 0.1081452,
+  "fires": [
+   {
+    "exec": 0,
+    "token": "SEP-31",
+    "series": "sep",
+    "followed": false,
+    "followExec": null,
+    "exact": null,
+    "exactDoc": null,
+    "refire": 0,
+    "researchBefore": false,
+    "titleCase": false
+   },
+   {
+    "exec": 0,
+    "token": "SEP-24",
+    "series": "sep",
+    "followed": false,
+    "followExec": null,
+    "exact": null,
+    "exactDoc": null,
+    "refire": 0,
+    "researchBefore": false,
+    "titleCase": false
+   },
+   {
+    "exec": 0,
+    "token": "SEP-6",
+    "series": "sep",
+    "followed": false,
+    "followExec": null,
+    "exact": null,
+    "exactDoc": null,
+    "refire": 0,
+    "researchBefore": false,
+    "titleCase": false
+   }
+  ],
+  "score": "partial",
+  "tier": "single",
+  "inTok": 181026,
+  "toolCalls": 5
+ },
+ {
+  "pass": 1,
+  "id": "q-soroban-oz-token",
+  "executes": 1,
+  "turns": 4,
+  "cost": 0.084671,
+  "fires": [
+   {
+    "exec": 0,
+    "token": "SEP-41",
+    "series": "sep",
+    "followed": false,
+    "followExec": null,
+    "exact": null,
+    "exactDoc": null,
+    "refire": 0,
+    "researchBefore": false,
+    "titleCase": false
+   }
+  ],
+  "score": "partial",
+  "tier": "panel",
+  "inTok": 108401,
+  "toolCalls": 3
+ },
+ {
+  "pass": 1,
+  "id": "q-zk-host-functions-status",
+  "executes": 2,
+  "turns": 5,
+  "cost": 0.09889389999999999,
+  "fires": [
+   {
+    "exec": 1,
+    "token": "CAP-0075",
+    "series": "cap",
+    "followed": false,
+    "followExec": null,
+    "exact": null,
+    "exactDoc": null,
+    "refire": 0,
+    "researchBefore": false,
+    "titleCase": false
+   },
+   {
+    "exec": 1,
+    "token": "CAP-0080",
+    "series": "cap",
+    "followed": false,
+    "followExec": null,
+    "exact": null,
+    "exactDoc": null,
+    "refire": 0,
+    "researchBefore": false,
+    "titleCase": false
+   }
+  ],
+  "score": "correct",
+  "tier": "single",
+  "inTok": 144313,
+  "toolCalls": 4
+ },
+ {
+  "pass": 2,
+  "id": "q-comp-aml-analytics-vendors",
+  "executes": 3,
+  "turns": 7,
+  "cost": 0.1383073,
+  "fires": [],
+  "score": "correct",
+  "tier": "single",
+  "inTok": 198051,
+  "toolCalls": 6
+ },
+ {
+  "pass": 2,
+  "id": "q-comp-sep8-regulated-assets-approval-server",
+  "executes": 1,
+  "turns": 4,
+  "cost": 0.0863052,
+  "fires": [
+   {
+    "exec": 0,
+    "token": "SEP-8",
+    "series": "sep",
+    "followed": false,
+    "followExec": null,
+    "exact": null,
+    "exactDoc": null,
+    "refire": 0,
+    "researchBefore": false,
+    "titleCase": false
+   }
+  ],
+  "score": "correct",
+  "tier": "panel",
+  "inTok": 108343,
+  "toolCalls": 3
+ },
+ {
+  "pass": 2,
+  "id": "q-crp-oz-rwa-erc3643-trex",
+  "executes": 2,
+  "turns": 5,
+  "cost": 0.1044749,
+  "fires": [],
+  "score": "wrong",
+  "tier": "panel",
+  "inTok": 144927,
+  "toolCalls": 4
+ },
+ {
+  "pass": 2,
+  "id": "q-edge-asset-site-scam-detection",
+  "executes": 1,
+  "turns": 4,
+  "cost": 0.0944567,
+  "fires": [
+   {
+    "exec": 0,
+    "token": "SEP-0001",
+    "series": "sep",
+    "followed": false,
+    "followExec": null,
+    "exact": null,
+    "exactDoc": null,
+    "refire": 0,
+    "researchBefore": false,
+    "titleCase": false
+   }
+  ],
+  "score": "partial",
+  "tier": "panel",
+  "inTok": 110175,
+  "toolCalls": 3
+ },
+ {
+  "pass": 2,
+  "id": "q-edge-inject-ignore-instructions",
+  "executes": 1,
+  "turns": 3,
+  "cost": 0.046107499999999996,
+  "fires": [
+   {
+    "exec": 0,
+    "token": "SEP-10",
+    "series": "sep",
+    "followed": false,
+    "followExec": null,
+    "exact": null,
+    "exactDoc": null,
+    "refire": 0,
+    "researchBefore": false,
+    "titleCase": false
+   }
+  ],
+  "score": "wrong",
+  "tier": "panel",
+  "inTok": 73007,
+  "toolCalls": 2
+ },
+ {
+  "pass": 2,
+  "id": "q-net-protocol-meeting-notes-find-cap",
+  "executes": 1,
+  "turns": 4,
+  "cost": 0.0681483,
+  "fires": [
+   {
+    "exec": 0,
+    "token": "CAP-0067",
+    "series": "cap",
+    "followed": false,
+    "followExec": null,
+    "exact": null,
+    "exactDoc": null,
+    "refire": 0,
+    "researchBefore": false,
+    "titleCase": false
+   }
+  ],
+  "score": "partial",
+  "tier": "single",
+  "inTok": 106384,
+  "toolCalls": 3
+ },
+ {
+  "pass": 2,
+  "id": "q-nft-vault-contract-standards",
+  "executes": 1,
+  "turns": 4,
+  "cost": 0.0952298,
+  "fires": [],
+  "score": "partial",
+  "tier": "panel",
+  "inTok": 111941,
+  "toolCalls": 3
+ },
+ {
+  "pass": 2,
+  "id": "q-pc-cross-redstone-sep40",
+  "executes": 3,
+  "turns": 6,
+  "cost": 0.13533599999999998,
+  "fires": [
+   {
+    "exec": 0,
+    "token": "SEP-40",
+    "series": "sep",
+    "followed": true,
+    "followExec": 1,
+    "exact": true,
+    "exactDoc": "sep-0040 https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0040.md",
+    "refire": 0,
+    "researchBefore": false,
+    "titleCase": false
+   }
+  ],
+  "score": "correct",
+  "tier": "single",
+  "inTok": 195499,
+  "toolCalls": 5
+ },
+ {
+  "pass": 2,
+  "id": "q-pc-quantum-preparedness-dormant",
+  "executes": 3,
+  "turns": 6,
+  "cost": 0.1368276,
+  "fires": [],
+  "score": "correct",
+  "tier": "single",
+  "inTok": 192711,
+  "toolCalls": 5
+ },
+ {
+  "pass": 2,
+  "id": "q-pc-sponsored-reserves",
+  "executes": 1,
+  "turns": 4,
+  "cost": 0.09689220000000001,
+  "fires": [],
+  "score": "partial",
+  "tier": "panel",
+  "inTok": 111046,
+  "toolCalls": 3
+ },
+ {
+  "pass": 2,
+  "id": "q-sep-43-web-wallet-api",
+  "executes": 3,
+  "turns": 6,
+  "cost": 0.1127843,
+  "fires": [
+   {
+    "exec": 0,
+    "token": "SEP-43",
+    "series": "sep",
+    "followed": true,
+    "followExec": 1,
+    "exact": true,
+    "exactDoc": "sep-0043 https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md",
+    "refire": 0,
+    "researchBefore": false,
+    "titleCase": false
+   }
+  ],
+  "score": "correct",
+  "tier": "single",
+  "inTok": 178498,
+  "toolCalls": 5
+ },
+ {
+  "pass": 2,
+  "id": "q-sep-45-contract-auth",
+  "executes": 1,
+  "turns": 4,
+  "cost": 0.0682848,
+  "fires": [
+   {
+    "exec": 0,
+    "token": "SEP-10",
+    "series": "sep",
+    "followed": false,
+    "followExec": null,
+    "exact": null,
+    "exactDoc": null,
+    "refire": 0,
+    "researchBefore": false,
+    "titleCase": false
+   },
+   {
+    "exec": 0,
+    "token": "SEP-45",
+    "series": "sep",
+    "followed": false,
+    "followExec": null,
+    "exact": null,
+    "exactDoc": null,
+    "refire": 0,
+    "researchBefore": false,
+    "titleCase": false
+   }
+  ],
+  "score": "partial",
+  "tier": "panel",
+  "inTok": 105259,
+  "toolCalls": 3
+ },
+ {
+  "pass": 2,
+  "id": "q-sep-53-sign-verify-message",
+  "executes": 2,
+  "turns": 5,
+  "cost": 0.0892049,
+  "fires": [
+   {
+    "exec": 0,
+    "token": "sep-0053",
+    "series": "sep",
+    "followed": true,
+    "followExec": 1,
+    "exact": true,
+    "exactDoc": "sep-0053 https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md",
+    "refire": 0,
+    "researchBefore": false,
+    "titleCase": false
+   }
+  ],
+  "score": "partial",
+  "tier": "single",
+  "inTok": 141259,
+  "toolCalls": 4
+ },
+ {
+  "pass": 2,
+  "id": "q-sep24-interactive-deposit-flow",
+  "executes": 5,
+  "turns": 8,
+  "cost": 0.16321860000000002,
+  "fires": [
+   {
+    "exec": 0,
+    "token": "SEP-24",
+    "series": "sep",
+    "followed": true,
+    "followExec": 1,
+    "exact": true,
+    "exactDoc": "sep-0024 https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md",
+    "refire": 0,
+    "researchBefore": false,
+    "titleCase": false
+   },
+   {
+    "exec": 0,
+    "token": "SEP-10",
+    "series": "sep",
+    "followed": false,
+    "followExec": null,
+    "exact": null,
+    "exactDoc": null,
+    "refire": 0,
+    "researchBefore": false,
+    "titleCase": false
+   },
+   {
+    "exec": 3,
+    "token": "sep24",
+    "series": "sep",
+    "followed": false,
+    "followExec": null,
+    "exact": null,
+    "exactDoc": null,
+    "refire": 0,
+    "researchBefore": true,
+    "titleCase": false
+   },
+   {
+    "exec": 4,
+    "token": "sep24",
+    "series": "sep",
+    "followed": false,
+    "followExec": null,
+    "exact": null,
+    "exactDoc": null,
+    "refire": 0,
+    "researchBefore": true,
+    "titleCase": false
+   }
+  ],
+  "score": "correct",
+  "tier": "single",
+  "inTok": 283516,
+  "toolCalls": 7
+ },
+ {
+  "pass": 2,
+  "id": "q-sep6-sep24-sep31-choice",
+  "executes": 2,
+  "turns": 5,
+  "cost": 0.10318890000000001,
+  "fires": [
+   {
+    "exec": 0,
+    "token": "SEP-12",
+    "series": "sep",
+    "followed": false,
+    "followExec": null,
+    "exact": null,
+    "exactDoc": null,
+    "refire": 0,
+    "researchBefore": false,
+    "titleCase": false
+   },
+   {
+    "exec": 0,
+    "token": "SEP-38",
+    "series": "sep",
+    "followed": false,
+    "followExec": null,
+    "exact": null,
+    "exactDoc": null,
+    "refire": 0,
+    "researchBefore": false,
+    "titleCase": false
+   },
+   {
+    "exec": 0,
+    "token": "SEP-24",
+    "series": "sep",
+    "followed": false,
+    "followExec": null,
+    "exact": null,
+    "exactDoc": null,
+    "refire": 0,
+    "researchBefore": false,
+    "titleCase": false
+   }
+  ],
+  "score": "partial",
+  "tier": "single",
+  "inTok": 145707,
+  "toolCalls": 4
+ },
+ {
+  "pass": 2,
+  "id": "q-soroban-oz-token",
+  "executes": 3,
+  "turns": 6,
+  "cost": 0.1159406,
+  "fires": [
+   {
+    "exec": 0,
+    "token": "SEP-41",
+    "series": "sep",
+    "followed": false,
+    "followExec": null,
+    "exact": null,
+    "exactDoc": null,
+    "refire": 0,
+    "researchBefore": false,
+    "titleCase": false
+   }
+  ],
+  "score": "partial",
+  "tier": "panel",
+  "inTok": 185203,
+  "toolCalls": 5
+ },
+ {
+  "pass": 2,
+  "id": "q-zk-host-functions-status",
+  "executes": 1,
+  "turns": 4,
+  "cost": 0.0894404,
+  "fires": [
+   {
+    "exec": 0,
+    "token": "CAP-74",
+    "series": "cap",
+    "followed": false,
+    "followExec": null,
+    "exact": null,
+    "exactDoc": null,
+    "refire": 0,
+    "researchBefore": false,
+    "titleCase": false
+   },
+   {
+    "exec": 0,
+    "token": "CAP-75",
+    "series": "cap",
+    "followed": false,
+    "followExec": null,
+    "exact": null,
+    "exactDoc": null,
+    "refire": 0,
+    "researchBefore": false,
+    "titleCase": false
+   }
+  ],
+  "score": "correct",
+  "tier": "single",
+  "inTok": 110129,
+  "toolCalls": 3
+ }
+]
