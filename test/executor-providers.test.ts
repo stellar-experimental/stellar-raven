@@ -259,7 +259,7 @@ describe("host structural service evidence", () => {
     });
 
     it("ignores zero padding and spacing, and reads either `q` or `query`", () => {
-      for (const query of ["SEP-0043", "sep 43", "SEP43", "see Sep-43 please"]) {
+      for (const query of ["SEP-0043", "sep 43", "SEP43", "see SEP-43 please"]) {
         expect(keys(query), query).toEqual([{ index: 0, key: "sep-0043" }]);
       }
       expect(keys("", sep43, { q: "SEP-43" })).toEqual([{ index: 0, key: "sep-0043" }]);

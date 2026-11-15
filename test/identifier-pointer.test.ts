@@ -124,6 +124,40 @@ describe("the token rule (amendment A6)", () => {
     expect(exactRowsOf(research, { q: "audit 45" }, { results: [row] })).toEqual([]);
   });
 
+  it("bounds the digits to six, so a token echoed twice cannot be long (review F1)", () => {
+    const long = `SEP-${"0".repeat(200)}45`;
+    expect(identifiersInArguments(long, SERIES)).toEqual([]);
+    expect(identifiersInArguments(`sep${"9".repeat(50)}`, SERIES)).toEqual([]);
+    expect(identifiersInArguments("seven digits SEP-1234567", SERIES)).toEqual([]);
+    expect(identifiersInArguments("SEP-123456 and CAP-0046", SERIES).map((t) => t.text)).toEqual(["SEP-123456", "CAP-0046"]);
+    expect(hintOf([call("stellarDocs.search_docs", long)])?.identifier).toBeUndefined();
+  });
+
+  it("does not read a token whose letters are title case: all-upper and all-lower are identifiers (review F2)", () => {
+    for (const joinedOnly of [true, false]) {
+      const read = (text: string) => identifierTokens(text, { joinedOnly }).map((t) => t.text);
+      expect(read("Sep-24 Cap-12 Sep24")).toEqual([]);
+      expect(read("SEP-24 and sep-24 and CAP12")).toEqual(["SEP-24", "sep-24", "CAP12"]);
+    }
+    expect(identifierTokens("Sep 24", { joinedOnly: false })).toEqual([]);
+    expect(identifierTokens("SEP 24 and sep 24", { joinedOnly: false })).toHaveLength(2);
+    // Known and accepted: an all-upper month joined to digits (`10-SEP-2024`) still reads as SEP-2024.
+    expect(identifiersInArguments("10-Sep-2024 and 2024-Sep-10", SERIES)).toEqual([]);
+    // The pointer does not fire on a month, and fires on both ways a standard is written.
+    expect(hintOf([call("stellarDocs.search_docs", "Sep-24")])?.identifier).toBeUndefined();
+    expect(hintOf([call("stellarDocs.search_docs", "SEP-24")])?.identifier).toHaveLength(1);
+    expect(hintOf([call("stellarDocs.search_docs", "sep-24")])?.identifier).toHaveLength(1);
+  });
+
+  it("arm 2 does not mark an exact row for a title-case query, and still does for SEP-24 and sep-24", () => {
+    const research = catalog.entries.find((entry) => entry.id === RESEARCH)!;
+    const row = { source: "sep", url: "https://example.org/sep-0024" };
+    expect(exactRowsOf(research, { q: "Sep-24" }, { results: [row] })).toEqual([]);
+    expect(exactRowsOf(research, { q: "Sep 24 event" }, { results: [row] })).toEqual([]);
+    expect(exactRowsOf(research, { q: "SEP-24" }, { results: [row] })).toHaveLength(1);
+    expect(exactRowsOf(research, { q: "sep-24" }, { results: [row] })).toHaveLength(1);
+  });
+
   it("reads nested string values only, and only the letters of a declared series", () => {
     expect(
       identifiersInArguments({ a: ["x", { b: "see SEP-10" }], SEP99: "keys are not read", n: 45, c: "cve-2024 and abc-5" }, SERIES).map((t) => t.text)

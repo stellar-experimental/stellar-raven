@@ -6,6 +6,10 @@
  * call and accepts only a hyphenated or joined token, because `audit 2024`, `release 23`,
  * `incident 2023` and `paper 1` are phrases, not identifiers (amendment A6).
  *
+ * A token whose letters are title case (`Sep-24`, `Cap 12`) is not an identifier: it reads as a
+ * month or a sentence-initial word. Both hosts share this rule. A token of more than six digits in
+ * the joined form is not one either.
+ *
  * A token followed by `-` or `.` and another digit (`CVE-2024-1234`, `SEP-43.1`) is a longer
  * identifier, not a prefix match. The host keeps no list of standards: the letters are compared
  * with the series an operation declares (src/catalog/document-series.ts).
@@ -21,18 +25,24 @@ export type IdentifierToken = {
 };
 
 const SPACED_TOKEN_RE = /\b([A-Za-z]+)[- ]?(\d+)\b(?![-.]\d)/g;
-const JOINED_TOKEN_RE = /\b([A-Za-z]+)-?(\d+)\b(?![-.]\d)/g;
+// At most six digits: a longer run is not an identifier, and the pointer echoes the token twice.
+const JOINED_TOKEN_RE = /\b([A-Za-z]+)-?(\d{1,6})\b(?![-.]\d)/g;
+// `Sep-24`, `Cap-12`: a month or a word that starts a sentence, not an identifier. All-upper and
+// all-lower letters are the two ways a standard's name is written.
+const TITLE_CASE_RE = /^[A-Z][a-z]+$/;
 
 const stripLeadingZeros = (digits: string): string => digits.replace(/^0+(?=\d)/, "");
 
 /** Identifier tokens in `text`, in order of appearance. `joinedOnly` refuses the spaced form. */
 export function identifierTokens(text: string, { joinedOnly }: { joinedOnly: boolean }): IdentifierToken[] {
   const pattern = joinedOnly ? JOINED_TOKEN_RE : SPACED_TOKEN_RE;
-  return [...text.matchAll(pattern)].map((match) => ({
-    text: match[0],
-    letters: match[1]!.toLowerCase(),
-    number: stripLeadingZeros(match[2]!)
-  }));
+  return [...text.matchAll(pattern)]
+    .filter((match) => !TITLE_CASE_RE.test(match[1]!))
+    .map((match) => ({
+      text: match[0],
+      letters: match[1]!.toLowerCase(),
+      number: stripLeadingZeros(match[2]!)
+    }));
 }
 
 /** The identity of a token, for comparing two tokens: `sep-45` for `SEP-0045` and `sep45`. */
