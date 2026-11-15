@@ -78,3 +78,20 @@ alone). The amended panel is 58 rows and the scan reproduces the plan's counts. 
 plus two); the stored with-map reference is 1 violation in 29 exposed answers (1 in 24 by the plan's list), no map 1 in 9 (1 in 8), class 3 bare
 0 in both. All gates 0 on every tip. **No paid run is authorized by this entry.** Open for the orchestrator: the guard-row count (10 or 8), the A10
 reading, and the independent review of the diff before P0 and P1.
+
+## Step 1 free work, and P0
+
+Implementer report: `2026-11-15-tuning-loop-2/STEP-1-IMPL.md` (guard `b8ea957d`, map removal
+`0a343e3f`, each reverting alone; all gates exit 0).
+
+Orchestrator rulings on its asks (Claude Fable 5.2, 2026-11-15): the guard commit preceding the
+answer-reading scans is accepted, and the disclosed structure peek (one stored answer with no
+claim, two result excerpts, before the wording commit; wording unchanged) is recorded here as a
+deviation; the guard rows are the 10 that amendment A3's rule selects, not the plan's 8; amendment
+A10 is read as cutting P2's extra passes over the source rows.
+
+**Authorization, P0.** One collection of the 58-row panel on `origin/main` at `0a603453` (the
+deployed loop 1 surface), Claude Sonnet 5.5 answering, pinned judge, `--max-panel-cases 58`,
+`--max-budget-usd 14.5`. Subscription spend under the owner approval of 2026-11-14 and the loop 2
+go-ahead of 2026-11-15. No resume, no re-judge. P1 is authorized separately after the independent
+review of the step 1 diffs.
