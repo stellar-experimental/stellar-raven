@@ -3,7 +3,7 @@
 Implementer: Claude Sonnet 5.5 (`claude-sonnet-5-5`), terminal `loop2-impl2` (`t1ps`), worktree `raven-wt/loop2`, branch `tune/loop-2`.
 Orchestrator: Claude Fable 5.2 (`kalepail-c3614nvxph-mbp/t40f`). Plan: [`PLAN.md`](PLAN.md) with [`PLAN-AMENDMENTS.md`](PLAN-AMENDMENTS.md) (A5, A7, A8, A9, A10) and the notes of
 [`STEP-1-REVIEW.md`](STEP-1-REVIEW.md) that touch step 2 (R7, R8). Step 1's decision (guard and map removal both kept) is in the round ledger, from `P1.md` on
-`origin/tune/loop-2-runs`. No model-calling command ran, no collection ran, nothing was deployed or uploaded. **P2 is not authorized by this file.**
+`origin/tune/loop-2-runs`. No model-calling command ran, no collection ran, nothing was deployed or uploaded. **P2 is not authorized by this file.** The "Review reconciliation" section at the end supersedes section 4's "Not run: the reachability record" and section 8's code-identity commit and pins.
 
 ## 1. Commits
 
@@ -336,3 +336,108 @@ research-call share on the 17 identifier rows is a free transcript count again (
 
 `gca-eval` was not touched. No server runs from this lane (`step2-server` was killed; port 8811 is closed). The scratch worktree used to test reverts was removed. `.agents/rounds/2026-11-15-tuning-loop-2.md` has the step 2 entry. The
 subscription subagent count for this step is zero.
+
+## 10. Review reconciliation
+
+Implementer: Claude Sonnet 5.5 (`claude-sonnet-5-5`), terminal `loop2-fix2` (`t1pw`), on the orchestrator's direct instruction. Review: [`STEP-2-REVIEW.md`](STEP-2-REVIEW.md), adopted whole by the orchestrator;
+the ledger records the verdict, the intrusion measurement and the decisions. No model call, no spend, nothing deployed.
+
+**Frozen commit: `bd9719fb`** (S1, S2, R8 brief, ledger). The reachability commit after it is read-only data and a script; the adapter, scorer inputs and descriptions are frozen at `bd9719fb` for this loop
+(`git diff bd9719fb HEAD -- src scripts catalog specs package.json wrangler.jsonc env.d.ts` is empty). Any later change reopens the off-golden 40 as its acceptance test, never the 12 rows.
+
+### What each finding became
+
+| Finding | Action |
+|---|---|
+| S1 (the `detail` sentence fires when no hit has a `path`) | The ledger's `OpLedgerCall` gains `detailReady`: the `detail` targets whose join keys at least one returned row carries (set in `providers.ts` from the catalog edge, by `rowsCarryJoinKeys` in `src/catalog/detail-relation.ts`, so the schema-time and run-time definitions of "carries" sit in one file). `evidenceRecoveryHint` passes it to `detailTargetsFromSources` as `ready`; a source it does not name, and an operation with any unchecked call, is not narrowed. No source is named in the code. Tests in `test/stellar-org-detail-hint.test.ts`: an audit-only result gives no pointer and no sentence; a result with a page row among audit rows gives the sentence; an unchecked call and a mixed ledger are not narrowed; a Docs search is byte-identical with and without the field |
+| S2 (a zero-row site search is closed-world `no-rows`) | `search()` returns `soft-empty` with the review's message and retry hint when `results` is empty. Rows that came back and were all filtered stay ok with `no-rows` (the existing test holds). One new adapter test through the sandbox envelope: `ok: false`, `soft-empty`, no `caveat`, ledger outcome `soft-empty` |
+| R8 | No code change. The rule is added to `eval/qa/claim-read-brief.md` after the support-class list; it applies to every run read from now on |
+| S3 | Decided: the description is measured as is. The ledger carries the measurement, the three causes and the watch rows |
+| S4 | No change (the first lines are the best that fit) |
+| S5 | The reading rules and the cap note are in the ledger; the P0 comparison is a rule of P2's reading (below) |
+| "Keep the `detail` edge and its `part` nouns" | Kept; the one defect (S1) is fixed |
+
+No other finding of the review asked for a change now. Notes left where the review left them: the client probe harness on this tip (needs each client's models, its own authorization line); the vendor-diverse
+adapter attack; the title cap of 300 (G2, low, bounded by the host's 6k-token return cap); the forward ranker changes (the orchestrator's `.agents/TODO.md`); the spec text still names only the filter reason
+for an empty `search_site` (the descriptions are frozen, so it stays; the empty case is now carried by the result's own message and hint).
+
+### Gates, each bare, exit code, on the tip whose Worker is the frozen commit
+
+Each ran with its output to a file, so the exit code is the command's own. The tree was clean afterwards. The two commits after `bd9719fb` change this file, the ledger and `scans/step2/reachability.*` only.
+
+| Command | Exit | Detail |
+|---|---:|---|
+| `npm run typecheck` | 0 | |
+| `npm test` | 0 | 163 files passed, 5 skipped; 3,602 passed, 3 expected fail, 5 skipped (3,596 before: +6 new cases) |
+| `npm run build` | 0 | |
+| `npm run test:smoke` | 0 | 9 files, 144 tests |
+| `npm run eval:routing -- --gate` | 0 | `GATE PASS — legacy 338 within band, skills lane at/above floor, holdout lane at/above floors and under its capture ceiling` |
+| CI "generated artifacts in sync": the ten generators, then `git diff --exit-code --stat` over the generated paths | 0 / 0 | the generators exit 0 and the diff is empty |
+| `npm run secrets:scan -- --tree` | 0 | |
+
+### The off-golden 40-question check, re-run on the frozen tip
+
+`measure.mts` (adapter recall on the stored snapshot, limit 5 and 10) and `catalog-reach.mts` (a `stellarOrg` operation in the `search` page at 5 and 7), same inputs as `scans/step2/off-golden-*.txt`,
+outputs to a scratch directory. **Neither S1 nor S2 changed it.** Adapter recall is 33/40 (question) and 37/40 (keyword) at 5 and at 10; reach is 8/40 and 14/40 at 5, 8/40 and 16/40 at 7. The per-row output
+files are identical to the committed ones (`off-golden-adapter.json`, `off-golden-reach.json`; text and JSON). That is expected: S1 acts at result time on the hint, S2 on an empty list the 80-response snapshot
+turns into the same zero hits, and the catalog, descriptions and scorer inputs did not change.
+
+### The surface pin is unchanged
+
+S1 and S2 touch no tool text, schema or description source (the diff names `stellar-org.ts`, `detail-relation.ts`, `search.ts`, `providers.ts`, `run.ts` and tests). The in-process fingerprint
+(`node scripts/run-mcp-surface.mjs`: descriptions 3,924, input schemas 1,661, serialized tool list 6,069, instructions 1,899 with sha `67a6bd0b…6c00`) is identical on the new tip and on `160cd1fa`
+(`815333b7…2bd07` at both, measured in a scratch worktree, removed). So the live surface pin `42ec6102…f17f` stands; `--expect-sha256` still fails the P2 launch on a mismatch, before spend.
+The code-identity commit changes from `160cd1fa` to **`bd9719fb`**.
+
+### The 12-row reachability record (`scans/step2/reachability.mjs`, `.json`, `.txt`)
+
+Run after `bd9719fb` was pushed, from this workstation (it says nothing about Worker egress; A7), through `callStellarOrg`, GET only, keyless, one sample, limit 10. The 12 ids are the roles scan's source rows, checked
+against the committed panel; the case file was filtered by those ids before any other field was read, and only `question` and `truth.sources[].ref` were read. No golden answer, key fact, verdict or transcript was opened.
+
+| Result | Rows |
+|---|---:|
+| `search_site` on the question returns a page the golden cites (top 5, top 7 and top 10 alike) | **7 of 12** |
+| `get_page` returns server-rendered text for a cited page | **12 of 12** (21 cited pages in all) |
+| Both | 7 |
+| Page readable, but the question's own search does not return a cited page | **5**: `q-asset-usdc-eurc-issuer`, `q-comp-aml-analytics-vendors`, `q-data-network-metrics-sources`, `q-eco-stellar-rwa-stablecoin-volume`, `q-scf-ambassador-program` |
+| Neither | 0 |
+
+Ranks of a cited page in the top 10, where it appears: `q-scf-how-to-apply` 1, `q-org-sdf-structure-mandate` 1 (and 2), `q-scf-vs-sdf-enterprise-fund` 1 to 3, `q-hot-fee-pool-burn-deflation` 2, `q-hot-sdf-xlm-holdings-sales` 2,
+`q-soroban-pre-mainnet-security-steps` 2, `q-raph-official-help-sdf-cannot-recover` 5. Two cited pages return thin text (`/xlm-utility` 233 characters, `/enterprise-fund/apply` 633); whether a thin page holds the fact the
+golden needs is not read here (no golden answer was opened). `q-eco-stellar-rwa-stablecoin-volume`'s search returned rows that the blog, press and events filter dropped, so it shows zero hits.
+
+**How P2 reads it.** Applying the plan's two-part test literally, the five rows whose own question's search does not return a cited page are marked **unreachable by the question as written** and are not counted against
+the source; they can move only if the agent's own query reaches a cited page, so a traced gain on one of them is still a gain. The seven both-reachable rows are the source rows that count. This is a single live
+sample of a site search whose snapshot showed intermittent empty lists (G3); one miss is a basis for "not counted against", not for "cannot reach". The orchestrator may loosen the marking.
+
+### The final P2 command (not run; needs the owner's authorization line in the ledger)
+
+Section 8's command, with these changes only, and nothing else:
+
+1. The code-identity line, from `160cd1fa` to the frozen commit:
+   ```sh
+   git diff --quiet bd9719fb HEAD -- src scripts catalog specs package.json wrangler.jsonc env.d.ts || { echo "Worker changed since bd9719fb"; exit 1; }
+   ```
+2. `P2_COMMIT` is the pushed tip of `tune/loop-2` at launch, or any later commit that passes line 1 (the data commits after `bd9719fb` do). The source-revision pin is that commit's SHA, as before.
+3. Everything else is unchanged: surface pin `42ec61020a5f38c73ac30eb204ff424f30220f68ee3827373071c077ada8f17f`; instructions 1,899 characters, SHA-256 `67a6bd0b57da385b412a5dc47dc3de3b8ae65f4b39e3a862cb53deec659c6c00`; `search` 1,960;
+   `execute` 1,964; descriptions 3,924; Claude Code `2.1.325`, binary SHA-256 `0dc4f4a9a165fc60746d7ae8489712e5fc352f1e7ad4eb22e7141bd0812eb0cf`; probe SHA-256 `aabfb83fb8e956856d70f9b5657ea6fca2f64551073812fb646b3689a8f28d99`;
+   remote identity `046b02808eabfdca9477d7e90c2d3ef3a15729911a86280ba4f91471c4a727e8`; stability register `4322dd4d1ebfc30bc02a9def008039aba4f4b2395b1f9da5cabef56ec24bf458`;
+   `--max-panel-cases` read from P0 (58); 58 ids; `--max-budget-usd 14.5` **on the orchestrator's acceptance of the 21% margin on P1 pass 1's USD 12.02** (a cap stop voids the run with no resume; a higher cap needs the orchestrator's word).
+
+   ```sh
+   node eval/qa/run-qa.mjs --variant A --port "$PORT" --max-panel-cases "$MAX_PANEL_CASES" --stability-register "$STABILITY_REGISTER" --server-revision "$SERVER_REVISION" \
+     --expect-sha256 42ec61020a5f38c73ac30eb204ff424f30220f68ee3827373071c077ada8f17f \
+     --expect-agent-binary-sha256 "$AGENT_BINARY_SHA256" --expect-agent-environment-sha256 "$AGENT_ENVIRONMENT_SHA256" \
+     --remote-identity-probe "$REMOTE_IDENTITY_PROBE" --expect-remote-identity-probe-sha256 "$REMOTE_IDENTITY_PROBE_SHA256" \
+     --expect-remote-identity-sha256 "$REMOTE_IDENTITY_SHA256" \
+     --ids "$PANEL_IDS" --max-budget-usd 14.5     # one pass, 58 rows
+   ```
+
+**After P2, read** (the ledger carries the rules): the definitions in `scans/step2/roles.md` on the P2 transcripts; each `stellarOrg` card's rank and the number of source-exposed rows outside the 12; **every row that
+changed between P1 pass 1 and P2, against P0 as well** (P0, P1 and P2 verdicts and judge tiers; a P2 verdict equal to P0's after a P1 move the P1 trace classed as noise is "returned", and counts only if the P2
+transcript traces it); the tier-matched net first; the claim read under the R8 rule in `eval/qa/claim-read-brief.md`; the research-call share on the 17 identifier rows (Q7).
+
+**Watch rows, read from both transcripts whatever their verdict:** `q-soroban-reentrancy`, `q-protocol-tier1-requirements`, `q-ti-parse-raw-ledger-data`; and every row whose P2 `search` page carries a `stellarOrg`
+card at a rank above a card that the row's P1 script called. Two traced displacements make the remedy a ranker change, not a description edit or result text. P2 is a check for gross intrusions only.
+
+**Not read from P2:** that the source improves answers; that it causes no displacement harm; anything about seven cards' benefit, other clients, Worker egress, or the delivery text apart from the source's description text.

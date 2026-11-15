@@ -249,3 +249,14 @@ so the vendor-diverse attack on the adapter that `SORG-REVIEW.md` left open stay
 - **Cap, for the orchestrator's word.** P2's `--max-budget-usd 14.5` is a 21% margin on P1 pass 1's measured USD 12.02. A cap stop voids the run with no resume. The plan's rate (USD 0.25 per case) gives 14.5 for
   58 rows. Kept at 14.5 only on the orchestrator's acceptance of that risk; a higher cap needs the orchestrator's word. **No paid run is authorized by this entry.**
 - **Still open from the review.** The client probe harness on this tip (it calls models; plan section 6; its own authorization line); the vendor-diverse adapter attack.
+
+### 2026-11-15: step 2 review reconciled; the adapter, scorer inputs and descriptions are frozen
+
+Implementer `loop2-fix2` (Claude Sonnet 5.5), record: [STEP-2-IMPL.md](2026-11-15-tuning-loop-2/STEP-2-IMPL.md) section 10. S1, S2 and the R8 brief landed as one commit, **`bd9719fb`** (pushed before anything else ran).
+All gates exit 0 on it, bare: typecheck, `npm test` (3,602 passed), build, smoke (144), the routing gate, the generated-artifacts sync and diff, the secrets scan. The off-golden 40 is unchanged (adapter 33/40 and 37/40;
+reach 8/40 and 14/40 at 5, 8/40 and 16/40 at 7): neither S1 nor S2 moved a row. The surface pin `42ec6102…f17f` stands (local fingerprint identical on `bd9719fb` and `160cd1fa`); P2's code-identity commit is now `bd9719fb`.
+
+**Reachability record, read-only, 12 source rows, from this workstation** (commit after `bd9719fb`): `search_site` on the question returns a cited page for 7 of 12; `get_page` returns text for a cited page on 12 of 12.
+The five rows whose own search misses (`q-asset-usdc-eurc-issuer`, `q-comp-aml-analytics-vendors`, `q-data-network-metrics-sources`, `q-eco-stellar-rwa-stablecoin-volume`, `q-scf-ambassador-program`) are marked
+unreachable by the question as written, per the plan's two-part test, and are not counted against the source (one sample; the orchestrator may loosen it). **After this read, the `stellarOrg` adapter, scorer inputs and
+descriptions are frozen at `bd9719fb` for this loop.** **No paid run is authorized by this entry.**
