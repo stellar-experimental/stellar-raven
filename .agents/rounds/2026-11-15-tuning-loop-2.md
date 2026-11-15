@@ -49,7 +49,7 @@ per-row output; aggregate gate counts stay allowed. Their ids are not recorded a
 |---|---|---|---|---|
 | `loop2-plan` | Claude Fable 5.2 | (finished) | Plan written | [PLAN.md](2026-11-15-tuning-loop-2/PLAN.md) |
 | plan review | Claude Opus 5.5 | (finished) | Reviewed: launch after amendments | [PLAN-REVIEW.md](2026-11-15-tuning-loop-2/PLAN-REVIEW.md) |
-| `loop2-impl` | Claude Sonnet 5.5 | `t1pk`, parent `kalepail-c3614nvxph-mbp/t40f` | Step 1, free work only | `STEP-1-IMPL.md` |
+| `loop2-impl` | Claude Sonnet 5.5 | `t1pk`, parent `kalepail-c3614nvxph-mbp/t40f` | Step 1 free work done, pushed; awaits the diff review and the P0 and P1 authorizations | [STEP-1-IMPL.md](2026-11-15-tuning-loop-2/STEP-1-IMPL.md) |
 
 ## Ledger
 
@@ -70,3 +70,11 @@ the amendments are copied from it verbatim in [PLAN-AMENDMENTS.md](2026-11-15-tu
   passes over the 12 source rows are cut (P2 becomes one pass over the 58 rows plus nothing
   else), so the plan's "three passes" paired check on the source rows and its gain figure are
   dropped. P1's guard-row passes and R's passes stay, as A10 says.
+
+### 2026-11-15: step 1, free work (no paid run)
+
+[STEP-1-IMPL.md](2026-11-15-tuning-loop-2/STEP-1-IMPL.md). Code tip `0a343e3f` (the guard `b8ea957d`, then the map removal alone, which reverts
+alone). The amended panel is 58 rows and the scan reproduces the plan's counts. The guard rows are 10 by the amended claim words (the plan's 8
+plus two); the stored with-map reference is 1 violation in 29 exposed answers (1 in 24 by the plan's list), no map 1 in 9 (1 in 8), class 3 bare
+0 in both. All gates 0 on every tip. **No paid run is authorized by this entry.** Open for the orchestrator: the guard-row count (10 or 8), the A10
+reading, and the independent review of the diff before P0 and P1.
