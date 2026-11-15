@@ -43,6 +43,7 @@ import { shapeLogs } from "./shape-logs.ts";
 import { withScriptHint } from "./script-hints.ts";
 import { put as putArtifact, type ArtifactMime } from "../artifacts/store.ts";
 import { logArtifactWrite } from "../observability.ts";
+import { CORROBORATING_FAMILY_IDS } from "../policy/corroboration.ts";
 import type { EvidenceRecoveryHint } from "../policy/evidence-checkpoint.ts";
 import type { ExactEvidenceCall } from "../policy/exact-evidence.ts";
 
@@ -57,6 +58,8 @@ export type ExecuteOperationSummary = {
   caveats?: number;
   /** Successful calls marked `caveat: "unverified-match"` (candidate lane or semantic/corrected match mode). */
   candidateEvidence?: number;
+  /** Successful calls that returned rows from a family outside the corroborating families (see src/policy/corroboration.ts). */
+  uncorroboratedEvidence?: number;
   /** Successful Scout project/repository calls whose contracts can return prior-art candidates. */
   priorArtCandidates?: number;
   /** Successful candidate-lane calls with a row that is the document the query names by identifier. */
@@ -157,6 +160,7 @@ export function summarizeOperationLedger(calls: readonly OpLedgerCall[]): Execut
   let evidenceData = 0;
   let caveats = 0;
   let candidateEvidence = 0;
+  let uncorroboratedEvidence = 0;
   let priorArtCandidates = 0;
   let exactEvidence = 0;
   for (const call of calls) {
@@ -167,12 +171,14 @@ export function summarizeOperationLedger(calls: readonly OpLedgerCall[]): Execut
     if (hasEvidenceData) evidenceData += 1;
     if (call.outcome === "ok" && call.caveat) caveats += 1;
     if (hasEvidenceData && call.caveat === "unverified-match") candidateEvidence += 1;
+    if (hasEvidenceData && !CORROBORATING_FAMILY_IDS.includes(call.op.split(".", 1)[0]!)) uncorroboratedEvidence += 1;
     if (hasEvidenceData && EVIDENCE_OPERATION_IDS["prior-art"].has(call.op)) priorArtCandidates += 1;
     if (call.outcome === "ok" && call.exactRows?.length) exactEvidence += 1;
   }
   if (evidenceData > 0) summary.evidenceData = evidenceData;
   if (caveats > 0) summary.caveats = caveats;
   if (candidateEvidence > 0) summary.candidateEvidence = candidateEvidence;
+  if (uncorroboratedEvidence > 0) summary.uncorroboratedEvidence = uncorroboratedEvidence;
   if (priorArtCandidates > 0) summary.priorArtCandidates = priorArtCandidates;
   if (exactEvidence > 0) summary.exactEvidence = exactEvidence;
   return summary;

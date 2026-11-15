@@ -6,6 +6,7 @@ import { prepareDemoStep } from "../../src/demo/steps";
 import type { DemoFrame } from "../../src/demo/frames";
 import type { ExecuteRunner } from "../../src/executor/run";
 import { EXECUTE_DESCRIPTION } from "../../src/mcp/tools";
+import { CORROBORATION_GUARD } from "../../src/policy/corroboration";
 
 type ToolWithExecute = {
   execute: (args: Record<string, unknown>) => Promise<unknown>;
@@ -744,6 +745,9 @@ describe("demo tools at the worker boundary", () => {
     })) as string;
     expect(build).not.toContain("--- CANDIDATE EVIDENCE ---");
     expect(build).not.toContain("--- EVIDENCE CHECKPOINT ---");
+    // The Playground never renders the PRIOR-ART block, so the Scout rows keep the guard as its own line.
+    expect(build.endsWith(`\n\n${CORROBORATION_GUARD}`)).toBe(true);
+    expect(ordinary.split(CORROBORATION_GUARD)).toHaveLength(2);
     expect(budgetReport()).toMatchObject({
       recoveryHintedExecutes: 2,
       recoveryAdviceDelivered: true,

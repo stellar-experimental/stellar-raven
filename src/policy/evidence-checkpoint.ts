@@ -1,4 +1,6 @@
 import type { RetrievalReason } from "../catalog/types.ts";
+import { CORROBORATION_GUARD } from "./corroboration.ts";
+import { withExactEvidence, type ExactEvidenceCall } from "./exact-evidence.ts";
 
 export type EvidenceRecoveryCandidate = {
   id: string;
@@ -46,7 +48,35 @@ export function detailOnlyHint(hint: EvidenceRecoveryHint | null | undefined): E
  */
 export function candidateEvidenceBlock(count: number | undefined, suppressed = false): string {
   if (!count || suppressed) return "";
-  return `\n\n--- CANDIDATE EVIDENCE ---\nThis run used ${count} semantic, research, A/V, or fallback-directory call(s). These rows are candidates, not identity or absence proof: require an exact identity or canonical slug plus source and date, date current or mutable claims by observation time, discard adjacent matches, and keep any non-verification source-scoped. For a closed-world directory answer, inspect match_mode and report only that source's exact result.`;
+  return `\n\n--- CANDIDATE EVIDENCE ---\nThis run used ${count} semantic, research, A/V, or fallback-directory call(s). These rows are candidates, not identity or absence proof: require an exact identity or canonical slug plus source and date, date current or mutable claims by observation time, discard adjacent matches, and keep any non-verification source-scoped. For a closed-world directory answer, inspect match_mode and report only that source's exact result. ${CORROBORATION_GUARD}`;
+}
+
+/** What the host observed about the run's calls that decides which candidate-side text renders. */
+export type CandidateSectionInput = {
+  /** Successful calls marked `unverified-match`. */
+  candidateEvidence?: number;
+  /** Successful calls that returned rows from a family outside the corroborating families. */
+  uncorroboratedEvidence?: number;
+  /** A build-stage run: the CANDIDATE EVIDENCE block stays suppressed. */
+  hasPriorArtPreflight: boolean;
+  /** The PRIOR-ART block renders in the result; it carries its own audit clause, so no standalone guard. */
+  priorArtBlockRenders: boolean;
+  exactEvidence?: readonly ExactEvidenceCall[];
+};
+
+/**
+ * The text a result carries about candidate rows, in one place for the MCP tool and the
+ * Playground. The CANDIDATE EVIDENCE block, when it renders, ends with the corroboration guard,
+ * then any exact-row exception. When it does not render, the guard stands alone as its own line
+ * whenever the run returned rows from a family that is not an official record, unless the
+ * PRIOR-ART block renders. Both conditions come from the call ledger; no operation or topic is
+ * named.
+ */
+export function candidateEvidenceSection(input: CandidateSectionInput): string {
+  const block = candidateEvidenceBlock(input.candidateEvidence, input.hasPriorArtPreflight);
+  if (block !== "") return withExactEvidence(block, input.exactEvidence);
+  if (input.priorArtBlockRenders || !input.uncorroboratedEvidence) return "";
+  return `\n\n${CORROBORATION_GUARD}`;
 }
 
 /** One sentence per target, built from the edge: its source operations, target, and join keys. */

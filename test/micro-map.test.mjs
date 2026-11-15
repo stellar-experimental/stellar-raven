@@ -9,6 +9,7 @@ import { fileURLToPath } from "node:url";
 import {
   assertGeneratedTextNoNonExposedRefs,
   buildMicroMap,
+  renderCorroborationTs,
   renderTs,
   validateFamilyPurposes
 } from "../scripts/build-micro-map.mjs";
@@ -18,6 +19,7 @@ import { FAMILY_LINE, MICRO_MAP } from "../src/mcp/micro-map.ts";
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const MANIFEST_PATH = join(ROOT, "catalog", "manifest.json");
 const MICRO_MAP_PATH = join(ROOT, "src", "mcp", "micro-map.ts");
+const CORROBORATION_PATH = join(ROOT, "src", "policy", "corroboration.ts");
 
 const committed = readFileSync(MICRO_MAP_PATH, "utf8");
 const manifest = JSON.parse(readFileSync(MANIFEST_PATH, "utf8"));
@@ -27,6 +29,13 @@ describe("build-micro-map.mjs", () => {
     expect(committed, "src/mcp/micro-map.ts is stale — run node scripts/build-micro-map.mjs").toBe(
       renderTs(buildMicroMap(manifest))
     );
+  });
+
+  it("the checked-in corroboration module matches the in-memory render", () => {
+    expect(
+      readFileSync(CORROBORATION_PATH, "utf8"),
+      "src/policy/corroboration.ts is stale — run node scripts/build-micro-map.mjs"
+    ).toBe(renderCorroborationTs(buildMicroMap(manifest)));
   });
 
   it("emits the committed micro-map and family line", () => {

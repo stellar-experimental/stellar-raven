@@ -41,8 +41,7 @@ import { projectSourceBasisTelemetry } from "../policy/source-basis.ts";
 import { logEvent } from "../observability.ts";
 import { searchEventFields } from "../observability-search.ts";
 import { truncateForModel, truncateLogsForModel } from "../policy/truncate.ts";
-import { candidateEvidenceBlock, evidenceCheckpointBlock } from "../policy/evidence-checkpoint.ts";
-import { withExactEvidence } from "../policy/exact-evidence.ts";
+import { candidateEvidenceSection, evidenceCheckpointBlock } from "../policy/evidence-checkpoint.ts";
 import { FAMILY_LINE, MICRO_MAP } from "./micro-map.ts";
 
 export { SEARCH_KINDS };
@@ -478,10 +477,13 @@ export function registerTools(server: McpServer, options: RegisterToolsOptions =
         outcome.operationSummary.priorArtCandidates && outcome.evidenceSummary.buildAuthoritySkillIds?.length
       );
 
-      const candidateBlock = withExactEvidence(
-        candidateEvidenceBlock(outcome.operationSummary.candidateEvidence, hasPriorArtPreflight),
-        outcome.exactEvidence
-      );
+      const candidateBlock = candidateEvidenceSection({
+        candidateEvidence: outcome.operationSummary.candidateEvidence,
+        uncorroboratedEvidence: outcome.operationSummary.uncorroboratedEvidence,
+        hasPriorArtPreflight,
+        priorArtBlockRenders: hasPriorArtPreflight,
+        exactEvidence: outcome.exactEvidence
+      });
 
       const priorArtEvidenceBlock =
         hasPriorArtPreflight
