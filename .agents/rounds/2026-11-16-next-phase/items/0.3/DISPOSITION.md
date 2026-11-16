@@ -127,3 +127,11 @@ gone (#434, #435, #440, #450 to #452). `git branch -D` drops the branch reflogs 
 "Tree" SHA-256 is `find <dir> -type f -print0 | sort -z | xargs -0 sha256sum | sha256sum`, run from
 `/home/tyler/backups/`. All of these, the bundle, both tarballs and this manifest go to the Mac
 second copy before phase B deletes anything.
+
+## Second copy
+
+Mac, `/Users/kalepail/Backups/stellar-raven/` (`raven-next-phase/` with `heldout-private/` at mode
+700, plus `fd-2026-11-14/`, `client-text-limits-2026-11-14/`, `loop2-scans-2026-11-15/`,
+`fp-2026-11-12-evidence.tar.zst`, `gca-2026-11-14-split.json`). Verified by the orchestrator on
+2026-11-16: the three archive SHA-256 values and the Mac bundle hash match, `git bundle verify` ok
+with 55 heads, all 853 sibling files match per-file SHA-256.

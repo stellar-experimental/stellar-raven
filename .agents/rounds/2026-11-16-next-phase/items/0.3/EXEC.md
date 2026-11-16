@@ -183,3 +183,31 @@ change.
 
 Pull request: https://github.com/stellar-experimental/stellar-raven/pull/453 (branch pushed at
 `6575e1e7`; a follow-up commit adds the PR link to the ledger row). Nothing was deleted.
+
+## Phase B: deletions (2026-11-16, after the orchestrator's go)
+
+Brief: [briefs/exec-b2.md](briefs/exec-b2.md). Preconditions held: pull request #453 open at
+`cc84a77a`, and the Mac second copy verified by the orchestrator (recorded in `MANIFEST.md` and
+`DISPOSITION.md`, section "Second copy"). Refs were worked in the main clone, from the name-and-SHA
+list in `MANIFEST.md`, never by pattern.
+
+| Step | Command and result |
+|---|---|
+| 0. Record the Mac copy | Appended the "Second copy" paragraph to `MANIFEST.md` and `DISPOSITION.md` |
+| 1. Pre-check | Local refs (branches, `origin/*`, `refs/archive/*`, tags) diffed against `expected-refs.txt`: identical, except `refs/remotes/origin/np/0.3-branch-bundle` (this item's own pushed branch, `np/*`, out of scope). `git fetch origin`; `ls-remote --heads origin` equals the expected `origin` tips; no new non-`main`, non-`np/*` branch |
+| 2. Worktrees | For `client-text-limits`, `gca`, `loop2`, `loop2-run`, `sorg`, `tune`: archived paths re-hashed against both manifests (`gca` 37, `loop2` 82, `sorg` 51, `tune` 62 files; all equal; the other two hold none; no QA file opened); `git status --porcelain --ignored` showed only the archived paths and the not-kept list (`.dev.vars`, `node_modules/`, `.wrangler/`, `dist/`, `ecosystem-skills/.cache/`, `env.d.ts`); `git worktree remove <wt>` without `--force`: six exit 0, no refusal; `git worktree prune`. `gca-eval` untouched |
+| 3. Local refs | `git update-ref -d refs/heads/<branch> <sha>` for the 34 branches (34 of 34 succeeded), then `refs/np03-mac/audit/golden-coverage` and the two `refs/archive/*` the same way. Tags, `main` and `np/*` untouched |
+| 4. Re-verify | `git branch`: `main` and `np/0.3-branch-bundle`. `git worktree list`: main clone (`0bfbc8f4`), `gca-eval` (detached `361ff2ef`), `np-0.3`. `git bundle verify`: complete history, SHA-256 still `15f6ff83…38ce7`. Fresh `git clone --mirror` of the bundle: `git fsck --full` clean, 55 refs, every SHA equals `expected-refs.txt`. Six tags unchanged |
+| 5. Remote | `git push --force-with-lease=<branch>:<sha> origin :refs/heads/<branch>` for the 12 branches: 12 of 12 `[deleted]`, no lease failure. `git fetch --prune origin`. `git ls-remote --heads origin`: `main` (`0bfbc8f4`) and `np/0.3-branch-bundle` (`cc84a77a`) only |
+
+Notes:
+
+- A count of live result files per worktree read one higher than the manifest (`gca` 37 against 36,
+  and so on). The extra file is the tracked `eval/qa/corpus/retired/q-scf-round-43-results.json`,
+  matched by my `*results*` pattern; the status check had already shown nothing but archived paths
+  and the not-kept list. I caught this after the removals, from the same file in this worktree.
+- Pull request #453 stayed open: the deletions did not touch `np/*`.
+
+Final state: refs `main` and `np/0.3-branch-bundle` locally and on `origin`; six tags; worktrees
+main clone, `gca-eval`, `np-0.3`. The bundle and both tarballs on agentpc and the Mac copy are the
+only archive of the deleted branches.
