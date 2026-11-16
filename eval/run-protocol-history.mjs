@@ -8,6 +8,7 @@ import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import { loadManifest, searchCatalog } from "../src/catalog/search.ts";
 import { evaluateProtocolHistory } from "./lib/protocol-history-source-epoch.mjs";
+import { confirmationOnlyFor, consoleValue, tagRows } from "./lib/confirmation-only.mjs";
 
 const EVAL_DIR = dirname(fileURLToPath(import.meta.url));
 const REPO = join(EVAL_DIR, "..");
@@ -18,10 +19,12 @@ const inputs = [
   {
     path: join(EVAL_DIR, "protocol-history-cases-v2.json"),
     expectedContract: "protocol-history-routing-v2",
+    listSet: "protocol-history-v2",
   },
   {
     path: join(EVAL_DIR, "protocol-history-blind-cases-v2.json"),
     expectedContract: "protocol-history-blind-v2",
+    listSet: "protocol-history-blind-v2",
   },
 ];
 
@@ -53,6 +56,16 @@ const result = evaluateProtocolHistory({
 });
 result.ranAt = new Date().toISOString();
 
+// Rows whose question matches a QA headline question are tagged confirmation-only (eval/README.md):
+// the set totals above still count them, and the console prints no per-row outcome for them.
+if (Array.isArray(result.sets)) {
+  for (const set of result.sets) {
+    const input = inputs.find((candidate) => candidate.expectedContract === set.contract);
+    if (!input) throw new Error(`no listed question set for contract ${set.contract}`);
+    tagRows(set.cases, confirmationOnlyFor(input.listSet, set.cases.map((testCase) => testCase.id)));
+  }
+}
+
 const stamp = new Date().toISOString().replace(/[:.]/g, "-");
 mkdirSync(RESULTS_DIR, { recursive: true });
 const outputPath = join(RESULTS_DIR, `protocol-history-${stamp}.json`);
@@ -80,8 +93,8 @@ if (result.measurementStatus === "source-expired") {
       set.cases.map((testCase) => ({
         id: testCase.id,
         role: testCase.role,
-        targetRank: testCase.targetRank ?? "miss",
-        top: testCase.topHits[0]?.id ?? "none",
+        targetRank: consoleValue(testCase, testCase.targetRank ?? "miss"),
+        top: consoleValue(testCase, testCase.topHits[0]?.id ?? "none"),
       })),
     );
   }

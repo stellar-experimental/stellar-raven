@@ -14,8 +14,8 @@
  *
  * Usage: node eval/qa/claim-read-packets.mjs --split <split.json> --out <dir> [--require-block]
  *          --run <label>=<results.json> ... [--expected <label>=<rows>] ...
- * A baseline file holds 79 tuning rows and a panel run 50; `--expected` states the count per label
- * (default 50, `baseline` 79).
+ * A baseline file holds every tuning row and a panel run 50; `--expected` states the count per label
+ * (default 50, `baseline` the tuning row count).
  */
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { parseArgs } from "node:util";

@@ -11,6 +11,7 @@ import {
   resultStamp,
   writeResult
 } from "./lib.mjs";
+import { confirmationOnlyFor, consoleValue, tagRows } from "../lib/confirmation-only.mjs";
 
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(DIR, "../..");
@@ -59,6 +60,12 @@ async function main() {
   const replay = JSON.parse(readFileSync(casesPath, "utf8"));
   if (!Array.isArray(replay.occurrences)) throw new Error(`${casesPath} must contain occurrences[]`);
   await preflightSearch(url, "mined-query-replay");
+  // Rows whose query matches a QA headline question are tagged confirmation-only (eval/README.md).
+  // The list covers the committed mined-query file; a `--cases` file with other ids has no listed rows.
+  const isListed = confirmationOnlyFor(
+    "mined-replay",
+    JSON.parse(readFileSync(DEFAULT_CASES, "utf8")).occurrences.map((occurrence) => occurrence.id),
+  );
   const rows = [];
   for (const [index, occurrence] of replay.occurrences.entries()) {
     process.stdout.write(`[${index + 1}/${replay.occurrences.length}] ${occurrence.id} ... `);
@@ -80,8 +87,11 @@ async function main() {
       usableOpAt5: hits.slice(0, 5).some((hit) => acceptable.has(hit.id)),
       topHits: hits
     };
+    tagRows([row], isListed);
     rows.push(row);
-    console.log(`family@1=${row.familyTop1 ? "hit" : "miss"} family@5=${row.familyTop5 ? "hit" : "miss"}`);
+    console.log(
+      `family@1=${consoleValue(row, row.familyTop1 ? "hit" : "miss")} family@5=${consoleValue(row, row.familyTop5 ? "hit" : "miss")}`,
+    );
   }
   const summary = summarize(rows);
   const stamp = resultStamp(runLabel);

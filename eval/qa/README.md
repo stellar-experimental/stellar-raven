@@ -229,6 +229,12 @@ goes to reserve until the next draw, which uses a new salt. Write the split to
 default. Record only its SHA-256 in the round ledger, and never copy a held-out or reserve ID into
 a ledger or `.agents/TODO.md`.
 
+A held-out or reserve case whose content an agent or the orchestrator saw moves to tuning by a dated
+amendment that writes a new split file and leaves the old one in place; a re-draw is a separate
+owner decision. Record the amendment in the new file's `amended` field and in the round ledger, with
+the new file's SHA-256. The tuning row count lives in one constant (`TUNING_ROW_COUNT` in
+`tuning-rows.mjs`), and `split-amend.mjs` holds the checked move.
+
 ### Source sentinels
 
 A sentinel re-reads a golden's own primary source and tests one anchor for a volatile value.

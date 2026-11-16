@@ -25,6 +25,7 @@ The launcher forwards arguments, including `--json`, to the report.
 | `npm run docs:anchors:build` | `src/adapters/stellar-docs-anchors.json` | daily live-drift check; reads public sitemap and rendered headings |
 | `node eval/corpus/raven-next/research/golden/_meta/compile.mjs` | `eval/corpus/raven-next/research/golden/compiled/golden.json` | yes |
 | `node eval/compile-routing.mjs` | `eval/routing-cases.json` | yes |
+| `npm run eval:routing:overlap` | `eval/routing-qa-overlap.json` | yes (`npm test`) |
 | `node eval/qa/compile-qa.mjs` | `eval/qa/cases.json`, `eval/qa/sample.json`, `eval/qa/lifecycle-registry.json` | yes |
 | `node eval/plan/build-op-classes.mjs` | `eval/plan/op-classes.json` | yes |
 | `node ecosystem-skills/build-index.mjs` | `ecosystem-skills/INDEX.md` from the pin manifest, directory catalog, and groups | yes |

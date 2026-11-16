@@ -31,10 +31,10 @@ describe.skipIf(!SPLIT || !RESULTS)("guard replay over stored tuning executes", 
   it("adds the guard to the end of every stored candidate block and nothing else", () => {
     const ids = tuningIdsOf(JSON.parse(readFileSync(SPLIT!, "utf8")));
     const report: Array<Record<string, unknown>> = [];
-    // The first file is the baseline (79 tuning rows); every other file is a stored panel run (50).
+    // The first file is the baseline (every tuning row); every other file is a stored panel run (50).
     for (const [index, path] of RESULTS!.split(",").entries()) {
       const results = JSON.parse(readFileSync(path, "utf8"));
-      const rows = selectById<{ id: string; transcript?: Entry[] }>(results.rows, ids, index === 0 ? 79 : 50, path);
+      const rows = selectById<{ id: string; transcript?: Entry[] }>(results.rows, ids, index === 0 ? ids.length : 50, path);
       let executes = 0;
       let withBlock = 0;
       let matching = 0;

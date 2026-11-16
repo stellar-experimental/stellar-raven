@@ -4,6 +4,7 @@ This instrument measures whether search results expose an expected source family
 The one-shot instrument makes one MCP search with the case question.
 The agent instrument allows at most three searches. The replay instrument uses stored queries from evaluation agents.
 The runners call the MCP server through HTTP. They do not import the search implementation.
+A discovery case or a mined query that matches a QA headline question is confirmation-only; the runners tag it and print no per-row outcome for it (see the [routing guide](../README.md#confirmation-only-rows)).
 
 ## Commands
 

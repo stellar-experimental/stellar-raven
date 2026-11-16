@@ -3,6 +3,7 @@ import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { compactHit, loadDiscoveryCases, normalizeUrl, parseSearchPayload, postMcp } from "./lib.mjs";
+import { confirmationOnlyFor, consoleValue, tagRows } from "../lib/confirmation-only.mjs";
 
 const DISCOVERY_DIR = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(DISCOVERY_DIR, "../..");
@@ -68,12 +69,19 @@ async function main() {
   const { meta, cases } = loadCases(casesPath);
   const manifest = manifestSummary();
   await preflight(url);
+  // Rows whose question matches a QA headline question are tagged confirmation-only (eval/README.md):
+  // the summary still counts them, and the console prints no per-row outcome for them. The list
+  // covers eval/discovery/cases.json; a `--cases` file with other ids has no listed rows.
+  const isListed = confirmationOnlyFor("discovery", loadDiscoveryCases(DEFAULT_CASES).cases.map((c) => c.id));
   const rows = [];
   for (const [i, c] of cases.entries()) {
     process.stdout.write(`[${i + 1}/${cases.length}] ${c.id} ... `);
     const row = await runCase(url, c, i);
+    tagRows([row], isListed);
     rows.push(row);
-    console.log(`family@3=${row.familyHitAt3 ? "hit" : "miss"} usable@5=${row.usableOpAt5 ? "hit" : "miss"}`);
+    console.log(
+      `family@3=${consoleValue(row, row.familyHitAt3 ? "hit" : "miss")} usable@5=${consoleValue(row, row.usableOpAt5 ? "hit" : "miss")}`,
+    );
   }
   const summary = summarize(rows);
   const stamp = new Date().toISOString().replace(/[:.]/g, "-");

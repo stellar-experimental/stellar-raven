@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { TUNING_ROW_COUNT } from "../eval/qa/tuning-rows.mjs";
 import { identifiersIn, scanPass, scanCorroboration, seriesOfCatalog } from "../eval/qa/scan-corroboration.mjs";
 
 const manifest = {
@@ -67,7 +68,7 @@ describe("scanPass", () => {
 });
 
 describe("scanCorroboration", () => {
-  const ids = Array.from({ length: 79 }, (_, i) => `q-${String(i).padStart(2, "0")}`);
+  const ids = Array.from({ length: TUNING_ROW_COUNT }, (_, i) => `q-${String(i).padStart(2, "0")}`);
   const split = { sets: { tuning: ids } };
   const rowOf = (id, answer, result) => ({ id, answer, transcript: [exec('async()=>scout.searchResearch({q:"x"})', result)] });
   const run = (rowIds, answerOf) => ({ rows: rowIds.map((id) => rowOf(id, answerOf(id), `{}${BLOCK}`)) });

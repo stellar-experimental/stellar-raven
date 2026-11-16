@@ -9,12 +9,12 @@
  *
  * Usage: node eval/qa/scan-tuning-panel.mjs --split <split.json> [--cases eval/qa/cases.json]
  *          --run <label>=<results.json> ... [--json]
- * The first `--run` is the baseline (79 tuning rows); every other run is a stored panel run
+ * The first `--run` is the baseline (every tuning row); every other run is a stored panel run
  * (50 rows, all tuning, the same 50 ids).
  */
 import { readFileSync } from "node:fs";
 import { parseArgs } from "node:util";
-import { selectById, tuningIdsOf } from "./tuning-rows.mjs";
+import { TUNING_ROW_COUNT, selectById, tuningIdsOf } from "./tuning-rows.mjs";
 
 const PANEL_RUN_ROWS = 50;
 /** Paths on the SDF site that the `stellarOrg` source does not serve. */
@@ -101,7 +101,7 @@ export function scanPanel({ split, cases, runs }) {
 export function renderMarkdown(scan) {
   const s = scan.summary;
   const lines = [
-    `Tuning rows scanned: ${s.tuningRows} (asserted 79). Rows citing any stellar.org page: ${s.citeStellarOrg}. Rows citing a page outside /blog, /press and /events: ${s.citeServedPath}, of which ${s.servedPathInLoop1Panel} are in loop 1's panel.`,
+    `Tuning rows scanned: ${s.tuningRows} (asserted ${TUNING_ROW_COUNT}). Rows citing any stellar.org page: ${s.citeStellarOrg}. Rows citing a page outside /blog, /press and /events: ${s.citeServedPath}, of which ${s.servedPathInLoop1Panel} are in loop 1's panel.`,
     `Panel: ${s.loop1Panel} loop 1 rows + ${s.added} added = ${s.panel}. Loop 1 panel by \`tags.service\`: ${JSON.stringify(s.loop1ServiceTags)}. Panel: ${JSON.stringify(s.panelServiceTags)}.`,
     `Trap-tagged panel rows: ${s.traps.join(", ") || "none"}.`,
     "",

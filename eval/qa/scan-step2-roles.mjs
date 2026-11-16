@@ -143,9 +143,9 @@ export function scanRoles({ split, cases, loop1, runs, manifest, manifestWithout
   // Identifier rows: a series identifier in an execute string in two or more of the stored loop 1 runs.
   const seen = new Map();
   const seriesSeen = new Map();
-  // The first loop 1 run is the baseline (79 tuning rows); the others are the 50-row panel runs.
+  // The first loop 1 run is the baseline (every tuning row); the others are the 50-row panel runs.
   for (const [i, run] of loop1.entries()) {
-    for (const row of selectById(run.results.rows, ids, i === 0 ? 79 : 50, run.label)) {
+    for (const row of selectById(run.results.rows, ids, i === 0 ? ids.length : 50, run.label)) {
       if (!panelIds.includes(row.id)) continue;
       const named = seriesIdentifiersIn(row.transcript, series);
       if (named.length === 0) continue;
