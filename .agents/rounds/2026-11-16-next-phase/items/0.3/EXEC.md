@@ -155,8 +155,8 @@ Edits:
   - Deleted the owner decision "The round's prototype branches" (answered by decision 8, recorded in
     the ledger row). The section now reads "None open."
 - `.agents/rounds/2026-11-16-next-phase.md`: the 0.3 row (bundle and both tarball SHA-256 values,
-  `gca-eval` stays, phase B pending, no Worker bytes change). The PR column is filled in by a
-  follow-up commit once the PR exists.
+  `gca-eval` stays, phase B pending, no Worker bytes change). The PR column links #453 (filled in by a
+  follow-up commit).
 - `.agents/rounds/2026-11-15-tuning-loop-2.md`: one paragraph under the header naming the bundle and
   linking `DISPOSITION.md`.
 - `.agents/README.md`: one Retention bullet saying deleted branches are archived in dated bundles
@@ -180,3 +180,6 @@ placeholder `.dev.vars` from the CI stub (names only, value `x`; ignored, not co
 `CONTRIBUTING.md`'s Checks table has no command for `.agents/`, so no docs lint was run. The
 pre-commit secrets hook ran on the commit. `test:smoke` was not run: no `src/executor` or `src/demo`
 change.
+
+Pull request: https://github.com/stellar-experimental/stellar-raven/pull/453 (branch pushed at
+`6575e1e7`; a follow-up commit adds the PR link to the ledger row). Nothing was deleted.
