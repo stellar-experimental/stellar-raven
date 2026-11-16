@@ -307,10 +307,9 @@ record which.
 ### Treat stellar.org routing reach as a lexical and description question
 
 The "Routing reach" bullet (a `stellarOrg` operation in the top five for 7 of 40 off-golden questions)
-sits under "Finish the stellar.org source after merge" on `feat/stellar-org-source`, not on `main`.
-When that branch merges, link that bullet to the [family decider
-record](../research/audits/2026-11-14-family-decider.md). The record's answer: an engine is not the
-fix. On the 20 development stellar.org questions (natural form) today's page reaches 3, a model-free
+is under "Prove the stellar.org source and settle its egress"; the [family decider
+record](../research/audits/2026-11-14-family-decider.md) answers it: an engine is not the fix. On
+the 20 development stellar.org questions (natural form) today's page reaches 3, a model-free
 family floor 19, and the engines on the rewritten statements +10 to +12 over seven lexical cards
 against the floor's +16. The floor is not a ship either: it admitted a `stellarOrg` card on 33 of the 46 FAM development rows that do not
 label it. The lead is the family text and the `stellarOrg` descriptions, which the frozen statements
@@ -329,6 +328,14 @@ characters for the vendor prefix rule, as `tokensOverlap` already does, and let 
 candidate that beats the page's weakest gated card keep its slot when the page is full. The
 description is not changed: a reword that removes the security displacement cut off-golden reach
 from 8 to 6 of 40 and moves the cost to other audit questions.
+
+The FAM development rows are archived in the branch bundle (agentpc
+`~/backups/raven-next-phase/raven-branches-2026-11-16.bundle`) at ref `refs/heads/exp/family-decider`, path
+`.agents/rounds/2026-11-14-family-decider/sets/fam.development.discovery.json`, and in
+`~/backups/fd-2026-11-14/split/`; both copies have SHA-256
+`0246ad022163f1d67247671b8ed640d7bb61f1aec6cad65a937ffa33b56cf89c`. Moving them into `eval/discovery/` is
+owed when this item is worked: the loader now accepts `stellarOrg`, the move changes the routing set,
+and it needs its own gate run.
 
 Done when: a general description, lexical or ranker change raises stellar.org reach on the
 off-golden questions with no loss elsewhere, measured on FAM development and the SORG development
@@ -697,7 +704,9 @@ cause, and the follows added 0 to 2 turns. Delivery was exact and the model's be
 limit. Two general defects to carry into any later attempt: the cap of three keeps the first three
 identifiers, not the ones the question names (on one row it dropped the two the question is about),
 and a token read from a `get_doc_page` path string fires for a page the agent is already reading.
-The implementation is in git history (`a49ee918`, `940dc013`, replay tooling `3d65d0ff`).
+The implementation is archived in the branch bundle (agentpc
+`~/backups/raven-next-phase/raven-branches-2026-11-16.bundle`, ref `refs/heads/tune/loop-2-runs`: commits
+`a49ee918`, `940dc013`, replay tooling `3d65d0ff`); restore with `git fetch <bundle> <ref>:<ref>`.
 
 A later attempt needs a different surface (the sentence was already in the result the agent reads
 next) and a reason to expect the exact row to matter: in R it supplied a header (status, version,
@@ -993,6 +1002,17 @@ Done when: the same defect appears in a second unrelated case (a different quest
 primary service), a contract mismatch appears, or trace evidence shows the prompt requests the
 wrong behavior. Record each recurrence with its case ID, result stamp, and transcript.
 
+### Move the pinned judge-stability register out of the `gca-eval` worktree
+
+`eval/qa/heldout-read.sh` defaults its register to
+`/home/tyler/code/raven-wt/gca-eval/eval/qa/judge-stability.json` and stops unless its SHA-256 is the
+pinned value, so that detached worktree stays as a data directory; the stored QA results live in its
+ignored files too. Both are also in the held-out archive of the 2026-11-16 branch cleanup
+([record](rounds/2026-11-16-next-phase/items/0.3/DISPOSITION.md)).
+
+Done when: the register and the stored QA results sit at a fixed path outside any worktree, the script
+default points there with the same pin, and the `gca-eval` worktree is removed, in a reviewed change.
+
 ## Dependencies
 
 ### Migrate the deprecated vitest pool and remove its overrides
@@ -1100,7 +1120,4 @@ the portal's connection check or the owner has confirmed withdrawal.
 Each decision names the question and the safe default. Record the answer in a round ledger or a
 decision record, then delete it here.
 
-- **The round's prototype branches.** `fp/harness`, `fp/retrieve`, `fp/brief`, `fp/calib`, and
-  `fp/surface` are unmerged and unreviewed. Keep or delete them? The generic agent loop, the spend
-  ledger, and the paired analysis on `fp/harness` are reusable and would need their own reviewed
-  pull request. Default: keep the branches and merge nothing.
+None open.
