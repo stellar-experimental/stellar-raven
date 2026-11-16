@@ -308,7 +308,8 @@ record which.
 
 The "Routing reach" bullet (a `stellarOrg` operation in the top five for 7 of 40 off-golden questions)
 is under "Prove the stellar.org source and settle its egress"; the [family decider
-record](../research/audits/2026-11-14-family-decider.md) answers it: an engine is not the fix. On the 20 development stellar.org questions (natural form) today's page reaches 3, a model-free
+record](../research/audits/2026-11-14-family-decider.md) answers it: an engine is not the fix. On
+the 20 development stellar.org questions (natural form) today's page reaches 3, a model-free
 family floor 19, and the engines on the rewritten statements +10 to +12 over seven lexical cards
 against the floor's +16. The floor is not a ship either: it admitted a `stellarOrg` card on 33 of the 46 FAM development rows that do not
 label it. The lead is the family text and the `stellarOrg` descriptions, which the frozen statements
