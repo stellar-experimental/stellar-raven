@@ -220,7 +220,7 @@
     "description": "One spec covering every operation this MCP server can execute, across five services: lumenloop, scout (Stellar Light), stellarDocs (Mintlify-backed docs search), stellarOrg (the stellar.org website), and skills (pinned agent playbooks). Paths are keyed '/{service}/{operation}' and each operationId is the exact callable name: an operation with operationId 'lumenloop.search_directory' is invoked inside the execute tool's sandbox as `await lumenloop.search_directory(args)` — args is ONE object matching the operation's requestBody schema (POST ops) or its parameter names (GET ops). The exact call line is on each operation as x-execute. Every call resolves (never throws) to { ok: true, data, asOf, asOfBasis, caveat? } or { ok: false, error: { service, kind, message } }; the 200 response schema documents `data`. `asOf` is the upstream data date (dataAsOf or asOf) when the payload states one, else the host observation time, and `asOfBasis` names which; `caveat` is \"no-rows\" or \"unverified-match\" when the host can show it. Every path in this spec is callable — exposure is filtered at build time, so nothing uncallable is described. Auth is handled host-side — code never sees keys.",
     "title": "stellar-raven-codemode — unified super spec",
     "version": "1.0.0",
-    "x-generatedAt": "2026-11-14T00:00:00Z"
+    "x-generatedAt": "2026-11-16T22:24:20Z"
   },
   "openapi": "3.1.0",
   "paths": {
@@ -1690,7 +1690,7 @@
     },
     "/scout/analyzeEcosystem": {
       "get": {
-        "description": "The cross-ecosystem macro rollup: totals no single-event tool answers. Slice via dimension=hackathons|categories|funding|tvl|gaps|developers|toolchain: hackathon + SCF-funding totals, category distribution, DeFi TVL (dated), gaps (per-vertical whitespace: what should I build), developers (Electric Capital monthly-active devs + trend), and toolchain (Soroban-SDK version-status distribution + deprecated-toolchain roster + CI/test presence). gaps/developers/toolchain are SUPPLY/commit-side and as-of dated; never demand or a headcount.",
+        "description": "The cross-ecosystem macro rollup: totals no single-event tool answers. Slice via dimension=hackathons|categories|funding|tvl|gaps|developers|toolchain: hackathon + SCF-funding totals, category distribution, DeFi TVL (dated), gaps (per-vertical whitespace: what should I build), developers (Electric Capital monthly-active devs + trend), and toolchain (Soroban-SDK and JS-SDK version-status distribution, apart and combined + deprecated-toolchain roster + CI/test presence). gaps/developers/toolchain are SUPPLY/commit-side and as-of dated; never demand or a headcount.",
         "operationId": "scout.analyzeEcosystem",
         "parameters": [
           {
@@ -7719,7 +7719,7 @@
   "x-generated": {
     "builder": "scripts/build-super-spec.mjs",
     "catalogEntries": 286,
-    "generatedAt": "2026-11-14T00:00:00Z"
+    "generatedAt": "2026-11-16T22:24:20Z"
   },
   "x-services": {
     "lumenloop": {
@@ -7731,7 +7731,7 @@
     },
     "scout": {
       "base": "https://stellarlight.xyz",
-      "fetchedAt": "2026-11-12T14:25:31.643Z",
+      "fetchedAt": "2026-11-16T22:24:00.455Z",
       "note": "Read-only keyless API, carried near-verbatim from the upstream OpenAPI (components namespaced 'scout.*').",
       "source": "https://stellarlight.xyz/api/openapi.json"
     },
@@ -7762,7 +7762,7 @@
           "skills": 1
         }
       ],
-      "syncedAt": "2026-11-09T19:08:24Z"
+      "syncedAt": "2026-11-16T22:24:20Z"
     },
     "stellarDocs": {
       "authoredAt": "2026-11-02T00:00:00Z",
