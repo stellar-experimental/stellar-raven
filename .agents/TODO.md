@@ -38,7 +38,7 @@ Held-out status: the first-principles split is void, because the 2026-11-14 gold
 rebuilt the battery. The current split is drawn by the rule in
 [`eval/qa/README.md`](../eval/qa/README.md) ("Held-out split") from the 247 headline cases:
 
-- SHA-256 `<v3 SHA pending>`.
+- SHA-256 `ceb98d6a612aa2a85b48a20dac953f76b7e67f860092c61c84292dcb53434155`.
 - 80 tuning, 118 held-out, and 49 reserve cases.
 - The file is on the owner's Linux machine at `~/backups/gca-2026-11-14-split-v3.json`. It
   replaces `gca-2026-11-14-split-v2.json` (SHA-256

@@ -5,7 +5,7 @@ from `ba1a448d`. Spend: USD 0. No model call, no network beyond local tooling, n
 Wrangler. Nothing under `~/backups/` was opened, printed, `head`ed or `jq`ed: only `ls`,
 `sha256sum` and the amendment runner touched it.
 
-## Phase 1 status: done, real amendment not run
+## Phase 1: done
 
 ### What I did
 
@@ -109,6 +109,21 @@ question, and exits before the new tagging path, so that path is covered by the 
 5. Only `amend-split.mjs` and this file under `items/D2/` are committed. The lead's `PLAN.md`,
    `REVIEW.md` and `briefs/` stay untracked.
 
-### Waiting
+## Phase 2: done (after the lead's "proceed")
 
-Phase 2 (real run, SHA fill-in, round ledger row) waits for the lead's "proceed".
+- Ran `amend-split.mjs` once without `--dry-run`. Printed:
+
+  ```
+  counts: tuning 80, heldOut 118, reserve 49
+  v3 SHA-256: ceb98d6a612aa2a85b48a20dac953f76b7e67f860092c61c84292dcb53434155
+  ```
+
+- `ls -l`: `-rw------- 10229 ~/backups/gca-2026-11-14-split-v3.json` (mode 600). `sha256sum` of the file
+  equals the printed value and the dry-run value. v2 still hashes to `697c550a…ed12`.
+- Filled `<v3 SHA pending>` in `.agents/TODO.md` and the loop 2 ledger (two places); none is left
+  outside this brief's own text.
+- Added the D2 row to `.agents/rounds/2026-11-16-next-phase.md` (PR `pending`, counts per set, v3
+  SHA-256, 80/118/49, deployed "Not needed: no Worker bytes change"; `src/` is untouched).
+- Re-ran `npm test` (exit 0; 166 files passed, 5 skipped; 3632 passed, 3 expected fail, 5 skipped)
+  and `npm run secrets:scan -- --tree` (exit 0, clean).
+- No new deviation.

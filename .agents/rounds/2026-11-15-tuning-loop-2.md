@@ -469,7 +469,7 @@ The row is identified only by its case-input hash in the sealed directory
 (`exposed-row.sha256`); at the next split draw it is treated as exposed and leaves the held-out set.
 
 2026-11-16: the row moved to tuning without a re-draw (decision 2(b), round item D2). The amended
-split is `~/backups/gca-2026-11-14-split-v3.json`, SHA-256 `<v3 SHA pending>`, 80 tuning, 118
+split is `~/backups/gca-2026-11-14-split-v3.json`, SHA-256 `ceb98d6a612aa2a85b48a20dac953f76b7e67f860092c61c84292dcb53434155`, 80 tuning, 118
 held-out and 49 reserve cases. The stored held-out read above stays on 119 rows.
 
 **Loop 2 closed.** Spend: P0 11.81, P1 16.10, P2 11.62, R 7.05, held-out 25.01; USD 71.59
