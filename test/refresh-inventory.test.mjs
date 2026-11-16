@@ -8,11 +8,12 @@ import {
 } from "../scripts/refresh-inventory.mjs";
 
 describe("refresh-inventory service selection", () => {
-  it("defaults to all and accepts the three isolated refresh lanes", () => {
+  it("defaults to all and accepts the four isolated refresh lanes", () => {
     expect(parseServiceArg([])).toBe("all");
     expect(parseServiceArg(["--service", "lumenloop"])).toBe("lumenloop");
     expect(parseServiceArg(["--service", "stellar-light"])).toBe("stellar-light");
     expect(parseServiceArg(["--service", "stellar-docs"])).toBe("stellar-docs");
+    expect(parseServiceArg(["--service", "stellar-org"])).toBe("stellar-org");
   });
 
   it("rejects unknown or malformed selectors before reading service credentials", () => {

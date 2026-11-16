@@ -17,7 +17,7 @@ The launcher forwards arguments, including `--json`, to the report.
 | Command | Output | CI sync guard |
 |---|---|---|
 | `node scripts/build-catalog.mjs` | `catalog/manifest.json` | yes |
-| `npm run micro-map:build` | `src/mcp/micro-map.ts` | yes |
+| `npm run micro-map:build` | `src/mcp/micro-map.ts`, `src/policy/corroboration.ts` | yes |
 | `npm run spec:build` | `specs/super-spec.json` | yes |
 | `npm run site:globes` | `src/demo/globe.ts`, `src/consent-globe.ts` | yes |
 | `npm run site:fonts` | `src/fonts.ts` | operator generated; fetches unpinned Google Fonts CSS and font bytes; not CI-gated |

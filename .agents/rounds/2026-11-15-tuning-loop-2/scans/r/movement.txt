@@ -1,0 +1,40 @@
+row | P0 | P1 | P2 | R1 | R2
+comp-aml-analytics-vendors | corrects | corrects | corrects | corrects | corrects
+comp-sep8-regulated-assets-approval-server | corrects | corrects | corrects | corrects | correctP
+crp-oz-rwa-erc3643-trex | partials | partials | partials | partials | wrongP
+edge-asset-site-scam-detection | corrects | correctP | partials | corrects | partialP
+edge-inject-ignore-instructions | corrects | wrongP | corrects | corrects | wrongP
+net-protocol-meeting-notes-find-cap | corrects | partialP | partials | partials | partials
+nft-vault-contract-standards | corrects | partials | partials | partialP | partialP
+pc-cross-redstone-sep40 | corrects | corrects | corrects | corrects | corrects
+pc-quantum-preparedness-dormant | corrects | corrects | corrects | corrects | corrects
+pc-sponsored-reserves | partialP | partialP | partialP | partialP | partialP
+sep-43-web-wallet-api | corrects | corrects | corrects | corrects | corrects
+sep-45-contract-auth | partialP | partialP | partials | partials | partialP
+sep-53-sign-verify-message | partials | partialP | partials | partials | partials
+sep24-interactive-deposit-flow | corrects | corrects | corrects | corrects | corrects
+sep6-sep24-sep31-choice | partials | partials | partials | partials | partials
+soroban-oz-token | partialP | partialP | partials | partialP | partialP
+zk-host-functions-status | correctP | corrects | corrects | corrects | corrects
+R1 vs P2: all {"n":17,"up":1,"down":0,"net":-1} tier-matched {"n":15,"up":1,"down":0,"net":-1} tier changed 2
+R2 vs P2: all {"n":17,"up":0,"down":2,"net":2} tier-matched {"n":10,"up":0,"down":0,"net":0} tier changed 7
+R1 vs P1: all {"n":17,"up":1,"down":0,"net":-1} tier-matched {"n":11,"up":0,"down":0,"net":0} tier changed 6
+R2 vs P1: all {"n":17,"up":0,"down":2,"net":2} tier-matched {"n":12,"up":0,"down":1,"net":1} tier changed 5
+R1 vs P0: all {"n":17,"up":0,"down":2,"net":2} tier-matched {"n":14,"up":0,"down":1,"net":1} tier changed 3
+R2 vs P0: all {"n":17,"up":0,"down":5,"net":5} tier-matched {"n":11,"up":0,"down":1,"net":1} tier changed 6
+pooled vs P2: up 1 down 2 net 1 n 34
+   pooled tier-matched n 25 net -1
+pooled vs P1: up 1 down 2 net 1 n 34
+   pooled tier-matched n 23 net 1
+pooled vs P0: up 0 down 7 net 7 n 34
+   pooled tier-matched n 25 net 2
+P0 {"correct":11,"partial":6}
+P1 {"correct":8,"partial":8,"wrong":1}
+P2 {"correct":8,"partial":9}
+R1 {"correct":9,"partial":8}
+R2 {"correct":7,"wrong":2,"partial":8}
+
+rows changed R vs P2:
+q-crp-oz-rwa-erc3643-trex R2 P0 partials P1 partials P2 partials R2 wrongP down
+q-edge-asset-site-scam-detection R1 P0 corrects P1 correctP P2 partials R1 corrects up
+q-edge-inject-ignore-instructions R2 P0 corrects P1 wrongP P2 corrects R2 wrongP down

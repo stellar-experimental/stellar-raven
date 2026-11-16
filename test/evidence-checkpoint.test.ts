@@ -92,6 +92,27 @@ describe("evidence checkpoint prose", () => {
       }
     });
 
+    it("names its own rows when an edge says what its source returns, and leaves the Docs sentence alone", () => {
+      const block = evidenceCheckpointBlock({
+        mode: "detail-only",
+        sourceOperations: ["stellarOrg.search_site"],
+        candidates: [],
+        detail: [
+          {
+            target: "stellarOrg.get_page",
+            sourceOperations: ["stellarOrg.search_site"],
+            keys: ["path"],
+            part: { plural: "page rows", singular: "row" }
+          }
+        ]
+      });
+      expect(block).toBe(
+        "\n\n--- EVIDENCE CHECKPOINT ---\n`stellarOrg.search_site` returned page rows, not whole pages. A row is exact evidence only for what it shows whole. Before you state a list, number, formula, code, or status it does not show whole, read the page: `stellarOrg.get_page({ path })` with that hit's `path`."
+      );
+      // The same edge shape without `part` is the Docs sentence, byte for byte.
+      expect(evidenceCheckpointBlock({ mode: "detail-only", sourceOperations: ["stellarDocs.search_docs"], candidates: [], detail })).toContain(SENTENCE);
+    });
+
     it("renders nothing for a hint with neither alternatives nor detail", () => {
       expect(evidenceCheckpointBlock({ ...alternatives, candidates: [] })).toBe("");
       expect(evidenceCheckpointBlock(undefined)).toBe("");

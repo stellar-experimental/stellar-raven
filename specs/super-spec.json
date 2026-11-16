@@ -217,10 +217,10 @@
     }
   },
   "info": {
-    "description": "One spec covering every operation this MCP server can execute, across four services: lumenloop, scout (Stellar Light), stellarDocs (Mintlify-backed docs search), and skills (pinned agent playbooks). Paths are keyed '/{service}/{operation}' and each operationId is the exact callable name: an operation with operationId 'lumenloop.search_directory' is invoked inside the execute tool's sandbox as `await lumenloop.search_directory(args)` — args is ONE object matching the operation's requestBody schema (POST ops) or its parameter names (GET ops). The exact call line is on each operation as x-execute. Every call resolves (never throws) to { ok: true, data, asOf, asOfBasis, caveat? } or { ok: false, error: { service, kind, message } }; the 200 response schema documents `data`. `asOf` is the upstream data date (dataAsOf or asOf) when the payload states one, else the host observation time, and `asOfBasis` names which; `caveat` is \"no-rows\" or \"unverified-match\" when the host can show it. Every path in this spec is callable — exposure is filtered at build time, so nothing uncallable is described. Auth is handled host-side — code never sees keys.",
+    "description": "One spec covering every operation this MCP server can execute, across five services: lumenloop, scout (Stellar Light), stellarDocs (Mintlify-backed docs search), stellarOrg (the stellar.org website), and skills (pinned agent playbooks). Paths are keyed '/{service}/{operation}' and each operationId is the exact callable name: an operation with operationId 'lumenloop.search_directory' is invoked inside the execute tool's sandbox as `await lumenloop.search_directory(args)` — args is ONE object matching the operation's requestBody schema (POST ops) or its parameter names (GET ops). The exact call line is on each operation as x-execute. Every call resolves (never throws) to { ok: true, data, asOf, asOfBasis, caveat? } or { ok: false, error: { service, kind, message } }; the 200 response schema documents `data`. `asOf` is the upstream data date (dataAsOf or asOf) when the payload states one, else the host observation time, and `asOfBasis` names which; `caveat` is \"no-rows\" or \"unverified-match\" when the host can show it. Every path in this spec is callable — exposure is filtered at build time, so nothing uncallable is described. Auth is handled host-side — code never sees keys.",
     "title": "stellar-raven-codemode — unified super spec",
     "version": "1.0.0",
-    "x-generatedAt": "2026-11-12T14:25:31.643Z"
+    "x-generatedAt": "2026-11-14T00:00:00Z"
   },
   "openapi": "3.1.0",
   "paths": {
@@ -7427,6 +7427,223 @@
         },
         "x-service": "stellarDocs"
       }
+    },
+    "/stellarOrg/get_page": {
+      "post": {
+        "description": "Read the main text from one stellar.org page, given its path: /foundation/strategy, /foundation/roadmap, /audit-bank/projects, /ecosystem/service-providers and other paths from stellarOrg.search_site rows. Returns the page title, URL and text with headings and list items kept.",
+        "operationId": "stellarOrg.get_page",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "path": {
+                    "description": "Site-relative page path starting with /, such as \"/foundation/strategy\". Full URLs, query strings, percent-encoded characters and /api paths are refused.",
+                    "minLength": 1,
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "content": {
+                      "description": "Main page text. Client-side lists, such as later pages of the audited-projects list, are not in the server-rendered text.",
+                      "type": "string"
+                    },
+                    "path": {
+                      "description": "The path served, after any same-origin redirect.",
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "truncated": {
+                      "description": "Present and true when content was cut at 40,000 characters.",
+                      "type": "boolean"
+                    },
+                    "url": {
+                      "format": "uri",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "url",
+                    "path",
+                    "title",
+                    "content"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "{ url, path, title, content, truncated? }."
+          }
+        },
+        "summary": "Read the main text from one stellar.org page, given its path: /foundation/strategy, /foundation/roadmap, /audit-bank/pro",
+        "tags": [
+          "stellarOrg"
+        ],
+        "x-endpoint": "page",
+        "x-execute": "await stellarOrg.get_page(args)",
+        "x-service": "stellarOrg"
+      }
+    },
+    "/stellarOrg/search_site": {
+      "post": {
+        "description": "Search the SDF website, stellar.org, for pages the Stellar Development Foundation publishes about itself: the SDF strategy and annual objectives, the product roadmap, the Soroban Security Audit Bank and its security-audited projects list, and the service providers directory listing agencies and audit partners. Returns site-search rows: pages, audit records with report links, video tutorials and partner listings; read one page with stellarOrg.get_page.",
+        "operationId": "stellarOrg.search_site",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "limit": {
+                    "default": 5,
+                    "maximum": 10,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "query": {
+                    "description": "Keywords or a short question for the stellar.org site search, such as \"strategy\", \"roadmap\" or \"service providers\". The site refuses more than 200 characters.",
+                    "maxLength": 200,
+                    "minLength": 1,
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "query"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "hits": {
+                      "description": "The hits live under `data.hits`, in site order. Empty when every site-search row was a blog, press, events or external non-audit row.",
+                      "items": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "description": {
+                            "description": "Page, tutorial and partner rows.",
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "firm": {
+                            "description": "Audit rows: the audit firm or firms.",
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "kind": {
+                            "description": "page: read it with stellarOrg.get_page using path. audit: an audit-register record. tutorial: a video tutorial. partner: an ecosystem directory listing.",
+                            "enum": [
+                              "page",
+                              "audit",
+                              "tutorial",
+                              "partner"
+                            ],
+                            "type": "string"
+                          },
+                          "path": {
+                            "description": "Page rows only: site-relative path on https://stellar.org; pass it to stellarOrg.get_page.",
+                            "type": "string"
+                          },
+                          "project": {
+                            "description": "Audit rows: the audited project, or null when the register names none.",
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "reportUrl": {
+                            "description": "Audit rows: the auditor's report, off stellar.org. Cite it; get_page does not read it.",
+                            "format": "uri",
+                            "type": "string"
+                          },
+                          "tags": {
+                            "description": "Page and tutorial tags; for partner rows, the directory categories.",
+                            "items": {
+                              "type": "string"
+                            },
+                            "type": "array"
+                          },
+                          "title": {
+                            "description": "For audit rows the site's \"Project - Firm\" title.",
+                            "type": "string"
+                          },
+                          "url": {
+                            "description": "Tutorial and partner rows: the stellar.org link to cite. The tutorial player and partner detail render in the browser, so get_page has no text for them.",
+                            "format": "uri",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "title"
+                        ],
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "meta": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "candidates": {
+                          "description": "Rows the site search returned before filtering.",
+                          "type": "integer"
+                        }
+                      },
+                      "required": [
+                        "candidates"
+                      ],
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "hits",
+                    "meta"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "{ hits: [{ kind, title, description?, path?, url?, tags?, project?, firm?, reportUrl? }], meta: { candidates } }."
+          }
+        },
+        "summary": "Search the SDF website, stellar.org, for pages the Stellar Development Foundation publishes about itself: the SDF strate",
+        "tags": [
+          "stellarOrg"
+        ],
+        "x-endpoint": "search",
+        "x-execute": "await stellarOrg.search_site(args)",
+        "x-service": "stellarOrg"
+      }
     }
   },
   "tags": [
@@ -7441,6 +7658,10 @@
     {
       "description": "Official Stellar developer docs at developers.stellar.org, searched via the Mintlify search and page-content API (12 intent-named operations).",
       "name": "stellarDocs"
+    },
+    {
+      "description": "The Stellar Development Foundation's website, stellar.org: keyless site search (blog, press and events rows removed) and main-text page reads (2 operations).",
+      "name": "stellarOrg"
     },
     {
       "description": "Ecosystem agent-skill playbooks, served from their pinned upstream commit and hash-verified at read time: list, targeted section reads, and ranked search. The skill index is embedded in /skills/list_skills x-skill-index. Skills marked runnable also execute host-side via /skills/run_skill (codemode.skill.run).",
@@ -7497,8 +7718,8 @@
   ],
   "x-generated": {
     "builder": "scripts/build-super-spec.mjs",
-    "catalogEntries": 284,
-    "generatedAt": "2026-11-12T14:25:31.643Z"
+    "catalogEntries": 286,
+    "generatedAt": "2026-11-14T00:00:00Z"
   },
   "x-services": {
     "lumenloop": {
@@ -7570,6 +7791,23 @@
       },
       "note": "Authored spec-as-data operations over the Mintlify discovery API; x-mintlify on each op records the exact request mapping.",
       "source": "specs/stellar-docs.json"
+    },
+    "stellarOrg": {
+      "authoredAt": "2026-11-14T00:00:00Z",
+      "backend": {
+        "auth": "none (keyless)",
+        "constraints": {
+          "filtered": "Page rows whose path is under /blog, /press or /events are dropped: Scout and Lumenloop returned a stellar.org blog, press or events post for each of ten sampled questions (research/services/stellar-org-site.md). External rows are dropped except audit rows, whose external url is the auditor's report. Partner rows, one per directory category on the site, merge into one hit per partner. Unknown kinds are dropped.",
+          "pages": "Pages are server-rendered HTML of 410-500 KB (2026-11-14). The adapter keeps the <main> text, follows same-origin redirects only, refuses a body over 2,000,000 bytes, bounds one read to 24 s, cuts content at 40,000 characters, and returns soft-empty when the page renders no server-side text.",
+          "searchShape": "GET /api/search?q=<query>&locale=en returns { query, locale, results: [{ id, kind, title, description, tags, url, isExternal }] } with at most 10 rows and no paging; kind is page, audit, tutorial or partner. The search matches title, description and tags, not page body text. A missing q, or one over 200 characters, returns 400 { error: \"invalid_query\" }."
+        },
+        "cost": "free",
+        "origin": "https://stellar.org",
+        "searchPath": "/api/search",
+        "type": "http"
+      },
+      "note": "Authored spec-as-data operations over stellar.org; x-endpoint on each op names the request the host adapter makes.",
+      "source": "specs/stellar-org.json"
     }
   }
 }

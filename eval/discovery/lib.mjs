@@ -3,7 +3,7 @@ import { createHash } from "node:crypto";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-export const FAMILIES = new Set(["lumenloop", "scout", "stellarDocs", "skills"]);
+export const FAMILIES = new Set(["lumenloop", "scout", "stellarDocs", "stellarOrg", "skills"]);
 const MANIFEST_PATH = fileURLToPath(new URL("../../catalog/manifest.json", import.meta.url));
 
 export function sha256(value) {

@@ -1,0 +1,77 @@
+
+-- changed rows vs baseline (all shared)
+q-crp-oz-rwa-erc3643-trex wrong->partial up tier panel->single
+q-defi-agentic-payment-standards-compare correct->partial down tier single->panel
+q-edge-factcheck-soroswap-first-amm correct->wrong down tier single->panel
+q-hot-fee-pool-burn-deflation correct->partial down tier panel->single
+q-net-protocol-meeting-notes-find-cap partial->correct up tier single->single
+q-nft-vault-contract-standards partial->correct up tier single->single EXACT
+q-pc-account-activation-not-found partial->correct up tier panel->single
+q-pc-cross-redstone-sep40 partial->correct up tier panel->single
+q-scf-instawards correct->partial down tier single->panel
+q-sep-43-web-wallet-api wrong->correct up tier single->single EXACT
+q-soroban-cli-bindings wrong->partial up tier single->panel
+
+-- changed rows vs step0prime (all shared)
+q-asset-usdc-eurc-issuer partial->correct up tier panel->single
+q-defi-agentic-payment-standards-compare correct->partial down tier single->panel
+q-edge-asset-site-scam-detection partial->correct up tier panel->single
+q-edge-inject-ignore-instructions wrong->correct up tier panel->single
+q-infra-rpc-methods-list wrong->partial up tier single->panel
+q-nft-vault-contract-standards partial->correct up tier single->single EXACT
+q-pc-account-activation-not-found partial->correct up tier panel->single
+q-smart-account-scoped-policy-signers partial->correct up tier panel->single
+q-sor-custom-errors-find-failure-cause partial->correct up tier panel->single
+q-soroban-contract-id-derivation correct->partial down tier single->single
+q-soroban-storage-types correct->partial down tier single->panel
+q-tool-js-sdk-package correct->partial down tier single->panel
+
+-- changed rows vs arm1 (all shared)
+q-asset-usdc-eurc-issuer partial->correct up tier panel->single
+q-defi-agentic-payment-standards-compare correct->partial down tier single->panel
+q-edge-inject-ignore-instructions wrong->correct up tier panel->single
+q-nft-vault-contract-standards partial->correct up tier single->single EXACT
+q-pc-account-activation-not-found partial->correct up tier panel->single
+q-sep-43-web-wallet-api wrong->correct up tier single->single EXACT
+q-sor-custom-errors-find-failure-cause partial->correct up tier panel->single
+q-soroban-storage-types correct->partial down tier single->panel
+
+-- changed rows vs arm3 (all shared)
+q-defi-agentic-payment-standards-compare correct->partial down tier single->panel
+q-edge-asset-site-scam-detection partial->correct up tier panel->single
+q-edge-factcheck-soroswap-first-amm correct->wrong down tier single->panel
+q-net-protocol-meeting-notes-find-cap partial->correct up tier single->single
+q-nft-vault-contract-standards partial->correct up tier single->single EXACT
+q-pc-account-activation-not-found partial->correct up tier panel->single
+q-protocol-ledger-close-time wrong->partial up tier single->panel
+q-sep-43-web-wallet-api wrong->correct up tier single->single EXACT
+q-sep24-interactive-deposit-flow partial->correct up tier panel->single
+q-smart-wallet-fee-sponsorship correct->partial down tier single->panel
+q-soroban-contract-id-derivation correct->partial down tier single->single
+q-soroban-storage-types correct->partial down tier single->panel
+q-ti-enumerate-holders-airdrop correct->partial down tier single->single
+q-tool-js-sdk-package correct->partial down tier single->panel
+
+== P0 vs baseline: shared 50
+all: n=50 flips=11 up=7 down=4 net(down-up)=-3 newWrong=1
+noExact: n=46 flips=9 up=5 down=4 net(down-up)=-1 newWrong=1
+tierMatchedNoExact: n=28 flips=1 up=1 down=0 net(down-up)=-1 newWrong=0
+tierMatchedAll: n=31 flips=3 up=3 down=0 net(down-up)=-3 newWrong=0
+
+== P0 vs step0prime: shared 50
+all: n=50 flips=12 up=8 down=4 net(down-up)=-4 newWrong=0
+noExact: n=46 flips=11 up=7 down=4 net(down-up)=-3 newWrong=0
+tierMatchedNoExact: n=30 flips=1 up=0 down=1 net(down-up)=1 newWrong=0
+tierMatchedAll: n=34 flips=2 up=1 down=1 net(down-up)=0 newWrong=0
+
+== P0 vs arm1: shared 50
+all: n=50 flips=8 up=6 down=2 net(down-up)=-4 newWrong=0
+noExact: n=46 flips=6 up=4 down=2 net(down-up)=-2 newWrong=0
+tierMatchedNoExact: n=30 flips=0 up=0 down=0 net(down-up)=0 newWrong=0
+tierMatchedAll: n=34 flips=2 up=2 down=0 net(down-up)=-2 newWrong=0
+
+== P0 vs arm3: shared 50
+all: n=50 flips=14 up=7 down=7 net(down-up)=0 newWrong=1
+noExact: n=46 flips=12 up=5 down=7 net(down-up)=2 newWrong=1
+tierMatchedNoExact: n=28 flips=3 up=1 down=2 net(down-up)=1 newWrong=0
+tierMatchedAll: n=32 flips=5 up=3 down=2 net(down-up)=-1 newWrong=0

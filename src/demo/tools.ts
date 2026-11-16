@@ -42,6 +42,7 @@ import {
   SEARCH_DESCRIPTION,
   EXECUTE_DESCRIPTION,
   rankedSearchInputSchema,
+  searchLimitSchema,
   executeInputSchema
 } from "../mcp/tools.ts";
 import {
@@ -60,12 +61,11 @@ import {
 } from "../policy/truncate.ts";
 import { projectSourceBasisTelemetry } from "../policy/source-basis.ts";
 import {
-  candidateEvidenceBlock,
+  candidateEvidenceSection,
   detailOnlyHint,
   evidenceCheckpointBlock,
   type EvidenceRecoveryHint
 } from "../policy/evidence-checkpoint.ts";
-import { withExactEvidence } from "../policy/exact-evidence.ts";
 import { DEMO_CAPS, createDemoToolBudget, type DemoToolBudget } from "./budget.ts";
 import type { DemoFrame } from "./frames.ts";
 
@@ -300,7 +300,7 @@ export function buildDemoTools(opts: {
 
   const search = tool({
     description: `${SEARCH_DESCRIPTION}\n\nPlayground evidence rule: search hits are navigation metadata and callable signatures, not sufficient factual evidence for the answer. Use execute to obtain factual service or skill results.`,
-    inputSchema: z.object(rankedSearchInputSchema),
+    inputSchema: z.object({ ...rankedSearchInputSchema, limit: searchLimitSchema(DEMO_SEARCH_DEFAULT_LIMIT) }),
     strict: DEMO_TOOL_STRICT,
     execute: async (args) => {
       const id = crypto.randomUUID();
@@ -589,10 +589,14 @@ export function buildDemoTools(opts: {
           outcome.evidenceSummary.buildAuthoritySkillIds?.length
       );
       const candidateBlock = outcome.ok
-        ? withExactEvidence(
-            candidateEvidenceBlock(outcome.operationSummary.candidateEvidence, hasPriorArtPreflight),
-            outcome.exactEvidence
-          )
+        ? candidateEvidenceSection({
+            candidateEvidence: outcome.operationSummary.candidateEvidence,
+            uncorroboratedEvidence: outcome.operationSummary.uncorroboratedEvidence,
+            hasPriorArtPreflight,
+            // The Playground never renders the PRIOR-ART block, so a build-stage run keeps the guard line.
+            priorArtBlockRenders: false,
+            exactEvidence: outcome.exactEvidence
+          })
         : "";
 
       const text = outcome.ok

@@ -258,8 +258,16 @@ describe("host structural service evidence", () => {
       expect(keys("")).toEqual([]);
     });
 
+    it("does not read a title-case month as an identifier; SEP-24 and sep-24 still mark the row", () => {
+      const sep24 = { results: [row("sep", "sep-0024")] };
+      for (const query of ["Sep-24", "Sep 24 event", "Sep24"]) expect(keys(query, sep24), query).toEqual([]);
+      for (const query of ["SEP-24", "sep-24", "SEP 24", "sep24"]) {
+        expect(keys(query, sep24), query).toEqual([{ index: 0, key: "sep-0024" }]);
+      }
+    });
+
     it("ignores zero padding and spacing, and reads either `q` or `query`", () => {
-      for (const query of ["SEP-0043", "sep 43", "SEP43", "see Sep-43 please"]) {
+      for (const query of ["SEP-0043", "sep 43", "SEP43", "see SEP-43 please"]) {
         expect(keys(query), query).toEqual([{ index: 0, key: "sep-0043" }]);
       }
       expect(keys("", sep43, { q: "SEP-43" })).toEqual([{ index: 0, key: "sep-0043" }]);
@@ -372,12 +380,13 @@ describe("host structural service evidence", () => {
 describe("sandbox surface shape", () => {
   const providers = buildSandbox(catalog, skillSource, env);
 
-  it("exposes exactly the three service namespaces plus codemode", () => {
+  it("exposes exactly the four service namespaces plus codemode", () => {
     expect(providers.map((p) => p.name).sort()).toEqual([
       "codemode",
       "lumenloop",
       "scout",
-      "stellarDocs"
+      "stellarDocs",
+      "stellarOrg"
     ]);
   });
 

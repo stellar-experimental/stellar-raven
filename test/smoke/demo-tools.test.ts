@@ -6,6 +6,7 @@ import { prepareDemoStep } from "../../src/demo/steps";
 import type { DemoFrame } from "../../src/demo/frames";
 import type { ExecuteRunner } from "../../src/executor/run";
 import { EXECUTE_DESCRIPTION } from "../../src/mcp/tools";
+import { CORROBORATION_GUARD } from "../../src/policy/corroboration";
 
 type ToolWithExecute = {
   execute: (args: Record<string, unknown>) => Promise<unknown>;
@@ -15,6 +16,12 @@ it("gives the Playground the complete description with the contradictory clause 
   const built = buildDemoTools({ env: env as unknown as Env, emit: () => {} });
   expect(built.tools.execute).toMatchObject({ description: EXECUTE_DESCRIPTION });
   expect(EXECUTE_DESCRIPTION).not.toContain("purely factual questions use docs first");
+});
+
+it("tells the Playground model its own search default, not the public one", () => {
+  const built = buildDemoTools({ env: env as unknown as Env, emit: () => {} });
+  const search = built.tools.search as unknown as { inputSchema: { shape: { limit: { description?: string } } } };
+  expect(search.inputSchema.shape.limit.description).toBe("Maximum number of hits to return (default 5, max 50).");
 });
 
 afterEach(() => {
@@ -744,6 +751,9 @@ describe("demo tools at the worker boundary", () => {
     })) as string;
     expect(build).not.toContain("--- CANDIDATE EVIDENCE ---");
     expect(build).not.toContain("--- EVIDENCE CHECKPOINT ---");
+    // The Playground never renders the PRIOR-ART block, so the Scout rows keep the guard as its own line.
+    expect(build.endsWith(`\n\n${CORROBORATION_GUARD}`)).toBe(true);
+    expect(ordinary.split(CORROBORATION_GUARD)).toHaveLength(2);
     expect(budgetReport()).toMatchObject({
       recoveryHintedExecutes: 2,
       recoveryAdviceDelivered: true,

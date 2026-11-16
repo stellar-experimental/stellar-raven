@@ -41,9 +41,8 @@ import { projectSourceBasisTelemetry } from "../policy/source-basis.ts";
 import { logEvent } from "../observability.ts";
 import { searchEventFields } from "../observability-search.ts";
 import { truncateForModel, truncateLogsForModel } from "../policy/truncate.ts";
-import { candidateEvidenceBlock, evidenceCheckpointBlock } from "../policy/evidence-checkpoint.ts";
-import { withExactEvidence } from "../policy/exact-evidence.ts";
-import { FAMILY_LINE, MICRO_MAP } from "./micro-map.ts";
+import { candidateEvidenceSection, evidenceCheckpointBlock } from "../policy/evidence-checkpoint.ts";
+import { FAMILY_LINE, SEARCH_OPENING } from "./micro-map.ts";
 
 export { SEARCH_KINDS };
 
@@ -52,10 +51,21 @@ export const EXECUTE_TOOL_NAME = "execute";
 const SEARCH_TOOL_TITLE = "Discover Stellar tools and skills";
 const EXECUTE_TOOL_TITLE = "Run Stellar research code";
 const SOURCE_BASIS_TELEMETRY_CALL_LIMIT = 12;
-/** The public page is five cards; `limit` raises it. The catalog default stays the ranker's own. */
-export const SEARCH_DEFAULT_LIMIT = 5;
+/** The public page is seven cards; `limit` changes it. The catalog default stays the ranker's own. */
+export const SEARCH_DEFAULT_LIMIT = 7;
 export const SEARCH_CARD_DESCRIPTION_CHARS = 220;
 export const SEARCH_NEXT_STEPS_MAX_CHARS = 400;
+
+/** The `limit` input, telling the model the default of the surface that serves it. */
+export function searchLimitSchema(defaultLimit: number) {
+  return z
+    .number()
+    .int()
+    .min(1)
+    .max(50)
+    .optional()
+    .describe(`Maximum number of hits to return (default ${defaultLimit}, max 50).`);
+}
 
 export const rankedSearchInputSchema = {
   query: z
@@ -74,15 +84,9 @@ export const rankedSearchInputSchema = {
     .string()
     .optional()
     .describe(
-      "Restrict results to one service namespace, e.g. \"lumenloop\", \"scout\", or \"stellarDocs\"."
+      "Restrict results to one service namespace, e.g. \"lumenloop\", \"scout\", \"stellarDocs\", or \"stellarOrg\"."
     ),
-  limit: z
-    .number()
-    .int()
-    .min(1)
-    .max(50)
-    .optional()
-    .describe(`Maximum number of hits to return (default ${SEARCH_DEFAULT_LIMIT}, max 50).`),
+  limit: searchLimitSchema(SEARCH_DEFAULT_LIMIT),
   recoverFrom: z
     .array(z.string().min(1))
     .max(10)
@@ -116,12 +120,18 @@ export const executeInputSchema = {
 // text. ADR-0003: name only exposed operations and runnable skills here.
 // The Playground uses the same exported tool contract.
 //
+// Clients that show only the start of a description (OpenCode lists 117 characters, then "...";
+// Codex lists the first line of the instructions) must still read a whole thought, so each
+// description opens with one or two complete sentences that end inside 117 characters and a
+// paragraph break after them. The `search` opening names every operation family and is generated
+// (SEARCH_OPENING, scripts/build-micro-map.mjs). test/mcp-instructions.test.ts holds both.
+//
 // One official upstream documentation URL per source family rides last on the
 // `search` description, as reference metadata. The `execute` description does
 // not carry it.
 export const UPSTREAM_DOC_LINKS = `Upstream docs: Lumenloop https://api.lumenloop.com/v1/docs; Scout https://stellarlight.xyz/api/openapi.json; Stellar Docs https://developers.stellar.org/docs.`;
 
-export const SEARCH_DESCRIPTION = `Ranked search over every exposed service operation (lumenloop.*, scout.*, stellarDocs.*) and whole skill. Hits are cards to compose in \`execute\`; they are not evidence.
+export const SEARCH_DESCRIPTION = `${SEARCH_OPENING}
 
 ## Workflow
 
@@ -138,7 +148,9 @@ Each hit has its exact \`id\`, a short description, a \`signature\` (input type 
 
 ${UPSTREAM_DOC_LINKS}`;
 
-export const EXECUTE_DESCRIPTION = `Run one JavaScript async arrow function in a sandbox with no network. It can call only the operations found with \`search\` (\`lumenloop.*\`, \`scout.*\`, \`stellarDocs.*\`) and the \`codemode.*\` helpers. The ONLY globals are \`lumenloop\`, \`scout\`, \`stellarDocs\`, \`codemode\`, and standard JavaScript (\`fetch()\` fails). Operation ids such as \`scout.searchResearch\` are called inside this script, never as top-level tools. Ids are exact-match: copy them from search hits.
+export const EXECUTE_DESCRIPTION = `Run one JavaScript async arrow function in a sandbox with no network. It calls only operations found with \`search\`.
+
+The ONLY globals are \`lumenloop\`, \`scout\`, \`stellarDocs\`, \`stellarOrg\`, \`codemode\`, and standard JavaScript (\`fetch()\` fails). Operation ids such as \`scout.searchResearch\` are called inside this script, never as top-level tools. Ids are exact-match: copy them from search hits.
 
 Compose in ONE script: independent calls in parallel, then follow-ups built from their results, then return a small projection. The return value is the result, capped near 6k tokens: select fields and slice arrays in the script. A list row is a summary; call the detail operation before answering specifics.
 
@@ -163,9 +175,10 @@ Helpers:
  * MCP initialize-time instructions (SDK ServerOptions.instructions). Clients
  * that inject them put them in the system prompt, where they outlive per-tool
  * descriptions over a long session. BASE is the workflow and evidence contract
- * and fits the pre-v2.1.296 2,048-character limit; it names the envelope without restating
- * the payload-access rule, which the execute description owns. The micro-map
- * rides after BASE for clients that inject instructions in full.
+ * and fits inside Grok's 2,033-character cut; it names the envelope without restating
+ * the payload-access rule, which the execute description owns. It is the whole
+ * string: the per-family source map that used to follow it is gone, and the
+ * family orientation lives in the `search` description (FAMILY_LINE).
  */
 export const BASE_SERVER_INSTRUCTIONS = `Unified Stellar-ecosystem gateway: \`search\` discovers service operations and skills. \`execute\` composes them in sandboxed JavaScript.
 
@@ -177,7 +190,7 @@ Evidence discipline: copy exact symbols, types, formulas, and identifiers from r
 
 Host blocks preserve metadata and truncation. Read listed artifacts with \`codemode.artifact.info(id)\` / \`codemode.artifact.read(id)\`, then return a compact projection. Operation and skill ids are exact-match — never guess them; discover via \`search\` or \`codemode.search\` mid-script.`;
 
-export const SERVER_INSTRUCTIONS = `${BASE_SERVER_INSTRUCTIONS}\n\n${MICRO_MAP}`;
+export const SERVER_INSTRUCTIONS = BASE_SERVER_INSTRUCTIONS;
 
 type SearchCard = { id: string; description: string; signature?: string };
 
@@ -478,10 +491,13 @@ export function registerTools(server: McpServer, options: RegisterToolsOptions =
         outcome.operationSummary.priorArtCandidates && outcome.evidenceSummary.buildAuthoritySkillIds?.length
       );
 
-      const candidateBlock = withExactEvidence(
-        candidateEvidenceBlock(outcome.operationSummary.candidateEvidence, hasPriorArtPreflight),
-        outcome.exactEvidence
-      );
+      const candidateBlock = candidateEvidenceSection({
+        candidateEvidence: outcome.operationSummary.candidateEvidence,
+        uncorroboratedEvidence: outcome.operationSummary.uncorroboratedEvidence,
+        hasPriorArtPreflight,
+        priorArtBlockRenders: hasPriorArtPreflight,
+        exactEvidence: outcome.exactEvidence
+      });
 
       const priorArtEvidenceBlock =
         hasPriorArtPreflight

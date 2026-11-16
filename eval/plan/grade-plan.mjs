@@ -18,7 +18,7 @@
  * (same formatting style as eval/qa/lib.mjs formatSummaryTable).
  *
  * Op extraction is regex over each execute input's {code}:
- *   /\b(lumenloop|scout|stellarDocs)\.(\w+)\s*\(/  → service op
+ *   /\b(lumenloop|scout|stellarDocs|stellarOrg)\.(\w+)\s*\(/  → service op
  *   codemode.skill.read / codemode.skill_read      → service "skills"
  *   codemode.skill.run("<id>") / codemode.skill_run → service "skills" op
  *     "skill.run" (skillId captured). The registry at src/skills/runners/index.ts
@@ -54,7 +54,7 @@ export const PLAN_CATEGORIES = new Set(QA_CATEGORIES);
 // appear escaped (\" ) — the quote class therefore also admits a leading
 // backslash via the (\\?["']) group.
 const OP_RE =
-  /\b(lumenloop|scout|stellarDocs)\.(\w+)\s*\(|\bcodemode\.skill(?:\.run|_run)\s*\(\s*(?:\\?["']([^\\"']+)\\?["'])?|\bcodemode\.skill(?:\.read|_read)\s*\(|\bcodemode\.(search|catalog|spec|describe)\s*\(/g;
+  /\b(lumenloop|scout|stellarDocs|stellarOrg)\.(\w+)\s*\(|\bcodemode\.skill(?:\.run|_run)\s*\(\s*(?:\\?["']([^\\"']+)\\?["'])?|\bcodemode\.skill(?:\.read|_read)\s*\(|\bcodemode\.(search|catalog|spec|describe)\s*\(/g;
 
 /**
  * Extract service ops (in source order) from one execute tool input string
@@ -221,7 +221,7 @@ const isExecuteToolCall = (t) => (t.tool ?? "").endsWith("execute");
 
 /** Isolated harness tool: mcp__<server>__<service>_<operation>. */
 export function extractPlainOperationTool(toolName) {
-  const match = /^mcp__.+__(lumenloop|scout|stellarDocs)_([A-Za-z0-9_]+)$/.exec(String(toolName ?? ""));
+  const match = /^mcp__.+__(lumenloop|scout|stellarDocs|stellarOrg)_([A-Za-z0-9_]+)$/.exec(String(toolName ?? ""));
   return match ? { service: match[1], op: match[2] } : null;
 }
 

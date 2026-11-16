@@ -7,8 +7,8 @@ files. Human contributors start with [`CONTRIBUTING.md`](CONTRIBUTING.md).
 ## Project and source-of-truth map
 
 A Cloudflare Workers MCP server that exposes `search` and `execute` over Lumenloop, Stellar
-Light/Scout, Stellar Docs (Mintlify), and pinned ecosystem skills. Model-written JavaScript runs in
-a networkless Dynamic Worker. Host adapters own all service traffic, policy, and secrets.
+Light/Scout, Stellar Docs (Mintlify), the stellar.org site, and pinned ecosystem skills.
+Model-written JavaScript runs in a networkless Dynamic Worker. Host adapters own all service traffic, policy, and secrets.
 
 | Need | Read |
 |---|---|

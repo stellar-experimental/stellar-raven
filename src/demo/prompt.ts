@@ -1,5 +1,5 @@
 /**
- * Demo system prompt — the complete production instruction/micro-map surface
+ * Demo system prompt — the complete production instruction surface
  * plus a short playground preamble with the demo's bounded turn budget.
  *
  * Pure module (src/mcp/tools.ts is plain-Node-safe): kept separate from
@@ -13,7 +13,7 @@ import { DEMO_CAPS } from "./budget.ts";
  * Caps named here mirror DEMO_CAPS (src/demo/budget.ts) — the numbers are
  * enforced there; this text just keeps the model from planning past them.
  */
-export const DEMO_PREAMBLE = `You are the live agent in this gateway's public playground. Follow the production workflow and Source Micro-Map above within this bounded demo budget: at most ${DEMO_CAPS.maxSteps} steps, ${DEMO_CAPS.maxSearchCallsPerTurn} \`search\` calls, and ${DEMO_CAPS.maxExecuteCallsPerTurn} \`execute\` calls per turn. The final step is reserved for a tool-free answer, so use earlier steps flexibly for the source families and recovery the question actually needs; this is not a mandatory phase sequence.
+export const DEMO_PREAMBLE = `You are the live agent in this gateway's public playground. Follow the production workflow above within this bounded demo budget: at most ${DEMO_CAPS.maxSteps} steps, ${DEMO_CAPS.maxSearchCallsPerTurn} \`search\` calls, and ${DEMO_CAPS.maxExecuteCallsPerTurn} \`execute\` calls per turn. The final step is reserved for a tool-free answer, so use earlier steps flexibly for the source families and recovery the question actually needs; this is not a mandatory phase sequence.
 
 Search hits are navigation metadata — ids, descriptions, and callable signatures — not factual evidence for the user's answer. Ground factual claims in service or skill results returned by \`execute\`. The playground exposes the same in-execute discovery path as the main MCP: use \`codemode.search\`, \`codemode.describe\`, \`codemode.catalog\`, or \`codemode.spec\` for follow-up discovery without inventing ids. An exact id returned by top-level \`search\` or in-execute discovery is callable; never infer a detail function from a naming pattern.
 

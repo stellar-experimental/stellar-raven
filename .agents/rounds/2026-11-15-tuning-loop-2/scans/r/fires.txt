@@ -1,0 +1,37 @@
+per pass: rows 34 fires 42 followed 9 exact on follow 9 re-fires after follow 0 non sep/cap 0 title-case 0
+pass 1 rows fired 13 fires 23 followed 5 (22%) exact 5 refire 0 researchBefore 1
+pass 2 rows fired 12 fires 19 followed 4 (21%) exact 4 refire 0 researchBefore 2
+1 q-comp-aml-analytics-vendors correct single turns 6 cost 0.123 fires: SEP-12->followed(exact sep-0012 https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0012.md)
+1 q-comp-sep8-regulated-assets-approval-server correct single turns 4 cost 0.085 fires: SEP-8
+1 q-crp-oz-rwa-erc3643-trex partial single turns 6 cost 0.119 fires: none
+1 q-edge-asset-site-scam-detection correct single turns 5 cost 0.146 fires: none
+1 q-edge-inject-ignore-instructions correct single turns 4 cost 0.058 fires: SEP-10
+1 q-net-protocol-meeting-notes-find-cap partial single turns 5 cost 0.078 fires: CAP-0067
+1 q-nft-vault-contract-standards partial panel turns 6 cost 0.112 fires: SEP-50->followed(exact sep-0056 https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0056.md), SEP-56->followed(exact sep-0056 https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0056.md), SEP-41
+1 q-pc-cross-redstone-sep40 correct single turns 7 cost 0.135 fires: SEP-40->followed(exact sep-0040 https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0040.md)
+1 q-pc-quantum-preparedness-dormant correct single turns 8 cost 0.185 fires: none
+1 q-pc-sponsored-reserves partial panel turns 6 cost 0.120 fires: none
+1 q-sep-43-web-wallet-api correct single turns 6 cost 0.108 fires: SEP-0043->followed(exact sep-0043 https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md)
+1 q-sep-45-contract-auth partial single turns 4 cost 0.066 fires: SEP-10, SEP-45
+1 q-sep-53-sign-verify-message partial single turns 6 cost 0.095 fires: SEP-53
+1 q-sep24-interactive-deposit-flow correct single turns 7 cost 0.171 fires: SEP-24, SEP-10, sep24, sep24, sep24
+1 q-sep6-sep24-sep31-choice partial single turns 6 cost 0.108 fires: SEP-31, SEP-24, SEP-6
+1 q-soroban-oz-token partial panel turns 4 cost 0.085 fires: SEP-41
+1 q-zk-host-functions-status correct single turns 5 cost 0.099 fires: CAP-0075, CAP-0080
+2 q-comp-aml-analytics-vendors correct single turns 7 cost 0.138 fires: none
+2 q-comp-sep8-regulated-assets-approval-server correct panel turns 4 cost 0.086 fires: SEP-8
+2 q-crp-oz-rwa-erc3643-trex wrong panel turns 5 cost 0.104 fires: none
+2 q-edge-asset-site-scam-detection partial panel turns 4 cost 0.094 fires: SEP-0001
+2 q-edge-inject-ignore-instructions wrong panel turns 3 cost 0.046 fires: SEP-10
+2 q-net-protocol-meeting-notes-find-cap partial single turns 4 cost 0.068 fires: CAP-0067
+2 q-nft-vault-contract-standards partial panel turns 4 cost 0.095 fires: none
+2 q-pc-cross-redstone-sep40 correct single turns 6 cost 0.135 fires: SEP-40->followed(exact sep-0040 https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0040.md)
+2 q-pc-quantum-preparedness-dormant correct single turns 6 cost 0.137 fires: none
+2 q-pc-sponsored-reserves partial panel turns 4 cost 0.097 fires: none
+2 q-sep-43-web-wallet-api correct single turns 6 cost 0.113 fires: SEP-43->followed(exact sep-0043 https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0043.md)
+2 q-sep-45-contract-auth partial panel turns 4 cost 0.068 fires: SEP-10, SEP-45
+2 q-sep-53-sign-verify-message partial single turns 5 cost 0.089 fires: sep-0053->followed(exact sep-0053 https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0053.md)
+2 q-sep24-interactive-deposit-flow correct single turns 8 cost 0.163 fires: SEP-24->followed(exact sep-0024 https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0024.md), SEP-10, sep24, sep24
+2 q-sep6-sep24-sep31-choice partial single turns 5 cost 0.103 fires: SEP-12, SEP-38, SEP-24
+2 q-soroban-oz-token partial panel turns 6 cost 0.116 fires: SEP-41
+2 q-zk-host-functions-status correct single turns 4 cost 0.089 fires: CAP-74, CAP-75

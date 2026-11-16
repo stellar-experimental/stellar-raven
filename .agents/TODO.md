@@ -124,25 +124,12 @@ disputes disappear, and no answer with a truly unsupported claim is graded up.
 ## Caps audit follow-ups
 
 Source: [caps audit](../research/audits/2026-11-14-caps-audit.md). The audit changed no cap that
-reaches the model. These items measure the three caps with the largest cost and accuracy effect,
-and read the free telemetry before touching four more. Each paid test (M1 to M3) needs its own
-written authorization under the `run-evals` skill; none is granted here. Run the free step first
-and stop there when it decides.
-
-### M1: search default of 7 against 5
-
-`SEARCH_DEFAULT_LIMIT` is 5, copied from the playground and only bundle-measured. Free check: 7
-cards adds 11 operation-card hits on 182 legacy rows and loses none, at about 475 more tokens per
-page. A default of 6 ranks worse than 5; do not test it. Next: replay the stored arm B search
-queries through the scorer at 5 and 7 and count live-data wrong answers whose needed operation
-sits at rank 6 or 7. If there are none, stop and keep 5. The client-token change needs no paid run:
-pages are deterministic, so the +1,899 bytes per page times the rereads in the stored arm B
-transcripts gives it exactly. Otherwise run the paid test only on the cases the replay flags (needed
-operation at rank 6 or 7, answer wrong) plus a few controls: default 7 against 5, interleaved.
-
-Done when: the replay finds no rank 6 or 7 case and 5 stays, or the paid run moves the default to 7
-or keeps 5. Move to 7 if the flagged cases gain and the computed token rise is at most 5%;
-otherwise keep 5.
+reaches the model. Tuning loop 2 decided two of its three measured caps without a paid test of their
+own: seven search cards by default (M1, kept) and the micro-map (M3, removed); see
+[the round ledger](rounds/2026-11-15-tuning-loop-2.md). The item below measures the third and reads
+the free telemetry before touching four more. A paid test needs its own written authorization
+under the `run-evals` skill; none is granted here. Run the free step first and stop there when it
+decides.
 
 ### M2: execute boundary of 4,000 tokens against 6,000
 
@@ -161,48 +148,6 @@ CLI so its 20 KB clip applies.
 Done when: the boundary stays 6,000 or moves to 4,000 (or 4,500), with score, client tokens, and
 artifact reads per question recorded. Keep 6,000 if the score falls by more than 0.05, the margin 61
 cases can resolve, or artifact reads rise enough to cancel the saving.
-
-### M3: the micro-map's value
-
-The micro-map costs about 542 tokens on every model call in a client that injects instructions,
-and Claude Code v2.1.296 or later now reads all of it. Only two routing cases have checked its
-value. The audit ranks this lowest. Next, if the owner wants it: Claude Code v2.1.296 or later
-(Sonnet 5.5), instructions with and without the map, on the tuning split. Compare score and
-source-family misses.
-
-On 61 cases that resolve only 0.05, most outcomes land within noise, so "drop the map if within
-noise" is a decision by default: the burden of proof is on the map, which the owner may accept under
-"cost counts". Only Claude Code is known to read the map: Codex and ChatGPT stress the first 512
-characters, and claude.ai web and Desktop drop server instructions entirely.
-
-Done when: the map is dropped because the score is within noise, or kept with the measured gain
-recorded.
-
-2026-11-15: tuning arm 3 measured it
-([result](rounds/2026-11-14-baseline-tuning/ARM-3.md)). Removing the map cost no rows (net -4 on 50,
--2 on tier-matched rows, against a cost of 6), no required-service coverage, and no trap behaviour,
-and saved about 750 tokens per question. It stays by the pre-registered rule only because one
-answer stated an audit fact from research rows without official corroboration. The next item is the
-follow-up.
-
-### Carry the corroboration guard on a surface every client receives, then remove the micro-map
-
-The map's one rule with no other home is: governance, standards-authorship, incident, and audit
-claims stay unverified until Stellar Docs or a skill corroborates them. Only Claude Code 2.1.296 or
-later reads the map, so every other client never had it
-([client limits](../research/audits/2026-11-14-client-text-limits.md)). Candidate homes are
-`BASE_SERVER_INSTRUCTIONS` (101 characters of its 2,000 budget remain) and the candidate-evidence
-block that every result with research rows carries. Arm 2's exact-row sentence already covers a
-document the query names by identifier. The rule's other half, "official docs are authority for
-standards status", is false for SEP and CAP files and does not move.
-
-Done when: the guard is stated on one such surface, within its character budget, and a read on a
-panel with governance, incident, and audit rows shows no rise in uncorroborated claims of that kind
-(count them per answer, with-guard against without); then the micro-map is deleted in a commit that
-also fixes `ARCHITECTURE.md`, `README.md`, the public page copy in `src/site.ts` that says the
-agent is told which family to trust, and `.agents/skills/live-drift-resolution/SKILL.md`, and that
-renames `micro-map.ts`, `build-micro-map.mjs`, and `micro-map:build` for what they emit. Revert the
-guard if the read shows no effect and it costs a measurable share of cost or turns.
 
 ### Point the total-guard failure at its sources
 
@@ -250,14 +195,85 @@ cut. claude.ai web and Claude Desktop: community evidence (`anthropics/claude-ai
 instructions are dropped, so the tool descriptions are the whole contract there. The audit's
 "Re-verifying the external facts" table has the method for each.
 
-Done when: the table's rows match the current client versions, and the owner decides whether Grok's
-2,033-character cut needs a guard like the Claude Code one (BASE is 1,899 characters, so it fits today).
+Done when: the table's rows match the current client versions. Grok's 2,033-character cut has its
+guard: `test/mcp-instructions.test.ts` pins the instructions and both tool descriptions under 2,033
+(1,899, 1,960 and 1,964 today, and the first line of each stands alone).
+
+## Tuning loop 2 follow-ups
+
+Record: [round ledger](rounds/2026-11-15-tuning-loop-2.md) and its P0, P1, P2 and R files. The loop
+kept the corroboration guard, the micro-map removal, the delivery text, the `stellarOrg` source,
+seven cards and the title-case rule for exact rows. It did not ship the identifier pointer. Each
+item below is evidence for what it names, not an improvement claim.
+
+### Rename the micro-map files for what they emit
+
+The guard is in the result and the map is gone from the served instructions, but the generator and
+its output still carry the old name: `src/mcp/micro-map.ts`, `scripts/build-micro-map.mjs`,
+`npm run micro-map:build`, `test/micro-map.test.mjs`, and the CI and skill references to them.
+They now emit the instructions text, the family line of `search`, and the guard sentence. Rename
+them for that, and assert the served hashes are unchanged (surface `42ec6102…f17f`, instructions
+`67a6bd0b…6c00`).
+
+Done when: no tracked file outside dated records says `micro-map`, and the surface hash is still
+`42ec6102…f17f`.
+
+### Carry the guard to absence-of-standard statements
+
+The guard sentence is about a claim a source makes. P1's repeat passes still produced bare statements
+such as "no official standard or SEP" on a guard row with the guard in the result, inferred from the
+absence of a hit, and the readers disagreed on whether they were violations (their own calls on P0
+read 1, 2 and 1). P2 and R read 0 violations in 25 and 20 claim-word answers, so the rule cannot see
+the case. Do not reword the sentence on that evidence.
+
+Done when: a targeted read of the answers that state a standard, audit or incident is absent, on a
+panel with enough such rows to give a rate, has the readers agreeing on the class; then a reviewed
+general wording change is measured against the unchanged sentence.
+
+### Watch required-service coverage on the 58-row panel
+
+`npm run eval:plan` covered 58 of 58 rows' required services in P0, 56 in P1 and 55 in P2. The
+misses were rows whose verdicts did not move (a Docs-required row where only Scout was touched,
+and the reverse), so no step was blamed. The planner does not name `stellarOrg` as a service.
+
+Done when: the next panel run reports the count against 55 of 58, and a fall to 53 or fewer is
+traced in the transcripts before any change ships.
+
+### Test the `stellarOrg` result rule for the corroboration guard
+
+R8 decided that `stellarOrg` stays outside the corroborating families, so each of its results
+carries the guard line, and `eval/qa/claim-read-brief.md` reads a `get_page` result as class 2 for
+SDF's own programmes and class 3 for governance and incident claims. No claim statement in P2 or R
+rested on a `stellarOrg` result, so the rule and its over-hedging risk are untested.
+
+Done when: a run with at least 5 claim-word answers that rest on a `stellarOrg` result is read with
+the brief, and the readers' violation and over-hedge counts are recorded; the rule changes only on
+that read.
+
+### Close the all-capitals date gap in the identifier token
+
+`Sep-24` (a month) is no longer an identifier, but `10-SEP-2024` and `2024-SEP-10` still read as
+SEP-2024 and SEP-10, so a query about a September date can mark that document exact. The rule is
+letter case; a month list would be vocabulary and is forbidden. No stored run shows the case.
+
+Done when: a general rule (for example, an identifier is not preceded or followed by a numeric
+date part) separates the date from the standard with unit cases for both, and the 90-query replay
+of `test/replay-exact-rows.test.ts` is byte-identical except for the date inputs.
+
+### Point the fingerprint gate failure at the fingerprint only
+
+A manifest fingerprint failure in `npm test` printed the routing runner's per-case tables,
+including the holdout lane's ids and top-five lists, to a lane that was not meant to read them
+(step 3 deviation D7). Any gate failure can repeat it.
+
+Done when: the failure message of the `gates.json` fingerprint test names the mismatching input and
+the re-baseline command and prints no per-case rows, with a test.
 
 ## Family decider follow-ups
 
 Source: [family decider record](../research/audits/2026-11-14-family-decider.md). The engine question
-is closed for the search page; nothing below reopens it. The record also bears on M1: seven lexical
-cards against five was +3/−0 on 64 FAM development rows.
+is closed for the search page; nothing below reopens it. The record also bore on the seven-card default (kept in
+tuning loop 2): seven lexical cards against five was +3/−0 on 64 FAM development rows.
 
 ### Settle the routing-row overlap with the held-out QA questions
 
@@ -280,10 +296,10 @@ orchestrator; the record lists the paths). They can be used once. A routing-reac
 them: the rows a decider can win are reached by general search operations the base instructions
 already name. A test earns them when its outcome is an answer, not a card on the page, it states the
 decision it changes, and its pass rule is fixed before the rows open. Free first step: in the stored
-agent transcripts that M1 replays, count how often an agent called a family's general search
+agent transcripts (tuning loop 2's runs hold three), count how often an agent called a family's general search
 operation (`stellarDocs.search_docs`, `lumenloop.search_content_semantic`, `scout.searchResearch`)
 when the page lacked it. A high rate means no page change helps; a low rate points to a static fix (a
-`nextSteps` clause, or two named general ids after the page) inside M1's paired QA.
+`nextSteps` clause, or two named general ids after the page) inside a paired QA run.
 
 Done when: such a test is written and the rows are spent on it once, or the owner retires the set;
 record which.
@@ -302,9 +318,21 @@ in `research/audits/2026-11-14-family-decider/statements/` show can raise a mode
 from 0.73 to 0.95. Under ADR-0009 a change needs +3 at top five with per-case review, and the owner's
 rule stands: do not fit the service to the stellar.org slice at the expense of other categories.
 
-Done when: a general description or lexical change raises stellar.org reach on the off-golden
-questions with no loss elsewhere, measured on FAM development and the SORG development rows and
-confirmed on questions not used to write it, or the owner closes the item.
+Tuning loop 2's P2 measured it: on the 58 panel questions as written a `stellarOrg` operation
+enters the top five of none; at the limit agents use (10) it displaces a non-SDF card on about 3 of
+25 non-SDF questions. The causes are three, and two are ranker properties: the id token `org`
+matches every query word that starts with "org" (the vendor scorer's prefix rule has no minimum
+length), and a weakly scored operation that passes the lexical gate fills the gated page so a
+higher-scoring one that fails the gate loses its backfill slot. Two general ranker changes follow,
+each needing the routing gate and the off-golden 40 as its acceptance check: require 4 or more
+characters for the vendor prefix rule, as `tokensOverlap` already does, and let a gate-failed
+candidate that beats the page's weakest gated card keep its slot when the page is full. The
+description is not changed: a reword that removes the security displacement cut off-golden reach
+from 8 to 6 of 40 and moves the cost to other audit questions.
+
+Done when: a general description, lexical or ranker change raises stellar.org reach on the
+off-golden questions with no loss elsewhere, measured on FAM development and the SORG development
+rows and confirmed on questions not used to write it, or the owner closes the item.
 
 ## Golden answers
 
@@ -345,34 +373,38 @@ remains:
 Done when: each owner decision is recorded under "Owner decisions", and the baseline plan is
 written or declined.
 
-### Decide whether stellar.org pages outside Docs belong in a Raven source
+### Prove the stellar.org source and settle its egress
 
-Three unrelated golden cases miss for one reason: the fact lives only on a `stellar.org` page that
-no Raven source holds. The leaves are `ecosystem.strategy-roadmap` (the SDF strategy and roadmap
-pages), `security.audit-registry` (the Audit Bank projects page), and `funding.service-providers`
-(the service-providers directory). The 2026-11-14 QA test showed all three
-([result](rounds/2026-11-14-golden-coverage-audit/qa/RESULT.md), "Corpus-coverage
-diagnostics"). `sls-117` covers only the Scout research-corpus part: four `sdf-org` pages its
-`sls-055` fix left out. Whether Raven should hold `stellar.org` itself is an owner decision, not
-a finding.
+The source is in (`stellarOrg.search_site` and `stellarOrg.get_page`, merged in tuning loop 2) and
+it is **unproven**: P2 called it on 3 of 58 rows (3 of the 12 `sets.tuning` rows whose golden cites
+a served stellar.org page), all calls ok, one answer used a fact from it, and no verdict moved
+because of it; 5 of the 12 rows cannot reach a cited page from the question as written. The
+`search_site` result is large (up to about 21,700 characters) and was ignored on 2 of 3 rows. Its
+harm side is clean at what T = 5 on 58 rows can see, not below it. What remains:
 
-The owner wants the source if it does not muddy other results (2026-11-14). `stellar.org` is a
-Next.js site on Sanity. SDF's Algolia application `TYESA7T7LE` holds an index `pages` (5,782
-section records with title, URL, `_type`, and full body text; rebuilt daily; Spanish, staging,
-and dev copies beside it). Read in the dashboard on 2026-11-14: "SDF strategy" ranks
-`/foundation/strategy` first, "service providers" ranks `/ecosystem/service-providers` first, and
-"audit bank projects" ranks `/audit-bank/projects` first; "forgot memo deposit" misses the
-`/community` answer. About half the sitemap is blog and press that Scout and Lumenloop already
-hold (580 blog and 127 press of 1,244 URLs).
+- **Worker egress.** The account's Workers reached stellar.org (amendment A7), but the adapter's own
+  code path from the deployed Worker is not tested. After the next deploy, call both operations from
+  the Worker and confirm stellar.org's front serves them.
+- **Routing reach.** See "Treat stellar.org routing reach as a lexical and description question".
+- **Adapter review residue.** The vendor-diverse attack on the adapter (a Codex frontier or Grok
+  reviewer) was never run: both reviews were Claude Opus. The title cap of 300 characters that
+  review G2 suggested was not applied (a 200,000-character title passes through `search_site`; the
+  host's 6,000-token return cap bounds it), and `/API/search` sends one request to stellar.org
+  (G4, the owner's call).
+- **Algolia `pages` index.** Orchestrator evidence, 2026-11-14, read in the Algolia dashboard: of
+  nine body-text phrases the keyless search missed, the `pages` index ranked the right page in its
+  top four for about five. Whether it holds audit records is unconfirmed. Add it only if a later
+  run shows detail-lookup failures, and then with a search-only key.
+- **Candidate upstream finding.** The stellar.org audit register titles Blend's records
+  `Unnamed record - Certora Ltd`, so a project-name query cannot find them; only the report URL
+  says "blend". Route it through `improvements/` if confirmed.
+- **Out-of-source fact.** The Anchor Directory is `anchors.stellar.org`, not stellar.org; that case
+  needs another source or a golden-truth edit.
 
-Next step: a free, read-only retrieval A/B before any adapter work. The owner creates a
-search-only key limited to the `pages` index. Query the gap-ledger leaves through it and through
-Raven, with the pass condition fixed first: more supporting passages and no displaced correct
-row. If it passes, add one operation in its own source family, filtered away from blog, press,
-and event records, with the exposure change in one reviewed change.
-
-Done when: the decision is recorded under "Owner decisions" and the three leaves' cases follow
-it.
+Done when: the Worker egress check is recorded, the vendor-diverse adapter review is done or the owner waives it, a run on the 12 source rows shows the source
+supplying a judged fact (or the owner accepts it as a coverage fix without a scored gain), the
+Algolia decision is recorded, the Blend register finding is filed or dropped, and the Anchor
+Directory case is routed.
 
 ### Check Docs search for the SEP-7 payment-request page before filing
 
@@ -656,17 +688,26 @@ forbidden captures) and all routing gates.
 ### Get research called when a question names a SEP or CAP
 
 Tuning arm 2 marks the document a research query names by identifier, but it can act only when the
-agent makes that query. In the five-row read
-([result](rounds/2026-11-14-baseline-tuning/ARM-2.md)), the agent called research with the
-identifier in 8 of 15 repeats; on `q-sep-53-sign-verify-message` it never did, in three repeats, and
-on `q-sep-43-web-wallet-api` a run without the map never called it, and arm 1's run called it with a query that returned no row for the document. The seven
-standards rows in the PH4 note above are the same gap from the other side. This is a routing and
-instruction problem, not a result-marking one.
+agent makes that query. Tuning loop 2 tried a host pointer in the `execute` result (one generated
+sentence naming the research call, once per identifier, at most three) and **did not ship it**. R
+(17 identifier rows, two passes, Claude Sonnet 5.5): the sentence fired 42 times, agents followed
+it 9 times (21% per fire against a bar above 33%; the replay baseline without it is 4%), every
+follow returned an exact row (9 of 9), and yet no answer improved: no verdict moved by a traced
+cause, and the follows added 0 to 2 turns. Delivery was exact and the model's behaviour was the
+limit. Two general defects to carry into any later attempt: the cap of three keeps the first three
+identifiers, not the ones the question names (on one row it dropped the two the question is about),
+and a token read from a `get_doc_page` path string fires for a page the agent is already reading.
+The implementation is in git history (`a49ee918`, `940dc013`, replay tooling `3d65d0ff`).
+
+A later attempt needs a different surface (the sentence was already in the result the agent reads
+next) and a reason to expect the exact row to matter: in R it supplied a header (status, version,
+dates, authors) and no judged fact, so a higher follow rate alone would not have moved a verdict.
+This is a routing and instruction problem, not a result-marking one.
 
 Done when: a reviewed general mechanism (no list of standards, no per-case vocabulary) raises the
-share of repeats that call `scout.searchResearch` with the identifier on rows that name a SEP or CAP,
-measured on those rows with three repeats each, with no grade, cost, or trap regression. Hold it
-with the PH3 ruling above: it shares the owner's decision.
+per-fire follow rate above 33% on rows that name a SEP or CAP, and at least two different rows go
+up by a trace to the exact row it led to, with no grade, cost, or trap regression, on a read of at
+least 17 rows twice. Hold it with the PH3 ruling above: it shares the owner's decision.
 
 ### Stop identity substitution on spelling-corrected matches
 
@@ -860,9 +901,17 @@ QA answering client; the `run-evals` skill tells agents to run them as `hc` lane
 loopback MCP server. Two of the three default eval clients (GPT-6.1 Terra and Grok 4.7)
 therefore have no repeatable harness.
 
+Tuning loop 2's item 4 (the first 120 characters of each description and the first line of the
+instructions stand alone) is therefore unverified outside Claude Code: delivery is arithmetic against
+measured limits (Codex's catalogue line, OpenCode's two listings, Grok's 2,033-character cut), not a
+session, and whether any of it changes an answer on Codex, Grok or OpenCode, whether a Codex model
+prints `ALL_TOOLS`, whether an OpenCode model reads past 117 characters, and whether those clients
+pass `limit` (which decides what seven cards do for them) are all open. The client probe harness
+the plan names calls models and needs its own authorization line.
+
 Done when: a committed runner drives the Codex and Grok CLIs as answering clients against the
 local server and writes results the judge can grade, or a recorded decision keeps the hand-run
-lanes.
+lanes; then a run on the loop 2 surface reports those four behaviours per client.
 
 ### Close the remaining claim-support gaps of judge pack p9
 

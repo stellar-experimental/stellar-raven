@@ -1,0 +1,16 @@
+rows 12; served golden pages 21
+search_site returns a cited page: top 5 7, top 7 7, top 10 7 of 12
+get_page returns text for a cited page: 12 of 12
+both: 7; page only: 5; neither: 0
+q-asset-usdc-eurc-issuer                     search 1 hits             | rank {"/products-and-tools/circle-usdc-eurc":null} | page {"/products-and-tools/circle-usdc-eurc":3327}
+q-comp-aml-analytics-vendors                 search 1 hits             | rank {"/ecosystem/service-providers":null} | page {"/ecosystem/service-providers":4972}
+q-data-network-metrics-sources               search 3 hits             | rank {"/quarterly-reports":null,"/learn/the-power-of-stellar":null} | page {"/quarterly-reports":1576,"/learn/the-power-of-stellar":2530}
+q-eco-stellar-rwa-stablecoin-volume          search 0 hits             | rank {"/resources/institutional-infrastructure-report":null,"/quarterly-reports":null} | page {"/resources/institutional-infrastructure-report":1068,"/quarterly-reports":1576}
+q-hot-fee-pool-burn-deflation                search 4 hits             | rank {"/xlm-utility":2} | page {"/xlm-utility":233}
+q-hot-sdf-xlm-holdings-sales                 search 7 hits             | rank {"/foundation/mandate":2,"/quarterly-reports":null} | page {"/foundation/mandate":11411,"/quarterly-reports":1576}
+q-org-sdf-structure-mandate                  search 7 hits             | rank {"/foundation":2,"/foundation/mandate":1,"/quarterly-reports":null,"/terms-of-service":null} | page {"/foundation":4479,"/foundation/mandate":11411,"/quarterly-reports":1576,"/terms-of-service":30165}
+q-raph-official-help-sdf-cannot-recover      search 6 hits             | rank {"/community":5} | page {"/community":4773}
+q-scf-ambassador-program                     search 3 hits             | rank {"/community":null} | page {"/community":4773}
+q-scf-how-to-apply                           search 3 hits             | rank {"/enterprise-fund/apply":1} | page {"/enterprise-fund/apply":633}
+q-scf-vs-sdf-enterprise-fund                 search 5 hits             | rank {"/enterprise-fund":2,"/enterprise-fund/apply":1,"/grants-and-funding/matching-fund":3,"/grants-and-funding/marketing-grants":null} | page {"/enterprise-fund":3421,"/enterprise-fund/apply":633,"/grants-and-funding/matching-fund":7854,"/grants-and-funding/marketing-grants":2430}
+q-soroban-pre-mainnet-security-steps         search 2 hits             | rank {"/grants-and-funding/soroban-audit-bank":2} | page {"/grants-and-funding/soroban-audit-bank":6917}

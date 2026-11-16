@@ -1,0 +1,15 @@
+row | P0 | P1 | P2 | P3   (verdict tier; b=blocks g=guard results)
+q-crp-oz-rwa-erc3643-trex | partials b1 g0 | partials b1 g1 | partials b1 g1 | partialP b1 g1
+q-defi-agent-identity-stellar-experimental | corrects b2 g0 | corrects b1 g1 | corrects b1 g2 | corrects b1 g2
+q-edge-factcheck-soroswap-first-amm | wrongP b1 g0 | wrongP b1 g1 | wrongP b1 g1 | corrects b2 g2
+q-n3-issues-842-backup-faucet-wallet | corrects b0 g0 | corrects b1 g1 | corrects b1 g1 | corrects b0 g0
+q-pc-sponsored-reserves | partialP b1 g0 | partialP b0 g0 | partialP b0 g0 | partialP b0 g0
+q-scf-instawards | partialP b1 g0 | partials b2 g2 | corrects b2 g2 | partials b2 g2
+q-smart-account-scoped-policy-signers | corrects b1 g0 | corrects b2 g2 | corrects b2 g2 | corrects b3 g3
+q-soroban-pre-mainnet-security-steps | partials b3 g0 | partialP b2 g2 | partials b2 g2 | partials b1 g1
+q-soroban-reentrancy | corrects b2 g0 | corrects b1 g1 | corrects b1 g1 | corrects b1 g1
+q-soroban-vuln-classes | partials b1 g0 | partials b1 g1 | partials b1 g1 | partials b1 g1
+P0 blocks 13 guard results 0
+P1 blocks 12 guard results 12
+P2 blocks 12 guard results 13
+P3 blocks 12 guard results 13

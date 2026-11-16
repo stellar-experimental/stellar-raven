@@ -1198,7 +1198,7 @@ describe("searchCatalogPage — tier marker + total/truncated", () => {
     );
     // Admission runs before scoring. It can reduce total when an operation
     // publishes exclusions but lacks positive evidence for this query.
-    expect(page.total).toBe(37);
+    expect(page.total).toBe(39);
     expect(page.truncated).toBe(true);
   });
 
@@ -1813,7 +1813,15 @@ describe("the detail relation in the recovery graph", () => {
     const detailEdges = catalog.entries.flatMap((entry) =>
       (entry.retrievalProfile?.recoverWith ?? []).filter((edge) => edge.relation === "detail")
     );
-    expect(detailEdges).toHaveLength(DOCS_SEARCHES.length);
+    // The Docs searches, plus the one stellar.org site search, whose rows are pages (joined on `path`).
+    expect(detailEdges).toHaveLength(DOCS_SEARCHES.length + 1);
+    const orgEdges = byId.get("stellarOrg.search_site")?.retrievalProfile?.recoverWith ?? [];
+    expect(orgEdges.at(-1)).toEqual({
+      id: "stellarOrg.get_page",
+      relation: "detail",
+      on: ["partial"],
+      part: { plural: "page rows", singular: "row" }
+    });
   });
 
   it("never enters the alternatives, the search recovery walk, or the three-candidate cap", () => {

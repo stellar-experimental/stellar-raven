@@ -316,7 +316,7 @@ function executeEntries(transcript) {
   return (Array.isArray(transcript) ? transcript : []).filter(
     (entry) =>
       (String(entry.tool ?? "").endsWith("execute") ||
-        /^mcp__.+__(?:lumenloop|scout|stellarDocs)_/.test(String(entry.tool ?? ""))) &&
+        /^mcp__.+__(?:lumenloop|scout|stellarDocs|stellarOrg)_/.test(String(entry.tool ?? ""))) &&
       typeof entry.result === "string"
   );
 }

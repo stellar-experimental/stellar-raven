@@ -78,6 +78,8 @@ import {
 } from "../catalog/search.ts";
 import { prepareCatalogSearch } from "../catalog/search-resolution.ts";
 import { lastIdSegment, VALID_IDENT } from "../catalog/id.ts";
+import { detailJoinKeys, rowsCarryJoinKeys } from "../catalog/detail-relation.ts";
+import { identifierTokens, stripLeadingZeros } from "../policy/identifier-token.ts";
 import { callService } from "../adapters/index.ts";
 import type { AdapterEnv, AdapterResult, ExactRow, FetchLike, ResultCaveat } from "../adapters/types.ts";
 import { guard } from "../policy/guard.ts";
@@ -109,6 +111,11 @@ export type OpLedgerCall = {
   outcome: "ok" | "error" | "soft-empty";
   /** Host-only structural evidence signal. It never changes the service envelope. */
   hasServiceData?: boolean;
+  /**
+   * The `detail` targets of this operation whose join keys at least one returned row carries. Set
+   * only for an operation with a `detail` edge; absent means the result was not checked.
+   */
+  detailReady?: string[];
   /** Exact allowlisted response metadata captured before sandbox projection. */
   sourceMetadata?: SourceMetadataField[];
   /** The same host-derived caveat the ok envelope carries. */
@@ -207,6 +214,20 @@ function captureSourceMetadata(payload: unknown): SourceMetadataField[] | undefi
   return fields.length > 0 ? fields : undefined;
 }
 
+/** The ledger's `detailReady` field for an operation with `detail` edges; nothing for one without. */
+function detailReadyOf(catalog: Catalog, entry: CatalogEntry, data: unknown): { detailReady?: string[] } {
+  const edges = (entry.retrievalProfile?.recoverWith ?? []).filter((edge) => edge.relation === "detail");
+  if (edges.length === 0) return {};
+  const byId = new Map(catalog.entries.map((candidate) => [candidate.id, candidate]));
+  const ready: string[] = [];
+  for (const edge of edges) {
+    const target = byId.get(edge.id);
+    const keys = target ? detailJoinKeys(entry, target) : null;
+    if (keys && rowsCarryJoinKeys(data, keys)) ready.push(edge.id);
+  }
+  return { detailReady: ready };
+}
+
 /**
  * An ok envelope is not by itself factual service evidence. Collections carry
  * the rows that can support a later answer. Empty collections are
@@ -289,12 +310,8 @@ export function resultCaveat(
   return candidateMode ? "unverified-match" : undefined;
 }
 
-// A token followed by `-` or `.` and another digit (`CVE-2024-1234`, `SEP-43.1`) is a longer identifier, not a prefix match.
-const IDENTIFIER_TOKEN_RE = /\b([A-Za-z]+)[- ]?(\d+)\b(?![-.]\d)/g;
 const MAX_EXACT_ROWS = 5;
 const MAX_EXACT_URL_CHARS = 200;
-
-const stripLeadingZeros = (digits: string): string => digits.replace(/^0+(?=\d)/, "");
 
 /** The first top-level array of the payload whose items carry a string `source` and `url`. */
 function sourceRowsOf(data: unknown): unknown[] | undefined {
@@ -345,10 +362,7 @@ export function exactRowsOf(
   if (lane === undefined || !CANDIDATE_LANES.has(lane)) return [];
   const query = [args.q, args.query].find((value): value is string => typeof value === "string");
   if (!query) return [];
-  const wanted = [...query.matchAll(IDENTIFIER_TOKEN_RE)].map((match) => ({
-    letters: match[1]!.toLowerCase(),
-    number: stripLeadingZeros(match[2]!)
-  }));
+  const wanted = identifierTokens(query);
   const rows = wanted.length > 0 ? sourceRowsOf(data) : undefined;
   if (!rows) return [];
   const out: Array<ExactRow & { url?: string }> = [];
@@ -601,6 +615,7 @@ export function buildOpsFns(
         op: entry.id,
         outcome: "ok",
         hasServiceData: hasServiceData(redactedResult.data),
+        ...detailReadyOf(catalog, entry, redactedResult.data),
         sourceMetadata,
         ...(caveat ? { caveat } : {}),
         ...(exactRows.length > 0 ? { exactRows } : {}),

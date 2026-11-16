@@ -29,6 +29,7 @@ import {
   type RegisterToolsOptions
 } from "../src/mcp/tools";
 import { getCatalog } from "../src/catalog/load";
+import { CORROBORATION_GUARD } from "../src/policy/corroboration";
 import { clipProse } from "../src/catalog/search";
 import { allowDevUnauthenticated } from "../src/auth/gate";
 import type { McpAccessContext } from "../src/server";
@@ -814,6 +815,21 @@ describe("search behavior (host-side ranked)", () => {
     expect(structured.nextSteps).not.toContain("ok: true");
   });
 
+  it("a search with no limit returns the default page of seven cards, and the schema says so", async () => {
+    expect(SEARCH_DEFAULT_LIMIT).toBe(7);
+    const { tools } = await client.listTools();
+    const limit = (tools.find((t) => t.name === "search")!.inputSchema as JsonSchema).properties!.limit as { description?: string };
+    expect(limit.description).toContain("default 7, max 50");
+    const page = async (args: Record<string, unknown>) =>
+      (await client.callTool({ name: "search", arguments: args })).structuredContent as { hits: unknown[]; total: number };
+    const unlimited = await page({ query: "stellar soroban contract documentation" });
+    expect(unlimited.total).toBeGreaterThan(SEARCH_DEFAULT_LIMIT);
+    expect(unlimited.hits).toHaveLength(SEARCH_DEFAULT_LIMIT);
+    // An explicit limit still governs, and raises or lowers the page.
+    expect((await page({ query: "stellar soroban contract documentation", limit: 3 })).hits).toHaveLength(3);
+    expect((await page({ query: "stellar soroban contract documentation", limit: 10 })).hits).toHaveLength(10);
+  });
+
   it("renders each hit as a compact card that is still callable", async () => {
     const result = await client.callTool({ name: "search", arguments: { query: "search directory" } });
     const { hits } = result.structuredContent as {
@@ -1433,6 +1449,65 @@ describe("execute behavior", () => {
     expect(text).toContain("These rows are candidates, not identity or absence proof");
     expect(text).toContain("closed-world directory answer");
     expect(text).not.toContain("--- EVIDENCE RECOVERY ---");
+  });
+
+  it("ends the candidate block with the corroboration guard, once, before any exception", async () => {
+    const execClient = await connectedClient({
+      runExecute: async () => ({
+        ok: true,
+        result: '{"rows":[{"title":"nearby"}]}',
+        truncated: false,
+        logs: [],
+        ...executeSummaries({
+          total: 1,
+          ok: 1,
+          error: 0,
+          softEmpty: 0,
+          candidateEvidence: 1,
+          uncorroboratedEvidence: 1,
+          exactEvidence: 1
+        }),
+        exactEvidence: [{ op: "scout.searchResearch", rows: [{ key: "sep-0043" }] }]
+      })
+    });
+    const text = (
+      (await execClient.callTool({ name: "execute", arguments: { code: "async () => 1" } })).content as Array<{ text: string }>
+    )[0]?.text ?? "";
+    expect(text.split(CORROBORATION_GUARD)).toHaveLength(2);
+    expect(text.indexOf(CORROBORATION_GUARD)).toBeGreaterThan(text.indexOf("report only that source's exact result."));
+    expect(text.indexOf(CORROBORATION_GUARD)).toBeLessThan(text.indexOf("Exception:"));
+  });
+
+  it("renders the guard as its own line after a call that never carries the candidate block", async () => {
+    const execClient = await connectedClient({
+      runExecute: async () => ({
+        ok: true,
+        result: '{"audits":[{"name":"x"}]}',
+        truncated: false,
+        logs: [],
+        ...executeSummaries({ total: 1, ok: 1, error: 0, softEmpty: 0, evidenceData: 1, uncorroboratedEvidence: 1 })
+      })
+    });
+    const text = (
+      (await execClient.callTool({ name: "execute", arguments: { code: "async () => 1" } })).content as Array<{ text: string }>
+    )[0]?.text ?? "";
+    expect(text).toBe(`{"audits":[{"name":"x"}]}\n\n${CORROBORATION_GUARD}`);
+  });
+
+  it("adds no guard when every call came from a corroborating family", async () => {
+    const execClient = await connectedClient({
+      runExecute: async () => ({
+        ok: true,
+        result: '{"hits":[]}',
+        truncated: false,
+        logs: [],
+        ...executeSummaries({ total: 1, ok: 1, error: 0, softEmpty: 0, evidenceData: 1 })
+      })
+    });
+    const text = (
+      (await execClient.callTool({ name: "execute", arguments: { code: "async () => 1" } })).content as Array<{ text: string }>
+    )[0]?.text ?? "";
+    expect(text).not.toContain(CORROBORATION_GUARD);
   });
 
   it("adds the exact-row exception to the candidate block only when the host marked a row", async () => {

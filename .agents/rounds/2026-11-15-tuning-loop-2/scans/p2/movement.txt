@@ -1,0 +1,25 @@
+P2 vs P1 pass 1: all {"n":58,"up":4,"down":5,"net":1} tier-matched {"n":37,"up":1,"down":0,"net":-1} tier-changed 21
+   non-source 46 rows all {"n":46,"up":3,"down":4,"net":1} tm {"n":29,"up":1,"down":0,"net":-1}
+   source 12 rows {"n":12,"up":1,"down":1,"net":0}
+P2 vs P0: all {"n":58,"up":4,"down":7,"net":3} tier-matched {"n":37,"up":1,"down":3,"net":2} tier-changed 21
+   non-source 46 rows all {"n":46,"up":3,"down":6,"net":3} tm {"n":30,"up":0,"down":3,"net":3}
+   source 12 rows {"n":12,"up":1,"down":1,"net":0}
+
+CHANGED P1->P2 (with P0):
+q-defi-agentic-payment-standards-compare P0 partial(panel) P1 correct(single) P2 partial(panel) down RETURNED-to-P0
+q-edge-asset-site-scam-detection P0 correct(single) P1 correct(panel) P2 partial(single) down 
+q-edge-factcheck-soroswap-first-amm P0 wrong(panel) P1 wrong(panel) P2 correct(single) up 
+q-edge-inject-ignore-instructions P0 correct(single) P1 wrong(panel) P2 correct(single) up RETURNED-to-P0
+q-hot-sdf-xlm-holdings-sales [SRC] P0 partial(single) P1 correct(single) P2 partial(panel) down RETURNED-to-P0
+q-pc-account-activation-not-found P0 correct(single) P1 correct(single) P2 partial(panel) down 
+q-protocol-ledger-close-time P0 partial(panel) P1 partial(single) P2 correct(single) up 
+q-raph-official-help-sdf-cannot-recover [SRC] P0 partial(single) P1 partial(panel) P2 correct(single) up 
+q-ti-enumerate-holders-airdrop P0 partial(single) P1 partial(single) P2 wrong(panel) down 
+
+CHANGED P0->P2 not in P1->P2:
+q-asset-usdc-eurc-issuer [SRC] P0 correct(single) P1 partial(panel) P2 partial(panel)
+q-infra-which-indexer P0 correct(single) P1 partial(single) P2 partial(panel)
+q-net-protocol-meeting-notes-find-cap P0 correct(single) P1 partial(panel) P2 partial(single)
+q-nft-vault-contract-standards P0 correct(single) P1 partial(single) P2 partial(single)
+q-soroban-storage-types P0 partial(panel) P1 correct(single) P2 correct(single)
+P2 totals {"correct":23,"partial":34,"wrong":1}

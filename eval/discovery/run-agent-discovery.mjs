@@ -97,7 +97,7 @@ const OUTPUT_SCHEMA = {
     primaryToolId: { type: "string" },
     primaryService: {
       type: "string",
-      enum: ["lumenloop", "scout", "stellarDocs", "skills", "none"]
+      enum: ["lumenloop", "scout", "stellarDocs", "stellarOrg", "skills", "none"]
     },
     alternateToolIds: { type: "array", items: { type: "string" }, maxItems: 3 },
     reasoning: { type: "string" }

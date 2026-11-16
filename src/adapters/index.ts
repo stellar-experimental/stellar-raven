@@ -7,12 +7,14 @@ import type { CatalogEntry } from "../catalog/types.ts";
 import { callLumenloop } from "./lumenloop.ts";
 import { callScout } from "./scout.ts";
 import { callStellarDocs } from "./stellar-docs.ts";
+import { callStellarOrg } from "./stellar-org.ts";
 import { errResult, type AdapterEnv, type AdapterResult, type FetchLike } from "./types.ts";
 
 export type { AdapterEnv, AdapterError, AdapterResult, FetchLike } from "./types.ts";
 export { callLumenloop } from "./lumenloop.ts";
 export { callScout } from "./scout.ts";
 export { callStellarDocs } from "./stellar-docs.ts";
+export { callStellarOrg } from "./stellar-org.ts";
 
 export async function callService(
   entry: CatalogEntry,
@@ -27,6 +29,8 @@ export async function callService(
       return callScout(entry, args, env, fetchImpl);
     case "stellarDocs":
       return callStellarDocs(entry, args, env, fetchImpl);
+    case "stellarOrg":
+      return callStellarOrg(entry, args, fetchImpl);
     default:
       return errResult({
         service: entry.service,
