@@ -211,3 +211,6 @@ Notes:
 Final state: refs `main` and `np/0.3-branch-bundle` locally and on `origin`; six tags; worktrees
 main clone, `gca-eval`, `np-0.3`. The bundle and both tarballs on agentpc and the Mac copy are the
 only archive of the deleted branches.
+
+Gates after phase B, bare, from this worktree: `npm run typecheck`, `npm test`, `npm run build` and
+`npm run secrets:scan -- --tree` all exit 0.
