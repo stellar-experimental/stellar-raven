@@ -1,6 +1,6 @@
 {
   "source": "https://developers.stellar.org/sitemap.xml",
-  "capturedAt": "2026-11-09T19:08:12.220Z",
+  "capturedAt": "2026-11-16T22:23:57.473Z",
   "pages": {
     "/docs/build": {
       "Applications": [
@@ -135,6 +135,9 @@
       "Mainnet USDC": [
         "mainnet-usdc"
       ],
+      "Rail402": [
+        "rail402"
+      ],
       "Supported Assets": [
         "supported-assets"
       ],
@@ -234,6 +237,35 @@
       ],
       "Using Stellar Lab": [
         "using-stellar-lab"
+      ]
+    },
+    "/docs/build/agentic-payments/x402/seller-and-agent-guide": {
+      "Before you start": [
+        "before-you-start"
+      ],
+      "Build an agent that discovers and pays": [
+        "build-an-agent-that-discovers-and-pays"
+      ],
+      "Fee sponsorship": [
+        "fee-sponsorship"
+      ],
+      "Learn more": [
+        "learn-more"
+      ],
+      "Make an endpoint discoverable": [
+        "make-an-endpoint-discoverable"
+      ],
+      "Moving to mainnet": [
+        "moving-to-mainnet"
+      ],
+      "Networks, assets, and trustlines": [
+        "networks-assets-and-trustlines"
+      ],
+      "Troubleshooting": [
+        "troubleshooting"
+      ],
+      "What the payer signs": [
+        "what-the-payer-signs"
       ]
     },
     "/docs/build/apps": {},
@@ -846,9 +878,6 @@
       "Anchor Basics": [
         "anchor-basics"
       ],
-      "Closing Resources": [
-        "closing-resources"
-      ],
       "Configuring the Client": [
         "configuring-the-client"
       ],
@@ -1113,12 +1142,12 @@
     },
     "/docs/build/guides": {},
     "/docs/build/guides/archival": {},
-    "/docs/build/guides/archival/create-restoration-footprint-js": {
+    "/docs/build/guides/archival/create-restoration-footprint": {
       "Code walkthrough": [
         "code-walkthrough"
       ]
     },
-    "/docs/build/guides/archival/extend-persistent-entry-js": {
+    "/docs/build/guides/archival/extend-persistent-entry": {
       "Extending a persistent entry": [
         "extending-a-persistent-entry"
       ],
@@ -1135,8 +1164,8 @@
         "the-extension-process"
       ]
     },
-    "/docs/build/guides/archival/restore-contract-js": {},
-    "/docs/build/guides/archival/restore-data-js": {},
+    "/docs/build/guides/archival/restore-contract": {},
+    "/docs/build/guides/archival/restore-data": {},
     "/docs/build/guides/archival/test-ttl-extension": {
       "Example": [
         "example"
@@ -2073,9 +2102,8 @@
     "/docs/build/guides/freighter/sign-auth-entries": {},
     "/docs/build/guides/freighter/sign-soroban-xdrs": {},
     "/docs/build/guides/rpc": {},
-    "/docs/build/guides/rpc/generate-ledger-keys-python": {},
-    "/docs/build/guides/rpc/retrieve-contract-code-js": {},
-    "/docs/build/guides/rpc/retrieve-contract-code-python": {},
+    "/docs/build/guides/rpc/generate-ledger-keys": {},
+    "/docs/build/guides/rpc/retrieve-contract-code": {},
     "/docs/build/guides/storage": {},
     "/docs/build/guides/storage/choosing-the-right-storage": {
       "A note on TTL": [
@@ -2726,11 +2754,11 @@
       "Understanding the Footprint": [
         "understanding-the-footprint"
       ],
+      "Using an SDK": [
+        "using-an-sdk"
+      ],
       "Using Fetch": [
         "using-fetch"
-      ],
-      "Using the JavaScript SDK": [
-        "using-the-javascript-sdk"
       ]
     },
     "/docs/build/guides/transactions/sponsored-reserves": {
@@ -2774,7 +2802,7 @@
         "sponsorship-source-accounts"
       ]
     },
-    "/docs/build/guides/transactions/submit-transaction-wait-js": {
+    "/docs/build/guides/transactions/submit-transaction-wait": {
       "Send statuses": [
         "send-statuses"
       ],
@@ -5889,7 +5917,8 @@
       ],
       "Integrations": [
         "integrations",
-        "integrations-2"
+        "integrations-2",
+        "integrations-3"
       ],
       "Key Features": [
         "key-features"
@@ -9565,6 +9594,56 @@
         "when-you-need-a-contract-token-examples"
       ]
     },
+    "/docs/tokens/asset-issuance-stack": {
+      "Clawback must be enabled before any trustline exists": [
+        "clawback-must-be-enabled-before-any-trustline-exists"
+      ],
+      "How to approach the decision": [
+        "how-to-approach-the-decision"
+      ],
+      "Layer 1. Asset and issuance": [
+        "layer-1-asset-and-issuance"
+      ],
+      "Layer 2. Keys, custody and account control": [
+        "layer-2-keys-custody-and-account-control"
+      ],
+      "Layer 3. Custody and safekeeping": [
+        "layer-3-custody-and-safekeeping"
+      ],
+      "Layer 4. Compliance and identity": [
+        "layer-4-compliance-and-identity"
+      ],
+      "Layer 5. Data, oracles and attestation": [
+        "layer-5-data-oracles-and-attestation"
+      ],
+      "Layer 6. Distribution and liquidity": [
+        "layer-6-distribution-and-liquidity"
+      ],
+      "Layer 7. Assurance and visibility": [
+        "layer-7-assurance-and-visibility"
+      ],
+      "Migration between asset models is not a configuration change": [
+        "migration-between-asset-models-is-not-a-configuration-change"
+      ],
+      "Section 1. The primary token architecture design decision": [
+        "section-1-the-primary-token-architecture-design-decision"
+      ],
+      "Section 2. Decisions that cannot be reversed after launch": [
+        "section-2-decisions-that-cannot-be-reversed-after-launch"
+      ],
+      "Section 3. The integration stack": [
+        "section-3-the-integration-stack"
+      ],
+      "Section 4. Requirements by asset type": [
+        "section-4-requirements-by-asset-type"
+      ],
+      "Section 5. Reference documentation": [
+        "section-5-reference-documentation"
+      ],
+      "What each capability actually applies to": [
+        "what-each-capability-actually-applies-to"
+      ]
+    },
     "/docs/tokens/control-asset-access": {
       "Auditing": [
         "auditing"
@@ -10353,9 +10432,6 @@
       "Actions": [
         "actions"
       ],
-      "Admin Setup": [
-        "admin-setup"
-      ],
       "Asset Contract Setup": [
         "asset-contract-setup"
       ],
@@ -10371,9 +10447,6 @@
       "Clawback (Admin Only)": [
         "clawback-admin-only"
       ],
-      "Contract Deployment": [
-        "contract-deployment"
-      ],
       "Issuer Config": [
         "issuer-config"
       ],
@@ -10384,7 +10457,7 @@
         "mint-admin-only"
       ],
       "Revoke Authorization / Freeze (Admin Only)": [
-        "revoke-authorization--freeze-admin-only"
+        "revoke-authorization-/-freeze-admin-only"
       ],
       "Transfer": [
         "transfer"
@@ -10399,10 +10472,10 @@
         "boolean"
       ],
       "Bytes / BytesN": [
-        "bytes--bytesn"
+        "bytes-/-bytesn"
       ],
       "Enum / Union (User-Defined Type)": [
-        "enum--union-user-defined-type"
+        "enum-/-union-user-defined-type"
       ],
       "File-Based Arguments": [
         "file-based-arguments"
@@ -10629,31 +10702,34 @@
     },
     "/docs/tools/cli/plugins-list": {
       "brozorec/smart-account-sign": [
-        "brozorecsmart-account-sign"
+        "brozorec/smart-account-sign"
       ],
       "fnando/stellar-hello-plugin": [
-        "fnandostellar-hello-plugin"
+        "fnando/stellar-hello-plugin"
+      ],
+      "JosueBrenes/stellar-agent-pay": [
+        "josuebrenes/stellar-agent-pay"
       ],
       "lightsail-network/stellar-contract-bindings": [
-        "lightsail-networkstellar-contract-bindings"
+        "lightsail-network/stellar-contract-bindings"
       ],
       "OpenZeppelin/stellar-upgrader-cli": [
-        "openzeppelinstellar-upgrader-cli"
+        "openzeppelin/stellar-upgrader-cli"
+      ],
+      "Soneso/stellar-agent-wallet": [
+        "soneso/stellar-agent-wallet"
+      ],
+      "stellar-experimental/stellar-contract-verify-plugin": [
+        "stellar-experimental/stellar-contract-verify-plugin"
+      ],
+      "stellar-registry/cli": [
+        "stellar-registry/cli"
       ],
       "stellar-scaffold/cli": [
-        "stellar-scaffoldcli"
+        "stellar-scaffold/cli"
       ]
     },
     "/docs/tools/cli/stellar-cli": {
-      "Archive Options:": [
-        "archive-options"
-      ],
-      "Filter Options:": [
-        "filter-options"
-      ],
-      "FILTERS:": [
-        "filters"
-      ],
       "stellar": [
         "stellar"
       ],
@@ -11017,11 +11093,23 @@
       "stellar token burn-from": [
         "stellar-token-burn-from"
       ],
+      "stellar token clawback": [
+        "stellar-token-clawback"
+      ],
       "stellar token decimals": [
         "stellar-token-decimals"
       ],
+      "stellar token mint": [
+        "stellar-token-mint"
+      ],
       "stellar token name": [
         "stellar-token-name"
+      ],
+      "stellar token set-admin": [
+        "stellar-token-set-admin"
+      ],
+      "stellar token set-authorized": [
+        "stellar-token-set-authorized"
       ],
       "stellar token symbol": [
         "stellar-token-symbol"
@@ -13249,6 +13337,38 @@
       ],
       "What Koul Is": [
         "what-koul-is"
+      ]
+    },
+    "/meetings/2026/11/12": {
+      "Closing": [
+        "closing"
+      ],
+      "Contracts and Subregistries": [
+        "contracts-and-subregistries"
+      ],
+      "Ecosystem News": [
+        "ecosystem-news"
+      ],
+      "Governance": [
+        "governance"
+      ],
+      "Meet Stellar Registry": [
+        "meet-stellar-registry"
+      ],
+      "Publishing From GitHub Actions": [
+        "publishing-from-github-actions"
+      ],
+      "Q&A With Pam and Chad": [
+        "q&a-with-pam-and-chad"
+      ],
+      "Roadmap": [
+        "roadmap"
+      ],
+      "The Registry CLI": [
+        "the-registry-cli"
+      ],
+      "Wasms": [
+        "wasms"
       ]
     }
   }

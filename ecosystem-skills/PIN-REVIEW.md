@@ -44,6 +44,36 @@ instructions ("ignore previous", "you must", credentials, URLs to fetch).
 
 ## Entries
 
+### 2026-11-16 — stellar-dev oracle guidance, Scout SDK-status and evidence rules, OpenZeppelin commit move (#223)
+
+| Source | Pinned commit | Selection | Reviewed |
+| --- | --- | --- | --- |
+| `openzeppelin-stellar` | `f82d2d95880076cac83b8d3ee1bfe48defec0aff` | `sel:66a21fa7d3e1` | executor (Claude Sonnet 5.5) read the pin diff; independent review by Codex frontier (`gpt-6-astra`, high) accepted |
+| `stellar-dev` | `421ca30a671cd32d7d6466e8b903f10d79dc1590` | `sel:5e7b81b76438` | executor read the complete body diff; independent Codex frontier (`gpt-6-astra`, high) read every changed line and accepted |
+| `stellar-light` | `f1f781b925a9517d033aee95c5e7572cd5a0705e` | `sel:e9a0fe5ef280` | executor read the complete body diff; independent Codex frontier (`gpt-6-astra`, high) read every changed line and accepted |
+
+The executor read the two body diffs `ecosystem-skills/update.sh` printed. Exactly two selected
+files change. `stellar-dev` `standards/ecosystem.md` (+35 -2 lines) adds Stellar oracle
+selection, verification and freshness guidance; its API-key and subscription mentions describe
+provider access prerequisites, and the public contract addresses are not signing keys.
+`stellar-light` `references/api-reference.md` (+12 -10 lines) adds rules for reading dated
+evidence, SDK status, TVL, issuer claims and contract attribution, matching the Scout 1.9.150
+descriptor. The `openzeppelin-stellar` commit moves with no selected-file change. The `lumenloop`
+and `trustless-work` selections are unchanged. No skill or selected file is added or removed.
+
+The changed text contains no instruction override, credential or seed request, unsafe signing
+instruction, install, payment or exfiltration ask, new Raven capability claim, or reference to
+an excluded operation or retired skill. Cache-bypassed mirror verification passed for all 67
+selected files. The discovery directories gain one community entry, `cavos-stellar`, a
+discovery-only row that links to `cavos-labs/kit` with a plain repository install pointer; it is
+not pinned or exposed, and the review covers the entry, not its remote body. Serving these pins
+grants no new callable operation.
+
+Routing: all 544 rows keep their grades against the previous tip's manifest, with 5 score moves
+and 3 top-five list changes recorded in `eval/gates.json` (searchable skill text is unchanged;
+only `transport` moves). Independent review: Codex frontier, GPT-6 Astra (`gpt-6-astra`), high
+effort, PASS with zero findings; record `.agents/rounds/2026-11-16-next-phase/items/0.2/REVIEW-CODEX.md`.
+
 ### 2026-11-09 — Scout partial-list provenance and venue filtering
 
 | Source | Pinned commit | Selection | Reviewed |

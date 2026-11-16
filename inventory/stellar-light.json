@@ -1,17 +1,16 @@
 {
-  "changelogEntryCount": 381,
+  "changelogEntryCount": 396,
   "changelogLatest": {
-    "date": "2026-11-11",
-    "detail": "No row moves on deploy: published, the basis stored before this version, now means not judged yet, and it and a missing basis are served exactly as before, so /api/contracts still serves 135 rows. A rescan (scan-repo-code --with-contract re-judges every row holding an id) moves a row to self-validated, source-matched, sibling-matched or cited where it can decide, and leaves it published where it cannot: a repo it points to is private or gone, a submodule's target cannot be read, or the contract's trait impls take the trait's default functions. A source read that was not whole (an unreadable file, a truncated tree) is a check that did not run and keeps the stored basis. Run read-only over the 135 rows the rescan leaves 115 rows on /api/contracts and judges 109 of 110 owners as theirs, every one of the 18 consumers cited, and 2 copies of an owner's source as owners (precision 0.98, recall 0.99). All 135 were labelled by hand on 2026-11-11: 111 owners, 18 consumers, 3 forks or copies, 3 unclear. Consumers held the SushiSwap V3 factory (reflector-network/reflector-stellar-connector, a config default), Soroswap's factory (lumenmap/lumenmap), two Blend pools (six repos) and the KALE farm contract. A sibling is found only where the repo points: the WASM's SEP-55 source_repo, a git submodule, or a README link, under the same GitHub owner; a fork defines nothing of its own, and an id whose build is attested to another owner's repo is cited. The source read takes a trait impl named by a path, with generics or with attribute arguments, the way a SEP-41 token implements its interface, and leaves out test code, inline test modules and mock contracts; a WASM exporting fewer than four functions matches only when the source defines all of them. A rescan keeps a cited id with its basis instead of dropping it, and judges the id a repo holds wherever its README still names it. The deployment pass counts a repo's contract id as mainnet-contract-join evidence only when it is not judged cited, and retracts to unknown a stored join claim whose source repo's id is judged cited: the evidence stays served as that repo's `mainnetContractBasis` cited on /api/repos/trust, and the run's plan prints the dated reason (the deployment row keeps none).",
-    "summary": "A contract a repo's README only cites is no longer served as that repo's contract. Every repo surface serves `mainnetContractBasis` beside `mainnetContractId`, with three new values: source-matched (the repo's own #[contractimpl] source defines at least half of the functions the deployed WASM exports, or all of them when it exports fewer than four), sibling-matched (a repo under the same GitHub owner that it points to does) and cited (neither does; usually a contract the repo calls). A cited id leaves /api/contracts, its trust report signals cites-contract-id, and explain no longer calls it the repo's deployment.",
+    "date": "2026-11-13",
+    "detail": "What was fetched on 2026-11-13, from one machine, each with its raw HTTP status. xBull: the App Store listing (apps.apple.com/us/app/xbull-wallet/id6705122563) and the Google Play listing (app.xbull.mobile) that xbull.app linked when archived on 2025-06-19 both returned 404. Scopuly: the App Store link on scopuly.com (id1383402218) returned 404. Interstellar: the App Store link (id1437679072) and the Google Play link (cm.fintech.interstellar) on interstellar.exchange as archived on 2026-06-07 both returned 404. The OpenZeppelin privacy wallet: the testnet web app its README links (privacywallet.coderipper.xyz) returned 404 from its host. Lumexo: lumexo.io returned 200 and showed its App Store button as Coming Soon with no link, and its Google Play button linked play.google.com/store/apps/details?id=io.lumexo.wallet, which returned 200 (Lumexo TECH, updated 2026-11-05). Empowch: the Google Play link on empowch.com/fintech (com.app.bankey, listed as Empowch by Bankey LLC when archived on 2025-12-07) returned 404, while that developer account's page (play.google.com/store/apps/developer?id=Bankey+LLC) returned 200 and listed one app, Shaheen money (com.app.bankey.Shaheen, 200, updated 2026-11-11, developer contact at empowch.com). Shaheen money is also the name of the App Store listing that empowch.com's iOS link redirects to, which the Empowch iOS row already counts. Cypher: cypherhq.io/notice-of-termination returned 200 and names the mobile application; cypherhq.io returned 200 and its timeline names the dApp. For the three App Store ids, Apple's lookup returned no result for 26 storefront country codes. The three Google Play ids that returned 404 (app.xbull.mobile, cm.fintech.interstellar, com.app.bankey) also returned 404 with the gl country parameter set to each of 8 countries, which is a request parameter and not a request from those countries. The same requests returned 200 for listings that are up. After the curation run: the 7 rows that stay unavailable (xBull iOS and Android, Scopuly iOS, Lumexo iOS, the OpenZeppelin privacy wallet's web app, Interstellar iOS and Android) will carry the fetched URL as `sourceUrl`, lumexo.io for Lumexo iOS; Lumexo Android will carry its Google Play listing as `storeUrl`; Empowch Android will carry the Shaheen money listing as `storeUrl` and the developer account's page as `sourceUrl`, because empowch.com does not link the new listing; these 9 rows will be dated 2026-11-13 in `checkedAt`; and Cypher's three rows will keep their `storeUrl` and `checkedAt` and gain a `sourceUrl`: the notice on the iOS and Android rows, the home page on the web row. A null `sourceUrl` means the row was recorded with no URL: a gap in our record, never a statement about the product. The nightly completeness sweep reports a row with neither URL, in any state, on every project row it reads, and a test fails on one in the curated data.",
+    "summary": "searchProjects `availability` rows gain `sourceUrl`: the URL that was read on `checkedAt`. On 2026-11-12 type=Wallet served 12 unavailable platform facts, and 9 of them had `storeUrl` null and no other URL, so the row did not point to what had been checked (stellar-raven sls-033). `storeUrl` stays null for a listing that is gone or not out yet; `sourceUrl` then names the store listing or operator page that was read. A row with a `storeUrl` serves that `storeUrl` as its `sourceUrl` unless a separate page was recorded. Until the curation lane runs, the 9 rows serve `sourceUrl` null. Once it has run, 7 of the 9 will stay unavailable and carry the URL fetched on 2026-11-13, with what it returned in `note`; the other two, Lumexo and Empowch on Android, will be available with a `storeUrl`; and Cypher's three unavailable rows will carry an operator page as `sourceUrl`: its termination notice on the iOS and Android rows, its home page on the web row.",
     "surfaces": [
-      "api",
-      "skill"
+      "api"
     ],
-    "type": "fixed",
-    "version": "spec@1.9.135"
+    "type": "added",
+    "version": "spec@1.9.150"
   },
-  "fetchedAt": "2026-11-12T14:25:31.643Z",
+  "fetchedAt": "2026-11-16T22:24:00.455Z",
   "openapi": {
     "components": {
       "parameters": {
@@ -1744,6 +1743,13 @@
                   "nullable": true,
                   "type": "string"
                 },
+                "goneRepos": {
+                  "description": "Aggregated repositories (owner/name) marked gone: GitHub answered 404 to the gone-repos probe (scanState `gone` on /api/repos/trust), which it does for a private repo and a deleted one alike. Counted in every number above, since a repo going private is not the project stopping, and never listed in repos. [] = none marked. Sorted; also the CSV's last column, gone_repos.",
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
                 "lastActivityAt": {
                   "description": "Latest default-branch commit (fallback: last push) across indexed repos. Null when no indexed repo has a known date.",
                   "format": "date-time",
@@ -1755,11 +1761,11 @@
                   "type": "integer"
                 },
                 "repoCount": {
-                  "description": "Indexed repos attributed to the project: our index's coverage, not the project's total GitHub footprint.",
+                  "description": "Indexed repos attributed to the project, the ones in goneRepos included: our index's coverage, not the project's total GitHub footprint.",
                   "type": "integer"
                 },
                 "repos": {
-                  "description": "The exact repositories (owner/name) the stats above aggregate over; repoCount === repos.length, sorted. Lets a consumer reconcile 'activity' against a known set instead of trusting an opaque count; the members are our INDEX's attribution, so a repo absent here may still exist on GitHub (coverage, not a negative claim). Also served in the CSV export as a ';'-joined `repos` column.",
+                  "description": "The repositories (owner/name) the stats above aggregate over, minus any marked gone, sorted; repoCount === repos.length + goneRepos.length. Lets a consumer reconcile 'activity' against a known set instead of trusting an opaque count; the members are our INDEX's attribution, so a repo absent here may still exist on GitHub (coverage, not a negative claim). Also served in the CSV export as a ';'-joined `repos` column.",
                   "items": {
                     "type": "string"
                   },
@@ -2410,18 +2416,21 @@
               ]
             },
             "availability": {
-              "description": "Per-platform app availability, each row dated by checkedAt (YYYY-MM-DD). platform sms is a wallet used by text message, with no app; its storeUrl is the operator's page for that service. available = the store listing or product surface at storeUrl was reachable on checkedAt; unavailable = the operator listed or announced the product for that platform but it could not be used there on checkedAt: the listing is gone or 404s, the product is not out yet, or the operator says it has shut down (the note says which; storeUrl is null unless a listing is still up). Rows say where the product's app is offered, not that it supports Stellar on that platform, and are separate from `status` (lifecycle). Null = no platform fact recorded: unknown, never 'unavailable'; availabilityCheck says whether a check found none.",
+              "description": "Per-platform app availability, each row dated by checkedAt (YYYY-MM-DD). platform sms is a wallet used by text message, with no app; its storeUrl is the operator's page for that service. available = the store listing or product surface at storeUrl was reachable on checkedAt; unavailable = the operator listed or announced the product for that platform but it could not be used there on checkedAt: the listing is gone or 404s, the product is not out yet, or the operator says it has shut down (the note says which; storeUrl is null unless a listing is still up, and sourceUrl names the URL that was read). Rows say where the product's app is offered, not that it supports Stellar on that platform, and are separate from `status` (lifecycle). Null = no platform fact recorded: unknown, never 'unavailable'; availabilityCheck says whether a check found none.",
               "items": {
                 "properties": {
                   "checkedAt": {
+                    "description": "YYYY-MM-DD the state was last checked. A dated fact: check again before relying on it.",
                     "nullable": true,
                     "type": "string"
                   },
                   "note": {
+                    "description": "One line on what the check found: what the URL returned, and where its link came from.",
                     "nullable": true,
                     "type": "string"
                   },
                   "platform": {
+                    "description": "Where the product is offered. sms is a wallet used by text message, with no app.",
                     "enum": [
                       "ios",
                       "android",
@@ -2433,7 +2442,13 @@
                     ],
                     "type": "string"
                   },
+                  "sourceUrl": {
+                    "description": "The URL that was read on checkedAt for this row. On a row with a storeUrl it is that storeUrl, unless a separate page was recorded: the operator notice that says the product ended, or the developer page that ties the listing to the operator. On an unavailable row with storeUrl null it is the store listing or operator page that was read: a listing or app the operator linked that no longer answers, or the operator page that shows no app yet. The note says what it returned. Null = the row was recorded with no URL: a gap in our record, never a statement about the product.",
+                    "nullable": true,
+                    "type": "string"
+                  },
                   "state": {
+                    "description": "Whether the product could be used on this platform on checkedAt. The array description says what each value means.",
                     "enum": [
                       "available",
                       "unavailable"
@@ -2441,6 +2456,7 @@
                     "type": "string"
                   },
                   "storeUrl": {
+                    "description": "The store listing or product surface a user opens: App Store, Google Play, an extension store, a vendor shop or a web app. Null on an unavailable row whose listing is gone or not out yet; sourceUrl then names what was read.",
                     "nullable": true,
                     "type": "string"
                   }
@@ -2576,7 +2592,7 @@
                   "type": "string"
                 },
                 "basis": {
-                  "description": "The evidence class behind a mainnet or testnet value. 'human-verified' = a curator checked a source that names the network (the operator's docs, a stellar.toml, an app bundle, Stellar's developer docs or an explorer page); sourceUrl is that source. 'onchain-activity' = a contract, asset, account or transaction the record holds, observed on that network's ledger; sourceUrl is its explorer page. 'mainnet-contract-join' = a repository of the project publishes a contract id that the mainnet ledger holds; sourceUrl is the repository. 'defillama-tvl' = DefiLlama tracks the protocol on Stellar (a reading at most 14 days old when the value was written); sourceUrl is the DefiLlama page. 'rwa-registry' = a minted product in the verified RWA registry (/api/rwa); sourceUrl is that product's own evidence. 'operator-toml' = the project's own stellar.toml declares an asset that Horizon holds and whose issuer names the project's domain back; sourceUrl is the toml. Null when network is unknown.",
+                  "description": "The evidence class behind a mainnet or testnet value. 'human-verified' = a curator checked a source that names the network (the operator's docs, a stellar.toml, an app bundle, Stellar's developer docs or an explorer page); sourceUrl is that source. 'onchain-activity' = a contract, asset, account or transaction the record holds, observed on that network's ledger; sourceUrl is its explorer page. 'mainnet-contract-join' = a repository of the project publishes a contract id that the mainnet ledger holds; sourceUrl is the repository. 'defillama-tvl' = DefiLlama tracks the protocol on Stellar (a reading at most 14 days old when the value was written); sourceUrl is the DefiLlama page. 'rwa-registry' = a minted product in the verified RWA registry (/api/rwa) whose attribution to this project holds both ways, verificationLevel toml-bidirectional (the issuer's own stellar.toml names it and the issuer's home_domain names that domain back); a row at any other level lends no deployment, though it still appears in the project's products; sourceUrl is that product's own evidence. 'operator-toml' = the project's own stellar.toml declares an asset that Horizon holds and whose issuer names the project's domain back; sourceUrl is the toml. Null when network is unknown.",
                   "enum": [
                     "human-verified",
                     "onchain-activity",
@@ -2678,7 +2694,7 @@
               "type": "string"
             },
             "lifecycle": {
-              "description": "Historical-archive context, present only when a record carries real history (e.g. a defunct project that used to be live); narrate as 'used to be live', not as a current offering. Null for ordinary live records.",
+              "description": "Historical-archive context, present when a record carries a lifecycle note or wasLive is true; null otherwise. A note is dated context and implies no launch. Narrate as 'used to be live' only when wasLive is true, never as a current offering.",
               "nullable": true,
               "properties": {
                 "note": {
@@ -2686,6 +2702,7 @@
                   "type": "string"
                 },
                 "wasLive": {
+                  "description": "True when the product once reached Live: operating for users, not on testnet only. False means no record of a launch, not proof it never ran. A correction from a mistaken Live label to Development or Pre-Release clears it; a project that really launched keeps it.",
                   "type": "boolean"
                 }
               },
@@ -2979,7 +2996,7 @@
               "type": "array"
             },
             "productsCoverage": {
-              "description": "Whether `products` is COMPLETE for the issuer accounts this project joins (sls-083). The comparison set is what those accounts' own stellar.toml declared on asOf (the RWA registry's issuer coverage table): declared = (code, issuer) pairs the tomls declare under the covered accounts; tracked = of those, registry rows in any state; complete = declared === tracked AND issuersUnreconciled === 0; a project with an issuer whose toml could not be read is never 'complete' (Circle: false). served = REGISTRY-fed product records on this row (minted states only, one per paired tranche; `products` may also carry hand-curated records); it is a different count from tracked: it can be smaller (a zero-supply asset is tracked but not a product) or larger (the registry tracks an issued asset the toml omits, verificationLevel on-chain-home-domain). NULL = completeness cannot be stated: no joined issuer has a toml to reconcile and no deployer entry exists (on-chain-only classic issuers, hand-curated products); null is never 'complete'. issuersUnreconciled counts the issuer accounts the statement does NOT cover: classic issuers whose toml could not be read, plus one for the project's Soroban tokens when it has any (they have no toml).",
+              "description": "Whether `products` is COMPLETE for the issuer accounts this project joins (sls-083). The comparison set is what those accounts' own stellar.toml declared on asOf (the RWA registry's issuer coverage table): declared = (code, issuer) pairs the tomls declare under the covered accounts; tracked = of those, registry rows in any state; complete = declared === tracked AND issuersUnreconciled === 0; a project with an issuer whose toml could not be read is never 'complete'. served = REGISTRY-fed product records on this row (minted states only, one per paired tranche; `products` may also carry hand-curated records); it is a different count from tracked: it can be smaller (a zero-supply asset is tracked but not a product) or larger (the registry tracks an issued asset the toml omits, verificationLevel on-chain-home-domain). NULL = completeness cannot be stated: no joined issuer has a toml to reconcile and no deployer entry exists (on-chain-only classic issuers, hand-curated products); null is never 'complete'. issuersUnreconciled counts the issuer accounts the statement does NOT cover: classic issuers whose toml could not be read, plus one for the project's Soroban tokens when it has any (they have no toml).",
               "nullable": true,
               "properties": {
                 "asOf": {
@@ -3040,7 +3057,7 @@
               ]
             },
             "repos": {
-              "description": "This project’s top indexed GitHub repos, surfaced inline (same shape as /api/repos/search items). Cite as the project’s code references.",
+              "description": "This project’s top indexed GitHub repos, surfaced inline (same shape as /api/repos/search items). Cite as the project’s code references. A repo marked gone (GitHub answered 404 to the gone-repos probe; scanState `gone` on /api/repos/trust) is left out, as on /api/repos/search, and still counts toward lastActivityAt, since a repo going private is not the project stopping. A repo that went 404 after the probe last marked rows is still listed until it is marked.",
               "items": {
                 "$ref": "#/components/schemas/Repo"
               },
@@ -3231,7 +3248,7 @@
               "type": "string"
             },
             "statusBasis": {
-              "description": "What kind of evidence backs the current status, WEAKEST LAST: 'human-verified' = a curator confirmed it, 'onchain-activity' = a contract/network probe, 'repo-activity' = the project's OWN indexed repository committed inside a dated window, which for a LIBRARY or SDK is what liveness means (it is deliberately not awarded to deployed products, where a commit shows the team is working but not that the service runs), 'package-release' = a versioned artifact shipped to a package registry (npm, jsr.io) whose own metadata names this project's repository as its source, published inside a dated window; publication evidence for a library, never proof anything is deployed, 'product-integration' = the LIVE product itself was found to reference Stellar infrastructure (a SEP-1 stellar.toml, a Horizon/Soroban RPC endpoint, an on-chain address, or a Stellar SDK in its own bundle); an integration OBSERVED on the deployed surface, stronger than a page merely answering but NEVER a claim the product works or that a human looked, 'site-liveness' = the product surface was reachable when checked (reachable is not maintained; a parked domain and a dead product's marketing site both pass it), 'operator-announcement' = the team said so, and it can describe PLANS rather than deployment; read statusAsOf and the description. The last two are ADMISSIONS, not evidence: 'source-inherited' means the label was carried over from the upstream ecosystem database and NOBODY HAS INDEPENDENTLY CHECKED IT; it is the default and currently the majority of rows; 'unverified' means the same with no citable source. A Live label on either basis is a record of what a seed list said, never proof the project is running or that anything is deployed on mainnet. Null = provenance not recorded. statusAsOf dates the OBSERVATION behind the basis, not the last sync.",
+              "description": "What kind of evidence backs the current status, WEAKEST LAST: 'human-verified' = a curator confirmed it, 'onchain-activity' = a contract/network probe, 'repo-activity' = the project's OWN indexed repository committed inside a dated window, which for a LIBRARY or SDK is what liveness means (it is deliberately not awarded to deployed products, where a commit shows the team is working but not that the service runs), 'package-release' = a versioned artifact shipped to a package registry (npm, jsr.io) whose own metadata names this project's repository as its source, published inside a dated window; publication evidence for a library, never proof anything is deployed, 'product-integration' = the LIVE product itself was found to reference Stellar infrastructure (a SEP-1 stellar.toml, a Horizon/Soroban RPC endpoint, an on-chain address, or a Stellar SDK in its own bundle); an integration OBSERVED on the deployed surface, stronger than a page merely answering but NEVER a claim the product works or that a human looked, 'site-liveness' = the product surface was reachable when checked (reachable is not maintained; a parked domain and a dead product's marketing site both pass it; a page on somebody else's host, such as a code repository, a link-in-bio, docs or video page, a package page or the SCF project page, is not the product surface and never earns it), 'operator-announcement' = the team said so, and it can describe PLANS rather than deployment; read statusAsOf and the description. The last two are ADMISSIONS, not evidence: 'source-inherited' means the label was carried over from the upstream ecosystem database and NOBODY HAS INDEPENDENTLY CHECKED IT; it is the default and currently the majority of rows; 'unverified' means the same with no citable source. A Live label on either basis is a record of what a seed list said, never proof the project is running or that anything is deployed on mainnet. Null = provenance not recorded. statusAsOf dates the OBSERVATION behind the basis, not the last sync.",
               "enum": [
                 "operator-announcement",
                 "site-liveness",
@@ -3672,6 +3689,16 @@
                   "description": "This repo's PRODUCT is a deployable Soroban contract (Cargo cdylib; vs a CLI/indexer/frontend that only uses Stellar). Known platform/SDK/tooling repos (stellar-core, rs-soroban-env, the SDKs/CLI/RPC…) are pinned FALSE even though they vendor cdylib crates; those are runtime/fixtures, not a deployable contract product.",
                   "type": "boolean"
                 },
+                "jsSdkStatus": {
+                  "description": "stellarJsDep's own status: @stellar/stellar-sdk by major (deprecated below 14), and the npm publisher-deprecated packages stellar-sdk, @stellar/stellar-base and soroban-client at any version. 'unknown' = no JS dependency the table covers, or one whose range names no released major (pre-release, unpinned, git, workspace, or a range without a dotted version).",
+                  "enum": [
+                    "current",
+                    "supported",
+                    "deprecated",
+                    "unknown"
+                  ],
+                  "type": "string"
+                },
                 "mainnetContractBasis": {
                   "description": "Whose contract mainnetContractId is. self-validated = the deployed WASM names this repo as its source (SEP-55 source_repo) and this repo holds a GitHub build attestation for it. source-matched = this repo's own #[contractimpl] source defines at least half of the functions the deployed WASM exports (its contractspecv0), or all of them when it exports fewer than four; a function-name match, not a byte-level build, test code and mock contracts are not read, and a GitHub fork never qualifies. sibling-matched = a repo under the same GitHub owner that this repo points to (the WASM's SEP-55 source_repo, a git submodule, or a README link) defines at least half of them: a team's frontend or SDK repo whose contract lives next door. cited = the README names the contract but neither this repo nor such a sibling defines it, usually a contract the repo calls; it is NOT this repo's deployment. published = not judged under that rule yet: stored before spec 1.9.135 and served as it was until a scan of the repo moves it to one of the values above where it can decide, or left by a scan that could not decide (a pointed-to repo is private or gone, a submodule's target cannot be read, or the contract's trait impls take the trait's default functions, so its source names fewer functions than it exports). Every value but cited is served as the repo's deployment. null when mainnetContractId is null, or the id was recorded before its basis was (also not judged yet).",
                   "enum": [
@@ -3690,7 +3717,7 @@
                   "type": "string"
                 },
                 "protocolCaps": {
-                  "description": "CAPs (Core Advancement Proposals) whose declared protocolVersion matches targetProtocol: the protocol-change grounding for this repo's SDK line, joined from the committed cap-registry. Answers 'which consensus/protocol changes are relevant to this contract's SDK pin'. Empty when targetProtocol is null.",
+                  "description": "CAPs (Core Advancement Proposals) whose declared protocolVersion matches targetProtocol: the protocol-change grounding for this repo's SDK line, joined from the committed cap-registry. Answers 'which consensus/protocol changes are relevant to this contract's SDK pin'. Empty when targetProtocol is null, or when the registry holds no CAP for that protocol (Protocol 29 introduced none).",
                   "items": {
                     "properties": {
                       "cap": {
@@ -3729,6 +3756,16 @@
                   },
                   "type": "array"
                 },
+                "sorobanSdkStatus": {
+                  "description": "The Rust soroban-sdk pin's own status, read through the dated table at request time: current = the newest major, deprecated = below our floor (major < 21). 'unknown' (rc/git/unpinned or none) never implies staleness. supported is our floor, not the publisher's: rs-soroban-sdk supports only its two newest majors.",
+                  "enum": [
+                    "current",
+                    "supported",
+                    "deprecated",
+                    "unknown"
+                  ],
+                  "type": "string"
+                },
                 "sorobanSdkVersion": {
                   "description": "Raw soroban-sdk version requirement (a sourced fact; never a bare protocol integer).",
                   "nullable": true,
@@ -3740,6 +3777,11 @@
                     "type": "string"
                   },
                   "type": "array"
+                },
+                "stellarJsDep": {
+                  "description": "The repo's JavaScript Stellar dependency as scanned (name@range, e.g. @stellar/stellar-sdk@^17.0.1). null = the scan found none.",
+                  "nullable": true,
+                  "type": "string"
                 },
                 "stellarProof": {
                   "description": "How we verified it's Stellar, strongest→weakest: cargo-sdk (soroban-sdk dep) / contract-macros (#[contract] usage) / lang-sdk (Swift/Kotlin/Go/Python Stellar SDK) / js-sdk / stellar-toml. 'none' = the repo WAS scanned and no direct Stellar code evidence was found (a scanned general-purpose dependency); such repos rank below Stellar-evidenced ones and carry stellarEvidence 'none' unless their own text mentions Stellar.",
@@ -3766,7 +3808,7 @@
                   "type": "integer"
                 },
                 "versionStatus": {
-                  "description": "soroban-sdk status vs the latest protocol at scan time. 'unknown' (rc/git/unpinned) never implies staleness.",
+                  "description": "Combined SDK status: deprecated when EITHER sorobanSdkStatus or jsSdkStatus is deprecated, else sorobanSdkStatus when readable, else jsSdkStatus. Not a soroban-sdk claim on its own: a supported soroban-sdk with a deprecated JS dependency reads deprecated here. 'unknown' never implies staleness.",
                   "enum": [
                     "current",
                     "supported",
@@ -4955,13 +4997,13 @@
       },
       "summary": "Agent-native data layer for the Stellar ecosystem: projects, builders, hackathons, SCF, audits, research.",
       "title": "Stellar Scout API",
-      "version": "1.9.135"
+      "version": "1.9.150"
     },
     "openapi": "3.1.0",
     "paths": {
       "/api/analyze": {
         "get": {
-          "description": "The cross-ecosystem macro rollup: totals no single-event tool answers. Slice via `dimension=hackathons|categories|funding|tvl|gaps|developers|toolchain`: hackathon + SCF-funding totals, category distribution, DeFi TVL (dated), `gaps` (per-vertical whitespace: what should I build), `developers` (Electric Capital monthly-active devs + trend), and `toolchain` (Soroban-SDK version-status distribution + deprecated-toolchain roster + CI/test presence). gaps/developers/toolchain are SUPPLY/commit-side and as-of dated; never demand or a headcount.",
+          "description": "The cross-ecosystem macro rollup: totals no single-event tool answers. Slice via `dimension=hackathons|categories|funding|tvl|gaps|developers|toolchain`: hackathon + SCF-funding totals, category distribution, DeFi TVL (dated), `gaps` (per-vertical whitespace: what should I build), `developers` (Electric Capital monthly-active devs + trend), and `toolchain` (Soroban-SDK and JS-SDK version-status distribution, apart and combined + deprecated-toolchain roster + CI/test presence). gaps/developers/toolchain are SUPPLY/commit-side and as-of dated; never demand or a headcount.",
           "operationId": "analyzeEcosystem",
           "parameters": [
             {
@@ -5441,15 +5483,242 @@
                         "type": "object"
                       },
                       "toolchain": {
-                        "description": "Soroban SDK toolchain health across scanned repos: how many run supported / current / deprecated SDK versions, with the deprecated rows named. Present for dimension=all|toolchain.",
+                        "description": "SDK support status across scanned repos, for two SDK lines apart and combined: bySorobanSdkStatus (the Rust soroban-sdk crate), byJsSdkStatus (the JavaScript Stellar SDK dependency), and byVersionStatus / deprecatedTotal (deprecated when EITHER line is). Deprecated rows are named with the line behind each. Present for dimension=all|toolchain.",
                         "properties": {
+                          "adoption": {
+                            "description": "Repos per SDK major, from each repo's stored requirement (the first major it names; git, path, workspace and unpinned requirements are not readable). share = repos / readable. byMajor is newest major first, not a rank.",
+                            "properties": {
+                              "jsSdk": {
+                                "description": "@stellar/stellar-sdk over every scanned repo whose stored JS dependency it is, with or without a soroban-sdk version. The scan stores one Stellar JS dependency per repo (@stellar/stellar-sdk first), so repos is a floor.",
+                                "properties": {
+                                  "byMajor": {
+                                    "items": {
+                                      "properties": {
+                                        "major": {
+                                          "type": "integer"
+                                        },
+                                        "repos": {
+                                          "type": "integer"
+                                        },
+                                        "share": {
+                                          "type": "number"
+                                        }
+                                      },
+                                      "type": "object"
+                                    },
+                                    "type": "array"
+                                  },
+                                  "measurementComplete": {
+                                    "type": "boolean"
+                                  },
+                                  "readable": {
+                                    "type": "integer"
+                                  },
+                                  "repos": {
+                                    "type": "integer"
+                                  },
+                                  "reposWithNpmDependency": {
+                                    "description": "Scanned repos whose stored Stellar JS dependency is an npm package (any the scanner reads, not only @stellar/stellar-sdk); the scanner's language markers are not counted.",
+                                    "type": "integer"
+                                  }
+                                },
+                                "type": "object"
+                              },
+                              "sorobanSdk": {
+                                "description": "Over scannedRepos (repos carrying a soroban-sdk version).",
+                                "properties": {
+                                  "byMajor": {
+                                    "items": {
+                                      "properties": {
+                                        "major": {
+                                          "type": "integer"
+                                        },
+                                        "repos": {
+                                          "type": "integer"
+                                        },
+                                        "share": {
+                                          "type": "number"
+                                        }
+                                      },
+                                      "type": "object"
+                                    },
+                                    "type": "array"
+                                  },
+                                  "readable": {
+                                    "type": "integer"
+                                  },
+                                  "repos": {
+                                    "type": "integer"
+                                  }
+                                },
+                                "type": "object"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          "advisories": {
+                            "description": "Security advisories on the packages in packages, each as its publisher records it: the GitHub Advisory Database (source reviewed, unreviewed or malware) or, where the database does not hold one, the maintainer's repository advisory (source repository). affected is verbatim. alsoAffects names the soroban-sdk releases whose dependency tree reaches an affected version of a crate in affected, with the path, so a repo can inherit an advisory on a crate it never declares; the walk has a depth cap, so check the lockfile (Cargo.lock, package-lock.json) for the versions actually built. Not a mapping of scanned repos to advisories. Order carries no rank.",
+                            "items": {
+                              "properties": {
+                                "affected": {
+                                  "items": {
+                                    "properties": {
+                                      "ecosystem": {
+                                        "description": "GitHub's advisory ecosystem (rust = crates.io).",
+                                        "type": "string"
+                                      },
+                                      "firstPatched": {
+                                        "description": "null = the advisory names no patched version.",
+                                        "nullable": true,
+                                        "type": "string"
+                                      },
+                                      "package": {
+                                        "type": "string"
+                                      },
+                                      "vulnerableRange": {
+                                        "description": "Comparators joined by ', ', e.g. '>= 25.0.0, < 25.3.0'.",
+                                        "type": "string"
+                                      }
+                                    },
+                                    "type": "object"
+                                  },
+                                  "type": "array"
+                                },
+                                "alsoAffects": {
+                                  "description": "soroban-sdk releases whose dependency tree reaches an affected version of a crate in affected, read from the crates.io index: normal, non-optional dependencies through soroban-* and stellar-* crates, up to 4 hops, stable releases. Per release and build class the strongest path is kept. [] = no soroban-sdk release reaches an affected version within 4 hops of that tree, not a clearance beyond it: check the lockfile.",
+                                  "items": {
+                                    "properties": {
+                                      "appliesTo": {
+                                        "description": "The builds the path is in, from every hop's target: a host-only path never reaches the deployed wasm contract.",
+                                        "enum": [
+                                          "every build",
+                                          "host builds and tests, not the deployed wasm contract",
+                                          "wasm contract builds only",
+                                          "builds matching every hop's target"
+                                        ],
+                                        "type": "string"
+                                      },
+                                      "basis": {
+                                        "type": "string"
+                                      },
+                                      "ecosystem": {
+                                        "type": "string"
+                                      },
+                                      "package": {
+                                        "description": "The crate a repo declares (soroban-sdk).",
+                                        "type": "string"
+                                      },
+                                      "path": {
+                                        "description": "Crate names from package to via, e.g. soroban-sdk, soroban-env-host, soroban-env-common, stellar-xdr.",
+                                        "items": {
+                                          "type": "string"
+                                        },
+                                        "type": "array"
+                                      },
+                                      "pin": {
+                                        "description": "exact = every hop of path is an = requirement, so those builds compile an affected version; minimum = at least one hop admits a range of versions, so the lockfile decides.",
+                                        "enum": [
+                                          "exact",
+                                          "minimum"
+                                        ],
+                                        "type": "string"
+                                      },
+                                      "sourceUrl": {
+                                        "format": "uri",
+                                        "type": "string"
+                                      },
+                                      "targets": {
+                                        "description": "The target cfg of each hop (one per hop); null = every target.",
+                                        "items": {
+                                          "nullable": true,
+                                          "type": "string"
+                                        },
+                                        "type": "array"
+                                      },
+                                      "via": {
+                                        "description": "The crate the advisory names (the last crate of path).",
+                                        "type": "string"
+                                      },
+                                      "vulnerableRange": {
+                                        "description": "Its releases that inherit the advisory, in the advisory range grammar.",
+                                        "type": "string"
+                                      }
+                                    },
+                                    "type": "object"
+                                  },
+                                  "type": "array"
+                                },
+                                "asOf": {
+                                  "format": "date",
+                                  "type": "string"
+                                },
+                                "cve": {
+                                  "nullable": true,
+                                  "type": "string"
+                                },
+                                "ghsa": {
+                                  "type": "string"
+                                },
+                                "publishedAt": {
+                                  "format": "date",
+                                  "type": "string"
+                                },
+                                "repository": {
+                                  "description": "owner/repo of the affected code.",
+                                  "type": "string"
+                                },
+                                "severity": {
+                                  "enum": [
+                                    "low",
+                                    "medium",
+                                    "high",
+                                    "critical"
+                                  ],
+                                  "type": "string"
+                                },
+                                "source": {
+                                  "enum": [
+                                    "reviewed",
+                                    "unreviewed",
+                                    "malware",
+                                    "repository"
+                                  ],
+                                  "type": "string"
+                                },
+                                "summary": {
+                                  "type": "string"
+                                },
+                                "url": {
+                                  "format": "uri",
+                                  "type": "string"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "type": "array"
+                          },
                           "basis": {
                             "type": "string"
+                          },
+                          "byJsSdkStatus": {
+                            "additionalProperties": {
+                              "type": "integer"
+                            },
+                            "description": "The JavaScript Stellar dependency alone, per status, over the same repos as scannedRepos (those carrying a soroban-sdk version), so not an ecosystem-wide JavaScript count: repos whose scan found only a JS dependency are not in this block. deprecated = @stellar/stellar-sdk below 14, or stellar-sdk, @stellar/stellar-base or soroban-client (npm publisher-deprecated); unknown = no JS dependency the table covers, or one whose range names no released major (pre-release, unpinned, git, workspace, or a range without a dotted version).",
+                            "type": "object"
+                          },
+                          "bySorobanSdkStatus": {
+                            "additionalProperties": {
+                              "type": "integer"
+                            },
+                            "description": "The Rust soroban-sdk pin alone, per status (current = newest major; deprecated = major below our floor of 21; unknown = rc/git/unpinned). supported is our floor, not the publisher's window of its two newest majors.",
+                            "type": "object"
                           },
                           "byVersionStatus": {
                             "additionalProperties": {
                               "type": "integer"
                             },
+                            "description": "Combined status counts (current, supported, deprecated, unknown): deprecated when EITHER SDK line is, else the soroban-sdk status when readable, else the JS one.",
                             "type": "object"
                           },
                           "deprecatedListTruncated": {
@@ -5457,16 +5726,49 @@
                             "type": "boolean"
                           },
                           "deprecatedRepos": {
+                            "description": "Repos deprecated on either SDK line (a capped sample; see deprecatedListTruncated), each naming the line behind it. Order: rows deprecated on the soroban-sdk line (deprecatedBy soroban-sdk or both) first, then js-sdk rows, which fill the sample only while fewer than 50 repos are deprecated on the soroban-sdk line; no rank within each group. Ordered, so not a representative sample: never read a share off it. A row's versions are not a deprecated-version list: apply deprecationRule.",
                             "items": {
                               "properties": {
+                                "deprecatedBy": {
+                                  "description": "Which SDK line makes this row deprecated: soroban-sdk (the Rust crate), js-sdk (the JavaScript dependency only; its soroban-sdk may be supported), or both.",
+                                  "enum": [
+                                    "soroban-sdk",
+                                    "js-sdk",
+                                    "both"
+                                  ],
+                                  "type": "string"
+                                },
                                 "fullName": {
+                                  "type": "string"
+                                },
+                                "jsSdkStatus": {
+                                  "enum": [
+                                    "current",
+                                    "supported",
+                                    "deprecated",
+                                    "unknown"
+                                  ],
                                   "type": "string"
                                 },
                                 "projectSlug": {
                                   "nullable": true,
                                   "type": "string"
                                 },
+                                "sorobanSdkStatus": {
+                                  "enum": [
+                                    "current",
+                                    "supported",
+                                    "deprecated",
+                                    "unknown"
+                                  ],
+                                  "type": "string"
+                                },
                                 "sorobanSdkVersion": {
+                                  "nullable": true,
+                                  "type": "string"
+                                },
+                                "stellarJsDep": {
+                                  "description": "The JavaScript Stellar dependency as scanned (name@range); null = none found.",
                                   "nullable": true,
                                   "type": "string"
                                 }
@@ -5476,7 +5778,34 @@
                             "type": "array"
                           },
                           "deprecatedTotal": {
+                            "description": "Repos deprecated on EITHER SDK line (= byVersionStatus.deprecated). Not a soroban-sdk count: read bySorobanSdkStatus.deprecated for that, byJsSdkStatus.deprecated for the JS line. A repo deprecated on both counts once here.",
                             "type": "integer"
+                          },
+                          "deprecationRule": {
+                            "description": "The rule behind every deprecated status in this block, as of the dated tables. A soroban-sdk pin is deprecated when its major is below sorobanSdkMajorBelow; an @stellar/stellar-sdk pin when its major is below jsSdkMajorBelow; a package in jsDeprecatedPackages at any version. Otherwise a pre-release, git, workspace or unpinned version, or a JS range without a dotted major (^13), reads unknown, never deprecated. Our floors, not the publishers' support windows.",
+                            "properties": {
+                              "jsDeprecatedPackages": {
+                                "items": {
+                                  "type": "string"
+                                },
+                                "type": "array"
+                              },
+                              "jsSdkMajorBelow": {
+                                "type": "integer"
+                              },
+                              "jsSdkTableAsOf": {
+                                "format": "date",
+                                "type": "string"
+                              },
+                              "sorobanSdkMajorBelow": {
+                                "type": "integer"
+                              },
+                              "sorobanSdkTableAsOf": {
+                                "format": "date",
+                                "type": "string"
+                              }
+                            },
+                            "type": "object"
                           },
                           "engineeringPractice": {
                             "description": "Repos whose latest scan recorded tree-level CI and test presence: presence facts only, not CI results.",
@@ -5493,6 +5822,65 @@
                             },
                             "type": "object"
                           },
+                          "factsAsOf": {
+                            "description": "When the SDK facts below were last read from their sources as a set; each row also carries its own asOf. A weekly check re-reads the advisories, registry fields (deprecated message, latest major, yanks) and the soroban-sdk crates.io index behind them and flags drift; it does not re-read the renamed and moved statements or the idiom source pages.",
+                            "format": "date",
+                            "type": "string"
+                          },
+                          "idioms": {
+                            "description": "Deprecated code patterns with their replacements, each stated by an official source (SDK or CLI source, release notes, or developers.stellar.org) and applying from appliesFrom. Not every deprecation: a pattern missing here is not a claim that it is current. pattern is a JavaScript regular expression source, no flags, applied to one line at a time; a match is a place to look, not proof of use. Order carries no rank.",
+                            "items": {
+                              "properties": {
+                                "appliesFrom": {
+                                  "properties": {
+                                    "name": {
+                                      "type": "string"
+                                    },
+                                    "version": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "type": "object"
+                                },
+                                "asOf": {
+                                  "format": "date",
+                                  "type": "string"
+                                },
+                                "deprecated": {
+                                  "type": "string"
+                                },
+                                "example": {
+                                  "type": "string"
+                                },
+                                "id": {
+                                  "type": "string"
+                                },
+                                "pattern": {
+                                  "type": "string"
+                                },
+                                "replacement": {
+                                  "type": "string"
+                                },
+                                "scope": {
+                                  "enum": [
+                                    "rust-source",
+                                    "build-config",
+                                    "cli"
+                                  ],
+                                  "type": "string"
+                                },
+                                "sourceUrl": {
+                                  "format": "uri",
+                                  "type": "string"
+                                },
+                                "statement": {
+                                  "type": "string"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "type": "array"
+                          },
                           "measuredRepos": {
                             "description": "How many repos byVersionStatus was actually computed over. Equal to scannedRepos when measurementComplete is true; smaller when the scan hit its cap. THIS is the denominator for any rate.",
                             "type": "integer"
@@ -5500,6 +5888,89 @@
                           "measurementComplete": {
                             "description": "false = the buckets describe only part of the population; a rate taken against scannedRepos would understate every status.",
                             "type": "boolean"
+                          },
+                          "packages": {
+                            "description": "Stellar SDK packages and their status on their own registry: active, deprecated (the registry's own deprecated field), renamed (the publisher names a new package; the old name still resolves unmarked) or moved (the publisher names a new registry or scope; the old one still gets releases for now). statement is the publisher's words, verbatim. Packages named by an advisory are listed too. Order carries no rank.",
+                            "items": {
+                              "properties": {
+                                "asOf": {
+                                  "format": "date",
+                                  "type": "string"
+                                },
+                                "latestMajor": {
+                                  "description": "Major of the registry's latest stable release on asOf.",
+                                  "type": "integer"
+                                },
+                                "name": {
+                                  "type": "string"
+                                },
+                                "registry": {
+                                  "enum": [
+                                    "crates.io",
+                                    "npm",
+                                    "jsr"
+                                  ],
+                                  "type": "string"
+                                },
+                                "registryUrl": {
+                                  "format": "uri",
+                                  "type": "string"
+                                },
+                                "replacement": {
+                                  "description": "null for an active package.",
+                                  "nullable": true,
+                                  "properties": {
+                                    "name": {
+                                      "type": "string"
+                                    },
+                                    "registry": {
+                                      "enum": [
+                                        "crates.io",
+                                        "npm",
+                                        "jsr"
+                                      ],
+                                      "type": "string"
+                                    }
+                                  },
+                                  "type": "object"
+                                },
+                                "repository": {
+                                  "type": "string"
+                                },
+                                "statement": {
+                                  "nullable": true,
+                                  "type": "string"
+                                },
+                                "statementUrl": {
+                                  "format": "uri",
+                                  "nullable": true,
+                                  "type": "string"
+                                },
+                                "status": {
+                                  "enum": [
+                                    "active",
+                                    "deprecated",
+                                    "renamed",
+                                    "moved"
+                                  ],
+                                  "type": "string"
+                                },
+                                "statusScope": {
+                                  "description": "What the status covers when it is not the whole package (soroban-cli: renamed as a binary, still a library); null = the whole package.",
+                                  "nullable": true,
+                                  "type": "string"
+                                },
+                                "withdrawnVersions": {
+                                  "description": "Versions the registry marks not for use: crates.io and JSR yanks, npm versions deprecated one by one. [] = checked, none.",
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "type": "array"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "type": "array"
                           },
                           "scannedRepos": {
                             "description": "Repos in the corpus carrying a soroban-sdk version: the POPULATION, not the sample the buckets were computed over. Divide rates by measuredRepos, not by this.",
@@ -7839,7 +8310,7 @@
                                       "type": "string"
                                     },
                                     "scanState": {
-                                      "description": "Scan lifecycle of this repo row. `gone` = GitHub answered 404 for the repository itself, so the code facts here describe something no longer reachable; such rows are excluded from searchRepos and builder code evidence. null = never stamped.",
+                                      "description": "Scan lifecycle of this repo row. `gone` = GitHub answered 404 for the repository itself, so the code facts here describe something no longer reachable; such rows are excluded from searchRepos, from the repos listed on searchProjects and getLeaderboard rows and from builder code evidence. null = never stamped.",
                                       "enum": [
                                         "pending",
                                         "scanned",
@@ -14731,7 +15202,7 @@
                             "additionalProperties": {
                               "type": "integer"
                             },
-                            "description": "THEIR status vocabulary -> count, verbatim from their records.",
+                            "description": "THEIR status vocabulary -> count, verbatim from their active records, plus retired: the length of `retired`. Never set from our side.",
                             "type": "object"
                           },
                           "definition": {
@@ -14821,7 +15292,30 @@
                             },
                             "type": "array"
                           },
+                          "retired": {
+                            "description": "Records they retired: each left their active folder with a receipt in their improvements/resolved.json, the only source of this status. Compact on purpose; the record's text is in their ledger. Absent from an artifact written before retirements were read.",
+                            "items": {
+                              "properties": {
+                                "id": {
+                                  "type": "string"
+                                },
+                                "retired": {
+                                  "description": "The resolved date on their receipt.",
+                                  "nullable": true,
+                                  "type": "string"
+                                },
+                                "retiredBy": {
+                                  "description": "The PR, or the commit when its subject names no PR, in their repository that deleted the record. null = their history could not be read.",
+                                  "nullable": true,
+                                  "type": "string"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "type": "array"
+                          },
                           "total": {
+                            "description": "Every record they filed against us: the active records plus the retired ones.",
                             "type": "integer"
                           }
                         },
@@ -15041,6 +15535,7 @@
                             "cadence": {
                               "enum": [
                                 "weekly",
+                                "twice-weekly",
                                 "on-deploy",
                                 "baseline"
                               ],
@@ -16096,6 +16591,16 @@
                             "description": "The routed repo's PRODUCT is a deployable Soroban contract. Known platform/SDK/tooling repos (stellar-core, rs-soroban-env, the SDKs/CLI/RPC…) are pinned FALSE: they vendor cdylib crates as runtime/fixtures, and this flag must never be read as 'Stellar Core itself is deployable'.",
                             "type": "boolean"
                           },
+                          "jsSdkStatus": {
+                            "description": "stellarJsDep's own status.",
+                            "enum": [
+                              "current",
+                              "supported",
+                              "deprecated",
+                              "unknown"
+                            ],
+                            "type": "string"
+                          },
                           "mainnetContractBasis": {
                             "description": "Whose contract mainnetContractId is. self-validated = the deployed WASM names this repo as its source (SEP-55 source_repo) and this repo holds a GitHub build attestation for it. source-matched = this repo's own #[contractimpl] source defines at least half of the functions the deployed WASM exports (its contractspecv0), or all of them when it exports fewer than four; a function-name match, not a byte-level build, test code and mock contracts are not read, and a GitHub fork never qualifies. sibling-matched = a repo under the same GitHub owner that this repo points to (the WASM's SEP-55 source_repo, a git submodule, or a README link) defines at least half of them: a team's frontend or SDK repo whose contract lives next door. cited = the README names the contract but neither this repo nor such a sibling defines it, usually a contract the repo calls; it is NOT this repo's deployment. published = not judged under that rule yet: stored before spec 1.9.135 and served as it was until a scan of the repo moves it to one of the values above where it can decide, or left by a scan that could not decide (a pointed-to repo is private or gone, a submodule's target cannot be read, or the contract's trait impls take the trait's default functions, so its source names fewer functions than it exports). Every value but cited is served as the repo's deployment. null when mainnetContractId is null, or the id was recorded before its basis was (also not judged yet).",
                             "enum": [
@@ -16149,6 +16654,16 @@
                             },
                             "type": "array"
                           },
+                          "sorobanSdkStatus": {
+                            "description": "The soroban-sdk pin's own status (same reading as searchRepos codeVerified.sorobanSdkStatus).",
+                            "enum": [
+                              "current",
+                              "supported",
+                              "deprecated",
+                              "unknown"
+                            ],
+                            "type": "string"
+                          },
                           "sorobanSdkVersion": {
                             "nullable": true,
                             "type": "string"
@@ -16158,6 +16673,11 @@
                               "type": "string"
                             },
                             "type": "array"
+                          },
+                          "stellarJsDep": {
+                            "description": "The JavaScript Stellar dependency as scanned (name@range); null = none found.",
+                            "nullable": true,
+                            "type": "string"
                           },
                           "stellarProof": {
                             "type": "string"
@@ -16173,6 +16693,13 @@
                             "type": "integer"
                           },
                           "versionStatus": {
+                            "description": "Combined: deprecated when EITHER sorobanSdkStatus or jsSdkStatus is; not a soroban-sdk claim on its own.",
+                            "enum": [
+                              "current",
+                              "supported",
+                              "deprecated",
+                              "unknown"
+                            ],
                             "nullable": true,
                             "type": "string"
                           }
@@ -16898,7 +17425,7 @@
                                 "type": "string"
                               },
                               "scanState": {
-                                "description": "Scan lifecycle of this repo row. `gone` = GitHub answered 404 for the repository itself; such rows are excluded from searchRepos and builder code evidence. null = never stamped.",
+                                "description": "Scan lifecycle of this repo row. `gone` = GitHub answered 404 for the repository itself; such rows are excluded from searchRepos, from the repos listed on searchProjects and getLeaderboard rows and from builder code evidence. null = never stamped.",
                                 "enum": [
                                   "pending",
                                   "scanned",
@@ -20797,7 +21324,7 @@
       }
     ]
   },
-  "openapiVersion": "1.9.135",
+  "openapiVersion": "1.9.150",
   "operationCount": 42,
   "service": "stellar-light",
   "source": {
@@ -20809,7 +21336,7 @@
     "status": "https://stellarlight.xyz/api/status"
   },
   "status": {
-    "apiVersion": "1.9.135",
+    "apiVersion": "1.9.150",
     "docs": "https://stellarlight.xyz/scout",
     "endpoints": [
       "/api/status",
