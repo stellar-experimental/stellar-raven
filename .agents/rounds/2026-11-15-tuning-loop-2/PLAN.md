@@ -2,7 +2,7 @@
 
 Planner: Claude Fable 5.2, lane `loop2-plan`, branch `tune/loop-2` from `origin/main` at `0a603453`.
 Reviewer: Claude Opus 5.5. Implementer and run lane: Claude Sonnet 5.5. Brief:
-[`briefs/loop2-plan.md`](briefs/loop2-plan.md). Inputs: the loop 1 record in
+`briefs/loop2-plan.md` (deleted at closure). Inputs: the loop 1 record in
 [`../2026-11-14-baseline-tuning/`](../2026-11-14-baseline-tuning/), the four 2026-11-14 audits in
 `research/audits/`, `feat/stellar-org-source` (PR 439), the `run-evals` skill, and `AGENTS.md`.
 

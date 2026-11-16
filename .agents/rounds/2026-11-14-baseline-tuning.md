@@ -4,6 +4,11 @@ Orchestrator: Claude Fable 5.2 (Mac, hc). Lanes run on the owner's Linux machine
 Claude subscription (owner, 2026-11-14: approved subscription spend for evals and tuning loops
 while weekly limits have headroom). No API-billed path.
 
+This round's branches and the commits it cites are archived in the branch bundle
+`~/backups/raven-next-phase/raven-branches-2026-11-16.bundle` (SHA-256
+`15f6ff8390c52e259c4fdc97621d2b6278b84d397451c5329d234e88a0138ce7`); see
+[DISPOSITION.md](2026-11-16-next-phase/items/0.3/DISPOSITION.md).
+
 ## Plan 1: first full baseline
 
 1. **Decision.** Sets the reference for every later comparison on the 247-case battery, and names
@@ -24,13 +29,6 @@ while weekly limits have headroom). No API-billed path.
 Held-out split: amended after PR 438 by the README rule (one retired case removed, two new cases
 to reserve). SHA-256 `697c550ae15400f5d7e8d9e47f4fd3d5460a6052d91571f5014ef4d35f64ed12`; 79 tuning,
 119 held-out, 49 reserve; kept outside the repository.
-
-## Lanes
-
-| Lane | Model | Terminal | State | Output |
-|---|---|---|---|---|
-
-## Ledger
 
 ## Plan 2: first tuning loop
 
@@ -137,3 +135,28 @@ baseline, 119 here), and identical surfaces moved 17 of 50 panel rows in step 0-
 
 **Loop 1 closed.** Kept: arm 1 (owner exception) and arm 2. Not merged: arm 3. Spend: step
 0-prime 9.74, arm 1 9.61, arm 2 2.90, arm 3 9.16, held-out 25.02; USD 56.43 subscription-equivalent.
+
+## Outcome
+
+**Baseline (Plan 1).** 247 of 247 judged: 82 correct, 144 partial, 21 wrong. Stamp
+`2026-11-14T20-13-51-variantA` on `66301389`; USD 45.27 of the 90 cap
+([BASELINE.md](2026-11-14-baseline-tuning/BASELINE.md)). Merged in #442 as `06757beb`.
+
+**Tuning loop (Plan 2).** Kept: arm 1 (owner exception) and arm 2. Merged in #446 as `0a603453`
+(2026-11-15 02:28:53 UTC) and deployed (see the header of
+[the loop 2 ledger](2026-11-15-tuning-loop-2.md)). Arm 3 was not merged; its micro-map removal
+shipped in loop 2 (#447). The held-out harm check read "no harm shown". Spend: USD 56.43
+subscription-equivalent, the tuning loop only; the baseline is the USD 45.27 above.
+
+**Retained evidence, and what needs it.** Every file in this round's folder stays, because the
+ledger, [`.agents/TODO.md`](../TODO.md) and the loop 2 plan cite its labels (amendments A1 to A11,
+step 0-prime, K0 to K5) or hold a result: `BASELINE.md`, `ARM-1.md` to `ARM-3.md`,
+`CASE-DEFECTS.md` and its review, `STEP-0-PRIME.md`, `TUNE-IMPL-1.md`, `TUNE-DIFF-REVIEW.md`,
+`ARM-3-IMPL.md`, `ARM-3-REVIEW.md`, `KEPT-SET.md`, `TUNING-PLAN.md` with its review and
+amendments, `review.json` and `arm3/`. Current artifacts that cite them: `eval/qa/cases.json`,
+`eval/qa/sample.json`, `eval/qa/consistency-register.json` (which also cites
+`CASE-DEFECTS-REVIEW.md`), four battery cases, and the findings `sd-074`, `sd-109` and `sd-110`.
+The launch brief `briefs/baseline.md` is deleted.
+
+Open work moved to the TODO: "Settle the routing-row overlap with the held-out QA questions" and
+the rest of "First-principles round follow-ups".
