@@ -23,8 +23,7 @@
  */
 import { readFileSync } from "node:fs";
 import { parseArgs } from "node:util";
-
-const TUNING_ROW_COUNT = 79;
+import { TUNING_ROW_COUNT } from "./tuning-rows.mjs";
 
 /** Role inputs, from the tuning plan: the rows the plan names as targets of each arm. */
 export const ARM1_TARGETS = [

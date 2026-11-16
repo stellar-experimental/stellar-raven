@@ -5,9 +5,10 @@
  * id before any other field of any row is read, and each selection asserts its count, so a row
  * outside `sets.tuning` is never inspected.
  */
-export const TUNING_ROW_COUNT = 79;
+/** The number of tuning rows in the current split. A dated split amendment changes it here only. */
+export const TUNING_ROW_COUNT = 80;
 
-/** The tuning ids of a split. Asserts 79 unique ids. */
+/** The tuning ids of a split. Asserts `TUNING_ROW_COUNT` unique ids. */
 export function tuningIdsOf(split) {
   const ids = split?.sets?.tuning;
   if (!Array.isArray(ids) || ids.length !== TUNING_ROW_COUNT) {
@@ -19,7 +20,7 @@ export function tuningIdsOf(split) {
 
 /**
  * The entries of `list` whose id is in `ids`, selected by id alone. `expected` is the count the
- * caller asserts: 79 for a baseline or the case corpus, 50 for a stored panel run.
+ * caller asserts: `ids.length` for a baseline or the case corpus, 50 for a stored panel run.
  */
 export function selectById(list, ids, expected, label) {
   const wanted = new Set(ids);

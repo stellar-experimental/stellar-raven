@@ -20,6 +20,7 @@ import { evidenceCheckpointBlock } from "../src/policy/evidence-checkpoint.ts";
 import { evidenceRecoveryHint, summarizeOperationLedger } from "../src/executor/run.ts";
 import type { OpLedgerCall } from "../src/executor/providers.ts";
 import { scriptOf, selectTuningRows } from "../eval/qa/scan-tuning-exposure.mjs";
+import { TUNING_ROW_COUNT } from "../eval/qa/tuning-rows.mjs";
 
 const SPLIT = process.env.RAVEN_REPLAY_SPLIT;
 const RESULTS = process.env.RAVEN_REPLAY_RESULTS;
@@ -38,7 +39,7 @@ describe.skipIf(!SPLIT || !RESULTS)("arm 1 replay over the stored tuning execute
       split: JSON.parse(readFileSync(SPLIT!, "utf8")),
       results: JSON.parse(readFileSync(RESULTS!, "utf8"))
     }) as Array<{ id: string; transcript?: Entry[] }>;
-    expect(rows).toHaveLength(79);
+    expect(rows).toHaveLength(TUNING_ROW_COUNT);
 
     const totals = {
       executes: 0,

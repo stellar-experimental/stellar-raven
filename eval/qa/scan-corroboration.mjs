@@ -20,7 +20,7 @@
  *
  * Usage: node eval/qa/scan-corroboration.mjs --split <split.json> --catalog catalog/manifest.json
  *          --panel <panel.json from scan-tuning-panel.mjs --json> --run <label>=<results.json> ... [--json]
- * The first `--run` is the baseline (79 tuning rows); the others are panel runs (50 rows each).
+ * The first `--run` is the baseline (every tuning row); the others are panel runs (50 rows each).
  */
 import { readFileSync } from "node:fs";
 import { parseArgs } from "node:util";

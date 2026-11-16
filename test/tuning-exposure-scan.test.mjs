@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { TUNING_ROW_COUNT } from "../eval/qa/tuning-rows.mjs";
 import {
   panelRole,
   scanTranscript,
@@ -89,13 +90,13 @@ describe("panelRole", () => {
 });
 
 describe("scanTuningRows", () => {
-  const ids = Array.from({ length: 79 }, (_, i) => `q-t${i}`);
+  const ids = Array.from({ length: TUNING_ROW_COUNT }, (_, i) => `q-t${i}`);
   const split = { sets: { tuning: ids } };
   const rowFor = (id) => ({ id, tags: { category: "soroban" }, verdict: { score: "correct" }, transcript: [] });
 
   it("asserts the tuning count and the rows present", () => {
-    expect(() => scanTuningRows({ split: { sets: { tuning: ids.slice(1) } }, results: { rows: [] } })).toThrow(/79/);
-    expect(() => scanTuningRows({ split, results: { rows: ids.slice(1).map(rowFor) } })).toThrow(/78 of the 79/);
+    expect(() => scanTuningRows({ split: { sets: { tuning: ids.slice(1) } }, results: { rows: [] } })).toThrow(new RegExp(String(TUNING_ROW_COUNT)));
+    expect(() => scanTuningRows({ split, results: { rows: ids.slice(1).map(rowFor) } })).toThrow(new RegExp(`${TUNING_ROW_COUNT - 1} of the ${TUNING_ROW_COUNT}`));
   });
 
   it("never reads a field of a row outside the tuning set", () => {
@@ -106,6 +107,6 @@ describe("scanTuningRows", () => {
       }
     });
     const rows = scanTuningRows({ split, results: { rows: [outsider, ...ids.map(rowFor)] } });
-    expect(rows).toHaveLength(79);
+    expect(rows).toHaveLength(TUNING_ROW_COUNT);
   });
 });

@@ -54,6 +54,7 @@ import { dirname, resolve, join, relative } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { aggregate, cardMatchesExact, gradeCase, tableRows } from "./lib/grade.mjs";
 import { overlayExpectedAnyById, unionExpectedAny } from "./lib/labels.mjs";
+import { confirmationOnlyFor, consoleValue, tagRows } from "./lib/confirmation-only.mjs";
 
 const EVAL_DIR = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(EVAL_DIR, "..");
@@ -254,7 +255,9 @@ async function main() {
     r.any1 === undefined ? r : { expected_service: r.expected_service, top1: r.any1, top3: r.any3, top5: r.any5, cardHit5: r.cardHit5 };
 
   // --- legacy compiled cases: strict v3 (the gate) -------------------------------------
-  const perCase = compiled.cases.map(runCase);
+  // Rows whose question matches a QA headline question are tagged confirmation-only (eval/README.md):
+  // the aggregates below still count them, and the console prints no per-row outcome for them.
+  const perCase = tagRows(compiled.cases.map(runCase), confirmationOnlyFor("legacy", compiled.cases.map((c) => c.id)));
   const agg = aggregate(perCase);
 
   // --- corpus accept-either: every legacy case graded with its expected_any union ------
@@ -265,7 +268,10 @@ async function main() {
   let extendedLane = null;
   let extendedPerCase = [];
   if (Array.isArray(compiled.extendedCases) && compiled.extendedCases.length > 0) {
-    extendedPerCase = compiled.extendedCases.map(runCase);
+    extendedPerCase = tagRows(
+      compiled.extendedCases.map(runCase),
+      confirmationOnlyFor("extended", compiled.extendedCases.map((c) => c.id)),
+    );
     extendedLane = {
       strict: aggregate(extendedPerCase),
       acceptEither: aggregate(extendedPerCase.map(asAny)).overall,
@@ -299,7 +305,7 @@ async function main() {
   let skillsPerCase = [];
   if (existsSync(SKILLS_CASES)) {
     const supplement = JSON.parse(readFileSync(SKILLS_CASES, "utf8"));
-    skillsPerCase = supplement.cases.map(runCase);
+    skillsPerCase = tagRows(supplement.cases.map(runCase), confirmationOnlyFor("skills", supplement.cases.map((c) => c.id)));
     skillsLane = { authoredAt: supplement.authoredAt, ...aggregate(skillsPerCase).overall };
   }
 
@@ -317,6 +323,7 @@ async function main() {
         }
       }
     }
+    const holdoutListed = confirmationOnlyFor("holdout", supplement.cases.map((c) => c.id));
     holdoutPerCase = supplement.cases.map((c) => {
       const hits = searchCatalog(catalog, { query: c.question, limit: 5 });
       const expectedIndex = hits.findIndex((hit) => c.expected_cards.some((card) => cardMatchesExact(card, hit)));
@@ -341,6 +348,7 @@ async function main() {
         forbiddenCapture,
         forbiddenHits,
         pass: top5 && !forbiddenCapture,
+        ...(holdoutListed(c.id) ? { confirmationOnly: true } : {}),
         topHits: hits.map((h) => ({ id: h.id, service: h.service, score: h.score })),
       };
     });
@@ -378,10 +386,13 @@ async function main() {
         topHits: hits.map((hit) => ({ id: hit.id, service: hit.service, score: hit.score }))
       };
     };
-    protocolHistoryPerCase = [
-      ...diagnostic.positiveCases.map((c) => runDiagnosticCase(c, "positive")),
-      ...diagnostic.controlCases.map((c) => runDiagnosticCase(c, "control"))
-    ];
+    protocolHistoryPerCase = tagRows(
+      [
+        ...diagnostic.positiveCases.map((c) => runDiagnosticCase(c, "positive")),
+        ...diagnostic.controlCases.map((c) => runDiagnosticCase(c, "control"))
+      ],
+      confirmationOnlyFor("protocol-history-v1", [...diagnostic.positiveCases, ...diagnostic.controlCases].map((c) => c.id)),
+    );
     const positives = protocolHistoryPerCase.filter((c) => c.role === "positive");
     const controls = protocolHistoryPerCase.filter((c) => c.role === "control");
     protocolHistoryLane = {
@@ -529,12 +540,12 @@ async function main() {
     console.table(tableRows(aggregate(holdoutPerCase)));
     console.table(holdoutPerCase.map((r) => ({
       id: r.id,
-      rank: r.expectedRank ?? "miss",
-      top1: r.top1 ? "PASS" : "FAIL",
-      top3: r.top3 ? "PASS" : "FAIL",
-      top5: r.top5 ? "PASS" : "FAIL",
-      forbidden: r.forbiddenCapture ? r.forbiddenHits.join(", ") : "none",
-      result: r.pass ? "PASS" : "FAIL",
+      rank: consoleValue(r, r.expectedRank ?? "miss"),
+      top1: consoleValue(r, r.top1 ? "PASS" : "FAIL"),
+      top3: consoleValue(r, r.top3 ? "PASS" : "FAIL"),
+      top5: consoleValue(r, r.top5 ? "PASS" : "FAIL"),
+      forbidden: consoleValue(r, r.forbiddenCapture ? r.forbiddenHits.join(", ") : "none"),
+      result: consoleValue(r, r.pass ? "PASS" : "FAIL"),
     })));
     console.log(`holdout forbidden captures: ${holdoutLane.forbiddenCaptures}/${holdoutLane.n}`);
   }
@@ -548,8 +559,8 @@ async function main() {
         id: r.id,
         class: r.class,
         role: r.role,
-        targetRank: r.targetRank ?? "miss",
-        top: r.topHits[0]?.id ?? "none"
+        targetRank: consoleValue(r, r.targetRank ?? "miss"),
+        top: consoleValue(r, r.topHits[0]?.id ?? "none")
       }))
     );
     console.log(

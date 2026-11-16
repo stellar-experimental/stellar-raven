@@ -26,6 +26,7 @@ Without `--gate`, the runner reports threshold failures without enforcing their 
 
 The ranked dump includes legacy, extended, skills, and protocol-history cases.
 It excludes holdout cases. Compare dumps only across identical case memberships.
+Compare two dumps with `cmp`, and count a difference on a confirmation-only row without printing it.
 An empty diff establishes result-ID order for those cases; it does not establish answer quality.
 
 The runner imports `src/catalog/search.ts` through Node's native type support.
@@ -56,6 +57,27 @@ Keep each case set's denominator separate.
 The accept-either view combines source `acceptable_cards` with the reviewed overlay.
 It does not change the strict service score.
 The extended cases remain separate from the legacy aggregate.
+
+### Confirmation-only rows
+
+A routing or discovery row whose question matches a QA headline question is confirmation-only.
+A match is a token Jaccard of at least 0.8 against any question in `qa/cases.json`.
+[routing-qa-overlap.json](routing-qa-overlap.json) lists those rows per question set, by routing row id.
+It holds no QA id and no score, and `npm test` fails when it no longer matches the committed inputs.
+Regenerate it after a routing recompile or a golden question edit:
+
+```sh
+npm run eval:routing:overlap
+```
+
+No lane tunes on a listed row or reads its per-row output; a lane uses it as aggregate counts only.
+The runners (`run-routing.mjs`, `run-protocol-history.mjs`, `discovery/run-discovery.mjs`, `discovery/run-replay.mjs`)
+tag a listed result row `confirmationOnly: true`, print `confirmation-only` in place of its rank, top hit, or hit/miss,
+and still count it in every aggregate.
+The tagged rows keep their grades in the result file, so a pass rule can count them.
+The ranked dump is unchanged; a dump difference on a listed row is counted, never displayed.
+A new routing or discovery question set is added to the generator (`routing-qa-overlap.mjs`) and passes its set name to
+`lib/confirmation-only.mjs`.
 
 ### Card-name normalizer
 

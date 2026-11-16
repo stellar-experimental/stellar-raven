@@ -27,6 +27,7 @@
     "eval:discovery:replay": "node eval/discovery/run-replay.mjs",
     "micro-map:build": "node scripts/build-micro-map.mjs",
     "eval:routing": "node eval/run-routing.mjs",
+    "eval:routing:overlap": "node eval/routing-qa-overlap.mjs",
     "eval:protocol-history": "node eval/run-protocol-history.mjs",
     "eval:plan": "node eval/plan/grade-plan.mjs",
     "spec:build": "node scripts/build-super-spec.mjs",

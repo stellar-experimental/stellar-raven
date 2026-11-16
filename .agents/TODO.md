@@ -38,16 +38,24 @@ Held-out status: the first-principles split is void, because the 2026-11-14 gold
 rebuilt the battery. The current split is drawn by the rule in
 [`eval/qa/README.md`](../eval/qa/README.md) ("Held-out split") from the 247 headline cases:
 
-- SHA-256 `697c550ae15400f5d7e8d9e47f4fd3d5460a6052d91571f5014ef4d35f64ed12`.
-- 79 tuning, 119 held-out, and 49 reserve cases.
-- The file is on the owner's Linux machine at `~/backups/gca-2026-11-14-split-v2.json`.
+- SHA-256 `ceb98d6a612aa2a85b48a20dac953f76b7e67f860092c61c84292dcb53434155`.
+- 80 tuning, 118 held-out, and 49 reserve cases.
+- The file is on the owner's Linux machine at `~/backups/gca-2026-11-14-split-v3.json`. It
+  replaces `gca-2026-11-14-split-v2.json` (SHA-256
+  `697c550ae15400f5d7e8d9e47f4fd3d5460a6052d91571f5014ef4d35f64ed12`, 79/119/49), which stays in
+  place. A Mac copy of v2, or an id list taken from it, is stale.
 
 Two tuning loops tuned on the tuning rows ([loop 1](rounds/2026-11-14-baseline-tuning.md),
 [loop 2](rounds/2026-11-15-tuning-loop-2.md)). The audit's battery test read the answers of 70
 headline cases before the draw ([ids](rounds/2026-11-14-golden-coverage-audit/qa/ids.txt)). The
 baseline and one read per loop ran the held-out rows, counts only. One held-out answer was exposed
-(loop 2); it moves to tuning under decision 2(b). An item may name a case by ID; never record
-which set a case is in, and tune no product change on a held-out or reserve case.
+(loop 2); it moved to tuning on 2026-11-16 (decision 2(b)). The stored held-out reads and their
+thresholds are on 119 rows, and a future read pairs on v3's 118. An item may name a case by ID;
+never record which set a case is in, and tune no product change on a held-out or reserve case.
+
+Routing and discovery rows whose question matches a QA headline question are confirmation-only:
+[`eval/routing-qa-overlap.json`](../eval/routing-qa-overlap.json) lists them, and no lane tunes on
+them or reads their per-row output ([`eval/README.md`](../eval/README.md), "Confirmation-only rows").
 
 ### Audit source coverage
 
@@ -277,29 +285,6 @@ the re-baseline command and prints no per-case rows, with a test.
 Source: [family decider record](../research/audits/2026-11-14-family-decider.md). The engine question
 is closed for the search page; nothing below reopens it. The record also bore on the seven-card default (kept in
 tuning loop 2): seven lexical cards against five was +3/−0 on 64 FAM development rows.
-
-### Settle the routing-row overlap with the held-out QA questions
-
-73 of 338 legacy and 26 of 122 extended routing rows were exact or near duplicates (token Jaccard
-at least 0.8) of the 168 held-out and reserve QA questions; the skills rows (0 of 23) and the FAM
-and stellar.org question sets (0 of 150, 0 of 40) had none. That is the old measurement. The
-orchestrator holds the matching ids and no file names them, because naming them reveals which QA
-cases are held out.
-
-The owner chose no re-draw (2026-11-16, decision 2). Two steps remain, on agentpc; no round item
-carries them yet:
-
-- (a) Commit the list of routing rows whose question matches any of the 247 headline questions at
-  token Jaccard 0.8 or more, and mark them confirmation-only for routing work. Computed against
-  all 247, it reveals no membership.
-- (b) Move the one exposed held-out row to tuning by a dated amendment and record the new SHA-256
-  of the split. The row is identified by `exposed-row.sha256` in the sealed directory of the loop 2
-  held-out read ([ledger](rounds/2026-11-15-tuning-loop-2.md)).
-
-Until (a) lands, the loop 2 ruling stands: no lane reads per-row output of the legacy and extended
-routing rows; aggregate counts only. Round item 3.3's per-case review therefore waits on (a).
-
-Done when: both steps are done and the routing eval README says no lane tunes on the listed rows.
 
 ### Decide what test earns the sealed FAM confirmation rows
 

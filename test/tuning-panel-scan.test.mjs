@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { scanPanel, sdfSiteSources, stellarOrgPath } from "../eval/qa/scan-tuning-panel.mjs";
-import { selectById, tuningIdsOf } from "../eval/qa/tuning-rows.mjs";
+import { TUNING_ROW_COUNT, selectById, tuningIdsOf } from "../eval/qa/tuning-rows.mjs";
 
-const ids = Array.from({ length: 79 }, (_, i) => `q-${String(i).padStart(2, "0")}`);
+const ids = Array.from({ length: TUNING_ROW_COUNT }, (_, i) => `q-${String(i).padStart(2, "0")}`);
 const split = { sets: { tuning: ids, "held-out": ["secret-1"], reserve: ["secret-2"] } };
 const source = (ref) => ({ class: "A", ref });
 
@@ -26,9 +26,9 @@ describe("sdfSiteSources", () => {
 });
 
 describe("tuning selection", () => {
-  it("asserts 79 unique tuning ids and reads no other set", () => {
-    expect(tuningIdsOf(split)).toHaveLength(79);
-    expect(() => tuningIdsOf({ sets: { tuning: ids.slice(1) } })).toThrow(/79/);
+  it("asserts the unique tuning ids and reads no other set", () => {
+    expect(tuningIdsOf(split)).toHaveLength(TUNING_ROW_COUNT);
+    expect(() => tuningIdsOf({ sets: { tuning: ids.slice(1) } })).toThrow(new RegExp(String(TUNING_ROW_COUNT)));
     expect(() => tuningIdsOf({ sets: { tuning: [...ids.slice(1), ids[1]] } })).toThrow(/duplicate/);
   });
 
@@ -40,7 +40,7 @@ describe("tuning selection", () => {
       }
     });
     const list = [...ids.map((id) => ({ id })), poisoned];
-    expect(selectById(list, ids, 79, "run")).toHaveLength(79);
+    expect(selectById(list, ids, TUNING_ROW_COUNT, "run")).toHaveLength(TUNING_ROW_COUNT);
     expect(() => selectById(list, ids, 50, "run")).toThrow(/expected 50/);
   });
 });
@@ -64,7 +64,7 @@ describe("scanPanel", () => {
         { label: "b", results: run(panelIds, "wrong") }
       ]
     });
-    expect(scan.summary).toMatchObject({ tuningRows: 79, citeStellarOrg: 2, citeServedPath: 1, added: 1, panel: 51 });
+    expect(scan.summary).toMatchObject({ tuningRows: TUNING_ROW_COUNT, citeStellarOrg: 2, citeServedPath: 1, added: 1, panel: 51 });
     const added = scan.rows.find((r) => r.id === ids[60]);
     expect(added).toMatchObject({ inPanel: true, inLoop1Panel: false, sourceRow: true });
     expect(added.verdicts).toEqual({ baseline: "partial", a: null, b: null });
