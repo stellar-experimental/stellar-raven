@@ -6,6 +6,11 @@ loops while weekly limits have headroom). No API-billed path. Worktree
 `/home/tyler/code/raven-wt/loop2`, branch `tune/loop-2`, from `origin/main` at `0a603453` (loop 1
 merged and deployed there).
 
+This round's branches and the commits it cites are archived in the branch bundle
+`~/backups/raven-next-phase/raven-branches-2026-11-16.bundle` (SHA-256
+`15f6ff8390c52e259c4fdc97621d2b6278b84d397451c5329d234e88a0138ce7`); see
+[DISPOSITION.md](2026-11-16-next-phase/items/0.3/DISPOSITION.md).
+
 ## Scope
 
 The owner approved this order on 2026-11-14:

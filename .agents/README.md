@@ -32,3 +32,6 @@ A ledger records what happened. It never sets a rule.
 - Delete other briefs, intermediate reviews, raw outputs, and finished ledgers after
   reconciliation. Git keeps the history; do not rewrite a retained record to describe current
   tools.
+- Deleted branches are archived in dated git bundles outside the repository; the item record that
+  deleted them lists each ref, SHA, and bundle
+  ([`rounds/2026-11-16-next-phase/items/0.3/DISPOSITION.md`](rounds/2026-11-16-next-phase/items/0.3/DISPOSITION.md)).
