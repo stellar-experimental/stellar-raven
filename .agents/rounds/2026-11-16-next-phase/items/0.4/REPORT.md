@@ -62,3 +62,15 @@ None.
 
 The worktree `/home/tyler/code/raven-wt/np-0.4` stays until merge. Its `.dev.vars` (placeholder
 names only) and `tmp/` are ignored.
+
+## Follow-up after the orchestrator's reply
+
+- The loop 2 ledger records the deploy and egress evidence the orchestrator supplied. That
+  covers Version `c3596dcc-90d7-4602-bbab-d813b3eaf1ec`, the post-deploy checks, and both
+  `stellarOrg` operations ok from production at 2026-11-16 00:06:28 UTC.
+- In the TODO, the egress bullet and its done-when clause are deleted. The heading is now
+  "Prove the stellar.org source".
+- DECISIONS.md decision 5 now quotes ADR-0011 rule 3 correctly, with the owner's intent beside
+  it.
+- Decision 2 runs as the next item, and decision 6(c) goes to the 1.3 lead. No change from this
+  item.

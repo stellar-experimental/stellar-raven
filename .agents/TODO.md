@@ -320,7 +320,7 @@ record which.
 ### Treat stellar.org routing reach as a lexical and description question
 
 Routing reach of the `stellarOrg` operations (top five for 8 of 40 off-golden questions, loop 2
-step 2) is this item; "Prove the stellar.org source and settle its egress" points here. The
+step 2) is this item; "Prove the stellar.org source" points here. The
 [family decider record](../research/audits/2026-11-14-family-decider.md) answers it: an engine is
 not the fix. On
 the 20 development stellar.org questions (natural form) today's page reaches 3, a model-free
@@ -368,18 +368,17 @@ look (round item 1.1 or 1.3). Open no case beyond these.
 
 Done when: each case is edited through `golden-truth` or confirmed unchanged.
 
-### Prove the stellar.org source and settle its egress
+### Prove the stellar.org source
 
 The source is in (`stellarOrg.search_site` and `stellarOrg.get_page`, merged in tuning loop 2) and
 it is **unproven**: P2 called it on 3 of 58 rows (3 of the 12 `sets.tuning` rows whose golden cites
 a served stellar.org page), all calls ok, one answer used a fact from it, and no verdict moved
 because of it; 5 of the 12 rows cannot reach a cited page from the question as written. The
 `search_site` result is large (up to about 21,700 characters) and was ignored on 2 of 3 rows. Its
-harm side is clean at what T = 5 on 58 rows can see, not below it. What remains:
+harm side is clean at what T = 5 on 58 rows can see, not below it. The deployed Worker reaches
+stellar.org through the adapter's own path (checked after the #447 deploy,
+[loop 2 ledger](rounds/2026-11-15-tuning-loop-2.md)). What remains:
 
-- **Worker egress.** Deployed after #447. The orchestrator reports the adapter path verified
-  (Version `c3596dcc`); record the command and result in
-  [the loop 2 ledger](rounds/2026-11-15-tuning-loop-2.md), then delete this bullet.
 - **Routing reach.** See "Treat stellar.org routing reach as a lexical and description question".
 - **Adapter review residue.** The vendor-diverse attack on the adapter (a Codex frontier or Grok
   reviewer) was never run: both reviews were Claude Opus. Round item 1.2 runs it. The title cap of
@@ -396,10 +395,10 @@ harm side is clean at what T = 5 on 58 rows can see, not below it. What remains:
 - **Out-of-source fact.** The Anchor Directory is `anchors.stellar.org`, not stellar.org; that case
   needs another source or a golden-truth edit (round item 1.3).
 
-Done when: the Worker egress check is recorded, the vendor-diverse adapter review is done or the
-owner waives it, a run on the 12 source rows shows the source supplying a judged fact (or the
-owner accepts it as a coverage fix without a scored gain), the Blend register finding is filed or
-dropped, and the Anchor Directory case is routed.
+Done when: the vendor-diverse adapter review is done or the owner waives it, a run on the 12
+source rows shows the source supplying a judged fact (or the owner accepts it as a coverage fix
+without a scored gain), the Blend register finding is filed or dropped, and the Anchor Directory
+case is routed.
 
 ### Check Docs search for the SEP-7 payment-request page before filing
 

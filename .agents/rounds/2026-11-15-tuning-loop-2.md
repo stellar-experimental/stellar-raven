@@ -469,11 +469,23 @@ subscription-equivalent (plan estimate 72, caps 92).
 
 ### 2026-11-16: merged and deployed
 
-#447 merged 2026-11-16 00:04:53 UTC as `986ffbaa`. It was deployed as Version `c3596dcc`. The
-orchestrator reports that production then served the `stellarOrg` adapter's path; this ledger
-holds no command, result or time for that check, only the report
-([round brief](2026-11-16-next-phase/briefs/PLAN-BRIEF.md)). The TODO keeps the egress check open
-until those are recorded.
+Recorded by the orchestrator from the loop 2 session transcript.
+
+- **Deploy.** #447 merged 2026-11-16 00:04:53 UTC as `986ffbaa`. `npm run deploy` ran from a clean
+  worktree at `origin/main` at 00:05 UTC: preflight ok, Version
+  `c3596dcc-90d7-4602-bbab-d813b3eaf1ec`, usage tail consumer check passed.
+- **Post-deploy checks, 00:06 UTC.** `/` 200, `/health` 200, unauthenticated `POST /mcp` 401 with
+  `WWW-Authenticate: Bearer realm="OAuth" ... scope="mcp"`.
+- **Egress through the adapter's own path, 00:06:28 UTC.** One `execute` through the production
+  Raven connector:
+  - `stellarOrg.search_site({ query: "SDF strategy" })`: ok in 171 ms; top hits
+    `/foundation/strategy` ("SDF's Strategy"), `/foundation/team`, `/foundation`.
+  - `stellarOrg.get_page({ path: "/foundation/strategy" })`: ok in 34 ms; 4,455 characters,
+    beginning "2026 / # Accelerating growth".
+  - `scout.listAudits({ limit: 2 })`: ok in 840 ms, as a control.
+  - Totals: 3 ok, 0 error, 0 soft-empty.
+
+This closes the A7 gap: the deployed Worker reaches stellar.org through the adapter itself.
 
 ## Outcome
 
