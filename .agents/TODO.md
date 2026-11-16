@@ -12,44 +12,42 @@ paid run.
 
 ## Priorities
 
-1. Ship the trimmed surface and work its known weakness on live-data questions (first item).
-2. Source coverage, from the 2026-11-14 gap ledger: the first-principles round found that sources
-   and goldens limit accuracy, not the shape of the tool. The golden coverage audit rebuilt the
-   goldens.
-3. Event-tied golden re-verification, on its dates.
+"Round item N" is an item of the [2026-11-16 round](rounds/2026-11-16-next-phase.md). Its
+[plan](rounds/2026-11-16-next-phase/PLAN.md) proposes; the
+[owner decisions](rounds/2026-11-16-next-phase/DECISIONS.md) bind.
 
-The general routing repair stays held. It needs new mechanism evidence, not another lexical
-variant.
+1. Dated truth maintenance: the Bell goldens after the 2026-11-23 vote and the three later cases
+   (round items 1.4, 2.1 and 2.2), and the upstream handoffs (round item 1.1).
+2. The production read and the source-gap residue (round items 3.1 and 1.3).
+3. Mechanisms with a measured cause (round items 3.2 and 3.3).
+
+No third tuning loop, and no paid QA run without a new written owner authorization, except round
+item 4.1 under decision 7 (owner, 2026-11-16, decision 1). The general routing repair stays held.
+It needs new mechanism evidence, not another lexical variant.
 
 ## First-principles round follow-ups
 
 Round `fp-2026-11-12`: [ledger](rounds/2026-11-12-fp.md),
 [record](../research/audits/2026-11-12-first-principles-round.md), and
 [ADR-0011](../research/decisions/0011-tool-surface-stays-code-mode-trimmed.md). The tool surface
-stays `search` + `execute`, trimmed for cost.
+stays `search` + `execute`, trimmed for cost. The owner accepted the trimmed surface's loss on
+live-data questions as the price of the trim (2026-11-16, decision 5). A fix that keeps most of
+the token saving reopens it; ADR-0011's reopening rules are unchanged.
 
 Held-out status: the first-principles split is void, because the 2026-11-14 golden coverage audit
 rebuilt the battery. The current split is drawn by the rule in
-[`eval/qa/README.md`](../eval/qa/README.md) ("Held-out split") from the 246 headline cases:
+[`eval/qa/README.md`](../eval/qa/README.md) ("Held-out split") from the 247 headline cases:
 
-- SHA-256 `f683852ee2922dce1b73504582fca7109a21b5cdff89d72a219c51d6f9890efa`.
-- 79 tuning, 119 held-out, and 48 reserve cases.
-- The file is on the owner's Linux machine at `~/backups/gca-2026-11-14-split.json`.
+- SHA-256 `697c550ae15400f5d7e8d9e47f4fd3d5460a6052d91571f5014ef4d35f64ed12`.
+- 79 tuning, 119 held-out, and 49 reserve cases.
+- The file is on the owner's Linux machine at `~/backups/gca-2026-11-14-split-v2.json`.
 
-No product-tuning lane has opened any of the 246 cases. The round's battery test used 70 of them
-once (IDs in [`qa/ids.txt`](rounds/2026-11-14-golden-coverage-audit/qa/ids.txt)); it read answers
-and tuned nothing. An item may name a case by ID; never record which set a
-case is in, and tune no product change on a held-out or reserve case.
-
-### Find what costs the trimmed surface accuracy on live-data questions
-
-On the held-out look, the trimmed surface scored 0.646 against 0.707 on questions whose answer
-depends on live data, with 12 wrong answers against 6. Stable and scheduled facts were level or
-close. Next: find which change costs it (five cards per search, the removed `search` output
-schema, or the shorter instructions) from the stored transcripts before spending on a fix.
-
-Done when: a reviewed change closes the gap on a scoped live-data run, or the owner accepts the
-gap as the price of the trim.
+Two tuning loops tuned on the tuning rows ([loop 1](rounds/2026-11-14-baseline-tuning.md),
+[loop 2](rounds/2026-11-15-tuning-loop-2.md)). The audit's battery test read the answers of 70
+headline cases before the draw ([ids](rounds/2026-11-14-golden-coverage-audit/qa/ids.txt)). The
+baseline and one read per loop ran the held-out rows, counts only. One held-out answer was exposed
+(loop 2); it moves to tuning under decision 2(b). An item may name a case by ID; never record
+which set a case is in, and tune no product change on a held-out or reserve case.
 
 ### Audit source coverage
 
@@ -57,14 +55,17 @@ The first-principles round measured the old battery: 291 of 569 tuning key facts
 supporting passage in anything Raven retrieved. The 2026-11-14 golden coverage audit rebuilt the
 battery, so start from its
 [gap ledger](rounds/2026-11-14-golden-coverage-audit/gaps/GAPS.md). The ledger lists 43 taxonomy
-leaves with a known or suspected source gap (15 confirmed, 28 single observations), and six
-`verified` findings cover 9 of them: `sd-105`, `sd-106`, `sd-107`, `sd-108`, `sls-117`,
-`sls-118`. Do this after the per-source status item below.
+leaves with a known or suspected source gap (15 confirmed), and six filed findings cover 9 of
+them: `sd-105`, `sd-106`, `sd-107`, `sd-108`, `sls-117`, `sls-118`. 11 leaves are marked "not
+re-run" in its "Reach today" column.
 
-Next: re-check the 28 single-observation leaves. For each confirmed gap without a finding, find
-where support exists: a source Raven reaches but did not surface, a source it does not reach, or
-nowhere. Then test the one or two sources that recover the most facts, with a pass condition fixed
-in advance: more correct answers and no more wrong ones.
+Next: round item 1.3 re-reads those 11 leaves and classes each confirmed gap without a finding:
+where support exists (a source Raven reaches but did not surface, a source it does not reach, or
+nowhere). The three confirmed gaps held by sources outside Raven's scope (`assets.public-sector-cbdc`,
+the National Bank of Ukraine statement; `wallets.scams-phishing`; `wallets.pi-network`) are filed
+as content-gap issues in round item 1.3's change (decision 6(c)). Then test the one or two sources
+that recover the most facts, with a pass condition fixed in advance: more correct answers and no
+more wrong ones.
 
 Gaps are findings, not only errors (owner, 2026-11-14). Where support exists nowhere, or only in a
 source Raven does not reach, file a gap finding with a concrete net-new doc or content
@@ -85,20 +86,12 @@ survives Lumenloop and Scout. Two gaps remain:
 
 The round also reported that a successful response hid a failed source. That came from the
 round's own aggregation layer and is not reproduced in production Raven; reproduce it before
-treating it as a product defect. Keep the per-operation failure envelopes as they are. This work
-comes before the coverage audit.
+treating it as a product defect. Keep the per-operation failure envelopes as they are. Round item 3.2
+does this work, and adds the Lumenloop and Scout per-call timeouts that "Read the free telemetry
+before changing four caps" describes.
 
 Done when: a Mintlify retry exhaustion carries the last HTTP status, and the `execute` log event
 records attempts and final status per source, with tests.
-
-### Keep a default `execute` result under the Grok CLI clip
-
-The Grok CLI cuts any MCP result at 20,000 bytes and keeps the head. On the held-out look the
-trimmed surface sent no `search` result over that size, but 275 of 565 `execute` results from the
-three decisive clients were over it. Next: confirm the clip in the Grok CLI, then put status
-lines first and bound the default result (about 18 KB) with the artifact path for the rest.
-
-Done when: a reviewed change ships, or the check shows the clip does not lose answer evidence.
 
 ### Check what the judge saw before changing how it weighs cited text
 
@@ -133,43 +126,47 @@ decides.
 
 ### M2: execute boundary of 4,000 tokens against 6,000
 
-The 6,000-token boundary is inherited from `@cloudflare/codemode` and never measured here; 275 of
-565 held-out `execute` results exceeded 20,000 bytes. It is the environment variable
-`EXECUTE_MODEL_BOUNDARY_MAX_TOKENS`, so the test needs no code change. This is the measurement
-"Keep a default `execute` result under the Grok CLI clip" needs. Next: count how often a returned
-value exceeds 16,000 characters before truncation (telemetry or stored results). Then re-truncate the
-stored arm B `execute` results at 16,000 characters and check whether facts cited in the stored
-answers appear only between 16,000 and 24,000 characters of the raw result: if none do, the paid run
-only confirms; if many do, 4,000 is unlikely to hold, so skip the run. Consider 4,500 tokens too
-(18,000 characters plus the 1,600-character source-basis manifest is under the Grok clip). Then run
-4,000 against 6,000 on the tuning split with Sonnet 5.5, GPT-6.1 Terra, and Grok 4.7, Grok in the Grok
-CLI so its 20 KB clip applies.
+The 6,000-token boundary is inherited from `@cloudflare/codemode` and never measured here. It is
+the environment variable `EXECUTE_MODEL_BOUNDARY_MAX_TOKENS`, so the test needs no code change.
 
-Done when: the boundary stays 6,000 or moves to 4,000 (or 4,500), with score, client tokens, and
-artifact reads per question recorded. Keep 6,000 if the score falls by more than 0.05, the margin 61
-cases can resolve, or artifact reads rise enough to cancel the saving.
+The Grok CLI cuts any MCP result at 20,000 bytes and keeps the head. In the first-principles
+round's held-out look the trimmed surface sent no `search` result over that size, but 275 of 565
+`execute` results from the three decisive clients were over it. A candidate: put status lines
+first and bound the default result (about 18 KB) with the artifact path for the rest. M2 is the
+measurement that candidate needs.
 
-### Point the total-guard failure at its sources
+Next, free (round item 3.4): count how often a returned value exceeds 16,000 characters before
+truncation (telemetry or stored results). Then re-truncate the stored arm B `execute` results at
+16,000 characters and check whether facts cited in the stored answers appear only between 16,000
+and 24,000 characters of the raw result: if none do, a paid run only confirms; if many do, 4,000 is
+unlikely to hold, so skip the run. Consider 4,500 tokens too (18,000 characters plus the
+1,600-character source-basis manifest is under the Grok clip). The same read of stored transcripts
+recounts `data.sections` misreads, `.data` omissions, and failed calls with an omitted reason. The
+section-shape text (PR #270) cut section misreads from 5 in 38 scripts to 0 in 35 on a 16-row
+sample: a direction, not a rate
+([result](rounds/2026-10-12-call-pattern-triage/result-text-v2.md)). The sandbox guard was
+indeterminate and does not ship without a new design or an owner decision. The free read decides;
+a paid comparison of 4,000 against 6,000 (Sonnet 5.5, GPT-6.1 Terra, and Grok 4.7, Grok in the
+Grok CLI so its 20 KB clip applies) needs a new owner authorization.
 
-The retired build error named the file to edit. The new total guard in
-`test/mcp-instructions.test.ts` fails with only two numbers, and the instructions have 30 characters
-of headroom. Add one line to the test name or a comment naming `scripts/catalog-data/source-families.mjs`
-and `src/mcp/tools.ts`, for the drift-resolution agent that hits it.
-
-Done when: the failure text names both files.
+Done when: the boundary stays 6,000 or moves to 4,000 (or 4,500), or a reviewed change bounds the
+default result under the Grok clip, or the read shows the clip loses no answer evidence; the
+section-misread recount is recorded here. A paid comparison records score, client tokens, and
+artifact reads per question. Keep 6,000 if the score falls by more than 0.05, the margin 61 cases
+can resolve, or artifact reads rise enough to cancel the saving.
 
 ### Read the free telemetry before changing four caps
 
-Four caps wait on a read of Workers observability (`cloudflare-observability-review`). Keep the
-counts out of the repo; record only the decision.
+Four caps wait on a read of Workers observability (`cloudflare-observability-review`). Round item
+3.1 does the read. Keep the counts out of the repo; record only the decision.
 
 - `requestedLimit` on `search`: if callers rarely ask for more than 10, lower the public
   `MAX_SEARCH_LIMIT` from 50 to 10 and keep 50 for `codemode.search` inside `execute`. The change
   edits model-facing schema text ("default 5, max 50"), so it needs its own review. At 50 a page
   averages 41.8 KB and the Grok CLI clips 459 of 460 audit pages.
 - Lumenloop and Scout tail latency per operation: then give each adapter a per-call timeout sized
-  like the Stellar Docs budget. Neither adapter has one today, so one hung call holds a script
-  until the 60-second limit.
+  like the Stellar Docs budget (round item 3.2). Neither adapter has one today, so one hung call
+  holds a script until the 60-second limit.
 - Artifact caps (`ARTIFACT_INFO_CAP` 8, `ARTIFACT_READ_CAP` 4): whether any run reaches them.
 - `execute` timeout rate against `EXECUTE_TIMEOUT_MS` (60 s), and the share of runs with wall time
   above about 50 s. Codex's default `tool_timeout_sec` is 60, so a run near Raven's limit can lose its
@@ -215,6 +212,8 @@ They now emit the instructions text, the family line of `search`, and the guard 
 them for that, and assert the served hashes are unchanged (surface `42ec6102…f17f`, instructions
 `67a6bd0b…6c00`).
 
+Round item 3.5 does this.
+
 Done when: no tracked file outside dated records says `micro-map`, and the surface hash is still
 `42ec6102…f17f`.
 
@@ -256,6 +255,8 @@ that read.
 SEP-2024 and SEP-10, so a query about a September date can mark that document exact. The rule is
 letter case; a month list would be vocabulary and is forbidden. No stored run shows the case.
 
+Round item 3.5 does this.
+
 Done when: a general rule (for example, an identifier is not preceded or followed by a numeric
 date part) separates the date from the standard with unit cases for both, and the 90-query replay
 of `test/replay-exact-rows.test.ts` is byte-identical except for the date inputs.
@@ -265,6 +266,8 @@ of `test/replay-exact-rows.test.ts` is byte-identical except for the date inputs
 A manifest fingerprint failure in `npm test` printed the routing runner's per-case tables,
 including the holdout lane's ids and top-five lists, to a lane that was not meant to read them
 (step 3 deviation D7). Any gate failure can repeat it.
+
+Round item 3.5 does this.
 
 Done when: the failure message of the `gates.json` fingerprint test names the mismatching input and
 the re-baseline command and prints no per-case rows, with a test.
@@ -277,16 +280,26 @@ tuning loop 2): seven lexical cards against five was +3/−0 on 64 FAM developme
 
 ### Settle the routing-row overlap with the held-out QA questions
 
-73 of 338 legacy and 26 of 122 extended routing rows are exact or near duplicates (token Jaccard at
-least 0.8) of the 168 held-out and reserve QA questions. The skills rows (0 of 23) and the FAM and
-stellar.org question sets (0 of 150, 0 of 40) have none. The orchestrator holds the matching ids and
-no file names them, because naming them reveals which QA cases are held out. Until this is settled, a
-frame, threshold, or rule tuned on a routing row can touch held-out content. Options: (1) re-draw the
-QA split without the duplicates; (2) mark the matching routing rows confirmation-only for all routing
-work.
+73 of 338 legacy and 26 of 122 extended routing rows were exact or near duplicates (token Jaccard
+at least 0.8) of the 168 held-out and reserve QA questions; the skills rows (0 of 23) and the FAM
+and stellar.org question sets (0 of 150, 0 of 40) had none. That is the old measurement. The
+orchestrator holds the matching ids and no file names them, because naming them reveals which QA
+cases are held out.
 
-Done when: the owner picks one, and either the new split and its SHA-256 are recorded or the routing
-partition marks those rows and the routing eval README says no lane tunes on them.
+The owner chose no re-draw (2026-11-16, decision 2). Two steps remain, on agentpc; no round item
+carries them yet:
+
+- (a) Commit the list of routing rows whose question matches any of the 247 headline questions at
+  token Jaccard 0.8 or more, and mark them confirmation-only for routing work. Computed against
+  all 247, it reveals no membership.
+- (b) Move the one exposed held-out row to tuning by a dated amendment and record the new SHA-256
+  of the split. The row is identified by `exposed-row.sha256` in the sealed directory of the loop 2
+  held-out read ([ledger](rounds/2026-11-15-tuning-loop-2.md)).
+
+Until (a) lands, the loop 2 ruling stands: no lane reads per-row output of the legacy and extended
+routing rows; aggregate counts only. Round item 3.3's per-case review therefore waits on (a).
+
+Done when: both steps are done and the routing eval README says no lane tunes on the listed rows.
 
 ### Decide what test earns the sealed FAM confirmation rows
 
@@ -306,9 +319,10 @@ record which.
 
 ### Treat stellar.org routing reach as a lexical and description question
 
-The "Routing reach" bullet (a `stellarOrg` operation in the top five for 7 of 40 off-golden questions)
-is under "Prove the stellar.org source and settle its egress"; the [family decider
-record](../research/audits/2026-11-14-family-decider.md) answers it: an engine is not the fix. On
+Routing reach of the `stellarOrg` operations (top five for 8 of 40 off-golden questions, loop 2
+step 2) is this item; "Prove the stellar.org source" points here. The
+[family decider record](../research/audits/2026-11-14-family-decider.md) answers it: an engine is
+not the fix. On
 the 20 development stellar.org questions (natural form) today's page reaches 3, a model-free
 family floor 19, and the engines on the rewritten statements +10 to +12 over seven lexical cards
 against the floor's +16. The floor is not a ship either: it admitted a `stellarOrg` card on 33 of the 46 FAM development rows that do not
@@ -327,7 +341,9 @@ each needing the routing gate and the off-golden 40 as its acceptance check: req
 characters for the vendor prefix rule, as `tokensOverlap` already does, and let a gate-failed
 candidate that beats the page's weakest gated card keep its slot when the page is full. The
 description is not changed: a reword that removes the security displacement cut off-golden reach
-from 8 to 6 of 40 and moves the cost to other audit questions.
+from 8 to 6 of 40 and moves the cost to other audit questions. Round item 3.3 measures the two
+ranker changes once each, with the pass rule fixed in the round plan; a failed mechanism is
+recorded and dropped, with no second variant.
 
 The FAM development rows are archived in the branch bundle (agentpc
 `~/backups/raven-next-phase/raven-branches-2026-11-16.bundle`) at ref `refs/heads/exp/family-decider`, path
@@ -343,83 +359,54 @@ rows and confirmed on questions not used to write it, or the owner closes the it
 
 ## Golden answers
 
-### Finish the 2026-11-14 golden coverage audit
+### Look at the Freighter and Scout SDK-status goldens
 
-The round rebuilt the battery around a taxonomy of Stellar (`eval/qa/taxonomy.json`):
+Docs retitled the Freighter guides "Varial" (2026-11-16), and Scout 1.9.150 added SDK-status
+fields ([record](rounds/2026-11-16-next-phase/items/0.2/REPORT.md)). `q-tool-freighter-wallet`,
+`q-tool-wallets-comparison`, and the matching `eval/qa/cases.json` entries need a `golden-truth`
+look (round item 1.1 or 1.3). Open no case beyond these.
 
-- 247 headline cases and 6 tool-lane cases;
-- 164 of 167 leaves covered;
-- the two remaining `openSlots` are waived.
+Done when: each case is edited through `golden-truth` or confirmed unchanged.
 
-The corpus work is done ([ledger](rounds/2026-11-14-golden-coverage-audit.md), Outcome). What
-remains:
-
-- **Owner decisions:**
-  - Done 2026-11-14: the six findings are filed as stellar/stellar-docs#3143 to #3146 (`sd-105`
-    to `sd-108`) and Stellar-Light/stellarlight#1969 and #1970 (`sls-117`, `sls-118`). On the next
-    drift refresh, read each ref and re-run each finding's reproduction commands.
-  - The stellar.org source question: the next item.
-  - Done 2026-11-14: the scope advice in
-    [`decisions/SCOPE.md`](rounds/2026-11-14-golden-coverage-audit/decisions/SCOPE.md) is applied
-    ([`decisions/APPLY.md`](rounds/2026-11-14-golden-coverage-audit/decisions/APPLY.md), reviewed in
-    [`decisions/REVIEW.md`](rounds/2026-11-14-golden-coverage-audit/decisions/REVIEW.md)). Outcome:
-    `q-pay-anchor-msb-licensing` retired, four cases now grade Stellar-side facts only, and the
-    XLM US-classification and issuer custody cases are active on their own leaves.
-  - Done 2026-11-14: the four envelope traps without a case get nothing added. The `no-rows` and
-    `unverified-match` caveats are pinned by unit tests, and the `matchPartners-503` path is pinned
-    in `test/adapters.test.ts`.
-  - `sls-119` (Scout names Circle's reseller as EURC's issuer of record) is `verified` and not
-    posted upstream. Posting it is an owner decision.
-- **Optional key-fact polish.** 72 cases still carry lint warnings: 98 warnings in all, 58 of
-  them on key facts with multiple predicates, over 90 characters, or with a negative predicate.
-  Polish through the `golden-truth` skill, case by case; no warning blocks a gate.
-- **A first full baseline run** on the 247 headline cases. It needs its own `run-evals` plan
-  (decision, cap, stop rule) and its own spend authorization. Keep the held-out discipline
-  stated at the top of this file.
-
-Done when: each owner decision is recorded under "Owner decisions", and the baseline plan is
-written or declined.
-
-### Prove the stellar.org source and settle its egress
+### Prove the stellar.org source
 
 The source is in (`stellarOrg.search_site` and `stellarOrg.get_page`, merged in tuning loop 2) and
 it is **unproven**: P2 called it on 3 of 58 rows (3 of the 12 `sets.tuning` rows whose golden cites
 a served stellar.org page), all calls ok, one answer used a fact from it, and no verdict moved
 because of it; 5 of the 12 rows cannot reach a cited page from the question as written. The
 `search_site` result is large (up to about 21,700 characters) and was ignored on 2 of 3 rows. Its
-harm side is clean at what T = 5 on 58 rows can see, not below it. What remains:
+harm side is clean at what T = 5 on 58 rows can see, not below it. The deployed Worker reaches
+stellar.org through the adapter's own path (checked after the #447 deploy,
+[loop 2 ledger](rounds/2026-11-15-tuning-loop-2.md)). What remains:
 
-- **Worker egress.** The account's Workers reached stellar.org (amendment A7), but the adapter's own
-  code path from the deployed Worker is not tested. After the next deploy, call both operations from
-  the Worker and confirm stellar.org's front serves them.
 - **Routing reach.** See "Treat stellar.org routing reach as a lexical and description question".
 - **Adapter review residue.** The vendor-diverse attack on the adapter (a Codex frontier or Grok
-  reviewer) was never run: both reviews were Claude Opus. The title cap of 300 characters that
-  review G2 suggested was not applied (a 200,000-character title passes through `search_site`; the
-  host's 6,000-token return cap bounds it), and `/API/search` sends one request to stellar.org
-  (G4, the owner's call).
+  reviewer) was never run: both reviews were Claude Opus. Round item 1.2 runs it. The title cap of
+  300 characters that review G2 suggested was not applied (a 200,000-character title passes
+  through `search_site`; the host's 6,000-token return cap bounds it), and `/API/search` sends one
+  request to stellar.org (G4, the owner's call).
 - **Algolia `pages` index.** Orchestrator evidence, 2026-11-14, read in the Algolia dashboard: of
   nine body-text phrases the keyless search missed, the `pages` index ranked the right page in its
-  top four for about five. Whether it holds audit records is unconfirmed. Add it only if a later
-  run shows detail-lookup failures, and then with a search-only key.
+  top four for about five. Whether it holds audit records is unconfirmed. Decision (round plan):
+  add depth only on a production detail-lookup failure, and then with a search-only key.
 - **Candidate upstream finding.** The stellar.org audit register titles Blend's records
   `Unnamed record - Certora Ltd`, so a project-name query cannot find them; only the report URL
-  says "blend". Route it through `improvements/` if confirmed.
+  says "blend". Round item 1.3 routes it through `improvements/` if confirmed.
 - **Out-of-source fact.** The Anchor Directory is `anchors.stellar.org`, not stellar.org; that case
-  needs another source or a golden-truth edit.
+  needs another source or a golden-truth edit (round item 1.3).
 
-Done when: the Worker egress check is recorded, the vendor-diverse adapter review is done or the owner waives it, a run on the 12 source rows shows the source
-supplying a judged fact (or the owner accepts it as a coverage fix without a scored gain), the
-Algolia decision is recorded, the Blend register finding is filed or dropped, and the Anchor
-Directory case is routed.
+Done when: the vendor-diverse adapter review is done or the owner waives it, a run on the 12
+source rows shows the source supplying a judged fact (or the owner accepts it as a coverage fix
+without a scored gain), the Blend register finding is filed or dropped, and the Anchor Directory
+case is routed.
 
 ### Check Docs search for the SEP-7 payment-request page before filing
 
 `stellarDocs.search_docs('web+stellar:pay payment request QR code')` does not return
 `/docs/build/apps/wallet/sep7`, though the page holds that exact string; Scout returns it. The
 leaf is `standards.payment-patterns` ([gap ledger](rounds/2026-11-14-golden-coverage-audit/gaps/GAPS.md)).
-Nothing is filed: the owner is not established, because the miss may come from Raven's scoping
-or from upstream ranking.
+Round item 1.3 runs this check. Nothing is filed: the owner is not established, because the miss
+may come from Raven's scoping or from upstream ranking.
 
 Next step: run the same query against the Mintlify search backend directly, and through Raven
 with and without its scoping, and compare where the page ranks. The bare query `web+stellar:pay` returns
@@ -439,10 +426,15 @@ date passes. Six cases keep dates before 2027 because each depends on a known ev
   official page both listed the two Q4 briefs on 2026-11-14.
 - **Bell/P30 Mainnet vote, 2026-11-23 17:00 UTC.** `q-pc-protocol-upgrade-timing`,
   `q-protocol-version-history-list`, and `q-edge-fresh-latest-protocol-version` are due 11-24.
-  `q-hist-quantum-preparedness-plan` is due 12-01. One case added by the audit, which states the
-  Protocol 29 release set, is due 11-30; `--stale` lists it. The `mainnet-protocol-29` source
-  sentinel fires when Mainnet activates Protocol 30. Update the register's Bell date trap in the
-  same change.
+  `q-hist-quantum-preparedness-plan` is due 12-01. `q-infra-software-versions-current-protocol`,
+  which states the Protocol 29 release set, is due 11-30; `--stale` lists it. The
+  `mainnet-protocol-29` source sentinel fires when Mainnet activates Protocol 30. Update the
+  register's Bell date trap in the same change.
+
+Round items carry the work: 1.4 pre-stages the Bell probes by 2026-11-22; 2.1 edits the three
+cases due 11-24 after the vote (2026-11-23 17:00 UTC) and merges before 2026-11-25 00:00 UTC, when
+the stale lint starts failing every pull request on them; 2.2 takes the three later cases between
+2026-11-30 and 2026-12-04.
 
 Use the `golden-truth` skill, then `npm run eval:qa:register`.
 [Ledger](rounds/2026-11-12-truth-maintenance.md).
@@ -467,7 +459,7 @@ The 2026-11-14 baseline graded this case `wrong` because the answer quoted the L
 Explorer page, with attribution, as the CLI's binding language coverage. That page is wrong
 (`sd-110`), and the canonical-page rule caps such a quote at `partial`. The golden is correct
 (key fact 3). Make a separate `golden-truth` edit that adds the canonical-page caution naming
-`sd-110` ([ledger](rounds/2026-11-14-baseline-tuning/CASE-DEFECTS.md)).
+`sd-110` ([ledger](rounds/2026-11-14-baseline-tuning/CASE-DEFECTS.md)). Round item 1.3 carries it.
 
 Done when: the case's notes carry the caution and `truth.verified` records the edit.
 
@@ -494,21 +486,27 @@ Recheck only when the named change or new evidence arrives. An untouched issue n
 reminder. The [November 5 ledger](rounds/2026-11-05-truth-maintenance.md) and its per-finding
 tables cover every finding.
 
+- **Standing authority to post** (owner, 2026-11-16, decision 4): post every verified finding as
+  an issue and resolution comments as comments, never pull requests, with no per-repository cap.
+  A finding not posted stays `verified` with a note, so it can be posted later. Move this rule
+  into the `improvements-pipeline` skill in round item 1.1's change.
 - **sls-033**: the source-URL gap is fixed live (2026-11-14, Scout 1.9.150, PR1967; inbound
   handoff #429), and the finding holds the receipt. It stays `reported-upstream` only because a
   golden partial cap still names it. In one change: remove that cap with `golden-truth`
   (`rg -l sls-033 eval/qa/corpus/battery`), set `fixed-upstream`, run the distinct retirement
-  review, and post the resolution comment on stellarlight#519 and PR1967.
+  review, and post the resolution comment on stellarlight#519 and PR1967 (round item 1.1).
 - **sls-107** is `fixed-upstream` on the 2026-11-14 live recheck (inbound handoff #425). It
   waits for the distinct retirement review and the resolution comment on stellarlight#1900 and
-  PR1944. The reviewer should scan one adjacent row: BRLT has a null `issuerOfRecordCheck` and
-  no note.
+  PR1944 (round item 1.1). The reviewer should scan one adjacent row: BRLT has a null
+  `issuerOfRecordCheck` and no note.
 - **sls-116** is partly fixed (PR1962; inbound handoff #427). One named round-44 page
   (`soroban-contract-source-verification-service-bax`) is on no Scout row, and the owner's own
-  check reports 20 rounds short by 27 awards. Reply with the 2026-11-14 result; retire only when
-  the remainder is sourced or explicitly out of scope.
-- **Inbound handoff #426 (sls-029)** arrived after the finding was retired on 2026-11-12. Reply
-  with the receipt in `improvements/resolved.json` and close it.
+  check reports 20 rounds short by 27 awards. Reply with the 2026-11-14 result (round item 1.1);
+  retire only when the remainder is sourced or explicitly out of scope.
+- **`sd-105` to `sd-110` and `sls-117` to `sls-119`** (filed 2026-11-14): read each upstream ref
+  and re-run each reproduction command once (round item 1.1).
+- **sd-081** cites Docs pages that lost their `-js` suffix; run a recurrence probe at the new
+  paths (round item 1.1).
 - **Docs pull requests.** The [Docs table](rounds/2026-11-05-truth-maintenance/docs.md) and the
   [continuation table](rounds/2026-11-06-remaining-sweep/docs.md) name each unmerged pull
   request, its blocker, and its live trigger, including draft2752 and the generated-skill
@@ -540,7 +538,8 @@ a precise remaining defect in its active finding.
 
 The Scout DeepWiki note for `stellar/stellar-horizon` is a dated fact that goes stale at each
 protocol bump. It failed twice (`sls-087`, `sls-115`) and passed on 2026-11-12
-([round](rounds/2026-11-12-truth-maintenance.md)).
+([round](rounds/2026-11-12-truth-maintenance.md)) and 2026-11-16 (value 30 at `scannedRef`
+`01ba44a9`, [round item 0.2](rounds/2026-11-16-next-phase/items/0.2/EXEC.md)).
 
 During each improvements or drift round, run one free `scout.explainRepo` reading against the
 local Raven server for `stellar/stellar-horizon`: "Which Horizon ingestion constant pins the
@@ -583,8 +582,11 @@ Held by this item:
 - Three mixed-intent controls run as `it.fails` in `test/drift-141-routing.test.ts`. Remove the
   markers when the repair passes.
 - `inventory/stellar-docs-titles.json` stays at its Algolia-era bytes, so the daily refresh
-  reports it as drift and its `source.authEnv` names deleted secrets that nothing reads. Fresh
-  titles alone drop `stellarDocs.search_wallet_dapp_docs` from `q-tool-wallets-kit`.
+  reports it as drift and its `source.authEnv` names deleted secrets that nothing reads. On
+  2026-11-16 fresh titles (982 Docs pages) cost three graded rows with no gain (two legacy, one
+  holdout-lane row by count), and the earlier `q-tool-wallets-kit` loss no longer reproduces.
+  Under decision 3 the hold stays
+  ([TITLES-AB.md](rounds/2026-11-16-next-phase/items/0.2/TITLES-AB.md)).
   [Issue #223](https://github.com/stellar-experimental/stellar-raven/issues/223) stays open for
   this hold and the repair.
 - A `SKILL_DESCRIPTION_OVERRIDES` entry for `skills.stellar-dev.dapp` holds that skill's search
@@ -678,45 +680,38 @@ A new attempt needs one of:
 The upstream card and the Scout inventory have both changed since the contracts froze (the PH1
 trigger). That allows the free diagnostic and authorizes no mechanism.
 
-2026-11-14 evidence for PH4 ([baseline](rounds/2026-11-14-baseline-tuning/BASELINE.md), stored run
-`2026-11-14T20-13-51-variantA`): on nine standards questions from three families, seven never
-called `scout.searchResearch` (`q-sep-45-contract-auth`, `q-crp-oz-rwa-erc3643-trex`,
-`q-sep6-sep24-sep31-choice`, `q-nft-vault-contract-standards`,
-`q-net-protocol-meeting-notes-find-cap`, `q-protocol-ledger-close-time`,
-`q-edge-factcheck-soroswap-first-amm`), and `search` returned the research operation on none of the
-eight that searched, at limits of 5, 8, and 10. The same lane is absent for a wallet SEP, a
-token-compliance SEP, and a CAP's status. Whether this meets PH4's bar is the owner's decision; the
-routing repair stays held until the owner rules on PH3. The tuning loop
-([plan](rounds/2026-11-14-baseline-tuning/TUNING-PLAN.md)) does not try to fix it.
+The 2026-11-14 baseline ([BASELINE.md](rounds/2026-11-14-baseline-tuning/BASELINE.md)) is the PH4
+evidence offered: on nine standards questions from three families, seven never called
+`scout.searchResearch`, and `search` returned it on none of the eight that searched.
 
-Done when: a reviewed mechanism passes both contracts (19 of 19 required top-five hits, zero
-forbidden captures) and all routing gates.
+**Held.** The owner ruled on 2026-11-16 that PH4 is not met and PH3 does not open (decision 6(a)).
+What reopens this item is PH4 evidence of the kind stated above, then an owner ruling on PH3.
 
-### Get research called when a question names a SEP or CAP
-
-Tuning arm 2 marks the document a research query names by identifier, but it can act only when the
-agent makes that query. Tuning loop 2 tried a host pointer in the `execute` result (one generated
-sentence naming the research call, once per identifier, at most three) and **did not ship it**. R
-(17 identifier rows, two passes, Claude Sonnet 5.5): the sentence fired 42 times, agents followed
-it 9 times (21% per fire against a bar above 33%; the replay baseline without it is 4%), every
-follow returned an exact row (9 of 9), and yet no answer improved: no verdict moved by a traced
-cause, and the follows added 0 to 2 turns. Delivery was exact and the model's behaviour was the
-limit. Two general defects to carry into any later attempt: the cap of three keeps the first three
-identifiers, not the ones the question names (on one row it dropped the two the question is about),
-and a token read from a `get_doc_page` path string fires for a page the agent is already reading.
-The implementation is archived in the branch bundle (agentpc
-`~/backups/raven-next-phase/raven-branches-2026-11-16.bundle`, ref `refs/heads/tune/loop-2-runs`: commits
-`a49ee918`, `940dc013`, replay tooling `3d65d0ff`); restore with `git fetch <bundle> <ref>:<ref>`.
+The identifier pointer is part of the same hold. Tuning arm 2 marks the document a research query
+names by identifier, but it can act only when the agent makes that query. Tuning loop 2 tried a
+host pointer in the `execute` result and **did not ship it**. R (17 identifier rows, two passes,
+Claude Sonnet 5.5): the sentence fired 42 times and agents followed it 9 times (21% per fire
+against a bar above 33%; the replay baseline without it is 4%), every follow returned an exact row
+(9 of 9), and no verdict moved by a traced cause. Delivery was exact and the model's behaviour was
+the limit. Two general defects to carry into any later attempt: the cap of three keeps the first
+three identifiers, not the ones the question names (on one row it dropped the two the question is
+about), and a token read from a `get_doc_page` path string fires for a page the agent is already
+reading. The implementation is archived in the branch bundle (agentpc
+`~/backups/raven-next-phase/raven-branches-2026-11-16.bundle`, ref `refs/heads/tune/loop-2-runs`:
+commits `a49ee918`, `940dc013`, replay tooling `3d65d0ff`); restore with
+`git fetch <bundle> <ref>:<ref>`.
 
 A later attempt needs a different surface (the sentence was already in the result the agent reads
 next) and a reason to expect the exact row to matter: in R it supplied a header (status, version,
 dates, authors) and no judged fact, so a higher follow rate alone would not have moved a verdict.
 This is a routing and instruction problem, not a result-marking one.
 
-Done when: a reviewed general mechanism (no list of standards, no per-case vocabulary) raises the
-per-fire follow rate above 33% on rows that name a SEP or CAP, and at least two different rows go
-up by a trace to the exact row it led to, with no grade, cost, or trap regression, on a read of at
-least 17 rows twice. Hold it with the PH3 ruling above: it shares the owner's decision.
+Done when: a reviewed mechanism passes both contracts (19 of 19 required top-five hits, zero
+forbidden captures) and all routing gates. The bar a later pointer attempt must meet: a reviewed
+general mechanism (no list of standards, no per-case vocabulary) raises the per-fire follow rate
+above 33% on rows that name a SEP or CAP, and at least two different rows go up by a trace to the
+exact row it led to, with no grade, cost, or trap regression, on a read of at least 17 rows
+twice.
 
 ### Stop identity substitution on spelling-corrected matches
 
@@ -769,6 +764,10 @@ For a candidate: rebuild the catalog and generated surfaces, run the focused exp
 `npm run eval:routing -- --gate` without changing `eval/gates.json`, and record the manifest
 hash and all routing lane totals against the accepted surface.
 
+Fired 2026-11-16: Scout 1.9.150 changed the `GET /api/quality` response schema. The candidate gave
++1 legacy, −1 extended and −1 protocol-history, so quality stays excluded
+([SCOUT-EXPOSURE.md](rounds/2026-11-16-next-phase/items/0.2/SCOUT-EXPOSURE.md)).
+
 Done when: a changed contract passes the existing gate and an independent review accepts the
 exposure. Otherwise both stay in `EXCLUDED_SCOUT_OPS`.
 
@@ -793,19 +792,9 @@ A/B on the golden docs pages and the probe, and the routing gate.
 Done when: the `op_bad_signer` query yields the `SET_OPTIONS_BAD_SIGNER` mapping in one search
 call or one hinted page read. Remove when `sd-059` is fixed upstream.
 
-2026-11-14 evidence: in the stored baseline, 56 of 79 tuning rows ran a Docs search with no page
-read, and 10 of the 66 rows that searched read one. The nine rows below stopped at snippets; the
-fact each missed is on a page the agent already had a path for, except `q-sep-45-contract-auth`
-(its status is in the research preamble, not in a Docs page) and `q-soroban-contract-id-derivation`
-(on no page it was shown). `q-soroban-cli-bindings`, `q-pc-account-activation-not-found`,
-`q-pc-cross-redstone-sep40`, `q-pc-sequence-numbers-ordering-replace`, and
-`q-ti-classic-submission-errors` have it on one of the first two pages; `q-infra-rpc-methods-list`
-and `q-smart-wallet-fee-sponsorship` have it on a later path. Tuning arm 1 (a `detail` relation
-that renders a page-read pointer in the checkpoint) was measured: 44 of 50 panel rows saw the sentence,
-21 of them read a page, two rows went up from it and none down, and the owner kept it as a named
-exception to the pre-registered rule
-([measurement](rounds/2026-11-14-baseline-tuning/ARM-1.md),
-[implementation](rounds/2026-11-14-baseline-tuning/TUNE-IMPL-1.md)).
+Tuning arm 1 shipped the page-read pointer for this class (#446; the owner kept it as a named
+exception to the pre-registered rule, [measurement](rounds/2026-11-14-baseline-tuning/ARM-1.md)).
+The item stays for `sd-059` itself.
 
 ### Two snippet-only rows no Docs page can answer
 
@@ -817,23 +806,12 @@ second needs the status "Draft", which is in the research preamble of the SEP fi
 they were
 ([record](rounds/2026-11-14-baseline-tuning/ARM-1.md)).
 
+Round item 1.3 does this check.
+
 Done when: for each row a live check of the Docs page set says whether any page states the fact. A
 missing fact becomes an `improvements/` finding (upstream content gap), or the golden is changed
 through `golden-truth` with live evidence; a fact on a page becomes a reachability fix. Delete this
 item when both rows are decided.
-
-### Measure "read past the snippet" guidance
-
-In the HackMeridian review, 11 of 29 weaker answers stopped at a cut snippet, the first page, or
-the first ten rows. Candidate: when a result is a cut snippet or a partial page of rows, say so
-and name the call that reads the rest. Upstream codemode is the default, so a change needs a
-measured win.
-
-Done when: a measured change ships, or the measurement shows no gain and this item is deleted.
-
-2026-11-14: tuning arm 1 was that measurement ([result](rounds/2026-11-14-baseline-tuning/ARM-1.md)). It marks a Docs search result as sections of pages
-and names the page read, in the checkpoint. The nine baseline rows that stopped at snippets are
-listed under "Point agents at the page when a docs hit has no body".
 
 ### Clarify the model-facing `codemode.describe` response shape
 
@@ -875,7 +853,8 @@ stellar-rpc. No source gives the current npm, JSR, or crates version of common p
 latest OpenZeppelin stellar-contracts release. Search also ranks `scout.getChangelog` (Scout's
 own API log) above `scout.searchResearch` with `source: "release"`.
 
-Decide between an upstream Scout request (file it in `improvements/`) and a new host adapter
+The owner decides this, and a Dashboard lumens API source, after the production read (round item
+3.1; decision 6(b)): an upstream Scout request (file it in `improvements/`) or a new host adapter
 (an ADR-0003 exposure change). Fix the `getChangelog` ranking trap either way.
 
 Done when: probes Q5, R23, R33, and R35 of the HackMeridian review pass again, or the owner
@@ -918,9 +897,15 @@ prints `ALL_TOOLS`, whether an OpenCode model reads past 117 characters, and whe
 pass `limit` (which decides what seven cards do for them) are all open. The client probe harness
 the plan names calls models and needs its own authorization line.
 
-Done when: a committed runner drives the Codex and Grok CLIs as answering clients against the
-local server and writes results the judge can grade, or a recorded decision keeps the hand-run
-lanes; then a run on the loop 2 surface reports those four behaviours per client.
+The hand-run diagnostic comes first (round item 4.1, owner decision 7 in
+[DECISIONS.md](rounds/2026-11-16-next-phase/DECISIONS.md)): 24 tuning rows per client on GPT-6.1
+Terra and Grok 4.7, no judge, cap USD 8 per client subscription-equivalent. OpenCode joins only if
+a subscription login works inside it; no lane uses a per-token API path. A committed runner
+follows only if that diagnostic shows a defect that needs a before-and-after measurement.
+
+Done when: round item 4.1's record reports those four behaviours per client, and either a
+committed runner drives the Codex and Grok CLIs as answering clients against the local server and
+writes results the judge can grade, or a recorded decision keeps the hand-run lanes.
 
 ### Close the remaining claim-support gaps of judge pack p9
 
@@ -964,16 +949,6 @@ prompt change changes the implementation hash and needs a reviewed decision and 
 
 Done when: a reviewed decision changes the prompt with a measured before and after on the
 out-of-scope cases, or records why the prompt stays.
-
-### Recount `data.sections` misreads in the next authorized QA round
-
-The section-shape text (PR #270) cut section misreads from 5 in 38 scripts to 0 in 35 on a
-16-row sample: a direction, not a rate
-([result](rounds/2026-10-12-call-pattern-triage/result-text-v2.md)). The sandbox guard was
-indeterminate and does not ship without a new design or an owner decision.
-
-Done when: an authorized QA round on current `main` recounts section misreads, `.data`
-omissions, and failed calls with an omitted reason, and records them here.
 
 ### Monitor Raven capability-boundary offers
 

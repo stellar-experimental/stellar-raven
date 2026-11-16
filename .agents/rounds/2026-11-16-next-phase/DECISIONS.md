@@ -39,8 +39,9 @@ every lane in this round and override PLAN.md where they differ.
    filling for a little quality loss which we may be able to pick up elsewhere with better tool
    description tuning or endpoint routing."
    - Accepted. Close the TODO item.
-   - ADR-0011's reopening rule 3 stands: a fix that keeps most of the token saving reopens the
-     question.
+   - ADR-0011's reopening rules stand. Rule 3 reads: a fix for the live-data weakness that gives
+     back most of the token saving reopens the trim. The owner's intent beside it: a fix that keeps
+     most of the token saving reopens the question of the loss.
 6. **Sources.** Owner: "sounds good, do it." Adopt all three parts:
    - (a) PH3 stays closed.
    - (b) The Dashboard API and a release source are decided after the 3.1 telemetry read.

@@ -11,6 +11,9 @@ This round's branches and the commits it cites are archived in the branch bundle
 `15f6ff8390c52e259c4fdc97621d2b6278b84d397451c5329d234e88a0138ce7`); see
 [DISPOSITION.md](2026-11-16-next-phase/items/0.3/DISPOSITION.md).
 
+`P0.md`, `P1.md`, `P2.md` and `R.md` are in this round's folder on `main` since #447; entries below
+that place them on `tune/loop-2-runs` were written before that merge.
+
 ## Scope
 
 The owner approved this order on 2026-11-14:
@@ -55,11 +58,9 @@ per-row output; aggregate gate counts stay allowed. Their ids are not recorded a
 | `loop2-plan` | Claude Fable 5.2 | (finished) | Plan written | [PLAN.md](2026-11-15-tuning-loop-2/PLAN.md) |
 | plan review | Claude Opus 5.5 | (finished) | Reviewed: launch after amendments | [PLAN-REVIEW.md](2026-11-15-tuning-loop-2/PLAN-REVIEW.md) |
 | `loop2-run` | Claude Sonnet 5.5 | `t1pm`, parent `kalepail-c3614nvxph-mbp/t40f` | P0 collected and read; `gca-eval` released | [P0.md](2026-11-15-tuning-loop-2/P0.md) |
-| `loop2-impl` | Claude Sonnet 5.5 | `t1pk`, parent `kalepail-c3614nvxph-mbp/t40f` | Step 1 free work done and review reconciled (R1 to R10); awaits P0 and the P1 authorization | [STEP-1-IMPL.md](2026-11-15-tuning-loop-2/STEP-1-IMPL.md) |
-
 | `loop2-impl` | Claude Sonnet 5.5 | `t1pk`, parent `kalepail-c3614nvxph-mbp/t40f` | Step 1 free work done and review reconciled (R1 to R10); P1 ran, step 1 decided | [STEP-1-IMPL.md](2026-11-15-tuning-loop-2/STEP-1-IMPL.md) |
-| `loop2-impl2` | Claude Sonnet 5.5 | `t1ps`, parent `kalepail-c3614nvxph-mbp/t40f` | Step 2 free work done (items 4, 2, 3 and the scans); awaits the independent review, the A7 check and the P2 authorization | [STEP-2-IMPL.md](2026-11-15-tuning-loop-2/STEP-2-IMPL.md) |
-| `loop2-impl3` | Claude Sonnet 5.5 | `t1py`, parent `kalepail-c3614nvxph-mbp/t40f` | Step 3 free work done (item 5, the identifier pointer, and its free checks); awaits the independent review and the R authorization | [STEP-3-IMPL.md](2026-11-15-tuning-loop-2/STEP-3-IMPL.md) |
+| `loop2-impl2` | Claude Sonnet 5.5 | `t1ps`, parent `kalepail-c3614nvxph-mbp/t40f` | Step 2 free work done (items 4, 2, 3 and the scans); reviewed, P2 ran, step 2 decided | [STEP-2-IMPL.md](2026-11-15-tuning-loop-2/STEP-2-IMPL.md) |
+| `loop2-impl3` | Claude Sonnet 5.5 | `t1py`, parent `kalepail-c3614nvxph-mbp/t40f` | Step 3 free work done (item 5, the identifier pointer, and its free checks); reviewed, R ran, step 3 decided: the pointer is not shipped | [STEP-3-IMPL.md](2026-11-15-tuning-loop-2/STEP-3-IMPL.md) |
 | `loop2-kept` | Claude Sonnet 5.5 | `t1q5`, parent `kalepail-c3614nvxph-mbp/t40f` | R decided; the pointer removed and the kept set prepared (free work, no model call) | [KEPT-SET.md](2026-11-15-tuning-loop-2/KEPT-SET.md) |
 
 ## Ledger
@@ -465,3 +466,51 @@ The row is identified only by its case-input hash in the sealed directory
 
 **Loop 2 closed.** Spend: P0 11.81, P1 16.10, P2 11.62, R 7.05, held-out 25.01; USD 71.59
 subscription-equivalent (plan estimate 72, caps 92).
+
+### 2026-11-16: merged and deployed
+
+Recorded by the orchestrator from the loop 2 session transcript.
+
+- **Deploy.** #447 merged 2026-11-16 00:04:53 UTC as `986ffbaa`. `npm run deploy` ran from a clean
+  worktree at `origin/main` at 00:05 UTC: preflight ok, Version
+  `c3596dcc-90d7-4602-bbab-d813b3eaf1ec`, usage tail consumer check passed.
+- **Post-deploy checks, 00:06 UTC.** `/` 200, `/health` 200, unauthenticated `POST /mcp` 401 with
+  `WWW-Authenticate: Bearer realm="OAuth" ... scope="mcp"`.
+- **Egress through the adapter's own path, 00:06:28 UTC.** One `execute` through the production
+  Raven connector:
+  - `stellarOrg.search_site({ query: "SDF strategy" })`: ok in 171 ms; top hits
+    `/foundation/strategy` ("SDF's Strategy"), `/foundation/team`, `/foundation`.
+  - `stellarOrg.get_page({ path: "/foundation/strategy" })`: ok in 34 ms; 4,455 characters,
+    beginning "2026 / # Accelerating growth".
+  - `scout.listAudits({ limit: 2 })`: ok in 840 ms, as a control.
+  - Totals: 3 ok, 0 error, 0 soft-empty.
+
+This closes the A7 gap: the deployed Worker reaches stellar.org through the adapter itself.
+
+## Outcome
+
+Verdicts, each decided by rule at its step (the kept-set entry above has the commits):
+
+| Item | Verdict |
+|---|---|
+| 1. Corroboration guard, then micro-map removal | Kept, on "no harm shown" |
+| 2. `stellarOrg` source | Kept, unproven (called on 3 of 58 rows) |
+| 3. Seven search cards by default | Kept |
+| 4. Description openings that stand alone | Kept |
+| 5. Identifier pointer for SEP and CAP queries | Not shipped; the title-case rule for exact rows stays |
+
+The held-out harm check reads "no harm shown" and claims no improvement. Spend: USD 71.59
+subscription-equivalent. Decision 2(b) of
+[the next-phase decisions](2026-11-16-next-phase/DECISIONS.md) replaces "at the next split draw"
+above: the exposed row moves to tuning by a dated amendment, with no re-draw.
+
+Every file in this round's folder stays, because each defines a label the ledger and
+[`.agents/TODO.md`](../TODO.md) cite (`R8`, `D7`, the step and review ids) or holds a result: the
+plan, review and amendments, `STEP-1` to `STEP-3` and their reviews, `P0.md`, `P1.md`, `P2.md`,
+`R.md` and `KEPT-SET.md`. `scans/` stays because the TODO's "Tuning loop 2 follow-ups" and "Prove
+the stellar.org source" items rest on its claim reads and counts. The raw JSON output is not
+committed; it is in `~/backups/loop2-scans-2026-11-15/scans/` on agentpc. The launch brief
+`briefs/loop2-plan.md` is deleted.
+
+Open work moved to the TODO: the follow-ups under "Tuning loop 2 follow-ups" and "Prove the
+stellar.org source".
