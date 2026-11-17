@@ -1,12 +1,13 @@
 ---
 id: cs-012
 service: canonical-source
-status: verified
+status: reported-upstream
 discovered: 2026-11-17
 upstreamTitle: "codemode: DynamicWorkerExecutor reports no error when sandbox code throws a non-Error value"
 evidence:
   - "2026-11-17 executed on @cloudflare/codemode 0.5.1 in workerd with a LOADER worker_loaders binding: new DynamicWorkerExecutor({ loader }).execute() on 'async () => { throw \"x\"; }' and on 'async () => { throw { code: 1 }; }' returns result undefined and error undefined. Read, not executed: the same line in 0.5.6 (npm latest) dist/index.js:365 and in main packages/codemode/src/executor.ts:511 at commit 366d5b5baf846b4669a2ecd0e61e104aa634432b."
   - "Raven impact: a caller that treats error === undefined as success logs the run as ok. Raven's createExecuteRunner returns { ok: true, result: \"undefined\" } for both throws. A throw of null differs: err.message throws inside the catch block, and the call rejects with TypeError: Cannot read properties of null (reading 'message')."
+  - upstream issue filed 2026-11-17: https://github.com/cloudflare/agents/issues/2897
 ---
 
 ## Finding
