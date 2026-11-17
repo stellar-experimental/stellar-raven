@@ -138,33 +138,6 @@ free telemetry read of four more caps is done; its decisions are in the second. 
 its own written authorization under the `run-evals` skill; none is granted here. Run the free step
 first and stop there when it decides.
 
-### M2: bound the default `execute` result under the Grok clip
-
-Round item 3.4 closed the boundary question: it stays 6,000 tokens
-([result](rounds/2026-11-16-next-phase/items/3.4/RESULT.md)). The free read re-truncated the stored
-tuning transcripts at 16,000 characters (the 4,000-token cut): 32 of the 44 rows with a result over
-it state a fact found only past it, so 4,000 is unlikely to hold and no paid comparison runs. At
-18,000 characters it is 30 of 38 rows, and a 4,500-token boundary does not fit under the Grok clip
-(79 to 100 of 119 results still exceed 20,000 bytes), so neither value is a candidate.
-
-The same read recounted the call patterns on the baseline (87 rows) and the shipped surface (58
-rows): `data.sections` misreads 0 of 26 and 0 of 19 section-read scripts, `.data` omissions 0 and
-0, failed calls with an omitted reason 0 of 4 and 0 of 8 scripts with a failed call. The sandbox
-guard stays unshipped without a new design or an owner decision.
-
-Still open: the Grok CLI cuts any MCP result at 20,000 bytes and keeps the head. In the
-first-principles round's held-out look the trimmed surface sent no `search` result over that size
-(the largest stored one here is 18,755 characters), but 275 of 565 `execute` results from the
-three decisive clients were over it. Of 939 stored tuning `execute` results, 119 are over it, and
-the head clip would lose a fact an answer states on 23 of 38 exposed rows; part of that is the
-host source block, which carries the as-of date. A candidate: put status lines first and bound the
-default result (about 18 KB) with the artifact path for the rest. Round item 4.1's client
-diagnostic shows whether a real Grok client meets it.
-
-Done when: a reviewed change bounds the default result under the Grok clip, or item 4.1 shows the
-clip costs no Grok answer. A paid comparison of Sonnet 5.5, GPT-6.1 Terra and Grok 4.7 (Grok in
-the Grok CLI so its clip applies) needs a new owner authorization.
-
 ### Ship the cap decisions from the production read
 
 Round item 3.1 read production once: a 6.5-day Workers Logs window (the 7-day retention, less one
@@ -814,7 +787,16 @@ Each needs a check before a fix:
   Account example, and the fee-sponsorship pages. Add routing cases first.
 - Clients: Grok CLI never completed OAuth (every `/mcp` request got 401), Copilot CLI looped on
   404 (protocol 2026-07-28), and one browser looped on the consent page with "CSRF token
-  mismatch". Reproduce each.
+  mismatch". Reproduce each. Round item 4.1 ran Codex and Grok with no auth against the local
+  server and both completed, so the Grok 401 loop is an OAuth-path problem, not a protocol one (Grok
+  speaks 2026-07-28 and the local server answers `server/discover` with 200).
+- Codex and Grok findings (round item 4.1, [record](rounds/2026-11-16-next-phase/items/4.1/RECORD.md)):
+  Codex printed both tool descriptions in 9 of 24 rows, so most runs reached `search` and `execute`
+  from the catalogue line alone, and in 3 rows sent `execute` without `code`; Codex passed `limit` on
+  4 of 38 `search` calls, Grok on every call. Check whether a stronger first sentence of the server
+  instructions or an argument hint in the catalogue-visible text helps Codex, as a routing/description
+  question with its own measurement. Grok's 20,000-byte clip cost no answer (61 events, none lost) but
+  cost spend and time.
 
 The review's evidence is in the owner's private snapshot `2026-10-26-hackmeridian`
 (`usage/README.md`).
@@ -897,30 +879,19 @@ arm 3 run were panel-to-single moves. Rules that follow:
 Done when: `run-qa.mjs` or a compare script refuses to pair two runs whose panel cap or register
 differ, or a same-surface pair at one cap measures the null directly. Delete this note then.
 
-### Add a runner for Codex and Grok as QA answering clients
+### Return the OpenCode lane of round item 4.1
 
-`eval/qa/run-qa.mjs` drives only the Claude CLI. No committed runner drives Codex or Grok as a
-QA answering client; the `run-evals` skill tells agents to run them as `hc` lanes against the
-loopback MCP server. Two of the three default eval clients (GPT-6.1 Terra and Grok 4.7)
-therefore have no repeatable harness.
+Round item 4.1's [record](rounds/2026-11-16-next-phase/items/4.1/RECORD.md) read GPT-6.1 Terra in the
+Codex CLI (24 rows) and Grok 4.7 in the Grok CLI (20 rows, cap stop) on four behaviours, and kept the
+hand-run lanes: no defect there needs a before-and-after measurement, so no committed runner for Codex
+and Grok is built (`eval/qa/run-qa.mjs` still drives only the Claude CLI). OpenCode could not run on
+agentpc (no subscription login). Its Mac lane is written
+([brief](rounds/2026-11-16-next-phase/items/4.1/briefs/opencode-mac.md)); the orchestrator runs it and returns
+`summary-opencode.json`. The reader's OpenCode path is untested on a real transcript, so the Mac smoke
+may need a reader fix first.
 
-Tuning loop 2's item 4 (the first 120 characters of each description and the first line of the
-instructions stand alone) is therefore unverified outside Claude Code: delivery is arithmetic against
-measured limits (Codex's catalogue line, OpenCode's two listings, Grok's 2,033-character cut), not a
-session, and whether any of it changes an answer on Codex, Grok or OpenCode, whether a Codex model
-prints `ALL_TOOLS`, whether an OpenCode model reads past 117 characters, and whether those clients
-pass `limit` (which decides what seven cards do for them) are all open. The client probe harness
-the plan names calls models and needs its own authorization line.
-
-The hand-run diagnostic comes first (round item 4.1, owner decision 7 in
-[DECISIONS.md](rounds/2026-11-16-next-phase/DECISIONS.md)): 24 tuning rows per client on GPT-6.1
-Terra and Grok 4.7, no judge, cap USD 8 per client subscription-equivalent. OpenCode joins only if
-a subscription login works inside it; no lane uses a per-token API path. A committed runner
-follows only if that diagnostic shows a defect that needs a before-and-after measurement.
-
-Done when: round item 4.1's record reports those four behaviours per client, and either a
-committed runner drives the Codex and Grok CLIs as answering clients against the local server and
-writes results the judge can grade, or a recorded decision keeps the hand-run lanes.
+Done when: `summary-opencode.json` is in the record, or the record states that OpenCode dropped out
+(failed login smoke, or per-token spend moved).
 
 ### Close the remaining claim-support gaps of judge pack p9
 
