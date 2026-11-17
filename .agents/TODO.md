@@ -284,16 +284,14 @@ Done when: a general rule (for example, an identifier is not preceded or followe
 date part) separates the date from the standard with unit cases for both, and the 90-query replay
 of `test/replay-exact-rows.test.ts` is byte-identical except for the date inputs.
 
-### Point the fingerprint gate failure at the fingerprint only
+### Stop the routing gate run from printing the holdout rows
 
-A manifest fingerprint failure in `npm test` printed the routing runner's per-case tables,
-including the holdout lane's ids and top-five lists, to a lane that was not meant to read them
-(step 3 deviation D7). Any gate failure can repeat it.
+Under `--gate` the runner prints the holdout and protocol-history per-case tables on every run,
+CI's `npm run eval:routing -- --gate` included. The fingerprint failure message no longer points at
+them, but any gate run still writes holdout case ids and top-five lists to stdout. Print the
+holdout aggregate only and keep the rows in the results file.
 
-Round item 3.5 does this.
-
-Done when: the failure message of the `gates.json` fingerprint test names the mismatching input and
-the re-baseline command and prints no per-case rows, with a test.
+Done when: a gate run's stdout holds no holdout case id.
 
 ## Family decider follow-ups
 

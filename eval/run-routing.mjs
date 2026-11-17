@@ -55,6 +55,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { aggregate, cardMatchesExact, gradeCase, tableRows } from "./lib/grade.mjs";
 import { overlayExpectedAnyById, unionExpectedAny } from "./lib/labels.mjs";
 import { confirmationOnlyFor, consoleValue, tagRows } from "./lib/confirmation-only.mjs";
+import { gateEvidenceFailures } from "./lib/gate-evidence.mjs";
 
 const EVAL_DIR = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(EVAL_DIR, "..");
@@ -74,68 +75,6 @@ const OVERLAY = join(EVAL_DIR, "build-question-overlay.json");
 const GATES = join(EVAL_DIR, "gates.json");
 const RESULTS_DIR = join(EVAL_DIR, "results");
 const ENFORCE_GATE = process.argv.includes("--gate");
-const GATE_EVIDENCE_INPUTS = [
-  "catalog/manifest.json",
-  "eval/routing-cases.json",
-  "eval/skills-cases.json",
-  "eval/holdout-cases.json",
-];
-
-function gateEvidenceFailures(gateConfig) {
-  const failures = [];
-  const evidence = gateConfig.evidence;
-  if (!evidence || typeof evidence !== "object" || Array.isArray(evidence)) {
-    return ["gates.json evidence is missing — re-baseline with committed input fingerprints and accepted totals"];
-  }
-
-  if (!Array.isArray(evidence.inputs)) {
-    failures.push("gates.json evidence.inputs must be an array");
-  } else {
-    const inputs = new Map();
-    for (const input of evidence.inputs) {
-      if (!input || typeof input.path !== "string" || typeof input.sha256 !== "string") {
-        failures.push("gates.json evidence.inputs entries must contain path and sha256 strings");
-        continue;
-      }
-      if (inputs.has(input.path)) failures.push(`gates.json evidence.inputs repeats ${input.path}`);
-      inputs.set(input.path, input.sha256);
-    }
-    for (const path of GATE_EVIDENCE_INPUTS) {
-      const expected = inputs.get(path);
-      if (!expected) {
-        failures.push(`gates.json evidence.inputs is missing ${path}`);
-        continue;
-      }
-      if (!/^[a-f0-9]{64}$/.test(expected)) {
-        failures.push(`gates.json evidence.inputs has an invalid SHA-256 for ${path}`);
-        continue;
-      }
-      // The manifest evidence must describe the manifest this run grades, including a --manifest variant.
-      const source = path === "catalog/manifest.json" ? MANIFEST : join(REPO, path);
-      const actual = createHash("sha256").update(readFileSync(source)).digest("hex");
-      if (actual === expected) continue;
-      if (source === MANIFEST && MANIFEST !== join(REPO, path)) {
-        failures.push(`selected manifest ${relative(REPO, MANIFEST)} SHA-256 does not match the committed ${path} gate evidence — a variant manifest cannot pass --gate`);
-      } else {
-        failures.push(`${path} SHA-256 does not match the committed gate evidence — re-baseline gates.json explicitly`);
-      }
-    }
-    for (const path of inputs.keys()) {
-      if (!GATE_EVIDENCE_INPUTS.includes(path)) failures.push(`gates.json evidence.inputs contains unexpected path ${path}`);
-    }
-  }
-
-  const totals = evidence.acceptedTotals;
-  for (const lane of ["legacy", "skills", "holdout"]) {
-    if (!totals?.[lane] || typeof totals[lane] !== "object" || Array.isArray(totals[lane])) {
-      failures.push(`gates.json evidence.acceptedTotals.${lane} is missing`);
-    }
-  }
-  if (evidence.localTrace !== undefined && (typeof evidence.localTrace !== "string" || evidence.localTrace.length === 0)) {
-    failures.push("gates.json evidence.localTrace must be a non-empty string when present");
-  }
-  return failures;
-}
 // --dump-ranked <file> writes ordered top-5 hit IDs by case ID for the legacy,
 // extended, skills, and protocol-history lanes. See eval/README.md for the
 // routing contract and eval/gates.json for gate inputs and thresholds.
@@ -418,7 +357,7 @@ async function main() {
   let gate = null;
   if (existsSync(GATES)) {
     const g = JSON.parse(readFileSync(GATES, "utf8"));
-    const failures = gateEvidenceFailures(g);
+    const failures = gateEvidenceFailures(g, { repo: REPO, manifestPath: MANIFEST });
     if (g.gradingRule !== "v3-manifest-exposed") {
       failures.push(`gates.json gradingRule "${g.gradingRule}" is not what this runner grades (v3-manifest-exposed) — re-baseline`);
     }
