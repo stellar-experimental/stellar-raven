@@ -1478,10 +1478,13 @@ describe("spec-search runner (kept for explicit evaluation callers, ADR-0001)", 
   });
 });
 
-describe("execute runner: unawaited provider call (codemode 0.5.5 gate)", () => {
-  it("returns normally when a provider call is left pending", async () => {
+describe("execute runner: unawaited provider call (codemode 0.5.5 compatibility)", () => {
+  it("an unawaited provider call does not break the run", async () => {
     const outcome = await run(`async () => { codemode.search("x"); return 1; }`);
     expect(outcome.ok).toBe(true);
-    if (outcome.ok) expect(outcome.result.startsWith("1")).toBe(true);
+    if (outcome.ok) {
+      // A footer may follow the value; the first line is exactly the returned value.
+      expect(outcome.result.split("\n")[0]).toBe("1");
+    }
   });
 });

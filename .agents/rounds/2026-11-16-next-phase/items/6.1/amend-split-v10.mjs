@@ -39,6 +39,7 @@ const LINES = {
   v9Hash: "check failed: the v9 split SHA-256 is not the recorded value",
   outExists: "check failed: the v10 split already exists; it is never overwritten",
   notOne: "check failed: the exposure note does not name exactly one case outside tuning",
+  amend: "check failed: the amendment library refused the move (message withheld)",
   unexpected: "check failed: unexpected error (message withheld)",
 };
 class RunnerError extends Error {
@@ -122,7 +123,8 @@ function main() {
 try {
   main();
 } catch (error) {
-  const line = error instanceof AmendError || error instanceof RunnerError ? error.message : LINES.unexpected;
+  const line =
+    error instanceof RunnerError ? error.message : error instanceof AmendError ? LINES.amend : LINES.unexpected;
   console.error(`amend-split-v10 failed: ${line}`);
   process.exit(1);
 }

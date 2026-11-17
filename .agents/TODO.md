@@ -675,7 +675,7 @@ ask for context, with no regression in the abstention or absence slices.
 and Porter stemming failed routing coverage; do not replace them with query exceptions or a
 tuned token-length threshold.
 
-`cs-012` ([Cloudflare #2897](https://github.com/cloudflare/agents/issues/2897)) is a live bullet:
+`cs-012` ([Cloudflare #2897](https://github.com/cloudflare/agents/issues/2897)) :
 through 0.5.6, a non-Error throw reaches Raven as `error: undefined` and is logged `ok: true`.
 Raven has no local workaround. A fix such as
 [#2898](https://github.com/cloudflare/agents/pull/2898) (open, unmerged) makes a non-Error throw
