@@ -407,4 +407,20 @@ receipt's pinned `sourceUrl`.
 
 ### The #427 reply
 
-Posted after the final push; its URL is in the next section.
+Posted on stellar-raven#427 after the push of `be39023a`, and read back (author kalepail):
+https://github.com/stellar-experimental/stellar-raven/issues/427#issuecomment-6933957089
+
+I did not comment on #425 or #429 and did not open the pull request; those are the lead's.
+
+## For the lead
+
+- v4: `~/backups/gca-2026-11-14-split-v4.json`, SHA-256
+  `58ad28bb903fcd7c72122de4ca13f93438a42b92a6987dcbce7d6c3f8096c191`, counts 81 / 117 / 49. Copy it to
+  the Mac.
+- Ids this item took for the item 1.3 lane: sls-120 (filed as stellarlight#1973). The next free id
+  is sls-121.
+- Branch `np/1.1-drain-upstream-handoffs` is pushed. The last commit before this paragraph is
+  `be39023a`; this paragraph and the #427 URL are committed after it.
+- The v4 move turned out unnecessary for the wallets-case edit (the judge-facing text carried no
+  sls-033 cap since 2026-11-14); v4 stands because the case was opened.
+- Not deployed and not needed: no file under `src/` changed.
