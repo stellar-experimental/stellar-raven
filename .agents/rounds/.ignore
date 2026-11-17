@@ -1,0 +1,5 @@
+# Ripgrep (and fd, ag) skip these rounds by default: their records hold golden text. Entries are
+# anchored to this folder; an explicit path argument still searches them. Layout and rule:
+# eval/qa/README.md, "Held-out split". test/case-search-ignore.test.mjs pins this list.
+/2026-11-02-golden-audit/
+/2026-11-14-golden-coverage-audit/
