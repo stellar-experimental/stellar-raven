@@ -831,7 +831,7 @@ The review's evidence is in the owner's private snapshot `2026-10-26-hackmeridia
 (`usage/README.md`).
 
 Production read (round item 3.1, 6.5 days): `scout.matchPartners` still failed on nearly every
-call, which supports removing it. Playground replies that stopped at the output cap were rare, so
+call; the decision and its measurement are in the first bullet. Playground replies that stopped at the output cap were rare, so
 the cap review can close as "no change" unless the owner sees otherwise. `recoveryHint` could not be
 read: its key was not in the capped key list ("Ship the cap decisions from the production read"
 has the follow-up). The client loops could not be attributed: user-agent queries returned no rows,
