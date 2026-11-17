@@ -1,0 +1,11 @@
+[Unit]
+Description=Raven round 2026-11-16 item 2.2b: start the dated Opus lead (quantum preparedness case, merge before 2026-12-02 00:00 UTC)
+StartLimitIntervalSec=0
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/share/raven-dated/launch-dated-lead.sh 2.2b quantum-plan
+TimeoutStartSec=15min
+Restart=on-failure
+RestartSec=20min
+RestartPreventExitStatus=75

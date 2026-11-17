@@ -1,0 +1,47 @@
+{
+  "2.1": {
+    "brief": ".agents/rounds/2026-11-16-next-phase/items/1.4/dated/2.1-LEAD.md",
+    "slug": "bell-goldens",
+    "cases": [
+      "q-edge-fresh-latest-protocol-version",
+      "q-pc-protocol-upgrade-timing",
+      "q-protocol-version-history-list",
+      "q-hist-quantum-preparedness-plan"
+    ],
+    "due": "2026-11-24",
+    "cutoff": "2026-11-24T20:00:00Z",
+    "mergeDeadline": "2026-11-25T00:00:00Z"
+  },
+  "2.2a": {
+    "brief": ".agents/rounds/2026-11-16-next-phase/items/1.4/dated/2.2a-LEAD.md",
+    "slug": "software-versions",
+    "cases": ["q-infra-software-versions-current-protocol"],
+    "due": "2026-11-30",
+    "cutoff": "2026-11-30T20:00:00Z",
+    "mergeDeadline": "2026-12-01T00:00:00Z"
+  },
+  "2.2b": {
+    "brief": ".agents/rounds/2026-11-16-next-phase/items/1.4/dated/2.2b-LEAD.md",
+    "slug": "quantum-plan",
+    "cases": ["q-hist-quantum-preparedness-plan"],
+    "due": "2026-12-01",
+    "cutoff": "2026-12-01T20:00:00Z",
+    "mergeDeadline": "2026-12-02T00:00:00Z"
+  },
+  "2.2c": {
+    "brief": ".agents/rounds/2026-11-16-next-phase/items/1.4/dated/2.2c-LEAD.md",
+    "slug": "scf-current-round",
+    "cases": ["q-scf-current-round"],
+    "due": "2026-12-04",
+    "cutoff": "2026-12-04T20:00:00Z",
+    "mergeDeadline": "2026-12-05T00:00:00Z"
+  },
+  "rehearsal": {
+    "brief": ".agents/rounds/2026-11-16-next-phase/items/1.4/dated/rehearsal-LEAD.md",
+    "slug": "rehearsal",
+    "cases": [],
+    "due": "2099-01-01",
+    "cutoff": "2099-01-01T00:00:00Z",
+    "mergeDeadline": "2099-01-01T00:00:00Z"
+  }
+}

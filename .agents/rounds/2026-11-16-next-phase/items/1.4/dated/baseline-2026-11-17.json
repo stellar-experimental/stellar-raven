@@ -1,0 +1,2890 @@
+{
+  "probedAt": "2026-11-17T02:40:02.791Z",
+  "sections": {
+    "protocol": {
+      "ok": true,
+      "horizon": {
+        "mainnet": {
+          "ok": true,
+          "current_protocol_version": 29,
+          "core_supported_protocol_version": 30,
+          "core_latest_ledger": 65519431,
+          "history_latest_ledger": 65519431,
+          "network_passphrase": "Public Global Stellar Network ; September 2015",
+          "latestLedger": {
+            "sequence": 65519431,
+            "closed_at": "2026-11-17T02:39:57Z",
+            "protocol_version": 29
+          }
+        },
+        "testnet": {
+          "ok": true,
+          "current_protocol_version": 30,
+          "core_supported_protocol_version": 30,
+          "core_latest_ledger": 5771911,
+          "history_latest_ledger": 5771911,
+          "network_passphrase": "Test SDF Network ; September 2015",
+          "latestLedger": {
+            "sequence": 5771911,
+            "closed_at": "2026-11-17T02:40:01Z",
+            "protocol_version": 30
+          }
+        }
+      },
+      "rpc": {
+        "mainnet": {
+          "ok": true,
+          "protocolVersion": 29,
+          "sequence": 65519432,
+          "closeTime": "1794883202"
+        },
+        "testnet": {
+          "ok": true,
+          "protocolVersion": 30,
+          "sequence": 5771911,
+          "closeTime": "1794883201"
+        }
+      },
+      "activation": {
+        "ok": true,
+        "found": false,
+        "note": "latest Mainnet ledger is below Protocol 30"
+      },
+      "status": {
+        "ok": true,
+        "scheduledMaintenances": [
+          {
+            "name": "Stellar Public Network Protocol Upgrade Vote",
+            "status": "scheduled",
+            "scheduled_for": "2026-11-23T17:00:00.000Z",
+            "scheduled_until": "2026-11-23T17:05:00.000Z",
+            "resolved_at": null
+          },
+          {
+            "name": "Bell, Protocol 30 Testnet Upgrade",
+            "status": "completed",
+            "scheduled_for": "2026-11-03T17:00:00.000Z",
+            "scheduled_until": "2026-11-03T17:05:00.000Z",
+            "resolved_at": "2026-11-03T17:05:18.991Z"
+          },
+          {
+            "name": "Mainnet Adapter, Protocol 28 Upgrade Vote",
+            "status": "completed",
+            "scheduled_for": "2026-09-16T17:00:00.000Z",
+            "scheduled_until": "2026-09-16T17:05:00.000Z",
+            "resolved_at": "2026-09-16T17:05:07.357Z"
+          },
+          {
+            "name": "Testnet Adapter, Protocol 28 Upgrade",
+            "status": "completed",
+            "scheduled_for": "2026-08-27T17:00:00.000Z",
+            "scheduled_until": "2026-08-27T17:05:00.000Z",
+            "resolved_at": "2026-08-27T17:05:08.478Z"
+          },
+          {
+            "name": "X-Ray Mainnet Upgrade Vote",
+            "status": "completed",
+            "scheduled_for": "2026-01-22T17:00:00.000Z",
+            "scheduled_until": "2026-01-22T18:00:00.000Z",
+            "resolved_at": "2026-01-22T18:00:21.160Z"
+          },
+          {
+            "name": "X-Ray Testnet Upgrade",
+            "status": "completed",
+            "scheduled_for": "2026-01-07T17:00:00.000Z",
+            "scheduled_until": "2026-01-07T18:00:00.000Z",
+            "resolved_at": "2026-01-07T18:00:22.930Z"
+          },
+          {
+            "name": "Mainnet Protocol 24 Upgrade Vote",
+            "status": "completed",
+            "scheduled_for": "2025-10-22T17:00:00.000Z",
+            "scheduled_until": "2025-10-22T18:00:00.000Z",
+            "resolved_at": "2025-10-22T18:00:21.543Z"
+          },
+          {
+            "name": "Protocol 24 Testnet Upgrade",
+            "status": "completed",
+            "scheduled_for": "2025-10-21T21:00:00.000Z",
+            "scheduled_until": "2025-10-21T22:00:00.000Z",
+            "resolved_at": "2025-10-21T22:00:28.275Z"
+          },
+          {
+            "name": "Protocol 23 Mainnet Upgrade Vote",
+            "status": "completed",
+            "scheduled_for": "2025-09-03T17:00:00.000Z",
+            "scheduled_until": "2025-09-03T18:00:00.000Z",
+            "resolved_at": "2025-09-03T18:00:21.199Z"
+          },
+          {
+            "name": "Protocol 23 Testnet Upgrade",
+            "status": "completed",
+            "scheduled_for": "2025-07-17T17:00:00.000Z",
+            "scheduled_until": "2025-07-17T18:00:00.000Z",
+            "resolved_at": "2025-07-17T18:00:21.163Z"
+          },
+          {
+            "name": "Protocol 22 Mainnet Upgrade Vote",
+            "status": "completed",
+            "scheduled_for": "2024-12-05T17:00:00.000Z",
+            "scheduled_until": "2024-12-05T17:05:00.000Z",
+            "resolved_at": "2024-12-05T17:05:21.133Z"
+          },
+          {
+            "name": "Protocol 22 Testnet Upgrade",
+            "status": "completed",
+            "scheduled_for": "2024-11-12T17:00:00.000Z",
+            "scheduled_until": "2024-11-12T17:05:00.000Z",
+            "resolved_at": "2024-11-12T17:05:21.141Z"
+          },
+          {
+            "name": "Mainnet Protocol Upgrade Vote",
+            "status": "completed",
+            "scheduled_for": "2024-06-18T17:00:00.000Z",
+            "scheduled_until": "2024-06-18T17:01:00.000Z",
+            "resolved_at": "2024-06-18T17:01:02.168Z"
+          },
+          {
+            "name": "Testnet Protocol 21 Upgrade",
+            "status": "completed",
+            "scheduled_for": "2024-05-14T17:00:00.000Z",
+            "scheduled_until": "2024-05-14T17:01:00.000Z",
+            "resolved_at": "2024-05-14T17:01:02.522Z"
+          },
+          {
+            "name": "Testnet Protocol 20 Upgrade",
+            "status": "completed",
+            "scheduled_for": "2023-09-20T15:00:00.000Z",
+            "scheduled_until": "2023-09-20T15:01:00.000Z",
+            "resolved_at": "2023-09-20T15:01:02.631Z"
+          }
+        ],
+        "upcoming": [
+          {
+            "name": "Stellar Public Network Protocol Upgrade Vote",
+            "status": "scheduled",
+            "scheduled_for": "2026-11-23T17:00:00.000Z",
+            "scheduled_until": "2026-11-23T17:05:00.000Z",
+            "resolved_at": null
+          }
+        ],
+        "note": "status is resolved by the clock; a completed row proves nothing"
+      },
+      "coreReleases": {
+        "ok": true,
+        "rows": [
+          {
+            "tag_name": "v30.0.0",
+            "prerelease": false,
+            "published_at": "2026-10-16T21:09:15Z"
+          },
+          {
+            "tag_name": "v29.0.0",
+            "prerelease": false,
+            "published_at": "2026-10-05T19:19:08Z"
+          },
+          {
+            "tag_name": "v29.0.0-internal",
+            "prerelease": false,
+            "published_at": "2026-10-01T17:22:41Z"
+          },
+          {
+            "tag_name": "v28.0.1",
+            "prerelease": false,
+            "published_at": "2026-09-01T07:01:54Z"
+          },
+          {
+            "tag_name": "v28.0.0",
+            "prerelease": false,
+            "published_at": "2026-08-13T20:05:30Z"
+          },
+          {
+            "tag_name": "v27.1.0",
+            "prerelease": false,
+            "published_at": "2026-06-25T19:16:20Z"
+          },
+          {
+            "tag_name": "v27.0.0",
+            "prerelease": false,
+            "published_at": "2026-06-05T19:51:25Z"
+          },
+          {
+            "tag_name": "v26.1.0",
+            "prerelease": false,
+            "published_at": "2026-05-15T18:03:49Z"
+          },
+          {
+            "tag_name": "v26.0.1",
+            "prerelease": false,
+            "published_at": "2026-04-13T19:13:45Z"
+          },
+          {
+            "tag_name": "v26.0.0",
+            "prerelease": false,
+            "published_at": "2026-03-31T23:35:24Z"
+          }
+        ]
+      },
+      "bellGuide": {
+        "ok": true,
+        "url": "https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide",
+        "scheduleLines": [
+          "November 3, 2026, 1700 UTC —Testnet upgrade vote",
+          "November 23, 2026, 1700 UTC —Mainnet upgrade vote"
+        ]
+      }
+    },
+    "software-versions": {
+      "ok": true,
+      "url": "https://developers.stellar.org/docs/networks/software-versions.md",
+      "headings": [
+        {
+          "heading": "Protocol 29 (Mainnet, October 1, 2026)",
+          "rows": [
+            [
+              "XDR",
+              "`v28.0`"
+            ],
+            [
+              "Rust XDR",
+              "`28.0.1`"
+            ],
+            [
+              "Smart Contract Host Environment",
+              "`29.0.0`"
+            ],
+            [
+              "Stellar Core",
+              "`29.0.0`"
+            ],
+            [
+              "Smart Contract Rust SDK",
+              "`28.0.0`"
+            ],
+            [
+              "Poseidon Rust SDK",
+              "`28.0.0`"
+            ],
+            [
+              "Stellar CLI",
+              "`28.1.0`"
+            ],
+            [
+              "Stellar RPC",
+              "`v29.0.0`"
+            ],
+            [
+              "Stellar Horizon",
+              "`v29.0.0`"
+            ],
+            [
+              "Stellar Galexie",
+              "`v29.0.0`"
+            ],
+            [
+              "Stellar Quickstart",
+              "`docker pull stellar/quickstart`"
+            ],
+            [
+              "Stellar JS Stellar SDK",
+              "`v17.2.1`"
+            ],
+            [
+              "Stellar Horizon Client & TxnBuild",
+              "`v0.7.3`"
+            ],
+            [
+              "Stellar RPC Client",
+              "`v28.0.0`"
+            ],
+            [
+              "Freighter",
+              ""
+            ],
+            [
+              "Laboratory",
+              "`N/A`"
+            ],
+            [
+              "Futurenet Network Passphrase",
+              "`Test SDF Future Network ; October 2022`"
+            ],
+            [
+              "Testnet Network Passphrase",
+              "`Test SDF Network ; September 2015`"
+            ],
+            [
+              "Mainnet Network Passphrase",
+              "`Public Global Stellar Network ; September 2015`"
+            ]
+          ]
+        },
+        {
+          "heading": "Protocol 29 (Testnet, September 29, 2026)",
+          "rows": [
+            [
+              "XDR",
+              "`v28.0`"
+            ],
+            [
+              "Rust XDR",
+              "`28.0.1`"
+            ],
+            [
+              "Smart Contract Host Environment",
+              "`29.0.0`"
+            ],
+            [
+              "Stellar Core",
+              "`29.0.0`"
+            ],
+            [
+              "Smart Contract Rust SDK",
+              "`28.0.0`"
+            ],
+            [
+              "Poseidon Rust SDK",
+              "`28.0.0`"
+            ],
+            [
+              "Stellar CLI",
+              "`28.1.0`"
+            ],
+            [
+              "Stellar RPC",
+              "`v29.0.0`"
+            ],
+            [
+              "Stellar Horizon",
+              "`v29.0.0`"
+            ],
+            [
+              "Stellar Galexie",
+              "`v29.0.0`"
+            ],
+            [
+              "Stellar Quickstart",
+              "`docker pull stellar/quickstart`"
+            ],
+            [
+              "Stellar JS Stellar SDK",
+              "`v17.2.0`"
+            ],
+            [
+              "Stellar Horizon Client & TxnBuild",
+              "`v0.7.3`"
+            ],
+            [
+              "Stellar RPC Client",
+              "`v28.0.0`"
+            ],
+            [
+              "Freighter",
+              ""
+            ],
+            [
+              "Laboratory",
+              "`N/A`"
+            ],
+            [
+              "Futurenet Network Passphrase",
+              "`Test SDF Future Network ; October 2022`"
+            ],
+            [
+              "Testnet Network Passphrase",
+              "`Test SDF Network ; September 2015`"
+            ],
+            [
+              "Mainnet Network Passphrase",
+              "`Public Global Stellar Network ; September 2015`"
+            ]
+          ]
+        },
+        {
+          "heading": "Protocol 28 (Mainnet, September 16, 2026)",
+          "rows": [
+            [
+              "XDR",
+              "`v28.0`"
+            ],
+            [
+              "Rust XDR",
+              "`28.0.0`"
+            ],
+            [
+              "Smart Contract Host Environment",
+              "`28.0.2`"
+            ],
+            [
+              "Stellar Core",
+              "`28.0.1`"
+            ],
+            [
+              "Smart Contract Rust SDK",
+              "`28.0.0`"
+            ],
+            [
+              "Poseidon Rust SDK",
+              "`28.0.0`"
+            ],
+            [
+              "Stellar CLI",
+              "`28.1.0`"
+            ],
+            [
+              "Stellar RPC",
+              "`v28.0.1`"
+            ],
+            [
+              "Stellar Horizon",
+              "`v28.0.1`"
+            ],
+            [
+              "Stellar Galexie",
+              "`v28.0.1`"
+            ],
+            [
+              "Stellar Quickstart",
+              "`docker pull stellar/quickstart`"
+            ],
+            [
+              "Stellar JS Stellar SDK",
+              "`v17.1.0`"
+            ],
+            [
+              "Stellar Horizon Client & TxnBuild",
+              "`v0.7.3`"
+            ],
+            [
+              "Stellar RPC Client",
+              "`v28.0.0`"
+            ],
+            [
+              "Freighter",
+              ""
+            ],
+            [
+              "Laboratory",
+              "`N/A`"
+            ],
+            [
+              "Futurenet Network Passphrase",
+              "`Test SDF Future Network ; October 2022`"
+            ],
+            [
+              "Testnet Network Passphrase",
+              "`Test SDF Network ; September 2015`"
+            ],
+            [
+              "Mainnet Network Passphrase",
+              "`Public Global Stellar Network ; September 2015`"
+            ]
+          ]
+        },
+        {
+          "heading": "Protocol 28 (Testnet, August 27, 2026)",
+          "rows": [
+            [
+              "XDR",
+              "`v28.0`"
+            ],
+            [
+              "Rust XDR",
+              "`28.0.0`"
+            ],
+            [
+              "Smart Contract Host Environment",
+              "`28.0.1`"
+            ],
+            [
+              "Stellar Core",
+              "`28.0.0`"
+            ],
+            [
+              "Smart Contract Rust SDK",
+              "`28.0.0`"
+            ],
+            [
+              "Poseidon Rust SDK",
+              "`28.0.0`"
+            ],
+            [
+              "Stellar CLI",
+              "`28.0.0`"
+            ],
+            [
+              "Stellar RPC",
+              "`v28.0.0`"
+            ],
+            [
+              "Stellar Horizon",
+              "`v28.0.0`"
+            ],
+            [
+              "Stellar Galexie",
+              "`v28.0.0`"
+            ],
+            [
+              "Stellar Quickstart",
+              "`docker pull stellar/quickstart`"
+            ],
+            [
+              "Stellar JS Stellar SDK",
+              "`v17.0.0`"
+            ],
+            [
+              "Stellar Horizon Client & TxnBuild",
+              "`v0.7.0`"
+            ],
+            [
+              "Stellar RPC Client",
+              "`v28.0.0`"
+            ],
+            [
+              "Freighter",
+              ""
+            ],
+            [
+              "Laboratory",
+              "`N/A`"
+            ],
+            [
+              "Futurenet Network Passphrase",
+              "`Test SDF Future Network ; October 2022`"
+            ],
+            [
+              "Testnet Network Passphrase",
+              "`Test SDF Network ; September 2015`"
+            ],
+            [
+              "Mainnet Network Passphrase",
+              "`Public Global Stellar Network ; September 2015`"
+            ]
+          ]
+        },
+        {
+          "heading": "Protocol 27 (Mainnet, July 8, 2026)",
+          "rows": [
+            [
+              "XDR",
+              "`v27.0`"
+            ],
+            [
+              "Rust XDR",
+              "`27.0.0`"
+            ],
+            [
+              "Smart Contract Host Environment",
+              "`27.0.1`"
+            ],
+            [
+              "Stellar Core",
+              "`27.1.0`"
+            ],
+            [
+              "Smart Contract Rust SDK",
+              "`27.0.6`"
+            ],
+            [
+              "Poseidon Rust SDK",
+              "`27.0.0`"
+            ],
+            [
+              "Stellar CLI",
+              "`27.1.0`"
+            ],
+            [
+              "Stellar RPC",
+              "`v27.1.1`"
+            ],
+            [
+              "Stellar Horizon",
+              "`v27.0.1`"
+            ],
+            [
+              "Stellar Galexie",
+              "`v27.0.0`"
+            ],
+            [
+              "Stellar Quickstart",
+              "`docker pull stellar/quickstart`"
+            ],
+            [
+              "Stellar JS Stellar Base",
+              "`N/A` (merged into the JS Stellar SDK)"
+            ],
+            [
+              "Stellar JS Stellar SDK",
+              "`v16.2.0`"
+            ],
+            [
+              "Stellar Horizon Client & TxnBuild",
+              "`v0.6.1`"
+            ],
+            [
+              "Stellar RPC Client",
+              "`v27.0.0`"
+            ],
+            [
+              "Freighter",
+              ""
+            ],
+            [
+              "Laboratory",
+              "`N/A`"
+            ],
+            [
+              "Futurenet Network Passphrase",
+              "`Test SDF Future Network ; October 2022`"
+            ],
+            [
+              "Testnet Network Passphrase",
+              "`Test SDF Network ; September 2015`"
+            ],
+            [
+              "Mainnet Network Passphrase",
+              "`Public Global Stellar Network ; September 2015`"
+            ]
+          ]
+        },
+        {
+          "heading": "Protocol 27 (Testnet, June 18, 2026)",
+          "rows": [
+            [
+              "XDR",
+              "`v27.0`"
+            ],
+            [
+              "Rust XDR",
+              "`27.0.0`"
+            ],
+            [
+              "Smart Contract Host Environment",
+              "`27.0.0`"
+            ],
+            [
+              "Stellar Core",
+              "`27.0.0`"
+            ],
+            [
+              "Smart Contract Rust SDK",
+              "`27.0.2`"
+            ],
+            [
+              "Poseidon Rust SDK",
+              "`27.0.0`"
+            ],
+            [
+              "Stellar CLI",
+              "`27.0.0`"
+            ],
+            [
+              "Stellar RPC",
+              "`v27.0.0`"
+            ],
+            [
+              "Stellar Horizon",
+              "`v27.0.0`"
+            ],
+            [
+              "Stellar Galexie",
+              "`v27.0.0`"
+            ],
+            [
+              "Stellar Quickstart",
+              "`docker pull stellar/quickstart`"
+            ],
+            [
+              "Stellar JS Stellar Base",
+              "`N/A` (merged into the JS Stellar SDK)"
+            ],
+            [
+              "Stellar JS Stellar SDK",
+              "`v16.0.0-rc.2`"
+            ],
+            [
+              "Stellar Horizon Client & TxnBuild",
+              "`v0.6.0`"
+            ],
+            [
+              "Stellar RPC Client",
+              "`v27.0.0`"
+            ],
+            [
+              "Freighter",
+              ""
+            ],
+            [
+              "Laboratory",
+              "`N/A`"
+            ],
+            [
+              "Futurenet Network Passphrase",
+              "`Test SDF Future Network ; October 2022`"
+            ],
+            [
+              "Testnet Network Passphrase",
+              "`Test SDF Network ; September 2015`"
+            ],
+            [
+              "Mainnet Network Passphrase",
+              "`Public Global Stellar Network ; September 2015`"
+            ]
+          ]
+        },
+        {
+          "heading": "Protocol 26 (Mainnet, May 6, 2026)",
+          "rows": [
+            [
+              "XDR",
+              "`v26.0`"
+            ],
+            [
+              "Rust XDR",
+              "`26.0.1`"
+            ],
+            [
+              "Smart Contract Host Environment",
+              "`26.0.0`"
+            ],
+            [
+              "Stellar Core",
+              "`26.1.0`"
+            ],
+            [
+              "Smart Contract Rust SDK",
+              "`26.0.1`"
+            ],
+            [
+              "Poseidon Rust SDK",
+              "`26.0.0`"
+            ],
+            [
+              "Stellar CLI",
+              "`26.1.0`"
+            ],
+            [
+              "Stellar RPC",
+              "`v26.0.0`"
+            ],
+            [
+              "Stellar Horizon",
+              "`v26.0.0`"
+            ],
+            [
+              "Stellar Galexie",
+              "`v26.1.0`"
+            ],
+            [
+              "Stellar Quickstart",
+              "`docker pull stellar/quickstart`"
+            ],
+            [
+              "Stellar JS Stellar Base",
+              "`v15.0.0`"
+            ],
+            [
+              "Stellar JS Stellar SDK",
+              "`v15.1.0`"
+            ],
+            [
+              "Stellar Horizon Client & TxnBuild",
+              "`v0.5.0`"
+            ],
+            [
+              "Stellar RPC Client",
+              "`v26.0.0`"
+            ],
+            [
+              "Freighter",
+              ""
+            ],
+            [
+              "Laboratory",
+              "`N/A`"
+            ],
+            [
+              "Futurenet Network Passphrase",
+              "`Test SDF Future Network ; October 2022`"
+            ],
+            [
+              "Testnet Network Passphrase",
+              "`Test SDF Network ; September 2015`"
+            ],
+            [
+              "Mainnet Network Passphrase",
+              "`Public Global Stellar Network ; September 2015`"
+            ]
+          ]
+        },
+        {
+          "heading": "Protocol 26 (Testnet, April 16, 2026)",
+          "rows": [
+            [
+              "XDR",
+              "`v26.0`"
+            ],
+            [
+              "Rust XDR",
+              "`26.0.1`"
+            ],
+            [
+              "Smart Contract Host Environment",
+              "`26.1.3`"
+            ],
+            [
+              "Stellar Core",
+              "`26.1.0`"
+            ],
+            [
+              "Smart Contract Rust SDK",
+              "`26.0.1`"
+            ],
+            [
+              "Poseidon Rust SDK",
+              "`26.0.0`"
+            ],
+            [
+              "Stellar CLI",
+              "`26.1.0`"
+            ],
+            [
+              "Stellar RPC",
+              "`v26.0.0`"
+            ],
+            [
+              "Stellar Horizon",
+              "`v26.0.0`"
+            ],
+            [
+              "Stellar Galexie",
+              "`v26.1.0`"
+            ],
+            [
+              "Stellar Quickstart",
+              "`docker pull stellar/quickstart`"
+            ],
+            [
+              "Stellar JS Stellar Base",
+              "`v15.0.0`"
+            ],
+            [
+              "Stellar JS Stellar SDK",
+              "`v15.1.0`"
+            ],
+            [
+              "Stellar Horizon Client & TxnBuild",
+              "`v0.5.0`"
+            ],
+            [
+              "Stellar RPC Client",
+              "`v26.0.0`"
+            ],
+            [
+              "Freighter",
+              ""
+            ],
+            [
+              "Laboratory",
+              "`N/A`"
+            ],
+            [
+              "Futurenet Network Passphrase",
+              "`Test SDF Future Network ; October 2022`"
+            ],
+            [
+              "Testnet Network Passphrase",
+              "`Test SDF Network ; September 2015`"
+            ],
+            [
+              "Mainnet Network Passphrase",
+              "`Public Global Stellar Network ; September 2015`"
+            ]
+          ]
+        },
+        {
+          "heading": "Protocol 25 (Mainnet, January 22, 2026)",
+          "rows": [
+            [
+              "XDR",
+              "`v25.0`"
+            ],
+            [
+              "Rust XDR",
+              "`25.0.0`"
+            ],
+            [
+              "Smart Contract Host Environment",
+              "`25.0.0`"
+            ],
+            [
+              "Stellar Core",
+              "`25.0.0`"
+            ],
+            [
+              "Smart Contract Rust SDK",
+              "`25.0.0`"
+            ],
+            [
+              "Poseidon Rust SDK",
+              "`25.0.0-rc.1`"
+            ],
+            [
+              "Stellar CLI",
+              "`25.0.0`"
+            ],
+            [
+              "Stellar RPC",
+              "`v25.0.0`"
+            ],
+            [
+              "Stellar Horizon",
+              "`v25.0.0`"
+            ],
+            [
+              "Stellar Galexie",
+              "`v25.1.0`"
+            ],
+            [
+              "Stellar Quickstart",
+              "`docker pull stellar/quickstart`"
+            ],
+            [
+              "Stellar JS Stellar Base",
+              "`v14.0.4`"
+            ],
+            [
+              "Stellar JS Stellar SDK",
+              "`v14.4.3`"
+            ],
+            [
+              "Stellar Horizon Client & TxnBuild",
+              "`v24.0.0`"
+            ],
+            [
+              "Stellar RPC Client",
+              "`v25.0.0`"
+            ],
+            [
+              "Freighter",
+              ""
+            ],
+            [
+              "Laboratory",
+              "`N/A`"
+            ],
+            [
+              "Futurenet Network Passphrase",
+              "`Test SDF Future Network ; October 2022`"
+            ],
+            [
+              "Testnet Network Passphrase",
+              "`Test SDF Network ; September 2015`"
+            ],
+            [
+              "Mainnet Network Passphrase",
+              "`Public Global Stellar Network ; September 2015`"
+            ]
+          ]
+        },
+        {
+          "heading": "Protocol 25 (Testnet, January 7, 2026)",
+          "rows": [
+            [
+              "XDR",
+              "`v25.0`"
+            ],
+            [
+              "Rust XDR",
+              "`25.0.0`"
+            ],
+            [
+              "Smart Contract Host Environment",
+              "`25.0.0`"
+            ],
+            [
+              "Stellar Core",
+              "`25.0.0`"
+            ],
+            [
+              "Smart Contract Rust SDK",
+              "`25.0.0`"
+            ],
+            [
+              "Poseidon Rust SDK",
+              "`25.0.0-rc.1`"
+            ],
+            [
+              "Stellar CLI",
+              "`25.0.0`"
+            ],
+            [
+              "Stellar RPC",
+              "`v25.0.0`"
+            ],
+            [
+              "Stellar Horizon",
+              "`v25.0.0`"
+            ],
+            [
+              "Stellar Galexie",
+              "`v25.1.0`"
+            ],
+            [
+              "Stellar Quickstart",
+              "`docker pull stellar/quickstart`"
+            ],
+            [
+              "Stellar JS Stellar Base",
+              "`v14.0.4`"
+            ],
+            [
+              "Stellar JS Stellar SDK",
+              "`v14.4.3`"
+            ],
+            [
+              "Stellar Horizon Client & TxnBuild",
+              "`v24.0.0`"
+            ],
+            [
+              "Stellar RPC Client",
+              "`v25.0.0`"
+            ],
+            [
+              "Freighter",
+              ""
+            ],
+            [
+              "Laboratory",
+              "`N/A`"
+            ],
+            [
+              "Futurenet Network Passphrase",
+              "`Test SDF Future Network ; October 2022`"
+            ],
+            [
+              "Testnet Network Passphrase",
+              "`Test SDF Network ; September 2015`"
+            ],
+            [
+              "Mainnet Network Passphrase",
+              "`Public Global Stellar Network ; September 2015`"
+            ]
+          ]
+        },
+        {
+          "heading": "Protocol 24 (Mainnet, October 22, 2025)",
+          "rows": [
+            [
+              "XDR",
+              "`v24.0`"
+            ],
+            [
+              "Rust XDR",
+              "`24.0.1`"
+            ],
+            [
+              "Smart Contract Host Environment",
+              "`24.0.0`"
+            ],
+            [
+              "Stellar Core",
+              "`24.0.0`"
+            ],
+            [
+              "Smart Contract Rust SDK",
+              "`23.0.3`"
+            ],
+            [
+              "Stellar CLI",
+              "`23.1.4`"
+            ],
+            [
+              "Stellar RPC",
+              "`v24.0.0`"
+            ],
+            [
+              "Stellar Horizon",
+              "`v24.0.0`"
+            ],
+            [
+              "Stellar Galexie",
+              "`v24.0.0`"
+            ],
+            [
+              "Stellar Quickstart",
+              "`docker pull stellar/quickstart`"
+            ],
+            [
+              "Stellar JS Stellar Base",
+              "`v14.0.0`"
+            ],
+            [
+              "Stellar JS Stellar SDK",
+              "`v14.3.0`"
+            ],
+            [
+              "Stellar Horizon Client & TxnBuild",
+              "`v24.0.0`"
+            ],
+            [
+              "Stellar RPC Client",
+              "`v24.0.0`"
+            ],
+            [
+              "Freighter",
+              ""
+            ],
+            [
+              "Laboratory",
+              "`N/A`"
+            ],
+            [
+              "Futurenet Network Passphrase",
+              "`Test SDF Future Network ; October 2022`"
+            ],
+            [
+              "Testnet Network Passphrase",
+              "`Test SDF Network ; September 2015`"
+            ],
+            [
+              "Mainnet Network Passphrase",
+              "`Public Global Stellar Network ; September 2015`"
+            ]
+          ]
+        },
+        {
+          "heading": "Protocol 24 (Testnet, October 21, 2025)",
+          "rows": [
+            [
+              "XDR",
+              "`v24.0`"
+            ],
+            [
+              "Rust XDR",
+              "`24.0.1`"
+            ],
+            [
+              "Smart Contract Host Environment",
+              "`23.0.0`"
+            ],
+            [
+              "Stellar Core",
+              "`24.0.0`"
+            ],
+            [
+              "Smart Contract Rust SDK",
+              "`23.0.3`"
+            ],
+            [
+              "Stellar CLI",
+              "`23.1.4`"
+            ],
+            [
+              "Stellar RPC",
+              "`v24.0.0`"
+            ],
+            [
+              "Stellar Horizon",
+              "`v24.0.0`"
+            ],
+            [
+              "Stellar Galexie",
+              "`v24.0.0`"
+            ],
+            [
+              "Stellar Quickstart",
+              "`docker pull stellar/quickstart`"
+            ],
+            [
+              "Stellar JS Stellar Base",
+              "`v14.0.0`"
+            ],
+            [
+              "Stellar JS Stellar SDK",
+              "`v14.3.0`"
+            ],
+            [
+              "Stellar Horizon Client & TxnBuild",
+              "`v24.0.0`"
+            ],
+            [
+              "Stellar RPC Client",
+              "`v24.0.0`"
+            ],
+            [
+              "Freighter",
+              ""
+            ],
+            [
+              "Laboratory",
+              "`N/A`"
+            ],
+            [
+              "Futurenet Network Passphrase",
+              "`Test SDF Future Network ; October 2022`"
+            ],
+            [
+              "Testnet Network Passphrase",
+              "`Test SDF Network ; September 2015`"
+            ],
+            [
+              "Mainnet Network Passphrase",
+              "`Public Global Stellar Network ; September 2015`"
+            ],
+            [
+              "XDR",
+              "`v23.0`"
+            ],
+            [
+              "Rust XDR",
+              "`v23.0.0`"
+            ],
+            [
+              "Smart Contract Host Environment",
+              "`v23.0.2`"
+            ],
+            [
+              "Stellar Core",
+              "`v23.0.1`"
+            ],
+            [
+              "Smart Contract Rust SDK",
+              "`v23.0.2`"
+            ],
+            [
+              "Stellar CLI",
+              "`v23.1.1`"
+            ],
+            [
+              "Stellar RPC",
+              "`v23.0.2`"
+            ],
+            [
+              "Stellar Horizon",
+              "`v23.0.0`"
+            ],
+            [
+              "Stellar Galexie",
+              "`v23.0.0`"
+            ],
+            [
+              "Stellar Quickstart",
+              "`docker pull stellar/quickstart`"
+            ],
+            [
+              "Stellar JS Stellar Base",
+              "`v14.0.0`"
+            ],
+            [
+              "Stellar JS Stellar SDK",
+              "`v14.1.1`"
+            ],
+            [
+              "Stellar Horizon Client & TxnBuild",
+              "`v23.0.0`"
+            ],
+            [
+              "Rust Stellar RPC Client",
+              "`v23.0.0`"
+            ],
+            [
+              "Freighter",
+              "`v5.34.1`"
+            ],
+            [
+              "Laboratory",
+              "`N/A`"
+            ],
+            [
+              "Futurenet Network Passphrase",
+              "`Test SDF Future Network ; October 2022`"
+            ],
+            [
+              "Testnet Network Passphrase",
+              "`Test SDF Network ; September 2015`"
+            ],
+            [
+              "Mainnet Network Passphrase",
+              "`Public Global Stellar Network ; September 2015`"
+            ]
+          ]
+        },
+        {
+          "heading": "Protocol 23 (Testnet, August 14, 2025)",
+          "rows": [
+            [
+              "XDR",
+              "`v23.0`"
+            ],
+            [
+              "Rust XDR",
+              "`23.0.0`"
+            ],
+            [
+              "Smart Contract Host Environment",
+              "`23.0.0`"
+            ],
+            [
+              "Stellar Core",
+              "`23.0.0`"
+            ],
+            [
+              "Smart Contract Rust SDK",
+              "`23.0.0-rc.2.4`"
+            ],
+            [
+              "Stellar CLI",
+              "`23.0.1`"
+            ],
+            [
+              "Stellar RPC",
+              "`v23.0.0`"
+            ],
+            [
+              "Stellar Horizon",
+              "`v23.0.0`"
+            ],
+            [
+              "Stellar Galexie",
+              "`v23.0.0`"
+            ],
+            [
+              "Stellar Quickstart",
+              "`docker pull stellar/quickstart`"
+            ],
+            [
+              "Stellar JS Stellar Base",
+              "`v14.0.0`"
+            ],
+            [
+              "Stellar JS Stellar SDK",
+              "`v14.0.0`"
+            ],
+            [
+              "Stellar Horizon Client & TxnBuild",
+              "`v23.0.0`"
+            ],
+            [
+              "Stellar RPC Client",
+              "`v23.0.0`"
+            ],
+            [
+              "Freighter",
+              ""
+            ],
+            [
+              "Laboratory",
+              "`N/A`"
+            ],
+            [
+              "Futurenet Network Passphrase",
+              "`Test SDF Future Network ; October 2022`"
+            ],
+            [
+              "Testnet Network Passphrase",
+              "`Test SDF Network ; September 2015`"
+            ],
+            [
+              "Mainnet Network Passphrase",
+              "`Public Global Stellar Network ; September 2015`"
+            ],
+            [
+              "XDR",
+              "`v23.0`",
+              "`n/a`"
+            ],
+            [
+              "Rust XDR",
+              "`23.0.0-rc.2`",
+              "`rust crate: stellar-xdr:23.0.0-rc.2`"
+            ],
+            [
+              "Stellar Rust Host Environment",
+              "`23.0.0-rc.2`",
+              "`rust crate: soroban-env-host:23.0.0-rc.2.1`"
+            ],
+            [
+              "Stellar Core",
+              "`23.0.0rc4`",
+              "`debian: stellar-core:23.0.0-2587.rc4`"
+            ],
+            [
+              "Stellar Rust SDK",
+              "`23.0.0-rc.2.2`",
+              "`rust crate: soroban-sdk:23.0.0-rc.2.1`"
+            ],
+            [
+              "Stellar CLI",
+              "`23.0.0`",
+              "`rust crate: stellar-cli:23.0.0`"
+            ],
+            [
+              "Stellar RPC",
+              "`v23.0.0-rc.2`",
+              "`debian: stellar-rpc:23.0.0~rc2-127`"
+            ],
+            [
+              "Stellar Horizon",
+              "`v23.0.0-rc2`",
+              "`debian: stellar-horizon:23.0.0~rc2-508`"
+            ],
+            [
+              "Stellar Quickstart",
+              "`main`",
+              "`docker.io/stellar/quickstart:sha256:d4f752eece1e8780d19f4bd2726845996c413c0f4c4f57d1e4a9ff450442fc29`"
+            ],
+            [
+              "Stellar JS Stellar Base",
+              "`v14.0.0-rc.2`",
+              "`NPM: 14.0.0-rc.2`"
+            ],
+            [
+              "Stellar JS Stellar SDK",
+              "`v14.0.0-rc.3`",
+              "`NPM: 14.0.0-rc.3`"
+            ],
+            [
+              "Freighter",
+              "`n/a`",
+              "`n/a`"
+            ],
+            [
+              "Laboratory",
+              "`n/a`",
+              "`n/a`"
+            ],
+            [
+              "Futurenet Network Passphrase",
+              "`n/a`",
+              "`Test SDF Future Network ; October 2022`"
+            ],
+            [
+              "Testnet Network Passphrase",
+              "`n/a`",
+              "`Test SDF Network ; September 2015`"
+            ],
+            [
+              "Mainnet Network Passphrase",
+              "`n/a`",
+              "`Public Global Stellar Network ; September 2015`"
+            ]
+          ]
+        },
+        {
+          "heading": "Protocol 22 (Mainnet, December 5, 2024)",
+          "rows": [
+            [
+              "XDR",
+              "`v22.0`"
+            ],
+            [
+              "Rust XDR",
+              "`v22.0.0`"
+            ],
+            [
+              "Soroban Environment",
+              "`v22.1.2`"
+            ],
+            [
+              "Stellar Core",
+              "`v22.0.0`"
+            ],
+            [
+              "Soroban Rust SDK",
+              "`v22.0.3`"
+            ],
+            [
+              "Stellar CLI",
+              "`v22.0.1`"
+            ],
+            [
+              "Stellar RPC",
+              "`v22.1.0`"
+            ],
+            [
+              "Stellar Horizon",
+              "`v22.0.1`"
+            ],
+            [
+              "Stellar Quickstart",
+              "`docker.io/stellar/quickstart:v455-latest@sha256:bbd4cea64c5428381ac5ace7c380ed7c3b72f12488aeb1f1bf19c48e74244af8`"
+            ],
+            [
+              "Stellar JS Stellar Base",
+              "`v13.0.1`"
+            ],
+            [
+              "Stellar JS Stellar SDK",
+              "`v13.1.0`"
+            ],
+            [
+              "Freighter",
+              ""
+            ],
+            [
+              "Laboratory",
+              ""
+            ],
+            [
+              "Futurenet Network Passphrase",
+              "`Test SDF Future Network ; October 2022`"
+            ],
+            [
+              "Testnet Network Passphrase",
+              "`Test SDF Network ; September 2015`"
+            ],
+            [
+              "Mainnet Network Passphrase",
+              "`Public Global Stellar Network ; September 2015`"
+            ]
+          ]
+        },
+        {
+          "heading": "Protocol 21 (Mainnet, June 18, 2024)",
+          "rows": [
+            [
+              "XDR",
+              "`v21.1`"
+            ],
+            [
+              "Rust XDR",
+              "`v21.0.1`"
+            ],
+            [
+              "Soroban Environment",
+              "`v21.0.2`"
+            ],
+            [
+              "Stellar Core",
+              "`v21.0.0`"
+            ],
+            [
+              "Soroban Rust SDK",
+              "`21.0.1-preview.3`"
+            ],
+            [
+              "Stellar CLI",
+              "`v21.0.0`"
+            ],
+            [
+              "Soroban RPC",
+              "`v21.3.0`"
+            ],
+            [
+              "Stellar Horizon",
+              "`v2.30.0`"
+            ],
+            [
+              "Stellar Quickstart",
+              "`https://hub.docker.com/layers/stellar/quickstart/v426-latest-amd64/images/sha256-274395daab6fa8033b9213f152d56699358917fb01d7c7e95392a37fc00c9d01`"
+            ],
+            [
+              "Stellar JS Stellar Base",
+              "`v12.0.0-rc1`"
+            ],
+            [
+              "Stellar JS Stellar SDK",
+              "`v12.1.0`"
+            ],
+            [
+              "Freighter",
+              ""
+            ],
+            [
+              "Laboratory",
+              ""
+            ],
+            [
+              "Soroban React Payment dapp",
+              "`TBD`"
+            ],
+            [
+              "Soroban Mint Token dapp",
+              "`TBD`"
+            ],
+            [
+              "Soroban Swap Token dapp",
+              "`TBD`"
+            ],
+            [
+              "Futurenet Network Passphrase",
+              "`Test SDF Future Network ; October 2022`"
+            ],
+            [
+              "Testnet Network Passphrase",
+              "`Test SDF Network ; September 2015`"
+            ],
+            [
+              "Mainnet Network Passphrase",
+              "`Public Global Stellar Network ; September 2015`"
+            ]
+          ]
+        },
+        {
+          "heading": "Protocol 21 (Testnet only, May 20, 2024)",
+          "rows": [
+            [
+              "XDR",
+              "`v21.1`"
+            ],
+            [
+              "Rust XDR",
+              "`v21.0.1`"
+            ],
+            [
+              "Soroban Environment",
+              "`v21.0.2`"
+            ],
+            [
+              "Stellar Core",
+              "`v21.0.0`"
+            ],
+            [
+              "Soroban Rust SDK",
+              "`21.0.1-preview.3`"
+            ],
+            [
+              "Soroban CLI",
+              "`v21.0.0-rc.1`"
+            ],
+            [
+              "Soroban RPC",
+              "`v21.2.0`"
+            ],
+            [
+              "Stellar Horizon",
+              "`v2.30.0`"
+            ],
+            [
+              "Stellar Quickstart",
+              "`https://hub.docker.com/layers/stellar/quickstart/v426-latest-amd64/images/sha256-274395daab6fa8033b9213f152d56699358917fb01d7c7e95392a37fc00c9d01`"
+            ],
+            [
+              "Stellar JS Stellar Base",
+              "`v12.0.0-rc1`"
+            ],
+            [
+              "Stellar JS Stellar SDK",
+              "`v12.0.0-rc.3`"
+            ],
+            [
+              "Freighter",
+              ""
+            ],
+            [
+              "Laboratory",
+              ""
+            ],
+            [
+              "Soroban React Payment dapp",
+              "`TBD`"
+            ],
+            [
+              "Soroban Mint Token dapp",
+              "`TBD`"
+            ],
+            [
+              "Soroban Swap Token dapp",
+              "`TBD`"
+            ],
+            [
+              "Futurenet Network Passphrase",
+              "`Test SDF Future Network ; October 2022`"
+            ],
+            [
+              "Testnet Network Passphrase",
+              "`Test SDF Network ; September 2015`"
+            ],
+            [
+              "Mainnet Network Passphrase",
+              "`Public Global Stellar Network ; September 2015`"
+            ]
+          ]
+        },
+        {
+          "heading": "Protocol 21: Preview 1 (Testnet only, April 12, 2024)",
+          "rows": [
+            [
+              "XDR",
+              "`v21.1`"
+            ],
+            [
+              "Rust XDR",
+              "`v21.0.1`"
+            ],
+            [
+              "Soroban Environment",
+              "`v21.0.1`"
+            ],
+            [
+              "Stellar Core",
+              "`v21.0.0rc1`"
+            ],
+            [
+              "Soroban Rust SDK",
+              "`21.0.1-preview.1`"
+            ],
+            [
+              "Soroban CLI",
+              "`v21.0.0-preview.1`"
+            ],
+            [
+              "Soroban RPC",
+              "`v21.0.1`"
+            ],
+            [
+              "Stellar Horizon",
+              "`v2.30.0`"
+            ],
+            [
+              "Stellar Quickstart",
+              "\\`\\`"
+            ],
+            [
+              "Stellar JS Stellar Base",
+              "`v11.1.0`"
+            ],
+            [
+              "Stellar JS Stellar SDK",
+              "`v12.0.0-rc.1`"
+            ],
+            [
+              "Freighter",
+              "\\`\\`"
+            ],
+            [
+              "Laboratory",
+              "\\`\\`"
+            ],
+            [
+              "Soroban React Payment dapp",
+              "`TBD`"
+            ],
+            [
+              "Soroban Mint Token dapp",
+              "`TBD`"
+            ],
+            [
+              "Soroban Swap Token dapp",
+              "`TBD`"
+            ],
+            [
+              "Futurenet Network Passphrase",
+              "`Test SDF Future Network ; October 2022`"
+            ],
+            [
+              "Testnet Network Passphrase",
+              "`Test SDF Network ; September 2015`"
+            ],
+            [
+              "Mainnet Network Passphrase",
+              "`Public Global Stellar Network ; September 2015`"
+            ]
+          ]
+        },
+        {
+          "heading": "Protocol 20: Soroban Phase 2 (March 19, 2024)",
+          "rows": [
+            [
+              "XDR",
+              "[3da6ebcbd8afa01d5c94dbc7f0475f4c00089420](https://github.com/stellar/rs-stellar-xdr/commit/3da6ebcbd8afa01d5c94dbc7f0475f4c00089420)"
+            ],
+            [
+              "Soroban Environment",
+              "`v20.2.2`"
+            ],
+            [
+              "Soroban Interface Version",
+              "`0`"
+            ],
+            [
+              "Soroban Resource Limits",
+              "Phase 2 Limits"
+            ],
+            [
+              "Soroban Resource Fees",
+              "Phase 2 Fees"
+            ],
+            [
+              "Stellar Core",
+              "`v20.3.0`"
+            ],
+            [
+              "Soroban Rust SDK",
+              "`v20.4.0`"
+            ],
+            [
+              "Soroban CLI",
+              "`v20.3.1`"
+            ],
+            [
+              "Soroban RPC",
+              "`v20.3.3`"
+            ],
+            [
+              "Stellar Horizon",
+              "`v2.28.3`"
+            ],
+            [
+              "Stellar Friendbot",
+              "`TBD`"
+            ],
+            [
+              "Stellar Quickstart",
+              "`docker.io/stellar/quickstart:latest@sha256:1a82b17a4fae853d24189dd25d4e6b774fa7a1b6356a993e618c6e9bd2f3e04c`"
+            ],
+            [
+              "Stellar JS Stellar Base",
+              "[`v11.0.0`](https://github.com/stellar/js-stellar-base/releases/tag/v11.0.0)"
+            ],
+            [
+              "Stellar JS Stellar SDK",
+              "[`v11.2.2`](https://github.com/stellar/js-stellar-sdk/releases/tag/v11.2.2)"
+            ],
+            [
+              "Freighter",
+              "`v5.17.0`"
+            ],
+            [
+              "Laboratory",
+              "`v4.1.0`"
+            ],
+            [
+              "Soroban React Payment dapp",
+              "`TBD`"
+            ],
+            [
+              "Soroban Mint Token dapp",
+              "`TBD`"
+            ],
+            [
+              "Soroban Swap Token dapp",
+              "`TBD`"
+            ],
+            [
+              "Futurenet Network Passphrase",
+              "`Test SDF Future Network ; October 2022`"
+            ],
+            [
+              "Testnet Network Passphrase",
+              "`Test SDF Network ; September 2015`"
+            ],
+            [
+              "Mainnet Network Passphrase",
+              "`Public Global Stellar Network ; September 2015`"
+            ]
+          ]
+        },
+        {
+          "heading": "Protocol 20: Soroban Phase 1 (February 27, 2024)",
+          "rows": [
+            [
+              "XDR",
+              "[8b9d623ef40423a8462442b86997155f2c04d3a1](https://github.com/stellar/rs-stellar-xdr/commit/8b9d623ef40423a8462442b86997155f2c04d3a1)"
+            ],
+            [
+              "Soroban Environment",
+              "`v20.2.2`"
+            ],
+            [
+              "Soroban Interface Version",
+              "`0`"
+            ],
+            [
+              "Soroban Resource Limits",
+              "Phase 1 Limits"
+            ],
+            [
+              "Soroban Resource Fees",
+              "Phase 1 Fees"
+            ],
+            [
+              "Stellar Core",
+              "`v20.2.0`"
+            ],
+            [
+              "Soroban Rust SDK",
+              "`v20.3.2`"
+            ],
+            [
+              "Soroban CLI",
+              "`v20.3.1`"
+            ],
+            [
+              "Soroban RPC",
+              "`v20.3.3`"
+            ],
+            [
+              "Stellar Horizon",
+              "`v2.28.3`"
+            ],
+            [
+              "Stellar Friendbot",
+              "`TBD`"
+            ],
+            [
+              "Stellar Quickstart",
+              "`docker.io/stellar/quickstart:latest@sha256:1a82b17a4fae853d24189dd25d4e6b774fa7a1b6356a993e618c6e9bd2f3e04c`"
+            ],
+            [
+              "Stellar JS Stellar Base",
+              "[`v11.0.0`](https://github.com/stellar/js-stellar-base/releases/tag/v11.0.0)"
+            ],
+            [
+              "Stellar JS Stellar SDK",
+              "[`v11.2.2`](https://github.com/stellar/js-stellar-sdk/releases/tag/v11.2.2)"
+            ],
+            [
+              "Freighter",
+              "`v5.17.0`"
+            ],
+            [
+              "Laboratory",
+              "`v4.1.0`"
+            ],
+            [
+              "Soroban React Payment dapp",
+              "`TBD`"
+            ],
+            [
+              "Soroban Mint Token dapp",
+              "`TBD`"
+            ],
+            [
+              "Soroban Swap Token dapp",
+              "`TBD`"
+            ],
+            [
+              "Futurenet Network Passphrase",
+              "`Test SDF Future Network ; October 2022`"
+            ],
+            [
+              "Testnet Network Passphrase",
+              "`Test SDF Network ; September 2015`"
+            ],
+            [
+              "Mainnet Network Passphrase",
+              "`Public Global Stellar Network ; September 2015`"
+            ]
+          ]
+        },
+        {
+          "heading": "Protocol 20: Soroban Phase 0 (Mainnet, February 20, 2024)",
+          "rows": [
+            [
+              "XDR",
+              "[8b9d623ef40423a8462442b86997155f2c04d3a1](https://github.com/stellar/rs-stellar-xdr/commit/8b9d623ef40423a8462442b86997155f2c04d3a1)"
+            ],
+            [
+              "Soroban Environment",
+              "`v20.2.2`"
+            ],
+            [
+              "Soroban Interface Version",
+              "`0`"
+            ],
+            [
+              "Soroban Resource Limits",
+              "Phase 0 Limits"
+            ],
+            [
+              "Soroban Resource Fees",
+              "Phase 0 Fees"
+            ],
+            [
+              "Stellar Core",
+              "`v20.2.0`"
+            ],
+            [
+              "Soroban Rust SDK",
+              "`v20.3.2`"
+            ],
+            [
+              "Soroban CLI",
+              "`v20.3.0`"
+            ],
+            [
+              "Soroban RPC",
+              "`v20.3.1`"
+            ],
+            [
+              "Stellar Horizon",
+              "`v2.28.3`"
+            ],
+            [
+              "Stellar Friendbot",
+              "`TBD`"
+            ],
+            [
+              "Stellar Quickstart",
+              "`docker.io/stellar/quickstart:latest@sha256:8d6f6520ad3842042bfe4e271f8b2324ec2f128564487abedd3876cea83af4f1`"
+            ],
+            [
+              "Stellar JS Stellar Base",
+              "[`v11.0.0`](https://github.com/stellar/js-stellar-base/releases/tag/v11.0.0)"
+            ],
+            [
+              "Stellar JS Stellar SDK",
+              "[`v11.2.2`](https://github.com/stellar/js-stellar-sdk/releases/tag/v11.2.2)"
+            ],
+            [
+              "Freighter",
+              "`5.16.0`"
+            ],
+            [
+              "Laboratory",
+              "`v4.1.0`"
+            ],
+            [
+              "Soroban React Payment dapp",
+              "`v3.0.0`"
+            ],
+            [
+              "Soroban Mint Token dapp",
+              "`v3.0.0`"
+            ],
+            [
+              "Soroban Swap Token dapp",
+              "`TBD`"
+            ],
+            [
+              "Futurenet Network Passphrase",
+              "`Test SDF Future Network ; October 2022`"
+            ],
+            [
+              "Testnet Network Passphrase",
+              "`Test SDF Network ; September 2015`"
+            ],
+            [
+              "Mainnet Network Passphrase",
+              "`Public Global Stellar Network ; September 2015`"
+            ],
+            [
+              "XDR",
+              "[bb54e505f814386a3f45172e0b7e95b7badbe969](https://github.com/stellar/stellar-xdr/commit/bb54e505f814386a3f45172e0b7e95b7badbe969)"
+            ],
+            [
+              "Soroban Environment",
+              "`v20.1.0`"
+            ],
+            [
+              "Soroban Interface Version",
+              "`0`"
+            ],
+            [
+              "Stellar Core",
+              "`v20.1.0`"
+            ],
+            [
+              "Soroban Rust SDK",
+              "`v20.2.0`"
+            ],
+            [
+              "Soroban CLI",
+              "`v20.2.0`"
+            ],
+            [
+              "Soroban RPC",
+              "`v20.2.0`"
+            ],
+            [
+              "Stellar Horizon",
+              "`v2.27.0`"
+            ],
+            [
+              "Stellar Friendbot",
+              "`TBD`"
+            ],
+            [
+              "Stellar Quickstart",
+              "`docker.io/stellar/quickstart:soroban-dev@sha256:64b2d14b8a531c534560e287768846f538b2f063fc776aa9ca016c788e86c782`"
+            ],
+            [
+              "Stellar JS Stellar Base",
+              "[`v10.0.1`](https://github.com/stellar/js-stellar-base/releases/tag/v10.0.1)"
+            ],
+            [
+              "Stellar JS Stellar SDK",
+              "[`v11.2.0`](https://github.com/stellar/js-stellar-sdk/releases/tag/v11.2.0)"
+            ],
+            [
+              "Freighter",
+              "`5.9.0`"
+            ],
+            [
+              "Laboratory",
+              "`TBD`"
+            ],
+            [
+              "Soroban React Payment dapp",
+              "`TBD`"
+            ],
+            [
+              "Soroban Mint Token dapp",
+              "`TBD`"
+            ],
+            [
+              "Soroban Swap Token dapp",
+              "`TBD`"
+            ],
+            [
+              "Futurenet Network Passphrase",
+              "`Test SDF Future Network ; October 2022`"
+            ],
+            [
+              "Testnet Network Passphrase",
+              "`Test SDF Network ; September 2015`"
+            ],
+            [
+              "XDR",
+              "[bb54e505f814386a3f45172e0b7e95b7badbe969](https://github.com/stellar/stellar-xdr/commit/bb54e505f814386a3f45172e0b7e95b7badbe969)"
+            ],
+            [
+              "Soroban Environment",
+              "`v20.0.0`"
+            ],
+            [
+              "Soroban Interface Version",
+              "`0`"
+            ],
+            [
+              "Stellar Core",
+              "`v20.0.1`"
+            ],
+            [
+              "Soroban Rust SDK",
+              "`v20.0.0`"
+            ],
+            [
+              "Soroban CLI",
+              "`v20.0.2`"
+            ],
+            [
+              "Soroban RPC",
+              "`v20.0.2`"
+            ],
+            [
+              "Stellar Horizon",
+              "`v2.27.0`"
+            ],
+            [
+              "Stellar Friendbot",
+              "`TBD`"
+            ],
+            [
+              "Stellar Quickstart",
+              "`docker.io/stellar/quickstart:testing@sha256:3c7947f65db493f2ab8ca639753130ba4916c57d000d4a1f01ec530e3423853b`"
+            ],
+            [
+              "Stellar JS Stellar Base",
+              "[`v10.0.0`](https://github.com/stellar/js-stellar-base/releases/tag/v10.0.0)"
+            ],
+            [
+              "Stellar JS Stellar SDK",
+              "[`v11.0.1`](https://github.com/stellar/js-stellar-sdk/releases/tag/v11.0.1)"
+            ],
+            [
+              "Stellar JS Soroban Client",
+              "[`v1.0.0`](https://github.com/stellar/js-soroban-client/releases/tag/v1.0.0) (deprecated, prefer the Stellar SDK)"
+            ],
+            [
+              "Freighter",
+              "`5.12.0`"
+            ],
+            [
+              "Laboratory",
+              "`4.11.0`"
+            ],
+            [
+              "Soroban React Payment dapp",
+              "`3.0.0`"
+            ],
+            [
+              "Soroban Mint Token dapp",
+              "`3.0.0`"
+            ],
+            [
+              "Soroban Swap Token dapp",
+              "`TBD`"
+            ],
+            [
+              "Futurenet Network Passphrase",
+              "`Test SDF Future Network ; October 2022`"
+            ],
+            [
+              "Testnet Network Passphrase",
+              "`Test SDF Network ; September 2015`"
+            ],
+            [
+              "XDR",
+              "[9ac02641139e6717924fdad716f6e958d0168491](https://github.com/stellar/stellar-xdr/commit/9ac02641139e6717924fdad716f6e958d0168491)"
+            ],
+            [
+              "Soroban Environment",
+              "`v20.0.0-rc2`"
+            ],
+            [
+              "Soroban Interface Version",
+              "`57`"
+            ],
+            [
+              "Stellar Core",
+              "`20.0.0-1504.rc2.22088c1f2.focal`"
+            ],
+            [
+              "Soroban Rust SDK",
+              "`v20.0.0-rc2`"
+            ],
+            [
+              "Soroban CLI",
+              "`v20.0.0-rc4`"
+            ],
+            [
+              "Soroban RPC",
+              "`v20.0.0-rc4`"
+            ],
+            [
+              "Stellar Horizon",
+              "`2.27.0~rc2-384`"
+            ],
+            [
+              "Stellar Friendbot",
+              "`soroban-v0.0.2-alpha`"
+            ],
+            [
+              "Stellar Quickstart",
+              "`docker.io/stellar/quickstart:testing@sha256:0c756150e7b3c53603fe36bb932c4e7d7ceaef691906b2d3d952771ccc195559`"
+            ],
+            [
+              "Stellar JS Stellar Base",
+              "[`v10.0.0-beta.3`](https://github.com/stellar/js-stellar-base/releases/tag/v10.0.0-beta.3)"
+            ],
+            [
+              "Stellar JS Stellar SDK",
+              "[`v11.0.0-beta.5`](https://github.com/stellar/js-stellar-sdk/releases/tag/v11.0.0-beta.5)"
+            ],
+            [
+              "Stellar JS Soroban Client",
+              "[`v1.0.0-beta.3`](https://github.com/stellar/js-soroban-client/releases/tag/v1.0.0-beta.3) (deprecated, prefer the Stellar SDK)"
+            ],
+            [
+              "Freighter",
+              "`5.6.1`"
+            ],
+            [
+              "Laboratory",
+              "`2.12.0`"
+            ],
+            [
+              "Soroban React Payment dapp",
+              "`2.0.0`"
+            ],
+            [
+              "Soroban Mint Token dapp",
+              "`2.0.0`"
+            ],
+            [
+              "Soroban Swap Token dapp",
+              "`2.0.0`"
+            ],
+            [
+              "Futurenet Network Passphrase",
+              "`Test SDF Future Network ; October 2022`"
+            ],
+            [
+              "Testnet Network Passphrase",
+              "`Test SDF Network ; September 2015`"
+            ],
+            [
+              "XDR",
+              "[e372df9f677961aac04c5a4cc80a3667f310b29f](https://github.com/stellar/stellar-xdr/commit/e372df9f677961aac04c5a4cc80a3667f310b29f)"
+            ],
+            [
+              "Soroban Environment",
+              "`v0.0.17`"
+            ],
+            [
+              "Soroban Interface Version",
+              "`51`"
+            ],
+            [
+              "Stellar Core",
+              "`19.12.1-1406.b7d3a8f8d.focal~soroban`"
+            ],
+            [
+              "Soroban Rust SDK",
+              "`v0.9.2`"
+            ],
+            [
+              "Soroban CLI",
+              "`v0.9.1`"
+            ],
+            [
+              "Soroban RPC",
+              "`v0.9.2`"
+            ],
+            [
+              "Stellar Horizon",
+              "`stellar-horizon:2.26.1~soroban-373`"
+            ],
+            [
+              "Stellar Friendbot",
+              "`soroban-v0.0.2-alpha`"
+            ],
+            [
+              "Stellar Quickstart",
+              "`stellar/quickstart:soroban-dev@sha256:8a99332f834ca82e3ac1418143736af59b5288e792d1c4278d6c547c6ed8da3b`"
+            ],
+            [
+              "Stellar JS Stellar Base",
+              "`10.0.0-soroban.3`"
+            ],
+            [
+              "Stellar JS Soroban Client",
+              "`0.9.2`"
+            ],
+            [
+              "Freighter",
+              "`5.2.3`"
+            ],
+            [
+              "Laboratory",
+              "`2.11.0`"
+            ],
+            [
+              "Soroban React Payment dapp",
+              "`1.1.0`"
+            ],
+            [
+              "Soroban Mint Token dapp",
+              "`1.1.0`"
+            ],
+            [
+              "Futurenet Network Passphrase",
+              "`Test SDF Future Network ; October 2022`"
+            ],
+            [
+              "XDR",
+              "[2f16687fdf6f4bcfb56805e2035f69997f4b34c4](https://github.com/stellar/stellar-xdr/commit/2f16687fdf6f4bcfb56805e2035f69997f4b34c4)"
+            ],
+            [
+              "Soroban Environment",
+              "`v0.0.16`"
+            ],
+            [
+              "Soroban Interface Version",
+              "`37`"
+            ],
+            [
+              "Stellar Core",
+              "`19.10.1-1310.6649f5173.focal~soroban`"
+            ],
+            [
+              "Soroban Rust SDK",
+              "`v0.8.4`"
+            ],
+            [
+              "Soroban CLI",
+              "`v0.8.0`"
+            ],
+            [
+              "Soroban RPC",
+              "`v0.8.0`"
+            ],
+            [
+              "Stellar Horizon",
+              "`stellar-horizon:2.25.1~soroban-346`"
+            ],
+            [
+              "Stellar Friendbot",
+              "`soroban-v0.0.2-alpha`"
+            ],
+            [
+              "Stellar Quickstart",
+              "`stellar/quickstart:soroban-dev@sha256:57e8ab498bfa14c65595fbb01cb94b1cdee9637ef2e6634e59d54f6958c05bdb`"
+            ],
+            [
+              "Stellar JS Stellar Base",
+              "`9.0.0-soroban.1`"
+            ],
+            [
+              "Stellar JS Soroban Client",
+              "`0.7.0`"
+            ],
+            [
+              "Freighter",
+              "`5.0.1`"
+            ],
+            [
+              "Laboratory",
+              "`2.10.0`"
+            ],
+            [
+              "Futurenet Network Passphrase",
+              "`Test SDF Future Network ; October 2022`"
+            ],
+            [
+              "XDR",
+              "[7356dc237ee0db5626561c129fb3fa4beaabbac6](https://github.com/stellar/stellar-xdr/commit/7356dc237ee0db5626561c129fb3fa4beaabbac6)"
+            ],
+            [
+              "Soroban Environment",
+              "`v0.0.15`"
+            ],
+            [
+              "Soroban Interface Version",
+              "`32`"
+            ],
+            [
+              "Stellar Core",
+              "`19.8.1-1246.064a2787a.focal~soroban`"
+            ],
+            [
+              "Soroban Rust SDK",
+              "`v0.7.0`"
+            ],
+            [
+              "Soroban CLI",
+              "`v0.7.0`"
+            ],
+            [
+              "Soroban RPC",
+              "`v0.7.0`"
+            ],
+            [
+              "Stellar Horizon",
+              "`stellar-horizon:2.24.62~soroban-338`"
+            ],
+            [
+              "Stellar Friendbot",
+              "`soroban-v0.0.2-alpha`"
+            ],
+            [
+              "Stellar Quickstart",
+              "`stellar/quickstart:soroban-dev@sha256:a057ec6f06c6702c005693f8265ed1261e901b153a754e97cf18b0962257e872`"
+            ],
+            [
+              "Stellar JS Stellar Base",
+              "`8.2.2-soroban.12`"
+            ],
+            [
+              "Stellar JS Soroban Client",
+              "`v0.5.0`"
+            ],
+            [
+              "Freighter",
+              "`v2.12.2`"
+            ],
+            [
+              "Laboratory",
+              "`v2.8.0`"
+            ],
+            [
+              "Futurenet Network Passphrase",
+              "`Test SDF Future Network ; October 2022`"
+            ],
+            [
+              "XDR",
+              "[df18148747e807618acf4639db41c4fd6f0be9fc](https://github.com/stellar/stellar-xdr/commit/df18148747e807618acf4639db41c4fd6f0be9fc)"
+            ],
+            [
+              "Soroban Environment",
+              "`v0.0.14`"
+            ],
+            [
+              "Soroban Interface Version",
+              "`29`"
+            ],
+            [
+              "Stellar Core",
+              "`19.7.1-1204.871accefc.focal~soroban`"
+            ],
+            [
+              "Soroban Rust SDK",
+              "`v0.6.0`"
+            ],
+            [
+              "Soroban CLI",
+              "`v0.6.0`"
+            ],
+            [
+              "Soroban RPC",
+              "`0.6.1-13`"
+            ],
+            [
+              "Stellar Horizon",
+              "`stellar-horizon:2.24.61~soroban-335`"
+            ],
+            [
+              "Stellar Friendbot",
+              "`soroban-v0.0.2-alpha`"
+            ],
+            [
+              "Stellar Quickstart",
+              "`stellar/quickstart:soroban-dev@sha256:81c23da078c90d0ba220f8fc93414d0ea44608adc616988930529c58df278739`"
+            ],
+            [
+              "Stellar JS Stellar Base",
+              "`8.2.2-soroban.11`"
+            ],
+            [
+              "Stellar JS Soroban Client",
+              "`v0.4.0`"
+            ],
+            [
+              "Freighter",
+              "`v2.10.0`"
+            ],
+            [
+              "Laboratory",
+              "`v2.7.0`"
+            ],
+            [
+              "Futurenet Network Passphrase",
+              "`Test SDF Future Network ; October 2022`"
+            ],
+            [
+              "XDR",
+              "[026c9cd074bdb28ddde8ee52f2a4502d9e518a09](https://github.com/stellar/stellar-xdr/tree/026c9cd074bdb28ddde8ee52f2a4502d9e518a09)"
+            ],
+            [
+              "Soroban Environment",
+              "`v0.0.12`"
+            ],
+            [
+              "Soroban Interface Version",
+              "`27`"
+            ],
+            [
+              "Stellar Core",
+              "`19.6.1-1158.c0ad35aa1.focal~soroban`"
+            ],
+            [
+              "Soroban Rust SDK",
+              "`v0.4.2`"
+            ],
+            [
+              "Soroban CLI",
+              "`v0.5.0`"
+            ],
+            [
+              "Soroban RPC",
+              "`0.4.0-10`"
+            ],
+            [
+              "Stellar Horizon",
+              "`stellar-horizon:2.22.0~soroban-323`"
+            ],
+            [
+              "Stellar Friendbot",
+              "`soroban-v0.0.2-alpha`"
+            ],
+            [
+              "Stellar Quickstart (amd64)",
+              "`stellar/quickstart:soroban-dev@sha256:c4429def497ed78ca99ae40c8e2522ec932081b4428df992900b5bc8d53bd642`"
+            ],
+            [
+              "Stellar Quickstart (arm64)",
+              "`stellar/quickstart:soroban-dev@sha256:37205510329845f5fe533bb7c4c182d8f35b3a3515f0a6729889067663e1ec97`"
+            ],
+            [
+              "Stellar JS Stellar Base",
+              "`8.0.1-soroban.6`"
+            ],
+            [
+              "Stellar JS Soroban Client",
+              "`v0.3.0`"
+            ],
+            [
+              "Futurenet Network Passphrase",
+              "`Test SDF Future Network ; October 2022`"
+            ],
+            [
+              "XDR",
+              "[026c9cd074bdb28ddde8ee52f2a4502d9e518a09](https://github.com/stellar/stellar-xdr/tree/026c9cd074bdb28ddde8ee52f2a4502d9e518a09)"
+            ],
+            [
+              "Soroban Environment",
+              "`v0.0.11`"
+            ],
+            [
+              "Soroban Interface Version",
+              "`26`"
+            ],
+            [
+              "Stellar Core",
+              "`stellar-core_19.5.1-1137.b3a6bc281.focal~soroban`"
+            ],
+            [
+              "Soroban Rust SDK",
+              "`v0.3.2`"
+            ],
+            [
+              "Soroban CLI",
+              "`v0.3.3`"
+            ],
+            [
+              "Soroban RPC",
+              "`0.3.1-32`"
+            ],
+            [
+              "Stellar Horizon",
+              "`stellar-horizon:2.22.0~soroban-318`"
+            ],
+            [
+              "Stellar Friendbot",
+              "`soroban-v0.0.2-alpha`"
+            ],
+            [
+              "Stellar Quickstart",
+              "`stellar/quickstart:soroban-dev@sha256:8046391718f8e58b2b88b9c379abda3587bb874689fa09b2ed4871a764ebda27`"
+            ],
+            [
+              "Stellar JS Stellar Base",
+              "`8.0.1-soroban.5`"
+            ],
+            [
+              "Stellar JS Soroban Client",
+              "`v0.2.0`"
+            ],
+            [
+              "Futurenet Network Passphrase",
+              "`Test SDF Future Network ; October 2022`"
+            ],
+            [
+              "XDR",
+              "[https://github.com/stellar/stellar-xdr-next/tree/48d5e17ae63bba0aa9725cd9d18d7438f44c07b1](https://github.com/stellar/stellar-xdr-next/tree/48d5e17ae63bba0aa9725cd9d18d7438f44c07b1)"
+            ],
+            [
+              "Soroban Environment",
+              "`v0.0.9`"
+            ],
+            [
+              "Soroban Interface Version",
+              "`23`"
+            ],
+            [
+              "Stellar Core",
+              "`19.5.1-1111.eba1d3de9.focal~soroban`"
+            ],
+            [
+              "Soroban Rust SDK",
+              "`v0.2.1`"
+            ],
+            [
+              "Soroban CLI",
+              "`v0.2.1`"
+            ],
+            [
+              "Soroban RPC",
+              "`0.3.1-32`"
+            ],
+            [
+              "Stellar Horizon",
+              "`2.22.0~soroban-304`"
+            ],
+            [
+              "Stellar Quickstart",
+              "`stellar/quickstart:soroban-dev@sha256:0993d3350148af6ffeab5dc8f0b835236b28dade6dcae77ff8a09317162f768d`"
+            ],
+            [
+              "Futurenet Network Passphrase",
+              "`Test SDF Future Network ; October 2022`"
+            ],
+            [
+              "XDR",
+              "[https://github.com/stellar/stellar-xdr-next/tree/161e2e5b64425a49f9ccfef7f732ae742ed5eec4](https://github.com/stellar/stellar-xdr-next/tree/161e2e5b64425a49f9ccfef7f732ae742ed5eec4)"
+            ],
+            [
+              "Soroban Environment",
+              "`v0.0.6`"
+            ],
+            [
+              "Soroban Interface Version",
+              "`23`"
+            ],
+            [
+              "Stellar Core",
+              "`19.4.1-1097.4e813f20e.focal~soroban`"
+            ],
+            [
+              "Soroban Rust SDK",
+              "`v0.1.1`"
+            ],
+            [
+              "Soroban CLI",
+              "`v0.1.2`"
+            ],
+            [
+              "Soroban RPC",
+              "???"
+            ],
+            [
+              "Stellar Horizon",
+              "`2.22.0~soroban-304`"
+            ],
+            [
+              "Stellar Quickstart",
+              "`stellar/quickstart:soroban-dev@sha256:e58d83f92a61f43406087f488dd1cba110a92646dca85f14b3a416163609e853`"
+            ],
+            [
+              "Futurenet Network Passphrase",
+              "`Test SDF Future Network ; October 2022`"
+            ]
+          ]
+        }
+      ],
+      "hasProtocol30": false
+    },
+    "scf": {
+      "ok": true,
+      "awardsUrl": "https://communityfund.stellar.org/awards",
+      "rounds": [
+        {
+          "round": 46,
+          "phase": "Initial Review",
+          "deadlineToSubmit": "November 9, 2026"
+        },
+        {
+          "round": 45,
+          "phase": "Ended",
+          "deadlineToSubmit": "August 16, 2026"
+        },
+        {
+          "round": 44,
+          "phase": "Ended",
+          "deadlineToSubmit": "June 14, 2026"
+        },
+        {
+          "round": 43,
+          "phase": "Ended",
+          "deadlineToSubmit": "April 26, 2026"
+        },
+        {
+          "round": 42,
+          "phase": "Ended",
+          "deadlineToSubmit": "March 15, 2026"
+        },
+        {
+          "round": 41,
+          "phase": "Ended",
+          "deadlineToSubmit": "February 8, 2026"
+        },
+        {
+          "round": 40,
+          "phase": "Ended",
+          "deadlineToSubmit": "November 9, 2025"
+        },
+        {
+          "round": 39,
+          "phase": "Ended",
+          "deadlineToSubmit": "September 21, 2025"
+        },
+        {
+          "round": 38,
+          "phase": "Ended",
+          "deadlineToSubmit": "August 11, 2025"
+        },
+        {
+          "round": 37,
+          "phase": "Ended",
+          "deadlineToSubmit": "July 6, 2025"
+        },
+        {
+          "round": 36,
+          "phase": "Ended",
+          "deadlineToSubmit": "May 26, 2025"
+        },
+        {
+          "round": 35,
+          "phase": "Ended",
+          "deadlineToSubmit": "April 13, 2025"
+        },
+        {
+          "round": 34,
+          "phase": "Ended",
+          "deadlineToSubmit": "March 2, 2025"
+        }
+      ],
+      "scf47Present": false,
+      "round46Card": "SCF #46 is currently in Initial Review.",
+      "round46Dates": {
+        "abstract": {
+          "open": "",
+          "close": ""
+        },
+        "communityVote": {
+          "open": "2026-11-23",
+          "close": "2026-12-03"
+        },
+        "initialReview": {
+          "open": "",
+          "close": ""
+        },
+        "panelReview": {
+          "open": "2026-11-11",
+          "close": "2026-11-18"
+        },
+        "awardSubmission": {
+          "open": "",
+          "close": "2026-11-09"
+        },
+        "awardDistribution": {
+          "open": "",
+          "close": ""
+        },
+        "cohort": {
+          "open": "",
+          "close": ""
+        },
+        "cohortPreparation": {
+          "open": "",
+          "close": ""
+        }
+      },
+      "scout": {
+        "ok": true,
+        "url": "https://stellarlight.xyz/api/rfps?status=open",
+        "scfRound": {
+          "currentRound": 46,
+          "currentPhase": "Initial Review",
+          "lastConfirmedRound": 45,
+          "lastConfirmedRoundNote": "In progress: SCF #46 (Initial Review, submission deadline 2026-11-09). SCF #45 is the last concluded round.",
+          "submissionWindow": {
+            "opens": null,
+            "closes": null
+          },
+          "roundsInProgress": [
+            {
+              "round": 46,
+              "phase": "Initial Review",
+              "submissionDeadline": "2026-11-09"
+            }
+          ],
+          "asOf": "2026-11-17",
+          "source": "live",
+          "verifyAt": "https://communityfund.stellar.org/awards"
+        },
+        "counts": {
+          "total": 18,
+          "open": 2,
+          "closed": 16,
+          "matched": 2,
+          "returned": 2,
+          "syntheticRounds": 0
+        },
+        "rfpTitles": [
+          "Web and API Analytics for Stellar Ecosystem Projects",
+          "XDR/CAP-Coverage Audit Tool and Indexer-Hardening Guide"
+        ]
+      }
+    },
+    "quantum": {
+      "ok": true,
+      "cap": "CAP-0087",
+      "status": "Status: Implemented",
+      "protocolVersion": "Protocol version: 30"
+    }
+  }
+}

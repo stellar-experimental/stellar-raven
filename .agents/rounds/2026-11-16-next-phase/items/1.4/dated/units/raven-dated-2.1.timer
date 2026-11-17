@@ -1,0 +1,10 @@
+[Unit]
+Description=One-shot: Raven round 2026-11-16 item 2.1 (Bell Mainnet vote goldens, merge before 2026-11-25 00:00 UTC)
+
+[Timer]
+OnCalendar=2026-11-23 18:00:00 UTC
+Persistent=true
+AccuracySec=1min
+
+[Install]
+WantedBy=timers.target

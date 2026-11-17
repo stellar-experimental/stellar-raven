@@ -1,0 +1,11 @@
+[Unit]
+Description=Raven round 2026-11-16 item 2.1: start the dated Opus lead (Bell Mainnet vote goldens, merge before 2026-11-25 00:00 UTC)
+StartLimitIntervalSec=0
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/share/raven-dated/launch-dated-lead.sh 2.1 bell-goldens
+TimeoutStartSec=15min
+Restart=on-failure
+RestartSec=20min
+RestartPreventExitStatus=75

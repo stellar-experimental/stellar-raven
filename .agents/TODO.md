@@ -38,13 +38,18 @@ Held-out status: the first-principles split is void, because the 2026-11-14 gold
 rebuilt the battery. The current split is drawn by the rule in
 [`eval/qa/README.md`](../eval/qa/README.md) ("Held-out split") from the 247 headline cases:
 
-- SHA-256 `58ad28bb903fcd7c72122de4ca13f93438a42b92a6987dcbce7d6c3f8096c191`.
-- 81 tuning, 117 held-out, and 49 reserve cases.
-- The file is on the owner's Linux machine at `~/backups/gca-2026-11-14-split-v4.json`. It
-  replaces `gca-2026-11-14-split-v3.json` (SHA-256
-  `ceb98d6a612aa2a85b48a20dac953f76b7e67f860092c61c84292dcb53434155`, 80/118/49), which stays in
-  place, and v2 before it (79/119/49). A Mac copy of v2 or v3, or an id list taken from either,
-  is stale. Tuning scans pass `--split ~/backups/gca-2026-11-14-split-v4.json`.
+- SHA-256 `c8796ec14c4d77d114693cfcf5a51a9f5da80a6506956bb7f88c6992725f4b15`.
+- 86 tuning, 114 held-out, and 47 reserve cases.
+- The file is on the owner's Linux machine at `~/backups/gca-2026-11-14-split-v5.json`. It
+  replaces `gca-2026-11-14-split-v4.json` (SHA-256
+  `58ad28bb903fcd7c72122de4ca13f93438a42b92a6987dcbce7d6c3f8096c191`, 81/117/49), which stays in
+  place, and v3 (80/118/49) and v2 (79/119/49) before it. A Mac copy of v2, v3 or v4, or an id
+  list taken from any of them, is stale. Tuning scans pass
+  `--split ~/backups/gca-2026-11-14-split-v5.json`.
+- v5 is a dated amendment of v4 by the orchestrator's answer in
+  [round item 1.4 `QUESTION.md`](rounds/2026-11-16-next-phase/items/1.4/QUESTION.md): five
+  dated-golden cases moved to tuning so the dated runs (round items 2.1 and 2.2) can open and edit
+  them. In the v5 note, "scheduled" means "has a `reverifyBy`".
 
 Two tuning loops tuned on the tuning rows ([loop 1](rounds/2026-11-14-baseline-tuning.md),
 [loop 2](rounds/2026-11-15-tuning-loop-2.md)). The audit's battery test read the answers of 70
@@ -52,8 +57,9 @@ headline cases before the draw ([ids](rounds/2026-11-14-golden-coverage-audit/qa
 baseline and one read per loop ran the held-out rows, counts only. One held-out answer was exposed
 (loop 2); it moved to tuning on 2026-11-16 (decision 2(b)). One more case moved to tuning on
 2026-11-17 (round item 1.1, orchestrator's answer in its `QUESTION.md`), because its notes were
-opened and edited. The stored held-out reads and their thresholds are on 119 rows, and a future
-read pairs on v4's 117. An item may name a case by ID; never record which set a case is in, and tune no product change on a held-out or reserve case.
+opened and edited, and five more on 2026-11-17 (round item 1.4, v5; see the owner decision below).
+The stored held-out reads and their thresholds are on 119 rows, and a future read pairs on v5's
+114. An item may name a case by ID; never record which set a case is in, and tune no product change on a held-out or reserve case.
 
 Routing and discovery rows whose question matches a QA headline question are confirmation-only:
 [`eval/routing-qa-overlap.json`](../eval/routing-qa-overlap.json) lists them, and no lane tunes on
@@ -399,15 +405,36 @@ date passes. Six cases keep dates before 2027 because each depends on a known ev
   `mainnet-protocol-29` source sentinel fires when Mainnet activates Protocol 30. Update the
   register's Bell date trap in the same change.
 
-Round items carry the work: 1.4 pre-stages the Bell probes by 2026-11-22; 2.1 edits the three
-cases due 11-24 after the vote (2026-11-23 17:00 UTC) and merges before 2026-11-25 00:00 UTC, when
-the stale lint starts failing every pull request on them; 2.2 takes the three later cases between
-2026-11-30 and 2026-12-04.
+Round items carry the work. Item 1.4 staged it as timer-started dated runs
+([PRESTAGE.md](rounds/2026-11-16-next-phase/items/1.4/dated/PRESTAGE.md)): 2.1 on 2026-11-23
+18:00 UTC edits the three cases due 11-24 and the quantum case, and merges before 2026-11-25 00:00
+UTC, when the stale lint starts failing every pull request on them; 2.2a, 2.2b and 2.2c take the
+rest on 2026-11-30, 2026-12-01 and 2026-12-04. A run that cannot show the event extends the dates
+and schedules its own follow-up. Each run updates its own bullet here.
 
 Use the `golden-truth` skill, then `npm run eval:qa:register`.
 [Ledger](rounds/2026-11-12-truth-maintenance.md).
 
 Done when: no battery case has a `reverifyBy` date before 2027-01-01.
+
+### Decide whether golden maintenance may open held-out cases (owner decision)
+
+The held-out rule ([`eval/qa/README.md`](../eval/qa/README.md), "Held-out split") moves a case to
+tuning once an agent has opened it. A dated golden edit must open its case, so each one exposes it.
+Round item 1.4 took option 1 (amend split v5 now) by the orchestrator's answer in its
+[`QUESTION.md`](rounds/2026-11-16-next-phase/items/1.4/QUESTION.md). Counts only:
+
+- 67 cases outside tuning carry a `reverifyBy`. Each one is exposed when its date comes due, so
+  option 1 erodes the held-out set every quarter. The next such date is 2027-01-14.
+- Option 2 is the durable fix: a golden-maintenance lane that changes no product code may open a
+  held-out or reserve case without moving it. It changes the README rule and owner decision 2, so
+  it needs the owner.
+- Register entries that the dated runs left at `reopen`: a run closes its reopened entries all or
+  none, and closes none when it could not read every member (orchestrator's answer 2 (1) in
+  `QUESTION.md`). Count left open so far: none recorded yet. Each dated run adds its count here.
+
+Done when: the owner chooses option 1 or option 2 for the quarterly dates, and the left-open
+register entries are closed or accepted.
 
 ### Golden follow-ups from the sls-024 and sls-029 cap review
 
@@ -466,9 +493,12 @@ tables cover every finding.
   rebase.
 - **Software Versions (not filed).** Protocol 30 is live on Testnet, but
   https://developers.stellar.org/docs/networks/software-versions.md lists nothing above
-  Protocol 29. Upstream normally adds a version around Mainnet activation. Recheck on or after
-  2026-12-01; if the page still lacks Protocol 30, file it as the class of resolved sd-008
-  ([ledger](rounds/2026-11-10-truth-maintenance.md)).
+  Protocol 29. Upstream normally adds a version around Mainnet activation. The dated run 2.2a
+  (2026-11-30, merge before 2026-12-01 00:00 UTC) owns the recheck: if Mainnet runs Protocol 30
+  and the page still lacks it, it files the finding as the class of resolved sd-008
+  ([ledger](rounds/2026-11-10-truth-maintenance.md)) and
+  [PRESTAGE.md](rounds/2026-11-16-next-phase/items/1.4/dated/PRESTAGE.md) says how. The
+  orchestrator's deadline overrides the earlier "on or after 2026-12-01".
 - **ll-022, ll-023, ll-024.** The original records kept no reproducible wrong milestone,
   preview-boundary omission, or stale venue row, and current checks do not prove those errors.
   Before a closure or a renewed claim, obtain the original and corrected record or an owner
