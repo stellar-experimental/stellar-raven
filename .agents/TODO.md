@@ -24,8 +24,8 @@ paid run.
 3. Mechanisms with a measured cause. The production read ranks round item 3.2 first: its
    per-source status half meets the most failed operation calls, and the `execute` `errorName` and
    `scout.matchPartners` bullets of "Triage the runtime and client gaps" belong with it (they edit
-   the same event and adapter surface). Round item 3.3 is last: `stellarOrg` is little used. The
-   orchestrator confirms this order.
+   the same event and adapter surface). Round item 3.3 is last: `stellarOrg` is little used. This
+   order waits on the orchestrator's confirmation.
 
 No third tuning loop, and no paid QA run without a new written owner authorization, except round
 item 4.1 under decision 7 (owner, 2026-11-16, decision 1). The general routing repair stays held.
@@ -203,7 +203,7 @@ evidence folder; this item records the decisions. Four caps wait on it
   pending at 60 seconds logs no event, and `op` `ms` includes retries and host queueing. Round item
   3.2 ships the timeouts and decides how one timeout combines with an adapter's retries.
 - Artifact caps (`ARTIFACT_INFO_CAP` 8, `ARTIFACT_READ_CAP` 4): **keep.** No `info-cap` or
-  `read-cap` refusal in the window, and no run read more than one artifact.
+  `read-cap` refusal in the window, and per-run artifact reads stayed far below both caps.
 - `EXECUTE_TIMEOUT_MS` (60 s): **not decided.** No failed `execute` ran past 59 seconds in the
   window, but the rule also counts `POST /mcp` invocations that ended cancelled or disconnected after
   59 seconds, and the platform queries returned no rows. Keep 60 until that half is read. Codex's
@@ -212,10 +212,12 @@ evidence folder; this item records the decisions. Four caps wait on it
 
 Next: round item 3.2 ships the timeouts. One free Workers Logs follow-up (run on the Mac) reads
 what the first read could not: key discovery returned a capped list, so first search the keys for
-`recoveryHint` and the artifact-write `skipped` and `errorName` by name; then read the wall time of
-`POST /mcp` invocations over 59 seconds with their outcome (the app rows carry
-`$workers.wallTimeMs` and `$workers.outcome`), and the user-agent families, which the first read
-could not group. The user-agent read also lets the Grok, Copilot and browser loops in "Triage the
+`recoveryHint` and the artifact-write `skipped` and `errorName` by name. Every query that
+filtered `$metadata.type = "cf-worker-event"` with path `/mcp`, or grouped by the user-agent header,
+returned no rows; the cause is unknown, so first group one recent hour by `$metadata.type` and
+check which row type carries the path, user-agent, `$workers.wallTimeMs` and `$workers.outcome`.
+Then read the wall time of `POST /mcp` invocations over 59 seconds with their outcome, and the
+user-agent families. The user-agent read also lets the Grok, Copilot and browser loops in "Triage the
 runtime and client gaps" be attributed.
 
 Done when: round item 3.2 has shipped the timeouts, and the `execute` timeout has a recorded
