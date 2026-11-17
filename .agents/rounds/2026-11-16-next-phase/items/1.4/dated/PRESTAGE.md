@@ -7,7 +7,7 @@ behind it; this file is the spec a lead follows when no orchestrator is awake. R
 quoted fact against `origin/main` and the live source before you edit.
 
 Terms: the run key is `<item><run>` (`2.1`, `2.1r1`); `<key>` below means it. The split file is
-`~/backups/gca-2026-11-14-split-v7.json` (SHA-256 `d5e56748dfdf2ce9c0bcf8a48898f976db96578dd97516d07dd0b3cb13966c8a`; if `.agents/TODO.md` names a later split in its held-out status, use that one, because `sibling-check.mjs` asserts `TUNING_ROW_COUNT`).
+`~/backups/gca-2026-11-14-split-v8.json` (SHA-256 `1f0c1268d47103e652c545cd7642f808d893aa7779192b50d189c42510027720`; if `.agents/TODO.md` names a later split in its held-out status, use that one, because `sibling-check.mjs` asserts `TUNING_ROW_COUNT`).
 A **dated case** is one of the six below. Evidence classes come from
 [`golden-truth`](../../../../../skills/golden-truth/SKILL.md): A official docs and sites, B source code
 and repos, C live service APIs (status feed, Scout), D the CLI's built-in web search only, E the Docs
@@ -93,7 +93,7 @@ your worktree.
 node .agents/rounds/2026-11-16-next-phase/items/1.4/dated/probe.mjs --protocol --quantum --out <scratch>/probe-1.json
 node .../probe.mjs --software-versions       # 2.2a
 node .../probe.mjs --scf                     # 2.2c
-node .../sibling-check.mjs --run 2.1 --split ~/backups/gca-2026-11-14-split-v7.json   # or 2.2a, 2.2c
+node .../sibling-check.mjs --run 2.1 --split ~/backups/gca-2026-11-14-split-v8.json   # or 2.2a, 2.2c
 ```
 
 `probe.mjs` is keyless and prints JSON; a failed section reports `{ok:false,error}` and the rest

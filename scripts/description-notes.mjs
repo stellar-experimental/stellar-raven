@@ -274,13 +274,6 @@ export const SCOUT_DESCRIPTION_SCRUBS = {
     // recommendation, not the fact; SCOUT_DESCRIPTION_NOTES.getStatus carries
     // the boundary.
     " or to discover endpoints"
-  ],
-  matchPartners: [
-    // "Not for: ... → GET /api/partners; interactive human chat → the
-    // /partners/chat page (backed by /api/partners/assistant)." — the chat
-    // page is backed by the excluded assistant endpoint; the directory-browse
-    // alternative before the ";" stays.
-    "; interactive human chat → the /partners/chat page (backed by /api/partners/assistant)"
   ]
 };
 

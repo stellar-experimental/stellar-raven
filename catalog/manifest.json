@@ -3486,14 +3486,12 @@
         "lowest",
         "share",
         "value",
-        "notes",
         "range",
         "coverage",
         "end",
         "date",
         "external",
         "profile",
-        "activity",
         "builds",
         "known",
         "unknown",
@@ -4329,7 +4327,6 @@
         "verified",
         "confidence",
         "age",
-        "days",
         "high",
         "medium",
         "low",
@@ -4338,7 +4335,6 @@
         "paths",
         "deployable",
         "js",
-        "current",
         "supported",
         "deprecated",
         "unknown",
@@ -4354,14 +4350,12 @@
         "ref",
         "capabilities",
         "soroban",
-        "version",
         "deps",
         "dep",
         "proof",
         "symbols",
         "target",
         "knowledge",
-        "notes",
         "check",
         "noted",
         "value",
@@ -4373,14 +4367,11 @@
         "symbol",
         "note2",
         "renamed",
-        "archived",
-        "kind",
         "fork",
         "platform",
         "template",
         "tutorial",
         "application",
-        "stars",
         "via",
         "security",
         "checked",
@@ -4388,7 +4379,14 @@
         "indicators",
         "detail",
         "runs",
-        "font"
+        "font",
+        "fake",
+        "autorun",
+        "task",
+        "install",
+        "hook",
+        "auto",
+        "tasks"
       ],
       "kind": "operation",
       "outputSchema": {
@@ -5156,7 +5154,6 @@
         "evidence",
         "primary",
         "language",
-        "stars",
         "display",
         "username",
         "featured",
@@ -6556,7 +6553,6 @@
         "key",
         "short",
         "dimensions",
-        "notes",
         "population",
         "included",
         "scope",
@@ -6995,7 +6991,6 @@
       },
       "keywords": [
         "coverage",
-        "notes",
         "tiers",
         "amount",
         "asset",
@@ -7023,7 +7018,6 @@
         "award",
         "outcomes",
         "upstream",
-        "kind",
         "contracts",
         "created",
         "network",
@@ -7034,8 +7028,6 @@
         "listed",
         "commits",
         "90",
-        "days",
-        "archived",
         "found",
         "builder",
         "demo",
@@ -8852,7 +8844,6 @@
         "infrastructure",
         "payments",
         "anchor",
-        "sdk",
         "indexer",
         "explorer",
         "ai",
@@ -9717,12 +9708,10 @@
         "year",
         "exclude",
         "matching",
-        "current",
         "update",
         "fresh",
         "aging",
         "stale",
-        "archived",
         "org",
         "lead",
         "time",
@@ -9744,7 +9733,6 @@
         "pilot",
         "pricing",
         "model",
-        "notes",
         "types",
         "response",
         "sla",
@@ -9753,7 +9741,6 @@
         "toml",
         "confidence",
         "age",
-        "days",
         "high",
         "medium",
         "low",
@@ -9766,7 +9753,6 @@
         "auto",
         "verify",
         "onchain",
-        "active",
         "involvement",
         "website"
       ],
@@ -10301,12 +10287,10 @@
         "docs",
         "founded",
         "year",
-        "current",
         "update",
         "fresh",
         "aging",
         "stale",
-        "archived",
         "org",
         "lead",
         "time",
@@ -10314,7 +10298,6 @@
         "pilot",
         "pricing",
         "model",
-        "notes",
         "response",
         "sla",
         "sectors",
@@ -10322,7 +10305,6 @@
         "tagline",
         "confidence",
         "age",
-        "days",
         "high",
         "medium",
         "low",
@@ -10334,7 +10316,6 @@
         "auto",
         "verify",
         "onchain",
-        "active",
         "involvement",
         "website"
       ],
@@ -11074,11 +11055,9 @@
       "keywords": [
         "section",
         "offset",
-        "kind",
         "guide",
         "article",
         "data",
-        "version",
         "filtered",
         "observed",
         "sections"
@@ -11498,7 +11477,6 @@
         "type": "object"
       },
       "keywords": [
-        "days",
         "audits",
         "auditor",
         "paths",
@@ -11512,18 +11490,14 @@
         "error",
         "incomplete",
         "gone",
-        "sdk",
         "capabilities",
-        "archived",
         "renamed",
-        "stars",
         "tier",
         "security",
         "checked",
         "held",
         "indicators",
         "detail",
-        "kind",
         "runs",
         "font",
         "fake",
@@ -12821,7 +12795,6 @@
         "featured",
         "homepage",
         "alt",
-        "kind",
         "repository",
         "tagline",
         "tags",
@@ -13781,7 +13754,6 @@
       "keywords": [
         "skill",
         "bytes",
-        "notes",
         "population",
         "last24h",
         "last7d"
@@ -14115,7 +14087,6 @@
         "security",
         "held",
         "bar",
-        "projects",
         "open",
         "phase",
         "deadline",
@@ -14125,11 +14096,9 @@
         "events",
         "delta",
         "size",
-        "stellar",
         "proof",
         "audit",
         "drift",
-        "days",
         "latest",
         "audits",
         "auditor",
@@ -14146,11 +14115,8 @@
         "error",
         "incomplete",
         "gone",
-        "sdk",
         "capabilities",
-        "activity",
         "renamed",
-        "stars",
         "tier",
         "signals",
         "succession",
@@ -14158,7 +14124,13 @@
         "successor",
         "usage",
         "subinvocations",
-        "vertical"
+        "vertical",
+        "scored",
+        "weak",
+        "types",
+        "via",
+        "winners",
+        "progress"
       ],
       "kind": "operation",
       "outputSchema": {
@@ -15208,7 +15180,6 @@
         "extraction",
         "observed",
         "protocol",
-        "version",
         "superseded",
         "filtered"
       ],
@@ -16761,359 +16732,6 @@
       }
     },
     {
-      "description": "AI-rank partners against a plain-language need. Describe a builder need in plain language (e.g. 'I need a USDC off-ramp in Mexico with SEP-24') and get the published partners RANKED by fit, each with a one-line reason. Grounded: only real published partners are ranked; nothing is invented. Requires the service to have AI configured; returns 503 unavailable:true otherwise (fall back to scout.getPartners filters). Use when: an agent needs a scored shortlist for a concrete integration need. Not for: browsing the full directory → scout.getPartners.",
-      "id": "scout.matchPartners",
-      "inputSchema": {
-        "properties": {
-          "limit": {
-            "default": 5,
-            "description": "Most matches to return, 1 to 10 (default 5); out-of-range values are clamped.",
-            "maximum": 10,
-            "minimum": 1,
-            "type": "integer"
-          },
-          "need": {
-            "description": "The builder's need, in plain language, up to 2,000 characters.",
-            "maxLength": 2000,
-            "type": "string"
-          },
-          "region": {
-            "description": "Rank only partners whose recorded regions contain this text.",
-            "type": "string"
-          },
-          "sector": {
-            "description": "Rank only partners whose recorded sectors contain this text.",
-            "type": "string"
-          },
-          "type": {
-            "description": "Rank only partners of this type; any other value answers 400 with validTypes.",
-            "enum": [
-              "anchor",
-              "on-off-ramp",
-              "infrastructure",
-              "tooling",
-              "protocol",
-              "wallet",
-              "audit-firm",
-              "legal",
-              "agency",
-              "asset-issuer",
-              "other"
-            ],
-            "type": "string"
-          }
-        },
-        "required": [
-          "need"
-        ],
-        "type": "object"
-      },
-      "keywords": [
-        "region",
-        "sector",
-        "anchor",
-        "infrastructure",
-        "tooling",
-        "protocol",
-        "wallet",
-        "audit",
-        "firm",
-        "legal",
-        "agency",
-        "asset",
-        "issuer",
-        "other",
-        "matches",
-        "accepting",
-        "clients",
-        "freshness",
-        "regions",
-        "sectors",
-        "tagline",
-        "website",
-        "candidates",
-        "considered",
-        "model",
-        "summary"
-      ],
-      "kind": "operation",
-      "outputSchema": {
-        "description": "AI partner matches for a stated need (previously opaque).",
-        "properties": {
-          "matches": {
-            "items": {
-              "properties": {
-                "partner": {
-                  "description": "The matched partner row.",
-                  "properties": {
-                    "acceptingClients": {
-                      "nullable": true,
-                      "type": "boolean"
-                    },
-                    "freshness": {
-                      "properties": {
-                        "status": {
-                          "type": "string"
-                        }
-                      },
-                      "type": "object"
-                    },
-                    "name": {
-                      "type": "string"
-                    },
-                    "partnerType": {
-                      "type": "string"
-                    },
-                    "regions": {
-                      "description": "Curated coverage regions; NULL = none recorded (UNKNOWN).",
-                      "items": {
-                        "type": "string"
-                      },
-                      "nullable": true,
-                      "type": "array"
-                    },
-                    "sectors": {
-                      "description": "Curated sectors; NULL = none recorded (UNKNOWN).",
-                      "items": {
-                        "type": "string"
-                      },
-                      "nullable": true,
-                      "type": "array"
-                    },
-                    "slug": {
-                      "type": "string"
-                    },
-                    "tagline": {
-                      "nullable": true,
-                      "type": "string"
-                    },
-                    "url": {
-                      "description": "Public profile page.",
-                      "type": "string"
-                    },
-                    "websiteUrl": {
-                      "nullable": true,
-                      "type": "string"
-                    }
-                  },
-                  "type": "object"
-                },
-                "reason": {
-                  "description": "Why it matched: safe to surface.",
-                  "type": "string"
-                },
-                "score": {
-                  "description": "Relevance of this partner to the need.",
-                  "type": "number"
-                }
-              },
-              "type": "object"
-            },
-            "type": "array"
-          },
-          "meta": {
-            "properties": {
-              "candidatesConsidered": {
-                "description": "The denominator behind the matches.",
-                "type": "integer"
-              },
-              "generatedAt": {
-                "format": "date-time",
-                "type": "string"
-              },
-              "model": {
-                "type": "string"
-              },
-              "note": {
-                "type": "string"
-              },
-              "source": {
-                "type": "string"
-              }
-            },
-            "type": "object"
-          },
-          "need": {
-            "type": "string"
-          },
-          "summary": {
-            "nullable": true,
-            "type": "string"
-          }
-        },
-        "type": "object"
-      },
-      "provenance": {
-        "fetchedAt": "2026-11-16T22:24:00.455Z",
-        "openapiVersion": "1.9.150",
-        "source": "https://stellarlight.xyz/api/openapi.json"
-      },
-      "routingExclusions": [
-        {
-          "tokens": [
-            "browsing",
-            "all",
-            "partners"
-          ]
-        },
-        {
-          "tokens": [
-            "one",
-            "known",
-            "partner",
-            "profile"
-          ]
-        }
-      ],
-      "routingKeywords": [
-        "partner",
-        "provider",
-        "best",
-        "describes",
-        "corridor",
-        "wants",
-        "work",
-        "kyc",
-        "brazil",
-        "recommendation",
-        "find",
-        "help",
-        "case",
-        "fits"
-      ],
-      "routingPhrases": [
-        {
-          "field": "purpose",
-          "tokens": [
-            "rank",
-            "published",
-            "partners",
-            "against",
-            "plain",
-            "language",
-            "builder",
-            "need",
-            "each",
-            "one",
-            "line",
-            "reason"
-          ]
-        },
-        {
-          "field": "useWhen",
-          "tokens": [
-            "builder",
-            "describes",
-            "need",
-            "plain",
-            "language",
-            "corridor",
-            "sep",
-            "service",
-            "wants",
-            "published",
-            "partners",
-            "ranked",
-            "fit"
-          ]
-        },
-        {
-          "field": "exampleQuestions",
-          "tokens": [
-            "partner",
-            "best",
-            "fit",
-            "usdc",
-            "off",
-            "ramp",
-            "mexico",
-            "sep",
-            "24"
-          ]
-        },
-        {
-          "field": "exampleQuestions",
-          "tokens": [
-            "work",
-            "kyc",
-            "brazil"
-          ]
-        },
-        {
-          "field": "keywords",
-          "tokens": [
-            "partner",
-            "use"
-          ]
-        },
-        {
-          "field": "keywords",
-          "tokens": [
-            "best",
-            "partner"
-          ]
-        },
-        {
-          "field": "keywords",
-          "tokens": [
-            "match",
-            "partners"
-          ]
-        },
-        {
-          "field": "keywords",
-          "tokens": [
-            "partner",
-            "recommendation"
-          ]
-        },
-        {
-          "field": "keywords",
-          "tokens": [
-            "find",
-            "partner"
-          ]
-        },
-        {
-          "field": "keywords",
-          "tokens": [
-            "rank",
-            "partners"
-          ]
-        },
-        {
-          "field": "keywords",
-          "tokens": [
-            "provider",
-            "use",
-            "case"
-          ]
-        },
-        {
-          "field": "keywords",
-          "tokens": [
-            "off",
-            "ramp",
-            "provider"
-          ]
-        },
-        {
-          "field": "keywords",
-          "tokens": [
-            "provider",
-            "fits"
-          ]
-        }
-      ],
-      "service": "scout",
-      "transport": {
-        "base": "https://stellarlight.xyz",
-        "method": "POST",
-        "path": "/api/partners/match",
-        "type": "http"
-      }
-    },
-    {
       "description": "Resolve a historical project name to what it is now. Reconciles a name found in an old post, changelog, README or repo against the current directory: returns the record it names, where to look NOW if that record was superseded, and the evidence behind any inactive status. Use when: you hit a project name that matches nothing current and need to know whether it was renamed, replaced, or is simply untracked. Not for: searching for projects by topic (→ searchProjects). A miss means NOT TRACKED HERE: never that the name never existed, never that it is defunct.",
       "id": "scout.resolveProject",
       "inputSchema": {
@@ -17440,9 +17058,7 @@
         "weak",
         "types",
         "via",
-        "activity",
         "domains",
-        "stars",
         "tier",
         "winners",
         "progress",
@@ -18153,7 +17769,6 @@
         "bridge",
         "infrastructure",
         "anchor",
-        "sdk",
         "indexer",
         "explorer",
         "analytics",
@@ -18179,8 +17794,6 @@
         "after",
         "commits",
         "90",
-        "days",
-        "archived",
         "found",
         "award",
         "categories",
@@ -18203,7 +17816,10 @@
         "facts",
         "draft",
         "development",
-        "pre"
+        "pre",
+        "release",
+        "inactive",
+        "held"
       ],
       "kind": "operation",
       "outputSchema": {
@@ -19037,7 +18653,6 @@
         "partner",
         "integration",
         "bridge",
-        "sdk",
         "indexer",
         "explorer",
         "analytics",
@@ -19072,10 +18687,8 @@
         "prs",
         "tag",
         "state",
-        "active",
         "maintained",
         "dormant",
-        "archived",
         "unknown",
         "reputation",
         "canonical",
@@ -19086,7 +18699,6 @@
         "subinvocations",
         "confidence",
         "age",
-        "days",
         "high",
         "medium",
         "low",
@@ -19095,7 +18707,11 @@
         "interface",
         "paths",
         "deployable",
-        "js"
+        "js",
+        "supported",
+        "deprecated",
+        "mainnet",
+        "self"
       ],
       "kind": "operation",
       "outputSchema": {
@@ -22405,11 +22021,8 @@
         "type": "object"
       },
       "keywords": [
-        "activity",
-        "active",
         "maintained",
         "dormant",
-        "archived",
         "unknown",
         "offset",
         "fields",
@@ -22439,7 +22052,6 @@
         "verified",
         "confidence",
         "age",
-        "days",
         "high",
         "medium",
         "low",
@@ -22468,7 +22080,11 @@
         "lang",
         "toml",
         "symbols",
-        "deep"
+        "deep",
+        "wiki",
+        "homepage",
+        "judge",
+        "judged"
       ],
       "kind": "operation",
       "outputSchema": {
@@ -23879,7 +23495,6 @@
         "top",
         "chunk",
         "content",
-        "kind",
         "guide",
         "article",
         "data",
@@ -24919,9 +24534,7 @@
         "weak",
         "types",
         "via",
-        "activity",
         "domains",
-        "stars",
         "tier",
         "winners",
         "progress",

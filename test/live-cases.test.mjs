@@ -37,7 +37,7 @@ describe("manual live case contracts (offline)", () => {
       }
     });
     if (label.startsWith("1.")) {
-      expect(Object.values(result.services).reduce((sum, service) => sum + service.callable, 0)).toBe(66);
+      expect(Object.values(result.services).reduce((sum, service) => sum + service.callable, 0)).toBe(65);
       expect(result.hasLumenloopGlobal).toBe(true);
     } else if (label.startsWith("2.")) {
       expect(result.searchOps.lumenloop).toContain("lumenloop.search_content_semantic");

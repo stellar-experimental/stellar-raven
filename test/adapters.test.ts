@@ -444,7 +444,13 @@ describe("scout adapter", () => {
 
   it("maps 503 unavailable AI endpoints to a non-retryable error with fallback hint", async () => {
     const { fetchImpl } = stubFetch(JSON.stringify({ error: "ai unavailable", unavailable: true }), 503);
-    const r = await callScout(entry("scout.matchPartners"), { need: "an anchor" }, {}, fetchImpl);
+    // The operation is not exposed, so build its entry by hand; the adapter keeps the branch for re-exposure.
+    const matchPartners: CatalogEntry = {
+      ...entry("scout.getPartners"),
+      id: "scout.matchPartners",
+      transport: { type: "http", base: "https://stellarlight.xyz", method: "POST", path: "/api/partners/match" }
+    };
+    const r = await callScout(matchPartners, { need: "an anchor" }, {}, fetchImpl);
     expect(r.ok).toBe(false);
     if (r.ok) return;
     expect(r.error.status).toBe(503);

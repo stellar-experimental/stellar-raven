@@ -57,13 +57,17 @@ export function lumenloopOpExcluded(tool) {
 //                                     request reviewed by the Stellar Light team
 //  POST /api/partners/assistant       surfaced partners are logged as leads for
 //                                     the weekly partner digest (per upstream
-//                                     OpenAPI); scout.matchPartners is the
-//                                     side-effect-free ranking alternative
+//                                     OpenAPI); scout.getPartners is the
+//                                     side-effect-free directory alternative
 //  POST /api/partners/onboard         upstream marks the AI interview/extraction
 //                                     helper x-side-effecting as of Scout 1.8.70;
 //                                     Raven has no approval or budget gate for it
-//  POST /api/partners/match stays exposed: its OpenAPI description declares
-//                                     pure AI ranking over published partners
+//  POST /api/partners/match           pure AI ranking over published partners
+//                                     (no side effect), but no observed call has
+//                                     succeeded since 2026-10-26;
+//                                     scout.getPartners is the directory path.
+//                                     Re-expose when it returns 200 with
+//                                     `matches` (sls-123).
 export {
   EXCLUDED_SCOUT_OPERATIONS,
   EXCLUDED_SCOUT_OPS,

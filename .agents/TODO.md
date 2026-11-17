@@ -42,15 +42,15 @@ Held-out status: the first-principles split is void, because the 2026-11-14 gold
 rebuilt the battery. The current split is drawn by the rule in
 [`eval/qa/README.md`](../eval/qa/README.md) ("Held-out split") from the 247 headline cases:
 
-- SHA-256 `d5e56748dfdf2ce9c0bcf8a48898f976db96578dd97516d07dd0b3cb13966c8a`.
-- 88 tuning, 112 held-out, and 47 reserve cases.
-- The file is on the owner's Linux machine at `~/backups/gca-2026-11-14-split-v7.json`. It
-  replaces `gca-2026-11-14-split-v6.json` (SHA-256
-  `04107a463c462eecb02a64fe0b69fab6cb4a1bc388197c3e3a01107e9350c362`, 87/113/47), which stays in
-  place, v5 (`c8796ec14c4d77d114693cfcf5a51a9f5da80a6506956bb7f88c6992725f4b15`, 86/114/47), and
+- SHA-256 `1f0c1268d47103e652c545cd7642f808d893aa7779192b50d189c42510027720`.
+- 89 tuning, 112 held-out, and 46 reserve cases.
+- The file is on the owner's Linux machine at `~/backups/gca-2026-11-14-split-v8.json`. It
+  replaces `gca-2026-11-14-split-v7.json` (SHA-256
+  `d5e56748dfdf2ce9c0bcf8a48898f976db96578dd97516d07dd0b3cb13966c8a`, 88/112/47), which stays in place, v6
+  (`04107a463c462eecb02a64fe0b69fab6cb4a1bc388197c3e3a01107e9350c362`, 87/113/47), v5 (`c8796ec14c4d77d114693cfcf5a51a9f5da80a6506956bb7f88c6992725f4b15`, 86/114/47), and
   v4 (81/117/49), v3 (80/118/49) and v2 (79/119/49) before it. A Mac copy of an earlier split,
   or an id list taken from one, is stale. Tuning scans pass
-  `--split ~/backups/gca-2026-11-14-split-v7.json`.
+  `--split ~/backups/gca-2026-11-14-split-v8.json`.
 - v5 is a dated amendment of v4 by the orchestrator's answer in
   [round item 1.4 `QUESTION.md`](rounds/2026-11-16-next-phase/items/1.4/QUESTION.md): five
   dated-golden cases moved to tuning so the dated runs (round items 2.1 and 2.2) can open and edit
@@ -63,6 +63,11 @@ rebuilt the battery. The current split is drawn by the rule in
   [round item 3.5 `FOLLOWUP.md`](rounds/2026-11-16-next-phase/items/3.5/FOLLOWUP.md): one case
   whose id and golden amounts a QA lint log displayed to the item 3.5 lead moved to tuning. A
   script took its id from the lead's untracked exposure note.
+- v8 is a dated amendment of v7 by the orchestrator's answer in
+  [round item 5.1 `FOLLOWUP.md`](rounds/2026-11-16-next-phase/items/5.1/FOLLOWUP.md): one case
+  that lists the removed `scout.matchPartners` operation in its `surface`, and that the item 5.1
+  lead saw while listing references, moved to tuning. A script took its id from the lead's untracked
+  exposure note.
 
 Two tuning loops tuned on the tuning rows ([loop 1](rounds/2026-11-14-baseline-tuning.md),
 [loop 2](rounds/2026-11-15-tuning-loop-2.md)). The audit's battery test read the answers of 70
@@ -85,7 +90,7 @@ Round item 1.3 classed every residual source gap
 [LEAVES.md](rounds/2026-11-16-next-phase/items/1.3/LEAVES.md); an independent Grok attack in
 [GROK-REVIEW.md](rounds/2026-11-16-next-phase/items/1.3/GROK-REVIEW.md) moved three rows to
 "reached"). Of the 11 "not re-run" leaves, none is a source gap today: 10 are reached or did not
-reproduce, and one leaves a Raven-side TODO (the `scout.matchPartners` 503, below). New findings:
+reproduce, and one leaves a Raven-side TODO (the removed `scout.matchPartners`, below). New findings:
 `sd-111`, `sd-112`, `sd-113`, `ll-039`, `sls-121`, `sls-122`. The facts no reached source holds are
 now few: the XRP Ledger facts (`ecosystem.chain-comparisons`, xrpl.org), the NBU statement
 (`ll-039`), and Pi Network's relation to Stellar (`sd-113`).
@@ -396,7 +401,7 @@ tuning once an agent has opened it. A dated golden edit must open its case, so e
 Round item 1.4 took option 1 (amend split v5 now) by the orchestrator's answer in its
 [`QUESTION.md`](rounds/2026-11-16-next-phase/items/1.4/QUESTION.md). Counts only:
 
-- 65 cases outside tuning carry a `reverifyBy` (split v7). Each one is exposed when its date comes due, so
+- 65 cases outside tuning carry a `reverifyBy` (split v8). Each one is exposed when its date comes due, so
   option 1 erodes the held-out set every quarter. The next such date is 2027-01-14.
 - Option 2 is the durable fix: a golden-maintenance lane that changes no product code may open a
   held-out or reserve case without moving it. It changes the README rule and owner decision 2, so
@@ -770,16 +775,29 @@ Done when: one reviewed, measured correction makes the shape clear to models.
 
 Each needs a check before a fix:
 
-- `scout.matchPartners` returned the upstream "AI not configured" failure on every call; live Scout
-  now answers HTTP 503 "AI matchmaking isn't available right now". Decision (orchestrator,
-  2026-11-17): keep it exposed. The adapter's 503 hint routes to `scout.getPartners`. Measured the
-  same day: removing it held every legacy, extended and skills grade and total, but moved the frozen
-  holdout lane's forbidden captures from 10 to 11 (ceiling 10) through a lexical corpus shift, and
-  dropped `scout.searchRepos` from a pinned top five in `test/search.test.ts`. To recreate the
-  removal, add one line, `["POST /api/partners/match", "matchPartners"],`, to
-  `EXCLUDED_SCOUT_OPERATIONS` in `src/policy/scout-exposure.ts`, then run the normal rebuild and
-  make the test and eval edits listed in the item 3.2 [EXEC.md](rounds/2026-11-16-next-phase/items/3.2/EXEC.md).
-  Revisit when the upstream answers again, or when a catalog change leaves holdout headroom.
+- `scout.matchPartners` is removed from the exposed surface (2026-11-17, round item 5.1, the owner's
+  authorization is quoted in `eval/gates.json` `evidence.notes`). No observed call has succeeded
+  since 2026-10-26: "AI not configured" on 2026-10-26, HTTP 502 on 2026-11-02 (the resolved
+  `sls-097`), 503 `unavailable` on 2026-11-17 through Raven and direct on Scout 1.9.150. The
+  adapter's 503 hint stays and routes to `scout.getPartners`. The removal moved the frozen holdout
+  lane's forbidden captures from 10 to 11, and the owner authorized the ceiling 11 for this removal
+  only. **Re-exposure trigger:** `sls-123`
+  ([stellarlight#1976](https://github.com/Stellar-Light/stellarlight/issues/1976)) is verified live:
+  one POST of the command recorded in the finding returns 200 with `matches`. That POST is
+  model-backed on the upstream's account, so one call per verification is enough. Re-exposure then:
+  1. deletes the `["POST /api/partners/match", "matchPartners"],` line from
+     `EXCLUDED_SCOUT_OPERATIONS`;
+  2. reverses the edits listed in round item 5.1
+     [EXEC.md](rounds/2026-11-16-next-phase/items/5.1/EXEC.md);
+  3. re-runs the per-case routing comparison on both manifests;
+  4. restores the holdout ceiling to 10, but only if the comparison shows 10 captures; otherwise it
+     reports the count.
+- The removal also drops, from the served `stellar-scout` skill, the partner-filter step in its
+  workflow (the directory filters, the stablecoin peg guidance and the "none listed at our source"
+  rule), one sentence of the `getPartner` paragraph and the match section of the API reference,
+  because `src/skills/scrub.ts` scrubs skill bodies from the same exclusion list. Add a narrower
+  scrub unit, so the partner-filter step survives an operation exclusion, and check the served
+  skill text afterwards.
 - `recoveryHint` appears on most successful executes, so agents probably ignore it. Show it only
   for empty, thin, or conflicting results.
 - The Playground often stopped at `DEMO_CAPS.maxOutputTokens` (4096). Review the cap.
@@ -802,7 +820,7 @@ The review's evidence is in the owner's private snapshot `2026-10-26-hackmeridia
 (`usage/README.md`).
 
 Production read (round item 3.1, 6.5 days): `scout.matchPartners` still failed on nearly every
-call; the decision and its measurement are in the first bullet. Playground replies that stopped at the output cap were rare, so
+call; the removal (round item 5.1) and its re-exposure trigger are in the first bullet. Playground replies that stopped at the output cap were rare, so
 the cap review can close as "no change" unless the owner sees otherwise. `recoveryHint` could not be
 read: its key was not in the capped key list ("Ship the cap decisions from the production read"
 has the follow-up). The client loops could not be attributed: user-agent queries returned no rows,

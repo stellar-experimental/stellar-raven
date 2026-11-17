@@ -482,10 +482,10 @@ export function registerTools(server: McpServer, options: RegisterToolsOptions =
         : !noData
           ? ""
         : operationSummary.error > 0 && operationSummary.softEmpty === 0
-          ? `\n\n--- SERVICE ERRORS ---\nAll ${operationSummary.total} service calls failed. Errors do not establish absence or an open-world negative: inspect or retry the failures before broadening.`
+          ? `\n\n--- SERVICE ERRORS ---\nAll ${operationSummary.total} service calls failed. Errors do not establish absence or an open-world negative: follow each failure's hint before broadening.`
           : operationSummary.error === 0
             ? `\n\n--- EVIDENCE RECOVERY ---\nAll ${operationSummary.total} service calls soft-emptied. This cannot ground an open-world negative: follow the calls' hints and make one broad pass. For a closed-world question, report the empty result only at the named source's scope.`
-            : `\n\n--- INCONCLUSIVE SERVICE OUTCOMES ---\n${operationSummary.error} service call(s) errored and ${operationSummary.softEmpty} soft-emptied. Neither outcome establishes absence or an open-world negative: inspect or retry errors, then use any applicable soft-empty hint before broadening.`;
+            : `\n\n--- INCONCLUSIVE SERVICE OUTCOMES ---\n${operationSummary.error} service call(s) errored and ${operationSummary.softEmpty} soft-emptied. Neither outcome establishes absence or an open-world negative: follow each error's hint, then use any applicable soft-empty hint before broadening.`;
 
       // Scout project/repo operations serve ordinary lookup and landscape requests too. Treat
       // them as a build-stage preflight only when the same execute read an exact

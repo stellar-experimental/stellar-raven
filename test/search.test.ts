@@ -519,9 +519,11 @@ describe("searchCatalog — excluded ops are absent by construction (ADR-0003)",
       expect(ids, `query: ${query}`).not.toContain("scout.submitPartnerListing");
       expect(ids, `query: ${query}`).not.toContain("scout.partnerAssistant");
     }
-    // The side-effect-free partner ops remain reachable.
+    // matchPartners is excluded (no observed call succeeded since 2026-10-26); the directory read stays reachable.
     const match = searchCatalog(catalog, { query: "scout.matchPartners", limit: 50 });
-    expect(match.map((h) => h.id)).toContain("scout.matchPartners");
+    expect(match.map((h) => h.id)).not.toContain("scout.matchPartners");
+    const directory = searchCatalog(catalog, { query: "scout.getPartners", limit: 50 });
+    expect(directory.map((h) => h.id)).toContain("scout.getPartners");
   });
 });
 
@@ -628,7 +630,7 @@ describe("searchCatalog — routing quality", () => {
 
     expect(page.hits.map((hit) => hit.id)).toContain("scout.getLeaderboard");
     expect(page.hits.map((hit) => hit.id)).not.toContain("scout.searchProjects");
-    expect(page.hits.filter((hit) => hit.service === "scout")).toHaveLength(2);
+    expect(page.hits.filter((hit) => hit.service === "scout")).toHaveLength(1);
     expect(searchCatalogPage(catalog, {
       query: "top Stellar projects by GitHub activity",
       limit: 5
