@@ -429,9 +429,9 @@ Round item 1.4 took option 1 (amend split v5 now) by the orchestrator's answer i
 - Option 2 is the durable fix: a golden-maintenance lane that changes no product code may open a
   held-out or reserve case without moving it. It changes the README rule and owner decision 2, so
   it needs the owner.
-- Register entries that the dated runs left at `reopen`, because they hold cases a run may not
-  open (orchestrator's answer 2 (1) in `QUESTION.md`): none recorded yet. Each dated run adds its
-  count here.
+- Register entries that the dated runs left at `reopen`: a run closes its reopened entries all or
+  none, and closes none when it could not read every member (orchestrator's answer 2 (1) in
+  `QUESTION.md`). Count left open so far: none recorded yet. Each dated run adds its count here.
 
 Done when: the owner chooses option 1 or option 2 for the quarterly dates, and the left-open
 register entries are closed or accepted.
@@ -497,8 +497,8 @@ tables cover every finding.
   (2026-11-30, merge before 2026-12-01 00:00 UTC) owns the recheck: if Mainnet runs Protocol 30
   and the page still lacks it, it files the finding as the class of resolved sd-008
   ([ledger](rounds/2026-11-10-truth-maintenance.md)) and
-  [PRESTAGE.md](rounds/2026-11-16-next-phase/items/1.4/dated/PRESTAGE.md) says how. The owner's
-  deadline overrides the earlier "on or after 2026-12-01".
+  [PRESTAGE.md](rounds/2026-11-16-next-phase/items/1.4/dated/PRESTAGE.md) says how. The
+  orchestrator's deadline overrides the earlier "on or after 2026-12-01".
 - **ll-022, ll-023, ll-024.** The original records kept no reproducible wrong milestone,
   preview-boundary omission, or stale venue row, and current checks do not prove those errors.
   Before a closure or a renewed claim, obtain the original and corrected record or an owner

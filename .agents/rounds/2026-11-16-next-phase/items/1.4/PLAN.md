@@ -328,10 +328,13 @@ proves nothing.
 - Activation invariant: append "Protocol 30 (Bell) from ledger L (date)" to `authoritativeValue`,
   and update `evidence` and `datePolicy`.
 - Cluster notes: update the P29 and Bell tails.
-- Run `npm run eval:qa:register`. Close a reopened entry, by a register-helper review, only when
-  the lead has read every one of its members. Leave every other entry at `reopen`, and record those
-  entries by count in the TODO, under the held-out maintenance owner question. This is the
-  orchestrator's answer 2 (1) in [QUESTION.md](QUESTION.md).
+- Run `npm run eval:qa:register`. Closure is all or none within one run. If any reopened entry
+  holds a member the lead may not open, close none of that run's reopened entries: every one stays
+  at `reopen` with no `reSwept` written, and the TODO, under the held-out maintenance owner
+  question, records the count of entries left open. Only when the lead has read every member of
+  every reopened entry does the run close them, by a register-helper review. This is the
+  orchestrator's answer 2 (1) in [QUESTION.md](QUESTION.md), applied more strictly so that which
+  entries close never reveals which hold an unreadable member.
 - The `reSwept.reason` template, the same for every entry:
   - what changed in the edited member;
   - the entry's subject;
@@ -346,8 +349,8 @@ proves nothing.
   - B otherwise, or X: the run date plus 7 days.
 - In B, the judge-facing wording changes as stated above. The edge, timing and history cases each
   get it, and the root cause is `freshness-drift`.
-- Write the Bell trap's dated extension through `--review` only if every member was read.
-  Otherwise leave it at `reopen`. Either way its quoted dates must equal the cases (the date-trap
+- Write the Bell trap's dated extension through `--review` only under the all-or-none closure
+  rule above. Otherwise leave it at `reopen`. Either way its quoted dates must equal the cases (the date-trap
   lint).
 - Change the vote sentinel to the new date, or remove it.
 - Run `schedule-followup.sh 2.1 r1 '<new vote + 1h | reverifyBy - 1d 18:00>' <new reverifyBy>`
@@ -480,8 +483,9 @@ The rehearsal (step 7) runs once after the merge. No case file is edited in this
 - **A reboot.** `Persistent=true` covers a missed fire. That the `hc` core restarts on the first
   `hc` call is assumed, not tested across a reboot.
 - **Quota.** A real lead that is `done` within 2 minutes fails loudly, and the watchdog backs it.
-- **Members a lane may not open.** Those entries stay at `reopen` (answer 2 (1)). They are
-  counted in the TODO, and the scripted scan is a warning signal only.
+- **Members a lane may not open.** If any exist among a run's reopened entries, the whole run's
+  entries stay at `reopen` (answer 2 (1), all or none). They are counted in the TODO, and the
+  scripted scan is a warning signal only.
 
 ## Needs from the orchestrator
 
@@ -497,7 +501,7 @@ The rehearsal (step 7) runs once after the merge. No case file is edited in this
 | 3 | Set membership by elimination | Adopted: held-out rule for committed files; sibling-check prints ids to stdout only; neutral `reSwept` template; per-entry splits and the sibling list removed from this plan |
 | 4 | Follow-up cannot start a lead | Adopted: run key, `schedule-followup.sh`, rehearsed in step 7 |
 | 5 | Merge authority unbounded; admin token | Adopted: May and Never lists, confirmed by the orchestrator (answer 2), with a cutoff added |
-| 6 | Register coverage | Adopted: pool derived from the register per run; per-run patterns; invariant fields; quoted dates; AddressV2 clause kept; closure by answer 2 (1): only entries with every member read are closed |
+| 6 | Register coverage | Adopted: pool derived from the register per run; per-run patterns; invariant fields; quoted dates; AddressV2 clause kept; closure by answer 2 (1), all or none per run: entries close only when every reopened entry was read in full |
 | 7 | Dormant sibling's pending answer | Adopted: staged edit; the other siblings get "no judge-facing change" with the reason |
 | 8 | Gaps in the edit per case | Adopted, all bullets |
 | 9 | Stalls go unnoticed; the alert path may be dead | Adopted: watchdogs, `gh issue` channel, early `done` fails |

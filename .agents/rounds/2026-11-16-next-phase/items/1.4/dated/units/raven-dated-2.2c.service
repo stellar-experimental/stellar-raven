@@ -1,7 +1,6 @@
 [Unit]
 Description=Raven round 2026-11-16 item 2.2c: start the dated Opus lead (SCF current round case, merge before 2026-12-05 00:00 UTC)
-StartLimitIntervalSec=12h
-StartLimitBurst=30
+StartLimitIntervalSec=0
 
 [Service]
 Type=oneshot

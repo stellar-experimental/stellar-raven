@@ -12,9 +12,12 @@
 # dated/<item>-LEAD.md and items.json (both on origin/main) names the item's cases and due date.
 #
 # Exit 0: started, or already done. Exit 1: retryable (fetch failed, brief or items.json not on
-# origin/main yet); the unit retries every 20 minutes. Exit 75: final (the worktree or branch exists,
-# hc run failed, or the lead did not take its task); the unit does not retry. The first failure of a
-# key alerts the owner on both channels, and so does every final failure.
+# origin/main yet, or an alert that no channel accepted before `hc run`); the unit retries every 20
+# minutes with no rate limit, so this script bounds the retries itself: past the run's cutoff it ends
+# with exit 75. Exit 75: final (the worktree or branch exists, hc run failed, the lead did not take
+# its task, or the cutoff passed); the unit does not retry. The first failure of a key alerts the
+# owner on both channels, and so does every final failure. The FAILED marker is written only after
+# an alert was accepted.
 set -euo pipefail
 export PATH="$HOME/.local/bin:$HOME/.bun/bin:/usr/local/bin:/usr/bin:/bin"
 unset HC_TERMINAL_ID
@@ -38,30 +41,58 @@ mkdir -p "$STATE"
 if [[ -n "$DRY" ]]; then exec > >(tee -a "$LOG") 2>&1; else exec >>"$LOG" 2>&1; fi
 log() { printf '%s %s\n' "$(date -u +%FT%TZ)" "$*"; }
 
-notify() { timeout 90 hc send "$ORCH" "$1" >/dev/null 2>&1 || log "orchestrator not reached (best effort): $1"; }
+notify() { timeout 60 hc send "$ORCH" "$1" >/dev/null 2>&1 || log "orchestrator not reached (best effort): $1"; }
 
-# Both channels: hc to the orchestrator (best effort), and a GitHub issue that needs no hc. The
-# label may not exist and this script never creates one, so the call retries without it.
+# Both channels: hc to the orchestrator, and a GitHub issue that needs no hc (a comment on an open
+# issue with the same title, else a new issue; the label may not exist and this script never creates
+# one, so the call retries without it). Each call is bounded. Returns 0 only if a channel accepted.
 alert() {
-  local title="Dated golden run $KEY: ${1:0:100}"
-  local body="Run $KEY: $1"$'\n\n'"Log on agentpc: $LOG"
-  notify "$1 (log: agentpc $LOG)"
-  gh issue create -R "$GH_REPO" --title "$title" --body "$body" --label dated-golden >/dev/null 2>&1 ||
-    gh issue create -R "$GH_REPO" --title "$title" --body "$body" >/dev/null 2>&1 ||
-    log "gh issue create failed (best effort)"
+  local title="Dated golden run $KEY: ${1:0:100}" body accepted=1 number
+  body="Run $KEY: $1"$'\n\n'"Log on agentpc: $LOG"
+  if timeout 60 hc send "$ORCH" "$1 (log: agentpc $LOG)" >/dev/null 2>&1; then accepted=0; else log "alert: hc channel did not accept"; fi
+  number=$(timeout 60 gh issue list -R "$GH_REPO" --state open --search "\"$title\" in:title" --json number,title 2>/dev/null |
+    jq -r --arg t "$title" '[.[] | select(.title == $t)][0].number // empty' 2>/dev/null) || number=""
+  if [[ -n "$number" ]]; then
+    timeout 60 gh issue comment "$number" -R "$GH_REPO" --body "$body" >/dev/null 2>&1 && accepted=0 || log "alert: issue comment failed"
+  elif timeout 60 gh issue create -R "$GH_REPO" --title "$title" --body "$body" --label dated-golden >/dev/null 2>&1 ||
+    timeout 60 gh issue create -R "$GH_REPO" --title "$title" --body "$body" >/dev/null 2>&1; then accepted=0
+  else log "alert: gh channel did not accept"; fi
+  return "$accepted"
 }
 
-# fail <exit code> <message>
+LAUNCHED=""
+# fail <exit code> <message>. An alert that no channel accepted leaves no marker. Before `hc run` it
+# turns a final failure into a retryable one, so a later attempt can deliver it; after `hc run` the
+# exit stays final and the delivery failure is only logged.
 fail() {
   local code="$1"; shift
   log "FAILED ($code): $*"
   if [[ -n "$DRY" ]]; then log "dry run: would alert"; exit "$code"; fi
-  if [[ "$code" == 75 || ! -e "$STATE/FAILED-$KEY.txt" ]]; then alert "did not start: $*"; fi
-  printf '%s %s\n' "$(date -u +%FT%TZ)" "$*" >"$STATE/FAILED-$KEY.txt"
+  if [[ "$code" == 75 || ! -e "$STATE/FAILED-$KEY.txt" ]]; then
+    if alert "did not start: $*"; then
+      printf '%s %s\n' "$(date -u +%FT%TZ)" "$*" >"$STATE/FAILED-$KEY.txt"
+    else
+      log "alert delivery failed on every channel"
+      [[ -n "$LAUNCHED" ]] || code=1
+    fi
+  fi
   exit "$code"
 }
 
+# The retry bound: a plain key uses the cutoff in items.json, a follow-up its due date at 20:00 UTC.
+check_cutoff() {
+  [[ -n "${CUTOFF:-}" && -z "${RAVEN_DATED_TEST:-}" ]] || return 0
+  local limit now; limit=$(date -u -d "$CUTOFF" +%s) || fail 75 "bad cutoff $CUTOFF"; now=$(date -u +%s)
+  if (( now > limit )); then fail 75 "missed cutoff $CUTOFF"; fi
+}
 log "start key=$KEY item=$ITEM slug=$SLUG dry=${DRY:-no}"
+if [[ -n "$RUN" ]]; then
+  [[ "${4:-}" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]] || fail 75 "follow-up $KEY needs a due date argument"
+  CUTOFF="${4}T20:00:00Z"
+else
+  CUTOFF=$(git -C "$REPO" show "origin/main:$DATED/items.json" 2>/dev/null | jq -r --arg i "$ITEM" '.[$i].cutoff // empty' 2>/dev/null) || CUTOFF=""
+fi
+check_cutoff
 if [[ "${RAVEN_DATED_TEST:-}" == 1 ]]; then
   WT="$HOME/code/raven-wt/np-$KEY-$SLUG"
   BRIEF="$WT/BRIEF.md"
@@ -73,6 +104,7 @@ else
   ENTRY=$(git -C "$REPO" show "origin/main:$DATED/items.json" 2>/dev/null | jq -ce --arg i "$ITEM" '.[$i] // empty') ||
     fail 1 "items.json, or item $ITEM in it, missing on origin/main"
   DUE="${4:-$(jq -r .due <<<"$ENTRY")}"
+  [[ -n "$CUTOFF" ]] || { CUTOFF=$(jq -r '.cutoff // empty' <<<"$ENTRY"); check_cutoff; }
   # Already done: every case of the item has a reverifyBy later than the due date. An item with no
   # cases (the rehearsal) is never done.
   if git -C "$REPO" show origin/main:eval/qa/cases.json |
@@ -96,35 +128,38 @@ fi
 if [[ -n "$DRY" ]]; then log "dry run: would hc run $NAME"; exit 0; fi
 
 TASK="Confirmed by the orchestrator, a direct instruction: read $BRIEF and do it. Run key: $KEY. Due: $DUE."
+# From here a lead may exist: every failure is final (75), and nothing ever starts a second lead.
+LAUNCHED=1
 OUT=$(hc run --json --bg --no-parent --name "$NAME" --cwd "$WT" -- \
   systemd-run --user --scope -q -p MemoryMax=8G -p MemorySwapMax=0 \
   claude --model opus --effort high --dangerously-skip-permissions "$TASK") || fail 75 "hc run failed: $OUT"
 log "hc run: $OUT"
-T=$(jq -r '.address // .id // empty' <<<"$OUT")
-[[ -n "$T" ]] || fail 75 "hc run returned no terminal address"
+T=$(jq -r '.address // .id // empty' <<<"$OUT" 2>/dev/null) || T=""
+[[ -n "$T" ]] || fail 75 "hc run returned no terminal address: $OUT"
 # The task is claude's argv prompt, so it is delivered unless a start-up dialog (folder trust, the
 # bypass-permissions warning) blocks it. Confirm that the agent took it: status working. A real
 # lead that is already done inside the window refused, hit a limit or asked a question: that fails.
+# Every command in the loop may fail on its own; a transient failure only costs one turn of the loop.
 SENT=false
 for attempt in $(seq 1 12); do
-  STATE_NOW=$(hc get "$T" --json 2>/dev/null | jq -r '.status.state // .state // empty')
-  log "check $attempt: status $STATE_NOW"
+  STATE_NOW=$(hc get "$T" --json 2>/dev/null | jq -r '.status.state // .state // empty' 2>/dev/null) || STATE_NOW=""
+  log "check $attempt: status ${STATE_NOW:-unreadable}"
   case "$STATE_NOW" in
     working) SENT=true; break ;;
     done)
       if [[ "${RAVEN_DATED_TEST:-}" == 1 ]]; then SENT=true; break; fi
-      log "lead is done inside the start window; screen:"; hc read --lines 0 "$T" 2>&1 | tail -25 || true
+      log "lead is done inside the start window; screen:"; { hc read --lines 0 "$T" 2>&1 | tail -25; } || true
       fail 75 "lead $T finished inside the start window (refused, hit a limit or asked a question); see the log" ;;
     blocked)
-      SCREEN=$(hc read --lines 0 "$T" 2>&1 || true)
-      log "blocked; screen:"; printf '%s\n' "$SCREEN" | tail -25
-      if grep -q "Yes, I accept" <<<"$SCREEN"; then hc keys "$T" down enter
-      elif grep -qi "trust" <<<"$SCREEN"; then hc keys "$T" enter
+      SCREEN=$(hc read --lines 0 "$T" 2>&1) || SCREEN=""
+      log "blocked; screen:"; printf '%s\n' "$SCREEN" | tail -25 || true
+      if grep -q "Yes, I accept" <<<"$SCREEN"; then hc keys "$T" down enter || log "hc keys failed"
+      elif grep -qi "trust" <<<"$SCREEN"; then hc keys "$T" enter || log "hc keys failed"
       fi ;;
   esac
   hc wait "$T" --timeout 10 >/dev/null 2>&1 || true
 done
-[[ "$SENT" == true ]] || fail 75 "lead $T started but did not take its task within about 2 minutes; see the log"
+[[ "$SENT" == true ]] || fail 75 "lead $T started but readiness could not be established within about 2 minutes; see the log"
 
 rm -f "$STATE/FAILED-$KEY.txt"
 log "lead $T ($NAME) running in $WT"

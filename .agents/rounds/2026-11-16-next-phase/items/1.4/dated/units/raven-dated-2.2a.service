@@ -1,7 +1,6 @@
 [Unit]
 Description=Raven round 2026-11-16 item 2.2a: start the dated Opus lead (Software Versions case, merge before 2026-12-01 00:00 UTC)
-StartLimitIntervalSec=12h
-StartLimitBurst=30
+StartLimitIntervalSec=0
 
 [Service]
 Type=oneshot

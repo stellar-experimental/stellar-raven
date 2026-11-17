@@ -87,22 +87,14 @@ change).
    failure (75) always alerts. The task line gained a second short sentence ("Run key: …. Due: ….")
    because a follow-up lead needs both. Test mode (`RAVEN_DATED_TEST=1`) is kept; `done` counts as
    success only there. No `--assignee` on the issue (the plan does not name one).
-5. **A thing to decide before 2026-11-23.** Outcomes B and X extend to "the run date plus 7 days" =
-   2026-11-30, which is not later than 2.2a's due date (2026-11-30), so 2.2a's launcher would not skip
-   its lead, and 2.1's follow-up (`reverifyBy - 1d 18:00` = 2026-11-29 18:00) would run before it on the
-   same Software Versions case. Briefs follow the plan as written. A date of 2026-12-02 or later for the
-   Software Versions and quantum cases would make 2.2a and 2.2b end in the launcher.
+5. **Bell follow-up dates.** Resolved by the lead and Codex finding 3: D is never before 2026-12-02,
+   and 2.1 schedules `2.1r1` and `2.2ar1` (see "Codex reconciliation").
 6. **Dry-run log.** The dry run wrote `~/.local/state/raven-dated/dry-2.2b.log` (the launcher's own log
    folder, a dry-run-only file name), and its `git fetch --prune` removed one stale remote-tracking ref
    in the shared repository, as the existing launcher's fetch does.
-7. **Residual inference.** The orchestrator's answer 2 (1) leaves register entries at `reopen` when a
-   member cannot be read. A committed register then shows which entries those are, so a reader can
-   infer that each holds a member outside the lead's reach. That is the accepted cost of answer 2 (1);
-   nothing in this item names a case.
-8. **Names in the lead's files.** `REVIEW.md` (the lead's file, committed with this item) names two
-   sibling ids in findings 7. They appear in `sibling-check.mjs`'s 2.1 output as openable, so they do
-   not reveal a non-tuning case, but the held-out rule says to name only edited siblings; the lead may
-   want to drop them.
+7. **Residual inference.** Superseded: closure is now all or none per run, so a closed or open
+   register is the same for every reopened entry of that run and shows no per-entry partition.
+8. **Names in the lead's files.** Resolved by the lead (two sibling ids redacted).
 9. **The 67 count** in the TODO is taken from PLAN.md; I could not re-derive it without reading cases
    outside the allowed set.
 10. **TODO shape.** The owner-decision text is a short `###` item with a "Done when" line, as the TODO's
@@ -120,3 +112,58 @@ change).
   the four lead and four watchdog timers, and record `systemctl --user list-timers`.
 - Merge this pull request before 2026-11-23 18:00 UTC, then run the rehearsal (PLAN.md step 7).
 - Decide deviation 5.
+
+## Codex reconciliation
+
+Finding numbers are those of `CODEX-REVIEW.md`; the lead's dispositions are in `briefs/exec-codex.md`.
+The lead's own edits (D never before 2026-12-02, the follow-up cutoff wording in `2.1-LEAD.md`, the
+redacted sibling ids in `REVIEW.md` and `briefs/review.md`, the TODO wording) are kept.
+
+1. **Write set.** PRESTAGE.md now lists the compiler outputs `lifecycle-registry.json` and, only when
+   changed, `tool-cases.json`, never hand-edited, in the write set, the merge "May" condition and the
+   section 7 commit instruction.
+2. **Membership disclosure.** `REVIEW.md` finding 3's evidence now holds the bracketed redaction line
+   and finding 6's "members of the Bell and SCF traps that the lane may not open" is redacted too.
+   Closure is all or none within a run (PRESTAGE.md sections 4 and 6, PLAN.md register paragraph,
+   risks and reconciliation row, the briefs, the TODO item). *Audit* of every new or changed file for
+   entry-specific membership statements, per-entry counts and read/unread partitions: PRESTAGE.md,
+   the five briefs, `sibling-check.mjs`, the launcher, watchdog and units, `items.json`, the TODO and
+   this file are clean; the only per-entry material is the list of entries each run reopens, which
+   follows from the dated cases' public membership. `QUESTION.md` (the verbatim question and answer)
+   says that a Bell or SCF edit reopens entries "that also hold cases outside tuning" as a class
+   statement without naming an entry or a count; I left that record unedited, and the lead may want
+   to decide whether to soften it.
+3. **Software Versions after a Bell follow-up.** In B or X, 2.1 schedules `2.1 r1` and `2.2a r1`
+   (fired 4 hours later), both with due D. `2.2a-LEAD.md` handles run key `2.2ar1` with D from the task
+   line (cutoff D 20:00 UTC, merge deadline D+1 00:00 UTC); a follow-up that again ends in B or X
+   extends its own cases, alerts and schedules nothing. `2.1r1` never edits Software Versions.
+4. **Start limit.** Units and `schedule-followup.sh` use `StartLimitIntervalSec=0` (no burst), with
+   `Restart=on-failure`, `RestartSec=20min` and `RestartPreventExitStatus=75` for the lead. The launcher
+   bounds retries itself: for a plain key the cutoff comes from `items.json` (read from the local
+   `origin/main` ref before the fetch, again after it), for a suffixed key it is the due date at 20:00
+   UTC, and after it the launcher does `fail 75 "missed cutoff <time>"`, which alerts.
+5. **Watchdog.** Rewritten: it checks that every expected id is present with a valid `reverifyBy`;
+   a failed fetch, `git` or `jq` step, a missing id or a malformed date alerts and exits 1; "ok" is
+   logged only after a positive check of every id; its services have `Restart=on-failure`,
+   `RestartSec=15min`, `StartLimitIntervalSec=0`; past the merge deadline it sends one final alert and
+   exits 0; it exits 1 when no alert channel accepted. Tested offline with stubbed `hc`, `gh` and a
+   scratch repository: ok, late, missing id, and both channels failing.
+6. **Launcher after `hc run`.** `hc get | jq`, the address parse, `hc read` and `hc keys` are guarded;
+   a transient failure costs one loop turn; any path that cannot establish readiness ends in
+   `fail 75` with the terminal address in the log; nothing starts a second lead.
+7. **Alert delivery.** Each channel is wrapped in `timeout 60`; `alert` returns 0 only if a channel
+   accepted; the `FAILED-<key>.txt` marker is written only after an accepted alert; with no accepted
+   alert the launcher exits 1 before `hc run` and keeps 75 after it; an open issue with the same title
+   gets a comment instead of a duplicate. Tested with stubs: cutoff missed with alert ok (exit 75,
+   marker), with no channel (exit 1, no marker), and a second retryable failure not re-alerting.
+8. **SCF corroboration.** PRESTAGE.md 2.2c: Scout is a retrieval comparison, not a second class; a
+   newly pinned phase or deadline needs an independent class-D source outside the awards page; "no
+   #47" needs an explicit dated web sweep; otherwise use source-relative wording or extend only.
+
+Gates re-run after these edits: `npm run typecheck` exit 0; `npm test` 166 files passed, 3680 tests
+passed; `npm run build` exit 0; `npm run eval:qa:lint -- --stale` 0 errors, 98 warnings;
+`npm run secrets:scan -- --tree` clean; `bash -n` and `node --check` clean;
+`systemd-analyze --user verify` exit 0 on the 16 units with the updated scripts in a scratch `HOME`,
+and on a generated follow-up unit pair (read by eye; `schedule-followup.sh` tested with a stub
+`systemctl`); the dry run against `2.2b` stops at "brief missing on origin/main", exit 1; a dry run of
+`2.1 r1` with a past due date stops at "missed cutoff", exit 75.

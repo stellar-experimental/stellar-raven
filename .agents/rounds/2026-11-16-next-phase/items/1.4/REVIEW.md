@@ -88,16 +88,8 @@ Evidence:
 
 - `.agents/TODO.md:56`: "never record which set a case is in". `eval/qa/README.md:227-228`: never
   copy a held-out or reserve id into a ledger.
-- PLAN.md:42-45 gives tuning and non-tuning counts per register entry, and PLAN.md:31 says all six
-  dated cases are tuning. The register is committed and lists each entry's ids. The Bell trap and
-  the SCF trap each hold exactly one id beyond the dated cases, and so does the activation
-  invariant. Subtraction names the non-tuning case in each.
-- PLAN.md:46-47 says each of six clusters has a non-tuning member. Two of those clusters have one
-  member beyond the dated cases.
-- PLAN.md:48-52 names eight ids as tuning.
-- PLAN.md:180-181 tells the dated lead to write a `reSwept.reason` that "names the tuning members
-  read". In a committed entry with a public member list, that is the same subtraction, repeated in
-  `consistency-register.json` on every closed entry.
+- [evidence redacted by the lead: it described which register entries allow identification by
+  subtraction. The class of leak: per-entry counts against the public register.]
 
 Change:
 
@@ -191,11 +183,10 @@ Change:
   the review (invariant `authoritativeValue`, `rule`, `acceptedSpellings`, `evidence`,
   `datePolicy`; cluster `note`). It says every quoted `reverifyBy` in a trap must equal the case,
   in 2.1, 2.2a and 2.2c alike. The new Bell trigger keeps the AddressV2 clause.
-- Decide now, while the orchestrator is present, whether a scripted count is enough for the
-  members of the Bell and SCF traps that the lane may not open. `golden-truth` §5 and the trap's
-  own `requiredRecheck` ask for a re-verification of every member when the trigger passes. Record
-  the answer in QUESTION.md. The alternatives are a further amendment before 11-23 or leaving
-  those two traps open after the runs.
+- Decide now, while the orchestrator is present, whether a scripted count is enough to close the
+  register entries that a lane cannot read in full. [Entry-specific wording redacted by the lead
+  under the held-out rule.] Record the answer in QUESTION.md. The alternatives are a further
+  amendment before 11-23 or leaving those entries open after the runs.
 
 ### 7. One sibling the lane may open states the pending state in its answer, with no staged edit
 
@@ -205,8 +196,8 @@ and it has no `reverifyBy`, so nothing else will catch it. PLAN.md:148-173 stage
 cases only.
 
 Change: stage the outcome A edit for that clause (a gospel change with its own evidence rows), and
-add its register entries to finding 6. For `q-protocol-ledger-close-time` and
-`q-zk-host-functions-status`, record "no judge-facing change" with the reason: their Bell mentions
+add its register entries to finding 6. For the two other openable siblings [ids redacted by the
+lead under the held-out rule of PLAN.md], record "no judge-facing change" with the reason: their Bell mentions
 are dated or structural, and the pending text is in judge-blind `truth.notes`, which the run
 refreshes.
 

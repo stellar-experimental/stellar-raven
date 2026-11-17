@@ -1,7 +1,10 @@
 [Unit]
 Description=Raven round 2026-11-16 item 2.2a: watchdog, alerts if the run has not merged (Software Versions case, merge before 2026-12-01 00:00 UTC)
+StartLimitIntervalSec=0
 
 [Service]
 Type=oneshot
 ExecStart=%h/.local/share/raven-dated/watchdog-dated.sh 2.2a
 TimeoutStartSec=5min
+Restart=on-failure
+RestartSec=15min

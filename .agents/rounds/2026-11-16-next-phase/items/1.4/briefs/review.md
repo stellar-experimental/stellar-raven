@@ -38,8 +38,8 @@ Questions to press:
 You may open these six case files only: `q-edge-fresh-latest-protocol-version`,
 `q-pc-protocol-upgrade-timing`, `q-protocol-version-history-list`,
 `q-infra-software-versions-current-protocol`, `q-hist-quantum-preparedness-plan`,
-`q-scf-current-round`, plus `q-pc-quantum-preparedness-dormant`, `q-protocol-ledger-close-time`,
-`q-zk-host-functions-status`. Open no other file under `eval/qa/corpus/`, never read a split file
+`q-scf-current-round`, plus `q-pc-quantum-preparedness-dormant` and two further sibling cases
+[ids redacted by the lead under the held-out rule of PLAN.md; the reviewer was given them]. Open no other file under `eval/qa/corpus/`, never read a split file
 under `~/backups`, and never read another case's fields out of `eval/qa/cases.json` or
 `sample.json` (search them only for ids already named here).
 

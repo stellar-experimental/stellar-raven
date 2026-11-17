@@ -39,18 +39,18 @@ SLUG=$(git -C "$REPO" show "origin/main:$ITEMS" | jq -er --arg i "$ITEM" '.[$i].
 [[ ! -e "$UNITS/raven-dated-$KEY.timer" ]] || { echo "raven-dated-$KEY already exists; remove it first" >&2; exit 2; }
 mkdir -p "$UNITS"
 
-# $1 unit name, $2 description, $3 ExecStart arguments, $4 OnCalendar, $5 restart policy (lead only)
+# $1 unit name, $2 description, $3 ExecStart, $4 OnCalendar, $5 RestartSec, $6 extra [Service] line (may be empty).
+# No start rate limit: the launcher and the watchdog bound their own retries.
 write_pair() {
   {
-    echo "[Unit]"; echo "Description=$2"
-    if [[ -n "$5" ]]; then echo "StartLimitIntervalSec=12h"; echo "StartLimitBurst=30"; fi
+    echo "[Unit]"; echo "Description=$2"; echo "StartLimitIntervalSec=0"
     echo; echo "[Service]"; echo "Type=oneshot"; echo "ExecStart=$3"; echo "TimeoutStartSec=15min"
-    if [[ -n "$5" ]]; then echo "Restart=on-failure"; echo "RestartSec=20min"; echo "RestartPreventExitStatus=75"; fi
+    echo "Restart=on-failure"; echo "RestartSec=$5"; [[ -z "$6" ]] || echo "$6"
   } >"$UNITS/$1.service"
   printf '[Unit]\nDescription=One-shot: %s\n\n[Timer]\nOnCalendar=%s UTC\nPersistent=true\nAccuracySec=1min\n\n[Install]\nWantedBy=timers.target\n' "$2" "$4" >"$UNITS/$1.timer"
 }
-write_pair "raven-dated-$KEY" "Raven dated run $KEY: start the Opus lead for item $ITEM (due $DUE)" "$BIN/launch-dated-lead.sh $ITEM $SLUG $RUN $DUE" "$FIRE" yes
-write_pair "raven-watchdog-$KEY" "Raven dated run $KEY: watchdog for item $ITEM (due $DUE)" "$BIN/watchdog-dated.sh $ITEM $DUE" "$DOG" ""
+write_pair "raven-dated-$KEY" "Raven dated run $KEY: start the Opus lead for item $ITEM (due $DUE)" "$BIN/launch-dated-lead.sh $ITEM $SLUG $RUN $DUE" "$FIRE" 20min "RestartPreventExitStatus=75"
+write_pair "raven-watchdog-$KEY" "Raven dated run $KEY: watchdog for item $ITEM (due $DUE)" "$BIN/watchdog-dated.sh $ITEM $DUE" "$DOG" 15min ""
 systemctl --user daemon-reload
 systemctl --user enable --now "raven-dated-$KEY.timer" "raven-watchdog-$KEY.timer"
 systemctl --user list-timers --all "raven-dated-$KEY.timer" "raven-watchdog-$KEY.timer" --no-pager

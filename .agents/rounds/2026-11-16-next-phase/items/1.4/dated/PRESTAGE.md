@@ -42,7 +42,10 @@ through `sibling-check.mjs`. Never commit or paste its id list.
 **Write set.** A run may change only:
 
 - its cases and the siblings it edits, under `eval/qa/corpus/battery/`;
-- `eval/qa/cases.json` and `eval/qa/sample.json`, from the compiler only;
+- the compiler outputs `eval/qa/cases.json`, `eval/qa/sample.json`, `eval/qa/lifecycle-registry.json`
+  and (only when the compiler changes it) `eval/qa/tool-cases.json`. They are never hand-edited:
+  `npm run eval:qa:compile` rebuilds them, and even a `reverifyBy`-only extension changes the
+  lifecycle registry's content hash;
 - `eval/qa/consistency-register.json`;
 - `eval/qa/source-sentinels.json`;
 - `test/source-sentinels.test.mjs`, with the staged edit in section 5 only;
@@ -60,7 +63,7 @@ edited ids predate the change. Class D evidence comes from the CLI's built-in we
 
 - May: push your own branch; open one pull request; run `gh pr merge <n> --squash` once all hold:
   `secrets` and `test` are green on the head commit, the re-derivation review is reconciled, you
-  have read the full diff, and the diff is inside the write set.
+  have read the full diff, and the diff is inside the write set (the compiler outputs included).
 - Never: `--admin` (the token is an admin; branch protection does not bind it); any change to
   protection, rulesets, workflows, `package.json` scripts, or lint or test logic (the staged sentinel
   test edit excepted); a push to `main`; a force push; merging another pull request; a deploy;
@@ -240,19 +243,28 @@ The first probe of a run that fires at 2026-11-23 18:00 UTC is probe 1.
 
 **Outcomes B and X in 2.1.**
 
-- Extend every Bell-dependent case to one date: the edge, timing, history, quantum and Software
-  Versions cases. B with a primary new date: that date plus 1 day. B otherwise, or X: the run date
-  plus 7 days.
+- Extend every Bell-dependent case to one date D: the edge, timing, history, quantum and Software
+  Versions cases. B with a primary new date: D = that date plus 1 day. B otherwise, or X: D = the
+  run date plus 7 days. Either way D is never earlier than 2026-12-02, so that 2.2a (due 11-30) and
+  2.2b (due 12-01) end in the launcher as "already done" and no two runs edit the same case.
 - In B the judge-facing wording changes as stated above, for the edge, timing and history cases, each
   with root cause `freshness-drift`. In X nothing judge-facing changes.
-- Write the Bell trap's dated extension through `--review` only if every member was read. Otherwise
-  leave it at `reopen`. Either way its quoted `q-… reverifyBy YYYY-MM-DD` dates must equal the cases.
+- Write the Bell trap's dated extension through `--review` only under the all-or-none closure rule
+  of section 6. Otherwise leave it at `reopen`. Either way its quoted `q-… reverifyBy YYYY-MM-DD`
+  dates must equal the cases.
 - Change the vote sentinel to the new date, or remove it.
-- Run `schedule-followup.sh 2.1 r1 '<new vote + 1h | reverifyBy - 1d 18:00>' <new reverifyBy>` from
-  `~/.local/share/raven-dated/`, and record its `list-timers` output. A second slip goes to the alert
-  channel, not to a third timer. The follow-up run key is `2.1r1`; it uses this same brief.
-- 2.2a and 2.2b then end in the launcher as "already done" if their cases moved later than their
-  due dates, and otherwise run normally.
+- Schedule two follow-ups from `~/.local/share/raven-dated/`, both with due date D, and record the
+  `list-timers` output. Let F be `<new vote + 1h | D - 1 day 18:00>`:
+  - `schedule-followup.sh 2.1 r1 'F' D`: run key `2.1r1`, this same brief;
+  - `schedule-followup.sh 2.2a r1 '<F + 4 hours>' D`: run key `2.2ar1`, the `2.2a-LEAD.md` brief,
+    which owns the Software Versions case on D.
+  Each follow-up takes D from its task line; its cutoff is D at 20:00 UTC and its merge deadline D+1
+  at 00:00 UTC (not the fields in `items.json`; the launcher refuses to start after the cutoff). A
+  follow-up run that again ends in B or X extends its own cases once more (run date plus 7 days),
+  schedules no timer, and alerts on both channels.
+- A follow-up `2.1r1` never edits the Software Versions case; `2.2ar1` does.
+- 2.2a (11-30) and 2.2b (12-01) then end in the launcher as "already done", because D is later than
+  both of their due dates.
 
 ## 5. Runs 2.2a, 2.2b and 2.2c
 
@@ -280,22 +292,34 @@ register and the Bell cases on `main`: if 2.1 already merged, its Bell trap edit
   `Protocol 29 \(Mainnet`). Extend by a quarter. Extra gates: `npm run improvements:lint` and
   `npm run improvements:index`.
 - **Mainnet still runs Protocol 29.** Extend as in 2.1 outcome B, and say so in REPORT.md.
+- **Run key `2.2ar1`** (a follow-up that 2.1 scheduled in outcome B or X). Your due date D comes from
+  the task line: your cutoff is D at 20:00 UTC and your merge deadline D+1 at 00:00 UTC. Do the same
+  three-state test as above. If you again end in "still Protocol 29" or an uncertain state, extend
+  your own case (run date plus 7 days), schedule nothing, and alert on both channels.
 - **Register:** cluster-024 and the Bell trap's quoted date.
 
 **2.2b, quantum preparedness case.** The launcher normally finds it done and starts no lead. If you
 run, 2.1 did not finish its case: apply the 2.1 quantum edit for the outcome the evidence supports
 (outcome A, B or X above), and the Bell register steps in section 6.
 
-**2.2c, SCF current round.** Sources: the awards page (class A) plus one more class (the Scout RFP
-feed, class C, or the SCF handbook). Both are read by `probe.mjs --scf`.
+**2.2c, SCF current round.** Sources: the awards page (class A), read by `probe.mjs --scf`, plus the independent second class
+named below.
 
 | Claim | Class | URL | observedAt | Value or quote |
 |---|---|---|---|---|
 | Phase and "Deadline to submit" of SCF #46, #45 | A | `https://communityfund.stellar.org/awards` | | |
 | "SCF #47" listed or not | A | the same page | | |
 | SCF #46 round dates (Panel Review, Community Vote) | A | the page's embedded round data | | |
-| Current round and phase | C | `https://stellarlight.xyz/api/rfps?status=open` (`meta.scfRound`) | | |
+| Current round and phase (retrieval comparison only: it mirrors the awards page) | C | `https://stellarlight.xyz/api/rfps?status=open` (`meta.scfRound`) | | |
+| A newly pinned phase or deadline, from outside the awards page (an SDF or SCF announcement) | D | the CLI's built-in web search | | |
+| No "SCF #47" published (negative claim: explicit sweep, dated) | D | the CLI's built-in web search, the SCF handbook, SDF announcements | | |
 
+- Scout mirrors the awards page and is the service under test, so it is a retrieval comparison and
+  never a second class. Pin a changed phase or deadline only with a second independent class: an SDF
+  or SCF announcement outside the awards page, found by the CLI's built-in web search (class D). Pin
+  "no SCF #47" only after an explicit dated web sweep, as a negative claim requires. With no
+  qualifying second class, use source-relative wording ("per the official SCF Awards page, observed
+  <timestamp>") or extend `reverifyBy` only.
 - Pin the observed state of SCF #46 and #47. `golden.answer` and key fact 2: replace "(SCF #46,
   Initial Review)" with the observed phase.
 - Rewrite the three sentinels `scf-46-submission-deadline`, `scf-47-not-listed` and `scf-45-ended` to
@@ -336,11 +360,19 @@ trap by its old `triggerDateEvent` text.
 
 The reopened list is whatever `npm run eval:qa:register` prints; the table is what to expect.
 
-**Closure rule** (orchestrator's answer 2 (1)). Close an entry only when you have read every one of
-its members in full: each member is a dated case or an id `sibling-check.mjs` printed. Leave every
-other entry at `reopen` (legal in CI) and record those entries by count in `.agents/TODO.md`, under
-"Decide whether golden maintenance may open held-out cases", replacing "none recorded yet" with the
-running count. The `sibling-check.mjs` scan is a warning signal only; it never closes an entry.
+**Closure rule** (orchestrator's answer 2 (1), applied all or none so that which entries close
+never shows which hold an unreadable member). For one run, check every reopened entry: each member
+must be a dated case or an id `sibling-check.mjs` printed.
+
+- If every member of every reopened entry was read in full, close all of them with the neutral
+  template below.
+- If any reopened entry holds a member you may not open, close none of that run's reopened entries.
+  Every one stays at `reopen` (legal in CI) with no `reSwept` written. Record the count of entries
+  left open in `.agents/TODO.md`, under "Decide whether golden maintenance may open held-out cases",
+  replacing "none recorded yet" with the running count.
+
+State no per-entry reason anywhere. The `sibling-check.mjs` scan is a warning signal only; it never
+closes an entry.
 
 **`reSwept.reason` template**, identical in form for every closed entry: "<what changed in the
 edited member>; <the entry's subject>; all members read." Name no member as read or unread, and no
@@ -350,7 +382,8 @@ count. Set `reSwept.date` equal to `lastChecked` and `verdict` to `consistent`.
 
 Run each bare and record a one-line summary in REPORT.md:
 
-- `npm run eval:qa:compile` (commit the regenerated `cases.json` and `sample.json`)
+- `npm run eval:qa:compile` (commit the regenerated `cases.json`, `sample.json`, `lifecycle-registry.json`
+  and, if it changed, `tool-cases.json`; never hand-edit them)
 - `npm run eval:qa:lint -- --since origin/main --stale --enforce-floors`
 - `npm run eval:qa:register`
 - `npm run eval:qa:sentinels -- --ids <changed sentinel ids>`
