@@ -41,8 +41,9 @@ Files: [CLASSIFICATION.md](CLASSIFICATION.md), [LEAVES.md](LEAVES.md),
     classes (rows 6, 8, 9); I re-verified each live and reclassed them to reached. It found one
     undercount (`ll-039`, id 4732) and one wording issue (`sd-111`); both fixed. Rows 14 to 17 and 20,
     `sd-112` and `sd-113` stand. Details in CLASSIFICATION.md.
-12. **Post.** Not yet. Waiting for the lead's push, then dry run and post of `ll-039`, `sd-112`,
-    `sls-121`, `sls-122`. `sd-111` and `sd-113` stay `verified` and unposted (no public tracker).
+12. **Post.** The lead pushed `6365c9e8`; each dry run passed (snapshot link on the pushed commit);
+    four issues posted and read back from GitHub (all open). `sd-111` and `sd-113` stay `verified`
+    and unposted (no public tracker).
 
 ## Gates (bare, after the last edit)
 
@@ -65,7 +66,12 @@ No `test:smoke`: `src/` is untouched.
 
 ## Upstream URLs posted
 
-None yet.
+- `ll-039`: https://github.com/lumenloop/lumenloop-backend/issues/52
+- `sd-112`: https://github.com/stellar/stellar-docs/issues/3163
+- `sls-121`: https://github.com/Stellar-Light/stellarlight/issues/1974
+- `sls-122`: https://github.com/Stellar-Light/stellarlight/issues/1975
+
+No comment was posted anywhere, and no pull request was opened.
 
 ## Deviations from the plan
 

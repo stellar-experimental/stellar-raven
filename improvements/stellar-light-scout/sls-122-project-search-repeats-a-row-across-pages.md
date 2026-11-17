@@ -1,7 +1,7 @@
 ---
 id: sls-122
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-11-17
 upstreamTitle: "Scout project search with q=wallet returns the Coca project twice, so pages overlap and total counts it once"
 evidence:
@@ -10,6 +10,7 @@ evidence:
   - "The repeat does not depend on page size. The same walk with limit=50 (4 pages) and limit=25 (8 pages) also returns 196 rows, 195 distinct, and coca twice."
   - "Control walks that return no repeat: q=stablecoin limit=100 (207 rows, 207 distinct, total 207) and q=defi limit=100 (199 rows, 199 distinct, total 199). The type=Wallet query returns 74 rows with total 74 and coca once."
   - "Dedupe 2026-11-17: sls-033 (resolved) covered exact Wallet enumeration with type=Wallet, which is clean. This finding covers the q= ranking path. No active Scout finding covers it."
+  - upstream issue filed 2026-11-17: https://github.com/Stellar-Light/stellarlight/issues/1975
 ---
 
 ## Finding
