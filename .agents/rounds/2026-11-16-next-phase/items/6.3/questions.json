@@ -1,0 +1,90 @@
+{
+  "questions": [
+    {
+      "key": "C1",
+      "question": "Simulate a transfer of a tokenized bond through Stellar RPC.",
+      "referenceUrls": [
+        "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/simulateTransaction",
+        "https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/transaction-simulation",
+        "https://developers.stellar.org/docs/tokens/stellar-asset-contract"
+      ]
+    },
+    {
+      "key": "C2",
+      "question": "How do I read a wallet balance for tokenized treasury assets?",
+      "referenceUrls": [
+        "https://developers.stellar.org/docs/data/apis/horizon/api-reference/resources/accounts",
+        "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/getLedgerEntries",
+        "https://developers.stellar.org/docs/tokens/stellar-asset-contract"
+      ]
+    },
+    {
+      "key": "C3",
+      "question": "How can an individual or small business tokenize a real-world asset on Stellar, and what legal structuring and compliance issues should they consider?",
+      "referenceUrls": [
+        "https://developers.stellar.org/docs/tokens/control-asset-access",
+        "https://stellar.org/solutions/real-world-assets",
+        "https://stellarlight.xyz/api/rwa"
+      ]
+    },
+    {
+      "key": "D1",
+      "question": "What real-world-asset (RWA) products are live on Stellar?",
+      "referenceUrls": [
+        "https://app.rwa.xyz/networks/stellar",
+        "https://stellarlight.xyz/api/rwa",
+        "https://stellar.org/solutions/real-world-assets"
+      ]
+    },
+    {
+      "key": "D2",
+      "question": "Has anything like tokenized real-world assets or on-chain funds been funded through the SCF?",
+      "referenceUrls": [
+        "https://communityfund.stellar.org/projects",
+        "https://stellarlight.xyz/api/rwa"
+      ]
+    },
+    {
+      "key": "D3",
+      "question": "What were the notable DeFi and RWA launches on Stellar in 2025?",
+      "referenceUrls": [
+        "https://stellar.org/blog/foundation-news/2025-year-in-review",
+        "https://stellar.org/solutions/real-world-assets",
+        "https://stellarlight.xyz/api/rwa"
+      ]
+    },
+    {
+      "key": "D4",
+      "question": "What is Franklin Templeton's BENJI / on-chain money fund on Stellar?",
+      "referenceUrls": [
+        "https://stellar.org/case-studies/franklin-templeton",
+        "https://stellar.org/solutions/real-world-assets",
+        "https://stellarlight.xyz/api/rwa"
+      ]
+    },
+    {
+      "key": "N1",
+      "question": "Does Stellar fund academic research, and how would a university researcher apply?",
+      "referenceUrls": [
+        "https://stellar.org/grants-and-funding",
+        "https://communityfund.stellar.org/projects"
+      ]
+    },
+    {
+      "key": "N2",
+      "question": "How does SEP-8 add per-transaction approval for regulated assets, and what does it require in stellar.toml?",
+      "referenceUrls": [
+        "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0008.md",
+        "https://developers.stellar.org/docs/learn/fundamentals/stellar-ecosystem-proposals"
+      ]
+    },
+    {
+      "key": "N3",
+      "question": "How do I reconstruct an account's full asset balances as of a specific past date via Hubble/BigQuery and compute their USD value with historical price data?",
+      "referenceUrls": [
+        "https://developers.stellar.org/docs/data/analytics/hubble",
+        "https://developers.stellar.org/docs/data/analytics/hubble/data-catalog"
+      ]
+    }
+  ]
+}

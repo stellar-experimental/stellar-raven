@@ -1,0 +1,543 @@
+{
+  "judge": "claude-opus-5-5 (--model opus, effort high), blind; un-blinded with tmp/6.3/rt/blind-key.json",
+  "attributionJudge": "claude-fable (--model fable, effort high), one session over 4 items",
+  "verdicts": [
+    {
+      "key": "C1",
+      "sample": 1,
+      "excluded": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "included": {
+        "correctness": "partial",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": [
+          "States that tokenized bonds and treasury funds on Stellar are Soroban contract tokens and that no bond token is in the roster; the registry lists classic-asset bonds and treasuries (e.g. Bitbond's BB1 tokenized bond, Etherfuse USTRY, BENJI) and a Soroban 'VuMe Bond 2030' (TPT30)."
+        ]
+      },
+      "reasonAsWritten": "Both describe the simulateTransaction flow accurately; X wrongly asserts that bonds on Stellar are Soroban-only.",
+      "judgeLabels": {
+        "X": "included",
+        "Y": "excluded"
+      }
+    },
+    {
+      "key": "C1",
+      "sample": 2,
+      "excluded": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "included": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "reasonAsWritten": "Both describe a correct simulateTransaction flow; X's recording/enforcing auth-mode note matches the docs, and Y's SDK script and registry contract IDs are accurate.",
+      "judgeLabels": {
+        "X": "excluded",
+        "Y": "included"
+      }
+    },
+    {
+      "key": "C1",
+      "sample": 3,
+      "excluded": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "included": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "reasonAsWritten": "Both give a doc-accurate simulateTransaction flow (invokeHostFunction transfer, request shape, result handling); CLI and error-code details in X match the CLI guides.",
+      "judgeLabels": {
+        "X": "excluded",
+        "Y": "included"
+      }
+    },
+    {
+      "key": "C2",
+      "sample": 1,
+      "excluded": {
+        "correctness": "partial",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": [
+          "Claims Horizon asset statistics return `amount` (total issued) and `num_accounts` (trustline count); the current Horizon Asset object documents `balances` and `accounts` (grouped by trustline flag state) and no longer lists `amount` or `num_accounts`."
+        ]
+      },
+      "included": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "reasonAsWritten": "Both give the classic-trustline and SEP-41 balance paths correctly; X adds registry-accurate issuers/contract IDs, Y has one outdated Horizon field claim.",
+      "judgeLabels": {
+        "X": "included",
+        "Y": "excluded"
+      }
+    },
+    {
+      "key": "C2",
+      "sample": 2,
+      "excluded": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "included": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "reasonAsWritten": "Both correctly describe Horizon trustline balances vs SEP-41 balance(); Y's treasury asset table, decimals and auth/clawback flags match the registry.",
+      "judgeLabels": {
+        "X": "excluded",
+        "Y": "included"
+      }
+    },
+    {
+      "key": "C2",
+      "sample": 3,
+      "excluded": {
+        "correctness": "partial",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": [
+          "Claims `server.assets().forCode().forIssuer()` returns `amount` (total issued) and `num_accounts` (trustline count); the current Horizon Asset object documents `balances` and `accounts` instead and no longer lists those fields."
+        ]
+      },
+      "included": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "reasonAsWritten": "X gives the classic and Soroban paths with registry-accurate IDs and a correct `stellar token balance` CLI usage; Y is generic and has one outdated Horizon field claim.",
+      "judgeLabels": {
+        "X": "included",
+        "Y": "excluded"
+      }
+    },
+    {
+      "key": "C3",
+      "sample": 1,
+      "excluded": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "included": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "reasonAsWritten": "Both correctly cover the classic-asset issuance path, issuer flags, SEP-8/SEP-57 and appropriately flagged general legal considerations.",
+      "judgeLabels": {
+        "X": "excluded",
+        "Y": "included"
+      }
+    },
+    {
+      "key": "C3",
+      "sample": 2,
+      "excluded": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "included": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "reasonAsWritten": "Both give the documented issuance path, issuer flags and SEP-8/SEP-57 options, plus clearly labeled general legal guidance.",
+      "judgeLabels": {
+        "X": "excluded",
+        "Y": "included"
+      }
+    },
+    {
+      "key": "C3",
+      "sample": 3,
+      "excluded": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "included": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "reasonAsWritten": "Both give a documented issuance path and controls; X's SDF Q3 2026 and SEC wrapped/native citations and Y's hot-account and 0.5 XLM reserve points check out.",
+      "judgeLabels": {
+        "X": "included",
+        "Y": "excluded"
+      }
+    },
+    {
+      "key": "D3",
+      "sample": 1,
+      "excluded": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "included": {
+        "correctness": "partial",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": [
+          "Lists only registry rows with 2025 launch dates and names no 2025 DeFi launches; omits headline 2025 launches such as Franklin Templeton's Luxembourg fund, Ondo's USDY, RedSwan's $100M real estate and PYUSD."
+        ]
+      },
+      "reasonAsWritten": "X's dated list and the $785M year-end figure check out; Y's registry figures are accurate but cover only part of the question.",
+      "judgeLabels": {
+        "X": "excluded",
+        "Y": "included"
+      }
+    },
+    {
+      "key": "D3",
+      "sample": 2,
+      "excluded": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "included": {
+        "correctness": "partial",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": [
+          "Omits notable 2025 RWA launches documented by SDF, notably Ondo's USDY launch on Stellar (stellar.org press, 2025-09-17), Franklin Templeton's 2025 Luxembourg fund launch and PYUSD going live."
+        ]
+      },
+      "reasonAsWritten": "Y's dated list (Franklin, Archax, 21X, Ondo, Centrifuge, RedSwan, Turbo Energy, Templar) checks out against press pages; X's items check out but miss Ondo, Franklin and PYUSD.",
+      "judgeLabels": {
+        "X": "included",
+        "Y": "excluded"
+      }
+    },
+    {
+      "key": "D3",
+      "sample": 3,
+      "excluded": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "included": {
+        "correctness": "partial",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": [
+          "States the registry does not name the issuers of the 2025 tokenized real-estate tokens; the registry lists an issuerEntity for each (e.g. Olympus Capital Real Estate, LLC for Sedona Ranch, Goldman Investments R&B Towers Owner LP for RSRB).",
+          "Omits the 2025 launches SDF's 2025 year-in-review highlights, such as Franklin Templeton's expansion, PayPal's PYUSD going live, RedSwan's $100M real estate and Ondo's USDY (stellar.org press, 2025-09-17)."
+        ]
+      },
+      "reasonAsWritten": "Y covers Franklin, Centrifuge, Ondo, RedSwan, PYUSD with figures matching its cited SDF review; X is registry-centric, misstates the registry on issuers and misses the headline launches.",
+      "judgeLabels": {
+        "X": "included",
+        "Y": "excluded"
+      }
+    },
+    {
+      "key": "N1",
+      "sample": 1,
+      "excluded": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "included": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "reasonAsWritten": "Both accurately reproduce the program page's scope, eligibility/gift terms, deadlines and proposal outline, with correct supporting SDF posts.",
+      "judgeLabels": {
+        "X": "included",
+        "Y": "excluded"
+      }
+    },
+    {
+      "key": "N1",
+      "sample": 2,
+      "excluded": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "included": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "reasonAsWritten": "Both accurately reproduce the Academic Research Grants page (quarterly deadlines, 2/year, 3-page PDF outline, $150K cap, ~$75K average) and the 14-groups 2024 figure.",
+      "judgeLabels": {
+        "X": "excluded",
+        "Y": "included"
+      }
+    },
+    {
+      "key": "N1",
+      "sample": 3,
+      "excluded": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "included": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "reasonAsWritten": "Both match the research-grants page; X also correctly covers eligibility (degree-granting institution, PI status, gifts to institutions).",
+      "judgeLabels": {
+        "X": "excluded",
+        "Y": "included"
+      }
+    },
+    {
+      "key": "N2",
+      "sample": 1,
+      "excluded": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "included": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "reasonAsWritten": "Both match the SEP-8 spec on flags, stellar.toml fields, transaction composition and approval-server statuses; the Go reference server removal (Oct 2025) is confirmed.",
+      "judgeLabels": {
+        "X": "included",
+        "Y": "excluded"
+      }
+    },
+    {
+      "key": "N2",
+      "sample": 2,
+      "excluded": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "included": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "reasonAsWritten": "Both match the SEP-8 spec: AUTH_REQUIRED+AUTH_REVOCABLE, regulated/approval_server/approval_criteria in stellar.toml, the authorize-pay-deauthorize composition and the five response statuses.",
+      "judgeLabels": {
+        "X": "excluded",
+        "Y": "included"
+      }
+    },
+    {
+      "key": "N2",
+      "sample": 3,
+      "excluded": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "included": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "reasonAsWritten": "Both are consistent with the SEP-8 spec (Status Active) on approval flow and stellar.toml fields.",
+      "judgeLabels": {
+        "X": "included",
+        "Y": "excluded"
+      }
+    },
+    {
+      "key": "N3",
+      "sample": 1,
+      "excluded": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "included": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "reasonAsWritten": "Both correctly combine SCD2 accounts/trustlines snapshots with Reflector daily prices, with caveats that match the data dictionary.",
+      "judgeLabels": {
+        "X": "excluded",
+        "Y": "included"
+      }
+    },
+    {
+      "key": "N3",
+      "sample": 2,
+      "excluded": {
+        "correctness": "partial",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": [
+          "Says no historical price table exists in Hubble and falls back to external price sources; Hubble's silver layer has reflector_prices_data_sdex_snapshot and reflector_prices_data_cex_snapshot with daily open/high/low/close_usd, so the USD-valuation half is not answered from Hubble."
+        ]
+      },
+      "included": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "reasonAsWritten": "X covers both balance routes and the Reflector price join; Y gets the snapshot balances right but misses Hubble's historical price tables.",
+      "judgeLabels": {
+        "X": "included",
+        "Y": "excluded"
+      }
+    },
+    {
+      "key": "N3",
+      "sample": 3,
+      "excluded": {
+        "correctness": "partial",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": [
+          "Asserts that the accounts_snapshot, trustlines_snapshot and Reflector snapshot tables are in `crypto-stellar.crypto_stellar`; the Hubble data-dictionary examples query these snapshots at `crypto-stellar.snapshots.*`, so the SQL as written likely targets the wrong dataset."
+        ]
+      },
+      "included": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "reasonAsWritten": "Both use the documented SCD2 snapshots and Reflector close_usd correctly; Y adds the gold account_balances_daily_agg route and flags the dataset path as unconfirmed, while X states it as fact.",
+      "judgeLabels": {
+        "X": "excluded",
+        "Y": "included"
+      }
+    }
+  ],
+  "attribution": [
+    {
+      "pair": "D3:3",
+      "valid": true,
+      "items": [
+        {
+          "n": 1,
+          "deficiency": "States the registry does not name the issuers of the 2025 tokenized real-estate tokens; the registry lists an issuerEntity for each (e.g. Olympus Capital Real Estate, LLC for Sedona Ranch, Goldman Investments R&B Towers Owner LP for RSRB).",
+          "valid": true,
+          "involvesRegistry": true,
+          "problem": null,
+          "answerQuote": "Issuers are not named in the registry.",
+          "toolQuote": "{\"n\":\"Sedona Ranch\",\"s\":\"RSR\",\"c\":\"Real Estate\",\"l\":\"2025-09-19\",\"v\":8202000,\"st\":\"issued-single-holder\",\"p\":null,"
+        },
+        {
+          "n": 2,
+          "deficiency": "Omits the 2025 launches SDF's 2025 year-in-review highlights, such as Franklin Templeton's expansion, PayPal's PYUSD going live, RedSwan's $100M real estate and Ondo's USDY (stellar.org press, 2025-09-17).",
+          "valid": true,
+          "involvesRegistry": true,
+          "problem": null,
+          "answerQuote": "Sedona Ranch (RSR), valued at about $8.2M.",
+          "toolQuote": "{\"n\":\"Sedona Ranch\",\"s\":\"RSR\",\"c\":\"Real Estate\",\"l\":\"2025-09-19\",\"v\":8202000,\"st\":\"issued-single-holder\",\"p\":null,"
+        }
+      ]
+    },
+    {
+      "pair": "D3:2",
+      "valid": true,
+      "items": [
+        {
+          "n": 1,
+          "deficiency": "Omits notable 2025 RWA launches documented by SDF, notably Ondo's USDY launch on Stellar (stellar.org press, 2025-09-17), Franklin Templeton's 2025 Luxembourg fund launch and PYUSD going live.",
+          "valid": true,
+          "involvesRegistry": true,
+          "problem": null,
+          "answerQuote": "| EU T-Bills fund | EUTBL | about $441.7M |",
+          "toolQuote": "[\"Spiko EU T-Bills Money Market Fund\",\"EUTBL\",\"non-US Government Debt\",\"2025-10-01\",441692137.3035398,\"Spiko\",\"spiko\"]"
+        }
+      ]
+    },
+    {
+      "pair": "D3:1",
+      "valid": true,
+      "items": [
+        {
+          "n": 1,
+          "deficiency": "Lists only registry rows with 2025 launch dates and names no 2025 DeFi launches; omits headline 2025 launches such as Franklin Templeton's Luxembourg fund, Ondo's USDY, RedSwan's $100M real estate and PYUSD.",
+          "valid": true,
+          "involvesRegistry": true,
+          "problem": null,
+          "answerQuote": "EUTBL, EU T-Bills fund: about $441.7M valuation, 2,334 holders.",
+          "toolQuote": "[\"Spiko EU T-Bills Money Market Fund\",\"EUTBL\",\"Spiko\",\"rwa-asset\",\"non-US Government Debt\",\"2025-10-01\",\"live\",441692137.3035398,2334,\"spiko\",null]"
+        }
+      ]
+    },
+    {
+      "pair": "C1:1",
+      "valid": true,
+      "items": [
+        {
+          "n": 1,
+          "deficiency": "States that tokenized bonds and treasury funds on Stellar are Soroban contract tokens and that no bond token is in the roster; the registry lists classic-asset bonds and treasuries (e.g. Bitbond's BB1 tokenized bond, Etherfuse USTRY, BENJI) and a Soroban 'VuMe Bond 2030' (TPT30).",
+          "valid": true,
+          "involvesRegistry": true,
+          "problem": null,
+          "answerQuote": "Tokenized bonds and treasury funds on Stellar are Soroban contract tokens.",
+          "toolQuote": "{\"n\":\"Spiko US T-Bills Money Market Fund\",\"s\":\"USTBL\",\"c\":\"CARUUX2FZNPH6DGJOEUFSIUQWYHNL5AVDV7PMVSHWL7OBYIBFC76F4TO\",\"k\":\"rwa-asset\",\"st\":\"live\""
+        }
+      ]
+    }
+  ],
+  "outcome": {
+    "outcome": "exclude",
+    "inconclusiveReasons": [],
+    "firedClauses": [
+      "D3: attributableDrop (3)"
+    ],
+    "carriedFailed": []
+  }
+}

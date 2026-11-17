@@ -504,7 +504,19 @@ Held by this item:
 
 - `GET /api/rwa` stays excluded until check 8 passes;
   [issue #167](https://github.com/stellar-experimental/stellar-raven/issues/167) tracks its
-  three deferred controls. `GET /api/quality` stays excluded (response-schema keywords caused
+  three deferred controls. A pre-registered answer A/B (round item 6.3, Sonnet 5.5, 10 pairs, blind
+  Opus judge, 2026-11-17) returned exclude on one clause: one attributable drop on a mixed-intent
+  control (INCLUDED partial against EXCLUDED correct, with a registry call). It found no wrong
+  registry call, no bad answer, no loss on the displacement or registry questions, and no registry
+  call on the three off-target questions. See
+  [RESULTS.md](rounds/2026-11-16-next-phase/items/6.3/RESULTS.md). A pre-registered 3-sample
+  re-test (round item 6.3, result 2: 42 answers, Sonnet 5.5, blind Opus grader, Fable attribution)
+  also returned exclude, on one question: on "notable DeFi and RWA launches of 2025" the INCLUDED
+  answer stopped at registry rows and missed the headline launches in all three samples (a
+  completeness loss, not an accuracy one). Result 1's control drop did not repeat, and the registry
+  did not hurt the controls or off-target questions. See
+  [RESULTS-2.md](rounds/2026-11-16-next-phase/items/6.3/RESULTS-2.md). The A/B is not re-run on
+  routine drift; a re-test needs an owner or orchestrator decision. `GET /api/quality` stays excluded (response-schema keywords caused
   unrelated captures). `reviewSubmission`, `analyzeHackathonSubmissions`,
   `getHackathonSubmission`, and `locateSource` stay excluded.
 - Three mixed-intent controls run as `it.fails` in `test/drift-141-routing.test.ts`. Remove the
@@ -550,7 +562,9 @@ Acceptance checks:
 6. Strong Docs evidence remains eligible after five weak gated Scout candidates.
 7. All eight regression rows meet their clean grades.
 8. A general RWA query reaches `scout.getRwaAssets`, while unrelated Friendbot, RPC, WASM,
-   simulation, and balance questions do not capture it.
+   simulation, and balance questions do not capture it. The proposed answer-level form ("the
+   target stays rank 1 and answers do not degrade") was tested in round item 6.3 and not adopted,
+   because the pre-registered rule returned exclude.
 9. The leaderboard and RFP improvements remain.
 10. The legacy, skills, and holdout routing gates pass. The extended diagnostic shows no
     regression.
@@ -684,6 +698,9 @@ Raven has no local workaround. A fix such as
 collides with Raven's. When a release carries the fix, re-run the item 5.2 scratch test (source in
 [`items/5.2/EXEC.md`](rounds/2026-11-16-next-phase/items/5.2/EXEC.md), "Reproduction") and retire
 `cs-012` under the `improvements-pipeline` skill.
+
+Issue #167 does not depend on cloudflare/agents#2296 (Raven vendors its scorer), so #167 no longer
+tracks it and this item keeps the watch.
 
 Done when: an upstream or general local repair passes the original triggers, the positive
 controls, and Raven's routing gates.
