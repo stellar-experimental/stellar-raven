@@ -71,7 +71,9 @@ Two authored operations in [`specs/stellar-org.json`](../../specs/stellar-org.js
   `{ kind, title, description, url, tags }` with `url` rebuilt on the fixed origin from a checked
   slug. Partner rows return one hit per partner with the same fields, `url`
   `https://stellar.org/ecosystem?partner=<slug>`, and the directory categories as `tags`. Other
-  external rows and unknown kinds are dropped. Descriptions are clipped at 500 characters. The
+  external rows and unknown kinds are dropped. Descriptions are clipped at 500 characters;
+  titles, and an audit's `project` and `firm` (split from the full title first), at 300; tags are
+  at most 10 of at most 200 characters. A clipped value ends with `…`. The
   result is `{ hits, meta: { candidates } }`. The blog, press, and events filter is kept because
   Scout or Lumenloop returned a stellar.org post under those prefixes for each of ten sampled
   questions (SORG-GENERAL). The search body is read up to 256,000
@@ -79,9 +81,14 @@ Two authored operations in [`specs/stellar-org.json`](../../specs/stellar-org.js
 - `stellarOrg.get_page({ path })` fetches `https://stellar.org<path>`. The path must be
   site-relative with unreserved characters only (no `%`, since `fetch` decodes `%2e` dot segments
   and the server decodes encoded letters) and no `//`, dot segments, query, fragment, or `/api`
-  prefix. Redirects are followed only to a same-origin path without a query (at most three hops),
-  and one call, redirects included, is bounded to 24 s. A body over 2,000,000 bytes is refused. The adapter keeps the first `<main>` element's text,
-  skips script, style, SVG, and similar elements, writes headings as `#` lines and list items as
+  prefix (in any letter case). Redirects are followed only to a same-origin path without a query (at most three hops),
+  and one call, redirects included, is bounded to 24 s. A body over 2,000,000 bytes is refused.
+  An error shows at most 200 characters of a redirect target or content type, ending with `…`.
+  The adapter keeps the first `<main>` element's text. It skips `script`, `style`, `noscript`,
+  `iframe`, and `title` as raw text (everything up to the end tag, whatever it contains; no end
+  tag skips the rest of the page) and `svg`, `template`, and `head` as nested elements. The
+  document title is the first `<title>` outside comments, raw text, `svg`, and `template`, clipped
+  at 300. The adapter writes headings as `#` lines and list items as
   `- ` lines, drops responsive duplicate lines, and cuts content at 40,000 characters with
   `truncated: true`. A 404 or 410, or a page with no server-side `<main>` text, is soft-empty;
   every other failure is an error.
