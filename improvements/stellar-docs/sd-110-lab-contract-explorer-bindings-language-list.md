@@ -20,7 +20,7 @@ evidence:
   - "Same site, correct claim: GET https://developers.stellar.org/docs/tools/cli/stellar-cli.md (2026-11-14) lines 292 to 298 list typescript as deprecated and python, java, flutter, swift, php, and kmp as \"requires external plugin\". The resolved finding sd-052 fixed that manual on 2026-10-02."
   - "2026-11-14: a model answering from Stellar Docs search retrieved this Contract Explorer section and quoted it, attributed to the Lab Contract Explorer, as the CLI's binding language coverage (baseline run 2026-11-14T20-13-51-variantA, q-soroban-cli-bindings)."
   - "Classification: docs-content. The section undertakes to say which languages the CLI binding command covers and names one that does not exist and two that the CLI does not generate."
-  - "Affected golden case: eval/qa/corpus/battery/soroban/q-soroban-cli-bindings.json (key fact 3; no golden change). Ledger: .agents/rounds/2026-11-14-baseline-tuning/CASE-DEFECTS.md."
+  - "Affected golden case: eval/qa/corpus/battery/soroban/q-soroban-cli-bindings.json (key fact 3). 2026-11-17: the case's golden.notes now cap an attributed quote of the Lab page at partial while this finding stands, and truth.verified.rootCause names this file (round item 1.3). Ledger: .agents/rounds/2026-11-14-baseline-tuning/CASE-DEFECTS.md."
   - upstream issue filed 2026-11-14: https://github.com/stellar/stellar-docs/issues/3151
 recurrences:
   - date: 2026-11-17

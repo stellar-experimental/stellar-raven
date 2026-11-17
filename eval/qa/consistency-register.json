@@ -1412,7 +1412,7 @@
           "q-soroban-cli-bindings",
           "q-ti-scaffold-stellar"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-11-14",
         "reSwept": {
           "date": "2026-11-14",
@@ -1423,8 +1423,12 @@
         "memberContentSha256": {
           "q-sor-build-target-wasm32v1": "db97b55e4c3c7248ba176972b9be50c4274fc7a47e59dc12411b33f2bbe07ec0",
           "q-sor-deploy-invoke-from-js-sdk": "6e836adae846cbcb7a1ef69b870cdf6662094975d43dd7b224c2b8c3293f5a7b",
-          "q-soroban-cli-bindings": "291bc3c4bce8cb8d7c54ee85c47879a06651a5da9c54886148639c7fc2c2eb06",
+          "q-soroban-cli-bindings": "ed6d17f3bea4b14355684a7aeff4340b122a9b9d8c16aa548b4b23dffcd480bd",
           "q-ti-scaffold-stellar": "33da387ed56e880c1ce8d50c66402752b91c2259cf14be00fed9a797bc669a90"
+        },
+        "reopened": {
+          "date": "2026-11-17",
+          "reason": "member-content-changed"
         }
       },
       {
@@ -1516,7 +1520,7 @@
           "q-soroban-cli-bindings",
           "q-soroban-deploy-cli"
         ],
-        "verdict": "consistent",
+        "verdict": "reopen",
         "lastChecked": "2026-11-14",
         "reSwept": {
           "date": "2026-11-14",
@@ -1525,8 +1529,12 @@
         },
         "note": "corrected; owner candidate captured in research. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
-          "q-soroban-cli-bindings": "291bc3c4bce8cb8d7c54ee85c47879a06651a5da9c54886148639c7fc2c2eb06",
+          "q-soroban-cli-bindings": "ed6d17f3bea4b14355684a7aeff4340b122a9b9d8c16aa548b4b23dffcd480bd",
           "q-soroban-deploy-cli": "71b9fc99850b096b8934c73c7fc38fb7e93de41f50e8936e2744c8bef040819e"
+        },
+        "reopened": {
+          "date": "2026-11-17",
+          "reason": "member-content-changed"
         }
       },
       {
