@@ -658,6 +658,22 @@ describe("htmlToText and mainHtml", () => {
     expect(htmlToText("<svg><script>x</svg><p>after</p>")).toBe("after");
   });
 
+  it("keeps svg context inside a skipped template or head", async () => {
+    expect(htmlToText(mainHtml("<main>before<template><svg><title/></svg></template><p>after</p></main>"))).toBe("before\nafter");
+    expect(htmlToText(mainHtml("<main>before<template><svg><style/><path/></svg></template><p>after</p></main>"))).toBe("before\nafter");
+    expect(htmlToText(mainHtml("<head><svg><title/></svg></head><main>real</main>"))).toBe("real");
+    expect(htmlToText("<template><svg><svg><title/></svg><style/></svg><script>x</script></template><p>after</p>")).toBe("after");
+    const result = await callStellarOrg(PAGE, { path: "/t" }, async () =>
+      html("<head><svg><title/></svg></head><main>before<template><svg><title/></svg></template><p>after</p></main>")
+    );
+    expect(result).toMatchObject({ ok: true, data: { content: "before\nafter" } });
+  });
+
+  it("collapses a literal no-break space like its entity", () => {
+    expect(htmlToText("<main>A\u00a0\u00a0B</main>")).toBe("A B");
+    expect(htmlToText("<main>A&nbsp;&nbsp;B</main>")).toBe("A B");
+  });
+
   it("drops comments and keeps the text around them", () => {
     expect(htmlToText("<p>a<!-- <p>hidden</p> -->b</p>")).toBe("ab");
   });

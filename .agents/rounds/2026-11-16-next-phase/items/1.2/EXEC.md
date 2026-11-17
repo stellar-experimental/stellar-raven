@@ -93,3 +93,29 @@ comparison was not needed.
 
 Targets from R9: the two-step end-tag search in `scan` (R1), `svg` content (R2), and the live diff
 above (R6). The scanner is the `scan` generator and `END_TAG_RES`.
+
+## Fix review reconciliation
+
+Source: `CODEX-FIX-REVIEW.md` (commit `272939f5`). Brief: `briefs/exec-fixes.md`. All three adopted.
+
+- **Y1 (should fix).** `scan` keeps an `svgDepth` counter, updated on every `svg` start tag that is
+  not self-closing and on every `</svg>` the scanner sees, inside a skipped element or not. The
+  raw-text jump now requires `svgDepth === 0` (it was `skipping !== "svg"`), so an svg inside a
+  skipped `template` or `head` no longer takes it. `/>` stays honoured. A real `<script>` in a
+  `<template>` is still skipped (existing test). New test: `<main>before<template><svg><title/></svg></template><p>after</p></main>`
+  and the `<svg><style/><path/></svg>` variant give `before\nafter`;
+  `<head><svg><title/></svg></head><main>real</main>` gives `real`; nested svgs in a template; one
+  case through `get_page`. The 1.9 MB linear-time tests pass unchanged.
+- **Y2 (low).** The line-whitespace class in `htmlToText` has ` ` again. My edit script had
+  replaced the literal U+00A0 with a plain space, an unintended change I missed in round 1. New
+  test: literal `A  B` gives `A B`, the same as `A&nbsp;&nbsp;B`.
+- **Y3 (low).** The `src/adapters/stellar-org.ts` header comment and `research/services/stellar-org-site.md`
+  now say a clipped title, name, tag or header excerpt ends with `…` (the excerpt only when
+  clipped), and that a clipped description does not. Description output is unchanged.
+
+Gates (bare): `npm run typecheck` pass; `npm test` pass (166 files passed, 5 skipped; 3,680 tests
+passed, 3 expected fail, 5 skipped; the adapter file has 107 tests); `npm run build` pass (dry run);
+`npm run secrets:scan -- --tree` clean.
+
+Live: `tmp/1.2-smoke/after2.json` against `before.json`: all seven whole envelopes are identical
+(JSON string equality), the five pages and both searches. One live pass, seven operation calls.

@@ -14,7 +14,8 @@
  *
  * Output fields are bounded: titles and names at MAX_TITLE_CHARS, tags at
  * MAX_TAGS of MAX_TAG_CHARS, descriptions at MAX_DESCRIPTION_CHARS, and the
- * header text an error echoes at MAX_ECHO_CHARS. A cut value ends with `…`.
+ * header text an error echoes at MAX_ECHO_CHARS. A cut title, name, tag or
+ * header excerpt ends with `…`; a cut description does not.
  *
  * The catalog entry's `transport.endpoint` selects the request. The origin is
  * a constant here, never read from the manifest.
@@ -237,8 +238,8 @@ type Tag = { name: string; closing: boolean; index: number; end: number; skipped
  * `iframe` or `title` start tag (a trailing `/` ignored) skips to its end tag,
  * parsing nothing in between; with no end tag the rest is skipped and the scan
  * stops. Comments come back as unnamed tags. `svg`, `template` and (unless `intoHead`) `head` skip as nested units;
- * inside `svg` only `svg` tags count, but raw text is still skipped inside the
- * others. The end tag is found in two steps, `</name` then the next `>`, and
+ * anywhere inside an `svg` (even one in a skipped `template`) raw text is not
+ * special, while inside the others it is still skipped. The end tag is found in two steps, `</name` then the next `>`, and
  * a failed step ends the scan, so no candidate is searched for twice.
  */
 function* scan(html: string, intoHead = false): Generator<Tag> {
@@ -246,6 +247,7 @@ function* scan(html: string, intoHead = false): Generator<Tag> {
   let skipping: string | null = null;
   let depth = 0;
   let from = 0;
+  let svgDepth = 0;
   for (let match = re.exec(html); match; match = re.exec(html)) {
     const name = (match[2] ?? "").toLowerCase();
     const closing = match[1] === "/";
@@ -256,7 +258,9 @@ function* scan(html: string, intoHead = false): Generator<Tag> {
       if (!skipping) yield { name, closing, index: match.index, end: open };
       continue;
     }
-    if (RAW_TEXT.has(name) && !closing && skipping !== "svg") {
+    // Inside any svg, `script`, `style` and `title` are ordinary tags and `/>` closes them.
+    if (name === "svg" && !selfClosing) svgDepth = Math.max(0, svgDepth + (closing ? -1 : 1));
+    if (RAW_TEXT.has(name) && !closing && svgDepth === 0) {
       const endTag = END_TAG_RES.get(name)!;
       endTag.lastIndex = open;
       const close = endTag.exec(html)?.index ?? -1;
@@ -308,7 +312,7 @@ export function htmlToText(html: string): string {
   out.push(html.slice(last));
   const lines = decodeEntities(out.join(""))
     .split("\n")
-    .map((line) => line.replace(/[ \t\r\f\v ]+/g, " ").trim());
+    .map((line) => line.replace(/[ \t\r\f\v\u00a0]+/g, " ").trim());
   const kept: string[] = [];
   for (const line of lines) {
     // Empty heading and bullet markers carry nothing; a repeated line is a responsive-layout duplicate.

@@ -73,7 +73,7 @@ Two authored operations in [`specs/stellar-org.json`](../../specs/stellar-org.js
   `https://stellar.org/ecosystem?partner=<slug>`, and the directory categories as `tags`. Other
   external rows and unknown kinds are dropped. Descriptions are clipped at 500 characters;
   titles, and an audit's `project` and `firm` (split from the full title first), at 300; tags are
-  at most 10 of at most 200 characters. A clipped value ends with `…`. The
+  at most 10 of at most 200 characters. A clipped title, name, or tag ends with `…`; a clipped description does not. The
   result is `{ hits, meta: { candidates } }`. The blog, press, and events filter is kept because
   Scout or Lumenloop returned a stellar.org post under those prefixes for each of ten sampled
   questions (SORG-GENERAL). The search body is read up to 256,000
@@ -83,7 +83,7 @@ Two authored operations in [`specs/stellar-org.json`](../../specs/stellar-org.js
   and the server decodes encoded letters) and no `//`, dot segments, query, fragment, or `/api`
   prefix (in any letter case). Redirects are followed only to a same-origin path without a query (at most three hops),
   and one call, redirects included, is bounded to 24 s. A body over 2,000,000 bytes is refused.
-  An error shows at most 200 characters of a redirect target or content type, ending with `…`.
+  An error shows at most 200 characters of a redirect target or content type, ending with `…` when clipped.
   The adapter keeps the first `<main>` element's text. It skips `script`, `style`, `noscript`,
   `iframe`, and `title` as raw text (everything up to the end tag, whatever it contains; no end
   tag skips the rest of the page) and `svg`, `template`, and `head` as nested elements. The
