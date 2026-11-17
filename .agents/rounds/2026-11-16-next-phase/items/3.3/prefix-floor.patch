@@ -1,0 +1,26 @@
+diff --git a/src/catalog/scoring.ts b/src/catalog/scoring.ts
+index b74d7b48..db752ba8 100644
+--- a/src/catalog/scoring.ts
++++ b/src/catalog/scoring.ts
+@@ -488,7 +488,7 @@ function scoreFieldUngated(
+     if (fieldTokens.includes(token)) {
+       score += weight * 4;
+       matchedTokens.add(token);
+-    } else if (fieldTokens.some((c) => c.startsWith(token) || token.startsWith(c))) {
++    } else if (fieldTokens.some((c) => Math.min(c.length, token.length) >= 4 && (c.startsWith(token) || token.startsWith(c)))) {
+       score += weight * 2;
+       matchedTokens.add(token);
+     } else if (raw.includes(token)) {
+diff --git a/src/catalog/vendor/search-scoring.ts b/src/catalog/vendor/search-scoring.ts
+index 0cede5f9..32d68644 100644
+--- a/src/catalog/vendor/search-scoring.ts
++++ b/src/catalog/vendor/search-scoring.ts
+@@ -82,7 +82,7 @@ function scoreField(
+     if (field.tokens.includes(token)) {
+       score += weight * 4;
+       matchedTokens.add(token);
+-    } else if (field.tokens.some((c) => c.startsWith(token) || token.startsWith(c))) {
++    } else if (field.tokens.some((c) => Math.min(c.length, token.length) >= 4 && (c.startsWith(token) || token.startsWith(c)))) {
+       score += weight * 2;
+       matchedTokens.add(token);
+     } else if (field.raw.includes(token)) {

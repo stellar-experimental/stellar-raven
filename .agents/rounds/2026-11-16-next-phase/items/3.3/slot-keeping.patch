@@ -1,0 +1,41 @@
+diff --git a/src/catalog/search.ts b/src/catalog/search.ts
+index 6cfc6f7f..ab64a548 100644
+--- a/src/catalog/search.ts
++++ b/src/catalog/search.ts
+@@ -1283,6 +1283,36 @@ export function searchCatalogPage(catalog: Catalog, opts: SearchOptions): Search
+     selected = [...selected, ...rescue].slice(0, limit);
+   }
+   selected = preserveStrongBackfill(selected, backfill, query.contentTokens, limit);
++  if (gatedPageIsFull) {
++    const gateFailed = scoreCandidates(
++      catalog,
++      opts,
++      scoreEntryWeightedUngated,
++      query,
++      (entry) => !gatedIds.has(entry.id)
++    );
++    const onPage = new Set(selected.map((candidate) => candidate.entry.id));
++    const counts = new Map<string, number>();
++    for (const candidate of selected) {
++      counts.set(candidate.entry.service, (counts.get(candidate.entry.service) ?? 0) + 1);
++    }
++    let victimIndex = -1;
++    for (let index = 1; index < selected.length; index++) {
++      if (!gatedIds.has(selected[index]!.entry.id)) continue;
++      if (victimIndex === -1 || selected[index]!.score <= selected[victimIndex]!.score) {
++        victimIndex = index;
++      }
++    }
++    if (victimIndex !== -1) {
++      const victim = selected[victimIndex]!;
++      const candidate = gateFailed.find((c) =>
++        !onPage.has(c.entry.id) &&
++        (c.entry.service === victim.entry.service ||
++          (counts.get(c.entry.service) ?? 0) < serviceQuota(limit))
++      );
++      if (candidate && candidate.score > victim.score) selected[victimIndex] = candidate;
++    }
++  }
+   const allCandidates = mergeCandidates(gated, backfill);
+   selected = preserveIntentWithinServiceQuota(
+     selected,

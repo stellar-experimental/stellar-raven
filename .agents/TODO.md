@@ -346,9 +346,23 @@ each needing the routing gate and the off-golden 40 as its acceptance check: req
 characters for the vendor prefix rule, as `tokensOverlap` already does, and let a gate-failed
 candidate that beats the page's weakest gated card keep its slot when the page is full. The
 description is not changed: a reword that removes the security displacement cut off-golden reach
-from 8 to 6 of 40 and moves the cost to other audit questions. Round item 3.3 measures the two
-ranker changes once each, with the pass rule fixed in the round plan; a failed mechanism is
-recorded and dropped, with no second variant.
+from 8 to 6 of 40 and moves the cost to other audit questions. Round item 3.3 measured the two
+ranker changes once each ([record](rounds/2026-11-16-next-phase/items/3.3/MEASURE.md)); both
+failed the pass rule and are dropped, with no second variant:
+
+- **Prefix floor** (4 characters, both directions, both scorers). It removes the `org` match on the
+  two spot queries, and FAM development reach rises (55, 58, 63 to 57, 60, 64 at limits 5, 7, 10).
+  It fails the no-loss rules: legacy rows go hit-to-miss on every metric, one holdout row is
+  newly captured, extended top3, top5 and cardHit5 fall (112, 117, 16 to 104, 109, 11), and
+  non-SDF displacement at limit 10 rises from 3 to 5. The 2026-10-02 floor of 3 failed the same
+  gate. The code is kept as `prefix-floor.patch` beside the record.
+- **Gate-failed slot keeping.** It returns `search_soroban_contract_docs` to the reentrancy spot
+  page, but legacy rows go hit-to-miss on four metrics, one holdout row loses top3, and FAM
+  development reach at limit 10 falls from 63 to 61. The code is kept as `slot-keeping.patch`.
+- The round plan's metric (a `stellarOrg` card displacing a non-SDF card at limit 10, 3 of 25) is
+  cause 1, the `search_site` description: all three displacing cards are gate-failed backfill on
+  short pages, matched by exact description and id tokens. Neither mechanism touches it, and this
+  item leaves it unchanged.
 
 The FAM development rows are archived in the branch bundle (agentpc
 `~/backups/raven-next-phase/raven-branches-2026-11-16.bundle`) at ref `refs/heads/exp/family-decider`, path
