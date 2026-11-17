@@ -124,7 +124,7 @@ Providers keep per-execute ledgers and flags.
 Module-level caches reuse catalog views and resolved spec objects.
 
 The runner wraps sandbox execution in a `codemode.execute` trace span.
-Each adapter call emits an `op` event with identity, outcome, and timing.
+Each adapter call emits an `op` event with identity, outcome, timing, `attempts` (upstream requests, counting the Docs `/index` retry, the site probe, and stellar.org redirect hops), and `finalStatus` (the HTTP status, else `timeout`, `network`, or `none`).
 A failed execution returns `isError: true` and bounded error text.
 The MCP execute response uses text `content`, without `structuredContent` or an `outputSchema`.
 This provides one model-facing copy of the bounded output.
@@ -310,6 +310,7 @@ AI Gateway account limits require separate live verification; this table describ
 | Budget override | `EXECUTE_MODEL_BOUNDARY_MAX_TOKENS`: 1,000–32,000 tokens. Invalid values use the default. | [truncate.ts](src/policy/truncate.ts) |
 | Logs | First 100 lines; redact before clipping each line to 2,000 characters. Apply the combined token cap afterward. | [shape-logs.ts](src/executor/shape-logs.ts) |
 | Error text | Same configured token cap as result bodies. | [tools.ts](src/mcp/tools.ts) |
+| Operation call | 24s wall-clock budget per call (`OPERATION_BUDGET_MS`), not per attempt. Lumenloop and Scout make one request under one signal that also bounds the body read. Stellar Docs and stellar.org `get_page` clip every attempt, redirect, and probe to one deadline. A retry takes the remaining budget. The bound is per call: three sequential hung calls still exceed the 60s `execute` limit, and one hung call uses 24s of a skill runner's 30s. | [types.ts](src/adapters/types.ts) |
 | Skill file load | 20s per file, with 8s fetch attempts and one retry. | [source.ts](src/skills/source.ts), [store.ts](src/skills/store.ts) |
 | Skill runner | 30s host deadline. In-flight operations can continue after timeout. | [run.ts](src/skills/run.ts) |
 
@@ -420,6 +421,10 @@ Network, geography, and TLS values do not become application identity fields.
 
 Search events record query size, limits, counts, tiers, recovery IDs, response size, and timing.
 Execute events record outcomes, sizing, truncation, artifact use, and bounded source-basis facts.
+They also carry `sources` (per service: calls, attempts, outcomes, and final-status counts in the fixed buckets `2xx`, `3xx`, `4xx`, `429`, `5xx`, `timeout`, `network`, `none`; exact statuses stay on the `op` event) and `errorName`, which is null on success and otherwise one of `SyntaxError`, `TypeError`, `ReferenceError`, `timeout`, or `other`.
+`@cloudflare/codemode` returns only `err.message`, so the class comes from the runtime's own message forms and the outcome path ([script-hints.ts](src/executor/script-hints.ts)); a model-thrown `Error` with such text is misclassed.
+The `codemode.execute` span sets `sandbox.errorName` on failure. `errorName` never carries message text and never reaches the model.
+`sourceBasis.calls.first` rows also carry `attempts` and `finalStatus`; both are bounded and telemetry-only.
 Operation and runner events record IDs, outcomes, and timing.
 Skill-read events distinguish memo, colo cache, and upstream retrieval.
 Events and spans exclude query text, execute code, payloads, answers, secrets, and provider-error messages.

@@ -143,16 +143,111 @@ describe("per-call attempts and final status", () => {
   });
 
   it("passes the request through to fetch untouched", async () => {
-    const seen: Array<{ url: string; init?: RequestInit }> = [];
-    const { providers } = run(async (url, init) => {
-      seen.push({ url, init });
+    // Lumenloop: authorization header, method, POST body and signal reach the underlying fetch.
+    const lumen: Array<{ url: string; init?: RequestInit }> = [];
+    const llRun = run(async (url, init) => {
+      lumen.push({ url, init });
+      return new Response(fixture("lumenloop-success.json"), { headers: { "content-type": "application/json" } });
+    });
+    await fnsOf(llRun.providers, "lumenloop").search_directory!({ query: "soroban" });
+    expect(lumen).toHaveLength(1);
+    expect(lumen[0]!.url).toContain("/v1/tools/search_directory");
+    expect(lumen[0]!.init).toMatchObject({
+      method: "POST",
+      headers: { Authorization: `Bearer ${env.LUMENLOOP_API_KEY}`, "Content-Type": "application/json" }
+    });
+    expect(JSON.parse(String(lumen[0]!.init?.body))).toEqual({ query: "soroban" });
+    expect(lumen[0]!.init?.signal).toBeInstanceOf(AbortSignal);
+
+    // Scout: the GET reaches fetch with its query string.
+    const scout: Array<{ url: string; init?: RequestInit }> = [];
+    const scRun = run(async (url, init) => {
+      scout.push({ url, init });
       return new Response(fixture("scout-success.json"), { headers: { "content-type": "application/json" } });
     });
-    await fnsOf(providers, "scout").searchResearch!({ q: "base reserve" });
-    expect(seen).toHaveLength(1);
-    expect(seen[0]!.url).toContain("/api/research");
-    expect(seen[0]!.init).toMatchObject({ method: "GET" });
-    expect(seen[0]!.init?.signal).toBeInstanceOf(AbortSignal);
+    await fnsOf(scRun.providers, "scout").searchResearch!({ q: "base reserve" });
+    expect(scout[0]!.url).toContain("/api/research");
+    expect(scout[0]!.init).toMatchObject({ method: "GET" });
+    expect(scout[0]!.init?.signal).toBeInstanceOf(AbortSignal);
+
+    // stellar.org: every redirect hop keeps `redirect: "manual"`.
+    const org: Array<{ url: string; init?: RequestInit }> = [];
+    let hop = 0;
+    const orgRun = run(
+      async (url, init) => {
+        org.push({ url, init });
+        return hop++ === 0
+          ? new Response(null, { status: 308, headers: { location: "/foundation/roadmap" } })
+          : new Response("<main><h1>Roadmap</h1></main>", { status: 200, headers: { "content-type": "text/html" } });
+      },
+      {}
+    );
+    await fnsOf(orgRun.providers, "stellarOrg").get_page!({ path: "/foundation/old-roadmap" });
+    expect(org).toHaveLength(2);
+    for (const call of org) expect(call.init).toMatchObject({ method: "GET", redirect: "manual" });
+  });
+
+  it("keeps two interleaved calls' attempts and final status apart", async () => {
+    // Docs search: 503 then 200 (2 attempts, 200). Scout: one 404 (1 attempt, 404). Their requests
+    // interleave; each call must keep its own trace.
+    const gates: Array<() => void> = [];
+    const hold = () => new Promise<void>((resolve) => gates.push(resolve));
+    const seen: string[] = [];
+    let docsCount = 0;
+    const fetchImpl: FetchLike = async (url) => {
+      const isDocs = new URL(url).hostname !== "stellarlight.xyz";
+      seen.push(isDocs ? "docs" : "scout");
+      await hold();
+      if (!isDocs) return Response.json({ error: "unknown" }, { status: 404 });
+      return docsCount++ === 0
+        ? Response.json({ message: "boom" }, { status: 503 })
+        : new Response(fixture("stellar-docs-success.json"));
+    };
+    const { calls, providers } = run(fetchImpl);
+    const docs = fnsOf(providers, "stellarDocs").search_docs!({ query: "soroban storage" });
+    const scout = fnsOf(providers, "scout").getHackathon!({ slug: "unknown" });
+    const release = async () => {
+      // Let each pending request start, then release one at a time in reverse order.
+      await new Promise((resolve) => setTimeout(resolve, 0));
+      gates.pop()!();
+    };
+    await release(); // scout (last started) answers first
+    await release(); // docs attempt 1: 503, then attempt 2 starts
+    await release(); // docs attempt 2: 200
+    await Promise.all([docs, scout]);
+    expect(seen).toEqual(["docs", "scout", "docs"]);
+    expect(calls.find((c) => c.op === "scout.getHackathon")).toMatchObject({
+      outcome: "soft-empty",
+      attempts: 1,
+      finalStatus: "404"
+    });
+    expect(calls.find((c) => c.op === "stellarDocs.search_docs")).toMatchObject({
+      outcome: "ok",
+      attempts: 2,
+      finalStatus: "200"
+    });
+  });
+
+  it("pins finalStatus timeout on the ledger row for a stalled body", async () => {
+    const realTimeout = AbortSignal.timeout.bind(AbortSignal);
+    const spy = vi.spyOn(AbortSignal, "timeout").mockImplementation(() => realTimeout(5));
+    try {
+      const stalled: FetchLike = async (_url, init) => {
+        const signal = init!.signal!;
+        const body = new ReadableStream<Uint8Array>({
+          start(controller) {
+            signal.addEventListener("abort", () => controller.error(signal.reason));
+          }
+        });
+        return new Response(body, { status: 200, headers: { "content-type": "application/json" } });
+      };
+      const { calls, providers } = run(stalled);
+      const result = await fnsOf(providers, "lumenloop").search_directory!({ query: "x" });
+      expect(result).toMatchObject({ ok: false, error: { kind: "error", message: "lumenloop timed out after 24 s" } });
+      expect(calls[0]).toMatchObject({ outcome: "error", reason: "timeout", attempts: 1, finalStatus: "timeout" });
+    } finally {
+      spy.mockRestore();
+    }
   });
 });
 

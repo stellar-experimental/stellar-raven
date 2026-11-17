@@ -1403,6 +1403,10 @@ describe("codemode.skill.run at the real worker boundary (design §12 smoke)", (
       ]);
       expect(parsed.calls.every((c) => c.ok)).toBe(true);
       expect(parsed.envelopeTrap).toContain("r.data.items");
+      // The runner's calls reach the host ledger: one request each, both ended 200.
+      expect(outcome.sourceSummary).toEqual({
+        lumenloop: { calls: 2, attempts: 2, ok: 2, error: 0, softEmpty: 0, finalStatus: { "2xx": 2 } }
+      });
     }
   });
 
