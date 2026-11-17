@@ -53,3 +53,23 @@ pull request.
 - Only the eight production timers remain.
 - Raw results stay on agentpc: `~/.local/state/raven-dated/rehearsalr0-REHEARSAL.md`,
   `rehearsalr1-REHEARSAL.md`, and the launcher logs `rehearsalr0.log` and `rehearsalr1.log`.
+
+## Report
+
+- PR [#460](https://github.com/stellar-experimental/stellar-raven/pull/460), from the fresh branch
+  `np/1.4b-rehearsal-split-v6` off `origin/main` at `19d53257`.
+- The lead ran every gate bare and each passed:
+  - `npm run typecheck`
+  - `npm test`: 3680 passed
+  - `npm run build`
+  - `npm run eval:qa:lint -- --stale`: 0 errors
+  - `npm run secrets:scan -- --tree`
+  - `node --check` on the new script
+- No deploy is needed.
+- **For the orchestrator:**
+  - Merge #460 before 2026-11-23 18:00 UTC. The 2.1 lead reads the v6 path from `origin/main`. The
+    v5 path would now fail `sibling-check.mjs`.
+  - Copy split v6 to the Mac (SHA-256 above).
+- **Review.** No separate review ran. `amend-split-v6.mjs` reuses the `moveToTuning` core and the
+  runner shape that the item 1.4 reviews covered. If you want an independent read of it, say so.
+- **Open questions:** none.
