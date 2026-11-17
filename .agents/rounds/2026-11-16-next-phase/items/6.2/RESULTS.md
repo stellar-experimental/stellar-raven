@@ -147,3 +147,7 @@ reversals and the one win voided.
   ranking differently; this A/B says nothing about them.
 - The clients mostly went on to `stellarDocs.search_docs`/`get_doc_page`, which read live Docs on both
   arms, so the title vocabulary reaches an answer only through `search` ranking.
+- **Budget check does not reserve a retry** (Codex review, low). `ab-run.mjs` checks `spent + 4 <= 25` before a
+  question but can call `runAgent` twice before adding either attempt's cost, so a retried run could pass the
+  USD 25 arm cap. It did not arise: every one of the 60 runs took one attempt and the largest arm total was USD
+  6.37. The harness stays as pre-registered; any reuse must check the remaining arm budget before each attempt.

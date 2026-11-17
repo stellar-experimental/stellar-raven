@@ -50,6 +50,17 @@ records commit (SHAs in `git log`).
   - `npm run secrets:scan -- --tree`: exit 0, clean over all tracked files.
   - No `test:smoke` (no `src/executor` or `src/demo` change) and no QA lint, as planned.
 
+## Reviews
+- Fable plan review ([REVIEW.md](REVIEW.md)): 13 findings, all adopted (reconciliation table in PLAN.md).
+- Second opinions ([SECOND-OPUS.md](SECOND-OPUS.md), [SECOND-FABLE.md](SECOND-FABLE.md)): Opus 5.5 and Fable
+  both absorb.
+- Codex frontier, GPT-6 Astra (`gpt-6-astra`), high effort ([CODEX-REVIEW.md](CODEX-REVIEW.md)): PASS, one low
+  finding, recorded without a code change. `ab-run.mjs` checks the arm budget (`spent + 4 <= 25`) before a
+  question but does not reserve a retry, so a retried run could pass the USD 25 cap. It did not arise (all 60 runs
+  took one attempt; largest arm USD 6.37) and the harness stays as pre-registered. Any reuse must check the
+  remaining arm budget before each attempt. The same line is in RESULTS.md "Limits". The review's note line in
+  `eval/gates.json` now states the PASS and the low finding (only the note string changed; `--gate` exit 0).
+
 ## Deviations
 - EXEC.md and RESULTS.md are written under `tmp/6.2/` (draft) until both arms end, because an untracked
   file in `items/6.2/` makes `dev:eval` refuse the dirty tree (`scripts/run-eval-server.mjs:18-21`). They are
