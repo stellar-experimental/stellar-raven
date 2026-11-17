@@ -16,7 +16,7 @@ item branch carries the records, the two patches and the TODO edit. Nothing was 
    and the measurement ran once. Rules 1, 2, 5 and 6 failed, so I added no tests or docs and saved the
    diff as `prefix-floor.patch`.
 3. **Slot keeping** on `np/3.3-slot-keeping` (commit `013592d1`): the block from the plan in
-   `searchCatalogPage`, no other change. Same sequence. Rules 1, 4 and part of 6 failed, so no tests or
+   `searchCatalogPage`, no other change. Same sequence. Rules 1 and 4 failed, so no tests or
    docs; the diff is `slot-keeping.patch`.
 4. **Decision:** none passes, so the item branch carries only the records and the patches. No
    combination run.
@@ -28,7 +28,7 @@ item branch carries the records, the two patches and the TODO edit. Nothing was 
 
 ## Failing existing tests (names only, no output)
 
-Prefix floor, 24 failing and 3695 passing (base: 0 failing). Classified under rule 6:
+Prefix floor, 24 failing and 3695 passing (base: 0 failing). Classified under rule 6: 20 losses, 3 re-pins and the gate-run test.
 
 - Losses, asserting the membership, rank or tier of a named card:
   - `test/drift-141-routing.test.ts`: all seven (`applies the vocabulary rule to another directory
@@ -47,27 +47,26 @@ Prefix floor, 24 failing and 3695 passing (base: 0 failing). Classified under ru
     abbreviations`;
   - `test/search-resolution.test.ts`: `keeps wider candidates identical`;
   - `test/server.test.ts`: `keeps hit-aware guidance on all-backfill pages with wider candidates`,
-    `keeps nextSteps inside its bound on every kind of successful page`.
+    `keeps nextSteps inside its bound on every kind of successful page`, `search logs the shared
+    privacy-bounded page telemetry shape` (`test/executor-providers.test.ts`) and `logs
+    privacy-bounded search page facts and honest invalid-filter semantics` (`test/server.test.ts`).
+    The last two fail on `truncated` flipping and on the rank order of `widerCandidateTop`, the same
+    order change as `keeps wider candidates identical` (follow-up 1, finding 3).
 - Re-pins, pinned numbers or rendered text:
   - `test/scoring.test.ts`: `preserves the SAC entry's stronger ungated score` (the plan names the
     812 pin);
   - `test/demo-page.test.ts`: `sample hits/scores/total match the live engine on the current catalog`;
   - `test/server.test.ts`: `keeps the search-to-execute trace example in sync with the current scorer`;
-  - `test/executor-providers.test.ts`: `search logs the shared privacy-bounded page telemetry shape`;
-  - `test/server.test.ts`: `logs privacy-bounded search page facts and honest invalid-filter
-    semantics`. The last two compare a logged page-fact object with an expected one; I did not read
-    the full diff, so I classify them as re-pins on the assertion's first line only.
 - The gate run: `test/run-routing-manifest-evidence.test.mjs` `passes --gate when the selected manifest
   is the committed manifest` fails because `eval:routing --gate` exits 1 (rule 1 again), not as a
   separate loss.
 
 Slot keeping, 4 failing and 3714 passing:
 
-- Re-pins, as the plan names them: `keeps pages without targeted replacements entirely in tier 1` and
-  `permits one evidence-backed full-page replacement without expanding total`.
-- `returns SearchHit-shaped hits, ranked by score desc then id asc`: asserts the score-descending
-  order, which the in-place swap breaks when the swapped-in card scores above a later card. I count it
-  as the invariant the mechanism removes; a reviewer may disagree.
+- Three re-pins, so rule 6 passes: `keeps pages without targeted replacements entirely in tier 1` and
+  `permits one evidence-backed full-page replacement without expanding total` (both named by the
+  plan), and `returns SearchHit-shaped hits, ranked by score desc then id asc`, which asserts the
+  score order the in-place swap breaks (the invariant the mechanism removes; follow-up 1, finding 4).
 - The gate run, as above.
 
 ## Deviations and notes

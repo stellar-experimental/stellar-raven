@@ -81,6 +81,11 @@ Ids named by the comparison (non-confirmation rows only):
 - legacy top5 hit-to-miss: `q-asset-rwa-tokenized-freshness`, `q-defi-aquarius-av`,
   `q-defi-bridges-content`, `q-defi-comet-content`, `q-defi-phoenix-what-is`,
   `q-defi-reflector-oracle`. Miss-to-hit: `q-eco-wallets-overview`.
+- legacy cardHit5 hit-to-miss: `q-asset-rwa-tokenized-freshness`, `q-defi-aquarius-av`,
+  `q-defi-blend-scf-funding`, `q-defi-bridges-content`, `q-defi-comet-content`,
+  `q-defi-soroswap-resolve`, `q-defi-soroswap-similar`, `q-edge-exhaustive-defi-deep-report`,
+  `q-protocol-bls12-381-cap59`, `q-protocol-bn254-poseidon-xray`, `q-protocol-clawback-cap-0035`,
+  `q-protocol-parallel-execution`, `q-scf-build-tracks`, `q-scf-exhaustive-funding-report`.
 - extended top1 hit-to-miss: `q-aas-claim-received-claimable-balances`,
   `q-crp-custodial-vs-noncustodial-wallets`, `q-crp-tokenize-personal-rwa`,
   `q-edge-deep-leave-no-stone-unturned-wallets`, `q-ti-contract-verification-explorers`,
@@ -104,15 +109,21 @@ Verdict:
 
 | Rule | Result |
 |---|---|
-| 1. Legacy, skills, holdout | **Fail.** Legacy rows go hit-to-miss on all four metrics. One holdout row is newly captured. The gate exits 1. |
+| 1. Legacy, skills, holdout | **Fail.** Legacy rows go hit-to-miss on all four metrics. Holdout rows also go hit-to-miss (counts 1, 3, 2, 2, 1 on top1, top3, top5, cardHit5, pass), and one holdout row is newly captured. The gate exits 1. |
 | 2. Extended strict totals | **Fail.** top3 112 to 104, top5 117 to 109, cardHit5 16 to 11. |
 | 3. Off-golden 40 | Pass. No cell falls. |
 | 4. FAM development reach | Pass. 57, 60, 64 against 55, 58, 63. |
 | 5. Effect | **Fail.** The target is met, but non-SDF displacement at limit 10 rises from 3 to 5. |
-| 6. Unit tests | **Fail.** See EXEC.md for the 24 names. Most assert the membership, rank or tier of a named card. |
+| 6. Unit tests | **Fail.** 20 losses, 3 re-pins and the gate-run test; names in EXEC.md. |
 
 The prefix floor is dropped. The 2026-10-02 floor-3 result predicted this direction: its gate failed
 the same way.
+
+Per-case reading ([CASE-REVIEW.md](CASE-REVIEW.md) finding 7 has the rows): thirteen of the 14
+extended hit-to-miss rows are real losses (a wrong card at rank 1, the expected scout card leaving
+the page, or the expected service leaving), and one is label-dependent. Named legacy rows lose the
+exact operation (`q-defi-soroswap-similar`, `q-defi-aquarius-av`, `q-defi-soroswap-resolve`), and
+some counted gains hide a loss. The one extended gain is real. The losses are not label noise.
 
 ## Gate-failed slot keeping alone
 
@@ -132,7 +143,7 @@ and `preserveIntentWithinServiceQuota`. No other change.
 | Protocol-history lane (top1, top3, top5; control captures) | 6, 7, 7; 3 | 6, 7, 7; 3 |
 | `npm test` | 0 failing | **4 failing**, 3714 passing |
 
-The probe's limit-5 and limit-7 rises are not part of rule 5 (limit 10 only); they are reported.
+Rule 5 reads limit 10 only, so the limit-5 and limit-7 rises do not fail it; they are a cost the TODO records.
 
 `compare-routing.mjs --lists`, base against slot keeping, exit 1. Ordered top five changed on 158 of
 338 legacy rows, 12 of 122 extended, 3 of 23 skills, 13 of 49 holdout, 4 of 12 protocol-history.
@@ -156,10 +167,17 @@ Verdict:
 | 2. Extended strict totals | Pass. No total moves. |
 | 3. Off-golden 40 | Pass. No cell falls; question form rises at limits 5, 7 and 10. |
 | 4. FAM development reach | **Fail.** Limit 10 falls from 63 to 61. |
-| 5. Effect | Pass. The target is met and limit-10 displacement stays at 3. |
-| 6. Unit tests | Three plan-named or ordering assertions, plus the gate-run test. See EXEC.md. |
+| 5. Effect | Pass at limit 10 only. The target is met and limit-10 displacement stays at 3, but displacement rises at limit 5 (0 to 2 of 25) and limit 7 (1 to 3 of 25), and SDF on-page at limit 10 falls from 4 to 3. |
+| 6. Unit tests | Pass. Three re-pins (two plan-named, one asserting the score order the in-place swap breaks); the fourth failure is the gate-run test, which is rule 1 again. |
 
 Slot keeping is dropped.
+
+Per-case reading ([CASE-REVIEW.md](CASE-REVIEW.md) finding 6 has the rows): the 117 named changed
+rows each swap exactly one card. On 42 the removed card was its service's only card on the page, and
+on 67 the added card is a whole skill. It often swaps the right operation out for a card that fits
+less (for example `lumenloop.search_directory` leaves directory questions) and puts
+`stellarOrg.search_site` on nine pages and removes it from one. Some gains are real, and no retained
+card changes relative order. The losses are not label noise.
 
 ## Combination
 
