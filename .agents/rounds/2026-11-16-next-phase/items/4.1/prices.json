@@ -1,0 +1,29 @@
+{
+  "readOn": "2026-11-17",
+  "unit": "USD per 1M tokens, standard (non-batch, non-regional) list price",
+  "models": {
+    "gpt-6.1-terra": {
+      "input": 1.0,
+      "cachedInput": 0.05,
+      "output": 5.0,
+      "note": "Above 272K prompt tokens the page lists 2x input and cache, 1.5x output; no row is expected to reach it. cacheWrite is the 30-minute write price; Codex reported 0 cache-write tokens in the smoke.",
+      "source": "https://developers.openai.com/api/docs/models/gpt-6.1-terra and https://developers.openai.com/api/docs/pricing",
+      "cacheWrite": 1.25
+    },
+    "grok-4.7": {
+      "input": 2.0,
+      "cachedInput": 0.5,
+      "output": 6.0,
+      "note": "At 200K prompt tokens or more the page lists 4 / 1 / 12; no row is expected to reach it.",
+      "source": "https://docs.x.ai/developers/pricing"
+    },
+    "claude-sonnet-5-5": {
+      "input": 2.0,
+      "cachedInput": 0.1,
+      "cacheWrite": 2.5,
+      "output": 10.0,
+      "note": "cacheWrite is the 5-minute write price.",
+      "source": "https://platform.claude.com/docs/en/models/sonnet-5-5/overview and https://platform.claude.com/docs/en/build-with-claude/prompt-caching"
+    }
+  }
+}
