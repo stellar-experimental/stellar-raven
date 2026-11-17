@@ -1,0 +1,12 @@
+[Unit]
+Description=Raven round 2026-11-16 item 2.2c: start the dated Opus lead (SCF current round case, merge before 2026-12-05 00:00 UTC)
+StartLimitIntervalSec=12h
+StartLimitBurst=30
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/share/raven-dated/launch-dated-lead.sh 2.2c scf-current-round
+TimeoutStartSec=15min
+Restart=on-failure
+RestartSec=20min
+RestartPreventExitStatus=75

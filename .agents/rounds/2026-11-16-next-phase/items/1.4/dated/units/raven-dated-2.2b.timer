@@ -1,0 +1,10 @@
+[Unit]
+Description=One-shot: Raven round 2026-11-16 item 2.2b (quantum preparedness case, merge before 2026-12-02 00:00 UTC)
+
+[Timer]
+OnCalendar=2026-12-01 06:00:00 UTC
+Persistent=true
+AccuracySec=1min
+
+[Install]
+WantedBy=timers.target
