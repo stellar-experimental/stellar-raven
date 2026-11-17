@@ -250,3 +250,180 @@ after:
   recommend a dated `.agents/TODO.md` line for the next Scout sweep, not a filing from this item.
 - Raw responses are in my session scratchpad and are not committed. The hashes above identify
   them.
+
+## Part B
+
+Reviewed on the pushed branch at `a027be08` (local `HEAD` equals `origin`; `gh api …/commits/a027be08`
+answers). Times are UTC on 2026-11-17, 00:27Z to 00:35Z. I opened `q-tool-wallets-comparison` and
+`q-scf-resolve-passport-superseded-slug`, and no other QA case. I read nothing under `~/backups`.
+
+### Verdict
+
+**PASS WITH FIXES.** The part A verdicts stand. No judge-facing text changed, and the passport
+repoint is correct. Two fixes are needed before step 13, and one part of the edit should be
+reverted in my reading.
+
+| # | Finding | Action |
+|---|---|---|
+| B1 | `truth.notes` says the judge-facing text "never carried" a cap. That is false | **Fix** before step 13 |
+| B2 | The sls-033 evidence entry says a golden partial cap "is removed in the same change" | **Fix** before the resolve dry run |
+| B3 | `truth.verified` on the wallets case was replaced for an edit that changed no gospel | **Revert that hunk** (recommended); if kept, record the two costs below |
+| B4 | The receipt that two fields point to does not exist yet | Confirm after step 13 |
+| B5 | Phase 3 still owes the TODO bullets, the intake override and the sls-119 reword | Confirm after step 14 |
+
+### The wallets-case edit
+
+**Independent checks that pass.**
+
+- Parsed diff of the compiled files against `origin/main`, with `caseInputSha256` from
+  `eval/qa/paired-verdict.mjs`:
+  - `cases.json`: 247 cases; only `corpusContentSha256` and this case's `truth.verified` and
+    `truth.notes` changed. `caseInputSha256` is the **same**.
+  - `tool-cases.json`: 6 cases; only `corpusContentSha256` and the passport case's
+    `truth.corroboration` changed. `caseInputSha256` is the same.
+  - `sample.json`: only `corpusContentSha256`. `lifecycle-registry.json`: two
+    `caseContentSha256` values.
+- `question`, `tags`, every `golden.*` field, `truth.asOf` and `truth.reverifyBy` are unchanged.
+- `golden.notes` holds no cap. Its sentence "Quoting Scout's wallet type metadata as attributed is
+  not a wrong claim" matches no cap pattern in `lintCapFindings` (no "at partial", and no
+  canonical, official or upstream wording), so the `cap-finding` lint has nothing to check.
+- The live Wallet data does not contradict a judge-facing fact. `freighter` is named "Varial",
+  an end-user wallet. `ledger` and `trezor` are `hardware-wallet`. `walletconnect` is typed
+  `Infrastructure` and is not in the Wallet set.
+- No other battery case names sls-033: `grep -rl sls-033 eval/qa/corpus` prints these two files
+  only. That check reads no case content, so it covers the 49 cases the sibling sweep left
+  unopened.
+- The sentence left in `golden.notes` is still true and needs no change. A judge-facing edit
+  would change `caseInputSha256` for no gain in truth.
+
+**B1. "Never" is false.** The new `truth.notes` says "no grading cap applies; the judge-facing
+text never carried one". `git log` on the case file shows otherwise:
+
+| Commit | Date | `golden.notes` has the cap sentence | `truth.notes` has it |
+|---|---|---|---|
+| `c2428488` (#73) | 2026-08-27 | yes | no |
+| `35c90ecf`, `9b039b96`, `049fb747` (#319) | 2026-08-29 to 2026-11-02 | yes | no |
+| `5e6496ce` (#436) | 2026-11-14 | no | yes |
+
+So the judge saw "grade caps at partial … while sls-033 stands" from 2026-08-27 until the battery
+rebuild of 2026-11-14 moved it to the judge-blind notes. The accurate wording is: "the
+judge-facing text has carried no cap since 2026-11-14 (#436)". The same claim is in `EXEC.md`
+step 9 ("was never capped in its judge-facing text") and in the lead decision in
+`briefs/exec.md`. Correct the case and `EXEC.md`; the brief is a dated instruction and can stay.
+The fix changes `caseContentSha256`, so it needs `eval:qa:compile` and `eval:qa:register` again.
+It does not change `caseInputSha256`.
+
+This does not change the v4 outcome. v4 is still needed: the executor and I opened the case, and
+the committed `EXEC.md` quotes its `golden.notes`.
+
+**B3. `truth.verified` should go back to the 2026-11-14 record.** Reasons:
+
+1. No gospel changed. The lint asks for a new `truth.verified` only with a judge-facing change.
+   The passport case had the same kind of judge-blind edit and kept its record.
+2. The new block verifies none of the case's key facts. Its evidence is the Scout re-check, three
+   store fetches and PR #1967. The record it replaced held the dated A and B quotes for the Varial
+   rename and the Wallets Kit modules. The skill calls `truth.verified` the latest verification
+   event; for this case's gospel that is still the 2026-11-14 audit. `truth.asOf` still says
+   2026-11-14, so the block now carries two different dates for one case.
+3. The date has a side effect. The case is `scheduled`. `goldenTimeConsistency` in
+   `eval/qa/re-judge.mjs` refuses a re-judge when `truth.verified.date` is later than the stored
+   run's `finishedAt`, unless `--allow-golden-drift` is passed; `gateway-rejudge.mjs` throws on the
+   same test. A run that finished before 2026-11-17 and is re-judged against the worktree cases
+   now fails that guard on this case, though the judge input is byte-identical. `EXEC.md` says "no
+   re-judge needed" and does not mention this.
+4. `rootCause` names a receipt that does not exist at `a027be08` (see B4).
+
+The sls-033 provenance is already in `truth.notes`, which is where the skill puts provenance. If
+you want the pointer, add "(receipt: improvements/resolved.json, sls-033)" to that paragraph.
+
+If the lead keeps the new block, record in `EXEC.md` that the 2026-11-14 audit evidence left the
+case (it remains in corroboration rows 4 and 5 and in the audit round files) and that pre-2026-11-17
+runs need `--allow-golden-drift` for this case.
+
+### The passport repoint
+
+Correct. `truth.corroboration[1].evidence[2].ref` now reads
+`improvements/resolved.json (sls-033 receipt)`. Nothing else in the case changed, and the edit is
+judge-blind. The row is one of three under a claim that also has class A and class B evidence, so
+the claim does not rest on it. The spelling matches the `symmetric-caution` exemption, which
+accepts only the bare path.
+
+One live read, 00:29:13Z: `GET https://stellarlight.xyz/api/projects/resolve?q=passport` returns
+`matchedOn` slug, `superseded` true, subject `passport` Draft, current `stellar-passport` Live. The
+golden still holds, and it agrees with part A: the Wallet set has one `stellar-passport` row.
+
+Owed in step 13, as planned: put the receipt's commit-pinned `sourceUrl` in that row's `note`. The
+pinned snapshot is what keeps the "duplicate-name Stellar Passport records" evidence line readable
+after the file is deleted.
+
+### B2. The sls-033 finding file
+
+Status `fixed-upstream` and the new first evidence entry match my part A numbers. One sentence in
+that entry is wrong: "The golden partial cap that named this finding is removed in the same change
+(ADR-0008)." No judge-facing cap existed in this change; a judge-blind `truth.notes` sentence was
+rewritten. Reword it before the resolve dry run, because the receipt pins this file. Suggested:
+"The judge-blind truth.notes sentence that named this finding is rewritten in the same change; the
+case has carried no judge-facing cap since 2026-11-14."
+
+Not blocking: the `## Finding` body still describes the 2026-11-06 state (72 rows, 10 null
+`productKind`). The file is deleted on resolve and the evidence list is current, so I would leave
+it.
+
+### B4. The receipt
+
+`improvements/resolved.json` has no sls-033 entry at `a027be08`. The wallets case `rootCause` (if
+kept) and the passport `ref` both name it. That is the planned order, but it means the branch must
+not merge unless step 13 completes for sls-033. Check at the end:
+`jq '.entries[] | select(.id == "sls-033")' improvements/resolved.json` returns one entry whose
+`sourceUrl` resolves.
+
+### Reference reconciliation
+
+Command, run for each id: `grep -rIn --exclude-dir=.git --exclude-dir=node_modules -e <id> .`
+(`rg` is a shell function in this environment). I also searched for other spellings of both ids
+and found none.
+
+**sls-033: 51 files.**
+
+| Where | Hits | Class | State at `a027be08` |
+|---|---|---|---|
+| `eval/qa/corpus/…/q-tool-wallets-comparison.json`, `eval/qa/cases.json` | 2 + 2 | golden | Reconciled, subject to B1 and B3 |
+| `eval/qa/corpus/…/q-scf-resolve-passport-superseded-slug.json`, `eval/qa/tool-cases.json` | 1 + 1 | golden | Reconciled; the note gains the `sourceUrl` in step 13 |
+| `improvements/stellar-light-scout/sls-033-…md` | 3 | finding | B2; deleted by the resolver |
+| `improvements/intake.json` | 1 | intake | Per-finding override; **open**, the resolver removes it |
+| `improvements/INDEX.md` | 1 | generated | Shows `fixed-upstream`; regenerated on resolve |
+| `improvements/resolved.json` | 1 | ledger | Inside the sls-036 receipt's review text; history, unchanged |
+| `improvements/lumenloop/ll-038-…md` | 1 | dated dedupe evidence | Names the id with no path; still true; unchanged |
+| `.agents/TODO.md` | 2 | TODO | **Open and now stale**: says the finding "stays `reported-upstream`" and tells the reader to remove a cap. Step 14 deletes the bullet |
+| `inventory/stellar-light.json` | 2 | upstream text | The 1.9.150 changelog and a `matchMode` description quote the id; generated; unchanged. Not in `catalog/` or `src/` |
+| `.agents/rounds/2026-11-16-next-phase/PLAN.md`, `items/0.2`, `items/0.4`, `items/1.1/*` | 71 across 12 files, counted before part B was added | current round records | Dated records. The round `PLAN.md` line 149 says "remove the cap in the two cases that name it"; leave it, and let the ledger row state what was found |
+| `.agents/rounds/` before 2026-11-16 | 31 across 20 files | dated records | History, unchanged |
+| `research/audits/*`, `research/qa-deep-dive-2026-08-25/*` | 38 across 8 files | dated evidence | History, unchanged |
+
+**sls-107: 34 files.**
+
+| Where | Hits | Class | State at `a027be08` |
+|---|---|---|---|
+| `improvements/stellar-light-scout/sls-107-…md` | 1 | finding | `fixed-upstream`; deleted by the resolver |
+| `improvements/stellar-light-scout/sls-119-…md` | 1 | successor | Line 13 says "sls-107 (fixed-upstream, …)". **Open**: step 13 rewords it to the receipt |
+| `improvements/INDEX.md` | 1 | generated | Regenerated on resolve |
+| `.agents/TODO.md` | 1 | TODO | **Open**: step 14 deletes the bullet |
+| `.agents/rounds/2026-11-16-next-phase/*` | 39 across 10 files, counted before part B was added | current round records | Dated records |
+| `.agents/rounds/` before 2026-11-16 | 20 across 12 files | dated records | History, unchanged |
+| `research/audits/*` | 34 across 8 files | dated evidence | History, unchanged |
+
+sls-107 has no hit in `eval/`, `src/`, `docs/`, `catalog/`, `improvements/intake.json` or
+`inventory/`. No golden, register or intake entry names it, so nothing there needs a change.
+
+The branch diff touches no dated record outside `items/1.1/`.
+
+### B5. Owed in phase 3, to confirm before merge
+
+- sls-120 is filed, and its issue URL and #1971 are in sls-107's `--live-recheck` and in the
+  comment on #1900.
+- The two TODO bullets are gone, and the Scout-sweep line from part A is added.
+- `improvements/intake.json` has no `sls-033` key.
+- sls-119 line 13 points to the sls-107 receipt.
+- `improvements:lint -- --live` passes after the two files are deleted.
+
+None of these needs another pass from me. B1 and B2 are wording fixes. B3 is the lead's decision.

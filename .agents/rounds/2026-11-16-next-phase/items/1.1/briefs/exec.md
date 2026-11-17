@@ -69,3 +69,28 @@ record whether `caseInputSha256` changed after compile. Then steps 10 to 12 as p
 expected diff is whatever A produces: record exactly which compiled fields changed.
 In EXEC.md record plainly that the case was not judge-facing-capped, so the v4 move turned out
 unnecessary for this edit; the lead reports it.
+
+## Lead decision (2026-11-17, before phase 3): adopt REVIEW-RETIRE.md part B
+
+Do these first, before step 13's dry run:
+
+1. **B1.** In the wallets case `truth.notes`, replace "the judge-facing text never carried one"
+   with the accurate history: the judge-facing text has carried no cap since 2026-11-14 (#436).
+   Fix the same claim in EXEC.md step 9 (the v4 move was not needed for this edit because the cap
+   had already left the judge-facing text on 2026-11-14; v4 stands because the case was opened).
+2. **B2.** In the sls-033 evidence entry, replace the "golden partial cap ... is removed in the
+   same change" sentence with the reviewer's suggested wording.
+3. **B3.** Revert the wallets case `truth.verified` to its 2026-11-14 record exactly (from
+   `origin/main`). Add "(receipt: improvements/resolved.json, sls-033)" to the rewritten
+   `truth.notes` paragraph instead. Then `eval:qa:compile` and `eval:qa:register`; confirm
+   `caseInputSha256` is unchanged.
+4. In EXEC.md, replace the list of the 27 opened ids with the counts only (27 opened, of which 2
+   are tool lane; 49 not opened). A committed file should not list set membership.
+5. Commit and push these, confirm the commit answers on GitHub, then run step 13 against that
+   commit (no commit to the sls-033 or sls-107 files between dry run and real run).
+
+Then phase 3 as planned plus the first addendum. Before you report, check B5: sls-120 filed and
+linked; TODO bullets gone and the Scout-sweep line added; no `sls-033` key in `intake.json`;
+sls-119 points to the sls-107 receipt; `jq '.entries[] | select(.id == "sls-033")'` (and sls-107)
+returns one receipt each; `improvements:lint -- --live` passes; the passport `note` carries the
+receipt's pinned `sourceUrl`.

@@ -206,19 +206,26 @@ wrong claim." It names no finding and states no cap, and `lintCapFindings`
 (`eval/qa/lint-corpus.mjs:553-580`) reads `golden.notes` only. The only text that named sls-033
 and said "grade caps at partial" was in the judge-blind `truth.notes`.
 
-**The case was never capped in its judge-facing text, so the v4 move turned out unnecessary for
-this edit.** The lead reports it.
+**The judge-facing text had carried the cap from 2026-08-27 until the battery rebuild of 2026-11-14
+(#436) moved it to the judge-blind `truth.notes`.** (`git log` on the case file; the reviewer found
+it, and an earlier version of this paragraph said "never capped", which was wrong.) So the
+judge-facing text carried no sls-033 cap when this item started, and the v4 move was not needed for
+this edit. v4 stands because the case was opened. The lead reports it.
 
 Option A edit (lead decision), judge-blind only:
 
 - `truth.notes`, second paragraph: now says, dated 2026-11-17, that sls-033 is fixed live (Scout
-  1.9.150: every platform fact serves `sourceUrl` and `checkedAt`) and that no grading cap applies;
-  it keeps the true provenance (accurate quoting of the canonical Scout source is not a wrong
-  claim). The first and third paragraphs are unchanged.
-- `truth.verified`: date 2026-11-17; by round item 1.1; evidence = the step 2 re-check, the spot
-  fetches, PR #1967, `REVIEW-RETIRE.md` and this file; `rootCause`
-  `improvements/resolved.json (sls-033 receipt)`.
-- Every `golden.*` field, `question`, `tags`, `truth.asOf` and `truth.reverifyBy` unchanged.
+  1.9.150: every platform fact serves `sourceUrl` and `checkedAt`; receipt:
+  `improvements/resolved.json`, sls-033), that no grading cap applies, and that the judge-facing
+  text has carried no cap since 2026-11-14 (#436). It keeps the true provenance. The first and
+  third paragraphs are unchanged.
+- `truth.verified`: **unchanged from `origin/main`** (the 2026-11-14 record). I first replaced it
+  (date 2026-11-17, rootCause the receipt). The reviewer's finding B3 asked for the revert: no
+  gospel changed, the new block verified none of the key facts, and a later `truth.verified.date`
+  makes `goldenTimeConsistency` in `eval/qa/re-judge.mjs` refuse a re-judge of older runs without
+  `--allow-golden-drift`. The revert is committed.
+- Every `golden.*` field, `question`, `tags`, `truth.asOf` and `truth.reverifyBy` unchanged. Against
+  `origin/main` the case differs in `truth.notes` only.
 - **Re-judge disposition:** none needed. The judge-facing text is unchanged. Checked by
   `caseInputSha256` of the compiled case, before and after compile: **unchanged**. So
   `heldout-read.mjs` still pairs a stored row with this case, and no stored comparison mixes two
@@ -230,17 +237,8 @@ eval/qa/corpus/battery` (`rg` is a shell function here, so I used the equivalent
 27 that are in tuning or the tool lane. The other 49 stay unchecked; they were not printed or
 opened, and no raw list is committed.
 
-Opened ids (27): q-defi-aquarius-what-is, q-defi-bridge-evm-to-stellar-axelar,
-q-smart-account-scoped-policy-signers, q-soroban-av-passkeys-talk (tool lane),
-q-soroban-check-auth-custom-account, q-hot-sdf-xlm-holdings-sales, q-crp-export-tx-history-taxes,
-q-crp-remittance-founder-advisory, q-comp-sep8-regulated-assets-approval-server,
-q-stellar-recurring-payments, q-smart-wallet-fee-sponsorship, q-comp-aml-analytics-vendors,
-q-tool-wallets-comparison (the edited case), q-data-network-metrics-sources, q-ti-scaffold-stellar,
-q-raph-phishing-pending-claim, q-raph-official-help-sdf-cannot-recover, q-sep6-sep24-sep31-choice,
-q-sep-53-sign-verify-message, q-sep-45-contract-auth, q-sep24-interactive-deposit-flow,
-q-sep-43-web-wallet-api, q-scf-resolve-passport-superseded-slug (tool lane; step 10),
-q-raph-stolen-wallet-recovery, q-n3-issues-842-backup-faucet-wallet, q-n3-pi-network-wrong-chain,
-q-edge-asset-site-scam-detection.
+Opened: 27 cases, of which 2 are tool lane (the passport case and one other). Not opened: 49. The
+ids are not listed here, because a committed file should not list set membership.
 
 I searched the 26 others for `sls-033`, `productKind`, `type=Wallet`, platform availability,
 `availabilityCheck` and "wallet type": no hit, so none contradicts the changed truth claim. This is
@@ -288,3 +286,22 @@ the exit code was read with `PIPESTATUS`, and the bare run above replaced it.
 ### Step 12: commit and push
 
 See the section below, added after the push.
+
+Committed with normal hooks (the pre-commit secret scan ran clean) and pushed:
+
+- Commit `a027be08ff232f21a95bb3f119df481dc10ea9fe` on `np/1.1-drain-upstream-handoffs`.
+- `gh api repos/stellar-experimental/stellar-raven/commits/a027be08ff232f21a95bb3f119df481dc10ea9fe` answers with that SHA, so
+  snapshot links to this commit resolve.
+
+### Part B fixes (lead decision, before step 13)
+
+- **B1:** the wallets case `truth.notes` and step 9 above now say the judge-facing text carried the
+  cap from 2026-08-27 until 2026-11-14 (#436).
+- **B2:** the sls-033 evidence entry now says the judge-blind `truth.notes` sentence was rewritten
+  and the case has carried no judge-facing cap since 2026-11-14.
+- **B3:** `truth.verified` of the wallets case is the `origin/main` record again; the receipt
+  pointer is in the rewritten `truth.notes` paragraph. `eval:qa:compile` and `eval:qa:register`
+  ran. `caseInputSha256` is unchanged. The case differs from `origin/main` in `truth.notes` only.
+- The opened-id list is replaced by counts.
+- Gates after the fixes: `eval:qa:lint -- --since origin/main` exit 0 (0 errors, 98 warnings);
+  `eval:qa:register -- --check` exit 0; `improvements:index` and `improvements:lint` exit 0.

@@ -266,21 +266,26 @@
       }
     ],
     "verified": {
-      "date": "2026-11-17",
-      "by": "Round item 1.1 (executor Claude Sonnet 5.5; distinct review Claude Fable 5.2; .agents/rounds/2026-11-16-next-phase/items/1.1/EXEC.md)",
+      "date": "2026-11-14",
+      "by": "Golden coverage audit 2026-11-14 (audit-tooling-b, verify-audit-tooling-b; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
       "evidence": [
-        "Live C 2026-11-17T00:16Z: https://stellarlight.xyz/api/projects/search?type=Wallet&limit=200 -- 74 rows, 0 null productKind, 123 platform facts, 0 facts without sourceUrl or checkedAt, 0 unavailable facts without a URL (Scout 1.9.150)",
-        "Spot fetch 2026-11-17: the xBull Google Play, Scopuly App Store and privacywallet.coderipper.xyz sourceUrls return 404, as their unavailable rows say",
-        "Resolving ref: https://github.com/Stellar-Light/stellarlight/pull/1967",
-        "Retirement review: .agents/rounds/2026-11-16-next-phase/items/1.1/REVIEW-RETIRE.md",
-        "Execution record: .agents/rounds/2026-11-16-next-phase/items/1.1/EXEC.md"
+        "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-b.json#q-tool-wallets-comparison",
+        "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-b.json#q-tool-wallets-comparison",
+        "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-tool-wallets-comparison",
+        "Live A 2026-11-14: https://stellar.org/blog/foundation-news/freighter-is-now-varial -- 'Today, Freighter becomes Varial, with a new name and a new focus'",
+        "Live B 2026-11-14: https://api.github.com/repos/stellar/freighter/releases -- '5.50.0 published 2026-10-29; 5.52.0 2026-11-07'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/tools/developer-tools/wallets.md -- 'SDF’s flagship non-custodial wallet extension'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/tools/developer-tools/wallets.md -- 'The Stellar Wallets Kit supports many wallets including: ... Ledger Hardware Wallet, Trezor Hardware Wallet, ... WalletConnect'",
+        "Live B 2026-11-14: https://github.com/Creit-Tech/Stellar-Wallets-Kit/tree/main/src/sdk/modules -- 'ledger.module.ts, trezor.module.ts, wallet-connect.module.ts, varial.module.ts'",
+        "Live A 2026-11-14: https://developers.stellar.org/docs/build/guides/freighter -- 'Varial (formerly Freighter) is a browser extension wallet provided by the Stellar Development Foundation.'",
+        "Live B 2026-11-14: https://github.com/Creit-Tech/Stellar-Wallets-Kit/tree/HEAD/src/sdk/modules -- 'ledger.module.ts, trezor.module.ts, wallet-connect.module.ts, varial.module.ts'"
       ],
       "rootCause": [
-        "improvements/resolved.json (sls-033 receipt)"
+        ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit"
       ]
     },
     "origin": "raven-next q-tool-wallets-comparison",
-    "notes": "GT-56 TAXONOMY CORRECTION 2026-07-11: compare roles and exact products, not one roster. Ledger/Trezor are hardware wallet products; WalletConnect is a connectivity protocol/module. Separate wallet products, wallet-building SDKs, community Wallets Kit, and smart-account tooling, with product-specific custody/recovery/capability evidence.\n2026-11-17: sls-033 is fixed live (Scout 1.9.150: every platform fact serves sourceUrl and checkedAt), and no grading cap applies; the judge-facing text never carried one. Accurately quoting the canonical Scout source on exact `type=Wallet` membership or available `productKind` and platform metadata is not a wrong claim.\nRENAME (verified 2026-11-02): SDF renamed the Freighter wallet to Varial on 2026-10-29 (stellar.org blog \"Freighter is now Varial\"; extension 5.50.0 is the first Varial release). Freighter and Varial name the same SDF wallet; do not penalize either name.",
+    "notes": "GT-56 TAXONOMY CORRECTION 2026-07-11: compare roles and exact products, not one roster. Ledger/Trezor are hardware wallet products; WalletConnect is a connectivity protocol/module. Separate wallet products, wallet-building SDKs, community Wallets Kit, and smart-account tooling, with product-specific custody/recovery/capability evidence.\n2026-11-17: sls-033 is fixed live (Scout 1.9.150: every platform fact serves sourceUrl and checkedAt; receipt: improvements/resolved.json, sls-033), and no grading cap applies; the judge-facing text has carried no cap since 2026-11-14 (#436). Accurately quoting the canonical Scout source on exact `type=Wallet` membership or available `productKind` and platform metadata is not a wrong claim.\nRENAME (verified 2026-11-02): SDF renamed the Freighter wallet to Varial on 2026-10-29 (stellar.org blog \"Freighter is now Varial\"; extension 5.50.0 is the first Varial release). Freighter and Varial name the same SDF wallet; do not penalize either name.",
     "leaf": "wallets.landscape",
     "secondaryLeaf": "tooling.wallet-connection"
   }
