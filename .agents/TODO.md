@@ -504,7 +504,14 @@ Held by this item:
 
 - `GET /api/rwa` stays excluded until check 8 passes;
   [issue #167](https://github.com/stellar-experimental/stellar-raven/issues/167) tracks its
-  three deferred controls. `GET /api/quality` stays excluded (response-schema keywords caused
+  three deferred controls. A pre-registered answer A/B (round item 6.3, Sonnet 5.5, 10 pairs, blind
+  Opus judge, 2026-11-17) returned exclude on one clause: one attributable drop on a mixed-intent
+  control (INCLUDED partial against EXCLUDED correct, with a registry call). It found no wrong
+  registry call, no bad answer, no loss on the displacement or registry questions, and no registry
+  call on the three off-target questions. See
+  [RESULTS.md](rounds/2026-11-16-next-phase/items/6.3/RESULTS.md). The A/B is not re-run on routine
+  drift; a re-test needs an owner or orchestrator decision (for example more samples per control
+  pair). `GET /api/quality` stays excluded (response-schema keywords caused
   unrelated captures). `reviewSubmission`, `analyzeHackathonSubmissions`,
   `getHackathonSubmission`, and `locateSource` stay excluded.
 - Three mixed-intent controls run as `it.fails` in `test/drift-141-routing.test.ts`. Remove the
@@ -550,7 +557,9 @@ Acceptance checks:
 6. Strong Docs evidence remains eligible after five weak gated Scout candidates.
 7. All eight regression rows meet their clean grades.
 8. A general RWA query reaches `scout.getRwaAssets`, while unrelated Friendbot, RPC, WASM,
-   simulation, and balance questions do not capture it.
+   simulation, and balance questions do not capture it. The proposed answer-level form ("the
+   target stays rank 1 and answers do not degrade") was tested in round item 6.3 and not adopted,
+   because the pre-registered rule returned exclude.
 9. The leaderboard and RFP improvements remain.
 10. The legacy, skills, and holdout routing gates pass. The extended diagnostic shows no
     regression.

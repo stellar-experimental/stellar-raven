@@ -1,0 +1,185 @@
+{
+  "judge": "claude-opus-5-5 (--model opus, effort high, --max-budget-usd 15), blind; un-blinded with tmp/6.3/blind-key.json",
+  "verdicts": [
+    {
+      "key": "C1",
+      "excluded": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false
+      },
+      "included": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false
+      },
+      "reasonAsWritten": "Both give the documented simulateTransaction JSON-RPC procedure with SEP-41 transfer and auth caveats; X's endpoints and the stellar token transfer CLI command check out; Y's TPT30/USTBL contract IDs match the registry.",
+      "judgeLabels": {
+        "X": "excluded",
+        "Y": "included"
+      }
+    },
+    {
+      "key": "C2",
+      "excluded": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false
+      },
+      "included": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false
+      },
+      "reasonAsWritten": "Both correctly split classic trustline reads (Horizon/getLedgerEntries) from SEP-41 balance() calls; X's contract IDs, decimals and auth flags match the registry; Y's generic SDK/CLI guidance is accurate.",
+      "judgeLabels": {
+        "X": "included",
+        "Y": "excluded"
+      }
+    },
+    {
+      "key": "C3",
+      "excluded": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false
+      },
+      "included": {
+        "correctness": "partial",
+        "fabrication": false,
+        "offTopic": false
+      },
+      "reasonAsWritten": "X's issuance steps and flags are sound, but it misstates the docs' three tokenization models (it lists classic/SAC/SEP-41, while the docs say Stellar Assets, SEP-41 and SEP-57) and its legal guidance stops at 'get counsel'; Y matches the docs (models, clawback timing, jurisdiction quote, Securitize 2026-10-28, DTCC H1 2027) and covers the legal issues, labelled as general knowledge.",
+      "judgeLabels": {
+        "X": "included",
+        "Y": "excluded"
+      }
+    },
+    {
+      "key": "D1",
+      "excluded": {
+        "correctness": "partial",
+        "fabrication": false,
+        "offTopic": false
+      },
+      "included": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false
+      },
+      "reasonAsWritten": "X's per-asset values, states and discontinued flags match the registry; Y's 82 live RWA-type directory projects is accurate, but it covers only 40 (by its own admission), lists projects rather than products, and includes non-asset tooling.",
+      "judgeLabels": {
+        "X": "included",
+        "Y": "excluded"
+      }
+    },
+    {
+      "key": "D2",
+      "excluded": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false
+      },
+      "included": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false
+      },
+      "reasonAsWritten": "Both list SCF-funded RWA and fund projects; the totals I checked against the stellarlight directory scf records (67 non-draft awarded RWA projects, Lend $213,460, Untangled $320,000, 0xAuth #27/#29, etc.) all match. Y's Unlock $110K in SCF #19 claim could not be confirmed either way.",
+      "judgeLabels": {
+        "X": "excluded",
+        "Y": "included"
+      }
+    },
+    {
+      "key": "D3",
+      "excluded": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false
+      },
+      "included": {
+        "correctness": "partial",
+        "fabrication": false,
+        "offTopic": false
+      },
+      "reasonAsWritten": "X's Centrifuge deRWA and registry rows are accurate, but it misses major 2025 launches in the reference year-in-review (RedSwan by name, PYUSD, Franklin Luxembourg fund, Ondo USDY, Whisk); Y's launches and figures (Ondo 5.3%, 21X, RedSwan, Archax, Templar, $3B/$290M, $1.5B/$48M, Messari $533M/$496M, Turbo Energy, US Bancorp) all check out.",
+      "judgeLabels": {
+        "X": "included",
+        "Y": "excluded"
+      }
+    },
+    {
+      "key": "D4",
+      "excluded": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false
+      },
+      "included": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false
+      },
+      "reasonAsWritten": "X's BENJI/gBENJI/sgBENJI/grBENJI issuers, supply, holders and flags match the registry, and $654M matches the case study; Y's 1940 Act, $580M/85%, $650M, $2.5B and $4.5B figures all match SDF and Lumen Loop pages.",
+      "judgeLabels": {
+        "X": "included",
+        "Y": "excluded"
+      }
+    },
+    {
+      "key": "N1",
+      "excluded": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false
+      },
+      "included": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false
+      },
+      "reasonAsWritten": "Both match research.stellar.org/research-grants (quarterly deadlines, 3-page PDF, $150K cap/$75K avg) and the 2024 review (14 groups); Y also adds the eligibility rules from the page.",
+      "judgeLabels": {
+        "X": "excluded",
+        "Y": "included"
+      }
+    },
+    {
+      "key": "N2",
+      "excluded": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false
+      },
+      "included": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false
+      },
+      "reasonAsWritten": "Both match SEP-8: AUTH_REQUIRED+AUTH_REVOCABLE, the authorize/pay/deauthorize sandwich, status codes, CORS and the regulated/approval_server/approval_criteria toml fields; the Go server removal note is from the dev skill.",
+      "judgeLabels": {
+        "X": "excluded",
+        "Y": "included"
+      }
+    },
+    {
+      "key": "N3",
+      "excluded": {
+        "correctness": "partial",
+        "fabrication": true,
+        "offTopic": false
+      },
+      "included": {
+        "correctness": "partial",
+        "fabrication": false,
+        "offTopic": false
+      },
+      "reasonAsWritten": "X's snapshot and Reflector columns are accurate, but its SQL uses an unsupported dataset (crypto_stellar_2; the docs use crypto-stellar.snapshots) and skips contract-token balances; Y's gold/SCD2 and cex/fex/sdex details are right, but its sketch prices only trustline_balance and uses an unconfirmed dataset path for the gold table.",
+      "judgeLabels": {
+        "X": "excluded",
+        "Y": "included"
+      }
+    }
+  ]
+}
