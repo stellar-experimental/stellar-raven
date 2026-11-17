@@ -26,20 +26,27 @@ describe("the identifier token rule", () => {
 
   it("reads a standard that a number or a word only precedes", () => {
     expect(read("SEP-6/SEP-24")).toEqual(["sep-6", "sep-24"]);
+    expect(read("SEP-6,SEP-24")).toEqual(["sep-6", "sep-24"]);
+    expect(read("x-SEP-10")).toEqual(["sep-10"]);
     expect(read("CAP 46 SEP 45")).toEqual(["cap-46", "sep-45"]);
     expect(read("SEP-10 and SEP-24")).toEqual(["sep-10", "sep-24"]);
     // `see 2024` is a token of its own (a word, a space, digits); the standard after it still reads.
     expect(read("see 2024 SEP-10")).toEqual(["see-2024", "sep-10"]);
   });
 
-  it("keeps the dates the rule does not see, and drops a second token after a digit and a hyphen", () => {
-    // Known and accepted: no dash or dot joins a number to the token, so it reads.
+  it("reads a date with no dash or dot before it (accepted false mark) and drops a token after a digit and a dash or dot (accepted missed mark)", () => {
+    // Accepted false mark: the host cannot tell a date from a standard when only a space or slash
+    // joins the number, and a number and a space before a standard is common in real queries.
     expect(read("SEP 10, 2024")).toEqual(["sep-10"]);
+    expect(read("10 SEP 24")).toEqual(["sep-24"]);
     expect(read("10 SEP 2024")).toEqual(["sep-2024"]);
     expect(read("in SEP 2024")).toEqual(["sep-2024"]);
     expect(read("2024/SEP-10")).toEqual(["sep-10"]);
-    // Known and accepted: a missed exact mark for the second standard, never a false one.
+    // Accepted missed mark, never a false one: any token that directly follows a digit and `-` or
+    // `.` is dropped, even when it is the only standard named.
     expect(read("CAP-46-SEP-45")).toEqual(["cap-46"]);
+    expect(read("BLS12-381-CAP-59")).toEqual([]);
+    expect(read("9-SEP-10")).toEqual([]);
   });
 
   it("reads at most six digits", () => {

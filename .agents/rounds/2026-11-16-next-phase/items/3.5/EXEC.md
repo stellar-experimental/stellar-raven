@@ -13,7 +13,8 @@ request, no deploy. No model-calling eval and no paid call. No stop rule fired; 
 | 2 | `7925540c` | Read an all-capitals date as a date, not an identifier |
 | 3 | `da949a9a` | Rename the micro-map generator for what it emits |
 | 4 | `8733c434` | State the public search default as seven |
-| EXEC | the commit after this file | this record |
+| EXEC | `34efbb9c` | Record the item 3.5 execution |
+| Reconcile | the commit after `34efbb9c` | Reconcile the item 3.5 token review |
 
 ## What each step did
 
@@ -81,6 +82,11 @@ command, `RAVEN_REPLAY_LIVE=1`. Both passed. Each report has 98 entries (98 call
 entries carry an exact row, the same 17 before and after. I did not open the split or the results
 file.
 
+No replay query holds a digit followed by `-` or `.`, so none can reach the new lookbehind. The old
+and new rules read the same tokens from all 98 queries ([REVIEW-TOKEN.md](REVIEW-TOKEN.md)). The
+replay is evidence of no regression on 98 real calls; the date behaviour rests on the unit and
+provider tests alone.
+
 **Surface.** `npm run -s mcp:surface -- --json`, head equals base:
 
 ```
@@ -135,18 +141,23 @@ path comments from it. Deploy is needed after merge. Production checks: landing 
 - The runner still prints the holdout and protocol-history per-case tables on every `--gate` run, CI
   included. Recorded as a TODO item ("Stop the routing gate run from printing the holdout rows"); out
   of this item's scope.
-- Step 2 accepted shapes (pinned in tests): `SEP 10, 2024`, `10 SEP 2024`, `in SEP 2024` and
-  `2024/SEP-10` still read as identifiers; `CAP-46-SEP-45` reads only `cap-46`. A missed exact mark,
-  never a false one.
-- The Fable child that reads step 2's evidence (`REVIEW-TOKEN.md`, plan "Reviews") has not run; the
-  brief forbids subagents, so it is the lead's to start. Its inputs: the routing comparison (empty),
-  the replay `cmp` (identical) and the unit cases.
+- Step 2, accepted false mark (pinned in tests): a date with no `-` or `.` joining its number to the
+  token (`SEP 10, 2024`, `10 SEP 24`, `2024/SEP-10`) still reads as an identifier, so a question
+  about that day can mark a row exact. The host cannot tell a date from a standard there, and a
+  number and a space before a standard is common in real queries (the replay has four).
+- Step 2, accepted missed mark, never a false one (pinned): the rule drops any token that directly
+  follows a digit and `-` or `.`, even the only standard named (`BLS12-381-CAP-59` reads nothing;
+  `CAP-46-SEP-45` reads `cap-46`).
+- The Fable read of step 2 is [REVIEW-TOKEN.md](REVIEW-TOKEN.md): no blocking finding, two
+  should-fix (wording) and four nits, reconciled below.
 
 ## Deviations from the plan
 
 1. **Replay split.** The plan's `gca-2026-11-14-split-v2.json` holds 79 tuning ids and the test now
    requires `TUNING_ROW_COUNT = 87` (error: "sets.tuning must list 87 ids, got 79"). I read only that
-   count from the test's error message. v3, v4 and v5 gave 80, 81 and 86; v6 passes. Base and head
+   count from the test's error message. v3, v4 and v5 gave 80, 81 and 86; v6 passes. Split v6 is the
+   current split by the repo's record (`.agents/TODO.md`, `eval/qa/tuning-rows.mjs`), so the trial
+   of v3 to v5 was not needed. Base and head
    both used `gca-2026-11-14-split-v6.json`, so the comparison is like for like. The call count is 98,
    not the expected 90. The `cmp` result does not depend on it.
 2. **`npm run -s`** for `mcp:surface -- --json`, because the npm banner lines otherwise make the file
@@ -156,3 +167,26 @@ path comments from it. Deploy is needed after merge. Production checks: landing 
    `["see-2024", "sep-10"]`, and the second example became `10-SEP-2024, then SEP-10`.
 4. **Gate output** was redirected to log files instead of shown, with the exit status read from the
    command (no pipe).
+
+## Token review reconciliation
+
+[REVIEW-TOKEN.md](REVIEW-TOKEN.md) (Claude Fable 5.2) found no blocking issue. The lead adopted all
+six findings; each was done in the "Reconcile the item 3.5 token review" commit. The commit
+message of `7925540c` is not amended: it still says "pinned as accepted: a missed exact mark, never
+a false one" of the dates too, and the pull request body carries the correction.
+
+| # | Finding | What I did |
+|---|---|---|
+| 1 | "Never a false one" said of dates that still read | `src/policy/identifier-token.ts` comment split: space-joined dates are an accepted false mark (with the reason); the dropped token is a missed mark. Test comments and the residuals above say the same. |
+| 2 | Loss wider than "a second token" | Comment and test name now say any token directly after a digit and `-` or `.`, even the only standard named. Pinned `BLS12-381-CAP-59` as `[]` beside `CAP-46-SEP-45`. No rule change. |
+| 3 | `ARCHITECTURE.md:215` states the preceding half backwards | Now "one to six digits; the token is not followed by a dash or dot and a digit, and not preceded by a digit and a dash or dot (…)". |
+| 4 | Three pins | Added `SEP-6,SEP-24` (reads both), `10 SEP 24` (reads `sep-24`, accepted false mark), `x-SEP-10` (reads `sep-10`) and `9-SEP-10` (reads nothing). |
+| 5 | Replay shows no date input | Sentence added to the replay paragraph. |
+| 6 | Citation and stale lines | Split v6 cited as current; the commit row and the Fable-child residual fixed; this section added. |
+
+Checks run bare after the changes (output in `tmp/3.5/r-*.log`):
+
+- `npm run typecheck`: exit 0.
+- `npx vitest run test/identifier-token.test.ts test/executor-providers.test.ts`: exit 0; 2 files,
+  117 tests passed.
+- `npm test`: exit 0; 168 files passed, 5 skipped; 3,725 tests passed, 3 expected fail, 5 skipped.

@@ -12,10 +12,14 @@
  * `2024-SEP-10`, `10-SEP-24`, a date). The rule is the shape, not a month list, and the host keeps
  * no list of standards.
  *
- * Still read, because no `-` or `.` joins a number to the token: `SEP 10, 2024`, `10 SEP 2024`,
- * `in SEP 2024` and `2024/SEP-10` read as `sep-10` or `sep-2024`. The rule also drops a second
- * token that follows a digit and a hyphen (`CAP-46-SEP-45` reads `cap-46` only). Both are accepted:
- * a missed exact mark, never a false one.
+ * Accepted false mark: a date with no `-` or `.` joining its number to the token (`SEP 10, 2024`,
+ * `10 SEP 24`, `2024/SEP-10`) still reads as `sep-10` or `sep-24`, so a question about that day can
+ * mark `sep-0010` exact. The host cannot tell a date from a standard there, and a number and a
+ * space before a standard is common in real queries (`Protocol 19 CAP-40`), so a space is not a join.
+ *
+ * Accepted missed mark, never a false one: the rule drops any token that directly follows a digit
+ * and `-` or `.`, even when it is the only standard named (`BLS12-381-CAP-59` reads nothing;
+ * `CAP-46-SEP-45` reads `cap-46`).
  */
 
 export type IdentifierToken = {
