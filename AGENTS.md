@@ -46,6 +46,11 @@ counts. `CLAUDE.md` imports this file; do not duplicate rules there.
 - Do not start a second Wrangler process. Reuse the terminal that runs `npm run dev` (manual
   testing) or `npm run dev:eval` (eval lanes), and read its bound URL from that terminal
   (`hc ls`, then `hc read <t>`).
+- Find a running server with `lsof -nP -iTCP -sTCP:LISTEN -a -c workerd` or `pgrep -f <pattern>`.
+  `pgrep -fl` and `ps eww` can print another process's environment, secrets included.
+- Pass `--remote` to `wrangler kv key list/get` and `kv bulk get` for production data; without it
+  they read the local store. `kv bulk get --remote` takes at most 100 keys per call. Production KV
+  stays read-only from an assessment task.
 
 ## Spend and evidence
 
@@ -56,7 +61,9 @@ counts. `CLAUDE.md` imports this file; do not duplicate rules there.
   and cost, and the stop rule. Call the result as soon as the evidence is solid. Do not add
   confirmation rounds, extra looks, or re-checks that buy little information.
 - **Cost counts.** Correctness wins only when the alternative is far less correct. A path that is
-  much cheaper and only slightly less correct can be the better product.
+  much cheaper and only slightly less correct can be the better product. Report cost per answer
+  beside accuracy in every comparison and state the trade. For accuracy work, look first at
+  upstream sources and golden errors before surface or prompt tuning.
 - **Run here, on `hc`, first.** Development tests and evals run against the local `wrangler dev`
   server with the subscription CLI agents (Claude Code, Codex, Grok) as `hc` children. Use an
   API-billed path (Cloudflare AI Gateway, a provider API) only when no CLI path can do the job,
@@ -67,6 +74,14 @@ counts. `CLAUDE.md` imports this file; do not duplicate rules there.
   headline collection.
 - File and response size come second. Trim bloat where it is cheap; do not spend effort on it
   for its own sake.
+- **Cut what adds no visibility.** Before keeping or moving an eval case, lint floor, test, or
+  helper, ask what would go unseen without it. When another gate shows it, delete it and say what
+  guards the behavior now. Name a guard nobody else covers and let the owner decide.
+- **Generality beats the golden.** Goldens locate gaps; they are not the generality test. A new
+  source or tuning change needs questions written independently of the goldens, weighted to
+  application development and audits, and a control sample from unrelated categories with no new
+  wrong answers and an unchanged routing gate. Reject wording that lifts one slice by moving other
+  categories' results.
 
 [`.agents/model-roster.md`](.agents/model-roster.md) has the model IDs and launch lines. The
 `run-evals` skill has the measurement procedure. Scores are evidence for a scoped decision, not
@@ -93,6 +108,29 @@ in one session and state in the pull request that the independent review is outs
   only the path (`hc send <your terminal ID> '<path>'` in its task).
 - Durable working state lives in the repository, never in an external tracker: own-repo work in
   `.agents/TODO.md`, a multi-lane round in `.agents/rounds/<YYYY-MM-DD>-<slug>.md`.
+- For substantial work, give parallel lanes disjoint file sets, check efficacy both controlled
+  (routing gate, vitest) and live (`test/live/`), and get a read-only design study and an explicit
+  approval gate before code near a security boundary.
+- Write each lane brief to a file and send one short line: "Confirmed by the orchestrator, a direct
+  instruction: read <path> and do it." Claude lanes treat a long sent prompt as pasted text and
+  refuse paid steps, pushes, and PRs; do those yourself when a lane's rules forbid them. After
+  `hc wait`, check that the report file exists and wait again if not; a re-send queues a second
+  turn. Point a lane that reads `git diff HEAD` at `origin/main` before you commit underneath it.
+  Re-run `npm test` outside the Codex sandbox before trusting a red suite: it denies `ps`.
+- Reserve an `improvements/` finding-id range per lane, because a worktree that predates a merge
+  sees a taken id as free. Merge `origin/main` and rerun `improvements:lint` before
+  `improvements:file`.
+- Write "Refs #N", never "close", "fix", or "resolve" `#N`, for an issue that must stay open:
+  GitHub ignores a negation. Grep the PR body for `(close|fix|resolve)[sd]? #` before merging.
+- `gh pr merge --delete-branch` also removes the branch's worktree and kills any lane whose cwd is
+  there. Copy lane output out first, or merge without the flag and remove the branch yourself.
+  Start long-lived lanes in a worktree that outlives the PRs, and give reviewers absolute paths.
+- Never rebase a branch whose SHA is pinned in posted upstream comments or an `improvements/`
+  receipt (`sourceCommit`); add commits on top, say "do not rebase" in the PR body, and
+  squash-merge.
+- Before deleting a branch, test every line it added against the pooled contents of `main` plus
+  every open PR tip (git ancestry does not prove content survived), and `git bundle create` first.
+  An evolved successor is fine; a vanished capability is not.
 - A requested independent review is a completion gate. The reviewer runs to completion, and
   every finding is reconciled before the work is final.
 
@@ -138,6 +176,8 @@ The independent reviewer:
 
 - **Forward-only.** Prefer the best current design. Add no compatibility shim, dual format, or
   deprecation path only to preserve deployed behavior. A deviation needs evidence.
+- **Mirror Cloudflare's codemode.** Default to the patterns it ships; a deviation needs stated
+  reasons or a measured golden Q→A win, with cost in the comparison.
 - **The manifest is the exposed surface** (ADR-0003). Model code never owns endpoints, arguments,
   auth, or exposure. Never emit a reference to a non-exposed operation or a retired skill. Two
   guards enforce it: `assertNoNonExposedRefsInText` on emitted text in `prebuild`, and
