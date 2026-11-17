@@ -42,16 +42,17 @@ Held-out status: the first-principles split is void, because the 2026-11-14 gold
 rebuilt the battery. The current split is drawn by the rule in
 [`eval/qa/README.md`](../eval/qa/README.md) ("Held-out split") from the 247 headline cases:
 
-- SHA-256 `0b6c9c04b59f5f49225df4c054df0a1117bfb8f179660147dde14887515c800c`.
-- 91 tuning, 111 held-out, and 45 reserve cases.
-- The file is on the owner's Linux machine at `~/backups/gca-2026-11-14-split-v9.json`. It
-  replaces `gca-2026-11-14-split-v8.json` (SHA-256
-  `1f0c1268d47103e652c545cd7642f808d893aa7779192b50d189c42510027720`, 89/112/46), which stays in
-  place, v7 (`d5e56748dfdf2ce9c0bcf8a48898f976db96578dd97516d07dd0b3cb13966c8a`, 88/112/47), v6
+- SHA-256 `fea3d467e0df7b21a3fab7b5e4013d077da789de5aea16188d5bf975063f35e9`.
+- 92 tuning, 110 held-out, and 45 reserve cases.
+- The file is on the owner's Linux machine at `~/backups/gca-2026-11-14-split-v10.json`. It
+  replaces `gca-2026-11-14-split-v9.json` (SHA-256
+  `0b6c9c04b59f5f49225df4c054df0a1117bfb8f179660147dde14887515c800c`, 91/111/45), which stays in
+  place, v8 (`1f0c1268d47103e652c545cd7642f808d893aa7779192b50d189c42510027720`, 89/112/46), v7
+  (`d5e56748dfdf2ce9c0bcf8a48898f976db96578dd97516d07dd0b3cb13966c8a`, 88/112/47), v6
   (`04107a463c462eecb02a64fe0b69fab6cb4a1bc388197c3e3a01107e9350c362`, 87/113/47), v5 (`c8796ec14c4d77d114693cfcf5a51a9f5da80a6506956bb7f88c6992725f4b15`, 86/114/47), and
   v4 (81/117/49), v3 (80/118/49) and v2 (79/119/49) before it. A Mac copy of an earlier split,
   or an id list taken from one, is stale. Tuning scans pass
-  `--split ~/backups/gca-2026-11-14-split-v9.json`.
+  `--split ~/backups/gca-2026-11-14-split-v10.json`.
 - v5 is a dated amendment of v4 by the orchestrator's answer in
   [round item 1.4 `QUESTION.md`](rounds/2026-11-16-next-phase/items/1.4/QUESTION.md): five
   dated-golden cases moved to tuning so the dated runs (round items 2.1 and 2.2) can open and edit
@@ -74,6 +75,10 @@ rebuilt the battery. The current split is drawn by the rule in
   piped to `tail` showed the item 5.2 executor five case ids with golden text; the cases among them
   that were outside tuning moved to tuning. A script took the ids from the executor's untracked
   exposure note; nobody read them.
+- v10 is a dated amendment of v9 by the orchestrator's answer in
+  [round item 6.1 `QUESTION.md`](rounds/2026-11-16-next-phase/items/6.1/QUESTION.md) ("Answer"): a
+  repository-wide search printed one non-tuning case's notes to the item 6.1 lead, and that case
+  moved to tuning. A script took its id from the lead's untracked exposure note; nobody read it.
 
 Two tuning loops tuned on the tuning rows ([loop 1](rounds/2026-11-14-baseline-tuning.md),
 [loop 2](rounds/2026-11-15-tuning-loop-2.md)). The audit's battery test read the answers of 70
