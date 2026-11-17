@@ -10,9 +10,12 @@ evidence:
   - "2026-11-14 https://www.circle.com/legal/eurc-terms, section 1: 'EURC is a digital token issued by Circle Internet Financial Europe SAS, (“Circle Europe”)' and 'Circle Internet Financial, LLC (“Circle”) is an affiliate of Circle Europe and acts as a reseller of EURC to those having a Circle Mint account.' Section 13: 'EURC is issued and redeemed by Circle Europe'."
   - "2026-11-14 https://www.circle.com/eurc (page dated 2026-11-12): 'EURC is issued by Circle Internet Financial Europe SAS, an electronic money institution authorized by the ACPR in France, and qualifies as an e-money token under MiCA.'"
   - "2026-11-14T16:53Z Raven execute scout.getStablecoins({peg: 'EUR'}) returned the same EURC issuerOfRecord. Prevalence: only the EURC row was checked against the issuer's legal disclosure; the USDC row carries the same toml-derived value and was not assessed."
-  - "Dedupe 2026-11-14: sls-107 (fixed-upstream, Stellar-Light/stellarlight#1900, PR 1944) added issuerOfRecord from the toml ORG_NAME. This finding is its residual: ORG_NAME names the toml publisher, which for EURC is not the legal issuer. No open issue on Stellar-Light/stellarlight mentions EURC issuer of record."
+  - "Dedupe 2026-11-14: sls-107 (retired 2026-11-17; receipt in improvements/resolved.json; Stellar-Light/stellarlight#1900, PR 1944) added issuerOfRecord from the toml ORG_NAME. This finding is its residual: ORG_NAME names the toml publisher, which for EURC is not the legal issuer. No open issue on Stellar-Light/stellarlight mentions EURC issuer of record."
   - "Affected golden case: eval/qa/corpus/battery/retail-consumer/q-asset-usdc-eurc-issuer.json (the EU legal-issuer key fact moved to grading notes on 2026-11-14; .agents/rounds/2026-11-14-golden-coverage-audit/decisions/APPLY.md)."
   - upstream issue filed 2026-11-14: https://github.com/Stellar-Light/stellarlight/issues/1971
+recurrences:
+  - date: 2026-11-17
+    evidence: "Still reproduces. Reproduction command from the evidence, run 2026-11-17 (00:19Z): GET https://stellarlight.xyz/api/stablecoins?peg=EUR&limit=50 (meta.dataAsOf 2026-11-16T22:20:13.659Z) returns 6 rows. The EURC row with issuer GDHU6WRG4IEQXM5NZ4BMPKOXHW76MZM4Y2IEMFDVXBSDP6SJY4ITNPP2 still has issuerOfRecord \"Circle Internet Financial, LLC\", issuerOfRecordCheck \"named\" and issuerOfRecordSourceUrl https://circle.com/.well-known/stellar.toml. https://github.com/Stellar-Light/stellarlight/issues/1971 is open with 0 comments."
 ---
 
 ## Finding

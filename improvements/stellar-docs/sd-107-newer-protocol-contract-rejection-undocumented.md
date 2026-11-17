@@ -23,6 +23,9 @@ evidence:
   - "Classification: docs-content. The Environment Meta section undertakes to explain the interface version and omits the rule that the host enforces."
   - "Affected golden case: eval/qa/corpus/battery/tooling-infra/q-infra-version-lag-errors.json, key fact 4. Ledger: .agents/rounds/2026-11-14-golden-coverage-audit/gaps/GAPS.md."
   - upstream issue filed 2026-11-14: https://github.com/stellar/stellar-docs/issues/3145
+recurrences:
+  - date: 2026-11-17
+    evidence: "Still reproduces. `npm run improvements:probes -- --service stellar-docs --service stellar-light-scout` on 2026-11-17 (00:18Z): GET https://developers.stellar.org/docs/learn/fundamentals/contract-development/overview.md answers 200, contains \"should match the version of the host functions supported\" and still excludes \"newer\". https://github.com/stellar/stellar-docs/issues/3145 is open. Its triage-bot fix PR https://github.com/stellar/stellar-docs/pull/3149 is open and not merged. The thread asks Raven no question."
 ---
 
 ## Finding
