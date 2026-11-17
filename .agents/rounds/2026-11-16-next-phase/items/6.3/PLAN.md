@@ -364,3 +364,202 @@ larger spec) and `node scripts/check-pin-review.mjs --base origin/main`. No QA l
 | 11 | should-fix | Adopted: `Refs #167` unless the orchestrator confirms supersession. |
 | 12 | should-fix | Adopted: inconclusive has its own text. |
 | 13 | nits | Adopted: midnight straddle recorded; Codex checks argument validation and truncation. |
+
+## Re-test: second measurement (pre-registered 2026-11-17, after result 1)
+
+Orchestrator answer to REPORT.md question 1 (2026-11-17): "One sample within the measured noise (5 of
+10 flips between equivalent arms in 6.2) does not decide this, so run the 3-sample re-test as a NEW
+pre-registered measurement. Do not edit the first rule: keep the first result recorded as it is, and add
+the re-test as a second, separate result." It sets: 3 samples per pair on the controls and off-target
+questions, the registry questions only if they fit about 40 answers; "an attributable drop counts only
+when INCLUDED is worse in a majority of samples for that question AND the judge's stated reason involves
+the registry call or its data"; the same blind judging; subscription only; a cap of 45 answers. Result 1
+([RESULTS.md](RESULTS.md), the rule above) stays as recorded. Reviewed by a second Claude Fable session
+([REVIEW-2.md](REVIEW-2.md)); its 16 findings are reconciled at the end of this section, before any run.
+
+### Scope
+
+- Re-sampled: C1, C2, C3, N1, N2, N3 and D3 (same text and references as the table above), 3 samples
+  per arm: 7 × 3 × 2 = 42 planned answers. D3 is added because its single result-1 sample was INCLUDED
+  partial against correct with a registry call, the pattern this re-test asks about (REVIEW-2 finding 3);
+  it fits "about 40" and the cap. D1, D2 and D4 are not re-sampled (they would pass 45); their result-1
+  clauses are carried and recomputed by `--score` from the committed `verdicts.json`, and RESULTS-2 says
+  they are single-sample passes.
+- Caps: 45 answer attempts in all, retries included. `--max-attempts` is checked before every attempt
+  beside the cost cap: EXCLUDED at most 22, INCLUDED at most 45 minus EXCLUDED's attempts. Per run USD 4,
+  per arm USD 10 (null cost at USD 4), each judge USD 15, re-test total USD 50 subscription-equivalent.
+  Estimate USD 2 to 3 per arm and about 7 minutes per arm (result 1: under 3 minutes per 10-run arm),
+  plus two judge sessions. No fourth sample, no extra arm, no re-judge beyond the one completion pass
+  below.
+
+### Arms
+
+- EXCLUDED: the tree of the re-test pre-registration commit on `np/6.3-rwa-retest`. EXEC records that
+  `git diff --stat cd4520bd <that commit> -- . ':!.agents'` is empty (manifest SHA-256 `7a4fab76…5caa29`).
+- INCLUDED: commit I (`92f71b8d`, manifest SHA-256 `d90a7a46…c3a1`) served from a second worktree the
+  executor creates detached at that commit, `/home/tyler/code/raven-wt/np-6.3-inc` (`npm ci`, `.dev.vars`
+  copied with mode 600). EXEC records that the diff from the pre-registration commit to `92f71b8d`
+  outside `.agents/` is commit I's six files. After the arm the executor runs `git worktree remove` and
+  checks that the directory and its `.dev.vars` copy are gone.
+- One `dev:eval` at a time, never two. Identity at each arm's start and end, naming the serving worktree:
+  `serverInfo.sourceRevision`, manifest SHA-256, `git -C <serving worktree> status --porcelain` empty, the
+  RWA probe, and on INCLUDED the `scout.getRwaAssets({ limit: 3 })` execute probe. On both arms, before
+  the harness, the start probes plus one skill read warm the skills cache.
+- Order: EXCLUDED arm, then INCLUDED. Within an arm, round-major: sample 1 over the seven questions in
+  table order, then sample 2, then 3. The harness runs from the branch worktree in both arms. No arm starts
+  between 23:30 and 00:00 UTC.
+- This file and the new scripts are in the pre-registration commit (`dev:eval` refuses an untracked
+  file); RESULTS-2 and EXEC drafts stay in `tmp/6.3/` until both arms end.
+
+### Harness changes (in the re-test pre-registration commit; result-1 files keep their behaviour)
+
+- `ab-run.mjs`:
+  - `--keys <comma list>`, `--samples <n>`, `--max-attempts <n>`, `--dry-run` (prints the planned order,
+    no agent call). Record identity is `(key, sample)`; a duplicate is refused; resume is
+    `--from <sample>:<key>`. An unanswered `(key, sample)` stays missing; samples are never re-paired.
+    Defaults reproduce result 1's ten-question order.
+  - A fresh `mkdtempSync` agent directory for every attempt.
+  - For every run on both arms, with no branch on the arm, write
+    `tmp/6.3/rt/exec-<arm>-<key>-<sample>.json`: every `execute` entry of the final attempt as
+    `{ index, code, result, isError, resultChars, namesRwa, footerCalls }` (`result` is the text the model
+    saw, from `runAgent`'s transcript).
+  - Per run `rwaCalled` (the code regex), `rwaRan` (a host footer lists `scout.getRwaAssets=ok`) and
+    `rwaMentioned`. The re-test's registry-call condition is `rwaCalled || rwaRan`; any run where the two
+    differ is reported.
+- `blind.mjs --retest` (pack, score, selftest):
+  - 21 pairs: EXCLUDED sample i with INCLUDED sample i, per question. X/Y split 2 and 1 within each
+    question, balanced over the packet as far as seven questions allow (11 and 10); opaque shuffled ids.
+  - Packet entry shape exactly `id, question, referenceUrls, X, Y`, each side `answer` and `resultUrls`
+    (registry URLs stripped on both arms).
+  - Rubric as in result 1 plus: `deficiencies`, a list, most important first, required when the grade
+    is not `correct` or `fabrication` is true. Each item names one claim or omission, stands alone, and
+    refers to neither the other answer nor X or Y. When `offTopic` is true, the off-topic content is
+    named.
+  - Validation refuses a file with a missing `deficiencies` list where one is required, or an item
+    matching `\b[XY]\b`. On a refusal the executor may ask the same judge session once to complete the
+    missing fields; `--score` compares every grade with a hash taken at the first write, so no grade can
+    change.
+- `attribute.mjs` (new; pack, score, selftest):
+  - Packed set: every INCLUDED answer whose run has the registry-call condition and at least one
+    deficiency item. Scored set: the candidates only (below). The packet does not say which items are
+    candidates.
+  - A packet item: the question, the INCLUDED answer, its deficiency items, and the `code` and `result`
+    of every `execute` from the first one that names or ran the registry onward, labelled as tool output.
+    No EXCLUDED answer, no grade, no pair reason, none of: "arm", "included", "excluded", "candidate",
+    `sample`, the key, the class, model names, costs, timestamps, or what a verdict leads to. A packed run
+    with no capture file is a hard error.
+  - Verdict per deficiency item: `involvesRegistry` true or false. `true` must carry two quotes, one from
+    the answer and one from the tool output, and `--score` checks each is a whitespace-normalised
+    substring of its source; a `true` without both verified quotes is invalid.
+  - Rubric definition: `true` only when (a) the deficient claim is taken from the tool output's registry
+    rows (both quotes show it), or (b) the deficiency is an omission or off-question content and the
+    answer gives registry rows in the place where the missing content belongs (quote those rows and the
+    tool output they came from). An omission where the answer shows no registry content in that part is
+    `false`. A deficiency about documentation or general knowledge with no registry content is `false`.
+  - An item's verdict is per deficiency; the answer's `involvesRegistry` is true when any item is true.
+  - An invalid or missing verdict after one correction pass makes the outcome inconclusive; there is no
+    default.
+
+### Judging
+
+- Grading judge: Claude Opus 5.5, effort high, blind, one session over 21 pairs, in a fresh `/tmp`
+  directory holding only `packet.json` and `RUBRIC.md`. It answered nothing.
+- Attribution judge: Claude Fable, effort high, one session, a fresh `/tmp` directory with only its
+  packet and rubric. It answered and graded nothing, and is not either Fable reviewer session.
+- **Deviation from blind judging, for the orchestrator to accept:** the grades stay blind, but the
+  attribution judge sees the INCLUDED arm's tool output by construction (the orchestrator's clause needs
+  the reason tied to the registry call or its data, and the blind grader cannot see the call). It sees no
+  EXCLUDED answer, no grade and no stake.
+- Calibration on result 1, recorded here before any run, not given to the judge: under this definition
+  result 1's C3 drop is `false` (a misstated documentation list; no registry text in that part) and D3's
+  drop is `true` under (b) (registry rows given for "notable launches" in place of the year-in-review
+  launches).
+
+### Re-test rule (second measurement)
+
+Grades: `s` = 0 bad (`wrong` or `fabrication`), 1 `partial`, 2 `correct`. A pair is **complete** when
+both samples are answered and graded. A **candidate pair**: `s(INCLUDED) < s(EXCLUDED)` and the INCLUDED
+run meets the registry-call condition. Per question Q in C1 to C3, N1 to N3 and D3, over its complete
+pairs, three clauses, each counted on its own (clauses do not add):
+
+1. **Bad loss (net)**: (pairs with INCLUDED bad and EXCLUDED not bad) minus (the reverse) ≥ 2.
+2. **Attributable drop**: candidate pairs whose INCLUDED answer has `involvesRegistry: true` ≥ 2. This
+   reads the orchestrator's sentence as "worse in a majority of samples, with the reason involving the
+   registry in each of them".
+3. **Wrong registry use**: pairs where the INCLUDED run meets the registry-call condition and the grader
+   marked it `offTopic` ≥ 2.
+
+With 3 complete pairs a clause fires at 2 or more. With exactly 2 complete pairs: a count of 2 fires the
+clause, 0 does not, and exactly 1 makes the outcome inconclusive. Fewer than 2 complete pairs on any of
+the seven questions: inconclusive.
+
+**Include RWA only if no clause fires on any of the seven questions, no inconclusive condition holds,
+and the carried result-1 clauses for D1, D2 and D4 hold** (recomputed from `verdicts.json`). Otherwise
+exclude, or inconclusive as defined. The outcome is computed once, mechanically, by
+`blind.mjs --retest --score` together with `attribute.mjs --score`; with zero candidates the outcome is
+final through the same code path and no attribution session runs. The lead does not override it.
+
+Reported, not counted: per question, the pairs where INCLUDED is worse for any reason; the count under
+the other reading of the sentence (worse in a majority, registry involved at least once); candidate
+pairs with `involvesRegistry: false` (pure crowd-out); any question with 2 or more worse pairs that fired
+no clause; every grade, reason, deficiency and attribution line; `rwaCalled`, `rwaRan` and their
+differences; turns and cost per arm. RESULTS-2 states the accepted limit that the grader sees each
+question three times.
+
+### Selftests (pass before the pre-registration commit)
+
+- `blind.mjs --retest --selftest`: 21 pairs from seven keys and three samples; D1, D2, D4 answers never
+  packed; a missing sample makes only its pair missing; 2 and 1 per question, 11 and 10 overall; unique
+  ids; exact packet shape and the forbidden-string list outside answer text; no registry URL in
+  `resultUrls`; each clause at its threshold (1 of 3 passes, 2 and 3 fire); candidate ordering (partial
+  under correct, bad under partial, bad under correct are candidates; equal or better are not); one
+  `true` and one `false` candidate pass; triggers on different questions and different clauses do not
+  add; the two-pair and one-pair inconclusive cases; D clauses recomputed from `verdicts.json`; zero
+  candidates gives a final outcome; the result-1 selftest still passes unchanged.
+- `attribute.mjs --selftest`: packed set wider than scored set; packet shape and forbidden strings; a
+  missing capture file is an error; one verdict per id, unknown or duplicate ids refused; a `true` without
+  two verified quotes refused; an item naming X or Y refused; packing twice refused; the outcome for
+  every combination above, including inconclusive on an invalid verdict.
+- `ab-run.mjs --dry-run`: the planned order; unknown keys and bad sample counts refused; duplicate
+  `(key, sample)` refused; resume position; the attempt cap; one capture file per run; the defaults give
+  result 1's order.
+
+### Records and follow-ups
+
+- The executor writes `RESULTS-2.md` (the second result) and stops. RESULTS.md is not edited.
+- Either way (orchestrator answer 3): the lead posts one new #167 status comment on every outcome
+  (result 1's comment is not edited). It says #167 does not depend on cloudflare/agents#2296 (Raven
+  vendors its scorer) and no longer tracks it. The TODO item "Re-check the upstream codemode short-token
+  repair" keeps the watch and gains that sentence. Nothing is posted on cloudflare/agents.
+- Include: PLAN.md step 6a in full, plus:
+  - restore commit I by reverting the revert, and check the manifest SHA-256 is `d90a7a46…c3a1`;
+  - if `origin/main` has moved past `cd4520bd` in product paths, stop and report;
+  - remove the result-1 sentences 6b added to the TODO;
+  - the Codex review also reads `attribute.mjs` and the re-test mode;
+  - the policy record cites both results and quotes the orchestrator's instruction that set the second
+    rule;
+  - update PR #475's title, body and ledger row. Deploy needed.
+- Exclude or inconclusive: the TODO RWA bullet gains one sentence for result 2 (inconclusive names the
+  questions with missing pairs); PR #475 body and ledger row updated.
+- PR #475 stays a draft until the re-test is recorded.
+
+### Reconciliation of Fable review 2
+
+| # | Severity | Disposition |
+|---|---|---|
+| 1 | blocking | Adopted: two verified quotes per `true`, operational (b), calibration recorded, wider packed set with candidates hidden, crowd-out reported. |
+| 2 | blocking | Adopted: full `execute` capture on both arms, tool output from the first registry call onward, `rwaRan` beside `rwaCalled`. |
+| 3 | should-fix | Adopted: D3 re-sampled at 3 per arm (42 planned, inside the cap and "about 40"); D1, D2, D4 carried and recomputed. Reported to the orchestrator as a scope choice. |
+| 4 | should-fix | Adopted: `(key, sample)` identity, `--from <sample>:<key>`, `--max-attempts`, no re-pairing, `--dry-run`. |
+| 5 | should-fix | Adopted: one trigger of two complete pairs is inconclusive. |
+| 6 | should-fix | Adopted: bad loss is netted (losses minus wins ≥ 2). |
+| 7 | should-fix | Adopted: `deficiencies` list, standalone items, per-item attribution, X/Y refused, off-topic content named. |
+| 8 | should-fix | Adopted: the reading stated, the other reading's count and unfired worse questions reported, clauses do not add. |
+| 9 | should-fix | Adopted: named as a deviation in this section and in the report. |
+| 10 | should-fix | Adopted: 2 and 1 per question. |
+| 11 | should-fix | Adopted: a fresh agent directory per attempt. |
+| 12 | should-fix | Adopted: validation, one completion pass with a grade hash, inconclusive on an invalid attribution. |
+| 13 | should-fix | Adopted: the selftest lists above. |
+| 14 | should-fix | Adopted: #167 comment on every outcome, the TODO item named, include-path checks. |
+| 15 | nit | Adopted: arm cap USD 10, time estimate, no extra runs restated. |
+| 16 | nit | Adopted: identity commands name the worktree, warm-up, diff checks, worktree removal check, no start before midnight. |
