@@ -25,6 +25,8 @@ export const CARD_CAVEATS = Object.freeze({
     "Read placementRank with its track; never infer finishing place from list position. null means unranked.",
   "scout.getLeaderboard":
     "tvl null means no figure, never zero. issues is the open backlog, not activity.",
+  "scout.getRwaAssets":
+    "Includes fiat stablecoins (productKind=stablecoin). rwaxyzValueUsd is rwa.xyz's valuation; state counts holders, not product status.",
   "scout.getStablecoins":
     "Compare marketCapUSD, not raw supply across pegs. null is unmeasured, never zero; check basis.",
   "scout.listAudits":
