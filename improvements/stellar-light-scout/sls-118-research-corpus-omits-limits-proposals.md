@@ -23,6 +23,8 @@ evidence:
 recurrences:
   - date: 2026-11-14
     evidence: "2026-11-14 QA test of the rebuilt battery (claude-sonnet-5-5 answering, results stamp 2026-11-14T06-06-31-variantA): two unrelated cases missed the Limits Proposals. q-pc-slp-0004-0006-status: no Stellar Docs page, meeting note, Scout or Lumenloop hit mentioned SLPs, so the agent could not confirm the proposal type exists. q-pc-quorum-freeze-cap77: the agent found no source tying the YieldBlox freeze to CAP-0077 or SLP-0006. Evidence/owner state: .agents/rounds/2026-11-14-golden-coverage-audit/qa/RESULT.md, 'Upstream gaps by leaf'."
+  - date: 2026-11-17
+    evidence: "Still reproduces. `npm run improvements:probes -- --service stellar-docs --service stellar-light-scout` on 2026-11-17 (00:18Z): GET https://stellarlight.xyz/api/research?q=SLP-0006%20freeze%20YieldBlox%20exploit%20accounts&limit=25 answers 200 and still excludes \"limits/slp-0006\". https://github.com/Stellar-Light/stellarlight/issues/1970 is open with 0 comments."
 ---
 
 ## Finding

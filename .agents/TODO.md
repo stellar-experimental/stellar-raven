@@ -471,10 +471,6 @@ Recheck only when the named change or new evidence arrives. An untouched issue n
 reminder. The [November 5 ledger](rounds/2026-11-05-truth-maintenance.md) and its per-finding
 tables cover every finding.
 
-- **Standing authority to post** (owner, 2026-11-16, decision 4): post every verified finding as
-  an issue and resolution comments as comments, never pull requests, with no per-repository cap.
-  A finding not posted stays `verified` with a note, so it can be posted later. Move this rule
-  into the `improvements-pipeline` skill in round item 1.1's change.
 - **sls-033**: the source-URL gap is fixed live (2026-11-14, Scout 1.9.150, PR1967; inbound
   handoff #429), and the finding holds the receipt. It stays `reported-upstream` only because a
   golden partial cap still names it. In one change: remove that cap with `golden-truth`

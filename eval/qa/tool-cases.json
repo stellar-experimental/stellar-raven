@@ -1,7 +1,7 @@
 {
   "$comment": "Generated tool-contract lane: battery cases with truth.lane tool. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "fdb738dc9ed1ac439731c127bd29616955c36382d699ddddea09f870cfd93f68",
+  "corpusContentSha256": "da99e2f97ca652438a0ece8d59dffa1a8d9614554696ae25595fd16cbb917b5f",
   "counts": {
     "total": 6,
     "byCategory": {
@@ -522,7 +522,7 @@
               },
               {
                 "class": "C",
-                "ref": "improvements/stellar-light-scout/sls-033-wallet-type-enumeration-availability.md",
+                "ref": "improvements/resolved.json (sls-033 receipt)",
                 "observedAt": "2026-07-13",
                 "note": "Prior finding recorded duplicate Stellar Passport rows under different slugs and statuses."
               }

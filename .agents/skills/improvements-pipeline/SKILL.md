@@ -90,6 +90,9 @@ More rules:
   rendered. Commit first, or omit the snapshot.
 - A finding fixed before anyone filed it needs no ceremonial issue. Add dated live evidence and any
   existing upstream ref that explains the fix.
+- **Posting authority is standing.** Post every verified finding upstream as an issue, and post
+  resolutions as comments. Never open a pull request. There is no per-repository cap. A finding
+  that is not posted stays `verified`, with a note that says why, so it can be posted later.
 - A finding that backs a golden partial cap (ADR-0008) does not wait in `verified`: re-check it
   live, dedupe, and file it in the same round, or record why no public owner can receive it.
 - When the consumer-side workaround is a golden change, land it through `golden-truth`. Cite the

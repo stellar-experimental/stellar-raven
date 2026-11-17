@@ -1,10 +1,11 @@
 /**
- * The pure core of a dated split amendment: move the one held-out case a stored results file
- * identifies by `caseInputSha256` to the tuning set (eval/qa/README.md, "Held-out split").
+ * The pure core of a dated split amendment (eval/qa/README.md, "Held-out split").
  *
- * The function reads `caseInputSha256` of every row and `id` of the single matching row, and no
- * other field of any row. It never returns or throws an id, a question, or a row field: a failed
- * check throws an `AmendError` whose message is one fixed line.
+ * `moveToTuning` moves one named id from an allowed non-tuning set to the tuning set. `amendSplit`
+ * is the D2 wrapper: it finds the one held-out case a stored results file identifies by
+ * `caseInputSha256` and moves it. `amendSplit` reads `caseInputSha256` of every row and `id` of the
+ * single matching row, and no other field of any row. Neither function returns or throws an id, a
+ * question, or a row field: a failed check throws an `AmendError` whose message is one fixed line.
  */
 const HEX64 = /^[a-f0-9]{64}$/;
 
@@ -31,6 +32,10 @@ export const CHECK_LINES = {
   countsAfter: "check failed: the amended split is not 80 tuning, 118 heldOut, 49 reserve",
   samePartition: "check failed: the amended split does not partition the same ids",
   notACase: "check failed: the moved id is not a case in eval/qa/cases.json",
+  // The general move (`moveToTuning`) names its own counts and source sets, so it has its own lines.
+  moveCountsBefore: "check failed: the split sets do not hold the expected counts before the move",
+  moveNotAllowed: "check failed: the moved id is not in exactly one allowed source set, or is also in another set",
+  moveCountsAfter: "check failed: the amended split does not hold the expected counts after the move",
 };
 
 export class AmendError extends Error {
@@ -58,6 +63,73 @@ function allIds(sets) {
 }
 
 /**
+ * Move `movedId` from one of the `allowedFrom` sets to the tuning set.
+ *
+ * Check order: shape, `countsBefore`, a disjoint partition of all ids, then the id appears exactly
+ * once and only in a set listed in `allowedFrom`. After the move: the counts (tuning +1, the source
+ * set -1), the same partition, and membership in `caseIds`.
+ *
+ * @param {object} input
+ * @param {object} input.split         the split object
+ * @param {string} input.movedId       the id to move
+ * @param {Array<"heldOut"|"reserve">} input.allowedFrom  the sets the id may leave
+ * @param {{ tuning: number, heldOut: number, reserve: number }} input.countsBefore
+ * @param {Iterable<string>} input.caseIds  the ids in eval/qa/cases.json
+ * @param {string} input.note          appended to the split's `amended` string
+ * @returns {{ split: object, counts: { tuning: number, heldOut: number, reserve: number } }}
+ */
+export function moveToTuning({ split, movedId, allowedFrom, countsBefore, caseIds, note }) {
+  const sets = split?.sets;
+  requireCheck(
+    sets && SET_KEYS.every((key) => Array.isArray(sets[key])) && typeof split.amended === "string",
+    "splitShape",
+  );
+  requireCheck(sameCounts(countsOf(sets), countsBefore), "moveCountsBefore");
+  const before = allIds(sets);
+  requireCheck(
+    new Set(before).size === before.length && before.length === SET_KEYS.reduce((sum, key) => sum + countsBefore[key], 0),
+    "partition",
+  );
+  const holders = SET_KEYS.filter((key) => sets[key].includes(movedId));
+  requireCheck(
+    holders.length === 1 &&
+      allowedFrom.includes(holders[0]) &&
+      holders[0] !== "tuning" &&
+      sets[holders[0]].filter((id) => id === movedId).length === 1,
+    "moveNotAllowed",
+  );
+  const source = holders[0];
+
+  const next = {
+    ...split,
+    sets: {
+      ...sets,
+      tuning: [...sets.tuning, movedId],
+      [source]: sets[source].filter((id) => id !== movedId),
+    },
+    amended: split.amended.length > 0 ? `${split.amended}; ${note}` : note,
+  };
+
+  const counts = countsOf(next.sets);
+  requireCheck(
+    sameCounts(counts, { ...countsBefore, tuning: countsBefore.tuning + 1, [source]: countsBefore[source] - 1 }),
+    "moveCountsAfter",
+  );
+  const after = allIds(next.sets);
+  const beforeIds = new Set(before);
+  requireCheck(
+    new Set(after).size === after.length && after.length === before.length && after.every((id) => beforeIds.has(id)),
+    "samePartition",
+  );
+  requireCheck(new Set(caseIds).has(movedId), "notACase");
+
+  return { split: next, counts };
+}
+
+/** The `moveToTuning` checks whose D2 spelling differs from the general one. */
+const D2_CHECKS = { moveCountsBefore: "countsBefore", moveNotAllowed: "notHeldOut", moveCountsAfter: "countsAfter" };
+
+/**
  * @param {object} input
  * @param {object} input.split      the v2 split object
  * @param {Array}  input.rows       `results.rows`
@@ -83,43 +155,19 @@ export function amendSplit({ split, rows, targetSha256, caseIds }) {
   const movedId = matchRow.id;
   requireCheck(typeof movedId === "string" && movedId.length > 0, "matchId");
 
-  const sets = split?.sets;
-  requireCheck(
-    sets && SET_KEYS.every((key) => Array.isArray(sets[key])) && typeof split.amended === "string",
-    "splitShape",
-  );
-  requireCheck(sameCounts(countsOf(sets), COUNTS_BEFORE), "countsBefore");
-  const before = allIds(sets);
-  requireCheck(
-    new Set(before).size === before.length && before.length === COUNTS_BEFORE.tuning + COUNTS_BEFORE.heldOut + COUNTS_BEFORE.reserve,
-    "partition",
-  );
-  requireCheck(
-    sets.heldOut.filter((id) => id === movedId).length === 1 &&
-      !sets.tuning.includes(movedId) &&
-      !sets.reserve.includes(movedId),
-    "notHeldOut",
-  );
-
-  const v3 = {
-    ...split,
-    sets: {
-      ...sets,
-      tuning: [...sets.tuning, movedId],
-      heldOut: sets.heldOut.filter((id) => id !== movedId),
-    },
-    amended: split.amended.length > 0 ? `${split.amended}; ${AMENDMENT_NOTE}` : AMENDMENT_NOTE,
-  };
-
-  const counts = countsOf(v3.sets);
-  requireCheck(sameCounts(counts, COUNTS_AFTER), "countsAfter");
-  const after = allIds(v3.sets);
-  const beforeIds = new Set(before);
-  requireCheck(
-    new Set(after).size === after.length && after.length === before.length && after.every((id) => beforeIds.has(id)),
-    "samePartition",
-  );
-  requireCheck(new Set(caseIds).has(movedId), "notACase");
-
-  return { v3, counts };
+  try {
+    const { split: v3, counts } = moveToTuning({
+      split,
+      movedId,
+      allowedFrom: ["heldOut"],
+      countsBefore: COUNTS_BEFORE,
+      caseIds,
+      note: AMENDMENT_NOTE,
+    });
+    requireCheck(sameCounts(counts, COUNTS_AFTER), "countsAfter");
+    return { v3, counts };
+  } catch (error) {
+    if (error instanceof AmendError && D2_CHECKS[error.check]) throw new AmendError(D2_CHECKS[error.check]);
+    throw error;
+  }
 }

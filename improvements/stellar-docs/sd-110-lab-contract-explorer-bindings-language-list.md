@@ -22,6 +22,9 @@ evidence:
   - "Classification: docs-content. The section undertakes to say which languages the CLI binding command covers and names one that does not exist and two that the CLI does not generate."
   - "Affected golden case: eval/qa/corpus/battery/soroban/q-soroban-cli-bindings.json (key fact 3; no golden change). Ledger: .agents/rounds/2026-11-14-baseline-tuning/CASE-DEFECTS.md."
   - upstream issue filed 2026-11-14: https://github.com/stellar/stellar-docs/issues/3151
+recurrences:
+  - date: 2026-11-17
+    evidence: "Still reproduces. `npm run improvements:probes -- --service stellar-docs --service stellar-light-scout` on 2026-11-17 (00:18Z): GET https://developers.stellar.org/docs/tools/lab/smart-contracts/contract-explorer.md answers 200 and still contains \"TypeScript, JSON, Rust, Python, and Java\". https://github.com/stellar/stellar-docs/issues/3151 is open. Its triage-bot fix PR https://github.com/stellar/stellar-docs/pull/3153 is open and not merged. The later comments on the thread are unrelated account requests. The thread asks Raven no question."
 ---
 
 ## Finding

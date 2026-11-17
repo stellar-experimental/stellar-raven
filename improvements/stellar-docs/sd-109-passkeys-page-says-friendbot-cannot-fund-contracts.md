@@ -23,6 +23,9 @@ evidence:
   - "Classification: docs-content. The page states a Friendbot limit that the deployed Friendbot does not have and that two other Docs pages contradict."
   - "Affected golden case: eval/qa/corpus/battery/tooling-infra/q-infra-testnet-vs-futurenet.json (grading caution). Ledger: .agents/rounds/2026-11-14-baseline-tuning/CASE-DEFECTS.md."
   - upstream issue filed 2026-11-14: https://github.com/stellar/stellar-docs/issues/3150
+recurrences:
+  - date: 2026-11-17
+    evidence: "Still reproduces. `npm run improvements:probes -- --service stellar-docs --service stellar-light-scout` on 2026-11-17 (00:18Z): GET https://developers.stellar.org/docs/build/apps/guestbook/passkeys-prerequisites.md answers 200 and still contains \"only funds classic\". https://github.com/stellar/stellar-docs/issues/3150 is open. Its triage-bot fix PR https://github.com/stellar/stellar-docs/pull/3152 is open and not merged. The thread asks Raven no question."
 ---
 
 ## Finding

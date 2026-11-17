@@ -14,6 +14,9 @@ evidence:
   - "Classification: docs-content, missing guidance. Placement is a judgment: Stellar Docs already host the wallet tutorial, the SEP-7 guide, and the Varial signing guides, so signing review fits there. No canonical page exists elsewhere."
   - "Affected golden cases: eval/qa/corpus/battery/retail-consumer/q-signing-safety-website-request.json and eval/qa/corpus/battery/retail-consumer/q-raph-unsolicited-airdrop.json. Ledger: .agents/rounds/2026-11-14-golden-coverage-audit/gaps/GAPS.md."
   - upstream issue filed 2026-11-14: https://github.com/stellar/stellar-docs/issues/3146
+recurrences:
+  - date: 2026-11-17
+    evidence: "Still reproduces. Reproduction command from the evidence, run 2026-11-17 (00:19Z): `gh search code \"blind signing\" --repo stellar/stellar-docs` and `gh search code \"unsolicited\" --repo stellar/stellar-docs` each return 0 results. A control query, `gh search code \"Friendbot\" --repo stellar/stellar-docs`, returns pages, so the search works. https://github.com/stellar/stellar-docs/issues/3146 is open. Its \"Decision needed\" question is addressed to the Docs maintainers, and a wallet developer replied to the bot. The thread asks Raven no question."
 ---
 
 ## Finding
