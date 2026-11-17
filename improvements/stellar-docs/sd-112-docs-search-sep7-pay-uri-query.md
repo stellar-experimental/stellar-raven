@@ -9,8 +9,6 @@ evidence:
   - "Same day, same endpoint, body {\"query\": \"web+stellar:pay\", \"pageSize\": 50} returned 38 sections. The first section is /docs/build/apps/wallet/sep7."
   - "2026-11-17 GET https://developers.stellar.org/docs/build/apps/wallet/sep7.md returned HTTP 200. The text holds the string web+stellar:pay 3 times and a section titled Pay Operation, which says \"The pay operation represents a request to pay a specific address\". It does not hold the word QR."
   - "Both queries also ran through the Docs search tool that Raven exposes (stellarDocs.search_docs, hitsPerPage 20). The results match the direct calls: the long query omits the page; the bare query ranks it first. Raven's path scoping does not hide the page, because the backend response does not contain it."
-  - "Probe output: .agents/rounds/2026-11-16-next-phase/items/1.3/probes/sep7-three-way.json"
-  - "Classification: docs-search. The page undertakes to explain the pay URI and holds the exact string. The search backend ranks it first for the bare string and drops it from all 43 returned sections when generic words are added."
 ---
 
 ## Finding

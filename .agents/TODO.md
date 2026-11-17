@@ -63,26 +63,21 @@ them or reads their per-row output ([`eval/README.md`](../eval/README.md), "Conf
 
 Round item 1.3 classed every residual source gap
 ([CLASSIFICATION.md](rounds/2026-11-16-next-phase/items/1.3/CLASSIFICATION.md); probes in
-[LEAVES.md](rounds/2026-11-16-next-phase/items/1.3/LEAVES.md)). Of the 11 "not re-run" leaves, one
-reproduced as a real gap in the rows (`wallets.landscape`), one is a Raven-side TODO (the
-`scout.matchPartners` 503), and one is a half gap (`ecosystem.xlm-staking-rewards`, below). The rest
-are reached or held outside Raven's sources. New findings: `sd-111`, `sd-112`, `sd-113`, `ll-039`,
-`sls-121`, `sls-122`.
+[LEAVES.md](rounds/2026-11-16-next-phase/items/1.3/LEAVES.md); an independent Grok attack in
+[GROK-REVIEW.md](rounds/2026-11-16-next-phase/items/1.3/GROK-REVIEW.md) moved three rows to
+"reached"). Of the 11 "not re-run" leaves, none is a source gap today: 10 are reached or did not
+reproduce, and one leaves a Raven-side TODO (the `scout.matchPartners` 503, below). New findings:
+`sd-111`, `sd-112`, `sd-113`, `ll-039`, `sls-121`, `sls-122`. The facts no reached source holds are
+now few: the XRP Ledger facts (`ecosystem.chain-comparisons`, xrpl.org), the NBU statement
+(`ll-039`), and Pi Network's relation to Stellar (`sd-113`).
 
 Next, the owner's choice only: which one or two sources to test for the facts that no reached source
 holds, with a pass condition fixed in advance (more correct answers and no more wrong ones).
-Decision 6(b) defers it until after round item 3.1. The sources named so far: the Dashboard lumens
-API (`ecosystem.sdf-mandate-holdings`) and an other-chain source (`ecosystem.chain-comparisons`).
+Decision 6(b) defers it until after round item 3.1. Candidate: an other-chain source for
+`ecosystem.chain-comparisons`.
 
 Done when: the owner decides which source, if any, to test.
 
-- **XLM staking (2026-11-17).** `ecosystem.xlm-staking-rewards`: the 2026 rewards proposal is
-  reached (`stellar.org/xlm-utility`, Lumenloop id 12902), but no reached row states plainly that XLM
-  has no protocol staking. Not filed: no primary source for the negative claim was read. Next check:
-  read the whitepaper PDF behind `https://stellar.org/xlm-utility` and
-  `https://github.com/orgs/stellar/discussions/categories/tokenomics` for the staking status. If a
-  primary source states it, file a net-new content request for the Docs Lumens page
-  (`/docs/learn/fundamentals/lumens`).
 - **Contract-id derivation reachability (2026-11-17).** `q-soroban-contract-id-derivation`: the fact is on
   `/docs/learn/fundamentals/contract-development/contract-interactions/stellar-transaction`
   ("based on `contractIDPreimage` value and the network identifier") and, with "sha256", on

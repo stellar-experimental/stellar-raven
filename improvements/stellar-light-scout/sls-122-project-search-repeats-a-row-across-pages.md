@@ -9,7 +9,6 @@ evidence:
   - "The repeated row is Coca (id 69b035ad2d04b7c0f26da1a0, slug coca). It sits at index 46 of page one and index 3 of page two. The two copies differ only in confidence: one has score 0.97 (freshness 1, authority 0.85), the other 0.85 (freshness 0.5, authority 0.6)."
   - "The repeat does not depend on page size. The same walk with limit=50 (4 pages) and limit=25 (8 pages) also returns 196 rows, 195 distinct, and coca twice."
   - "Control walks that return no repeat: q=stablecoin limit=100 (207 rows, 207 distinct, total 207) and q=defi limit=100 (199 rows, 199 distinct, total 199). The type=Wallet query returns 74 rows with total 74 and coca once."
-  - "Probe output: .agents/rounds/2026-11-16-next-phase/items/1.3/probes/scout-wallet-paging.json and scout-paging-variants.json"
   - "Dedupe 2026-11-17: sls-033 (resolved) covered exact Wallet enumeration with type=Wallet, which is clean. This finding covers the q= ranking path. No active Scout finding covers it."
 ---
 

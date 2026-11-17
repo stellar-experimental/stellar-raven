@@ -105,7 +105,7 @@ Total findings: 91
 | ll-036 | Seven indexed Aquarius proposal rows contain the title <img src=x onerror=alert(1)> w50c and reference unavailable source proposals. The…   | reported-upstream | 2026-11-02 | 2           |
 | ll-037 | get_related_projects returns a successful empty result for the unavailable article id 99999999. The response contains success: true, data:… | reported-upstream | 2026-11-02 | 2           |
 | ll-038 | The xbull directory description lists Android and iOS support without qualifying the unavailable mobile store listings. The checked Apple…  | reported-upstream | 2026-11-02 | 2           |
-| ll-039 | This is a coverage request. Lumenloop holds four news items on the 2021 Ukraine pilot of TASCOMBANK, Bitt, and the Stellar Development…     | verified          | 2026-11-17 | 0           |
+| ll-039 | This is a coverage request. Lumenloop holds several news items on the 2021 Ukraine pilot of TASCOMBANK, Bitt, and the Stellar Development…  | verified          | 2026-11-17 | 0           |
 
 ## workers-ai-provider
 

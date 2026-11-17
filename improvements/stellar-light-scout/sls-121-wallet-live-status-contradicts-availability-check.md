@@ -10,7 +10,6 @@ evidence:
   - "The checks say: spatium \"The operator's domain no longer resolves: spatium.net has no address record\"; freelii \"freelii.app ... is NXDOMAIN. The org links no app and its last push was 2025-07-28\"; bebop \"x.com/bebopcash showed 'This account doesn't exist'; the linked repo ... links no app\"; sentit \"now runs a waitlist for tokenized Nigerian government debt on ERC-20 tokens; it links no app and does not name Stellar\"; elsa \"links no app; it says its 2021 consumer remittance app became Borderless, a B2B payments API, in 2023\"."
   - "2026-11-17 independent re-read: getent hosts spatium.net and getent hosts freelii.app return no address. GET https://x.com/bebopcash returns HTTP 404. GET https://sentit.io/ returns HTTP 200 with the title \"Sentit: Tokenized Nigerian sovereign debt\". GET https://elsa.care/about returns HTTP 200 and describes a payments technology company, not a wallet app."
   - "Dedupe 2026-11-17: sls-033 (resolved 2026-11-17; Stellar-Light/stellarlight#519, #742, PR #1967) asked for availability facts beside the lifecycle label and Scout shipped them. The OpenAPI text says availability is \"separate from `status` (lifecycle)\". This finding is a residual of that receipt: the label and the check disagree on the same row. No active Scout finding covers it."
-  - "Probe output: .agents/rounds/2026-11-16-next-phase/items/1.3/probes/scout-live-wallet-rows.json and scout-wallet-live-vs-check.json"
 ---
 
 ## Finding

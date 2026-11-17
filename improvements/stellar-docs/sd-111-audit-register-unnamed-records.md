@@ -21,8 +21,9 @@ records the title "Unnamed record". Each title has the form "Unnamed record - <F
 titles have the form "<Project> - <Firm>".
 
 Three of the four records link a report whose URL contains `blend`. Those records belong to Blend
-by their own evidence. The register does not say so. A search for "Blend audit" returns no audit
-record. A search for "Unnamed record" returns the four.
+by their own evidence. The register does not say so. A search for the project name alone ("Blend" or "Blend audit") returns no audit
+record. A search for "Unnamed record" returns the four. A search for "Certora blend" also returns the
+three Certora records, but only because "blend" is in their report URLs.
 
 A reader or a tool that looks up the audits of one project by name cannot find these records. The
 register undertakes to let readers browse audited projects, so a record without a project name does
@@ -56,6 +57,7 @@ outside the register.
 
 Name the project in each of the four records. For the three Certora records, "Blend - Certora Ltd"
 fits the existing title form. The report URL is the evidence that the project is known. For the
-OtterSec record, name the audited project in the title as well.
+OtterSec record, the register's owner knows which project the report covers. Name it in the title
+as well; the report URL does not name it.
 
 Optional: reject a record without a project name when it is added to the register.
