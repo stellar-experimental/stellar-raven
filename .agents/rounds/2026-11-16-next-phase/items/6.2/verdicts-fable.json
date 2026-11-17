@@ -1,0 +1,64 @@
+{
+  "verdicts": [
+    {
+      "id": "39fe7c35b7",
+      "X": { "correctness": "partial", "fabrication": false },
+      "Y": { "correctness": "partial", "fabrication": false },
+      "reason": "Both give the seller middleware, facilitator, payTo/trustline and wrapped-fetch agent flow correctly and every identifier is in the cited skill/CLI pages, but both say mainnet needs only .env changes (the seller-and-agent guide requires an RPC URL passed to the client's ExactStellarScheme) and both say there is no spending-limit layer while that guide documents spendControls."
+    },
+    {
+      "id": "0fc6d85344",
+      "X": { "correctness": "correct", "fabrication": false },
+      "Y": { "correctness": "correct", "fabrication": false },
+      "reason": "No reference pages: both disclaim being an exhaustive multi-hour report, attribute their figures (TVL table matches the live Scout leaderboard exactly; SCF, supply and incident figures match Scout), name only protocols confirmable on the web (Y's 'Noter'/'Soxno' appear under those spellings on lumenloop.com's Meridian SCF pitch page, i.e. Noether/XOXNO), and cover all major DeFi sectors."
+    },
+    {
+      "id": "5710d8ef01",
+      "X": { "correctness": "correct", "fabrication": false },
+      "Y": { "correctness": "correct", "fabrication": false },
+      "reason": "Both describe simulateTransaction params, minResourceFee/transactionData/results, Protocol 23 restore behaviour, assembleTransaction/prepareTransaction and the CLI simulate paths in agreement with the RPC reference, simulation, deep-dive, fees and CLI pages."
+    },
+    {
+      "id": "da58d0fae5",
+      "X": { "correctness": "correct", "fabrication": false },
+      "Y": { "correctness": "correct", "fabrication": false },
+      "reason": "Both match the fees page: inclusion fee = operations x effective base fee, 100-stroop minimum, 1,000-operation classic ledger limit, surge-pricing example (2,3,4,4,5 XLM -> 3 XLM) and fee-bump payer; X's buildFeeBumpTransaction argument order matches the fee-bump guide."
+    },
+    {
+      "id": "e0b260e3cc",
+      "X": { "correctness": "correct", "fabrication": false },
+      "Y": { "correctness": "correct", "fabrication": false },
+      "reason": "Both identify Varial as the renamed Freighter extension and give the guide's flow (@stellar/varial-sdk, connect to Testnet, signTransaction returns an object with the signed XDR, freighter-api still works); extra details (Scout slug, edunode, SDF rebrand post, state-archival isConnected snippet, 11-wallet kit) check out on the cited pages."
+    },
+    {
+      "id": "d8f193a069",
+      "X": { "correctness": "correct", "fabrication": false },
+      "Y": { "correctness": "correct", "fabrication": false },
+      "reason": "Both match the claimable-balances guide and list of operations: two-step create/claim, predicates, thresholds, base reserve per claimant, op_no_trust, full-amount clawback, no-trustline/anchor onboarding and time-bound/reclaim use cases, and the forever-on-ledger caution."
+    },
+    {
+      "id": "0ccfe877e8",
+      "X": { "correctness": "correct", "fabrication": false },
+      "Y": { "correctness": "correct", "fabrication": false },
+      "reason": "Both name bronze account_signers and silver account_signers_current with the exact keys, partitioning and clustering from the reference pages, and describe the catalog as Data Model Diagram / Data Dictionary (bronze, silver, gold) / Data Lineage; X's column list is incomplete but disclosed and not asked for, Y's 19/22/9 item counts match the live page."
+    },
+    {
+      "id": "fe32e5b8a0",
+      "X": { "correctness": "correct", "fabrication": false },
+      "Y": { "correctness": "partial", "fabrication": false },
+      "reason": "Both give the right split (RPC for current state and ~7 days, Hubble for full history and analytics) with the comparison table as published; X's table names and batch_run_date advice match the queries page, while Y's example query filters history_transactions on source_account (the reference page uses account; the column comes from the cited data skill) and lumps *_current tables in with the SCD Type 2 valid_from/valid_to snapshots."
+    },
+    {
+      "id": "5b001fc249",
+      "X": { "correctness": "correct", "fabrication": false },
+      "Y": { "correctness": "correct", "fabrication": false },
+      "reason": "Both reproduce the fee-sponsorship guide's three approaches (fee-bump, sponsored reserves, relayer), who signs, the contract-account limitation, the selection guidance and combinations, with fee-bump and OpenZeppelin Relayer/Channels/Launchtube details matching the fee-bump and relayer pages."
+    },
+    {
+      "id": "853ec07ec5",
+      "X": { "correctness": "correct", "fabrication": false },
+      "Y": { "correctness": "correct", "fabrication": false },
+      "reason": "Both state there is no msg.sender, the Address is passed as an argument and require_auth() makes the host verify that address authorized this exact contract/function/arguments (not a permission list), consistent with the authorization page and auth example; X adds the host's step-by-step checks verbatim-accurate, Y the four account types, and both snippets come from the cited contract-authorization guide."
+    }
+  ]
+}
