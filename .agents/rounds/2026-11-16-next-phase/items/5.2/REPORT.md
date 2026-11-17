@@ -2,7 +2,7 @@
 
 Lead: Claude Opus 5.5, agentpc `t1ty`. Pull request:
 [#468](https://github.com/stellar-experimental/stellar-raven/pull/468), branch
-`np/5.2-owner-followups` (five commits on `7dafce0c`). Not merged and not deployed.
+`np/5.2-owner-followups` on `7dafce0c`. Not merged and not deployed.
 
 ## Result
 
@@ -31,7 +31,7 @@ The full scope in [NOTE.md](NOTE.md) is done, through A, C, D, E, F, H and I. Th
 - **Reviews.** Fable plan review: 22 findings, all adopted
   ([REVIEW.md](REVIEW.md), reconciliation table in [PLAN.md](PLAN.md)). No further review: the
   `improvements-pipeline` skill asks for a distinct reviewer only to retire a finding.
-- **Gates.** Run bare by the lead, all exit 0: `eval:qa:lint`, `improvements:lint -- --live`,
+- **Gates.** Run bare by the lead, all exit 0, again after split v9: `eval:qa:lint`, `improvements:lint -- --live`,
   `typecheck`, `test`, `secrets:scan -- --tree`.
 - **Spend.** USD 0.
 
@@ -47,24 +47,24 @@ The full scope in [NOTE.md](NOTE.md) is done, through A, C, D, E, F, H and I. Th
    - Then rebase, and carry the lead's left-open count into the rewritten TODO item.
 
    The `cs-012` issue links the finding on `main`, so that link stays dead until the merge.
-2. **Exposure: 1 event, five case ids (decision needed).** The executor piped
-   `npm run eval:qa:lint` to `tail`, and its warning lines showed five cases with golden text.
-   - It opened no corpus file and looked up no set.
-   - It wrote the ids to `~/.local/state/raven-dated/5.2-EXPOSURE.txt` on agentpc. The file is
-     untracked, and I have not opened it.
-   - The executor is not a maintenance lane, so the new exception does not cover it. Under the
-     README rule, the cases move to tuning by a dated amendment (split v9).
-   - Precedent: items 3.5 and 5.1, where the move was made by script with the ids unseen in prose.
-   - I have not amended the split. Tell me to make v9 from that file by script, and I will update
-     `TUNING_ROW_COUNT` and the dated briefs' split pointer in this PR.
-   - Two notes on that path:
-     - The file sits in the dated runs' state folder. Move it out if that matters to you.
-     - The dated runs need the new split pointer before 2026-11-23 18:00 UTC, so v9 should land
-       in this PR or before it merges.
-3. **Recurring hazard.** This is the second time QA lint output has exposed golden text (3.5 was
-   the first). A lint mode that prints ids without text, or a rule that lint output goes to a file
-   and only its exit code is read, would stop it. I did not add a TODO item, because that is outside
-   this item's scope. Say if you want one.
+2. **Exposure: done, split v9 (orchestrator's answer, 2026-11-17).** The executor piped
+   `npm run eval:qa:lint` to `tail`, and its warning lines showed five case ids with golden text.
+   It opened no corpus file and looked up no set. The executor is not a maintenance lane, so the
+   README rule applies and the cases outside tuning move.
+   - The exposure note was moved from `~/.local/state/raven-dated/` to the worktree's untracked
+     `tmp/5.2/EXPOSURE.txt`. Nobody read it.
+   - [`amend-split-v9.mjs`](amend-split-v9.mjs) checked the v8 SHA-256 (`1f0c1268…7720`). It moved
+     only the ids outside tuning (2 of the 5; 3 were already tuning) and printed counts and the
+     SHA-256 only.
+   - **v9:** `~/backups/gca-2026-11-14-split-v9.json`, mode 600, SHA-256
+     `0b6c9c04b59f5f49225df4c054df0a1117bfb8f179660147dde14887515c800c`, 91 tuning, 111 held-out,
+     45 reserve. 63 cases outside tuning carry a `reverifyBy`; the earliest is 2027-01-14.
+   - `TUNING_ROW_COUNT` is 91. `PRESTAGE.md` and the four dated `*-LEAD.md` briefs point at v9, and
+     `sibling-check.mjs` runs on it for 2.1, 2.2a and 2.2c (last line only read). The TODO held-out
+     status records v9.
+3. **Recurring hazard: TODO item added.** "Stop QA lint from printing golden text" (under "Eval
+   instruments"): lint prints case ids and check names only, and a test pins that. Its cost so far:
+   two exposures (items 3.5 and 5.2). It is not implemented here.
 4. **`sd-077` and `sd-111`.** When the owner confirms the forward was sent, set
    `reported-upstream` with the date and channel. Any machine can do it.
 
