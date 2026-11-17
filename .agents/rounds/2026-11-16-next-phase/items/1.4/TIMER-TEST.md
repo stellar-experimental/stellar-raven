@@ -47,14 +47,22 @@ Run 2's launcher log:
 
 ## Installed timers
 
-`systemctl --user list-timers --all` after install:
+The first four lead timers were armed at 02:21 UTC with the first launcher. After the Fable and
+Codex reviews, the reconciled launcher, watchdog and follow-up scheduler were installed to
+`~/.local/share/raven-dated/`, the eight units in [dated/units/](dated/units/) were copied to
+`~/.config/systemd/user/`, and all timers were re-armed at 03:03 UTC. The installed files are
+byte-identical to the sources (`cmp`), and `systemd-analyze --user verify` passes. No service has
+run: the LAST column of the lead timers shows the `Persistent=` stamp written when they were
+enabled, not a firing.
 
 ```
 NEXT LEFT LAST PASSED UNIT ACTIVATES
-Mon 2026-11-23 18:00:00 UTC 6 days - - raven-dated-2.1.timer raven-dated-2.1.service
-Mon 2026-11-30 06:00:00 UTC 1 week 6 days - - raven-dated-2.2a.timer raven-dated-2.2a.service
-Tue 2026-12-01 06:00:00 UTC 2 weeks 0 days - - raven-dated-2.2b.timer raven-dated-2.2b.service
-Fri 2026-12-04 06:00:00 UTC 2 weeks 3 days - - raven-dated-2.2c.timer raven-dated-2.2c.service
+Mon 2026-11-23 18:00:00 UTC 6 days Tue 2026-11-17 02:21:31 UTC - raven-dated-2.1.timer raven-dated-2.1.service
+Tue 2026-11-24 16:00:00 UTC 1 week 0 days - - raven-watchdog-2.1.timer raven-watchdog-2.1.service
+Mon 2026-11-30 06:00:00 UTC 1 week 6 days Tue 2026-11-17 02:21:31 UTC - raven-dated-2.2a.timer raven-dated-2.2a.service
+Mon 2026-11-30 16:00:00 UTC 1 week 6 days - - raven-watchdog-2.2a.timer raven-watchdog-2.2a.service
+Tue 2026-12-01 06:00:00 UTC 2 weeks 0 days Tue 2026-11-17 02:21:31 UTC - raven-dated-2.2b.timer raven-dated-2.2b.service
+Tue 2026-12-01 16:00:00 UTC 2 weeks 0 days - - raven-watchdog-2.2b.timer raven-watchdog-2.2b.service
+Fri 2026-12-04 06:00:00 UTC 2 weeks 3 days Tue 2026-11-17 02:21:31 UTC - raven-dated-2.2c.timer raven-dated-2.2c.service
+Fri 2026-12-04 16:00:00 UTC 2 weeks 3 days - - raven-watchdog-2.2c.timer raven-watchdog-2.2c.service
 ```
-
-The unit sources are in [dated/units/](dated/units/), and the installed copies are in `~/.config/systemd/user/`.
