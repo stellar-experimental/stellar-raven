@@ -1,0 +1,86 @@
+{
+ "spatium": {
+  "slug": "spatium",
+  "status": "Live",
+  "statusAsOf": "2026-08-19T07:29:37.806Z",
+  "statusBasis": "source-inherited",
+  "statusSourceUrl": "https://github.com/lumenloop/stellar-ecosystem-db/blob/main/projects/spatium.yaml",
+  "availabilityCheck": {
+   "result": "none-found",
+   "checkedAt": "2026-11-11",
+   "sources": [
+    "https://spatium.net/",
+    "https://web.archive.org/web/20250404155959/https://www.spatium.net/"
+   ],
+   "note": "The operator's domain no longer resolves: spatium.net has no address record. Its last archived copy (2025-04-04), which links the record's X handle, offered a Bitcoin wallet and a wallet SDK and links no store listing"
+  },
+  "availability": null
+ },
+ "freelii": {
+  "slug": "freelii",
+  "status": "Live",
+  "statusAsOf": "2026-08-19T07:29:15.596Z",
+  "statusBasis": "source-inherited",
+  "statusSourceUrl": "https://github.com/lumenloop/stellar-ecosystem-db/blob/main/projects/freelii.yaml",
+  "availabilityCheck": {
+   "result": "none-found",
+   "checkedAt": "2026-11-11",
+   "sources": [
+    "https://freelii.app",
+    "https://github.com/freelii"
+   ],
+   "note": "The operator's domain no longer resolves: freelii.app, the site its GitHub org names, is NXDOMAIN. The org links no app and its last push was 2025-07-28"
+  },
+  "availability": null
+ },
+ "bebop": {
+  "slug": "bebop",
+  "status": "Live",
+  "statusAsOf": "2026-08-19T07:29:03.433Z",
+  "statusBasis": "source-inherited",
+  "statusSourceUrl": "https://github.com/lumenloop/stellar-ecosystem-db/blob/main/projects/bebop.yaml",
+  "availabilityCheck": {
+   "result": "none-found",
+   "checkedAt": "2026-11-11",
+   "sources": [
+    "https://x.com/bebopcash",
+    "https://github.com/christopherkarani/escrowcotract"
+   ],
+   "note": "No website on record; x.com/bebopcash showed 'This account doesn't exist'; the linked repo (an escrow contract, last push 2024-11-14) links no app"
+  },
+  "availability": null
+ },
+ "sentit": {
+  "slug": "sentit",
+  "status": "Live",
+  "statusAsOf": "2026-08-17T03:02:29.060Z",
+  "statusBasis": "site-liveness",
+  "statusSourceUrl": "https://sentit.io/",
+  "availabilityCheck": {
+   "result": "none-found",
+   "checkedAt": "2026-11-11",
+   "sources": [
+    "https://sentit.io/"
+   ],
+   "note": "sentit.io now runs a waitlist for tokenized Nigerian government debt on ERC-20 tokens; it links no app and does not name Stellar"
+  },
+  "availability": null
+ },
+ "elsa": {
+  "slug": "elsa",
+  "status": "Live",
+  "statusAsOf": "2026-08-17T03:02:29.060Z",
+  "statusBasis": "site-liveness",
+  "statusSourceUrl": "https://elsa.care/",
+  "availabilityCheck": {
+   "result": "none-found",
+   "checkedAt": "2026-11-11",
+   "sources": [
+    "https://elsa.care/",
+    "https://elsa.care/about"
+   ],
+   "note": "elsa.care links no app; it says its 2021 consumer remittance app became Borderless, a B2B payments API, in 2023"
+  },
+  "availability": null
+ }
+}

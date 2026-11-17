@@ -1,0 +1,15 @@
+{
+ "read": "GET https://stellarlight.xyz/api/partners?q=moneygram&limit=1",
+ "slug": "anchor-moneygram",
+ "partnerType": "anchor",
+ "seps": [
+  "sep-24"
+ ],
+ "rampTypes": [
+  "on-ramp",
+  "off-ramp"
+ ],
+ "description": "MoneyGram Access (MoneyGram Ramps) is a fiat on- and off-ramp anchor on Stellar. Via the SEP-24 standard, users deposit and withdraw cash to and from USDC at ~500K retail locations across 170+ cash-out countries, with no bank account required. In June 2026 MoneyGram launched MGUSD, a self-custodial USD stablecoin issued by Bridge on Stellar.",
+ "tomlFetchedAt": "2026-09-29",
+ "url": "https://stellarlight.xyz/partners/anchor-moneygram"
+}

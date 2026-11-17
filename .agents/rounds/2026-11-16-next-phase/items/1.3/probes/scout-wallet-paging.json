@@ -1,0 +1,62 @@
+[
+ {
+  "run": 1,
+  "at": "2026-11-17T01:31:09.922703Z",
+  "pages": [
+   {
+    "offset": 0,
+    "returned": 100,
+    "counts": {
+     "returned": 100,
+     "total": 195,
+     "semantic": 0
+    }
+   },
+   {
+    "offset": 100,
+    "returned": 96,
+    "counts": {
+     "returned": 96,
+     "total": 195,
+     "semantic": 0
+    }
+   }
+  ],
+  "total": 195,
+  "rowsSeen": 196,
+  "distinct": 195,
+  "duplicates": {
+   "coca": 2
+  }
+ },
+ {
+  "run": 2,
+  "at": "2026-11-17T01:31:10.444506Z",
+  "pages": [
+   {
+    "offset": 0,
+    "returned": 100,
+    "counts": {
+     "returned": 100,
+     "total": 195,
+     "semantic": 0
+    }
+   },
+   {
+    "offset": 100,
+    "returned": 96,
+    "counts": {
+     "returned": 96,
+     "total": 195,
+     "semantic": 0
+    }
+   }
+  ],
+  "total": 195,
+  "rowsSeen": 196,
+  "distinct": 195,
+  "duplicates": {
+   "coca": 2
+  }
+ }
+]

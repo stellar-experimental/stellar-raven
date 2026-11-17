@@ -1,0 +1,26 @@
+{
+  "clusters": [
+    {
+      "id": "cluster-095",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-17",
+      "reSwept": {
+        "date": "2026-11-17",
+        "reason": "Round item 1.3 re-sweep (reviewer: the item lead, Claude Opus 5.5, distinct from the executor that authored the edit). The only member that changed is q-soroban-cli-bindings, at commit 21f14c0a. Its diff appends one grading caution to golden.notes (an attributed Lab Contract Explorer quote of the bindings language list caps at partial while sd-110 stands) and replaces truth.verified. golden.answer, keyFacts and avoid are unchanged, so no member claim moved. Basis: the diff and this cluster's note (wasm32v1-none target, local Wasm supplies the binding spec, generated deploy needs an installed wasmHash, SDK helper return types are version-sensitive); no sibling member file was opened.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    },
+    {
+      "id": "cluster-103",
+      "verdict": "consistent",
+      "lastChecked": "2026-11-17",
+      "reSwept": {
+        "date": "2026-11-17",
+        "reason": "Round item 1.3 re-sweep (reviewer: the item lead, Claude Opus 5.5, distinct from the executor that authored the edit). The only member that changed is q-soroban-cli-bindings, at commit 21f14c0a: one appended grading caution in golden.notes naming sd-110 and a replaced truth.verified. No command, input or version claim changed, so the 2026-11-14 comparison with q-soroban-deploy-cli (distinct commands, same CLI name and version, no overlapping rule) still holds. Basis: the diff and this cluster's note; no sibling member file was opened.",
+        "verdict": "consistent"
+      },
+      "clearReopened": true
+    }
+  ]
+}

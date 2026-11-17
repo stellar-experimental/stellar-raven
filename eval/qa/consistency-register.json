@@ -1413,17 +1413,17 @@
           "q-ti-scaffold-stellar"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-14",
+        "lastChecked": "2026-11-17",
         "reSwept": {
-          "date": "2026-11-14",
-          "reason": "Re-sweep 2026-11-14 (resweep-2, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json): Read all 4 members. sor-build-target-wasm32v1 (stellar contract build, wasm32v1-none, soroban-sdk 28 plain-cargo failure), soroban-cli-bindings (Rust bindings only from a local --wasm, TypeScript from wasm/hash/id but deprecated, regenerate after spec changes), sor-deploy-invoke-from-js-sdk (createCustomContract needs an uploaded wasmHash; assembleTransaction returns a builder, prepareTransaction a built tx, version-sensitive) and ti-scaffold-stellar (separate plugin, not core CLI, not stellar contract init) agree with the note; no case claims scaffold replaces bindings.",
+          "date": "2026-11-17",
+          "reason": "Round item 1.3 re-sweep (reviewer: the item lead, Claude Opus 5.5, distinct from the executor that authored the edit). The only member that changed is q-soroban-cli-bindings, at commit 21f14c0a. Its diff appends one grading caution to golden.notes (an attributed Lab Contract Explorer quote of the bindings language list caps at partial while sd-110 stands) and replaces truth.verified. golden.answer, keyFacts and avoid are unchanged, so no member claim moved. Basis: the diff and this cluster's note (wasm32v1-none target, local Wasm supplies the binding spec, generated deploy needs an installed wasmHash, SDK helper return types are version-sensitive); no sibling member file was opened.",
           "verdict": "consistent"
         },
         "note": "Current target is wasm32v1-none. Local Wasm supplies the spec for bindings; generated deploy requires installed wasmHash; SDK helper return types are version-sensitive. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed. Added 2026-07-28 (todo 1253 Lane B): q-ti-scaffold-stellar joins because it asserts where this flow's boundary lies — Scaffold Stellar is a separately installed plugin (cargo install stellar-scaffold-cli, stellar scaffold init) that generates contracts, TypeScript clients/bindings, frontend, and environment config, and is NOT bundled with a core Stellar CLI install nor equivalent to 'stellar contract init'. Verified 2026-07-28 against q-soroban-cli-bindings, q-sor-build-target-wasm32v1, and q-soroban-deploy-cli: no case conflates the plugin with the core CLI, and no case claims the plugin replaces 'stellar contract bindings'. Alternative considered and rejected: a standalone scaffold-versus-core-CLI cluster, which would duplicate this one's membership without adding a distinct claim.",
         "memberContentSha256": {
           "q-sor-build-target-wasm32v1": "db97b55e4c3c7248ba176972b9be50c4274fc7a47e59dc12411b33f2bbe07ec0",
           "q-sor-deploy-invoke-from-js-sdk": "6e836adae846cbcb7a1ef69b870cdf6662094975d43dd7b224c2b8c3293f5a7b",
-          "q-soroban-cli-bindings": "291bc3c4bce8cb8d7c54ee85c47879a06651a5da9c54886148639c7fc2c2eb06",
+          "q-soroban-cli-bindings": "ed6d17f3bea4b14355684a7aeff4340b122a9b9d8c16aa548b4b23dffcd480bd",
           "q-ti-scaffold-stellar": "33da387ed56e880c1ce8d50c66402752b91c2259cf14be00fed9a797bc669a90"
         }
       },
@@ -1517,15 +1517,15 @@
           "q-soroban-deploy-cli"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-14",
+        "lastChecked": "2026-11-17",
         "reSwept": {
-          "date": "2026-11-14",
-          "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-soroban-cli-bindings (stellar contract bindings typescript/rust inputs, TypeScript path deprecated for the JS SDK generator, CLI 30.0.1) with q-soroban-deploy-cli (build, keys generate, deploy --wasm, invoke; CLI is stellar not soroban). Distinct commands, same CLI name and version, no overlapping rule.",
+          "date": "2026-11-17",
+          "reason": "Round item 1.3 re-sweep (reviewer: the item lead, Claude Opus 5.5, distinct from the executor that authored the edit). The only member that changed is q-soroban-cli-bindings, at commit 21f14c0a: one appended grading caution in golden.notes naming sd-110 and a replaced truth.verified. No command, input or version claim changed, so the 2026-11-14 comparison with q-soroban-deploy-cli (distinct commands, same CLI name and version, no overlapping rule) still holds. Basis: the diff and this cluster's note; no sibling member file was opened.",
           "verdict": "consistent"
         },
         "note": "corrected; owner candidate captured in research. Re-swept 2026-07-28: re-read all member claims after reverifyBy-only hash churn; no substantive claim changed.",
         "memberContentSha256": {
-          "q-soroban-cli-bindings": "291bc3c4bce8cb8d7c54ee85c47879a06651a5da9c54886148639c7fc2c2eb06",
+          "q-soroban-cli-bindings": "ed6d17f3bea4b14355684a7aeff4340b122a9b9d8c16aa548b4b23dffcd480bd",
           "q-soroban-deploy-cli": "71b9fc99850b096b8934c73c7fc38fb7e93de41f50e8936e2744c8bef040819e"
         }
       },

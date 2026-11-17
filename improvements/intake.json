@@ -266,6 +266,18 @@
     "sd-110": {
       "repo": "stellar/stellar-docs",
       "reason": "Docs content correction: docs/tools/lab/smart-contracts/contract-explorer.mdx is owned by stellar/stellar-docs; the same sentence in stellar/laboratory Bindings.tsx is named in the recommendation."
+    },
+    "sd-111": {
+      "intake": "unclear",
+      "reason": "The audit register is stellar.org page data, not developers.stellar.org content, so stellar/stellar-docs does not own it. The stellar.org page copy has no public issue tracker (checked 2026-11-17)."
+    },
+    "sd-112": {
+      "repo": "stellar/stellar-docs",
+      "reason": "Mintlify search ranking for developers.stellar.org: the docs team owns the Mintlify project (rankingRule)."
+    },
+    "sd-113": {
+      "intake": "unclear",
+      "reason": "Net-new content request. No stellar.org or developers.stellar.org page undertakes the topic, and the stellar.org page copy has no public issue tracker (checked 2026-11-17)."
     }
   }
 }

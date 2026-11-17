@@ -1,0 +1,221 @@
+{
+ "sd1": {
+  "candidates": 43,
+  "hits": [
+   {
+    "rank": 1,
+    "path": "/docs/networks",
+    "title": "Networks",
+    "sec": "Network IDs"
+   },
+   {
+    "rank": 2,
+    "path": "/docs/tools/quickstart/network-modes",
+    "title": "Network Modes",
+    "sec": "Network Passphrase"
+   },
+   {
+    "rank": 3,
+    "path": "/docs/tools/developer-tools/network-insights",
+    "title": "Network Insights",
+    "sec": ""
+   },
+   {
+    "rank": 4,
+    "path": "/docs/data/apis/rpc/api-reference/methods/getNetwork",
+    "title": "getNetwork",
+    "sec": "Using the Lab"
+   },
+   {
+    "rank": 5,
+    "path": "/docs/tools/developer-tools/network-status",
+    "title": "Network Status",
+    "sec": "[Obsrvr Radar](https://radar.withobsrvr.com)"
+   },
+   {
+    "rank": 6,
+    "path": "/docs/tools/quickstart/cloud",
+    "title": "Cloud Deployment",
+    "sec": ""
+   }
+  ]
+ },
+ "sd2": {
+  "candidates": 45,
+  "hits": [
+   {
+    "rank": 1,
+    "path": "/docs/build/apps/wallet/stellar",
+    "title": "Stellar Network",
+    "sec": "Path Pay"
+   },
+   {
+    "rank": 2,
+    "path": "/docs/build/agentic-payments/x402",
+    "title": "x402 on Stellar",
+    "sec": "Coinbase x402 Facilitator"
+   },
+   {
+    "rank": 3,
+    "path": "/docs/tools/cli/agent-cli/guides/send-tokens",
+    "title": "Send tokens",
+    "sec": "Destination trustlines"
+   },
+   {
+    "rank": 4,
+    "path": "/docs/networks",
+    "title": "Networks",
+    "sec": "Network Comparison"
+   },
+   {
+    "rank": 5,
+    "path": "/docs/data/apis/rpc/api-reference/methods/sendTransaction",
+    "title": "sendTransaction",
+    "sec": "Using the Lab"
+   },
+   {
+    "rank": 6,
+    "path": "/docs/tools/cli/stellar-cli",
+    "title": "Stellar CLI Manual",
+    "sec": "`stellar tx send`"
+   }
+  ]
+ },
+ "org1": {
+  "ok": false,
+  "error": {
+   "service": "stellarOrg",
+   "kind": "soft-empty",
+   "message": "stellar.org site search returned no rows for this query.",
+   "hint": "The site search sometimes returns no rows for a valid query. Retry once or use another family; this is not evidence that SDF has no page on the topic."
+  }
+ },
+ "org2": [],
+ "sr": [
+  {
+   "src": "paper",
+   "title": "The Stellar Consensus Protocol: A Federated Model for Internet-level Consensus",
+   "url": "https://stellar.org/papers/stellar-consensus-protocol.pdf",
+   "sec": "",
+   "pub": "2016-02-25T00:00:00.000Z",
+   "obs": "2026-11-16",
+   "c": "# The Stellar Consensus Protocol: A Federated Model for Internet-level Consensus The Stellar Consensus Protocol: A Federated Model for Internet-level Consensus DAVID MAZI `ERES, Stellar Development F"
+  },
+  {
+   "src": "sdf-blog",
+   "title": "The company you keep",
+   "url": "https://stellar.org/blog/ecosystem/becoming-a-stellar-validator",
+   "sec": "The consensus effect",
+   "pub": "2026-08-11T00:00:00.000Z",
+   "obs": "2026-11-16",
+   "c": "## The consensus effect Most blockchains, including Ethereum, Solana, Cardano, and Avalanche, use some form of proof of stake. Under proof of stake, influence generally follows the amount of coin an "
+  },
+  {
+   "src": "dev-docs",
+   "title": "Overview of the Stellar Consensus Protocol (SCP) and Transaction Validation",
+   "url": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol",
+   "sec": "",
+   "pub": "2025-12-03T00:00:00.000Z",
+   "obs": "2026-11-16",
+   "c": "# Overview of the Stellar Consensus Protocol (SCP) and Transaction Validation Core Concepts # Stellar Consensus Protocol Copy pageCopy pageA brief overview of how the Stellar Consensus Protocol (SCP"
+  },
+  {
+   "src": "cap",
+   "title": "Remove NO_ISSUER Operation Results",
+   "url": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0030.md",
+   "sec": "Implementation",
+   "pub": "2020-01-14T00:00:00.000Z",
+   "obs": "",
+   "c": "## Implementation https://github.com/stellar/stellar-core/pull/2389"
+  },
+  {
+   "src": "cap",
+   "title": "Two-Part Payments with ClaimableBalanceEntry",
+   "url": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0023.md",
+   "sec": "Implementation",
+   "pub": "2020-02-05T00:00:00.000Z",
+   "obs": "",
+   "c": "## Implementation https://github.com/stellar/stellar-core/pull/2591"
+  }
+ ],
+ "ll": [
+  {
+   "id": "323",
+   "coll": "articles",
+   "title": "Integrating Stellar Network into your SME business",
+   "url": "https://bpventures.us/blog/integrating-stellar-network-into-your-sme-business",
+   "date": "2022-08-02"
+  },
+  {
+   "id": "60",
+   "coll": "articles",
+   "title": "The Power of Stellar",
+   "url": "https://stellar.org/learn/the-power-of-stellar",
+   "date": "2023-06-01"
+  },
+  {
+   "id": "12457",
+   "coll": "articles",
+   "title": "PwC Germany taps Stellar for securitization settlement and investor payouts",
+   "url": "https://x.com/i/article/2110407364356530176",
+   "date": "2026-10-14"
+  },
+  {
+   "id": "12046",
+   "coll": "articles",
+   "title": "Stellar",
+   "url": "https://web.archive.org/web/20140801061847/https://stripe.com/blog/stellar",
+   "date": "2014-07-31"
+  },
+  {
+   "id": "326",
+   "coll": "articles",
+   "title": "Stellar payments — thoughts on federation, QR Codes, URIs, and Point of Sale systems within the Stellar.org ec",
+   "url": "https://bpventures.us/blog/stellar-payments-thoughts-on-federation-qr-codes-uris-and-point-of-sale-systems-within-the-stellar-org-ecosystem",
+   "date": "2018-07-09"
+  },
+  {
+   "id": "12838",
+   "coll": "articles",
+   "title": "Stellar Unveils Fee-Free Network Processing 7 Million Payments per Second",
+   "url": "https://thedefiant.io/news/blockchains/stellar-unveils-fee-free-network-processing-7-million-transactions-per-second",
+   "date": "2026-10-28"
+  },
+  {
+   "id": 178,
+   "coll": "research",
+   "title": "Stellar Weekly Roundup: Week of Oct 2, 2026",
+   "date": "2026-10-09"
+  },
+  {
+   "id": 184,
+   "coll": "research",
+   "title": "Stellar Weekly Roundup: Week of Oct 30, 2026",
+   "date": "2026-10-30"
+  },
+  {
+   "id": 190,
+   "coll": "research",
+   "title": "Stellar Weekly Roundup: Week of Nov 13, 2026",
+   "date": "2026-11-13"
+  },
+  {
+   "id": 175,
+   "coll": "research",
+   "title": "Stellar Weekly Roundup: Week of Sep 25, 2026",
+   "date": "2026-10-02"
+  },
+  {
+   "id": 182,
+   "coll": "research",
+   "title": "Stellar Weekly Roundup: Week of Oct 23, 2026",
+   "date": "2026-10-23"
+  },
+  {
+   "id": 180,
+   "coll": "research",
+   "title": "Stellar Weekly Roundup: Week of Oct 9, 2026",
+   "date": "2026-10-16"
+  }
+ ]
+}

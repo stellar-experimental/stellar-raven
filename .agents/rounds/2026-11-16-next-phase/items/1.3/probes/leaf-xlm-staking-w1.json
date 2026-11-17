@@ -1,0 +1,157 @@
+{
+ "sd1": {
+  "candidates": 50,
+  "hits": [
+   {
+    "rank": 1,
+    "path": "/docs/learn/fundamentals/lumens",
+    "title": "Lumens (XLM)",
+    "sec": "Definitions"
+   },
+   {
+    "rank": 2,
+    "path": "/docs/tokens/asset-issuance-stack",
+    "title": "Asset Issuance Stack",
+    "sec": "Migration between asset models is not a configurat"
+   },
+   {
+    "rank": 3,
+    "path": "/docs/learn/fundamentals/stellar-data-structures/ledgers",
+    "title": "Ledgers",
+    "sec": "Fee pool"
+   },
+   {
+    "rank": 4,
+    "path": "/docs/learn/fundamentals/stellar-data-structures/accounts",
+    "title": "Accounts",
+    "sec": "Subentries"
+   },
+   {
+    "rank": 5,
+    "path": "/docs/learn/fundamentals/transactions/list-of-operations",
+    "title": "List of Operations",
+    "sec": "Create passive sell offer"
+   },
+   {
+    "rank": 6,
+    "path": "/docs/build/agentic-payments/x402",
+    "title": "x402 on Stellar",
+    "sec": "Supported Assets"
+   }
+  ]
+ },
+ "sr1": [
+  {
+   "src": "lumenloop-research",
+   "title": "Stellar AMA Recap: DTCC, RWAs, Privacy & What's Next",
+   "url": "https://lumenloop.com/research/stellar-ama-recap-dtcc-rwas-privacy-next",
+   "sec": "XLM&#x27;s role and value accrual",
+   "pub": "2026-06-03T02:15:30.183Z",
+   "obs": "2026-11-16",
+   "c": "## XLM&#x27;s role and value accrual This was one of the most-asked topics, fielded mainly by Denelle and Tomer. How does XLM accrue value from adoption? Are there equity/token-swap deals? Denelle: "
+  },
+  {
+   "src": "audit",
+   "title": "EquitX: Runtime Verification (EquitX - Security Audit Report)",
+   "url": "https://stellarsecurityportal.com/report/55",
+   "sec": "[A11]",
+   "pub": "2025-11-16T23:00:00.000Z",
+   "obs": "2026-11-16",
+   "c": "## [A11] # Missing # LogicforUtilizingtheProtocol # RevenueFromInterestandFeePayments Severity: High Recommended Action: Fix Design Not addressed by client **Description ** The contract collects "
+  },
+  {
+   "src": "audit",
+   "title": "Aquarius AMM: Cantina (Cantina Aquarius Competition Security Report)",
+   "url": "https://stellarsecurityportal.com/report/41",
+   "sec": "3.2MediumRisk",
+   "pub": "2025-08-31T15:00:00.000Z",
+   "obs": "2026-11-16",
+   "c": "## 3.2MediumRisk **3.2.1 Reward distribution may be vulnerable to sandwich attacks ** Submitted by shaflow01, also found by 3n0ch, etherSky, 0xgh0st, 0x37, crypticdefense, schnilch, aksoy, trtrth, "
+  },
+  {
+   "src": "cap",
+   "title": "Disable Inflation Mechanism",
+   "url": "https://github.com/stellar/stellar-protocol/blob/master/core/cap-0026.md",
+   "sec": "Motivation",
+   "pub": "2019-09-24T00:00:00.000Z",
+   "obs": "",
+   "c": "## Motivation Inflation mechanism was originally planned as a simple way for users to support important ecosystem projects and keep the overall XLM supply slightly inflationary. - Currently, it doe"
+  },
+  {
+   "src": "audit",
+   "title": "Allbridge Soroban Bridge: Quarkslab",
+   "url": "https://stellarsecurityportal.com/report/4",
+   "sec": "3.5.4",
+   "pub": "2024-02-21T15:00:00.000Z",
+   "obs": "2026-11-16",
+   "c": "## 3.5.4 # Liquidity # providing # mechanism The Pool contract requires a substantial stablecoin liquidity to guarantee successful funds bridg- ing. To collect this liquidity, users are encouraged "
+  }
+ ],
+ "ll1": [
+  {
+   "id": "12902",
+   "coll": "articles",
+   "title": "XLM Rewards Pool Explorer",
+   "url": "https://stellar.org/xlm-utility",
+   "date": ""
+  },
+  {
+   "id": "5384",
+   "coll": "articles",
+   "title": "Binance to airdrop 9 million Stellar, now offers staking rewards",
+   "url": "https://decrypt.co/7930/binance-airdrop-stellar-staking",
+   "date": "2019-07-18"
+  },
+  {
+   "id": "4682",
+   "coll": "articles",
+   "title": "Binance unknowingly generates $775k from staking Stellar; will share proceeds with community",
+   "url": "https://www.theblock.co/linked/32480/binance-unknowingly-generates-775k-from-staking-stellar-will-share-proceeds-with-community",
+   "date": "2019-07-18"
+  },
+  {
+   "id": "11424",
+   "coll": "articles",
+   "title": "Explore LumosCore’s Reward Programs: Hold, Provide Liquidity & Earn",
+   "url": "https://x.com/i/article/2099411653817405440",
+   "date": "2026-09-14"
+  },
+  {
+   "id": "10839",
+   "coll": "articles",
+   "title": "SODA Now Trading on XLM Domains",
+   "url": "https://x.com/i/article/2096972011620691968",
+   "date": "2026-09-07"
+  },
+  {
+   "id": 180,
+   "coll": "research",
+   "title": "Stellar Weekly Roundup: Week of Oct 9, 2026",
+   "date": "2026-10-16"
+  },
+  {
+   "id": 184,
+   "coll": "research",
+   "title": "Stellar Weekly Roundup: Week of Oct 30, 2026",
+   "date": "2026-10-30"
+  },
+  {
+   "id": 160,
+   "coll": "research",
+   "title": "Peridot Margin Trading: integrated leverage to Stellar DeFi",
+   "date": "2026-08-24"
+  },
+  {
+   "id": 56,
+   "coll": "research",
+   "title": "The End of Open-Door AQUA Rewards",
+   "date": "2026-05-18"
+  },
+  {
+   "id": 175,
+   "coll": "research",
+   "title": "Stellar Weekly Roundup: Week of Sep 25, 2026",
+   "date": "2026-10-02"
+  }
+ ]
+}

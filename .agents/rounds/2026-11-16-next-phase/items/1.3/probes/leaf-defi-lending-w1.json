@@ -1,0 +1,125 @@
+{
+ "sr1": [
+  {
+   "src": "audit",
+   "title": "Blend Protocol V2: Certora (Security Assessment DRAFT v3 Report Blend v2)",
+   "url": "https://stellarsecurityportal.com/report/40",
+   "sec": "Issues",
+   "pub": "2025-08-13T15:00:00.000Z",
+   "obs": "2026-11-16",
+   "c": "## Issues # Lackofoff-chain # infrastructuretocallstate-changing # functions **L-01. ** Severity: **Low ** Impact: **Low ** Likelihood: **Low ** Status: Acknowledged **Description: ** The Blend sy"
+  },
+  {
+   "src": "sdf-blog",
+   "title": "Composability on Stellar: How DeFi Protocols Work Together",
+   "url": "https://stellar.org/blog/developers/composability-on-stellar-from-concept-to-reality",
+   "sec": "Blend: the execution layer (lending prim",
+   "pub": "2025-12-24T00:00:00.000Z",
+   "obs": "2026-11-16",
+   "c": "## Blend: the execution layer (lending primitive) First, we have the base layer: Blend, a decentralized lending protocol created by Script3 for Stellar applications. Users can deposit assets into sep"
+  },
+  {
+   "src": "scf-proposal",
+   "title": "Stellar RWA Lending Market (SCF submission, SCF #44)",
+   "url": "https://communityfund.stellar.org/submissions/recIPO2uN2oa0uitf",
+   "sec": "Tranche 1 (Deliverable Roadmap) - MVP",
+   "pub": null,
+   "obs": "2026-11-16",
+   "c": "## Tranche 1 (Deliverable Roadmap) - MVP **Tranche #1: Deep technical assessment of Blend v2 integration for institutional RWA collateral, with full design package and UI prototype.** Before on-cha"
+  },
+  {
+   "src": "audit",
+   "title": "Blend Protocol: Certora (Blend Security Assessment Report)",
+   "url": "https://stellarsecurityportal.com/report/9",
+   "sec": "",
+   "pub": "2023-12-31T15:00:00.000Z",
+   "obs": "2026-11-16",
+   "c": "The emitter is responsible for minting BLND, which is the token deposited in the backstop module for use as ,andasarewardforparticipatingactorsinboththebackstopmoduleandthelendingpools.insurance The "
+  },
+  {
+   "src": "audit",
+   "title": "Blend Protocol V2: Code4rena (Blend Smart Contract Security Assessment)",
+   "url": "https://stellarsecurityportal.com/report/38",
+   "sec": "[18]Contrarytowhitepaper,",
+   "pub": "2025-08-12T15:00:00.000Z",
+   "obs": "2026-11-16",
+   "c": "## [18]Contrarytowhitepaper, # backstopratecanbechanged https://docs.blend.capital/blend-whitepaper#owned-pools https://github.com/code-423n4/2025-02- blend/blob/f23b3260763488f365ef6a95bfb139c95b"
+  },
+  {
+   "src": "audit",
+   "title": "Blend Protocol: OtterSec (Blend Capital Security Assessment)",
+   "url": "https://stellarsecurityportal.com/report/1",
+   "sec": "04—Vulnerabilities",
+   "pub": "2024-02-28T15:00:00.000Z",
+   "obs": "2026-11-16",
+   "c": "## 04—Vulnerabilities BlendCapitalAudit04—Vulnerabilities **ProofofConcept** 1.Theattackermintsoneshare(#bb__ttookkeenn )withasmallamount. 2.Theattackerthendonatesalargeamountoftokens,artificiallyinc"
+  }
+ ],
+ "ll1": [
+  {
+   "id": "1997",
+   "coll": "articles",
+   "title": "Blend: The Lending Primitive Nobody's Talking About",
+   "url": "https://x.com/i/article/2014349988088737792",
+   "date": "2026-01-22"
+  },
+  {
+   "id": "26",
+   "coll": "articles",
+   "title": "Blend & Meru Case Study",
+   "url": "https://stellar.org/case-studies/meru-wallet-uses-blend-defi-protocol-for-yield",
+   "date": "2025-05-27"
+  },
+  {
+   "id": "10608",
+   "coll": "articles",
+   "title": "Comet BLND-USDC LP Incident - Post Mortem",
+   "url": "https://x.com/i/article/2093131771210547200",
+   "date": "2026-08-28"
+  },
+  {
+   "id": "727",
+   "coll": "articles",
+   "title": "Introducing Blend",
+   "url": "https://medium.com/script3/introducing-blend-95aaf66bdf41",
+   "date": "2023-04-03"
+  },
+  {
+   "id": "12317",
+   "coll": "articles",
+   "title": "LUMOS / xLMNR liquidity pool on Stellar | LumosCore",
+   "url": "https://lumoscore.com/pools/stellar/id/e67b5a693d12ba98cb411d3b349b900602302cc8bc4479d35e0c806712c9ca59",
+   "date": ""
+  },
+  {
+   "id": 160,
+   "coll": "research",
+   "title": "Peridot Margin Trading: integrated leverage to Stellar DeFi",
+   "date": "2026-08-24"
+  },
+  {
+   "id": 178,
+   "coll": "research",
+   "title": "Stellar Weekly Roundup: Week of Oct 2, 2026",
+   "date": "2026-10-09"
+  },
+  {
+   "id": 184,
+   "coll": "research",
+   "title": "Stellar Weekly Roundup: Week of Oct 30, 2026",
+   "date": "2026-10-30"
+  },
+  {
+   "id": 148,
+   "coll": "research",
+   "title": "Why Compliant Privacy Is a Business Requirement for Fintech Companies",
+   "date": "2026-07-20"
+  },
+  {
+   "id": 175,
+   "coll": "research",
+   "title": "Stellar Weekly Roundup: Week of Sep 25, 2026",
+   "date": "2026-10-02"
+  }
+ ]
+}

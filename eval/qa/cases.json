@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "55b4be2479bfc75c3af4163d51ca2ce4794b6727c0001f024547b10d39e1ac40",
+  "corpusContentSha256": "5e44ed384e9182bed8abd69294396c38c73c4fbbb5834527b18a5ce08072011d",
   "counts": {
     "total": 247,
     "byCategory": {
@@ -36216,7 +36216,7 @@
           "Do NOT claim that Rust or placeholder languages accept all three TypeScript inputs.",
           "Do NOT claim that bindings update automatically after a contract upgrade."
         ],
-        "notes": "Version-qualify CLI claims; the current CLI is 30.0.1 (2026-11-03)."
+        "notes": "Version-qualify CLI claims; the current CLI is 30.0.1 (2026-11-03). Quoting the official Lab Contract Explorer page, with attribution, that the Stellar CLI generates TypeScript, JSON, Rust, Python, and Java bindings is not a wrong claim while sd-110 stands; grade caps at partial."
       },
       "tags": {
         "category": "soroban",
@@ -36354,21 +36354,15 @@
           }
         ],
         "verified": {
-          "date": "2026-11-14",
-          "by": "Golden coverage audit 2026-11-14 (audit-soroban-a, verify-audit-soroban-a; .agents/rounds/2026-11-14-golden-coverage-audit.md)",
+          "date": "2026-11-17",
+          "by": "Round item 1.3 (golden-truth, canonical-page caution; executor Claude Sonnet 5.5, round ledger .agents/rounds/2026-11-16-next-phase/items/1.3/EXEC.md)",
           "evidence": [
-            "Audit record: .agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-a.json#q-soroban-cli-bindings",
-            "Verifier decision: .agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-a.json#q-soroban-cli-bindings",
-            "Coverage decision: .agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json#q-soroban-cli-bindings",
-            "Live B 2026-11-14: https://github.com/stellar/stellar-cli/releases/tag/v30.0.1 -- 'v30.0.1 published 2026-11-03'",
-            "Live B 2026-11-14: https://github.com/stellar/stellar-cli/blob/v30.0.1/cmd/soroban-cli/src/commands/contract/bindings.rs -- 'Deprecated, use the JavaScript Stellar SDK instead ... Generate Python bindings (requires external plugin)'",
-            "Live B 2026-11-14: https://github.com/stellar/stellar-cli/blob/v30.0.1/cmd/soroban-cli/src/commands/contract/bindings/rust.rs -- 'wasm: wasm::Args ... generate_from_file(&wasm_path_str'",
-            "Live A 2026-11-14: https://github.com/stellar/js-stellar-sdk/blob/master/README.md -- 'npx @stellar/stellar-sdk generate --wasm ... --wasm-hash <hex-encoded-hash>'",
-            "Live B 2026-11-14: https://github.com/stellar/stellar-cli/blob/v30.0.1/cmd/soroban-cli/src/commands/contract/bindings.rs#L15 -- 'Deprecated, use the JavaScript Stellar SDK instead ... Generate Python bindings (requires external plugin)'"
+            "Live A 2026-11-17: https://developers.stellar.org/docs/tools/lab/smart-contracts/contract-explorer.md line 84 still reads 'including TypeScript, JSON, Rust, Python, and Java' (HTTP 200).",
+            "Upstream state 2026-11-17: https://github.com/stellar/stellar-docs/issues/3151 is open; fix PR https://github.com/stellar/stellar-docs/pull/3153 is open and not merged.",
+            ".agents/rounds/2026-11-14-baseline-tuning/CASE-DEFECTS.md, section 'Lab Contract Explorer bindings claim (q-soroban-cli-bindings)': the page's claim fails against stellar 30.0.1 (no JSON command; Python and Java need an external plugin)."
           ],
           "rootCause": [
-            ".agents/TODO.md — Finish the 2026-11-14 golden coverage audit",
-            "freshness-drift"
+            "improvements/stellar-docs/sd-110-lab-contract-explorer-bindings-language-list.md"
           ]
         },
         "origin": "raven-next q-soroban-cli-bindings",

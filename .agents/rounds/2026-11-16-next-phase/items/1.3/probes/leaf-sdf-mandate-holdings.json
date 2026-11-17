@@ -1,0 +1,77 @@
+{
+ "w1": {
+  "candidates": 50,
+  "hits": [
+   {
+    "rank": 1,
+    "path": "/docs/learn/fundamentals/lumens",
+    "title": "Lumens (XLM)",
+    "sec": "Definitions"
+   },
+   {
+    "rank": 2,
+    "path": "/docs/platforms",
+    "title": "SDF Platforms",
+    "sec": "Anchor Platform"
+   },
+   {
+    "rank": 3,
+    "path": "/docs/tools/cli/cookbook/tx-new",
+    "title": "tx Commands",
+    "sec": "Payment"
+   },
+   {
+    "rank": 4,
+    "path": "/docs/tokens/anatomy-of-an-asset",
+    "title": "Assets Overview & Comparison",
+    "sec": "Tokenization Model Comparison"
+   },
+   {
+    "rank": 5,
+    "path": "/docs/learn/glossary",
+    "title": "Glossary",
+    "sec": "XLM (lumens)"
+   },
+   {
+    "rank": 6,
+    "path": "/docs/tools/cli/agent-cli/guides/usdt0-on-mainnet",
+    "title": "USDT0 on mainnet",
+    "sec": "Set up mainnet first"
+   }
+  ]
+ },
+ "page": {
+  "len": 11664,
+  "hit": " useful for products and services that track the distribution of XLM, including market cap aggregators and some exchanges, or to anyone who wants to investigate the distribution of XLM defined by the SDF mandate.\n\nUnlike many other blockchains, the native network currency is not created through mining- all XLM that has ever existed and will ever exist was created when the Stellar network went live.\n\n[SDF’s Dashboard API endpoint](https://dashboard.stellar.org/api/v3/lumens) will always have the live totals for the essential numbers around lumens. This guide explains important supply metrics like Original Supply, Total Supply, and Circulating Supply entailed in that data.\n\n### Dashboard API\n\nAs of July 21st, 2026, the Dashboard API shows:\n\n```json\n{\n  \"updatedAt\": \"2026-07-21T16:30:53.463Z\""
+ },
+ "sr": [
+  {
+   "src": "dev-docs",
+   "title": "Understanding Lumens, The Native Currency of the Network",
+   "url": "https://developers.stellar.org/docs/learn/fundamentals/lumens",
+   "obs": "2026-11-16",
+   "c": "## Lumen Supply Metrics This section explains how lumen supply metrics are calculated and made available via API. This i"
+  },
+  {
+   "src": "sdf-org",
+   "title": "SDF Mandate (current): mission, structure, and funding (stellar.org/foundation/mandate)",
+   "url": "https://stellar.org/foundation/mandate",
+   "obs": "2026-11-16",
+   "c": "## Conclusion Since the first formal mandate published in November 2019, SDF’s goal has been to use and disperse the XLM"
+  },
+  {
+   "src": "sdf-org",
+   "title": "SDF Mandate (2019, historical) (stellar.org/foundation/mandate/2019)",
+   "url": "https://stellar.org/foundation/mandate/2019",
+   "obs": "2026-11-16",
+   "c": "Foundation # SDF Mandate (2019) Our mandate provides transparent and live updates on our progress towards our goals. See"
+  },
+  {
+   "src": "sdf-blog",
+   "title": "An Updated Mandate for a Growing Stellar Ecosystem",
+   "url": "https://stellar.org/blog/foundation-news/an-updated-mandate-for-a-growing-stellar-ecosystem",
+   "obs": "2026-11-16",
+   "c": "## Commitment to transparency As always, you can track our XLM balances in real-time using the links on our updated mand"
+  }
+ ]
+}

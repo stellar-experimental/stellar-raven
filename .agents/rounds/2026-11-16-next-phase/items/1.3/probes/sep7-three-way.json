@@ -1,0 +1,93 @@
+{
+ "target": "/docs/build/apps/wallet/sep7",
+ "observedAt": "2026-11-17T01:33:10.049Z",
+ "arms": [
+  {
+   "arm": "a-mintlify-pageSize50",
+   "query": "web+stellar:pay payment request QR code",
+   "status": 200,
+   "sections": 43,
+   "sectionRank": null,
+   "pageRank": null,
+   "top10Pages": [
+    "/docs/build/apps/example-application-tutorial/anchor-integration/sep10",
+    "/docs/platforms/anchor-platform/api-reference/platform/rpc/methods/do_stellar_payment",
+    "/docs/build/agentic-payments/x402/built-on-stellar",
+    "/docs/build/apps/example-application-tutorial/payment",
+    "/docs/build/guides/transactions/send-and-receive-payments",
+    "/docs/build/agentic-payments/x402",
+    "/docs/build/agentic-payments",
+    "/docs/tools/cli/agent-cli/guides/pay-for-apis-x402",
+    "/docs/build/agentic-payments/x402/quickstart-guide",
+    "/docs/tools/cli/cookbook/payments-and-assets"
+   ],
+   "sep7Sections": []
+  },
+  {
+   "arm": "b-raven-search_docs-hitsPerPage20",
+   "query": "web+stellar:pay payment request QR code",
+   "candidates": 43,
+   "hits": 20,
+   "sectionRank": null,
+   "pageRank": null,
+   "top10Pages": [
+    "/docs/build/apps/example-application-tutorial/anchor-integration/sep10",
+    "/docs/platforms/anchor-platform/api-reference/platform/rpc/methods/do_stellar_payment",
+    "/docs/build/agentic-payments/x402/built-on-stellar",
+    "/docs/build/apps/example-application-tutorial/payment",
+    "/docs/build/guides/transactions/send-and-receive-payments",
+    "/docs/build/agentic-payments/x402",
+    "/docs/build/agentic-payments",
+    "/docs/tools/cli/agent-cli/guides/pay-for-apis-x402",
+    "/docs/build/agentic-payments/x402/quickstart-guide",
+    "/docs/tools/cli/cookbook/payments-and-assets"
+   ]
+  },
+  {
+   "arm": "a-mintlify-pageSize50",
+   "query": "web+stellar:pay",
+   "status": 200,
+   "sections": 38,
+   "sectionRank": 1,
+   "pageRank": 1,
+   "top10Pages": [
+    "/docs/build/apps/wallet/sep7",
+    "/docs/build/apps/example-application-tutorial/anchor-integration/sep10",
+    "/docs/tools/cli/plugins-list",
+    "/docs/platforms/anchor-platform/api-reference/platform/rpc/methods/do_stellar_payment",
+    "/docs/tools/cli/agent-cli/guides/pay-for-apis-x402",
+    "/docs/build/apps/privacy",
+    "/docs/build/agentic-payments/mpp",
+    "/docs/build/apps/swift-payment-app",
+    "/docs/build/apps/wallet/stellar",
+    "/docs/build/agentic-payments/x402"
+   ],
+   "sep7Sections": [
+    {
+     "rank": 1,
+     "path": "/docs/build/apps/wallet/sep7"
+    }
+   ]
+  },
+  {
+   "arm": "b-raven-search_docs-hitsPerPage20",
+   "query": "web+stellar:pay",
+   "candidates": 38,
+   "hits": 20,
+   "sectionRank": 1,
+   "pageRank": 1,
+   "top10Pages": [
+    "/docs/build/apps/wallet/sep7",
+    "/docs/build/apps/example-application-tutorial/anchor-integration/sep10",
+    "/docs/tools/cli/plugins-list",
+    "/docs/platforms/anchor-platform/api-reference/platform/rpc/methods/do_stellar_payment",
+    "/docs/tools/cli/agent-cli/guides/pay-for-apis-x402",
+    "/docs/build/apps/privacy",
+    "/docs/build/agentic-payments/mpp",
+    "/docs/build/apps/swift-payment-app",
+    "/docs/build/apps/wallet/stellar",
+    "/docs/build/agentic-payments/x402"
+   ]
+  }
+ ]
+}
