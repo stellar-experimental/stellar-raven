@@ -63,7 +63,7 @@ describe.skipIf(!SPLIT || !RESULTS)("arm 1 replay over the stored tuning execute
         const ids = [...new Set([...code.matchAll(OP_RE)].map((m) => `${m[1]}.${m[2]}`))].filter((id) =>
           operations.has(id)
         );
-        const ledger: OpLedgerCall[] = ids.map((op) => ({ op, outcome: "ok", hasServiceData: true, ms: 0 }));
+        const ledger: OpLedgerCall[] = ids.map((op) => ({ op, outcome: "ok", hasServiceData: true, attempts: 1, finalStatus: "200", ms: 0 }));
         const hint = evidenceRecoveryHint(ledger, summarizeOperationLedger(ledger));
         const expectDetail = ids.some((id) => DOCS_SEARCH.test(id)) && !ids.includes("stellarDocs.get_doc_page");
         if (ids.some((id) => DOCS_SEARCH.test(id))) docsSearchAnywhere = true;

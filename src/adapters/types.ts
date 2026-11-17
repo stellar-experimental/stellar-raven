@@ -26,6 +26,16 @@ export type AdapterEnv = {
   MINTLIFY_ASSISTANT_API_KEY?: string;
 };
 
+/**
+ * Wall-clock bound for ONE operation call, in milliseconds. It is one budget per call, not per
+ * attempt: Lumenloop and Scout make one request under one `AbortSignal.timeout` (header and body
+ * read); Stellar Docs and stellar.org `get_page` clip every attempt, the `/index` retry, redirect
+ * hops and the site probe to one deadline. A retry added to any adapter takes the REMAINING
+ * budget, never a fresh one, so a timeout cannot multiply. The bound is per call, not per script:
+ * three sequential hung calls still exceed the 60 s `execute` limit.
+ */
+export const OPERATION_BUDGET_MS = 24_000;
+
 /** Injectable fetch so unit tests run against recorded fixtures, no network. */
 export type FetchLike = (input: string, init?: RequestInit) => Promise<Response>;
 

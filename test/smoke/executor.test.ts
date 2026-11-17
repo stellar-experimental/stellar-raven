@@ -1218,7 +1218,23 @@ describe("execute runner (real Dynamic Worker isolate)", () => {
       expect(outcome.error).toContain("the only globals available in the sandbox are:");
       expect(outcome.error).toContain("lumenloop");
       expect(outcome.error).toContain("codemode");
+      expect(outcome.errorName).toBe("ReferenceError");
     }
+  });
+
+  it("classifies a real TypeError, a model-thrown Error, and a load failure by errorName", async () => {
+    // The class comes from the runtime's own message forms, so the real runtime pins them.
+    const typeError = await run(`async () => { const x = null; return x.y; }`);
+    expect(typeError.ok).toBe(false);
+    if (!typeError.ok) expect(typeError.errorName).toBe("TypeError");
+
+    const thrown = await run(`async () => { throw new Error("plain-boom"); }`);
+    expect(thrown.ok).toBe(false);
+    if (!thrown.ok) expect(thrown.errorName).toBe("other");
+
+    const load = await run(`async () => { const x: number = 1; return x; }`);
+    expect(load.ok).toBe(false);
+    if (!load.ok) expect(load.errorName).toBe("SyntaxError");
   });
 
   it("leaves a non-ReferenceError message unchanged (no globals hint)", async () => {

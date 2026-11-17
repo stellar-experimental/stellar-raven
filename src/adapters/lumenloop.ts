@@ -12,6 +12,11 @@
  *    contract ("not evidence") → kind "soft-empty" with the text as message.
  *  - success:false → kind "error" with upstream code/details/hint preserved.
  *
+ * Timeout: one request under one `OPERATION_BUDGET_MS` signal that also bounds the body read.
+ * An abort is detected from the signal (`signal.aborted`), never from the thrown error, and
+ * returns a timeout envelope with no status. There is no retry; a future retry must take the
+ * remaining budget, never a fresh one.
+ *
  * Secrets: LUMENLOOP_API_KEY is read here, host-side, and never echoed —
  * policy/redact.ts additionally scrubs any accidental key echo from results.
  */
@@ -20,6 +25,7 @@ import {
   errResult,
   okResult,
   caughtResult,
+  OPERATION_BUDGET_MS,
   type AdapterEnv,
   type AdapterResult,
   type FetchLike
@@ -27,6 +33,17 @@ import {
 import { normalizeLumenloopOutput } from "./lumenloop-shape.ts";
 
 const SERVICE = "lumenloop";
+const TIMEOUT_HINT =
+  "The call timed out. Do not retry it in this script. Report this source as unavailable, not as missing data.";
+
+function timeoutResult(): AdapterResult {
+  return errResult({
+    service: SERVICE,
+    kind: "error",
+    message: `${SERVICE} timed out after ${OPERATION_BUDGET_MS / 1000} s`,
+    hint: TIMEOUT_HINT
+  });
+}
 
 type LumenloopEnvelope = {
   success?: boolean;
@@ -61,6 +78,7 @@ export async function callLumenloop(
     });
   }
 
+  const signal = AbortSignal.timeout(OPERATION_BUDGET_MS);
   try {
     const res = await fetchImpl(`${transport.base ?? "https://api.lumenloop.com"}${transport.path}`, {
       method: transport.method ?? "POST",
@@ -68,13 +86,16 @@ export async function callLumenloop(
         Authorization: `Bearer ${key}`,
         "Content-Type": "application/json"
       },
-      body: JSON.stringify(args)
+      body: JSON.stringify(args),
+      signal
     });
 
     let body: LumenloopEnvelope;
     try {
       body = (await res.json()) as LumenloopEnvelope;
     } catch {
+      // A body read cut off by the budget rejects here; it is a timeout, not a non-JSON answer.
+      if (signal.aborted) return timeoutResult();
       return errResult({
         service: SERVICE,
         kind: "error",
@@ -119,6 +140,6 @@ export async function callLumenloop(
     // the envelope is exactly { ok: true, data }.
     return okResult(normalizeLumenloopOutput(entry.id, body.data));
   } catch (e) {
-    return caughtResult(SERVICE, e);
+    return signal.aborted ? timeoutResult() : caughtResult(SERVICE, e);
   }
 }

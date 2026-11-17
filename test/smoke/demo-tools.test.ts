@@ -475,6 +475,7 @@ describe("demo tools at the worker boundary", () => {
       result: "first",
       truncated: false,
       logs: [],
+      sourceSummary: {},
       operationSummary: { total: 2, ok: 1, error: 0, softEmpty: 1 },
       evidenceSummary: {
         kind: "service-data",
@@ -490,6 +491,7 @@ describe("demo tools at the worker boundary", () => {
       result: "second",
       truncated: false,
       logs: [],
+      sourceSummary: {},
       operationSummary: { total: 1, ok: 0, error: 1, softEmpty: 0 },
       evidenceSummary: {
         kind: "service-inconclusive",
@@ -656,7 +658,9 @@ describe("demo tools at the worker boundary", () => {
         .find((entry) => entry?.evt === "demo-execute");
       expect(event).toMatchObject({
         ok: false,
+        errorName: "other",
         artifactReadCount: 0,
+        sources: {},
         operationSummary: { total: 0, ok: 0, error: 0, softEmpty: 0 },
         evidenceSummary: {
           kind: "none",
@@ -781,6 +785,7 @@ describe("demo tools at the worker boundary", () => {
       result: "rows",
       truncated: false,
       logs: [],
+      sourceSummary: {},
       operationSummary: { total: 1, ok: 1, error: 0, softEmpty: 0 },
       evidenceSummary: {
         kind: "service-data",
@@ -857,6 +862,8 @@ describe("demo tools at the worker boundary", () => {
       evt: "demo-execute",
       ok: true,
       evidenceOutcome: "error",
+      sources: {},
+      errorName: null,
       operationSummary: { total: 10, ok: 0, error: 10, softEmpty: 0 },
       evidenceSummary: {
         kind: "service-inconclusive",

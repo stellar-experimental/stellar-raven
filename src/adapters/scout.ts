@@ -25,18 +25,26 @@
  *    retry once, then report an inconclusive read. Preserve the warnings and
  *    `meta.failedReads` in details.
  *  - Other warnings remain visible in unchanged successful data.
+ *
+ * Timeout: one request under one `OPERATION_BUDGET_MS` signal that also bounds the body read.
+ * An abort is detected from the signal (`signal.aborted`), never from the thrown error, and
+ * returns a timeout envelope with no status. There is no retry; a future retry must take the
+ * remaining budget, never a fresh one.
  */
 import type { CatalogEntry } from "../catalog/types.ts";
 import {
   errResult,
   okResult,
   caughtResult,
+  OPERATION_BUDGET_MS,
   type AdapterEnv,
   type AdapterResult,
   type FetchLike
 } from "./types.ts";
 
 const SERVICE = "scout";
+const TIMEOUT_HINT =
+  "The call timed out. Do not retry it in this script. Report this source as unavailable, not as missing data.";
 const SCOUT_MISS_HINT =
   "Scope this miss to the requested Scout record. For an open-world identity or history question, make one broader pass: use scout.searchResearch for cited research/history, scout.searchProjects for project identity, scout.getPeople for SDF staff/leadership/board, or scout.getBuilders for ecosystem builder membership; validate any semantic candidate before attribution.";
 
@@ -121,6 +129,8 @@ export async function callScout(
     init.body = JSON.stringify(rest);
   }
 
+  const signal = AbortSignal.timeout(OPERATION_BUDGET_MS);
+  init.signal = signal;
   try {
     const res = await fetchImpl(url, init);
     const contentType = res.headers.get("content-type") ?? "";
@@ -234,6 +244,14 @@ export async function callScout(
 
     return okResult(body);
   } catch (e) {
+    if (signal.aborted) {
+      return errResult({
+        service: SERVICE,
+        kind: "error",
+        message: `${SERVICE} timed out after ${OPERATION_BUDGET_MS / 1000} s`,
+        hint: TIMEOUT_HINT
+      });
+    }
     return caughtResult(SERVICE, e);
   }
 }

@@ -198,7 +198,7 @@ What a result proves:
 | Hits per search | 1 to 20, default 5 | `hitsPerPage` in each operation schema |
 | Snippet length | 300 characters | `SNIPPET_CHARS` in the adapter |
 | HTTP attempts per lookup | 2, with 8,000 ms and 12,000 ms timeouts | `attemptTimeoutsMs` in the spec backend |
-| Wall-clock budget per operation | 24,000 ms, for every attempt and the probe | `OPERATION_BUDGET_MS` in the adapter |
+| Wall-clock budget per operation | 24,000 ms, for every attempt and the probe | `OPERATION_BUDGET_MS` in `src/adapters/types.ts` |
 | Search: lookups and HTTP attempts | 1 lookup, so at most 2 API requests | `mintlifyRequest` in the adapter |
 | Page read: lookups and HTTP attempts | At most 4 lookups (the path, its `/index`, a redirect target, its `/index`), so at most 8 API requests | The `/index` retry and the redirect follow |
 | Site redirect probes per read | At most 1 `GET` to the docs site, separate from the API requests; 8,000 ms, no retry | `siteRedirectPath` in the adapter |

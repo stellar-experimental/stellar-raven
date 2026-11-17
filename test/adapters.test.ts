@@ -13,7 +13,7 @@ import { loadManifest, type Catalog, type CatalogEntry } from "../src/catalog/se
 import { callLumenloop } from "../src/adapters/lumenloop.ts";
 import { callScout } from "../src/adapters/scout.ts";
 import { callStellarDocs, cleanContent, queryTerms } from "../src/adapters/stellar-docs.ts";
-import type { FetchLike } from "../src/adapters/types.ts";
+import { OPERATION_BUDGET_MS, type FetchLike } from "../src/adapters/types.ts";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const catalog: Catalog = loadManifest(
@@ -862,7 +862,8 @@ describe("stellarDocs adapter", () => {
       expect(calls).toHaveLength(1);
       expect(r).toMatchObject({ ok: false, error: {
         kind: "error",
-        message: "mintlify request failed after 1 attempts: operation deadline of 24000 ms reached"
+        message: "mintlify request failed after 1 attempts: operation deadline of 24000 ms reached",
+        status: 503
       } });
 
       // A slow missing page: the /index retry and the site probe are skipped.
@@ -1051,6 +1052,22 @@ describe("stellarDocs adapter", () => {
     if (!r.ok) expect(r.error.status).toBeUndefined();
   });
 
+  it("clears the 5xx status when a later attempt fails without a response", async () => {
+    const op = withTransport(entry("stellarDocs.search_docs"), { attemptTimeoutsMs: [5, 10] });
+    let calls = 0;
+    const fetchImpl: FetchLike = (_url, init) => {
+      calls += 1;
+      if (calls === 1) return Promise.resolve(Response.json({ message: "boom" }, { status: 503 }));
+      return new Promise((_resolve, reject) => {
+        init?.signal?.addEventListener("abort", () => reject(init.signal!.reason));
+      });
+    };
+    const r = await callStellarDocs(op, { query: "soroban" }, docsEnv, fetchImpl);
+    expect(calls).toBe(2);
+    expect(r).toMatchObject({ ok: false, error: { kind: "error", message: expect.stringContaining("after 2 attempts") } });
+    if (!r.ok) expect(r.error.status).toBeUndefined();
+  });
+
   for (const failure of ["401", "403", "429", "500", "503", "network", "body", "json", "invalid"]) {
     it(`classifies a search failure without data: ${failure}`, async () => {
       const { fetchImpl, calls } = mintlifyStub(() => {
@@ -1069,6 +1086,9 @@ describe("stellarDocs adapter", () => {
       const retried = ["500", "503", "network", "body"].includes(failure);
       expect(calls).toHaveLength(retried ? 2 : 1);
       if (retried) expect(result).toMatchObject({ error: { message: expect.stringContaining("after 2 attempts") } });
+      // An exhausted 5xx keeps the last response status; a network failure has none.
+      if (["500", "503"].includes(failure)) expect(result).toMatchObject({ error: { status: Number(failure) } });
+      if (failure === "network") expect(result).not.toHaveProperty("error.status");
       if (["401", "403", "429"].includes(failure)) {
         expect(result).toMatchObject({ error: { status: Number(failure), message: "upstream failure" } });
       }
@@ -1401,4 +1421,95 @@ describe("stellarDocs adapter", () => {
       expect("pathFiltered" in ((op.outputSchema as Shape).properties ?? {}), op.id).toBe(filtersByPath);
     });
   }
+});
+
+describe("lumenloop and scout operation timeout", () => {
+  const realTimeout = AbortSignal.timeout.bind(AbortSignal);
+  /** A request that never answers until its signal aborts. */
+  const hangUntilAbort: FetchLike = (_url, init) =>
+    new Promise((_resolve, reject) => {
+      init?.signal?.addEventListener("abort", () => reject(init.signal!.reason));
+    });
+  /** Headers arrive at once, then the body stalls until the signal aborts. */
+  const stalledBody: FetchLike = async (_url, init) => {
+    const signal = init!.signal!;
+    const body = new ReadableStream<Uint8Array>({
+      start(controller) {
+        signal.addEventListener("abort", () => controller.error(signal.reason));
+      }
+    });
+    return new Response(body, { status: 200, headers: { "content-type": "application/json" } });
+  };
+  const expectTimeout = (r: Awaited<ReturnType<typeof callLumenloop>>, service: string) => {
+    expect(r).toMatchObject({
+      ok: false,
+      error: {
+        service,
+        kind: "error",
+        message: `${service} timed out after 24 s`,
+        hint: expect.stringContaining("Do not retry it in this script")
+      }
+    });
+    if (!r.ok) expect(r.error.status).toBeUndefined();
+  };
+
+  function shortenTimeout() {
+    return vi.spyOn(AbortSignal, "timeout").mockImplementation(() => realTimeout(5));
+  }
+
+  it("asks for one operation budget and passes the signal to fetch", async () => {
+    const spy = vi.spyOn(AbortSignal, "timeout");
+    try {
+      const lumen = stubFetch(fixture("lumenloop-success.json"), 200);
+      await callLumenloop(entry("lumenloop.search_directory"), { query: "soroban" }, env, lumen.fetchImpl);
+      const scout = stubFetch(fixture("scout-success.json"), 200);
+      await callScout(entry("scout.searchResearch"), { q: "x" }, {}, scout.fetchImpl);
+      expect(spy.mock.calls).toEqual([[OPERATION_BUDGET_MS], [OPERATION_BUDGET_MS]]);
+      expect(OPERATION_BUDGET_MS).toBe(24_000);
+      expect(lumen.calls[0]?.init?.signal).toBeInstanceOf(AbortSignal);
+      expect(scout.calls[0]?.init?.signal).toBeInstanceOf(AbortSignal);
+    } finally {
+      spy.mockRestore();
+    }
+  });
+
+  it("times out a lumenloop request that never answers", async () => {
+    const spy = shortenTimeout();
+    try {
+      const r = await callLumenloop(entry("lumenloop.search_directory"), { query: "x" }, env, hangUntilAbort);
+      expectTimeout(r, "lumenloop");
+    } finally {
+      spy.mockRestore();
+    }
+  });
+
+  it("reports a stalled lumenloop body as a timeout, not as non-JSON HTTP 200", async () => {
+    const spy = shortenTimeout();
+    try {
+      const r = await callLumenloop(entry("lumenloop.search_directory"), { query: "x" }, env, stalledBody);
+      expectTimeout(r, "lumenloop");
+    } finally {
+      spy.mockRestore();
+    }
+  });
+
+  it("times out a scout request that never answers, and one whose body stalls", async () => {
+    const spy = shortenTimeout();
+    try {
+      expectTimeout(await callScout(entry("scout.searchResearch"), { q: "x" }, {}, hangUntilAbort), "scout");
+      expectTimeout(await callScout(entry("scout.searchResearch"), { q: "x" }, {}, stalledBody), "scout");
+    } finally {
+      spy.mockRestore();
+    }
+  });
+
+  it("keeps a non-timeout throw as a plain caught error", async () => {
+    const boom: FetchLike = async () => {
+      throw new TypeError("network unavailable");
+    };
+    const lumen = await callLumenloop(entry("lumenloop.search_directory"), { query: "x" }, env, boom);
+    expect(lumen).toMatchObject({ ok: false, error: { kind: "error", message: "network unavailable" } });
+    const scout = await callScout(entry("scout.searchResearch"), { q: "x" }, {}, boom);
+    expect(scout).toMatchObject({ ok: false, error: { kind: "error", message: "network unavailable" } });
+  });
 });
