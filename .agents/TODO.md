@@ -21,10 +21,9 @@ paid run.
 2. The owner's source choice, now that the production read (round item 3.1) and the source-gap
    residue (round item 1.3) are in: "Audit source coverage" and "Add a release and package-version
    source".
-3. Mechanisms with a measured cause. The production read ranks round item 3.2 first: its
-   per-source status half meets the most failed operation calls, and the `execute` `errorName` and
-   `scout.matchPartners` bullets of "Triage the runtime and client gaps" belong with it (they edit
-   the same event and adapter surface). Round item 3.3 is last: `stellarOrg` is little used.
+3. Mechanisms with a measured cause. Round items 3.2 and 3.3 are done: 3.2 merged as #462, and
+   3.3 measured both ranker mechanisms and dropped them (see "Treat stellar.org routing reach as a
+   lexical and description question"). No mechanism here is pending.
 
 No third tuning loop, and no paid QA run without a new written owner authorization, except round
 item 4.1 under decision 7 (owner, 2026-11-16, decision 1). The general routing repair stays held.
@@ -346,9 +345,26 @@ each needing the routing gate and the off-golden 40 as its acceptance check: req
 characters for the vendor prefix rule, as `tokensOverlap` already does, and let a gate-failed
 candidate that beats the page's weakest gated card keep its slot when the page is full. The
 description is not changed: a reword that removes the security displacement cut off-golden reach
-from 8 to 6 of 40 and moves the cost to other audit questions. Round item 3.3 measures the two
-ranker changes once each, with the pass rule fixed in the round plan; a failed mechanism is
-recorded and dropped, with no second variant.
+from 8 to 6 of 40 and moves the cost to other audit questions. Round item 3.3 measured the two
+ranker changes once each ([record](rounds/2026-11-16-next-phase/items/3.3/MEASURE.md)); both
+failed the pass rule and are dropped, with no second variant:
+
+- **Prefix floor** (4 characters, both directions, both scorers). It removes the `org` match on the
+  two spot queries and lifts FAM development reach (55, 58, 63 to 57, 60, 64), but it fails every
+  no-loss rule that counts: legacy and holdout rows go hit-to-miss, one holdout row is newly
+  captured, extended top3, top5 and cardHit5 fall, and non-SDF displacement at limit 10 rises from 3
+  to 5. The 2026-10-02 floor of 3 failed the same gate
+  ([lane C report](rounds/2026-10-02-routing-adapter-repairs/lane-c-report.md)); the code is kept
+  as `prefix-floor.patch`.
+- **Gate-failed slot keeping.** It returns `search_soroban_contract_docs` to the reentrancy spot
+  page, but legacy rows go hit-to-miss on four metrics, one holdout row loses top3, FAM development
+  reach at limit 10 falls from 63 to 61, and non-SDF `stellarOrg` displacement rises at limits 5 and
+  7 (0 to 2 and 1 to 3 of 25). The code is kept as `slot-keeping.patch`.
+- The round plan's metric (a `stellarOrg` card displacing a non-SDF card at limit 10, 3 of 25) is
+  cause 1, the `search_site` description: all three displacing cards are gate-failed backfill on
+  short pages, matched by exact description and id tokens. Neither mechanism removes any of the
+  three; the prefix floor adds two at limit 10 and slot keeping adds two at limits 5 and 7. This
+  item leaves the description unchanged.
 
 The FAM development rows are archived in the branch bundle (agentpc
 `~/backups/raven-next-phase/raven-branches-2026-11-16.bundle`) at ref `refs/heads/exp/family-decider`, path
