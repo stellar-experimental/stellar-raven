@@ -1,0 +1,125 @@
+{
+  "base": "https://developers.stellar.org",
+  "questions": [
+    {
+      "key": "L1",
+      "question": "Should I read account balances and history from Stellar RPC or from Hubble/BigQuery? When does each make sense?",
+      "referencePaths": [
+        "/docs/data",
+        "/docs/data/apis/rpc",
+        "/docs/data/analytics/hubble",
+        "/docs/data/analytics/hubble/analyst-guide/queries-for-horizon-like-data"
+      ],
+      "referenceUrls": [
+        "https://developers.stellar.org/docs/data",
+        "https://developers.stellar.org/docs/data/apis/rpc",
+        "https://developers.stellar.org/docs/data/analytics/hubble",
+        "https://developers.stellar.org/docs/data/analytics/hubble/analyst-guide/queries-for-horizon-like-data"
+      ]
+    },
+    {
+      "key": "L2",
+      "question": "Produce an exhaustive, multi-hour deep-research report covering the entire Stellar DeFi landscape end to end.",
+      "referencePaths": [],
+      "referenceUrls": []
+    },
+    {
+      "key": "N1",
+      "question": "What is a claimable balance on Stellar and when would you use one instead of a direct payment?",
+      "referencePaths": [
+        "/docs/build/guides/transactions/claimable-balances"
+      ],
+      "referenceUrls": [
+        "https://developers.stellar.org/docs/build/guides/transactions/claimable-balances"
+      ]
+    },
+    {
+      "key": "N2",
+      "question": "How does the Stellar fee model work for classic transactions — what is the base fee and how are fees computed?",
+      "referencePaths": [
+        "/docs/learn/fundamentals/fees-resource-limits-metering",
+        "/docs/build/guides/transactions/fee-bump-transactions"
+      ],
+      "referenceUrls": [
+        "https://developers.stellar.org/docs/learn/fundamentals/fees-resource-limits-metering",
+        "https://developers.stellar.org/docs/build/guides/transactions/fee-bump-transactions"
+      ]
+    },
+    {
+      "key": "N3",
+      "question": "How do I simulate a Soroban contract invocation to get the resource footprint and fees before submitting?",
+      "referencePaths": [
+        "/docs/data/apis/rpc/api-reference/methods/simulateTransaction",
+        "/docs/learn/fundamentals/contract-development/contract-interactions/transaction-simulation"
+      ],
+      "referenceUrls": [
+        "https://developers.stellar.org/docs/data/apis/rpc/api-reference/methods/simulateTransaction",
+        "https://developers.stellar.org/docs/learn/fundamentals/contract-development/contract-interactions/transaction-simulation"
+      ]
+    },
+    {
+      "key": "N4",
+      "question": "What's the Soroban equivalent of Solidity's `msg.sender` — how do I get the calling address, why must the user pass their own Address as an argument, and what exactly does `require_auth()` verify (it's not an allow/blocklist)?",
+      "referencePaths": [
+        "/docs/learn/fundamentals/contract-development/authorization",
+        "/docs/build/smart-contracts/example-contracts/auth"
+      ],
+      "referenceUrls": [
+        "https://developers.stellar.org/docs/learn/fundamentals/contract-development/authorization",
+        "https://developers.stellar.org/docs/build/smart-contracts/example-contracts/auth"
+      ]
+    },
+    {
+      "key": "F1",
+      "question": "What is the Varial wallet, and how do I prompt it to sign a transaction from a JavaScript dapp?",
+      "referencePaths": [
+        "/docs/build/guides/freighter",
+        "/docs/build/guides/freighter/prompt-to-sign-tx"
+      ],
+      "referenceUrls": [
+        "https://developers.stellar.org/docs/build/guides/freighter",
+        "https://developers.stellar.org/docs/build/guides/freighter/prompt-to-sign-tx"
+      ]
+    },
+    {
+      "key": "F2",
+      "question": "How can my app pay transaction fees on behalf of its users on Stellar, and how do I choose between the approaches?",
+      "referencePaths": [
+        "/docs/build/guides/transactions/fee-sponsorship",
+        "/docs/build/guides/transactions/fee-bump-transactions"
+      ],
+      "referenceUrls": [
+        "https://developers.stellar.org/docs/build/guides/transactions/fee-sponsorship",
+        "https://developers.stellar.org/docs/build/guides/transactions/fee-bump-transactions"
+      ]
+    },
+    {
+      "key": "F3",
+      "question": "I want to charge AI agents per request for my API using x402 on Stellar. How do I set up the seller side, and how does an agent pay?",
+      "referencePaths": [
+        "/docs/build/agentic-payments/x402/seller-and-agent-guide",
+        "/docs/build/agentic-payments/x402/quickstart-guide"
+      ],
+      "referenceUrls": [
+        "https://developers.stellar.org/docs/build/agentic-payments/x402/seller-and-agent-guide",
+        "https://developers.stellar.org/docs/build/agentic-payments/x402/quickstart-guide"
+      ]
+    },
+    {
+      "key": "F4",
+      "question": "Which Hubble tables hold account signer data, and how is the Hubble data catalog organized?",
+      "referencePaths": [
+        "/docs/data/analytics/hubble/data-catalog",
+        "/docs/data/analytics/hubble/data-catalog/data-dictionary",
+        "/docs/data/analytics/hubble/data-catalog/data-dictionary/bronze/account-signers",
+        "/docs/data/analytics/hubble/data-catalog/data-dictionary/silver/account-signers-current"
+      ],
+      "referenceUrls": [
+        "https://developers.stellar.org/docs/data/analytics/hubble/data-catalog",
+        "https://developers.stellar.org/docs/data/analytics/hubble/data-catalog/data-dictionary",
+        "https://developers.stellar.org/docs/data/analytics/hubble/data-catalog/data-dictionary/bronze/account-signers",
+        "https://developers.stellar.org/docs/data/analytics/hubble/data-catalog/data-dictionary/silver/account-signers-current"
+      ]
+    }
+  ]
+}
