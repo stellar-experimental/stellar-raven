@@ -306,3 +306,25 @@ describe("QA register CLI", () => {
     }
   });
 });
+
+describe("QA register CLI output", () => {
+  it("names a malformed case file without printing its text", () => {
+    const root = mkdtempSync(join(tmpdir(), "qa-register-malformed-"));
+    try {
+      const corpus = join(root, "corpus");
+      const register = join(root, "register.json");
+      mkdirSync(corpus);
+      writeFileSync(join(corpus, "case.json"), '{"question": ZQXMARKER}\n');
+      writeFileSync(register, '{"clusters":[]}\n');
+      const result = spawnSync(process.execPath, [CLI, "--corpus", corpus, "--register", register, "--check"], {
+        cwd: root,
+        encoding: "utf8"
+      });
+      expect(result.status).toBe(1);
+      expect(result.stderr).toMatch(/\[register-helper\] ERROR: .*case\.json: invalid JSON/);
+      expect(`${result.stdout}${result.stderr}`).not.toContain("ZQXMARKER");
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+});

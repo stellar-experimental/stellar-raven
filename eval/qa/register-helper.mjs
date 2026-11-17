@@ -11,6 +11,7 @@ import { existsSync, readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { writeFileAtomic } from "../../scripts/lib/shared.mjs";
+import { parseJsonText } from "./lib.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const DEFAULT_REGISTER = path.join(ROOT, "eval/qa/consistency-register.json");
@@ -31,7 +32,7 @@ export function caseFileHashes(corpusDir) {
   const hashes = new Map();
   for (const file of walkJsonFiles(corpusDir)) {
     const bytes = readFileSync(file);
-    const parsed = JSON.parse(bytes.toString("utf8"));
+    const parsed = parseJsonText(bytes.toString("utf8"), path.relative(ROOT, file).split(path.sep).join("/"));
     if (typeof parsed.id !== "string" || !parsed.id) throw new Error(`case file has no id: ${file}`);
     if (hashes.has(parsed.id)) throw new Error(`duplicate case id while hashing: ${parsed.id}`);
     hashes.set(parsed.id, createHash("sha256").update(bytes).digest("hex"));
