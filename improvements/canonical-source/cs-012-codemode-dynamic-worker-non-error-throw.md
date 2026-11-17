@@ -5,10 +5,8 @@ status: verified
 discovered: 2026-11-17
 upstreamTitle: "codemode: DynamicWorkerExecutor reports no error when sandbox code throws a non-Error value"
 evidence:
-  - "2026-11-17 local reproduction on @cloudflare/codemode 0.5.1 in workerd (vitest-pool-workers, LOADER binding). new DynamicWorkerExecutor({ loader }).execute('async () => { throw \"x\"; }', []) returns { result: undefined, logs: [] } with error undefined. The same holds for 'async () => { throw { code: 1 }; }'. The expected result is an error value for both."
-  - "2026-11-17 the same template line, read and not executed: node_modules 0.5.1 dist/index.js:307, published 0.5.6 dist/index.js:365 (the npm latest release on 2026-11-17), and main packages/codemode/src/executor.ts:511 at commit 366d5b5baf846b4669a2ecd0e61e104aa634432b. The line is `return { result: undefined, error: err.message, logs: __logs };`."
-  - "Contrast in the same package: dist/browser.js:116 uses `error: err.message || String(err)`, and dist/browser.js:127 and dist/index.js:239 (0.5.6; line 181 in 0.5.1) use `err instanceof Error ? err.message : String(err)`."
-  - "Raven impact: a downstream caller that treats `error === undefined` as success records the run as ok. In Raven, createExecuteRunner returns { ok: true, result: \"undefined\" } for both throws above. A throw of null gives a different outcome: `err.message` itself throws inside the catch block, and the call rejects with `TypeError: Cannot read properties of null (reading 'message')`."
+  - "2026-11-17 executed on @cloudflare/codemode 0.5.1 in workerd with a LOADER worker_loaders binding: new DynamicWorkerExecutor({ loader }).execute() on 'async () => { throw \"x\"; }' and on 'async () => { throw { code: 1 }; }' returns result undefined and error undefined. Read, not executed: the same line in 0.5.6 (npm latest) dist/index.js:365 and in main packages/codemode/src/executor.ts:511 at commit 366d5b5baf846b4669a2ecd0e61e104aa634432b."
+  - "Raven impact: a caller that treats error === undefined as success logs the run as ok. Raven's createExecuteRunner returns { ok: true, result: \"undefined\" } for both throws. A throw of null differs: err.message throws inside the catch block, and the call rejects with TypeError: Cannot read properties of null (reading 'message')."
 ---
 
 ## Finding
@@ -29,6 +27,8 @@ The generated module ends with this catch block (`packages/codemode/src/executor
 ```
 
 The same line is in `@cloudflare/codemode` 0.5.1 (`dist/index.js:307`) and 0.5.6 (`dist/index.js:365`).
+Only 0.5.1 was executed. The 0.5.6 and `main` lines were read, at `main` commit
+`366d5b5baf846b4669a2ecd0e61e104aa634432b`.
 The package already handles this case elsewhere. `dist/browser.js:116` uses `err.message || String(err)`.
 `dist/index.js:239` (0.5.6) uses `err instanceof Error ? err.message : String(err)`.
 
