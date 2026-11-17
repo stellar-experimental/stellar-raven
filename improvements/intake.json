@@ -239,6 +239,10 @@
       "repo": "cloudflare/agents",
       "reason": "The agents package metadata (npm view agents@0.32.0 repository bugs) names cloudflare/agents as its issue owner; createAI lives in packages/agents/src/models."
     },
+    "cs-012": {
+      "repo": "cloudflare/agents",
+      "reason": "The @cloudflare/codemode package metadata names cloudflare/agents as its issue owner; DynamicWorkerExecutor lives in packages/codemode/src/executor.ts."
+    },
     "sd-096": {
       "repo": "stellar/stellar-docs",
       "reason": "redirects.json at the stellar/stellar-docs repository root owns the wildcard redirect rules."

@@ -7,7 +7,7 @@ behind it; this file is the spec a lead follows when no orchestrator is awake. R
 quoted fact against `origin/main` and the live source before you edit.
 
 Terms: the run key is `<item><run>` (`2.1`, `2.1r1`); `<key>` below means it. The split file is
-`~/backups/gca-2026-11-14-split-v8.json` (SHA-256 `1f0c1268d47103e652c545cd7642f808d893aa7779192b50d189c42510027720`; if `.agents/TODO.md` names a later split in its held-out status, use that one, because `sibling-check.mjs` asserts `TUNING_ROW_COUNT`).
+`~/backups/gca-2026-11-14-split-v9.json` (SHA-256 `0b6c9c04b59f5f49225df4c054df0a1117bfb8f179660147dde14887515c800c`; if `.agents/TODO.md` names a later split in its held-out status, use that one, because `sibling-check.mjs` asserts `TUNING_ROW_COUNT`).
 A **dated case** is one of the six below. Evidence classes come from
 [`golden-truth`](../../../../../skills/golden-truth/SKILL.md): A official docs and sites, B source code
 and repos, C live service APIs (status feed, Scout), D the CLI's built-in web search only, E the Docs
@@ -38,6 +38,14 @@ You may open only the six dated case files, `q-pc-quantum-preparedness-dormant` 
 ids `sibling-check.mjs` prints to stdout. Never open another file under `eval/qa/corpus/`. Never read
 another case's fields from `cases.json` or `sample.json`, and never read the split file, except
 through `sibling-check.mjs`. Never commit or paste its id list.
+
+**The README maintenance exception does not apply to these runs.** `eval/qa/README.md`
+("Held-out split") lets a golden-maintenance lane open a held-out or reserve case under
+conditions these runs do not meet. Keep the rule above: open only the files it lists, close
+entries all or none (section 6), and never amend the split or `TUNING_ROW_COUNT`. If a tool's
+output shows you text of a case you may not open, do not use it: write the id to
+`~/.local/state/raven-dated/<key>-EXPOSURE.txt`, never commit it, say "exposure: 1" in
+REPORT.md, and continue. A later lane closes the entries you leave open.
 
 **Write set.** A run may change only:
 
@@ -93,7 +101,7 @@ your worktree.
 node .agents/rounds/2026-11-16-next-phase/items/1.4/dated/probe.mjs --protocol --quantum --out <scratch>/probe-1.json
 node .../probe.mjs --software-versions       # 2.2a
 node .../probe.mjs --scf                     # 2.2c
-node .../sibling-check.mjs --run 2.1 --split ~/backups/gca-2026-11-14-split-v8.json   # or 2.2a, 2.2c
+node .../sibling-check.mjs --run 2.1 --split ~/backups/gca-2026-11-14-split-v9.json   # or 2.2a, 2.2c
 ```
 
 `probe.mjs` is keyless and prints JSON; a failed section reports `{ok:false,error}` and the rest
@@ -368,7 +376,7 @@ must be a dated case or an id `sibling-check.mjs` printed.
   template below.
 - If any reopened entry holds a member you may not open, close none of that run's reopened entries.
   Every one stays at `reopen` (legal in CI) with no `reSwept` written. Record the count of entries
-  left open in `.agents/TODO.md`, under "Decide whether golden maintenance may open held-out cases",
+  left open in `.agents/TODO.md`, under "Close the register entries the dated runs leave open",
   replacing "none recorded yet" with the running count.
 
 State no per-entry reason anywhere. The `sibling-check.mjs` scan is a warning signal only; it never
