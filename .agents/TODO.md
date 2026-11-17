@@ -128,41 +128,37 @@ disputes disappear, and no answer with a truly unsupported claim is graded up.
 Source: [caps audit](../research/audits/2026-11-14-caps-audit.md). The audit changed no cap that
 reaches the model. Tuning loop 2 decided two of its three measured caps without a paid test of their
 own: seven search cards by default (M1, kept) and the micro-map (M3, removed); see
-[the round ledger](rounds/2026-11-15-tuning-loop-2.md). The first item below measures the third. The
+[the round ledger](rounds/2026-11-15-tuning-loop-2.md). The first item below holds what is left of the third. The
 free telemetry read of four more caps is done; its decisions are in the second. A paid test needs
 its own written authorization under the `run-evals` skill; none is granted here. Run the free step
 first and stop there when it decides.
 
-### M2: execute boundary of 4,000 tokens against 6,000
+### M2: bound the default `execute` result under the Grok clip
 
-The 6,000-token boundary is inherited from `@cloudflare/codemode` and never measured here. It is
-the environment variable `EXECUTE_MODEL_BOUNDARY_MAX_TOKENS`, so the test needs no code change.
+Round item 3.4 closed the boundary question: it stays 6,000 tokens
+([result](rounds/2026-11-16-next-phase/items/3.4/RESULT.md)). The free read re-truncated the stored
+tuning transcripts at 16,000 characters (the 4,000-token cut): 32 of the 44 rows with a result over
+it state a fact found only past it, so 4,000 is unlikely to hold and no paid comparison runs. At
+18,000 characters it is 30 of 38 rows, and a 4,500-token boundary does not fit under the Grok clip
+(79 to 100 of 119 results still exceed 20,000 bytes), so neither value is a candidate.
 
-The Grok CLI cuts any MCP result at 20,000 bytes and keeps the head. In the first-principles
-round's held-out look the trimmed surface sent no `search` result over that size, but 275 of 565
-`execute` results from the three decisive clients were over it. A candidate: put status lines
-first and bound the default result (about 18 KB) with the artifact path for the rest. M2 is the
-measurement that candidate needs.
+The same read recounted the call patterns on the baseline (87 rows) and the shipped surface (58
+rows): `data.sections` misreads 0 of 26 and 0 of 19 section-read scripts, `.data` omissions 0 and
+0, failed calls with an omitted reason 0 of 4 and 0 of 8 scripts with a failed call. The sandbox
+guard stays unshipped without a new design or an owner decision.
 
-Next, free (round item 3.4): count how often a returned value exceeds 16,000 characters before
-truncation (telemetry or stored results). Then re-truncate the stored arm B `execute` results at
-16,000 characters and check whether facts cited in the stored answers appear only between 16,000
-and 24,000 characters of the raw result: if none do, a paid run only confirms; if many do, 4,000 is
-unlikely to hold, so skip the run. Consider 4,500 tokens too (18,000 characters plus the
-1,600-character source-basis manifest is under the Grok clip). The same read of stored transcripts
-recounts `data.sections` misreads, `.data` omissions, and failed calls with an omitted reason. The
-section-shape text (PR #270) cut section misreads from 5 in 38 scripts to 0 in 35 on a 16-row
-sample: a direction, not a rate
-([result](rounds/2026-10-12-call-pattern-triage/result-text-v2.md)). The sandbox guard was
-indeterminate and does not ship without a new design or an owner decision. The free read decides;
-a paid comparison of 4,000 against 6,000 (Sonnet 5.5, GPT-6.1 Terra, and Grok 4.7, Grok in the
-Grok CLI so its 20 KB clip applies) needs a new owner authorization.
+Still open: the Grok CLI cuts any MCP result at 20,000 bytes and keeps the head. In the
+first-principles round's held-out look the trimmed surface sent no `search` result over that size
+(the largest stored one here is 18,755 characters), but 275 of 565 `execute` results from the
+three decisive clients were over it. Of 939 stored tuning `execute` results, 119 are over it, and
+the head clip would lose a fact an answer states on 23 of 38 exposed rows; part of that is the
+host source block, which carries the as-of date. A candidate: put status lines first and bound the
+default result (about 18 KB) with the artifact path for the rest. Round item 4.1's client
+diagnostic shows whether a real Grok client meets it.
 
-Done when: the boundary stays 6,000 or moves to 4,000 (or 4,500), or a reviewed change bounds the
-default result under the Grok clip, or the read shows the clip loses no answer evidence; the
-section-misread recount is recorded here. A paid comparison records score, client tokens, and
-artifact reads per question. Keep 6,000 if the score falls by more than 0.05, the margin 61 cases
-can resolve, or artifact reads rise enough to cancel the saving.
+Done when: a reviewed change bounds the default result under the Grok clip, or item 4.1 shows the
+clip costs no Grok answer. A paid comparison of Sonnet 5.5, GPT-6.1 Terra and Grok 4.7 (Grok in
+the Grok CLI so its clip applies) needs a new owner authorization.
 
 ### Ship the cap decisions from the production read
 
