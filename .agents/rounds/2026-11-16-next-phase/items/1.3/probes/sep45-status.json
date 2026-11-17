@@ -1,0 +1,81 @@
+{
+ "sr": [
+  {
+   "src": "sep",
+   "title": "Stellar Web Authentication for Contract Accounts",
+   "url": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0045.md",
+   "sec": "Preamble",
+   "pub": "2025-12-16T00:00:00.000Z",
+   "obs": "2026-11-16",
+   "c": "## Preamble ``` SEP: 0045 Title: Stellar Web Authentication for Contract Accounts Author: Philip Liu <@philipliu>, Marcelo Salloum <@marcelosalloum>, Leigh McCulloch <@leighmcculloch> Status: Draft C"
+  },
+  {
+   "src": "dev-docs",
+   "title": "SEP Guides",
+   "url": "https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide",
+   "sec": "Stellar Authentication for Contract Acco",
+   "pub": "2025-12-09T00:00:00.000Z",
+   "obs": "2026-11-16",
+   "c": "## Stellar Authentication for Contract Accounts (SEP-45) SEP-45 (Stellar Web Authentication for Contract Accounts) enables smart wallet applications to create authenticated sessions with Stellar anch"
+  },
+  {
+   "src": "dev-docs",
+   "title": "Stellar Authentication for Contract Accounts (SEP-45)",
+   "url": "https://developers.stellar.org/docs/platforms/anchor-platform/sep-guide/sep45",
+   "sec": "",
+   "pub": "2026-10-12T00:00:00.000Z",
+   "obs": "2026-11-16",
+   "c": "# Stellar Authentication for Contract Accounts (SEP-45) SEP Guides # Stellar Authentication for Contract Accounts (SEP-45) Copy pageCopy pageSEP-45 (Stellar Web Authentication for Contract Accounts)"
+  },
+  {
+   "src": "sep",
+   "title": "Stellar Web Authentication",
+   "url": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0010.md",
+   "sec": "Preamble",
+   "pub": "2024-03-20T00:00:00.000Z",
+   "obs": "2026-11-16",
+   "c": "## Preamble ``` SEP: 0010 Title: Stellar Web Authentication Author: Sergey Nebolsin <@nebolsin>, Tom Quisel <tom.quisel@gmail.com>, Leigh McCulloch <@leighmcculloch>, Jake Urban <@jakeurban> Status: "
+  }
+ ],
+ "sd": {
+  "candidates": 39,
+  "hits": [
+   {
+    "rank": 1,
+    "path": "/docs/platforms/anchor-platform/sep-guide/sep45",
+    "title": "Stellar Authentication for Contract Accounts (SEP-45)",
+    "sec": ""
+   },
+   {
+    "rank": 2,
+    "path": "/docs/build/guides/contract-accounts",
+    "title": "Contract Accounts",
+    "sec": ""
+   },
+   {
+    "rank": 3,
+    "path": "/docs/build/apps/example-application-tutorial/anchor-integration/sep10",
+    "title": "SEP-10: Stellar Web Authentication",
+    "sec": "Requesting a challenge transaction"
+   },
+   {
+    "rank": 4,
+    "path": "/docs/platforms/anchor-platform/sep-guide/sep10",
+    "title": "Stellar Authentication (SEP-10)",
+    "sec": "How to Test the Authentication Flow"
+   },
+   {
+    "rank": 5,
+    "path": "/docs/build/smart-contracts/example-contracts/complex-account",
+    "title": "Complex Account",
+    "sec": "Authentication"
+   },
+   {
+    "rank": 6,
+    "path": "/docs/platforms/anchor-platform/sep-guide",
+    "title": "SEP Guides",
+    "sec": ""
+   }
+  ]
+ }
+}

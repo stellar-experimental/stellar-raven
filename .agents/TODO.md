@@ -61,28 +61,35 @@ them or reads their per-row output ([`eval/README.md`](../eval/README.md), "Conf
 
 ### Audit source coverage
 
-The first-principles round measured the old battery: 291 of 569 tuning key facts had no
-supporting passage in anything Raven retrieved. The 2026-11-14 golden coverage audit rebuilt the
-battery, so start from its
-[gap ledger](rounds/2026-11-14-golden-coverage-audit/gaps/GAPS.md). The ledger lists 43 taxonomy
-leaves with a known or suspected source gap (15 confirmed), and six filed findings cover 9 of
-them: `sd-105`, `sd-106`, `sd-107`, `sd-108`, `sls-117`, `sls-118`. 11 leaves are marked "not
-re-run" in its "Reach today" column.
+Round item 1.3 classed every residual source gap
+([CLASSIFICATION.md](rounds/2026-11-16-next-phase/items/1.3/CLASSIFICATION.md); probes in
+[LEAVES.md](rounds/2026-11-16-next-phase/items/1.3/LEAVES.md)). Of the 11 "not re-run" leaves, one
+reproduced as a real gap in the rows (`wallets.landscape`), one is a Raven-side TODO (the
+`scout.matchPartners` 503), and one is a half gap (`ecosystem.xlm-staking-rewards`, below). The rest
+are reached or held outside Raven's sources. New findings: `sd-111`, `sd-112`, `sd-113`, `ll-039`,
+`sls-121`, `sls-122`.
 
-Next: round item 1.3 re-reads those 11 leaves and classes each confirmed gap without a finding:
-where support exists (a source Raven reaches but did not surface, a source it does not reach, or
-nowhere). The three confirmed gaps held by sources outside Raven's scope (`assets.public-sector-cbdc`,
-the National Bank of Ukraine statement; `wallets.scams-phishing`; `wallets.pi-network`) are filed
-as content-gap issues in round item 1.3's change (decision 6(c)). Then test the one or two sources
-that recover the most facts, with a pass condition fixed in advance: more correct answers and no
-more wrong ones.
+Next, the owner's choice only: which one or two sources to test for the facts that no reached source
+holds, with a pass condition fixed in advance (more correct answers and no more wrong ones).
+Decision 6(b) defers it until after round item 3.1. The sources named so far: the Dashboard lumens
+API (`ecosystem.sdf-mandate-holdings`) and an other-chain source (`ecosystem.chain-comparisons`).
 
-Gaps are findings, not only errors (owner, 2026-11-14). Where support exists nowhere, or only in a
-source Raven does not reach, file a gap finding with a concrete net-new doc or content
-recommendation for the owning source, as an issue (Raven never opens upstream pull requests).
+Done when: the owner decides which source, if any, to test.
 
-Done when: the classification is recorded, gap findings are filed for the facts no reached source
-supports, and the owner decides which source, if any, to test.
+- **XLM staking (2026-11-17).** `ecosystem.xlm-staking-rewards`: the 2026 rewards proposal is
+  reached (`stellar.org/xlm-utility`, Lumenloop id 12902), but no reached row states plainly that XLM
+  has no protocol staking. Not filed: no primary source for the negative claim was read. Next check:
+  read the whitepaper PDF behind `https://stellar.org/xlm-utility` and
+  `https://github.com/orgs/stellar/discussions/categories/tokenomics` for the staking status. If a
+  primary source states it, file a net-new content request for the Docs Lumens page
+  (`/docs/learn/fundamentals/lumens`).
+- **Contract-id derivation reachability (2026-11-17).** `q-soroban-contract-id-derivation`: the fact is on
+  `/docs/learn/fundamentals/contract-development/contract-interactions/stellar-transaction`
+  ("based on `contractIDPreimage` value and the network identifier") and, with "sha256", on
+  `/docs/tokens/stellar-asset-contract`. `stellarDocs.search_docs` does not return the first page
+  for the question wording or for `contractIDPreimage` in the top 10; `HOST_FUNCTION_TYPE_CREATE_CONTRACT`
+  returns it at rank 1. Next check: only if a free retrieval-level A/B shows a general mechanism
+  that surfaces the page (no per-query exception; `docs/stellar-docs.md`, "Maintenance").
 
 ### Report per-source attempts and final status
 
@@ -351,7 +358,7 @@ rows and confirmed on questions not used to write it, or the owner closes the it
 Docs retitled the Freighter guides "Varial" (2026-11-16), and Scout 1.9.150 added SDK-status
 fields ([record](rounds/2026-11-16-next-phase/items/0.2/REPORT.md)). `q-tool-freighter-wallet`,
 `q-tool-wallets-comparison`, and the matching `eval/qa/cases.json` entries need a `golden-truth`
-look (round item 1.1 or 1.3). Open no case beyond these.
+look (a later golden lane; round items 1.1 and 1.3 do not take it). Open no case beyond these.
 
 Done when: each case is edited through `golden-truth` or confirmed unchanged.
 
@@ -371,31 +378,16 @@ stellar.org through the adapter's own path (checked after the #447 deploy,
   nine body-text phrases the keyless search missed, the `pages` index ranked the right page in its
   top four for about five. Whether it holds audit records is unconfirmed. Decision (round plan):
   add depth only on a production detail-lookup failure, and then with a search-only key.
-- **Candidate upstream finding.** The stellar.org audit register titles Blend's records
-  `Unnamed record - Certora Ltd`, so a project-name query cannot find them; only the report URL
-  says "blend". Round item 1.3 routes it through `improvements/` if confirmed.
-- **Out-of-source fact.** The Anchor Directory is `anchors.stellar.org`, not stellar.org; that case
-  needs another source or a golden-truth edit (round item 1.3).
+- **Audit register (done).** The stellar.org audit register titles 4 of 77 records "Unnamed
+  record" (3 are Blend's). Filed as `sd-111` (`verified`, intake `unclear`, unposted; stellar.org
+  copy has no public tracker). Whether the owner forwards `sd-111`, `sd-113`, and `sd-077` to the
+  stellar.org web team is the owner's call.
+- **Anchor Directory (done).** Not an out-of-source fact: the Docs Anchor Tools and Ramps pages and
+  the Anchors fundamentals page name `https://anchors.stellar.org`, and
+  `stellarDocs.search_docs("Anchor Directory")` returns them at ranks 1 and 4. No golden edit.
 
 Done when: a run on the 12 source rows shows the source supplying a judged fact (or the owner
-accepts it as a coverage fix without a scored gain), the Blend register finding is filed or
-dropped, and the Anchor Directory case is routed.
-
-### Check Docs search for the SEP-7 payment-request page before filing
-
-`stellarDocs.search_docs('web+stellar:pay payment request QR code')` does not return
-`/docs/build/apps/wallet/sep7`, though the page holds that exact string; Scout returns it. The
-leaf is `standards.payment-patterns` ([gap ledger](rounds/2026-11-14-golden-coverage-audit/gaps/GAPS.md)).
-Round item 1.3 runs this check. Nothing is filed: the owner is not established, because the miss
-may come from Raven's scoping or from upstream ranking.
-
-Next step: run the same query against the Mintlify search backend directly, and through Raven
-with and without its scoping, and compare where the page ranks. The bare query `web+stellar:pay` returns
-`/docs/build/apps/wallet/sep7#pay-operation` first, so the miss comes from the added words, not
-from the index or Raven's scoping; the check is about ranking, and the owner may be upstream.
-
-Done when: either an `sd-` docs-search finding is filed with the retrieval-level evidence, or a
-Raven-side fix lands with its A/B, or the check shows no defect and that result is recorded here.
+accepts it as a coverage fix without a scored gain).
 
 ### Re-verify the event-tied goldens after SCF #46 Panel Review and the Bell vote
 
@@ -434,16 +426,6 @@ judge-blind provenance.)
 
 Done when: the live contract's next reviewed revision carries the reworded label.
 
-### Add a canonical-page caution to `q-soroban-cli-bindings`
-
-The 2026-11-14 baseline graded this case `wrong` because the answer quoted the Lab Contract
-Explorer page, with attribution, as the CLI's binding language coverage. That page is wrong
-(`sd-110`), and the canonical-page rule caps such a quote at `partial`. The golden is correct
-(key fact 3). Make a separate `golden-truth` edit that adds the canonical-page caution naming
-`sd-110` ([ledger](rounds/2026-11-14-baseline-tuning/CASE-DEFECTS.md)). Round item 1.3 carries it.
-
-Done when: the case's notes carry the caution and `truth.verified` records the edit.
-
 ### Resolve held source ownership and bounty policy
 
 The [source triage](../research/audits/2026-11-03-qa-followup/additional-source-triage.md) and
@@ -477,13 +459,10 @@ tables cover every finding.
   (the 1.9.150 OpenAPI has no round-count operation); (3) `peer` should carry `scfSourceUrl` and
   `scfAsOf` (both null, rounds `[22, 26]`). Retire only when all three are sourced or explicitly
   out of scope. Comment upstream only on a change.
-- **Scout sweep, next round** (2026-11-17 retirement review, not verified to the filing bar):
-  5 of 67 `Live` wallet rows have an `availabilityCheck` that says the operator is gone or the
-  product left Stellar (spatium, freelii, bebop, sentit, elsa), and their `statusAsOf` is 89 to
-  91 days old. Also `GET /api/projects/search?q=wallet` paged at `offset=0` and `offset=100`
-  returned 196 rows for `total` 195, with `coca` on both pages; the read was not repeated. Next
-  check: re-run both reads once; file a finding for each that still reproduces and passes the
-  verified bar.
+- **Scout wallet findings (2026-11-17).** Round item 1.3 reproduced both reads and filed `sls-121`
+  (5 `Live` wallet rows whose later `availabilityCheck` says the operator is gone) and `sls-122`
+  (`q=wallet` returns `coca` twice, 196 rows for `total` 195). Check the upstream issues
+  only on a Scout release that touches wallet rows or project search.
 - **Docs pull requests.** The [Docs table](rounds/2026-11-05-truth-maintenance/docs.md) and the
   [continuation table](rounds/2026-11-06-remaining-sweep/docs.md) name each unmerged pull
   request, its blocker, and its live trigger, including draft2752 and the generated-skill
@@ -664,6 +643,13 @@ evidence offered: on nine standards questions from three families, seven never c
 **Held.** The owner ruled on 2026-11-16 that PH4 is not met and PH3 does not open (decision 6(a)).
 What reopens this item is PH4 evidence of the kind stated above, then an owner ruling on PH3.
 
+Row evidence (2026-11-17, round item 1.3): `q-sep-45-contract-auth` needs the SEP-45 status
+("Draft"). No Docs page states it (`/docs/platforms/anchor-platform/sep-guide/sep45` gives the
+SEP-10 relation only). The SEP file in `stellar/stellar-protocol` states `Status: Draft`, `Version:
+0.1.1`, `Updated: 2025-12-16`, and `scout.searchResearch` returns that preamble at rank 1 for
+"SEP-45 Stellar Web Authentication for Contract Accounts status". The fact is reached when the agent
+calls research; the golden still matches the SEP file. No finding: the SEP file owns the status.
+
 The identifier pointer is part of the same hold. Tuning arm 2 marks the document a research query
 names by identifier, but it can act only when the agent makes that query. Tuning loop 2 tried a
 host pointer in the `execute` result and **did not ship it**. R (17 identifier rows, two passes,
@@ -773,23 +759,6 @@ Tuning arm 1 shipped the page-read pointer for this class (#446; the owner kept 
 exception to the pre-registered rule, [measurement](rounds/2026-11-14-baseline-tuning/ARM-1.md)).
 The item stays for `sd-059` itself.
 
-### Two snippet-only rows no Docs page can answer
-
-Arm 1 cannot move `q-soroban-contract-id-derivation` and `q-sep-45-contract-auth`. The first needs the
-contract id derivation (a SHA-256 of the `ContractIDPreimage` and the network id): the deployer pages
-say only "derived from the deployer address and salt", and no checked page states the formula. The
-second needs the status "Draft", which is in the research preamble of the SEP file, not in a Docs page
-(arm 2 reaches it only when the agent calls research). In the arm 1 panel run both rows stayed where
-they were
-([record](rounds/2026-11-14-baseline-tuning/ARM-1.md)).
-
-Round item 1.3 does this check.
-
-Done when: for each row a live check of the Docs page set says whether any page states the fact. A
-missing fact becomes an `improvements/` finding (upstream content gap), or the golden is changed
-through `golden-truth` with live evidence; a fact on a page becomes a reachability fix. Delete this
-item when both rows are decided.
-
 ### Clarify the model-facing `codemode.describe` response shape
 
 `codemode.describe` returns `{ ok: true, signature, inputSchema, ... }` at the top level, while
@@ -805,7 +774,10 @@ Done when: one reviewed, measured correction makes the shape clear to models.
 Each needs a check before a fix:
 
 - `scout.matchPartners` returned the upstream "AI not configured" failure on every call. Check
-  live Scout; if it still fails, remove it from the exposed surface (ADR-0003).
+  live Scout; if it still fails, remove it from the exposed surface (ADR-0003). 2026-11-17: it
+  still fails, now with HTTP 503 "AI matchmaking isn't available right now" and the hint "fall back
+  to GET /api/partners filters (scout.getPartners); do not retry". Decide: remove the operation, or
+  keep it with its hint (the hint already routes to `scout.getPartners`).
 - `execute` failures have no error class. Add a bounded `errorName` (SyntaxError, TypeError,
   ReferenceError, timeout) to the `execute` event and span, with no message text.
 - `recoveryHint` appears on most successful executes, so agents probably ignore it. Show it only

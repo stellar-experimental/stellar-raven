@@ -1,0 +1,125 @@
+{
+ "keys": [
+  "meta",
+  "ecosystem",
+  "projects"
+ ],
+ "n": 12,
+ "meta": "{\"source\":\"https://stellarlight.xyz/leaderboard\",\"generatedAt\":\"2026-11-17T01:30:28.630Z\",\"dataAsOf\":\"2026-11-16T18:53:17.288Z\",\"counts\":{\"returned\":12,\"total\":898},\"filters\":{\"sort\":\"tvl\",\"range\":\"all\",\"category\":null,\"limit\":12,\"type\":null},\"docs\":\"https://stellarlight.xyz/scout/api-reference\",\"metricDefinitions\":{\"activity\":\"sort=activity orders by github.commits90d: default-branch commits over the trailing 90 days summed across the project's indexed repos (the enrich pass's activitySignals, ",
+ "rows": [
+  {
+   "name": "Blend",
+   "slug": "blend",
+   "tvlUSD": 103691482,
+   "tvlUnavailable": null,
+   "types": [
+    "Lending"
+   ]
+  },
+  {
+   "name": "Upshift",
+   "slug": "upshift",
+   "tvlUSD": 90532651,
+   "tvlUnavailable": null,
+   "types": [
+    "RWA"
+   ]
+  },
+  {
+   "name": "Sentora",
+   "slug": "sentora",
+   "tvlUSD": 69591161,
+   "tvlUnavailable": null,
+   "types": [
+    "Infrastructure",
+    "RWA"
+   ]
+  },
+  {
+   "name": "Aquarius",
+   "slug": "aquarius",
+   "tvlUSD": 36479490,
+   "tvlUnavailable": null,
+   "types": [
+    "DEX"
+   ]
+  },
+  {
+   "name": "Gami Labs",
+   "slug": "gami-labs",
+   "tvlUSD": 34747412,
+   "tvlUnavailable": null,
+   "types": [
+    "Infrastructure"
+   ]
+  },
+  {
+   "name": "DeFindex",
+   "slug": "defindex",
+   "tvlUSD": 18342582,
+   "tvlUnavailable": null,
+   "types": [
+    "Infrastructure",
+    "SDK",
+    "Yield"
+   ]
+  },
+  {
+   "name": "Sushi",
+   "slug": "sushi",
+   "tvlUSD": 15812000,
+   "tvlUnavailable": null,
+   "types": [
+    "DEX"
+   ]
+  },
+  {
+   "name": "Templar Protocol",
+   "slug": "templar-protocol",
+   "tvlUSD": 12268701,
+   "tvlUnavailable": null,
+   "types": [
+    "Lending"
+   ]
+  },
+  {
+   "name": "DeFa by InvoiceMate",
+   "slug": "defa-invoicemate",
+   "tvlUSD": 4014516,
+   "tvlUnavailable": null,
+   "types": [
+    "Lending",
+    "RWA"
+   ]
+  },
+  {
+   "name": "Soroswap",
+   "slug": "soroswap",
+   "tvlUSD": 1107113,
+   "tvlUnavailable": null,
+   "types": [
+    "DEX"
+   ]
+  },
+  {
+   "name": "Scopuly",
+   "slug": "scopuly",
+   "tvlUSD": 884208,
+   "tvlUnavailable": null,
+   "types": [
+    "Wallet",
+    "DEX"
+   ]
+  },
+  {
+   "name": "Spectra Finance",
+   "slug": "spectra-finance",
+   "tvlUSD": 763129,
+   "tvlUnavailable": null,
+   "types": [
+    "Bridge",
+    "Yield"
+   ]
+  }
+ ]
+}

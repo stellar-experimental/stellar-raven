@@ -1,0 +1,155 @@
+{
+ "read": "GET https://stellarlight.xyz/api/projects/search?type=Wallet&limit=100",
+ "counts": {
+  "returned": 74,
+  "total": 74,
+  "semantic": 0
+ },
+ "statusCounts": {
+  "Live": 67,
+  "Development": 4,
+  "Inactive": 3
+ },
+ "liveWithNoneFound": [
+  {
+   "slug": "spatium",
+   "status": "Live",
+   "statusAsOf": "2026-08-19T07:29:37.806Z",
+   "statusBasis": "source-inherited",
+   "statusConfidence": {
+    "score": 0.45,
+    "label": "low",
+    "ageDays": 89
+   },
+   "availabilityCheck": {
+    "result": "none-found",
+    "checkedAt": "2026-11-11",
+    "sources": [
+     "https://spatium.net/",
+     "https://web.archive.org/web/20250404155959/https://www.spatium.net/"
+    ],
+    "note": "The operator's domain no longer resolves: spatium.net has no address record. Its last archived copy (2025-04-04), which links the record's X handle, offered a Bitcoin wallet and a wallet SDK and links no store listing"
+   }
+  },
+  {
+   "slug": "sentit",
+   "status": "Live",
+   "statusAsOf": "2026-08-17T03:02:29.060Z",
+   "statusBasis": "site-liveness",
+   "statusConfidence": {
+    "score": 0.6,
+    "label": "medium",
+    "ageDays": 91
+   },
+   "availabilityCheck": {
+    "result": "none-found",
+    "checkedAt": "2026-11-11",
+    "sources": [
+     "https://sentit.io/"
+    ],
+    "note": "sentit.io now runs a waitlist for tokenized Nigerian government debt on ERC-20 tokens; it links no app and does not name Stellar"
+   }
+  },
+  {
+   "slug": "freelii",
+   "status": "Live",
+   "statusAsOf": "2026-08-19T07:29:15.596Z",
+   "statusBasis": "source-inherited",
+   "statusConfidence": {
+    "score": 0.45,
+    "label": "low",
+    "ageDays": 89
+   },
+   "availabilityCheck": {
+    "result": "none-found",
+    "checkedAt": "2026-11-11",
+    "sources": [
+     "https://freelii.app",
+     "https://github.com/freelii"
+    ],
+    "note": "The operator's domain no longer resolves: freelii.app, the site its GitHub org names, is NXDOMAIN. The org links no app and its last push was 2025-07-28"
+   }
+  },
+  {
+   "slug": "elsa",
+   "status": "Live",
+   "statusAsOf": "2026-08-17T03:02:29.060Z",
+   "statusBasis": "site-liveness",
+   "statusConfidence": {
+    "score": 0.6,
+    "label": "medium",
+    "ageDays": 91
+   },
+   "availabilityCheck": {
+    "result": "none-found",
+    "checkedAt": "2026-11-11",
+    "sources": [
+     "https://elsa.care/",
+     "https://elsa.care/about"
+    ],
+    "note": "elsa.care links no app; it says its 2021 consumer remittance app became Borderless, a B2B payments API, in 2023"
+   }
+  },
+  {
+   "slug": "ben-wallet",
+   "status": "Live",
+   "statusAsOf": "2026-11-12T00:00:00.000Z",
+   "statusBasis": "unverified",
+   "statusConfidence": {
+    "score": 0.25,
+    "label": "low",
+    "ageDays": 5
+   },
+   "availabilityCheck": {
+    "result": "none-found",
+    "checkedAt": "2026-11-11",
+    "sources": [
+     "https://myben.gitbook.io/ben-platform/releases.md",
+     "https://github.com/ben-platform",
+     "https://myben.xyz/"
+    ],
+    "note": "The docs say early Android builds ship as APKs under GitHub Releases, and no wallet release is published there; myben.xyz is a pre-launch waitlist ('Almost there! ... we'll let you know when it's ready'), with no app yet"
+   }
+  },
+  {
+   "slug": "bebop",
+   "status": "Live",
+   "statusAsOf": "2026-08-19T07:29:03.433Z",
+   "statusBasis": "source-inherited",
+   "statusConfidence": {
+    "score": 0.45,
+    "label": "low",
+    "ageDays": 89
+   },
+   "availabilityCheck": {
+    "result": "none-found",
+    "checkedAt": "2026-11-11",
+    "sources": [
+     "https://x.com/bebopcash",
+     "https://github.com/christopherkarani/escrowcotract"
+    ],
+    "note": "No website on record; x.com/bebopcash showed 'This account doesn't exist'; the linked repo (an escrow contract, last push 2024-11-14) links no app"
+   }
+  },
+  {
+   "slug": "blaze",
+   "status": "Live",
+   "statusAsOf": "2026-09-06T00:00:00.000Z",
+   "statusBasis": "human-verified",
+   "statusConfidence": {
+    "score": 0.9,
+    "label": "high",
+    "ageDays": 72
+   },
+   "availabilityCheck": {
+    "result": "could-not-check",
+    "checkedAt": "2026-11-11",
+    "sources": [
+     "https://blaze.money/",
+     "https://blaze.money/about"
+    ],
+    "note": "blaze.money/about offers 'Download Blaze on iOS and Android' only through an email form, so no store link could be read; the home page now presents an AI CFO product for businesses"
+   }
+  }
+ ]
+}

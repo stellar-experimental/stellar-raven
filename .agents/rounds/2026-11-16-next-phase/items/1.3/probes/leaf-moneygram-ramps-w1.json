@@ -1,0 +1,13 @@
+{
+ "matchPartners": {
+  "ok": false,
+  "error": {
+   "service": "scout",
+   "kind": "error",
+   "message": "AI matchmaking isn't available right now. Try the /partners directory filters.",
+   "status": 503,
+   "hint": "AI partner endpoints are unavailable — fall back to GET /api/partners filters (scout.getPartners); do not retry."
+  }
+ },
+ "getPartners": "{\"meta\":{\"source\":\"https://stellarlight.xyz/partners\",\"generatedAt\":\"2026-11-17T01:29:58.062Z\",\"filters\":{\"type\":null,\"sector\":null,\"region\":null,\"ramps\":null,\"accepting\":null,\"all\":false,\"q\":\"moneygram\",\"limit\":5,\"offset\":0},\"matchMode\":\"scored\",\"matchModeLabel\":\"ranked by the shared partner scorer over structured capability fields\",\"counts\":{\"returned\":2,\"total\":2,\"filteredOut\":4},\"validTypes\":[\"anchor\",\"on-off-ramp\",\"infrastructure\",\"tooling\",\"protocol\",\"wallet\",\"audit-firm\",\"legal\",\"agency\",\"asset-issuer\",\"other\"],\"validRamps\":[\"on-ramp\",\"off-ramp\"],\"note\":\"Published partners only. Default results pass a directory quality bar (tagline + contact path, non-archived); pass all=1 for the unfiltered set. With `q`, results are relevance-ranked by fit, weighted across the structured capability fields (assets, ramps, SEPs, country, services) and region, not exact-keyword text, so a natural query like 'USDC off-ramp' surfaces anchors by capability; without `q`, pilot partners sort first, then freshness. `verified` fields are system-computed; `freshness.excludeFromMatching` flags partners too stale for AI matching.\"},\"partners\":[{\"slug\":\"anchor-moneygram\",\"name\":\"Moneygram\",\"partnerType\":\"anchor\",\"pilot\":false,\"tagline\":\"Cash in and out of USDC at participating MoneyGram locations.\",\"description\":\"MoneyGram Access (MoneyGram Ramps) is a fiat on- and off-ramp anchor on Stellar. Via the SEP-24 standard, users deposit and withdraw cash to and from USDC at ~500K retail locations across"
+}

@@ -1,0 +1,228 @@
+{
+ "xrp_sr": [
+  {
+   "src": "dev-docs",
+   "title": "Stellar CLI Manual",
+   "url": "https://developers.stellar.org/docs/tools/cli/stellar-cli",
+   "sec": "stellar tx new change-trust",
+   "pub": "2026-09-30T00:00:00.000Z",
+   "obs": "2026-11-16",
+   "c": "## stellar tx new change-trust Create, update, or delete a trustline Usage: stellar tx new change-trust [OPTIONS] --source-account <SOURCE_ACCOUNT> --line <LINE> Global Options: - --config-dir <CONF"
+  },
+  {
+   "src": "dev-docs",
+   "title": "Blockchain Glossary: Key Terms and Concepts for Understanding Stellar",
+   "url": "https://developers.stellar.org/docs/learn/glossary",
+   "sec": "",
+   "pub": "2026-09-14T00:00:00.000Z",
+   "obs": "2026-11-16",
+   "c": "Short for Scalable, Parallelizable, and Economically Efficient Distributed EXchange, SPEEDEX is a proposed fully on-chain decentralized exchange design that processes trades in batches at shared excha"
+  },
+  {
+   "src": "dev-docs",
+   "title": "History Ledgers",
+   "url": "https://developers.stellar.org/docs/data/analytics/hubble/data-catalog/data-dictionary/bronze/history-ledgers",
+   "sec": "Column Details",
+   "pub": "2026-09-08T00:00:00.000Z",
+   "obs": "2026-11-16",
+   "c": "## Column Details NameDescriptionData TypeDomain ValuesRequired?NotessequenceThe sequence number that corresponds to the individual ledgers. As ledgers are written to the network, the sequence is inc"
+  },
+  {
+   "src": "dev-docs",
+   "title": "Ledgers Store Accounts, Balances, Orders, Smart Contract Data & More",
+   "url": "https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/ledgers",
+   "sec": "Ledger header fields",
+   "pub": "2026-05-27T00:00:00.000Z",
+   "obs": "2026-11-16",
+   "c": "## Ledger header fields ### Version The protocol version of this ledger. ### Previous ledger hash Hash of the previous ledger. ### SCP value During consensus, all the validating nodes in the net"
+  },
+  {
+   "src": "dev-docs",
+   "title": "Overview of the Stellar Consensus Protocol (SCP) and Transaction Validation",
+   "url": "https://developers.stellar.org/docs/learn/fundamentals/stellar-consensus-protocol",
+   "sec": "",
+   "pub": "2025-12-03T00:00:00.000Z",
+   "obs": "2026-11-16",
+   "c": "# Overview of the Stellar Consensus Protocol (SCP) and Transaction Validation Core Concepts # Stellar Consensus Protocol Copy pageCopy pageA brief overview of how the Stellar Consensus Protocol (SCP"
+  }
+ ],
+ "xrp_ll": [
+  {
+   "id": "4640",
+   "coll": "articles",
+   "title": "Stellar Network Fork Prompts Concerns Over Ripple Consensus Protocol",
+   "url": "https://www.coindesk.com/markets/2014/12/09/stellar-network-fork-prompts-concerns-over-ripple-consensus-protocol",
+   "date": "2014-12-09"
+  },
+  {
+   "id": "78",
+   "coll": "articles",
+   "title": "Stellar Consensus Protocol",
+   "url": "https://stellar.org/learn/stellar-consensus-protocol",
+   "date": "2023-08-07"
+  },
+  {
+   "id": "10772",
+   "coll": "articles",
+   "title": "Why Regulated Finance Is Choosing Stellar",
+   "url": "https://x.com/i/article/2095546326150791168",
+   "date": "2026-09-03"
+  },
+  {
+   "id": "1912",
+   "coll": "articles",
+   "title": "SCP: Stellar's Unique Approach to Fast and Reliable Blockchain Consensus",
+   "url": "https://medium.com/@BAFTeam/scp-stellars-unique-approach-to-fast-and-reliable-blockchain-consensus-dbe97d2b74b0",
+   "date": "2024-08-05"
+  },
+  {
+   "id": "11450",
+   "coll": "articles",
+   "title": "Network fundamentals, RWA infrastructure, and the role of curated vaults",
+   "url": "https://x.com/i/article/2098768299416825856",
+   "date": "2026-09-14"
+  }
+ ],
+ "reg_sr": [
+  {
+   "src": "sdf-blog",
+   "title": "MiCA Implementation: Off to the Races",
+   "url": "https://stellar.org/blog/policy/mica-implementation-off-to-the-races",
+   "sec": "",
+   "pub": "2023-06-23T00:00:00.000Z",
+   "obs": "2026-11-16",
+   "c": "# MiCA Implementation: Off to the Races Blog Article # MiCA implementation: off to the races Author Lesley Chavkin Publishing date Mica Policy Regulation Earlier this month, the SDF Policy tea"
+  },
+  {
+   "src": "lumenloop-research",
+   "title": "From niche to necessity: how stablecoins hit $250b and redefined money",
+   "url": "https://lumenloop.com/news/niche-necessity-stablecoins-hit-250b-redefined-money",
+   "sec": "",
+   "pub": "2025-08-19T16:00:00.000Z",
+   "obs": "2026-11-16",
+   "c": "# From niche to necessity: how stablecoins hit $250b and redefined money - - - - - - - From niche to necessity: how stablecoins hit $250b and redefined money | Lumen Loop- - - - - - - - News•Media•Pr"
+  },
+  {
+   "src": "sdf-blog",
+   "title": "Bringing Stellar to the Regions That Matter",
+   "url": "https://stellar.org/blog/foundation-news/bringing-stellar-to-the-regions-that-matter",
+   "sec": "Europe",
+   "pub": "2026-05-08T00:00:00.000Z",
+   "obs": "2026-11-16",
+   "c": "## Europe Juan Lopez Carretero leads Market Development Europe as SDF&#x27;s Senior Director. He joined us from BBVA, where he led global partnerships and previously the team evaluating and executing"
+  },
+  {
+   "src": "lumenloop-research",
+   "title": "🚨 GENIUS Act Passes House — A New Era for Stablecoins Begins",
+   "url": "https://lumenloop.com/news/genius-act-passes-house-new-era-stablecoins-begins",
+   "sec": "",
+   "pub": "2025-06-18T00:00:00.000Z",
+   "obs": "2026-11-16",
+   "c": "# 🚨 GENIUS Act Passes House — A New Era for Stablecoins Begins - - - - - - - 🚨 GENIUS Act Passes House — A New Era for Stablecoins Begins | Lumen Loop- - - - - - - - News•Media•Projects•Events•Rese"
+  },
+  {
+   "src": "sdf-blog",
+   "title": "From Niche to Necessity: How Stablecoins Hit $250B and Redefined Money",
+   "url": "https://stellar.org/blog/ecosystem/niche-to-necessity-stablecoins-vs-cash",
+   "sec": "",
+   "pub": "2025-08-19T16:00:00.000Z",
+   "obs": "2026-11-16",
+   "c": "# From Niche to Necessity: How Stablecoins Hit $250B and Redefined Money # From niche to necessity: how stablecoins hit $250b and redefined money Author Claire Grant Publishing date Stablecoins ha"
+  },
+  {
+   "src": "lumenloop-research",
+   "title": "A Bank-Issued Stablecoin Moves Real Money on Stellar",
+   "url": "https://lumenloop.com/news/bank-issued-stablecoin-moves-real-money-stellar",
+   "sec": "",
+   "pub": "2026-09-09T00:00:00.000Z",
+   "obs": "2026-11-16",
+   "c": "# A Bank-Issued Stablecoin Moves Real Money on Stellar - - - - - - - A Bank-Issued Stablecoin Moves Real Money on Stellar | Lumen Loop- - - - - - - - News•Media•Projects•Events•Research•Governance•Jo"
+  }
+ ],
+ "reg_ll": [
+  {
+   "id": "267",
+   "coll": "articles",
+   "title": "🚨 GENIUS Act Passes House — A New Era for Stablecoins Begins",
+   "url": "https://trustlesswork.com/escrow-times/news-genius-act-stablecoins",
+   "date": "2025-06-18"
+  },
+  {
+   "id": "3983",
+   "coll": "articles",
+   "title": "The Time for Stablecoin Legislation Is Now",
+   "url": "https://stellar.org/blog/policy/the-time-for-stablecoin-legislation-is-now",
+   "date": "2022-05-12"
+  },
+  {
+   "id": "4825",
+   "coll": "articles",
+   "title": "Stellar Foundation Head Still Bullish on US Stablecoin Law in 2023",
+   "url": "https://blockworks.com/news/stellar-foundation-head-bullish-stablecoin-law",
+   "date": "2023-04-25"
+  },
+  {
+   "id": "1829",
+   "coll": "articles",
+   "title": "Societe Generale-Forge Advances Its Multichain Strategy and Selects the Stellar Network to Deploy Its MiCA-Com",
+   "url": "https://stellar.org/press/societe-generale-forge-advances-its-multichain-strategy-and-selects-the-stellar-network-to-deploy-its-mica-compliant-stablecoin",
+   "date": "2025-02-20"
+  },
+  {
+   "id": "12457",
+   "coll": "articles",
+   "title": "PwC Germany taps Stellar for securitization settlement and investor payouts",
+   "url": "https://x.com/i/article/2110407364356530176",
+   "date": "2026-10-14"
+  },
+  {
+   "id": "13021",
+   "coll": "articles",
+   "title": "Stellar Meridian Recap: Wall Street funds, everyday payments, and a push to scale",
+   "url": "https://x.com/i/article/2116192732100415488",
+   "date": "2026-10-30"
+  },
+  {
+   "id": "4380",
+   "coll": "av",
+   "title": "The Institutional Era of Stablecoins: SDF's Denelle Dixon on RWAs, the Genius Act & Agentic Commerce",
+   "url": "https://www.youtube.com/watch?v=PxVWhyVoslE",
+   "date": "2026-10-26"
+  },
+  {
+   "id": "4381",
+   "coll": "av",
+   "title": "The Institutional Era of Stablecoins: SDF's Denelle Dixon on RWAs, the Genius Act & Agentic Commerce",
+   "url": "https://www.youtube.com/watch?v=VWd9SSaEw0g",
+   "date": "2026-10-26"
+  },
+  {
+   "id": "4832",
+   "coll": "av",
+   "title": "Q3 Webinar",
+   "url": "https://www.youtube.com/watch?v=AwKzLAg5Kao",
+   "date": "2026-11-13"
+  },
+  {
+   "id": "4696",
+   "coll": "av",
+   "title": "Made to Move with Stellar Development Foundation Leadership",
+   "url": "https://www.youtube.com/watch?v=nLgnM6LhS3Q",
+   "date": "2026-11-09"
+  },
+  {
+   "id": "4671",
+   "coll": "av",
+   "title": "The Institutional Capital DeFi Can't Reach",
+   "url": "https://www.youtube.com/watch?v=mwqfSHr6Kss",
+   "date": "2026-11-07"
+  },
+  {
+   "id": "2927",
+   "coll": "av",
+   "title": "Q2 Webinar",
+   "url": "https://www.youtube.com/watch?v=ag_Eu8M7shI",
+   "date": "2026-07-30"
+  }
+ ]
+}
