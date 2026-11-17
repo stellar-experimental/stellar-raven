@@ -272,18 +272,6 @@ Done when: a run with at least 5 claim-word answers that rest on a `stellarOrg` 
 the brief, and the readers' violation and over-hedge counts are recorded; the rule changes only on
 that read.
 
-### Close the all-capitals date gap in the identifier token
-
-`Sep-24` (a month) is no longer an identifier, but `10-SEP-2024` and `2024-SEP-10` still read as
-SEP-2024 and SEP-10, so a query about a September date can mark that document exact. The rule is
-letter case; a month list would be vocabulary and is forbidden. No stored run shows the case.
-
-Round item 3.5 does this.
-
-Done when: a general rule (for example, an identifier is not preceded or followed by a numeric
-date part) separates the date from the standard with unit cases for both, and the 90-query replay
-of `test/replay-exact-rows.test.ts` is byte-identical except for the date inputs.
-
 ### Stop the routing gate run from printing the holdout rows
 
 Under `--gate` the runner prints the holdout and protocol-history per-case tables on every run,
