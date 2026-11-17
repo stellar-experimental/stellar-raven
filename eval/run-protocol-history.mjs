@@ -2,17 +2,21 @@
 /**
  * Grade the frozen protocol-history v2 sets without merging them into routing lanes.
  * Required cases need scout.searchResearch in the top five. Forbidden cases exclude it.
+ * Console output prints set aggregates only; `--rows` adds the per-case tables. The results file
+ * carries every row either way (eval/README.md, "Row output").
  */
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import { loadManifest, searchCatalog } from "../src/catalog/search.ts";
 import { evaluateProtocolHistory } from "./lib/protocol-history-source-epoch.mjs";
-import { confirmationOnlyFor, consoleValue, tagRows } from "./lib/confirmation-only.mjs";
+import { confirmationOnlyFor, tagRows } from "./lib/confirmation-only.mjs";
+import { reportProtocolHistorySets } from "./lib/protocol-history-report.mjs";
 
 const EVAL_DIR = dirname(fileURLToPath(import.meta.url));
 const REPO = join(EVAL_DIR, "..");
 const RESULTS_DIR = join(EVAL_DIR, "results");
+const SHOW_ROWS = process.argv.includes("--rows");
 const MANIFEST_PATH = join(REPO, "catalog", "manifest.json");
 const INVENTORY_PATH = join(REPO, "inventory", "stellar-light.json");
 const inputs = [
@@ -82,22 +86,7 @@ if (result.measurementStatus === "source-expired") {
   console.error(`audit result -> ${outputPath}`);
   process.exitCode = 1;
 } else {
-  for (const set of result.sets) {
-    console.log(
-      `${set.contract}: required ${set.requiredTop5}/${set.required} top-five; ` +
-        `forbidden captures ${set.forbiddenTop5Captures}/${set.forbidden}; ` +
-        `neutral captures ${set.neutralTop5Captures}/${set.neutral}; ` +
-        `${set.pass ? "PASS" : "FAIL"}`,
-    );
-    console.table(
-      set.cases.map((testCase) => ({
-        id: testCase.id,
-        role: testCase.role,
-        targetRank: consoleValue(testCase, testCase.targetRank ?? "miss"),
-        top: consoleValue(testCase, testCase.topHits[0]?.id ?? "none"),
-      })),
-    );
-  }
+  reportProtocolHistorySets(result.sets, { showRows: SHOW_ROWS });
   console.log(`results -> ${outputPath}`);
   if (result.sets.some((set) => !set.pass)) process.exitCode = 1;
 }
