@@ -15,6 +15,7 @@ import {
   QA_SERVICES,
   SAMPLE_PATH,
   TOOL_CASES_PATH,
+  parseJsonText,
   stratifiedSample
 } from "./lib.mjs";
 import {
@@ -51,7 +52,7 @@ function sha256(value) {
 }
 
 function json(file) {
-  return JSON.parse(readFileSync(file, "utf8"));
+  return parseJsonText(readFileSync(file, "utf8"), path.relative(REPO_ROOT, file));
 }
 
 function walkJsonFiles(dir) {
@@ -92,7 +93,7 @@ export function validateCase(file, kase, { allowedLifecycleStates = COMPILED_LIF
   if (!kase || typeof kase !== "object" || Array.isArray(kase)) fail(file, "case must be an object");
   const [strkeyFinding] = strkeyFindings(kase);
   if (strkeyFinding) {
-    fail(file, `invalid strkey at ${strkeyFinding.path}: ${strkeyFinding.token} (${strkeyFinding.reason})`);
+    fail(file, `invalid strkey at ${strkeyFinding.path} (${strkeyFinding.reason})`);
   }
   if (!nonEmptyString(kase.id) || !/^q-[a-z0-9-]+$/.test(kase.id)) fail(file, "id must be a q-* kebab id");
   if (path.basename(file) !== `${kase.id}.json`) fail(file, "filename must equal id + .json");

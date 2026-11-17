@@ -848,18 +848,6 @@ leaves release data upstream and the finding is filed.
 
 ## Eval instruments
 
-### Stop QA lint from printing golden text
-
-`npm run eval:qa:lint` warnings quote a case's golden text next to its id. Any lane that reads lint
-output can therefore see a held-out or reserve case. That has cost two exposures and two split
-amendments so far: round item 3.5 (v7) and round item 5.2 (v9).
-
-Fix: every lint warning and error prints the case id and the check name only, never a golden or
-question field. A test runs the lint on a fixture whose golden text holds a marker string and fails
-if the marker appears in the output.
-
-Done when: that change and its test are merged.
-
 ### Method note: same-surface verdict noise, and the judge-tier cap
 
 Standing note, not a task. Two runs of the same 50 panel rows on the same surface differed on 17 rows (8

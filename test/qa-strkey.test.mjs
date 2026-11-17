@@ -124,8 +124,11 @@ describe("QA strkey validation", () => {
     try {
       expect(() => validateCaseFile(file)).toThrow(
         expect.objectContaining({
-          message: expect.stringContaining(`invalid strkey at $.golden.answer: ${broken}`)
+          message: expect.stringContaining("invalid strkey at $.golden.answer (CRC16 checksum mismatch)")
         })
+      );
+      expect(() => validateCaseFile(file)).toThrow(
+        expect.objectContaining({ message: expect.not.stringContaining(broken) })
       );
     } finally {
       rmSync(tempRoot, { recursive: true, force: true });
