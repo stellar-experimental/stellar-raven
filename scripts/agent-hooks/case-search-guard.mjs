@@ -121,19 +121,19 @@ export function tokenize(input) {
     w.pat += marker;
     if (marker === UNKNOWN) w.unknown = true;
   };
-  const skipSubstitution = (start, open, close) => {
-    // `start` indexes the character after the opener; returns the index of the closing character.
+  // `start` indexes the character of `text` after the opener; returns the index in `text` of the closing character.
+  const skipSubstitution = (text, start, open, close) => {
     let depth = 1;
     let i = start;
-    while (i < input.length) {
-      const c = input[i];
+    while (i < text.length) {
+      const c = text[i];
       if (c === "\\") i += 2;
       else if (c === "'" && open !== "`") {
-        const end = input.indexOf("'", i + 1);
-        i = end < 0 ? input.length : end + 1;
+        const end = text.indexOf("'", i + 1);
+        i = end < 0 ? text.length : end + 1;
       } else if (c === '"' && open !== "`") {
         i++;
-        while (i < input.length && input[i] !== '"') i += input[i] === "\\" ? 2 : 1;
+        while (i < text.length && text[i] !== '"') i += text[i] === "\\" ? 2 : 1;
         i++;
       } else {
         if (c === open && open !== close) depth++;
@@ -141,18 +141,18 @@ export function tokenize(input) {
         i++;
       }
     }
-    return input.length;
+    return text.length;
   };
   const substitutions = (text) => {
     const found = [];
     for (let i = 0; i < text.length; i++) {
       if (text[i] === "\\") i++;
       else if (text[i] === "$" && text[i + 1] === "(") {
-        const end = skipSubstitution(i + 2, "(", ")");
+        const end = skipSubstitution(text, i + 2, "(", ")");
         found.push(text.slice(i + 2, end));
         i = end;
       } else if (text[i] === "`") {
-        const end = skipSubstitution(i + 1, "`", "`");
+        const end = skipSubstitution(text, i + 1, "`", "`");
         found.push(text.slice(i + 1, end));
         i = end;
       }
@@ -165,7 +165,7 @@ export function tokenize(input) {
   const dollar = () => {
     const next = input[i + 1];
     if (next === "(") {
-      const end = skipSubstitution(i + 2, "(", ")");
+      const end = skipSubstitution(input, i + 2, "(", ")");
       cur.subs.push(input.slice(i + 2, end));
       ensure().subs++;
       addMarker(UNKNOWN);
@@ -195,7 +195,7 @@ export function tokenize(input) {
     return false;
   };
   const backtick = () => {
-    const end = skipSubstitution(i + 1, "`", "`");
+    const end = skipSubstitution(input, i + 1, "`", "`");
     cur.subs.push(input.slice(i + 1, end));
     ensure().subs++;
     addMarker(UNKNOWN);
@@ -350,9 +350,9 @@ const WRAPPERS = {
 
 /**
  * Resolve the command a segment runs, or null when it runs none. Returns
- * { env, name, args, via, query, cwdShift, split }: `env` is the environment the command sees (the
+ * { env, name, args, via, query, cwdShifts, split }: `env` is the environment the command sees (the
  * inherited one plus its assignments, last wins), `via` the wrappers passed through, `query` is true
- * for `command -v`/`-V` (nothing runs), `cwdShift` a token from `env -C`, `split` text from
+ * for `command -v`/`-V` (nothing runs), `cwdShifts` the tokens of every `env -C`, in order, `split` text from
  * `env -S`.
  */
 export function resolveCommand(tokens, inherited) {
@@ -368,12 +368,12 @@ export function resolveCommand(tokens, inherited) {
     else if (!token.quoted && REDIRECT.test(token.text)) i += BARE_REDIRECT.test(token.text) ? 2 : 1;
     else break;
   }
-  let cwdShift = null;
+  const cwdShifts = [];
   let split = null;
   while (i < tokens.length) {
     const name = basename(tokens[i].text.replace(/^\\/, ""));
     const table = WRAPPERS[name];
-    if (!table) return { env, name, args: tokens.slice(i + 1), via, query: false, cwdShift, split };
+    if (!table) return { env, name, args: tokens.slice(i + 1), via, query: false, cwdShifts, split };
     via.push(name);
     i++;
     let durationPending = Boolean(table.duration);
@@ -395,34 +395,33 @@ export function resolveCommand(tokens, inherited) {
         if (name === "env") {
           if (long === "--ignore-environment") env.clear();
           else if (long === "--unset" && value) env.delete(value.text);
-          else if (long === "--chdir") cwdShift = value;
+          else if (long === "--chdir" && value) cwdShifts.push(value);
           else if (long === "--split-string") split = value?.text ?? null;
         }
       } else if (text.startsWith("-") && text.length > 1) {
         i++;
         for (let k = 1; k < text.length; k++) {
           const letter = text[k];
-          if (name === "command" && (letter === "v" || letter === "V")) return { env, name, args: [], via, query: true, cwdShift, split };
+          if (name === "command" && (letter === "v" || letter === "V")) return { env, name, args: [], via, query: true, cwdShifts, split };
           if (name === "env" && letter === "i") env.clear();
           if (table.value.includes(`-${letter}`)) {
             const rest = text.slice(k + 1);
             const value = rest !== "" ? { text: rest, pat: rest } : i < tokens.length ? tokens[i++] : null;
             if (name === "env" && value) {
               if (letter === "u") env.delete(value.text);
-              else if (letter === "C") cwdShift = value;
+              else if (letter === "C") cwdShifts.push(value);
               else if (letter === "S") split = value.text;
             }
             break;
           }
         }
-      } else if (durationPending) {
-        durationPending = false;
-        i++;
       } else break;
     }
+    // A required operand follows the options and their `--` terminator: timeout's duration.
+    if (durationPending && i < tokens.length) i++;
   }
   // Only wrappers were left: nothing runs, except an `env -S` string.
-  return via.length ? { env, name: "", args: [], via, query: false, cwdShift, split } : null;
+  return via.length ? { env, name: "", args: [], via, query: false, cwdShifts, split } : null;
 }
 
 // ---------------------------------------------------------------- option parsing
@@ -512,7 +511,7 @@ export function globToRegExp(glob) {
         out += `[${glob.slice(i + 1, end).replace(/^!/, "^").replace(/\\/g, "\\\\")}]`;
         i = end;
       }
-    } else if (c === "{") {
+    } else if (c === "{" && glob.indexOf("}", i) > i) {
       braces++;
       out += "(?:";
     } else if (c === "}" && braces > 0) {
@@ -520,9 +519,67 @@ export function globToRegExp(glob) {
       out += ")";
     } else if (c === "," && braces > 0) out += "|";
     else if (c === "\\") out += (glob[++i] ?? "\\").replace(/[.*+?^${}()|[\]\\/]/g, "\\$&");
-    else out += c.replace(/[.+^$()|\\/]/g, "\\$&");
+    else out += c.replace(/[.+^${}()|\\/\]]/g, "\\$&");
   }
   return new RegExp(`^${out}$`, "i");
+}
+
+/** A compiled glob, or null when it cannot be compiled: callers treat that as a risky, unknown scope. */
+function safeRegExp(glob) {
+  try {
+    return globToRegExp(glob);
+  } catch {
+    return null;
+  }
+}
+
+/** The index range of the first brace group with a top-level comma, or null. */
+function findBraceGroup(text) {
+  for (let start = 0; start < text.length; start++) {
+    if (text[start] === "\\") {
+      start++;
+      continue;
+    }
+    if (text[start] !== "{") continue;
+    let depth = 0;
+    const cuts = [start];
+    for (let j = start; j < text.length; j++) {
+      if (text[j] === "\\") j++;
+      else if (text[j] === "{") depth++;
+      else if (text[j] === "}" && --depth === 0) {
+        if (cuts.length === 1) break; // no comma: not an alternation
+        cuts.push(j);
+        return { start, end: j, alternatives: cuts.slice(0, -1).map((cut, k) => text.slice(cut + 1, cuts[k + 1])) };
+      } else if (text[j] === "," && depth === 1) cuts.push(j);
+    }
+  }
+  return null;
+}
+
+/** Expand brace alternatives, nested ones included, into at most `limit` strings; null when there would be more. */
+function expandBraces(text, limit = 64) {
+  const done = [];
+  const queue = [text];
+  while (queue.length) {
+    const item = queue.pop();
+    const group = findBraceGroup(item);
+    if (!group) {
+      done.push(item);
+    } else {
+      for (const alternative of group.alternatives) queue.push(item.slice(0, group.start) + alternative + item.slice(group.end + 1));
+    }
+    if (done.length + queue.length > limit) return null;
+  }
+  return done;
+}
+
+/** Apply `env -C` style shifts in order. A shift the guard cannot resolve makes the directory unknown (null). */
+function shiftCwd(cwd, shifts, home) {
+  let where = cwd;
+  for (const shift of shifts) {
+    where = where === null || shift.unknown || shift.glob ? null : resolve(where, shift.text.replaceAll(PWD, where).replaceAll(HOME, home));
+  }
+  return where;
 }
 
 function relativeTo(projectDir, absolute) {
@@ -537,7 +594,8 @@ function globReachesEntry(glob, entry, projectDir) {
   const probes = [];
   for (let start = 0; start < rel.length; start++) probes.push(rel.slice(start).join("/"));
   if (entry.isDir) probes.push(`${rel.join("/")}/x`);
-  const regex = globToRegExp(pattern);
+  const regex = safeRegExp(pattern);
+  if (!regex) return true;
   return probes.some((probe) => regex.test(probe));
 }
 
@@ -551,13 +609,16 @@ function pathPattern(token, cwd, home) {
 
 /** True when a search over `paths` (empty means the cwd) walks into the entry without naming it. */
 function scopeCoversEntry(paths, cwd, entry, home) {
-  const scopes = paths.length ? paths.map((token) => pathPattern(token, cwd, home)) : [cwd === null ? UNKNOWN : resolve(cwd)];
+  const scopes = paths.length
+    ? paths.flatMap((token) => (expandBraces(token.pat) ?? [UNKNOWN]).map((pat) => pathPattern({ pat }, cwd, home)))
+    : [cwd === null ? UNKNOWN : resolve(cwd)];
   const parts = entry.path.split(sep);
   const ancestors = [];
   for (let end = 1; end < parts.length; end++) ancestors.push(parts.slice(0, end).join(sep) || sep);
   return scopes.some((scope) => {
     if (scope.includes(UNKNOWN)) return true; // an unresolved expansion in a search path: unknown scope
-    const regex = globToRegExp(scope.replace(/\/+$/, "") || "/");
+    const regex = safeRegExp(scope.replace(/\/+$/, "") || "/");
+    if (!regex) return true;
     return ancestors.some((ancestor) => regex.test(ancestor));
   });
 }
@@ -573,15 +634,22 @@ const isMultiComponent = (component) => component === "**" || component.includes
 /** True when a path with an active glob could expand to a listed entry or to a path inside one. */
 function globPositionalReaches(token, cwd, entries, home) {
   if (!token.glob) return false;
-  const parts = pathPattern(token, cwd, home).split("/");
-  return entries.some((entry) => {
-    const entryParts = entry.path.split("/");
-    for (let i = 0; i < entryParts.length; i++) {
-      if (i >= parts.length) return false;
-      if (isMultiComponent(parts[i])) return true;
-      if (!globToRegExp(parts[i]).test(entryParts[i])) return false;
-    }
-    return true;
+  // Braces expand before the path splits into components: `{eval/qa,src}/*.json` spans components.
+  const alternatives = expandBraces(token.pat);
+  if (alternatives === null) return true; // too many alternatives: unknown, risky scope
+  return alternatives.some((pat) => {
+    const parts = pathPattern({ pat }, cwd, home).split("/");
+    return entries.some((entry) => {
+      const entryParts = entry.path.split("/");
+      for (let i = 0; i < entryParts.length; i++) {
+        if (i >= parts.length) return false;
+        if (isMultiComponent(parts[i])) return true;
+        const regex = safeRegExp(parts[i]);
+        if (!regex) return true; // cannot compile: treat as a risky, unknown scope
+        if (!regex.test(entryParts[i])) return false;
+      }
+      return true;
+    });
   });
 }
 
@@ -629,11 +697,7 @@ function segmentVerdict(command, cwdStart, ctx) {
   const { entries, projectDir, home } = ctx;
   const { name, args, via } = command;
   if (command.env.get(OPT_IN_NAME) === OPT_IN_VALUE) return null;
-  let cwd = cwdStart;
-  if (command.cwdShift) {
-    const target = command.cwdShift;
-    cwd = cwd === null || target.unknown || target.glob ? null : resolve(cwd, target.text.replaceAll(PWD, cwd).replaceAll(HOME, home));
-  }
+  const cwd = shiftCwd(cwdStart, command.cwdShifts, home);
 
   if (via.includes("xargs") && (GREPS.has(name) || name === "rg")) return "xargs file list into a search";
   if (name === "find") {
@@ -736,13 +800,17 @@ function nestedTexts(command, cmd) {
   return texts;
 }
 
-/** Visit every command in a line, its substitutions and the texts it runs. Returns the first truthy result. */
-function walk(text, env, depth, onCommand) {
+/**
+ * Visit every command in a line, its substitutions and the texts it runs. Returns the first truthy
+ * result. A text run by a command that shifts the working directory (`env -C`) goes to `shifted`
+ * when one is given, so its analysis can start from the shifted directories.
+ */
+function walk(text, env, depth, onCommand, shifted = null) {
   if (depth > 6) return null;
   const { commands } = tokenize(text);
   for (const cmd of commands) {
     for (const sub of cmd.subs) {
-      const found = walk(sub, env, depth + 1, onCommand);
+      const found = walk(sub, env, depth + 1, onCommand, shifted);
       if (found) return found;
     }
     const command = resolveCommand(cmd.tokens, env);
@@ -750,7 +818,8 @@ function walk(text, env, depth, onCommand) {
     const found = onCommand(command);
     if (found) return found;
     for (const nested of nestedTexts(command, cmd)) {
-      const inner = walk(nested, command.env, depth + 1, onCommand);
+      const inner =
+        shifted && command.cwdShifts.length ? shifted(command, nested, depth + 1) : walk(nested, command.env, depth + 1, onCommand, shifted);
       if (inner) return inner;
     }
   }
@@ -760,33 +829,51 @@ function walk(text, env, depth, onCommand) {
 const MAX_CWDS = 64;
 
 /** Add the directories a `cd`/`pushd` can lead to. A directory the guard cannot resolve becomes null (unknown). */
-function collectCwd(command, ctx) {
+function collectCwd(command, cwds, home) {
   if (command.name !== "cd" && command.name !== "pushd") return null;
   const target = command.args.find((t) => !(t.text.startsWith("-") && t.text.length > 1));
-  for (const cwd of [...ctx.cwds]) {
-    if (ctx.cwds.size >= MAX_CWDS) {
-      ctx.cwds.add(null);
+  for (const cwd of [...cwds]) {
+    if (cwds.size >= MAX_CWDS) {
+      cwds.add(null);
       break;
     }
     if (cwd === null) continue;
-    if (!target) ctx.cwds.add(ctx.home);
-    else if (target.unknown || target.glob || target.text === "-") ctx.cwds.add(null);
-    else ctx.cwds.add(resolve(cwd, target.text.replaceAll(PWD, cwd).replaceAll(HOME, ctx.home)));
+    if (!target) cwds.add(home);
+    else if (target.unknown || target.glob || target.text === "-") cwds.add(null);
+    else cwds.add(resolve(cwd, target.text.replaceAll(PWD, cwd).replaceAll(HOME, home)));
   }
   return null;
 }
 
+/**
+ * The deny reason for a text analyzed from a set of possible working directories. The `cd` targets
+ * of the text and of the scripts it runs join the set first, so every segment is tried against all of
+ * them. A script run under `env -C` is its own scope, starting from the shifted directories.
+ */
+function scopeVerdict(text, env, cwds, ctx, depth) {
+  walk(text, env, depth, (command) => collectCwd(command, cwds, ctx.home), () => null);
+  return walk(
+    text,
+    env,
+    depth,
+    (command) => {
+      for (const cwd of cwds) {
+        const reason = segmentVerdict(command, cwd, ctx);
+        if (reason) return reason;
+      }
+      return null;
+    },
+    (command, nested, nestedDepth) => {
+      const inner = new Set([...cwds].map((cwd) => shiftCwd(cwd, command.cwdShifts, ctx.home)));
+      return scopeVerdict(nested, command.env, inner, ctx, nestedDepth);
+    },
+  );
+}
+
 /** The deny reason for a command line, or null. */
 export function bashVerdict(commandLine, state) {
-  const ctx = { cwds: new Set([state.cwd]), entries: state.entries, projectDir: state.projectDir, home: state.home ?? homedir() };
-  walk(commandLine, new Map(), 0, (command) => collectCwd(command, ctx));
-  return walk(commandLine, new Map(), 0, (command) => {
-    for (const cwd of ctx.cwds) {
-      const reason = segmentVerdict(command, cwd, ctx);
-      if (reason) return reason;
-    }
-    return null;
-  });
+  const ctx = { entries: state.entries, projectDir: state.projectDir, home: state.home ?? homedir() };
+  return scopeVerdict(commandLine, new Map(), new Set([state.cwd]), ctx, 0);
 }
 
 /**

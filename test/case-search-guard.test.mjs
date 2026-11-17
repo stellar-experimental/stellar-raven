@@ -179,6 +179,26 @@ const MUST_DENY = [
   "grep --directories recurse X .",
   // ordered negative globs stay denied: an accepted false positive, `rg X src` is the substitute
   "rg --hidden -g '*.json' -g '!eval/**' -g '!.agents/**' X .",
+  // re-check: wrapper cwd carries into a shell script, timeout's terminator, brace globs
+  "env -C eval/qa bash -c 'grep X *.json'",
+  "env -C src bash -c 'rg -g \"*.json\" X ../eval'",
+  "env -C src env -C ../eval rg -g '*.json' X",
+  "env -C eval/qa bash -c 'cd .. && grep X qa/*.json'",
+  "env -C eval sh <<'EOF'\nrg -g '*.json' X\nEOF",
+  'env -C "$SOMEWHERE" bash -c \'rg -g "*.json" X\'',
+  "timeout -- 5 grep -r X .",
+  "timeout -k 1 -- 5 rg -u X",
+  "timeout --foreground -- 5 grep -r X .",
+  "grep X {eval/qa,src}/*.json",
+  "rg X {eval/qa,src}/*.json",
+  "rg X {src,eval}/*",
+  "rg X {src,{eval/qa,test}}/*.json",
+  "rg -g '*.json' X {src,eval}",
+  "rg X {a,b}{c,d}{e,f}{g,h}{i,j}{k,l}{m,n}/*.json",
+  // heredoc substitutions run for real
+  "cat <<EOF\n$(date +%F)\n$(grep -r X eval)\nEOF",
+  "cat <<EOF\n`grep -r X eval`\nEOF",
+  "cat <<EOF\ntext\n`rg -u X`\nEOF",
 ];
 
 const MUST_PASS = [
@@ -275,6 +295,21 @@ const MUST_PASS = [
   "CASE_TEXT=maintenance bash -c 'grep -r X .'",
   "CASE_TEXT=maintenance bash <<'EOF'\ngrep -r X .\nEOF",
   "CASE_TEXT=maintenance eval 'grep -r X .'",
+  // re-check: safe scopes under a wrapper, timeout, braces, interpolated documents
+  "env -C src bash -c 'rg X .'",
+  "env -C src bash -c 'rg -g \"*.json\" X .'",
+  "env -C eval/qa bash -c 'echo hi'",
+  "timeout -- 5 npm test",
+  "timeout -k 1 -- 5 echo hi",
+  "timeout 5 npm test",
+  "rg X {src,test}/*.ts",
+  "grep X {src,test}/*.ts",
+  "rg -g '*.json' X {src,test}",
+  "rg X {src,{test,scripts}}/*.mjs",
+  "rg X {unmatched",
+  "cat <<EOF_DOC\n$(date +%F)\nThe policy forbids the following command:\ngrep -r X eval\nEOF_DOC",
+  "cat <<EOF\n`date`\nThe policy forbids rg -u and grep -r\nEOF",
+  "cat <<EOF\n$(echo ok) and $(date)\ngit grep X\nEOF",
 ];
 
 describe("case-search guard decisions", () => {
@@ -311,6 +346,12 @@ describe("case-search guard decisions", () => {
     expect(grepTool({ pattern: "X", glob: "*.json", path: "src" }).deny).toBe(false);
     expect(grepTool({ pattern: "X", glob: "*.json", path: "eval/qa/corpus" }).deny).toBe(false);
     expect(grepTool({ pattern: "X", glob: "!*.json" }).deny).toBe(false);
+  });
+
+  it("never throws on odd glob syntax", () => {
+    for (const command of ["grep X {", "rg X [", "rg X *[", "grep X }{", "rg -g '{' X", "rg -g '[' X src", "rg X {,}/*", "rg X {a,}/*.json", "rg X *{"]) {
+      expect(() => bash(command), command).not.toThrow();
+    }
   });
 
   it("ignores other tools and malformed input", () => {
