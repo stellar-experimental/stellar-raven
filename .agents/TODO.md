@@ -319,10 +319,9 @@ stellar.org through the adapter's own path (checked after the #447 deploy,
   top four for about five. Whether it holds audit records is unconfirmed. Decision (round plan):
   add depth only on a production detail-lookup failure, and then with a search-only key.
 - **Audit register (done).** The stellar.org audit register titles 4 of 77 records "Unnamed
-  record" (3 are Blend's). Filed as `sd-111` (`verified`, intake `unclear`, unposted; stellar.org
-  copy has no public tracker). The owner forwards `sd-111` and `sd-077` to the SDF web team
-  (2026-11-17); the orchestrator sets `reported-upstream` when the owner confirms the message was
-  sent. `sd-113` is not forwarded.
+  record" (3 are Blend's). Filed as `sd-111` (intake `unclear`; stellar.org copy has no public
+  tracker). The owner forwarded `sd-111` and `sd-077` to the SDF web team on 2026-11-17, so both are
+  `reported-upstream`. `sd-113` is not forwarded.
 - **Anchor Directory (done).** Not an out-of-source fact: the Docs Anchor Tools and Ramps pages and
   the Anchors fundamentals page name `https://anchors.stellar.org`, and
   `stellarDocs.search_docs("Anchor Directory")` returns them at ranks 1 and 4. No golden edit.

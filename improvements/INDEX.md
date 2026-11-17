@@ -51,7 +51,7 @@ Total findings: 93
 | sd-061 | The claimable-balances guide says that RPC getLedgerEntries gets the Balance ID. The sample that follows needs the Balance ID as its input  | reported-upstream | 2026-11-02 | 2           |
 | sd-070 | The storage migration guide says that reading a stored DataV1 as a DataV2 with an added Option field traps with Error(Object,…              | reported-upstream | 2026-11-02 | 2           |
 | sd-074 | The Scaffold Stellar page tells readers to configure projects with environments.toml. The current Scaffold CLI uses scaffold.yml (schema…   | reported-upstream | 2026-11-02 | 3           |
-| sd-077 | Two stellar.org pages describe Marketing Grants eligibility differently for a project that has not launched                                 | verified          | 2026-11-02 | 2           |
+| sd-077 | Two stellar.org pages describe Marketing Grants eligibility differently for a project that has not launched                                 | reported-upstream | 2026-11-02 | 2           |
 | sd-081 | The contract-restoration example on two docs pages once failed to parse and could not build a valid restoration transaction.…               | reported-upstream | 2026-11-02 | 3           |
 | sd-096 | Three invented source paths redirect to pages that do not exist. The original old-page premise was incorrect; the maintainer confirmed…     | declined-upstream | 2026-11-03 | 1           |
 | sd-102 | RPC backfill checks existing local ledger history for internal sequence gaps before fetching older history. A gap returns db verify: gap…   | declined-upstream | 2026-11-09 | 0           |
@@ -61,7 +61,7 @@ Total findings: 93
 | sd-108 | Stellar Docs explain how an application asks a wallet to sign. They do not explain what a person or a wallet must review before approval    | reported-upstream | 2026-11-14 | 1           |
 | sd-109 | The passkeys prerequisites page says that Friendbot cannot fund a contract address. That is not true. The Testnet and Futurenet Friendbots… | reported-upstream | 2026-11-14 | 1           |
 | sd-110 | The Lab Contract Explorer page gives a wrong list of Stellar CLI binding languages. It says the CLI generates bindings in "TypeScript,…     | reported-upstream | 2026-11-14 | 1           |
-| sd-111 | The stellar.org audit register at https://stellar.org/audit-bank/projects gives 4 of its 77 records the title "Unnamed record". Each title… | verified          | 2026-11-17 | 0           |
+| sd-111 | The stellar.org audit register at https://stellar.org/audit-bank/projects gives 4 of its 77 records the title "Unnamed record". Each title… | reported-upstream | 2026-11-17 | 0           |
 | sd-112 | Docs search does not return the SEP-7 page, /docs/build/apps/wallet/sep7, for the query web+stellar:pay payment request QR code. The page…  | reported-upstream | 2026-11-17 | 0           |
 | sd-113 | This is a net-new content request. No page on stellar.org or developers.stellar.org says that Pi Network is a different network from…       | verified          | 2026-11-17 | 0           |
 
