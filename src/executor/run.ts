@@ -16,17 +16,13 @@
  * Logs and errors have independent model-output caps and are not persisted.
  */
 import { tracing } from "cloudflare:workers";
-import { DynamicWorkerExecutor } from "@cloudflare/codemode";
+import { DynamicWorkerExecutor, truncateResult } from "@cloudflare/codemode";
 import superSpecJson from "../../specs/super-spec.json";
 import { getCatalog } from "../catalog/load.ts";
 import { detailTargetsFromSources, recoveryCandidatesFromSources } from "../catalog/search.ts";
 import type { BuildAuthorityRole, Catalog } from "../catalog/types.ts";
 import { buildSandbox, type ArtifactReadStats, type OpLedgerCall, type SandboxProvider } from "./providers.ts";
-import {
-  createSpecSandboxCode,
-  sandboxResponseText,
-  serializeSpecForSandbox
-} from "./spec-sandbox.ts";
+import { createSpecSandboxCode, serializeSpecForSandbox } from "./spec-sandbox.ts";
 import { createSkillSource } from "../skills/source.ts";
 import { redactSecrets, secretsFromEnv } from "../policy/redact.ts";
 import { truncateForModel, modelBoundaryMaxTokensFromEnv } from "../policy/truncate.ts";
@@ -664,12 +660,33 @@ function getSerializedSpec(): string {
   return cachedSerializedSpec;
 }
 
+/** Character budget of a spec-search response (~6,000 tokens). */
+const SPEC_RESPONSE_MAX_CHARS = 24_000;
+
+/**
+ * Model-facing text of a spec-search result. A line-for-line copy of
+ * `responseText` in @cloudflare/codemode@0.5.6 `dist/mcp.js` (the package does
+ * not export it), built on the exported `truncateResult`: strings are clipped
+ * to the budget, structured values are truncated structurally so the text
+ * stays valid JSON, pretty-printed when that fits and compact otherwise.
+ */
+function specResponseText(content: unknown): string {
+  const shaped = truncateResult(content, { maxChars: SPEC_RESPONSE_MAX_CHARS });
+  if (typeof shaped === "string") return shaped;
+  const pretty = JSON.stringify(shaped, null, 2) ?? "undefined";
+  return pretty.length <= SPEC_RESPONSE_MAX_CHARS
+    ? pretty
+    : (JSON.stringify(shaped) ?? "undefined");
+}
+
 /**
  * Experimental spec-search runner for explicit evaluation callers.
  * Production search uses host-ranked catalog queries under ADR-0001.
  * This runner injects the serialized spec into a networkless Dynamic Worker
- * with no service providers. It applies spec-sandbox output shaping and drops
- * console logs. It is not registered as a production MCP tool.
+ * with no service providers. Like upstream's `openApiMcpServer` search handler
+ * (0.5.6), it shapes the result host-side with `specResponseText` and turns an
+ * executor or serialization failure into `{ ok: false }`. It drops console
+ * logs. It is not registered as a production MCP tool.
  */
 export function createSpecSearchRunner(env: Env): SpecSearchRunner {
   const executor = new DynamicWorkerExecutor({
@@ -679,15 +696,19 @@ export function createSpecSearchRunner(env: Env): SpecSearchRunner {
   });
 
   return async (code: string): Promise<SpecSearchOutcome> => {
-    const outcome = await tracing.enterSpan("codemode.spec_search", async (span) => {
-      span.setAttribute("code.chars", code.length);
-      const result = await executor.execute(createSpecSandboxCode(code, getSerializedSpec()), []);
-      span.setAttribute("sandbox.ok", result.error === undefined);
-      return result;
-    });
-    if (outcome.error !== undefined) {
-      return { ok: false, error: outcome.error };
+    try {
+      const outcome = await tracing.enterSpan("codemode.spec_search", async (span) => {
+        span.setAttribute("code.chars", code.length);
+        const result = await executor.execute(createSpecSandboxCode(code, getSerializedSpec()), []);
+        span.setAttribute("sandbox.ok", result.error === undefined);
+        return result;
+      });
+      if (outcome.error !== undefined) {
+        return { ok: false, error: outcome.error };
+      }
+      return { ok: true, result: specResponseText(outcome.result) };
+    } catch (error) {
+      return { ok: false, error: error instanceof Error ? error.message : String(error) };
     }
-    return { ok: true, result: sandboxResponseText(outcome.result) };
   };
 }

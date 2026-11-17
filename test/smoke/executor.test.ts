@@ -1430,7 +1430,7 @@ describe("codemode.skill.run at the real worker boundary (design §12 smoke)", (
   });
 });
 
-describe("spec-search runner (kept for A/Bs, ADR-0001)", () => {
+describe("spec-search runner (kept for explicit evaluation callers, ADR-0001)", () => {
   it("evaluates codemode.spec() queries in a no-provider sandbox", async () => {
     const runSearch = createSpecSearchRunner(env as unknown as Env); // same OAUTH_PROVIDER bridge as above
     const outcome = await runSearch(`async () => {
@@ -1439,8 +1439,49 @@ describe("spec-search runner (kept for A/Bs, ADR-0001)", () => {
     }`);
     expect(outcome.ok).toBe(true);
     if (outcome.ok) {
+      // Host-side shaping pretty-prints (2 spaces) a value that fits the budget.
+      expect(outcome.result).toContain('\n  "services"');
       const parsed = JSON.parse(outcome.result) as { services: number };
       expect(parsed.services).toBeGreaterThan(0);
     }
+  });
+
+  it("truncates an oversized object structurally: valid JSON within the 24,000-char budget", async () => {
+    const runSearch = createSpecSearchRunner(env as unknown as Env);
+    const outcome = await runSearch(`async () => ({
+      title: "oversized",
+      rows: Array.from({ length: 400 }, (_, i) => ({ i, text: "row-" + "x".repeat(90) }))
+    })`);
+    expect(outcome.ok).toBe(true);
+    if (outcome.ok) {
+      expect(outcome.result.length).toBeLessThanOrEqual(24_000);
+      expect(() => JSON.parse(outcome.result)).not.toThrow();
+      expect(outcome.result).toContain("--- TRUNCATED ---");
+    }
+  });
+
+  it("clips an oversized string with the upstream footer", async () => {
+    const runSearch = createSpecSearchRunner(env as unknown as Env);
+    const outcome = await runSearch(`async () => "y".repeat(30000)`);
+    expect(outcome.ok).toBe(true);
+    if (outcome.ok) {
+      expect(outcome.result.startsWith("y".repeat(24_000))).toBe(true);
+      expect(outcome.result.endsWith("Narrow the request to reduce response size.")).toBe(true);
+    }
+  });
+
+  it("returns ok: false instead of rejecting on a result JSON cannot serialize", async () => {
+    const runSearch = createSpecSearchRunner(env as unknown as Env);
+    const outcome = await runSearch(`async () => 1n`);
+    expect(outcome.ok).toBe(false);
+    if (!outcome.ok) expect(outcome.error.length).toBeGreaterThan(0);
+  });
+});
+
+describe("execute runner: unawaited provider call (codemode 0.5.5 gate)", () => {
+  it("returns normally when a provider call is left pending", async () => {
+    const outcome = await run(`async () => { codemode.search("x"); return 1; }`);
+    expect(outcome.ok).toBe(true);
+    if (outcome.ok) expect(outcome.result.startsWith("1")).toBe(true);
   });
 });
