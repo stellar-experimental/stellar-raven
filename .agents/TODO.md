@@ -988,6 +988,22 @@ default points there with the same pin, and the `gca-eval` worktree is removed, 
 
 ## Dependencies
 
+### Wait for a picomatch release that fixes GHSA-fc5q-39xc-vjpf
+
+Issue #473 (`npm audit`, 8 high) traces to one advisory: picomatch through 4.0.7 has a ReDoS on
+single-branch repeated extglobs (GHSA-fc5q-39xc-vjpf, published 2026-10-19). Every reported package
+reaches it through `picomatch` 4.0.7, the latest release, and the advisory names no patched
+version. The fixes `npm audit` offers are downgrades (`agents@0.8.3`, `vitest@3.1.4`) and are not
+taken.
+
+Reach on 2026-11-17: `picomatch` comes in through `vitest`, `tinyglobby` and `fdir` (tests), and
+through `agents` via `vite` and `@rolldown/plugin-babel` (build tooling). The built Worker bundle
+(`dist/server.js`, main `2c1f4587`) contains no picomatch code, and Raven passes no untrusted glob to
+any of these tools. Production has no exposure; the risk is local tooling only.
+
+Done when: a picomatch release fixes the advisory, the lockfile takes it (an `overrides` entry if a
+parent pins it), `npm audit` reports none, and the dependency-audit workflow closes #473.
+
 ### Migrate the deprecated vitest pool and remove its overrides
 
 `@cloudflare/vitest-pool-workers` 0.23.0 is deprecated in favor of `@cloudflare/vitest-plugin`
