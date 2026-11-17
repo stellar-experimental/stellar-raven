@@ -86,6 +86,19 @@ rows on the owner's deferral.
   agentpc, each checked with one trivial prompt, so those subscription logins exist if the item
   reopens.
 
+## Follow-up answers (2026-11-17, assumptions review)
+
+A Fable assessment of the assumptions behind the open holds proposed three changes. It is the source
+of the proposals, not a verdict. The owner answered each on 2026-11-17. The items run one at a time,
+in the order 6.1, 6.2, 6.3.
+
+- **RWA re-test** (round item 6.3). A free ranking run, then a roughly 20-answer Sonnet 5.5 A/B on the
+  subscription CLI. Owner: "do it".
+- **Docs titles hold** (round item 6.2). Ended with a one-time re-baseline. Owner: "eval with Fable,
+  Opus and Sonnet and decide and proceed".
+- **`@cloudflare/codemode` 0.5.1 to 0.5.6** (round item 6.1). Owner: "makes sense, do it, updates and
+  progress is good especially if there are new features we can benefit from".
+
 ## Timing
 
 The work for the P30 Mainnet vote runs from a one-shot timer on agentpc at

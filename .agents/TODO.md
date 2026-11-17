@@ -671,17 +671,19 @@ ask for context, with no regression in the abstention or absence slices.
 
 `@cloudflare/codemode` routes falsely on short-token prefixes (`cs-001`,
 [Cloudflare #2296](https://github.com/cloudflare/agents/issues/2296)). It reproduces through
-0.5.4. Raven stays on 0.5.1 and has an ungated copy of the same rule. Reverse-prefix deletion
+0.5.6, and Raven has an ungated copy of the same rule. Reverse-prefix deletion
 and Porter stemming failed routing coverage; do not replace them with query exceptions or a
 tuned token-length threshold.
 
-An upgrade past 0.5.1 also re-checks `cs-012`: a non-Error throw reaches Raven as `error: undefined`
-and is logged `ok: true`.
-
-An upgrade past 0.5.1 must also move `src/executor/spec-sandbox.ts`, which mirrors the 0.5.1
-`truncateResponse`, `sandboxResponseText`, and in-sandbox `__truncateResponse`; 0.5.3 replaces
-them with host-side `truncateResult` (24,000 characters). `test/spec-sandbox.test.ts` pins the
-0.5.1 behavior.
+`cs-012` ([Cloudflare #2897](https://github.com/cloudflare/agents/issues/2897)) is a live bullet:
+through 0.5.6, a non-Error throw reaches Raven as `error: undefined` and is logged `ok: true`.
+Raven has no local workaround. A fix such as
+[#2898](https://github.com/cloudflare/agents/pull/2898) (open, unmerged) makes a non-Error throw
+`ok: false` with `String(err)`, which is model-facing when it ships, and reserves the provider names
+`String`, `Object`, `Proxy`, `JSON`, `Math`, `Uint8Array`, `ArrayBuffer`, `btoa` and `atob`; none
+collides with Raven's. When a release carries the fix, re-run the item 5.2 scratch test (source in
+[`items/5.2/EXEC.md`](rounds/2026-11-16-next-phase/items/5.2/EXEC.md), "Reproduction") and retire
+`cs-012` under the `improvements-pipeline` skill.
 
 Done when: an upstream or general local repair passes the original triggers, the positive
 controls, and Raven's routing gates.
