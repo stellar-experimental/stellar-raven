@@ -7,7 +7,7 @@ no eval or paid call.
 
 ## Pull request and result
 
-PR_URL, branch `np/1.4-prestage-dated-goldens`. It refs TODO entries only, so no issue closes. I
+[#459](https://github.com/stellar-experimental/stellar-raven/pull/459), branch `np/1.4-prestage-dated-goldens`. It refs TODO entries only, so no issue closes. I
 read the full diff and re-ran every gate bare on the final tree, and each exited 0:
 
 - typecheck;
