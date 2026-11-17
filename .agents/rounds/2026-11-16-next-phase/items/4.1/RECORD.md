@@ -87,7 +87,9 @@ What each number means here:
 - **Grok cost.** The clip is not free in spend: Grok ran about 155 s and $0.38 per row at list price (median wall
   time) against Codex's 25 s and $0.03.
 
-Per row (`B1 class`; `search calls/with limit`; clip events; error count; wall seconds):
+Per row (`B1 class`; `search calls/with limit`; clip events; error count; wall seconds). The error
+count sums the row's `isError` results, `Execution failed` results and client-reported errors, so one
+failure can count more than once (Grok's first row: one failed `execute`, counted 3 times):
 
 | Row | Codex B1 | search/limit | clips | err | s | Grok B1 | search/limit | clips | err | s |
 |---|---|---|---|---|---|---|---|---|---|---|
@@ -121,7 +123,10 @@ Per row (`B1 class`; `search calls/with limit`; clip events; error count; wall s
 - **M2 (Grok clip), by the fixed rule.** Grok logged 61 paired clip events on 17 rows (at least 5 on at least 3).
   No uncontaminated row has a lost cited fact that a key fact depends on (0 flagged, so no hand read was needed).
   Grok **costs no answer** on this pass, and M2 closes by its done-when ("item 4.1 shows the clip costs no Grok
-  answer"). Limits to read with it: 20 of 24 rows (cap stop), 30 golden candidates, one pass, the model recovered by
+  answer"). The rule counts events whether or not the row's golden yields a candidate; 7 of the 17
+  clipped rows yield none, so the instrument cannot see a loss there. On the 10 clipped rows that do
+  yield one, Grok still logged 36 events, so the rule's threshold holds on the rows it can see (lead
+  check). Limits to read with it: 20 of 24 rows (cap stop), 30 golden candidates, one pass, the model recovered by
   re-querying, and the recovery cost spend and time. A bound under the clip would save that spend; it is not needed
   to protect an answer.
 - **Runner rule.** No behaviour failed in a way a code change would fix and a before-and-after measurement would

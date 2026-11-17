@@ -788,8 +788,8 @@ Each needs a check before a fix:
 - Clients: Grok CLI never completed OAuth (every `/mcp` request got 401), Copilot CLI looped on
   404 (protocol 2026-07-28), and one browser looped on the consent page with "CSRF token
   mismatch". Reproduce each. Round item 4.1 ran Codex and Grok with no auth against the local
-  server and both completed, so the Grok 401 loop is an OAuth-path problem, not a protocol one (Grok
-  speaks 2026-07-28 and the local server answers `server/discover` with 200).
+  server and both completed: Grok speaks 2026-07-28 and the local server answers `server/discover`
+  with 200, which points the Grok 401 loop at the OAuth path rather than the protocol.
 - Codex and Grok findings (round item 4.1, [record](rounds/2026-11-16-next-phase/items/4.1/RECORD.md)):
   Codex printed both tool descriptions in 9 of 24 rows, so most runs reached `search` and `execute`
   from the catalogue line alone, and in 3 rows sent `execute` without `code`; Codex passed `limit` on
