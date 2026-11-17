@@ -21,15 +21,13 @@
  * a constant here, never read from the manifest.
  */
 import type { CatalogEntry } from "../catalog/types.ts";
-import { errResult, okResult, caughtResult, type AdapterResult, type FetchLike } from "./types.ts";
+import { errResult, okResult, caughtResult, OPERATION_BUDGET_MS, type AdapterResult, type FetchLike } from "./types.ts";
 
 const SERVICE = "stellarOrg";
 export const STELLAR_ORG_ORIGIN = "https://stellar.org";
 const SEARCH_PATH = "/api/search";
 export const USER_AGENT = "RavenMCP/1.0";
 const REQUEST_TIMEOUT_MS = 12_000;
-/** One get_page call, redirects included, as the Docs adapter bounds one operation. */
-const OPERATION_BUDGET_MS = 24_000;
 const MAX_SEARCH_BYTES = 256_000;
 const MAX_DESCRIPTION_CHARS = 500;
 const MAX_TITLE_CHARS = 300;

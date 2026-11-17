@@ -125,9 +125,17 @@ Each of these fails silently: the query succeeds and the number looks plausible.
 - **`recoveryAdviceDelivered` is a host delivery latch**, not model compliance.
 - **`evidenceState` on a `demo-step` is per step.** The final answering step makes no tool calls,
   so `"none"` there is structural.
+- **`sources` and `errorName` on `execute` and `demo-execute`.** `sources` counts calls, upstream
+  requests (`attempts`), outcomes, and `finalStatus` per service in fixed buckets (`2xx`, `3xx`,
+  `4xx`, `429`, `5xx`, `timeout`, `network`, `none`); the exact status and `attempts` are on each
+  `op` event. A `timeout` bucket is a call that hit the 24-second per-call budget, not a missing
+  result. `errorName` is null on success, else `SyntaxError`, `TypeError`, `ReferenceError`,
+  `timeout`, or `other`; it is a best-effort class from the runtime's message text, so a
+  model-thrown `Error` can land in the wrong class. A script that throws a non-Error is recorded
+  as `ok: true`.
 - **`sourceBasis`** exists when a result is truncated or an operation provides allowed source
-  metadata. `canonicalUrlCount` comes from the full result before truncation, so a zero count
-  cannot show that truncation removed a URL.
+  metadata. `calls.first` rows also carry `attempts` and `finalStatus`. `canonicalUrlCount` comes
+  from the full result before truncation, so a zero count cannot show that truncation removed a URL.
 - **Check the shape before you match stored results.** `rows[].transcript` is an array of objects,
   and `verdict` is an object whose label is `verdict.score`. String or identity comparisons on
   either return a wrong answer without an error.

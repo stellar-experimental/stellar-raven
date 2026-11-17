@@ -93,6 +93,8 @@ describe("the call ledger", () => {
     op,
     outcome: "ok",
     hasServiceData: true,
+    attempts: 1,
+    finalStatus: "200",
     ms: 1,
     ...extra
   });

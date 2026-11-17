@@ -34,6 +34,34 @@ const SCRIPT_HINTS: ReadonlyArray<{ when: RegExp; hint: (globals: string) => str
   }
 ];
 
+/** The bounded class of a failed `execute`, for telemetry only; it never reaches the model. */
+export type ExecuteErrorName = "SyntaxError" | "TypeError" | "ReferenceError" | "timeout" | "other";
+
+/** The runtime's exact message when a script exceeds `EXECUTE_TIMEOUT_MS`. */
+const TIMEOUT_MESSAGE = "Execution timed out";
+const SYNTAX_ERROR_MESSAGE =
+  /SyntaxError|Failed to start Worker|Unexpected (?:token|identifier|end of input)|Invalid or unexpected token|missing \) after|is not valid JSON|Unexpected end of JSON input/;
+const REFERENCE_ERROR_MESSAGE = /\bis not defined\b|Cannot access '[^']*' before initialization/;
+const TYPE_ERROR_MESSAGE =
+  /Cannot read properties of (?:undefined|null)|Cannot set properties of|is not a function|is not iterable|is not a constructor|Cannot convert undefined or null|Assignment to constant variable|Cannot destructure/;
+
+/**
+ * Classify a failed `execute` from the sandbox's raw message (before hinting and redaction).
+ * `@cloudflare/codemode` drops `err.name` and returns only `err.message`, so the class comes from
+ * the runtime's own message forms and outcome path, not from a structural field: a model-thrown
+ * `Error` whose text matches one of these forms is misclassed. This is telemetry only. When the
+ * script failed to load (`loadRejected`), the rejection also carries RPC, isolate, and loader
+ * faults, so only a message in the syntax forms is a `SyntaxError`; the rest is `other`.
+ */
+export function classifyExecuteError(message: string, loadRejected: boolean): ExecuteErrorName {
+  if (message === TIMEOUT_MESSAGE) return "timeout";
+  if (SYNTAX_ERROR_MESSAGE.test(message)) return "SyntaxError";
+  if (loadRejected) return "other";
+  if (REFERENCE_ERROR_MESSAGE.test(message)) return "ReferenceError";
+  if (TYPE_ERROR_MESSAGE.test(message)) return "TypeError";
+  return "other";
+}
+
 /** Append the first matching hint; a message with no rule passes through unchanged. */
 export function withScriptHint(message: string, globalNames: readonly string[]): string {
   const rule = SCRIPT_HINTS.find(({ when }) => when.test(message));

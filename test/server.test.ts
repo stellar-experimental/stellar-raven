@@ -33,7 +33,7 @@ import { CORROBORATION_GUARD } from "../src/policy/corroboration";
 import { clipProse } from "../src/catalog/search";
 import { allowDevUnauthenticated } from "../src/auth/gate";
 import type { McpAccessContext } from "../src/server";
-import type { ExecuteEvidenceSummary, ExecuteOperationSummary } from "../src/executor/run";
+import type { ExecuteEvidenceSummary, ExecuteOperationSummary, SourceSummary } from "../src/executor/run";
 import {
   DOC_CODEMODE_HELPERS,
   DOC_TRACE_EXAMPLE,
@@ -55,9 +55,10 @@ const devBypassAccess: McpAccessContext = { mode: "dev-bypass" };
 
 function executeSummaries(
   operationSummary: ExecuteOperationSummary = { total: 0, ok: 0, error: 0, softEmpty: 0 }
-): { operationSummary: ExecuteOperationSummary; evidenceSummary: ExecuteEvidenceSummary } {
+): { operationSummary: ExecuteOperationSummary; sourceSummary: SourceSummary; evidenceSummary: ExecuteEvidenceSummary } {
   return {
     operationSummary,
+    sourceSummary: {},
     evidenceSummary: {
       kind:
         operationSummary.ok > 0
@@ -1377,6 +1378,7 @@ describe("execute behavior", () => {
         result: '{"projects":[],"meta":{"total":0}}',
         truncated: false,
         logs: [],
+        sourceSummary: {},
         operationSummary: { total: 1, ok: 1, error: 0, softEmpty: 0 },
         evidenceSummary: {
           kind: "service-inconclusive",
@@ -1413,6 +1415,7 @@ describe("execute behavior", () => {
         result: '{"changes":[]}',
         truncated: false,
         logs: [],
+        sourceSummary: {},
         operationSummary: { total: 1, ok: 1, error: 0, softEmpty: 0 },
         evidenceSummary: {
           kind: "service-inconclusive",
@@ -1617,6 +1620,7 @@ describe("execute behavior", () => {
         result: '{"repos":[{"name":"example"}]}',
         truncated: false,
         logs: [],
+        sourceSummary: {},
         operationSummary: {
           total: 2,
           ok: 2,
@@ -1654,6 +1658,7 @@ describe("execute behavior", () => {
         result: '{"projects":[{"name":"example"}]}',
         truncated: false,
         logs: [],
+        sourceSummary: {},
         operationSummary: {
           total: 1,
           ok: 1,
@@ -1691,6 +1696,7 @@ describe("execute behavior", () => {
         result: '{"repos":[{"name":"example"}]}',
         truncated: false,
         logs: [],
+        sourceSummary: {},
         operationSummary: { total: 1, ok: 1, error: 0, softEmpty: 0, priorArtCandidates: 1 },
         evidenceSummary: {
           kind: "skill-content",
@@ -1713,6 +1719,7 @@ describe("execute behavior", () => {
         result: '{"repos":[{"name":"example"}]}',
         truncated: false,
         logs: [],
+        sourceSummary: {},
         operationSummary: { total: 1, ok: 1, error: 0, softEmpty: 0, priorArtCandidates: 1 },
         evidenceSummary: {
           kind: "skill-content",
@@ -1819,6 +1826,9 @@ describe("execute behavior", () => {
           truncated: true,
           logs: [],
           ...executeSummaries({ total: 30, ok: 10, error: 10, softEmpty: 10 }),
+          sourceSummary: {
+            scout: { calls: 2, attempts: 3, ok: 1, error: 1, softEmpty: 0, finalStatus: { "2xx": 1, "5xx": 1 } }
+          },
           sourceBasis: {
             shape: { kind: "array", serializedChars: 100_000, approxTokens: 25_000, totalItems: 30 },
             calls: Array.from({ length: 30 }, (_, i) => {
@@ -1840,6 +1850,8 @@ describe("execute behavior", () => {
           try {
             return JSON.parse(String(call[0])) as {
               evt?: string;
+              sources?: unknown;
+              errorName?: unknown;
               sourceBasis?: { calls?: { first?: unknown[]; total?: number; omitted?: number; totals?: unknown } };
             };
           } catch {
@@ -1857,10 +1869,44 @@ describe("execute behavior", () => {
         "soft-empty": 10
       });
       expect(executeEvent?.sourceBasis).toMatchObject({ canonicalUrlCount: 1 });
+      // Per-source status rides the event as fixed buckets; an ok run has no error class.
+      expect(executeEvent?.sources).toEqual({
+        scout: { calls: 2, attempts: 3, ok: 1, error: 1, softEmpty: 0, finalStatus: { "2xx": 1, "5xx": 1 } }
+      });
+      expect(executeEvent?.errorName).toBeNull();
       expect(executeEvent).not.toHaveProperty("code");
       expect(executeEvent).not.toHaveProperty("resultPreview");
       expect(executeEvent).not.toHaveProperty("error");
       expect(JSON.stringify(executeEvent)).not.toContain("sensitive.example");
+    } finally {
+      logSpy.mockRestore();
+    }
+  });
+
+  it("logs the bounded error class, never the message, on a failed execute", async () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    try {
+      const execClient = await connectedClient({
+        runExecute: async () => ({
+          ok: false,
+          errorName: "TypeError",
+          error: "private-payload-in-message",
+          logs: [],
+          ...executeSummaries()
+        })
+      });
+      await execClient.callTool({ name: "execute", arguments: { code: "async () => 1" } });
+      const event = logSpy.mock.calls
+        .map((call) => {
+          try {
+            return JSON.parse(String(call[0])) as Record<string, unknown>;
+          } catch {
+            return null;
+          }
+        })
+        .find((e) => e?.evt === "execute");
+      expect(event).toMatchObject({ ok: false, errorName: "TypeError", sources: {} });
+      expect(JSON.stringify(event)).not.toContain("private-payload");
     } finally {
       logSpy.mockRestore();
     }
@@ -1873,6 +1919,7 @@ describe("execute behavior", () => {
     const execClient = await connectedClient({
       runExecute: async () => ({
         ok: false,
+        errorName: "other",
         error: "x".repeat(100_000),
         logs: [],
         ...executeSummaries()
@@ -1893,6 +1940,7 @@ describe("execute behavior", () => {
       modelBoundaryMaxTokens: 1000,
       runExecute: async () => ({
         ok: false,
+        errorName: "other",
         error: "x".repeat(100_000),
         logs: [],
         ...executeSummaries()
@@ -1913,6 +1961,7 @@ describe("execute behavior", () => {
     const execClient = await connectedClient({
       runExecute: async () => ({
         ok: false,
+        errorName: "other",
         error: "fetch is not allowed",
         logs: ["[error] boom"],
         ...executeSummaries()

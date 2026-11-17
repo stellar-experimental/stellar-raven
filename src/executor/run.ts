@@ -40,7 +40,7 @@ import {
   type SourceMetadataEntry
 } from "../policy/source-basis.ts";
 import { shapeLogs } from "./shape-logs.ts";
-import { withScriptHint } from "./script-hints.ts";
+import { classifyExecuteError, withScriptHint, type ExecuteErrorName } from "./script-hints.ts";
 import { put as putArtifact, type ArtifactMime } from "../artifacts/store.ts";
 import { logArtifactWrite } from "../observability.ts";
 import { CORROBORATING_FAMILY_IDS } from "../policy/corroboration.ts";
@@ -76,6 +76,26 @@ export type ExecuteEvidenceSummary = {
   artifactReads: number;
 };
 
+/** The fixed buckets a call's final status counts into; the exact status stays on the `op` event. */
+export const SOURCE_STATUS_BUCKETS = ["2xx", "3xx", "4xx", "429", "5xx", "timeout", "network", "none"] as const;
+export type SourceStatusBucket = (typeof SOURCE_STATUS_BUCKETS)[number];
+
+export const SOURCE_SERVICES = ["lumenloop", "scout", "stellarDocs", "stellarOrg"] as const;
+export type SourceService = (typeof SOURCE_SERVICES)[number];
+
+/** One service's calls in a run: counts only, with fixed keys, never upstream text. */
+export type SourceSummaryEntry = {
+  calls: number;
+  /** Upstream HTTP requests across those calls. */
+  attempts: number;
+  ok: number;
+  error: number;
+  softEmpty: number;
+  finalStatus: Partial<Record<SourceStatusBucket, number>>;
+};
+/** Keyed by service; only services the run called appear. */
+export type SourceSummary = Partial<Record<SourceService, SourceSummaryEntry>>;
+
 export type ExecuteOutcome =
   | {
       ok: true;
@@ -84,6 +104,8 @@ export type ExecuteOutcome =
       logs: string[];
       /** Compact host-observed service-call outcomes; never includes payload data. */
       operationSummary: ExecuteOperationSummary;
+      /** Per-service calls, upstream requests, outcomes, and final-status buckets. */
+      sourceSummary: SourceSummary;
       /** Host-owned evidence classification; never inspects model-authored payload text. */
       evidenceSummary: ExecuteEvidenceSummary;
       /** Conditional wider-pass advice derived only from successful operation ids. */
@@ -101,9 +123,13 @@ export type ExecuteOutcome =
   | {
       ok: false;
       error: string;
+      /** Bounded failure class for telemetry; never message text and never shown to the model. */
+      errorName: ExecuteErrorName;
       logs: string[];
       /** Calls completed before the sandbox failed, summarized without payload data. */
       operationSummary: ExecuteOperationSummary;
+      /** Per-service calls, upstream requests, outcomes, and final-status buckets. */
+      sourceSummary: SourceSummary;
       /** Host-owned evidence classification; never inspects model-authored payload text. */
       evidenceSummary: ExecuteEvidenceSummary;
       artifactReadBytes?: number;
@@ -181,6 +207,36 @@ export function summarizeOperationLedger(calls: readonly OpLedgerCall[]): Execut
   if (uncorroboratedEvidence > 0) summary.uncorroboratedEvidence = uncorroboratedEvidence;
   if (priorArtCandidates > 0) summary.priorArtCandidates = priorArtCandidates;
   if (exactEvidence > 0) summary.exactEvidence = exactEvidence;
+  return summary;
+}
+
+/** Bucket a ledger `finalStatus` (an exact HTTP status or `timeout`, `network`, `none`) into a fixed key. */
+export function sourceStatusBucket(finalStatus: string): SourceStatusBucket {
+  if (finalStatus === "timeout" || finalStatus === "network" || finalStatus === "none") return finalStatus;
+  const status = Number(finalStatus);
+  if (status === 429) return "429";
+  if (status >= 200 && status < 300) return "2xx";
+  if (status >= 300 && status < 400) return "3xx";
+  if (status >= 400 && status < 500) return "4xx";
+  if (status >= 500 && status < 600) return "5xx";
+  return "none";
+}
+
+/** Per-service view of the run ledger: fixed service keys and fixed status buckets only. */
+export function summarizeSourceLedger(calls: readonly OpLedgerCall[]): SourceSummary {
+  const summary: SourceSummary = {};
+  for (const call of calls) {
+    const service = SOURCE_SERVICES.find((name) => name === call.op.split(".", 1)[0]);
+    if (!service) continue;
+    const entry = (summary[service] ??= { calls: 0, attempts: 0, ok: 0, error: 0, softEmpty: 0, finalStatus: {} });
+    entry.calls += 1;
+    entry.attempts += call.attempts;
+    if (call.outcome === "ok") entry.ok += 1;
+    else if (call.outcome === "error") entry.error += 1;
+    else entry.softEmpty += 1;
+    const bucket = sourceStatusBucket(call.finalStatus);
+    entry.finalStatus[bucket] = (entry.finalStatus[bucket] ?? 0) + 1;
+  }
   return summary;
 }
 
@@ -428,12 +484,18 @@ export function createExecuteRunner(env: Env, options: ExecuteRunnerOptions = {}
       // A script that fails to load (a syntax error) rejects instead of
       // returning an error. Fold it into the same outcome so it gets a hint,
       // redaction, and truncation like any other script failure.
-      const result = await executor.execute(code, providers).catch((e: unknown) => ({
-        result: undefined,
-        error: e instanceof Error ? e.message : String(e),
-        logs: [] as string[]
-      }));
+      let loadRejected = false;
+      const result = await executor.execute(code, providers).catch((e: unknown) => {
+        loadRejected = true;
+        return {
+          result: undefined,
+          error: e instanceof Error ? e.message : String(e),
+          logs: [] as string[]
+        };
+      });
+      const errorName = result.error === undefined ? undefined : classifyExecuteError(result.error, loadRejected);
       span.setAttribute("sandbox.ok", result.error === undefined);
+      if (errorName !== undefined) span.setAttribute("sandbox.errorName", errorName);
       span.setAttribute("sandbox.logLines", result.logs?.length ?? 0);
       span.setAttribute("sandbox.skillRead", skillRead);
       span.setAttribute("sandbox.skillRun", skillRuns);
@@ -444,10 +506,11 @@ export function createExecuteRunner(env: Env, options: ExecuteRunnerOptions = {}
       span.setAttribute("sandbox.operationOk", spanOperationSummary.ok);
       span.setAttribute("sandbox.operationError", spanOperationSummary.error);
       span.setAttribute("sandbox.operationSoftEmpty", spanOperationSummary.softEmpty);
-      return result;
+      return { ...result, errorName };
     });
     const logs = shapeLogs(outcome.logs, secrets);
     const operationSummary = summarizeOperationLedger(opLedger);
+    const sourceSummary = summarizeSourceLedger(opLedger);
     const recoveryHint = evidenceRecoveryHint(opLedger, operationSummary);
     const exactEvidence = exactEvidenceOfLedger(opLedger);
     const evidenceSummary: ExecuteEvidenceSummary = {
@@ -468,14 +531,17 @@ export function createExecuteRunner(env: Env, options: ExecuteRunnerOptions = {}
       artifactReads: artifactReadStats.count
     };
     if (outcome.error !== undefined) {
+      const errorName = outcome.errorName ?? "other";
       // Global names come from the wired provider set, never a hard-coded list.
       // Hinting runs before redaction and truncation so those still run last.
       const hinted = withScriptHint(outcome.error, providers.map((provider) => provider.name));
       return {
         ok: false,
         error: redactSecrets(hinted, secrets),
+        errorName,
         logs,
         operationSummary,
+        sourceSummary,
         evidenceSummary,
         artifactReadBytes: artifactReadStats.bytes
       };
@@ -575,6 +641,7 @@ export function createExecuteRunner(env: Env, options: ExecuteRunnerOptions = {}
       truncated: result.truncated,
       logs,
       operationSummary,
+      sourceSummary,
       evidenceSummary,
       ...(recoveryHint ? { recoveryHint } : {}),
       ...(exactEvidence.length > 0 ? { exactEvidence } : {}),

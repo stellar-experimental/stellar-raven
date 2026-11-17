@@ -24,6 +24,7 @@ import {
   errResult,
   okResult,
   caughtResult,
+  OPERATION_BUDGET_MS,
   type AdapterEnv,
   type AdapterResult,
   type FetchLike
@@ -32,8 +33,6 @@ import {
 const SERVICE = "stellarDocs";
 const MAX_ERROR_BODY_CHARS = 1024;
 const SNIPPET_CHARS = 300;
-/** Wall-clock bound for one operation, across retries, the `/index` retry, and the site redirect probe. */
-const OPERATION_BUDGET_MS = 24_000;
 /** An attempt with less time left than this is not started. */
 const MIN_ATTEMPT_MS = 500;
 /**
@@ -68,7 +67,7 @@ type Section = { path: string; title: string; content: string; rank: number; isI
 
 type Attempt =
   | { kind: "success"; data: unknown }
-  | { kind: "retryable"; cause: string }
+  | { kind: "retryable"; cause: string; status?: number }
   | { kind: "terminal"; status: number; message: string; absent: boolean };
 
 type MintlifyResponse = { ok: true; body: unknown } | { ok: false; message: string; status?: number; absent?: boolean };
@@ -117,7 +116,7 @@ async function attempt(
       signal: AbortSignal.timeout(timeoutMs)
     });
     const bodyText = await res.text();
-    if (res.status >= 500) return { kind: "retryable", cause: errorMessageFromBody(bodyText, res.status) };
+    if (res.status >= 500) return { kind: "retryable", cause: errorMessageFromBody(bodyText, res.status), status: res.status };
     if (!res.ok) {
       return {
         kind: "terminal",
@@ -155,6 +154,8 @@ async function mintlifyRequest(
 ): Promise<MintlifyResponse> {
   let lastError = "no attempts configured";
   let attempts = 0;
+  // The HTTP status of the last attempt that got a response; cleared when a later attempt fails without one.
+  let lastStatus: number | undefined;
   for (const timeoutMs of timeouts) {
     const remaining = deadline - Date.now();
     if (remaining < MIN_ATTEMPT_MS) {
@@ -166,10 +167,12 @@ async function mintlifyRequest(
     if (result.kind === "success") return { ok: true, body: result.data };
     if (result.kind === "terminal") return { ok: false, message: result.message, status: result.status, absent: result.absent };
     lastError = result.cause;
+    lastStatus = result.status;
   }
   return {
     ok: false,
-    message: attempts === 0 ? `mintlify request not started: ${lastError}` : `mintlify request failed after ${attempts} attempts: ${lastError}`
+    message: attempts === 0 ? `mintlify request not started: ${lastError}` : `mintlify request failed after ${attempts} attempts: ${lastError}`,
+    ...(lastStatus !== undefined ? { status: lastStatus } : {})
   };
 }
 

@@ -126,6 +126,17 @@ export type OpLedgerCall = {
   observedAt?: string;
   /** Bounded host label; never an upstream message, body, URL, or argument value. */
   reason?: string;
+  /**
+   * Upstream HTTP requests this call made, counting the Docs `/index` retry, the site redirect
+   * probe, and stellar.org redirect hops. Zero for a call the guard refused or a missing key.
+   */
+  attempts: number;
+  /**
+   * How the call ended, never upstream text: the adapter's HTTP status; else for an ok result the
+   * last response status; else `timeout` (the last request's signal aborted), `network` (the last
+   * request threw), or `none` (no request was made).
+   */
+  finalStatus: string;
   ms: number;
 };
 
@@ -516,6 +527,39 @@ function envelopeGuardPrelude(opsByService: Map<string, string[]>): string {
   ].join("\n");
 }
 
+/** What the fetch wrapper saw of one call's upstream requests. */
+type CallTrace = { attempts: number; lastStatus?: number; lastThrew: boolean; lastSignal?: AbortSignal };
+
+/**
+ * Count one call's upstream requests without changing them: `input` and `init` pass through
+ * untouched, and the default `fetch` is called unbound as the adapters call it.
+ */
+function tracedFetch(base: FetchLike | undefined, trace: CallTrace): FetchLike {
+  return async (input, init) => {
+    trace.attempts += 1;
+    trace.lastStatus = undefined;
+    trace.lastThrew = false;
+    trace.lastSignal = init?.signal ?? undefined;
+    try {
+      const res = await (base ?? fetch)(input, init);
+      trace.lastStatus = res.status;
+      return res;
+    } catch (e) {
+      trace.lastThrew = true;
+      throw e;
+    }
+  };
+}
+
+function finalStatusOf(result: AdapterResult, trace: CallTrace): string {
+  if (!result.ok && typeof result.error.status === "number") return String(result.error.status);
+  if (result.ok) return trace.lastStatus !== undefined ? String(trace.lastStatus) : "none";
+  if (trace.attempts === 0) return "none";
+  if (trace.lastSignal?.aborted) return "timeout";
+  if (trace.lastThrew) return "network";
+  return trace.lastStatus !== undefined ? String(trace.lastStatus) : "none";
+}
+
 function failedCallReason(entry: CatalogEntry, result: AdapterResult, refused = false): string | undefined {
   if (result.ok || result.error.kind === "soft-empty") return undefined;
   if (refused) {
@@ -573,30 +617,39 @@ export function buildOpsFns(
         logEvent("op", {
           id: entry.id,
           outcome: refused.ok ? "ok" : refused.error.kind,
+          attempts: 0,
+          finalStatus: "none",
           ms
         });
         deps?.onOpCall?.({
           op: entry.id,
           outcome: refused.ok ? "ok" : refused.error.kind,
           reason: failedCallReason(entry, refused, true),
+          attempts: 0,
+          finalStatus: "none",
           ms
         });
         return refused;
       }
+      const trace: CallTrace = { attempts: 0, lastThrew: false };
       const result = await callService(
         entry,
         (args ?? {}) as Record<string, unknown>,
         env,
-        fetchImpl
+        tracedFetch(fetchImpl, trace)
       );
       const ms = Date.now() - t0;
+      const attempts = trace.attempts;
+      const finalStatus = finalStatusOf(result, trace);
       const redactedResult = redactSecrets(result, secrets);
       if (!redactedResult.ok) {
-        logEvent("op", { id: entry.id, outcome: redactedResult.error.kind, ms });
+        logEvent("op", { id: entry.id, outcome: redactedResult.error.kind, attempts, finalStatus, ms });
         deps?.onOpCall?.({
           op: entry.id,
           outcome: redactedResult.error.kind,
           reason: failedCallReason(entry, result),
+          attempts,
+          finalStatus,
           ms
         });
         return redactedResult;
@@ -608,12 +661,16 @@ export function buildOpsFns(
       logEvent("op", {
         id: entry.id,
         outcome: "ok",
+        attempts,
+        finalStatus,
         ms,
         ...(caveat ? { caveat } : {})
       });
       deps?.onOpCall?.({
         op: entry.id,
         outcome: "ok",
+        attempts,
+        finalStatus,
         hasServiceData: hasServiceData(redactedResult.data),
         ...detailReadyOf(catalog, entry, redactedResult.data),
         sourceMetadata,

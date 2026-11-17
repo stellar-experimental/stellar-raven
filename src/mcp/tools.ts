@@ -411,8 +411,10 @@ export function registerTools(server: McpServer, options: RegisterToolsOptions =
         outcome = {
           ok: false as const,
           error: e instanceof Error ? e.message : String(e),
+          errorName: "other" as const,
           logs: [],
           operationSummary: { total: 0, ok: 0, error: 0, softEmpty: 0 },
+          sourceSummary: {},
           evidenceSummary: {
             kind: "none",
             skillRead: false,
@@ -448,6 +450,8 @@ export function registerTools(server: McpServer, options: RegisterToolsOptions =
         artifactReadCount: outcome.evidenceSummary.artifactReads,
         artifactReadBytes: outcome.artifactReadBytes ?? 0,
         operationSummary: outcome.operationSummary,
+        sources: outcome.sourceSummary,
+        errorName: outcome.ok ? null : outcome.errorName,
         recoveryHint: outcome.ok ? (outcome.recoveryHint ?? null) : null,
         sourceBasis: outcome.ok
           ? projectSourceBasisTelemetry(outcome.sourceBasis, SOURCE_BASIS_TELEMETRY_CALL_LIMIT)

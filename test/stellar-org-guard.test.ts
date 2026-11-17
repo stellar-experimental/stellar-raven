@@ -13,7 +13,7 @@ import type { OpLedgerCall } from "../src/executor/providers.ts";
 import { candidateEvidenceSection } from "../src/policy/evidence-checkpoint.ts";
 import { CORROBORATION_GUARD } from "../src/policy/corroboration.ts";
 
-const ok = (op: string): OpLedgerCall => ({ op, outcome: "ok", hasServiceData: true, ms: 0 });
+const ok = (op: string): OpLedgerCall => ({ op, outcome: "ok", hasServiceData: true, attempts: 1, finalStatus: "200", ms: 0 });
 
 describe("stellarOrg and the corroboration guard", () => {
   it("counts a stellarOrg run as uncorroborated and a Docs run as corroborated", () => {

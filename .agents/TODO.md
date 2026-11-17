@@ -24,8 +24,7 @@ paid run.
 3. Mechanisms with a measured cause. The production read ranks round item 3.2 first: its
    per-source status half meets the most failed operation calls, and the `execute` `errorName` and
    `scout.matchPartners` bullets of "Triage the runtime and client gaps" belong with it (they edit
-   the same event and adapter surface). Round item 3.3 is last: `stellarOrg` is little used. This
-   order waits on the orchestrator's confirmation.
+   the same event and adapter surface). Round item 3.3 is last: `stellarOrg` is little used.
 
 No third tuning loop, and no paid QA run without a new written owner authorization, except round
 item 4.1 under decision 7 (owner, 2026-11-16, decision 1). The general routing repair stays held.
@@ -104,25 +103,6 @@ Done when: the owner decides which source, if any, to test.
   returns it at rank 1. Next check: only if a free retrieval-level A/B shows a general mechanism
   that surfaces the page (no per-query exception; `docs/stellar-docs.md`, "Maintenance").
 
-### Report per-source attempts and final status
-
-A failed call already carries its upstream status: HTTP 429 survives all three adapters, and 5xx
-survives Lumenloop and Scout. Two gaps remain:
-
-- Mintlify retry exhaustion on 5xx returns an error with no numeric status
-  (`mintlifyRequest` in `src/adapters/stellar-docs.ts`).
-- No result or log event records how many attempts each source took, or each source's final
-  status across one `execute`.
-
-The round also reported that a successful response hid a failed source. That came from the
-round's own aggregation layer and is not reproduced in production Raven; reproduce it before
-treating it as a product defect. Keep the per-operation failure envelopes as they are. Round item 3.2
-does this work, and adds the Lumenloop and Scout per-call timeouts that "Ship the cap decisions from
-the production read" records (24 seconds each).
-
-Done when: a Mintlify retry exhaustion carries the last HTTP status, and the `execute` log event
-records attempts and final status per source, with tests.
-
 ### Check what the judge saw before changing how it weighs cited text
 
 In the round's harness, the judge called a correctly quoted fact "fabricated" in about 2% of the
@@ -200,8 +180,9 @@ evidence folder; this item records the decisions. Four caps wait on it
   operation has more than 1% of its ok calls above 24 seconds. A few operations (Scout
   `searchProjects` and `explainRepo`, Lumenloop `find_similar_scf_submissions`) have more than 1% above
   12 seconds, so no shorter value leaves them a margin. The tails are a lower bound: a call still
-  pending at 60 seconds logs no event, and `op` `ms` includes retries and host queueing. Round item
-  3.2 ships the timeouts and decides how one timeout combines with an adapter's retries.
+  pending at 60 seconds logs no event, and `op` `ms` includes retries and host queueing. Shipped
+  (round item 3.2): 24 seconds is one wall-clock budget per operation call, not per attempt, so an
+  adapter retry takes the remaining budget and a timeout cannot multiply.
 - Artifact caps (`ARTIFACT_INFO_CAP` 8, `ARTIFACT_READ_CAP` 4): **keep.** No `info-cap` or
   `read-cap` refusal in the window, and per-run artifact reads stayed far below both caps.
 - `EXECUTE_TIMEOUT_MS` (60 s): **not decided.** No failed `execute` ran past 59 seconds in the
@@ -210,7 +191,7 @@ evidence folder; this item records the decisions. Four caps wait on it
   default `tool_timeout_sec` is 60, so a run near Raven's limit can lose its structured timeout
   result to the client.
 
-Next: round item 3.2 ships the timeouts. One free Workers Logs follow-up (run on the Mac) reads
+Next: one free Workers Logs follow-up (run on the Mac) reads
 what the first read could not: key discovery returned a capped list, so first search the keys for
 `recoveryHint` and the artifact-write `skipped` and `errorName` by name. Every query that
 filtered `$metadata.type = "cf-worker-event"` with path `/mcp`, or grouped by the user-agent header,
@@ -220,8 +201,7 @@ Then read the wall time of `POST /mcp` invocations over 59 seconds with their ou
 user-agent families. The user-agent read also lets the Grok, Copilot and browser loops in "Triage the
 runtime and client gaps" be attributed.
 
-Done when: round item 3.2 has shipped the timeouts, and the `execute` timeout has a recorded
-decision from the follow-up read.
+Done when: the `execute` timeout has a recorded decision from the follow-up read.
 
 ### Re-verify each external client limit when its version changes
 
@@ -828,13 +808,16 @@ Done when: one reviewed, measured correction makes the shape clear to models.
 
 Each needs a check before a fix:
 
-- `scout.matchPartners` returned the upstream "AI not configured" failure on every call. Check
-  live Scout; if it still fails, remove it from the exposed surface (ADR-0003). 2026-11-17: it
-  still fails, now with HTTP 503 "AI matchmaking isn't available right now" and the hint "fall back
-  to GET /api/partners filters (scout.getPartners); do not retry". Decide: remove the operation, or
-  keep it with its hint (the hint already routes to `scout.getPartners`).
-- `execute` failures have no error class. Add a bounded `errorName` (SyntaxError, TypeError,
-  ReferenceError, timeout) to the `execute` event and span, with no message text.
+- `scout.matchPartners` returned the upstream "AI not configured" failure on every call; live Scout
+  now answers HTTP 503 "AI matchmaking isn't available right now". Decision (orchestrator,
+  2026-11-17): keep it exposed. The adapter's 503 hint routes to `scout.getPartners`. Measured the
+  same day: removing it held every legacy, extended and skills grade and total, but moved the frozen
+  holdout lane's forbidden captures from 10 to 11 (ceiling 10) through a lexical corpus shift, and
+  dropped `scout.searchRepos` from a pinned top five in `test/search.test.ts`. To recreate the
+  removal, add one line, `["POST /api/partners/match", "matchPartners"],`, to
+  `EXCLUDED_SCOUT_OPERATIONS` in `src/policy/scout-exposure.ts`, then run the normal rebuild and
+  make the test and eval edits listed in the item 3.2 [EXEC.md](rounds/2026-11-16-next-phase/items/3.2/EXEC.md).
+  Revisit when the upstream answers again, or when a catalog change leaves holdout headroom.
 - `recoveryHint` appears on most successful executes, so agents probably ignore it. Show it only
   for empty, thin, or conflicting results.
 - The Playground often stopped at `DEMO_CAPS.maxOutputTokens` (4096). Review the cap.
@@ -848,14 +831,18 @@ The review's evidence is in the owner's private snapshot `2026-10-26-hackmeridia
 (`usage/README.md`).
 
 Production read (round item 3.1, 6.5 days): `scout.matchPartners` still failed on nearly every
-call, which supports removing it. Most failed `execute` runs ran no operation (script failures),
-which supports adding `errorName`. Playground replies that stopped at the output cap were rare, so
+call; the decision and its measurement are in the first bullet. Playground replies that stopped at the output cap were rare, so
 the cap review can close as "no change" unless the owner sees otherwise. `recoveryHint` could not be
 read: its key was not in the capped key list ("Ship the cap decisions from the production read"
 has the follow-up). The client loops could not be attributed: user-agent queries returned no rows,
 and `/mcp` 401 responses are a large share of requests whatever the client.
 
 Done when: each bullet has a merged fix or a recorded "no change" decision.
+
+Shipped (round item 3.2): the bounded `execute` `errorName` (SyntaxError, TypeError, ReferenceError,
+timeout, other) on the event and span. Out of scope there: a script that throws a non-Error
+(`throw "x"`) has no `err.message`, so `@cloudflare/codemode` returns no error and the run is
+recorded as `ok: true`; `errorName` never sees it.
 
 ### Explain the soft-empty and skipped-write anomalies from the production read
 

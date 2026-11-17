@@ -19,7 +19,7 @@ import type { FetchLike } from "../src/adapters/types.ts";
 import { lazyPinnedSkillSource as skillSource } from "./helpers/skill-source.ts";
 import { evidenceCheckpointBlock } from "../src/policy/evidence-checkpoint.ts";
 
-const ok = (op: string): OpLedgerCall => ({ op, outcome: "ok", hasServiceData: true, ms: 0 });
+const ok = (op: string): OpLedgerCall => ({ op, outcome: "ok", hasServiceData: true, attempts: 1, finalStatus: "200", ms: 0 });
 const hintFor = (...ops: string[]) => {
   const ledger = ops.map(ok);
   return evidenceRecoveryHint(ledger, summarizeOperationLedger(ledger));
