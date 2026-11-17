@@ -38,18 +38,22 @@ Held-out status: the first-principles split is void, because the 2026-11-14 gold
 rebuilt the battery. The current split is drawn by the rule in
 [`eval/qa/README.md`](../eval/qa/README.md) ("Held-out split") from the 247 headline cases:
 
-- SHA-256 `c8796ec14c4d77d114693cfcf5a51a9f5da80a6506956bb7f88c6992725f4b15`.
-- 86 tuning, 114 held-out, and 47 reserve cases.
-- The file is on the owner's Linux machine at `~/backups/gca-2026-11-14-split-v5.json`. It
-  replaces `gca-2026-11-14-split-v4.json` (SHA-256
-  `58ad28bb903fcd7c72122de4ca13f93438a42b92a6987dcbce7d6c3f8096c191`, 81/117/49), which stays in
-  place, and v3 (80/118/49) and v2 (79/119/49) before it. A Mac copy of v2, v3 or v4, or an id
-  list taken from any of them, is stale. Tuning scans pass
-  `--split ~/backups/gca-2026-11-14-split-v5.json`.
+- SHA-256 `04107a463c462eecb02a64fe0b69fab6cb4a1bc388197c3e3a01107e9350c362`.
+- 87 tuning, 113 held-out, and 47 reserve cases.
+- The file is on the owner's Linux machine at `~/backups/gca-2026-11-14-split-v6.json`. It
+  replaces `gca-2026-11-14-split-v5.json` (SHA-256
+  `c8796ec14c4d77d114693cfcf5a51a9f5da80a6506956bb7f88c6992725f4b15`, 86/114/47), which stays in
+  place, and v4 (81/117/49), v3 (80/118/49) and v2 (79/119/49) before it. A Mac copy of an
+  earlier split, or an id list taken from one, is stale. Tuning scans pass
+  `--split ~/backups/gca-2026-11-14-split-v6.json`.
 - v5 is a dated amendment of v4 by the orchestrator's answer in
   [round item 1.4 `QUESTION.md`](rounds/2026-11-16-next-phase/items/1.4/QUESTION.md): five
   dated-golden cases moved to tuning so the dated runs (round items 2.1 and 2.2) can open and edit
   them. In the v5 note, "scheduled" means "has a `reverifyBy`".
+- v6 is a dated amendment of v5 by the orchestrator's answer in
+  [round item 1.4 `FOLLOWUP.md`](rounds/2026-11-16-next-phase/items/1.4/FOLLOWUP.md): one case
+  whose provenance an incidental search in the item 1.4 Codex review displayed moved to tuning.
+  A script took its id from the session log; nobody saw it.
 
 Two tuning loops tuned on the tuning rows ([loop 1](rounds/2026-11-14-baseline-tuning.md),
 [loop 2](rounds/2026-11-15-tuning-loop-2.md)). The audit's battery test read the answers of 70
@@ -57,9 +61,9 @@ headline cases before the draw ([ids](rounds/2026-11-14-golden-coverage-audit/qa
 baseline and one read per loop ran the held-out rows, counts only. One held-out answer was exposed
 (loop 2); it moved to tuning on 2026-11-16 (decision 2(b)). One more case moved to tuning on
 2026-11-17 (round item 1.1, orchestrator's answer in its `QUESTION.md`), because its notes were
-opened and edited, and five more on 2026-11-17 (round item 1.4, v5; see the owner decision below).
-The stored held-out reads and their thresholds are on 119 rows, and a future read pairs on v5's
-114. An item may name a case by ID; never record which set a case is in, and tune no product change on a held-out or reserve case.
+opened and edited, five more on 2026-11-17 (round item 1.4, v5; see the owner decision below),
+and one more the same day (v6). The stored held-out reads and their thresholds are on 119 rows,
+and a future read pairs on v6's 113. An item may name a case by ID; never record which set a case is in, and tune no product change on a held-out or reserve case.
 
 Routing and discovery rows whose question matches a QA headline question are confirmation-only:
 [`eval/routing-qa-overlap.json`](../eval/routing-qa-overlap.json) lists them, and no lane tunes on
@@ -424,7 +428,7 @@ tuning once an agent has opened it. A dated golden edit must open its case, so e
 Round item 1.4 took option 1 (amend split v5 now) by the orchestrator's answer in its
 [`QUESTION.md`](rounds/2026-11-16-next-phase/items/1.4/QUESTION.md). Counts only:
 
-- 67 cases outside tuning carry a `reverifyBy`. Each one is exposed when its date comes due, so
+- 66 cases outside tuning carry a `reverifyBy` (split v6). Each one is exposed when its date comes due, so
   option 1 erodes the held-out set every quarter. The next such date is 2027-01-14.
 - Option 2 is the durable fix: a golden-maintenance lane that changes no product code may open a
   held-out or reserve case without moving it. It changes the README rule and owner decision 2, so
