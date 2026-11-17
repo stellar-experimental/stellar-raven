@@ -1,5 +1,5 @@
 /**
- * build-micro-map.mjs — staleness and guard coverage for the generated
+ * build-family-text.mjs — staleness and guard coverage for the generated
  * family line that sits inside the `search` description.
  */
 import { describe, expect, it } from "vitest";
@@ -8,39 +8,39 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   assertGeneratedTextNoNonExposedRefs,
-  buildMicroMap,
+  buildFamilyText,
   renderCorroborationTs,
   renderTs,
   searchOpening
-} from "../scripts/build-micro-map.mjs";
-import * as emitted from "../src/mcp/micro-map.ts";
+} from "../scripts/build-family-text.mjs";
+import * as emitted from "../src/mcp/family-text.ts";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const MANIFEST_PATH = join(ROOT, "catalog", "manifest.json");
-const MICRO_MAP_PATH = join(ROOT, "src", "mcp", "micro-map.ts");
+const FAMILY_TEXT_PATH = join(ROOT, "src", "mcp", "family-text.ts");
 const CORROBORATION_PATH = join(ROOT, "src", "policy", "corroboration.ts");
 
-const committed = readFileSync(MICRO_MAP_PATH, "utf8");
+const committed = readFileSync(FAMILY_TEXT_PATH, "utf8");
 const manifest = JSON.parse(readFileSync(MANIFEST_PATH, "utf8"));
 
-describe("build-micro-map.mjs", () => {
+describe("build-family-text.mjs", () => {
   it("the checked-in generated file matches the in-memory render", () => {
-    expect(committed, "src/mcp/micro-map.ts is stale — run node scripts/build-micro-map.mjs").toBe(
-      renderTs(buildMicroMap(manifest))
+    expect(committed, "src/mcp/family-text.ts is stale — run node scripts/build-family-text.mjs").toBe(
+      renderTs(buildFamilyText(manifest))
     );
   });
 
   it("the checked-in corroboration module matches the in-memory render", () => {
     expect(
       readFileSync(CORROBORATION_PATH, "utf8"),
-      "src/policy/corroboration.ts is stale — run node scripts/build-micro-map.mjs"
-    ).toBe(renderCorroborationTs(buildMicroMap(manifest)));
+      "src/policy/corroboration.ts is stale — run node scripts/build-family-text.mjs"
+    ).toBe(renderCorroborationTs(buildFamilyText(manifest)));
   });
 
-  it("emits only the family line and the search opening to micro-map.ts: the per-family source map is not generated", () => {
+  it("emits only the family line and the search opening to family-text.ts: the per-family source map is not generated", () => {
     // Length is bounded by the `search` description guard in test/mcp-instructions.test.ts.
     expect(Object.keys(emitted)).toEqual(["FAMILY_LINE", "SEARCH_OPENING"]);
-    expect(buildMicroMap(manifest)).toMatchObject({ familyLine: emitted.FAMILY_LINE, searchOpening: emitted.SEARCH_OPENING });
+    expect(buildFamilyText(manifest)).toMatchObject({ familyLine: emitted.FAMILY_LINE, searchOpening: emitted.SEARCH_OPENING });
     expect(committed).not.toContain("MICRO_MAP");
   });
 

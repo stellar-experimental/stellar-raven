@@ -5,11 +5,11 @@
 import { createHash } from "node:crypto";
 import { describe, expect, it } from "vitest";
 import {
-  buildMicroMap,
+  buildFamilyText,
   corroborationGuard,
   renderCorroborationTs,
   validateCorroboratingFamilies
-} from "../scripts/build-micro-map.mjs";
+} from "../scripts/build-family-text.mjs";
 import { CORROBORATING_FAMILIES, CORROBORATION_GUARD_TEMPLATE } from "../scripts/catalog-data/source-families.mjs";
 import { CORROBORATING_FAMILY_IDS, CORROBORATION_GUARD } from "../src/policy/corroboration.ts";
 import { getCatalog } from "../src/catalog/load.ts";
@@ -30,7 +30,7 @@ describe("the guard sentence", () => {
     expect(CORROBORATION_GUARD).toHaveLength(415);
     expect(CORROBORATING_FAMILY_IDS).toEqual(CORROBORATING_FAMILIES.map(({ family }) => family));
     const manifest = { entries: getCatalog().entries };
-    expect(renderCorroborationTs(buildMicroMap(manifest))).toContain(`"${CORROBORATION_GUARD.slice(0, 20)}`);
+    expect(renderCorroborationTs(buildFamilyText(manifest))).toContain(`"${CORROBORATION_GUARD.slice(0, 20)}`);
   });
 
   it("lengthens by the name of a family added as data, and by nothing else", () => {

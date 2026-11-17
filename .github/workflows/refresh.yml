@@ -172,7 +172,7 @@ jobs:
           } > .env
       - run: node scripts/refresh-inventory.mjs
       - run: node scripts/build-catalog.mjs
-      - run: npm run micro-map:build
+      - run: npm run family-text:build
       - run: npm run spec:build
       # Detection only — never runs ecosystem-skills/update.sh from CI (mirrored
       # skills are prompt input; upstream edits go through human review). Reads
@@ -404,7 +404,7 @@ jobs:
       # skills-HEAD, anchor capture error — is captured as an enum above and reported in
       # the drift issue with its own remediation, so it never lands here. What
       # remains is a real script fault (refresh-inventory / build-catalog /
-      # micro-map / spec:build) that died before drift detection completed, which
+      # family-text / spec:build) that died before drift detection completed, which
       # would otherwise be just a red scheduled run. Gated on the drift step NOT
       # having succeeded, so the intentional exit-1 steps above don't trip this.
       # Static body only — never echoes .env / secret values.
@@ -417,7 +417,7 @@ jobs:
             echo '### Refresh job crashed'
             echo
             echo 'The daily refresh failed BEFORE drift detection completed — an UNCLASSIFIED'
-            echo 'script error (refresh-inventory / build-catalog / micro-map / spec:build).'
+            echo 'script error (refresh-inventory / build-catalog / family-text / spec:build).'
             echo
             echo 'Every known drift class is captured as an enum and reported in the drift issue'
             echo 'with its own remediation — an unresolvable skill pin, stale QA gospel, inventory'

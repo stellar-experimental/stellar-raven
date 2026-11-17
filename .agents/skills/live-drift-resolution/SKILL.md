@@ -29,7 +29,7 @@ issue text or the upstream changelog. Run in order:
 npm run docs:anchors:build            # sitemap + headings -> src/adapters/stellar-docs-anchors.json
 node scripts/refresh-inventory.mjs    # live upstream -> inventory/*.json
 node scripts/build-catalog.mjs        # inventory -> catalog/manifest.json, with exposure guards
-npm run micro-map:build               # catalog + family line -> src/mcp/micro-map.ts
+npm run family-text:build               # catalog + family line -> src/mcp/family-text.ts
 npm run spec:build                    # catalog -> specs/super-spec.json
 node eval/plan/build-op-classes.mjs   # catalog -> eval/plan/op-classes.json
 ```
@@ -52,7 +52,7 @@ node eval/plan/build-op-classes.mjs   # catalog -> eval/plan/op-classes.json
   node scripts/check-pin-review.mjs --base origin/main
   ```
 
-  then rebuild the catalog, micro-map, spec, and op classes. Skill bodies are fetched and verified
+  then rebuild the catalog, family-text, spec, and op classes. Skill bodies are fetched and verified
   at read time from the pinned commit, so a re-pin changes what the model reads. Read the body diff
   before you commit it.
 

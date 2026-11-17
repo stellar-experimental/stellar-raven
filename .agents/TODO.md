@@ -127,7 +127,7 @@ disputes disappear, and no answer with a truly unsupported claim is graded up.
 
 Source: [caps audit](../research/audits/2026-11-14-caps-audit.md). The audit changed no cap that
 reaches the model. Tuning loop 2 decided two of its three measured caps without a paid test of their
-own: seven search cards by default (M1, kept) and the micro-map (M3, removed); see
+own: seven search cards by default (M1, kept) and the source map (M3, removed); see
 [the round ledger](rounds/2026-11-15-tuning-loop-2.md). The first item below holds what is left of the third. The
 free telemetry read of four more caps is done; its decisions are in the second. A paid test needs
 its own written authorization under the `run-evals` skill; none is granted here. Run the free step
@@ -222,23 +222,9 @@ guard: `test/mcp-instructions.test.ts` pins the instructions and both tool descr
 ## Tuning loop 2 follow-ups
 
 Record: [round ledger](rounds/2026-11-15-tuning-loop-2.md) and its P0, P1, P2 and R files. The loop
-kept the corroboration guard, the micro-map removal, the delivery text, the `stellarOrg` source,
+kept the corroboration guard, the source-map removal, the delivery text, the `stellarOrg` source,
 seven cards and the title-case rule for exact rows. It did not ship the identifier pointer. Each
 item below is evidence for what it names, not an improvement claim.
-
-### Rename the micro-map files for what they emit
-
-The guard is in the result and the map is gone from the served instructions, but the generator and
-its output still carry the old name: `src/mcp/micro-map.ts`, `scripts/build-micro-map.mjs`,
-`npm run micro-map:build`, `test/micro-map.test.mjs`, and the CI and skill references to them.
-They now emit the instructions text, the family line of `search`, and the guard sentence. Rename
-them for that, and assert the served hashes are unchanged (surface `42ec6102…f17f`, instructions
-`67a6bd0b…6c00`).
-
-Round item 3.5 does this.
-
-Done when: no tracked file outside dated records says `micro-map`, and the surface hash is still
-`42ec6102…f17f`.
 
 ### Carry the guard to absence-of-standard statements
 

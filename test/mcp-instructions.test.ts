@@ -12,7 +12,7 @@
  * do not pin wording beyond the rules a model acts on.
  */
 import { describe, expect, it } from "vitest";
-import { assertGeneratedTextNoNonExposedRefs } from "../scripts/build-micro-map.mjs";
+import { assertGeneratedTextNoNonExposedRefs } from "../scripts/build-family-text.mjs";
 import { getCatalog } from "../src/catalog/load";
 import {
   CLAUDE_CODE_INSTRUCTIONS_CAP_CHARS,
@@ -21,7 +21,7 @@ import {
   GROK_CUT_CHARS,
   OPENCODE_LISTING_CHARS
 } from "./helpers/mcp-tool-metadata";
-import { SEARCH_OPENING } from "../src/mcp/micro-map";
+import { SEARCH_OPENING } from "../src/mcp/family-text";
 import {
   BASE_SERVER_INSTRUCTIONS,
   EXECUTE_DESCRIPTION,

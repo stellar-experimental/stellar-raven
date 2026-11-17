@@ -1,8 +1,8 @@
 /**
  * Source-family orientation for the `search` description.
  *
- * `FAMILY_LINE` is authored text, emitted by scripts/build-micro-map.mjs into
- * src/mcp/micro-map.ts and guarded at build time by the ADR-0003 text checks.
+ * `FAMILY_LINE` is authored text, emitted by scripts/build-family-text.mjs into
+ * src/mcp/family-text.ts and guarded at build time by the ADR-0003 text checks.
  * It carries no operation chains: `search` ranks operations, and a second router
  * written in prose drifts from it.
  */

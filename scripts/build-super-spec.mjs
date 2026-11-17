@@ -904,7 +904,7 @@ async function main() {
   // ADR-0003 leak guard over the WHOLE emitted spec, not just its paths. This
   // artifact is serialized into the sandbox and returned by codemode.spec(), so
   // it is emitted text by the same definition build-catalog.mjs and
-  // build-micro-map.mjs already guard. Running it here closes the coverage hole
+  // build-family-text.mjs already guard. Running it here closes the coverage hole
   // that let scout.FeedbackRequest's description ship the excluded
   // "/api/feedback" path; fail the build rather than write the leak.
   assertNoNonExposedRefsInText(JSON.stringify(sorted), "specs/super-spec.json");
