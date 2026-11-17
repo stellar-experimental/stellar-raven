@@ -1,0 +1,272 @@
+/**
+ * The case-search guard (scripts/agent-hooks/case-search-guard.mjs): a table of commands it must
+ * deny and must pass, real PreToolUse payloads piped to the script, and the settings wiring.
+ */
+import { spawnSync } from "node:child_process";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+import { describe, expect, it } from "vitest";
+import { decide, loadEntries } from "../scripts/agent-hooks/case-search-guard.mjs";
+
+const REPO = join(import.meta.dirname, "..");
+const SCRIPT = join(REPO, "scripts/agent-hooks/case-search-guard.mjs");
+const entries = loadEntries(REPO);
+
+const bash = (command, cwd = REPO) => decide({ toolName: "Bash", toolInput: { command }, cwd, entries, projectDir: REPO });
+const grepTool = (toolInput, cwd = REPO) => decide({ toolName: "Grep", toolInput, cwd, entries, projectDir: REPO });
+
+const FULL_EXCLUSION = [
+  ":!eval/qa",
+  ":!eval/corpus",
+  ":!eval/holdout-cases.json",
+  ":!eval/protocol-history-blind-cases.json",
+  ":!eval/protocol-history-blind-cases-v2.json",
+  ":!.agents/rounds/2026-11-02-golden-audit",
+  ":!.agents/rounds/2026-11-14-golden-coverage-audit",
+]
+  .map((spec) => `'${spec}'`)
+  .join(" ");
+
+const MUST_DENY = [
+  // recursive grep, every spelling
+  "grep -r X .",
+  "grep -R X .",
+  "grep -rn X src",
+  "grep -nr X src",
+  "grep -inrE 'a|b' .",
+  "grep --recursive X .",
+  "grep --dereference-recursive X .",
+  "grep -d recurse X .",
+  "grep -drecurse X .",
+  "grep --directories=recurse X .",
+  "egrep -r X .",
+  "fgrep -r X .",
+  "/usr/bin/grep -r X .",
+  "\\grep -r X .",
+  // command position behind wrappers, separators and substitutions
+  "sudo grep -r X .",
+  "env FOO=1 grep -r X .",
+  "command grep -r X .",
+  "echo start; grep -r X .",
+  "true && grep -r X .",
+  "false || grep -r X .",
+  "cat list | grep -r X .",
+  "(grep -r X .)",
+  "{ grep -r X .; }",
+  "echo $(grep -r X .)",
+  'echo "$(grep -r X .)"',
+  "echo `grep -r X .`",
+  "bash -c 'grep -r X .'",
+  'sh -c "cd src && grep -r X ."',
+  "eval 'grep -r X .'",
+  "cat <<EOF\n$(grep -r X .)\nEOF",
+  "cd eval && grep -r X .",
+  // git grep without a full exclusion
+  "git grep X",
+  "git -C . grep X",
+  "git --no-pager grep X",
+  "git grep X -- ':!eval/qa' ':!eval/corpus'",
+  "git grep X -- eval/qa/corpus",
+  // file lists into a search
+  "git ls-files | xargs grep X",
+  "git ls-files | xargs rg X",
+  "find . -name '*.json' | xargs -n1 grep X",
+  "find . -type f -exec grep X {} +",
+  "find . -type f -exec rg X {} +",
+  "rg X $(git ls-files)",
+  "rg X `git ls-files`",
+  "grep X $(git ls-files)",
+  // rg flags that drop the ignore files
+  "rg -u X",
+  "rg -uu X",
+  "rg -uuu X",
+  "rg -iu X",
+  "rg --unrestricted X",
+  "rg --no-ignore X",
+  "rg --no-ignore-vcs X",
+  "rg --no-ignore-dot X",
+  "rg --no-ignore-parent X",
+  // positive globs that re-include a file-level entry
+  "rg -g '*.json' X",
+  "rg -g'*.json' X",
+  "rg --glob '*.json' X eval",
+  "rg --glob='*.json' X",
+  "rg --iglob '*CASES*' X",
+  "rg -g '*cases*' X",
+  "rg --files -g '*.json'",
+  "rg --hidden -g '*.json' CANARY eval",
+  "rg -g '*.json' -g '!*.ts' X",
+  "rg -g 'qa/*.json' X",
+  "rg -g '*' X",
+  // shell globs and brace lists over the case folders
+  "rg X eval/qa/*",
+  "rg X eval/*",
+  "rg X eval/qa/*.json",
+  "rg X ./eval/qa/*.json",
+  "rg X eval/qa/{cases,sample}.json",
+  "rg --hidden X .agents/rounds/*",
+  "rg X .agents/*",
+  "grep X eval/qa/*.json",
+  `grep X ${REPO}/eval/qa/*.json`,
+  "cd eval/qa && rg X *",
+];
+
+const MUST_PASS = [
+  "grep X file",
+  "grep -n X file.txt",
+  "grep -e r file",
+  "grep -A3 -B2 X file",
+  "grep -E 'a|b' file",
+  "grep -m1 r file",
+  "grep -- -r file",
+  "ps aux | grep node",
+  "git log --grep=X",
+  "git log --grep X",
+  "git log -S X --oneline",
+  "git -C . log --grep X",
+  "rg X",
+  "rg X src",
+  "rg X eval/qa/corpus",
+  "rg X eval/qa/cases.json",
+  "rg --hidden -g '!.git' X",
+  "rg --hidden -g '!.git' X src eval",
+  "rg -trust X",
+  "rg -tjson X",
+  "rg -t json X",
+  "rg -g '!*.ts' X",
+  "rg -g '*.ts' X src",
+  "rg -g '*.json' X src",
+  "rg -g '*.json' X eval/qa/corpus",
+  "rg 'eval/*' src",
+  "rg --version",
+  "command -v rg",
+  "rg -l X | head",
+  `git grep X -- ${FULL_EXCLUSION}`,
+  "git grep X -- ':(exclude)eval' ':(exclude).agents'",
+  "git commit -m \"deny git grep and grep -r in agent hooks\"",
+  "git commit -m 'rg -u and grep -r are denied'",
+  "gh pr create --title t --body \"grep -r, git grep and rg -u are denied by the hook\"",
+  "echo \"grep -r X .\"",
+  "printf '%s' 'git grep X'",
+  "cat <<'EOF'\ngrep -r X .\ngit grep X\nEOF",
+  "git commit -F - <<EOF\nthe rule bans grep -r\nEOF",
+  "cat <<EOF > note.md\nrg -u and grep -r\nEOF",
+  "# grep -r X .",
+  "npm test 2>&1 | tail -5",
+  "find . -name '*.ts'",
+  "ls eval/qa",
+  // per-segment opt-in
+  "CASE_TEXT=maintenance grep -r X eval/qa/corpus",
+  "cd eval/qa && CASE_TEXT=maintenance grep -r X corpus",
+  "CASE_TEXT=maintenance git grep X",
+  "CASE_TEXT=maintenance rg -u X",
+];
+
+describe("case-search guard decisions", () => {
+  it.each(MUST_DENY)("denies %j", (command) => {
+    expect(bash(command).deny, command).toBe(true);
+  });
+
+  it.each(MUST_PASS)("passes %j", (command) => {
+    expect(bash(command).deny, command).toBe(false);
+  });
+
+  it("applies the opt-in to its own segment only", () => {
+    expect(bash("CASE_TEXT=maintenance true && grep -r X .").deny).toBe(true);
+  });
+
+  it("denies a glob from a working directory that sits above the listed path", () => {
+    expect(bash("rg -g '*.json' X", join(REPO, "eval")).deny).toBe(true);
+    expect(bash("rg -g '*.json' X", join(REPO, "src")).deny).toBe(false);
+    expect(bash("rg X *", join(REPO, "eval/qa")).deny).toBe(true);
+  });
+
+  it("covers the Grep tool: a positive glob through an unset or ancestor path", () => {
+    expect(grepTool({ pattern: "X", glob: "*.json" }).deny).toBe(true);
+    expect(grepTool({ pattern: "X", glob: "*.json", path: "." }).deny).toBe(true);
+    expect(grepTool({ pattern: "X", glob: "*.json", path: "eval" }).deny).toBe(true);
+    expect(grepTool({ pattern: "X", glob: "*cases*", path: "eval/qa" }).deny).toBe(true);
+    expect(grepTool({ pattern: "X" }).deny).toBe(false);
+    expect(grepTool({ pattern: "X", glob: "*.ts" }).deny).toBe(false);
+    expect(grepTool({ pattern: "X", glob: "*.json", path: "src" }).deny).toBe(false);
+    expect(grepTool({ pattern: "X", glob: "*.json", path: "eval/qa/corpus" }).deny).toBe(false);
+    expect(grepTool({ pattern: "X", glob: "!*.json" }).deny).toBe(false);
+  });
+
+  it("ignores other tools and malformed input", () => {
+    expect(decide({ toolName: "Read", toolInput: { file_path: "eval/qa/cases.json" }, cwd: REPO, entries, projectDir: REPO }).deny).toBe(false);
+    expect(decide({ toolName: "Bash", toolInput: undefined, cwd: REPO, entries, projectDir: REPO }).deny).toBe(false);
+    expect(decide({ toolName: "Bash", toolInput: { command: 5 }, cwd: REPO, entries, projectDir: REPO }).deny).toBe(false);
+    expect(bash("grep -r 'unterminated").deny).toBe(true);
+    expect(bash("echo \"$(").deny).toBe(false);
+  });
+});
+
+function runHook(stdin) {
+  return spawnSync(process.execPath, [SCRIPT], { input: stdin, encoding: "utf8", cwd: REPO });
+}
+
+describe("case-search guard as a process", () => {
+  it("denies with the documented PreToolUse output and exit 0", () => {
+    const run = runHook(JSON.stringify({ hook_event_name: "PreToolUse", tool_name: "Bash", tool_input: { command: "grep -r CANARY ." }, cwd: REPO }));
+    expect(run.status).toBe(0);
+    const output = JSON.parse(run.stdout);
+    expect(output.hookSpecificOutput.hookEventName).toBe("PreToolUse");
+    expect(output.hookSpecificOutput.permissionDecision).toBe("deny");
+    expect(output.hookSpecificOutput.permissionDecisionReason).toContain("eval/qa/README.md");
+    expect(output.hookSpecificOutput.permissionDecisionReason).not.toContain("CASE_TEXT");
+  });
+
+  it("denies a Grep tool call by glob", () => {
+    const run = runHook(JSON.stringify({ tool_name: "Grep", tool_input: { pattern: "X", glob: "*.json" }, cwd: REPO }));
+    expect(run.status).toBe(0);
+    expect(JSON.parse(run.stdout).hookSpecificOutput.permissionDecision).toBe("deny");
+  });
+
+  it("prints nothing for an allowed call", () => {
+    const run = runHook(JSON.stringify({ tool_name: "Bash", tool_input: { command: "rg X src" }, cwd: REPO }));
+    expect(run.status).toBe(0);
+    expect(run.stdout).toBe("");
+  });
+
+  it("fails open with one stderr line on bad input, exit 0", () => {
+    for (const input of ["", "not json", "null", JSON.stringify({ tool_name: "Bash" })]) {
+      const run = runHook(input);
+      expect(run.status, input).toBe(0);
+      expect(run.stdout, input).toBe("");
+      expect(run.stderr.trim().split("\n").length, input).toBeLessThanOrEqual(1);
+    }
+  });
+});
+
+describe("case-search guard wiring", () => {
+  const settings = JSON.parse(readFileSync(join(REPO, ".claude/settings.json"), "utf8"));
+  const [group] = settings.hooks.PreToolUse;
+  const [hook] = group.hooks;
+
+  it("runs the guard from $CLAUDE_PROJECT_DIR on Bash and Grep with a short timeout", () => {
+    expect(settings.hooks.PreToolUse).toHaveLength(1);
+    expect(group.matcher).toBe("Bash|Grep");
+    expect(group.hooks).toHaveLength(1);
+    expect(hook.type).toBe("command");
+    expect(hook.command).toBe('node "$CLAUDE_PROJECT_DIR"/scripts/agent-hooks/case-search-guard.mjs');
+    expect(hook.timeout).toBeGreaterThan(0);
+    expect(hook.timeout).toBeLessThanOrEqual(10);
+  });
+
+  it("names a tracked script that is not git-ignored, with the settings file tracked too", () => {
+    const tracked = (path) => spawnSync("git", ["ls-files", "--error-unmatch", path], { cwd: REPO }).status;
+    expect(tracked("scripts/agent-hooks/case-search-guard.mjs")).toBe(0);
+    expect(tracked(".claude/settings.json")).toBe(0);
+    expect(spawnSync("git", ["check-ignore", "-q", ".claude/settings.json"], { cwd: REPO }).status).toBe(1);
+  });
+
+  it("imports Node built-ins only", () => {
+    const source = readFileSync(SCRIPT, "utf8");
+    const specifiers = [...source.matchAll(/^import\s.*?from\s+"([^"]+)"/gm)].map((m) => m[1]);
+    expect(specifiers.length).toBeGreaterThan(0);
+    for (const specifier of specifiers) expect(specifier).toMatch(/^node:/);
+    expect(source).not.toMatch(/\bimport\s*\(/);
+    expect(source).not.toMatch(/\brequire\s*\(/);
+  });
+});

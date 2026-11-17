@@ -30,6 +30,8 @@ env.d.ts
 # No trailing slash on the negation: it must re-include the symlink, not just a dir.
 .claude/*
 !.claude/skills
+# settings.json is committed: it wires scripts/agent-hooks/case-search-guard.mjs.
+!.claude/settings.json
 
 # eval run outputs — local-only; summaries live in the eval READMEs
 eval/results/

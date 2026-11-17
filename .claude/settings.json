@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Grep",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR\"/scripts/agent-hooks/case-search-guard.mjs",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}
