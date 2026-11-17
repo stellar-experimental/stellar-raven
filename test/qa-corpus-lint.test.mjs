@@ -649,10 +649,12 @@ describe("QA lint never prints judge-facing text", () => {
       writeJson(join(dir, "protocol-core/q-marker-broken.json"), `{"question": ${MARK}}`);
       const { findings } = loadLifecycleLane(dir, "proposed");
       const reason = decodeStrkey(BROKEN_STRKEY).reason;
-      expect(findings.map((item) => item.message)).toEqual(expect.arrayContaining([
-        expect.stringMatching(/q-marker-broken\.json: invalid JSON( at (?:line \d+ column \d+|position \d+))?$/),
-        expect.stringMatching(new RegExp(`q-marker-strkey\\.json: invalid strkey at \\$\\.golden\\.answer \\(${reason.replace(/[()]/g, "\\$&")}\\)$`))
+      const messages = findings.map((item) => item.message);
+      expect(messages).toEqual(expect.arrayContaining([
+        expect.stringMatching(/q-marker-broken\.json: invalid JSON( at (?:line \d+ column \d+|position \d+))?$/)
       ]));
+      const strkeyTail = `q-marker-strkey.json: invalid strkey at $.golden.answer (${reason})`;
+      expect(messages.some((message) => message.endsWith(strkeyTail)), strkeyTail).toBe(true);
       expect(findings).toHaveLength(2);
       expect(clean(findings)).toEqual([]);
     }));
