@@ -99,6 +99,21 @@ in the order 6.1, 6.2, 6.3.
 - **`@cloudflare/codemode` 0.5.1 to 0.5.6** (round item 6.1). Owner: "makes sense, do it, updates and
   progress is good especially if there are new features we can benefit from".
 
+## Follow-up answers (2026-11-17, after item 6.3)
+
+The owner answered three proposals after item 6.3 on 2026-11-17. The items run one at a time, in the
+order 7.1, 7.2, 7.3.
+
+- **Keep agents out of the case folders** (round item 7.1). Owner: "review carefully on pros and cons
+  and decide against a Fable and Sonnet hc agent and then carry out and if there are files and folders
+  or data that should just be flushed or code paths that should be removed, do so, just carefully and
+  with consideration".
+- **RWA card caveat and A/B** (round item 7.2). Owner: "sounds good, do it, I'd love to be able to
+  reasonably clear the RWA issue if possible".
+- **Dependency updates** (round item 7.3): routine patches, then `agents` 0.33 and the MCP SDK 2.4,
+  then the OAuth provider 1.x with a security review. Owner: "sounds good, research, review, test and
+  eval and decide and execute what sticks".
+
 ## Timing
 
 The work for the P30 Mainnet vote runs from a one-shot timer on agentpc at

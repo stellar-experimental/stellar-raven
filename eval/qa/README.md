@@ -268,6 +268,61 @@ outside the lane who sees the content still triggers the move. The exception mov
 back: a case already in tuning stays there. A held-out read reports, as a count, the cases with
 a judge-facing change since the split was drawn and since the read it is compared with.
 
+### Searching without reading case text
+
+A recursive search of the repository must not put golden, held-out or reserve text in an agent's
+context. Three parent-folder `.ignore` files carry the paths, and ripgrep skips them from any
+starting folder; an explicit path argument still searches them:
+
+| File | Entries |
+|---|---|
+| `eval/.ignore` | `corpus/`, `holdout-cases.json`, `protocol-history-blind-cases.json`, `protocol-history-blind-cases-v2.json` |
+| `eval/qa/.ignore` | `corpus/`, `reviewed/`, `results/`, `cases.json`, `sample.json`, `tool-cases.json`, `consistency-register.json`, `source-sentinels.json` |
+| `.agents/rounds/.ignore` | `2026-11-02-golden-audit/`, `2026-11-14-golden-coverage-audit/` |
+
+`test/case-search-ignore.test.mjs` pins the entries and runs real ripgrep over a canary tree. CI
+installs ripgrep and fails that test when it is missing; locally the behavior test skips with a
+printed reason when `rg` is not on `PATH`. In a Claude Code shell `rg` is a function that runs the
+Claude binary, so it is absent from a plain `bash -c`.
+
+**How to search.** Use `rg --hidden -g '!.git' <pattern> [path]`. Plain `rg` also skips hidden
+folders, so it never reaches `.agents/`, `.github/` or `.claude/`; `--hidden` with `!.git` fixes that
+without walking `.git/`. Where `rg` is missing, use `git grep` with an exclusion for every listed path:
+
+```sh
+git grep <pattern> -- . ':!eval/qa' ':!eval/corpus' ':!eval/holdout-cases.json' \
+  ':!eval/protocol-history-blind-cases.json' ':!eval/protocol-history-blind-cases-v2.json' \
+  ':!.agents/rounds/2026-11-02-golden-audit' ':!.agents/rounds/2026-11-14-golden-coverage-audit'
+```
+
+**The Claude Code hook.** `.claude/settings.json` runs `scripts/agent-hooks/case-search-guard.mjs`
+before every Bash and Grep call. It parses the command quote-aware and denies, for a segment whose
+command word is the search tool: `grep -r`/`-R`/`--recursive` (and `-d recurse`); `git grep` without
+the full exclusion above; `rg -u`/`--unrestricted`/`--no-ignore*`; a positive `-g`, `--glob` or
+`--iglob` that matches a listed name; a shell glob over `eval/` or `.agents/`; a `$(...)` file list;
+and `xargs` or `find -exec` running `grep` or `rg`. The Grep tool is denied for a `glob` that matches
+a listed name through an unset or ancestor `path`. It blocks and never rewrites, fails open on any
+internal error, and runs in every Claude session in a checkout, including a checked-out pull request
+branch. A worktree branched before the hook merged has none. The guard's `rg` rules were probed
+live; its Grep-tool branch is unit-tested only, so the rule names `rg`.
+
+**Opt-in.** A golden-maintenance lane working under the maintenance exception above prefixes the
+search segment with `CASE_TEXT=maintenance` (a segment-level environment prefix, for example
+`cd eval/qa && CASE_TEXT=maintenance rg -u <pattern> corpus`) or opens a file by its exact path. No
+other lane does.
+
+**What the guard does not stop.** `cat`, the Read tool, `git diff`, `git show`, `git log -p`, an
+explicit path to a listed file, a pull request's diff, and any lane that is not a Claude Code
+session. `rg -g '*.json'` re-includes a file-level entry, so the hook denies it; Codex and Grok lanes
+rely on the rule in `AGENTS.md`. Moving the generated case files into one folder would close that
+hole at the source.
+
+**Copies of golden text.** `eval/qa/case-text-scan.mjs` counts 8-word golden shingles (unique to at
+most two cases) that a file git lists outside the paths above repeats. `npm test` fails when a file
+with 50 or more is not in `case-text-baseline.json`, or exceeds its ceiling. Ceilings carry headroom;
+a pull request that changes the corpus may raise one with a `reason`. The floor catches a bulk copy,
+not a short quote: cite the case id and field, and never quote judge-facing text.
+
 ### Source sentinels
 
 A sentinel re-reads a golden's own primary source and tests one anchor for a volatile value.

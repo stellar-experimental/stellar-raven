@@ -5,6 +5,7 @@ Top-level scripts provide operator commands, CI checks, and shared build policy.
 `improvements-lib.mjs` provides shared finding maintenance functions.
 Files under `scripts/lib/` are shared helpers. Files under `scripts/catalog-data/` are builder data.
 `scripts/git-hooks/` contains the installed hook.
+`scripts/agent-hooks/` holds Claude Code hooks that `.claude/settings.json` wires; `case-search-guard.mjs` denies searches that would read case text.
 Keep a command when a package command, CI check, maintenance workflow, or generated artifact uses it.
 Delete a command only after checking package commands, workflows, documentation, and imports.
 

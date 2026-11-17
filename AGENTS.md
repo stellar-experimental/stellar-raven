@@ -157,6 +157,13 @@ The independent reviewer:
 - Mintlify admin credentials are maintenance-only, never a runtime or sandbox surface. A docs
   search change needs a read-only A/B win and a general mechanism, not a per-query exception
   ([`docs/stellar-docs.md`](docs/stellar-docs.md), "Maintenance").
+- **Search without opening case text.** Search with `rg --hidden -g '!.git' <pattern> [path]`: the
+  `.ignore` files under `eval/`, `eval/qa/` and `.agents/rounds/` make it skip the held-out, reserve
+  and golden-audit paths. Never use `grep -r`, `git grep`, `rg -u` or `--no-ignore`, an `rg -g` glob
+  that matches a case file, or a shell glob over `eval/` or `.agents/rounds/`. A Claude Code hook
+  denies these; Codex and Grok lanes rely on this rule. Where `rg` is missing, use `git grep` with the
+  exclusion pathspec that `eval/qa/README.md` ("Held-out split") prints. Only a golden-maintenance
+  lane opens case text, and it names the exact path.
 - Skills are timeless: no todo IDs, run stamps, or dated state in skill text.
 - Solo, a retired task tracker, is not a live path. Add no `solo://` reference, Solo todo, or Solo
   scratchpad. Leave Solo references in dated records unchanged.
