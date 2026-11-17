@@ -8,6 +8,9 @@ evidence:
   - "2026-11-17 executed on @cloudflare/codemode 0.5.1 in workerd with a LOADER worker_loaders binding: new DynamicWorkerExecutor({ loader }).execute() on 'async () => { throw \"x\"; }' and on 'async () => { throw { code: 1 }; }' returns result undefined and error undefined. Read, not executed: the same line in 0.5.6 (npm latest) dist/index.js:365 and in main packages/codemode/src/executor.ts:511 at commit 366d5b5baf846b4669a2ecd0e61e104aa634432b."
   - "Raven impact: a caller that treats error === undefined as success logs the run as ok. Raven's createExecuteRunner returns { ok: true, result: \"undefined\" } for both throws. A throw of null differs: err.message throws inside the catch block, and the call rejects with TypeError: Cannot read properties of null (reading 'message')."
   - upstream issue filed 2026-11-17: https://github.com/cloudflare/agents/issues/2897
+recurrences:
+  - date: 2026-11-17
+    evidence: "Re-executed on @cloudflare/codemode 0.5.6 in workerd (round item 6.1) with the same scratch test as the 0.5.1 run: DynamicWorkerExecutor.execute() on a thrown string and a thrown plain object returns result undefined and error undefined (keys result,logs); Raven's createExecuteRunner returns ok true with result \"undefined\" for both; a thrown null still rejects with TypeError: Cannot read properties of null (reading 'message'). Upstream fix PR https://github.com/cloudflare/agents/pull/2898 (opened by a bot) is open and unmerged, with bot activity only and no human maintainer."
 ---
 
 ## Finding
@@ -28,12 +31,12 @@ The generated module ends with this catch block (`packages/codemode/src/executor
 ```
 
 The same line is in `@cloudflare/codemode` 0.5.1 (`dist/index.js:307`) and 0.5.6 (`dist/index.js:365`).
-Only 0.5.1 was executed. The 0.5.6 and `main` lines were read, at `main` commit
+0.5.1 and 0.5.6 were both executed (2026-11-17). The `main` line was read, at `main` commit
 `366d5b5baf846b4669a2ecd0e61e104aa634432b`.
 The package already handles this case elsewhere. `dist/browser.js:116` uses `err.message || String(err)`.
 `dist/index.js:239` (0.5.6) uses `err instanceof Error ? err.message : String(err)`.
 
-Observed on 0.5.1, executed in workerd with a `worker_loaders` binding named `LOADER`:
+Observed on 0.5.1, and again unchanged on 0.5.6, executed in workerd with a `worker_loaders` binding named `LOADER`:
 
 | Sandbox code | `result` | `error` |
 |---|---|---|
