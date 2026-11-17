@@ -516,8 +516,7 @@ Held by this item:
   completeness loss, not an accuracy one). Result 1's control drop did not repeat, and the registry
   did not hurt the controls or off-target questions. See
   [RESULTS-2.md](rounds/2026-11-16-next-phase/items/6.3/RESULTS-2.md). The A/B is not re-run on
-  routine drift; a re-test needs an owner or orchestrator decision (for example more samples per
-  control pair). `GET /api/quality` stays excluded (response-schema keywords caused
+  routine drift; a re-test needs an owner or orchestrator decision. `GET /api/quality` stays excluded (response-schema keywords caused
   unrelated captures). `reviewSubmission`, `analyzeHackathonSubmissions`,
   `getHackathonSubmission`, and `locateSource` stay excluded.
 - Three mixed-intent controls run as `it.fails` in `test/drift-141-routing.test.ts`. Remove the
