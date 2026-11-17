@@ -18,8 +18,14 @@ paid run.
 
 1. Dated truth maintenance: the Bell goldens after the 2026-11-23 vote and the three later cases
    (round items 1.4, 2.1 and 2.2), and the upstream handoffs (round item 1.1).
-2. The production read and the source-gap residue (round items 3.1 and 1.3).
-3. Mechanisms with a measured cause (round items 3.2 and 3.3).
+2. The owner's source choice, now that the production read (round item 3.1) and the source-gap
+   residue (round item 1.3) are in: "Audit source coverage" and "Add a release and package-version
+   source".
+3. Mechanisms with a measured cause. The production read ranks round item 3.2 first: its
+   per-source status half meets the most failed operation calls, and the `execute` `errorName` and
+   `scout.matchPartners` bullets of "Triage the runtime and client gaps" belong with it (they edit
+   the same event and adapter surface). Round item 3.3 is last: `stellarOrg` is little used. The
+   orchestrator confirms this order.
 
 No third tuning loop, and no paid QA run without a new written owner authorization, except round
 item 4.1 under decision 7 (owner, 2026-11-16, decision 1). The general routing repair stays held.
@@ -83,7 +89,9 @@ now few: the XRP Ledger facts (`ecosystem.chain-comparisons`, xrpl.org), the NBU
 
 Next, the owner's choice only: which one or two sources to test for the facts that no reached source
 holds, with a pass condition fixed in advance (more correct answers and no more wrong ones).
-Decision 6(b) defers it until after round item 3.1. Candidate: an other-chain source for
+Decision 6(b) deferred it until after round item 3.1; that read is done and decides nothing here:
+query and answer text are not logged, so telemetry shows no demand for these facts, and silence is
+"no measured demand", not absence. Candidate: an other-chain source for
 `ecosystem.chain-comparisons`.
 
 Done when: the owner decides which source, if any, to test.
@@ -109,8 +117,8 @@ survives Lumenloop and Scout. Two gaps remain:
 The round also reported that a successful response hid a failed source. That came from the
 round's own aggregation layer and is not reproduced in production Raven; reproduce it before
 treating it as a product defect. Keep the per-operation failure envelopes as they are. Round item 3.2
-does this work, and adds the Lumenloop and Scout per-call timeouts that "Read the free telemetry
-before changing four caps" describes.
+does this work, and adds the Lumenloop and Scout per-call timeouts that "Ship the cap decisions from
+the production read" records (24 seconds each).
 
 Done when: a Mintlify retry exhaustion carries the last HTTP status, and the `execute` log event
 records attempts and final status per source, with tests.
@@ -141,10 +149,10 @@ disputes disappear, and no answer with a truly unsupported claim is graded up.
 Source: [caps audit](../research/audits/2026-11-14-caps-audit.md). The audit changed no cap that
 reaches the model. Tuning loop 2 decided two of its three measured caps without a paid test of their
 own: seven search cards by default (M1, kept) and the micro-map (M3, removed); see
-[the round ledger](rounds/2026-11-15-tuning-loop-2.md). The item below measures the third and reads
-the free telemetry before touching four more. A paid test needs its own written authorization
-under the `run-evals` skill; none is granted here. Run the free step first and stop there when it
-decides.
+[the round ledger](rounds/2026-11-15-tuning-loop-2.md). The first item below measures the third. The
+free telemetry read of four more caps is done; its decisions are in the second. A paid test needs
+its own written authorization under the `run-evals` skill; none is granted here. Run the free step
+first and stop there when it decides.
 
 ### M2: execute boundary of 4,000 tokens against 6,000
 
@@ -177,25 +185,41 @@ section-misread recount is recorded here. A paid comparison records score, clien
 artifact reads per question. Keep 6,000 if the score falls by more than 0.05, the margin 61 cases
 can resolve, or artifact reads rise enough to cancel the saving.
 
-### Read the free telemetry before changing four caps
+### Ship the cap decisions from the production read
 
-Four caps wait on a read of Workers observability (`cloudflare-observability-review`). Round item
-3.1 does the read. Keep the counts out of the repo; record only the decision.
+Round item 3.1 read production once: a 6.5-day Workers Logs window (the 7-day retention, less one
+slice) plus 30 days of usage and invocation counts. The figures stay in the owner's private
+evidence folder; this item records the decisions. Four caps wait on it
+(`cloudflare-observability-review`):
 
-- `requestedLimit` on `search`: if callers rarely ask for more than 10, lower the public
-  `MAX_SEARCH_LIMIT` from 50 to 10 and keep 50 for `codemode.search` inside `execute`. The change
-  edits model-facing schema text ("default 5, max 50"), so it needs its own review. At 50 a page
-  averages 41.8 KB and the Grok CLI clips 459 of 460 audit pages.
-- Lumenloop and Scout tail latency per operation: then give each adapter a per-call timeout sized
-  like the Stellar Docs budget (round item 3.2). Neither adapter has one today, so one hung call
-  holds a script until the 60-second limit.
-- Artifact caps (`ARTIFACT_INFO_CAP` 8, `ARTIFACT_READ_CAP` 4): whether any run reaches them.
-- `execute` timeout rate against `EXECUTE_TIMEOUT_MS` (60 s), and the share of runs with wall time
-  above about 50 s. Codex's default `tool_timeout_sec` is 60, so a run near Raven's limit can lose its
-  structured timeout result to the client. Read this before keeping 60.
+- Public `MAX_SEARCH_LIMIT`: **keep 50.** After the seven-card deploy, more than 5% of top-level
+  searches ask for more than 10, so the rule for lowering it to 10 fails. The model-facing text
+  reads "default 7, max 50" and stays. Results above 20,000 characters became rare after that
+  deploy, so the size case for lowering the cap is also gone. Nothing ships.
+- Lumenloop and Scout per-call timeouts: **24 seconds each**, the Stellar Docs budget. No
+  operation has more than 1% of its ok calls above 24 seconds. A few operations (Scout
+  `searchProjects` and `explainRepo`, Lumenloop `find_similar_scf_submissions`) have more than 1% above
+  12 seconds, so no shorter value leaves them a margin. The tails are a lower bound: a call still
+  pending at 60 seconds logs no event, and `op` `ms` includes retries and host queueing. Round item
+  3.2 ships the timeouts and decides how one timeout combines with an adapter's retries.
+- Artifact caps (`ARTIFACT_INFO_CAP` 8, `ARTIFACT_READ_CAP` 4): **keep.** No `info-cap` or
+  `read-cap` refusal in the window, and no run read more than one artifact.
+- `EXECUTE_TIMEOUT_MS` (60 s): **not decided.** No failed `execute` ran past 59 seconds in the
+  window, but the rule also counts `POST /mcp` invocations that ended cancelled or disconnected after
+  59 seconds, and the platform queries returned no rows. Keep 60 until that half is read. Codex's
+  default `tool_timeout_sec` is 60, so a run near Raven's limit can lose its structured timeout
+  result to the client.
 
-Done when: each of the four has a recorded decision, and a change ships only where the read
-supports it.
+Next: round item 3.2 ships the timeouts. One free Workers Logs follow-up (run on the Mac) reads
+what the first read could not: key discovery returned a capped list, so first search the keys for
+`recoveryHint` and the artifact-write `skipped` and `errorName` by name; then read the wall time of
+`POST /mcp` invocations over 59 seconds with their outcome (the app rows carry
+`$workers.wallTimeMs` and `$workers.outcome`), and the user-agent families, which the first read
+could not group. The user-agent read also lets the Grok, Copilot and browser loops in "Triage the
+runtime and client gaps" be attributed.
+
+Done when: round item 3.2 has shipped the timeouts, and the `execute` timeout has a recorded
+decision from the follow-up read.
 
 ### Re-verify each external client limit when its version changes
 
@@ -821,7 +845,33 @@ Each needs a check before a fix:
 The review's evidence is in the owner's private snapshot `2026-10-26-hackmeridian`
 (`usage/README.md`).
 
+Production read (round item 3.1, 6.5 days): `scout.matchPartners` still failed on nearly every
+call, which supports removing it. Most failed `execute` runs ran no operation (script failures),
+which supports adding `errorName`. Playground replies that stopped at the output cap were rare, so
+the cap review can close as "no change" unless the owner sees otherwise. `recoveryHint` could not be
+read: its key was not in the capped key list ("Ship the cap decisions from the production read"
+has the follow-up). The client loops could not be attributed: user-agent queries returned no rows,
+and `/mcp` 401 responses are a large share of requests whatever the client.
+
 Done when: each bullet has a merged fix or a recorded "no change" decision.
+
+### Explain the soft-empty and skipped-write anomalies from the production read
+
+Round item 3.1 saw two things it was not asked to measure:
+
+- `lumenloop.get_scf_submissions` returns soft-empty on most calls, and `scout.getRepoTrust` on most
+  of its (few) calls. A soft-empty is inconclusive, not absence, so a caller that stops there may
+  answer wrongly. Check which arguments produce them (a round or year filter that matches nothing,
+  a repository Scout does not track) and whether the hint should name a broader call.
+- A large share of `artifact_write` events carry `ok = false`. The code logs a skipped write as
+  `ok = false` with a `skipped` reason, and a thrown write with `errorName`; neither field was
+  readable in the first read.
+
+Next: read the `skipped` and `errorName` values in the Workers Logs follow-up named in "Ship the cap
+decisions from the production read", and sample the soft-empty calls' `op` events by operation
+and `caveat` (no query text is logged, so reproduce with live probes).
+
+Done when: each anomaly has a cause, and a merged fix or a recorded "no change" decision.
 
 ### Add a release and package-version source
 
@@ -831,9 +881,18 @@ stellar-rpc. No source gives the current npm, JSR, or crates version of common p
 latest OpenZeppelin stellar-contracts release. Search also ranks `scout.getChangelog` (Scout's
 own API log) above `scout.searchResearch` with `source: "release"`.
 
-The owner decides this, and a Dashboard lumens API source, after the production read (round item
-3.1; decision 6(b)): an upstream Scout request (file it in `improvements/`) or a new host adapter
-(an ADR-0003 exposure change). Fix the `getChangelog` ranking trap either way.
+The owner decides this, and a Dashboard lumens API source (decision 6(b)): an upstream Scout
+request (file it in `improvements/`) or a new host adapter (an ADR-0003 exposure change). Fix the
+`getChangelog` ranking trap either way.
+
+The production read (round item 3.1) does not decide it. The Dashboard lumens API has no
+telemetry proxy (`stellarOrg` is two generic operations and arguments are not logged): not
+measurable. For releases the read gives an upper bound only. History questions reach
+`scout.searchResearch` often, and `scout.getChangelog` ranks first in few searches, so the ranking
+trap touches few callers. Query text is not logged, so silence is "no measured demand", not
+absence. The evidence that can decide stays the committed one: round item 1.3's classification
+(its `sdf-mandate-holdings` row shows the Dashboard API is not needed for that fact), and the
+HackMeridian probes above.
 
 Done when: probes Q5, R23, R33, and R35 of the HackMeridian review pass again, or the owner
 leaves release data upstream and the finding is filed.
