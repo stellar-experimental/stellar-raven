@@ -96,6 +96,22 @@ in one session and state in the pull request that the independent review is outs
 - A requested independent review is a completion gate. The reviewer runs to completion, and
   every finding is reconciled before the work is final.
 
+## Owner delegations (lead session only)
+
+These apply only to the lead session the owner started and works with. Lanes, reviewers, harness
+runs, and other tools do not merge, deploy, or sign; they report to their lead.
+
+- **Merge and deploy as work completes.** Merge a reviewed, CI-green PR and run `npm run deploy`
+  without asking. Before each deploy, check and report what the owner may be missing: another
+  session's active eval round that holds deploys (read its ledger), a model-facing change without
+  its measured verdict, or a dependency update that changes the model-facing request while free
+  gates stay green. Ledger-only PRs need no deploy.
+- **Owner signatures on reviewed run sheets.** When a reviewed paid-run sheet needs the owner's
+  signature or an interactive confirmation, sign for the owner (delegation of 2026-10-10), quote
+  that delegation in the signed record, and answer prompts through `hc`. Keep every reviewed cap,
+  stop rule, and independent review. Add no paid method the done criterion does not need.
+  Outward-facing posts still need the owner's approval.
+
 ## Model routing for repo-work fan-out
 
 | Tier | Use for |
