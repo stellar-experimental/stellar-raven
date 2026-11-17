@@ -59,6 +59,7 @@ import { aggregate, cardMatchesExact, gradeCase, tableRows } from "./lib/grade.m
 import { overlayExpectedAnyById, unionExpectedAny } from "./lib/labels.mjs";
 import { confirmationOnlyFor, consoleValue, tagRows } from "./lib/confirmation-only.mjs";
 import { gateEvidenceFailures } from "./lib/gate-evidence.mjs";
+import { readJson } from "./lib/read-json.mjs";
 
 const EVAL_DIR = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(EVAL_DIR, "..");
@@ -162,16 +163,16 @@ async function main() {
 
   const manifestBytes = readFileSync(MANIFEST);
   const manifestSha256 = createHash("sha256").update(manifestBytes).digest("hex");
-  const manifestJson = JSON.parse(manifestBytes.toString("utf8"));
+  const manifestJson = readJson(MANIFEST, REPO);
   const catalog = loadManifest(manifestJson);
-  const compiled = JSON.parse(readFileSync(CASES, "utf8"));
+  const compiled = readJson(CASES, REPO);
 
   // --- overlay: attach expected_any to hand-reviewed case ids (load-time, so
   // compile-routing.mjs regenerating routing-cases.json never wipes it) ---------------
   let overlay = null;
   const expectedAnyById = new Map();
   if (existsSync(OVERLAY)) {
-    overlay = JSON.parse(readFileSync(OVERLAY, "utf8"));
+    overlay = readJson(OVERLAY, REPO);
     const known = new Set([...compiled.cases, ...(compiled.extendedCases ?? [])].map((c) => c.id));
     for (const [id, expectedAny] of overlayExpectedAnyById(overlay, known, (id) => {
       console.warn(`overlay warning: case id "${id}" not present in routing-cases.json — ignored`);
@@ -249,7 +250,7 @@ async function main() {
   let skillsLane = null;
   let skillsPerCase = [];
   if (existsSync(SKILLS_CASES)) {
-    const supplement = JSON.parse(readFileSync(SKILLS_CASES, "utf8"));
+    const supplement = readJson(SKILLS_CASES, REPO);
     skillsPerCase = tagRows(supplement.cases.map(runCase), confirmationOnlyFor("skills", supplement.cases.map((c) => c.id)));
     skillsLane = { authoredAt: supplement.authoredAt, ...aggregate(skillsPerCase).overall };
   }
@@ -258,7 +259,7 @@ async function main() {
   let holdoutLane = null;
   let holdoutPerCase = [];
   if (existsSync(HOLDOUT_CASES)) {
-    const supplement = JSON.parse(readFileSync(HOLDOUT_CASES, "utf8"));
+    const supplement = readJson(HOLDOUT_CASES, REPO);
     const searchableEntries = catalog.entries.filter((e) => e.searchable !== false && e.kind !== "skill-section");
     // The message names a position, never a case id or card: this error reaches stdout and CI logs.
     supplement.cases.forEach((c, caseIndex) => {
@@ -315,7 +316,7 @@ async function main() {
   let protocolHistoryLane = null;
   let protocolHistoryPerCase = [];
   if (existsSync(PROTOCOL_HISTORY_CASES)) {
-    const diagnostic = JSON.parse(readFileSync(PROTOCOL_HISTORY_CASES, "utf8"));
+    const diagnostic = readJson(PROTOCOL_HISTORY_CASES, REPO);
     const target = catalog.entries.filter(
       (entry) => entry.id === diagnostic.targetOperation && entry.searchable !== false
     );
@@ -367,7 +368,7 @@ async function main() {
   // --- gate check (eval/gates.json; EVALS.md: two gates, everything else diagnostic) --
   let gate = null;
   if (existsSync(GATES)) {
-    const g = JSON.parse(readFileSync(GATES, "utf8"));
+    const g = readJson(GATES, REPO);
     const failures = gateEvidenceFailures(g, { repo: REPO, manifestPath: MANIFEST });
     if (g.gradingRule !== "v3-manifest-exposed") {
       failures.push(`gates.json gradingRule "${g.gradingRule}" is not what this runner grades (v3-manifest-exposed) — re-baseline`);
@@ -423,7 +424,7 @@ async function main() {
   if (DUMP_RANKED_PATH) {
     const ranked = {};
     for (const r of [...perCase, ...extendedPerCase, ...skillsPerCase, ...protocolHistoryPerCase]) {
-      if (r.id in ranked) throw new Error(`--dump-ranked: duplicate case id "${r.id}" across lanes — dump would silently drop one`);
+      if (r.id in ranked) throw new Error("--dump-ranked: a case id repeats across lanes — the dump would silently drop one");
       ranked[r.id] = r.topHits.map((h) => h.id);
     }
     mkdirSync(dirname(DUMP_RANKED_PATH), { recursive: true });

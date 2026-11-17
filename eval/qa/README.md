@@ -296,24 +296,35 @@ git grep <pattern> -- . ':!eval/qa' ':!eval/corpus' ':!eval/holdout-cases.json' 
 ```
 
 **The Claude Code hook.** `.claude/settings.json` runs `scripts/agent-hooks/case-search-guard.mjs`
-before every Bash and Grep call. It parses the command quote-aware and denies, for a segment whose
-command word is the search tool: `grep -r`/`-R`/`--recursive` (and `-d recurse`); `git grep` without
-the full exclusion above; `rg -u`/`--unrestricted`/`--no-ignore*`; a positive `-g`, `--glob` or
-`--iglob` that matches a listed name; a shell glob over `eval/` or `.agents/`; a `$(...)` file list;
-and `xargs` or `find -exec` running `grep` or `rg`. The Grep tool is denied for a `glob` that matches
-a listed name through an unset or ancestor `path`. It blocks and never rewrites, fails open on any
-internal error, and runs in every Claude session in a checkout, including a checked-out pull request
-branch. A worktree branched before the hook merged has none. The guard's `rg` rules were probed
-live; its Grep-tool branch is unit-tested only, so the rule names `rg`.
+before every Bash and Grep call. It stops accidental, ordinary command forms; a deliberate bypass is
+out of scope. Where it cannot establish the scope of a search, it denies the risky form (a positive
+glob, a recursive grep, a shell glob) instead of allowing it. It parses the command quote-aware,
+resolves env prefixes and wrappers (`env`, `sudo`, `command -p`, `xargs`, `timeout`, `nice`, and
+others, each with its own options), and analyzes command substitutions and strings a shell runs
+(`bash -c`, `eval`, a heredoc fed to a shell). It tries every working directory the line could reach
+(the start directory and each `cd` target) and denies when any of them denies. For a segment whose
+command word is the search tool it denies: `grep -r`/`-R`/`--recursive` (GNU abbreviations such as
+`--rec` included) and `-d recurse`; `git grep` without the full exclusion above; `rg
+-u`/`--unrestricted`/`--no-ignore*`; a positive `-g`, `--glob` or `--iglob` that matches a listed
+name; a shell glob that could expand to a listed path (`eval/qa/*`, `*/*/*.json`, `"$PWD/eval"/*`);
+a `$(...)` file list; and `xargs` or `find -exec` running `grep` or `rg`. The Grep tool is denied
+for a `glob` that matches a listed name through an unset or ancestor `path`. It blocks and never
+rewrites, fails open on a parse or internal error, and runs in every Claude session in a checkout,
+including a checked-out pull request branch. A worktree branched before the hook merged has none.
+Its `rg` rules were probed live; its Grep-tool branch is unit-tested only, so the rule names `rg`.
+A positive glob is denied even when a later negative glob excludes every listed path (`rg -g '*.json'
+-g '!eval/**' X`): an accepted false positive, with `rg X src` as the substitute.
 
 **Opt-in.** A golden-maintenance lane working under the maintenance exception above prefixes the
 search segment with `CASE_TEXT=maintenance` (a segment-level environment prefix, for example
-`cd eval/qa && CASE_TEXT=maintenance rg -u <pattern> corpus`) or opens a file by its exact path. No
-other lane does.
+`cd eval/qa && CASE_TEXT=maintenance rg -u <pattern> corpus`) or opens a file by its exact path. The
+last assignment of the variable that reaches the command counts, and it reaches a shell script the
+command runs (`CASE_TEXT=maintenance bash -c '...'`), not the outer shell's command substitutions.
+No other lane uses it.
 
 **What the guard does not stop.** `cat`, the Read tool, `git diff`, `git show`, `git log -p`, an
-explicit path to a listed file, a pull request's diff, and any lane that is not a Claude Code
-session. `rg -g '*.json'` re-includes a file-level entry, so the hook denies it; Codex and Grok lanes
+explicit path to a listed file, a pull request's diff, a script file or a pipe into a shell
+(`echo '...' | bash`), `ag`, `ack` and `ugrep`, and any lane that is not a Claude Code session. `rg -g '*.json'` re-includes a file-level entry, so the hook denies it; Codex and Grok lanes
 rely on the rule in `AGENTS.md`. Moving the generated case files into one folder would close that
 hole at the source.
 

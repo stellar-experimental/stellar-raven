@@ -12,6 +12,7 @@ import { loadManifest, searchCatalog } from "../src/catalog/search.ts";
 import { evaluateProtocolHistory } from "./lib/protocol-history-source-epoch.mjs";
 import { confirmationOnlyFor, tagRows } from "./lib/confirmation-only.mjs";
 import { reportProtocolHistorySets } from "./lib/protocol-history-report.mjs";
+import { readJson } from "./lib/read-json.mjs";
 
 const EVAL_DIR = dirname(fileURLToPath(import.meta.url));
 const REPO = join(EVAL_DIR, "..");
@@ -34,15 +35,15 @@ const inputs = [
 
 const manifestBytes = readFileSync(MANIFEST_PATH);
 const inventoryBytes = readFileSync(INVENTORY_PATH);
-const manifest = JSON.parse(manifestBytes.toString("utf8"));
-const inventory = JSON.parse(inventoryBytes.toString("utf8"));
+const manifest = readJson(MANIFEST_PATH, REPO);
+const inventory = readJson(INVENTORY_PATH, REPO);
 const contractInputs = inputs.map((input) => {
   const bytes = readFileSync(input.path);
   return {
     ...input,
     path: relative(REPO, input.path),
     bytes,
-    contract: JSON.parse(bytes.toString("utf8")),
+    contract: readJson(input.path, REPO),
   };
 });
 

@@ -4,7 +4,7 @@
  * only; nothing here reads a case into an assertion message.
  */
 import { spawnSync } from "node:child_process";
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { afterAll, describe, expect, it } from "vitest";
@@ -16,6 +16,7 @@ import {
   SHINGLE_WORDS,
   baselineBreaches,
   ceilingFor,
+  displayPath,
   scanCaseText,
 } from "../eval/qa/case-text-scan.mjs";
 import { IGNORE_FILES } from "../scripts/agent-hooks/case-search-guard.mjs";
@@ -96,3 +97,88 @@ describe("case-text scan on a synthetic corpus", () => {
     expect(ceilingFor(4)).toBe(14);
   });
 });
+
+function syntheticRepo(label) {
+  const root = mkdtempSync(join(tmpdir(), `case-text-${label}-`));
+  const write = (path, content) => {
+    mkdirSync(dirname(join(root, path)), { recursive: true });
+    writeFileSync(join(root, path), content);
+  };
+  for (const file of IGNORE_FILES) write(file, readFileSync(join(REPO, file)));
+  spawnSync("git", ["init", "-q"], { cwd: root });
+  return { root, write };
+}
+
+describe("case-text scan file names", () => {
+  const { root, write } = syntheticRepo("names");
+  afterAll(() => rmSync(root, { recursive: true, force: true }));
+  const golden = Array.from({ length: 70 }, (_, i) => `namew${i}`).join(" ");
+  write("eval/qa/corpus/battery/a/one.json", JSON.stringify({ id: "one", golden, truth: { notes: "" } }));
+  const names = ["plain.md", "résumé.md", 'quoted"name.md', "line\nbreak.md", "with space.md"];
+  for (const name of names) write(name, golden);
+  write("gone.md", golden);
+  spawnSync("git", ["add", "gone.md"], { cwd: root });
+  rmSync(join(root, "gone.md"));
+  symlinkSync("eval", join(root, "link-to-folder"));
+  const { rows } = scanCaseText(root);
+
+  it("counts a bulk copy under every kind of file name, and skips a deleted file and a symlink", () => {
+    for (const name of names) expect(rows.find((row) => row.path === name)?.shingles, displayPath(name)).toBe(63);
+    expect(rows.some((row) => row.path === "gone.md" || row.path === "link-to-folder")).toBe(false);
+  });
+
+  it("prints no raw newline or quote from a file name in a diagnostic", () => {
+    const lines = baselineBreaches(rows, { floor: FLOOR, files: [] });
+    expect(lines).toHaveLength(names.length);
+    for (const line of lines) expect(line).not.toMatch(/[\n\r]/);
+    expect(displayPath("line\nbreak.md")).toBe('"line\\nbreak.md"');
+    expect(displayPath("plain.md")).toBe("plain.md");
+  });
+});
+
+describe("case-text scan on a malformed corpus file", () => {
+  const MARKER = "SYNTHETIC_PRIVATE_CASE_TEXT_7f3a";
+  const { root, write } = syntheticRepo("malformed");
+  afterAll(() => rmSync(root, { recursive: true, force: true }));
+  write("eval/qa/corpus/battery/a/good.json", JSON.stringify({ id: "good", golden: "fine words only here", truth: { notes: "" } }));
+  write("eval/qa/corpus/battery/b/bad.json", `${MARKER} not json {`);
+  const scanModule = join(REPO, "eval/qa/case-text-scan.mjs");
+
+  it("throws a position-only error with no cause", () => {
+    let thrown;
+    try {
+      scanCaseText(root);
+    } catch (error) {
+      thrown = error;
+    }
+    expect(thrown).toBeInstanceOf(Error);
+    expect(thrown.message.includes(MARKER)).toBe(false);
+    expect(thrown.message.includes("bad")).toBe(false);
+    expect(thrown.message).toMatch(/malformed battery case file #2 of 2 in folder b/);
+    expect(thrown.cause).toBeUndefined();
+  });
+
+  it("keeps the marker out of stdout and stderr through the API and the CLI, and exits non-zero", () => {
+    const api = spawnSync(
+      process.execPath,
+      ["--input-type=module", "-e", `import { scanCaseText } from ${JSON.stringify(scanModule)}; scanCaseText(process.argv[1]);`, root],
+      { encoding: "utf8" },
+    );
+    expect(api.status).not.toBe(0);
+    expect(api.stdout.includes(MARKER) || api.stderr.includes(MARKER)).toBe(false);
+    for (const args of [["--repo", root], ["--check", "--repo", root]]) {
+      const cli = spawnSync(process.execPath, [scanModule, ...args], { encoding: "utf8" });
+      expect(cli.status, args.join(" ")).toBe(1);
+      expect(cli.stdout.includes(MARKER) || cli.stderr.includes(MARKER), args.join(" ")).toBe(false);
+      expect(cli.stderr).toMatch(/^case-text scan failed: malformed battery case file #2 of 2/);
+    }
+  });
+
+  it("treats valid JSON that is not a case the same way", () => {
+    write("eval/qa/corpus/battery/b/bad.json", JSON.stringify(MARKER));
+    const cli = spawnSync(process.execPath, [scanModule, "--repo", root], { encoding: "utf8" });
+    expect(cli.status).toBe(1);
+    expect(cli.stdout.includes(MARKER) || cli.stderr.includes(MARKER)).toBe(false);
+  });
+});
+
