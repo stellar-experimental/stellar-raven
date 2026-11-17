@@ -90,3 +90,6 @@ Tree = revert commit plus the TODO edit and the item records (docs only; src, sc
 - `npm run eval:selftest`: exit 0, "all checks passed".
 - `npm run secrets:scan -- --tree`: exit 0, "clean — scanned all tracked files" (run before the records commit; the pre-commit hook scans the staged files again).
 No test:smoke (no `src/executor` or `src/demo` change) and no QA lint, as planned. No push.
+
+## Commits on `np/6.3-rwa-retest` (none pushed)
+`370fb322` pre-registration; `92f71b8d` commit I (RWA exposed); `5cfec6f3` revert of commit I; the records commit that holds this file.
