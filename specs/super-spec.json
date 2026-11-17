@@ -3067,109 +3067,6 @@
         }
       }
     },
-    "/scout/getRwaAssets": {
-      "get": {
-        "description": "Every tokenized real-world asset rwa.xyz lists on Stellar (97 tokens, 52 issuers), each re-verified on-chain: classic assets from the issuer's own stellar.toml plus Horizon where the toml declares them (else on-chain-only), Soroban tokens from the contract's own metadata via RPC. state is live | issued-single-holder | deployed-no-supply | not-found; rows carry verificationLevel, evidenceUrl, verifiedAt, and pairedWith for a tranche deployed twice. Includes the fiat stablecoins rwa.xyz classes as RWA (productKind=stablecoin). Curated registry: absence means untracked, never 'not on Stellar'.",
-        "operationId": "scout.getRwaAssets",
-        "parameters": [
-          {
-            "description": "Filter by product state. live = minted with at least two holders (someone other than the issuer holds it); issued-single-holder = minted, exactly one holder (the issuer or its custodian) and no secondary activity: a real security, not a live market; deployed-no-supply = nothing minted: a Soroban contract with zero supply and zero events, or a classic asset the issuer declares whose trustlines exist but whose supply is zero (Etherfuse CETESZ, Franklin FOCGX); not-found = a listing that no longer resolves on mainnet. live and issued-single-holder are decided by holder count (balance > 0): two or more, or exactly one.",
-            "in": "query",
-            "name": "state",
-            "schema": {
-              "enum": [
-                "live",
-                "issued-single-holder",
-                "deployed-no-supply",
-                "not-found"
-              ],
-              "type": "string"
-            }
-          },
-          {
-            "description": "Filter by verificationLevel (see methodology).",
-            "in": "query",
-            "name": "level",
-            "schema": {
-              "enum": [
-                "toml-bidirectional",
-                "entity-toml",
-                "contract-metadata",
-                "on-chain-home-domain",
-                "on-chain-only"
-              ],
-              "type": "string"
-            }
-          },
-          {
-            "description": "classic = a Stellar asset (code + issuer); soroban = a contract token (invisible to Horizon /assets).",
-            "in": "query",
-            "name": "kind",
-            "schema": {
-              "enum": [
-                "classic",
-                "soroban"
-              ],
-              "type": "string"
-            }
-          },
-          {
-            "description": "Directory project slug: the rows that feed that project's `products`.",
-            "in": "query",
-            "name": "project",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "description": "Max rows (default 100, max 100).",
-            "in": "query",
-            "name": "limit",
-            "schema": {
-              "default": 100,
-              "maximum": 100,
-              "type": "integer"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "description": "Compact output schema with exact top-level fields. Call codemode.describe(\"scout.getRwaAssets\") for the full output schema.",
-                  "properties": {
-                    "assets": {},
-                    "meta": {}
-                  },
-                  "required": [
-                    "meta",
-                    "assets"
-                  ],
-                  "type": "object",
-                  "x-codemode-describe": "codemode.describe(\"scout.getRwaAssets\")"
-                }
-              }
-            },
-            "description": "Verified RWA tokens, sorted by rwa.xyz USD value (rows without one last)."
-          },
-          "400": {
-            "description": "Unknown query parameter, or an invalid state/level/kind value; the body names the valid values."
-          }
-        },
-        "summary": "Tokenized real-world assets verified on Stellar",
-        "tags": [
-          "scout",
-          "Ecosystem"
-        ],
-        "x-execute": "await scout.getRwaAssets(args)",
-        "x-service": "scout",
-        "x-upstream": {
-          "method": "GET",
-          "path": "/api/rwa"
-        }
-      }
-    },
     "/scout/getSkill": {
       "get": {
         "description": "Full detail for ONE skill by slug or display name: metadata plus, for entries listed on skills.stellar.org (SDF authored and community-built), the complete raw SKILL.md text (.skill.content, fetched live from where the registry links it). 404s with a hint to list scout.listSkills when unknown. Use when you know the skill and need its actual instructions or install command. Not for discovering which skills exist → use listSkills.\n\nCatalog note: returns the full upstream markdown of one directory entry, suited to install/metadata questions. For reading build/integration playbooks, prefer the skills. catalog entries via codemode.skill.read (sectioned, curated, pinned).",
@@ -7508,7 +7405,7 @@
   ],
   "x-generated": {
     "builder": "scripts/build-super-spec.mjs",
-    "catalogEntries": 286,
+    "catalogEntries": 285,
     "generatedAt": "2026-11-17T19:49:58.447Z"
   },
   "x-services": {
