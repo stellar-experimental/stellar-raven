@@ -305,3 +305,106 @@ Committed with normal hooks (the pre-commit secret scan ran clean) and pushed:
 - The opened-id list is replaced by counts.
 - Gates after the fixes: `eval:qa:lint -- --since origin/main` exit 0 (0 errors, 98 warnings);
   `eval:qa:register -- --check` exit 0; `improvements:index` and `improvements:lint` exit 0.
+
+## Phase 3 (plan steps 13 to 15, with the lead's addendum)
+
+### sls-120: found, verified, filed
+
+Source: the "What sls-120 would state" block of `REVIEW-RETIRE.md` part A (sls-107). I re-ran its
+four reads on 2026-11-17 (00:32Z to 00:33Z) before writing the finding, and all reproduce:
+
+1. `GET /api/stablecoins?limit=100`: 37 rows. BRLT (`GCHQ3F2B…PRSO`, brand Settle Network) has all
+   five `issuerOfRecord*` fields null. It is the only row of 37 with the five fields null (35
+   `named`, 1 `not-named` (USDT0), 1 null).
+2. Horizon: `home_domain` `sep.stablex.cloud`. DNS at dns.google (A, AAAA, CNAME for it and for
+   `stablex.cloud`) and cloudflare-dns.com: `Status` 3, no answer. A direct fetch fails.
+3. `https://pubnet-sep.latamex.com/.well-known/stellar.toml`: 200, SHA-256
+   `d39046c15f5c04d8b0bc25d625271782553017ce4b25b1d4bf61de58de0694ca` (the reviewer's hash),
+   `ORG_NAME="Relay Tech Services Ltd"`, the account in `ACCOUNTS`, and a BRLT currency entry.
+4. The ARST row (same brand) serves `issuerOfRecord` "Relay Tech Services Ltd" from that toml.
+   I also read `https://settlenetwork.com/.well-known/stellar.toml` (404). I did not cite the
+   attestation PDF.
+
+`improvements/stellar-light-scout/sls-120-brlt-issuer-of-record-null-with-readable-toml.md`, status
+`verified`. One lint rule moved the Raven comment URL out of its evidence (a GitHub URL requires a
+filed status). I committed and pushed it (`f44fa9e9`) so the snapshot link resolves, read the dry
+run as the maintainer, and filed it:
+[Stellar-Light/stellarlight#1973](https://github.com/Stellar-Light/stellarlight/issues/1973). I
+read it back: open, author the Raven account, title and body as in the dry run, with the snapshot
+link. The filing commit is `a8db4f01`. sls-120 is the next free id (active max 119, ledger max
+115); the item 1.3 lane starts above it.
+
+### Step 13: resolve
+
+No commit touched either finding file between the dry run and the real run. Comments read back
+(the text equals the dry-run comment; `jq` adds only a trailing newline).
+
+| Finding | Comments posted | Receipt `sourceUrl` commit |
+|---|---|---|
+| sls-033 | [#519](https://github.com/Stellar-Light/stellarlight/issues/519#issuecomment-6933871506), [#742](https://github.com/Stellar-Light/stellarlight/issues/742#issuecomment-6933871829), [PR #1967](https://github.com/Stellar-Light/stellarlight/pull/1967#issuecomment-6933872127) | `ce4f8735` |
+| sls-107 | [#1900](https://github.com/Stellar-Light/stellarlight/issues/1900#issuecomment-6933884157), [PR #1944](https://github.com/Stellar-Light/stellarlight/pull/1944#issuecomment-6933884524) | `cfb8a6be` |
+
+- sls-033: `--resolving-ref` PR #1967. The comment URLs are in the receipt's `reviewEvidence`.
+- sls-107: `--live-recheck` names sls-119 (#1971) and sls-120 (#1973), so the comment on #1900
+  carries both links. I re-ran its trigger checks myself first (35 named rows, AUDD, Kinesis,
+  MGUSD, `assetType` counts, `assetType=Yield%20Stablecoin` 200, `assetType=Bogus` 400).
+- Both snapshot commits answer on GitHub.
+- The receipt `title` is the first sentence of each finding's `## Finding` and is cut with "…".
+  The resolver derives it; I did not edit it, because a commit to either file between the dry run
+  and the real run would change the posted snapshot.
+- sls-119's dedupe line now reads "sls-107 (retired 2026-11-17; receipt in
+  improvements/resolved.json; …)". It is the only other finding file I edited outside step 4.
+- The passport case `note` carries the sls-033 receipt's pinned `sourceUrl`. After compile and
+  register, its `caseInputSha256` equals the value before any of my edits.
+- `improvements/intake.json` has no `sls-033` key. `jq` shows one receipt each for sls-033 and
+  sls-107.
+
+### sd-081 (addendum item 2)
+
+The residual (the restore-data `Api` defect) is inside the original finding, so the status stays
+`reported-upstream` and no successor is filed. I rewrote the finding's `## Finding`, `## Evidence`
+and `## Recommendation` to current state: PR #3083 fixed the contract-restoration fences, the
+paths are the unsuffixed ones, and the `Api` defect is the open item with its smallest fix (change
+`restore-data` line 42 to `const { assembleTransaction } = StellarRpc;`). I posted one short
+comment on stellar/stellar-docs#2562 in the upstream style, read it back (author kalepail), and
+recorded its URL in the finding's evidence:
+https://github.com/stellar/stellar-docs/issues/2562#issuecomment-6933906845
+
+### Step 14: records
+
+- `.agents/TODO.md`: held-out status now names v4 (path, SHA-256, 81/117/49), says v3 and v2 are
+  replaced and that Mac copies of either are stale, and says a future read pairs on v4's held-out
+  count. Deleted: the standing-authority bullet (phase 1), and the bullets for sls-033, sls-107,
+  the nine findings and sd-081. Rewritten: the sls-116 bullet is a dated next check that names the
+  three open items, #1952, #427 and the exact re-check. Added: the Scout-sweep line (5 `Live`
+  wallet rows whose `availabilityCheck` says the operator is gone or the product left Stellar,
+  and the unrepeated `q=wallet` paging overlap), marked not verified to the filing bar.
+- `items/1.1/STATE.md`: the state table, 13 findings plus sls-120.
+
+### Step 15: gates (each bare, output to a file, exit read)
+
+| Gate | Result |
+|---|---|
+| `npm run improvements:index` | exit 0: 85 findings |
+| `npm run improvements:lint` | exit 0: ok, 85 findings |
+| `npm run improvements:lint -- --live` | exit 0: ok, 85 findings, live intake checked |
+| `npm run eval:qa:compile` | exit 0 |
+| `npm run eval:qa:lint -- --since origin/main` | exit 0: 0 errors, 98 warnings |
+| `npm run eval:qa:lint -- --stale --enforce-floors` | exit 0: 0 errors, 98 warnings |
+| `npm run eval:qa:register -- --check` | exit 0: up to date |
+| `npm run eval:selftest` | exit 0: all checks passed |
+| `npm run typecheck` | exit 0 |
+| `npm test` | exit 0: 166 files passed, 5 skipped; 3645 tests passed, 3 expected fail, 5 skipped |
+| `npm run build` | exit 0 (Wrangler dry run). No file under `src/` changed, so no deploy is needed |
+| `npm run secrets:scan -- --tree` | exit 0: clean |
+
+### Lead's B5 check
+
+sls-120 filed and linked (#1973); both TODO bullets gone and the Scout-sweep line added; no
+`sls-033` key in `intake.json`; sls-119 points to the sls-107 receipt; one receipt each for
+sls-033 and sls-107 (`jq`); `improvements:lint -- --live` passes; the passport `note` carries the
+receipt's pinned `sourceUrl`.
+
+### The #427 reply
+
+Posted after the final push; its URL is in the next section.

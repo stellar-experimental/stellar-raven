@@ -6,6 +6,7 @@ discovered: 2026-11-02
 upstreamTitle: "Contract-restoration example fails parsing and reads the WASM hash and footprint with obsolete XDR access"
 evidence:
   - "2026-11-09 sweep (still-repro): Known partial fix in merged PR2977 persists: both copies setTimeout(30). Both live contract-restoration fences still fail TypeScript parsing TS1131/TS1128 at the empty return type; both still pass instance LedgerKey as entry and response as footprint key. Combined polling/data-restoration fences with SDK17.4.0 reproduce TS2440 Api redeclaration. Recheck: https://developers.stellar.org/docs/build/guides/archival/restore-contract-js.md; https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival.md; https://developers.stellar.org/docs/build/guides/archival/restore-data-js.md; https://developers.stellar.org/docs/build/guides/transactions/submit-transaction-wait-js.md"
+  - "Raven verification of the PR 3083 fix and the remaining Api defect posted and read back 2026-11-17 (author kalepail): https://github.com/stellar/stellar-docs/issues/2562#issuecomment-6933906845"
   - "Raven partial-fix verification posted and read back 2026-11-06 (author kalepail): https://github.com/stellar/stellar-docs/issues/2562#issuecomment-6686867459"
   - "Partial fix: https://github.com/stellar/stellar-docs/pull/2977 merged 2026-11-03T16:14:21Z at d7845d6c594bfac2c1a9cbc856ccd68d92d66eb0; both deployed restoration copies now setTimeout(30). The November 2 initial evidence predates this change. Independent current residual tests: .agents/rounds/2026-11-06-remaining-sweep/cross-review.md."
   - "Successor of sd-055, which stellar/stellar-docs#2933 fixed. The sd-055 retirement review (Codex gpt-6.1-sol high, 2026-11-02, .agents/rounds/2026-11-02-upstream-followup/rv-fu-review.md section A1) found this adjacent example still broken on both deployed pages."
@@ -25,73 +26,48 @@ recurrences:
 
 ## Finding
 
-The contract-restoration example on two docs pages does not parse and cannot build a valid restoration transaction.
-`getWasmLedgerKey` has an empty return type, and the snippet uses `xdr` without importing it.
-Issue #2562 already reports those two defects for one of the pages.
+The contract-restoration example on two docs pages once failed to parse and could not build a valid
+restoration transaction. stellar/stellar-docs PR #3083 (merged 2026-11-10) fixed it. On
+2026-11-17 both JavaScript restoration fences parse. The restore-contract fence type-checks with
+`@stellar/stellar-sdk` 17.4.0.
 
-The example also has runtime defects that #2562 does not list:
-
-- It passes the instance `LedgerKey` from `c.getFootprint()` to a function that reads it as a `ContractDataEntry`.
-- It reads the WASM hash from the instance key. The key holds no WASM hash; the hash is in the instance ledger entry.
-- It puts the `getLedgerEntries` response into the read-write footprint, which needs a `LedgerKey`.
-
-The data-restoration guide has a separate defect.
-It tells readers to reuse `submitTx` from the polling guide, which imports `Api` from `@stellar/stellar-sdk/rpc`.
-The guide also declares `const { Api, assembleTransaction } = StellarRpc;`.
-The combined code fails TypeScript check `TS2440`.
+One defect remains in the data-restoration guide. The guide tells readers to reuse `submitTx` from
+the polling guide. That guide imports `Api` from `@stellar/stellar-sdk/rpc`. The data-restoration
+code then declares `const { Api, assembleTransaction } = StellarRpc;`. TypeScript reports
+`TS2440` when a reader combines the two code blocks.
 
 ## Evidence
 
-[`restore-contract-js`](https://developers.stellar.org/docs/build/guides/archival/restore-contract-js) line 69 and the
-[state-archival page](https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival) line 365 contain:
+The `-js` page paths now answer HTTP 307 to these pages:
+
+- [restore-contract](https://developers.stellar.org/docs/build/guides/archival/restore-contract)
+- [restore-data](https://developers.stellar.org/docs/build/guides/archival/restore-data)
+- [submit-transaction-wait](https://developers.stellar.org/docs/build/guides/transactions/submit-transaction-wait)
+- [state-archival](https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival)
+
+Fixed on 2026-11-17. `getWasmLedgerKey(data: xdr.LedgerEntryData): xdr.LedgerKey` has a return
+type. The caller reads `entries[0].val` from `getLedgerEntries(instance)`. The footprint holds two
+`LedgerKey` values. Each fence parses, and the restore-contract fence has 0 type errors with SDK
+17.4.0.
+
+Still failing. `restore-data` line 42 declares `Api` again:
 
 ```typescript
-function getWasmLedgerKey(entry: xdr.ContractDataEntry):  {
-  return xdr.LedgerKey.contractCode(
-    new xdr.LedgerKeyContractCode({
-      hash: entry.val().instance().wasmHash()
-    })
-  );
-}
-```
-
-The caller passes `c.getFootprint()` and uses the `getLedgerEntries` response as a footprint key:
-
-```typescript
-const instance = c.getFootprint();
-const wasmEntry = await server.getLedgerEntries(getWasmLedgerKey(instance));
-new SorobanDataBuilder().setReadWrite([instance, wasmEntry]).build()
-```
-
-A local check with `@stellar/stellar-sdk` 17.4.0 confirms the parse failure.
-
-[`restore-data-js`](https://developers.stellar.org/docs/build/guides/archival/restore-data-js) line 43 declares `Api` again:
-
-```typescript
-// submit-transaction-wait-js, line 13
-import { Server, Api } from "@stellar/stellar-sdk/rpc";
-// restore-data-js, line 43
+// submit-transaction-wait, line 38
+import { Api, Server } from "@stellar/stellar-sdk/rpc";
+// restore-data, line 42
 const { Api, assembleTransaction } = StellarRpc;
 ```
 
-TypeScript reports `TS2440: Import declaration conflicts with local declaration of 'Api'.` for the combined code.
+The two fences combined in one module report
+`TS2440: Import declaration conflicts with local declaration of 'Api'.` with SDK 17.4.0.
 
 ## Recommendation
 
-Fix both copies of the example:
+In `restore-data`, remove `Api` from the local declaration. Use this line:
 
-1. Give `getWasmLedgerKey` a `xdr.LedgerKey` return type and import `xdr`.
-2. Read the instance ledger entry with `getLedgerEntries(instance)`, and take the WASM hash from that entry's contract instance executable. With `@stellar/stellar-sdk` 17.4.0 the path is `response.entries[0].val.value.val.value.executable.value`. Check that the entry exists and that the executable is `contractExecutableWasm`.
-3. Build the contract-code `LedgerKey` from that hash, and put the two `LedgerKey` values in the read-write footprint.
+```typescript
+const { assembleTransaction } = StellarRpc;
+```
 
-In `restore-data-js`, remove the local `Api` declaration and use the `Api` that the polling guide imports.
-
-## Partial fix verified — 2026-11-06
-
-Both deployed contract-restoration copies now call `.setTimeout(30)` before `.build()`.
-The time-bounds recommendation is complete. The initial November 2 evidence above is historical;
-the November 5 sweep incorrectly repeated it as a current defect. The parse, missing import,
-instance-entry, footprint and duplicate `Api` defects remain. Keep this finding active.
-
-Live reproduction and independent review: `.agents/rounds/2026-11-06-remaining-sweep/docs.md`
-and `.agents/rounds/2026-11-06-remaining-sweep/cross-review.md`.
+The guide already says to reuse the imports of `submitTx`, which include `Api`.

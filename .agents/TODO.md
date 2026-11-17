@@ -38,19 +38,21 @@ Held-out status: the first-principles split is void, because the 2026-11-14 gold
 rebuilt the battery. The current split is drawn by the rule in
 [`eval/qa/README.md`](../eval/qa/README.md) ("Held-out split") from the 247 headline cases:
 
-- SHA-256 `ceb98d6a612aa2a85b48a20dac953f76b7e67f860092c61c84292dcb53434155`.
-- 80 tuning, 118 held-out, and 49 reserve cases.
-- The file is on the owner's Linux machine at `~/backups/gca-2026-11-14-split-v3.json`. It
-  replaces `gca-2026-11-14-split-v2.json` (SHA-256
-  `697c550ae15400f5d7e8d9e47f4fd3d5460a6052d91571f5014ef4d35f64ed12`, 79/119/49), which stays in
-  place. A Mac copy of v2, or an id list taken from it, is stale.
+- SHA-256 `58ad28bb903fcd7c72122de4ca13f93438a42b92a6987dcbce7d6c3f8096c191`.
+- 81 tuning, 117 held-out, and 49 reserve cases.
+- The file is on the owner's Linux machine at `~/backups/gca-2026-11-14-split-v4.json`. It
+  replaces `gca-2026-11-14-split-v3.json` (SHA-256
+  `ceb98d6a612aa2a85b48a20dac953f76b7e67f860092c61c84292dcb53434155`, 80/118/49), which stays in
+  place, and v2 before it (79/119/49). A Mac copy of v2 or v3, or an id list taken from either,
+  is stale. Tuning scans pass `--split ~/backups/gca-2026-11-14-split-v4.json`.
 
 Two tuning loops tuned on the tuning rows ([loop 1](rounds/2026-11-14-baseline-tuning.md),
 [loop 2](rounds/2026-11-15-tuning-loop-2.md)). The audit's battery test read the answers of 70
 headline cases before the draw ([ids](rounds/2026-11-14-golden-coverage-audit/qa/ids.txt)). The
 baseline and one read per loop ran the held-out rows, counts only. One held-out answer was exposed
-(loop 2); it moved to tuning on 2026-11-16 (decision 2(b)). The stored held-out reads and their
-thresholds are on 119 rows, and a future read pairs on v3's 118. An item may name a case by ID;
+(loop 2); it moved to tuning on 2026-11-16 (decision 2(b)). One more case moved to tuning on
+2026-11-17 (round item 1.1), because a reviewer opened it. The stored held-out reads and their
+thresholds are on 119 rows, and a future read pairs on v4's 117. An item may name a case by ID;
 never record which set a case is in, and tune no product change on a held-out or reserve case.
 
 Routing and discovery rows whose question matches a QA headline question are confirmation-only:
@@ -471,23 +473,23 @@ Recheck only when the named change or new evidence arrives. An untouched issue n
 reminder. The [November 5 ledger](rounds/2026-11-05-truth-maintenance.md) and its per-finding
 tables cover every finding.
 
-- **sls-033**: the source-URL gap is fixed live (2026-11-14, Scout 1.9.150, PR1967; inbound
-  handoff #429), and the finding holds the receipt. It stays `reported-upstream` only because a
-  golden partial cap still names it. In one change: remove that cap with `golden-truth`
-  (`rg -l sls-033 eval/qa/corpus/battery`), set `fixed-upstream`, run the distinct retirement
-  review, and post the resolution comment on stellarlight#519 and PR1967 (round item 1.1).
-- **sls-107** is `fixed-upstream` on the 2026-11-14 live recheck (inbound handoff #425). It
-  waits for the distinct retirement review and the resolution comment on stellarlight#1900 and
-  PR1944 (round item 1.1). The reviewer should scan one adjacent row: BRLT has a null
-  `issuerOfRecordCheck` and no note.
-- **sls-116** is partly fixed (PR1962; inbound handoff #427). One named round-44 page
-  (`soroban-contract-source-verification-service-bax`) is on no Scout row, and the owner's own
-  check reports 20 rounds short by 27 awards. Reply with the 2026-11-14 result (round item 1.1);
-  retire only when the remainder is sourced or explicitly out of scope.
-- **`sd-105` to `sd-110` and `sls-117` to `sls-119`** (filed 2026-11-14): read each upstream ref
-  and re-run each reproduction command once (round item 1.1).
-- **sd-081** cites Docs pages that lost their `-js` suffix; run a recurrence probe at the new
-  paths (round item 1.1).
+- **sls-116** (stellarlight#1952, inbound handoff #427): three items still reproduce on
+  2026-11-17 (Scout 1.9.150) and #1952 has no maintainer reply. Next check, only after a Scout
+  release that touches SCF data or a reply on #1952: (1) `GET
+  /api/projects/search?scfAwarded=true&limit=100` at offsets 0 to 700 should name
+  `soroban-contract-source-verification-service-bax` on a row (the official page
+  `https://communityfund.stellar.org/project/soroban-contract-source-verification-service-bax`
+  shows `lastAwardedRound` 44); (2) a public endpoint should serve the owner's 27-award baseline
+  (the 1.9.150 OpenAPI has no round-count operation); (3) `peer` should carry `scfSourceUrl` and
+  `scfAsOf` (both null, rounds `[22, 26]`). Retire only when all three are sourced or explicitly
+  out of scope. Comment upstream only on a change.
+- **Scout sweep, next round** (2026-11-17 retirement review, not verified to the filing bar):
+  5 of 67 `Live` wallet rows have an `availabilityCheck` that says the operator is gone or the
+  product left Stellar (spatium, freelii, bebop, sentit, elsa), and their `statusAsOf` is 89 to
+  91 days old. Also `GET /api/projects/search?q=wallet` paged at `offset=0` and `offset=100`
+  returned 196 rows for `total` 195, with `coca` on both pages; the read was not repeated. Next
+  check: re-run both reads once; file a finding for each that still reproduces and passes the
+  verified bar.
 - **Docs pull requests.** The [Docs table](rounds/2026-11-05-truth-maintenance/docs.md) and the
   [continuation table](rounds/2026-11-06-remaining-sweep/docs.md) name each unmerged pull
   request, its blocker, and its live trigger, including draft2752 and the generated-skill

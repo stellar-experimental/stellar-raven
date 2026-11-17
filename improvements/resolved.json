@@ -2875,6 +2875,26 @@
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/0306425752a0fb4c1b1965d64236c5a975aafa5b/improvements/stellar-light-scout/sls-032-bridge-route-asset-representation.md"
     },
     {
+      "id": "sls-033",
+      "title": "Exact wallet enumeration and name deduplication now work: on 2026-11-06, type=Wallet&limit=100 returns 72 rows, total: 72, and 72 distinct…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-07-10",
+      "resolved": "2026-11-17",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/519",
+        "https://github.com/Stellar-Light/stellarlight/issues/742",
+        "https://github.com/Stellar-Light/stellarlight/pull/1967"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/pull/1967"
+      ],
+      "liveRecheck": "2026-11-17T00:16Z, Scout OpenAPI 1.9.150: GET https://stellarlight.xyz/api/projects/search?type=Wallet&limit=200 returns 74 rows (returned 74, total 74; the server clamps limit to 100). Every row has productKind. 64 rows carry 123 platform facts, and 10 more carry a dated availabilityCheck. All 123 facts serve sourceUrl and checkedAt. All 10 unavailable facts serve a URL. A spot fetch of the xBull Google Play, Scopuly App Store and privacywallet.coderipper.xyz URLs returns 404, as the rows say.",
+      "reviewEvidence": "Distinct review by Claude Fable 5.2 (high effort) on 2026-11-17: re-ran the Wallet query (74 rows, 0 facts without sourceUrl), fetched 11 sourceUrls and found each agrees with its row, read the refs, and found no residual that needs a successor. Verdict: retire. Record: .agents/rounds/2026-11-16-next-phase/items/1.1/REVIEW-RETIRE.md Resolution comments posted and read back: https://github.com/Stellar-Light/stellarlight/issues/519#issuecomment-6933871506 https://github.com/Stellar-Light/stellarlight/issues/742#issuecomment-6933871829 https://github.com/Stellar-Light/stellarlight/pull/1967#issuecomment-6933872127",
+      "sourceCommit": "ce4f87358ce5dd8871f377db384cbbe9c4909fbb",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/ce4f87358ce5dd8871f377db384cbbe9c4909fbb/improvements/stellar-light-scout/sls-033-wallet-type-enumeration-availability.md"
+    },
+    {
       "id": "sls-034",
       "title": "Scout's stablecoin discovery surface is neither an exhaustive asset registry nor a consistently asset-level taxonomy. On 2026-07-10, a…",
       "service": "stellar-light-scout",
@@ -4205,6 +4225,25 @@
       "reviewEvidence": "Independent Astra high t2dv repeated original trigger and adjacent controls; .agents/rounds/2026-11-05-truth-maintenance/upstream-independent.md. Author lane t2dw. Golden reconciliation reviewed in scout-golden-review.md. Posted and read back: https://github.com/Stellar-Light/stellarlight/issues/1917#issuecomment-6674723431",
       "sourceCommit": "079c82b9e6c079bf6514c344fd5aac51ba39c2a7",
       "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/079c82b9e6c079bf6514c344fd5aac51ba39c2a7/improvements/stellar-light-scout/sls-106-hackathon-feed-omits-stellar-events.md"
+    },
+    {
+      "id": "sls-107",
+      "title": "GET /api/stablecoins has one company field, and it holds a brand name. For two issuers the brand differs from the ORG_NAME in the issuer's…",
+      "service": "stellar-light-scout",
+      "discovered": "2026-11-02",
+      "resolved": "2026-11-17",
+      "repo": "Stellar-Light/stellarlight",
+      "upstreamRefs": [
+        "https://github.com/Stellar-Light/stellarlight/issues/1900",
+        "https://github.com/Stellar-Light/stellarlight/pull/1944"
+      ],
+      "resolvingRefs": [
+        "https://github.com/Stellar-Light/stellarlight/pull/1944"
+      ],
+      "liveRecheck": "2026-11-17T00:32Z to 00:34Z, Scout OpenAPI 1.9.150: GET https://stellarlight.xyz/api/stablecoins?limit=100 (meta.dataAsOf 2026-11-16T22:21:02Z) returns 37 rows. 35 rows have issuerOfRecordCheck \"named\", and each of those has issuerOfRecord, issuerOfRecordSourceUrl and issuerOfRecordAsOf. No other row has an issuerOfRecord. The AUDD row serves \"AUDC PTY LTD\". All 8 Kinesis Money rows serve \"Kinesis Money Panama S.A.\". The MGUSD note names Bridge. No row has a null assetType (22 Fiat-Backed, 3 Yield Stablecoin, 7 Unclassified, 2 Crypto-Backed, 2 Multi-Asset-Backed, 1 Treasury-Backed). GET /api/stablecoins?assetType=Yield%20Stablecoin returns 200 with USDY, YLDS and USDM, and assetType=Bogus returns 400. Two residuals are filed as successor findings. EURC: https://github.com/Stellar-Light/stellarlight/issues/1971 (sls-119). BRLT, which serves null issuer-of-record fields: https://github.com/Stellar-Light/stellarlight/issues/1973 (sls-120).",
+      "reviewEvidence": "Distinct review by Claude Fable 5.2 (high effort) on 2026-11-17: re-ran the six trigger reads, checked USDT0 (not a residual) and BRLT (a residual), and read the refs. Verdict: retire with successors sls-119 and sls-120. Record: .agents/rounds/2026-11-16-next-phase/items/1.1/REVIEW-RETIRE.md Resolution comments posted and read back: https://github.com/Stellar-Light/stellarlight/issues/1900#issuecomment-6933884157 https://github.com/Stellar-Light/stellarlight/pull/1944#issuecomment-6933884524",
+      "sourceCommit": "cfb8a6be717d71190d65734f67a37a2cb0d0f594",
+      "sourceUrl": "https://github.com/stellar-experimental/stellar-raven/blob/cfb8a6be717d71190d65734f67a37a2cb0d0f594/improvements/stellar-light-scout/sls-107-stablecoin-issuer-of-record-and-asset-class.md"
     },
     {
       "id": "sls-109",

@@ -163,10 +163,6 @@
       "repo": "OpenZeppelin/openzeppelin-skills",
       "reason": "The stale upgrade-stellar-contracts API guidance is owned by the OpenZeppelin skills repository."
     },
-    "sls-033": {
-      "repo": "Stellar-Light/stellarlight",
-      "reason": "Wallet enumeration mixes records, products, aliases, and availability states, so exact wallet counts and platform claims are unsafe."
-    },
     "sls-039": {
       "repo": "Stellar-Light/stellarlight",
       "reason": "Project TVL rows expose a point but no history/method URL or metric decomposition for current-versus-trend/peak/record questions."
