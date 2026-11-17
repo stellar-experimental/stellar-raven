@@ -6,7 +6,7 @@ discovered: 2026-11-17
 upstreamTitle: "POST /api/partners/match has returned no matches in any observed call since 2026-10-26"
 evidence:
   - "2026-11-17T14:21:11Z, direct, OpenAPI info.version 1.9.150: HTTP 503 with unavailable:true and no Retry-After header (command and body in the Evidence section). The same call at 14:04:50Z gave the same result."
-  - "Dedupe 2026-11-17: a search of Stellar-Light/stellarlight for partners match, matchmaking, and AI not configured finds no open issue. Issue 1908 covers the OpenAPI documentation of the 502, not the unavailable AI path. No active or resolved Scout finding covers it."
+  - "A search of Stellar-Light/stellarlight on 2026-11-17 for partners match, matchmaking, and AI not configured finds no open issue. Issue 1908 covers only the OpenAPI documentation of the 502."
 ---
 
 ## Finding
