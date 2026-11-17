@@ -1,17 +1,16 @@
 /**
  * Spec sandbox — the code-shaped `search` machinery, mirroring
- * @cloudflare/codemode@0.4.2's `openApiMcpServer` internals
- * (dist/mcp.js: truncateResponse / sandboxResponseText /
- * createOpenApiSandboxCode) as faithfully as our multi-service setup allows.
+ * @cloudflare/codemode@0.5.6's `openApiMcpServer` internals
+ * (dist/mcp.js: createOpenApiSandboxCode) as faithfully as our multi-service
+ * setup allows. Output shaping is host-side, as upstream's is since 0.5.2:
+ * the wrapper returns the script's raw value and `createSpecSearchRunner`
+ * (run.ts) truncates it with the package's `truncateResult`.
  *
  * What mirrors upstream EXACTLY:
- *  - the truncation constants (4 chars/token, 6k-token cap, marker + footer,
- *    24512-char sandbox pass-through ceiling) and both truncation functions;
  *  - the generated sandbox source: spec JSON injected inline (`</` escaped),
  *    `__resolveRefs` with ref cache + structuredClone + `$circular` marker,
- *    lazily resolved `__resolvedSpec`, in-sandbox `__truncateResponse`,
- *    normalizeCode applied to the LLM code, wrapper returns the truncated
- *    string.
+ *    lazily resolved `__resolvedSpec`, normalizeCode applied to the LLM code,
+ *    wrapper returns the script's raw value.
  *
  * Provider and spec behavior (see ARCHITECTURE.md):
  *  - `includeRequest` is always false — our execute keeps per-operation fns
@@ -19,7 +18,7 @@
  *    codemode.request; the search sandbox is read-only over spec data with
  *    NO providers at all, exactly like upstream's search.
  *  - the spec is our unified super spec (specs/super-spec.json), not a single
- *    upstream OpenAPI document.
+ *    upstream OpenAPI document, and it is serialized once per isolate.
  *  - `resolveSpecRefs` reimplements the sandbox's `__resolveRefs` host-side
  *    so `execute`'s codemode.spec() can return the same resolved document
  *    across the provider RPC boundary (upstream injects the spec into the
@@ -31,40 +30,6 @@
  */
 import { normalizeCode } from "../catalog/vendor/normalize.ts";
 
-// --- constants: verbatim from @cloudflare/codemode/dist/mcp.js --------------
-export const CHARS_PER_TOKEN = 4;
-export const MAX_TOKENS = 6_000;
-export const MAX_CHARS = MAX_TOKENS * CHARS_PER_TOKEN;
-export const TRUNCATION_MARKER = "--- TRUNCATED ---";
-const TRUNCATION_FOOTER_PREFIX = `\n\n${TRUNCATION_MARKER}\nResponse was ~`;
-export const MAX_SANDBOX_TRUNCATED_CHARS = 24_512;
-
-/** Upstream `truncateResponse`: hard cap at ~6k tokens with actionable footer. */
-export function truncateResponse(content: unknown): string {
-  const text =
-    typeof content === "string" ? content : (JSON.stringify(content, null, 2) ?? "undefined");
-  if (text.length <= MAX_CHARS) return text;
-  return `${text.slice(0, MAX_CHARS)}\n\n${TRUNCATION_MARKER}\nResponse was ~${Math.ceil(
-    text.length / CHARS_PER_TOKEN
-  ).toLocaleString()} tokens (limit: ${MAX_TOKENS.toLocaleString()}). Use more specific queries to reduce response size.`;
-}
-
-/**
- * Upstream `sandboxResponseText`: the sandbox already truncated its own
- * result — pass an already-footered string through untouched (its footer
- * carries the REAL pre-truncation size); re-truncate anything else.
- */
-export function sandboxResponseText(content: unknown): string {
-  if (
-    typeof content === "string" &&
-    content.length <= MAX_SANDBOX_TRUNCATED_CHARS &&
-    content.slice(MAX_CHARS).startsWith(TRUNCATION_FOOTER_PREFIX)
-  ) {
-    return content;
-  }
-  return truncateResponse(content);
-}
-
 /** Serialize a spec for inline injection (upstream: `</` → <, script-safe). */
 export function serializeSpecForSandbox(spec: unknown): string {
   return JSON.stringify(spec).replace(/</g, "\\u003c");
@@ -73,9 +38,10 @@ export function serializeSpecForSandbox(spec: unknown): string {
 /**
  * Upstream `createOpenApiSandboxCode(code, spec, /*includeRequest*\/ false)`:
  * wrap LLM code in an async arrow function whose scope provides
- * `codemode.spec()` over the inlined spec, with in-sandbox $ref resolution
- * and truncation. `serializedSpec` must come from serializeSpecForSandbox
- * (pre-serialized once per isolate so each call doesn't re-stringify ~180KB).
+ * `codemode.spec()` over the inlined spec, with in-sandbox $ref resolution.
+ * The wrapper returns the raw value; the host shapes it. `serializedSpec`
+ * must come from serializeSpecForSandbox (pre-serialized once per isolate so
+ * each call doesn't re-stringify ~180KB).
  */
 export function createSpecSandboxCode(code: string, serializedSpec: string): string {
   const normalized = normalizeCode(code);
@@ -112,17 +78,10 @@ const __resolveRefs = (obj, root, seen = new Set()) => {
   return result;
 };
 let __resolvedSpec;
-const __truncateResponse = (content) => {
-  const text = typeof content === "string" ? content : (JSON.stringify(content, null, 2) ?? "undefined");
-  if (text.length <= ${MAX_CHARS}) return text;
-  const truncated = text.slice(0, ${MAX_CHARS});
-  const estimatedTokens = Math.ceil(text.length / ${CHARS_PER_TOKEN});
-  return truncated + "\\n\\n${TRUNCATION_MARKER}\\nResponse was ~" + estimatedTokens.toLocaleString() + " tokens (limit: ${MAX_TOKENS.toLocaleString()}). Use more specific queries to reduce response size.";
-};
 const codemode = {
   spec: async () => (__resolvedSpec ??= __resolveRefs(__rawSpec, __rawSpec))
 };
-return __truncateResponse(await (${normalized})());
+return await (${normalized})();
 }`;
 }
 

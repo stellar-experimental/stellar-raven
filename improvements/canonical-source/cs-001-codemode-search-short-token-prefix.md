@@ -13,6 +13,7 @@ evidence:
   - research/audits/2026-09-17-routing-audit/upstream-prefix-review.md records the commits, reproduction, ownership, and dedupe search.
   - research/audits/2026-09-17-routing-audit/scorer-followup-plan.md and porter-stem-experiment.md record the Raven-side ablations. Removing only the reverse prefix direction also removed query-side word forms such as forecasts→forecast.
   - "upstream issue filed 2026-09-17: https://github.com/cloudflare/agents/issues/2296"
+  - "2026-11-17 (round item 6.1): the search region of the @cloudflare/codemode 0.5.6 dist/index.js is byte-identical to 0.5.1's, and the reverse short-token prefix rule is at line 1328. Read, not executed."
 recurrences:
   - date: 2026-11-09
     evidence: "Fresh main search.ts executes all ten original cases: false matches score 27/55/45/27; four no-short-token controls return empty; intended queries score 153/481. Reverse short-token prefix rule remains line 68."

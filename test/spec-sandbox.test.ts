@@ -1,6 +1,6 @@
 /**
  * Spec-sandbox tests for the code-shaped spec-search machinery that
- * mirrors @cloudflare/codemode@0.4.2's openApiMcpServer internals. Since
+ * mirrors @cloudflare/codemode@0.5.6's openApiMcpServer internals. Since
  * ADR-0001 (research/decisions/0001-search-tool-shape.md) this is no longer
  * a top-level tool: resolveSpecRefs feeds `execute`'s codemode.spec(), and
  * the wrapper backs the retained (unregistered) spec-search runner.
@@ -8,21 +8,16 @@
  * The generated wrapper is plain JavaScript (an async arrow function source
  * string), so beyond asserting its shape we EVALUATE it directly under Node —
  * exercising the real in-sandbox behavior: lazy $ref resolution (cache,
- * cycles, external refs), and the in-sandbox truncation. The Dynamic Worker
- * transport runs in test/smoke/executor.test.ts. The manual live scripts
+ * cycles, external refs) and the raw returned value. Output shaping is
+ * host-side (run.ts `specResponseText`); the Dynamic Worker transport and
+ * that shaping run in test/smoke/executor.test.ts. The manual live scripts
  * additionally check service traffic against an existing local server.
  */
 import { describe, expect, it } from "vitest";
 import {
-  CHARS_PER_TOKEN,
-  MAX_CHARS,
-  MAX_SANDBOX_TRUNCATED_CHARS,
-  TRUNCATION_MARKER,
   createSpecSandboxCode,
   resolveSpecRefs,
-  sandboxResponseText,
-  serializeSpecForSandbox,
-  truncateResponse
+  serializeSpecForSandbox
 } from "../src/executor/spec-sandbox.ts";
 
 const FIXTURE_SPEC = {
@@ -77,55 +72,44 @@ describe("createSpecSandboxCode — source generation", () => {
 
   it("executes code inside Markdown fences", async () => {
     const fenced = "```js\nasync () => 42\n```";
-    expect(await runWrapped(fenced, {})).toBe("42");
+    expect(await runWrapped(fenced, {})).toBe(42);
+  });
+
+  it("returns the script's raw value and leaves output shaping to the host", async () => {
+    const source = createSpecSandboxCode("async () => ({ a: 1 })", serializeSpecForSandbox({}));
+    expect(source).not.toContain("__truncateResponse");
+    expect(await runWrapped("async () => ({ a: 1 })", {})).toEqual({ a: 1 });
   });
 });
 
 describe("generated wrapper — evaluated behavior", () => {
   it("codemode.spec() resolves internal $refs inline", async () => {
-    const result = (await runWrapped(`async () => {
+    const result = await runWrapped(`async () => {
       const spec = await codemode.spec();
       return spec.paths["/scout/getThing"].get.parameters[0];
-    }`)) as string;
-    expect(JSON.parse(result)).toEqual({ name: "q", in: "query", schema: { type: "string" } });
+    }`);
+    expect(result).toEqual({ name: "q", in: "query", schema: { type: "string" } });
   });
 
   it("marks circular refs with $circular and leaves external refs untouched", async () => {
-    const result = (await runWrapped(`async () => {
+    const result = await runWrapped(`async () => {
       const spec = await codemode.spec();
       const thing = spec.paths["/scout/getThing"].get.responses["200"].content["application/json"].schema;
       return { parent: thing.properties.parent, ext: thing.properties.ext };
-    }`)) as string;
-    expect(JSON.parse(result)).toEqual({
+    }`);
+    expect(result).toEqual({
       parent: { $circular: "#/components/schemas/Thing" },
       ext: { $ref: "https://example.com/other.json#/Foo" }
     });
   });
 
   it("resolves the spec lazily, once (second spec() call returns the cached object)", async () => {
-    const result = (await runWrapped(`async () => {
+    const result = await runWrapped(`async () => {
       const a = await codemode.spec();
       const b = await codemode.spec();
       return a === b;
-    }`)) as string;
-    expect(result).toBe("true");
-  });
-
-  it("truncates oversized results in-sandbox with the upstream footer", async () => {
-    const result = (await runWrapped(`async () => "x".repeat(${MAX_CHARS + 4000})`)) as string;
-    expect(result.length).toBeLessThanOrEqual(MAX_SANDBOX_TRUNCATED_CHARS);
-    expect(result.slice(0, MAX_CHARS)).toBe("x".repeat(MAX_CHARS));
-    expect(result).toContain(TRUNCATION_MARKER);
-    expect(result).toContain(
-      `Response was ~${Math.ceil((MAX_CHARS + 4000) / CHARS_PER_TOKEN).toLocaleString()} tokens`
-    );
-    // …and the host-side pass-through keeps it verbatim (already truncated).
-    expect(sandboxResponseText(result)).toBe(result);
-  });
-
-  it("JSON-stringifies non-string results (2-space, upstream behavior)", async () => {
-    const result = (await runWrapped(`async () => ({ a: 1 })`)) as string;
-    expect(result).toBe('{\n  "a": 1\n}');
+    }`);
+    expect(result).toBe(true);
   });
 
   it("works against the REAL super spec: services + a known operation resolve", async () => {
@@ -144,7 +128,7 @@ describe("generated wrapper — evaluated behavior", () => {
         "utf8"
       )
     ) as { entries: Array<{ kind: string }> };
-    const result = (await runWrapped(
+    const parsed = (await runWrapped(
       `async () => {
         const spec = await codemode.spec();
         const services = new Set();
@@ -159,8 +143,7 @@ describe("generated wrapper — evaluated behavior", () => {
         };
       }`,
       superSpec
-    )) as string;
-    const parsed = JSON.parse(result) as {
+    )) as {
       services: string[];
       qParam: { name: string; in: string };
       skillCount: number;
@@ -171,28 +154,10 @@ describe("generated wrapper — evaluated behavior", () => {
   });
 });
 
-describe("host-side truncation helpers (upstream mirror)", () => {
-  it("truncateResponse passes short content through and truncates long content", () => {
-    expect(truncateResponse("short")).toBe("short");
-    const long = truncateResponse("y".repeat(MAX_CHARS + 100));
-    expect(long).toContain(TRUNCATION_MARKER);
-    expect(long.startsWith("y".repeat(MAX_CHARS))).toBe(true);
-  });
-
-  it("sandboxResponseText re-truncates non-footered oversized strings", () => {
-    const raw = "z".repeat(MAX_CHARS + 100);
-    const out = sandboxResponseText(raw);
-    expect(out).not.toBe(raw);
-    expect(out).toContain(TRUNCATION_MARKER);
-  });
-});
-
 describe("resolveSpecRefs (host twin for execute's codemode.spec())", () => {
   it("produces the same resolution as the sandbox's __resolveRefs", async () => {
     const hostResolved = resolveSpecRefs(FIXTURE_SPEC) as Record<string, unknown>;
-    const sandboxResolved = JSON.parse(
-      (await runWrapped("async () => await codemode.spec()")) as string
-    );
+    const sandboxResolved = await runWrapped("async () => await codemode.spec()");
     expect(hostResolved).toEqual(sandboxResolved);
   });
 });

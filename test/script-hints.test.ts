@@ -1,6 +1,6 @@
 /**
  * Host hints for script mistakes. The messages below are the sandbox's own
- * (workerd and @cloudflare/codemode 0.5.1, observed 2026-11-12); the smoke
+ * (workerd and @cloudflare/codemode 0.5.6, observed 2026-11-17); the smoke
  * lane holds that the assembled worker still produces them.
  */
 import { describe, expect, it } from "vitest";

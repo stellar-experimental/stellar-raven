@@ -16,6 +16,9 @@
  * service→connector(8), description→description(5) — plus a low-weight
  * kind field (2). Scoring math (exact/prefix/phrase multipliers, token hits,
  * coverage gate, bonuses) is unchanged from upstream.
+ *
+ * Also adapted: `normalizeSearchText` splits on `#` as well (upstream
+ * `/[_./:-]+/`, Raven `/[_./:#-]+/`); present since the initial snapshot.
  */
 
 export type ScorableEntry = {
