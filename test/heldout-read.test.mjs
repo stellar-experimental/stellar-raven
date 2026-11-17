@@ -2,7 +2,7 @@
  * The counting logic of the held-out launcher (eval/qa/heldout-read.sh): counts only, never an id.
  */
 import { execFileSync, spawnSync } from "node:child_process";
-import { mkdtempSync, writeFileSync } from "node:fs";
+import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
@@ -111,7 +111,7 @@ describe("held-out read: summary", () => {
 describe("heldout-read.sh", () => {
   it("is valid bash, and echoes no id variable", () => {
     expect(() => execFileSync("bash", ["-n", "eval/qa/heldout-read.sh"])).not.toThrow();
-    const source = execFileSync("cat", ["eval/qa/heldout-read.sh"], { encoding: "utf8" });
+    const source = readFileSync("eval/qa/heldout-read.sh", "utf8");
     expect(source).not.toMatch(/echo[^\n]*\$\{?IDS\b/);
     expect(source).not.toMatch(/set -x/);
     expect(source).toContain("--max-budget-usd 30");
