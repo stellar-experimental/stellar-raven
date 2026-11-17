@@ -283,7 +283,9 @@ describe("stellarOrg.get_page path guard", () => {
     ["/foundation/strategy", "/foundation/strategy"],
     ["/foundation/roadmap/", "/foundation/roadmap"],
     ["/", "/"],
-    ["/audit-bank/projects", "/audit-bank/projects"]
+    ["/audit-bank/projects", "/audit-bank/projects"],
+    ["/apiary", "/apiary"],
+    ["/Apiary/Page", "/Apiary/Page"]
   ])("accepts %s", (raw, expected) => {
     expect(normalizeSitePath(raw)).toBe(expected);
   });
@@ -299,6 +301,9 @@ describe("stellarOrg.get_page path guard", () => {
     "/foundation#team",
     "/api",
     "/api/search",
+    "/API",
+    "/API/search",
+    "/Api/search",
     "/foundation strategy",
     "/%2e%2e/api/search",
     "/foo/%2e%2e/api/x",
@@ -375,7 +380,9 @@ describe("stellarOrg.get_page", () => {
     ["a protocol-relative host", "//evil.example/x"],
     ["an /api path", "/api/search?q=x"],
     ["a query string", "/ecosystem?partner=x"],
-    ["an encoded /api path", "/%2e%2e/api/x"]
+    ["an encoded /api path", "/%2e%2e/api/x"],
+    ["an upper-case /API path", "/API/search"],
+    ["a mixed-case /Api path", "/Api/search"]
   ])("refuses a redirect to %s without following it", async (_label, location) => {
     const { fetchImpl, calls } = recorder(() => new Response(null, { status: 307, headers: { location } }));
     const result = await callStellarOrg(PAGE, { path: "/developers" }, fetchImpl);
@@ -474,6 +481,107 @@ describe("stellarOrg.get_page", () => {
   });
 });
 
+describe("stellarOrg output bounds", () => {
+  const MAX = 300;
+  const page = (extra: Record<string, unknown>) => ({ kind: "page", title: "t", url: "/t", ...extra });
+
+  it("clips a long title on every search kind and marks the cut", () => {
+    const long = "T".repeat(200_000);
+    const hits = siteHits([
+      page({ title: long }),
+      { kind: "tutorial", title: long, url: "/learn?tutorial=a" },
+      { kind: "partner", title: long, url: "?partner=b&category=defi" },
+      page({ title: "x".repeat(MAX), url: "/exact" })
+    ]);
+    expect(hits).toHaveLength(4);
+    for (const hit of hits.slice(0, 3)) {
+      expect(hit.title).toHaveLength(MAX);
+      expect(hit.title.endsWith("T…")).toBe(true);
+    }
+    expect(hits[3]!.title).toBe("x".repeat(MAX));
+  });
+
+  it("splits an audit title before clipping, so a long project keeps its firm", () => {
+    const audit = (title: string) => ({ kind: "audit", title, url: "https://reports.example/r", isExternal: true });
+    const [hit] = siteHits([audit(`${"P".repeat(200_000)} - Firm`)]);
+    expect(hit).toMatchObject({ kind: "audit", firm: "Firm", reportUrl: "https://reports.example/r" });
+    if (hit?.kind !== "audit") throw new Error("expected an audit hit");
+    expect(hit.title).toHaveLength(MAX);
+    expect(hit.project).toHaveLength(MAX);
+    expect(hit.project!.endsWith("P…")).toBe(true);
+    const [long] = siteHits([audit(`Project - ${"F".repeat(100_000)}`)]);
+    expect(long).toMatchObject({ project: "Project" });
+    expect(long && "firm" in long && long.firm).toHaveLength(MAX);
+  });
+
+  it("keeps at most 10 non-empty tags of 200 characters, including the partner merge", () => {
+    const tags = ["", ...Array.from({ length: 30 }, (_, i) => `tag${i}`), 7, "t".repeat(5_000)];
+    const [hit] = siteHits([page({ tags })]);
+    expect(hit && "tags" in hit && hit.tags).toEqual(Array.from({ length: 10 }, (_, i) => `tag${i}`));
+    const [wide] = siteHits([page({ tags: ["t".repeat(5_000)] })]);
+    expect(wide && "tags" in wide && wide.tags[0]).toHaveLength(200);
+    const rows = Array.from({ length: 300 }, (_, i) => ({ kind: "partner", title: "P", url: `?partner=p&category=c${i}` }));
+    const [partner] = siteHits(rows);
+    expect(partner && "tags" in partner && partner.tags).toEqual(Array.from({ length: 10 }, (_, i) => `c${i}`));
+  });
+
+  it("clips the document title, decoded and with whitespace normalized", async () => {
+    const result = await callStellarOrg(PAGE, { path: "/t" }, async () =>
+      html(`<head><title>${"T&amp;  ".repeat(200_000)}</title></head><main>USEFUL</main>`)
+    );
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    const data = result.data as { title: string; content: string };
+    expect(data.title).toHaveLength(MAX);
+    expect(data.title.endsWith("…")).toBe(true);
+    expect(data.title.startsWith("T& T& ")).toBe(true);
+    expect(data.content).toBe("USEFUL");
+  });
+
+  it("bounds the header text an error echoes", async () => {
+    const respond = (headers: Record<string, string>, status: number) => async () => new Response(null, { status, headers });
+    const longPath = "a".repeat(5_000);
+    const refusals = await Promise.all([
+      callStellarOrg(PAGE, { path: "/x" }, respond({ location: `https://evil.example/${longPath}` }, 302)),
+      callStellarOrg(PAGE, { path: "/x" }, respond({ location: `/api/${longPath}` }, 302)),
+      callStellarOrg(PAGE, { path: "/x" }, respond({ location: `/y?q=${longPath}` }, 302)),
+      callStellarOrg(PAGE, { path: "/x" }, respond({ "content-type": `application/x-${longPath}` }, 200))
+    ]);
+    for (const result of refusals) {
+      expect(result.ok).toBe(false);
+      if (result.ok) continue;
+      expect(result.error.message.length).toBeLessThan(1_000);
+      expect(result.error.message).toContain("…");
+    }
+    expect(refusals[0]!.ok ? "" : refusals[0]!.error.message).toMatch(/off stellar\.org to https:\/\/evil\.example\/a+…;/);
+  });
+
+  it("leaves a short redirect target and content type whole", async () => {
+    const off = await callStellarOrg(PAGE, { path: "/x" }, async () => new Response(null, { status: 302, headers: { location: "https://evil.example/b" } }));
+    expect(off.ok ? "" : off.error.message).toContain("to https://evil.example/b;");
+    const type = await callStellarOrg(PAGE, { path: "/x" }, async () => new Response("x", { headers: { "content-type": "application/json" } }));
+    expect(type.ok ? "" : type.error.message).toContain("(application/json)");
+  });
+
+  it("refuses a redirect to /API/search before a second request", async () => {
+    const { fetchImpl, calls } = recorder(() => new Response(null, { status: 307, headers: { location: "/API/search" } }));
+    const result = await callStellarOrg(PAGE, { path: "/start" }, fetchImpl);
+    expect(calls).toHaveLength(1);
+    expect(result).toMatchObject({ ok: false, error: { status: 307 } });
+  });
+
+  it("sends no request for /API paths and drops /API search rows", async () => {
+    const { fetchImpl, calls } = recorder(() => html("<main>x</main>"));
+    for (const path of ["/API", "/API/search", "/Api/search"]) {
+      expect(await callStellarOrg(PAGE, { path }, fetchImpl)).toMatchObject({ ok: false, error: { kind: "error" } });
+    }
+    expect(calls).toHaveLength(0);
+    expect(siteHits([page({ url: "/API/x" }), page({ url: "/apiary" })]).map((hit) => ("path" in hit ? hit.path : null))).toEqual(["/apiary"]);
+    expect(await callStellarOrg(PAGE, { path: "/apiary" }, fetchImpl)).toMatchObject({ ok: true });
+    expect(calls).toHaveLength(1);
+  });
+});
+
 describe("htmlToText and mainHtml", () => {
   it("ignores a main tag inside a script and takes the first real main element", () => {
     const page = '<head><script>var s = "<main>fake</main>";</script></head><body><main><main>inner</main> outer</main><main>second</main></body>';
@@ -528,5 +636,91 @@ describe("htmlToText and mainHtml", () => {
     expect(htmlToText("<svg><svg><text>icon</text></svg><text>more</text></svg><p>after</p>")).toBe("after");
     expect(htmlToText("<p>before</p><script>if (a < b) {}</script><p>after</p>")).toBe("before\nafter");
     expect(htmlToText("<li>same</li><li></li><li>same</li><h2>Next</h2><p>x</p>")).toBe("- same\n\n## Next\n\nx");
+  });
+
+  it("treats script and style as raw text, whatever their bodies contain", () => {
+    expect(htmlToText('<main><p>Before</p><script>const t = "<script>";</script><p>AFTER_FACT</p></main>')).toBe("Before\nAFTER_FACT");
+    expect(htmlToText('<p>Before</p><style>div::after {content:"<style>"}</style><p>AFTER_FACT</p>')).toBe("Before\nAFTER_FACT");
+    expect(htmlToText("<p>Before</p><script/>HIDDEN_SCRIPT_TEXT</script><p>AFTER_FACT</p>")).toBe("Before\nAFTER_FACT");
+    expect(htmlToText('<p>Before</p><script>var s = "<!--";</script><p>AFTER_FACT</p>')).toBe("Before\nAFTER_FACT");
+    expect(htmlToText("<p>Before</p><SCRIPT>x</ScRiPt ><p>AFTER_FACT</p>")).toBe("Before\nAFTER_FACT");
+    expect(htmlToText("<p>Before</p><noscript><p>no js</p></noscript><iframe><p>frame</p></iframe><p>AFTER_FACT</p>")).toBe("Before\nAFTER_FACT");
+    expect(htmlToText("<p>Before</p><script>never ends <p>lost</p>")).toBe("Before");
+    expect(htmlToText("<p>a</p><script-x>kept</script-x>")).toBe("a\nkept");
+  });
+
+  it("skips raw text inside head and template, but counts only svg tags inside svg", () => {
+    const head = '<head><script>var s = "</head><main>fake</main>";</script></head><main>real</main>';
+    expect(htmlToText(mainHtml(head))).toBe("real");
+    expect(htmlToText('<template><script>"</template>";</script></template><p>after</p>')).toBe("after");
+    expect(htmlToText("<svg><title/></svg><p>after</p>")).toBe("after");
+    expect(htmlToText("<svg><style/><path/></svg><p>after</p>")).toBe("after");
+    expect(htmlToText("<svg><script>x</svg><p>after</p>")).toBe("after");
+  });
+
+  it("keeps svg context inside a skipped template or head", async () => {
+    expect(htmlToText(mainHtml("<main>before<template><svg><title/></svg></template><p>after</p></main>"))).toBe("before\nafter");
+    expect(htmlToText(mainHtml("<main>before<template><svg><style/><path/></svg></template><p>after</p></main>"))).toBe("before\nafter");
+    expect(htmlToText(mainHtml("<head><svg><title/></svg></head><main>real</main>"))).toBe("real");
+    expect(htmlToText("<template><svg><svg><title/></svg><style/></svg><script>x</script></template><p>after</p>")).toBe("after");
+    const result = await callStellarOrg(PAGE, { path: "/t" }, async () =>
+      html("<head><svg><title/></svg></head><main>before<template><svg><title/></svg></template><p>after</p></main>")
+    );
+    expect(result).toMatchObject({ ok: true, data: { content: "before\nafter" } });
+  });
+
+  it("collapses a literal no-break space like its entity", () => {
+    expect(htmlToText("<main>A\u00a0\u00a0B</main>")).toBe("A B");
+    expect(htmlToText("<main>A&nbsp;&nbsp;B</main>")).toBe("A B");
+  });
+
+  it("drops comments and keeps the text around them", () => {
+    expect(htmlToText("<p>a<!-- <p>hidden</p> -->b</p>")).toBe("ab");
+  });
+
+  it.each([
+    ["comment", "<!--<title>COMMENT_TITLE</title>--><title>REAL_TITLE</title><main>AFTER_FACT</main>", "REAL_TITLE"],
+    ["script literal", '<head><script>const x = "<title>SCRIPT_TITLE</title>";</script><title>REAL_TITLE</title></head><main>AFTER_FACT</main>', "REAL_TITLE"],
+    ["style literal", '<head><style>a::after{content:"<title>X</title>"}</style><TITLE>REAL_TITLE</TITLE ></head>', "REAL_TITLE"],
+    ["entities and whitespace", "<head><title>\n  A &amp;\n B </title></head>", "A & B"],
+    ["svg title", "<svg><title>icon</title></svg><main>x</main>", "/t"],
+    ["no title", "<main>x</main>", "/t"],
+    ["empty title", "<head><title> </title></head><main>x</main>", "/t"],
+    ["unterminated title", "<main>x</main><head><title>never ends", "/t"]
+  ])("reads the document title past a %s", async (_label, body, expected) => {
+    const result = await callStellarOrg(PAGE, { path: "/t" }, async () => html(body.includes("<main>") ? body : `${body}<main>x</main>`));
+    expect(result).toMatchObject({ ok: true, data: { title: expected } });
+  });
+
+  it("keeps the page text when the title sits in a skipped head", async () => {
+    const result = await callStellarOrg(PAGE, { path: "/t" }, async () =>
+      html("<html><head><title>Roadmap | Stellar</title><script>var a;</script></head><body><main><p>Body</p></main></body></html>")
+    );
+    expect(result).toMatchObject({ ok: true, data: { title: "Roadmap | Stellar", content: "Body" } });
+  });
+
+  // R1: an end tag with no `>` must not be searched for again from every `</script ` candidate.
+  it.each([
+    ["script start tags with no end tag", `<main>ok${"<script>".repeat(240_000)}`],
+    ["script end candidates with no >", `<main>ok<script>${"</script ".repeat(210_000)}`],
+    ["title end candidates with no >", `<main>ok</main><head><title>${"</title ".repeat(240_000)}`],
+    ["style end candidates with no >", `<main>ok<style>${"</style ".repeat(240_000)}`],
+    ["raw-text end tags that never match", `<main>ok${"<script></scripts>".repeat(100_000)}`]
+  ])("reads 1.9 MB of %s in under a second", async (_family, body) => {
+    const bytes = new TextEncoder().encode(body).length;
+    expect(bytes).toBeGreaterThan(1_680_000);
+    expect(bytes).toBeLessThanOrEqual(MAX_PAGE_BYTES);
+    const started = performance.now();
+    const result = await callStellarOrg(PAGE, { path: "/t" }, async () => html(body));
+    expect(performance.now() - started).toBeLessThan(1_000);
+    expect(result.ok).toBe(true);
+  });
+
+  it("reads many short script elements in linear time", async () => {
+    const body = `<main>ok${"<script>x</script>".repeat(100_000)}<p>end</p></main>`;
+    const started = performance.now();
+    const result = await callStellarOrg(PAGE, { path: "/t" }, async () => html(body));
+    expect(performance.now() - started).toBeLessThan(1_000);
+    expect(result).toMatchObject({ ok: true, data: { content: "ok\nend" } });
   });
 });

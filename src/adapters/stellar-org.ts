@@ -12,6 +12,11 @@
  *    text with headings and list items, follows same-origin redirects only,
  *    and caps the bytes it reads and the time one read takes.
  *
+ * Output fields are bounded: titles and names at MAX_TITLE_CHARS, tags at
+ * MAX_TAGS of MAX_TAG_CHARS, descriptions at MAX_DESCRIPTION_CHARS, and the
+ * header text an error echoes at MAX_ECHO_CHARS. A cut title, name, tag or
+ * header excerpt ends with `…`; a cut description does not.
+ *
  * The catalog entry's `transport.endpoint` selects the request. The origin is
  * a constant here, never read from the manifest.
  */
@@ -27,6 +32,11 @@ const REQUEST_TIMEOUT_MS = 12_000;
 const OPERATION_BUDGET_MS = 24_000;
 const MAX_SEARCH_BYTES = 256_000;
 const MAX_DESCRIPTION_CHARS = 500;
+const MAX_TITLE_CHARS = 300;
+const MAX_TAGS = 10;
+const MAX_TAG_CHARS = 200;
+/** The part of an upstream header an error message shows. */
+const MAX_ECHO_CHARS = 200;
 const MAX_ERROR_BODY_CHARS = 512;
 /** Rendered pages measured 410-500 KB (2026-11-14); a larger body is refused, not truncated. */
 export const MAX_PAGE_BYTES = 2_000_000;
@@ -61,6 +71,13 @@ export type SiteHit = PageHit | TutorialHit | PartnerHit | AuditHit;
 const SLUG_RE = /^[a-z0-9][a-z0-9-]{0,199}$/i;
 const MAX_REPORT_URL_CHARS = 2048;
 
+/** `value` cut to at most `max` characters, ending with `…` when it was cut. */
+function clip(value: string, max: number): string {
+  if (value.length <= max) return value;
+  const cut = value.slice(0, max - 1);
+  return `${/[\ud800-\udbff]$/.test(cut) ? cut.slice(0, -1) : cut}…`;
+}
+
 function underPrefix(path: string, prefix: string): boolean {
   return path === prefix || path.startsWith(`${prefix}/`);
 }
@@ -75,7 +92,7 @@ export function normalizeSitePath(raw: unknown): string | null {
   if (path.length === 0 || path.length > MAX_PATH_CHARS || !PATH_RE.test(path)) return null;
   if (path.includes("//") || path.split("/").some((segment) => segment === "." || segment === "..")) return null;
   const trimmed = path.length > 1 ? path.replace(/\/$/, "") : path;
-  if (underPrefix(trimmed, "/api")) return null;
+  if (underPrefix(trimmed.toLowerCase(), "/api")) return null;
   return trimmed;
 }
 
@@ -84,10 +101,12 @@ function text(value: unknown, max: number): string | null {
 }
 
 function stringTags(value: unknown): string[] {
-  return Array.isArray(value) ? value.filter((tag): tag is string => typeof tag === "string") : [];
+  if (!Array.isArray(value)) return [];
+  const tags = value.filter((tag): tag is string => typeof tag === "string" && tag !== "");
+  return tags.slice(0, MAX_TAGS).map((tag) => clip(tag, MAX_TAG_CHARS));
 }
 
-/** "Project - Firm"; the site writes "Unnamed record" when the register has no project. */
+/** "Project - Firm", split before any clipping; the site writes "Unnamed record" when the register has no project. */
 function auditHit(title: string, rawUrl: unknown): AuditHit | null {
   if (typeof rawUrl !== "string") return null;
   let url: URL;
@@ -105,9 +124,9 @@ function auditHit(title: string, rawUrl: unknown): AuditHit | null {
   const firm = cut >= 0 ? title.slice(cut + 2).trim() : "";
   return {
     kind: "audit",
-    title,
-    project: project && project !== "Unnamed record" ? project : null,
-    firm: firm || null,
+    title: clip(title, MAX_TITLE_CHARS),
+    project: project && project !== "Unnamed record" ? clip(project, MAX_TITLE_CHARS) : null,
+    firm: firm ? clip(firm, MAX_TITLE_CHARS) : null,
     reportUrl: url.href
   };
 }
@@ -136,14 +155,15 @@ export function siteHits(results: SiteRow[]): SiteHit[] {
   const partners = new Map<string, PartnerHit>();
   for (const row of results) {
     if (!row || typeof row.title !== "string" || !row.title.trim()) continue;
-    const title = row.title.trim();
+    const fullTitle = row.title.trim();
     const description = text(row.description, MAX_DESCRIPTION_CHARS);
     const kind = typeof row.kind === "string" ? row.kind : "page";
     if (kind === "audit") {
-      const hit = auditHit(title, row.url);
+      const hit = auditHit(fullTitle, row.url);
       if (hit) hits.push(hit);
       continue;
     }
+    const title = clip(fullTitle, MAX_TITLE_CHARS);
     if (row.isExternal === true) continue;
     if (kind === "tutorial") {
       const slug = siteSlug(row.url, "/learn", "tutorial");
@@ -156,7 +176,7 @@ export function siteHits(results: SiteRow[]): SiteHit[] {
       const category = siteSlug(row.url, "/ecosystem", "category");
       const seen = partners.get(slug);
       if (seen) {
-        if (category && !seen.tags.includes(category)) seen.tags.push(category);
+        if (category && seen.tags.length < MAX_TAGS && !seen.tags.includes(category)) seen.tags.push(category);
         continue;
       }
       const hit: PartnerHit = { kind, title, description, url: `${STELLAR_ORG_ORIGIN}/ecosystem?partner=${slug}`, tags: category ? [category] : [] };
@@ -194,8 +214,10 @@ function decodeEntities(text: string): string {
   });
 }
 
-/** Elements whose content is never page text. */
-const SKIPPED = new Set(["script", "style", "noscript", "svg", "template", "iframe", "head"]);
+/** Elements whose content is never page text; their start tag is a bounded region, not markup. */
+const RAW_TEXT = new Set(["script", "style", "noscript", "iframe", "title"]);
+/** Skipped elements that nest: only a tag of the same name changes the depth. */
+const NESTED = new Set(["svg", "template", "head"]);
 const BLOCKS = new Set([
   "p", "div", "section", "article", "header", "footer", "aside", "nav", "ul", "ol", "table", "tr",
   "blockquote", "figure", "figcaption", "dl", "dt", "dd", "br", "hr", "form", "details", "summary"
@@ -206,6 +228,67 @@ const BLOCKS = new Set([
  * so a scan stays linear.
  */
 const TAG_RE = /<!--(?:[\s\S]*?-->|[\s\S]*$)|<(\/?)([A-Za-z][A-Za-z0-9-]*)(?![\w-])[^<>]*>/g;
+const END_TAG_RES = new Map(Array.from(RAW_TEXT, (name) => [name, new RegExp(`</${name}(?![\\w-])`, "gi")]));
+
+/** A tag outside every skipped region, or one skipped element as a unit (`skipped`, `body` for raw text with an end tag). */
+type Tag = { name: string; closing: boolean; index: number; end: number; skipped?: true; body?: string };
+
+/**
+ * The tags of an HTML string, one linear pass. A `script`, `style`, `noscript`,
+ * `iframe` or `title` start tag (a trailing `/` ignored) skips to its end tag,
+ * parsing nothing in between; with no end tag the rest is skipped and the scan
+ * stops. Comments come back as unnamed tags. `svg`, `template` and (unless `intoHead`) `head` skip as nested units;
+ * anywhere inside an `svg` (even one in a skipped `template`) raw text is not
+ * special, while inside the others it is still skipped. The end tag is found in two steps, `</name` then the next `>`, and
+ * a failed step ends the scan, so no candidate is searched for twice.
+ */
+function* scan(html: string, intoHead = false): Generator<Tag> {
+  const re = new RegExp(TAG_RE.source, "g");
+  let skipping: string | null = null;
+  let depth = 0;
+  let from = 0;
+  let svgDepth = 0;
+  for (let match = re.exec(html); match; match = re.exec(html)) {
+    const name = (match[2] ?? "").toLowerCase();
+    const closing = match[1] === "/";
+    const selfClosing = match[0].endsWith("/>");
+    const open = match.index + match[0].length;
+    if (!name) {
+      // A comment: yielded unnamed so htmlToText drops it.
+      if (!skipping) yield { name, closing, index: match.index, end: open };
+      continue;
+    }
+    // Inside any svg, `script`, `style` and `title` are ordinary tags and `/>` closes them.
+    if (name === "svg" && !selfClosing) svgDepth = Math.max(0, svgDepth + (closing ? -1 : 1));
+    if (RAW_TEXT.has(name) && !closing && svgDepth === 0) {
+      const endTag = END_TAG_RES.get(name)!;
+      endTag.lastIndex = open;
+      const close = endTag.exec(html)?.index ?? -1;
+      const gt = close < 0 ? -1 : html.indexOf(">", close);
+      const end = gt < 0 ? html.length : gt + 1;
+      if (!skipping) yield { name, closing, index: match.index, end, skipped: true, ...(gt < 0 ? {} : { body: html.slice(open, close) }) };
+      if (gt < 0) break;
+      re.lastIndex = end;
+      continue;
+    }
+    if (skipping) {
+      if (name === skipping && !selfClosing) depth += closing ? -1 : 1;
+      if (depth === 0) {
+        yield { name: skipping, closing: false, index: from, end: open, skipped: true };
+        skipping = null;
+      }
+      continue;
+    }
+    if (NESTED.has(name) && !(intoHead && name === "head") && !closing && !selfClosing) {
+      skipping = name;
+      depth = 1;
+      from = match.index;
+      continue;
+    }
+    yield { name, closing, index: match.index, end: open };
+  }
+  if (skipping) yield { name: skipping, closing: false, index: from, end: html.length, skipped: true };
+}
 
 /**
  * Readable text of an HTML fragment: headings become `#` lines, list items
@@ -214,41 +297,22 @@ const TAG_RE = /<!--(?:[\s\S]*?-->|[\s\S]*$)|<(\/?)([A-Za-z][A-Za-z0-9-]*)(?![\w
  */
 export function htmlToText(html: string): string {
   const out: string[] = [];
-  let skipping: string | null = null;
-  let depth = 0;
   let last = 0;
-  for (const match of html.matchAll(TAG_RE)) {
-    const index = match.index;
-    const closing = match[1] === "/";
-    const name = (match[2] ?? "").toLowerCase();
-    if (skipping) {
-      if (name === skipping && !match[0].endsWith("/>")) depth += closing ? -1 : 1;
-      if (depth === 0) {
-        skipping = null;
-        last = index + match[0].length;
-      }
-      continue;
-    }
-    out.push(html.slice(last, index));
-    last = index + match[0].length;
-    if (!name) continue;
-    if (SKIPPED.has(name) && !closing) {
-      if (!match[0].endsWith("/>")) {
-        skipping = name;
-        depth = 1;
-      }
-      continue;
-    }
+  for (const tag of scan(html)) {
+    out.push(html.slice(last, tag.index));
+    last = tag.end;
+    if (tag.skipped) continue;
+    const { name, closing } = tag;
     const heading = /^h([1-6])$/.exec(name);
     if (heading) out.push(closing ? "\n\n" : `\n\n${"#".repeat(Number(heading[1]))} `);
     else if (name === "li") out.push(closing ? "\n" : "\n- ");
     else if (BLOCKS.has(name)) out.push("\n");
     else if (name === "td" || name === "th") out.push(" ");
   }
-  if (!skipping) out.push(html.slice(last));
+  out.push(html.slice(last));
   const lines = decodeEntities(out.join(""))
     .split("\n")
-    .map((line) => line.replace(/[ \t\r\f\v ]+/g, " ").trim());
+    .map((line) => line.replace(/[ \t\r\f\v\u00a0]+/g, " ").trim());
   const kept: string[] = [];
   for (const line of lines) {
     // Empty heading and bullet markers carry nothing; a repeated line is a responsive-layout duplicate.
@@ -265,41 +329,29 @@ export function htmlToText(html: string): string {
  * a script) never count.
  */
 export function mainHtml(html: string): string {
-  let skipping: string | null = null;
-  let depth = 0;
   let mainStart = -1;
   let mainDepth = 0;
-  for (const match of html.matchAll(TAG_RE)) {
-    const name = (match[2] ?? "").toLowerCase();
-    if (!name) continue;
-    const closing = match[1] === "/";
-    const selfClosing = match[0].endsWith("/>");
-    if (skipping) {
-      if (name === skipping && !selfClosing) depth += closing ? -1 : 1;
-      if (depth === 0) skipping = null;
-      continue;
-    }
-    if (SKIPPED.has(name) && !closing && !selfClosing) {
-      skipping = name;
-      depth = 1;
-      continue;
-    }
-    if (name !== "main") continue;
-    if (!closing) {
-      if (mainStart < 0) mainStart = match.index + match[0].length;
+  for (const tag of scan(html)) {
+    if (tag.skipped || tag.name !== "main") continue;
+    if (!tag.closing) {
+      if (mainStart < 0) mainStart = tag.end;
       if (mainDepth >= 0) mainDepth += 1;
     } else if (mainDepth > 0) {
       mainDepth -= 1;
-      if (mainDepth === 0) return html.slice(mainStart, match.index);
+      if (mainDepth === 0) return html.slice(mainStart, tag.index);
     }
   }
   return mainStart >= 0 ? html.slice(mainStart) : "";
 }
 
+/** The first terminated `<title>` outside comments, scripts, `svg` and `template`; `head` is entered. */
 function documentTitle(html: string): string | undefined {
-  const match = /<title\b[^<>]*>([^<]*)<\/title>/i.exec(html);
-  const title = match ? decodeEntities(match[1]!).replace(/\s+/g, " ").trim() : "";
-  return title || undefined;
+  for (const tag of scan(html, true)) {
+    if (!tag.skipped || tag.name !== "title") continue;
+    const title = tag.body === undefined ? "" : clip(decodeEntities(tag.body).replace(/\s+/g, " ").trim(), MAX_TITLE_CHARS);
+    return title || undefined;
+  }
+  return undefined;
 }
 
 async function readCapped(res: Response, maxBytes: number): Promise<string | null> {
@@ -423,7 +475,7 @@ async function page(args: Record<string, unknown>, fetchImpl: FetchLike): Promis
           service: SERVICE,
           kind: "error",
           status: res.status,
-          message: `${path} redirects off stellar.org to ${target.origin}${target.pathname}; it is not a stellar.org page`,
+          message: `${path} redirects off stellar.org to ${clip(`${target.origin}${target.pathname}`, MAX_ECHO_CHARS)}; it is not a stellar.org page`,
           hint: "Read the target with the source that owns that site."
         });
       }
@@ -433,7 +485,7 @@ async function page(args: Record<string, unknown>, fetchImpl: FetchLike): Promis
           service: SERVICE,
           kind: "error",
           status: res.status,
-          message: `${path} redirects to ${target.pathname}${target.search}, a stellar.org URL this tool does not read (query string, /api, or an unsafe path)`
+          message: `${path} redirects to ${clip(`${target.pathname}${target.search}`, MAX_ECHO_CHARS)}, a stellar.org URL this tool does not read (query string, /api, or an unsafe path)`
         });
       }
       if (hop >= MAX_REDIRECTS || next === path) {
@@ -464,7 +516,7 @@ async function page(args: Record<string, unknown>, fetchImpl: FetchLike): Promis
     const contentType = res.headers.get("content-type") ?? "";
     if (!/^text\/html\b/i.test(contentType)) {
       await res.body?.cancel();
-      return errResult({ service: SERVICE, kind: "error", message: `${path} is not an HTML page (${contentType || "no content type"})` });
+      return errResult({ service: SERVICE, kind: "error", message: `${path} is not an HTML page (${clip(contentType, MAX_ECHO_CHARS) || "no content type"})` });
     }
     const html = await readCapped(res, MAX_PAGE_BYTES);
     if (html === null) {

@@ -367,11 +367,6 @@ stellar.org through the adapter's own path (checked after the #447 deploy,
 [loop 2 ledger](rounds/2026-11-15-tuning-loop-2.md)). What remains:
 
 - **Routing reach.** See "Treat stellar.org routing reach as a lexical and description question".
-- **Adapter review residue.** The vendor-diverse attack on the adapter (a Codex frontier or Grok
-  reviewer) was never run: both reviews were Claude Opus. Round item 1.2 runs it. The title cap of
-  300 characters that review G2 suggested was not applied (a 200,000-character title passes
-  through `search_site`; the host's 6,000-token return cap bounds it), and `/API/search` sends one
-  request to stellar.org (G4, the owner's call).
 - **Algolia `pages` index.** Orchestrator evidence, 2026-11-14, read in the Algolia dashboard: of
   nine body-text phrases the keyless search missed, the `pages` index ranked the right page in its
   top four for about five. Whether it holds audit records is unconfirmed. Decision (round plan):
@@ -382,10 +377,9 @@ stellar.org through the adapter's own path (checked after the #447 deploy,
 - **Out-of-source fact.** The Anchor Directory is `anchors.stellar.org`, not stellar.org; that case
   needs another source or a golden-truth edit (round item 1.3).
 
-Done when: the vendor-diverse adapter review is done or the owner waives it, a run on the 12
-source rows shows the source supplying a judged fact (or the owner accepts it as a coverage fix
-without a scored gain), the Blend register finding is filed or dropped, and the Anchor Directory
-case is routed.
+Done when: a run on the 12 source rows shows the source supplying a judged fact (or the owner
+accepts it as a coverage fix without a scored gain), the Blend register finding is filed or
+dropped, and the Anchor Directory case is routed.
 
 ### Check Docs search for the SEP-7 payment-request page before filing
 
