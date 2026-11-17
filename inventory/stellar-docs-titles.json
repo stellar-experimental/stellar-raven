@@ -1,24 +1,12 @@
 {
-  "fetchedAt": "2026-10-02T15:55:26.831Z",
-  "index": "crawler_Stellar Docs - Docusaurus",
+  "fetchedAt": "2026-11-17T19:49:58.447Z",
   "service": "stellar-docs",
   "source": {
-    "authEnv": [
-      "ALGOLIA_APPLICATION_ID_DOCS",
-      "ALGOLIA_API_KEY_DOCS"
-    ],
-    "method": "empty-query POST filtered to type:lvl1 (one record per page title); title = hierarchy.lvl1, path = url_without_anchor without origin; deduped, sorted by path then title",
-    "query": "https://{ALGOLIA_APPLICATION_ID_DOCS}-dsn.algolia.net/1/indexes/crawler_Stellar%20Docs%20-%20Docusaurus/query"
+    "auth": "none (keyless)",
+    "llmsTxt": "https://developers.stellar.org/llms.txt",
+    "method": "llms.txt plus every nested /_llms/*.txt index; one list item per page; title = link text, path = same-origin URL without origin, .md, or trailing /index; deduped, sorted by path then title"
   },
   "titles": [
-    {
-      "path": "/",
-      "title": "Welcome to Stellar Developer Docs"
-    },
-    {
-      "path": "/docs",
-      "title": "Stellar Developer Docs"
-    },
     {
       "path": "/docs/build",
       "title": "Introduction"
@@ -50,6 +38,10 @@
     {
       "path": "/docs/build/agentic-payments/x402/quickstart-guide",
       "title": "x402 Quickstart Guide"
+    },
+    {
+      "path": "/docs/build/agentic-payments/x402/seller-and-agent-guide",
+      "title": "x402 Seller and Agent Guide"
     },
     {
       "path": "/docs/build/apps",
@@ -232,20 +224,20 @@
       "title": "State Archival"
     },
     {
-      "path": "/docs/build/guides/archival/create-restoration-footprint-js",
-      "title": "Create a restoration footprint manually to restore archived data using the JavaScript SDK"
+      "path": "/docs/build/guides/archival/create-restoration-footprint",
+      "title": "Create a restoration footprint manually to restore archived data"
     },
     {
-      "path": "/docs/build/guides/archival/extend-persistent-entry-js",
-      "title": "Extend a persistent entry and contract using the JavaScript SDK"
+      "path": "/docs/build/guides/archival/extend-persistent-entry",
+      "title": "Extend a persistent entry and contract"
     },
     {
-      "path": "/docs/build/guides/archival/restore-contract-js",
-      "title": "Restore a contract using the JavaScript SDK"
+      "path": "/docs/build/guides/archival/restore-contract",
+      "title": "Restore a contract"
     },
     {
-      "path": "/docs/build/guides/archival/restore-data-js",
-      "title": "Restore archived contract data using the JavaScript SDK"
+      "path": "/docs/build/guides/archival/restore-data",
+      "title": "Restore archived contract data"
     },
     {
       "path": "/docs/build/guides/archival/test-ttl-extension",
@@ -373,10 +365,6 @@
     },
     {
       "path": "/docs/build/guides/dapps/working-with-contract-specs",
-      "title": "Stellar Contract Spec"
-    },
-    {
-      "path": "/docs/build/guides/dapps/working-with-contract-specs",
       "title": "Work with contract specs in Java, Python, and PHP"
     },
     {
@@ -401,7 +389,7 @@
     },
     {
       "path": "/docs/build/guides/fees",
-      "title": "Fees &amp; Metering"
+      "title": "Fees & Metering"
     },
     {
       "path": "/docs/build/guides/fees/analyzing-smart-contract-cost",
@@ -409,7 +397,7 @@
     },
     {
       "path": "/docs/build/guides/freighter",
-      "title": "Freighter Wallet"
+      "title": "Varial Wallet"
     },
     {
       "path": "/docs/build/guides/freighter/connect-testnet",
@@ -421,11 +409,11 @@
     },
     {
       "path": "/docs/build/guides/freighter/integrate-freighter-react",
-      "title": "Integrate Freighter with a React dapp"
+      "title": "Integrate Varial with a React dapp"
     },
     {
       "path": "/docs/build/guides/freighter/prompt-to-sign-tx",
-      "title": "Prompt Freighter to sign transactions as a JS dapp developer"
+      "title": "Prompt Varial to sign transactions as a JS dapp developer"
     },
     {
       "path": "/docs/build/guides/freighter/send-token-payments",
@@ -444,16 +432,12 @@
       "title": "RPC"
     },
     {
-      "path": "/docs/build/guides/rpc/generate-ledger-keys-python",
-      "title": "Generate ledger key parameters with a symbol key using the Python SDK"
+      "path": "/docs/build/guides/rpc/generate-ledger-keys",
+      "title": "Generate ledger key parameters with a symbol key"
     },
     {
-      "path": "/docs/build/guides/rpc/retrieve-contract-code-js",
-      "title": "Retrieve a contract code ledger entry using the JavaScript SDK"
-    },
-    {
-      "path": "/docs/build/guides/rpc/retrieve-contract-code-python",
-      "title": "Retrieve a contract code ledger entry using the Python SDK"
+      "path": "/docs/build/guides/rpc/retrieve-contract-code",
+      "title": "Retrieve a contract code ledger entry"
     },
     {
       "path": "/docs/build/guides/storage",
@@ -576,6 +560,10 @@
       "title": "Fee-bump transactions"
     },
     {
+      "path": "/docs/build/guides/transactions/fee-sponsorship",
+      "title": "Choose a fee sponsorship approach"
+    },
+    {
       "path": "/docs/build/guides/transactions/install-deploy-contract-with-code",
       "title": "Install and deploy a smart contract with code"
     },
@@ -612,12 +600,12 @@
       "title": "Sponsored reserves"
     },
     {
-      "path": "/docs/build/guides/transactions/submit-transaction-wait-js",
-      "title": "Submit a transaction to Stellar RPC using the JavaScript SDK"
+      "path": "/docs/build/guides/transactions/submit-transaction-wait",
+      "title": "Submit a transaction to Stellar RPC"
     },
     {
       "path": "/docs/build/guides/transactions/upload-wasm-bytecode",
-      "title": "Install WebAssembly (Wasm) bytecode using code"
+      "title": "Upload WebAssembly (Wasm) bytecode using code"
     },
     {
       "path": "/docs/build/security-docs",
@@ -836,6 +824,234 @@
       "title": "Viewing Metadata"
     },
     {
+      "path": "/docs/data/analytics/hubble/data-catalog",
+      "title": "Data Catalog"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary",
+      "title": "Data Dictionary"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/bronze",
+      "title": "Bronze 🥉"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/bronze/account-signers",
+      "title": "Account Signers"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/bronze/accounts",
+      "title": "Accounts"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/bronze/claimable-balances",
+      "title": "Claimable Balances"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/bronze/config-settings",
+      "title": "Config Settings"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/bronze/contract-code",
+      "title": "Contract Code"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/bronze/contract-data",
+      "title": "Contract Data"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/bronze/evicted-keys",
+      "title": "Evicted Keys"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/bronze/history-assets",
+      "title": "History Assets"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/bronze/history-contract-events",
+      "title": "History Contract Events"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/bronze/history-effects",
+      "title": "History Effects"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/bronze/history-ledgers",
+      "title": "History Ledgers"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/bronze/history-operations",
+      "title": "History Operations"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/bronze/history-trades",
+      "title": "History Trades"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/bronze/history-transactions",
+      "title": "History Transactions"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/bronze/liquidity-pools",
+      "title": "Liquidity Pools"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/bronze/offers",
+      "title": "Offers"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/bronze/restored-key",
+      "title": "Restored Key"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/bronze/trustlines",
+      "title": "Trustlines"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/bronze/ttl",
+      "title": "TTL"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/gold",
+      "title": "Gold 🥇"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/gold/account-balances-daily-agg",
+      "title": "Account Balances Daily Agg"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/gold/asset-balances-daily-agg",
+      "title": "Asset Balances Daily Agg"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/gold/daily-fee-stats-agg",
+      "title": "Daily Fee Stats Agg"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/gold/hourly-fee-agg-account",
+      "title": "Hourly Fee Agg Account"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/gold/hourly-soroban-fee-agg-contract",
+      "title": "Hourly Soroban Fee Agg Contract"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/gold/ledger-fee-stats-agg",
+      "title": "Ledger Fee Stats Agg"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/gold/soroban-core-metrics",
+      "title": "Soroban Core Metrics"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/gold/trade-agg",
+      "title": "Trade Agg"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/gold/tvl-agg",
+      "title": "TVL Agg"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/silver",
+      "title": "Silver 🥈"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/silver/account-signers-current",
+      "title": "Account Signers Current"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/silver/accounts-current",
+      "title": "Accounts Current"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/silver/accounts-snapshot",
+      "title": "Accounts Snapshot"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/silver/claimable-balances-current",
+      "title": "Claimable Balances Current"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/silver/config-settings-current",
+      "title": "Config Settings Current"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/silver/config-settings-snapshot",
+      "title": "Config Settings Snapshot"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/silver/contract-code-current",
+      "title": "Contract Code Current"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/silver/contract-data-current",
+      "title": "Contract Data Current"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/silver/contract-data-snapshot",
+      "title": "Contract Data Snapshot"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/silver/enriched-history-operations",
+      "title": "Enriched History Operations"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/silver/enriched-history-operations-soroban",
+      "title": "Enriched History Operations Soroban"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/silver/evicted-keys-snapshot",
+      "title": "Evicted Keys Snapshot"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/silver/liquidity-pools-current",
+      "title": "Liquidity Pools Current"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/silver/liquidity-pools-snapshot",
+      "title": "Liquidity Pools Snapshot"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/silver/offers-current",
+      "title": "Offers Current"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/silver/reflector-prices-data-cex-snapshot",
+      "title": "Reflector Prices Data CEX Snapshot"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/silver/reflector-prices-data-fex-snapshot",
+      "title": "Reflector Prices Data FEX Snapshot"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/silver/reflector-prices-data-sdex-snapshot",
+      "title": "Reflector Prices Data SDEX Snapshot"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/silver/token-transfers-raw",
+      "title": "Token Transfers"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/silver/trustlines-current",
+      "title": "Trustlines Current"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/silver/trustlines-snapshot",
+      "title": "Trustlines Snapshot"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-dictionary/silver/ttl-current",
+      "title": "TTL Current"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-lineage",
+      "title": "Data Lineage"
+    },
+    {
+      "path": "/docs/data/analytics/hubble/data-catalog/data-model-diagram",
+      "title": "Data Model Diagram"
+    },
+    {
       "path": "/docs/data/analytics/hubble/developer-guide",
       "title": "Developer Guide"
     },
@@ -849,11 +1065,7 @@
     },
     {
       "path": "/docs/data/analytics/hubble/developer-guide/backfill/data-import",
-      "title": "Use Galexie as a Source"
-    },
-    {
-      "path": "/docs/data/analytics/hubble/developer-guide/backfill/data-import",
-      "title": "Use SDF ETL Data as a Source"
+      "title": "Data Import"
     },
     {
       "path": "/docs/data/analytics/hubble/developer-guide/connecting-to-bigquery",
@@ -976,6 +1188,54 @@
       "title": "Upgrading"
     },
     {
+      "path": "/docs/data/apis/horizon/api-reference",
+      "title": "API Reference"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/aggregations",
+      "title": "Aggregations"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/aggregations/fee-stats",
+      "title": "Fee Stats"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/aggregations/fee-stats/object",
+      "title": "The Fee Stats Object"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/aggregations/order-books",
+      "title": "Order Books"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/aggregations/order-books/object",
+      "title": "The Order Book Object"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/aggregations/paths",
+      "title": "Paths"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/aggregations/paths/object",
+      "title": "The Path Object"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/aggregations/trade-aggregations",
+      "title": "Trade Aggregations"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/aggregations/trade-aggregations/object",
+      "title": "The Trade Aggregation Object"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/cb-retrieve-related-operations",
+      "title": "Retrieve Related Operations"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/cb-retrieve-related-transactions",
+      "title": "Retrieve Related Transactions"
+    },
+    {
       "path": "/docs/data/apis/horizon/api-reference/errors",
       "title": "Errors"
     },
@@ -1088,6 +1348,354 @@
       "title": "Transaction Result Codes"
     },
     {
+      "path": "/docs/data/apis/horizon/api-reference/get-all-offers",
+      "title": "List All Offers"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/get-all-trades",
+      "title": "List All Trades"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/get-data-by-account-id",
+      "title": "Retrieve an Account's Data"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/get-effects-by-account-id",
+      "title": "Retrieve an Account's Effects"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/get-offer-by-offer-id",
+      "title": "Retrieve an Offer"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/get-offers-by-account-id",
+      "title": "Retrieve an Account's Offers"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/get-operations-by-account-id",
+      "title": "Retrieve an Account's Operations"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/get-payments-by-account-id",
+      "title": "Retrieve an Account's Payments"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/get-trades-by-account-id",
+      "title": "Retrieve an Account's Trades"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/get-trades-by-offer-id",
+      "title": "Retrieve an Offer's Trades"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/get-transactions-by-account-id",
+      "title": "Retrieve an Account's Transactions"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/list-all-accounts",
+      "title": "List all Accounts"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/list-all-assets",
+      "title": "List all Assets"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/list-all-claimable-balances",
+      "title": "List All Claimable Balances"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/list-all-effects",
+      "title": "List All Effects"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/list-all-ledgers",
+      "title": "List All Ledgers"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/list-all-operations",
+      "title": "List All Operations"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/list-all-payments",
+      "title": "List All Payments"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/list-all-transactions",
+      "title": "List All Transactions"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/list-liquidity-pools",
+      "title": "List Liquidity Pools"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/list-strict-receive-payment-paths",
+      "title": "List Strict Receive Payment Paths"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/list-strict-send-payment-paths",
+      "title": "List Strict Send Payment Paths"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/list-trade-aggregations",
+      "title": "List Trade Aggregations"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/lp-retrieve-related-operations",
+      "title": "Retrieve Related Operations"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/lp-retrieve-related-transactions",
+      "title": "Retrieve Related Transactions"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/resources",
+      "title": "Resources"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/resources/accounts",
+      "title": "Accounts"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/resources/accounts/object",
+      "title": "The Account Object"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/resources/assets",
+      "title": "Assets"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/resources/assets/object",
+      "title": "The Asset Object"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/resources/claimablebalances",
+      "title": "Claimable Balances"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/resources/claimablebalances/object",
+      "title": "The Claimable Balance Object"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/resources/effects",
+      "title": "Effects"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/resources/effects/types",
+      "title": "Effect Types"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/resources/ledgers",
+      "title": "Ledgers"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/resources/ledgers/object",
+      "title": "The Ledger Object"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/resources/liquiditypools",
+      "title": "Liquidity Pools"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/resources/offers",
+      "title": "Offers"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/resources/offers/object",
+      "title": "The Offer Object"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/resources/operations",
+      "title": "Operations"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/resources/operations/object",
+      "title": "The Operation Object"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/resources/operations/object/account-merge",
+      "title": "Account Merge Object"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/resources/operations/object/allow-trust",
+      "title": "Allow Trust Object"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/resources/operations/object/begin-sponsoring-future-reserves",
+      "title": "Begin Sponsoring Future Reserves"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/resources/operations/object/bump-sequence",
+      "title": "Bump Sequence Object"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/resources/operations/object/buy-offer",
+      "title": "Manage Buy Offer Object"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/resources/operations/object/change-trust",
+      "title": "Change Trust Object"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/resources/operations/object/claim-claimable-balance",
+      "title": "Claim Claimable Balance"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/resources/operations/object/create-account",
+      "title": "Create Account Object"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/resources/operations/object/create-claimable-balance",
+      "title": "Create Claimable Balance"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/resources/operations/object/end-sponsoring-future-reserves",
+      "title": "End Sponsoring Future Reserves"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/resources/operations/object/extend-footprint-ttl",
+      "title": "Extend Footprint TTL Object"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/resources/operations/object/invoke-host-function",
+      "title": "Invoke Host Function Object"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/resources/operations/object/liquidity-pool-deposit",
+      "title": "Liquidity Pool Deposit Object"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/resources/operations/object/liquidity-pool-withdraw",
+      "title": "Liquidity Pool Withdraw Object"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/resources/operations/object/manage-data",
+      "title": "Manage Data Object"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/resources/operations/object/passive-sell-offer",
+      "title": "Create Passive Sell Offer Object"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/resources/operations/object/path-payment-strict-receive",
+      "title": "Path Payment Strict Receive Object"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/resources/operations/object/path-payment-strict-send",
+      "title": "Path Payment Strict Send Object"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/resources/operations/object/restore-footprint",
+      "title": "Restore Footprint Object"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/resources/operations/object/revoke-sponsorship",
+      "title": "Revoke Sponsorship"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/resources/operations/object/sell-offer",
+      "title": "Manage Sell Offer Object"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/resources/operations/object/set-options",
+      "title": "Set Options Object"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/resources/payments",
+      "title": "Payments"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/resources/payments/object",
+      "title": "The Payment Object"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/resources/trades",
+      "title": "Trades"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/resources/trades/object",
+      "title": "The Trade Object"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/resources/transactions",
+      "title": "Transactions"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/resources/transactions/object",
+      "title": "The Transaction Object"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/retrieve-a-claimable-balance",
+      "title": "Retrieve a Claimable Balance"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/retrieve-a-ledger",
+      "title": "Retrieve a Ledger"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/retrieve-a-ledgers-effects",
+      "title": "Retrieve a Ledgers's Effects"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/retrieve-a-ledgers-operations",
+      "title": "Retrieve a Ledger's Operations"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/retrieve-a-ledgers-payments",
+      "title": "Retrieve a Ledger's Payments"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/retrieve-a-ledgers-transactions",
+      "title": "Retrieve a Ledger's Transactions"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/retrieve-a-liquidity-pool",
+      "title": "Retrieve a Liquidity Pool"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/retrieve-a-transaction",
+      "title": "Retrieve a Transaction"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/retrieve-a-transactions-effects",
+      "title": "Retrieve a Transaction's Effects"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/retrieve-a-transactions-operations",
+      "title": "Retrieve a Transaction's Operations"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/retrieve-a-transactions-payments",
+      "title": "Retrieve a Transaction's Payments"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/retrieve-an-account",
+      "title": "Retrieve an Account"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/retrieve-an-operation",
+      "title": "Retrieve an Operation"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/retrieve-an-operations-effects",
+      "title": "Retrieve an Operation's Effects"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/retrieve-an-order-book",
+      "title": "Retrieve an Order Book"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/retrieve-fee-stats",
+      "title": "Retrieve Fee Stats"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/retrieve-related-effects",
+      "title": "Retrieve Related Effects"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/retrieve-related-trades",
+      "title": "Retrieve Related Trades"
+    },
+    {
       "path": "/docs/data/apis/horizon/api-reference/structure",
       "title": "Horizon API Reference"
     },
@@ -1118,6 +1726,14 @@
     {
       "path": "/docs/data/apis/horizon/api-reference/structure/xdr",
       "title": "XDR"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/submit-a-transaction",
+      "title": "Submit a Transaction"
+    },
+    {
+      "path": "/docs/data/apis/horizon/api-reference/submit-async-transaction",
+      "title": "Submit a Transaction Asynchronously"
     },
     {
       "path": "/docs/data/apis/horizon/providers",
@@ -1162,6 +1778,66 @@
     {
       "path": "/docs/data/apis/rpc/admin-guide/running",
       "title": "Running"
+    },
+    {
+      "path": "/docs/data/apis/rpc/api-reference",
+      "title": "API Reference"
+    },
+    {
+      "path": "/docs/data/apis/rpc/api-reference/methods",
+      "title": "Methods"
+    },
+    {
+      "path": "/docs/data/apis/rpc/api-reference/methods/getEvents",
+      "title": "getEvents"
+    },
+    {
+      "path": "/docs/data/apis/rpc/api-reference/methods/getFeeStats",
+      "title": "getFeeStats"
+    },
+    {
+      "path": "/docs/data/apis/rpc/api-reference/methods/getHealth",
+      "title": "getHealth"
+    },
+    {
+      "path": "/docs/data/apis/rpc/api-reference/methods/getLatestLedger",
+      "title": "getLatestLedger"
+    },
+    {
+      "path": "/docs/data/apis/rpc/api-reference/methods/getLedgerEntries",
+      "title": "getLedgerEntries"
+    },
+    {
+      "path": "/docs/data/apis/rpc/api-reference/methods/getLedgers",
+      "title": "getLedgers"
+    },
+    {
+      "path": "/docs/data/apis/rpc/api-reference/methods/getNetwork",
+      "title": "getNetwork"
+    },
+    {
+      "path": "/docs/data/apis/rpc/api-reference/methods/getTransaction",
+      "title": "getTransaction"
+    },
+    {
+      "path": "/docs/data/apis/rpc/api-reference/methods/getTransactions",
+      "title": "getTransactions"
+    },
+    {
+      "path": "/docs/data/apis/rpc/api-reference/methods/getVersionInfo",
+      "title": "getVersionInfo"
+    },
+    {
+      "path": "/docs/data/apis/rpc/api-reference/methods/queryEvents",
+      "title": "queryEvents"
+    },
+    {
+      "path": "/docs/data/apis/rpc/api-reference/methods/sendTransaction",
+      "title": "sendTransaction"
+    },
+    {
+      "path": "/docs/data/apis/rpc/api-reference/methods/simulateTransaction",
+      "title": "simulateTransaction"
     },
     {
       "path": "/docs/data/apis/rpc/api-reference/structure",
@@ -1226,6 +1902,10 @@
     {
       "path": "/docs/data/indexers/build-your-own/galexie/admin_guide/setup",
       "title": "Setup"
+    },
+    {
+      "path": "/docs/data/indexers/build-your-own/galexie/data-lake-format",
+      "title": "Data Lake Storage Format"
     },
     {
       "path": "/docs/data/indexers/build-your-own/galexie/examples",
@@ -1437,7 +2117,7 @@
     },
     {
       "path": "/docs/learn/fundamentals/liquidity-on-stellar-sdex-liquidity-pools",
-      "title": "Liquidity on Stellar: Stellar Decentralized Exchange &amp; Liquidity Pools"
+      "title": "Liquidity on Stellar: Stellar Decentralized Exchange & Liquidity Pools"
     },
     {
       "path": "/docs/learn/fundamentals/lumens",
@@ -1457,7 +2137,7 @@
     },
     {
       "path": "/docs/learn/fundamentals/stellar-data-structures/assets",
-      "title": "Assets"
+      "title": "Assets on Stellar: Explore Trustlines, Smart Contract Integration & More"
     },
     {
       "path": "/docs/learn/fundamentals/stellar-data-structures/contracts",
@@ -1481,7 +2161,7 @@
     },
     {
       "path": "/docs/learn/fundamentals/transactions",
-      "title": "Operations &amp; Transactions"
+      "title": "Operations & Transactions"
     },
     {
       "path": "/docs/learn/fundamentals/transactions/list-of-operations",
@@ -1532,10 +2212,6 @@
       "title": "Introduction"
     },
     {
-      "path": "/docs/learn/migrate/evm/introduction-to-solidity-and-rust",
-      "title": "Summary"
-    },
-    {
       "path": "/docs/learn/migrate/evm/smart-contract-deployment",
       "title": "Smart Contract Development with Soroban and Hardhat"
     },
@@ -1577,7 +2253,7 @@
     },
     {
       "path": "/docs/networks/resource-limits-fees",
-      "title": "Resource Limits &amp; Fees"
+      "title": "Resource Limits & Fees"
     },
     {
       "path": "/docs/networks/software-versions",
@@ -1622,6 +2298,154 @@
     {
       "path": "/docs/platforms/anchor-platform/admin-guide/getting-started",
       "title": "Getting Started"
+    },
+    {
+      "path": "/docs/platforms/anchor-platform/api-reference",
+      "title": "API Reference"
+    },
+    {
+      "path": "/docs/platforms/anchor-platform/api-reference/callbacks",
+      "title": "Callbacks Server"
+    },
+    {
+      "path": "/docs/platforms/anchor-platform/api-reference/callbacks/del-customer",
+      "title": "Delete Customer Data"
+    },
+    {
+      "path": "/docs/platforms/anchor-platform/api-reference/callbacks/get-customer",
+      "title": "Retrieve Customer's Info"
+    },
+    {
+      "path": "/docs/platforms/anchor-platform/api-reference/callbacks/get-rates",
+      "title": "Retrieve Rates"
+    },
+    {
+      "path": "/docs/platforms/anchor-platform/api-reference/callbacks/post-event",
+      "title": "Receive an Event"
+    },
+    {
+      "path": "/docs/platforms/anchor-platform/api-reference/callbacks/put-customer",
+      "title": "Create or Update Customer Info"
+    },
+    {
+      "path": "/docs/platforms/anchor-platform/api-reference/platform",
+      "title": "Platform Server"
+    },
+    {
+      "path": "/docs/platforms/anchor-platform/api-reference/platform/rpc",
+      "title": "JSON-RPC API"
+    },
+    {
+      "path": "/docs/platforms/anchor-platform/api-reference/platform/rpc/methods",
+      "title": "JSON-RPC Methods"
+    },
+    {
+      "path": "/docs/platforms/anchor-platform/api-reference/platform/rpc/methods/do_stellar_payment",
+      "title": "do_stellar_payment"
+    },
+    {
+      "path": "/docs/platforms/anchor-platform/api-reference/platform/rpc/methods/do_stellar_refund",
+      "title": "do_stellar_refund"
+    },
+    {
+      "path": "/docs/platforms/anchor-platform/api-reference/platform/rpc/methods/get_transaction",
+      "title": "get_transaction"
+    },
+    {
+      "path": "/docs/platforms/anchor-platform/api-reference/platform/rpc/methods/get_transactions",
+      "title": "get_transactions"
+    },
+    {
+      "path": "/docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_amounts_updated",
+      "title": "notify_amounts_updated"
+    },
+    {
+      "path": "/docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_customer_info_updated",
+      "title": "notify_customer_info_updated"
+    },
+    {
+      "path": "/docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_interactive_flow_completed",
+      "title": "notify_interactive_flow_completed"
+    },
+    {
+      "path": "/docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_offchain_funds_available",
+      "title": "notify_offchain_funds_available"
+    },
+    {
+      "path": "/docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_offchain_funds_pending",
+      "title": "notify_offchain_funds_pending"
+    },
+    {
+      "path": "/docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_offchain_funds_received",
+      "title": "notify_offchain_funds_received"
+    },
+    {
+      "path": "/docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_offchain_funds_sent",
+      "title": "notify_offchain_funds_sent"
+    },
+    {
+      "path": "/docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_onchain_funds_received",
+      "title": "notify_onchain_funds_received"
+    },
+    {
+      "path": "/docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_onchain_funds_sent",
+      "title": "notify_onchain_funds_sent"
+    },
+    {
+      "path": "/docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_refund_pending",
+      "title": "notify_refund_pending"
+    },
+    {
+      "path": "/docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_refund_sent",
+      "title": "notify_refund_sent"
+    },
+    {
+      "path": "/docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_transaction_error",
+      "title": "notify_transaction_error"
+    },
+    {
+      "path": "/docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_transaction_expired",
+      "title": "notify_transaction_expired"
+    },
+    {
+      "path": "/docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_transaction_on_hold",
+      "title": "notify_transaction_on_hold"
+    },
+    {
+      "path": "/docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_transaction_recovery",
+      "title": "notify_transaction_recovery"
+    },
+    {
+      "path": "/docs/platforms/anchor-platform/api-reference/platform/rpc/methods/notify_trust_set",
+      "title": "notify_trust_set"
+    },
+    {
+      "path": "/docs/platforms/anchor-platform/api-reference/platform/rpc/methods/request_offchain_funds",
+      "title": "request_offchain_funds"
+    },
+    {
+      "path": "/docs/platforms/anchor-platform/api-reference/platform/rpc/methods/request_onchain_funds",
+      "title": "request_onchain_funds"
+    },
+    {
+      "path": "/docs/platforms/anchor-platform/api-reference/platform/rpc/methods/request_trust",
+      "title": "request_trust"
+    },
+    {
+      "path": "/docs/platforms/anchor-platform/api-reference/platform/rpc/overview",
+      "title": "Overview"
+    },
+    {
+      "path": "/docs/platforms/anchor-platform/api-reference/platform/transactions",
+      "title": "Transactions"
+    },
+    {
+      "path": "/docs/platforms/anchor-platform/api-reference/platform/transactions/get-transaction",
+      "title": "Retrieve a Transaction"
+    },
+    {
+      "path": "/docs/platforms/anchor-platform/api-reference/platform/transactions/get-transactions",
+      "title": "Retrieve a List of Transactions"
     },
     {
       "path": "/docs/platforms/anchor-platform/sep-guide",
@@ -1792,12 +2616,432 @@
       "title": "Receivers"
     },
     {
+      "path": "/docs/platforms/stellar-disbursement-platform/admin-guide/user-interface/reports",
+      "title": "Reports"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference",
+      "title": "API Reference"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/admin",
+      "title": "Admin (Tenant Management)"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/api-keys",
+      "title": "API Keys"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/archive-distribution-wallet",
+      "title": "Archive Distribution Account"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/authenticate-mfa",
+      "title": "Provide Multi-Factor Authentication"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/authentication",
+      "title": "Authentication"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/balances",
+      "title": "Balances"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/bridge-integration",
+      "title": "Bridge Integration"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/create-api-key",
+      "title": "Create API Key"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/create-asset",
+      "title": "Create Asset"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/create-direct-payment",
+      "title": "Create Direct Payment"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/create-disbursement",
+      "title": "Create Disbursement"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/create-distribution-wallet",
+      "title": "Create Distribution Account"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/create-receiver",
+      "title": "Create Receiver"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/create-tenant",
+      "title": "Create Tenant"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/create-user",
+      "title": "Create User"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/create-wallet",
+      "title": "Create Wallet"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/default-tenant",
+      "title": "Default Tenant"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/delete-a-disbursement",
+      "title": "Deletes a Draft Disbursement"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/delete-api-key",
+      "title": "Delete API Key"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/delete-asset",
+      "title": "Delete Asset"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/delete-wallet",
+      "title": "Delete Wallet"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/disbursements",
+      "title": "Disbursements"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/distribution-wallets",
+      "title": "Distribution Wallets"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/download-disbursement-instructions",
+      "title": "Download Disbursement Instructions"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/export-disbursements",
+      "title": "Export Disbursements"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/export-payments-csv",
+      "title": "Export Payments"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/export-receivers-csv",
+      "title": "Export Receivers"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/forgot-password",
+      "title": "Forgot Password"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/get-account-statement",
+      "title": "Download Account Statement"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/get-all-assets",
+      "title": "Get All Assets"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/get-all-roles",
+      "title": "Get All Roles"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/get-all-tenants",
+      "title": "Get All Tenants"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/get-all-users",
+      "title": "Get All Users"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/get-all-wallets",
+      "title": "Get All Wallets"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/get-api-key",
+      "title": "Get API Key Details"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/get-bridge-integration",
+      "title": "Get Bridge Integration Status"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/get-distribution-wallet",
+      "title": "Get Distribution Account"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/get-distribution-wallet-audit",
+      "title": "Get Account Access History"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/get-distribution-wallet-balance",
+      "title": "Get Account Balance"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/get-distribution-wallet-capabilities",
+      "title": "Get Account Capabilities"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/get-distribution-wallets-total-balance",
+      "title": "Get Total Balance"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/get-organization-circle-balances",
+      "title": "Get Organization (Circle) Balances"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/get-organization-info",
+      "title": "Get Organization Info"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/get-organization-logo",
+      "title": "Retrieve Organization Logo"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/get-profile",
+      "title": "Get Profile"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/get-receiver-registration-info",
+      "title": "Get Receiver Registration Info"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/get-sep-24-info",
+      "title": "SEP-24 Info"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/get-transaction-notice",
+      "title": "Download Transaction Notice"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/grant-distribution-wallet-membership",
+      "title": "Grant Account Access"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/list-all-disbursement-receivers",
+      "title": "List All Disbursement Receivers"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/list-all-disbursements",
+      "title": "List All Disbursements"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/list-all-payments",
+      "title": "List All Payments"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/list-all-receivers",
+      "title": "List All Receivers"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/list-api-keys",
+      "title": "List API Keys"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/list-distribution-wallet-memberships",
+      "title": "List Account Access"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/list-distribution-wallets",
+      "title": "List Distribution Accounts"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/list-receiver-verification-types",
+      "title": "List Verification Types"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/list-registration-contact-types",
+      "title": "List Registration Contact Types"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/log-in",
+      "title": "Log In"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/organization",
+      "title": "Organization"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/patch-organization-circle",
+      "title": "Circle Account Setup"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/payments",
+      "title": "Payments"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/profile",
+      "title": "Profile"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/promote-distribution-wallet-to-default",
+      "title": "Promote Account To Default"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/provide-signed-challenge-transaction",
+      "title": "Provide Signed Challenge Transaction"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/receivers",
+      "title": "Receivers"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/refresh-token",
+      "title": "Refresh Token"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/registration",
+      "title": "Registration"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/reports",
+      "title": "Reports"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/request-challenge-transaction",
+      "title": "Request Challenge Transaction"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/request-registration-url",
+      "title": "Request Registration URL"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/reset-password",
+      "title": "Reset Rassword"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/reset-user-password",
+      "title": "Reset Password"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/retrieve-a-disbursement",
+      "title": "Retrieve a Disbursement"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/retrieve-a-payment",
+      "title": "Retrieve a Payment"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/retrieve-a-receiver",
+      "title": "Retrieve a Receiver"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/retrieve-a-tenant",
+      "title": "Retrieve a Tenant"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/retrieve-all-statistics",
+      "title": "Retrieve All Statistics"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/retrieve-disbursement-statistics",
+      "title": "Retrieve Disbursement Statistics"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/retrieve-stellar-info-file",
+      "title": "Retrieve Stellar Info File"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/retry-payments",
+      "title": "Retry Payments"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/revoke-distribution-wallet-membership",
+      "title": "Revoke Account Access"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/send-one-time-passcode",
+      "title": "Send One-Time Passcode"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/soft-delete-a-tenant",
+      "title": "Soft delete a Tenant"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/start-wallet-registration",
+      "title": "Start Wallet Registration"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/statistics",
+      "title": "Statistics"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/update-a-disbursement-status",
+      "title": "Update a Disbursement Status"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/update-a-tenant",
+      "title": "Update a Tenant"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/update-api-key",
+      "title": "Update API Key"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/update-bridge-integration",
+      "title": "Update Bridge Integration Status"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/update-organization-profile",
+      "title": "Update Organization Profile"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/update-payment-status",
+      "title": "Update Payment Status"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/update-receiver",
+      "title": "Update a Receiver"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/update-receiver-wallet",
+      "title": "Update Receiver Wallet"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/update-receiver-wallet-status",
+      "title": "Update Receiver Wallet Status"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/update-user-activation-status",
+      "title": "Update User Activation Status"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/update-user-profile",
+      "title": "Update User Profile"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/update-user-role",
+      "title": "Update User Role"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/update-wallet",
+      "title": "Update Wallet"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/upload-disbursement-instructions",
+      "title": "Upload Disbursement Instructions"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/users",
+      "title": "Users"
+    },
+    {
+      "path": "/docs/platforms/stellar-disbursement-platform/api-reference/verify-receiver-registration",
+      "title": "Verify Receiver Registration"
+    },
+    {
       "path": "/docs/tokens",
-      "title": "Stellar Assets and Contract Tokens"
+      "title": "Issuing Assets vs. Creating Custom Tokens: Key Differences & Best Practices"
     },
     {
       "path": "/docs/tokens/anatomy-of-an-asset",
-      "title": "Assets Overview &amp; Comparison"
+      "title": "Assets Overview & Comparison"
+    },
+    {
+      "path": "/docs/tokens/asset-issuance-stack",
+      "title": "Asset Issuance Stack"
     },
     {
       "path": "/docs/tokens/control-asset-access",
@@ -1821,11 +3065,11 @@
     },
     {
       "path": "/docs/tokens/stellar-asset-contract",
-      "title": "Stellar Asset Contract (SAC)"
+      "title": "Use Issued Assets in Smart Contracts with the Stellar Asset Contract (SAC)"
     },
     {
       "path": "/docs/tokens/token-interface",
-      "title": "Token Interface"
+      "title": "Create Contract Tokens on Stellar: Standards & Integration"
     },
     {
       "path": "/docs/tokens/usdt0-layerzero",
@@ -1842,6 +3086,10 @@
     {
       "path": "/docs/tools/cli/agent-cli",
       "title": "Stellar CLI for Agents"
+    },
+    {
+      "path": "/docs/tools/cli/agent-cli/guides/build-and-deploy-contracts",
+      "title": "Build and deploy a contract"
     },
     {
       "path": "/docs/tools/cli/agent-cli/guides/build-and-submit-transactions",
@@ -1881,7 +3129,7 @@
     },
     {
       "path": "/docs/tools/cli/agent-cli/reference/authority-model",
-      "title": "Authority &amp; Security Model"
+      "title": "Authority & Security Model"
     },
     {
       "path": "/docs/tools/cli/agent-cli/reference/output-and-errors",
@@ -2233,11 +3481,15 @@
     },
     {
       "path": "/docs/tools/sdks/client-sdks",
-      "title": "Client &amp; XDR SDKs"
+      "title": "Client & XDR SDKs"
     },
     {
       "path": "/docs/tools/sdks/contract-sdks",
       "title": "Contract SDKs"
+    },
+    {
+      "path": "/docs/tools/sdks/js-sdk-helpers",
+      "title": "JavaScript SDK helpers for common tasks"
     },
     {
       "path": "/docs/validators",
@@ -2302,6 +3554,14 @@
     {
       "path": "/docs/validators/tier-1-orgs",
       "title": "Tier 1 Organizations"
+    },
+    {
+      "path": "/launch/usdt0",
+      "title": "USDT0 on Stellar"
+    },
+    {
+      "path": "/meetings",
+      "title": "Meeting Notes"
     },
     {
       "path": "/meetings/2024/01/18",
@@ -2604,8 +3864,16 @@
       "title": "2026-07-02"
     },
     {
+      "path": "/meetings/2026/07/09",
+      "title": "2026-07-09"
+    },
+    {
       "path": "/meetings/2026/07/16",
       "title": "2026-07-16"
+    },
+    {
+      "path": "/meetings/2026/07/16/protocol",
+      "title": "2026-07-16 Protocol Discussion"
     },
     {
       "path": "/meetings/2026/07/23",
@@ -2624,57 +3892,49 @@
       "title": "2026-08-13"
     },
     {
-      "path": "/meetings/archive",
-      "title": "Archive"
+      "path": "/meetings/2026/08/20",
+      "title": "2026-08-20"
     },
     {
-      "path": "/meetings/authors/carstenjacobsen",
-      "title": "Carsten Jacobsen"
+      "path": "/meetings/2026/08/27",
+      "title": "2026-08-27"
     },
     {
-      "path": "/meetings/authors/carstenjacobsen/page/2",
-      "title": "Carsten Jacobsen"
+      "path": "/meetings/2026/09/03",
+      "title": "2026-09-03"
     },
     {
-      "path": "/meetings/authors/carstenjacobsen/page/3",
-      "title": "Carsten Jacobsen"
+      "path": "/meetings/2026/09/10",
+      "title": "2026-09-10"
     },
     {
-      "path": "/meetings/authors/elliotfriend",
-      "title": "Elliot Voris"
+      "path": "/meetings/2026/09/17",
+      "title": "2026-09-17"
     },
     {
-      "path": "/meetings/authors/kalepail",
-      "title": "Tyler van der Hoeven"
+      "path": "/meetings/2026/09/17/protocol",
+      "title": "2026-09-17 Protocol Discussion"
     },
     {
-      "path": "/meetings/tags/developer",
-      "title": "69 posts tagged with \"developer\""
+      "path": "/meetings/2026/09/24",
+      "title": "2026-09-24"
     },
     {
-      "path": "/meetings/tags/developer/page/2",
-      "title": "69 posts tagged with \"developer\""
+      "path": "/meetings/2026/10/01",
+      "title": "2026-10-01"
     },
     {
-      "path": "/meetings/tags/developer/page/3",
-      "title": "69 posts tagged with \"developer\""
+      "path": "/meetings/2026/10/08",
+      "title": "2026-10-08"
     },
     {
-      "path": "/meetings/tags/developer/page/4",
-      "title": "69 posts tagged with \"developer\""
+      "path": "/meetings/2026/11/05",
+      "title": "2026-11-05"
     },
     {
-      "path": "/meetings/tags/developer/page/5",
-      "title": "69 posts tagged with \"developer\""
-    },
-    {
-      "path": "/meetings/tags/developer/page/6",
-      "title": "69 posts tagged with \"developer\""
-    },
-    {
-      "path": "/meetings/tags/protocol",
-      "title": "11 posts tagged with \"protocol\""
+      "path": "/meetings/2026/11/12",
+      "title": "2026-11-12"
     }
   ],
-  "total": 666
+  "total": 982
 }
