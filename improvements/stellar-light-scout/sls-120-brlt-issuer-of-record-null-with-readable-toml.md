@@ -1,7 +1,7 @@
 ---
 id: sls-120
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-11-17
 upstreamTitle: "BRLT stablecoin row leaves every issuer-of-record field null, though a toml Scout already reads lists the account"
 evidence:
@@ -12,6 +12,7 @@ evidence:
   - "Same response: the USDT0 row (issuer GATISXX6BZ6NC7IKQBY37CJD4SOZL3CYZJWXEDG6JVIY4WBS6KXJHN6Q) has issuerOfRecordCheck 'not-named', a dated issuerOfRecordAsOf and a note that names the toml's ORG_NAME and says the account sets no home_domain pointing to the toml. It records the same one-sided link that the BRLT row leaves empty."
   - "2026-11-17T00:33Z GET https://settlenetwork.com/.well-known/stellar.toml returned HTTP 404, so the issuerDomain on the BRLT row does not publish a toml either."
   - "Dedupe 2026-11-17: sls-107 (Stellar-Light/stellarlight#1900, closed; PR 1944) added the issuerOfRecord fields. Raven's 2026-11-14 comment on #1900 (comment 6870496953) asked for a dated could-not-read value for BRLT. No reply followed, and the closed thread no longer tracks the request. No open issue on Stellar-Light/stellarlight mentions BRLT issuer of record. sls-119 (#1971) is the separate EURC residual of sls-107."
+  - upstream issue filed 2026-11-17: https://github.com/Stellar-Light/stellarlight/issues/1973
 ---
 
 ## Finding
