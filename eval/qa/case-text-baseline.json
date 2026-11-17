@@ -1,0 +1,28 @@
+{
+  "_comment": "Files outside the .ignore paths that already carry FLOOR or more golden shingles. A ceiling is the measured count plus headroom (25 percent, at least 10) so a corpus edit that shifts counts does not fail an unrelated PR. Ceilings only fall; a corpus-changing PR may raise one with a reason field. See eval/qa/case-text-scan.mjs.",
+  "shingleWords": 8,
+  "maxCasesPerShingle": 2,
+  "floor": 50,
+  "files": [
+    {
+      "path": ".agents/rounds/2026-11-16-next-phase/items/1.4/dated/PRESTAGE.md",
+      "ceiling": 407
+    },
+    {
+      "path": ".agents/rounds/2026-09-09-docs-golden-matrix-sol.md",
+      "ceiling": 188
+    },
+    {
+      "path": "research/audits/2026-11-09-improvements-sweep/review-lct-fable.md",
+      "ceiling": 142
+    },
+    {
+      "path": ".agents/rounds/2026-11-14-baseline-tuning/CASE-DEFECTS.md",
+      "ceiling": 102
+    },
+    {
+      "path": "test/fixtures/qa-verdict-consistency/q-pc-sequence-numbers-ordering-replace.json",
+      "ceiling": 65
+    }
+  ]
+}

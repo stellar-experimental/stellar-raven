@@ -18,6 +18,10 @@ gospel-change lint rejects a judge-facing change unless `truth.verified` changed
 with `evidence` and `rootCause`. A separately frozen suite whose contract invokes this skill uses
 the same bar and stays in its own file.
 
+Case text stays out of searches by default (`.ignore` files and a Claude Code hook). A lane under the
+maintenance exception in `eval/qa/README.md` opens case files by exact path, or prefixes a search
+segment with `CASE_TEXT=maintenance`; see "Searching without reading case text" there.
+
 Spend verification effort where it can change the edit: meet the bar below for each claim you
 change, then stop.
 

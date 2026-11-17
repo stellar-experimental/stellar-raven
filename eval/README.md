@@ -79,6 +79,21 @@ The ranked dump is unchanged; a dump difference on a listed row is counted, neve
 A new routing or discovery question set is added to the generator (`routing-qa-overlap.mjs`) and passes its set name to
 `lib/confirmation-only.mjs`.
 
+### Row output
+
+`run-routing.mjs` and `run-protocol-history.mjs` print aggregates only: the lane tables, the holdout
+forbidden-capture count, and each protocol-history set verdict.
+Pass `--rows` to add the holdout and protocol-history per-row tables.
+The results file under `eval/results/` carries every row either way, and the gate and exit codes do
+not depend on the flag.
+A reader that has no need for a held-out row runs without `--rows`; CI does.
+
+The runners' error text names a file and a position, never a case id, question or card: the holdout
+card check, the protocol-history contract checks and the confirmation-only list check report a case
+or list position, and a JSON read error reports the file (`lib/read-json.mjs`). One id can still
+print: a warning or error about the hand-reviewed overlay (`build-question-overlay.json`) names a
+legacy routing case. The result file, `--rows` output and a `--dump-ranked` file hold ids.
+
 ### Card-name normalizer
 
 `card@5` checks operation labels through [lib/grade.mjs](lib/grade.mjs).

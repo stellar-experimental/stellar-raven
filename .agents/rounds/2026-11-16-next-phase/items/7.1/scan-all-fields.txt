@@ -1,0 +1,103 @@
+battery cases=253 K=8 tracked files scanned=2225 files with case shingles=336
+files with >=5 cases: 89; >=1 case with >=3 shingles: 243
+162	2021	eval/routing-cases.json
+71	7342	.agents/rounds/2026-11-14-golden-coverage-audit/coverage/overrides.json
+45	363	.agents/rounds/2026-11-14-golden-coverage-audit/coverage/POLISH.md
+35	149	eval/qa/consistency-register.json
+32	2309	.agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-protocol.json
+26	1673	.agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-hist-retail.json
+26	2286	.agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-b.json
+23	67	.agents/rounds/2026-11-14-golden-coverage-audit/resweep/review.json
+22	1424	.agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-edge.json
+21	1574	.agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-assets.json
+21	1387	.agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-compliance.json
+21	1488	.agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-defi.json
+19	2335	.agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-a.json
+19	281	eval/discovery/cases.json
+17	1886	.agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-soroban-a.json
+17	71	.agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.json
+16	1319	.agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-scf.json
+16	1124	.agents/rounds/2026-11-14-golden-coverage-audit/audit/audit-tooling-b.json
+16	70	.agents/rounds/2026-11-14-golden-coverage-audit/coverage/coverage.md
+15	42	.agents/rounds/2026-11-02-golden-audit/register-resweep.json
+13	36	.agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-2.json
+12	435	.agents/rounds/2026-11-14-golden-coverage-audit/gap/verify-gap.json
+12	35	.agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json
+12	96	eval/agentic/sample.json
+11	499	.agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-assets.json
+11	924	.agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-hist-retail.json
+10	309	.agents/rounds/2026-11-02-golden-audit/pass1/compliance-rwa-payments-03.json
+10	34	.agents/rounds/2026-11-14-golden-coverage-audit/apply/RECONCILE.md
+10	47	.agents/rounds/2026-11-14-golden-coverage-audit/review/REVIEW.md
+9	97	.agents/rounds/2026-10-09-backlog/routing-design/selected-fresh-acceptance.json
+9	97	.agents/rounds/2026-10-09-backlog/routing-design/selected-main-acceptance.json
+9	109	.agents/rounds/2026-10-09-continuation/routing-step2/step2-fresh-acceptance.json
+9	109	.agents/rounds/2026-10-09-continuation/routing-step2/step2-main-acceptance.json
+9	109	.agents/rounds/2026-10-09-followup/routing-step1/baseline-fresh-acceptance.json
+9	109	.agents/rounds/2026-10-09-followup/routing-step1/baseline-main-acceptance.json
+9	109	.agents/rounds/2026-10-09-followup/routing-step1/step1-fresh-acceptance.json
+9	109	.agents/rounds/2026-10-09-followup/routing-step1/step1-main-acceptance.json
+9	14	.agents/rounds/2026-11-14-golden-coverage-audit/map/map-supply.json
+9	15	.agents/rounds/2026-11-14-golden-coverage-audit/map/taxonomy.json
+9	700	.agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-b.json
+9	325	.agents/rounds/2026-11-16-next-phase/items/1.4/dated/PRESTAGE.md
+8	387	.agents/rounds/2026-11-02-golden-audit/pass1/assets-anchors-seps-01.json
+8	135	.agents/rounds/2026-11-02-golden-audit/pass2/payments-assets.json
+8	18	.agents/rounds/2026-11-14-golden-coverage-audit/map/map-demand.json
+8	767	.agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-compliance.json
+8	585	.agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-protocol.json
+8	651	.agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-soroban-b.json
+8	78	test/drift-141-routing.test.ts
+7	16	.agents/rounds/2026-08-29-golden-truth-session-3/register-resweep-sol-b.md
+7	122	.agents/rounds/2026-11-02-golden-audit/pass1/history-org-tokenomics-02.json
+7	101	.agents/rounds/2026-11-02-golden-audit/pass1/varial-dev.json
+7	81	.agents/rounds/2026-11-14-baseline-tuning/CASE-DEFECTS.md
+7	40	.agents/rounds/2026-11-14-golden-coverage-audit/decisions/SCOPE.md
+7	33	.agents/rounds/2026-11-14-golden-coverage-audit/gap/gap-1.slots.json
+7	659	.agents/rounds/2026-11-14-golden-coverage-audit/verify/audit-tooling-a.json
+6	258	.agents/rounds/2026-11-02-golden-audit/pass1/protocol-core-01.json
+6	96	.agents/rounds/2026-11-02-golden-audit/pass1/protocol-core-02.json
+6	64	.agents/rounds/2026-11-02-golden-audit/pass1/retail-consumer-03.json
+6	212	.agents/rounds/2026-11-02-golden-audit/pass1/soroban-02.json
+6	114	.agents/rounds/2026-11-02-golden-audit/pass1/soroban-05.json
+--- by area (files)
+67	.agents/rounds/2026-11-02-golden-audit
+58	.agents/rounds/2026-11-14-golden-coverage-audit
+14	improvements
+12	.agents/rounds/2026-11-16-next-phase
+11	test
+8	.agents/rounds/2026-10-09-followup
+6	.agents/rounds/2026-10-10-weekend
+6	.agents/rounds/2026-10-28-routing-repair
+6	.agents/rounds/2026-11-15-tuning-loop-2
+6	.agents/rounds/2026-11-02-mintlify-migration
+6	research/audits/2026-11-09-improvements-sweep
+5	research/audits/2026-11-06-remaining-sweep
+5	research/audits/2026-11-03-qa-followup
+5	.agents/rounds/2026-10-06-truth-maintenance
+5	.agents/rounds/2026-10-02-routing-adapter-repairs
+5	research/audits/2026-09-17-routing-audit
+4	.agents/rounds/2026-10-09-backlog
+4	.agents/rounds/2026-11-02-golden-reverify
+4	.agents/rounds/2026-11-05-truth-maintenance
+4	research/audits/2026-11-05-improvements
+4	.agents/rounds/2026-10-01-backlog-closeout
+3	.agents/rounds/2026-10-09-continuation
+3	.agents/rounds/2026-08-29-golden-truth-session-3
+3	.agents/rounds/2026-11-14-baseline-tuning
+3	.agents/rounds/2026-10-12-pack-p9
+3	.agents/rounds/2026-08-31-golden-metadata-remainder
+3	research/audits/2026-11-02-golden-freshness-probe
+3	.agents/rounds/2026-09-01-stale-gospel-refresh
+3	.agents/rounds/2026-09-03-truth-maintenance
+3	research/audits/2026-11-12-truth-maintenance
+3	.agents/rounds/2026-11-02-upstream-filing
+3	eval/qa/reviewed
+2	research/audits/2026-11-10-truth-maintenance
+2	.agents/rounds/2026-11-02-pr314-review
+2	research/audits/2026-11-06-assets-type-handoff
+2	src
+1	eval/routing-cases.json
+1	eval/qa/consistency-register.json
+1	eval/discovery/cases.json
+1	eval/agentic/sample.json

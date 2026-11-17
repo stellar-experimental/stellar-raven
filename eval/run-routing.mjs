@@ -35,6 +35,9 @@
  * Compare these IDs to check rank and membership differences between builds.
  * See eval/README.md for the routing contract. The flag does not change grading.
  *
+ * Console output prints aggregates only. The holdout and protocol-history per-row tables print
+ * under `--rows`; the results file carries every row either way (eval/README.md, "Row output").
+ *
  * Gate enforcement (eval/gates.json): every run prints a gate verdict — legacy 338
  * strict within ±bandPct of the baselined top-1/3/5 counts, skills lane top-1 at or
  * above its floor, and holdout floors plus a forbidden-capture ceiling.
@@ -56,6 +59,7 @@ import { aggregate, cardMatchesExact, gradeCase, tableRows } from "./lib/grade.m
 import { overlayExpectedAnyById, unionExpectedAny } from "./lib/labels.mjs";
 import { confirmationOnlyFor, consoleValue, tagRows } from "./lib/confirmation-only.mjs";
 import { gateEvidenceFailures } from "./lib/gate-evidence.mjs";
+import { readJson } from "./lib/read-json.mjs";
 
 const EVAL_DIR = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(EVAL_DIR, "..");
@@ -75,6 +79,9 @@ const OVERLAY = join(EVAL_DIR, "build-question-overlay.json");
 const GATES = join(EVAL_DIR, "gates.json");
 const RESULTS_DIR = join(EVAL_DIR, "results");
 const ENFORCE_GATE = process.argv.includes("--gate");
+// The holdout and protocol-history per-row tables stay out of stdout unless asked for: a gate run
+// (CI included) is read by agents, and a printed row is held-out case text in their context.
+const SHOW_ROWS = process.argv.includes("--rows");
 // --dump-ranked <file> writes ordered top-5 hit IDs by case ID for the legacy,
 // extended, skills, and protocol-history lanes. See eval/README.md for the
 // routing contract and eval/gates.json for gate inputs and thresholds.
@@ -156,16 +163,16 @@ async function main() {
 
   const manifestBytes = readFileSync(MANIFEST);
   const manifestSha256 = createHash("sha256").update(manifestBytes).digest("hex");
-  const manifestJson = JSON.parse(manifestBytes.toString("utf8"));
+  const manifestJson = readJson(MANIFEST, REPO);
   const catalog = loadManifest(manifestJson);
-  const compiled = JSON.parse(readFileSync(CASES, "utf8"));
+  const compiled = readJson(CASES, REPO);
 
   // --- overlay: attach expected_any to hand-reviewed case ids (load-time, so
   // compile-routing.mjs regenerating routing-cases.json never wipes it) ---------------
   let overlay = null;
   const expectedAnyById = new Map();
   if (existsSync(OVERLAY)) {
-    overlay = JSON.parse(readFileSync(OVERLAY, "utf8"));
+    overlay = readJson(OVERLAY, REPO);
     const known = new Set([...compiled.cases, ...(compiled.extendedCases ?? [])].map((c) => c.id));
     for (const [id, expectedAny] of overlayExpectedAnyById(overlay, known, (id) => {
       console.warn(`overlay warning: case id "${id}" not present in routing-cases.json — ignored`);
@@ -243,7 +250,7 @@ async function main() {
   let skillsLane = null;
   let skillsPerCase = [];
   if (existsSync(SKILLS_CASES)) {
-    const supplement = JSON.parse(readFileSync(SKILLS_CASES, "utf8"));
+    const supplement = readJson(SKILLS_CASES, REPO);
     skillsPerCase = tagRows(supplement.cases.map(runCase), confirmationOnlyFor("skills", supplement.cases.map((c) => c.id)));
     skillsLane = { authoredAt: supplement.authoredAt, ...aggregate(skillsPerCase).overall };
   }
@@ -252,16 +259,21 @@ async function main() {
   let holdoutLane = null;
   let holdoutPerCase = [];
   if (existsSync(HOLDOUT_CASES)) {
-    const supplement = JSON.parse(readFileSync(HOLDOUT_CASES, "utf8"));
+    const supplement = readJson(HOLDOUT_CASES, REPO);
     const searchableEntries = catalog.entries.filter((e) => e.searchable !== false && e.kind !== "skill-section");
-    for (const c of supplement.cases) {
-      for (const card of [...c.expected_cards, ...c.forbidden_cards]) {
-        const matches = searchableEntries.filter((entry) => cardMatchesExact(card, entry));
-        if (matches.length !== 1) {
-          throw new Error(`holdout card "${card}" resolves to ${matches.length} searchable catalog entries (case ${c.id})`);
-        }
+    // The message names a position, never a case id or card: this error reaches stdout and CI logs.
+    supplement.cases.forEach((c, caseIndex) => {
+      for (const [list, cards] of [["expected", c.expected_cards], ["forbidden", c.forbidden_cards]]) {
+        cards.forEach((card, cardIndex) => {
+          const matches = searchableEntries.filter((entry) => cardMatchesExact(card, entry));
+          if (matches.length !== 1) {
+            throw new Error(
+              `holdout case #${caseIndex} ${list} card #${cardIndex} resolves to ${matches.length} searchable catalog entries (must be 1)`,
+            );
+          }
+        });
       }
-    }
+    });
     const holdoutListed = confirmationOnlyFor("holdout", supplement.cases.map((c) => c.id));
     holdoutPerCase = supplement.cases.map((c) => {
       const hits = searchCatalog(catalog, { query: c.question, limit: 5 });
@@ -304,7 +316,7 @@ async function main() {
   let protocolHistoryLane = null;
   let protocolHistoryPerCase = [];
   if (existsSync(PROTOCOL_HISTORY_CASES)) {
-    const diagnostic = JSON.parse(readFileSync(PROTOCOL_HISTORY_CASES, "utf8"));
+    const diagnostic = readJson(PROTOCOL_HISTORY_CASES, REPO);
     const target = catalog.entries.filter(
       (entry) => entry.id === diagnostic.targetOperation && entry.searchable !== false
     );
@@ -356,7 +368,7 @@ async function main() {
   // --- gate check (eval/gates.json; EVALS.md: two gates, everything else diagnostic) --
   let gate = null;
   if (existsSync(GATES)) {
-    const g = JSON.parse(readFileSync(GATES, "utf8"));
+    const g = readJson(GATES, REPO);
     const failures = gateEvidenceFailures(g, { repo: REPO, manifestPath: MANIFEST });
     if (g.gradingRule !== "v3-manifest-exposed") {
       failures.push(`gates.json gradingRule "${g.gradingRule}" is not what this runner grades (v3-manifest-exposed) — re-baseline`);
@@ -412,7 +424,7 @@ async function main() {
   if (DUMP_RANKED_PATH) {
     const ranked = {};
     for (const r of [...perCase, ...extendedPerCase, ...skillsPerCase, ...protocolHistoryPerCase]) {
-      if (r.id in ranked) throw new Error(`--dump-ranked: duplicate case id "${r.id}" across lanes — dump would silently drop one`);
+      if (r.id in ranked) throw new Error("--dump-ranked: a case id repeats across lanes — the dump would silently drop one");
       ranked[r.id] = r.topHits.map((h) => h.id);
     }
     mkdirSync(dirname(DUMP_RANKED_PATH), { recursive: true });
@@ -477,15 +489,17 @@ async function main() {
   if (holdoutLane) {
     console.log(`\nholdout lane — ${holdoutPerCase.length} FROZEN blind-authored cases (expected exact-card rank; pass = expected top-5 and no forbidden top-5 capture)\n`);
     console.table(tableRows(aggregate(holdoutPerCase)));
-    console.table(holdoutPerCase.map((r) => ({
-      id: r.id,
-      rank: consoleValue(r, r.expectedRank ?? "miss"),
-      top1: consoleValue(r, r.top1 ? "PASS" : "FAIL"),
-      top3: consoleValue(r, r.top3 ? "PASS" : "FAIL"),
-      top5: consoleValue(r, r.top5 ? "PASS" : "FAIL"),
-      forbidden: consoleValue(r, r.forbiddenCapture ? r.forbiddenHits.join(", ") : "none"),
-      result: consoleValue(r, r.pass ? "PASS" : "FAIL"),
-    })));
+    if (SHOW_ROWS) {
+      console.table(holdoutPerCase.map((r) => ({
+        id: r.id,
+        rank: consoleValue(r, r.expectedRank ?? "miss"),
+        top1: consoleValue(r, r.top1 ? "PASS" : "FAIL"),
+        top3: consoleValue(r, r.top3 ? "PASS" : "FAIL"),
+        top5: consoleValue(r, r.top5 ? "PASS" : "FAIL"),
+        forbidden: consoleValue(r, r.forbiddenCapture ? r.forbiddenHits.join(", ") : "none"),
+        result: consoleValue(r, r.pass ? "PASS" : "FAIL"),
+      })));
+    }
     console.log(`holdout forbidden captures: ${holdoutLane.forbiddenCaptures}/${holdoutLane.n}`);
   }
   if (protocolHistoryLane) {
@@ -493,15 +507,17 @@ async function main() {
       `\nprotocol-history diagnostic — ${protocolHistoryLane.positives} positives and ` +
         `${protocolHistoryLane.controls} controls (target ${protocolHistoryLane.targetOperation}; diagnostic only)\n`
     );
-    console.table(
-      protocolHistoryPerCase.map((r) => ({
-        id: r.id,
-        class: r.class,
-        role: r.role,
-        targetRank: consoleValue(r, r.targetRank ?? "miss"),
-        top: consoleValue(r, r.topHits[0]?.id ?? "none")
-      }))
-    );
+    if (SHOW_ROWS) {
+      console.table(
+        protocolHistoryPerCase.map((r) => ({
+          id: r.id,
+          class: r.class,
+          role: r.role,
+          targetRank: consoleValue(r, r.targetRank ?? "miss"),
+          top: consoleValue(r, r.topHits[0]?.id ?? "none")
+        }))
+      );
+    }
     console.log(
       `protocol-history target: top-1 ${protocolHistoryLane.top1}/${protocolHistoryLane.positives}, ` +
         `top-3 ${protocolHistoryLane.top3}/${protocolHistoryLane.positives}, ` +

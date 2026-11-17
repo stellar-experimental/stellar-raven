@@ -263,15 +263,6 @@ Done when: a run with at least 5 claim-word answers that rest on a `stellarOrg` 
 the brief, and the readers' violation and over-hedge counts are recorded; the rule changes only on
 that read.
 
-### Stop the routing gate run from printing the holdout rows
-
-Under `--gate` the runner prints the holdout and protocol-history per-case tables on every run,
-CI's `npm run eval:routing -- --gate` included. The fingerprint failure message no longer points at
-them, but any gate run still writes holdout case ids and top-five lists to stdout. Print the
-holdout aggregate only and keep the rows in the results file.
-
-Done when: a gate run's stdout holds no holdout case id.
-
 ## Family decider follow-ups
 
 Source: [family decider record](../research/audits/2026-11-14-family-decider.md). The engine question

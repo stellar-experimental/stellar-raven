@@ -83,6 +83,10 @@ jobs:
         with:
           path: ecosystem-skills/.cache
           key: skill-bodies-${{ hashFiles('ecosystem-skills/MANIFEST.json') }}
+      # test/case-search-ignore.test.mjs runs real ripgrep over the `.ignore` layout and fails, not
+      # skips, in CI when `rg` is missing.
+      - name: ensure ripgrep
+        run: command -v rg || { sudo apt-get update && sudo apt-get install -y ripgrep; }
       - run: npm test
       # workerd smoke lane (test/smoke/): the assembled router
       # + real Dynamic Worker executor boundary via vitest-pool-workers.

@@ -1,0 +1,8 @@
+# Ripgrep (and fd, ag) skip these paths by default, so a recursive search of the repository does not
+# put held-out or reserve case text in an agent's context. Entries are anchored to this folder, one
+# path component each; an explicit path argument still searches them. Layout and rule:
+# eval/qa/README.md, "Held-out split". test/case-search-ignore.test.mjs pins this list.
+/corpus/
+/holdout-cases.json
+/protocol-history-blind-cases.json
+/protocol-history-blind-cases-v2.json

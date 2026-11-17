@@ -5,11 +5,13 @@
  * a runner tags its result row and prints aggregate counts in place of its per-row outcome. The
  * lookup is keyed by set name, so two sets that share row ids stay separate. It fails closed: a
  * missing list, an unknown set, or a listed id that its set no longer holds throws, which is what a
- * stale list looks like after `npm run eval:compile`.
+ * stale list looks like after `npm run eval:compile`. Its errors name a set and a list position,
+ * never a row id: a runner prints them.
  */
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { readJson } from "./read-json.mjs";
 
 export const OVERLAP_LIST_PATH = join(dirname(fileURLToPath(import.meta.url)), "..", "routing-qa-overlap.json");
 export const CONFIRMATION_ONLY_LABEL = "confirmation-only";
@@ -22,7 +24,7 @@ function loadList() {
   if (!existsSync(OVERLAP_LIST_PATH)) {
     throw new Error(`missing eval/routing-qa-overlap.json — run: ${REGENERATE_COMMAND}`);
   }
-  const list = JSON.parse(readFileSync(OVERLAP_LIST_PATH, "utf8"));
+  const list = readJson(OVERLAP_LIST_PATH);
   if (!list || typeof list.sets !== "object" || list.sets === null) {
     throw new Error(`eval/routing-qa-overlap.json has no sets — run: ${REGENERATE_COMMAND}`);
   }
@@ -34,17 +36,17 @@ function loadList() {
  * The predicate for one set. `ids` are the row ids the runner is about to grade, so a listed id the
  * set no longer holds throws instead of leaving a row silently untagged.
  */
-export function confirmationOnlyFor(setName, ids) {
-  const entry = loadList().sets[setName];
+export function confirmationOnlyFor(setName, ids, list = loadList()) {
+  const entry = list.sets[setName];
   if (!entry || !Array.isArray(entry.ids)) {
     throw new Error(`eval/routing-qa-overlap.json has no set "${setName}" — run: ${REGENERATE_COMMAND}`);
   }
   const present = new Set(ids);
-  for (const id of entry.ids) {
+  entry.ids.forEach((id, index) => {
     if (!present.has(id)) {
-      throw new Error(`eval/routing-qa-overlap.json lists "${id}" which set "${setName}" does not hold — run: ${REGENERATE_COMMAND}`);
+      throw new Error(`eval/routing-qa-overlap.json set "${setName}" lists an id at position ${index} that the set does not hold — run: ${REGENERATE_COMMAND}`);
     }
-  }
+  });
   const listed = new Set(entry.ids);
   return (id) => listed.has(id);
 }

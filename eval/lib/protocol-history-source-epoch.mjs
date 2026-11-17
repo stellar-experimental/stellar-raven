@@ -74,22 +74,24 @@ export function actualSourceEpoch({ manifestBytes, manifest, inventory, targetOp
   };
 }
 
+// These errors name a file and a position, never a case id, question or class: a runner prints them.
 function validateRoleCases(path, cases, role, seen) {
   if (!Array.isArray(cases)) throw new Error(`${path} ${role}Cases must be an array`);
-  return cases.map((testCase) => {
+  return cases.map((testCase, index) => {
+    const where = `${path} ${role}Cases[${index}]`;
     if (!testCase || typeof testCase !== "object" || Array.isArray(testCase)) {
-      throw new Error(`${path} ${role}Cases must contain objects`);
+      throw new Error(`${path} ${role}Cases must contain objects (position ${index})`);
     }
     if (typeof testCase.id !== "string" || testCase.id.length === 0) {
-      throw new Error(`${path} ${role} case must have a non-empty id`);
+      throw new Error(`${where} must have a non-empty id`);
     }
     if (typeof testCase.question !== "string" || testCase.question.length === 0) {
-      throw new Error(`${path} ${testCase.id} must have a non-empty question`);
+      throw new Error(`${where} must have a non-empty question`);
     }
     if (typeof testCase.class !== "string" || testCase.class.length === 0) {
-      throw new Error(`${path} ${testCase.id} must have a non-empty class`);
+      throw new Error(`${where} must have a non-empty class`);
     }
-    if (seen.has(testCase.id)) throw new Error(`${path} repeats id ${testCase.id}`);
+    if (seen.has(testCase.id)) throw new Error(`${where} repeats an id used earlier in the file`);
     seen.add(testCase.id);
     return testCase;
   });

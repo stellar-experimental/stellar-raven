@@ -8,12 +8,30 @@ const REPO = join(import.meta.dirname, "..");
 const dir = mkdtempSync(join(tmpdir(), "routing-manifest-"));
 afterAll(() => rmSync(dir, { recursive: true, force: true }));
 
-// The runner prints the holdout and protocol-history per-case tables on every run, so the raw
-// output must never reach an assertion: a failed `toMatch` prints the whole string. This returns
-// derived values only. Known residual: a `run-routing failed:` line can carry a case id
-// (run-routing.mjs, the case-resolution throw).
-function gate(manifest) {
-  const run = spawnSync(process.execPath, ["eval/run-routing.mjs", "--gate", "--manifest", manifest], {
+// The runner prints the holdout and protocol-history per-case tables only under `--rows`, but the
+// raw output must still never reach an assertion: a failed `toMatch` prints the whole string. This
+// returns derived values only: failure lines and a count of held-out case ids found in the output.
+function heldOutIds() {
+  const ids = new Set();
+  const walk = (value) => {
+    if (Array.isArray(value)) value.forEach(walk);
+    else if (value && typeof value === "object") {
+      if (typeof value.id === "string" && value.id.length >= 4) ids.add(value.id);
+      Object.values(value).forEach(walk);
+    }
+  };
+  for (const file of [
+    "eval/holdout-cases.json",
+    "eval/protocol-history-cases.json",
+    "eval/protocol-history-cases-v2.json",
+    "eval/protocol-history-blind-cases.json",
+    "eval/protocol-history-blind-cases-v2.json",
+  ]) walk(JSON.parse(readFileSync(join(REPO, file), "utf8")));
+  return ids;
+}
+
+function gate(manifest, extraArgs = []) {
+  const run = spawnSync(process.execPath, ["eval/run-routing.mjs", "--gate", "--manifest", manifest, ...extraArgs], {
     cwd: REPO,
     encoding: "utf8",
   });
@@ -25,7 +43,9 @@ function gate(manifest) {
     ...lines.filter((line) => line.startsWith("run-routing failed:")),
   ];
   if (run.status !== 0 && failures.length === 0) failures.push(`runner exited ${run.status} without a gate verdict`);
-  return { status: run.status, failures, rawHasPerCaseTable: /holdout lane — \d+ FROZEN/.test(raw) && raw.includes("┌") };
+  const ids = heldOutIds();
+  const heldOutIdOccurrences = raw.split(/[^A-Za-z0-9._-]+/).filter((token) => ids.has(token)).length;
+  return { status: run.status, failures, heldOutIdOccurrences, printsHoldoutLane: /holdout lane — \d+ FROZEN/.test(raw) };
 }
 
 describe("run-routing --manifest gate evidence", () => {
@@ -35,8 +55,8 @@ describe("run-routing --manifest gate evidence", () => {
     const run = gate(variant);
     expect(run.status).toBe(1);
     expect(run.failures.join("\n")).toMatch(/selected manifest .*variant-manifest\.json SHA-256 does not match the committed catalog\/manifest\.json gate evidence/);
-    // The runner does print the tables; the failures are what a reader sees, and hold no row.
-    expect(run.rawHasPerCaseTable).toBe(true);
+    // The failures are what a reader sees, and hold no row.
+    expect(run.heldOutIdOccurrences).toBe(0);
     for (const line of run.failures) expect(line).not.toMatch(/[│┌]/);
   }, 120_000);
 
@@ -44,5 +64,14 @@ describe("run-routing --manifest gate evidence", () => {
     const run = gate(join(REPO, "catalog/manifest.json"));
     expect(run.failures).toEqual([]);
     expect(run.status).toBe(0);
+    // The default run prints the holdout aggregate and no held-out case id.
+    expect(run.printsHoldoutLane).toBe(true);
+    expect(run.heldOutIdOccurrences).toBe(0);
+  }, 120_000);
+
+  it("prints the per-row tables only under --rows", () => {
+    const run = gate(join(REPO, "catalog/manifest.json"), ["--rows"]);
+    expect(run.status).toBe(0);
+    expect(run.heldOutIdOccurrences).toBeGreaterThan(0);
   }, 120_000);
 });
