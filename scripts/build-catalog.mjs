@@ -1260,7 +1260,7 @@ export function attachCardCaveats(entries, caveats = CARD_CAVEATS) {
 // a manifest — see assertNoNonExposedRefsInText.
 export function assertNoNonExposedRefs(entries) {
   const opIds = new Set(entries.filter((e) => e.kind === "operation").map((e) => e.id));
-  // Service-callable tokens ("scout.matchPartners"); the lookbehind skips
+  // Service-callable tokens ("scout.getPartners"); the lookbehind skips
   // dotted prefixes so skill ids like "skills.lumenloop.<name>" never match,
   // and TLD-shaped tokens ("lumenloop.com" in prose URLs) are ignored.
   const callableRe = /(?<![.\w])(?:lumenloop|scout|stellarDocs|stellarOrg)\.[A-Za-z_]\w*/g;

@@ -384,17 +384,19 @@ describe("build-catalog.mjs", () => {
       catalog.entries.filter((e) => e.service === "lumenloop" && e.kind === "skill-section")
     ).toHaveLength(0);
 
-    // Scout: 30 exposed of 37 upstream OpenAPI operations — the 4 write/
+    // Scout: 29 exposed of 42 upstream OpenAPI operations — the 4 write/
     // side-effecting endpoints (submitFeedback, submitPartnerListing,
     // partnerAssistant, partnerOnboard) are excluded at build time, plus getFeedbackSchema:
     // read-only, but a dead end whose only purpose is to shape the excluded
     // feedback submission (its upstream description names the non-exposed
-    // scout.submitFeedback). The read-only hackathonBrief and matchPartners
-    // operations stay exposed. Their OpenAPI contracts describe no persistence.
+    // scout.submitFeedback), plus matchPartners: read-only, but no observed call
+    // has succeeded since 2026-10-26 (scout.getPartners is the directory path).
+    // The read-only hackathonBrief operation stays exposed. Its OpenAPI contract
+    // describes no persistence.
     // resolveProject is read-only and fully typed. The accepted 1.9.1 surface
     // keeps getQualityReport hidden until a general scoring repair passes. It
     // keeps verifyClaim hidden under a separate current-surface routing decision.
-    expect(count((e) => e.service === "scout" && e.kind === "operation")).toBe(30);
+    expect(count((e) => e.service === "scout" && e.kind === "operation")).toBe(29);
     expect(count((e) => e.id === "scout.submitFeedback")).toBe(0);
     expect(count((e) => e.id === "scout.getFeedbackSchema")).toBe(0);
     expect(count((e) => e.id === "scout.submitPartnerListing")).toBe(0);
@@ -404,7 +406,7 @@ describe("build-catalog.mjs", () => {
     expect(count((e) => e.id === "scout.verifyClaim")).toBe(0);
     expect(count((e) => e.id === "scout.resolveProject")).toBe(1);
     expect(count((e) => e.id === "scout.hackathonBrief")).toBe(1);
-    expect(count((e) => e.id === "scout.matchPartners")).toBe(1);
+    expect(count((e) => e.id === "scout.matchPartners")).toBe(0);
     for (const id of [
       "scout.listAudits",
       "scout.searchHackathonBuilds",
@@ -453,8 +455,8 @@ describe("build-catalog.mjs", () => {
       ["stellarOrg.search_site", "search"]
     ]);
 
-    // Grand total: 62 operations + 20 whole skills + 204 skill sections.
-    expect(catalog.entries).toHaveLength(286);
+    // Grand total: 61 operations + 20 whole skills + 204 skill sections.
+    expect(catalog.entries).toHaveLength(285);
   });
 
   it("carries exactly version/generatedAt/entries at the top level", () => {
@@ -619,7 +621,6 @@ describe("x-routing ingestion — routingKeywords and routingPhrases fields", ()
     "scout.listAudits",
     "scout.listContracts",
     "scout.listSkills",
-    "scout.matchPartners",
     "scout.resolveProject",
     "scout.scfPitch",
     "scout.searchHackathonBuilds",

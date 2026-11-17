@@ -12,6 +12,13 @@ export const EXCLUDED_SCOUT_OPERATIONS = new Map([
   ["POST /api/partners/submit-listing", "submitPartnerListing"],
   ["POST /api/partners/assistant", "partnerAssistant"],
   ["POST /api/partners/onboard", "partnerOnboard"],
+  // AI ranking over the partner directory. No observed call has succeeded
+  // since 2026-10-26: "AI not configured" on 2026-10-26, HTTP 502 on
+  // 2026-11-02, and HTTP 503 `unavailable` on 2026-11-17. scout.getPartners
+  // is the directory path. Tracked as
+  // https://github.com/Stellar-Light/stellarlight/issues/1976 (sls-123).
+  // Re-expose when that issue's POST returns 200 with `matches`.
+  ["POST /api/partners/match", "matchPartners"],
   // Keep quality excluded until its routing contract and a general scoring
   // repair pass the routing gates and independent exposure review.
   ["GET /api/quality", "getQualityReport"],
