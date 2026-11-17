@@ -6,7 +6,7 @@
  * outside `sets.tuning` is never inspected.
  */
 /** The number of tuning rows in the current split. A dated split amendment changes it here only. */
-export const TUNING_ROW_COUNT = 88;
+export const TUNING_ROW_COUNT = 89;
 
 /** The tuning ids of a split. Asserts `TUNING_ROW_COUNT` unique ids. */
 export function tuningIdsOf(split) {
