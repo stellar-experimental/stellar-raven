@@ -1,12 +1,13 @@
 ---
 id: sls-123
 service: stellar-light-scout
-status: verified
+status: reported-upstream
 discovered: 2026-11-17
 upstreamTitle: "POST /api/partners/match has returned no matches in any observed call since 2026-10-26"
 evidence:
   - "2026-11-17T14:21:11Z, direct, OpenAPI info.version 1.9.150: HTTP 503 with unavailable:true and no Retry-After header (command and body in the Evidence section). The same call at 14:04:50Z gave the same result."
   - "A search of Stellar-Light/stellarlight on 2026-11-17 for partners match, matchmaking, and AI not configured finds no open issue. Issue 1908 covers only the OpenAPI documentation of the 502."
+  - upstream issue filed 2026-11-17: https://github.com/Stellar-Light/stellarlight/issues/1976
 ---
 
 ## Finding

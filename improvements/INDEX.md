@@ -34,7 +34,7 @@ Total findings: 92
 | sls-120 | GET /api/stablecoins returns the BRLT row of Settle Network with all five issuer-of-record fields null. The fields are issuerOfRecord,…    | reported-upstream | 2026-11-17 | 0           |
 | sls-121 | Scout serves five Wallet rows with status: "Live" while the availabilityCheck on the same row says the operator is gone or the product is… | reported-upstream | 2026-11-17 | 0           |
 | sls-122 | GET /api/projects/search?q=wallet returns the project Coca twice in its ranked list, once at rank 47 and once at rank 104.…                | reported-upstream | 2026-11-17 | 0           |
-| sls-123 | POST /api/partners/match has not returned a match in any call we observed since 2026-10-26. The 503 unavailable: true response is the…     | verified          | 2026-11-17 | 0           |
+| sls-123 | POST /api/partners/match has not returned a match in any call we observed since 2026-10-26. The 503 unavailable: true response is the…     | reported-upstream | 2026-11-17 | 0           |
 
 ## stellar-docs
 
