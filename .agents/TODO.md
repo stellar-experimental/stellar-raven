@@ -42,14 +42,15 @@ Held-out status: the first-principles split is void, because the 2026-11-14 gold
 rebuilt the battery. The current split is drawn by the rule in
 [`eval/qa/README.md`](../eval/qa/README.md) ("Held-out split") from the 247 headline cases:
 
-- SHA-256 `04107a463c462eecb02a64fe0b69fab6cb4a1bc388197c3e3a01107e9350c362`.
-- 87 tuning, 113 held-out, and 47 reserve cases.
-- The file is on the owner's Linux machine at `~/backups/gca-2026-11-14-split-v6.json`. It
-  replaces `gca-2026-11-14-split-v5.json` (SHA-256
-  `c8796ec14c4d77d114693cfcf5a51a9f5da80a6506956bb7f88c6992725f4b15`, 86/114/47), which stays in
-  place, and v4 (81/117/49), v3 (80/118/49) and v2 (79/119/49) before it. A Mac copy of an
-  earlier split, or an id list taken from one, is stale. Tuning scans pass
-  `--split ~/backups/gca-2026-11-14-split-v6.json`.
+- SHA-256 `d5e56748dfdf2ce9c0bcf8a48898f976db96578dd97516d07dd0b3cb13966c8a`.
+- 88 tuning, 112 held-out, and 47 reserve cases.
+- The file is on the owner's Linux machine at `~/backups/gca-2026-11-14-split-v7.json`. It
+  replaces `gca-2026-11-14-split-v6.json` (SHA-256
+  `04107a463c462eecb02a64fe0b69fab6cb4a1bc388197c3e3a01107e9350c362`, 87/113/47), which stays in
+  place, v5 (`c8796ec14c4d77d114693cfcf5a51a9f5da80a6506956bb7f88c6992725f4b15`, 86/114/47), and
+  v4 (81/117/49), v3 (80/118/49) and v2 (79/119/49) before it. A Mac copy of an earlier split,
+  or an id list taken from one, is stale. Tuning scans pass
+  `--split ~/backups/gca-2026-11-14-split-v7.json`.
 - v5 is a dated amendment of v4 by the orchestrator's answer in
   [round item 1.4 `QUESTION.md`](rounds/2026-11-16-next-phase/items/1.4/QUESTION.md): five
   dated-golden cases moved to tuning so the dated runs (round items 2.1 and 2.2) can open and edit
@@ -58,6 +59,10 @@ rebuilt the battery. The current split is drawn by the rule in
   [round item 1.4 `FOLLOWUP.md`](rounds/2026-11-16-next-phase/items/1.4/FOLLOWUP.md): one case
   whose provenance an incidental search in the item 1.4 Codex review displayed moved to tuning.
   A script took its id from the session log; nobody saw it.
+- v7 is a dated amendment of v6 by the orchestrator's answer in
+  [round item 3.5 `FOLLOWUP.md`](rounds/2026-11-16-next-phase/items/3.5/FOLLOWUP.md): one case
+  whose id and golden amounts a QA lint log displayed to the item 3.5 lead moved to tuning. A
+  script took its id from the lead's untracked exposure note.
 
 Two tuning loops tuned on the tuning rows ([loop 1](rounds/2026-11-14-baseline-tuning.md),
 [loop 2](rounds/2026-11-15-tuning-loop-2.md)). The audit's battery test read the answers of 70
@@ -418,7 +423,7 @@ tuning once an agent has opened it. A dated golden edit must open its case, so e
 Round item 1.4 took option 1 (amend split v5 now) by the orchestrator's answer in its
 [`QUESTION.md`](rounds/2026-11-16-next-phase/items/1.4/QUESTION.md). Counts only:
 
-- 66 cases outside tuning carry a `reverifyBy` (split v6). Each one is exposed when its date comes due, so
+- 65 cases outside tuning carry a `reverifyBy` (split v7). Each one is exposed when its date comes due, so
   option 1 erodes the held-out set every quarter. The next such date is 2027-01-14.
 - Option 2 is the durable fix: a golden-maintenance lane that changes no product code may open a
   held-out or reserve case without moving it. It changes the README rule and owner decision 2, so

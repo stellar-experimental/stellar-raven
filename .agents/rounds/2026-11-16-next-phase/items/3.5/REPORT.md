@@ -59,6 +59,14 @@ deploy:
   as in item 1.4. No other case content was read by me or my children. The executor's split trials
   (v2 to v5) failed on the test's count check before any row was read.
 
+## Split v7 (follow-up, by the orchestrator's answer)
+
+The exposed case moved to tuning by script ([FOLLOWUP.md](FOLLOWUP.md)), in its own commit on #465:
+`~/backups/gca-2026-11-14-split-v7.json`, SHA-256
+`d5e56748dfdf2ce9c0bcf8a48898f976db96578dd97516d07dd0b3cb13966c8a`, 88 tuning, 112 held-out, 47
+reserve. `TUNING_ROW_COUNT` is 88, and the TODO and the dated briefs name v7. Copy v7 to the Mac and
+merge #465 before the 2.1 timer (2026-11-23 18:00 UTC).
+
 ## Open questions for the owner
 
 None.
