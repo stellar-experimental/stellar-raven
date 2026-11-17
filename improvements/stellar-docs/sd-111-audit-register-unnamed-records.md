@@ -12,6 +12,7 @@ evidence:
   - "Supporting source for the project names: Scout GET /api/audits?project=blend (via scout.listAudits, 2026-11-17) returns six Blend reports dated 2023-12-31 to 2025-08-13 on stellarsecurityportal.com. It is not the register's data, and it is not the requested fix."
   - "Classification: site-content. The register page undertakes to let a reader browse audited projects. A record with no project name cannot serve that task. The stellar.org page copy has no public issue tracker, so intake.json marks this finding unclear (precedent: sd-077)."
   - "Not posted: the stellar.org page copy has no public tracker, so no public owner can receive this finding. It stays verified until the owner forwards it."
+  - "2026-11-17 owner: forward to the SDF web team with sd-077; the orchestrator sets reported-upstream with the date and channel once the owner confirms it was sent."
 ---
 
 ## Finding

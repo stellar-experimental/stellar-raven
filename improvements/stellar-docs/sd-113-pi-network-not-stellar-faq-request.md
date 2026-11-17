@@ -10,7 +10,7 @@ evidence:
   - "2026-11-17 Scout research and Lumenloop semantic search for \"Pi Network Stellar\" and \"Pi Network Stellar fork consensus\" return SCP articles and Stellar roundups. No returned row mentions Pi Network."
   - "Host page: none. No stellar.org or developers.stellar.org page undertakes to compare Stellar with other networks or to answer \"is this coin on Stellar\". stellarOrg.search_site for \"frequently asked questions\" and \"is this coin on Stellar\" returns no FAQ page. The nearest pages are \"Guide to Stellar\" and \"Intro to the Stellar Network\". They describe Stellar only."
   - "Classification: site-content, net-new content request. The finding is not a defect in an existing page. The Pi-side facts belong to Pi Network. The Stellar-side ask is one FAQ line."
-  - "Not posted: no owner page undertakes the topic and the stellar.org page copy has no public tracker (precedent: sd-077). The finding stays verified until the owner decides where to send it."
+  - "Not posted and not forwarded (owner, 2026-11-17): out of scope for stellar.org; Pi Network owns the fact. No owner page undertakes the topic."
 ---
 
 ## Finding

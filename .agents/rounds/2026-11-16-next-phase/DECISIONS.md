@@ -63,6 +63,29 @@ every lane in this round and override PLAN.md where they differ.
      including their untracked and ignored files.
    - The bundle is verified before any deletion.
 
+## Follow-up answers (2026-11-17)
+
+The owner answered the follow-ups after the round on 2026-11-17. The orchestrator decided the FAM
+rows on the owner's deferral.
+
+- **stellar.org findings.** Owner: "Do these even belong? They seem separate to the concerns those
+  sites actually serve". `sd-077` and `sd-111` belong, and the owner forwards them to the SDF web
+  team. `sd-113` does not belong and is not forwarded.
+- **`scout.matchPartners`.** Removed by round item 5.1, on the owner's "isolated rare events likely
+  don't constitute making everything call and experience worse, more expensive".
+- **stellar.org displacement.** Closed as accepted. Owner: "sounds good if you really believe it and
+  there's no clear obvious compromise".
+- **FAM rows.** The owner deferred to the orchestrator. Decision: no move, and the sealed set stays
+  sealed and unspent.
+- **Maintenance exception.** Owner: "sure, if you think that's warranted and worth it". Adopted
+  ([`eval/qa/README.md`](../../../eval/qa/README.md), "Held-out split"). It narrows the README rule
+  that every seen case moves. Answer 2 is unchanged. An exposure outside a maintenance lane still
+  moves the case.
+- **OpenCode.** Kept out of client diagnostics. OpenCode 2.2.7 offers Anthropic only through an API
+  key. The owner logged OpenCode in with ChatGPT and SuperGrok on 2026-11-17, on the Mac and on
+  agentpc, each checked with one trivial prompt, so those subscription logins exist if the item
+  reopens.
+
 ## Timing
 
 The work for the P30 Mainnet vote runs from a one-shot timer on agentpc at

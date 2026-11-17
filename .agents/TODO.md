@@ -22,8 +22,8 @@ paid run.
    residue (round item 1.3) are in: "Audit source coverage" and "Add a release and package-version
    source".
 3. Mechanisms with a measured cause. Round items 3.2 and 3.3 are done: 3.2 merged as #462, and
-   3.3 measured both ranker mechanisms and dropped them (see "Treat stellar.org routing reach as a
-   lexical and description question"). No mechanism here is pending.
+   3.3 measured both ranker mechanisms and dropped them
+   ([record](rounds/2026-11-16-next-phase/items/3.3/MEASURE.md)). No mechanism here is pending.
 
 No third tuning loop, and no paid QA run without a new written owner authorization, except round
 item 4.1 under decision 7 (owner, 2026-11-16, decision 1). The general routing repair stays held.
@@ -75,9 +75,12 @@ headline cases before the draw ([ids](rounds/2026-11-14-golden-coverage-audit/qa
 baseline and one read per loop ran the held-out rows, counts only. One held-out answer was exposed
 (loop 2); it moved to tuning on 2026-11-16 (decision 2(b)). One more case moved to tuning on
 2026-11-17 (round item 1.1, orchestrator's answer in its `QUESTION.md`), because its notes were
-opened and edited, five more on 2026-11-17 (round item 1.4, v5; see the owner decision below),
+opened and edited, five more on 2026-11-17 (round item 1.4, v5; owner answers in
+[DECISIONS.md](rounds/2026-11-16-next-phase/DECISIONS.md), "Follow-up answers (2026-11-17)"),
 and one more the same day (v6). The stored held-out reads and their thresholds are on 119 rows,
 and a future read pairs on v6's 113. An item may name a case by ID; never record which set a case is in, and tune no product change on a held-out or reserve case.
+A golden-maintenance lane may open and edit a held-out or reserve case without moving it, under the
+conditions in the README's "Held-out split" ("Maintenance exception").
 
 Routing and discovery rows whose question matches a QA headline question are confirmation-only:
 [`eval/routing-qa-overlap.json`](../eval/routing-qa-overlap.json) lists them, and no lane tunes on
@@ -92,8 +95,10 @@ Round item 1.3 classed every residual source gap
 "reached"). Of the 11 "not re-run" leaves, none is a source gap today: 10 are reached or did not
 reproduce, and one leaves a Raven-side TODO (the removed `scout.matchPartners`, below). New findings:
 `sd-111`, `sd-112`, `sd-113`, `ll-039`, `sls-121`, `sls-122`. The facts no reached source holds are
-now few: the XRP Ledger facts (`ecosystem.chain-comparisons`, xrpl.org), the NBU statement
-(`ll-039`), and Pi Network's relation to Stellar (`sd-113`).
+now few: the XRP Ledger facts (`ecosystem.chain-comparisons`, xrpl.org) and the NBU statement
+(`ll-039`). Pi Network's relation to Stellar (`sd-113`, `wallets.pi-network`) is one leaf that no
+reached source holds, and it stays so (owner, 2026-11-17): it does not earn a source, and `sd-113`
+is not forwarded.
 
 Next, the owner's choice only: which one or two sources to test for the facts that no reached source
 holds, with a pass condition fixed in advance (more correct answers and no more wrong ones).
@@ -256,78 +261,21 @@ Source: [family decider record](../research/audits/2026-11-14-family-decider.md)
 is closed for the search page; nothing below reopens it. The record also bore on the seven-card default (kept in
 tuning loop 2): seven lexical cards against five was +3/−0 on 64 FAM development rows.
 
-### Decide what test earns the sealed FAM confirmation rows
+### Hold the sealed FAM confirmation rows
 
 82 FAM confirmation questions, written without goldens and labeled by two lanes, are sealed and
 unspent (SHA-256 `07587dc04e2c993a92736d18610e4fc8fa78e04e77541863df4cfa83c85244ec`, held by the
-orchestrator; the record lists the paths). They can be used once. A routing-reach test does not earn
-them: the rows a decider can win are reached by general search operations the base instructions
-already name. A test earns them when its outcome is an answer, not a card on the page, it states the
-decision it changes, and its pass rule is fixed before the rows open. Free first step: in the stored
-agent transcripts (tuning loop 2's runs hold three), count how often an agent called a family's general search
-operation (`stellarDocs.search_docs`, `lumenloop.search_content_semantic`, `scout.searchResearch`)
-when the page lacked it. A high rate means no page change helps; a low rate points to a static fix (a
-`nextSteps` clause, or two named general ids after the page) inside a paired QA run.
+orchestrator; the record lists the paths). They can be used once, and only by an answer-outcome
+test: its outcome is an answer, not a card on the page, it states the decision it changes, and its
+pass rule is fixed before the rows open. A routing-reach test does not earn them: the rows a
+decider can win are reached by general search operations the base instructions already name. No
+test is planned. Decision: no move, and the set stays sealed and unspent (orchestrator,
+2026-11-17). A second copy of `~/backups/fd-2026-11-14/split/` is on the Mac (orchestrator,
+2026-11-17, hashes checked). That folder holds both the development and the confirmation files;
+the Mac path is held by the orchestrator.
 
 Done when: such a test is written and the rows are spent on it once, or the owner retires the set;
 record which.
-
-### Treat stellar.org routing reach as a lexical and description question
-
-Routing reach of the `stellarOrg` operations (top five for 8 of 40 off-golden questions, loop 2
-step 2) is this item; "Prove the stellar.org source" points here. The
-[family decider record](../research/audits/2026-11-14-family-decider.md) answers it: an engine is
-not the fix. On
-the 20 development stellar.org questions (natural form) today's page reaches 3, a model-free
-family floor 19, and the engines on the rewritten statements +10 to +12 over seven lexical cards
-against the floor's +16. The floor is not a ship either: it admitted a `stellarOrg` card on 33 of the 46 FAM development rows that do not
-label it. The lead is the family text and the `stellarOrg` descriptions, which the frozen statements
-in `research/audits/2026-11-14-family-decider/statements/` show can raise a model's family precision
-from 0.73 to 0.95. Under ADR-0009 a change needs +3 at top five with per-case review, and the owner's
-rule stands: do not fit the service to the stellar.org slice at the expense of other categories.
-
-Tuning loop 2's P2 measured it: on the 58 panel questions as written a `stellarOrg` operation
-enters the top five of none; at the limit agents use (10) it displaces a non-SDF card on about 3 of
-25 non-SDF questions. The causes are three, and two are ranker properties: the id token `org`
-matches every query word that starts with "org" (the vendor scorer's prefix rule has no minimum
-length), and a weakly scored operation that passes the lexical gate fills the gated page so a
-higher-scoring one that fails the gate loses its backfill slot. Two general ranker changes follow,
-each needing the routing gate and the off-golden 40 as its acceptance check: require 4 or more
-characters for the vendor prefix rule, as `tokensOverlap` already does, and let a gate-failed
-candidate that beats the page's weakest gated card keep its slot when the page is full. The
-description is not changed: a reword that removes the security displacement cut off-golden reach
-from 8 to 6 of 40 and moves the cost to other audit questions. Round item 3.3 measured the two
-ranker changes once each ([record](rounds/2026-11-16-next-phase/items/3.3/MEASURE.md)); both
-failed the pass rule and are dropped, with no second variant:
-
-- **Prefix floor** (4 characters, both directions, both scorers). It removes the `org` match on the
-  two spot queries and lifts FAM development reach (55, 58, 63 to 57, 60, 64), but it fails every
-  no-loss rule that counts: legacy and holdout rows go hit-to-miss, one holdout row is newly
-  captured, extended top3, top5 and cardHit5 fall, and non-SDF displacement at limit 10 rises from 3
-  to 5. The 2026-10-02 floor of 3 failed the same gate
-  ([lane C report](rounds/2026-10-02-routing-adapter-repairs/lane-c-report.md)); the code is kept
-  as `prefix-floor.patch`.
-- **Gate-failed slot keeping.** It returns `search_soroban_contract_docs` to the reentrancy spot
-  page, but legacy rows go hit-to-miss on four metrics, one holdout row loses top3, FAM development
-  reach at limit 10 falls from 63 to 61, and non-SDF `stellarOrg` displacement rises at limits 5 and
-  7 (0 to 2 and 1 to 3 of 25). The code is kept as `slot-keeping.patch`.
-- The round plan's metric (a `stellarOrg` card displacing a non-SDF card at limit 10, 3 of 25) is
-  cause 1, the `search_site` description: all three displacing cards are gate-failed backfill on
-  short pages, matched by exact description and id tokens. Neither mechanism removes any of the
-  three; the prefix floor adds two at limit 10 and slot keeping adds two at limits 5 and 7. This
-  item leaves the description unchanged.
-
-The FAM development rows are archived in the branch bundle (agentpc
-`~/backups/raven-next-phase/raven-branches-2026-11-16.bundle`) at ref `refs/heads/exp/family-decider`, path
-`.agents/rounds/2026-11-14-family-decider/sets/fam.development.discovery.json`, and in
-`~/backups/fd-2026-11-14/split/`; both copies have SHA-256
-`0246ad022163f1d67247671b8ed640d7bb61f1aec6cad65a937ffa33b56cf89c`. Moving them into `eval/discovery/` is
-owed when this item is worked: the loader now accepts `stellarOrg`, the move changes the routing set,
-and it needs its own gate run.
-
-Done when: a general description, lexical or ranker change raises stellar.org reach on the
-off-golden questions with no loss elsewhere, measured on FAM development and the SORG development
-rows and confirmed on questions not used to write it, or the owner closes the item.
 
 ## Golden answers
 
@@ -351,15 +299,23 @@ harm side is clean at what T = 5 on 58 rows can see, not below it. The deployed 
 stellar.org through the adapter's own path (checked after the #447 deploy,
 [loop 2 ledger](rounds/2026-11-15-tuning-loop-2.md)). What remains:
 
-- **Routing reach.** See "Treat stellar.org routing reach as a lexical and description question".
+- **Routing reach (closed as accepted, owner, 2026-11-17).** Standing numbers, from the round item
+  3.3 baseline on `main` before item 5.1 and not re-measured since: top five for 8 of 40 off-golden
+  questions in question form; a `stellarOrg` card displaces a non-SDF card on 0, 1 and 3 of 25
+  questions at limits 5, 7 and 10, as backfill on short pages. Both general ranker mechanisms failed
+  the no-loss rule ([record](rounds/2026-11-16-next-phase/items/3.3/MEASURE.md)). A `search_site`
+  description reword moved the cost (reach 8 to 6 of 40). A `stellarOrg`-only rule is the per-slice
+  fitting the owner ruled out. Reopen only on a production transcript where a `stellarOrg` card cost
+  an answer, not on another probe count.
 - **Algolia `pages` index.** Orchestrator evidence, 2026-11-14, read in the Algolia dashboard: of
   nine body-text phrases the keyless search missed, the `pages` index ranked the right page in its
   top four for about five. Whether it holds audit records is unconfirmed. Decision (round plan):
   add depth only on a production detail-lookup failure, and then with a search-only key.
 - **Audit register (done).** The stellar.org audit register titles 4 of 77 records "Unnamed
   record" (3 are Blend's). Filed as `sd-111` (`verified`, intake `unclear`, unposted; stellar.org
-  copy has no public tracker). Whether the owner forwards `sd-111`, `sd-113`, and `sd-077` to the
-  stellar.org web team is the owner's call.
+  copy has no public tracker). The owner forwards `sd-111` and `sd-077` to the SDF web team
+  (2026-11-17); the orchestrator sets `reported-upstream` when the owner confirms the message was
+  sent. `sd-113` is not forwarded.
 - **Anchor Directory (done).** Not an out-of-source fact: the Docs Anchor Tools and Ramps pages and
   the Anchors fundamentals page name `https://anchors.stellar.org`, and
   `stellarDocs.search_docs("Anchor Directory")` returns them at ranks 1 and 4. No golden edit.
@@ -394,24 +350,22 @@ Use the `golden-truth` skill, then `npm run eval:qa:register`.
 
 Done when: no battery case has a `reverifyBy` date before 2027-01-01.
 
-### Decide whether golden maintenance may open held-out cases (owner decision)
+### Close the register entries the dated runs leave open
 
-The held-out rule ([`eval/qa/README.md`](../eval/qa/README.md), "Held-out split") moves a case to
-tuning once an agent has opened it. A dated golden edit must open its case, so each one exposes it.
-Round item 1.4 took option 1 (amend split v5 now) by the orchestrator's answer in its
-[`QUESTION.md`](rounds/2026-11-16-next-phase/items/1.4/QUESTION.md). Counts only:
+The owner adopted the maintenance exception (2026-11-17; rule in
+[`eval/qa/README.md`](../eval/qa/README.md), "Held-out split"; answer in
+[DECISIONS.md](rounds/2026-11-16-next-phase/DECISIONS.md), "Follow-up answers (2026-11-17)"). The
+dated runs keep their narrow scope: a run closes its reopened register entries all or none, and
+closes none when it could not read every member (orchestrator's answer 2 (1) in
+[`QUESTION.md`](rounds/2026-11-16-next-phase/items/1.4/QUESTION.md)). Such an entry stays at
+`reopen`. Count left open so far: none recorded yet. Each dated run adds its count here.
 
-- 65 cases outside tuning carry a `reverifyBy` (split v8). Each one is exposed when its date comes due, so
-  option 1 erodes the held-out set every quarter. The next such date is 2027-01-14.
-- Option 2 is the durable fix: a golden-maintenance lane that changes no product code may open a
-  held-out or reserve case without moving it. It changes the README rule and owner decision 2, so
-  it needs the owner.
-- Register entries that the dated runs left at `reopen`: a run closes its reopened entries all or
-  none, and closes none when it could not read every member (orchestrator's answer 2 (1) in
-  `QUESTION.md`). Count left open so far: none recorded yet. Each dated run adds its count here.
+Next, after round item 2.2c: one maintenance lane under the exception reads every member of each
+left-open entry and closes or accepts it. Its brief must claim the exception and name the trigger
+(a register entry that an earlier edit reopened). It must also override the "Never open a held-out
+or reserve QA case" rule in `ITEM-LEAD.md`.
 
-Done when: the owner chooses option 1 or option 2 for the quarterly dates, and the left-open
-register entries are closed or accepted.
+Done when: the count is zero, or the owner accepts the entries still open.
 
 ### Golden follow-ups from the sls-024 and sls-029 cap review
 
@@ -565,6 +519,16 @@ current and a fresh source. The acceptance helper is
 `rounds/2026-10-09-followup/routing-step1/acceptance.mjs`; its inputs exist only in the owner's
 ignored archives under `eval/results/`, so a new attempt measures its own baseline.
 
+An optional no-loss lane for that attempt: the 64 FAM development rows. They are archived in the
+branch bundle (agentpc `~/backups/raven-next-phase/raven-branches-2026-11-16.bundle`) at ref
+`refs/heads/exp/family-decider`, path
+`.agents/rounds/2026-11-14-family-decider/sets/fam.development.discovery.json`, and in
+`~/backups/fd-2026-11-14/split/`; both copies have SHA-256
+`0246ad022163f1d67247671b8ed640d7bb61f1aec6cad65a937ffa33b56cf89c`. A second copy of the folder is
+on the Mac (orchestrator, 2026-11-17, hashes checked). Moving the rows into `eval/discovery/` is
+owed by that attempt, not before: the loader now accepts `stellarOrg`, the move changes the
+routing set, and it needs its own gate run.
+
 Acceptance checks:
 
 1. Protocol-history additions do not remove `yieldblox` or `reflector` intent.
@@ -700,6 +664,9 @@ ask for context, with no regression in the abstention or absence slices.
 and Porter stemming failed routing coverage; do not replace them with query exceptions or a
 tuned token-length threshold.
 
+An upgrade past 0.5.1 also re-checks `cs-012`: a non-Error throw reaches Raven as `error: undefined`
+and is logged `ok: true`.
+
 An upgrade past 0.5.1 must also move `src/executor/spec-sandbox.ts`, which mirrors the 0.5.1
 `truncateResponse`, `sandboxResponseText`, and in-sandbox `__truncateResponse`; 0.5.3 replaces
 them with host-side `truncateResult` (24,000 characters). `test/spec-sandbox.test.ts` pins the
@@ -829,9 +796,7 @@ and `/mcp` 401 responses are a large share of requests whatever the client.
 Done when: each bullet has a merged fix or a recorded "no change" decision.
 
 Shipped (round item 3.2): the bounded `execute` `errorName` (SyntaxError, TypeError, ReferenceError,
-timeout, other) on the event and span. Out of scope there: a script that throws a non-Error
-(`throw "x"`) has no `err.message`, so `@cloudflare/codemode` returns no error and the run is
-recorded as `ok: true`; `errorName` never sees it.
+timeout, other) on the event and span.
 
 ### Explain the soft-empty and skipped-write anomalies from the production read
 
@@ -897,34 +862,18 @@ arm 3 run were panel-to-single moves. Rules that follow:
 Done when: `run-qa.mjs` or a compare script refuses to pair two runs whose panel cap or register
 differ, or a same-surface pair at one cap measures the null directly. Delete this note then.
 
-### Run the OpenCode lane of round item 4.1 after a re-login (owner)
+### Keep OpenCode out of client diagnostics
 
-Round item 4.1's [record](rounds/2026-11-16-next-phase/items/4.1/RECORD.md) covers two clients on the
-four behaviours:
+OpenCode stays out of client diagnostics (owner, 2026-11-17): no decision depends on it. Round item
+4.1's [record](rounds/2026-11-16-next-phase/items/4.1/RECORD.md) measured GPT-6.1 Terra in the Codex
+CLI and Grok 4.7 in the Grok CLI. Reopen on a production signal: OpenCode in the user-agent read,
+or a reported OpenCode failure. Then run GPT-6.1 Terra through the ChatGPT login, smoke first, under
+a new spend authorization, after the [brief](rounds/2026-11-16-next-phase/items/4.1/briefs/opencode-mac.md)
+and the smoke rule are rewritten for that provider.
 
-- GPT-6.1 Terra in the Codex CLI, 24 rows.
-- Grok 4.7 in the Grok CLI, 20 rows (cap stop).
-
-It kept the hand-run lanes. No defect in either client needs a before-and-after measurement, so no
-committed runner for Codex and Grok is built, and `eval/qa/run-qa.mjs` still drives only the Claude
-CLI.
-
-OpenCode is excluded from that round:
-
-- On agentpc, OpenCode has no subscription login.
-- On the Mac, the Anthropic OAuth login in OpenCode is invalid. The smoke got HTTP 401 at its first
-  model call, after the MCP handshake had succeeded.
-- No rows ran, and the spend was USD 0.
-
-To rejoin, the owner logs in to OpenCode's Anthropic provider on the Mac again. The orchestrator then
-reruns the lane in the [brief](rounds/2026-11-16-next-phase/items/4.1/briefs/opencode-mac.md), smoke
-first. It needs a new spend authorization, because decision 7 covered one pass in that round. The
-reader's OpenCode path is untested on a real transcript, so the first smoke may need a reader fix.
-
-Done when either:
-
-- an OpenCode summary is in the record, or
-- the owner decides OpenCode stays out of client diagnostics.
+Logins, checked 2026-11-17 with one trivial prompt each: ChatGPT and SuperGrok are logged in to
+OpenCode on the Mac and on agentpc. OpenCode 2.2.7 offers Anthropic only through an API key, which
+the owner's rule excludes.
 
 ### Close the remaining claim-support gaps of judge pack p9
 

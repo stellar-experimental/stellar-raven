@@ -39,6 +39,14 @@ ids `sibling-check.mjs` prints to stdout. Never open another file under `eval/qa
 another case's fields from `cases.json` or `sample.json`, and never read the split file, except
 through `sibling-check.mjs`. Never commit or paste its id list.
 
+**The README maintenance exception does not apply to these runs.** `eval/qa/README.md`
+("Held-out split") lets a golden-maintenance lane open a held-out or reserve case under
+conditions these runs do not meet. Keep the rule above: open only the files it lists, close
+entries all or none (section 6), and never amend the split or `TUNING_ROW_COUNT`. If a tool's
+output shows you text of a case you may not open, do not use it: write the id to
+`~/.local/state/raven-dated/<key>-EXPOSURE.txt`, never commit it, say "exposure: 1" in
+REPORT.md, and continue. A later lane closes the entries you leave open.
+
 **Write set.** A run may change only:
 
 - its cases and the siblings it edits, under `eval/qa/corpus/battery/`;
@@ -368,7 +376,7 @@ must be a dated case or an id `sibling-check.mjs` printed.
   template below.
 - If any reopened entry holds a member you may not open, close none of that run's reopened entries.
   Every one stays at `reopen` (legal in CI) with no `reSwept` written. Record the count of entries
-  left open in `.agents/TODO.md`, under "Decide whether golden maintenance may open held-out cases",
+  left open in `.agents/TODO.md`, under "Close the register entries the dated runs leave open",
   replacing "none recorded yet" with the running count.
 
 State no per-entry reason anywhere. The `sibling-check.mjs` scan is a warning signal only; it never

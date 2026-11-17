@@ -235,6 +235,37 @@ owner decision. Record the amendment in the new file's `amended` field and in th
 the new file's SHA-256. The tuning row count lives in one constant (`TUNING_ROW_COUNT` in
 `tuning-rows.mjs`), and `split-amend.mjs` holds the checked move.
 
+**Maintenance exception.** A golden-maintenance lane may open and edit a held-out or reserve
+case without moving it. The lane is its lead, its executor and its reviewers. Its brief says
+that it runs under the exception and names the trigger before any case is opened. All of these
+hold:
+
+- **Trigger.** It is a fact about the world, not about Raven: a `reverifyBy` date, a
+  source-sentinel drift, an upstream event shown by a primary source, or a consistency-register
+  entry that such an edit reopened. An edit prompted by a Raven answer, transcript, or verdict
+  on that case is not maintenance, and that case moves to tuning.
+- **No Raven output.** The lane reads no stored answer, transcript, or verdict for a case it
+  opens, and runs no model-calling eval.
+- **Edit.** It changes only what the trigger made stale, through `golden-truth` and its
+  independent re-derivation.
+- **Write set.** The lane's sessions and its pull request change no product code, catalog,
+  prompt, rubric, judge pack, or gate threshold, and its sessions do no other work. They may
+  change the corpus and its compiled outputs, the register, the source sentinels and the test
+  that pins them, `improvements/`, and the lane's own records.
+- **Records.** The lane works by case id and never looks up or writes which set a case is in; an
+  id written without its set is not a copy in the sense above. Outside the corpus and the
+  register, nothing it writes quotes or paraphrases a case's judge-facing text: not its report,
+  review file, ledger row, TODO entry, finding, commit message, pull-request body, or a message
+  to another terminal.
+- **Readers.** No other agent, and not the orchestrator, opens the case files, the pull
+  request's diff of them, or a log that prints them. The orchestrator merges on the review
+  verdict and the check status.
+
+A lane that does not claim the exception, or misses a condition, keeps the rule above. Anyone
+outside the lane who sees the content still triggers the move. The exception moves no case
+back: a case already in tuning stays there. A held-out read reports, as a count, the cases with
+a judge-facing change since the split was drawn and since the read it is compared with.
+
 ### Source sentinels
 
 A sentinel re-reads a golden's own primary source and tests one anchor for a volatile value.
