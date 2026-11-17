@@ -7,7 +7,7 @@ see [EXEC.md](EXEC.md) "Codex reconciliation"). USD 0. No model-calling run.
 
 ## Pull request and result
 
-PR: see the ledger row (`np/6.1-codemode-0.5.6`). Seven commits on `origin/main` `35d5de90`.
+PR: [#472](https://github.com/stellar-experimental/stellar-raven/pull/472) (`np/6.1-codemode-0.5.6`). Nine commits on `origin/main` `35d5de90`.
 
 - **Pin.** `@cloudflare/codemode` is pinned exactly to 0.5.6. The lockfile changes only the codemode
   entry and that entry's own optional `@tanstack/ai` peer range. `agents` 0.28.1 dedupes to 0.5.6. No
