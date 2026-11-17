@@ -42,14 +42,15 @@ Held-out status: the first-principles split is void, because the 2026-11-14 gold
 rebuilt the battery. The current split is drawn by the rule in
 [`eval/qa/README.md`](../eval/qa/README.md) ("Held-out split") from the 247 headline cases:
 
-- SHA-256 `04107a463c462eecb02a64fe0b69fab6cb4a1bc388197c3e3a01107e9350c362`.
-- 87 tuning, 113 held-out, and 47 reserve cases.
-- The file is on the owner's Linux machine at `~/backups/gca-2026-11-14-split-v6.json`. It
-  replaces `gca-2026-11-14-split-v5.json` (SHA-256
-  `c8796ec14c4d77d114693cfcf5a51a9f5da80a6506956bb7f88c6992725f4b15`, 86/114/47), which stays in
-  place, and v4 (81/117/49), v3 (80/118/49) and v2 (79/119/49) before it. A Mac copy of an
-  earlier split, or an id list taken from one, is stale. Tuning scans pass
-  `--split ~/backups/gca-2026-11-14-split-v6.json`.
+- SHA-256 `d5e56748dfdf2ce9c0bcf8a48898f976db96578dd97516d07dd0b3cb13966c8a`.
+- 88 tuning, 112 held-out, and 47 reserve cases.
+- The file is on the owner's Linux machine at `~/backups/gca-2026-11-14-split-v7.json`. It
+  replaces `gca-2026-11-14-split-v6.json` (SHA-256
+  `04107a463c462eecb02a64fe0b69fab6cb4a1bc388197c3e3a01107e9350c362`, 87/113/47), which stays in
+  place, v5 (`c8796ec14c4d77d114693cfcf5a51a9f5da80a6506956bb7f88c6992725f4b15`, 86/114/47), and
+  v4 (81/117/49), v3 (80/118/49) and v2 (79/119/49) before it. A Mac copy of an earlier split,
+  or an id list taken from one, is stale. Tuning scans pass
+  `--split ~/backups/gca-2026-11-14-split-v7.json`.
 - v5 is a dated amendment of v4 by the orchestrator's answer in
   [round item 1.4 `QUESTION.md`](rounds/2026-11-16-next-phase/items/1.4/QUESTION.md): five
   dated-golden cases moved to tuning so the dated runs (round items 2.1 and 2.2) can open and edit
@@ -58,6 +59,10 @@ rebuilt the battery. The current split is drawn by the rule in
   [round item 1.4 `FOLLOWUP.md`](rounds/2026-11-16-next-phase/items/1.4/FOLLOWUP.md): one case
   whose provenance an incidental search in the item 1.4 Codex review displayed moved to tuning.
   A script took its id from the session log; nobody saw it.
+- v7 is a dated amendment of v6 by the orchestrator's answer in
+  [round item 3.5 `FOLLOWUP.md`](rounds/2026-11-16-next-phase/items/3.5/FOLLOWUP.md): one case
+  whose id and golden amounts a QA lint log displayed to the item 3.5 lead moved to tuning. A
+  script took its id from the lead's untracked exposure note.
 
 Two tuning loops tuned on the tuning rows ([loop 1](rounds/2026-11-14-baseline-tuning.md),
 [loop 2](rounds/2026-11-15-tuning-loop-2.md)). The audit's battery test read the answers of 70
@@ -127,7 +132,7 @@ disputes disappear, and no answer with a truly unsupported claim is graded up.
 
 Source: [caps audit](../research/audits/2026-11-14-caps-audit.md). The audit changed no cap that
 reaches the model. Tuning loop 2 decided two of its three measured caps without a paid test of their
-own: seven search cards by default (M1, kept) and the micro-map (M3, removed); see
+own: seven search cards by default (M1, kept) and the source map (M3, removed); see
 [the round ledger](rounds/2026-11-15-tuning-loop-2.md). The first item below holds what is left of the third. The
 free telemetry read of four more caps is done; its decisions are in the second. A paid test needs
 its own written authorization under the `run-evals` skill; none is granted here. Run the free step
@@ -222,23 +227,9 @@ guard: `test/mcp-instructions.test.ts` pins the instructions and both tool descr
 ## Tuning loop 2 follow-ups
 
 Record: [round ledger](rounds/2026-11-15-tuning-loop-2.md) and its P0, P1, P2 and R files. The loop
-kept the corroboration guard, the micro-map removal, the delivery text, the `stellarOrg` source,
+kept the corroboration guard, the source-map removal, the delivery text, the `stellarOrg` source,
 seven cards and the title-case rule for exact rows. It did not ship the identifier pointer. Each
 item below is evidence for what it names, not an improvement claim.
-
-### Rename the micro-map files for what they emit
-
-The guard is in the result and the map is gone from the served instructions, but the generator and
-its output still carry the old name: `src/mcp/micro-map.ts`, `scripts/build-micro-map.mjs`,
-`npm run micro-map:build`, `test/micro-map.test.mjs`, and the CI and skill references to them.
-They now emit the instructions text, the family line of `search`, and the guard sentence. Rename
-them for that, and assert the served hashes are unchanged (surface `42ec6102…f17f`, instructions
-`67a6bd0b…6c00`).
-
-Round item 3.5 does this.
-
-Done when: no tracked file outside dated records says `micro-map`, and the surface hash is still
-`42ec6102…f17f`.
 
 ### Carry the guard to absence-of-standard statements
 
@@ -272,28 +263,14 @@ Done when: a run with at least 5 claim-word answers that rest on a `stellarOrg` 
 the brief, and the readers' violation and over-hedge counts are recorded; the rule changes only on
 that read.
 
-### Close the all-capitals date gap in the identifier token
+### Stop the routing gate run from printing the holdout rows
 
-`Sep-24` (a month) is no longer an identifier, but `10-SEP-2024` and `2024-SEP-10` still read as
-SEP-2024 and SEP-10, so a query about a September date can mark that document exact. The rule is
-letter case; a month list would be vocabulary and is forbidden. No stored run shows the case.
+Under `--gate` the runner prints the holdout and protocol-history per-case tables on every run,
+CI's `npm run eval:routing -- --gate` included. The fingerprint failure message no longer points at
+them, but any gate run still writes holdout case ids and top-five lists to stdout. Print the
+holdout aggregate only and keep the rows in the results file.
 
-Round item 3.5 does this.
-
-Done when: a general rule (for example, an identifier is not preceded or followed by a numeric
-date part) separates the date from the standard with unit cases for both, and the 90-query replay
-of `test/replay-exact-rows.test.ts` is byte-identical except for the date inputs.
-
-### Point the fingerprint gate failure at the fingerprint only
-
-A manifest fingerprint failure in `npm test` printed the routing runner's per-case tables,
-including the holdout lane's ids and top-five lists, to a lane that was not meant to read them
-(step 3 deviation D7). Any gate failure can repeat it.
-
-Round item 3.5 does this.
-
-Done when: the failure message of the `gates.json` fingerprint test names the mismatching input and
-the re-baseline command and prints no per-case rows, with a test.
+Done when: a gate run's stdout holds no holdout case id.
 
 ## Family decider follow-ups
 
@@ -446,7 +423,7 @@ tuning once an agent has opened it. A dated golden edit must open its case, so e
 Round item 1.4 took option 1 (amend split v5 now) by the orchestrator's answer in its
 [`QUESTION.md`](rounds/2026-11-16-next-phase/items/1.4/QUESTION.md). Counts only:
 
-- 66 cases outside tuning carry a `reverifyBy` (split v6). Each one is exposed when its date comes due, so
+- 65 cases outside tuning carry a `reverifyBy` (split v7). Each one is exposed when its date comes due, so
   option 1 erodes the held-out set every quarter. The next such date is 2027-01-14.
 - Option 2 is the durable fix: a golden-maintenance lane that changes no product code may open a
   held-out or reserve case without moving it. It changes the README rule and owner decision 2, so

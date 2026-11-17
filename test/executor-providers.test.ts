@@ -266,6 +266,14 @@ describe("host structural service evidence", () => {
       }
     });
 
+    it("does not read an all-capitals date as an identifier; SEP-10 still marks the row", () => {
+      const sep10 = { results: [row("sep", "sep-0010")] };
+      const sep24 = { results: [row("sep", "sep-0024")] };
+      expect(keys("2024-SEP-10", sep10)).toEqual([]);
+      expect(keys("10-SEP-24", sep24)).toEqual([]);
+      expect(keys("SEP-10", sep10)).toEqual([{ index: 0, key: "sep-0010" }]);
+    });
+
     it("ignores zero padding and spacing, and reads either `q` or `query`", () => {
       for (const query of ["SEP-0043", "sep 43", "SEP43", "see SEP-43 please"]) {
         expect(keys(query), query).toEqual([{ index: 0, key: "sep-0043" }]);

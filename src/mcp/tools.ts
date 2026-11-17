@@ -42,7 +42,7 @@ import { logEvent } from "../observability.ts";
 import { searchEventFields } from "../observability-search.ts";
 import { truncateForModel, truncateLogsForModel } from "../policy/truncate.ts";
 import { candidateEvidenceSection, evidenceCheckpointBlock } from "../policy/evidence-checkpoint.ts";
-import { FAMILY_LINE, SEARCH_OPENING } from "./micro-map.ts";
+import { FAMILY_LINE, SEARCH_OPENING } from "./family-text.ts";
 
 export { SEARCH_KINDS };
 
@@ -124,7 +124,7 @@ export const executeInputSchema = {
 // Codex lists the first line of the instructions) must still read a whole thought, so each
 // description opens with one or two complete sentences that end inside 117 characters and a
 // paragraph break after them. The `search` opening names every operation family and is generated
-// (SEARCH_OPENING, scripts/build-micro-map.mjs). test/mcp-instructions.test.ts holds both.
+// (SEARCH_OPENING, scripts/build-family-text.mjs). test/mcp-instructions.test.ts holds both.
 //
 // One official upstream documentation URL per source family rides last on the
 // `search` description, as reference metadata. The `execute` description does

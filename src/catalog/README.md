@@ -19,7 +19,7 @@ They remain available through exact-ID reads and section navigation.
 Its stages validate the service, validate exact recovery IDs, then resolve the page and requested recovery candidates.
 Adapters own their input schemas, error shapes, response prose, and telemetry.
 
-The catalog and sandbox `codemode.search` default page limit is 10; the public MCP `search` tool defaults to 5. The maximum is 50.
+The catalog and sandbox `codemode.search` default page limit is 10; the public MCP `search` tool defaults to 7. The maximum is 50.
 A non-finite limit uses the default before clamping.
 Kind and service filters use exact values.
 Unknown services produce structured issues at the adapter boundary.

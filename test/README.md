@@ -28,7 +28,7 @@ These tests check failure recovery without changing tracked generated files.
 
 | Test group | Main coverage |
 | --- | --- |
-| `catalog*`, `search*`, `scoring*`, `routing*`, `drift-*`, `extract-*`, `micro-map*`, `super-spec*` | Catalog validation, ranking, exact identities, admission rules, and generated specifications |
+| `catalog*`, `search*`, `scoring*`, `routing*`, `drift-*`, `extract-*`, `family-text*`, `super-spec*` | Catalog validation, ranking, exact identities, admission rules, and generated specifications |
 | [adapters.test.ts](adapters.test.ts), [lumenloop-shape.test.ts](lumenloop-shape.test.ts) | Service contracts, response shapes, and error handling |
 | `executor*`, `spec-sandbox*`, `artifacts*`, `shape-logs*`, `source-basis*`, `evidence-checkpoint*` | Execution limits, spec access, artifact storage, and evidence boundaries |
 | `auth*`, `policy*`, `retention*`, `consent-page*`, `html*` | Authentication, request controls, retention, escaping, and secret removal |

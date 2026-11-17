@@ -10,6 +10,7 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
+import { GATE_EVIDENCE_INPUTS, REBASELINE_POINTER } from "./lib/gate-evidence.mjs";
 import { aggregate, cardMatches, cardMatchesExact, canonToken, gradeCase, isServiceLevelCard, tableRows } from "./lib/grade.mjs";
 import {
   deriveExpectedAny,
@@ -41,13 +42,6 @@ const check = (name, fn) => {
   }
 };
 
-const GATE_EVIDENCE_INPUTS = [
-  "catalog/manifest.json",
-  "eval/routing-cases.json",
-  "eval/skills-cases.json",
-  "eval/holdout-cases.json",
-];
-
 check("routing gate evidence resolves from committed files", () => {
   const repoRoot = new URL("../", import.meta.url);
   const gates = JSON.parse(readFileSync(new URL("./gates.json", import.meta.url), "utf8"));
@@ -57,7 +51,7 @@ check("routing gate evidence resolves from committed files", () => {
   for (const input of gates.evidence.inputs) {
     assert.match(input.sha256, /^[a-f0-9]{64}$/);
     const actual = createHash("sha256").update(readFileSync(new URL(input.path, repoRoot))).digest("hex");
-    assert.equal(actual, input.sha256, `${input.path} must match its committed gate fingerprint`);
+    assert.equal(actual, input.sha256, `${input.path} must match its committed gate fingerprint — ${REBASELINE_POINTER}`);
   }
   if (gates.evidence.localTrace !== undefined) {
     assert.equal(typeof gates.evidence.localTrace, "string");

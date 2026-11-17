@@ -17,7 +17,7 @@ The launcher forwards arguments, including `--json`, to the report.
 | Command | Output | CI sync guard |
 |---|---|---|
 | `node scripts/build-catalog.mjs` | `catalog/manifest.json` | yes |
-| `npm run micro-map:build` | `src/mcp/micro-map.ts`, `src/policy/corroboration.ts` | yes |
+| `npm run family-text:build` | `src/mcp/family-text.ts`, `src/policy/corroboration.ts` | yes |
 | `npm run spec:build` | `specs/super-spec.json` | yes |
 | `npm run site:globes` | `src/demo/globe.ts`, `src/consent-globe.ts` | yes |
 | `npm run site:fonts` | `src/fonts.ts` | operator generated; fetches unpinned Google Fonts CSS and font bytes; not CI-gated |
@@ -36,7 +36,7 @@ The reader fetches each file from the upstream commit in `ecosystem-skills/MANIF
 It verifies the recorded Git blob hash and caches the bytes under the ignored `ecosystem-skills/.cache/` folder.
 A hash mismatch fails the build. The skill bodies are the builders' only uncommitted input.
 
-The current catalog, spec, micro-map, globe, index, and evaluation generators use `writeFileAtomic` from `scripts/lib/shared.mjs`.
+The current catalog, spec, family-text, globe, index, and evaluation generators use `writeFileAtomic` from `scripts/lib/shared.mjs`.
 Atomic replacement prevents interrupted writes from leaving truncated tracked outputs.
 The retained prior-art compiler writes directly. CI checks its output after compilation.
 Generated modules are never edited by hand.
