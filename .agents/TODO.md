@@ -509,14 +509,9 @@ Held by this item:
   `getHackathonSubmission`, and `locateSource` stay excluded.
 - Three mixed-intent controls run as `it.fails` in `test/drift-141-routing.test.ts`. Remove the
   markers when the repair passes.
-- `inventory/stellar-docs-titles.json` stays at its Algolia-era bytes, so the daily refresh
-  reports it as drift and its `source.authEnv` names deleted secrets that nothing reads. On
-  2026-11-16 fresh titles (982 Docs pages) cost three graded rows with no gain (two legacy, one
-  holdout-lane row by count), and the earlier `q-tool-wallets-kit` loss no longer reproduces.
-  Under decision 3 the hold stays
-  ([TITLES-AB.md](rounds/2026-11-16-next-phase/items/0.2/TITLES-AB.md)).
-  [Issue #223](https://github.com/stellar-experimental/stellar-raven/issues/223) stays open for
-  this hold and the repair.
+- [Issue #223](https://github.com/stellar-experimental/stellar-raven/issues/223) stays open for the
+  repair. Holdout top3 now sits on its floor (26) after the live Docs titles were absorbed (round item 6.2),
+  so the next change that costs one holdout top-3 fails the gate.
 - A `SKILL_DESCRIPTION_OVERRIDES` entry for `skills.stellar-dev.dapp` holds that skill's search
   text.
 
