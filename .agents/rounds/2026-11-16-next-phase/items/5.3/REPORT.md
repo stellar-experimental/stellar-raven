@@ -81,3 +81,7 @@ Nothing.
 - The extra integers the count script printed (cases, needles, line counts, shape counts) go
   beyond NOTE.md's three items. I adopted them from the Fable review without asking, because they
   carry no text or case id and make a pass falsifiable.
+
+## Follow-up (orchestrator, 2026-11-17)
+
+- Added (`08122f22`): `eval/qa/register-helper.mjs` `caseFileHashes` parses case files with `parseJsonText`. The new test `QA register CLI output > names a malformed case file without printing its text` (`test/qa-register-cli.test.mjs`) failed before the fix and passes after. `npm run typecheck` 0, `npm test` 0 (3747 passed), CI checks: CI2.
