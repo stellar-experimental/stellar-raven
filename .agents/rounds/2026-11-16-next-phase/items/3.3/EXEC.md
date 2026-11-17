@@ -106,3 +106,29 @@ is the base run above (exit 0); `test:smoke`, `eval:selftest` and `improvements:
   item 3.5.
 - The prefix floor does lift FAM development reach and the `org` spot pages, at the cost of legacy
   and extended rows. The stop rule forbids a variant, so it is only recorded.
+
+## Follow-up 1
+
+Reconciled [CASE-REVIEW.md](CASE-REVIEW.md), all eight findings adopted as record fixes. No code
+change and no re-measurement. Commit `aacad3f8`.
+
+1. TODO slot-keeping bullet and MEASURE.md rule 5 row: the limit-5 and limit-7 displacement rises
+   (0 to 2 and 1 to 3 of 25) are named, and the rule 5 pass reads "at limit 10 only".
+2. TODO cause-1 bullet: "Neither mechanism removes any of the three; the prefix floor adds two at
+   limit 10 and slot keeping adds two at limits 5 and 7."
+3. Prefix-floor test classification: the two telemetry tests are losses, so 20 losses, 3 re-pins and
+   the gate-run test. The verdict (fail) is unchanged.
+4. Slot keeping rule 6 is a pass (three re-pins). MEASURE.md's row and step 3 here ("Rules 1 and 4
+   failed") are fixed.
+5. MEASURE.md lists the 14 named legacy cardHit5 hit-to-miss ids for the prefix floor.
+6. and 7. MEASURE.md has a "per-case reading" paragraph per mechanism that cites CASE-REVIEW.md
+   findings 6 and 7.
+8. MEASURE.md prefix-floor rule 1 row names the holdout hit-to-miss counts (1, 3, 2, 2, 1); the TODO
+   floor-3 sentence links `lane-c-report.md`, and the prefix-floor bullet is two sentences.
+
+Also: TODO priority list item 3 now says round items 3.2 (#462) and 3.3 are done and no mechanism is
+pending; "The general routing repair stays held" is unchanged. `CASE-REVIEW.md`,
+`briefs/CASE-REVIEW-BRIEF.md` and `briefs/EXEC-FOLLOWUP-1.md` are committed.
+
+Gates after the commit, each bare: `npm test` exit 0 (3718 passed, 3 expected fail, 5 skipped);
+`npm run secrets:scan -- --tree` exit 0 (clean).
