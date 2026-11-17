@@ -110,6 +110,10 @@ Each of these fails silently: the query succeeds and the number looks plausible.
 - **A new field value is not filterable at once.** The filter index can lag the first emission by
   about 20 minutes. When a filter returns zero for something you have reason to expect, query by
   service only and filter client-side, or join by `$metadata.requestId`.
+- **The `keys` endpoint does not prove a family carries a key.** It ignores event filters and caps
+  its list, which flattened array fields fill. A listed key can be absent from the rows you filter,
+  and a real key can be missing from the list. Before a long run, search the keys by name and
+  confirm each key with one small group-by over a recent hour.
 - **A wide `view: "events"` query returns a small, unrepresentative slice**, not every match under
   `limit`. Slice any window wider than about 6 hours and sum. Never conclude "this never happens"
   from one multi-day query.
