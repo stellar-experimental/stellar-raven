@@ -51,9 +51,9 @@ Two tuning loops tuned on the tuning rows ([loop 1](rounds/2026-11-14-baseline-t
 headline cases before the draw ([ids](rounds/2026-11-14-golden-coverage-audit/qa/ids.txt)). The
 baseline and one read per loop ran the held-out rows, counts only. One held-out answer was exposed
 (loop 2); it moved to tuning on 2026-11-16 (decision 2(b)). One more case moved to tuning on
-2026-11-17 (round item 1.1), because a reviewer opened it. The stored held-out reads and their
-thresholds are on 119 rows, and a future read pairs on v4's 117. An item may name a case by ID;
-never record which set a case is in, and tune no product change on a held-out or reserve case.
+2026-11-17 (round item 1.1, orchestrator's answer in its `QUESTION.md`), because its notes were
+opened and edited. The stored held-out reads and their thresholds are on 119 rows, and a future
+read pairs on v4's 117. An item may name a case by ID; never record which set a case is in, and tune no product change on a held-out or reserve case.
 
 Routing and discovery rows whose question matches a QA headline question are confirmation-only:
 [`eval/routing-qa-overlap.json`](../eval/routing-qa-overlap.json) lists them, and no lane tunes on
