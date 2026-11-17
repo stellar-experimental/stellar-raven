@@ -39,6 +39,21 @@ export const SERVICE_MAP = {
   none: "none"
 };
 
+/**
+ * Parse case JSON without echoing it. V8's SyntaxError message quotes the source text, and case
+ * files hold golden text, so only the label and a position reach the error.
+ */
+export function parseJsonText(text, label) {
+  try {
+    return JSON.parse(text);
+  } catch (error) {
+    if (!(error instanceof SyntaxError)) throw error;
+    const at = / in JSON at position (\d+)(?: \(line (\d+) column (\d+)\))?$/.exec(error.message);
+    const where = !at ? "" : at[2] ? ` at line ${at[2]} column ${at[3]}` : ` at position ${at[1]}`;
+    throw new Error(`${label}: invalid JSON${where}`);
+  }
+}
+
 export function loadCases(casesPath = CASES_PATH) {
   const parsed = JSON.parse(readFileSync(casesPath, "utf8"));
   if (!Array.isArray(parsed.cases)) throw new Error(`${casesPath}: missing cases[]`);

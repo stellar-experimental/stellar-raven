@@ -1,11 +1,12 @@
 import { execFileSync, spawnSync } from "node:child_process";
-import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import {
   isPullRequestCI,
+  lintAvoidPhrases,
   lintCorroboration,
   lintDateContingentTraps,
   lintGoldenAuthoring,
@@ -13,12 +14,18 @@ import {
   lintGospelChanges,
   lintCoverage,
   lintLedger,
+  lintLiveContract,
+  lintNumericInvariants,
+  loadCases,
+  loadLifecycleLane,
   runLint,
   lintStale,
   lintSurface
 } from "../eval/qa/lint-corpus.mjs";
 import { updateRegister } from "../eval/qa/register-helper.mjs";
 import { contentSha256 } from "../eval/qa/lifecycle.mjs";
+import { decodeStrkey } from "../eval/qa/strkey.mjs";
+import { EXCLUDED_SCOUT_OPS } from "../src/policy/scout-exposure.ts";
 
 const FIXTURES = join(dirname(fileURLToPath(import.meta.url)), "fixtures", "qa-corpus");
 const LINT_CLI = join(dirname(fileURLToPath(import.meta.url)), "..", "eval", "qa", "lint-corpus.mjs");
@@ -461,5 +468,249 @@ describe("QA corpus lint lanes", () => {
     } finally {
       rmSync(repo, { recursive: true, force: true });
     }
+  });
+});
+
+// Judge-facing text of a held-out or reserve case must never reach lint output. Every fixture
+// below is synthetic; the marker stands for golden text.
+const MARK = "ZQXMARKER";
+
+function markerCase(id, golden = {}, extra = {}) {
+  return {
+    id,
+    question: `How does ${MARK} behave?`,
+    surface: ["stellarDocs.search_docs"],
+    golden: {
+      answer: `The answer names ${MARK}.`,
+      keyFacts: [`${MARK} is documented.`],
+      avoid: [],
+      notes: `Notes mention ${MARK}.`,
+      ...golden
+    },
+    tags: { category: "protocol-core", service: "stellarDocs", freshness: "stable" },
+    truth: { domain: "real-world", status: "confirmed", asOf: "2026-07-10", verified: { date: "2026-07-10" } },
+    ...extra
+  };
+}
+
+const AVOID_CASE = markerCase("q-marker-avoid", {
+  avoid: [
+    `Do not claim ${MARK} beyond the corpus support.`,
+    `Do not state ${MARK} without evidence.`,
+    `Omits ${MARK} from the answer.`
+  ]
+});
+const LONG_FACT = `${MARK} is documented in a very long sentence that keeps going well past the ninety character limit.`;
+const KEY_FACT_CASE = markerCase("q-marker-keyfact", {
+  keyFacts: [
+    LONG_FACT,
+    `${MARK} is stable and ${MARK} has retries.`,
+    `Rejects widgets from ${MARK} lists.`,
+    `${MARK} was dated 2026-07-10.`,
+    `${MARK} takes 5 seconds.`
+  ]
+});
+const CAP_NOTES_SINGLE = `${MARK} intro sentence. Quoting the official ${MARK} page is not a wrong claim; grade caps at partial for ${MARK}.`;
+const CAP_NOTES_JOINED = `Quoting the official ${MARK} page is not a wrong claim. Grade caps at partial for ${MARK}.`;
+const CAP_SINGLE_CASE = markerCase("q-marker-cap-single", { notes: CAP_NOTES_SINGLE });
+const CAP_JOINED_CASE = markerCase("q-marker-cap-joined", { notes: CAP_NOTES_JOINED });
+const EXCLUDED_PATH = [...EXCLUDED_SCOUT_OPS].map((operation) => operation.split(" ")[1]).find((route) => !route.includes("{"));
+const SURFACE_CASE = markerCase("q-marker-surface", {
+  answer: `Use scout.${MARK} here.`,
+  keyFacts: [`${MARK} is documented.`, `${MARK} calls ${EXCLUDED_PATH} directly.`]
+});
+const NUMERIC_CASE = markerCase("q-marker-numeric");
+const NUMERIC_REGISTER = {
+  numericInvariants: { entries: [{ label: "fixture-invariant", affectedCaseIds: [NUMERIC_CASE.id], contradictions: [MARK] }] }
+};
+const MARKER_CASES = [AVOID_CASE, KEY_FACT_CASE, CAP_SINGLE_CASE, CAP_JOINED_CASE, SURFACE_CASE, NUMERIC_CASE];
+const messagesOf = (findings, id) => findings.filter((item) => item.id === id).map((item) => item.message);
+const clean = (findings) => findings.filter((item) => item.message.includes(MARK));
+
+function span(notes, sentence) {
+  const start = notes.indexOf(sentence);
+  return `${start}-${start + sentence.length}`;
+}
+
+describe("QA lint never prints judge-facing text", () => {
+  it("names the avoid item, tier and labels instead of quoting it", () => {
+    const messages = [
+      ...messagesOf(lintAvoidPhrases([AVOID_CASE]), AVOID_CASE.id),
+      ...messagesOf(lintGoldenAuthoring([AVOID_CASE]), AVOID_CASE.id)
+    ];
+    expect(messages).toEqual(expect.arrayContaining([
+      "golden.avoid[0] judge-blind [beyond-support,corpus-support]",
+      "golden.avoid[1] sourcing-guard [without-evidence]",
+      "golden.avoid[2] is a presentation, omission, or phrasing requirement, not a concrete false-content avoid item"
+    ]));
+  });
+
+  it("names the key fact index and metadata instead of quoting it", () => {
+    const messages = messagesOf(lintGoldenAuthoring([KEY_FACT_CASE]), KEY_FACT_CASE.id);
+    expect(messages).toEqual(expect.arrayContaining([
+      `golden.keyFacts[0] exceeds 90 characters (${LONG_FACT.length})`,
+      "golden.keyFacts[1] contains multiple predicates",
+      "golden.keyFacts[2] negative predicate object is absent from the question; consider moving it to golden.avoid",
+      "golden.keyFacts[3] requires the golden snapshot date 2026-07-10"
+    ]));
+  });
+
+  it("names the uncorroborated numeric key fact by index", () => {
+    expect(messagesOf(lintCorroboration([KEY_FACT_CASE], {}), KEY_FACT_CASE.id)).toEqual(expect.arrayContaining([
+      "golden.keyFacts[3] numeric/version/date keyFact lacks a covering corroboration row",
+      "golden.keyFacts[4] numeric/version/date keyFact lacks a covering corroboration row"
+    ]));
+  });
+
+  it("names the partial cap by sentence ordinal and character span", () => {
+    const [intro, quote] = CAP_NOTES_SINGLE.split(/(?<=[.!?])\s+/);
+    expect(intro).toBe(`${MARK} intro sentence.`);
+    const findings = lintCapFindings([CAP_SINGLE_CASE, CAP_JOINED_CASE], new Map());
+    expect(messagesOf(findings, CAP_SINGLE_CASE.id)).toEqual([
+      `golden.notes sentence 2 (chars ${span(CAP_NOTES_SINGLE, quote)}): partial cap names no improvements finding`
+    ]);
+    expect(messagesOf(findings, CAP_JOINED_CASE.id)).toEqual([
+      `golden.notes sentences 1-2 (chars 0-${CAP_NOTES_JOINED.length}): partial cap names no improvements finding`
+    ]);
+  });
+
+  it("names the leaking field, not the token, for an ADR-0003 surface leak", () => {
+    const findings = lintSurface([SURFACE_CASE], load("manifest.json"));
+    expect(messagesOf(findings, SURFACE_CASE.id)).toEqual([
+      "ADR-0003 leak in golden.answer: references a non-exposed operation",
+      "ADR-0003 leak in golden.keyFacts[1]: references an excluded scout endpoint path"
+    ]);
+  });
+
+  it("names the register entry and value index, not the forbidden value", () => {
+    expect(messagesOf(lintNumericInvariants([NUMERIC_CASE], NUMERIC_REGISTER), NUMERIC_CASE.id)).toEqual([
+      "exact contradiction to fixture-invariant: forbidden value 0 of the register entry is present"
+    ]);
+  });
+
+  it("keeps the marker out of every runLint finding while each targeted check still fires", () => {
+    const findings = runLint({
+      cases: MARKER_CASES,
+      manifest: load("manifest.json"),
+      register: NUMERIC_REGISTER,
+      findingStatuses: new Map()
+    });
+    const lanes = new Set(findings.map((item) => item.lane));
+    for (const lane of ["avoid", "key-fact", "snapshot-date", "corroboration", "cap-finding", "surface", "numeric"]) {
+      expect(lanes.has(lane), lane).toBe(true);
+    }
+    expect(clean(findings)).toEqual([]);
+  });
+
+  it("keeps the marker out of every live-contract finding", () => {
+    const live = (kase) => ({ ...kase, tags: { ...kase.tags, freshness: "live" } });
+    const cases = [live(AVOID_CASE), live(KEY_FACT_CASE)];
+    const findings = lintLiveContract({ contract: "marker-v1", cases, membership: cases.map((kase) => kase.id) });
+    expect(findings.some((item) => item.lane === "key-fact")).toBe(true);
+    expect(findings.some((item) => item.lane === "corroboration" && item.message.startsWith("golden.keyFacts["))).toBe(true);
+    expect(findings.some((item) => item.lane === "avoid")).toBe(true);
+    expect(clean(findings)).toEqual([]);
+  });
+
+  describe("on disk", () => {
+    const BROKEN_STRKEY = `G${MARK.repeat(7)}`;
+    const writeJson = (file, value) => {
+      mkdirSync(dirname(file), { recursive: true });
+      writeFileSync(file, typeof value === "string" ? value : `${JSON.stringify(value, null, 2)}\n`);
+    };
+    const proposed = (id, golden) => markerCase(id, golden, {
+      truth: { domain: "real-world", status: "confirmed", lifecycle: { state: "proposed", reviewState: "none" } }
+    });
+    const withRoot = (body) => {
+      const root = mkdtempSync(join(tmpdir(), "qa-lint-marker-"));
+      try { return body(root); } finally { rmSync(root, { recursive: true, force: true }); }
+    };
+    const runCli = (root, args) => {
+      const result = spawnSync(process.execPath, [LINT_CLI, ...args], {
+        cwd: root,
+        encoding: "utf8",
+        env: {
+          ...process.env,
+          QA_REPO_ROOT: root,
+          CI: "",
+          GITHUB_EVENT_NAME: "",
+          GITHUB_BASE_REF: "",
+          GITHUB_BASE_SHA: "",
+          GITHUB_EVENT_PATH: ""
+        }
+      });
+      return { status: result.status, stdout: result.stdout, stderr: result.stderr, output: `${result.stdout}${result.stderr}` };
+    };
+    const lane = (output, name) => new RegExp(`^\\[lint-corpus\\] (?:ERROR|WARN) \\[${name}\\] `, "m").test(output);
+
+    it("reports a strkey and malformed JSON in the proposed lane without their text", () => withRoot((root) => {
+      const dir = join(root, "eval/qa/corpus/proposed");
+      writeJson(join(dir, "protocol-core/q-marker-strkey.json"), proposed("q-marker-strkey", { answer: `The issuer is ${BROKEN_STRKEY}.` }));
+      writeJson(join(dir, "protocol-core/q-marker-broken.json"), `{"question": ${MARK}}`);
+      const { findings } = loadLifecycleLane(dir, "proposed");
+      const reason = decodeStrkey(BROKEN_STRKEY).reason;
+      expect(findings.map((item) => item.message)).toEqual(expect.arrayContaining([
+        expect.stringMatching(/q-marker-broken\.json: invalid JSON( at (?:line \d+ column \d+|position \d+))?$/),
+        expect.stringMatching(new RegExp(`q-marker-strkey\\.json: invalid strkey at \\$\\.golden\\.answer \\(${reason.replace(/[()]/g, "\\$&")}\\)$`))
+      ]));
+      expect(findings).toHaveLength(2);
+      expect(clean(findings)).toEqual([]);
+    }));
+
+    it("names the file, not the source text, for a malformed case file", () => withRoot((root) => {
+      const dir = join(root, "battery");
+      writeJson(join(dir, "protocol-core/q-marker-broken.json"), `{"question": ${MARK}}`);
+      let message = "";
+      try { loadCases(dir); } catch (error) { message = error.message; }
+      expect(message).toMatch(/q-marker-broken\.json: invalid JSON/);
+      expect(message).not.toContain(MARK);
+    }));
+
+    it("prints no marker through the CLI while every targeted lane still reports", () => withRoot((root) => {
+      writeJson(join(root, "catalog/manifest.json"), load("manifest.json"));
+      writeJson(join(root, "eval/qa/consistency-register.json"), NUMERIC_REGISTER);
+      for (const kase of MARKER_CASES) writeJson(join(root, "eval/qa/corpus/battery/protocol-core", `${kase.id}.json`), kase);
+      writeJson(
+        join(root, "eval/qa/corpus/proposed/protocol-core/q-marker-strkey.json"),
+        proposed("q-marker-strkey", { answer: `The issuer is ${BROKEN_STRKEY}.` })
+      );
+      const result = runCli(root, []);
+      expect(result.output).toMatch(/\[lint-corpus\] \d+ error\(s\), \d+ warning\(s\)/);
+      expect(result.output).not.toContain("[lint-corpus] ERROR:");
+      for (const name of ["avoid", "key-fact", "snapshot-date", "cap-finding", "corroboration", "surface", "numeric", "lifecycle-proposed"]) {
+        expect(lane(result.output, name), name).toBe(true);
+      }
+      expect(result.output).toMatch(/\[lifecycle-proposed\] q-marker-strkey: .*invalid strkey at \$\.golden\.answer \(/);
+      expect(result.stdout).not.toContain(MARK);
+      expect(result.stderr).not.toContain(MARK);
+    }));
+
+    it("prints no marker when a battery file or the live contract is malformed", () => withRoot((root) => {
+      writeJson(join(root, "catalog/manifest.json"), load("manifest.json"));
+      const battery = "eval/qa/corpus/battery/protocol-core/q-marker-broken.json";
+      writeJson(join(root, battery), `{"question": ${MARK}}`);
+      const contract = "eval/qa/live/broken.json";
+      writeJson(join(root, contract), `{"contract": ${MARK}}`);
+      for (const [args, file] of [[[], battery], [["--live-contract", contract, "--since", "HEAD"], contract]]) {
+        const result = runCli(root, args);
+        expect(result.status).toBe(1);
+        expect(result.stderr).toContain(`[lint-corpus] ERROR: ${file}: invalid JSON`);
+        expect(result.output).not.toContain(MARK);
+      }
+    }));
+
+    it("prints no marker when the base ref holds a malformed case file", () => withRoot((root) => {
+      writeJson(join(root, "catalog/manifest.json"), load("manifest.json"));
+      const battery = "eval/qa/corpus/battery/protocol-core/q-marker-broken.json";
+      writeJson(join(root, battery), `{"question": ${MARK}}`);
+      for (const args of [["init", "-q"], ["config", "user.email", "qa@example.test"], ["config", "user.name", "QA Fixture"], ["add", "."], ["-c", "commit.gpgsign=false", "commit", "-qm", "base"]]) {
+        execFileSync("git", args, { cwd: root });
+      }
+      const result = runCli(root, ["--since", "HEAD"]);
+      expect(result.status).toBe(1);
+      expect(result.stderr).toMatch(/\[lint-corpus\] ERROR: .*q-marker-broken\.json: invalid JSON/);
+      expect(result.output).not.toContain(MARK);
+      expect(existsSync(join(root, battery))).toBe(true);
+    }));
   });
 });

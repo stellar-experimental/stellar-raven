@@ -40,6 +40,8 @@ npm run eval:qa:compile
 npm run eval:qa:lint -- --since <ref>
 ```
 
+Lint findings name the case id, the check and a field path, never golden or question text.
+
 The headline battery measures Stellar truth by taxonomy leaf. It does not measure operation reach,
 skill reach, or response-envelope traps; the routing gates, the skills routing cases, unit tests,
 the frozen live lanes, and the tool lane own those.

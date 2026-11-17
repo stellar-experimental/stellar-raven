@@ -15,7 +15,7 @@ import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { assertNoNonExposedRefs } from "../../scripts/build-catalog.mjs";
 import { validateCaseFile, validateTombstoneFile } from "./compile-qa.mjs";
-import { QA_CATEGORIES, QA_SERVICES } from "./lib.mjs";
+import { QA_CATEGORIES, QA_SERVICES, parseJsonText } from "./lib.mjs";
 import {
   COMPILED_LIFECYCLE_STATES,
   LIFECYCLE_REGISTRY_SCHEMA,
@@ -92,7 +92,7 @@ function finding(level, lane, id, message) {
 }
 
 function json(pathname) {
-  return JSON.parse(readFileSync(pathname, "utf8"));
+  return parseJsonText(readFileSync(pathname, "utf8"), path.relative(ROOT, pathname).split(path.sep).join("/"));
 }
 
 function stable(value) {
@@ -107,14 +107,19 @@ function same(a, b) {
   return JSON.stringify(stable(a)) === JSON.stringify(stable(b));
 }
 
-function caseText(kase) {
+/** Judge-facing strings with the field path a finding may name. */
+function judgeFacingFields(kase) {
   return [
-    kase.question,
-    kase.golden?.answer,
-    ...(kase.golden?.keyFacts ?? []),
-    ...(kase.golden?.avoid ?? []),
-    kase.golden?.notes
-  ].filter((part) => typeof part === "string").join("\n");
+    ["question", kase.question],
+    ["golden.answer", kase.golden?.answer],
+    ...(kase.golden?.keyFacts ?? []).map((text, index) => [`golden.keyFacts[${index}]`, text]),
+    ...(kase.golden?.avoid ?? []).map((text, index) => [`golden.avoid[${index}]`, text]),
+    ["golden.notes", kase.golden?.notes]
+  ].filter(([, text]) => typeof text === "string");
+}
+
+function caseText(kase) {
+  return judgeFacingFields(kase).map(([, text]) => text).join("\n");
 }
 
 function entriesOf(collection) {
@@ -293,16 +298,39 @@ export function lintSurface(cases, manifest) {
     for (const id of surface) {
       if (!exposedIds.has(id)) findings.push(finding("error", "surface", kase.id, `non-exposed surface id: ${id}`));
     }
-    try {
-      assertNoNonExposedRefs([
-        ...operationAllowlist,
-        { id: `qa-case:${kase.id}`, kind: "qa-case", description: caseText(kase) }
-      ]);
-    } catch (error) {
-      findings.push(finding("error", "surface", kase.id, error.message));
+    const leaks = (text) => {
+      try {
+        assertNoNonExposedRefs([...operationAllowlist, { id: `qa-case:${kase.id}`, kind: "qa-case", description: text }]);
+      } catch (error) {
+        return error;
+      }
+      return undefined;
+    };
+    // The guard's message quotes the offending token or path, which is case text. Re-run it per
+    // judge-facing field and report the field path and the violation class only.
+    if (!leaks(caseText(kase))) continue;
+    let located = false;
+    for (const [fieldPath, text] of judgeFacingFields(kase)) {
+      const error = leaks(text);
+      if (!error) continue;
+      located = true;
+      findings.push(finding("error", "surface", kase.id, `ADR-0003 leak in ${fieldPath}: references ${leakClass(error.message)}`));
     }
+    if (!located) findings.push(finding("error", "surface", kase.id, "ADR-0003 leak in case text"));
   }
   return findings;
+}
+
+const LEAK_CLASSES = [
+  [/excluded scout operation name/, "an excluded scout operation name"],
+  [/excluded scout endpoint path/, "an excluded scout endpoint path"],
+  [/retired-skill reference/, "a retired skill"],
+  [/excluded lumenloop tool name/, "an excluded lumenloop tool name"],
+  [/non-exposed operation/, "a non-exposed operation"]
+];
+
+function leakClass(message) {
+  return LEAK_CLASSES.find(([pattern]) => pattern.test(message))?.[1] ?? "a non-exposed operation or path";
 }
 
 function invariantIds(invariant) {
@@ -352,8 +380,10 @@ export function lintNumericInvariants(cases, register = {}) {
         continue;
       }
       const text = caseText(kase);
-      for (const value of forbidden) {
-        if (text.includes(value)) findings.push(finding("error", "numeric", id, `exact contradiction to ${label}: ${value}`));
+      for (const [index, value] of forbidden.entries()) {
+        if (text.includes(value)) {
+          findings.push(finding("error", "numeric", id, `exact contradiction to ${label}: forbidden value ${index} of the register entry is present`));
+        }
       }
       if (accepted.length > 0 && !accepted.some((value) => text.includes(value))) {
         findings.push(finding("warn", "numeric", id, `fuzzy review: no authoritative spelling for ${label} found (${accepted.join(" | ")})`));
@@ -444,12 +474,12 @@ export function lintGospelChanges(currentCases, previousCases) {
 export function lintAvoidPhrases(cases) {
   const findings = [];
   for (const kase of cases) {
-    for (const item of kase.golden?.avoid ?? []) {
+    for (const [index, item] of (kase.golden?.avoid ?? []).entries()) {
       const body = item.replace(/^\s*do\s+not\b/i, "");
       const hits = AVOID_PATTERNS.filter((pattern) => pattern.re.test(body)).map((pattern) => pattern.label);
       if (hits.length === 0) continue;
       const tier = JUDGE_BLIND_RE.test(item) ? "judge-blind" : "sourcing-guard";
-      findings.push(finding("warn", "avoid", kase.id, `${tier} [${hits.join(",")}]: ${item}`));
+      findings.push(finding("warn", "avoid", kase.id, `golden.avoid[${index}] ${tier} [${hits.join(",")}]`));
     }
   }
   return findings;
@@ -491,27 +521,27 @@ export function lintGoldenAuthoring(cases) {
       findings.push(finding("warn", "freshness", kase.id, "stable golden notes or avoid items cite an \"as of <date>\" value; confirm it is a historical observation, not a current value"));
     }
     const snapshotDates = new Set([kase.truth?.asOf, kase.truth?.verified?.date].filter((date) => DATE_RE.test(date ?? "")));
-    for (const fact of kase.golden?.keyFacts ?? []) {
+    for (const [index, fact] of (kase.golden?.keyFacts ?? []).entries()) {
       if (fact.length > 90) {
-        findings.push(finding("warn", "key-fact", kase.id, `key fact exceeds 90 characters (${fact.length}): ${fact}`));
+        findings.push(finding("warn", "key-fact", kase.id, `golden.keyFacts[${index}] exceeds 90 characters (${fact.length})`));
       }
       if (hasMultiplePredicates(fact)) {
-        findings.push(finding("warn", "key-fact", kase.id, `key fact contains multiple predicates: ${fact}`));
+        findings.push(finding("warn", "key-fact", kase.id, `golden.keyFacts[${index}] contains multiple predicates`));
       }
       const match = NEGATIVE_PREDICATE_RE.exec(fact);
       if (match && !questionContainsObject(kase.question, match[1])) {
-        findings.push(finding("warn", "key-fact", kase.id, `negative predicate object is absent from the question; consider moving it to golden.avoid: ${fact}`));
+        findings.push(finding("warn", "key-fact", kase.id, `golden.keyFacts[${index}] negative predicate object is absent from the question; consider moving it to golden.avoid`));
       }
       for (const date of snapshotDates) {
         if (fact.includes(date)) {
-          findings.push(finding("warn", "snapshot-date", kase.id, `key fact requires the golden snapshot date ${date}: ${fact}`));
+          findings.push(finding("warn", "snapshot-date", kase.id, `golden.keyFacts[${index}] requires the golden snapshot date ${date}`));
         }
       }
     }
-    for (const item of kase.golden?.avoid ?? []) {
+    for (const [index, item] of (kase.golden?.avoid ?? []).entries()) {
       const body = item.replace(/^\s*do\s+not\b/i, "").trim();
       if (NON_CONTENT_AVOID_RE.test(body) && !ANSWER_VISIBLE_SOURCING_AVOID_RE.test(body)) {
-        findings.push(finding("warn", "avoid", kase.id, `presentation, omission, or phrasing requirement is not a concrete false-content avoid item: ${item}`));
+        findings.push(finding("warn", "avoid", kase.id, `golden.avoid[${index}] is a presentation, omission, or phrasing requirement, not a concrete false-content avoid item`));
       }
     }
     const hasImprovementRootCause = (kase.truth?.verified?.rootCause ?? [])
@@ -555,22 +585,30 @@ export function lintCapFindings(cases, findingStatuses) {
   const findings = [];
   if (!findingStatuses) return findings;
   for (const kase of cases) {
-    const all = String(kase.golden?.notes ?? "").split(/(?<=[.!?])\s+/);
+    const notes = String(kase.golden?.notes ?? "");
+    const all = notes.split(/(?<=[.!?])\s+/);
+    // Character offset of each piece in the notes, so a finding can point at it without quoting it.
+    let cursor = 0;
+    const starts = all.map((piece) => {
+      const start = notes.indexOf(piece, cursor);
+      cursor = start + piece.length;
+      return start;
+    });
     const sentences = [];
     for (let i = 0; i < all.length; i += 1) {
       const next = all[i + 1] ?? "";
       // Join a split attribution + grade pair only; two complete caps expire independently.
       if (NOT_WRONG_RE.test(all[i]) && !PARTIAL_CAP_RE.test(all[i]) && PARTIAL_CAP_RE.test(next) && !NOT_WRONG_RE.test(next)) {
-        sentences.push(`${all[i]} ${next}`);
+        sentences.push({ text: `${all[i]} ${next}`, where: `sentences ${i + 1}-${i + 2} (chars ${starts[i]}-${starts[i + 1] + next.length})` });
         i += 1;
       } else if (PARTIAL_CAP_RE.test(all[i]) || (NOT_WRONG_RE.test(all[i]) && SOURCE_ATTRIBUTION_RE.test(all[i]))) {
-        sentences.push(all[i]);
+        sentences.push({ text: all[i], where: `sentence ${i + 1} (chars ${starts[i]}-${starts[i] + all[i].length})` });
       }
     }
-    for (const sentence of sentences) {
+    for (const { text: sentence, where } of sentences) {
       const ids = [...new Set(sentence.match(FINDING_ID_RE) ?? [])];
       if (ids.length === 0) {
-        findings.push(finding("error", "cap-finding", kase.id, `partial cap names no improvements finding: ${sentence.slice(0, 140)}`));
+        findings.push(finding("error", "cap-finding", kase.id, `golden.notes ${where}: partial cap names no improvements finding`));
       } else if (!ids.some((id) => ACTIVE_FINDING_STATUSES.has(findingStatuses.get(id)))) {
         const states = ids.map((id) => `${id}=${findingStatuses.get(id) ?? "not active (resolved or missing)"}`).join(", ");
         findings.push(finding("error", "cap-finding", kase.id, `partial cap names no active finding (${states})`));
@@ -605,7 +643,7 @@ export function lintCorroboration(cases, register = {}) {
       }
     }
     if (kase.truth?.domain === "real-world") {
-      for (const fact of kase.golden?.keyFacts ?? []) {
+      for (const [index, fact] of (kase.golden?.keyFacts ?? []).entries()) {
         if (!NUMERIC_RE.test(fact)) continue;
         const fragments = numericFragments(fact).map((part) => part.toLowerCase());
         const covered = rows.some((row) => {
@@ -613,7 +651,7 @@ export function lintCorroboration(cases, register = {}) {
           return fragments.length > 0 && fragments.some((fragment) => claim.includes(fragment));
         });
         if (!covered) {
-          findings.push(finding("error", "corroboration", kase.id, `numeric/version/date keyFact lacks a covering corroboration row: ${fact}`));
+          findings.push(finding("error", "corroboration", kase.id, `golden.keyFacts[${index}] numeric/version/date keyFact lacks a covering corroboration row`));
         }
       }
     }
@@ -943,7 +981,7 @@ function loadCasesAtRef(ref, corpusDir) {
   } catch (error) {
     throw new Error(`cannot read corpus at ${ref}: ${error.message}`);
   }
-  return files.sort().map((file) => JSON.parse(git(["show", `${ref}:${file}`])));
+  return files.sort().map((file) => parseJsonText(git(["show", `${ref}:${file}`]), `${ref}:${file}`));
 }
 
 function loadLiveContractAtRef(ref, contractPath) {
