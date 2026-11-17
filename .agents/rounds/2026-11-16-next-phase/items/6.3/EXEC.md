@@ -93,3 +93,92 @@ No test:smoke (no `src/executor` or `src/demo` change) and no QA lint, as planne
 
 ## Commits on `np/6.3-rwa-retest` (none pushed)
 `370fb322` pre-registration; `92f71b8d` commit I (RWA exposed); `5cfec6f3` revert of commit I; the records commit that holds this file.
+
+## Re-test (second measurement; brief: briefs/RETEST-BRIEF.md; plan: PLAN.md, "Re-test: second measurement")
+
+### Step 1: re-test pre-registration commit 0100fa6a5c7115d63f7c8231f473bd05952dcac7
+PLAN.md (re-test section and Fable review 2 reconciliation), REVIEW-2.md, briefs/RETEST-BRIEF.md, briefs/REVIEW-2-BRIEF.md,
+ab-run.mjs, blind.mjs, attribute.mjs: every re-test rule, rubric and scorer predates every re-test answer. `node --check` on the
+three scripts passed; `blind.mjs --selftest` (result 1, unchanged) passed ("10 pairs packed, balanced and blinded; 20 rule
+cases; 3 refusals"); `blind.mjs --retest --selftest`, `attribute.mjs --selftest` and `ab-run.mjs --selftest` passed (mutation
+checks on the clause thresholds, candidate ordering, bad-loss netting, quote checks and the attempt cap each made a selftest
+fail, so the selftests can fail). `ab-run.mjs --dry-run` prints the 21-run round-major order and refuses unknown keys, bad
+sample counts and duplicate keys. The commit hooks ran (secrets scan clean).
+Arm tree check: `git diff --stat cd4520bd 0100fa6a -- . ':!.agents'` is empty; manifest SHA-256
+`7a4fab7687507691d1ac7b219761fe9f9a7600b29ffb96d17f8815503c5caa29`; `git status --porcelain` empty after the commit.
+Question texts, references and rubric wording are those of result 1 (questions.json unchanged); the retest rubric is `RETEST_RUBRIC` in
+blind.mjs and the attribution rubric `ATTRIBUTION_RUBRIC` in attribute.mjs, both in the pre-registration commit.
+
+### Step 2: EXCLUDED arm (tree = 0100fa6a, served from /home/tyler/code/raven-wt/np-6.3)
+`npm run dev:eval -- --port 8793` as hc child `63-dev`; readiness: `initialize` POST 200. Identity at start and end (`tmp/6.3/rt/probe2.mjs`):
+`serverInfo.sourceRevision` = HEAD = 0100fa6a5c7115d63f7c8231f473bd05952dcac7; manifest sha256 of that revision
+`7a4fab7687507691d1ac7b219761fe9f9a7600b29ffb96d17f8815503c5caa29`; `git -C <worktree> status --porcelain` empty. Probe top seven at start and end:
+skills.stellar-dev.assets, stellarDocs.search_docs, stellarDocs.search_sdk_cli_tools_docs, lumenloop.search_content_semantic,
+skills.lumenloop.stellar-ecosystem-scout, scout.searchProjects, skills.stellar-dev.standards (no scout.getRwaAssets). Skills-cache warm-up: one
+`codemode.skill.read("skills.stellar-light.stellar-scout", { sections: ["when-to-use-this-skill"] })` through `execute`, ok.
+One harness process (hc child `63-ab-ex`): `ab-run.mjs --arm excluded --keys C1,C2,C3,D3,N1,N2,N3 --samples 3 --max-attempts 22`; 21/21 answered, 21 attempts,
+no failure, no retry; `rwaCalled` 0, `rwaRan` 0, `rwaMentioned` 0; cost USD 2.51; window 21:36:25Z to 21:42:29Z; 21 capture files
+(`tmp/6.3/rt/exec-excluded-<key>-<sample>.json`). Server and child killed and removed; port free.
+
+### Step 2 (cont.): INCLUDED arm (commit I 92f71b8d, second worktree)
+`git worktree add --detach /home/tyler/code/raven-wt/np-6.3-inc 92f71b8d`; `npm ci`; `.dev.vars` copied with `cp -p`, mode 600. Diff from 0100fa6a to
+92f71b8d outside `.agents/` is commit I's six files (`src/policy/scout-exposure.ts`, `scripts/catalog-data/card-caveats.mjs`,
+`eval/plan/build-op-classes.mjs`, `catalog/manifest.json`, `specs/super-spec.json`, `eval/plan/op-classes.json`). Server as hc child `63-dev` with
+`--cwd` the second worktree, same port. Identity at start and end: sourceRevision = worktree HEAD = 92f71b8dc7c3cd937fbeb635e69642d6c8679059; manifest
+sha256 `d90a7a46926dd70eff2fcd0ab07550d1f3f9c56a0c1055e199e7a9129947c3a1`; `git -C /home/tyler/code/raven-wt/np-6.3-inc status --porcelain` empty. Probe (start and
+end the same): scout.getRwaAssets rank 1, then skills.stellar-dev.assets, stellarDocs.search_docs, stellarDocs.search_sdk_cli_tools_docs,
+lumenloop.search_content_semantic, scout.searchProjects, skills.stellar-dev.standards. `scout.getRwaAssets({ limit: 3 })` through `execute`: start ok,
+`asOfBasis` "observed", 3 rows (382 ms); end ok, "observed", 3 rows (161 ms). Same skill-read warm-up. Harness as hc child `63-ab-in` from the branch worktree
+(`--max-attempts 24`, 45 minus EXCLUDED's 21): 21/21 answered, 21 attempts, no failure; `rwaCalled` 8, `rwaRan` 8 (never differ), `rwaMentioned` 8
+(C1 samples 1 and 2, C2 samples 1 to 3, D3 samples 1 to 3); cost USD 2.58; window 21:42:57Z to 21:50:33Z; 21 capture files. Neither arm window straddles 00:00 UTC and
+neither started between 23:30 and 00:00. Server and child killed and removed; `git worktree remove --force` run; the directory and its `.dev.vars` copy are gone
+(checked with `ls`); `git worktree list` shows no `np-6.3-inc`.
+
+### Step 3: blind grading, validation, attribution, scoring
+- `blind.mjs --retest --pack --dir /tmp/ab63rt-judge.E3j0Tv` (only `packet.json`, 272 KB, and `RUBRIC.md`): 21 pairs; included-as-X per question
+  C1 1, C2 2, C3 1, D3 2, N1 1, N2 2, N3 1 (10 overall); leak check on the real packet: none of `excluded`, `included`, `"arm"`, `getRwaAssets`, `claude-`,
+  `sample`, `rwaCalled` outside answer and question text, and no registry URL in `resultUrls`. Key `tmp/6.3/rt/blind-key.json` (mode 600).
+- Judge: hc child `6.3-judge2`, launch line from the brief (Claude Opus 5.5, `--model opus`, effort high, `systemd-run` memory cap). The line has no
+  `--max-budget-usd` (PLAN.md names USD 15; it is a print-mode flag and the interactive CLI runs under the subscription). The Claude trust prompt was
+  answered with `hc keys 6.3-judge2 down enter` (own child). It wrote `verdicts.json` and sent the path at 21:56:57Z; killed and removed.
+- `blind.mjs --retest --validate`: grade hash recorded at the first write and the file valid; no completion pass was needed. Copy of the first write:
+  `tmp/6.3/rt/verdicts-first.json`.
+- `blind.mjs --retest --score`: outcome pending-attribution, 4 candidates (C1:1, D3:1, D3:2, D3:3), no fired clause yet.
+- `attribute.mjs --pack --dir /tmp/ab63rt-attrib.9tL8VM`: packed set 4 items (equal to the candidates here), each with its capture file; hc child `6.3-attrib`
+  (Claude Fable, `--model fable`, effort high; trust prompt answered with `down enter`); verdicts at 21:58:06Z; `attribute.mjs --validate`: valid on the first write, no
+  correction pass; killed and removed. `attribute.mjs --score`: outcome **exclude** (D3 clause 2, count 3). Outputs: `tmp/6.3/rt/score-retest.{json,md}` (preliminary) and
+  `score-retest-final.{json,md}`; un-blinded record copied to `items/6.3/verdicts-2.json`; `RESULTS-2.md` written.
+- Spend: answers USD 5.09 (2.51 + 2.58) for 42 attempts of the 45 cap; judge costs not recorded (subscription; caps USD 15 each); well under the USD 50 re-test total.
+
+### Deviations and notes
+- RESULTS-2.md, `verdicts-2.json` and this section were drafted under ignored `tmp/6.3/rt/` until both servers stopped, then copied into the item folder uncommitted
+  (an untracked or modified file there makes `dev:eval` refuse the tree).
+- The first `probe2.mjs` run crashed with ENOBUFS hashing the 1 MB manifest through `execFileSync` (no server effect); fixed to pipe through `sha256sum`. The EXCLUDED start
+  probe was run twice: the first run's warm-up read named a section that does not exist (it still loaded the skill and returned the section list); the second used
+  `when-to-use-this-skill`. The recorded start probe is the second; the INCLUDED arm used it from the start.
+- Interpretation recorded in the `blind.mjs` header, not exercised by this outcome: when a clause fires and another condition is inconclusive, the label is
+  "inconclusive" (the result-1 precedence) and every fired clause is listed.
+- The judge launch lines omit `--max-budget-usd` (see step 3); no judge cost was recorded.
+- No commit after the pre-registration commit `0100fa6a`; RESULTS.md and the result-1 part of this file are unedited. No push.
+
+### Records (brief: briefs/RETEST-RECORD-BRIEF.md; the lead accepts the mechanical outcome, exclude)
+- `.agents/TODO.md`, routing-repair item, "Held by this item" RWA bullet: result 1's sentences stay; added the result-2 summary (42 answers, exclude on the
+  2025-launches question, a completeness loss; result 1's control drop did not repeat; controls and off-target questions not hurt), the RESULTS-2.md link, and
+  kept "a re-test needs an owner or orchestrator decision".
+- `.agents/TODO.md`, "Re-check the upstream codemode short-token repair": one sentence that #167 does not depend on cloudflare/agents#2296 (Raven vendors its scorer),
+  no longer tracks it, and this item keeps the watch. Nothing is posted on cloudflare/agents.
+- Records commit: EXEC.md, RESULTS-2.md, verdicts-2.json, briefs/RETEST-RECORD-BRIEF.md and the TODO edits. Not pushed.
+
+## Gates on the final tree (each run bare, output under tmp/6.3/rt-gate-*.txt)
+Tree = `0100fa6a` plus the TODO edit and the records (docs only; src, scripts, specs, catalog and eval/plan equal `cd4520bd`).
+- `npm run typecheck`: exit 0.
+- `npm test`: exit 0; 168 files passed, 5 skipped; 3744 tests passed, 3 expected fail, 5 skipped.
+- `npm run build`: exit 0 (wrangler dry run).
+- `npm run eval:routing -- --gate`: exit 0, `GATE PASS` (legacy 338 within band, skills at floor, holdout at floors and under the capture ceiling; committed evidence
+  verified). stdout in `tmp/6.3/rt-gate-routing.txt`; only the GATE line was read.
+- `npm run eval:selftest`: exit 0, "all checks passed".
+- `npm run secrets:scan -- --tree`: exit 0, "clean — scanned all tracked files" (the commit hook scans the staged files again).
+No test:smoke (no `src/executor` or `src/demo` change) and no QA lint. No push.
+
+## Commits on `np/6.3-rwa-retest` since result 1 (none pushed)
+`0100fa6a` re-test pre-registration; the re-test records commit that holds this file.
