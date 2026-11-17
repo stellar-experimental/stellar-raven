@@ -190,3 +190,19 @@ After `sls-123` is verified live (one POST returns 200 with `matches`):
    expected from a changed case file.
 9. **Independent review.** The `evidence.notes` lead says the Codex review was outstanding when
    written. The lead fills it in after the review.
+
+## Codex review reconciliation
+
+[CODEX-REVIEW.md](CODEX-REVIEW.md): Codex frontier, GPT-6 Astra (`gpt-6-astra`), high. Verdict FAIL
+on one should-fix; every other check passed.
+
+- **Finding 1 (adopted).** The finding and issue said a client that follows the hint "gets a 503 on
+  every call we observed", but the 2026-10-26 and 2026-11-02 rows were not 503. The sentence now
+  reads "gets no match: every call we observed failed, and every call on 2026-11-17 returned 503
+  with `unavailable: true`." The finding carries a dated evidence line for the correction. Issue
+  #1976 was fetched byte-exact, only that sentence was replaced, and it was written back with
+  `gh issue edit` and read back (one sentence changed; the only other difference is the trailing
+  newline `--jq` adds). The snapshot link is unchanged.
+- **`eval/gates.json`.** The review line in the `evidence.notes` lead now records the review and its
+  outcome. The note is not a fingerprinted input; the gate still passes.
+- Gates after the edit, bare: `npm test` 3,733 passed; `npm run eval:routing -- --gate` `GATE PASS`; `npm run improvements:lint` ok (also `-- --live`); `npm run secrets:scan -- --tree` clean.

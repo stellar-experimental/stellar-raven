@@ -8,6 +8,7 @@ evidence:
   - "2026-11-17T14:21:11Z, direct, OpenAPI info.version 1.9.150: HTTP 503 with unavailable:true and no Retry-After header (command and body in the Evidence section). The same call at 14:04:50Z gave the same result."
   - "A search of Stellar-Light/stellarlight on 2026-11-17 for partners match, matchmaking, and AI not configured finds no open issue. Issue 1908 covers only the OpenAPI documentation of the 502."
   - upstream issue filed 2026-11-17: https://github.com/Stellar-Light/stellarlight/issues/1976
+  - upstream issue body corrected 2026-11-17: the sentence on what a client gets now matches the dated table (every observed call failed; every 2026-11-17 call returned 503 with unavailable:true)
 ---
 
 ## Finding
@@ -18,7 +19,7 @@ deployment is the defect: the AI path behind the operation is not available.
 
 The OpenAPI operation still publishes routing hints. Its description says to use the operation when
 a client needs a scored shortlist for a concrete integration need. A client that follows the hint
-gets a 503 on every call we observed.
+gets no match: every call we observed failed, and every call on 2026-11-17 returned 503 with `unavailable: true`.
 
 The 503 is correct, but it gives the client no way to know in advance. A client can learn that the
 AI path is off only by sending the request.
