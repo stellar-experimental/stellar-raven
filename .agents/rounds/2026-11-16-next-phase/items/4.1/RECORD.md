@@ -12,8 +12,8 @@ logs and client homes stay under `tmp/4.1/` (git-ignored). Plan: [PLAN.md](PLAN.
 | CLI | Codex `0.167.0` | Grok `1.0.77` | v2.2.7, not run on agentpc (Mac lane, [brief](briefs/opencode-mac.md)) |
 | Model | `gpt-6.1-terra` | `grok-4.7` (log shows `grok-4.7-build`) | `claude-sonnet-5-5` |
 | Effort | `low` (catalog default) | `high` (catalog default) | provider default |
-| Login | ChatGPT (`plan_type` pro) | xAI OIDC | Anthropic OAuth, Mac |
-| Rows | 24 of 24 | 20 of 24 (cap stop) | pending |
+| Login | ChatGPT (`plan_type` pro) | xAI OIDC | Anthropic OAuth, Mac: invalid (401) |
+| Rows | 24 of 24 | 20 of 24 (cap stop) | 0: dropped out at the smoke |
 
 Efforts differ by client (their catalog defaults). No comparison between clients is drawn.
 
@@ -131,7 +131,7 @@ failure can count more than once (Grok's first row: one failed `execute`, counte
   to protect an answer.
 - **Runner rule.** No behaviour failed in a way a code change would fix and a before-and-after measurement would
   need. The record keeps the hand-run lanes, and the TODO item "Add a runner for Codex and Grok" closes by its
-  recorded-decision branch. One condition: OpenCode's lane is outstanding (below).
+  recorded-decision branch. OpenCode dropped out (below), so no OpenCode reading stands behind it.
 - **Defects for the TODO, none fixed here.** (1) Codex reaches the full descriptions in 9 of 24 rows only and
   omitted `execute`'s `code` argument in 3; the first sentence of the instructions is all most Codex runs see.
   (2) Grok's `search` calls carry a `limit` every time, Codex's almost never, so what seven cards do for Codex is
@@ -140,8 +140,23 @@ failure can count more than once (Grok's first row: one failed `execute`, counte
 
 ## OpenCode
 
-Not run on agentpc: its OpenCode has no subscription login. The Mac lane is written
-([`briefs/opencode-mac.md`](briefs/opencode-mac.md)) and uses the same `run-client.mjs --client opencode`. Its
-result file `summary-opencode.json` is not yet in this record. If its smoke fails, OpenCode drops out and nothing
-is worked around. Its B1, B2 and B3 reading is untested on a real OpenCode transcript: the reader opens
-`opencode.db` generically, and the OpenCode `part` schema it assumes is unconfirmed until the Mac smoke runs.
+**Excluded in this round.** The Mac's Anthropic OAuth login in OpenCode is invalid (HTTP 401). It can
+rejoin after the owner logs in again and the smoke passes. Nothing was worked around. The orchestrator
+ran the Mac lane ([`briefs/opencode-mac.md`](briefs/opencode-mac.md)) on 2026-11-17:
+
+- **Versions.** OpenCode v2.2.7 and Node v24.13.0. The server worktree was at `c8cfb437`, the same
+  server revision as the agentpc lanes. The item branch checkout was at `6cfe7d1f`.
+- **Environment.** No `ANTHROPIC_*`, `OPENAI_*`, `XAI_*` or `OPENROUTER_*` variable was set. The
+  `anthropic` entry of `auth.json` has type `oauth`.
+- **Smoke.** The driver exited 0. OpenCode exited 1 after 1.3 s at its first model call. The stdout
+  event was `provider.auth` with HTTP 401, Anthropic `authentication_error` "OAuth access token is
+  invalid."
+  - The stored access token expired on 2026-01-30, and the login file was last written on
+    2026-09-01, so OpenCode had not refreshed it.
+  - There was no usage and no answer. The login symlink stayed intact.
+- **MCP side.** It worked. The tap logged `initialize` 200, `notifications/initialized` 202 and
+  `tools/list` 200. No `tools/call` was made, because the model never ran.
+- **Spend.** USD 0. The ledger holds the smoke only, with no tokens. The claude.ai usage page was the
+  same before and after the smoke: weekly 25% used, usage credits $0, monthly spend $0.00.
+- **Reader.** Not run, because `opencode.db` holds no assistant message. The reader's OpenCode path
+  is still untested on a real transcript.

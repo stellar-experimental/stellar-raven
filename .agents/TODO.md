@@ -879,19 +879,34 @@ arm 3 run were panel-to-single moves. Rules that follow:
 Done when: `run-qa.mjs` or a compare script refuses to pair two runs whose panel cap or register
 differ, or a same-surface pair at one cap measures the null directly. Delete this note then.
 
-### Return the OpenCode lane of round item 4.1
+### Run the OpenCode lane of round item 4.1 after a re-login (owner)
 
-Round item 4.1's [record](rounds/2026-11-16-next-phase/items/4.1/RECORD.md) read GPT-6.1 Terra in the
-Codex CLI (24 rows) and Grok 4.7 in the Grok CLI (20 rows, cap stop) on four behaviours, and kept the
-hand-run lanes: no defect there needs a before-and-after measurement, so no committed runner for Codex
-and Grok is built (`eval/qa/run-qa.mjs` still drives only the Claude CLI). OpenCode could not run on
-agentpc (no subscription login). Its Mac lane is written
-([brief](rounds/2026-11-16-next-phase/items/4.1/briefs/opencode-mac.md)); the orchestrator runs it and returns
-`summary-opencode.json`. The reader's OpenCode path is untested on a real transcript, so the Mac smoke
-may need a reader fix first.
+Round item 4.1's [record](rounds/2026-11-16-next-phase/items/4.1/RECORD.md) covers two clients on the
+four behaviours:
 
-Done when: `summary-opencode.json` is in the record, or the record states that OpenCode dropped out
-(failed login smoke, or per-token spend moved).
+- GPT-6.1 Terra in the Codex CLI, 24 rows.
+- Grok 4.7 in the Grok CLI, 20 rows (cap stop).
+
+It kept the hand-run lanes. No defect in either client needs a before-and-after measurement, so no
+committed runner for Codex and Grok is built, and `eval/qa/run-qa.mjs` still drives only the Claude
+CLI.
+
+OpenCode is excluded from that round:
+
+- On agentpc, OpenCode has no subscription login.
+- On the Mac, the Anthropic OAuth login in OpenCode is invalid. The smoke got HTTP 401 at its first
+  model call, after the MCP handshake had succeeded.
+- No rows ran, and the spend was USD 0.
+
+To rejoin, the owner logs in to OpenCode's Anthropic provider on the Mac again. The orchestrator then
+reruns the lane in the [brief](rounds/2026-11-16-next-phase/items/4.1/briefs/opencode-mac.md), smoke
+first. It needs a new spend authorization, because decision 7 covered one pass in that round. The
+reader's OpenCode path is untested on a real transcript, so the first smoke may need a reader fix.
+
+Done when either:
+
+- an OpenCode summary is in the record, or
+- the owner decides OpenCode stays out of client diagnostics.
 
 ### Close the remaining claim-support gaps of judge pack p9
 

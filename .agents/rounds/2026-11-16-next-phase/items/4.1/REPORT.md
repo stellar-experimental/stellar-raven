@@ -62,3 +62,15 @@ met. Reopen M2 if a production Grok answer is found missing a fact that its own 
 - The server worktree `np-4.1-server` is removed.
 - The item worktree `/home/tyler/code/raven-wt/np-4.1` stays for fixes.
 - Raw transcripts are in its git-ignored `tmp/4.1/`.
+
+## Addendum: the OpenCode lane
+
+The orchestrator's Mac return was folded in on 2026-11-17. OpenCode dropped out at the smoke: the
+Anthropic OAuth login in OpenCode is invalid (401) at the first model call, after an MCP handshake
+that worked. It cost USD 0, and no rows ran.
+
+- `RECORD.md` "OpenCode" holds the evidence.
+- The TODO item is now "Run the OpenCode lane of round item 4.1 after a re-login (owner)". Rejoining
+  needs an owner re-login and a new spend authorization.
+- The ledger row is updated.
+- Gates were re-run bare on the change: `npm test` and `npm run secrets:scan -- --tree`.
