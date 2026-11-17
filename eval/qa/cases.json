@@ -1,7 +1,7 @@
 {
   "$comment": "Generated owned QA battery. Regenerate with npm run eval:qa:compile.",
   "schema": "qa-case-v1",
-  "corpusContentSha256": "5e44ed384e9182bed8abd69294396c38c73c4fbbb5834527b18a5ce08072011d",
+  "corpusContentSha256": "e0294891c09d26ed2a643a9d662e79f9d459d6d061532c8b8033f25880cfe140",
   "counts": {
     "total": 247,
     "byCategory": {
@@ -1352,7 +1352,6 @@
       "question": "Which projects in the Stellar ecosystem operate as anchors or build anchor infrastructure?",
       "surface": [
         "scout.getPartners",
-        "scout.matchPartners",
         "scout.searchProjects",
         "scout.searchResearch"
       ],

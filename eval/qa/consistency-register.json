@@ -263,15 +263,15 @@
           "q-anchor-list-builders-discovery"
         ],
         "verdict": "consistent",
-        "lastChecked": "2026-11-14",
+        "lastChecked": "2026-11-17",
         "note": "MoneyGram Ramps settles in Stellar USDC. As of 2026-11-02, MoneyGram's developer portal labels the SEP-10/SEP-24 anchor path legacy for existing allowlisted partners and directs new Stellar wallets to its Ramps widget SDK with API keys and server-side sessions; members accept either path when it is dated and attributed. q-anchor-list-builders-discovery names MoneyGram Ramps as SEP-24 cash-in and cash-out, which is incomplete rather than wrong under the Ramps case.",
         "memberContentSha256": {
-          "q-anchor-list-builders-discovery": "1829a0b1cfdebcd44a9ea325b0ab420137b7dd72087d643ebbbae3f748a327de",
+          "q-anchor-list-builders-discovery": "0d3f00eaa2f45d5b35c27aba9a55c3c7cfa5e5939fdd2c2b617e1dd2dbe2c5d0",
           "q-anchor-moneygram-ramps": "143b0fde2dcf543832865ea129130e1c1a452c7c8ac65dfbb59bb3f36cc158de"
         },
         "reSwept": {
-          "date": "2026-11-14",
-          "reason": "Re-sweep 2026-11-14 (resweep-1, .agents/rounds/2026-11-14-golden-coverage-audit/resweep/resweep-1.json): Compared q-anchor-moneygram-ramps (settles in Stellar USDC, widget SDK for new partners, SEP-10/SEP-24 legacy for existing allowlisted partners, 170+ countries) with q-crp-remittance-founder-advisory. The latter now names no MoneyGram, Ramps, USDC figure or country count at all (it is a generic corridor/SEP-rails advisory), so it cannot disagree about MoneyGram figures. The note also still describes minimums (15 vs 1 USDC), 950/2500 USDC maxima and four-member country counts that no remaining member states. Applied drop-member: Drop q-crp-remittance-founder-advisory from cluster-016.members. Replace it with q-anchor-list-builders-discovery, which names \"MoneyGram Ramps (SEP-24 cash-in and cash-out)\" and so can still disagree about the path; that wording is incomplete rather than wrong under the Ramps case note. Cut the note sentences on the 15/1 USDC minimum, the 950/2,500 USDC maxima and country counts. If the orchestrator prefers no replacement, delete-entry instead, since one member cannot contradict itself. Re-checked by the instrument lane after the finalize edits: q-anchor-moneygram-ramps changed only judge-blind truth fields (asOf and verification evidence); added member q-anchor-list-builders-discovery states the note's claims without conflict. Members remain consistent.",
+          "date": "2026-11-17",
+          "reason": "surface-only edit: removed a non-exposed operation; no judge-facing field moved",
           "verdict": "consistent"
         }
       },
