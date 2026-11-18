@@ -74,8 +74,9 @@ counts. There is no `CLAUDE.md`; Claude Code reads this file natively.
   server with the subscription CLI agents (Claude Code, Codex, Grok) as `hc` children. Use an
   API-billed path (Cloudflare AI Gateway, a provider API) only when no CLI path can do the job,
   and record why.
-- **Eval and test models.** Claude Sonnet 5.5, GPT-6.1 Terra, and Grok 4.7. Add Claude Opus 5.5
-  and GPT-6.1 Sol where they help. Leave out Haiku and GPT-6 Luna.
+- **Eval and test models.** Claude Sonnet, Codex Terra, and Grok, each at its family's newest
+  model. Add Claude Opus and Codex Sol where they help. Leave out Haiku and Codex Luna. Never
+  tune to one model version; every run records the exact ID it resolved.
 - A paid method needs its own written authorization. A diagnostic budget does not transfer to
   headline collection.
 - File and response size come second. Trim bloat where it is cheap; do not spend effort on it
@@ -89,7 +90,8 @@ counts. There is no `CLAUDE.md`; Claude Code reads this file natively.
   wrong answers and an unchanged routing gate. Reject wording that lifts one slice by moving other
   categories' results.
 
-[`.agents/model-roster.md`](.agents/model-roster.md) has the model IDs and launch lines. The
+[`.agents/model-roster.md`](.agents/model-roster.md) has the launch lines. They name families, and
+a run records the resolved ID; a dated brief's explicit launch line stays as written. The
 `run-evals` skill has the measurement procedure. Scores are evidence for a scoped decision, not
 the decision; an established upstream defect goes to `improvements/`.
 

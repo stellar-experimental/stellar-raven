@@ -51,9 +51,10 @@ State both numbers and make the call; scores are evidence, not the decision.
 
 ## 2. Clients, models, and billing
 
-The client set, its model IDs, and its CLI flags are in
-[`.agents/model-roster.md`](../../model-roster.md#models-for-evals-and-tests). The roster owns the
-IDs. Pass the full ID to `run-qa.mjs --model <id>`.
+The client set and its CLI flags are in
+[`.agents/model-roster.md`](../../model-roster.md#models-for-evals-and-tests). The roster names
+families. Pass `run-qa.mjs --model` an alias (`sonnet`) or an exact ID. The run records the
+resolved ID, and that ID is the measurement's identity.
 
 - One client is enough when the decision does not depend on the client. Add clients only for a
   client-dependent decision.
@@ -77,10 +78,12 @@ IDs. Pass the full ID to `run-qa.mjs --model <id>`.
 
 Three roles stay separate. The **orchestrating agent** runs this skill and never answers cases
 itself. The **answering agent** and the **judge** are spawned by the runner. Their defaults
-(`AGENT_MODEL` in `eval/qa/run-qa.mjs`, `JUDGE_MODEL` in `eval/qa/judge.mjs`) are a measurement
-contract: they move only by a recorded eval decision, never by the repo-work routing in
-`AGENTS.md`. The judge stays on its pinned model so that verdicts remain comparable across runs. Report the answering model, judge model, rubric, pack, case count, and results stamp
-with every QA number.
+(`AGENT_MODEL` in `eval/qa/run-qa.mjs`, `JUDGE_MODEL` in `eval/qa/judge.mjs`) are family aliases,
+so each takes its family's newest model. The artifact records both the requested alias and the
+resolved ID. A change of resolved answering or judge model starts a new baseline, and a run on a
+different resolved model is a different measurement. A resumed or re-judged file keeps the judge
+it recorded. Report the resolved answering model, resolved judge model, rubric, pack, case count,
+and results stamp with every QA number.
 
 ## 3. Pick the instrument
 
@@ -119,7 +122,9 @@ gospel-change lane skips locally while CI enforces it. Generated files (`routing
 frozen: change them only with a provenance note, a contract-version bump, and a digest update.
 
 `npm run eval:qa:selftest` is **paid** (seven judge calls) although it needs no server. Run it only
-when the rubric, prompt, evidence pack, or judge adapter changed, under its own authorization.
+when the rubric, prompt, evidence pack, or judge adapter changed, or when the resolved judge model
+changed, under its own authorization. A new resolved judge model needs it before its first
+headline judged run, and that run sets the new baseline.
 
 ## 5. Paid runs
 

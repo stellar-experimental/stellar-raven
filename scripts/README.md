@@ -3,6 +3,7 @@
 Top-level scripts provide operator commands, CI checks, and shared build policy.
 `exposure.mjs`, `description-notes.mjs`, and `emitted-text-guard.mjs` are imported policy modules.
 `improvements-lib.mjs` provides shared finding maintenance functions.
+`latest-model.mjs <family>` prints the newest model ID of a Codex or Grok family from the CLI's offline catalog cache (Claude aliases pass through); launch lines use it ([`.agents/model-roster.md`](../.agents/model-roster.md)).
 Files under `scripts/lib/` are shared helpers. Files under `scripts/catalog-data/` are builder data.
 `scripts/git-hooks/` contains the installed hook.
 `scripts/agent-hooks/` holds Claude Code hooks that `.claude/settings.json` wires; `case-search-guard.mjs` denies searches that would read case text.
