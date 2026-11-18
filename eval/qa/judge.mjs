@@ -774,9 +774,18 @@ export function assertJudgeSubscription({
     claudePath,
     env: buildJudgeEnv(env),
     cwd,
-    args: ["--strict-mcp-config", ...(safeMode ? ["--safe-mode"] : [])],
+    args: judgeRootFlags(safeMode),
     impl
   });
+}
+
+/**
+ * The root flags a judge launches with, shared by the spawn and its subscription probe so both load
+ * the same configuration. `--setting-sources ""` loads no settings file, so a judge does not depend
+ * on the operator's settings (the answering agents launch the same way).
+ */
+export function judgeRootFlags(safeMode = true) {
+  return ["--strict-mcp-config", "--setting-sources", "", ...(safeMode ? ["--safe-mode"] : [])];
 }
 
 export function buildJudgeArgs({ model = JUDGE_MODEL, safeMode = true, maxBudgetUsd = null } = {}) {
@@ -789,9 +798,8 @@ export function buildJudgeArgs({ model = JUDGE_MODEL, safeMode = true, maxBudget
     model,
     "--output-format",
     "json",
-    "--strict-mcp-config",
-    ...(maxBudgetUsd === null ? [] : ["--max-budget-usd", String(maxBudgetUsd)]),
-    ...(safeMode ? ["--safe-mode"] : [])
+    ...judgeRootFlags(safeMode),
+    ...(maxBudgetUsd === null ? [] : ["--max-budget-usd", String(maxBudgetUsd)])
   ];
 }
 

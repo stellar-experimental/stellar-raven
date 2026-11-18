@@ -37,7 +37,7 @@ function createCliFixture() {
       "#!/bin/sh",
       "for arg in \"$@\"; do",
       "  if [ \"$arg\" = \"auth\" ]; then",
-      "    printf '{\"authMethod\":\"%s\",\"subscriptionType\":\"max\"}\\n' \"${DISCOVERY_FAKE_AUTH_METHOD:-claude.ai}\"",
+      "    printf '{\"authMethod\":\"%s\",\"apiProvider\":\"firstParty\",\"subscriptionType\":\"max\"}\\n' \"${DISCOVERY_FAKE_AUTH_METHOD:-claude.ai}\"",
       "    exit 0",
       "  fi",
       "done",

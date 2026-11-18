@@ -117,8 +117,8 @@ const AUTH_METHOD_REFUSALS = new Map([
 /**
  * Fail closed unless the Claude Code CLI, probed the way its paid child will run, is on the
  * claude.ai subscription at the first-party endpoint. `claude auth status --json` makes no model
- * call. An API key, an auth token, a cloud-provider switch or a stored Console login each change
- * `authMethod`, so a positive check catches what a list of variables would miss. An endpoint
+ * call. It also requires `apiProvider` to be exactly `firstParty`. An API key, an auth token, a
+ * cloud-provider switch or a stored Console login each change `authMethod`, so a positive check catches what a list of variables would miss. An endpoint
  * override leaves `authMethod` at `claude.ai`, so the environment is checked for those too.
  *
  * The probe must see what the child sees: pass the child's `env`, `cwd` and the root flags it uses
@@ -178,8 +178,8 @@ export function assertClaudeSubscription({
         "not the claude.ai subscription"
     );
   }
-  if (typeof status.apiProvider === "string" && status.apiProvider !== "firstParty") {
-    refuse("the API provider is not first-party");
+  if (status.apiProvider !== "firstParty") {
+    refuse("the API provider is missing or not first-party");
   }
   const subscriptionType = typeof status.subscriptionType === "string" ? status.subscriptionType.trim() : "";
   if (!subscriptionType) refuse("no subscriptionType");

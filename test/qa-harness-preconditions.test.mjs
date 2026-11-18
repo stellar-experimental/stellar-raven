@@ -54,7 +54,7 @@ import {
   assertClaudeSubscription,
   runCompleteness
 } from "../eval/lib/harness-guards.mjs";
-import { assertJudgeSubscription, buildJudgeEnv } from "../eval/qa/judge.mjs";
+import { assertJudgeSubscription, buildJudgeEnv, judgeRootFlags } from "../eval/qa/judge.mjs";
 import {
   MCP_PROTOCOL_VERSION,
   MCP_SURFACE_SCHEMA,
@@ -349,6 +349,32 @@ describe("P2 — answering agents run in a neutral working directory", () => {
     expect(args).not.toContain("--mcp-config");
   });
 
+  it("launches the judge with no settings file, and probes with the same root flags", () => {
+    const flagPair = (args) => {
+      const index = args.indexOf("--setting-sources");
+      return index < 0 ? null : args.slice(index, index + 2);
+    };
+    expect(flagPair(buildJudgeArgs({ model: "claude-sonnet-5" }))).toEqual(["--setting-sources", ""]);
+    expect(flagPair(buildJudgeArgs({ safeMode: false }))).toEqual(["--setting-sources", ""]);
+    const probes = [];
+    assertJudgeSubscription({
+      claudePath: "/fixture/claude",
+      env: {},
+      cwd: "/repo",
+      impl: (...call) => {
+        probes.push(call[1]);
+        return { status: 0, stdout: JSON.stringify({ authMethod: "claude.ai", apiProvider: "firstParty", subscriptionType: "max" }), stderr: "" };
+      }
+    });
+    expect(flagPair(probes[0])).toEqual(["--setting-sources", ""]);
+    // Every root flag of the launch (the ones `auth status` accepts) is in the probe.
+    const launch = buildJudgeArgs({ model: "claude-sonnet-5" });
+    for (const flag of judgeRootFlags()) {
+      expect(launch).toContain(flag);
+      expect(probes[0]).toContain(flag);
+    }
+  });
+
   it("does not grade discovery evidence after the required MCP server failed", () => {
     const grade = gradeAgentRow(
       { expected_service: "scout" },
@@ -513,7 +539,7 @@ fi
 # The probe puts root flags before the subcommand, so find "auth" anywhere in the arguments.
 for arg in "$@"; do
   if [ "$arg" = "auth" ]; then
-    printf '{"authMethod":"%s","subscriptionType":"max"}\\n' "\${QA_FAKE_AUTH_METHOD:-claude.ai}"
+    printf '{"authMethod":"%s","apiProvider":"firstParty","subscriptionType":"max"}\\n' "\${QA_FAKE_AUTH_METHOD:-claude.ai}"
     exit 0
   fi
 done
@@ -678,7 +704,7 @@ describe("assertClaudeSubscription refuses a Claude run that would bill an API",
       args: ["--setting-sources", "", "--disable-slash-commands", "--strict-mcp-config"],
       impl: (...call) => {
         calls.push(call);
-        return { status: 0, stdout: JSON.stringify({ authMethod: "claude.ai", subscriptionType: "max" }), stderr: "" };
+        return { status: 0, stdout: JSON.stringify({ authMethod: "claude.ai", apiProvider: "firstParty", subscriptionType: "max" }), stderr: "" };
       }
     });
     expect(calls[0][1]).toEqual(["--setting-sources", "", "--disable-slash-commands", "--strict-mcp-config", "auth", "status", "--json"]);
@@ -689,13 +715,13 @@ describe("assertClaudeSubscription refuses a Claude run that would bill an API",
     const calls = [];
     const impl = (...call) => {
       calls.push(call);
-      return { status: 0, stdout: JSON.stringify({ authMethod: "claude.ai", subscriptionType: "max" }), stderr: "" };
+      return { status: 0, stdout: JSON.stringify({ authMethod: "claude.ai", apiProvider: "firstParty", subscriptionType: "max" }), stderr: "" };
     };
     assertAnsweringAgentSubscription({ claudePath: "/fixture/claude", env: { PATH: "/x" }, cwd: "/neutral", impl });
     assertJudgeSubscription({ claudePath: "/fixture/claude", env: { PATH: "/x" }, cwd: "/repo", impl });
     expect(calls[0][1]).toEqual([...answeringAgentIsolationArgs({}), "--strict-mcp-config", "auth", "status", "--json"]);
     expect(calls[0][2]).toMatchObject({ cwd: "/neutral", env: { PATH: "/x" } });
-    expect(calls[1][1]).toEqual(["--strict-mcp-config", "--safe-mode", "auth", "status", "--json"]);
+    expect(calls[1][1]).toEqual(["--strict-mcp-config", "--setting-sources", "", "--safe-mode", "auth", "status", "--json"]);
     expect(calls[1][2]).toMatchObject({ cwd: "/repo", env: { PATH: "/x", ...buildJudgeEnv({}) } });
   });
 
@@ -705,9 +731,9 @@ describe("assertClaudeSubscription refuses a Claude run that would bill an API",
     ["third_party", { authMethod: "third_party" }, /the login is a cloud provider/],
     ["a missing authMethod", { subscriptionType: "max" }, /no authMethod/],
     ["an unknown authMethod", { authMethod: "future-method" }, /the login is not the claude.ai subscription/],
-    ["a non-first-party provider", { authMethod: "claude.ai", apiProvider: "vertex", subscriptionType: "max" }, /API provider is not first-party/],
-    ["a missing subscriptionType", { authMethod: "claude.ai" }, /no subscriptionType/],
-    ["an empty subscriptionType", { authMethod: "claude.ai", subscriptionType: " " }, /no subscriptionType/]
+    ["a non-first-party provider", { authMethod: "claude.ai", apiProvider: "vertex", subscriptionType: "max" }, /API provider is missing or not first-party/],
+    ["a missing subscriptionType", { authMethod: "claude.ai", apiProvider: "firstParty" }, /no subscriptionType/],
+    ["an empty subscriptionType", { authMethod: "claude.ai", apiProvider: "firstParty", subscriptionType: " " }, /no subscriptionType/]
   ])("refuses %s before any paid call", (_name, body, message) => {
     expect(() => assertClaudeSubscription({ impl: status(body) })).toThrow(message);
     expect(() => assertClaudeSubscription({ impl: status(body) })).toThrow(/refusing paid calls/);
@@ -720,36 +746,57 @@ describe("assertClaudeSubscription refuses a Claude run that would bill an API",
     expect(() => assertClaudeSubscription({ impl: status("not json") })).toThrow(/did not print JSON/);
   });
 
-  it.each([
-    ["ANTHROPIC_BASE_URL", "http://127.0.0.1:9"],
-    ["ANTHROPIC_BEDROCK_BASE_URL", "http://127.0.0.1:9"],
-    ["ANTHROPIC_VERTEX_BASE_URL", "http://127.0.0.1:9"],
-    ["ANTHROPIC_FOUNDRY_BASE_URL", "http://127.0.0.1:9"],
-    ["CLAUDE_CODE_USE_BEDROCK", "1"],
-    ["CLAUDE_CODE_USE_VERTEX", "true"],
-    ["CLAUDE_CODE_USE_FOUNDRY", "1"]
-  ])("refuses %s even when the account status is the claude.ai subscription", (name, value) => {
-    let spawned = false;
-    const subscription = () => {
-      spawned = true;
-      return { status: 0, stdout: JSON.stringify({ authMethod: "claude.ai", subscriptionType: "max" }), stderr: "" };
-    };
-    let message = "";
+  const ENDPOINT_SENTINEL = "http://ENDPOINT-SENTINEL.example.test";
+  const SWITCH_SENTINEL = "yes-SWITCH-SENTINEL";
+  const refusalMessage = (options) => {
     try {
-      assertClaudeSubscription({ env: { [name]: value }, impl: subscription });
+      assertClaudeSubscription(options);
     } catch (error) {
-      message = String(error.message);
+      return String(error.message);
     }
-    expect(message).toMatch(new RegExp(`${name} is set`));
-    expect(message).toMatch(/refusing paid calls/);
-    expect(message).not.toContain(value === "1" ? "\u0000" : value);
+    return "";
+  };
+
+  it.each([
+    ["ANTHROPIC_BASE_URL", ENDPOINT_SENTINEL, "ENDPOINT-SENTINEL"],
+    ["ANTHROPIC_BEDROCK_BASE_URL", ENDPOINT_SENTINEL, "ENDPOINT-SENTINEL"],
+    ["ANTHROPIC_VERTEX_BASE_URL", ENDPOINT_SENTINEL, "ENDPOINT-SENTINEL"],
+    ["ANTHROPIC_FOUNDRY_BASE_URL", ENDPOINT_SENTINEL, "ENDPOINT-SENTINEL"],
+    ["CLAUDE_CODE_USE_BEDROCK", SWITCH_SENTINEL, "SWITCH-SENTINEL"],
+    ["CLAUDE_CODE_USE_VERTEX", SWITCH_SENTINEL, "SWITCH-SENTINEL"],
+    ["CLAUDE_CODE_USE_FOUNDRY", SWITCH_SENTINEL, "SWITCH-SENTINEL"]
+  ])("refuses %s even when the account status is the claude.ai subscription, without echoing its value", (name, value, sentinel) => {
+    let spawned = false;
+    const message = refusalMessage({
+      env: { [name]: value },
+      impl: () => {
+        spawned = true;
+        return { status: 0, stdout: JSON.stringify({ authMethod: "claude.ai", apiProvider: "firstParty", subscriptionType: "max" }), stderr: "" };
+      }
+    });
+    // The expected refusal first, so an empty or unrelated message cannot pass the privacy check.
+    expect(message).toBe(
+      `Claude subscription check: ${name} is set, ${name.endsWith("_BASE_URL") ? "an alternate model endpoint" : "a cloud-provider switch"}; refusing paid calls`
+    );
+    expect(message).not.toContain(sentinel);
     expect(spawned).toBe(false);
+  });
+
+  it.each([
+    ["missing", { authMethod: "claude.ai", subscriptionType: "max" }],
+    ["null", { authMethod: "claude.ai", apiProvider: null, subscriptionType: "max" }],
+    ["numeric", { authMethod: "claude.ai", apiProvider: 1, subscriptionType: "max" }],
+    ["another string", { authMethod: "claude.ai", apiProvider: "bedrock", subscriptionType: "max" }]
+  ])("requires apiProvider to be exactly firstParty: %s", (_name, body) => {
+    expect(refusalMessage({ impl: status(body) })).toBe(
+      "Claude subscription check: the API provider is missing or not first-party; refusing paid calls"
+    );
   });
 
   it("allows an empty or false switch and an empty base URL", () => {
     expect(assertClaudeSubscription({
       env: { ANTHROPIC_BASE_URL: "", CLAUDE_CODE_USE_BEDROCK: "0", CLAUDE_CODE_USE_VERTEX: "false" },
-      impl: status({ authMethod: "claude.ai", subscriptionType: "max" })
+      impl: status({ authMethod: "claude.ai", apiProvider: "firstParty", subscriptionType: "max" })
     })).toEqual({ authMethod: "claude.ai", subscriptionType: "max" });
   });
 
@@ -769,13 +816,9 @@ describe("assertClaudeSubscription refuses a Claude run that would bill an API",
       expect(message).not.toContain("sk-");
       expect(message).not.toContain("private@example.test");
     }
-    let message = "";
-    try {
-      assertClaudeSubscription({ env: { ANTHROPIC_BASE_URL: "http://secret-gateway.example.test" }, impl: status({}) });
-    } catch (error) {
-      message = String(error.message);
-    }
-    expect(message).not.toContain("secret-gateway");
+    const message = refusalMessage({ env: { ANTHROPIC_BASE_URL: ENDPOINT_SENTINEL }, impl: status({}) });
+    expect(message).toMatch(/ANTHROPIC_BASE_URL is set, an alternate model endpoint; refusing paid calls/);
+    expect(message).not.toContain("ENDPOINT-SENTINEL");
   });
 });
 

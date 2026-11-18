@@ -1274,6 +1274,8 @@ roster's one-call `modelUsage` read), pass that ID, and each candidate fails if 
 another model. The call record has an exact key set and no model field, so record the exact ID beside
 the summary. Repeat it whenever the resolved judge model moves.
 
+The judge also launches with `--setting-sources ""` since item 8.6, which the same self-test covers.
+
 Done when: the self-test passes under a written authorization and its record names the resolved judge
 ID.
 
