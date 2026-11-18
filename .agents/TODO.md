@@ -1018,16 +1018,17 @@ any of these tools. Production has no exposure; the risk is local tooling only.
 Done when: a picomatch release fixes the advisory, the lockfile takes it (an `overrides` entry if a
 parent pins it), `npm audit` reports none, and the dependency-audit workflow closes #473.
 
-### Migrate the deprecated vitest pool and remove its overrides
+### Move `wrangler`, `miniflare`, and `@cloudflare/vitest-plugin` together
 
-`@cloudflare/vitest-pool-workers` 0.23.0 is deprecated in favor of `@cloudflare/vitest-plugin`
-and pins `wrangler`, `miniflare`, and `zod` exactly. `package.json` `overrides` therefore keeps
-three entries: the global `"miniflare": "$miniflare"` (without it, `npm audit` reports 4 high
-findings and the tree gets a second `workerd`), and the pool's `"wrangler": "$wrangler"` (one
-`workerd`) and `"zod": "$zod"` (2 high findings without it).
+Standing note. `@cloudflare/vitest-plugin` pins `wrangler`, `miniflare`, `esbuild`, and `zod` exactly,
+and `package.json` holds exact pins for `wrangler`, `miniflare`, and `esbuild`, with no `overrides`.
+Bump the plugin and `wrangler` in the same change, and expect a nested dev-only `zod` copy while
+the plugin's `zod` pin trails the root's. Check the lockfile for one `workerd` copy (exactly one key
+ending in `node_modules/workerd`) after every toolchain bump.
 
-Done when: the tests run on `@cloudflare/vitest-plugin`, all three overrides are gone, and
-`npm audit`, `npm test`, `npm run test:smoke`, and the single-`workerd` check pass.
+The deprecated `@cloudflare/vitest-pool-workers` 0.23.0 is the dead end: it imports `getNodeCompat`
+from `miniflare`, which miniflare removed in `5.20261103.0-beta`. Its ceiling is `wrangler` 4.156.2
+with miniflare `5.20261102.0-beta`. Do not go back to the pool or to an `overrides` route.
 
 ### Move the demo off the deprecated `workers-ai-provider`
 

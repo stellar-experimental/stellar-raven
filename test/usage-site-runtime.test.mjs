@@ -9,7 +9,7 @@ describe("usage site on the Workers runtime", () => {
     const launch = JSON.parse(readFileSync(new URL("../usage/report-site/test/launch-fixture.json", import.meta.url), "utf8"));
     const requests = [];
     const source = readFileSync(new URL("../usage/report-site/src/server.js", import.meta.url), "utf8");
-    const mf = new Miniflare({ workers: [{
+    const mf = new Miniflare({ enableDevRegistry: false, workers: [{
       config: {
         name: "usage-site-test", compatibilityDate: "2026-06-11",
         manifest: { mainModule: "server.js", modules: {
