@@ -3486,6 +3486,7 @@
         "lowest",
         "share",
         "value",
+        "notes",
         "range",
         "coverage",
         "end",
@@ -4327,14 +4328,17 @@
         "verified",
         "confidence",
         "age",
+        "days",
         "high",
         "medium",
         "low",
+        "score",
         "depth",
         "interface",
         "paths",
         "deployable",
         "js",
+        "current",
         "supported",
         "deprecated",
         "unknown",
@@ -4350,12 +4354,14 @@
         "ref",
         "capabilities",
         "soroban",
+        "version",
         "deps",
         "dep",
         "proof",
         "symbols",
         "target",
         "knowledge",
+        "notes",
         "check",
         "noted",
         "value",
@@ -4367,11 +4373,13 @@
         "symbol",
         "note2",
         "renamed",
+        "archived",
         "fork",
         "platform",
         "template",
         "tutorial",
         "application",
+        "stars",
         "via",
         "security",
         "checked",
@@ -4379,14 +4387,7 @@
         "indicators",
         "detail",
         "runs",
-        "font",
-        "fake",
-        "autorun",
-        "task",
-        "install",
-        "hook",
-        "auto",
-        "tasks"
+        "font"
       ],
       "kind": "operation",
       "outputSchema": {
@@ -5154,6 +5155,8 @@
         "evidence",
         "primary",
         "language",
+        "score",
+        "stars",
         "display",
         "username",
         "featured",
@@ -5513,7 +5516,7 @@
                     "type": "string"
                   },
                   "warnings": {
-                    "description": "Present only when there is something to disclose. Two kinds of line share it. (1) A backend read that failed or timed out: the line starts with \"backend read failed\" and the page may be incomplete; `partial` and `failedReads` carry the same fact as fields. (2) Query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure: the request still succeeds. Two policies, by operation kind, both naming the supported set: the search operations (searchResearch, searchProjects, searchRepos, getPartners, listSkills, getHackathons, getClusters, getLeaderboard, getRfps, getChangelog) ignore an unknown parameter and name it here; the registry and lookup operations (listAudits, getChanges, getStablecoins, getBuilders, listContracts, searchHackathonBuilds, getPeople, resolveProject, getRepoTrust) reject it with 400 and list the supported parameters in the body (hint, supportedParams or validParams), because a list that looks filtered is worse than a 400.",
+                    "description": "Present only when there is something to disclose. Two kinds of line share it. (1) A backend read that failed or timed out: the line starts with \"backend read failed\" and the page may be incomplete; `partial` and `failedReads` carry the same fact as fields. (2) Query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure: the request still succeeds. Two policies, by operation kind, both naming the supported set: the search operations (searchResearch, searchProjects, searchRepos, getPartners, listSkills, getHackathons, getClusters, getLeaderboard, getRfps, getChangelog) ignore an unknown parameter and name it here; the registry and lookup operations (listAudits, getChanges, getRwaAssets, getStablecoins, getBuilders, listContracts, searchHackathonBuilds, getPeople, resolveProject, getRepoTrust) reject it with 400 and list the supported parameters in the body (hint, supportedParams or validParams), because a list that looks filtered is worse than a 400.",
                     "items": {
                       "type": "string"
                     },
@@ -6209,6 +6212,7 @@
         "corpus",
         "wide",
         "top",
+        "score",
         "truncated"
       ],
       "kind": "operation",
@@ -6553,6 +6557,7 @@
         "key",
         "short",
         "dimensions",
+        "notes",
         "population",
         "included",
         "scope",
@@ -6704,7 +6709,7 @@
                     "type": "string"
                   },
                   "warnings": {
-                    "description": "Present only when there is something to disclose. Two kinds of line share it. (1) A backend read that failed or timed out: the line starts with \"backend read failed\" and the page may be incomplete; `partial` and `failedReads` carry the same fact as fields. (2) Query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure: the request still succeeds. Two policies, by operation kind, both naming the supported set: the search operations (searchResearch, searchProjects, searchRepos, getPartners, listSkills, getHackathons, getClusters, getLeaderboard, getRfps, getChangelog) ignore an unknown parameter and name it here; the registry and lookup operations (listAudits, getChanges, getStablecoins, getBuilders, listContracts, searchHackathonBuilds, getPeople, resolveProject, getRepoTrust) reject it with 400 and list the supported parameters in the body (hint, supportedParams or validParams), because a list that looks filtered is worse than a 400.",
+                    "description": "Present only when there is something to disclose. Two kinds of line share it. (1) A backend read that failed or timed out: the line starts with \"backend read failed\" and the page may be incomplete; `partial` and `failedReads` carry the same fact as fields. (2) Query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure: the request still succeeds. Two policies, by operation kind, both naming the supported set: the search operations (searchResearch, searchProjects, searchRepos, getPartners, listSkills, getHackathons, getClusters, getLeaderboard, getRfps, getChangelog) ignore an unknown parameter and name it here; the registry and lookup operations (listAudits, getChanges, getRwaAssets, getStablecoins, getBuilders, listContracts, searchHackathonBuilds, getPeople, resolveProject, getRepoTrust) reject it with 400 and list the supported parameters in the body (hint, supportedParams or validParams), because a list that looks filtered is worse than a 400.",
                     "items": {
                       "type": "string"
                     },
@@ -6991,6 +6996,7 @@
       },
       "keywords": [
         "coverage",
+        "notes",
         "tiers",
         "amount",
         "asset",
@@ -7010,6 +7016,7 @@
         "scores",
         "weight",
         "percent",
+        "score",
         "max",
         "min",
         "questions",
@@ -7028,6 +7035,8 @@
         "listed",
         "commits",
         "90",
+        "days",
+        "archived",
         "found",
         "builder",
         "demo",
@@ -7697,7 +7706,7 @@
                 "type": "string"
               },
               "warnings": {
-                "description": "Present only when there is something to disclose. Two kinds of line share it. (1) A backend read that failed or timed out: the line starts with \"backend read failed\" and the page may be incomplete; `partial` and `failedReads` carry the same fact as fields. (2) Query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure: the request still succeeds. Two policies, by operation kind, both naming the supported set: the search operations (searchResearch, searchProjects, searchRepos, getPartners, listSkills, getHackathons, getClusters, getLeaderboard, getRfps, getChangelog) ignore an unknown parameter and name it here; the registry and lookup operations (listAudits, getChanges, getStablecoins, getBuilders, listContracts, searchHackathonBuilds, getPeople, resolveProject, getRepoTrust) reject it with 400 and list the supported parameters in the body (hint, supportedParams or validParams), because a list that looks filtered is worse than a 400.",
+                "description": "Present only when there is something to disclose. Two kinds of line share it. (1) A backend read that failed or timed out: the line starts with \"backend read failed\" and the page may be incomplete; `partial` and `failedReads` carry the same fact as fields. (2) Query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure: the request still succeeds. Two policies, by operation kind, both naming the supported set: the search operations (searchResearch, searchProjects, searchRepos, getPartners, listSkills, getHackathons, getClusters, getLeaderboard, getRfps, getChangelog) ignore an unknown parameter and name it here; the registry and lookup operations (listAudits, getChanges, getRwaAssets, getStablecoins, getBuilders, listContracts, searchHackathonBuilds, getPeople, resolveProject, getRepoTrust) reject it with 400 and list the supported parameters in the body (hint, supportedParams or validParams), because a list that looks filtered is worse than a 400.",
                 "items": {
                   "type": "string"
                 },
@@ -8518,7 +8527,7 @@
                     "type": "string"
                   },
                   "warnings": {
-                    "description": "Present only when there is something to disclose. Two kinds of line share it. (1) A backend read that failed or timed out: the line starts with \"backend read failed\" and the page may be incomplete; `partial` and `failedReads` carry the same fact as fields. (2) Query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure: the request still succeeds. Two policies, by operation kind, both naming the supported set: the search operations (searchResearch, searchProjects, searchRepos, getPartners, listSkills, getHackathons, getClusters, getLeaderboard, getRfps, getChangelog) ignore an unknown parameter and name it here; the registry and lookup operations (listAudits, getChanges, getStablecoins, getBuilders, listContracts, searchHackathonBuilds, getPeople, resolveProject, getRepoTrust) reject it with 400 and list the supported parameters in the body (hint, supportedParams or validParams), because a list that looks filtered is worse than a 400.",
+                    "description": "Present only when there is something to disclose. Two kinds of line share it. (1) A backend read that failed or timed out: the line starts with \"backend read failed\" and the page may be incomplete; `partial` and `failedReads` carry the same fact as fields. (2) Query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure: the request still succeeds. Two policies, by operation kind, both naming the supported set: the search operations (searchResearch, searchProjects, searchRepos, getPartners, listSkills, getHackathons, getClusters, getLeaderboard, getRfps, getChangelog) ignore an unknown parameter and name it here; the registry and lookup operations (listAudits, getChanges, getRwaAssets, getStablecoins, getBuilders, listContracts, searchHackathonBuilds, getPeople, resolveProject, getRepoTrust) reject it with 400 and list the supported parameters in the body (hint, supportedParams or validParams), because a list that looks filtered is worse than a 400.",
                     "items": {
                       "type": "string"
                     },
@@ -8844,6 +8853,7 @@
         "infrastructure",
         "payments",
         "anchor",
+        "sdk",
         "indexer",
         "explorer",
         "ai",
@@ -9708,10 +9718,12 @@
         "year",
         "exclude",
         "matching",
+        "current",
         "update",
         "fresh",
         "aging",
         "stale",
+        "archived",
         "org",
         "lead",
         "time",
@@ -9733,6 +9745,7 @@
         "pilot",
         "pricing",
         "model",
+        "notes",
         "types",
         "response",
         "sla",
@@ -9741,9 +9754,11 @@
         "toml",
         "confidence",
         "age",
+        "days",
         "high",
         "medium",
         "low",
+        "score",
         "fetched",
         "trust",
         "verification",
@@ -9753,8 +9768,8 @@
         "auto",
         "verify",
         "onchain",
-        "involvement",
-        "website"
+        "active",
+        "involvement"
       ],
       "kind": "operation",
       "outputSchema": {
@@ -10287,10 +10302,12 @@
         "docs",
         "founded",
         "year",
+        "current",
         "update",
         "fresh",
         "aging",
         "stale",
+        "archived",
         "org",
         "lead",
         "time",
@@ -10298,6 +10315,7 @@
         "pilot",
         "pricing",
         "model",
+        "notes",
         "response",
         "sla",
         "sectors",
@@ -10305,9 +10323,11 @@
         "tagline",
         "confidence",
         "age",
+        "days",
         "high",
         "medium",
         "low",
+        "score",
         "trust",
         "verification",
         "typical",
@@ -10316,6 +10336,7 @@
         "auto",
         "verify",
         "onchain",
+        "active",
         "involvement",
         "website"
       ],
@@ -10395,7 +10416,7 @@
                     "type": "string"
                   },
                   "warnings": {
-                    "description": "Present only when there is something to disclose. Two kinds of line share it. (1) A backend read that failed or timed out: the line starts with \"backend read failed\" and the page may be incomplete; `partial` and `failedReads` carry the same fact as fields. (2) Query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure: the request still succeeds. Two policies, by operation kind, both naming the supported set: the search operations (searchResearch, searchProjects, searchRepos, getPartners, listSkills, getHackathons, getClusters, getLeaderboard, getRfps, getChangelog) ignore an unknown parameter and name it here; the registry and lookup operations (listAudits, getChanges, getStablecoins, getBuilders, listContracts, searchHackathonBuilds, getPeople, resolveProject, getRepoTrust) reject it with 400 and list the supported parameters in the body (hint, supportedParams or validParams), because a list that looks filtered is worse than a 400.",
+                    "description": "Present only when there is something to disclose. Two kinds of line share it. (1) A backend read that failed or timed out: the line starts with \"backend read failed\" and the page may be incomplete; `partial` and `failedReads` carry the same fact as fields. (2) Query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure: the request still succeeds. Two policies, by operation kind, both naming the supported set: the search operations (searchResearch, searchProjects, searchRepos, getPartners, listSkills, getHackathons, getClusters, getLeaderboard, getRfps, getChangelog) ignore an unknown parameter and name it here; the registry and lookup operations (listAudits, getChanges, getRwaAssets, getStablecoins, getBuilders, listContracts, searchHackathonBuilds, getPeople, resolveProject, getRepoTrust) reject it with 400 and list the supported parameters in the body (hint, supportedParams or validParams), because a list that looks filtered is worse than a 400.",
                     "items": {
                       "type": "string"
                     },
@@ -11058,6 +11079,7 @@
         "guide",
         "article",
         "data",
+        "version",
         "filtered",
         "observed",
         "sections"
@@ -11138,7 +11160,7 @@
                     "type": "string"
                   },
                   "warnings": {
-                    "description": "Present only when there is something to disclose. Two kinds of line share it. (1) A backend read that failed or timed out: the line starts with \"backend read failed\" and the page may be incomplete; `partial` and `failedReads` carry the same fact as fields. (2) Query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure: the request still succeeds. Two policies, by operation kind, both naming the supported set: the search operations (searchResearch, searchProjects, searchRepos, getPartners, listSkills, getHackathons, getClusters, getLeaderboard, getRfps, getChangelog) ignore an unknown parameter and name it here; the registry and lookup operations (listAudits, getChanges, getStablecoins, getBuilders, listContracts, searchHackathonBuilds, getPeople, resolveProject, getRepoTrust) reject it with 400 and list the supported parameters in the body (hint, supportedParams or validParams), because a list that looks filtered is worse than a 400.",
+                    "description": "Present only when there is something to disclose. Two kinds of line share it. (1) A backend read that failed or timed out: the line starts with \"backend read failed\" and the page may be incomplete; `partial` and `failedReads` carry the same fact as fields. (2) Query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure: the request still succeeds. Two policies, by operation kind, both naming the supported set: the search operations (searchResearch, searchProjects, searchRepos, getPartners, listSkills, getHackathons, getClusters, getLeaderboard, getRfps, getChangelog) ignore an unknown parameter and name it here; the registry and lookup operations (listAudits, getChanges, getRwaAssets, getStablecoins, getBuilders, listContracts, searchHackathonBuilds, getPeople, resolveProject, getRepoTrust) reject it with 400 and list the supported parameters in the body (hint, supportedParams or validParams), because a list that looks filtered is worse than a 400.",
                     "items": {
                       "type": "string"
                     },
@@ -11477,6 +11499,7 @@
         "type": "object"
       },
       "keywords": [
+        "days",
         "audits",
         "auditor",
         "paths",
@@ -11490,8 +11513,11 @@
         "error",
         "incomplete",
         "gone",
+        "sdk",
         "capabilities",
+        "archived",
         "renamed",
+        "stars",
         "tier",
         "security",
         "checked",
@@ -12774,6 +12800,671 @@
       }
     },
     {
+      "cardCaveat": "Not a launch or news timeline: launchedAt is Soroban contract creation only. Includes fiat stablecoins; state is not product status.",
+      "description": "Tokenized real-world assets verified on Stellar. Every tokenized real-world asset rwa.xyz lists on Stellar (97 tokens, 52 issuers), each re-verified on-chain: classic assets from the issuer's own stellar.toml plus Horizon where the toml declares them (else on-chain-only), Soroban tokens from the contract's own metadata via RPC. state is live | issued-single-holder | deployed-no-supply | not-found; rows carry verificationLevel, evidenceUrl, verifiedAt, and pairedWith for a tranche deployed twice. Includes the fiat stablecoins rwa.xyz classes as RWA (productKind=stablecoin). Curated registry: absence means untracked, never 'not on Stellar'.",
+      "id": "scout.getRwaAssets",
+      "inputSchema": {
+        "properties": {
+          "kind": {
+            "description": "classic = a Stellar asset (code + issuer); soroban = a contract token (invisible to Horizon /assets).",
+            "enum": [
+              "classic",
+              "soroban"
+            ],
+            "type": "string"
+          },
+          "level": {
+            "description": "Filter by verificationLevel (see methodology).",
+            "enum": [
+              "toml-bidirectional",
+              "entity-toml",
+              "contract-metadata",
+              "on-chain-home-domain",
+              "on-chain-only"
+            ],
+            "type": "string"
+          },
+          "limit": {
+            "default": 100,
+            "description": "Max rows (default 100, max 100).",
+            "maximum": 100,
+            "type": "integer"
+          },
+          "project": {
+            "description": "Directory project slug: the rows that feed that project's `products`.",
+            "type": "string"
+          },
+          "state": {
+            "description": "Filter by product state. live = minted with at least two holders (someone other than the issuer holds it); issued-single-holder = minted, exactly one holder (the issuer or its custodian) and no secondary activity: a real security, not a live market; deployed-no-supply = nothing minted: a Soroban contract with zero supply and zero events, or a classic asset the issuer declares whose trustlines exist but whose supply is zero (Etherfuse CETESZ, Franklin FOCGX); not-found = a listing that no longer resolves on mainnet. live and issued-single-holder are decided by holder count (balance > 0): two or more, or exactly one.",
+            "enum": [
+              "live",
+              "issued-single-holder",
+              "deployed-no-supply",
+              "not-found"
+            ],
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "keywords": [
+        "bidirectional",
+        "entity",
+        "home",
+        "domain",
+        "class",
+        "controls",
+        "auth",
+        "immutable",
+        "required",
+        "revocable",
+        "clawback",
+        "enabled",
+        "flags",
+        "decimals",
+        "discontinued",
+        "launched",
+        "measured",
+        "holders",
+        "measure",
+        "unmeasured",
+        "network",
+        "mainnet",
+        "rwaxyz",
+        "listed",
+        "symbol",
+        "declared",
+        "coverage",
+        "methodology"
+      ],
+      "kind": "operation",
+      "outputSchema": {
+        "properties": {
+          "assets": {
+            "items": {
+              "properties": {
+                "assetClass": {
+                  "description": "rwa.xyz asset class (US Treasury Debt, Real Estate, Commodities, ...).",
+                  "nullable": true,
+                  "type": "string"
+                },
+                "basisNote": {
+                  "nullable": true,
+                  "type": "string"
+                },
+                "code": {
+                  "nullable": true,
+                  "type": "string"
+                },
+                "contract": {
+                  "description": "Contract id (Soroban).",
+                  "nullable": true,
+                  "type": "string"
+                },
+                "controls": {
+                  "description": "The issuer's on-chain flags, read from Horizon (classic assets only): the whitelisting and clawback controls a regulated security carries, as facts: authRequired = holders must be approved by the issuer (a whitelist); authRevocable = the issuer can freeze a holder; clawbackEnabled = the issuer can pull tokens back; authImmutable = those powers are given up for good. null on Soroban tokens, whose controls live in contract logic.",
+                  "nullable": true,
+                  "properties": {
+                    "authImmutable": {
+                      "type": "boolean"
+                    },
+                    "authRequired": {
+                      "type": "boolean"
+                    },
+                    "authRevocable": {
+                      "type": "boolean"
+                    },
+                    "clawbackEnabled": {
+                      "type": "boolean"
+                    }
+                  },
+                  "type": "object"
+                },
+                "controlsBasis": {
+                  "description": "Where controls came from; null when controls is null.",
+                  "enum": [
+                    "horizon-issuer-flags"
+                  ],
+                  "nullable": true,
+                  "type": "string"
+                },
+                "decimals": {
+                  "nullable": true,
+                  "type": "integer"
+                },
+                "discontinued": {
+                  "description": "The issuer's own dated statement that it no longer offers this product (issuance wound down, exchange services ended): `note` says what it states, `sourceUrl` where, `asOf` the day it was read. The row stays, since the token still exists on chain and `state` says what is minted; the project row serves the product with status retired and this note. null = no such statement found, never a verified 'still offered'.",
+                  "nullable": true,
+                  "properties": {
+                    "asOf": {
+                      "type": "string"
+                    },
+                    "note": {
+                      "type": "string"
+                    },
+                    "sourceUrl": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                },
+                "evidenceUrl": {
+                  "description": "Where to re-verify: the issuer's stellar.toml, or the asset/contract on stellar.expert.",
+                  "type": "string"
+                },
+                "horizonNote": {
+                  "nullable": true,
+                  "type": "string"
+                },
+                "id": {
+                  "description": "`CODE-GISSUER` for a classic asset; the `C…` contract id for a Soroban token. The asset's identity: a ticker alone identifies nothing.",
+                  "type": "string"
+                },
+                "issuer": {
+                  "description": "Mainnet issuer account (classic).",
+                  "nullable": true,
+                  "type": "string"
+                },
+                "issuerEntity": {
+                  "description": "The issuer label rwa.xyz gives the row: a brand, product line or fund as often as a legal entity ('Ondo USDY', 'Circle International'), not read from the issuer's stellar.toml. A row rwa.xyz does not list (rwaxyzListed false) carries the label of that issuer's listed rows (FOCGX carries BENJI's 'Franklin Templeton Trust'), or null when it has none. For the issuer's own statement, read the toml at evidenceUrl where the row cites one.",
+                  "nullable": true,
+                  "type": "string"
+                },
+                "kind": {
+                  "enum": [
+                    "classic",
+                    "soroban"
+                  ],
+                  "type": "string"
+                },
+                "launchedAt": {
+                  "description": "Contract creation date (Soroban). null for classic assets. Horizon does not date issuance.",
+                  "nullable": true,
+                  "type": "string"
+                },
+                "measured": {
+                  "description": "What the six-hour refresh lane measured about this asset: supply, holders, activityCount, dated by measuredAt. null until the lane has measured it: an admission, never zero. measureBasis live = read that cycle; unmeasured = the fetch failed and the previous good numbers were kept (note says why).",
+                  "nullable": true,
+                  "properties": {
+                    "activityCount": {
+                      "description": "Classic: lifetime payment operations. Soroban: lifetime contract events. A count, not an amount; not comparable across kinds.",
+                      "nullable": true,
+                      "type": "number"
+                    },
+                    "holders": {
+                      "nullable": true,
+                      "type": "number"
+                    },
+                    "measureBasis": {
+                      "enum": [
+                        "live",
+                        "unmeasured"
+                      ],
+                      "type": "string"
+                    },
+                    "measuredAt": {
+                      "type": "string"
+                    },
+                    "note": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "supply": {
+                      "nullable": true,
+                      "type": "number"
+                    }
+                  },
+                  "type": "object"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "network": {
+                  "enum": [
+                    "mainnet"
+                  ],
+                  "type": "string"
+                },
+                "pairedWith": {
+                  "description": "The sibling contract when the same tranche was deployed twice (same wasm, same deployer, minutes apart, one holder each; rwa.xyz lists both). Neither is provably canonical, so both rows stay, linked; a project row receives one product per pair.",
+                  "nullable": true,
+                  "type": "string"
+                },
+                "productKind": {
+                  "enum": [
+                    "rwa-asset",
+                    "stablecoin"
+                  ],
+                  "type": "string"
+                },
+                "projectSlug": {
+                  "description": "Directory project this row joins onto (feeds its `products`); null = the issuer has no project row.",
+                  "nullable": true,
+                  "type": "string"
+                },
+                "rwaxyzHolders": {
+                  "nullable": true,
+                  "type": "integer"
+                },
+                "rwaxyzListed": {
+                  "description": "true = rwa.xyz lists this token on Stellar (the original inclusion rule); false = admitted because a tracked issuer's own stellar.toml declares it under a tracked issuer account; rwa.xyz figures are null on those rows (not provided, never zero).",
+                  "type": "boolean"
+                },
+                "rwaxyzValueUsd": {
+                  "description": "rwa.xyz's own USD value: a valuation, not activity. Read beside totalSupply and holders.",
+                  "nullable": true,
+                  "type": "number"
+                },
+                "state": {
+                  "description": "What is minted on chain: live (at least two holders), issued-single-holder, deployed-no-supply or not-found. It is an on-chain fact, not a product status: a row whose issuer has discontinued the product (`discontinued` set) keeps state live while its tokens are minted and held.",
+                  "enum": [
+                    "live",
+                    "issued-single-holder",
+                    "deployed-no-supply",
+                    "not-found"
+                  ],
+                  "type": "string"
+                },
+                "symbol": {
+                  "type": "string"
+                },
+                "tomlStatus": {
+                  "description": "The issuer toml's own `status` for this asset (SEP-1: live | private | test …) on rows whose toml block was read; null = not read, never 'live'. `private` = the issuer calls it a restricted offering (SBRL: KYC-gated platform accounts, not publicly tradable) and the project row's product record carries that in `note`.",
+                  "nullable": true,
+                  "type": "string"
+                },
+                "totalSupply": {
+                  "description": "Read from the contract's total_supply() (Soroban); null where no such function. Classic supply is served by Horizon/stellar.expert, not here.",
+                  "nullable": true,
+                  "type": "number"
+                },
+                "verificationLevel": {
+                  "enum": [
+                    "toml-bidirectional",
+                    "entity-toml",
+                    "contract-metadata",
+                    "on-chain-home-domain",
+                    "on-chain-only"
+                  ],
+                  "type": "string"
+                },
+                "verifiedAt": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "meta": {
+            "properties": {
+              "counts": {
+                "properties": {
+                  "byLevel": {
+                    "additionalProperties": {
+                      "type": "integer"
+                    },
+                    "type": "object"
+                  },
+                  "byState": {
+                    "additionalProperties": {
+                      "type": "integer"
+                    },
+                    "type": "object"
+                  },
+                  "discontinued": {
+                    "description": "Registry rows whose issuer has said it no longer offers the product (`discontinued` set). They keep state live while the tokens are minted and held, so subtract them from byState.live to count live products.",
+                    "type": "integer"
+                  },
+                  "issuerDeclared": {
+                    "description": "Rows admitted because a tracked issuer's own toml declares them (sls-083).",
+                    "type": "integer"
+                  },
+                  "issuers": {
+                    "type": "integer"
+                  },
+                  "matched": {
+                    "type": "integer"
+                  },
+                  "measured": {
+                    "description": "Served rows that carry a `measured` reading from the six-hour lane.",
+                    "type": "integer"
+                  },
+                  "registry": {
+                    "type": "integer"
+                  },
+                  "returned": {
+                    "type": "integer"
+                  },
+                  "rwaxyzListed": {
+                    "description": "Rows admitted by rwa.xyz's listing on Stellar.",
+                    "type": "integer"
+                  }
+                },
+                "type": "object"
+              },
+              "coverage": {
+                "properties": {
+                  "basis": {
+                    "type": "string"
+                  },
+                  "note": {
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              },
+              "filters": {
+                "description": "The filters this response was computed under; null = not applied.",
+                "properties": {
+                  "kind": {
+                    "description": "Echo of the request parameter, not a served fact; it cannot be dated, because nothing was measured to produce it. Every asset row is dated by its own verifiedAt; meta.registryAsOf dates the registry.",
+                    "nullable": true,
+                    "type": "string"
+                  },
+                  "level": {
+                    "description": "Echo of the request parameter, not a served fact; it cannot be dated, because nothing was measured to produce it. Every asset row is dated by its own verifiedAt; meta.registryAsOf dates the registry.",
+                    "nullable": true,
+                    "type": "string"
+                  },
+                  "limit": {
+                    "description": "Echo of the request parameter, not a served fact; it cannot be dated, because nothing was measured to produce it. Every asset row is dated by its own verifiedAt; meta.registryAsOf dates the registry.",
+                    "type": "integer"
+                  },
+                  "project": {
+                    "description": "Echo of the request parameter, not a served fact; it cannot be dated, because nothing was measured to produce it. Every asset row is dated by its own verifiedAt; meta.registryAsOf dates the registry.",
+                    "nullable": true,
+                    "type": "string"
+                  },
+                  "state": {
+                    "description": "Echo of the request parameter, not a served fact; it cannot be dated, because nothing was measured to produce it. Every asset row is dated by its own verifiedAt; meta.registryAsOf dates the registry.",
+                    "nullable": true,
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              },
+              "generatedAt": {
+                "format": "date-time",
+                "type": "string"
+              },
+              "methodology": {
+                "type": "string"
+              },
+              "registryAsOf": {
+                "description": "Date every row was last re-verified on-chain.",
+                "type": "string"
+              },
+              "source": {
+                "type": "string"
+              }
+            },
+            "type": "object"
+          }
+        },
+        "required": [
+          "meta",
+          "assets"
+        ],
+        "type": "object"
+      },
+      "provenance": {
+        "fetchedAt": "2026-11-16T22:24:00.455Z",
+        "openapiVersion": "1.9.150",
+        "source": "https://stellarlight.xyz/api/openapi.json"
+      },
+      "routingExclusions": [
+        {
+          "tokens": [
+            "fiat",
+            "stablecoin",
+            "market",
+            "caps",
+            "pegs",
+            "supply"
+          ]
+        },
+        {
+          "tokens": [
+            "issuer",
+            "company",
+            "profile",
+            "funding",
+            "repos"
+          ]
+        },
+        {
+          "tokens": [
+            "issue",
+            "asset",
+            "build",
+            "tokenization",
+            "contract"
+          ]
+        }
+      ],
+      "routingKeywords": [
+        "funds",
+        "estate",
+        "actually",
+        "benji",
+        "treasuries",
+        "bonds",
+        "gold",
+        "issues",
+        "spiko",
+        "etherfuse",
+        "franklin",
+        "templeton",
+        "treasury",
+        "fund",
+        "whom",
+        "wisdom",
+        "tree",
+        "ustbl",
+        "cetes",
+        "today",
+        "largest",
+        "value",
+        "exist",
+        "biggest",
+        "token",
+        "money",
+        "market",
+        "bills",
+        "wisdomtree",
+        "stablebond"
+      ],
+      "routingPhrases": [
+        {
+          "field": "purpose",
+          "tokens": [
+            "real",
+            "world",
+            "asset",
+            "tokens",
+            "tokenized",
+            "funds",
+            "treasuries",
+            "bonds",
+            "estate",
+            "gold",
+            "actually",
+            "issued",
+            "stellar",
+            "whom",
+            "chain",
+            "evidence",
+            "verification",
+            "level"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "rwa",
+            "tokenized",
+            "funds",
+            "treasuries",
+            "bonds",
+            "real",
+            "estate",
+            "live",
+            "stellar",
+            "issues"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "product",
+            "benji",
+            "wisdom",
+            "tree",
+            "gold",
+            "spiko",
+            "ustbl",
+            "etherfuse",
+            "cetes",
+            "actually",
+            "issued",
+            "stellar",
+            "today",
+            "contract",
+            "issuer",
+            "evidence"
+          ]
+        },
+        {
+          "field": "useWhen",
+          "tokens": [
+            "largest",
+            "rwa",
+            "tokens",
+            "issuers",
+            "stellar",
+            "xyz",
+            "value"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "real",
+            "world",
+            "assets",
+            "live",
+            "stellar"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "franklin",
+            "templeton",
+            "benji",
+            "actually",
+            "issued",
+            "stellar"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "tokenized",
+            "treasury",
+            "funds",
+            "exist",
+            "stellar",
+            "issues"
+          ]
+        },
+        {
+          "field": "exampleQuestions",
+          "tokens": [
+            "biggest",
+            "rwa",
+            "token",
+            "stellar"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "real",
+            "world",
+            "asset"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "real",
+            "world",
+            "assets"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "tokenized",
+            "fund"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "tokenized",
+            "treasury"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "tokenized",
+            "real",
+            "estate"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "money",
+            "market",
+            "fund"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "franklin",
+            "templeton"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "issued",
+            "stellar"
+          ]
+        },
+        {
+          "field": "keywords",
+          "tokens": [
+            "live",
+            "stellar"
+          ]
+        }
+      ],
+      "service": "scout",
+      "transport": {
+        "base": "https://stellarlight.xyz",
+        "method": "GET",
+        "path": "/api/rwa",
+        "type": "http"
+      }
+    },
+    {
       "description": "Get one skill's full content. Full detail for ONE skill by slug or display name: metadata plus, for entries listed on skills.stellar.org (SDF authored and community-built), the complete raw SKILL.md text (.skill.content, fetched live from where the registry links it). 404s with a hint to list scout.listSkills when unknown. Use when you know the skill and need its actual instructions or install command. Not for discovering which skills exist → use listSkills.\n\nCatalog note: returns the full upstream markdown of one directory entry, suited to install/metadata questions. For reading build/integration playbooks, prefer the skills. catalog entries via codemode.skill.read (sectioned, curated, pinned).",
       "id": "scout.getSkill",
       "inputSchema": {
@@ -13195,7 +13886,7 @@
                     "type": "string"
                   },
                   "warnings": {
-                    "description": "Present only when there is something to disclose. Two kinds of line share it. (1) A backend read that failed or timed out: the line starts with \"backend read failed\" and the page may be incomplete; `partial` and `failedReads` carry the same fact as fields. (2) Query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure: the request still succeeds. Two policies, by operation kind, both naming the supported set: the search operations (searchResearch, searchProjects, searchRepos, getPartners, listSkills, getHackathons, getClusters, getLeaderboard, getRfps, getChangelog) ignore an unknown parameter and name it here; the registry and lookup operations (listAudits, getChanges, getStablecoins, getBuilders, listContracts, searchHackathonBuilds, getPeople, resolveProject, getRepoTrust) reject it with 400 and list the supported parameters in the body (hint, supportedParams or validParams), because a list that looks filtered is worse than a 400.",
+                    "description": "Present only when there is something to disclose. Two kinds of line share it. (1) A backend read that failed or timed out: the line starts with \"backend read failed\" and the page may be incomplete; `partial` and `failedReads` carry the same fact as fields. (2) Query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure: the request still succeeds. Two policies, by operation kind, both naming the supported set: the search operations (searchResearch, searchProjects, searchRepos, getPartners, listSkills, getHackathons, getClusters, getLeaderboard, getRfps, getChangelog) ignore an unknown parameter and name it here; the registry and lookup operations (listAudits, getChanges, getRwaAssets, getStablecoins, getBuilders, listContracts, searchHackathonBuilds, getPeople, resolveProject, getRepoTrust) reject it with 400 and list the supported parameters in the body (hint, supportedParams or validParams), because a list that looks filtered is worse than a 400.",
                     "items": {
                       "type": "string"
                     },
@@ -13754,6 +14445,7 @@
       "keywords": [
         "skill",
         "bytes",
+        "notes",
         "population",
         "last24h",
         "last7d"
@@ -14087,6 +14779,7 @@
         "security",
         "held",
         "bar",
+        "projects",
         "open",
         "phase",
         "deadline",
@@ -14096,9 +14789,11 @@
         "events",
         "delta",
         "size",
+        "stellar",
         "proof",
         "audit",
         "drift",
+        "days",
         "latest",
         "audits",
         "auditor",
@@ -14115,8 +14810,10 @@
         "error",
         "incomplete",
         "gone",
+        "sdk",
         "capabilities",
         "renamed",
+        "stars",
         "tier",
         "signals",
         "succession",
@@ -14125,12 +14822,7 @@
         "usage",
         "subinvocations",
         "vertical",
-        "scored",
-        "weak",
-        "types",
-        "via",
-        "winners",
-        "progress"
+        "scored"
       ],
       "kind": "operation",
       "outputSchema": {
@@ -15180,6 +15872,7 @@
         "extraction",
         "observed",
         "protocol",
+        "version",
         "superseded",
         "filtered"
       ],
@@ -15390,7 +16083,7 @@
                     "type": "string"
                   },
                   "warnings": {
-                    "description": "Present only when there is something to disclose. Two kinds of line share it. (1) A backend read that failed or timed out: the line starts with \"backend read failed\" and the page may be incomplete; `partial` and `failedReads` carry the same fact as fields. (2) Query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure: the request still succeeds. Two policies, by operation kind, both naming the supported set: the search operations (searchResearch, searchProjects, searchRepos, getPartners, listSkills, getHackathons, getClusters, getLeaderboard, getRfps, getChangelog) ignore an unknown parameter and name it here; the registry and lookup operations (listAudits, getChanges, getStablecoins, getBuilders, listContracts, searchHackathonBuilds, getPeople, resolveProject, getRepoTrust) reject it with 400 and list the supported parameters in the body (hint, supportedParams or validParams), because a list that looks filtered is worse than a 400.",
+                    "description": "Present only when there is something to disclose. Two kinds of line share it. (1) A backend read that failed or timed out: the line starts with \"backend read failed\" and the page may be incomplete; `partial` and `failedReads` carry the same fact as fields. (2) Query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure: the request still succeeds. Two policies, by operation kind, both naming the supported set: the search operations (searchResearch, searchProjects, searchRepos, getPartners, listSkills, getHackathons, getClusters, getLeaderboard, getRfps, getChangelog) ignore an unknown parameter and name it here; the registry and lookup operations (listAudits, getChanges, getRwaAssets, getStablecoins, getBuilders, listContracts, searchHackathonBuilds, getPeople, resolveProject, getRepoTrust) reject it with 400 and list the supported parameters in the body (hint, supportedParams or validParams), because a list that looks filtered is worse than a 400.",
                     "items": {
                       "type": "string"
                     },
@@ -16343,7 +17036,7 @@
                     "type": "string"
                   },
                   "warnings": {
-                    "description": "Present only when there is something to disclose. Two kinds of line share it. (1) A backend read that failed or timed out: the line starts with \"backend read failed\" and the page may be incomplete; `partial` and `failedReads` carry the same fact as fields. (2) Query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure: the request still succeeds. Two policies, by operation kind, both naming the supported set: the search operations (searchResearch, searchProjects, searchRepos, getPartners, listSkills, getHackathons, getClusters, getLeaderboard, getRfps, getChangelog) ignore an unknown parameter and name it here; the registry and lookup operations (listAudits, getChanges, getStablecoins, getBuilders, listContracts, searchHackathonBuilds, getPeople, resolveProject, getRepoTrust) reject it with 400 and list the supported parameters in the body (hint, supportedParams or validParams), because a list that looks filtered is worse than a 400.",
+                    "description": "Present only when there is something to disclose. Two kinds of line share it. (1) A backend read that failed or timed out: the line starts with \"backend read failed\" and the page may be incomplete; `partial` and `failedReads` carry the same fact as fields. (2) Query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure: the request still succeeds. Two policies, by operation kind, both naming the supported set: the search operations (searchResearch, searchProjects, searchRepos, getPartners, listSkills, getHackathons, getClusters, getLeaderboard, getRfps, getChangelog) ignore an unknown parameter and name it here; the registry and lookup operations (listAudits, getChanges, getRwaAssets, getStablecoins, getBuilders, listContracts, searchHackathonBuilds, getPeople, resolveProject, getRepoTrust) reject it with 400 and list the supported parameters in the body (hint, supportedParams or validParams), because a list that looks filtered is worse than a 400.",
                     "items": {
                       "type": "string"
                     },
@@ -17059,6 +17752,7 @@
         "types",
         "via",
         "domains",
+        "stars",
         "tier",
         "winners",
         "progress",
@@ -17769,6 +18463,7 @@
         "bridge",
         "infrastructure",
         "anchor",
+        "sdk",
         "indexer",
         "explorer",
         "analytics",
@@ -17794,6 +18489,8 @@
         "after",
         "commits",
         "90",
+        "days",
+        "archived",
         "found",
         "award",
         "categories",
@@ -17816,10 +18513,7 @@
         "facts",
         "draft",
         "development",
-        "pre",
-        "release",
-        "inactive",
-        "held"
+        "pre"
       ],
       "kind": "operation",
       "outputSchema": {
@@ -18653,6 +19347,7 @@
         "partner",
         "integration",
         "bridge",
+        "sdk",
         "indexer",
         "explorer",
         "analytics",
@@ -18687,8 +19382,10 @@
         "prs",
         "tag",
         "state",
+        "active",
         "maintained",
         "dormant",
+        "archived",
         "unknown",
         "reputation",
         "canonical",
@@ -18699,19 +19396,16 @@
         "subinvocations",
         "confidence",
         "age",
+        "days",
         "high",
         "medium",
         "low",
+        "score",
         "depth",
         "domains",
         "interface",
         "paths",
-        "deployable",
-        "js",
-        "supported",
-        "deprecated",
-        "mainnet",
-        "self"
+        "deployable"
       ],
       "kind": "operation",
       "outputSchema": {
@@ -19380,7 +20074,7 @@
                     "type": "string"
                   },
                   "warnings": {
-                    "description": "Present only when there is something to disclose. Two kinds of line share it. (1) A backend read that failed or timed out: the line starts with \"backend read failed\" and the page may be incomplete; `partial` and `failedReads` carry the same fact as fields. (2) Query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure: the request still succeeds. Two policies, by operation kind, both naming the supported set: the search operations (searchResearch, searchProjects, searchRepos, getPartners, listSkills, getHackathons, getClusters, getLeaderboard, getRfps, getChangelog) ignore an unknown parameter and name it here; the registry and lookup operations (listAudits, getChanges, getStablecoins, getBuilders, listContracts, searchHackathonBuilds, getPeople, resolveProject, getRepoTrust) reject it with 400 and list the supported parameters in the body (hint, supportedParams or validParams), because a list that looks filtered is worse than a 400.",
+                    "description": "Present only when there is something to disclose. Two kinds of line share it. (1) A backend read that failed or timed out: the line starts with \"backend read failed\" and the page may be incomplete; `partial` and `failedReads` carry the same fact as fields. (2) Query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure: the request still succeeds. Two policies, by operation kind, both naming the supported set: the search operations (searchResearch, searchProjects, searchRepos, getPartners, listSkills, getHackathons, getClusters, getLeaderboard, getRfps, getChangelog) ignore an unknown parameter and name it here; the registry and lookup operations (listAudits, getChanges, getRwaAssets, getStablecoins, getBuilders, listContracts, searchHackathonBuilds, getPeople, resolveProject, getRepoTrust) reject it with 400 and list the supported parameters in the body (hint, supportedParams or validParams), because a list that looks filtered is worse than a 400.",
                     "items": {
                       "type": "string"
                     },
@@ -19793,7 +20487,7 @@
                       "type": "string"
                     },
                     "basis": {
-                      "description": "The evidence class behind a mainnet or testnet value. 'human-verified' = a curator checked a source that names the network (the operator's docs, a stellar.toml, an app bundle, Stellar's developer docs or an explorer page); sourceUrl is that source. 'onchain-activity' = a contract, asset, account or transaction the record holds, observed on that network's ledger; sourceUrl is its explorer page. 'mainnet-contract-join' = a repository of the project publishes a contract id that the mainnet ledger holds; sourceUrl is the repository. 'defillama-tvl' = DefiLlama tracks the protocol on Stellar (a reading at most 14 days old when the value was written); sourceUrl is the DefiLlama page. 'rwa-registry' = a minted product in the verified RWA registry (upstream rwa) whose attribution to this project holds both ways, verificationLevel toml-bidirectional (the issuer's own stellar.toml names it and the issuer's home_domain names that domain back); a row at any other level lends no deployment, though it still appears in the project's products; sourceUrl is that product's own evidence. 'operator-toml' = the project's own stellar.toml declares an asset that Horizon holds and whose issuer names the project's domain back; sourceUrl is the toml. Null when network is unknown.",
+                      "description": "The evidence class behind a mainnet or testnet value. 'human-verified' = a curator checked a source that names the network (the operator's docs, a stellar.toml, an app bundle, Stellar's developer docs or an explorer page); sourceUrl is that source. 'onchain-activity' = a contract, asset, account or transaction the record holds, observed on that network's ledger; sourceUrl is its explorer page. 'mainnet-contract-join' = a repository of the project publishes a contract id that the mainnet ledger holds; sourceUrl is the repository. 'defillama-tvl' = DefiLlama tracks the protocol on Stellar (a reading at most 14 days old when the value was written); sourceUrl is the DefiLlama page. 'rwa-registry' = a minted product in the verified RWA registry (/api/rwa) whose attribution to this project holds both ways, verificationLevel toml-bidirectional (the issuer's own stellar.toml names it and the issuer's home_domain names that domain back); a row at any other level lends no deployment, though it still appears in the project's products; sourceUrl is that product's own evidence. 'operator-toml' = the project's own stellar.toml declares an asset that Horizon holds and whose issuer names the project's domain back; sourceUrl is the toml. Null when network is unknown.",
                       "enum": [
                         "human-verified",
                         "onchain-activity",
@@ -19989,7 +20683,7 @@
                   "type": "string"
                 },
                 "products": {
-                  "description": "Per-PRODUCT deployment records (#742): provider status and product-on-network status are DIFFERENT statements. A Live project row NEVER establishes that a given product is live on a given network; read this array for that, and if it is null you do not have the answer and must go to the operator. Curated only; every record carries evidenceUrl + asOf so the claim is re-verifiable at its source. NULL = no product-level records modelled for this project (UNKNOWN, never 'this project ships no products'). Fed by the verified RWA registry (upstream rwa; every row dated by its own verifiedAt) for the issuers that have a project row: WisdomTree, Spiko, Etherfuse, Ondo, Figure, Circle, Paxos, Centrifuge and others, plus hand-curated rows, and by the oracle registry for oracle providers (Band, DIA, Lightecho, Reflector, RedStone, Chainlink, Pyth): one oracle-feed record per contract the provider published for each network, each address checked on chain on asOf. On an oracle record, status live means a contract existed at contractId on asOf and retired means the published address held none; status never says whether feeds update, which is `observation`: what the chain showed at its checkedAt. Evidence tiers (sls-029) read off two fields: addressTier (official-address or directory-only) and observation.tier (observed-updating, observed-stale, published-address-absent, or not-observable-pull-model); retired status is published-address-absent as of asOf. A provider that announced Stellar support without publishing an address has no record (provider-announced is not served as a tier). Only MINTED registry rows are served here (registryState live or issued-single-holder); an asset the issuer declares or deployed with zero supply is tracked in the registry but is not a product. WHETHER THIS LIST IS COMPLETE for the issuer is a separate fact: read the sibling `productsCoverage`; declared / tracked / served against the issuer's own declaration (its stellar.toml, or its deployer's contract history), `complete` only when every declared asset is tracked and every issuer account was reconciled, null when that cannot be stated. Still null on most projects. kind: oracle-feed | rwa-asset | stablecoin | wallet-app | bridge | ramp | other; network: mainnet | testnet | futurenet; status: live | development | announced | retired. A registry product whose issuer has said it no longer offers it (upstream rwa assets `discontinued`) is served as retired, with that statement in note.",
+                  "description": "Per-PRODUCT deployment records (#742): provider status and product-on-network status are DIFFERENT statements. A Live project row NEVER establishes that a given product is live on a given network; read this array for that, and if it is null you do not have the answer and must go to the operator. Curated only; every record carries evidenceUrl + asOf so the claim is re-verifiable at its source. NULL = no product-level records modelled for this project (UNKNOWN, never 'this project ships no products'). Fed by the verified RWA registry (/api/rwa; every row dated by its own verifiedAt) for the issuers that have a project row: WisdomTree, Spiko, Etherfuse, Ondo, Figure, Circle, Paxos, Centrifuge and others, plus hand-curated rows, and by the oracle registry for oracle providers (Band, DIA, Lightecho, Reflector, RedStone, Chainlink, Pyth): one oracle-feed record per contract the provider published for each network, each address checked on chain on asOf. On an oracle record, status live means a contract existed at contractId on asOf and retired means the published address held none; status never says whether feeds update, which is `observation`: what the chain showed at its checkedAt. Evidence tiers (sls-029) read off two fields: addressTier (official-address or directory-only) and observation.tier (observed-updating, observed-stale, published-address-absent, or not-observable-pull-model); retired status is published-address-absent as of asOf. A provider that announced Stellar support without publishing an address has no record (provider-announced is not served as a tier). Only MINTED registry rows are served here (registryState live or issued-single-holder); an asset the issuer declares or deployed with zero supply is tracked in the registry but is not a product. WHETHER THIS LIST IS COMPLETE for the issuer is a separate fact: read the sibling `productsCoverage`; declared / tracked / served against the issuer's own declaration (its stellar.toml, or its deployer's contract history), `complete` only when every declared asset is tracked and every issuer account was reconciled, null when that cannot be stated. Still null on most projects. kind: oracle-feed | rwa-asset | stablecoin | wallet-app | bridge | ramp | other; network: mainnet | testnet | futurenet; status: live | development | announced | retired. A registry product whose issuer has said it no longer offers it (getRwaAssets `discontinued`) is served as retired, with that statement in note.",
                   "items": {
                     "properties": {
                       "addressTier": {
@@ -20035,7 +20729,7 @@
                         "type": "string"
                       },
                       "issuer": {
-                        "description": "The issuer label the RWA registry carries for the product (upstream rwa assets issuerEntity: the rwa.xyz listing's name, a brand, product line or fund as often as a legal entity), not read from the issuer's stellar.toml. Null on hand-curated rows.",
+                        "description": "The issuer label the RWA registry carries for the product (getRwaAssets issuerEntity: the rwa.xyz listing's name, a brand, product line or fund as often as a legal entity), not read from the issuer's stellar.toml. Null on hand-curated rows.",
                         "nullable": true,
                         "type": "string"
                       },
@@ -20186,7 +20880,7 @@
                         "type": "string"
                       },
                       "verificationLevel": {
-                        "description": "How the registry verified this product (see upstream rwa assets methodology); null on hand-curated rows.",
+                        "description": "How the registry verified this product (see getRwaAssets methodology); null on hand-curated rows.",
                         "nullable": true,
                         "type": "string"
                       }
@@ -22021,8 +22715,10 @@
         "type": "object"
       },
       "keywords": [
+        "active",
         "maintained",
         "dormant",
+        "archived",
         "unknown",
         "offset",
         "fields",
@@ -22052,6 +22748,7 @@
         "verified",
         "confidence",
         "age",
+        "days",
         "high",
         "medium",
         "low",
@@ -22081,10 +22778,7 @@
         "toml",
         "symbols",
         "deep",
-        "wiki",
-        "homepage",
-        "judge",
-        "judged"
+        "wiki"
       ],
       "kind": "operation",
       "outputSchema": {
@@ -22162,7 +22856,7 @@
                     "type": "string"
                   },
                   "warnings": {
-                    "description": "Present only when there is something to disclose. Two kinds of line share it. (1) A backend read that failed or timed out: the line starts with \"backend read failed\" and the page may be incomplete; `partial` and `failedReads` carry the same fact as fields. (2) Query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure: the request still succeeds. Two policies, by operation kind, both naming the supported set: the search operations (searchResearch, searchProjects, searchRepos, getPartners, listSkills, getHackathons, getClusters, getLeaderboard, getRfps, getChangelog) ignore an unknown parameter and name it here; the registry and lookup operations (listAudits, getChanges, getStablecoins, getBuilders, listContracts, searchHackathonBuilds, getPeople, resolveProject, getRepoTrust) reject it with 400 and list the supported parameters in the body (hint, supportedParams or validParams), because a list that looks filtered is worse than a 400.",
+                    "description": "Present only when there is something to disclose. Two kinds of line share it. (1) A backend read that failed or timed out: the line starts with \"backend read failed\" and the page may be incomplete; `partial` and `failedReads` carry the same fact as fields. (2) Query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure: the request still succeeds. Two policies, by operation kind, both naming the supported set: the search operations (searchResearch, searchProjects, searchRepos, getPartners, listSkills, getHackathons, getClusters, getLeaderboard, getRfps, getChangelog) ignore an unknown parameter and name it here; the registry and lookup operations (listAudits, getChanges, getRwaAssets, getStablecoins, getBuilders, listContracts, searchHackathonBuilds, getPeople, resolveProject, getRepoTrust) reject it with 400 and list the supported parameters in the body (hint, supportedParams or validParams), because a list that looks filtered is worse than a 400.",
                     "items": {
                       "type": "string"
                     },
@@ -23490,6 +24184,7 @@
         "doc",
         "empty",
         "model",
+        "score",
         "advisory",
         "wide",
         "top",
@@ -23578,7 +24273,7 @@
                     "type": "string"
                   },
                   "warnings": {
-                    "description": "Present only when there is something to disclose. Two kinds of line share it. (1) A backend read that failed or timed out: the line starts with \"backend read failed\" and the page may be incomplete; `partial` and `failedReads` carry the same fact as fields. (2) Query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure: the request still succeeds. Two policies, by operation kind, both naming the supported set: the search operations (searchResearch, searchProjects, searchRepos, getPartners, listSkills, getHackathons, getClusters, getLeaderboard, getRfps, getChangelog) ignore an unknown parameter and name it here; the registry and lookup operations (listAudits, getChanges, getStablecoins, getBuilders, listContracts, searchHackathonBuilds, getPeople, resolveProject, getRepoTrust) reject it with 400 and list the supported parameters in the body (hint, supportedParams or validParams), because a list that looks filtered is worse than a 400.",
+                    "description": "Present only when there is something to disclose. Two kinds of line share it. (1) A backend read that failed or timed out: the line starts with \"backend read failed\" and the page may be incomplete; `partial` and `failedReads` carry the same fact as fields. (2) Query parameters this endpoint does not read: names them and states the results are NOT filtered by them. Additive-contract disclosure: the request still succeeds. Two policies, by operation kind, both naming the supported set: the search operations (searchResearch, searchProjects, searchRepos, getPartners, listSkills, getHackathons, getClusters, getLeaderboard, getRfps, getChangelog) ignore an unknown parameter and name it here; the registry and lookup operations (listAudits, getChanges, getRwaAssets, getStablecoins, getBuilders, listContracts, searchHackathonBuilds, getPeople, resolveProject, getRepoTrust) reject it with 400 and list the supported parameters in the body (hint, supportedParams or validParams), because a list that looks filtered is worse than a 400.",
                     "items": {
                       "type": "string"
                     },
@@ -24535,6 +25230,7 @@
         "types",
         "via",
         "domains",
+        "stars",
         "tier",
         "winners",
         "progress",
