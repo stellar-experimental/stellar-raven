@@ -21,8 +21,8 @@
  *
  * Output is deterministic (sorted keys, no timestamp) — rebuild with:
  *   node eval/plan/build-op-classes.mjs
- * Never hand-edit op-classes.json (CLAUDE.md: generated artifacts are rebuilt
- * by scripts).
+ * Never hand-edit op-classes.json (AGENTS.md "Hard rules": generated artifacts are
+ * rebuilt by scripts).
  */
 import { readFileSync } from "node:fs";
 import { fileURLToPath, pathToFileURL } from "node:url";

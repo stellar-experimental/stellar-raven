@@ -26,7 +26,9 @@ export const EXPECTED_TOOL_METADATA = {
 // loads upfront: 4,096 characters". The same page says "Before v2.1.296, the shorter limit was
 // 2,048 characters." A tool loaded through tool search gets 16,384 and is not the binding case.
 // A user's CLAUDE_CODE_MAX_MCP_DESCRIPTION_LENGTH can change both limits. Re-verify this figure
-// whenever a Claude Code version changes (.agents/TODO.md). The local tests count JavaScript
+// before a change to the server instructions or a tool description, and when Claude Code release
+// notes name an MCP text limit; a version bump alone does not fire it (.agents/TODO.md, "Re-verify
+// each external client limit before changing model-facing text"). The local tests count JavaScript
 // characters.
 export const CLAUDE_CODE_INSTRUCTIONS_CAP_CHARS = 4_096;
 export const CLAUDE_CODE_TOOL_DESCRIPTION_CAP_CHARS = 4_096;
