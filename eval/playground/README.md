@@ -74,7 +74,7 @@ Live cost reporting remains a measurement prerequisite; offline mocks cannot pro
 
 ### Supported accounting transports
 
-Evaluation accounting captures raw responses through these paths in the installed `workers-ai-provider@4.0.0`:
+Evaluation accounting captures raw responses through these paths in the installed `workers-ai-provider@4.0.1`:
 
 | Path | Supported configurations |
 |---|---|
