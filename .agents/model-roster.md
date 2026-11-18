@@ -40,7 +40,7 @@ clients.
 | Default | Grok | Grok | `--model "$M"`, with `M` from `scripts/latest-model.mjs grok` in the two-step form below |
 | Add where it helps | Claude Opus | Claude Code | `--model opus` |
 | Add where it helps | Codex Sol | Codex | `-m "$M"`, with `M` from `scripts/latest-model.mjs sol` in the two-step form below |
-| Only when a decision names it | GPT Terra or Sol, or Grok, through OpenCode | OpenCode | `--standalone -m openai/$M` or `-m xai/$M` (`M` from `scripts/latest-model.mjs` for `terra`, `sol` or `grok`), `--agent <name>` where tools must be denied |
+| Only when a decision names it | GPT Terra or Sol, or Grok, through OpenCode | OpenCode | `--standalone -m openai/$M` or `--standalone -m xai/$M` (`M` from `scripts/latest-model.mjs` for `terra`, `sol` or `grok`), `--agent <name>` where tools must be denied |
 
 - OpenCode runs only after the probe in [`eval/EVALS.md`](../eval/EVALS.md#model-call-billing)
   ("Model-call billing"), and `opencode models --standalone` must list `<provider>/$M`: OpenCode
@@ -73,7 +73,9 @@ M=$(node <worktree>/scripts/latest-model.mjs grok) && echo "resolved: $M" && hc 
   directory, then copy and commit them yourself. With `-a never` it cannot approve MCP tool
   calls, so it cannot repeat an authenticated Raven connector check. Before a paid lane, check
   that `codex login status` prints "Logged in using ChatGPT".
-- **Grok** `--always-approve` can be denied as an unsafe launch when a Claude Code orchestrator
+- **Grok** has no offline login check (`grok usage` cannot show the plan in this version). Before a
+  paid lane, establish the SuperGrok login interactively and keep `XAI_API_KEY` unset; a Codex lane
+  likewise keeps `OPENAI_API_KEY` unset. `--always-approve` can be denied as an unsafe launch when a Claude Code orchestrator
   runs in auto mode. Do not retry. Treat the tier as unavailable and apply the fallback rule in
   `AGENTS.md`, or ask the owner to launch it.
 

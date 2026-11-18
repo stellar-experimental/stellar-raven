@@ -339,18 +339,11 @@ describe("re-judge saved-answer selection", () => {
       expectedAgentBinarySha256: binary.sha256,
       expectedAgentEnvironmentSha256: environment.sha256
     };
-    const subscriptionChecks: unknown[] = [];
     const dependencies = {
       executableIdentityImpl: () => structuredClone(binary),
-      environmentIdentityImpl: () => structuredClone(environment),
-      claudeSubscriptionImpl: (options: unknown) => { subscriptionChecks.push(options); }
+      environmentIdentityImpl: () => structuredClone(environment)
     };
     expect(attestRejudgeIdentity(pins, dependencies)).toMatchObject({ binary, environment });
-    expect(subscriptionChecks).toEqual([{ claudePath: "/opt/claude", env: process.env }]);
-    expect(() => attestRejudgeIdentity(pins, {
-      ...dependencies,
-      claudeSubscriptionImpl: () => { throw new Error("Claude subscription check: refusing paid calls"); }
-    })).toThrow(/subscription check/);
     expect(() => attestRejudgeIdentity({
       ...pins,
       expectedAgentBinarySha256: "c".repeat(64)

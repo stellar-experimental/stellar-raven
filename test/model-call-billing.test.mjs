@@ -4,7 +4,7 @@
  * Gateway token, the Playground chat route or an AI SDK import. It is a deny-list of strings: it
  * catches the obvious forms, not every API client.
  *
- * It scans code files and skill Markdown only, skips the case-bearing paths that the `.ignore` files
+ * It scans code files, skill Markdown and GitHub Actions workflows only, skips the case-bearing paths that the `.ignore` files
  * name, and on failure prints a path and a pattern name, never a line.
  */
 import { execFileSync } from "node:child_process";
@@ -16,19 +16,24 @@ const REPO = join(import.meta.dirname, "..");
 
 const CODE_FILE = /\.(?:mjs|js|cjs|ts|mts|sh)$/;
 const SKILL_DOC = /^\.agents\/skills\/.*\.md$/;
+const WORKFLOW = /^\.github\/workflows\/.*\.ya?ml$/;
 const OUT_OF_SCOPE_DIRECTORIES = ["src/", "test/", "research/", ".agents/rounds/"];
 // Case-bearing paths: each `.ignore` entry is anchored to its own folder.
 const IGNORE_FILES = ["eval/.ignore", "eval/qa/.ignore"];
 
-// An import of an AI SDK. `workers-ai-provider` is also a plain service ID in improvements/ scripts,
-// so match only the import forms.
-const SDK_IMPORT = /(?:from\s*|import\s*\(\s*)["'](?:ai|@ai-sdk\/[^"']+|workers-ai-provider(?:\/[^"']*)?)["']/;
+// An import or require of an AI SDK or of an `agents/models/` provider integration.
+// `workers-ai-provider` is also a plain service ID in improvements/ scripts, so match only the
+// import forms.
+const SDK_MODULE = String.raw`(?:ai|@ai-sdk\/[^"']+|workers-ai-provider(?:\/[^"']*)?|agents\/models\/[^"']+)`;
+const SDK_IMPORT = new RegExp(String.raw`(?:from\s*|import\s*\(?\s*|require\s*\(\s*)["']${SDK_MODULE}["']`);
+const WORKERS_AI_RUN = /\bAI\.run\(/;
 
 const PATTERNS = [
   ["gateway.ai.cloudflare.com", (text) => text.includes("gateway.ai.cloudflare.com")],
   ["CF_AIG_TOKEN", (text) => text.includes("CF_AIG_TOKEN")],
   ["cf-aig-", (text) => text.includes("cf-aig-")],
   ["AI.gateway(", (text) => text.includes("AI.gateway(")],
+  ["AI.run(", (text) => WORKERS_AI_RUN.test(text)],
   [".gateway( with getLog", (text) => text.includes(".gateway(") && text.includes("getLog")],
   ["api.openai.com", (text) => text.includes("api.openai.com")],
   ["api.anthropic.com", (text) => text.includes("api.anthropic.com")],
@@ -77,7 +82,7 @@ function ignoredPrefixes() {
 function inScope(file, skipped) {
   if (OUT_OF_SCOPE_DIRECTORIES.some((directory) => file.startsWith(directory))) return false;
   if (skipped.some((prefix) => file === prefix || file.startsWith(prefix))) return false;
-  return CODE_FILE.test(file) || SKILL_DOC.test(file);
+  return CODE_FILE.test(file) || SKILL_DOC.test(file) || WORKFLOW.test(file);
 }
 
 /** Pattern names that match each in-scope file outside the allowlist, plus stale allowlist entries. */
@@ -128,7 +133,14 @@ describe("model-call billing guard", () => {
       "scripts/planted-ai.mjs": 'import { generateText } from "ai";',
       "scripts/planted-sdk.mjs": 'const { createOpenAI } = await import("@ai-sdk/openai");',
       "scripts/planted-provider.mjs": 'import { createWorkersAI } from "workers-ai-provider";',
-      ".agents/skills/planted/SKILL.md": "POST https://api.openai.com/v1/responses"
+      ".agents/skills/planted/SKILL.md": "POST https://api.openai.com/v1/responses",
+      "scripts/planted-workers-ai.mjs": "const out = await env.AI.run(model, { prompt });",
+      "scripts/planted-require.cjs": 'const { createOpenAI } = require("@ai-sdk/openai");',
+      "scripts/planted-require-ai.cjs": "const ai = require('ai');",
+      "scripts/planted-agents-models.mjs": 'import { aiSdkModel } from "agents/models/ai-sdk";',
+      "scripts/planted-agents-opencode.mjs": 'const m = await import("agents/models/opencode");',
+      ".github/workflows/planted.yml": "      - run: curl https://api.anthropic.com/v1/messages",
+      ".github/workflows/planted.yaml": "      - run: curl -X POST https://api.x.ai/v1/chat/completions"
     };
     const { unlisted, stale } = findBillingProblems({
       files: Object.keys(planted),
@@ -144,7 +156,7 @@ describe("model-call billing guard", () => {
   it("does not flag a plain provider service ID, only an import of the SDK", () => {
     const { unlisted } = findBillingProblems({
       files: ["scripts/improvements-lib.mjs"],
-      read: () => 'const services = ["workers-ai-provider", "ai-gateway"];\nconst note = "the ai package";',
+      read: () => 'const services = ["workers-ai-provider", "ai-gateway"];\nconst note = "the ai package";\nconst runner = robot.run(1);',
       allowlist: new Map()
     });
     expect(unlisted).toEqual([]);

@@ -11,7 +11,6 @@ import {
   assertExpectedExecutable,
   executableIdentity
 } from "../lib/executable-identity.mjs";
-import { assertClaudeSubscription } from "../lib/harness-guards.mjs";
 import {
   assertDualBoundServersUnchanged,
   pairedListenerPairs,
@@ -20,7 +19,8 @@ import {
 } from "../lib/bound-server-identity.mjs";
 import {
   JUDGE_SELF_TEST_CANDIDATE_COUNT,
-  P6_SELF_TEST_CALL_SCHEMA
+  P6_SELF_TEST_CALL_SCHEMA,
+  assertJudgeSubscription
 } from "./judge.mjs";
 
 export { P6_SELF_TEST_CALL_SCHEMA };
@@ -86,8 +86,7 @@ export function attestP6SelfTestIdentity(
     env = process.env,
     gitIdentity = gitWorktreeIdentity,
     executableIdentityImpl = executableIdentity,
-    environmentIdentityImpl = agentEnvironmentIdentity,
-    claudeSubscriptionImpl = assertClaudeSubscription
+    environmentIdentityImpl = agentEnvironmentIdentity
   } = {}
 ) {
   requirePin(runnerRevision, REVISION_PATTERN, "--runner-revision");
@@ -105,7 +104,6 @@ export function attestP6SelfTestIdentity(
     claudeBinarySha256,
     { label: "p6 Claude CLI" }
   );
-  claudeSubscriptionImpl({ claudePath: binary.resolvedPath, env });
   const environment = assertExpectedAgentEnvironment(
     environmentIdentityImpl(env),
     claudeEnvironmentSha256,
@@ -210,6 +208,7 @@ export function runP6JudgeSelfTest({
   spawnSyncImpl = spawnSync,
   judgePath = JUDGE_PATH,
   attestIdentity = (expected) => attestP6SelfTestIdentity(expected),
+  assertSubscription = assertJudgeSubscription,
   beforeCall = () => {},
   log = console.log
 } = {}) {
@@ -220,6 +219,8 @@ export function runP6JudgeSelfTest({
   }
   requireExactJudgeModel(pins?.judgeModel);
   const before = attestIdentity(pins);
+  // Once, before the first paid candidate. Each candidate process probes again before its own call.
+  assertSubscription({ claudePath: before.binary.resolvedPath });
   runStaticChild(spawnSyncImpl, judgePath);
   assertStableP6SelfTestIdentity(before, attestIdentity(pins));
 

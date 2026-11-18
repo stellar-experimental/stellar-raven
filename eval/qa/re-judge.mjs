@@ -28,6 +28,7 @@ import {
   buildTranscriptEvidence,
   hasSuccessfulAnswer,
   judgeInputSha256,
+  assertJudgeSubscription,
   judgeCase,
   judgeCasePanel,
   JUDGE_MODEL,
@@ -62,7 +63,6 @@ import {
   assertExpectedExecutable,
   executableIdentity
 } from "../lib/executable-identity.mjs";
-import { assertClaudeSubscription } from "../lib/harness-guards.mjs";
 
 const QA_DIR = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(QA_DIR, "..", "..");
@@ -262,8 +262,7 @@ export function attestRejudgeIdentity(
   {
     env = process.env,
     executableIdentityImpl = executableIdentity,
-    environmentIdentityImpl = agentEnvironmentIdentity,
-    claudeSubscriptionImpl = assertClaudeSubscription
+    environmentIdentityImpl = agentEnvironmentIdentity
   } = {}
 ) {
   if (typeof claudePath !== "string" || !claudePath) {
@@ -274,7 +273,6 @@ export function attestRejudgeIdentity(
     expectedAgentBinarySha256,
     { label: "re-judge Claude CLI" }
   );
-  claudeSubscriptionImpl({ claudePath: binary.resolvedPath, env });
   const environment = assertExpectedAgentEnvironment(
     environmentIdentityImpl(env),
     expectedAgentEnvironmentSha256,
@@ -1030,6 +1028,8 @@ async function main() {
   }
 
   const judgeIdentityBefore = attestRejudgeIdentity(options);
+  // Once, before the first judge call: the status probe is not part of the post-call attestation.
+  assertJudgeSubscription({ claudePath: judgeIdentityBefore.binary.resolvedPath });
   const startedAt = new Date().toISOString();
   const spendLedger = createSpendLedger(options.maxBudgetUsd);
   // The pin exists before the first checkpoint, so meta.judgeModel is an exact ID or null, never an alias.

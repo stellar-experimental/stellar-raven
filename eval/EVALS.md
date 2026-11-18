@@ -57,6 +57,12 @@ The client set is in [the roster](../.agents/model-roster.md#models-for-evals-an
 7. A comparison across a change of resolved model (answering or judge) is not like for like. A gate or QA baseline re-baselines when its resolved model changes. Eval defaults are family aliases, so every artifact records the exact ID that ran beside the alias requested. A new resolved judge model needs the paid seven-case self-test, under its own authorization, before its first headline judged run, and that run sets the new baseline.
 8. Preserve dated evidence. A historical score does not establish current correctness or authorize another paid run.
 
+When a round establishes an upstream defect, file or update evidence-backed findings in [improvements/](../improvements/README.md).
+Record problems in this repository in [.agents/TODO.md](../.agents/TODO.md).
+The [improvements workflow](../.agents/skills/improvements-pipeline/SKILL.md) defines evidence and status requirements.
+
+Dated audit records live under [research/audits/](../research/audits/).
+
 ## Model-call billing
 
 Evals, judging, testing and building run on subscription CLIs as `hc` children: Claude Code, Codex,
@@ -65,13 +71,14 @@ API is allowed only for an exception in this section. Any other API-billed run n
 written approval naming the run. A paid subscription run still needs its own written authorization
 (`AGENTS.md`, "Spend and evidence").
 
-**Pre-run billing checks.** Make each check before a paid lane. None makes a model call.
+**Pre-run billing checks.** Make each check before a paid lane. None makes a model call. Every CLI's
+launch environment also has no provider API key set.
 
 | CLI | Check |
 |---|---|
-| Claude Code | `claude auth status --json` shows `authMethod` `claude.ai` and a `subscriptionType`. `assertClaudeSubscription` (`eval/lib/harness-guards.mjs`) enforces it in `run-qa.mjs`, `re-judge.mjs`, both judge self-tests, the discovery runner and the judge half of `npm run eval:playground`. An API key, an auth token, a cloud-provider switch or a Console login each refuse the run. |
-| Codex | `codex login status` prints "Logged in using ChatGPT". |
-| Grok | `grok --help` has no offline login check. The lane's first run records the billing mode. |
+| Claude Code | `claude auth status --json` shows `authMethod` `claude.ai`, `apiProvider` `firstParty` and a `subscriptionType`, and the environment sets no model-endpoint override (`ANTHROPIC_BASE_URL` and its Bedrock, Vertex, Foundry, AWS, Google Cloud and Mantle variants, or a `CLAUDE_CODE_USE_*` provider switch). `assertClaudeSubscription` (`eval/lib/harness-guards.mjs`) enforces both once per paid entry point before its first model call: `run-qa.mjs`, `re-judge.mjs`, the judge self-test and its candidates, the discovery runner and the judge half of `npm run eval:playground`. It probes the way the child runs: the child's environment and working directory, and the root flags that change which settings load (`--setting-sources`, `--disable-slash-commands`, `--safe-mode`, `--strict-mcp-config`). `auth status` accepts them only before the subcommand. An API key, an auth token, a cloud provider or a Console login each refuse the run. `auth status` does not report a base URL, so a base URL set in a settings file is not seen by the check, even when the probe loads that source. An answering agent launches with `--setting-sources ""` and loads none; a judge loads the default sources, so keep `ANTHROPIC_BASE_URL` out of the settings files on a judging machine. |
+| Codex | `codex login status` prints "Logged in using ChatGPT", and `OPENAI_API_KEY` is unset. |
+| Grok | `grok usage` cannot show the plan in this version, so no command checks the login offline. Establish the SuperGrok login interactively before launch, and keep `XAI_API_KEY` unset. |
 | OpenCode | The probe below. |
 
 **OpenCode probe.** OpenCode also holds API-key providers (Cloudflare AI Gateway, Workers AI,
@@ -105,11 +112,6 @@ the eval cost frame. The `cloudflare-observability-review` skill reads Gateway l
 telemetry through the Cloudflare API and makes no model call. CI, `test/smoke` (a mocked `AI`
 binding), `test/live` and `usage/` make none.
 
-`test/model-call-billing.test.mjs` fails when a tracked code file outside the exceptions names a
-provider endpoint, an AI Gateway token, the Playground chat route or an AI SDK import.
-
-When a round establishes an upstream defect, file or update evidence-backed findings in [improvements/](../improvements/README.md).
-Record problems in this repository in [.agents/TODO.md](../.agents/TODO.md).
-The [improvements workflow](../.agents/skills/improvements-pipeline/SKILL.md) defines evidence and status requirements.
-
-Dated audit records live under [research/audits/](../research/audits/).
+`test/model-call-billing.test.mjs` fails when a code file, skill document or GitHub Actions workflow
+outside the exceptions names a provider endpoint, an AI Gateway token, an `AI.run(` or `AI.gateway(`
+call, the Playground chat route or an AI SDK import.

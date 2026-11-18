@@ -119,6 +119,7 @@ import {
   hasSuccessfulAnswer,
   isRetryableJudgeError,
   judgeInputSha256,
+  assertJudgeSubscription,
   judgeCase,
   judgeCaseTiered,
   createPanelCaseBudget,
@@ -156,7 +157,7 @@ import {
 import {
   REQUIRED_MCP_SERVER_NAME,
   answeringAgentIsolationArgs,
-  assertClaudeSubscription,
+  assertAnsweringAgentSubscription,
   answeringAgentIsolationRecord,
   assertFailClosedCliSyntax,
   assertNeutralAgentCwd,
@@ -1794,7 +1795,6 @@ async function main() {
     agentEnvironmentIdentity(),
     parseRequiredAgentEnvironmentFlag(args)
   );
-  assertClaudeSubscription({ claudePath: agentBinary.resolvedPath, env: process.env });
   const safeJudge = (input, options) =>
     judgeCase(input, { ...options, command: agentBinary.resolvedPath, safeMode: true });
   const {
@@ -1825,6 +1825,8 @@ async function main() {
       throw new Error("--judge-stored and --ids are contradictory; use re-judge.mjs --ids");
     }
     const stabilityRegister = prepareStabilityRegister();
+    // Once, before the first judge call.
+    assertJudgeSubscription({ claudePath: agentBinary.resolvedPath });
     const { summary, metrics, judgeTiering } = await judgeStoredResults(path.resolve(process.cwd(), judgeStoredPath), {
       judgeModel: argVal("--judge-model"),
       judgePanel: parseJudgePanel(argVal("--judge-panel")),
@@ -1980,6 +1982,15 @@ async function main() {
   // project-instruction discovery walk.
   const agentCwd = mkdtempSync(path.join(os.tmpdir(), "qa-agent-cwd-"));
   assertNeutralAgentCwd(agentCwd, { repoRoot: REPO_ROOT, label: "run-qa answering agent" });
+  // Once, before the first paid call: the answering agent's directory and flags, then the judge's.
+  try {
+    assertAnsweringAgentSubscription({ claudePath: agentBinary.resolvedPath, cwd: agentCwd });
+    if (!noJudge) assertJudgeSubscription({ claudePath: agentBinary.resolvedPath });
+  } catch (error) {
+    rmSync(tmpDir, { recursive: true, force: true });
+    rmSync(agentCwd, { recursive: true, force: true });
+    throw error;
+  }
   const mcpConfigPath = path.join(tmpDir, "mcp.json");
   const upstreamUrl = `http://localhost:${port}/mcp`;
   const mcpServerConfig =

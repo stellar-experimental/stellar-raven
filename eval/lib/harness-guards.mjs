@@ -82,33 +82,86 @@ export function answeringAgentIsolationArgs(environment = {}) {
 }
 
 /**
- * Fail closed unless the Claude Code CLI, run with the environment its paid
- * child will inherit, is logged in on the claude.ai subscription. `claude auth
- * status --json` makes no model call. An API key, an auth token, a cloud
- * provider switch or a stored Console login each change `authMethod`, so a
- * positive check catches what a list of environment variables would miss.
+ * Environment variables the Claude Code CLI reads to send inference somewhere other than the
+ * first-party endpoint. Checked offline: each name is in the installed binary, and the three
+ * `CLAUDE_CODE_USE_*` provider switches (Bedrock, Vertex, Foundry) change `auth status`.
+ * A base URL set through a settings file is not in this environment; the probe sees it only
+ * when it loads the same setting sources as the child.
+ */
+const ENDPOINT_OVERRIDE_VARIABLES = [
+  "ANTHROPIC_BASE_URL",
+  "ANTHROPIC_AWS_BASE_URL",
+  "ANTHROPIC_BEDROCK_BASE_URL",
+  "ANTHROPIC_BEDROCK_MANTLE_BASE_URL",
+  "ANTHROPIC_FOUNDRY_BASE_URL",
+  "ANTHROPIC_GOOGLE_CLOUD_BASE_URL",
+  "ANTHROPIC_VERTEX_BASE_URL"
+];
+const PROVIDER_SWITCH_VARIABLES = [
+  "CLAUDE_CODE_USE_ANTHROPIC_AWS",
+  "CLAUDE_CODE_USE_ANTHROPIC_GOOGLE_CLOUD",
+  "CLAUDE_CODE_USE_BEDROCK",
+  "CLAUDE_CODE_USE_FOUNDRY",
+  "CLAUDE_CODE_USE_GATEWAY",
+  "CLAUDE_CODE_USE_MANTLE",
+  "CLAUDE_CODE_USE_VERTEX"
+];
+const FALSE_SWITCH = new Set(["", "0", "false", "no", "off"]);
+// Fixed text per known `authMethod`. The value itself is never interpolated.
+const AUTH_METHOD_REFUSALS = new Map([
+  ["api_key", "the login is an API key"],
+  ["oauth_token", "the login is an auth token"],
+  ["third_party", "the login is a cloud provider"]
+]);
+
+/**
+ * Fail closed unless the Claude Code CLI, probed the way its paid child will run, is on the
+ * claude.ai subscription at the first-party endpoint. `claude auth status --json` makes no model
+ * call. An API key, an auth token, a cloud-provider switch or a stored Console login each change
+ * `authMethod`, so a positive check catches what a list of variables would miss. An endpoint
+ * override leaves `authMethod` at `claude.ai`, so the environment is checked for those too.
  *
- * Never prints the status body: it holds an account email and organization.
+ * The probe must see what the child sees: pass the child's `env`, `cwd` and the root flags it uses
+ * that change which settings load (`--setting-sources`, `--disable-slash-commands`, `--safe-mode`,
+ * `--strict-mcp-config`). `auth status` accepts them only before the subcommand, so they go first.
+ *
+ * Messages are fixed text: never a status field, an environment value or the status body (it holds
+ * an account email and organization).
  *
  * @param {object} options
  * @param {string} [options.claudePath]  the executable the paid run will spawn
  * @param {object} [options.env]         the environment the paid child will get
+ * @param {string} [options.cwd]         the directory the paid child will run in
+ * @param {string[]} [options.args]      root flags the paid child uses
  * @param {Function} [options.impl]      spawnSync-compatible, injectable for tests
  * @returns {{authMethod: string, subscriptionType: string}}
  */
 export function assertClaudeSubscription({
   claudePath = "claude",
   env = process.env,
+  cwd,
+  args = [],
   impl = spawnSync
 } = {}) {
   const refuse = (reason) => {
     throw new Error(`Claude subscription check: ${reason}; refusing paid calls`);
   };
-  const result = impl(claudePath, ["auth", "status", "--json"], {
+  for (const name of ENDPOINT_OVERRIDE_VARIABLES) {
+    if (String(env?.[name] ?? "").trim() !== "") {
+      refuse(`${name} is set, an alternate model endpoint`);
+    }
+  }
+  for (const name of PROVIDER_SWITCH_VARIABLES) {
+    if (!FALSE_SWITCH.has(String(env?.[name] ?? "").trim().toLowerCase())) {
+      refuse(`${name} is set, a cloud-provider switch`);
+    }
+  }
+  const result = impl(claudePath, [...args, "auth", "status", "--json"], {
     encoding: "utf8",
     timeout: 15_000,
     maxBuffer: 1024 * 1024,
-    env
+    env,
+    ...(cwd === undefined ? {} : { cwd })
   });
   if (result?.error) refuse("claude auth status could not run");
   if (result?.status !== 0) refuse(`claude auth status exited ${result?.status ?? "without a status"}`);
@@ -121,13 +174,35 @@ export function assertClaudeSubscription({
   const method = typeof status?.authMethod === "string" ? status.authMethod : "";
   if (method !== "claude.ai") {
     refuse(
-      `authMethod is ${/^[a-z0-9_.-]{1,32}$/.test(method) ? JSON.stringify(method) : "not claude.ai"}, ` +
+      `${method === "" ? "no authMethod" : (AUTH_METHOD_REFUSALS.get(method) ?? "the login is not the claude.ai subscription")}, ` +
         "not the claude.ai subscription"
     );
+  }
+  if (typeof status.apiProvider === "string" && status.apiProvider !== "firstParty") {
+    refuse("the API provider is not first-party");
   }
   const subscriptionType = typeof status.subscriptionType === "string" ? status.subscriptionType.trim() : "";
   if (!subscriptionType) refuse("no subscriptionType");
   return { authMethod: method, subscriptionType };
+}
+
+/**
+ * The same check for an answering agent: its neutral working directory, the isolation flags it
+ * launches with and `--strict-mcp-config`.
+ */
+export function assertAnsweringAgentSubscription({
+  claudePath,
+  env = process.env,
+  cwd,
+  impl
+}) {
+  return assertClaudeSubscription({
+    claudePath,
+    env,
+    cwd,
+    args: [...answeringAgentIsolationArgs(env), "--strict-mcp-config"],
+    impl
+  });
 }
 
 /** Machine-readable record of the answering-agent isolation contract. */

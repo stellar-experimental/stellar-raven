@@ -694,7 +694,7 @@ source budget and non-promotability under `meta.diagnosticSource`, sets `nonProm
 and `summary: null`, and cannot be used to promote a model or claim an aggregate comparison.
 The source file is never edited; changing its budget/status flags is not a valid workaround.
 
-Judging runs on the Claude Code CLI. There is no AI Gateway judge (round item 8.6). A non-Claude
+Judging runs on the Claude Code CLI. There is no AI Gateway judge. A non-Claude
 second judge follows the TODO item "Build a subscription second judge on OpenCode when a decision
 needs one".
 

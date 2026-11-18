@@ -758,6 +758,27 @@ export function buildJudgeEnv(baseEnv) {
   };
 }
 
+/**
+ * Preflight for a paid judge: probe the subscription the way `judgeCase` spawns the CLI, with
+ * `buildJudgeEnv`, the caller's working directory and the judge's root flags. Call it once
+ * before the first model call, never in a post-call check.
+ */
+export function assertJudgeSubscription({
+  claudePath,
+  env = process.env,
+  cwd = process.cwd(),
+  safeMode = true,
+  impl
+}) {
+  return assertClaudeSubscription({
+    claudePath,
+    env: buildJudgeEnv(env),
+    cwd,
+    args: ["--strict-mcp-config", ...(safeMode ? ["--safe-mode"] : [])],
+    impl
+  });
+}
+
 export function buildJudgeArgs({ model = JUDGE_MODEL, safeMode = true, maxBudgetUsd = null } = {}) {
   if (maxBudgetUsd !== null && (!Number.isFinite(maxBudgetUsd) || maxBudgetUsd < 0)) {
     throw new Error(`maxBudgetUsd must be null or a finite non-negative number, got ${maxBudgetUsd}`);
@@ -1010,8 +1031,7 @@ function attestJudgeSelfTestIdentity(
     env = process.env,
     gitIdentity = gitWorktreeIdentity,
     executableIdentityImpl = executableIdentity,
-    environmentIdentityImpl = agentEnvironmentIdentity,
-    claudeSubscriptionImpl = assertClaudeSubscription
+    environmentIdentityImpl = agentEnvironmentIdentity
   } = {}
 ) {
   const runner = gitIdentity(repoRoot);
@@ -1022,7 +1042,6 @@ function attestJudgeSelfTestIdentity(
     claudeBinarySha256,
     { label: "judge self-test Claude CLI" }
   );
-  claudeSubscriptionImpl({ claudePath: binary.resolvedPath, env });
   const environment = assertExpectedAgentEnvironment(
     environmentIdentityImpl(env),
     claudeEnvironmentSha256,
@@ -1054,6 +1073,7 @@ export async function runPinnedJudgeSelfTestCandidate(
   {
     judge = judgeCase,
     attestIdentity = (expected) => attestJudgeSelfTestIdentity(expected),
+    assertSubscription = assertJudgeSubscription,
     log: reportFailure = (message) => console.error(message)
   } = {}
 ) {
@@ -1062,6 +1082,7 @@ export async function runPinnedJudgeSelfTestCandidate(
     throw new Error("judge self-test requires an exact --judge-model ID, not an alias; resolve the alias first");
   }
   const before = attestIdentity(pins);
+  assertSubscription({ claudePath: before.binary.resolvedPath });
   let reportedModel;
   const result = await runJudgeSelfTestCandidate(index, {
     judge: async (input, options) => {
