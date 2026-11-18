@@ -10,10 +10,14 @@
  *    must not silently shrink the denominator.
  * 3. Reject unsupported CLI syntax before a paid call so measurement flags
  *    cannot be silently ignored.
+ * 4. Refuse a Claude Code run that would bill an API key instead of the
+ *    subscription (`assertClaudeSubscription`).
  *
- * PURITY: no fs, no spawn, no clock, no network. Callers create their own
- * temporary directories and pass the path in.
+ * PURITY: no fs, no clock, no network. The one process spawn is
+ * `assertClaudeSubscription`'s `claude auth status --json`, injectable for
+ * tests. Callers create their own temporary directories and pass the path in.
  */
+import { spawnSync } from "node:child_process";
 import path from "node:path";
 
 /** The explicit MCP server every paid answering agent must connect to. */
@@ -75,6 +79,55 @@ export function answeringAgentIsolationArgs(environment = {}) {
     );
   }
   return ["--setting-sources", "", "--disable-slash-commands"];
+}
+
+/**
+ * Fail closed unless the Claude Code CLI, run with the environment its paid
+ * child will inherit, is logged in on the claude.ai subscription. `claude auth
+ * status --json` makes no model call. An API key, an auth token, a cloud
+ * provider switch or a stored Console login each change `authMethod`, so a
+ * positive check catches what a list of environment variables would miss.
+ *
+ * Never prints the status body: it holds an account email and organization.
+ *
+ * @param {object} options
+ * @param {string} [options.claudePath]  the executable the paid run will spawn
+ * @param {object} [options.env]         the environment the paid child will get
+ * @param {Function} [options.impl]      spawnSync-compatible, injectable for tests
+ * @returns {{authMethod: string, subscriptionType: string}}
+ */
+export function assertClaudeSubscription({
+  claudePath = "claude",
+  env = process.env,
+  impl = spawnSync
+} = {}) {
+  const refuse = (reason) => {
+    throw new Error(`Claude subscription check: ${reason}; refusing paid calls`);
+  };
+  const result = impl(claudePath, ["auth", "status", "--json"], {
+    encoding: "utf8",
+    timeout: 15_000,
+    maxBuffer: 1024 * 1024,
+    env
+  });
+  if (result?.error) refuse("claude auth status could not run");
+  if (result?.status !== 0) refuse(`claude auth status exited ${result?.status ?? "without a status"}`);
+  let status;
+  try {
+    status = JSON.parse(String(result.stdout));
+  } catch {
+    return refuse("claude auth status did not print JSON");
+  }
+  const method = typeof status?.authMethod === "string" ? status.authMethod : "";
+  if (method !== "claude.ai") {
+    refuse(
+      `authMethod is ${/^[a-z0-9_.-]{1,32}$/.test(method) ? JSON.stringify(method) : "not claude.ai"}, ` +
+        "not the claude.ai subscription"
+    );
+  }
+  const subscriptionType = typeof status.subscriptionType === "string" ? status.subscriptionType.trim() : "";
+  if (!subscriptionType) refuse("no subscriptionType");
+  return { authMethod: method, subscriptionType };
 }
 
 /** Machine-readable record of the answering-agent isolation contract. */

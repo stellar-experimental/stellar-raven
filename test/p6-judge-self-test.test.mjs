@@ -381,12 +381,19 @@ describe("reviewed p6 judge self-test wrapper", () => {
   });
 
   it("requires the pinned clean runner, binary hash, and environment hash", () => {
+    const subscriptionChecks = [];
     const dependencies = {
       gitIdentity: () => structuredClone(identity.runner),
       executableIdentityImpl: () => structuredClone(identity.binary),
-      environmentIdentityImpl: () => structuredClone(identity.environment)
+      environmentIdentityImpl: () => structuredClone(identity.environment),
+      claudeSubscriptionImpl: (options) => { subscriptionChecks.push(options); }
     };
     expect(attestP6SelfTestIdentity(pins, dependencies)).toMatchObject(identity);
+    expect(subscriptionChecks).toHaveLength(1);
+    expect(() => attestP6SelfTestIdentity(pins, {
+      ...dependencies,
+      claudeSubscriptionImpl: () => { throw new Error("Claude subscription check: refusing paid calls"); }
+    })).toThrow(/subscription check/);
     expect(() => attestP6SelfTestIdentity(
       { ...pins, runnerRevision: "d".repeat(40) },
       dependencies

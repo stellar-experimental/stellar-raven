@@ -50,6 +50,7 @@ import {
   assertNeutralAgentCwd,
   assertRunPlan,
   formatCompletenessNotice,
+  assertClaudeSubscription,
   runCompleteness
 } from "../eval/lib/harness-guards.mjs";
 import {
@@ -507,6 +508,10 @@ if [ "$1" = "--version" ]; then
   printf '%s\\n' 'fixture-claude 1.0.0'
   exit 0
 fi
+if [ "$1" = "auth" ]; then
+  printf '{"authMethod":"%s","subscriptionType":"max"}\\n' "\${QA_FAKE_AUTH_METHOD:-claude.ai}"
+  exit 0
+fi
 model=""
 while [ "$#" -gt 0 ]; do
   if [ "$1" = "--model" ]; then model="$2"; fi
@@ -529,7 +534,7 @@ printf '{"result":"{\\"score\\":\\"correct\\",\\"coreAnswer\\":\\"correct\\",\\"
   };
   const binarySha256 = sha256(readFileSync(claudePath));
   const environmentSha256 = agentEnvironmentIdentity(environment).sha256;
-  const run = (resultsPath, extraArgs = []) =>
+  const run = (resultsPath, extraArgs = [], extraEnv = {}) =>
     spawnSync(
       process.execPath,
       [
@@ -542,7 +547,7 @@ printf '{"result":"{\\"score\\":\\"correct\\",\\"coreAnswer\\":\\"correct\\",\\"
         binarySha256,
         ...extraArgs
       ],
-      { cwd: REPO_ROOT, env: environment, encoding: "utf8" }
+      { cwd: REPO_ROOT, env: { ...environment, ...extraEnv }, encoding: "utf8" }
     );
   const runCollection = (extraArgs = []) =>
     spawnSync(
@@ -625,6 +630,69 @@ describe("run-qa optional IDs selector guards", () => {
     } finally {
       rmSync(fixture.root, { recursive: true, force: true });
     }
+  });
+});
+
+describe("assertClaudeSubscription refuses a Claude run that would bill an API", () => {
+  const status = (body, overrides = {}) => () => ({
+    status: 0,
+    stdout: typeof body === "string" ? body : JSON.stringify(body),
+    stderr: "",
+    ...overrides
+  });
+
+  it("passes the claude.ai subscription and returns only the two billing fields", () => {
+    const calls = [];
+    const env = { PATH: "/fixture" };
+    const result = assertClaudeSubscription({
+      claudePath: "/fixture/claude",
+      env,
+      impl: (...call) => {
+        calls.push(call);
+        return {
+          status: 0,
+          stdout: JSON.stringify({ authMethod: "claude.ai", subscriptionType: "max", email: "x@example.test" }),
+          stderr: ""
+        };
+      }
+    });
+    expect(result).toEqual({ authMethod: "claude.ai", subscriptionType: "max" });
+    expect(calls).toHaveLength(1);
+    expect(calls[0][0]).toBe("/fixture/claude");
+    expect(calls[0][1]).toEqual(["auth", "status", "--json"]);
+    expect(calls[0][2].env).toBe(env);
+  });
+
+  it.each([
+    ["api_key", { authMethod: "api_key", apiKeySource: "ANTHROPIC_API_KEY" }, /authMethod is "api_key"/],
+    ["oauth_token", { authMethod: "oauth_token" }, /authMethod is "oauth_token"/],
+    ["third_party", { authMethod: "third_party" }, /authMethod is "third_party"/],
+    ["a missing authMethod", { subscriptionType: "max" }, /authMethod is not claude\.ai/],
+    ["a missing subscriptionType", { authMethod: "claude.ai" }, /no subscriptionType/],
+    ["an empty subscriptionType", { authMethod: "claude.ai", subscriptionType: " " }, /no subscriptionType/]
+  ])("refuses %s before any paid call", (_name, body, message) => {
+    expect(() => assertClaudeSubscription({ impl: status(body) })).toThrow(message);
+    expect(() => assertClaudeSubscription({ impl: status(body) })).toThrow(/refusing paid calls/);
+  });
+
+  it("refuses a non-zero exit, a spawn error and output that is not JSON", () => {
+    expect(() => assertClaudeSubscription({ impl: status("", { status: 1 }) })).toThrow(/exited 1/);
+    expect(() => assertClaudeSubscription({ impl: () => ({ error: new Error("ENOENT"), status: null }) }))
+      .toThrow(/could not run/);
+    expect(() => assertClaudeSubscription({ impl: status("not json") })).toThrow(/did not print JSON/);
+  });
+
+  it("never repeats an unexpected authMethod value or the status body", () => {
+    const body = { authMethod: "sk-ant-secret value", email: "private@example.test", subscriptionType: "max" };
+    let message = "";
+    try {
+      assertClaudeSubscription({ impl: status(body) });
+    } catch (error) {
+      message = String(error.message);
+    }
+    expect(message).toMatch(/refusing paid calls/);
+    expect(message).not.toContain("sk-ant");
+    expect(message).not.toContain("private@example.test");
   });
 });
 
@@ -817,6 +885,27 @@ describe("P3 — run-qa CLI pins the inherited agent environment", () => {
       rmSync(fixture.root, { recursive: true, force: true });
     }
   });
+
+  it.each(["api_key", "oauth_token", "third_party"])(
+    "refuses a paid judge call when the Claude login is %s, not the subscription",
+    (authMethod) => {
+      const fixture = createEnvironmentPinCliFixture();
+      try {
+        const resultsPath = writeEnvironmentPinFixture(fixture.root, `auth-${authMethod}`);
+        const result = fixture.run(
+          resultsPath,
+          ["--expect-agent-environment-sha256", fixture.environmentSha256],
+          { QA_FAKE_AUTH_METHOD: authMethod }
+        );
+
+        expect(result.status).not.toBe(0);
+        expect(result.stderr).toMatch(/Claude subscription check: authMethod is "[a-z_]+", not the claude\.ai subscription/);
+        expect(fixture.paidCalls()).toEqual([]);
+      } finally {
+        rmSync(fixture.root, { recursive: true, force: true });
+      }
+    }
+  );
 
   it("accepts a matching pin and stamps the judge environment identity", () => {
     const fixture = createEnvironmentPinCliFixture();

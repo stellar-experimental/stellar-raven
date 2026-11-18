@@ -48,6 +48,7 @@ import {
 
 import { authorizeSpend, createSpendLedger, parseMaxBudgetUsd, recordSpend, spendLedgerRecord } from "../eval/qa/spend-budget.mjs";
 import { executableIdentity } from "../eval/lib/executable-identity.mjs";
+import { assertClaudeSubscription } from "../eval/lib/harness-guards.mjs";
 
 const DEFAULT_SAMPLE = 5;
 const DEFAULT_SEED = "playground-semantic-v1";
@@ -816,6 +817,7 @@ async function main() {
   const judgeModel = args.judgeModel ?? JUDGE_MODEL;
   const judgePin = createModelPin(judgeModel);
   const judgeExecutable = args.noJudge ? null : executableIdentity("claude");
+  if (judgeExecutable) assertClaudeSubscription({ claudePath: judgeExecutable.resolvedPath, env: process.env });
   const treeAtStart = await workingTreeSnapshot();
   if (args.serverGeneration !== treeAtStart.generationSha256) {
     throw new Error(

@@ -11,6 +11,7 @@ import {
   assertExpectedExecutable,
   executableIdentity
 } from "../lib/executable-identity.mjs";
+import { assertClaudeSubscription } from "../lib/harness-guards.mjs";
 import {
   assertDualBoundServersUnchanged,
   pairedListenerPairs,
@@ -85,7 +86,8 @@ export function attestP6SelfTestIdentity(
     env = process.env,
     gitIdentity = gitWorktreeIdentity,
     executableIdentityImpl = executableIdentity,
-    environmentIdentityImpl = agentEnvironmentIdentity
+    environmentIdentityImpl = agentEnvironmentIdentity,
+    claudeSubscriptionImpl = assertClaudeSubscription
   } = {}
 ) {
   requirePin(runnerRevision, REVISION_PATTERN, "--runner-revision");
@@ -103,6 +105,7 @@ export function attestP6SelfTestIdentity(
     claudeBinarySha256,
     { label: "p6 Claude CLI" }
   );
+  claudeSubscriptionImpl({ claudePath: binary.resolvedPath, env });
   const environment = assertExpectedAgentEnvironment(
     environmentIdentityImpl(env),
     claudeEnvironmentSha256,

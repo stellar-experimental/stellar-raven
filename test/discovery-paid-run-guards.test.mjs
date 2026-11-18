@@ -35,6 +35,10 @@ function createCliFixture() {
     claudePath,
     [
       "#!/bin/sh",
+      "if [ \"$1\" = \"auth\" ]; then",
+      "  printf '{\"authMethod\":\"%s\",\"subscriptionType\":\"max\"}\\n' \"${DISCOVERY_FAKE_AUTH_METHOD:-claude.ai}\"",
+      "  exit 0",
+      "fi",
       "printf '%s\\n' paid >> \"$DISCOVERY_FAKE_CALL_LOG\"",
       "printf '%s\\n' '{\"type\":\"result\",\"total_cost_usd\":0.01}'",
       ""

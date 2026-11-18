@@ -62,6 +62,7 @@ import {
   assertExpectedExecutable,
   executableIdentity
 } from "../lib/executable-identity.mjs";
+import { assertClaudeSubscription } from "../lib/harness-guards.mjs";
 
 const QA_DIR = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(QA_DIR, "..", "..");
@@ -261,7 +262,8 @@ export function attestRejudgeIdentity(
   {
     env = process.env,
     executableIdentityImpl = executableIdentity,
-    environmentIdentityImpl = agentEnvironmentIdentity
+    environmentIdentityImpl = agentEnvironmentIdentity,
+    claudeSubscriptionImpl = assertClaudeSubscription
   } = {}
 ) {
   if (typeof claudePath !== "string" || !claudePath) {
@@ -272,6 +274,7 @@ export function attestRejudgeIdentity(
     expectedAgentBinarySha256,
     { label: "re-judge Claude CLI" }
   );
+  claudeSubscriptionImpl({ claudePath: binary.resolvedPath, env });
   const environment = assertExpectedAgentEnvironment(
     environmentIdentityImpl(env),
     expectedAgentEnvironmentSha256,

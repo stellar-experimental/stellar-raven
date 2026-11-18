@@ -13,6 +13,7 @@ import { createModelPin, resolvedModelFromStream } from "../qa/model-identity.mj
 import {
   REQUIRED_MCP_SERVER_NAME,
   answeringAgentIsolationArgs,
+  assertClaudeSubscription,
   answeringAgentIsolationRecord,
   assertFailClosedCliSyntax,
   assertNeutralAgentCwd,
@@ -468,6 +469,7 @@ async function runPaidDiscovery(paidRun) {
     agentEnvironmentIdentity(),
     paidRun.agentEnvironmentSha256
   );
+  assertClaudeSubscription({ claudePath: agentBinary.resolvedPath, env: process.env });
   const spendLedger = createSpendLedger(paidRun.maxBudgetUsd);
 
   const tempDir = mkdtempSync(path.join(os.tmpdir(), "agent-discovery-"));

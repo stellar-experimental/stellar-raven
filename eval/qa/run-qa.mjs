@@ -156,6 +156,7 @@ import {
 import {
   REQUIRED_MCP_SERVER_NAME,
   answeringAgentIsolationArgs,
+  assertClaudeSubscription,
   answeringAgentIsolationRecord,
   assertFailClosedCliSyntax,
   assertNeutralAgentCwd,
@@ -1793,6 +1794,7 @@ async function main() {
     agentEnvironmentIdentity(),
     parseRequiredAgentEnvironmentFlag(args)
   );
+  assertClaudeSubscription({ claudePath: agentBinary.resolvedPath, env: process.env });
   const safeJudge = (input, options) =>
     judgeCase(input, { ...options, command: agentBinary.resolvedPath, safeMode: true });
   const {
