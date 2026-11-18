@@ -27,7 +27,7 @@ Research notes and possible future work. These notes are not committed product p
   `sources.locate` surface. Its measured reopen trigger follows repository-recovery work.
 - [Skill Discovery Measurements](./skill-discovery-without-bundling.md) — two questions. Do skill
   reads improve navigation-only answers? Do agents use exact section reads?
-- [Raven as a Codegen Correctness Substrate](./codegen-correctness-substrate.md) — an external
+- [Raven as a Codegen Correctness Substrate](../research/audits/2026-08-07-codegen-partner-report.md) — an external
   partner ran long-horizon Soroban codegen with Raven installed alongside. Raven serves guidance
   for many of the reported defect classes, but the defects occurred. The cause is unattributed and
   n=1. No instrument measures that mode.
