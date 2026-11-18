@@ -25,8 +25,20 @@ The canonical host is `raven.stellar.org`. `raven.stellar.buzz` and `agents.stel
 The `/mcp` namespace, `/.well-known/` discovery, and exact `/register`, `/authorize`, `/callback`,
 and `/token` routes stay on each alias. Discovery advertises that origin's issuer, endpoints,
 and protected resource; consent cookies and the WorkOS callback stay on the same origin.
-Existing bearer tokens and refresh grants continue through the same provider and `OAUTH_KV`
-without migration or re-registration. New connections should use `https://raven.stellar.org/mcp`.
+New connections should use `https://raven.stellar.org/mcp`.
+
+Each of the three origins has its own OAuth provider, built at module scope, whose one canonical
+resource is `<origin>/mcp`. The resource binds that origin's tokens and grants: another origin
+refuses them. A grant issued before audience binding carries no resource and binds to the origin
+that first refreshes it. `selectOAuthOrigin` in [src/hosts.ts](src/hosts.ts) picks the provider
+from the request URL's origin alone, never from `Host` or a forwarding header. A request to any
+other origin, such as a production hostname over `http:` or on another port, gets `404` before
+the playground, any provider, or any WorkOS login work. Local dev serves `http:` on `localhost`,
+`127.0.0.1`, and `[::1]` with any port, through a provider built per request. The provider
+caches its helpers on `env.OAUTH_PROVIDER`, bound to itself, so every dispatch passes a copy of
+`env` with that field cleared; the shared `env` is never mutated. Only `/.well-known/oauth-protected-resource/mcp`
+is served; the bare-origin document gives `404`.
+
 For `/mcp`, it checks authorization in this order:
 
 1. `authenticateApiKey` accepts a named bearer credential, `Authorization: Bearer <name>:<token>`.
@@ -38,7 +50,12 @@ For `/mcp`, it checks authorization in this order:
 
 Raven acts as the OAuth authorization server. The provider owns opaque tokens in `OAUTH_KV`, client registration, S256-PKCE, and Client ID Metadata Documents. WorkOS AuthKit authenticates the person through `/authorize` and `/callback`. Raven keeps the peppered subject and OAuth client ID in encrypted grant properties. It discards the WorkOS access token after the code exchange.
 
-The provider validates client identities, redirect matches, URI schemes, and native loopback ports. Raven additionally rejects non-loopback HTTP redirects during registration and authorization. An insecure redirect produces a local `400` response without `Location`. Raven supports HTTPS, loopback HTTP, and native schemes accepted by the provider. Metadata aliases map supported discovery paths to the provider's metadata endpoint.
+The provider validates client identities, redirect matches, and URI forms. Raven narrows the callbacks it uses to an allowlist in [src/auth/redirects.ts](src/auth/redirects.ts): `https:`, `http:` on loopback hosts, and the native schemes `claude:`, `cursor:`, and `warp:`. The provider's `allowPrivateUseRedirectUris` is on so those three schemes work, and the allowlist keeps every other scheme out, including OS protocol handlers such as `smb:` and `ms-settings:`.
+- Registration refuses remote `http:` and any registration with no allowlisted URI. It tolerates other listed URIs, because a client may list a native callback beside a compliant one.
+- Authorization checks the URI in use on both `/authorize` legs, in the provider-error redirect, and for the parked request in `/callback` after the state and browser-binding checks and before the WorkOS exchange. This covers Client ID Metadata Document and older registered clients.
+- A refused callback produces a local `400` without `Location` and without a WorkOS hop. `auth_reject` records `redirect_refused:<scheme>` with a bounded scheme token, never the URI. A new native client is added by naming its scheme after it shows up there.
+
+The allowlist limits callback transports. It does not authenticate the app that owns a scheme; the consent page and the browser-bound WorkOS state do that work. The provider's `onError` hook logs `oauth_error` with the status, code, and the provider's internal `category` and `reason`, never its description. Metadata aliases map supported discovery paths to the provider's metadata endpoint.
 
 The script-free consent page labels the client name as unverified. It shows the complete validated return address as plain text. Approval requires the form's CSRF token and Terms acknowledgement before WorkOS login starts. Cancel requires CSRF validation and returns `303 access_denied` to the validated address. Cancel preserves the OAuth state and issuer, clears the consent cookie, and creates no grant or login state. [src/auth/workos.ts](src/auth/workos.ts) owns this flow.
 

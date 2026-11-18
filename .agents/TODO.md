@@ -867,6 +867,25 @@ HackMeridian probes above.
 Done when: probes Q5, R23, R33, and R35 of the HackMeridian review pass again, or the owner
 leaves release data upstream and the finding is filed.
 
+## Authentication follow-ups
+
+### Re-check Devin CLI sign-in after the oauth-provider 1.x deploy
+
+Round item 7.3, PR 4 gives each served origin its own OAuth provider and resource
+(`<origin>/mcp`). Fewer than 10 Devin CLI sessions hold grants bound to the bare origin
+`https://raven.stellar.org`. They fail at the deploy (a `401` on the access token, `invalid_grant`
+on refresh), and the root `/.well-known/oauth-protected-resource` document those grants came from
+now answers `404`. The owner accepted this on 2026-11-18. A client that follows the `401`
+challenge or sends no `resource` signs in once; one that re-derives the bare origin gets
+`invalid_target` and cannot sign in.
+([design](rounds/2026-11-16-next-phase/items/7.3/pr4-oauth/DESIGN.md), D1.)
+
+Next, after the deploy: read the `auth_reject` and `oauth_error` events in Workers Logs for the
+Devin CLI client and the bare-origin class (`grant_audience_unbound`, `token_audience_unbound`,
+`invalid_target`), and try a Devin CLI sign-in if the owner can run one.
+
+Done when: a Devin CLI sign-in has succeeded, or its failure is understood and recorded.
+
 ## Eval instruments
 
 ### Repair the `test/live/` suites against current code
