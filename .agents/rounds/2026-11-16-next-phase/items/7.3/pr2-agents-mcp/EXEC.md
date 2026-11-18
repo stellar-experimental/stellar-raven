@@ -221,3 +221,16 @@ The picomatch item is unchanged (step 7).
 - The pre-existing live-suite failures above (baseline too).
 - Before the deploy: the AGENTS.md ledger pre-check. After: `live-host-check.mjs`, a connector search,
   and rollback to `35c3b860` if either fails (plan, "Needs from the orchestrator").
+
+## Independent security review and reconciliation (lead)
+
+Reviewer: Codex `gpt-6-astra`, high effort, agentpc `t1xm`, a different vendor from the Sonnet author
+and the Opus lead. It read the import switch, the full stateless-handler chunk diff, the SDK
+v2.3.1...v2.4.0 compare, the lockfile and artifact ownership. It rebuilt the bundle (byte-identical
+SHA-256) and re-checked `mcp:surface`, `npm ls workerd` and the bundle lists. Verdict **PASS**: no
+blocker, major or minor finding, and 2 notes ([DIFF-REVIEW.md](DIFF-REVIEW.md)).
+
+| Note | Disposition |
+|---|---|
+| 1 `getResourceAuthInfo` trusts a correctly shaped `ctx.auth`, and shape is not verification. Safe today: the runtime supplies `ctx`, oauth-provider 0.10.4 sets neither `ctx.auth` nor the symbol, and artifact ownership still comes from `ctx.props` through the host closure | Carried to PR 4 (oauth-provider 1.x): its plan must keep this trust boundary and check what 1.x writes to `ctx.auth` |
+| 2 The live-suite failures predate this PR and are outside the PASS | Recorded as a TODO item, "Repair the `test/live/` suites against current code" (Eval instruments), and in the report |

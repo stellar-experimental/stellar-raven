@@ -869,6 +869,23 @@ leaves release data upstream and the finding is filed.
 
 ## Eval instruments
 
+### Repair the `test/live/` suites against current code
+
+On 2026-11-18 (round item 7.3, PR 2) both live suites failed against a local `npm run dev`, with
+identical results on `origin/main` `0683d266` and on the upgraded branch, so no dependency change
+caused it:
+- `run-live-execute.mjs` failed 3 checks: `initialize` reports no envelope contract in its
+  instructions, case 6's result is unparseable, and case 8 is `isError` with
+  `Cannot read properties of undefined (reading 'slice')`;
+- `run-live-spec-search.mjs` failed case 4, whose oversized whole-spec result is meant to be
+  truncated host-side with the footer.
+
+The cause was not investigated. Until they are repaired, AGENTS.md's live
+check depends on the handshake and smoke lanes.
+
+Done when: both suites pass against a current local server, or each failing check is rewritten to
+the current contract or deleted with a stated guard.
+
 ### Method note: same-surface verdict noise, and the judge-tier cap
 
 Standing note, not a task. Two runs of the same 50 panel rows on the same surface differed on 17 rows (8
