@@ -45,7 +45,8 @@ describe("Gateway blind judge", () => {
     expect(request.input).toEqual([{ role: "user", content: prompt }]);
     expect(result.promptSha256).toBe(sha(prompt));
     expect(JSON.stringify(h.session.snapshot())).not.toContain("host-only-test-token");
-    expect(JUDGE_MODEL).toBe("claude-sonnet-5");
+    // A family alias; verdicts and artifacts record the exact ID that ran.
+    expect(JUDGE_MODEL).toBe("sonnet");
   });
 
   it.each([

@@ -2,7 +2,10 @@ import { streamText } from "ai";
 import { createWorkersAI } from "workers-ai-provider";
 import { openai } from "workers-ai-provider/openai";
 import { describe, expect, it } from "vitest";
+// @ts-ignore The executable deliberately exposes its default matrix for this test seam.
+import { DEFAULT_MODELS as GAUNTLET_DEFAULT_MODELS } from "../scripts/run-demo-model-gauntlet.mjs";
 import {
+  DEMO_CATALOG_LATEST,
   DEMO_FALLBACK_MODEL,
   DEMO_GATEWAY_ID_FALLBACK,
   DEMO_GROK_CONTROL_MODEL,
@@ -76,6 +79,11 @@ function openAiResponsesSseResponse(model: string): Response {
 }
 
 describe("demo model config", () => {
+  it("keeps the gauntlet's default eval-client matrix on the same catalog IDs as the demo", () => {
+    expect(GAUNTLET_DEFAULT_MODELS).toContain(DEMO_CATALOG_LATEST.terra);
+    expect(GAUNTLET_DEFAULT_MODELS).toContain(DEMO_CATALOG_LATEST.grok);
+  });
+
   it("disables AI Gateway logging at the binding boundary", () => {
     expect(demoGatewayOptions("test-gateway")).toEqual({ id: "test-gateway", collectLog: false });
   });
@@ -83,7 +91,7 @@ describe("demo model config", () => {
   it("keeps the primary with the qualified cross-vendor fallback and conservative sampling", () => {
     expect(DEMO_PRIMARY_MODEL).toBe("openai/gpt-6.1-terra");
     expect(DEMO_FALLBACK_MODEL).toBe("anthropic/claude-haiku-5.5");
-    expect(DEMO_GROK_CONTROL_MODEL).toBe("xai/grok-4.6");
+    expect(DEMO_GROK_CONTROL_MODEL).toBe(DEMO_CATALOG_LATEST.grok);
     expect(DEMO_KIMI_CONTROL_MODEL).toBe("@cf/moonshotai/kimi-k2.7-code");
     expect(DEMO_MODEL).toBe(DEMO_PRIMARY_MODEL);
     expect(DEMO_MODELS).toEqual([

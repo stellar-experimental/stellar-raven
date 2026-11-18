@@ -1,24 +1,30 @@
 # Agent model roster
 
-`AGENTS.md` names role tiers and the eval and test model set. This file maps both to exact model
-IDs and launch lines. When a CLI catalog changes, update this file only.
-
-Verified 2026-11-18 against the installed CLI catalogs: Codex `0.169.0`, Claude Code `2.1.327`,
-Grok `1.0.88`.
+`AGENTS.md` names role tiers and the eval and test model set by family. This file maps each family
+to how a launch line selects its newest model. Nothing here pins a version: a run takes the
+family's newest model and records the exact ID it resolved. A run on a different resolved model is
+a different measurement.
 
 ## Repo-work tiers
 
-| Tier | Model ID | Efforts (catalog default) | Working context |
+| Tier | Family | Efforts | Working context |
 |---|---|---|---|
-| Codex frontier | `gpt-6-astra` | low to max, ultra (medium) | 272k |
-| Codex workhorse | `gpt-6.1-sol` | low to max, ultra (low) | 500k |
-| Claude Fable | `claude-fable-5-2` (alias `fable`) | low to max | 1M |
-| Claude Opus | `claude-opus-5-5` (alias `opus`) | low to max | 1M |
-| Grok | `grok-4.7` | low to xhigh (high) | 256k |
+| Codex frontier | Astra (`scripts/latest-model.mjs astra`) | per catalog | per catalog |
+| Codex workhorse | Sol (`scripts/latest-model.mjs sol`) | per catalog | per catalog |
+| Claude Fable | `fable` alias | per catalog | per catalog |
+| Claude Opus | `opus` alias | per catalog | per catalog |
+| Grok | `scripts/latest-model.mjs grok` | per catalog | per catalog |
 
 - Always pass the model flag. An unflagged Codex command inherits the host's
   `~/.codex/config.toml`, which the repository does not set.
-- Launch Claude tiers by alias. A review gate records the resolved ID, not the alias.
+- Claude Code takes the family alias and serves the newest model. Codex and Grok have no alias, so
+  `scripts/latest-model.mjs <family>` reads the CLI's offline catalog cache and prints one ID. It
+  exits non-zero with a reason when the cache is missing or has no match, and prints the cache's
+  `fetched_at` on stderr.
+- **Record the resolved ID for every run, and for a review gate.** Claude: the `modelUsage` key of
+  `--output-format json`, or `model` on the stream-json `system/init` line. Codex: the resolver's
+  output. Grok: the resolver's output plus the `modelUsage` key it reports, which can be a
+  server-side name.
 - `ultra` delegates to subagents. It is a separate execution system, not a higher effort.
 - Any other catalog entry is not a tier until `AGENTS.md` names one for it.
 
@@ -27,29 +33,35 @@ Grok `1.0.88`.
 Use this set when a test or an evaluation needs an answering client or a comparison across
 clients.
 
-| Role | Model | CLI | Model flag |
+| Role | Family | CLI | Model flag |
 |---|---|---|---|
-| Default | Claude Sonnet 5.5 | Claude Code | `--model sonnet` (`claude-sonnet-5-5`) |
-| Default | GPT-6.1 Terra | Codex | `-m gpt-6.1-terra` |
-| Default | Grok 4.7 | Grok | `--model grok-4.7` |
-| Add where it helps | Claude Opus 5.5 | Claude Code | `--model opus` (`claude-opus-5-5`) |
-| Add where it helps | GPT-6.1 Sol | Codex | `-m gpt-6.1-sol` |
+| Default | Claude Sonnet | Claude Code | `--model sonnet` |
+| Default | Codex Terra | Codex | `-m "$M"`, with `M` from `scripts/latest-model.mjs terra` in the two-step form below |
+| Default | Grok | Grok | `--model "$M"`, with `M` from `scripts/latest-model.mjs grok` in the two-step form below |
+| Add where it helps | Claude Opus | Claude Code | `--model opus` |
+| Add where it helps | Codex Sol | Codex | `-m "$M"`, with `M` from `scripts/latest-model.mjs sol` in the two-step form below |
 
-- Haiku and GPT-6 Luna are out of every test and eval: they are less common and too inconsistent
-  to weigh.
-- A frozen measurement contract keeps the models it names: a registered battery's answering set,
-  a judge, and the public Playground models in `src/demo/model-config.ts`. Changing one is a
-  reviewed measurement change under the `run-evals` skill, not a roster edit.
+- Haiku and Codex Luna are out of every test and eval: they are less common and too inconsistent
+  to weigh. The Playground fallback model is the one exception (`src/demo/model-config.ts`).
+- The eval defaults are family aliases. A run's identity is the exact ID it resolved, stored beside
+  the alias it requested (`eval/EVALS.md`). A change of resolved answering or judge model starts a
+  new baseline, under the `run-evals` skill.
+- A dated brief that names an explicit launch line keeps it. This file does not override one.
 
 ## Launch lines
 
 Each lane is a background `hc` child with its first task on the launch line. Replace `<lane>`,
-`<worktree>`, `<model>`, and `<task>`. Keep the task to one line that points at a brief file.
+`<worktree>`, `<family>`, `<alias>`, and `<task>`. Keep the task to one line that points at a brief
+file.
+
+Codex and Grok use the two-step form. A resolver failure then stops the launch. A command
+substitution inside the launch line would pass `-m ""`, and an empty Codex model inherits
+`~/.codex/config.toml`. The first step also gives the orchestrator the ID to record.
 
 ```sh
-hc run --bg --name <lane> --cwd <worktree> codex --no-daemon -m <model> -c 'model_reasoning_effort="high"' -c 'sandbox_workspace_write.network_access=true' -a never -s workspace-write "<task>"
-hc run --bg --name <lane> --cwd <worktree> claude --model <alias> --effort high --permission-mode bypassPermissions "<task>"
-hc run --bg --name <lane> --cwd <worktree> grok --model grok-4.7 --reasoning-effort high --always-approve "<task>"
+M=$(node <worktree>/scripts/latest-model.mjs <sol|astra|terra>) && hc run --bg --name <lane> --cwd <worktree> codex --no-daemon -m "$M" -c 'model_reasoning_effort="high"' -c 'sandbox_workspace_write.network_access=true' -a never -s workspace-write "<task>"
+hc run --bg --name <lane> --cwd <worktree> claude --model <sonnet|opus|fable> --effort high --permission-mode bypassPermissions "<task>"
+M=$(node <worktree>/scripts/latest-model.mjs grok) && hc run --bg --name <lane> --cwd <worktree> grok --model "$M" --reasoning-effort high --always-approve "<task>"
 ```
 
 - **Codex** needs `--no-daemon` under `hc`. Its `workspace-write` sandbox cannot write under
@@ -62,7 +74,15 @@ hc run --bg --name <lane> --cwd <worktree> grok --model grok-4.7 --reasoning-eff
 
 ## How to re-verify
 
-The CLIs cache their catalogs on disk. These reads are offline:
+A family move needs no edit here. Check that the resolver still finds each family when a CLI
+renames one:
+
+```sh
+for f in sol astra terra grok; do node scripts/latest-model.mjs $f; done
+```
+
+The CLIs cache their catalogs on disk. These reads are offline and select model fields only, never
+the credential fields the caches also hold:
 
 ```sh
 codex --version && jq '.client_version, (.models[]|{slug, visibility, description, context_window, default_reasoning_level, efforts:[.supported_reasoning_levels[].effort]})' ~/.codex/models_cache.json
@@ -76,7 +96,7 @@ Claude alias, run `claude -p --model <alias> --output-format json "Reply ok" | j
 and read the `claude-<family>-*` key.
 
 - Map tiers from the catalog description, not the name. Codex family names change meaning
-  between generations.
+  between generations. Read the description when a new generation lands.
 - Working context is the catalog's `context_window`, not `max_context_window`.
-- A catalog entry proves a model is selectable, not that a call works. Before you bind a new ID,
-  run one short review with it as an `hc` lane.
+- A catalog entry proves a model is selectable, not that a call works. The first lane on a newly
+  resolved ID is that check. When its launch fails, fall back to the previous model and report.

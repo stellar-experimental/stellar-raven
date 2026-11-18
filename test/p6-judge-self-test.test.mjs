@@ -44,7 +44,8 @@ const pins = {
   runnerRevision: identity.runner.revision,
   claudePath: identity.binary.resolvedPath,
   claudeBinarySha256: identity.binary.sha256,
-  claudeEnvironmentSha256: identity.environment.sha256
+  claudeEnvironmentSha256: identity.environment.sha256,
+  judgeModel: "claude-sonnet-5-5"
 };
 
 function callRecord(index, overrides = {}) {
@@ -92,6 +93,7 @@ describe("reviewed p6 judge self-test wrapper", () => {
       "--claude-path", pins.claudePath,
       "--expect-claude-binary-sha256", pins.claudeBinarySha256,
       "--expect-claude-environment-sha256", pins.claudeEnvironmentSha256,
+      "--judge-model", pins.judgeModel,
       "--out", "/tmp/p6-summary.json"
     ])).toEqual({ ...pins, out: "/tmp/p6-summary.json" });
   });
@@ -101,7 +103,8 @@ describe("reviewed p6 judge self-test wrapper", () => {
       "--runner-revision", pins.runnerRevision,
       "--claude-path", pins.claudePath,
       "--expect-claude-binary-sha256", pins.claudeBinarySha256,
-      "--expect-claude-environment-sha256", pins.claudeEnvironmentSha256
+      "--expect-claude-environment-sha256", pins.claudeEnvironmentSha256,
+      "--judge-model", pins.judgeModel
     ];
     const digest = ["--expect-paired-listeners-sha256", "d".repeat(64)];
     expect(parseP6SelfTestCli([...base, "--paired-listeners", "/tmp/listeners.json", ...digest, "--out", "/tmp/p6.json"]))
@@ -272,7 +275,9 @@ describe("reviewed p6 judge self-test wrapper", () => {
         "--expect-claude-binary-sha256",
         identity.binary.sha256,
         "--expect-claude-environment-sha256",
-        identity.environment.sha256
+        identity.environment.sha256,
+        "--judge-model",
+        pins.judgeModel
       ]);
     }
     expect(P6_SELF_TEST_CALLS).toBe(7);
@@ -435,12 +440,44 @@ describe("reviewed p6 judge self-test wrapper", () => {
     const record = await runPinnedJudgeSelfTestCandidate(0, pins, {
       judge: async (_input, options) => {
         receivedOptions = options;
-        return { score: "correct", costUsd: 0.2 };
+        return { score: "correct", costUsd: 0.2, resolvedModel: pins.judgeModel };
       },
       attestIdentity: () => structuredClone(identity)
     });
-    expect(receivedOptions).toEqual({ maxBudgetUsd: 0.5, command: "/opt/claude" });
+    // The exact judge ID is what the call asks for, and the strict record gains no model key.
+    expect(receivedOptions).toEqual({ maxBudgetUsd: 0.5, command: "/opt/claude", model: "claude-sonnet-5-5" });
     expect(record).toEqual(callRecord(0, { label: record.label, costUsd: 0.2 }));
+  });
+
+  it("fails a candidate whose verdict reports a different model than the exact judge, with the reason on stderr", async () => {
+    const reasons = [];
+    for (const resolvedModel of ["claude-sonnet-5-6", null, undefined]) {
+      const record = await runPinnedJudgeSelfTestCandidate(0, pins, {
+        judge: async () => ({ score: "correct", costUsd: 0.2, resolvedModel }),
+        attestIdentity: () => structuredClone(identity),
+        log: (message) => reasons.push(message)
+      });
+      expect(record.ok).toBe(false);
+      expect(Object.keys(record)).toEqual(Object.keys(callRecord(0)));
+    }
+    expect(reasons).toEqual([
+      expect.stringContaining("reported model claude-sonnet-5-6, not the requested claude-sonnet-5-5"),
+      expect.stringContaining("reported model none"),
+      expect.stringContaining("reported model none")
+    ]);
+  });
+
+  it("refuses an alias or a missing --judge-model before any call", async () => {
+    for (const judgeModel of ["sonnet", "opus", "", undefined]) {
+      await expect(
+        runPinnedJudgeSelfTestCandidate(0, { ...pins, judgeModel }, {
+          judge: async () => { throw new Error("must not call"); },
+          attestIdentity: () => structuredClone(identity)
+        })
+      ).rejects.toThrow(/exact --judge-model ID, not an alias/);
+      expect(() => runP6JudgeSelfTest({ pins: { ...pins, judgeModel }, spawnSyncImpl: () => { throw new Error("no spawn"); } }))
+        .toThrow(/exact model ID, not an alias/);
+    }
   });
 
   it("rejects a dirty runner before identity comparison", () => {

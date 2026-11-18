@@ -10,8 +10,9 @@
  *         coreAnswer: "correct" | "incorrect" | null, avoidMatches: number[],
  *         missingFacts: string[], wrongClaims: string[], rationale: string }
  *
- * Implementation: one headless `claude -p --model claude-sonnet-5
- * --output-format json` call first. The tiered path can add two calls when
+ * Implementation: one headless `claude -p --model sonnet
+ * --output-format json` call first (the alias; the verdict reports the exact
+ * model ID the call ran on as `resolvedModel`). The tiered path can add two calls when
  * stability history or a boundary verdict requires the three-vote panel.
  * "error" means the judge itself failed (CLI error / unparseable output / a
  * verdict that contradicts itself), never a grade of the candidate — so every
@@ -27,6 +28,7 @@
  * exits non-zero when a candidate result violates its expected grade.
  */
 import { spawnSync } from "node:child_process";
+import { isAliasRequest, resolvedModelFromUsage } from "./model-identity.mjs";
 import { createHash } from "node:crypto";
 import { readFileSync, readdirSync } from "node:fs";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -55,7 +57,11 @@ import {
   gitWorktreeIdentity
 } from "../lib/bound-server-identity.mjs";
 
-export const JUDGE_MODEL = "claude-sonnet-5";
+/**
+ * A family alias: Claude Code serves the newest Sonnet. Verdicts carry the exact ID that ran
+ * (`resolvedModel`), and artifacts record both (eval/qa/model-identity.mjs).
+ */
+export const JUDGE_MODEL = "sonnet";
 /**
  * Stall handling for one judge call. A judge CLI that the harness kills prints
  * no cost, and a budgeted method stops on a missing cost. So the CLI handles
@@ -665,10 +671,14 @@ export async function judgeCase(
     envelope = null;
   }
   const resultText = envelope?.result ?? decodeCliEvidenceText(res.stdout);
-  return judgeVerdictFromText(input, {
-    resultText, transcriptEvidence, promptSha256,
-    costUsd: validCost(envelope?.total_cost_usd) ? envelope.total_cost_usd : undefined
-  });
+  return {
+    ...judgeVerdictFromText(input, {
+      resultText, transcriptEvidence, promptSha256,
+      costUsd: validCost(envelope?.total_cost_usd) ? envelope.total_cost_usd : undefined
+    }),
+    // The exact model ID this call ran on, or null when the envelope does not name one.
+    resolvedModel: resolvedModelFromUsage(model, envelope?.modelUsage)
+  };
 }
 
 /** Shared rubric validation for CLI and host-side, tool-free API transports. */
@@ -1030,21 +1040,42 @@ function assertStableJudgeSelfTestIdentity(before, after) {
   }
 }
 
+/**
+ * One self-test candidate on ONE exact judge. The calibration is of a specific model, so an alias
+ * is refused, and a candidate whose verdict reports a different model fails (`ok: false`, reason on
+ * stderr). The strict call record has an exact key set, so it carries no model field.
+ */
 export async function runPinnedJudgeSelfTestCandidate(
   index,
   pins,
   {
     judge = judgeCase,
-    attestIdentity = (expected) => attestJudgeSelfTestIdentity(expected)
+    attestIdentity = (expected) => attestJudgeSelfTestIdentity(expected),
+    log: reportFailure = (message) => console.error(message)
   } = {}
 ) {
+  const judgeModel = pins?.judgeModel;
+  if (typeof judgeModel !== "string" || judgeModel === "" || isAliasRequest(judgeModel)) {
+    throw new Error("judge self-test requires an exact --judge-model ID, not an alias; resolve the alias first");
+  }
   const before = attestIdentity(pins);
+  let reportedModel;
   const result = await runJudgeSelfTestCandidate(index, {
-    judge: (input, options) => judge(input, { ...options, command: before.binary.resolvedPath }),
+    judge: async (input, options) => {
+      const verdict = await judge(input, { ...options, command: before.binary.resolvedPath, model: judgeModel });
+      reportedModel = verdict?.resolvedModel;
+      return verdict;
+    },
     maxBudgetUsd: 0.5,
     log() {}
   });
   assertStableJudgeSelfTestIdentity(before, attestIdentity(pins));
+  const modelMatches = reportedModel === judgeModel;
+  if (!modelMatches) {
+    reportFailure(
+      `judge self-test candidate ${index} reported model ${reportedModel ?? "none"}, not the requested ${judgeModel}`
+    );
+  }
   return {
     schema: P6_SELF_TEST_CALL_SCHEMA,
     index: result.index,
@@ -1057,7 +1088,7 @@ export async function runPinnedJudgeSelfTestCandidate(
     gradeMatches: result.gradeMatches,
     costReported: result.costReported,
     costWithinCap: result.costWithinCap,
-    ok: result.ok,
+    ok: result.ok && modelMatches,
     runnerRevision: before.runner.revision,
     runnerDirty: before.runner.dirty,
     claudePath: before.binary.resolvedPath,
@@ -1283,7 +1314,8 @@ if (isMain) {
       "--runner-revision",
       "--claude-path",
       "--expect-claude-binary-sha256",
-      "--expect-claude-environment-sha256"
+      "--expect-claude-environment-sha256",
+      "--judge-model"
     ]);
     const values = {};
     if (args.length !== flags.size * 2) {
@@ -1306,7 +1338,8 @@ if (isMain) {
       runnerRevision: values["--runner-revision"],
       claudePath: values["--claude-path"],
       claudeBinarySha256: values["--expect-claude-binary-sha256"],
-      claudeEnvironmentSha256: values["--expect-claude-environment-sha256"]
+      claudeEnvironmentSha256: values["--expect-claude-environment-sha256"],
+      judgeModel: values["--judge-model"]
     });
     console.log(JSON.stringify(result));
     process.exitCode = result.ok ? 0 : 1;

@@ -51,7 +51,9 @@ mismatch. There is no automatic resume or retry.
 
 ## Configure and review without calls
 
-Create a local config with every field explicit:
+Create a local config with every field explicit. Name the newest Sol in the AI Gateway catalog on
+the day of the run (the example uses `gpt-6.1-sol`). The config stays explicit by design: identity
+hashes the exact model, so a family move never changes an existing config.
 
 ```json
 {

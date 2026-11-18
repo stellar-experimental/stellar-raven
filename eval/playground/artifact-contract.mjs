@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { isAliasRequest } from "../qa/model-identity.mjs";
 
 export const PLAYGROUND_ARTIFACT_CONTRACT = "playground-semantic-result/v3";
 
@@ -136,7 +137,7 @@ export function buildPlaygroundArtifactMeta({
     tree,
     serverGenerationSha256: server.generationSha256,
     answeringConfigSha256: sha256Json(answeringConfiguration(answering)),
-    judgeTupleSha256: sha256Json(judge),
+    judgeTupleSha256: sha256Json(judgeTupleForSnapshot(judge)),
     capContextSha256: sha256Json(capContext)
   };
 
@@ -154,6 +155,41 @@ export function buildPlaygroundArtifactMeta({
   };
   assertPlaygroundArtifactMeta(meta);
   return meta;
+}
+
+/**
+ * The judge tuple the input snapshot hashes. `judge.resolvedModel` (the exact ID the first verdict
+ * reported) is added after the run, so it stays outside the hash: `judge.model` is the request, the
+ * pre-run identity. Stored v3 artifacts carry no `resolvedModel` and hash exactly as before.
+ */
+export function judgeTupleForSnapshot(judge) {
+  if (!judge || typeof judge !== "object") return judge;
+  const { resolvedModel: _resolvedModel, ...tuple } = judge;
+  return tuple;
+}
+
+/**
+ * Rows whose graded verdict reports a judge model other than the artifact's `judge.resolvedModel`.
+ * An unresolved artifact (legacy v3, or no verdict reports one) has no recorded identity to
+ * contradict, so it conflicts with nothing and stays readable.
+ */
+export function playgroundJudgeEvidenceConflicts(results) {
+  const recorded = results?.meta?.judge?.resolvedModel;
+  if (typeof recorded !== "string" || !Array.isArray(results?.rows)) return [];
+  return results.rows
+    .filter((row) => ["correct", "partial", "wrong"].includes(row?.verdict?.score))
+    .filter((row) => typeof row.verdict.resolvedModel === "string" && row.verdict.resolvedModel !== recorded)
+    .map((row) => ({ id: row.id, reported: row.verdict.resolvedModel, recorded }));
+}
+
+/** Refuse an artifact whose recorded judge identity a graded verdict contradicts. */
+export function assertPlaygroundJudgeEvidence(results, label = "results") {
+  const [first] = playgroundJudgeEvidenceConflicts(results);
+  if (first) {
+    throw new Error(
+      `invalid ${PLAYGROUND_ARTIFACT_CONTRACT}: ${label} judge.resolvedModel ${first.recorded} conflicts with the verdict reported for ${first.id} (${first.reported})`
+    );
+  }
 }
 
 export function assertPlaygroundArtifactMeta(meta) {
@@ -220,6 +256,17 @@ export function assertPlaygroundArtifactMeta(meta) {
     requiredString(judge.rubric, "judge.rubric");
   } else if (judge.model !== null || judge.rubric !== null) {
     fail("disabled judge must use explicit null model and rubric");
+  }
+  if (judge.resolvedModel !== undefined) {
+    if (!judge.enabled) fail("disabled judge cannot carry judge.resolvedModel");
+    requiredString(judge.resolvedModel, "judge.resolvedModel");
+    // It must be an exact ID, and consistent with the request: an alias request resolves within
+    // its family, and an exact request resolves to itself.
+    if (isAliasRequest(judge.resolvedModel)) fail("judge.resolvedModel must be an exact model ID, not an alias");
+    const family = isAliasRequest(judge.model) ? judge.model.replace(/\[.*\]$/, "").toLowerCase() : null;
+    if (family ? !judge.resolvedModel.startsWith(`claude-${family}-`) : judge.resolvedModel !== judge.model) {
+      fail("judge.resolvedModel does not match the requested judge.model");
+    }
   }
   requiredString(judge.packVersion, "judge.packVersion");
   if (judge.temperature?.value !== null || judge.temperature?.semantics !== "provider-default-unpinned") {
@@ -316,7 +363,7 @@ export function assertPlaygroundArtifactMeta(meta) {
   if (snapshot.answeringConfigSha256 !== sha256Json(answeringConfiguration(answering))) {
     fail("inputSnapshot.answeringConfigSha256 does not match answering");
   }
-  if (snapshot.judgeTupleSha256 !== sha256Json(judge)) {
+  if (snapshot.judgeTupleSha256 !== sha256Json(judgeTupleForSnapshot(judge))) {
     fail("inputSnapshot.judgeTupleSha256 does not match judge");
   }
   if (snapshot.capContextSha256 !== sha256Json(caps)) {

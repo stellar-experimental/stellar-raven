@@ -11,7 +11,7 @@ import { buildJudgePrompt, buildTranscriptEvidence, judgeSelfTestFixture, JUDGE_
 import { PACK_VERSION } from "./evidence-pack.mjs";
 import { diagnosticRejudgeSource, diagnosticAnswerProblem, partialRecoverySource } from "./diagnostic-rejudge-source.mjs";
 import { verifySourceCases, resolveCasesRef, goldenTimeConsistency, verdictAgreement } from "./re-judge.mjs";
-import { PLAYGROUND_ARTIFACT_CONTRACT, assertCurrentPlaygroundContract, assertNotPlaygroundQuarantine, assertPlaygroundArtifactMeta } from "../playground/artifact-contract.mjs";
+import { PLAYGROUND_ARTIFACT_CONTRACT, assertCurrentPlaygroundContract, assertNotPlaygroundQuarantine, assertPlaygroundArtifactMeta, assertPlaygroundJudgeEvidence } from "../playground/artifact-contract.mjs";
 
 const sha256 = (value) => createHash("sha256").update(value).digest("hex");
 const shaPattern = /^[a-f0-9]{64}$/;
@@ -97,7 +97,7 @@ export function prepareGatewayRejudge(plan, { identityImpl = gatewayJudgeIdentit
       if (JSON.stringify(plan.ids) !== JSON.stringify(diagnostic.attemptedIds)) throw new Error("partial source requires all attempted rows");
       partial = { ...plan.source.partial, parentTaskId: recovery.parentTaskId, experimentId: recovery.experimentId, proof: proofIdentity, conservativeChargeUsd: recovery.conservativeChargeUsd };
     } else if (plan.source.diagnostic === true) diagnostic = diagnosticRejudgeSource(result);
-    else { assertNotPlaygroundQuarantine(result); assertPlaygroundArtifactMeta(result.meta); }
+    else { assertNotPlaygroundQuarantine(result); assertPlaygroundArtifactMeta(result.meta); assertPlaygroundJudgeEvidence(result); }
     const verified = verifySourceCases(result, plan.source.path, { casesRef: resolveCasesRef(result, plan.source.casesRef), ...(partial ? { selectedIds: diagnostic.selectedIds } : {}) });
     if (!verified.guard.matches) throw new Error("source case snapshot mismatch");
     const byId = new Map(result.rows.map((row) => [row.id, row]));

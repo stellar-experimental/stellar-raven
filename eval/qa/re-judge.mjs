@@ -34,13 +34,16 @@ import {
   JUDGE_RUBRIC
 } from "./judge.mjs";
 import { PACK_VERSION } from "./evidence-pack.mjs";
+import { createModelPin, isAliasRequest, observeJudgeModel } from "./model-identity.mjs";
 import { panelConfidence } from "./panel-confidence.mjs";
 import { diagnosticRejudgeSource } from "./diagnostic-rejudge-source.mjs";
 import {
   PLAYGROUND_ARTIFACT_CONTRACT,
   assertCurrentPlaygroundContract,
   assertNotPlaygroundQuarantine,
-  assertPlaygroundArtifactMeta
+  assertPlaygroundArtifactMeta,
+  assertPlaygroundJudgeEvidence,
+  playgroundJudgeEvidenceConflicts
 } from "../playground/artifact-contract.mjs";
 import { sha256Text } from "./five-track.mjs";
 import {
@@ -131,7 +134,8 @@ export function parseArgs(argv) {
   const positional = [];
   let ids;
   let flipsVs;
-  let judgeModel = JUDGE_MODEL;
+  // Undefined unless --judge-model is given: main defaults to the judge the source recorded.
+  let judgeModel;
   let casesRef;
   let judgePanel = 1;
   let allowNonIdentical = false;
@@ -552,16 +556,38 @@ export function goldenTimeConsistency(results, selectedRows, caseById) {
   return { matches: violations.length === 0, finishedAt, checkedIds, violations };
 }
 
+/**
+ * The exact judge a stored artifact recorded, or null. A re-judge is "same judge, new sample", so
+ * this is the default judge; an alias (`JUDGE_MODEL`) only chooses the judge for a fresh run.
+ * A Playground artifact's `judge.resolvedModel` is the exact ID; `judge.model` is what was asked.
+ */
+export function recordedJudgeModel(results) {
+  const versionedPlayground = results?.meta?.artifactContract === PLAYGROUND_ARTIFACT_CONTRACT;
+  // A recorded Playground identity that a graded verdict contradicts is unknown, so the same-judge
+  // guard (source and --flips-vs baseline alike) refuses instead of trusting it.
+  if (versionedPlayground && playgroundJudgeEvidenceConflicts(results).length > 0) return null;
+  // Only an exact ID is an identity. A legacy `judge.model` that is an alias names a family, not
+  // the model that ran, so it is unknown.
+  const model = versionedPlayground
+    ? results.meta.judge?.resolvedModel ?? results.meta.judge?.model
+    : results?.meta?.judgeModel;
+  return isExactModelId(model) ? model : null;
+}
+
+function isExactModelId(model) {
+  return typeof model === "string" && model !== "" && !isAliasRequest(model);
+}
+
 export function tupleGuard(results, judgeModel) {
   const versionedPlayground = results?.meta?.artifactContract === PLAYGROUND_ARTIFACT_CONTRACT;
   const source = versionedPlayground
     ? {
-        model: results.meta.judge?.model,
+        model: recordedJudgeModel(results),
         rubric: results.meta.judge?.rubric,
         packVersion: results.meta.judge?.packVersion
       }
     : {
-        model: results?.meta?.judgeModel,
+        model: recordedJudgeModel(results),
         rubric: results?.meta?.judgeRubric,
         packVersion: results?.meta?.packVersion
       };
@@ -569,7 +595,10 @@ export function tupleGuard(results, judgeModel) {
   return {
     source,
     current,
+    // The same judge needs a known exact ID on both sides: two nulls or two aliases never match.
     matches:
+      isExactModelId(source.model) &&
+      isExactModelId(current.model) &&
       source.model === current.model &&
       source.rubric === current.rubric &&
       source.packVersion === current.packVersion
@@ -689,6 +718,8 @@ export function buildRejudgeArtifact({ baseMeta, rows, spendLedger, runState, fi
     ...(baseMeta.diagnosticSource ? { nonPromotable: true, summary: null } : {}),
     meta: {
       ...baseMeta,
+      // The exact ID that ran. An explicit alias has none until the first response pins it.
+      ...(runState.judgePin ? { judgeModel: runState.judgePin.identity() } : {}),
       resultSchema: REJUDGE_RESULT_SCHEMA,
       completedIds: rows.map((row) => row.id),
       promptSha256ById: Object.fromEntries(rows.map((row) => [row.id, row.new.promptSha256 ?? null])),
@@ -783,6 +814,8 @@ export async function rejudgeRows({
   runState = {}
 }) {
   const rows = [];
+  // Pin after the first response: an explicit alias runs as the exact ID the first call reported.
+  const judgePin = (runState.judgePin ??= createModelPin(judgeModel));
   for (const [index, row] of selectedRows.entries()) {
     const kase = caseById.get(row.id);
     if (!kase) fail(`source cases file no longer contains selected case ${row.id}`);
@@ -824,6 +857,7 @@ export async function rejudgeRows({
       });
       const verdict = await judge(input, {
         ...options,
+        model: judgePin.argument(),
         maxBudgetUsd: authorization.maxBudgetUsd
       });
       const call = {
@@ -837,6 +871,7 @@ export async function rejudgeRows({
       calls.push(call);
       try {
         recordSpend(spendLedger, authorization, verdict?.costUsd);
+        observeJudgeModel(judgePin, verdict);
       } catch (error) {
         error.rejudgeCall = call;
         throw error;
@@ -847,7 +882,7 @@ export async function rejudgeRows({
     try {
       verdict = await judgeCasePanel(
         { ...kase, candidateAnswer: row.answer, transcript: row.transcript },
-        { model: judgeModel, panelSize: judgePanel, judge: budgetedJudge }
+        { model: judgePin.argument(), panelSize: judgePanel, judge: budgetedJudge }
       );
     } catch (error) {
       const budgetEnforcementError =
@@ -910,12 +945,14 @@ async function main() {
   const options = parseArgs(process.argv.slice(2));
   const sourceResultsPath = path.resolve(process.cwd(), options.resultsPath);
   const { parsed: results, sha256: sourceResultsSha256 } = readJson(sourceResultsPath, "source results");
+  options.judgeModel ??= recordedJudgeModel(results) ?? JUDGE_MODEL;
   const diagnosticSource = options.diagnosticSource ? diagnosticRejudgeSource(results) : null;
   if (!diagnosticSource) assertNotPlaygroundQuarantine(results, "source results");
   assertCurrentPlaygroundContract(results, "source results");
   requireRows(results, "source results");
   if (results?.meta?.artifactContract === PLAYGROUND_ARTIFACT_CONTRACT) {
     assertPlaygroundArtifactMeta(results.meta);
+    assertPlaygroundJudgeEvidence(results, "source results");
   }
 
   const casesRef = resolveCasesRef(results, options.casesRef);
@@ -992,7 +1029,13 @@ async function main() {
   const judgeIdentityBefore = attestRejudgeIdentity(options);
   const startedAt = new Date().toISOString();
   const spendLedger = createSpendLedger(options.maxBudgetUsd);
-  const runState = { stopError: null, incompleteIds: [], unattemptedIds: [] };
+  // The pin exists before the first checkpoint, so meta.judgeModel is an exact ID or null, never an alias.
+  const runState = {
+    stopError: null,
+    incompleteIds: [],
+    unattemptedIds: [],
+    judgePin: createModelPin(options.judgeModel)
+  };
   const stamp = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
   const resultsDir = path.join(QA_DIR, "results");
   const outPath = path.join(resultsDir, `${stamp}-rejudge.json`);
@@ -1024,7 +1067,8 @@ async function main() {
       tuple,
       goldenTime: { ...goldenTime, allowGoldenDrift: options.allowGoldenDrift },
       ...(selection.baselineGuard ? { baselineGuard: selection.baselineGuard } : {}),
-      judgeModel: options.judgeModel,
+      judgeModel: runState.judgePin.identity(),
+      judgeRequestedModel: options.judgeModel,
       ...(options.judgePanel > 1 ? { judgePanel: options.judgePanel } : {}),
       judgeRubric: JUDGE_RUBRIC,
       packVersion: PACK_VERSION,

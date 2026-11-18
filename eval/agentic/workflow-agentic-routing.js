@@ -1,8 +1,8 @@
 export const meta = {
   name: 'agentic-routing-eval',
-  description: 'Sonnet 5 sub-agents (low+medium effort) pick tools via live MCP search; graded vs golden labels',
+  description: 'Sonnet sub-agents (low+medium effort) pick tools via live MCP search; graded vs golden labels',
   phases: [
-    { title: 'Ask', detail: '30 questions x 2 efforts, Sonnet 5 agents against live /mcp' },
+    { title: 'Ask', detail: '30 questions x 2 efforts, Sonnet agents against live /mcp' },
   ],
 }
 

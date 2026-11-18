@@ -60,9 +60,13 @@ export async function judgeWithFakeCli(
 /** A CLI that returns `modelVerdict` in a normal envelope and exits 0. */
 export function judgeWithFakeClaude(
   modelVerdict,
-  { costUsd = 0.125, promptIncludes = [], input = FAKE_JUDGE_INPUT } = {}
+  { costUsd = 0.125, promptIncludes = [], input = FAKE_JUDGE_INPUT, modelUsage } = {}
 ) {
-  const envelope = JSON.stringify({ result: JSON.stringify(modelVerdict), total_cost_usd: costUsd });
+  const envelope = JSON.stringify({
+    result: JSON.stringify(modelVerdict),
+    total_cost_usd: costUsd,
+    ...(modelUsage === undefined ? {} : { modelUsage })
+  });
   return judgeWithFakeCli(
     `#!/usr/bin/env node\n` +
       `const prompt = require("node:fs").readFileSync(0, "utf8");\n` +

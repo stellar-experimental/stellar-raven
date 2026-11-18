@@ -1048,7 +1048,7 @@ differ, or a same-surface pair at one cap measures the null directly. Delete thi
 OpenCode stays out of client diagnostics (owner, 2026-11-17): no decision depends on it. Round item
 4.1's [record](rounds/2026-11-16-next-phase/items/4.1/RECORD.md) measured GPT-6.1 Terra in the Codex
 CLI and Grok 4.7 in the Grok CLI. Reopen on a production signal: OpenCode in the user-agent read,
-or a reported OpenCode failure. Then run GPT-6.1 Terra through the ChatGPT login, smoke first, under
+or a reported OpenCode failure. Then run Codex Terra through the ChatGPT login, smoke first, under
 a new spend authorization, after the [brief](rounds/2026-11-16-next-phase/items/4.1/briefs/opencode-mac.md)
 and the smoke rule are rewritten for that provider.
 
@@ -1231,6 +1231,38 @@ Either way, update the `test/README.md` scope line that now names the extra file
 
 Done when: `npm test` runs no file under `research/`.
 
+### Run the judge self-test on the resolved judge model
+
+The QA judge default is the Claude Code alias `sonnet` (item 8.3), so it moved from `claude-sonnet-5`
+to the newest Sonnet (`claude-sonnet-5-5` on 2026-11-18). The paid seven-case self-test
+(`npm run eval:qa:selftest`) has never graded that model. Item 8.3 made no paid call, so it could not
+close this.
+
+Trigger: the first headline judged run, or any run whose verdicts will be compared. Run the self-test
+under its own authorization first, and let that run set the new baseline (`eval/EVALS.md`, rule 7).
+The self-test requires an exact `--judge-model` and refuses an alias: resolve `sonnet` first (the
+roster's one-call `modelUsage` read), pass that ID, and each candidate fails if its verdict reports
+another model. The call record has an exact key set and no model field, so record the exact ID beside
+the summary. Repeat it whenever the resolved judge model moves.
+
+Done when: the self-test passes under a written authorization and its record names the resolved judge
+ID.
+
+### Bump the Playground catalog IDs when the AI Gateway lists a newer model
+
+No provider offers a family alias, so `DEMO_CATALOG_LATEST` in `src/demo/model-config.ts` (Terra,
+Haiku, Grok) and the default matrix in `scripts/run-demo-model-gauntlet.mjs` name exact AI Gateway
+catalog IDs (item 8.3).
+
+Trigger: the AI Gateway catalog lists a newer Terra, Haiku, Sonnet or Grok. Owner: the orchestrator,
+when it next reads the catalog. Bump the constant and the gauntlet literal together (a test pins
+that they agree). Check `DEMO_ANTHROPIC_5X_MODEL` in the same change: it matches generation 5 only,
+and an unmatched Claude ID silently loses the adaptive-thinking options. A new primary or fallback
+model is a Playground change, so run the gauntlet on the candidate first
+(`eval/playground/README.md`).
+
+Done when: no trigger remains open. Delete this item then and add it back at the next trigger.
+
 ## Documentation follow-ups
 
 ### Apply the item 8.2 deferred documentation changes after run 2.2c merges
@@ -1332,9 +1364,10 @@ lifecycle decision.
 ### Verify that xAI accepts the explicit tool `strict` field
 
 Both Playground tools set `strict: false`, and the field reaches the OpenAI-compatible chat
-transport of the Grok control model `xai/grok-4.6`. xAI acceptance is unverified.
+transport of the Grok control model (`DEMO_GROK_CONTROL_MODEL`, the newest Grok in the AI Gateway
+catalog). xAI acceptance is unverified.
 
-Done when: the model gauntlet shows `xai/grok-4.6` accepts the request before the next
+Done when: the model gauntlet shows the Grok control model accepts the request before the next
 control-model lane, or a reviewed change omits the field for that transport.
 
 ### Confirm `npm run mcp-key` on wrangler 4.164.0

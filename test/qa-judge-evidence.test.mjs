@@ -1921,7 +1921,7 @@ describe("QA judge CLI evidence", () => {
         avoidMatches: [],
         score: "correct"
       },
-      { costUsd: 0.25 }
+      { costUsd: 0.25, modelUsage: { "claude-sonnet-5-5": { costUSD: 0.25 }, "claude-haiku-5-5": {} } }
     );
 
     expect(verdict).toEqual({
@@ -1932,6 +1932,9 @@ describe("QA judge CLI evidence", () => {
       avoidMatches: [],
       rationale: "The candidate gives the required answer.",
       costUsd: 0.25,
+      // The default judge is the alias `sonnet`; the verdict names the exact model that ran and
+      // ignores the auxiliary Haiku key.
+      resolvedModel: "claude-sonnet-5-5",
       rubric: "v2.11",
       packVersion: "p9",
       promptSha256: verdict.promptSha256

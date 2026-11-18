@@ -15,6 +15,7 @@
  * blocked request.
  */
 import { createHash } from "node:crypto";
+import { resolvedModelFromStream } from "./model-identity.mjs";
 
 /**
  * Bump when the STORED outcome shape changes (run-qa stamps it in meta).
@@ -31,6 +32,10 @@ import { createHash } from "node:crypto";
  * `resultProjection` (eval/qa/search-projection.mjs). v1 artifacts recorded a
  * sliced query and no hits at all, so they are not comparable for any routing
  * or coverage read — the readers refuse to mix the two rather than join them.
+ *
+ * The stored outcome also carries `resolvedModel` (the exact model ID the CLI reported, or null).
+ * It is optional: no reader requires it, so adding it is not a shape move and does not bump this
+ * string. A bump would strand every stored v4 file.
  */
 export const AGENT_RESULT_SCHEMA = "qa-agent-result-v4";
 
@@ -468,6 +473,9 @@ function artifactOutcomes(transcript) {
  *        Bounded evidence for a tool whose result is NOT kept whole. A
  *        non-null return is stored as `resultProjection`. Used for `search`,
  *        where the whole body is mostly prose but the ranking is the measurement.
+ * @param {string|null} [options.requestedModel]
+ *        The `--model` value the call asked for (an alias or an exact ID). It picks the
+ *        `modelUsage` key when `init.model` does not name a `claude-` model.
  * @param {string|null} [options.requiredMcpServerName]
  *        Require this server to appear as connected in the system init event.
  * @returns {object} the structured outcome (see AGENT_RESULT_SCHEMA).
@@ -488,6 +496,7 @@ export function parseAgentResult(spawn, options = {}) {
   let finalUsage = null;
   let resultMessage = null;
   let mcpServers = null;
+  let initModel = null;
   let sawAnyMessage = false;
   let protocolIssue = null;
   // Stream events can hold separate content blocks from the same message.
@@ -508,6 +517,7 @@ export function parseAgentResult(spawn, options = {}) {
     sawAnyMessage = true;
 
     if (msg.type === "system" && msg.subtype === "init") {
+      initModel = typeof msg.model === "string" ? msg.model : null;
       mcpServers = Array.isArray(msg.mcp_servers)
         ? msg.mcp_servers.map((server) => ({
             name: String(server?.name ?? ""),
@@ -585,6 +595,11 @@ export function parseAgentResult(spawn, options = {}) {
 
   return {
     schema: AGENT_RESULT_SCHEMA,
+    resolvedModel: resolvedModelFromStream({
+      requested: options.requestedModel ?? null,
+      initModel,
+      modelUsage: resultMessage?.modelUsage
+    }),
     answer: failure ? "" : answer,
     transcript,
     turns,

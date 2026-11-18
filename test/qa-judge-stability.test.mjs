@@ -480,3 +480,91 @@ describe("tiered QA judge selection", () => {
     });
   });
 });
+
+describe("stability register judge models", () => {
+  const generate = (artifacts) => {
+    const root = mkdtempSync(join(tmpdir(), "qa-stability-judges-"));
+    try {
+      const resultsDir = join(root, "results");
+      mkdirSync(resultsDir);
+      for (const [name, data] of Object.entries(artifacts)) writeFileSync(join(resultsDir, name), JSON.stringify(data));
+      const outPath = join(root, "register.json");
+      generateStabilityRegister({ resultsDir, outPath });
+      return { document: JSON.parse(readFileSync(outPath, "utf8")), loaded: loadJudgeStabilityRegister(outPath), outPath };
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  };
+  const collection = (judgeModel) => ({ meta: { judgeModel }, rows: [{ id: "case-a", verdict: correct() }] });
+
+  it("records the distinct exact judge IDs of collection artifacts", () => {
+    const { document, loaded } = generate({
+      "a-variantA.json": collection("claude-sonnet-5"),
+      "b-variantA.json": collection("claude-sonnet-5-5"),
+      "c-variantA.json": collection("claude-sonnet-5")
+    });
+    expect(document._meta.judgeModels).toEqual(["claude-sonnet-5", "claude-sonnet-5-5"]);
+    expect(document._meta.judgeModelsUnknown).toBe(false);
+    expect(loaded.judgeModels).toEqual(["claude-sonnet-5", "claude-sonnet-5-5"]);
+    expect(loaded.judgeModelsUnknown).toBe(false);
+  });
+
+  it("collects both sides of a re-judge pair, so a cross-model flip lists both judges", () => {
+    const { document } = generate({
+      "a-rejudge.json": {
+        meta: { judgeModel: "claude-sonnet-5-5", tuple: { source: { model: "claude-sonnet-5" } } },
+        rows: [{ id: "case-a", original: correct(), new: partial() }]
+      }
+    });
+    expect(document._meta.judgeModels).toEqual(["claude-sonnet-5", "claude-sonnet-5-5"]);
+    expect(document._meta.judgeModelsUnknown).toBe(false);
+    expect(document["case-a"].crossPassFlips).toBe(1);
+  });
+
+  it("records an unknown contributor instead of dropping it, and treats an alias as unknown", () => {
+    const { document, loaded } = generate({
+      "a-variantA.json": collection("claude-sonnet-5-5"),
+      "b-variantA.json": { rows: [{ id: "case-a", verdict: correct() }] },
+      "c-variantA.json": collection("sonnet")
+    });
+    expect(document._meta.judgeModels).toEqual(["claude-sonnet-5-5"]);
+    expect(document._meta.judgeModelsUnknown).toBe(true);
+    expect(loaded.judgeModelsUnknown).toBe(true);
+  });
+
+  it("adds no identity from a file that contributes no verdicts or pairs", () => {
+    // The reviewer's probe: an empty re-judge file whose judges differ from the collection's.
+    const { document } = generate({
+      "a-variantA.json": collection("claude-sonnet-5-5"),
+      "b-rejudge.json": {
+        meta: { judgeModel: "claude-sonnet-5-5", tuple: { source: { model: "claude-sonnet-5-6" } } },
+        rows: []
+      },
+      "c-variantA.json": { meta: { judgeModel: "claude-opus-5-5" }, rows: [{ id: "case-a", verdict: null }, { verdict: correct() }] },
+      "d-rejudge.json": {
+        meta: { judgeModel: "claude-opus-5-5", tuple: { source: { model: "claude-sonnet-5-6" } } },
+        rows: [{ id: "case-a", original: correct(), new: null }]
+      }
+    });
+    expect(document._meta.judgeModels).toEqual(["claude-sonnet-5-5"]);
+    expect(document._meta.judgeModelsUnknown).toBe(false);
+  });
+
+  it("reads null from a register without the lists", () => {
+    const { outPath, document } = generate({ "a-variantA.json": collection("claude-sonnet-5-5") });
+    const root = mkdtempSync(join(tmpdir(), "qa-stability-old-"));
+    try {
+      const old = structuredClone(document);
+      delete old._meta.judgeModels;
+      delete old._meta.judgeModelsUnknown;
+      const path = join(root, "old.json");
+      writeFileSync(path, JSON.stringify(old));
+      const loaded = loadJudgeStabilityRegister(path, { verifySources: false });
+      expect(loaded.judgeModels).toBeNull();
+      expect(loaded.judgeModelsUnknown).toBeNull();
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+      void outPath;
+    }
+  });
+});

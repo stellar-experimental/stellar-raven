@@ -54,7 +54,8 @@ rule, the cost estimate and the API-billed exceptions. The client set is in
 4. Grade volatile facts through behavioral goldens. Use the golden-truth workflow for changes to expected answers.
 5. Edit source case files, then regenerate outputs. Never edit generated cases, samples, or lifecycle registries by hand.
 6. Treat results as local evidence under ignored `results/` directories. Prune results older than 30 days after investigations end.
-7. Preserve dated evidence. A historical score does not establish current correctness or authorize another paid run.
+7. A comparison across a change of resolved model (answering or judge) is not like for like. A gate or QA baseline re-baselines when its resolved model changes. Eval defaults are family aliases, so every artifact records the exact ID that ran beside the alias requested. A new resolved judge model needs the paid seven-case self-test, under its own authorization, before its first headline judged run, and that run sets the new baseline.
+8. Preserve dated evidence. A historical score does not establish current correctness or authorize another paid run.
 
 When a round establishes an upstream defect, file or update evidence-backed findings in [improvements/](../improvements/README.md).
 Record problems in this repository in [.agents/TODO.md](../.agents/TODO.md).

@@ -177,7 +177,9 @@ async function loadJudgeTuple(): Promise<JudgeTuple> {
   const packPath = "../eval/qa/evidence-pack.mjs";
   const judge = (await import(judgePath)) as { JUDGE_MODEL: string; JUDGE_RUBRIC: string };
   const pack = (await import(packPath)) as { PACK_VERSION: string };
-  return { judgeModel: judge.JUDGE_MODEL, judgeRubric: judge.JUDGE_RUBRIC, packVersion: pack.PACK_VERSION };
+  // The default judge is an alias (`JUDGE_MODEL`); a stored artifact records the exact ID that ran, and
+  // the same-judge guard needs a known exact ID on both sides.
+  return { judgeModel: "claude-sonnet-5-5", judgeRubric: judge.JUDGE_RUBRIC, packVersion: pack.PACK_VERSION };
 }
 
 // A source and a baseline over the same single case, both identical to the
@@ -577,6 +579,9 @@ describe("re-judge saved-answer selection", () => {
         resultsPath,
         "--flips-vs",
         baselinePath,
+        // The source recorded no judge, so the baseline's exact judge must be named explicitly.
+        "--judge-model",
+        "claude-sonnet-5-5",
         "--allow-non-identical",
         "--allow-empty",
         "--dry-run"
