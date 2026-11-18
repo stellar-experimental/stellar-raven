@@ -82,9 +82,8 @@ export default defineConfig({
         // files, which are served from the local map above so skill.read (and
         // its integrity check) is exercised without real network. (`cloudflare:test`
         // has no `fetchMock`, so enforcement lives here and per-test mocking
-        // uses vi.stubGlobal;
-        // tests run in the same isolate as the main worker, so global stubs
-        // apply to host-side adapter fetches too.)
+        // uses vi.stubGlobal; tests run in the same isolate as the main worker,
+        // so global stubs apply to host-side adapter fetches too.)
         outboundService(request: Request) {
           const body = pinnedBodies.get(request.url);
           if (body !== undefined) {

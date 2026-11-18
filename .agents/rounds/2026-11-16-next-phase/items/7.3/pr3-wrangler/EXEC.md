@@ -187,3 +187,22 @@ wrangler's own templates produced the same output at 4.164.0 as at 4.153.0. **PR
 `wrangler 4.164.0 and @cloudflare/vitest-plugin 1.8.4; drop the pool overrides (round item 7.3)` on
 `np/7.3-deps-wrangler`, with the plan folder (`../README.md`, `PLAN.md`, `REVIEW.md`, `briefs/`,
 `EXEC.md`) in the same commit. The commit SHA is in the final report to the lead.
+
+## Independent diff review and reconciliation (lead)
+
+Reviewer: Codex frontier, `gpt-6-astra`, high effort, agentpc `t1xt`. It differs from the Sonnet
+author and the Opus lead and orchestrator. It recomputed the lockfile diff (28 removed, 2 added, 35
+changed) and checked all 37 added or changed entries against registry metadata. It also compared the
+pool 0.23.0 source with the plugin 1.8.4 source for smoke isolation. The plugin sets
+`enableDevRegistry: false` itself, the outbound wall and `remoteBindings: false` still hold, and the
+new config handling is opt-in. It rebuilt `dist/server.js` and `dist/usage/collector.js` with the
+same SHA-256 values as above. Verdict **PASS**, no blocker, major or minor finding, and 2 notes
+([DIFF-REVIEW.md](DIFF-REVIEW.md)).
+
+| Note | Disposition |
+|---|---|
+| 1 Local gates on Node 26; CI on Node 24 is the gate of record | Already recorded; the PR waits for CI |
+| 2 The TODO item's "`npm audit` passes" was read as "no new advisory"; picomatch stays tracked | Already recorded; the picomatch item is unchanged |
+
+Lead edit after the review: a comment-only rewrap in `test/smoke/vitest.config.ts` (the offline-wall
+comment had a broken line). It does not change the bundle, and the smoke gate was re-run.

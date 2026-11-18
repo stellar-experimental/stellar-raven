@@ -11,7 +11,7 @@ merged into. Each has its own folder (PLAN, REVIEW, EXEC, REPORT).
 |---|---|---|---|
 | 1 | Routine in-range patches | [pr1-routine](pr1-routine/) | merged, #480, deployed `35c3b860` |
 | 2 | `agents` 0.28.1 to 0.33.0, with `@modelcontextprotocol/server` and `/client` 2.3.1 to 2.4.0 and `@modelcontextprotocol/sdk` 1.32.1 to 1.32.2 | [pr2-agents-mcp](pr2-agents-mcp/) | merged, #482, deployed `fe3708cb` |
-| 3 | `wrangler` 4.153 to 4.164, the vitest pool, miniflare and `esbuild` 0.28.2, and the move from the deprecated pool to `@cloudflare/vitest-plugin` | [pr3-wrangler](pr3-wrangler/) | planned |
+| 3 | `wrangler` 4.153 to 4.164, the vitest pool, miniflare and `esbuild` 0.28.2, and the move from the deprecated pool to `@cloudflare/vitest-plugin` | [pr3-wrangler](pr3-wrangler/) | PR open |
 | 4 | `@cloudflare/workers-oauth-provider` 1.x | pr4-oauth | waiting |
 | 5 | `vitest` 5 | proposed | the plugin's peer range has accepted `vitest` ^5 since 1.4.0; proposed after PR 4 |
 
