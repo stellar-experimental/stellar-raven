@@ -53,7 +53,7 @@ battery. The current split, the held-out status that the dated runs read, is dra
   [round ledger](rounds/2026-11-16-next-phase.md) holds the SHA-256 and the reason of every
   amendment.
 
-Rules that follow:
+State and rules:
 
 - Two tuning loops tuned on the tuning rows ([loop 1](rounds/2026-11-14-baseline-tuning.md),
   [loop 2](rounds/2026-11-15-tuning-loop-2.md)).
@@ -827,8 +827,9 @@ so the trap touches few callers and the fix is low value. Query text is not logg
 passes `npm run eval:routing -- --gate` with no holdout loss; no operation-specific exception. The
 test is probes Q5, R23, R33, and R35 of the HackMeridian review.
 
-Done when: those four probes pass again through a gated general fix, and either the owner's source
-decision is recorded or the upstream request is filed in `improvements/`.
+Done when: the ranking trap is fixed through a gated general change, and either the four probes
+pass again or the owner's decision leaves release data upstream and the request is filed in
+`improvements/`.
 
 ## Authentication follow-ups
 
@@ -1048,8 +1049,7 @@ Done when: no assertion in that test compares a single timed sample.
 
 The two golden rounds (`.agents/rounds/2026-11-02-golden-audit/` and
 `.agents/rounds/2026-11-14-golden-coverage-audit/`) hold JSON intermediates that carry case text
-outside the case folders. At round item 7.1, 109 files stood beyond the five that current artifacts
-cite. The corpus cites 24 of those as per-case provenance and `sd-108` cites a 25th, so 84 could
+outside the case folders. At round item 7.1, 109 files were removal candidates. The corpus cites 24 of them as per-case provenance and `sd-108` cites a 25th, so 84 could
 go. Round item 7.1 left the flush out so it would not land in a code commit
 ([report](rounds/2026-11-16-next-phase/items/7.1/REPORT.md)). The `.ignore` files and the hook
 already keep agents out of the folders, so this is cleanup, not exposure.
