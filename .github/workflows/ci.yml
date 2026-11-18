@@ -89,7 +89,7 @@ jobs:
         run: command -v rg || { sudo apt-get update && sudo apt-get install -y ripgrep; }
       - run: npm test
       # workerd smoke lane (test/smoke/): the assembled router
-      # + real Dynamic Worker executor boundary via vitest-pool-workers.
+      # + real Dynamic Worker executor boundary via @cloudflare/vitest-plugin.
       # Offline enforced (miniflare outboundService wall) — auth/keys are
       # test-only fakes from its config, so no repo secrets are needed.
       - run: npm run test:smoke

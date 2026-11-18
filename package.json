@@ -74,26 +74,19 @@
     "zod": "^4.6.7"
   },
   "devDependencies": {
-    "@cloudflare/vitest-pool-workers": "^0.23.0",
+    "@cloudflare/vitest-plugin": "1.8.4",
     "@cloudflare/workers-types": "^5.20261117.1",
     "@modelcontextprotocol/client": "2.4.0",
     "@modelcontextprotocol/sdk": "1.32.2",
     "@types/node": "^26.6.6",
-    "esbuild": "0.28.1",
+    "esbuild": "0.28.2",
     "happy-dom": "21.0.4",
-    "miniflare": "5.20261023.0-beta",
+    "miniflare": "5.20261117.0-beta",
     "typescript": "^7.0.2",
     "vitest": "^4.1.12",
-    "wrangler": "4.153.0"
+    "wrangler": "4.164.0"
   },
   "engines": {
     "node": ">=24 <25"
-  },
-  "overrides": {
-    "miniflare": "$miniflare",
-    "@cloudflare/vitest-pool-workers": {
-      "wrangler": "$wrangler",
-      "zod": "$zod"
-    }
   }
 }
