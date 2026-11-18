@@ -4,9 +4,9 @@
  * later in it. An entry here restates that caveat in one line, and the card
  * renderer keeps it inside the same 220 characters (src/mcp/tools.ts).
  *
- * Add an operation only when its full description or its output schema already
- * states the caveat and a reader who misses it would state something false from
- * a successful result. The envelope and the server instructions already say that an empty
+ * Add an operation only when its full description already states the caveat
+ * and a reader who misses it would state something false from a successful
+ * result. The envelope and the server instructions already say that an empty
  * result is not absence and that a semantic row is a candidate: do not repeat
  * those here. Keys are exact exposed operation ids; the catalog builder fails
  * on an unknown key or an over-long line. The text never feeds search scoring.
@@ -25,8 +25,6 @@ export const CARD_CAVEATS = Object.freeze({
     "Read placementRank with its track; never infer finishing place from list position. null means unranked.",
   "scout.getLeaderboard":
     "tvl null means no figure, never zero. issues is the open backlog, not activity.",
-  "scout.getRwaAssets":
-    "Not a launch or news timeline: launchedAt is Soroban contract creation only. Includes fiat stablecoins; state is not product status.",
   "scout.getStablecoins":
     "Compare marketCapUSD, not raw supply across pegs. null is unmeasured, never zero; check basis.",
   "scout.listAudits":

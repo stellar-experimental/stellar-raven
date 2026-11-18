@@ -25,6 +25,9 @@ export const EXCLUDED_SCOUT_OPERATIONS = new Map([
   // Keep verification excluded until a routing-contract candidate passes
   // the routing gates and independent exposure review.
   ["GET /api/verify", "verifyClaim"],
+  // RWA routing can capture unrelated implementation queries. Require a
+  // general routing repair and independent operation review before exposure.
+  ["GET /api/rwa", "getRwaAssets"],
   // Review reads a caller-supplied submission link. Keep it excluded until a
   // hackathon routing repair passes the gates and independent exposure review.
   ["GET /api/hackathons/review", "reviewSubmission"],
