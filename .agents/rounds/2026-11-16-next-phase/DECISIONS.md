@@ -114,6 +114,29 @@ order 7.1, 7.2, 7.3.
   then the OAuth provider 1.x with a security review. Owner: "sounds good, research, review, test and
   eval and decide and execute what sticks".
 
+## Follow-up answers (2026-11-18)
+
+The owner answered the proposal to audit `.agents/TODO.md` on 2026-11-18. The same section records
+the outcomes that the 7.x items decided without a separate owner question.
+
+- **TODO audit** (round item 8.1). Owner: "sounds good, rewrite for watching, put this and the Your
+  call items into TODO and audit and ensure that TODO has all the right stuff for the right reasons
+  well scoped and detailed and accurate to the current state".
+- **RWA (issue #167) closed as excluded by measurement** (round items 6.3 and 7.2). The orchestrator
+  closed the issue on 2026-11-18 as "decided: excluded by measurement", on the owner's 7.2
+  instruction ("I'd love to be able to reasonably clear the RWA issue if possible"). The three
+  re-open triggers (a Scout `/api/rwa` schema change, a general mixed-intent routing mechanism, or
+  an owner product need) are in the TODO item "Preserve structured routing intent across extraction
+  caps and gate tiers".
+- **OAuth provider 1.x, choices D1 and D2** (round item 7.3, PR 4). The orchestrator decided them
+  under the owner's "decide and execute what sticks". D1: one provider per served origin. D2: a
+  native-callback allowlist (https, loopback http, `claude:`, `cursor:` and `warp:`). The same
+  delegation covers the accepted loss of the bare-origin grants (fewer than 10, all Devin CLI); the
+  owner does not use Devin. See [DESIGN.md](items/7.3/pr4-oauth/DESIGN.md). The TODO item "Watch
+  sign-in rejects after the oauth-provider 1.x deploy" holds the watch.
+- **Playground output cap: no change.** The 3.1 production read found replies that stopped at
+  `DEMO_CAPS.maxOutputTokens` (4096) rare. Lead's call, open to owner veto.
+
 ## Timing
 
 The work for the P30 Mainnet vote runs from a one-shot timer on agentpc at
