@@ -5,7 +5,7 @@ Claude default, rubric, pack, or existing dollar ledger. It uses `buildJudgeProm
 same verdict extraction/consistency checks as Claude. A different API transport is always
 labeled `nonIdentical: true`; it cannot establish identical-input Claude variance.
 
-The archived Codex CLI transport is unsupported. Codex 0.167.0 documents forced ChatGPT
+The archived Codex CLI transport is unsupported. The Codex CLI documents forced ChatGPT
 login but no global tool-denial control. Read-only sandboxing and an empty working directory
 do not establish blindness. PreToolUse hooks can fail open. This runner never uses Codex
 authentication, subscription tokens, or undocumented ChatGPT endpoints.

@@ -4,7 +4,7 @@ This instrument measures whether search results expose an expected source family
 The one-shot instrument makes one MCP search with the case question.
 The agent instrument allows at most three searches. The replay instrument uses stored queries from evaluation agents.
 The runners call the MCP server through HTTP. They do not import the search implementation.
-A discovery case or a mined query that matches a QA headline question is confirmation-only; the runners tag it and print no per-row outcome for it (see the [routing guide](../README.md#confirmation-only-rows)).
+A discovery case or a mined query that matches a QA headline question is confirmation-only; the one-shot and replay runners tag it and print no per-row outcome for it; the agent runner and the classifier do not tag (see the [routing guide](../README.md#confirmation-only-rows)).
 
 ## Commands
 
@@ -63,7 +63,7 @@ For each one-shot case, the runner calls `search` with the question and `limit: 
 The summary groups counts by seed pool.
 `classify-misses.mjs` compares a one-shot artifact with an agent artifact:
 
-- `downstream`: the one-shot search found both the expected family and a usable operation.
+- `downstream`: the one-shot search found both the expected family and a usable operation. A review also uses it for a miss whose cause comes after discovery, such as `execute` usage, upstream data or content quality, missing fields, stale source data, or synthesis.
 - `agent-behavior`: the one-shot search missed either measure, but one agent run found both.
 - `retrieval`: no individual agent run found both.
 
@@ -74,11 +74,3 @@ The discovery measures do not establish final-answer correctness. Use [QA](../qa
 
 [ADR-0009](../../research/decisions/0009-discovery-stays-lexical.md) records the lexical discovery decision and its measured reopening conditions.
 Use fresh, identified artifacts for comparisons. Historical scores do not establish current performance.
-
-## Miss Classification
-
-Use these categories when reviewing misses:
-
-- `retrieval`: one-search discovery failed to surface a needed family or usable op even though the exposed catalog contains one.
-- `agent-behavior`: the needed family/op was visible, but an agent likely needs better search planning, follow-up search, or source-family guidance.
-- `downstream`: discovery was sufficient; the later answer would fail because of execute usage, upstream data/content quality, missing fields, stale source data, or synthesis.
