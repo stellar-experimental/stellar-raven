@@ -160,6 +160,23 @@ the outcomes that the 7.x items decided without a separate owner question.
     serves pinned skills by forwarding and stores no skill body (`THIRD-PARTY-NOTICES.md`,
     "Ecosystem skills — served, not stored").
 
+## Follow-up answers (2026-11-18, subscriptions first)
+
+The owner asked why the repository holds an AI Gateway judge. Round item 8.6 applies the answer.
+
+- **No AI Gateway judging.** Owner (2026-11-18): "I see some stuff around gateway judges, why? There
+  should be NO gateway judging, everything possible should be handled by subs and at the very least
+  run through opencode vs scripts or something that call raw cloudflare API gateway. We should be
+  using subs though via codex, claude, grok and opencode, this is very important for cost and we need
+  to make this quite important and standard. There may be times when we utilize AI gateway but not for
+  evals or the building and testing of the service except or rare, known, and reasoned exceptions"
+- **Standing OpenCode rule** (answer 7, quoted): "I don't want to spend AI credits on evals and tests
+  so if you use opencode you need to first probe and find a grok, openai or anthropic sub that you can
+  use so you don't spend API tokens."
+- **Applied by item 8.6.** The gateway judge is removed; stored verdicts stay readable. AGENTS.md
+  holds the rule, and `eval/EVALS.md` "Model-call billing" holds the exception list and the OpenCode
+  probe.
+
 ## Timing
 
 The work for the P30 Mainnet vote runs from a one-shot timer on agentpc at

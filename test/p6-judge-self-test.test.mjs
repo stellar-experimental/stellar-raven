@@ -143,6 +143,7 @@ describe("reviewed p6 judge self-test wrapper", () => {
           return result;
         },
         attestIdentity: () => structuredClone(identity),
+        assertSubscription() {},
         beforeCall,
         log() {}
       });
@@ -255,6 +256,7 @@ describe("reviewed p6 judge self-test wrapper", () => {
       spawnSyncImpl: successfulSpawner(spawns),
       judgePath: "/tmp/judge.mjs",
       attestIdentity: () => structuredClone(identity),
+      assertSubscription() {},
       log() {}
     });
 
@@ -290,6 +292,7 @@ describe("reviewed p6 judge self-test wrapper", () => {
       pins,
       spawnSyncImpl: successfulSpawner([]),
       attestIdentity: () => structuredClone(identity),
+      assertSubscription() {},
       log: (line) => output.push(line)
     });
     const parsed = JSON.parse(output[0]);
@@ -313,6 +316,7 @@ describe("reviewed p6 judge self-test wrapper", () => {
       pins,
       spawnSyncImpl,
       attestIdentity: () => structuredClone(identity),
+      assertSubscription() {},
       log() {}
     })).toThrow(/candidate 2 failed/);
     expect(spawns).toHaveLength(4);
@@ -328,6 +332,7 @@ describe("reviewed p6 judge self-test wrapper", () => {
       pins,
       spawnSyncImpl,
       attestIdentity: () => structuredClone(identity),
+      assertSubscription() {},
       log() {}
     })).toThrow(/static failed/);
     expect(spawns).toEqual([[expect.any(String), "--self-test-static"]]);
@@ -356,6 +361,7 @@ describe("reviewed p6 judge self-test wrapper", () => {
       pins,
       spawnSyncImpl,
       attestIdentity: () => structuredClone(identity),
+      assertSubscription() {},
       log() {}
     })).toThrow(expected);
   });
@@ -370,6 +376,7 @@ describe("reviewed p6 judge self-test wrapper", () => {
       expect(() => runP6JudgeSelfTest({
         pins,
         spawnSyncImpl: successfulSpawner([]),
+        assertSubscription() {},
         attestIdentity: () => {
           const value = structuredClone(identity);
           if (attestations++ === 1) mutate(value);
@@ -442,7 +449,8 @@ describe("reviewed p6 judge self-test wrapper", () => {
         receivedOptions = options;
         return { score: "correct", costUsd: 0.2, resolvedModel: pins.judgeModel };
       },
-      attestIdentity: () => structuredClone(identity)
+      attestIdentity: () => structuredClone(identity),
+      assertSubscription() {}
     });
     // The exact judge ID is what the call asks for, and the strict record gains no model key.
     expect(receivedOptions).toEqual({ maxBudgetUsd: 0.5, command: "/opt/claude", model: "claude-sonnet-5-5" });
@@ -455,6 +463,7 @@ describe("reviewed p6 judge self-test wrapper", () => {
       const record = await runPinnedJudgeSelfTestCandidate(0, pins, {
         judge: async () => ({ score: "correct", costUsd: 0.2, resolvedModel }),
         attestIdentity: () => structuredClone(identity),
+        assertSubscription() {},
         log: (message) => reasons.push(message)
       });
       expect(record.ok).toBe(false);
@@ -465,6 +474,45 @@ describe("reviewed p6 judge self-test wrapper", () => {
       expect.stringContaining("reported model none"),
       expect.stringContaining("reported model none")
     ]);
+  });
+
+  it("probes the subscription once before the first paid candidate and refuses before any spawn", () => {
+    const checks = [];
+    const spawns = [];
+    const spawnSyncImpl = (_command, args) => {
+      spawns.push(args);
+      const indexFlag = args.indexOf("--self-test-candidate");
+      if (indexFlag < 0) return { status: 0, stdout: "static ok", stderr: "" };
+      return { status: 0, stderr: "", stdout: JSON.stringify(callRecord(Number(args[indexFlag + 1]))) };
+    };
+    runP6JudgeSelfTest({
+      pins,
+      spawnSyncImpl,
+      attestIdentity: () => structuredClone(identity),
+      assertSubscription: (options) => checks.push(options),
+      log() {}
+    });
+    expect(checks).toEqual([{ claudePath: identity.binary.resolvedPath }]);
+
+    spawns.length = 0;
+    expect(() => runP6JudgeSelfTest({
+      pins,
+      spawnSyncImpl,
+      attestIdentity: () => structuredClone(identity),
+      assertSubscription: () => { throw new Error("Claude subscription check: refusing paid calls"); },
+      log() {}
+    })).toThrow(/subscription check/);
+    expect(spawns).toEqual([]);
+  });
+
+  it("refuses a candidate before its judge call when the subscription check fails", async () => {
+    let judged = false;
+    await expect(runPinnedJudgeSelfTestCandidate(0, pins, {
+      judge: async () => { judged = true; return { score: "correct", costUsd: 0.2, resolvedModel: pins.judgeModel }; },
+      attestIdentity: () => structuredClone(identity),
+      assertSubscription: () => { throw new Error("Claude subscription check: refusing paid calls"); }
+    })).rejects.toThrow(/subscription check/);
+    expect(judged).toBe(false);
   });
 
   it("refuses an alias or a missing --judge-model before any call", async () => {

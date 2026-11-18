@@ -694,10 +694,9 @@ source budget and non-promotability under `meta.diagnosticSource`, sets `nonProm
 and `summary: null`, and cannot be used to promote a model or claim an aggregate comparison.
 The source file is never edited; changing its budget/status flags is not a valid workaround.
 
-The opt-in [Gateway second judge](gateway-judge.md) uses standard Cloudflare authentication
-and a tool-free OpenAI Responses request. It has separate cash and call authorization and
-calibration. Claude remains the default measurement. The archived Codex CLI adapter is not
-supported: its documented CLI controls do not establish the required blind tool boundary.
+Judging runs on the Claude Code CLI. There is no AI Gateway judge. A non-Claude
+second judge follows the TODO item "Build a subscription second judge on OpenCode when a decision
+needs one".
 
 ### Flip panel annotations
 

@@ -6,7 +6,6 @@ import { partialRecoverySource, diagnosticAnswerProblem } from '../eval/qa/diagn
 import { buildPlaygroundArtifactMeta, treeGenerationSha256 } from '../eval/playground/artifact-contract.mjs';
 import { accounting, closeServer, commandFor, createJournal, declareServer, plan, reserveBatch, reserveExternal, roundCap, settle, settleExternal, sha256, updateJournal, answerFailureClass, readFinalsMatrix, reserveExternalBatch, freezeJudgeB, validateReceipt, settlePartial, reserveContinuation, revalidateSettlement } from '../research/audits/2026-11-06-playground-final-resolution/orchestrate.mjs';
 
-import { prepareGatewayRejudge } from '../eval/qa/gateway-rejudge.mjs';
 import { verifySourceCases } from '../eval/qa/re-judge.mjs';
 import { frozenCorpusBytes } from '../research/audits/2026-11-06-playground-final-resolution/frozen-corpus.mjs';
 const selection = JSON.parse(readFileSync('research/audits/2026-11-06-playground-final-resolution/selection.json'));
@@ -347,20 +346,14 @@ describe('explicit first-attempt-preserving partial recovery',()=>{
     expect(()=>partialRecoverySource(f.raw,f.recovery,f.gatewayProof,f.rawIdentity.sha256)).toThrow();
     f.raw.rows[3].frames.push({type:'ready'});expect(answerFailureClass(f.raw.rows[3])).toBe('provider-error');
   });
-  it('verifies all25 source cases without inventing rows and plans exactly two B calls',()=>{
+  it('verifies all25 source cases without inventing rows',()=>{
     const f=partialFixture();
     // Beside the frozen measurement snapshot, so meta.casesPath resolves to it, not the live battery.
     const rawPath=path.join(f.dir,'measurement','raw.json'),bytes=JSON.stringify(f.raw);writeFileSync(rawPath,bytes);
     f.recovery.receipt={path:rawPath,sha256:sha256(bytes)};
     writeFileSync(f.recoveryIdentity.path,JSON.stringify(f.recovery));f.recoveryIdentity.sha256=h(f.recovery);
-    const p={schema:'gateway-judge-plan-v1',mode:'rejudge',allowNonIdentical:true,runId:'partial-test',out:path.join(f.dir,'out.json'),config:{...B_CONFIG,gatewayId:f.config.gatewayId},identitySha256:S,auth:{kind:'env',variable:'CF_AIG_TOKEN'},
-      source:{...f.recovery.receipt,diagnostic:true,casesRef:'worktree',partial:f.recoveryIdentity},ids:f.raw.rows.map(r=>r.id),maxCalls:2,maxBudgetUsd:3,maxJudgeErrorRate:0};
-    const prepare=()=>prepareGatewayRejudge(p,{identityImpl:()=>({sha256:S})});
-    const prepared=prepare();expect(prepared.prompts.map(r=>r.id)).toEqual([p.ids[0],p.ids[2]]);expect(prepared.entries).toHaveLength(4);
-    expect(prepared.source.budget.status).toBe('invalid');expect(prepared.source.nonPromotable).toBe(true);
     expect(verifySourceCases(f.raw,rawPath,{selectedIds:f.task.ids}).guard.matches).toBe(true);
     expect(verifySourceCases(f.raw,rawPath).guard.matches).toBe(false);
-    p.source.partial=undefined;expect(prepare).toThrow();p.source.partial=f.recoveryIdentity;p.ids=p.ids.slice(0,3);expect(prepare).toThrow('all attempted');
   });
   it.each(['reordered','non-prefix'])('independently rejects %s rows for an explicit full source selection',kind=>{
     const f=partialFixture();

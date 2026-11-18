@@ -10,8 +10,9 @@ at once. Before a paid A/B for one, add these to the pre-spend lines and have th
    enters a paired no-regression QA arm. A source can help its own questions and flood others;
    aggregate routing does not measure that.
 3. **Control verdict variance.** Use two or three runs per arm on a small slice, or a second judge
-   for each cross-arm grade difference before it counts. Put the rule and its cost ceiling in the
-   pre-spend lines.
+   for each cross-arm grade difference before it counts (another Claude family through
+   `re-judge.mjs --judge-model <model> --allow-non-identical`, because the judge tuple then differs
+   from the source's). Put the rule and its cost ceiling in the pre-spend lines.
 4. **Grade facts as well as verdicts.** Pre-register missing-fact and wrong-claim deltas as the
    mechanism metric. Correct/Partial/Wrong stays the headline.
 5. **Measure provenance directly.** If unique or first-party sourcing is the value, define its own

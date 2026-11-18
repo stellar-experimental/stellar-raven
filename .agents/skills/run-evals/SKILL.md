@@ -58,14 +58,13 @@ resolved ID, and that ID is the measurement's identity.
 
 - One client is enough when the decision does not depend on the client. Add clients only for a
   client-dependent decision.
-- **Run here, on `hc`.** Development tests and evals use the local `wrangler dev` server
-  (`npm run dev:eval`) and the subscription CLIs (Claude Code, Codex, Grok) driven through `hc`,
-  before any API-billed path (Cloudflare AI Gateway, provider APIs). Use API billing only when no
-  CLI can do the job, and say why in the four lines of each plan. Two lanes qualify. The
-  Playground lane measures the product route, which itself calls the Gateway. The Gateway second
-  judge is the opt-in diagnostic in [`eval/qa/gateway-judge.md`](../../../eval/qa/gateway-judge.md):
-  it needs an independent OpenAI judge model, and that contract documents why the Codex CLI
-  transport is unsupported for it. Neither exception extends to other API judging or collection.
+- **Subscriptions first, on `hc`.** Development tests and evals use the local `wrangler dev` server
+  (`npm run dev:eval`) and the subscription CLIs driven through `hc`. The billing rule, the pre-run
+  checks, the OpenCode probe and the only two API-billed exceptions (the Playground lanes E1 and E2)
+  are in [`eval/EVALS.md`](../../../eval/EVALS.md#model-call-billing). Any other API-billed run needs
+  the owner's written approval naming the run. Judges run on the Claude Code CLI; there is no AI
+  Gateway judge, and a non-Claude second judge follows the TODO item "Build a subscription second
+  judge on OpenCode when a decision needs one".
 - The QA runner and the discovery agent arm spawn headless `claude -p` themselves. Start the runner
   as an `hc` child (`hc run --bg --name <lane> ...`) and `hc wait` for it. `--model` selects the
   Claude client.
@@ -99,7 +98,7 @@ and results stamp with every QA number.
 | Search behavior of agents | Agentic lane (paid, Claude Code Workflow tool, live server) |
 | Tool-plan question on a stored run | `npm run eval:plan -- <results>` (free, offline) |
 | Stale-gospel gate fired | `truth-maintenance` owns the queue; each case goes through `golden-truth` |
-| Playground model or prompt | `eval/playground/README.md` (paid, API-billed) |
+| Playground model or prompt | `eval/playground/README.md` (paid, API-billed: exceptions E1 and E2 in [Model-call billing](../../../eval/EVALS.md#model-call-billing)) |
 
 Open `.agents/rounds/<YYYY-MM-DD>-<slug>.md` for a round with paid instruments or several lanes;
 a single free check needs no ledger. Use `truth-maintenance` only for an explicitly broad round.

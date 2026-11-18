@@ -40,7 +40,12 @@ clients.
 | Default | Grok | Grok | `--model "$M"`, with `M` from `scripts/latest-model.mjs grok` in the two-step form below |
 | Add where it helps | Claude Opus | Claude Code | `--model opus` |
 | Add where it helps | Codex Sol | Codex | `-m "$M"`, with `M` from `scripts/latest-model.mjs sol` in the two-step form below |
+| Only when a decision names it | GPT Terra or Sol, or Grok, through OpenCode | OpenCode | `--standalone -m openai/$M` or `--standalone -m xai/$M` (`M` from `scripts/latest-model.mjs` for `terra`, `sol` or `grok`), `--agent <name>` where tools must be denied |
 
+- OpenCode runs only after the probe in [`eval/EVALS.md`](../eval/EVALS.md#model-call-billing)
+  ("Model-call billing"), and `opencode models --standalone` must list `<provider>/$M`: OpenCode
+  keeps its own catalog, which the resolver does not read. OpenCode stays out of client diagnostics
+  (TODO, "Keep OpenCode out of client diagnostics").
 - Haiku and Codex Luna are out of every test and eval: they are less common and too inconsistent
   to weigh. The Playground fallback model is the one exception (`src/demo/model-config.ts`).
 - The eval defaults are family aliases. A run's identity is the exact ID it resolved, stored beside
@@ -66,8 +71,11 @@ M=$(node <worktree>/scripts/latest-model.mjs grok) && echo "resolved: $M" && hc 
 - **Codex** needs `--no-daemon` under `hc`. Its `workspace-write` sandbox cannot write under
   `.agents/` or commit to the shared `.git`. Have it write findings to the ignored `tmp/`
   directory, then copy and commit them yourself. With `-a never` it cannot approve MCP tool
-  calls, so it cannot repeat an authenticated Raven connector check.
-- **Grok** `--always-approve` can be denied as an unsafe launch when a Claude Code orchestrator
+  calls, so it cannot repeat an authenticated Raven connector check. Before a paid lane, check
+  that `codex login status` prints "Logged in using ChatGPT".
+- **Grok** has no offline login check (`grok usage` cannot show the plan in this version). Before a
+  paid lane, establish the SuperGrok login interactively and keep `XAI_API_KEY` unset; a Codex lane
+  likewise keeps `OPENAI_API_KEY` unset. `--always-approve` can be denied as an unsafe launch when a Claude Code orchestrator
   runs in auto mode. Do not retry. Treat the tier as unavailable and apply the fallback rule in
   `AGENTS.md`, or ask the owner to launch it.
 

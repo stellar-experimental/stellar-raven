@@ -1053,8 +1053,37 @@ a new spend authorization, after the [brief](rounds/2026-11-16-next-phase/items/
 and the smoke rule are rewritten for that provider.
 
 Logins, checked 2026-11-17 with one trivial prompt each: ChatGPT and SuperGrok are logged in to
-OpenCode on the Mac and on agentpc. OpenCode 2.2.7 offers Anthropic only through an API key, which
-the owner's rule excludes.
+OpenCode on the Mac and on agentpc. OpenCode offers Anthropic only through an API key, which the
+owner's rule excludes. Any OpenCode run starts with the probe in [`eval/EVALS.md`](../eval/EVALS.md#model-call-billing)
+("OpenCode probe"), which checks that the provider's login is `oauth` and that no API-key provider is
+enabled. "Build a subscription second judge on OpenCode when a decision needs one" is the one OpenCode
+use the owner's rule leaves open.
+
+### Build a subscription second judge on OpenCode when a decision needs one
+
+The repository has one judge: Claude Sonnet on the Claude Code subscription (`eval/qa/judge.mjs`).
+Round item 8.6 removed the AI Gateway judge, which existed because the Codex CLI could not be shown
+tool-blind (#387). No current decision needs judge-vendor diversity, so nothing is built. Checked
+offline on agentpc, 2026-11-18 (no model call):
+
+| CLI | Tool control | Tool-blind? |
+|---|---|---|
+| Codex (`codex-cli 0.169.0`) | `--disable <FEATURE>` and per-feature switches; no all-tools-off control | No. A deny-list goes stale when a release adds a tool. Stays unsupported |
+| Grok (`grok 1.0.88`) | `--tools` (an allowlist), `--disallowed-tools`, `--deny` | Unproven: help does not say what an empty `--tools` means, and user MCP servers still load. The fallback if OpenCode fails |
+| OpenCode (`v2.3.0`) | Agent `permission` rules; an agent with `permission: {"*": "deny"}` resolves to a deny-all rule in `opencode debug agents --standalone` | Yes at the execution boundary (config verified offline). Tool definitions may still reach the model |
+
+Trigger: a decision that needs a second, non-Claude judge, such as a cross-arm grade difference that
+a second Claude family cannot settle. Then, under its own written authorization:
+
+1. Run the probe in [`eval/EVALS.md`](../eval/EVALS.md#model-call-billing) for `openai` (ChatGPT) or
+   `xai` (SuperGrok), and confirm the exact model in `opencode models --standalone`.
+2. Define a `judge` agent with `permission: {"*": "deny"}`, check it with `opencode debug agents
+   --standalone`, and launch with `--standalone -m <provider>/<model> --agent judge`.
+3. Grade the seven fixtures behind `npm run eval:qa:selftest` as calibration.
+4. After every run, check that `opencode.db` holds no tool part for the session.
+
+Done when: the judge passes the calibration under a written authorization and the after-run check is
+clean, or the decision is made without it. Delete this item then.
 
 ### Close the remaining claim-support gaps of judge pack p9
 
@@ -1244,6 +1273,8 @@ The self-test requires an exact `--judge-model` and refuses an alias: resolve `s
 roster's one-call `modelUsage` read), pass that ID, and each candidate fails if its verdict reports
 another model. The call record has an exact key set and no model field, so record the exact ID beside
 the summary. Repeat it whenever the resolved judge model moves.
+
+The judge also launches with `--setting-sources ""` since item 8.6, which the same self-test covers.
 
 Done when: the self-test passes under a written authorization and its record names the resolved judge
 ID.

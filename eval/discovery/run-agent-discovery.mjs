@@ -13,6 +13,7 @@ import { createModelPin, resolvedModelFromStream } from "../qa/model-identity.mj
 import {
   REQUIRED_MCP_SERVER_NAME,
   answeringAgentIsolationArgs,
+  assertAnsweringAgentSubscription,
   answeringAgentIsolationRecord,
   assertFailClosedCliSyntax,
   assertNeutralAgentCwd,
@@ -475,6 +476,14 @@ async function runPaidDiscovery(paidRun) {
   // under test cannot read AGENTS.md/CLAUDE.md as project instructions.
   const agentCwd = mkdtempSync(path.join(os.tmpdir(), "agent-discovery-cwd-"));
   assertNeutralAgentCwd(agentCwd, { repoRoot: REPO, label: "discovery answering agent" });
+  // Once, before the first paid call: the agent's directory and isolation flags.
+  try {
+    assertAnsweringAgentSubscription({ claudePath: agentBinary.resolvedPath, cwd: agentCwd });
+  } catch (error) {
+    rmSync(tempDir, { recursive: true, force: true });
+    rmSync(agentCwd, { recursive: true, force: true });
+    throw error;
+  }
   const mcpConfigPath = path.join(tempDir, "mcp.json");
   writeFileSync(
     mcpConfigPath,

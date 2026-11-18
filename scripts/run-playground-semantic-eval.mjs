@@ -30,7 +30,7 @@ import {
   demoReasoningEffortFor,
   demoReasoningEffortOverride
 } from "../src/demo/model-config.ts";
-import { buildTranscriptEvidence, judgeCase, JUDGE_MODEL, JUDGE_RUBRIC } from "../eval/qa/judge.mjs";
+import { assertJudgeSubscription, buildTranscriptEvidence, judgeCase, JUDGE_MODEL, JUDGE_RUBRIC } from "../eval/qa/judge.mjs";
 import { PACK_VERSION } from "../eval/qa/evidence-pack.mjs";
 import { checkJudgeVerdictIdentity, createModelPin } from "../eval/qa/model-identity.mjs";
 import { QA_DIR, formatSummaryTable, loadCases, summarize } from "../eval/qa/lib.mjs";
@@ -816,6 +816,7 @@ async function main() {
   const judgeModel = args.judgeModel ?? JUDGE_MODEL;
   const judgePin = createModelPin(judgeModel);
   const judgeExecutable = args.noJudge ? null : executableIdentity("claude");
+  if (judgeExecutable) assertJudgeSubscription({ claudePath: judgeExecutable.resolvedPath });
   const treeAtStart = await workingTreeSnapshot();
   if (args.serverGeneration !== treeAtStart.generationSha256) {
     throw new Error(

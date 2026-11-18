@@ -52,6 +52,7 @@ import {
   assertExpectedExecutable,
   executableIdentity
 } from "../lib/executable-identity.mjs";
+import { assertClaudeSubscription } from "../lib/harness-guards.mjs";
 import {
   assertStableGitWorktreeIdentity,
   gitWorktreeIdentity
@@ -757,6 +758,36 @@ export function buildJudgeEnv(baseEnv) {
   };
 }
 
+/**
+ * Preflight for a paid judge: probe the subscription the way `judgeCase` spawns the CLI, with
+ * `buildJudgeEnv`, the caller's working directory and the judge's root flags. Call it once
+ * before the first model call, never in a post-call check.
+ */
+export function assertJudgeSubscription({
+  claudePath,
+  env = process.env,
+  cwd = process.cwd(),
+  safeMode = true,
+  impl
+}) {
+  return assertClaudeSubscription({
+    claudePath,
+    env: buildJudgeEnv(env),
+    cwd,
+    args: judgeRootFlags(safeMode),
+    impl
+  });
+}
+
+/**
+ * The root flags a judge launches with, shared by the spawn and its subscription probe so both load
+ * the same configuration. `--setting-sources ""` loads no settings file, so a judge does not depend
+ * on the operator's settings (the answering agents launch the same way).
+ */
+export function judgeRootFlags(safeMode = true) {
+  return ["--strict-mcp-config", "--setting-sources", "", ...(safeMode ? ["--safe-mode"] : [])];
+}
+
 export function buildJudgeArgs({ model = JUDGE_MODEL, safeMode = true, maxBudgetUsd = null } = {}) {
   if (maxBudgetUsd !== null && (!Number.isFinite(maxBudgetUsd) || maxBudgetUsd < 0)) {
     throw new Error(`maxBudgetUsd must be null or a finite non-negative number, got ${maxBudgetUsd}`);
@@ -767,9 +798,8 @@ export function buildJudgeArgs({ model = JUDGE_MODEL, safeMode = true, maxBudget
     model,
     "--output-format",
     "json",
-    "--strict-mcp-config",
-    ...(maxBudgetUsd === null ? [] : ["--max-budget-usd", String(maxBudgetUsd)]),
-    ...(safeMode ? ["--safe-mode"] : [])
+    ...judgeRootFlags(safeMode),
+    ...(maxBudgetUsd === null ? [] : ["--max-budget-usd", String(maxBudgetUsd)])
   ];
 }
 
@@ -1051,6 +1081,7 @@ export async function runPinnedJudgeSelfTestCandidate(
   {
     judge = judgeCase,
     attestIdentity = (expected) => attestJudgeSelfTestIdentity(expected),
+    assertSubscription = assertJudgeSubscription,
     log: reportFailure = (message) => console.error(message)
   } = {}
 ) {
@@ -1059,6 +1090,7 @@ export async function runPinnedJudgeSelfTestCandidate(
     throw new Error("judge self-test requires an exact --judge-model ID, not an alias; resolve the alias first");
   }
   const before = attestIdentity(pins);
+  assertSubscription({ claudePath: before.binary.resolvedPath });
   let reportedModel;
   const result = await runJudgeSelfTestCandidate(index, {
     judge: async (input, options) => {

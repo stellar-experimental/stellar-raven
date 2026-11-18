@@ -6,7 +6,7 @@
 
 Use a terminal already running `npm run dev` and its bound loopback URL; do not start Wrangler for this command.
 
-Both lanes are API-billed: the Playground route itself calls models through Cloudflare AI Gateway, so no subscription CLI can stand in for it. The [run-evals skill](../../.agents/skills/run-evals/SKILL.md) owns the scoping and spend rules. For other questions, use the CLI-driven instruments in the [evaluation map](../EVALS.md).
+Both lanes are API-billed: the Playground route itself calls models through Cloudflare AI Gateway, so no subscription CLI can stand in for it. They are exceptions E1 and E2 in [Model-call billing](../EVALS.md#model-call-billing), which holds the reasons. The [run-evals skill](../../.agents/skills/run-evals/SKILL.md) owns the scoping and spend rules. For other questions, use the CLI-driven instruments in the [evaluation map](../EVALS.md).
 
 ```sh
 # Free validation: default seeded, stratified five-case selection; no HTTP/model/judge calls.
@@ -61,9 +61,9 @@ Ordinary Playground requests keep their existing logging settings.
 The [Gateway log API](https://developers.cloudflare.com/api/resources/ai_gateway/subresources/logs/methods/get/) defines the reported cost field.
 
 The route emits one `eval-cost` frame before stream closure, after any terminal frame.
-Its `logIds` preserve captured request identities in call order, so the operator can independently
-reconcile exact Gateway records even when answer and judge models share a gateway. Missing or
-duplicate identities still invalidate accounting; this list does not establish a settled cost.
+Its `logIds` preserve the identities of the answer's provider calls in call order, so the operator can
+independently reconcile exact Gateway records. Missing or duplicate identities still invalidate
+accounting; this list does not establish a settled cost.
 The runner reads through stream closure to collect this frame.
 Missing log identities, missing costs, duplicate identities, and failed requests never imply zero cost.
 Five bounded log reads permit a short reporting delay.

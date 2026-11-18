@@ -28,6 +28,7 @@ import {
   buildTranscriptEvidence,
   hasSuccessfulAnswer,
   judgeInputSha256,
+  assertJudgeSubscription,
   judgeCase,
   judgeCasePanel,
   JUDGE_MODEL,
@@ -1027,6 +1028,8 @@ async function main() {
   }
 
   const judgeIdentityBefore = attestRejudgeIdentity(options);
+  // Once, before the first judge call: the status probe is not part of the post-call attestation.
+  assertJudgeSubscription({ claudePath: judgeIdentityBefore.binary.resolvedPath });
   const startedAt = new Date().toISOString();
   const spendLedger = createSpendLedger(options.maxBudgetUsd);
   // The pin exists before the first checkpoint, so meta.judgeModel is an exact ID or null, never an alias.
