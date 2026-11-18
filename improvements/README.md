@@ -1,4 +1,4 @@
-# improvements/ — upstream findings from eval runs
+# improvements/ — upstream service findings
 
 ## Principle
 
@@ -73,12 +73,8 @@ evidence:
 Refresh the status when upstream changes. A drift refresh is a natural checkpoint.
 
 This directory is an active queue, not an archive. `fixed-upstream` is a short-lived state before
-deletion. Before the active file is deleted, a distinct reviewer must do these steps:
-
-1. Re-run the original trigger independently.
-2. Inspect the upstream resolution and its deployment.
-3. Scan for residuals and for repository references.
-4. Confirm the cleanup.
+deletion. A distinct reviewer re-derives each deletion candidate; the skill's "Drain
+`fixed-upstream`" step has the checks.
 
 Resolution appends a compact receipt to `resolved.json`. IDs in that ledger are never reused. A
 GitHub closure or merge alone never meets the evidence bar.
@@ -94,28 +90,11 @@ queue.
 
 ## Upstream filing channels
 
+`improvements/intake.json` resolves the repository for each collection and for each finding
+(`services.*` rules and per-finding overrides); the
+[improvements-pipeline skill](../.agents/skills/improvements-pipeline/SKILL.md) has the rules.
 `reported-upstream` means that a GitHub issue, or an equivalent, exists with the service owner.
 Record the exact issue URL in the finding's `evidence` list.
-
-- `stellar-light-scout/` findings and Scout-sourced `skills/` findings go to the Stellar-Light
-  organization. File on the repository that owns the failing surface. When you are not sure, file
-  on `stellarlight` and cross-link.
-  - <https://github.com/Stellar-Light/stellarlight> — the discovery-layer service behind the
-    Stellar Light API. Use it for data, content, and API-semantics findings.
-  - <https://github.com/Stellar-Light/stellar-scout> — the Scout skill. Use it for skill-content
-    and research-corpus findings.
-  - <https://github.com/Stellar-Light/scout-mcp> — their MCP server surface.
-- `stellar-docs/` content and content-structure findings go to
-  <https://github.com/stellar/stellar-docs>. Mintlify search findings also go there, because the
-  docs team owns the Mintlify project (for example `sd-059`, filed as stellar/stellar-docs#2995).
-- `lumenloop/` API and content findings go to <https://github.com/lumenloop/lumenloop-backend>
-  (authenticated issue access). Directory-record corrections go to
-  <https://github.com/lumenloop/stellar-ecosystem-db>. Skill-content findings go to
-  <https://github.com/lumenloop/lumenloop-skills>.
-- `workers-ai-provider/` findings go to <https://github.com/cloudflare/ai>.
-- `canonical-source/` findings go to the owning repository. Set it as a per-finding override in
-  `improvements/intake.json` after you verify the owner. The service rule is `mixed`, so the filer
-  refuses a finding without an override.
 
 ### File a finding
 
@@ -123,16 +102,8 @@ Record the exact issue URL in the finding's `evidence` list.
 npm run improvements:file -- --file improvements/<collection>/<finding>.md --dry-run
 ```
 
-The dry run shows the resolved owner and the standardized body. Omit `--dry-run` to file the
-issue. The generated issue has these parts:
-
-- An automated-content notice and a durable `generated-by-stellar-raven` marker at the top.
-- A link to the exact public finding.
-- A resolution handoff back to this repository.
-- The `raven` label, when the target repository provides it. Every body keeps Raven provenance
-  when that label is unavailable.
-
-Find Raven-filed issues across repositories with this command:
+The dry run shows the resolved owner and the standardized body. Every filed body carries a durable
+`generated-by-stellar-raven` marker. Find Raven-filed issues across repositories with this command:
 
 ```sh
 gh search issues --match body '"generated-by-stellar-raven"'
@@ -150,23 +121,7 @@ Before Raven retires a resolved file, it posts two items on the upstream referen
 result and the commit-pinned source snapshot. New filing bodies include the active `main` link and
 an immutable snapshot. The source therefore stays auditable after the active queue is empty.
 
-### Follow up
-
-Leave untouched open issues quiet. A routine live recurrence stays in the local finding. It does
-not justify a reminder, a status request, or a backlink-only comment. Follow up only for these
-events:
-
-- Substantive owner activity.
-- A claimed fix that needs verification.
-- Materially new evidence that changes the action.
-- Author-owned pull request work.
-
-Read back every newly recorded GitHub URL before you accept it as evidence.
-
-Do not file an issue only for bookkeeping when a live recheck already proves that the defect is
-fixed. `fixed-upstream` without an issue URL is valid when its evidence records that dated
-recheck. Add an existing resolving issue or pull request when you can find one. Do not invent a
-ceremonial report.
+The skill owns the follow-up loop and the rule to leave untouched open issues quiet.
 
 ## Resolution paths (stellar-docs)
 
@@ -183,12 +138,8 @@ an own-repo fix, not a finding. It goes to `.agents/TODO.md` and needs a general
 read-only retrieval-level A/B win before it ships. `docs/stellar-docs.md` defines the scoping
 contract.
 
-**Analytics as evidence.** `MINTLIFY_ADMIN_API_KEY` reads the docs project's analytics. It is a
-maintenance-only key and is never a Worker or sandbox binding. Aggregated query reports measure
-how common a finding is better than the eval corpus does. Cite the analytics query and window in
-`evidence`.
-
 ## When findings get filed
 
-File findings after **every eval round**. [`eval/EVALS.md`](../eval/EVALS.md) describes the eval
-workflow. Filing the round's findings into this directory is part of closing the round.
+File a finding when an eval round, a drift refresh, an audit, or an upstream handoff shows an
+upstream defect. Filing the round's findings is part of closing the round; the
+[evaluation map](../eval/EVALS.md) describes the eval workflow.

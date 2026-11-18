@@ -1,8 +1,7 @@
 # Skill pin review ledger
 
 Skill bodies are **prompt input**: what they say becomes instructions the model follows. They are
-not vendored here, so a re-pin commit shows only hash changes — the text itself never appears in
-`git diff` the way it did when the bodies were checked in. This ledger is the replacement gate.
+not vendored here, so a re-pin commit shows only hash changes. This ledger is the review gate.
 
 **Every commit that changes what `MANIFEST.json` serves must add an entry here naming the new
 `sel:` digest.** `scripts/check-pin-review.mjs` enforces it in CI, and it is a review record, not
@@ -15,7 +14,7 @@ tree, or adding/dropping a selected skill, changes which prompt input is served 
 commit, so the commit alone is not what the gate can key on. Print the current digests with
 `node scripts/check-pin-review.mjs --digests`.
 
-Three details the gate is strict about, each because the loose version was walkable:
+The gate is strict about three details:
 
 - **The entry must be NEW in this diff.** An attestation that already existed at the base ref does
   not count. Reverting to a previously reviewed selection is still a decision to serve those bytes
@@ -25,17 +24,19 @@ Three details the gate is strict about, each because the loose version was walka
 - **Removing a source needs an entry too**, since it changes everything that source served. Record
   it as `removed: <source-id>` with the reason.
 
-Do **not** paste skill text into this file — that would re-create the vendored copy this design
-removes. Summarize what changed and why it is safe to serve.
+Do **not** paste skill text into this file. Summarize what changed and why it is safe to serve.
 
 ## Procedure
 
+Follow [Re-pin](README.md#re-pin) in the directory README. `./ecosystem-skills/update.sh` prints
+the old-to-new body diff and the new digests. Two commands repeat that output on demand:
+
 ```bash
-./ecosystem-skills/update.sh             # re-pins, prints the old->new body diff AND the new digests
-node scripts/diff-pins.mjs <old> <new>   # re-print the diff on demand
+node scripts/diff-pins.mjs <old> <new>        # re-print the diff
 node scripts/check-pin-review.mjs --digests   # the sel: digests to record
-# then add an entry below, rebuild the generated artifacts, and commit together
 ```
+
+Then add an entry below, rebuild the generated artifacts, and commit together.
 
 What to look for in the diff, beyond "is it accurate": instructions that try to change the
 agent's behavior outside the skill's topic, references to non-exposed operations or retired

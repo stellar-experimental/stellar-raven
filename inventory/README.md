@@ -16,7 +16,7 @@ node scripts/refresh-inventory.mjs
 ```
 
 The script needs Node 24 (`.nvmrc`) and no dependencies. It reads `LUMENLOOP_API_KEY` and
-`MINTLIFY_ASSISTANT_API_KEY` from `.env` at the repository root.
+`MINTLIFY_ASSISTANT_API_KEY` from `.env` at the repository root or from the environment.
 
 - **Idempotent.** The script rewrites a file only when its content changes. It ignores
   `fetchedAt` in that comparison, so two runs in a row produce no diff.
@@ -35,9 +35,8 @@ On a fork, also set two repository variables:
 
 - `RAVEN_SERVICE_URL`: the base URL of your deployed Raven. The workflow reads its
   `/health/skills`. Without it, the refresh skips on a fork.
-- `REFRESH_ISSUE_ASSIGNEE`: the maintainer who gets the drift issues and the `dependency-audit`
-  issue. Without it, the repository owner gets them.
-  [The operations guide](../docs/operations.md#scheduled-workflows) lists the workflows.
+- `REFRESH_ISSUE_ASSIGNEE`: the maintainer who gets the drift issues. [The operations
+  guide](../docs/operations.md#scheduled-workflows) lists the workflows and owns the default.
 
 ## Files
 
@@ -51,7 +50,7 @@ On a fork, also set two repository variables:
 
 ### `lumenloop.json` details
 
-- **Tools.** All 21 tool names: 18 guest and 3 partner. The list endpoint hides partner tools
+- **Tools.** Every guest and partner tool name. The list endpoint hides partner tools
   even with a partner key. The refresh therefore joins keyless `GET /v1/tools` with the authored
   `LUMENLOOP_PARTNER_TOOLS` name list. It checks the joined count against `GET /v1/me`
   `tools.available`.
@@ -59,11 +58,11 @@ On a fork, also set two repository variables:
   Schemas, and the invoke block.
 - **Partner tools** are name-only stubs (`partner_stub: true`). Partner-tier detail is never
   committed.
-- **Skills.** All 14 skill names. The public set has metadata and file paths, never contents. The
+- **Skills.** Every skill name. The public set has metadata and file paths, never contents. The
   partner set has name, set, and tier stubs only. `/v1/me` exposes no skills count, so no count
   guard applies.
 - **`/v1/me`.** Tier, lane, and tool counts. Limits are not stored.
-- **`openapi`.** The full keyless `GET /v1/openapi.json` spec (33 operations: the 18 guest
+- **`openapi`.** The full keyless `GET /v1/openapi.json` spec (the guest
   tool-invoke paths plus account and discovery endpoints). Partner tools never appear in the spec,
   so the `tools` union is the source of truth.
 

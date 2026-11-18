@@ -12,8 +12,8 @@ therefore cannot reach a model until someone re-pins. Licenses are in
 
 In the catalog, each skill is a searchable entry, and each `##` section is an exact-ID entry
 that `skill.read` can read but search does not return
-([ADR-0005](../research/decisions/0005-skills-form-sections-out-of-search.md)). The manifest
-allowlist applies to both.
+([ADR-0005](../research/decisions/0005-skills-form-sections-out-of-search.md)). The catalog manifest
+(`catalog/manifest.json`) allowlist applies to both.
 
 ## Layout
 
@@ -34,19 +34,18 @@ allowlist applies to both.
 
 | Source id | Origin | What |
 | --- | --- | --- |
-| `lumenloop` | [`lumenloop/lumenloop-skills`](https://github.com/lumenloop/lumenloop-skills) `skills/` | 8 public Stellar-ecosystem analyst skills |
-| `openzeppelin-stellar` | [`OpenZeppelin/openzeppelin-skills`](https://github.com/OpenZeppelin/openzeppelin-skills) `skills/` | 3 Stellar/Soroban contract skills, picked from a multi-chain repo |
+| `lumenloop` | [`lumenloop/lumenloop-skills`](https://github.com/lumenloop/lumenloop-skills) `skills/` | Public Stellar-ecosystem analyst skills |
+| `openzeppelin-stellar` | [`OpenZeppelin/openzeppelin-skills`](https://github.com/OpenZeppelin/openzeppelin-skills) `skills/` | Stellar/Soroban contract skills, picked from a multi-chain repo |
 | `stellar-dev` | [`stellar/stellar-dev-skill`](https://github.com/stellar/stellar-dev-skill) `skills/` | SDF developer skills |
-| `stellar-light` | [`Stellar-Light/stellar-scout`](https://github.com/Stellar-Light/stellar-scout) (root) | 1 ecosystem-analyst skill |
-| `trustless-work` | [`Trustless-Work/trustlesswork-skill`](https://github.com/Trustless-Work/trustlesswork-skill) `trustless-work-dev/` | 1 escrow-integration skill, picked from the repo root |
+| `stellar-light` | [`Stellar-Light/stellar-scout`](https://github.com/Stellar-Light/stellar-scout) (root) | Ecosystem-analyst skill |
+| `trustless-work` | [`Trustless-Work/trustlesswork-skill`](https://github.com/Trustless-Work/trustlesswork-skill) `trustless-work-dev/` | Escrow-integration skill, picked from the repo root |
 
-Every source is public, and the re-pin uses no credential. That is a deliberate publish-safety
-property: no re-pin can add private content. `MANIFEST.json` records each source's upstream
+Every source is public, and the re-pin needs no Raven or service credential, only your own `gh`
+login. That is a deliberate publish-safety property: no re-pin can add private content. `MANIFEST.json` records each source's upstream
 `LICENSE` and `NOTICE` file names (`license_files`) at the pinned commit.
 
-The Lumenloop API lists 14 skills: the 8 public ones, identical to the GitHub repository, and 6
-partner-set skills (`lumenloop-api-*`) from a private repository. Raven pins only the public
-set. Partner-tier content must never be in this repository; the partner skills appear only as
+The Lumenloop API also lists partner-set skills (`lumenloop-api-*`) from a private repository,
+beyond the public set that matches the GitHub repository. Raven pins only the public set. Partner-tier content must never be in this repository; the partner skills appear only as
 name-only stubs in `inventory/lumenloop.json`.
 
 ## Re-pin
@@ -54,8 +53,8 @@ name-only stubs in `inventory/lumenloop.json`.
 `update.sh` needs an authenticated `gh` CLI, `jq`, `node`, `curl`, and `git`, and no API key.
 
 ```bash
-./update.sh                    # re-pin every source and rebuild INDEX.md
-node build-index.mjs           # rebuild the index only (after editing groups.json)
+./ecosystem-skills/update.sh          # re-pin every source and rebuild INDEX.md
+node ecosystem-skills/build-index.mjs # rebuild the index only (after editing groups.json)
 ```
 
 `update.sh` resolves a commit for each source, records every file's path, size, and blob hash,
@@ -113,7 +112,7 @@ touches the pinned path; the live stellarlight directory against `catalog.json`;
 Community names and links against `community.json`. Drift goes into the same issue as the
 inventory checks. CI never runs `update.sh`: a person must review upstream skill edits.
 
-- Source drift: run `./update.sh` and follow "After a re-pin".
+- Source drift: run `./ecosystem-skills/update.sh` and follow "After a re-pin".
 - Community-only drift: run
   `node scripts/lib/stellar-community.mjs ecosystem-skills/community.json`, then
   `node ecosystem-skills/build-index.mjs`.
@@ -156,7 +155,7 @@ pull request.
    code.
 2. Add the repository to `improvements/intake.json` (`services.skills.default.repos` and
    `sourceRepos`) and its license to `THIRD-PARTY-NOTICES.md`.
-3. Run `./update.sh` and do "After a re-pin" steps 1 to 3.
+3. Run `./ecosystem-skills/update.sh` and do "After a re-pin" steps 1 to 3.
 4. Add an `exposed` row for each skill to `research/skill-exposure-inventory.json`
    (`test/skill-exposure-classification.test.ts` requires it).
 5. Rebuild the generated artifacts through `live-drift-resolution`.

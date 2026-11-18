@@ -1,9 +1,10 @@
 # Catalog search and recovery
 
 The generated [manifest](../../catalog/manifest.json) defines the exposed operations, skills, and section addresses.
-[load.ts](load.ts) validates it once per Worker isolate.
-[types.ts](types.ts) defines its schema and file-pin constraints.
-Entry IDs are globally unique; operation terminal names are unique within each service.
+[load.ts](load.ts) caches the validated manifest once per Worker isolate; `loadManifest` in
+[search.ts](search.ts) validates it. [types.ts](types.ts) defines the schema and file-pin
+constraints, and `search.ts` enforces globally unique entry IDs and per-service unique operation
+terminal names.
 These terminal names become sandbox function names.
 
 [ADR-0003](../../research/decisions/0003-build-time-exposure-filtering.md) defines build-time exposure.

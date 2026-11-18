@@ -27,9 +27,11 @@ The launcher forwards arguments, including `--json`, to the report.
 | `node eval/corpus/raven-next/research/golden/_meta/compile.mjs` | `eval/corpus/raven-next/research/golden/compiled/golden.json` | yes |
 | `node eval/compile-routing.mjs` | `eval/routing-cases.json` | yes |
 | `npm run eval:routing:overlap` | `eval/routing-qa-overlap.json` | yes (`npm test`) |
-| `node eval/qa/compile-qa.mjs` | `eval/qa/cases.json`, `eval/qa/sample.json`, `eval/qa/lifecycle-registry.json` | yes |
+| `node eval/qa/compile-qa.mjs` | `eval/qa/cases.json`, `eval/qa/sample.json`, `eval/qa/tool-cases.json`, `eval/qa/lifecycle-registry.json` | yes |
 | `node eval/plan/build-op-classes.mjs` | `eval/plan/op-classes.json` | yes |
-| `node ecosystem-skills/build-index.mjs` | `ecosystem-skills/INDEX.md` from the pin manifest, directory catalog, and groups | yes |
+| `node ecosystem-skills/build-index.mjs` | `ecosystem-skills/INDEX.md` from the pin manifest, directory catalog, and groups | yes (this regeneration only) |
+| `./ecosystem-skills/update.sh` | `ecosystem-skills/MANIFEST.json`, `catalog.json`, `community.json`, `INDEX.md` | no; CI never runs it, and `check-mirrors.mjs` and `check-pin-review.mjs` gate the result |
+| `node scripts/refresh-inventory.mjs` | `inventory/*.json` | no; the daily `refresh.yml` reports drift |
 | `npm run improvements:index` | `improvements/INDEX.md` | yes (`npm run improvements:lint`) |
 
 `build-catalog.mjs` and `build-super-spec.mjs` read pinned skill bodies through `scripts/lib/skill-mirror.mjs`.
@@ -50,5 +52,5 @@ Their tracked writes also use atomic replacement.
 
 Scripts use `.mjs` because Node runs them directly.
 A `.d.mts` declaration is required when TypeScript imports a JavaScript module that needs types.
-Declarations exist for `build-catalog.mjs`, `exposure.mjs`, `emitted-text-guard.mjs`, and `lib/skill-mirror.mjs`.
+Declarations exist for `build-catalog.mjs`, `build-family-text.mjs`, `exposure.mjs`, `emitted-text-guard.mjs`, and `lib/skill-mirror.mjs`.
 Use runtime tests for command-only scripts. Add declarations at an actual TypeScript import boundary.

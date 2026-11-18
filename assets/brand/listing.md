@@ -50,8 +50,7 @@ the tool rows read.
 
 Each frame recreates a Claude conversation. It shows the prompt, Raven's `search` call, Raven's
 `execute` call, and an answer with sources. A left rail gives the outcome and the dated sources.
-The evidence file records the prompts, the calls, and the values that the answers cite. It does not
-record the search totals or the `scfAsOf` date range that the frames also show. If the directory
+The evidence file records the prompts, the calls, and the values that the answers cite. If the directory
 requires real product screenshots, run the same three prompts in claude.ai and capture them.
 
 The frames quote live values. Check them against the evidence file before a new submission.
