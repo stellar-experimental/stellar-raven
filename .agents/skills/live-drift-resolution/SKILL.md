@@ -34,8 +34,8 @@ npm run spec:build                    # catalog -> specs/super-spec.json
 node eval/plan/build-op-classes.mjs   # catalog -> eval/plan/op-classes.json
 ```
 
-- `refresh-inventory.mjs` rewrites a service file only when its surface moved, so the working tree
-  isolates the drift. `git status --short` must show only generated artifacts, plus the policy,
+- `refresh-inventory.mjs` rewrites a service file only when its content moved (ignoring
+  `fetchedAt`), so the working tree isolates the drift. `git status --short` must show only generated artifacts, plus the policy,
   runner, or baseline edits the class below requires. Anything else: stop and investigate.
 - **Anchors.** When `stellar-docs-anchors.json` changes, read the summary's changed pages, removed
   pages, and ambiguous headings, then run `test/adapters.test.ts` and the two
@@ -43,16 +43,10 @@ node eval/plan/build-op-classes.mjs   # catalog -> eval/plan/op-classes.json
 - **stellar.org.** When `inventory/stellar-org.json` changes, run
   `test/stellar-org-adapter.test.ts` and a live smoke of `stellarOrg.search_site` and
   `stellarOrg.get_page`.
-- **Skill pins.** When `ecosystem-skills/` pins move, also run:
-
-  ```sh
-  ./ecosystem-skills/update.sh               # re-pin and print the old->new body diff
-  node scripts/check-mirrors.mjs --fetch     # every pin resolves upstream and hashes as recorded
-  $EDITOR ecosystem-skills/PIN-REVIEW.md     # record the attestation
-  node scripts/check-pin-review.mjs --base origin/main
-  ```
-
-  then rebuild the catalog, family-text, spec, and op classes. Skill bodies are fetched and verified
+- **Skill pins.** When `ecosystem-skills/` pins move, follow
+  [`ecosystem-skills/README.md`](../../../ecosystem-skills/README.md#re-pin): re-pin, read the body
+  diffs, record the attestation in `PIN-REVIEW.md`, and run `check-mirrors.mjs --fetch`. Then
+  rebuild the catalog, family-text, spec, and op classes in the order above. Skill bodies are fetched and verified
   at read time from the pinned commit, so a re-pin changes what the model reads. Read the body diff
   before you commit it.
 
@@ -71,7 +65,7 @@ Exit `0` is equal, `1` is drift, `2` is an input error to correct. Run all three
 
 | Class | What changed | Needs |
 |---|---|---|
-| Provenance/data | `fetchedAt`, versions, changelog, counts, and nothing else; all three modes equal | Absorb as-is |
+| Provenance/data | Versions, changelog, counts, and nothing else; all three modes equal | Absorb as-is |
 | Operation surface | An operation was added, removed, or renamed (`surface` drift) | Policy decision (step 3) |
 | Routing text | A `summary`, `description`, `operationId`, or `x-routing` changed (`text` drift) | Baseline decision (step 4) |
 | Runner-affecting | Any drift on an operation a runnable-skill runner declares in `ops` | Live runner check (step 5); stacks on the others |
@@ -138,9 +132,10 @@ evidence.
 
 - `node scripts/build-catalog.mjs` exits 0 with the expected exclusions.
 - The routing gate matches the class: unchanged pass, or the intended movement.
-- Run the focused gates for whatever else changed: `npm run eval:qa:lint`; for improvements,
-  `npm run improvements:index`, `npm run improvements:lint`, `npm run improvements:lint -- --live`,
-  and `npm run improvements:probes`.
+- Run the focused gates for whatever else changed:
+  `npm run eval:qa:lint -- --stale --enforce-floors`; for improvements, `npm run improvements:index`,
+  `npm run improvements:lint`, `npm run improvements:lint -- --live`, and
+  `npm run improvements:probes`.
 - After a skill re-pin, `check-mirrors.mjs --fetch` passes and `catalog/manifest.json` carries the
   new `transport.url` and `sha` for every changed skill file.
 - `npm run secrets:scan -- --tree` and `git diff --check` are clean. A regenerated artifact must
@@ -159,8 +154,6 @@ serves the old surface until someone deploys.
 
 1. `npm run build` confirms that the bundle builds.
 2. `npm run deploy` needs the owner's go-ahead unless durably authorized.
-3. Wait about a minute; a fresh route can return 404 while it propagates. Then check that the
-   landing page returns `200` and unauthenticated `/mcp` returns `401` with
-   `WWW-Authenticate: Bearer`.
+3. Run the post-deploy checks in [`docs/operations.md`](../../../docs/operations.md#deploy).
 4. Close the issue with the commit, the deploy Version ID, and the guard and live-check evidence
    (`gh issue close <n> --comment ...`).
