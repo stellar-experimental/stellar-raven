@@ -506,7 +506,13 @@ Held by this item:
   answer stopped at registry rows and missed the headline launches in all three samples (a
   completeness loss, not an accuracy one). Result 1's control drop did not repeat, and the registry
   did not hurt the controls or off-target questions. See
-  [RESULTS-2.md](rounds/2026-11-16-next-phase/items/6.3/RESULTS-2.md). The A/B is not re-run on
+  [RESULTS-2.md](rounds/2026-11-16-next-phase/items/6.3/RESULTS-2.md). A card-caveat variant
+  (round item 7.2, 2026-11-18: the same 42-answer design, with the card saying the registry is not
+  a launch or news timeline and `launchedAt` is Soroban contract creation only) also returned
+  exclude: the 2025-launches loss fell from three of three samples to two, which still fires the
+  clause. See [RESULTS.md](rounds/2026-11-16-next-phase/items/7.2/RESULTS.md). Re-open only on a
+  Scout `/api/rwa` schema change, a general mixed-intent routing mechanism, or an owner product
+  need. The A/B is not re-run on
   routine drift; a re-test needs an owner or orchestrator decision. `GET /api/quality` stays excluded (response-schema keywords caused
   unrelated captures). `reviewSubmission`, `analyzeHackathonSubmissions`,
   `getHackathonSubmission`, and `locateSource` stay excluded.
@@ -554,7 +560,7 @@ Acceptance checks:
 7. All eight regression rows meet their clean grades.
 8. A general RWA query reaches `scout.getRwaAssets`, while unrelated Friendbot, RPC, WASM,
    simulation, and balance questions do not capture it. The proposed answer-level form ("the
-   target stays rank 1 and answers do not degrade") was tested in round item 6.3 and not adopted,
+   target stays rank 1 and answers do not degrade") was tested in round items 6.3 and 7.2 and not adopted,
    because the pre-registered rule returned exclude.
 9. The leaderboard and RFP improvements remain.
 10. The legacy, skills, and holdout routing gates pass. The extended diagnostic shows no

@@ -1,0 +1,541 @@
+{
+  "judge": "claude-opus-5-5 (--model opus, effort high), blind; un-blinded with tmp/7.2/rt/blind-key.json",
+  "attributionJudge": "claude-fable (--model fable, effort high), one session over 3 items; first write valid, no correction pass",
+  "verdicts": [
+    {
+      "key": "C1",
+      "sample": 1,
+      "included": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "excluded": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "reasonAsWritten": "Both describe the simulation correctly; X's TPT30 contract ID matches the registry, Y's MuxedAddress and CLI details match the docs.",
+      "judgeLabels": {
+        "X": "included",
+        "Y": "excluded"
+      }
+    },
+    {
+      "key": "C1",
+      "sample": 2,
+      "excluded": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "included": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "reasonAsWritten": "Both give a correct documented procedure for building a SEP-41 transfer and calling simulateTransaction, noting it was not executed.",
+      "judgeLabels": {
+        "X": "excluded",
+        "Y": "included"
+      }
+    },
+    {
+      "key": "C1",
+      "sample": 3,
+      "excluded": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "included": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "reasonAsWritten": "Both give accurate simulateTransaction procedures with the documented request shape and token transfer interface.",
+      "judgeLabels": {
+        "X": "excluded",
+        "Y": "included"
+      }
+    },
+    {
+      "key": "C2",
+      "sample": 1,
+      "included": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "excluded": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "reasonAsWritten": "Both are accurate; X's identifiers, flags, decimals and states match the registry and its CLI command matches the docs.",
+      "judgeLabels": {
+        "X": "included",
+        "Y": "excluded"
+      }
+    },
+    {
+      "key": "C2",
+      "sample": 2,
+      "included": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "excluded": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "reasonAsWritten": "Both explain trustline balances via Horizon and SEP-41 balance() for contract tokens; X's issuer/contract IDs and decimals match the registry.",
+      "judgeLabels": {
+        "X": "included",
+        "Y": "excluded"
+      }
+    },
+    {
+      "key": "C2",
+      "sample": 3,
+      "excluded": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "included": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "reasonAsWritten": "Both correctly describe classic vs contract balance reads; Y's issuers, contract IDs and decimals match the registry and X's CAP-73 note matches the SAC docs.",
+      "judgeLabels": {
+        "X": "excluded",
+        "Y": "included"
+      }
+    },
+    {
+      "key": "C3",
+      "sample": 1,
+      "excluded": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "included": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "reasonAsWritten": "Both give the documented issuance path, flags and SEP-8 caveat, with requirements matching the Asset Issuance Stack, and flag legal points as counsel questions.",
+      "judgeLabels": {
+        "X": "excluded",
+        "Y": "included"
+      }
+    },
+    {
+      "key": "C3",
+      "sample": 2,
+      "excluded": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "included": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "reasonAsWritten": "Both accurately cite the Asset Issuance Stack requirements table and irreversible-choice warnings; Y's registry flag examples match.",
+      "judgeLabels": {
+        "X": "excluded",
+        "Y": "included"
+      }
+    },
+    {
+      "key": "C3",
+      "sample": 3,
+      "included": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "excluded": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "reasonAsWritten": "Both match the Asset Issuance Stack docs (table values, vendor examples, OpenZeppelin RWA suite) and registry facts.",
+      "judgeLabels": {
+        "X": "included",
+        "Y": "excluded"
+      }
+    },
+    {
+      "key": "D3",
+      "sample": 1,
+      "included": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": [
+          "Does not mention RedSwan's $100M tokenized real estate, a 2025 highlight in SDF's year-in-review (minor omission)."
+        ]
+      },
+      "excluded": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": [
+          "Does not mention PayPal PYUSD going live on Stellar in September 2025, a highlight in SDF's year-in-review (minor omission)."
+        ]
+      },
+      "reasonAsWritten": "Both give broad, dated, source-supported lists of 2025 RWA and DeFi launches.",
+      "judgeLabels": {
+        "X": "included",
+        "Y": "excluded"
+      }
+    },
+    {
+      "key": "D3",
+      "sample": 2,
+      "excluded": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "included": {
+        "correctness": "partial",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": [
+          "Omits the headline 2025 launches the SDF 2025 year-in-review lists (Ondo USDY on Stellar, PayPal PYUSD going live, RedSwan's $100M tokenized real estate, Franklin Templeton's fund expanding to European investors); the list is limited to Centrifuge deRWA and registry-dated Spiko tokens."
+        ]
+      },
+      "reasonAsWritten": "X covers the year-in-review's main RWA/DeFi launches with supported figures; Y is accurate but misses most headline 2025 launches.",
+      "judgeLabels": {
+        "X": "excluded",
+        "Y": "included"
+      }
+    },
+    {
+      "key": "D3",
+      "sample": 3,
+      "excluded": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": [
+          "Does not mention PayPal PYUSD going live on Stellar in September 2025, a highlight in SDF's year-in-review (minor omission)."
+        ]
+      },
+      "included": {
+        "correctness": "partial",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": [
+          "Omits PayPal PYUSD (live Sep 2025), RedSwan's $100M tokenized real estate and Franklin Templeton's Feb 2025 European fund launch, which SDF's 2025 year-in-review lists as highlights; Franklin's BENJI is mentioned only as an undated registry entry.",
+          "States that DeFi TVL passed $70M at the time of the Flipside Quests launch; the fetched Defiant article excerpts do not show this figure."
+        ]
+      },
+      "reasonAsWritten": "X lists the major 2025 launches with checked dates; Y is accurate on what it lists but misses several headline launches.",
+      "judgeLabels": {
+        "X": "excluded",
+        "Y": "included"
+      }
+    },
+    {
+      "key": "N1",
+      "sample": 1,
+      "included": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "excluded": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "reasonAsWritten": "Both accurately describe the Academic Research Grants program, eligibility/PI requirement and full proposal outline.",
+      "judgeLabels": {
+        "X": "included",
+        "Y": "excluded"
+      }
+    },
+    {
+      "key": "N1",
+      "sample": 2,
+      "excluded": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "included": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "reasonAsWritten": "Both accurately reproduce the research.stellar.org Academic Research Grants terms and application outline.",
+      "judgeLabels": {
+        "X": "excluded",
+        "Y": "included"
+      }
+    },
+    {
+      "key": "N1",
+      "sample": 3,
+      "included": {
+        "correctness": "partial",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": [
+          "Gives only the first part of the proposal outline (title, abstract, PI bio) and omits the rest stated on research.stellar.org: PI-authorization statement, technical body, budget cap of $150,000 (≈$75,000 average), named student/post-doc, no-patent statement, bibliography, and the submission link."
+        ]
+      },
+      "excluded": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "reasonAsWritten": "Y gives the full application requirements; X stops partway through the outline and omits the budget cap and submission method.",
+      "judgeLabels": {
+        "X": "included",
+        "Y": "excluded"
+      }
+    },
+    {
+      "key": "N2",
+      "sample": 1,
+      "included": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "excluded": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "reasonAsWritten": "Both match the SEP-8 spec on per-transaction approval flow and the stellar.toml fields.",
+      "judgeLabels": {
+        "X": "included",
+        "Y": "excluded"
+      }
+    },
+    {
+      "key": "N2",
+      "sample": 2,
+      "included": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "excluded": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "reasonAsWritten": "Both match SEP-8: AUTH_REQUIRED+AUTH_REVOCABLE, approval server flow and statuses, and regulated/approval_server/approval_criteria in [[CURRENCIES]].",
+      "judgeLabels": {
+        "X": "included",
+        "Y": "excluded"
+      }
+    },
+    {
+      "key": "N2",
+      "sample": 3,
+      "excluded": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "included": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": []
+      },
+      "reasonAsWritten": "Both match the SEP-8 spec; the Go reference server removal is confirmed by an Oct 2025 go-stellar-sdk commit.",
+      "judgeLabels": {
+        "X": "excluded",
+        "Y": "included"
+      }
+    },
+    {
+      "key": "N3",
+      "sample": 1,
+      "excluded": {
+        "correctness": "partial",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": [
+          "Queries `crypto-stellar.crypto_stellar.account_balances_daily_agg` and `crypto-stellar.crypto_stellar.reflector_prices_data_sdex_snapshot` as fact; the Hubble data dictionary's own examples query `crypto-stellar.snapshots.accounts_snapshot` / `crypto-stellar.snapshots.trustlines_snapshot` and place dbt models in `crypto-stellar.crypto_stellar_dbt`, so these paths are unsupported and the SQL would likely fail."
+        ]
+      },
+      "included": {
+        "correctness": "partial",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": [
+          "States the snapshot tables live in the `crypto-stellar.crypto_stellar` dataset and queries `crypto-stellar.crypto_stellar.accounts_snapshot`/`trustlines_snapshot`; the Hubble data dictionary's own examples query `crypto-stellar.snapshots.accounts_snapshot` / `crypto-stellar.snapshots.trustlines_snapshot` and place dbt models in `crypto-stellar.crypto_stellar_dbt`."
+        ]
+      },
+      "reasonAsWritten": "Both identify the right tables and columns, but each asserts a dataset path for the silver/gold tables that the Hubble docs contradict.",
+      "judgeLabels": {
+        "X": "excluded",
+        "Y": "included"
+      }
+    },
+    {
+      "key": "N3",
+      "sample": 2,
+      "included": {
+        "correctness": "partial",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": [
+          "Asserts the snapshot tables are in `crypto-stellar.crypto_stellar`; the Hubble data dictionary's own examples query `crypto-stellar.snapshots.accounts_snapshot` / `crypto-stellar.snapshots.trustlines_snapshot` and place dbt models in `crypto-stellar.crypto_stellar_dbt`.",
+          "Does not cover Soroban contract-token balances (e.g. the gold account_balances__daily_agg or contract data), so the 'full' balance is incomplete."
+        ]
+      },
+      "excluded": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": [
+          "Its SQL uses `crypto-stellar.crypto_stellar.*` paths for the snapshot tables, while the docs' examples use `crypto-stellar.snapshots.*`; the answer does flag the dataset name as unconfirmed."
+        ]
+      },
+      "reasonAsWritten": "Y covers balances, all three Reflector price tables and the non-trustline holdings while flagging the unconfirmed dataset; X asserts the wrong dataset and omits contract tokens.",
+      "judgeLabels": {
+        "X": "included",
+        "Y": "excluded"
+      }
+    },
+    {
+      "key": "N3",
+      "sample": 3,
+      "excluded": {
+        "correctness": "partial",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": [
+          "Prices every asset by joining reflector_prices_data_cex_snapshot on asset_code only; the docs say the CEX table covers bridged assets priced on their native chains, while Stellar-issued assets are in the SDEX table keyed by asset_contract_id/code+issuer+type, and the answer itself warns code-only joins mix issuers.",
+          "Does not cover Soroban contract-token balances, so the 'full' balance is incomplete."
+        ]
+      },
+      "included": {
+        "correctness": "correct",
+        "fabrication": false,
+        "offTopic": false,
+        "deficiencies": [
+          "Its SQL uses `crypto-stellar.crypto_stellar.*` paths for the snapshot tables, while the docs' examples use `crypto-stellar.snapshots.*`; the answer does flag the table paths as an assumption."
+        ]
+      },
+      "reasonAsWritten": "Y gives a sound point-in-time method with SDEX pricing and the gold table for contract tokens; X's price join uses the wrong table and key.",
+      "judgeLabels": {
+        "X": "excluded",
+        "Y": "included"
+      }
+    }
+  ],
+  "attribution": [
+    {
+      "id": "e90f483011",
+      "pair": "D3:3",
+      "valid": true,
+      "items": [
+        {
+          "n": 1,
+          "deficiency": "Omits PayPal PYUSD (live Sep 2025), RedSwan's $100M tokenized real estate and Franklin Templeton's Feb 2025 European fund launch, which SDF's 2025 year-in-review lists as highlights; Franklin's BENJI is mentioned only as an undated registry entry.",
+          "valid": true,
+          "involvesRegistry": true,
+          "problem": null,
+          "answerQuote": "the directory also lists Franklin Templeton BENJI (about $450M), WisdomTree digital funds, Etherfuse USTRY and Societe Generale-FORGE EURCV. Their 2025 launch dates are not confirmed by the directory.",
+          "toolQuote": "[\"Franklin OnChain U.S. Government Money Fund\",\"BENJI\",\"Franklin Templeton Trust\",\"rwa-asset\",null,450305422.50546753]"
+        },
+        {
+          "n": 2,
+          "deficiency": "States that DeFi TVL passed $70M at the time of the Flipside Quests launch; the fetched Defiant article excerpts do not show this figure.",
+          "valid": true,
+          "involvesRegistry": false,
+          "problem": null,
+          "answerQuote": null,
+          "toolQuote": null
+        }
+      ]
+    },
+    {
+      "id": "b9dec31872",
+      "pair": "D3:1",
+      "valid": true,
+      "items": [
+        {
+          "n": 1,
+          "deficiency": "Does not mention RedSwan's $100M tokenized real estate, a 2025 highlight in SDF's year-in-review (minor omission).",
+          "valid": true,
+          "involvesRegistry": true,
+          "problem": null,
+          "answerQuote": "the registry lists EUTBL, USTBL, UKTBL and eurSPKCC with a Soroban launch date of 2025-10-01. EUTBL is about $442M per rwa.xyz.",
+          "toolQuote": "[\"Spiko EU T-Bills Money Market Fund\",\"EUTBL\",\"Spiko\",\"non-US Government Debt\",\"2025-10-01\",441692137.3035398]"
+        }
+      ]
+    },
+    {
+      "id": "ce75c2ce2e",
+      "pair": "D3:2",
+      "valid": true,
+      "items": [
+        {
+          "n": 1,
+          "deficiency": "Omits the headline 2025 launches the SDF 2025 year-in-review lists (Ondo USDY on Stellar, PayPal PYUSD going live, RedSwan's $100M tokenized real estate, Franklin Templeton's fund expanding to European investors); the list is limited to Centrifuge deRWA and registry-dated Spiko tokens.",
+          "valid": true,
+          "involvesRegistry": true,
+          "problem": null,
+          "answerQuote": "| EUTBL | EU T-Bills | ≈$441.7M |",
+          "toolQuote": "[\"Spiko EU T-Bills Money Market Fund\",\"EUTBL\",\"Spiko\",\"rwa-asset\",\"2025-10-01\",441692137.3035398,\"spiko\"]"
+        }
+      ]
+    }
+  ],
+  "outcome": {
+    "outcome": "exclude",
+    "inconclusiveReasons": [],
+    "firedClauses": [
+      "D3: attributableDrop (2)"
+    ],
+    "carriedFailed": []
+  }
+}
