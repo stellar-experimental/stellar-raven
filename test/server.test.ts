@@ -104,7 +104,7 @@ vi.mock("@cloudflare/workers-oauth-provider", () => ({
     }
   }
 }));
-vi.mock("agents/mcp", () => ({
+vi.mock("agents/mcp/server", () => ({
   createMcpHandler: vi.fn(() => () => new Response(null, { status: 404 })),
   getMcpAuthContext: vi.fn(() => undefined)
 }));

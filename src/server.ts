@@ -8,7 +8,7 @@
  * Only host code receives credentials and authorized grant properties.
  */
 import OAuthProvider from "@cloudflare/workers-oauth-provider";
-import { createMcpHandler } from "agents/mcp";
+import { createMcpHandler } from "agents/mcp/server";
 import { McpServer } from "@modelcontextprotocol/server";
 import { registerTools, SERVER_INSTRUCTIONS } from "./mcp/tools";
 import type { ExecuteRunner } from "./executor/run";
