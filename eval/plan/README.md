@@ -1,10 +1,10 @@
-# Multi-tool plan eval — grading the PLAN, not just the answer
+# Multi-tool plan evaluation
 
-The golden Q→A eval (`eval/qa/`) judges the final answer. Real questions, though, often need
-**many tools plus follow-up calls**: SCF questions legitimately span scout AND
-lumenloop, project lookups span scout AND lumenloop, OpenZeppelin-Soroban questions live in the
-skills bundle — and specific answers demand a broad→detail call progression, not one-shot
-routing. This eval re-grades an existing results file's per-row tool `transcript` on three axes:
+The QA evaluation (`eval/qa/`) judges the final answer. Many questions need several tools and
+follow-up calls: SCF questions and project lookups span Scout and Lumenloop, OpenZeppelin-Soroban
+questions live in the pinned skills, and a specific answer needs a broad-to-detail call
+progression, not one-shot routing. This evaluation re-grades the per-row tool `transcript` of an
+existing results file on three axes:
 
 1. **Set coverage** — did the plan touch the right SET of services, graded against an
    acceptable-set per case (`coverage-rules.json`)?
@@ -65,7 +65,7 @@ coverage doc) beat all rules.
 ## Op extraction and classes
 
 The grader extracts direct service calls from stored execute `{code}` inputs with this regex:
-`\b(lumenloop|scout|stellarDocs)\.(\w+)\s*\(`.
+`\b(lumenloop|scout|stellarDocs|stellarOrg)\.(\w+)\s*\(`.
 It also recognizes `codemode.skill.read`, `codemode.skill.run`, and their supported aliases as `skills` calls.
 It expands a captured `skill.run` ID through the runner registry's declared operations.
 Each expansion carries `via: <skillId>`. These declarations do not prove which host calls actually ran.
@@ -77,12 +77,12 @@ A `codemode.search` or top-level MCP search supplies the broad step for a later 
 
 `op-classes.json` is **generated** — rebuild with `node eval/plan/build-op-classes.mjs` after a
 catalog change; never hand-edit. It classes every catalog operation as `broad` (returns
-collections: search_/list_/find_/match_ plus explicit plural-`get*` overrides), `detail` (one
+collections: search_/list_/find_ plus explicit plural-`get*` overrides), `detail` (one
 thing by id: get_/read_/explain/compare), or `meta` (status/changelog/vocabularies/writes/metered
 compute). Unmatched ops default to `meta` and are listed under `unmatched` + warned at build time
 so misclassification stays visible.
 
-## Limitations (honest)
+## Limitations
 
 - **Regex op extraction misses dynamic dispatch** — code like `const svc = scout; svc[opName]()`
   or ops invoked through helper variables won't be counted; extraction is a lower bound on what

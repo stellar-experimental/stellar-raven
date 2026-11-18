@@ -37,10 +37,10 @@ and optional pseudonymous account hash. An invocation identifier plus log index 
 Neither table stores request headers, queries, answers, code, exceptions, or raw account identifiers.
 The collector tries each database write up to three times and reports permanent failures.
 
-The daily cleanup retains thirteen UTC monthly periods: the current month and the previous twelve.
-The collector imports `USAGE_RETENTION_MONTHS` from `src/auth/retention.ts`.
+The daily cleanup deletes rows older than the retention window: the current UTC month and the previous months that `USAGE_RETENTION_MONTHS` counts.
+The collector imports it from `src/auth/retention.ts`; [the operations guide](../docs/operations.md#data-retention) gives the period.
 An account-data deletion also removes the account's response rows.
-[The operations guide](../docs/operations.md) gives the deletion procedure and the other retention periods.
+[The operations guide](../docs/operations.md#account-data-deletion) gives the deletion procedure.
 
 Migration 0003 stores historical report snapshots in D1. Each snapshot has an explicit expiry
 timestamp, and the daily cleanup deletes expired snapshots. The report API returns the launch
@@ -52,7 +52,7 @@ snapshot only after bearer authentication.
 node scripts/usage-report.mjs --from 2026-09 --to 2026-10
 ```
 
-`--to` is exclusive. The command uses the account in this directory's config. Set `WRANGLER_PROFILE` to pick a
+`--to` is exclusive. The command uses the account in `usage/wrangler.jsonc`. Set `WRANGLER_PROFILE` to pick a
 named Wrangler profile; without it, Wrangler uses your default login.
 Add `--local` to query the local test database.
 The JSON output contains MCP, playground, and combined monthly rows.
@@ -138,7 +138,7 @@ The archive cannot recreate tool events that expired from Workers Logs before co
 - Receipt presence indicates observed invocations, not complete tool coverage.
 - Missing-identifier and write-failure receipts use random identifiers; redelivery can repeat these diagnostic counts.
 - Producer failure and truncation checks indicate possible missing responses, not necessarily a collector fault.
-- The 13-month retention applies to D1 usage records. It does not apply to Workers Logs or AI Gateway metadata.
+- The usage retention window applies to D1 usage records. It does not apply to Workers Logs or AI Gateway metadata.
 
 ## Owner data stays outside the repository
 

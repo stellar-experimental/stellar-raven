@@ -19,6 +19,7 @@ Use the [run-evals workflow](../../.agents/skills/run-evals/SKILL.md) to plan a 
 | `consistency-register.json` | Cross-case contradictions and numeric invariants |
 | `results/` | Local, ignored collection and judging artifacts |
 | `reviewed/` | Retained dated evidence |
+| `claim-read-packets.mjs`, `claim-read-brief.md` | Packets and the standing brief for the governance and attribution claim read; the lead splits the packets into chunk files and gives each reader one |
 
 [lifecycle-registry.json](lifecycle-registry.json) owns current battery membership.
 Keep the battery, canonical live cases, and digest supplement separate in reports.
@@ -237,6 +238,8 @@ owner decision. Record the amendment in the new file's `amended` field and in th
 the new file's SHA-256. The tuning row count lives in one constant (`TUNING_ROW_COUNT` in
 `tuning-rows.mjs`), and `split-amend.mjs` holds the checked move.
 
+How to search without reading case text: see [Searching without reading case text](#searching-without-reading-case-text).
+
 **Maintenance exception.** A golden-maintenance lane may open and edit a held-out or reserve
 case without moving it. The lane is its lead, its executor and its reviewers. Its brief says
 that it runs under the exception and names the trigger before any case is opened. All of these
@@ -310,7 +313,7 @@ name; a shell glob that could expand to a listed path (`eval/qa/*`, `*/*/*.json`
 a `$(...)` file list; and `xargs` or `find -exec` running `grep` or `rg`. The Grep tool is denied
 for a `glob` that matches a listed name through an unset or ancestor `path`. It blocks and never
 rewrites, fails open on a parse or internal error, and runs in every Claude session in a checkout,
-including a checked-out pull request branch. A worktree branched before the hook merged has none.
+including a checked-out pull request branch.
 Its `rg` rules were probed live; its Grep-tool branch is unit-tested only, so the rule names `rg`.
 A positive glob is denied even when a later negative glob excludes every listed path (`rg -g '*.json'
 -g '!eval/**' X`): an accepted false positive, with `rg X src` as the substitute.
@@ -325,8 +328,7 @@ No other lane uses it.
 **What the guard does not stop.** `cat`, the Read tool, `git diff`, `git show`, `git log -p`, an
 explicit path to a listed file, a pull request's diff, a script file or a pipe into a shell
 (`echo '...' | bash`), `ag`, `ack` and `ugrep`, and any lane that is not a Claude Code session. `rg -g '*.json'` re-includes a file-level entry, so the hook denies it; Codex and Grok lanes
-rely on the rule in `AGENTS.md`. Moving the generated case files into one folder would close that
-hole at the source.
+rely on the rule in `AGENTS.md`.
 
 **Copies of golden text.** `eval/qa/case-text-scan.mjs` counts 8-word golden shingles (unique to at
 most two cases) that a file git lists outside the paths above repeats. `npm test` fails when a file
@@ -527,6 +529,7 @@ Changes to evidence selection or serialization require a pack-version change.
 Use prompt-hash fixtures to demonstrate that a comment or formatting change preserves prompt bytes.
 The code keeps only the current pack. To rebuild an earlier pack, import `eval/qa/evidence-pack.mjs` from the revision that defined it.
 For `p6`, use revision `d15a4ce5`; for `p7`, use `7e00ede2`; for `p8`, use `36e77d40`. [The p9 replay](../../.agents/rounds/2026-10-12-pack-p9/replay-p9.mjs) loads all three.
+`7e00ede2` and `36e77d40` exist only on closed PR #264; run `git fetch origin pull/264/head` before importing them.
 
 The sampler allocates by service, sorts IDs, and selects evenly spaced cases.
 Corpus growth can change membership even when the requested sample size stays fixed.
@@ -736,19 +739,8 @@ The screen can mistake evidence summaries for answer preparation.
 Unusual quotation forms can produce false positives; unmatched English forms can produce false negatives.
 Counts measure saved row occurrences, including repeated answers and mixed historical runs.
 The diagnostic changes no answer, judge grade, prompt, or release gate.
-[The October 9 review](reviewed/2026-10-09-planning-text.json) records 378 files and 2,765 non-empty answers.
-The revised screen matched 32 answer occurrences with 33 matches; 2,615 answer texts were unique.
-The author reviewed a fresh deterministic sample of 20 matched answers.
-The sample has 19 planning preambles, no false positives, and one uncertain case.
-Precision among the 19 decided labels is `19/19 = 100%`.
-The uncertain label gives a sample precision range of `95%–100%`.
-This range measures label uncertainty, not statistical confidence.
-The original screen matched `28/38` first-line cue answers; the revised screen matches `32/38`.
-Six cue-leading answers remain unmatched; these cues can also introduce legitimate evidence summaries.
-The report gives the first-line cue expression and counts; this measured gap does not establish recall.
-The historical `155/500` broad screen used a different answer set and rule.
-The sample covers answer preparation preambles; it contains no tool action match.
-These historical counts do not establish recall or production prevalence.
+[The 2026-10-09 review](reviewed/2026-10-09-planning-text.json) records the screen's measured precision and cue coverage.
+The counts it reports do not establish recall or production prevalence.
 
 ## Paired `PASS` / `FAIL` / `INDETERMINATE` verdict
 
@@ -828,8 +820,7 @@ The supervisor runs collection only. Run stored judging later with artifact path
 The collection arms inherit the supervisor's process group; cancellation signals each recorded child directly.
 The launch operator owns group cleanup and verifies all surviving group members before signaling.
 After each stored judge, the operator requires complete judging evidence and unsuppressed aggregates before the next phase.
-Each arm collects under `$80`; stored judging raises the same cumulative ledger to `$120`.
-The two-arm cumulative cap is `$240`.
+Each arm's plan sets a collection cap and a higher cumulative cap for stored judging, and the two-arm cap must equal the sum of the two cumulative caps (the reviewed run used `$80`, `$120` and `$240`). The owner-signed plan holds the authorized values.
 
 The P6 block fixes seven `$0.50` calls, the launch's `--paired-listeners` record and its digest (`p6.listenersSha256`), and a new output path.
 The supervisor requires that record to match its digest and the ports and revisions of both collection commands.

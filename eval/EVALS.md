@@ -9,25 +9,22 @@ from an all-model superiority study: predeclare its sample, acceptance and stopp
 historical incomplete cohorts separate. The [run-evals skill](../.agents/skills/run-evals/SKILL.md)
 owns this scoping and review workflow; required CI and release gates remain unchanged.
 
-Before a paid run, name the decision, the smallest run that can change it, the stop rule, and the
-expected time and cost. Run development evals here: the local `wrangler dev` server and the
-subscription CLIs (Claude Code, Codex, Grok) driven through `hc`, before any API-billed path.
-Test with Claude Sonnet 5.5, GPT-6.1 Terra, and Grok 4.7; add Claude Opus 5.5 or GPT-6.1 Sol only
-where they can change the decision, and omit Haiku and GPT-6 Luna. The skill holds the model IDs
-and the two API-billed exceptions.
+Scope each paid run with the [run-evals skill](../.agents/skills/run-evals/SKILL.md): it owns the decision, the smallest run, the stop
+rule, the cost estimate and the API-billed exceptions. The client set is in
+[the roster](../.agents/model-roster.md#models-for-evals-and-tests).
 
 ## Instruments
 
 | Instrument | Measure | Cost and use | Status |
 |---|---|---|---|
-| [Routing: legacy](README.md) | Service ranking on 338 cases | Offline; run after catalog or scoring changes | Gate: top-1/3/5 baseline band |
-| [Routing: skills](README.md) | Skill ranking on 23 cases | Offline; same routing run | Gate: top-1 floor |
-| [Routing: holdout](README.md) | Blind routing on 49 cases | Offline; same routing run | Gate: top-1/3/5 floors and forbidden-capture ceiling |
-| [Routing: extended](README.md) | Service ranking on 122 additional questions | Offline; same routing run | Diagnostic |
+| [Routing: legacy](README.md) | Service ranking on the legacy set | Offline; run after catalog or scoring changes | Gate: top-1/3/5 baseline band |
+| [Routing: skills](README.md) | Skill ranking on the skills set | Offline; same routing run | Gate: top-1 floor |
+| [Routing: holdout](README.md) | Blind routing on the holdout set | Offline; same routing run | Gate: top-1/3/5 floors and forbidden-capture ceiling |
+| [Routing: extended](README.md) | Service ranking on the extended set | Offline; same routing run | Diagnostic |
 | [Routing: accept-either](README.md) | Routing with declared alternate service labels | Offline; same routing run | Diagnostic; keep separate from strict scores |
 | [Protocol-history v1](protocol-history-cases.json) | Eight positive cases and four controls | Offline; same routing run | Frozen diagnostic |
 | [Protocol-history v2](run-protocol-history.mjs) | 19 required, nine forbidden, and four neutral cases | Offline; `npm run eval:protocol-history` | Frozen diagnostic; source mismatches produce `source-expired` |
-| [Discovery](discovery/README.md) | Source-family and usable-operation discovery on 43 cases; 91-query replay | One-shot and replay call a live MCP server without model calls; the agent arm is paid | Diagnostic |
+| [Discovery](discovery/README.md) | Source-family and usable-operation discovery on 43 cases; 91-query replay | One-shot and replay call a live MCP server without model calls; the agent arm is paid | Diagnostic; [ADR-0009](../research/decisions/0009-discovery-stays-lexical.md) |
 | [Agentic routing](agentic/README.md) | Agent query reformulation and service selection on 30 cases | Paid; requires the Claude Code Workflow tool and a live server | Diagnostic |
 | [QA battery](qa/README.md) | Final-answer correctness | Paid; use matched cases before and after substantial changes | Headline; membership comes from the [registry](qa/lifecycle-registry.json) |
 | [Canonical live QA](qa/corpus/live/live-cases.json) | Live-data behavior on 15 cases | Paid; test grounding after executor or adapter changes | Separate diagnostic: `live-data-canonical-v3` |
@@ -38,9 +35,6 @@ and the two API-billed exceptions.
 | [Partner docs](partner-docs/README.md) | Required facts in partner documentation | Live source checks; see the instrument guide | Diagnostic |
 | [Composition](qa/analyze-composition.mjs) | Tool composition in stored transcripts | Offline; accepts a saved result file | Diagnostic |
 | [Missing-fact clusters](qa/cluster-missing-facts.mjs) | Repeated omissions in stored verdicts | Offline; accepts a saved result file | Diagnostic |
-
-The Vectorize experiments measured NO-SHIP outcomes. The repository does not retain their implementation or commands.
-Git history preserves their measurement evidence.
 
 ## Contract ownership
 
@@ -66,9 +60,4 @@ When a round establishes an upstream defect, file or update evidence-backed find
 Record problems in this repository in [.agents/TODO.md](../.agents/TODO.md).
 The [improvements workflow](../.agents/skills/improvements-pipeline/SKILL.md) defines evidence and status requirements.
 
-The [2026-11-02 non-Anthropic diagnostic](../research/audits/2026-11-02-golden-overnight/README.md) records a separate direct-Grok host loop and 100-case selection.
-It preserves incomplete quality coverage and has no canonical five-track or historical QA comparability claim.
-
-The [2026-11-03 follow-up](../research/audits/2026-11-03-qa-followup/README.md) records the resulting repairs and held questions.
-Its separate finalization candidate remains unmeasured.
-The original grades and withheld quality score remain unchanged.
+Dated audit records live under [research/audits/](../research/audits/).

@@ -1,12 +1,12 @@
 # Playground semantic evaluation
 
-`scripts/run-demo-model-gauntlet.mjs` remains the eight-case transport and tool-loop smoke test. It checks that models can complete the SSE chat path cleanly; it does not establish factual answer quality. It prints the validated matrix first and will not create artifacts, read `.dev.vars`, mint cookies, or start Wrangler unless the operator explicitly supplies `--confirm-paid` (for example: `node scripts/run-demo-model-gauntlet.mjs --models openai/gpt-6.1-terra --confirm-paid`). The printed total is planned Playground chat turns, not guaranteed provider calls. Without `--models` it runs the three evaluation clients (Sonnet 5.5, GPT-6.1 Terra, Grok 4.7). Select any other model explicitly with `--models` and state in the run plan the decision it serves.
+`scripts/run-demo-model-gauntlet.mjs` remains the eight-case transport and tool-loop smoke test. It checks that models can complete the SSE chat path cleanly; it does not establish factual answer quality. It prints the validated matrix first and will not create artifacts, read `.dev.vars`, mint cookies, or start Wrangler unless the operator explicitly supplies `--confirm-paid` (for example: `node scripts/run-demo-model-gauntlet.mjs --models openai/gpt-6.1-terra --confirm-paid`). The printed total is planned Playground chat turns, not guaranteed provider calls. It starts its own Wrangler per model on its own port. Without `--models` it runs the three evaluation clients (Sonnet 5.5, GPT-6.1 Terra, Grok 4.7). Select any other model explicitly with `--models` and state in the run plan the decision it serves.
 
 `npm run eval:playground` is the complementary semantic lane. It sends existing QA cases to the real `POST /playground/chat` SSE route, captures the final assistant text, search/execute outcomes, terminal reason, latency, HTTP/SSE errors, and grades the final answer with the existing `eval/qa` golden, evidence-pack, and judge contract. It introduces no new quality rubric and does not change corpus or golden content.
 
-Use a pane already running `npm run dev` and its bound loopback URL; do not start Wrangler for this command.
+Use a terminal already running `npm run dev` and its bound loopback URL; do not start Wrangler for this command.
 
-Both lanes are API-billed: the Playground route itself calls models through Cloudflare AI Gateway, so no subscription CLI can stand in for it. Use them only for a Playground decision, on the fewest cases and models that can change it, and state the expected cost first. For other questions, use the CLI-driven instruments in the [evaluation map](../EVALS.md).
+Both lanes are API-billed: the Playground route itself calls models through Cloudflare AI Gateway, so no subscription CLI can stand in for it. The [run-evals skill](../../.agents/skills/run-evals/SKILL.md) owns the scoping and spend rules. For other questions, use the CLI-driven instruments in the [evaluation map](../EVALS.md).
 
 ```sh
 # Free validation: default seeded, stratified five-case selection; no HTTP/model/judge calls.
@@ -97,7 +97,7 @@ The guard still rejects non-chat calls without raw-response support before any u
 Missing or duplicate log identifiers block further calls and produce an incomplete receipt.
 Ordinary requests without the evaluation budget header retain their existing model support.
 
-The [coverage review](../../research/audits/2026-10-01-playground-accounting-coverage.md) records the original gap.
+The [coverage review](../../research/audits/2026-10-01-playground-accounting-coverage.md) records the accounting coverage by transport.
 The current regressions use the real handler and installed parser with mocked upstream responses and costs.
 They cover both named models, JSON responses to streaming requests, and fallback into a native model.
 They do not establish live model availability or live cost reporting.
@@ -118,7 +118,7 @@ The judge tuple records the executable path, real path, version, and SHA-256 bef
 harness requires it, checks it against the complete local working-tree generation before the
 first model call, checks that the tree stayed unchanged before writing, and records the limit
 honestly: this does not prove that an already-running Worker loaded those bytes. The reviewed
-operator must ensure the reused `dev` pane represents that generation. A generation is
+operator must ensure the reused `dev` terminal represents that generation. A generation is
 machine-local, not a portable build or deployment identity; the value only attests to the named
 operator's local tree at the harness checkpoints.
 
@@ -157,7 +157,7 @@ the named round owner updates `*ConsumedBeforeRun` between invocations and verif
 projection before spending. The harness fail-closes an inconsistent or over-cap input, but cannot
 account for model calls made outside the supplied machine-local context.
 
-`--no-judge` captures a route/trace diagnostic only; omit it for the semantic result. Results are timestamped JSON below `eval/local-lanes/playground-semantic/`, which is gitignored. Newly produced files use metadata contract `playground-semantic-result/v3` and input snapshot `playground-semantic-input/v1`. They pin the ordered configured primary/fallback models, effective/requested API mode, reasoning effort, answering temperature, explicit judge model/rubric/pack/unpinned-temperature semantics, demo/evaluator/round caps, local tree generation, and raw corpus/manifest/super-spec plus evaluator-source hashes. The configured tuple comes from the evaluator's process environment or `.dev.vars`, so a server started with a different `--var DEMO_MODEL_OVERRIDE` would mislabel it. The route therefore reports the AI Gateway-logged model of every provider call in each `eval-cost` frame (`models`). The harness stops with `observed-model-mismatch` before any judge call when a turn reports a model outside the configured tuple, or reports none. `answering.observedAttemptedModels` lists the configured models that answered; a stopped row keeps the unconfigured model in `provenanceError`. The comparison is an exact string match, and the paired 2026-11-03 runs confirmed that the Gateway logs `openai/*` models under the configured id. Other vendors are covered only by mocks, so verify their logged ids before relying on this check. Set the same override in the harness environment as on the server. Internal hashes are revalidated by the re-judge reader; omission or mismatch fails. `inputSnapshot.answeringConfigSha256` excludes `observedAttemptedModels`, so equal configurations hash equally. Historical artifacts remain untouched, and re-judge refuses an older `playground-semantic-result/*` contract.
+`--no-judge` captures a route/trace diagnostic only; omit it for the semantic result. Results are timestamped JSON below `eval/local-lanes/playground-semantic/`, which is gitignored. Newly produced files use metadata contract `playground-semantic-result/v3` and input snapshot `playground-semantic-input/v1`. They pin the ordered configured primary/fallback models, effective/requested API mode, reasoning effort, answering temperature, explicit judge model/rubric/pack/unpinned-temperature semantics, demo/evaluator/round caps, local tree generation, and raw corpus/manifest/super-spec plus evaluator-source hashes. The configured tuple comes from the evaluator's process environment or `.dev.vars`, so a server started with a different `--var DEMO_MODEL_OVERRIDE` would mislabel it. The route therefore reports the AI Gateway-logged model of every provider call in each `eval-cost` frame (`models`). The harness stops with `observed-model-mismatch` before any judge call when a turn reports a model outside the configured tuple, or reports none. `answering.observedAttemptedModels` lists the configured models that answered; a stopped row keeps the unconfigured model in `provenanceError`. The comparison is an exact string match. The Gateway logs `openai/*` models under the configured id; other vendors are covered only by mocks, so verify their logged ids before relying on this check. Set the same override in the harness environment as on the server. Internal hashes are revalidated by the re-judge reader; omission or mismatch fails. `inputSnapshot.answeringConfigSha256` excludes `observedAttemptedModels`, so equal configurations hash equally. Historical artifacts remain untouched, and re-judge refuses an older `playground-semantic-result/*` contract.
 
 If a required local generation checkpoint observes a mismatch after an answer call has started, or the checkpoint itself fails after spend, the invocation fails closed (exit 1) without writing a normal result. It instead makes a best-effort local-only `playground-semantic-quarantine/v1` file at `<out-dir>/quarantine/<runId>-playground-semantic-quarantine.json`. A quarantine has `quarantinedMeta` and `quarantinedRows`, never normal top-level `meta`, `rows`, or `summary`; it is non-promotable and may be used only for spend reconciliation and runner forensics. It cannot support factual, upstream, eval, causal, scoring, re-judge, aggregate, or comparison claims. A quarantined transcript may motivate an investigation, but any finding needs fresh non-quarantined evidence from a clean rerun or recurrence probe.
 
@@ -169,7 +169,7 @@ Their saved transcript uses `mcp__playground__search` / `mcp__playground__execut
 npm run eval:plan -- eval/local-lanes/playground-semantic/<stamp>-playground-semantic.json
 ```
 
-Run that regrade after playground prompt or tool-loop changes. Treat this as a separate playground lane: do not merge its denominator or scores with the main MCP QA battery.
+Run that regrade after playground prompt or tool-loop changes. Treat this as a separate Playground lane: do not merge its denominator or scores with the main MCP QA battery.
 
 For live loopback runs, the harness reads `MCP_SERVER_SECRET` from the environment or `.dev.vars` without logging it and mints an ephemeral run-scoped demo cookie. This exercises the normal cookie-authenticated per-subject throttle while avoiding collisions in the shared `dev-loopback` bucket; it never uses this cookie against a non-loopback URL.
 

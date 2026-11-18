@@ -3,19 +3,20 @@
 A separate OpenAI plugin package that connects to the existing production server. It does not
 change the Claude connection or the server.
 
-**Status.** The last recorded portal state (October 23, 2026) is version `0.1.2`, in review and
-not published. Check the portal, reviewer access, and any exception decision again before you
-act. The open work is in [the work queue](../../.agents/TODO.md) under "OpenAI plugin
-submission".
+**Status.** Portal state and the open work are in [the work queue](../../.agents/TODO.md) under
+"OpenAI plugin submission"; the last recorded state is in [RESUBMISSION.md](RESUBMISSION.md).
+Check the portal, reviewer access, and any exception decision before you act.
 
-| Record | Holds |
-|---|---|
-| [RESUBMISSION.md](RESUBMISSION.md) | The October 23 repair, the reviewer-access procedure, and the last recorded status |
-| [REVIEW-CASES-2026-10-23.md](REVIEW-CASES-2026-10-23.md) | The eight-case rehearsal: first failures and the verified package fix |
-| [MCP-FINDINGS.md](MCP-FINDINGS.md) | The three portal findings that need OpenAI's exception decision |
-| [EXCEPTION-REQUEST.md](EXCEPTION-REQUEST.md) | The request for written guidance on the single-endpoint design |
-| [VERIFICATION.md](VERIFICATION.md) | The October 7 submission: portal state, reviewer key, recording, and policy observation |
-| [domain-verification/](domain-verification/) | The Worker that serves the domain challenge |
+| File | Kind | Holds |
+|---|---|---|
+| [RESUBMISSION.md](RESUBMISSION.md) | Dated record | The October 23 repair and the last recorded status |
+| [REVIEW-CASES-2026-10-23.md](REVIEW-CASES-2026-10-23.md) | Dated record | The eight-case rehearsal: first failures and the verified package fix |
+| [MCP-FINDINGS.md](MCP-FINDINGS.md) | Dated record | The three portal findings that need OpenAI's exception decision |
+| [EXCEPTION-REQUEST.md](EXCEPTION-REQUEST.md) | Dated record, unsent draft | The request for written guidance on the single-endpoint design |
+| [VERIFICATION.md](VERIFICATION.md) | Dated record | The October 7 submission: portal state, reviewer key, recording, and policy observation |
+| [domain-verification/](domain-verification/) | Living guide | The Worker that serves the domain challenge |
+
+No record is an instruction. The standing procedure is in "Review materials" below.
 
 ## Rules
 
@@ -36,7 +37,7 @@ submission".
 
 The package holds no bundled skill, app binding, credential, or server source.
 
-Publication choices, confirmed by the owner on October 7, 2026: publisher Stellar Development
+Publication choices, set by the owner and recorded in [VERIFICATION.md](VERIFICATION.md): publisher Stellar Development
 Foundation, all available countries (`publication.countries: []`), no payments or purchases, and
 the existing Raven icon and orange. The portal must confirm the verified publisher before
 submission; the package does not prove business verification.
@@ -51,13 +52,13 @@ submission; the package does not prove business verification.
 - **Annotations.** `execute` can persist a large result for seven days, which conflicts with its
   `readOnlyHint: true` under OpenAI's artifact persistence rule. The package cannot override MCP
   tool annotations. Assess `openWorldHint` against the tool's actual retrieval scope.
-- **Authentication.** The earlier OpenAI audit named OAuth resource and scope checks for review.
+- **Authentication.** OAuth resource and scope checks may be reviewed.
   Do not replace the shared Claude authentication contract without a separate reviewed change.
 - **Privacy.** The package keeps the existing privacy URL, which does not prove full coverage of
   stored results, upstream recipients, and usage records. `/terms` still describes
   query/response logging for 30 days, while
   [operations](../../docs/operations.md#data-retention) describes operational metadata retention
-  of at most seven days ([policy observation](VERIFICATION.md#policy-observation)). Resolve this
+  of at most seven days ([recorded check](VERIFICATION.md#policy-observation)). Resolve this
   before publication, and confirm the authorization and terms of the independently operated
   sources.
 
@@ -65,12 +66,53 @@ submission; the package does not prove business verification.
 
 - **Reviewer access.** The portal does not support API-key connection setup. Reviewers use the
   dedicated Raven reviewer account through the normal OAuth sign-in; the portal stores its email
-  and password. The October 23 check needed no MFA, email code, or further setup.
+  and password. The October 23 check needed no MFA, email code, or further setup. The procedure
+  below was last run on 2026-10-23; check the portal before you act.
 - **Demo recording.** The package's `review.demo_recording_url` points at the
   [verified recording](https://pub-b2eaaee2bbe74d70820bacb7298958f5.r2.dev/stellar-raven/openai-review/2026-10-07/stellar-raven-demo-c0fcfd39.mp4).
   It shows the authenticated Raven connection, not package installation or reviewer sign-in.
   [Cloudflare reserves `r2.dev` URLs for development use](https://developers.cloudflare.com/r2/buckets/public-buckets/);
   use an SDF-approved custom domain if permanent hosting is required.
+
+### Reviewer access procedure
+
+Account preparation:
+
+- Complete registration, email verification, and password setup before review. Ensure the account
+  can run all eight review cases.
+- Verify sign-in without MFA, email codes, or access to the owner's mailbox. Check any WorkOS
+  account restrictions if sign-in asks for more verification. Do not disable verification for all
+  Raven users to repair one reviewer account.
+- Keep credentials outside the repository and the ZIP. Enter them only in the portal's secure
+  reviewer fields.
+
+Portal update:
+
+1. Open the existing Stellar Raven plugin in the authorized owner's account, and inspect the saved
+   version before you create a replacement draft.
+2. Use `Create draft from ZIP` if the rejected version has no editable review information. Keep the
+   declared endpoint `https://raven.stellar.org/mcp`, and confirm that the draft retains or
+   restores the existing MCP connection. Do not create a duplicate plugin to repair a missing
+   connection, and record any connection-reuse error.
+3. Complete OAuth setup if the portal requires it. Select the username/password reviewer sign-in
+   method if the portal offers it.
+4. Replace the old reviewer credentials and the direct-header instructions with the dedicated
+   account's credentials and the sign-in instructions below.
+5. Save, reopen, and confirm that every required reviewer field remains populated. Keep
+   credential contents out of screenshots, logs, and preparation notes.
+
+Do not change the shared server authentication merely to complete the form.
+
+Sign-in instructions for the portal field:
+
+> Start the Stellar Raven connection in ChatGPT or Codex. Use the configured MCP endpoint:
+> `https://raven.stellar.org/mcp`. Review the Raven consent page and continue if you accept its
+> terms and requested access. At the Raven sign-in page, enter the supplied reviewer email and
+> password. Complete the redirect to ChatGPT or Codex. Run the supplied review cases after the
+> connection completes. The reviewer account must require no registration, email code, or
+> additional verification.
+
+### Demo recording
 
 To record a new demonstration:
 
@@ -108,6 +150,3 @@ declared files. Keep review evidence and preparation notes outside the upload di
   [MCP review](https://developers.openai.com/plugins/deploy/app-review).
 - [Raven support](https://raven.stellar.org/docs), [Raven terms](https://raven.stellar.org/terms),
   and the [published SDF privacy policy](https://stellar.org/privacy-policy).
-- The Claude listing work this package builds on: commits `65f38b83` (execute scope and
-  result-storage description), `aa004d7d` (source operator credits), `8c0e6ee2` (hosted icon and
-  logos), and `dd8724e5` (hosted brand and listing images).

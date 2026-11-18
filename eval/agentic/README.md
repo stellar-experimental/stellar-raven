@@ -7,7 +7,7 @@ Use the [run-evals workflow](../../.agents/skills/run-evals/SKILL.md) to obtain 
 ## Method
 
 [sample.json](sample.json) fixes 30 cases: 12 Stellar Docs, 10 Scout, and eight Lumenloop cases.
-Its ids and questions are legacy routing rows, and the cases that match a QA headline question are confirmation-only (see the [routing guide](../README.md#confirmation-only-rows)).
+Its ids and questions are legacy routing rows. `routing-qa-overlap.json` lists the ones that match a QA headline question (set `agentic`; see the [routing guide](../README.md#confirmation-only-rows)). This workflow does not tag or hide them, so report them as counts only.
 [workflow-agentic-routing.js](workflow-agentic-routing.js) runs each case at low and medium effort, producing 60 rows.
 It uses the Workflow model alias `sonnet`.
 Record the resolved model before comparing runs; an alias does not establish model identity.

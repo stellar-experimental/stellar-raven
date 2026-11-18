@@ -8,6 +8,8 @@ Track C item 1 of
 ("canonical technical source reader") under the owner's stated philosophy. It is not a decision
 record. Nothing here ships without the gates in §9.
 
+Code anchors are as of 2026-08-27.
+
 ## 0. The governing philosophy
 
 Verbatim intent from the service owner, 2026-08-27:
@@ -490,6 +492,5 @@ the ship reason, and a battery-only gain with a flat locator gate is a stop sign
 - Active findings: `sd-004` and `sd-044` under
   [`improvements/stellar-docs/`](../improvements/stellar-docs/). Resolved findings `sd-003` and
   `sd-043` are in [`improvements/resolved.json`](../improvements/resolved.json).
-- Neighboring held source lanes for format precedent:
-  [`partner-doc-live-sources.md`](./partner-doc-live-sources.md),
-  [`stellar-org-source-lane.md`](./stellar-org-source-lane.md)
+- Neighboring held source lane for format precedent:
+  [`partner-doc-live-sources.md`](./partner-doc-live-sources.md)

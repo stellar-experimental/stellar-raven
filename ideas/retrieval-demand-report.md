@@ -86,6 +86,8 @@ Gates before any collection:
 Playground chat text stays out. It is the text most likely to contain a pasted secret, and it is
 not the primary source. Full execute code stays out for the same reason.
 
+A possible later use of the extract is a source of live evaluation candidates written by nobody on the team. The same gates apply, and the discovery instrument still forbids raw user traffic as case input ([the discovery guide](../eval/discovery/README.md)).
+
 ## What this note is not
 
 This is not a raw log archive. [The R2 retention note](./observability-r2-retention.md) covers that
@@ -94,7 +96,7 @@ held path, and its trigger is forensic history rather than a subject reading.
 This is not the monthly usage report. That report stores tool counts and account hashes. It stores
 no catalog ids and no query text.
 
-This is not per-user memory. [The personalization note](./per-user-mcp-observability.md) covers
+This is not per-user memory. [The personalization note](./user-controlled-personalization.md) covers
 that held path.
 
 ## Id aggregate, if the 7-day window is not enough

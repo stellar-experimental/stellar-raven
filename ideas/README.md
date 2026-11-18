@@ -2,32 +2,20 @@
 
 Research notes and possible future work. These notes are not committed product plans.
 
-- [Observability R2 Retention Plan](./observability-r2-retention.md) — an optional Logpush and R2
-  archive for investigations that need history beyond the Workers Logs window.
-- [Retrieval Demand Report](./retrieval-demand-report.md) — the desired reading is the
-  question text an MCP caller sends. Public id counts are the safe layer under that extract.
-  Playground counts can sit beside them. Full prompts and execute code stay out.
-- [User-controlled Personalization](./per-user-mcp-observability.md) — deferred personalization
-  with a separate store and explicit user controls.
-  [The usage guide](../usage/README.md) describes the implemented private aggregate reports.
-- [Architecture Explorations](./architecture-explorations.md) — open architecture questions and
-  their evaluation gates.
-- [Direct Stellar.org Source Coverage](./stellar-org-source-lane.md) — the held `stellarOrg`
-  root-service proposal. Revisit it only after its dated review or an explicit source-gap trigger.
-- [Live Ecosystem-Partner Documentation](./partner-doc-live-sources.md) — partner MCP servers
-  are not a docs source. Allowlisted first-party partner Markdown is one. A four-phase gate keeps
-  that source held.
-- [ChatGPT Subscription Login for `/playground`](./playground-chatgpt-subscription-login.md) —
-  optional user-funded Playground inference through ChatGPT/Codex OAuth. The note records the
-  token-custody, consistency, budget, and upstream-support gates that come before any spike.
-- [Shareable Durable `/playground` Sessions](./shareable-durable-playground-sessions.md) — a
-  deferred durable-session design. The Playground stays stateless with its 8,000-character input
-  limit.
-- [Source Delivery: Ranked References](./source-delivery-ranked-references.md) — a deferred
-  `sources.locate` surface. Its measured reopen trigger follows repository-recovery work.
-- [Skill Discovery Measurements](./skill-discovery-without-bundling.md) — two questions. Do skill
-  reads improve navigation-only answers? Do agents use exact section reads?
-- [Raven as a Codegen Correctness Substrate](../research/audits/2026-08-07-codegen-partner-report.md) — an external
-  partner ran long-horizon Soroban codegen with Raven installed alongside. Raven serves guidance
-  for many of the reported defect classes, but the defects occurred. The cause is unattributed and
-  n=1. No instrument measures that mode.
+| Idea | State | Reopen trigger or review date | Work queue item |
+|---|---|---|---|
+| [Observability R2 retention](./observability-r2-retention.md) | Held | A forensic question needs request, log, or trace evidence older than seven days, or another trigger in the note | None |
+| [Retrieval demand report](./retrieval-demand-report.md) | Held | An operator needs question text, or the same ranking after the Workers Logs window, with purpose, access, retention, and disclosure written first | None |
+| [User-controlled personalization](./user-controlled-personalization.md) | Deferred | An owner decision to build personalization | None |
+| [Live ecosystem-partner documentation](./partner-doc-live-sources.md) | Held; review dated 2026-10-31 is overdue | The note's triggers, or the overdue review | "Run the overdue partner-documentation review" |
+| [ChatGPT subscription login for `/playground`](./playground-chatgpt-subscription-login.md) | Research note | One of the note's four reopen triggers | None |
+| [Shareable durable `/playground` sessions](./shareable-durable-playground-sessions.md) | Deferred | An owner decision, then the note's four deferred choices | None |
+| [Skill discovery measurements](./skill-discovery-without-bundling.md) | Measuring; the read dated 2026-09-30 is overdue | 100 organic `skill_read` events, or the date | "Read the `skill_read` shape distribution" |
+| [Source delivery: ranked references](./source-delivery-ranked-references.md) | Deferred by the owner on 2026-08-28 | The measured reopen rule in section 8 | "Keep `sources.locate` deferred" |
+
+An idea file has a status line and a trigger. A dated review is an entry in [the work
+queue](../.agents/TODO.md) that points at the file. When an idea ships or is rejected, delete the
+file and record the decision in an ADR or the queue.
+
+The [2026-08-07 codegen partner report](../research/audits/2026-08-07-codegen-partner-report.md)
+is a dated record, not an idea. [`research/`](../research/) holds the other dated research.

@@ -1,8 +1,9 @@
 # Live ecosystem-partner documentation as a Raven source
 
-Status: held product idea. Re-evaluate on or after **2026-10-31**, or earlier only if one of the
-triggers below fires. Raised as [issue #1](https://github.com/stellar-experimental/stellar-raven/issues/1);
-the dated evidence and the full admission contract live in
+Status: held product idea. The dated review (2026-10-31) is overdue; the work queue's "Deferred
+programs" holds the trigger that fires it. Reopen earlier only if one of the triggers below fires.
+Raised as [issue #1](https://github.com/stellar-experimental/stellar-raven/issues/1); the dated
+evidence and the full admission contract live in
 [`research/partner-doc-source-onboarding.md`](../research/partner-doc-source-onboarding.md).
 
 ## Current decision
@@ -69,62 +70,25 @@ a synthetic fact, and never resolved by letting the newer timestamp silently win
   gate asked for now exist and the floor is code-enforced, but the 2026-07-31 run measured the
   candidate arm only. Without a paired baseline over all 12 cases the gate is `inconclusive` by
   construction — a missing baseline never shrinks the denominator quietly.
-- **The issue's concrete example healed from two directions at once.** Alchemy's Stellar Data API
-  was missing from the official docs when the issue was filed; the same gap was tracked as
-  `sd-010`, and `stellar/stellar-docs#2573` merged on 2026-07-14 and was live-verified on
-  2026-07-15. In
-  parallel, [stellarlight#446](https://github.com/Stellar-Light/stellarlight/pull/446) (merged
-  2026-07-10) corrected the ecosystem `alchemy` record to name both products and add the `Indexer`
-  type — four days *before* `#2573` merged, grounded in the language SDF was then merging. The
-  acute instance was closed by coordinated upstream and downstream fixes, not by one PR.
-
-  The systemic point survives it: both fixes took humans noticing, filing, and shipping, which is
-  exactly the cadence problem the issue names.
-- **This hold is partly corroborated — but read the overlap precisely, because it is narrower
-  than it first looks.**
-  [stellarlight#448](https://github.com/Stellar-Light/stellarlight/pull/448) (merged 2026-07-10)
-  answered "should we ingest partner docs?" with NO, on the grounds that provider reference docs
-  are already agent-readable at source (Alchemy ships `llms.txt`) and "a corpus copy would go
-  stale and duplicate what the provider serves", choosing "the structured record + a first-class
-  pointer to the living source" instead.
-
-  That is corroboration for declining **ingestion**, and this lane declines ingestion too. It is
-  *not* corroboration for declining the mechanism actually held here: request-time allowlisted
-  fetch under serve-do-not-store is not a corpus copy, so #448's staleness objection does not
-  reach it — if anything that design sits nearer to what #448 *chose* than to what it rejected.
-  Treat #448 as an independent "no" to the copy, not as a second vote against this lane, and do
-  not cite it as though two analyses converged on the same question.
-- **The residue is already being measured upstream — but ingestion is not retrieval.** Partner-side
-  movement that reaches official docs is caught by the improvements pipeline, and
-  `check-skills-drift` detects upstream skill drift. More directly, the Stellar Light upstream
-  shipped a coverage-and-freshness detector explicitly motivated by this issue
-  ([stellarlight#561](https://github.com/Stellar-Light/stellarlight/pull/561), merged 2026-07-16),
-  whose `coverage-watch.yml` runs monthly and tiers partner coverage `own` / `mention` / `none`.
-  Its first run reported **0 of 4 partners with their own content indexed**.
-
-  Two corrections travel with that number, and both matter more than the number does. First, the
-  lane was judging "served" by result URL alone and
-  [stellarlight#564](https://github.com/Stellar-Light/stellarlight/pull/564) (2026-07-16) fixed it
-  to scan served text at probe depth 15 — so the first run's verdict semantics are not the current
-  ones, and the 0/4 should not be quoted as standing fact. Second, and more damaging to the easy
-  version of this argument:
-  [stellarlight#565](https://github.com/Stellar-Light/stellarlight/pull/565) (2026-07-16) found
-  that *after* `stellar-docs#2573` was ingested, a bare `q=Alchemy` still returned **zero
-  results**, and the Indexers chunk that documents the Data API ranked below top-15 for its own
-  brand query. It needed a lexical-pool supplement and a 0.8 `fullLexicalMatch` floor to fix.
-
-  So "the improvements pipeline already catches it" is too glib: content reaching official docs is
-  necessary and not sufficient — it must also be *retrievable*. That is a real, dated live failure
-  of exactly the kind this lane's reopen trigger asks for, and it argues for fixing retrieval
-  upstream before adding a source here, not for adding one.
-- **The same upstream is closing the gap from the supply side.**
-  [stellarlight#657](https://github.com/Stellar-Light/stellarlight/pull/657) (merged 2026-07-21)
-  added a `data-providers` research anchor targeting, in its own words, "stellar-raven#18's exact
-  case" — the `alchemy` query that surfaced event-ingest guides instead of the Providers and
-  Indexers roster docs that name Alchemy's Stellar Data API. Every point of upstream coverage is a
-  point of justification this lane loses: the better Stellar Light indexes partner content, the
-  weaker the case for Raven fetching it directly. Re-evaluation must measure against that improved
-  upstream, not against the 2026-07-10 picture.
+- **The issue's concrete example healed upstream.** Alchemy's Stellar Data API was missing from the
+  official docs when the issue was filed. `stellar/stellar-docs#2573` (live 2026-07-15, tracked as
+  `sd-010`) and [stellarlight#446](https://github.com/Stellar-Light/stellarlight/pull/446)
+  (2026-07-10) closed it from both sides. Both fixes took humans noticing, filing, and shipping,
+  which is the cadence problem the issue names.
+- **The nearest upstream "no" is narrower than this hold.**
+  [stellarlight#448](https://github.com/Stellar-Light/stellarlight/pull/448) declined to ingest
+  partner docs because a corpus copy goes stale. This lane declines ingestion too, but request-time
+  allowlisted fetch under serve-do-not-store is not a copy. Treat #448 as an independent "no" to
+  the copy, not as a second vote against this lane.
+- **Upstream is closing the gap, and "ingested" is not "retrievable".** Stellar Light's monthly
+  `coverage-watch` ([#561](https://github.com/Stellar-Light/stellarlight/pull/561)) tiers partner
+  coverage, and its first run's 0 of 4 used a verdict that
+  [#564](https://github.com/Stellar-Light/stellarlight/pull/564) later corrected, so do not quote
+  it as fact. [#565](https://github.com/Stellar-Light/stellarlight/pull/565) found that after
+  `stellar-docs#2573` was ingested, a bare `q=Alchemy` still returned zero results, and
+  [#657](https://github.com/Stellar-Light/stellarlight/pull/657) added a research anchor for the
+  Alchemy roster case. Re-evaluation must measure against this improved upstream, and content
+  reaching official docs is necessary but not sufficient: it must also be retrievable.
 
 ## Triggers to revisit
 
@@ -182,5 +146,4 @@ If a trigger fires, or at the dated review:
   (ingested ≠ retrievable; `q=Alchemy` returned zero results), and
   [`#657`](https://github.com/Stellar-Light/stellarlight/pull/657) (`data-providers` research
   anchor for the Alchemy roster case)
-- Precedent for a held source lane with the same shape:
-  [`ideas/stellar-org-source-lane.md`](./stellar-org-source-lane.md)
+- Lessons from admitting a source: [`source-addition.md`](../.agents/skills/run-evals/references/source-addition.md)

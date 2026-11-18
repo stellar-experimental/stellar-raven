@@ -29,7 +29,8 @@ If those blocks change, regenerate the files here.
 
 | File | Upload slot |
 |------|-------------|
-| `../../public/raven-icon.svg` / `raven-icon-512.png` | Logo icon — light **and** dark (mark reads on both) |
+| `../../public/raven-icon.svg` | Logo icon, vector — light **and** dark (mark reads on both) |
+| `raven-icon-512.png` | Logo icon, 512px raster — light **and** dark |
 | `raven-favicon.svg` / `raven-favicon-256.png` | Favicon — light **and** dark (identical to the icon) |
 | `../../public/raven-logo-dark.svg` | Logo (full lockup) — dark-mode page (light wordmark) |
 | `../../public/raven-logo-light.svg` | Logo (full lockup) — light-mode page (dark wordmark) |

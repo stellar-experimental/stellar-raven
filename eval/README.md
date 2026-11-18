@@ -4,7 +4,6 @@ This instrument checks which services and operations `searchCatalog()` returns f
 It runs offline and does not execute service operations or grade final answers.
 Use the [evaluation map](EVALS.md) to select an instrument.
 
-The committed Scout inventory version is `1.9.116`.
 [gates.json](gates.json) owns the accepted totals, thresholds, input hashes, and baseline decisions.
 
 ## How to run
@@ -75,6 +74,7 @@ The runners (`run-routing.mjs`, `run-protocol-history.mjs`, `discovery/run-disco
 tag a listed result row `confirmationOnly: true`, print `confirmation-only` in place of its rank, top hit, or hit/miss,
 and still count it in every aggregate.
 The tagged rows keep their grades in the result file, so a pass rule can count them.
+The agentic workflow and the agent discovery runner do not tag rows; report their listed rows as counts only.
 The ranked dump is unchanged; a dump difference on a listed row is counted, never displayed.
 A new routing or discovery question set is added to the generator (`routing-qa-overlap.mjs`) and passes its set name to
 `lib/confirmation-only.mjs`.
