@@ -9,7 +9,7 @@ Executor: Claude Sonnet 5.5, worktree `np-8.2-guides`, branch `np/8.2-docs-guide
 | `a96356aa` | folder guides: `scripts/`, `test/`, `src/catalog/`, `ecosystem-skills/`, `inventory/`, `usage/`, `improvements/`, `plugins/openai/`, `assets/brand/` |
 | `96426ad5` | `ideas/` |
 | `082bc8dd` | `.agents/TODO.md` (additions only) |
-| this file | EXEC-3 |
+| `9b18cab3` | EXEC-3 |
 
 ## Findings
 
@@ -80,7 +80,7 @@ Executor: Claude Sonnet 5.5, worktree `np-8.2-guides`, branch `np/8.2-docs-guide
 | `stellar-org-source-lane.md` | Deleted (shipped in #447). Not opened. | Shipped as `specs/stellar-org.json`; lessons in `run-evals/references/source-addition.md`; live state in the TODO "Prove the stellar.org source". Its citation in `partner-doc-live-sources.md` now points at `source-addition.md`; in `source-delivery-ranked-references.md` the line is removed. | `42496f22` | `96426ad5` |
 | `architecture-explorations.md` | Folded, deleted | See the item table below. | `42496f22` | `96426ad5`, `082bc8dd` |
 | `codegen-correctness-substrate.md` | Not touched (PR 4). Never opened. | PR 4 moves it; residues in the TODO ("Review the codegen-adjacent goldens by case id", "Probe the malformed-input gap ...", "Measure long-horizon codegen ..."). `ideas/README.md` links the dated record. | n/a | n/a |
-| `observability-r2-retention.md` | Kept, cut from 299 to 76 lines | Proposal, query fallback, triggers and a two-stage build. Dropped: the 2026-07-07 observed state, doc drift, Stage 3 and the gate-baseline prefix (`baselineResults` no longer exists in `eval/gates.json`), Solo lines. Links ADR-0004. | `378994a3` | `96426ad5` |
+| `observability-r2-retention.md` | Kept, cut from 299 to 78 lines | Proposal, query fallback, triggers and a two-stage build. Dropped: the 2026-07-07 observed state, doc drift, Stage 3 and the gate-baseline prefix (`baselineResults` no longer exists in `eval/gates.json`), Solo lines. Links ADR-0004. | `378994a3` | `96426ad5` |
 | `partner-doc-live-sources.md` | Kept; chronicle trimmed to three bullets | Status says the 2026-10-31 review is overdue; TODO "Run the overdue partner-documentation review". | `3b2808bc` | `96426ad5`, `082bc8dd` |
 | `per-user-mcp-observability.md` | Renamed `user-controlled-personalization.md` | Link fixed in `retrieval-demand-report.md` and the index. | `378994a3` | `96426ad5` |
 | `playground-chatgpt-subscription-login.md` | Kept | "What changed" folded into "Decision" as "Support" and "Open: hosted multi-tenant credential custody"; "GPT-5.4 path" now "shipped Playground model"; the date of the external facts is stated. | `378994a3` | `96426ad5` |
