@@ -211,3 +211,38 @@ call, paid call or QA case file; no subagent. The Claude, Codex and Grok checks 
 7,084,617 bytes. `origin/main` is still `3e490ec5` and `src/` still has no diff, so I reused the earlier
 real-`node_modules` build of `origin/main`, which has the same hash and a `cmp` identical result, rather
 than rebuild it. Worker bytes do not change.
+
+## Reconciliation 2
+
+Reconciles [CODEX-RECHECK.md](CODEX-RECHECK.md) per `briefs/RECONCILE-2-BRIEF.md`. Commit `f4e3125c`. No
+model call; offline checks used only `claude auth status --json` (two fields read). This supersedes the
+settings-file correction and the "keep `ANTHROPIC_BASE_URL` out of settings" advice in Reconciliation 1.
+
+1. **Blocking, judge settings.** No settings-file reader. `judge.mjs` gains `judgeRootFlags(safeMode)`
+   (`--strict-mcp-config --setting-sources "" [--safe-mode]`), used by both `buildJudgeArgs` and
+   `assertJudgeSubscription`, so launch and probe load no settings file. The answering agents already
+   launched this way. Offline check with a synthetic project `.claude/settings.json` holding a Bedrock
+   switch: the old judge flags returned `third_party`/`bedrock`; the new flags return `claude.ai`/
+   `firstParty`, so the project settings no longer reach the probe. (A base URL in settings is never in
+   `auth status`; isolating the sources is what closes it.) Regression test: `buildJudgeArgs()` (safe mode
+   on and off) and the judge probe both contain `--setting-sources ""`, and every `judgeRootFlags()` flag is
+   in both. The test that pinned the probe argument list is updated; no other test pinned the judge
+   arguments. `eval/EVALS.md` drops the settings-file limitation and says judges and answering agents load
+   no settings file. The TODO item "Run the judge self-test on the resolved judge model" has the one added
+   line. **Judge identity:** `judge.mjs` changed, so the judge implementation hash changes. The combined
+   launch (`--strict-mcp-config --setting-sources "" --safe-mode` with `-p`) is accepted by `auth status`
+   but was not run with a model call; the paid self-test is the first run that does.
+2. **`apiProvider`.** The check requires `apiProvider === "firstParty"` exactly; missing, `null`, numeric
+   and another string all refuse with fixed text ("the API provider is missing or not first-party").
+   Offline: the genuine subscription status here has `apiProvider: "firstParty"` under the judge flags and
+   outside the project. The fake `claude` in the QA and discovery fixtures and the unit-test bodies now
+   include it. Tests: missing, null, numeric, another string.
+3. **Vacuous privacy tests.** Switch rows use `yes-SWITCH-SENTINEL`, endpoint rows
+   `http://ENDPOINT-SENTINEL.example.test`. Each test asserts the exact expected refusal first, then that
+   the sentinel is absent; the endpoint-privacy assertion in the status-body test does the same.
+
+Gates (each bare): `npm run typecheck` exit 0; `npm test` exit 0, 177 files passed, 5 skipped, 4283 tests
+passed, 3 expected fail, 8 skipped (4294); `npm run build` exit 0; `npm run eval:selftest` exit 0, "all
+checks passed"; `npm run secrets:scan -- --tree` exit 0, clean. `dist/server.js` SHA-256
+`8f8ac7f9ca79afb962acb8759d6fbb84a3e7ecefd8fc24cf5669db9e191d0532`, unchanged; `origin/main` is still
+`3e490ec5` and `src/` has no diff.
