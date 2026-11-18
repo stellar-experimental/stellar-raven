@@ -31,13 +31,13 @@ packages pulls them in.
 Moved out of PR 1:
 - `@modelcontextprotocol/sdk` 1.32.2 goes to PR 2. It is bundled through `agents/mcp`, and
   `agents@0.28.1` pins its peer at 1.32.1 exactly.
-- `esbuild` 0.28.2 goes to PR 4. It moves 54 lockfile entries between the copies that wrangler and
+- `esbuild` 0.28.2 goes to PR 3 (wrangler). It moves 54 lockfile entries between the copies that wrangler and
   the vitest pool pin.
 
 `@cloudflare/workers-oauth-provider` 0.10.4 has one change (upstream #303): the ID-JAG replay
 marker's KV TTL is floored at 60 s. That code runs only with `enterpriseManagedAuthorization`, which
 `src/auth/gate.ts` does not set. 0.10.4 ends the 0.10 line. The 1.x token-endpoint hardening is not
-backported to it; that is PR 5.
+backported to it; that is PR 4.
 
 ## Steps
 
@@ -100,11 +100,10 @@ backported to it; that is PR 5.
    list, the per-transport capture result, the step 4 note and each gate's result.
 8. **Commit** on `np/7.3-deps-routine` with the normal hooks:
    `Routine dependency patches: AI SDK, acorn, oauth-provider 0.10.4, types (round item 7.3)`.
-9. **Independent diff review** (the lead runs it after the executor): a Claude Opus 5.5 child, high
-   effort, reads the diff and EXEC.md and writes `DIFF-REVIEW.md` here. The author is Sonnet and
-   the orchestrator and lead are Opus, so the matched tier for a dependency change is Codex
-   workhorse; the lead uses Codex `gpt-6-astra` at high instead of Opus if it is available. The
-   executor reconciles the findings.
+9. **Independent diff review** (the lead runs it after the executor): a Codex `gpt-6-astra` child at
+   high effort reads the diff and EXEC.md and writes `DIFF-REVIEW.md` here. The author is Sonnet,
+   and the orchestrator and lead are Opus, so a different vendor reviews. Claude Opus is the
+   fallback if Codex is unavailable. The findings are reconciled in EXEC.md.
 
 ## Stop rule
 
@@ -142,7 +141,7 @@ owner question.
 | Finding | Disposition |
 |---|---|
 | 1 MCP SDK is bundled and pinned by `agents` | Adopted: moved to PR 2 |
-| 2 `esbuild` moves 54 entries | Adopted: moved to PR 4 |
+| 2 `esbuild` moves 54 entries | Adopted: moved to PR 3 (wrangler) |
 | 3 Capture at the binding, production slugs | Adopted: step 3 |
 | 4 Follow-up requests; refusal parsing | Adopted: two Anthropic requests; step 4 accepts and records the refusal change |
 | 5 Table and text corrections, stale `4.0.0` lines | Adopted: table, transitive set, step 5 |

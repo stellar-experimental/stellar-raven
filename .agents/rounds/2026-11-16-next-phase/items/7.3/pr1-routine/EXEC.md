@@ -36,7 +36,8 @@ commit). The `npm install` output ended with the 8 high findings and an install-
 ### Lockfile entry list
 
 Compared `package-lock.json` before and after (`packages` keys, all fields except `resolved` and
-`integrity`). 15 entries changed, none added, none removed. All are in the expected set.
+`integrity`). 14 entries changed (the root and 13 under `node_modules`), none added, none removed. The count was
+15 before the diff review corrected it (finding 3). All are in the expected set.
 
 | Entry | Change |
 |---|---|
@@ -78,8 +79,10 @@ is captured:
   builds the real tool objects and schemas; only each tool's `execute` is replaced by a canned result
   so the follow-up request is deterministic.
 - The primary (OpenAI Responses) was captured with two requests, not one (the plan only asks two for
-  Anthropic). It is the production path and the 4.0.113 parallel-tool metadata change lands on the
-  second request.
+  Anthropic). It is the production path. The second request is an ordinary function-call follow-up.
+  It does not exercise the 4.0.113 `parallel` wrapper replay, which needs a `parallel` call with
+  nested `tool_uses` (diff review, finding 2). Neither this capture nor the smoke pins cover that
+  path; no regression is shown either way.
 
 Entries recorded: endpoint, headers and whole body (gateway entry or `binding.run` slug, body and
 options).
@@ -130,7 +133,10 @@ Per transport:
 - **Anthropic fallback (both requests):** byte-identical. The `@ai-sdk/anthropic` 4.0.97 change to
   returned signature and metadata does not alter the follow-up in this scenario (a thinking block
   with a signature, then a tool use).
-- **Grok chat:** version string only (line 568). The Grok entry carries `ai-sdk-openai/...`, because
+- **Grok chat:** version string only (line 568). The capture passes `DEMO_REASONING_EFFORT` (`none`),
+  so it covers the configured-effort case (`reasoning_effort: "none"`). A plain
+  `DEMO_MODEL_OVERRIDE=xai/grok-4.6` leaves the effort unset and omits the field
+  (`src/demo/chat.ts:293-296`), and that variant was not captured (diff review, finding 1). The Grok entry carries `ai-sdk-openai/...`, because
   the OpenAI chat plugin builds it.
 - **Google:** version string only (line 702).
 - **Kimi (`binding.run`):** byte-identical. It sends no SDK header.
@@ -211,3 +217,37 @@ One commit on `np/7.3-deps-routine`, normal hooks, message
 `package.json`, `package-lock.json`, the two stale-text lines and the plan folder files (`README.md`,
 `PLAN.md`, `REVIEW.md`, `briefs/`, `EXEC.md`). `tmp/` and `.dev.vars` are git-ignored and not
 committed. The independent diff review (step 9) is the lead's.
+
+## Independent diff review and reconciliation
+
+Reviewer: Codex `gpt-6-astra`, high effort, agentpc `t1xc`. The author is Sonnet and the lead and
+orchestrator are Opus, so a different vendor reviews. Verdict **PASS**: 3 minor findings and 2
+notes, all about the records, none about runtime ([DIFF-REVIEW.md](DIFF-REVIEW.md)). The lead
+reconciled them in these records; the executor had already exited.
+
+| Finding | Disposition |
+|---|---|
+| 1 The Grok capture covers only the configured `none` effort | Adopted: qualified in Step 3 |
+| 2 The second OpenAI request does not exercise the `parallel` wrapper | Adopted: qualified in Step 3 |
+| 3 Lockfile count 14, not 15; PLAN's later-PR numbers | Adopted: corrected here and in PLAN.md |
+| 4 Registry now reports 9 high (adds `@vitest/mocker`), the same on `origin/main`'s lockfile | Adopted: recorded below |
+| 5 Upstream security changes and their reach | Adopted: recorded below |
+
+- **Audit, paired (finding 4).** By the time of the review the registry reported 9 high findings, all
+  GHSA-fc5q-39xc-vjpf through picomatch: the 8 above plus `@vitest/mocker`. `npm audit` on
+  `origin/main`'s exact `package.json` and `package-lock.json` gives the same 9. The bump adds none.
+- **Reach of the upstream security changes (finding 5).**
+  - `@ai-sdk/provider-utils` 5.0.80 removes the default Node DNS-pinned download, and 5.0.78 and
+    5.0.80 tighten MCP OAuth discovery fetches. No Raven path reaches either: `parseChatBody` accepts
+    only user and assistant string content, the demo tools return plain results, Raven uses no SDK
+    MCP OAuth client, `wrangler.jsonc` sets `global_fetch_strictly_public`, and execute Workers keep
+    `globalOutbound: null`.
+  - `ai` 7.0.171 changes the default tool-error redaction in UI-message streams. Raven reads
+    `fullStream` directly and never calls `toUIMessageStream` or `toUIMessageChunk`.
+- **Bundle growth.** The reviewer attributes it to the bundled SDK packages' own growth (entry files:
+  `ai` +54 KB, `@ai-sdk/openai` +41 KB, `@ai-sdk/google` +21 KB, `@ai-sdk/anthropic` +16 KB,
+  `@ai-sdk/gateway` +14 KB, `@ai-sdk/provider-utils` +11 KB), not a new subtree. These figures are
+  package-file sizes, not exact bundle shares.
+- The reviewer also checked every changed tarball's SHA-512 against the lockfile integrity, and diffed
+  oauth-provider 0.10.4 and `workers-ai-provider` 4.0.1 at runtime level. Both agree with the records
+  above.
