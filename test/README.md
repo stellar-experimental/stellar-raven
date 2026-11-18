@@ -39,7 +39,7 @@ The table names groups, not every file. A test whose name matches no row joins t
 | `demo*` | Page contracts and extracted page functions |
 | `skill*`, `pinned-source-shape*` | Pinned content, section reads, source integrity, exposure, and runner contracts |
 | `model-family*` | The launch-line model resolver, with hand-written catalog fixtures (no host cache is read) |
-| `qa-*`, `re-judge*`, `gateway-judge*`, `gate-evidence*`, `diagnostic-rejudge-source*` | Evaluation evidence, grading, lifecycle, budgets, identity checks, and saved-answer grading |
+| `qa-*`, `re-judge*`, `gate-evidence*`, `diagnostic-rejudge-source*` | Evaluation evidence, grading, lifecycle, budgets, identity checks, and saved-answer grading |
 | `corroboration-*`, `claim-read-packets*` | Corroboration rubric, guard, build, and scan; claim-read packets |
 | `case-search-*`, `case-text-scan*`, `heldout-read*`, `source-sentinels*`, `split-amend*`, `tuning-*`, `step2-roles-scan*` | Case-text guards: the agent search hook, the `.ignore` layout, held-out reads, split amendments, and tuning scans |
 | `playground-*`, `quarantine-reader-rejection*` | Playground evaluation artifacts and quarantine controls |

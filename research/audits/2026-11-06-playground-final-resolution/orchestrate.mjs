@@ -11,7 +11,7 @@ import { closeSync, existsSync, fsyncSync, mkdirSync, openSync, readFileSync, re
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { assertPlaygroundArtifactMeta } from '../../../eval/playground/artifact-contract.mjs';
-import { isSettledJudgeRowFailure, gatewayJudgeConfig } from '../../../eval/qa/gateway-judge.mjs';
+import { isSettledJudgeRowFailure, gatewayJudgeConfig } from './gateway-receipt.mjs';
 import { diagnosticRejudgeSource, diagnosticAnswerProblem, partialRecoverySource, isHarnessTransportFailure } from '../../../eval/qa/diagnostic-rejudge-source.mjs';
 
 import { importPriorCohort, verifyPriorCohort, pinnedJson, RESTART_ID, OLD_ANSWER_REVISION, OLD_RUNNER_SHA } from './prior-cohort.mjs';
