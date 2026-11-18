@@ -16,6 +16,7 @@ import { createHash } from "node:crypto";
 import { readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { isAliasRequest } from "./model-identity.mjs";
 
 const QA_DIR = path.dirname(fileURLToPath(import.meta.url));
 const SCORE_VALUES = ["correct", "partial", "wrong", "error"];
@@ -228,15 +229,18 @@ export function generateStabilityRegister({
   }
 
   const cases = buildStabilityRegister(artifacts);
-  // The distinct exact judge IDs of the source artifacts. A register without this list is unknown,
-  // not a mismatch (run-qa stabilityRegisterJudgeMatch).
-  const judgeModels = [
-    ...new Set(
-      artifacts
-        .map((artifact) => artifact.data?.meta?.judgeModel)
-        .filter((model) => typeof model === "string" && model !== "")
-    )
-  ].sort();
+  // The distinct exact judge IDs behind every contributing verdict: a collection artifact's judge,
+  // and BOTH sides of a re-judge pair (the source's recorded judge and the new judge). A
+  // contributor whose identity is missing or an alias is recorded as unknown, so a partly
+  // identified register cannot claim a full match (run-qa stabilityRegisterJudgeMatch).
+  const identities = artifacts.flatMap((artifact) =>
+    artifactKind(artifact.name, artifact.data) === "rejudge"
+      ? [artifact.data?.meta?.tuple?.source?.model, artifact.data?.meta?.judgeModel]
+      : [artifact.data?.meta?.judgeModel]
+  );
+  const isExactId = (model) => typeof model === "string" && model !== "" && !isAliasRequest(model);
+  const judgeModels = [...new Set(identities.filter(isExactId))].sort();
+  const judgeModelsUnknown = identities.some((model) => !isExactId(model));
   const collectionArtifactCount = artifacts.filter((artifact) => artifactKind(artifact.name, artifact.data) === "collection").length;
   const rejudgeArtifactCount = artifacts.filter((artifact) => artifactKind(artifact.name, artifact.data) === "rejudge").length;
   const document = {
@@ -247,6 +251,7 @@ export function generateStabilityRegister({
       formula: STABILITY_FORMULA,
       unstableThreshold: JUDGE_STABILITY_THRESHOLD,
       judgeModels,
+      judgeModelsUnknown,
       sourceArtifactCount: sourceArtifacts.length,
       collectionArtifactCount,
       rejudgeArtifactCount,
@@ -317,7 +322,8 @@ export function loadJudgeStabilityRegister(
       ? meta.sourceArtifactCount
       : null,
     caseCount: Object.keys(cases).length,
-    judgeModels: Array.isArray(meta?.judgeModels) ? meta.judgeModels : null
+    judgeModels: Array.isArray(meta?.judgeModels) ? meta.judgeModels : null,
+    judgeModelsUnknown: typeof meta?.judgeModelsUnknown === "boolean" ? meta.judgeModelsUnknown : null
   };
   const generatedAtMs = Date.parse(meta?.generatedAt);
   if (meta?.schemaVersion !== STABILITY_SCHEMA_VERSION) {

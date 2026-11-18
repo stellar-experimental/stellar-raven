@@ -5,6 +5,7 @@
 import { describe, expect, it } from "vitest";
 import { parseArgs, recordedJudgeModel, rejudgeRows, tupleGuard } from "../eval/qa/re-judge.mjs";
 import { JUDGE_MODEL } from "../eval/qa/judge.mjs";
+import { createModelPin } from "../eval/qa/model-identity.mjs";
 import { PLAYGROUND_ARTIFACT_CONTRACT } from "../eval/playground/artifact-contract.mjs";
 
 describe("re-judge default judge", () => {
@@ -41,6 +42,33 @@ describe("re-judge default judge", () => {
       judge: { model: "claude-sonnet-5", rubric: "v2.11", packVersion: "p9" }
     };
     expect(recordedJudgeModel({ meta })).toBe("claude-sonnet-5");
+  });
+});
+
+describe("same-judge guard needs known exact IDs", () => {
+  const source = (judgeModel) => ({ meta: { judgeModel, judgeRubric: "v2.11", packVersion: "p9" } });
+
+  it("does not match two nulls, two aliases, or an alias against its own resolution", () => {
+    expect(tupleGuard(source(null), null).matches).toBe(false);
+    expect(tupleGuard(source("sonnet"), "sonnet").matches).toBe(false);
+    expect(tupleGuard(source("sonnet"), "claude-sonnet-5-5").matches).toBe(false);
+    expect(tupleGuard(source("claude-sonnet-5-5"), "sonnet").matches).toBe(false);
+  });
+
+  it("matches the same exact ID on both sides, and refuses a different one", () => {
+    expect(tupleGuard(source("claude-sonnet-5-5"), "claude-sonnet-5-5").matches).toBe(true);
+    expect(tupleGuard(source("claude-sonnet-5"), "claude-sonnet-5-5").matches).toBe(false);
+  });
+
+  it("reads a recorded alias, legacy or Playground, as unknown", () => {
+    expect(recordedJudgeModel({ meta: { judgeModel: "sonnet" } })).toBeNull();
+    const playground = { meta: { artifactContract: PLAYGROUND_ARTIFACT_CONTRACT, judge: { model: "sonnet", rubric: "v2.11", packVersion: "p9" } } };
+    expect(recordedJudgeModel(playground)).toBeNull();
+    expect(tupleGuard(playground, "sonnet").matches).toBe(false);
+  });
+
+  it("gives an alias pin no identity before the first response, so the first checkpoint never records the alias", () => {
+    expect(createModelPin("sonnet").identity()).toBeNull();
   });
 });
 

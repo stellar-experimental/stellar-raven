@@ -32,7 +32,7 @@ import {
 } from "../src/demo/model-config.ts";
 import { buildTranscriptEvidence, judgeCase, JUDGE_MODEL, JUDGE_RUBRIC } from "../eval/qa/judge.mjs";
 import { PACK_VERSION } from "../eval/qa/evidence-pack.mjs";
-import { createModelPin, observeJudgeModel } from "../eval/qa/model-identity.mjs";
+import { checkJudgeVerdictIdentity, createModelPin } from "../eval/qa/model-identity.mjs";
 import { QA_DIR, formatSummaryTable, loadCases, summarize } from "../eval/qa/lib.mjs";
 import {
   PLAYGROUND_ROUND_CAP_CONTRACT,
@@ -656,6 +656,12 @@ export async function orchestratePlaygroundRun({
       row.verdict = verdict;
       try { recordSpend(ledger, authorization, verdict.costUsd); }
       catch (error) { budgetError = error; break; }
+      // Spend is settled; now stop. The row keeps the verdict and its model evidence, and the
+      // artifact is invalid and non-promotable.
+      if (verdict?.failureClass === "judge-model-identity") {
+        budgetError = { code: "judge-model-identity", id: item.id };
+        break;
+      }
     } else if (judgeEnabled) {
       row.verdict = await judgeAnswer(item, run);
     }
@@ -928,8 +934,9 @@ async function main() {
         { ...item, candidateAnswer: run.answer, transcript: run.transcript, transcriptEvidence },
         { model: judgePin.argument(), command: judgeExecutable.resolvedPath, maxBudgetUsd }
       );
-      observeJudgeModel(judgePin, verdict);
-      return verdict;
+      // An unknown or conflicting judge model keeps its verdict, cost and model evidence; the
+      // orchestrator settles the spend, then stops with `judge-model-identity`.
+      return checkJudgeVerdictIdentity(judgePin, verdict);
     },
     makeRow,
     buildNormalArtifact: (rows) => {

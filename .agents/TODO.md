@@ -1240,9 +1240,10 @@ close this.
 
 Trigger: the first headline judged run, or any run whose verdicts will be compared. Run the self-test
 under its own authorization first, and let that run set the new baseline (`eval/EVALS.md`, rule 7).
-The self-test's call record has an exact key set and no model field, so record the judge ID the CLI
-resolves beside it (`claude -p --model sonnet --output-format json`, the `modelUsage` key). Repeat it
-whenever the resolved judge model moves.
+The self-test requires an exact `--judge-model` and refuses an alias: resolve `sonnet` first (the
+roster's one-call `modelUsage` read), pass that ID, and each candidate fails if its verdict reports
+another model. The call record has an exact key set and no model field, so record the exact ID beside
+the summary. Repeat it whenever the resolved judge model moves.
 
 Done when: the self-test passes under a written authorization and its record names the resolved judge
 ID.

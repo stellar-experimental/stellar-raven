@@ -28,7 +28,7 @@
  * exits non-zero when a candidate result violates its expected grade.
  */
 import { spawnSync } from "node:child_process";
-import { resolvedModelFromUsage } from "./model-identity.mjs";
+import { isAliasRequest, resolvedModelFromUsage } from "./model-identity.mjs";
 import { createHash } from "node:crypto";
 import { readFileSync, readdirSync } from "node:fs";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -1040,21 +1040,42 @@ function assertStableJudgeSelfTestIdentity(before, after) {
   }
 }
 
+/**
+ * One self-test candidate on ONE exact judge. The calibration is of a specific model, so an alias
+ * is refused, and a candidate whose verdict reports a different model fails (`ok: false`, reason on
+ * stderr). The strict call record has an exact key set, so it carries no model field.
+ */
 export async function runPinnedJudgeSelfTestCandidate(
   index,
   pins,
   {
     judge = judgeCase,
-    attestIdentity = (expected) => attestJudgeSelfTestIdentity(expected)
+    attestIdentity = (expected) => attestJudgeSelfTestIdentity(expected),
+    log: reportFailure = (message) => console.error(message)
   } = {}
 ) {
+  const judgeModel = pins?.judgeModel;
+  if (typeof judgeModel !== "string" || judgeModel === "" || isAliasRequest(judgeModel)) {
+    throw new Error("judge self-test requires an exact --judge-model ID, not an alias; resolve the alias first");
+  }
   const before = attestIdentity(pins);
+  let reportedModel;
   const result = await runJudgeSelfTestCandidate(index, {
-    judge: (input, options) => judge(input, { ...options, command: before.binary.resolvedPath }),
+    judge: async (input, options) => {
+      const verdict = await judge(input, { ...options, command: before.binary.resolvedPath, model: judgeModel });
+      reportedModel = verdict?.resolvedModel;
+      return verdict;
+    },
     maxBudgetUsd: 0.5,
     log() {}
   });
   assertStableJudgeSelfTestIdentity(before, attestIdentity(pins));
+  const modelMatches = reportedModel === judgeModel;
+  if (!modelMatches) {
+    reportFailure(
+      `judge self-test candidate ${index} reported model ${reportedModel ?? "none"}, not the requested ${judgeModel}`
+    );
+  }
   return {
     schema: P6_SELF_TEST_CALL_SCHEMA,
     index: result.index,
@@ -1067,7 +1088,7 @@ export async function runPinnedJudgeSelfTestCandidate(
     gradeMatches: result.gradeMatches,
     costReported: result.costReported,
     costWithinCap: result.costWithinCap,
-    ok: result.ok,
+    ok: result.ok && modelMatches,
     runnerRevision: before.runner.revision,
     runnerDirty: before.runner.dirty,
     claudePath: before.binary.resolvedPath,
@@ -1293,7 +1314,8 @@ if (isMain) {
       "--runner-revision",
       "--claude-path",
       "--expect-claude-binary-sha256",
-      "--expect-claude-environment-sha256"
+      "--expect-claude-environment-sha256",
+      "--judge-model"
     ]);
     const values = {};
     if (args.length !== flags.size * 2) {
@@ -1316,7 +1338,8 @@ if (isMain) {
       runnerRevision: values["--runner-revision"],
       claudePath: values["--claude-path"],
       claudeBinarySha256: values["--expect-claude-binary-sha256"],
-      claudeEnvironmentSha256: values["--expect-claude-environment-sha256"]
+      claudeEnvironmentSha256: values["--expect-claude-environment-sha256"],
+      judgeModel: values["--judge-model"]
     });
     console.log(JSON.stringify(result));
     process.exitCode = result.ok ? 0 : 1;

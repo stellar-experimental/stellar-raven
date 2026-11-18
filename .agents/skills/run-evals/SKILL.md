@@ -124,7 +124,8 @@ frozen: change them only with a provenance note, a contract-version bump, and a 
 `npm run eval:qa:selftest` is **paid** (seven judge calls) although it needs no server. Run it only
 when the rubric, prompt, evidence pack, or judge adapter changed, or when the resolved judge model
 changed, under its own authorization. A new resolved judge model needs it before its first
-headline judged run, and that run sets the new baseline.
+headline judged run, and that run sets the new baseline. It requires an exact `--judge-model` (resolve
+the alias first), not an alias.
 
 ## 5. Paid runs
 

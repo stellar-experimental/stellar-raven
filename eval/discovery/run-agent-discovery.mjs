@@ -9,11 +9,7 @@ import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
-import {
-  createModelPin,
-  isAliasRequest,
-  resolvedModelFromStream
-} from "../qa/model-identity.mjs";
+import { createModelPin, resolvedModelFromStream } from "../qa/model-identity.mjs";
 import {
   REQUIRED_MCP_SERVER_NAME,
   answeringAgentIsolationArgs,
@@ -350,18 +346,26 @@ function runAgent(c, { mcpConfigPath, model, effort, maxBudgetUsd, agentCwd, age
   return { ...capped, output, costUsd, turns, mcpServers, resolvedModel, error: resultError };
 }
 
+/** The exact ID the measured (non-failed) rows ran on, or null when none or they disagree. */
+export function measuredDiscoveryModel(rows) {
+  const ids = new Set(rows.filter((row) => !row.agent?.error).map((row) => row.agent?.model).filter(Boolean));
+  return ids.size === 1 ? [...ids][0] : null;
+}
+
 /**
- * Comparability reasons for the discovery agent's model. Rows that ran on two exact IDs, or an
- * alias request whose rows name none, are not one measurement. Failed rows say nothing.
+ * Comparability reasons for the discovery agent's model, for either request type: a row with no
+ * exact ID, rows on two IDs, or a pin that conflicts with the measured rows. Failed rows say
+ * nothing.
  */
-export function discoveryModelComparabilityReasons(rows, requested) {
+export function discoveryModelComparabilityReasons(rows, { pin = null } = {}) {
   const ran = rows.filter((row) => !row.agent?.error);
   const ids = [...new Set(ran.map((row) => row.agent?.model).filter(Boolean))];
   const unknown = ran.filter((row) => !row.agent?.model).length;
   const reasons = [];
   if (ids.length > 1) reasons.push(`agent rows ran on more than one model (${ids.join(", ")})`);
-  if (unknown > 0 && isAliasRequest(requested)) {
-    reasons.push(`agent model unknown for ${unknown} row(s) under the alias "${requested}"`);
+  if (unknown > 0) reasons.push(`agent model unknown for ${unknown} row(s)`);
+  if (pin?.resolved && ids.length === 1 && ids[0] !== pin.resolved) {
+    reasons.push(`the run pinned ${pin.resolved} but its rows ran on ${ids[0]}`);
   }
   return reasons;
 }
@@ -527,8 +531,8 @@ async function runPaidDiscovery(paidRun) {
           searches: run.searches,
           selection: run.output,
           agent: {
-            // The exact ID that ran; null for an alias that resolved to nothing.
-            model: run.resolvedModel ?? (isAliasRequest(model) ? null : model),
+            // The exact ID that ran; null when unresolved, for either request type. Never the request.
+            model: run.resolvedModel ?? null,
             requestedModel: model,
             effort,
             turns: run.turns,
@@ -581,7 +585,7 @@ async function runPaidDiscovery(paidRun) {
     ...(rows.some((row) => row.agent?.error)
       ? [`${rows.filter((row) => row.agent?.error).length} agent row(s) failed`]
       : []),
-    ...discoveryModelComparabilityReasons(rows, model)
+    ...discoveryModelComparabilityReasons(rows, { pin: modelPin })
   ];
   const comparable = comparabilityReasons.length === 0;
   // Precondition P4: a lane that lost rows is incomplete, not smaller. Rows
@@ -614,7 +618,7 @@ async function runPaidDiscovery(paidRun) {
       caseCount: cases.length,
       repeat,
       url,
-      model: modelPin.identity(),
+      model: measuredDiscoveryModel(rows),
       requestedModel: model,
       effort,
       maxSearches: MAX_SEARCHES,

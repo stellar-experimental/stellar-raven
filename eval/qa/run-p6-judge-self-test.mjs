@@ -4,6 +4,7 @@ import { spawnSync } from "node:child_process";
 import { existsSync, linkSync, readFileSync, unlinkSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { isAliasRequest } from "./model-identity.mjs";
 import {
   agentEnvironmentIdentity,
   assertExpectedAgentEnvironment,
@@ -59,6 +60,17 @@ function sha256(bytes) {
 
 export function p6SelfTestWrapperSha256() {
   return sha256(readFileSync(WRAPPER_PATH));
+}
+
+/**
+ * The self-test calibrates ONE exact judge model. Resolve an alias first (the roster's one-call
+ * read of the `modelUsage` key), then pass the exact ID.
+ */
+export function requireExactJudgeModel(judgeModel) {
+  if (typeof judgeModel !== "string" || judgeModel === "" || isAliasRequest(judgeModel)) {
+    throw new Error("--judge-model must be an exact model ID, not an alias; resolve the alias first");
+  }
+  return judgeModel;
 }
 
 function requirePin(value, pattern, flag) {
@@ -170,7 +182,7 @@ function parseStrictCallRecord(result, expectedIndex, expectedIdentity) {
   return record;
 }
 
-function candidateArgs(judgePath, index, identity) {
+function candidateArgs(judgePath, index, identity, judgeModel) {
   return [
     judgePath,
     "--self-test-candidate",
@@ -184,7 +196,9 @@ function candidateArgs(judgePath, index, identity) {
     "--expect-claude-binary-sha256",
     identity.binary.sha256,
     "--expect-claude-environment-sha256",
-    identity.environment.sha256
+    identity.environment.sha256,
+    "--judge-model",
+    judgeModel
   ];
 }
 
@@ -201,6 +215,7 @@ export function runP6JudgeSelfTest({
       `p6 judge self-test requires exactly ${P6_SELF_TEST_CALLS} candidates; found ${JUDGE_SELF_TEST_CANDIDATE_COUNT}`
     );
   }
+  requireExactJudgeModel(pins?.judgeModel);
   const before = attestIdentity(pins);
   runStaticChild(spawnSyncImpl, judgePath);
   assertStableP6SelfTestIdentity(before, attestIdentity(pins));
@@ -209,7 +224,7 @@ export function runP6JudgeSelfTest({
   for (let index = 0; index < P6_SELF_TEST_CALLS; index++) {
     assertStableP6SelfTestIdentity(before, attestIdentity(pins));
     beforeCall(index);
-    const child = spawnSyncImpl(process.execPath, candidateArgs(judgePath, index, before), {
+    const child = spawnSyncImpl(process.execPath, candidateArgs(judgePath, index, before, pins.judgeModel), {
       encoding: "utf8",
       maxBuffer: 4 * 1024 * 1024
     });
@@ -255,7 +270,8 @@ export function parseP6SelfTestCli(args) {
     "--runner-revision",
     "--claude-path",
     "--expect-claude-binary-sha256",
-    "--expect-claude-environment-sha256"
+    "--expect-claude-environment-sha256",
+    "--judge-model"
   ]);
   let out;
   let pairedListeners;
@@ -309,6 +325,7 @@ export function parseP6SelfTestCli(args) {
       SHA256_PATTERN,
       "--expect-claude-environment-sha256"
     ),
+    judgeModel: requireExactJudgeModel(values["--judge-model"]),
     out,
     ...(pairedListeners === undefined ? {} : { pairedListeners, pairedListenersSha256 })
   };

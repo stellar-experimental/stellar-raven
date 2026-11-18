@@ -47,7 +47,11 @@ function reviewedRound(overrides: Record<string, unknown> = {}) {
   };
 }
 
-function fixtureMeta(roundAuthorization: any = reviewedRound(), shapeAnswering: (answering: any) => any = (answering) => answering) {
+function fixtureMeta(
+  roundAuthorization: any = reviewedRound(),
+  shapeAnswering: (answering: any) => any = (answering) => answering,
+  judgeModel = "claude-sonnet-5"
+) {
   const treeBase = {
     headRevision: "8e891fa6f9b913b723af897d1bf55bb2b5251c34",
     dirty: false,
@@ -87,7 +91,7 @@ function fixtureMeta(roundAuthorization: any = reviewedRound(), shapeAnswering: 
     }),
     judge: {
       enabled: true,
-      model: "claude-sonnet-5",
+      model: judgeModel,
       rubric: "v2.4",
       packVersion: "p3",
       temperature: { value: null, semantics: "provider-default-unpinned" }
@@ -323,7 +327,7 @@ describe("playground semantic artifact contract", () => {
   });
 
   it("takes an optional judge.resolvedModel outside the snapshot hash and stays on v3", () => {
-    const before = fixtureMeta();
+    const before = fixtureMeta(undefined, undefined, "sonnet");
     expect(before.artifactContract).toBe("playground-semantic-result/v3");
     expect(before.judge).not.toHaveProperty("resolvedModel");
     // The resolved ID is added after the first verdict; the pre-run snapshot hash is unchanged.
@@ -333,11 +337,31 @@ describe("playground semantic artifact contract", () => {
     expect(after.inputSnapshot.judgeTupleSha256).toBe(before.inputSnapshot.judgeTupleSha256);
     // Any other judge change still breaks the hash.
     const changed = structuredClone(after) as any;
-    changed.judge.model = "another-judge";
+    changed.judge.rubric = "v9.9";
     expect(() => assertPlaygroundArtifactMeta(changed)).toThrow(/judgeTupleSha256/);
     const empty = structuredClone(before) as any;
     empty.judge.resolvedModel = "";
     expect(() => assertPlaygroundArtifactMeta(empty)).toThrow(/judge.resolvedModel/);
+  });
+
+  it("rejects an alias, a wrong family, or a mismatch with an exact request in judge.resolvedModel", () => {
+    const alias = fixtureMeta(undefined, undefined, "sonnet") as any;
+    for (const resolvedModel of ["sonnet", "claude-opus-5-5", "gpt-6.1-sol"]) {
+      const meta = structuredClone(alias);
+      meta.judge.resolvedModel = resolvedModel;
+      expect(() => assertPlaygroundArtifactMeta(meta), resolvedModel).toThrow(/judge\.resolvedModel/);
+    }
+    const exact = fixtureMeta() as any;
+    exact.judge.resolvedModel = "claude-sonnet-5";
+    expect(() => assertPlaygroundArtifactMeta(exact)).not.toThrow();
+    exact.judge.resolvedModel = "claude-sonnet-5-5";
+    expect(() => assertPlaygroundArtifactMeta(exact)).toThrow(/does not match the requested judge.model/);
+  });
+
+  it("keeps an unresolved stored v3 artifact valid with its existing hash", () => {
+    const stored = fixtureMeta(undefined, undefined, "sonnet") as any;
+    expect(stored.judge).not.toHaveProperty("resolvedModel");
+    expect(() => assertPlaygroundArtifactMeta(stored)).not.toThrow();
   });
 
   it("refuses an older playground contract instead of reading it as a legacy QA artifact", () => {

@@ -137,7 +137,7 @@ import {
   loadJudgeStabilityRegister
 } from "./judge-stability.mjs";
 import { verifySourceCases } from "./re-judge.mjs";
-import { createModelPin, isAliasRequest, observeJudgeModel } from "./model-identity.mjs";
+import { JudgeModelIdentityError, createModelPin, observeJudgeModel } from "./model-identity.mjs";
 import { PACK_VERSION } from "./evidence-pack.mjs";
 import { AGENT_RESULT_SCHEMA, parseAgentResult } from "./agent-result.mjs";
 import {
@@ -559,13 +559,16 @@ export function prepareJudgeStabilityRegister({
 }
 
 /**
- * Whether the stability register was built from the judge in use. `null` when either side is
- * unknown: a register that predates `judgeModels`, an empty list, or a judge not yet pinned.
+ * Whether the stability register was built from the judge in use. `true` only when every
+ * contributor's identity is known and equals the judge in use; `false` when a known contributor
+ * differs; `null` otherwise (a register that predates `judgeModels`, an empty list, an unpinned
+ * judge, or a contributor with unknown identity and no known difference).
  */
 export function stabilityRegisterJudgeMatch(stabilityRegister, judgeModel) {
   const models = stabilityRegister?.judgeModels;
   if (!Array.isArray(models) || models.length === 0 || !judgeModel) return null;
-  return models.every((model) => model === judgeModel);
+  if (models.some((model) => model !== judgeModel)) return false;
+  return stabilityRegister.judgeModelsUnknown === false ? true : null;
 }
 
 export function registerMismatchNotice(stabilityRegister, judgeModel) {
@@ -959,11 +962,22 @@ function budgetFailureVerdict(error, calls) {
 }
 
 /**
- * Comparability reasons for the answering model. A run whose answered rows carry two exact IDs, or
- * an alias request whose rows carry none, is not one measurement, so its aggregates are suppressed.
- * Rows without a successful answer say nothing about the model and are skipped.
+ * The exact answering ID the measured rows ran on, or null when no answered row has one or they
+ * disagree. The artifact label comes from the rows, never from the pin or the request.
  */
-export function answeringModelComparabilityReasons(rows, requested) {
+export function measuredAnsweringModel(rows) {
+  const ids = new Set(
+    rows.filter((row) => hasSuccessfulAnswer(row.answer, row.agent?.failure)).map((row) => row.agent?.model).filter(Boolean)
+  );
+  return ids.size === 1 ? [...ids][0] : null;
+}
+
+/**
+ * Comparability reasons for the answering model, for either request type: an answered row with no
+ * exact ID, answered rows on two IDs, or a pin that conflicts with the measured rows (an earlier
+ * unsuccessful attempt can pin a different ID). Rows without a successful answer say nothing.
+ */
+export function answeringModelComparabilityReasons(rows, { pin = null } = {}) {
   const answered = rows.filter((row) => hasSuccessfulAnswer(row.answer, row.agent?.failure));
   const unknown = answered.filter((row) => !row.agent?.model).map((row) => row.id);
   const ids = [...new Set(answered.map((row) => row.agent?.model).filter(Boolean))];
@@ -971,10 +985,11 @@ export function answeringModelComparabilityReasons(rows, requested) {
   if (ids.length > 1) {
     reasons.push(`answering rows ran on more than one model (${ids.join(", ")}); not one measurement`);
   }
-  if (unknown.length > 0 && isAliasRequest(requested)) {
-    reasons.push(
-      `answering model unknown for ${unknown.length} row(s) under the alias "${requested}" (first: ${unknown[0]})`
-    );
+  if (unknown.length > 0) {
+    reasons.push(`answering model unknown for ${unknown.length} answered row(s) (first: ${unknown[0]})`);
+  }
+  if (pin?.resolved && ids.length === 1 && ids[0] !== pin.resolved) {
+    reasons.push(`the run pinned ${pin.resolved} but its answered rows ran on ${ids[0]}`);
   }
   return reasons;
 }
@@ -1322,6 +1337,18 @@ export async function judgeStoredResults(
   // An alias chooses the judge only for a fresh measurement. A file that already recorded its exact
   // judge finishes on it; only an explicit, different --judge-model is refused.
   const recordedJudgeModel = meta.judgeModel ?? null;
+  // A pre-call checkpoint stamps the request before any response resolves it. It binds a resume the
+  // same way a resolved ID does, so an explicit different --judge-model cannot take over.
+  if (
+    recordedJudgeModel == null &&
+    judgeModel !== undefined &&
+    meta.judgeRequestedModel != null &&
+    meta.judgeRequestedModel !== judgeModel
+  ) {
+    throw new Error(
+      `--judge-stored: file was stamped for judge request ${meta.judgeRequestedModel} before any response resolved it; refusing to switch to ${judgeModel}`
+    );
+  }
   const requestedJudgeModel = judgeModel ?? recordedJudgeModel ?? meta.judgeRequestedModel ?? JUDGE_MODEL;
   judgeModel = requestedJudgeModel;
   if (recordedJudgeModel != null && recordedJudgeModel !== judgeModel) {
@@ -1331,6 +1358,9 @@ export async function judgeStoredResults(
   }
   const judgePin = createModelPin(judgeModel, { resolved: recordedJudgeModel });
   let registerMismatchReported = false;
+  // A judge-identity failure (an unknown or mixed judge model) is part of the artifact, not only an
+  // exception: every write after it is non-comparable with aggregates suppressed.
+  let judgeIdentityFailure = null;
   if (meta.judgeRubric != null && meta.judgeRubric !== JUDGE_RUBRIC) {
     throw new Error(
       `--judge-stored: file already carries verdicts under rubric ${meta.judgeRubric}, current is ${JUDGE_RUBRIC} — use re-judge.mjs for cross-rubric work`
@@ -1439,7 +1469,17 @@ export async function judgeStoredResults(
       judging: true
     });
     meta.judgingCompleteness = completeness;
-    const aggregatesAllowed = collectionAggregatesAllowed && completeness.aggregatesAllowed;
+    const aggregatesAllowed =
+      collectionAggregatesAllowed && completeness.aggregatesAllowed && !judgeIdentityFailure;
+    if (judgeIdentityFailure) {
+      const reason = `judge model identity failed at ${judgeIdentityFailure.id}: ${judgeIdentityFailure.message}`;
+      meta.comparable = false;
+      meta.comparabilityReasons = [
+        ...(meta.comparabilityReasons ?? []).filter((item) => item !== reason),
+        reason
+      ];
+      meta.judgeIdentityFailure = judgeIdentityFailure;
+    }
     meta.aggregatesSuppressed = !aggregatesAllowed;
     // Every stored-judge write owns the measurement block: drop the current
     // keys before re-stamping them, and drop the retired coverage keys that an
@@ -1587,9 +1627,13 @@ export async function judgeStoredResults(
         );
       } catch (error) {
         if (error.judgeAttempt) row.attempts.judge.push(error.judgeAttempt);
+        if (error instanceof JudgeModelIdentityError) {
+          judgeIdentityFailure = { code: error.code, message: error.message, id: row.id };
+        }
         if (
           error instanceof MissingReportedCostError ||
           error instanceof BudgetAuthorizationExceededError ||
+          error instanceof JudgeModelIdentityError ||
           (error instanceof BudgetExhaustedError && error.judgeAttempt)
         ) incompleteJudgeIds.add(row.id);
         row.verdict ??= row.attempts.judge[0]?.verdict ?? null;
@@ -2067,9 +2111,9 @@ async function main() {
         answer: firstAttempt.answer,
         transcript: firstAttempt.transcript,
         agent: {
-          // The exact ID that ran. An alias that resolved to nothing leaves this null, and the
-          // run is non-comparable (answeringModelComparabilityReasons).
-          model: firstAttempt.agent?.resolvedModel ?? (isAliasRequest(model) ? null : model),
+          // The exact ID that ran. An unresolved answer stays null for either request type, and the
+          // run is non-comparable (answeringModelComparabilityReasons). Never the request.
+          model: firstAttempt.agent?.resolvedModel ?? null,
           requestedModel: model,
           ...firstAttempt.agent,
           inputSha256: firstAttempt.inputSha256,
@@ -2104,7 +2148,8 @@ async function main() {
         answerAttempts.length > 0 && (
           stopError instanceof BudgetExhaustedError ||
           stopError instanceof MissingReportedCostError ||
-          stopError instanceof BudgetAuthorizationExceededError
+          stopError instanceof BudgetAuthorizationExceededError ||
+          stopError instanceof JudgeModelIdentityError
         )
       ) incompleteIds.add(c.id);
       rows.push(row);
@@ -2179,7 +2224,7 @@ async function main() {
       collectionSourceIdentityGuard,
       remoteIdentityGuardRecord
     }),
-    ...answeringModelComparabilityReasons(rows, model)
+    ...answeringModelComparabilityReasons(rows, { pin: answerPin })
   ];
   if (pairedControl && comparabilityReasons.length === 0) {
     try {
@@ -2194,7 +2239,7 @@ async function main() {
           collectionSourceIdentityGuard,
           remoteIdentityGuardRecord
         }),
-        ...answeringModelComparabilityReasons(rows, model)
+        ...answeringModelComparabilityReasons(rows, { pin: answerPin })
       ];
     }
   } else if (pairedControl && comparabilityReasons.length > 0 && !collectionError) {
@@ -2228,7 +2273,7 @@ async function main() {
           searchTool: surface === "search-execute" ? searchTool : null,
           port,
           // Identity fields hold the exact IDs that ran; the requested values sit beside them.
-          model: answerPin.identity(),
+          model: measuredAnsweringModel(rows),
           requestedModel: model,
           judgeModel: noJudge ? null : judgePin.identity(),
           judgeRequestedModel: noJudge ? null : judgeModel,

@@ -440,6 +440,7 @@ The artifact records the exact IDs that ran (`meta.model`, `meta.judgeModel`) be
 Within a run, the first response pins the resolved ID for every later call of that role. A call that reports no resolved ID stops judging, or makes the answering rows non-comparable.
 A resumed or re-judged file keeps the judge it recorded; an explicit different `--judge-model` is refused or labeled non-identical, as before.
 Stored verdicts from `claude-sonnet-5` are a different judge from the current default. The first judged run on the new judge sets a new baseline, after the paid seven-case self-test on that judge under its own authorization.
+The self-test calibrates one exact judge, so it requires `--judge-model <exact ID>` and refuses an alias. Resolve the alias first with the roster's one-call read (`claude -p --model sonnet --output-format json "Reply ok" | jq '.modelUsage|keys'`), then pass that exact ID. Each candidate runs on that ID and fails when its verdict reports a different model. The strict call record has no model key, so record the exact ID beside the summary.
 `meta.judgeTiering.stabilityRegisterJudgeMatch` says whether the local judge-stability register was built from the judge in use (`true`, `false`, or `null` when the register predates the list). It stays advisory.
 An artifact answered by an earlier model differs in answering identity; compare it with a new one only as a labeled cross-model comparison.
 [judge.mjs](judge.mjs) owns the prompt and rubric. [evidence-pack.mjs](evidence-pack.mjs) owns evidence selection and serialization.

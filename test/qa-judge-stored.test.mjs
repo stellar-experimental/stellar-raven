@@ -17,6 +17,7 @@ import {
   RETIRED_MEASUREMENT_METRIC_KEYS,
   answeringModelComparabilityReasons,
   assertCollectionSourceIdentity,
+  measuredAnsweringModel,
   assertPinnedServerRevision,
   collectionGitStatus,
   judgeStoredResults,
@@ -24,7 +25,7 @@ import {
   sourceIdentityGuard,
   stabilityRegisterJudgeMatch
 } from "../eval/qa/run-qa.mjs";
-import { JudgeModelIdentityError } from "../eval/qa/model-identity.mjs";
+import { JudgeModelIdentityError, createModelPin } from "../eval/qa/model-identity.mjs";
 import { JUDGE_RUBRIC } from "../eval/qa/judge.mjs";
 import { PACK_VERSION } from "../eval/qa/evidence-pack.mjs";
 import { AGENT_RESULT_SCHEMA } from "../eval/qa/agent-result.mjs";
@@ -1553,6 +1554,16 @@ function writeThreeAnsweredRows(root) {
   return writeFixture(root, { rows, cases: CASES });
 }
 
+/** What the written file must say after a judge-identity failure: no summary, not comparable. */
+function expectIdentityFailureArtifact(written) {
+  expect(written.meta.comparable).toBe(false);
+  expect(written.meta.aggregatesSuppressed).toBe(true);
+  expect(written.summary).toBeNull();
+  expect(written.meta.comparabilityReasons.join(" ")).toMatch(/judge model identity failed/);
+  expect(written.meta.judgeIdentityFailure).toMatchObject({ code: "judge-model-identity" });
+  expect(written.meta.judgeStored.incompleteIds).toContain(written.meta.judgeIdentityFailure.id);
+}
+
 describe("run-qa --judge-stored model identity", () => {
   it("runs the alias until the first response, then pins the exact ID and records both", async () => {
     const root = mkdtempSync(join(tmpdir(), "qa-judge-stored-pin-"));
@@ -1602,6 +1613,11 @@ describe("run-qa --judge-stored model identity", () => {
       ).rejects.toThrow(JudgeModelIdentityError);
       const written = JSON.parse(readFileSync(resultsPath, "utf8"));
       expect(written.meta.judgeModel).toBeNull();
+      expectIdentityFailureArtifact(written);
+      // The invalid status survives resume: the file is non-comparable, so a retry is refused.
+      await expect(
+        judgeStoredResults(resultsPath, { judge: resolvingJudge(resolveAlias), log: () => {} })
+      ).rejects.toThrow(/artifact is non-comparable: .*judge model identity failed/);
     } finally {
       rmSync(root, { recursive: true, force: true });
     }
@@ -1616,6 +1632,30 @@ describe("run-qa --judge-stored model identity", () => {
       await expect(
         judgeStoredResults(resultsPath, { judge: drifting, log: () => {} })
       ).rejects.toThrow(/refusing to mix judge models/);
+      const written = JSON.parse(readFileSync(resultsPath, "utf8"));
+      expectIdentityFailureArtifact(written);
+      expect(written.meta.judgeModel).toBe("claude-sonnet-5-5");
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("binds a resume to a request stamped before any response, and keeps the resolved ID after a pin", async () => {
+    const root = mkdtempSync(join(tmpdir(), "qa-judge-stored-precall-"));
+    try {
+      const { resultsPath } = writeThreeAnsweredRows(root);
+      const seeded = JSON.parse(readFileSync(resultsPath, "utf8"));
+      seeded.meta.judgeModel = null;
+      seeded.meta.judgeRequestedModel = "sonnet";
+      writeFileSync(resultsPath, JSON.stringify(seeded, null, 2));
+      await expect(
+        judgeStoredResults(resultsPath, { judgeModel: "claude-opus-5-5", judge: resolvingJudge(resolveAlias), log: () => {} })
+      ).rejects.toThrow(/stamped for judge request sonnet before any response resolved it; refusing to switch to claude-opus-5-5/);
+      // The same request is accepted, pins, and records the resolved ID beside the request.
+      await judgeStoredResults(resultsPath, { judgeModel: "sonnet", judge: resolvingJudge(resolveAlias), log: () => {} });
+      const written = JSON.parse(readFileSync(resultsPath, "utf8"));
+      expect(written.meta.judgeModel).toBe("claude-sonnet-5-5");
+      expect(written.meta.judgeRequestedModel).toBe("sonnet");
     } finally {
       rmSync(root, { recursive: true, force: true });
     }
@@ -1630,7 +1670,7 @@ describe("run-qa --judge-stored model identity", () => {
       const { resultsPath } = writeThreeAnsweredRows(root);
       await judgeStoredResults(resultsPath, {
         judge: resolvingJudge(resolveAlias),
-        stabilityRegister: { status: "available", cases: {}, source: "pinned", judgeModels: ["claude-sonnet-5"] },
+        stabilityRegister: { status: "available", cases: {}, source: "pinned", judgeModels: ["claude-sonnet-5"], judgeModelsUnknown: false },
         log: () => {}
       });
       const written = JSON.parse(readFileSync(resultsPath, "utf8"));
@@ -1644,20 +1684,32 @@ describe("run-qa --judge-stored model identity", () => {
 });
 
 describe("stabilityRegisterJudgeMatch", () => {
-  it("is true when every register judge is the judge in use", () => {
-    expect(stabilityRegisterJudgeMatch({ judgeModels: ["claude-sonnet-5-5"] }, "claude-sonnet-5-5")).toBe(true);
+  const known = (judgeModels) => ({ judgeModels, judgeModelsUnknown: false });
+
+  it("is true only when every contributor is known and is the judge in use", () => {
+    expect(stabilityRegisterJudgeMatch(known(["claude-sonnet-5-5"]), "claude-sonnet-5-5")).toBe(true);
   });
 
-  it("is false when the register was built from another judge or mixes judges", () => {
-    expect(stabilityRegisterJudgeMatch({ judgeModels: ["claude-sonnet-5"] }, "claude-sonnet-5-5")).toBe(false);
-    expect(stabilityRegisterJudgeMatch({ judgeModels: ["claude-sonnet-5", "claude-sonnet-5-5"] }, "claude-sonnet-5-5")).toBe(false);
+  it("is false when a known contributor differs, even beside an unknown one", () => {
+    expect(stabilityRegisterJudgeMatch(known(["claude-sonnet-5"]), "claude-sonnet-5-5")).toBe(false);
+    expect(stabilityRegisterJudgeMatch(known(["claude-sonnet-5", "claude-sonnet-5-5"]), "claude-sonnet-5-5")).toBe(false);
+    expect(
+      stabilityRegisterJudgeMatch({ judgeModels: ["claude-sonnet-5"], judgeModelsUnknown: true }, "claude-sonnet-5-5")
+    ).toBe(false);
+  });
+
+  it("is null when a contributor is unknown and no known one differs", () => {
+    expect(
+      stabilityRegisterJudgeMatch({ judgeModels: ["claude-sonnet-5-5"], judgeModelsUnknown: true }, "claude-sonnet-5-5")
+    ).toBeNull();
+    expect(stabilityRegisterJudgeMatch({ judgeModels: ["claude-sonnet-5-5"] }, "claude-sonnet-5-5")).toBeNull();
   });
 
   it("is null, never false, for a register without the list, an empty list, or an unpinned judge", () => {
     expect(stabilityRegisterJudgeMatch({}, "claude-sonnet-5-5")).toBeNull();
     expect(stabilityRegisterJudgeMatch({ judgeModels: null }, "claude-sonnet-5-5")).toBeNull();
-    expect(stabilityRegisterJudgeMatch({ judgeModels: [] }, "claude-sonnet-5-5")).toBeNull();
-    expect(stabilityRegisterJudgeMatch({ judgeModels: ["claude-sonnet-5"] }, null)).toBeNull();
+    expect(stabilityRegisterJudgeMatch(known([]), "claude-sonnet-5-5")).toBeNull();
+    expect(stabilityRegisterJudgeMatch(known(["claude-sonnet-5"]), null)).toBeNull();
   });
 });
 
@@ -1666,25 +1718,37 @@ describe("answeringModelComparabilityReasons", () => {
 
   it("is empty when every answered row ran on one exact model", () => {
     const rows = [answered("a", "claude-sonnet-5-5"), answered("b", "claude-sonnet-5-5")];
-    expect(answeringModelComparabilityReasons(rows, "sonnet")).toEqual([]);
+    expect(answeringModelComparabilityReasons(rows)).toEqual([]);
+    expect(measuredAnsweringModel(rows)).toBe("claude-sonnet-5-5");
   });
 
-  it("gives a reason when answered rows ran on two models", () => {
+  it("gives a reason when answered rows ran on two models, and labels the run with neither", () => {
     const rows = [answered("a", "claude-sonnet-5-5"), answered("b", "claude-sonnet-5-6")];
-    expect(answeringModelComparabilityReasons(rows, "sonnet")).toEqual([
+    expect(answeringModelComparabilityReasons(rows)).toEqual([
       expect.stringContaining("more than one model (claude-sonnet-5-5, claude-sonnet-5-6)")
     ]);
+    expect(measuredAnsweringModel(rows)).toBeNull();
   });
 
-  it("gives a reason for an alias request whose rows name no model", () => {
-    const rows = [answered("a", null)];
-    expect(answeringModelComparabilityReasons(rows, "sonnet")).toEqual([
-      expect.stringContaining('unknown for 1 row(s) under the alias "sonnet"')
+  it("gives a reason for an answered row with no exact ID, for an alias or an exact request alike", () => {
+    expect(answeringModelComparabilityReasons([answered("a", null)])).toEqual([
+      expect.stringContaining("unknown for 1 answered row(s)")
     ]);
+    expect(measuredAnsweringModel([answered("a", null)])).toBeNull();
+  });
+
+  it("gives a reason when the pin conflicts with the measured rows", () => {
+    const pin = createModelPin("sonnet");
+    pin.observe("claude-sonnet-5-4"); // an earlier unsuccessful attempt pinned a different model
+    const rows = [answered("a", "claude-sonnet-5-5")];
+    expect(answeringModelComparabilityReasons(rows, { pin })).toEqual([
+      expect.stringContaining("pinned claude-sonnet-5-4 but its answered rows ran on claude-sonnet-5-5")
+    ]);
+    expect(measuredAnsweringModel(rows)).toBe("claude-sonnet-5-5");
   });
 
   it("skips rows with no successful answer", () => {
     const failed = { id: "c", answer: "", agent: { model: null, failure: { class: "timeout" } } };
-    expect(answeringModelComparabilityReasons([answered("a", "claude-sonnet-5-5"), failed], "sonnet")).toEqual([]);
+    expect(answeringModelComparabilityReasons([answered("a", "claude-sonnet-5-5"), failed])).toEqual([]);
   });
 });

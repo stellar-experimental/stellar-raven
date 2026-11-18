@@ -51,6 +51,50 @@ describe("judge capture from modelUsage", () => {
   });
 });
 
+describe("conflicting same-family usage keys", () => {
+  it("is unknown for an exact request whose envelope also names a competing same-family key", () => {
+    const usage = { "claude-sonnet-5-5": {}, "claude-sonnet-5-6": {} };
+    expect(resolvedModelFromUsage("claude-sonnet-5-5", usage)).toBeNull();
+  });
+
+  it("stays unknown after the run pins an exact ID, where the alias call was already unknown", () => {
+    const usage = { "claude-sonnet-5-5": {}, "claude-sonnet-5-6": {} };
+    expect(resolvedModelFromUsage("sonnet", usage)).toBeNull();
+    const pin = createModelPin("sonnet");
+    pin.observe("claude-sonnet-5-5");
+    expect(resolvedModelFromUsage(pin.argument(), usage)).toBeNull();
+  });
+
+  it("still ignores keys of other families after pinning", () => {
+    expect(resolvedModelFromUsage("claude-sonnet-5-5", { "claude-sonnet-5-5": {}, "claude-haiku-5-5": {} })).toBe(
+      "claude-sonnet-5-5"
+    );
+  });
+});
+
+describe("contradictory stream capture", () => {
+  it("is unknown when init and usage disagree, and never falls back to the request", () => {
+    const run = parse(
+      [initLine("claude-sonnet-5-5"), resultLine({ "claude-sonnet-5-6": {} })],
+      "claude-sonnet-5-5"
+    );
+    expect(run.resolvedModel).toBeNull();
+  });
+
+  it("is unknown for an exact request when init is absent and the only usage key is a different model", () => {
+    const run = parse([initLine(undefined), resultLine({ "claude-sonnet-5-6": {} })], "claude-sonnet-5-5");
+    expect(run.resolvedModel).toBeNull();
+  });
+
+  it("accepts init when usage agrees or names only another family", () => {
+    const run = parse(
+      [initLine("claude-sonnet-5-5"), resultLine({ "claude-sonnet-5-5": {}, "claude-haiku-5-5": {} })],
+      "sonnet"
+    );
+    expect(run.resolvedModel).toBe("claude-sonnet-5-5");
+  });
+});
+
 describe("answering capture from the stream", () => {
   it("reads init.model under an alias", () => {
     const run = parse([initLine("claude-sonnet-5-5"), resultLine({ "claude-sonnet-5-5": {} })], "sonnet");
@@ -118,17 +162,48 @@ describe("stream fixtures keep recording", () => {
 describe("discovery agent model comparability", () => {
   const ran = (model) => ({ agent: { model, error: null } });
 
-  it("is empty when every row ran on one exact model", async () => {
-    const { discoveryModelComparabilityReasons } = await import("../eval/discovery/run-agent-discovery.mjs");
-    expect(discoveryModelComparabilityReasons([ran("claude-sonnet-5-5"), ran("claude-sonnet-5-5")], "sonnet")).toEqual([]);
+  it("is empty when every row ran on one exact model, which labels the run", async () => {
+    const { discoveryModelComparabilityReasons, measuredDiscoveryModel } = await import("../eval/discovery/run-agent-discovery.mjs");
+    const rows = [ran("claude-sonnet-5-5"), ran("claude-sonnet-5-5")];
+    expect(discoveryModelComparabilityReasons(rows)).toEqual([]);
+    expect(measuredDiscoveryModel(rows)).toBe("claude-sonnet-5-5");
   });
 
-  it("gives a reason for two models, or an alias whose rows name none, and skips failed rows", async () => {
-    const { discoveryModelComparabilityReasons } = await import("../eval/discovery/run-agent-discovery.mjs");
-    expect(discoveryModelComparabilityReasons([ran("claude-sonnet-5-5"), ran("claude-sonnet-5-6")], "sonnet")).toEqual([
+  it("gives a reason for two models, an unresolved row (either request type), or a conflicting pin; failed rows say nothing", async () => {
+    const { discoveryModelComparabilityReasons, measuredDiscoveryModel } = await import("../eval/discovery/run-agent-discovery.mjs");
+    expect(discoveryModelComparabilityReasons([ran("claude-sonnet-5-5"), ran("claude-sonnet-5-6")])).toEqual([
       expect.stringContaining("more than one model")
     ]);
-    expect(discoveryModelComparabilityReasons([ran(null)], "sonnet")).toEqual([expect.stringContaining("unknown for 1 row(s)")]);
-    expect(discoveryModelComparabilityReasons([{ agent: { model: null, error: "spawn failed" } }], "sonnet")).toEqual([]);
+    expect(discoveryModelComparabilityReasons([ran(null)])).toEqual([expect.stringContaining("unknown for 1 row(s)")]);
+    expect(measuredDiscoveryModel([ran(null)])).toBeNull();
+    const pin = createModelPin("sonnet");
+    pin.observe("claude-sonnet-5-4");
+    expect(discoveryModelComparabilityReasons([ran("claude-sonnet-5-5")], { pin })).toEqual([
+      expect.stringContaining("pinned claude-sonnet-5-4")
+    ]);
+    expect(discoveryModelComparabilityReasons([{ agent: { model: null, error: "spawn failed" } }])).toEqual([]);
+  });
+});
+
+describe("checkJudgeVerdictIdentity", () => {
+  it("returns a verdict unchanged when its model is known and consistent", async () => {
+    const { checkJudgeVerdictIdentity } = await import("../eval/qa/model-identity.mjs");
+    const pin = createModelPin("sonnet");
+    const verdict = { score: "correct", costUsd: 0.1, resolvedModel: "claude-sonnet-5-5" };
+    expect(checkJudgeVerdictIdentity(pin, verdict)).toBe(verdict);
+    expect(pin.resolved).toBe("claude-sonnet-5-5");
+  });
+
+  it("turns an unknown or mixed model into an error verdict that keeps cost and model evidence", async () => {
+    const { checkJudgeVerdictIdentity } = await import("../eval/qa/model-identity.mjs");
+    const pin = createModelPin("sonnet");
+    const unknown = checkJudgeVerdictIdentity(pin, { score: "correct", costUsd: 0.2, resolvedModel: null });
+    expect(unknown).toMatchObject({ score: "error", coreAnswer: null, judgeScore: "correct", costUsd: 0.2, resolvedModel: null, failureClass: "judge-model-identity" });
+    pin.observe("claude-sonnet-5-5");
+    const mixed = checkJudgeVerdictIdentity(pin, { score: "partial", costUsd: 0.3, resolvedModel: "claude-sonnet-5-6" });
+    expect(mixed).toMatchObject({ score: "error", costUsd: 0.3, resolvedModel: "claude-sonnet-5-6", failureClass: "judge-model-identity" });
+    // An error verdict is not an identity failure.
+    const failed = { score: "error", failureClass: "cli" };
+    expect(checkJudgeVerdictIdentity(pin, failed)).toBe(failed);
   });
 });

@@ -11,6 +11,7 @@ import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { extractPlainOperationTool, gradeRow, loadRunnerOps, summarizePlan } from "../plan/grade-plan.mjs";
 import { AGENT_RESULT_SCHEMA } from "./agent-result.mjs";
+import { isAliasRequest } from "./model-identity.mjs";
 
 const TRUNCATION_MARKERS = ["--- TRUNCATED ---", "--- SOURCE BASIS ---"];
 
@@ -285,6 +286,10 @@ export async function verifyPlanSourceAssociation(label, plan, resultsPath, resu
   };
 }
 
+function isExactModelId(model) {
+  return typeof model === "string" && model !== "" && !isAliasRequest(model);
+}
+
 function assertComparable(search, perOperation) {
   const fail = (message) => {
     throw new Error(`incomparable A/B inputs: ${message}`);
@@ -296,9 +301,9 @@ function assertComparable(search, perOperation) {
   // unstamped — would compare as empty usage and zero agent errors, a false
   // clean bill rather than a refusal. Agreement between the arms is not enough;
   // both must be the schema this reader actually understands.
-  for (const [label, meta] of [
-    ["first", search.meta],
-    ["second", perOperation.meta]
+  for (const [label, meta, rows] of [
+    ["first", search.meta, search.rows],
+    ["second", perOperation.meta, perOperation.rows]
   ]) {
     if (meta?.resultsSchema !== AGENT_RESULT_SCHEMA) {
       fail(
@@ -313,6 +318,22 @@ function assertComparable(search, perOperation) {
     }
     if (meta?.sourceIdentityGuard?.matches !== true) {
       fail(`${label} artifact has no passing sourceIdentityGuard`);
+    }
+    // A rejected run is evidence, not a measurement: its aggregates were suppressed for a reason.
+    if (meta?.comparable === false) {
+      fail(`${label} artifact is non-comparable: ${(meta.comparabilityReasons ?? []).join("; ") || "collection guard failed"}`);
+    }
+    // Identity must be an exact ID, never a null or an alias, so two unresolved arms cannot match.
+    if (!isExactModelId(meta?.model)) {
+      fail(`${label} artifact has no exact answering model ID (meta.model ${JSON.stringify(meta?.model ?? null)})`);
+    }
+    const judged = meta?.judgeRubric != null || meta?.judgeModel != null;
+    if (judged && !isExactModelId(meta?.judgeModel)) {
+      fail(`${label} artifact has no exact judge model ID (meta.judgeModel ${JSON.stringify(meta?.judgeModel ?? null)})`);
+    }
+    const rowModels = [...new Set((rows ?? []).map((row) => row.agent?.model).filter((model) => model != null))];
+    if (rowModels.some((model) => model !== meta.model)) {
+      fail(`${label} artifact rows ran on ${rowModels.join(", ")}, not its meta.model ${meta.model}`);
     }
   }
   for (const key of ["model", "judgeModel", "judgeRubric", "packVersion", "casesPath", "caseContract", "sampleN"]) {

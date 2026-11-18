@@ -1,4 +1,6 @@
 import { describe, expect, it } from "vitest";
+// @ts-expect-error eval-side module
+import { checkJudgeVerdictIdentity, createModelPin } from "../eval/qa/model-identity.mjs";
 // @ts-expect-error executable test seam
 import { orchestratePlaygroundRun, parseArgs, exitCodeForRunDisposition, observedModelProblem, observedModelsFromRows } from "../scripts/run-playground-semantic-eval.mjs";
 // @ts-expect-error evaluator contract
@@ -64,6 +66,36 @@ describe("Playground method budget", () => {
       expect(result.artifact.summary).toBeNull();
       expect(result.calls.length).toBeLessThanOrEqual(2);
     }
+  });
+
+  it("settles a judge-identity failure's cost, keeps its model evidence, and stops non-promotable", async () => {
+    const pin = createModelPin("sonnet");
+    const calls: unknown[] = [];
+    const result = await orchestratePlaygroundRun({
+      cases: [{ id: "a" }, { id: "b" }], maxBudgetUsd: 1,
+      treeAtStart: { generationSha256: "same" }, startMeta: {}, judgeEnabled: true,
+      snapshotTree: async () => ({ generationSha256: "same" }),
+      runAnswer: async (item: any) => { calls.push(["answer", item.id]); return { answer: "text", costUsd: 0.1 }; },
+      judgeAnswer: async (item: any) => {
+        calls.push(["judge", item.id]);
+        // A paid verdict whose envelope named two same-family models: identity unknown.
+        return checkJudgeVerdictIdentity(pin, { score: "correct", coreAnswer: "correct", costUsd: 0.2, resolvedModel: null });
+      },
+      makeRow: (item: any, answer: any) => ({ ...item, ...answer }),
+      buildNormalArtifact: (rows: any[]) => ({ meta: {}, rows, summary: {} }),
+      writeNormalArtifact: async () => {}, writeQuarantineArtifact: async () => {}
+    });
+    expect(calls).toEqual([["answer", "a"], ["judge", "a"]]);
+    // The $0.20 judge cost is recorded beside the $0.10 answer, not replaced by a missing-cost failure.
+    expect(result.artifact.budget).toMatchObject({
+      status: "invalid", error: "judge-model-identity", reportedSpendUsd: 0.3, missingCosts: 0, incompleteCaseIds: ["a", "b"]
+    });
+    expect(result.artifact.meta.totalJudgeCostUsd).toBe(0.2);
+    expect(result.artifact.rows[0].verdict).toMatchObject({ score: "error", failureClass: "judge-model-identity", judgeScore: "correct", resolvedModel: null });
+    expect(result.artifact.summary).toBeNull();
+    expect(result.artifact.nonPromotable).toBe(true);
+    expect(exitCodeForRunDisposition(result)).toBe(1);
+    expect(() => assertNotPlaygroundQuarantine(result.artifact)).toThrow(/non-promotable/);
   });
 
   it("stops before any judge when an answer reports a model outside the configured tuple", async () => {

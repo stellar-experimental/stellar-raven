@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { isAliasRequest } from "../qa/model-identity.mjs";
 
 export const PLAYGROUND_ARTIFACT_CONTRACT = "playground-semantic-result/v3";
 
@@ -235,6 +236,13 @@ export function assertPlaygroundArtifactMeta(meta) {
   if (judge.resolvedModel !== undefined) {
     if (!judge.enabled) fail("disabled judge cannot carry judge.resolvedModel");
     requiredString(judge.resolvedModel, "judge.resolvedModel");
+    // It must be an exact ID, and consistent with the request: an alias request resolves within
+    // its family, and an exact request resolves to itself.
+    if (isAliasRequest(judge.resolvedModel)) fail("judge.resolvedModel must be an exact model ID, not an alias");
+    const family = isAliasRequest(judge.model) ? judge.model.replace(/\[.*\]$/, "").toLowerCase() : null;
+    if (family ? !judge.resolvedModel.startsWith(`claude-${family}-`) : judge.resolvedModel !== judge.model) {
+      fail("judge.resolvedModel does not match the requested judge.model");
+    }
   }
   requiredString(judge.packVersion, "judge.packVersion");
   if (judge.temperature?.value !== null || judge.temperature?.semantics !== "provider-default-unpinned") {

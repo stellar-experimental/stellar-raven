@@ -20,27 +20,47 @@ function aliasFamily(requested) {
   return requested.replace(/\[.*\]$/, "").toLowerCase();
 }
 
+const FAMILY_PREFIX = /^(claude-(?:sonnet|opus|fable|haiku)-)/;
+
 /**
- * The exact ID a judge call ran on, from the JSON envelope's `modelUsage` keys.
- * Alias request: the single key starting `claude-<family>-`. Exact request: the key equal to it.
- * Zero or two candidate keys give `null`.
+ * The exact ID a call ran on, from the JSON envelope's `modelUsage` keys. Auxiliary keys of
+ * another family (a Haiku call the CLI made for itself) are ignored; conflicting keys of the SAME
+ * family are not, so an envelope that names two models of the family is unknown whether the
+ * request is an alias or an exact ID, and whether or not the run has pinned an ID.
+ * Alias request: the single key starting `claude-<family>-`. Exact request: the one same-family
+ * key must equal it. Zero or conflicting candidates give `null`, which no caller may turn back
+ * into the request.
  */
 export function resolvedModelFromUsage(requested, modelUsage) {
   if (typeof requested !== "string" || requested === "") return null;
   if (modelUsage === null || typeof modelUsage !== "object" || Array.isArray(modelUsage)) return null;
   const keys = Object.keys(modelUsage);
-  const candidates = isAliasRequest(requested)
-    ? keys.filter((key) => key.startsWith(`claude-${aliasFamily(requested)}-`))
-    : keys.filter((key) => key === requested);
+  let candidates;
+  if (isAliasRequest(requested)) {
+    candidates = keys.filter((key) => key.startsWith(`claude-${aliasFamily(requested)}-`));
+  } else {
+    const prefix = FAMILY_PREFIX.exec(requested)?.[1];
+    candidates = prefix ? keys.filter((key) => key.startsWith(prefix)) : keys.filter((key) => key === requested);
+    if (candidates.some((key) => key !== requested)) return null;
+  }
   return candidates.length === 1 ? candidates[0] : null;
 }
 
 /**
- * The exact ID an answering or discovery agent ran on: the stream `init.model` when it is a
- * `claude-` ID, otherwise the result line's `modelUsage` key by the same rule as the judge.
+ * The exact ID an answering or discovery agent ran on. A stream `init.model` that is a `claude-`
+ * ID is the answer only when the result's `modelUsage` does not contradict it: a same-family usage
+ * key other than the init ID makes the capture unknown (`null`). Otherwise the `modelUsage` key,
+ * by the rule above.
  */
 export function resolvedModelFromStream({ requested, initModel, modelUsage }) {
-  if (typeof initModel === "string" && /^claude-/.test(initModel)) return initModel;
+  if (typeof initModel === "string" && /^claude-/.test(initModel)) {
+    const prefix = FAMILY_PREFIX.exec(initModel)?.[1];
+    if (prefix && modelUsage !== null && typeof modelUsage === "object" && !Array.isArray(modelUsage)) {
+      const sameFamily = Object.keys(modelUsage).filter((key) => key.startsWith(prefix));
+      if (sameFamily.length > 0 && !(sameFamily.length === 1 && sameFamily[0] === initModel)) return null;
+    }
+    return initModel;
+  }
   return resolvedModelFromUsage(requested, modelUsage);
 }
 
@@ -112,4 +132,27 @@ export function observeJudgeModel(pin, verdict) {
     );
   }
   pin.observe(reported);
+}
+
+/**
+ * Check a judge verdict against the pin without losing it. A paid verdict whose model identity is
+ * unknown or conflicting comes back as an error verdict that keeps its cost and its model
+ * evidence (`resolvedModel`), marked `failureClass: "judge-model-identity"`, so the caller can
+ * settle the spend before it stops. Other errors are not identity failures and propagate.
+ */
+export function checkJudgeVerdictIdentity(pin, verdict) {
+  try {
+    observeJudgeModel(pin, verdict);
+    return verdict;
+  } catch (error) {
+    if (!(error instanceof JudgeModelIdentityError)) throw error;
+    return {
+      ...verdict,
+      score: "error",
+      coreAnswer: null,
+      judgeScore: verdict?.score,
+      failureClass: "judge-model-identity",
+      rationale: error.message
+    };
+  }
 }

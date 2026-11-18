@@ -34,7 +34,7 @@ import {
   JUDGE_RUBRIC
 } from "./judge.mjs";
 import { PACK_VERSION } from "./evidence-pack.mjs";
-import { createModelPin, observeJudgeModel } from "./model-identity.mjs";
+import { createModelPin, isAliasRequest, observeJudgeModel } from "./model-identity.mjs";
 import { panelConfidence } from "./panel-confidence.mjs";
 import { diagnosticRejudgeSource } from "./diagnostic-rejudge-source.mjs";
 import {
@@ -561,22 +561,28 @@ export function goldenTimeConsistency(results, selectedRows, caseById) {
  */
 export function recordedJudgeModel(results) {
   const versionedPlayground = results?.meta?.artifactContract === PLAYGROUND_ARTIFACT_CONTRACT;
+  // Only an exact ID is an identity. A legacy `judge.model` that is an alias names a family, not
+  // the model that ran, so it is unknown.
   const model = versionedPlayground
     ? results.meta.judge?.resolvedModel ?? results.meta.judge?.model
     : results?.meta?.judgeModel;
-  return typeof model === "string" && model !== "" ? model : null;
+  return isExactModelId(model) ? model : null;
+}
+
+function isExactModelId(model) {
+  return typeof model === "string" && model !== "" && !isAliasRequest(model);
 }
 
 export function tupleGuard(results, judgeModel) {
   const versionedPlayground = results?.meta?.artifactContract === PLAYGROUND_ARTIFACT_CONTRACT;
   const source = versionedPlayground
     ? {
-        model: results.meta.judge?.resolvedModel ?? results.meta.judge?.model,
+        model: recordedJudgeModel(results),
         rubric: results.meta.judge?.rubric,
         packVersion: results.meta.judge?.packVersion
       }
     : {
-        model: results?.meta?.judgeModel,
+        model: recordedJudgeModel(results),
         rubric: results?.meta?.judgeRubric,
         packVersion: results?.meta?.packVersion
       };
@@ -584,7 +590,10 @@ export function tupleGuard(results, judgeModel) {
   return {
     source,
     current,
+    // The same judge needs a known exact ID on both sides: two nulls or two aliases never match.
     matches:
+      isExactModelId(source.model) &&
+      isExactModelId(current.model) &&
       source.model === current.model &&
       source.rubric === current.rubric &&
       source.packVersion === current.packVersion
@@ -1014,7 +1023,13 @@ async function main() {
   const judgeIdentityBefore = attestRejudgeIdentity(options);
   const startedAt = new Date().toISOString();
   const spendLedger = createSpendLedger(options.maxBudgetUsd);
-  const runState = { stopError: null, incompleteIds: [], unattemptedIds: [] };
+  // The pin exists before the first checkpoint, so meta.judgeModel is an exact ID or null, never an alias.
+  const runState = {
+    stopError: null,
+    incompleteIds: [],
+    unattemptedIds: [],
+    judgePin: createModelPin(options.judgeModel)
+  };
   const stamp = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
   const resultsDir = path.join(QA_DIR, "results");
   const outPath = path.join(resultsDir, `${stamp}-rejudge.json`);
@@ -1046,7 +1061,7 @@ async function main() {
       tuple,
       goldenTime: { ...goldenTime, allowGoldenDrift: options.allowGoldenDrift },
       ...(selection.baselineGuard ? { baselineGuard: selection.baselineGuard } : {}),
-      judgeModel: options.judgeModel,
+      judgeModel: runState.judgePin.identity(),
       judgeRequestedModel: options.judgeModel,
       ...(options.judgePanel > 1 ? { judgePanel: options.judgePanel } : {}),
       judgeRubric: JUDGE_RUBRIC,

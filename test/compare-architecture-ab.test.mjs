@@ -177,6 +177,49 @@ describe("architecture A/B metric collector", () => {
     ).toThrow(/case ids/);
   });
 
+  describe("model identity", () => {
+    const arm = (surface, metaOverrides = {}, rowAgent = { turns: 3 }) => ({
+      meta: { ...baseMeta, surface, ...metaOverrides },
+      rows: [{ id: "q1", agent: rowAgent, verdict: { score: "correct" }, transcript: [] }]
+    });
+    const compare = (left, right) =>
+      compareArchitectureResults({ search: left, perOperation: right, searchPlan: plan(true), perOperationPlan: plan(true) });
+
+    it("refuses two arms that agree on null models, and an arm marked non-comparable", () => {
+      const nulls = { model: null, judgeModel: null };
+      expect(() => compare(arm("search-execute", nulls), arm("per-operation", nulls))).toThrow(/no exact answering model ID/);
+      expect(() =>
+        compare(
+          arm("search-execute", { comparable: false, comparabilityReasons: ["answering model unknown"] }),
+          arm("per-operation")
+        )
+      ).toThrow(/non-comparable: answering model unknown/);
+    });
+
+    it("refuses an alias as the answering or judge identity", () => {
+      expect(() => compare(arm("search-execute", { model: "sonnet" }), arm("per-operation", { model: "sonnet" }))).toThrow(
+        /no exact answering model ID/
+      );
+      expect(() =>
+        compare(arm("search-execute", { judgeModel: "sonnet" }), arm("per-operation", { judgeModel: "sonnet" }))
+      ).toThrow(/no exact judge model ID/);
+    });
+
+    it("refuses rows that ran on a model other than meta.model", () => {
+      expect(() =>
+        compare(arm("search-execute", {}, { turns: 3, model: "claude-sonnet-5-6" }), arm("per-operation"))
+      ).toThrow(/rows ran on claude-sonnet-5-6, not its meta.model claude-sonnet-5/);
+    });
+
+    it("keeps legacy exact-ID artifacts and answer-only comparison comparable", () => {
+      expect(() =>
+        compare(arm("search-execute", {}, { turns: 3, model: "claude-sonnet-5" }), arm("per-operation", {}, { turns: 3, model: "claude-sonnet-5" }))
+      ).not.toThrow();
+      const answerOnly = { judgeModel: null, judgeRubric: null };
+      expect(() => compare(arm("search-execute", answerOnly), arm("per-operation", answerOnly))).not.toThrow();
+    });
+  });
+
   it("keeps missing costs nullable and computes means from reported values only", () => {
     const agentFailure = {
       id: "q1",
