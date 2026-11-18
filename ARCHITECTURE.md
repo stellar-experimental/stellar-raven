@@ -14,13 +14,16 @@ Read [PLAN.md](PLAN.md) for scope and [README.md](README.md) for connection deta
 | Skill reads and first-party runners | [src/skills/](src/skills/README.md) |
 | Stellar Docs mappings, scoping, and credential guardrails | [docs/stellar-docs.md](docs/stellar-docs.md) |
 | Operational usage collection | [usage/README.md](usage/README.md) |
+| Service snapshots | `inventory/`, `scripts/refresh-inventory.mjs` |
+| Skill pins | `ecosystem-skills/MANIFEST.json`, `ecosystem-skills/update.sh` |
+| Worker bindings and compatibility flags | `wrangler.jsonc` |
 
-## 1. A `search` call, end to end
+## 1. Requests, authorization, and `search`
 
 ### Request routes and authorization
 
 `src/server.ts` handles the Worker request.
-The canonical host is `raven.stellar.org`. `raven.stellar.buzz` and `agents.stellar.buzz` are aliases.
+The canonical host is `raven.stellar.org`. `raven.stellar.buzz` and `agents.stellar.buzz` are alias hosts.
 [src/hosts.ts](src/hosts.ts) redirects alias browser pages to the canonical host with a `308`.
 The `/mcp` namespace, `/.well-known/` discovery, and exact `/register`, `/authorize`, `/callback`,
 and `/token` routes stay on each alias. Discovery advertises that origin's issuer, endpoints,
@@ -29,11 +32,10 @@ New connections should use `https://raven.stellar.org/mcp`.
 
 Each of the three origins has its own OAuth provider, built at module scope, whose one canonical
 resource is `<origin>/mcp`. The resource binds that origin's tokens and grants, and another origin
-refuses bound tokens and grants. A grant issued before audience binding carries no resource and
-binds to the origin that first refreshes it. An access token issued before audience binding carries
-no audience. It stays usable on all three origins until it expires, even after its grant is bound.
-This migration exception lasts at most one access-token lifetime; see the
-[item 7.3 PR 4 design record](.agents/rounds/2026-11-16-next-phase/items/7.3/pr4-oauth/DESIGN.md). `selectOAuthOrigin` in [src/hosts.ts](src/hosts.ts) picks the provider
+refuses bound tokens and grants. A grant with no resource binds to the origin that first refreshes
+it. An access token with no audience stays usable on all three origins until it expires, at most
+one hour. The [OAuth per-origin design record](.agents/rounds/2026-11-16-next-phase/items/7.3/pr4-oauth/DESIGN.md)
+holds the design. `selectOAuthOrigin` in [src/hosts.ts](src/hosts.ts) picks the provider
 from the request URL's origin alone, never from `Host` or a forwarding header. Origin selection
 runs after the alias redirect and the API-key and local-dev MCP bypasses. A request that reaches it
 from any other origin, such as a production hostname over `http:` or on another port, gets `404`
@@ -66,7 +68,7 @@ The script-free consent page labels the client name as unverified. It shows the 
 
 ### Public site and Playground
 
-The OAuth default handler serves public site routes through [src/site.ts](src/site.ts). These include `/`, `/docs`, `/terms`, `robots.txt`, `sitemap.xml`, and `/og.png`. Generated fonts and images form part of the Worker bundle. The project does not use a Wrangler static-assets directory.
+The OAuth default handler serves public site routes through [src/site.ts](src/site.ts). These include `/`, `/docs`, `/terms`, `robots.txt`, `sitemap.xml`, and `/og.png`. Generated fonts and the Open Graph image form part of the Worker bundle. Static brand and listing images in `public/` are served as Wrangler static assets before the Worker runs, and `public/_headers` sets their cache, nosniff, and CSP headers. Every other path reaches the Worker.
 
 `src/server.ts` handles `/playground` before the OAuth default handler. Unauthenticated visitors see a static example and a WorkOS login link. Authenticated visitors use `/playground/chat` through a signed session cookie. The chat handler uses the same catalog search and execute runner through [src/demo/tools.ts](src/demo/tools.ts). Its outer wrapper enforces the Playground limits in section 7.
 
@@ -76,7 +78,7 @@ The browser keeps history in page memory and sends it with each turn. The server
 
 Each authorized request creates a fresh, stateless `McpServer`. `createMcpHandler` serves streamable HTTP and supports both discovery and initialization lifecycles. Raven uses no Durable Object or server-side MCP session storage. Cloudflare routing handles allowed hostnames. The handler checks browser Origins against the configured hostnames and loopback hosts. Requests without an Origin header remain valid for ordinary MCP clients.
 
-[src/mcp/tools.ts](src/mcp/tools.ts) owns tool schemas, descriptions, and `SERVER_INSTRUCTIONS`. Claude Code keeps 4,096 characters of the server instructions and of each tool description that loads up front (2,048 before v2.1.296); Grok CLI keeps 2,033, the smallest measured cut. Tests hold the whole instructions string and each description to 2,033, so every measured client receives them whole. Clients that show only the start of a text get a whole thought there: the first line of the instructions is one line of at most 200 characters ending in a full stop (Codex lists it, about 230 characters for one server and 201 for two), and each description opens with a first line of at most 117 characters ending in a full stop (OpenCode lists 117 characters). `BASE_SERVER_INSTRUCTIONS` is one complete contract and is the whole served instructions string; the per-family source map is gone. The `search` opening names every operation family and is generated from the catalog manifest (`SEARCH_OPENING`, [build-family-text.mjs](scripts/build-family-text.mjs)); the build fails when a new family pushes it past 117 characters. `FAMILY_LINE` in the `search` description carries each family's scope. The descriptions state what a script must know before it runs. The `execute` description states three scripting rules up front, because measured runs failed without them: operation ids are called inside the script and are not top-level tools; the only globals are the four services (`lumenloop`, `scout`, `stellarDocs`, `stellarOrg`), `codemode`, and standard JavaScript; and artifact reads resolve to the same envelope as service calls. Any other mechanical mistake (an unknown id, a wrong-level read, TypeScript syntax) is taught by the host error that follows it ([script-hints.ts](src/executor/script-hints.ts)). One upstream documentation URL per source family rides last on the `search` description only. The generated `FAMILY_LINE` names each family's scope inside the `search` description and carries no operation chains.
+[src/mcp/tools.ts](src/mcp/tools.ts) owns tool schemas, descriptions, and `SERVER_INSTRUCTIONS`. Tests hold the whole instructions string and each description to 2,033 characters, the smallest measured client cut, so every measured client receives them whole. Clients that show only the start of a text get a whole thought there: the first line of the instructions is one line of at most 200 characters ending in a full stop, and each description opens with a first line of at most 117 characters ending in a full stop. [mcp-tool-metadata.ts](test/helpers/mcp-tool-metadata.ts) owns the per-client figures and their sources. `BASE_SERVER_INSTRUCTIONS` is one complete contract and is the whole served instructions string. The `search` opening names every operation family and is generated from the catalog manifest (`SEARCH_OPENING`, [build-family-text.mjs](scripts/build-family-text.mjs)); the build fails when a new family pushes it past 117 characters. The descriptions state what a script must know before it runs. The `execute` description states three scripting rules up front, because measured runs failed without them: operation ids are called inside the script and are not top-level tools; the only globals are the four services (`lumenloop`, `scout`, `stellarDocs`, `stellarOrg`), `codemode`, and standard JavaScript; and artifact reads resolve to the same envelope as service calls. Any other mechanical mistake (an unknown id, a wrong-level read, TypeScript syntax) is taught by the host error that follows it ([script-hints.ts](src/executor/script-hints.ts)). One upstream documentation URL per source family rides last on the `search` description only. The generated `FAMILY_LINE` names each family's scope inside the `search` description and carries no operation chains.
 
 The MCP and sandbox search adapters share `prepareCatalogSearch` from [search-resolution.ts](src/catalog/search-resolution.ts). It validates the service filter, validates recovery IDs, then resolves the page and requested recovery candidates. Each adapter retains its own input checks, response shape, prose, and telemetry.
 The MCP response supplies matching text and `structuredContent`, and the tool advertises no `outputSchema`:
@@ -93,7 +95,7 @@ An unknown service produces zero MCP hits and names the valid services in `nextS
 ## 2. The scoring pipeline
 
 [The catalog reference](src/catalog/README.md) defines the scoring, admission, selection, ordering, count, and recovery rules.
-This section gives only the stages.
+This section gives only the stages. [ADR-0009](research/decisions/0009-discovery-stays-lexical.md) records why discovery stays lexical.
 
 1. The vendored scorer supplies lexical matching and a token-coverage gate.
    [scoring.ts](src/catalog/scoring.ts) adds stopword rescue, query aliases, weighted keywords, and kind weighting.
@@ -237,7 +239,6 @@ The run-level `candidateEvidence` count, which triggers the candidate-evidence b
 An ok result from a `semantic`, `research`, or `av` operation can also carry `exactRows: [{ index, key }]`. The host marks a row exact when three things agree, and judges no relevance: the query (`q` or `query`) holds a token of all-upper or all-lower letters (title case, as in `Sep-24`, a month, is not an identifier), an optional hyphen or space, and one to six digits; the token is not followed by a dash or dot and a digit, and not preceded by a digit and a dash or dot (`CVE-2024-1234` and `SEP-43.1` are longer identifiers, not prefix matches, and `2024-SEP-10` is a date; the rule is `src/policy/identifier-token.ts`); the row's `source` equals those letters, ignoring case; and the last URL path segment of the row, without its extension, is those letters, a hyphen, and the same number (zero padding ignored). The host trusts the upstream `source` label; it does not check the URL host. A row that only cites the identifier names another slug and is not marked. `exactRows` is present only when non-empty, and `caveat` and `data` do not change; the other rows stay candidates. When a call carries it, the candidate-evidence block appends one generated exception per exact row that names the call, the row's slug and URL, and says to state only what the returned text shows ([exact-evidence.ts](src/policy/exact-evidence.ts)). The upstream `exactKeys` field is not read: a row that only cites a key carries it too.
 
 The corroboration guard is one sentence, generated into [corroboration.ts](src/policy/corroboration.ts) from the families in `scripts/catalog-data/source-families.mjs` (`CORROBORATING_FAMILIES`: Stellar Docs and a skill today). It says that an audit, incident, governance, or standards-authorship claim is fact only when one of those families or a primary record a result returned states it, and that anything else, a party's statement about itself included, is that source's claim to attribute by name and date. It ends the candidate-evidence block, before any exact-row exception. When that block does not render, the sentence stands as its own line after the result whenever the run returned rows from a call outside those families (`uncorroboratedEvidence` in the operation summary, from the call ledger). It is not added when the PRIOR-ART block renders, which carries its own audit clause. No operation or topic is named, so a family added to the list is exempt from the line and named in the sentence with no other edit. [`candidateEvidenceSection`](src/policy/evidence-checkpoint.ts) is the one function both the MCP tool and the Playground call.
-[The design note](.agents/rounds/2026-10-10-weekend/answer-style/design.md) records which instruction sentences these signals replace.
 
 Scout can return HTTP 200 for a page that lost a backend read.
 It states the loss in `meta.partial: true` and lists the reads in `meta.failedReads`.
@@ -303,7 +304,7 @@ Sections remain readable by exact ID but do not enter default search.
 A skill read depends on the upstream file at its pinned commit.
 Raven accepts this availability risk because the risk is observable.
 `skill_read` error events show failed reads from real traffic.
-The daily mirror check and the hourly Worker canary test retrieval without their caches.
+The daily pin check (`check-mirrors.mjs --fetch`) and the hourly Worker canary test retrieval without their caches.
 `GET /health/skills` publishes the canary verdict.
 A failed check requires diagnosis; it does not prove that upstream deleted a file.
 Never mirror the content to correct an availability failure.
@@ -322,7 +323,7 @@ Refresh this matrix when those constants change.
 [The operator guide](docs/operations.md) owns the retention table, account-data deletion, and release procedures.
 AI Gateway account limits require separate live verification; this table describes application limits.
 
-### Shared by demo and MCP
+### Shared by the Playground and MCP
 
 | Area | Limit or behavior | Source |
 | --- | --- | --- |
@@ -364,7 +365,7 @@ The signed cookie contains the peppered WorkOS subject; loopback dev uses `dev-l
 
 | Area | Limit or behavior | Source |
 | --- | --- | --- |
-| Search page | Default 5 hits; maximum 50. `codemode.search` defaults to 10. | [tools.ts](src/mcp/tools.ts), [search.ts](src/catalog/search.ts) |
+| Search page | Default `SEARCH_DEFAULT_LIMIT`; maximum 50. The [catalog reference](src/catalog/README.md#search-interfaces) holds the defaults for both search interfaces. | [tools.ts](src/mcp/tools.ts), [search.ts](src/catalog/search.ts) |
 | Execute code | Non-empty string; no application length ceiling. | [tools.ts](src/mcp/tools.ts) |
 | Tool calls | No application per-session count cap. | [server.ts](src/server.ts) |
 | Refresh grant | Fixed authorization window; token rotation does not extend it. See the [retention table](docs/operations.md). | [gate.ts](src/auth/gate.ts) |
@@ -403,17 +404,17 @@ Its gitignored file cache supports repeated builds.
 The builder scopes those titles by each docs operation's `mintlify.include` prefixes.
 Stellar Docs operations come from the authored spec, not from a fetched descriptor.
 [docs/stellar-docs.md](docs/stellar-docs.md) defines the docs transport, scoping, and soft-empty contract.
-stellar.org operations come from `specs/stellar-org.json`. The adapter fixes the origin, guards the
-page path, follows same-origin redirects only, and caps the page size;
-[research/services/stellar-org-site.md](research/services/stellar-org-site.md) records the contract.
+stellar.org operations come from `specs/stellar-org.json`, and [src/adapters/stellar-org.ts](src/adapters/stellar-org.ts)
+fixes the origin, guards the page path, follows same-origin redirects only, and caps the page size.
+[The 2026-11-14 measurement](research/services/stellar-org-site.md) records what the site returned.
 Sorted entries, stable keys, and input-derived timestamps make catalog generation deterministic.
 
 `src/policy/scout-exposure.ts` owns excluded Scout operations.
 `scripts/exposure.mjs` owns the other exposure lists and re-exports Scout exclusions.
-Builders reject stale exclusions, unresolved retirement names, orphaned notes, missing skill mirrors, and missing build-authority IDs.
+Builders reject stale exclusions, unresolved retirement names, orphaned notes, missing pinned skill files, and missing build-authority IDs.
 They also reject references to non-exposed operations in authored model-facing text.
 Runnable schemas and declared operation sets must match the emitted manifest.
-Catalog, spec, and instruction-map checks reject stale generated outputs.
+Catalog, spec, and family-text checks reject stale generated outputs.
 
 The skill update process displays changed bodies and requires selection-specific review evidence.
 A new file requires full review.
@@ -426,7 +427,7 @@ The smoke lane blocks external traffic and serves pinned skill files from a loca
 The artifact gate rebuilds catalog, spec, instructions, images, skill index, and eval artifacts, then rejects differences.
 Build-time pinned-file retrieval can require network access.
 
-[refresh.yml](.github/workflows/refresh.yml) checks live inventories, skill pins, mirror availability, and the Worker canary.
+[refresh.yml](.github/workflows/refresh.yml) checks live inventories, skill pins, pinned-file availability, and the Worker canary.
 It reports drift through an issue and fails the workflow.
 Operation-ID sets define surface drift; a version string alone does not.
 Docs title drift comes from the refreshed title inventory.
@@ -449,7 +450,7 @@ The `codemode.execute` span sets `sandbox.errorName` on failure. `errorName` nev
 `sourceBasis.calls.first` rows also carry `attempts` and `finalStatus`; both are bounded and telemetry-only.
 Operation and runner events record IDs, outcomes, and timing.
 Skill-read events distinguish memo, colo cache, and upstream retrieval.
-Events and spans exclude query text, execute code, payloads, answers, secrets, and provider-error messages.
+Events and spans exclude query text, execute code, payloads, answers, secrets, and provider-error messages. [ADR-0004](research/decisions/0004-correlation-id-continuity.md) keeps correlation ids out of model-facing text.
 The [observability skill](.agents/skills/cloudflare-observability-review/SKILL.md) owns investigation procedures.
 
 ## 10. Evals

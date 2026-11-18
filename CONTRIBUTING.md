@@ -38,11 +38,11 @@ matching one when you change its area:
 | Area | Command |
 |---|---|
 | `src/executor/` or `src/demo/` | `npm run test:smoke` |
-| `eval/` | `npm run eval:selftest`, `npm run eval:qa:lint -- --stale --enforce-floors`, `npm run eval:qa:register -- --check` |
+| `eval/` | `npm run eval:selftest`, `npm run eval:qa:lint -- --stale --enforce-floors`, `npm run eval:qa:register -- --check`; for a change to the live cases, also `node eval/qa/lint-corpus.mjs --live-contract eval/qa/corpus/live/live-cases.json --since "$(git merge-base HEAD origin/main)"` |
 | Catalog, routing, or skills | `npm run eval:routing -- --gate` |
 | `ecosystem-skills/` pins | `node scripts/check-pin-review.mjs --base origin/main` |
 | `improvements/` | `npm run improvements:lint` |
-| `usage/` | `npm run test:usage-report` |
+| `usage/` | `npm run build:usage`, `npm run test:usage-report`, `npm run build:usage-report` |
 | Any generated file | Rerun its generator. [`scripts/README.md`](./scripts/README.md) lists them. CI fails when a generated file is out of sync. |
 
 [`test/README.md`](./test/README.md) maps the test suites, and

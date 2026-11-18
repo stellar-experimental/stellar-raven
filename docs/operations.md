@@ -17,8 +17,9 @@ Run `npm run deploy`, never `wrangler deploy` directly. The package script adds 
   attached and that the collector's daily cleanup schedule exists. It skips with a notice when no
   Cloudflare credential is available.
 
-Wrangler must use the Cloudflare account that owns the Worker. It stores credentials per
-directory in `~/.wrangler`, so bind the profile once per clone:
+Wrangler must use the Cloudflare account that owns the Worker. It stores each profile, and the
+directory each profile is bound to, in its global config directory, not in the repository, so bind
+the profile once per clone:
 
 ```sh
 wrangler auth list                 # profiles and their bound directories
@@ -75,10 +76,11 @@ findings go to GitHub issues.
 |---|---|---|
 | `refresh.yml` | Daily | One open issue labeled `drift` for upstream drift in the service snapshots, skill pins, and canaries; it also reads `/health/skills`. A script fault goes to an issue labeled `refresh-failure`. [`inventory/README.md`](../inventory/README.md) lists its secrets and variables. |
 | `dependency-audit.yml` | Daily, and on each change to `package.json` or `package-lock.json` on `main` | One open issue labeled `dependency-audit` for `npm audit` findings. The workflow replaces the body when findings change and closes the issue when the audit is clean. It needs no secret. |
+| `golden-sentinels.yml` | Daily, and on each change to `eval/qa/source-sentinels.*` on `main` | One open issue labeled `golden-sentinels` for primary-source drift on a golden case. It needs no secret. The drift only queues a re-verification; it is never evidence by itself. |
 | `usage-health.yml` | Hourly | The run fails on a usage collection gap and opens no issue ([`usage/README.md`](../usage/README.md)). |
 
 The repository variable `REFRESH_ISSUE_ASSIGNEE` names the maintainer who gets the drift,
-refresh-failure, and dependency issues. Without it, the repository owner gets them.
+refresh-failure, dependency-audit, and golden-sentinels issues. Without it, the repository owner gets them.
 
 ## Observability
 
@@ -106,7 +108,7 @@ policy.
 |---|---|---|
 | OAuth access token | `OAUTH_KV` | 1 hour |
 | OAuth refresh grant | `OAUTH_KV` | 90 days, fixed from sign-in |
-| Registered OAuth client | `OAUTH_KV` | 365 days; a registration made under oauth-provider 1.x renews for another 365 days when a token request arrives in its second half, so one in use does not expire |
+| Registered OAuth client | `OAUTH_KV` | 365 days; a registration renews for another 365 days when a token request arrives in its second half, so one in use does not expire |
 | Client assertion replay marker (`client-assertion-jti:<hash>`) | `OAUTH_KV` | The assertion's lifetime plus 60 seconds; written only for Client ID Metadata Document clients that authenticate with `private_key_jwt` |
 | Parked login state (`login:<state>`) | `OAUTH_KV` | 10 minutes |
 | Playground session cookie | browser | 2 hours |

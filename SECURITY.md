@@ -25,13 +25,13 @@ a vulnerability there.
 In scope:
 
 - The source code and generated artifacts in this repository.
-- The gateway at `raven.stellar.org`, and any retired hostname that still routes to it. This
-  includes the authentication flows, the `search` and `execute` MCP tools, the `/playground` page
-  with its login and chat routes, and sandbox isolation and egress.
+- The gateway at `raven.stellar.org` and its alias hosts `raven.stellar.buzz` and
+  `agents.stellar.buzz`. This includes the authentication flows, the `search` and `execute` MCP
+  tools, the `/playground` page with its login and chat routes, and sandbox isolation and egress.
 
 Out of scope:
 
-- The upstream services that the gateway uses: Lumenloop, Stellar Light/Scout, and Stellar Docs.
+- The upstream services that the gateway uses: Lumenloop, Stellar Light/Scout, Stellar Docs, and the stellar.org site.
   Report those problems to their owners.
 - Attacks that need a compromised maintainer machine.
 - Volumetric denial of service.

@@ -33,7 +33,8 @@ its own license. [`ecosystem-skills/README.md`](./ecosystem-skills/README.md) de
 Add `https://raven.stellar.org/mcp` to an MCP client that supports streamable HTTP and OAuth.
 Raven is its own OAuth authorization server, and WorkOS AuthKit handles sign-in. Compatible
 clients find and complete this flow automatically. An access token lasts 1 hour. Clients refresh
-it automatically for 90 days, then the user signs in again.
+it automatically for 90 days, then the user signs in again. [Data retention](./docs/operations.md#data-retention)
+lists every duration.
 
 Existing connections to `raven.stellar.buzz/mcp` and `agents.stellar.buzz/mcp` remain supported,
 including OAuth sign-in and token refresh on the original host. Browser pages on those hosts
@@ -71,7 +72,7 @@ The Worker reads `.dev.vars`. Maintenance scripts, such as `scripts/refresh-inve
 
 ```sh
 npm run typecheck   # tsc
-npm test            # unit and contract tests (offline)
+npm test            # unit and contract tests (no service credentials; a cold skill cache downloads pinned files from GitHub)
 npm run test:smoke  # the assembled Worker and the Dynamic Worker boundary
 npm run build       # dry-run the Worker bundle
 ```
@@ -82,9 +83,11 @@ npm run build       # dry-run the Worker bundle
 
 | Question | Document |
 |---|---|
-| What is in scope, and which decisions are open? | [PLAN.md](./PLAN.md) |
+| What is in scope, and what is built? | [PLAN.md](./PLAN.md) |
 | How do `search` and `execute` work? | [ARCHITECTURE.md](./ARCHITECTURE.md) |
 | How do I deploy and operate Raven? | [docs/operations.md](./docs/operations.md) |
+| How are answers measured? | [eval/EVALS.md](./eval/EVALS.md) |
+| How are skill pins reviewed? | [ecosystem-skills/README.md](./ecosystem-skills/README.md) |
 | How is usage counted and retained? | [usage/README.md](./usage/README.md) |
 | How do I contribute? | [CONTRIBUTING.md](./CONTRIBUTING.md) |
 | How do agents work in this repository? | [AGENTS.md](./AGENTS.md) |
