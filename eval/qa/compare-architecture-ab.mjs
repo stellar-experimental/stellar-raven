@@ -327,7 +327,11 @@ function assertComparable(search, perOperation) {
     if (!isExactModelId(meta?.model)) {
       fail(`${label} artifact has no exact answering model ID (meta.model ${JSON.stringify(meta?.model ?? null)})`);
     }
-    const judged = meta?.judgeRubric != null || meta?.judgeModel != null;
+    // Judged by the metadata OR by the rows: a scored row with null judge metadata is still judged.
+    const judged =
+      meta?.judgeRubric != null ||
+      meta?.judgeModel != null ||
+      (rows ?? []).some((row) => typeof row?.verdict?.score === "string");
     if (judged && !isExactModelId(meta?.judgeModel)) {
       fail(`${label} artifact has no exact judge model ID (meta.judgeModel ${JSON.stringify(meta?.judgeModel ?? null)})`);
     }

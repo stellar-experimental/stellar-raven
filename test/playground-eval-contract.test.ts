@@ -18,6 +18,7 @@ const {
   assertPlaygroundArtifactMeta,
   assertQuarantineArtifact,
   buildQuarantineArtifact,
+  assertPlaygroundJudgeEvidence,
   buildPlaygroundArtifactMeta,
   deriveQuarantineState,
   sanitizeGenerationCheckError,
@@ -356,6 +357,26 @@ describe("playground semantic artifact contract", () => {
     expect(() => assertPlaygroundArtifactMeta(exact)).not.toThrow();
     exact.judge.resolvedModel = "claude-sonnet-5-5";
     expect(() => assertPlaygroundArtifactMeta(exact)).toThrow(/does not match the requested judge.model/);
+  });
+
+  it("refuses a recorded judge.resolvedModel that a graded verdict contradicts", () => {
+    const meta = fixtureMeta(undefined, undefined, "sonnet") as any;
+    meta.judge.resolvedModel = "claude-sonnet-5-6";
+    expect(() => assertPlaygroundArtifactMeta(meta)).not.toThrow(); // the metadata alone is consistent
+    const artifact = (verdict: any) => ({ meta, rows: [{ id: "a", verdict }] });
+    expect(() => assertPlaygroundJudgeEvidence(artifact({ score: "correct", resolvedModel: "claude-sonnet-5-5" })))
+      .toThrow(/judge\.resolvedModel claude-sonnet-5-6 conflicts with the verdict reported for a \(claude-sonnet-5-5\)/);
+    // Agreement, a verdict with no model, and an error verdict do not conflict.
+    expect(() => assertPlaygroundJudgeEvidence(artifact({ score: "correct", resolvedModel: "claude-sonnet-5-6" }))).not.toThrow();
+    expect(() => assertPlaygroundJudgeEvidence(artifact({ score: "wrong" }))).not.toThrow();
+    expect(() => assertPlaygroundJudgeEvidence(artifact({ score: "error", resolvedModel: "claude-sonnet-5-5" }))).not.toThrow();
+  });
+
+  it("keeps an unresolved legacy v3 artifact readable even when a verdict reports a model", () => {
+    const meta = fixtureMeta(undefined, undefined, "sonnet") as any;
+    expect(() =>
+      assertPlaygroundJudgeEvidence({ meta, rows: [{ id: "a", verdict: { score: "correct", resolvedModel: "claude-sonnet-5-5" } }] })
+    ).not.toThrow();
   });
 
   it("keeps an unresolved stored v3 artifact valid with its existing hash", () => {

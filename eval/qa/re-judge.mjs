@@ -41,7 +41,9 @@ import {
   PLAYGROUND_ARTIFACT_CONTRACT,
   assertCurrentPlaygroundContract,
   assertNotPlaygroundQuarantine,
-  assertPlaygroundArtifactMeta
+  assertPlaygroundArtifactMeta,
+  assertPlaygroundJudgeEvidence,
+  playgroundJudgeEvidenceConflicts
 } from "../playground/artifact-contract.mjs";
 import { sha256Text } from "./five-track.mjs";
 import {
@@ -561,6 +563,9 @@ export function goldenTimeConsistency(results, selectedRows, caseById) {
  */
 export function recordedJudgeModel(results) {
   const versionedPlayground = results?.meta?.artifactContract === PLAYGROUND_ARTIFACT_CONTRACT;
+  // A recorded Playground identity that a graded verdict contradicts is unknown, so the same-judge
+  // guard (source and --flips-vs baseline alike) refuses instead of trusting it.
+  if (versionedPlayground && playgroundJudgeEvidenceConflicts(results).length > 0) return null;
   // Only an exact ID is an identity. A legacy `judge.model` that is an alias names a family, not
   // the model that ran, so it is unknown.
   const model = versionedPlayground
@@ -947,6 +952,7 @@ async function main() {
   requireRows(results, "source results");
   if (results?.meta?.artifactContract === PLAYGROUND_ARTIFACT_CONTRACT) {
     assertPlaygroundArtifactMeta(results.meta);
+    assertPlaygroundJudgeEvidence(results, "source results");
   }
 
   const casesRef = resolveCasesRef(results, options.casesRef);

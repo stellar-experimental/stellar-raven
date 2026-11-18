@@ -168,6 +168,30 @@ export function judgeTupleForSnapshot(judge) {
   return tuple;
 }
 
+/**
+ * Rows whose graded verdict reports a judge model other than the artifact's `judge.resolvedModel`.
+ * An unresolved artifact (legacy v3, or no verdict reports one) has no recorded identity to
+ * contradict, so it conflicts with nothing and stays readable.
+ */
+export function playgroundJudgeEvidenceConflicts(results) {
+  const recorded = results?.meta?.judge?.resolvedModel;
+  if (typeof recorded !== "string" || !Array.isArray(results?.rows)) return [];
+  return results.rows
+    .filter((row) => ["correct", "partial", "wrong"].includes(row?.verdict?.score))
+    .filter((row) => typeof row.verdict.resolvedModel === "string" && row.verdict.resolvedModel !== recorded)
+    .map((row) => ({ id: row.id, reported: row.verdict.resolvedModel, recorded }));
+}
+
+/** Refuse an artifact whose recorded judge identity a graded verdict contradicts. */
+export function assertPlaygroundJudgeEvidence(results, label = "results") {
+  const [first] = playgroundJudgeEvidenceConflicts(results);
+  if (first) {
+    throw new Error(
+      `invalid ${PLAYGROUND_ARTIFACT_CONTRACT}: ${label} judge.resolvedModel ${first.recorded} conflicts with the verdict reported for ${first.id} (${first.reported})`
+    );
+  }
+}
+
 export function assertPlaygroundArtifactMeta(meta) {
   const fail = (message) => {
     throw new Error(`invalid ${PLAYGROUND_ARTIFACT_CONTRACT}: ${message}`);

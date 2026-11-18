@@ -532,6 +532,24 @@ describe("stability register judge models", () => {
     expect(loaded.judgeModelsUnknown).toBe(true);
   });
 
+  it("adds no identity from a file that contributes no verdicts or pairs", () => {
+    // The reviewer's probe: an empty re-judge file whose judges differ from the collection's.
+    const { document } = generate({
+      "a-variantA.json": collection("claude-sonnet-5-5"),
+      "b-rejudge.json": {
+        meta: { judgeModel: "claude-sonnet-5-5", tuple: { source: { model: "claude-sonnet-5-6" } } },
+        rows: []
+      },
+      "c-variantA.json": { meta: { judgeModel: "claude-opus-5-5" }, rows: [{ id: "case-a", verdict: null }, { verdict: correct() }] },
+      "d-rejudge.json": {
+        meta: { judgeModel: "claude-opus-5-5", tuple: { source: { model: "claude-sonnet-5-6" } } },
+        rows: [{ id: "case-a", original: correct(), new: null }]
+      }
+    });
+    expect(document._meta.judgeModels).toEqual(["claude-sonnet-5-5"]);
+    expect(document._meta.judgeModelsUnknown).toBe(false);
+  });
+
   it("reads null from a register without the lists", () => {
     const { outPath, document } = generate({ "a-variantA.json": collection("claude-sonnet-5-5") });
     const root = mkdtempSync(join(tmpdir(), "qa-stability-old-"));

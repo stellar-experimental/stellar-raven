@@ -233,11 +233,21 @@ export function generateStabilityRegister({
   // and BOTH sides of a re-judge pair (the source's recorded judge and the new judge). A
   // contributor whose identity is missing or an alias is recorded as unknown, so a partly
   // identified register cannot claim a full match (run-qa stabilityRegisterJudgeMatch).
-  const identities = artifacts.flatMap((artifact) =>
-    artifactKind(artifact.name, artifact.data) === "rejudge"
+  // Only an artifact with at least one row that actually contributes a verdict (collection) or a
+  // pair (re-judge) adds identities; an empty or all-ineligible file adds none.
+  const identities = artifacts.flatMap((artifact) => {
+    const rejudge = artifactKind(artifact.name, artifact.data) === "rejudge";
+    const contributes = artifact.data.rows.some(
+      (row) =>
+        typeof row?.id === "string" &&
+        row.id !== "" &&
+        (rejudge ? verdictScore(row.original) && verdictScore(row.new) : verdictScore(row.verdict))
+    );
+    if (!contributes) return [];
+    return rejudge
       ? [artifact.data?.meta?.tuple?.source?.model, artifact.data?.meta?.judgeModel]
-      : [artifact.data?.meta?.judgeModel]
-  );
+      : [artifact.data?.meta?.judgeModel];
+  });
   const isExactId = (model) => typeof model === "string" && model !== "" && !isAliasRequest(model);
   const judgeModels = [...new Set(identities.filter(isExactId))].sort();
   const judgeModelsUnknown = identities.some((model) => !isExactId(model));

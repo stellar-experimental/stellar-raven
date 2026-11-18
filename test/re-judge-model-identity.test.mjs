@@ -36,6 +36,21 @@ describe("re-judge default judge", () => {
     expect(tupleGuard({ meta }, "claude-sonnet-5-5").source.model).toBe("claude-sonnet-5-5");
   });
 
+  it("treats a recorded Playground judge that a graded verdict contradicts as unknown, so the guard refuses", () => {
+    const meta = {
+      artifactContract: PLAYGROUND_ARTIFACT_CONTRACT,
+      judge: { model: "sonnet", resolvedModel: "claude-sonnet-5-6", rubric: "v2.11", packVersion: "p9" }
+    };
+    const results = { meta, rows: [{ id: "a", verdict: { score: "correct", resolvedModel: "claude-sonnet-5-5" } }] };
+    expect(recordedJudgeModel(results)).toBeNull();
+    expect(tupleGuard(results, "claude-sonnet-5-6").matches).toBe(false);
+    expect(tupleGuard(results, "claude-sonnet-5-5").matches).toBe(false);
+    // Without the contradiction the recorded ID is the identity.
+    const agreeing = { meta, rows: [{ id: "a", verdict: { score: "correct", resolvedModel: "claude-sonnet-5-6" } }] };
+    expect(recordedJudgeModel(agreeing)).toBe("claude-sonnet-5-6");
+    expect(tupleGuard(agreeing, "claude-sonnet-5-6").matches).toBe(true);
+  });
+
   it("falls back to judge.model for a stored v3 artifact with no resolved ID", () => {
     const meta = {
       artifactContract: PLAYGROUND_ARTIFACT_CONTRACT,

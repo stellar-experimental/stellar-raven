@@ -215,8 +215,20 @@ describe("architecture A/B metric collector", () => {
       expect(() =>
         compare(arm("search-execute", {}, { turns: 3, model: "claude-sonnet-5" }), arm("per-operation", {}, { turns: 3, model: "claude-sonnet-5" }))
       ).not.toThrow();
+      // Answer-only: no judge metadata and no verdict on any row.
       const answerOnly = { judgeModel: null, judgeRubric: null };
-      expect(() => compare(arm("search-execute", answerOnly), arm("per-operation", answerOnly))).not.toThrow();
+      const noVerdict = (surface) => ({
+        meta: { ...baseMeta, surface, ...answerOnly },
+        rows: [{ id: "q1", agent: { turns: 3 }, verdict: null, transcript: [] }]
+      });
+      expect(() => compare(noVerdict("search-execute"), noVerdict("per-operation"))).not.toThrow();
+    });
+
+    it("refuses scored rows whose judge metadata is null, whichever field is missing", () => {
+      const nullJudge = { judgeModel: null, judgeRubric: null };
+      expect(() => compare(arm("search-execute", nullJudge), arm("per-operation", nullJudge))).toThrow(
+        /no exact judge model ID/
+      );
     });
   });
 

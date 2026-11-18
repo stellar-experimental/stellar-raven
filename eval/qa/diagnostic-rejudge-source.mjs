@@ -1,6 +1,7 @@
 import {
   PLAYGROUND_ARTIFACT_CONTRACT,
   assertPlaygroundArtifactMeta,
+  assertPlaygroundJudgeEvidence,
   sha256Json
 } from "../playground/artifact-contract.mjs";
 
@@ -14,6 +15,7 @@ export function diagnosticRejudgeSource(results) {
       results.artifactContract || results.quarantinedMeta || results.quarantinedRows ||
       results.status === "quarantined-non-evidence") refuse("requires an unquarantined current Playground result");
   assertPlaygroundArtifactMeta(results.meta);
+  assertPlaygroundJudgeEvidence(results, "diagnostic source");
   if (results.meta.comparable === false || results.meta.judgeIdentity?.guard?.matches === false ||
       results.meta.identity?.matches === false) refuse("identity drift is not a judge error");
   const { budget, rows } = results;
@@ -105,6 +107,7 @@ export function partialRecoverySource(results, recovery, proof, receiptSha256) {
       recovery.receipt?.sha256 !== receiptSha256 || !recovery.reviewRef?.trim() || !recovery.parentTaskId?.trim() || !recovery.experimentId?.trim()) fail("explicit pinned recovery required");
   if (results?.meta?.artifactContract !== PLAYGROUND_ARTIFACT_CONTRACT || results.artifactContract || results.quarantinedMeta || results.quarantinedRows || results.status === "quarantined-non-evidence") fail("quarantine or wrong contract");
   assertPlaygroundArtifactMeta(results.meta);
+  assertPlaygroundJudgeEvidence(results, "recovery source");
   if (results.meta.comparable === false || results.meta.identity?.matches === false || results.meta.judgeIdentity?.guard?.matches === false || results.nonPromotable !== true) fail("source drift or flags");
   const {rows,budget,meta}=results;
   if (!Array.isArray(rows) || rows.length<2 || !meta.judge.enabled || !unique(budget?.selectedCaseIds) || budget.selectedCaseIds.length>25 || rows.length>=budget.selectedCaseIds.length) fail("partial selection required");
