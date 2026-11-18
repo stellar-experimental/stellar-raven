@@ -127,3 +127,87 @@ scratch worktree and its copy are removed.
   commands the brief allows were not needed again because the review recorded them.
 - Step 9 (ledger row) and the PR (`Refs` only) are open. `git log origin/main..HEAD` shows the four
   commits above plus the EXEC/DISPOSITION record commit.
+
+## Reconciliation
+
+Reconciles [CODEX-REVIEW.md](CODEX-REVIEW.md) (Codex `gpt-6.2-sol`, high, verdict CHANGES) and the
+lead's two nits, per `briefs/RECONCILE-BRIEF.md`. Commit `e2a3f853`. All findings adopted. This section
+supersedes the step 4 call-site list and the "Deviations" notes 2 and 3 above where they differ. No model
+call, paid call or QA case file; no subagent. The Claude, Codex and Grok checks below used only
+`claude auth status --json` (field names and `authMethod`/`apiProvider` read, never the body),
+`--help`, `strings` on the installed binaries, and `grok usage`.
+
+1. **Alternate endpoint (blocking).** `assertClaudeSubscription` refuses a non-empty `ANTHROPIC_BASE_URL`
+   and its six variants (`ANTHROPIC_{AWS,BEDROCK,BEDROCK_MANTLE,FOUNDRY,GOOGLE_CLOUD,VERTEX}_BASE_URL`),
+   and a truthy `CLAUDE_CODE_USE_{ANTHROPIC_AWS,ANTHROPIC_GOOGLE_CLOUD,BEDROCK,FOUNDRY,GATEWAY,MANTLE,VERTEX}`,
+   before it spawns anything. Each name is in the installed Claude binary (`strings`). Offline checks:
+   `auth status` stays `claude.ai`/`firstParty` with every base-URL variable set; `CLAUDE_CODE_USE_BEDROCK`,
+   `_VERTEX` and `_FOUNDRY` turn it into `third_party`. The text names the variable, never its value. It
+   also refuses an `apiProvider` that is present and not `firstParty`. Tests: one refusal per family of
+   variable with a `claude.ai` status, a loopback base URL through the run-qa CLI (no paid call, value not
+   echoed), and an empty or false value passes.
+   **Correction to the brief's note:** `auth status` does not report a base URL at all, so a base URL set in
+   a *settings file* is invisible to the probe even when the probe loads that source (tested with a project
+   `.claude/settings.json`, with and without `--safe-mode`: `claude.ai`/`firstParty` both times). EVALS.md
+   says that plainly: an answering agent launches with `--setting-sources ""` and loads none; a judge loads
+   the default sources, so keep `ANTHROPIC_BASE_URL` out of settings files on a judging machine. A check
+   that closes that case would have to read the settings files itself; I did not add one.
+2. **Probe with each child's configuration.** The function takes `cwd` and `args`. Offline: `claude auth
+   status` rejects every root flag placed *after* the subcommand (`error: unknown option`), and accepts all
+   four placed *before* it. So `--setting-sources ""`, `--disable-slash-commands`, `--safe-mode` and
+   `--strict-mcp-config` are all passed, before `auth status --json`. Answering children (run-qa,
+   discovery): `assertAnsweringAgentSubscription` uses the neutral `agentCwd`,
+   `answeringAgentIsolationArgs(env)` plus `--strict-mcp-config`, and the spawn environment. Judges:
+   `assertJudgeSubscription` (in `judge.mjs`) uses `buildJudgeEnv(env)`, the process working directory and
+   `--strict-mcp-config --safe-mode`, which is what `buildJudgeArgs` adds by default. With a synthetic
+   project Bedrock setting, the probe sees `third_party` with default flags and `claude.ai` with
+   `--setting-sources ""`, as the review found.
+3. **Fixed messages.** Known `authMethod` values (`api_key`, `oauth_token`, `third_party`) and a missing
+   one have fixed text; anything else gets one fixed fallback. Nothing from the status or the environment
+   is interpolated. Tests use `sk-test-abc` (matches the old regex), a value with a space, an email in the
+   body and a secret-looking base URL; none appears in the message.
+4. **Preflight once.** Removed from `attestRejudgeIdentity`, `attestP6SelfTestIdentity` and
+   `attestJudgeSelfTestIdentity`; their tests are back to the original shape. Now called once per paid
+   entry point before its first model call: run-qa `--judge-stored` (judge probe) and run-qa collection
+   (answering probe, plus the judge probe unless `--no-judge`, after the neutral directory exists and with
+   cleanup of both temp directories on refusal); discovery after its neutral directory; re-judge `main`
+   right after the pre-call identity attestation; the p6 wrapper `runP6JudgeSelfTest` after its first
+   attestation and before the first spawn; each judge self-test candidate (`runPinnedJudgeSelfTestCandidate`)
+   before its judge call; the Playground judge half before the first answer request. None sits in a
+   finalizer or post-call attestation. Tests: the wrapper probes once and a refusal spawns nothing; a
+   candidate refusal never reaches its judge; the existing wrapper tests inject a no-op probe. The p6
+   wrapper's seven candidates each probe in their own process, so a full self-test makes eight probes, not
+   thirty.
+5. **Guard coverage.** Added `AI.run(` (any receiver, matched as `\bAI\.run\(`), `require(` of `ai`,
+   `@ai-sdk/*`, `workers-ai-provider` and `agents/models/*` (the installed `agents` 0.33.0 exports
+   `models/ai-sdk`, `models/opencode` and `models/pi-ai`), the same modules by `import`, and
+   `.github/workflows/*.yml|yaml`. One in-memory fixture per new form, plus a negative case (`robot.run(`).
+   Held-out exclusions are unchanged. The real-tree test still matches only the four allowlisted files.
+6. **Grok and Codex before inference.** EVALS.md "Pre-run billing checks": every CLI's launch environment
+   has no provider API key; Codex: `codex login status` and `OPENAI_API_KEY` unset (that is the only key
+   name the Codex help and binary show; I did not find `CODEX_API_KEY`, so I did not name it); Grok:
+   `XAI_API_KEY` unset (67 occurrences in the Grok binary). `grok usage` was checked: it exits 1 with "can't
+   show your plan's usage here yet", so it is no offline check. The row now requires the operator to
+   establish the SuperGrok login interactively before launch. The roster's Grok bullet mirrors it, and its
+   Codex bullet adds `OPENAI_API_KEY`.
+7. **Nits.** Roster: `--standalone` in both OpenCode fragments. Playground README: `logIds` are the
+   identities of the answer's provider calls. `source-addition.md`: the second judge needs `re-judge.mjs
+   --judge-model <model> --allow-non-identical` (both flags confirmed in `re-judge.mjs`).
+8. **Lead nits.** "(round item 8.6)" removed from `eval/qa/README.md`. In `eval/EVALS.md`, "Model-call
+   billing" now follows the evaluation rules and their trailing lines (upstream defects, TODO, the
+   improvements workflow, dated audits).
+
+### Gates after reconciliation (each run bare)
+
+| Gate | Result |
+|---|---|
+| `npm run typecheck` | exit 0 |
+| `npm test` | exit 0. 177 files passed, 5 skipped (182). 4278 tests passed, 3 expected fail, 8 skipped (4289); 15 more tests than before the reconciliation |
+| `npm run build` | exit 0 |
+| `npm run eval:selftest` | exit 0, "self-test: all checks passed" |
+| `npm run secrets:scan -- --tree` | exit 0, clean |
+
+**Byte comparison.** `dist/server.js` SHA-256 `8f8ac7f9ca79afb962acb8759d6fbb84a3e7ecefd8fc24cf5669db9e191d0532`,
+7,084,617 bytes. `origin/main` is still `3e490ec5` and `src/` still has no diff, so I reused the earlier
+real-`node_modules` build of `origin/main`, which has the same hash and a `cmp` identical result, rather
+than rebuild it. Worker bytes do not change.
