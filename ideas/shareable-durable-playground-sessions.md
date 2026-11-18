@@ -1,28 +1,12 @@
 # Shareable durable `/playground` sessions
 
-Status: deferred product idea only. The Playground remains stateless.
+Status: deferred product idea only. The Playground remains stateless, with the input limit that
+[the architecture](../ARCHITECTURE.md) describes. Durable sessions need a new owner decision first.
 
 Recorded: 2026-07-15 from product discussion about durable private playground sessions that an
 author may share publicly. A viewer can read a shared session without signing in. If that viewer
 signs in and asks a follow-up, Raven creates a private fork owned by the viewer and continues there;
 the shared source never becomes collaborative or writable by another user.
-
-## Issue #40 status
-
-Issue #40 requested a copy action, a larger paste limit, and cross-session history. PR #70 shipped
-the copy action. The owner approved an 8,000-character user-message ceiling on 2026-08-28. The
-owner kept cross-session history deferred and the shipped Playground stateless.
-
-The Playground now uses the approved 8,000-character contract. It keeps oversized text editable,
-shows the count and exact excess, disables Send, and rejects bypassed oversized requests. The
-durable-session design below remains an unapproved idea and requires a new owner decision before
-implementation.
-
-## Input-limit decision
-
-The client keeps the complete pasted text visible. It shows a live count and the exact excess,
-disables Send, and presents an accessible inline error. The server rejects a bypassed request with
-the same 8,000-character contract. Neither layer truncates user input. A modal is unnecessary.
 
 ## Deferred design shape
 
@@ -137,7 +121,8 @@ not the browser request.
 
 ## Storage choice
 
-Use one Cloudflare D1 database. Do not add Durable Objects for this feature.
+Use one Cloudflare D1 database. Do not add Durable Objects for this feature. Check this choice against
+[the work queue](../.agents/TODO.md) item "Consider consolidating the auxiliary Workers" before building.
 
 D1 fits session lookup, per-owner listing, public-token lookup, ordered turns, ownership checks,
 atomic fork creation, and retention cleanup. Durable Objects would be warranted for resumable live

@@ -5,7 +5,8 @@ are satisfied.
 
 Recorded: 2026-07-15 from product feedback proposing
 [`opencoredev/login-with-chatgpt`](https://github.com/opencoredev/login-with-chatgpt) so playground
-users can spend their own ChatGPT/Codex allowance.
+users can spend their own ChatGPT/Codex allowance. The external facts below date from that day;
+re-check them before any spike.
 
 ## Decision
 
@@ -24,26 +25,21 @@ would offer two explicit choices:
 Keep this as an idea until a small spike clears the support, storage, budget, and quality gates.
 One feedback item is enough to research, not enough to add a second production auth system.
 
-## What changed from the initial assessment
-
-This is no longer best characterized as an unsupported direction. OpenAI's current Codex
-app-server documentation explicitly describes app-server as the interface for deep integration in
-another product, including ChatGPT-managed browser and device-code login, token persistence and
-refresh, plan details, and rate-limit reads
+**Support.** OpenAI's Codex app-server documentation describes app-server as the interface for
+deep integration in another product, including ChatGPT-managed browser and device-code login,
+token persistence and refresh, plan details, and rate-limit reads
 ([Codex App Server](https://learn.chatgpt.com/docs/app-server)). The Codex SDK documentation also
 names integration inside an application as a supported use case, though its TypeScript library is
 server-side Node rather than a Workers runtime
-([Codex SDK](https://learn.chatgpt.com/docs/codex-sdk)). OpenAI product leadership has also publicly
-described using Codex subscriptions in OpenCode, Pi, Claude Code, and other clients as intentional;
-the statement and source links are preserved in
-[Simon Willison's contemporary write-up](https://simonwillison.net/2026/Apr/23/gpt-5-5/).
+([Codex SDK](https://learn.chatgpt.com/docs/codex-sdk)). OpenAI product leadership has publicly
+described using Codex subscriptions in OpenCode, Pi, Claude Code, and other clients as intentional
+([Simon Willison's contemporary write-up](https://simonwillison.net/2026/Apr/23/gpt-5-5/)).
 
-The unresolved distinction is **hosted multi-tenant credential custody**. Most named integrations
-are local clients. Raven would retain encrypted refresh tokens on its infrastructure for a public
-website. Official app-server supports host applications that own auth, and asks enterprise-facing
-integrations to contact OpenAI for a known client identity, but the linked SDK is not an official
-OpenAI SDK and directly mirrors the Codex wire protocol. Confirm this exact hosted use before
-production.
+**Open: hosted multi-tenant credential custody.** Most named integrations are local clients. Raven
+would retain encrypted refresh tokens on its infrastructure for a public website. Official
+app-server supports host applications that own auth, and asks enterprise-facing integrations to
+contact OpenAI for a known client identity, but the linked SDK is not an official OpenAI SDK and
+directly mirrors the Codex wire protocol. Confirm this exact hosted use before production.
 
 ## Linked SDK assessment
 
@@ -167,7 +163,7 @@ Run only after hosted-use confirmation or explicit acceptance that the spike is 
 2. Exercise login, cancelled/expired device code, model discovery, one turn, multi-turn encrypted
    reasoning continuity, logout, and forced token refresh.
 3. Run the existing playground semantic corpus through the ChatGPT path. Require tool-call and final
-   answer quality no worse than the current GPT-5.4 path on reviewed cases.
+   answer quality no worse than the shipped Playground model on reviewed cases.
 4. Test simultaneous tabs and refresh-at-expiry. Production storage design must demonstrate one
    refresh winner and no stale-token replay.
 5. Verify abort on timeout/client disconnect and measure actual usage. Reconcile the missing output

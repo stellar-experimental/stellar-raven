@@ -22,7 +22,7 @@ not there.
 
 Instruments: the skills lane in `eval/skills-cases.json` (23 cases), the QA battery's skill cases,
 and the agentic lane. Precedent for the shape of this experiment: the 2026-07-13 skills-form A/B
-(`eval/README.md`), which moved sections out of search on measured evidence.
+([ADR-0005](../research/decisions/0005-skills-form-sections-out-of-search.md)), which moved sections out of search on measured evidence.
 
 ## Still open — question 2: do section entries earn their place?
 
@@ -30,8 +30,8 @@ Sections are `searchable: false` — they cost nothing in ranking. What they cos
 a fail-closed invariant to maintain (a `##` heading with no catalog entry is refused on both read
 paths). What they buy is exact-id partial reads and `availableSections` navigation.
 
-Banked evidence, not re-litigated: arm C (all skills out of search) has +30/−1 offline evidence in
-Solo scratchpad 608; arm A (sections back in search) stays buildable via
+Banked evidence, not re-litigated: arm C (all skills out of search) has +30/−1 offline evidence,
+banked in [ADR-0005](../research/decisions/0005-skills-form-sections-out-of-search.md); arm A (sections back in search) stays buildable via
 `node scripts/build-catalog.mjs --skills-form A`.
 
 Cheapest falsification: measure how often agents actually request a section versus a whole read.
@@ -70,7 +70,7 @@ measurement rather than a story told afterwards — the same discipline the `bas
   availability question forward. Read the rate while you are in the logs; the detector owns it.
 
 Query guidance, including the trap where a filter on a new field VALUE returns zero while the
-events exist, is in `.agents/skills/cloudflare-observability-review/SKILL.md` "Skill Retrieval".
+events exist, is in `.agents/skills/cloudflare-observability-review/SKILL.md` "Skill reads".
 
 ## What a win would delete
 
@@ -86,16 +86,14 @@ the house rule.
 Once both questions are answered by the data above, with the answers recorded where they belong:
 a settled "sections stay" in `ARCHITECTURE.md` §6, a deletion in the diff itself, or an ADR if the
 read surface goes. Until then this file is the single home for the questions, the rules, and the
-reasoning — deliberately not split across a doc and a todo, because two copies of a pending
-decision is two things to keep in sync and still nothing that fires.
+reasoning. [The work queue](../.agents/TODO.md) ("Deferred programs") holds the trigger that
+fires the read and points back here, so the pre-registered rules above stay in one place.
 
 ## Sources
 
 - [ADR-0002: retire onboarding skills and twins](../research/decisions/0002-skills-retirement-twin-dedup.md)
 - [ADR-0003: build-time exposure filtering](../research/decisions/0003-build-time-exposure-filtering.md)
 - [ADR-0005: skill sections leave search](../research/decisions/0005-skills-form-sections-out-of-search.md)
-- [Skills-form A/B results](../eval/README.md)
 - [Skill exposure inventory](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/skill-exposure-inventory.md)
 - `ARCHITECTURE.md` §6 — the shipped retrieval design, the review gate, the availability posture
 - `THIRD-PARTY-NOTICES.md` — the serve-not-store position
-- Adversarial review 2026-07-30: Solo todos 1275–1278, 1280
