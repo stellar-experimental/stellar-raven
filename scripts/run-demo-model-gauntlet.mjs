@@ -6,7 +6,7 @@ import { once } from "node:events";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { mintDemoCookie } from "../src/demo/auth.ts";
-import { demoReasoningEffortOverride } from "../src/demo/model-config.ts";
+import { DEMO_CATALOG_LATEST, demoReasoningEffortOverride } from "../src/demo/model-config.ts";
 
 /**
  * DO NOT EDIT ANYTHING UNDER `src/` WHILE A RUN IS IN FLIGHT, and keep heavy
@@ -35,11 +35,11 @@ import { demoReasoningEffortOverride } from "../src/demo/model-config.ts";
  * span means the invocation was destroyed, which no model behavior can cause.
  *
  * The default matrix is the three evaluation clients that the run-evals skill
- * names: Sonnet, Terra, and Grok, each at its newest AI Gateway catalog ID. This
- * literal is the single home of the eval-client catalog IDs (the script is plain
- * Node); test/demo-model-config.test.ts pins its Terra and Grok entries to
- * DEMO_CATALOG_LATEST. Select any other model explicitly with --models, and
- * state in the run plan the decision it serves.
+ * names: Sonnet, Terra, and Grok, each at its newest AI Gateway catalog ID. The
+ * Sonnet literal below is the one eval-client-only catalog ID (the Worker never
+ * uses Sonnet); Terra and Grok come from DEMO_CATALOG_LATEST. Select any other
+ * model explicitly with --models, and state in the run plan the decision it
+ * serves.
  * Dated observations: `openai/gpt-6.1-terra` routed on 2026-08-06 (run ids 2026-08-06-latest-matrix
  * / -route-probe); `anthropic/claude-sonnet-5.5` and `xai/grok-4.7` routed in
  * the 2026-11-03 sweep (research/gauntlets/). A slug that has not been probed
@@ -87,8 +87,8 @@ import { demoReasoningEffortOverride } from "../src/demo/model-config.ts";
  */
 export const DEFAULT_MODELS = [
   "anthropic/claude-sonnet-5.5",
-  "openai/gpt-6.1-terra",
-  "xai/grok-4.7"
+  DEMO_CATALOG_LATEST.terra,
+  DEMO_CATALOG_LATEST.grok
 ];
 
 export const PROMPTS = [

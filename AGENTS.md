@@ -91,7 +91,7 @@ counts. There is no `CLAUDE.md`; Claude Code reads this file natively.
   categories' results.
 
 [`.agents/model-roster.md`](.agents/model-roster.md) has the launch lines. They name families, and
-a run records the resolved ID; a dated brief's explicit launch line stays as written. The
+a run records the resolved ID. The
 `run-evals` skill has the measurement procedure. Scores are evidence for a scoped decision, not
 the decision; an established upstream defect goes to `improvements/`.
 

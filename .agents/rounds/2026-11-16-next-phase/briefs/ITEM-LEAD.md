@@ -3,8 +3,8 @@
 You lead one item of this round from start to finish: plan, review, execution and pull request.
 The task line that started you names the item.
 
-- Orchestrator: Claude Opus 5.5, on the Mac at `kalepail-c3614nvxph-mbp/t40j`.
-- You run on agentpc as a Claude Opus 5.5 lane.
+- Orchestrator: Claude Opus, on the Mac at `kalepail-c3614nvxph-mbp/t40j`.
+- You run on agentpc as a Claude Opus lane.
 
 ## Read first
 
@@ -33,7 +33,7 @@ The task line that started you names the item.
 3. **Fable review.** Start a Claude Fable child to review your plan against the repository. Its
    findings go to `REVIEW.md` next to the plan. Reconcile every finding in the plan: adopt it, or
    say why not.
-4. **Sonnet execution.** Start a Claude Sonnet 5.5 child that carries out the reconciled plan. It:
+4. **Sonnet execution.** Start a Claude Sonnet child that carries out the reconciled plan. It:
    - writes `EXEC.md` next to the plan, covering what it did, a short summary of each gate's
      output, and any deviation;
    - commits on your item branch with the normal hooks, never `--no-verify`.
@@ -60,10 +60,11 @@ Pull request body ending:
 🤖 Generated with [Claude Code](https://claude.com/claude-code)
 ```
 
-Commit message ending (use the model that wrote the commit):
+Commit message ending (the exact name of the model that wrote the commit, as its system prompt
+gives it):
 
 ```
-Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>
+Co-Authored-By: Claude <Family> <version> <noreply@anthropic.com>
 ```
 
 ## Children
@@ -75,10 +76,13 @@ it. Launch from your worktree, with an absolute `--cwd`:
 ```sh
 hc run --bg --name <item>-review --cwd <worktree> -- systemd-run --user --scope -q -p MemoryMax=8G -p MemorySwapMax=0 claude --model fable --effort high --dangerously-skip-permissions "Confirmed by the orchestrator, a direct instruction: read <abs brief path> and do it. Report with hc send $HC_TERMINAL_ID '<abs report path>'."
 hc run --bg --name <item>-exec ... claude --model sonnet --effort high ...      # same shape
-hc run --bg --name <item>-codex --cwd <worktree> -- systemd-run --user --scope -q -p MemoryMax=8G -p MemorySwapMax=0 codex --no-daemon -m gpt-6-astra -c 'model_reasoning_effort="high"' -c 'sandbox_workspace_write.network_access=true' -a never -s workspace-write "<one line>"
-hc run --bg --name <item>-grok --cwd <worktree> -- grok --model grok-4.7 --reasoning-effort high --always-approve "<one line>"
+M=$(node <worktree>/scripts/latest-model.mjs astra) && echo "resolved: $M" && hc run --bg --name <item>-codex --cwd <worktree> -- systemd-run --user --scope -q -p MemoryMax=8G -p MemorySwapMax=0 codex --no-daemon -m "$M" -c 'model_reasoning_effort="high"' -c 'sandbox_workspace_write.network_access=true' -a never -s workspace-write "<one line>"
+M=$(node <worktree>/scripts/latest-model.mjs grok) && echo "resolved: $M" && hc run --bg --name <item>-grok --cwd <worktree> -- grok --model "$M" --reasoning-effort high --always-approve "<one line>"
 ```
 
+- Record the resolved ID that the `echo` printed in the child's record.
+- If the resolver exits non-zero or the resolved model fails to start, that tier is unavailable:
+  take the next fallback and record the reason. Never type a model version by hand.
 - Wait with `hc wait --children any`. Do not sleep or poll. After a wait returns, check that the
   report file exists.
 - A child in state `blocked` is waiting on a dialog. Read it with `hc read`. A Claude trust prompt

@@ -1251,12 +1251,12 @@ ID.
 ### Bump the Playground catalog IDs when the AI Gateway lists a newer model
 
 No provider offers a family alias, so `DEMO_CATALOG_LATEST` in `src/demo/model-config.ts` (Terra,
-Haiku, Grok) and the default matrix in `scripts/run-demo-model-gauntlet.mjs` name exact AI Gateway
-catalog IDs (item 8.3).
+Haiku, Grok) and the one Sonnet literal in the default matrix of `scripts/run-demo-model-gauntlet.mjs`
+name exact AI Gateway catalog IDs (item 8.3). The gauntlet takes Terra and Grok from the constant.
 
 Trigger: the AI Gateway catalog lists a newer Terra, Haiku, Sonnet or Grok. Owner: the orchestrator,
-when it next reads the catalog. Bump the constant and the gauntlet literal together (a test pins
-that they agree). Check `DEMO_ANTHROPIC_5X_MODEL` in the same change: it matches generation 5 only,
+when it next reads the catalog. Bump the constant, plus the gauntlet's Sonnet literal for
+a new Sonnet. Check `DEMO_ANTHROPIC_5X_MODEL` in the same change: it matches generation 5 only,
 and an unmatched Claude ID silently loses the adaptive-thinking options. A new primary or fallback
 model is a Playground change, so run the gauntlet on the candidate first
 (`eval/playground/README.md`).

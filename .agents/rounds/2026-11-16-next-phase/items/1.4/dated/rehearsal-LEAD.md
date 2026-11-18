@@ -1,6 +1,6 @@
 # Rehearsal lead brief (the real launch path, no edit, no pull request)
 
-You are a Claude Opus 5.5 lane started by a systemd timer on agentpc with no parent, through
+You are a Claude Opus lane started by a systemd timer on agentpc with no parent, through
 `launch-dated-lead.sh`. This run proves the path that the dated leads use: worktree, `npm ci`, push
 access, `gh`, `hc` children and a follow-up timer. It edits no file, opens no pull request, merges
 nothing and opens no QA case. Your task line gives the **run key** (`rehearsalr0` or `rehearsalr1`).
@@ -23,8 +23,11 @@ is. A failed step does not stop the rest.
 
    ```sh
    hc run --bg --name <key>-fable --cwd <wt> -- systemd-run --user --scope -q -p MemoryMax=8G -p MemorySwapMax=0 claude --model fable --effort high --dangerously-skip-permissions "Confirmed by the orchestrator, a direct instruction: read AGENTS.md, then report one line, your model name and its first heading, with hc send $HC_TERMINAL_ID '<line>'. Edit nothing."
-   hc run --bg --name <key>-codex --cwd <wt> -- systemd-run --user --scope -q -p MemoryMax=8G -p MemorySwapMax=0 codex --no-daemon -m gpt-6.1-sol -c 'model_reasoning_effort="high"' -c 'sandbox_workspace_write.network_access=true' -a never -s workspace-write "Read AGENTS.md, then report one line, your model name and its first heading, with hc send $HC_TERMINAL_ID '<line>'. Edit nothing."
+   M=$(node <wt>/scripts/latest-model.mjs sol) && echo "resolved: $M" && hc run --bg --name <key>-codex --cwd <wt> -- systemd-run --user --scope -q -p MemoryMax=8G -p MemorySwapMax=0 codex --no-daemon -m "$M" -c 'model_reasoning_effort="high"' -c 'sandbox_workspace_write.network_access=true' -a never -s workspace-write "Read AGENTS.md, then report one line, your model name and its first heading, with hc send $HC_TERMINAL_ID '<line>'. Edit nothing."
    ```
+
+   If the resolver exits non-zero or the resolved model fails to start, that tier is unavailable:
+   report the reason instead of that child's line. Never type a model version by hand.
 
    Kill and remove both children afterwards (`hc kill`, `hc rm`). A child in state `blocked` shows a
    dialog: `hc read` it; a Claude trust prompt is answered with `hc keys <t> down enter`.
