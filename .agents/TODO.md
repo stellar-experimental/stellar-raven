@@ -1019,6 +1019,24 @@ ignored files too. Both are also in the held-out archive of the 2026-11-16 branc
 Done when: the register and the stored QA results sit at a fixed path outside any worktree, the script
 default points there with the same pin, and the `gca-eval` worktree is removed, in a reviewed change.
 
+### Stabilize the timing-ratio assertion in `test/qa-judge-evidence.test.mjs`
+
+On 2026-11-18, the first CI run of PR #484 (round item 7.3, PR 4) failed `scans failed and
+userinfo-free URL candidates in bounded linear time` at `test/qa-judge-evidence.test.mjs:1519`:
+`largeMs / smallMs` was 8.41 against `< 8`. The failed attempt is
+<https://github.com/stellar-experimental/stellar-raven/actions/runs/44223760712/attempts/1>
+(`gh run list --branch np/7.3-deps-oauth`, then that run's attempt 1). Attempt 2 of the same run
+passed without a code change.
+
+Scope: the block at lines 1505-1520. Line 1519 compares two single wall-clock samples, and line 1518
+(`largeMs < 250`) is also one single sample. The other timed assertions in the file (lines 715,
+1587, 1808, 1821) are out of scope.
+
+Approach: count work instead of time where the scanner allows it. Otherwise take the minimum of
+several runs for each size, because noise only adds time.
+
+Done when: no assertion in that block compares a single timed sample.
+
 ## Dependencies
 
 ### Wait for a picomatch release that fixes GHSA-fc5q-39xc-vjpf
@@ -1048,6 +1066,9 @@ ending in `node_modules/workerd`) after every toolchain bump.
 The deprecated `@cloudflare/vitest-pool-workers` 0.23.0 is the dead end: it imports `getNodeCompat`
 from `miniflare`, which miniflare removed in `5.20261103.0-beta`. Its ceiling is `wrangler` 4.156.2
 with miniflare `5.20261102.0-beta`. Do not go back to the pool or to an `overrides` route.
+
+`vitest` is on 5.x (5.1.0 from round item 7.3, PR 5), inside the plugin's peer range
+`^4.1.0 || ^5.0.0`. Check that range before moving either one.
 
 ### Move the demo off the deprecated `workers-ai-provider`
 
