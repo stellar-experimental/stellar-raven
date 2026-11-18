@@ -10,8 +10,9 @@
  * client is added by name, after its scheme shows up in `auth_reject` logs.
  *
  * This restricts callback transports. It does not authenticate the app that
- * owns a scheme; the consent page and the browser-bound WorkOS state do that
- * job's share.
+ * owns a scheme: native-app ownership stays unverified. The consent page
+ * records the user's approval of a client it labels unverified, and the
+ * browser-bound WorkOS state ties the login round trip to that browser.
  */
 export const NATIVE_REDIRECT_SCHEMES: ReadonlySet<string> = new Set(["claude:", "cursor:", "warp:"]);
 

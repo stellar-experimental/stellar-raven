@@ -234,3 +234,32 @@ driver and results, the 0.10.4 tarball), `tmp/pr4-fresh-env-without-fix.log`,
 Before step 12, the reviewer reads the diff against `origin/main` (`fdd001a4`), not `HEAD`, because the
 commit lands underneath it. The rollback target remains Worker version
 `fe3708cb-4d35-4c53-a0e0-a27071e5e9c0`. The deploy note and post-deploy checks are in DESIGN.md.
+
+## Independent security review and reconciliation (lead)
+
+Reviewer: Codex frontier, `gpt-6-astra`, high effort, agentpc `t1y2`. It is independent of the Sonnet
+author and the Opus lead and orchestrator. It reviewed `fdd001a4...c341e0f1` against DESIGN.md
+revision 2.1.
+
+What it re-ran:
+- typecheck;
+- 307 plain-Node tests and 48 smoke tests in the touched files;
+- the 12-case migration harness;
+- `mcp:surface` (unchanged).
+
+It also reproduced both negative controls with a scratch transform:
+- `providerEnv` returning `env`: host-routing 4 failed;
+- ownership read from `ctx.auth.userId`: identity suite 5 failed.
+
+Verdict **PASS**: no blocker or major finding, and 3 minor documentation findings
+([DIFF-REVIEW.md](DIFF-REVIEW.md)). The lead reconciled them in `ARCHITECTURE.md` and one source
+comment, because the executor had already exited:
+
+| Finding | Disposition |
+|---|---|
+| 1 "Consent and binding do that work" overstates them: native-app ownership is unverified | Adopted: ARCHITECTURE.md and the `src/auth/redirects.ts` comment now say ownership stays unverified, and what consent and binding protect |
+| 2 Old audience-free tokens stay usable on all three origins until they expire | Adopted: ARCHITECTURE.md, with a link to DESIGN.md |
+| 3 The 404 applies only to requests that reach origin selection, after the alias redirect and the MCP bypasses | Adopted: ARCHITECTURE.md |
+
+These are text-only edits; no runtime code changed. The lead re-ran the gates afterwards (see the
+ledger row).
