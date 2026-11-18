@@ -480,3 +480,31 @@ describe("tiered QA judge selection", () => {
     });
   });
 });
+
+describe("stability register judge models", () => {
+  it("records the distinct exact judge IDs of its source artifacts, and reads none from an old register", () => {
+    const root = mkdtempSync(join(tmpdir(), "qa-stability-judges-"));
+    try {
+      const resultsDir = join(root, "results");
+      mkdirSync(resultsDir);
+      for (const [name, judgeModel] of [["a-variantA.json", "claude-sonnet-5"], ["b-variantA.json", "claude-sonnet-5-5"], ["c-variantA.json", "claude-sonnet-5"]]) {
+        writeFileSync(
+          join(resultsDir, name),
+          JSON.stringify({ meta: { judgeModel }, rows: [{ id: "case-a", verdict: correct() }] })
+        );
+      }
+      const outPath = join(root, "register.json");
+      generateStabilityRegister({ resultsDir, outPath });
+      expect(JSON.parse(readFileSync(outPath, "utf8"))._meta.judgeModels).toEqual(["claude-sonnet-5", "claude-sonnet-5-5"]);
+      expect(loadJudgeStabilityRegister(outPath).judgeModels).toEqual(["claude-sonnet-5", "claude-sonnet-5-5"]);
+
+      // A register without the list is unknown (null), not a mismatch.
+      const old = JSON.parse(readFileSync(outPath, "utf8"));
+      delete old._meta.judgeModels;
+      writeFileSync(outPath, JSON.stringify(old));
+      expect(loadJudgeStabilityRegister(outPath).judgeModels).toBeNull();
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+});

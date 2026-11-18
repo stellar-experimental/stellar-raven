@@ -10,8 +10,9 @@
  *         coreAnswer: "correct" | "incorrect" | null, avoidMatches: number[],
  *         missingFacts: string[], wrongClaims: string[], rationale: string }
  *
- * Implementation: one headless `claude -p --model claude-sonnet-5
- * --output-format json` call first. The tiered path can add two calls when
+ * Implementation: one headless `claude -p --model sonnet
+ * --output-format json` call first (the alias; the verdict reports the exact
+ * model ID the call ran on as `resolvedModel`). The tiered path can add two calls when
  * stability history or a boundary verdict requires the three-vote panel.
  * "error" means the judge itself failed (CLI error / unparseable output / a
  * verdict that contradicts itself), never a grade of the candidate — so every
@@ -27,6 +28,7 @@
  * exits non-zero when a candidate result violates its expected grade.
  */
 import { spawnSync } from "node:child_process";
+import { resolvedModelFromUsage } from "./model-identity.mjs";
 import { createHash } from "node:crypto";
 import { readFileSync, readdirSync } from "node:fs";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -55,7 +57,11 @@ import {
   gitWorktreeIdentity
 } from "../lib/bound-server-identity.mjs";
 
-export const JUDGE_MODEL = "claude-sonnet-5";
+/**
+ * A family alias: Claude Code serves the newest Sonnet. Verdicts carry the exact ID that ran
+ * (`resolvedModel`), and artifacts record both (eval/qa/model-identity.mjs).
+ */
+export const JUDGE_MODEL = "sonnet";
 /**
  * Stall handling for one judge call. A judge CLI that the harness kills prints
  * no cost, and a budgeted method stops on a missing cost. So the CLI handles
@@ -665,10 +671,14 @@ export async function judgeCase(
     envelope = null;
   }
   const resultText = envelope?.result ?? decodeCliEvidenceText(res.stdout);
-  return judgeVerdictFromText(input, {
-    resultText, transcriptEvidence, promptSha256,
-    costUsd: validCost(envelope?.total_cost_usd) ? envelope.total_cost_usd : undefined
-  });
+  return {
+    ...judgeVerdictFromText(input, {
+      resultText, transcriptEvidence, promptSha256,
+      costUsd: validCost(envelope?.total_cost_usd) ? envelope.total_cost_usd : undefined
+    }),
+    // The exact model ID this call ran on, or null when the envelope does not name one.
+    resolvedModel: resolvedModelFromUsage(model, envelope?.modelUsage)
+  };
 }
 
 /** Shared rubric validation for CLI and host-side, tool-free API transports. */

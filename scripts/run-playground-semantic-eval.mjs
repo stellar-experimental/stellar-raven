@@ -32,6 +32,7 @@ import {
 } from "../src/demo/model-config.ts";
 import { buildTranscriptEvidence, judgeCase, JUDGE_MODEL, JUDGE_RUBRIC } from "../eval/qa/judge.mjs";
 import { PACK_VERSION } from "../eval/qa/evidence-pack.mjs";
+import { createModelPin, observeJudgeModel } from "../eval/qa/model-identity.mjs";
 import { QA_DIR, formatSummaryTable, loadCases, summarize } from "../eval/qa/lib.mjs";
 import {
   PLAYGROUND_ROUND_CAP_CONTRACT,
@@ -73,7 +74,7 @@ Options:
   --confirm-paid        Allow model-backed HTTP turns (required unless --dry-run)
   --no-judge            Capture turns but skip the paid QA judge call
   --max-budget-usd USD  REQUIRED once per paid command; counts answer and judge costs
-  --judge-model NAME    Existing QA judge model (default ${JUDGE_MODEL})
+  --judge-model NAME    Existing QA judge model: an alias or an exact ID (default ${JUDGE_MODEL})
   --server-generation SHA
                         REQUIRED for model-backed runs: operator assertion of the loopback
                         server's local working-tree generation SHA-256
@@ -804,7 +805,10 @@ async function main() {
     throw new Error("Refusing a model-backed playground evaluation without --confirm-paid. Use --dry-run or --preflight to validate for free.");
   }
   assertModelBackedRunInputs(args);
+  // `judge.model` stays the requested value (an alias by default) inside the pre-run tuple. The
+  // first verdict pins the exact ID, which the final artifact records as `judge.resolvedModel`.
   const judgeModel = args.judgeModel ?? JUDGE_MODEL;
+  const judgePin = createModelPin(judgeModel);
   const judgeExecutable = args.noJudge ? null : executableIdentity("claude");
   const treeAtStart = await workingTreeSnapshot();
   if (args.serverGeneration !== treeAtStart.generationSha256) {
@@ -920,14 +924,20 @@ async function main() {
         };
       }
       const transcriptEvidence = buildTranscriptEvidence({ ...item, candidateAnswer: run.answer, transcript: run.transcript });
-      return judgeCase({ ...item, candidateAnswer: run.answer, transcript: run.transcript, transcriptEvidence }, { model: judgeModel, command: judgeExecutable.resolvedPath, maxBudgetUsd });
+      const verdict = await judgeCase(
+        { ...item, candidateAnswer: run.answer, transcript: run.transcript, transcriptEvidence },
+        { model: judgePin.argument(), command: judgeExecutable.resolvedPath, maxBudgetUsd }
+      );
+      observeJudgeModel(judgePin, verdict);
+      return verdict;
     },
     makeRow,
     buildNormalArtifact: (rows) => {
       const meta = buildPlaygroundArtifactMeta({
         run: runMeta(new Date().toISOString()),
         answering: answeringWithObserved(answering, rows),
-        judge, capContext, inputFiles: sourceFiles,
+        judge: judgePin.resolved ? { ...judge, resolvedModel: judgePin.resolved } : judge,
+        capContext, inputFiles: sourceFiles,
         selectedCases: cases, tree: treeAtStart, server
       });
       return { meta, summary: args.noJudge ? null : summarize(rows), rows };

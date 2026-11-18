@@ -322,6 +322,24 @@ describe("playground semantic artifact contract", () => {
     expect(meta.inputSnapshot.answeringConfigSha256).toBe(fixtureMeta().inputSnapshot.answeringConfigSha256);
   });
 
+  it("takes an optional judge.resolvedModel outside the snapshot hash and stays on v3", () => {
+    const before = fixtureMeta();
+    expect(before.artifactContract).toBe("playground-semantic-result/v3");
+    expect(before.judge).not.toHaveProperty("resolvedModel");
+    // The resolved ID is added after the first verdict; the pre-run snapshot hash is unchanged.
+    const after = structuredClone(before) as any;
+    after.judge.resolvedModel = "claude-sonnet-5-5";
+    expect(() => assertPlaygroundArtifactMeta(after)).not.toThrow();
+    expect(after.inputSnapshot.judgeTupleSha256).toBe(before.inputSnapshot.judgeTupleSha256);
+    // Any other judge change still breaks the hash.
+    const changed = structuredClone(after) as any;
+    changed.judge.model = "another-judge";
+    expect(() => assertPlaygroundArtifactMeta(changed)).toThrow(/judgeTupleSha256/);
+    const empty = structuredClone(before) as any;
+    empty.judge.resolvedModel = "";
+    expect(() => assertPlaygroundArtifactMeta(empty)).toThrow(/judge.resolvedModel/);
+  });
+
   it("refuses an older playground contract instead of reading it as a legacy QA artifact", () => {
     expect(() => assertCurrentPlaygroundContract({ meta: { artifactContract: "playground-semantic-result/v2" } }))
       .toThrow(/stale playground-semantic-result\/v2/);

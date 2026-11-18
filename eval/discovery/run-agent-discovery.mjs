@@ -10,6 +10,11 @@ import os from "node:os";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import {
+  createModelPin,
+  isAliasRequest,
+  resolvedModelFromStream
+} from "../qa/model-identity.mjs";
+import {
   REQUIRED_MCP_SERVER_NAME,
   answeringAgentIsolationArgs,
   answeringAgentIsolationRecord,
@@ -62,7 +67,8 @@ const DIR = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(DIR, "../..");
 const DEFAULT_CASES = path.join(DIR, "cases.json");
 const DEFAULT_URL = "http://localhost:8787";
-const DEFAULT_MODEL = "claude-sonnet-5-5";
+// A family alias: the newest Sonnet. Rows and meta record the exact ID that ran.
+const DEFAULT_MODEL = "sonnet";
 const DEFAULT_EFFORT = "medium";
 const MAX_SEARCHES = 3;
 const MAX_TURNS = 6;
@@ -277,6 +283,8 @@ function runAgent(c, { mcpConfigPath, model, effort, maxBudgetUsd, agentCwd, age
   let costUsd = null;
   let turns = null;
   let resultError = null;
+  let initModel = null;
+  let modelUsage = null;
   for (const line of String(response.stdout).split("\n")) {
     if (!line.trim().startsWith("{")) continue;
     let message;
@@ -286,6 +294,7 @@ function runAgent(c, { mcpConfigPath, model, effort, maxBudgetUsd, agentCwd, age
       continue;
     }
     if (message.type === "system" && message.subtype === "init") {
+      initModel = typeof message.model === "string" ? message.model : null;
       mcpServers = Array.isArray(message.mcp_servers)
         ? message.mcp_servers.map((server) => ({
             name: String(server?.name ?? ""),
@@ -320,6 +329,7 @@ function runAgent(c, { mcpConfigPath, model, effort, maxBudgetUsd, agentCwd, age
       }
       costUsd = message.total_cost_usd ?? null;
       turns = message.num_turns ?? null;
+      modelUsage = message.modelUsage ?? null;
       if (message.is_error) resultError = message.subtype ?? "agent result is_error";
     }
   }
@@ -336,7 +346,24 @@ function runAgent(c, { mcpConfigPath, model, effort, maxBudgetUsd, agentCwd, age
       `required MCP server ${REQUIRED_MCP_SERVER_NAME} was ${raven?.status || "not reported"} in system init`;
     resultError = resultError ? `${resultError}; ${mcpError}` : mcpError;
   }
-  return { ...capped, output, costUsd, turns, mcpServers, error: resultError };
+  const resolvedModel = resolvedModelFromStream({ requested: model, initModel, modelUsage });
+  return { ...capped, output, costUsd, turns, mcpServers, resolvedModel, error: resultError };
+}
+
+/**
+ * Comparability reasons for the discovery agent's model. Rows that ran on two exact IDs, or an
+ * alias request whose rows name none, are not one measurement. Failed rows say nothing.
+ */
+export function discoveryModelComparabilityReasons(rows, requested) {
+  const ran = rows.filter((row) => !row.agent?.error);
+  const ids = [...new Set(ran.map((row) => row.agent?.model).filter(Boolean))];
+  const unknown = ran.filter((row) => !row.agent?.model).length;
+  const reasons = [];
+  if (ids.length > 1) reasons.push(`agent rows ran on more than one model (${ids.join(", ")})`);
+  if (unknown > 0 && isAliasRequest(requested)) {
+    reasons.push(`agent model unknown for ${unknown} row(s) under the alias "${requested}"`);
+  }
+  return reasons;
 }
 
 /** Authorize one call, then record its reported cost before another can start. */
@@ -387,6 +414,8 @@ async function runPaidDiscovery(paidRun) {
   const url = normalizeUrl(argValue("--url") ?? DEFAULT_URL);
   const casesPath = path.resolve(argValue("--cases") ?? DEFAULT_CASES);
   const model = argValue("--model") ?? DEFAULT_MODEL;
+  // Pin after the first response: the alias until a run reports its ID, then that exact ID.
+  const modelPin = createModelPin(model);
   const effort = argValue("--effort") ?? DEFAULT_EFFORT;
   const repeat = Number(argValue("--repeat") ?? 1);
   const runLabel = argValue("--run-label") ?? "agent";
@@ -470,7 +499,7 @@ async function runPaidDiscovery(paidRun) {
             invokeAgent: (maxBudgetUsd) =>
               runAgent(c, {
                 mcpConfigPath,
-                model,
+                model: modelPin.argument(),
                 effort,
                 maxBudgetUsd,
                 agentCwd,
@@ -485,6 +514,7 @@ async function runPaidDiscovery(paidRun) {
             : `budget failure: ${error.message}`;
           collectionError = error;
         }
+        modelPin.observe(run.resolvedModel);
         const grade = gradeAgentRow(c, run);
         rows.push({
           run: runIndex,
@@ -497,7 +527,9 @@ async function runPaidDiscovery(paidRun) {
           searches: run.searches,
           selection: run.output,
           agent: {
-            model,
+            // The exact ID that ran; null for an alias that resolved to nothing.
+            model: run.resolvedModel ?? (isAliasRequest(model) ? null : model),
+            requestedModel: model,
             effort,
             turns: run.turns,
             costUsd: run.costUsd,
@@ -548,7 +580,8 @@ async function runPaidDiscovery(paidRun) {
     ...(postflightError ? [`postflight failed: ${String(postflightError.message ?? postflightError)}`] : []),
     ...(rows.some((row) => row.agent?.error)
       ? [`${rows.filter((row) => row.agent?.error).length} agent row(s) failed`]
-      : [])
+      : []),
+    ...discoveryModelComparabilityReasons(rows, model)
   ];
   const comparable = comparabilityReasons.length === 0;
   // Precondition P4: a lane that lost rows is incomplete, not smaller. Rows
@@ -581,7 +614,8 @@ async function runPaidDiscovery(paidRun) {
       caseCount: cases.length,
       repeat,
       url,
-      model,
+      model: modelPin.identity(),
+      requestedModel: model,
       effort,
       maxSearches: MAX_SEARCHES,
       runLabel,

@@ -136,7 +136,7 @@ export function buildPlaygroundArtifactMeta({
     tree,
     serverGenerationSha256: server.generationSha256,
     answeringConfigSha256: sha256Json(answeringConfiguration(answering)),
-    judgeTupleSha256: sha256Json(judge),
+    judgeTupleSha256: sha256Json(judgeTupleForSnapshot(judge)),
     capContextSha256: sha256Json(capContext)
   };
 
@@ -154,6 +154,17 @@ export function buildPlaygroundArtifactMeta({
   };
   assertPlaygroundArtifactMeta(meta);
   return meta;
+}
+
+/**
+ * The judge tuple the input snapshot hashes. `judge.resolvedModel` (the exact ID the first verdict
+ * reported) is added after the run, so it stays outside the hash: `judge.model` is the request, the
+ * pre-run identity. Stored v3 artifacts carry no `resolvedModel` and hash exactly as before.
+ */
+export function judgeTupleForSnapshot(judge) {
+  if (!judge || typeof judge !== "object") return judge;
+  const { resolvedModel: _resolvedModel, ...tuple } = judge;
+  return tuple;
 }
 
 export function assertPlaygroundArtifactMeta(meta) {
@@ -220,6 +231,10 @@ export function assertPlaygroundArtifactMeta(meta) {
     requiredString(judge.rubric, "judge.rubric");
   } else if (judge.model !== null || judge.rubric !== null) {
     fail("disabled judge must use explicit null model and rubric");
+  }
+  if (judge.resolvedModel !== undefined) {
+    if (!judge.enabled) fail("disabled judge cannot carry judge.resolvedModel");
+    requiredString(judge.resolvedModel, "judge.resolvedModel");
   }
   requiredString(judge.packVersion, "judge.packVersion");
   if (judge.temperature?.value !== null || judge.temperature?.semantics !== "provider-default-unpinned") {
@@ -316,7 +331,7 @@ export function assertPlaygroundArtifactMeta(meta) {
   if (snapshot.answeringConfigSha256 !== sha256Json(answeringConfiguration(answering))) {
     fail("inputSnapshot.answeringConfigSha256 does not match answering");
   }
-  if (snapshot.judgeTupleSha256 !== sha256Json(judge)) {
+  if (snapshot.judgeTupleSha256 !== sha256Json(judgeTupleForSnapshot(judge))) {
     fail("inputSnapshot.judgeTupleSha256 does not match judge");
   }
   if (snapshot.capContextSha256 !== sha256Json(caps)) {

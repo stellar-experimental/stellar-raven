@@ -228,6 +228,15 @@ export function generateStabilityRegister({
   }
 
   const cases = buildStabilityRegister(artifacts);
+  // The distinct exact judge IDs of the source artifacts. A register without this list is unknown,
+  // not a mismatch (run-qa stabilityRegisterJudgeMatch).
+  const judgeModels = [
+    ...new Set(
+      artifacts
+        .map((artifact) => artifact.data?.meta?.judgeModel)
+        .filter((model) => typeof model === "string" && model !== "")
+    )
+  ].sort();
   const collectionArtifactCount = artifacts.filter((artifact) => artifactKind(artifact.name, artifact.data) === "collection").length;
   const rejudgeArtifactCount = artifacts.filter((artifact) => artifactKind(artifact.name, artifact.data) === "rejudge").length;
   const document = {
@@ -237,6 +246,7 @@ export function generateStabilityRegister({
       resultsDir: resolvedResultsDir,
       formula: STABILITY_FORMULA,
       unstableThreshold: JUDGE_STABILITY_THRESHOLD,
+      judgeModels,
       sourceArtifactCount: sourceArtifacts.length,
       collectionArtifactCount,
       rejudgeArtifactCount,
@@ -306,7 +316,8 @@ export function loadJudgeStabilityRegister(
     sourceArtifactCount: Number.isInteger(meta?.sourceArtifactCount)
       ? meta.sourceArtifactCount
       : null,
-    caseCount: Object.keys(cases).length
+    caseCount: Object.keys(cases).length,
+    judgeModels: Array.isArray(meta?.judgeModels) ? meta.judgeModels : null
   };
   const generatedAtMs = Date.parse(meta?.generatedAt);
   if (meta?.schemaVersion !== STABILITY_SCHEMA_VERSION) {

@@ -7,7 +7,8 @@
  * per case and writes eval/qa/results/<stamp>.json + a console summary.
  *
  * For each case:
- *   1. drive an answering agent — headless `claude -p --model claude-sonnet-5-5`
+ *   1. drive an answering agent — headless `claude -p --model sonnet`
+ *      (the family alias; the artifact records the exact ID that ran)
  *      with a generated temp .mcp.json pointing at the live server
  *      (http://localhost:PORT/mcp), allowed tools = the variant's search tool
  *      + execute (verified working 2026-07-02)
@@ -47,8 +48,11 @@
  *                      hand-authored contracts include live-data-canonical-v3
  *                      (corpus/live/live-cases.json) and live-digest-supplement-v2
  *                      (corpus/live/live-digest-supplement-cases.json); run separately.
- *   --model name       answering-agent model (default claude-sonnet-5-5)
- *   --judge-model name judge model (default judge.mjs JUDGE_MODEL)
+ *   --model name       answering-agent model: an alias or an exact ID (default
+ *                      the alias sonnet). meta.model records the exact ID that ran.
+ *   --judge-model name judge model: an alias or an exact ID (default judge.mjs
+ *                      JUDGE_MODEL, the alias sonnet). A resumed --judge-stored
+ *                      file defaults to the judge it recorded.
  *   --judge-panel N    force a 2- or 3-call judge panel. The default tier
  *                      starts with one call and can escalate to three.
  *   --max-panel-cases N cap boundary-triggered panels. The default is one-
@@ -133,6 +137,7 @@ import {
   loadJudgeStabilityRegister
 } from "./judge-stability.mjs";
 import { verifySourceCases } from "./re-judge.mjs";
+import { createModelPin, isAliasRequest, observeJudgeModel } from "./model-identity.mjs";
 import { PACK_VERSION } from "./evidence-pack.mjs";
 import { AGENT_RESULT_SCHEMA, parseAgentResult } from "./agent-result.mjs";
 import {
@@ -217,7 +222,9 @@ import { createPairedCollectionChildControl } from "./paired-collection-control.
 // registered top-level; re-testing it requires a build exposing a code-shaped
 // tool via a --search-tool override.
 const VARIANT_TOOL = { A: "search", B: null };
-const AGENT_MODEL = "claude-sonnet-5-5";
+// A family alias, so the answering agent is the newest Sonnet. Rows and meta record the exact ID
+// that ran; the alias is only what was requested (meta.requestedModel).
+const AGENT_MODEL = "sonnet";
 const MAX_TURNS = 24;
 const AGENT_TIMEOUT_MS = 10 * 60_000;
 const SURFACES = new Set(["search-execute", "per-operation"]);
@@ -551,11 +558,29 @@ export function prepareJudgeStabilityRegister({
   };
 }
 
+/**
+ * Whether the stability register was built from the judge in use. `null` when either side is
+ * unknown: a register that predates `judgeModels`, an empty list, or a judge not yet pinned.
+ */
+export function stabilityRegisterJudgeMatch(stabilityRegister, judgeModel) {
+  const models = stabilityRegister?.judgeModels;
+  if (!Array.isArray(models) || models.length === 0 || !judgeModel) return null;
+  return models.every((model) => model === judgeModel);
+}
+
+export function registerMismatchNotice(stabilityRegister, judgeModel) {
+  return (
+    `run-qa: the judge-stability register was built from ${(stabilityRegister?.judgeModels ?? []).join(", ")}, ` +
+    `not the judge in use (${judgeModel}); its stability scores are advisory for this judge`
+  );
+}
+
 export function judgeTieringMetadata({
   judgePanel,
   stabilityRegister,
   panelLimit,
-  rows
+  rows,
+  judgeModel = null
 }) {
   const counts = panelCaseCounts(rows);
   return {
@@ -570,6 +595,7 @@ export function judgeTieringMetadata({
     stabilityRegisterGeneratedAt: stabilityRegister.generatedAt ?? null,
     stabilityRegisterSourceArtifactCount: stabilityRegister.sourceArtifactCount ?? null,
     stabilityRegisterCaseCount: stabilityRegister.caseCount ?? 0,
+    stabilityRegisterJudgeMatch: stabilityRegisterJudgeMatch(stabilityRegister, judgeModel),
     selectedCaseCount: panelLimit.selectedCaseCount,
     maxPanelCases: panelLimit.maxPanelCases,
     maxPanelCasesSource: panelLimit.maxPanelCasesSource,
@@ -873,7 +899,8 @@ export function runAgent(question, {
       // response guidance, so it is projected instead of stored.
       keepWholeInput: (tool) => keepWholeResult(tool) || isSearchTool(tool),
       projectResult: makeSearchResultProjector(searchToolNames),
-      requiredMcpServerName: REQUIRED_MCP_SERVER_NAME
+      requiredMcpServerName: REQUIRED_MCP_SERVER_NAME,
+      requestedModel: model
     }
   );
   return {
@@ -895,6 +922,7 @@ export function agentAttemptRecord(run, number, startedAtMs, endedAtMs) {
     answer: run.answer,
     transcript: run.transcript,
     agent: {
+      resolvedModel: run.resolvedModel ?? null,
       turns: run.turns,
       costUsd: run.costUsd,
       usage: run.usage,
@@ -930,6 +958,27 @@ function budgetFailureVerdict(error, calls) {
   };
 }
 
+/**
+ * Comparability reasons for the answering model. A run whose answered rows carry two exact IDs, or
+ * an alias request whose rows carry none, is not one measurement, so its aggregates are suppressed.
+ * Rows without a successful answer say nothing about the model and are skipped.
+ */
+export function answeringModelComparabilityReasons(rows, requested) {
+  const answered = rows.filter((row) => hasSuccessfulAnswer(row.answer, row.agent?.failure));
+  const unknown = answered.filter((row) => !row.agent?.model).map((row) => row.id);
+  const ids = [...new Set(answered.map((row) => row.agent?.model).filter(Boolean))];
+  const reasons = [];
+  if (ids.length > 1) {
+    reasons.push(`answering rows ran on more than one model (${ids.join(", ")}); not one measurement`);
+  }
+  if (unknown.length > 0 && isAliasRequest(requested)) {
+    reasons.push(
+      `answering model unknown for ${unknown.length} row(s) under the alias "${requested}" (first: ${unknown[0]})`
+    );
+  }
+  return reasons;
+}
+
 /** One judge method attempt. Its calls retain panel-call costs separately. */
 export async function runJudgeAttempt(
   input,
@@ -937,6 +986,7 @@ export async function runJudgeAttempt(
     number,
     kind,
     judgeModel,
+    judgePin = createModelPin(judgeModel),
     judgePanel,
     judge,
     stabilityRegister,
@@ -955,8 +1005,10 @@ export async function runJudgeAttempt(
       attempt: `${number}.${callNumber}`
     });
     const callStartedAt = new Date().toISOString();
+    // Pin after the first response: the request until a call reports its ID, then that exact ID.
     const verdict = await judge(judgeInput, {
       ...judgeOptions,
+      model: judgePin.argument(),
       maxBudgetUsd: authorization.maxBudgetUsd
     });
     const call = {
@@ -972,6 +1024,7 @@ export async function runJudgeAttempt(
     calls.push(call);
     try {
       recordSpend(spendLedger, authorization, verdict?.costUsd);
+      observeJudgeModel(judgePin, verdict);
     } catch (error) {
       error.judgeCall = call;
       throw error;
@@ -981,7 +1034,7 @@ export async function runJudgeAttempt(
   let verdict;
   try {
     verdict = await judgeCaseTiered(input, {
-      model: judgeModel,
+      model: judgePin.argument(),
       judgePanel,
       judge: budgetedJudge,
       stabilityRegister,
@@ -1217,7 +1270,7 @@ export async function probeLiveSurface(port, { surface, searchTool, plainSurface
 export async function judgeStoredResults(
   resultsPath,
   {
-    judgeModel = JUDGE_MODEL,
+    judgeModel,
     judgePanel = 1,
     judge = judgeCase,
     judgeBinary = null,
@@ -1266,11 +1319,18 @@ export async function judgeStoredResults(
       `--judge-stored: results were collected under agent-result schema ${meta.resultsSchema ?? "none"}, current is ${AGENT_RESULT_SCHEMA} — the stored failure/usage shape moved since collection; re-collect`
     );
   }
-  if (meta.judgeModel != null && meta.judgeModel !== judgeModel) {
+  // An alias chooses the judge only for a fresh measurement. A file that already recorded its exact
+  // judge finishes on it; only an explicit, different --judge-model is refused.
+  const recordedJudgeModel = meta.judgeModel ?? null;
+  const requestedJudgeModel = judgeModel ?? recordedJudgeModel ?? meta.judgeRequestedModel ?? JUDGE_MODEL;
+  judgeModel = requestedJudgeModel;
+  if (recordedJudgeModel != null && recordedJudgeModel !== judgeModel) {
     throw new Error(
-      `--judge-stored: file already carries verdicts from judge model ${meta.judgeModel}; refusing to mix in ${judgeModel}`
+      `--judge-stored: file already carries verdicts from judge model ${recordedJudgeModel}; refusing to mix in ${judgeModel}`
     );
   }
+  const judgePin = createModelPin(judgeModel, { resolved: recordedJudgeModel });
+  let registerMismatchReported = false;
   if (meta.judgeRubric != null && meta.judgeRubric !== JUDGE_RUBRIC) {
     throw new Error(
       `--judge-stored: file already carries verdicts under rubric ${meta.judgeRubric}, current is ${JUDGE_RUBRIC} — use re-judge.mjs for cross-rubric work`
@@ -1353,15 +1413,21 @@ export async function judgeStoredResults(
     .filter((row) => row.attempts.judge.length > 0)
     .map((row) => row.id);
   const writeState = ({ withSummary }) => {
-    meta.judgeModel = judgeModel;
+    meta.judgeModel = judgePin.identity();
+    meta.judgeRequestedModel = meta.judgeRequestedModel ?? judgeModel;
     meta.judgeRubric = JUDGE_RUBRIC;
     meta.judgePanel = judgePanel;
     meta.judgeTiering = judgeTieringMetadata({
       judgePanel,
       stabilityRegister,
       panelLimit,
-      rows: results.rows
+      rows: results.rows,
+      judgeModel: meta.judgeModel
     });
+    if (meta.judgeTiering.stabilityRegisterJudgeMatch === false && !registerMismatchReported) {
+      registerMismatchReported = true;
+      console.error(registerMismatchNotice(stabilityRegister, meta.judgeModel));
+    }
     const totals = costTotals(results.rows);
     Object.assign(meta, totals);
     // P4 for the two-phase path: the case snapshot is already guarded by
@@ -1468,8 +1534,10 @@ export async function judgeStoredResults(
   }), "before"));
 
   // Stamp the judge tuple BEFORE the first paid call so a crash-resume with a
-  // different model trips the mixing guard instead of silently mixing tuples.
-  meta.judgeModel = judgeModel;
+  // different model trips the mixing guard instead of silently mixing tuples. An exact request is
+  // its own identity; an alias has none until the first response pins it.
+  meta.judgeModel = judgePin.identity();
+  meta.judgeRequestedModel = meta.judgeRequestedModel ?? judgeModel;
   meta.judgeRubric = JUDGE_RUBRIC;
   meta.judgePanel = judgePanel;
   results.meta = meta;
@@ -1502,6 +1570,7 @@ export async function judgeStoredResults(
           { ...kase, candidateAnswer: row.answer, transcript: row.transcript, transcriptEvidence },
           {
             judgeModel,
+            judgePin,
             judgePanel,
             judge,
             stabilityRegister,
@@ -1711,7 +1780,7 @@ async function main() {
     }
     const stabilityRegister = prepareStabilityRegister();
     const { summary, metrics, judgeTiering } = await judgeStoredResults(path.resolve(process.cwd(), judgeStoredPath), {
-      judgeModel: argVal("--judge-model") ?? JUDGE_MODEL,
+      judgeModel: argVal("--judge-model"),
       judgePanel: parseJudgePanel(argVal("--judge-panel")),
       judge: safeJudge,
       judgeBinary: agentBinary,
@@ -1739,6 +1808,9 @@ async function main() {
   const port = Number(argVal("--port") ?? 8788);
   const model = argVal("--model") ?? AGENT_MODEL;
   const judgeModel = argVal("--judge-model") ?? JUDGE_MODEL;
+  // Alias requests are pinned to the exact ID of the first response (eval/qa/model-identity.mjs).
+  const answerPin = createModelPin(model);
+  const judgePin = createModelPin(judgeModel);
   const judgePanel = parseJudgePanel(argVal("--judge-panel"));
   const stabilityRegister = prepareStabilityRegister();
   const pairedControl = pairedControlArm
@@ -1919,12 +1991,13 @@ async function main() {
             searchTool,
             allowedTools,
             mcpConfigPath,
-            model,
+            model: answerPin.argument(),
             agentCwd,
             agentCommand: agentBinary.resolvedPath,
             maxBudgetUsd: authorization.maxBudgetUsd
           }),
           onCompleted: (completedRun) => {
+            answerPin.observe(completedRun.resolvedModel);
             const attempt = agentAttemptRecord(
               completedRun,
               attemptNumber,
@@ -1961,6 +2034,7 @@ async function main() {
               },
               {
                 judgeModel,
+                judgePin,
                 judgePanel,
                 judge: safeJudge,
                 stabilityRegister,
@@ -1993,7 +2067,10 @@ async function main() {
         answer: firstAttempt.answer,
         transcript: firstAttempt.transcript,
         agent: {
-          model,
+          // The exact ID that ran. An alias that resolved to nothing leaves this null, and the
+          // run is non-comparable (answeringModelComparabilityReasons).
+          model: firstAttempt.agent?.resolvedModel ?? (isAliasRequest(model) ? null : model),
+          requestedModel: model,
           ...firstAttempt.agent,
           inputSha256: firstAttempt.inputSha256,
           answerSha256: firstAttempt.answerSha256,
@@ -2094,25 +2171,31 @@ async function main() {
   const finalSourceIdentity = sourceIdentity(serverRevision);
   const collectionSourceIdentityGuard = sourceIdentityGuard(collectionSourceIdentity, finalSourceIdentity);
   const remoteIdentityGuardRecord = remoteIdentityGuard.record();
-  let comparabilityReasons = collectionComparabilityReasons({
-    collectionError,
-    postflightError,
-    remoteIdentityPostflightError,
-    collectionSourceIdentityGuard,
-    remoteIdentityGuardRecord
-  });
+  let comparabilityReasons = [
+    ...collectionComparabilityReasons({
+      collectionError,
+      postflightError,
+      remoteIdentityPostflightError,
+      collectionSourceIdentityGuard,
+      remoteIdentityGuardRecord
+    }),
+    ...answeringModelComparabilityReasons(rows, model)
+  ];
   if (pairedControl && comparabilityReasons.length === 0) {
     try {
       await pairedControl.postflightComplete();
     } catch (error) {
       collectionError = error;
-      comparabilityReasons = collectionComparabilityReasons({
-        collectionError,
-        postflightError,
-        remoteIdentityPostflightError,
-        collectionSourceIdentityGuard,
-        remoteIdentityGuardRecord
-      });
+      comparabilityReasons = [
+        ...collectionComparabilityReasons({
+          collectionError,
+          postflightError,
+          remoteIdentityPostflightError,
+          collectionSourceIdentityGuard,
+          remoteIdentityGuardRecord
+        }),
+        ...answeringModelComparabilityReasons(rows, model)
+      ];
     }
   } else if (pairedControl && comparabilityReasons.length > 0 && !collectionError) {
     pairedControl.failed(new Error(comparabilityReasons.join("; ")));
@@ -2144,8 +2227,11 @@ async function main() {
           surface,
           searchTool: surface === "search-execute" ? searchTool : null,
           port,
-          model,
-          judgeModel: noJudge ? null : judgeModel,
+          // Identity fields hold the exact IDs that ran; the requested values sit beside them.
+          model: answerPin.identity(),
+          requestedModel: model,
+          judgeModel: noJudge ? null : judgePin.identity(),
+          judgeRequestedModel: noJudge ? null : judgeModel,
           judgeRubric: noJudge ? null : JUDGE_RUBRIC,
           ...(!noJudge ? { judgePanel } : {}),
           ...(!noJudge
@@ -2154,7 +2240,8 @@ async function main() {
                   judgePanel,
                   stabilityRegister,
                   panelLimit,
-                  rows
+                  rows,
+                  judgeModel: judgePin.identity()
                 })
               }
             : {}),
@@ -2265,12 +2352,17 @@ async function main() {
     console.log(formatMeasurementMetrics(metrics));
   }
   if (!noJudge) {
-    console.log(formatPanelSummary(judgeTieringMetadata({
+    const finalJudgeTiering = judgeTieringMetadata({
       judgePanel,
       stabilityRegister,
       panelLimit,
-      rows
-    }), "after"));
+      rows,
+      judgeModel: judgePin.identity()
+    });
+    console.log(formatPanelSummary(finalJudgeTiering, "after"));
+    if (finalJudgeTiering.stabilityRegisterJudgeMatch === false) {
+      console.error(registerMismatchNotice(stabilityRegister, judgePin.identity()));
+    }
   }
   if (!comparable) {
     pairedControl?.close();

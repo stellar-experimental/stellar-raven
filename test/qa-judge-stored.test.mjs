@@ -15,13 +15,16 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
   RETIRED_MEASUREMENT_METRIC_KEYS,
+  answeringModelComparabilityReasons,
   assertCollectionSourceIdentity,
   assertPinnedServerRevision,
   collectionGitStatus,
   judgeStoredResults,
   sourceIdentity,
-  sourceIdentityGuard
+  sourceIdentityGuard,
+  stabilityRegisterJudgeMatch
 } from "../eval/qa/run-qa.mjs";
+import { JudgeModelIdentityError } from "../eval/qa/model-identity.mjs";
 import { JUDGE_RUBRIC } from "../eval/qa/judge.mjs";
 import { PACK_VERSION } from "../eval/qa/evidence-pack.mjs";
 import { AGENT_RESULT_SCHEMA } from "../eval/qa/agent-result.mjs";
@@ -1530,5 +1533,158 @@ describe("run-qa --judge-stored", () => {
     } finally {
       rmSync(root, { recursive: true, force: true });
     }
+  });
+});
+
+/** A judge stub that reports the model it was asked for, the way Claude Code reports a resolved ID. */
+function resolvingJudge(resolve, calls = []) {
+  return async (input, opts) => {
+    calls.push({ id: input.id, model: opts?.model });
+    return { ...stubVerdict, resolvedModel: resolve(opts?.model) };
+  };
+}
+const resolveAlias = (model) => (model === "sonnet" ? "claude-sonnet-5-5" : model);
+
+function writeThreeAnsweredRows(root) {
+  const rows = CASES.map((kase) => ({
+    ...answeredRow(kase, `answer for ${kase.id}`),
+    truth: { status: "verified", lifecycle: kase.truth.lifecycle }
+  }));
+  return writeFixture(root, { rows, cases: CASES });
+}
+
+describe("run-qa --judge-stored model identity", () => {
+  it("runs the alias until the first response, then pins the exact ID and records both", async () => {
+    const root = mkdtempSync(join(tmpdir(), "qa-judge-stored-pin-"));
+    try {
+      const { resultsPath } = writeThreeAnsweredRows(root);
+      const calls = [];
+      await judgeStoredResults(resultsPath, { judge: resolvingJudge(resolveAlias, calls), log: () => {} });
+      expect(calls[0].model).toBe("sonnet");
+      expect(calls.slice(1).every((call) => call.model === "claude-sonnet-5-5")).toBe(true);
+      expect(calls.length).toBeGreaterThan(1);
+      const written = JSON.parse(readFileSync(resultsPath, "utf8"));
+      expect(written.meta.judgeModel).toBe("claude-sonnet-5-5");
+      expect(written.meta.judgeRequestedModel).toBe("sonnet");
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("defaults a resumed file to the exact judge it recorded and refuses an explicit different one", async () => {
+    const root = mkdtempSync(join(tmpdir(), "qa-judge-stored-resume-"));
+    try {
+      const { resultsPath } = writeThreeAnsweredRows(root);
+      const seeded = JSON.parse(readFileSync(resultsPath, "utf8"));
+      seeded.meta.judgeModel = "claude-sonnet-5";
+      writeFileSync(resultsPath, JSON.stringify(seeded, null, 2));
+
+      await expect(
+        judgeStoredResults(resultsPath, { judgeModel: "sonnet", judge: resolvingJudge(resolveAlias), log: () => {} })
+      ).rejects.toThrow(/file already carries verdicts from judge model claude-sonnet-5; refusing to mix in sonnet/);
+
+      const calls = [];
+      await judgeStoredResults(resultsPath, { judge: resolvingJudge(resolveAlias, calls), log: () => {} });
+      expect(calls.every((call) => call.model === "claude-sonnet-5")).toBe(true);
+      const written = JSON.parse(readFileSync(resultsPath, "utf8"));
+      expect(written.meta.judgeModel).toBe("claude-sonnet-5");
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("stops judging when a call reports no usable model, as it does for a missing cost", async () => {
+    const root = mkdtempSync(join(tmpdir(), "qa-judge-stored-unknown-"));
+    try {
+      const { resultsPath } = writeThreeAnsweredRows(root);
+      await expect(
+        judgeStoredResults(resultsPath, { judge: resolvingJudge(() => null), log: () => {} })
+      ).rejects.toThrow(JudgeModelIdentityError);
+      const written = JSON.parse(readFileSync(resultsPath, "utf8"));
+      expect(written.meta.judgeModel).toBeNull();
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("stops judging when a later call ran on a different model than the pin", async () => {
+    const root = mkdtempSync(join(tmpdir(), "qa-judge-stored-mixed-"));
+    try {
+      const { resultsPath } = writeThreeAnsweredRows(root);
+      let call = 0;
+      const drifting = async () => ({ ...stubVerdict, resolvedModel: call++ === 0 ? "claude-sonnet-5-5" : "claude-sonnet-5-6" });
+      await expect(
+        judgeStoredResults(resultsPath, { judge: drifting, log: () => {} })
+      ).rejects.toThrow(/refusing to mix judge models/);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("stamps the stability register match beside the other register fields and warns once on false", async () => {
+    const root = mkdtempSync(join(tmpdir(), "qa-judge-stored-register-"));
+    const warnings = [];
+    const original = console.error;
+    console.error = (message) => warnings.push(String(message));
+    try {
+      const { resultsPath } = writeThreeAnsweredRows(root);
+      await judgeStoredResults(resultsPath, {
+        judge: resolvingJudge(resolveAlias),
+        stabilityRegister: { status: "available", cases: {}, source: "pinned", judgeModels: ["claude-sonnet-5"] },
+        log: () => {}
+      });
+      const written = JSON.parse(readFileSync(resultsPath, "utf8"));
+      expect(written.meta.judgeTiering.stabilityRegisterJudgeMatch).toBe(false);
+      expect(warnings.filter((line) => line.includes("judge-stability register"))).toHaveLength(1);
+    } finally {
+      console.error = original;
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+});
+
+describe("stabilityRegisterJudgeMatch", () => {
+  it("is true when every register judge is the judge in use", () => {
+    expect(stabilityRegisterJudgeMatch({ judgeModels: ["claude-sonnet-5-5"] }, "claude-sonnet-5-5")).toBe(true);
+  });
+
+  it("is false when the register was built from another judge or mixes judges", () => {
+    expect(stabilityRegisterJudgeMatch({ judgeModels: ["claude-sonnet-5"] }, "claude-sonnet-5-5")).toBe(false);
+    expect(stabilityRegisterJudgeMatch({ judgeModels: ["claude-sonnet-5", "claude-sonnet-5-5"] }, "claude-sonnet-5-5")).toBe(false);
+  });
+
+  it("is null, never false, for a register without the list, an empty list, or an unpinned judge", () => {
+    expect(stabilityRegisterJudgeMatch({}, "claude-sonnet-5-5")).toBeNull();
+    expect(stabilityRegisterJudgeMatch({ judgeModels: null }, "claude-sonnet-5-5")).toBeNull();
+    expect(stabilityRegisterJudgeMatch({ judgeModels: [] }, "claude-sonnet-5-5")).toBeNull();
+    expect(stabilityRegisterJudgeMatch({ judgeModels: ["claude-sonnet-5"] }, null)).toBeNull();
+  });
+});
+
+describe("answeringModelComparabilityReasons", () => {
+  const answered = (id, model) => ({ id, answer: "an answer", agent: { model, failure: null } });
+
+  it("is empty when every answered row ran on one exact model", () => {
+    const rows = [answered("a", "claude-sonnet-5-5"), answered("b", "claude-sonnet-5-5")];
+    expect(answeringModelComparabilityReasons(rows, "sonnet")).toEqual([]);
+  });
+
+  it("gives a reason when answered rows ran on two models", () => {
+    const rows = [answered("a", "claude-sonnet-5-5"), answered("b", "claude-sonnet-5-6")];
+    expect(answeringModelComparabilityReasons(rows, "sonnet")).toEqual([
+      expect.stringContaining("more than one model (claude-sonnet-5-5, claude-sonnet-5-6)")
+    ]);
+  });
+
+  it("gives a reason for an alias request whose rows name no model", () => {
+    const rows = [answered("a", null)];
+    expect(answeringModelComparabilityReasons(rows, "sonnet")).toEqual([
+      expect.stringContaining('unknown for 1 row(s) under the alias "sonnet"')
+    ]);
+  });
+
+  it("skips rows with no successful answer", () => {
+    const failed = { id: "c", answer: "", agent: { model: null, failure: { class: "timeout" } } };
+    expect(answeringModelComparabilityReasons([answered("a", "claude-sonnet-5-5"), failed], "sonnet")).toEqual([]);
   });
 });

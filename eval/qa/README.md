@@ -435,10 +435,12 @@ A projected answer without that envelope can remain `indeterminate`.
 
 ## Judging rubric and score comparability
 
-The default answering model is `claude-sonnet-5-5`.
-The default judge model is `claude-sonnet-5`, with rubric `v2.11` and evidence pack `p9`.
-The judge stays on that model so that new verdicts remain comparable with stored verdicts and the judge-stability register.
-Move it only with a recorded decision and a new baseline.
+The default answering model and the default judge model are both the Claude Code alias `sonnet`, so each takes the newest Sonnet. The rubric is `v2.11` and the evidence pack `p9`.
+The artifact records the exact IDs that ran (`meta.model`, `meta.judgeModel`) beside the aliases requested (`meta.requestedModel`, `meta.judgeRequestedModel`).
+Within a run, the first response pins the resolved ID for every later call of that role. A call that reports no resolved ID stops judging, or makes the answering rows non-comparable.
+A resumed or re-judged file keeps the judge it recorded; an explicit different `--judge-model` is refused or labeled non-identical, as before.
+Stored verdicts from `claude-sonnet-5` are a different judge from the current default. The first judged run on the new judge sets a new baseline, after the paid seven-case self-test on that judge under its own authorization.
+`meta.judgeTiering.stabilityRegisterJudgeMatch` says whether the local judge-stability register was built from the judge in use (`true`, `false`, or `null` when the register predates the list). It stays advisory.
 An artifact answered by an earlier model differs in answering identity; compare it with a new one only as a labeled cross-model comparison.
 [judge.mjs](judge.mjs) owns the prompt and rubric. [evidence-pack.mjs](evidence-pack.mjs) owns evidence selection and serialization.
 

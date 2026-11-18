@@ -507,9 +507,16 @@ if [ "$1" = "--version" ]; then
   printf '%s\\n' 'fixture-claude 1.0.0'
   exit 0
 fi
+model=""
+while [ "$#" -gt 0 ]; do
+  if [ "$1" = "--model" ]; then model="$2"; fi
+  shift
+done
+# Report the exact model the way Claude Code does: an alias resolves, an exact request echoes.
+if [ "$model" = "sonnet" ]; then model="claude-sonnet-5-5"; fi
 cat >/dev/null
 printf '%s\\n' paid >> "$QA_FAKE_CALL_LOG"
-printf '%s\\n' '{"result":"{\\"score\\":\\"correct\\",\\"coreAnswer\\":\\"correct\\",\\"missingFacts\\":[],\\"wrongClaims\\":[],\\"avoidMatches\\":[],\\"rationale\\":\\"fixture\\"}","total_cost_usd":0.01}'
+printf '{"result":"{\\"score\\":\\"correct\\",\\"coreAnswer\\":\\"correct\\",\\"missingFacts\\":[],\\"wrongClaims\\":[],\\"avoidMatches\\":[],\\"rationale\\":\\"fixture\\"}","total_cost_usd":0.01,"modelUsage":{"%s":{}}}\\n' "$model"
 `;
   writeFileSync(claudePath, claudeSource);
   chmodSync(claudePath, 0o755);
