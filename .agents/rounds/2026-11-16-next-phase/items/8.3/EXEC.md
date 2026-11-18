@@ -196,3 +196,58 @@ remains, each with its reason:
   stability register built from them, are a different judge from `claude-sonnet-5-5`. The new
   TODO item holds the paid self-test.
 - Independent review of `eval/`, `scripts/` and `src/demo/` is still outstanding, per the plan.
+
+## Round 2: reconciling `CODEX-REVIEW.md` (Codex `gpt-6.2-sol`, high)
+
+Every finding adopted. Commits: `0f7a4749` (lead files, unchanged), `9f4a1f1a` (findings 9 and 11,
+roster nit), `1ae8180b` (the rest). No model call, no `eval:qa:lint`, no `eval:qa:register`.
+
+| # | Disposition | Test |
+|---|---|---|
+| 1 | `judgeStoredResults` records a `JudgeModelIdentityError` as `meta.judgeIdentityFailure`; every later write sets `comparable: false`, adds a reason, suppresses aggregates and the summary, and adds the row to `judgeStored.incompleteIds`. A resume is refused by the existing non-comparable guard. Inline: the row joins `incompleteIds`; `collectionError` already makes the run non-comparable. | `qa-judge-stored`: the unknown and mixed tests read the written file (`expectIdentityFailureArtifact`) and the unknown test shows the resume refusal. The inline `main()` path has no unit test (needs a live server). |
+| 2 | `row.agent.model` is `resolvedModel ?? null` for either request type (QA and discovery). `meta.model` is `measuredAnsweringModel(rows)` / `measuredDiscoveryModel(rows)`, the single exact ID of the answered rows. `answeringModelComparabilityReasons(rows, {pin})` and the discovery twin add reasons for an unresolved answered row, two IDs, or a pin that conflicts with the measured rows. Capture: a stream `init.model` is accepted only if `modelUsage` has no same-family key other than it; otherwise unknown. | `qa-model-identity` (contradictory init and usage; exact request with only a different usage key), `qa-judge-stored` (reasons, label, pin conflict), discovery twins in `qa-model-identity`. |
+| 3 | `compare-architecture-ab.mjs` rejects `meta.comparable === false`, a non-exact `meta.model`, a non-exact `meta.judgeModel` when judged (`judgeRubric` or `judgeModel` set), and row `agent.model` values that differ from `meta.model`. Legacy exact-ID v4 files and answer-only comparison still pass. | `compare-architecture-ab` "model identity" (4 tests). |
+| 4 | `tupleGuard` needs known exact IDs on both sides (no nulls, no aliases). `recordedJudgeModel` returns only an exact ID, so a legacy alias is unknown. The v3 validator rejects an alias, an empty string, a wrong family (alias request) or a mismatch (exact request) in `judge.resolvedModel`; unresolved stored v3 artifacts keep their hash. The re-judge pin is created in `runState` before the first checkpoint, so `meta.judgeModel` is an exact ID or `null`, never an alias. | `re-judge-model-identity` (guard, alias reads, pin identity), `playground-eval-contract` (resolved-field rules, unresolved v3 stays valid). Two existing `re-judge` tests needed an exact ID: their helper now records `claude-sonnet-5-5`, and one passes `--judge-model` because its source recorded no judge. |
+| 5 | `checkJudgeVerdictIdentity(pin, verdict)` returns an error verdict (`failureClass: "judge-model-identity"`) that keeps cost and `resolvedModel` instead of throwing. The orchestrator settles the judge cost, then sets `budgetError.code = "judge-model-identity"` and stops; the artifact is `invalid`, summary null, `nonPromotable`. | `playground-budget` orchestrator test ($0.10 answer plus $0.20 judge records $0.30, no missing-cost error), `qa-model-identity` for the helper. |
+| 6 | A file stamped with `judgeModel: null` and a `judgeRequestedModel` refuses an explicit different `--judge-model`; after a pin the recorded resolved ID is used. | `qa-judge-stored` pre-call resume test. |
+| 7 | The register collects identities from every collection artifact and BOTH sides of each re-judge pair (`meta.tuple.source.model` and `meta.judgeModel`) into `_meta.judgeModels`, and records `_meta.judgeModelsUnknown` for a missing or alias identity. `stabilityRegisterJudgeMatch` is `true` only when all are known and equal the judge, `false` when a known one differs, else `null`. | `qa-judge-stability` (4 tests), `qa-judge-stored` match values. |
+| 8 | The wrapper and child require `--judge-model <exact ID>` and refuse an alias; each candidate runs on that ID and fails (`ok: false`, reason on stderr) when its verdict reports another model. No key was added to the strict call record. `eval/qa/README.md`, the `run-evals` skill and the TODO item say to resolve the alias first, pass the exact ID and record it beside the summary. | `p6-judge-self-test` (alias refusal, model mismatch, record keys unchanged, args). |
+| 9 | The Grok resolver requires `info.id` to be a string on an object entry and skips everything else (no key fallback). | `model-family` malformed, hidden and valid mix, and a no-match case. |
+| 10 | `resolvedModelFromUsage` rejects any same-family key other than the request for an exact request, so pinning cannot narrow the check; other families stay ignored. | `qa-model-identity` conflicting-key tests, including after a pin. |
+| 11 | `fetched_at` is printed only when it parses as a date, in normalized ISO form; otherwise nothing. | `model-family` and CLI tests (a non-date marker is never echoed). |
+| nit | Roster flag cells are `-m "$M"` and `--model "$M"` with `M` from the two-step form. | none |
+
+### Gates (each run bare)
+
+| Gate | Result |
+|---|---|
+| `npm run typecheck` | clean |
+| `npm test` | 177 files passed, 5 skipped; 4278 tests passed, 3 expected fail, 8 skipped |
+| `npm run build` | exit 0 |
+| `npm run test:smoke` | 10 files, 173 tests passed |
+| `npm run eval:selftest` | all checks passed |
+| `npm run secrets:scan -- --tree` | clean |
+
+### Deviations and notes
+
+- **Earlier statements changed.** Deviation 1 and 5 of the first report stand, but an unresolved
+  answered row is now `null` for an exact request too (it no longer falls back to the request), and
+  `meta.model` no longer comes from the pin. An exact request is its own identity only before the
+  first response in `createModelPin`, and a judge verdict that reports `undefined` is still accepted
+  for an exact request (adapters and stubs that report nothing).
+- **Existing fixtures changed to exact IDs.** The `re-judge` tests' judge tuple is now
+  `claude-sonnet-5-5` instead of the `JUDGE_MODEL` alias, because the same-judge guard no longer
+  accepts an alias on either side. `playground-eval-contract` gained a `judgeModel` argument for
+  its fixture.
+- **Finding 4's "eligible verdict evidence at read time".** I validated `judge.resolvedModel` against
+  the request only (alias family, or exact equality). I did not cross-check it against per-row
+  verdict evidence, because a Playground row carries no model field to check against.
+- **Wrapper hash.** `run-p6-judge-self-test.mjs` and `judge.mjs` changed, so
+  `p6SelfTestWrapperSha256()` and any frozen run sheet that pinned the old wrapper hash no longer
+  match. No test pinned it; a future paid self-test run sheet must record the new hash.
+- **Not tested at unit level, still:** the inline `main()` wiring in `run-qa.mjs` and the discovery
+  spawn parse (live server and CLI needed), and the Playground `main()` call site of
+  `checkJudgeVerdictIdentity` (the helper and the orchestrator are tested).
+- Nothing needed a stop: no finding required a design the plan did not foresee, and no stored
+  artifact is stranded. Stored artifacts that recorded an alias as identity (none expected: the
+  first change landed this week) would now read as unknown and need `--allow-non-identical`.
