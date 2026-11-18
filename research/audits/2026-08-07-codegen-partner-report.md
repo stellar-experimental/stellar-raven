@@ -1,10 +1,12 @@
 # Raven as a codegen correctness substrate
 
+Moved from `ideas/` and sanitized on 2026-11-18 by round item 8.2: case text replaced by case ids, partner detail removed. A dated record, not a plan.
+
 Status: research note only. No committed work. Opened 2026-08-07 from the first external report of
 this usage mode.
 
 Recorded from an external partner report, 2026-08-05 → 2026-08-07. Identity, triage, and full
-message provenance are held in Solo scratchpad 784 and deliberately not repeated here.
+message provenance are held in an internal note and deliberately not repeated here (source: an internal note, not retained).
 
 ## The report
 
@@ -30,7 +32,7 @@ Checked live on 2026-08-07 against `skills.stellar-dev.smart-contracts` (served 
 `52baea1d8cb1aa9441004ce44b723f55cbc90901`) and the `stellarDocs.*` surface:
 
 Verdicts below were independently re-derived by an adversarial reviewer instructed to refute them.
-The consolidated evidence is in Solo scratchpad 784. Three of the original eight did not survive.
+The consolidated evidence is in an internal note (source: an internal note, not retained). Three of the original eight did not survive.
 The table carries the corrected verdicts.
 
 | Reported defect class | What Raven serves | Verdict |
@@ -39,7 +41,7 @@ The table carries the corrected verdicts.
 | #10 host-blocked re-entry | `SKILL.md` § platform-constraints: "cross-contract reentrancy is blocked by the host". `security.md`: "the host blocks reentrant calls, direct or indirect, on normal cross-contract paths" | **CONFIRMED** |
 | #8 persistent key, no rent → archival | `development.md`: "Every entry has a TTL … and is archived (persistent/instance) … when it expires"; "Rent is charged at invocation time". `security.md` class 8: "persistent entries archive and add restoration friction. Extend TTLs in hot paths" | **CONFIRMED** |
 | #12 mutator with no auth gate | `security.md` class 1 "Missing authorization", with a `// BAD: anyone can drain` example: "Every privileged path needs `require_auth()` on the right address" | **CONFIRMED** |
-| #6 missing `IdentityVerifier` / SEP-57 | golden `q-sor-evm-to-soroban-porting` names ERC-3643 → SEP-57 Draft v0.3.0 + OZ RWA modules | **CONFIRMED** |
+| #6 missing `IdentityVerifier` / SEP-57 | the expected-answer field of golden `q-sor-evm-to-soroban-porting` covers it | **CONFIRMED** |
 | #24/#25 wrong target / host triple | Target guidance is exact — "Compile for the `wasm32v1-none` target (Rust ≥ 1.84) — the only Wasm target the Stellar runtime supports". But **host-triple / toolchain diagnosis is absent** (not found after 4 targeted queries: `host triple`, `rustc --print`, `rustup show`, `native target`) | **PARTIAL** |
 | #9 unbounded collection vs entry cap | `development.md` states the number — "Ledger entry size (incl. whole instance storage) \| 64 KB" — and "Keep keys fine-grained … not one giant Map". But it **never connects a growing collection under one persistent key to eventual entry-cap write failure** (no match after 6 targeted queries) | **PARTIAL** |
 | #11 panic on malformed input | Only adjacent generic advice: "validate sign and range on inputs" and "When panicking, use `panic_with_error!` … not bare `panic!`". **No malformed-input or length-guard guidance exists** (not found after 6 targeted queries: `malformed`, `length guard`, `input length`, `out of bounds`, `slice`, `decode`). `security.md` class 7 is check-then-act races, not malformed input | **REFUTED — real content gap** |
@@ -68,7 +70,7 @@ open?* That is the weakest of three different bars, and they must not be run tog
 3. **Pinned** — a golden case measures it, which measures answering-when-asked, not writing.
 
 Only bar 1 is established. Bars 2 and 3 are demonstrably weaker in places, and the live probes in
-scratchpad 784 undercut the table's own verdicts: **re-entry (#10) returned no relevant docs hit**,
+an internal note (source: an internal note, not retained) undercut the table's own verdicts: **re-entry (#10) returned no relevant docs hit**,
 and **event assertions (#18/#20) returned only a weak page**. The table still marks #10 "Covered"
 because the skill text and a golden case exist. That is presence, not servability on the path a
 writing agent actually takes.
@@ -127,15 +129,15 @@ of this note.
 
 ## Where the ownership line actually falls
 
-The triage in scratchpad 784 split the 32 classes into "the project spec", "the harness", and
+The triage in an internal note (source: an internal note, not retained) split the 32 classes into "the project spec", "the harness", and
 "ours-adjacent", and assigned the whole parity band #1–#7 to *the project spec*. **That was too generous to
 us.** Project-specific names and ratified units (#1, #5, and the specific shapes in #7) genuinely
 belong to the project. But event topic placement versus EVM `indexed`, event field semantics, error-surface
 conventions, and cross-contract client shape are **platform education Raven actively markets to EVM
-porters** — `q-sor-evm-to-soroban-porting` exists precisely to teach that band. The split was also
+porters** — `q-sor-evm-to-soroban-porting` is the golden case for that band. The split was also
 internally inconsistent: it assigned #6 to ours-adjacent while assigning the rest of #1–#7 away.
 
-Corrected in 784. Recording it here because dumping the parity band off-books shrinks "ours" and
+Corrected in that note. Recording it here because dumping the parity band off-books shrinks "ours" and
 makes the coverage picture look better than it is.
 
 ## Candidate directions
@@ -155,8 +157,7 @@ Unranked, none committed. Each needs its own evidence before it becomes work.
    ordering"` returned the correct `test-contract-events` and `example-contracts/events#tests`. Same
    concept, different phrasing, materially different quality. Porters phrase in EVM terms
    (`indexed`, `msg.sender`, `nonReentrant`, `address(0)`). `q-sor-evm-to-soroban-porting` is
-   currently the only golden case entering from that vocabulary, and it carries a very wide surface
-   alone.
+   currently the only golden case entering from that vocabulary.
 4. **The silent-success family.** The reporter's own headline: 7 of the 32 (#2, #17, #23, #24, #26, #27,
    #28) collapse to one shape — *an operation that reports success while changing nothing, or
    changing the wrong thing*. The reporter calls it the most productive class to hunt. Raven already models
@@ -175,50 +176,39 @@ Unranked, none committed. Each needs its own evidence before it becomes work.
 
 Real, narrow, and independent of everything above. All four were independently re-verified against
 all 490 battery cases. The review sharpened two claims and found a fifth issue. Full evidence is in
-Solo scratchpad 784.
+an internal note (source: an internal note, not retained). Case text is not repeated here; each gap names the case ids and the field they concern.
 
-- **Persistent unbounded collection vs the entry cap** (#9) — **gap real, narrower than first
-  stated.** The closest case is not the one originally named: `q-zk-nullifier-storage` already
-  teaches "use individually keyed persistent nullifiers with explicit TTL and rent handling, not an
-  unbounded instance map" — but it is instance-framed and grades double-spend, not a write hitting
-  the cap. `q-soroban-wasm-size-limit` pins 64 KiB deliberately as a *contrast* value ("Do NOT call
-  64 KiB … a universal ledger-entry limit"). The persistent-write-failure path is nowhere the graded
-  subject.
-- **Event-assertion discipline in tests** (#18/#20) — **partial; the original claim missed the case
-  that matters.** `q-sor-decode-hosterror-codes` does grade test-side event inspection, including the
-  import trap and the rollback trap: "For events import `testutils::Events as _` and inspect
-  `env.events().all().events()`; failed calls roll events back." What is nowhere in the corpus is the
-  **per-call reset semantic** — that an assertion read after an intervening invocation is
-  meaningless. Zero hits corpus-wide. That narrower gap stands.
-- **Auth failure error surface** (#13) — **GAP CONFIRMED.** Zero hits corpus-wide for `map_err`,
+- **Persistent unbounded collection vs the entry cap** (#9) — gap real, narrower than first
+  stated. The closest cases are `q-zk-nullifier-storage` (golden field) and
+  `q-soroban-wasm-size-limit` (avoid clauses). Neither grades a persistent write hitting the cap.
+- **Event-assertion discipline in tests** (#18/#20) — partial. `q-sor-decode-hosterror-codes`
+  (golden field) is the closest case. The per-call reset semantic is in no case: zero hits
+  corpus-wide.
+- **Auth failure error surface** (#13) — gap confirmed. Zero hits corpus-wide for `map_err`,
   `contracterror`, "domain error", "custom error", "swallow". Twelve cases mention `require_auth`;
-  none address error remapping. `q-sor-decode-hosterror-codes` is adjacent but is a *diagnosis*
-  rubric — about not misreading an error code, not about not rewriting one.
-- **`try_*` client semantics** — **GAP CONFIRMED.** Zero occurrences of any `try_*` method across all
-  490 files; the only regex hits were the substring inside `contract_data_entry_size_bytes`. Also
-  zero hits for `Result<`, "swallow", "silent success", "ignore the Result". Squarely the
-  silent-success shape and entirely unpinned.
+  none address error remapping. `q-sor-decode-hosterror-codes` (rubric field) is adjacent, not a
+  match.
+- **`try_*` client semantics** — gap confirmed. Zero occurrences of any `try_*` method across all
+  490 files, and zero hits for `Result<`, "swallow", "silent success", "ignore the Result".
+  Squarely the silent-success shape and entirely unpinned.
 
 ### Separate corpus defect found while verifying
 
-`q-soroban-unit-testing` carries a **stale pointer to a case that does not exist in the owned
-battery**. Its notes delegate: "the failure-path concern (proving an UNAUTHORIZED caller is rejected
-— where `mock_all_auths` is the wrong tool) is owned by `q-sor-testing-negative-auth-events`." That
-case exists only in the retired, read-only, routing-eval-only prior art at
-`eval/corpus/raven-next/research/golden/soroban/`. The owned battery never received it, so the
-delegated concern is owned by nothing. Its prior-art `must_haves` cover ground both the event-assert
-and auth-error gaps circle. **This is a repo defect independent of the partner team and should be reconciled on
-its own.**
+`q-soroban-unit-testing` (notes field) points to `q-sor-testing-negative-auth-events`, which does
+not exist in the owned battery. That case exists only in the retired, read-only,
+routing-eval-only prior art at `eval/corpus/raven-next/research/golden/soroban/`. The owned
+battery never received it, so the delegated concern is owned by nothing. Its prior-art `must_haves`
+field is the reference for reconciling the gaps above. **This is a repo defect independent of the
+partner team and should be reconciled on its own.**
 
 ## Unanalyzed product risk
 
-The "building with AI" page is what sold him ("very impressed"), install followed the same evening,
-and Jane has since told him the feedback goes "to the Raven team". That sequence creates a
-correctness expectation which this note's non-goals then disclaim. The gap between what the on-ramp
-implies and what the non-goals reserve has not been examined, and it is being carried by a partner
-heading into DTCC and SEC processes. The product question — whether the on-ramp promises something
-the server does not own — belongs here and is open. The consolidated partner-side handling is in
-Solo scratchpad 784.
+The "building with AI" page drove the install, and the partner was told the feedback goes to the
+Raven team. That sequence creates a correctness expectation which this note's non-goals then
+disclaim. The gap between what the on-ramp implies and what the non-goals reserve has not been
+examined. The product question — whether the on-ramp promises something the server does not own —
+belongs here and is open. The consolidated partner-side handling is in an internal note
+(source: an internal note, not retained).
 
 ## Non-goals
 

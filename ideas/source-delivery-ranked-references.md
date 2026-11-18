@@ -31,32 +31,21 @@ is a routing defect.
 
 **Class 1 — the fact exists only in source, and no exposed operation carries it.**
 
-- `q-quickstart-manual-ledger-close`: `--enable-core-manual-close` exists only in the
-  `stellar/quickstart` `start` script (line 47 default, line 202 parse, line 520 config write, per
-  `sd-044`). README and Docs omit it. Eight docs executes plus one `scout.searchResearch` could not
-  surface it; the answer asserted non-existence (`fable-max.md` §2.1, [`sol-max.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/qa-deep-dive-2026-08-25/sol-max.md) row 32).
-  `scout.explainRepo` was the only plausible exposed route and was not tried (`fable-max.md` §7 Q6).
-- `q-ti-rpc-gettransactions-pagination-xdr`: the getTransactions defaults (50/200) are
-  operator-configurable in `stellar-rpc` `options.go`, but the docs page says "hardcoded in
-  Stellar-RPC" and `sd-004` is declined upstream ([`grok-xhigh.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/qa-deep-dive-2026-08-25/grok-xhigh.md) §2). Terra classes the row
-  UPSTREAM-LACKS: "no current Raven carrier for complete canonical RPC reference."
+- `q-quickstart-manual-ledger-close`: Class 1. Public evidence: finding `sd-044`.
+- `q-ti-rpc-gettransactions-pagination-xdr`: Class 1. Public evidence: finding `sd-004`.
 
 **Class 2 — official docs and the canonical implementation disagree, and the agent cannot see
 the second voice.**
 
-- `q-protocol-base-reserve-min-balance`: `stellar-core` `getMinBalance` in
-  `src/transactions/TransactionUtils.cpp` excludes selling liabilities. The sponsored-reserves
-  page formerly added `+ liabilities.selling` (`sd-043`). Stellar Docs fixed this conflict on
-  2026-09-08. Raven retired the finding after an independent live recheck.
+- `q-protocol-base-reserve-min-balance`: Class 2. Public evidence: finding `sd-043`.
 - Fable §7 Q2 names six goldens that "punish docs-faithful answers" and asks for a docs-vs-source
   policy. Terra's top-10 puts a canonical technical reader at rank 1 (up to 14 rows), an advisory
   source at rank 8, and docs repair at rank 3.
 
-**Not in either class.** `q-sor-p23-auto-restore-extendto` is classified ANSWER-FAIL
-(`fable-max.md` §2.2), carrier EXPOSED with fix class `output-contract` ([`terra-max.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/qa-deep-dive-2026-08-25/terra-max.md) row 87);
-the `max_entry_ttl` value was visible in a result and the final formula dropped the minus-one
-([`sol-max.md`](https://github.com/stellar-experimental/stellar-raven/blob/6dd9439461a286f5ca5f87722fb60f238c610d3d/research/qa-deep-dive-2026-08-25/sol-max.md) row 40). A precise CAP pointer may help questions of that shape (§5, precision use
-case), but the recorded evidence does not show that this mechanism would have fixed that answer.
+**Not in either class.** `q-sor-p23-auto-restore-extendto` is classified ANSWER-FAIL in the deep
+dive (fix class `output-contract`). A precise CAP pointer may help questions of that shape (§5,
+precision use case), but the recorded evidence does not show that this mechanism would have fixed
+that answer.
 
 The pattern across both classes: the calling agent's best possible next step was "go read this
 exact file at this exact ref," and Raven had no way to say that. The prior framing (Track C item 1)
