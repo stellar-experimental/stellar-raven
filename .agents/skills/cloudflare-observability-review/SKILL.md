@@ -1,6 +1,6 @@
 ---
 name: cloudflare-observability-review
-description: Investigate live Cloudflare Workers observability for stellar-raven-codemode. Use when reviewing production MCP request logs, playground/demo telemetry, traces, Ray IDs, request headers, telemetry query results, eval observability, agent-run forensics, or whether Cloudflare metadata is enough without app-level correlation IDs.
+description: Investigate live Cloudflare Workers observability for stellar-raven-codemode. Use when reviewing production MCP request logs, Playground telemetry, traces, Ray IDs, request headers, telemetry query results, eval observability, agent-run forensics, or whether Cloudflare metadata is enough without app-level correlation IDs.
 ---
 
 # Cloudflare observability review
@@ -12,7 +12,8 @@ inputs, Ray IDs, and verdict in the round ledger or `.agents/TODO.md`.
 
 Cloudflare-native request identity is enough for one invocation. Use the app's privacy-safe
 `subjectHash` and `clientHash` only to attribute across requests. Do not add a model-forwarded
-correlation ID unless production evidence shows this fails for common investigations.
+correlation ID unless production evidence shows this fails for common investigations
+([ADR-0004](../../../research/decisions/0004-correlation-id-continuity.md)).
 
 ## Safety
 
@@ -42,9 +43,11 @@ Third-party traffic across requests:
   `$metadata.requestId` and do not repeat the hashes.
 - `subjectHash` is the 16-hex `hashPrefix(subject)` that playground and artifact events use.
   `clientHash` is a 16-hex HMAC of the OAuth client ID.
-- `clientHash = null` means a grant issued before client attribution, not an anonymous user. Never
-  fill the gap from user-agent or network fields.
-- Rotating `MCP_SERVER_SECRET` splits hashes between old and new grants, and rotates demo cookies.
+- `clientHash = null` means a grant issued before client attribution, or an unset
+  `MCP_SERVER_SECRET`, not an anonymous user. Never fill the gap from user-agent or network fields.
+- Rotating `MCP_SERVER_SECRET` changes every `clientHash` at once. It also gives each user a new
+  subject, so a new `subjectHash`, at the next sign-in; a grant issued before the rotation keeps
+  its old subject until it is replaced. Signed Playground cookies stop verifying.
 - A wrong named API key falls through to OAuth and appears as `accessMode = "oauth-rejected"`; a
   valid key is `"api-key"`. Never derive identity from rejected credentials.
 - `OPTIONS /mcp` preflights emit no `mcp_request` event.
@@ -125,22 +128,16 @@ Each of these fails silently: the query succeeds and the number looks plausible.
 - **`recoveryAdviceDelivered` is a host delivery latch**, not model compliance.
 - **`evidenceState` on a `demo-step` is per step.** The final answering step makes no tool calls,
   so `"none"` there is structural.
-- **`sources` and `errorName` on `execute` and `demo-execute`.** `sources` counts calls, upstream
-  requests (`attempts`), outcomes, and `finalStatus` per service in fixed buckets (`2xx`, `3xx`,
-  `4xx`, `429`, `5xx`, `timeout`, `network`, `none`); the exact status and `attempts` are on each
-  `op` event. A `timeout` bucket is a call that hit the 24-second per-call budget, not a missing
-  result. `errorName` is null on success, else `SyntaxError`, `TypeError`, `ReferenceError`,
-  `timeout`, or `other`; it is a best-effort class from the runtime's message text, so a
-  model-thrown `Error` can land in the wrong class. A script that throws a non-Error is recorded
-  as `ok: true`.
+- **`sources` and `errorName` on `execute` and `demo-execute`.** A `timeout` bucket in `sources` is
+  a call that hit the 24-second per-call budget, not a missing result. A script that throws a
+  non-Error is recorded as `ok: true`. The fields, buckets, and `errorName` classes are in
+  [`ARCHITECTURE.md`](../../../ARCHITECTURE.md#9-observability); the exact status and `attempts`
+  are on each `op` event.
 - **`sourceBasis`** exists when a result is truncated or an operation provides allowed source
   metadata. `calls.first` rows also carry `attempts` and `finalStatus`. `canonicalUrlCount` comes
   from the full result before truncation, so a zero count cannot show that truncation removed a URL.
-- **Check the shape before you match stored results.** `rows[].transcript` is an array of objects,
-  and `verdict` is an object whose label is `verdict.score`. String or identity comparisons on
-  either return a wrong answer without an error.
-- **AI Gateway can replay completions.** The demo gateway has `cache_ttl: 300`, and a replay is
-  invisible from the Worker. `demoModelSettings` sends `cf-aig-skip-cache: true`, so demo repeats
+- **AI Gateway can replay completions.** The demo gateway caches completions (its TTL is
+  dashboard-side config, 300 seconds when last read), and a replay is invisible from the Worker. `demoModelSettings` sends `cf-aig-skip-cache: true`, so demo repeats
   are independent; any other measured surface that talks to a gateway needs that header. Compare
   repeat latency and output length before you trust a p50.
 
@@ -148,11 +145,10 @@ Each of these fails silently: the query succeeds and the number looks plausible.
 
 Skill bodies are fetched from their pinned upstream at read time (`ARCHITECTURE.md` §6).
 
-- **`evt = "skill_read"`**: group `ms` by `from` (`memo`, `cache`, `upstream`) and never average
+- **`evt = "skill_read"`**: group `ms` by `from` (`memo`, `cache`, `upstream`, `none`) and never average
   across them. Expect tens of milliseconds for `upstream` and near zero for `memo`. For
   availability, filter `outcome = "error"` and group by `id` and `from`. `shape` (`whole`,
-  `sections`, `files`, `mixed`) and `id` show what is read; this feeds the open question in
-  `ideas/skill-discovery-without-bundling.md`. `retrievals` counts pinned files
+  `sections`, `files`, `mixed`) and `id` show what is read. `retrievals` counts pinned files
   fetched. Events carry no body text and no caller identity.
 - **`evt = "skill_canary"`**: the hourly cron (`src/skills/canary.ts`) fetches every pinned file
   with caches bypassed. It is the only detector that works with no user traffic. Silence in
@@ -189,8 +185,8 @@ and mark inference from counts and IDs as best-effort.
 
 ## Field map
 
-- **MCP request summary**: `accessMode`, `subjectHash`, `clientHash`, `requestId`, `rayId`,
-  `method`, `status`. Rejected events omit the identity keys. Cloudflare redacts the older `auth`
+- **MCP request summary**: `accessMode`, `apiKeyName` (named API keys only), `subjectHash`,
+  `clientHash`, `requestId`, `rayId`, `method`, `status`. Rejected events omit the identity keys. Cloudflare redacts the older `auth`
   field, so group by `accessMode`.
 - **Auth-flow rejections**: `evt = "auth_reject"` with `status` and `reason`; `src/auth/workos.ts`
   owns the emitters and reason strings. A callback the allowlist refuses logs

@@ -113,7 +113,7 @@ contracts. Never preserve a comment only because another model might read it lat
 
 ### Repairs
 
-- Keep user tasks in the task tracker and temporary agent context in a scratch surface.
+- Keep open work in the project's designated queue (`.agents/TODO.md` in this repository) and temporary agent context in a scratch surface.
 - Keep public behavior in API documentation and durable design decisions in ADRs.
 - Move low-level facts close to the code that owns them.
 - Replace duplicate prose with a link to the canonical owner.

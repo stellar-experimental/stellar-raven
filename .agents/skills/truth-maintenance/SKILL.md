@@ -35,23 +35,24 @@ ledger under their own heading; the coordinator owns repo edits unless a write s
 explicit, and disjoint. A reviewer re-derives from files, diffs, live probes, or GitHub state, not
 from the coordinator's summary.
 
-Ledger headings: `Scope`, `Lane plan`, one verdict section per lane in scope, `Own-repo todos`,
-`Decisions`, `Final checklist`.
+Ledger headings follow [`.agents/rounds/README.md`](../../rounds/README.md): `Scope`, `Lanes` (the
+lane plan), `Ledger` (one verdict subsection per lane in scope), and `Outcome` (decisions, own-repo
+todos moved to `.agents/TODO.md`, retained evidence, and the final checklist).
 
 ## 2. The stale-gospel queue
 
 This skill owns golden freshness as a standing due-date queue. Every `scheduled` case has a
-`truth.reverifyBy` date, and `npm run eval:qa:lint -- --stale` fails on a past-due case in PR CI
-and the daily refresh.
+`truth.reverifyBy` date, and `npm run eval:qa:lint -- --stale --enforce-floors` fails on a
+past-due case in PR CI and the daily refresh.
 
 - **When the gate fires**, send each past-due case through `golden-truth`: re-verify it (update
   `truth.verified`, `truth.asOf`, and `reverifyBy`), or record a dated extension with a root cause.
   The gospel-change lint does not require evidence when only `reverifyBy` changes, so a reviewer
   checks the evidence for either action.
-- **Stagger new dates** by quarter across cases. A wall of identical dates is a review finding.
 - **Source sentinels fire early.** The daily `golden-sentinels` workflow keeps one labeled issue
   open while an anchor drifts. Queue each drifted case ahead of its `reverifyBy` date. A drift is a
   trigger, never evidence; when the fact holds and only the wording moved, re-author the anchor.
+  `golden-truth` section 5 owns the per-case rules: staggered dates and sentinel handling.
 - **Look ahead.** Fold cases due in the next two to four weeks into the current round.
 - **Corpus health**, when the round asks for it: scan `eval/qa/consistency-register.json` clusters
   for cross-question contradictions, sample a refute-then-repair sweep weighted toward
@@ -75,7 +76,8 @@ trigger. Declined findings stay active while the trigger reproduces.
 Stop when each lane in scope has a verdict with evidence. Then confirm:
 
 - Each lane ran its own final gates; the ledger records commands, result stamps, URLs, and commits.
-- `npm run eval:qa:lint -- --stale` is green and new `reverifyBy` dates are staggered.
+- `npm run eval:qa:lint -- --stale --enforce-floors` is green and new `reverifyBy` dates are
+  staggered.
 - Improvements index, lint, and probes ran if `improvements/` changed; every retired finding has a
   complete `resolved.json` receipt and no stale references.
 - Every recorded GitHub URL was read back; untouched open issues stayed silent.

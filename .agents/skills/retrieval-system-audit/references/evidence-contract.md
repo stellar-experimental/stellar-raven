@@ -7,7 +7,7 @@ Use these fields in the durable audit ledger. Add fields only when the experimen
 | Field | Required value |
 | --- | --- |
 | ID | Exact exposed operation or skill ID |
-| Source | Lumenloop, Scout, Stellar Docs, or Skills |
+| Source | Lumenloop, Scout, Stellar Docs, stellar.org, or Skills |
 | Authority | Claims this source can support |
 | Input | Required fields, enums, and unsafe values |
 | Output | Top-level and nested model-visible fields |
@@ -15,7 +15,7 @@ Use these fields in the durable audit ledger. Add fields only when the experimen
 | Responses | Data, soft-empty, error, upstream-ok traps, and the ok `asOf` and `caveat` signals |
 | Retrieval | Description, keywords, profile, and recovery edges |
 | Safety | Read-only, paid, side-effecting, or excluded |
-| Coverage | Routing, holdout, QA, live, plan, discovery, and agentic cases |
+| Coverage | Routing, holdout, QA, live, plan, discovery, temporal, and agentic cases |
 | Finding | Verified defect, risk, or no issue |
 
 ## Live probe record

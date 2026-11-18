@@ -3,8 +3,8 @@
 `AGENTS.md` names role tiers and the eval and test model set. This file maps both to exact model
 IDs and launch lines. When a CLI catalog changes, update this file only.
 
-Verified 2026-11-14 against the installed CLI catalogs: Codex `0.167.0`, Claude Code `2.1.325`,
-Grok `1.0.77`.
+Verified 2026-11-18 against the installed CLI catalogs: Codex `0.169.0`, Claude Code `2.1.327`,
+Grok `1.0.88`.
 
 ## Repo-work tiers
 
@@ -37,10 +37,6 @@ clients.
 
 - Haiku and GPT-6 Luna are out of every test and eval: they are less common and too inconsistent
   to weigh.
-- **Run on `hc` agents first.** Drive these models through the subscription CLIs above, as `hc`
-  children, against the local server (`npm run dev:eval`). Use an API-billed path (Cloudflare AI
-  Gateway, a provider API) only when no CLI path can do the job, and record the reason in the
-  round ledger.
 - A frozen measurement contract keeps the models it names: a registered battery's answering set,
   a judge, and the public Playground models in `src/demo/model-config.ts`. Changing one is a
   reviewed measurement change under the `run-evals` skill, not a roster edit.

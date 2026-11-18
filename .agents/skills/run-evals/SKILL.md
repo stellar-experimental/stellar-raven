@@ -51,16 +51,10 @@ State both numbers and make the call; scores are evidence, not the decision.
 
 ## 2. Clients, models, and billing
 
-| Client under test | CLI and model ID | Use |
-|---|---|---|
-| Claude Sonnet 5.5 | `claude --model claude-sonnet-5-5` | Default set |
-| GPT-6.1 Terra | `codex -m gpt-6.1-terra` | Default set |
-| Grok 4.7 | `grok --model grok-4.7` | Default set |
-| Claude Opus 5.5 | `claude --model claude-opus-5-5` | Add only where a stronger client can change the decision |
-| GPT-6.1 Sol | `codex -m gpt-6.1-sol` | Add only where a stronger client can change the decision |
+The client set, its model IDs, and its CLI flags are in
+[`.agents/model-roster.md`](../../model-roster.md#models-for-evals-and-tests). The roster owns the
+IDs. Pass the full ID to `run-qa.mjs --model <id>`.
 
-- Do not test or evaluate with Haiku or GPT-6 Luna. They are uncommon among users and too
-  inconsistent to weigh.
 - One client is enough when the decision does not depend on the client. Add clients only for a
   client-dependent decision.
 - **Run here, on `hc`.** Development tests and evals use the local `wrangler dev` server
@@ -76,8 +70,10 @@ State both numbers and make the call; scores are evidence, not the decision.
   Claude client.
 - Codex and Grok have no committed runner. Run them as `hc` lanes with the launch lines in
   [`.agents/model-roster.md`](../../model-roster.md), register the loopback MCP URL with
-  `codex mcp add` or `grok mcp add`, and have each lane write its answers to a file. Report the
-  result as a client diagnostic with its own denominator; never merge it with QA-runner results.
+  `codex mcp add` or `grok mcp add`, and have each lane write its answers to a file. A Codex lane
+  launched with `-a never` cannot approve MCP tool calls; read the roster's Codex note before you
+  rely on the registration. Report the result as a client diagnostic with its own denominator;
+  never merge it with QA-runner results.
 
 Three roles stay separate. The **orchestrating agent** runs this skill and never answers cases
 itself. The **answering agent** and the **judge** are spawned by the runner. Their defaults
@@ -112,11 +108,13 @@ npm run eval:selftest            # grader math and frozen live-contract pins
 npm run eval:compile             # corpus -> eval/routing-cases.json
 npm run eval:routing -- --gate   # exit 1 on a breach or a changed denominator
 npm run eval:qa:compile          # only when QA cases changed
-npm run eval:qa:lint -- --stale  # add --since <base-ref> after editing judge-facing gospel
+node eval/plan/build-op-classes.mjs   # catalog -> eval/plan/op-classes.json; rerun after a catalog change
+npm run eval:qa:lint -- --stale --enforce-floors  # the CI form
 ```
 
-Without `--since`, the gospel-change lane skips locally while CI enforces it. Generated files
-(`routing-cases.json`, `qa/cases.json`, `qa/sample.json`, `qa/lifecycle-registry.json`,
+Add `--since <base-ref>` to the lint after editing judge-facing gospel. Without `--since`, the
+gospel-change lane skips locally while CI enforces it. Generated files (`routing-cases.json`,
+`qa/cases.json`, `qa/sample.json`, `qa/tool-cases.json`, `qa/lifecycle-registry.json`,
 `plan/op-classes.json`) come from these scripts; CI byte-pins them. The two live contracts are
 frozen: change them only with a provenance note, a contract-version bump, and a digest update.
 
@@ -128,7 +126,8 @@ when the rubric, prompt, evidence pack, or judge adapter changed, under its own 
 1. **Server.** Reuse a terminal already running `npm run dev:eval` (`hc ls`, then `hc read <t>` for
    its port). If none exists, start your own: `hc run --bg --name dev-eval npm run dev:eval --
    --port <port>`, then `hc wait dev-eval --output Ready`. Stop only a server you started. Use
-   `dev:eval`, not `dev`: without its `--host localhost` every request returns 401.
+   `dev:eval`, not `dev`: only the eval launcher refuses a dirty worktree and stamps the revision
+   in MCP `serverInfo`, which the run's `--server-revision` pin checks.
 2. **Readiness.** A plain GET on `/mcp` proves nothing. Expect `200` from a real initialize:
 
    ```sh
@@ -141,7 +140,8 @@ when the rubric, prompt, evidence pack, or judge adapter changed, under its own 
    and pass exactly one `--max-budget-usd`. A changed pin stops the method; a new pin needs a new
    authorization. Never resume a stopped artifact under the same authorization.
 4. **Estimate cost from stored runs**, not from a per-case figure in a README: read
-   `meta.totalCostUsd` in `eval/qa/results/*.json` for the same lane, model, rubric, and pack, and
+   `meta.totalCostUsd` with `jq` from the results files that the round ledgers name for the same
+   lane, model, rubric, and pack (`eval/qa/results/<stamp>-variantA.json`), never by glob, and
    quote the observed range and median.
 5. **Run.**
 
@@ -175,6 +175,9 @@ transcript and the exact golden. `caseInput` on each row holds the judge input; 
 needs the question, golden, `trap` and `freshness` tags, as-of metadata, and transcript. Truncated
 execute results end in a `--- SOURCE BASIS ---` block.
 
+- Check the shape before you match stored results. `rows[].transcript` is an array of objects, and
+  `verdict` is an object whose label is `verdict.score`. String or identity comparisons on either
+  return a wrong answer without an error.
 - Read `wrong` counts before `correct` counts. Compare runs only on the same case IDs, model,
   rubric, and pack; the sampler can change membership when the corpus grows.
 - Untagged cases are judged corpus-blind, so a grounded specific that the judge cannot see can be
@@ -193,8 +196,8 @@ Classify each reviewed failure and surprising pass. Disclose unreviewed rows; th
 
 | Root cause | How to recognize | Where it goes |
 |---|---|---|
-| Judge artifact | Live re-execution contradicts the verdict | Round record; rubric note if the mode is new |
-| Agent failure | Tool use or synthesis is wrong in the transcript | Round record; `.agents/TODO.md` only for a pattern |
+| Judge artifact | Live re-execution contradicts the verdict | Round ledger; rubric note if the mode is new |
+| Agent failure | Tool use or synthesis is wrong in the transcript | Round ledger; `.agents/TODO.md` only for a pattern |
 | Own-repo gap (scoring, catalog, executor, adapters) | Search buried the right entry, or a normalizer misread a payload | `.agents/TODO.md`, never `improvements/` |
 | Eval-side gap (stale golden, mislabeled case) | The golden disagrees with the service's own live answer | `.agents/TODO.md`; fix through `golden-truth` |
 | Upstream data or content gap | Correct agent and plumbing still cannot answer from what the service returns | `improvements/` finding |
@@ -203,12 +206,13 @@ Classify each reviewed failure and surprising pass. Disclose unreviewed rows; th
 
 - **Bar for acting.** The same failure in two unrelated cases, a contract mismatch, a reproducible
   infrastructure bug, or trace evidence that the model was asked the wrong thing. A single-case
-  finding goes on a named monitor-only list in the round record.
+  finding goes on a named monitor-only list in the round ledger.
 - **No overfitting.** Fix a general mechanism or leave the case red with a note. No
   query-to-service maps and no per-question vocabulary. Case IDs, question phrases, and golden
-  fragments stay in the round record, out of descriptions, keywords, scorer constants, and prompts.
-  The same bar binds docs scoping changes (`improvements-pipeline`). When the first failed boundary
-  is an upstream gap, file or update the finding before you propose local wording.
+  fragments stay in the round ledger, out of descriptions, keywords, scorer constants, and prompts.
+  The same bar binds docs scoping changes
+  ([`docs/stellar-docs.md`](../../../docs/stellar-docs.md#maintenance)). When the first failed
+  boundary is an upstream gap, file or update the finding before you propose local wording.
 - **A reported regression is an outcome, not a cause.** Before you special-case a dropped keyword
   or rank, check whether a threshold (for example the document-frequency cut) is doing its job.
 - **Before a wording fix**, read what the model was already told at the failure moment, nearest
@@ -235,16 +239,16 @@ review coverage, retained failures, and limits. Keep dated evidence in `research
 
 - Gate verdict recorded; `gates.json` re-baselined in-commit if the movement was legitimate.
 - Verified findings filed or explicitly deferred; own-repo fixes are `.agents/TODO.md` entries.
-- After case edits, `npm run eval:qa:lint -- --since <ref> --stale` is green and
+- After case edits, `npm run eval:qa:lint -- --since <ref> --stale --enforce-floors` is green and
   `npm run eval:qa:register` re-stamped the clusters.
 - A requested independent review finished and every finding was reconciled.
 
 ## Hard rules
 
-- One headline (QA end to end) and three routing gates; everything else is diagnostic. Lanes never
-  merge, denominators never change quietly, and no view becomes a gate without a recorded decision.
+- The four instrument rules (one headline and three routing gates, separate denominators, no
+  per-question tuning, freshness graded as behavior) are the "Evaluation rules" in
+  [`eval/EVALS.md`](../../../eval/EVALS.md#evaluation-rules).
 - When two instruments disagree, the one closer to the headline wins.
-- No per-question tuning. No schemas or judge code copied from prior-art repos.
-- Freshness-sensitive truth is graded as behavior, never as pinned values in a gate.
+- No schemas or judge code copied from prior-art repos.
 - Never print or commit secrets. Paid Lumenloop research stays off; eval runs use free operations.
 - Sandbox and network posture is never relaxed for eval convenience.
