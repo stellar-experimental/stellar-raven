@@ -12,8 +12,8 @@ merged into. Each has its own folder (PLAN, REVIEW, EXEC, REPORT).
 | 1 | Routine in-range patches | [pr1-routine](pr1-routine/) | merged, #480, deployed `35c3b860` |
 | 2 | `agents` 0.28.1 to 0.33.0, with `@modelcontextprotocol/server` and `/client` 2.3.1 to 2.4.0 and `@modelcontextprotocol/sdk` 1.32.1 to 1.32.2 | [pr2-agents-mcp](pr2-agents-mcp/) | merged, #482, deployed `fe3708cb` |
 | 3 | `wrangler` 4.153 to 4.164, the vitest pool, miniflare and `esbuild` 0.28.2, and the move from the deprecated pool to `@cloudflare/vitest-plugin` | [pr3-wrangler](pr3-wrangler/) | merged, #483, no deploy |
-| 4 | `@cloudflare/workers-oauth-provider` 1.x | [pr4-oauth](pr4-oauth/) | design approved; PR open |
-| 5 | `vitest` 5 | approved after PR 4 | the plugin's peer range has accepted `vitest` ^5 since 1.4.0; proposed after PR 4 |
+| 4 | `@cloudflare/workers-oauth-provider` 1.x | [pr4-oauth](pr4-oauth/) | merged, #484, deployed `9f01ae3e` |
+| 5 | `vitest` 4.1.12 to 5.1.0 | [pr5-vitest5](pr5-vitest5/) | PR open, #485; no deploy (bundle byte-identical) |
 
 The orchestrator's rows 2 (`agents`) and 3 (MCP SDK 2.4) are one PR: `agents@0.33.0` pins
 `@modelcontextprotocol/client` and `/server` at 2.4.0 and `@modelcontextprotocol/sdk` at 1.32.2 as
