@@ -208,8 +208,8 @@ The independent reviewer:
   and golden-audit paths. Never use `grep -r`, `git grep`, `rg -u` or `--no-ignore`, an `rg -g` glob
   that matches a case file, or a shell glob over `eval/` or `.agents/rounds/`. A Claude Code hook
   denies these; Codex and Grok lanes rely on this rule. Where `rg` is missing, use `git grep` with the
-  exclusion pathspec that `eval/qa/README.md` ("Searching without reading case text") prints. Only a golden-maintenance
-  lane opens case text, and it names the exact path.
+  exclusion pathspec that `eval/qa/README.md` ("Searching without reading case text") prints. Only a
+  golden-maintenance lane opens case text, and it names the exact path.
 - Skills are timeless: no todo IDs, run stamps, or dated state in skill text.
 - Solo, a retired task tracker, is not a live path. Add no `solo://` reference, Solo todo, or Solo
   scratchpad. Leave Solo references in dated records unchanged.

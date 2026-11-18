@@ -365,7 +365,7 @@ The signed cookie contains the peppered WorkOS subject; loopback dev uses `dev-l
 
 | Area | Limit or behavior | Source |
 | --- | --- | --- |
-| Search page | Default `SEARCH_DEFAULT_LIMIT`; maximum 50. The [catalog reference](src/catalog/README.md#search-interfaces) holds the defaults for both search interfaces. | [tools.ts](src/mcp/tools.ts), [search.ts](src/catalog/search.ts) |
+| Search page | Default 7 (`SEARCH_DEFAULT_LIMIT`); maximum 50. The [catalog reference](src/catalog/README.md#search-interfaces) holds the defaults for both search interfaces. | [tools.ts](src/mcp/tools.ts), [search.ts](src/catalog/search.ts) |
 | Execute code | Non-empty string; no application length ceiling. | [tools.ts](src/mcp/tools.ts) |
 | Tool calls | No application per-session count cap. | [server.ts](src/server.ts) |
 | Refresh grant | Fixed authorization window; token rotation does not extend it. See the [retention table](docs/operations.md). | [gate.ts](src/auth/gate.ts) |
@@ -450,7 +450,7 @@ The `codemode.execute` span sets `sandbox.errorName` on failure. `errorName` nev
 `sourceBasis.calls.first` rows also carry `attempts` and `finalStatus`; both are bounded and telemetry-only.
 Operation and runner events record IDs, outcomes, and timing.
 Skill-read events distinguish memo, colo cache, and upstream retrieval.
-Events and spans exclude query text, execute code, payloads, answers, secrets, and provider-error messages. [ADR-0004](research/decisions/0004-correlation-id-continuity.md) keeps correlation ids out of model-facing text.
+Events and spans exclude query text, execute code, payloads, answers, secrets, and provider-error messages. [ADR-0004](research/decisions/0004-correlation-id-continuity.md) removed the `correlationId` input and output from the tools; Ray IDs join logs and spans.
 The [observability skill](.agents/skills/cloudflare-observability-review/SKILL.md) owns investigation procedures.
 
 ## 10. Evals
