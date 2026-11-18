@@ -1015,16 +1015,18 @@ Done when: the tests run on `@cloudflare/vitest-plugin`, all three overrides are
 ### Move the demo off the deprecated `workers-ai-provider`
 
 Cloudflare froze `workers-ai-provider`; the replacement is `createAI` from
-`agents/models/ai-sdk`, which needs `agents` 0.32.0 or later. Blocked: `createAI` string catalog
-models drop `providerOptions.anthropic` (adaptive `thinking` and `effort`) on the binding `/run`
-path (`cs-010`, repro under `rounds/2026-11-03-demo-createai/repro/`). The owner decided on
+`agents/models/ai-sdk`, which needs `agents` 0.32.0 or later; `agents` is 0.33.0 now, so that
+precondition is met. Still blocked: `createAI` string catalog models drop
+`providerOptions.anthropic` (adaptive `thinking` and `effort`) on the binding `/run` path
+(`cs-010`, repro under `rounds/2026-11-03-demo-createai/repro/`); the repro was re-run on
+`agents` 0.33.0 on 2026-11-09 and still reproduces. The owner decided on
 2026-11-03 to keep current behavior and not migrate through a different transport. The binding
 path also has no stream-resume opt-out (cloudflare/agents#2790).
 
 Done when: an `agents` release forwards Anthropic provider options for `anthropic/*` catalog ids
 (re-run the `cs-010` repro), a reviewed decision covers stream resume, `src/demo` and
 `test/demo-model-config.test.ts` no longer import the package, and `wai-001` is closed under the
-`improvements-pipeline` skill. The `agents` upgrade moves the MCP server runtime, so it needs
+`improvements-pipeline` skill. The migration moves the demo model path, so it needs
 `npm run test:smoke`, the single-`workerd` check, and a Playground run of every demo model. The
 migration is not `fixed-upstream` evidence for `wai-001`; that close-out needs a reviewed
 lifecycle decision.

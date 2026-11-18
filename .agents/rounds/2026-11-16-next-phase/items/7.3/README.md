@@ -9,8 +9,8 @@ merged into. Each has its own folder (PLAN, REVIEW, EXEC, REPORT).
 
 | # | Class | Folder | Status |
 |---|---|---|---|
-| 1 | Routine in-range patches | [pr1-routine](pr1-routine/) | PR open |
-| 2 | `agents` 0.28.1 to 0.33.0, with `@modelcontextprotocol/server` and `/client` 2.3.1 to 2.4.0 and `@modelcontextprotocol/sdk` 1.32.1 to 1.32.2 | pr2-agents-mcp | waiting |
+| 1 | Routine in-range patches | [pr1-routine](pr1-routine/) | merged, #480, deployed `35c3b860` |
+| 2 | `agents` 0.28.1 to 0.33.0, with `@modelcontextprotocol/server` and `/client` 2.3.1 to 2.4.0 and `@modelcontextprotocol/sdk` 1.32.1 to 1.32.2 | [pr2-agents-mcp](pr2-agents-mcp/) | planned |
 | 3 | `wrangler` 4.153 to 4.164, the vitest pool, miniflare and `esbuild` 0.28.2 | pr3-wrangler | waiting |
 | 4 | `@cloudflare/workers-oauth-provider` 1.x | pr4-oauth | waiting |
 | 5 | `vitest` 5 | recorded only | waiting on the pool |
