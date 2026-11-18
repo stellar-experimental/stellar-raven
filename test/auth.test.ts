@@ -29,7 +29,11 @@ import {
   rewritePath,
   timingSafeEqualBytes
 } from "../src/auth/gate";
-import { hasAllowedRedirectTransport } from "../src/auth/redirects";
+import {
+  hasAllowedRedirectTransport,
+  isRegistrableRedirect,
+  redirectSchemeToken
+} from "../src/auth/redirects";
 import {
   API_KEY_NAME_PATTERN,
   API_KEY_PREFIX,
@@ -48,40 +52,12 @@ import {
 } from "../src/auth/workos";
 import { DEMO_COOKIE_NAME, verifyDemoCookie } from "../src/demo/auth";
 import { FAVICON, getDocCatalogCounts } from "../src/site";
+import { memoryKv } from "./helpers/memory-kv";
 
 // ---------------------------------------------------------------------------
 // Stubs
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-
-function memoryKv(): KVNamespace & { store: Map<string, string> } {
-  const store = new Map<string, string>();
-  return {
-    store,
-    // Honors `{ type: "json" }`. The real provider reads client records that
-    // way, so a stub that always returns the raw string hands back a string
-    // where an object is expected and fails deep inside the library.
-    async get(key: string, options?: { type?: string } | string) {
-      const raw = store.get(key) ?? null;
-      const type = typeof options === "string" ? options : options?.type;
-      if (raw === null || type !== "json") return raw;
-      try {
-        return JSON.parse(raw);
-      } catch {
-        return null;
-      }
-    },
-    async put(key: string, value: string) {
-      store.set(key, value);
-    },
-    async delete(key: string) {
-      store.delete(key);
-    },
-    async list() {
-      return { keys: [], list_complete: true, cacheStatus: null };
-    }
-  } as unknown as KVNamespace & { store: Map<string, string> };
-}
 
 function testEnv(overrides: Record<string, unknown> = {}): Env {
   return {
@@ -281,7 +257,7 @@ describe("allowDevUnauthenticated", () => {
 
 describe("OAuthProvider wiring (real @cloudflare/workers-oauth-provider)", () => {
   const mcpFetch = vi.fn(async () => new Response("mcp-ok"));
-  const options = oauthProviderOptions({ fetch: mcpFetch });
+  const options = oauthProviderOptions({ fetch: mcpFetch }, "https://mcp.test/mcp");
   const provider = new OAuthProvider(options);
 
   it("pins OAuth lifetimes (access 1h, refresh grant 90d, client registration 365d)", () => {
@@ -322,7 +298,9 @@ describe("OAuthProvider wiring (real @cloudflare/workers-oauth-provider)", () =>
     ["HTTPS", "https://client.example/callback"],
     ["IPv4 loopback HTTP", "http://127.0.0.1:8912/callback"],
     ["IPv6 loopback HTTP", "http://[::1]:8912/callback"],
-    ["native-app scheme", "org.example.app:/oauth/callback"]
+    ["Claude Code callback", "claude://oauth/callback"],
+    ["Cursor callback", "cursor://anysphere.cursor-mcp/oauth/callback"],
+    ["Warp callback", "warp://mcp/oauth2callback"]
   ])("allows %s redirects through the registration endpoint", async (_label, redirectUri) => {
     const response = await provider.fetch(
       new Request("https://mcp.test/register", {
@@ -739,6 +717,91 @@ describe("WorkOSAuthHandler", () => {
     expect(cookieValue(response, "__Host-MCP_CONSENT_CSRF")).toBeUndefined();
   });
 
+  it.each([
+    ["smb", "smb://host/share"],
+    ["ms-settings", "ms-settings:network"],
+    ["ftp", "ftp://client.example/cb"],
+    ["ws", "ws://localhost:8912/cb"],
+    ["org.example.app", "org.example.app:/oauth/cb"],
+    ["http", "http://client.example/cb"]
+  ])("%s redirect: both /authorize legs refuse locally and log the bounded scheme", async (scheme, redirectUri) => {
+    const workosFetch = vi.fn();
+    vi.stubGlobal("fetch", workosFetch);
+    const log = vi.spyOn(console, "log").mockImplementation(() => undefined);
+    for (const method of ["GET", "POST"]) {
+      const helpers = stubHelpers({
+        parseAuthRequest: vi.fn(async () => ({ ...AUTH_REQ, redirectUri }) as AuthRequest)
+      });
+      const env = testEnv({ OAUTH_PROVIDER: helpers });
+      const response = await WorkOSAuthHandler.fetch(
+        new Request("https://mcp.test/authorize?client_id=client-abc", {
+          method,
+          headers: {
+            "content-type": "application/x-www-form-urlencoded",
+            cookie: "__Host-MCP_CONSENT_CSRF=token-1"
+          },
+          ...(method === "POST" ? { body: new URLSearchParams({ csrf_token: "token-1", tos_agree: "on" }) } : {})
+        }),
+        env
+      );
+      expect(response.status, method).toBe(400);
+      expect(response.headers.get("location"), method).toBeNull();
+      expect(cookieValue(response, "__Host-MCP_CONSENT_CSRF"), method).toBeUndefined();
+      expect(helpers.completeAuthorization).not.toHaveBeenCalled();
+      expect((env.OAUTH_KV as unknown as { store: Map<string, string> }).store.size).toBe(0);
+    }
+    expect(workosFetch).not.toHaveBeenCalled();
+    const events = log.mock.calls.map(([line]) => String(line));
+    // The scheme is logged as a bounded token; the URI itself never is.
+    expect(events.map((line) => JSON.parse(line))).toContainEqual({
+      evt: "auth_reject",
+      status: 400,
+      reason: `redirect_refused:${scheme}`
+    });
+    expect(events.join("\n")).not.toContain(redirectUri);
+    log.mockRestore();
+  });
+
+  it("a PKCE-less request with an unlisted scheme gets a local 400, not the 303 error redirect", async () => {
+    const env = testEnv({
+      OAUTH_PROVIDER: stubHelpers({
+        parseAuthRequest: vi.fn(
+          async () => ({ ...AUTH_REQ, redirectUri: "smb://host/share", codeChallenge: undefined }) as AuthRequest
+        )
+      })
+    });
+    const response = await WorkOSAuthHandler.fetch(
+      new Request("https://mcp.test/authorize?client_id=client-abc"),
+      env
+    );
+    expect(response.status).toBe(400);
+    expect(response.headers.get("location")).toBeNull();
+  });
+
+  it.each(["smb://host/share", "ms-settings:network", "ftp://client.example/cb"])(
+    "a provider error redirect to %s is refused locally, with no Location",
+    async (redirectUri) => {
+      const env = testEnv({
+        OAUTH_PROVIDER: stubHelpers({
+          parseAuthRequest: vi.fn(async () => {
+            throw new AuthorizationError("unsupported_response_type", {
+              description: "Unsupported response type",
+              redirectUri,
+              state: "client-state",
+              issuer: "https://mcp.test"
+            });
+          })
+        })
+      });
+      const response = await WorkOSAuthHandler.fetch(
+        new Request("https://mcp.test/authorize?client_id=client-abc"),
+        env
+      );
+      expect(response.status).toBe(400);
+      expect(response.headers.get("location")).toBeNull();
+    }
+  );
+
   it.each(["GET", "POST"])(
     "%s /authorize refuses unsafe redirect metadata from a parse error",
     async (method) => {
@@ -772,8 +835,8 @@ describe("WorkOSAuthHandler", () => {
     }
   );
 
-  it("GET /authorize still allows http loopback and custom-scheme redirects", async () => {
-    for (const redirectUri of ["http://127.0.0.1:8912/cb", "myapp://oauth/cb"]) {
+  it("GET /authorize still allows http loopback and the named native-app redirects", async () => {
+    for (const redirectUri of ["http://127.0.0.1:8912/cb", "claude://oauth/cb", "cursor://x/cb", "warp://x/cb"]) {
       const allowed = { ...AUTH_REQ, redirectUri };
       const env = testEnv({
         OAUTH_PROVIDER: stubHelpers({
@@ -1111,6 +1174,57 @@ describe("WorkOSAuthHandler", () => {
     expect(kv.store.has("login:st2")).toBe(false);
   });
 
+  it.each(["smb://host/share", "ms-settings:network", "http://client.example/cb", "org.example.app:/oauth/cb"])(
+    "GET /callback refuses a parked request whose callback is now refused: %s",
+    async (redirectUri) => {
+      const helpers = stubHelpers();
+      const env = testEnv({ OAUTH_PROVIDER: helpers });
+      const kv = env.OAUTH_KV as unknown as { store: Map<string, string> };
+      kv.store.set(
+        "login:stP",
+        JSON.stringify({ type: "mcp", oauthReq: { ...AUTH_REQ, redirectUri }, binding: "bind-p" })
+      );
+      const workosFetch = vi.fn();
+      vi.stubGlobal("fetch", workosFetch);
+      const response = await WorkOSAuthHandler.fetch(
+        new Request("https://mcp.test/callback?code=code-123&state=stP", {
+          headers: { cookie: "__Host-MCP_STATE=bind-p" }
+        }),
+        env
+      );
+      expect(response.status).toBe(400);
+      expect(response.headers.get("location")).toBeNull();
+      // State is consumed and the binding cookie cleared, as for any failed callback.
+      expect(kv.store.has("login:stP")).toBe(false);
+      expect(response.headers.get("set-cookie")).toContain("__Host-MCP_STATE=;");
+      // No WorkOS hop, no grant.
+      expect(workosFetch).not.toHaveBeenCalled();
+      expect(helpers.completeAuthorization).not.toHaveBeenCalled();
+    }
+  );
+
+  it("GET /callback still completes a parked request for a named native callback", async () => {
+    const helpers = stubHelpers({
+      completeAuthorization: vi.fn(async () => ({ redirectTo: "claude://oauth/cb?code=xyz" }))
+    });
+    const env = testEnv({ OAUTH_PROVIDER: helpers });
+    const kv = env.OAUTH_KV as unknown as { store: Map<string, string> };
+    kv.store.set(
+      "login:stN",
+      JSON.stringify({ type: "mcp", oauthReq: { ...AUTH_REQ, redirectUri: "claude://oauth/cb" }, binding: "bind-n" })
+    );
+    vi.stubGlobal("fetch", vi.fn(async () => Response.json({ user: { id: "user_wos_1" } })));
+    const response = await WorkOSAuthHandler.fetch(
+      new Request("https://mcp.test/callback?code=code-123&state=stN", {
+        headers: { cookie: "__Host-MCP_STATE=bind-n" }
+      }),
+      env
+    );
+    expect(response.status).toBe(302);
+    expect(response.headers.get("location")).toBe("claude://oauth/cb?code=xyz");
+    expect(helpers.completeAuthorization).toHaveBeenCalledTimes(1);
+  });
+
   it("GET /callback surfaces a WorkOS failure as 502 without completing", async () => {
     const helpers = stubHelpers();
     const env = testEnv({ OAUTH_PROVIDER: helpers });
@@ -1258,13 +1372,50 @@ describe("login-state union on /callback", () => {
     ["IPv4 loopback HTTP", "http://127.0.0.1:8912/cb", true],
     ["IPv6 loopback HTTP", "http://[::1]:8912/cb", true],
     ["localhost HTTP", "http://localhost:3000/cb", true],
-    ["native-app scheme", "org.example.app:/oauth/cb", true],
+    ["Claude Code scheme", "claude://oauth/cb", true],
+    ["Cursor scheme", "cursor://anysphere.cursor-mcp/oauth/callback", true],
+    ["Warp scheme", "warp://mcp/oauth2callback", true],
+    ["uppercase native scheme", "CLAUDE://oauth/cb", true],
+    ["reverse-domain scheme", "org.example.app:/oauth/cb", false],
+    ["simple unlisted scheme", "myapp://oauth/cb", false],
+    ["smb", "smb://host/share", false],
+    ["ms-settings", "ms-settings:network", false],
+    ["search-ms", "search-ms:query=x", false],
+    ["tel", "tel:+15555550100", false],
+    ["ftp", "ftp://client.example/cb", false],
+    ["ws", "ws://localhost:8912/cb", false],
+    ["wss", "wss://client.example/cb", false],
+    ["a lookalike prefix of a named scheme", "claudex://oauth/cb", false],
     ["public HTTP host", "http://client.example/cb", false],
     ["documentation IP HTTP", "http://203.0.113.7/cb", false],
     ["uppercase HTTP scheme", "HTTP://client.example/cb", false],
     ["malformed URI", "not a URI", false]
   ])("redirect transport: %s → allowed=%s", (_label, uri, allowed) => {
     expect(hasAllowedRedirectTransport(uri as string)).toBe(allowed);
+  });
+
+  it.each([
+    ["smb://host/share", "smb"],
+    ["ms-settings:network", "ms-settings"],
+    ["org.example.app:/oauth/cb", "org.example.app"],
+    ["HTTP://client.example/cb", "http"],
+    ["not a URI", "other"],
+    ["", "other"],
+    [`${"a".repeat(33)}://x/cb`, "other"]
+  ])("redirect scheme token for %s is %s", (uri, token) => {
+    expect(redirectSchemeToken(uri)).toBe(token);
+  });
+
+  it.each([
+    ["https://client.example/cb", true],
+    ["http://localhost:3000/cb", true],
+    ["http://client.example/cb", false],
+    ["not a URI", false],
+    ["smb://host/share", true],
+    [42, false],
+    [undefined, false]
+  ])("registrable redirect %s → %s (registration refuses only remote http and junk)", (uri, ok) => {
+    expect(isRegistrableRedirect(uri)).toBe(ok);
   });
 });
 

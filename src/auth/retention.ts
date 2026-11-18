@@ -33,7 +33,11 @@ export const RETENTION = {
   accessTokenSeconds: 60 * 60,
   /** Refresh grants within the fixed re-authentication window. */
   refreshGrantSeconds: 90 * 24 * 60 * 60,
-  /** Dynamically registered OAuth clients. */
+  /**
+   * Dynamically registered OAuth clients. The provider rewrites a registration
+   * for another full lifetime when a token request arrives in its second half,
+   * so a registration in use does not expire; an idle one lapses after this long.
+   */
   clientRegistrationSeconds: 365 * 24 * 60 * 60,
   /** Parked /authorize login states in OAUTH_KV. */
   loginStateSeconds: 10 * 60,

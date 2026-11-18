@@ -751,7 +751,7 @@ describe("MCP request event contract", () => {
     const { default: worker } = await import("../src/server");
 
     const rejected = await worker.fetch(
-      new Request("https://mcp.test/mcp", {
+      new Request("https://raven.stellar.org/mcp", {
         headers: { authorization: `Bearer guessed:${"x".repeat(43)}`, "cf-ray": "reject123-IAD" }
       }),
       serverEnv(),
@@ -777,7 +777,7 @@ describe("MCP request event contract", () => {
       new Headers({ "x-mcp-admin-token": "a".repeat(43) })
     ]) {
       const legacy = await worker.fetch(
-        new Request("https://mcp.test/mcp", { headers }),
+        new Request("https://raven.stellar.org/mcp", { headers }),
         serverEnv(),
         workerContext()
       );
@@ -787,7 +787,7 @@ describe("MCP request event contract", () => {
 
     spy.mockClear();
     const preflight = await worker.fetch(
-      new Request("https://mcp.test/mcp", { method: "OPTIONS" }),
+      new Request("https://raven.stellar.org/mcp", { method: "OPTIONS" }),
       serverEnv(),
       workerContext()
     );

@@ -193,8 +193,13 @@ and mark inference from counts and IDs as best-effort.
   `method`, `status`. Rejected events omit the identity keys. Cloudflare redacts the older `auth`
   field, so group by `accessMode`.
 - **Auth-flow rejections**: `evt = "auth_reject"` with `status` and `reason`; `src/auth/workos.ts`
-  owns the emitters and reason strings. These events omit identity fields. Failures inside `@cloudflare/workers-oauth-provider`
-  (`/token`, `/register`) show only status and path.
+  owns the emitters and reason strings. A callback the allowlist refuses logs
+  `redirect_refused:<scheme>` with a bounded scheme token. These events omit identity fields.
+- **Provider errors**: `evt = "oauth_error"` with `status`, `code`, and the provider's internal
+  `category` and `reason` (`src/auth/gate.ts`, the `onError` hook). The reasons never carry request
+  text. Watch `grant_audience_unbound`, `token_audience_unbound`,
+  `legacy_grant_resource_mismatch` and `resource_not_configured`: the last two answer
+  `invalid_target`, which clients do not recover from.
 - **App logs**: `evt`, `queryChars`, `requestedLimit`, `effectiveLimit`, `omittedCount`,
   `gatedHits`, `backfillHits`, `hits`, `total`, `truncated`, `top`, `ok`, `evidenceOutcome`,
   `codeChars`, `latestUserChars`, `historyChars`, `historyMessages`, `userMessages`, `model`,

@@ -57,13 +57,68 @@ describe("assembled OAuth redirect transport policy", () => {
   it.each([
     ["HTTPS", "https://client.example/callback"],
     ["loopback HTTP", "http://127.0.0.1:8912/callback"],
-    ["native-app scheme", "org.example.app:/oauth/callback"]
+    ["Claude Code callback", "claude://oauth/callback"],
+    ["Cursor callback", "cursor://anysphere.cursor-mcp/oauth/callback"],
+    ["Warp callback", "warp://mcp/oauth2callback"]
   ])("allows %s at dynamic registration", async (_label, redirectUri) => {
     const response = await SELF.fetch(registrationRequest(redirectUri));
 
     expect(response.status).toBe(201);
     expect(await response.json()).toMatchObject({ redirect_uris: [redirectUri] });
   });
+
+  it.each([
+    ["smb only", ["smb://host/share"]],
+    ["a reverse-domain scheme only", ["org.example.app:/oauth/callback"]],
+    ["https plus remote http", ["https://client.example/callback", INSECURE_REDIRECT]]
+  ])("refuses %s at dynamic registration", async (_label, redirectUris) => {
+    const response = await SELF.fetch(
+      new Request(`${ORIGIN}/register`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          client_name: "Refused-callback smoke client",
+          redirect_uris: redirectUris,
+          grant_types: ["authorization_code", "refresh_token"],
+          response_types: ["code"],
+          token_endpoint_auth_method: "none"
+        })
+      })
+    );
+
+    expect(response.status).toBe(400);
+    expect(await response.json()).toMatchObject({ error: "invalid_client_metadata" });
+  });
+
+  it.each(["GET", "POST"])(
+    "registers https plus smb, then refuses the smb callback on the %s authorization leg",
+    async (method) => {
+      const refused = "smb://host/share";
+      const registration = await SELF.fetch(
+        new Request(`${ORIGIN}/register`, {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({
+            client_name: "Mixed-callback smoke client",
+            redirect_uris: ["https://client.example/callback", refused],
+            grant_types: ["authorization_code", "refresh_token"],
+            response_types: ["code"],
+            token_endpoint_auth_method: "none"
+          })
+        })
+      );
+      expect(registration.status).toBe(201);
+      const { client_id: clientId } = (await registration.json()) as { client_id: string };
+      const response = await SELF.fetch(
+        authorizationUrl(clientId).replace(encodeURIComponent(INSECURE_REDIRECT), encodeURIComponent(refused)),
+        { method, redirect: "manual" }
+      );
+
+      expect(response.status).toBe(400);
+      expect(response.headers.get("location")).toBeNull();
+      expect(response.headers.get("set-cookie")).toBeNull();
+    }
+  );
 
   it("returns access_denied from the assembled consent Cancel flow", async () => {
     const redirectUri = "https://client.example/cancelled";

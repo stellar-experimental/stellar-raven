@@ -106,7 +106,8 @@ policy.
 |---|---|---|
 | OAuth access token | `OAUTH_KV` | 1 hour |
 | OAuth refresh grant | `OAUTH_KV` | 90 days, fixed from sign-in |
-| Registered OAuth client | `OAUTH_KV` | 365 days |
+| Registered OAuth client | `OAUTH_KV` | 365 days; a registration made under oauth-provider 1.x renews for another 365 days when a token request arrives in its second half, so one in use does not expire |
+| Client assertion replay marker (`client-assertion-jti:<hash>`) | `OAUTH_KV` | The assertion's lifetime plus 60 seconds; written only for Client ID Metadata Document clients that authenticate with `private_key_jwt` |
 | Parked login state (`login:<state>`) | `OAUTH_KV` | 10 minutes |
 | Playground session cookie | browser | 2 hours |
 | Playground throttle (`demo-throttle:<subject>:<hour>`) | `OAUTH_KV` | 2 hours |

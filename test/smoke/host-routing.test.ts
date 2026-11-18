@@ -10,6 +10,7 @@ const ALIASES = ["https://raven.stellar.buzz", "https://agents.stellar.buzz"];
 const REDIRECT_URI = "https://client.example/callback";
 const VERIFIER = "v".repeat(43);
 type Tokens = { access_token: string; refresh_token: string; resource?: string };
+type Fetcher = (request: Request) => Promise<Response>;
 
 // Exercise the assembled worker with explicit test-only secrets, independent of
 // .dev.vars. SELF below also verifies the configured entry point's dispatch.
@@ -114,11 +115,12 @@ describe.each(ALIASES)("legacy host %s", (origin) => {
         token_endpoint: `${origin}/token`, registration_endpoint: `${origin}/register`
       });
     }
-    for (const suffix of ["", "/mcp"]) {
-      const response = await SELF.fetch(`${origin}/.well-known/oauth-protected-resource${suffix}`, { redirect: "manual" });
-      expect(response.status).toBe(200);
-      expect(await response.json()).toMatchObject({ resource: `${origin}${suffix}`, authorization_servers: [origin] });
-    }
+    const resource = await SELF.fetch(`${origin}/.well-known/oauth-protected-resource/mcp`, { redirect: "manual" });
+    expect(resource.status).toBe(200);
+    expect(await resource.json()).toMatchObject({ resource: `${origin}/mcp`, authorization_servers: [origin] });
+    // oauth-provider 1.x serves one protected resource, /mcp; the bare-origin document is gone.
+    const root = await SELF.fetch(`${origin}/.well-known/oauth-protected-resource`, { redirect: "manual" });
+    expect(root.status).toBe(404);
   });
 
   it("accepts named API keys on the alias MCP endpoint", async () => {
@@ -132,7 +134,7 @@ describe.each(ALIASES)("legacy host %s", (origin) => {
     const bindings = testEnv();
     // Mint through the unchanged provider directly, as before host redirects
     // existed. No call to the restored router creates this client or grant.
-    const options = oauthProviderOptions({ fetch: () => new Response("unused") });
+    const options = oauthProviderOptions({ fetch: () => new Response("unused") }, `${origin}/mcp`);
     const provider = new OAuthProvider(options);
     const helpers = getOAuthApi(options, bindings);
     const client = await helpers.createClient({
@@ -170,7 +172,8 @@ describe.each(ALIASES)("legacy host %s", (origin) => {
     }), bindings);
     expect(refreshed.status).toBe(200);
     const rotated = await refreshed.json() as Tokens;
-    expect(rotated.resource).toBe(includeResource ? `${origin}/mcp` : undefined);
+    // 1.x always reports the resource, even when the client sent none.
+    expect(rotated.resource).toBe(`${origin}/mcp`);
     expect(rotated.refresh_token).toBeTruthy();
     expect(rotated.refresh_token).not.toBe(tokens.refresh_token);
     await initialize(origin, rotated.access_token, bindings);
@@ -179,58 +182,170 @@ describe.each(ALIASES)("legacy host %s", (origin) => {
   });
 });
 
+/**
+ * Registration, consent, WorkOS callback and code exchange through `fetcher`.
+ * The WorkOS authenticate call is stubbed; nothing else is.
+ */
+async function completeOAuthFlow(
+  fetcher: Fetcher,
+  origin: string,
+  includeResource = true
+): Promise<{ clientId: string; tokens: Tokens }> {
+  const upstream = vi.fn(async (input: RequestInfo | URL) => {
+    expect(String(input)).toBe("https://api.workos.com/user_management/authenticate");
+    return Response.json({ user: { id: "user_host_routing_test" } });
+  });
+  vi.stubGlobal("fetch", upstream);
+  const registration = await fetcher(new Request(`${origin}/register`, {
+    method: "POST", redirect: "manual", headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      client_name: "Alias flow client", redirect_uris: [REDIRECT_URI],
+      grant_types: ["authorization_code", "refresh_token"], response_types: ["code"],
+      token_endpoint_auth_method: "none"
+    })
+  }));
+  expect(registration.status).toBe(201);
+  const { client_id: clientId } = await registration.json() as { client_id: string };
+  const authorize = await authorizationRequest(origin, clientId, includeResource);
+  const consent = await fetcher(authorize);
+  expect(consent.status).toBe(200);
+  const page = await consent.text();
+  expect(page).toContain('action="/authorize?');
+  const csrf = page.match(/name="csrf_token" value="([^"]+)"/)?.[1];
+  expect(csrf).toBeTruthy();
+  const consentCookie = consent.headers.get("set-cookie")!;
+  expect(consentCookie).toContain(`__Host-MCP_CONSENT_CSRF=${csrf}`);
+  expect(consentCookie).not.toMatch(/Domain=/i);
+  const approval = await fetcher(new Request(authorize.url, {
+    method: "POST", redirect: "manual", headers: { cookie: consentCookie.split(";", 1)[0]! },
+    body: new URLSearchParams({ csrf_token: csrf!, tos_agree: "yes" })
+  }));
+  expect(approval.status).toBe(302);
+  const workos = new URL(approval.headers.get("location")!);
+  expect(workos.origin).toBe("https://api.workos.com");
+  expect(workos.searchParams.get("redirect_uri")).toBe(`${origin}/callback`);
+  const binding = approval.headers.get("set-cookie")?.match(/__Host-MCP_STATE=([^;]+)/)?.[1];
+  expect(binding).toBeTruthy();
+  expect(approval.headers.get("set-cookie")).not.toMatch(/Domain=/i);
+  const callback = await fetcher(new Request(`${origin}/callback?${new URLSearchParams({
+    code: "test-workos-code", state: workos.searchParams.get("state")!
+  })}`, { redirect: "manual", headers: { cookie: `__Host-MCP_STATE=${binding}` } }));
+  const code = callbackCode(callback, origin);
+  const exchanged = await fetcher(tokenRequest(origin, {
+    grant_type: "authorization_code", client_id: clientId, code, code_verifier: VERIFIER,
+    redirect_uri: REDIRECT_URI, ...(includeResource ? { resource: `${origin}/mcp` } : {})
+  }));
+  expect(exchanged.status).toBe(200);
+  return { clientId, tokens: await exchanged.json() as Tokens };
+}
+
+async function grantResource(tokens: Tokens): Promise<string | undefined> {
+  const [subject, grantId] = tokens.refresh_token.split(":");
+  const grant = await env.OAUTH_KV.get<{ resource?: string }>(`grant:${subject}:${grantId}`, "json");
+  return grant?.resource;
+}
+
 describe.each([CANONICAL, ...ALIASES])("complete OAuth flow at %s", (origin) => {
   it("keeps registration, consent, WorkOS callback, and token exchange on the configured origin", async () => {
     const bindings = testEnv();
-    const upstream = vi.fn(async (input: RequestInfo | URL) => {
-      expect(String(input)).toBe("https://api.workos.com/user_management/authenticate");
-      return Response.json({ user: { id: "user_host_routing_test" } });
-    });
-    vi.stubGlobal("fetch", upstream);
-    const registration = await dispatch(new Request(`${origin}/register`, {
-      method: "POST", redirect: "manual", headers: { "content-type": "application/json" },
-      body: JSON.stringify({
-        client_name: "Alias flow client", redirect_uris: [REDIRECT_URI],
-        grant_types: ["authorization_code", "refresh_token"], response_types: ["code"],
-        token_endpoint_auth_method: "none"
-      })
-    }), bindings);
-    expect(registration.status).toBe(201);
-    const { client_id: clientId } = await registration.json() as { client_id: string };
-    const authorize = await authorizationRequest(origin, clientId);
-    const consent = await dispatch(authorize, bindings);
-    expect(consent.status).toBe(200);
-    const page = await consent.text();
-    expect(page).toContain('action="/authorize?');
-    const csrf = page.match(/name="csrf_token" value="([^"]+)"/)?.[1];
-    expect(csrf).toBeTruthy();
-    const consentCookie = consent.headers.get("set-cookie")!;
-    expect(consentCookie).toContain(`__Host-MCP_CONSENT_CSRF=${csrf}`);
-    expect(consentCookie).not.toMatch(/Domain=/i);
-    const approval = await dispatch(new Request(authorize.url, {
-      method: "POST", redirect: "manual", headers: { cookie: consentCookie.split(";", 1)[0]! },
-      body: new URLSearchParams({ csrf_token: csrf!, tos_agree: "yes" })
-    }), bindings);
-    expect(approval.status).toBe(302);
-    const workos = new URL(approval.headers.get("location")!);
-    expect(workos.origin).toBe("https://api.workos.com");
-    expect(workos.searchParams.get("redirect_uri")).toBe(`${origin}/callback`);
-    const binding = approval.headers.get("set-cookie")?.match(/__Host-MCP_STATE=([^;]+)/)?.[1];
-    expect(binding).toBeTruthy();
-    expect(approval.headers.get("set-cookie")).not.toMatch(/Domain=/i);
-    const callback = await dispatch(new Request(`${origin}/callback?${new URLSearchParams({
-      code: "test-workos-code", state: workos.searchParams.get("state")!
-    })}`, { redirect: "manual", headers: { cookie: `__Host-MCP_STATE=${binding}` } }), bindings);
-    const code = callbackCode(callback, origin);
-    expect(upstream).toHaveBeenCalledTimes(1);
-    const exchanged = await dispatch(tokenRequest(origin, {
-      grant_type: "authorization_code", client_id: clientId, code, code_verifier: VERIFIER,
-      redirect_uri: REDIRECT_URI, resource: `${origin}/mcp`
-    }), bindings);
-    expect(exchanged.status).toBe(200);
-    const tokens = await exchanged.json() as Tokens;
+    const { tokens } = await completeOAuthFlow((request) => dispatch(request, bindings), origin);
     expect(tokens.resource).toBe(`${origin}/mcp`);
     expect(tokens.refresh_token).toBeTruthy();
     await initialize(origin, tokens.access_token, bindings);
+  });
+});
+
+/**
+ * oauth-provider 1.x caches its helpers on `env.OAUTH_PROVIDER`, bound to the
+ * provider that made them. The real Worker `env` is shared by every request in
+ * an isolate, so without the per-dispatch copy in src/server.ts the first
+ * origin served would pin its helpers and every later /authorize on another
+ * origin would bind the wrong resource. These go through SELF.fetch, the real
+ * shared env, in both orders and concurrently.
+ */
+describe("one isolate serves all three origins", () => {
+  const ORIGIN_ORDERS = [
+    ["canonical first", [CANONICAL, ...ALIASES]],
+    ["reverse", [...ALIASES].reverse().concat(CANONICAL)],
+    ["alias, canonical, alias", [ALIASES[0]!, CANONICAL, ALIASES[1]!, ALIASES[0]!]]
+  ] as const;
+
+  it.each(ORIGIN_ORDERS)("binds each grant to its own host's /mcp: %s", async (_label, order) => {
+    for (const includeResource of [true, false]) {
+      for (const origin of order) {
+        const { tokens } = await completeOAuthFlow((request) => SELF.fetch(request), origin, includeResource);
+        expect(tokens.resource, `${origin} resource=${includeResource}`).toBe(`${origin}/mcp`);
+        expect(await grantResource(tokens), `${origin} grant resource=${includeResource}`).toBe(`${origin}/mcp`);
+      }
+    }
+  });
+
+  it("binds each grant to its own host's /mcp under concurrent flows", async () => {
+    const origins = [CANONICAL, ...ALIASES, ...ALIASES, CANONICAL];
+    // Flows interleave their awaits, so each origin's /authorize and /token
+    // run while another origin's are in flight on the same env.
+    const results = await Promise.all(
+      origins.map((origin) => completeOAuthFlow((request) => SELF.fetch(request), origin, origin !== ALIASES[0]))
+    );
+    for (const [index, origin] of origins.entries()) {
+      expect(results[index]!.tokens.resource).toBe(`${origin}/mcp`);
+      expect(await grantResource(results[index]!.tokens)).toBe(`${origin}/mcp`);
+    }
+  });
+});
+
+describe("origins that are not served", () => {
+  const UNKNOWN_URLS = [
+    "https://unknown.example",
+    "http://raven.stellar.org",
+    "https://raven.stellar.org:8443",
+    "http://raven.stellar.buzz",
+    "https://raven.stellar.org.evil.example",
+    "http://192.168.1.5:8787"
+  ];
+  const PATHS = [
+    "/", "/health", "/.well-known/oauth-authorization-server",
+    "/.well-known/oauth-authorization-server/mcp", "/.well-known/oauth-protected-resource/mcp",
+    "/mcp", "/authorize", "/token", "/register", "/callback", "/playground", "/playground/login"
+  ];
+
+  async function loginStates(): Promise<number> {
+    return (await env.OAUTH_KV.list({ prefix: "login:" })).keys.length;
+  }
+
+  it.each(UNKNOWN_URLS)("answers 404 for every route at %s, with no browser login work", async (base) => {
+    const before = await loginStates();
+    for (const path of PATHS) {
+      const response = await SELF.fetch(`${base}${path}`, { method: path === "/mcp" || path === "/token" || path === "/register" ? "POST" : "GET", redirect: "manual" });
+      // An alias hostname redirects its browser pages to the canonical host
+      // before origin selection; every served-on-alias path still gets 404.
+      if (response.status === 308) {
+        expect(new URL(base).hostname.endsWith("stellar.buzz"), `${base}${path}`).toBe(true);
+        expect(response.headers.get("location")).toBe(`${CANONICAL}${path}`);
+        continue;
+      }
+      expect(response.status, `${base}${path}`).toBe(404);
+      expect(response.headers.get("www-authenticate"), `${base}${path}`).toBeNull();
+    }
+    expect(await loginStates()).toBe(before);
+  });
+
+  it("ignores Host and forwarding headers: they neither admit an unknown origin nor reject a served one", async () => {
+    const spoof = { host: CANONICAL.slice("https://".length), "x-forwarded-host": "raven.stellar.org", forwarded: "host=raven.stellar.org;proto=https" };
+    const unknown = await SELF.fetch("https://unknown.example/.well-known/oauth-authorization-server", { headers: spoof });
+    expect(unknown.status).toBe(404);
+    const unknownLogin = await SELF.fetch("https://unknown.example/playground/login", { headers: spoof, redirect: "manual" });
+    expect(unknownLogin.status).toBe(404);
+    const hostile = { host: "unknown.example", "x-forwarded-host": "unknown.example", forwarded: "host=unknown.example;proto=http" };
+    const served = await SELF.fetch(`${CANONICAL}/.well-known/oauth-authorization-server`, { headers: hostile });
+    expect(served.status).toBe(200);
+    expect(await served.json()).toMatchObject({ issuer: CANONICAL });
+  });
+
+  it("still parks browser-login state on a served origin, so the 404 checks above would notice", async () => {
+    const before = await loginStates();
+    const response = await SELF.fetch(`${CANONICAL}/playground/login`, { redirect: "manual" });
+    expect(response.status).toBe(302);
+    expect(await loginStates()).toBe(before + 1);
   });
 });

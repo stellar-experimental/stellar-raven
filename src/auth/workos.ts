@@ -49,7 +49,7 @@ import {
 } from "../site";
 import { OG_PNG_BASE64 } from "../og";
 import { logEvent } from "../observability.ts";
-import { hasAllowedRedirectTransport } from "./redirects";
+import { hasAllowedRedirectTransport, redirectSchemeToken } from "./redirects";
 import { skillHealthResponse } from "../skills/canary.ts";
 import { mintDemoCookie, parseDemoParkedState } from "../demo/auth";
 
@@ -268,6 +268,15 @@ async function completeCallback(
   if (!presented || presented !== parked.binding) {
     return text("State binding mismatch", 400, { "set-cookie": clearCookie(STATE_BINDING_COOKIE) });
   }
+  // A request parked before a callback-policy change must not complete with a
+  // URI the policy now refuses. Checked after the state and binding checks, so
+  // state is already consumed and the cookie is cleared, and before the WorkOS
+  // code exchange, so a refusal makes no upstream call.
+  if (parked.type === "mcp" && !hasAllowedRedirectTransport(parked.oauthReq.redirectUri)) {
+    return refusedRedirectResponse(parked.oauthReq.redirectUri, {
+      "set-cookie": clearCookie(STATE_BINDING_COOKIE)
+    });
+  }
 
   const workosResponse = await fetch(WORKOS_AUTHENTICATE_URL, {
     method: "POST",
@@ -471,9 +480,7 @@ async function resolveAuthRequest(
   try {
     const parsed = await provider.parseAuthRequest(request);
     if (!hasAllowedRedirectTransport(parsed.redirectUri)) {
-      throw new AuthorizationError("invalid_request", {
-        description: "redirect_uri must use https for non-loopback hosts."
-      });
+      return { ok: false, response: refusedRedirectResponse(parsed.redirectUri) };
     }
     if (!parsed.codeChallenge || parsed.codeChallengeMethod !== "S256") {
       throw new AuthorizationError("invalid_request", {
@@ -508,12 +515,11 @@ function authorizationErrorResponse(
   error: unknown,
   headers: Record<string, string> = {}
 ): Response {
-  if (
-    !(error instanceof AuthorizationError) ||
-    !error.redirectUri ||
-    !hasAllowedRedirectTransport(error.redirectUri)
-  ) {
+  if (!(error instanceof AuthorizationError) || !error.redirectUri) {
     return text("Invalid authorization request", 400, headers, unredirectableReason(error));
+  }
+  if (!hasAllowedRedirectTransport(error.redirectUri)) {
+    return refusedRedirectResponse(error.redirectUri, headers);
   }
   const target = new URL(error.redirectUri);
   target.searchParams.set("error", error.code);
@@ -525,6 +531,16 @@ function authorizationErrorResponse(
     status: 303,
     headers: { location: target.toString(), "cache-control": "no-store", ...headers }
   });
+}
+
+/**
+ * A callback the transport allowlist refuses (src/auth/redirects.ts): a local
+ * 400 with no Location, so nothing is redirected to it and no WorkOS hop
+ * starts. The log carries a bounded scheme token, never the URI, so a new
+ * native client's scheme shows up in `auth_reject`.
+ */
+function refusedRedirectResponse(redirectUri: string, headers: Record<string, string> = {}): Response {
+  return text("Invalid authorization request", 400, headers, `redirect_refused:${redirectSchemeToken(redirectUri)}`);
 }
 
 /**

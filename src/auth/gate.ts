@@ -19,7 +19,9 @@
  */
 import type { OAuthProviderOptions } from "@cloudflare/workers-oauth-provider";
 import { WorkOSAuthHandler } from "./workos";
-import { hasAllowedRedirectTransport } from "./redirects";
+import { LOOPBACK_HOSTNAMES } from "../hosts";
+import { logEvent } from "../observability";
+import { hasAllowedRedirectTransport, isRegistrableRedirect } from "./redirects";
 // Token lifetimes derive from the retention leaf that privacy disclosures
 // quote, so a published duration can never drift from the enforced one.
 import { RETENTION } from "./retention";
@@ -42,13 +44,23 @@ export const CLIENT_REGISTRATION_TTL_SECONDS = RETENTION.clientRegistrationSecon
 /** The single scope this server understands. */
 export const MCP_SCOPE = "mcp";
 
+/** The MCP protected resource for one served origin; also the audience its tokens carry. */
+export function mcpResource(origin: string): string {
+  return `${origin}/mcp`;
+}
+
 /**
  * Options for `new OAuthProvider(...)` — exported (rather than the instance)
  * so plain-Node tests can build a provider around a stub /mcp handler and
  * assert the real emitted behavior (401 + WWW-Authenticate, discovery docs).
+ *
+ * `resource` is the one canonical resource this provider binds tokens to. Raven
+ * serves three origins, so src/server.ts builds one provider per origin, each
+ * with its own `<origin>/mcp` (DESIGN.md D1 of the oauth-provider 1.x round).
  */
 export function oauthProviderOptions(
-  mcpHandler: ExportedHandler<Env> & { fetch: NonNullable<ExportedHandler<Env>["fetch"]> }
+  mcpHandler: ExportedHandler<Env> & { fetch: NonNullable<ExportedHandler<Env>["fetch"]> },
+  resource: string
 ): OAuthProviderOptions<Env> {
   return {
     apiHandlers: { "/mcp": mcpHandler },
@@ -60,36 +72,56 @@ export function oauthProviderOptions(
     refreshTokenTTL: REFRESH_TOKEN_TTL_SECONDS,
     clientRegistrationTTL: CLIENT_REGISTRATION_TTL_SECONDS,
     scopesSupported: [MCP_SCOPE],
-    // OAuth 2.1 posture: S256 PKCE only.
-    allowPlainPKCE: false,
     // CIMD (URL-based client_ids — no dynamic-registration round trip). Also
     // needs the `global_fetch_strictly_public` compat flag (wrangler.jsonc);
     // the provider gates on BOTH before advertising/serving it.
     clientIdMetadataDocumentEnabled: true,
-    // Reject non-loopback HTTP redirects before the provider stores a DCR client.
+    // Native-app callbacks (RFC 8252 private-use schemes). This deviates from
+    // upstream's advice to leave it off for MCP servers: Claude Code (`claude:`),
+    // Cursor (`cursor:`) and Warp (`warp:`) callbacks were measured in
+    // production grants on 2026-11-18, and without the flag the provider
+    // refuses every such authorization. Raven narrows what it admits to an
+    // allowlist of https, loopback http and those three schemes
+    // (src/auth/redirects.ts), checked at authorization in workos.ts.
+    allowPrivateUseRedirectUris: true,
+    // Refuse a registration that lists a remote-http or malformed callback, or
+    // that lists no callback Raven would use at authorization.
     clientRegistrationCallback: ({ clientMetadata }) => {
       const uris = (clientMetadata as { redirect_uris?: unknown }).redirect_uris;
-      if (
-        Array.isArray(uris) &&
-        uris.some((uri) => typeof uri !== "string" || !hasAllowedRedirectTransport(uri))
-      ) {
+      if (!Array.isArray(uris)) return;
+      if (!uris.every(isRegistrableRedirect)) {
         return {
           code: "invalid_client_metadata",
           description: "redirect_uris must use https for non-loopback hosts."
         };
       }
+      if (!uris.some((uri) => hasAllowedRedirectTransport(uri as string))) {
+        return {
+          code: "invalid_client_metadata",
+          description: "redirect_uris must include an https, loopback http, claude:, cursor: or warp: URI."
+        };
+      }
+    },
+    // The provider's own error reasons are stable slugs (internal.category and
+    // internal.reason). Log only those and the status: never `description` or
+    // `detail`, which can carry request-supplied text. Return nothing so the
+    // provider's response stands.
+    onError: ({ code, status, internal }) => {
+      logEvent("oauth_error", { status, code, category: internal.category, reason: internal.reason });
     },
     // RFC 9728 protected-resource metadata — how Claude/Cursor connectors
-    // discover that /mcp is OAuth-protected and where to authorize.
+    // discover that /mcp is OAuth-protected and where to authorize. The scope
+    // is advertised (metadata and the 401 challenge), not enforced here.
     resourceMetadata: {
-      scopes_supported: [MCP_SCOPE],
+      resource,
       resource_name: "stellar-raven-codemode MCP"
-    }
+    },
+    requiredScopes: [MCP_SCOPE]
   };
 }
 
-/** Loopback hostnames wrangler dev binds to (URL.hostname forms). */
-const LOCAL_HOSTS = new Set(["localhost", "127.0.0.1", "::1", "[::1]"]);
+/** Loopback hostnames wrangler dev binds to, in both `URL.hostname` and bare IPv6 forms. */
+const LOCAL_HOSTS = new Set([...LOOPBACK_HOSTNAMES, "::1"]);
 
 /**
  * Local-dev bypass: the var must be the exact string "true" (only ever set via

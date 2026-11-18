@@ -16,6 +16,7 @@ import { modelBoundaryMaxTokensFromEnv } from "./policy/truncate";
 import {
   allowDevUnauthenticated,
   isAuthServerMetadataAlias,
+  mcpResource,
   oauthProviderOptions,
   rewritePath
 } from "./auth/gate";
@@ -26,7 +27,13 @@ import { DEMO_PAGE_HEADERS, demoPage } from "./demo/page";
 import { logEvent } from "./observability";
 import { getCatalog } from "./catalog/load";
 import { runAndStoreSkillCanary } from "./skills/canary";
-import { canonicalHostRedirect } from "./hosts";
+import {
+  LOOPBACK_HOSTNAMES,
+  PRODUCTION_HOSTNAMES,
+  PRODUCTION_ORIGINS,
+  canonicalHostRedirect,
+  selectOAuthOrigin
+} from "./hosts";
 import {
   authSubjectFromProps,
   buildMcpRequestObservability,
@@ -44,15 +51,8 @@ const SERVER_INFO = {
   ...(SOURCE_REVISION ? { sourceRevision: SOURCE_REVISION } : {})
 };
 const DEV_LOCAL_ARTIFACT_OWNER = "dev-local";
-// Keep in sync with wrangler.jsonc routes; loopback entries preserve local dev.
-const MCP_ALLOWED_ORIGIN_HOSTNAMES = [
-  "raven.stellar.org",
-  "raven.stellar.buzz",
-  "agents.stellar.buzz",
-  "localhost",
-  "127.0.0.1",
-  "[::1]"
-];
+// Production hostnames mirror wrangler.jsonc routes (src/hosts.ts); loopback entries preserve local dev.
+const MCP_ALLOWED_ORIGIN_HOSTNAMES = [...PRODUCTION_HOSTNAMES, ...LOOPBACK_HOSTNAMES];
 
 export type McpAccessContext =
   | { mode: "oauth" }
@@ -141,7 +141,34 @@ export const mcpHandler = {
   }
 };
 
-const oauthProvider = new OAuthProvider(oauthProviderOptions(mcpHandler));
+function createOAuthProvider(origin: string): OAuthProvider<Env> {
+  return new OAuthProvider(oauthProviderOptions(mcpHandler, mcpResource(origin)));
+}
+
+// One provider per served origin, each binding tokens to its own `<origin>/mcp`
+// (DESIGN.md D1, oauth-provider 1.x round). Built at module scope because the
+// library validates its options in the constructor: a bad option fails at
+// import, not as a 500 on the first request.
+const productionProviders = new Map<string, OAuthProvider<Env>>(
+  PRODUCTION_ORIGINS.map((origin) => [origin, createOAuthProvider(origin)])
+);
+
+// Production origins use the cached provider. A loopback origin gets a fresh one
+// per request: any port is valid, so the origin space is too large to cache,
+// and building one costs nothing that matters in local dev.
+function oauthProviderFor(origin: string): OAuthProvider<Env> {
+  return productionProviders.get(origin) ?? createOAuthProvider(origin);
+}
+
+// The library does `if (!env.OAUTH_PROVIDER) env.OAUTH_PROVIDER = createOAuthHelpers(env)`
+// and the helpers close over the provider that made them. The Worker `env` is
+// shared by every request in an isolate, so on a shared object the first origin
+// served would pin its helpers and every later /authorize on another origin
+// would validate against the wrong resource. Each dispatch passes a copy with
+// the field cleared; never mutate or clear it on the shared object.
+function providerEnv(env: Env): Env {
+  return { ...env, OAUTH_PROVIDER: undefined } as unknown as Env;
+}
 
 function isMcpPath(url: URL): boolean {
   return url.pathname === "/mcp" || url.pathname.startsWith("/mcp/");
@@ -219,6 +246,14 @@ export default {
       }
     }
 
+    // Only the three production origins and loopback have an OAuth provider.
+    // Anything else gets 404 before any provider or browser-login work, so no
+    // request origin is ever advertised as an issuer (src/hosts.ts).
+    const oauthOrigin = selectOAuthOrigin(url);
+    if (oauthOrigin === null) {
+      return Response.json({ error: "not found" }, { status: 404, headers: { "cache-control": "no-store" } });
+    }
+
     // /playground — cookie-gated browser surface, intercepted BEFORE the
     // provider (it knows nothing about these routes).
     if (isPlaygroundPath(url)) {
@@ -227,14 +262,19 @@ export default {
 
     // Discovery aliases (path-suffixed RFC 8414 + OIDC-discovery paths) →
     // the lib's exact-path RFC 8414 endpoint (see gate.ts).
+    const oauthProvider = oauthProviderFor(oauthOrigin);
     if (isAuthServerMetadataAlias(url)) {
-      return oauthProvider.fetch(rewritePath(request, "/.well-known/oauth-authorization-server"), env, ctx);
+      return oauthProvider.fetch(
+        rewritePath(request, "/.well-known/oauth-authorization-server"),
+        providerEnv(env),
+        ctx
+      );
     }
 
     // Everything else — /mcp (token-checked), /token, /register, the
     // .well-known docs, and the defaultHandler (/, /health, /authorize,
     // /callback, 404) — belongs to the provider.
-    const response = await oauthProvider.fetch(request, env, ctx);
+    const response = await oauthProvider.fetch(request, providerEnv(env), ctx);
     if (isMcpPath(url) && response.status === 401) {
       // A failed API-key check also lands here by design; never hash or
       // otherwise derive identity from a rejected bearer token.
