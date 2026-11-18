@@ -5,7 +5,7 @@
 | `skills/` | Repeatable task procedures (`<name>/SKILL.md`). `.claude/skills` is a committed symlink to it. | Durable |
 | `model-roster.md` | Model IDs and launch lines for the `AGENTS.md` tiers and the eval and test set | Durable; update when a CLI catalog changes |
 | `TODO.md` | The own-repo work queue and open owner decisions | Until each item is done |
-| `rounds/` | One dated ledger per multi-lane round | Until reconciliation (see Retention) |
+| `rounds/` | `<YYYY-MM-DD>-<slug>.md` ledger per multi-lane round, plus an optional `<YYYY-MM-DD>-<slug>/` working folder for briefs, plans, and reviews | Until reconciliation (see Retention) |
 
 Working state lives in the repository so that the next agent and CI can read it. A decision
 recorded elsewhere does not exist for them.
@@ -34,4 +34,5 @@ A ledger records what happened. It never sets a rule.
   tools.
 - Deleted branches are archived in dated git bundles outside the repository; the item record that
   deleted them lists each ref, SHA, and bundle
-  ([`rounds/2026-11-16-next-phase/items/0.3/DISPOSITION.md`](rounds/2026-11-16-next-phase/items/0.3/DISPOSITION.md)).
+  ([`rounds/2026-11-16-next-phase/items/0.3/DISPOSITION.md`](rounds/2026-11-16-next-phase/items/0.3/DISPOSITION.md),
+  retained for this index).

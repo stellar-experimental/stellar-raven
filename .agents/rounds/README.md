@@ -1,7 +1,13 @@
 # `rounds/` — dated ledgers for multi-lane work
 
-One file per round: `<YYYY-MM-DD>-<slug>.md`. A ledger is working state for one round.
+One ledger file per round: `<YYYY-MM-DD>-<slug>.md`. A ledger is working state for one round.
 [`../README.md`](../README.md#retention) says how long it stays.
+
+A round with several items or lanes may also have a working folder, `<YYYY-MM-DD>-<slug>/`, beside
+its ledger. The folder holds the round `PLAN.md` and `DECISIONS.md`, and one `items/<n>/` folder per
+item with its `PLAN.md`, `briefs/` (one file per lane), findings and review files, and the item's
+`EXEC.md`. The ledger indexes the folder and carries the `Outcome`; the folder files follow the
+same retention.
 
 ## Shape
 
@@ -35,5 +41,6 @@ retained evidence and the current artifact that needs it.
 - Name the model and effort of every spawned agent and why that tier was chosen.
 - A verdict needs a stamp: a timestamp, a commit, a results file, or a URL.
 - When a round changes a golden answer, record the root cause here and link it from the change.
-- Close the round by writing the Outcome section and moving open work to `.agents/TODO.md`.
+- Close the round by writing the Outcome section; [`../README.md`](../README.md#retention) says
+  where open work and durable rules go.
 - Nothing wakes you. A future check is a dated `.agents/TODO.md` entry that the next round reads.
