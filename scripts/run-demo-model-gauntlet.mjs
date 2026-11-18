@@ -35,9 +35,12 @@ import { demoReasoningEffortOverride } from "../src/demo/model-config.ts";
  * span means the invocation was destroyed, which no model behavior can cause.
  *
  * The default matrix is the three evaluation clients that the run-evals skill
- * names: Sonnet 5.5, GPT-6.1 Terra, and Grok 4.7. Select any other model
- * explicitly with --models, and state in the run plan the decision it serves.
- * `openai/gpt-6.1-terra` routed on 2026-08-06 (run ids 2026-08-06-latest-matrix
+ * names: Sonnet, Terra, and Grok, each at its newest AI Gateway catalog ID. This
+ * literal is the single home of the eval-client catalog IDs (the script is plain
+ * Node); test/demo-model-config.test.ts pins its Terra and Grok entries to
+ * DEMO_CATALOG_LATEST. Select any other model explicitly with --models, and
+ * state in the run plan the decision it serves.
+ * Dated observations: `openai/gpt-6.1-terra` routed on 2026-08-06 (run ids 2026-08-06-latest-matrix
  * / -route-probe); `anthropic/claude-sonnet-5.5` and `xai/grok-4.7` routed in
  * the 2026-11-03 sweep (research/gauntlets/). A slug that has not been probed
  * does not belong in the default, because a wrong one does not look like a

@@ -11,9 +11,19 @@ export type DemoModelConfig = {
 export type DemoReasoningEffort = "none" | "minimal" | "low" | "medium" | "high" | "xhigh";
 export type DemoOpenAiApiMode = "chat" | "responses";
 
-export const DEMO_PRIMARY_MODEL = "openai/gpt-6.1-terra";
-export const DEMO_FALLBACK_MODEL = "anthropic/claude-haiku-5.5";
-export const DEMO_GROK_CONTROL_MODEL = "xai/grok-4.6";
+/**
+ * The newest AI Gateway catalog model of each family the demo uses. No provider offers a family or
+ * `latest` alias, so these are exact catalog IDs. Bump an entry when the catalog lists a newer
+ * model of that family, and check `DEMO_ANTHROPIC_5X_MODEL` in the same change.
+ */
+export const DEMO_CATALOG_LATEST = {
+  terra: "openai/gpt-6.1-terra",
+  haiku: "anthropic/claude-haiku-5.5",
+  grok: "xai/grok-4.7"
+} as const;
+export const DEMO_PRIMARY_MODEL = DEMO_CATALOG_LATEST.terra;
+export const DEMO_FALLBACK_MODEL = DEMO_CATALOG_LATEST.haiku;
+export const DEMO_GROK_CONTROL_MODEL = DEMO_CATALOG_LATEST.grok;
 export const DEMO_KIMI_CONTROL_MODEL = "@cf/moonshotai/kimi-k2.7-code";
 export const DEMO_MODELS: readonly DemoModelConfig[] = [
   { model: DEMO_PRIMARY_MODEL, role: "primary" },
