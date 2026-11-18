@@ -345,6 +345,40 @@ Do not infer an owner, denominator, deployment, or policy from search snippets.
 
 Done when: primary evidence supports a reviewed correction or an explicit continued hold.
 
+### Review the codegen-adjacent goldens by case id
+
+The [2026-08-07 codegen partner report](../research/audits/2026-08-07-codegen-partner-report.md)
+found no battery case that tests its Soroban defect classes directly. Each case below is the
+nearest one to a class, or carries a stale pointer. A lane that may open case text decides each;
+this item names ids and fields only.
+
+| Case id | Field | Concern |
+|---|---|---|
+| `q-zk-nullifier-storage` | golden | Closest to the persistent-collection versus entry-cap gap; not a match |
+| `q-soroban-wasm-size-limit` | avoid clauses | Same gap; adjacent only |
+| `q-sor-decode-hosterror-codes` | golden | Closest to the event-assertion reset gap; also adjacent to the auth-error-surface gap |
+| `q-soroban-unit-testing` | notes | Points at a case id that is not in the owned battery |
+| `q-sor-testing-negative-auth-events` | none in the owned battery | The pointer target exists only in the retired prior art; author it or reroute the pointer |
+| `q-sor-evm-to-soroban-porting` | golden | The only case entering from EVM vocabulary; a retrieval-vocabulary candidate |
+
+Four topics have no owning case: the entry-cap write failure for a growing persistent collection,
+the per-call reset of test-side event reads, auth failure error remapping, and `try_*` client
+method semantics.
+
+Done when: each row is edited through `golden-truth`, confirmed unchanged, or has its pointer
+rerouted, and each topic is authored as a case or declined with a reason.
+
+### Audit the two corpus guides no lane has read
+
+`eval/qa/corpus/README.md` and `eval/corpus/PROVENANCE.md` are living guides that the item 8.2
+documentation audit could not open: both sit under paths no audit lane may read. Their claims are
+unchecked against the code.
+
+Next: a golden-maintenance lane that is allowed to open those two paths checks each claim against
+the code and fixes what is stale.
+
+Done when: both guides are checked and corrected, or the owner accepts them as unaudited.
+
 ## Improvements follow-up
 
 Recheck only when the named change or new evidence arrives. An untouched issue needs no
@@ -418,6 +452,20 @@ monitor-only until three dated successful re-executions of the Docs-first, inspe
 later `scout.explainRepo` sequence. The earlier candidate is in closed PR #102 at `6baec0a4`.
 
 Done when: a reviewed v3 plan ships, or the owner retires the recovery program.
+
+### Probe the malformed-input gap in the pinned smart-contracts skill
+
+The security reference in `skills.stellar-dev.smart-contracts` (repository `stellar/stellar-dev-skill`)
+numbers its vulnerability classes, and none covers malformed or short input. The nearest entry is
+check-then-act races, a different thing. Only generic input-validation advice exists; a length or
+bounds guard before decoding or slicing is absent. The evidence is the
+[2026-08-07 codegen partner report](../research/audits/2026-08-07-codegen-partner-report.md), so it
+is older than the current pin.
+
+Next: a recurrence probe against the current pinned commit, through the `improvements-pipeline`
+skill. If the gap still reproduces, file a finding under `improvements/skills/`.
+
+Done when: the probe shows the gap closed, or a finding records it.
 
 ## Routing
 
@@ -831,6 +879,18 @@ Done when: the ranking trap is fixed through a gated general change, and either 
 pass again or the owner's decision leaves release data upstream and the request is filed in
 `improvements/`.
 
+### Decouple `extractLossDetail` from the truncation footer wording
+
+`extractLossDetail` in `src/policy/source-basis.ts` finds the loss detail with a regular expression
+over the footer that `truncate.ts` appends (`--- TRUNCATED --- Result was ~N tokens (limit: N).`
+then the detail, then ` Re-run returning`). A wording edit to that footer silently empties
+`lossDetail`, and one indirect test guards it.
+
+Next: have `truncate.ts` return the detail as a field, or export one constant that both sides use,
+and add a direct test that fails when the footer changes.
+
+Done when: a footer wording change fails a test instead of emptying `lossDetail`.
+
 ## Authentication follow-ups
 
 ### Watch sign-in rejects after the oauth-provider 1.x deploy
@@ -963,6 +1023,13 @@ The judge uses pack `p9` ([result](rounds/2026-10-12-pack-p9/result-p9.md)). Kno
 - The R8-1 sentence scope is unresolved.
 - The round follow-up "Check what the judge saw before changing how it weighs cited text" may
   add a cited-text gap here.
+- Judges see capped transcript text and claim-anchored packs, while agents read full payloads
+  through `codemode.artifact.read`, so live-computed aggregates ("N of M events") stay
+  unanchorable. A pre-cap evidence sidecar would close it at the root: `run-qa.mjs` captures
+  uncapped `execute` payloads (or dev R2 artifact bodies) into a gitignored per-stamp sidecar, and
+  the pack builder prefers the sidecar over the capped transcript. Without it, the first break is
+  count and aggregation claims on live digest cases. This is a runner change and a pack-version
+  change, so it needs its own reviewed measurement.
 
 Done when: a reviewed later pack closes these gaps with an authorized measurement, or the owner
 accepts them as the standing limits of p9.
@@ -1090,6 +1157,72 @@ once as a live probe on the subscription login.
 Done when: each CLI denies the hook's probe set in a live probe, or this item records why one
 cannot.
 
+### Tag confirmation-only rows in the agent discovery runner and the agentic workflow
+
+Only `run-discovery.mjs` and `run-replay.mjs` import `lib/confirmation-only.mjs`.
+`run-agent-discovery.mjs`, `classify-misses.mjs` and the agentic workflow
+(`eval/agentic/workflow-agentic-routing.js`, its capture proxy and reconciler) do not tag or hide a
+row that matches a QA headline question, although `routing-qa-overlap.mjs` lists an `agentic` set.
+The guides now say so and ask for counts only.
+
+Next: wire the tag into those paths so a listed row prints `confirmation-only` in place of its
+outcome, with the same fail-closed behavior as the one-shot runner. Or decide the counts-only rule
+is enough and delete this item.
+
+Done when: every runner that replays a listed row tags it, or the owner accepts the guide rule.
+
+### Move the playground blind-packets test out of a record folder
+
+`research/audits/2026-11-06-playground-final-resolution/blind-packets.test.mjs` is tracked, and
+`vitest.config.ts` excludes no `research/` path, so `npm test` and CI run it from a dated record
+folder. A record folder should not hold a test that gates CI.
+
+Next: move the file under `test/`, or add `research/**` to the vitest exclude and retire the test.
+Either way, update the `test/README.md` scope line that now names the extra file.
+
+Done when: `npm test` runs no file under `research/`.
+
+## Documentation follow-ups
+
+### Apply the item 8.2 deferred documentation changes after run 2.2c merges
+
+Round item 8.2 audited the living documents. It left these changes for after run 2.2c has merged
+(about 2026-12-04), because the dated runs read `AGENTS.md`, `golden-truth`, `improvements-pipeline`,
+`eval/qa/README.md` and the TODO anchors at launch. This item waits for the orchestrator's approval
+of the list; do not apply it before then. The list is the "Approval list" point 3 in the item's
+[RECONCILE.md](rounds/2026-11-16-next-phase/items/8.2/RECONCILE.md):
+
+- The `CLAUDE.md` prohibition (the fact "there is no `CLAUDE.md`" already landed).
+- O-10: one statement of posting and deploy authority across `AGENTS.md`, two skills and
+  `ecosystem-skills/README.md`.
+- O-27: define owner, lead, orchestrator and lane once in `AGENTS.md` "Coordination".
+- O-30 (the `wrangler kv` usage sentences move to `docs/operations.md`), O-32 to O-38 (move or
+  reword `AGENTS.md` rules that are orchestrator handoff detail), and O-40 (shorten the Solo rule).
+- C-17: record the playground gauntlet's own Wrangler per model as an exception to "do not start a
+  second Wrangler process", or let the gauntlet reuse a server.
+- "File and response size come second" in `AGENTS.md` "Spend and evidence".
+- B-12 (declined as superseded), B-13, B-14 and the "Raven scoping" sentence in
+  `improvements-pipeline`, and the `golden-truth` lifecycle overlap.
+- O-12: split `eval/qa/README.md` (about 860 lines holding an operator guide, repo-wide agent rules,
+  pack internals and dated results).
+- Point the case-search hook message and the three `.ignore` headers at "Searching without reading
+  case text"; with the pointer line in "Held-out split" they stay navigable until then.
+
+Done when: the approved changes are applied and the rest are declined in the round ledger.
+
+### Fix the document pointers in `src/` comments
+
+Three comments under `src/` point at text that no longer fits. Editing them changes Worker bytes,
+so they ride with the next code change, not a documentation pull request.
+
+- `src/mcp/tools.ts` (the `BASE_SERVER_INSTRUCTIONS` comment) narrates the removed per-family source
+  map. State what the string is and where the family orientation lives.
+- `src/auth/gate.ts` and `src/auth/redirects.ts` cite "DESIGN.md D1" and "D2 of the oauth-provider
+  1.x round". That file sits in a round folder that retention may delete. Point them at the
+  per-origin provider description in `ARCHITECTURE.md`.
+
+Done when: the comments state current behavior with no history and no pointer to a round file.
+
 ## Dependencies
 
 ### Wait for a picomatch release that fixes GHSA-fc5q-39xc-vjpf
@@ -1208,6 +1341,48 @@ before any change:
 Done when: the owner accepts a reviewed design note and it ships, or the owner keeps the split
 and this item is deleted.
 
+### Run the overdue partner-documentation review
+
+[`ideas/partner-doc-live-sources.md`](../ideas/partner-doc-live-sources.md) holds the partner
+Markdown source lane behind a four-phase gate and set its review for 2026-10-31. The date passed
+with no recorded result. The first step costs no model call: re-evaluation step 1 is the paired
+12-case `npm run eval:partner-docs -- --raven-url <bound URL>` against the reused `dev` terminal.
+The baseline arm is the unmeasured half, and stellar.org and the newer Scout index now exist.
+
+Next: run it once, then follow the note's re-evaluation steps. Stop at an empty residue and close the
+idea again without an implementation round.
+
+Done when: the result is recorded in the note's status and the idea is held, closed, or promoted to
+the gate's next phase.
+
+### Read the `skill_read` shape distribution
+
+[`ideas/skill-discovery-without-bundling.md`](../ideas/skill-discovery-without-bundling.md)
+pre-registered its decision rules for the `skill_read` events: read after 100 organic events or
+2026-09-30, whichever comes first. The date has passed and nothing fired the read. It is one Workers
+Logs calculation over `skill_read.shape` and `id` by the `cloudflare-observability-review` skill.
+Workers Logs hold at most seven days, so a read can count only the organic events from that window;
+if it counts fewer than 100, record the count and re-read later.
+
+Next: take it in the next Workers Logs session (priority 2 above), apply the note's rules as
+written, and do not paraphrase them here.
+
+Done when: the answers to both questions are recorded where the note says, and the note is deleted.
+
+### Measure long-horizon codegen with Raven installed
+
+No instrument measures long-horizon codegen with Raven installed. The only evidence is one external
+partner's run, in the
+[2026-08-07 codegen partner report](../research/audits/2026-08-07-codegen-partner-report.md): Raven
+served guidance for many of the reported defect classes, the defects occurred anyway, and the cause
+is unattributed (n=1).
+
+Trigger: the partner's per-round bug report arrives, or the owner funds a with-Raven versus
+without-Raven codegen A/B graded against the partner's external defect taxonomy. No item here
+authorizes a paid run.
+
+Done when: an authorized A/B attributes the defects or the owner retires the question.
+
 ## OpenAI plugin submission
 
 ### Obtain a written exception for the accepted two-tool endpoint
@@ -1278,6 +1453,12 @@ decision record, then delete it here.
    7.3 deploys because no production bearer credential exists on the Mac or agentpc). It is the
    only free check of both wire eras on all three hosts. Safe default: none. Deploy checks stay on
    the OAuth metadata, the `/mcp` 401 and one connector `execute`.
+7. **Counsel review of skill forwarding against upstream licenses.** Raven forwards pinned skill
+   metadata and source URLs, and whole-skill reads preserve upstream YAML frontmatter
+   ([`THIRD-PARTY-NOTICES.md`](../THIRD-PARTY-NOTICES.md), "Ecosystem skills — served, not stored").
+   Whether that satisfies each upstream license is an open question for counsel; the OpenZeppelin
+   skills are AGPL-3.0-only. No queue item named it before. Safe default: no change. Raven stores no
+   skill body and serves pinned bytes that match their recorded hash.
 
 Owner-blocked actions that already have an item (one line each, no decision needed here):
 
