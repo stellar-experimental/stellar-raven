@@ -6,7 +6,7 @@
 
 Use a terminal already running `npm run dev` and its bound loopback URL; do not start Wrangler for this command.
 
-Both lanes are API-billed: the Playground route itself calls models through Cloudflare AI Gateway, so no subscription CLI can stand in for it. The [run-evals skill](../../.agents/skills/run-evals/SKILL.md) owns the scoping and spend rules. For other questions, use the CLI-driven instruments in the [evaluation map](../EVALS.md).
+Both lanes are API-billed: the Playground route itself calls models through Cloudflare AI Gateway, so no subscription CLI can stand in for it. They are exceptions E1 and E2 in [Model-call billing](../EVALS.md#model-call-billing), which holds the reasons. The [run-evals skill](../../.agents/skills/run-evals/SKILL.md) owns the scoping and spend rules. For other questions, use the CLI-driven instruments in the [evaluation map](../EVALS.md).
 
 ```sh
 # Free validation: default seeded, stratified five-case selection; no HTTP/model/judge calls.

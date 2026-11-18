@@ -70,10 +70,12 @@ counts. There is no `CLAUDE.md`; Claude Code reads this file natively.
   much cheaper and only slightly less correct can be the better product. Report cost per answer
   beside accuracy in every comparison and state the trade. For accuracy work, look first at
   upstream sources and golden errors before surface or prompt tuning.
-- **Run here, on `hc`, first.** Development tests and evals run against the local `wrangler dev`
-  server with the subscription CLI agents (Claude Code, Codex, Grok) as `hc` children. Use an
-  API-billed path (Cloudflare AI Gateway, a provider API) only when no CLI path can do the job,
-  and record why.
+- **Subscriptions first. No AI Gateway judging.** Evals, judging, testing and building run on
+  subscription CLIs as `hc` children: Claude Code, Codex, Grok, and OpenCode only after its
+  subscription-provider probe, never on API keys. Tests and evals run against the local
+  `wrangler dev` server. AI Gateway or a provider API is allowed only for an exception listed with
+  its reason in [`eval/EVALS.md`](eval/EVALS.md) "Model-call billing". Any other API-billed run needs
+  the owner's written approval naming the run.
 - **Eval and test models.** Claude Sonnet, Codex Terra, and Grok, each at its family's newest
   model. Add Claude Opus and Codex Sol where they help. Leave out Haiku and Codex Luna. Never
   tune to one model version; every run records the exact ID it resolved.
@@ -91,9 +93,9 @@ counts. There is no `CLAUDE.md`; Claude Code reads this file natively.
   categories' results.
 
 [`.agents/model-roster.md`](.agents/model-roster.md) has the launch lines. They name families, and
-a run records the resolved ID; a dated brief's explicit launch line stays as written. The
-`run-evals` skill has the measurement procedure. Scores are evidence for a scoped decision, not
-the decision; an established upstream defect goes to `improvements/`.
+a run records the resolved ID. The `run-evals` skill has the measurement procedure. Scores are
+evidence for a scoped decision, not the decision; an established upstream defect goes to
+`improvements/`.
 
 ## Coordination
 

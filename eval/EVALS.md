@@ -10,8 +10,8 @@ historical incomplete cohorts separate. The [run-evals skill](../.agents/skills/
 owns this scoping and review workflow; required CI and release gates remain unchanged.
 
 Scope each paid run with the [run-evals skill](../.agents/skills/run-evals/SKILL.md): it owns the decision, the smallest run, the stop
-rule, the cost estimate and the API-billed exceptions. The client set is in
-[the roster](../.agents/model-roster.md#models-for-evals-and-tests).
+rule and the cost estimate. [Model-call billing](#model-call-billing) lists the API-billed exceptions.
+The client set is in [the roster](../.agents/model-roster.md#models-for-evals-and-tests).
 
 ## Instruments
 
@@ -29,7 +29,7 @@ rule, the cost estimate and the API-billed exceptions. The client set is in
 | [QA battery](qa/README.md) | Final-answer correctness | Paid; use matched cases before and after substantial changes | Headline; membership comes from the [registry](qa/lifecycle-registry.json) |
 | [Canonical live QA](qa/corpus/live/live-cases.json) | Live-data behavior on 15 cases | Paid; test grounding after executor or adapter changes | Separate diagnostic: `live-data-canonical-v3` |
 | [Digest QA](qa/corpus/live/live-digest-supplement-cases.json) | Recency-digest grounding on two cases | Paid; test digest or skill-run questions | Separate diagnostic: `live-digest-supplement-v2` |
-| [Playground](playground/README.md) | The public `/playground/chat` model and tool loop | Paid and API-billed through AI Gateway; uses selected QA cases | Diagnostic; keep its denominator separate from MCP QA |
+| [Playground](playground/README.md) | The public `/playground/chat` model and tool loop | Paid and API-billed through AI Gateway (exception E1 in [Model-call billing](#model-call-billing)); uses selected QA cases | Diagnostic; keep its denominator separate from MCP QA |
 | [Plan](plan/README.md) | Service coverage and broad-to-detail call order | Offline; grades stored QA transcripts | Diagnostic; progression is informational |
 | [Temporal](temporal/README.md) | Answer behavior for temporal questions | Offline; grades stored results | Diagnostic |
 | [Partner docs](partner-docs/README.md) | Required facts in partner documentation | Live source checks; see the instrument guide | Diagnostic |
@@ -56,6 +56,57 @@ rule, the cost estimate and the API-billed exceptions. The client set is in
 6. Treat results as local evidence under ignored `results/` directories. Prune results older than 30 days after investigations end.
 7. A comparison across a change of resolved model (answering or judge) is not like for like. A gate or QA baseline re-baselines when its resolved model changes. Eval defaults are family aliases, so every artifact records the exact ID that ran beside the alias requested. A new resolved judge model needs the paid seven-case self-test, under its own authorization, before its first headline judged run, and that run sets the new baseline.
 8. Preserve dated evidence. A historical score does not establish current correctness or authorize another paid run.
+
+## Model-call billing
+
+Evals, judging, testing and building run on subscription CLIs as `hc` children: Claude Code, Codex,
+Grok, and OpenCode only after the probe below. There is no AI Gateway judge. AI Gateway or a provider
+API is allowed only for an exception in this section. Any other API-billed run needs the owner's
+written approval naming the run. A paid subscription run still needs its own written authorization
+(`AGENTS.md`, "Spend and evidence").
+
+**Pre-run billing checks.** Make each check before a paid lane. None makes a model call.
+
+| CLI | Check |
+|---|---|
+| Claude Code | `claude auth status --json` shows `authMethod` `claude.ai` and a `subscriptionType`. `assertClaudeSubscription` (`eval/lib/harness-guards.mjs`) enforces it in `run-qa.mjs`, `re-judge.mjs`, both judge self-tests, the discovery runner and the judge half of `npm run eval:playground`. An API key, an auth token, a cloud-provider switch or a Console login each refuse the run. |
+| Codex | `codex login status` prints "Logged in using ChatGPT". |
+| Grok | `grok --help` has no offline login check. The lane's first run records the billing mode. |
+| OpenCode | The probe below. |
+
+**OpenCode probe.** OpenCode also holds API-key providers (Cloudflare AI Gateway, Workers AI,
+OpenRouter), so restrict it to one subscription provider before any call. Pass `--standalone` on every
+command: without it the CLI uses a shared background service that runs on the default config.
+
+1. Set a private `XDG_CONFIG_HOME` only. Its `opencode.json` sets `enabled_providers` to the one
+   provider: `openai` for ChatGPT or `xai` for SuperGrok. Keep the real data dir: the login lives in
+   `opencode.db` there, and private data dirs remove it. Set `OPENCODE_DISABLE_PROJECT_CONFIG=1` and
+   `OPENCODE_DISABLE_CLAUDE_CODE=1`.
+2. `opencode auth list --standalone --format json`: that provider's `connections[].method` is `oauth`,
+   never `key`. Read only the `method` fields; `type` is `credential` for every entry and proves
+   nothing.
+3. `opencode models --standalone` lists only that provider and lists the exact model.
+4. No provider API key is set in the environment.
+
+Anthropic through OpenCode is API-key only: never.
+
+**Exceptions.** Each reaches a model only through the Playground's own transport.
+
+| ID | Path | Reason | A subscription CLI instead? |
+|---|---|---|---|
+| E1 | `scripts/run-playground-semantic-eval.mjs` (`npm run eval:playground`) | It answers through the local `/playground/chat` route, which calls the model through AI Gateway. The subject under test is the Playground's own model and transport. Its judge half is Claude Code on the subscription. | No: a CLI would test a different client. |
+| E2 | `scripts/run-demo-model-gauntlet.mjs` | The eight-case transport and tool-loop smoke test on the same route. | No, same reason. |
+
+[`eval/playground/`](playground/README.md) holds the contract for both.
+
+**Not exceptions.** The product's runtime is not an eval or a build step: `src/demo/chat.ts` calls AI
+Gateway and Workers AI for the public Playground, and `src/demo/eval-cost.ts` reads Gateway logs for
+the eval cost frame. The `cloudflare-observability-review` skill reads Gateway logs and Workers
+telemetry through the Cloudflare API and makes no model call. CI, `test/smoke` (a mocked `AI`
+binding), `test/live` and `usage/` make none.
+
+`test/model-call-billing.test.mjs` fails when a tracked code file outside the exceptions names a
+provider endpoint, an AI Gateway token, the Playground chat route or an AI SDK import.
 
 When a round establishes an upstream defect, file or update evidence-backed findings in [improvements/](../improvements/README.md).
 Record problems in this repository in [.agents/TODO.md](../.agents/TODO.md).
