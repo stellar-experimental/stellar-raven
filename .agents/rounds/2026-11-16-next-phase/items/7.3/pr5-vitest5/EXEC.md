@@ -158,3 +158,24 @@ any of my runs here (runs 1 and 2, `npm test`).
    (git-ignored) and not committed.
 
 No other deviation.
+
+## Independent diff review (lead)
+
+Reviewer: Codex frontier, `gpt-6-astra`, high effort, agentpc `t1yc`. Verdict **PASS**, with no
+blocker, major or minor finding and 4 confirming notes ([DIFF-REVIEW.md](DIFF-REVIEW.md)):
+- the lockfile matches this record, with registry integrity checked for all 12 added or updated
+  entries;
+- a rebuild gives the same `dist/server.js` and `.map` hashes;
+- `test:smoke` passes 173 tests, and no test is edited;
+- the flake TODO checks out against CI run 44223760712, attempt 1.
+
+Nothing to reconcile.
+
+The lead re-ran the gates bare on the final tree:
+- typecheck;
+- test (4190 passed);
+- build (same bundle hash);
+- smoke (173 passed);
+- secrets.
+
+All exit 0.
