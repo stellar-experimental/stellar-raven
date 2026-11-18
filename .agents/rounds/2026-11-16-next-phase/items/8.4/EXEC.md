@@ -143,4 +143,5 @@ with changes. Both findings adopted.
 2. **nit, adopted.** Removed the trailing space at the end of the "Commits" section of this file.
 
 Gates for this round: `git diff --check origin/main..HEAD` and `npm run secrets:scan -- --tree`,
-both run bare; results below.
+both run bare, after the commit `da5e1b69`: `git diff --check` exit 0 with no output, and the secrets
+scan exit 0 ("clean — scanned all tracked files").
