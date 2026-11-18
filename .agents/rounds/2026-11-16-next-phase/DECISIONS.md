@@ -144,6 +144,11 @@ the outcomes that the 7.x items decided without a separate owner question.
     their latest". Agent launch lines, the roster, skills, eval defaults and docs name a model
     family and take its latest model; a run records the model ID it resolved. Round item 8.3 applies
     it.
+  - Families everywhere (round item 8.4). Owner (2026-11-18): "We should update all things everywhere
+    around this to not name versions but rather familes running the latest version. e.g. there are
+    new Sol and Astra versions that came out recently". This supersedes item 8.3's choice to leave
+    the dated briefs and `briefs/ITEM-LEAD.md` pinned: they now name families and resolve the newest
+    model at launch with `scripts/latest-model.mjs`. Records keep the model they ran on.
   - Partner detail in public history: answered in conversation; no further action recorded.
   - Observability retention. Owner: "30 is an allowance, today we have 7. I'd like to convert to
     actually doing 30 everywhere. Do this work carefully, or plan for it maybe for now in TODO."

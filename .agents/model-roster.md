@@ -46,7 +46,6 @@ clients.
 - The eval defaults are family aliases. A run's identity is the exact ID it resolved, stored beside
   the alias it requested (`eval/EVALS.md`). A change of resolved answering or judge model starts a
   new baseline, under the `run-evals` skill.
-- A dated brief that names an explicit launch line keeps it. This file does not override one.
 
 ## Launch lines
 
@@ -56,12 +55,12 @@ file.
 
 Codex and Grok use the two-step form. A resolver failure then stops the launch. A command
 substitution inside the launch line would pass `-m ""`, and an empty Codex model inherits
-`~/.codex/config.toml`. The first step also gives the orchestrator the ID to record.
+`~/.codex/config.toml`. The `echo` prints the resolved ID for the orchestrator to record.
 
 ```sh
-M=$(node <worktree>/scripts/latest-model.mjs <sol|astra|terra>) && hc run --bg --name <lane> --cwd <worktree> codex --no-daemon -m "$M" -c 'model_reasoning_effort="high"' -c 'sandbox_workspace_write.network_access=true' -a never -s workspace-write "<task>"
+M=$(node <worktree>/scripts/latest-model.mjs <sol|astra|terra>) && echo "resolved: $M" && hc run --bg --name <lane> --cwd <worktree> codex --no-daemon -m "$M" -c 'model_reasoning_effort="high"' -c 'sandbox_workspace_write.network_access=true' -a never -s workspace-write "<task>"
 hc run --bg --name <lane> --cwd <worktree> claude --model <sonnet|opus|fable> --effort high --permission-mode bypassPermissions "<task>"
-M=$(node <worktree>/scripts/latest-model.mjs grok) && hc run --bg --name <lane> --cwd <worktree> grok --model "$M" --reasoning-effort high --always-approve "<task>"
+M=$(node <worktree>/scripts/latest-model.mjs grok) && echo "resolved: $M" && hc run --bg --name <lane> --cwd <worktree> grok --model "$M" --reasoning-effort high --always-approve "<task>"
 ```
 
 - **Codex** needs `--no-daemon` under `hc`. Its `workspace-write` sandbox cannot write under
@@ -99,4 +98,5 @@ and read the `claude-<family>-*` key.
   between generations. Read the description when a new generation lands.
 - Working context is the catalog's `context_window`, not `max_context_window`.
 - A catalog entry proves a model is selectable, not that a call works. The first lane on a newly
-  resolved ID is that check. When its launch fails, fall back to the previous model and report.
+  resolved ID is that check. When resolution or the launch fails, record the reason and take the
+  lane's tier fallback.
