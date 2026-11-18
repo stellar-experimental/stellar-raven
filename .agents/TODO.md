@@ -869,6 +869,23 @@ leaves release data upstream and the finding is filed.
 
 ## Eval instruments
 
+### Repair the `test/live/` suites against current code
+
+On 2026-11-18 (round item 7.3, PR 2) both live suites failed against a local `npm run dev`, with
+identical results on `origin/main` `0683d266` and on the upgraded branch, so no dependency change
+caused it:
+- `run-live-execute.mjs` failed 3 checks: `initialize` reports no envelope contract in its
+  instructions, case 6's result is unparseable, and case 8 is `isError` with
+  `Cannot read properties of undefined (reading 'slice')`;
+- `run-live-spec-search.mjs` failed case 4, whose oversized whole-spec result is meant to be
+  truncated host-side with the footer.
+
+The cause was not investigated. Until they are repaired, AGENTS.md's live
+check depends on the handshake and smoke lanes.
+
+Done when: both suites pass against a current local server, or each failing check is rewritten to
+the current contract or deleted with a stated guard.
+
 ### Method note: same-surface verdict noise, and the judge-tier cap
 
 Standing note, not a task. Two runs of the same 50 panel rows on the same surface differed on 17 rows (8
@@ -1015,16 +1032,18 @@ Done when: the tests run on `@cloudflare/vitest-plugin`, all three overrides are
 ### Move the demo off the deprecated `workers-ai-provider`
 
 Cloudflare froze `workers-ai-provider`; the replacement is `createAI` from
-`agents/models/ai-sdk`, which needs `agents` 0.32.0 or later. Blocked: `createAI` string catalog
-models drop `providerOptions.anthropic` (adaptive `thinking` and `effort`) on the binding `/run`
-path (`cs-010`, repro under `rounds/2026-11-03-demo-createai/repro/`). The owner decided on
+`agents/models/ai-sdk`, which needs `agents` 0.32.0 or later; `agents` is 0.33.0 now, so that
+precondition is met. Still blocked: `createAI` string catalog models drop
+`providerOptions.anthropic` (adaptive `thinking` and `effort`) on the binding `/run` path
+(`cs-010`, repro under `rounds/2026-11-03-demo-createai/repro/`); the repro was re-run on
+`agents` 0.33.0 on 2026-11-09 and still reproduces. The owner decided on
 2026-11-03 to keep current behavior and not migrate through a different transport. The binding
 path also has no stream-resume opt-out (cloudflare/agents#2790).
 
 Done when: an `agents` release forwards Anthropic provider options for `anthropic/*` catalog ids
 (re-run the `cs-010` repro), a reviewed decision covers stream resume, `src/demo` and
 `test/demo-model-config.test.ts` no longer import the package, and `wai-001` is closed under the
-`improvements-pipeline` skill. The `agents` upgrade moves the MCP server runtime, so it needs
+`improvements-pipeline` skill. The migration moves the demo model path, so it needs
 `npm run test:smoke`, the single-`workerd` check, and a Playground run of every demo model. The
 migration is not `fixed-upstream` evidence for `wai-001`; that close-out needs a reviewed
 lifecycle decision.

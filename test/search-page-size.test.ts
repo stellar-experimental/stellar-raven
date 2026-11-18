@@ -27,7 +27,7 @@ vi.mock("cloudflare:workers", () => ({
   tracing: { async trace<T>(_name: string, fn: () => T | Promise<T>): Promise<T> { return await fn(); } },
   WorkerEntrypoint: class WorkerEntrypoint {}
 }));
-vi.mock("agents/mcp", () => ({ createMcpHandler: vi.fn(() => () => new Response(null, { status: 404 })), getMcpAuthContext: vi.fn(() => undefined) }));
+vi.mock("agents/mcp/server", () => ({ createMcpHandler: vi.fn(() => () => new Response(null, { status: 404 })), getMcpAuthContext: vi.fn(() => undefined) }));
 vi.mock("@cloudflare/codemode", () => ({ DynamicWorkerExecutor: class DynamicWorkerExecutor {} }));
 vi.mock("../src/executor/run", () => ({ createExecuteRunner: vi.fn() }));
 
