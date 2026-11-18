@@ -31,8 +31,8 @@ In scope:
 
 Out of scope:
 
-- The upstream services that the gateway uses: Lumenloop, Stellar Light/Scout, Stellar Docs, and the stellar.org site.
-  Report those problems to their owners.
+- The upstream services that the gateway uses: Lumenloop, Stellar Light/Scout, Stellar Docs, and
+  the stellar.org site. Report those problems to their owners.
 - Attacks that need a compromised maintainer machine.
 - Volumetric denial of service.
 
