@@ -45,10 +45,10 @@ The first-principles split is void, because the 2026-11-14 golden coverage audit
 battery. The current split, the held-out status that the dated runs read, is drawn by the rule in
 [`eval/qa/README.md`](../eval/qa/README.md) ("Held-out split") from the 247 headline cases:
 
-- SHA-256 `bb4390d3398f5e0cbdf99948bdd61be4b6872fe57c2484524802771407d71fd6`.
-- 93 tuning, 109 held-out, and 45 reserve cases.
-- The file is on the owner's Linux machine at `~/backups/gca-2026-11-14-split-v11.json`. Tuning
-  scans pass `--split ~/backups/gca-2026-11-14-split-v11.json`.
+- SHA-256 `6a032d098ea9f8e4dadcfdd4599d610d1d2eca9d704d6bb1a30c7f71c144c85f`.
+- 98 tuning, 105 held-out, and 44 reserve cases.
+- The file is on the owner's Linux machine at `~/backups/gca-2026-11-14-split-v12.json`. Tuning
+  scans pass `--split ~/backups/gca-2026-11-14-split-v12.json`.
 - An earlier split file, a Mac copy of one, or an id list taken from one is stale. The
   [round ledger](rounds/2026-11-16-next-phase.md) holds the SHA-256 and the reason of every
   amendment.
@@ -60,7 +60,7 @@ State and rules:
 - The audit's battery test read the answers of 70 headline cases before the draw
   ([ids](rounds/2026-11-14-golden-coverage-audit/qa/ids.txt)).
 - The baseline and one read per loop ran the held-out rows, counts only. The stored held-out reads
-  and their thresholds are on 119 rows, and a future read pairs on the current split's 109
+  and their thresholds are on 119 rows, and a future read pairs on the current split's 105
   held-out rows.
 - An item may name a case by ID; never record which set a case is in, and tune no product change
   on a held-out or reserve case.
