@@ -129,4 +129,18 @@ Two commits on the branch, normal hooks, each ending `Co-Authored-By: Claude Son
 <noreply@anthropic.com>`: one for code and docs (everything above except the round records) and
 one for the round records (`PLAN.md`, `REVIEW.md`, `briefs/`, `EXEC.md`, `DECISIONS.md`). The
 dated briefs and `briefs/ITEM-LEAD.md` are round files too, but they are step 2 and 3 edits to
-live briefs, so they go with the first commit. 
+live briefs, so they go with the first commit.
+
+## Codex review reconciliation
+
+Reviewer: Codex workhorse `gpt-6.2-sol`, high ([CODEX-REVIEW.md](CODEX-REVIEW.md)). Verdict: approve
+with changes. Both findings adopted.
+
+1. **should, adopted.** `.agents/model-roster.md` ("How to re-verify") said "When its launch
+   fails, fall back to the previous model and report", which needs a version chosen by hand. It now
+   reads "When resolution or the launch fails, record the reason and take the lane's tier fallback",
+   matching the dated briefs' fail-closed rule.
+2. **nit, adopted.** Removed the trailing space at the end of the "Commits" section of this file.
+
+Gates for this round: `git diff --check origin/main..HEAD` and `npm run secrets:scan -- --tree`,
+both run bare; results below.

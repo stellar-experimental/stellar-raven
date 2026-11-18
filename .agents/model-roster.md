@@ -98,4 +98,5 @@ and read the `claude-<family>-*` key.
   between generations. Read the description when a new generation lands.
 - Working context is the catalog's `context_window`, not `max_context_window`.
 - A catalog entry proves a model is selectable, not that a call works. The first lane on a newly
-  resolved ID is that check. When its launch fails, fall back to the previous model and report.
+  resolved ID is that check. When resolution or the launch fails, record the reason and take the
+  lane's tier fallback.
