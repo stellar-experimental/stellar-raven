@@ -52,16 +52,15 @@ mismatch. There is no automatic resume or retry.
 ## Configure and review without calls
 
 Create a local config with every field explicit. Name the newest Sol in the AI Gateway catalog on
-the day of the run. The config stays explicit by design: identity hashes the exact model, so a family
-move never changes an existing config. The Codex CLI catalog is not the AI Gateway catalog, so
-`scripts/latest-model.mjs` cannot fill the field.
+the day of the run (the example uses `gpt-6.1-sol`). The config stays explicit by design: identity
+hashes the exact model, so a family move never changes an existing config.
 
 ```json
 {
   "accountId": "<32 lowercase hexadecimal characters>",
   "gatewayId": "default",
-  "model": "gpt-<version>-sol",
-  "gatewayLogModel": "openai/gpt-<version>-sol",
+  "model": "gpt-6.1-sol",
+  "gatewayLogModel": "openai/gpt-6.1-sol",
   "effort": "high",
   "maxOutputTokens": 4096,
   "maxPromptBytes": 100000,
@@ -147,6 +146,6 @@ disagreement and cost before using the adapter for a study. Project remaining ca
 costs, including answer generation and reserves, before starting the final matrix.
 
 Protocol references: [OpenAI Responses](https://developers.openai.com/api/reference/resources/responses/methods/create),
-[OpenAI models](https://developers.openai.com/api/docs/models),
+[GPT-6.1 Sol](https://developers.openai.com/api/docs/models/gpt-6.1-sol),
 [Cloudflare OpenAI provider](https://developers.cloudflare.com/ai-gateway/usage/providers/openai/),
 [Cloudflare log detail](https://developers.cloudflare.com/api/resources/ai_gateway/subresources/logs/methods/get/).

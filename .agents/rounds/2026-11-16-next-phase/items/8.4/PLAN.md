@@ -165,3 +165,13 @@ All ten findings adopted. Where this section differs from the steps above, this 
 Amended gates: `npm run typecheck`, `npm test`, `npm run build` (then `cmp dist/server.js` with an
 `origin/main` build), `npm run eval:selftest`, `npm run secrets:scan -- --tree`, all bare. No
 `test:smoke` (no `src/` change). No deploy expected.
+
+## Scope change (orchestrator, 2026-11-18, after execution)
+
+Note item 5 is dropped: the owner wants gateway judging removed entirely, and item 8.6 owns
+`eval/qa/gateway-judge.md`, `eval/qa/gateway-judge.mjs`, `eval/qa/gateway-rejudge.mjs`,
+`test/gateway-judge.test.mjs`, `eval/EVALS.md`, `AGENTS.md`, `.agents/skills/run-evals/` and
+`eval/qa/README.md`. The lead reverted this branch's edits to `eval/qa/gateway-judge.md` and
+`AGENTS.md` (step 1's AGENTS.md clause and step 5) to `origin/main` in a forward commit. The
+AGENTS.md clause "a dated brief's explicit launch line stays as written" therefore remains and now
+contradicts the roster and the briefs; it is handed to item 8.6.
