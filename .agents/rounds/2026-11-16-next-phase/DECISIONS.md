@@ -139,6 +139,22 @@ the outcomes that the 7.x items decided without a separate owner question.
 - **Docs audit** (round item 8.2). Owner: "We should probably work with Fable and Sonnet to audit
   and review all docs around this repo to ensure accuracy, cleanliness, organization, etc."
 
+- **Owner answers to the item 8.2 questions** (2026-11-18):
+  - Models. Owner: "don't tune by specific model version anywhere, just those model familes at
+    their latest". Agent launch lines, the roster, skills, eval defaults and docs name a model
+    family and take its latest model; a run records the model ID it resolved. Round item 8.3 applies
+    it.
+  - Partner detail in public history: answered in conversation; no further action recorded.
+  - Observability retention. Owner: "30 is an allowance, today we have 7. I'd like to convert to
+    actually doing 30 everywhere. Do this work carefully, or plan for it maybe for now in TODO."
+    Planned in the TODO item "Keep 30 days of observability data, including queries and responses".
+  - ADRs for the per-origin OAuth design and the stellar.org admission. Owner: "just write a TODO
+    that says we'll want that if and when we tackle it". Done as a TODO item.
+  - Counsel review of skill forwarding. Owner: "nah, I don't want to fiddle with this. We should be
+    forwarding or proxy'ing not storing and copying. That's already been approved." Closed: Raven
+    serves pinned skills by forwarding and stores no skill body (`THIRD-PARTY-NOTICES.md`,
+    "Ecosystem skills — served, not stored").
+
 ## Timing
 
 The work for the P30 Mainnet vote runs from a one-shot timer on agentpc at

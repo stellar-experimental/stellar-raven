@@ -955,6 +955,55 @@ is decided, the orchestrator keeps a second copy outside the checkout.
 
 Done when: the recovery is confirmed and the record is committed or discarded.
 
+## Observability and retention
+
+### Keep 30 days of observability data, including queries and responses
+
+Owner, 2026-11-18: "30 is an allowance, today we have 7. I'd like to convert to actually doing 30
+everywhere. Do this work carefully, or plan for it maybe for now in TODO." This item is that plan.
+
+What is wrong: `/terms` (`src/site.ts`, "Operational and quality logs") says the Service stores
+observability data, which may include queries and responses, for 30 days, and that a user may opt
+out of query and response logging. Today Raven keeps less than that:
+
+- Workers Logs, traces and request metadata: at most 7 days (Cloudflare's platform limit; it cannot
+  be raised in Workers Logs itself).
+- No query or response text is logged. Several TODO items rely on that fact ("query text is not
+  logged, so silence is no measured demand"); 30-day capture would make demand measurable.
+- Oversized `execute` artifacts in R2 `stellar-raven-artifacts`: 7 days. These are a result cache,
+  not observability; whether they move to 30 days is a decision inside this item.
+- D1 usage rows (13 months) and OAuth records are not observability and do not change.
+
+`docs/operations.md` ("Data retention") and `src/auth/retention.ts` own the periods;
+[`ideas/observability-r2-retention.md`](../ideas/observability-r2-retention.md) has an earlier
+Logpush-to-R2 sketch.
+
+Design questions to settle before code (a design study, a Fable review, and a Codex frontier
+security review, because this stores user content):
+
+1. Transport: Workers Logpush to an R2 bucket with a 30-day lifecycle rule, or the existing tail
+   consumer (`stellar-raven-usage`) writing to R2. Cost estimated from current request volume.
+2. Capture set: `search` queries, `execute` code, tool responses (with a size cap and a pointer for
+   artifacts), Playground turns. What is never captured: credentials, tokens, email addresses, IP
+   addresses (match the usage-statistics promise unless the owner decides otherwise).
+3. Opt-out, which `/terms` already promises: a per-account flag keyed by the hashed WorkOS subject,
+   checked in the capture path, with a test.
+4. Deletion on request: delete one account's records across the archive by its hashed subject.
+5. Access: private bucket, read-only analysis tooling, and the AGENTS.md rule that production data
+   and counts are never committed.
+6. One retention constant in `src/auth/retention.ts`, enforced by the bucket lifecycle and checked by
+   `test/retention.test.ts`.
+
+The work stays inside the `/terms` text as written, so no counsel review is needed; capturing
+anything the terms do not name would need the legal lane first.
+
+Next: an owner go to start the design study. It touches no file the dated runs read.
+
+Done when: every observability store keeps 30 days and deletes after it, opt-out and per-account
+deletion are implemented and tested, `docs/operations.md`, `src/auth/retention.ts`, `/terms` and
+`usage/README.md` agree, the TODO items that assume "query text is not logged" are updated, the
+idea file is folded or deleted, and a read 31 days after the deploy shows the oldest records gone.
+
 ## Eval instruments
 
 ### Repair the `test/live/` suites against current code
@@ -1307,6 +1356,17 @@ fixed.
 
 ## Deferred programs
 
+### Write ADRs for the per-origin OAuth design and the stellar.org admission
+
+Neither has a decision record; living docs cite the round records instead
+([DESIGN.md](rounds/2026-11-16-next-phase/items/7.3/pr4-oauth/DESIGN.md) for per-origin OAuth
+providers and the native-callback allowlist; #447 for the stellar.org source). Owner, 2026-11-18:
+write them if and when that area is tackled again.
+
+Trigger: the next change to the OAuth host model, the callback allowlist, or the stellar.org source
+or its admission. Done when: the ADR is in `research/decisions/` and its index lists it.
+
+
 ### Keep `sources.locate` deferred
 
 Deferred by the owner on 2026-08-28. The design and the reopen rule are in
@@ -1393,9 +1453,9 @@ correspondence before acting. The trimmed surface changes the tool descriptions 
 cases describe; re-run the rehearsal before the next submission step.
 [`plugins/openai/README.md`](../plugins/openai/README.md) has the records and rules.
 
-Before publication, resolve publisher verification and privacy coverage: `/terms` in
-`src/site.ts` describes query and response logging for 30 days, while `docs/operations.md`
-describes operational metadata retention of at most seven days. After the final review
+Before publication, resolve publisher verification and privacy coverage. The `/terms` 30-day
+observability promise against today's 7 days is tracked in "Keep 30 days of observability data,
+including queries and responses". After the final review
 decision, revoke the reviewer API key `openai-review-20261007`. Before that revoke, finish
 "Confirm `npm run mcp-key` on wrangler 4.164.0".
 
@@ -1453,13 +1513,6 @@ decision record, then delete it here.
    7.3 deploys because no production bearer credential exists on the Mac or agentpc). It is the
    only free check of both wire eras on all three hosts. Safe default: none. Deploy checks stay on
    the OAuth metadata, the `/mcp` 401 and one connector `execute`.
-7. **Counsel review of skill forwarding against upstream licenses.** Raven forwards pinned skill
-   metadata and source URLs, and whole-skill reads preserve upstream YAML frontmatter
-   ([`THIRD-PARTY-NOTICES.md`](../THIRD-PARTY-NOTICES.md), "Ecosystem skills — served, not stored").
-   Whether that satisfies each upstream license is an open question for counsel; the OpenZeppelin
-   skills are AGPL-3.0-only. No queue item named it before. Safe default: no change. Raven stores no
-   skill body and serves pinned bytes that match their recorded hash.
-
 Owner-blocked actions that already have an item (one line each, no decision needed here):
 
 - The OpenAI portal check and reply: "Obtain a written exception for the accepted two-tool endpoint".
