@@ -151,7 +151,7 @@ export function createEvalCostBinding(ai: Ai, gatewayId: string, maxBudgetUsd: n
         // Type narrowing only: dispatch already rejects non-Response values through error above.
         if (!(response instanceof Response)) throw new Error("answer-cost-requires-response");
         if (!response.ok) throw await answerProviderError(response);
-        // workers-ai-provider@4.0.0 doStream accepts SSE bytes or a JSON object,
+        // workers-ai-provider@4.0.1 doStream accepts SSE bytes or a JSON object,
         // including JSON replies to stream:true. It does not accept Response.
         const contentType = response.headers.get("content-type")?.split(";", 1)[0]?.trim().toLowerCase();
         try {
