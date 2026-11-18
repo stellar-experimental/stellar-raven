@@ -16,6 +16,12 @@ Model-written JavaScript runs in a networkless Dynamic Worker. Host adapters own
 | Request, catalog, scoring, sandbox, and auth design | `ARCHITECTURE.md` |
 | Connection and local setup | `README.md` |
 | Deploy and operate | [`docs/operations.md`](docs/operations.md) |
+| Stellar Docs adapter contract and credentials | [`docs/stellar-docs.md`](docs/stellar-docs.md) |
+| Eval instruments, gates, and denominators | [`eval/EVALS.md`](eval/EVALS.md) |
+| Which test suite covers what | [`test/README.md`](test/README.md) |
+| Generated files and their generators | [`scripts/README.md`](scripts/README.md) |
+| Upstream findings charter | [`improvements/README.md`](improvements/README.md) |
+| A design decision (ADR) | [`research/decisions/README.md`](research/decisions/README.md) |
 | A repeatable task procedure | `.agents/skills/<name>/SKILL.md` (`.claude/skills` is a symlink to that directory) |
 | Open work and owner decisions | `.agents/TODO.md` |
 | Round ledgers, and which note goes where | `.agents/rounds/`, `.agents/README.md` |
@@ -23,7 +29,7 @@ Model-written JavaScript runs in a networkless Dynamic Worker. Host adapters own
 
 The repo is self-contained, including usage collection under `usage/`. The owner keeps private
 folders outside it; `usage/README.md` names them. Never depend on them, and never commit production
-counts. `CLAUDE.md` imports this file; do not duplicate rules there.
+counts. There is no `CLAUDE.md`; Claude Code reads this file natively.
 
 ## Commands and verification
 
@@ -202,8 +208,8 @@ The independent reviewer:
   and golden-audit paths. Never use `grep -r`, `git grep`, `rg -u` or `--no-ignore`, an `rg -g` glob
   that matches a case file, or a shell glob over `eval/` or `.agents/rounds/`. A Claude Code hook
   denies these; Codex and Grok lanes rely on this rule. Where `rg` is missing, use `git grep` with the
-  exclusion pathspec that `eval/qa/README.md` ("Held-out split") prints. Only a golden-maintenance
-  lane opens case text, and it names the exact path.
+  exclusion pathspec that `eval/qa/README.md` ("Searching without reading case text") prints. Only a
+  golden-maintenance lane opens case text, and it names the exact path.
 - Skills are timeless: no todo IDs, run stamps, or dated state in skill text.
 - Solo, a retired task tracker, is not a live path. Add no `solo://` reference, Solo todo, or Solo
   scratchpad. Leave Solo references in dated records unchanged.

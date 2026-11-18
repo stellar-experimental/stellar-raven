@@ -1,6 +1,6 @@
 # Plan — stellar-raven-codemode
 
-Product scope, what is built, and what is undecided. [ARCHITECTURE.md](ARCHITECTURE.md) describes
+Product scope, what is built, and what is not built. [ARCHITECTURE.md](ARCHITECTURE.md) describes
 how the system works. [The work queue](.agents/TODO.md) holds outstanding work and open owner
 decisions.
 
@@ -14,7 +14,9 @@ skills through two tools:
 - `execute` runs model-written JavaScript in a fresh Dynamic Worker with no network access.
 
 The host owns service traffic, authentication, argument validation, and secrets.
-[ADR-0001](research/decisions/0001-search-tool-shape.md) records the two-tool design.
+[ADR-0001](research/decisions/0001-search-tool-shape.md) records the two-tool design, and
+[ADR-0011](research/decisions/0011-tool-surface-stays-code-mode-trimmed.md) records that the surface stays
+`search` and `execute`, trimmed for cost.
 
 ## What is built
 
@@ -32,26 +34,15 @@ The host owns service traffic, authentication, argument validation, and secrets.
 | Usage collection and private monthly reports | [usage/README.md](usage/README.md) |
 | Evaluation instruments and gates | [eval/EVALS.md](eval/EVALS.md) |
 
-## Repository layout
-
-| Area | Owner |
-|---|---|
-| Request handling and authentication | `src/server.ts`, `src/auth/` |
-| Ranking, adapters, and sandbox execution | `src/catalog/`, `src/adapters/`, `src/executor/` |
-| Service snapshots | `inventory/`, `scripts/refresh-inventory.mjs` |
-| Skill pins | `ecosystem-skills/MANIFEST.json`, `ecosystem-skills/update.sh` |
-| Generated catalog and sandbox specification | `catalog/manifest.json`, `specs/super-spec.json` |
-| Stellar Docs search contract and credential guardrails | [docs/stellar-docs.md](docs/stellar-docs.md) |
-| Worker bindings and compatibility flags | `wrangler.jsonc` |
-| Generated-file ownership | [scripts/README.md](scripts/README.md) |
-
 ## Change rules
 
 A new operation, skill pin, or source passes its review and evaluation gates before it replaces
 the accepted catalog. A successful regeneration alone does not approve it. The skills in
 `.agents/skills/` give the procedures for drift, evaluations, golden answers, and improvement
 findings. Source acceptance, paid evaluation, deployment, and upstream issue closure are separate
-decisions ([ADR-0008](research/decisions/0008-human-review-eval-and-playground-policy.md)).
+decisions. [AGENTS.md](AGENTS.md#spend-and-evidence) requires written authorization for a paid
+method, and [its owner delegations](AGENTS.md#owner-delegations-lead-session-only) say who may
+merge and deploy.
 
 ## Not built
 

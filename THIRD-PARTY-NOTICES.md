@@ -28,7 +28,8 @@ Upstream remains the source.
 frontmatter. Companion-file reads include any upstream YAML frontmatter. Heading-section reads
 return only the requested `##` section. `data.url` names the pinned main `SKILL.md`. Each
 returned section names its exact pinned source in its own `url`. Whether the forwarded metadata and
-source URLs satisfy each upstream license is an open question for counsel.
+source URLs satisfy each upstream license has not had counsel review. [The work queue](./.agents/TODO.md)
+tracks it.
 
 At read time, `scrubNonExposedRefs` (`src/skills/scrub.ts`) removes model-facing references that
 are not in Raven's manifest. One pass removes references to retired skills. A second pass removes
@@ -94,7 +95,7 @@ The logo SVGs in `public/` contain IBM Plex Serif and IBM Plex Mono glyphs conve
   [stellarlight.xyz/api/skills](https://stellarlight.xyz/api/skills) ecosystem directory.
 - `inventory/*.json` — interface metadata that the upstream services publish for consumption:
   operation names, descriptions, and schemas. `scripts/refresh-inventory.mjs` regenerates it.
-  Partner-tier LumenLoop items are name-only stubs. Partner-tier detail is never committed to this
+  Partner-tier Lumenloop items are name-only stubs. Partner-tier detail is never committed to this
   repository.
 - `eval/corpus/` — project-authored corpora from this project's retired prior-art repositories.
   They include questions adapted from reviewed external collections. See

@@ -616,7 +616,7 @@ function buildLumenloop(inv) {
     // public repo). A stub that is not excluded is unemittable AND a policy
     // breach: fail loudly so exposing a partner tool is always a deliberate
     // change (extend the exclusions, or restore detail persistence together
-    // with the budget gate — see CLAUDE.md's research-lane rule).
+    // with the budget gate — see AGENTS.md "Hard rules").
     if (tool.partner_stub && !lumenloopOpExcluded(tool)) {
       throw new Error(
         `lumenloop tool "${tool.name}" is a partner name-only stub but is not excluded — ` +

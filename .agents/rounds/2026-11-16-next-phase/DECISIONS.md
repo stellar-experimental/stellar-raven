@@ -136,6 +136,8 @@ the outcomes that the 7.x items decided without a separate owner question.
   sign-in rejects after the oauth-provider 1.x deploy" holds the watch.
 - **Playground output cap: no change.** The 3.1 production read found replies that stopped at
   `DEMO_CAPS.maxOutputTokens` (4096) rare. Lead's call, open to owner veto.
+- **Docs audit** (round item 8.2). Owner: "We should probably work with Fable and Sonnet to audit
+  and review all docs around this repo to ensure accuracy, cleanliness, organization, etc."
 
 ## Timing
 

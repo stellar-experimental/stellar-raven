@@ -4,7 +4,7 @@
 //   node scripts/refresh-inventory.mjs
 //   node scripts/refresh-inventory.mjs --service stellar-light
 //
-// Plain Node 20+ (global fetch, node:fs only — no deps). Reads .env at the repo
+// Plain Node 24 (global fetch, node:fs only — no deps). Reads .env at the repo
 // root for LUMENLOOP_API_KEY / MINTLIFY_ASSISTANT_API_KEY.
 //
 // Guarantees:
