@@ -251,3 +251,37 @@ roster nit), `1ae8180b` (the rest). No model call, no `eval:qa:lint`, no `eval:q
 - Nothing needed a stop: no finding required a design the plan did not foresee, and no stored
   artifact is stranded. Stored artifacts that recorded an alias as identity (none expected: the
   first change landed this week) would now read as unknown and need `--allow-non-identical`.
+
+## Round 3: the Codex re-check (`CODEX-RECHECK.md`)
+
+All three items adopted. Commit `CODEX-RECHECK.md` landed unchanged with the fix. No model call,
+no `eval:qa:lint`, no `eval:qa:register`.
+
+| Item | Disposition | Test |
+|---|---|---|
+| 1 (finding 3) | `compare-architecture-ab.mjs` treats an arm as judged when the metadata sets `judgeRubric` or `judgeModel` OR any row has a string `verdict.score`; a judged arm then requires an exact judge ID. | `compare-architecture-ab`: the answer-only test now uses rows with a null verdict; the reviewer's probe (scored rows, both judge fields null) refuses with `no exact judge model ID`. |
+| 2 (finding 4) | New `playgroundJudgeEvidenceConflicts` and `assertPlaygroundJudgeEvidence` in `eval/playground/artifact-contract.mjs`: every graded (`correct`, `partial`, `wrong`) verdict that reports a `resolvedModel` must equal `judge.resolvedModel`, else the artifact is refused. Called where a Playground judge identity is trusted: re-judge main, the diagnostic and recovery source readers, and the gateway re-judge reader. `recordedJudgeModel` returns `null` for a contradicted artifact, so the same-judge guard (source and `--flips-vs` baseline) refuses. Unresolved legacy v3 artifacts (no `judge.resolvedModel`) conflict with nothing and stay readable. | `playground-eval-contract`: the reviewer's probe (`claude-sonnet-5-6` against a verdict reporting `claude-sonnet-5-5`) refuses; agreement, a verdict with no model, an error verdict and an unresolved artifact do not. `re-judge-model-identity`: the contradicted artifact reads as unknown and the guard is false against both IDs; the agreeing artifact matches. |
+| 3 (new) | `judge-stability.mjs` adds identities only from an artifact that has at least one row contributing a verdict (collection) or a pair (re-judge, both scores valid, row id present). An empty or all-ineligible file adds none. | `qa-judge-stability`: the reviewer's empty re-judge probe (`rows: []`, judge 5-5, source 5-6) plus an all-null collection and a pair with `new: null`; the register stays `["claude-sonnet-5-5"]` with unknown false. |
+
+**Correction to the Round 2 note.** Round 2 said a Playground row carries no model field to check
+`judge.resolvedModel` against. That was wrong: the production Playground callback preserves
+`judgeCase`'s verdict, which carries `resolvedModel` (a graded verdict also keeps it through
+`checkJudgeVerdictIdentity`). The Round 2 deviation "I validated `judge.resolvedModel` against the
+request only" is superseded by item 2 above.
+
+Note on the register: `error` counts as a contributing score in `judge-stability.mjs` (it is in its
+`SCORE_VALUES`), so a collection file whose only verdicts are errors still contributes its identity.
+I kept that, to match the register's own eligibility; the new test uses null verdicts instead.
+
+### Gates (each run bare)
+
+| Gate | Result |
+|---|---|
+| `npm run typecheck` | clean |
+| `npm test` | 177 files passed, 5 skipped; 4283 tests passed, 3 expected fail, 8 skipped. One earlier run failed `qa-judge-evidence` "scans failed and userinfo-free URL candidates in bounded linear time", the known timing-ratio flake in `.agents/TODO.md`; it passed alone and on the rerun. |
+| `npm run build` | exit 0 |
+| `npm run test:smoke` | 10 files, 173 tests passed |
+| `npm run eval:selftest` | all checks passed |
+| `npm run secrets:scan -- --tree` | clean |
+
+No deviation from the brief.
