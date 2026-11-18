@@ -1041,7 +1041,7 @@ Done when: no assertion in that block compares a single timed sample.
 
 ### Wait for a picomatch release that fixes GHSA-fc5q-39xc-vjpf
 
-Issue #473 (`npm audit`, 8 high) traces to one advisory: picomatch through 4.0.7 has a ReDoS on
+Issue #481 (`npm audit`, 8 high; it replaced #473, closed on 2026-11-17) traces to one advisory: picomatch through 4.0.7 has a ReDoS on
 single-branch repeated extglobs (GHSA-fc5q-39xc-vjpf, published 2026-10-19). Every reported package
 reaches it through `picomatch` 4.0.7, the latest release, and the advisory names no patched
 version. The fixes `npm audit` offers are downgrades (`agents@0.8.3`, `vitest@3.1.4`) and are not
@@ -1053,7 +1053,7 @@ through `agents` via `vite` and `@rolldown/plugin-babel` (build tooling). The bu
 any of these tools. Production has no exposure; the risk is local tooling only.
 
 Done when: a picomatch release fixes the advisory, the lockfile takes it (an `overrides` entry if a
-parent pins it), `npm audit` reports none, and the dependency-audit workflow closes #473.
+parent pins it), `npm audit` reports none, and the dependency-audit workflow closes #481.
 
 ### Move `wrangler`, `miniflare`, and `@cloudflare/vitest-plugin` together
 
