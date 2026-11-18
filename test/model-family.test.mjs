@@ -65,11 +65,16 @@ describe("Codex families", () => {
     expect(resolveFamily("astra", { codexHome })).toBe("gpt-6.2-astra");
   });
 
-  it("reports the catalog's fetched_at without reading anything else", () => {
+  it("reports the catalog's fetched_at, normalized, without reading anything else", () => {
     expect(resolveFamilyDetail("astra", { codexHome })).toEqual({
       id: "gpt-6.2-astra",
-      fetchedAt: "2026-01-01T00:00:00Z",
+      fetchedAt: "2026-01-01T00:00:00.000Z",
     });
+  });
+
+  it("reports no fetch time when fetched_at does not parse as a date", () => {
+    const dir = home(codex([["gpt-6.2-astra"]], "sk-not-a-real-marker"));
+    expect(resolveFamilyDetail("astra", { codexHome: dir }).fetchedAt).toBeNull();
   });
 
   it("is case-insensitive on the family name", () => {
@@ -88,6 +93,26 @@ describe("Grok family", () => {
       grok([["grok-4.5"], ["grok-4.6"], ["grok-4.7"], ["grok-4.7-build-fast"], ["grok-4.8", true], ["grok-4.10"]]),
     );
     expect(resolveFamily("grok", { grokHome })).toBe("grok-4.10");
+  });
+
+  it("skips malformed entries alongside hidden and valid ones", () => {
+    const grokHome = home({
+      models: {
+        "grok-999": null,
+        "grok-998": 7,
+        "grok-997": [],
+        "grok-996": { info: { id: 5 } },
+        "grok-995": { info: { id: "not-a-grok-id" } },
+        "grok-4.8": { info: { id: "grok-4.8", hidden: true } },
+        "grok-4.7": { info: { id: "grok-4.7", hidden: false } }
+      }
+    });
+    expect(resolveFamily("grok", { grokHome })).toBe("grok-4.7");
+  });
+
+  it("reports no match when only malformed or hidden entries remain", () => {
+    const grokHome = home({ models: { "grok-999": null, "grok-4.8": { info: { id: "grok-4.8", hidden: true } } } });
+    expect(() => resolveFamily("grok", { grokHome })).toThrow(/no visible grok model/);
   });
 
   it("skips a hidden newest entry", () => {
@@ -134,7 +159,15 @@ describe("latest-model CLI", () => {
     const result = run(["astra"], { CODEX_HOME: dir });
     expect(result.status).toBe(0);
     expect(result.stdout).toBe("gpt-6.2-astra\n");
-    expect(result.stderr).toContain("2026-02-02T00:00:00Z");
+    expect(result.stderr).toContain("2026-02-02T00:00:00.000Z");
+  });
+
+  it("prints no diagnostic for a fetched_at that is not a date, and never echoes it", () => {
+    const dir = home(codex([["gpt-6.2-astra"]], "sk-not-a-real-marker"));
+    const result = run(["astra"], { CODEX_HOME: dir });
+    expect(result.status).toBe(0);
+    expect(result.stdout).toBe("gpt-6.2-astra\n");
+    expect(result.stderr).toBe("");
   });
 
   it("exits non-zero with no stdout on failure", () => {

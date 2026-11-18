@@ -60,8 +60,11 @@ function newest(candidates, family, label) {
   return candidates[0];
 }
 
+/** The catalog's fetch time in normalized ISO form, or null unless it parses as a date. */
 function fetchedAt(catalog) {
-  return typeof catalog?.fetched_at === "string" ? catalog.fetched_at : null;
+  if (typeof catalog?.fetched_at !== "string") return null;
+  const ms = Date.parse(catalog.fetched_at);
+  return Number.isFinite(ms) ? new Date(ms).toISOString() : null;
 }
 
 function resolveCodex(family, home) {
@@ -86,9 +89,12 @@ function resolveGrok(home) {
   }
   const pattern = /^grok-(\d+(?:\.\d+)*)$/;
   const candidates = [];
-  for (const [key, entry] of Object.entries(models)) {
-    const id = typeof entry?.info?.id === "string" ? entry.info.id : key;
-    if (entry?.info?.hidden === true) continue;
+  for (const entry of Object.values(models)) {
+    // A malformed entry (null, a non-object, or no usable id) is not a selectable model.
+    if (entry === null || typeof entry !== "object" || Array.isArray(entry)) continue;
+    const id = entry.info?.id;
+    if (typeof id !== "string" || id === "") continue;
+    if (entry.info.hidden === true) continue;
     const match = pattern.exec(id);
     if (match) candidates.push({ id, version: parseVersion(match[1]) });
   }

@@ -36,10 +36,10 @@ clients.
 | Role | Family | CLI | Model flag |
 |---|---|---|---|
 | Default | Claude Sonnet | Claude Code | `--model sonnet` |
-| Default | Codex Terra | Codex | `-m "$(node scripts/latest-model.mjs terra)"`, in the two-step form below |
-| Default | Grok | Grok | `--model "$(node scripts/latest-model.mjs grok)"`, in the two-step form below |
+| Default | Codex Terra | Codex | `-m "$M"`, with `M` from `scripts/latest-model.mjs terra` in the two-step form below |
+| Default | Grok | Grok | `--model "$M"`, with `M` from `scripts/latest-model.mjs grok` in the two-step form below |
 | Add where it helps | Claude Opus | Claude Code | `--model opus` |
-| Add where it helps | Codex Sol | Codex | `-m "$(node scripts/latest-model.mjs sol)"`, in the two-step form below |
+| Add where it helps | Codex Sol | Codex | `-m "$M"`, with `M` from `scripts/latest-model.mjs sol` in the two-step form below |
 
 - Haiku and Codex Luna are out of every test and eval: they are less common and too inconsistent
   to weigh. The Playground fallback model is the one exception (`src/demo/model-config.ts`).
