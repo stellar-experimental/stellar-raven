@@ -8,7 +8,7 @@ Add an item when you find work you are not doing now. Delete it when it is done;
 the archive. An item states what is wrong, its current state, the next step or trigger, and what
 "done" means. Keep the history in the linked ledger, not here. The spend rules in
 [`AGENTS.md`](../AGENTS.md#spend-and-evidence) apply to every item: a run needs no
-approval, and each runs under a hard cap and is recorded with its cost.
+approval, and each runs under a dollar cap and is recorded with its cost.
 
 ## Priorities
 
@@ -112,8 +112,8 @@ the figures stay in the owner's private evidence folder. Standing values: public
 50, Lumenloop and Scout calls 24 seconds each as one wall-clock budget per operation call, and
 the artifact caps `ARTIFACT_INFO_CAP` 8 and `ARTIFACT_READ_CAP` 4. Tuning loop 2 kept seven search
 cards by default and removed the source map ([ledger](rounds/2026-11-15-tuning-loop-2.md)). Only
-the `execute` timeout is open. A paid test runs under a cap
-sized by the `run-evals` skill and is recorded with its cost.
+the `execute` timeout is open. A paid test runs under a cap sized by the `run-evals` skill and is
+recorded with its cost.
 
 ### Decide the `execute` timeout from one more Workers Logs read
 
@@ -1049,7 +1049,7 @@ OpenCode stays out of client diagnostics (owner, 2026-11-17): no decision depend
 4.1's [record](rounds/2026-11-16-next-phase/items/4.1/RECORD.md) measured GPT-6.1 Terra in the Codex
 CLI and Grok 4.7 in the Grok CLI. Reopen on a production signal: OpenCode in the user-agent read,
 or a reported OpenCode failure. Then run Codex Terra through the ChatGPT login, smoke first, under
-under its own cap, after the [brief](rounds/2026-11-16-next-phase/items/4.1/briefs/opencode-mac.md)
+its own cap, after the [brief](rounds/2026-11-16-next-phase/items/4.1/briefs/opencode-mac.md)
 and the smoke rule are rewritten for that provider.
 
 Logins, checked 2026-11-17 with one trivial prompt each: ChatGPT and SuperGrok are logged in to
@@ -1502,8 +1502,8 @@ served guidance for many of the reported defect classes, the defects occurred an
 is unattributed (n=1).
 
 Trigger: the partner's per-round bug report arrives, or the owner funds a with-Raven versus
-without-Raven codegen A/B graded against the partner's external defect taxonomy. The A/B is a direction call
-and runs under a hard cap.
+without-Raven codegen A/B graded against the partner's external defect taxonomy. The A/B is a
+direction call and runs under a dollar cap.
 
 Done when: a capped A/B attributes the defects or the owner retires the question.
 

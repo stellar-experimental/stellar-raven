@@ -104,7 +104,7 @@ describe("demo model gauntlet CLI safety", () => {
 
     const unbudgeted = validateGauntletInvocation(parseGauntletArgs(["--models", "model-a", "--prompts", "rpc-simulate"]));
     expect(unbudgeted.maxBudgetUsd).toBeNull();
-    expect(formatLaunchPlan(buildLaunchPlan(unbudgeted))).toContain("budget: none (no cost accounting; read the Gateway logs)");
+    expect(formatLaunchPlan(buildLaunchPlan(unbudgeted))).toContain("budget: no cap supplied; preview only");
 
     for (const value of ["0", "abc", "1e3", "$2"]) {
       expect(() => validateGauntletInvocation(parseGauntletArgs(["--max-budget-usd", value]))).toThrow(

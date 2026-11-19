@@ -65,7 +65,7 @@ resolved ID, and that ID is the measurement's identity.
   the Playground product itself (its transport, prompt, loop, caps, fallback, or a model only the Gateway
   reaches). Which model answers Raven questions best, and how the MCP tool surface performs, go to the
   subscription paths below; a shared MCP text change gets a Playground sample only under the conditional
-  rule in the EVALS.md question table. Every API-billed run carries a hard dollar cap and is recorded with
+  rule in the EVALS.md question table. Every API-billed run carries a dollar cap and is recorded with
   its cost; an unlisted path first joins the list in a reviewed pull request. Judges run on the Claude Code CLI; there is no AI Gateway judge, and a non-Claude second judge
   follows the TODO item "Build a subscription second judge on OpenCode when a decision needs one".
 - The QA runner and the discovery agent arm spawn headless `claude -p` themselves. Start the runner

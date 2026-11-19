@@ -96,7 +96,7 @@ export function pairedCollectionPlanSha256(plan) {
   return sha256(JSON.stringify(canonicalize(plan)));
 }
 
-/** The launch hash binds the run to the frozen plan bytes a reviewer read. */
+/** The launch hash binds the run to the canonical plan contents and the ordered command arguments. */
 export function validateFrozenPairedCollectionPlan(plan, planSha256) {
   validateHash(planSha256, "plan SHA-256");
   const actual = pairedCollectionPlanSha256(plan);

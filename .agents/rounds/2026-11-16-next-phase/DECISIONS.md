@@ -220,7 +220,7 @@ shipped-tuple smoke (about USD 0.45 per model-path change)?" Round item 8.8 appl
   Answer 1's own text above is unchanged. A QA headline run starts only when a named decision needs
   it (`run-evals` section 1).
 - **Applied by item 8.8.** No run needs anyone's approval, signature or confirmation flag.
-  Subscription runs need none of any kind. Every API-billed run carries a hard dollar cap and is
+  Subscription runs need none of any kind. Every API-billed run carries a dollar cap and is
   recorded with its cost, answer count and reason in the round ledger or item record. The
   automatic guards stay: the pre-run billing checks, the exception list for AI Gateway and its
   allowlist test, the identity pins and budget ledgers, and "never in a gate sweep". AI Gateway

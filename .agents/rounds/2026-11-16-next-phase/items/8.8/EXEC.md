@@ -17,7 +17,7 @@ Not pushed.
 | `eval/playground/artifact-contract.mjs` | `assertModelBackedRunInputs` requires only `--server-generation`. New `singleRunRoundCapContext(runId)`: `kind: "not-applicable"`, `experimentId` auto-filled with the run ID (decision: keeps the `experimentId` validator line unchanged), reason "single run: no round cap context given", `sourceFile: null`, all cap fields and `runAllocation` null. `assertRoundCapContext` accepts `sourceFile: null` only when `kind` is `not-applicable`; a `reviewed-round` still needs `sourceFile.path` and a SHA-256. Field name `roundAuthorization` and the kind names are unchanged, so stored artifacts stay valid. |
 | `test/playground-budget.test.ts` | `parseArgs([])` throws "exactly one --max-budget-usd"; `parseArgs(["--confirm-paid"])` throws as unknown; `--preflight`, `--print-generation`, `--help` and `--max-budget-usd 2` parse. |
 | `test/playground-eval-contract.test.ts` | `assertModelBackedRunInputs` needs no cap context; new test covers `singleRunRoundCapContext`, a `not-applicable` file context (old shape), and a `reviewed-round` with `sourceFile: null` or a bad hash failing. `fixtureMeta` now lets a caller's `sourceFile` win (default unchanged). |
-| `eval/qa/paired-collection-supervisor.mjs` | Flag `--authorized-plan-sha256` is `--plan-sha256`; `validateAuthorizedPairedCollectionPlan` is `validateFrozenPairedCollectionPlan`; error "plan SHA-256 does not match the canonical plan". The "authorization record must stay external" check is deleted (reconciliation 12). No alias. `maxAuthorizedCostUsd` kept. What guards the plan now: the hash binds the launch to the canonical plan bytes and every frozen command array, and `validatePairedCollectionPlan` still validates the plan; nothing stops a plan from carrying an `authorization` key, and nothing needs to, since no authorization record exists. |
+| `eval/qa/paired-collection-supervisor.mjs` | Flag `--authorized-plan-sha256` is `--plan-sha256`; `validateAuthorizedPairedCollectionPlan` is `validateFrozenPairedCollectionPlan`; error "plan SHA-256 does not match the canonical plan". The "authorization record must stay external" check is deleted (reconciliation 12). No alias. `maxAuthorizedCostUsd` kept. What guards the plan now: the hash binds the launch to the canonical plan contents and the ordered command arguments (corrected after the Sol review; it hashes canonicalized parsed JSON, not raw bytes), and `validatePairedCollectionPlan` still validates the plan; nothing stops a plan from carrying an `authorization` key, and nothing needs to, since no authorization record exists. |
 | `test/qa-paired-collection-supervisor.test.mjs` | Renamed imports and tests; dead "authorization record" assertion deleted; CLI test expects `--plan-sha256` and also proves the old flag is rejected with the usage text. |
 | `eval/discovery/run-agent-discovery.mjs` | Comment "malformed approval" to "malformed flags" (reconciliation 13). |
 
@@ -150,3 +150,32 @@ and the OAuth-heavy test files. Classification of what remains:
 5. **Placeholder `.dev.vars` and generated `env.d.ts`** exist in the worktree (both gitignored; names only,
    per the README step).
 6. Reconciliation 14: the two per-request deploy approvals are quoted above; held item 8.2 O-10 owns them.
+
+## Review reconciliation (Codex Sol)
+
+Review: `CODEX-REVIEW.md` (`gpt-6.2-sol`), commit `94135d9e`. Fixes are a second commit on top (no amend).
+
+1. **Sol 1 (medium): adopted, wording only, no Worker change.** "Hard cap" became "dollar cap" in
+   `AGENTS.md` (both places), `eval/EVALS.md` "Model-call billing", the `run-evals` skill, ITEM-LEAD.md, the
+   new DECISIONS.md section and the two TODO lines I wrote. `eval/EVALS.md` "Sizing" now says once: a cap
+   stops the next call once the reported spend reaches it, one in-flight call can overshoot it
+   (`eval/playground/README.md`, "Dollar accounting"), so size caps with that headroom. The hard-ceiling
+   alternative (a verified upper bound before dispatch) is not done here; it would be a Worker change.
+2. **Sol 2 (low): adopted.** The code comment, `eval/qa/README.md` and this file now say the hash binds the
+   canonical plan contents and the ordered command arguments (key order and whitespace do not change it), and
+   that the hash stays outside the plan.
+3. **Sol 3 (low): adopted.** The no-cap launch-plan line prints `no cap supplied; preview only`;
+   `test/demo-gauntlet-cli.test.ts` asserts it; the "Dollar accounting" comment in
+   `scripts/run-demo-model-gauntlet.mjs` now describes current behavior (every launch has a cap; a null cap
+   only occurs in the preview).
+4. **Sol 4 (low, pre-existing): deferred, not fixed.** Both CLIs can serialize a tiny positive cap or
+   remainder such as `0.0000005` as `5e-7`, which the Worker rejects with HTTP 400. It predates 8.8 and
+   fails closed (the run stops; no spend), and a fix touches the shared header formatting. Worth a TODO item
+   if it ever bites; none filed here.
+5. **TODO fixes: adopted.** The doubled "under under its own cap" in the OpenCode reopen item is gone; the
+   `execute`-timeout paragraph, the codegen A/B trigger and the OpenCode paragraph are reflowed to the file's
+   width.
+
+Gates re-run bare after the fixes: `npm run typecheck` exit 0; `npm test` exit 0 (4285 passed, 3 expected
+fail, 8 skipped); `npm run build` exit 0; `npm run eval:selftest` exit 0 (I touched a script comment and a
+launch-plan string, not eval logic); `npm run secrets:scan -- --tree` exit 0, clean.

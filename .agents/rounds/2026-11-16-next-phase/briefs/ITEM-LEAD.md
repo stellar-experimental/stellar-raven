@@ -98,7 +98,7 @@ M=$(node <worktree>/scripts/latest-model.mjs grok) && echo "resolved: $M" && hc 
 - **Spend.** Model-calling runs only on subscription CLIs as `hc` children (Claude Code for the
   Claude models), against a single local `npm run dev:eval` in your worktree. Never use AI Gateway,
   Workers AI or a provider API except an exception listed in `eval/EVALS.md` "Model-call billing",
-  under a hard budget cap. No run needs anyone's approval (owner, 2026-11-19): pick the least spend
+  under a dollar cap. No run needs anyone's approval (owner, 2026-11-19): pick the least spend
   that decides, run it, and record each run, its answer count and its cost in the ledger row.
   Keyless reads of public upstreams and of your own local server are free.
 - **Local server.** If you need one, start a single `npm run dev:eval` in your worktree as a child,

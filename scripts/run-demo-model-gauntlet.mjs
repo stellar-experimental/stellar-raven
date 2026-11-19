@@ -300,9 +300,10 @@ async function stopWrangler(server) {
 }
 
 /**
- * Optional dollar accounting, borrowed from the semantic lane. With
- * `--max-budget-usd`, every turn carries `x-raven-eval-max-budget-usd` with
- * the remaining authorization, so the route settles each provider call
+ * Dollar accounting, borrowed from the semantic lane. Every launch requires
+ * `--max-budget-usd` (a null cap only occurs in the plan preview, which
+ * starts nothing), and every turn carries `x-raven-eval-max-budget-usd` with
+ * the remaining budget, so the route settles each provider call
  * against the AI Gateway log before the next one and stops the turn when
  * the amount is spent. The route also records the Gateway-logged model of
  * every call, which is how a vendor's logged id is verified. Side effects of
@@ -791,7 +792,7 @@ export function buildLaunchPlan(invocation) {
 }
 
 export function formatLaunchPlan(plan) {
-  const budget = plan.maxBudgetUsd === null ? "none (no cost accounting; read the Gateway logs)" : `USD ${plan.maxBudgetUsd} through loopback accounting`;
+  const budget = plan.maxBudgetUsd === null ? "no cap supplied; preview only" : `USD ${plan.maxBudgetUsd} through loopback accounting`;
   return `[gauntlet] launch plan\nmodels (${plan.models.length}): ${plan.models.join(", ")}\nreasoning efforts (${plan.reasoningEfforts.length}): ${plan.reasoningEfforts.join(", ")}\nprompts (${plan.promptIds.length}): ${plan.promptIds.join(", ")}\nrepeats: ${plan.repeats}\nplanned Playground chat turns: ${plan.totalPaidTurns} (not guaranteed provider calls)\nbudget: ${budget}\ntimeout: ${plan.timeoutMs}ms\nWrangler ports: ${plan.portBase}-${plan.portLast}; inspector ports: ${plan.portBase + 1000}-${plan.inspectorPortLast}\noutput: ${plan.outDir}`;
 }
 

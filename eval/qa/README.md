@@ -798,7 +798,7 @@ Each capture and the complete check must finish within 120,000 ms.
 The artifact remains valid through exactly 86,400,000 ms after completion. Future timestamps fail.
 
 Freeze the capacity artifact and every command array, then record the canonical plan hash.
-The launch hash binds the run to the plan bytes and every command array; the plan must not embed its own hash.
+The launch hash binds the run to the canonical plan contents and the ordered command arguments (key order and whitespace do not change it); keep the hash outside the plan.
 Any plan edit requires a new hash.
 Run the exact planned P6 command before launching the supervisor within the capacity window.
 

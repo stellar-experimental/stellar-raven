@@ -70,7 +70,7 @@ Grok, and OpenCode only after the probe below. There is no AI Gateway judge. AI 
 API is allowed only for an exception in this section. An API-billed path outside the list first
 becomes a listed exception, with its reason in this section and, if code names the endpoint, its
 entry in the allowlist in `test/model-call-billing.test.mjs`, in a reviewed pull request; then it runs
-under a hard cap. AI Gateway judging stays out without exception (owner, 2026-11-18). No run needs
+under a dollar cap. AI Gateway judging stays out without exception (owner, 2026-11-18). No run needs
 anyone's approval: the checks below are automatic and a subscription run needs none of any kind
 (`AGENTS.md`, "Spend and evidence").
 
@@ -124,7 +124,9 @@ Sizing. Each tier runs under the default cap below; record the run and its cost.
 is the lead's call: the ledger row records the cap, the reason and the reported cost. Both lanes require
 exactly one `--max-budget-usd` on every model-backed launch; there is no built-in default, so these are
 documented defaults. Without the flag E2 prints its launch plan and refuses before any Wrangler work,
-and E1 refuses before any request.
+and E1 refuses before any request. A cap stops the next call once the reported spend reaches it; one
+in-flight call can overshoot it (`eval/playground/README.md`, "Dollar accounting"), so size caps with
+that headroom.
 
 | Run | Cap (`--max-budget-usd`) | Basis |
 |---|---|---|

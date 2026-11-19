@@ -75,13 +75,13 @@ counts. There is no `CLAUDE.md`; Claude Code reads this file natively.
   subscription-provider probe, never on API keys. Tests and evals run against the local
   `wrangler dev` server. AI Gateway or a provider API is allowed only for an exception listed with
   its reason in [`eval/EVALS.md`](eval/EVALS.md) "Model-call billing". Every API-billed run carries a
-  hard dollar cap and is recorded with its cost; an unlisted path first joins the list in a
+  dollar cap and is recorded with its cost; an unlisted path first joins the list in a
   reviewed pull request ([`eval/EVALS.md`](eval/EVALS.md) "Model-call billing").
 - **Eval and test models.** Claude Sonnet, Codex Terra, and Grok, each at its family's newest
   model. Add Claude Opus and Codex Sol where they help. Leave out Haiku and Codex Luna. Never
   tune to one model version; every run records the exact ID it resolved.
 - **No per-run approvals.** A model-calling eval, test or build run needs nobody's approval or
-  signature. Decide, run it under a hard cap, and record the run, its reason, answer count and
+  signature. Decide, run it under a dollar cap, and record the run, its reason, answer count and
   cost in the round ledger or item record. A lane stays inside its brief.
 - File and response size come second. Trim bloat where it is cheap; do not spend effort on it
   for its own sake.
