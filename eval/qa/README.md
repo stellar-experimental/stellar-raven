@@ -299,23 +299,33 @@ git grep <pattern> -- . ':!eval/qa' ':!eval/corpus' ':!eval/holdout-cases.json' 
   ':!.agents/rounds/2026-11-02-golden-audit' ':!.agents/rounds/2026-11-14-golden-coverage-audit'
 ```
 
-**The Claude Code hook.** `.claude/settings.json` runs `scripts/agent-hooks/case-search-guard.mjs`
-before every Bash and Grep call. It stops accidental, ordinary command forms; a deliberate bypass is
-out of scope. Where it cannot establish the scope of a search, it denies the risky form (a positive
-glob, a recursive grep, a shell glob) instead of allowing it. It parses the command quote-aware,
-resolves env prefixes and wrappers (`env`, `sudo`, `command -p`, `xargs`, `timeout`, `nice`, and
-others, each with its own options), and analyzes command substitutions and strings a shell runs
-(`bash -c`, `eval`, a heredoc fed to a shell). It tries every working directory the line could reach
-(the start directory and each `cd` target) and denies when any of them denies. For a segment whose
-command word is the search tool it denies: `grep -r`/`-R`/`--recursive` (GNU abbreviations such as
-`--rec` included) and `-d recurse`; `git grep` without the full exclusion above; `rg
--u`/`--unrestricted`/`--no-ignore*`; a positive `-g`, `--glob` or `--iglob` that matches a listed
-name; a shell glob that could expand to a listed path (`eval/qa/*`, `*/*/*.json`, `"$PWD/eval"/*`);
-a `$(...)` file list; and `xargs` or `find -exec` running `grep` or `rg`. The Grep tool is denied
-for a `glob` that matches a listed name through an unset or ancestor `path`. It blocks and never
-rewrites, fails open on a parse or internal error, and runs in every Claude session in a checkout,
-including a checked-out pull request branch.
-Its `rg` rules were probed live; its Grep-tool branch is unit-tested only, so the rule names `rg`.
+**The agent `PreToolUse` hook.** One script, `scripts/agent-hooks/case-search-guard.mjs`, is wired
+into four CLIs:
+
+| CLI | Config file | Tools guarded | Notes |
+|---|---|---|---|
+| Claude Code | `.claude/settings.json` | `Bash`, `Grep` | Runs in every Claude session in a checkout. Shell rules probed live; `Grep` branch unit-tested only. |
+| Codex | `.codex/hooks.json` | `Bash` | Matches Codex 0.169 `pre-tool-use.command.{input,output}` (subprocess-tested). Codex loads project hooks only when the checkout folder has `trust_level = "trusted"` in `~/.codex/config.toml` (not overridable by `-c`) and the hook is approved in `/hooks` or run with `--dangerously-bypass-hook-trust`; untrusted worktrees skip it. |
+| Grok | `.grok/hooks/case-search-guard.json` | `Bash` (`run_terminal_command`, `Shell`), `Grep` (`grep`) | Probed live (shell and built-in `grep`) in a trusted project under `--always-approve`. Grok also reads `.claude/settings.json` when Claude compatibility is enabled; the native `.grok/hooks/` file keeps the guard active when Claude compatibility is off. Truncated inputs (`toolInputTruncated: true`) on guarded tools deny. |
+| Antigravity (`agy`) | `.agents/hooks.json` | `run_command`, `grep_search` | `run_command` probed live under `--dangerously-skip-permissions`; `grep_search` unit-tested only. Allowed calls emit empty stdout (pass-through); `{}` would default proto3 `allow_tool` to `false`. |
+
+It stops accidental, ordinary command forms; a deliberate bypass is out of scope. Where it cannot
+establish the scope of a search, it denies the risky form (a positive glob, a recursive grep, a
+shell glob) instead of allowing it. It parses the command quote-aware, resolves env prefixes and
+wrappers (`env`, `sudo`, `command -p`, `xargs`, `timeout`, `nice`, and others, each with its own
+options), and analyzes command substitutions and strings a shell runs (`bash -c`, `eval`, a heredoc
+fed to a shell). It tries every working directory the line could reach (the start directory, any
+tool-level working directory such as `working_directory`/`cwd`/`Cwd`, and each `cd` target) and
+denies when any of them denies. For a segment whose command word is the search tool it denies:
+`grep -r`/`-R`/`--recursive` (GNU abbreviations such as `--rec` included) and `-d recurse`;
+`git grep` without the full exclusion above; `rg -u`/`--unrestricted`/`--no-ignore*`; a positive
+`-g`, `--glob` or `--iglob` that matches a listed name; a shell glob that could expand to a listed
+path (`eval/qa/*`, `*/*/*.json`, `"$PWD/eval"/*`); a `$(...)` file list; and `xargs` or
+`find -exec` running `grep` or `rg`. The Grep tools (`Grep`, `grep`, `grep_search`) are denied for
+a positive glob (`glob`, `glob_pattern`, `Includes`) that matches a listed name through an unset or
+ancestor path (`path`, `target_directory`, `SearchPath`). It blocks and never rewrites, and fails
+open on a parse or internal error (or when the hook process cannot start, such as a missing script
+path or unset workspace variable).
 A positive glob is denied even when a later negative glob excludes every listed path (`rg -g '*.json'
 -g '!eval/**' X`): an accepted false positive, with `rg X src` as the substitute.
 
@@ -328,8 +338,12 @@ No other lane uses it.
 
 **What the guard does not stop.** `cat`, the Read tool, `git diff`, `git show`, `git log -p`, an
 explicit path to a listed file, a pull request's diff, a script file or a pipe into a shell
-(`echo '...' | bash`), `ag`, `ack` and `ugrep`, and any lane that is not a Claude Code session. `rg -g '*.json'` re-includes a file-level entry, so the hook denies it; Codex and Grok lanes
-rely on the rule in `AGENTS.md`.
+(`echo '...' | bash`), `ag`, `ack` and `ugrep`, an unglobbed search through an agent's built-in
+grep tool if that tool does not honor `.ignore` (unverified for Grok `grep` and for Antigravity's
+in-process fallback when embedded ripgrep is unavailable), a Codex session in an untrusted worktree
+or without hook trust, a Grok session in an untrusted folder, and any CLI outside the four above.
+`rg -g '*.json'` re-includes a file-level entry, so the hook denies it where active; untrusted
+Codex/Grok sessions and other CLIs rely on the rule in `AGENTS.md`.
 
 **Copies of golden text.** `eval/qa/case-text-scan.mjs` counts 8-word golden shingles (unique to at
 most two cases) that a file git lists outside the paths above repeats. `npm test` fails when a file

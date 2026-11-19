@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Grep",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$GROK_WORKSPACE_ROOT\"/scripts/agent-hooks/case-search-guard.mjs",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)\"/scripts/agent-hooks/case-search-guard.mjs",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

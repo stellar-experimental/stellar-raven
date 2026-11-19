@@ -6,7 +6,7 @@ import { spawnSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { decide, loadEntries } from "../scripts/agent-hooks/case-search-guard.mjs";
+import { decide, formatOutput, loadEntries, parsePayload } from "../scripts/agent-hooks/case-search-guard.mjs";
 
 const REPO = join(import.meta.dirname, "..");
 const SCRIPT = join(REPO, "scripts/agent-hooks/case-search-guard.mjs");
@@ -354,6 +354,67 @@ describe("case-search guard decisions", () => {
     }
   });
 
+  it("covers Grok and Antigravity tool shapes, tool-level cwd, and truncated inputs", () => {
+    expect(decide({ toolName: "run_terminal_command", toolInput: { command: "grep -r X ." }, cwd: REPO, entries, projectDir: REPO }).deny).toBe(true);
+    expect(decide({ toolName: "Bash", toolInput: { command: ["grep", "-r", "X", "."] }, cwd: REPO, entries, projectDir: REPO }).deny).toBe(true);
+    expect(decide({ toolName: "Bash", toolInput: { command: ["rg", "X", "src"] }, cwd: REPO, entries, projectDir: REPO }).deny).toBe(false);
+    expect(decide({ toolName: "Shell", toolInput: { command: "rg -g '*.json' X eval" }, cwd: REPO, entries, projectDir: REPO }).deny).toBe(true);
+    expect(decide({ toolName: "run_terminal_command", toolInput: { command: "rg -g '*.json' X", working_directory: "eval" }, cwd: REPO, entries, projectDir: REPO }).deny).toBe(true);
+    expect(decide({ toolName: "run_terminal_command", toolInput: { command: "rg -g '*.json' X", cwd: "eval" }, cwd: REPO, entries, projectDir: REPO }).deny).toBe(true);
+    expect(decide({ toolName: "run_terminal_command", toolInput: { command: "rg -g '*.json' X", working_directory: "src" }, cwd: REPO, entries, projectDir: REPO }).deny).toBe(false);
+    expect(decide({ toolName: "grep", toolInput: { pattern: "X", glob: "*.json", path: "eval" }, cwd: REPO, entries, projectDir: REPO }).deny).toBe(true);
+    expect(decide({ toolName: "grep", toolInput: { pattern: "X", glob_pattern: "*.json", target_directory: "eval" }, cwd: REPO, entries, projectDir: REPO }).deny).toBe(true);
+    expect(decide({ toolName: "grep", toolInput: { pattern: "X", glob: "*.json", path: "src" }, cwd: REPO, entries, projectDir: REPO }).deny).toBe(false);
+    expect(decide({ toolName: "run_terminal_command", toolInput: { command: "echo hi" }, cwd: REPO, entries, projectDir: REPO, truncated: true }).deny).toBe(true);
+    expect(decide({ toolName: "Read", toolInput: { file_path: "README.md" }, cwd: REPO, entries, projectDir: REPO, truncated: true }).deny).toBe(false);
+
+    expect(decide({ toolName: "run_command", toolInput: { CommandLine: "grep -r X ." }, cwd: REPO, entries, projectDir: REPO }).deny).toBe(true);
+    expect(decide({ toolName: "run_command", toolInput: { CommandLine: "rg -g '*.json' X", Cwd: "eval" }, cwd: REPO, entries, projectDir: REPO }).deny).toBe(true);
+    expect(decide({ toolName: "run_command", toolInput: { CommandLine: "grep -n IGNORE_FILES scripts/agent-hooks/case-search-guard.mjs" }, cwd: REPO, entries, projectDir: REPO }).deny).toBe(false);
+    expect(decide({ toolName: "grep_search", toolInput: { Query: "X", Includes: ["*.json"], SearchPath: "eval" }, cwd: REPO, entries, projectDir: REPO }).deny).toBe(true);
+    expect(decide({ toolName: "grep_search", toolInput: { Query: "X", Includes: ["*.json"], SearchPath: "src" }, cwd: REPO, entries, projectDir: REPO }).deny).toBe(false);
+  });
+
+  it("normalizes PreToolUse payloads and outputs for all four CLIs", () => {
+    const codex = parsePayload({
+      hook_event_name: "PreToolUse",
+      tool_name: "Bash",
+      tool_input: { command: "grep -r X ." },
+      cwd: REPO,
+      session_id: "s1",
+      turn_id: "t1",
+      tool_use_id: "u1",
+      model: "gpt-6.2-sol",
+      permission_mode: "default",
+      transcript_path: null,
+    });
+    expect(codex).toEqual({ format: "claude", toolName: "Bash", toolInput: { command: "grep -r X ." }, cwd: REPO, truncated: false });
+
+    const grok = parsePayload({
+      hookEventName: "pre_tool_use",
+      hook_event_name: "PreToolUse",
+      toolName: "run_terminal_command",
+      toolInput: { command: "rg -u X" },
+      workspaceRoot: REPO,
+      toolInputTruncated: true,
+    });
+    expect(grok).toEqual({ format: "claude", toolName: "run_terminal_command", toolInput: { command: "rg -u X" }, cwd: REPO, truncated: true });
+
+    const agy = parsePayload({
+      hookEventName: "PreToolUse",
+      toolCall: { id: "tc1", name: "run_command", args: { CommandLine: "rg -u X" } },
+      workspacePaths: [REPO],
+    });
+    expect(agy).toEqual({ format: "antigravity", toolName: "run_command", toolInput: { CommandLine: "rg -u X" }, cwd: REPO, truncated: false });
+
+    expect(formatOutput("claude", { deny: false })).toBe("");
+    expect(formatOutput("antigravity", { deny: false })).toBe("");
+    expect(JSON.parse(formatOutput("antigravity", { deny: true, rule: "recursive grep" }))).toMatchObject({
+      decision: "deny",
+      reason: expect.stringContaining("(rule: recursive grep)"),
+    });
+  });
+
   it("ignores other tools and malformed input", () => {
     expect(decide({ toolName: "Read", toolInput: { file_path: "eval/qa/cases.json" }, cwd: REPO, entries, projectDir: REPO }).deny).toBe(false);
     expect(decide({ toolName: "Bash", toolInput: undefined, cwd: REPO, entries, projectDir: REPO }).deny).toBe(false);
@@ -384,6 +445,78 @@ describe("case-search guard as a process", () => {
     expect(JSON.parse(run.stdout).hookSpecificOutput.permissionDecision).toBe("deny");
   });
 
+  it("handles Grok camelCase shell, built-in grep, and truncated payloads", () => {
+    const shellDeny = runHook(
+      JSON.stringify({
+        hookEventName: "pre_tool_use",
+        hook_event_name: "PreToolUse",
+        toolName: "run_terminal_command",
+        toolInput: { command: "rg --hidden -g '*.json' X eval" },
+        cwd: REPO,
+        workspaceRoot: REPO,
+        toolInputTruncated: false,
+      }),
+    );
+    expect(shellDeny.status).toBe(0);
+    expect(JSON.parse(shellDeny.stdout).hookSpecificOutput.permissionDecision).toBe("deny");
+
+    const grepDeny = runHook(
+      JSON.stringify({
+        hookEventName: "pre_tool_use",
+        hook_event_name: "PreToolUse",
+        toolName: "grep",
+        toolInput: { pattern: "X", glob: "*.json", path: "eval" },
+        cwd: REPO,
+        workspaceRoot: REPO,
+        toolInputTruncated: false,
+      }),
+    );
+    expect(grepDeny.status).toBe(0);
+    expect(JSON.parse(grepDeny.stdout).hookSpecificOutput.permissionDecision).toBe("deny");
+
+    const truncatedDeny = runHook(
+      JSON.stringify({
+        hookEventName: "pre_tool_use",
+        hook_event_name: "PreToolUse",
+        toolName: "run_terminal_command",
+        toolInput: { command: "echo hi" },
+        cwd: REPO,
+        workspaceRoot: REPO,
+        toolInputTruncated: true,
+      }),
+    );
+    expect(truncatedDeny.status).toBe(0);
+    expect(JSON.parse(truncatedDeny.stdout).hookSpecificOutput.permissionDecision).toBe("deny");
+  });
+
+  it("handles Antigravity toolCall payloads: deny with decision JSON, pass-through with empty stdout", () => {
+    const deny = runHook(
+      JSON.stringify({
+        hookEventName: "PreToolUse",
+        toolCall: { id: "toolu_01", name: "run_command", args: { CommandLine: "grep -r X scripts/agent-hooks" } },
+        cwd: REPO,
+        workspacePaths: [REPO],
+      }),
+    );
+    expect(deny.status).toBe(0);
+    const parsed = JSON.parse(deny.stdout);
+    expect(parsed.decision).toBe("deny");
+    expect(parsed.reason).toContain("eval/qa/README.md");
+    expect(parsed.reason).toContain("(rule: recursive grep)");
+
+    const allow = runHook(
+      JSON.stringify({
+        hookEventName: "PreToolUse",
+        toolCall: { id: "toolu_02", name: "run_command", args: { CommandLine: "rg X src" } },
+        cwd: REPO,
+        workspacePaths: [REPO],
+      }),
+    );
+    expect(allow.status).toBe(0);
+    // Antigravity falls back to proto3 allow_tool=false on `{}`, so pass-through must be empty stdout.
+    expect(allow.stdout).toBe("");
+  });
+
   it("prints nothing for an allowed call", () => {
     const run = runHook(JSON.stringify({ tool_name: "Bash", tool_input: { command: "rg X src" }, cwd: REPO }));
     expect(run.status).toBe(0);
@@ -401,25 +534,124 @@ describe("case-search guard as a process", () => {
 });
 
 describe("case-search guard wiring", () => {
-  const settings = JSON.parse(readFileSync(join(REPO, ".claude/settings.json"), "utf8"));
-  const [group] = settings.hooks.PreToolUse;
-  const [hook] = group.hooks;
+  const claudeSettings = JSON.parse(readFileSync(join(REPO, ".claude/settings.json"), "utf8"));
+  const codexHooks = JSON.parse(readFileSync(join(REPO, ".codex/hooks.json"), "utf8"));
+  const grokHooks = JSON.parse(readFileSync(join(REPO, ".grok/hooks/case-search-guard.json"), "utf8"));
+  const agyHooks = JSON.parse(readFileSync(join(REPO, ".agents/hooks.json"), "utf8"));
 
-  it("runs the guard from $CLAUDE_PROJECT_DIR on Bash and Grep with a short timeout", () => {
-    expect(settings.hooks.PreToolUse).toHaveLength(1);
-    expect(group.matcher).toBe("Bash|Grep");
-    expect(group.hooks).toHaveLength(1);
-    expect(hook.type).toBe("command");
-    expect(hook.command).toBe('node "$CLAUDE_PROJECT_DIR"/scripts/agent-hooks/case-search-guard.mjs');
-    expect(hook.timeout).toBeGreaterThan(0);
-    expect(hook.timeout).toBeLessThanOrEqual(10);
+  it("wires Claude Code, Codex, Grok, and Antigravity with short timeouts", () => {
+    const [claudeGroup] = claudeSettings.hooks.PreToolUse;
+    const [claudeHook] = claudeGroup.hooks;
+    expect(claudeSettings.hooks.PreToolUse).toHaveLength(1);
+    expect(claudeGroup.matcher).toBe("Bash|Grep");
+    expect(claudeGroup.hooks).toHaveLength(1);
+    expect(claudeHook.type).toBe("command");
+    expect(claudeHook.command).toBe('node "$CLAUDE_PROJECT_DIR"/scripts/agent-hooks/case-search-guard.mjs');
+    expect(claudeHook.timeout).toBeGreaterThan(0);
+    expect(claudeHook.timeout).toBeLessThanOrEqual(10);
+
+    const [codexGroup] = codexHooks.hooks.PreToolUse;
+    const [codexHook] = codexGroup.hooks;
+    expect(codexHooks.hooks.PreToolUse).toHaveLength(1);
+    expect(codexGroup.matcher).toBe("Bash");
+    expect(codexGroup.hooks).toHaveLength(1);
+    expect(codexHook.type).toBe("command");
+    expect(codexHook.command).toContain("scripts/agent-hooks/case-search-guard.mjs");
+    expect(codexHook.timeout).toBeGreaterThan(0);
+    expect(codexHook.timeout).toBeLessThanOrEqual(10);
+
+    const [grokGroup] = grokHooks.hooks.PreToolUse;
+    const [grokHook] = grokGroup.hooks;
+    expect(grokHooks.hooks.PreToolUse).toHaveLength(1);
+    expect(grokGroup.matcher).toBe("Bash|Grep");
+    expect(grokGroup.hooks).toHaveLength(1);
+    expect(grokHook.type).toBe("command");
+    expect(grokHook.command).toBe('node "$GROK_WORKSPACE_ROOT"/scripts/agent-hooks/case-search-guard.mjs');
+    expect(grokHook.timeout).toBeGreaterThan(0);
+    expect(grokHook.timeout).toBeLessThanOrEqual(10);
+
+    const [agyGroup] = agyHooks["case-search-guard"].PreToolUse;
+    const [agyHook] = agyGroup.hooks;
+    expect(agyHooks["case-search-guard"].PreToolUse).toHaveLength(1);
+    expect(agyGroup.matcher).toBe("run_command|grep_search");
+    expect(agyGroup.hooks).toHaveLength(1);
+    expect(agyHook.type).toBe("command");
+    expect(agyHook.command).toBe("node ../scripts/agent-hooks/case-search-guard.mjs");
+    expect(agyHook.timeout).toBeGreaterThan(0);
+    expect(agyHook.timeout).toBeLessThanOrEqual(10);
   });
 
-  it("names a tracked script that is not git-ignored, with the settings file tracked too", () => {
+  it("executes each CLI config's shell command end-to-end with its runtime cwd and env", () => {
+    const runShell = (command, { cwd = REPO, env = process.env, stdin }) =>
+      spawnSync("sh", ["-c", command], { cwd, env, input: stdin, encoding: "utf8" });
+
+    const claudeRun = runShell(claudeSettings.hooks.PreToolUse[0].hooks[0].command, {
+      env: { ...process.env, CLAUDE_PROJECT_DIR: REPO },
+      stdin: JSON.stringify({ hook_event_name: "PreToolUse", tool_name: "Bash", tool_input: { command: "grep -r X ." }, cwd: REPO }),
+    });
+    expect(claudeRun.status).toBe(0);
+    expect(JSON.parse(claudeRun.stdout).hookSpecificOutput.permissionDecision).toBe("deny");
+
+    // Codex runs from the session cwd (including subdirectories) without CLAUDE_PROJECT_DIR.
+    const codexRun = runShell(codexHooks.hooks.PreToolUse[0].hooks[0].command, {
+      cwd: join(REPO, "src"),
+      stdin: JSON.stringify({
+        hook_event_name: "PreToolUse",
+        tool_name: "Bash",
+        tool_input: { command: "rg -g '*.json' X ../eval" },
+        cwd: join(REPO, "src"),
+        session_id: "thr_1",
+        turn_id: "turn_1",
+        tool_use_id: "call_1",
+        model: "gpt-6.2-sol",
+        permission_mode: "default",
+        transcript_path: null,
+      }),
+    });
+    expect(codexRun.status).toBe(0);
+    expect(JSON.parse(codexRun.stdout).hookSpecificOutput.permissionDecision).toBe("deny");
+
+    const grokRun = runShell(grokHooks.hooks.PreToolUse[0].hooks[0].command, {
+      env: { ...process.env, GROK_WORKSPACE_ROOT: REPO },
+      stdin: JSON.stringify({
+        hookEventName: "pre_tool_use",
+        hook_event_name: "PreToolUse",
+        toolName: "run_terminal_command",
+        toolInput: { command: "grep -r X ." },
+        cwd: REPO,
+        workspaceRoot: REPO,
+        toolInputTruncated: false,
+      }),
+    });
+    expect(grokRun.status).toBe(0);
+    expect(JSON.parse(grokRun.stdout).hookSpecificOutput.permissionDecision).toBe("deny");
+
+    // Antigravity sets the hook command's working directory to the directory containing hooks.json (.agents/).
+    const agyRun = runShell(agyHooks["case-search-guard"].PreToolUse[0].hooks[0].command, {
+      cwd: join(REPO, ".agents"),
+      stdin: JSON.stringify({
+        hookEventName: "PreToolUse",
+        toolCall: { id: "toolu_01", name: "run_command", args: { CommandLine: "grep -r X ." } },
+        cwd: REPO,
+        workspacePaths: [REPO],
+      }),
+    });
+    expect(agyRun.status).toBe(0);
+    expect(JSON.parse(agyRun.stdout).decision).toBe("deny");
+  });
+
+  it("tracks the guard script and all four CLI hook config files without git-ignoring them", () => {
     const tracked = (path) => spawnSync("git", ["ls-files", "--error-unmatch", path], { cwd: REPO }).status;
-    expect(tracked("scripts/agent-hooks/case-search-guard.mjs")).toBe(0);
-    expect(tracked(".claude/settings.json")).toBe(0);
-    expect(spawnSync("git", ["check-ignore", "-q", ".claude/settings.json"], { cwd: REPO }).status).toBe(1);
+    for (const file of [
+      "scripts/agent-hooks/case-search-guard.mjs",
+      ".claude/settings.json",
+      ".codex/hooks.json",
+      ".grok/hooks/case-search-guard.json",
+      ".agents/hooks.json",
+    ]) {
+      expect(tracked(file), `${file} tracked`).toBe(0);
+      expect(spawnSync("git", ["check-ignore", "-q", file], { cwd: REPO }).status, `${file} not ignored`).toBe(1);
+    }
   });
 
   it("imports Node built-ins only", () => {
