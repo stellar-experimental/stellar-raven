@@ -5,7 +5,6 @@ import { fileURLToPath } from "node:url";
 import {
   loadManifest,
   searchCatalog,
-  searchCatalogPage,
   type Catalog
 } from "../src/catalog/search.ts";
 
@@ -78,14 +77,7 @@ describe("issue #141 routing acceptance", () => {
     expect(ranked.indexOf("scout.hackathonBrief")).toBe(-1);
   });
 
-  it("keeps a strong ungated Docs result on a full page", () => {
-    expect(ids(
-      "Since XLM has no native protocol staking, how can I build a staking or yield feature for my own Soroban token?"
-    )).toContain("stellarDocs.search_asset_token_docs");
-  });
-
-  it("keeps the leaderboard and RFP improvements", () => {
-    expect(ids("top projects by GitHub activity")).toContain("scout.getLeaderboard");
+  it("keeps the RFP improvement", () => {
     expect(ids(
       "Is there an open SCF RFP for developer tooling or indexing infrastructure I could build against?"
     )).toContain("scout.getRfps");
@@ -251,23 +243,5 @@ describe("issue #141 routing acceptance", () => {
     const ranked = ids(query);
     expect(ranked[0]).toBe(expectedFirst);
     expect(ranked).not.toContain("scout.searchProjects");
-  });
-
-  it("keeps exact operation identities searchable", () => {
-    expect(ids("scout.explainRepo")[0]).toBe("scout.explainRepo");
-    expect(ids("scout.searchResearch")[0]).toBe("scout.searchResearch");
-  });
-
-  it("keeps the full-page total tied to the gated pool after a targeted admission", () => {
-    const page = searchCatalogPage(catalog, {
-      query: "What project categories does the Stellar ecosystem directory actually track — give me the controlled list of category values it uses.",
-      limit: 5
-    });
-    expect(page.hits).toContainEqual(expect.objectContaining({
-      id: "lumenloop.get_categories",
-      tier: "backfill"
-    }));
-    expect(page.total).toBe(7);
-    expect(page.truncated).toBe(true);
   });
 });

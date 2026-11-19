@@ -29,7 +29,8 @@ import {
   prepareScoringQuery,
   scoreEntryUngated,
   scoreEntryWeighted,
-  scoreEntryWeightedUngated
+  scoreEntryWeightedUngated,
+  tokensOverlap
 } from "../src/catalog/scoring.ts";
 import { loadManifest, searchCatalog } from "../src/catalog/search.ts";
 import { lastIdSegment } from "../src/catalog/id.ts";
@@ -405,5 +406,50 @@ describe("scoreEntryWeighted — routing-keyword blend (lever 7)", () => {
     const routingOnly = scoreEntryWeighted({ ...op, routingKeywords: ["recruiting"] }, q)!;
     expect(both).toBeGreaterThanOrEqual(Math.max(keywordsOnly, routingOnly));
     expect(both).toBeGreaterThanOrEqual(plain);
+  });
+
+  it("does not boost has from the unrelated schema word phase", () => {
+    const exact = {
+      id: "demo.has",
+      name: "has",
+      service: "demo",
+      kind: "operation",
+      description: "Report whether a value exists"
+    };
+    expect(scoreEntryWeighted({ ...exact, keywords: ["phase"] }, "has"))
+      .toBe(scoreEntryWeighted(exact, "has"));
+  });
+
+  it("adds only one routing delta for repeated evidence", () => {
+    const q = "search stellar builders recruiting latam";
+    const phrase = { field: "useWhen" as const, tokens: ["builders", "recruiting", "latam"] };
+    const one = scoreEntryWeighted({
+      ...op,
+      routingKeywords: ["builders", "recruiting", "latam"],
+      routingPhrases: [phrase]
+    }, q);
+    const repeated = scoreEntryWeighted({
+      ...op,
+      routingKeywords: ["builders", "recruiting", "latam", "builders"],
+      routingPhrases: [phrase, phrase]
+    }, q);
+    expect(repeated).toBe(one);
+  });
+});
+
+describe("routing token boundaries", () => {
+  it("normalizes plurals and x-plus-es plurals consistently", () => {
+    expect(tokensOverlap("category", "categories")).toBe(true);
+    expect(tokensOverlap("person", "people")).toBe(true);
+    expect(tokensOverlap("dex", "dexes")).toBe(true);
+    expect(tokensOverlap("dexes", "dex")).toBe(true);
+  });
+
+  it("rejects unrelated short prefixes and keeps bounded long morphology", () => {
+    expect(tokensOverlap("phase", "has")).toBe(false);
+    expect(tokensOverlap("use", "user")).toBe(false);
+    expect(tokensOverlap("cat", "category")).toBe(false);
+    expect(tokensOverlap("region", "regional")).toBe(true);
+    expect(tokensOverlap("issue", "issued")).toBe(true);
   });
 });

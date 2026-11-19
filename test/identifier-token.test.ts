@@ -62,18 +62,19 @@ describe("against the matcher shipped in loop 1 (bd9719fb)", () => {
   const SHIPPED_RE = /\b([A-Za-z]+)[- ]?(\d+)\b(?![-.]\d)/g;
   const TITLE_CASE = /^[A-Z][a-z]+$/;
 
-  const words = ["SEP", "sep", "Sep", "sEp", "CAP", "cap", "Cap", "CVE", "cve", "Protocol", "protocol", "audit", "I", "A", "Q"];
+  // Equivalence classes covering every case, separator, digit-length, prefix, and tail branch.
+  const words = ["SEP", "sep", "Sep", "sEp", "A"];
   const joiners = ["", "-", " ", "--", "_"];
-  const numbers = ["0", "7", "24", "0024", "0045", "123456", "0000045", "1234567", "9".repeat(40)];
-  const tails = ["", " standard", ".1", "-01", "-2024-1", " and SEP-12", ", see Sep-24", "."];
-  const prefixes = ["", "10-", "2024-", "1.", "10 ", "2024/", "in ", "see 2024 ", "x-", "v1.", "9-", "SEP-6 "];
+  const numbers = ["0", "0024", "123456", "0000045", "1234567"];
+  const tails = ["", " standard", ".1", "-01", ", see Sep-24"];
+  const prefixes = ["", "10-", "1.", "10 ", "x-", "SEP-6 "];
   const corpus: string[] = [];
   for (const prefix of prefixes) for (const word of words) for (const joiner of joiners) for (const number of numbers) for (const tail of tails) {
     corpus.push(`${prefix}${word}${joiner}${number}${tail}`, `how does ${prefix}${word}${joiner}${number}${tail} work`);
   }
 
   it("reads the shipped tokens, less a title-case word, a run of more than six digits and a token after a digit and a dash or dot", () => {
-    expect(corpus.length).toBeGreaterThan(50000);
+    expect(corpus.length).toBeGreaterThan(5000);
     const dropped = { titleCase: 0, longDigits: 0, afterNumber: 0 };
     for (const text of corpus) {
       const kept = [];

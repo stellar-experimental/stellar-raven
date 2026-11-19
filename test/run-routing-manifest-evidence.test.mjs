@@ -1,4 +1,4 @@
-import { spawnSync } from "node:child_process";
+import { execFile } from "node:child_process";
 import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -11,7 +11,9 @@ afterAll(() => rmSync(dir, { recursive: true, force: true }));
 // The runner prints the holdout and protocol-history per-case tables only under `--rows`, but the
 // raw output must still never reach an assertion: a failed `toMatch` prints the whole string. This
 // returns derived values only: failure lines and a count of held-out case ids found in the output.
+let cachedHeldOutIds;
 function heldOutIds() {
+  if (cachedHeldOutIds) return cachedHeldOutIds;
   const ids = new Set();
   const walk = (value) => {
     if (Array.isArray(value)) value.forEach(walk);
@@ -27,13 +29,21 @@ function heldOutIds() {
     "eval/protocol-history-blind-cases.json",
     "eval/protocol-history-blind-cases-v2.json",
   ]) walk(JSON.parse(readFileSync(join(REPO, file), "utf8")));
+  cachedHeldOutIds = ids;
   return ids;
 }
 
-function gate(manifest, extraArgs = []) {
-  const run = spawnSync(process.execPath, ["eval/run-routing.mjs", "--gate", "--manifest", manifest, ...extraArgs], {
-    cwd: REPO,
-    encoding: "utf8",
+async function gate(manifest, extraArgs = []) {
+  const run = await new Promise((resolve) => {
+    execFile(
+      process.execPath,
+      ["eval/run-routing.mjs", "--gate", "--manifest", manifest, ...extraArgs],
+      { cwd: REPO, encoding: "utf8", maxBuffer: 10 * 1024 * 1024 },
+      (error, stdout, stderr) => {
+        const status = error && typeof error.code === "number" ? error.code : error ? null : 0;
+        resolve({ status, stdout, stderr });
+      }
+    );
   });
   const raw = run.stdout + run.stderr;
   const lines = raw.split("\n");
@@ -49,10 +59,10 @@ function gate(manifest, extraArgs = []) {
 }
 
 describe("run-routing --manifest gate evidence", () => {
-  it("fails --gate when the selected manifest differs from the committed evidence, without a per-case row in the failures", () => {
+  it.concurrent("fails --gate when the selected manifest differs from the committed evidence, without a per-case row in the failures", async () => {
     const variant = join(dir, "variant-manifest.json");
     writeFileSync(variant, readFileSync(join(REPO, "catalog/manifest.json"), "utf8") + "\n");
-    const run = gate(variant);
+    const run = await gate(variant);
     expect(run.status).toBe(1);
     expect(run.failures.join("\n")).toMatch(/selected manifest .*variant-manifest\.json SHA-256 does not match the committed catalog\/manifest\.json gate evidence/);
     // The failures are what a reader sees, and hold no row.
@@ -60,8 +70,8 @@ describe("run-routing --manifest gate evidence", () => {
     for (const line of run.failures) expect(line).not.toMatch(/[│┌]/);
   }, 120_000);
 
-  it("passes --gate when the selected manifest is the committed manifest", () => {
-    const run = gate(join(REPO, "catalog/manifest.json"));
+  it.concurrent("passes --gate when the selected manifest is the committed manifest", async () => {
+    const run = await gate(join(REPO, "catalog/manifest.json"));
     expect(run.failures).toEqual([]);
     expect(run.status).toBe(0);
     // The default run prints the holdout aggregate and no held-out case id.
@@ -69,8 +79,8 @@ describe("run-routing --manifest gate evidence", () => {
     expect(run.heldOutIdOccurrences).toBe(0);
   }, 120_000);
 
-  it("prints the per-row tables only under --rows", () => {
-    const run = gate(join(REPO, "catalog/manifest.json"), ["--rows"]);
+  it.concurrent("prints the per-row tables only under --rows", async () => {
+    const run = await gate(join(REPO, "catalog/manifest.json"), ["--rows"]);
     expect(run.status).toBe(0);
     expect(run.heldOutIdOccurrences).toBeGreaterThan(0);
   }, 120_000);

@@ -1,8 +1,8 @@
-import { spawnSync } from "node:child_process";
+import { execFile } from "node:child_process";
 import { cpSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, realpathSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import { afterEach, describe, expect, test } from "vitest";
+import { afterAll, describe, expect, test } from "vitest";
 import { parseFinding, renderIndex, writeFindingFrontmatter, writeIndex } from "../scripts/improvements-lib.mjs";
 
 const ROOT = path.resolve(import.meta.dirname, "..");
@@ -10,7 +10,7 @@ const fixtures = [];
 const issueUrl = "https://github.com/stellar/stellar-docs/issues/4242";
 const findingRelative = "improvements/stellar-docs/sd-995-write-fixture.md";
 
-afterEach(() => {
+afterAll(() => {
   for (const directory of fixtures.splice(0)) rmSync(directory, { recursive: true, force: true });
 });
 
@@ -81,14 +81,24 @@ fs.unlinkSync = (file) => {
 };
 syncBuiltinESMExports();
 `);
-  function run(script, args = [], options = {}) {
-    const result = spawnSync(process.execPath, ["--import", at("fail-write.mjs"), at(`scripts/${script}`), ...args], {
-      cwd: options.subdirectory ? at("subdirectory") : root,
-      encoding: "utf8",
-      env: {
-        PATH: at("bin"), TMPDIR: at("tmp"), STUB_FINDING: file, STUB_CALLS: at("gh-calls"),
-        ...options.env
-      }
+  async function run(script, args = [], options = {}) {
+    const result = await new Promise((resolveRun) => {
+      execFile(
+        process.execPath,
+        ["--import", at("fail-write.mjs"), at(`scripts/${script}`), ...args],
+        {
+          cwd: options.subdirectory ? at("subdirectory") : root,
+          encoding: "utf8",
+          env: {
+            PATH: at("bin"), TMPDIR: at("tmp"), STUB_FINDING: file, STUB_CALLS: at("gh-calls"),
+            ...options.env
+          }
+        },
+        (error, stdout, stderr) => {
+          const status = error && typeof error.code === "number" ? error.code : error ? null : 0;
+          resolveRun({ status, stdout, stderr, error: error && typeof error.code !== "number" ? error : undefined });
+        }
+      );
     });
     expect(result.error).toBeUndefined();
     expect(result.stderr).not.toMatch(/STUB_(GH|GIT)_UNEXPECTED/);
@@ -119,24 +129,24 @@ describe("improvements index writes", () => {
     expect(readFileSync(output, "utf8")).toBe(renderIndex(findings));
   });
 
-  test("the isolated entrypoint writes the index and is deterministic", () => {
+  test.concurrent("the isolated entrypoint writes the index and is deterministic", async () => {
     const f = fixture();
-    const result = f.run("improvements-index.mjs");
+    const result = await f.run("improvements-index.mjs");
     expect(result.status, result.stderr).toBe(0);
     expect(result.stdout).toMatch(/wrote improvements\/INDEX.md \(1 findings\)/);
     const first = readFileSync(f.at("improvements/INDEX.md"), "utf8");
     expect(first).toContain("sd-995");
-    expect(f.run("improvements-index.mjs").status).toBe(0);
+    expect((await f.run("improvements-index.mjs")).status).toBe(0);
     expect(readFileSync(f.at("improvements/INDEX.md"), "utf8")).toBe(first);
     expectNoTemporaryFiles(f);
   });
 
-  test("the committed index matches an isolated rebuild of the current findings", () => {
+  test.concurrent("the committed index matches an isolated rebuild of the current findings", async () => {
     const f = fixture();
     rmSync(f.at("improvements"), { recursive: true });
     cpSync(path.join(ROOT, "improvements"), f.at("improvements"), { recursive: true });
     const committed = readFileSync(path.join(ROOT, "improvements/INDEX.md"), "utf8");
-    const result = f.run("improvements-index.mjs");
+    const result = await f.run("improvements-index.mjs");
     expect(result.status, result.stderr).toBe(0);
     expect(readFileSync(f.at("improvements/INDEX.md"), "utf8")).toBe(committed);
   });
@@ -167,9 +177,9 @@ describe("improvements filing writes and recovery", () => {
     expectNoTemporaryFiles(f);
   });
 
-  test("filing records the issue and rebuilds the index", () => {
+  test.concurrent("filing records the issue and rebuilds the index", async () => {
     const f = fixture();
-    const result = f.fileIssue();
+    const result = await f.fileIssue();
     expect(result.status, result.stderr).toBe(0);
     expect(result.stdout.trim()).toBe(issueUrl);
     expect(readFileSync(f.file, "utf8")).toContain("status: reported-upstream");
@@ -179,11 +189,11 @@ describe("improvements filing writes and recovery", () => {
     expectNoTemporaryFiles(f);
   });
 
-  test.each(["readback", "finding"])("a %s failure preserves the finding and warns about duplicate filing", (boundary) => {
+  test.concurrent.each(["readback", "finding"])("a %s failure preserves the finding and warns about duplicate filing", async (boundary) => {
     const f = fixture();
     const before = readFileSync(f.file, "utf8");
     const env = boundary === "readback" ? { FAIL_READBACK: "1" } : { FAIL_RENAME: f.file };
-    const result = f.fileIssue({ env });
+    const result = await f.fileIssue({ env });
     expect(result.status, result.stderr).toBe(1);
     expect(result.stderr).toContain(boundary === "readback" ? "read-back failed" : "the local finding was not updated");
     expect(result.stderr).toContain("already exist");
@@ -197,9 +207,9 @@ describe("improvements filing writes and recovery", () => {
     expectNoTemporaryFiles(f);
   });
 
-  test("an index failure retains the filing and the dedupe guard refuses another issue", () => {
+  test.concurrent("an index failure retains the filing and the dedupe guard refuses another issue", async () => {
     const f = fixture();
-    const result = f.fileIssue({ env: { FAIL_RENAME: f.at("improvements/INDEX.md") } });
+    const result = await f.fileIssue({ env: { FAIL_RENAME: f.at("improvements/INDEX.md") } });
     expect(result.status, result.stderr).toBe(1);
     for (const message of ["improvements/INDEX.md was not regenerated", "the finding records it", "dedupe guard refuses another filing", "npm run improvements:index", "npm run improvements:lint"]) {
       expect(result.stderr).toContain(message);
@@ -208,16 +218,16 @@ describe("improvements filing writes and recovery", () => {
     expect(readFileSync(f.file, "utf8")).toContain(issueUrl);
     expect(readFileSync(f.at("improvements/INDEX.md"), "utf8")).toBe("old index\n");
     const calls = readFileSync(f.at("gh-calls"), "utf8");
-    expect(f.fileIssue().status).toBe(2);
+    expect((await f.fileIssue()).status).toBe(2);
     expect(readFileSync(f.at("gh-calls"), "utf8")).toBe(calls);
     expectNoTemporaryFiles(f);
   });
 });
 
 describe("improvements resolution writes and recovery", () => {
-  test("resolution from a subdirectory updates the repo intake, receipt, finding, and index", () => {
+  test.concurrent("resolution from a subdirectory updates the repo intake, receipt, finding, and index", async () => {
     const f = fixture("fixed-upstream");
-    const result = f.resolve({ subdirectory: true });
+    const result = await f.resolve({ subdirectory: true });
     expect(result.status, result.stderr).toBe(0);
     expect(readJson(f.at("improvements/resolved.json")).entries).toHaveLength(1);
     expect(readJson(f.at("improvements/intake.json")).findings).toEqual({});
@@ -227,10 +237,10 @@ describe("improvements resolution writes and recovery", () => {
     expectNoTemporaryFiles(f);
   });
 
-  test("a receipt failure leaves every active record intact", () => {
+  test.concurrent("a receipt failure leaves every active record intact", async () => {
     const f = fixture("fixed-upstream");
     const before = readFileSync(f.file, "utf8");
-    const result = f.resolve({ env: { FAIL_RENAME: f.at("improvements/resolved.json") } });
+    const result = await f.resolve({ env: { FAIL_RENAME: f.at("improvements/resolved.json") } });
     expect(result.status, result.stderr).toBe(1);
     expect(readJson(f.at("improvements/resolved.json")).entries).toEqual([]);
     expect(readJson(f.at("improvements/intake.json")).findings).toHaveProperty("sd-995");
@@ -239,12 +249,12 @@ describe("improvements resolution writes and recovery", () => {
     expectNoTemporaryFiles(f);
   });
 
-  test.each(["intake", "deletion", "index"])("a %s failure preserves the receipt and reports each remaining repair", (boundary) => {
+  test.concurrent.each(["intake", "deletion", "index"])("a %s failure preserves the receipt and reports each remaining repair", async (boundary) => {
     const f = fixture("fixed-upstream");
     const before = readFileSync(f.file, "utf8");
     const env = boundary === "deletion" ? { FAIL_UNLINK: f.file }
       : { FAIL_RENAME: f.at(`improvements/${boundary === "intake" ? "intake.json" : "INDEX.md"}`) };
-    const result = f.resolve({ env });
+    const result = await f.resolve({ env });
     expect(result.status, result.stderr).toBe(1);
     const receipts = readJson(f.at("improvements/resolved.json")).entries;
     expect(receipts).toHaveLength(1);
@@ -268,7 +278,7 @@ describe("improvements resolution writes and recovery", () => {
     }
     // Restore the retired input only to reach the receipt dedupe guard on a second invocation.
     if (!existsSync(f.file)) writeFileSync(f.file, before);
-    const retry = f.resolve();
+    const retry = await f.resolve();
     expect(retry.status).toBe(2);
     expect(retry.stderr).toContain("already exists in improvements/resolved.json");
     expectNoTemporaryFiles(f);

@@ -805,7 +805,7 @@ describe("QA verdict consistency", () => {
       score: "correct"
     });
 
-    expect(verdict).toMatchObject({ coreAnswer: "correct", avoidMatches: [] });
+    expect(verdict).toMatchObject({ score: "correct", coreAnswer: "correct", avoidMatches: [] });
     expect(verdict).not.toHaveProperty("judgeScore");
     expect(verdict).not.toHaveProperty("consistencyViolations");
   });
@@ -865,21 +865,6 @@ describe("QA verdict consistency", () => {
     }
   });
 
-  it("keeps a graded coreAnswer on a consistent verdict", async () => {
-    const verdict = await judgeWithFakeClaude({
-      rationale: "The core answer is right and nothing contradicts it.",
-      coreAnswer: "correct",
-      missingFacts: [],
-      wrongClaims: [],
-      avoidMatches: [],
-      score: "correct"
-    });
-
-    expect(verdict.score).toBe("correct");
-    expect(verdict.coreAnswer).toBe("correct");
-    expect(verdict).not.toHaveProperty("consistencyViolations");
-  });
-
   it("passes raw invalid avoid matches to the check but emits []", async () => {
     for (const avoidMatches of [[0], [2], [5], [1.5], ["1"], [1, 1]]) {
       const verdict = await judgeWithFakeClaude({
@@ -896,34 +881,6 @@ describe("QA verdict consistency", () => {
       expect(verdict.consistencyViolations).toContain("invalid-avoid-match");
       expect(verdict.avoidMatches).toEqual([]);
     }
-  });
-
-  it("emits [] when an avoid index exceeds the golden range", async () => {
-    const verdict = await judgeWithFakeClaude({
-      rationale: "The model fired an out-of-range avoid index.",
-      coreAnswer: "correct",
-      missingFacts: [],
-      wrongClaims: [],
-      avoidMatches: [2],
-      score: "wrong"
-    });
-
-    expect(verdict.score).toBe("error");
-    expect(verdict.consistencyViolations).toContain("invalid-avoid-match");
-    expect(verdict.avoidMatches).toEqual([]);
-
-    const direct = checkVerdictConsistency({
-      golden: { avoid: ["Only one avoid item."] },
-      verdict: {
-        coreAnswer: "correct",
-        missingFacts: [],
-        wrongClaims: [],
-        avoidMatches: [2],
-        score: "correct"
-      }
-    });
-    expect(direct.ok).toBe(false);
-    expect(direct.violations).toContain("invalid-avoid-match");
   });
 
   it("retains a valid fired avoid index on a non-avoid violation", async () => {

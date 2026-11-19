@@ -2,8 +2,8 @@ import { createHash } from "node:crypto";
 import { chmodSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { spawnSync } from "node:child_process";
-import { afterEach, describe, expect, it } from "vitest";
+import { execFile, spawnSync } from "node:child_process";
+import { afterAll, describe, expect, it } from "vitest";
 
 const ROOT = join(import.meta.dirname, "..");
 const CASES_PATH = join(ROOT, "eval", "qa", "cases.json");
@@ -13,7 +13,7 @@ type SourceCasesVerification = {
   selectedCases: unknown[];
   guard: { matches: boolean } & Record<string, unknown>;
 };
-type VerifySourceCases = (results: object, sourceResultsPath: string, options?: { casesRef?: string; repoRoot?: string }) => SourceCasesVerification;
+type VerifySourceCases = (results: object, sourceResultsPath: string, options?: { casesRef?: string; repoRoot?: string; selectedIds?: string[] }) => SourceCasesVerification;
 type JudgeCostAccounting = (rows: Array<{ new?: { costUsd?: unknown } }>, expectedJudgeCalls: number) => {
   expectedAgentCalls: number;
   reportedAgentCosts: number;
@@ -283,7 +283,25 @@ function revisionResults(casesPath: string, ids: string[], expectedCasesSha256: 
   };
 }
 
-afterEach(() => {
+function runRejudgeCli(args: string[], options: { env?: NodeJS.ProcessEnv } = {}) {
+  return new Promise<{ status: number | null; stdout: string; stderr: string }>((resolve) => {
+    execFile(
+      process.execPath,
+      [REJUDGE_PATH, ...args],
+      { cwd: ROOT, encoding: "utf8", env: options.env },
+      (error, stdout, stderr) => {
+        const status = error && typeof error === "object" && "code" in error && typeof error.code === "number"
+          ? error.code
+          : error
+            ? null
+            : 0;
+        resolve({ status, stdout, stderr });
+      }
+    );
+  });
+}
+
+afterAll(() => {
   for (const directory of temporaryDirectories.splice(0)) rmSync(directory, { recursive: true, force: true });
 });
 
@@ -904,6 +922,45 @@ describe("re-judge saved-answer selection", () => {
     });
   });
 
+  it("verifies an explicit full selection prefix without inventing unattempted rows", async () => {
+    const verifySourceCases = await loadVerifySourceCases();
+    const allCases = [{ id: "one" }, { id: "two" }, { id: "three" }];
+    const git = writeGitCases({ cases: allCases });
+    const fullIds = allCases.map((item) => item.id);
+    const results = {
+      meta: {
+        casesPath: git.casesPath,
+        inputSnapshot: {
+          casesSha256: sha256(JSON.stringify(allCases)),
+          caseIdsSha256: sha256(JSON.stringify(fullIds))
+        }
+      },
+      rows: [{ id: "one" }, { id: "two" }]
+    };
+    const sourceResultsPath = join(git.directory, "results.json");
+
+    expect(
+      verifySourceCases(results, sourceResultsPath, { repoRoot: git.directory, selectedIds: fullIds }).guard.matches
+    ).toBe(true);
+    expect(
+      verifySourceCases(results, sourceResultsPath, { repoRoot: git.directory }).guard.matches
+    ).toBe(false);
+    expect(() =>
+      verifySourceCases(
+        { ...results, rows: [{ id: "two" }, { id: "one" }] },
+        sourceResultsPath,
+        { repoRoot: git.directory, selectedIds: fullIds }
+      )
+    ).toThrow("ordered prefix");
+    expect(() =>
+      verifySourceCases(
+        { ...results, rows: [{ id: "one" }, { id: "three" }] },
+        sourceResultsPath,
+        { repoRoot: git.directory, selectedIds: fullIds }
+      )
+    ).toThrow("ordered prefix");
+  });
+
   it("maps a relative Windows cases path on a POSIX runner", async () => {
     const verifySourceCases = await loadVerifySourceCases();
     const selected = [{ id: "one" }];
@@ -982,7 +1039,7 @@ describe("re-judge saved-answer selection", () => {
     });
   });
 
-  it("records revision-pinned case guard details in a dry run", () => {
+  it.concurrent("records revision-pinned case guard details in a dry run", async () => {
     const historicalRevision = "70726884a723786c669283953f576277ce9d955b";
     const historicalCases = JSON.parse(
       spawnSync("git", ["show", `${historicalRevision}:eval/qa/corpus/live/live-cases.json`], { cwd: ROOT, encoding: "utf8" }).stdout
@@ -1001,11 +1058,9 @@ describe("re-judge saved-answer selection", () => {
       })
     );
 
-    const result = spawnSync(
-      process.execPath,
-      [REJUDGE_PATH, resultsPath, "--ids", historicalCases[0].id, "--cases-ref", historicalRevision, "--allow-non-identical", "--dry-run"],
-      { cwd: ROOT, encoding: "utf8" }
-    );
+    const result = await runRejudgeCli([
+      resultsPath, "--ids", historicalCases[0].id, "--cases-ref", historicalRevision, "--allow-non-identical", "--dry-run"
+    ]);
 
     expect(result.status, result.stderr).toBe(0);
     expect(JSON.parse(result.stdout).guards.historicalCases).toMatchObject({
@@ -1027,34 +1082,25 @@ describe("re-judge saved-answer selection", () => {
     );
   });
 
-  it("refuses a quarantine source or flips baseline before dry-run processing", () => {
+  it.concurrent("refuses a quarantine source or flips baseline before dry-run processing", async () => {
     const directory = mkdtempSync(join(tmpdir(), "raven-rejudge-quarantine-"));
     temporaryDirectories.push(directory);
     const quarantinePath = join(directory, "quarantine.json");
     writeFileSync(quarantinePath, JSON.stringify({ artifactContract: "playground-semantic-quarantine/v1", quarantinedRows: [] }));
-    const source = spawnSync(process.execPath, [REJUDGE_PATH, quarantinePath, "--ids", "anything", "--allow-non-identical", "--dry-run"], {
-      cwd: ROOT,
-      encoding: "utf8"
-    });
+    const { resultsPath } = writeResults([{ score: "correct" }]);
+    const [source, baseline] = await Promise.all([
+      runRejudgeCli([quarantinePath, "--ids", "anything", "--allow-non-identical", "--dry-run"]),
+      runRejudgeCli([resultsPath, "--flips-vs", quarantinePath, "--allow-non-identical", "--dry-run"])
+    ]);
     expect(source.status).toBe(1);
     expect(source.stderr).toContain("non-promotable playground quarantine");
-
-    const { resultsPath } = writeResults([{ score: "correct" }]);
-    const baseline = spawnSync(process.execPath, [REJUDGE_PATH, resultsPath, "--flips-vs", quarantinePath, "--allow-non-identical", "--dry-run"], {
-      cwd: ROOT,
-      encoding: "utf8"
-    });
     expect(baseline.status).toBe(1);
     expect(baseline.stderr).toContain("non-promotable playground quarantine");
   });
 
-  it("reports an identical --flips-vs baseline as guarded", async () => {
+  it.concurrent("reports an identical --flips-vs baseline as guarded", async () => {
     const { resultsPath, baselinePath, ids } = writeFlipsPair(await loadJudgeTuple());
-    const result = spawnSync(
-      process.execPath,
-      [REJUDGE_PATH, resultsPath, "--flips-vs", baselinePath, "--dry-run"],
-      { cwd: ROOT, encoding: "utf8" }
-    );
+    const result = await runRejudgeCli([resultsPath, "--flips-vs", baselinePath, "--dry-run"]);
 
     expect(result.status, result.stderr).toBe(0);
     const guards = JSON.parse(result.stdout).guards;
@@ -1067,7 +1113,7 @@ describe("re-judge saved-answer selection", () => {
     expect(JSON.parse(result.stdout).selectedIds).toEqual(ids);
   });
 
-  it.each(["source", "flipsVs", "both", "absent", "panel", "tier-panel", "size-only"])(
+  it.concurrent.each(["source", "flipsVs", "both", "absent", "panel", "tier-panel", "size-only"])(
     "annotates %s panel metadata without changing flip selection",
     async (kind) => {
       const { resultsPath, baselinePath, ids } = writeFlipsPair(await loadJudgeTuple());
@@ -1084,7 +1130,7 @@ describe("re-judge saved-answer selection", () => {
         }
         writeFileSync(file!, JSON.stringify(artifact));
       }
-      const result = spawnSync(process.execPath, [REJUDGE_PATH, resultsPath, "--flips-vs", baselinePath, "--dry-run"], { cwd: ROOT, encoding: "utf8" });
+      const result = await runRejudgeCli([resultsPath, "--flips-vs", baselinePath, "--dry-run"]);
       expect(result.status, result.stderr).toBe(0);
       const report = JSON.parse(result.stdout);
       expect(report.selectedIds).toEqual(ids);
@@ -1094,7 +1140,7 @@ describe("re-judge saved-answer selection", () => {
     }
   );
 
-  it("refuses a --flips-vs baseline whose snapshot or judge tuple differs", async () => {
+  it.concurrent("refuses a --flips-vs baseline whose snapshot or judge tuple differs", async () => {
     const tuple = await loadJudgeTuple();
     const drifted: Array<[string, Record<string, unknown>, string]> = [
       ["snapshot", { inputSnapshot: { casesSha256: sha256("drifted baseline snapshot") } }, "case input snapshot differs"],
@@ -1102,59 +1148,51 @@ describe("re-judge saved-answer selection", () => {
       ["rubric", { judgeRubric: "v0.0" }, "judge tuple differs"],
       ["pack", { packVersion: "p0" }, "judge tuple differs"]
     ];
+    const stubEnv = { ...process.env, PATH: stubClaudeDirectory() };
 
-    for (const [label, baselineMeta, reason] of drifted) {
+    // PATH holds only a stub `claude`, so a guard that fails to fire cannot reach the paid judge.
+    await Promise.all(drifted.flatMap(([label, baselineMeta, reason]) => {
       const { resultsPath, baselinePath } = writeFlipsPair(tuple, baselineMeta);
-
-      // PATH holds only a stub `claude`, so a guard that fails to fire cannot
-      // reach the paid judge.
-      for (const extra of [["--dry-run"], [
+      return [["--dry-run"], [
         "--max-budget-usd", "1",
         "--claude-path", "claude",
         "--expect-agent-binary-sha256", "a".repeat(64),
         "--expect-agent-environment-sha256", "b".repeat(64)
-      ]]) {
-        const result = spawnSync(
-          process.execPath,
-          [REJUDGE_PATH, resultsPath, "--flips-vs", baselinePath, ...extra],
-          { cwd: ROOT, encoding: "utf8", env: { ...process.env, PATH: stubClaudeDirectory() } }
-        );
-
+      ]].map(async (extra) => {
+        const result = await runRejudgeCli([resultsPath, "--flips-vs", baselinePath, ...extra], { env: stubEnv });
         expect(result.status, `${label} ${extra.join(" ")}: ${result.stdout}`).toBe(1);
         expect(result.stderr, label).toContain("baseline");
         expect(result.stderr, label).toContain(reason);
-      }
-    }
+      });
+    }));
   });
 
-  it("refuses a drifted --flips-vs baseline even with --allow-non-identical", async () => {
+  it.concurrent("refuses a drifted --flips-vs baseline even with --allow-non-identical", async () => {
     // The override covers a source snapshot that no longer reproduces. It
     // never covers the baseline, which decides what gets paid for.
     const tuple = await loadJudgeTuple();
-    for (const baselineMeta of [
+    const stubEnv = { ...process.env, PATH: stubClaudeDirectory() };
+    await Promise.all([
       { judgeRubric: "v0.0" },
       { inputSnapshot: { casesSha256: sha256("drifted baseline snapshot") } }
-    ]) {
+    ].map(async (baselineMeta) => {
       const { resultsPath, baselinePath } = writeFlipsPair(tuple, baselineMeta);
-      const result = spawnSync(
-        process.execPath,
-        [REJUDGE_PATH, resultsPath, "--flips-vs", baselinePath, "--allow-non-identical", "--dry-run"],
-        { cwd: ROOT, encoding: "utf8", env: { ...process.env, PATH: stubClaudeDirectory() } }
+      const result = await runRejudgeCli(
+        [resultsPath, "--flips-vs", baselinePath, "--allow-non-identical", "--dry-run"],
+        { env: stubEnv }
       );
-
       expect(result.status, result.stdout).toBe(1);
       expect(result.stderr).toContain("--allow-non-identical does not waive");
-    }
+    }));
   });
 
-  it("refuses when a shared case id has different content in source and baseline", async () => {
+  it.concurrent("refuses when a shared case id has different content in source and baseline", async () => {
     // Both artifacts reproduce their own snapshot, so only a cross-comparison
     // catches it: the same id is a different question on each side.
     const { resultsPath, baselinePath } = writeDivergentCasesPair(await loadJudgeTuple());
-    const result = spawnSync(
-      process.execPath,
-      [REJUDGE_PATH, resultsPath, "--flips-vs", baselinePath, "--dry-run"],
-      { cwd: ROOT, encoding: "utf8", env: { ...process.env, PATH: stubClaudeDirectory() } }
+    const result = await runRejudgeCli(
+      [resultsPath, "--flips-vs", baselinePath, "--dry-run"],
+      { env: { ...process.env, PATH: stubClaudeDirectory() } }
     );
 
     expect(result.status, result.stdout).toBe(1);
@@ -1162,25 +1200,17 @@ describe("re-judge saved-answer selection", () => {
     expect(result.stderr).toContain("shared-drift-case");
   });
 
-  it("labels an all-unjudged --ids dry run as initial judging without spending", () => {
+  it.concurrent("labels an all-unjudged --ids dry run as initial judging without spending", async () => {
     const { resultsPath, ids } = writeResults([null]);
-    const result = spawnSync(
-      process.execPath,
-      [REJUDGE_PATH, resultsPath, "--ids", ids[0]!, "--allow-non-identical", "--dry-run"],
-      { cwd: ROOT, encoding: "utf8" }
-    );
+    const result = await runRejudgeCli([resultsPath, "--ids", ids[0]!, "--allow-non-identical", "--dry-run"]);
 
     expect(result.status, result.stderr).toBe(0);
     expect(JSON.parse(result.stdout)).toMatchObject({ selectedIds: ids, initialJudging: true });
   });
 
-  it("rejects a mixed judged/unjudged --ids selection before any judge call", () => {
+  it.concurrent("rejects a mixed judged/unjudged --ids selection before any judge call", async () => {
     const { resultsPath, ids } = writeResults([{ score: "correct" }, null]);
-    const result = spawnSync(
-      process.execPath,
-      [REJUDGE_PATH, resultsPath, "--ids", ids.join(","), "--allow-non-identical", "--dry-run"],
-      { cwd: ROOT, encoding: "utf8" }
-    );
+    const result = await runRejudgeCli([resultsPath, "--ids", ids.join(","), "--allow-non-identical", "--dry-run"]);
 
     expect(result.status).toBe(1);
     expect(result.stderr).toContain("cannot mix saved verdicts with --no-judge rows");

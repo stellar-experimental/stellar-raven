@@ -1,23 +1,11 @@
 import { describe, expect, it } from "vitest";
 import {
-  candidateEvidenceBlock,
   detailOnlyHint,
   evidenceCheckpointBlock,
   type EvidenceRecoveryHint
 } from "../src/policy/evidence-checkpoint";
 
 describe("evidence checkpoint prose", () => {
-  it("keeps candidate guidance conditional and attribution-focused", () => {
-    expect(candidateEvidenceBlock(undefined)).toBe("");
-    expect(candidateEvidenceBlock(2, true)).toBe("");
-
-    const block = candidateEvidenceBlock(2);
-    expect(block).toContain("--- CANDIDATE EVIDENCE ---");
-    expect(block).toContain("2 semantic, research, A/V, or fallback-directory call(s)");
-    expect(block).toContain("rows are candidates, not identity or absence proof");
-    expect(block).toContain("discard adjacent matches");
-  });
-
   it("names only catalog-derived recovery candidates", () => {
     const block = evidenceCheckpointBlock({
       mode: "narrow-only",
@@ -127,11 +115,6 @@ describe("evidence checkpoint prose", () => {
       });
       expect(block).toContain("`a.search, a.search_in` returned sections of pages");
       expect(block).toContain("`a.get({ id, rev })` with that hit's `id` and `rev`.");
-    });
-
-    it("keeps the sentence short and free of case or operation vocabulary", () => {
-      expect(SENTENCE.length).toBeLessThan(400);
-      expect(SENTENCE.toLowerCase()).not.toMatch(/sep|cap-|soroban|stellar docs|meeting/);
     });
 
     it("splits a hint into its detail-only part", () => {

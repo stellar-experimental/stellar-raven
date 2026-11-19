@@ -17,7 +17,8 @@ export default defineConfig({
     // without this exclude their duplicates run too and double the suite.
     // test/smoke/ is the workerd lane (`npm run test:smoke`, its own config):
     // its tests import `cloudflare:test`, which plain Node cannot load.
-    exclude: ["**/node_modules/**", ".claude/**", "tmp/**", "test/smoke/**", "usage/report-site/test/**"],
+    // research/ holds dated audit records rather than live test suites.
+    exclude: ["**/node_modules/**", ".claude/**", "tmp/**", "research/**", "test/smoke/**", "usage/report-site/test/**"],
     server: {
       deps: {
         // Externalized deps resolve through Node's loader, which cannot see

@@ -5,13 +5,13 @@ See [README.md](../README.md#run-locally) for installation and generated type se
 
 | Command | Scope | Runtime and service access |
 | --- | --- | --- |
-| `npm test` | `test/*.test.ts` and `test/*.test.mjs`, plus one audit packet test under `research/audits/` | Node; service calls use local substitutes. |
+| `npm test` | `test/*.test.ts` and `test/*.test.mjs` | Node; service calls use local substitutes. |
 | `npm run test:smoke` | `test/smoke/*.test.ts` | workerd; tests use the assembled Worker and local service substitutes. |
 | `npm run typecheck` | Repository TypeScript | Static checks; no service calls. |
 | `npm run eval:selftest` | Evaluation harness | Local harness checks; no model calls. |
 | `npm run test:usage-report` | Usage report site | Separate site tests and checks. |
 
-The root [configuration](../vitest.config.ts) excludes smoke tests, report-site tests, and copied agent worktrees.
+The root [configuration](../vitest.config.ts) excludes smoke tests, report-site tests, dated records under `research/`, and copied agent worktrees.
 Run smoke tests when you change `src/executor` or `src/demo`.
 The [smoke configuration](smoke/vitest.config.ts) runs under `@cloudflare/vitest-plugin`. Its outbound wall serves only pinned skill files locally and refuses every other request.
 It supplies test authentication values.
@@ -30,7 +30,7 @@ The table names groups, not every file. A test whose name matches no row joins t
 
 | Test group | Main coverage |
 | --- | --- |
-| `catalog*`, `search*`, `scoring*`, `routing*`, `drift-*`, `extract-*`, `family-text*`, `super-spec*`, `argument-aliases*`, `identifier-token*`, `title-keywords*`, `description-notes*`, `replay-*` | Catalog validation, ranking, exact identities, admission rules, replayed searches, and generated specifications |
+| `catalog*`, `search*`, `scoring*`, `drift-*`, `extract-*`, `family-text*`, `super-spec*`, `argument-aliases*`, `identifier-token*`, `title-keywords*`, `description-notes*` | Catalog validation, ranking, exact identities, admission rules, and generated specifications |
 | [adapters.test.ts](adapters.test.ts), [lumenloop-shape.test.ts](lumenloop-shape.test.ts) | Service contracts, response shapes, and error handling |
 | `executor*`, `spec-sandbox*`, `artifacts*`, `shape-logs*`, `source-basis*`, `evidence-checkpoint*`, `exact-evidence*`, `script-hints*` | Execution limits, spec access, artifact storage, and evidence boundaries |
 | `auth*`, `policy*`, `retention*`, `consent-page*`, `html*` | Authentication, request controls, retention, escaping, and secret removal |
