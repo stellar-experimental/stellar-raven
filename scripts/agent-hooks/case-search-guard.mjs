@@ -1,30 +1,38 @@
 #!/usr/bin/env node
 /**
- * Claude Code PreToolUse hook (.claude/settings.json): keeps recursive searches out of the
- * case-bearing paths that the `.ignore` files list (eval/qa/README.md, "Searching without reading
- * case text").
+ * Multi-CLI PreToolUse hook: keeps recursive searches out of the case-bearing paths that the
+ * `.ignore` files list (eval/qa/README.md, "Searching without reading case text").
+ *
+ * Wired by:
+ *   - Claude Code:  .claude/settings.json
+ *   - Codex:        .codex/hooks.json
+ *   - Grok:         .grok/hooks/case-search-guard.json (and .claude/settings.json compat)
+ *   - Antigravity:  .agents/hooks.json
  *
  * Scope: the guard stops accidental, ordinary command forms. A deliberate bypass (a script written
  * to a file, a pipe into a shell, an encoded command) is out of scope. Where the guard cannot
  * establish the scope of a search, it denies the risky form (a positive glob, a recursive grep, a
  * shell glob) instead of allowing it. A parse or internal error fails open.
  *
- * Bash: a command is denied when its command word is
+ * Shell tools (`Bash`, `run_terminal_command`, `Shell`, `run_command`): denied when a command word is
  *   - grep/egrep/fgrep with a recursive flag (GNU long-option abbreviations included), a shell glob
  *     that could expand to a listed path, or a command-substitution file list;
  *   - `git grep` without a pathspec exclusion for every listed path;
  *   - rg with -u/--unrestricted/--no-ignore*, a positive -g/--glob/--iglob that could reach a listed
  *     path, a shell glob that could expand to one, or a command-substitution file list;
  *   - xargs or `find -exec` running grep or rg.
- * Grep tool: denied when `glob` reaches a listed path through an unset or ancestor `path`.
+ * Grep tools (`Grep`, `grep`, `grep_search`): denied when a positive glob (`glob`, `glob_pattern`,
+ * or `Includes`) reaches a listed path through an unset or ancestor path (`path`,
+ * `target_directory`, or `SearchPath`).
  *
  * Command recognition: the command line is split quote-aware into segments; `grep`/`rg` must be the
  * command word (after env assignments and wrappers) or git's subcommand, so a commit message, an
  * echo or a heredoc that merely names them passes. Each wrapper has its own option table. Strings
  * run by a shell (`bash -c`, `eval`, a heredoc fed to a shell) and command substitutions are
- * analyzed as commands. Every working directory the line could reach (the start directory and each
- * `cd` target) is tried against every segment, and a deny from any of them denies. Expansions the
- * guard cannot resolve count as wildcards. `$PWD` and `$HOME` resolve.
+ * analyzed as commands. Every working directory the line could reach (the start directory, any
+ * tool-level working directory, and each `cd` target) is tried against every segment, and a deny
+ * from any of them denies. Expansions the guard cannot resolve count as wildcards. `$PWD` and
+ * `$HOME` resolve.
  *
  * The opt-in is the last `CASE_TEXT=maintenance` assignment that reaches the command; it propagates
  * into a shell script the command runs, not into outer command substitutions.
@@ -32,10 +40,16 @@
  * Accepted false positive: a positive glob denies even when a later negative glob excludes every
  * listed path (`rg -g '*.json' -g '!eval/**' X`); `rg X src` is the substitute.
  *
- * Contract used (Claude Code 2.1.326): the payload is JSON on stdin with tool_name, tool_input and
- * cwd; a deny is exit 0 with this JSON on stdout:
- *   {"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"deny",
- *     "permissionDecisionReason":"..."}}
+ * Contracts used:
+ *   - Claude Code (2.1.328) & Codex (0.169.0): stdin JSON with tool_name, tool_input, cwd; deny is
+ *     exit 0 with {"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"deny",
+ *     "permissionDecisionReason":"..."}}; allow is empty stdout, exit 0.
+ *   - Grok (1.0.88): stdin JSON with toolName, toolInput, cwd, workspaceRoot, toolInputTruncated;
+ *     same PreToolUse hookSpecificOutput deny contract and empty-stdout allow. When
+ *     toolInputTruncated is true on a guarded tool, deny (tail of input is hidden).
+ *   - Antigravity (1.5.12): stdin JSON with toolCall.{name,args}, cwd, workspacePaths; deny is
+ *     exit 0 with {"decision":"deny","reason":"..."}; pass-through is {} on stdout, exit 0.
+ *
  * The guard blocks and never rewrites. It imports Node built-ins only.
  */
 import { existsSync, readFileSync, realpathSync } from "node:fs";
@@ -876,52 +890,168 @@ export function bashVerdict(commandLine, state) {
   return scopeVerdict(commandLine, new Map(), new Set([state.cwd]), ctx, 0);
 }
 
+const SHELL_TOOLS = new Set(["Bash", "run_terminal_command", "Shell", "run_command"]);
+const GREP_TOOLS = new Set(["Grep", "grep", "grep_search"]);
+
+function normalizePathString(raw, home) {
+  let value = raw;
+  if (value.startsWith("file://")) {
+    try {
+      value = fileURLToPath(value);
+    } catch {
+      // keep raw string
+    }
+  }
+  if (value === "~") return home;
+  if (value.startsWith("~/")) return join(home, value.slice(2));
+  return value;
+}
+
+function firstNonEmptyString(...values) {
+  for (const value of values) {
+    if (typeof value === "string" && value !== "") return value;
+  }
+  return null;
+}
+
+function extractCommand(toolInput) {
+  if (!toolInput || typeof toolInput !== "object") return null;
+  if (typeof toolInput.command === "string") return toolInput.command;
+  if (typeof toolInput.CommandLine === "string") return toolInput.CommandLine;
+  return null;
+}
+
+function extractToolCwd(toolInput, home) {
+  if (!toolInput || typeof toolInput !== "object") return null;
+  const raw = firstNonEmptyString(toolInput.working_directory, toolInput.cwd, toolInput.Cwd, toolInput.workdir);
+  return raw === null ? null : normalizePathString(raw, home);
+}
+
+function extractGrepArgs(toolInput, home) {
+  if (!toolInput || typeof toolInput !== "object") return { globs: [], searchPath: null };
+  const globs = [];
+  if (typeof toolInput.glob === "string" && toolInput.glob !== "") {
+    globs.push(...toolInput.glob.split(/\s+/).filter(Boolean));
+  }
+  if (typeof toolInput.glob_pattern === "string" && toolInput.glob_pattern !== "") {
+    globs.push(...toolInput.glob_pattern.split(/\s+/).filter(Boolean));
+  }
+  if (Array.isArray(toolInput.Includes)) {
+    for (const item of toolInput.Includes) {
+      if (typeof item === "string" && item !== "") globs.push(item);
+    }
+  } else if (typeof toolInput.Includes === "string" && toolInput.Includes !== "") {
+    globs.push(...toolInput.Includes.split(/\s+/).filter(Boolean));
+  }
+  const rawPath = firstNonEmptyString(
+    toolInput.path,
+    toolInput.target_directory,
+    toolInput.SearchPath,
+    toolInput.SearchPathUri,
+  );
+  return { globs, searchPath: rawPath === null ? null : normalizePathString(rawPath, home) };
+}
+
 /**
  * The decision for one tool call: { deny: false } or { deny: true, rule }. `rule` names the rule;
  * the user-facing message is DENY_MESSAGE.
  */
-export function decide({ toolName, toolInput, cwd, entries, projectDir = PROJECT_DIR }) {
+export function decide({ toolName, toolInput, cwd, entries, projectDir = PROJECT_DIR, truncated = false }) {
+  const isShell = SHELL_TOOLS.has(toolName);
+  const isGrep = GREP_TOOLS.has(toolName);
+  if (!isShell && !isGrep) return { deny: false };
+  if (truncated) return { deny: true, rule: "truncated tool input on guarded search tool" };
+
+  const home = homedir();
   let where = resolve(cwd || projectDir);
   try {
     where = realpathSync(where);
   } catch {
     // keep the lexical path
   }
-  const state = { cwd: where, entries, projectDir, home: homedir() };
-  if (toolName === "Bash" && typeof toolInput?.command === "string") {
-    const rule = bashVerdict(toolInput.command, state);
-    return rule ? { deny: true, rule } : { deny: false };
+  if (isShell) {
+    const toolCwd = extractToolCwd(toolInput, home);
+    if (toolCwd !== null) {
+      where = resolve(where, toolCwd);
+      try {
+        where = realpathSync(where);
+      } catch {
+        // keep the lexical path
+      }
+    }
+    const command = extractCommand(toolInput);
+    if (command !== null) {
+      const rule = bashVerdict(command, { cwd: where, entries, projectDir, home });
+      return rule ? { deny: true, rule } : { deny: false };
+    }
+    return { deny: false };
   }
-  if (toolName === "Grep" && typeof toolInput?.glob === "string" && toolInput.glob !== "") {
-    const paths = typeof toolInput.path === "string" && toolInput.path !== "" ? [{ pat: toolInput.path }] : [];
-    const globs = toolInput.glob.split(/\s+/).filter(Boolean);
-    return globDenied(globs, paths, state.cwd, entries, projectDir, state.home)
+  const { globs, searchPath } = extractGrepArgs(toolInput, home);
+  if (globs.length) {
+    const paths = searchPath !== null ? [{ pat: searchPath }] : [];
+    return globDenied(globs, paths, where, entries, projectDir, home)
       ? { deny: true, rule: "positive Grep glob that reaches a listed path" }
       : { deny: false };
   }
   return { deny: false };
 }
 
-export function denyOutput(rule) {
+/** Normalize a PreToolUse stdin payload from Claude Code, Codex, Grok, or Antigravity. */
+export function parsePayload(payload) {
+  if (!payload || typeof payload !== "object") throw new Error("payload must be an object");
+  if (payload.toolCall && typeof payload.toolCall === "object") {
+    const firstWorkspace = Array.isArray(payload.workspacePaths)
+      ? payload.workspacePaths.find((p) => typeof p === "string" && p !== "")
+      : undefined;
+    return {
+      format: "antigravity",
+      toolName: payload.toolCall.name,
+      toolInput: payload.toolCall.args,
+      cwd: firstNonEmptyString(payload.cwd, firstWorkspace) ?? undefined,
+      truncated: false,
+    };
+  }
+  return {
+    format: "claude",
+    toolName: payload.tool_name ?? payload.toolName,
+    toolInput: payload.tool_input ?? payload.toolInput,
+    cwd: firstNonEmptyString(payload.cwd, payload.workspaceRoot) ?? undefined,
+    truncated: payload.toolInputTruncated === true,
+  };
+}
+
+export function denyOutput(rule, format = "claude") {
+  const reason = `${DENY_MESSAGE} (rule: ${rule})`;
+  if (format === "antigravity") {
+    return { decision: "deny", reason };
+  }
   return {
     hookSpecificOutput: {
       hookEventName: "PreToolUse",
       permissionDecision: "deny",
-      permissionDecisionReason: `${DENY_MESSAGE} (rule: ${rule})`,
+      permissionDecisionReason: reason,
     },
   };
+}
+
+export function formatOutput(format, verdict) {
+  if (verdict.deny) return `${JSON.stringify(denyOutput(verdict.rule, format))}\n`;
+  return "";
 }
 
 function main() {
   try {
     const payload = JSON.parse(readFileSync(0, "utf8"));
+    const parsed = parsePayload(payload);
     const verdict = decide({
-      toolName: payload.tool_name,
-      toolInput: payload.tool_input,
-      cwd: payload.cwd,
+      toolName: parsed.toolName,
+      toolInput: parsed.toolInput,
+      cwd: parsed.cwd,
+      truncated: parsed.truncated,
       entries: loadEntries(),
     });
-    if (verdict.deny) process.stdout.write(`${JSON.stringify(denyOutput(verdict.rule))}\n`);
+    const out = formatOutput(parsed.format, verdict);
+    if (out) process.stdout.write(out);
   } catch (error) {
     process.stderr.write(`case-search-guard: failed open (${error instanceof Error ? error.message : "error"})\n`);
   }

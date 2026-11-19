@@ -1,0 +1,16 @@
+{
+  "case-search-guard": {
+    "PreToolUse": [
+      {
+        "matcher": "run_command|grep_search",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ../scripts/agent-hooks/case-search-guard.mjs",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}
