@@ -16,11 +16,11 @@ case file was opened, and every check into a case path returned counts.
 | cards | #503 | good | none |
 | scrub | #504 | good | none; two follow-ups go to the TODO |
 | hooks | #505 | good with fixes | F1, F2: Codex wording in `eval/qa/README.md`, and the launch lines |
-| tests | #506 | good | none; one follow-up goes to the TODO |
+| tests | #506 | good with fixes | F4: explicit timeouts on two load-sensitive tests; one follow-up goes to the TODO |
 
 Nothing needs rework. No guard was weakened: the manifest exposure tests, the billing and
 precondition checks, the secrets handling, the case-text guard and the routing gate evidence all
-hold. Every fix below is documentation.
+hold. Three fixes are documentation; the fourth adds a timeout to two tests.
 
 ## Checks I ran (all free except one probe)
 
@@ -34,6 +34,7 @@ hold. Every fix below is documentation.
 | Citation forms the flush script does not match, over its own scopes, counts only | 0 of the 80 deleted files is named by bare file name or by its path without `.json`; 0 of their 13 folders is cited without a trailing slash, with one, or with a glob |
 | Codex hook probe (one model call, see "hooks") | the hook denied `grep -r` and let the control run |
 | CI on `main` after each of the eight merges | green |
+| CI on this item's branch | one of two runs failed on a test timeout (F4 under "tests") |
 
 ## register (#499): good
 
@@ -165,7 +166,7 @@ hold. Every fix below is documentation.
 - Antigravity needs no flag: the lane's live probe and its reviewer's session both saw denials.
   Grok needs a trusted folder; its probe passed 4 of 4.
 
-## tests (#506): good
+## tests (#506): good with fixes
 
 Before the lane: 182 files, 4304 tests, 48.7 s. After it: 176 files, 4150 tests, 18.0 s. `main` now
 runs 178 files and 4173 tests in 20.8 s.
@@ -194,6 +195,20 @@ runs 178 files and 4173 tests in 20.8 s.
   machine can only make them less sensitive.
 - `scripts/run-demo-model-gauntlet.mjs:292-309` clears and unrefs the kill timer. A real fix: the
   script used to hold the event loop for five seconds after every run.
+- **F4. The parallelization pushed one test to the edge of its timeout, and it failed once in
+  CI.** `test/qa-paired-verdict.test.mjs`, "runs reduced deterministic operating-characteristic
+  gates under npm test", does fixed CPU work (5,000 iterations) under vitest's 5,000 ms default
+  timeout. CI run 44604472775 on this item's branch failed on it at 5,098 ms; the next run passed
+  with no test change. Measured on agentpc (16 cores), three runs each: 1,446 to 1,448 ms alone;
+  3,009 to 3,154 ms in the full suite on `cd9ea54b`, the commit before #506; 4,489 to 4,707 ms in the
+  full suite after it. The lane made many subprocess tests run concurrently, so this test now runs
+  under more load. Three 8.9 lanes had already seen it time out locally while eight lanes shared the
+  box, and the lane's review (M1) kept `iterations: 5_000` "at zero wall-clock penalty", which held
+  for the suite and not for this test's margin. Fix: an explicit 30,000 ms timeout, which only
+  guards against a hang. The next test down on the default timeout,
+  `test/find-uncited-golden-round-json.test.mjs` "never leaks file content …" at 3,393 ms in the
+  full suite, gets the same. Every other test above 1,500 ms already sets its own timeout or sits
+  under a third of the default.
 - Fit. Two places where the lane kept more than the task needed, both defensible:
   - It moved the tests of `partialRecoverySource` (one accepting case, twelve rejection branches)
     into `test/diagnostic-rejudge-source.test.mjs`.
@@ -221,6 +236,7 @@ runs 178 files and 4173 tests in 20.8 s.
 | F1 | `eval/qa/README.md` | Correct the Codex table row and the Codex clause in "What the guard does not stop" |
 | F2 | `.agents/model-roster.md`, `briefs/ITEM-LEAD.md` | Add `--dangerously-bypass-hook-trust` to the Codex launch line, with one sentence saying why |
 | F3 | `scripts/README.md` | One line for `find-uncited-golden-round-json.mjs` |
+| F4 | `test/qa-paired-verdict.test.mjs`, `test/find-uncited-golden-round-json.test.mjs` | `{ timeout: 30_000 }` on one test in each ([briefs/exec-2.md](briefs/exec-2.md)) |
 
 The close-out edits from the orchestrator's note ride in the same pull request
 ([briefs/exec.md](briefs/exec.md)).

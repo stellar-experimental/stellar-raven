@@ -6,8 +6,9 @@ Pull request: <https://github.com/stellar-experimental/stellar-raven/pull/507> (
 
 ## Verdicts (for the owner)
 
-All eight lanes did what they claimed. None needs rework, and no guard was weakened. The only
-corrections are documentation.
+All eight lanes did what they claimed. None needs rework, and no guard was weakened. Three
+corrections are documentation. The fourth is a timeout on two tests: the test speedup left one test
+at 90% of its time limit, and it failed once in CI.
 
 | Lane | PR | Verdict | Correct | Complete | Fit | What I changed |
 |---|---|---|---|---|---|---|
@@ -18,7 +19,7 @@ corrections are documentation.
 | cards | #503 | good | yes; gate reproduces at 114 of 182 | yes | right-sized | nothing |
 | scrub | #504 | good | yes; served text is exactly the two restored passages | yes | right-sized after round 2 | nothing; two follow-ups in the TODO |
 | hooks | #505 | good with fixes | yes; one decision function for four CLIs | yes, with the Codex flag | right-sized | the Codex wording in `eval/qa/README.md`; the flag on two launch lines |
-| tests | #506 | good | yes; every removal's named guard exists | yes | kept slightly more than needed (tests for a function with no live caller), left | nothing; one follow-up in the TODO |
+| tests | #506 | good with fixes | yes for every removal (each named guard exists); the parallel runs left one test flaky | yes | kept slightly more than needed (tests for a function with no live caller), left | a 30 s timeout on two tests; one follow-up in the TODO |
 
 The evidence for each cell, with file and line, is in [AUDIT.md](AUDIT.md).
 
@@ -33,17 +34,24 @@ The evidence for each cell, with file and line, is in [AUDIT.md](AUDIT.md).
 2. **Two live Codex launch lines lacked the flag (fixed):** the roster and `briefs/ITEM-LEAD.md`.
 3. **No document named the flush script (fixed):** `scripts/README.md` now says what it does and
    what to do when its test fails.
-4. **The scrub rule can change a sentence's meaning at a future re-pin (TODO).** It drops a
+4. **The tests lane left one test at the edge of its timeout (fixed).** CI run 44604472775 on this
+   branch failed once on `test/qa-paired-verdict.test.mjs` ("Test timed out in 5000ms", 5,098 ms)
+   and passed on the next push. The test does fixed CPU work under the 5,000 ms default. In the full
+   suite it took 3.0 to 3.2 s before #506 and takes 4.5 to 4.7 s after it, because #506 runs many
+   subprocess tests concurrently. It and the next-slowest default-timeout test now set 30,000 ms.
+   Without this fix `main` fails CI now and then.
+5. **The scrub rule can change a sentence's meaning at a future re-pin (TODO).** It drops a
    qualifier that follows the excluded alternative. Nothing is wrong in the served text today. A
    re-pin review reads the upstream diff, not the served sentence, so the new TODO item proposes a
    pinned count of narrowed sentences.
-5. **`partialRecoverySource` has no live caller (TODO).** The tests lane kept its tests. Removing the
+6. **`partialRecoverySource` has no live caller (TODO).** The tests lane kept its tests. Removing the
    function is a deletion decision for the owner or the lead.
 
 ## Fixes and close-out in the pull request
 
-- Fixes F1 to F3 above (`eval/qa/README.md`, `.agents/model-roster.md`, `briefs/ITEM-LEAD.md`,
-  `scripts/README.md`).
+- Fixes F1 to F3 (`eval/qa/README.md`, `.agents/model-roster.md`, `briefs/ITEM-LEAD.md`,
+  `scripts/README.md`) and F4 (`{ timeout: 30_000 }` on one test in
+  `test/qa-paired-verdict.test.mjs` and one in `test/find-uncited-golden-round-json.test.mjs`).
 - `.agents/TODO.md`: the eight closed items deleted; owner decision 5 deleted (see below);
   Priorities point 4 and the case-file move item reworded; two items added ("Align the skill scrub
   with the emitted-text guard", "Decide whether `partialRecoverySource` stays"). The frozen anchors
@@ -55,8 +63,8 @@ The evidence for each cell, with file and line, is in [AUDIT.md](AUDIT.md).
 - `usage/README.md`: `/home/tyler/raven-data/qa` listed among the owner's private directories.
 - DECISIONS.md: both owner quotes of 2026-11-19, verbatim.
 
-Executor: Claude Sonnet (`claude-sonnet-5-5`, `t20n`), [EXEC.md](EXEC.md). I read its whole diff. I
-then made two small edits myself: a paragraph re-wrap in `eval/qa/README.md` and a link in the 8.9
+Executor: Claude Sonnet (`claude-sonnet-5-5`, `t20n`, then `t20p` for F4), [EXEC.md](EXEC.md). I
+read both diffs whole. I made two small edits myself: a paragraph re-wrap in `eval/qa/README.md` and a link in the 8.9
 ledger row. Its three stated deviations are sound.
 
 ## Gates (run bare by the lead on the final tree)
@@ -74,9 +82,10 @@ ledger row. Its three stated deviations are sound.
 Not run: `npm run eval:qa:lint` (7-COMMON.md forbids it in this item; the change to `eval/` is two
 README passages, and CI runs the lint). `eval:routing -- --gate` was run once during the audit on
 `main` (GATE PASS); no routing code changes in the pull request. No `src/` change, so Worker bytes
-do not change.
+do not change. CI on the branch: the first run failed on the timeout above; the runs after it are
+in the pull request.
 
-Model calls: one Codex probe (`gpt-6.2-sol`, low effort) and one Sonnet executor, both on
+Model calls: one Codex probe (`gpt-6.2-sol`, low effort) and two Sonnet executor runs, all on
 subscriptions. USD 0 API.
 
 ## Deploy
