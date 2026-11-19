@@ -2,9 +2,7 @@ import { describe, expect, it } from "vitest";
 import { buildPlaygroundArtifactMeta, sha256Json, treeGenerationSha256, assertNotPlaygroundQuarantine } from "../eval/playground/artifact-contract.mjs";
 import {
   diagnosticAnswerProblem,
-  diagnosticRejudgeSource,
-  isHarnessTransportFailure,
-  partialRecoverySource
+  diagnosticRejudgeSource
 } from "../eval/qa/diagnostic-rejudge-source.mjs";
 import { buildRejudgeArtifact, parseArgs, rejudgeRows } from "../eval/qa/re-judge.mjs";
 import { createSpendLedger } from "../eval/qa/spend-budget.mjs";
@@ -137,10 +135,8 @@ describe("optional transport details do not change admission", () => {
     Object.assign(source.rows[0], {answer: "", costUsd: null, answerCost: null, responseStatus: null, httpError: null,
       clientError: "fetch failed", finishReason: null, frames: [], transcript: [], sseErrors: [], verdict: null});
     const failure = source.rows[0];
-    expect(isHarnessTransportFailure(failure)).toBe(true);
     expect(() => diagnosticRejudgeSource(source)).toThrow("invalid saved answer");
     failure.clientErrorDetails = {phase: "fetch", name: "TypeError", cause: {name: "Error", code: "ECONNRESET", syscall: "read"}};
-    expect(isHarnessTransportFailure(failure)).toBe(true);
     expect(() => diagnosticRejudgeSource(source)).toThrow("invalid saved answer");
   });
   it("keeps a settled judge diagnostic identical with absent or null details", () => {
@@ -150,157 +146,7 @@ describe("optional transport details do not change admission", () => {
   });
 });
 
-describe("partial recovery admission and answer-problem classification", () => {
-  function partialFixture() {
-    const selectedCases = Array.from({ length: 5 }, (_, index) => ({
-      id: `case-${index + 1}`,
-      question: `Question ${index + 1}`,
-      golden: { answer: `Answer ${index + 1}`, keyFacts: [], avoid: [] },
-      tags: { freshness: "stable" }
-    }));
-    const selectedIds = selectedCases.map((item) => item.id);
-    const base = fixture();
-    const meta = buildPlaygroundArtifactMeta({
-      run: { casesPath: "eval/qa/cases.json", finishedAt: "2026-11-06T00:00:00Z" },
-      answering: {
-        primaryModel: "openai/gpt-6-luna", fallbackModels: [], models: [{ model: "openai/gpt-6-luna", role: "primary" }],
-        apiMode: { requested: "responses", effective: "responses" }, reasoningEffort: { value: "low", source: "explicit" },
-        temperature: 0.1, configurationBasis: "fixture", runtimeIntrospection: "gateway-log", observedAttemptedModels: ["openai/gpt-6-luna"], proofLimit: "fixture"
-      },
-      judge: { enabled: true, model: "claude-sonnet-5", rubric: "v2.11", packVersion: "p9", temperature: { value: null, semantics: "provider-default-unpinned" } },
-      capContext: {
-        demo: base.meta.capContext.demo,
-        evaluator: { timeoutMs: 1000, maxCasesPerRunSubject: 5, selectedCases: 5, answerCallsThisRun: 5, judgeCallsThisRun: 5, maxBudgetUsd: 10 },
-        roundAuthorization: base.meta.capContext.roundAuthorization
-      },
-      inputFiles: Object.fromEntries(["corpusFileSha256", "manifestFileSha256", "superSpecFileSha256", "runnerFileSha256", "modelConfigFileSha256", "judgeFileSha256", "evidencePackFileSha256"].map((key) => [key, hash])),
-      selectedCases,
-      tree: base.meta.inputSnapshot.tree,
-      server: base.meta.server
-    });
-    meta.totalAgentCostUsd = 0.3;
-    meta.totalJudgeCostUsd = 0.6;
-    meta.totalCostUsd = 0.9;
-
-    const calls = [];
-    let remaining = 10;
-    const addCall = (method, id, costUsd) => {
-      calls.push({ method, id, costUsd, authorizedUsd: Number(remaining.toFixed(12)) });
-      if (costUsd !== null) remaining = Number((remaining - costUsd).toFixed(12));
-    };
-    const rows = selectedIds.slice(0, 3).map((id, index) => {
-      const frame = {
-        type: "eval-cost", costUsd: 0.1, reportedCostUsd: 0.1, calls: 2, reportedCalls: 2,
-        models: ["openai/gpt-6-luna"], logIds: [`log-${id}-1`, `log-${id}-2`], error: null, atMs: 100
-      };
-      addCall("answer", id, 0.1);
-      addCall("judge", id, 0.2);
-      const finishReason = index === 1 ? "abort" : "stop";
-      return {
-        id, answer: "A valid saved answer", costUsd: 0.1, answerCost: frame,
-        finishReason, responseStatus: 200, httpError: null, clientError: null,
-        sseErrors: [], transcript: [], frames: [{ type: "done", reason: finishReason }, frame],
-        verdict: { score: "partial", costUsd: 0.2, promptSha256: hash }
-      };
-    });
-    addCall("answer", selectedIds[3], null);
-    rows.push({
-      id: selectedIds[3], answer: "", costUsd: null, answerCost: null,
-      responseStatus: null, httpError: null, clientError: "fetch failed",
-      sseErrors: [], frames: [], transcript: [], verdict: null, finishReason: null
-    });
-
-    const raw = {
-      meta, nonPromotable: true, summary: null,
-      budget: {
-        status: "invalid", error: "missing-reported-cost", claimed: true,
-        authorizedUsd: 10, reportedSpendUsd: 0.9, remainingUsd: 9.1,
-        missingCosts: 1, expectedCalls: 7, reportedCalls: 6, exhausted: false, stoppedBefore: null,
-        selectedCaseIds: selectedIds,
-        incompleteCaseIds: [selectedIds[1], selectedIds[3], selectedIds[4]],
-        unattemptedCaseIds: [selectedIds[4]],
-        calls
-      },
-      rows
-    };
-    const receiptSha256 = sha256Json(raw);
-    const knownRows = rows.slice(0, 3).map((row) => ({
-      id: row.id, costUsd: row.costUsd, judgeCostUsd: row.verdict.costUsd, logIds: [...row.answerCost.logIds]
-    }));
-    const gatewayProof = {
-      accountId: "a".repeat(32), gatewayId: "test-gateway", knownAnswerCashUsd: 0.3,
-      knownRows: knownRows.map((row) => ({
-        id: row.id, costUsd: row.costUsd,
-        logs: row.logIds.map((id) => ({
-          id, cost: 0.05, model: "openai/gpt-6-luna", provider: "openai",
-          cached: false, custom_cost: false, collect_log_payload: false
-        }))
-      }))
-    };
-    const recovery = {
-      contract: "playground-partial-recovery/v1", experimentId: "test-round", parentTaskId: "task-1",
-      reviewRef: "accepted-recovery-review", receipt: { path: "/fixture/raw.json", sha256: receiptSha256 },
-      inputSnapshot: structuredClone(meta.inputSnapshot), sourceBudget: structuredClone(raw.budget),
-      sourceNonPromotable: true, selectedCaseIds: [...selectedIds],
-      attemptedIds: selectedIds.slice(0, 4), continuationIds: selectedIds.slice(4),
-      failure: { id: selectedIds[3], class: "harness-transport-failure" },
-      conservativeChargeUsd: 10, knownAnswerCashUsd: 0.3, knownSubscriptionNotionalUsd: 0.6,
-      knownRows, gatewayProof: { path: "/fixture/proof.json", sha256: sha256Json(gatewayProof) }
-    };
-    return { raw, recovery, gatewayProof, receiptSha256, selectedIds };
-  }
-
-  it("admits a reviewed partial recovery source without mutating inputs", () => {
-    const { raw, recovery, gatewayProof, receiptSha256, selectedIds } = partialFixture();
-    const before = JSON.stringify(raw);
-    const admitted = partialRecoverySource(raw, recovery, gatewayProof, receiptSha256);
-    expect(admitted).toMatchObject({
-      mode: "reviewed-partial-diagnostic-v1",
-      nonPromotable: true,
-      sourceNonPromotable: true,
-      selectedIds,
-      attemptedIds: selectedIds.slice(0, 4),
-      continuationIds: selectedIds.slice(4),
-      knownAnswerCashUsd: 0.3,
-      knownSubscriptionNotionalUsd: 0.6,
-      ungradeableRows: [
-        { id: selectedIds[1], reason: "unsuccessful-terminal" },
-        { id: selectedIds[3], reason: "empty-answer" }
-      ]
-    });
-    expect(JSON.stringify(raw)).toBe(before);
-  });
-
-  it.each([
-    ["reorder", /partial recovery: source partition or snapshot differs/],
-    ["missing-cost", /partial recovery: missing\/invalid known cost/],
-    ["last-frames", /partial recovery: unsupported failed attempt/],
-    ["last-status", /partial recovery: unsupported failed attempt/],
-    ["last-judge", /partial recovery: unsupported failed attempt/],
-    ["log-reuse", /partial recovery: duplicate\/invalid Gateway log/],
-    ["log-cache", /partial recovery: Gateway proof identity\/privacy differs/],
-    ["bad-charge", /partial recovery: unsupported accounting failure/],
-    ["wrong-partition", /partial recovery: source partition or snapshot differs/],
-    ["wrong-receipt", /partial recovery: explicit pinned recovery required/],
-    ["wrong-snapshot", /partial recovery: source partition or snapshot differs/],
-    ["other-client-error", /partial recovery: unsupported failed attempt/]
-  ])("rejects partial recovery %s", (kind, expectedError) => {
-    const { raw, recovery, gatewayProof, receiptSha256 } = partialFixture();
-    if (kind === "reorder") raw.rows.reverse();
-    if (kind === "missing-cost") raw.rows[0].costUsd = null;
-    if (kind === "last-frames") raw.rows[3].frames.push({ type: "ready" });
-    if (kind === "last-status") raw.rows[3].responseStatus = 200;
-    if (kind === "last-judge") raw.rows[3].verdict = { score: "error" };
-    if (kind === "log-reuse") raw.rows[1].answerCost.logIds[0] = raw.rows[0].answerCost.logIds[0];
-    if (kind === "log-cache") gatewayProof.knownRows[0].logs[0].cached = true;
-    if (kind === "bad-charge") recovery.conservativeChargeUsd = 1;
-    if (kind === "wrong-partition") recovery.continuationIds.unshift(raw.rows[3].id);
-    if (kind === "wrong-receipt") recovery.receipt = { ...recovery.receipt, sha256: hash };
-    if (kind === "wrong-snapshot") recovery.inputSnapshot = { ...recovery.inputSnapshot, corpusFileSha256: "b".repeat(64) };
-    if (kind === "other-client-error") raw.rows[3].clientError = "socket closed";
-    expect(() => partialRecoverySource(raw, recovery, gatewayProof, receiptSha256)).toThrow(expectedError);
-  });
-
+describe("answer-problem classification", () => {
   it("classifies gradeable and ungradeable saved answers consistently", () => {
     const base = { answer: "answer", finishReason: "stop", sseErrors: [], transcript: [] };
     expect(diagnosticAnswerProblem(base)).toBeNull();

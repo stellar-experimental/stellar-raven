@@ -60,3 +60,53 @@ Gates:
 - `npm run typecheck`: exit 0.
 - `npm test`: exit 0 (173 files passed, 5 skipped; 4165 tests passed, 3 expected fail, 5 skipped; 18.03 s).
 - `npm run secrets:scan -- --tree`: exit 0 (clean).
+
+## Third task
+
+Model: Claude Sonnet 5.5. Commit A and commit B, not pushed.
+
+### A. Codex launch line in the five dated lead briefs (commit cf24029d)
+
+- Added `--dangerously-bypass-hook-trust` directly after `--no-daemon` in `2.1-LEAD.md`,
+  `2.2a-LEAD.md`, `2.2b-LEAD.md`, `2.2c-LEAD.md` and `rehearsal-LEAD.md` under `items/1.4/dated/`.
+  One line changed in each (5 insertions, 5 deletions). Each file had exactly one
+  `codex --no-daemon` line; the `rg -c` check printed 1 for each.
+
+### B. Delete `partialRecoverySource` and `isHarnessTransportFailure`
+
+- `eval/qa/diagnostic-rejudge-source.mjs`: 158 to 86 lines (72 deleted). Both functions and their
+  doc comments are gone. No import became unused, so none was removed. `diagnosticRejudgeSource`
+  and `diagnosticAnswerProblem` are unchanged.
+- `test/diagnostic-rejudge-source.test.mjs`: 317 to 163 lines (2 insertions, 156 deletions). Removed
+  the two imports, `partialFixture`, the accepting test (1) and the twelve rejection cases (12).
+  That is 13 tests: 44 before, 31 after. In the "optional transport details" test I removed the
+  two `expect(isHarnessTransportFailure(failure)).toBe(true)` lines and kept its
+  `diagnosticRejudgeSource` assertions. The `describe` that held the removed tests and the
+  `diagnosticAnswerProblem` classification test is now named "answer-problem classification";
+  the classification test is unchanged.
+- `.agents/TODO.md`: deleted the item "Decide whether `partialRecoverySource` stays" (16 lines,
+  its heading to the line before the next heading). Nothing else there changed.
+- `research/` is untouched; its `orchestrate.mjs` keeps an import that no longer resolves.
+- `rg --hidden -g '!.git' -n 'partialRecoverySource|isHarnessTransportFailure' eval test scripts src .agents/TODO.md`:
+  no match (exit 1). Before the edit the names appeared only in the three files above.
+
+### Gates
+
+- `npx vitest run test/diagnostic-rejudge-source.test.mjs`: exit 0 (1 file, 31 tests passed).
+- `npm run typecheck`: exit 0.
+- `npm test`: exit 0 (173 files passed, 5 skipped; 4152 tests passed, 3 expected fail, 5 skipped;
+  4165 before, 13 fewer).
+- `npm run build`: exit 0.
+- `npm run eval:selftest`: exit 0 ("all checks passed").
+- `npm run secrets:scan -- --tree`: exit 0 (clean).
+
+No test pinned a hash of `eval/qa/*.mjs`.
+
+### Deviations
+
+- The two `isHarnessTransportFailure` asserts inside a `diagnosticRejudgeSource` test were removed
+  with the function; the test itself stays. The brief said to keep every `diagnosticRejudgeSource`
+  test unchanged, and this is the one place it could not be literal.
+- The `describe` rename above.
+- I ran `npm run typecheck` once through a pipe by mistake, then reran it bare; the exit code above
+  is from the bare run. The other gates ran bare with output sent to a scratch log.

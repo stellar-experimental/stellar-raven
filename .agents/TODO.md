@@ -1140,22 +1140,6 @@ Done when: the same defect appears in a second unrelated case (a different quest
 primary service), a contract mismatch appears, or trace evidence shows the prompt requests the
 wrong behavior. Record each recurrence with its case ID, result stamp, and transcript.
 
-### Decide whether `partialRecoverySource` stays
-
-`partialRecoverySource` and `isHarnessTransportFailure` in
-`eval/qa/diagnostic-rejudge-source.mjs` have one caller outside their own file and test:
-`research/audits/2026-11-06-playground-final-resolution/orchestrate.mjs`, the orchestrator of a
-study that `research/audits/2026-11-09-playground-product-decision.md` closed as superseded.
-`npm test` no longer runs that folder (round item 8.9). `test/diagnostic-rejudge-source.test.mjs`
-still tests `partialRecoverySource`: one accepting case and twelve rejection branches.
-
-Next: delete both functions and their tests and accept that the superseded orchestrator no
-longer loads, or keep them and record why. Deleting removes a capability of a dated record, so
-the owner or the lead decides first.
-
-Done when: the functions have a live caller, or they and their tests are gone with the decision
-recorded.
-
 ### Move the compiled case files into `eval/qa/compiled/`
 
 `eval/qa/cases.json`, `sample.json` and `tool-cases.json` sit where an unguarded session's
