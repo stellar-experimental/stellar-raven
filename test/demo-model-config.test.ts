@@ -79,12 +79,8 @@ function openAiResponsesSseResponse(model: string): Response {
 }
 
 describe("demo model config", () => {
-  it("keeps the gauntlet's default matrix to the three eval clients and no Haiku", () => {
-    expect(GAUNTLET_DEFAULT_MODELS).toHaveLength(3);
-    expect(GAUNTLET_DEFAULT_MODELS.filter((model: string) => model.startsWith("anthropic/claude-sonnet-"))).toHaveLength(1);
-    expect(GAUNTLET_DEFAULT_MODELS).toContain(DEMO_CATALOG_LATEST.terra);
-    expect(GAUNTLET_DEFAULT_MODELS).toContain(DEMO_CATALOG_LATEST.grok);
-    expect(GAUNTLET_DEFAULT_MODELS).not.toContain(DEMO_CATALOG_LATEST.haiku);
+  it("defaults the gauntlet to the shipped primary then fallback", () => {
+    expect(GAUNTLET_DEFAULT_MODELS).toEqual([DEMO_PRIMARY_MODEL, DEMO_FALLBACK_MODEL]);
   });
 
   it("disables AI Gateway logging at the binding boundary", () => {

@@ -6,7 +6,7 @@ import { once } from "node:events";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { mintDemoCookie } from "../src/demo/auth.ts";
-import { DEMO_CATALOG_LATEST, demoReasoningEffortOverride } from "../src/demo/model-config.ts";
+import { DEMO_MODELS, demoReasoningEffortOverride } from "../src/demo/model-config.ts";
 
 /**
  * DO NOT EDIT ANYTHING UNDER `src/` WHILE A RUN IS IN FLIGHT, and keep heavy
@@ -34,15 +34,19 @@ import { DEMO_CATALOG_LATEST, demoReasoningEffortOverride } from "../src/demo/mo
  * conclusion — including a gateway cache replay — logs it. No log plus no closed
  * span means the invocation was destroyed, which no model behavior can cause.
  *
- * The default matrix is the three evaluation clients that the run-evals skill
- * names: Sonnet, Terra, and Grok, each at its newest AI Gateway catalog ID. The
- * Sonnet literal below is the one eval-client-only catalog ID (the Worker never
- * uses Sonnet); Terra and Grok come from DEMO_CATALOG_LATEST. Select any other
- * model explicitly with --models, and state in the run plan the decision it
- * serves.
+ * The default matrix is the shipped Playground tuple, primary then fallback
+ * (DEMO_MODELS), each model alone on its own server. It is a per-model
+ * transport and tool-loop smoke test, not a hand-off test: no run here makes the
+ * primary fail over to the fallback (offline tests cover the hand-off). A tuple
+ * change moves the default with it. Select any other model explicitly with
+ * --models (Sonnet and Grok routing stay reachable that way), and state in the
+ * run plan the decision it serves.
+ *
  * Dated observations: `openai/gpt-6.1-terra` routed on 2026-08-06 (run ids 2026-08-06-latest-matrix
- * / -route-probe); `anthropic/claude-sonnet-5.5` and `xai/grok-4.7` routed in
- * the 2026-11-03 sweep (research/gauntlets/). A slug that has not been probed
+ * / -route-probe) and passed 8/8 on 2026-11-10 (research/audits/2026-11-10-playground-gpt61-terra-recheck.md);
+ * `anthropic/claude-haiku-5.5` passed 16/16 turns on 2026-11-09
+ * (research/audits/2026-11-09-playground-product-decision.md); `anthropic/claude-sonnet-5.5` and
+ * `xai/grok-4.7` routed in the 2026-11-03 sweep (research/gauntlets/). A slug that has not been probed
  * does not belong in the default, because a wrong one does not look like a
  * typo. Anthropic 4.x versions take DASHES (`claude-sonnet-4-6`, not `4.6`); a
  * dotted 4.x id authenticates and returns "model … was not found", which reads
@@ -81,15 +85,11 @@ import { DEMO_CATALOG_LATEST, demoReasoningEffortOverride } from "../src/demo/mo
  * still fit, so it presents as one model failing every prompt in ~180ms while
  * the rest of the matrix stays green — which looks exactly like a dead model.
  * Seen 2026-08-06: claude-fable-5 0/8 with `Payment Required`, then green again
- * on re-probe once the window slid. A full run of the default matrix is 24
+ * on re-probe once the window slid. A full run of the default matrix is 16
  * turns; a wider --models selection or back-to-back runs can hit the limit.
  * Check the gateway's spend window before debugging the model.
  */
-export const DEFAULT_MODELS = [
-  "anthropic/claude-sonnet-5.5",
-  DEMO_CATALOG_LATEST.terra,
-  DEMO_CATALOG_LATEST.grok
-];
+export const DEFAULT_MODELS = DEMO_MODELS.map(({ model }) => model);
 
 export const PROMPTS = [
   {
