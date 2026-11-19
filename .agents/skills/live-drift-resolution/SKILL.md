@@ -153,7 +153,9 @@ The catalog, spec, and skill pins compile into the Worker, and CI does not deplo
 serves the old surface until someone deploys.
 
 1. `npm run build` confirms that the bundle builds.
-2. `npm run deploy` needs the owner's go-ahead unless durably authorized.
+2. After the independent review, run `npm run deploy` without asking under the owner delegation in
+   [`AGENTS.md`](../../../AGENTS.md#owner-delegations-lead-session-only), and record it in the
+   ledger.
 3. Run the post-deploy checks in [`docs/operations.md`](../../../docs/operations.md#deploy).
 4. Close the issue with the commit, the deploy Version ID, and the guard and live-check evidence
    (`gh issue close <n> --comment ...`).

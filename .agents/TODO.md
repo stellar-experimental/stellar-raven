@@ -1305,8 +1305,9 @@ of the list; do not apply it before then. The list is the "Approval list" point 
 [RECONCILE.md](rounds/2026-11-16-next-phase/items/8.2/RECONCILE.md):
 
 - The `CLAUDE.md` prohibition (the fact "there is no `CLAUDE.md`" already landed).
-- O-10: one statement of posting and deploy authority across `AGENTS.md`, two skills and
-  `ecosystem-skills/README.md`.
+- O-10: one statement of posting authority across `AGENTS.md` and the skills. Deploy authority
+  already reads one way (round item 8.8, owner 2026-11-19): deploy without asking under the
+  `AGENTS.md` owner delegation.
 - O-27: define owner, lead, orchestrator and lane once in `AGENTS.md` "Coordination".
 - O-30 (the `wrangler kv` usage sentences move to `docs/operations.md`), O-32 to O-38 (move or
   reword `AGENTS.md` rules that are orchestrator handoff detail), and O-40 (shorten the Solo rule).

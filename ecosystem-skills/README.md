@@ -171,8 +171,8 @@ pull request.
    catalog fingerprint in `eval/gates.json`; numerical thresholds stay unless a separate
    decision changes them. A host description override or a search-admission change is a
    separate routing decision with its own comparison.
-8. Get an independent review (`AGENTS.md`), record it in a round ledger, and deploy with the
-   owner's approval.
+8. Get an independent review (`AGENTS.md`), record it in a round ledger, and deploy without
+   asking under the owner delegation in `AGENTS.md`.
 
 A candidate that is not admitted still needs a recorded decision: an owner decision or work
 item in `.agents/TODO.md`, or a round ledger entry.
