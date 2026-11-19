@@ -40,8 +40,8 @@ A new operation, skill pin, or source passes its review and evaluation gates bef
 the accepted catalog. A successful regeneration alone does not approve it. The skills in
 `.agents/skills/` give the procedures for drift, evaluations, golden answers, and improvement
 findings. Source acceptance, paid evaluation, deployment, and upstream issue closure are separate
-decisions. [AGENTS.md](AGENTS.md#spend-and-evidence) requires written authorization for a paid
-method, and [its owner delegations](AGENTS.md#owner-delegations-lead-session-only) say who may
+decisions. [AGENTS.md](AGENTS.md#spend-and-evidence) requires a hard cap and a recorded cost for a paid
+run, and [its owner delegations](AGENTS.md#owner-delegations-lead-session-only) say who may
 merge and deploy.
 
 ## Not built

@@ -13,8 +13,8 @@
  * "Model-call billing". Model and MCP-surface questions run on subscriptions.
  *
  * Results are local-only under eval/local-lanes/ (gitignored). A live request
- * invokes the playground model, so --confirm-paid is required. --full is an
- * additional explicit acknowledgement before selecting the complete battery.
+ * invokes the playground model, so it requires exactly one --max-budget-usd cap
+ * (no flag confirms a launch). --full selects the complete battery.
  */
 import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
@@ -41,6 +41,7 @@ import { QA_DIR, formatSummaryTable, loadCases, summarize } from "../eval/qa/lib
 import {
   PLAYGROUND_ROUND_CAP_CONTRACT,
   assertModelBackedRunInputs,
+  singleRunRoundCapContext,
   buildQuarantineArtifact,
   buildPlaygroundArtifactMeta,
   deriveQuarantineState,
@@ -66,7 +67,7 @@ function usage() {
 Runs QA cases through the actual POST /playground/chat SSE route, captures the
 assistant final text and tool trace, then grades it through eval/qa/judge.mjs.
 The default selection is a seeded, stratified 5-case sample. Live requests use
-the playground model, so --confirm-paid is required; --full also requires it.
+the playground model, so every model-backed run requires exactly one --max-budget-usd.
 
 Options:
   --url URL             Local playground base URL (default http://localhost:8787)
@@ -75,15 +76,16 @@ Options:
   --sample N            Seeded stratified sample size (default ${DEFAULT_SAMPLE})
   --seed VALUE          Deterministic selection seed (default ${DEFAULT_SEED})
   --full                Select every case only when the selected contract has <=${MAX_CASES_PER_RUN_SUBJECT} cases
-  --confirm-paid        Allow model-backed HTTP turns (required unless --dry-run)
   --no-judge            Capture turns but skip the paid QA judge call
-  --max-budget-usd USD  REQUIRED once per paid command; counts answer and judge costs
+  --max-budget-usd USD  REQUIRED once on every model-backed run; counts answer and judge costs
   --judge-model NAME    Existing QA judge model: an alias or an exact ID (default ${JUDGE_MODEL})
   --server-generation SHA
                         REQUIRED for model-backed runs: operator assertion of the loopback
                         server's local working-tree generation SHA-256
   --round-cap-context PATH
-                        REQUIRED for model-backed runs: JSON ${PLAYGROUND_ROUND_CAP_CONTRACT}
+                        OPTIONAL: your own cumulative call-cap file for a round of several
+                        invocations, JSON ${PLAYGROUND_ROUND_CAP_CONTRACT}; absent, the run
+                        records a single-run context
   --timeout-ms N        Per-turn client timeout in milliseconds (default ${DEFAULT_TIMEOUT_MS})
   --out-dir PATH        Local-only results directory (default ${DEFAULT_OUT_DIR})
   --print-generation    Print the current working-tree generation SHA-256; no model request
@@ -94,9 +96,9 @@ Options:
 Examples:
   npm run eval:playground -- --dry-run
   npm run eval:playground -- --print-generation
-  npm run eval:playground -- --confirm-paid --max-budget-usd 10 --server-generation <sha256> --round-cap-context <path> --sample 5 --seed baseline-a
-  npm run eval:playground -- --confirm-paid --max-budget-usd 10 --server-generation <sha256> --round-cap-context <path> --ids q-aas-burn-clawback-redemption-mechanics
-  npm run eval:playground -- --confirm-paid --max-budget-usd 10 --server-generation <sha256> --round-cap-context <path> --cases eval/qa/corpus/live/live-cases.json --full
+  npm run eval:playground -- --max-budget-usd 2 --server-generation <sha256> --sample 5 --seed baseline-a
+  npm run eval:playground -- --max-budget-usd 2 --server-generation <sha256> --ids q-aas-burn-clawback-redemption-mechanics
+  npm run eval:playground -- --max-budget-usd 6 --server-generation <sha256> --round-cap-context <path> --cases eval/qa/corpus/live/live-cases.json --full
 `;
 }
 
@@ -113,7 +115,7 @@ export function parseArgs(argv) {
     if (seen.has(arg)) throw new Error(`Duplicate argument: ${arg}`);
     seen.add(arg);
     if (arg === "--help") out.help = true;
-    else if (arg === "--full" || arg === "--confirm-paid" || arg === "--no-judge" || arg === "--dry-run" || arg === "--preflight" || arg === "--print-generation") {
+    else if (arg === "--full" || arg === "--no-judge" || arg === "--dry-run" || arg === "--preflight" || arg === "--print-generation") {
       out[arg.slice(2).replace(/-([a-z])/g, (_, c) => c.toUpperCase())] = true;
     } else if (["--max-budget-usd", "--url", "--cases", "--ids", "--sample", "--seed", "--judge-model", "--server-generation", "--round-cap-context", "--timeout-ms", "--out-dir"].includes(arg)) {
       const value = argv[++index];
@@ -132,8 +134,8 @@ export function parseArgs(argv) {
     throw new Error("--server-generation must be a lowercase SHA-256");
   }
   out.maxBudgetUsd = parseMaxBudgetUsd(out.maxBudgetUsd);
-  if (out.confirmPaid && !out.dryRun && !out.preflight && !out.printGeneration && out.maxBudgetUsd === null) {
-    throw new Error("Paid runs require exactly one --max-budget-usd");
+  if (!out.help && !out.dryRun && !out.preflight && !out.printGeneration && out.maxBudgetUsd === null) {
+    throw new Error("Model-backed runs require exactly one --max-budget-usd (use --dry-run, --preflight, --print-generation or --help to validate for free)");
   }
   return out;
 }
@@ -284,7 +286,8 @@ async function inputFileHashes(casesPath) {
   );
 }
 
-async function loadRoundCapContext(file) {
+async function loadRoundCapContext(file, runId) {
+  if (!file) return singleRunRoundCapContext(runId);
   const resolved = path.resolve(file);
   const raw = await readFile(resolved, "utf8");
   let parsed;
@@ -811,9 +814,6 @@ async function main() {
     console.log("preflight complete: signed cookie reached body validation (HTTP 400); no throttle or model request was made.");
     return;
   }
-  if (!args.confirmPaid) {
-    throw new Error("Refusing a model-backed playground evaluation without --confirm-paid. Use --dry-run or --preflight to validate for free.");
-  }
   assertModelBackedRunInputs(args);
   // `judge.model` stays the requested value (an alias by default) inside the pre-run tuple. The
   // first verdict pins the exact ID, which the final artifact records as `judge.resolvedModel`.
@@ -850,7 +850,7 @@ async function main() {
       judgeCallsThisRun: args.noJudge ? 0 : cases.length,
       answerCallUnit: "one POST /playground/chat turn; provider fallback attempts remain inside that turn"
     },
-    roundAuthorization: await loadRoundCapContext(args.roundCapContext)
+    roundAuthorization: await loadRoundCapContext(args.roundCapContext, runId)
   };
   const server = {
     endpoint,

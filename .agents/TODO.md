@@ -7,8 +7,8 @@ documentation. An upstream service defect goes to `improvements/` (see
 Add an item when you find work you are not doing now. Delete it when it is done; git history is
 the archive. An item states what is wrong, its current state, the next step or trigger, and what
 "done" means. Keep the history in the linked ledger, not here. The spend rules in
-[`AGENTS.md`](../AGENTS.md#spend-and-evidence) apply to every item: no item below authorizes a
-paid run.
+[`AGENTS.md`](../AGENTS.md#spend-and-evidence) apply to every item: a run needs no
+approval, and each runs under a hard cap and is recorded with its cost.
 
 ## Priorities
 
@@ -35,8 +35,8 @@ paid run.
 Everything not named here is a hold, a monitor or waits on its trigger. Do not start one without
 its trigger.
 
-No third tuning loop, and no paid QA run without a new written owner authorization, except round
-item 4.1 under decision 7 (owner, 2026-11-16, decision 1). The general routing repair stays held.
+No third tuning loop (owner, 2026-11-16, decision 1). A QA headline run starts only when a named
+decision needs it (`run-evals` section 1); it needs no approval. The general routing repair stays held.
 It needs new mechanism evidence, not another lexical variant.
 
 ## Held-out status
@@ -112,8 +112,8 @@ the figures stay in the owner's private evidence folder. Standing values: public
 50, Lumenloop and Scout calls 24 seconds each as one wall-clock budget per operation call, and
 the artifact caps `ARTIFACT_INFO_CAP` 8 and `ARTIFACT_READ_CAP` 4. Tuning loop 2 kept seven search
 cards by default and removed the source map ([ledger](rounds/2026-11-15-tuning-loop-2.md)). Only
-the `execute` timeout is open. A paid test needs its own written authorization under the
-`run-evals` skill; none is granted here.
+the `execute` timeout is open. A paid test runs under a cap
+sized by the `run-evals` skill and is recorded with its cost.
 
 ### Decide the `execute` timeout from one more Workers Logs read
 
@@ -446,7 +446,7 @@ receipts.
 The repository-recovery program behind this monitor stays rejected
 ([closeout](rounds/2026-08-31-rejected-experiments-closeout.md)). A passing reading authorizes
 nothing. A new plan must cite ADR-0008, keep the 10-of-12 positive and 0-of-8 premature-detour
-gate, and pass an independent plan review and its own spend authorization. It reopens on three
+gate, and pass an independent plan review. It reopens on three
 qualifying positive operation-selection misses; the Docs-versus-repository conflict stays
 monitor-only until three dated successful re-executions of the Docs-first, inspect, then one
 later `scout.explainRepo` sequence. The earlier candidate is in closed PR #102 at `6baec0a4`.
@@ -1049,7 +1049,7 @@ OpenCode stays out of client diagnostics (owner, 2026-11-17): no decision depend
 4.1's [record](rounds/2026-11-16-next-phase/items/4.1/RECORD.md) measured GPT-6.1 Terra in the Codex
 CLI and Grok 4.7 in the Grok CLI. Reopen on a production signal: OpenCode in the user-agent read,
 or a reported OpenCode failure. Then run Codex Terra through the ChatGPT login, smoke first, under
-a new spend authorization, after the [brief](rounds/2026-11-16-next-phase/items/4.1/briefs/opencode-mac.md)
+under its own cap, after the [brief](rounds/2026-11-16-next-phase/items/4.1/briefs/opencode-mac.md)
 and the smoke rule are rewritten for that provider.
 
 Logins, checked 2026-11-17 with one trivial prompt each: ChatGPT and SuperGrok are logged in to
@@ -1073,7 +1073,7 @@ on agentpc, 2026-11-18 and 2026-11-19 (Codex offline with no model call; one Gro
 | OpenCode (`v2.3.0`) | Agent `permission` rules; an agent with `permission: {"*": "deny"}` resolves to a deny-all rule in `opencode debug agents --standalone` | Yes at the execution boundary (config verified offline). Tool definitions may still reach the model |
 
 Trigger: a decision that needs a second, non-Claude judge, such as a cross-arm grade difference that
-a second Claude family cannot settle. Then, under its own written authorization:
+a second Claude family cannot settle. Then, under its own cap:
 
 1. Run the probe in [`eval/EVALS.md`](../eval/EVALS.md#model-call-billing) for `openai` (ChatGPT) or
    `xai` (SuperGrok), and confirm the exact model in `opencode models --standalone`.
@@ -1082,7 +1082,7 @@ a second Claude family cannot settle. Then, under its own written authorization:
 3. Grade the seven fixtures behind `npm run eval:qa:selftest` as calibration.
 4. After every run, check that `opencode.db` holds no tool part for the session.
 
-Done when: the judge passes the calibration under a written authorization and the after-run check is
+Done when: the judge passes the calibration under its own cap and the after-run check is
 clean, or the decision is made without it. Delete this item then.
 
 ### Close the remaining claim-support gaps of judge pack p9
@@ -1109,7 +1109,7 @@ The judge uses pack `p9` ([result](rounds/2026-10-12-pack-p9/result-p9.md)). Kno
   count and aggregation claims on live digest cases. This is a runner change and a pack-version
   change, so it needs its own reviewed measurement.
 
-Done when: a reviewed later pack closes these gaps with an authorized measurement, or the owner
+Done when: a reviewed later pack closes these gaps with a capped measurement, or the owner
 accepts them as the standing limits of p9.
 
 ### Decide whether a sourced summary error matches must-avoid "unsupported memory"
@@ -1147,7 +1147,7 @@ suppress it.
 Reopen a free cause audit after a production occurrence, a transcript with an attempted
 account-scoped operation, model-facing prose that advertises the capability, or a new distinct
 QA case. A fired trigger allows free scans, a plan, and an independent plan review; a diagnostic
-and a headline sample each need their own authorization. Do not add another QA-prompt wording
+and a headline sample each run under their own caps. Do not add another QA-prompt wording
 layer or copy case facts into a prompt.
 
 Done when: the owner retires the monitor, or a fired trigger leads to a reviewed resolution.
@@ -1268,7 +1268,7 @@ to the newest Sonnet (`claude-sonnet-5-5` on 2026-11-18). The paid seven-case se
 close this.
 
 Trigger: the first headline judged run, or any run whose verdicts will be compared. Run the self-test
-under its own authorization first, and let that run set the new baseline (`eval/EVALS.md`, rule 7).
+under its own cap first, and let that run set the new baseline (`eval/EVALS.md`, rule 7).
 The self-test requires an exact `--judge-model` and refuses an alias: resolve `sonnet` first (the
 roster's one-call `modelUsage` read), pass that ID, and each candidate fails if its verdict reports
 another model. The call record has an exact key set and no model field, so record the exact ID beside
@@ -1276,7 +1276,7 @@ the summary. Repeat it whenever the resolved judge model moves.
 
 The judge also launches with `--setting-sources ""` since item 8.6, which the same self-test covers.
 
-Done when: the self-test passes under a written authorization and its record names the resolved judge
+Done when: the self-test passes under its own cap and its record names the resolved judge
 ID.
 
 ### Bump the Playground catalog IDs when the AI Gateway lists a newer model
@@ -1502,10 +1502,10 @@ served guidance for many of the reported defect classes, the defects occurred an
 is unattributed (n=1).
 
 Trigger: the partner's per-round bug report arrives, or the owner funds a with-Raven versus
-without-Raven codegen A/B graded against the partner's external defect taxonomy. No item here
-authorizes a paid run.
+without-Raven codegen A/B graded against the partner's external defect taxonomy. The A/B is a direction call
+and runs under a hard cap.
 
-Done when: an authorized A/B attributes the defects or the owner retires the question.
+Done when: a capped A/B attributes the defects or the owner retires the question.
 
 ## OpenAI plugin submission
 

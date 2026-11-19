@@ -29,13 +29,18 @@ async function run(cap: number, answerCosts: unknown[], judgeCosts: unknown[], j
 
 describe("Playground method budget", () => {
   it("requires one spaced decimal cap and rejects duplicates before paid work", () => {
-    expect(() => parseArgs(["--confirm-paid"])).toThrow(/exactly one/);
+    expect(() => parseArgs([])).toThrow(/exactly one --max-budget-usd/);
+    expect(() => parseArgs(["--confirm-paid"])).toThrow(/Unknown argument: --confirm-paid/);
     expect(() => parseArgs(["--max-budget-usd", "1", "--max-budget-usd", "2"])).toThrow(/Duplicate/);
     for (const value of ["NaN", "Infinity", "-1", "1e3"]) {
       expect(() => parseArgs(["--max-budget-usd", value])).toThrow();
     }
     expect(() => parseArgs(["--max-budget-usd=1"])).toThrow();
     expect(parseArgs(["--dry-run"]).maxBudgetUsd).toBeNull();
+    expect(parseArgs(["--preflight"]).maxBudgetUsd).toBeNull();
+    expect(parseArgs(["--print-generation"]).maxBudgetUsd).toBeNull();
+    expect(parseArgs(["--help"]).help).toBe(true);
+    expect(parseArgs(["--max-budget-usd", "2"]).maxBudgetUsd).toBe(2);
   });
 
   it("counts both costs and gives each judge only the remaining dollars", async () => {

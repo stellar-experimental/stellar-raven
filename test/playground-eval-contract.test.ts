@@ -23,6 +23,7 @@ const {
   deriveQuarantineState,
   sanitizeGenerationCheckError,
   sha256Json,
+  singleRunRoundCapContext,
   treeGenerationSha256
 } = artifactContract;
 
@@ -119,8 +120,8 @@ function fixtureMeta(
         answerCallUnit: "one turn"
       },
       roundAuthorization: {
-        ...roundAuthorization,
-        sourceFile: { path: "/tmp/round-cap.json", sha256: sha("5") }
+        sourceFile: { path: "/tmp/round-cap.json", sha256: sha("5") },
+        ...roundAuthorization
       }
     },
     inputFiles: {
@@ -281,12 +282,21 @@ describe("playground answering receipt configuration", () => {
 });
 
 describe("playground semantic artifact contract", () => {
-  it("requires both paid-run provenance inputs before model execution", () => {
+  it("requires the server generation, and no round cap context, before model execution", () => {
     expect(() => assertModelBackedRunInputs({})).toThrow(/server-generation/);
-    expect(() => assertModelBackedRunInputs({ serverGeneration: sha("a") })).toThrow(/round-cap-context/);
-    expect(() =>
-      assertModelBackedRunInputs({ serverGeneration: sha("a"), roundCapContext: "/tmp/caps.json" })
-    ).not.toThrow();
+    expect(() => assertModelBackedRunInputs({ serverGeneration: sha("a") })).not.toThrow();
+    expect(() => assertModelBackedRunInputs({ serverGeneration: sha("a"), roundCapContext: "/tmp/caps.json" })).not.toThrow();
+  });
+
+  it("records a single run without a cap file and keeps sourceFile required for a reviewed round", () => {
+    const single = singleRunRoundCapContext("run-1");
+    expect(single).toMatchObject({ kind: "not-applicable", experimentId: "run-1", sourceFile: null, runAllocation: null });
+    expect(() => fixtureMeta(single)).not.toThrow();
+    // A not-applicable context given as a file keeps its stored shape.
+    expect(() => fixtureMeta({ ...single, sourceFile: { path: "/tmp/caps.json", sha256: sha("6") } })).not.toThrow();
+    // A reviewed round still needs the file and its hash.
+    expect(() => fixtureMeta(reviewedRound({ sourceFile: null }))).toThrow(/sourceFile\.path/);
+    expect(() => fixtureMeta(reviewedRound({ sourceFile: { path: "/tmp/c.json", sha256: "x" } }))).toThrow(/sourceFile\.sha256/);
   });
 
   it("builds a complete, versioned, internally pinned artifact metadata block", () => {

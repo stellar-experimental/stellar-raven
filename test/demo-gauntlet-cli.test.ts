@@ -39,14 +39,18 @@ describe("demo model gauntlet CLI safety", () => {
     expect(existsSync(outDir)).toBe(false);
   });
 
-  it("prints the validated plan but makes no output before --confirm-paid", async () => {
+  it("prints the validated plan but makes no output without --max-budget-usd", async () => {
     const outDir = await scratchOutDir();
     const result = runCli(["--models", "openai/test", "--prompts", "rpc-simulate", "--out-dir", outDir]);
 
     expect(result.status).toBe(1);
     expect(result.stdout).toContain("planned Playground chat turns: 1 (not guaranteed provider calls)");
-    expect(result.stderr).toContain("--confirm-paid");
+    expect(result.stderr).toContain("pass --max-budget-usd <usd> to launch (the shipped-tuple smoke uses 1)");
     expect(existsSync(outDir)).toBe(false);
+  });
+
+  it("rejects the removed --confirm-paid flag as unknown", () => {
+    expect(() => parseGauntletArgs(["--confirm-paid"])).toThrow("Unknown argument: --confirm-paid");
   });
 
   it("rejects an invalid invocation before creating its requested output", async () => {
@@ -171,7 +175,7 @@ http.createServer((req, res) => {
     const outDir = path.join(directory, "results");
     const result = spawnSync(process.execPath, ["scripts/run-demo-model-gauntlet.mjs",
       "--models", "openai/offline-fixture", "--prompts", "rpc-simulate", "--repeats", String(repeats),
-      "--max-budget-usd", "1", "--confirm-paid", "--port-base", String(port),
+      "--max-budget-usd", "1", "--port-base", String(port),
       "--run-id", "missing-cost", "--out-dir", outDir
     ], {
       cwd: process.cwd(), encoding: "utf8", timeout: 20_000,

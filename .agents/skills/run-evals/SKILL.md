@@ -34,8 +34,8 @@ Then hold to it:
   preferred answer.
 - A changed scope or stop rule is a named amendment: keep the old results, failures, and
   denominator, and report the new sample separately.
-- A paid run needs the owner's spending authorization. One call-count or dollar authorization
-  covers one method run; a re-run needs its own, even when it repairs the method.
+- No run needs approval. One cap covers one method run; a re-run gets its own cap and its own
+  ledger line, even when it repairs the method.
 - Get an independent review of the four lines only when the owner asks for one, or when the run is
   a multi-arm comparison or a source-addition lane
   ([`references/source-addition.md`](references/source-addition.md)). Reuse that review while its
@@ -65,8 +65,8 @@ resolved ID, and that ID is the measurement's identity.
   the Playground product itself (its transport, prompt, loop, caps, fallback, or a model only the Gateway
   reaches). Which model answers Raven questions best, and how the MCP tool surface performs, go to the
   subscription paths below; a shared MCP text change gets a Playground sample only under the conditional
-  rule in the EVALS.md question table. Any other API-billed run needs the owner's written approval naming the
-  run. Judges run on the Claude Code CLI; there is no AI Gateway judge, and a non-Claude second judge
+  rule in the EVALS.md question table. Every API-billed run carries a hard dollar cap and is recorded with
+  its cost; an unlisted path first joins the list in a reviewed pull request. Judges run on the Claude Code CLI; there is no AI Gateway judge, and a non-Claude second judge
   follows the TODO item "Build a subscription second judge on OpenCode when a decision needs one".
 - The QA runner and the discovery agent arm spawn headless `claude -p` themselves. Start the runner
   as an `hc` child (`hc run --bg --name <lane> ...`) and `hc wait` for it. `--model` selects the
@@ -125,7 +125,7 @@ frozen: change them only with a provenance note, a contract-version bump, and a 
 
 `npm run eval:qa:selftest` is **paid** (seven judge calls) although it needs no server. Run it only
 when the rubric, prompt, evidence pack, or judge adapter changed, or when the resolved judge model
-changed, under its own authorization. A new resolved judge model needs it before its first
+changed. A new resolved judge model needs it before its first
 headline judged run, and that run sets the new baseline. It requires an exact `--judge-model` (resolve
 the alias first), not an alias.
 
@@ -145,8 +145,8 @@ the alias first), not an alias.
    ```
 3. **Pins and cap.** Compute the identity pins in the collection shell as
    [`eval/qa/README.md`](../../../eval/qa/README.md#identity-and-budget-requirements) describes,
-   and pass exactly one `--max-budget-usd`. A changed pin stops the method; a new pin needs a new
-   authorization. Never resume a stopped artifact under the same authorization.
+   and pass exactly one `--max-budget-usd`. A changed pin stops the method; a new pin starts a
+   new run. Never resume a stopped artifact under the same budget ledger.
 4. **Estimate cost from stored runs**, not from a per-case figure in a README: read
    `meta.totalCostUsd` with `jq` from the results files that the round ledgers name for the same
    lane, model, rubric, and pack (`eval/qa/results/<stamp>-variantA.json`), never by glob, and

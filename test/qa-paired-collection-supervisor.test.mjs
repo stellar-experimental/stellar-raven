@@ -21,7 +21,7 @@ import {
   devVarsIdentity,
   pairedCollectionPlanSha256,
   supervisePairedChildren,
-  validateAuthorizedPairedCollectionPlan,
+  validateFrozenPairedCollectionPlan,
   validatePairedCollectionPlan
 } from "../eval/qa/paired-collection-supervisor.mjs";
 import { PAIRED_COLLECTION_CONTROL_SCHEMA } from "../eval/qa/paired-collection-control.mjs";
@@ -1193,27 +1193,22 @@ describe("paired QA collection supervisor", () => {
     }
   });
 
-  it("requires one external authorization for the canonical plan hash", () => {
+  it("binds the launch to the canonical plan hash", () => {
     const { root, plan } = planFixture();
     try {
       const expected = pairedCollectionPlanSha256(plan);
-      expect(validateAuthorizedPairedCollectionPlan(plan, expected)).toBe(expected);
+      expect(validateFrozenPairedCollectionPlan(plan, expected)).toBe(expected);
       const reordered = Object.fromEntries(Object.entries(plan).reverse());
       expect(pairedCollectionPlanSha256(reordered)).toBe(expected);
-      expect(() => validateAuthorizedPairedCollectionPlan(plan, "0".repeat(64))).toThrow(
+      expect(() => validateFrozenPairedCollectionPlan(plan, "0".repeat(64))).toThrow(
         /does not match the canonical plan/
       );
-      plan.authorization = { signature: "not allowed inside the plan" };
-      expect(() => validateAuthorizedPairedCollectionPlan(
-        plan,
-        pairedCollectionPlanSha256(plan)
-      )).toThrow(/authorization record must stay external/);
     } finally {
       rmSync(root, { recursive: true, force: true });
     }
   });
 
-  it("requires the authorized hash on the launch command line", () => {
+  it("requires the plan hash on the launch command line", () => {
     const root = mkdtempSync(path.join(os.tmpdir(), "qa-paired-auth-cli-"));
     try {
       const planPath = path.join(root, "plan.json");
@@ -1227,17 +1222,23 @@ describe("paired QA collection supervisor", () => {
 
       const missing = spawnSync(process.execPath, [script, "--plan", planPath], { encoding: "utf8" });
       expect(missing.status).toBe(1);
-      expect(missing.stderr).toMatch(/--authorized-plan-sha256/);
+      expect(missing.stderr).toMatch(/--plan-sha256/);
 
       const wrong = spawnSync(process.execPath, [
         script,
         "--plan",
         planPath,
-        "--authorized-plan-sha256",
+        "--plan-sha256",
         "0".repeat(64)
       ], { encoding: "utf8" });
       expect(wrong.status).toBe(1);
-      expect(wrong.stderr).toMatch(/does not match the canonical plan/);
+      expect(wrong.stderr).toMatch(/plan SHA-256 does not match the canonical plan/);
+
+      const old = spawnSync(process.execPath, [script, "--plan", planPath, "--authorized-plan-sha256", "0".repeat(64)], {
+        encoding: "utf8"
+      });
+      expect(old.status).toBe(1);
+      expect(old.stderr).toMatch(/usage:.*--plan-sha256/);
     } finally {
       rmSync(root, { recursive: true, force: true });
     }

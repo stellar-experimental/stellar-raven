@@ -14,7 +14,7 @@ Reuse the running server and substitute its bound URL.
 node eval/discovery/run-discovery.mjs --url http://localhost:8788
 node eval/discovery/run-replay.mjs --url http://localhost:8787
 
-# Paid agent collection requires an approved cap and pinned server, executable, and environment identities.
+# Paid agent collection requires a `--max-budget-usd` cap and pinned server, executable, and environment identities.
 node eval/discovery/run-agent-discovery.mjs \
   --url http://localhost:8787 \
   --server-revision <commit> \
@@ -31,7 +31,7 @@ Remote one-shot and replay runs use `RAVEN_MCP_BEARER_TOKEN` with the full `name
 The runner sends that credential as a bearer token and does not print it.
 
 Paid agent collection requires a local server from `npm run dev:eval`, with a clean tree and a matching compiled revision.
-Use the [run-evals workflow](../../.agents/skills/run-evals/SKILL.md) to prepare and approve that server.
+Use the [run-evals workflow](../../.agents/skills/run-evals/SKILL.md) to prepare that server.
 The runner disables user, project, and local settings and slash commands.
 It retains the explicit strict MCP configuration and permission bypass.
 Each row must report the `raven` MCP server as `connected`.
@@ -39,8 +39,8 @@ A failed connection stops collection and suppresses aggregates.
 
 Every agent-runner flag requires one spaced value. The parser rejects unknown flags, equals forms, and stray arguments.
 The required flags bind the server revision, surface hash, executable hash, environment hash, and total budget.
-Each agent receives only the remaining budget authorization. Invalid, missing, or excessive cost reports fail the run.
-Artifacts record each authorization, cost report, and remaining amount under `eval/discovery/results/`.
+Each agent receives only the remaining budget. Invalid, missing, or excessive cost reports fail the run.
+Artifacts record each budget grant, cost report, and remaining amount under `eval/discovery/results/`.
 
 The agent defaults to the Claude Code alias `sonnet` (the newest Sonnet; the artifact records the resolved ID) at medium effort and can use only `mcp__raven__search`.
 The runner grades at most the first three searches and records the observed call count.

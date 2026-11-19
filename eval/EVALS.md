@@ -44,7 +44,7 @@ The client set is in [the roster](../.agents/model-roster.md#models-for-evals-an
 - [The lifecycle registry](qa/lifecycle-registry.json) owns battery membership and case identity.
 - [The corpus guide](qa/corpus/README.md) owns case authoring and lifecycle inputs.
 - [The corpus provenance guide](corpus/PROVENANCE.md) identifies routing inputs and retained source material.
-- [The run-evals skill](../.agents/skills/run-evals/SKILL.md) owns round coordination and required approval steps.
+- [The run-evals skill](../.agents/skills/run-evals/SKILL.md) owns round coordination and run sizing.
 
 ## Evaluation rules
 
@@ -54,8 +54,8 @@ The client set is in [the roster](../.agents/model-roster.md#models-for-evals-an
 4. Grade volatile facts through behavioral goldens. Use the golden-truth workflow for changes to expected answers.
 5. Edit source case files, then regenerate outputs. Never edit generated cases, samples, or lifecycle registries by hand.
 6. Treat results as local evidence under ignored `results/` directories. Prune results older than 30 days after investigations end.
-7. A comparison across a change of resolved model (answering or judge) is not like for like. A gate or QA baseline re-baselines when its resolved model changes. Eval defaults are family aliases, so every artifact records the exact ID that ran beside the alias requested. A new resolved judge model needs the paid seven-case self-test, under its own authorization, before its first headline judged run, and that run sets the new baseline.
-8. Preserve dated evidence. A historical score does not establish current correctness or authorize another paid run.
+7. A comparison across a change of resolved model (answering or judge) is not like for like. A gate or QA baseline re-baselines when its resolved model changes. Eval defaults are family aliases, so every artifact records the exact ID that ran beside the alias requested. A new resolved judge model needs the paid seven-case self-test before its first headline judged run, and that run sets the new baseline.
+8. Preserve dated evidence. A historical score does not establish current correctness or decide that another paid run is needed.
 
 When a round establishes an upstream defect, file or update evidence-backed findings in [improvements/](../improvements/README.md).
 Record problems in this repository in [.agents/TODO.md](../.agents/TODO.md).
@@ -67,8 +67,11 @@ Dated audit records live under [research/audits/](../research/audits/).
 
 Evals, judging, testing and building run on subscription CLIs as `hc` children: Claude Code, Codex,
 Grok, and OpenCode only after the probe below. There is no AI Gateway judge. AI Gateway or a provider
-API is allowed only for an exception in this section. Any other API-billed run needs the owner's
-written approval naming the run. A paid subscription run still needs its own written authorization
+API is allowed only for an exception in this section. An API-billed path outside the list first
+becomes a listed exception, with its reason in this section and, if code names the endpoint, its
+entry in the allowlist in `test/model-call-billing.test.mjs`, in a reviewed pull request; then it runs
+under a hard cap. AI Gateway judging stays out without exception (owner, 2026-11-18). No run needs
+anyone's approval: the checks below are automatic and a subscription run needs none of any kind
 (`AGENTS.md`, "Spend and evidence").
 
 **Pre-run billing checks.** Make each check before a paid lane. None makes a model call. Every CLI's
@@ -107,8 +110,8 @@ so it decides a question only when none of those differences is what the questio
 | Question | Path | Reason |
 |---|---|---|
 | Does a model route through the Playground's Gateway transport (slug, provider quirks, tool `strict` on xAI)? | E2 with `--models` | Gateway routing and the AI SDK transport are not reachable from a CLI |
-| Which model ID does the Gateway log for a configured model? | A matching saved receipt or log first ([`research/gauntlets/2026-11-03-sweep-probe-summary.md`](../research/gauntlets/2026-11-03-sweep-probe-summary.md) has exact IDs). Live: E2 with `--models` and an authorized `--max-budget-usd`, then compare the observed IDs with the configured ID | E2 reports observed IDs only through the accounting header, and the launch plan prints the configured ID, which is independent of what the Gateway logged |
-| Does the route's cost accounting settle for a model? | Offline tests. Live settlement only inside an already authorized product run | `--max-budget-usd` is a cap and a measurement, not a separate cost test |
+| Which model ID does the Gateway log for a configured model? | A matching saved receipt or log first ([`research/gauntlets/2026-11-03-sweep-probe-summary.md`](../research/gauntlets/2026-11-03-sweep-probe-summary.md) has exact IDs). Live: E2 with `--models` and a `--max-budget-usd` cap, then compare the observed IDs with the configured ID | E2 reports observed IDs only through the accounting header, and the launch plan prints the configured ID, which is independent of what the Gateway logged |
+| Does the route's cost accounting settle for a model? | Offline tests. Live settlement only inside a product run that is happening anyway | `--max-budget-usd` is a cap and a measurement, not a separate cost test |
 | Does each shipped model, run alone, complete the stream and tool loop after a model-path change? | E2 default: the shipped primary and fallback | The Playground route itself. It verifies isolated per-model requests on the configured test Gateway (`stellar-raven-demo`) with slug-only overrides |
 | Should a candidate replace the Playground primary or fallback? | E2 on the candidate, then E1 paired | The decision is about the prompt, loop, caps, effort, temperature and model together |
 | Did a Playground-specific change (`DEMO_PREAMBLE`, the caps, the tool loop) move answer quality or plan? | E1 on both arms. A plan-only question uses stored matched traces where possible, else E1 with `--no-judge` plus `npm run eval:plan`; run the judge only when the decision needs answer grades | `DEMO_PREAMBLE`, the caps and the loop exist only in the Playground |
@@ -117,7 +120,20 @@ so it decides a question only when none of those differences is what the questio
 | Did a tool description, MCP instruction, catalog or executor change help or hurt answers? | Subscription QA first. Add an E1 sample only when the changed shared text is about the constraint the Playground caps or overrides (call counts, step order, the search-evidence rule), or matched stored transcripts show the change moves top-level MCP `search` and `execute` calls per answer across a Playground cap. Count those calls directly: the plan report's `searchQueries` also counts searches nested inside `execute` | The MCP surface decides it; the Playground shares that text but adds its own caps |
 | Does the fallback hand-off, the harness contract or a deployed Playground read healthy? | Free: offline tests, `--dry-run`, `--preflight`, and the Gateway log read in `cloudflare-observability-review` | No model call is needed |
 
-Sizing. Every tier needs its own written authorization; none is standing.
+Sizing. Each tier runs under the default cap below; record the run and its cost. A cap above a default
+is the lead's call: the ledger row records the cap, the reason and the reported cost. Both lanes require
+exactly one `--max-budget-usd` on every model-backed launch; there is no built-in default, so these are
+documented defaults. Without the flag E2 prints its launch plan and refuses before any Wrangler work,
+and E1 refuses before any request.
+
+| Run | Cap (`--max-budget-usd`) | Basis |
+|---|---|---|
+| E2 shipped-tuple gauntlet | USD 1 | 16 turns, USD 0.40 to 0.45 measured. The capped path is stricter than production: SDK retries are off, each call gets one Gateway attempt, and a turn with no reported cost stops the matrix |
+| E2 on one candidate model | USD 1 | Terra, 8 turns, USD 0.355 |
+| E1 run | USD 0.20 per selected case, rounded up to a whole dollar, minimum USD 2 (5 cases: 2; 30 cases: 6) | About USD 0.11 per case measured (30 cases: answers 1.383 plus judge 2.016) |
+| One candidate, all in | Two invocations: gauntlet 1, E1 on 30 cases 6; expected total USD 3.75; the ledger row records the sum | [2026-11-10 worked example](../research/audits/2026-11-10-playground-gpt61-terra-recheck.md) |
+| QA runner, re-judge, discovery (subscription) | Required `--max-budget-usd`, sized from stored runs (`run-evals` section 5) | An existing cost guard |
+| Judge self-test (subscription) | Its fixed 7 calls at USD 0.50 | An existing cost guard |
 
 1. **Shipped-tuple gauntlet.** Primary and fallback, each alone, 8 prompts each: 16 turns, about USD 0.40
    to 0.45, run with `--max-budget-usd 1`. Run it for a model-path change only (`src/demo/model-config.ts`,

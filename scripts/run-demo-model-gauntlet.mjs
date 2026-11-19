@@ -149,7 +149,9 @@ export async function main(argv = process.argv.slice(2)) {
   const invocation = validateGauntletInvocation(args);
   const plan = buildLaunchPlan(invocation);
   console.log(formatLaunchPlan(plan));
-  if (!args.confirmPaid) throw new Error("Refusing to start planned Playground chat turns without --confirm-paid.");
+  if (invocation.maxBudgetUsd === null) {
+    throw new Error("Refusing to start planned Playground chat turns without a dollar cap: pass --max-budget-usd <usd> to launch (the shipped-tuple smoke uses 1).");
+  }
 
   const { models, reasoningEfforts, prompts, openAiApiMode, repeats, portBase, outDir, timeoutMs, maxBudgetUsd } = invocation;
   const runId = args.runId ?? new Date().toISOString().replaceAll(":", "").replaceAll(".", "");
@@ -608,14 +610,14 @@ export function killedByReload(result) {
 }
 
 export function usage() {
-  return `Usage: node scripts/run-demo-model-gauntlet.mjs [options] --confirm-paid
+  return `Usage: node scripts/run-demo-model-gauntlet.mjs [options] --max-budget-usd <usd>
 
-Runs planned Playground chat turns and may incur provider charges. Review the printed launch
-plan, then pass --confirm-paid to allow any filesystem, credential, or Wrangler work.
+Runs planned Playground chat turns and may incur provider charges. Every launch needs exactly one
+--max-budget-usd cap (the shipped-tuple smoke uses 1). Without it the script prints the validated
+launch plan and exits before any filesystem, credential, or Wrangler work.
 
 Options:
   -h, --help                         Print this usage and exit without side effects
-  --confirm-paid                     Allow the validated paid launch
   --model <id>                       Add one model (repeatable)
   --models <id,...>                  Select models (default: built-in matrix)
   --reasoning-effort <effort>        Add one effort: default, none, minimal, low, medium, high, xhigh
@@ -627,7 +629,7 @@ Options:
   --repeats <positive integer>       Repetitions per model/effort/prompt cell (default: 1)
   --port-base <port>                 First Wrangler port (default: 8890)
   --timeout-ms <positive integer>    Per-chat timeout (default: 150000)
-  --max-budget-usd <usd>             Dollar cap for the whole run through the route's loopback
+  --max-budget-usd <usd>             Required to launch. Dollar cap for the whole run through the route's loopback
                                      accounting (sends x-raven-eval-max-budget-usd per turn,
                                      records each turn's Gateway cost and logged model, stops the
                                      matrix when the reported sum reaches the cap)
@@ -666,8 +668,6 @@ export function parseGauntletArgs(argv) {
     const arg = argv[i];
     if (arg === "--help" || arg === "-h") {
       out.help = true;
-    } else if (arg === "--confirm-paid") {
-      out.confirmPaid = true;
     } else if (!VALUE_FLAGS.has(arg)) {
       throw new Error(`Unknown argument: ${arg}`);
     } else {

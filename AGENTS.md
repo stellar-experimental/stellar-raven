@@ -44,8 +44,8 @@ counts. There is no `CLAUDE.md`; Claude Code reads this file natively.
   command; run the matching one when you touch `eval/`, `improvements/`, `catalog/`,
   `ecosystem-skills/`, or `usage/`. The selected skill names any further gate.
 - Run a gate command bare. A pipe hides its exit status.
-- Never put a model-calling eval command in a gate sweep. Those commands cost money and need
-  their own authorization (the `run-evals` skill).
+- Never put a model-calling eval command in a gate sweep: it costs money. Run it on its own,
+  sized and capped by the `run-evals` skill.
 - Scan before committing: `npm run secrets:scan -- --tree`.
 - Generated files are rebuilt by their scripts, never edited by hand
   ([`scripts/README.md`](scripts/README.md) lists them).
@@ -74,13 +74,15 @@ counts. There is no `CLAUDE.md`; Claude Code reads this file natively.
   subscription CLIs as `hc` children: Claude Code, Codex, Grok, and OpenCode only after its
   subscription-provider probe, never on API keys. Tests and evals run against the local
   `wrangler dev` server. AI Gateway or a provider API is allowed only for an exception listed with
-  its reason in [`eval/EVALS.md`](eval/EVALS.md) "Model-call billing". Any other API-billed run needs
-  the owner's written approval naming the run.
+  its reason in [`eval/EVALS.md`](eval/EVALS.md) "Model-call billing". Every API-billed run carries a
+  hard dollar cap and is recorded with its cost; an unlisted path first joins the list in a
+  reviewed pull request ([`eval/EVALS.md`](eval/EVALS.md) "Model-call billing").
 - **Eval and test models.** Claude Sonnet, Codex Terra, and Grok, each at its family's newest
   model. Add Claude Opus and Codex Sol where they help. Leave out Haiku and Codex Luna. Never
   tune to one model version; every run records the exact ID it resolved.
-- A paid method needs its own written authorization. A diagnostic budget does not transfer to
-  headline collection.
+- **No per-run approvals.** A model-calling eval, test or build run needs nobody's approval or
+  signature. Decide, run it under a hard cap, and record the run, its reason, answer count and
+  cost in the round ledger or item record. A lane stays inside its brief.
 - File and response size come second. Trim bloat where it is cheap; do not spend effort on it
   for its own sake.
 - **Cut what adds no visibility.** Before keeping or moving an eval case, lint floor, test, or
@@ -147,18 +149,14 @@ in one session and state in the pull request that the independent review is outs
 ## Owner delegations (lead session only)
 
 These apply only to the lead session the owner started and works with. Lanes, reviewers, harness
-runs, and other tools do not merge, deploy, or sign; they report to their lead.
+runs, and other tools do not merge or deploy; they report to their lead.
 
 - **Merge and deploy as work completes.** Merge a reviewed, CI-green PR and run `npm run deploy`
   without asking. Before each deploy, check and report what the owner may be missing: another
   session's active eval round that holds deploys (read its ledger), a model-facing change without
   its measured verdict, or a dependency update that changes the model-facing request while free
-  gates stay green. Ledger-only PRs need no deploy.
-- **Owner signatures on reviewed run sheets.** When a reviewed paid-run sheet needs the owner's
-  signature or an interactive confirmation, sign for the owner (delegation of 2026-10-10), quote
-  that delegation in the signed record, and answer prompts through `hc`. Keep every reviewed cap,
-  stop rule, and independent review. Add no paid method the done criterion does not need.
-  Outward-facing posts still need the owner's approval.
+  gates stay green. Ledger-only PRs need no deploy. Outward-facing posts still need the owner's
+  approval.
 
 ## Model routing for repo-work fan-out
 
