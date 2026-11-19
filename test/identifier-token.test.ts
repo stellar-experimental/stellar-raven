@@ -66,7 +66,7 @@ describe("against the matcher shipped in loop 1 (bd9719fb)", () => {
   const words = ["SEP", "sep", "Sep", "sEp", "A"];
   const joiners = ["", "-", " ", "--", "_"];
   const numbers = ["0", "0024", "123456", "0000045", "1234567"];
-  const tails = ["", " standard", ".1", "-01", ", see Sep-24"];
+  const tails = ["", " standard", ".1", "-01", ", see Sep-24", "."];
   const prefixes = ["", "10-", "1.", "10 ", "x-", "SEP-6 "];
   const corpus: string[] = [];
   for (const prefix of prefixes) for (const word of words) for (const joiner of joiners) for (const number of numbers) for (const tail of tails) {

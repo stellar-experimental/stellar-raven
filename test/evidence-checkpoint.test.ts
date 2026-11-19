@@ -117,6 +117,11 @@ describe("evidence checkpoint prose", () => {
       expect(block).toContain("`a.get({ id, rev })` with that hit's `id` and `rev`.");
     });
 
+    it("keeps the sentence short and free of case or operation vocabulary", () => {
+      expect(SENTENCE.length).toBeLessThan(400);
+      expect(SENTENCE.toLowerCase()).not.toMatch(/sep|cap-|soroban|stellar docs|meeting/);
+    });
+
     it("splits a hint into its detail-only part", () => {
       expect(detailOnlyHint(alternatives)).toBeNull();
       expect(detailOnlyHint(null)).toBeNull();

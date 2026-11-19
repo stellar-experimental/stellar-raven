@@ -166,6 +166,7 @@ File a successor rather than reopening it.
     await withSuccessorFixture(async ({ run, findingPath, stubPath }) => {
       const CITED = "https://github.com/stellar/stellar-docs/issues/1234";
 
+      // Safe to run in parallel: the `gh` stub is stateless and exits 42 before any local write.
       const [
         defaultRefused,
         uncitedRefused,

@@ -20,7 +20,7 @@ const SERVER_SOURCE = String.raw`
   const server = net.createServer((socket) => {
     console.log("connection");
     let buffered = Buffer.alloc(0);
-    socket.setTimeout(150, () => socket.destroy());
+    socket.setTimeout(300, () => socket.destroy());
     socket.on("data", (chunk) => {
       buffered = Buffer.concat([buffered, chunk]);
       while (true) {
@@ -71,7 +71,7 @@ const CLIENT_SOURCE = String.raw`
         await fetchLiveSurface("http://localhost:" + port + "/mcp");
       };
   await probe();
-  spawnSync(process.execPath, ["-e", "Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 350)"]);
+  spawnSync(process.execPath, ["-e", "Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 700)"]);
   await probe();
 `;
 

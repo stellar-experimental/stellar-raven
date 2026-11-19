@@ -1320,7 +1320,7 @@ describe("paired QA verdict", () => {
   });
 
   it("runs reduced deterministic operating-characteristic gates under npm test", () => {
-    const validation = runPairedVerdictValidation({ iterations: 1_000 });
+    const validation = runPairedVerdictValidation({ iterations: 5_000 });
 
     expect(validation.pass).toBe(true);
     expect(validation.gates).toEqual(expect.objectContaining({

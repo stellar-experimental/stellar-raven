@@ -272,10 +272,19 @@ describe("partial recovery admission and answer-problem classification", () => {
   });
 
   it.each([
-    "reorder", "missing-cost", "last-frames", "last-status", "last-judge",
-    "log-reuse", "log-cache", "bad-charge", "wrong-partition",
-    "wrong-receipt", "wrong-snapshot", "other-client-error"
-  ])("rejects partial recovery %s", (kind) => {
+    ["reorder", /partial recovery: source partition or snapshot differs/],
+    ["missing-cost", /partial recovery: missing\/invalid known cost/],
+    ["last-frames", /partial recovery: unsupported failed attempt/],
+    ["last-status", /partial recovery: unsupported failed attempt/],
+    ["last-judge", /partial recovery: unsupported failed attempt/],
+    ["log-reuse", /partial recovery: duplicate\/invalid Gateway log/],
+    ["log-cache", /partial recovery: Gateway proof identity\/privacy differs/],
+    ["bad-charge", /partial recovery: unsupported accounting failure/],
+    ["wrong-partition", /partial recovery: source partition or snapshot differs/],
+    ["wrong-receipt", /partial recovery: explicit pinned recovery required/],
+    ["wrong-snapshot", /partial recovery: source partition or snapshot differs/],
+    ["other-client-error", /partial recovery: unsupported failed attempt/]
+  ])("rejects partial recovery %s", (kind, expectedError) => {
     const { raw, recovery, gatewayProof, receiptSha256 } = partialFixture();
     if (kind === "reorder") raw.rows.reverse();
     if (kind === "missing-cost") raw.rows[0].costUsd = null;
@@ -289,7 +298,7 @@ describe("partial recovery admission and answer-problem classification", () => {
     if (kind === "wrong-receipt") recovery.receipt = { ...recovery.receipt, sha256: hash };
     if (kind === "wrong-snapshot") recovery.inputSnapshot = { ...recovery.inputSnapshot, corpusFileSha256: "b".repeat(64) };
     if (kind === "other-client-error") raw.rows[3].clientError = "socket closed";
-    expect(() => partialRecoverySource(raw, recovery, gatewayProof, receiptSha256)).toThrow();
+    expect(() => partialRecoverySource(raw, recovery, gatewayProof, receiptSha256)).toThrow(expectedError);
   });
 
   it("classifies gradeable and ungradeable saved answers consistently", () => {

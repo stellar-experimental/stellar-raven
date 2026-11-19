@@ -40,4 +40,8 @@ describe("exact rows in the candidate evidence block", () => {
     expect(withExactEvidence(candidateEvidenceBlock(1, true), exact)).toBe("");
     expect(withExactEvidence(candidateEvidenceBlock(undefined), exact)).toBe("");
   });
+
+  it("makes no status or date claim of its own", () => {
+    expect(SENTENCE).not.toMatch(/\b(active|final|draft|accepted|implemented|as of|published)\b/i);
+  });
 });

@@ -381,6 +381,12 @@ describe("scoreEntryWeighted — routing-keyword blend (lever 7)", () => {
       q
     );
     expect(withRouting).not.toBeNull();
+    // A single coherent two-token phrase covering 2 of 3 query tokens still admits.
+    expect(scoreEntryWeighted({
+      ...op,
+      routingKeywords: ["widgets", "latam", "hiring"],
+      routingPhrases: [{ field: "useWhen", tokens: ["widgets", "latam"] }]
+    }, "widgets latam hiring")).not.toBeNull();
   });
 
   it("does not rescue routing vocabulary split across incoherent phrases", () => {

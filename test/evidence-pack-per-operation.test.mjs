@@ -635,6 +635,19 @@ describe("QA transcript evidence pack", () => {
     );
   });
 
+  it("keeps the historical freshness tag for every stored-correct control", () => {
+    expect(Object.fromEntries(
+      largeTranscriptCorrectControls.map((fixture) => [fixture.id, fixture.tags.freshness])
+    )).toEqual({
+      "q-sor-confidential-tokens": "scheduled",
+      "q-asset-rwa-tokenized-freshness": "live",
+      "q-live-hackathon-recent-winners": "live",
+      "q-live-oracle-repo-triage": "live",
+      "q-live-digest-rwa-recent": "live",
+      "q-live-digest-blend-coverage": "live"
+    });
+  });
+
   it("flags exact support present in the full transcript but absent from the pack", () => {
     const check = findTranscriptEvidencePackOmissions({
       transcript: indexerSourceBasisFixture.transcript,

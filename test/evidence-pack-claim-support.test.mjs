@@ -29,17 +29,12 @@ const audits = new Map();
 let lastExplain = null;
 
 function explainOnce(candidateAnswer, transcript, extra = {}) {
-  const extraKey = JSON.stringify(extra);
-  if (
-    lastExplain &&
-    lastExplain.candidateAnswer === candidateAnswer &&
-    lastExplain.transcript === transcript &&
-    lastExplain.extraKey === extraKey
-  ) {
+  const key = JSON.stringify([candidateAnswer, transcript, extra]);
+  if (lastExplain && lastExplain.key === key) {
     return lastExplain.result;
   }
   const result = explainTranscriptEvidencePack({ ...CASE, candidateAnswer, transcript, ...extra });
-  lastExplain = { candidateAnswer, transcript, extraKey, result };
+  lastExplain = { key, result };
   return result;
 }
 

@@ -30,7 +30,7 @@ The table names groups, not every file. A test whose name matches no row joins t
 
 | Test group | Main coverage |
 | --- | --- |
-| `catalog*`, `search*`, `scoring*`, `drift-*`, `extract-*`, `family-text*`, `super-spec*`, `argument-aliases*`, `identifier-token*`, `title-keywords*`, `description-notes*` | Catalog validation, ranking, exact identities, admission rules, and generated specifications |
+| `catalog*`, `search*`, `scoring*`, `routing*`, `drift-*`, `extract-*`, `family-text*`, `super-spec*`, `argument-aliases*`, `identifier-token*`, `title-keywords*`, `description-notes*`, `replay-*` | Catalog validation, ranking, exact identities, admission rules, replayed searches, and generated specifications |
 | [adapters.test.ts](adapters.test.ts), [lumenloop-shape.test.ts](lumenloop-shape.test.ts) | Service contracts, response shapes, and error handling |
 | `executor*`, `spec-sandbox*`, `artifacts*`, `shape-logs*`, `source-basis*`, `evidence-checkpoint*`, `exact-evidence*`, `script-hints*` | Execution limits, spec access, artifact storage, and evidence boundaries |
 | `auth*`, `policy*`, `retention*`, `consent-page*`, `html*` | Authentication, request controls, retention, escaping, and secret removal |
