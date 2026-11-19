@@ -96,3 +96,73 @@ No AI Gateway, Workers AI, or provider-API calls were made.
 
 - **Model-facing deploy note:** This change restores dropped prose in served `skills.stellar-light.stellar-scout` (`SKILL.md` step 4 and `references/api-reference.md` `GET /api/partners/{slug}`) while keeping `catalog/manifest.json` and routing identical. Per `AGENTS.md` / `REVIEW.md`, the orchestrator decides whether the free routing gate + served-text verification suffices (as planned for item 8.9 free fixes) or if any answer-quality check is desired before deploying.
 - **Pre-existing scrub/guard notes (from `REVIEW.md` P1–P3):** Worth tracking if `scrub.ts` or `emitted-text-guard.mjs` is revisited: (P1) `excludedPathPattern` is case-sensitive while `emitted-text-guard.mjs` lowercases; (P2) `emitted-text-guard.mjs` omits `SCOUT_PATHS_ABSENT_FROM_SPEC` (`/api/repos`); (P3) the outer `inFence` toggle in `scrub.ts` does not match fence delimiter kind/length (`~~~` inside ```` ``` ````).
+
+---
+
+## Round 2: simplification (2026-11-19)
+
+Per the orchestrator's round-2 directive (`8.9-scrub-SIMPLIFY.md`), replaced the round-1 sentence-grammar heuristic machinery with the smallest general linear-time rule that restores the exact same served text.
+
+### Line counts (before / after)
+
+| File | `origin/main` | Round 1 (`58d5efff`) | Round 2 (`8f6d6be3`) | Net vs `origin/main` | Delta vs Round 1 |
+|---|---:|---:|---:|---:|---:|
+| `src/skills/scrub.ts` | 289 | 807 | **354** | **+65** (`+74 / -9` diff lines) | **−453** |
+| `test/skill-scrub.test.ts` | 206 | 353 | **307** | **+101** (`+102 / -1` diff lines) | **−46** |
+
+- **Worker bytes change:** **Yes** (model-facing). `git diff origin/main...HEAD --stat -- src/ package.json package-lock.json wrangler.jsonc` reports `src/skills/scrub.ts | 83 +++++++++++++++++++++++++++++++++++++++++++++++------` (`74 insertions(+), 9 deletions(-)` — well under the 80-added-line budget).
+
+### What changed in Round 2
+
+- **`src/skills/scrub.ts`**:
+  - Replaced `scanTopLevel`, `isSingleParenthetical`, `hasUnpairedCorrelative`, `hasBalancedMarkdownEmphasis`, `hasUnclosedSingleQuote`, `topLevelOrSplits`, `isValidNarrowedPrefix`, `parseExcludedAlternativeTail`, `stripExcludedAlternativeClause`, `narrowAllSentences`, and the dropped-bullet clean-fence swallowing loop with two small functions:
+    - `stripTrailingExcludedOrClause(sentence)`: single-pass $O(n)$ scan over top-level text (outside backticks, double quotes, `()`, and `[]`) finding the last top-level `, or …` / ` or …` split (`TRAILING_OR_RE = /(?:,\s*|\s+)or\s+/iy`, checked only at `,` or the start of a whitespace run so pathological whitespace/comma inputs stay linear). Drops the trailing clause only when no top-level `,`, `;`, or `:` follows it and the remaining prefix is non-empty and free of excluded Scout paths; otherwise returns `null` to fall back to whole-sentence / whole-item removal.
+    - `narrowListItem(item)`: joins a list item's body lines (excluding `|` / `>` continuations) and narrows only when every excluded-path sentence narrows cleanly; otherwise returns `null` so the whole item drops.
+  - Preserved `!fenceLine(...)` in list-item collection so any excluded path inside an indented code fence still routes through `inFence` and fails closed at the unchanged end-of-scrub `containsExcludedScoutPath` check.
+- **`test/skill-scrub.test.ts`**:
+  - Deleted unit tests that only pinned the removed grammar guards (correlatives, subordinators, gerunds, serial lists, curly/single quote kinds, scan caps, clean-fence swallowing).
+  - Kept the served-text corpus pin test (both restored passages in `SKILL.md` and `references/api-reference.md`, the removed `## POST /api/partners/match` section, `assertNoNonExposedRefsInText`, and `EXCLUDED_SCOUT_PATHS`), unit tests for trailing `, or …` / ` or …` narrowing and whole-sentence / whole-item fallback, and fail-closed tests for fenced excluded paths (including indented fences under kept and dropped bullets).
+
+### Round 2 served-text verification (`codemode.skill.read` on `http://localhost:8792`)
+
+Re-read all four files of `skills.stellar-light.stellar-scout` through the local Worker (`npm run dev -- --port 8792`, stopped immediately after verification) via `execute` calling `codemode.skill.read`, and compared all 65 exposed pinned skill files against both `origin/main` and Round 1 (`58d5efff`):
+
+- `SKILL.md`: 35,023 chars (`+363` vs `origin/main`, byte-identical to Round 1) — passes `assertNoNonExposedRefsInText` and `EXCLUDED_SCOUT_PATHS`.
+- `file:README.md`: 6,899 chars (`+0`, byte-identical to `origin/main` and Round 1) — passes both checks.
+- `file:references/api-reference.md`: 65,534 chars (`+112` vs `origin/main`, byte-identical to Round 1) — passes both checks.
+- `file:references/examples.md`: 14,118 chars (`+0`, byte-identical to `origin/main` and Round 1) — passes both checks.
+- Across all 65 exposed pinned skill files in `ecosystem-skills/MANIFEST.json`: exact same two diffs vs `origin/main`, zero diffs vs Round 1 (`[]`).
+
+### Round 2 gates (all run bare on final code `8f6d6be3`)
+
+| Command | Exit | Result |
+|---|---|---|
+| `npm run typecheck` | 0 | Clean |
+| `npm test` | 0 | 177 passed \| 5 skipped (182 files); 4298 passed \| 3 expected fail \| 5 skipped (4306 tests) |
+| `npx vitest run test/skill-scrub.test.ts` | 0 | 1 passed (1 file); 16 passed (16 tests) |
+| `npm run test:smoke` | 0 | 10 passed (10 files); 173 passed (173 tests) |
+| `npm run build` | 0 | Clean (`wrangler deploy --dry-run --outdir dist`; 6920.96 KiB / gzip 1375.76 KiB) |
+| `npm run secrets:scan -- --tree` | 0 | Clean — scanned all tracked files |
+| `npm run eval:routing -- --gate` | 0 | GATE PASS — legacy 64.8% / 86.7% / 96.4% (card@5 62.1%), extended 76.2% / 91.8% / 95.9% (card@5 57.1%), skills 73.9% / 100.0% / 100.0% (card@5 100.0%), holdout 24.5% / 53.1% / 61.2%, forbidden captures 11/49 (identical to before across every lane) |
+
+### Round 2 independent review and reconciliation
+
+- **Reviewer:** Claude Opus 5.5 (`agy --model claude-opus-5-5 --effort high`), independent of author (Gemini 4 Neon) and orchestrator.
+- **Review file:** `.agents/rounds/2026-11-16-next-phase/items/8.9/scrub/REVIEW-2.md`
+- **Verdict:** **APPROVE** — zero critical, high, or medium findings; 400k-char linear-time probe (5–25 ms) and adversarial leak probes all passed cleanly.
+
+Reconciliation of every finding:
+
+- **L1 (low) — Accepted.** Added this Round 2 section to `REPORT.md` so the ledger accurately reflects the simplified code that ships.
+- **L2 (low) — Noted (no code change needed).** Stricter fail-closed throw on an indented fence containing an excluded path under a dropped bullet is intentional, consistent with "fenced lines bypass every removal", and pinned by unit tests.
+- **N1 (nit) — Declined as out of scope.** Trailing closing marks after a sentence terminator (e.g. `.**`) are a cosmetic grammar/formatting edge case with no excluded-path leak and do not occur in the pinned corpus.
+- **N2 (nit) — Declined (kept intentionally).** Explicit `not.toContain("## \`POST /api/partners/match\`")` / `not.toContain("/api/partners/match")` assertions directly satisfy the round-2 instruction to pin the removed match section.
+- **N3 (nit) — Declined (kept intentionally).** Keeping synthetic list item 2 alongside the corpus test pins the narrowing rule independently of future upstream skill re-pins.
+
+### Round 2 model calls made
+
+| CLI | Model ID | Effort | Purpose |
+|---|---|---|---|
+| `agy` (subscription) | `claude-opus-5-5` | `high` | Independent code review of Round 2 simplification (`git diff origin/main...HEAD`) -> `REVIEW-2.md` (`status: SUCCESS`) |
+
+No AI Gateway, Workers AI, or provider-API calls were made.
