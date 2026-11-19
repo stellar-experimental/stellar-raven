@@ -332,3 +332,7 @@ stellar/stellar-docs#2941.
 
 - None for the switch-over. Follow-ups are in `.agents/TODO.md`: section anchors, `sd-059`, the
   golden-audit hand-off, and the `sd-003` retirement.
+
+## Outcome
+
+Retained for: `eval/gates.json`, `improvements/stellar-docs/sd-005-agentic-payments-no-landscape-positioning.md`, `improvements/stellar-docs/sd-009-sep-6-interactive-deprecation-undiscoverable.md`, and `improvements/stellar-docs/sd-059-responsefield-text-unsearchable.md` (along with the cited `sd-059` and `sd-003` artifacts in `2026-11-02-mintlify-migration/`).

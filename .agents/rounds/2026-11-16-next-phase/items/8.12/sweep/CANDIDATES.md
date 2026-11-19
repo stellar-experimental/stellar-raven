@@ -6,8 +6,8 @@ Generated before any deletion under `.agents/README.md` ("Retention"), `.agents/
 
 | Verdict | Files | Bytes |
 |---|---:|---:|
-| **keep** | 396 | 6,577,342 |
-| **delete** | 597 | 11,471,992 |
+| **keep** | 390 | 6,575,474 |
+| **delete** | 603 | 11,473,860 |
 | **fold** | 0 | 0 |
 | **Total in scope** | 993 | 18,049,334 |
 
@@ -160,11 +160,12 @@ Generated before any deletion under `.agents/README.md` ("Retention"), `.agents/
 | `.agents/rounds/2026-11-02-mintlify-anchors/` (1 files) | 1 | 14,193 | **delete** | No current artifact, QA provenance scope, or retained ledger Outcome cites or needs any file in this folder | — |
 | `.agents/rounds/2026-11-02-mintlify-anchors.md` | 1 | 1,734 | **keep** | Current: `eval/gates.json:55` | — |
 | `.agents/rounds/2026-11-02-mintlify-migration/identifier-probe.json` | 1 | 5,052 | **keep** | Current: `improvements/stellar-docs/sd-059-responsefield-text-unsearchable.md:10` | — |
+| `.agents/rounds/2026-11-02-mintlify-migration/responsefield-files.txt` | 1 | 7,536 | **keep** | Saved 93-file `<ResponseField>` input list for `.agents/rounds/2026-11-02-mintlify-migration/rf-rank.mjs:7` (cited by open finding `improvements/stellar-docs/sd-059-responsefield-text-unsearchable.md:9`) | — |
 | `.agents/rounds/2026-11-02-mintlify-migration/responsefield-rank.json` | 1 | 26,653 | **keep** | Current: `improvements/stellar-docs/sd-059-responsefield-text-unsearchable.md:9` | — |
 | `.agents/rounds/2026-11-02-mintlify-migration/rf-rank.mjs` | 1 | 2,546 | **keep** | Current: `improvements/stellar-docs/sd-059-responsefield-text-unsearchable.md:9` | — |
 | `.agents/rounds/2026-11-02-mintlify-migration/sd003-golden-review.md` | 1 | 16,899 | **keep** | Current: `improvements/resolved.json:135` | — |
 | `.agents/rounds/2026-11-02-mintlify-migration/sd003-recheck.md` | 1 | 12,790 | **keep** | Current: `improvements/resolved.json:135` | — |
-| `.agents/rounds/2026-11-02-mintlify-migration/` (15 uncited files) | 15 | 200,388 | **delete** | Uncited working/review/raw files: `branch-review.md`, `golden-handoff.md`, `ident-probe.mjs`, `page-coverage.json`, `paramfield-rank.json`, +10 more | — |
+| `.agents/rounds/2026-11-02-mintlify-migration/` (14 uncited files) | 14 | 192,852 | **delete** | Uncited working/review/raw files: `branch-review.md`, `golden-handoff.md`, `ident-probe.mjs`, `page-coverage.json`, `paramfield-rank.json`, +9 more | — |
 | `.agents/rounds/2026-11-02-mintlify-migration.md` | 1 | 22,036 | **keep** | Current: `eval/gates.json:55`, `improvements/stellar-docs/sd-009-sep-6-interactive-deprecation-undiscoverable.md:18`, `improvements/stellar-docs/sd-059-responsefield-text-unsearchable.md:12`, `improvements/stellar-docs/sd-005-agentic-payments-no-landscape-positioning.md:22` | — |
 | `.agents/rounds/2026-11-02-pr314-review/` (3 files) | 3 | 40,405 | **delete** | No current artifact, QA provenance scope, or retained ledger Outcome cites or needs any file in this folder | — |
 | `.agents/rounds/2026-11-02-pr314-review.md` | 1 | 6,010 | **delete** | No current artifact, QA provenance scope, or retained ledger Outcome cites or needs this file | — |
@@ -303,18 +304,18 @@ Generated before any deletion under `.agents/README.md` ("Retention"), `.agents/
 | `research/audits/2026-11-14-mcp-peer-survey.md` | 1 | 35,976 | **delete** | No current artifact, QA provenance scope, or retained ledger Outcome cites or needs this file | — |
 | `research/demo-playground-design.md` | 1 | 22,363 | **keep** | Current: `ideas/playground-chatgpt-subscription-login.md:83`, `ideas/shareable-durable-playground-sessions.md:452` | — |
 | `research/evidence-poor-retrieval-2026-07-13.md` | 1 | 8,220 | **delete** | No current artifact, QA provenance scope, or retained ledger Outcome cites or needs this file | — |
-| `research/gauntlets/2026-11-03-sweep-probe-gemini-passthrough-summary.md` | 1 | 711 | **keep** | Directory cited by `scripts/run-demo-model-gauntlet.mjs:53` (and `2026-11-03-sweep-probe-summary.md` directly by `eval/EVALS.md:113`, `eval/playground/README.md:167`, `scripts/run-demo-model-gauntlet.mjs:48`) | — |
-| `research/gauntlets/2026-11-03-sweep-probe-summary.md` | 1 | 4,688 | **keep** | Directory cited by `scripts/run-demo-model-gauntlet.mjs:53` (and `2026-11-03-sweep-probe-summary.md` directly by `eval/EVALS.md:113`, `eval/playground/README.md:167`, `scripts/run-demo-model-gauntlet.mjs:48`); direct: `scripts/run-demo-model-gauntlet.mjs:48`, `eval/playground/README.md:167`, `eval/EVALS.md:113` | — |
-| `research/gauntlets/2026-11-03-sweep-stage1-low-summary.md` | 1 | 927 | **keep** | Directory cited by `scripts/run-demo-model-gauntlet.mjs:53` (and `2026-11-03-sweep-probe-summary.md` directly by `eval/EVALS.md:113`, `eval/playground/README.md:167`, `scripts/run-demo-model-gauntlet.mjs:48`) | — |
-| `research/gauntlets/2026-11-03-sweep-stage1-summary.md` | 1 | 10,848 | **keep** | Directory cited by `scripts/run-demo-model-gauntlet.mjs:53` (and `2026-11-03-sweep-probe-summary.md` directly by `eval/EVALS.md:113`, `eval/playground/README.md:167`, `scripts/run-demo-model-gauntlet.mjs:48`) | — |
-| `research/gauntlets/2026-11-03-sweep-stage1b-astra1-summary.md` | 1 | 991 | **keep** | Directory cited by `scripts/run-demo-model-gauntlet.mjs:53` (and `2026-11-03-sweep-probe-summary.md` directly by `eval/EVALS.md:113`, `eval/playground/README.md:167`, `scripts/run-demo-model-gauntlet.mjs:48`) | — |
-| `research/gauntlets/2026-11-03-sweep-stage1b-astra2-summary.md` | 1 | 689 | **keep** | Directory cited by `scripts/run-demo-model-gauntlet.mjs:53` (and `2026-11-03-sweep-probe-summary.md` directly by `eval/EVALS.md:113`, `eval/playground/README.md:167`, `scripts/run-demo-model-gauntlet.mjs:48`) | — |
-| `research/gauntlets/2026-11-03-sweep-stage1b-deepseek-summary.md` | 1 | 2,053 | **keep** | Directory cited by `scripts/run-demo-model-gauntlet.mjs:53` (and `2026-11-03-sweep-probe-summary.md` directly by `eval/EVALS.md:113`, `eval/playground/README.md:167`, `scripts/run-demo-model-gauntlet.mjs:48`) | — |
-| `research/gauntlets/2026-11-03-sweep-stage1b-grok1-summary.md` | 1 | 786 | **keep** | Directory cited by `scripts/run-demo-model-gauntlet.mjs:53` (and `2026-11-03-sweep-probe-summary.md` directly by `eval/EVALS.md:113`, `eval/playground/README.md:167`, `scripts/run-demo-model-gauntlet.mjs:48`) | — |
-| `research/gauntlets/2026-11-03-sweep-stage1b-grok2-summary.md` | 1 | 1,182 | **keep** | Directory cited by `scripts/run-demo-model-gauntlet.mjs:53` (and `2026-11-03-sweep-probe-summary.md` directly by `eval/EVALS.md:113`, `eval/playground/README.md:167`, `scripts/run-demo-model-gauntlet.mjs:48`) | — |
-| `research/gauntlets/2026-11-03-sweep-stage1b-six-summary.md` | 1 | 4,090 | **keep** | Directory cited by `scripts/run-demo-model-gauntlet.mjs:53` (and `2026-11-03-sweep-probe-summary.md` directly by `eval/EVALS.md:113`, `eval/playground/README.md:167`, `scripts/run-demo-model-gauntlet.mjs:48`) | — |
-| `research/gauntlets/2026-11-03-sweep-stage1c-astra-summary.md` | 1 | 686 | **keep** | Directory cited by `scripts/run-demo-model-gauntlet.mjs:53` (and `2026-11-03-sweep-probe-summary.md` directly by `eval/EVALS.md:113`, `eval/playground/README.md:167`, `scripts/run-demo-model-gauntlet.mjs:48`) | — |
-| `research/gauntlets/2026-11-03-sweep-stage1c-muse-summary.md` | 1 | 805 | **keep** | Directory cited by `scripts/run-demo-model-gauntlet.mjs:53` (and `2026-11-03-sweep-probe-summary.md` directly by `eval/EVALS.md:113`, `eval/playground/README.md:167`, `scripts/run-demo-model-gauntlet.mjs:48`) | — |
+| `research/gauntlets/2026-11-03-sweep-probe-gemini-passthrough-summary.md` | 1 | 711 | **delete** | No current artifact, QA provenance scope, or retained ledger Outcome cites or needs this file | — |
+| `research/gauntlets/2026-11-03-sweep-probe-summary.md` | 1 | 4,688 | **keep** | Current: `scripts/run-demo-model-gauntlet.mjs:48`, `eval/playground/README.md:167`, `eval/EVALS.md:113` | — |
+| `research/gauntlets/2026-11-03-sweep-stage1-low-summary.md` | 1 | 927 | **delete** | No current artifact, QA provenance scope, or retained ledger Outcome cites or needs this file | — |
+| `research/gauntlets/2026-11-03-sweep-stage1-summary.md` | 1 | 10,848 | **keep** | 2026-11-03 sweep summary for `anthropic/claude-sonnet-5.5`, `xai/grok-4.7`, `openai/gpt-6.1-terra`, and `anthropic/claude-haiku-5.5` under `research/gauntlets/` (`scripts/run-demo-model-gauntlet.mjs:53`) | — |
+| `research/gauntlets/2026-11-03-sweep-stage1b-astra1-summary.md` | 1 | 991 | **delete** | No current artifact, QA provenance scope, or retained ledger Outcome cites or needs this file | — |
+| `research/gauntlets/2026-11-03-sweep-stage1b-astra2-summary.md` | 1 | 689 | **delete** | No current artifact, QA provenance scope, or retained ledger Outcome cites or needs this file | — |
+| `research/gauntlets/2026-11-03-sweep-stage1b-deepseek-summary.md` | 1 | 2,053 | **delete** | No current artifact, QA provenance scope, or retained ledger Outcome cites or needs this file | — |
+| `research/gauntlets/2026-11-03-sweep-stage1b-grok1-summary.md` | 1 | 786 | **keep** | 2026-11-03 sweep summary for `xai/grok-4.7` under `research/gauntlets/` (`scripts/run-demo-model-gauntlet.mjs:53`) | — |
+| `research/gauntlets/2026-11-03-sweep-stage1b-grok2-summary.md` | 1 | 1,182 | **keep** | 2026-11-03 sweep summary for `xai/grok-4.7` under `research/gauntlets/` (`scripts/run-demo-model-gauntlet.mjs:53`) | — |
+| `research/gauntlets/2026-11-03-sweep-stage1b-six-summary.md` | 1 | 4,090 | **delete** | No current artifact, QA provenance scope, or retained ledger Outcome cites or needs this file | — |
+| `research/gauntlets/2026-11-03-sweep-stage1c-astra-summary.md` | 1 | 686 | **delete** | No current artifact, QA provenance scope, or retained ledger Outcome cites or needs this file | — |
+| `research/gauntlets/2026-11-03-sweep-stage1c-muse-summary.md` | 1 | 805 | **delete** | No current artifact, QA provenance scope, or retained ledger Outcome cites or needs this file | — |
 | `research/listing-carousel-evidence-2026-10-07.md` | 1 | 6,902 | **keep** | Current: `assets/brand/listing.md:6`, `assets/brand/README.md:13` | — |
 | `research/observability-cloudflare.md` | 1 | 12,781 | **keep** | Current: `wrangler.jsonc:116` | — |
 | `research/partner-doc-source-onboarding.md` | 1 | 19,682 | **keep** | Current: `ideas/partner-doc-live-sources.md:7,126,185`, `eval/partner-docs/README.md:69`, `eval/partner-docs/cases.json:217`, `scripts/eval-partner-docs.mjs:22` | — |
@@ -327,7 +328,7 @@ Generated before any deletion under `.agents/README.md` ("Retention"), `.agents/
 | `research/qa-deep-dive-2026-08-25/terra-max.md` | 1 | 24,662 | **keep** | Current: `ideas/source-delivery-ranked-references.md:477` | — |
 | `research/qa-deep-dive-2026-08-25/review-judge.md` | 1 | 17,777 | **delete** | No current artifact, QA provenance scope, or retained ledger Outcome cites or needs this file | — |
 | `research/qa-improvement-plan-2026-08-25.md` | 1 | 11,908 | **keep** | Current: `ideas/source-delivery-ranked-references.md:7,475` | — |
-| `research/retired-skill-guidance.md` | 1 | 1,548 | **delete** | No current artifact, QA provenance scope, or retained ledger Outcome cites or needs this file | — |
+| `research/retired-skill-guidance.md` | 1 | 1,548 | **keep** | Cited in `research/skill-exposure-inventory.json:174,224` (`evidenceRefs`), which is a live test-enforced artifact (`test/skill-exposure-classification.test.ts:20`, `ecosystem-skills/README.md:146,164`) | — |
 | `research/services/lumenloop.md` | 1 | 23,789 | **keep** | Current: `scripts/refresh-inventory.mjs:276`, `inventory/lumenloop.json:9177`, `eval/plan/README.md:16`, `eval/plan/coverage-rules.json:2,7 (+10)` (+1 more files) | — |
 | `research/services/stellar-docs-algolia.md` | 1 | 35,672 | **delete** | No current artifact, QA provenance scope, or retained ledger Outcome cites or needs this file | — |
 | `research/services/stellar-docs-mintlify.md` | 1 | 13,135 | **keep** | Current: `specs/stellar-docs.json:7`, `scripts/refresh-inventory.mjs:516`, `docs/stellar-docs.md:6`, `inventory/stellar-docs.json:56` (+2 more files) | — |
