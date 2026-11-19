@@ -341,9 +341,9 @@ explicit path to a listed file, a pull request's diff, a script file or a pipe i
 (`echo '...' | bash`), `ag`, `ack` and `ugrep`, an unglobbed search through an agent's built-in
 grep tool if that tool does not honor `.ignore` (unverified for Grok `grep` and for Antigravity's
 in-process fallback when embedded ripgrep is unavailable), a Codex session launched without
-`--dangerously-bypass-hook-trust` or `/hooks` approval, a Grok session in an untrusted folder, and any CLI outside the four above.
-`rg -g '*.json'` re-includes a file-level entry, so the hook denies it where active; those
-sessions and other CLIs rely on the rule in `AGENTS.md`.
+`--dangerously-bypass-hook-trust` or `/hooks` approval, a Grok session in an untrusted folder, and
+any CLI outside the four above. `rg -g '*.json'` re-includes a file-level entry, so the hook denies
+it where active; those sessions and other CLIs rely on the rule in `AGENTS.md`.
 
 **Copies of golden text.** `eval/qa/case-text-scan.mjs` counts 8-word golden shingles (unique to at
 most two cases) that a file git lists outside the paths above repeats. `npm test` fails when a file
