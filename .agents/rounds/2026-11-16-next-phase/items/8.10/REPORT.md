@@ -4,6 +4,25 @@ Lead and auditor: Claude Fable (`claude-fable-5-2`), agentpc `t20j`, 2026-11-19.
 Pull request: <https://github.com/stellar-experimental/stellar-raven/pull/507> (branch
 `np/8.10-audit-8.9`, from `origin/main` at `50418fa3`). Not merged; the orchestrator merges.
 
+## After the first report (2026-11-19)
+
+The orchestrator answered the two open points and both are in the pull request:
+
+- The five dated lead briefs under `items/1.4/dated/` launch Codex with
+  `--dangerously-bypass-hook-trust` (commit `cf24029d`: one flag in each, nothing else).
+- `partialRecoverySource` and `isHarnessTransportFailure` are deleted from
+  `eval/qa/diagnostic-rejudge-source.mjs` with their 13 tests, and the TODO item is dropped (commit
+  `f48e8813`). Disposition: plainly dead. Their only caller,
+  `research/audits/2026-11-06-playground-final-resolution/orchestrate.mjs`, passes `--confirm-paid`
+  to `scripts/run-playground-semantic-eval.mjs`, which has rejected that flag since #498
+  (`test/playground-budget.test.ts:33`), so it already could not run. The record under `research/`
+  is unchanged, and the code is in git history at `10a1ead5`. `diagnosticRejudgeSource` and
+  `diagnosticAnswerProblem` are untouched. `qaImplementationSha256` changes, as with any
+  `eval/qa/*.mjs` edit.
+- Owner decision 5 (ripgrep) is confirmed as the ninth closed item.
+
+The sections below are the first report, updated only where these two changes alter a fact.
+
 ## Verdicts (for the owner)
 
 All eight lanes did what they claimed. None needs rework, and no guard was weakened. Three
@@ -19,7 +38,7 @@ at 90% of its time limit, and it failed once in CI.
 | cards | #503 | good | yes; gate reproduces at 114 of 182 | yes | right-sized | nothing |
 | scrub | #504 | good | yes; served text is exactly the two restored passages | yes | right-sized after round 2 | nothing; two follow-ups in the TODO |
 | hooks | #505 | good with fixes | yes; one decision function for four CLIs | yes, with the Codex flag | right-sized | the Codex wording in `eval/qa/README.md`; the flag on two launch lines |
-| tests | #506 | good with fixes | yes for every removal (each named guard exists); the parallel runs left one test flaky | yes | kept slightly more than needed (tests for a function with no live caller), left | a 30 s timeout on two tests; one follow-up in the TODO |
+| tests | #506 | good with fixes | yes for every removal (each named guard exists); the parallel runs left one test flaky | yes | kept slightly more than needed (tests for a function with no live caller), left | a 30 s timeout on two tests; the dead function and its tests deleted afterwards |
 
 The evidence for each cell, with file and line, is in [AUDIT.md](AUDIT.md).
 
@@ -44,8 +63,8 @@ The evidence for each cell, with file and line, is in [AUDIT.md](AUDIT.md).
    qualifier that follows the excluded alternative. Nothing is wrong in the served text today. A
    re-pin review reads the upstream diff, not the served sentence, so the new TODO item proposes a
    pinned count of narrowed sentences.
-6. **`partialRecoverySource` has no live caller (TODO).** The tests lane kept its tests. Removing the
-   function is a deletion decision for the owner or the lead.
+6. **`partialRecoverySource` had no live caller (deleted on the orchestrator's instruction).** The
+   tests lane had kept its tests.
 
 ## Fixes and close-out in the pull request
 
@@ -53,9 +72,8 @@ The evidence for each cell, with file and line, is in [AUDIT.md](AUDIT.md).
   `scripts/README.md`) and F4 (`{ timeout: 30_000 }` on one test in
   `test/qa-paired-verdict.test.mjs` and one in `test/find-uncited-golden-round-json.test.mjs`).
 - `.agents/TODO.md`: the eight closed items deleted; owner decision 5 deleted (see below);
-  Priorities point 4 and the case-file move item reworded; two items added ("Align the skill scrub
-  with the emitted-text guard", "Decide whether `partialRecoverySource` stays"). The frozen anchors
-  are byte-identical.
+  Priorities point 4 and the case-file move item reworded; one item added ("Align the skill scrub
+  with the emitted-text guard"). The frozen anchors are byte-identical.
 - Ledger: the 8.9 row (lanes, PRs, deploy `d860f844`, the `cards` accepted evidence, the `gca-eval`
   removal and backups, the Antigravity lane lesson) and the 8.10 row.
 - Hook wording: `AGENTS.md` (one bullet), `golden-truth` (one sentence), `.agents/README.md` (one
@@ -63,8 +81,8 @@ The evidence for each cell, with file and line, is in [AUDIT.md](AUDIT.md).
 - `usage/README.md`: `/home/tyler/raven-data/qa` listed among the owner's private directories.
 - DECISIONS.md: both owner quotes of 2026-11-19, verbatim.
 
-Executor: Claude Sonnet (`claude-sonnet-5-5`, `t20n`, then `t20p` for F4), [EXEC.md](EXEC.md). I
-read both diffs whole. I made two small edits myself: a paragraph re-wrap in `eval/qa/README.md` and a link in the 8.9
+Executor: Claude Sonnet (`claude-sonnet-5-5`, `t20n`, then `t20p` for F4 and `t20q` for the two
+additions), [EXEC.md](EXEC.md). I read every diff whole. I made two small edits myself: a paragraph re-wrap in `eval/qa/README.md` and a link in the 8.9
 ledger row. Its three stated deviations are sound.
 
 ## Gates (run bare by the lead on the final tree)
@@ -72,7 +90,7 @@ ledger row. Its three stated deviations are sound.
 | Gate | Exit | Result |
 |---|---|---|
 | `npm run typecheck` | 0 | clean |
-| `npm test` | 0 | 173 files passed, 5 skipped; 4165 passed, 3 expected fail, 5 skipped; 17.8 s |
+| `npm test` | 0 | 173 files passed, 5 skipped; 4152 passed, 3 expected fail, 5 skipped (13 fewer: the deleted tests) |
 | `npm run build` | 0 | dry run, 6920.96 KiB |
 | `npm run secrets:scan -- --tree` | 0 | clean |
 | `npm run eval:selftest` | 0 | all checks passed |
@@ -85,7 +103,7 @@ README passages, and CI runs the lint). `eval:routing -- --gate` was run once du
 do not change. CI on the branch: the first run failed on the timeout above; the runs after it are
 in the pull request.
 
-Model calls: one Codex probe (`gpt-6.2-sol`, low effort) and two Sonnet executor runs, all on
+Model calls: one Codex probe (`gpt-6.2-sol`, low effort) and three Sonnet executor runs, all on
 subscriptions. USD 0 API.
 
 ## Deploy
@@ -94,19 +112,15 @@ Not needed. `git diff origin/main -- src package.json package-lock.json wrangler
 
 ## For the orchestrator
 
-1. **Merge window.** The pull request changes `AGENTS.md` and `golden-truth`, which the dated runs
-   read at launch. Merge before 2026-11-23 18:00 UTC, or hold until run 2.1 and its follow-ups have
-   merged.
-2. **The five dated lead briefs still launch Codex without the flag** (`items/1.4/dated/2.1-LEAD.md`,
-   `2.2a`, `2.2b`, `2.2c`, `rehearsal-LEAD.md`). I did not edit them: timers launch them and they
-   were rehearsed as written. I recommend adding `--dangerously-bypass-hook-trust` after
-   `--no-daemon` in each. Those Codex children work next to golden text, which is where the guard
-   matters most, and my probe used the same `systemd-run` launch shape on agentpc with Codex
-   0.169.0. The risk is a Codex update that drops the flag; the launch would then fail and the brief
-   falls back a tier. Your call; say the word and I will add it to this pull request.
-3. **Owner decision 5 (install ripgrep on agentpc) is deleted as done.** `ripgrep 15.1.0` is at
-   `/usr/bin/rg`, installed by `apt` on 2026-11-19 18:28. I take this to be the ninth closed item in
-   your note; the TODO held eight headed items. If you meant another item, tell me which.
+1. **Merge window.** The pull request changes `AGENTS.md`, `golden-truth` and the five dated lead
+   briefs, which the dated runs read at launch. Merge before 2026-11-23 18:00 UTC, or hold until
+   run 2.1 and its follow-ups have merged.
+2. **The dated briefs' Codex launch line** now carries the flag, on your instruction. The evidence
+   for it is my probe: the same `systemd-run` launch shape on agentpc with Codex 0.169.0. The
+   remaining risk is a Codex update that drops the flag; the launch would then fail and the brief
+   falls back a tier.
+3. **Owner decision 5** (install ripgrep on agentpc) is deleted as done, which you confirmed.
+   `ripgrep 15.1.0` is at `/usr/bin/rg`, installed by `apt` on 2026-11-19 18:28.
 4. **Nothing to do on the Mac** beyond the merge.
 
 ## Not fixed, and why
@@ -124,7 +138,5 @@ Not needed. `git diff origin/main -- src package.json package-lock.json wrangler
 
 ## Open questions for the owner
 
-- Should `partialRecoverySource` and `isHarnessTransportFailure` be deleted with their tests? The
-  only caller is the superseded 2026-11-06 Playground orchestrator under `research/`, which would
-  then no longer load. Safe default: keep them (TODO item "Decide whether `partialRecoverySource`
-  stays").
+None. The one question in the first report, whether to delete `partialRecoverySource`, was answered
+by the orchestrator: deleted.

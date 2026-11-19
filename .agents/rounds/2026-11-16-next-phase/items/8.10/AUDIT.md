@@ -240,3 +240,14 @@ runs 178 files and 4173 tests in 20.8 s.
 
 The close-out edits from the orchestrator's note ride in the same pull request
 ([briefs/exec.md](briefs/exec.md)).
+
+## Addendum (2026-11-19, after the orchestrator's reply)
+
+Two changes followed the audit and are not findings of it:
+
+- The five dated lead briefs under `items/1.4/dated/` now launch Codex with
+  `--dangerously-bypass-hook-trust`. This completes F2.
+- `partialRecoverySource` and `isHarnessTransportFailure` were deleted with their tests, on the
+  orchestrator's instruction, and the TODO item was dropped. The "tests" section above describes
+  the state before that deletion. Their caller under `research/` already could not run: it passes
+  `--confirm-paid`, which `scripts/run-playground-semantic-eval.mjs` has rejected since #498.
