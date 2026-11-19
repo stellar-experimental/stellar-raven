@@ -7,6 +7,7 @@ import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { mintDemoCookie } from "../src/demo/auth.ts";
 import { DEMO_MODELS, demoReasoningEffortOverride } from "../src/demo/model-config.ts";
+import { formatBudgetUsd } from "../eval/qa/spend-budget.mjs";
 
 /**
  * DO NOT EDIT ANYTHING UNDER `src/` WHILE A RUN IS IN FLIGHT, and keep heavy
@@ -363,7 +364,7 @@ async function runPrompt({ runId, url, cookie, model, reasoningEffort, prompt, r
         origin: new URL(url).origin,
         "sec-fetch-site": "same-origin",
         ...(cookie ? { cookie } : {}),
-        ...(maxBudgetUsd === null ? {} : { "x-raven-eval-max-budget-usd": String(maxBudgetUsd) })
+        ...(maxBudgetUsd === null ? {} : { "x-raven-eval-max-budget-usd": formatBudgetUsd(maxBudgetUsd) })
       },
       body: JSON.stringify({ messages: [{ role: "user", content: prompt.text }] }),
       signal: controller.signal

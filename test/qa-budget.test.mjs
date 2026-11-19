@@ -19,6 +19,7 @@ import {
   MissingReportedCostError,
   authorizeSpend,
   createSpendLedger,
+  formatBudgetUsd,
   parseMaxBudgetUsd,
   recordSpend,
   resumeSpendLedger,
@@ -367,5 +368,29 @@ describe("QA sequential budget", () => {
     expect(checkpoints.at(-1).rows[0].attempts.judgeCalls).toHaveLength(1);
     expect(runState.incompleteIds).toEqual(["one"]);
     expect(runState.unattemptedIds).toEqual(["two"]);
+  });
+});
+
+describe("formatBudgetUsd", () => {
+  // src/demo/chat.ts accepts the eval budget header only as a plain decimal.
+  const workerBudgetHeader = /^(?:\d+\.?\d*|\.\d+)$/;
+
+  it.each([
+    [80, "80"],
+    [0.5, "0.5"],
+    [1.25, "1.25"],
+    [0.0000005, "0.0000005"],
+    [1e-12, "0.000000000001"],
+    [0.1 + 0.2, "0.3"]
+  ])("formats %s as the plain decimal %s", (value, expected) => {
+    const formatted = formatBudgetUsd(value);
+    expect(formatted).toBe(expected);
+    expect(formatted).toMatch(workerBudgetHeader);
+  });
+
+  it("refuses a value it cannot format as a plain decimal", () => {
+    expect(() => formatBudgetUsd(-1)).toThrow(/non-negative/);
+    expect(() => formatBudgetUsd(Number.POSITIVE_INFINITY)).toThrow(/non-negative/);
+    expect(() => formatBudgetUsd(1e21)).toThrow(/plain decimal/);
   });
 });

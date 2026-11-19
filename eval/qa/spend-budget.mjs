@@ -162,9 +162,16 @@ export function spendLedgerRecord(ledger) {
   };
 }
 
+/**
+ * A budget as a plain decimal at ledger precision (12 places), never exponent
+ * notation: the Playground route accepts its budget header only as a plain
+ * decimal and rejects `5e-7` with HTTP 400.
+ */
 export function formatBudgetUsd(value) {
   if (!Number.isFinite(value) || value < 0) {
     throw new Error(`budget value must be a finite non-negative number, got ${value}`);
   }
-  return String(roundUsd(value));
+  if (value >= 1e21) throw new Error(`budget value is too large for a plain decimal, got ${value}`);
+  const fixed = roundUsd(value).toFixed(12);
+  return fixed.includes(".") ? fixed.replace(/\.?0+$/, "") : fixed;
 }

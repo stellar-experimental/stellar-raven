@@ -51,7 +51,7 @@ import {
   treeGenerationSha256
 } from "../eval/playground/artifact-contract.mjs";
 
-import { authorizeSpend, createSpendLedger, parseMaxBudgetUsd, recordSpend, spendLedgerRecord } from "../eval/qa/spend-budget.mjs";
+import { authorizeSpend, createSpendLedger, formatBudgetUsd, parseMaxBudgetUsd, recordSpend, spendLedgerRecord } from "../eval/qa/spend-budget.mjs";
 import { executableIdentity } from "../eval/lib/executable-identity.mjs";
 
 const DEFAULT_SAMPLE = 5;
@@ -432,7 +432,7 @@ export async function runCase(item, { endpoint, timeoutMs, cookie, maxBudgetUsd 
         origin: new URL(endpoint).origin,
         "sec-fetch-site": "same-origin",
         cookie,
-        "x-raven-eval-max-budget-usd": String(maxBudgetUsd)
+        "x-raven-eval-max-budget-usd": formatBudgetUsd(maxBudgetUsd)
       },
       body: JSON.stringify({ messages: [{ role: "user", content: item.question }] }),
       signal: controller.signal

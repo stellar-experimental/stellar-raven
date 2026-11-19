@@ -99,3 +99,32 @@ Nothing is required for this PR. Context for the merge:
 4. **Dated research script.** `research/audits/2026-11-06-playground-final-resolution/orchestrate.mjs` still
    passes `--confirm-paid`. Re-running it would now fail with "Unknown argument". Research records stay
    unchanged.
+
+## Orchestrator additions (2026-11-19, commits on top)
+
+1. **Deploy approvals relaxed.** Per the orchestrator's instruction, the owner's 2026-11-19 words override
+   the 8.2 O-10 hold for these lines. `ecosystem-skills/README.md` step 8 now reads "deploy without asking
+   under the owner delegation in `AGENTS.md`". `live-drift-resolution` "Deploy and close" step 2 now reads:
+   after the independent review, run `npm run deploy` without asking under the AGENTS.md owner delegation,
+   and record it in the ledger. The O-10 bullet in the TODO item "Apply the item 8.2 deferred
+   documentation changes" now holds only posting authority.
+2. **Cap formatting fixed (Sol finding 4).** `formatBudgetUsd` (`eval/qa/spend-budget.mjs`) now returns a
+   plain decimal at ledger precision, for example `0.0000005` instead of `5e-7`. It refuses values that
+   cannot be written that way. Both Playground scripts now send `x-raven-eval-max-budget-usd` through it.
+   Ordinary values format exactly as before, so stored command arrays and the run-qa and discovery
+   arguments do not change.
+
+   The tests were written first and failed before the fix: four failures, including the gauntlet loopback
+   test that captured the sent header as `'5e-7'`. All pass after it:
+   - `test/qa-budget.test.mjs`: formatter cases.
+   - `test/demo-gauntlet-cli.test.ts`: a "tiny cap" loopback case that records the header the script sends
+     and checks it against the Worker's regex.
+
+Gates rerun bare on the new head, all exit 0:
+- `npm run typecheck`
+- `npm test` (4293 passed, 3 expected fail)
+- `npm run build`
+- `npm run eval:selftest`
+- `npm run secrets:scan -- --tree`
+
+The Worker bundle (`dist/server.js` and its map) is still byte-identical. No deploy is needed.
