@@ -12,7 +12,7 @@
    - Uses whole-second UTC ISO default `fetched_at` matching `update.sh` (Sol F4).
 2. **Single documented directory-only refresh path (`scripts/refresh-skill-directories.mjs`):**
    - Refreshes `ecosystem-skills/catalog.json`, `ecosystem-skills/community.json`, and `ecosystem-skills/INDEX.md` without touching `MANIFEST.json`, `catalog/manifest.json`, `specs/super-spec.json`, `eval/gates.json`, or `PIN-REVIEW.md`.
-   - Idempotent: preserves existing `fetched_at` and writes zero bytes on a clean tree; stages inputs and validates `build-index.mjs` before atomically updating changed targets with rollback.
+   - Idempotent: fetches both directories first (failing closed before touching files), rewrites each snapshot only when content ignoring `fetched_at` changed, then runs `ecosystem-skills/build-index.mjs` and logs one line per file (zero diff on a clean tree).
 3. **Accurate drift-checker remediation routing (`scripts/check-skills-drift.mjs`):**
    - Routes both `stellarlight-catalog` and `stellar-community-catalog` to `Directory remediation` (`node scripts/refresh-skill-directories.mjs`), and prints `Source remediation` (`ecosystem-skills/update.sh`) only when a pinned GitHub source drifts.
 4. **Accurate two-surface community disclaimer (`scripts/lib/stellar-community.mjs`, regenerated `ecosystem-skills/INDEX.md`, `ecosystem-skills/README.md`):**
@@ -64,6 +64,15 @@
 | `codex` (subscription, read-only, `model_reasoning_effort="high"`) | `gpt-6.2-sol` (resolved via `node scripts/latest-model.mjs sol`) | Independent review of `git diff origin/main...HEAD` -> `SOL-REVIEW.md` |
 
 No AI Gateway, Workers AI, or provider-API calls were made.
+
+## Simplification (orchestrator review of #515)
+
+Trimmed both new scripts to the smallest implementation that works inside a git checkout: removed the staging directory, in-script rollback layer (git is the rollback), and unused CLI path/timestamp override flags from `scripts/refresh-skill-directories.mjs`, and collapsed `scripts/lib/stellarlight-catalog.mjs` CLI argument parsing to positional `<out-path> [fetched-at]`. Retained the shared projection, canonical diff, whole-second `fetched_at` default, `meta.registry.live === false` fail-closed guard, and all lasting-invariant tests in `test/check-skills-drift-cli.test.mjs`.
+
+| File | Before | After | Delta |
+| --- | ---: | ---: | ---: |
+| `scripts/refresh-skill-directories.mjs` | 200 lines | 70 lines | -130 lines (-65%) |
+| `scripts/lib/stellarlight-catalog.mjs` | 132 lines | 82 lines | -50 lines (-38%) |
 
 ## Open questions
 

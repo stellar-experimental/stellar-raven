@@ -1,23 +1,11 @@
 #!/usr/bin/env node
-// refresh-skill-directories.mjs — refresh the two ecosystem directory snapshots
-// (ecosystem-skills/catalog.json and ecosystem-skills/community.json) and
-// regenerate ecosystem-skills/INDEX.md without moving any skill pin in MANIFEST.json.
-//
-// Usage:
-//   node scripts/refresh-skill-directories.mjs [--catalog <path>] [--community <path>] [--index <path>] [--manifest <path>] [--fetched-at <iso>]
-//
-// Guarantees:
-//   - Leaves MANIFEST.json and every pinned skill untouched.
-//   - Idempotent: rewrites a directory snapshot only when its content (ignoring
-//     fetched_at) actually changed, and rewrites INDEX.md only when its rendered
-//     bytes differ; running on a clean tree changes nothing.
-//   - Fails closed: fetches both directories and validates INDEX.md generation
-//     into a staging directory before modifying any target file.
+// refresh-skill-directories.mjs — refresh ecosystem-skills/catalog.json and
+// community.json when upstream content changed, then rebuild INDEX.md.
+// Leaves MANIFEST.json and all pinned skills untouched.
 
 import { execFileSync } from "node:child_process";
-import { existsSync, mkdtempSync, readFileSync, rmSync, unlinkSync } from "node:fs";
-import { tmpdir } from "node:os";
-import { dirname, join, relative, resolve } from "node:path";
+import { existsSync, readFileSync } from "node:fs";
+import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { writeFileAtomic } from "./lib/shared.mjs";
 import {
@@ -33,165 +21,47 @@ import {
   formatStellarlightCatalog,
 } from "./lib/stellarlight-catalog.mjs";
 
-const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const BUILD_INDEX = join(ROOT, "ecosystem-skills", "build-index.mjs");
+const SKILLS_DIR = join(resolve(dirname(fileURLToPath(import.meta.url)), ".."), "ecosystem-skills");
+const CATALOG_PATH = join(SKILLS_DIR, "catalog.json");
+const COMMUNITY_PATH = join(SKILLS_DIR, "community.json");
+const INDEX_PATH = join(SKILLS_DIR, "INDEX.md");
+const BUILD_INDEX = join(SKILLS_DIR, "build-index.mjs");
 
-function parseArgs(argv) {
-  const options = {
-    catalog: join(ROOT, "ecosystem-skills", "catalog.json"),
-    community: join(ROOT, "ecosystem-skills", "community.json"),
-    index: join(ROOT, "ecosystem-skills", "INDEX.md"),
-    manifest: join(ROOT, "ecosystem-skills", "MANIFEST.json"),
-    fetchedAt: null,
-  };
-  for (let i = 0; i < argv.length; i += 1) {
-    const flag = argv[i];
-    const value = argv[i + 1];
-    if (!["--catalog", "--community", "--index", "--manifest", "--fetched-at"].includes(flag)) {
-      throw new Error(`refresh-skill-directories: unknown argument ${flag}`);
-    }
-    if (!value || value.startsWith("--")) {
-      throw new Error(`refresh-skill-directories: ${flag} needs a value`);
-    }
-    if (flag === "--catalog") options.catalog = resolve(value);
-    else if (flag === "--community") options.community = resolve(value);
-    else if (flag === "--index") options.index = resolve(value);
-    else if (flag === "--manifest") options.manifest = resolve(value);
-    else if (flag === "--fetched-at") options.fetchedAt = value;
-    i += 1;
-  }
-  return options;
-}
-
-function readJsonIfExists(path) {
+const readJson = (path) => {
   if (!existsSync(path)) return null;
-  try {
-    return JSON.parse(readFileSync(path, "utf8"));
-  } catch {
-    return null;
-  }
-}
-
-function labelFor(path) {
-  const rel = relative(ROOT, path);
-  return rel && !rel.startsWith("..") ? rel : path;
-}
-
-function writeAtomicallyWithRollback(writes) {
-  const backups = writes.map(({ path }) => ({
-    path,
-    existed: existsSync(path),
-    previous: existsSync(path) ? readFileSync(path) : null,
-  }));
-  const written = [];
-  try {
-    for (let i = 0; i < writes.length; i += 1) {
-      writeFileAtomic(writes[i].path, writes[i].data);
-      written.push(backups[i]);
-    }
-  } catch (error) {
-    for (const entry of written.reverse()) {
-      try {
-        if (entry.existed) writeFileAtomic(entry.path, entry.previous);
-        else if (existsSync(entry.path)) unlinkSync(entry.path);
-      } catch {
-        // Best-effort rollback; preserve the primary error.
-      }
-    }
-    throw error;
-  }
-}
+  try { return JSON.parse(readFileSync(path, "utf8")); } catch { return null; }
+};
 
 async function main() {
-  const options = parseArgs(process.argv.slice(2));
-  const existingCatalog = readJsonIfExists(options.catalog);
-  const existingCommunity = readJsonIfExists(options.community);
+  const existingCatalog = readJson(CATALOG_PATH);
+  const existingCommunity = readJson(COMMUNITY_PATH);
   const catalogUrl = existingCatalog?.source || STELLARLIGHT_CATALOG_URL;
 
-  const [projectedCatalog, liveCommunityEntries] = await Promise.all([
+  const [projectedCatalog, liveCommunity] = await Promise.all([
     fetchStellarlightCatalog(catalogUrl),
     fetchCommunityEntries(),
   ]);
 
   const catalogNote = existingCatalog ? compareStellarlightCatalog(existingCatalog, projectedCatalog) : "new snapshot";
-  const catalogChanged =
-    !existingCatalog || existingCatalog.source !== catalogUrl || catalogNote !== "";
-
-  const communityNote =
-    existingCommunity && Array.isArray(existingCommunity.entries)
-      ? compareCommunity(existingCommunity.entries, liveCommunityEntries)
-      : "new snapshot";
-  const communityChanged =
-    !existingCommunity ||
-    existingCommunity.source !== COMMUNITY_URL ||
-    !Array.isArray(existingCommunity.entries) ||
-    communityNote !== "";
-
-  const fetchedAtOption = options.fetchedAt ? { fetchedAt: options.fetchedAt } : {};
-  const nextCatalogText = catalogChanged
-    ? formatStellarlightCatalog(projectedCatalog, { source: catalogUrl, ...fetchedAtOption })
-    : null;
-  const nextCommunityText = communityChanged
-    ? formatCommunitySnapshot(liveCommunityEntries, { source: COMMUNITY_URL, ...fetchedAtOption })
-    : null;
-
-  const stage = mkdtempSync(join(tmpdir(), "skill-directories-"));
-  try {
-    let effectiveCatalog = options.catalog;
-    let effectiveCommunity = options.community;
-    if (catalogChanged) {
-      effectiveCatalog = join(stage, "catalog.json");
-      writeFileAtomic(effectiveCatalog, nextCatalogText);
-    }
-    if (communityChanged) {
-      effectiveCommunity = join(stage, "community.json");
-      writeFileAtomic(effectiveCommunity, nextCommunityText);
-    }
-    const stagedIndex = join(stage, "INDEX.md");
-    try {
-      execFileSync(
-        process.execPath,
-        [
-          BUILD_INDEX,
-          "--manifest",
-          options.manifest,
-          "--catalog",
-          effectiveCatalog,
-          "--community",
-          effectiveCommunity,
-          "--out",
-          stagedIndex,
-        ],
-        { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] },
-      );
-    } catch (error) {
-      const stderr = error.stderr?.trim();
-      throw new Error(stderr ? `build-index failed:\n${stderr}` : `build-index failed: ${error.message}`);
-    }
-
-    const nextIndexText = readFileSync(stagedIndex, "utf8");
-    const indexChanged = !existsSync(options.index) || readFileSync(options.index, "utf8") !== nextIndexText;
-
-    const writes = [];
-    if (catalogChanged) writes.push({ path: options.catalog, data: nextCatalogText });
-    if (communityChanged) writes.push({ path: options.community, data: nextCommunityText });
-    if (indexChanged) writes.push({ path: options.index, data: nextIndexText });
-    if (writes.length) writeAtomicallyWithRollback(writes);
-
-    console.log(
-      catalogChanged
-        ? `${labelFor(options.catalog)}: updated (${projectedCatalog.entries.length} entries; ${catalogNote})`
-        : `${labelFor(options.catalog)}: unchanged (kept fetched_at ${existingCatalog.fetched_at ?? "?"})`,
-    );
-    console.log(
-      communityChanged
-        ? `${labelFor(options.community)}: updated (${liveCommunityEntries.length} entries; ${communityNote})`
-        : `${labelFor(options.community)}: unchanged (kept fetched_at ${existingCommunity.fetched_at ?? "?"})`,
-    );
-    console.log(`${labelFor(options.index)}: ${indexChanged ? "updated" : "unchanged"}`);
-  } finally {
-    rmSync(stage, { recursive: true, force: true });
+  if (!existingCatalog || existingCatalog.source !== catalogUrl || catalogNote !== "") {
+    writeFileAtomic(CATALOG_PATH, formatStellarlightCatalog(projectedCatalog, { source: catalogUrl }));
+    console.log(`ecosystem-skills/catalog.json: updated (${projectedCatalog.entries.length} entries; ${catalogNote})`);
+  } else {
+    console.log(`ecosystem-skills/catalog.json: unchanged (kept fetched_at ${existingCatalog.fetched_at ?? "?"})`);
   }
+
+  const communityOk = Array.isArray(existingCommunity?.entries);
+  const communityNote = communityOk ? compareCommunity(existingCommunity.entries, liveCommunity) : "new snapshot";
+  if (!existingCommunity || existingCommunity.source !== COMMUNITY_URL || !communityOk || communityNote !== "") {
+    writeFileAtomic(COMMUNITY_PATH, formatCommunitySnapshot(liveCommunity));
+    console.log(`ecosystem-skills/community.json: updated (${liveCommunity.length} entries; ${communityNote})`);
+  } else {
+    console.log(`ecosystem-skills/community.json: unchanged (kept fetched_at ${existingCommunity.fetched_at ?? "?"})`);
+  }
+
+  const beforeIndex = existsSync(INDEX_PATH) ? readFileSync(INDEX_PATH, "utf8") : null;
+  execFileSync(process.execPath, [BUILD_INDEX], { stdio: ["ignore", "pipe", "inherit"] });
+  console.log(`ecosystem-skills/INDEX.md: ${readFileSync(INDEX_PATH, "utf8") !== beforeIndex ? "updated" : "unchanged"}`);
 }
 
 main().catch((err) => {

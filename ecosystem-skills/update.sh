@@ -152,7 +152,7 @@ fetch_catalog() {
   # skill pin, print "Done", and exit 0 while leaving a stale ecosystem catalog
   # behind — a mixed-age result reported as a complete refresh, which is exactly
   # what an operator resolving a drift issue would then believe was resolved.
-  node "$SCRIPT_DIR/../scripts/lib/stellarlight-catalog.mjs" "$CATALOG_TMP" --fetched-at "$NOW" || {
+  node "$SCRIPT_DIR/../scripts/lib/stellarlight-catalog.mjs" "$CATALOG_TMP" "$NOW" || {
     echo "error: could not fetch the stellarlight catalog — refusing to re-pin." >&2
     echo "       Nothing was changed. Retry when the directory is reachable." >&2
     exit 1
