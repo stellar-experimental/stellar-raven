@@ -64,7 +64,8 @@ resolved ID, and that ID is the measurement's identity.
   are in [`eval/EVALS.md`](../../../eval/EVALS.md#model-call-billing). Those lanes serve questions about
   the Playground product itself (its transport, prompt, loop, caps, fallback, or a model only the Gateway
   reaches). Which model answers Raven questions best, and how the MCP tool surface performs, go to the
-  subscription paths below. Any other API-billed run needs the owner's written approval naming the
+  subscription paths below; a shared MCP text change gets a Playground sample only under the conditional
+  rule in the EVALS.md question table. Any other API-billed run needs the owner's written approval naming the
   run. Judges run on the Claude Code CLI; there is no AI Gateway judge, and a non-Claude second judge
   follows the TODO item "Build a subscription second judge on OpenCode when a decision needs one".
 - The QA runner and the discovery agent arm spawn headless `claude -p` themselves. Start the runner
@@ -100,7 +101,7 @@ and results stamp with every QA number.
 | Search behavior of agents | Agentic lane (paid, Claude Code Workflow tool, live server) |
 | Tool-plan question on a stored run | `npm run eval:plan -- <results>` (free, offline) |
 | Stale-gospel gate fired | `truth-maintenance` owns the queue; each case goes through `golden-truth` |
-| Playground transport, model path, prompt or loop | `eval/playground/README.md` (paid, API-billed through the Gateway: exceptions E1 and E2 in [Model-call billing](../../../eval/EVALS.md#model-call-billing)). A question about which model answers best or about the MCP tool surface goes to the QA runner or a Codex or Grok lane instead |
+| Playground transport, model path, prompt or loop | `eval/playground/README.md` (paid, API-billed through the Gateway: exceptions E1 and E2 in [Model-call billing](../../../eval/EVALS.md#model-call-billing)). A question about which model answers best or about the MCP tool surface goes to the QA runner or a Codex or Grok lane first; add a Playground sample only under the conditional rule in the EVALS.md question table |
 
 Open `.agents/rounds/<YYYY-MM-DD>-<slug>.md` for a round with paid instruments or several lanes;
 a single free check needs no ledger. Use `truth-maintenance` only for an explicitly broad round.

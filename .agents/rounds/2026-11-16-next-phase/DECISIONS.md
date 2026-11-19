@@ -196,7 +196,10 @@ item 8.7 applies the answers.
 - **Outcome.** E1 and E2 stay as product exceptions, scoped by question: the Gateway path serves
   only questions about the Playground's own transport, prompt, tool loop, caps, fallback or a
   Gateway-only model. Questions about which model answers Raven questions best, or about the MCP
-  tool surface, go to subscriptions (the QA runner, and Codex and Grok `hc` lanes). The gauntlet
+  tool surface, go to subscriptions (the QA runner, and Codex and Grok `hc` lanes). A shared MCP text
+  change adds a Playground E1 sample only when it is about a constraint the Playground caps or
+  overrides, or matched stored transcripts show it moves top-level `search` and `execute` calls across
+  a cap (the rule in the `eval/EVALS.md` question table). The gauntlet
   default is the shipped tuple, each model alone, not the three eval clients. Q9 and Q10 (model and
   surface questions) run on subscriptions. Second judge: Codex 0.169.0 is not tool-blind at the
   definition level (offline `codex debug prompt-input`, no model call). Grok 1.0.88 is not

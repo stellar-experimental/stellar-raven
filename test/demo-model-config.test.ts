@@ -79,7 +79,9 @@ function openAiResponsesSseResponse(model: string): Response {
 }
 
 describe("demo model config", () => {
-  it("defaults the gauntlet to the shipped primary then fallback", () => {
+  // Drift check: it fails on the old three-model list or a reversed pair. A literal copy of the
+  // current IDs would still pass until the next tuple change.
+  it("keeps the gauntlet default in step with the shipped primary then fallback", () => {
     expect(GAUNTLET_DEFAULT_MODELS).toEqual([DEMO_PRIMARY_MODEL, DEMO_FALLBACK_MODEL]);
   });
 

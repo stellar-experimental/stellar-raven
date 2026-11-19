@@ -106,13 +106,15 @@ so it decides a question only when none of those differences is what the questio
 
 | Question | Path | Reason |
 |---|---|---|
-| Does a model route through the Playground's Gateway transport (slug, provider quirks, tool `strict` on xAI, the logged model ID)? | E2 with `--models` | Gateway routing and the AI SDK transport are not reachable from a CLI |
-| Does each shipped model, run alone, complete the stream and tool loop after a model-path change? | E2 default: the shipped primary and fallback | The Playground route itself |
+| Does a model route through the Playground's Gateway transport (slug, provider quirks, tool `strict` on xAI)? | E2 with `--models` | Gateway routing and the AI SDK transport are not reachable from a CLI |
+| Which model ID does the Gateway log for a configured model? | A matching saved receipt or log first ([`research/gauntlets/2026-11-03-sweep-probe-summary.md`](../research/gauntlets/2026-11-03-sweep-probe-summary.md) has exact IDs). Live: E2 with `--models` and an authorized `--max-budget-usd`, then compare the observed IDs with the configured ID | E2 reports observed IDs only through the accounting header, and the launch plan prints the configured ID, which is independent of what the Gateway logged |
+| Does the route's cost accounting settle for a model? | Offline tests. Live settlement only inside an already authorized product run | `--max-budget-usd` is a cap and a measurement, not a separate cost test |
+| Does each shipped model, run alone, complete the stream and tool loop after a model-path change? | E2 default: the shipped primary and fallback | The Playground route itself. It verifies isolated per-model requests on the configured test Gateway (`stellar-raven-demo`) with slug-only overrides |
 | Should a candidate replace the Playground primary or fallback? | E2 on the candidate, then E1 paired | The decision is about the prompt, loop, caps, effort, temperature and model together |
-| Did a Playground prompt, preamble, tool-loop or cap change move answer quality or plan? | E1 on both arms, then `npm run eval:plan` | `DEMO_PREAMBLE`, the caps and the loop exist only in the Playground |
+| Did a Playground-specific change (`DEMO_PREAMBLE`, the caps, the tool loop) move answer quality or plan? | E1 on both arms. A plan-only question uses stored matched traces where possible, else E1 with `--no-judge` plus `npm run eval:plan`; run the judge only when the decision needs answer grades | `DEMO_PREAMBLE`, the caps and the loop exist only in the Playground |
 | Does a model that only the Gateway or Workers AI reaches (such as Kimi) fit the Playground? | E2 and E1, as above | No subscription CLI exists |
 | Which model family answers Raven questions best, or how does it use `search` and `execute`? | Subscription: the QA runner, and Codex and Grok `hc` lanes | The MCP client and model decide it, not the Playground |
-| Did a tool description, MCP instruction, catalog or executor change help or hurt answers? | Subscription QA. Add an E1 sample only when the change is about call counts, step order or the search-evidence rule, or stored transcripts show more tool calls per answer than the Playground caps allow | The MCP surface decides it |
+| Did a tool description, MCP instruction, catalog or executor change help or hurt answers? | Subscription QA first. Add an E1 sample only when the changed shared text is about the constraint the Playground caps or overrides (call counts, step order, the search-evidence rule), or matched stored transcripts show the change moves top-level MCP `search` and `execute` calls per answer across a Playground cap. Count those calls directly: the plan report's `searchQueries` also counts searches nested inside `execute` | The MCP surface decides it; the Playground shares that text but adds its own caps |
 | Does the fallback hand-off, the harness contract or a deployed Playground read healthy? | Free: offline tests, `--dry-run`, `--preflight`, and the Gateway log read in `cloudflare-observability-review` | No model call is needed |
 
 Sizing. Every tier needs its own written authorization; none is standing.
@@ -120,7 +122,13 @@ Sizing. Every tier needs its own written authorization; none is standing.
 1. **Shipped-tuple gauntlet.** Primary and fallback, each alone, 8 prompts each: 16 turns, about USD 0.40
    to 0.45, run with `--max-budget-usd 1`. Run it for a model-path change only (`src/demo/model-config.ts`,
    the request building in `src/demo/chat.ts`, an `ai`, `@ai-sdk/*`, `workers-ai-provider` or `agents`
-   bump, a catalog ID bump or a Gateway setting). `npm run test:smoke` gates other `src/demo` changes.
+   bump, a catalog ID bump). `npm run test:smoke` gates other `src/demo` changes. The default verifies
+   isolated per-model requests on the configured test Gateway (`stellar-raven-demo`) with slug-only
+   overrides. For a tuple change, run the offline request-equivalence tests (`test/demo-chat.test.ts`,
+   "preserves each measured request in the shipped mixed tuple") and pin `--openai-api-mode` and
+   `--reasoning-effort` wherever the shipped tuple's mode or effort differs from the per-model default.
+   E2 cannot verify a change of the Gateway ID or a Gateway setting, because it forces its own test
+   Gateway; check those with the post-deploy Gateway log read in `cloudflare-observability-review`.
 2. **E1 sample.** 5 cases by default, at most 30 (the `chatsPerHour` cap, not a target). Pair on the
    same case IDs. Reuse a stored run when its identities match; a prompt or loop change needs both
    arms on one tree.

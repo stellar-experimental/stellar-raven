@@ -42,11 +42,14 @@ import { DEMO_MODELS, demoReasoningEffortOverride } from "../src/demo/model-conf
  * --models (Sonnet and Grok routing stay reachable that way), and state in the
  * run plan the decision it serves.
  *
- * Dated observations: `openai/gpt-6.1-terra` routed on 2026-08-06 (run ids 2026-08-06-latest-matrix
- * / -route-probe) and passed 8/8 on 2026-11-10 (research/audits/2026-11-10-playground-gpt61-terra-recheck.md);
- * `anthropic/claude-haiku-5.5` passed 16/16 turns on 2026-11-09
- * (research/audits/2026-11-09-playground-product-decision.md); `anthropic/claude-sonnet-5.5` and
- * `xai/grok-4.7` routed in the 2026-11-03 sweep (research/gauntlets/). A slug that has not been probed
+ * Dated observations: the 2026-08-06 matrix (run ids 2026-08-06-latest-matrix / -route-probe)
+ * routed `openai/gpt-5.6-terra`, not 6.1. `openai/gpt-6.1-terra` routed in the 2026-11-03 probe
+ * (research/gauntlets/2026-11-03-sweep-probe-summary.md) and passed 8/8 on 2026-11-10
+ * (research/audits/2026-11-10-playground-gpt61-terra-recheck.md). `anthropic/claude-haiku-5.5`
+ * (research/audits/2026-11-09-playground-product-decision.md) passed all five required promotion
+ * fields on 16/16 turns; the broader diagnostic, which also requires an expected search call, passed
+ * 14/16 (two Soroswap-builder turns made none). `anthropic/claude-sonnet-5.5` and `xai/grok-4.7`
+ * routed in the 2026-11-03 sweep (research/gauntlets/). A slug that has not been probed
  * does not belong in the default, because a wrong one does not look like a
  * typo. Anthropic 4.x versions take DASHES (`claude-sonnet-4-6`, not `4.6`); a
  * dotted 4.x id authenticates and returns "model … was not found", which reads
